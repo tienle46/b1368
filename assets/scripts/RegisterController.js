@@ -14,7 +14,8 @@ cc.Class({
 
     // use this for initialization
     onLoad: function () {
-      this.accountNameLabel.string = "AAA";
+        
+      // this.accountNameLabel.string = "AAA";
 
     },
 
