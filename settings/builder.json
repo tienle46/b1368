@@ -1,0 +1,13 @@
+{
+  "excludeScenes": [],
+  "orientation": {
+    "landscapeLeft": true,
+    "landscapeRight": true,
+    "portrait": false,
+    "upsideDown": false
+  },
+  "packageName": "org.cocos2d.B1368",
+  "startScene": "98809580-449e-4d72-91cd-f61f39b8296c",
+  "title": "B1368",
+  "webOrientation": "auto"
+}
