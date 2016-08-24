@@ -6,8 +6,8 @@
     "portrait": false,
     "upsideDown": false
   },
-  "packageName": "org.cocos2d.B1368",
-  "startScene": "98809580-449e-4d72-91cd-f61f39b8296c",
+  "packageName": "com.game..B1368",
+  "startScene": "c974f5d7-0595-4898-8cd6-c7ef5b82d2b7",
   "title": "B1368",
   "webOrientation": "auto"
 }
