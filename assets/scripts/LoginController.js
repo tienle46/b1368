@@ -36,12 +36,23 @@ cc.Class({
 
     // use this for initialization
     onLoad: function () {
-        
+
+
+        var listener;
+        listener = {
+            event: cc.EventListener.TOUCH_ONE_BY_ONE,
+            onTouchBegan: function (touch, event) {
+               console.log("Touch Action Test");
+
+            }
+        };
+        cc.eventManager.addListener(listener, this.loginButton);
     },
 
     //  handle Action
-    handleLoginAction: function() {
+    handleLoginAction:function () {
 
+    console.log("login action");
     },
 
     handleRegisterButton: function() {
