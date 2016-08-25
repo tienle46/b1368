@@ -2,6 +2,8 @@
  * Created by Thanh on 8/23/2016.
  */
 
+var game;
+
 var GameResource = cc.Class({
 
     ctor() {
@@ -10,11 +12,8 @@ var GameResource = cc.Class({
 });
 
 GameResource.newInstance = function () {
-    let instance = new GameResource();
-    
-    //Init object properties here
-    
-    return instance;
+    game = require("GameResource")
+    return new GameResource();
 };
 
 module.exports = GameResource;

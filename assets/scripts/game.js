@@ -9,18 +9,15 @@ var GameSystem = require("GameSystem")
 
 var game = module.exports;
 
-game.const = {};
-_initConst();
-
-game.config = {};
 _loadConfig();
+_initConst();
+_setupGame();
 
-game.context = GameContext.newInstance();
-game.resource = GameResource.newInstance();
-game.service = GameService.newInstance();
-game.system = GameSystem.newInstance();
 
 function _loadConfig() {
+
+    game.config = {};
+
     game.config.zone = "XGame";
     game.config.debug = true;
     game.config.useSSL = false;
@@ -29,5 +26,29 @@ function _loadConfig() {
 }
 
 function _initConst() {
-    game.const.TITLE = "B1368"
+
+    game.const = {};
+
+    _initSceneNameConst();
+    _initStringConst();
+}
+
+function _initSceneNameConst() {
+    game.const.scene = {};
+    game.const.scene.LOGIN_SCENE = "LoginScene"
+    game.const.scene.REGISTER_SCENE = "RegisterScene"
+    game.const.scene.GAME_SCENE = "GameScene"
+}
+
+function _initStringConst() {
+
+    game.const.string = {};
+    game.const.string.GAME_TITLE = "B1368"
+}
+
+function _setupGame() {
+    game.context = GameContext.newInstance();
+    game.resource = GameResource.newInstance();
+    game.system = GameSystem.newInstance()
+    game.service = GameService.newInstance();
 }

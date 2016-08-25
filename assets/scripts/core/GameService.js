@@ -2,9 +2,9 @@
  * Created by Thanh on 8/23/2016.
  */
 
+var game;
 var SFS2X = require("SFS2X");
 var Keywords = require("Keywords");
-var game = require("game");
 
 var GameService = cc.Class({
         properties: {
@@ -28,19 +28,33 @@ var GameService = cc.Class({
             config.useSSL = game.config.useSSL;
 
             this._sfsClient = new SFS2X.SmartFox(config);
-            // this._sfsClient.setClientDetails("MOZILLA", "1.0.0")
-
-            console.log(this._sfsClient.version, this._sfsClient._clientDetails)
+            this._sfsClient.setClientDetails("MOZILLA", "1.0.0")
 
             this._registerSmartFoxEvent();
 
-            this.connect();
+            this.connect((success) => {
+                console.debug("success: " + success);
+                if (success) {
+                    this.login("crush1", "1234nm", (error, result) => {
+                        if (result) {
+                            console.debug(`Logged in as ${game.context.getUser().name}`)
+                        }
+
+                        if (error) {
+                            console.debug("Login error: ")
+                            console.debug(error)
+                        }
+                    });
+                }
+            });
         },
 
         _registerSmartFoxEvent(){
 
             this._removeSmartFoxEvent();
 
+            this.addEventListener(SFS2X.SFSEvent.LOGIN, this._onLogin);
+            this.addEventListener(SFS2X.SFSEvent.LOGIN_ERROR, this._onLoginError);
             this.addEventListener(SFS2X.SFSEvent.CONNECTION, this._onConnection);
             this.addEventListener(SFS2X.SFSEvent.CONNECTION_LOST, this._onConnectionLost);
             this.addEventListener(SFS2X.SFSEvent.CONNECTION_RESUME, this._onConnectionResume);
@@ -50,6 +64,8 @@ var GameService = cc.Class({
         },
 
         _removeSmartFoxEvent() {
+            this.removeEventListener(SFS2X.SFSEvent.LOGIN, this._onLogin);
+            this.removeEventListener(SFS2X.SFSEvent.LOGIN_ERROR, this._onLoginError);
             this.removeEventListener(SFS2X.SFSEvent.CONNECTION, this._onConnection);
             this.removeEventListener(SFS2X.SFSEvent.CONNECTION_LOST, this._onConnectionLost);
             this.removeEventListener(SFS2X.SFSEvent.CONNECTION_RESUME, this._onConnectionResume);
@@ -57,29 +73,63 @@ var GameService = cc.Class({
         },
 
         _onConnection(event){
-            let cb = this._eventCallbacks[SFS2X.SFSEvent.CONNECTION];
-            cb && cb.call(event.success);
+            console.debug("_onConnection")
+            console.debug(event)
+
+            this._callCallback(SFS2X.SFSEvent.CONNECTION, cb);
         },
 
         _onConnectionLost(event){
             console.debug("_onConnectionLost")
-            console.log(event);
-            //TODO
+            console.debug(event);
+
+            // game.system.loadScene(game.const.scene.LOGIN_SCENE);
         },
 
         _onConnectionResume(event){
             console.debug("_onConnectionResume")
-            console.log(event);
+            console.debug(event);
             //TODO
         },
 
         _onExtensionEvent(event){
-            let cb = this._eventCallbacks[event.cmd];
-            cb && cb.call(event.params);
+            console.debug("_onExtensionEvent")
+            console.debug(event)
+
+            this._callCallback(event.cmd, event.params);
+        },
+
+        _onLogin(event){
+            console.debug("_onLogin")
+            console.debug(event)
+
+            this._callCallback(SFS2X.SFSEvent.LOGIN, undefined, event.data);
+        },
+
+        _onLoginError(){
+            console.debug("_onLoginError")
+            console.debug(event)
+
+            this._callCallback(SFS2X.SFSEvent.LOGIN, event.data);
         },
 
         _sendRequest(request){
             this._sfsClient.send(request);
+        },
+
+        _callCallback(key, args){
+
+            let cb = this._getCallback(key);
+            var argArr = Array.prototype.slice.call(arguments, 1);
+            cb && cb.apply(null, argArr);
+        },
+
+        _getCallback(key){
+            return this._eventCallbacks[key];
+        },
+
+        _addCallback(key, cb){
+            this._eventCallbacks[key] = cb instanceof Function ? cb : undefined;
         },
 
         addEventListener(eventType, handleFunc){
@@ -90,39 +140,64 @@ var GameService = cc.Class({
             this._sfsClient.removeEventListener(eventType, handleFunc, this);
         },
 
+        /**
+         * Current Smart Fox Client
+         *
+         * @returns {SFS2X.SmartFox}
+         */
         getClient(){
             return this._sfsClient;
         },
 
+        /**
+         * Connect to server game with default host & port configuration
+         * @param cb
+         */
         connect(cb){
             this.disconnect();
 
-            this._eventCallbacks[SFS2X.SFSEvent.CONNECTION] = cb;
+            this._addCallback(SFS2X.SFSEvent.CONNECTION, cb);
 
             console.debug(`Connecting to: ${game.config.host}:${game.config.port}`);
 
             this._sfsClient.connect(game.config.host, game.config.port)
         },
 
+        /**
+         * Disconnect to game server
+         */
         disconnect(){
             if (this._sfsClient.isConnected()) {
                 this._sfsClient.disconnect();
             }
         },
 
+        /**
+         * Disconnect to game server and go to Login Screen
+         */
         logout(){
+            disconnect();
+            game.system.loadScene(game.const.scene.LOGIN_SCENE);
         },
 
+        /**
+         * @param {string} username
+         * @param {string} password
+         * @param {function} cb
+         */
         login(username, password, cb){
             let data = {};
-            data[Keywords.REGISTED] = false;
+            data[Keywords.IS_REGISTER] = false;
             data[Keywords.PASSWORD] = password;
+            data[Keywords.APP_SECRET_KEY] = "63d9ccc8-9ce1-4165-80c8-b15eb84a780a";
+
+            this._addCallback(SFS2X.SFSEvent.LOGIN, cb);
 
             this._sendRequest(new SFS2X.Requests.System.LoginRequest(username, password, data, game.config.zone));
         },
 
         /**
-         * @param {object} options  - Data to send:
+         * @param {object} options  - Object data want to send via ExtensionRequest or other instance of RequestObject:
          *      + cmd: Command
          *      + data: Param object going to send to server
          *      + scope: Specially room scope, null or undefined if is global scope (zone scope in smart fox)
@@ -139,13 +214,17 @@ var GameService = cc.Class({
             } else {
                 const cmd = options.cmd;
                 if (cmd) {
-                    this._eventCallbacks[cmd] = cb instanceof Function ? cb : undefined;
+                    this._addCallback(cmd, cb);
                     this._sendRequest(new SFS2X.Requests.System.ExtensionRequest(cmd, options.data ? options.data : {}, options.scope));
                 }
             }
         },
 
-        removeCallback(key){
+        /**
+         * Remove all callback mapped with key
+         * @param {string} key
+         */
+        removeAllCallback(key){
             key && delete this._eventCallbacks[key];
         }
 
@@ -153,6 +232,7 @@ var GameService = cc.Class({
 );
 
 GameService.newInstance = function () {
+    game = require("game");
     let instance = new GameService();
     return instance;
 };
