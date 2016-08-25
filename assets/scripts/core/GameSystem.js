@@ -3,12 +3,27 @@
  */
 
 var game;
-
+var BaseSceneController = require("BaseSceneController");
+var SystemEventHandler = require("SystemEventHandler");
 
 var GameSystem = cc.Class({
 
-    ctor() {
+    properties: {
+        _currentScene: {
+            default: null
+        },
 
+        _systemEventHandler: {
+            default: null
+        }
+    },
+
+    ctor() {
+        this._systemEventHandler = new SystemEventHandler();
+    },
+
+    init(){
+        this._systemEventHandler._registerSystemEventHandler();
     },
 
     /**
@@ -17,6 +32,34 @@ var GameSystem = cc.Class({
      */
     loadScene(sceneName, onLaunch){
         cc.director.loadScene(sceneName, onLaunch)
+    },
+
+
+    /**
+     *
+     * @returns {BaseSceneController}
+     */
+    currentScene(){
+        return this._currentScene;
+    },
+
+
+    /**
+     *
+     * @param {BaseSceneController} scene - Current scene
+     */
+    setCurrentScene(scene){
+        this.currentScene = scene;
+    },
+
+    /**
+     *
+     * @param {string} cmd - Command or request name sent from server
+     * @param {object} data - Data sent according to request
+     */
+    handleData(cmd, data){
+        SystemEventHandler.handleData(cmd, data);
+        this._currentScene &&this._currentScene.handleData(cmd, data)
     }
 
 });
