@@ -1,3 +1,4 @@
+var game = require('game');
 cc.Class({
     extends: cc.Component,
 
@@ -38,21 +39,26 @@ cc.Class({
     onLoad: function () {
 
 
-        var listener;
-        listener = {
-            event: cc.EventListener.TOUCH_ONE_BY_ONE,
-            onTouchBegan: function (touch, event) {
-               console.log("Touch Action Test");
-
-            }
-        };
-        cc.eventManager.addListener(listener, this.loginButton);
     },
 
     //  handle Action
     handleLoginAction:function () {
 
-    console.log("login action");
+        game.service.connect((success) => {
+            console.debug("success: " + success);
+            if (success) {
+                game.service.login("crush1", "1234nm", (error, result) => {
+                    if (result) {
+                        console.debug(`Logged in as ${game.context.getUser().name}`)
+                    }
+
+                    if (error) {
+                        console.debug("Login error: ")
+                        console.debug(error)
+                    }
+                });
+            }
+        });
     },
 
     handleRegisterButton: function() {
