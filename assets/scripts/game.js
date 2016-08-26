@@ -6,12 +6,15 @@ var GameContext = require("GameContext")
 var GameResource = require("GameResource")
 var GameService = require("GameService")
 var GameSystem = require("GameSystem")
+var async = require("async");
 
 var game = module.exports;
 
 _loadConfig();
 _initConst();
 _setupGame();
+
+game.async = async;
 
 
 function _loadConfig() {

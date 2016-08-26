@@ -11,11 +11,12 @@ var GameService = cc.Class({
         _sfsClient: {
             default: null
         },
+
         _eventCallbacks: {
             default: {}
         },
 
-        _eventListeners: {
+        _eventScopes: {
             default: {}
         }
     },
@@ -35,9 +36,9 @@ var GameService = cc.Class({
         this._sfsClient.setClientDetails("MOZILLA", "1.0.0")
 
         this._registerSmartFoxEvent();
+    },
 
-        this._callCallback("dsdsd");
-
+    __testConnection(){
         this.connect((success) => {
             console.debug("success: " + success)
             if (success) {
@@ -102,8 +103,16 @@ var GameService = cc.Class({
         console.debug("_onExtensionEvent")
         console.debug(event)
 
-        this._callCallback(event.cmd, event.params)
-        this._callListener(event.cmd, event.params)
+        if (this._hasCallback(event.cmd)) {
+            this._callCallbackAsync(event.cmd, event.params)
+        } else {
+            game.system.handleData(event.cmd, event.params)
+        }
+
+        // game.async.series([
+        //     () => {this._callCallback(event.cmd, event.params)},
+        //     () => {game.system.handleData(event.cmd, event.params)}
+        // ]);
     },
 
     _onLogin(event){
@@ -125,17 +134,22 @@ var GameService = cc.Class({
     },
 
     _callCallback(key, args){
-
         let cb = this._getCallback(key)
         var argArr = Array.prototype.slice.call(arguments, 1)
         cb && cb.apply(null, argArr);
     },
 
-    _callListener(key, args)
+    _callCallbackAsync(key, args){
+        game.async.series([
+            (callback) => {
+                this._callCallback(arguments)
+            }
+        ]);
+    },
+
+    _hasCallback(key)
     {
-        let listener = this._eventListeners[key]
-        var argArr = Array.prototype.slice.call(arguments, 1)
-        listener && listener.apply(null, argArr)
+        return this._eventCallbacks.hasOwnProperty(key)
     },
 
     _getCallback(key)
@@ -143,17 +157,16 @@ var GameService = cc.Class({
         return this._eventCallbacks[key]
     },
 
-    _addCallback(key, cb)
+    _addCallback(key, cb, scope)
     {
         this._eventCallbacks[key] = cb instanceof Function ? cb : undefined
-    }
-    ,
+        this._addCommandToScope(keys, scope);
+    },
 
     addEventListener(eventType, handleFunc)
     {
         this._sfsClient.addEventListener(eventType, handleFunc, this)
-    }
-    ,
+    },
 
     removeEventListener(eventType, handleFunc)
     {
@@ -230,7 +243,7 @@ var GameService = cc.Class({
      * @param {function} cb - Callback function on server responses
      *
      */
-    send(options, cb)
+    send(options, cb, scope)
     {
 
         if (!options) return
@@ -240,35 +253,18 @@ var GameService = cc.Class({
         } else {
             const cmd = options.cmd
             if (cmd) {
-                this._addCallback(cmd, cb)
-                this._sendRequest(new SFS2X.Requests.System.ExtensionRequest(cmd, options.data ? options.data : {}, options.scope))
+                this._addCallback(cmd, cb, scope)
+                this._sendRequest(new SFS2X.Requests.System.ExtensionRequest(cmd, options.data || {}, options.scope))
             }
         }
     },
 
-    /**
-     * Game service will be call this listener has registered when data send from
-     *
-     * @param {string} key  - Key map with listener
-     * @param {function} listener - Function handle data. Function must contain 2 parameters.
-     * + cmd - {string} (the command of extension request or request name)
-     * + data - {object} (The data sent from server)
-     *
-     */
-    registerEventListener(key, listener)
-    {
-        if (key) {
-            this._eventListeners[key] = listener instanceof Function ? listener : undefined
+    _addCommandToScope(key, scope){
+        if(cmd && scope){
+            let keys = this._eventScopes[scope] || {}
+            keys[cmd] = ""
+            this._eventScopes[scope] = keys
         }
-    },
-
-    /**
-     *
-     * @param {string} key - Name mapped with listener
-     */
-    removeEventListener(key)
-    {
-        key && delete this._eventListeners[key]
     },
 
     /**
@@ -278,6 +274,23 @@ var GameService = cc.Class({
     removeCallback(key)
     {
         key && delete this._eventCallbacks[key]
+    },
+
+    /**
+     *
+     * @param {string} scope
+     */
+    removeAllCallback(scope)
+    {
+        let eventCmdObj = scope && this._eventScopes[scope];
+        if (eventCmdObj) {
+            let keys = Object.keys(eventCmdObj)
+            keys.forEach(key => {
+                delete this._eventCallbacks[key]
+            })
+        }
+
+        scope && delete this._eventScopes[scope]
     }
 
 })
