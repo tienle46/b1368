@@ -13,6 +13,21 @@ cc.Class({
         //    readonly: false,    // optional, default is false
         // },
         // ...
+
+        scrollerContentView: {
+            default:null,
+            type:cc.Layout
+        },
+
+        item: {
+            default: null,
+            type:cc.Prefab
+        },
+
+        gameList: []
+
+
+
     },
 
     // use this for initialization
@@ -26,8 +41,29 @@ cc.Class({
         console.log('request list game');
         game.service.send(sendObject, (data) => {
             console.log(data);
+
+        this.gameList = data("cl");
+
+
+
         },game.const.scene.DASHBOARD_SCENE);
+
+        this.initItemListGame();
     },
+    
+    
+    initItemListGame:function () {
+
+        for (var i = 0; i < 10; i++) {
+            const node = new cc.instantiate(this.item);
+            node.setContentSize(50,50);
+            this.scrollerContentView.node.addChild(node);
+        }
+
+
+
+
+    }
 
     // called every frame, uncomment this function to activate update callback
     // update: function (dt) {
