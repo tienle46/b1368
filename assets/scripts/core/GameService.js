@@ -142,7 +142,7 @@ var GameService = cc.Class({
     _callCallbackAsync(key, args){
         game.async.series([
             (callback) => {
-                this._callCallback(arguments)
+                this._callCallback.apply(this, arguments)
             }
         ]);
     },
@@ -160,7 +160,7 @@ var GameService = cc.Class({
     _addCallback(key, cb, scope)
     {
         this._eventCallbacks[key] = cb instanceof Function ? cb : undefined
-        this._addCommandToScope(keys, scope);
+        this._addCommandToScope(key, scope);
     },
 
     addEventListener(eventType, handleFunc)
@@ -260,9 +260,9 @@ var GameService = cc.Class({
     },
 
     _addCommandToScope(key, scope){
-        if(cmd && scope){
+        if(key && scope){
             let keys = this._eventScopes[scope] || {}
-            keys[cmd] = ""
+            keys[key] = ""
             this._eventScopes[scope] = keys
         }
     },
