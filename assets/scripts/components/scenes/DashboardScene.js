@@ -45,7 +45,6 @@ cc.Class({
         this.gameList = data("cl");
 
 
-
         },game.const.scene.DASHBOARD_SCENE);
 
         this.initItemListGame();
