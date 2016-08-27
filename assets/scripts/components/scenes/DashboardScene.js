@@ -1,8 +1,12 @@
 var game = require('game');
+
+var item = require('item');
 cc.Class({
     extends: cc.Component,
 
+
     properties: {
+        gameList:[],
         // foo: {
         //    default: null,      // The default value will be used only when the component attaching
         //                           to a node for the first time
@@ -24,7 +28,7 @@ cc.Class({
             type:cc.Prefab
         },
 
-        _gameList: []
+
 
     },
 
@@ -41,12 +45,12 @@ cc.Class({
             console.log(data);
 
 
-        this.gameList = data("cl");
+        this.gameList = data["cl"];
+
+            console.log(this.gameList);
 
 
 
-            this._gameList = data['cl'];
-            console.log(this._gameList);
             this._initItemListGame();
         },game.const.scene.DASHBOARD_SCENE);
 
@@ -55,13 +59,26 @@ cc.Class({
 
     _initItemListGame:function () {
 
-        var height = this.scrollerContentView.node.height;
-        var itemDimension = height / 2.0 - 80;
+        let height = this.scrollerContentView.node.height;
+        let itemDimension = height / 2.0 - 80;
 
-        for (var i = 0; i <  14 ; i++) {
-            const node = new cc.instantiate(this.item);
-            node.setContentSize(itemDimension,itemDimension);
-            this.scrollerContentView.node.addChild(node);
+        for (var i = 0; i <  this.gameList.length ; i++) {
+
+
+            let nodeItem = new cc.instantiate(this.item);
+            // console.log(nodeItem);
+           let sprite = nodeItem.getComponent(cc.Sprite);
+            nodeItem.setContentSize(itemDimension,itemDimension);
+
+            this.scrollerContentView.node.addChild(nodeItem);
+            nodeItem.getComponent(item).addOnClickListener((gameCode) => {
+                    console.log("click Item");
+            });
+
+            cc.loader.loadRes(game.resource.gameIcon[this.gameList[i]], cc.SpriteFrame, function (err, spriteFrame) {
+                var sprite = nodeItem.getComponent(cc.Sprite);
+                sprite.spriteFrame = spriteFrame ;
+            });
         }
 
     }

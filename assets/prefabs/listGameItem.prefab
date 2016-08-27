@@ -71,9 +71,7 @@
       "__id__": 1
     },
     "_enabled": true,
-    "_spriteFrame": {
-      "__uuid__": "10012f0a-e5df-4390-9f79-83d83df93335"
-    },
+    "_spriteFrame": null,
     "_type": 0,
     "_sizeMode": 0,
     "_fillType": 0,
@@ -90,13 +88,16 @@
     "_atlas": null
   },
   {
-    "__type__": "e6bfaRMsXZDTpPF40MYJQjK",
+    "__type__": "c3b71GyQoxL7af8/TTwolN9",
     "_name": "",
     "_objFlags": 0,
     "node": {
       "__id__": 1
     },
-    "_enabled": true
+    "_enabled": true,
+    "gameCode": "",
+    "gameID": 0,
+    "_clickListener": null
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -104,7 +105,7 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "b6322b4f-cfe0-4ae9-94c0-bcf66d5d5cbe"
+      "__uuid__": "58be83f2-719c-4e5a-a005-631d332e4eee"
     },
     "fileId": "8e5a3Btjm1OyYT8UB67TzCH"
   }

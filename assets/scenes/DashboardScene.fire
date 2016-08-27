@@ -40,7 +40,7 @@
     "_globalZOrder": 0,
     "_tag": -1,
     "_opacityModifyRGB": false,
-    "_id": "47ad7434-a7a2-4288-8a90-cff1cef40c4b"
+    "_id": "731145bc-56be-4dde-ade7-d6578199e1a8"
   },
   {
     "__type__": "cc.Node",
@@ -578,7 +578,7 @@
     "_fitHeight": true
   },
   {
-    "__type__": "0107b+7tyxDGoSm8a2ZVv2f",
+    "__type__": "99fd6tnAzNE34yi+5z55Glt",
     "_name": "",
     "_objFlags": 0,
     "node": {
@@ -589,7 +589,7 @@
       "__id__": 7
     },
     "item": {
-      "__uuid__": "b6322b4f-cfe0-4ae9-94c0-bcf66d5d5cbe"
+      "__uuid__": "58be83f2-719c-4e5a-a005-631d332e4eee"
     },
     "_gameList": []
   }

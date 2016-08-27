@@ -13,6 +13,10 @@ cc.Class({
         // },
         // ...
 
+        gameCode: "",
+        gameID: 0,
+        _clickListener: null
+
     },
 
     // use this for initialization
@@ -38,9 +42,13 @@ cc.Class({
         cc.eventManager.addListener(listenerClick,this.node);
 
     },
-    
+
+    addOnClickListener(cb){
+        this._clickListener = cb;
+    },
+
     handleClickItem:function () {
-        console.log("click item in scroller");
+        this._clickListener && this._clickListener(this.gameCode);
     }
 
     // called every frame, uncomment this function to activate update callback
