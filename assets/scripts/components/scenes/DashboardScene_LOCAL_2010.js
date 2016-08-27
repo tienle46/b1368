@@ -24,45 +24,43 @@ cc.Class({
             type:cc.Prefab
         },
 
-        _gameList: []
+        gameList: []
+
+
 
     },
 
     // use this for initialization
     onLoad: function () {
         var sendObject = {
-            'cmd' : 'gv',
-            'data' : {
-                'pid' : 1
-            }
-        };
+            "cmd" : "gv",
+            "data" : {
+                "pid" : 1
+            },
+        }
         console.log('request list game');
         game.service.send(sendObject, (data) => {
             console.log(data);
 
-
         this.gameList = data("cl");
 
 
-
-            this._gameList = data['cl'];
-            console.log(this._gameList);
-            this._initItemListGame();
         },game.const.scene.DASHBOARD_SCENE);
 
+        this.initItemListGame();
     },
+    
+    
+    initItemListGame:function () {
 
-
-    _initItemListGame:function () {
-
-        var height = this.scrollerContentView.node.height;
-        var itemDimension = height / 2.0 - 80;
-
-        for (var i = 0; i <  14 ; i++) {
+        for (var i = 0; i < 10; i++) {
             const node = new cc.instantiate(this.item);
-            node.setContentSize(itemDimension,itemDimension);
+            node.setContentSize(50,50);
             this.scrollerContentView.node.addChild(node);
         }
+
+
+
 
     }
 

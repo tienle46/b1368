@@ -40,19 +40,14 @@ cc.Class({
         game.service.send(sendObject, (data) => {
             console.log(data);
 
-
-        this.gameList = data("cl");
-
-
-
             this._gameList = data['cl'];
             console.log(this._gameList);
             this._initItemListGame();
         },game.const.scene.DASHBOARD_SCENE);
 
     },
-
-
+    
+    
     _initItemListGame:function () {
 
         var height = this.scrollerContentView.node.height;
