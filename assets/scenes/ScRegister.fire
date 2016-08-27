@@ -2196,18 +2196,15 @@
     "_fitHeight": false
   },
   {
-    "__type__": "99521cTC85DjI2wLJhODQ4L",
+    "__type__": "32a694O8YNK8rY7NB+pTeNi",
     "_name": "",
     "_objFlags": 0,
     "node": {
       "__id__": 2
     },
     "_enabled": true,
-    "accountNameLabel": {
-      "__id__": 12
-    },
-    "accountNameInput": {
-      "__id__": 15
-    }
+    "loading": true,
+    "accountNameLabel": null,
+    "accountNameInput": null
   }
 ]

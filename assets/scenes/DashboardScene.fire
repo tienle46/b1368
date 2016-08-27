@@ -40,7 +40,7 @@
     "_globalZOrder": 0,
     "_tag": -1,
     "_opacityModifyRGB": false,
-    "_id": "731145bc-56be-4dde-ade7-d6578199e1a8"
+    "_id": "47ad7434-a7a2-4288-8a90-cff1cef40c4b"
   },
   {
     "__type__": "cc.Node",
@@ -125,7 +125,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 940,
-      "height": 540
+      "height": 480
     },
     "_children": [
       {
@@ -187,7 +187,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 940,
-      "height": 540
+      "height": 480
     },
     "_children": [
       {
@@ -249,7 +249,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 930,
-      "height": 530
+      "height": 470
     },
     "_children": [
       {
@@ -308,7 +308,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 913,
-      "height": 495
+      "height": 435
     },
     "_children": [],
     "_rotationX": 0,
@@ -350,7 +350,7 @@
     "_layoutSize": {
       "__type__": "cc.Size",
       "width": 913,
-      "height": 495
+      "height": 435
     },
     "_resize": 1,
     "_N$layoutType": 3,
@@ -524,7 +524,7 @@
     "_layoutSize": {
       "__type__": "cc.Size",
       "width": 940,
-      "height": 540
+      "height": 480
     },
     "_resize": 0,
     "_N$layoutType": 2,
@@ -552,8 +552,8 @@
     "_alignFlags": 45,
     "_left": 10,
     "_right": 10,
-    "_top": 50,
-    "_bottom": 50,
+    "_top": 80,
+    "_bottom": 80,
     "_isAbsLeft": true,
     "_isAbsRight": true,
     "_isAbsTop": true,
@@ -578,7 +578,7 @@
     "_fitHeight": true
   },
   {
-    "__type__": "99fd6tnAzNE34yi+5z55Glt",
+    "__type__": "0107b+7tyxDGoSm8a2ZVv2f",
     "_name": "",
     "_objFlags": 0,
     "node": {
@@ -589,7 +589,8 @@
       "__id__": 7
     },
     "item": {
-      "__uuid__": "58be83f2-719c-4e5a-a005-631d332e4eee"
-    }
+      "__uuid__": "b6322b4f-cfe0-4ae9-94c0-bcf66d5d5cbe"
+    },
+    "_gameList": []
   }
 ]
