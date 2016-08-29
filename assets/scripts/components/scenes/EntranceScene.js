@@ -52,7 +52,7 @@ cc.Class({
             if (success) {
                 game.service.login("crush1", "1234nm", (error, result) => {
                     if (result) {
-                        console.debug(`Logged in as ${game.context.getUser().name}`)
+                        console.debug(`Logged in as ${game.context.getMySelf().name}`)
 
                         this.node.runAction(cc.sequence(
                             cc.fadeOut(),

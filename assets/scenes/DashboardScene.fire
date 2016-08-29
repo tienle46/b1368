@@ -40,7 +40,7 @@
     "_globalZOrder": 0,
     "_tag": -1,
     "_opacityModifyRGB": false,
-    "_id": "5c28d106-f11d-46ce-a637-d0273d29e05e"
+    "_id": "549a029f-8a50-430c-8967-2f6d6bb6a0ce"
   },
   {
     "__type__": "cc.Node",
@@ -578,7 +578,7 @@
     "_fitHeight": true
   },
   {
-    "__type__": "fba13fHmG1H0JdzFO1v3mI9",
+    "__type__": "0aa5bZxWotHc4bJOoiRZiBd",
     "_name": "",
     "_objFlags": 0,
     "node": {
@@ -590,7 +590,7 @@
       "__id__": 7
     },
     "item": {
-      "__uuid__": "b6322b4f-cfe0-4ae9-94c0-bcf66d5d5cbe"
+      "__uuid__": "fcdaf13c-25db-4513-a410-be94122e0889"
     }
   }
 ]
