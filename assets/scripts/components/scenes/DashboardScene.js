@@ -7,16 +7,7 @@ cc.Class({
 
     properties: {
         gameList:[],
-        // foo: {
-        //    default: null,      // The default value will be used only when the component attaching
-        //                           to a node for the first time
-        //    url: cc.Texture2D,  // optional, default is typeof default
-        //    serializable: true, // optional, default is true
-        //    visible: true,      // optional, default is true
-        //    displayName: 'Foo', // optional
-        //    readonly: false,    // optional, default is false
-        // },
-        // ...
+
 
         scrollerContentView: {
             default:null,
@@ -28,6 +19,15 @@ cc.Class({
             type:cc.Prefab
         },
 
+        bottomBar: {
+            default: null,
+            type:cc.Node
+        },
+
+        topBar: {
+            default: null,
+            type:cc.Node
+        }
 
 
     },
@@ -54,7 +54,14 @@ cc.Class({
             }
         ,game.const.scene.DASHBOARD_SCENE);
 
+
+    //    handle bottom Bar event
+
+        this.listenBottomBarEvent();
+
     },
+
+
 
 
     _initItemListGame:function () {
@@ -65,15 +72,16 @@ cc.Class({
         for (var i = 0; i <  this.gameList.length ; i++) {
 
 
-            // nodeItem.getComponent(item).addOnClickListener((gameCode) => {
-            //         console.log('click Item' + gameCode);
-            // });
+
             var itemPrefab = this.item;
             var container = this.scrollerContentView;
             cc.loader.loadRes(game.resource.gameIcon[this.gameList[i]], cc.SpriteFrame, function (err, spriteFrame) {
 
                 var nodeItem = new cc.instantiate(itemPrefab);
                 nodeItem.setContentSize(itemDimension,itemDimension);
+                nodeItem.getComponent(item).listenOnClickListener((gameCode) => {
+                    console.log('click Item' + gameCode);
+                });
                 container.node.addChild(nodeItem);
 
                 var sprite = nodeItem.getComponent(cc.Sprite);
@@ -82,10 +90,20 @@ cc.Class({
             });
         }
 
+    },
+
+    // Listen Bottom Bar Event (Click button In Bottom Bar)
+    
+    listenBottomBarEvent:function () {
+
+        let _item = require("BottomBar");
+        this.bottomBar.getComponent(_item).listenClickTopBarItem( (buttonType) => {
+            console.log("dashboard:" + buttonType);
+        });
     }
 
     // called every frame, uncomment this function to activate update callback
     // update: function (dt) {
-
+    //
     // },
 });

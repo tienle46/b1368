@@ -43,7 +43,7 @@ cc.Class({
 
     },
 
-    addOnClickListener(cb){
+    listenOnClickListener(cb){
         this._clickListener = cb;
     },
 
