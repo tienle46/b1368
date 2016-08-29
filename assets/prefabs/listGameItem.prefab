@@ -88,11 +88,7 @@
     "_atlas": null
   },
   {
-<<<<<<< HEAD
     "__type__": "c3b71GyQoxL7af8/TTwolN9",
-=======
-    "__type__": "f3d27mMWjBGRYx+aesNrQtt",
->>>>>>> 507696bd5795bdecda92189f62a790642d6b6236
     "_name": "",
     "_objFlags": 0,
     "node": {
@@ -109,11 +105,7 @@
       "__id__": 1
     },
     "asset": {
-<<<<<<< HEAD
       "__uuid__": "58be83f2-719c-4e5a-a005-631d332e4eee"
-=======
-      "__uuid__": "fcdaf13c-25db-4513-a410-be94122e0889"
->>>>>>> 507696bd5795bdecda92189f62a790642d6b6236
     },
     "fileId": "8e5a3Btjm1OyYT8UB67TzCH"
   }

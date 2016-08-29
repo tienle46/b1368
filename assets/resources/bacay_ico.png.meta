@@ -1,0 +1,30 @@
+{
+  "ver": "1.0.0",
+  "uuid": "578b1555-a592-418f-a595-824fc22a8844",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "subMetas": {
+    "bacay_ico": {
+      "ver": "1.0.3",
+      "uuid": "b9e0cea4-a6d1-4ebd-8cc6-4c549cebbd15",
+      "rawTextureUuid": "578b1555-a592-418f-a595-824fc22a8844",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 0,
+      "trimY": 0,
+      "width": 315,
+      "height": 317,
+      "rawWidth": 315,
+      "rawHeight": 317,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}

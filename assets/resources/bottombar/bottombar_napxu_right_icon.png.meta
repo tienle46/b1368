@@ -1,0 +1,30 @@
+{
+  "ver": "1.0.0",
+  "uuid": "2795d22d-b4b8-4504-9a45-e5f197417759",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "subMetas": {
+    "bottombar_napxu_right_icon": {
+      "ver": "1.0.3",
+      "uuid": "51ca76a5-8127-4f77-af71-46d490344e70",
+      "rawTextureUuid": "2795d22d-b4b8-4504-9a45-e5f197417759",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 0,
+      "trimY": 0,
+      "width": 63,
+      "height": 58,
+      "rawWidth": 63,
+      "rawHeight": 58,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}
