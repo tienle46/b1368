@@ -2,11 +2,9 @@
  * Created by Thanh on 8/23/2016.
  */
 
-var game;
-var SFS2X = require("SFS2X");
-var Keywords = require("Keywords");
+var game = require('game')
 
-var GameService = cc.Class({
+var GameService = {
     properties: {
         client: {
             default: null
@@ -293,13 +291,6 @@ var GameService = cc.Class({
         scope && delete this._eventScopes[scope]
     }
 
-})
-
-
-GameService.newInstance = function () {
-    game = require("game");
-    let instance = new GameService()
-    return instance;
-};
+}
 
 module.exports = GameService;

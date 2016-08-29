@@ -5,6 +5,7 @@
 var game = require("game")
 var PlayerManager = require("PlayerManager")
 var PositionManager = require("PositionManager")
+var GameEventHandler = require("GameEventHandler")
 
 var Board = cc.Class({
     extends: cc.Component,
@@ -15,6 +16,10 @@ var Board = cc.Class({
         },
 
         positionManager: {
+            default: null
+        },
+
+        _gameEventHandler: {
             default: null
         },
 
@@ -75,6 +80,8 @@ var Board = cc.Class({
     onLoad() {
         this._loadGameData();
 
+        this._gameEventHandler = GameEventHandler.newInstance();
+
         this.playerManager = new PlayerManager(this);
         this.positionManager = new PositionManager(this);
         this.playerManager.initPlayers(this.room.getPlayerList());
@@ -82,6 +89,10 @@ var Board = cc.Class({
 
     update(dt) {
 
+    },
+
+    start(){
+        this._gameEventHandler.setShouldHandleEvent(true);
     },
 
     setState: function (state) {

@@ -2,30 +2,29 @@
  * Created by Thanh on 8/23/2016.
  */
 
-var GameContext = require("GameContext")
-var GameResource = require("GameResource")
-var GameService = require("GameService")
-var GameSystem = require("GameSystem")
-var GameManager = require("GameManager")
-var Keywords = require("Keywords")
-var Commands = require("Commands")
-var async = require("async");
 
 var game = module.exports;
 
+game.const = {}
+
+game.async = require("async")
+game.keywords = require("Keywords")
+game.commands = require("Commands")
+game.resource = require("GameResource")
+game.service = require("GameService")
+game.system  = require("GameSystem")
+game.manager = require("GameManager")
+
+require('PreLoader')
+
 _loadConfig();
 _initConst();
+_initResource()
 _setupGame();
-
-game.async = async;
-game.commands = Commands;
-game.keywords = Keywords;
-
 
 function _loadConfig() {
 
     game.config = {};
-
     game.config.zone = "XGame";
     game.config.debug = true;
     game.config.useSSL = false;
@@ -34,11 +33,7 @@ function _loadConfig() {
 }
 
 function _initConst() {
-
-    game.const = {};
-
     _initSceneNameConst();
-    _initStringConst();
 }
 
 function _initSceneNameConst() {
@@ -49,17 +44,12 @@ function _initSceneNameConst() {
     game.const.scene.GAME_SCENE = "GameScene"
 }
 
-function _initStringConst() {
-
-    game.const.string = {};
-    game.const.string.GAME_TITLE = "B1368"
-    game.const.string.SYSTEM = "Hệ thống"
+function _initResource() {
+    game.resource.string = {};
+    game.resource.string.GAME_TITLE = "B1368"
+    game.resource.string.SYSTEM = "Hệ thống"
 }
 
 function _setupGame() {
-    game.context = GameContext.newInstance();
-    game.resource = GameResource.newInstance();
-    game.system = GameSystem.newInstance()
-    game.service = GameService.newInstance();
-    game.manager = GameManager.newInstance();
+
 }

@@ -2,11 +2,12 @@
  * Created by Thanh on 8/23/2016.
  */
 
-var game;
+var game = require('game')
+
 var BaseScene = require("BaseScene");
 var SystemEventHandler = require("SystemEventHandler");
 
-var GameSystem = cc.Class({
+var GameSystem = {
 
     properties: {
         _currentScene: {
@@ -86,7 +87,7 @@ var GameSystem = cc.Class({
 
         if(arguments.length == 1){
             message = title;
-            title = game.const.string.SYSTEM;
+            title = game.resource.string.SYSTEM;
         }
 
         alert(message);
@@ -102,11 +103,6 @@ var GameSystem = cc.Class({
         alert("Ticker: " + messages)
     }
 
-});
-
-GameSystem.newInstance = function () {
-    game = require("game");
-    return new GameSystem();
-};
+}
 
 module.exports = GameSystem;

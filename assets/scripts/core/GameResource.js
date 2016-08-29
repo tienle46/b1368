@@ -2,19 +2,11 @@
  * Created by Thanh on 8/23/2016.
  */
 
-var game;
+var game = require('game')
 
-var GameResource = cc.Class({
+var GameResource = {
 
-    ctor() {
-        
-    }
-});
-
-GameResource.newInstance = function () {
-    game = require("GameResource")
-    return new GameResource();
-};
+}
 
 GameResource.getErrorMessage = function(key) {
 

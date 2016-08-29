@@ -10,6 +10,18 @@ var GameEventHandler = cc.Class({
         _board: {
             default: null
         },
+
+        _pendingEvents: {
+            default: []
+        },
+
+        _shouldHandleEvent: {
+            default: null
+        }
+    },
+
+    setShouldHandleEvent(shouldHandleEvent){
+        this._shouldHandleEvent = shouldHandleEvent;
     },
 
     setCurrentBoard(board){
@@ -87,6 +99,7 @@ var GameEventHandler = cc.Class({
         if (data.hasOwnProperty(game.keywords.BOARD_STATE_KEYWORD)) {
             let boardState = data[game.keywords.BOARD_STATE_KEYWORD];
             this._board.changeBoardState(boardState, data);
+
         }
     },
 
@@ -130,5 +143,12 @@ var GameEventHandler = cc.Class({
     }
 
 })
+
+GameEventHandler.newInstance = function(board){
+    let eventHandler = new GameEventHandler()
+    eventHandler.setCurrentBoard(board)
+    game.system.setGameEventHandler(eventHandler)
+    return eventHandler;
+}
 
 module.exports = GameEventHandler
