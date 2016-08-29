@@ -7,6 +7,16 @@ var GameService = require("GameService")
 
 var GameContext = cc.Class({
 
+    properties: {
+        currentRoom: {
+            default: null
+        },
+
+        groupId: {
+            default: ""
+        }
+    },
+
     ctor() {
         
     },
@@ -15,8 +25,12 @@ var GameContext = cc.Class({
      *
      * @returns {SFS2X.Entities.SFSUser}
      */
-    getUser() {
-        return game.service.getClient().mySelf;
+    getMySelf() {
+        return game.service.client.me;
+    },
+
+    isJoinedGame(){
+        return this.currentRoom && this.currentRoom.isGame
     }
 });
 

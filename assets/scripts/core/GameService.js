@@ -8,7 +8,7 @@ var Keywords = require("Keywords");
 
 var GameService = cc.Class({
     properties: {
-        _sfsClient: {
+        client: {
             default: null
         },
 
@@ -32,8 +32,8 @@ var GameService = cc.Class({
         config.debug = game.config.debug
         config.useSSL = game.config.useSSL
 
-        this._sfsClient = new SFS2X.SmartFox(config)
-        this._sfsClient.setClientDetails("MOZILLA", "1.0.0")
+        this.client = new SFS2X.SmartFox(config)
+        this.client.setClientDetails("MOZILLA", "1.0.0")
 
         this._registerSmartFoxEvent();
     },
@@ -44,7 +44,7 @@ var GameService = cc.Class({
             if (success) {
                 this.login("crush1", "1234nm", (error, result) => {
                     if (result) {
-                        console.debug(`Logged in as ${game.context.getUser().name}`)
+                        console.debug(`Logged in as ${game.context.getMySelf().name}`)
                     }
 
                     if (error) {
@@ -106,7 +106,7 @@ var GameService = cc.Class({
         if (this._hasCallback(event.cmd)) {
             this._callCallbackAsync(event.cmd, event.params)
         } else {
-            game.system.handleData(event.cmd, event.params)
+            game.system.handleData(event.cmd, event.params, event)
         }
 
         // game.async.series([
@@ -130,7 +130,7 @@ var GameService = cc.Class({
     },
 
     _sendRequest(request){
-        this._sfsClient.send(request)
+        this.client.send(request)
     },
 
     _callCallback(key, args){
@@ -165,12 +165,12 @@ var GameService = cc.Class({
 
     addEventListener(eventType, handleFunc)
     {
-        this._sfsClient.addEventListener(eventType, handleFunc, this)
+        this.client.addEventListener(eventType, handleFunc, this)
     },
 
     removeEventListener(eventType, handleFunc)
     {
-        this._sfsClient.removeEventListener(eventType, handleFunc, this)
+        this.client.removeEventListener(eventType, handleFunc, this)
     },
 
     /**
@@ -180,7 +180,7 @@ var GameService = cc.Class({
      */
     getClient()
     {
-        return this._sfsClient
+        return this.client
     },
 
     /**
@@ -195,7 +195,7 @@ var GameService = cc.Class({
 
         console.debug(`Connecting to: ${game.config.host}:${game.config.port}`)
 
-        this._sfsClient.connect(game.config.host, game.config.port)
+        this.client.connect(game.config.host, game.config.port)
     },
 
     /**
@@ -203,8 +203,8 @@ var GameService = cc.Class({
      */
     disconnect()
     {
-        if (this._sfsClient.isConnected()) {
-            this._sfsClient.disconnect()
+        if (this.client.isConnected()) {
+            this.client.disconnect()
         }
     },
 
@@ -238,7 +238,7 @@ var GameService = cc.Class({
      * @param {object} options  - Object data want to send via ExtensionRequest or other instance of RequestObject:
      *      + cmd: Command
      *      + data: Param object going to send to server
-     *      + scope: Specially room scope, null or undefined if is global scope (zone scope in smart fox)
+     *      + room: Specially room scope, null or undefined if is global scope (zone scope in smart fox)
      *
      * @param {function} cb - Callback function on server responses
      *
@@ -254,7 +254,7 @@ var GameService = cc.Class({
             const cmd = options.cmd
             if (cmd) {
                 this._addCallback(cmd, cb, scope)
-                this._sendRequest(new SFS2X.Requests.System.ExtensionRequest(cmd, options.data || {}, options.scope))
+                this._sendRequest(new SFS2X.Requests.System.ExtensionRequest(cmd, options.data || {}, options.room))
             }
         }
     },

@@ -636,3 +636,6 @@ Keywords.HIGH_LIGHT_MESSAGE = {
         RECON : "rc"
     }
 };
+
+Keywords.ADMIN_MESSAGE_TYPE = "t";
+Keywords.ADMIN_MESSAGE_LIST = "ml";

@@ -624,14 +624,14 @@ SFS2X.Controllers.SystemController.prototype._fnHandshake = function (a) {
 SFS2X.Controllers.SystemController.prototype._fnLogin = function (a) {
     if (null == a[SFS2X.Controllers.KEY_ERROR_CODE]) {
         this._populateRoomList(a[SFS2X.Requests.System.LoginRequest.KEY_ROOMLIST]);
-        this._sfs.mySelf = new SFS2X.Entities.SFSUser(a[SFS2X.Requests.System.LoginRequest.KEY_ID], a[SFS2X.Requests.System.LoginRequest.KEY_USER_NAME], !0);
-        this._sfs.mySelf._setUserManager(this._sfs.userManager);
-        this._sfs.mySelf.privilegeId = a[SFS2X.Requests.System.LoginRequest.KEY_PRIVILEGE_ID];
-        this._sfs.userManager._addUser(this._sfs.mySelf);
+        this._sfs.me = new SFS2X.Entities.SFSUser(a[SFS2X.Requests.System.LoginRequest.KEY_ID], a[SFS2X.Requests.System.LoginRequest.KEY_USER_NAME], !0);
+        this._sfs.me._setUserManager(this._sfs.userManager);
+        this._sfs.me.privilegeId = a[SFS2X.Requests.System.LoginRequest.KEY_PRIVILEGE_ID];
+        this._sfs.userManager._addUser(this._sfs.me);
         this._sfs._socketEngine.reconnectionSeconds = a[SFS2X.Requests.System.LoginRequest.KEY_RECONNECTION_SECONDS];
         var b = {};
         b.zone = a[SFS2X.Requests.System.LoginRequest.KEY_ZONE_NAME];
-        b.user = this._sfs.mySelf;
+        b.user = this._sfs.me;
         b.data = a[SFS2X.Requests.System.LoginRequest.KEY_PARAMS];
         this._sfs._dispatchEvent(SFS2X.SFSEvent.LOGIN, b)
     } else b = a[SFS2X.Controllers.KEY_ERROR_CODE], a = SFS2X.ErrorCodes.getErrorMessage(b, a[SFS2X.Controllers.KEY_ERROR_PARAMS]), this._sfs._dispatchEvent(SFS2X.SFSEvent.LOGIN_ERROR, {
@@ -750,7 +750,7 @@ SFS2X.Controllers.SystemController.prototype._handleBuddyMessage = function (a) 
     var b = {},
         c = a[SFS2X.Requests.System.GenericMessageRequest.KEY_USER_ID],
         d = this._sfs.buddyManager.getBuddyById(c);
-    b.isItMe = this._sfs.mySelf.id == c;
+    b.isItMe = this._sfs.me.id == c;
     b.buddy = d;
     b.message = a[SFS2X.Requests.System.GenericMessageRequest.KEY_MESSAGE];
     b.data = a[SFS2X.Requests.System.GenericMessageRequest.KEY_XTRA_PARAMS];
@@ -869,7 +869,7 @@ SFS2X.Controllers.SystemController.prototype._fnFindRooms = function (a) {
     this._sfs._dispatchEvent(SFS2X.SFSEvent.ROOM_FIND_RESULT, b)
 };
 SFS2X.Controllers.SystemController.prototype._fnFindUsers = function (a) {
-    for (var b = {}, a = a[SFS2X.Requests.System.FindUsersRequest.KEY_FILTERED_USERS], c = [], d = this._sfs.mySelf, e = 0; e < a.length; e++) {
+    for (var b = {}, a = a[SFS2X.Requests.System.FindUsersRequest.KEY_FILTERED_USERS], c = [], d = this._sfs.me, e = 0; e < a.length; e++) {
         var f = SFS2X.Entities.SFSUser.fromArray(a[e]);
         f.id == d.id && (f = d);
         c.push(f)
@@ -882,7 +882,7 @@ SFS2X.Controllers.SystemController.prototype._fnInviteUsers = function (a) {
         c = null,
         c = null != a[SFS2X.Requests.Game.InviteUsersRequest.KEY_USER_ID] ? this._sfs.userManager.getUserById(a[SFS2X.Requests.Game.InviteUsersRequest.KEY_USER_ID]) : SFS2X.Entities.SFSUser.fromArray(a[SFS2X.Requests.Game.InviteUsersRequest.KEY_USER]),
         d = a[SFS2X.Requests.Game.InviteUsersRequest.KEY_INVITATION_ID],
-        a = new SFS2X.Entities.Invitation.SFSInvitation(c, this._sfs.mySelf, a[SFS2X.Requests.Game.InviteUsersRequest.KEY_TIME],
+        a = new SFS2X.Entities.Invitation.SFSInvitation(c, this._sfs.me, a[SFS2X.Requests.Game.InviteUsersRequest.KEY_TIME],
             a[SFS2X.Requests.Game.InviteUsersRequest.KEY_PARAMS]);
     a.id = d;
     b.invitation = a;
@@ -1090,7 +1090,7 @@ SFS2X.Controllers.SystemController.prototype._fnGoOnline = function (a) {
     if (null == a[SFS2X.Controllers.KEY_ERROR_CODE]) {
         var c = a[SFS2X.Requests.BuddyList.GoOnlineRequest.KEY_BUDDY_NAME],
             d = this._sfs.buddyManager.getBuddyByName(c),
-            e = c == this._sfs.mySelf.name,
+            e = c == this._sfs.me.name,
             f = a[SFS2X.Requests.BuddyList.GoOnlineRequest.KEY_ONLINE],
             g = f == SFS2X.Utils.BuddyOnlineState.ONLINE,
             i = !0;
@@ -1108,7 +1108,7 @@ SFS2X.Controllers.SystemController.prototype._fnGoOnline = function (a) {
 SFS2X.Controllers.SystemController.prototype._fnSetBuddyVariables = function (a) {
     var b = {};
     if (null == a[SFS2X.Controllers.KEY_ERROR_CODE]) {
-        for (var c = a[SFS2X.Requests.BuddyList.SetBuddyVariablesRequest.KEY_BUDDY_NAME], a = a[SFS2X.Requests.BuddyList.SetBuddyVariablesRequest.KEY_BUDDY_VARS], d = this._sfs.buddyManager.getBuddyByName(c), e = c == this._sfs.mySelf.name, f = [], g = [], i = !0, j = 0; j < a.length; j++) {
+        for (var c = a[SFS2X.Requests.BuddyList.SetBuddyVariablesRequest.KEY_BUDDY_NAME], a = a[SFS2X.Requests.BuddyList.SetBuddyVariablesRequest.KEY_BUDDY_VARS], d = this._sfs.buddyManager.getBuddyByName(c), e = c == this._sfs.me.name, f = [], g = [], i = !0, j = 0; j < a.length; j++) {
             var k = SFS2X.Entities.Variables.SFSBuddyVariable.fromArray(a[j]);
             g.push(k);
             f.push(k.name)
@@ -2272,7 +2272,7 @@ SFS2X.Requests.System.LoginRequest = SFS2X.Requests._BaseRequest.extend({
         this._zoneName = d
     },
     validate: function (a) {
-        if (null != a.mySelf) throw new SFS2X.Exceptions.SFSValidationError("LoginRequest error", ["You are already logged in; logout before attempting a new login"]);
+        if (null != a.me) throw new SFS2X.Exceptions.SFSValidationError("LoginRequest error", ["You are already logged in; logout before attempting a new login"]);
         a = null != a.config && null != a.config.zone ? a.config.zone : null;
         null != this._zoneName && (a = this._zoneName);
         if (null == a || 0 == a.length) throw new SFS2X.Exceptions.SFSValidationError("LoginRequest Error", ["Missing Zone name"]);
@@ -2300,7 +2300,7 @@ SFS2X.Requests.System.LogoutRequest = SFS2X.Requests._BaseRequest.extend({
         this._super(SFS2X.Requests.Logout)
     },
     validate: function (a) {
-        if (null == a.mySelf) throw new SFS2X.Exceptions.SFSValidationError("LogoutRequest error", ["You are not logged in"]);
+        if (null == a.me) throw new SFS2X.Exceptions.SFSValidationError("LogoutRequest error", ["You are not logged in"]);
     },
     execute: function () {
     }
@@ -2452,7 +2452,7 @@ SFS2X.Requests.System.GenericMessageRequest = SFS2X.Requests._BaseRequest.extend
     _validatePublicMessage: function (a, b) {
         (null == this._message || 0 == this._message.length) &&
         b.push("Public message is empty");
-        null != this._room && !a.mySelf.isJoinedInRoom(this._room) && b.push("You are not joined in the target Room: " + this._room)
+        null != this._room && !a.me.isJoinedInRoom(this._room) && b.push("You are not joined in the target Room: " + this._room)
     },
     _validatePrivateMessage: function (a, b) {
         (null == this._message || 0 == this._message.length) && b.push("Private message is empty");
@@ -2485,7 +2485,7 @@ SFS2X.Requests.System.GenericMessageRequest = SFS2X.Requests._BaseRequest.extend
         null == this._room && (this._room = a.lastJoinedRoom);
         if (null == this._room) throw new SFS2X.Exceptions.SFSError("User should be joined in a Room in order to send a public message");
         this._reqObj[SFS2X.Requests.System.GenericMessageRequest.KEY_ROOM_ID] = this._room.id;
-        this._reqObj[SFS2X.Requests.System.GenericMessageRequest.KEY_USER_ID] = a.mySelf.id;
+        this._reqObj[SFS2X.Requests.System.GenericMessageRequest.KEY_USER_ID] = a.me.id;
         this._reqObj[SFS2X.Requests.System.GenericMessageRequest.KEY_MESSAGE] = this._message;
         null != this._params && (this._reqObj[SFS2X.Requests.System.GenericMessageRequest.KEY_XTRA_PARAMS] = this._params)
     },
@@ -2600,7 +2600,7 @@ SFS2X.Requests.System.SetRoomVariablesRequest = SFS2X.Requests._BaseRequest.exte
     },
     validate: function (a) {
         var b = [];
-        null != this._room ? this._room.containsUser(a.mySelf) || b.push("You are not joined in the target Room") : null == a.lastJoinedRoom && b.push("You are not joined in any Room");
+        null != this._room ? this._room.containsUser(a.me) || b.push("You are not joined in the target Room") : null == a.lastJoinedRoom && b.push("You are not joined in any Room");
         (null == this._roomVariables || 0 == this._roomVariables.length) && b.push("No variables were specified");
         if (0 < b.length) throw new SFS2X.Exceptions.SFSValidationError("SetRoomVariablesRequest Error",
             b);
@@ -2814,7 +2814,7 @@ SFS2X.Requests.System.KickUserRequest = SFS2X.Requests._BaseRequest.extend({
     },
     validate: function (a) {
         var b = [];
-        !a.mySelf.isModerator() && !a.mySelf.isAdmin() && b.push("You don't have enough permissions to execute this request");
+        !a.me.isModerator() && !a.me.isAdmin() && b.push("You don't have enough permissions to execute this request");
         if (0 < b.length) throw new SFS2X.Exceptions.SFSValidationError("KickUserRequest Error", b);
     },
     execute: function () {
@@ -2840,7 +2840,7 @@ SFS2X.Requests.System.BanUserRequest = SFS2X.Requests._BaseRequest.extend({
     },
     validate: function (a) {
         var b = [];
-        !a.mySelf.isModerator() && !a.mySelf.isAdmin() && b.push("You don't have enough permissions to execute this request");
+        !a.me.isModerator() && !a.me.isAdmin() && b.push("You don't have enough permissions to execute this request");
         if (0 < b.length) throw new SFS2X.Exceptions.SFSValidationError("BanUserRequest Error", b);
     },
     execute: function () {
@@ -3096,7 +3096,7 @@ SFS2X.Requests.Game.InviteUsersRequest = SFS2X.Requests._BaseRequest.extend({
         for (c in this._invitedUsers) {
             var d = this._invitedUsers[c];
             (d instanceof SFS2X.Entities.SFSUser || d instanceof SFS2X.Entities.SFSBuddy) &&
-            d != a.mySelf && b.push(d.id)
+            d != a.me && b.push(d.id)
         }
         this._reqObj[this.constructor.KEY_INVITED_USERS] = b;
         this._reqObj[this.constructor.KEY_TIME] = this._secondsForAnswer;
