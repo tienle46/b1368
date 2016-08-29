@@ -16,4 +16,8 @@ GameResource.newInstance = function () {
     return new GameResource();
 };
 
+GameResource.getErrorMessage = function(key) {
+
+}
+
 module.exports = GameResource;

@@ -6,6 +6,9 @@ var GameContext = require("GameContext")
 var GameResource = require("GameResource")
 var GameService = require("GameService")
 var GameSystem = require("GameSystem")
+var GameManager = require("GameManager")
+var Keywords = require("Keywords")
+var Commands = require("Commands")
 var async = require("async");
 
 var game = module.exports;
@@ -15,6 +18,8 @@ _initConst();
 _setupGame();
 
 game.async = async;
+game.commands = Commands;
+game.keywords = Keywords;
 
 
 function _loadConfig() {
@@ -48,6 +53,7 @@ function _initStringConst() {
 
     game.const.string = {};
     game.const.string.GAME_TITLE = "B1368"
+    game.const.string.SYSTEM = "Hệ thống"
 }
 
 function _setupGame() {
@@ -55,4 +61,5 @@ function _setupGame() {
     game.resource = GameResource.newInstance();
     game.system = GameSystem.newInstance()
     game.service = GameService.newInstance();
+    game.manager = GameManager.newInstance();
 }

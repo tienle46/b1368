@@ -17,6 +17,10 @@ var GameSystem = cc.Class({
             default: null
         },
 
+        _gameEventHandler: {
+            default: null
+        },
+
         _eventListeners: {
             default: {}
         }
@@ -61,13 +65,41 @@ var GameSystem = cc.Class({
         this.currentScene = scene;
     },
 
+    setGameEventHandler(gameEventHandler){
+        this._gameEventHandler = gameEventHandler;
+    },
+
     /**
      *
      * @param {string} cmd - Command or request name sent from server
      * @param {object} data - Data sent according to request
      */
-    handleData(cmd, data){
-       this._systemEventHandler.handleData(cmd, data);
+    handleData(cmd, data, event){
+        if(game.context.isJoinedGame()){
+            this._gameEventHandler && this._gameEventHandler.handleGameEvent(event)
+        }else{
+            this._systemEventHandler && this._systemEventHandler.handleData(cmd, data);
+        }
+    },
+
+    info(title, message){
+
+        if(arguments.length == 1){
+            message = title;
+            title = game.const.string.SYSTEM;
+        }
+
+        alert(message);
+        //TODO
+    },
+
+
+    /**
+     *
+     * @param {string array} messages
+     */
+    showTickerMessage(messages){
+        alert("Ticker: " + messages)
     }
 
 });

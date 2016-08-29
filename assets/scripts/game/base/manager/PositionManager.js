@@ -4,16 +4,31 @@
 
 var PositionManager = cc.Class({
 
-    ctor() {
-        
+    properties: {
+        board: null
+    },
+
+    _init(board){
+        this.board = board;
+    },
+
+    getPosition(playerId, gameCode){
+
+    },
+
+    getPlayerSeatPosition(playerId){
+
+    },
+
+    getPlayerSeatPosition(playerId){
+
+
     }
 });
 
-PositionManager.newInstance = function () {
+PositionManager.newInstance = function (board) {
     let instance = new PositionManager();
-    
-    //Init object properties here
-    
+    instance._init(board);
     return instance;
 };
 
