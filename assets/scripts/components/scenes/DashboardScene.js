@@ -21,12 +21,12 @@ cc.Class({
 
         bottomBar: {
             default: null,
-            type:cc.Node
+            type:cc.Prefab
         },
 
         topBar: {
             default: null,
-            type:cc.Node
+            type:cc.Prefab
         }
 
 
@@ -57,7 +57,7 @@ cc.Class({
 
     //    handle bottom Bar event
 
-        this.listenBottomBarEvent();
+        this.addBottomBar();
 
     },
 
@@ -94,12 +94,16 @@ cc.Class({
 
     // Listen Bottom Bar Event (Click button In Bottom Bar)
     
-    listenBottomBarEvent:function () {
+    addBottomBar:function () {
+
+        var bottomBarNode = new  cc.instantiate(this.bottomBar);
 
         let _item = require("BottomBar");
-        this.bottomBar.getComponent(_item).listenClickTopBarItem( (buttonType) => {
+        bottomBarNode.getComponent(_item).listenClickTopBarItem( (buttonType) => {
             console.log("dashboard:" + buttonType);
         });
+
+        this.node.addChild(bottomBarNode);
     }
 
     // called every frame, uncomment this function to activate update callback
