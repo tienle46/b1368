@@ -3,25 +3,16 @@
  */
 
 var game = require('game')
+var SFS2X = require('SFS2X')
 
-var GameService = {
-    properties: {
-        client: {
-            default: null
-        },
+class GameService {
+    constructor() {
+        this.client = null
+        this._eventCallbacks = {}
+        this._eventScopes = {}
 
-        _eventCallbacks: {
-            default: {}
-        },
-
-        _eventScopes: {
-            default: {}
-        }
-    },
-
-    ctor() {
         this._initSmartFoxClient()
-    },
+    }
 
     _initSmartFoxClient(){
 
@@ -34,7 +25,7 @@ var GameService = {
         this.client.setClientDetails("MOZILLA", "1.0.0")
 
         this._registerSmartFoxEvent();
-    },
+    }
 
     __testConnection(){
         this.connect((success) => {
@@ -52,7 +43,7 @@ var GameService = {
                 });
             }
         });
-    },
+    }
 
     _registerSmartFoxEvent(){
 
@@ -66,7 +57,7 @@ var GameService = {
         this.addEventListener(SFS2X.SFSEvent.EXTENSION_RESPONSE, this._onExtensionEvent)
 
         console.debug("Registered SmartFox event")
-    },
+    }
 
     _removeSmartFoxEvent() {
         this.removeEventListener(SFS2X.SFSEvent.LOGIN, this._onLogin)
@@ -75,27 +66,27 @@ var GameService = {
         this.removeEventListener(SFS2X.SFSEvent.CONNECTION_LOST, this._onConnectionLost)
         this.removeEventListener(SFS2X.SFSEvent.CONNECTION_RESUME, this._onConnectionResume)
         this.removeEventListener(SFS2X.SFSEvent.EXTENSION_RESPONSE, this._onExtensionEvent)
-    },
+    }
 
     _onConnection(event){
         console.debug("_onConnection")
         console.debug(event)
 
         this._callCallback(SFS2X.SFSEvent.CONNECTION, event.success)
-    },
+    }
 
     _onConnectionLost(event){
         console.debug("_onConnectionLost")
         console.debug(event);
 
         // game.system.loadScene(game.const.scene.LOGIN_SCENE);
-    },
+    }
 
     _onConnectionResume(event){
         console.debug("_onConnectionResume")
         console.debug(event);
         //TODO
-    },
+    }
 
     _onExtensionEvent(event){
         console.debug("_onExtensionEvent")
@@ -108,34 +99,34 @@ var GameService = {
         }
 
         // game.async.series([
-        //     () => {this._callCallback(event.cmd, event.params)},
+        //     () => {this._callCallback(event.cmd, event.params)}
         //     () => {game.system.handleData(event.cmd, event.params)}
         // ]);
-    },
+    }
 
     _onLogin(event){
         console.debug("_onLogin")
         console.debug(event)
 
         this._callCallback(SFS2X.SFSEvent.LOGIN, undefined, event.data)
-    },
+    }
 
     _onLoginError(){
         console.debug("_onLoginError")
         console.debug(event)
 
         this._callCallback(SFS2X.SFSEvent.LOGIN, event.data)
-    },
+    }
 
     _sendRequest(request){
         this.client.send(request)
-    },
+    }
 
     _callCallback(key, args){
         let cb = this._getCallback(key)
         var argArr = Array.prototype.slice.call(arguments, 1)
         cb && cb.apply(null, argArr);
-    },
+    }
 
     _callCallbackAsync(key, args){
         game.async.series([
@@ -143,33 +134,33 @@ var GameService = {
                 this._callCallback.apply(this, arguments)
             }
         ]);
-    },
+    }
 
     _hasCallback(key)
     {
         return this._eventCallbacks.hasOwnProperty(key)
-    },
+    }
 
     _getCallback(key)
     {
         return this._eventCallbacks[key]
-    },
+    }
 
     _addCallback(key, cb, scope)
     {
         this._eventCallbacks[key] = cb instanceof Function ? cb : undefined
         this._addCommandToScope(key, scope);
-    },
+    }
 
     addEventListener(eventType, handleFunc)
     {
         this.client.addEventListener(eventType, handleFunc, this)
-    },
+    }
 
     removeEventListener(eventType, handleFunc)
     {
         this.client.removeEventListener(eventType, handleFunc, this)
-    },
+    }
 
     /**
      * Current Smart Fox Client
@@ -179,7 +170,7 @@ var GameService = {
     getClient()
     {
         return this.client
-    },
+    }
 
     /**
      * Connect to server game with default host & port configuration
@@ -194,7 +185,7 @@ var GameService = {
         console.debug(`Connecting to: ${game.config.host}:${game.config.port}`)
 
         this.client.connect(game.config.host, game.config.port)
-    },
+    }
 
     /**
      * Disconnect to game server
@@ -204,7 +195,7 @@ var GameService = {
         if (this.client.isConnected()) {
             this.client.disconnect()
         }
-    },
+    }
 
     /**
      * Disconnect to game server and go to Login Screen
@@ -213,7 +204,7 @@ var GameService = {
     {
         disconnect();
         game.system.loadScene(game.const.scene.LOGIN_SCENE)
-    },
+    }
 
     /**
      * @param {string} username
@@ -223,14 +214,14 @@ var GameService = {
     login(username, password, cb)
     {
         let data = {};
-        data[Keywords.IS_REGISTER] = false
-        data[Keywords.PASSWORD] = password
-        data[Keywords.APP_SECRET_KEY] = "63d9ccc8-9ce1-4165-80c8-b15eb84a780a"
+        data[game.keywords.IS_REGISTER] = false
+        data[game.keywords.PASSWORD] = password
+        data[game.keywords.APP_SECRET_KEY] = "63d9ccc8-9ce1-4165-80c8-b15eb84a780a"
 
         this._addCallback(SFS2X.SFSEvent.LOGIN, cb)
 
         this._sendRequest(new SFS2X.Requests.System.LoginRequest(username, password, data, game.config.zone))
-    },
+    }
 
     /**
      * @param {object} options  - Object data want to send via ExtensionRequest or other instance of RequestObject:
@@ -255,7 +246,7 @@ var GameService = {
                 this._sendRequest(new SFS2X.Requests.System.ExtensionRequest(cmd, options.data || {}, options.room))
             }
         }
-    },
+    }
 
     _addCommandToScope(key, scope){
         if(key && scope){
@@ -263,7 +254,7 @@ var GameService = {
             keys[key] = ""
             this._eventScopes[scope] = keys
         }
-    },
+    }
 
     /**
      * Remove all callback mapped with key
@@ -272,7 +263,7 @@ var GameService = {
     removeCallback(key)
     {
         key && delete this._eventCallbacks[key]
-    },
+    }
 
     /**
      *
@@ -293,4 +284,4 @@ var GameService = {
 
 }
 
-module.exports = GameService;
+module.exports = new GameService();

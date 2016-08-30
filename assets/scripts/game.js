@@ -2,20 +2,13 @@
  * Created by Thanh on 8/23/2016.
  */
 
-
 var game = module.exports;
 
 game.const = {}
-
-game.async = require("async")
-game.keywords = require("Keywords")
-game.commands = require("Commands")
-game.resource = require("GameResource")
-game.service = require("GameService")
-game.system  = require("GameSystem")
-game.manager = require("GameManager")
-
-require('PreLoader')
+game.async = require("async");
+game.resource = require("GameResource");
+game.keywords = require("Keywords");
+game.commands = require("Commands");
 
 _loadConfig();
 _initConst();
@@ -23,7 +16,6 @@ _initResource()
 _setupGame();
 
 function _loadConfig() {
-
     game.config = {};
     game.config.zone = "XGame";
     game.config.debug = true;
@@ -38,18 +30,22 @@ function _initConst() {
 
 function _initSceneNameConst() {
     game.const.scene = {};
-    game.const.scene.LOGIN_SCENE = "LoginScene"
-    game.const.scene.REGISTER_SCENE = "RegisterScene"
-    game.const.scene.DASHBOARD_SCENE = "DashboardScene"
-    game.const.scene.GAME_SCENE = "GameScene"
+    game.const.scene.LOGIN_SCENE = "LoginScene";
+    game.const.scene.REGISTER_SCENE = "RegisterScene";
+    game.const.scene.DASHBOARD_SCENE = "DashboardScene";
+    game.const.scene.GAME_SCENE = "GameScene";
 }
 
 function _initResource() {
     game.resource.string = {};
-    game.resource.string.GAME_TITLE = "B1368"
-    game.resource.string.SYSTEM = "Hệ thống"
+    game.resource.string.GAME_TITLE = "B1368";
+    game.resource.string.SYSTEM = "Hệ thống";
 }
 
 function _setupGame() {
-
+    require('PreLoader')
+    game.service = require("GameService");
+    game.system = require("GameSystem");
+    game.context = require("GameContext");
+    game.manager = require("GameManager");
 }

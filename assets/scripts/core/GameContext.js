@@ -4,21 +4,12 @@
 
 var game = require("game")
 
-var GameContext = {
+class GameContext {
 
-    properties: {
-        currentRoom: {
-            default: null
-        },
-
-        groupId: {
-            default: ""
-        }
-    },
-
-    ctor() {
-        
-    },
+    constructor() {
+        this.currentRoom = null
+        this.groupId = null
+    }
 
     /**
      *
@@ -26,11 +17,11 @@ var GameContext = {
      */
     getMySelf() {
         return game.service.client.me;
-    },
+    }
 
     isJoinedGame(){
         return this.currentRoom && this.currentRoom.isGame
     }
 }
 
-module.exports = GameContext;
+module.exports = new GameContext();

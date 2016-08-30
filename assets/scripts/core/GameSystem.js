@@ -7,38 +7,30 @@ var game = require('game')
 var BaseScene = require("BaseScene");
 var SystemEventHandler = require("SystemEventHandler");
 
-var GameSystem = {
+class GameSystem {
 
-    properties: {
-        _currentScene: {
-            default: null
-        },
+    constructor() {
+        this._currentScene = null
 
-        _systemEventHandler: {
-            default: null
-        },
+        this._systemEventHandler = null
 
-        _gameEventHandler: {
-            default: null
-        },
+        this._gameEventHandler = null
 
-        _eventListeners: {
-            default: {}
-        }
-    },
+        this._eventListeners = null
+    }
 
     ctor() {
         this._systemEventHandler = new SystemEventHandler();
-    },
+    }
 
     start(){
         this._systemEventHandler._registerAllSystemEventHandler();
-    },
+    }
 
     stop(){
         "use strict";
         this._systemEventHandler._removeAllSystemEventHandler();
-    },
+    }
 
     /**
      * @param {string} sceneName - Scene Name want to load. The name of scene have been configured in {source} game.const.scene.*
@@ -46,7 +38,7 @@ var GameSystem = {
      */
     loadScene(sceneName, onLaunch){
         cc.director.loadScene(sceneName, onLaunch)
-    },
+    }
 
 
     /**
@@ -55,7 +47,7 @@ var GameSystem = {
      */
     currentScene(){
         return this._currentScene;
-    },
+    }
 
 
     /**
@@ -64,11 +56,11 @@ var GameSystem = {
      */
     setCurrentScene(scene){
         this.currentScene = scene;
-    },
+    }
 
     setGameEventHandler(gameEventHandler){
         this._gameEventHandler = gameEventHandler;
-    },
+    }
 
     /**
      *
@@ -81,7 +73,7 @@ var GameSystem = {
         }else{
             this._systemEventHandler && this._systemEventHandler.handleData(cmd, data);
         }
-    },
+    }
 
     info(title, message){
 
@@ -92,7 +84,7 @@ var GameSystem = {
 
         alert(message);
         //TODO
-    },
+    }
 
 
     /**
@@ -105,4 +97,4 @@ var GameSystem = {
 
 }
 
-module.exports = GameSystem;
+module.exports = new GameSystem();
