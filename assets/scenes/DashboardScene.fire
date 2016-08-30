@@ -1623,6 +1623,9 @@
     "bottomBar": {
       "__uuid__": "2fedc676-7a5a-420c-bdcc-54a09c094eff"
     },
-    "topBar": null
+    "topBar": null,
+    "popUp": {
+      "__uuid__": "b304b073-0867-4e3e-a771-770ac6349d22"
+    }
   }
 ]

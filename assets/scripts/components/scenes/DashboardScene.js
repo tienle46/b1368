@@ -27,6 +27,11 @@ cc.Class({
         topBar: {
             default: null,
             type:cc.Prefab
+        },
+
+        popUp: {
+            default:null,
+            type:cc.Prefab
         }
 
 
@@ -58,6 +63,7 @@ cc.Class({
     //    handle bottom Bar event
 
         this.addBottomBar();
+
 
     },
 
@@ -101,9 +107,19 @@ cc.Class({
         let _item = require("BottomBar");
         bottomBarNode.getComponent(_item).listenClickTopBarItem( (buttonType) => {
             console.log("dashboard:" + buttonType);
+            this.addPopup();
         });
 
         this.node.addChild(bottomBarNode);
+    },
+    
+    addPopup: function () {
+        var popupBase = new cc.instantiate(this.popUp);
+        popupBase.position = cc.p(0,0);
+        // let _item = require("BasePopup");
+        // popupBase.getComponent(_item)
+
+        this.node.addChild(popupBase);
     }
 
     // called every frame, uncomment this function to activate update callback
