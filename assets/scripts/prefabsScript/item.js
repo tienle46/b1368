@@ -22,24 +22,24 @@ cc.Class({
     // use this for initialization
     onLoad: function () {
 
-        var listenerTouch = {
-            event: cc.EventListener.TOUCH_ONE_BY_ONE,
-            onTouchBegan: function(touch, event) {
-                this.handleClickItem();
-                return true;
-            }.bind(this)
-        };
+        // var listenerTouch = {
+        //     event: cc.EventListener.TOUCH_ONE_BY_ONE,
+        //     onTouchBegan: function(touch, event) {
+        //         this.handleClickItem();
+        //         return true;
+        //     }.bind(this)
+        // };
 
-        var listenerClick = {
-            event: cc.EventListener.KEYBOARD,
-            onKeyPressed: function(keyCode, event) {
-                this.handleClickItem();
-                return true;
-            }.bind(this)
-        };
+        // var listenerClick = {
+        //     event: cc.EventListener.KEYBOARD,
+        //     onKeyPressed: function(keyCode, event) {
+        //         this.handleClickItem();
+        //         return true;
+        //     }.bind(this)
+        // };
 
-        cc.eventManager.addListener(listenerTouch,this.node);
-        cc.eventManager.addListener(listenerClick,this.node);
+        // cc.eventManager.addListener(listenerTouch,this.node);
+        // cc.eventManager.addListener(listenerClick,this.node);
 
     },
 
