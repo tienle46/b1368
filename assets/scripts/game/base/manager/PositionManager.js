@@ -20,10 +20,6 @@ var PositionManager = cc.Class({
 
     },
 
-    getPlayerSeatPosition(playerId){
-
-
-    }
 });
 
 PositionManager.newInstance = function (board) {

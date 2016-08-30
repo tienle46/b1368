@@ -72,29 +72,28 @@ cc.Class({
 
     _initItemListGame:function () {
 
-        var height = this.scrollerContentView.node.height;
-        var itemDimension = height / 2.0 - 80;
+        const height = this.scrollerContentView.node.height;
+        const itemDimension = height / 2.0 - 60;
 
-        for (var i = 0; i <  this.gameList.length ; i++) {
+        this.gameList.forEach(gc=>{
+            "use strict";
+            cc.loader.loadRes(game.resource.gameIcon[gc], cc.SpriteFrame, (err, spriteFrame) => {
 
-
-
-            var itemPrefab = this.item;
-            var container = this.scrollerContentView;
-            cc.loader.loadRes(game.resource.gameIcon[this.gameList[i]], cc.SpriteFrame, function (err, spriteFrame) {
-
-                var nodeItem = new cc.instantiate(itemPrefab);
+                const nodeItem = new cc.instantiate(this.item);
                 nodeItem.setContentSize(itemDimension,itemDimension);
-                nodeItem.getComponent(item).listenOnClickListener((gameCode) => {
-                    console.log('click Item' + gameCode);
+
+                let itemComponent = nodeItem.getComponent('item');
+
+                itemComponent.gameCode = gc;
+                itemComponent.listenOnClickListener((gameCode) => {
+                    console.log(`click Item ${gameCode}`);
                 });
-                container.node.addChild(nodeItem);
+                this.scrollerContentView.node.addChild(nodeItem);
 
-                var sprite = nodeItem.getComponent(cc.Sprite);
+                nodeItem.getComponent(cc.Sprite).spriteFrame = spriteFrame ;
 
-                sprite.spriteFrame = spriteFrame ;
             });
-        }
+        });
 
     },
 
@@ -102,10 +101,9 @@ cc.Class({
     
     addBottomBar:function () {
 
-        var bottomBarNode = new  cc.instantiate(this.bottomBar);
+        const bottomBarNode = new cc.instantiate(this.bottomBar);
 
-        let _item = require("BottomBar");
-        bottomBarNode.getComponent(_item).listenClickTopBarItem( (buttonType) => {
+        bottomBarNode.getComponent('BottomBar').listenClickTopBarItem( (buttonType) => {
             console.log("dashboard:" + buttonType);
             this.addPopup();
         });
