@@ -369,12 +369,11 @@
       "__uuid__": "e1de40f8-1bd2-46d4-848d-b05a92e36834"
     },
     "_clips": [
-      null,
       {
         "__uuid__": "e1de40f8-1bd2-46d4-848d-b05a92e36834"
       }
     ],
-    "playOnLoad": false
+    "playOnLoad": true
   },
   {
     "__type__": "cc.PrefabInfo",

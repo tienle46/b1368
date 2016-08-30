@@ -1,0 +1,30 @@
+{
+  "ver": "1.0.0",
+  "uuid": "931c1989-3953-445c-ad5a-ff7168d1750b",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "subMetas": {
+    "daigia_button_bkg": {
+      "ver": "1.0.3",
+      "uuid": "1a915d11-095a-442e-bf92-4b8ca4f72224",
+      "rawTextureUuid": "931c1989-3953-445c-ad5a-ff7168d1750b",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 0,
+      "trimY": 0,
+      "width": 428,
+      "height": 136,
+      "rawWidth": 428,
+      "rawHeight": 136,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}
