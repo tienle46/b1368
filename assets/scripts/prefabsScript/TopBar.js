@@ -30,27 +30,74 @@ cc.Class({
 
         friendsButton: {
             default:null,
-            type:cc.Label
+            type:cc.Button
         },
 
         moreButton: {
             default:null,
             type:cc.Button
-        }
+        },
 
+        backButton: {
+            default:null,
+            type:cc.Button
+
+        },
+
+        _showBack:false
 
     },
 
     // use this for initialization
     onLoad: function () {
+        if (this._showBack) {
+            this.settingButton.node.removeFromParent();
+        }
+        else  {
+            this.backButton.node.removeFromParent();
+        }
 
     },
     
     // Handle Click Action
     
     handleSettingAction: function () {
+    if (this._showBack) {
+
+    }
+        else  {
+
+    }
+
 
     },
+    
+    handleChatAction: function () {
+
+    },
+
+    handleFriendButtonAction: function () {
+
+    },
+
+    handleMoreAction: function () {
+
+    },
+
+    handleBackAction: function () {
+        
+    },
+
+    
+    autoScrollHighlight: function () {
+        
+    },
+    
+    // show Back Button, replace Setting Button
+    
+    showBackButton: function () {
+        this._showBack = true;
+    }
 
 
 

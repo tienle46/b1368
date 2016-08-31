@@ -14,12 +14,17 @@ var BaseScene = cc.Class({
     ctor() {
         "use strict";
        game = require("game")
+
     },
 
     start: function () {
         this.loading = false;
         game.system.setCurrentScene(this);
+
     },
+
+    // add Bkg
+
 
     /**
      * Handle data sent from server

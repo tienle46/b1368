@@ -1,8 +1,8 @@
 var game = require('game');
 var item = require('item');
-
+var BaseScene = require('BaseScene');
 cc.Class({
-    extends: cc.Component,
+    extends: BaseScene,
 
 
     properties: {
@@ -63,10 +63,10 @@ cc.Class({
     //    handle bottom Bar event
 
         this.addBottomBar();
+        this.addTopBar();
 
 
     },
-
 
 
 
@@ -87,7 +87,10 @@ cc.Class({
                 itemComponent.gameCode = gc;
                 itemComponent.listenOnClickListener((gameCode) => {
                     console.log(`click Item ${gameCode}`);
+
+                    cc.director.loadScene('ListTableScene');
                 });
+
                 this.scrollerContentView.node.addChild(nodeItem);
 
                 nodeItem.getComponent(cc.Sprite).spriteFrame = spriteFrame ;
@@ -109,6 +112,17 @@ cc.Class({
         });
 
         this.node.addChild(bottomBarNode);
+    },
+
+    addTopBar: function () {
+        const topBarNode = new cc.instantiate(this.topBar);
+
+        // topBarNode.getComponent('TopBar').listenClickTopBarItem( (buttonType) => {
+        //     console.log("dashboard:" + buttonType);
+        //     this.addPopup();
+        // });
+
+        this.node.addChild(topBarNode);
     },
     
     addPopup: function () {
