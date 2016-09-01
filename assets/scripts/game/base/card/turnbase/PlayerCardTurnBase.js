@@ -2,14 +2,11 @@
  * Created by Thanh on 8/23/2016.
  */
 
-var PlayerTurnBaseAdapter = require("PlayerTurnBaseAdapter")
-var BoardCard = require("BoardCard")
+import PlayerCard from 'PlayerCard'
 
-cc.PlayCardTurnBase = cc.Class({
-    extends: BoardCard,
-    turnAdapter: PlayerTurnBaseAdapter,
-
-    ctor(){
-
+export default class PlayerCardTurnBase extends PlayerCard {
+    constructor() {
+        super();
+        this.turnAdapter = null;
     }
-});
+}

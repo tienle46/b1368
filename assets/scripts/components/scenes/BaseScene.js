@@ -3,26 +3,23 @@
  */
 
 var game = require('game')
+import Component from 'Component'
 
-var BaseScene = cc.Class({
-    extends: cc.Component,
+export default class BaseScene extends Component {
+    constructor() {
+        super();
+        this.loading = true;
+    }
 
-    properties: {
-        loading: true
-    },
-
-    ctor() {
-        console.log("ctor BaseScene")
-    },
-
-    start: function () {
+    start() {
         this.loading = false;
         game.system.setCurrentScene(this);
+        console.log(this.cp);
+    }
 
-    },
-
-    // add Bkg
-
+    onLoad(){
+        console.log('base onload')
+    }
 
     /**
      * Handle data sent from server
@@ -30,7 +27,9 @@ var BaseScene = cc.Class({
      * @param {string} cmd - Command or request name sent from server
      * @param {object} data - Data sent according to request
      */
-    handleData(cmd, data){
+    handleData(cmd, data) {
 
     }
-});
+}
+
+//asign

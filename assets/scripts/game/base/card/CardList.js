@@ -2,20 +2,8 @@
  * Created by Thanh on 8/23/2016.
  */
 
-var CardList = cc.Class({
-    extends: cc.Component,
-
-    properties: {
-
-    },
-
-    onLoad() {
-
-    },
-
-    update(dt) {
+export default class CardList {
+    constructor() {
 
     }
-});
-
-module.exports = CardList;
+}

@@ -2,26 +2,24 @@
  * Created by Thanh on 8/23/2016.
  */
 
-var game = require('game')
-var Player = require('Player');
-var SFS2X = require('SFS2X')
-var utils = require('utils')
+import game from 'game'
+import Player from 'Player'
+import SFS2X from 'SFS2X'
 
-var PlayerManager = cc.Class({
-
-    properties: {
-        board: null,
-        me: null,
-        players: null,
-        _idToPlayerMap: null,
-        _nameToPlayerMap: null,
-        maxPlayerId: 1,
-    },
+export default class PlayerManager {
+    constructor() {
+        this.board = null
+            this.me = null
+            this.players = null
+            this._idToPlayerMap = null
+            this._nameToPlayerMap = null
+            this.maxPlayerId = 1
+    }
 
     _init(board){
         this.board = board;
         this._reset();
-    },
+    }
 
     _reset(){
         this.me = undefined;
@@ -29,7 +27,7 @@ var PlayerManager = cc.Class({
         this._idToPlayerMap = {};
         this._nameToPlayerMap = {};
         this.maxPlayerId = 1
-    },
+    }
 
     initPlayers(users){
         users.forEach(user => {
@@ -37,7 +35,7 @@ var PlayerManager = cc.Class({
         });
 
         this._update();
-    },
+    }
 
     /**
      * This function will be update all feature of player when data change
@@ -63,7 +61,7 @@ var PlayerManager = cc.Class({
 
         this.maxPlayerId = maxPlayerId;
 
-    },
+    }
 
     _updateMaxPlayerId(){
         let maxPlayerId = 1;
@@ -73,16 +71,16 @@ var PlayerManager = cc.Class({
         })
 
         this.maxPlayerId = maxPlayerId;
-    },
+    }
 
 
-    _insertPlayerFromUser: function (user) {
+    _insertPlayerFromUser (user) {
         if (user.isPlayer()) {
             let player = Player.create(this.board, user);
             this._addPlayerToBoard(player);
         }
 
-    },
+    }
 
     _addPlayerToBoard(player){
         if (this.players.indexOf(player) < 0) {
@@ -91,27 +89,27 @@ var PlayerManager = cc.Class({
 
             this.players.push(player);
         }
-    },
+    }
 
-    isSpectator: function () {
+    isSpectator () {
         return (!game.me || (!this.me.isPlaying() && this.board.isPlaying()));
-    },
+    }
 
-    isMySelfPlaying: function () {
+    isMySelfPlaying () {
         return !this.isSpectator() && this.me.isPlaying();
-    },
+    }
 
-    isShouldMySelfReady: function () {
+    isShouldMySelfReady () {
         return this.me && !this.me.isOwner() && !this.me.isReady();
-    },
+    }
 
-    findPlayer: function (idOrName) {
+    findPlayer (idOrName) {
         if (idOrName instanceof Number) {
             return this._idToPlayerMap[idOrName];
         } else {
             return this._nameToPlayerMap[idOrName];
         }
-    },
+    }
 
     _findPlayerIndex(playerId){
         let playerIndex = -1;
@@ -122,7 +120,7 @@ var PlayerManager = cc.Class({
             }
         })
         return playerIndex;
-    },
+    }
 
     _addPlayer(player){
         let playerInMap = this._idToPlayerMap[player.id];
@@ -137,9 +135,9 @@ var PlayerManager = cc.Class({
         this._idToPlayerMap[player.id] = player;
         this._nameToPlayerMap[player.user.name] = player;
         this._update()
-    },
+    }
 
-    _removePlayer: function (player) {
+    _removePlayer (player) {
         this.players.some((value, i, arr) => {
             if (value.id == player.id) {
 
@@ -152,9 +150,9 @@ var PlayerManager = cc.Class({
                 return true;
             }
         })
-    },
+    }
 
-    _replaceUser: function (player, newId) {
+    _replaceUser (player, newId) {
 
         let oldUser = player.user;
         if (oldUser == null) {
@@ -178,9 +176,9 @@ var PlayerManager = cc.Class({
 
         this.board.room._addUser(newUser);
         player.setUser(newUser);
-    },
+    }
 
-    countPlayingPlayers: function () {
+    countPlayingPlayers () {
         var count = 0;
         this.players.forEach(player => {
             if ((this.board.isPlaying() || this.board.isStarting()) && player.isPlaying())
@@ -188,70 +186,70 @@ var PlayerManager = cc.Class({
         })
 
         return count;
-    },
+    }
 
-    getPlayerSeatId: function (playerId) {
+    getPlayerSeatId (playerId) {
         return this.board.positionManager.getPlayerSeatId(playerId);
-    },
+    }
 
-    getPlayerPosition: function (playerId) {
+    getPlayerPosition (playerId) {
         return this.board.positionManager.getPlayerSeatPosition(playerId);
-    },
+    }
 
-    onBoardMinBetChanged: function () {
+    onBoardMinBetChanged () {
         this.players.forEach(player => {
             !player.isOwner() && player.resetReadyState()
         })
-    },
+    }
 
-    onBoardMasterChanged: function (master) {
+    onBoardMasterChanged (master) {
         this.players.forEach(player => player.onBoardMasterChanged())
-    },
+    }
 
-    onBoardOwnerChanged: function (owner) {
+    onBoardOwnerChanged (owner) {
         this.players.forEach(player => player.onBoardOwnerChanged())
-    },
+    }
 
-    playerOnBoardBegin: function (data) {
+    playerOnBoardBegin (data) {
         this.players.forEach(player => player.onBoardBegin(data));
-    },
+    }
 
-    playerOnBoardStarting: function (data) {
+    playerOnBoardStarting (data) {
         this.players.forEach(player => player.onBoardStarting(data));
-    },
+    }
 
-    playerOnBoardStarted: function (data) {
+    playerOnBoardStarted (data) {
         this.players.forEach(player => player.onBoardStarted(data));
-    },
+    }
 
-    playerOnBoardPlaying: function (data) {
+    playerOnBoardPlaying (data) {
         this.players.forEach(player => player.onBoardPlaying(data));
-    },
+    }
 
-    playerOnBoardEnd: function (data) {
+    playerOnBoardEnd (data) {
         this.players.forEach(player => player.onBoardEnd(data));
-    },
+    }
 
-    playerOnPlayerRejoin: function (playerIds, remainCardSizes, data) {
+    playerOnPlayerRejoin (playerIds, remainCardSizes, data) {
         playerIds && playerIds.forEach((id, i) => {
             var player = this.findPlayer(playerIds[i]);
             player.onRejoin(remainCardSizes[i], data);
         })
-    },
+    }
 
-    onPlayerToSpectator: function (user) {
+    onPlayerToSpectator (user) {
         this.players.forEach(player => {
             player.onPlayerToSpectator(user);
         })
-    },
+    }
 
-    onSpectatorToPlayer: function (user) {
+    onSpectatorToPlayer (user) {
         this.players.forEach(player => {
             player.onSpectatorToPlayer(user);
         })
-    },
+    }
 
-    onPlayerLeaveBoard: function (playerOrIdOrName) {
+    onPlayerLeaveBoard (playerOrIdOrName) {
         var leaveBoardPlayer = playerOrIdOrName instanceof Player ? playerOrIdOrName : this.findPlayer(playerOrIdOrName);
 
         if (leaveBoardPlayer) {
@@ -265,18 +263,18 @@ var PlayerManager = cc.Class({
                 this._removePlayer(leaveBoardPlayer);
             }
         }
-    },
+    }
 
-    _shouldLeaveBoardImmediately: function (player) {
+    _shouldLeaveBoardImmediately (player) {
         if (player && player.hasOwnProperty('isTurn') && typeof(player.isTurn) == "function") {
             return !(this.board.isPlaying() && player.isTurn());
         } else {
             return !(this.board.isPlaying());
         }
 
-    },
+    }
 
-    onUserEnterRoom: function (user, room) {
+    onUserEnterRoom (user, room) {
         if (user && user.isPlayer() && !this.findPlayer(user.getPlayerId(room))) {
 
             let newPlayer = this._addPlayer(user);
@@ -293,35 +291,49 @@ var PlayerManager = cc.Class({
 
             return true;
         }
-    },
+    }
 
-    onPlayerMessage: function (sender, message) {
+    onPlayerMessage (sender, message) {
         this.players.some(player => {
             if (player.name === sender.name) {
                 player.say(message);
             }
         })
-    },
+    }
 
-    onMyselfRejoinGame: function (resObj) {
+    onMyselfRejoinGame (resObj) {
         if (this.isMySelfPlaying()) {
             //TODO
         }
-    },
+    }
 
-    onPlayerReEnterGame: function (playerId, newUserId) {
+    onPlayerReEnterGame (playerId, newUserId) {
         let player = this.findPlayer(playerId);
         if (player) {
             this._replaceUser(player, newUserId);
         }
-    },
+    }
 
 
     handlePlayer(playerId, cmd, data){
 
     }
+}
 
-});
+// var PlayerManager = cc.Class({
+//
+//     properties: {
+//         board: null,
+//         me: null,
+//         players: null,
+//         _idToPlayerMap: null,
+//         _nameToPlayerMap: null,
+//         maxPlayerId: 1,
+//     }
+//
+//
+//
+// });
 
 PlayerManager.newInstance = function (board) {
     let instance = new PlayerManager();

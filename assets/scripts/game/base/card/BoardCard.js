@@ -2,13 +2,10 @@
  * Created by Thanh on 8/23/2016.
  */
 
-var Board = require("Board")
+import Board from 'Board'
 
-var BoardCard = cc.Class({
-    extends: Board,
-    properties: {
-
+export default class BoardCard {
+    constructor() {
+        
     }
-});
-
-module.exports = BoardCard;
+}

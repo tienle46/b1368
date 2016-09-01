@@ -18,22 +18,15 @@ const gameCodeToPlayerClassMap = {
     'tnd': TLMNDLPlayer
 };
 
-var GameManager = cc.Class({
+export default class GameManager {
+    constructor() {
+    }
 
     getBoardClass(gameCode){
         return gameCodeToBoardClassMap[gameCode]
-    },
+    }
 
     getPlayerClass(gameCode){
         return gameCodeToPlayerClassMap[gameCode]
     }
-
-
-});
-
-GameManager.newInstance = () => {
-    game = require('game')
-    return new GameManager()
 }
-
-module.exports = GameManager

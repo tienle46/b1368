@@ -2,13 +2,11 @@
  * Created by Thanh on 8/23/2016.
  */
 
-var Player = require("Player")
+import Player from 'Player'
 
-var PlayerCard = cc.Class({
-    extends: Player,
-    properties: {
+export default class PlayerCard extends Player {
+    constructor() {
+        super();
 
     }
-});
-
-module.exports = PlayerCard;
+}

@@ -2,16 +2,12 @@
  * Created by Thanh on 8/23/2016.
  */
 
-var BoardBetTurnAdapter = require("BoardBetTurnAdapter")
-var BoardCard = require("BoardCard")
+import BoardBetTurnAdapter from 'BoardBetTurnAdapter'
+import BoardCard from 'BoardCard'
 
-var BoardCardBetTurn = cc.Class({
-    extends: BoardCard,
-    betAdapter: BoardBetTurnAdapter,
-
-    ctor(){
-
+export default class BoardCardBetTurn extends BoardCard {
+    constructor() {
+        super();
+        this.betAdapter = null;
     }
-});
-
-module.exports = BoardCardBetTurn;
+}

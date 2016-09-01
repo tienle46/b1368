@@ -1,17 +1,9 @@
 /**
  * Created by Thanh on 8/23/2016.
  */
-var BoardBetTurnAdapter = cc.Class({
 
-    ctor() {
-        
+class BoardBetTurnAdapter {
+    constructor() {
+
     }
-});
-
-BoardBetTurnAdapter.newInstance = function () {
-    let instance = new BoardBetTurnAdapter();
-    //Init object properties here
-    return instance;
-};
-
-module.exports = BoardBetTurnAdapter;
+}

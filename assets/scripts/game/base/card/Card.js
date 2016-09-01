@@ -1,44 +1,31 @@
 
-var Card = cc.Class({
-    extends: cc.Component,
 
-    properties: {
-
-    },
+export default class Card {
+    constructor(rank, suit) {
+        this.init(rank, suit)
+    }
 
     onLoad() {
 
-    },
+    }
 
     update(dt) {
 
-    },
+    }
 
     init(rank, suit){
+        this.rank = rank
+        this.suit = suit
+    }
 
-    },
-
-    fromByte(byteValue){
+    static from(byteValue){
         let rank =  cardByte >> 2;
         let suit = cardByte & 0x03;
 
-        init(rank, suit);
+        this.init(rank, suit);
     }
+}
 
-});
-
-Card.newInstance = function (rank, suit) {
-
-    let card = new Card();
-
-    if (arguments.length == 1) {
-        card.fromByte(arguments[0]);
-    }else{
-        card.init(rank, suit);
-    }
-
-    return card;
-};
 
 Card.RANK_AT = 1;
 Card.RANK_HAI = 2;
@@ -88,5 +75,3 @@ Card.HAND_LEFT_MARGIN_RIGHT = 18;
 Card.HAND_LEFT_MARGIN_BOTTOM = 50;
 Card.HAND_RIGHT_MARGIN_LEFT = 17;
 Card.HAND_RIGHT_MARGIN_BOTTOM = 30;
-
-module.exports = Card;

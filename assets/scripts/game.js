@@ -12,33 +12,24 @@ require("GameConst");
 require("GameConfig");
 require("GameResource");
 
-(() => {
-    require('PreLoader')
-    game.service = require("GameService");
-    game.system = require("GameSystem");
-    game.context = require("GameContext");
-    game.manager = require("GameManager");
-})();
-
-game.createComponent = (className = null, extendClass = cc.Component) => {
-    
+game.createComponent = (className = null, extendClass) => {
     if(!className){
         return;
     }
 
     const instance = new className();
 
-    instance.properties = instance.properties || {}
-    instance.extends = instance.extends || extendClass;
+    instance.properties = instance.properties || {};
+    instance.extends =  extendClass || instance.extends || cc.Component;
+    
 
     Object.getOwnPropertyNames(instance).forEach(key => {
-
         if (key !== 'extends' && key !== 'properties' && !key.startsWith('__')) {
             instance.properties[key] = instance[key];
             delete instance[key]; // remove properties because cc.Scene can not detect properties that's outside this.properties = {}
         }
 
-    })
+    });
 
     Object.getOwnPropertyNames(Object.getPrototypeOf(instance)).forEach(name => {
 
@@ -54,4 +45,14 @@ game.createComponent = (className = null, extendClass = cc.Component) => {
     });
 
     return cc.Class(instance);
+};
+
+_setupGame();
+
+function _setupGame() {
+    require('PreLoader')
+    game.service = require("GameService");
+    game.system = require("GameSystem");
+    game.context = require("GameContext");
+    game.manager = require("GameManager");
 }

@@ -1,37 +1,30 @@
-var Player = cc.Class({
-    extends: cc.Component,
+export default class Player {
 
-    properties: {
-        id: 0,
-        user: null,
-        inited: false
-    },
-
-    init(user){
-        //TODO
-
-        this.inited = true;
-    },
+    constructor(user) {
+        this.id = 0,
+            this.user = null,
+            this.inited = false
+    }
 
     onLoad() {
 
-    },
+    }
 
     update(dt) {
 
-    },
+    }
 
     isOwner(){
 
-    },
+    }
 
     isMaster(){
 
-    },
+    }
 
     setUser(user){
         this.user = user;
-    },
+    }
 
     /**
      * Show message player want to say
@@ -39,69 +32,68 @@ var Player = cc.Class({
      */
     say(message){
 
-    },
+    }
 
     applyBoardState(boardState){
         //TODO
-    },
+    }
 
     isMe(){
 
-    },
+    }
 
     stopTimeLine(){
 
-    },
+    }
 
     startTimeLine(timeInSeconds){
 
-    },
+    }
 
     onSpectatorToPlayer(user){
 
-    },
+    }
 
     onPlayerToSpectator(user){
 
-    },
+    }
 
     onRejoin(remainCardCount, data){
 
-    },
+    }
 
     onBoardBegin(data){
 
-    },
+    }
 
     onBoardStarting(data){
 
-    },
+    }
 
     onBoardStarted(data){
 
-    },
+    }
 
     onBoardPlaying(data){
 
-    },
+    }
 
     onBoardEnd(data){
 
-    },
+    }
 
     resetReadyState(){
 
-    },
+    }
 
     onBoardMasterChanged(master){
 
-    },
+    }
 
     onBoardOwnerChanged(owner){
 
     }
-
-});
+}
 
 Player.create = (board, user) => {
     var playerClass = game.manager.getPlayerClass(board.gameCode)
