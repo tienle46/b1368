@@ -2,7 +2,7 @@
  * Created by Thanh on 8/25/2016.
  */
 
-var game;
+var game = require('game')
 
 var BaseScene = cc.Class({
     extends: cc.Component,
@@ -12,9 +12,7 @@ var BaseScene = cc.Class({
     },
 
     ctor() {
-        "use strict";
-       game = require("game")
-
+        console.log("ctor BaseScene")
     },
 
     start: function () {

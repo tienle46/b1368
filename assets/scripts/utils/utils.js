@@ -4,9 +4,4 @@
 
 var utils = {};
 
-// utils.array = {};
-// utils.array.shiftLeft = (arr, n) => {
-//     return Array.prototype.slice.call(arr, n)
-// }
-
 module.exports = utils;

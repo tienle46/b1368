@@ -4,48 +4,54 @@
 
 var game = module.exports;
 
-game.const = {}
 game.async = require("async");
-game.resource = require("GameResource");
 game.keywords = require("Keywords");
 game.commands = require("Commands");
 
-_loadConfig();
-_initConst();
-_initResource()
-_setupGame();
+require("GameConst");
+require("GameConfig");
+require("GameResource");
 
-function _loadConfig() {
-    game.config = {};
-    game.config.zone = "XGame";
-    game.config.debug = true;
-    game.config.useSSL = false;
-    game.config.host = "123.31.12.100";
-    game.config.port = 8481;
-}
-
-function _initConst() {
-    _initSceneNameConst();
-}
-
-function _initSceneNameConst() {
-    game.const.scene = {};
-    game.const.scene.LOGIN_SCENE = "LoginScene";
-    game.const.scene.REGISTER_SCENE = "RegisterScene";
-    game.const.scene.DASHBOARD_SCENE = "DashboardScene";
-    game.const.scene.GAME_SCENE = "GameScene";
-}
-
-function _initResource() {
-    game.resource.string = {};
-    game.resource.string.GAME_TITLE = "B1368";
-    game.resource.string.SYSTEM = "Hệ thống";
-}
-
-function _setupGame() {
+(() => {
     require('PreLoader')
     game.service = require("GameService");
     game.system = require("GameSystem");
     game.context = require("GameContext");
     game.manager = require("GameManager");
+})();
+
+game.createComponent = (className = null, extendClass = cc.Component) => {
+    
+    if(!className){
+        return;
+    }
+
+    const instance = new className();
+
+    instance.properties = instance.properties || {}
+    instance.extends = instance.extends || extendClass;
+
+    Object.getOwnPropertyNames(instance).forEach(key => {
+
+        if (key !== 'extends' && key !== 'properties' && !key.startsWith('__')) {
+            instance.properties[key] = instance[key];
+            delete instance[key]; // remove properties because cc.Scene can not detect properties that's outside this.properties = {}
+        }
+
+    })
+
+    Object.getOwnPropertyNames(Object.getPrototypeOf(instance)).forEach(name => {
+
+        if (name !== 'constructor') {
+            let method = instance[name];
+
+            // ignore if it isn't Function or it's a constructor
+            if (method instanceof Function) {
+                instance[name] = method;
+            }
+
+        }
+    });
+
+    return cc.Class(instance);
 }
