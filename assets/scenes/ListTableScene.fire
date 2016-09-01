@@ -1006,7 +1006,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 133.53,
-      "height": 28.500000000000004
+      "height": 12.78
     },
     "_children": [],
     "_rotationX": 0,
@@ -1221,10 +1221,10 @@
     },
     "_N$disabledColor": {
       "__type__": "cc.Color",
-      "r": 255,
-      "g": 255,
-      "b": 255,
-      "a": 255
+      "r": 127,
+      "g": 127,
+      "b": 127,
+      "a": 127.5
     },
     "_N$normalSprite": {
       "__uuid__": "8e30c7cd-1bdb-4195-9d2c-1f0a0181dae0"
@@ -1320,7 +1320,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 97.11,
-      "height": 68.50000000000013
+      "height": 25.56
     },
     "_children": [],
     "_rotationX": 0,
@@ -1506,28 +1506,24 @@
       "__id__": 34
     },
     "_enabled": true,
-    "transition": 2,
+    "transition": 1,
     "pressedColor": {
       "__type__": "cc.Color",
-      "r": 255,
-      "g": 255,
-      "b": 255,
-      "a": 255
+      "r": 127,
+      "g": 127,
+      "b": 127,
+      "a": 127.5
     },
     "hoverColor": {
       "__type__": "cc.Color",
-      "r": 255,
-      "g": 255,
-      "b": 255,
-      "a": 255
+      "r": 127,
+      "g": 127,
+      "b": 127,
+      "a": 127.5
     },
     "duration": 0.1,
-    "pressedSprite": {
-      "__uuid__": "e9ec654c-97a2-4787-9325-e6a10375219a"
-    },
-    "hoverSprite": {
-      "__uuid__": "e9ec654c-97a2-4787-9325-e6a10375219a"
-    },
+    "pressedSprite": null,
+    "hoverSprite": null,
     "clickEvents": [],
     "_N$interactable": true,
     "_N$normalColor": {
@@ -1539,17 +1535,15 @@
     },
     "_N$disabledColor": {
       "__type__": "cc.Color",
-      "r": 255,
-      "g": 255,
-      "b": 255,
-      "a": 255
+      "r": 127,
+      "g": 127,
+      "b": 127,
+      "a": 127.5
     },
     "_N$normalSprite": {
       "__uuid__": "210a46f5-e5d9-4635-8d24-f95204f428bc"
     },
-    "_N$disabledSprite": {
-      "__uuid__": "29158224-f8dd-4661-a796-1ffab537140e"
-    },
+    "_N$disabledSprite": null,
     "_N$target": {
       "__id__": 34
     }
@@ -1640,7 +1634,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 75.39,
-      "height": 25.560000000000038
+      "height": 25.56
     },
     "_children": [],
     "_rotationX": 0,
@@ -1826,20 +1820,20 @@
       "__id__": 42
     },
     "_enabled": true,
-    "transition": 2,
+    "transition": 1,
     "pressedColor": {
       "__type__": "cc.Color",
-      "r": 255,
-      "g": 255,
-      "b": 255,
-      "a": 255
+      "r": 127,
+      "g": 127,
+      "b": 127,
+      "a": 127.5
     },
     "hoverColor": {
       "__type__": "cc.Color",
-      "r": 255,
-      "g": 255,
-      "b": 255,
-      "a": 255
+      "r": 127,
+      "g": 127,
+      "b": 127,
+      "a": 127.5
     },
     "duration": 0.1,
     "pressedSprite": {
@@ -1859,10 +1853,10 @@
     },
     "_N$disabledColor": {
       "__type__": "cc.Color",
-      "r": 255,
-      "g": 255,
-      "b": 255,
-      "a": 255
+      "r": 127,
+      "g": 127,
+      "b": 127,
+      "a": 127.5
     },
     "_N$normalSprite": {
       "__uuid__": "1a915d11-095a-442e-bf92-4b8ca4f72224"
@@ -1960,7 +1954,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 111.81,
-      "height": 1.2800000000001788
+      "height": 12.78
     },
     "_children": [],
     "_rotationX": 0,
@@ -2146,20 +2140,20 @@
       "__id__": 50
     },
     "_enabled": true,
-    "transition": 2,
+    "transition": 1,
     "pressedColor": {
       "__type__": "cc.Color",
-      "r": 255,
-      "g": 255,
-      "b": 255,
-      "a": 255
+      "r": 127,
+      "g": 127,
+      "b": 127,
+      "a": 127.5
     },
     "hoverColor": {
       "__type__": "cc.Color",
-      "r": 255,
-      "g": 255,
-      "b": 255,
-      "a": 255
+      "r": 127,
+      "g": 127,
+      "b": 127,
+      "a": 127.5
     },
     "duration": 0.1,
     "pressedSprite": {
@@ -2179,10 +2173,10 @@
     },
     "_N$disabledColor": {
       "__type__": "cc.Color",
-      "r": 255,
-      "g": 255,
-      "b": 255,
-      "a": 255
+      "r": 127,
+      "g": 127,
+      "b": 127,
+      "a": 127.5
     },
     "_N$normalSprite": {
       "__uuid__": "d289b7eb-dddf-4abe-bc8d-22909cdee5d6"
