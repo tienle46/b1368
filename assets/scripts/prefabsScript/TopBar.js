@@ -44,7 +44,8 @@ cc.Class({
 
         },
 
-        _showBack:false
+        _showBack:false,
+        _listenBackAction:null
 
     },
 
@@ -85,7 +86,7 @@ cc.Class({
     },
 
     handleBackAction: function () {
-        
+        this._listenBackAction && this._listenBackAction();
     },
 
     
@@ -97,6 +98,12 @@ cc.Class({
     
     showBackButton: function () {
         this._showBack = true;
+    },
+
+    // Add listener
+
+    addListennerBackAction:function (cb) {
+        this._listenBackAction = cb;
     }
 
 

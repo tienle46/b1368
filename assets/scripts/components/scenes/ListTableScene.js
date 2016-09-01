@@ -97,7 +97,11 @@ cc.Class({
     addTopBar: function () {
         let topBarNode = new cc.instantiate(this.topBar);
 
-        topBarNode.getComponent('TopBar').showBackButton();
+        let topBarScript = topBarNode.getComponent('TopBar');
+        topBarScript.showBackButton();
+        topBarScript.addListennerBackAction(() => {
+            cc.director.loadScene('DashboardScene');
+        });
       let winsize =  cc.director.getWinSize()
 
         topBarNode.setContentSize(winsize.width,100);

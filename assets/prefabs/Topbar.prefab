@@ -1335,7 +1335,8 @@
     "backButton": {
       "__id__": 37
     },
-    "_showBack": false
+    "_showBack": false,
+    "_listenBackAction": null
   },
   {
     "__type__": "cc.PrefabInfo",

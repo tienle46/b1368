@@ -73,13 +73,14 @@ cc.Class({
     _initItemListGame:function () {
 
         const height = this.scrollerContentView.node.height;
-        const itemDimension = height / 2.0 - 60;
+        const itemDimension = height / 2.0 - 30;
 
         this.gameList.forEach(gc=>{
             "use strict";
             cc.loader.loadRes(game.resource.gameIcon[gc], cc.SpriteFrame, (err, spriteFrame) => {
 
                 const nodeItem = new cc.instantiate(this.item);
+                nodeItem.getComponent(cc.Sprite).spriteFrame = spriteFrame ;
                 nodeItem.setContentSize(itemDimension,itemDimension);
 
                 let itemComponent = nodeItem.getComponent('item');
@@ -87,13 +88,12 @@ cc.Class({
                 itemComponent.gameCode = gc;
                 itemComponent.listenOnClickListener((gameCode) => {
                     console.log(`click Item ${gameCode}`);
-
+                    
                     cc.director.loadScene('ListTableScene');
                 });
 
                 this.scrollerContentView.node.addChild(nodeItem);
 
-                nodeItem.getComponent(cc.Sprite).spriteFrame = spriteFrame ;
 
             });
         });
