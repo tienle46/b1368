@@ -459,20 +459,20 @@
       "__id__": 2
     },
     "_enabled": true,
-    "transition": 2,
+    "transition": 1,
     "pressedColor": {
       "__type__": "cc.Color",
-      "r": 255,
-      "g": 255,
-      "b": 255,
-      "a": 255
+      "r": 127,
+      "g": 127,
+      "b": 127,
+      "a": 127.5
     },
     "hoverColor": {
       "__type__": "cc.Color",
-      "r": 255,
-      "g": 255,
-      "b": 255,
-      "a": 255
+      "r": 127,
+      "g": 127,
+      "b": 127,
+      "a": 127.5
     },
     "duration": 0.1,
     "pressedSprite": {
@@ -496,10 +496,10 @@
     },
     "_N$disabledColor": {
       "__type__": "cc.Color",
-      "r": 255,
-      "g": 255,
-      "b": 255,
-      "a": 255
+      "r": 127,
+      "g": 127,
+      "b": 127,
+      "a": 127.5
     },
     "_N$normalSprite": {
       "__uuid__": "1e0520e7-f4e4-4751-af72-f74fbdef5568"
@@ -657,20 +657,20 @@
       "__id__": 18
     },
     "_enabled": true,
-    "transition": 2,
+    "transition": 1,
     "pressedColor": {
       "__type__": "cc.Color",
-      "r": 255,
-      "g": 255,
-      "b": 255,
-      "a": 255
+      "r": 127,
+      "g": 127,
+      "b": 127,
+      "a": 127.5
     },
     "hoverColor": {
       "__type__": "cc.Color",
-      "r": 255,
-      "g": 255,
-      "b": 255,
-      "a": 255
+      "r": 127,
+      "g": 127,
+      "b": 127,
+      "a": 127.5
     },
     "duration": 0.1,
     "pressedSprite": {
@@ -694,10 +694,10 @@
     },
     "_N$disabledColor": {
       "__type__": "cc.Color",
-      "r": 255,
-      "g": 255,
-      "b": 255,
-      "a": 255
+      "r": 127,
+      "g": 127,
+      "b": 127,
+      "a": 127.5
     },
     "_N$normalSprite": {
       "__uuid__": "18f3dcd7-e483-4556-9c7a-2aadff44d84b"
@@ -855,20 +855,20 @@
       "__id__": 25
     },
     "_enabled": true,
-    "transition": 2,
+    "transition": 1,
     "pressedColor": {
       "__type__": "cc.Color",
-      "r": 255,
-      "g": 255,
-      "b": 255,
-      "a": 255
+      "r": 127,
+      "g": 127,
+      "b": 127,
+      "a": 127.5
     },
     "hoverColor": {
       "__type__": "cc.Color",
-      "r": 255,
-      "g": 255,
-      "b": 255,
-      "a": 255
+      "r": 127,
+      "g": 127,
+      "b": 127,
+      "a": 127.5
     },
     "duration": 0.1,
     "pressedSprite": {
@@ -892,10 +892,10 @@
     },
     "_N$disabledColor": {
       "__type__": "cc.Color",
-      "r": 255,
-      "g": 255,
-      "b": 255,
-      "a": 255
+      "r": 127,
+      "g": 127,
+      "b": 127,
+      "a": 127.5
     },
     "_N$normalSprite": {
       "__uuid__": "759d39ee-019d-4b12-b90a-54d865ec3ec8"
@@ -1053,20 +1053,20 @@
       "__id__": 32
     },
     "_enabled": true,
-    "transition": 2,
+    "transition": 1,
     "pressedColor": {
       "__type__": "cc.Color",
-      "r": 255,
-      "g": 255,
-      "b": 255,
-      "a": 255
+      "r": 127,
+      "g": 127,
+      "b": 127,
+      "a": 127.5
     },
     "hoverColor": {
       "__type__": "cc.Color",
-      "r": 255,
-      "g": 255,
-      "b": 255,
-      "a": 255
+      "r": 127,
+      "g": 127,
+      "b": 127,
+      "a": 127.5
     },
     "duration": 0.1,
     "pressedSprite": {
@@ -1090,10 +1090,10 @@
     },
     "_N$disabledColor": {
       "__type__": "cc.Color",
-      "r": 255,
-      "g": 255,
-      "b": 255,
-      "a": 255
+      "r": 127,
+      "g": 127,
+      "b": 127,
+      "a": 127.5
     },
     "_N$normalSprite": {
       "__uuid__": "3153c2ba-ac3e-49c9-895c-9465d45de80e"
@@ -1251,20 +1251,20 @@
       "__id__": 39
     },
     "_enabled": true,
-    "transition": 2,
+    "transition": 1,
     "pressedColor": {
       "__type__": "cc.Color",
-      "r": 255,
-      "g": 255,
-      "b": 255,
-      "a": 255
+      "r": 127,
+      "g": 127,
+      "b": 127,
+      "a": 127.5
     },
     "hoverColor": {
       "__type__": "cc.Color",
-      "r": 255,
-      "g": 255,
-      "b": 255,
-      "a": 255
+      "r": 127,
+      "g": 127,
+      "b": 127,
+      "a": 127.5
     },
     "duration": 0.1,
     "pressedSprite": {
@@ -1288,10 +1288,10 @@
     },
     "_N$disabledColor": {
       "__type__": "cc.Color",
-      "r": 255,
-      "g": 255,
-      "b": 255,
-      "a": 255
+      "r": 127,
+      "g": 127,
+      "b": 127,
+      "a": 127.5
     },
     "_N$normalSprite": {
       "__uuid__": "95e90db0-5ecb-4e8f-88cd-879738957b6e"
@@ -1449,20 +1449,20 @@
       "__id__": 46
     },
     "_enabled": true,
-    "transition": 2,
+    "transition": 1,
     "pressedColor": {
       "__type__": "cc.Color",
-      "r": 255,
-      "g": 255,
-      "b": 255,
-      "a": 255
+      "r": 127,
+      "g": 127,
+      "b": 127,
+      "a": 127.5
     },
     "hoverColor": {
       "__type__": "cc.Color",
-      "r": 255,
-      "g": 255,
-      "b": 255,
-      "a": 255
+      "r": 127,
+      "g": 127,
+      "b": 127,
+      "a": 127.5
     },
     "duration": 0.1,
     "pressedSprite": {
@@ -1486,10 +1486,10 @@
     },
     "_N$disabledColor": {
       "__type__": "cc.Color",
-      "r": 255,
-      "g": 255,
-      "b": 255,
-      "a": 255
+      "r": 127,
+      "g": 127,
+      "b": 127,
+      "a": 127.5
     },
     "_N$normalSprite": {
       "__uuid__": "3866d508-91cc-462e-9be0-3be5d55e6cab"
@@ -2008,20 +2008,20 @@
       "__id__": 53
     },
     "_enabled": true,
-    "transition": 2,
+    "transition": 1,
     "pressedColor": {
       "__type__": "cc.Color",
-      "r": 255,
-      "g": 255,
-      "b": 255,
-      "a": 255
+      "r": 127,
+      "g": 127,
+      "b": 127,
+      "a": 127.5
     },
     "hoverColor": {
       "__type__": "cc.Color",
-      "r": 255,
-      "g": 255,
-      "b": 255,
-      "a": 255
+      "r": 127,
+      "g": 127,
+      "b": 127,
+      "a": 127.5
     },
     "duration": 0.1,
     "pressedSprite": {
@@ -2045,10 +2045,10 @@
     },
     "_N$disabledColor": {
       "__type__": "cc.Color",
-      "r": 255,
-      "g": 255,
-      "b": 255,
-      "a": 255
+      "r": 127,
+      "g": 127,
+      "b": 127,
+      "a": 127.5
     },
     "_N$normalSprite": {
       "__uuid__": "9ae6fa83-a256-45c9-9698-e887631f8c81"

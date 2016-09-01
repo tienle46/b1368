@@ -16,8 +16,8 @@
     "_color": {
       "__type__": "cc.Color",
       "r": 255,
-      "g": 255,
-      "b": 255,
+      "g": 252,
+      "b": 252,
       "a": 255
     },
     "_cascadeOpacityEnabled": true,
@@ -72,10 +72,13 @@
       },
       {
         "__id__": 25
+      },
+      {
+        "__id__": 26
       }
     ],
     "_prefab": {
-      "__id__": 26
+      "__id__": 27
     },
     "groupIndex": 0
   },
@@ -755,6 +758,54 @@
     },
     "lockIcon": {
       "__id__": 21
+    }
+  },
+  {
+    "__type__": "cc.Button",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 1
+    },
+    "_enabled": true,
+    "transition": 1,
+    "pressedColor": {
+      "__type__": "cc.Color",
+      "r": 209,
+      "g": 202,
+      "b": 202,
+      "a": 107.10000000000001
+    },
+    "hoverColor": {
+      "__type__": "cc.Color",
+      "r": 209,
+      "g": 202,
+      "b": 202,
+      "a": 127.5
+    },
+    "duration": 0.1,
+    "pressedSprite": null,
+    "hoverSprite": null,
+    "clickEvents": [],
+    "_N$interactable": true,
+    "_N$normalColor": {
+      "__type__": "cc.Color",
+      "r": 255,
+      "g": 252,
+      "b": 252,
+      "a": 255
+    },
+    "_N$disabledColor": {
+      "__type__": "cc.Color",
+      "r": 124,
+      "g": 124,
+      "b": 124,
+      "a": 255
+    },
+    "_N$normalSprite": null,
+    "_N$disabledSprite": null,
+    "_N$target": {
+      "__id__": 1
     }
   },
   {
