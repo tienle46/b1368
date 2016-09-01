@@ -59,7 +59,6 @@ cc.Class({
             default:null,
             type:cc.Prefab
         }
-
     },
 
     // use this for initialization
@@ -102,6 +101,7 @@ cc.Class({
         topBarScript.addListennerBackAction(() => {
             cc.director.loadScene('DashboardScene');
         });
+
       let winsize =  cc.director.getWinSize()
 
         topBarNode.setContentSize(winsize.width,100);

@@ -53,8 +53,6 @@ cc.Class({
             this.gameList = data["cl"];
             console.log(this.gameList);
 
-
-
                 this._initItemListGame();
             }
         ,game.const.scene.DASHBOARD_SCENE);
@@ -65,6 +63,12 @@ cc.Class({
         this.addBottomBar();
         this.addTopBar();
 
+    //    preload TableList Scene
+
+        cc.director.preloadScene('ListTableScene',function () {
+            console.log('preload Table List');
+        });
+
 
     },
 
@@ -73,7 +77,7 @@ cc.Class({
     _initItemListGame:function () {
 
         const height = this.scrollerContentView.node.height;
-        const itemDimension = height / 2.0 - 30;
+        const itemDimension = height / 2.0 - 40;
 
         this.gameList.forEach(gc=>{
             "use strict";
@@ -97,7 +101,6 @@ cc.Class({
 
             });
         });
-
     },
 
     // Listen Bottom Bar Event (Click button In Bottom Bar)
@@ -106,9 +109,13 @@ cc.Class({
 
         const bottomBarNode = new cc.instantiate(this.bottomBar);
 
+        // let bottomBarWidget = bottomBarNode.getComponent(cc.Widget);
+        // bottomBarWidget.bottom = 0;
+        // bottomBarWidget.left = 0;
+        // bottomBarWidget.right = 0;
         bottomBarNode.getComponent('BottomBar').listenClickTopBarItem( (buttonType) => {
             console.log("dashboard:" + buttonType);
-            this.addPopup();
+            // this.addPopup();
         });
 
         this.node.addChild(bottomBarNode);

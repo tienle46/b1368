@@ -533,10 +533,14 @@
     "_right": 0,
     "_top": 0,
     "_bottom": 6,
+    "_verticalCenter": 0,
+    "_horizontalCenter": 0,
     "_isAbsLeft": true,
     "_isAbsRight": true,
     "_isAbsTop": true,
     "_isAbsBottom": true,
+    "_isAbsHorizontalCenter": true,
+    "_isAbsVerticalCenter": true,
     "_originalWidth": 0,
     "_originalHeight": 0
   },
@@ -548,7 +552,9 @@
       "__id__": 2
     },
     "_enabled": true,
-    "buttonType": 0
+    "buttonType": 0,
+    "pressedScale": 0.8,
+    "transDuration": 0.1
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -731,10 +737,14 @@
     "_right": 0,
     "_top": 0,
     "_bottom": 13.5,
+    "_verticalCenter": 0,
+    "_horizontalCenter": 0,
     "_isAbsLeft": true,
     "_isAbsRight": true,
     "_isAbsTop": true,
     "_isAbsBottom": true,
+    "_isAbsHorizontalCenter": true,
+    "_isAbsVerticalCenter": true,
     "_originalWidth": 0,
     "_originalHeight": 0
   },
@@ -746,7 +756,9 @@
       "__id__": 18
     },
     "_enabled": true,
-    "buttonType": 0
+    "buttonType": 0,
+    "pressedScale": 0.8,
+    "transDuration": 0.1
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -929,10 +941,14 @@
     "_right": 0,
     "_top": 0,
     "_bottom": 13.5,
+    "_verticalCenter": 0,
+    "_horizontalCenter": 0,
     "_isAbsLeft": true,
     "_isAbsRight": true,
     "_isAbsTop": true,
     "_isAbsBottom": true,
+    "_isAbsHorizontalCenter": true,
+    "_isAbsVerticalCenter": true,
     "_originalWidth": 0,
     "_originalHeight": 0
   },
@@ -944,7 +960,9 @@
       "__id__": 25
     },
     "_enabled": true,
-    "buttonType": 0
+    "buttonType": 0,
+    "pressedScale": 0.8,
+    "transDuration": 0.1
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -1127,10 +1145,14 @@
     "_right": 0,
     "_top": 0,
     "_bottom": 6,
+    "_verticalCenter": 0,
+    "_horizontalCenter": 0,
     "_isAbsLeft": true,
     "_isAbsRight": true,
     "_isAbsTop": true,
     "_isAbsBottom": true,
+    "_isAbsHorizontalCenter": true,
+    "_isAbsVerticalCenter": true,
     "_originalWidth": 0,
     "_originalHeight": 0
   },
@@ -1142,7 +1164,9 @@
       "__id__": 32
     },
     "_enabled": true,
-    "buttonType": 0
+    "buttonType": 0,
+    "pressedScale": 0.8,
+    "transDuration": 0.1
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -1325,10 +1349,14 @@
     "_right": 318.5,
     "_top": 0,
     "_bottom": 13.5,
+    "_verticalCenter": 0,
+    "_horizontalCenter": 0,
     "_isAbsLeft": true,
     "_isAbsRight": true,
     "_isAbsTop": true,
     "_isAbsBottom": true,
+    "_isAbsHorizontalCenter": true,
+    "_isAbsVerticalCenter": true,
     "_originalWidth": 0,
     "_originalHeight": 0
   },
@@ -1340,7 +1368,9 @@
       "__id__": 39
     },
     "_enabled": true,
-    "buttonType": 0
+    "buttonType": 0,
+    "pressedScale": 0.8,
+    "transDuration": 0.1
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -1523,10 +1553,14 @@
     "_right": 253.5,
     "_top": 0,
     "_bottom": 13.5,
+    "_verticalCenter": 0,
+    "_horizontalCenter": 0,
     "_isAbsLeft": true,
     "_isAbsRight": true,
     "_isAbsTop": true,
     "_isAbsBottom": true,
+    "_isAbsHorizontalCenter": true,
+    "_isAbsVerticalCenter": true,
     "_originalWidth": 0,
     "_originalHeight": 0
   },
@@ -1538,7 +1572,9 @@
       "__id__": 46
     },
     "_enabled": true,
-    "buttonType": 0
+    "buttonType": 0,
+    "pressedScale": 0.8,
+    "transDuration": 0.1
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -2082,10 +2118,14 @@
     "_right": 13,
     "_top": 0,
     "_bottom": 8,
+    "_verticalCenter": 0,
+    "_horizontalCenter": 0,
     "_isAbsLeft": true,
     "_isAbsRight": true,
     "_isAbsTop": true,
     "_isAbsBottom": true,
+    "_isAbsHorizontalCenter": true,
+    "_isAbsVerticalCenter": true,
     "_originalWidth": 0,
     "_originalHeight": 0
   },
@@ -2097,7 +2137,9 @@
       "__id__": 53
     },
     "_enabled": true,
-    "buttonType": 0
+    "buttonType": 0,
+    "pressedScale": 0.8,
+    "transDuration": 0.1
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -2149,10 +2191,14 @@
     "_right": 0,
     "_top": 0,
     "_bottom": 0,
+    "_verticalCenter": 0,
+    "_horizontalCenter": 0,
     "_isAbsLeft": true,
     "_isAbsRight": true,
     "_isAbsTop": true,
     "_isAbsBottom": true,
+    "_isAbsHorizontalCenter": true,
+    "_isAbsVerticalCenter": true,
     "_originalWidth": 956,
     "_originalHeight": 0
   },

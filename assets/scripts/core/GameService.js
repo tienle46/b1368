@@ -29,16 +29,16 @@ class GameService {
 
     __testConnection(){
         this.connect((success) => {
-            console.debug("success: " + success)
+            console.log("success: " + success)
             if (success) {
                 this.login("crush1", "1234nm", (error, result) => {
                     if (result) {
-                        console.debug(`Logged in as ${game.context.getMySelf().name}`)
+                        console.log(`Logged in as ${game.context.getMySelf().name}`)
                     }
 
                     if (error) {
-                        console.debug("Login error: ")
-                        console.debug(error)
+                        console.log("Login error: ")
+                        console.log(error)
                     }
                 });
             }
@@ -56,7 +56,7 @@ class GameService {
         this.addEventListener(SFS2X.SFSEvent.CONNECTION_RESUME, this._onConnectionResume)
         this.addEventListener(SFS2X.SFSEvent.EXTENSION_RESPONSE, this._onExtensionEvent)
 
-        console.debug("Registered SmartFox event")
+        console.log("Registered SmartFox event")
     }
 
     _removeSmartFoxEvent() {
@@ -69,28 +69,28 @@ class GameService {
     }
 
     _onConnection(event){
-        console.debug("_onConnection")
-        console.debug(event)
+        console.log("_onConnection")
+        console.log(event)
 
         this._callCallback(SFS2X.SFSEvent.CONNECTION, event.success)
     }
 
     _onConnectionLost(event){
-        console.debug("_onConnectionLost")
-        console.debug(event);
+        console.log("_onConnectionLost")
+        console.log(event);
 
         // game.system.loadScene(game.const.scene.LOGIN_SCENE);
     }
 
     _onConnectionResume(event){
-        console.debug("_onConnectionResume")
-        console.debug(event);
+        console.log("_onConnectionResume")
+        console.log(event);
         //TODO
     }
 
     _onExtensionEvent(event){
-        console.debug("_onExtensionEvent")
-        console.debug(event)
+        console.log("_onExtensionEvent")
+        console.log(event)
 
         if (this._hasCallback(event.cmd)) {
             this._callCallbackAsync(event.cmd, event.params)
@@ -105,15 +105,15 @@ class GameService {
     }
 
     _onLogin(event){
-        console.debug("_onLogin")
-        console.debug(event)
+        console.log("_onLogin")
+        console.log(event)
 
         this._callCallback(SFS2X.SFSEvent.LOGIN, undefined, event.data)
     }
 
     _onLoginError(){
-        console.debug("_onLoginError")
-        console.debug(event)
+        console.log("_onLoginError")
+        console.log(event)
 
         this._callCallback(SFS2X.SFSEvent.LOGIN, event.data)
     }
@@ -182,7 +182,7 @@ class GameService {
 
         this._addCallback(SFS2X.SFSEvent.CONNECTION, cb)
 
-        console.debug(`Connecting to: ${game.config.host}:${game.config.port}`)
+        console.log(`Connecting to: ${game.config.host}:${game.config.port}`)
 
         this.client.connect(game.config.host, game.config.port)
     }
