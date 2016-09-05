@@ -6,55 +6,42 @@ import game from 'game'
 import PlayerManager from 'PlayerManager'
 import PositionManager from 'PositionManager'
 import GameEventHandler from 'GameEventHandler'
+import Component from 'Component'
 
-export class Board {
+class Board extends Component{
 
-    constructor() {
-        this.playerManager= {
-            default: null
-        }
+    constructor(room) {
+        super()
 
-        this.positionManager= {
-            default: null
-        }
+        game.context.currentRoom = this.room;
 
-        this._gameEventHandler= {
-            default: null
-        }
+        this.room = room;
 
-        this.gameData= {
-            default: {}
-        }
+        this.playerManager = null
 
-        this.owner= {
-            default: null
-        }
+        this.positionManager = null
 
-        this.master= {
-            default: null
-        }
+        this._gameEventHandler = null
 
-        this.minBet= {
-            default: 0
-        }
+        this.gameData = null
 
-        this.state= {
-            default: game.const.boardState.INITED
-        }
+        this.owner = null
 
-        this.serverState= {
-            default: game.const.boardState.INITED
-        }
+        this.master = null
 
-        this.readyPhaseDuration= {
-            default: game.const.DEFAULT_READY_PHASE_DURATION
-        }
+        this.minBet = null
+
+        this.state = game.const.boardState.INITED
+
+        this.serverState = game.const.boardState.INITED
+
+        this.readyPhaseDuration =  game.const.DEFAULT_READY_PHASE_DURATION
 
         this.gameCode = ""
+
     }
 
     _loadGameData(){
-        this.room = game.context.currentRoom;
 
         if (this.room && this.containsVariable(game.keywords.VARIABLE_GAME_INFO)) {
 
@@ -77,13 +64,13 @@ export class Board {
     }
 
     onLoad() {
-        this._loadGameData();
+        // this._loadGameData();
 
         this._gameEventHandler = GameEventHandler.newInstance();
-
-        this.playerManager = new PlayerManager(this);
-        this.positionManager = new PositionManager(this);
-        this.playerManager.initPlayers(this.room.getPlayerList());
+        //
+        // this.playerManager = new PlayerManager(this);
+        // this.positionManager = new PositionManager(this);
+        // this.playerManager.initPlayers(this.room && this.room.getPlayerList());
     }
 
     update(dt) {
@@ -291,3 +278,9 @@ export class Board {
         }
     }
 }
+
+var BoardComponent = Board
+
+export default BoardComponent
+
+game.createComponent(Board)

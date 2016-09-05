@@ -62,11 +62,41 @@ export default class ListTableScene extends BaseScene {
 
         for (let i = 0; i < 14; i++) {
 
-            let listCell = new cc.instantiate(this.tableListCell);
+            const listCell = new cc.instantiate(this.tableListCell);
+
             listCell.setContentSize(itemDimension - 16, 50);
             listCell.setPosition(cc.p(0, 0));
+
+            const cellComponent = listCell.getComponent('TableListCell');
+            cellComponent.setOnClickListener(() => {
+                this._createRoom(game.const.gameCode.TLMNDL, 1, 2);
+            })
+
             this.contentInScroll.node.addChild(listCell);
         }
+    }
+
+    _createRoom(gameCode = null, minBet = 0, roomCapacity = 2, password = undefined){
+
+        const requestParam = {};
+        requestParam[game.keywords.ROOM_BET] = minBet
+        requestParam[game.keywords.GAME_CODE] = gameCode
+        requestParam[game.keywords.ROOM_PASSWORD] = password
+        requestParam[game.keywords.ROOM_CAPACITY] = roomCapacity
+
+        game.service.send({cmd: game.commands.USER_CREATE_ROOM, data: requestParam, room: game.context.currentRoom}, (error, result) => {
+
+            if(event.errorCode){
+                game.system.error(event.errorMessage);
+            }else{
+
+                game.context.lastJoinRoom = result.room;
+                if (result.room.isJoined && result.room.isGame) {
+                    game.system.loadScene(game.const.scene.GAME_SCENE)
+                }
+            }
+
+        });
     }
 
     // Listen Bottom Bar Event (Click button In Bottom Bar)

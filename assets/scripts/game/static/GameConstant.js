@@ -49,7 +49,7 @@ game.const.gameServiceString = {
     "xga": game.const.GAME_XGAME
 };
 
-game.const.gameCode = [
+game.const.gameCodes = [
     "pom",
     "xit",
     "bcy",

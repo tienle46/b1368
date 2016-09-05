@@ -2,13 +2,15 @@
  * Created by Thanh on 8/23/2016.
  */
 
-var game = require("game")
+import game from 'game'
 
 class GameContext {
 
     constructor() {
         this.currentRoom = null
         this.groupId = null
+        this.currentRoom = null
+        this.lastJoinedRoom = null
     }
 
     /**
@@ -21,6 +23,10 @@ class GameContext {
 
     isJoinedGame(){
         return this.currentRoom && this.currentRoom.isGame
+    }
+
+    getRoom(roomId){
+        return game.service.getClient().getRoomById(roomId);
     }
 }
 

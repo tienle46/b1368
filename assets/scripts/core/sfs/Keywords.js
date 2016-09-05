@@ -639,3 +639,6 @@ Keywords.HIGH_LIGHT_MESSAGE = {
 
 Keywords.ADMIN_MESSAGE_TYPE = "t";
 Keywords.ADMIN_MESSAGE_LIST = "ml";
+
+Keywords.ROOM_BET = "b"
+Keywords.ROOM_CAPACITY = "mu"

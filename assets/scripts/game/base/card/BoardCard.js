@@ -4,8 +4,10 @@
 
 import Board from 'Board'
 
-export default class BoardCard {
-    constructor() {
-        
+export default class BoardCard extends Board {
+    constructor(room) {
+        super(room)
+
+
     }
 }

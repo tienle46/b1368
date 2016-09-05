@@ -55,6 +55,9 @@ class GameService {
         this.addEventListener(SFS2X.SFSEvent.CONNECTION_LOST, this._onConnectionLost)
         this.addEventListener(SFS2X.SFSEvent.CONNECTION_RESUME, this._onConnectionResume)
         this.addEventListener(SFS2X.SFSEvent.EXTENSION_RESPONSE, this._onExtensionEvent)
+        this.addEventListener(SFS2X.SFSEvent.ROOM_JOIN, this._onJoinRoomResult)
+        this.addEventListener(SFS2X.SFSEvent.ROOM_JOIN_ERROR, this._onJoinRoomResult)
+        this.addEventListener(SFS2X.SFSEvent.ROOM_CREATION_ERROR, this._onCreateRoomResult)
 
         console.log("Registered SmartFox event")
     }
@@ -65,7 +68,9 @@ class GameService {
         this.removeEventListener(SFS2X.SFSEvent.CONNECTION, this._onConnection)
         this.removeEventListener(SFS2X.SFSEvent.CONNECTION_LOST, this._onConnectionLost)
         this.removeEventListener(SFS2X.SFSEvent.CONNECTION_RESUME, this._onConnectionResume)
-        this.removeEventListener(SFS2X.SFSEvent.EXTENSION_RESPONSE, this._onExtensionEvent)
+        this.removeEventListener(SFS2X.SFSEvent.ROOM_JOIN, this._onJoinRoomResult)
+        this.removeEventListener(SFS2X.SFSEvent.ROOM_JOIN_ERROR, this._onJoinRoomResult)
+        this.removeEventListener(SFS2X.SFSEvent.ROOM_CREATION_ERROR, this._onCreateRoomResult)
     }
 
     _onConnection(event){
@@ -108,7 +113,7 @@ class GameService {
         console.log("_onLogin")
         console.log(event)
 
-        this._callCallback(SFS2X.SFSEvent.LOGIN, undefined, event.data)
+        this._callCallback(SFS2X.SFSEvent.LOGIN, event.data)
     }
 
     _onLoginError(){
@@ -122,16 +127,23 @@ class GameService {
         this.client.send(request)
     }
 
-    _callCallback(key, args){
-        let cb = this._getCallback(key)
-        var argArr = Array.prototype.slice.call(arguments, 1)
-        cb && cb.apply(null, argArr);
+    _callCallback(key, verifyFunc, ...args){
+        let cbObj = this._getCallbackObject(key)
+
+        if(!(verifyFunc instanceof Function)){
+            args = [verifyFunc, args];
+            verifyFunc = undefined;
+        }
+
+        if(cbObj && (!verifyFunc || verifyFunc(cbObj.data))){
+            cbObj.cb.apply(null, args);
+        }
     }
 
-    _callCallbackAsync(key, args){
+    _callCallbackAsync(key, verifyFunc, ...args){
         game.async.series([
             (callback) => {
-                this._callCallback.apply(this, arguments)
+                this._callCallback.apply(this, [key, verifyFunc, ...args])
             }
         ]);
     }
@@ -141,14 +153,14 @@ class GameService {
         return this._eventCallbacks.hasOwnProperty(key)
     }
 
-    _getCallback(key)
+    _getCallbackObject(key)
     {
         return this._eventCallbacks[key]
     }
 
-    _addCallback(key, cb, scope)
+    _addCallback(key, cb, scope, data)
     {
-        this._eventCallbacks[key] = cb instanceof Function ? cb : undefined
+        this._eventCallbacks[key] = cb instanceof Function ? {cb: cb, data: data} : undefined
         this._addCommandToScope(key, scope);
     }
 
@@ -223,6 +235,12 @@ class GameService {
         this._sendRequest(new SFS2X.Requests.System.LoginRequest(username, password, data, game.config.zone))
     }
 
+    _checkConnection(){
+        if(!this.client.isConnected()){
+            game.system.loadScene(game.const.scene.LOGIN_SCENE)
+        }
+    }
+
     /**
      * @param {object} options  - Object data want to send via ExtensionRequest or other instance of RequestObject:
      *      + cmd: Command
@@ -242,7 +260,7 @@ class GameService {
         } else {
             const cmd = options.cmd
             if (cmd) {
-                this._addCallback(cmd, cb, scope)
+                this._addCallback(cmd, cb, scope, options.data)
                 this._sendRequest(new SFS2X.Requests.System.ExtensionRequest(cmd, options.data || {}, options.room))
             }
         }
@@ -282,6 +300,34 @@ class GameService {
         scope && delete this._eventScopes[scope]
     }
 
+    _onJoinRoomResult(event){
+
+        console.log("_onJoinRoomResult")
+        console.log(event)
+        console.log(this._eventCallbacks)
+
+        const key = this._hasCallback(game.commands.USER_CREATE_ROOM) ? game.commands.USER_CREATE_ROOM : SFS2X.SFSEvent.ROOM_JOIN
+
+        if(event.errorCode){
+            this._callCallbackAsync(key, event)
+        }else{
+            this._callCallbackAsync(key, data => { return !data || !data.roomId || (event.room && data.roomId == event.id)} , null, event);
+        }
+    }
+
+    _onCreateRoomResult(event){
+        if(event.errorCode){
+            this._callCallbackAsync(game.commands.USER_CREATE_ROOM, event)
+        }
+    }
+
+    joinRoom(roomId){
+
+    }
+
+    leaveRoom(roomId){
+
+    }
 }
 
 module.exports = new GameService();

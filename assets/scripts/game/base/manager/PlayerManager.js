@@ -30,7 +30,7 @@ export default class PlayerManager {
     }
 
     initPlayers(users){
-        users.forEach(user => {
+        users && users.forEach(user => {
             this._insertPlayerFromUser(user);
         });
 

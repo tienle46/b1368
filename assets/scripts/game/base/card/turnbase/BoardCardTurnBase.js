@@ -6,8 +6,8 @@ import BoardTurnBaseAdapter from 'BoardTurnBaseAdapter'
 import BoardCard from 'BoardCard'
 
 export default class BoardCardTurnBase extends BoardCard {
-    constructor() {
-        super();
+    constructor(room) {
+        super(room);
         this.turnAdapter = null;
     }
 }

@@ -86,6 +86,16 @@ class GameSystem {
         //TODO
     }
 
+    error(title, message){
+
+        if(arguments.length == 1){
+            message = title;
+            title = game.resource.string.SYSTEM;
+        }
+
+        alert(message);
+        //TODOs
+    }
 
     /**
      *
