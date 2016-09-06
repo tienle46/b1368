@@ -86,15 +86,21 @@ class GameSystem {
         //TODO
     }
 
-    error(title, message){
-
-        if(arguments.length == 1){
-            message = title;
-            title = game.resource.string.SYSTEM;
-        }
+    error(message, closeCb){
 
         alert(message);
-        //TODOs
+
+        closeCb && closeCb();
+        //TODO
+    }
+
+    confirm(message, okCallback, cancelCallback){
+        var r = confirm(message);
+        if (r == true) {
+            okCallback && okCallback();
+        } else {
+            cancelCallback && cancelCallback();
+        }
     }
 
     /**

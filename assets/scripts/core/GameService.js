@@ -302,10 +302,6 @@ class GameService {
 
     _onJoinRoomResult(event){
 
-        console.log("_onJoinRoomResult")
-        console.log(event)
-        console.log(this._eventCallbacks)
-
         const key = this._hasCallback(game.commands.USER_CREATE_ROOM) ? game.commands.USER_CREATE_ROOM : SFS2X.SFSEvent.ROOM_JOIN
 
         if(event.errorCode){
@@ -320,6 +316,7 @@ class GameService {
             this._callCallbackAsync(game.commands.USER_CREATE_ROOM, event)
         }
     }
+
 
     joinRoom(roomId){
 

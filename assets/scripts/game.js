@@ -31,18 +31,28 @@ game.createComponent = (className = null, extendClass) => {
 
     });
 
-    Object.getOwnPropertyNames(Object.getPrototypeOf(instance)).forEach(name => {
+    const isContainClassPrototype = (obj) => {
+        return className = obj && obj.__proto__ && obj.__proto__.constructor.name && obj.__proto__.constructor.name !== 'Object'
+    }
 
-        if (name !== 'constructor') {
-            let method = instance[name];
+    let prototypeObj = instance;
+    while (isContainClassPrototype(prototypeObj)) {
 
-            // ignore if it isn't Function or it's a constructor
-            if (method instanceof Function) {
-                instance[name] = method;
+        Object.getOwnPropertyNames(Object.getPrototypeOf(prototypeObj)).forEach(name => {
+
+            if (name !== 'constructor') {
+                let method = instance[name];
+
+                // ignore if it isn't Function or it's a constructor
+                if (method instanceof Function) {
+                    instance[name] = method;
+                }
+
             }
+        });
 
-        }
-    });
+        prototypeObj = prototypeObj.__proto__
+    }
 
     return cc.Class(instance);
 };
