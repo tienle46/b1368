@@ -12,6 +12,7 @@ game.const.scene.LOGIN_SCENE = "LoginScene";
 game.const.scene.REGISTER_SCENE = "RegisterScene";
 game.const.scene.DASHBOARD_SCENE = "DashboardScene";
 game.const.scene.GAME_SCENE = "GameScene";
+game.const.scene.LIST_TABLE_SCENE = "ListTableScene";
 
 game.const.gameCode = {};
 game.const.gameCode.PHOM = 'pom';

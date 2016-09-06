@@ -4,4 +4,11 @@
 
 var utils = {};
 
+utils.addComponent = (node, className, component) => {
+    var component = node.addComponent(className);
+
+    // sp.spriteFrame = this.sprite;
+    // node.parent = this.node;
+}
+
 module.exports = utils;

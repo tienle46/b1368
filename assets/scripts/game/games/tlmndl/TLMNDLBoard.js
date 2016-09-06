@@ -5,11 +5,11 @@
 import game from 'game'
 import BoardCardTurnBase from 'BoardCardTurnBase'
 
-export default class BoardTLMNDL extends BoardCardTurnBase{
+export default class TLMNDLBoard extends BoardCardTurnBase{
 
     constructor(room) {
         super(room)
     }
 }
 
-game.createComponent(BoardTLMNDL);
+game.createComponent(TLMNDLBoard);

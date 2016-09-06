@@ -68,9 +68,9 @@ class Board extends Component{
 
         this._gameEventHandler = GameEventHandler.newInstance();
         //
-        // this.playerManager = new PlayerManager(this);
-        // this.positionManager = new PositionManager(this);
-        // this.playerManager.initPlayers(this.room && this.room.getPlayerList());
+        this.playerManager = new PlayerManager(this);
+        this.positionManager = new PositionManager(this);
+        this.playerManager.initPlayers(this.room && this.room.getPlayerList());
     }
 
     update(dt) {
@@ -278,9 +278,3 @@ class Board extends Component{
         }
     }
 }
-
-var BoardComponent = Board
-
-export default BoardComponent
-
-game.createComponent(Board)
