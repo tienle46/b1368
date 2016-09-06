@@ -5,56 +5,54 @@ import BaseScene from 'BaseScene';
 export default class DashboardScene extends BaseScene {
     constructor() {
         super();
-        this.gameList=[];
+        this.gameList = [];
 
 
         this.scrollerContentView = {
-            default:null,
-            type:cc.Layout
+            default: null,
+            type: cc.Layout
         };
 
         this.item = {
             default: null,
-            type:cc.Prefab
+            type: cc.Prefab
         };
 
         this.bottomBar = {
             default: null,
-            type:cc.Prefab
+            type: cc.Prefab
         };
 
         this.topBar = {
             default: null,
-            type:cc.Prefab
+            type: cc.Prefab
         };
 
         this.popUp = {
-            default:null,
-            type
-                : cc.Prefab
+            default: null,
+            type: cc.Prefab
         }
     }
 
     onLoad() {
         var sendObject = {
-            'cmd' : 'gv',
-            'data' : {
-                'pid' : 1
+            'cmd': 'gv',
+            'data': {
+                'pid': 1
             }
         };
         console.log('request list game');
         game.service.send(sendObject, (data) => {
-                console.log(data);
+            console.log(data);
 
 
-                this.gameList = data["cl"];
-                console.log(this.gameList);
+            this.gameList = data["cl"];
+            console.log(this.gameList);
 
 
 
-                this._initItemListGame();
-            }
-            ,game.const.scene.DASHBOARD_SCENE);
+            this._initItemListGame();
+        }, game.const.scene.DASHBOARD_SCENE);
 
 
         //    handle bottom Bar event
@@ -70,13 +68,13 @@ export default class DashboardScene extends BaseScene {
         const height = this.scrollerContentView.node.height;
         const itemDimension = height / 2.0 - 30;
 
-        this.gameList.forEach(gc=>{
+        this.gameList.forEach(gc => {
             "use strict";
             cc.loader.loadRes(game.resource.gameIcon[gc], cc.SpriteFrame, (err, spriteFrame) => {
 
                 const nodeItem = new cc.instantiate(this.item);
-                nodeItem.getComponent(cc.Sprite).spriteFrame = spriteFrame ;
-                nodeItem.setContentSize(itemDimension,itemDimension);
+                nodeItem.getComponent(cc.Sprite).spriteFrame = spriteFrame;
+                nodeItem.setContentSize(itemDimension, itemDimension);
 
                 let itemComponent = nodeItem.getComponent('item');
 
@@ -101,7 +99,7 @@ export default class DashboardScene extends BaseScene {
 
         const bottomBarNode = new cc.instantiate(this.bottomBar);
 
-        bottomBarNode.getComponent('BottomBar').listenClickTopBarItem( (buttonType) => {
+        bottomBarNode.getComponent('BottomBar').listenClickTopBarItem((buttonType) => {
             console.log("dashboard:" + buttonType);
             this.addPopup();
         });
@@ -120,16 +118,15 @@ export default class DashboardScene extends BaseScene {
         this.node.addChild(topBarNode);
     }
 
-    addPopup () {
-        var popupBase = new cc.instantiate(this.popUp);
-        popupBase.position = cc.p(0,0);
-        // let _item = require("BasePopup");
-        // popupBase.getComponent(_item)
+    // addPopup() {
+    //     var popupBase = new cc.instantiate(this.popUp);
+    //     popupBase.position = cc.p(0, 0);
+    //     // let _item = require("BasePopup");
+    //     // popupBase.getComponent(_item)
 
-        this.node.addChild(popupBase);
-    }
+    //     this.node.addChild(popupBase);
+    // }
 
 }
 
 game.createComponent(DashboardScene);
-

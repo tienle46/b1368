@@ -9,15 +9,18 @@ export default class BaseScene extends Component {
     constructor() {
         super();
         this.loading = true;
+        this.popUp = {
+            default: null,
+            type: cc.Prefab
+        }
     }
 
     start() {
         this.loading = false;
         game.system.setCurrentScene(this);
-        console.log(this.cp);
     }
 
-    onLoad(){
+    onLoad() {
         console.log('base onload')
     }
 
@@ -29,6 +32,18 @@ export default class BaseScene extends Component {
      */
     handleData(cmd, data) {
 
+    }
+
+    test() {
+        console.log('test');
+    }
+        
+    // show popup
+    addPopup() {
+        var popupBase = new cc.instantiate(this.popUp);
+        popupBase.position = cc.p(0, 0);
+
+        this.node.addChild(popupBase);
     }
 }
 

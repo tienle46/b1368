@@ -13,36 +13,43 @@ require("GameConfig");
 require("GameResource");
 
 game.createComponent = (className = null, extendClass) => {
-    if(!className){
+    if (!className) {
         return;
     }
 
     const instance = new className();
 
     instance.properties = instance.properties || {};
-    instance.extends =  extendClass || instance.extends || cc.Component;
-    
+    instance.extends = extendClass || instance.extends || cc.Component;
+
 
     Object.getOwnPropertyNames(instance).forEach(key => {
         if (key !== 'extends' && key !== 'properties' && !key.startsWith('__')) {
             instance.properties[key] = instance[key];
             delete instance[key]; // remove properties because cc.Scene can not detect properties that's outside this.properties = {}
         }
-
     });
 
-    Object.getOwnPropertyNames(Object.getPrototypeOf(instance)).forEach(name => {
+    const isContainClassPrototype = (obj) => {
+        return className = obj && Object.getPrototypeOf(obj) && Object.getPrototypeOf(obj).constructor.name && Object.getPrototypeOf(obj).constructor.name !== 'Object';
+    }
 
-        if (name !== 'constructor') {
-            let method = instance[name];
+    let prototypeObj = instance;
+    while (isContainClassPrototype(prototypeObj)) {
+        Object.getOwnPropertyNames(Object.getPrototypeOf(prototypeObj)).forEach(name => {
+            if (name !== 'constructor') {
+                let method = instance[name];
 
-            // ignore if it isn't Function or it's a constructor
-            if (method instanceof Function) {
-                instance[name] = method;
+                // ignore if it isn't Function or it's a constructor
+                if (method instanceof Function) {
+                    instance[name] = method;
+                }
+
             }
+        });
 
-        }
-    });
+        prototypeObj = Object.getPrototypeOf(prototypeObj);
+    }
 
     return cc.Class(instance);
 };

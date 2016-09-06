@@ -5,6 +5,7 @@
 var game = require('game')
 
 game.const = {}
+game.const.LANGUAGE = "vi"; // set the language used in game. Default: "vi"
 
 game.const.scene = {};
 game.const.scene.LOGIN_SCENE = "LoginScene";
@@ -23,4 +24,3 @@ game.const.gameCode.LIENG = 'lie';
 game.const.gameCode.XAM = 'xam';
 game.const.gameCode.BAU_CUA = 'tcc';
 game.const.gameCode.ALL = 'xga';
-
