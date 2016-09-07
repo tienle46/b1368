@@ -1,5 +1,5 @@
 import BaseScene from "BaseScene";
-import game from 'game';
+var game = require('game');
 
 export default class RegisterScene extends BaseScene {
     constructor() {
@@ -19,20 +19,31 @@ export default class RegisterScene extends BaseScene {
             default: null,
             type: cc.EditBox
         };
-
     }
 
     onLoad() {
         super.onLoad();
-        // this.userNameEditBox = cc.find('center/userNameEditBox');
-        console.log(this.userNameEditBox);
-        // console.log(this.node.find('userNameEditBox'));
     }
 
     handleRegistryAction() {
         // console.log(this.userNameEditBox, this.userPasswordEditBox);
-        super.addPopup();
-        this.test();
+        game.service.connect((success) => {
+            let username = this.userNameEditBox.string.trim();
+            let password = this.userPasswordEditBox.string.trim();
+            console.log('success', success);
+            if (success) {
+                game.service.login(username, password, (error, result) => {
+                    if (error) {
+                        console.debug('Login error:');
+                        console.log(error);
+                        this.addPopup(game.getMessageFromServer(error.c));
+                    }
+                    if (result.length) {
+                        console.debug(`Logged in as ${game.context.getMySelf().name}`);
+                    }
+                })
+            }
+        })
     }
 }
 game.createComponent(RegisterScene);

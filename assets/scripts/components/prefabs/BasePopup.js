@@ -21,12 +21,18 @@ class BasePopup extends Component {
     }
 
     // use this for initialization
-    onLoad() {}
+    onLoad() {
+        // this.setContent('heheheheheheh');
+    }
 
     handleClosePopupAction() {
-        console.log(this.scrollview.getComponentInChildren('view'));
         this.closeButton.getComponent(cc.Animation).play();
         this.node.removeFromParent(true);
+    }
+
+    setContent(string) {
+        var label = cc.find('scrollView/view/content/item', this.node).getComponent(cc.Label);
+        label.string = string;
     }
 }
 game.createComponent(BasePopup);

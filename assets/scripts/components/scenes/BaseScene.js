@@ -2,8 +2,9 @@
  * Created by Thanh on 8/25/2016.
  */
 
-var game = require('game')
-import Component from 'Component'
+var game = require('game');
+import Component from 'Component';
+var BasePopup = require('BasePopup');
 
 export default class BaseScene extends Component {
     constructor() {
@@ -34,15 +35,11 @@ export default class BaseScene extends Component {
 
     }
 
-    test() {
-        console.log('test');
-    }
-        
     // show popup
-    addPopup() {
+    addPopup(string = null) {
         var popupBase = new cc.instantiate(this.popUp);
         popupBase.position = cc.p(0, 0);
-
+        // popupBase.getComponent(BasePopup).setContent(string);
         this.node.addChild(popupBase);
     }
 }

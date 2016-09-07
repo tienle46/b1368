@@ -1,5 +1,5 @@
-var LOGIN_ERROR_MESSAGE = {};
-LOGIN_ERROR_MESSAGE["vi"] = {
+const LOGIN_ERROR_MESSAGES = {};
+LOGIN_ERROR_MESSAGES["vi"] = {
     "0": "Phiên bản hiện tại của bạn đã quá cũ",
     "1": "Hệ thống đang bảo trì, mời bạn quay lại sau",
     "2": "Người dùng không tồn tại",
@@ -21,4 +21,4 @@ LOGIN_ERROR_MESSAGE["vi"] = {
     }
 };
 
-export default LOGIN_ERROR_MESSAGE;
+export default LOGIN_ERROR_MESSAGES;
