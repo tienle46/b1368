@@ -10,7 +10,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "GameControlNode",
+    "_name": "TLMNControlsPrefab",
     "_objFlags": 0,
     "_opacity": 255,
     "_color": {
@@ -61,7 +61,9 @@
     "root": {
       "__id__": 1
     },
-    "asset": null,
+    "asset": {
+      "__uuid__": "d51796d9-2d97-4582-b66d-826b439bf5c7"
+    },
     "fileId": "07f12maHy5Gu4L0KUNfSSrt"
   }
 ]

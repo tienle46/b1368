@@ -8,18 +8,14 @@ import PositionManager from 'PositionManager'
 import GameEventHandler from 'GameEventHandler'
 import Component from 'Component'
 
-class Board extends Component{
+export default class Board extends Component{
 
-    constructor(room) {
+    constructor(room, scene) {
         super()
 
-        game.context.currentRoom = this.room;
+        this.parentScene = scene;
 
         this.room = room;
-
-        this.playerManager = null
-
-        this.positionManager = null
 
         this._gameEventHandler = null
 
@@ -68,9 +64,9 @@ class Board extends Component{
 
         this._gameEventHandler = GameEventHandler.newInstance();
         //
-        this.playerManager = new PlayerManager(this);
-        this.positionManager = new PositionManager(this);
-        this.playerManager.initPlayers(this.room && this.room.getPlayerList());
+        // this.playerManager = new PlayerManager(this);
+        // this.positionManager = new PositionManager(this);
+        // this.playerManager.initPlayers(this.room && this.room.getPlayerList());
     }
 
     update(dt) {
@@ -78,7 +74,7 @@ class Board extends Component{
     }
 
     start(){
-        this._gameEventHandler.setShouldHandleEvent(true);
+        this._gameEventHandler && this._gameEventHandler.setShouldHandleEvent(true);
     }
 
     setState (state) {

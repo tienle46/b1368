@@ -10,7 +10,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "GameControlNode",
+    "_name": "EightPlayerPositionsPrefab",
     "_objFlags": 0,
     "_opacity": 255,
     "_color": {
@@ -61,7 +61,9 @@
     "root": {
       "__id__": 1
     },
-    "asset": null,
-    "fileId": "07f12maHy5Gu4L0KUNfSSrt"
+    "asset": {
+      "__uuid__": "77cf7cda-5347-41af-877c-d2143ca4696c"
+    },
+    "fileId": "76debVtEg1GAZeb6mwUGNUJ"
   }
 ]

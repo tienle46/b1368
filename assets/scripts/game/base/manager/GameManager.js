@@ -19,7 +19,19 @@ const gameCodeToPlayerClassMap = {
     'tnd': TLMNDLPlayer
 }
 
-export default class GameManager {
+const maxPlayersMap = {
+    [game.const.gameCode.PHOM]: 4,
+    [game.const.gameCode.TLMNDL]: 4,
+    [game.const.gameCode.TLMN]: 4,
+    [game.const.gameCode.TLMNM]: 4,
+    [game.const.gameCode.BA_CAY]: 8,
+    [game.const.gameCode.BAU_CUA]: 6,
+    [game.const.gameCode.XAM]: 4,
+    [game.const.gameCode.XITO]: 5,
+    [game.const.gameCode.LIENG]: 5,
+}
+
+class GameManager {
     constructor() {
     }
 
@@ -40,4 +52,12 @@ export default class GameManager {
     getPlayerClass(gameCode){
         return gameCodeToPlayerClassMap[gameCode]
     }
+
+    getMaxPlayer(gameCode){
+        return maxPlayersMap[gameCode];
+    }
 }
+
+var gameManager = new GameManager();
+
+export default gameManager;

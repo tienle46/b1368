@@ -2,8 +2,8 @@ export default class Player {
 
     constructor(user) {
         this.id = 0,
-            this.user = null,
-            this.inited = false
+        this.user = null,
+        this.inited = false
     }
 
     onLoad() {
@@ -14,15 +14,15 @@ export default class Player {
 
     }
 
-    isOwner(){
+    isOwner() {
 
     }
 
-    isMaster(){
+    isMaster() {
 
     }
 
-    setUser(user){
+    setUser(user) {
         this.user = user;
     }
 
@@ -30,67 +30,67 @@ export default class Player {
      * Show message player want to say
      * @param message
      */
-    say(message){
+    say(message) {
 
     }
 
-    applyBoardState(boardState){
+    applyBoardState(boardState) {
         //TODO
     }
 
-    isMe(){
+    isMe() {
 
     }
 
-    stopTimeLine(){
+    stopTimeLine() {
 
     }
 
-    startTimeLine(timeInSeconds){
+    startTimeLine(timeInSeconds) {
 
     }
 
-    onSpectatorToPlayer(user){
+    onSpectatorToPlayer(user) {
 
     }
 
-    onPlayerToSpectator(user){
+    onPlayerToSpectator(user) {
 
     }
 
-    onRejoin(remainCardCount, data){
+    onRejoin(remainCardCount, data) {
 
     }
 
-    onBoardBegin(data){
+    onBoardBegin(data) {
 
     }
 
-    onBoardStarting(data){
+    onBoardStarting(data) {
 
     }
 
-    onBoardStarted(data){
+    onBoardStarted(data) {
 
     }
 
-    onBoardPlaying(data){
+    onBoardPlaying(data) {
 
     }
 
-    onBoardEnd(data){
+    onBoardEnd(data) {
 
     }
 
-    resetReadyState(){
+    resetReadyState() {
 
     }
 
-    onBoardMasterChanged(master){
+    onBoardMasterChanged(master) {
 
     }
 
-    onBoardOwnerChanged(owner){
+    onBoardOwnerChanged(owner) {
 
     }
 }

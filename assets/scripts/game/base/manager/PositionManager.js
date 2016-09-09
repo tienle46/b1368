@@ -2,16 +2,19 @@
  * Created by Thanh on 8/23/2016.
  */
 
-export default class PositionManager {
-    constructor(board) {
-        this.board = board;
+import Component from 'Component'
+
+export default class PositionManager extends Component{
+    constructor() {
+        super()
     }
 
-    getPosition(playerId, gameCode){
-
+    getPlayerAnchorByPlayerId(playerId ) {
+        return this.getPlayerAnchor(this.getPlayerAnchorOrder(playerId))
     }
 
-    getPlayerSeatPosition(playerId){
-
+    getPlayerAnchorOrder(playerId){
+        return playerId < 0 ? 1 : playerId;
+        //TODO
     }
 }

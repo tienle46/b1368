@@ -2,13 +2,9 @@
  * Created by Thanh on 8/26/2016.
  */
 
-
-var GameException = cc.Class({
-
-    ctor() {
-
+export default class GameException {
+    constructor(message, data) {
+        this.message = message
+        this.data = data
     }
-
-})
-
-module.exports = GameException
+}

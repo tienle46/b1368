@@ -10,3 +10,4 @@ game.config.debug = true;
 game.config.useSSL = false;
 game.config.host = "123.31.12.100";
 game.config.port = 8481;
+game.config.test = true;

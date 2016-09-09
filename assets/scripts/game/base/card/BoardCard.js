@@ -5,9 +5,7 @@
 import Board from 'Board'
 
 export default class BoardCard extends Board {
-    constructor(room) {
-        super(room)
-
-
+    constructor(room, scene) {
+        super(room, scene)
     }
 }

@@ -1,8 +1,28 @@
 
-
 export default class Card {
     constructor(rank, suit) {
         this.init(rank, suit)
+
+        this.rankNode = cc.Label
+        this.suitNode = cc.Sprite
+        this.mainPic = cc.Sprite
+        this.cardBG = cc.Sprite
+        this.redTextColor = cc.Color.WHITE
+        this.blackTextColor = cc.Color.WHITE
+        this.texFrontBG = cc.SpriteFrame
+        this.texBackBG = cc.SpriteFrame
+        this.texFaces = {
+            default: [],
+            type: cc.SpriteFrame
+        },
+            this.texSuitBig = {
+                default: [],
+                type: cc.SpriteFrame
+            },
+            this.texSuitSmall = {
+                default: [],
+                type: cc.SpriteFrame
+            }
     }
 
     onLoad() {
@@ -13,17 +33,86 @@ export default class Card {
 
     }
 
-    init(rank, suit){
+    initCard (card) {
+        var isFaceCard = card.rank > 10;
+
+        if (isFaceCard) {
+            this.mainPic.spriteFrame = this.texFaces[card.rank - 10 - 1];
+        }
+        else {
+            this.mainPic.spriteFrame = this.texSuitBig[card.suit - 1];
+        }
+
+        // for jsb
+        this.rankNode.string = card.pointName;
+
+        if (card.isRedSuit) {
+            this.point.node.color = this.redTextColor;
+        }
+        else {
+            this.point.node.color = this.blackTextColor;
+        }
+
+        this.suit.spriteFrame = this.texSuitSmall[card.suit - 1];
+    }
+
+    _init(rank, suit) {
         this.rank = rank
         this.suit = suit
+
+        let isFaceCard = this.rank > 10;
+
+        if (isFaceCard) {
+            this.mainPic.spriteFrame = this.texFaces[this.rank - 10 - 1];
+        }
+        else {
+            this.mainPic.spriteFrame = this.texSuitBig[this.suit - 1];
+        }
+
+        // for jsb
+        this.rankNode.string = this._getRankName();
+
+        if (this._isRedSuit()) {
+            this.rankNode.node.color = this.redTextColor;
+        }
+        else {
+            this.rankNode.node.color = this.blackTextColor;
+        }
+
+        this.suit.spriteFrame = this.texSuitSmall[this.suit - 1];
     }
 
-    static from(byteValue){
-        let rank =  cardByte >> 2;
+    static from(byteValue) {
+        let rank = cardByte >> 2;
         let suit = cardByte & 0x03;
 
-        this.init(rank, suit);
+        this._init(rank, suit);
     }
+
+    _getRankName(){
+        switch (this.rank){
+            case Card.RANK_J:
+                return 'J'
+            case Card.RANK_Q:
+                return 'Q'
+            case Card.RANK_K:
+                return 'K'
+            default:
+                return '' + this.rank
+        }
+    }
+
+    _isRedSuit(){
+        return this.suit == Card.SUIT_ZO || this.suit == Card.SUIT_CO;
+    }
+
+    reveal(isFaceUp) {
+        this.rankNode.node.active = isFaceUp;
+        this.rankNode.node.active = isFaceUp;
+        this.mainPic.node.active = isFaceUp;
+        this.cardBG.spriteFrame = isFaceUp ? this.texFrontBG : this.texBackBG;
+    }
+
 }
 
 

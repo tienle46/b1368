@@ -92,6 +92,7 @@ export default class ListTableScene extends BaseScene {
 
                 game.context.lastJoinRoom = result.room;
                 if (result.room.isJoined && result.room.isGame) {
+                    game.context.currentRoom = result.room;
                     game.system.loadScene(game.const.scene.GAME_SCENE)
                 }
             }

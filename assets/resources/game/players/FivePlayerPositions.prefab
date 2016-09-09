@@ -10,7 +10,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "GameControlNode",
+    "_name": "FivePlayerPositionsPrefab",
     "_objFlags": 0,
     "_opacity": 255,
     "_color": {
@@ -61,7 +61,9 @@
     "root": {
       "__id__": 1
     },
-    "asset": null,
+    "asset": {
+      "__uuid__": "8923a374-f21c-46b5-b036-02fe5666fd1c"
+    },
     "fileId": "07f12maHy5Gu4L0KUNfSSrt"
   }
 ]
