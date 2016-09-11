@@ -9,4 +9,4 @@ ROOM_ERROR_MESSAGE["vi"] = {
     "18": "Tạo phòng thất bại",
 };
 
-export default ROOM_ERROR_MESSAGE;
+module.exports = ROOM_ERROR_MESSAGE;

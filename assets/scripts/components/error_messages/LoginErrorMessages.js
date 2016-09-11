@@ -21,4 +21,4 @@ LOGIN_ERROR_MESSAGES["vi"] = {
     }
 };
 
-export default LOGIN_ERROR_MESSAGES;
+module.exports = LOGIN_ERROR_MESSAGES;

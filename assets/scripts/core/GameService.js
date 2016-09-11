@@ -14,7 +14,7 @@ class GameService {
         this._initSmartFoxClient()
     }
 
-    _initSmartFoxClient(){
+    _initSmartFoxClient() {
 
         var config = {}
         config.zone = game.config.zone
@@ -27,7 +27,7 @@ class GameService {
         this._registerSmartFoxEvent();
     }
 
-    __testConnection(){
+    __testConnection() {
         this.connect((success) => {
             console.log("success: " + success)
             if (success) {
@@ -45,7 +45,7 @@ class GameService {
         });
     }
 
-    _registerSmartFoxEvent(){
+    _registerSmartFoxEvent() {
 
         this._removeSmartFoxEvent()
 
@@ -73,27 +73,27 @@ class GameService {
         this.removeEventListener(SFS2X.SFSEvent.ROOM_CREATION_ERROR, this._onCreateRoomResult)
     }
 
-    _onConnection(event){
+    _onConnection(event) {
         console.log("_onConnection")
         console.log(event)
 
         this._callCallback(SFS2X.SFSEvent.CONNECTION, event.success)
     }
 
-    _onConnectionLost(event){
+    _onConnectionLost(event) {
         console.log("_onConnectionLost")
         console.log(event);
 
         // game.system.loadScene(game.const.scene.LOGIN_SCENE);
     }
 
-    _onConnectionResume(event){
+    _onConnectionResume(event) {
         console.log("_onConnectionResume")
         console.log(event);
         //TODO
     }
 
-    _onExtensionEvent(event){
+    _onExtensionEvent(event) {
         console.log("_onExtensionEvent")
         console.log(event)
 
@@ -109,69 +109,64 @@ class GameService {
         // ]);
     }
 
-    _onLogin(event){
+    _onLogin(event) {
         console.log("_onLogin")
         console.log(event)
 
         this._callCallback(SFS2X.SFSEvent.LOGIN, event.data)
     }
 
-    _onLoginError(){
+    _onLoginError() {
         console.log("_onLoginError")
-        console.log(event)
+        console.debug(event)
 
         this._callCallback(SFS2X.SFSEvent.LOGIN, event.data)
     }
 
-    _sendRequest(request){
+    _sendRequest(request) {
         this.client.send(request)
     }
 
-    _callCallback(key, verifyFunc, ...args){
+    _callCallback(key, verifyFunc, ...args) {
         let cbObj = this._getCallbackObject(key)
 
-        if(!(verifyFunc instanceof Function)){
+        if (!(verifyFunc instanceof Function)) {
             args = [verifyFunc, args];
             verifyFunc = undefined;
         }
 
-        if(cbObj && (!verifyFunc || verifyFunc(cbObj.data))){
+        if (cbObj && (!verifyFunc || verifyFunc(cbObj.data))) {
             cbObj.cb.apply(null, args);
         }
     }
 
-    _callCallbackAsync(key, verifyFunc, ...args){
+    _callCallbackAsync(key, verifyFunc, ...args) {
         game.async.series([
             (callback) => {
-                this._callCallback.apply(this, [key, verifyFunc, ...args])
+                this._callCallback.apply(this, [key, verifyFunc, ...args]);
             }
         ]);
     }
 
-    _hasCallback(key)
-    {
-        return this._eventCallbacks.hasOwnProperty(key)
+    _hasCallback(key) {
+        return this._eventCallbacks.hasOwnProperty(key);
     }
 
-    _getCallbackObject(key)
-    {
-        return this._eventCallbacks[key]
+    _getCallbackObject(key) {
+        return this._eventCallbacks[key];
     }
 
-    _addCallback(key, cb, scope, data)
-    {
-        this._eventCallbacks[key] = cb instanceof Function ? {cb: cb, data: data} : undefined
+    _addCallback(key, cb, scope, data) {
+        this._eventCallbacks[key] = cb instanceof Function ? { cb: cb, data: data } : undefined;
         this._addCommandToScope(key, scope);
     }
 
-    addEventListener(eventType, handleFunc)
-    {
-        this.client.addEventListener(eventType, handleFunc, this)
+    addEventListener(eventType, handleFunc) {
+        this.client.addEventListener(eventType, handleFunc, this);
     }
 
-    removeEventListener(eventType, handleFunc)
-    {
-        this.client.removeEventListener(eventType, handleFunc, this)
+    removeEventListener(eventType, handleFunc) {
+        this.client.removeEventListener(eventType, handleFunc, this);
     }
 
     /**
@@ -179,43 +174,39 @@ class GameService {
      *
      * @returns {SFS2X.SmartFox}
      */
-    getClient()
-    {
-        return this.client
+    getClient() {
+        return this.client;
     }
 
     /**
      * Connect to server game with default host & port configuration
      * @param cb
      */
-    connect(cb)
-    {
-        this.disconnect()
+    connect(cb) {
+        this.disconnect();
 
-        this._addCallback(SFS2X.SFSEvent.CONNECTION, cb)
+        this._addCallback(SFS2X.SFSEvent.CONNECTION, cb);
 
-        console.log(`Connecting to: ${game.config.host}:${game.config.port}`)
+        console.log(`Connecting to: ${game.config.host}:${game.config.port}`);
 
-        this.client.connect(game.config.host, game.config.port)
+        this.client.connect(game.config.host, game.config.port);
     }
 
     /**
      * Disconnect to game server
      */
-    disconnect()
-    {
+    disconnect() {
         if (this.client.isConnected()) {
-            this.client.disconnect()
+            this.client.disconnect();
         }
     }
 
     /**
      * Disconnect to game server and go to Login Screen
      */
-    logout()
-    {
+    logout() {
         disconnect();
-        game.system.loadScene(game.const.scene.LOGIN_SCENE)
+        game.system.loadScene(game.const.scene.LOGIN_SCENE);
     }
 
     /**
@@ -223,21 +214,36 @@ class GameService {
      * @param {string} password
      * @param {function} cb
      */
-    login(username, password, cb)
-    {
+    login(username, password, cb) {
         let data = {};
-        data[game.keywords.IS_REGISTER] = false
-        data[game.keywords.PASSWORD] = password
-        data[game.keywords.APP_SECRET_KEY] = "63d9ccc8-9ce1-4165-80c8-b15eb84a780a"
+        data[game.keywords.IS_REGISTER] = false;
+        data[game.keywords.PASSWORD] = password;
+        data[game.keywords.APP_SECRET_KEY] = "63d9ccc8-9ce1-4165-80c8-b15eb84a780a";
 
-        this._addCallback(SFS2X.SFSEvent.LOGIN, cb)
+        this._addCallback(SFS2X.SFSEvent.LOGIN, cb);
 
-        this._sendRequest(new SFS2X.Requests.System.LoginRequest(username, password, data, game.config.zone))
+        this._sendRequest(new SFS2X.Requests.System.LoginRequest(username, password, data, game.config.zone));
     }
 
-    _checkConnection(){
-        if(!this.client.isConnected()){
-            game.system.loadScene(game.const.scene.LOGIN_SCENE)
+    /**
+     * @param {string} username
+     * @param {string} password
+     * @param {function} cb
+     */
+    register(username, password, cb) {
+        let data = {};
+        data[game.keywords.IS_REGISTER] = true;
+        data[game.keywords.PASSWORD] = password;
+        data[game.keywords.APP_SECRET_KEY] = "63d9ccc8-9ce1-4165-80c8-b15eb84a780a";
+
+        this._addCallback(SFS2X.SFSEvent.LOGIN, cb);
+
+        this._sendRequest(new SFS2X.Requests.System.LoginRequest(username, password, data, game.config.zone));
+    }
+
+    _checkConnection() {
+        if (!this.client.isConnected()) {
+            game.system.loadScene(game.const.scene.LOGIN_SCENE);
         }
     }
 
@@ -250,10 +256,9 @@ class GameService {
      * @param {function} cb - Callback function on server responses
      *
      */
-    send(options, cb, scope)
-    {
+    send(options, cb, scope) {
 
-        if (!options) return
+        if (!options) return;
 
         if (options instanceof SFS2X.Requests._BaseRequest) {
             this._sendRequest(options)
@@ -266,11 +271,11 @@ class GameService {
         }
     }
 
-    _addCommandToScope(key, scope){
-        if(key && scope){
-            let keys = this._eventScopes[scope] || {}
-            keys[key] = ""
-            this._eventScopes[scope] = keys
+    _addCommandToScope(key, scope) {
+        if (key && scope) {
+            let keys = this._eventScopes[scope] || {};
+            keys[key] = "";
+            this._eventScopes[scope] = keys;
         }
     }
 
@@ -278,51 +283,49 @@ class GameService {
      * Remove all callback mapped with key
      * @param {string} key
      */
-    removeCallback(key)
-    {
-        key && delete this._eventCallbacks[key]
+    removeCallback(key) {
+        key && delete this._eventCallbacks[key];
     }
 
     /**
      *
      * @param {string} scope
      */
-    removeAllCallback(scope)
-    {
+    removeAllCallback(scope) {
         let eventCmdObj = scope && this._eventScopes[scope];
         if (eventCmdObj) {
-            let keys = Object.keys(eventCmdObj)
+            let keys = Object.keys(eventCmdObj);
             keys.forEach(key => {
-                delete this._eventCallbacks[key]
+                delete this._eventCallbacks[key];
             })
         }
 
-        scope && delete this._eventScopes[scope]
+        scope && delete this._eventScopes[scope];
     }
 
-    _onJoinRoomResult(event){
+    _onJoinRoomResult(event) {
 
-        const key = this._hasCallback(game.commands.USER_CREATE_ROOM) ? game.commands.USER_CREATE_ROOM : SFS2X.SFSEvent.ROOM_JOIN
+        const key = this._hasCallback(game.commands.USER_CREATE_ROOM) ? game.commands.USER_CREATE_ROOM : SFS2X.SFSEvent.ROOM_JOIN;
 
-        if(event.errorCode){
-            this._callCallbackAsync(key, event)
-        }else{
-            this._callCallbackAsync(key, data => { return !data || !data.roomId || (event.room && data.roomId == event.id)} , null, event);
+        if (event.errorCode) {
+            this._callCallbackAsync(key, event);
+        } else {
+            this._callCallbackAsync(key, data => { return !data || !data.roomId || (event.room && data.roomId == event.id) }, null, event);
         }
     }
 
-    _onCreateRoomResult(event){
-        if(event.errorCode){
-            this._callCallbackAsync(game.commands.USER_CREATE_ROOM, event)
+    _onCreateRoomResult(event) {
+        if (event.errorCode) {
+            this._callCallbackAsync(game.commands.USER_CREATE_ROOM, event);
         }
     }
 
 
-    joinRoom(roomId){
+    joinRoom(roomId) {
 
     }
 
-    leaveRoom(roomId){
+    leaveRoom(roomId) {
 
     }
 }

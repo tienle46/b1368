@@ -39,8 +39,8 @@ export default class BaseScene extends Component {
     addPopup(string = null) {
         var popupBase = new cc.instantiate(this.popUp);
         popupBase.position = cc.p(0, 0);
-        // popupBase.getComponent(BasePopup).setContent(string);
-        this.node.addChild(popupBase);
+        popupBase.getComponent(BasePopup).setContent(string);
+        this.node.addChild(popupBase, 10);
     }
 }
 
