@@ -25,35 +25,42 @@ game.createComponent = (className, extendClass = undefined, ...args) => {
         extendClass = null;
     }
 
+
     const instance = new className(...args);
 
     instance.properties = instance.properties || {};
     instance.extends = extendClass || instance.extends || cc.Component;
 
+
     const objPropsMap = {}; // contains keys which belong to "Object" type ( {a:1, b:2} ) and aren't empty object ( {} )
+
+    // Check if element is instance of cc[xxx]
+    function isComponentOfCC(el) {
+        // in case: var a = cc.Component
+        let isFunctionInstance = (element) => {
+            // sure that `instance[key]['type'] == cc["Component"|"Editbox"...]
+            // > instance[key]['type'] = [function cc_Component].name => cc_Component => cc_Component.substr(3) => "Component"
+            return typeof element === 'function' && element === cc[element.name.substr(3)];
+        }
+
+        // in case: var a = {type: cc.Component, default: null}
+        let isObjectInstance = (element) => {
+            return typeof element === 'object' && element.hasOwnProperty('type') && isFunctionInstance(element['type']);
+        };
+
+        return isFunctionInstance(el) || isObjectInstance(el);
+    }
 
     Object.getOwnPropertyNames(instance).forEach(key => {
         if (key !== 'extends' && key !== 'properties' && !key.startsWith('__')) {
-            // check if property is non empty Object && except instance of cc.Componet
-            // such as {default: xxx, type: cc.XXX }
-            
-            // if (instance[key] instanceof Object && instance[key].hasOwnProperty('default')) {
-            //     instance.properties[key] = instance[key];
-            // } else {
-            //     // instance.properties[key] = null;
-            //     objPropsMap[key] = instance[key] // {default: xx, xx: asd} <---
-            // }
-
-            if (typeof instance[key] === 'object' && Object.keys(instance[key] || {}).length > 0) {
-                // if `instance[key]` is intance of `cc`  
-                if (instance[key].hasOwnProperty('type') && typeof instance[key]['type'] === 'function' && instance[key]['type'] === cc[instance[key]['type'].name.split('_')[1]]) {
-                    instance.properties[key] = instance[key]; // push it to `properties` property
-                } else {
-                    objPropsMap[key] = instance[key]; // push it to objPropsMap so that We can append it into `assignObjPropsFunc() function`
-                }
+            // check if property is Object && except instance of cc.Componet
+            // such as {default: xxx, type: cc.XXX } => assign to `properties` for displaying value on cocoCcreator
+            // if `instance[key]` is intance of `cc`  
+            if (instance[key] && isComponentOfCC(instance[key])) {
+                instance.properties[key] = instance[key];
             } else {
                 // else push it to "properties" property - to using "this" keyword on cc.Class()
-                instance.properties[key] = instance[key];
+                objPropsMap[key] = instance[key] // {default: xx, xx: asd} <---
             }
             delete instance[key]; // remove properties because cc.Scene can not detect properties that's outside this.properties = {}
         }

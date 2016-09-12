@@ -17,7 +17,6 @@ export default class BaseScene extends Component {
     }
 
     start() {
-        this.loading = false;
         game.system.setCurrentScene(this);
     }
 

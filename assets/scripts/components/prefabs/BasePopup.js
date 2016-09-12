@@ -18,12 +18,14 @@ class BasePopup extends Component {
             default: null,
             type: cc.Node
         }
+
+       
     }
 
     // use this for initialization
     onLoad() {
         this.node.on('touchstart', function(event) {
-            console.log('asdfalskdf');
+
         });
 
     }

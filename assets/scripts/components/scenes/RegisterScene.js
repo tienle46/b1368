@@ -26,11 +26,12 @@ export default class RegisterScene extends BaseScene {
         };
 
         this.resetCaptcha = cc.Node;
-    }
+        }
 
     onLoad() {
         this.captchaLabel = this.resetCaptcha.getChildByName('label').getComponent(cc.Label);
         this.generateRandomString();
+        console.log(this.obj, this.num, this.empt);
     }
 
     handleRegistryAction() {
@@ -55,9 +56,9 @@ export default class RegisterScene extends BaseScene {
             })
         } else {
             if (!this._isValidPasswordInput(password)) {
-                this.addPopup(game.getMessageFromServer("_201"));
+                this.addPopup(game.getMessageFromServer("LOGIN_ERROR_PASSWORD_NOT_VALID"));
             } else if (!this._isValidUsernameInput(username)) {
-                this.addPopup(game.getMessageFromServer("_202"));
+                this.addPopup(game.getMessageFromServer("LOGIN_ERROR_USERNAME_NOT_VALID"));
             }
         }
     }

@@ -20,8 +20,8 @@ LOGIN_ERROR_MESSAGES["vi"] = {
         "104": "Lỗi hệ thống"
     },
     // CUSTOM ERROR FOR CLIENTS
-    "_200": "Tên đăng nhập phải lớn hơn 6 ký tự, không có ký tự đặc biệt và dấu cách",
-    "_201": "Mật khẩu phải lớn hơn 6 ký tự, có ít nhất 1 ký thự Hoa, 1 số, không có ký tự đặc biệt và dấu cách"
+    "LOGIN_ERROR_USERNAME_NOT_VALID": "Tên đăng nhập phải lớn hơn 6 ký tự, không có ký tự đặc biệt và dấu cách",
+    "LOGIN_ERROR_PASSWORD_NOT_VALID": "Mật khẩu phải lớn hơn 6 ký tự, có ít nhất 1 ký tự Hoa, 1 số, không có ký tự đặc biệt và dấu cách"
 };
 
 module.exports = LOGIN_ERROR_MESSAGES;
