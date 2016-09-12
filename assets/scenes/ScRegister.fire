@@ -1714,7 +1714,7 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": 0,
+      "x": 3,
       "y": 0
     },
     "_skewX": 0,
@@ -1751,8 +1751,8 @@
     "_enableWrapText": true,
     "_N$file": null,
     "_isSystemFontUsed": true,
-    "_N$string": "12345",
-    "_N$horizontalAlign": 0,
+    "_N$string": "1234",
+    "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
     "_N$overflow": 3
   },

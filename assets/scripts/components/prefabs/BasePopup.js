@@ -22,7 +22,10 @@ class BasePopup extends Component {
 
     // use this for initialization
     onLoad() {
-        // this.setContent('heheheheheheh');
+        this.node.on('touchstart', function(event) {
+            console.log('asdfalskdf');
+        });
+
     }
 
     handleClosePopupAction() {

@@ -18,7 +18,10 @@ LOGIN_ERROR_MESSAGES["vi"] = {
         "102": "Không thể đăng ký tài khoảng với hệ thống",
         "103": "Không thể tìm thấy thông tin tài khoản trong hệ thống",
         "104": "Lỗi hệ thống"
-    }
+    },
+    // CUSTOM ERROR FOR CLIENTS
+    "_200": "Tên đăng nhập phải lớn hơn 6 ký tự, không có ký tự đặc biệt và dấu cách",
+    "_201": "Mật khẩu phải lớn hơn 6 ký tự, có ít nhất 1 ký thự Hoa, 1 số, không có ký tự đặc biệt và dấu cách"
 };
 
 module.exports = LOGIN_ERROR_MESSAGES;
