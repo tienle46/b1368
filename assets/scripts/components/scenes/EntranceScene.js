@@ -39,16 +39,22 @@ class EntranceScene extends BaseScene {
         game.service.connect((success) => {
             console.debug("success: " + success);
             if (success) {
-                game.service.login("c12345rush1", "1234nm", (error, result) => {
+                game.service.login("crush1", "1234nm", (error, result) => {
                     if (result) {
-                        console.debug(`Logged in as ${game.context.getMe().name}`)
+                        // console.debug(`Logged in as ${game.context.getMe().name}`)
 
-                        this.node.runAction(cc.sequence(
-                            cc.fadeOut(0.5),
-                            cc.callFunc(function() {
-                                cc.director.loadScene('DashboardScene');
-                            })
-                        ));
+                        // if(game.context.getMe()){
+                        //     let ListTableScene = require('ListTableScene');
+                        //     new ListTableScene()._createRoom(game.const.gameCode.TLMNDL, 1, 2)
+                        // }else{
+                            this.node.runAction(cc.sequence(
+                                cc.fadeOut(0.5),
+                                cc.callFunc(function() {
+                                    cc.director.loadScene('DashboardScene');
+                                })
+                            ));
+                        // }
+
                     }
 
                     if (error) {

@@ -482,7 +482,16 @@ SFS2X.Utils.HashTable.prototype.hasItem = function (a) {
     return this.items.hasOwnProperty(a)
 };
 SFS2X.Utils.HashTable.prototype.removeItem = function (a) {
-    if (this.hasItem(a)) return previous = this.items[a], this.length--, delete this.items[a], previous
+    // if (this.hasItem(a)) return previous = this.items[a], this.length--, delete this.items[a], previous
+
+    var previous = null;
+    if (this.hasItem(a)) {
+        previous = this.items[a];
+        this.length--;
+        delete this.items[a];
+    }
+
+    return previous;
 };
 SFS2X.Utils.HashTable.prototype.keys = function () {
     var a = [],

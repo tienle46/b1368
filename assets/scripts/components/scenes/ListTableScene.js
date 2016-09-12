@@ -84,7 +84,7 @@ export default class ListTableScene extends BaseScene {
         requestParam[game.keywords.ROOM_PASSWORD] = password
         requestParam[game.keywords.ROOM_CAPACITY] = roomCapacity
 
-        game.service.send({cmd: game.commands.USER_CREATE_ROOM, data: requestParam, room: game.context.currentRoom}, (error, result) => {
+        game.service.send({cmd: game.commands.USER_CREATE_ROOM, data: requestParam, room: null /*game.context.currentRoom*/}, (error, result) => {
 
             if(event.errorCode){
                 game.system.error(event.errorMessage);

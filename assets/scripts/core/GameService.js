@@ -123,6 +123,10 @@ class GameService {
         this._callCallback(SFS2X.SFSEvent.LOGIN, event.data)
     }
 
+    sendRequest(request) {
+        this.client.send(request)
+    }
+
     _sendRequest(request) {
         this.client.send(request)
     }
@@ -161,12 +165,12 @@ class GameService {
         this._addCommandToScope(key, scope);
     }
 
-    addEventListener(eventType, handleFunc) {
-        this.client.addEventListener(eventType, handleFunc, this);
+    addEventListener(eventType, handleFunc, scope = this) {
+        this.client.addEventListener(eventType, handleFunc, scope);
     }
 
-    removeEventListener(eventType, handleFunc) {
-        this.client.removeEventListener(eventType, handleFunc, this);
+    removeEventListener(eventType, handleFunc, scope = this) {
+        this.client.removeEventListener(eventType, handleFunc, scope);
     }
 
     /**

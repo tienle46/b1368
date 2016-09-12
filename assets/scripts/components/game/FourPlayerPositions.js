@@ -6,8 +6,11 @@ import game from 'game'
 import PositionManager from 'PositionManager'
 
 class FourPlayerPositions extends PositionManager {
+
     constructor() {
         super();
+
+        this.ceilAnchor = 4
 
         this.anchor1 = {
             default: null,
@@ -36,7 +39,7 @@ class FourPlayerPositions extends PositionManager {
     }
 
     onLoad(){
-        this.playerAnchors[0] = this.myAnchor;
+        super.onLoad()
     }
 
     getPlayerAnchor(id){

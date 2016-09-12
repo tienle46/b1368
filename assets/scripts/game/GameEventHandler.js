@@ -2,12 +2,14 @@
  * Created by Thanh on 8/29/2016.
  */
 
-var game = require('game')
+import game from 'game'
+import SFS2X from 'SFS2X'
 
 export default class GameEventHandler {
-    constructor(board) {
+    constructor(board, scene) {
         this.setBoard(board)
         game.system.setGameEventHandler(this)
+        this.scene = scene;
     }
 
     setBoard(board){
@@ -22,7 +24,39 @@ export default class GameEventHandler {
         this._shouldHandleEvent = shouldHandleEvent;
     }
 
+    _addGameEventListener(){
+        game.service.addEventListener(SFS2X.SFSEvent.USER_EXIT_ROOM, this._onUserExitRoom, this)
+        game.service.addEventListener(SFS2X.SFSEvent.USER_ENTER_ROOM, this._onUserEnterRoom, this)
+        game.service.addEventListener(SFS2X.SFSEvent.ROOM_REMOVE, this._onRoomRemove, this)
+    }
+
+    _removeGameEventListener(){
+        game.service.removeEventListener(SFS2X.SFSEvent.USER_EXIT_ROOM, this._onUserExitRoom, this)
+        game.service.removeEventListener(SFS2X.SFSEvent.USER_ENTER_ROOM, this._onUserEnterRoom, this)
+        game.service.removeEventListener(SFS2X.SFSEvent.ROOM_REMOVE, this._onRoomRemove, this)
+    }
+
+    _onUserExitRoom(event){
+        console.log("_onUserExitRoom 2")
+        this.scene.goBack();
+    }
+
+    _onUserEnterRoom(event){
+
+        if (!event.user || !event.room || event.room.id != this.board.room.id) {
+            return;
+        }
+
+        this.scene.playerManager.onUserEnterRoom(event.user, event.room);
+    }
+
+    _onRoomRemove(event){
+        this.scene.goBack();
+    }
+
     handleGameEvent(event){
+
+        console.log("handleGameEvent: " + event)
 
         if (!this.board) {
             return;
