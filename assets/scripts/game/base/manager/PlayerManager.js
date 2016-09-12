@@ -89,8 +89,7 @@ export default class PlayerManager extends Component {
     }
 
     initPlayers() {
-        let users = [] ;//TODO get users list from board info
-
+        let users = this.board.room.getPlayerList()
         users && users.forEach(user => {
             if (user.isPlayer()) {
                 this._createSinglePlayer(user);
@@ -122,23 +121,26 @@ export default class PlayerManager extends Component {
 
     _createSinglePlayer(user){
 
-
+        let playerNode = cc.instantiate(this._playerPrefab);
         let playerClass = game.manager.getPlayerClass(this.gameCode);
         if(playerClass){
             let playerComponent = game.createComponent(playerClass, this.board, user);
             let player = playerNode.addComponent(playerComponent)
 
             if(player){
-
+                this._setPlayerPosition(playerNode, player)
+                this._addToPlayerLayer(playerNode)
+                this._addPlayerList(player)
             }
-            let playerNode = cc.instantiate(this._playerPrefab);
-            this._setPlayerPosition(playerNode)
-            this._addPlayerList(player)
         }
     }
 
-    _setPlayerPosition(playerNode, playerId){
-        let anchor = this.playerPositions.getPlayerAnchorByPlayerId(playerId)
+    _addToPlayerLayer(playerNode){
+        playerNode.parent = this.parentScene.playerLayer
+    }
+
+    _setPlayerPosition(playerNode, player){
+        let anchor = this.playerPositions.getPlayerAnchorByPlayerId(player.id, player.isItMe())
         playerNode && anchor && playerNode.setPosition(anchor.getPosition())
     }
 
@@ -149,14 +151,13 @@ export default class PlayerManager extends Component {
      */
     _update() {
 
-        if(!game.context.getMySelf()){
+        if(!game.context.getMe()){
             return;
         }
 
-        this.me = this.findPlayer(game.context.getMySelf().getPlayerId(this.board.room));
+        this.me = this.findPlayer(game.context.getMe().getPlayerId(this.board.room));
 
         //TODO set board owner & master
-
 
         let maxPlayerId = 1;
 
@@ -167,6 +168,8 @@ export default class PlayerManager extends Component {
             //TODO more action want to apply to player
 
         })
+
+        this.playerPositions.hideInviteButton(1)
 
         this.maxPlayerId = maxPlayerId;
 
@@ -196,15 +199,15 @@ export default class PlayerManager extends Component {
     }
 
     isSpectator() {
-        return (!game.me || (!this.me.isPlaying() && this.board.isPlaying()));
+        return (!this.me || (!this.me.isPlaying() && this.board.isPlaying()));
     }
 
-    isMySelfPlaying() {
+    isMePlaying() {
         return !this.isSpectator() && this.me.isPlaying();
     }
 
-    isShouldMySelfReady() {
-        return this.me && !this.me.isOwner() && !this.me.isReady();
+    isShouldMeReady() {
+        return this.Me && !this.me.isOwner() && !this.me.isReady();
     }
 
     findPlayer(idOrName) {
@@ -357,7 +360,7 @@ export default class PlayerManager extends Component {
         var leaveBoardPlayer = playerOrIdOrName instanceof Player ? playerOrIdOrName : this.findPlayer(playerOrIdOrName);
 
         if (leaveBoardPlayer) {
-            if (leaveBoardPlayer.isMe()) {
+            if (leaveBoardPlayer.isItMe()) {
                 leaveBoardPlayer.stopTimeLine();
             } else {
                 if (leaveBoardPlayer.isMaster()) {
@@ -405,8 +408,8 @@ export default class PlayerManager extends Component {
         })
     }
 
-    onMyselfRejoinGame(resObj) {
-        if (this.isMySelfPlaying()) {
+    onMeRejoinGame(resObj) {
+        if (this.isMePlaying()) {
             //TODO
         }
     }

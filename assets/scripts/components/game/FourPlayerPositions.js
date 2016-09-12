@@ -29,10 +29,14 @@ class FourPlayerPositions extends PositionManager {
             type: cc.Node
         }
 
-        this.myselfAnchor = {
+        this.myAnchor = {
             default: null,
             type: cc.Node
         }
+    }
+
+    onLoad(){
+        this.playerAnchors[0] = this.myAnchor;
     }
 
     getPlayerAnchor(id){
@@ -46,7 +50,7 @@ class FourPlayerPositions extends PositionManager {
             case 4:
                 return this.anchor4;
             default:
-                return this.myselfAnchor;
+                return this.myAnchor;
         }
     }
 }

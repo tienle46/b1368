@@ -39,7 +39,7 @@ class SixPlayerPositions extends PositionManager {
             type: cc.Node
         }
 
-        this.myselfAnchor = {
+        this.myAnchor = {
             default: null,
             type: cc.Node
         }
@@ -60,7 +60,7 @@ class SixPlayerPositions extends PositionManager {
             case 6:
                 return this.anchor6;
             default:
-                return this.myselfAnchor;
+                return this.myAnchor;
         }
     }
 }

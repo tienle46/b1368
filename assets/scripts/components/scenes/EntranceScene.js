@@ -41,7 +41,7 @@ class EntranceScene extends BaseScene {
             if (success) {
                 game.service.login("c12345rush1", "1234nm", (error, result) => {
                     if (result) {
-                        console.debug(`Logged in as ${game.context.getMySelf().name}`)
+                        console.debug(`Logged in as ${game.context.getMe().name}`)
 
                         this.node.runAction(cc.sequence(
                             cc.fadeOut(0.5),

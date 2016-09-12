@@ -5,8 +5,8 @@
 import PlayerCard from 'PlayerCard'
 
 export default class PlayerCardTurnBase extends PlayerCard {
-    constructor() {
-        super();
+    constructor(board, user) {
+        super(board, user);
         this.turnAdapter = null;
     }
 }

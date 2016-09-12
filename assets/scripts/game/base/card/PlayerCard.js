@@ -5,8 +5,8 @@
 import Player from 'Player'
 
 export default class PlayerCard extends Player {
-    constructor() {
-        super();
+    constructor(board, user) {
+        super(board, user);
 
     }
 }

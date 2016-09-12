@@ -17,7 +17,7 @@ class GameContext {
      *
      * @returns {SFS2X.Entities.SFSUser}
      */
-    getMySelf() {
+    getMe() {
         return game.service.client.me;
     }
 

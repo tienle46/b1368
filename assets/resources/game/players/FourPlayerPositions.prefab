@@ -29,8 +29,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 0,
-      "height": 0
+      "width": 1280,
+      "height": 720
     },
     "_children": [
       {
@@ -55,8 +55,8 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": 0,
-      "y": 0
+      "x": 640,
+      "y": 360
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -81,7 +81,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "anchorPoint1",
+    "_name": "anchorPoint4",
     "_objFlags": 0,
     "_opacity": 255,
     "_color": {
@@ -116,8 +116,8 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": 0,
-      "y": 250
+      "x": 500,
+      "y": 35
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -135,7 +135,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "ingame_invite_player_icon",
+    "_name": "inviteButton",
     "_objFlags": 0,
     "_opacity": 255,
     "_color": {
@@ -162,11 +162,11 @@
     "_children": [],
     "_rotationX": 0,
     "_rotationY": 0,
-    "_scaleX": 0.5,
-    "_scaleY": 0.5,
+    "_scaleX": 1,
+    "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": 2,
+      "x": 0,
       "y": 0
     },
     "_skewX": 0,
@@ -218,20 +218,24 @@
     "root": {
       "__id__": 1
     },
-    "asset": null,
-    "fileId": "6ce50/3mP5MXpOqtC+AEVpK"
+    "asset": {
+      "__uuid__": "e196cc5e-9dfe-4a2b-b80d-c51895c3295d"
+    },
+    "fileId": "c70bb3qQ1ZKmYWtQKI6618C"
   },
   {
     "__type__": "cc.PrefabInfo",
     "root": {
       "__id__": 1
     },
-    "asset": null,
-    "fileId": "ff197kBhsdDx7d92gKo7HVn"
+    "asset": {
+      "__uuid__": "e196cc5e-9dfe-4a2b-b80d-c51895c3295d"
+    },
+    "fileId": "686cecdfzRKBofEsjBQcmAu"
   },
   {
     "__type__": "cc.Node",
-    "_name": "anchorPoint2",
+    "_name": "anchorPoint3",
     "_objFlags": 0,
     "_opacity": 255,
     "_color": {
@@ -266,8 +270,8 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": 500,
-      "y": 35
+      "x": 0,
+      "y": 250
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -285,7 +289,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "ingame_invite_player_icon",
+    "_name": "inviteButton",
     "_objFlags": 0,
     "_opacity": 255,
     "_color": {
@@ -312,8 +316,8 @@
     "_children": [],
     "_rotationX": 0,
     "_rotationY": 0,
-    "_scaleX": 0.5,
-    "_scaleY": 0.5,
+    "_scaleX": 1,
+    "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
       "x": 0,
@@ -368,20 +372,24 @@
     "root": {
       "__id__": 1
     },
-    "asset": null,
-    "fileId": "83f90MW6ylAtLPyvYzaLUyI"
+    "asset": {
+      "__uuid__": "e196cc5e-9dfe-4a2b-b80d-c51895c3295d"
+    },
+    "fileId": "c70bb3qQ1ZKmYWtQKI6618C"
   },
   {
     "__type__": "cc.PrefabInfo",
     "root": {
       "__id__": 1
     },
-    "asset": null,
-    "fileId": "686cecdfzRKBofEsjBQcmAu"
+    "asset": {
+      "__uuid__": "e196cc5e-9dfe-4a2b-b80d-c51895c3295d"
+    },
+    "fileId": "ff197kBhsdDx7d92gKo7HVn"
   },
   {
     "__type__": "cc.Node",
-    "_name": "anchorPoint3",
+    "_name": "anchorPoint2",
     "_objFlags": 0,
     "_opacity": 255,
     "_color": {
@@ -416,8 +424,8 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": 0,
-      "y": -250
+      "x": -500,
+      "y": 40
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -435,7 +443,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "ingame_invite_player_icon",
+    "_name": "inviteButton",
     "_objFlags": 0,
     "_opacity": 255,
     "_color": {
@@ -462,8 +470,8 @@
     "_children": [],
     "_rotationX": 0,
     "_rotationY": 0,
-    "_scaleX": 0.5,
-    "_scaleY": 0.5,
+    "_scaleX": 1,
+    "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
       "x": 0,
@@ -518,20 +526,24 @@
     "root": {
       "__id__": 1
     },
-    "asset": null,
-    "fileId": "8097c83Cj1Nxbi/6nOVhJgB"
+    "asset": {
+      "__uuid__": "e196cc5e-9dfe-4a2b-b80d-c51895c3295d"
+    },
+    "fileId": "c70bb3qQ1ZKmYWtQKI6618C"
   },
   {
     "__type__": "cc.PrefabInfo",
     "root": {
       "__id__": 1
     },
-    "asset": null,
-    "fileId": "b5f0barS41J7ISidALy8BCp"
+    "asset": {
+      "__uuid__": "e196cc5e-9dfe-4a2b-b80d-c51895c3295d"
+    },
+    "fileId": "446384rZYpJR55d9A/2HZyz"
   },
   {
     "__type__": "cc.Node",
-    "_name": "anchorPoint4",
+    "_name": "anchorPoint1",
     "_objFlags": 0,
     "_opacity": 255,
     "_color": {
@@ -566,8 +578,8 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": -500,
-      "y": 40
+      "x": 0,
+      "y": -250
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -585,7 +597,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "ingame_invite_player_icon",
+    "_name": "inviteButton",
     "_objFlags": 0,
     "_opacity": 255,
     "_color": {
@@ -612,8 +624,8 @@
     "_children": [],
     "_rotationX": 0,
     "_rotationY": 0,
-    "_scaleX": 0.5,
-    "_scaleY": 0.5,
+    "_scaleX": 1,
+    "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
       "x": 0,
@@ -668,20 +680,24 @@
     "root": {
       "__id__": 1
     },
-    "asset": null,
-    "fileId": "03f03RsZahOjKhDTxcutRH4"
+    "asset": {
+      "__uuid__": "e196cc5e-9dfe-4a2b-b80d-c51895c3295d"
+    },
+    "fileId": "c70bb3qQ1ZKmYWtQKI6618C"
   },
   {
     "__type__": "cc.PrefabInfo",
     "root": {
       "__id__": 1
     },
-    "asset": null,
-    "fileId": "446384rZYpJR55d9A/2HZyz"
+    "asset": {
+      "__uuid__": "e196cc5e-9dfe-4a2b-b80d-c51895c3295d"
+    },
+    "fileId": "b5f0barS41J7ISidALy8BCp"
   },
   {
     "__type__": "cc.Node",
-    "_name": "anchorPointMyself",
+    "_name": "myAnchorPoint",
     "_objFlags": 0,
     "_opacity": 255,
     "_color": {
@@ -734,7 +750,9 @@
     "root": {
       "__id__": 1
     },
-    "asset": null,
+    "asset": {
+      "__uuid__": "e196cc5e-9dfe-4a2b-b80d-c51895c3295d"
+    },
     "fileId": "2c29cL6OpFOIrHFrZ4d0O9S"
   },
   {
@@ -771,18 +789,18 @@
     },
     "_enabled": true,
     "anchor1": {
-      "__id__": 2
-    },
-    "anchor2": {
-      "__id__": 7
-    },
-    "anchor3": {
-      "__id__": 12
-    },
-    "anchor4": {
       "__id__": 17
     },
-    "myselfAnchor": {
+    "anchor2": {
+      "__id__": 12
+    },
+    "anchor3": {
+      "__id__": 7
+    },
+    "anchor4": {
+      "__id__": 2
+    },
+    "myAnchor": {
       "__id__": 22
     }
   },
@@ -791,7 +809,9 @@
     "root": {
       "__id__": 1
     },
-    "asset": null,
+    "asset": {
+      "__uuid__": "e196cc5e-9dfe-4a2b-b80d-c51895c3295d"
+    },
     "fileId": "4df81Xfr+ZJV7R71XhoGjxJ"
   }
 ]

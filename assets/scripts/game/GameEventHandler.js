@@ -4,33 +4,27 @@
 
 var game = require('game')
 
-var GameEventHandler = cc.Class({
+export default class GameEventHandler {
+    constructor(board) {
+        this.setBoard(board)
+        game.system.setGameEventHandler(this)
+    }
 
-    properties: {
-        _board: {
-            default: null
-        },
+    setBoard(board){
+        this.board = board
 
-        _pendingEvents: {
-            default: []
-        },
+        this._pendingEvents = []
 
-        _shouldHandleEvent: {
-            default: null
-        }
-    },
+        this._shouldHandleEvent = false
+    }
 
     setShouldHandleEvent(shouldHandleEvent){
         this._shouldHandleEvent = shouldHandleEvent;
-    },
-
-    setCurrentBoard(board){
-        this._board = board;
-    },
+    }
 
     handleGameEvent(event){
 
-        if (!this._board) {
+        if (!this.board) {
             return;
         }
 
@@ -66,42 +60,42 @@ var GameEventHandler = cc.Class({
                 }
                 switch (cmd) {
                     case game.commands.PLAYERS_BALANCE_CHANGE:
-                        this._board._handleChangePlayerBalance(data);
+                        this.board._handleChangePlayerBalance(data);
                         break;
                     case game.commands.PLAYER_REENTER_ROOM:
-                        this._board._handlePlayerReEnterGame(data);
+                        this.board._handlePlayerReEnterGame(data);
                         break;
                     case game.commands.BOARD_STATE_CHANGE:
                         this._handleChangeBoardState(data);
                         break;
                     case game.commands.BOARD_MASTER_CHANGE:
-                        this._board._handleChangeBoardMaster(data);
+                        this.board._handleChangeBoardMaster(data);
                         break;
                     case game.commands.PLAYER_REJOIN_ROOM:
-                        this._board._handlePlayerRejoinGame(data);
+                        this.board._handlePlayerRejoinGame(data);
                         break;
                     case game.commands.SPECTATOR_TO_PLAYER:
-                        this._board._handleSpectatorToPlayer(data);
+                        this.board._handleSpectatorToPlayer(data);
                         break;
                     case game.commands.PLAYER_TO_SPECTATOR:
-                        this._board._handlePlayerToSpectator(data);
+                        this.board._handlePlayerToSpectator(data);
                         break;
                     default:
                         if (data.hasOwnProperty(game.keywords.PLAYER_ID)) {
-                            this._board.playerManager.handleEvent(data[game.keywords.PLAYER_ID], cmd, data);
+                            this.board.playerManager.handleEvent(data[game.keywords.PLAYER_ID], cmd, data);
                         }
 
                 }
         }
-    },
+    }
 
     _handleChangeBoardState(data){
         if (data.hasOwnProperty(game.keywords.BOARD_STATE_KEYWORD)) {
             let boardState = data[game.keywords.BOARD_STATE_KEYWORD];
-            this._board.changeBoardState(boardState, data);
+            this.board.changeBoardState(boardState, data);
 
         }
-    },
+    }
 
     _handleSystemMessage(data){
         var type = data[game.keywords.ADMIN_MESSAGE_TYPE];
@@ -114,27 +108,27 @@ var GameEventHandler = cc.Class({
                 game.system.info(messageArr[i]);
             });
         }
-    },
+    }
 
     _handlePlayerAvatar(data){
         //TODO
-    },
+    }
 
     _handleUserLevelUp(data) {
         //TODO
-    },
+    }
 
     _handleTaskFinish(data){
         //TODO
-    },
+    }
 
     _handBuddyNewInvitation(data){
         //TODO
-    },
+    }
 
     _handlePlayerUseAssets(data){
         //TODO
-    },
+    }
 
     _handlePingClient(data, roomId = -1){
         if (game.context.isJoinedGame() && roomId == game.context.currentRoom.id) {
@@ -142,13 +136,4 @@ var GameEventHandler = cc.Class({
         }
     }
 
-})
-
-GameEventHandler.newInstance = function(board){
-    let eventHandler = new GameEventHandler()
-    eventHandler.setCurrentBoard(board)
-    game.system.setGameEventHandler(eventHandler)
-    return eventHandler;
 }
-
-module.exports = GameEventHandler

@@ -39,15 +39,15 @@ export default class Board extends Component{
 
     _loadGameData(){
 
-        if (this.room && this.containsVariable(game.keywords.VARIABLE_GAME_INFO)) {
+        if (this.room && this.room.containsVariable(game.keywords.VARIABLE_GAME_INFO)) {
 
-            this.gameCode = room.name.substring(0, 3);
+            this.gameCode = this.room.name.substring(0, 3);
+            this.gameData = this.room.getVariable(game.keywords.VARIABLE_GAME_INFO).value;
 
             if (this.room.containsVariable(game.keywords.VARIABLE_MIN_BET)) {
                 this.minbet = this.room.getVariable(game.keywords.VARIABLE_MIN_BET)
             }
 
-            this.gameData = this.room.getVariable(game.keywords.VARIABLE_GAME_INFO).value;
 
             if (this.gameData.hasOwnProperty(game.keywords.BOARD_STATE_KEYWORD)) {
                 this.serverState = this.gameData[game.keywords.BOARD_STATE_KEYWORD];
@@ -59,14 +59,13 @@ export default class Board extends Component{
         }
     }
 
-    onLoad() {
-        // this._loadGameData();
+    init(){
+        this._loadGameData();
+        this._gameEventHandler = new GameEventHandler(this);
+    }
 
-        this._gameEventHandler = GameEventHandler.newInstance();
-        //
-        // this.playerManager = new PlayerManager(this);
-        // this.positionManager = new PositionManager(this);
-        // this.playerManager.initPlayers(this.room && this.room.getPlayerList());
+    onLoad() {
+
     }
 
     update(dt) {
@@ -177,7 +176,7 @@ export default class Board extends Component{
      * @overrideable
      */
     _shouldUpdateBoardTimeLineOnRejoin () {
-        return (this.isReady() && this.playerManager.shouldMySelfReady()) || this.isEnding();
+        return (this.isReady() && this.playerManager.shouldMeReady()) || this.isEnding();
     }
 
     /**
@@ -192,7 +191,7 @@ export default class Board extends Component{
      * @overrideable
      */
     _shouldStartReadyTimeLine () {
-        return !this.isSpectator() && this.isReady() && this.playerManager.shouldMySelfReady();
+        return !this.isSpectator() && this.isReady() && this.playerManager.shouldMeReady();
     }
 
     /**
@@ -268,7 +267,7 @@ export default class Board extends Component{
 
     _handleSpectatorToPlayer(data){
         if (data.hasOwnProperty(game.keywords.ERROR)) {
-            this._board._handleBoardError(game.resource.getErrorMessage(data[game.keywords.ERROR]));
+            this.board._handleBoardError(game.resource.getErrorMessage(data[game.keywords.ERROR]));
         }else{
             //TODO
         }

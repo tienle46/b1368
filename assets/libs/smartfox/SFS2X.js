@@ -52,7 +52,7 @@ SFS2X.SmartFox = function (a) {
         null != this.config && this.config.debug && (this.debug = !0);
         this.logger = this._log;
         this.lastJoinedRoom =
-            this.mySelf = this.buddyManager = this.userManager = this.roomManager = this.sessionToken = null;
+            this.me = this.buddyManager = this.userManager = this.roomManager = this.sessionToken = null;
         this._controllers = {};
         this._initialize();
         this._log.info("SmartFox instance ready!")
@@ -89,7 +89,7 @@ SFS2X.SmartFox.prototype.disconnect = function () {
     }, 100, this)) : this._log.info("You are not connected")
 };
 SFS2X.SmartFox.prototype.enableLagMonitor = function (a, b, c) {
-    null == this.mySelf ? this._log.warn("Lag Monitoring requires that you are logged in a Zone; please retry after completing the login process") : (null != this._lagMonitor && this._lagMonitor.destroy(), a && (this._lagMonitor = new SFS2X.Utils.LagMonitor(this, b, c), this._lagMonitor.start()))
+    null == this.me ? this._log.warn("Lag Monitoring requires that you are logged in a Zone; please retry after completing the login process") : (null != this._lagMonitor && this._lagMonitor.destroy(), a && (this._lagMonitor = new SFS2X.Utils.LagMonitor(this, b, c), this._lagMonitor.start()))
 };
 SFS2X.SmartFox.prototype.isConnected = function () {
     return null != this._socketEngine ? this._socketEngine.isConnected : !1
@@ -144,7 +144,7 @@ SFS2X.SmartFox.prototype._reset = function (a) {
     this.buddyManager = new SFS2X.Managers.BuddyManager(this);
     null != this._lagMonitor && this._lagMonitor.destroy();
     this._isJoining = !1;
-    this.mySelf = this.lastJoinedRoom = this._currentZone = null;
+    this.me = this.lastJoinedRoom = this._currentZone = null;
     a && (this.sessionToken = null)
 };
 SFS2X.SmartFox.prototype._dispatchEvent = function (a, b) {

@@ -7,11 +7,11 @@ import PlayerCardTurnBase from 'PlayerCardTurnBase'
 
 export default class TLMNDLPlayer extends PlayerCardTurnBase{
 
-    constructor(room) {
-        super(room)
+    constructor(board, user) {
+        super(board, user)
     }
 
     onLoad(){
-
+        super.onLoad();
     }
 }

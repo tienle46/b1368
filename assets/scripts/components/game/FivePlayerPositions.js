@@ -34,7 +34,7 @@ class FivePlayerPositions extends PositionManager {
             type: cc.Node
         }
 
-        this.myselfAnchor = {
+        this.myAnchor = {
             default: null,
             type: cc.Node
         }
@@ -53,7 +53,7 @@ class FivePlayerPositions extends PositionManager {
             case 5:
                 return this.anchor5;
             default:
-                return this.myselfAnchor;
+                return this.myAnchor;
         }
     }
 }

@@ -5,15 +5,6 @@ import CreateGameException from 'CreateGameException'
 import TLMNDLBoard from 'TLMNDLBoard'
 import TLMNDLPlayer from 'TLMNDLPlayer'
 
-const gameCodeToBoardClassMap = {
-    [game.const.gameCode.TLMNDL]: TLMNDLBoard
-}
-
-const gameCodeToPlayerClassMap = {
-    [game.const.gameCode.TLMNDL]: TLMNDLPlayer
-}
-
-
 class GameScene {
 
     constructor() {
@@ -38,12 +29,12 @@ class GameScene {
         }
 
         this.board = null;
-        this.room = game.context.currentRoom;
+        this.room = null;
     }
 
     onLoad() {
-
         try {
+            this.room = game.context.currentRoom
             this.gameCode = utils.getGameCode(this.room)
 
             if(!this.room || !this.room.isGame || !this.gameCode){
@@ -71,9 +62,10 @@ class GameScene {
             this.gameCode = this.gameCode || "tnd"
         }
 
-        let boardClass = gameCodeToBoardClassMap[this.gameCode]
+        let boardClass = game.manager.getBoardClass(this.gameCode)
         let boardComponent = game.createComponent(boardClass, this.room, this);
         this.board = this.boardLayer.addComponent(boardComponent)
+        this.board.init();
 
         if(!this.board){
             throw new CreateGameException("Không thể khởi tạo bàn chơi");
@@ -81,10 +73,8 @@ class GameScene {
     }
 
     _initPlayerLayer(){
-
         this.playerManager = this.playerLayer.getComponent('PlayerManager');
         this.playerManager.init(this.board, this);
-
     }
 
     _initGameControlLayer(){
@@ -112,16 +102,6 @@ class GameScene {
                 game.system.loadScene(game.const.scene.LOGIN_SCENE);
             })
         }
-    }
-
-    _createBoard(gameCode, room){
-        const boardClass = gameCodeToBoardClassMap[gameCode]
-        return boardClass && new boardClass(room)
-    }
-
-    _createPlayer(gameCode, user){
-        const playerClass = gameCodeToPlayerClassMap[gameCode]
-        return playerClass && new playerClass(user)
     }
 }
 

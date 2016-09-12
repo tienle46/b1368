@@ -49,7 +49,7 @@ class EightPlayerPositions extends PositionManager {
             type: cc.Node
         }
 
-        this.myselfAnchor = {
+        this.myAnchor = {
             default: null,
             type: cc.Node
         }
@@ -74,7 +74,7 @@ class EightPlayerPositions extends PositionManager {
             case 8:
                 return this.anchor8;
             default:
-                return this.myselfAnchor;
+                return this.myAnchor;
         }
     }
 }

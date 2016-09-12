@@ -33,7 +33,7 @@ class GameService {
             if (success) {
                 this.login("crush1", "1234nm", (error, result) => {
                     if (result) {
-                        console.log(`Logged in as ${game.context.getMySelf().name}`)
+                        console.log(`Logged in as ${game.context.getMe().name}`)
                     }
 
                     if (error) {

@@ -4,18 +4,14 @@
 
 import game from 'game'
 import TLMNDLBoard from 'TLMNDLBoard'
+import TLMNDLPlayer from 'TLMNDLPlayer'
 
-var PhomBoard;
-var PhomPlayer;
-var TLMNDLPlayer;
 
 const gameCodeToBoardClassMap = {
-    [game.const.gameCode.PHOM]: PhomBoard,
     [game.const.gameCode.TLMNDL]: TLMNDLBoard
 }
 
 const gameCodeToPlayerClassMap = {
-    'pom': PhomPlayer,
     'tnd': TLMNDLPlayer
 }
 

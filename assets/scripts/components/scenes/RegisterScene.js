@@ -46,7 +46,7 @@ export default class RegisterScene extends BaseScene {
                         this.addPopup(game.getMessageFromServer(error.c));
                     }
                     if (result.length) {
-                        console.debug(`Logged in as ${game.context.getMySelf().name}`);
+                        console.debug(`Logged in as ${game.context.getMe().name}`);
                     }
                 })
             }
