@@ -14,7 +14,7 @@ class GameSystem {
 
         this._systemEventHandler = null
 
-        this._gameEventHandler = null
+        this.gameEventHandler = null
 
         this._eventListeners = null
     }
@@ -59,7 +59,11 @@ class GameSystem {
     }
 
     setGameEventHandler(gameEventHandler){
-        this._gameEventHandler = gameEventHandler;
+        if(this.gameEventHandler){
+            this.gameEventHandler._removeGameEventListener();
+        }
+        this.gameEventHandler = gameEventHandler;
+        this.gameEventHandler._addGameEventListener()
     }
 
     /**
@@ -69,7 +73,7 @@ class GameSystem {
      */
     handleData(cmd, data, event){
         if(game.context.isJoinedGame()){
-            this._gameEventHandler && this._gameEventHandler.handleGameEvent(event)
+            this.gameEventHandler && this.gameEventHandler.handleGameEvent(event)
         }else{
             this._systemEventHandler && this._systemEventHandler.handleData(cmd, data);
         }

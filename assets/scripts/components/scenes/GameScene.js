@@ -4,6 +4,7 @@ import Board from 'Board'
 import CreateGameException from 'CreateGameException'
 import TLMNDLBoard from 'TLMNDLBoard'
 import TLMNDLPlayer from 'TLMNDLPlayer'
+import GameMenuPrefab from 'GameMenuPrefab'
 
 class GameScene {
 
@@ -30,6 +31,8 @@ class GameScene {
 
         this.board = null;
         this.room = null;
+        this.gameMenu = null;
+        this.playerManager = null;
     }
 
     onLoad() {
@@ -82,8 +85,11 @@ class GameScene {
     }
 
     _initGameMenuLayer() {
+
         cc.loader.loadRes('game/GameMenuPrefab', (error, prefab) => {
             let prefabObj = cc.instantiate(prefab);
+            this.gameMenu = prefabObj.getComponent('GameMenuPrefab');
+            this.gameMenu._init(this.board, this);
             prefabObj.parent = this.gameMenuLayer
         });
     }
@@ -101,6 +107,14 @@ class GameScene {
             game.system.error('Không thể kết nối với máy chủ. Bạn vui lòng đăng nhập lại để tiếp tục chơi!', () => {
                 game.system.loadScene(game.const.scene.LOGIN_SCENE);
             })
+        }
+    }
+
+    goBack(){
+        if(game.service.client.isConnected()){
+                game.system.loadScene(game.const.scene.LIST_TABLE_SCENE);
+        }else{
+            game.system.loadScene(game.const.scene.LOGIN_SCENE);
         }
     }
 }

@@ -11,19 +11,19 @@ import CreateGameException from 'CreateGameException'
 export default class PlayerManager extends Component {
     constructor() {
         super();
+
         this.playerPositions = {
             default: null,
             type: cc.Node
         }
 
-        this._playerPrefab = null
-
-        this.board = null
         this.me = null
+        this.board = null
         this.players = null
+        this.maxPlayerId = 1
+        this._playerPrefab = null
         this._idToPlayerMap = null
         this._nameToPlayerMap = null
-        this.maxPlayerId = 1
 
     }
 
@@ -36,7 +36,7 @@ export default class PlayerManager extends Component {
         this._initPlayerLayer();
     }
 
-    _onInitedPlayerLayer(){
+    _onFinishInitPlayerLayer(){
         cc.loader.loadRes('game/players/Player', (error, prefab) => {
             if(error){
                 throw new CreateGameException("Không thể khởi tạo người chơi")
@@ -72,7 +72,7 @@ export default class PlayerManager extends Component {
                 if(error){
                     throw new CreateGameException("Không thể cài đặt vị trí người chơi")
                 }else{
-                    this._onInitedPlayerLayer();
+                    this._onFinishInitPlayerLayer();
                 }
             })
         } else {
@@ -116,13 +116,16 @@ export default class PlayerManager extends Component {
             });
         }
 
-        this._update();
+        this._onPlayerDataChanged();
     }
 
     _createSinglePlayer(user){
 
+        let player;
+
         let playerNode = cc.instantiate(this._playerPrefab);
         let playerClass = game.manager.getPlayerClass(this.gameCode);
+
         if(playerClass){
             let playerComponent = game.createComponent(playerClass, this.board, user);
             let player = playerNode.addComponent(playerComponent)
@@ -130,9 +133,11 @@ export default class PlayerManager extends Component {
             if(player){
                 this._setPlayerPosition(playerNode, player)
                 this._addToPlayerLayer(playerNode)
-                this._addPlayerList(player)
+                this._addPlayerToList(player)
             }
         }
+
+        return player;
     }
 
     _addToPlayerLayer(playerNode){
@@ -149,7 +154,7 @@ export default class PlayerManager extends Component {
      *
      * @private
      */
-    _update() {
+    _onPlayerDataChanged() {
 
         if(!game.context.getMe()){
             return;
@@ -169,7 +174,11 @@ export default class PlayerManager extends Component {
 
         })
 
-        this.playerPositions.hideInviteButton(1)
+        if(this.board.isNewBoard() || this.board.isReady()){
+            this.playerPositions.showAllInviteButton();
+        }else{
+            this.playerPositions.hideInviteButton(1);
+        }
 
         this.maxPlayerId = maxPlayerId;
 
@@ -185,7 +194,7 @@ export default class PlayerManager extends Component {
         this.maxPlayerId = maxPlayerId;
     }
 
-    _addPlayerList(player) {
+    _addPlayerToList(player) {
         if(!player){
             return;
         }
@@ -196,6 +205,9 @@ export default class PlayerManager extends Component {
         }else{
             this.players[playerIndex] = player;
         }
+
+        this._idToPlayerMap[player.id] = player;
+        this._nameToPlayerMap[player.user.name] = player;
     }
 
     isSpectator() {
@@ -229,19 +241,10 @@ export default class PlayerManager extends Component {
         return playerIndex;
     }
 
-    _addPlayer(player) {
-        let playerInMap = this._idToPlayerMap[player.id];
-        let index = playerInMap && _findPlayerIndex(playerInMap.id);
-
-        if (index && index >= 0) {
-            this.players[index] = player
-        } else {
-            this.players.push(player);
-        }
-
-        this._idToPlayerMap[player.id] = player;
-        this._nameToPlayerMap[player.user.name] = player;
-        this._update()
+    _addPlayer(user) {
+        let newPlayer = this._createSinglePlayer(user);
+        // this._onPlayerDataChanged()
+        return newPlayer;
     }
 
     _removePlayer(player) {
@@ -252,7 +255,7 @@ export default class PlayerManager extends Component {
                 delete this._idToPlayerMap[player.id]
                 delete this._idToPlayerMap[player.user.name]
 
-                this._update()
+                this._onPlayerDataChanged()
 
                 return true;
             }
@@ -386,14 +389,14 @@ export default class PlayerManager extends Component {
 
             let newPlayer = this._addPlayer(user);
 
-            let boardState = this.board.isPlaying() || this.board.isStarting() ? game.const.boardState.PLAYING
+            if (newPlayer) {
+                let boardState = this.board.isPlaying() || this.board.isStarting() ? game.const.boardState.PLAYING
                 : this.board.isBegin() ? game.const.boardState.BEGIN
                 : this.board.isReady() ? game.const.boardState.READY
                 : this.board.isEnding() ? game.const.boardState.ENDING
                 : undefined;
 
-            if (boardState) {
-                newPlayer.applyBoardState(boardState);
+                boardState && newPlayer.applyBoardState(boardState);
             }
 
             return true;

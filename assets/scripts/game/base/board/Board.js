@@ -17,11 +17,13 @@ export default class Board extends Component{
 
         this.room = room;
 
-        this._gameEventHandler = null
+        this.gameEventHandler = null
 
         this.gameData = null
 
         this.owner = null
+
+        this.ownerId = 0
 
         this.master = null
 
@@ -61,7 +63,9 @@ export default class Board extends Component{
 
     init(){
         this._loadGameData();
-        this._gameEventHandler = new GameEventHandler(this);
+
+        this.gameEventHandler = new GameEventHandler(this, this.parentScene);
+
     }
 
     onLoad() {
@@ -73,7 +77,7 @@ export default class Board extends Component{
     }
 
     start(){
-        this._gameEventHandler && this._gameEventHandler.setShouldHandleEvent(true);
+        this.gameEventHandler && this.gameEventHandler.setShouldHandleEvent(true);
     }
 
     setState (state) {

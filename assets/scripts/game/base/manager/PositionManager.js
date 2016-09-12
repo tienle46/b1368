@@ -2,28 +2,49 @@
  * Created by Thanh on 8/23/2016.
  */
 
+import game from 'game'
 import Component from 'Component'
 
 export default class PositionManager extends Component{
     constructor() {
         super()
-
         this.playerAnchors = []
     }
 
-    _initPlayerAnchors(maxAnchor){
+    onLoad(){
         this.playerAnchors[0] = this.myAnchor;
-        for (let i = 1; i <= maxAnchor; i++){
+        for (let i = 1; i <= this.ceilAnchor; i++){
+            this.playerAnchors[i] = this['anchor' + i];
         }
+
+        this.hideAllInviteButton();
+    }
+
+    hideAllInviteButton(){
+        this.playerAnchors.forEach(anchor => {
+            let inviteButton = anchor.getChildByName('inviteButton')
+            game.utils.hide(inviteButton)
+        })
+    }
+
+    showAllInviteButton(){
+        this.playerAnchors.forEach(anchor => {
+            let inviteButton = anchor.getChildByName('inviteButton')
+            game.utils.show(inviteButton)
+        })
     }
 
     getPlayerAnchorByPlayerId(playerId, isItMe) {
+
+        console.log("Player Id: " + playerId + " " + isItMe)
+
         return this.getPlayerAnchor(this.getPlayerAnchorOrder(playerId, isItMe))
     }
 
     getPlayerAnchorOrder(playerId, isItMe){
-        return isItMe ? 0 : playerId <= 0 ? 1 : playerId;
+        let order = isItMe ? 0 : playerId <= 0 ? 1 : playerId;
         //TODO
+        return order
     }
 
     hideAllInviteButton(order){
@@ -44,8 +65,6 @@ export default class PositionManager extends Component{
 
     _setVisibleInviteButton(anchor, visible){
         if(anchor){
-
-            console.debug(anchor)
 
             for (let node of anchor.children){
 
