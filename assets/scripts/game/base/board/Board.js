@@ -63,13 +63,16 @@ export default class Board extends Component{
 
     init(){
         this._loadGameData();
-
-        this.gameEventHandler = new GameEventHandler(this, this.parentScene);
-
     }
 
     onLoad() {
 
+        console.debug(this)
+        console.debug(this.parentScene)
+
+        this.gameEventHandler = new GameEventHandler(this, this.parentScene);
+        this.gameEventHandler.setHandleEventImmediate(false);
+        this.gameEventHandler.addGameEventListener()
     }
 
     update(dt) {
@@ -77,7 +80,11 @@ export default class Board extends Component{
     }
 
     start(){
-        this.gameEventHandler && this.gameEventHandler.setShouldHandleEvent(true);
+        this.gameEventHandler && this.gameEventHandler.setHandleEventImmediate(true);
+    }
+
+    onDestroy(){
+        this.gameEventHandler && this.gameEventHandler.removeGameEventListener()
     }
 
     setState (state) {

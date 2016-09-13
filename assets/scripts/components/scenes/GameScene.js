@@ -33,6 +33,7 @@ class GameScene {
         this.room = null;
         this.gameMenu = null;
         this.playerManager = null;
+        this.gameControls = null;
     }
 
     onLoad() {
@@ -81,7 +82,16 @@ class GameScene {
     }
 
     _initGameControlLayer(){
+        cc.loader.loadRes('game/controls/BaseControls', (error, prefab) => {
 
+            let prefabObj = cc.instantiate(prefab);
+            prefabObj.setAnchorPoint(0, 0)
+            prefabObj.parent = this.gameControlLayer
+
+            let baseControlsComponent = prefabObj.getComponent('BaseControls');
+            this.gameControls = baseControlsComponent;
+            this.gameControls._init(this.board, this);
+        });
     }
 
     _initGameMenuLayer() {

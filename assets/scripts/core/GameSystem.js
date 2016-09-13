@@ -2,42 +2,32 @@
  * Created by Thanh on 8/23/2016.
  */
 
-var game = require('game')
-
-var BaseScene = require("BaseScene");
-var SystemEventHandler = require("SystemEventHandler");
+import game from 'game'
+import BaseScene from 'BaseScene'
+import Emitter from 'emitter'
 
 class GameSystem {
 
     constructor() {
         this._currentScene = null
 
-        this._systemEventHandler = null
+        this.eventEmitter = new Emitter
 
-        this.gameEventHandler = null
-
-        this._eventListeners = null
+        this._initEmitter();
     }
 
-    ctor() {
-        this._systemEventHandler = new SystemEventHandler();
-    }
-
-    start(){
-        this._systemEventHandler._registerAllSystemEventHandler();
-    }
-
-    stop(){
-        "use strict";
-        this._systemEventHandler._removeAllSystemEventHandler();
+    _initEmitter(){
+        //TODO
     }
 
     /**
      * @param {string} sceneName - Scene Name want to load. The name of scene have been configured in {source} game.const.scene.*
      * @param {function} onLaunch - On launch custom function
      */
-    loadScene(sceneName, onLaunch){
+    loadScene(sceneName, onLaunch, onShown){
         cc.director.loadScene(sceneName, onLaunch)
+        let currentScene = cc.director.getScene();
+        if (currentScene)  currentScene.onShown = onShown
     }
 
 
@@ -56,27 +46,6 @@ class GameSystem {
      */
     setCurrentScene(scene){
         this.currentScene = scene;
-    }
-
-    setGameEventHandler(gameEventHandler){
-        if(this.gameEventHandler){
-            this.gameEventHandler._removeGameEventListener();
-        }
-        this.gameEventHandler = gameEventHandler;
-        this.gameEventHandler._addGameEventListener()
-    }
-
-    /**
-     *
-     * @param {string} cmd - Command or request name sent from server
-     * @param {object} data - Data sent according to request
-     */
-    handleData(cmd, data, event){
-        if(game.context.isJoinedGame()){
-            this.gameEventHandler && this.gameEventHandler.handleGameEvent(event)
-        }else{
-            this._systemEventHandler && this._systemEventHandler.handleData(cmd, data);
-        }
     }
 
     info(title, message){
@@ -115,6 +84,35 @@ class GameSystem {
         alert("Ticker: " + messages)
     }
 
+    emit(name, ...args){
+        this.eventEmitter.emit(name, ...args)
+        this._emitToScene(name, ...args);
+    }
+
+    /**
+     *
+     * This func is in considering because it's conflict with event of cocos node
+     *
+     * @deprecated
+     */
+    _emitToScene(){
+        this._currentScene && this._currentScene.node.emit(name, ...args)
+
+    }
+
+
+    addListener(eventName, listener, context){
+        this.eventEmitter.addListener(eventName, listener, context);
+    }
+
+    removeListener(eventName, listener) {
+        this.eventEmitter.removeListener(eventName, listener)
+    }
+
+    removeAllListener(eventName) {
+        this.eventEmitter.removeListener(eventName)
+    }
 }
 
-module.exports = new GameSystem();
+const gameSystem = new GameSystem();
+module.exports = gameSystem;

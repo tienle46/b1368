@@ -8,6 +8,7 @@ game.const = {}
 game.const.LANGUAGE = "vi"; // set the language used in game. Default: "vi"
 
 game.const.scene = {};
+game.const.scene.ENTRANCE_SCENE= "EntranceScene";
 game.const.scene.LOGIN_SCENE = "LoginScene";
 game.const.scene.REGISTER_SCENE = "RegisterScene";
 game.const.scene.DASHBOARD_SCENE = "DashboardScene";

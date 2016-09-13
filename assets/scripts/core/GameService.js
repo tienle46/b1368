@@ -5,6 +5,43 @@
 var game = require('game')
 var SFS2X = require('SFS2X')
 
+const requestCallbackNames = {
+    [SFS2X.Requests.Handshake]: SFS2X.SFSEvent.HANDSHAKE,
+    [SFS2X.Requests.Login]: SFS2X.SFSEvent.LOGIN,
+    [SFS2X.Requests.Logout]: SFS2X.SFSEvent.LOGOUT,
+    [SFS2X.Requests.JoinRoom]: SFS2X.SFSEvent.ROOM_JOIN,
+    [SFS2X.Requests.CreateRoom]: SFS2X.SFSEvent.ROOM_ADD,
+    [SFS2X.Requests.GenericMessage]: SFS2X.Requests.getRequestNameFromId(SFS2X.Requests.GenericMessage),
+    [SFS2X.Requests.ChangeRoomName]: SFS2X.SFSEvent.ROOM_NAME_CHANGE,
+    [SFS2X.Requests.ChangeRoomPassword]: SFS2X.SFSEvent.ROOM_PASSWORD_STATE_CHANGE,
+    [SFS2X.Requests.SetRoomVariables]: SFS2X.SFSEvent.ROOM_VARIABLES_UPDATE,
+    [SFS2X.Requests.SetUserVariables]: SFS2X.SFSEvent.USER_VARIABLES_UPDATE,
+    [SFS2X.Requests.CallExtension]: SFS2X.SFSEvent.EXTENSION_RESPONSE,
+    [SFS2X.Requests.LeaveRoom]: SFS2X.SFSEvent.USER_EXIT_ROOM,
+    [SFS2X.Requests.SubscribeRoomGroup]: SFS2X.SFSEvent.ROOM_GROUP_SUBSCRIBE,
+    [SFS2X.Requests.UnsubscribeRoomGroup]: SFS2X.SFSEvent.ROOM_GROUP_UNSUBSCRIBE,
+    [SFS2X.Requests.SpectatorToPlayer]: SFS2X.SFSEvent.SPECTATOR_TO_PLAYER,
+    [SFS2X.Requests.PlayerToSpectator]: SFS2X.SFSEvent.PLAYER_TO_SPECTATOR,
+    [SFS2X.Requests.ChangeRoomCapacity]: SFS2X.SFSEvent.ROOM_CAPACITY_CHANGE,
+    [SFS2X.Requests.KickUser]: SFS2X.Requests.getRequestNameFromId(SFS2X.Requests.KickUser),
+    [SFS2X.Requests.BanUser]: SFS2X.Requests.getRequestNameFromId(SFS2X.Requests.BanUser),
+    [SFS2X.Requests.ManualDisconnection]: SFS2X.SFSEvent.CONNECTION_LOST,
+    [SFS2X.Requests.FindRooms]: SFS2X.SFSEvent.ROOM_FIND_RESULT,
+    [SFS2X.Requests.FindUsers]: SFS2X.SFSEvent.USER_FIND_RESULT,
+    [SFS2X.Requests.PingPong]: SFS2X.SFSEvent.PING_PONG,
+    [SFS2X.Requests.SetUserPosition]: SFS2X.SFSEvent.PROXIMITY_LIST_UPDATE,
+    [SFS2X.Requests.InitBuddyList]: SFS2X.SFSBuddyEvent.BUDDY_LIST_INIT,
+    [SFS2X.Requests.AddBuddy]: SFS2X.SFSBuddyEvent.BUDDY_ADD,
+    [SFS2X.Requests.BlockBuddy]: SFS2X.SFSBuddyEvent.BUDDY_BLOCK,
+    [SFS2X.Requests.RemoveBuddy]: SFS2X.SFSBuddyEvent.BUDDY_REMOVE,
+    [SFS2X.Requests.SetBuddyVariables]: SFS2X.SFSBuddyEvent.BUDDY_VARIABLES_UPDATE,
+    [SFS2X.Requests.GoOnline]: SFS2X.SFSBuddyEvent.BUDDY_ONLINE_STATE_CHANGE,
+    [SFS2X.Requests.InviteUsers]: SFS2X.SFSEvent.INVITATION,
+    [SFS2X.Requests.InvitationReply]: SFS2X.SFSEvent.INVITATION_REPLY,
+    [SFS2X.Requests.CreateSFSGame]: SFS2X.SFSEvent.ROOM_ADD,
+    [SFS2X.Requests.QuickJoinGame]: SFS2X.SFSEvent.ROOM_JOIN
+}
+
 class GameService {
     constructor() {
         this.client = null
@@ -58,8 +95,9 @@ class GameService {
         this.addEventListener(SFS2X.SFSEvent.ROOM_JOIN, this._onJoinRoomResult)
         this.addEventListener(SFS2X.SFSEvent.ROOM_JOIN_ERROR, this._onJoinRoomResult)
         this.addEventListener(SFS2X.SFSEvent.ROOM_CREATION_ERROR, this._onCreateRoomResult)
-
-        console.log("Registered SmartFox event")
+        this.addEventListener(SFS2X.SFSEvent.USER_EXIT_ROOM, this._onUserExitRoom)
+        this.addEventListener(SFS2X.SFSEvent.USER_ENTER_ROOM, this._onUserEnterRoom)
+        this.addEventListener(SFS2X.SFSEvent.ROOM_REMOVE, this._onRoomRemove)
     }
 
     _removeSmartFoxEvent() {
@@ -68,66 +106,65 @@ class GameService {
         this.removeEventListener(SFS2X.SFSEvent.CONNECTION, this._onConnection)
         this.removeEventListener(SFS2X.SFSEvent.CONNECTION_LOST, this._onConnectionLost)
         this.removeEventListener(SFS2X.SFSEvent.CONNECTION_RESUME, this._onConnectionResume)
+        this.removeEventListener(SFS2X.SFSEvent.EXTENSION_RESPONSE, this._onExtensionEvent)
         this.removeEventListener(SFS2X.SFSEvent.ROOM_JOIN, this._onJoinRoomResult)
         this.removeEventListener(SFS2X.SFSEvent.ROOM_JOIN_ERROR, this._onJoinRoomResult)
         this.removeEventListener(SFS2X.SFSEvent.ROOM_CREATION_ERROR, this._onCreateRoomResult)
+        this.removeEventListener(SFS2X.SFSEvent.USER_EXIT_ROOM, this._onUserExitRoom)
+        this.removeEventListener(SFS2X.SFSEvent.USER_ENTER_ROOM, this._onUserEnterRoom)
+        this.removeEventListener(SFS2X.SFSEvent.ROOM_REMOVE, this._onRoomRemove)
+    }
+
+    _onUserExitRoom(event){
+        game.system.emit(SFS2X.SFSEvent.USER_EXIT_ROOM, event);
+    }
+
+    _onUserEnterRoom(event){
+        game.system.emit(SFS2X.SFSEvent.USER_ENTER_ROOM, event);
+    }
+
+    _onRoomRemove(event){
+        game.system.emit(SFS2X.SFSEvent.ROOM_REMOVE, event);
     }
 
     _onConnection(event) {
-        console.log("_onConnection")
-        console.log(event)
-
         this._callCallback(SFS2X.SFSEvent.CONNECTION, event.success)
     }
 
     _onConnectionLost(event) {
-        console.log("_onConnectionLost")
-        console.log(event);
-
-        // game.system.loadScene(game.const.scene.LOGIN_SCENE);
+        game.system.loadScene(game.const.scene.ENTRANCE_SCENE, () => {
+            game.system.info("Kết nối tới máy chủ bị gián đoạn. Vui lòng đăng nhập lại!");
+        });
     }
 
     _onConnectionResume(event) {
         console.log("_onConnectionResume")
         console.log(event);
-        //TODO
     }
 
     _onExtensionEvent(event) {
-        console.log("_onExtensionEvent")
-        console.log(event)
 
         if (this._hasCallback(event.cmd)) {
             this._callCallbackAsync(event.cmd, event.params)
         } else {
-            game.system.handleData(event.cmd, event.params, event)
+            game.system.emit(event.cmd, event.params, event)
         }
-
-        // game.async.series([
-        //     () => {this._callCallback(event.cmd, event.params)}
-        //     () => {game.system.handleData(event.cmd, event.params)}
-        // ]);
     }
 
     _onLogin(event) {
-        console.log("_onLogin")
-        console.log(event)
-
-        this._callCallback(SFS2X.SFSEvent.LOGIN, event.data)
+        this._callCallback(SFS2X.SFSEvent.LOGIN, null, event.data)
     }
 
     _onLoginError() {
-        console.log("_onLoginError")
-        console.debug(event)
-
         this._callCallback(SFS2X.SFSEvent.LOGIN, event.data)
     }
 
-    sendRequest(request) {
-        this.client.send(request)
-    }
+    sendRequest(request, {cb = null, scope = null, cbName = null} = {}) {
+        if (cb) {
+            let cbKey = cbName || requestCallbackNames[request._id]
+            cbKey && this._addCallback(cbKey, cb, scope)
+        }
 
-    _sendRequest(request) {
         this.client.send(request)
     }
 
@@ -135,9 +172,13 @@ class GameService {
         let cbObj = this._getCallbackObject(key)
 
         if (!(verifyFunc instanceof Function)) {
-            args = [verifyFunc, args];
+            args = [verifyFunc, ...args];
             verifyFunc = undefined;
         }
+
+        console.log("call callback ")
+        console.log(args)
+
 
         if (cbObj && (!verifyFunc || verifyFunc(cbObj.data))) {
             cbObj.cb.apply(null, args);
@@ -161,7 +202,7 @@ class GameService {
     }
 
     _addCallback(key, cb, scope, data) {
-        this._eventCallbacks[key] = cb instanceof Function ? { cb: cb, data: data } : undefined;
+        this._eventCallbacks[key] = cb instanceof Function ? {cb: cb, data: data} : undefined;
         this._addCommandToScope(key, scope);
     }
 
@@ -187,13 +228,17 @@ class GameService {
      * @param cb
      */
     connect(cb) {
-        this.disconnect();
 
-        this._addCallback(SFS2X.SFSEvent.CONNECTION, cb);
+        if(this.client.isConnected()){
+            this._onConnection({success: true})
+        }else{
+            this._addCallback(SFS2X.SFSEvent.CONNECTION, cb);
 
-        console.log(`Connecting to: ${game.config.host}:${game.config.port}`);
+            console.log(`Connecting to: ${game.config.host}:${game.config.port}`);
 
-        this.client.connect(game.config.host, game.config.port);
+            this.client.connect(game.config.host, game.config.port);
+        }
+
     }
 
     /**
@@ -209,7 +254,7 @@ class GameService {
      * Disconnect to game server and go to Login Screen
      */
     logout() {
-        disconnect();
+        this.disconnect();
         game.system.loadScene(game.const.scene.LOGIN_SCENE);
     }
 
@@ -226,7 +271,7 @@ class GameService {
 
         this._addCallback(SFS2X.SFSEvent.LOGIN, cb);
 
-        this._sendRequest(new SFS2X.Requests.System.LoginRequest(username, password, data, game.config.zone));
+        this.sendRequest(new SFS2X.Requests.System.LoginRequest(username, password, data, game.config.zone));
     }
 
     /**
@@ -242,7 +287,7 @@ class GameService {
 
         this._addCallback(SFS2X.SFSEvent.LOGIN, cb);
 
-        this._sendRequest(new SFS2X.Requests.System.LoginRequest(username, password, data, game.config.zone));
+        this.sendRequest(new SFS2X.Requests.System.LoginRequest(username, password, data, game.config.zone));
     }
 
     _checkConnection() {
@@ -265,12 +310,12 @@ class GameService {
         if (!options) return;
 
         if (options instanceof SFS2X.Requests._BaseRequest) {
-            this._sendRequest(options)
+            this.sendRequest(options)
         } else {
             const cmd = options.cmd
             if (cmd) {
                 this._addCallback(cmd, cb, scope, options.data)
-                this._sendRequest(new SFS2X.Requests.System.ExtensionRequest(cmd, options.data || {}, options.room))
+                this.sendRequest(new SFS2X.Requests.System.ExtensionRequest(cmd, options.data || {}, options.room))
             }
         }
     }
@@ -314,7 +359,9 @@ class GameService {
         if (event.errorCode) {
             this._callCallbackAsync(key, event);
         } else {
-            this._callCallbackAsync(key, data => { return !data || !data.roomId || (event.room && data.roomId == event.id) }, null, event);
+            this._callCallbackAsync(key, data => {
+                return !data || !data.roomId || (event.room && data.roomId == event.id)
+            }, null, event);
         }
     }
 
@@ -322,15 +369,6 @@ class GameService {
         if (event.errorCode) {
             this._callCallbackAsync(game.commands.USER_CREATE_ROOM, event);
         }
-    }
-
-
-    joinRoom(roomId) {
-
-    }
-
-    leaveRoom(roomId) {
-
     }
 }
 

@@ -17,7 +17,7 @@ export default class PlayerManager extends Component {
             type: cc.Node
         }
 
-        this.me = null
+        this.meId = null
         this.board = null
         this.players = null
         this.maxPlayerId = 1
@@ -25,6 +25,10 @@ export default class PlayerManager extends Component {
         this._idToPlayerMap = null
         this._nameToPlayerMap = null
 
+    }
+
+    isItMe(id){
+        return this.meId == id;
     }
 
     init(board, scene) {
@@ -81,7 +85,7 @@ export default class PlayerManager extends Component {
     }
 
     _reset() {
-        this.me = undefined;
+        this.meId = 0;
         this.players = [];
         this._idToPlayerMap = {};
         this._nameToPlayerMap = {};
@@ -156,11 +160,13 @@ export default class PlayerManager extends Component {
      */
     _onPlayerDataChanged() {
 
+        cc.log()
+
         if(!game.context.getMe()){
             return;
         }
 
-        this.me = this.findPlayer(game.context.getMe().getPlayerId(this.board.room));
+        this.meId = this.findPlayer(game.context.getMe().getPlayerId(this.board.room));
 
         //TODO set board owner & master
 
