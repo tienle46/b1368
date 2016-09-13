@@ -1093,7 +1093,7 @@ declare module cc {
 	};
 	``` 
 	*/
-	export function Class(options : { name? : string; extends? : Function; ctor? : Function; properties? : any; statics? : any; mixins? : Function[]; editor? : any; update? : Function; lateUpdate? : Function; onLoad? : Function; start? : Function; onEnable? : Function; onDisable? : Function; onDestroy? : Function; onFocusInEditor? : Function; onLostFocusInEditor? : Function; onRestore? : Function; _getLocalBounds? : Function; }) : Function;	
+	export function Class(options : { name?; extends?; ctor?; properties?; statics?; mixins?; editor? : { requireComponent? : Component; disallowMultiple? : Component; menu? : string; executeInEditMode? : boolean; playOnFocus? : boolean; inspector? : string; icon? : string; help? : string; } ; update?; lateUpdate?; onLoad?; start?; onEnable?; onDisable?; onDestroy?; onFocusInEditor?; onLostFocusInEditor?; onRestore?; _getLocalBounds?; }) : Function;	
 	/** Return all super classes 
 	*/
 	export function getInheritanceChain(constructor : Function) : Function[];	
@@ -2015,6 +2015,213 @@ declare module cc {
 		!#zh 动画当前的时间，秒。 */
 		time : number;	
 	}		
+		/** !#en cc.audioEngine is the singleton object, it provide simple audio APIs.
+		!#zh
+		cc.audioengine是单例对象。<br/>
+		主要用来播放背景音乐和音效，背景音乐同一时间只能播放一个，而音效则可以同时播放多个。<br/>
+		注意：<br/>
+		在 Android 系统浏览器上，不同浏览器，不同版本的效果不尽相同。<br/>
+		比如说：大多数浏览器都需要用户物理交互才可以开始播放音效，有一些不支持 WebAudio，<br/>
+		有一些不支持多音轨播放。总之如果对音乐依赖比较强，请做尽可能多的测试。 */
+		export class audioEngine {		
+		/** !#en Play music.
+		!#zh
+		播放指定音乐，并可以设置是否循环播放。<br/>
+		注意：音乐播放接口不支持多音轨，同一时间只能播放一个音乐。
+		@param url The path of the music file without filename extension.
+		@param loop Whether the music loop or not.
+		
+		@example 
+		```js
+		//example
+		cc.audioEngine.playMusic(path, false);
+		``` 
+		*/
+		playMusic(url : string, loop : boolean) : void;		
+		/** !#en Stop playing music.
+		!#zh 停止当前音乐。
+		@param releaseData If release the music data or not.As default value is false.
+		
+		@example 
+		```js
+		//example
+		cc.audioEngine.stopMusic();
+		``` 
+		*/
+		stopMusic(releaseData? : boolean) : void;		
+		/** !#en Pause playing music.
+		!#zh 暂停正在播放音乐。
+		
+		@example 
+		```js
+		//example
+		cc.audioEngine.pauseMusic();
+		``` 
+		*/
+		pauseMusic() : void;		
+		/** !#en Resume playing music.
+		!#zh 恢复音乐播放。
+		
+		@example 
+		```js
+		//example
+		cc.audioEngine.resumeMusic();
+		``` 
+		*/
+		resumeMusic() : void;		
+		/** !#en Rewind playing music.
+		!#zh 从头开始重新播放当前音乐。
+		
+		@example 
+		```js
+		//example
+		cc.audioEngine.rewindMusic();
+		``` 
+		*/
+		rewindMusic() : void;		
+		/** !#en The volume of the music max value is 1.0,the min value is 0.0 .
+		!#zh 获取音量（0.0 ~ 1.0）。
+		
+		@example 
+		```js
+		//example
+		var volume = cc.audioEngine.getMusicVolume();
+		``` 
+		*/
+		getMusicVolume() : number;		
+		/** !#en Set the volume of music.
+		!#zh 设置音量（0.0 ~ 1.0）。
+		@param volume Volume must be in 0.0~1.0 .
+		
+		@example 
+		```js
+		//example
+		cc.audioEngine.setMusicVolume(0.5);
+		``` 
+		*/
+		setMusicVolume(volume : number) : void;		
+		/** !#en Whether the music is playing.
+		!#zh 音乐是否正在播放。
+		
+		@example 
+		```js
+		//example
+		 if (cc.audioEngine.isMusicPlaying()) {
+		     cc.log("music is playing");
+		 }
+		 else {
+		     cc.log("music is not playing");
+		 }
+		``` 
+		*/
+		isMusicPlaying() : boolean;		
+		/** !#en Play sound effect.
+		!#zh
+		播放指定音效，并可以设置是否循环播放。<br/>
+		注意：在部分不支持多音轨的浏览器上，这个接口会失效，请使用 playMusic
+		@param url The path of the sound effect with filename extension.
+		@param loop Whether to loop the effect playing, default value is false
+		
+		@example 
+		```js
+		//example
+		var soundId = cc.audioEngine.playEffect(path);
+		``` 
+		*/
+		playEffect(url : string, loop : boolean, volume : boolean) : number;		
+		/** !#en Set the volume of sound effects.
+		!#zh 设置音效音量（0.0 ~ 1.0）。
+		@param volume Volume must be in 0.0~1.0 .
+		
+		@example 
+		```js
+		//example
+		cc.audioEngine.setEffectsVolume(0.5);
+		``` 
+		*/
+		setEffectsVolume(volume : number) : void;		
+		/** !#en The volume of the effects max value is 1.0,the min value is 0.0 .
+		!#zh 获取音效音量（0.0 ~ 1.0）。
+		
+		@example 
+		```js
+		//example
+		var effectVolume = cc.audioEngine.getEffectsVolume();
+		``` 
+		*/
+		getEffectsVolume() : number;		
+		/** !#en Pause playing sound effect.
+		!#zh 暂停指定的音效。
+		@param audio The return value of function playEffect.
+		
+		@example 
+		```js
+		//example
+		cc.audioEngine.pauseEffect(audioID);
+		``` 
+		*/
+		pauseEffect(audio : number) : void;		
+		/** !#en Pause all playing sound effect.
+		!#zh 暂停现在正在播放的所有音效。
+		
+		@example 
+		```js
+		//example
+		cc.audioEngine.pauseAllEffects();
+		``` 
+		*/
+		pauseAllEffects() : void;		
+		/** !#en Resume playing sound effect.
+		!#zh 恢复播放指定的音效。
+		@param audioID The return value of function playEffect. 
+		*/
+		resumeEffect(audioID : number) : void;		
+		/** !#en Resume all playing sound effect.
+		!#zh 恢复播放所有之前暂停的所有音效。
+		
+		@example 
+		```js
+		//example
+		cc.audioEngine.resumeAllEffects();
+		``` 
+		*/
+		resumeAllEffects() : void;		
+		/** !#en Stop playing sound effect.
+		!#zh 停止播放指定音效。
+		@param audioID The return value of function playEffect.
+		
+		@example 
+		```js
+		//example
+		cc.audioEngine.stopEffect(audioID);
+		``` 
+		*/
+		stopEffect(audioID : number) : void;		
+		/** !#en Stop all playing sound effects.
+		!#zh 停止正在播放的所有音效。
+		
+		@example 
+		```js
+		//example
+		cc.audioEngine.stopAllEffects();
+		``` 
+		*/
+		stopAllEffects() : void;		
+		/** !#en Unload the preloaded effect from internal buffer.
+		!#zh 卸载预加载的音效。
+		
+		@example 
+		```js
+		//example
+		cc.audioEngine.unloadEffect(EFFECT_FILE);
+		``` 
+		*/
+		unloadEffect(url : string) : void;		
+		/** !#en End music and effects.
+		!#zh 停止所有音乐和音效的播放。 
+		*/
+		end() : void;	
+	}		
 		/** !#en Base class cc.Action for action classes.
 		!#zh Action 类是所有动作类型的基类。 */
 		export class Action {		
@@ -2801,16 +3008,21 @@ declare module cc {
 		targetOff(target : any) : void;		
 		/** !#en
 		Executes an action, and returns the action that is executed.<br/>
-		The node becomes the action's target. Refer to cc.Action's getTarget()<br/>
-		Calling runAction while the node is not active won't have any effect.
+		The node becomes the action's target. Refer to cc.Action's getTarget() <br/>
+		Calling runAction while the node is not active won't have any effect. <br/>
+		Note：You shouldn't modify the action after runAction, that won't take any effect.<br/>
+		if you want to modify, when you define action plus.
 		!#zh
 		执行并返回该执行的动作。该节点将会变成动作的目标。<br/>
-		调用 runAction 时，节点自身处于不激活状态将不会有任何效果。
+		调用 runAction 时，节点自身处于不激活状态将不会有任何效果。<br/>
+		注意：你不应该修改 runAction 后的动作，将无法发挥作用，如果想进行修改，请在定义 action 时加入。
 		
 		@example 
 		```js
 		var action = cc.scaleTo(0.2, 1, 0.6);
 		node.runAction(action);
+		node.runAction(action).repeatForever(); // fail
+		node.runAction(action.repeatForever()); // right
 		``` 
 		*/
 		runAction(action : Action) : Action;		
@@ -2878,7 +3090,10 @@ declare module cc {
 		!#zh
 		cc.Scene 是 cc.Node 的子类，仅作为一个抽象的概念。<br/>
 		cc.Scene 和 cc.Node 有点不同，用户不应直接修改 cc.Scene。 */
-		export class Scene extends _BaseNode {	
+		export class Scene extends _BaseNode {		
+		/** !#en Indicates whether all (directly or indirectly) static referenced assets of this scene are releasable by default after scene unloading.
+		!#zh 指示该场景中直接或间接静态引用到的所有资源是否默认在场景切换后自动释放。 */
+		autoReleaseAssets : boolean;	
 	}		
 		/** !#en
 		Scheduler is responsible of triggering the scheduled callbacks.<br/>
@@ -3945,213 +4160,6 @@ declare module cc {
 		export class TiledMapAsset extends Asset {		
 		constructor();	
 	}		
-		/** !#en cc.audioEngine is the singleton object, it provide simple audio APIs.
-		!#zn
-		cc.audioengine是单例对象。<br/>
-		主要用来播放背景音乐和音效，背景音乐同一时间只能播放一个，而音效则可以同时播放多个。<br/>
-		注意：<br/>
-		在 Android 系统浏览器上，不同浏览器，不同版本的效果不尽相同。<br/>
-		比如说：大多数浏览器都需要用户物理交互才可以开始播放音效，有一些不支持 WebAudio，<br/>
-		有一些不支持多音轨播放。总之如果对音乐依赖比较强，请做尽可能多的测试。 */
-		export class audioEngine {		
-		/** !#en Play music.
-		!#zh
-		播放指定音乐，并可以设置是否循环播放。<br/>
-		注意：音乐播放接口不支持多音轨，同一时间只能播放一个音乐。
-		@param url The path of the music file without filename extension.
-		@param loop Whether the music loop or not.
-		
-		@example 
-		```js
-		//example
-		cc.audioEngine.playMusic(path, false);
-		``` 
-		*/
-		playMusic(url : string, loop : boolean) : void;		
-		/** !#en Stop playing music.
-		!#zh 停止当前音乐。
-		@param releaseData If release the music data or not.As default value is false.
-		
-		@example 
-		```js
-		//example
-		cc.audioEngine.stopMusic();
-		``` 
-		*/
-		stopMusic(releaseData? : boolean) : void;		
-		/** !#en Pause playing music.
-		!#zh 暂停正在播放音乐。
-		
-		@example 
-		```js
-		//example
-		cc.audioEngine.pauseMusic();
-		``` 
-		*/
-		pauseMusic() : void;		
-		/** !#en Resume playing music.
-		!#zh 恢复音乐播放。
-		
-		@example 
-		```js
-		//example
-		cc.audioEngine.resumeMusic();
-		``` 
-		*/
-		resumeMusic() : void;		
-		/** !#en Rewind playing music.
-		!#zh 从头开始重新播放当前音乐。
-		
-		@example 
-		```js
-		//example
-		cc.audioEngine.rewindMusic();
-		``` 
-		*/
-		rewindMusic() : void;		
-		/** !#en The volume of the music max value is 1.0,the min value is 0.0 .
-		!#zh 获取音量（0.0 ~ 1.0）。
-		
-		@example 
-		```js
-		//example
-		var volume = cc.audioEngine.getMusicVolume();
-		``` 
-		*/
-		getMusicVolume() : number;		
-		/** !#en Set the volume of music.
-		!#zh 设置音量（0.0 ~ 1.0）。
-		@param volume Volume must be in 0.0~1.0 .
-		
-		@example 
-		```js
-		//example
-		cc.audioEngine.setMusicVolume(0.5);
-		``` 
-		*/
-		setMusicVolume(volume : number) : void;		
-		/** !#en Whether the music is playing.
-		!#zh 音乐是否正在播放。
-		
-		@example 
-		```js
-		//example
-		 if (cc.audioEngine.isMusicPlaying()) {
-		     cc.log("music is playing");
-		 }
-		 else {
-		     cc.log("music is not playing");
-		 }
-		``` 
-		*/
-		isMusicPlaying() : boolean;		
-		/** !#en Play sound effect.
-		!#zh
-		播放指定音效，并可以设置是否循环播放。<br/>
-		注意：在部分不支持多音轨的浏览器上，这个接口会失效，请使用 playMusic
-		@param url The path of the sound effect with filename extension.
-		@param loop Whether to loop the effect playing, default value is false
-		
-		@example 
-		```js
-		//example
-		var soundId = cc.audioEngine.playEffect(path);
-		``` 
-		*/
-		playEffect(url : string, loop : boolean, volume : boolean) : number;		
-		/** !#en Set the volume of sound effects.
-		!#zh 设置音效音量（0.0 ~ 1.0）。
-		@param volume Volume must be in 0.0~1.0 .
-		
-		@example 
-		```js
-		//example
-		cc.audioEngine.setEffectsVolume(0.5);
-		``` 
-		*/
-		setEffectsVolume(volume : number) : void;		
-		/** !#en The volume of the effects max value is 1.0,the min value is 0.0 .
-		!#zh 获取音效音量（0.0 ~ 1.0）。
-		
-		@example 
-		```js
-		//example
-		var effectVolume = cc.audioEngine.getEffectsVolume();
-		``` 
-		*/
-		getEffectsVolume() : number;		
-		/** !#en Pause playing sound effect.
-		!#zh 暂停指定的音效。
-		@param audio The return value of function playEffect.
-		
-		@example 
-		```js
-		//example
-		cc.audioEngine.pauseEffect(audioID);
-		``` 
-		*/
-		pauseEffect(audio : number) : void;		
-		/** !#en Pause all playing sound effect.
-		!#zh 暂停现在正在播放的所有音效。
-		
-		@example 
-		```js
-		//example
-		cc.audioEngine.pauseAllEffects();
-		``` 
-		*/
-		pauseAllEffects() : void;		
-		/** !#en Resume playing sound effect.
-		!#zh 恢复播放指定的音效。
-		@param audioID The return value of function playEffect. 
-		*/
-		resumeEffect(audioID : number) : void;		
-		/** !#en Resume all playing sound effect.
-		!#zh 恢复播放所有之前暂停的所有音效。
-		
-		@example 
-		```js
-		//example
-		cc.audioEngine.resumeAllEffects();
-		``` 
-		*/
-		resumeAllEffects() : void;		
-		/** !#en Stop playing sound effect.
-		!#zh 停止播放指定音效。
-		@param audioID The return value of function playEffect.
-		
-		@example 
-		```js
-		//example
-		cc.audioEngine.stopEffect(audioID);
-		``` 
-		*/
-		stopEffect(audioID : number) : void;		
-		/** !#en Stop all playing sound effects.
-		!#zh 停止正在播放的所有音效。
-		
-		@example 
-		```js
-		//example
-		cc.audioEngine.stopAllEffects();
-		``` 
-		*/
-		stopAllEffects() : void;		
-		/** !#en Unload the preloaded effect from internal buffer.
-		!#zh 卸载预加载的音效。
-		
-		@example 
-		```js
-		//example
-		cc.audioEngine.unloadEffect(EFFECT_FILE);
-		``` 
-		*/
-		unloadEffect(url : string) : void;		
-		/** !#en End music and effects.
-		!#zh 停止所有音乐和音效的播放。 
-		*/
-		end() : void;	
-	}		
 		/** !#en
 		 cc.NodePool is the cache pool designed for node type.<br/>
 		 It can helps you to improve your game performance for objects which need frequent release and recreate operations<br/>
@@ -4279,6 +4287,131 @@ declare module cc {
 		*/
 		drainAllPools() : void;	
 	}		
+		/** !#en
+		Base class for handling assets used in Fireball. This class can be instantiate.
+		
+		You may want to override:<br/>
+		- createNode<br/>
+		- cc.Object._serialize<br/>
+		- cc.Object._deserialize<br/>
+		!#zh
+		资源基类，该类可以被实例化。<br/>
+		
+		您可能需要重写：<br/>
+		- createNode <br/>
+		- cc.Object._serialize<br/>
+		- cc.Object._deserialize<br/> */
+		export class Asset extends RawAsset {		
+		constructor();		
+		/** !#en
+		Returns the url of this asset's first raw file, if none of rawFile exists,
+		it will returns an empty string.
+		!#zh 返回该资源的原始文件的 URL，如果不支持 RAW 文件，它将返回一个空字符串。 */
+		rawUrl : string;		
+		/** !#en
+		Returns the url of this asset's raw files, if none of rawFile exists,
+		it will returns an empty array.
+		!#zh 返回该资源的原文件的 URL 数组，如果不支持 RAW 文件，它将返回一个空数组。 */
+		rawUrls : String[];		
+		/** !#en Indicates whether its dependent raw assets can support deferred load if the owner scene is marked as `asyncLoadAssets`.
+		!#zh 当场景被标记为 `asyncLoadAssets`，禁止延迟加载该资源所依赖的其它 RawAsset。 */
+		preventDeferredLoadDependents : boolean;		
+		/** !#en
+		Create a new node using this asset in the scene.<br/>
+		If this type of asset dont have its corresponding node type, this method should be null.
+		!#zh
+		使用该资产在场景中创建一个新节点。<br/>
+		如果这类资产没有相应的节点类型，该方法应该是空的。 
+		*/
+		createNode(callback: (error: string, node: any) => void) : void;	
+	}		
+		/** !#en Class for audio data handling.
+		!#zh 音频资源类。 */
+		export class AudioClip extends RawAsset {		
+		constructor();	
+	}		
+		/** !#en Class for BitmapFont handling.
+		!#zh 位图字体资源类。 */
+		export class BitmapFont extends RawAsset {		
+		constructor();	
+	}		
+		/** !#en Class for Font handling.
+		!#zh 字体资源类。 */
+		export class Font extends RawAsset {		
+		constructor();	
+	}		
+		/** !#en Class for prefab handling.
+		!#zh 预制资源类。 */
+		export class Prefab extends Asset {		
+		constructor();	
+	}		
+		/** !#en
+		The base class for registering asset types.
+		
+		You may want to override:
+		- createNode (static)
+		!#zh
+		注册用的资源基类。<br/>
+		你可能要重写：<br/>
+		- createNode (static) */
+		export class RawAsset extends CCObject {		
+		/** !#en
+		Create a new node in the scene.<br/>
+		If this type of asset dont have its corresponding node type, this method should be null.
+		!#zh
+		在场景中创建一个新节点。<br/>
+		如果这类资源没有相应的节点类型，该方法应该是空的。 
+		*/
+		createNodeByInfo(Info : any, callback: (error: string, node: any) => void) : void;	
+	}		
+		/** !#en Class for scene handling.
+		!#zh 场景资源类。 */
+		export class SceneAsset extends Asset {		
+		constructor();		
+		scene : cc.Scene;		
+		/** !#en Indicates the raw assets of this scene can be load after scene launched.
+		!#zh 指示该场景依赖的资源可否在场景切换后再延迟加载。 */
+		asyncLoadAssets : boolean;	
+	}		
+		/** !#en Class for script handling.
+		!#zh Script 资源类。 */
+		export class _Script extends Asset {		
+		constructor();	
+	}		
+		/** !#en Class for JavaScript handling.
+		!#zh JavaScript 资源类。 */
+		export class _JavaScript extends Asset {		
+		constructor();	
+	}		
+		/** !#en Class for coffee script handling.
+		!#zh CoffeeScript 资源类。 */
+		export class CoffeeScript extends Asset {		
+		constructor();	
+	}		
+		/** !#en Class for sprite atlas handling.
+		!#zh 精灵图集资源类。 */
+		export class SpriteAtlas extends RawAsset {		
+		constructor();		
+		/** Returns the texture of the sprite atlas 
+		*/
+		getTexture() : cc.Texture2D;		
+		/** Returns the sprite frame correspond to the given key in sprite atlas. 
+		*/
+		getSpriteFrame(key : string) : SpriteFrame;		
+		/** Returns the sprite frames in sprite atlas. 
+		*/
+		getSpriteFrames() : [SpriteFrame];	
+	}		
+		/** !#en Class for TTFFont handling.
+		!#zh TTF 字体资源类。 */
+		export class TTFFont extends Asset {		
+		constructor();	
+	}		
+		/** !#en Class for text file.
+		!#zh 文本资源类。 */
+		export class TextAsset extends Asset {		
+		constructor();	
+	}		
 		/** !#en Box Collider.
 		!#zh 包围盒碰撞组件 */
 		export class BoxCollider extends Component {		
@@ -4404,331 +4537,6 @@ declare module cc {
 		/** !#en Polygon points
 		!#zh 多边形顶点数组 */
 		points : [Vec2];	
-	}		
-		/** !#en
-		Base class for handling assets used in Fireball. This class can be instantiate.
-		
-		You may want to override:<br/>
-		- createNode<br/>
-		- cc.Object._serialize<br/>
-		- cc.Object._deserialize<br/>
-		!#zh
-		资源基类，该类可以被实例化。<br/>
-		
-		您可能需要重写：<br/>
-		- createNode <br/>
-		- cc.Object._serialize<br/>
-		- cc.Object._deserialize<br/> */
-		export class Asset extends RawAsset {		
-		constructor();		
-		/** !#en
-		Returns the url of this asset's first raw file, if none of rawFile exists,
-		it will returns an empty string.
-		!#zh 返回该资源的原始文件的 URL，如果不支持 RAW 文件，它将返回一个空字符串。 */
-		rawUrl : string;		
-		/** !#en
-		Returns the url of this asset's raw files, if none of rawFile exists,
-		it will returns an empty array.
-		!#zh 返回该资源的原文件的 URL 数组，如果不支持 RAW 文件，它将返回一个空数组。 */
-		rawUrls : String[];		
-		/** !#en Indicates whether its dependent raw assets can support deferred load if the owner scene is marked as `asyncLoadAssets`.
-		!#zh 当场景被标记为 `asyncLoadAssets`，禁止延迟加载该资源所依赖的其它 RawAsset。 */
-		preventDeferredLoadDependents : boolean;		
-		/** !#en
-		Create a new node using this asset in the scene.<br/>
-		If this type of asset dont have its corresponding node type, this method should be null.
-		!#zh
-		使用该资产在场景中创建一个新节点。<br/>
-		如果这类资产没有相应的节点类型，该方法应该是空的。 
-		*/
-		createNode(callback: (error: string, node: any) => void) : void;	
-	}		
-		/** !#en Class for audio data handling.
-		!#zh 音频资源类。 */
-		export class AudioClip extends RawAsset {		
-		constructor();	
-	}		
-		/** !#en Class for BitmapFont handling.
-		!#zh 位图字体资源类。 */
-		export class BitmapFont extends RawAsset {		
-		constructor();	
-	}		
-		/** !#en Class for Font handling.
-		!#zh 字体资源类。 */
-		export class Font extends RawAsset {		
-		constructor();	
-	}		
-		/** !#en Class for prefab handling.
-		!#zh 预制资源类。 */
-		export class Prefab extends Asset {		
-		constructor();	
-	}		
-		/** !#en
-		The base class for registering asset types.
-		
-		You may want to override:
-		- createNode (static)
-		!#zh
-		注册用的资源基类。<br/>
-		你可能要重写：<br/>
-		- createNode (static) */
-		export class RawAsset extends CCObject {		
-		/** !#en
-		Create a new node in the scene.<br/>
-		If this type of asset dont have its corresponding node type, this method should be null.
-		!#zh
-		在场景中创建一个新节点。<br/>
-		如果这类资源没有相应的节点类型，该方法应该是空的。 
-		*/
-		createNodeByInfo(Info : any, callback: (error: string, node: any) => void) : void;	
-	}		
-		/** !#en Class for scene handling.
-		!#zh 场景资源类。 */
-		export class SceneAsset extends Asset {		
-		constructor();		
-		/** !#en Indicates the raw assets of this scene can be load after scene launched.
-		!#zh 指示该场景依赖的资源可否在场景切换后再延迟加载。 */
-		asyncLoadAssets : boolean;	
-	}		
-		/** !#en Class for script handling.
-		!#zh Script 资源类。 */
-		export class _Script extends Asset {		
-		constructor();	
-	}		
-		/** !#en Class for JavaScript handling.
-		!#zh JavaScript 资源类。 */
-		export class _JavaScript extends Asset {		
-		constructor();	
-	}		
-		/** !#en Class for coffee script handling.
-		!#zh CoffeeScript 资源类。 */
-		export class CoffeeScript extends Asset {		
-		constructor();	
-	}		
-		/** !#en Class for sprite atlas handling.
-		!#zh 精灵图集资源类。 */
-		export class SpriteAtlas extends RawAsset {		
-		constructor();		
-		/** Returns the texture of the sprite atlas 
-		*/
-		getTexture() : cc.Texture2D;		
-		/** Returns the sprite frame correspond to the given key in sprite atlas. 
-		*/
-		getSpriteFrame(key : string) : SpriteFrame;		
-		/** Returns the sprite frames in sprite atlas. 
-		*/
-		getSpriteFrames() : [SpriteFrame];	
-	}		
-		/** !#en Class for TTFFont handling.
-		!#zh TTF 字体资源类。 */
-		export class TTFFont extends Asset {		
-		constructor();	
-	}		
-		/** !#en Class for text file.
-		!#zh 文本资源类。 */
-		export class TextAsset extends Asset {		
-		constructor();	
-	}		
-		/** !#en
-		EventTarget is an object to which an event is dispatched when something has occurred.
-		Entity are the most common event targets, but other objects can be event targets too.
-		
-		Event targets are an important part of the Fireball event model.
-		The event target serves as the focal point for how events flow through the scene graph.
-		When an event such as a mouse click or a keypress occurs, Fireball dispatches an event object
-		into the event flow from the root of the hierarchy. The event object then makes its way through
-		the scene graph until it reaches the event target, at which point it begins its return trip through
-		the scene graph. This round-trip journey to the event target is conceptually divided into three phases:
-		- The capture phase comprises the journey from the root to the last node before the event target's node
-		- The target phase comprises only the event target node
-		- The bubbling phase comprises any subsequent nodes encountered on the return trip to the root of the tree
-		See also: http://www.w3.org/TR/DOM-Level-3-Events/#event-flow
-		
-		Event targets can implement the following methods:
-		 - _getCapturingTargets
-		 - _getBubblingTargets
-		
-		!#zh
-		事件目标是事件触发时，分派的事件对象，Node 是最常见的事件目标，
-		但是其他对象也可以是事件目标。<br/> */
-		export class EventTarget {		
-		/** !#en
-		Register an callback of a specific event type on the EventTarget.
-		This method is merely an alias to addEventListener.
-		!#zh
-		注册事件目标的特定事件类型回调，仅仅是 addEventListener 的别名。
-		@param type A string representing the event type to listen for.
-		@param callback The callback that will be invoked when the event is dispatched.
-		                             The callback is ignored if it is a duplicate (the callbacks are unique).
-		@param target The target to invoke the callback, can be null
-		@param useCapture When set to true, the capture argument prevents callback
-		                             from being invoked when the event's eventPhase attribute value is BUBBLING_PHASE.
-		                             When false, callback will NOT be invoked when event's eventPhase attribute value is CAPTURING_PHASE.
-		                             Either way, callback will be invoked when event's eventPhase attribute value is AT_TARGET.
-		
-		@example 
-		```js
-		node.on(cc.Node.EventType.TOUCH_END, function (event) {
-		    cc.log("this is callback");
-		}, node);
-		``` 
-		*/
-		on(type : string, callback: (param: Event) => void, target : any, useCapture : boolean) : Function;		
-		/** !#en
-		Removes the callback previously registered with the same type, callback, target and or useCapture.
-		This method is merely an alias to removeEventListener.
-		!#zh
-		删除之前与同类型，回调，目标或 useCapture 注册的回调，仅仅是 removeEventListener 的别名。
-		@param type A string representing the event type being removed.
-		@param callback The callback to remove.
-		@param target The target to invoke the callback, if it's not given, only callback without target will be removed
-		@param useCapture Specifies whether the callback being removed was registered as a capturing callback or not.
-		                             If not specified, useCapture defaults to false. If a callback was registered twice,
-		                             one with capture and one without, each must be removed separately. Removal of a capturing callback
-		                             does not affect a non-capturing version of the same listener, and vice versa.
-		
-		@example 
-		```js
-		// register touchEnd eventListener
-		var touchEnd = node.on(cc.Node.EventType.TOUCH_END, function (event) {
-		    cc.log("this is callback");
-		}, node);
-		// remove touchEnd eventListener
-		node.off(cc.Node.EventType.TOUCH_END, touchEnd, node);
-		``` 
-		*/
-		off(type : string, callback : Function, target : any, useCapture : boolean) : void;		
-		/** !#en Removes all callbacks previously registered with the same target.
-		!#zh 删除指定目标上的所有注册回调。
-		@param target The target to be searched for all related callbacks 
-		*/
-		targetOff(target : any) : void;		
-		/** !#en
-		Register an callback of a specific event type on the EventTarget,
-		the callback will remove itself after the first time it is triggered.
-		!#zh
-		注册事件目标的特定事件类型回调，回调会在第一时间被触发后删除自身。
-		@param type A string representing the event type to listen for.
-		@param callback The callback that will be invoked when the event is dispatched.
-		                             The callback is ignored if it is a duplicate (the callbacks are unique).
-		@param target The target to invoke the callback, can be null
-		@param useCapture When set to true, the capture argument prevents callback
-		                             from being invoked when the event's eventPhase attribute value is BUBBLING_PHASE.
-		                             When false, callback will NOT be invoked when event's eventPhase attribute value is CAPTURING_PHASE.
-		                             Either way, callback will be invoked when event's eventPhase attribute value is AT_TARGET.
-		
-		@example 
-		```js
-		node.once(cc.Node.EventType.TOUCH_END, function (event) {
-		    cc.log("this is callback");
-		}, node);
-		``` 
-		*/
-		once(type : string, callback: (param: Event) => void, target : any, useCapture : boolean) : void;		
-		/** !#en
-		Dispatches an event into the event flow.
-		The event target is the EventTarget object upon which the dispatchEvent() method is called.
-		!#zh 分发事件到事件流中。
-		@param event The Event object that is dispatched into the event flow 
-		*/
-		dispatchEvent(event : Event) : void;		
-		/** !#en
-		Send an event to this object directly, this method will not propagate the event to any other objects.
-		The event will be created from the supplied message, you can get the "detail" argument from event.detail.
-		!#zh
-		该对象直接发送事件， 这种方法不会对事件传播到任何其他对象。
-		@param message the message to send
-		@param detail whatever argument the message needs 
-		*/
-		emit(message : string, detail? : any) : void;	
-	}		
-		/** !#en Base class of all kinds of events.
-		!#zh 包含事件相关信息的对象。 */
-		export class Event {		
-		constructor();		
-		/** 
-		@param type The name of the event (case-sensitive), e.g. "click", "fire", or "submit"
-		@param bubbles A boolean indicating whether the event bubbles up through the tree or not 
-		*/
-		Event(type : string, bubbles : boolean) : Event;		
-		/** !#en The name of the event (case-sensitive), e.g. "click", "fire", or "submit".
-		!#zh 事件类型。 */
-		type : string;		
-		/** !#en Indicate whether the event bubbles up through the tree or not.
-		!#zh 表示该事件是否进行冒泡。 */
-		bubbles : boolean;		
-		/** !#en A reference to the target to which the event was originally dispatched.
-		!#zh 最初事件触发的目标 */
-		target : any;		
-		/** !#en A reference to the currently registered target for the event.
-		!#zh 当前目标 */
-		currentTarget : any;		
-		/** !#en
-		Indicates which phase of the event flow is currently being evaluated.
-		Returns an integer value represented by 4 constants:
-		 - Event.NONE = 0
-		 - Event.CAPTURING_PHASE = 1
-		 - Event.AT_TARGET = 2
-		 - Event.BUBBLING_PHASE = 3
-		The phases are explained in the [section 3.1, Event dispatch and DOM event flow]
-		(http://www.w3.org/TR/DOM-Level-3-Events/#event-flow), of the DOM Level 3 Events specification.
-		!#zh 事件阶段 */
-		eventPhase : number;		
-		/** !#en Reset the event for being stored in the object pool.
-		!#zh 重置对象池中存储的事件。 
-		*/
-		unuse() : string;		
-		/** !#en Reuse the event for being used again by the object pool.
-		!#zh 用于对象池再次使用的事件。 
-		*/
-		reuse() : string;		
-		/** !#en Stops propagation for current event.
-		!#zh 停止传递当前事件。 
-		*/
-		stopPropagation() : void;		
-		/** !#en Stops propagation for current event immediately,
-		the event won't even be dispatched to the listeners attached in the current target.
-		!#zh 立即停止当前事件的传递，事件甚至不会被分派到所连接的当前目标。 
-		*/
-		stopPropagationImmediate() : void;		
-		/** !#en Checks whether the event has been stopped.
-		!#zh 检查该事件是否已经停止传递. 
-		*/
-		isStopped() : boolean;		
-		/** !#en
-		<p>
-		    Gets current target of the event                                                            <br/>
-		    note: It only be available when the event listener is associated with node.                <br/>
-		         It returns 0 when the listener is associated with fixed priority.
-		</p>
-		!#zh 获取当前目标节点 
-		*/
-		getCurrentTarget() : Node;		
-		/** !#en Gets the event type.
-		!#zh 获取事件类型 
-		*/
-		getType() : string;		
-		/** !#en Code for event without type.
-		!#zh 没有类型的事件 */
-		NO_TYPE : string;		
-		/** !#en Events not currently dispatched are in this phase
-		!#zh 尚未派发事件阶段 */
-		NONE : number;		
-		/** !#en
-		The capturing phase comprises the journey from the root to the last node before the event target's node
-		see http://www.w3.org/TR/DOM-Level-3-Events/#event-flow
-		!#zh 捕获阶段，包括事件目标节点之前从根节点到最后一个节点的过程。 */
-		CAPTURING_PHASE : number;		
-		/** !#en
-		The target phase comprises only the event target node
-		see http://www.w3.org/TR/DOM-Level-3-Events/#event-flow
-		!#zh 目标阶段仅包括事件目标节点。 */
-		AT_TARGET : number;		
-		/** !#en
-		The bubbling phase comprises any subsequent nodes encountered on the return trip to the root of the hierarchy
-		see http://www.w3.org/TR/DOM-Level-3-Events/#event-flow
-		!#zh 冒泡阶段， 包括回程遇到到层次根节点的任何后续节点。 */
-		BUBBLING_PHASE : number;	
 	}		
 		/** !#en The animation component is used to play back animations.
 		
@@ -5499,6 +5307,11 @@ declare module cc {
 		/** !#en Scrollview events callback
 		!#zh 滚动视图的事件回调函数 */
 		scrollEvents : Component.EventHandler[];		
+		/** !#en If cancelInnerEvents is set to true, the scroll behavior will cancel touch events on inner content nodes of the scroll view
+		It's set to true by default.
+		!#zh 如果这个属性被设置为 true，那么滚动行为会取消 ScrollView 的子节点上注册的触摸事件，默认被设置为 true。
+		注意，子节点上的 touchstart 事件仍然会触发，触点移动距离非常短的情况下 touchmove 和 touchend 也不会受影响。 */
+		cancelInnerEvents : boolean;		
 		/** !#en Scroll the content to the bottom boundary of ScrollView.
 		!#zh 视图内容将在规定时间内滚动到视图底部。
 		@param timeInSecond Scroll time in second, if you don't pass timeInSecond,
@@ -5682,6 +5495,57 @@ declare module cc {
 		*/
 		getContentPosition() : Position;	
 	}		
+		/** !#en A distortion used to change the rendering of simple sprite.If will take effect after sprite component is added.
+		!#zh 扭曲效果组件,用于改变SIMPLE类型sprite的渲染,只有当sprite组件已经添加后,才能起作用. */
+		export class SpriteDistortion extends Component {		
+		/** !#en Change the UV offset for distortion rendering.
+		!#zh 在渲染时改变UV的整体偏移. */
+		offset : Vec2;		
+		/** !#en Change the UV scale for distortion rendering.
+		!#zh 在渲染时改变UV的寻址系数 */
+		tiling : Vec2;	
+	}		
+		/** !#en cc.VideoPlayer is a component for playing videos, you can use it for showing videos in your game.
+		!#zh Video 组件，用于在游戏中播放视频 */
+		export class VideoPlayer extends _RendererUnderSG {		
+		/** !#en The resource type of videoplayer, REMOTE for remote url and LOCAL for local file path.
+		!#zh 视频来源：REMOTE 表示远程视频 URL，LOCAL 表示本地视频地址。 */
+		resourceType : VideoPlayer.ResourceType;		
+		/** !#en The remote URL of video.
+		!#zh 远程视频的 URL */
+		remoteURL : string;		
+		/** !#en The local video full path.
+		!#zh 本地视频的 URL */
+		video : string;		
+		/** !#en The current playback time of the now playing item in seconds, you could also change the start playback time.
+		!#zh 指定视频从什么时间点开始播放，单位是秒，也可以用来获取当前视频播放的时间进度。 */
+		currentTime : number;		
+		/** !#en Whether keep the aspect ration of the original video.
+		!#zh 是否保持视频原来的宽高比 */
+		keepAspectRatio : boolean;		
+		/** !#en Whether play video in fullscreen mode.
+		!#zh 是否全屏播放视频 */
+		isFullscreen : boolean;		
+		/** !#en the video player's callback, it will be triggered when certain event occurs, like: playing, paused, stopped and completed.
+		!#zh 视频播放回调函数，该回调函数会在特定情况被触发，比如播放中，暂时，停止和完成播放。 */
+		videoPlayerEvent : cc.Component.EventHandler[];		
+		/** !#en If a video is paused, call this method could resume playing. If a video is stopped, call this method to play from scratch.
+		!#zh 如果视频被暂停播放了，调用这个接口可以继续播放。如果视频被停止播放了，调用这个接口可以从头开始播放。 
+		*/
+		play() : void;		
+		/** !#en If a video is paused, call this method to resume playing.
+		!#zh 如果一个视频播放被暂停播放了，调用这个接口可以继续播放。 
+		*/
+		resume() : void;		
+		/** !#en If a video is playing, call this method to pause playing.
+		!#zh 如果一个视频正在播放，调用这个接口可以暂停播放。 
+		*/
+		pause() : void;		
+		/** !#en If a video is playing, call this method to stop playing immediately.
+		!#zh 如果一个视频正在播放，调用这个接口可以立马停止播放。 
+		*/
+		stop() : void;	
+	}		
 		/** !#en Renders a sprite in the scene.
 		!#zh 该组件用于在场景中渲染精灵。 */
 		export class Sprite extends _RendererUnderSG {		
@@ -5804,57 +5668,6 @@ declare module cc {
 		*/
 		getInsetBottom() : number;	
 	}		
-		/** !#en A distortion used to change the rendering of simple sprite.If will take effect after sprite component is added.
-		!#zh 扭曲效果组件,用于改变SIMPLE类型sprite的渲染,只有当sprite组件已经添加后,才能起作用. */
-		export class SpriteDistortion extends Component {		
-		/** !#en Change the UV offset for distortion rendering.
-		!#zh 在渲染时改变UV的整体偏移. */
-		offset : Vec2;		
-		/** !#en Change the UV scale for distortion rendering.
-		!#zh 在渲染时改变UV的寻址系数 */
-		tiling : Vec2;	
-	}		
-		/** !#en cc.VideoPlayer is a component for playing videos, you can use it for showing videos in your game.
-		!#zh Video 组件，用于在游戏中播放视频 */
-		export class VideoPlayer extends _RendererUnderSG {		
-		/** !#en The resource type of videoplayer, REMOTE for remote url and LOCAL for local file path.
-		!#zh 视频来源：REMOTE 表示远程视频 URL，LOCAL 表示本地视频地址。 */
-		resourceType : VideoPlayer.ResourceType;		
-		/** !#en The remote URL of video.
-		!#zh 远程视频的 URL */
-		remoteURL : string;		
-		/** !#en The local video full path.
-		!#zh 本地视频的 URL */
-		video : string;		
-		/** !#en The current time when video start to play.
-		!#zh  从当前时间点开始播放视频 */
-		currentTime : Float;		
-		/** !#en Whether keep the aspect ration of the original video.
-		!#zh 是否保持视频原来的宽高比 */
-		keepAspectRatio : boolean;		
-		/** !#en Whether play video in fullscreen mode.
-		!#zh 是否全屏播放视频 */
-		isFullscreen : boolean;		
-		/** !#en the video player's callback, it will be triggered when certain event occurs, like: playing, paused, stopped and completed.
-		!#zh 视频播放回调函数，该回调函数会在特定情况被触发，比如播放中，暂时，停止和完成播放。 */
-		videoPlayerEvent : cc.Component.EventHandler[];		
-		/** !#en If a video is paused, call this method could resume playing. If a video is stopped, call this method to play from scratch.
-		!#zh 如果视频被暂停播放了，调用这个接口可以继续播放。如果视频被停止播放了，调用这个接口可以从头开始播放。 
-		*/
-		play() : void;		
-		/** !#en If a video is paused, call this method to resume playing.
-		!#zh 如果一个视频播放被暂停播放了，调用这个接口可以继续播放。 
-		*/
-		resume() : void;		
-		/** !#en If a video is playing, call this method to pause playing.
-		!#zh 如果一个视频正在播放，调用这个接口可以暂停播放。 
-		*/
-		pause() : void;		
-		/** !#en If a video is playing, call this method to stop playing immediately.
-		!#zh 如果一个视频正在播放，调用这个接口可以立马停止播放。 
-		*/
-		stop() : void;	
-	}		
 		/** !#en cc.WebView is a component for display web pages in the game
 		!#zh WebView 组件，用于在游戏中显示网页 */
 		export class WebView extends _RendererUnderSG {		
@@ -5868,8 +5681,10 @@ declare module cc {
 		/** !#en
 		Stores and manipulate the anchoring based on its parent.
 		Widget are used for GUI but can also be used for other things.
+		Widget will adjust current node's position and size automatically, but the results after adjustment can not be obtained until the next frame.
 		!#zh
-		Widget 组件，用于设置和适配其相对于父节点的边距，Widget 通常被用于 UI 界面，也可以用于其他地方。 */
+		Widget 组件，用于设置和适配其相对于父节点的边距，Widget 通常被用于 UI 界面，也可以用于其他地方。
+		Widget 会自动调整当前节点的坐标和宽高，不过目前调整后的结果要到下一帧才能在脚本里获取到。 */
 		export class Widget extends Component {		
 		/** !#en Whether to align the top.
 		!#zh 是否对齐上边。 */
@@ -5930,6 +5745,22 @@ declare module cc {
 		本节点右边和父节点右边的距离，可填写负值，只有在 isAlignRight 开启时才有作用。 */
 		right : number;		
 		/** !#en
+		Horizontal aligns the midpoint offset value,
+		the value can be negative, Only available in 'isAlignHorizontalCenter' open.
+		!#zh 水平居中的偏移值，可填写负值，只有在 isAlignHorizontalCenter 开启时才有作用。 */
+		horizontalCenter : number;		
+		/** !#en
+		Vertical aligns the midpoint offset value,
+		the value can be negative, Only available in 'isAlignVerticalCenter' open.
+		!#zh 垂直居中的偏移值，可填写负值，只有在 isAlignVerticalCenter 开启时才有作用。 */
+		verticalCenter : number;		
+		/** !#en If true, horizontalCenter is pixel margin, otherwise is percentage (0 - 1) margin.
+		!#zh 如果为 true，"horizontalCenter" 将会以像素作为偏移值，反之为百分比（0 到 1）。 */
+		isAbsoluteHorizontalCenter : boolean;		
+		/** !#en If true, verticalCenter is pixel margin, otherwise is percentage (0 - 1) margin.
+		!#zh 如果为 true，"verticalCenter" 将会以像素作为偏移值，反之为百分比（0 到 1）。 */
+		isAbsoluteVerticalCenter : boolean;		
+		/** !#en
 		If true, top is pixel margin, otherwise is percentage (0 - 1) margin relative to the parent's height.
 		!#zh
 		如果为 true，"top" 将会以像素作为边距，否则将会以相对父物体高度的百分比（0 到 1）作为边距。 */
@@ -5956,134 +5787,206 @@ declare module cc {
 		注意：onEnable 时所在的那一帧仍然会进行对齐。 */
 		isAlignOnce : boolean;	
 	}		
-		/** undefined */
-		export class Graphics extends _RendererUnderSG {		
 		/** !#en
-		Current line width.
+		EventTarget is an object to which an event is dispatched when something has occurred.
+		Entity are the most common event targets, but other objects can be event targets too.
+		
+		Event targets are an important part of the Fireball event model.
+		The event target serves as the focal point for how events flow through the scene graph.
+		When an event such as a mouse click or a keypress occurs, Fireball dispatches an event object
+		into the event flow from the root of the hierarchy. The event object then makes its way through
+		the scene graph until it reaches the event target, at which point it begins its return trip through
+		the scene graph. This round-trip journey to the event target is conceptually divided into three phases:
+		- The capture phase comprises the journey from the root to the last node before the event target's node
+		- The target phase comprises only the event target node
+		- The bubbling phase comprises any subsequent nodes encountered on the return trip to the root of the tree
+		See also: http://www.w3.org/TR/DOM-Level-3-Events/#event-flow
+		
+		Event targets can implement the following methods:
+		 - _getCapturingTargets
+		 - _getBubblingTargets
+		
 		!#zh
-		当前线条宽度 */
-		lineWidth : number;		
+		事件目标是事件触发时，分派的事件对象，Node 是最常见的事件目标，
+		但是其他对象也可以是事件目标。<br/> */
+		export class EventTarget {		
 		/** !#en
-		lineJoin determines how two connecting segments (of lines, arcs or curves) with non-zero lengths in a shape are joined together.
+		Register an callback of a specific event type on the EventTarget.
+		This method is merely an alias to addEventListener.
 		!#zh
-		lineJoin 用来设置2个长度不为0的相连部分（线段，圆弧，曲线）如何连接在一起的属性。 */
-		lineJoin : Graphics.LineJoin;		
+		注册事件目标的特定事件类型回调，仅仅是 addEventListener 的别名。
+		@param type A string representing the event type to listen for.
+		@param callback The callback that will be invoked when the event is dispatched.
+		                             The callback is ignored if it is a duplicate (the callbacks are unique).
+		@param target The target to invoke the callback, can be null
+		@param useCapture When set to true, the capture argument prevents callback
+		                             from being invoked when the event's eventPhase attribute value is BUBBLING_PHASE.
+		                             When false, callback will NOT be invoked when event's eventPhase attribute value is CAPTURING_PHASE.
+		                             Either way, callback will be invoked when event's eventPhase attribute value is AT_TARGET.
+		
+		@example 
+		```js
+		node.on(cc.Node.EventType.TOUCH_END, function (event) {
+		    cc.log("this is callback");
+		}, node);
+		``` 
+		*/
+		on(type : string, callback: (param: Event) => void, target : any, useCapture : boolean) : Function;		
 		/** !#en
-		lineCap determines how the end points of every line are drawn.
+		Removes the callback previously registered with the same type, callback, target and or useCapture.
+		This method is merely an alias to removeEventListener.
 		!#zh
-		lineCap 指定如何绘制每一条线段末端。 */
-		lineCap : Graphics.LineCap;		
+		删除之前与同类型，回调，目标或 useCapture 注册的回调，仅仅是 removeEventListener 的别名。
+		@param type A string representing the event type being removed.
+		@param callback The callback to remove.
+		@param target The target to invoke the callback, if it's not given, only callback without target will be removed
+		@param useCapture Specifies whether the callback being removed was registered as a capturing callback or not.
+		                             If not specified, useCapture defaults to false. If a callback was registered twice,
+		                             one with capture and one without, each must be removed separately. Removal of a capturing callback
+		                             does not affect a non-capturing version of the same listener, and vice versa.
+		
+		@example 
+		```js
+		// register touchEnd eventListener
+		var touchEnd = node.on(cc.Node.EventType.TOUCH_END, function (event) {
+		    cc.log("this is callback");
+		}, node);
+		// remove touchEnd eventListener
+		node.off(cc.Node.EventType.TOUCH_END, touchEnd, node);
+		``` 
+		*/
+		off(type : string, callback : Function, target : any, useCapture : boolean) : void;		
+		/** !#en Removes all callbacks previously registered with the same target.
+		!#zh 删除指定目标上的所有注册回调。
+		@param target The target to be searched for all related callbacks 
+		*/
+		targetOff(target : any) : void;		
 		/** !#en
-		stroke color
+		Register an callback of a specific event type on the EventTarget,
+		the callback will remove itself after the first time it is triggered.
 		!#zh
-		线段颜色 */
-		strokeColor : Color;		
+		注册事件目标的特定事件类型回调，回调会在第一时间被触发后删除自身。
+		@param type A string representing the event type to listen for.
+		@param callback The callback that will be invoked when the event is dispatched.
+		                             The callback is ignored if it is a duplicate (the callbacks are unique).
+		@param target The target to invoke the callback, can be null
+		@param useCapture When set to true, the capture argument prevents callback
+		                             from being invoked when the event's eventPhase attribute value is BUBBLING_PHASE.
+		                             When false, callback will NOT be invoked when event's eventPhase attribute value is CAPTURING_PHASE.
+		                             Either way, callback will be invoked when event's eventPhase attribute value is AT_TARGET.
+		
+		@example 
+		```js
+		node.once(cc.Node.EventType.TOUCH_END, function (event) {
+		    cc.log("this is callback");
+		}, node);
+		``` 
+		*/
+		once(type : string, callback: (param: Event) => void, target : any, useCapture : boolean) : void;		
 		/** !#en
-		fill color
-		!#zh
-		填充颜色 */
-		fillColor : Color;		
+		Dispatches an event into the event flow.
+		The event target is the EventTarget object upon which the dispatchEvent() method is called.
+		!#zh 分发事件到事件流中。
+		@param event The Event object that is dispatched into the event flow 
+		*/
+		dispatchEvent(event : Event) : void;		
 		/** !#en
-		Sets the miter limit ratio
+		Send an event to this object directly, this method will not propagate the event to any other objects.
+		The event will be created from the supplied message, you can get the "detail" argument from event.detail.
 		!#zh
-		设置斜接面限制比例 */
-		miterLimit : number;		
-		/** !#en Move path start point to (x,y).
-		!#zh 移动路径起点到坐标(x, y)
-		@param x The x axis of the coordinate for the end point.
-		@param y The y axis of the coordinate for the end point. 
+		该对象直接发送事件， 这种方法不会对事件传播到任何其他对象。
+		@param message the message to send
+		@param detail whatever argument the message needs 
 		*/
-		moveTo(x? : number, y? : number) : void;		
-		/** !#en Adds a straight line to the path
-		!#zh 绘制直线路径
-		@param x The x axis of the coordinate for the end point.
-		@param y The y axis of the coordinate for the end point. 
+		emit(message : string, detail? : any) : void;	
+	}		
+		/** !#en Base class of all kinds of events.
+		!#zh 包含事件相关信息的对象。 */
+		export class Event {		
+		constructor();		
+		/** 
+		@param type The name of the event (case-sensitive), e.g. "click", "fire", or "submit"
+		@param bubbles A boolean indicating whether the event bubbles up through the tree or not 
 		*/
-		lineTo(x? : number, y? : number) : void;		
-		/** !#en Adds a cubic Bézier curve to the path
-		!#zh 绘制三次贝赛尔曲线路径
-		@param c1x The x axis of the coordinate for the first control point.
-		@param c1y The y axis of the coordinate for first control point.
-		@param c2x The x axis of the coordinate for the second control point.
-		@param c2y The y axis of the coordinate for the second control point.
-		@param x The x axis of the coordinate for the end point.
-		@param y The y axis of the coordinate for the end point. 
+		Event(type : string, bubbles : boolean) : Event;		
+		/** !#en The name of the event (case-sensitive), e.g. "click", "fire", or "submit".
+		!#zh 事件类型。 */
+		type : string;		
+		/** !#en Indicate whether the event bubbles up through the tree or not.
+		!#zh 表示该事件是否进行冒泡。 */
+		bubbles : boolean;		
+		/** !#en A reference to the target to which the event was originally dispatched.
+		!#zh 最初事件触发的目标 */
+		target : any;		
+		/** !#en A reference to the currently registered target for the event.
+		!#zh 当前目标 */
+		currentTarget : any;		
+		/** !#en
+		Indicates which phase of the event flow is currently being evaluated.
+		Returns an integer value represented by 4 constants:
+		 - Event.NONE = 0
+		 - Event.CAPTURING_PHASE = 1
+		 - Event.AT_TARGET = 2
+		 - Event.BUBBLING_PHASE = 3
+		The phases are explained in the [section 3.1, Event dispatch and DOM event flow]
+		(http://www.w3.org/TR/DOM-Level-3-Events/#event-flow), of the DOM Level 3 Events specification.
+		!#zh 事件阶段 */
+		eventPhase : number;		
+		/** !#en Reset the event for being stored in the object pool.
+		!#zh 重置对象池中存储的事件。 
 		*/
-		bezierCurveTo(c1x? : number, c1y? : number, c2x? : number, c2y? : number, x? : number, y? : number) : void;		
-		/** !#en Adds a quadratic Bézier curve to the path
-		!#zh 绘制二次贝赛尔曲线路径
-		@param cx The x axis of the coordinate for the control point.
-		@param cy The y axis of the coordinate for the control point.
-		@param x The x axis of the coordinate for the end point.
-		@param y The y axis of the coordinate for the end point. 
+		unuse() : string;		
+		/** !#en Reuse the event for being used again by the object pool.
+		!#zh 用于对象池再次使用的事件。 
 		*/
-		quadraticCurveTo(cx? : number, cy? : number, x? : number, y? : number) : void;		
-		/** !#en Adds an arc to the path which is centered at (cx, cy) position with radius r starting at startAngle and ending at endAngle going in the given direction by counterclockwise (defaulting to false).
-		!#zh 绘制圆弧路径。圆弧路径的圆心在 (cx, cy) 位置，半径为 r ，根据 counterclockwise （默认为false）指定的方向从 startAngle 开始绘制，到 endAngle 结束。
-		@param cx The x axis of the coordinate for the center point.
-		@param cy The y axis of the coordinate for the center point.
-		@param r The arc's radius.
-		@param startAngle The angle at which the arc starts, measured clockwise from the positive x axis and expressed in radians.
-		@param endAngle The angle at which the arc ends, measured clockwise from the positive x axis and expressed in radians.
-		@param counterclockwise An optional Boolean which, if true, causes the arc to be drawn counter-clockwise between the two angles. By default it is drawn clockwise. 
+		reuse() : string;		
+		/** !#en Stops propagation for current event.
+		!#zh 停止传递当前事件。 
 		*/
-		arc(cx? : number, cy? : number, r? : number, startAngle? : number, endAngle? : number, counterclockwise? : number) : void;		
-		/** !#en Adds an ellipse to the path.
-		!#zh 绘制椭圆路径。
-		@param cx The x axis of the coordinate for the center point.
-		@param cy The y axis of the coordinate for the center point.
-		@param rx The ellipse's x-axis radius.
-		@param ry The ellipse's y-axis radius. 
+		stopPropagation() : void;		
+		/** !#en Stops propagation for current event immediately,
+		the event won't even be dispatched to the listeners attached in the current target.
+		!#zh 立即停止当前事件的传递，事件甚至不会被分派到所连接的当前目标。 
 		*/
-		ellipse(cx? : number, cy? : number, rx? : number, ry? : number) : void;		
-		/** !#en Adds an circle to the path.
-		!#zh 绘制圆形路径。
-		@param cx The x axis of the coordinate for the center point.
-		@param cy The y axis of the coordinate for the center point.
-		@param r The circle's radius. 
+		stopPropagationImmediate() : void;		
+		/** !#en Checks whether the event has been stopped.
+		!#zh 检查该事件是否已经停止传递. 
 		*/
-		circle(cx? : number, cy? : number, r? : number) : void;		
-		/** !#en Adds an rectangle to the path.
-		!#zh 绘制矩形路径。
-		@param x The x axis of the coordinate for the rectangle starting point.
-		@param y The y axis of the coordinate for the rectangle starting point.
-		@param w The rectangle's width.
-		@param h The rectangle's height. 
+		isStopped() : boolean;		
+		/** !#en
+		<p>
+		    Gets current target of the event                                                            <br/>
+		    note: It only be available when the event listener is associated with node.                <br/>
+		         It returns 0 when the listener is associated with fixed priority.
+		</p>
+		!#zh 获取当前目标节点 
 		*/
-		rect(x? : number, y? : number, w? : number, h? : number) : void;		
-		/** !#en Adds an round corner rectangle to the path.
-		!#zh 绘制圆角矩形路径。
-		@param x The x axis of the coordinate for the rectangle starting point.
-		@param y The y axis of the coordinate for the rectangle starting point.
-		@param w The rectangles width.
-		@param h The rectangle's height.
-		@param r The radius of the rectangle. 
+		getCurrentTarget() : Node;		
+		/** !#en Gets the event type.
+		!#zh 获取事件类型 
 		*/
-		roundRect(x? : number, y? : number, w? : number, h? : number, r? : number) : void;		
-		/** !#en Draws a filled rectangle.
-		!#zh 绘制填充矩形。
-		@param x The x axis of the coordinate for the rectangle starting point.
-		@param y The y axis of the coordinate for the rectangle starting point.
-		@param w The rectangle's width.
-		@param h The rectangle's height. 
-		*/
-		fillRect(x? : number, y? : number, w? : number, h? : number) : void;		
-		/** !#en Erasing any previously drawn content.
-		!#zh 擦除之前绘制的所有内容的方法。 
-		*/
-		clear() : void;		
-		/** !#en Causes the point of the pen to move back to the start of the current path. It tries to add a straight line from the current point to the start.
-		!#zh 将笔点返回到当前路径起始点的。它尝试从当前点到起始点绘制一条直线。 
-		*/
-		close() : void;		
-		/** !#en Strokes the current or given path with the current stroke style.
-		!#zh 根据当前的画线样式，绘制当前或已经存在的路径。 
-		*/
-		stroke() : void;		
-		/** !#en Fills the current or given path with the current fill style.
-		!#zh 根据当前的画线样式，填充当前或已经存在的路径。 
-		*/
-		stroke() : void;	
+		getType() : string;		
+		/** !#en Code for event without type.
+		!#zh 没有类型的事件 */
+		NO_TYPE : string;		
+		/** !#en Events not currently dispatched are in this phase
+		!#zh 尚未派发事件阶段 */
+		NONE : number;		
+		/** !#en
+		The capturing phase comprises the journey from the root to the last node before the event target's node
+		see http://www.w3.org/TR/DOM-Level-3-Events/#event-flow
+		!#zh 捕获阶段，包括事件目标节点之前从根节点到最后一个节点的过程。 */
+		CAPTURING_PHASE : number;		
+		/** !#en
+		The target phase comprises only the event target node
+		see http://www.w3.org/TR/DOM-Level-3-Events/#event-flow
+		!#zh 目标阶段仅包括事件目标节点。 */
+		AT_TARGET : number;		
+		/** !#en
+		The bubbling phase comprises any subsequent nodes encountered on the return trip to the root of the hierarchy
+		see http://www.w3.org/TR/DOM-Level-3-Events/#event-flow
+		!#zh 冒泡阶段， 包括回程遇到到层次根节点的任何后续节点。 */
+		BUBBLING_PHASE : number;	
 	}		
 		/** !#en
 		<p>
@@ -6099,7 +6002,7 @@ declare module cc {
 		export class EventListener {		
 		/** Constructor 
 		*/
-		EventListener(type : number, listenerID : number, callback : number) : EventListner;		
+		EventListener(type : number, listenerID : number, callback : number) : EventListener;		
 		/** !#en Checks whether the listener is available.
 		!#zh 检测监听器是否有效 
 		*/
@@ -6444,7 +6347,7 @@ declare module cc {
 		getRes(url : string) : any;		
 		/** Returns an item in pipeline. 
 		*/
-		getItem() : LoadingItem;		
+		getItem() : any;		
 		/** Release the cache of resource by url. 
 		*/
 		release(url : string) : void;		
@@ -6456,7 +6359,79 @@ declare module cc {
 		releaseRes(url : string) : void;		
 		/** Resource cache of all resources. 
 		*/
-		releaseAll() : void;	
+		releaseAll() : void;		
+		/** !#en
+		Indicates whether to release the asset when loading a new scene.<br>
+		By default, when loading a new scene, all assets in the previous scene will be released or preserved
+		according to whether the previous scene checked the "Auto Release Assets" option.
+		On the other hand, assets dynamically loaded by using `cc.loader.loadRes` or `cc.loader.loadResAll`
+		will not be affected by that option, remain not released by default.<br>
+		Use this API to change the default behavior on a single asset, to force preserve or release specified asset when scene switching.<br>
+		<br>
+		See: {{#crossLink "loader/setAutoReleaseRecursively:method"}}cc.loader.setAutoReleaseRecursively{{/crossLink}}, {{#crossLink "loader/isAutoRelease:method"}}cc.loader.isAutoRelease{{/crossLink}}
+		!#zh
+		设置当场景切换时是否自动释放资源。<br>
+		默认情况下，当加载新场景时，旧场景的资源根据旧场景是否勾选“Auto Release Assets”，将会被释放或者保留。
+		而使用 `cc.loader.loadRes` 或 `cc.loader.loadResAll` 动态加载的资源，则不受场景设置的影响，默认不自动释放。<br>
+		使用这个 API 可以在单个资源上改变这个默认行为，强制在切换场景时保留或者释放指定资源。<br>
+		<br>
+		参考：{{#crossLink "loader/setAutoReleaseRecursively:method"}}cc.loader.setAutoReleaseRecursively{{/crossLink}}，{{#crossLink "loader/isAutoRelease:method"}}cc.loader.isAutoRelease{{/crossLink}}
+		@param assetOrUrl asset object or the raw asset's url
+		@param autoRelease indicates whether should release automatically
+		
+		@example 
+		```js
+		// auto release the texture event if "Auto Release Assets" disabled in current scene
+		cc.loader.setAutoRelease(texture2d, true);
+		// don't release the texture even if "Auto Release Assets" enabled in current scene
+		cc.loader.setAutoRelease(texture2d, false);
+		// first parameter can be url
+		cc.loader.setAutoRelease(audioUrl, false);
+		``` 
+		*/
+		setAutoRelease(assetOrUrl : Asset|string, autoRelease : boolean) : void;		
+		/** !#en
+		Indicates whether to release the asset and its referenced other assets when loading a new scene.<br>
+		By default, when loading a new scene, all assets in the previous scene will be released or preserved
+		according to whether the previous scene checked the "Auto Release Assets" option.
+		On the other hand, assets dynamically loaded by using `cc.loader.loadRes` or `cc.loader.loadResAll`
+		will not be affected by that option, remain not released by default.<br>
+		Use this API to change the default behavior on the specified asset and its recursively referenced assets, to force preserve or release specified asset when scene switching.<br>
+		<br>
+		See: {{#crossLink "loader/setAutoRelease:method"}}cc.loader.setAutoRelease{{/crossLink}}, {{#crossLink "loader/isAutoRelease:method"}}cc.loader.isAutoRelease{{/crossLink}}
+		!#zh
+		设置当场景切换时是否自动释放资源及资源引用的其它资源。<br>
+		默认情况下，当加载新场景时，旧场景的资源根据旧场景是否勾选“Auto Release Assets”，将会被释放或者保留。
+		而使用 `cc.loader.loadRes` 或 `cc.loader.loadResAll` 动态加载的资源，则不受场景设置的影响，默认不自动释放。<br>
+		使用这个 API 可以在指定资源及资源递归引用到的所有资源上改变这个默认行为，强制在切换场景时保留或者释放指定资源。<br>
+		<br>
+		参考：{{#crossLink "loader/setAutoRelease:method"}}cc.loader.setAutoRelease{{/crossLink}}，{{#crossLink "loader/isAutoRelease:method"}}cc.loader.isAutoRelease{{/crossLink}}
+		@param assetOrUrl asset object or the raw asset's url
+		@param autoRelease indicates whether should release automatically
+		
+		@example 
+		```js
+		// auto release the SpriteFrame and its Texture event if "Auto Release Assets" disabled in current scene
+		cc.loader.setAutoReleaseRecursively(spriteFrame, true);
+		// don't release the SpriteFrame and its Texture even if "Auto Release Assets" enabled in current scene
+		cc.loader.setAutoReleaseRecursively(spriteFrame, false);
+		// don't release the Prefab and all the referenced assets
+		cc.loader.setAutoReleaseRecursively(prefab, false);
+		``` 
+		*/
+		setAutoReleaseRecursively(assetOrUrl : Asset|string, autoRelease : boolean) : void;		
+		/** !#en
+		Returns whether the asset is configured as auto released, despite how "Auto Release Assets" property is set on scene asset.<br>
+		<br>
+		See: {{#crossLink "loader/setAutoRelease:method"}}cc.loader.setAutoRelease{{/crossLink}}, {{#crossLink "loader/setAutoReleaseRecursively:method"}}cc.loader.setAutoReleaseRecursively{{/crossLink}}
+		
+		!#zh
+		返回指定的资源是否有被设置为自动释放，不论场景的“Auto Release Assets”如何设置。<br>
+		<br>
+		参考：{{#crossLink "loader/setAutoRelease:method"}}cc.loader.setAutoRelease{{/crossLink}}，{{#crossLink "loader/setAutoReleaseRecursively:method"}}cc.loader.setAutoReleaseRecursively{{/crossLink}}
+		@param assetOrUrl asset object or the raw asset's url 
+		*/
+		isAutoRelease(assetOrUrl : Asset|string) : boolean;	
 	}		
 		/** !#en
 		LoadingItems is the manager of items in pipeline.</br>
@@ -6722,28 +6697,133 @@ declare module cc {
 		onComplete(error : any[], items : LoadingItems) : void;	
 	}		
 		/** undefined */
-		export class _ComponentAttributes {		
-		constructor();		
-		/** Automatically add required component as a dependency. */
-		requireComponent : Component;		
-		/** If specified to a type, prevents Component of the same type (or subtype) to be added more than once to a Node. */
-		disallowMultiple : Component;		
-		/** The menu path to register a component to the editors "Component" menu. Eg. "Rendering/Camera". */
-		menu : string;		
-		/** Makes a component execute in edit mode.
-		By default, all components are only executed in play mode,
-		which means they will not have their callback functions executed while the Editor is in edit mode. */
-		executeInEditMode : boolean;		
-		/** This property is only available if executeInEditMode is true.
-		If specified, the editor's scene view will keep updating this node in 60 fps when it is selected,
-		otherwise, it will update only if necessary. */
-		playOnFocus : boolean;		
-		/** Specifying the url of the custom html to draw the component in inspector. */
-		inspector : string;		
-		/** Specifying the url of the icon to display in inspector. */
-		icon : string;		
-		/** The custom documentation URL */
-		help : string;	
+		export class Graphics extends _RendererUnderSG {		
+		/** !#en
+		Current line width.
+		!#zh
+		当前线条宽度 */
+		lineWidth : number;		
+		/** !#en
+		lineJoin determines how two connecting segments (of lines, arcs or curves) with non-zero lengths in a shape are joined together.
+		!#zh
+		lineJoin 用来设置2个长度不为0的相连部分（线段，圆弧，曲线）如何连接在一起的属性。 */
+		lineJoin : Graphics.LineJoin;		
+		/** !#en
+		lineCap determines how the end points of every line are drawn.
+		!#zh
+		lineCap 指定如何绘制每一条线段末端。 */
+		lineCap : Graphics.LineCap;		
+		/** !#en
+		stroke color
+		!#zh
+		线段颜色 */
+		strokeColor : Color;		
+		/** !#en
+		fill color
+		!#zh
+		填充颜色 */
+		fillColor : Color;		
+		/** !#en
+		Sets the miter limit ratio
+		!#zh
+		设置斜接面限制比例 */
+		miterLimit : number;		
+		/** !#en Move path start point to (x,y).
+		!#zh 移动路径起点到坐标(x, y)
+		@param x The x axis of the coordinate for the end point.
+		@param y The y axis of the coordinate for the end point. 
+		*/
+		moveTo(x? : number, y? : number) : void;		
+		/** !#en Adds a straight line to the path
+		!#zh 绘制直线路径
+		@param x The x axis of the coordinate for the end point.
+		@param y The y axis of the coordinate for the end point. 
+		*/
+		lineTo(x? : number, y? : number) : void;		
+		/** !#en Adds a cubic Bézier curve to the path
+		!#zh 绘制三次贝赛尔曲线路径
+		@param c1x The x axis of the coordinate for the first control point.
+		@param c1y The y axis of the coordinate for first control point.
+		@param c2x The x axis of the coordinate for the second control point.
+		@param c2y The y axis of the coordinate for the second control point.
+		@param x The x axis of the coordinate for the end point.
+		@param y The y axis of the coordinate for the end point. 
+		*/
+		bezierCurveTo(c1x? : number, c1y? : number, c2x? : number, c2y? : number, x? : number, y? : number) : void;		
+		/** !#en Adds a quadratic Bézier curve to the path
+		!#zh 绘制二次贝赛尔曲线路径
+		@param cx The x axis of the coordinate for the control point.
+		@param cy The y axis of the coordinate for the control point.
+		@param x The x axis of the coordinate for the end point.
+		@param y The y axis of the coordinate for the end point. 
+		*/
+		quadraticCurveTo(cx? : number, cy? : number, x? : number, y? : number) : void;		
+		/** !#en Adds an arc to the path which is centered at (cx, cy) position with radius r starting at startAngle and ending at endAngle going in the given direction by counterclockwise (defaulting to false).
+		!#zh 绘制圆弧路径。圆弧路径的圆心在 (cx, cy) 位置，半径为 r ，根据 counterclockwise （默认为false）指定的方向从 startAngle 开始绘制，到 endAngle 结束。
+		@param cx The x axis of the coordinate for the center point.
+		@param cy The y axis of the coordinate for the center point.
+		@param r The arc's radius.
+		@param startAngle The angle at which the arc starts, measured clockwise from the positive x axis and expressed in radians.
+		@param endAngle The angle at which the arc ends, measured clockwise from the positive x axis and expressed in radians.
+		@param counterclockwise An optional Boolean which, if true, causes the arc to be drawn counter-clockwise between the two angles. By default it is drawn clockwise. 
+		*/
+		arc(cx? : number, cy? : number, r? : number, startAngle? : number, endAngle? : number, counterclockwise? : number) : void;		
+		/** !#en Adds an ellipse to the path.
+		!#zh 绘制椭圆路径。
+		@param cx The x axis of the coordinate for the center point.
+		@param cy The y axis of the coordinate for the center point.
+		@param rx The ellipse's x-axis radius.
+		@param ry The ellipse's y-axis radius. 
+		*/
+		ellipse(cx? : number, cy? : number, rx? : number, ry? : number) : void;		
+		/** !#en Adds an circle to the path.
+		!#zh 绘制圆形路径。
+		@param cx The x axis of the coordinate for the center point.
+		@param cy The y axis of the coordinate for the center point.
+		@param r The circle's radius. 
+		*/
+		circle(cx? : number, cy? : number, r? : number) : void;		
+		/** !#en Adds an rectangle to the path.
+		!#zh 绘制矩形路径。
+		@param x The x axis of the coordinate for the rectangle starting point.
+		@param y The y axis of the coordinate for the rectangle starting point.
+		@param w The rectangle's width.
+		@param h The rectangle's height. 
+		*/
+		rect(x? : number, y? : number, w? : number, h? : number) : void;		
+		/** !#en Adds an round corner rectangle to the path.
+		!#zh 绘制圆角矩形路径。
+		@param x The x axis of the coordinate for the rectangle starting point.
+		@param y The y axis of the coordinate for the rectangle starting point.
+		@param w The rectangles width.
+		@param h The rectangle's height.
+		@param r The radius of the rectangle. 
+		*/
+		roundRect(x? : number, y? : number, w? : number, h? : number, r? : number) : void;		
+		/** !#en Draws a filled rectangle.
+		!#zh 绘制填充矩形。
+		@param x The x axis of the coordinate for the rectangle starting point.
+		@param y The y axis of the coordinate for the rectangle starting point.
+		@param w The rectangle's width.
+		@param h The rectangle's height. 
+		*/
+		fillRect(x? : number, y? : number, w? : number, h? : number) : void;		
+		/** !#en Erasing any previously drawn content.
+		!#zh 擦除之前绘制的所有内容的方法。 
+		*/
+		clear() : void;		
+		/** !#en Causes the point of the pen to move back to the start of the current path. It tries to add a straight line from the current point to the start.
+		!#zh 将笔点返回到当前路径起始点的。它尝试从当前点到起始点绘制一条直线。 
+		*/
+		close() : void;		
+		/** !#en Strokes the current or given path with the current stroke style.
+		!#zh 根据当前的画线样式，绘制当前或已经存在的路径。 
+		*/
+		stroke() : void;		
+		/** !#en Fills the current or given path with the current fill style.
+		!#zh 根据当前的画线样式，填充当前或已经存在的路径。 
+		*/
+		stroke() : void;	
 	}		
 		/** <p>
 		 This class manages all events of input. include: touch, mouse, accelerometer, keyboard                                       <br/>
@@ -7125,7 +7205,7 @@ declare module cc {
 		LINUX : number;		
 		MACOS : number;		
 		ANDROID : number;		
-		IOS : number;		
+		IPHONE : number;		
 		IPAD : number;		
 		BLACKBERRY : number;		
 		NACL : number;		
@@ -7598,6 +7678,445 @@ declare module cc {
 		*/
 		builtinRaw(url : string) : string;	
 	}		
+		/** !#en
+		A cc.SpriteFrame has:<br/>
+		 - texture: A cc.Texture2D that will be used by the _ccsg.Sprite<br/>
+		 - rectangle: A rectangle of the texture<br/>
+		<br/>
+		You can modify the frame of a _ccsg.Sprite by doing:<br/>
+		
+		Note: It's not recommended to use SpriteFrame constructor (new SpriteFrame)
+		because its memory usage can't be tracked in native environment, <br/>
+		if you know what you are doing, you may need to manually retain it after creation then
+		release it when you no longer need it.
+		
+		!#zh
+		一个 SpriteFrame 包含：<br/>
+		 - 纹理：会被 Sprite 使用的 Texture2D 对象。<br/>
+		 - 矩形：在纹理中的矩形区域。<br/>
+		注意：<br/>
+		  不建议用户使用构造函数进行创建，因为其内存使用情况，不能在本地环境中进行跟踪，需要用户手动管理内存，不然会导致严重错误。<br/>
+		  如果你知道你在做什么，你可能需要手动将其保留在创建之后，然后释放它。 */
+		export class SpriteFrame extends Asset {		
+		constructor();		
+		/** !#en
+		Constructor of SpriteFrame class. <br/>
+		Note: It's not recommended to use SpriteFrame constructor (new SpriteFrame)
+		because its memory usage can't be tracked in native environment, <br/>
+		if you know what you are doing, you may need to manually retain it after creation then
+		release it when you no longer need it.
+		!#zh
+		SpriteFrame 类的构造函数。<br/>
+		注意：<br/>
+		   不建议用户使用构造函数进行创建，因为其内存使用情况，不能在本地环境中进行跟踪，
+		   需要用户手动管理内存，不然会导致严重错误。<br/>
+		   如果你知道你在做什么，你可能需要手动将其保留在创建之后，然后释放它。
+		@param rotated Whether the frame is rotated in the texture
+		@param offset The offset of the frame in the texture
+		@param originalSize The size of the frame in the texture 
+		*/
+		SpriteFrame(filename? : string|Texture2D, rect? : Rect, rotated? : boolean, offset? : Vec2, originalSize? : Size) : void;		
+		/** !#en Top border of the sprite
+		!#zh sprite 的顶部边框 */
+		insetTop : number;		
+		/** !#en Bottom border of the sprite
+		!#zh sprite 的底部边框 */
+		insetBottom : number;		
+		/** !#en Left border of the sprite
+		!#zh sprite 的左边边框 */
+		insetLeft : number;		
+		/** !#en Right border of the sprite
+		!#zh sprite 的左边边框 */
+		insetRight : number;		
+		/** !#en Returns whether the texture have been loaded
+		!#zh 返回是否已加载纹理 
+		*/
+		textureLoaded() : boolean;		
+		/** Add a event listener for texture loaded event. 
+		*/
+		addLoadedEventListener(callback : Function, target : any) : void;		
+		/** !#en Returns whether the sprite frame is rotated in the texture.
+		!#zh 获取 SpriteFrame 是否旋转 
+		*/
+		isRotated() : boolean;		
+		/** !#en Set whether the sprite frame is rotated in the texture.
+		!#zh 设置 SpriteFrame 是否旋转 
+		*/
+		setRotated(bRotated : boolean) : void;		
+		/** !#en Returns the rect of the sprite frame in the texture.
+		!#zh 获取 SpriteFrame 的纹理矩形区域 
+		*/
+		getRect() : Rect;		
+		/** !#en Sets the rect of the sprite frame in the texture.
+		!#zh 设置 SpriteFrame 的纹理矩形区域 
+		*/
+		setRect(rect : Rect) : void;		
+		/** !#en Returns the original size of the trimmed image.
+		!#zh 获取修剪前的原始大小 
+		*/
+		getOriginalSize() : Size;		
+		/** !#en Sets the original size of the trimmed image.
+		!#zh 设置修剪前的原始大小 
+		*/
+		setOriginalSize(size : Size) : void;		
+		/** !#en Returns the texture of the frame.
+		!#zh 获取使用的纹理实例 
+		*/
+		getTexture() : Texture2D;		
+		/** !#en Sets the texture of the frame, the texture is retained automatically.
+		!#zh 设置使用的纹理实例，会被 retain。 
+		*/
+		_refreshTexture(texture : Texture2D) : void;		
+		/** !#en Returns the offset of the frame in the texture.
+		!#zh 获取偏移量 
+		*/
+		getOffset() : Vec2;		
+		/** !#en Sets the offset of the frame in the texture.
+		!#zh 设置偏移量 
+		*/
+		setOffset(offsets : Vec2) : void;		
+		/** !#en Clone the sprite frame.
+		!#zh 克隆 SpriteFrame 
+		*/
+		clone() : SpriteFrame;		
+		/** !#en If a loading scene is marked as `asyncLoadAssets`, all the textures of the SpriteFrame which
+		associated by user's custom Components in the scene, will not preload automatically.
+		These textures will be load when Sprite component is going to render the SpriteFrames.
+		You can call this method if you want to load the texture early.
+		!#zh 当加载中的场景被标记为 `asyncLoadAssets` 时，用户在场景中由自定义组件关联到的所有 SpriteFrame 的贴图都不会被提前加载。
+		只有当 Sprite 组件要渲染这些 SpriteFrame 时，才会检查贴图是否加载。如果你希望加载过程提前，你可以手工调用这个方法。
+		
+		@example 
+		```js
+		if (spriteFrame.textureLoaded()) {
+		    this._onSpriteFrameLoaded();
+		}
+		else {
+		    spriteFrame.once('load', this._onSpriteFrameLoaded, this);
+		    spriteFrame.ensureLoadTexture();
+		}
+		``` 
+		*/
+		ensureLoadTexture() : void;	
+	}		
+		/** <p>
+		This class allows to easily create OpenGL or Canvas 2D textures from images, text or raw data.                                    <br/>
+		The created cc.Texture2D object will always have power-of-two dimensions.                                                <br/>
+		Depending on how you create the cc.Texture2D object, the actual image area of the texture might be smaller than the texture dimensions <br/>
+		 i.e. "contentSize" != (pixelsWide, pixelsHigh) and (maxS, maxT) != (1.0, 1.0).                                           <br/>
+		Be aware that the content of the generated textures will be upside-down! </p> */
+		export class Texture2D extends RawAsset {		
+		/** Get width in pixels. 
+		*/
+		getPixelWidth() : number;		
+		/** Get height of in pixels. 
+		*/
+		getPixelHeight() : number;		
+		/** Get content size. 
+		*/
+		getContentSize() : Size;		
+		/** Get content size in pixels. 
+		*/
+		getContentSizeInPixels() : Size;		
+		/** Init with HTML element.
+		
+		@example 
+		```js
+		var img = new Image();
+		img.src = dataURL;
+		texture.initWithElement(img);
+		texture.handleLoadedTexture();
+		``` 
+		*/
+		initWithElement(element : HTMLImageElement|HTMLCanvasElement) : void;		
+		/** Intializes with a texture2d with data. 
+		*/
+		initWithData(data : any[], pixelFormat : number, pixelsWide : number, pixelsHigh : number, contentSize : Size) : boolean;		
+		/** Initializes a texture from a UIImage object.
+		Extensions to make it easy to create a CCTexture2D object from an image file.
+		Note that RGBA type textures will have their alpha premultiplied - use the blending mode (gl.ONE, gl.ONE_MINUS_SRC_ALPHA). 
+		*/
+		initWithImage(uiImage : HTMLImageElement) : boolean;		
+		/** HTMLElement Object getter. 
+		*/
+		getHtmlElementObj() : HTMLImageElement;		
+		/** Check whether texture is loaded. 
+		*/
+		isLoaded() : boolean;		
+		/** Handler of texture loaded event. 
+		*/
+		handleLoadedTexture(premultiplied? : boolean) : void;		
+		/** Description of cc.Texture2D. 
+		*/
+		description() : string;		
+		/** Release texture. 
+		*/
+		releaseTexture() : void;		
+		/** Pixel format of the texture. 
+		*/
+		getPixelFormat() : number;		
+		/** Whether or not the texture has their Alpha premultiplied,
+		support only in WebGl rendering mode. 
+		*/
+		hasPremultipliedAlpha() : boolean;		
+		/** Whether or not use mipmap, support only in WebGl rendering mode. 
+		*/
+		hasMipmaps() : boolean;		
+		/** Sets the min filter, mag filter, wrap s and wrap t texture parameters. <br/>
+		If the texture size is NPOT (non power of 2), then in can only use gl.CLAMP_TO_EDGE in gl.TEXTURE_WRAP_{S,T}.
+		@param texParams texParams object or minFilter 
+		*/
+		setTexParameters(texParams : any|number, magFilter? : number, wrapS? : Texture2D.WrapMode, wrapT? : Texture2D.WrapMode) : void;		
+		/** WebGLTexture Object. */
+		name : WebGLTexture;		
+		/** Pixel format of the texture. */
+		pixelFormat : number;		
+		/** Width in pixels. */
+		pixelWidth : number;		
+		/** Height in pixels. */
+		pixelHeight : number;		
+		/** Content width in points. */
+		width : number;		
+		/** Content height in points. */
+		height : number;	
+	}		
+		/** <p>A class that implements a Texture Atlas. <br />
+		Supported features: <br />
+		The atlas file can be a PNG, JPG. <br />
+		Quads can be updated in runtime <br />
+		Quads can be added in runtime <br />
+		Quads can be removed in runtime <br />
+		Quads can be re-ordered in runtime <br />
+		The TextureAtlas capacity can be increased or decreased in runtime.</p> */
+		export class TextureAtlas {		
+		constructor();		
+		/** <p>Creates a TextureAtlas with an filename and with an initial capacity for Quads. <br />
+		The TextureAtlas capacity can be increased in runtime. </p>
+		Constructor of cc.TextureAtlas
+		
+		@example 
+		```js
+		--------------------------
+		1. //creates a TextureAtlas with  filename
+		var textureAtlas = new cc.TextureAtlas("res/hello.png", 3);
+		
+		2. //creates a TextureAtlas with texture
+		var texture = cc.textureCache.addImage("hello.png");
+		var textureAtlas = new cc.TextureAtlas(texture, 3);
+		
+		``` 
+		*/
+		TextureAtlas(fileName : string|Texture2D, capacity : number) : void;		
+		/** Quantity of quads that are going to be drawn. 
+		*/
+		getTotalQuads() : number;		
+		/** Quantity of quads that can be stored with the current texture atlas size. 
+		*/
+		getCapacity() : number;		
+		/** Texture of the texture atlas. 
+		*/
+		getTexture() : Image;		
+		/** Set texture for texture atlas. 
+		*/
+		setTexture(texture : Image) : void;		
+		/** specify if the array buffer of the VBO needs to be updated. 
+		*/
+		setDirty(dirty : boolean) : void;		
+		/** whether or not the array buffer of the VBO needs to be updated. 
+		*/
+		isDirty() : boolean;		
+		/** Quads that are going to be rendered. 
+		*/
+		getQuads() : any[];		
+		/**  
+		*/
+		setQuads(quads : any[]) : void;		
+		/** <p>Initializes a TextureAtlas with a filename and with a certain capacity for Quads.<br />
+		The TextureAtlas capacity can be increased in runtime.<br />
+		WARNING: Do not reinitialize the TextureAtlas because it will leak memory. </p>
+		
+		@example 
+		```js
+		--------------------------------------------------
+		var textureAtlas = new cc.TextureAtlas();
+		textureAtlas.initWithTexture("hello.png", 3);
+		
+		``` 
+		*/
+		initWithFile(file : string, capacity : number) : boolean;		
+		/** <p>Initializes a TextureAtlas with a previously initialized Texture2D object, and<br />
+		with an initial capacity for Quads.<br />
+		The TextureAtlas capacity can be increased in runtime.<br />
+		WARNING: Do not reinitialize the TextureAtlas because it will leak memory</p>
+		
+		@example 
+		```js
+		---------------------------
+		var texture = cc.textureCache.addImage("hello.png");
+		var textureAtlas = new cc.TextureAtlas();
+		textureAtlas.initWithTexture(texture, 3);
+		
+		``` 
+		*/
+		initWithTexture(texture : Image, capacity : number) : boolean;		
+		/** <p>Updates a Quad (texture, vertex and color) at a certain index <br />
+		index must be between 0 and the atlas capacity - 1 </p> 
+		*/
+		updateQuad(quad : V3F_C4B_T2F_Quad, index : number) : void;		
+		/** <p>Inserts a Quad (texture, vertex and color) at a certain index<br />
+		index must be between 0 and the atlas capacity - 1 </p> 
+		*/
+		insertQuad(quad : V3F_C4B_T2F_Quad, index : number) : void;		
+		/** <p>
+		     Inserts a c array of quads at a given index                                           <br />
+		     index must be between 0 and the atlas capacity - 1                                    <br />
+		     this method doesn't enlarge the array when amount + index > totalQuads                <br />
+		</p> 
+		*/
+		insertQuads(quads : any[], index : number, amount : number) : void;		
+		/** <p>Removes the quad that is located at a certain index and inserts it at a new index <br />
+		This operation is faster than removing and inserting in a quad in 2 different steps</p> 
+		*/
+		insertQuadFromIndex(fromIndex : number, newIndex : number) : void;		
+		/** <p>Removes a quad at a given index number.<br />
+		The capacity remains the same, but the total number of quads to be drawn is reduced in 1 </p> 
+		*/
+		removeQuadAtIndex(index : number) : void;		
+		/** Removes a given number of quads at a given index. 
+		*/
+		removeQuadsAtIndex(index : number, amount : number) : void;		
+		/** <p>Removes all Quads. <br />
+		The TextureAtlas capacity remains untouched. No memory is freed.<br />
+		The total number of quads to be drawn will be 0</p> 
+		*/
+		removeAllQuads() : void;		
+		/** <p>Resize the capacity of the CCTextureAtlas.<br />
+		The new capacity can be lower or higher than the current one<br />
+		It returns YES if the resize was successful. <br />
+		If it fails to resize the capacity it will return NO with a new capacity of 0. <br />
+		no used for js</p> 
+		*/
+		resizeCapacity(newCapacity : number) : boolean;		
+		/** Used internally by CCParticleBatchNode                                    <br/>
+		don't use this unless you know what you're doing. 
+		*/
+		increaseTotalQuadsWith(amount : number) : void;		
+		/** Moves an amount of quads from oldIndex at newIndex. 
+		*/
+		moveQuadsFromIndex(oldIndex : number, amount : number, newIndex : number) : void;		
+		/** Ensures that after a realloc quads are still empty                                <br/>
+		Used internally by CCParticleBatchNode. 
+		*/
+		fillWithEmptyQuadsFromIndex(index : number, amount : number) : void;		
+		/** <p>Draws n quads from an index (offset). <br />
+		n + start can't be greater than the capacity of the atlas</p> 
+		*/
+		drawNumberOfQuads(n : number, start : number) : void;		
+		/** Indicates whether or not the array buffer of the VBO needs to be updated. */
+		dirty : boolean;		
+		/** Image texture for cc.TextureAtlas. */
+		texture : Image;		
+		/** Quantity of quads that can be stored with the current texture atlas size. */
+		capacity : number;		
+		/** Quantity of quads that are going to be drawn. */
+		totalQuads : number;		
+		/** Quads that are going to be rendered. */
+		quads : any[];	
+	}		
+		/** cc.textureCache is a singleton object, it's the global cache for cc.Texture2D */
+		export class textureCache {		
+		/** Description 
+		*/
+		description() : string;		
+		/** Returns an already created texture. Returns null if the texture doesn't exist.
+		
+		@example 
+		```js
+		------------------
+		var key = cc.textureCache.textureForKey("hello.png");
+		
+		``` 
+		*/
+		textureForKey(textureKeyName : string) : Texture2D;		
+		/** Returns an already created texture. Returns null if the texture doesn't exist.
+		
+		@example 
+		```js
+		------------------
+		var key = cc.textureCache.getTextureForKey("hello.png");
+		
+		``` 
+		*/
+		getTextureForKey(textureKeyName : string) : Texture2D;		
+		/** 
+		
+		@example 
+		```js
+		---------------
+		var cacheTextureForColor = cc.textureCache.getTextureColors(texture);
+		
+		``` 
+		*/
+		getTextureColors(texture : Image) : any[];		
+		/** <p>Purges the dictionary of loaded textures. <br />
+		Call this method if you receive the "Memory Warning"  <br />
+		In the short term: it will free some resources preventing your app from being killed  <br />
+		In the medium term: it will allocate more resources <br />
+		In the long term: it will be the same</p>
+		
+		@example 
+		```js
+		--------
+		cc.textureCache.removeAllTextures();
+		
+		``` 
+		*/
+		removeAllTextures() : void;		
+		/** Deletes a texture from the cache given a texture.
+		
+		@example 
+		```js
+		-----
+		cc.textureCache.removeTexture(texture);
+		
+		``` 
+		*/
+		removeTexture(texture : Image) : void;		
+		/** Deletes a texture from the cache given a its key name.
+		
+		@example 
+		```js
+		------
+		cc.textureCache.removeTexture("hello.png");
+		
+		``` 
+		*/
+		removeTextureForKey(textureKeyName : string) : void;		
+		/** <p>Returns a Texture2D object given an file image <br />
+		If the file image was not previously loaded, it will create a new Texture2D <br />
+		 object and it will return it. It will use the filename as a key.<br />
+		Otherwise it will return a reference of a previously loaded image. <br />
+		Supported image extensions: .png, .jpg, .gif</p>
+		
+		@example 
+		```js
+		----
+		cc.textureCache.addImage("hello.png");
+		
+		``` 
+		*/
+		addImage(url : string, cb : Function, target : any) : Texture2D;		
+		/** Cache the image data. 
+		*/
+		cacheImage(path : string, texture : Image|HTMLImageElement|HTMLCanvasElement) : void;		
+		/** <p>Returns a Texture2D object given an UIImage image<br />
+		If the image was not previously loaded, it will create a new Texture2D object and it will return it.<br />
+		Otherwise it will return a reference of a previously loaded image<br />
+		The "key" parameter will be used as the "key" for the cache.<br />
+		If "key" is null, then a new texture will be created each time.</p> 
+		*/
+		addUIImage(image : HTMLImageElement|HTMLCanvasElement, key : string) : Texture2D;	
+	}		
 		/** A base node for CCNode and CCEScene, it will:
 		- provide the same api with origin cocos2d rendering node (SGNode)
 		- maintains properties of the internal SGNode
@@ -8039,7 +8558,7 @@ declare module cc {
 		treating the returned/received node point as anchor relative.
 		!#zh
 		将一个点转换到世界空间坐标系。结果以 Vec2 为单位。<br/>
-		返回值将基于节点坐标。
+		返回值将基于世界坐标。
 		
 		@example 
 		```js
@@ -8284,455 +8803,6 @@ declare module cc {
 		``` 
 		*/
 		setCascadeColorEnabled(cascadeColorEnabled : boolean) : void;	
-	}		
-		/** <p>
-		This class allows to easily create OpenGL or Canvas 2D textures from images, text or raw data.                                    <br/>
-		The created cc.Texture2D object will always have power-of-two dimensions.                                                <br/>
-		Depending on how you create the cc.Texture2D object, the actual image area of the texture might be smaller than the texture dimensions <br/>
-		 i.e. "contentSize" != (pixelsWide, pixelsHigh) and (maxS, maxT) != (1.0, 1.0).                                           <br/>
-		Be aware that the content of the generated textures will be upside-down! </p> */
-		export class Texture2D extends RawAsset {		
-		/** Get width in pixels. 
-		*/
-		getPixelWidth() : number;		
-		/** Get height of in pixels. 
-		*/
-		getPixelHeight() : number;		
-		/** Get content size. 
-		*/
-		getContentSize() : Size;		
-		/** Get content size in pixels. 
-		*/
-		getContentSizeInPixels() : Size;		
-		/** Init with HTML element.
-		
-		@example 
-		```js
-		var img = new Image();
-		img.src = dataURL;
-		texture.initWithElement(img);
-		texture.handleLoadedTexture();
-		``` 
-		*/
-		initWithElement(element : HTMLImageElement|HTMLCanvasElement) : void;		
-		/** Intializes with a texture2d with data. 
-		*/
-		initWithData(data : any[], pixelFormat : number, pixelsWide : number, pixelsHigh : number, contentSize : Size) : boolean;		
-		/** Initializes a texture from a UIImage object.
-		Extensions to make it easy to create a CCTexture2D object from an image file.
-		Note that RGBA type textures will have their alpha premultiplied - use the blending mode (gl.ONE, gl.ONE_MINUS_SRC_ALPHA). 
-		*/
-		initWithImage(uiImage : HTMLImageElement) : boolean;		
-		/** HTMLElement Object getter. 
-		*/
-		getHtmlElementObj() : HTMLImageElement;		
-		/** Check whether texture is loaded. 
-		*/
-		isLoaded() : boolean;		
-		/** Handler of texture loaded event. 
-		*/
-		handleLoadedTexture(premultiplied? : boolean) : void;		
-		/** Description of cc.Texture2D. 
-		*/
-		description() : string;		
-		/** Release texture. 
-		*/
-		releaseTexture() : void;		
-		/** Pixel format of the texture. 
-		*/
-		getPixelFormat() : number;		
-		/** Whether or not the texture has their Alpha premultiplied,
-		support only in WebGl rendering mode. 
-		*/
-		hasPremultipliedAlpha() : boolean;		
-		/** Whether or not use mipmap, support only in WebGl rendering mode. 
-		*/
-		hasMipmaps() : boolean;		
-		/** Sets the min filter, mag filter, wrap s and wrap t texture parameters. <br/>
-		If the texture size is NPOT (non power of 2), then in can only use gl.CLAMP_TO_EDGE in gl.TEXTURE_WRAP_{S,T}.
-		@param texParams texParams object or minFilter 
-		*/
-		setTexParameters(texParams : any|number, magFilter? : number, wrapS? : Texture2D.WrapMode, wrapT? : Texture2D.WrapMode) : void;		
-		/** WebGLTexture Object. */
-		name : WebGLTexture;		
-		/** Pixel format of the texture. */
-		pixelFormat : number;		
-		/** Width in pixels. */
-		pixelWidth : number;		
-		/** Height in pixels. */
-		pixelHeight : number;		
-		/** Content width in points. */
-		width : number;		
-		/** Content height in points. */
-		height : number;	
-	}		
-		/** <p>A class that implements a Texture Atlas. <br />
-		Supported features: <br />
-		The atlas file can be a PNG, JPG. <br />
-		Quads can be updated in runtime <br />
-		Quads can be added in runtime <br />
-		Quads can be removed in runtime <br />
-		Quads can be re-ordered in runtime <br />
-		The TextureAtlas capacity can be increased or decreased in runtime.</p> */
-		export class TextureAtlas {		
-		constructor();		
-		/** <p>Creates a TextureAtlas with an filename and with an initial capacity for Quads. <br />
-		The TextureAtlas capacity can be increased in runtime. </p>
-		Constructor of cc.TextureAtlas
-		
-		@example 
-		```js
-		--------------------------
-		1. //creates a TextureAtlas with  filename
-		var textureAtlas = new cc.TextureAtlas("res/hello.png", 3);
-		
-		2. //creates a TextureAtlas with texture
-		var texture = cc.textureCache.addImage("hello.png");
-		var textureAtlas = new cc.TextureAtlas(texture, 3);
-		
-		``` 
-		*/
-		TextureAtlas(fileName : string|Texture2D, capacity : number) : void;		
-		/** Quantity of quads that are going to be drawn. 
-		*/
-		getTotalQuads() : number;		
-		/** Quantity of quads that can be stored with the current texture atlas size. 
-		*/
-		getCapacity() : number;		
-		/** Texture of the texture atlas. 
-		*/
-		getTexture() : Image;		
-		/** Set texture for texture atlas. 
-		*/
-		setTexture(texture : Image) : void;		
-		/** specify if the array buffer of the VBO needs to be updated. 
-		*/
-		setDirty(dirty : boolean) : void;		
-		/** whether or not the array buffer of the VBO needs to be updated. 
-		*/
-		isDirty() : boolean;		
-		/** Quads that are going to be rendered. 
-		*/
-		getQuads() : any[];		
-		/**  
-		*/
-		setQuads(quads : any[]) : void;		
-		/** <p>Initializes a TextureAtlas with a filename and with a certain capacity for Quads.<br />
-		The TextureAtlas capacity can be increased in runtime.<br />
-		WARNING: Do not reinitialize the TextureAtlas because it will leak memory. </p>
-		
-		@example 
-		```js
-		--------------------------------------------------
-		var textureAtlas = new cc.TextureAtlas();
-		textureAtlas.initWithTexture("hello.png", 3);
-		
-		``` 
-		*/
-		initWithFile(file : string, capacity : number) : boolean;		
-		/** <p>Initializes a TextureAtlas with a previously initialized Texture2D object, and<br />
-		with an initial capacity for Quads.<br />
-		The TextureAtlas capacity can be increased in runtime.<br />
-		WARNING: Do not reinitialize the TextureAtlas because it will leak memory</p>
-		
-		@example 
-		```js
-		---------------------------
-		var texture = cc.textureCache.addImage("hello.png");
-		var textureAtlas = new cc.TextureAtlas();
-		textureAtlas.initWithTexture(texture, 3);
-		
-		``` 
-		*/
-		initWithTexture(texture : Image, capacity : number) : boolean;		
-		/** <p>Updates a Quad (texture, vertex and color) at a certain index <br />
-		index must be between 0 and the atlas capacity - 1 </p> 
-		*/
-		updateQuad(quad : V3F_C4B_T2F_Quad, index : number) : void;		
-		/** <p>Inserts a Quad (texture, vertex and color) at a certain index<br />
-		index must be between 0 and the atlas capacity - 1 </p> 
-		*/
-		insertQuad(quad : V3F_C4B_T2F_Quad, index : number) : void;		
-		/** <p>
-		     Inserts a c array of quads at a given index                                           <br />
-		     index must be between 0 and the atlas capacity - 1                                    <br />
-		     this method doesn't enlarge the array when amount + index > totalQuads                <br />
-		</p> 
-		*/
-		insertQuads(quads : any[], index : number, amount : number) : void;		
-		/** <p>Removes the quad that is located at a certain index and inserts it at a new index <br />
-		This operation is faster than removing and inserting in a quad in 2 different steps</p> 
-		*/
-		insertQuadFromIndex(fromIndex : number, newIndex : number) : void;		
-		/** <p>Removes a quad at a given index number.<br />
-		The capacity remains the same, but the total number of quads to be drawn is reduced in 1 </p> 
-		*/
-		removeQuadAtIndex(index : number) : void;		
-		/** Removes a given number of quads at a given index. 
-		*/
-		removeQuadsAtIndex(index : number, amount : number) : void;		
-		/** <p>Removes all Quads. <br />
-		The TextureAtlas capacity remains untouched. No memory is freed.<br />
-		The total number of quads to be drawn will be 0</p> 
-		*/
-		removeAllQuads() : void;		
-		/** <p>Resize the capacity of the CCTextureAtlas.<br />
-		The new capacity can be lower or higher than the current one<br />
-		It returns YES if the resize was successful. <br />
-		If it fails to resize the capacity it will return NO with a new capacity of 0. <br />
-		no used for js</p> 
-		*/
-		resizeCapacity(newCapacity : number) : boolean;		
-		/** Used internally by CCParticleBatchNode                                    <br/>
-		don't use this unless you know what you're doing. 
-		*/
-		increaseTotalQuadsWith(amount : number) : void;		
-		/** Moves an amount of quads from oldIndex at newIndex. 
-		*/
-		moveQuadsFromIndex(oldIndex : number, amount : number, newIndex : number) : void;		
-		/** Ensures that after a realloc quads are still empty                                <br/>
-		Used internally by CCParticleBatchNode. 
-		*/
-		fillWithEmptyQuadsFromIndex(index : number, amount : number) : void;		
-		/** <p>Draws n quads from an index (offset). <br />
-		n + start can't be greater than the capacity of the atlas</p> 
-		*/
-		drawNumberOfQuads(n : number, start : number) : void;		
-		/** Indicates whether or not the array buffer of the VBO needs to be updated. */
-		dirty : boolean;		
-		/** Image texture for cc.TextureAtlas. */
-		texture : Image;		
-		/** Quantity of quads that can be stored with the current texture atlas size. */
-		capacity : number;		
-		/** Quantity of quads that are going to be drawn. */
-		totalQuads : number;		
-		/** Quads that are going to be rendered. */
-		quads : any[];	
-	}		
-		/** cc.textureCache is a singleton object, it's the global cache for cc.Texture2D */
-		export class textureCache {		
-		/** Description 
-		*/
-		description() : string;		
-		/** Returns an already created texture. Returns null if the texture doesn't exist.
-		
-		@example 
-		```js
-		------------------
-		var key = cc.textureCache.textureForKey("hello.png");
-		
-		``` 
-		*/
-		textureForKey(textureKeyName : string) : Texture2D;		
-		/** Returns an already created texture. Returns null if the texture doesn't exist.
-		
-		@example 
-		```js
-		------------------
-		var key = cc.textureCache.getTextureForKey("hello.png");
-		
-		``` 
-		*/
-		getTextureForKey(textureKeyName : string) : Texture2D;		
-		/** 
-		
-		@example 
-		```js
-		---------
-		var key = cc.textureCache.getKeyByTexture(texture);
-		
-		``` 
-		*/
-		getKeyByTexture(texture : Image) : string;		
-		/** 
-		
-		@example 
-		```js
-		---------------
-		var cacheTextureForColor = cc.textureCache.getTextureColors(texture);
-		
-		``` 
-		*/
-		getTextureColors(texture : Image) : any[];		
-		/** <p>Purges the dictionary of loaded textures. <br />
-		Call this method if you receive the "Memory Warning"  <br />
-		In the short term: it will free some resources preventing your app from being killed  <br />
-		In the medium term: it will allocate more resources <br />
-		In the long term: it will be the same</p>
-		
-		@example 
-		```js
-		--------
-		cc.textureCache.removeAllTextures();
-		
-		``` 
-		*/
-		removeAllTextures() : void;		
-		/** Deletes a texture from the cache given a texture.
-		
-		@example 
-		```js
-		-----
-		cc.textureCache.removeTexture(texture);
-		
-		``` 
-		*/
-		removeTexture(texture : Image) : void;		
-		/** Deletes a texture from the cache given a its key name.
-		
-		@example 
-		```js
-		------
-		cc.textureCache.removeTexture("hello.png");
-		
-		``` 
-		*/
-		removeTextureForKey(textureKeyName : string) : void;		
-		/** <p>Returns a Texture2D object given an file image <br />
-		If the file image was not previously loaded, it will create a new Texture2D <br />
-		 object and it will return it. It will use the filename as a key.<br />
-		Otherwise it will return a reference of a previously loaded image. <br />
-		Supported image extensions: .png, .jpg, .gif</p>
-		
-		@example 
-		```js
-		----
-		cc.textureCache.addImage("hello.png");
-		
-		``` 
-		*/
-		addImage(url : string, cb : Function, target : any) : Texture2D;		
-		/** Cache the image data. 
-		*/
-		cacheImage(path : string, texture : Image|HTMLImageElement|HTMLCanvasElement) : void;		
-		/** <p>Returns a Texture2D object given an UIImage image<br />
-		If the image was not previously loaded, it will create a new Texture2D object and it will return it.<br />
-		Otherwise it will return a reference of a previously loaded image<br />
-		The "key" parameter will be used as the "key" for the cache.<br />
-		If "key" is null, then a new texture will be created each time.</p> 
-		*/
-		addUIImage(image : HTMLImageElement|HTMLCanvasElement, key : string) : Texture2D;	
-	}		
-		/** !#en
-		A cc.SpriteFrame has:<br/>
-		 - texture: A cc.Texture2D that will be used by the _ccsg.Sprite<br/>
-		 - rectangle: A rectangle of the texture<br/>
-		<br/>
-		You can modify the frame of a _ccsg.Sprite by doing:<br/>
-		
-		Note: It's not recommended to use SpriteFrame constructor (new SpriteFrame)
-		because its memory usage can't be tracked in native environment, <br/>
-		if you know what you are doing, you may need to manually retain it after creation then
-		release it when you no longer need it.
-		
-		!#zh
-		一个 SpriteFrame 包含：<br/>
-		 - 纹理：会被 Sprite 使用的 Texture2D 对象。<br/>
-		 - 矩形：在纹理中的矩形区域。<br/>
-		注意：<br/>
-		  不建议用户使用构造函数进行创建，因为其内存使用情况，不能在本地环境中进行跟踪，需要用户手动管理内存，不然会导致严重错误。<br/>
-		  如果你知道你在做什么，你可能需要手动将其保留在创建之后，然后释放它。 */
-		export class SpriteFrame extends Asset {		
-		constructor();		
-		/** !#en
-		Constructor of SpriteFrame class. <br/>
-		Note: It's not recommended to use SpriteFrame constructor (new SpriteFrame)
-		because its memory usage can't be tracked in native environment, <br/>
-		if you know what you are doing, you may need to manually retain it after creation then
-		release it when you no longer need it.
-		!#zh
-		SpriteFrame 类的构造函数。<br/>
-		注意：<br/>
-		   不建议用户使用构造函数进行创建，因为其内存使用情况，不能在本地环境中进行跟踪，
-		   需要用户手动管理内存，不然会导致严重错误。<br/>
-		   如果你知道你在做什么，你可能需要手动将其保留在创建之后，然后释放它。
-		@param rotated Whether the frame is rotated in the texture
-		@param offset The offset of the frame in the texture
-		@param originalSize The size of the frame in the texture 
-		*/
-		SpriteFrame(filename? : string|Texture2D, rect? : Rect, rotated? : boolean, offset? : Vec2, originalSize? : Size) : void;		
-		/** !#en Top border of the sprite
-		!#zh sprite 的顶部边框 */
-		insetTop : number;		
-		/** !#en Bottom border of the sprite
-		!#zh sprite 的底部边框 */
-		insetBottom : number;		
-		/** !#en Left border of the sprite
-		!#zh sprite 的左边边框 */
-		insetLeft : number;		
-		/** !#en Right border of the sprite
-		!#zh sprite 的左边边框 */
-		insetRight : number;		
-		/** !#en Returns whether the texture have been loaded
-		!#zh 返回是否已加载纹理 
-		*/
-		textureLoaded() : boolean;		
-		/** Add a event listener for texture loaded event. 
-		*/
-		addLoadedEventListener(callback : Function, target : any) : void;		
-		/** !#en Returns whether the sprite frame is rotated in the texture.
-		!#zh 获取 SpriteFrame 是否旋转 
-		*/
-		isRotated() : boolean;		
-		/** !#en Set whether the sprite frame is rotated in the texture.
-		!#zh 设置 SpriteFrame 是否旋转 
-		*/
-		setRotated(bRotated : boolean) : void;		
-		/** !#en Returns the rect of the sprite frame in the texture.
-		!#zh 获取 SpriteFrame 的纹理矩形区域 
-		*/
-		getRect() : Rect;		
-		/** !#en Sets the rect of the sprite frame in the texture.
-		!#zh 设置 SpriteFrame 的纹理矩形区域 
-		*/
-		setRect(rect : Rect) : void;		
-		/** !#en Returns the original size of the trimmed image.
-		!#zh 获取修剪前的原始大小 
-		*/
-		getOriginalSize() : Size;		
-		/** !#en Sets the original size of the trimmed image.
-		!#zh 设置修剪前的原始大小 
-		*/
-		setOriginalSize(size : Size) : void;		
-		/** !#en Returns the texture of the frame.
-		!#zh 获取使用的纹理实例 
-		*/
-		getTexture() : Texture2D;		
-		/** !#en Sets the texture of the frame, the texture is retained automatically.
-		!#zh 设置使用的纹理实例，会被 retain。 
-		*/
-		_refreshTexture(texture : Texture2D) : void;		
-		/** !#en Returns the offset of the frame in the texture.
-		!#zh 获取偏移量 
-		*/
-		getOffset() : Vec2;		
-		/** !#en Sets the offset of the frame in the texture.
-		!#zh 设置偏移量 
-		*/
-		setOffset(offsets : Vec2) : void;		
-		/** !#en Clone the sprite frame.
-		!#zh 克隆 SpriteFrame 
-		*/
-		clone() : SpriteFrame;		
-		/** !#en If a loading scene is marked as `asyncLoadAssets`, all the textures of the SpriteFrame which
-		associated by user's custom Components in the scene, will not preload automatically.
-		These textures will be load when Sprite component is going to render the SpriteFrames.
-		You can call this method if you want to load the texture early.
-		!#zh 当加载中的场景被标记为 `asyncLoadAssets` 时，用户在场景中由自定义组件关联到的所有 SpriteFrame 的贴图都不会被提前加载。
-		只有当 Sprite 组件要渲染这些 SpriteFrame 时，才会检查贴图是否加载。如果你希望加载过程提前，你可以手工调用这个方法。
-		
-		@example 
-		```js
-		if (spriteFrame.textureLoaded()) {
-		    this._onSpriteFrameLoaded();
-		}
-		else {
-		    spriteFrame.once('load', this._onSpriteFrameLoaded, this);
-		    spriteFrame.ensureLoadTexture();
-		}
-		``` 
-		*/
-		ensureLoadTexture() : void;	
 	}		
 		/** !#en
 		cc.AffineTransform class represent an affine transform matrix. It's composed basically by translation, rotation, scale transformations.<br/>
@@ -9893,38 +9963,6 @@ declare module cc {
 	}	
 	
 	/****************************************************
-	* Event
-	*****************************************************/
-	
-	export module Event {			
-			/** !#en The Custom event
-			!#zh 自定义事件 */
-			export class EventCustom extends Event {			
-			constructor();			
-			/** 
-			@param type The name of the event (case-sensitive), e.g. "click", "fire", or "submit"
-			@param bubbles A boolean indicating whether the event bubbles up through the tree or not 
-			*/
-			EventCustom(type : string, bubbles : boolean) : EventCustom;			
-			/** !#en A reference to the detailed data of the event
-			!#zh 事件的详细数据 */
-			detail : any;			
-			/** !#en Sets user data
-			!#zh 设置用户数据 
-			*/
-			setUserData(data : any) : void;			
-			/** !#en Gets user data
-			!#zh 获取用户数据 
-			*/
-			getUserData() : any;			
-			/** !#en Gets event name
-			!#zh 获取事件名称 
-			*/
-			getEventName() : string;		
-		}	
-	}	
-	
-	/****************************************************
 	* Button
 	*****************************************************/
 	
@@ -10219,6 +10257,34 @@ declare module cc {
 	}	
 	
 	/****************************************************
+	* VideoPlayer
+	*****************************************************/
+	
+	export module VideoPlayer {		
+		/** !#en Video event type
+		!#zh 视频事件类型 */
+		export enum EventType {			
+			PLAYING = 0,
+			PAUSED = 0,
+			STOPPED = 0,
+			COMPLETED = 0,		
+		}	
+	}	
+	
+	/****************************************************
+	* VideoPlayer
+	*****************************************************/
+	
+	export module VideoPlayer {		
+		/** !#en Enum for video resouce type type.
+		!#zh 视频来源 */
+		export enum ResourceType {			
+			REMOTE = 0,
+			LOCAL = 0,		
+		}	
+	}	
+	
+	/****************************************************
 	* Sprite
 	*****************************************************/
 	
@@ -10262,34 +10328,6 @@ declare module cc {
 	}	
 	
 	/****************************************************
-	* VideoPlayer
-	*****************************************************/
-	
-	export module VideoPlayer {		
-		/** !#en Video event type
-		!#zh 视频事件类型 */
-		export enum EventType {			
-			PLAYING = 0,
-			PAUSED = 0,
-			STOPPED = 0,
-			COMPLETED = 0,		
-		}	
-	}	
-	
-	/****************************************************
-	* VideoPlayer
-	*****************************************************/
-	
-	export module VideoPlayer {		
-		/** !#en Enum for video resouce type type.
-		!#zh 视频来源 */
-		export enum ResourceType {			
-			REMOTE = 0,
-			LOCAL = 0,		
-		}	
-	}	
-	
-	/****************************************************
 	* WebView
 	*****************************************************/
 	
@@ -10304,30 +10342,34 @@ declare module cc {
 	}	
 	
 	/****************************************************
-	* Graphics
+	* Event
 	*****************************************************/
 	
-	export module Graphics {		
-		/** !#en Enum for LineCap.
-		!#zh 线段末端属性 */
-		export enum LineCap {			
-			BUTT = 0,
-			ROUND = 0,
-			SQUARE = 0,		
-		}	
-	}	
-	
-	/****************************************************
-	* Graphics
-	*****************************************************/
-	
-	export module Graphics {		
-		/** !#en Enum for LineJoin.
-		!#zh 线段拐角属性 */
-		export enum LineJoin {			
-			BEVEL = 0,
-			ROUND = 0,
-			MITER = 0,		
+	export module Event {			
+			/** !#en The Custom event
+			!#zh 自定义事件 */
+			export class EventCustom extends Event {			
+			constructor();			
+			/** 
+			@param type The name of the event (case-sensitive), e.g. "click", "fire", or "submit"
+			@param bubbles A boolean indicating whether the event bubbles up through the tree or not 
+			*/
+			EventCustom(type : string, bubbles : boolean) : EventCustom;			
+			/** !#en A reference to the detailed data of the event
+			!#zh 事件的详细数据 */
+			detail : any;			
+			/** !#en Sets user data
+			!#zh 设置用户数据 
+			*/
+			setUserData(data : any) : void;			
+			/** !#en Gets user data
+			!#zh 获取用户数据 
+			*/
+			getUserData() : any;			
+			/** !#en Gets event name
+			!#zh 获取事件名称 
+			*/
+			getEventName() : string;		
 		}	
 	}	
 	
@@ -10571,6 +10613,34 @@ declare module cc {
 	}	
 	
 	/****************************************************
+	* Graphics
+	*****************************************************/
+	
+	export module Graphics {		
+		/** !#en Enum for LineCap.
+		!#zh 线段末端属性 */
+		export enum LineCap {			
+			BUTT = 0,
+			ROUND = 0,
+			SQUARE = 0,		
+		}	
+	}	
+	
+	/****************************************************
+	* Graphics
+	*****************************************************/
+	
+	export module Graphics {		
+		/** !#en Enum for LineJoin.
+		!#zh 线段拐角属性 */
+		export enum LineJoin {			
+			BEVEL = 0,
+			ROUND = 0,
+			MITER = 0,		
+		}	
+	}	
+	
+	/****************************************************
 	* Texture2D
 	*****************************************************/
 	
@@ -10589,10 +10659,17 @@ AnySDK is a third party solution that offers game developers SDK integration wit
 AnySDK 为 CP 提供一套第三方 SDK 接入解决方案，整个接入过程，不改变任何 SDK 的功能、特性、参数等，对于最终玩家而言是完全透明无感知的。
 目的是让 CP 商能有更多时间更专注于游戏本身的品质，所有 SDK 的接入工作统统交给我们吧。第三方 SDK 包括了渠道SDK、用户系统、支付系统、广告系统、统计系统、分享系统等等。 */
 declare module anysdk {	
-	/** .agentManager */
-	export var anysdk : any;		
-		/** undefined */
+	/** !#en
+	agent manager of plugin
+	!#zh
+	插件管理对象 */
+	export var agentManager : anysdk.AgentManager;		
+		/** !#en
+		agent manager of plugin
+		!#zh
+		插件管理类 */
 		export class AgentManager {		
+		constructor();		
 		/** !#en
 		AppKey appSecret and privateKey are the only three parameters generated
 		after the packing tool client finishes creating the game.
@@ -10627,7 +10704,7 @@ declare module anysdk {
 		!#zh
 		获取支付系统插件 
 		*/
-		getIAPPlugin() : anysdk.ProtocolIAP;		
+		getIAPPlugins() : anysdk.ProtocolIAP;		
 		/** !#en
 		get IAP system plugin
 		!#zh
@@ -10754,36 +10831,54 @@ declare module anysdk {
 		获取 SDK 版本 
 		*/
 		getSDKVersion() : string;		
-		/** 
+		/** !#en
+		void methods for reflections with parameter
+		!#zh
+		反射调用带参数的void方法
 		@param args optional arguments 
 		*/
-		callFuncWithParam(funName : string, args? : string) : void;		
-		/** 
+		callFuncWithParam(funName : string, args? : any|anysdk.PluginParam) : void;		
+		/** !#en
+		String methods for reflections with parameter
+		!#zh
+		反射调用带参数的 String 方法
 		@param args optional arguments 
 		*/
-		callStringFuncWithParam(funName : string, args? : string) : string;		
-		/** 
+		callStringFuncWithParam(funName : string, args? : any|anysdk.PluginParam) : string;		
+		/** !#en
+		int methods for reflections with parameter
+		!#zh
+		反射调用带参数的 Int 方法
 		@param args optional arguments 
 		*/
-		callIntFuncWithParam(funName : string, args? : string) : number;		
-		/** 
+		callIntFuncWithParam(funName : string, args? : any|anysdk.PluginParam) : number;		
+		/** !#en
+		boolean methods for reflections with parameter
+		!#zh
+		反射调用带参数的 boolean 方法
 		@param args optional arguments 
 		*/
-		callBoolFuncWithParam(funName : string, args? : string) : boolean;		
-		/** 
+		callBoolFuncWithParam(funName : string, args? : any|anysdk.PluginParam) : boolean;		
+		/** !#en
+		float methods for reflections with parameter
+		!#zh
+		反射调用带参数的 float 方法
 		@param args optional arguments 
 		*/
-		callBoolFuncWithParam(funName : string, args? : string) : number;	
+		callFloatFuncWithParam(funName : string, args? : any|anysdk.PluginParam) : number;	
 	}		
-		/** undefined */
-		export class ProtocolUser {		
+		/** !#en
+		user protocol
+		!#zh
+		用户系统协议接口 */
+		export class ProtocolUser extends PluginProtocol {		
 		/** !#en
 		login interface
 		!#zh
 		登录接口
 		@param args optional arguments 
 		*/
-		login(args? : string) : void;		
+		login(args? : string|any) : void;		
 		/** !#en
 		get status of login
 		!#zh
@@ -10805,15 +10900,15 @@ declare module anysdk {
 		/** !#en
 		set listener
 		!#zh
-		设置自定义系统的监听 
+		设置用户系统的监听 
 		*/
 		setListener(listener : Function, target : any) : void;		
 		/** !#en
 		get listener
-		!#zh 
+		!#zh
+		获取用户系统的监听 
 		*/
-		getListener
-		获取自定义系统的监听() : Function;		
+		getListener() : Function;		
 		/** !#en
 		logout
 		Before to invoke, you need to verdict whether this properties existed
@@ -10876,21 +10971,21 @@ declare module anysdk {
 		!#zh
 		提交角色信息，调用前需要判断属性是否存在 
 		*/
-		submitLoginGameRole(data : string) : void;		
+		submitLoginGameRole(data : any) : void;		
 		/** !#en
 		get user information
 		Before to invoke, you need to verdict whether this properties existed
 		!#zh
 		获取用户信息，调用前需要判断属性是否存在 
 		*/
-		getUserInfo(info : string) : void;		
+		getUserInfo(info : any) : void;		
 		/** !#en
 		set login type
 		Before to invoke, you need to verdict whether this properties existed
 		!#zh
 		设置登录类型，调用前需要判断属性是否存在 
 		*/
-		getAvailableLoginType(info : string) : void;		
+		getAvailableLoginType(info : any) : void;		
 		/** !#en
 		set login type
 		Before to invoke, you need to verdict whether this properties existed
@@ -10913,8 +11008,11 @@ declare module anysdk {
 		*/
 		openBBS() : void;	
 	}		
-		/** undefined */
-		export class ProtocolIAP {		
+		/** !#en
+		IAP protocol
+		!#zh
+		支付系统协议接口 */
+		export class ProtocolIAP extends PluginProtocol {		
 		/** !#en
 		pay interface
 		!#zh
@@ -10943,18 +11041,21 @@ declare module anysdk {
 		/** !#en
 		set listener
 		!#zh
-		设置自定义系统的监听 
+		设置支付系统的监听 
 		*/
 		setListener(listener : Function, target : any) : void;		
 		/** !#en
 		get listener
-		!#zh 
+		!#zh
+		获取支付系统的监听 
 		*/
-		getListener
-		获取自定义系统的监听() : Function;	
+		getListener() : Function;	
 	}		
-		/** undefined */
-		export class ProtocolAnalytics {		
+		/** !#en
+		analytics protocol
+		!#zh
+		统计系统协议接口 */
+		export class ProtocolAnalytics extends PluginProtocol {		
 		/** !#en
 		Start a new session.
 		!#zh
@@ -11101,8 +11202,11 @@ declare module anysdk {
 		*/
 		failTask(paramMap : any) : void;	
 	}		
-		/** undefined */
-		export class ProtocolShare {		
+		/** !#en
+		share protocol
+		!#zh
+		分享系统协议接口 */
+		export class ProtocolShare extends PluginProtocol {		
 		/** !#en
 		share interface
 		!#zh
@@ -11113,18 +11217,21 @@ declare module anysdk {
 		/** !#en
 		set listener
 		!#zh
-		设置自定义系统的监听 
+		设置分享系统的监听 
 		*/
 		setListener(listener : Function, target : any) : void;		
 		/** !#en
 		get listener
-		!#zh 
+		!#zh
+		获取分享系统的监听 
 		*/
-		getListener
-		获取自定义系统的监听() : Function;	
+		getListener() : Function;	
 	}		
-		/** undefined */
-		export class ProtocolAds {		
+		/** !#en
+		ads protocol
+		!#zh
+		广告系统协议接口 */
+		export class ProtocolAds extends PluginProtocol {		
 		/** !#en
 		hide ads view
 		!#zh
@@ -11158,18 +11265,21 @@ declare module anysdk {
 		/** !#en
 		set listener
 		!#zh
-		设置自定义系统的监听 
+		设置广告系统的监听 
 		*/
 		setListener(listener : Function, target : any) : void;		
 		/** !#en
 		get listener
-		!#zh 
+		!#zh
+		获取广告系统的监听 
 		*/
-		getListener
-		获取自定义系统的监听() : Function;	
+		getListener() : Function;	
 	}		
-		/** undefined */
-		export class ProtocolSocial {		
+		/** !#en
+		social protocol
+		!#zh
+		社交系统协议接口 */
+		export class ProtocolSocial extends PluginProtocol {		
 		/** !#en
 		sign in
 		!#zh
@@ -11211,15 +11321,15 @@ declare module anysdk {
 		/** !#en
 		set listener
 		!#zh
-		设置自定义系统的监听 
+		设置社交系统的监听 
 		*/
 		setListener(listener : Function, target : any) : void;		
 		/** !#en
 		get listener
-		!#zh 
+		!#zh
+		获取社交系统的监听 
 		*/
-		getListener
-		获取自定义系统的监听() : Function;		
+		getListener() : Function;		
 		/** !#en
 		get friends info
 		Before to invoke, you need to verdict whether this properties existed
@@ -11242,8 +11352,11 @@ declare module anysdk {
 		*/
 		subscribe() : void;	
 	}		
-		/** undefined */
-		export class ProtocolPush {		
+		/** !#en
+		push protocol
+		!#zh
+		推送系统协议接口 */
+		export class ProtocolPush extends PluginProtocol {		
 		/** !#en
 		start Push services
 		!#zh
@@ -11285,18 +11398,21 @@ declare module anysdk {
 		/** !#en
 		set listener
 		!#zh
-		设置自定义系统的监听 
+		设置推送系统的监听 
 		*/
 		setListener(listener : Function, target : any) : void;		
 		/** !#en
 		get listener
-		!#zh 
+		!#zh
+		获取推送系统的监听 
 		*/
-		getListener
-		获取自定义系统的监听() : Function;	
+		getListener() : Function;	
 	}		
-		/** undefined */
-		export class ProtocolCrash {		
+		/** !#en
+		crash protocol
+		!#zh
+		崩溃分析系统协议接口 */
+		export class ProtocolCrash extends PluginProtocol {		
 		/** !#en
 		set user identifier
 		!#zh
@@ -11316,8 +11432,11 @@ declare module anysdk {
 		*/
 		leaveBreadcrumb(breadcrumb : string) : void;	
 	}		
-		/** undefined */
-		export class ProtocolREC {		
+		/** !#en
+		REC protocol
+		!#zh
+		录屏系统协议接口 */
+		export class ProtocolREC extends PluginProtocol {		
 		/** !#en
 		share video
 		!#zh
@@ -11340,15 +11459,15 @@ declare module anysdk {
 		/** !#en
 		set listener
 		!#zh
-		设置自定义系统的监听 
+		设置录屏系统的监听 
 		*/
 		setListener(listener : Function, target : any) : void;		
 		/** !#en
 		get listener
-		!#zh 
+		!#zh
+		获取录屏系统的监听 
 		*/
-		getListener
-		获取自定义系统的监听() : Function;		
+		getListener() : Function;		
 		/** !#en
 		pause to record video
 		Before to invoke, you need to verdict whether this properties existed
@@ -11414,8 +11533,11 @@ declare module anysdk {
 		*/
 		setMetaData(info : any) : void;	
 	}		
-		/** undefined */
-		export class ProtocolAdTracking {		
+		/** !#en
+		ad tracking protocol
+		!#zh
+		广告追踪系统协议接口 */
+		export class ProtocolAdTracking extends PluginProtocol {		
 		/** !#en
 		Call this method if you want to track register events as happening during a section.
 		!#zh
@@ -11467,8 +11589,11 @@ declare module anysdk {
 		*/
 		onStartToPay(info : any) : void;	
 	}		
-		/** undefined */
-		export class ProtocolCustom {		
+		/** !#en
+		custom protocol
+		!#zh
+		自定义系统协议接口 */
+		export class ProtocolCustom extends PluginProtocol {		
 		/** !#en
 		set listener
 		!#zh
@@ -11481,6 +11606,19 @@ declare module anysdk {
 		获取自定义系统的监听 
 		*/
 		getListener() : Function;	
+	}		
+		/** !#en
+		Data structure class
+		!#zh
+		数据结构类 */
+		export class PluginParam {		
+		constructor();		
+		/** !#en
+		create plugin parameters
+		!#zh
+		创建对象 
+		*/
+		create(parameters : number|string|any) : anysdk.PluginParam;	
 	}	
 	/** !#en The callback of user system
 	!#zh 用户系统回调 */
@@ -11860,7 +11998,7 @@ declare module sp {
 		!#zh 可查看 Spine 官方文档 http://zh.esotericsoftware.com/spine-json-format */
 		skeletonJson : any;		
 		atlasText : string;		
-		textures : Texture2D;		
+		textures : cc.Texture2D;		
 		/** !#en
 		A scale can be specified on the JSON or binary loader which will scale the bone positions,
 		image sizes, and animation translations.

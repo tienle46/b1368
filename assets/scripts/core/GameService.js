@@ -4,6 +4,7 @@
 
 var game = require('game')
 var SFS2X = require('SFS2X')
+var Fingerprint2 = require('fingerprinter');
 
 const requestCallbackNames = {
     [SFS2X.Requests.Handshake]: SFS2X.SFSEvent.HANDSHAKE,
@@ -115,15 +116,15 @@ class GameService {
         this.removeEventListener(SFS2X.SFSEvent.ROOM_REMOVE, this._onRoomRemove)
     }
 
-    _onUserExitRoom(event){
+    _onUserExitRoom(event) {
         game.system.emit(SFS2X.SFSEvent.USER_EXIT_ROOM, event);
     }
 
-    _onUserEnterRoom(event){
+    _onUserEnterRoom(event) {
         game.system.emit(SFS2X.SFSEvent.USER_ENTER_ROOM, event);
     }
 
-    _onRoomRemove(event){
+    _onRoomRemove(event) {
         game.system.emit(SFS2X.SFSEvent.ROOM_REMOVE, event);
     }
 
@@ -159,7 +160,7 @@ class GameService {
         this._callCallback(SFS2X.SFSEvent.LOGIN, event.data)
     }
 
-    sendRequest(request, {cb = null, scope = null, cbName = null} = {}) {
+    sendRequest(request, { cb = null, scope = null, cbName = null } = {}) {
         if (cb) {
             let cbKey = cbName || requestCallbackNames[request._id]
             cbKey && this._addCallback(cbKey, cb, scope)
@@ -202,7 +203,7 @@ class GameService {
     }
 
     _addCallback(key, cb, scope, data) {
-        this._eventCallbacks[key] = cb instanceof Function ? {cb: cb, data: data} : undefined;
+        this._eventCallbacks[key] = cb instanceof Function ? { cb: cb, data: data } : undefined;
         this._addCommandToScope(key, scope);
     }
 
@@ -229,9 +230,9 @@ class GameService {
      */
     connect(cb) {
 
-        if(this.client.isConnected()){
-            this._onConnection({success: true})
-        }else{
+        if (this.client.isConnected()) {
+            this._onConnection({ success: true })
+        } else {
             this._addCallback(SFS2X.SFSEvent.CONNECTION, cb);
 
             console.log(`Connecting to: ${game.config.host}:${game.config.port}`);
@@ -264,14 +265,17 @@ class GameService {
      * @param {function} cb
      */
     login(username, password, cb) {
-        let data = {};
-        data[game.keywords.IS_REGISTER] = false;
-        data[game.keywords.PASSWORD] = password;
-        data[game.keywords.APP_SECRET_KEY] = "63d9ccc8-9ce1-4165-80c8-b15eb84a780a";
+        new Fingerprint2().get((printer, components) => {
+            let data = {};
+            data[game.keywords.IS_REGISTER] = false;
+            data[game.keywords.PASSWORD] = password;
+            data[game.keywords.APP_SECRET_KEY] = printer;
+            // data[game.keywords.APP_SECRET_KEY] = "63d9ccc8-9ce1-4165-80c8-b15eb84a780a";
 
-        this._addCallback(SFS2X.SFSEvent.LOGIN, cb);
+            this._addCallback(SFS2X.SFSEvent.LOGIN, cb);
 
-        this.sendRequest(new SFS2X.Requests.System.LoginRequest(username, password, data, game.config.zone));
+            this.sendRequest(new SFS2X.Requests.System.LoginRequest(username, password, data, game.config.zone));
+        });
     }
 
     /**
@@ -280,14 +284,16 @@ class GameService {
      * @param {function} cb
      */
     register(username, password, cb) {
-        let data = {};
-        data[game.keywords.IS_REGISTER] = true;
-        data[game.keywords.PASSWORD] = password;
-        data[game.keywords.APP_SECRET_KEY] = "63d9ccc8-9ce1-4165-80c8-b15eb84a780a";
+        new Fingerprint2().get((printer, components) => {
+            let data = {};
+            data[game.keywords.IS_REGISTER] = true;
+            data[game.keywords.PASSWORD] = password;
+            data[game.keywords.APP_SECRET_KEY] = printer;
 
-        this._addCallback(SFS2X.SFSEvent.LOGIN, cb);
+            this._addCallback(SFS2X.SFSEvent.LOGIN, cb);
 
-        this.sendRequest(new SFS2X.Requests.System.LoginRequest(username, password, data, game.config.zone));
+            this.sendRequest(new SFS2X.Requests.System.LoginRequest(username, password, data, game.config.zone));
+        });
     }
 
     _checkConnection() {

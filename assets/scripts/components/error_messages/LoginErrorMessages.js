@@ -21,7 +21,8 @@ LOGIN_ERROR_MESSAGES["vi"] = {
     },
     // CUSTOM ERROR FOR CLIENTS
     "LOGIN_ERROR_USERNAME_NOT_VALID": "Tên đăng nhập phải lớn hơn 6 ký tự, không có ký tự đặc biệt và dấu cách",
-    "LOGIN_ERROR_PASSWORD_NOT_VALID": "Mật khẩu phải lớn hơn 6 ký tự, có ít nhất 1 ký tự Hoa, 1 số, không có ký tự đặc biệt và dấu cách"
+    "LOGIN_ERROR_PASSWORD_NOT_VALID": "Mật khẩu phải lớn hơn 6 ký tự, có ít nhất 1 ký tự Hoa, 1 số, không có ký tự đặc biệt và dấu cách",
+    "LOGIN_ERROR_CAPTCHA_NOT_VALID": "Mã xác nhận không đúng."
 };
 
 module.exports = LOGIN_ERROR_MESSAGES;

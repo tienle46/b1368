@@ -547,7 +547,7 @@
       "__uuid__": "c3c54555-5669-472f-a3e2-8b79492f9791"
     },
     "_N$returnType": 0,
-    "_N$inputFlag": 3,
+    "_N$inputFlag": 1,
     "_N$inputMode": 6,
     "_N$fontSize": 29,
     "_N$lineHeight": 40,
@@ -567,7 +567,7 @@
       "b": 127.5,
       "a": 255
     },
-    "_N$maxLength": 8
+    "_N$maxLength": 0
   },
   {
     "__type__": "cc.Widget",
@@ -789,7 +789,7 @@
       "b": 127.5,
       "a": 0
     },
-    "_N$maxLength": 8
+    "_N$maxLength": 0
   },
   {
     "__type__": "cc.Widget",
@@ -1362,7 +1362,7 @@
       "__uuid__": "c3c54555-5669-472f-a3e2-8b79492f9791"
     },
     "_N$returnType": 0,
-    "_N$inputFlag": 3,
+    "_N$inputFlag": 1,
     "_N$inputMode": 6,
     "_N$fontSize": 29,
     "_N$lineHeight": 40,
@@ -1676,9 +1676,7 @@
     "node": {
       "__id__": 38
     },
-    "_enabled": true,
-    "pressedScale": 0.85,
-    "transDuration": 0.1
+    "_enabled": true
   },
   {
     "__type__": "cc.Node",
@@ -1840,9 +1838,7 @@
     "node": {
       "__id__": 27
     },
-    "_enabled": true,
-    "pressedScale": 0.85,
-    "transDuration": 0.1
+    "_enabled": true
   },
   {
     "__type__": "cc.Node",

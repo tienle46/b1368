@@ -2,8 +2,8 @@ var BaseScene = require('BaseScene');
 var game = require('game');
 
 const CAPTCHA_LENGTH = 4;
-const MINIMUM_USERNAME = 6;
 const MINIMUM_PASSWORD = 6;
+const MINIMUM_USERNAME = 6;
 
 
 export default class RegisterScene extends BaseScene {
@@ -26,18 +26,16 @@ export default class RegisterScene extends BaseScene {
         };
 
         this.resetCaptcha = cc.Node;
-        }
+    }
 
     onLoad() {
         this.captchaLabel = this.resetCaptcha.getChildByName('label').getComponent(cc.Label);
         this.generateRandomString();
-        console.log(this.obj, this.num, this.empt);
     }
 
     handleRegistryAction() {
         let username = this.userNameEditBox.string.trim();
         let password = this.userPasswordEditBox.string.trim();
-        console.debug(this._isValidUserInputs(username, password));
 
         if (this._isValidUserInputs(username, password)) {
             game.service.connect((success) => {
@@ -48,17 +46,26 @@ export default class RegisterScene extends BaseScene {
                             console.debug('Login error:');
                             this.addPopup(game.getMessageFromServer(error.c));
                         }
-                        if (result.length) {
+                        if (result) {
+                            console.debug(result);
                             console.debug(`Logged in as ${game.context.getMe().name}`);
+                            this.node.runAction(cc.sequence(
+                                cc.fadeOut(0.5),
+                                cc.callFunc(function() {
+                                    cc.director.loadScene('DashboardScene');
+                                })
+                            ));
                         }
                     })
                 }
             })
         } else {
-            if (!this._isValidPasswordInput(password)) {
-                this.addPopup(game.getMessageFromServer("LOGIN_ERROR_PASSWORD_NOT_VALID"));
-            } else if (!this._isValidUsernameInput(username)) {
+            if (!this._isValidUsernameInput(username)) {
                 this.addPopup(game.getMessageFromServer("LOGIN_ERROR_USERNAME_NOT_VALID"));
+            } else if (!this._isValidPasswordInput(password)) {
+                this.addPopup(game.getMessageFromServer("LOGIN_ERROR_PASSWORD_NOT_VALID"));
+            } else if (!this._isValidCaptcha()) {
+                this.addPopup(game.getMessageFromServer("LOGIN_ERROR_CAPTCHA_NOT_VALID"));
             }
         }
     }
@@ -68,21 +75,26 @@ export default class RegisterScene extends BaseScene {
     }
 
     _isValidUserInputs(username, password) {
-        return this._isValidUsernameInput(username) && this._isValidPasswordInput(password);
+        return this._isValidUsernameInput(username) && this._isValidPasswordInput(password) && this._isValidCaptcha();
     }
 
     _isValidPasswordInput(str) {
         // minimum: 6, must have atleast a-z|A-Z|0-9, without space
         // /\s/.test(str) => true if str contains space
 
-        return /[a-z]/.test(str) && /[A-Z]/.test(str) && /[0-9]/.test(str) && !/\s/.test(str) && str.length >= 6;
+        return /[a-z]/.test(str) && /[A-Z]/.test(str) && /[0-9]/.test(str) && !/\s/.test(str) && str.length >= MINIMUM_PASSWORD;
     }
 
     _isValidUsernameInput(str) {
         // minimum: 6, a-zA-Z0-9, without space
         // /\s/.test(str) => true if str contains space
 
-        return /[a-zA-Z0-9]{6,}/.test(str) && !/\s/.test(str);
+        return new RegExp('/[a-zA-Z0-9]' + '{' + MINIMUM_USERNAME + ',}/').test(str) && !/\s/.test(str);
+    }
+
+    _isValidCaptcha() {
+        return this.userCaptchaEditBox.string === this.captchaLabel.string;
     }
 }
+
 game.createComponent(RegisterScene);

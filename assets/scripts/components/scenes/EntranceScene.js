@@ -47,12 +47,12 @@ class EntranceScene extends BaseScene {
                         //     let ListTableScene = require('ListTableScene');
                         //     new ListTableScene()._createRoom(game.const.gameCode.TLMNDL, 1, 2)
                         // }else{
-                            this.node.runAction(cc.sequence(
-                                cc.fadeOut(0.5),
-                                cc.callFunc(function() {
-                                    cc.director.loadScene('DashboardScene');
-                                })
-                            ));
+                        this.node.runAction(cc.sequence(
+                            cc.fadeOut(0.5),
+                            cc.callFunc(function() {
+                                cc.director.loadScene('DashboardScene');
+                            })
+                        ));
                         // }
 
                     }
@@ -78,6 +78,20 @@ class EntranceScene extends BaseScene {
 
     }
 
+    _generateUserName() {
+
+    }
+
+    _javaHasCode() {
+        // -> self là cái gì ?? @@ 
+        // let h = 0;
+
+        // for (let i = 0; i < self.length; i++) {
+        //     h = (31 * h) + [self characterAtIndex:i];
+        // }
+
+        // return h;
+    }
 }
 
 game.createComponent(EntranceScene);
