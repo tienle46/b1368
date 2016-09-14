@@ -31,6 +31,8 @@ export default class RegisterScene extends BaseScene {
     onLoad() {
         this.captchaLabel = this.resetCaptcha.getChildByName('label').getComponent(cc.Label);
         this.generateRandomString();
+        this.userNameEditBox.string = `a${this._generateRandomString(9)}${1}`;
+        this.userPasswordEditBox.string = `aA${this._generateRandomString(9)}${1}`;
     }
 
     handleRegistryAction() {
@@ -40,21 +42,16 @@ export default class RegisterScene extends BaseScene {
         if (this._isValidUserInputs(username, password)) {
             game.service.connect((success) => {
                 if (success) {
-                    game.service.register(username, password, (error, result) => {
+                    game.service.requestAuthen(username, password, true, false, (error, result) => {
                         error = JSON.parse(error);
                         if (error) {
                             console.debug('Login error:');
-                            this.addPopup(game.getMessageFromServer(error.c));
+                            this.addPopup(game.getMessageFromServer(error.p.ec));
                         }
                         if (result) {
                             console.debug(result);
                             console.debug(`Logged in as ${game.context.getMe().name}`);
-                            this.node.runAction(cc.sequence(
-                                cc.fadeOut(0.5),
-                                cc.callFunc(function() {
-                                    cc.director.loadScene('DashboardScene');
-                                })
-                            ));
+                            this.changeScene('DashboardScene');
                         }
                     })
                 }
@@ -71,7 +68,20 @@ export default class RegisterScene extends BaseScene {
     }
 
     generateRandomString() {
-        this.captchaLabel.string = Math.random().toString(36).slice(2, 6); // genarate from [2, 6] to avoid "0.xxx" in string
+        this.captchaLabel.string = this._generateRandomString(6) // genarate from [2, 6] to avoid "0.xxx" in string
+    }
+
+    back() { // back to EntranceScene
+        this.changeScene('EntranceScene');
+    }
+
+
+    /**
+     *  PRIVATE METHODS
+     */
+
+    _generateRandomString(number) {
+        return Math.random().toString(36).slice(2, 6);
     }
 
     _isValidUserInputs(username, password) {
@@ -81,7 +91,6 @@ export default class RegisterScene extends BaseScene {
     _isValidPasswordInput(str) {
         // minimum: 6, must have atleast a-z|A-Z|0-9, without space
         // /\s/.test(str) => true if str contains space
-
         return /[a-z]/.test(str) && /[A-Z]/.test(str) && /[0-9]/.test(str) && !/\s/.test(str) && str.length >= MINIMUM_PASSWORD;
     }
 
@@ -89,7 +98,7 @@ export default class RegisterScene extends BaseScene {
         // minimum: 6, a-zA-Z0-9, without space
         // /\s/.test(str) => true if str contains space
 
-        return new RegExp('/[a-zA-Z0-9]' + '{' + MINIMUM_USERNAME + ',}/').test(str) && !/\s/.test(str);
+        return /[a-zA-Z0-9]{6,}/.test(str) && !/\s/.test(str);
     }
 
     _isValidCaptcha() {

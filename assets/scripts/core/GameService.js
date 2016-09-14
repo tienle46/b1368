@@ -264,31 +264,21 @@ class GameService {
      * @param {string} password
      * @param {function} cb
      */
-    login(username, password, cb) {
+
+    requestAuthen(username, password, isRegister, isQuickLogin, cb) {
         new Fingerprint2().get((printer, components) => {
             let data = {};
-            data[game.keywords.IS_REGISTER] = false;
-            data[game.keywords.PASSWORD] = password;
-            data[game.keywords.APP_SECRET_KEY] = printer;
-            data[game.keywords.APP_SECRET_KEY] = "63d9ccc8-9ce1-4165-80c8-b15eb84a780a";
+            data[game.keywords.IS_REGISTER] = isRegister;
+            data[game.keywords.RAW_PASSWORD] = password;
+            data[game.keywords.APP_SECRET_KEY] = "63d9ccc8-9ce1-4165-80c8-b15eb84a780a"; //
+            // data[game.keywords.APP_VERSION_KEY] = "1.0.1"; //
+            // data[game.keywords.VERSION] = "1.0.0"; //
+            data[game.keywords.DEVICE_ID] = printer;
+            data[game.keywords.QUICK_PLAY] = isQuickLogin; // <-- die here!
 
-            this._addCallback(SFS2X.SFSEvent.LOGIN, cb);
+            if (isRegister)
+                data[game.keywords.PARTNER_ID] = "1"; // <-- or here
 
-            this.sendRequest(new SFS2X.Requests.System.LoginRequest(username, password, data, game.config.zone));
-        });
-    }
-
-    /**
-     * @param {string} username
-     * @param {string} password
-     * @param {function} cb
-     */
-    register(username, password, cb) {
-        new Fingerprint2().get((printer, components) => {
-            let data = {};
-            data[game.keywords.IS_REGISTER] = true;
-            data[game.keywords.PASSWORD] = password;
-            data[game.keywords.APP_SECRET_KEY] = printer;
 
             this._addCallback(SFS2X.SFSEvent.LOGIN, cb);
 

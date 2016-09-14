@@ -35,7 +35,7 @@ export default class BaseScene extends Component {
      *
      * @private
      */
-    _addListener(){
+    _addListener() {
         //TODO
     }
 
@@ -49,14 +49,14 @@ export default class BaseScene extends Component {
      *
      * @private
      */
-    _removeListener(){
+    _removeListener() {
         //TODO
     }
 
     start() {
         game.system.setCurrentScene(this);
 
-        if(this.onShown && this.onShown instanceof Function){
+        if (this.onShown && this.onShown instanceof Function) {
             this.onShown();
         }
     }
@@ -65,7 +65,7 @@ export default class BaseScene extends Component {
         this._addListener()
     }
 
-    onDestroy(){
+    onDestroy() {
         this._removeListener()
     }
 
@@ -80,7 +80,7 @@ export default class BaseScene extends Component {
     showLoading(payload, message, timeoutInSeconds = 10) {
         this.hideLoading(payload)
 
-        if(utils.isNumber(message)){
+        if (utils.isNumber(message)) {
             timeoutInSeconds = message;
         }
 
@@ -100,6 +100,15 @@ export default class BaseScene extends Component {
         popupBase.position = cc.p(0, 0);
         popupBase.getComponent(BasePopup).setContent(string);
         this.node.addChild(popupBase, 10);
+    }
+
+    changeScene(name, duration = 0.5) {
+        this.node.runAction(cc.sequence(
+            cc.fadeOut(duration),
+            cc.callFunc(function() {
+                cc.director.loadScene(name);
+            })
+        ));
     }
 }
 

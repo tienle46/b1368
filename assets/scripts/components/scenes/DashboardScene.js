@@ -49,8 +49,6 @@ export default class DashboardScene extends BaseScene {
             this.gameList = data["cl"];
             console.log(this.gameList);
 
-
-
             this._initItemListGame();
         }, game.const.scene.DASHBOARD_SCENE);
 
@@ -66,7 +64,7 @@ export default class DashboardScene extends BaseScene {
     _initItemListGame() {
 
         const height = this.scrollerContentView.node.height;
-        const itemDimension = height / 2.0 - 30;
+        const itemDimension = height / 2.0 - 50;
 
         this.gameList.forEach(gc => {
             "use strict";
@@ -82,7 +80,7 @@ export default class DashboardScene extends BaseScene {
                 itemComponent.listenOnClickListener((gameCode) => {
                     console.log(`click Item ${gameCode}`);
 
-                    cc.director.loadScene('ListTableScene');
+                    this.changeScene('ListTableScene');
                 });
 
                 this.scrollerContentView.node.addChild(nodeItem);

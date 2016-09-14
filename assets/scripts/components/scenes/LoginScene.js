@@ -7,7 +7,6 @@ var Fingerprint2 = require('fingerprinter');
 
 const CAPTCHA_LENGTH = 4;
 const MINIMUM_PASSWORD = 6;
-const MINIMUM_USERNAME = 6;
 
 
 
@@ -29,44 +28,43 @@ export default class LoginScene extends BaseScene {
     }
 
     onLoad() {
-        if (this.isRemember) {
-            _loginToDashboard();
-        }
-    }
+            if (this.isRemember) {
+                _loginToDashboard();
+            }
+        } //qply
 
     handleLoginAction() {
         let username = this.userNameEditBox.string.trim();
         let password = this.userPasswordEditBox.string.trim();
 
-        if (this._isValidUserInputs(username, password)) {
-            this._loginToDashboard(username, password);
-        } else {
-            if (!this._isValidUsernameInput(username)) {
-                this.addPopup(game.getMessageFromServer("LOGIN_ERROR_USERNAME_NOT_VALID"));
-            } else if (!this._isValidPasswordInput(password)) {
-                this.addPopup(game.getMessageFromServer("LOGIN_ERROR_PASSWORD_NOT_VALID"));
-            }
-        }
+        // if (this._isValidUserInputs(username, password)) {
+        this._loginToDashboard(username, password);
+        // } else {
+        //     if (!this._isValidUsernameInput(username)) {
+        //         this.addPopup(game.getMessageFromServer("LOGIN_ERROR_USERNAME_NOT_VALID"));
+        //     } else if (!this._isValidPasswordInput(password)) {
+        //         this.addPopup(game.getMessageFromServer("LOGIN_ERROR_PASSWORD_NOT_VALID"));
+        //     }
+        // }
+    }
+
+    back() { // back to EntranceScene
+        this.changeScene('EntranceScene');
     }
 
     _loginToDashboard(username, password) {
         game.service.connect((success) => {
             if (success) {
-                game.service.login(username, password, (error, result) => {
+                game.service.requestAuthen(username, password, false, false, (error, result) => {
                     error = JSON.parse(error);
                     if (error) {
                         console.debug('Login error:');
-                        this.addPopup(game.getMessageFromServer(error.c));
+                        this.addPopup(game.getMessageFromServer(error.p.ec));
                     }
                     if (result) {
                         console.debug(result);
                         console.debug(`Logged in as ${game.context.getMe().name}`);
-                        this.node.runAction(cc.sequence(
-                            cc.fadeOut(0.5),
-                            cc.callFunc(function() {
-                                cc.director.loadScene('DashboardScene');
-                            })
-                        ));
+                        this.changeScene('DashboardScene');
                     }
                 })
             }

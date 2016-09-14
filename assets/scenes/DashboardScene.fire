@@ -234,7 +234,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 940,
+      "width": 672,
       "height": 480
     },
     "_children": [
@@ -296,7 +296,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 940,
+      "width": 672,
       "height": 480
     },
     "_children": [
@@ -358,7 +358,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 930,
+      "width": 672,
       "height": 470
     },
     "_children": [
@@ -417,7 +417,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 913,
+      "width": 672,
       "height": 435
     },
     "_children": [],
@@ -427,7 +427,7 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": 4,
+      "x": 0,
       "y": 1
     },
     "_skewX": 0,
@@ -459,7 +459,7 @@
     "_enabled": true,
     "_layoutSize": {
       "__type__": "cc.Size",
-      "width": 913,
+      "width": 672,
       "height": 435
     },
     "_resize": 1,
@@ -485,7 +485,7 @@
     },
     "_enabled": true,
     "isAlignOnce": true,
-    "_alignFlags": 5,
+    "_alignFlags": 45,
     "_left": 0,
     "_right": 0,
     "_top": 16.5,
@@ -498,7 +498,7 @@
     "_isAbsBottom": true,
     "_isAbsHorizontalCenter": true,
     "_isAbsVerticalCenter": true,
-    "_originalWidth": 0,
+    "_originalWidth": 913,
     "_originalHeight": 495
   },
   {
@@ -522,8 +522,8 @@
     "_enabled": true,
     "isAlignOnce": true,
     "_alignFlags": 45,
-    "_left": 5,
-    "_right": 5,
+    "_left": 0,
+    "_right": 0,
     "_top": 5,
     "_bottom": 5,
     "_verticalCenter": 0,
@@ -642,7 +642,7 @@
     "_enabled": true,
     "_layoutSize": {
       "__type__": "cc.Size",
-      "width": 940,
+      "width": 672,
       "height": 480
     },
     "_resize": 0,
@@ -669,14 +669,14 @@
     "_enabled": true,
     "isAlignOnce": true,
     "_alignFlags": 45,
-    "_left": 10,
-    "_right": 10,
+    "_left": 0.15,
+    "_right": 0.15,
     "_top": 80,
     "_bottom": 80,
     "_verticalCenter": 0,
     "_horizontalCenter": 0,
-    "_isAbsLeft": true,
-    "_isAbsRight": true,
+    "_isAbsLeft": false,
+    "_isAbsRight": false,
     "_isAbsTop": true,
     "_isAbsBottom": true,
     "_isAbsHorizontalCenter": true,
@@ -708,8 +708,9 @@
       "__id__": 2
     },
     "_enabled": true,
-    "loading": true,
-    "gameList": [],
+    "popUp": {
+      "__uuid__": "b304b073-0867-4e3e-a771-770ac6349d22"
+    },
     "scrollerContentView": {
       "__id__": 10
     },
@@ -721,9 +722,6 @@
     },
     "topBar": {
       "__uuid__": "4d85d6d3-60fd-403c-b146-c9304957b77c"
-    },
-    "popUp": {
-      "__uuid__": "b304b073-0867-4e3e-a771-770ac6349d22"
     }
   }
 ]

@@ -90,7 +90,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "Button",
+    "_name": "napXuBtn",
     "_objFlags": 0,
     "_opacity": 255,
     "_color": {
@@ -462,17 +462,17 @@
     "transition": 1,
     "pressedColor": {
       "__type__": "cc.Color",
-      "r": 127,
-      "g": 127,
-      "b": 127,
-      "a": 127.5
+      "r": 255,
+      "g": 255,
+      "b": 255,
+      "a": 255
     },
     "hoverColor": {
       "__type__": "cc.Color",
-      "r": 127,
-      "g": 127,
-      "b": 127,
-      "a": 127.5
+      "r": 255,
+      "g": 255,
+      "b": 255,
+      "a": 255
     },
     "duration": 0.1,
     "pressedSprite": {
@@ -499,7 +499,7 @@
       "r": 127,
       "g": 127,
       "b": 127,
-      "a": 127.5
+      "a": 255
     },
     "_N$normalSprite": {
       "__uuid__": "1e0520e7-f4e4-4751-af72-f74fbdef5568"
@@ -568,7 +568,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "Button",
+    "_name": "AwardBtn",
     "_objFlags": 0,
     "_opacity": 255,
     "_color": {
@@ -666,17 +666,17 @@
     "transition": 1,
     "pressedColor": {
       "__type__": "cc.Color",
-      "r": 127,
-      "g": 127,
-      "b": 127,
-      "a": 127.5
+      "r": 255,
+      "g": 255,
+      "b": 255,
+      "a": 255
     },
     "hoverColor": {
       "__type__": "cc.Color",
-      "r": 127,
-      "g": 127,
-      "b": 127,
-      "a": 127.5
+      "r": 255,
+      "g": 255,
+      "b": 255,
+      "a": 255
     },
     "duration": 0.1,
     "pressedSprite": {
@@ -703,7 +703,7 @@
       "r": 127,
       "g": 127,
       "b": 127,
-      "a": 127.5
+      "a": 255
     },
     "_N$normalSprite": {
       "__uuid__": "18f3dcd7-e483-4556-9c7a-2aadff44d84b"
@@ -976,7 +976,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "Button",
+    "_name": "ExchangeBtn",
     "_objFlags": 0,
     "_opacity": 255,
     "_color": {
@@ -1074,17 +1074,17 @@
     "transition": 1,
     "pressedColor": {
       "__type__": "cc.Color",
-      "r": 127,
-      "g": 127,
-      "b": 127,
-      "a": 127.5
+      "r": 255,
+      "g": 255,
+      "b": 255,
+      "a": 255
     },
     "hoverColor": {
       "__type__": "cc.Color",
-      "r": 127,
-      "g": 127,
-      "b": 127,
-      "a": 127.5
+      "r": 255,
+      "g": 255,
+      "b": 255,
+      "a": 255
     },
     "duration": 0.1,
     "pressedSprite": {
@@ -1180,7 +1180,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "Button",
+    "_name": "MsgBtn",
     "_objFlags": 0,
     "_opacity": 255,
     "_color": {
@@ -1278,17 +1278,17 @@
     "transition": 1,
     "pressedColor": {
       "__type__": "cc.Color",
-      "r": 127,
-      "g": 127,
-      "b": 127,
-      "a": 127.5
+      "r": 255,
+      "g": 255,
+      "b": 255,
+      "a": 255
     },
     "hoverColor": {
       "__type__": "cc.Color",
-      "r": 127,
-      "g": 127,
-      "b": 127,
-      "a": 127.5
+      "r": 255,
+      "g": 255,
+      "b": 255,
+      "a": 255
     },
     "duration": 0.1,
     "pressedSprite": {
@@ -1315,7 +1315,7 @@
       "r": 127,
       "g": 127,
       "b": 127,
-      "a": 127.5
+      "a": 255
     },
     "_N$normalSprite": {
       "__uuid__": "95e90db0-5ecb-4e8f-88cd-879738957b6e"
@@ -1384,7 +1384,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "Button",
+    "_name": "phoneBtn",
     "_objFlags": 0,
     "_opacity": 255,
     "_color": {
@@ -1482,17 +1482,17 @@
     "transition": 1,
     "pressedColor": {
       "__type__": "cc.Color",
-      "r": 127,
-      "g": 127,
-      "b": 127,
-      "a": 127.5
+      "r": 255,
+      "g": 255,
+      "b": 255,
+      "a": 255
     },
     "hoverColor": {
       "__type__": "cc.Color",
-      "r": 127,
-      "g": 127,
-      "b": 127,
-      "a": 127.5
+      "r": 255,
+      "g": 255,
+      "b": 255,
+      "a": 255
     },
     "duration": 0.1,
     "pressedSprite": {
@@ -1519,7 +1519,7 @@
       "r": 127,
       "g": 127,
       "b": 127,
-      "a": 127.5
+      "a": 255
     },
     "_N$normalSprite": {
       "__uuid__": "3866d508-91cc-462e-9be0-3be5d55e6cab"
@@ -1588,7 +1588,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "Button",
+    "_name": "UserInfoBtn",
     "_objFlags": 0,
     "_opacity": 255,
     "_color": {
@@ -2047,17 +2047,17 @@
     "transition": 1,
     "pressedColor": {
       "__type__": "cc.Color",
-      "r": 127,
-      "g": 127,
-      "b": 127,
-      "a": 127.5
+      "r": 255,
+      "g": 255,
+      "b": 255,
+      "a": 255
     },
     "hoverColor": {
       "__type__": "cc.Color",
-      "r": 127,
-      "g": 127,
-      "b": 127,
-      "a": 127.5
+      "r": 255,
+      "g": 255,
+      "b": 255,
+      "a": 255
     },
     "duration": 0.1,
     "pressedSprite": {
@@ -2084,7 +2084,7 @@
       "r": 127,
       "g": 127,
       "b": 127,
-      "a": 127.5
+      "a": 255
     },
     "_N$normalSprite": {
       "__uuid__": "9ae6fa83-a256-45c9-9698-e887631f8c81"

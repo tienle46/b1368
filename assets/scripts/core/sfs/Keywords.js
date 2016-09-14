@@ -71,8 +71,10 @@ Keywords.BUDDY_MESSAGE = "bm";
 Keywords.FULLNAME = "fn";
 Keywords.IS_REGISTER = "r";
 Keywords.RAW_PASSWORD = "p";
+Keywords.DEVICE_ID = "di";
 Keywords.CLIENT_TYPE = "ct";
 Keywords.VERSION = "v";
+Keywords.QUICK_PLAY = "qply";
 Keywords.PARTNER_ID = "pid";
 Keywords.IS_UPDATE = "iu";
 Keywords.DOWNLOAD_LINK = "dl";
@@ -508,7 +510,7 @@ Keywords.TEST_MODE = "testMode";
 //Soccer
 Keywords.PAGE_CUSTOM = "pct";
 Keywords.SOCCER_ID_LIST = "il";
-Keywords.SOCCER_DATE_LIST ="dl";
+Keywords.SOCCER_DATE_LIST = "dl";
 Keywords.SOCCER_MATCH_TIME_LIST = "mtl";
 Keywords.SOCCER_SCORE_LIST = "cl";
 Keywords.SOCCER_HOME_TEAM_LIST = "htl";
@@ -557,72 +559,72 @@ Keywords.RANK_TYPE_ICON = "iml";
 
 //DOI THUONG
 Keywords.EXCHANGE_LIST = {
-    RESPONSE : {
-        TYPES : "types",
-        ITEM_TYPE : "t",
-        ITEM_ID_LIST : "il",
-        ITEM_NAME_LIST : "nl",
-        ITEM_GOLD_LIST : "gl",
-        ITEM_ICON_LIST : "iml"
+    RESPONSE: {
+        TYPES: "types",
+        ITEM_TYPE: "t",
+        ITEM_ID_LIST: "il",
+        ITEM_NAME_LIST: "nl",
+        ITEM_GOLD_LIST: "gl",
+        ITEM_ICON_LIST: "iml"
     }
 };
 
 Keywords.EXCHANGE = {
-    REQUEST : {
-        ID : 'i'
+    REQUEST: {
+        ID: 'i'
     },
-    RESPONSE : {
-        IS_SUCCESS : 'su',
-        MESSAGE : 'msg'
+    RESPONSE: {
+        IS_SUCCESS: 'su',
+        MESSAGE: 'msg'
     }
 };
 
 Keywords.EXCHANGE_HISTORY = {
-    RESPONSE : {
-        ITEM_ID_HISTORY : "il",
-        STATUS_LIST : "sl", // array 0:pending, 1:success, 2:failed
-        TIME_LIST : "dl", // thoi gian yeu cau doi thuong
-        NAME_LIST : "nl"
+    RESPONSE: {
+        ITEM_ID_HISTORY: "il",
+        STATUS_LIST: "sl", // array 0:pending, 1:success, 2:failed
+        TIME_LIST: "dl", // thoi gian yeu cau doi thuong
+        NAME_LIST: "nl"
     }
 };
 
 Keywords.EXCHANGE_HISTORY_DETAIL = {
-    REQUEST : {
-        ID : 'i'
+    REQUEST: {
+        ID: 'i'
     },
-    RESPONSE : {
-        ID : 'i', //id item history
-        DETAIL : 'd'
+    RESPONSE: {
+        ID: 'i', //id item history
+        DETAIL: 'd'
     }
 };
 
 //Admin Message
 Keywords.SYSTEM_MESSAGE = {
-    REQUEST : {
-        ACTION_TYPE : "ac",
-        GROUP_TYPE : "gt",
-        NODE_ID : "ni",
-        PAGE_NUMBER : 'p'
+    REQUEST: {
+        ACTION_TYPE: "ac",
+        GROUP_TYPE: "gt",
+        NODE_ID: "ni",
+        PAGE_NUMBER: 'p'
     },
-    RESPONSE : {
-        TITLE_LIST : "hl",
-        TIME_LIST : "cl",
-        ID_ITEM_LIST : "itl",
-        SUCCESS : "su",
-        PAGE_TOTAL : "pc",
-        CURRENT_PAGE : "p"
+    RESPONSE: {
+        TITLE_LIST: "hl",
+        TIME_LIST: "cl",
+        ID_ITEM_LIST: "itl",
+        SUCCESS: "su",
+        PAGE_TOTAL: "pc",
+        CURRENT_PAGE: "p"
     }
 };
 
 //Admin message detail
 Keywords.SYSTEM_MESSAGE_DETAIL = {
-    REQUEST : {
-        ACTION_TYPE : "ac",
-        GROUP_TYPE : "gt",
-        NODE_ID : "ni"
+    REQUEST: {
+        ACTION_TYPE: "ac",
+        GROUP_TYPE: "gt",
+        NODE_ID: "ni"
     },
-    RESPONSE : {
-        CONTENT : "c"
+    RESPONSE: {
+        CONTENT: "c"
     }
 };
 
@@ -631,15 +633,19 @@ Keywords.QUICK_JOIN_BET = "b";
 
 // HIGH LIGHT MESSAGE
 Keywords.HIGH_LIGHT_MESSAGE = {
-    RESPONSE : {
-        MESSAGE : "msg",
-        RECON : "rc"
+    RESPONSE: {
+        MESSAGE: "msg",
+        RECON: "rc"
     }
 };
 
 Keywords.ADMIN_MESSAGE_TYPE = "t";
 Keywords.ADMIN_MESSAGE_LIST = "ml";
 
-Keywords.ROOM_BET = "b"
-Keywords.ROOM_CAPACITY = "mu"
-Keywords.USER_VARIABLE_BALANCE = "coin"
+Keywords.ROOM_BET = "b";
+Keywords.ROOM_CAPACITY = "mu";
+Keywords.USER_VARIABLE_BALANCE = "coin";
+
+
+//
+Keywords.APP_VERSION_KEY = "avrsn";
