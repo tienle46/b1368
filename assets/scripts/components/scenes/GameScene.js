@@ -5,10 +5,14 @@ import CreateGameException from 'CreateGameException'
 import TLMNDLBoard from 'TLMNDLBoard'
 import TLMNDLPlayer from 'TLMNDLPlayer'
 import GameMenuPrefab from 'GameMenuPrefab'
+import BaseScene from 'BaseScene'
 
-class GameScene {
+
+class GameScene extends BaseScene {
 
     constructor() {
+        super();
+
         this.boardLayer = {
             default: null,
             type: cc.Node
@@ -34,23 +38,28 @@ class GameScene {
         this.gameMenu = null;
         this.playerManager = null;
         this.gameControls = null;
+        this.gameData = null;
     }
 
     onLoad() {
         try {
             this.room = game.context.currentRoom
-            this.gameCode = utils.getGameCode(this.room)
 
-            if(!this.room || !this.room.isGame || !this.gameCode){
-                if(!game.config.test){
-                    throw new CreateGameException('Bàn chơi không tồn tại!')
-                }
+            if(!this.room || !this.room.isGame){
+                throw new CreateGameException('Bàn chơi không tồn tại!')
+            }
+
+            this.gameCode = utils.getGameCode(this.room)
+            this.gameData = this.room.getVariable(game.keywords.VARIABLE_GAME_INFO).value;
+            if(!this.gameData){
+                throw new CreateGameException('Không thể tải thông tin bàn chơi!')
             }
 
             this._initBoardLayer()
             this._initPlayerLayer()
             this._initGameControlLayer()
             this._initGameMenuLayer()
+            this._loadGameData();
 
         }catch (e){
             console.error(e)
@@ -58,6 +67,11 @@ class GameScene {
             if(e instanceof CreateGameException)
                 this._onLoadSceneFail()
         }
+    }
+
+    _loadGameData(){
+        this.board._init(this.gameData);
+        this.playerManager._init(this.board, this)
     }
 
     _initBoardLayer(){
@@ -69,7 +83,6 @@ class GameScene {
         let boardClass = game.manager.getBoardClass(this.gameCode)
         let boardComponent = game.createComponent(boardClass, this.room, this);
         this.board = this.boardLayer.addComponent(boardComponent)
-        this.board.init();
 
         if(!this.board){
             throw new CreateGameException("Không thể khởi tạo bàn chơi");
@@ -78,7 +91,6 @@ class GameScene {
 
     _initPlayerLayer(){
         this.playerManager = this.playerLayer.getComponent('PlayerManager');
-        this.playerManager.init(this.board, this);
     }
 
     _initGameControlLayer(){
@@ -88,8 +100,7 @@ class GameScene {
             prefabObj.setAnchorPoint(0, 0)
             prefabObj.parent = this.gameControlLayer
 
-            let baseControlsComponent = prefabObj.getComponent('BaseControls');
-            this.gameControls = baseControlsComponent;
+            this.gameControls = prefabObj.getComponent('BaseControls');
             this.gameControls._init(this.board, this);
         });
     }

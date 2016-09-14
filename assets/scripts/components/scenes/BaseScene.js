@@ -3,13 +3,16 @@
  */
 
 import game from 'game'
+import utils from 'utils'
 import Component from 'Component'
 import BasePopup from 'BasePopup'
 
 export default class BaseScene extends Component {
     constructor() {
         super();
+
         this.loading = true;
+
         this.popUp = {
             default: null,
             type: cc.Prefab
@@ -64,6 +67,31 @@ export default class BaseScene extends Component {
 
     onDestroy(){
         this._removeListener()
+    }
+
+    showShortLoading(payload, message = '') {
+        this.showLoading(payload, message, 5)
+    }
+
+    showLongLoading(payload, message = '') {
+        this.showLoading(payload, message, 20)
+    }
+
+    showLoading(payload, message, timeoutInSeconds = 10) {
+        this.hideLoading(payload)
+
+        if(utils.isNumber(message)){
+            timeoutInSeconds = message;
+        }
+
+        //TODO
+
+        this.loading = true;
+    }
+
+    hideLoading(payload) {
+        this.loading = false;
+        //TODO
     }
 
     // show popup

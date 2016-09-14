@@ -19,8 +19,6 @@ export default class Board extends Component{
 
         this.gameEventHandler = null
 
-        this.gameData = null
-
         this.owner = null
 
         this.ownerId = 0
@@ -39,37 +37,21 @@ export default class Board extends Component{
 
     }
 
-    _loadGameData(){
+    _init(gameData){
+        this.gameCode = this.room.name.substring(0, 3);
 
-        if (this.room && this.room.containsVariable(game.keywords.VARIABLE_GAME_INFO)) {
-
-            this.gameCode = this.room.name.substring(0, 3);
-            this.gameData = this.room.getVariable(game.keywords.VARIABLE_GAME_INFO).value;
-
-            if (this.room.containsVariable(game.keywords.VARIABLE_MIN_BET)) {
-                this.minbet = this.room.getVariable(game.keywords.VARIABLE_MIN_BET)
-            }
+        if (this.room.containsVariable(game.keywords.VARIABLE_MIN_BET)) {
+            this.minbet = this.room.getVariable(game.keywords.VARIABLE_MIN_BET)
+        }
 
 
-            if (this.gameData.hasOwnProperty(game.keywords.BOARD_STATE_KEYWORD)) {
-                this.serverState = this.gameData[game.keywords.BOARD_STATE_KEYWORD];
-                this.state = game.const.boardState.BEGIN;
-            }
-
-        } else {
-            throw "Không thể tải dữ liệu bàn chơi hiện tại"
+        if (gameData.hasOwnProperty(game.keywords.BOARD_STATE_KEYWORD)) {
+            this.serverState = gameData[game.keywords.BOARD_STATE_KEYWORD];
+            this.state = game.const.boardState.BEGIN;
         }
     }
 
-    init(){
-        this._loadGameData();
-    }
-
     onLoad() {
-
-        console.debug(this)
-        console.debug(this.parentScene)
-
         this.gameEventHandler = new GameEventHandler(this, this.parentScene);
         this.gameEventHandler.setHandleEventImmediate(false);
         this.gameEventHandler.addGameEventListener()

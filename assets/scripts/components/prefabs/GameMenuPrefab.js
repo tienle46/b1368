@@ -32,17 +32,16 @@ class GameMenuPrefab extends Component {
     }
 
     onClickMenuButton(event){
-        console.log("Click menu button")
+        this.scene.showLoading()
         game.service.sendRequest(new SFS2X.Requests.System.LeaveRoomRequest(this.board.room));
-        console.log("After send leave room request")
     }
 
     onClickChatButton(event){
-
+        game.system.info("Chức năng đang hoàn thiện")
     }
 
     onClickTopupButton(event){
-
+        game.system.info("Chức năng đang hoàn thiện")
     }
 }
 

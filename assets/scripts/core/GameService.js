@@ -270,7 +270,7 @@ class GameService {
             data[game.keywords.IS_REGISTER] = false;
             data[game.keywords.PASSWORD] = password;
             data[game.keywords.APP_SECRET_KEY] = printer;
-            // data[game.keywords.APP_SECRET_KEY] = "63d9ccc8-9ce1-4165-80c8-b15eb84a780a";
+            data[game.keywords.APP_SECRET_KEY] = "63d9ccc8-9ce1-4165-80c8-b15eb84a780a";
 
             this._addCallback(SFS2X.SFSEvent.LOGIN, cb);
 

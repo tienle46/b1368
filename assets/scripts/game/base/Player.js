@@ -43,6 +43,8 @@ export default class Player {
         this.user = user
         this.board = board
         this.inited = false
+        this.isOwner = false
+        this.isMaster = false
 
         this._init();
     }
@@ -58,7 +60,7 @@ export default class Player {
         this.playerNameLabel = nameNode && nameNode.getComponent(cc.Label)
 
         let balanceNode = this.node.getChildByName('balance')
-        this.balanceLabel = cc.find('balance/balanceText', this.node).getComponent(cc.Label);//balanceNode && balanceNode.getChil('balanceText').getComponent(cc.Label)
+        this.balanceLabel = cc.find('balance/balanceText', this.node).getComponent(cc.Label);
 
         this.status1 = cc.find('status/status1', this.node);
         this.status2 = cc.find('status/status2', this.node);
@@ -69,13 +71,18 @@ export default class Player {
         utils.gone(this.ownerNode);
     }
 
+    setOwner(isOwner){
+        this.isOwner != isOwner && (this.isOwner = isOwner)
+        utils.setVisible(this.ownerNode, this.isOwner)
+    }
+
     onLoad() {
         this._initComponent();
 
         this.playerNameLabel.string = this.user.name;
         this.balanceLabel.string = `${this.balance}`;
 
-        utils.setVisible(this.ownerNode, this.isOwner())
+        this.setOwner(this.isOwner)
     }
 
     _getUserVariable(key, defaultValue){
@@ -86,16 +93,7 @@ export default class Player {
 
     }
 
-    _onUpdate(){
-        console.debug("Player parent")
-        console.debug(this.parent)
-    }
-
-    isOwner() {
-        return this.id === this.board.ownerId
-    }
-
-    isMaster() {
+    _onUpdatePlayer(){
 
     }
 
@@ -108,7 +106,7 @@ export default class Player {
      * @param message
      */
     say(message) {
-
+        alert(`${this.name}: ${message}`)
     }
 
     applyBoardState(boardState) {

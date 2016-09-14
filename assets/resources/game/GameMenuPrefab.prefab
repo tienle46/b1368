@@ -56,11 +56,11 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 18
+        "__id__": 20
       }
     ],
     "_prefab": {
-      "__id__": 19
+      "__id__": 21
     },
     "groupIndex": 0
   },
@@ -98,7 +98,7 @@
         "__id__": 8
       },
       {
-        "__id__": 12
+        "__id__": 13
       }
     ],
     "_rotationX": 0,
@@ -120,11 +120,11 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 16
+        "__id__": 18
       }
     ],
     "_prefab": {
-      "__id__": 17
+      "__id__": 19
     },
     "groupIndex": 0
   },
@@ -336,7 +336,7 @@
       }
     ],
     "_prefab": {
-      "__id__": 11
+      "__id__": 12
     },
     "groupIndex": 0
   },
@@ -392,7 +392,11 @@
     "duration": 0.1,
     "pressedSprite": null,
     "hoverSprite": null,
-    "clickEvents": [],
+    "clickEvents": [
+      {
+        "__id__": 11
+      }
+    ],
     "_N$interactable": true,
     "_N$normalColor": {
       "__type__": "cc.Color",
@@ -415,6 +419,14 @@
     "_N$target": {
       "__id__": 8
     }
+  },
+  {
+    "__type__": "cc.ClickEvent",
+    "target": {
+      "__id__": 1
+    },
+    "component": "GameMenuPrefab",
+    "handler": "onClickChatButton"
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -472,14 +484,14 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 13
+        "__id__": 14
       },
       {
-        "__id__": 14
+        "__id__": 15
       }
     ],
     "_prefab": {
-      "__id__": 15
+      "__id__": 17
     },
     "groupIndex": 0
   },
@@ -488,7 +500,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 12
+      "__id__": 13
     },
     "_enabled": true,
     "_spriteFrame": {
@@ -514,7 +526,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 12
+      "__id__": 13
     },
     "_enabled": true,
     "transition": 2,
@@ -535,7 +547,11 @@
     "duration": 0.1,
     "pressedSprite": null,
     "hoverSprite": null,
-    "clickEvents": [],
+    "clickEvents": [
+      {
+        "__id__": 16
+      }
+    ],
     "_N$interactable": true,
     "_N$normalColor": {
       "__type__": "cc.Color",
@@ -554,8 +570,16 @@
     "_N$normalSprite": null,
     "_N$disabledSprite": null,
     "_N$target": {
-      "__id__": 12
+      "__id__": 13
     }
+  },
+  {
+    "__type__": "cc.ClickEvent",
+    "target": {
+      "__id__": 1
+    },
+    "component": "GameMenuPrefab",
+    "handler": "onClickTopupButton"
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -617,7 +641,7 @@
       "__id__": 8
     },
     "topupBtn": {
-      "__id__": 12
+      "__id__": 13
     }
   },
   {

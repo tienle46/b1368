@@ -127,4 +127,5 @@ function _setupGame() {
     game.system = require("GameSystem");
     game.context = require("GameContext");
     game.manager = require("GameManager");
+    game.utils = require("utils");
 }

@@ -3,6 +3,7 @@
  */
 
 import game from 'game'
+import utils from 'utils'
 import Player from 'Player'
 import SFS2X from 'SFS2X'
 import Component from 'Component'
@@ -17,8 +18,10 @@ export default class PlayerManager extends Component {
             type: cc.Node
         }
 
-        this.meId = null
+        this.me = null
+        this.owner = null
         this.board = null
+        this.parentScene = null
         this.players = null
         this.maxPlayerId = 1
         this._playerPrefab = null
@@ -28,10 +31,10 @@ export default class PlayerManager extends Component {
     }
 
     isItMe(id){
-        return this.meId == id;
+        return this.me.id == id;
     }
 
-    init(board, scene) {
+    _init(board, scene) {
         this.board = board;
         this.parentScene = scene;
         this.gameCode = (this.board && this.board.gameCode) || (game.config.test ? "tnd" : "")
@@ -56,9 +59,6 @@ export default class PlayerManager extends Component {
         let maxPlayer = game.manager.getMaxPlayer(this.gameCode);
         let positionAnchorResPath = maxPlayer && game.resource.playerAnchorPath[maxPlayer];
         let positionAnchorName = maxPlayer && game.resource.playerAnchorName[maxPlayer];
-
-        console.debug(`max player : ${maxPlayer}`);
-        console.debug(`positionAnchorResPath : ${positionAnchorResPath}`);
 
         if (positionAnchorResPath && positionAnchorName) {
             cc.loader.loadRes(positionAnchorResPath, (error, prefab) => {
@@ -85,7 +85,7 @@ export default class PlayerManager extends Component {
     }
 
     _reset() {
-        this.meId = 0;
+        this.me = null;
         this.players = [];
         this._idToPlayerMap = {};
         this._nameToPlayerMap = {};
@@ -95,9 +95,7 @@ export default class PlayerManager extends Component {
     initPlayers() {
         let users = this.board.room.getPlayerList()
         users && users.forEach(user => {
-            if (user.isPlayer()) {
-                this._createSinglePlayer(user);
-            }
+            user.isPlayer() && this._createSinglePlayer(user);
         });
 
         if(game.config.test && !users || users.length == 0){
@@ -119,6 +117,8 @@ export default class PlayerManager extends Component {
                 prefabObj.parent = this.parentScene.playerLayer
             });
         }
+
+        console.log("initPlayers")
 
         this._onPlayerDataChanged();
     }
@@ -160,20 +160,33 @@ export default class PlayerManager extends Component {
      */
     _onPlayerDataChanged() {
 
-        cc.log()
-
         if(!game.context.getMe()){
             return;
         }
 
-        this.meId = this.findPlayer(game.context.getMe().getPlayerId(this.board.room));
+        this.me = this.findPlayer(game.context.getMe().getPlayerId(this.board.room));
 
-        //TODO set board owner & master
+        var ownerId = utils.getVariable(this.board.room, game.keywords.VARIABLE_OWNER);
+
+        console.log("owner: " + ownerId)
+
+        if (ownerId && (!this.owner || ownerId === this.owner.id)) {
+
+            this.owner && this.owner.setOwner(false)
+            this.owner = this.findPlayer(ownerId)
+            this.owner && this.owner.setOwner(true)
+
+            console.log("owner player: " + this.owner)
+
+            //TODO More action on owner changed
+        } else {
+            this.owner = null;
+        }
+
+        //TODO change board master
 
         let maxPlayerId = 1;
-
         this.players.forEach(player => {
-
             maxPlayerId = Math.max(maxPlayerId, player.id);
 
             //TODO more action want to apply to player
@@ -229,7 +242,7 @@ export default class PlayerManager extends Component {
     }
 
     findPlayer(idOrName) {
-        if (idOrName instanceof Number) {
+        if (game.utils.isNumber(idOrName)) {
             return this._idToPlayerMap[idOrName];
         } else {
             return this._nameToPlayerMap[idOrName];
@@ -372,7 +385,7 @@ export default class PlayerManager extends Component {
             if (leaveBoardPlayer.isItMe()) {
                 leaveBoardPlayer.stopTimeLine();
             } else {
-                if (leaveBoardPlayer.isMaster()) {
+                if (leaveBoardPlayer.isMaster) {
                     this.board.setMaster(null);
                 }
 

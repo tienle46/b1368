@@ -5,6 +5,7 @@
 import game from 'game'
 import utils from 'utils'
 import Component from 'Component'
+import Player from 'Player'
 
 class BaseControls extends Component {
     constructor(){
@@ -24,33 +25,46 @@ class BaseControls extends Component {
         this.scene = null;
     }
 
+    setBoard(board){
+        this.board = board;
+    }
+
+    setScene(scene){
+        this.scene = scene;
+    }
+
+    onLoad(){
+        utils.hide(this.unreadyBtn)
+        utils.hide(this.readyBtn)
+    }
+
     onClickReadyButton(){
-        //TODO show waiting dialog
-        console.log("onClickReadyButton")
+
+        this.scene.showShortLoading('onClickReadyButton');
+
         game.service.send({cmd: game.commands.PLAYER_READY, room: this.board.room}, (resObj) => {
-            console.log(resObj)
+
+            this.scene.hideLoading('onClickReadyButton');
 
             let playerId = resObj[game.keywords.PLAYER_ID]
 
             if(this.scene.playerManager.isItMe(playerId)){
-                utils.show(this.unreadyBtn)
-                utils.hide(this.readyBtn)
+                this._onPlayerReady()
             }
-
         });
     }
 
     onClickUnreadyButton(){
-        //TODO show waiting dialog
-        console.log("onClickUnreadyButton")
+        this.scene.showShortLoading('onClickUnreadyButton');
+
         game.service.send({cmd: game.commands.PLAYER_UNREADY, room: this.board.room}, (resObj) => {
-            console.log(resObj)
+
+            this.scene.hideLoading('onClickUnreadyButton');
 
             let playerId = resObj[game.keywords.PLAYER_ID]
 
             if(this.scene.playerManager.isItMe(playerId)){
-                utils.show(this.readyBtn)
-                utils.hide(this.unreadyBtn)
+                this._onPlayerUnready()
             }
         });
     }
@@ -58,6 +72,33 @@ class BaseControls extends Component {
     _init(board, scene){
         this.board = board;
         this.scene = scene;
+
+        let isMeReady = false;
+        let playerIds = this.scene.gameData[game.keywords.GAME_LIST_PLAYER];
+        if (playerIds) {
+            for(playerId of playerIds) {
+                if(this.scene.playerManager.isItMe(playerId)){
+                    isMeReady = true;
+                    break;
+                }
+            }
+        }
+
+        if(isMeReady){
+            this._onPlayerReady()
+        } else {
+            this._onPlayerUnready()
+        }
+    }
+
+    _onPlayerReady(){
+        utils.show(this.unreadyBtn)
+        utils.hide(this.readyBtn)
+    }
+
+    _onPlayerUnready(){
+        utils.hide(this.unreadyBtn)
+        utils.show(this.readyBtn)
     }
 }
 
