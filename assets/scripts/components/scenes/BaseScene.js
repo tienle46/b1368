@@ -2,7 +2,7 @@
  * Created by Thanh on 8/25/2016.
  */
 
-import game from 'game'
+import app from 'app'
 import utils from 'utils'
 import Component from 'Component'
 import BasePopup from 'BasePopup'
@@ -29,7 +29,7 @@ export default class BaseScene extends Component {
      * NOTE: Don't forget to add remove this event have been added into _removeListener func to avoid memory leak
      *
      * Example:
-     *      game.system.addListener('adminMessage', () => {
+     *      app.system.addListener('adminMessage', () => {
      *          //Show admin message
      *      })
      *
@@ -43,7 +43,7 @@ export default class BaseScene extends Component {
      * Use this func to remove listener from game system
      *
      * Example:
-     *      game.system.removeListener('adminMessage', () => {
+     *      app.system.removeListener('adminMessage', () => {
      *          //Show admin message
      *      })
      *
@@ -54,7 +54,7 @@ export default class BaseScene extends Component {
     }
 
     start() {
-        game.system.setCurrentScene(this);
+        app.system.setCurrentScene(this);
 
         if (this.onShown && this.onShown instanceof Function) {
             this.onShown();

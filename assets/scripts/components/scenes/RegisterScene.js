@@ -1,5 +1,5 @@
 var BaseScene = require('BaseScene');
-var game = require('game');
+var app = require('app');
 
 const CAPTCHA_LENGTH = 4;
 const MINIMUM_PASSWORD = 6;
@@ -40,17 +40,17 @@ export default class RegisterScene extends BaseScene {
         let password = this.userPasswordEditBox.string.trim();
 
         if (this._isValidUserInputs(username, password)) {
-            game.service.connect((success) => {
+            app.service.connect((success) => {
                 if (success) {
-                    game.service.requestAuthen(username, password, true, false, (error, result) => {
+                    app.service.requestAuthen(username, password, true, false, (error, result) => {
                         error = JSON.parse(error);
                         if (error) {
                             console.debug('Login error:');
-                            this.addPopup(game.getMessageFromServer(error.p.ec));
+                            this.addPopup(app.getMessageFromServer(error.p.ec));
                         }
                         if (result) {
                             console.debug(result);
-                            console.debug(`Logged in as ${game.context.getMe().name}`);
+                            console.debug(`Logged in as ${app.context.getMe().name}`);
                             this.changeScene('DashboardScene');
                         }
                     })
@@ -58,11 +58,11 @@ export default class RegisterScene extends BaseScene {
             })
         } else {
             if (!this._isValidUsernameInput(username)) {
-                this.addPopup(game.getMessageFromServer("LOGIN_ERROR_USERNAME_NOT_VALID"));
+                this.addPopup(app.getMessageFromServer("LOGIN_ERROR_USERNAME_NOT_VALID"));
             } else if (!this._isValidPasswordInput(password)) {
-                this.addPopup(game.getMessageFromServer("LOGIN_ERROR_PASSWORD_NOT_VALID"));
+                this.addPopup(app.getMessageFromServer("LOGIN_ERROR_PASSWORD_NOT_VALID"));
             } else if (!this._isValidCaptcha()) {
-                this.addPopup(game.getMessageFromServer("LOGIN_ERROR_CAPTCHA_NOT_VALID"));
+                this.addPopup(app.getMessageFromServer("LOGIN_ERROR_CAPTCHA_NOT_VALID"));
             }
         }
     }
@@ -106,4 +106,4 @@ export default class RegisterScene extends BaseScene {
     }
 }
 
-game.createComponent(RegisterScene);
+app.createComponent(RegisterScene);

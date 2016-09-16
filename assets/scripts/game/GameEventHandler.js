@@ -2,7 +2,7 @@
  * Created by Thanh on 8/29/2016.
  */
 
-import game from 'game'
+import app from 'app'
 import SFS2X from 'SFS2X'
 import async from 'async'
 
@@ -31,45 +31,45 @@ export default class GameEventHandler {
     }
 
     addGameEventListener(){
-        game.system.addListener(SFS2X.SFSEvent.USER_EXIT_ROOM, this._onUserExitRoom, this)
-        game.system.addListener(SFS2X.SFSEvent.USER_ENTER_ROOM, this._onUserEnterRoom, this)
-        game.system.addListener(SFS2X.SFSEvent.ROOM_REMOVE, this._onRoomRemove, this)
+        app.system.addListener(SFS2X.SFSEvent.USER_EXIT_ROOM, this._onUserExitRoom, this)
+        app.system.addListener(SFS2X.SFSEvent.USER_ENTER_ROOM, this._onUserEnterRoom, this)
+        app.system.addListener(SFS2X.SFSEvent.ROOM_REMOVE, this._onRoomRemove, this)
 
-        game.system.addListener(game.commands.SYSTEM_MESSAGE, this._handleSystemMessage, this)
-        game.system.addListener(game.commands.DOWNLOAD_IMAGE, this._handlePlayerAvatar, this)
-        game.system.addListener(game.commands.USER_LEVEL_UP, this._handleUserLevelUp, this)
-        game.system.addListener(game.commands.TASK_FINISH, this._handleTaskFinish, this)
-        game.system.addListener(game.commands.BUDDY_NEW_INVITATION, this._handBuddyNewInvitation, this)
-        game.system.addListener(game.commands.ASSETS_USE_ITEM, this._handlePlayerUseAssets, this)
-        game.system.addListener(game.commands.PING_CLIENT, this._handlePingClient, this)
-        game.system.addListener(game.commands.PLAYERS_BALANCE_CHANGE, this.board._handleChangePlayerBalance, this)
-        game.system.addListener(game.commands.PLAYER_REENTER_ROOM, this.board._handlePlayerReEnterGame, this)
-        game.system.addListener(game.commands.BOARD_STATE_CHANGE, this.board._handleChangeBoardState, this)
-        game.system.addListener(game.commands.BOARD_MASTER_CHANGE, this.board._handleChangeBoardMaster, this)
-        game.system.addListener(game.commands.PLAYER_REJOIN_ROOM, this.board._handlePlayerRejoinGame, this)
+        app.system.addListener(app.commands.SYSTEM_MESSAGE, this._handleSystemMessage, this)
+        app.system.addListener(app.commands.DOWNLOAD_IMAGE, this._handlePlayerAvatar, this)
+        app.system.addListener(app.commands.USER_LEVEL_UP, this._handleUserLevelUp, this)
+        app.system.addListener(app.commands.TASK_FINISH, this._handleTaskFinish, this)
+        app.system.addListener(app.commands.BUDDY_NEW_INVITATION, this._handBuddyNewInvitation, this)
+        app.system.addListener(app.commands.ASSETS_USE_ITEM, this._handlePlayerUseAssets, this)
+        app.system.addListener(app.commands.PING_CLIENT, this._handlePingClient, this)
+        app.system.addListener(app.commands.PLAYERS_BALANCE_CHANGE, this.board._handleChangePlayerBalance, this)
+        app.system.addListener(app.commands.PLAYER_REENTER_ROOM, this.board._handlePlayerReEnterGame, this)
+        app.system.addListener(app.commands.BOARD_STATE_CHANGE, this.board._handleChangeBoardState, this)
+        app.system.addListener(app.commands.BOARD_MASTER_CHANGE, this.board._handleChangeBoardMaster, this)
+        app.system.addListener(app.commands.PLAYER_REJOIN_ROOM, this.board._handlePlayerRejoinGame, this)
     }
 
     removeGameEventListener(){
-        game.system.removeListener(SFS2X.SFSEvent.USER_EXIT_ROOM, this._onUserExitRoom)
-        game.system.removeListener(SFS2X.SFSEvent.USER_ENTER_ROOM, this._onUserEnterRoom)
-        game.system.removeListener(SFS2X.SFSEvent.ROOM_REMOVE, this._onRoomRemove)
+        app.system.removeListener(SFS2X.SFSEvent.USER_EXIT_ROOM, this._onUserExitRoom)
+        app.system.removeListener(SFS2X.SFSEvent.USER_ENTER_ROOM, this._onUserEnterRoom)
+        app.system.removeListener(SFS2X.SFSEvent.ROOM_REMOVE, this._onRoomRemove)
 
-        game.system.removeListener(game.commands.SYSTEM_MESSAGE, this._handleSystemMessage)
-        game.system.removeListener(game.commands.DOWNLOAD_IMAGE, this._handlePlayerAvatar)
-        game.system.removeListener(game.commands.USER_LEVEL_UP, this._handleUserLevelUp)
-        game.system.removeListener(game.commands.TASK_FINISH, this._handleTaskFinish)
-        game.system.removeListener(game.commands.BUDDY_NEW_INVITATION, this._handBuddyNewInvitation)
-        game.system.removeListener(game.commands.ASSETS_USE_ITEM, this._handlePlayerUseAssets)
-        game.system.removeListener(game.commands.PING_CLIENT, this._handlePingClient)
-        game.system.removeListener(game.commands.PLAYERS_BALANCE_CHANGE, this.board._handleChangePlayerBalance)
-        game.system.removeListener(game.commands.PLAYER_REENTER_ROOM, this.board._handlePlayerReEnterGame)
-        game.system.removeListener(game.commands.BOARD_STATE_CHANGE, this.board._handleChangeBoardState)
-        game.system.removeListener(game.commands.BOARD_MASTER_CHANGE, this.board._handleChangeBoardMaster)
-        game.system.removeListener(game.commands.PLAYER_REJOIN_ROOM, this.board._handlePlayerRejoinGame)
+        app.system.removeListener(app.commands.SYSTEM_MESSAGE, this._handleSystemMessage)
+        app.system.removeListener(app.commands.DOWNLOAD_IMAGE, this._handlePlayerAvatar)
+        app.system.removeListener(app.commands.USER_LEVEL_UP, this._handleUserLevelUp)
+        app.system.removeListener(app.commands.TASK_FINISH, this._handleTaskFinish)
+        app.system.removeListener(app.commands.BUDDY_NEW_INVITATION, this._handBuddyNewInvitation)
+        app.system.removeListener(app.commands.ASSETS_USE_ITEM, this._handlePlayerUseAssets)
+        app.system.removeListener(app.commands.PING_CLIENT, this._handlePingClient)
+        app.system.removeListener(app.commands.PLAYERS_BALANCE_CHANGE, this.board._handleChangePlayerBalance)
+        app.system.removeListener(app.commands.PLAYER_REENTER_ROOM, this.board._handlePlayerReEnterGame)
+        app.system.removeListener(app.commands.BOARD_STATE_CHANGE, this.board._handleChangeBoardState)
+        app.system.removeListener(app.commands.BOARD_MASTER_CHANGE, this.board._handleChangeBoardMaster)
+        app.system.removeListener(app.commands.PLAYER_REJOIN_ROOM, this.board._handlePlayerRejoinGame)
     }
 
     isCurrentGameRoom(event){
-        return event.sourceRoom && event.sourceRoom === game.context.currentRoom.id
+        return event.sourceRoom && event.sourceRoom === app.context.currentRoom.id
     }
 
     _onUserExitRoom(event){
@@ -90,22 +90,22 @@ export default class GameEventHandler {
     }
 
     _handleChangeBoardState(data){
-        if (data.hasOwnProperty(game.keywords.BOARD_STATE_KEYWORD)) {
-            let boardState = data[game.keywords.BOARD_STATE_KEYWORD];
+        if (data.hasOwnProperty(app.keywords.BOARD_STATE_KEYWORD)) {
+            let boardState = data[app.keywords.BOARD_STATE_KEYWORD];
             this.board.changeBoardState(boardState, data);
 
         }
     }
 
     _handleSystemMessage(data){
-        var type = data[game.keywords.ADMIN_MESSAGE_TYPE];
-        var messageArr = data[game.keywords.ADMIN_MESSAGE_LIST];
+        var type = data[app.keywords.ADMIN_MESSAGE_TYPE];
+        var messageArr = data[app.keywords.ADMIN_MESSAGE_LIST];
 
-        if (type == game.const.SYSTEM_MESSAGE_TYPE_TICKER) {
-            game.system.showTickerMessage(messageArr);
-        } else if (type == game.const.SYSTEM_MESSAGE_TYPE_POPUP || type == game.const.SYSTEM_MESSAGE_TYPE_ACTIVITY) {
+        if (type == app.const.SYSTEM_MESSAGE_TYPE_TICKER) {
+            app.system.showTickerMessage(messageArr);
+        } else if (type == app.const.SYSTEM_MESSAGE_TYPE_POPUP || type == app.const.SYSTEM_MESSAGE_TYPE_ACTIVITY) {
             messageArr.forEach(message => {
-                game.system.info(messageArr[i]);
+                app.system.info(messageArr[i]);
             });
         }
     }
@@ -131,8 +131,8 @@ export default class GameEventHandler {
     }
 
     _handlePingClient(data, roomId = -1){
-        if (game.context.isJoinedGame() && roomId == game.context.currentRoom.id) {
-           game.service.send({cmd: game.commands.PING_CLIENT, data: data, room: game.context.currentRoom});
+        if (app.context.isJoinedGame() && roomId == app.context.currentRoom.id) {
+           app.service.send({cmd: app.commands.PING_CLIENT, data: data, room: app.context.currentRoom});
         }
     }
 
@@ -146,56 +146,56 @@ export default class GameEventHandler {
     //     let cmd = event.cmd;
     //
     //     switch (cmd) {
-    //         case game.commands.SYSTEM_MESSAGE:
+    //         case app.commands.SYSTEM_MESSAGE:
     //             this._handleSystemMessage(data);
     //             break;
-    //         case game.commands.DOWNLOAD_IMAGE:
+    //         case app.commands.DOWNLOAD_IMAGE:
     //             this._handlePlayerAvatar(data);
     //             break;
-    //         case game.commands.USER_LEVEL_UP:
+    //         case app.commands.USER_LEVEL_UP:
     //             this._handleUserLevelUp(data);
     //             break;
-    //         case game.commands.TASK_FINISH:
+    //         case app.commands.TASK_FINISH:
     //             this._handleTaskFinish(data);
     //             break;
-    //         case game.commands.BUDDY_NEW_INVITATION:
+    //         case app.commands.BUDDY_NEW_INVITATION:
     //             this._handBuddyNewInvitation(data);
     //             break;
-    //         case game.commands.ASSETS_USE_ITEM:
+    //         case app.commands.ASSETS_USE_ITEM:
     //             this._handlePlayerUseAssets(data);
     //             break;
-    //         case game.commands.PING_CLIENT:
+    //         case app.commands.PING_CLIENT:
     //             this._handlePingClient(data, roomId)
     //             break;
     //         default:
-    //             if (!roomId || roomId != game.context.currentRoom.id) {
+    //             if (!roomId || roomId != app.context.currentRoom.id) {
     //                 break;
     //             }
     //             switch (cmd) {
-    //                 case game.commands.PLAYERS_BALANCE_CHANGE:
+    //                 case app.commands.PLAYERS_BALANCE_CHANGE:
     //                     this.board._handleChangePlayerBalance(data);
     //                     break;
-    //                 case game.commands.PLAYER_REENTER_ROOM:
+    //                 case app.commands.PLAYER_REENTER_ROOM:
     //                     this.board._handlePlayerReEnterGame(data);
     //                     break;
-    //                 case game.commands.BOARD_STATE_CHANGE:
+    //                 case app.commands.BOARD_STATE_CHANGE:
     //                     this._handleChangeBoardState(data);
     //                     break;
-    //                 case game.commands.BOARD_MASTER_CHANGE:
+    //                 case app.commands.BOARD_MASTER_CHANGE:
     //                     this.board._handleChangeBoardMaster(data);
     //                     break;
-    //                 case game.commands.PLAYER_REJOIN_ROOM:
+    //                 case app.commands.PLAYER_REJOIN_ROOM:
     //                     this.board._handlePlayerRejoinGame(data);
     //                     break;
-    //                 case game.commands.SPECTATOR_TO_PLAYER:
+    //                 case app.commands.SPECTATOR_TO_PLAYER:
     //                     this.board._handleSpectatorToPlayer(data);
     //                     break;
-    //                 case game.commands.PLAYER_TO_SPECTATOR:
+    //                 case app.commands.PLAYER_TO_SPECTATOR:
     //                     this.board._handlePlayerToSpectator(data);
     //                     break;
     //                 default:
-    //                     if (data.hasOwnProperty(game.keywords.PLAYER_ID)) {
-    //                         this.board.playerManager.handleEvent(data[game.keywords.PLAYER_ID], cmd, data);
+    //                     if (data.hasOwnProperty(app.keywords.PLAYER_ID)) {
+    //                         this.board.playerManager.handleEvent(data[app.keywords.PLAYER_ID], cmd, data);
     //                     }
     //
     //             }

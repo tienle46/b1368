@@ -1,7 +1,7 @@
-var game = require("game");
+var app = require('app');
 
 
-game.bottomBarButtonType = {
+app.bottomBarButtonType = {
         NAPXU: 0,
         TOPRANK: 1,
         NOTIFI: 2,
@@ -27,7 +27,7 @@ game.bottomBarButtonType = {
             // },
             // ...
 
-            buttonType: game.bottomBarButtonType.NAPXU,
+            buttonType: app.bottomBarButtonType.NAPXU,
             pressedScale: 1,
             transDuration: 0
         },

@@ -2,7 +2,7 @@
  * Created by Thanh on 9/8/2016.
  */
 
-import game from 'game'
+import app from 'app'
 import PositionManager from 'PositionManager'
 
 class FourPlayerPositions extends PositionManager {
@@ -58,4 +58,4 @@ class FourPlayerPositions extends PositionManager {
     }
 }
 
-game.createComponent(FourPlayerPositions)
+app.createComponent(FourPlayerPositions)

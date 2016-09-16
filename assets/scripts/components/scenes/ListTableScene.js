@@ -1,4 +1,4 @@
-import game from 'game'
+import app from 'app'
 import BaseScene from 'BaseScene'
 
 export default class ListTableScene extends BaseScene {
@@ -69,7 +69,7 @@ export default class ListTableScene extends BaseScene {
 
             const cellComponent = listCell.getComponent('TableListCell');
             cellComponent.setOnClickListener(() => {
-                this._createRoom(game.const.gameCode.TLMNDL, 1, 2);
+                this._createRoom(app.const.gameCode.TLMNDL, 1, 2);
             })
 
             this.contentInScroll.node.addChild(listCell);
@@ -79,21 +79,21 @@ export default class ListTableScene extends BaseScene {
     _createRoom(gameCode = null, minBet = 0, roomCapacity = 2, password = undefined){
 
         const requestParam = {};
-        requestParam[game.keywords.ROOM_BET] = minBet
-        requestParam[game.keywords.GAME_CODE] = gameCode
-        requestParam[game.keywords.ROOM_PASSWORD] = password
-        requestParam[game.keywords.ROOM_CAPACITY] = roomCapacity
+        requestParam[app.keywords.ROOM_BET] = minBet
+        requestParam[app.keywords.GAME_CODE] = gameCode
+        requestParam[app.keywords.ROOM_PASSWORD] = password
+        requestParam[app.keywords.ROOM_CAPACITY] = roomCapacity
 
-        game.service.send({cmd: game.commands.USER_CREATE_ROOM, data: requestParam, room: null /*game.context.currentRoom*/}, (error, result) => {
+        app.service.send({cmd: app.commands.USER_CREATE_ROOM, data: requestParam, room: null /*app.context.currentRoom*/}, (error, result) => {
 
             if(event.errorCode){
-                game.system.error(event.errorMessage);
+                app.system.error(event.errorMessage);
             }else{
 
-                game.context.lastJoinRoom = result.room;
+                app.context.lastJoinRoom = result.room;
                 if (result.room.isJoined && result.room.isGame) {
-                    game.context.currentRoom = result.room;
-                    game.system.loadScene(game.const.scene.GAME_SCENE)
+                    app.context.currentRoom = result.room;
+                    app.system.loadScene(app.const.scene.GAME_SCENE)
                 }
             }
 
@@ -143,4 +143,4 @@ export default class ListTableScene extends BaseScene {
     }
 }
 
-game.createComponent(ListTableScene)
+app.createComponent(ListTableScene)

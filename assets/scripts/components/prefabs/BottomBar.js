@@ -1,4 +1,4 @@
-var game = require("game");
+var app = require('app');
 
 cc.Class({
     extends: cc.Component,
@@ -54,37 +54,37 @@ cc.Class({
     onClickNapXuAction: function () {
         console.log("nap xu");
 
-        this.handleClickTopbarItem(game.bottomBarButtonType.NAPXU);
+        this.handleClickTopbarItem(app.bottomBarButtonType.NAPXU);
     },
 
     onClickTopRankAction: function () {
         console.log("rank");
-        this.handleClickTopbarItem(game.bottomBarButtonType.TOPRANK);
+        this.handleClickTopbarItem(app.bottomBarButtonType.TOPRANK);
     },
 
     onClickNotifiAction: function () {
         console.log("Notifi");
-        this.handleClickTopbarItem(game.bottomBarButtonType.NOTIFI);
+        this.handleClickTopbarItem(app.bottomBarButtonType.NOTIFI);
     },
 
     onClickTransferAwardAction: function () {
         console.log("Award");
-        this.handleClickTopbarItem(game.bottomBarButtonType.EXCHANGEAWARD);
+        this.handleClickTopbarItem(app.bottomBarButtonType.EXCHANGEAWARD);
     },
 
     onClickHotlineAction: function () {
         console.log("Hotline");
-        this.handleClickTopbarItem(game.bottomBarButtonType.HOTLINE);
+        this.handleClickTopbarItem(app.bottomBarButtonType.HOTLINE);
     },
 
     onClickMessageAction: function () {
         console.log("Message");
-        this.handleClickTopbarItem(game.bottomBarButtonType.MESSAGE);
+        this.handleClickTopbarItem(app.bottomBarButtonType.MESSAGE);
     },
 
     onClickUserInfoAction: function () {
        console.log("UserInfo");
-        this.handleClickTopbarItem(game.bottomBarButtonType.USERINFO);
+        this.handleClickTopbarItem(app.bottomBarButtonType.USERINFO);
     },
 
     listenClickTopBarItem: function (cb) {

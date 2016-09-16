@@ -2,29 +2,29 @@
  * Created by Thanh on 8/27/2016.
  */
 
-import game from 'game'
+import app from 'app'
 import TLMNDLBoard from 'TLMNDLBoard'
 import TLMNDLPlayer from 'TLMNDLPlayer'
 
 
 const gameCodeToBoardClassMap = {
-    [game.const.gameCode.TLMNDL]: TLMNDLBoard
+    [app.const.gameCode.TLMNDL]: TLMNDLBoard
 }
 
 const gameCodeToPlayerClassMap = {
-    'tnd': TLMNDLPlayer
+    [app.const.gameCode.TLMNDL]: TLMNDLPlayer
 }
 
 const maxPlayersMap = {
-    [game.const.gameCode.PHOM]: 4,
-    [game.const.gameCode.TLMNDL]: 4,
-    [game.const.gameCode.TLMN]: 4,
-    [game.const.gameCode.TLMNM]: 4,
-    [game.const.gameCode.BA_CAY]: 8,
-    [game.const.gameCode.BAU_CUA]: 6,
-    [game.const.gameCode.XAM]: 4,
-    [game.const.gameCode.XITO]: 5,
-    [game.const.gameCode.LIENG]: 5,
+    [app.const.gameCode.PHOM]: 4,
+    [app.const.gameCode.TLMNDL]: 4,
+    [app.const.gameCode.TLMN]: 4,
+    [app.const.gameCode.TLMNM]: 4,
+    [app.const.gameCode.BA_CAY]: 8,
+    [app.const.gameCode.BAU_CUA]: 6,
+    [app.const.gameCode.XAM]: 4,
+    [app.const.gameCode.XITO]: 5,
+    [app.const.gameCode.LIENG]: 5,
 }
 
 class GameManager {
@@ -54,6 +54,4 @@ class GameManager {
     }
 }
 
-var gameManager = new GameManager();
-
-export default gameManager;
+export default new GameManager();

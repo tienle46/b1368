@@ -2,7 +2,7 @@
  * Created by Thanh on 9/13/2016.
  */
 
-import game from 'game'
+import app from 'app'
 import utils from 'utils'
 import Component from 'Component'
 import Player from 'Player'
@@ -42,11 +42,11 @@ class BaseControls extends Component {
 
         this.scene.showShortLoading('onClickReadyButton');
 
-        game.service.send({cmd: game.commands.PLAYER_READY, room: this.board.room}, (resObj) => {
+        app.service.send({cmd: app.commands.PLAYER_READY, room: this.board.room}, (resObj) => {
 
             this.scene.hideLoading('onClickReadyButton');
 
-            let playerId = resObj[game.keywords.PLAYER_ID]
+            let playerId = resObj[app.keywords.PLAYER_ID]
 
             if(this.scene.playerManager.isItMe(playerId)){
                 this._onPlayerReady()
@@ -57,11 +57,11 @@ class BaseControls extends Component {
     onClickUnreadyButton(){
         this.scene.showShortLoading('onClickUnreadyButton');
 
-        game.service.send({cmd: game.commands.PLAYER_UNREADY, room: this.board.room}, (resObj) => {
+        app.service.send({cmd: app.commands.PLAYER_UNREADY, room: this.board.room}, (resObj) => {
 
             this.scene.hideLoading('onClickUnreadyButton');
 
-            let playerId = resObj[game.keywords.PLAYER_ID]
+            let playerId = resObj[app.keywords.PLAYER_ID]
 
             if(this.scene.playerManager.isItMe(playerId)){
                 this._onPlayerUnready()
@@ -74,7 +74,7 @@ class BaseControls extends Component {
         this.scene = scene;
 
         let isMeReady = false;
-        let playerIds = this.scene.gameData[game.keywords.GAME_LIST_PLAYER];
+        let playerIds = this.scene.gameData[app.keywords.GAME_LIST_PLAYER];
         if (playerIds) {
             for(playerId of playerIds) {
                 if(this.scene.playerManager.isItMe(playerId)){
@@ -102,4 +102,4 @@ class BaseControls extends Component {
     }
 }
 
-game.createComponent(BaseControls)
+app.createComponent(BaseControls)

@@ -1,5 +1,5 @@
 
-import game from 'game'
+import app from 'app'
 import Component from 'Component'
 import SFS2X from 'SFS2X'
 
@@ -33,16 +33,16 @@ class GameMenuPrefab extends Component {
 
     onClickMenuButton(event){
         this.scene.showLoading()
-        game.service.sendRequest(new SFS2X.Requests.System.LeaveRoomRequest(this.board.room));
+        app.service.sendRequest(new SFS2X.Requests.System.LeaveRoomRequest(this.board.room));
     }
 
     onClickChatButton(event){
-        game.system.info("Chức năng đang hoàn thiện")
+        app.system.info("Chức năng đang hoàn thiện")
     }
 
     onClickTopupButton(event){
-        game.system.info("Chức năng đang hoàn thiện")
+        app.system.info("Chức năng đang hoàn thiện")
     }
 }
 
-game.createComponent(GameMenuPrefab)
+app.createComponent(GameMenuPrefab)

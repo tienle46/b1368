@@ -1,7 +1,7 @@
 'use strict';
 
 var BaseScene = require('BaseScene');
-var game = require('game');
+var app = require('app');
 var Fingerprint2 = require('fingerprinter');
 
 
@@ -41,9 +41,9 @@ export default class LoginScene extends BaseScene {
         this._loginToDashboard(username, password);
         // } else {
         //     if (!this._isValidUsernameInput(username)) {
-        //         this.addPopup(game.getMessageFromServer("LOGIN_ERROR_USERNAME_NOT_VALID"));
+        //         this.addPopup(app.getMessageFromServer("LOGIN_ERROR_USERNAME_NOT_VALID"));
         //     } else if (!this._isValidPasswordInput(password)) {
-        //         this.addPopup(game.getMessageFromServer("LOGIN_ERROR_PASSWORD_NOT_VALID"));
+        //         this.addPopup(app.getMessageFromServer("LOGIN_ERROR_PASSWORD_NOT_VALID"));
         //     }
         // }
     }
@@ -53,17 +53,17 @@ export default class LoginScene extends BaseScene {
     }
 
     _loginToDashboard(username, password) {
-        game.service.connect((success) => {
+        app.service.connect((success) => {
             if (success) {
-                game.service.requestAuthen(username, password, false, false, (error, result) => {
+                app.service.requestAuthen(username, password, false, false, (error, result) => {
                     error = JSON.parse(error);
                     if (error) {
                         console.debug('Login error:');
-                        this.addPopup(game.getMessageFromServer(error.p.ec));
+                        this.addPopup(app.getMessageFromServer(error.p.ec));
                     }
                     if (result) {
                         console.debug(result);
-                        console.debug(`Logged in as ${game.context.getMe().name}`);
+                        console.debug(`Logged in as ${app.context.getMe().name}`);
                         this.changeScene('DashboardScene');
                     }
                 })
@@ -90,4 +90,4 @@ export default class LoginScene extends BaseScene {
     }
 }
 
-game.createComponent(LoginScene);
+app.createComponent(LoginScene);

@@ -6,4 +6,28 @@ export default class Component {
     constructor() {
         this.extends = cc.Component;
     }
+
+    onLoad(){
+
+    }
+
+    start(){
+
+    }
+
+    update(dt){
+
+    }
+
+    onActive(){
+
+    }
+
+    onDisable(){
+
+    }
+
+    onDestroy(){
+
+    }
 }

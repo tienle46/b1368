@@ -1,8 +1,12 @@
 /**
  * Created by Thanh on 8/23/2016.
  */
-class BoardTurnBaseAdapter {
-    constructor() {
 
+import GameAdapter from 'GameAdapter'
+
+export default class BoardTurnBaseAdapter extends GameAdapter {
+    constructor() {
+        super()
     }
 }
+
