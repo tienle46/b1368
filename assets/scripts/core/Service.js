@@ -43,11 +43,15 @@ const requestCallbackNames = {
     [SFS2X.Requests.QuickJoinGame]: SFS2X.SFSEvent.ROOM_JOIN
 }
 
-class GameService {
+class Service {
     constructor() {
         this.client = null
-        this._eventCallbacks = {};
-        this._eventScopes = {};
+        this._eventCallbacks = {}
+        this._eventScopes = {}
+
+        this._valueQueue = [];
+        this._lagPollingInterval = null;
+        this._poorNetwork = false;
 
         this._initSmartFoxClient()
     }
@@ -136,6 +140,8 @@ class GameService {
         app.system.loadScene(app.const.scene.ENTRANCE_SCENE, () => {
             app.system.info("Kết nối tới máy chủ bị gián đoạn. Vui lòng đăng nhập lại!");
         });
+
+        this.stopLagPolling();
     }
 
     _onConnectionResume(event) {
@@ -145,15 +151,21 @@ class GameService {
 
     _onExtensionEvent(event) {
 
-        if (this._hasCallback(event.cmd)) {
-            this._callCallbackAsync(event.cmd, event.params)
-        } else {
-            app.system.emit(event.cmd, event.params, event)
+        if(event.cmd === app.commands.XLAG) {
+            this._handleLagPollingResponse(event);
+        }else{
+            if (this._hasCallback(event.cmd)) {
+                this._callCallbackAsync(event.cmd, event.params)
+            } else {
+                app.system.emit(event.cmd, event.params, event)
+            }
         }
+
     }
 
     _onLogin(event) {
         this._callCallback(SFS2X.SFSEvent.LOGIN, null, event.data)
+        this.startLagPolling(app.config.pingPongInterval)
     }
 
     _onLoginError() {
@@ -170,7 +182,7 @@ class GameService {
     }
 
     _callCallback(key, verifyFunc, ...args) {
-        let cbObj = this._getCallbackObject(key);
+        let cbObj = this._getCallbackObject(key)
 
         if (!(verifyFunc instanceof Function)) {
             args = [verifyFunc, ...args];
@@ -265,19 +277,20 @@ class GameService {
      * @param {function} cb
      */
 
-    requestAuthen(username, password, isRegister, isQickPlay, cb) {
+    requestAuthen(username, password, isRegister, isQuickLogin, cb) {
         new Fingerprint2().get((printer, components) => {
             let data = {};
-            data[game.keywords.IS_REGISTER] = isRegister;
-            data[game.keywords.RAW_PASSWORD] = password;
-            data[game.keywords.APP_SECRET_KEY] = "63d9ccc8-9ce1-4165-80c8-b15eb84a780a"; //
-            // data[game.keywords.APP_VERSION_KEY] = "1.0.1"; //
-            // data[game.keywords.VERSION] = "1.0.0"; //
-            data[game.keywords.DEVICE_ID] = printer;
-            data[game.keywords.QUICK_PLAY] = isQickPlay; // <-- die here!
-            if (isRegister) {
-                data[game.keywords.PARTNER_ID] = 1; // <-- or here
-            }
+            data[app.keywords.IS_REGISTER] = isRegister;
+            data[app.keywords.RAW_PASSWORD] = password;
+            data[app.keywords.APP_SECRET_KEY] = "63d9ccc8-9ce1-4165-80c8-b15eb84a780a"; //
+            // data[app.keywords.APP_VERSION_KEY] = "1.0.1"; //
+            // data[app.keywords.VERSION] = "1.0.0"; //
+            data[app.keywords.DEVICE_ID] = printer;
+            data[app.keywords.QUICK_PLAY] = isQuickLogin; // <-- die here!
+
+            if (isRegister)
+                data[app.keywords.PARTNER_ID] = "1"; // <-- or here
+
 
             this._addCallback(SFS2X.SFSEvent.LOGIN, cb);
 
@@ -365,6 +378,49 @@ class GameService {
             this._callCallbackAsync(app.commands.USER_CREATE_ROOM, event);
         }
     }
+
+    startLagPolling(pollingInterval) {
+        this.stopLagPolling();
+        this.interval = pollingInterval;
+        this._lagPollingInterval = setInterval(() => {
+            let currentTimeInMilis = (new Date()).getTime();
+            this.send({cmd: app.commands.XLAG, data: {[app.keywords.XLAG_VALUE]: currentTimeInMilis}});
+         }, this.interval);
+    }
+
+    stopLagPolling () {
+        if (this._lagPollingInterval) {
+            clearInterval(this._lagPollingInterval);
+            this._valueQueue = [];
+            this._lagPollingInterval = null;
+        }
+    }
+
+    _handleLagPollingResponse(event) {
+        if(event.cmd === app.commands.XLAG) {
+
+            let resObj = event.params;
+            let curRecVal = (new Date()).getTime();
+            let curSendVal = resObj[app.keywords.XLAG_VALUE];
+            if(curSendVal) {
+                if (this._valueQueue.length >= app.config.pingPongPollQueueSize) {
+                    this._valueQueue.splice(0, 1);
+                }
+                this._valueQueue.push(curRecVal - curSendVal);
+                this._updatePoorNetwork();
+            }
+        }
+    }
+
+    _updatePoorNetwork() {
+        if (this._valueQueue.length > 0) {
+            let totalLatency = 0;
+            this._valueQueue.forEach(value => {totalLatency += value})
+            var averageLatency = totalLatency / this._valueQueue.length;
+            this._poorNetwork = averageLatency > app.config.poorNetworkThreshold;
+        }
+    }
+
 }
 
-module.exports = new GameService();
+export default new Service();

@@ -13,3 +13,6 @@ app.config.port = 8481;
 app.config.test = true;
 app.config.testIngame = true;
 app.config.defaultLocale = 'vi';
+app.config.poorNetworkThreshold = 2000;
+app.config.pingPongPollQueueSize = 3;
+app.config.pingPongInterval = 60000;

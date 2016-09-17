@@ -1,5 +1,5 @@
 // contains login / register
-var game = require('game');
+var app = require('app');
 var LoginControl = require('LoginControl');
 let RegisterControl = require('RegisterControl');
 let RegisterControl2 = require('RegisterControl2');
@@ -39,12 +39,12 @@ var R = new RegisterControl();
 
 
 
-var Z = game.mixin(a, LoginControl, RegisterControl, RegisterControl2);
+var Z = app.mixin(a, LoginControl, RegisterControl, RegisterControl2);
 console.log(Z);
-Z.login();
-Z.showA();
-Z.register();
-R.register();
+Z && Z.login();
+Z && Z.showA();
+Z && Z.register();
+Z && R.register();
 
 /**
  * properties trung name

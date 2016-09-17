@@ -3,9 +3,6 @@
  */
 
 import app from 'app'
-import PlayerManager from 'PlayerManager'
-import PositionManager from 'PositionManager'
-import GameEventHandler from 'GameEventHandler'
 import Component from 'Component'
 
 export default class Board extends Component{

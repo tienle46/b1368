@@ -6,7 +6,7 @@ import app from 'app'
 import Component from 'Component'
 import utils from 'utils'
 
-export default class PositionManager extends Component{
+export default class PositionManager extends Component {
     constructor() {
         super()
         this.playerAnchors = []

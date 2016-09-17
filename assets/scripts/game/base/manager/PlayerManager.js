@@ -447,5 +447,3 @@ export default class PlayerManager extends Component {
 
     }
 }
-
-app.createComponent(PlayerManager)

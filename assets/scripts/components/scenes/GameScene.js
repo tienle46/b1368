@@ -5,10 +5,11 @@ import CreateGameException from 'CreateGameException'
 // import TLMNDLBoard from 'TLMNDLBoard'
 // import TLMNDLPlayer from 'TLMNDLPlayer'
 
-import { TLMNDLBoard, TLMNDLPlayer } from 'TLMNDLBoard'
+import {TLMNDLBoard, TLMNDLPlayer} from 'TLMNDLBoard'
 
 import GameMenuPrefab from 'GameMenuPrefab'
 import BaseScene from 'BaseScene'
+import GameEventHandler from 'GameEventHandler'
 
 class GameScene extends BaseScene {
 
@@ -73,7 +74,6 @@ class GameScene extends BaseScene {
         }
     }
 
-
     start() {
         this.gameEventHandler && this.gameEventHandler.setHandleEventImmediate(true)
     }
@@ -96,11 +96,6 @@ class GameScene extends BaseScene {
 
     _initBoardLayer() {
 
-        if (game.config.test) {
-            this.gameCode = this.gameCode || "tnd"
-        }
-
-
         let boardClass = app.game.getBoardClass(this.gameCode)
         let boardComponent = app.createComponent(boardClass, this.room, this);
         this.board = this.boardLayer.addComponent(boardComponent)
@@ -111,7 +106,7 @@ class GameScene extends BaseScene {
     }
 
     _initPlayerLayer() {
-        this.playerManager = this.playerLayer.getComponent('PlayerManager');
+        this.playerManager = this.playerLayer.getComponent('PlayerManagerComponent');
     }
 
     _initGameControlLayer() {
@@ -137,17 +132,17 @@ class GameScene extends BaseScene {
     }
 
     _onLoadSceneFail() {
-        if (game.config.debug) {
+        if (app.config.debug) {
             return;
         }
 
-        if (game.service.client.isConnected()) {
-            game.system.error('Không thể khởi tạo bàn chơi. Quay lại màn hình chọn bàn chơi!', () => {
-                game.system.loadScene(game.const.scene.LIST_TABLE_SCENE);
+        if (app.service.client.isConnected()) {
+            app.system.error('Không thể khởi tạo bàn chơi. Quay lại màn hình chọn bàn chơi!', () => {
+                app.system.loadScene(app.const.scene.LIST_TABLE_SCENE);
             })
         } else {
-            game.system.error('Không thể kết nối với máy chủ. Bạn vui lòng đăng nhập lại để tiếp tục chơi!', () => {
-                game.system.loadScene(game.const.scene.LOGIN_SCENE);
+            app.system.error('Không thể kết nối với máy chủ. Bạn vui lòng đăng nhập lại để tiếp tục chơi!', () => {
+                app.system.loadScene(app.const.scene.LOGIN_SCENE);
             })
         }
     }

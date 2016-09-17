@@ -1,4 +1,4 @@
-var game = require('game');
+var app = require('app');
 var Component = require('Component');
 
 class LoginControl extends Component {
@@ -17,4 +17,4 @@ class LoginControl extends Component {
     }
 }
 
-game.createComponent(LoginControl);
+app.createComponent(LoginControl);

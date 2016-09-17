@@ -113,14 +113,14 @@ app.createComponent = (className, extendClass = undefined, ...args) => {
     return cc.Class(instance);
 };
 
-game.mixin = (...args) => {
+app.mixin = (...args) => {
     let O = {};
 
     return args.reduce((prev, next) => {
         let P = typeof prev === 'function' ? Object.getPrototypeOf(new prev()) : prev;
         let N = typeof next === 'function' ? Object.getPrototypeOf(new next()) : next;
         let B = typeof next === 'function' ? new next() : new Function();
-
+        let Z = Object.assign({}, P, N);
         function joinF(...a) {
             let b;
 
@@ -154,7 +154,7 @@ game.mixin = (...args) => {
     }, {});
 }
 
-game.getMessageFromServer = (errorCode, errorMessage = 0) => {
+app.getMessageFromServer = (errorCode, errorMessage = 0) => {
     let M = MESSAGES[game.LANG];
     return (typeof M[errorCode] === 'object') ? M[errorCode][errorMessage] : M[errorCode];
 }

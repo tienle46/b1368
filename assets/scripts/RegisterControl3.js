@@ -1,4 +1,4 @@
-var game = require('game');
+var app = require('app');
 
 class RegisterControl {
     constructor() {
@@ -39,4 +39,4 @@ class RegisterControl3 extends RegisterControl2 {
     }
 }
 
-game.createComponent(RegisterControl3);
+app.createComponent(RegisterControl3);

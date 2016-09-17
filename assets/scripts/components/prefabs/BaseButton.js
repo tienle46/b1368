@@ -71,7 +71,7 @@ cc.Class({
     }
 });
 
-app.createComponent(BaseButton);
+// app.createComponent(BaseButton);
 
 // cc.Class({
 //     extends: cc.Component,
