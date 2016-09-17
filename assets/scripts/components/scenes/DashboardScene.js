@@ -1,6 +1,6 @@
 var game = require('game');
 var item = require('item');
-import BaseScene from 'BaseScene';
+var BaseScene = require('BaseScene');
 
 export default class DashboardScene extends BaseScene {
     constructor() {
@@ -55,10 +55,8 @@ export default class DashboardScene extends BaseScene {
 
         //    handle bottom Bar event
 
-        this.addBottomBar();
-        this.addTopBar();
-
-
+        this._addBottomBar();
+        this._addTopBar();
     }
 
     _initItemListGame() {
@@ -93,38 +91,39 @@ export default class DashboardScene extends BaseScene {
 
     // Listen Bottom Bar Event (Click button In Bottom Bar)
 
-    addBottomBar() {
-
+    _addBottomBar() {
         const bottomBarNode = new cc.instantiate(this.bottomBar);
 
         bottomBarNode.getComponent('BottomBar').listenClickTopBarItem((buttonType) => {
             console.log("dashboard:" + buttonType);
-            this.addPopup();
+            switch (buttonType) {
+                case game.bottomBarButtonType.NAPXU:
+                    this.addNapXuPopUp();
+                    break;
+                default:
+                    this.addPopup();
+                    break;
+            }
         });
-
         this.node.addChild(bottomBarNode);
     }
 
-    addTopBar() {
+    _addTopBar() {
         const topBarNode = new cc.instantiate(this.topBar);
 
         // topBarNode.getComponent('TopBar').listenClickTopBarItem( (buttonType) => {
         //     console.log("dashboard:" + buttonType);
         //     this.addPopup();
         // });
-
         this.node.addChild(topBarNode);
     }
 
-    // addPopup() {
-    //     var popupBase = new cc.instantiate(this.popUp);
-    //     popupBase.position = cc.p(0, 0);
-    //     // let _item = require("BasePopup");
-    //     // popupBase.getComponent(_item)
-
-    //     this.node.addChild(popupBase);
-    // }
-
+    addNapXuPopUp() {
+        var popupBase = new cc.instantiate(this.popUp);
+        popupBase.position = cc.p(0, 0);
+        console.debug(popupBase, popupBase.getChildByName('popup_bkg'));
+        this.node.addChild(popupBase, 10);
+    }
 }
 
 game.createComponent(DashboardScene);

@@ -7,7 +7,28 @@ import TLMNDLPlayer from 'TLMNDLPlayer'
 import GameMenuPrefab from 'GameMenuPrefab'
 import BaseScene from 'BaseScene'
 
+/**
+ + 1 properties trong gameSence
+ + de thuc hien logic cua 2 component  -> 1 component 
+ */
+/**
+ + gamescene 
+ + faker -> !this.properties ctor()
 
+var a, b, c (ccclass)
+
+b = a.b (b la properties a)
+
+a.b.b1111 (func)
+
+a.b1111 {
+    b.b1111
+}
+
+a[b1111] => function b1111() { b[b1111]}
+
+
+ */
 class GameScene extends BaseScene {
 
     constructor() {
@@ -45,13 +66,13 @@ class GameScene extends BaseScene {
         try {
             this.room = game.context.currentRoom
 
-            if(!this.room || !this.room.isGame){
+            if (!this.room || !this.room.isGame) {
                 throw new CreateGameException('Bàn chơi không tồn tại!')
             }
 
             this.gameCode = utils.getGameCode(this.room)
             this.gameData = this.room.getVariable(game.keywords.VARIABLE_GAME_INFO).value;
-            if(!this.gameData){
+            if (!this.gameData) {
                 throw new CreateGameException('Không thể tải thông tin bàn chơi!')
             }
 
@@ -61,22 +82,22 @@ class GameScene extends BaseScene {
             this._initGameMenuLayer()
             this._loadGameData();
 
-        }catch (e){
+        } catch (e) {
             console.error(e)
 
-            if(e instanceof CreateGameException)
+            if (e instanceof CreateGameException)
                 this._onLoadSceneFail()
         }
     }
 
-    _loadGameData(){
+    _loadGameData() {
         this.board._init(this.gameData);
         this.playerManager._init(this.board, this)
     }
 
-    _initBoardLayer(){
+    _initBoardLayer() {
 
-        if(game.config.test){
+        if (game.config.test) {
             this.gameCode = this.gameCode || "tnd"
         }
 
@@ -84,16 +105,16 @@ class GameScene extends BaseScene {
         let boardComponent = game.createComponent(boardClass, this.room, this);
         this.board = this.boardLayer.addComponent(boardComponent)
 
-        if(!this.board){
+        if (!this.board) {
             throw new CreateGameException("Không thể khởi tạo bàn chơi");
         }
     }
 
-    _initPlayerLayer(){
+    _initPlayerLayer() {
         this.playerManager = this.playerLayer.getComponent('PlayerManager');
     }
 
-    _initGameControlLayer(){
+    _initGameControlLayer() {
         cc.loader.loadRes('game/controls/BaseControls', (error, prefab) => {
 
             let prefabObj = cc.instantiate(prefab);
@@ -115,26 +136,26 @@ class GameScene extends BaseScene {
         });
     }
 
-    _onLoadSceneFail(){
-        if(game.config.debug){
+    _onLoadSceneFail() {
+        if (game.config.debug) {
             return;
         }
 
-        if(game.service.client.isConnected()){
+        if (game.service.client.isConnected()) {
             game.system.error('Không thể khởi tạo bàn chơi. Quay lại màn hình chọn bàn chơi!', () => {
                 game.system.loadScene(game.const.scene.LIST_TABLE_SCENE);
             })
-        }else{
+        } else {
             game.system.error('Không thể kết nối với máy chủ. Bạn vui lòng đăng nhập lại để tiếp tục chơi!', () => {
                 game.system.loadScene(game.const.scene.LOGIN_SCENE);
             })
         }
     }
 
-    goBack(){
-        if(game.service.client.isConnected()){
-                game.system.loadScene(game.const.scene.LIST_TABLE_SCENE);
-        }else{
+    goBack() {
+        if (game.service.client.isConnected()) {
+            game.system.loadScene(game.const.scene.LIST_TABLE_SCENE);
+        } else {
             game.system.loadScene(game.const.scene.LOGIN_SCENE);
         }
     }

@@ -6,38 +6,38 @@ cc.Class({
     properties: {
 
         napxuButton: {
-          default:null,
-            type:cc.Button
+            default: null,
+            type: cc.Button
         },
 
         topRankButton: {
             default: null,
-            type:cc.Button
+            type: cc.Button
         },
 
         notifiButton: {
             default: null,
-            type:cc.Button
+            type: cc.Button
         },
 
         awardTransferButton: {
-            default:null,
-            type:cc.Button
+            default: null,
+            type: cc.Button
         },
 
         hotlineButton: {
-            default:null,
-            type:cc.Button
+            default: null,
+            type: cc.Button
         },
 
         messageButton: {
-            default:null,
-            type:cc.Button
+            default: null,
+            type: cc.Button
         },
 
         userInfoButton: {
-            default:null,
-            type:cc.Button
+            default: null,
+            type: cc.Button
         },
 
         _clickListener: null
@@ -45,55 +45,54 @@ cc.Class({
     },
 
     // use this for initialization
-    onLoad: function () {
+    onLoad: function() {
 
     },
 
     // handle click button in bottomBar
 
-    onClickNapXuAction: function () {
+    onClickNapXuAction: function() {
         console.log("nap xu");
 
         this.handleClickTopbarItem(game.bottomBarButtonType.NAPXU);
     },
 
-    onClickTopRankAction: function () {
+    onClickTopRankAction: function() {
         console.log("rank");
         this.handleClickTopbarItem(game.bottomBarButtonType.TOPRANK);
     },
 
-    onClickNotifiAction: function () {
+    onClickNotifiAction: function() {
         console.log("Notifi");
         this.handleClickTopbarItem(game.bottomBarButtonType.NOTIFI);
     },
 
-    onClickTransferAwardAction: function () {
+    onClickTransferAwardAction: function() {
         console.log("Award");
         this.handleClickTopbarItem(game.bottomBarButtonType.EXCHANGEAWARD);
     },
 
-    onClickHotlineAction: function () {
+    onClickHotlineAction: function() {
         console.log("Hotline");
         this.handleClickTopbarItem(game.bottomBarButtonType.HOTLINE);
     },
 
-    onClickMessageAction: function () {
+    onClickMessageAction: function() {
         console.log("Message");
         this.handleClickTopbarItem(game.bottomBarButtonType.MESSAGE);
     },
 
-    onClickUserInfoAction: function () {
-       console.log("UserInfo");
+    onClickUserInfoAction: function() {
+        console.log("UserInfo");
         this.handleClickTopbarItem(game.bottomBarButtonType.USERINFO);
     },
 
-    listenClickTopBarItem: function (cb) {
+    listenClickTopBarItem: function(cb) {
         this._clickListener = cb;
     },
 
     // truyen vao button type (xác định đang xử lý sự kiện cho button ).
-    handleClickTopbarItem: function (buttonType) {
-
+    handleClickTopbarItem: function(buttonType) {
         console.log("type: " + buttonType);
         this._clickListener && this._clickListener(buttonType);
     }

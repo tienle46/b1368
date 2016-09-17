@@ -551,10 +551,7 @@
     "node": {
       "__id__": 2
     },
-    "_enabled": true,
-    "buttonType": 0,
-    "pressedScale": 0.8,
-    "transDuration": 0.1
+    "_enabled": true
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -755,10 +752,7 @@
     "node": {
       "__id__": 18
     },
-    "_enabled": true,
-    "buttonType": 0,
-    "pressedScale": 0.8,
-    "transDuration": 0.1
+    "_enabled": true
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -959,10 +953,7 @@
     "node": {
       "__id__": 25
     },
-    "_enabled": true,
-    "buttonType": 0,
-    "pressedScale": 0.8,
-    "transDuration": 0.1
+    "_enabled": true
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -1163,10 +1154,7 @@
     "node": {
       "__id__": 32
     },
-    "_enabled": true,
-    "buttonType": 0,
-    "pressedScale": 0.8,
-    "transDuration": 0.1
+    "_enabled": true
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -1367,10 +1355,7 @@
     "node": {
       "__id__": 39
     },
-    "_enabled": true,
-    "buttonType": 0,
-    "pressedScale": 0.8,
-    "transDuration": 0.1
+    "_enabled": true
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -1571,10 +1556,7 @@
     "node": {
       "__id__": 46
     },
-    "_enabled": true,
-    "buttonType": 0,
-    "pressedScale": 0.8,
-    "transDuration": 0.1
+    "_enabled": true
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -2136,10 +2118,7 @@
     "node": {
       "__id__": 53
     },
-    "_enabled": true,
-    "buttonType": 0,
-    "pressedScale": 0.8,
-    "transDuration": 0.1
+    "_enabled": true
   },
   {
     "__type__": "cc.PrefabInfo",

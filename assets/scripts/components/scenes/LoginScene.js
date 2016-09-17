@@ -28,10 +28,12 @@ export default class LoginScene extends BaseScene {
     }
 
     onLoad() {
-            if (this.isRemember) {
-                _loginToDashboard();
-            }
-        } //qply
+        if (this.isRemember) {
+            _loginToDashboard();
+        }
+        this.userNameEditBox.string = "crush1";
+        this.userPasswordEditBox.string = "1234nm";
+    }
 
     handleLoginAction() {
         let username = this.userNameEditBox.string.trim();

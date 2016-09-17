@@ -2,15 +2,15 @@
  * Created by Thanh on 9/13/2016.
  */
 
-import game from 'game'
+import game from 'game';
 import utils from 'utils'
 import Component from 'Component'
 import Player from 'Player'
 
 class BaseControls extends Component {
-    constructor(){
+    constructor() {
         super();
-        
+
         this.readyBtn = {
             default: null,
             type: cc.Button
@@ -25,81 +25,79 @@ class BaseControls extends Component {
         this.scene = null;
     }
 
-    setBoard(board){
+    setBoard(board) {
         this.board = board;
     }
 
-    setScene(scene){
+    setScene(scene) {
         this.scene = scene;
     }
 
-    onLoad(){
+    onLoad() {
         utils.hide(this.unreadyBtn)
         utils.hide(this.readyBtn)
     }
 
-    onClickReadyButton(){
+    onClickReadyButton() {
 
         this.scene.showShortLoading('onClickReadyButton');
 
-        game.service.send({cmd: game.commands.PLAYER_READY, room: this.board.room}, (resObj) => {
+        game.service.send({ cmd: game.commands.PLAYER_READY, room: this.board.room }, (resObj) => {
 
             this.scene.hideLoading('onClickReadyButton');
 
             let playerId = resObj[game.keywords.PLAYER_ID]
 
-            if(this.scene.playerManager.isItMe(playerId)){
+            if (this.scene.playerManager.isItMe(playerId)) {
                 this._onPlayerReady()
             }
         });
     }
 
-    onClickUnreadyButton(){
+    onClickUnreadyButton() {
         this.scene.showShortLoading('onClickUnreadyButton');
 
-        game.service.send({cmd: game.commands.PLAYER_UNREADY, room: this.board.room}, (resObj) => {
+        game.service.send({ cmd: game.commands.PLAYER_UNREADY, room: this.board.room }, (resObj) => {
 
             this.scene.hideLoading('onClickUnreadyButton');
 
             let playerId = resObj[game.keywords.PLAYER_ID]
 
-            if(this.scene.playerManager.isItMe(playerId)){
+            if (this.scene.playerManager.isItMe(playerId)) {
                 this._onPlayerUnready()
             }
         });
     }
 
-    _init(board, scene){
+    _init(board, scene) {
         this.board = board;
         this.scene = scene;
 
         let isMeReady = false;
         let playerIds = this.scene.gameData[game.keywords.GAME_LIST_PLAYER];
         if (playerIds) {
-            for(playerId of playerIds) {
-                if(this.scene.playerManager.isItMe(playerId)){
+            for (playerId of playerIds) {
+                if (this.scene.playerManager.isItMe(playerId)) {
                     isMeReady = true;
                     break;
                 }
             }
         }
 
-        if(isMeReady){
+        if (isMeReady) {
             this._onPlayerReady()
         } else {
             this._onPlayerUnready()
         }
     }
 
-    _onPlayerReady(){
+    _onPlayerReady() {
         utils.show(this.unreadyBtn)
         utils.hide(this.readyBtn)
     }
 
-    _onPlayerUnready(){
+    _onPlayerUnready() {
         utils.hide(this.unreadyBtn)
         utils.show(this.readyBtn)
     }
 }
-
-game.createComponent(BaseControls)

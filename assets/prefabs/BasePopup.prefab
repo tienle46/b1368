@@ -99,7 +99,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 979,
+      "width": 970,
       "height": 737
     },
     "_children": [
@@ -447,10 +447,7 @@
     "node": {
       "__id__": 3
     },
-    "_enabled": true,
-    "buttonType": 0,
-    "pressedScale": 0.8,
-    "transDuration": 0.1
+    "_enabled": true
   },
   {
     "__type__": "cc.PrefabInfo",

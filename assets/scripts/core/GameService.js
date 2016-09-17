@@ -46,8 +46,8 @@ const requestCallbackNames = {
 class GameService {
     constructor() {
         this.client = null
-        this._eventCallbacks = {}
-        this._eventScopes = {}
+        this._eventCallbacks = {};
+        this._eventScopes = {};
 
         this._initSmartFoxClient()
     }
@@ -170,7 +170,7 @@ class GameService {
     }
 
     _callCallback(key, verifyFunc, ...args) {
-        let cbObj = this._getCallbackObject(key)
+        let cbObj = this._getCallbackObject(key);
 
         if (!(verifyFunc instanceof Function)) {
             args = [verifyFunc, ...args];
@@ -265,7 +265,7 @@ class GameService {
      * @param {function} cb
      */
 
-    requestAuthen(username, password, isRegister, isQuickLogin, cb) {
+    requestAuthen(username, password, isRegister, isQickPlay, cb) {
         new Fingerprint2().get((printer, components) => {
             let data = {};
             data[game.keywords.IS_REGISTER] = isRegister;
@@ -274,11 +274,11 @@ class GameService {
             // data[game.keywords.APP_VERSION_KEY] = "1.0.1"; //
             // data[game.keywords.VERSION] = "1.0.0"; //
             data[game.keywords.DEVICE_ID] = printer;
-            data[game.keywords.QUICK_PLAY] = isQuickLogin; // <-- die here!
+            data[game.keywords.QUICK_PLAY] = isQickPlay; // <-- die here!
 
-            if (isRegister)
-                data[game.keywords.PARTNER_ID] = "1"; // <-- or here
-
+            if (isRegister) {
+                data[game.keywords.PARTNER_ID] = 1; // <-- or here
+            }
 
             this._addCallback(SFS2X.SFSEvent.LOGIN, cb);
 

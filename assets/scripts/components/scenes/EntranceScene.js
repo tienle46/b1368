@@ -32,7 +32,6 @@ class EntranceScene extends BaseScene {
     // use this for initialization
     onLoad() {
         super.onLoad();
-        console.log("Entrance on load...")
     }
 
     handleLoginAction() {

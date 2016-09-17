@@ -62,7 +62,7 @@ export default class BaseScene extends Component {
     }
 
     onLoad() {
-        this._addListener()
+        this._addListener();
     }
 
     onDestroy() {
