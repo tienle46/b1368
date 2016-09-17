@@ -1,34 +1,15 @@
-import game from 'game'
+import app from 'app'
 import utils from 'utils'
 import Board from 'Board'
 import CreateGameException from 'CreateGameException'
-import TLMNDLBoard from 'TLMNDLBoard'
-import TLMNDLPlayer from 'TLMNDLPlayer'
+// import TLMNDLBoard from 'TLMNDLBoard'
+// import TLMNDLPlayer from 'TLMNDLPlayer'
+
+import { TLMNDLBoard, TLMNDLPlayer } from 'TLMNDLBoard'
+
 import GameMenuPrefab from 'GameMenuPrefab'
 import BaseScene from 'BaseScene'
 
-/**
- + 1 properties trong gameSence
- + de thuc hien logic cua 2 component  -> 1 component 
- */
-/**
- + gamescene 
- + faker -> !this.properties ctor()
-
-var a, b, c (ccclass)
-
-b = a.b (b la properties a)
-
-a.b.b1111 (func)
-
-a.b1111 {
-    b.b1111
-}
-
-a[b1111] => function b1111() { b[b1111]}
-
-
- */
 class GameScene extends BaseScene {
 
     constructor() {
@@ -60,18 +41,19 @@ class GameScene extends BaseScene {
         this.playerManager = null;
         this.gameControls = null;
         this.gameData = null;
+        this.gameEventHandler = null
     }
 
     onLoad() {
         try {
-            this.room = game.context.currentRoom
+            this.room = app.context.currentRoom
 
             if (!this.room || !this.room.isGame) {
                 throw new CreateGameException('Bàn chơi không tồn tại!')
             }
 
             this.gameCode = utils.getGameCode(this.room)
-            this.gameData = this.room.getVariable(game.keywords.VARIABLE_GAME_INFO).value;
+            this.gameData = this.room.getVariable(app.keywords.VARIABLE_GAME_INFO).value;
             if (!this.gameData) {
                 throw new CreateGameException('Không thể tải thông tin bàn chơi!')
             }
@@ -80,7 +62,8 @@ class GameScene extends BaseScene {
             this._initPlayerLayer()
             this._initGameControlLayer()
             this._initGameMenuLayer()
-            this._loadGameData();
+            this._initEvent()
+            this._loadGameData()
 
         } catch (e) {
             console.error(e)
@@ -88,6 +71,22 @@ class GameScene extends BaseScene {
             if (e instanceof CreateGameException)
                 this._onLoadSceneFail()
         }
+    }
+
+
+    start() {
+        this.gameEventHandler && this.gameEventHandler.setHandleEventImmediate(true)
+    }
+
+    onDestroy() {
+        console.debug("GameScene onDestroy")
+        this.gameEventHandler && this.gameEventHandler.removeGameEventListener()
+    }
+
+    _initEvent() {
+        this.gameEventHandler = new GameEventHandler(this.board, this);
+        this.gameEventHandler.setHandleEventImmediate(false);
+        this.gameEventHandler.addGameEventListener()
     }
 
     _loadGameData() {
@@ -101,8 +100,9 @@ class GameScene extends BaseScene {
             this.gameCode = this.gameCode || "tnd"
         }
 
-        let boardClass = game.manager.getBoardClass(this.gameCode)
-        let boardComponent = game.createComponent(boardClass, this.room, this);
+
+        let boardClass = app.game.getBoardClass(this.gameCode)
+        let boardComponent = app.createComponent(boardClass, this.room, this);
         this.board = this.boardLayer.addComponent(boardComponent)
 
         if (!this.board) {
@@ -153,12 +153,12 @@ class GameScene extends BaseScene {
     }
 
     goBack() {
-        if (game.service.client.isConnected()) {
-            game.system.loadScene(game.const.scene.LIST_TABLE_SCENE);
+        if (app.service.client.isConnected()) {
+            app.system.loadScene(app.const.scene.LIST_TABLE_SCENE);
         } else {
-            game.system.loadScene(game.const.scene.LOGIN_SCENE);
+            app.system.loadScene(app.const.scene.LOGIN_SCENE);
         }
     }
 }
 
-game.createComponent(GameScene)
+app.createComponent(GameScene)

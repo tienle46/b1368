@@ -1,5 +1,5 @@
 
-import game from 'game'
+import app from 'app'
 import Component from 'Component'
 
 class TextView extends Component{
@@ -31,4 +31,4 @@ class TextView extends Component{
     }
 }
 
-game.createComponent(TextView)
+app.createComponent(TextView)

@@ -1,4 +1,4 @@
-var game = require('game');
+var app = require('app');
 var BaseScene = require("BaseScene");
 var Fingerprint2 = require('fingerprinter');
 
@@ -35,7 +35,23 @@ class EntranceScene extends BaseScene {
     }
 
     handleLoginAction() {
-        this.changeScene('LoginScene');
+        app.service.connect((success) => {
+            console.debug("success: " + success);
+            if (success) {
+                new Fingerprint2().get((deviceId) => {
+                    app.service.requestAuthen('crush1', "1234nm", false, true, (error, result) => {
+                        error = JSON.parse(error);
+                        if (result) {
+                            this.changeScene('DashboardScene');
+                        }
+
+                        if (error) {
+                            this.addPopup(app.getMessageFromServer(error.p.ec));
+                        }
+                    });
+                });
+            }
+        });
     }
 
     handleRegisterButton() {
@@ -43,16 +59,16 @@ class EntranceScene extends BaseScene {
     }
 
     handlePlayNowButton() {
-        // game.service.connect((success) => {
+        // app.service.connect((success) => {
         //     console.debug("success: " + success);
         //     if (success) {
-        //         game.service.login("crush1", "1234nm", (error, result) => {
+        //         app.service.login("crush1", "1234nm", (error, result) => {
         //             if (result) {
-        //                 // console.debug(`Logged in as ${game.context.getMe().name}`)
+        //                 // console.debug(`Logged in as ${app.context.getMe().name}`)
 
-        //                 // if(game.context.getMe()){
+        //                 // if(app.context.getMe()){
         //                 //     let ListTableScene = require('ListTableScene');
-        //                 //     new ListTableScene()._createRoom(game.const.gameCode.TLMNDL, 1, 2)
+        //                 //     new ListTableScene()._createRoom(app.const.gameCode.TLMNDL, 1, 2)
         //                 // }else{
         //                 this.node.runAction(cc.sequence(
         //                     cc.fadeOut(0.5),
@@ -71,18 +87,18 @@ class EntranceScene extends BaseScene {
         //         });
         //     }
         // });
-        game.service.connect((success) => {
+        app.service.connect((success) => {
             console.debug("success: " + success);
             if (success) {
                 new Fingerprint2().get((deviceId) => {
-                    game.service.requestAuthen(this._generateUserName("ysad12", deviceId, 0, 5), this._generateUserName("yz212", deviceId, 0, 6), false, true, (error, result) => {
+                    app.service.requestAuthen(this._generateUserName("ysad12", deviceId, 0, 5), this._generateUserName("yz212", deviceId, 0, 6), false, true, (error, result) => {
                         error = JSON.parse(error);
                         if (result) {
                             this.changeScene('DashboardScene');
                         }
 
                         if (error) {
-                            this.addPopup(game.getMessageFromServer(error.p.ec));
+                            this.addPopup(app.getMessageFromServer(error.p.ec));
                         }
                     });
                 });
@@ -119,4 +135,4 @@ class EntranceScene extends BaseScene {
     }
 }
 
-game.createComponent(EntranceScene);
+app.createComponent(EntranceScene);

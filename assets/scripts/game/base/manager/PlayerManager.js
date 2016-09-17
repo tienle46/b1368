@@ -2,7 +2,7 @@
  * Created by Thanh on 8/23/2016.
  */
 
-import game from 'game'
+import app from 'app'
 import utils from 'utils'
 import Player from 'Player'
 import SFS2X from 'SFS2X'
@@ -37,7 +37,7 @@ export default class PlayerManager extends Component {
     _init(board, scene) {
         this.board = board;
         this.parentScene = scene;
-        this.gameCode = (this.board && this.board.gameCode) || (game.config.test ? "tnd" : "")
+        this.gameCode = (this.board && this.board.gameCode) || (app.config.test ? "tnd" : "")
         this._reset();
 
         this._initPlayerLayer();
@@ -56,9 +56,9 @@ export default class PlayerManager extends Component {
     }
 
     _initPlayerLayer() {
-        let maxPlayer = game.manager.getMaxPlayer(this.gameCode);
-        let positionAnchorResPath = maxPlayer && game.resource.playerAnchorPath[maxPlayer];
-        let positionAnchorName = maxPlayer && game.resource.playerAnchorName[maxPlayer];
+        let maxPlayer = app.game.getMaxPlayer(this.gameCode);
+        let positionAnchorResPath = maxPlayer && app.res.playerAnchorPath[maxPlayer];
+        let positionAnchorName = maxPlayer && app.res.playerAnchorName[maxPlayer];
 
         if (positionAnchorResPath && positionAnchorName) {
             cc.loader.loadRes(positionAnchorResPath, (error, prefab) => {
@@ -98,7 +98,7 @@ export default class PlayerManager extends Component {
             user.isPlayer() && this._createSinglePlayer(user);
         });
 
-        if(game.config.test && !users || users.length == 0){
+        if(app.config.test && !users || users.length == 0){
             cc.loader.loadRes('game/players/Player', (error, prefab) => {
                 let prefabObj = cc.instantiate(prefab);
                 this._setPlayerPosition(prefabObj, 1)
@@ -128,10 +128,10 @@ export default class PlayerManager extends Component {
         let player;
 
         let playerNode = cc.instantiate(this._playerPrefab);
-        let playerClass = game.manager.getPlayerClass(this.gameCode);
+        let playerClass = app.game.getPlayerClass(this.gameCode);
 
         if(playerClass){
-            let playerComponent = game.createComponent(playerClass, this.board, user);
+            let playerComponent = app.createComponent(playerClass, this.board, user);
             let player = playerNode.addComponent(playerComponent)
 
             if(player){
@@ -160,13 +160,13 @@ export default class PlayerManager extends Component {
      */
     _onPlayerDataChanged() {
 
-        if(!game.context.getMe()){
+        if(!app.context.getMe()){
             return;
         }
 
-        this.me = this.findPlayer(game.context.getMe().getPlayerId(this.board.room));
+        this.me = this.findPlayer(app.context.getMe().getPlayerId(this.board.room));
 
-        var ownerId = utils.getVariable(this.board.room, game.keywords.VARIABLE_OWNER);
+        var ownerId = utils.getVariable(this.board.room, app.keywords.VARIABLE_OWNER);
 
         console.log("owner: " + ownerId)
 
@@ -242,7 +242,7 @@ export default class PlayerManager extends Component {
     }
 
     findPlayer(idOrName) {
-        if (game.utils.isNumber(idOrName)) {
+        if (utils.isNumber(idOrName)) {
             return this._idToPlayerMap[idOrName];
         } else {
             return this._nameToPlayerMap[idOrName];
@@ -296,12 +296,12 @@ export default class PlayerManager extends Component {
         userObj.push(this.__getUserVariablesData(oldUser));
 
         let newUser = SFS2X.Entities.SFSUser.fromArray(userObj, this.board.room);
-        newUser._setUserManager(game.service.client.userManager);
+        newUser._setUserManager(app.service.client.userManager);
 
         this.board.room._removeUser(oldUser);
 
-        game.service.client.userManager._removeUser(oldUser);
-        game.service.client.userManager._addUser(newUser);
+        app.service.client.userManager._removeUser(oldUser);
+        app.service.client.userManager._addUser(newUser);
 
         this.board.room._addUser(newUser);
         player.setUser(newUser);
@@ -409,10 +409,10 @@ export default class PlayerManager extends Component {
             let newPlayer = this._addPlayer(user);
 
             if (newPlayer) {
-                let boardState = this.board.isPlaying() || this.board.isStarting() ? game.const.boardState.PLAYING
-                : this.board.isBegin() ? game.const.boardState.BEGIN
-                : this.board.isReady() ? game.const.boardState.READY
-                : this.board.isEnding() ? game.const.boardState.ENDING
+                let boardState = this.board.isPlaying() || this.board.isStarting() ? app.const.game.board.state.PLAYING
+                : this.board.isBegin() ? app.const.game.board.state.BEGIN
+                : this.board.isReady() ? app.const.game.board.state.READY
+                : this.board.isEnding() ? app.const.game.board.state.ENDING
                 : undefined;
 
                 boardState && newPlayer.applyBoardState(boardState);
@@ -448,4 +448,4 @@ export default class PlayerManager extends Component {
     }
 }
 
-game.createComponent(PlayerManager)
+app.createComponent(PlayerManager)

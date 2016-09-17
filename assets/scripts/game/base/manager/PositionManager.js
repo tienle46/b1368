@@ -2,8 +2,9 @@
  * Created by Thanh on 8/23/2016.
  */
 
-import game from 'game'
+import app from 'app'
 import Component from 'Component'
+import utils from 'utils'
 
 export default class PositionManager extends Component{
     constructor() {
@@ -23,14 +24,14 @@ export default class PositionManager extends Component{
     hideAllInviteButton(){
         this.playerAnchors.forEach(anchor => {
             let inviteButton = anchor.getChildByName('inviteButton')
-            game.utils.hide(inviteButton)
+            utils.hide(inviteButton)
         })
     }
 
     showAllInviteButton(){
         this.playerAnchors.forEach(anchor => {
             let inviteButton = anchor.getChildByName('inviteButton')
-            game.utils.show(inviteButton)
+            utils.show(inviteButton)
         })
     }
 

@@ -1,7 +1,7 @@
-var game = require("game");
-var Component = require('Component');
+var app = require('app');
 
-game.bottomBarButtonType = {
+
+app.bottomBarButtonType = {
     NAPXU: 0,
     TOPRANK: 1,
     NOTIFI: 2,
@@ -11,19 +11,37 @@ game.bottomBarButtonType = {
     USERINFO: 6
 };
 
-class BaseButton extends Component {
-    constructor() {
-        super();
-        this.buttonType = game.bottomBarButtonType.NAPXU;
-        this.pressedScale = 1;
-        this.transDuration = 0;
-    }
 
-    onLoad() {
+cc.Class({
+    extends: cc.Component,
+
+    properties: {
+        // foo: {
+        //    default: null,      // The default value will be used only when the component attaching
+        //                           to a node for the first time
+        //    url: cc.Texture2D,  // optional, default is typeof default
+        //    serializable: true, // optional, default is true
+        //    visible: true,      // optional, default is true
+        //    displayName: 'Foo', // optional
+        //    readonly: false,    // optional, default is false
+        // },
+        // ...
+
+        buttonType: app.bottomBarButtonType.NAPXU,
+        pressedScale: 1,
+        transDuration: 0
+    },
+
+    // use this for initialization
+    onLoad: function() {
+
+
         this._addAnimationWhenTouch();
-    }
 
-    _addAnimationWhenTouch() {
+    },
+
+    // add animation ưhen touch
+    _addAnimationWhenTouch: function() {
         var self = this;
         self.initScale = this.node.scale;
         self.button = self.getComponent(cc.Button);
@@ -42,10 +60,18 @@ class BaseButton extends Component {
         this.node.on('touchstart', onTouchDown, this.node);
         this.node.on('touchend', onTouchUp, this.node);
         this.node.on('touchcancel', onTouchUp, this.node);
-    }
-}
 
-game.createComponent(BaseButton);
+        function onTouchUp(event) {
+            this.stopAllActions();
+            this.runAction(self.scaleUpAction);
+        }
+        this.node.on('touchstart', onTouchDown, this.node);
+        this.node.on('touchend', onTouchUp, this.node);
+        this.node.on('touchcancel', onTouchUp, this.node);
+    }
+});
+
+app.createComponent(BaseButton);
 
 // cc.Class({
 //     extends: cc.Component,

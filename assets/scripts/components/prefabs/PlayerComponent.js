@@ -2,7 +2,7 @@
  * Created by Thanh on 9/12/2016.
  */
 
-import game from 'game'
+import app from 'app'
 import Player from 'Player'
 
 class PlayerComponent extends Player {
@@ -16,4 +16,4 @@ class PlayerComponent extends Player {
     }
 }
 
-game.createComponent(PlayerComponent)
+app.createComponent(PlayerComponent)

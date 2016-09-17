@@ -1,4 +1,4 @@
-import game from 'game'
+import app from 'app'
 import Component from 'Component'
 import ClickEvent from 'ClickEvent'
 
@@ -49,4 +49,4 @@ class TableListCell extends Component{
     }
 }
 
-game.createComponent(TableListCell)
+app.createComponent(TableListCell)

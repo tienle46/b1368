@@ -2,7 +2,7 @@
  * Created by Thanh on 8/23/2016.
  */
 
-import game from 'game'
+import app from 'app'
 import PlayerManager from 'PlayerManager'
 import PositionManager from 'PositionManager'
 import GameEventHandler from 'GameEventHandler'
@@ -17,8 +17,6 @@ export default class Board extends Component{
 
         this.room = room;
 
-        this.gameEventHandler = null
-
         this.owner = null
 
         this.ownerId = 0
@@ -27,11 +25,11 @@ export default class Board extends Component{
 
         this.minBet = null
 
-        this.state = game.const.boardState.INITED
+        this.state = app.const.game.board.state.INITED
 
-        this.serverState = game.const.boardState.INITED
+        this.serverState = app.const.game.board.state.INITED
 
-        this.readyPhaseDuration =  game.const.DEFAULT_READY_PHASE_DURATION
+        this.readyPhaseDuration =  app.const.DEFAULT_READY_PHASE_DURATION
 
         this.gameCode = ""
 
@@ -40,21 +38,19 @@ export default class Board extends Component{
     _init(gameData){
         this.gameCode = this.room.name.substring(0, 3);
 
-        if (this.room.containsVariable(game.keywords.VARIABLE_MIN_BET)) {
-            this.minbet = this.room.getVariable(game.keywords.VARIABLE_MIN_BET)
+        if (this.room.containsVariable(app.keywords.VARIABLE_MIN_BET)) {
+            this.minbet = this.room.getVariable(app.keywords.VARIABLE_MIN_BET)
         }
 
 
-        if (gameData.hasOwnProperty(game.keywords.BOARD_STATE_KEYWORD)) {
-            this.serverState = gameData[game.keywords.BOARD_STATE_KEYWORD];
-            this.state = game.const.boardState.BEGIN;
+        if (gameData.hasOwnProperty(app.keywords.BOARD_STATE_KEYWORD)) {
+            this.serverState = gameData[app.keywords.BOARD_STATE_KEYWORD];
+            this.state = app.const.game.board.state.BEGIN;
         }
     }
 
     onLoad() {
-        this.gameEventHandler = new GameEventHandler(this, this.parentScene);
-        this.gameEventHandler.setHandleEventImmediate(false);
-        this.gameEventHandler.addGameEventListener()
+        super.onLoad();
     }
 
     update(dt) {
@@ -62,11 +58,11 @@ export default class Board extends Component{
     }
 
     start(){
-        this.gameEventHandler && this.gameEventHandler.setHandleEventImmediate(true);
+
     }
 
     onDestroy(){
-        this.gameEventHandler && this.gameEventHandler.removeGameEventListener()
+
     }
 
     setState (state) {
@@ -74,27 +70,27 @@ export default class Board extends Component{
     }
 
     isPlaying () {
-        return this.state === game.const.boardState.PLAYING;
+        return this.state === app.const.game.board.state.PLAYING;
     }
 
     isStarting () {
-        return this.state === game.const.boardState.STARTING;
+        return this.state === app.const.game.board.state.STARTING;
     }
 
     isReady () {
-        return this.state === game.const.boardState.READY;
+        return this.state === app.const.game.board.state.READY;
     }
 
     isBegin () {
-        return this.state === game.const.boardState.BEGIN;
+        return this.state === app.const.game.board.state.BEGIN;
     }
 
     isNewBoard () {
-        return this.state === game.const.boardState.INITED;
+        return this.state === app.const.game.board.state.INITED;
     }
 
     isEnding () {
-        return this.state === game.const.boardState.ENDING;
+        return this.state === app.const.game.board.state.ENDING;
     }
 
     getRoomNumber () {
@@ -102,7 +98,7 @@ export default class Board extends Component{
     }
 
     getGroupNumber () {
-        return game.context.groupId.length >= 3 && game.context.groupId.substring(3);
+        return app.context.groupId.length >= 3 && app.context.groupId.substring(3);
     }
 
     setMaster (master) {
@@ -124,11 +120,11 @@ export default class Board extends Component{
     }
 
     onResetBoard(){
-        this.state = game.const.boardState.INITED
+        this.state = app.const.game.board.state.INITED
     }
 
     onStartingBoard(){
-        return this.state === game.const.boardState.STARTING;
+        return this.state === app.const.game.board.state.STARTING;
     }
 
     onStartedBoard(){
@@ -139,7 +135,7 @@ export default class Board extends Component{
     }
 
     onDestroyBoard(){
-        game.system.setGameEventHandler(undefined);
+        app.system.setGameEventHandler(undefined);
         //TODO
     }
 
@@ -150,7 +146,7 @@ export default class Board extends Component{
     _updatePlayerState (boardInfoObj) {
         let playerIds = boardInfoObj[xg.Keywords.GAME_LIST_PLAYER];
         if (playerIds) {
-            this.playerManager.changePlayerState(playerIds, game.const.playerState.READY);
+            this.playerManager.changePlayerState(playerIds, app.const.playerState.READY);
         }
     }
 
@@ -195,7 +191,7 @@ export default class Board extends Component{
     }
 
     _isInstanceOfPlayingState (state) {
-        return state === game.const.boardState.PLAYING;
+        return state === app.const.game.board.state.PLAYING;
     }
 
     /**
@@ -250,8 +246,8 @@ export default class Board extends Component{
     }
 
     _handlePlayerToSpectator(data){
-        if (data.hasOwnProperty(game.keywords.ERROR)) {
-            this._handleBoardError(game.resource.getErrorMessage(data[game.keywords.ERROR]));
+        if (data.hasOwnProperty(app.keywords.ERROR)) {
+            this._handleBoardError(app.res.getErrorMessage(data[app.keywords.ERROR]));
         }else{
             //TODO
             this.playerManager.onPlayerToSpectator()
@@ -259,8 +255,8 @@ export default class Board extends Component{
     }
 
     _handleSpectatorToPlayer(data){
-        if (data.hasOwnProperty(game.keywords.ERROR)) {
-            this.board._handleBoardError(game.resource.getErrorMessage(data[game.keywords.ERROR]));
+        if (data.hasOwnProperty(app.keywords.ERROR)) {
+            this.board._handleBoardError(app.res.getErrorMessage(data[app.keywords.ERROR]));
         }else{
             //TODO
         }

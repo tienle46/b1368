@@ -1,4 +1,4 @@
-var game = require('game');
+var app = require('app');
 var item = require('item');
 var BaseScene = require('BaseScene');
 
@@ -42,7 +42,7 @@ export default class DashboardScene extends BaseScene {
             }
         };
         console.log('request list game');
-        game.service.send(sendObject, (data) => {
+        app.service.send(sendObject, (data) => {
             console.log(data);
 
 
@@ -50,7 +50,7 @@ export default class DashboardScene extends BaseScene {
             console.log(this.gameList);
 
             this._initItemListGame();
-        }, game.const.scene.DASHBOARD_SCENE);
+        }, app.const.scene.DASHBOARD_SCENE);
 
 
         //    handle bottom Bar event
@@ -66,7 +66,7 @@ export default class DashboardScene extends BaseScene {
 
         this.gameList.forEach(gc => {
             "use strict";
-            cc.loader.loadRes(game.resource.gameIcon[gc], cc.SpriteFrame, (err, spriteFrame) => {
+            cc.loader.loadRes(app.res.gameIcon[gc], cc.SpriteFrame, (err, spriteFrame) => {
 
                 const nodeItem = new cc.instantiate(this.item);
                 nodeItem.getComponent(cc.Sprite).spriteFrame = spriteFrame;
@@ -126,4 +126,4 @@ export default class DashboardScene extends BaseScene {
     }
 }
 
-game.createComponent(DashboardScene);
+app.createComponent(DashboardScene);

@@ -2,8 +2,11 @@
  * Created by Thanh on 8/23/2016.
  */
 
-class PlayerBetTurnAdapter {
-    constructor() {
+import GameAdapter from 'GameAdapter'
 
+export default class PlayerBetTurnAdapter extends GameAdapter {
+    constructor() {
+        super()
     }
 }
+

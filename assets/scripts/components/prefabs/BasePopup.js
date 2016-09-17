@@ -1,4 +1,4 @@
-import game from 'game';
+import app from 'app';
 import Component from 'Component';
 
 class BasePopup extends Component {
@@ -42,7 +42,7 @@ class BasePopup extends Component {
 
 }
 
-game.createComponent(BasePopup);
+app.createComponent(BasePopup);
 
 // cc.Class({
 //     extends: cc.Component,
