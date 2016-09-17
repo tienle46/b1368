@@ -1,0 +1,30 @@
+{
+  "ver": "1.0.0",
+  "uuid": "d08d7031-0ec5-4d1b-858a-c825095d8503",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "subMetas": {
+    "napxu-card-btn-active": {
+      "ver": "1.0.3",
+      "uuid": "bb06f76b-7ef5-44ae-845e-db981a272815",
+      "rawTextureUuid": "d08d7031-0ec5-4d1b-858a-c825095d8503",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": -0.5,
+      "offsetY": 0.5,
+      "trimX": 2,
+      "trimY": 2,
+      "width": 372,
+      "height": 158,
+      "rawWidth": 377,
+      "rawHeight": 163,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}

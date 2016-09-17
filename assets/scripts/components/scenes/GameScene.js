@@ -1,15 +1,15 @@
-import app from 'app'
-import utils from 'utils'
-import Board from 'Board'
-import CreateGameException from 'CreateGameException'
+import app from 'app';
+import utils from 'utils';
+import Board from 'Board';
+import CreateGameException from 'CreateGameException';
 // import TLMNDLBoard from 'TLMNDLBoard'
 // import TLMNDLPlayer from 'TLMNDLPlayer'
 
-import {TLMNDLBoard, TLMNDLPlayer} from 'TLMNDLBoard'
+import { TLMNDLBoard, TLMNDLPlayer } from 'TLMNDLBoard';
 
-import GameMenuPrefab from 'GameMenuPrefab'
-import BaseScene from 'BaseScene'
-import GameEventHandler from 'GameEventHandler'
+import GameMenuPrefab from 'GameMenuPrefab';
+import BaseScene from 'BaseScene';
+import GameEventHandler from 'GameEventHandler';
 
 class GameScene extends BaseScene {
 

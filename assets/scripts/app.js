@@ -113,47 +113,6 @@ app.createComponent = (className, extendClass = undefined, ...args) => {
     return cc.Class(instance);
 };
 
-app.mixin = (...args) => {
-    let O = {};
-
-    return args.reduce((prev, next) => {
-        let P = typeof prev === 'function' ? Object.getPrototypeOf(new prev()) : prev;
-        let N = typeof next === 'function' ? Object.getPrototypeOf(new next()) : next;
-        let B = typeof next === 'function' ? new next() : new Function();
-        let Z = Object.assign({}, P, N);
-        function joinF(...a) {
-            let b;
-
-            b = a[(a.length - 1)];
-            a.pop();
-
-            if (a.length > 1) {
-                a = joinF(a);
-            } else {
-                a = a[0];
-            }
-
-            return function(...args) {
-                b.apply(new a(), args);
-            };
-
-            // return function(...args) {
-            //     a.apply(new a, args);
-            //     b.apply(new b, args);
-            // }
-
-        }
-
-        for (let key in Z) {
-            if (typeof Z[key] === 'function' && N[key] && typeof N[key] === 'function' && Z[key] == N[key]) {
-                Z[key] = Z[key].bind(B);
-            }
-        }
-
-        return Z;
-    }, {});
-}
-
 app.getMessageFromServer = (errorCode, errorMessage = 0) => {
     let M = MESSAGES[game.LANG];
     return (typeof M[errorCode] === 'object') ? M[errorCode][errorMessage] : M[errorCode];

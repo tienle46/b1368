@@ -2,10 +2,10 @@
  * Created by Thanh on 8/25/2016.
  */
 
-import app from 'app'
-import utils from 'utils'
-import Component from 'Component'
-import BasePopup from 'BasePopup'
+import app from 'app';
+import utils from 'utils';
+import Component from 'Component';
+import BasePopup from 'BasePopup';
 
 export default class BaseScene extends Component {
     constructor() {
