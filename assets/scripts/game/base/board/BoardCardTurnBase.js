@@ -12,6 +12,10 @@ export default class BoardCardTurnBase extends BoardCard {
         this.turnAdapter = new BoardTurnBaseAdapter();
     }
 
+    _init(data = {}){
+        super._init(data);
+    }
+
     onLoad(){
         super.onLoad();
         this.turnAdapter.setBoard(this);

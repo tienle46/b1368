@@ -65,8 +65,10 @@ export default class DashboardScene extends BaseScene {
         const itemDimension = height / 2.0 - 50;
 
         this.gameList.forEach(gc => {
-            "use strict";
-            cc.loader.loadRes(app.res.gameIcon[gc], cc.SpriteFrame, (err, spriteFrame) => {
+
+            let gameIconPath = app.res.gameIcon[gc];
+
+            gameIconPath && cc.loader.loadRes(app.res.gameIcon[gc], cc.SpriteFrame, (err, spriteFrame) => {
 
                 const nodeItem = new cc.instantiate(this.item);
                 nodeItem.getComponent(cc.Sprite).spriteFrame = spriteFrame;

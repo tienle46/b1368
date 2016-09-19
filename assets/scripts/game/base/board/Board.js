@@ -32,7 +32,7 @@ export default class Board extends Component{
 
     }
 
-    _init(gameData){
+    _init(gameData = {}){
         this.gameCode = this.room.name.substring(0, 3);
 
         if (this.room.containsVariable(app.keywords.VARIABLE_MIN_BET)) {
@@ -219,11 +219,15 @@ export default class Board extends Component{
         //TODO Process board state changed here
     }
 
-    _handleChangePlayerBalance(data){
-
+    _dealCards(data){
+        console.debug("Deal card")
     }
 
-    _handleChangeBoardState(data){
+    changeBoardPhaseDuration(data){
+        //TODO on board timeline changed
+    }
+
+    _handleChangePlayerBalance(data){
 
     }
 

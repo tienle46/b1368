@@ -110,14 +110,19 @@ class GameScene extends BaseScene {
     }
 
     _initGameControlLayer() {
-        cc.loader.loadRes('game/controls/BaseControls', (error, prefab) => {
+        let gameControlsPath = app.game.getGameControlsPath(this.gameCode);
+        // let gameControlsPath = 'game/controls/BaseControls'
+
+        cc.loader.loadRes(gameControlsPath, (error, prefab) => {
 
             let prefabObj = cc.instantiate(prefab);
             prefabObj.setAnchorPoint(0, 0);
             prefabObj.parent = this.gameControlLayer;
 
-            this.gameControls = prefabObj.getComponent('BaseControls');
-            this.gameControls._init(this.board, this);
+            let gameControlsClass = app.game.getGameControlsClass(this.gameCode)
+            // let gameControlsClass = "BaseControls"
+            this.gameControls = prefabObj.getComponent(gameControlsClass);
+            this.gameControls._init(this);
         });
     }
 

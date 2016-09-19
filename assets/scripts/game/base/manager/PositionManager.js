@@ -12,23 +12,23 @@ export default class PositionManager extends Component {
         this.playerAnchors = [];
     }
 
-    onLoad(){
+    onLoad() {
         this.playerAnchors[0] = this.myAnchor;
-        for (let i = 1; i <= this.ceilAnchor; i++){
+        for (let i = 1; i <= this.ceilAnchor; i++) {
             this.playerAnchors[i] = this['anchor' + i];
         }
 
         this.hideAllInviteButton();
     }
 
-    hideAllInviteButton(){
+    hideAllInviteButton() { // <---- name duplicate
         this.playerAnchors.forEach(anchor => {
             let inviteButton = anchor.getChildByName('inviteButton');
             utils.hide(inviteButton);
         });
     }
 
-    showAllInviteButton(){
+    showAllInviteButton() {
         this.playerAnchors.forEach(anchor => {
             let inviteButton = anchor.getChildByName('inviteButton');
             utils.show(inviteButton);
@@ -42,34 +42,44 @@ export default class PositionManager extends Component {
         return this.getPlayerAnchor(this.getPlayerAnchorOrder(playerId, isItMe));
     }
 
-    getPlayerAnchorOrder(playerId, isItMe){
-        let order = isItMe ? 0 : playerId <= 0 ? 1 : playerId;
-        //TODO
-        return order;
+    getPlayerAnchorOrder(playerId, isItMe) {
+        if (isItMe) {
+            return 0;
+        } else {
+            let tmpIndex = 0;
+
+            if (app.context.getMe()) {
+                tmpIndex = (playerId + 5) % 4; //TODO
+                return tmpIndex;
+            } else {
+                tmpIndex = playerId;
+                return tmpIndex; //TODO
+            }
+        }
     }
 
-    hideAllInviteButton(order){
+    hideAllInviteButton(order) { // <---- name duplicate
         this.playerAnchors.forEach(anchor => {
             this._setVisibleInviteButton(anchor, false);
         });
     }
 
-    hideInviteButton(order){
+    hideInviteButton(order) {
         let anchor = this.getPlayerAnchor(order);
         this._setVisibleInviteButton(anchor, false);
     }
 
-    showInviteButton(order){
+    showInviteButton(order) {
         let anchor = this.getPlayerAnchor(order);
         this._setVisibleInviteButton(anchor, true);
     }
 
-    _setVisibleInviteButton(anchor, visible){
-        if(anchor){
+    _setVisibleInviteButton(anchor, visible) {
+        if (anchor) {
 
-            for (let node of anchor.children){
+            for (let node of anchor.children) {
 
-                if(node.name == 'inviteButton'){
+                if (node.name == 'inviteButton') {
                     node.active = visible;
                     break;
                 }
@@ -77,13 +87,13 @@ export default class PositionManager extends Component {
         }
     }
 
-    hideAnchor(order){
+    hideAnchor(order) {
         let anchor = this.getPlayerAnchor(order);
-        if(anchor) anchor.active = false;
+        if (anchor) anchor.active = false;
     }
 
-    showAnchor(order){
+    showAnchor(order) {
         let anchor = this.getPlayerAnchor(order);
-        if(anchor) anchor.active = true;
+        if (anchor) anchor.active = true;
     }
 }

@@ -29,6 +29,8 @@ class GameMenuPrefab extends Component {
     _init(board, scene){
         this.board = board;
         this.scene = scene;
+        
+        console.log(this.menuBtn)
     }
 
     onClickMenuButton(event){
