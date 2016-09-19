@@ -4,45 +4,35 @@
 
 import app from 'app'
 import utils from 'utils'
-import Component from 'Component'
-import Player from 'Player'
+import GameControls from 'GameControls'
 
-class BaseControls extends Component {
+class BaseControls extends GameControls {
     constructor() {
         super();
 
-        this.readyBtn = {
+        this.readyButton = {
             default: null,
-            type: cc.Button
+            type: cc.Node
         }
 
-        this.unreadyBtn = {
+        this.unreadyButton = {
             default: null,
-            type: cc.Button
+            type: cc.Node
         }
-
-        this.board = null;
-        this.scene = null;
-    }
-
-    setBoard(board) {
-        this.board = board;
-    }
-
-    setScene(scene) {
-        this.scene = scene;
     }
 
     onLoad() {
-        utils.hide(this.unreadyBtn)
-        utils.hide(this.readyBtn)
+        super.onLoad();
+        this.hideAllControls();
     }
 
     onClickReadyButton() {
+        
+        console.log("onClickReadyButton")
 
         this.scene.showShortLoading('onClickReadyButton');
 
-        app.service.send({ cmd: app.commands.PLAYER_READY, room: this.board.room }, (resObj) => {
+        app.service.send({ cmd: app.commands.PLAYER_READY, room: this.scene.room }, (resObj) => {
 
             this.scene.hideLoading('onClickReadyButton');
 
@@ -55,9 +45,12 @@ class BaseControls extends Component {
     }
 
     onClickUnreadyButton() {
+
+        console.log("onClickUnreadyButton")
+
         this.scene.showShortLoading('onClickUnreadyButton');
 
-        app.service.send({ cmd: app.commands.PLAYER_UNREADY, room: this.board.room }, (resObj) => {
+        app.service.send({ cmd: app.commands.PLAYER_UNREADY, room: this.scene.room }, (resObj) => {
             this.scene.hideLoading('onClickUnreadyButton');
 
             let playerId = resObj[app.keywords.PLAYER_ID]
@@ -68,8 +61,7 @@ class BaseControls extends Component {
         });
     }
 
-    _init(board, scene) {
-        this.board = board;
+    _init(scene) {
         this.scene = scene;
 
         let isMeReady = false;
@@ -88,18 +80,24 @@ class BaseControls extends Component {
         } else {
             this._onPlayerUnready()
         }
+
+        console.log(this.readyButton)
     }
 
     _onPlayerReady() {
-        utils.show(this.unreadyBtn)
-        utils.hide(this.readyBtn)
+        utils.show(this.unreadyButton)
+        utils.hide(this.readyButton)
     }
 
     _onPlayerUnready() {
-        utils.hide(this.unreadyBtn)
-        utils.show(this.readyBtn)
+        utils.hide(this.unreadyButton)
+        utils.show(this.readyButton)
     }
 
+    hideAllControls(){
+        utils.hide(this.readyButton)
+        utils.hide(this.unreadyButton)
+    }
 }
 
 app.createComponent(BaseControls)

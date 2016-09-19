@@ -6,10 +6,12 @@ import BoardCardRenderer from 'BoardCardRenderer'
 
 export default class BoardCardTurnBaseRenderer extends BoardCardRenderer {
     constructor() {
-        super()
+        super();
     }
 
     _initUI(data){
         super._initUI(data)
+
+
     }
 }

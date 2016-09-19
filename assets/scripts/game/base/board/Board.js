@@ -32,7 +32,7 @@ export default class Board extends Component{
 
     }
 
-    _init(gameData){
+    _init(gameData = {}){
         this.gameCode = this.room.name.substring(0, 3);
 
         if (this.room.containsVariable(app.keywords.VARIABLE_MIN_BET)) {

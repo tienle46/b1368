@@ -11,10 +11,26 @@ export default class TLMNDLBoard extends BoardCardTurnBase{
     constructor(room, scene) {
         super(room, scene);
 
+        this.handCardSize = 13;
+
+        this.deckCards = [];
+        this.winRank = 0;
         this.rendererClassName = TLMNDLBoardRenderer;
+    }
+
+    _init(data = {}){
+        super._init(data);
     }
 
     onLoad(){
         super.onLoad()
+
+    }
+
+    onResetBoard(){
+        super.onResetBoard();
+        this.winRank = 0;
+        this.renderer.setVisibleAnTrang(false);
+        this.renderer.setVisibleDutBaBich(false);
     }
 }
