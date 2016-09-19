@@ -43,8 +43,19 @@ export default class PositionManager extends Component {
     }
 
     getPlayerAnchorOrder(playerId, isItMe){
-        let order = isItMe ? 0 : playerId <= 0 ? 1 : playerId;
-        //TODO
+        if(isItMe){
+            return 0;
+        }else{
+            let tmpIndex = 0;
+
+            if(app.context.getMe()){
+                tmpIndex = (playerId + 5) % 4; //TODO
+                return tmpIndex;
+            }else{
+                tmpIndex = playerId;
+                return tmpIndex; //TODO
+            }
+        }
         return order
     }
 

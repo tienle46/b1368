@@ -44,7 +44,7 @@ export default class GameEventHandler {
         app.system.addListener(app.commands.PING_CLIENT, this._handlePingClient, this)
         app.system.addListener(app.commands.PLAYERS_BALANCE_CHANGE, this.board._handleChangePlayerBalance, this)
         app.system.addListener(app.commands.PLAYER_REENTER_ROOM, this.board._handlePlayerReEnterGame, this)
-        app.system.addListener(app.commands.BOARD_STATE_CHANGE, this.board._handleChangeBoardState, this)
+        app.system.addListener(app.commands.BOARD_STATE_CHANGE, this._handleChangeBoardState, this)
         app.system.addListener(app.commands.BOARD_MASTER_CHANGE, this.board._handleChangeBoardMaster, this)
         app.system.addListener(app.commands.PLAYER_REJOIN_ROOM, this.board._handlePlayerRejoinGame, this)
     }
@@ -63,7 +63,7 @@ export default class GameEventHandler {
         app.system.removeListener(app.commands.PING_CLIENT, this._handlePingClient)
         app.system.removeListener(app.commands.PLAYERS_BALANCE_CHANGE, this.board._handleChangePlayerBalance)
         app.system.removeListener(app.commands.PLAYER_REENTER_ROOM, this.board._handlePlayerReEnterGame)
-        app.system.removeListener(app.commands.BOARD_STATE_CHANGE, this.board._handleChangeBoardState)
+        app.system.removeListener(app.commands.BOARD_STATE_CHANGE, this._handleChangeBoardState)
         app.system.removeListener(app.commands.BOARD_MASTER_CHANGE, this.board._handleChangeBoardMaster)
         app.system.removeListener(app.commands.PLAYER_REJOIN_ROOM, this.board._handlePlayerRejoinGame)
     }
@@ -94,7 +94,11 @@ export default class GameEventHandler {
             let boardState = data[app.keywords.BOARD_STATE_KEYWORD];
             this.board.changeBoardState(boardState, data);
 
+            if (data.hasOwnProperty(xg.Keywords.BOARD_PHASE_DURATION)) {
+                this.board.changeBoardPhaseDuration(data);
+            }
         }
+
     }
 
     _handleSystemMessage(data){

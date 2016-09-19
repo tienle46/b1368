@@ -27,7 +27,7 @@ export default class TLMNDLControls extends GameControls {
         super._init(scene);
 
         this.baseControls._init(scene);
-        // this.cardTurnBaseControls._init(scene);
+        this.cardTurnBaseControls._init(scene);
     }
 
     onLoad(){
@@ -37,10 +37,15 @@ export default class TLMNDLControls extends GameControls {
         let cardTurnBaseControlPrefabs = cc.instantiate(this.cardTurnBaseControlsPrefab);
 
         this.node.addChild(baseControlsPrefab)
-        // this.node.addChild(cardTurnBaseControlPrefabs)
+        this.node.addChild(cardTurnBaseControlPrefabs)
 
         this.baseControls = baseControlsPrefab.getComponent("BaseControls")
-        // this.cardTurnBaseControls = cardTurnBaseControlPrefabs.getComponent("CardTurnBaseControls")
+        this.cardTurnBaseControls = cardTurnBaseControlPrefabs.getComponent("CardTurnBaseControls")
+
+        this.cardTurnBaseControls.node.on('touchstart', (event) => {
+            return true;
+        })
+
     }
 
     hidePlayControls(){
@@ -49,7 +54,7 @@ export default class TLMNDLControls extends GameControls {
 
     hideAllControls(){
         this.baseControls.hideAllControls();
-        // this.cardTurnBaseControls.hideAllControls();
+        this.cardTurnBaseControls.hideAllControls();
     }
 }
 

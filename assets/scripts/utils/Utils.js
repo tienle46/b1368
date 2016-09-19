@@ -23,20 +23,26 @@ export default class Utils {
         return value === null
     }
 
-    static gone(node) {
-        if (node) node.active = false;
+    static active(node){
+        this.setActive(node, true);
     }
 
-    static visible(node) {
-        if (node) node.active = true;
+    static deactive(node){
+        this.setActive(node, false);
+    }
+
+    static setActive(node, active){
+        if(!node) return;
+        
+        if(node instanceof cc.Node){
+            node.active = active;
+        }else{
+            node.node && (node.node.active = active);
+        }
     }
 
     static setVisible(node, visible) {
-        if (visible) {
-            this.visible(node)
-        } else {
-            this.gone(node)
-        }
+        this.setActive(node, visible);
     }
 
     static hide(node) {

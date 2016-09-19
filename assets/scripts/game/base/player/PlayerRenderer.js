@@ -58,15 +58,19 @@ export default class PlayerRenderer extends ActorRenderer {
         this.masterIcon = this.node.getChildByName('master')
         this.readyIcon = this.node.getChildByName('ready')
 
-        utils.gone(this.status1);
-        utils.gone(this.status2);
-        utils.gone(this.ownerIcon);
-        utils.gone(this.masterIcon);
-        utils.gone(this.readyIcon);
+        console.log("player renderer init ui: ", this.status1 instanceof cc.Node, this.status2 instanceof cc.Node)
+
+        utils.deactive(this.status1);
+        utils.deactive(this.status2);
+        utils.deactive(this.ownerIcon);
+        utils.deactive(this.masterIcon);
+        utils.deactive(this.readyIcon);
     }
 
     onLoad(){
         super.onLoad();
+
+        console.log("player renderer")
     }
 
     setName(name){
@@ -78,14 +82,14 @@ export default class PlayerRenderer extends ActorRenderer {
     }
 
     setVisibleOwner(visible){
-        utils.setVisible(this.ownerIcon, visible)
+        utils.setActive(this.ownerIcon, visible)
     }
 
     setVisibleMaster(visible){
-        utils.setVisible(this.masterIcon, visible)
+        utils.setActive(this.masterIcon, visible)
     }
 
     setVisibleReady(visible){
-        utils.setVisible(this.readyIcon, visible)
+        utils.setActive(this.readyIcon, visible)
     }
 }

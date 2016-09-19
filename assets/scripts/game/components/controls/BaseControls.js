@@ -85,18 +85,18 @@ class BaseControls extends GameControls {
     }
 
     _onPlayerReady() {
-        utils.show(this.unreadyButton)
-        utils.hide(this.readyButton)
+        utils.active(this.unreadyButton)
+        utils.deactive(this.readyButton)
     }
 
     _onPlayerUnready() {
-        utils.hide(this.unreadyButton)
-        utils.show(this.readyButton)
+        utils.deactive(this.unreadyButton)
+        utils.active(this.readyButton)
     }
 
     hideAllControls(){
-        utils.hide(this.readyButton)
-        utils.hide(this.unreadyButton)
+        utils.deactive(this.readyButton)
+        utils.deactive(this.unreadyButton)
     }
 }
 

@@ -164,6 +164,13 @@ class Service {
     }
 
     _onLogin(event) {
+
+        if(event.data[app.keywords.LOGIN_REJOIN_ROOM_GROUP]){
+            this.logout();
+            app.system.info("Hệ thống chưa hỗ trợ kết nối lại khi bàn đang chơi. Vui lòng đăng nhập lại!")
+            return;
+        }
+        
         this._callCallback(SFS2X.SFSEvent.LOGIN, null, event.data)
         this.startLagPolling(app.config.pingPongInterval)
     }
@@ -268,7 +275,7 @@ class Service {
      */
     logout() {
         this.disconnect();
-        app.system.loadScene(app.const.scene.LOGIN_SCENE);
+        app.system.loadScene(app.const.scene.ENTRANCE_SCENE);
     }
 
     /**

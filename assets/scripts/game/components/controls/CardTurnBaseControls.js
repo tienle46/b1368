@@ -32,9 +32,24 @@ export default class CardTurnBaseControls extends GameControls {
     }
 
     hideAllControls(){
-        utils.hide(this.playButton)
-        utils.hide(this.sortButton)
-        utils.hide(this.skipTurnButton)
+
+        console.log("play button: ", this.playButton instanceof cc.Node)
+
+        utils.deactive(this.playButton)
+        utils.deactive(this.sortButton)
+        utils.deactive(this.skipTurnButton)
+    }
+
+    onClickPlayButton(event){
+        console.log("click play button")
+    }
+
+    onClickSortButton(event){
+        console.log("click sort button")
+    }
+
+    onClickSkipTurnButton(event){
+        console.log("click skip turn button")
     }
 
 }

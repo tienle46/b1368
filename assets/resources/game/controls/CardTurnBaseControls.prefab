@@ -93,7 +93,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 140,
+      "width": 130,
       "height": 50
     },
     "_children": [
@@ -157,7 +157,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 140,
+      "width": 130,
       "height": 50
     },
     "_children": [],
@@ -303,8 +303,8 @@
     "target": {
       "__id__": 1
     },
-    "component": "BaseControls",
-    "handler": "onClickUnreadyButton"
+    "component": "CardTurnBaseControls",
+    "handler": "onClickPlayButton"
   },
   {
     "__type__": "cc.Layout",
@@ -316,7 +316,7 @@
     "_enabled": true,
     "_layoutSize": {
       "__type__": "cc.Size",
-      "width": 140,
+      "width": 130,
       "height": 50
     },
     "_resize": 1,
@@ -576,8 +576,8 @@
     "target": {
       "__id__": 1
     },
-    "component": "BaseControls",
-    "handler": "onClickReadyButton"
+    "component": "CardTurnBaseControls",
+    "handler": "onClickSortButton"
   },
   {
     "__type__": "cc.Widget",
@@ -637,7 +637,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 140,
+      "width": 130,
       "height": 50
     },
     "_children": [
@@ -701,7 +701,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 140,
+      "width": 130,
       "height": 50
     },
     "_children": [],
@@ -847,8 +847,8 @@
     "target": {
       "__id__": 1
     },
-    "component": "BaseControls",
-    "handler": "onClickUnreadyButton"
+    "component": "CardTurnBaseControls",
+    "handler": "onClickSkipTurnButton"
   },
   {
     "__type__": "cc.Layout",
@@ -860,7 +860,7 @@
     "_enabled": true,
     "_layoutSize": {
       "__type__": "cc.Size",
-      "width": 140,
+      "width": 130,
       "height": 50
     },
     "_resize": 1,
