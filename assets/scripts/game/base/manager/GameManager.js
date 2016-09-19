@@ -2,18 +2,18 @@
  * Created by Thanh on 8/27/2016.
  */
 
-import app from 'app'
-import TLMNDLBoard from 'TLMNDLBoard'
-import TLMNDLPlayer from 'TLMNDLPlayer'
+import app from 'app';
+import TLMNDLBoard from 'TLMNDLBoard';
+import TLMNDLPlayer from 'TLMNDLPlayer';
 
 
 const gameCodeToBoardClassMap = {
     [app.const.gameCode.TLMNDL]: TLMNDLBoard
-}
+};
 
 const gameCodeToPlayerClassMap = {
     [app.const.gameCode.TLMNDL]: TLMNDLPlayer
-}
+};
 
 const maxPlayersMap = {
     [app.const.gameCode.PHOM]: 4,
@@ -25,7 +25,7 @@ const maxPlayersMap = {
     [app.const.gameCode.XAM]: 4,
     [app.const.gameCode.XITO]: 5,
     [app.const.gameCode.LIENG]: 5,
-}
+};
 
 class GameManager {
     constructor() {
@@ -33,20 +33,20 @@ class GameManager {
 
     createBoard(gameCode, room){
         const boardClass = this.getBoardClass(gameCode);
-        return boardClass && new boardClass(room)
+        return boardClass && new boardClass(room);
     }
 
     createPlayer(gameCode, user){
         const playerClass = this.getPlayerClass(gameCode);
-        return playerClass && new playerClass(room)
+        return playerClass && new playerClass(room);
     }
 
     getBoardClass(gameCode){
-        return gameCodeToBoardClassMap[gameCode]
+        return gameCodeToBoardClassMap[gameCode];
     }
 
     getPlayerClass(gameCode){
-        return gameCodeToPlayerClassMap[gameCode]
+        return gameCodeToPlayerClassMap[gameCode];
     }
 
     getMaxPlayer(gameCode){

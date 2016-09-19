@@ -2,16 +2,16 @@
  * Created by Thanh on 8/23/2016.
  */
 
-import app from 'app'
-import BaseScene from 'BaseScene'
-import Emitter from 'emitter'
+import app from 'app';
+import BaseScene from 'BaseScene';
+import Emitter from 'emitter';
 
 class GameSystem {
 
     constructor() {
-        this._currentScene = null
+        this._currentScene = null;
 
-        this.eventEmitter = new Emitter
+        this.eventEmitter = new Emitter;
 
         this._initEmitter();
     }
@@ -25,9 +25,9 @@ class GameSystem {
      * @param {function} onLaunch - On launch custom function
      */
     loadScene(sceneName, onLaunch, onShown){
-        cc.director.loadScene(sceneName, onLaunch)
+        cc.director.loadScene(sceneName, onLaunch);
         let currentScene = cc.director.getScene();
-        if (currentScene)  currentScene.onShown = onShown
+        if (currentScene)  currentScene.onShown = onShown;
     }
 
 
@@ -81,11 +81,11 @@ class GameSystem {
      * @param {string array} messages
      */
     showTickerMessage(messages){
-        alert("Ticker: " + messages)
+        alert("Ticker: " + messages);
     }
 
     emit(name, ...args){
-        this.eventEmitter.emit(name, ...args)
+        this.eventEmitter.emit(name, ...args);
         this._emitToScene(name, ...args);
     }
 
@@ -96,7 +96,7 @@ class GameSystem {
      * @deprecated
      */
     _emitToScene(){
-        this._currentScene && this._currentScene.node.emit(name, ...args)
+        this._currentScene && this._currentScene.node.emit(name, ...args);
 
     }
 
@@ -106,11 +106,11 @@ class GameSystem {
     }
 
     removeListener(eventName, listener) {
-        this.eventEmitter.removeListener(eventName, listener)
+        this.eventEmitter.removeListener(eventName, listener);
     }
 
     removeAllListener(eventName) {
-        this.eventEmitter.removeListener(eventName)
+        this.eventEmitter.removeListener(eventName);
     }
 }
 

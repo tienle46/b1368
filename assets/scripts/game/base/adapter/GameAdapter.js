@@ -8,7 +8,7 @@ export default class GameAdapter {
     }
 
     setPlayer(player){
-        this.player = player
+        this.player = player;
     }
 
     setBoard(board){

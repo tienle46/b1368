@@ -2,7 +2,7 @@
  * Created by Thanh on 9/1/2016.
  */
 
-var app = require('app')
+var app = require('app');
 
 app.config = {};
 app.config.zone = "XGame";

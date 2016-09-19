@@ -2,9 +2,9 @@
  * Created by Thanh on 9/5/2016.
  */
 
-import app from 'app'
-import BoardCardTurnBase from 'BoardCardTurnBase'
-import TLMNDLBoardRenderer from 'TLMNDLBoardRenderer'
+import app from 'app';
+import BoardCardTurnBase from 'BoardCardTurnBase';
+import TLMNDLBoardRenderer from 'TLMNDLBoardRenderer';
 
 export default class TLMNDLBoard extends BoardCardTurnBase{
 
@@ -15,6 +15,6 @@ export default class TLMNDLBoard extends BoardCardTurnBase{
     }
 
     onLoad(){
-        super.onLoad()
+        super.onLoad();
     }
 }

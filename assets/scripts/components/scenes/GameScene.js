@@ -19,22 +19,22 @@ class GameScene extends BaseScene {
         this.boardLayer = {
             default: null,
             type: cc.Node
-        }
+        };
 
         this.playerLayer = {
             default: null,
             type: cc.Node
-        }
+        };
 
         this.gameControlLayer = {
             default: null,
             type: cc.Node
-        }
+        };
 
         this.gameMenuLayer = {
             default: null,
             type: cc.Node
-        }
+        };
 
         this.board = null;
         this.room = null;
@@ -42,63 +42,63 @@ class GameScene extends BaseScene {
         this.playerManager = null;
         this.gameControls = null;
         this.gameData = null;
-        this.gameEventHandler = null
+        this.gameEventHandler = null;
     }
 
     onLoad() {
         try {
-            this.room = app.context.currentRoom
+            this.room = app.context.currentRoom;
 
             if (!this.room || !this.room.isGame) {
-                throw new CreateGameException('Bàn chơi không tồn tại!')
+                throw new CreateGameException('Bàn chơi không tồn tại!');
             }
 
-            this.gameCode = utils.getGameCode(this.room)
+            this.gameCode = utils.getGameCode(this.room);
             this.gameData = this.room.getVariable(app.keywords.VARIABLE_GAME_INFO).value;
             if (!this.gameData) {
-                throw new CreateGameException('Không thể tải thông tin bàn chơi!')
+                throw new CreateGameException('Không thể tải thông tin bàn chơi!');
             }
 
-            this._initBoardLayer()
-            this._initPlayerLayer()
-            this._initGameControlLayer()
-            this._initGameMenuLayer()
-            this._initEvent()
-            this._loadGameData()
+            this._initBoardLayer();
+            this._initPlayerLayer();
+            this._initGameControlLayer();
+            this._initGameMenuLayer();
+            this._initEvent();
+            this._loadGameData();
 
         } catch (e) {
-            console.error(e)
+            console.error(e);
 
             if (e instanceof CreateGameException)
-                this._onLoadSceneFail()
+                this._onLoadSceneFail();
         }
     }
 
     start() {
-        this.gameEventHandler && this.gameEventHandler.setHandleEventImmediate(true)
+        this.gameEventHandler && this.gameEventHandler.setHandleEventImmediate(true);
     }
 
     onDestroy() {
-        console.debug("GameScene onDestroy")
-        this.gameEventHandler && this.gameEventHandler.removeGameEventListener()
+        console.debug("GameScene onDestroy");
+        this.gameEventHandler && this.gameEventHandler.removeGameEventListener();
     }
 
     _initEvent() {
         this.gameEventHandler = new GameEventHandler(this.board, this);
         this.gameEventHandler.setHandleEventImmediate(false);
-        this.gameEventHandler.addGameEventListener()
+        this.gameEventHandler.addGameEventListener();
     }
 
     _loadGameData() {
         this.board._init(this.gameData);
-        this.playerManager._init(this.board, this)
+        this.playerManager._init(this.board, this);
     }
 
     _initBoardLayer() {
 
-        let boardClass = app.game.getBoardClass(this.gameCode)
+        let boardClass = app.game.getBoardClass(this.gameCode);
         let boardComponent = app.createComponent(boardClass, this.room, this);
-        this.board = this.boardLayer.addComponent(boardComponent)
+        this.board = this.boardLayer.addComponent(boardComponent);
 
         if (!this.board) {
             throw new CreateGameException("Không thể khởi tạo bàn chơi");
@@ -113,8 +113,8 @@ class GameScene extends BaseScene {
         cc.loader.loadRes('game/controls/BaseControls', (error, prefab) => {
 
             let prefabObj = cc.instantiate(prefab);
-            prefabObj.setAnchorPoint(0, 0)
-            prefabObj.parent = this.gameControlLayer
+            prefabObj.setAnchorPoint(0, 0);
+            prefabObj.parent = this.gameControlLayer;
 
             this.gameControls = prefabObj.getComponent('BaseControls');
             this.gameControls._init(this.board, this);
@@ -127,7 +127,7 @@ class GameScene extends BaseScene {
             let prefabObj = cc.instantiate(prefab);
             this.gameMenu = prefabObj.getComponent('GameMenuPrefab');
             this.gameMenu._init(this.board, this);
-            prefabObj.parent = this.gameMenuLayer
+            prefabObj.parent = this.gameMenuLayer;
         });
     }
 
@@ -139,11 +139,11 @@ class GameScene extends BaseScene {
         if (app.service.client.isConnected()) {
             app.system.error('Không thể khởi tạo bàn chơi. Quay lại màn hình chọn bàn chơi!', () => {
                 app.system.loadScene(app.const.scene.LIST_TABLE_SCENE);
-            })
+            });
         } else {
             app.system.error('Không thể kết nối với máy chủ. Bạn vui lòng đăng nhập lại để tiếp tục chơi!', () => {
                 app.system.loadScene(app.const.scene.LOGIN_SCENE);
-            })
+            });
         }
     }
 
@@ -156,4 +156,4 @@ class GameScene extends BaseScene {
     }
 }
 
-app.createComponent(GameScene)
+app.createComponent(GameScene);

@@ -2,9 +2,9 @@
  * Created by Thanh on 9/1/2016.
  */
 
-var app = require('app')
+var app = require('app');
 
-app.const = {}
+app.const = {};
 app.const.LANGUAGE = "vi"; // set the language used in app. Default: "vi"
 
 app.const.scene = {};

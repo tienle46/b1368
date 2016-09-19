@@ -2,7 +2,7 @@
  * Created by Thanh on 9/15/2016.
  */
 
-import PlayerRenderer from 'PlayerRenderer'
+import PlayerRenderer from 'PlayerRenderer';
 
 export default class PlayerCardRenderer extends PlayerRenderer {
     constructor() {
@@ -11,6 +11,6 @@ export default class PlayerCardRenderer extends PlayerRenderer {
     }
 
     onLoad(){
-        super.onLoad()
+        super.onLoad();
     }
 }

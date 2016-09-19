@@ -4,7 +4,7 @@
 
 var Commands = {
 
-}
+};
 
 Commands.XLAG = "xlag";
 Commands.PING_CLIENT = "pg";

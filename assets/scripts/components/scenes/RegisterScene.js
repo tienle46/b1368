@@ -53,9 +53,9 @@ export default class RegisterScene extends BaseScene {
                             console.debug(`Logged in as ${app.context.getMe().name}`);
                             this.changeScene('DashboardScene');
                         }
-                    })
+                    });
                 }
-            })
+            });
         } else {
             if (!this._isValidUsernameInput(username)) {
                 this.addPopup(app.getMessageFromServer("LOGIN_ERROR_USERNAME_NOT_VALID"));
@@ -68,7 +68,7 @@ export default class RegisterScene extends BaseScene {
     }
 
     generateRandomString() {
-        this.captchaLabel.string = this._generateRandomString(6) // genarate from [2, 6] to avoid "0.xxx" in string
+        this.captchaLabel.string = this._generateRandomString(6); // genarate from [2, 6] to avoid "0.xxx" in string
     }
 
     back() { // back to EntranceScene

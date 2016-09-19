@@ -15,6 +15,7 @@ require("Constant");
 require("Config");
 require("Resource");
 
+console.log(cc);
 app.createComponent = (className, extendClass = undefined, ...args) => {
     if (!className) {
         return;
@@ -41,18 +42,18 @@ app.createComponent = (className, extendClass = undefined, ...args) => {
             // sure that `instance[key]['type'] == cc["Component"|"Editbox"...]
             // > instance[key]['type'] = [function cc_Component].name => cc_Component => cc_Component.substr(3) => "Component"
             return typeof element === 'function' && element === cc[element.name.substr(3)];
-        }
+        };
 
         // in case: var a = {type: cc.Component, default: null}
         let isObjectInstance = (element) => {
-            return typeof element === 'object' && element.hasOwnProperty('type') && isFunctionInstance(element['type']);
+            return typeof element === 'object' && ((element.hasOwnProperty('type') && isFunctionInstance(element['type'])) || element.hasOwnProperty('default'));
         };
 
         return isFunctionInstance(el) || isObjectInstance(el);
     }
 
     Object.getOwnPropertyNames(instance).forEach(key => {
-        if (key !== 'extends' && key !== 'properties' && !key.startsWith('__')) {
+        if (key !== 'editor' && key !== 'extends' && key !== 'properties' && !key.startsWith('__')) {
             // check if property is Object && except instance of cc.Componet
             // such as {default: xxx, type: cc.XXX } => assign to `properties` for displaying value on cocoCcreator
             // if `instance[key]` is intance of `cc`  
@@ -60,7 +61,7 @@ app.createComponent = (className, extendClass = undefined, ...args) => {
                 instance.properties[key] = instance[key];
             } else {
                 // else push it to "properties" property - to using "this" keyword on cc.Class()
-                objPropsMap[key] = instance[key] // {default: xx, xx: asd} <---
+                objPropsMap[key] = instance[key]; // {default: xx, xx: asd} <---
             }
             delete instance[key]; // remove properties because cc.Scene can not detect properties that's outside this.properties = {}
         }
@@ -68,7 +69,7 @@ app.createComponent = (className, extendClass = undefined, ...args) => {
 
     const isContainClassPrototype = (obj) => {
         return className = obj && Object.getPrototypeOf(obj) && Object.getPrototypeOf(obj).constructor.name && Object.getPrototypeOf(obj).constructor.name !== 'Object';
-    }
+    };
 
     let prototypeObj = instance;
 
@@ -106,9 +107,9 @@ app.createComponent = (className, extendClass = undefined, ...args) => {
      */
     instance.ctor = function ctor() {
         Object.getOwnPropertyNames(objPropsMap).forEach(key => {
-            this[key] = objPropsMap[key]
-        })
-    }
+            this[key] = objPropsMap[key];
+        });
+    };
 
     return cc.Class(instance);
 };
@@ -116,13 +117,13 @@ app.createComponent = (className, extendClass = undefined, ...args) => {
 app.getMessageFromServer = (errorCode, errorMessage = 0) => {
     let M = MESSAGES[game.LANG];
     return (typeof M[errorCode] === 'object') ? M[errorCode][errorMessage] : M[errorCode];
-}
+};
 
 /* INIT GAME */
 _setupGame();
 
 function _setupGame() {
-    require('PreLoader')
+    require('PreLoader');
     app.service = require("Service");
     app.system = require("System");
     app.context = require("Context");

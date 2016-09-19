@@ -16,7 +16,7 @@ export default class BaseScene extends Component {
         this.popUp = {
             default: null,
             type: cc.Prefab
-        }
+        };
 
         this.onShown = null;
     }
@@ -66,19 +66,19 @@ export default class BaseScene extends Component {
     }
 
     onDestroy() {
-        this._removeListener()
+        this._removeListener();
     }
 
     showShortLoading(payload, message = '') {
-        this.showLoading(payload, message, 5)
+        this.showLoading(payload, message, 5);
     }
 
     showLongLoading(payload, message = '') {
-        this.showLoading(payload, message, 20)
+        this.showLoading(payload, message, 20);
     }
 
     showLoading(payload, message, timeoutInSeconds = 10) {
-        this.hideLoading(payload)
+        this.hideLoading(payload);
 
         if (utils.isNumber(message)) {
             timeoutInSeconds = message;

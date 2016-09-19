@@ -31,7 +31,7 @@ export default class DashboardScene extends BaseScene {
         this.popUp = {
             default: null,
             type: cc.Prefab
-        }
+        };
     }
 
     onLoad() {

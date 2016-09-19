@@ -1,5 +1,5 @@
-import app from 'app'
-import BaseScene from 'BaseScene'
+import app from 'app';
+import BaseScene from 'BaseScene';
 
 export default class ListTableScene extends BaseScene {
     constructor() {
@@ -9,47 +9,47 @@ export default class ListTableScene extends BaseScene {
         this.containnerTableView = {
             default: null,
             type: cc.Sprite
-        }
+        };
 
         this.contentInScroll = {
             default: null,
             type: cc.Layout
-        }
+        };
 
         this.danThuongButton = {
             default: null,
             type: cc.Button
-        }
+        };
 
         this.danChoiButton = {
             default: null,
             type: cc.Button
-        }
+        };
 
         this.daiGiaButton = {
             default: null,
             type: cc.Button
-        }
+        };
 
         this.tyPhuButton = {
             default: null,
             type: cc.Button
-        }
+        };
 
         this.tableListCell = {
             default: null,
             type: cc.Prefab
-        }
+        };
 
         this.bottomBar = {
             default: null,
             type: cc.Prefab
-        }
+        };
 
         this.topBar = {
             default: null,
             type: cc.Prefab
-        }
+        };
     }
 
     onLoad() {
@@ -70,7 +70,7 @@ export default class ListTableScene extends BaseScene {
             const cellComponent = listCell.getComponent('TableListCell');
             cellComponent.setOnClickListener(() => {
                 this._createRoom(app.const.gameCode.TLMNDL, 1, 2);
-            })
+            });
 
             this.contentInScroll.node.addChild(listCell);
         }
@@ -79,10 +79,10 @@ export default class ListTableScene extends BaseScene {
     _createRoom(gameCode = null, minBet = 0, roomCapacity = 2, password = undefined){
 
         const requestParam = {};
-        requestParam[app.keywords.ROOM_BET] = minBet
-        requestParam[app.keywords.GAME_CODE] = gameCode
-        requestParam[app.keywords.ROOM_PASSWORD] = password
-        requestParam[app.keywords.ROOM_CAPACITY] = roomCapacity
+        requestParam[app.keywords.ROOM_BET] = minBet;
+        requestParam[app.keywords.GAME_CODE] = gameCode;
+        requestParam[app.keywords.ROOM_PASSWORD] = password;
+        requestParam[app.keywords.ROOM_CAPACITY] = roomCapacity;
 
         app.service.send({cmd: app.commands.USER_CREATE_ROOM, data: requestParam, room: null /*app.context.currentRoom*/}, (error, result) => {
 
@@ -93,7 +93,7 @@ export default class ListTableScene extends BaseScene {
                 app.context.lastJoinRoom = result.room;
                 if (result.room.isJoined && result.room.isGame) {
                     app.context.currentRoom = result.room;
-                    app.system.loadScene(app.const.scene.GAME_SCENE)
+                    app.system.loadScene(app.const.scene.GAME_SCENE);
                 }
             }
 
@@ -123,7 +123,7 @@ export default class ListTableScene extends BaseScene {
             cc.director.loadScene('DashboardScene');
         });
 
-        let winsize = cc.director.getWinSize()
+        let winsize = cc.director.getWinSize();
 
         topBarNode.setContentSize(winsize.width, 100);
         this.node.addChild(topBarNode);
@@ -143,4 +143,4 @@ export default class ListTableScene extends BaseScene {
     }
 }
 
-app.createComponent(ListTableScene)
+app.createComponent(ListTableScene);

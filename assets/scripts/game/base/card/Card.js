@@ -1,16 +1,16 @@
 
 export default class Card {
     constructor(rank, suit) {
-        this.init(rank, suit)
+        this.init(rank, suit);
 
-        this.rankNode = cc.Label
-        this.suitNode = cc.Sprite
-        this.mainPic = cc.Sprite
-        this.cardBG = cc.Sprite
-        this.redTextColor = cc.Color.WHITE
-        this.blackTextColor = cc.Color.WHITE
-        this.texFrontBG = cc.SpriteFrame
-        this.texBackBG = cc.SpriteFrame
+        this.rankNode = cc.Label;
+        this.suitNode = cc.Sprite;
+        this.mainPic = cc.Sprite;
+        this.cardBG = cc.Sprite;
+        this.redTextColor = cc.Color.WHITE;
+        this.blackTextColor = cc.Color.WHITE;
+        this.texFrontBG = cc.SpriteFrame;
+        this.texBackBG = cc.SpriteFrame;
         this.texFaces = {
             default: [],
             type: cc.SpriteFrame
@@ -22,7 +22,7 @@ export default class Card {
             this.texSuitSmall = {
                 default: [],
                 type: cc.SpriteFrame
-            }
+            };
     }
 
     onLoad() {
@@ -57,8 +57,8 @@ export default class Card {
     }
 
     _init(rank, suit) {
-        this.rank = rank
-        this.suit = suit
+        this.rank = rank;
+        this.suit = suit;
 
         let isFaceCard = this.rank > 10;
 
@@ -92,13 +92,13 @@ export default class Card {
     _getRankName(){
         switch (this.rank){
             case Card.RANK_J:
-                return 'J'
+                return 'J';
             case Card.RANK_Q:
-                return 'Q'
+                return 'Q';
             case Card.RANK_K:
-                return 'K'
+                return 'K';
             default:
-                return '' + this.rank
+                return '' + this.rank;
         }
     }
 

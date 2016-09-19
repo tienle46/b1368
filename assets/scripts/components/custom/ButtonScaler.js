@@ -10,7 +10,7 @@ class ButtonScaler extends Component {
 
     onLoad() {
         var self = this;
-        var audioMng = cc.find('Menu/AudioMng') || cc.find('Game/AudioMng')
+        var audioMng = cc.find('Menu/AudioMng') || cc.find('Game/AudioMng');
         if (audioMng) {
             audioMng = audioMng.getComponent('AudioMng');
         }

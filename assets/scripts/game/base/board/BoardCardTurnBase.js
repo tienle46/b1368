@@ -2,8 +2,8 @@
  * Created by Thanh on 8/23/2016.
  */
 
-import BoardTurnBaseAdapter from 'BoardTurnBaseAdapter'
-import BoardCard from 'BoardCard'
+import BoardTurnBaseAdapter from 'BoardTurnBaseAdapter';
+import BoardCard from 'BoardCard';
 
 export default class BoardCardTurnBase extends BoardCard {
     constructor(room, scene) {
@@ -14,6 +14,6 @@ export default class BoardCardTurnBase extends BoardCard {
 
     onLoad(){
         super.onLoad();
-        this.turnAdapter.setBoard(this)
+        this.turnAdapter.setBoard(this);
     }
 }

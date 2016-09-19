@@ -4,7 +4,7 @@
 
 var Keywords = module.exports;
 
-Keywords.APP_SECRET_KEY = "asrt"
+Keywords.APP_SECRET_KEY = "asrt";
 Keywords.PASSWORD = "p";
 Keywords.XLAG_VALUE = "v";
 Keywords.ERROR = "er";

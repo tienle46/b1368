@@ -2,33 +2,33 @@
  * Created by Thanh on 8/23/2016.
  */
 
-import app from 'app'
-import Component from 'Component'
+import app from 'app';
+import Component from 'Component';
 
 export default class Board extends Component{
 
     constructor(room, scene) {
-        super()
+        super();
 
         this.parentScene = scene;
 
         this.room = room;
 
-        this.owner = null
+        this.owner = null;
 
-        this.ownerId = 0
+        this.ownerId = 0;
 
-        this.master = null
+        this.master = null;
 
-        this.minBet = null
+        this.minBet = null;
 
-        this.state = app.const.game.board.state.INITED
+        this.state = app.const.game.board.state.INITED;
 
-        this.serverState = app.const.game.board.state.INITED
+        this.serverState = app.const.game.board.state.INITED;
 
-        this.readyPhaseDuration =  app.const.DEFAULT_READY_PHASE_DURATION
+        this.readyPhaseDuration =  app.const.DEFAULT_READY_PHASE_DURATION;
 
-        this.gameCode = ""
+        this.gameCode = "";
 
     }
 
@@ -36,7 +36,7 @@ export default class Board extends Component{
         this.gameCode = this.room.name.substring(0, 3);
 
         if (this.room.containsVariable(app.keywords.VARIABLE_MIN_BET)) {
-            this.minbet = this.room.getVariable(app.keywords.VARIABLE_MIN_BET)
+            this.minbet = this.room.getVariable(app.keywords.VARIABLE_MIN_BET);
         }
 
 
@@ -117,7 +117,7 @@ export default class Board extends Component{
     }
 
     onResetBoard(){
-        this.state = app.const.game.board.state.INITED
+        this.state = app.const.game.board.state.INITED;
     }
 
     onStartingBoard(){
@@ -150,7 +150,7 @@ export default class Board extends Component{
     _updateBoardMaster (boardInfoObj) {
         let masterPlayerId = boardInfoObj.hasOwnProperty(xg.Keywords.MASTER_PLAYER_ID);
         if (masterPlayerId) {
-            this.setMaster(this.playerManager.findPlayer(masterPlayerId))
+            this.setMaster(this.playerManager.findPlayer(masterPlayerId));
         }
     }
 
@@ -247,7 +247,7 @@ export default class Board extends Component{
             this._handleBoardError(app.res.getErrorMessage(data[app.keywords.ERROR]));
         }else{
             //TODO
-            this.playerManager.onPlayerToSpectator()
+            this.playerManager.onPlayerToSpectator();
         }
     }
 

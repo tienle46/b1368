@@ -17,7 +17,7 @@ class BasePopup extends Component {
         this.scrollview = {
             default: null,
             type: cc.Node
-        }
+        };
 
        
     }

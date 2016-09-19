@@ -2,8 +2,8 @@
  * Created by Thanh on 8/23/2016.
  */
 
-import BoardBetTurnAdapter from 'BoardBetTurnAdapter'
-import BoardCard from 'BoardCard'
+import BoardBetTurnAdapter from 'BoardBetTurnAdapter';
+import BoardCard from 'BoardCard';
 
 export default class BoardCardBetTurn extends BoardCard {
     constructor(room, scene) {
@@ -13,6 +13,6 @@ export default class BoardCardBetTurn extends BoardCard {
 
     onLoad(){
         super.onLoad();
-        this.betAdapter.setBoard(this)
+        this.betAdapter.setBoard(this);
     }
 }

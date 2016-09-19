@@ -4,23 +4,23 @@
 
 export default class Utils {
     static isNumber(value) {
-        return typeof value === 'number'
+        return typeof value === 'number';
     }
 
     static isBoolean(value) {
-        return typeof value === 'boolean'
+        return typeof value === 'boolean';
     }
 
     static isString(value) {
-        return typeof value === 'boolean'
+        return typeof value === 'boolean';
     }
 
     static isObject(value) {
-        return typeof value === 'object'
+        return typeof value === 'object';
     }
 
     static isNull(value) {
-        return value === null
+        return value === null;
     }
 
     static gone(node) {
@@ -33,26 +33,26 @@ export default class Utils {
 
     static setVisible(node, visible) {
         if (visible) {
-            this.visible(node)
+            this.visible(node);
         } else {
-            this.gone(node)
+            this.gone(node);
         }
     }
 
     static hide(node) {
-        node = node && (node.node || node)
-        node && node.runAction && node.runAction(cc.hide())
+        node = node && (node.node || node);
+        node && node.runAction && node.runAction(cc.hide());
     }
 
     static show(node) {
-        node = node.node || node
-        node && node.runAction && node.runAction(cc.show())
+        node = node.node || node;
+        node && node.runAction && node.runAction(cc.show());
     }
 
     static loadComponent(componentPath, parent) {
         cc.loader.loadRes(componentPath, (error, prefab) => {
             let prefabObj = cc.instantiate(prefab);
-            prefabObj.parent = this.playerLayer
+            prefabObj.parent = this.playerLayer;
         });
     }
 

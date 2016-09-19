@@ -68,7 +68,7 @@ export default class LoginScene extends BaseScene {
                         console.debug(`Logged in as ${app.context.getMe().name}`);
                         this.changeScene('DashboardScene');
                     }
-                })
+                });
             }
         });
     }

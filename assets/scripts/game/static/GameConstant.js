@@ -2,15 +2,15 @@
  * Created by t420 on 11/1/13.
  */
 
-import app from 'app'
+import app from 'app';
 
 app.const.game = {};
 app.const.game.board = {};
 app.const.game.player = {};
-app.const.game.rank = {}
-app.const.game.player.state = {}
-app.const.game.position = {}
-app.const.game.seat = {}
+app.const.game.rank = {};
+app.const.game.player.state = {};
+app.const.game.position = {};
+app.const.game.seat = {};
 
 /**
  * Init Board state
@@ -125,7 +125,7 @@ app.const.game.seat.SEAT_TYPE_4_PLAYER = 4;
 app.const.game.seat.SEAT_TYPE_4_PLAYER_PHOM = 41;
 app.const.game.seat.SEAT_TYPE_5_PLAYER = 5;
 app.const.game.seat.SEAT_TYPE_5_PLAYER_XITO = 51;
-app.const.game.seat.SEAT_TYPE_6_PLAYER = 6
+app.const.game.seat.SEAT_TYPE_6_PLAYER = 6;
 
 app.const.game.rank.getRankString = function(rankType, rank) {
     var retString = "";
