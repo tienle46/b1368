@@ -45,9 +45,9 @@ export default class Utils {
         this.setActive(node, visible);
     }
 
-    static hide(node) {
+    static hide(node, action = cc.hide()) {
         node = node && (node.node || node);
-        node && node.runAction && node.runAction(cc.hide());
+        node && node.runAction && node.runAction(action);
     }
 
     static show(node) {

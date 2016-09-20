@@ -4,13 +4,14 @@
 
 import app from 'app';
 import Component from 'Component';
+import GameUtils from 'GameUtils'
 
-export default class Board extends Component{
+export default class Board extends Component {
 
     constructor(room, scene) {
         super();
 
-        this.parentScene = scene;
+        this.scene = scene;
 
         this.room = room;
 
@@ -22,23 +23,27 @@ export default class Board extends Component{
 
         this.minBet = null;
 
-        this.state = app.const.game.board.state.INITED;
+        this.state;
 
         this.serverState = app.const.game.board.state.INITED;
 
-        this.readyPhaseDuration =  app.const.DEFAULT_READY_PHASE_DURATION;
+        this.readyPhaseDuration = app.const.DEFAULT_READY_PHASE_DURATION;
 
         this.gameCode = "";
 
     }
 
-    _init(gameData = {}){
+    _init(gameData = {}) {
+
+        console.debug("_init Board")
+        
+        this.state = app.const.game.board.state.INITED;
+
         this.gameCode = this.room.name.substring(0, 3);
 
         if (this.room.containsVariable(app.keywords.VARIABLE_MIN_BET)) {
             this.minbet = this.room.getVariable(app.keywords.VARIABLE_MIN_BET);
         }
-
 
         if (gameData.hasOwnProperty(app.keywords.BOARD_STATE_KEYWORD)) {
             this.serverState = gameData[app.keywords.BOARD_STATE_KEYWORD];
@@ -48,106 +53,88 @@ export default class Board extends Component{
 
     onLoad() {
         super.onLoad();
+
+        console.debug("_init Board")
     }
 
     update(dt) {
 
     }
 
-    start(){
+    start() {
+        // this.onBoardStateChanged(app.const.game.board.state.INITED);
+    }
+
+    onDestroy() {
 
     }
 
-    onDestroy(){
-
-    }
-
-    setState (state) {
+    setState(state) {
         this.state = state;
     }
 
-    isPlaying () {
+    isPlaying() {
         return this.state === app.const.game.board.state.PLAYING;
     }
 
-    isStarting () {
+    isStarting() {
         return this.state === app.const.game.board.state.STARTING;
     }
 
-    isReady () {
+    isReady() {
         return this.state === app.const.game.board.state.READY;
     }
 
-    isBegin () {
+    isBegin() {
         return this.state === app.const.game.board.state.BEGIN;
     }
 
-    isNewBoard () {
+    isNewBoard() {
         return this.state === app.const.game.board.state.INITED;
     }
 
-    isEnding () {
+    isEnding() {
         return this.state === app.const.game.board.state.ENDING;
     }
 
-    getRoomNumber () {
+    getRoomNumber() {
         return this.room.name.substring(5);
     }
 
-    getGroupNumber () {
+    getGroupNumber() {
         return app.context.groupId.length >= 3 && app.context.groupId.substring(3);
     }
 
-    setMaster (master) {
+    setMaster(master) {
         this.master = master;
     }
 
-    getSeatType () {
+    getSeatType() {
         //TODO
         // return xg.GameConstant.gameTableSeatType[xg.GameContext.getInstance().getGameID()];
     }
 
-    isSpectator () {
+    isSpectator() {
         return this.playerManager.isSpectator();
     }
 
-    getPlayerSeatID (playerId) {
+    getPlayerSeatID(playerId) {
         //TODO
         // return this.positionManager.getPlayerSeatID(playerId);
     }
 
-    onResetBoard(){
-        this.state = app.const.game.board.state.INITED;
-    }
-
-    onStartingBoard(){
-        return this.state === app.const.game.board.state.STARTING;
-    }
-
-    onStartedBoard(){
-    }
-
-    onEndingBoard(){
-
-    }
-
-    onDestroyBoard(){
-        app.system.setGameEventHandler(undefined);
+    stopBoardTimeLine() {
         //TODO
     }
 
-    stopBoardTimeLine(){
-        //TODO
-    }
-
-    _updatePlayerState (boardInfoObj) {
+    _updatePlayerState(boardInfoObj) {
         let playerIds = boardInfoObj[xg.Keywords.GAME_LIST_PLAYER];
         if (playerIds) {
             this.playerManager.changePlayerState(playerIds, app.const.playerState.READY);
         }
     }
 
-    _updateBoardMaster (boardInfoObj) {
+    _updateBoardMaster(boardInfoObj) {
         let masterPlayerId = boardInfoObj.hasOwnProperty(xg.Keywords.MASTER_PLAYER_ID);
         if (masterPlayerId) {
             this.setMaster(this.playerManager.findPlayer(masterPlayerId));
@@ -161,14 +148,14 @@ export default class Board extends Component{
      *
      * @overrideable
      */
-    _shouldUpdateBoardTimeLineOnRejoin () {
+    _shouldUpdateBoardTimeLineOnRejoin() {
         return (this.isReady() && this.playerManager.shouldMeReady()) || this.isEnding();
     }
 
     /**
      * @overrideable
      */
-    _shouldUpdatePlayerTimeLineOnRejoin () {
+    _shouldUpdatePlayerTimeLineOnRejoin() {
         return false;
     }
 
@@ -176,19 +163,15 @@ export default class Board extends Component{
     /**
      * @overrideable
      */
-    _shouldStartReadyTimeLine () {
+    _shouldStartReadyTimeLine() {
         return !this.isSpectator() && this.isReady() && this.playerManager.shouldMeReady();
     }
 
     /**
      * @overrideable
      */
-    _shouldStartPhaseTimeline () {
+    _shouldStartPhaseTimeline() {
         return this._shouldStartReadyTimeline() || this.isEnding();
-    }
-
-    _isInstanceOfPlayingState (state) {
-        return state === app.const.game.board.state.PLAYING;
     }
 
     /**
@@ -202,9 +185,14 @@ export default class Board extends Component{
      * @return Local state tuong ung voi {@param state}
      * @overrideable
      */
-    convertToLocalBoardState (state) {
+    convertToLocalBoardState(state) {
+
+        let _isInstanceOfPlayingState = (state) => {
+            return state === app.const.game.board.state.PLAYING;
+        }
+
         let localState = state;
-        if (this._isInstanceOfPlayingState(state)) {
+        if (_isInstanceOfPlayingState(state)) {
             localState = xg.Board.PLAYING;
         } else {
             localState = state;
@@ -213,52 +201,116 @@ export default class Board extends Component{
         return localState;
     }
 
-    changeBoardState(boardState, data){
+    changeBoardState(boardState, data) {
         this.serverState = boardState;
 
         //TODO Process board state changed here
     }
 
-    _dealCards(data){
+    onBoardStateChanged(serverSate, data) {
+
+        let localState = GameUtils.convertToLocalBoardState(serverSate)
+
+        switch (localState) {
+            case app.const.game.board.state.BEGIN:
+                this.onBoardBegin(data);
+                break;
+            case app.const.game.board.state.STARTING:
+                this.onBoardStarting(data);
+                break;
+            case app.const.game.board.state.STARTED:
+                this.onBoardStarted(data);
+                break;
+            case app.const.game.board.state.PLAYING:
+                this.onBoardPlaying(data);
+                break;
+            case app.const.game.board.state.ENDING:
+                this.onBoardEnding(data);
+                break;
+        }
+    }
+
+    onInitiated(){
+        //TODO
+        console.debug("board initiated")
+        this.onBoardBegin()
+    }
+
+    onBoardBegin(data) {
+        this.state = app.const.game.board.state.BEGIN;
+        this.scene.playerManager.playerPositions.showAllInviteButtons();
+        this.scene.playerManager.onGameBegin(data);
+    }
+
+    onBoardStarting(data) {
+        this.state = app.const.game.board.state.STARTING;
+        this.scene.gameControls.hideAllControlsBeforeGameStart();
+        this.scene.playerManager.playerPositions.hideAllInviteButtons();
+        this.scene.playerManager.onGameStarting(data);
+    }
+
+    onBoardStarted(data) {
+        this.state = app.const.game.board.state.STARTED;
+        //TODO
+        this.scene.playerManager.onGameStarted(data);
+    }
+
+    onBoardPlaying(data){
+        this.state = app.const.game.board.state.PLAYING;
+        //TODO
+        this.scene.playerManager.onGamePlaying(data);
+    }
+
+    onBoardEnding(data) {
+        this.state = app.const.game.board.state.ENDING;
+        //TODO
+        this.scene.playerManager.onGameEnding(data);
+    }
+
+    onBoardDestroy() {
+        //TODO
+    }
+
+    _dealCards(data) {
         console.debug("Deal card")
     }
 
-    changeBoardPhaseDuration(data){
+    changeBoardPhaseDuration(data) {
         //TODO on board timeline changed
     }
 
-    _handleChangePlayerBalance(data){
+    _handleChangePlayerBalance(data) {
 
     }
 
-    _handlePlayerReEnterGame(data){
+    _handlePlayerReEnterGame(data) {
 
     }
 
-    _handleChangeBoardMaster(data){
+    _handleChangeBoardMaster(data) {
     }
 
-    _handlePlayerRejoinGame(data){
-
-    }
-
-    _handleBoardError(errMsg){
+    _handlePlayerRejoinGame(data) {
 
     }
 
-    _handlePlayerToSpectator(data){
+    _handleBoardError(errMsg) {
+
+    }
+
+    _handlePlayerToSpectator(data) {
         if (data.hasOwnProperty(app.keywords.ERROR)) {
             this._handleBoardError(app.res.getErrorMessage(data[app.keywords.ERROR]));
-        }else{
+        } else {
             //TODO
             this.playerManager.onPlayerToSpectator();
         }
     }
 
-    _handleSpectatorToPlayer(data){
+    _handleSpectatorToPlayer(data) {
         if (data.hasOwnProperty(app.keywords.ERROR)) {
             this.board._handleBoardError(app.res.getErrorMessage(data[app.keywords.ERROR]));
-        }else{
+        } else {
             //TODO
         }
     }

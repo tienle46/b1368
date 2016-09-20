@@ -2,8 +2,8 @@
  * Created by Thanh on 8/23/2016.
  */
 
-import Board from 'Board';
 import app from 'app';
+import Board from 'Board';
 
 export default class BoardCard extends Board {
     constructor(room, scene) {

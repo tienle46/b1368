@@ -72,6 +72,8 @@ class GameScene extends BaseScene {
             if (e instanceof CreateGameException)
                 this._onLoadSceneFail();
         }
+
+        console.debug("onLoad GameScene")
     }
 
     start() {
@@ -91,7 +93,9 @@ class GameScene extends BaseScene {
 
     _loadGameData() {
         this.board._init(this.gameData);
-        this.playerManager._init(this.board, this);
+        this.playerManager._init(this.board, this, () => {
+            this.board.onInitiated();
+        });
     }
 
     _initBoardLayer() {

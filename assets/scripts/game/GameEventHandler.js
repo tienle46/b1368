@@ -94,7 +94,7 @@ export default class GameEventHandler {
             let boardState = data[app.keywords.BOARD_STATE_KEYWORD];
             this.board.changeBoardState(boardState, data);
 
-            if (data.hasOwnProperty(app.Keywords.BOARD_PHASE_DURATION)) {
+            if (data.hasOwnProperty(app.keywords.BOARD_PHASE_DURATION)) {
                 this.board.changeBoardPhaseDuration(data);
             }
         }

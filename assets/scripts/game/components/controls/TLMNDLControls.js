@@ -56,6 +56,14 @@ export default class TLMNDLControls extends GameControls {
         this.baseControls.hideAllControls();
         this.cardTurnBaseControls.hideAllControls();
     }
+
+    hideAllControlsBeforeGameStart(){
+        super.hideAllControlsBeforeGameStart();
+
+        console.log("hideAllControlsBeforeGameStart: ")
+
+        this.baseControls.hideAllControls();
+    }
 }
 
 app.createComponent(TLMNDLControls)

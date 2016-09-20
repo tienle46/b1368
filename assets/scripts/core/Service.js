@@ -151,9 +151,9 @@ class Service {
 
     _onExtensionEvent(event) {
 
-        if (event.cmd === app.commands.XLAG) {
+        if(event.cmd === app.commands.XLAG) {
             this._handleLagPollingResponse(event);
-        } else {
+        }else{
             if (this._hasCallback(event.cmd)) {
                 this._callCallbackAsync(event.cmd, event.params);
             } else {
@@ -164,7 +164,7 @@ class Service {
     }
 
     _onLogin(event) {
-        if (event.data[app.keywords.LOGIN_REJOIN_ROOM_GROUP]) {
+        if(event.data[app.keywords.LOGIN_REJOIN_ROOM_GROUP]){
             this.logout();
             app.system.info("Hệ thống chưa hỗ trợ kết nối lại khi bàn đang chơi. Vui lòng đăng nhập lại!")
             return;
@@ -390,12 +390,11 @@ class Service {
         this.interval = pollingInterval;
         this._lagPollingInterval = setInterval(() => {
             let currentTimeInMilis = (new Date()).getTime();
-            this.send({ cmd: app.commands.XLAG, data: {
-                    [app.keywords.XLAG_VALUE]: currentTimeInMilis } });
+            this.send({cmd: app.commands.XLAG, data: {[app.keywords.XLAG_VALUE]: currentTimeInMilis}});
         }, this.interval);
     }
 
-    stopLagPolling() {
+    stopLagPolling () {
         if (this._lagPollingInterval) {
             clearInterval(this._lagPollingInterval);
             this._valueQueue = [];
@@ -404,12 +403,12 @@ class Service {
     }
 
     _handleLagPollingResponse(event) {
-        if (event.cmd === app.commands.XLAG) {
+        if(event.cmd === app.commands.XLAG) {
 
             let resObj = event.params;
             let curRecVal = (new Date()).getTime();
             let curSendVal = resObj[app.keywords.XLAG_VALUE];
-            if (curSendVal) {
+            if(curSendVal) {
                 if (this._valueQueue.length >= app.config.pingPongPollQueueSize) {
                     this._valueQueue.splice(0, 1);
                 }
@@ -422,7 +421,7 @@ class Service {
     _updatePoorNetwork() {
         if (this._valueQueue.length > 0) {
             let totalLatency = 0;
-            this._valueQueue.forEach(value => { totalLatency += value; });
+            this._valueQueue.forEach(value => {totalLatency += value;});
             var averageLatency = totalLatency / this._valueQueue.length;
             this._poorNetwork = averageLatency > app.config.poorNetworkThreshold;
         }

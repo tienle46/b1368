@@ -21,22 +21,23 @@ export default class PlayerManager extends Component {
         this.me = null;
         this.owner = null;
         this.board = null;
-        this.parentScene = null;
+        this.scene = null;
         this.players = null;
         this.maxPlayerId = 1;
         this._playerPrefab = null;
         this._idToPlayerMap = null;
         this._nameToPlayerMap = null;
-
+        this.initDoneCb = null;
     }
 
     isItMe(id){
         return this.me.id == id;
     }
 
-    _init(board, scene) {
+    _init(board, scene, cb) {
         this.board = board;
-        this.parentScene = scene;
+        this.scene = scene;
+        this.initDoneCb = cb;
         this.gameCode = (this.board && this.board.gameCode) || (app.config.test ? "tnd" : "");
         this._reset();
 
@@ -44,6 +45,10 @@ export default class PlayerManager extends Component {
     }
 
     _onFinishInitPlayerLayer(){
+
+        this.initDoneCb && this.initDoneCb();
+        console.debug("_onFinishInitPlayerLayer")
+
         cc.loader.loadRes('game/players/Player', (error, prefab) => {
             if(error){
                 throw new CreateGameException("Không thể khởi tạo người chơi");
@@ -65,7 +70,7 @@ export default class PlayerManager extends Component {
 
                 if(!error){
                     let prefabObj = cc.instantiate(prefab);
-                    prefabObj.parent = this.parentScene.playerLayer;
+                    prefabObj.parent = this.scene.playerLayer;
                     this.playerPositions = prefabObj.getComponent(positionAnchorName);
                 }
 
@@ -102,19 +107,19 @@ export default class PlayerManager extends Component {
             cc.loader.loadRes('game/players/Player', (error, prefab) => {
                 let prefabObj = cc.instantiate(prefab);
                 this._setPlayerPosition(prefabObj, 1);
-                prefabObj.parent = this.parentScene.playerLayer;
+                prefabObj.parent = this.scene.playerLayer;
 
                 prefabObj = cc.instantiate(prefab);
                 this._setPlayerPosition(prefabObj, 2);
-                prefabObj.parent = this.parentScene.playerLayer;
+                prefabObj.parent = this.scene.playerLayer;
 
                 prefabObj = cc.instantiate(prefab);
                 this._setPlayerPosition(prefabObj, 3);
-                prefabObj.parent = this.parentScene.playerLayer;
+                prefabObj.parent = this.scene.playerLayer;
 
                 prefabObj = cc.instantiate(prefab);
                 this._setPlayerPosition(prefabObj, 4);
-                prefabObj.parent = this.parentScene.playerLayer;
+                prefabObj.parent = this.scene.playerLayer;
             });
         }
 
@@ -133,6 +138,7 @@ export default class PlayerManager extends Component {
         if(playerClass){
             let playerComponent = app.createComponent(playerClass, this.board, user);
             let player = playerNode.addComponent(playerComponent);
+            player._init(this.board, user);
 
             if(player){
                 this._setPlayerPosition(playerNode, player);
@@ -145,7 +151,7 @@ export default class PlayerManager extends Component {
     }
 
     _addToPlayerLayer(playerNode){
-        playerNode.parent = this.parentScene.playerLayer;
+        playerNode.parent = this.scene.playerLayer;
     }
 
     _setPlayerPosition(playerNode, player){
@@ -192,12 +198,6 @@ export default class PlayerManager extends Component {
             //TODO more action want to apply to player
 
         });
-
-        if(this.board.isNewBoard() || this.board.isReady()){
-            this.playerPositions.showAllInviteButton();
-        }else{
-            this.playerPositions.hideInviteButton(1);
-        }
 
         this.maxPlayerId = maxPlayerId;
 
@@ -339,24 +339,24 @@ export default class PlayerManager extends Component {
         this.players.forEach(player => player.onBoardOwnerChanged());
     }
 
-    playerOnBoardBegin(data) {
-        this.players.forEach(player => player.onBoardBegin(data));
+    onGameBegin(data) {
+        this.players.forEach(player => player.onGameBegin(data));
     }
 
-    playerOnBoardStarting(data) {
-        this.players.forEach(player => player.onBoardStarting(data));
+    onGameStarting(data) {
+        this.players.forEach(player => player.onGameStarting(data));
     }
 
-    playerOnBoardStarted(data) {
-        this.players.forEach(player => player.onBoardStarted(data));
+    onGameStarted(data) {
+        this.players.forEach(player => player.onGameStarted(data));
     }
 
-    playerOnBoardPlaying(data) {
-        this.players.forEach(player => player.onBoardPlaying(data));
+    onGamePlaying(data) {
+        this.players.forEach(player => player.onGamePlaying(data));
     }
 
-    playerOnBoardEnd(data) {
-        this.players.forEach(player => player.onBoardEnd(data));
+    onGameEnding(data) {
+        this.players.forEach(player => player.onGameEnding(data));
     }
 
     playerOnPlayerRejoin(playerIds, remainCardSizes, data) {

@@ -26,4 +26,8 @@ export default class GameControls extends Component {
     hideAllControls(){
 
     }
+
+    hideAllControlsBeforeGameStart(){
+
+    }
 }

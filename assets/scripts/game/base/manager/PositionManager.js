@@ -18,20 +18,36 @@ export default class PositionManager extends Component {
             this.playerAnchors[i] = this['anchor' + i];
         }
 
-        this.hideAllInviteButton();
+        this.hideAllInviteButtons();
+
+        console.debug("onLoad PositionManager")
     }
 
-    hideAllInviteButton() { // <---- name duplicate
+    hideAllInviteButtons() {
         this.playerAnchors.forEach(anchor => {
             let inviteButton = anchor.getChildByName('inviteButton');
-            utils.hide(inviteButton);
+            utils.deactive(inviteButton);
         });
     }
 
-    showAllInviteButton() {
+    showAllInviteButtons() {
+
+        let excludeAnchor;
+        if(app.context.getMe()){
+            excludeAnchor = this.playerAnchors[1];
+            this.hideInviteButton(1)
+        }
+
         this.playerAnchors.forEach(anchor => {
-            let inviteButton = anchor.getChildByName('inviteButton');
-            utils.show(inviteButton);
+            if(excludeAnchor !== anchor){
+                let inviteButton = anchor.getChildByName('inviteButton');
+
+
+                utils.active(inviteButton);
+
+                console.log("active: ", inviteButton);
+            }
+
         });
     }
 
@@ -39,10 +55,13 @@ export default class PositionManager extends Component {
 
         console.log("Player Id: " + playerId + " " + isItMe);
 
-        return this.getPlayerAnchor(this.getPlayerAnchorOrder(playerId, isItMe));
+        return this.getPlayerAnchor(this.getPlayerAnchorIndex(playerId, isItMe));
     }
 
-    getPlayerAnchorOrder(playerId, isItMe) {
+    getPlayerAnchorIndex(playerId, isItMe) {
+
+        console.log("getPlayerAnchorIndex: ", playerId, isItMe)
+
         if (isItMe) {
             return 0;
         } else {
@@ -58,19 +77,13 @@ export default class PositionManager extends Component {
         }
     }
 
-    hideAllInviteButton(order) { // <---- name duplicate
-        this.playerAnchors.forEach(anchor => {
-            this._setVisibleInviteButton(anchor, false);
-        });
-    }
-
-    hideInviteButton(order) {
-        let anchor = this.getPlayerAnchor(order);
+    hideInviteButton(index) {
+        let anchor = this.getPlayerAnchor(index);
         this._setVisibleInviteButton(anchor, false);
     }
 
-    showInviteButton(order) {
-        let anchor = this.getPlayerAnchor(order);
+    showInviteButton(index) {
+        let anchor = this.getPlayerAnchor(index);
         this._setVisibleInviteButton(anchor, true);
     }
 
@@ -87,13 +100,13 @@ export default class PositionManager extends Component {
         }
     }
 
-    hideAnchor(order) {
-        let anchor = this.getPlayerAnchor(order);
+    hideAnchor(index) {
+        let anchor = this.getPlayerAnchor(index);
         if (anchor) anchor.active = false;
     }
 
-    showAnchor(order) {
-        let anchor = this.getPlayerAnchor(order);
+    showAnchor(index) {
+        let anchor = this.getPlayerAnchor(index);
         if (anchor) anchor.active = true;
     }
 }

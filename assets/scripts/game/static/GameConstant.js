@@ -17,7 +17,7 @@ app.const.game.seat = {};
  * @type {{}}
  */
 app.const.game.board.state = {};
-app.const.game.board.state.BOARD_STATE_READY = 1;
+app.const.game.board.state.READY = 1;
 app.const.game.board.state.BOARD_STATE_END = 2;
 app.const.game.board.state.BOARD_STATE_TURN_BASE_TRUE_PLAY = 3;
 app.const.game.board.state.BOARD_STATE_ARRANGE_CARD = 4;
@@ -29,10 +29,9 @@ app.const.game.board.state.BOARD_STATE_SPIN = 6;
 app.const.game.board.state.EXPLODING_RING_SPRITE_TAG = 20;
 app.const.game.board.state.TIMELINE_SPRITE_ZORDER = 20;
 app.const.game.board.state.CENTER_Y_PADDING_BOTTOM = 28;
-app.const.game.board.state.READY = 1;
 app.const.game.board.state.ENDING = 2;
 app.const.game.board.state.STATE_BAO_XAM = 5;
-app.const.game.board.state.STATE_TURN_BASE_TRUE_PLAY = 3;
+app.const.game.board.state.TURN_BASE_TRUE_PLAY = 3;
 app.const.game.board.state.STATE_FACE_DOWN = 5;
 app.const.game.board.state.STATE_WAIT_TURN = 4;
 app.const.game.board.state.STATE_BET = 5;
@@ -45,6 +44,7 @@ app.const.game.board.state.STARTING = -4;
 app.const.game.board.state.PLAYING = -5;
 app.const.game.board.state.STATE_REJOIN = -6;
 app.const.game.board.state.STARTED = -7;
+app.const.game.board.state.DEAL_CARD = -8;
 app.const.game.board.state.HISTORY_KEYWORD_ENDTIME = "e";
 app.const.game.board.state.HISTORY_KEYWORD_DETAIL = "d";
 
