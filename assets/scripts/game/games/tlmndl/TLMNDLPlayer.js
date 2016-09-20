@@ -14,6 +14,15 @@ export default class TLMNDLPlayer extends PlayerCardTurnBase {
         this.rendererClassName = TLMNDLPlayerRenderer;
     }
 
+    setCards(cards){
+        super.setCards(cards);
+
+    }
+
+    createFakeCards(size = 13){
+        super.createFakeCards(size)
+    }
+
     onLoad(){
         super.onLoad();
     }

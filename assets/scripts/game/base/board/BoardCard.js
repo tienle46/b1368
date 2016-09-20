@@ -4,6 +4,7 @@
 
 import app from 'app';
 import Board from 'Board';
+import Card from 'Card'
 
 export default class BoardCard extends Board {
     constructor(room, scene) {
@@ -25,6 +26,8 @@ export default class BoardCard extends Board {
     }
 
     _dealCards(data) {
-
+        let cardBytes = data[app.keywords.DEAL_CARD_LIST_KEYWORD] || [];
+        var dealCards = cardBytes.map(cardByte => Card.from(cardByte));
     }
+
 }
