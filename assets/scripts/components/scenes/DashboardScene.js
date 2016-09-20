@@ -28,10 +28,10 @@ export default class DashboardScene extends BaseScene {
             type: cc.Prefab
         };
 
-        this.popUp = {
+        this.popUps = {
             default: null,
             type: cc.Prefab
-        }
+        };
     }
 
     onLoad() {
@@ -99,7 +99,7 @@ export default class DashboardScene extends BaseScene {
         bottomBarNode.getComponent('BottomBar').listenClickTopBarItem((buttonType) => {
             console.log("dashboard:" + buttonType);
             switch (buttonType) {
-                case game.bottomBarButtonType.NAPXU:
+                case app.bottomBarButtonType.NAPXU:
                     this.addNapXuPopUp();
                     break;
                 default:
@@ -121,9 +121,8 @@ export default class DashboardScene extends BaseScene {
     }
 
     addNapXuPopUp() {
-        var popupBase = new cc.instantiate(this.popUp);
+        var popupBase = new cc.instantiate(this.popUps);
         popupBase.position = cc.p(0, 0);
-        console.debug(popupBase, popupBase.getChildByName('popup_bkg'));
         this.node.addChild(popupBase, 10);
     }
 }

@@ -447,7 +447,10 @@
     "node": {
       "__id__": 3
     },
-    "_enabled": true
+    "_enabled": true,
+    "buttonType": 0.85,
+    "pressedScale": 1,
+    "transDuration": 0
   },
   {
     "__type__": "cc.PrefabInfo",

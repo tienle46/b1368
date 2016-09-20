@@ -19,7 +19,7 @@ class BasePopup extends Component {
             type: cc.Node
         };
 
-       
+
     }
 
     // use this for initialization
@@ -32,7 +32,8 @@ class BasePopup extends Component {
 
     handleClosePopupAction() {
         this.closeButton.getComponent(cc.Animation).play();
-        this.node.parent.removeFromParent(true);
+        // console.log(this.node.parent);
+        this.node.removeFromParent(true);
     }
 
     setContent(string) {
