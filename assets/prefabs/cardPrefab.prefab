@@ -524,7 +524,7 @@
       "__id__": 1
     },
     "component": "Card",
-    "handler": "handleClickItem"
+    "handler": "onClick"
   },
   {
     "__type__": "cc.PrefabInfo",

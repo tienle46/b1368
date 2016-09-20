@@ -3,77 +3,70 @@ import Component from 'Component'
 
 export default class Card extends Component{
 
-    constructor(rank, suit) {
+    constructor(rank, suit, cardByte) {
         super();
-        rank && suit && this.init(rank, suit);
-        this.rankNode = cc.Label
-        this.suitNode = cc.Sprite
-        this.mainPic = cc.Sprite
-        this.cardBG = cc.Sprite
-        this.redTextColor = new cc.Color().fromHEX('#C01E2E')
-        this.blackTextColor = new cc.Color().fromHEX('#2B2B2B')
-        this.texFrontBG = cc.SpriteFrame
-        this.texBackBG = cc.SpriteFrame
+
+        if(rank && suit){
+            this._init(rank, suit, cardByte);
+        }
+
+        this.rankNode = cc.Label;
+        this.suitNode = cc.Sprite;
+        this.mainPic = cc.Sprite;
+        this.cardBG = cc.Sprite;
+        this.redTextColor = new cc.Color().fromHEX('#C01E2E');
+        this.blackTextColor = new cc.Color().fromHEX('#2B2B2B');
+        this.texFrontBG = cc.SpriteFrame;
+        this.texBackBG = cc.SpriteFrame;
+
         this.texFaces = {
             default: [],
             type: cc.SpriteFrame
         }
+
         this.texSuitBig = {
             default: [],
             type: cc.SpriteFrame
         }
+
         this.texSuitSmall = {
             default: [],
             type: cc.SpriteFrame
         }
-        this.clickListener = null
+
         this.selected = false
+        this.clickListener = null
     }
 
+    initFromByte(byteValue) {
+        let rank = byteValue >> 2;
+        let suit = byteValue & 0x03;
+        this._init(rank, suit, byteValue);
+        
+        console.log("rank suit: ", rank, suit);
+    }
 
-    init(rank, suit) {
-        // console.log(`rank / suit : ${rank} / ${suit}`);
+    _init(rank, suit, byteValue) {
+
+        if(!rank || !suit) return;
 
         this.rank = rank;
         this.suit = suit;
-        this.byteValue = (rank << 2 | suit & 0x03);
-
-        let isFaceCard = this.rank > 10;
-
-        if (isFaceCard) {
-            this.mainPic.spriteFrame = this.texFaces[this.rank - 10 - 1];
-        }
-        else {
-            this.mainPic.spriteFrame = this.texSuitBig[this.suit];
-        }
-
-        // for jsb
-        this.rankNode.string = this._getRankName();
-
-        if (this.isRedSuit()) {
-            this.rankNode.node.color = this.redTextColor;
-        }
-        else {
-            this.rankNode.node.color = this.blackTextColor;
-        }
-
-        this.suitNode.spriteFrame = this.texSuitSmall[this.suit];
+        this.byteValue = byteValue || (rank << 2 | suit & 0x03);
     }
 
-    initFromByte(byteValue){
-        let rank = byteValue >> 2;
-        let suit = byteValue & 0x03;
-        this.byteValue = byteValue;
-        this.init(rank, suit);
-
+    onLoad() {
+        this.rankNode.string = this._getRankName();
+        this.suitNode.spriteFrame = this.texSuitSmall[this.suit];
+        this.rankNode.node.color = this.isRedSuit() ? this.redTextColor : this.blackTextColor;
+        //this.rank > 10 => isFaceCard
+        this.mainPic.spriteFrame = this.rank > 10 ? this.texFaces[this.rank - 10 - 1] : this.texSuitBig[this.suit];
     }
 
     static from(byteValue){
-        let rank = byteValue >> 2;
-        let suit = byteValue & 0x03;
-        this.byteValue = byteValue;
-        this.init(rank, suit);
-
+        let card = new Card();
+        card.initFromByte(byteValue);
+        return card;
     }
 
     _getRankName(){
@@ -95,6 +88,7 @@ export default class Card extends Component{
     isRedSuit(){
         return this.suit === Card.SUIT_ZO || this.suit === Card.SUIT_CO;
     }
+
     reveal(isFaceUp) {
         this.rankNode.node.active = isFaceUp;
         this.rankNode.node.active = isFaceUp;
@@ -102,30 +96,18 @@ export default class Card extends Component{
         this.cardBG.spriteFrame = isFaceUp ? this.texFrontBG : this.texBackBG;
     }
 
-
-    listenOnClickListener(cb) {
+    setOnClickListener(cb) {
         this._clickListener = cb;
     }
 
-    handleClickItem() {
+    onClick() {
         this._clickListener && this._clickListener(this);
     }
 
-
-
+    equals(card){
+        return this.byteValue === card.byteValue;
+    }
 }
-
-Card.from = (cardByte) => {
-
-    let rank = cardByte >> 2;
-    let suit = cardByte & 0x03;
-    let card = new Card(rank,suit)
-    return card;
-}
-Card.equals = function (o) {
-    return this.byteValue === o.byteValue;
-};
-
 
 Card.RANK_AT = 1;
 Card.RANK_HAI = 2;
@@ -175,6 +157,5 @@ Card.HAND_LEFT_MARGIN_RIGHT = 18;
 Card.HAND_LEFT_MARGIN_BOTTOM = 50;
 Card.HAND_RIGHT_MARGIN_LEFT = 17;
 Card.HAND_RIGHT_MARGIN_BOTTOM = 30;
-
 
 app.createComponent(Card)

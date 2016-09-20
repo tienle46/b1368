@@ -446,4 +446,15 @@ export default class PlayerManager extends Component {
     handlePlayer(playerId, cmd, data) {
 
     }
+
+    onDealCards(cards){
+        //TODO
+        this.players.forEach(player => {
+            if (player.isItMe()) {
+                this.setCards(cards);
+            }else{
+                this.setCards()
+            }
+        })
+    }
 }
