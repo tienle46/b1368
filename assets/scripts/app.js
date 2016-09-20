@@ -45,7 +45,7 @@ app.createComponent = (className, extendClass = undefined, ...args) => {
 
         // in case: var a = {type: cc.Component, default: null}
         let isObjectInstance = (element) => {
-            return typeof element === 'object' && element.hasOwnProperty('type') && isFunctionInstance(element['type']);
+            return typeof element === 'object' && ((element.hasOwnProperty('type') && isFunctionInstance(element['type'])) || element.hasOwnProperty('default'));
         };
 
         return isFunctionInstance(el) || isObjectInstance(el);
