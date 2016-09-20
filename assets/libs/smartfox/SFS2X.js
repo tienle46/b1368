@@ -6,14 +6,14 @@
 
 var a = !1;
 var b = /xyz/.test(function() {
-    xyz
+    xyz;
 }) ? /\b_super\b/ : /.*/;
 
 var Class = function() {};
 
 Class.extend = function(c) {
     function d() {
-        !a && this.init && this.init.apply(this, arguments)
+        !a && this.init && this.init.apply(this, arguments);
     }
     var e = this.prototype;
     a = !0;
@@ -25,14 +25,14 @@ Class.extend = function(c) {
             this._super = e[a];
             var d = b.apply(this, arguments);
             this._super = c;
-            return d
-        }
+            return d;
+        };
     }(g, c[g]) : c[g];
     d.prototype = f;
     d.prototype.constructor = d;
     d.extend = Class.extend;//arguments.callee;
-    return d
-}
+    return d;
+};
 
 var SFS2X = module.exports;
 SFS2X.SmartFox = function (a) {
@@ -55,19 +55,19 @@ SFS2X.SmartFox = function (a) {
             this.me = this.buddyManager = this.userManager = this.roomManager = this.sessionToken = null;
         this._controllers = {};
         this._initialize();
-        this._log.info("SmartFox instance ready!")
+        this._log.info("SmartFox instance ready!");
 };
 
 // var SmartFox = SFS2X.SmartFox;
 
 SFS2X.SmartFox.prototype.addEventListener = function (a, b, c) {
-    this._eventDispatcher.addEventListener(a, b, c)
+    this._eventDispatcher.addEventListener(a, b, c);
 };
 SFS2X.SmartFox.prototype.removeEventListener = function (a, b) {
-    this._eventDispatcher.removeEventListener(a, b)
+    this._eventDispatcher.removeEventListener(a, b);
 };
 SFS2X.SmartFox.prototype.setClientDetails = function (a, b) {
-    this.isConnected() ? this._log.warn("SetClientDetails must be called before the connection is started") : (this._clientDetails = null != a ? a.replace(":", " ") : "", this._clientDetails += ":", this._clientDetails += null != b ? b.replace(":", " ") : "")
+    this.isConnected() ? this._log.warn("SetClientDetails must be called before the connection is started") : (this._clientDetails = null != a ? a.replace(":", " ") : "", this._clientDetails += ":", this._clientDetails += null != b ? b.replace(":", " ") : "");
 };
 SFS2X.SmartFox.prototype.connect = function (a, b, c) {
     if (this.isConnected()) this._log.warn("Already connected");
@@ -80,62 +80,62 @@ SFS2X.SmartFox.prototype.connect = function (a, b, c) {
         null != b && (e = b);
         null != c && (f = c);
         null == d || 0 == d.length ? this._log.error("Invalid connection host/address") :
-            "number" != typeof e || 0 > e || 65535 < e ? this._log.error("Invalid TCP port") : ("boolean" != typeof f && (f = !1), this._socketEngine.connect(d, e, f))
+            "number" != typeof e || 0 > e || 65535 < e ? this._log.error("Invalid TCP port") : ("boolean" != typeof f && (f = !1), this._socketEngine.connect(d, e, f));
     }
 };
 SFS2X.SmartFox.prototype.disconnect = function () {
     this.isConnected() ? (0 < this._socketEngine.reconnectionSeconds && this.send(new SFS2X.Requests.System.ManualDisconnectionRequest), setTimeout(function (a) {
-        a._handleClientDisconnection(SFS2X.Utils.ClientDisconnectionReason.MANUAL)
-    }, 100, this)) : this._log.info("You are not connected")
+        a._handleClientDisconnection(SFS2X.Utils.ClientDisconnectionReason.MANUAL);
+    }, 100, this)) : this._log.info("You are not connected");
 };
 SFS2X.SmartFox.prototype.enableLagMonitor = function (a, b, c) {
-    null == this.me ? this._log.warn("Lag Monitoring requires that you are logged in a Zone; please retry after completing the login process") : (null != this._lagMonitor && this._lagMonitor.destroy(), a && (this._lagMonitor = new SFS2X.Utils.LagMonitor(this, b, c), this._lagMonitor.start()))
+    null == this.me ? this._log.warn("Lag Monitoring requires that you are logged in a Zone; please retry after completing the login process") : (null != this._lagMonitor && this._lagMonitor.destroy(), a && (this._lagMonitor = new SFS2X.Utils.LagMonitor(this, b, c), this._lagMonitor.start()));
 };
 SFS2X.SmartFox.prototype.isConnected = function () {
-    return null != this._socketEngine ? this._socketEngine.isConnected : !1
+    return null != this._socketEngine ? this._socketEngine.isConnected : !1;
 };
 SFS2X.SmartFox.prototype.getMaxMessageSize = function () {
-    return null != this._socketEngine ? this._socketEngine._maxMessageSize : 0
+    return null != this._socketEngine ? this._socketEngine._maxMessageSize : 0;
 };
 SFS2X.SmartFox.prototype.send = function (a) {
     if (this.isConnected())
         if (null == a.validate || null == a.execute) this._log.error("An invalid request was passed: " + a), this._log.debug("Object dump:\n" + SFS2X.DebugHelper.getDump(a));
         else {
             try {
-                a.validate(this), a.execute(this)
+                a.validate(this), a.execute(this);
             } catch (b) {
                 if (b instanceof SFS2X.Exceptions.SFSValidationError && null != b.getMessage) {
                     a = b.getMessage();
                     if (null != b.getErrors())
                         for (var a = a + ":", c = 0; c < b.getErrors().length; c++) 1 < b.getErrors().length && (a += " " + (c + 1) + ")"), a += " " + b.getErrors()[c];
                     this._log.error("Request failed | " +
-                        a)
+                        a);
                 } else throw b;
-                return !1
+                return !1;
             }
             this.debug && (this._log.info("OUTGOING DATA\n" + SFS2X.DebugHelper.getDump(a.getMessage())), this._log.info("OUT > " + SFS2X.Requests.getRequestNameFromId(a._id)));
             this._socketEngine.send(a.getMessage());
-            return !0
-        } else this._log.error("You are not connected. Request cannot be sent: " + SFS2X.Requests.getRequestNameFromId(a._id))
+            return !0;
+        } else this._log.error("You are not connected. Request cannot be sent: " + SFS2X.Requests.getRequestNameFromId(a._id));
 };
 SFS2X.SmartFox.prototype.getRoomById = function (a) {
-    return this.roomManager.getRoomById(a)
+    return this.roomManager.getRoomById(a);
 };
 SFS2X.SmartFox.prototype.getRoomByName = function (a) {
-    return this.roomManager.getRoomByName(a)
+    return this.roomManager.getRoomByName(a);
 };
 SFS2X.SmartFox.prototype.getRoomList = function () {
-    return this.roomManager.getRoomList()
+    return this.roomManager.getRoomList();
 };
 SFS2X.SmartFox.prototype.getRoomListFromGroup = function (a) {
-    return this.roomManager.getRoomListFromGroup(a)
+    return this.roomManager.getRoomListFromGroup(a);
 };
 SFS2X.SmartFox.prototype.getJoinedRooms = function () {
-    return this.roomManager.getJoinedRooms()
+    return this.roomManager.getJoinedRooms();
 };
 SFS2X.SmartFox.prototype._initialize = function () {
     this._inited || (this._socketEngine = new SFS2X.SocketEngine(this), this._socketEngine.addEventListener(SFS2X.SocketEvent.CONNECT, this._onSocketConnect, this), this._socketEngine.addEventListener(SFS2X.SocketEvent.DISCONNECT, this._onSocketDisconnect, this), this._socketEngine.addEventListener(SFS2X.SocketEvent.DATA, this._onSocketData, this), this._socketEngine.addEventListener(SFS2X.SocketEvent.IOERROR, this._onSocketIOError, this), this._controllers[0] = new SFS2X.Controllers.SystemController(this),
-        this._controllers[1] = new SFS2X.Controllers.ExtensionController(this), this._inited = !0, this._reset())
+        this._controllers[1] = new SFS2X.Controllers.ExtensionController(this), this._inited = !0, this._reset());
 };
 SFS2X.SmartFox.prototype._reset = function (a) {
     null != this.buddyManager && this.buddyManager._clearAll();
@@ -145,34 +145,34 @@ SFS2X.SmartFox.prototype._reset = function (a) {
     null != this._lagMonitor && this._lagMonitor.destroy();
     this._isJoining = !1;
     this.me = this.lastJoinedRoom = this._currentZone = null;
-    a && (this.sessionToken = null)
+    a && (this.sessionToken = null);
 };
 SFS2X.SmartFox.prototype._dispatchEvent = function (a, b) {
-    this._eventDispatcher.dispatchEvent(a, b)
+    this._eventDispatcher.dispatchEvent(a, b);
 };
 SFS2X.SmartFox.prototype._onSocketConnect = function (a) {
 
     a.success ? (a = new SFS2X.Requests.System.HandshakeRequest(this.version, this._clientDetails, a.isReconnection ? this.sessionToken : null), this.send(a)) : this._dispatchEvent(SFS2X.SFSEvent.CONNECTION, {
         success: !1
-    })
+    });
 };
 SFS2X.SmartFox.prototype._onSocketDisconnect = function (a) {
     this._dispatchEvent(SFS2X.SFSEvent.CONNECTION_LOST, {
         reason: a.reason
     });
-    this._reset(!0)
+    this._reset(!0);
 };
 SFS2X.SmartFox.prototype._onSocketData = function (a) {
     this.debug && this._log.info("INCOMING DATA\n" + SFS2X.DebugHelper.getDump(a));
     var b = a[SFS2X.Controllers.CONTROLLER_ID],
         c = a[SFS2X.Controllers.ACTION_ID],
         a = a[SFS2X.Controllers.PARAM_ID];
-    null == b ? this._log.error("Message rejected: Controller ID is missing") : null == b ? this._log.error("Message rejected: Action ID missing") : this._controllers[b].handleMessage(a, c)
+    null == b ? this._log.error("Message rejected: Controller ID is missing") : null == b ? this._log.error("Message rejected: Action ID missing") : this._controllers[b].handleMessage(a, c);
 };
 SFS2X.SmartFox.prototype._onSocketIOError = function (a) {
     this._dispatchEvent(SFS2X.SFSEvent.SOCKET_ERROR, {
         message: a
-    })
+    });
 };
 SFS2X.SmartFox.prototype._handleHandShake = function (a) {
     var b = a[SFS2X.Controllers.KEY_ERROR_CODE];
@@ -182,48 +182,48 @@ SFS2X.SmartFox.prototype._handleHandShake = function (a) {
         success: !1,
         errorMessage: SFS2X.ErrorCodes.getErrorMessage(b, a[SFS2X.Controllers.KEY_ERROR_PARAMS]),
         errorCode: b
-    }, this._dispatchEvent(SFS2X.SFSEvent.CONNECTION, a))
+    }, this._dispatchEvent(SFS2X.SFSEvent.CONNECTION, a));
 };
 SFS2X.SmartFox.prototype._handleLogout = function () {
-    this._reset(!1)
+    this._reset(!1);
 };
 SFS2X.SmartFox.prototype._handleClientDisconnection = function (a) {
-    this.isConnected() && this._socketEngine.disconnect(a)
+    this.isConnected() && this._socketEngine.disconnect(a);
 };
 
 var hexcase = 0,
     b64pad = "";
 
 function hex_md5(a) {
-    return rstr2hex(rstr_md5(str2rstr_utf8(a)))
+    return rstr2hex(rstr_md5(str2rstr_utf8(a)));
 }
 
 function b64_md5(a) {
-    return rstr2b64(rstr_md5(str2rstr_utf8(a)))
+    return rstr2b64(rstr_md5(str2rstr_utf8(a)));
 }
 
 function any_md5(a, b) {
-    return rstr2any(rstr_md5(str2rstr_utf8(a)), b)
+    return rstr2any(rstr_md5(str2rstr_utf8(a)), b);
 }
 
 function hex_hmac_md5(a, b) {
-    return rstr2hex(rstr_hmac_md5(str2rstr_utf8(a), str2rstr_utf8(b)))
+    return rstr2hex(rstr_hmac_md5(str2rstr_utf8(a), str2rstr_utf8(b)));
 }
 
 function b64_hmac_md5(a, b) {
-    return rstr2b64(rstr_hmac_md5(str2rstr_utf8(a), str2rstr_utf8(b)))
+    return rstr2b64(rstr_hmac_md5(str2rstr_utf8(a), str2rstr_utf8(b)));
 }
 
 function any_hmac_md5(a, b, c) {
-    return rstr2any(rstr_hmac_md5(str2rstr_utf8(a), str2rstr_utf8(b)), c)
+    return rstr2any(rstr_hmac_md5(str2rstr_utf8(a), str2rstr_utf8(b)), c);
 }
 
 function md5_vm_test() {
-    return "900150983cd24fb0d6963f7d28e17f72" == hex_md5("abc").toLowerCase()
+    return "900150983cd24fb0d6963f7d28e17f72" == hex_md5("abc").toLowerCase();
 }
 
 function rstr_md5(a) {
-    return binl2rstr(binl_md5(rstr2binl(a), 8 * a.length))
+    return binl2rstr(binl_md5(rstr2binl(a), 8 * a.length));
 }
 
 function rstr_hmac_md5(a, b) {
@@ -231,28 +231,28 @@ function rstr_hmac_md5(a, b) {
     16 < c.length && (c = binl_md5(c, 8 * a.length));
     for (var d = Array(16), e = Array(16), f = 0; 16 > f; f++) d[f] = c[f] ^ 909522486, e[f] = c[f] ^ 1549556828;
     c = binl_md5(d.concat(rstr2binl(b)), 512 + 8 * b.length);
-    return binl2rstr(binl_md5(e.concat(c), 640))
+    return binl2rstr(binl_md5(e.concat(c), 640));
 }
 
 function rstr2hex(a) {
     try {
-        hexcase
+        hexcase;
     } catch (b) {
-        hexcase = 0
+        hexcase = 0;
     }
     for (var c = hexcase ? "0123456789ABCDEF" : "0123456789abcdef", d = "", e, f = 0; f < a.length; f++) e = a.charCodeAt(f), d += c.charAt(e >>> 4 & 15) + c.charAt(e & 15);
-    return d
+    return d;
 }
 
 function rstr2b64(a) {
     try {
-        b64pad
+        b64pad;
     } catch (b) {
-        b64pad = ""
+        b64pad = "";
     }
     for (var c = "", d = a.length, e = 0; e < d; e += 3)
         for (var f = a.charCodeAt(e) << 16 | (e + 1 < d ? a.charCodeAt(e + 1) << 8 : 0) | (e + 2 < d ? a.charCodeAt(e + 2) : 0), g = 0; 4 > g; g++) c = 8 * e + 6 * g > 8 * a.length ? c + b64pad : c + "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/".charAt(f >>> 6 * (3 - g) & 63);
-    return c
+    return c;
 }
 
 function rstr2any(a, b) {
@@ -266,37 +266,37 @@ function rstr2any(a, b) {
         for (d = g = 0; d < j.length; d++)
             if (g = (g << 16) + j[d], f = Math.floor(g / c), g -= f * c, 0 < i.length || 0 < f) i[i.length] = f;
         h[e] = g;
-        j = i
+        j = i;
     }
     c = "";
     for (d = h.length - 1; 0 <= d; d--) c += b.charAt(h[d]);
-    return c
+    return c;
 }
 
 function str2rstr_utf8(a) {
     for (var b = "", c = -1, d, e; ++c < a.length;) d = a.charCodeAt(c), e = c + 1 < a.length ? a.charCodeAt(c + 1) : 0, 55296 <= d && (56319 >= d && 56320 <= e && 57343 >= e) && (d = 65536 + ((d & 1023) << 10) + (e & 1023), c++), 127 >= d ? b += String.fromCharCode(d) : 2047 >= d ? b += String.fromCharCode(192 | d >>> 6 & 31, 128 | d & 63) : 65535 >= d ? b += String.fromCharCode(224 | d >>> 12 & 15, 128 | d >>> 6 & 63, 128 | d & 63) : 2097151 >= d && (b += String.fromCharCode(240 | d >>> 18 & 7, 128 | d >>> 12 & 63, 128 | d >>> 6 & 63, 128 | d & 63));
-    return b
+    return b;
 }
 
 function str2rstr_utf16le(a) {
     for (var b = "", c = 0; c < a.length; c++) b += String.fromCharCode(a.charCodeAt(c) & 255, a.charCodeAt(c) >>> 8 & 255);
-    return b
+    return b;
 }
 
 function str2rstr_utf16be(a) {
     for (var b = "", c = 0; c < a.length; c++) b += String.fromCharCode(a.charCodeAt(c) >>> 8 & 255, a.charCodeAt(c) & 255);
-    return b
+    return b;
 }
 
 function rstr2binl(a) {
     for (var b = Array(a.length >> 2), c = 0; c < b.length; c++) b[c] = 0;
     for (c = 0; c < 8 * a.length; c += 8) b[c >> 5] |= (a.charCodeAt(c / 8) & 255) << c % 32;
-    return b
+    return b;
 }
 
 function binl2rstr(a) {
     for (var b = "", c = 0; c < 32 * a.length; c += 8) b += String.fromCharCode(a[c >> 5] >>> c % 32 & 255);
-    return b
+    return b;
 }
 
 function binl_md5(a, b) {
@@ -379,36 +379,36 @@ function binl_md5(a, b) {
         d = safe_add(d, j),
         e = safe_add(e, k),
         f = safe_add(f, h);
-    return [c, d, e, f]
+    return [c, d, e, f];
 }
 
 function md5_cmn(a, b, c, d, e, f) {
-    return safe_add(bit_rol(safe_add(safe_add(b, a), safe_add(d, f)), e), c)
+    return safe_add(bit_rol(safe_add(safe_add(b, a), safe_add(d, f)), e), c);
 }
 
 function md5_ff(a, b, c, d, e, f, g) {
-    return md5_cmn(b & c | ~b & d, a, b, e, f, g)
+    return md5_cmn(b & c | ~b & d, a, b, e, f, g);
 }
 
 function md5_gg(a, b, c, d, e, f, g) {
-    return md5_cmn(b & d | c & ~d, a, b, e, f, g)
+    return md5_cmn(b & d | c & ~d, a, b, e, f, g);
 }
 
 function md5_hh(a, b, c, d, e, f, g) {
-    return md5_cmn(b ^ c ^ d, a, b, e, f, g)
+    return md5_cmn(b ^ c ^ d, a, b, e, f, g);
 }
 
 function md5_ii(a, b, c, d, e, f, g) {
-    return md5_cmn(c ^ (b | ~d), a, b, e, f, g)
+    return md5_cmn(c ^ (b | ~d), a, b, e, f, g);
 }
 
 function safe_add(a, b) {
     var c = (a & 65535) + (b & 65535);
-    return (a >> 16) + (b >> 16) + (c >> 16) << 16 | c & 65535
+    return (a >> 16) + (b >> 16) + (c >> 16) << 16 | c & 65535;
 }
 
 function bit_rol(a, b) {
-    return a << b | a >>> 32 - b
+    return a << b | a >>> 32 - b;
 }
 SFS2X.Utils = {};
 SFS2X.Utils.md5_crypt = function (a, b) {
@@ -430,7 +430,7 @@ SFS2X.Utils.md5_crypt = function (a, b) {
     i += md5_to64(f, 2);
     b64pad = c;
     chrsz = d;
-    return i
+    return i;
 };
 SFS2X.Utils.ClientDisconnectionReason = {
     IDLE: "idle",
@@ -450,7 +450,7 @@ SFS2X.Utils.ClientDisconnectionReason.getReason = function (a) {
         case 3:
             return this.MANUAL;
         case 4:
-            return this.UNKNOWN
+            return this.UNKNOWN;
     }
 };
 SFS2X.Utils.ArrayUtil = {};
@@ -458,28 +458,28 @@ SFS2X.Utils.ArrayUtil.objToArray = function (a) {
     var b = [],
         c;
     for (c in a) a.hasOwnProperty(c) && b.push(a[c]);
-    return b
+    return b;
 };
 SFS2X.Utils.ArrayUtil.removeItem = function (a, b) {
     var c = a.indexOf(b);
-    -1 < c && a.splice(c, 1)
+    -1 < c && a.splice(c, 1);
 };
 SFS2X.Utils.HashTable = function (a) {
     this.length = 0;
     this.items = {};
-    for (var b in a) a.hasOwnProperty(b) && (this.items[b] = a[b], this.length++)
+    for (var b in a) a.hasOwnProperty(b) && (this.items[b] = a[b], this.length++);
 };
 SFS2X.Utils.HashTable.prototype.setItem = function (a, b) {
     var c = void 0;
     this.hasItem(a) ? c = this.items[a] : this.length++;
     this.items[a] = b;
-    return c
+    return c;
 };
 SFS2X.Utils.HashTable.prototype.getItem = function (a) {
-    return this.hasItem(a) ? this.items[a] : void 0
+    return this.hasItem(a) ? this.items[a] : void 0;
 };
 SFS2X.Utils.HashTable.prototype.hasItem = function (a) {
-    return this.items.hasOwnProperty(a)
+    return this.items.hasOwnProperty(a);
 };
 SFS2X.Utils.HashTable.prototype.removeItem = function (a) {
     // if (this.hasItem(a)) return previous = this.items[a], this.length--, delete this.items[a], previous
@@ -497,20 +497,20 @@ SFS2X.Utils.HashTable.prototype.keys = function () {
     var a = [],
         b;
     for (b in this.items) this.hasItem(b) && a.push(b);
-    return a
+    return a;
 };
 SFS2X.Utils.HashTable.prototype.values = function () {
     var a = [],
         b;
     for (b in this.items) this.hasItem(b) && a.push(this.items[b]);
-    return a
+    return a;
 };
 SFS2X.Utils.HashTable.prototype.each = function (a) {
-    for (var b in this.items) this.hasItem(b) && a(b, this.items[b])
+    for (var b in this.items) this.hasItem(b) && a(b, this.items[b]);
 };
 SFS2X.Utils.HashTable.prototype.clear = function () {
     this.items = {};
-    this.length = 0
+    this.length = 0;
 };
 SFS2X.Utils.LagMonitor = function (a, b, c) {
     if (null == b || 1 > b) b = 4;
@@ -520,38 +520,38 @@ SFS2X.Utils.LagMonitor = function (a, b, c) {
     this._interval = b;
     this._queueSize = c;
     this._thread = null;
-    this._lastReqTime = -1
+    this._lastReqTime = -1;
 };
 SFS2X.Utils.LagMonitor.prototype.start = function () {
-    !this.isRunning() && null != this._sfs && (this._thread = setInterval(this._threadRunner, 1E3 * this._interval, this))
+    !this.isRunning() && null != this._sfs && (this._thread = setInterval(this._threadRunner, 1E3 * this._interval, this));
 };
 SFS2X.Utils.LagMonitor.prototype.stop = function () {
-    this.isRunning() && (clearInterval(this._thread), this._thread = null, this._valueQueue = [])
+    this.isRunning() && (clearInterval(this._thread), this._thread = null, this._valueQueue = []);
 };
 SFS2X.Utils.LagMonitor.prototype.destroy = function () {
     this.stop();
-    this._sfs = null
+    this._sfs = null;
 };
 SFS2X.Utils.LagMonitor.prototype.isRunning = function () {
-    return null != this._thread
+    return null != this._thread;
 };
 SFS2X.Utils.LagMonitor.prototype.getLastPingTime = function () {
-    return 0 < this._valueQueue.length ? this._valueQueue[this._valueQueue.length - 1] : 0
+    return 0 < this._valueQueue.length ? this._valueQueue[this._valueQueue.length - 1] : 0;
 };
 SFS2X.Utils.LagMonitor.prototype._threadRunner = function (a) {
     a._lastReqTime = (new Date).getTime();
-    a._sfs.send(new SFS2X.Requests.System.PingPongRequest)
+    a._sfs.send(new SFS2X.Requests.System.PingPongRequest);
 };
 SFS2X.Utils.LagMonitor.prototype._onPingPong = function () {
     var a = (new Date).getTime() - this._lastReqTime;
     this._valueQueue.length >= this._queueSize && this._valueQueue.shift();
     this._valueQueue.push(a);
-    return this._getAveragePingTime()
+    return this._getAveragePingTime();
 };
 SFS2X.Utils.LagMonitor.prototype._getAveragePingTime = function () {
     if (0 == this._valueQueue.length) return 0;
     for (var a = 0, b = 0; b < this._valueQueue.length; b++) a += this._valueQueue[b];
-    return a / this._valueQueue.length
+    return a / this._valueQueue.length;
 };
 SFS2X.Utils.BuddyOnlineState = {
     ONLINE: 0,
@@ -573,16 +573,16 @@ SFS2X.Controllers.SystemController = function (a) {
     this._id = 0;
     this._requestHandlers = {};
     this._initRequestHandlers();
-    this._log = SFS2X.Logger
+    this._log = SFS2X.Logger;
 };
 SFS2X.Controllers.SystemController.prototype.getId = function () {
-    return this._id
+    return this._id;
 };
 SFS2X.Controllers.SystemController.prototype.handleMessage = function (a, b) {
     this._sfs.debug && this._log.info("IN < " + this._getEvtName(b));
     var c = this._requestHandlers[b];
     if (null != c) this[c](a);
-    else this._log.warn("Unknown message id: " + a.id)
+    else this._log.warn("Unknown message id: " + a.id);
 };
 SFS2X.Controllers.SystemController.prototype._initRequestHandlers = function () {
     this._requestHandlers[SFS2X.Requests.Handshake] = "_fnHandshake";
@@ -622,13 +622,13 @@ SFS2X.Controllers.SystemController.prototype._initRequestHandlers = function () 
     this._requestHandlers[1003] = "_fnRoomLost";
     this._requestHandlers[1004] = "_fnUserExitRoom";
     this._requestHandlers[1005] = "_fnClientDisconnection";
-    this._requestHandlers[1007] = "_fnSetMMOItemVariables"
+    this._requestHandlers[1007] = "_fnSetMMOItemVariables";
 };
 SFS2X.Controllers.SystemController.prototype._getEvtName = function (a) {
-    return this._requestHandlers[a].substr(3)
+    return this._requestHandlers[a].substr(3);
 };
 SFS2X.Controllers.SystemController.prototype._fnHandshake = function (a) {
-    this._sfs._handleHandShake(a)
+    this._sfs._handleHandShake(a);
 };
 SFS2X.Controllers.SystemController.prototype._fnLogin = function (a) {
     if (null == a[SFS2X.Controllers.KEY_ERROR_CODE]) {
@@ -642,17 +642,17 @@ SFS2X.Controllers.SystemController.prototype._fnLogin = function (a) {
         b.zone = a[SFS2X.Requests.System.LoginRequest.KEY_ZONE_NAME];
         b.user = this._sfs.me;
         b.data = a[SFS2X.Requests.System.LoginRequest.KEY_PARAMS];
-        this._sfs._dispatchEvent(SFS2X.SFSEvent.LOGIN, b)
+        this._sfs._dispatchEvent(SFS2X.SFSEvent.LOGIN, b);
     } else b = a[SFS2X.Controllers.KEY_ERROR_CODE], a = SFS2X.ErrorCodes.getErrorMessage(b, a[SFS2X.Controllers.KEY_ERROR_PARAMS]), this._sfs._dispatchEvent(SFS2X.SFSEvent.LOGIN_ERROR, {
         errorMessage: a,
         errorCode: b
-    })
+    });
 };
 SFS2X.Controllers.SystemController.prototype._fnLogout = function (a) {
     this._sfs._handleLogout();
     var b = {};
     b.zone = a[SFS2X.Requests.System.LogoutRequest.KEY_ZONE_NAME];
-    this._sfs._dispatchEvent(SFS2X.SFSEvent.LOGOUT, b)
+    this._sfs._dispatchEvent(SFS2X.SFSEvent.LOGOUT, b);
 };
 SFS2X.Controllers.SystemController.prototype._fnJoinRoom = function (a) {
     var b = this._sfs.roomManager,
@@ -668,13 +668,13 @@ SFS2X.Controllers.SystemController.prototype._fnJoinRoom = function (a) {
             var e = d[b],
                 f = this._getOrCreateUser(e, !0, a);
             f._setPlayerId(e[3], a);
-            a._addUser(f)
+            a._addUser(f);
         }
         a.isJoined = !0;
         this._sfs.lastJoinedRoom = a;
         c.room = a;
-        this._sfs._dispatchEvent(SFS2X.SFSEvent.ROOM_JOIN, c)
-    } else a = SFS2X.ErrorCodes.getErrorMessage(d, a[SFS2X.Controllers.KEY_ERROR_PARAMS]), c.errorMessage = a, c.errorCode = d, this._sfs._dispatchEvent(SFS2X.SFSEvent.ROOM_JOIN_ERROR, c)
+        this._sfs._dispatchEvent(SFS2X.SFSEvent.ROOM_JOIN, c);
+    } else a = SFS2X.ErrorCodes.getErrorMessage(d, a[SFS2X.Controllers.KEY_ERROR_PARAMS]), c.errorMessage = a, c.errorCode = d, this._sfs._dispatchEvent(SFS2X.SFSEvent.ROOM_JOIN_ERROR, c);
 };
 SFS2X.Controllers.SystemController.prototype._fnCreateRoom = function (a) {
     var b = {};
@@ -684,33 +684,33 @@ SFS2X.Controllers.SystemController.prototype._fnCreateRoom = function (a) {
         a._setRoomManager = c;
         c._addRoom(a);
         b.room = a;
-        this._sfs._dispatchEvent(SFS2X.SFSEvent.ROOM_ADD, b)
+        this._sfs._dispatchEvent(SFS2X.SFSEvent.ROOM_ADD, b);
     } else c = a[SFS2X.Controllers.KEY_ERROR_CODE], a = SFS2X.ErrorCodes.getErrorMessage(c, a[SFS2X.Controllers.KEY_ERROR_PARAMS]), b.errorMessage = a, b.errorCode = c, this._sfs._dispatchEvent(SFS2X.SFSEvent.ROOM_CREATION_ERROR,
-        b)
+        b);
 };
 SFS2X.Controllers.SystemController.prototype._fnChangeRoomName = function (a) {
     var b = {};
     if (null == a[SFS2X.Controllers.KEY_ERROR_CODE]) {
         var c = this._sfs.roomManager.getRoomById(a[SFS2X.Requests.System.ChangeRoomNameRequest.KEY_ROOM]);
-        null != c ? (b.oldName = c.name, this._sfs.roomManager._changeRoomName(c, a[SFS2X.Requests.System.ChangeRoomNameRequest.KEY_NAME]), b.room = c, this._sfs._dispatchEvent(SFS2X.SFSEvent.ROOM_NAME_CHANGE, b)) : this._log.warn("RoomNameChange event, unknown Room id: " + rId)
+        null != c ? (b.oldName = c.name, this._sfs.roomManager._changeRoomName(c, a[SFS2X.Requests.System.ChangeRoomNameRequest.KEY_NAME]), b.room = c, this._sfs._dispatchEvent(SFS2X.SFSEvent.ROOM_NAME_CHANGE, b)) : this._log.warn("RoomNameChange event, unknown Room id: " + rId);
     } else c = a[SFS2X.Controllers.KEY_ERROR_CODE], a =
-        SFS2X.ErrorCodes.getErrorMessage(c, a[SFS2X.Controllers.KEY_ERROR_PARAMS]), b.errorMessage = a, b.errorCode = c, this._sfs._dispatchEvent(SFS2X.SFSEvent.ROOM_NAME_CHANGE_ERROR, b)
+        SFS2X.ErrorCodes.getErrorMessage(c, a[SFS2X.Controllers.KEY_ERROR_PARAMS]), b.errorMessage = a, b.errorCode = c, this._sfs._dispatchEvent(SFS2X.SFSEvent.ROOM_NAME_CHANGE_ERROR, b);
 };
 SFS2X.Controllers.SystemController.prototype._fnChangeRoomPassword = function (a) {
     var b = {};
     if (null == a[SFS2X.Controllers.KEY_ERROR_CODE]) {
         var c = this._sfs.roomManager.getRoomById(a[SFS2X.Requests.System.ChangeRoomNameRequest.KEY_ROOM]);
-        null != c ? (this._sfs.roomManager._changeRoomPasswordState(c, a[SFS2X.Requests.System.ChangeRoomPasswordStateRequest.KEY_PASS]), b.room = c, this._sfs._dispatchEvent(SFS2X.SFSEvent.ROOM_PASSWORD_STATE_CHANGE, b)) : this._log.warn("RoomPasswordChange event, unknown Room id: " + rId)
+        null != c ? (this._sfs.roomManager._changeRoomPasswordState(c, a[SFS2X.Requests.System.ChangeRoomPasswordStateRequest.KEY_PASS]), b.room = c, this._sfs._dispatchEvent(SFS2X.SFSEvent.ROOM_PASSWORD_STATE_CHANGE, b)) : this._log.warn("RoomPasswordChange event, unknown Room id: " + rId);
     } else c =
-        a[SFS2X.Controllers.KEY_ERROR_CODE], a = SFS2X.ErrorCodes.getErrorMessage(c, a[SFS2X.Controllers.KEY_ERROR_PARAMS]), b.errorMessage = a, b.errorCode = c, this._sfs._dispatchEvent(SFS2X.SFSEvent.ROOM_PASSWORD_STATE_CHANGE_ERROR, b)
+        a[SFS2X.Controllers.KEY_ERROR_CODE], a = SFS2X.ErrorCodes.getErrorMessage(c, a[SFS2X.Controllers.KEY_ERROR_PARAMS]), b.errorMessage = a, b.errorCode = c, this._sfs._dispatchEvent(SFS2X.SFSEvent.ROOM_PASSWORD_STATE_CHANGE_ERROR, b);
 };
 SFS2X.Controllers.SystemController.prototype._fnChangeRoomCapacity = function (a) {
     var b = {};
     if (null == a[SFS2X.Controllers.KEY_ERROR_CODE]) {
         var c = this._sfs.roomManager.getRoomById(a[SFS2X.Requests.System.ChangeRoomNameRequest.KEY_ROOM]);
         null != c ? (this._sfs.roomManager._changeRoomCapacity(c, a[SFS2X.Requests.System.ChangeRoomCapacityRequest.KEY_USER_SIZE], a[SFS2X.Requests.System.ChangeRoomCapacityRequest.KEY_SPEC_SIZE]), b.room = c, this._sfs._dispatchEvent(SFS2X.SFSEvent.ROOM_CAPACITY_CHANGE, b)) : this._log.warn("RoomPasswordChange event, unknown Room id: " +
-            rId)
-    } else c = a[SFS2X.Controllers.KEY_ERROR_CODE], a = SFS2X.ErrorCodes.getErrorMessage(c, a[SFS2X.Controllers.KEY_ERROR_PARAMS]), b.errorMessage = a, b.errorCode = c, this._sfs._dispatchEvent(SFS2X.SFSEvent.ROOM_CAPACITY_CHANGE_ERROR, b)
+            rId);
+    } else c = a[SFS2X.Controllers.KEY_ERROR_CODE], a = SFS2X.ErrorCodes.getErrorMessage(c, a[SFS2X.Controllers.KEY_ERROR_PARAMS]), b.errorMessage = a, b.errorCode = c, this._sfs._dispatchEvent(SFS2X.SFSEvent.ROOM_CAPACITY_CHANGE_ERROR, b);
 };
 SFS2X.Controllers.SystemController.prototype._fnGenericMessage = function (a) {
     switch (a[SFS2X.Requests.System.GenericMessageRequest.KEY_MESSAGE_TYPE]) {
@@ -730,7 +730,7 @@ SFS2X.Controllers.SystemController.prototype._fnGenericMessage = function (a) {
             this._handleAdminMessage(a);
             break;
         case SFS2X.Requests.GenericMessageType.OBJECT_MSG:
-            this._handleObjectMessage(a)
+            this._handleObjectMessage(a);
     }
 };
 SFS2X.Controllers.SystemController.prototype._handlePublicMessage = function (a) {
@@ -738,7 +738,7 @@ SFS2X.Controllers.SystemController.prototype._handlePublicMessage = function (a)
         c = a[SFS2X.Requests.System.GenericMessageRequest.KEY_ROOM_ID],
         d = this._sfs.roomManager.getRoomById(c);
     null != d ? (b.room = d, b.sender = this._sfs.userManager.getUserById(a[SFS2X.Requests.System.GenericMessageRequest.KEY_USER_ID]), b.message = a[SFS2X.Requests.System.GenericMessageRequest.KEY_MESSAGE], b.data = a[SFS2X.Requests.System.GenericMessageRequest.KEY_XTRA_PARAMS], this._sfs._dispatchEvent(SFS2X.SFSEvent.PUBLIC_MESSAGE,
-        b)) : this._log.warn("Unexpected, public message target Room doesn't exist; Room id: " + c)
+        b)) : this._log.warn("Unexpected, public message target Room doesn't exist; Room id: " + c);
 };
 SFS2X.Controllers.SystemController.prototype._handlePrivateMessage = function (a) {
     var b = {},
@@ -746,14 +746,14 @@ SFS2X.Controllers.SystemController.prototype._handlePrivateMessage = function (a
     if (null == c) {
         if (null == a[SFS2X.Requests.System.GenericMessageRequest.KEY_SENDER_DATA]) {
             this._log.warn("Unexpected, private message has no sender details");
-            return
+            return;
         }
-        c = SFS2X.Entities.SFSUser.fromArray(a[SFS2X.Requests.System.GenericMessageRequest.KEY_SENDER_DATA])
+        c = SFS2X.Entities.SFSUser.fromArray(a[SFS2X.Requests.System.GenericMessageRequest.KEY_SENDER_DATA]);
     }
     b.sender = c;
     b.message = a[SFS2X.Requests.System.GenericMessageRequest.KEY_MESSAGE];
     b.data = a[SFS2X.Requests.System.GenericMessageRequest.KEY_XTRA_PARAMS];
-    this._sfs._dispatchEvent(SFS2X.SFSEvent.PRIVATE_MESSAGE, b)
+    this._sfs._dispatchEvent(SFS2X.SFSEvent.PRIVATE_MESSAGE, b);
 };
 SFS2X.Controllers.SystemController.prototype._handleBuddyMessage = function (a) {
     var b = {},
@@ -763,27 +763,27 @@ SFS2X.Controllers.SystemController.prototype._handleBuddyMessage = function (a) 
     b.buddy = d;
     b.message = a[SFS2X.Requests.System.GenericMessageRequest.KEY_MESSAGE];
     b.data = a[SFS2X.Requests.System.GenericMessageRequest.KEY_XTRA_PARAMS];
-    this._sfs._dispatchEvent(SFS2X.SFSBuddyEvent.BUDDY_MESSAGE, b)
+    this._sfs._dispatchEvent(SFS2X.SFSBuddyEvent.BUDDY_MESSAGE, b);
 };
 SFS2X.Controllers.SystemController.prototype._handleModMessage = function (a) {
     var b = {};
     b.sender = SFS2X.Entities.SFSUser.fromArray(a[SFS2X.Requests.System.GenericMessageRequest.KEY_SENDER_DATA]);
     b.message = a[SFS2X.Requests.System.GenericMessageRequest.KEY_MESSAGE];
     b.data = a[SFS2X.Requests.System.GenericMessageRequest.KEY_XTRA_PARAMS];
-    this._sfs._dispatchEvent(SFS2X.SFSEvent.MODERATOR_MESSAGE, b)
+    this._sfs._dispatchEvent(SFS2X.SFSEvent.MODERATOR_MESSAGE, b);
 };
 SFS2X.Controllers.SystemController.prototype._handleAdminMessage = function (a) {
     var b = {};
     b.sender = SFS2X.Entities.SFSUser.fromArray(a[SFS2X.Requests.System.GenericMessageRequest.KEY_SENDER_DATA]);
     b.message = a[SFS2X.Requests.System.GenericMessageRequest.KEY_MESSAGE];
     b.data = a[SFS2X.Requests.System.GenericMessageRequest.KEY_XTRA_PARAMS];
-    this._sfs._dispatchEvent(SFS2X.SFSEvent.ADMIN_MESSAGE, b)
+    this._sfs._dispatchEvent(SFS2X.SFSEvent.ADMIN_MESSAGE, b);
 };
 SFS2X.Controllers.SystemController.prototype._handleObjectMessage = function (a) {
     var b = {};
     b.sender = this._sfs.userManager.getUserById(a[SFS2X.Requests.System.GenericMessageRequest.KEY_USER_ID]);
     b.message = a[SFS2X.Requests.System.GenericMessageRequest.KEY_XTRA_PARAMS];
-    this._sfs._dispatchEvent(SFS2X.SFSEvent.OBJECT_MESSAGE, b)
+    this._sfs._dispatchEvent(SFS2X.SFSEvent.OBJECT_MESSAGE, b);
 };
 SFS2X.Controllers.SystemController.prototype._fnSetRoomVariables = function (a) {
     var b = a[SFS2X.Requests.System.SetRoomVariablesRequest.KEY_VAR_ROOM],
@@ -794,14 +794,14 @@ SFS2X.Controllers.SystemController.prototype._fnSetRoomVariables = function (a) 
         for (b = 0; b < c.length; b++) {
             var e = SFS2X.Entities.Variables.SFSRoomVariable.fromArray(c[b]);
             a._setVariable(e);
-            d.push(e.name)
+            d.push(e.name);
         }
         c = {};
         c.changedVars = d;
         c.room = a;
-        this._sfs._dispatchEvent(SFS2X.SFSEvent.ROOM_VARIABLES_UPDATE, c)
+        this._sfs._dispatchEvent(SFS2X.SFSEvent.ROOM_VARIABLES_UPDATE, c);
     } else this._log.warn("RoomVariablesUpdate event, unknown Room id: " +
-        b)
+        b);
 };
 SFS2X.Controllers.SystemController.prototype._fnSetUserVariables = function (a) {
     var b = a[SFS2X.Requests.System.SetUserVariablesRequest.KEY_USER],
@@ -812,13 +812,13 @@ SFS2X.Controllers.SystemController.prototype._fnSetUserVariables = function (a) 
         for (b = 0; b < c.length; b++) {
             var e = SFS2X.Entities.Variables.SFSUserVariable.fromArray(c[b]);
             a._setVariable(e);
-            d.push(e.name)
+            d.push(e.name);
         }
         c = {};
         c.changedVars = d;
         c.user = a;
-        this._sfs._dispatchEvent(SFS2X.SFSEvent.USER_VARIABLES_UPDATE, c)
-    } else this._log.warn("UserVariablesUpdate event, unknown User id: " + b)
+        this._sfs._dispatchEvent(SFS2X.SFSEvent.USER_VARIABLES_UPDATE, c);
+    } else this._log.warn("UserVariablesUpdate event, unknown User id: " + b);
 };
 SFS2X.Controllers.SystemController.prototype._fnSubscribeRoomGroup = function (a) {
     var b = {};
@@ -830,8 +830,8 @@ SFS2X.Controllers.SystemController.prototype._fnSubscribeRoomGroup = function (a
         b.groupId = c;
         b.newRooms = this._sfs.roomManager.getRoomListFromGroup(c);
         this._sfs._dispatchEvent(SFS2X.SFSEvent.ROOM_GROUP_SUBSCRIBE,
-            b)
-    } else c = a[SFS2X.Controllers.KEY_ERROR_CODE], a = SFS2X.ErrorCodes.getErrorMessage(c, a[SFS2X.Controllers.KEY_ERROR_PARAMS]), b.errorMessage = a, b.errorCode = c, this._sfs._dispatchEvent(SFS2X.SFSEvent.ROOM_GROUP_SUBSCRIBE_ERROR, b)
+            b);
+    } else c = a[SFS2X.Controllers.KEY_ERROR_CODE], a = SFS2X.ErrorCodes.getErrorMessage(c, a[SFS2X.Controllers.KEY_ERROR_PARAMS]), b.errorMessage = a, b.errorCode = c, this._sfs._dispatchEvent(SFS2X.SFSEvent.ROOM_GROUP_SUBSCRIBE_ERROR, b);
 };
 SFS2X.Controllers.SystemController.prototype._fnUnsubscribeRoomGroup = function (a) {
     var b = {};
@@ -841,8 +841,8 @@ SFS2X.Controllers.SystemController.prototype._fnUnsubscribeRoomGroup = function 
         this._sfs.roomManager._removeGroup(c);
         b.groupId = c;
         this._sfs._dispatchEvent(SFS2X.SFSEvent.ROOM_GROUP_UNSUBSCRIBE,
-            b)
-    } else c = a[SFS2X.Controllers.KEY_ERROR_CODE], a = SFS2X.ErrorCodes.getErrorMessage(c, a[SFS2X.Controllers.KEY_ERROR_PARAMS]), b.errorMessage = a, b.errorCode = c, this._sfs._dispatchEvent(SFS2X.SFSEvent.ROOM_GROUP_UNSUBSCRIBE_ERROR, b)
+            b);
+    } else c = a[SFS2X.Controllers.KEY_ERROR_CODE], a = SFS2X.ErrorCodes.getErrorMessage(c, a[SFS2X.Controllers.KEY_ERROR_PARAMS]), b.errorMessage = a, b.errorCode = c, this._sfs._dispatchEvent(SFS2X.SFSEvent.ROOM_GROUP_UNSUBSCRIBE_ERROR, b);
 };
 SFS2X.Controllers.SystemController.prototype._fnSpectatorToPlayer = function (a) {
     var b = {};
@@ -853,8 +853,8 @@ SFS2X.Controllers.SystemController.prototype._fnSpectatorToPlayer = function (a)
             e = this._sfs.userManager.getUserById(d),
             f = this._sfs.roomManager.getRoomById(c);
         null != f ? null != e ? e.isJoinedInRoom(f) ? (e._setPlayerId(a, f), b.room = f, b.user = e, b.playerId = a, this._sfs._dispatchEvent(SFS2X.SFSEvent.SPECTATOR_TO_PLAYER,
-            b)) : this._log.warn("SpectatorToPlayer event, user " + e + " not joined in Room ", f) : this._log.warn("SpectatorToPlayer event, unknown User id: " + d) : this._log.warn("SpectatorToPlayer event, unknown Room id: " + c)
-    } else c = a[SFS2X.Controllers.KEY_ERROR_CODE], d = SFS2X.ErrorCodes.getErrorMessage(c, a[SFS2X.Controllers.KEY_ERROR_PARAMS]), b.errorMessage = d, b.errorCode = c, this._sfs._dispatchEvent(SFS2X.SFSEvent.SPECTATOR_TO_PLAYER_ERROR, b)
+            b)) : this._log.warn("SpectatorToPlayer event, user " + e + " not joined in Room ", f) : this._log.warn("SpectatorToPlayer event, unknown User id: " + d) : this._log.warn("SpectatorToPlayer event, unknown Room id: " + c);
+    } else c = a[SFS2X.Controllers.KEY_ERROR_CODE], d = SFS2X.ErrorCodes.getErrorMessage(c, a[SFS2X.Controllers.KEY_ERROR_PARAMS]), b.errorMessage = d, b.errorCode = c, this._sfs._dispatchEvent(SFS2X.SFSEvent.SPECTATOR_TO_PLAYER_ERROR, b);
 };
 SFS2X.Controllers.SystemController.prototype._fnPlayerToSpectator = function (a) {
     var b = {};
@@ -864,27 +864,27 @@ SFS2X.Controllers.SystemController.prototype._fnPlayerToSpectator = function (a)
             d = this._sfs.userManager.getUserById(a),
             e = this._sfs.roomManager.getRoomById(c);
         null != e ? null != d ? d.isJoinedInRoom(e) ? (d._setPlayerId(-1, e), b.room = e, b.user = d, this._sfs._dispatchEvent(SFS2X.SFSEvent.PLAYER_TO_SPECTATOR, b)) : this._log.warn("PlayerToSpectator event, user " +
-            d + " not joined in Room ", e) : this._log.warn("PlayerToSpectator event, unknown User id: " + a) : this._log.warn("PlayerToSpectator event, unknown Room id: " + c)
-    } else c = a[SFS2X.Controllers.KEY_ERROR_CODE], a = SFS2X.ErrorCodes.getErrorMessage(c, a[SFS2X.Controllers.KEY_ERROR_PARAMS]), b.errorMessage = a, b.errorCode = c, this._sfs._dispatchEvent(SFS2X.SFSEvent.PLAYER_TO_SPECTATOR_ERROR, b)
+            d + " not joined in Room ", e) : this._log.warn("PlayerToSpectator event, unknown User id: " + a) : this._log.warn("PlayerToSpectator event, unknown Room id: " + c);
+    } else c = a[SFS2X.Controllers.KEY_ERROR_CODE], a = SFS2X.ErrorCodes.getErrorMessage(c, a[SFS2X.Controllers.KEY_ERROR_PARAMS]), b.errorMessage = a, b.errorCode = c, this._sfs._dispatchEvent(SFS2X.SFSEvent.PLAYER_TO_SPECTATOR_ERROR, b);
 };
 SFS2X.Controllers.SystemController.prototype._fnFindRooms = function (a) {
     for (var b = {}, a = a[SFS2X.Requests.System.FindRoomsRequest.KEY_FILTERED_ROOMS], c = [], d = 0; d < a.length; d++) {
         var e = SFS2X.Entities.SFSRoom.fromArray(a[d]),
             f = this._sfs.roomManager.getRoomById(e.id);
         null != f && (e.isJoined = f.isJoined);
-        c.push(e)
+        c.push(e);
     }
     b.rooms = c;
-    this._sfs._dispatchEvent(SFS2X.SFSEvent.ROOM_FIND_RESULT, b)
+    this._sfs._dispatchEvent(SFS2X.SFSEvent.ROOM_FIND_RESULT, b);
 };
 SFS2X.Controllers.SystemController.prototype._fnFindUsers = function (a) {
     for (var b = {}, a = a[SFS2X.Requests.System.FindUsersRequest.KEY_FILTERED_USERS], c = [], d = this._sfs.me, e = 0; e < a.length; e++) {
         var f = SFS2X.Entities.SFSUser.fromArray(a[e]);
         f.id == d.id && (f = d);
-        c.push(f)
+        c.push(f);
     }
     b.users = c;
-    this._sfs._dispatchEvent(SFS2X.SFSEvent.USER_FIND_RESULT, b)
+    this._sfs._dispatchEvent(SFS2X.SFSEvent.USER_FIND_RESULT, b);
 };
 SFS2X.Controllers.SystemController.prototype._fnInviteUsers = function (a) {
     var b = {},
@@ -895,7 +895,7 @@ SFS2X.Controllers.SystemController.prototype._fnInviteUsers = function (a) {
             a[SFS2X.Requests.Game.InviteUsersRequest.KEY_PARAMS]);
     a.id = d;
     b.invitation = a;
-    this._sfs._dispatchEvent(SFS2X.SFSEvent.INVITATION, b)
+    this._sfs._dispatchEvent(SFS2X.SFSEvent.INVITATION, b);
 };
 SFS2X.Controllers.SystemController.prototype._fnInvitationReply = function (a) {
     var b = {};
@@ -907,8 +907,8 @@ SFS2X.Controllers.SystemController.prototype._fnInvitationReply = function (a) {
         b.invitee = c;
         b.reply = d;
         b.data = a;
-        this._sfs._dispatchEvent(SFS2X.SFSEvent.INVITATION_REPLY, b)
-    } else c = a[SFS2X.Controllers.KEY_ERROR_CODE], a = SFS2X.ErrorCodes.getErrorMessage(c, a[SFS2X.Controllers.KEY_ERROR_PARAMS]), b.errorMessage = a, b.errorCode = c, this._sfs._dispatchEvent(SFS2X.SFSEvent.INVITATION_REPLY_ERROR, b)
+        this._sfs._dispatchEvent(SFS2X.SFSEvent.INVITATION_REPLY, b);
+    } else c = a[SFS2X.Controllers.KEY_ERROR_CODE], a = SFS2X.ErrorCodes.getErrorMessage(c, a[SFS2X.Controllers.KEY_ERROR_PARAMS]), b.errorMessage = a, b.errorCode = c, this._sfs._dispatchEvent(SFS2X.SFSEvent.INVITATION_REPLY_ERROR, b);
 };
 SFS2X.Controllers.SystemController.prototype._fnQuickJoinGame = function (a) {
     if (null != a[SFS2X.Controllers.KEY_ERROR_CODE]) {
@@ -917,14 +917,14 @@ SFS2X.Controllers.SystemController.prototype._fnQuickJoinGame = function (a) {
             c = {};
         c.errorMessage = a;
         c.errorCode = b;
-        this._sfs._dispatchEvent(SFS2X.SFSEvent.ROOM_JOIN_ERROR, c)
+        this._sfs._dispatchEvent(SFS2X.SFSEvent.ROOM_JOIN_ERROR, c);
     }
 };
 SFS2X.Controllers.SystemController.prototype._fnPingPong = function () {
     var a = this._sfs._lagMonitor._onPingPong(),
         b = {};
     b.lagValue = a;
-    this._sfs._dispatchEvent(SFS2X.SFSEvent.PING_PONG, b)
+    this._sfs._dispatchEvent(SFS2X.SFSEvent.PING_PONG, b);
 };
 SFS2X.Controllers.SystemController.prototype._fnSetUserPosition = function (a) {
     var b = {},
@@ -942,7 +942,7 @@ SFS2X.Controllers.SystemController.prototype._fnSetUserPosition = function (a) {
         for (h = 0; h < d.length; h++) {
             var l =
                 c.getUserById(d[h]);
-            null != l && (c._removeUser(l), i.push(l))
+            null != l && (c._removeUser(l), i.push(l));
         }
     if (null != e)
         for (h = 0; h < e.length; h++) l = e[h], d = this._getOrCreateUser(l, !0, c), g.push(d), c._addUser(d), l = l[5], null != l && (d.aoiEntryPoint = SFS2X.Entities.Data.Vec3D.fromArray(l));
@@ -956,7 +956,7 @@ SFS2X.Controllers.SystemController.prototype._fnSetUserPosition = function (a) {
     b.removedUsers = i;
     b.addedUsers = g;
     b.room = c;
-    this._sfs._dispatchEvent(SFS2X.SFSEvent.PROXIMITY_LIST_UPDATE, b)
+    this._sfs._dispatchEvent(SFS2X.SFSEvent.PROXIMITY_LIST_UPDATE, b);
 };
 SFS2X.Controllers.SystemController.prototype._fnSetMMOItemVariables = function (a) {
     var b = {},
@@ -968,13 +968,13 @@ SFS2X.Controllers.SystemController.prototype._fnSetMMOItemVariables = function (
         for (var f = 0; f < a.length; f++) {
             var g = SFS2X.Entities.Variables.MMOItemVariable.fromArray(a[f]);
             d._setVariable(g);
-            e.push(g.name)
+            e.push(g.name);
         }
         b.changedVars = e;
         b.mmoItem = d;
         b.room = c;
         this._sfs._dispatchEvent(SFS2X.SFSEvent.MMOITEM_VARIABLES_UPDATE,
-            b)
+            b);
     }
 };
 SFS2X.Controllers.SystemController.prototype._fnUserEnterRoom = function (a) {
@@ -985,7 +985,7 @@ SFS2X.Controllers.SystemController.prototype._fnUserEnterRoom = function (a) {
         var c = {};
         c.user = a;
         c.room = b;
-        this._sfs._dispatchEvent(SFS2X.SFSEvent.USER_ENTER_ROOM, c)
+        this._sfs._dispatchEvent(SFS2X.SFSEvent.USER_ENTER_ROOM, c);
     }
 };
 SFS2X.Controllers.SystemController.prototype._fnUserCountChange = function (a) {
@@ -1000,7 +1000,7 @@ SFS2X.Controllers.SystemController.prototype._fnUserCountChange = function (a) {
         a.room = b;
         a.uCount = c;
         a.sCount = d;
-        this._sfs._dispatchEvent(SFS2X.SFSEvent.USER_COUNT_CHANGE, a)
+        this._sfs._dispatchEvent(SFS2X.SFSEvent.USER_COUNT_CHANGE, a);
     }
 };
 SFS2X.Controllers.SystemController.prototype._fnUserLost = function (a) {
@@ -1013,7 +1013,7 @@ SFS2X.Controllers.SystemController.prototype._fnUserLost = function (a) {
             var d = {};
             d.user = a;
             d.room = b[c];
-            this._sfs._dispatchEvent(SFS2X.SFSEvent.USER_EXIT_ROOM, d)
+            this._sfs._dispatchEvent(SFS2X.SFSEvent.USER_EXIT_ROOM, d);
         }
     }
 };
@@ -1025,7 +1025,7 @@ SFS2X.Controllers.SystemController.prototype._fnRoomLost = function (a) {
         for (var c = a.getUserList(), d = 0; d < c.length; d++) b._removeUser(c[d]);
         b = {};
         b.room = a;
-        this._sfs._dispatchEvent(SFS2X.SFSEvent.ROOM_REMOVE, b)
+        this._sfs._dispatchEvent(SFS2X.SFSEvent.ROOM_REMOVE, b);
     }
 };
 SFS2X.Controllers.SystemController.prototype._fnUserExitRoom = function (a) {
@@ -1039,11 +1039,11 @@ SFS2X.Controllers.SystemController.prototype._fnUserExitRoom = function (a) {
         c.user = a;
         c.room = b;
         this._sfs._dispatchEvent(SFS2X.SFSEvent.USER_EXIT_ROOM,
-            c)
-    } else this._log.debug("Failed to handle UserExit event. Room: " + b + ", User: " + a)
+            c);
+    } else this._log.debug("Failed to handle UserExit event. Room: " + b + ", User: " + a);
 };
 SFS2X.Controllers.SystemController.prototype._fnClientDisconnection = function (a) {
-    this._sfs._handleClientDisconnection(SFS2X.Utils.ClientDisconnectionReason.getReason(a.dr))
+    this._sfs._handleClientDisconnection(SFS2X.Utils.ClientDisconnectionReason.getReason(a.dr));
 };
 SFS2X.Controllers.SystemController.prototype._fnInitBuddyList = function (a) {
     var b = {};
@@ -1054,7 +1054,7 @@ SFS2X.Controllers.SystemController.prototype._fnInitBuddyList = function (a) {
         this._sfs.buddyManager._clearAll();
         for (a = 0; a < c.length; a++) {
             var f = SFS2X.Entities.SFSBuddy.fromArray(c[a]);
-            this._sfs.buddyManager._addBuddy(f)
+            this._sfs.buddyManager._addBuddy(f);
         }
         null != e && this._sfs.buddyManager._setBuddyStates(e);
         c = [];
@@ -1063,9 +1063,9 @@ SFS2X.Controllers.SystemController.prototype._fnInitBuddyList = function (a) {
         this._sfs.buddyManager._setInited();
         b.buddyList = this._sfs.buddyManager.getBuddyList();
         b.myVariables = this._sfs.buddyManager.getMyVariables();
-        this._sfs._dispatchEvent(SFS2X.SFSBuddyEvent.BUDDY_LIST_INIT, b)
+        this._sfs._dispatchEvent(SFS2X.SFSBuddyEvent.BUDDY_LIST_INIT, b);
     } else d = a[SFS2X.Controllers.KEY_ERROR_CODE], a = SFS2X.ErrorCodes.getErrorMessage(d, a[SFS2X.Controllers.KEY_ERROR_PARAMS]), b.errorMessage = a, b.errorCode = d, this._sfs._dispatchEvent(SFS2X.SFSBuddyEvent.BUDDY_ERROR,
-        b)
+        b);
 };
 SFS2X.Controllers.SystemController.prototype._fnAddBuddy = function (a) {
     var b = {};
@@ -1073,26 +1073,26 @@ SFS2X.Controllers.SystemController.prototype._fnAddBuddy = function (a) {
         var c = SFS2X.Entities.SFSBuddy.fromArray(a[SFS2X.Requests.BuddyList.AddBuddyRequest.KEY_BUDDY_NAME]);
         this._sfs.buddyManager._addBuddy(c);
         b.buddy = c;
-        this._sfs._dispatchEvent(SFS2X.SFSBuddyEvent.BUDDY_ADD, b)
-    } else c = a[SFS2X.Controllers.KEY_ERROR_CODE], a = SFS2X.ErrorCodes.getErrorMessage(c, a[SFS2X.Controllers.KEY_ERROR_PARAMS]), b.errorMessage = a, b.errorCode = c, this._sfs._dispatchEvent(SFS2X.SFSBuddyEvent.BUDDY_ERROR, b)
+        this._sfs._dispatchEvent(SFS2X.SFSBuddyEvent.BUDDY_ADD, b);
+    } else c = a[SFS2X.Controllers.KEY_ERROR_CODE], a = SFS2X.ErrorCodes.getErrorMessage(c, a[SFS2X.Controllers.KEY_ERROR_PARAMS]), b.errorMessage = a, b.errorCode = c, this._sfs._dispatchEvent(SFS2X.SFSBuddyEvent.BUDDY_ERROR, b);
 };
 SFS2X.Controllers.SystemController.prototype._fnRemoveBuddy = function (a) {
     var b = {};
     if (null == a[SFS2X.Controllers.KEY_ERROR_CODE]) {
         var c = a[SFS2X.Requests.BuddyList.RemoveBuddyRequest.KEY_BUDDY_NAME],
             a = this._sfs.buddyManager._removeBuddyByName(c);
-        null != a ? (b.buddy = a, this._sfs._dispatchEvent(SFS2X.SFSBuddyEvent.BUDDY_REMOVE, b)) : this._log.warn("Unexpected: buddy removal failed, can't find " + c + " in local buddy list")
+        null != a ? (b.buddy = a, this._sfs._dispatchEvent(SFS2X.SFSBuddyEvent.BUDDY_REMOVE, b)) : this._log.warn("Unexpected: buddy removal failed, can't find " + c + " in local buddy list");
     } else c = a[SFS2X.Controllers.KEY_ERROR_CODE], a = SFS2X.ErrorCodes.getErrorMessage(c, a[SFS2X.Controllers.KEY_ERROR_PARAMS]),
-        b.errorMessage = a, b.errorCode = c, this._sfs._dispatchEvent(SFS2X.SFSBuddyEvent.BUDDY_ERROR, b)
+        b.errorMessage = a, b.errorCode = c, this._sfs._dispatchEvent(SFS2X.SFSBuddyEvent.BUDDY_ERROR, b);
 };
 SFS2X.Controllers.SystemController.prototype._fnBlockBuddy = function (a) {
     var b = {};
     if (null == a[SFS2X.Controllers.KEY_ERROR_CODE]) {
         var c = a[SFS2X.Requests.BuddyList.BlockBuddyRequest.KEY_BUDDY_NAME],
             d = this._sfs.buddyManager.getBuddyByName(c);
-        null != d ? (d.blocked = a[SFS2X.Requests.BuddyList.BlockBuddyRequest.KEY_BUDDY_BLOCK_STATE], b.buddy = d, this._sfs._dispatchEvent(SFS2X.SFSBuddyEvent.BUDDY_BLOCK, b)) : this._log.warn("Unexpected: buddy blocking/unblocking failed, can't find " + c + " in local buddy list")
+        null != d ? (d.blocked = a[SFS2X.Requests.BuddyList.BlockBuddyRequest.KEY_BUDDY_BLOCK_STATE], b.buddy = d, this._sfs._dispatchEvent(SFS2X.SFSBuddyEvent.BUDDY_BLOCK, b)) : this._log.warn("Unexpected: buddy blocking/unblocking failed, can't find " + c + " in local buddy list");
     } else c =
-        a[SFS2X.Controllers.KEY_ERROR_CODE], a = SFS2X.ErrorCodes.getErrorMessage(c, a[SFS2X.Controllers.KEY_ERROR_PARAMS]), b.errorMessage = a, b.errorCode = c, this._sfs._dispatchEvent(SFS2X.SFSBuddyEvent.BUDDY_ERROR, b)
+        a[SFS2X.Controllers.KEY_ERROR_CODE], a = SFS2X.ErrorCodes.getErrorMessage(c, a[SFS2X.Controllers.KEY_ERROR_PARAMS]), b.errorMessage = a, b.errorCode = c, this._sfs._dispatchEvent(SFS2X.SFSBuddyEvent.BUDDY_ERROR, b);
 };
 SFS2X.Controllers.SystemController.prototype._fnGoOnline = function (a) {
     var b = {};
@@ -1108,11 +1108,11 @@ SFS2X.Controllers.SystemController.prototype._fnGoOnline = function (a) {
         else if (null != d) d.id = a[SFS2X.Requests.BuddyList.GoOnlineRequest.KEY_BUDDY_ID], d._setVariable(new SFS2X.Entities.Variables.SFSBuddyVariable(SFS2X.Entities.Variables.ReservedBuddyVariables.BV_ONLINE, g)), f == SFS2X.Utils.BuddyOnlineState.LEFT_THE_SERVER && d._clearVolatileVariables(), i = this._sfs.buddyManager.getMyOnlineState();
         else {
             this._log.warn("Unexpected:  buddy '" + c + "' not found in local Buddy List when trying to set his online state");
-            return
+            return;
         }
         i && (b.buddy =
-            d, b.isItMe = e, this._sfs._dispatchEvent(SFS2X.SFSBuddyEvent.BUDDY_ONLINE_STATE_CHANGE, b))
-    } else c = a[SFS2X.Controllers.KEY_ERROR_CODE], a = SFS2X.ErrorCodes.getErrorMessage(c, a[SFS2X.Controllers.KEY_ERROR_PARAMS]), b.errorMessage = a, b.errorCode = c, this._sfs._dispatchEvent(SFS2X.SFSBuddyEvent.BUDDY_ERROR, b)
+            d, b.isItMe = e, this._sfs._dispatchEvent(SFS2X.SFSBuddyEvent.BUDDY_ONLINE_STATE_CHANGE, b));
+    } else c = a[SFS2X.Controllers.KEY_ERROR_CODE], a = SFS2X.ErrorCodes.getErrorMessage(c, a[SFS2X.Controllers.KEY_ERROR_PARAMS]), b.errorMessage = a, b.errorCode = c, this._sfs._dispatchEvent(SFS2X.SFSBuddyEvent.BUDDY_ERROR, b);
 };
 SFS2X.Controllers.SystemController.prototype._fnSetBuddyVariables = function (a) {
     var b = {};
@@ -1120,22 +1120,22 @@ SFS2X.Controllers.SystemController.prototype._fnSetBuddyVariables = function (a)
         for (var c = a[SFS2X.Requests.BuddyList.SetBuddyVariablesRequest.KEY_BUDDY_NAME], a = a[SFS2X.Requests.BuddyList.SetBuddyVariablesRequest.KEY_BUDDY_VARS], d = this._sfs.buddyManager.getBuddyByName(c), e = c == this._sfs.me.name, f = [], g = [], i = !0, j = 0; j < a.length; j++) {
             var k = SFS2X.Entities.Variables.SFSBuddyVariable.fromArray(a[j]);
             g.push(k);
-            f.push(k.name)
+            f.push(k.name);
         }
         if (e) this._sfs.buddyManager._setMyVariables(g);
         else if (null != d) d._setVariables(g), i = sfs.buddyManager.getMyOnlineState();
         else {
             this._log.warn("Unexpected:  buddy '" + c + "' not found in local Buddy List when trying to set his Buddy Variables");
-            return
+            return;
         }
-        i && (b.buddy = d, b.isItMe = e, b.changedVars = f, this._sfs._dispatchEvent(SFS2X.SFSBuddyEvent.BUDDY_VARIABLES_UPDATE, b))
+        i && (b.buddy = d, b.isItMe = e, b.changedVars = f, this._sfs._dispatchEvent(SFS2X.SFSBuddyEvent.BUDDY_VARIABLES_UPDATE, b));
     } else c = a[SFS2X.Controllers.KEY_ERROR_CODE], a = SFS2X.ErrorCodes.getErrorMessage(c, a[SFS2X.Controllers.KEY_ERROR_PARAMS]), b.errorMessage = a, b.errorCode = c, this._sfs._dispatchEvent(SFS2X.SFSBuddyEvent.BUDDY_ERROR,
-        b)
+        b);
 };
 SFS2X.Controllers.SystemController.prototype._populateRoomList = function (a) {
     for (var b = this._sfs.roomManager, c = 0; c < a.length; c++) {
         var d = SFS2X.Entities.SFSRoom.fromArray(a[c]);
-        b._replaceRoom(d)
+        b._replaceRoom(d);
     }
 };
 SFS2X.Controllers.SystemController.prototype._getOrCreateUser = function (a, b, c) {
@@ -1145,10 +1145,10 @@ SFS2X.Controllers.SystemController.prototype._getOrCreateUser = function (a, b, 
     else if (null != c) {
         d._setPlayerId(a[3], c);
         a = a[4];
-        for (c = 0; c < a.length; c++) d._setVariable(SFS2X.Entities.Variables.SFSUserVariable.fromArray(a[c]))
+        for (c = 0; c < a.length; c++) d._setVariable(SFS2X.Entities.Variables.SFSUserVariable.fromArray(a[c]));
     }
     b && this._sfs.userManager._addUser(d);
-    return d
+    return d;
 };
 SFS2X.Controllers.ExtensionController = function (a) {
     this.KEY_CMD = "c";
@@ -1156,10 +1156,10 @@ SFS2X.Controllers.ExtensionController = function (a) {
     this.KEY_ROOM = "r";
     this._sfs = a;
     this._id = 1;
-    this._log = SFS2X.Logger
+    this._log = SFS2X.Logger;
 };
 SFS2X.Controllers.ExtensionController.prototype.getId = function () {
-    return this._id
+    return this._id;
 };
 SFS2X.Controllers.ExtensionController.prototype.handleMessage = function (a) {
     this._sfs.debug && this._log.info("IN < ExtensionResponse");
@@ -1167,11 +1167,11 @@ SFS2X.Controllers.ExtensionController.prototype.handleMessage = function (a) {
     b.cmd = a[this.KEY_CMD];
     b.params = a[this.KEY_PARAMS];
     null != a[this.KEY_ROOM] && (b.sourceRoom = a[this.KEY_ROOM]);
-    this._sfs._dispatchEvent(SFS2X.SFSEvent.EXTENSION_RESPONSE, b)
+    this._sfs._dispatchEvent(SFS2X.SFSEvent.EXTENSION_RESPONSE, b);
 };
 SFS2X.DebugHelper = {};
 SFS2X.DebugHelper.getDump = function (a) {
-    return void 0 == a ? "<Null>" : a instanceof Object ? this._dumpObject(a) : "<Not An Object>"
+    return void 0 == a ? "<Null>" : a instanceof Object ? this._dumpObject(a) : "<Not An Object>";
 };
 SFS2X.DebugHelper._dumpObject = function (a) {
     function b(a, c, f) {
@@ -1183,25 +1183,25 @@ SFS2X.DebugHelper._dumpObject = function (a) {
             else {
                 var k = j.constructor,
                     h = void 0;
-                k === Array || k === Object ? (g = null, h = k === Array ? "[Array]" : "[Object]", b(j, c, f + 1)) : g = j.constructor === Number ? "Num" : j.constructor === Boolean ? "Bool" : j.constructor === String ? "Str" : "Unsupported"
+                k === Array || k === Object ? (g = null, h = k === Array ? "[Array]" : "[Object]", b(j, c, f + 1)) : g = j.constructor === Number ? "Num" : j.constructor === Boolean ? "Bool" : j.constructor === String ? "Str" : "Unsupported";
             }
-            c.push(SFS2X.DebugHelper._getTabs(f) + i + ": " + (void 0 == h ? j : h) + (void 0 == g ? "" : " (" + g + ")"))
+            c.push(SFS2X.DebugHelper._getTabs(f) + i + ": " + (void 0 == h ? j : h) + (void 0 == g ? "" : " (" + g + ")"));
         }
     }
 
     var c = [];
     b(a, c, 0);
-    return SFS2X.DebugHelper._prettyPrint(c)
+    return SFS2X.DebugHelper._prettyPrint(c);
 };
 SFS2X.DebugHelper._getTabs = function (a) {
     if (0 >= a) return "";
     if (1 == a) return "\t";
     for (var b = "", c = 0; c < a; c++) b += "\t";
-    return b
+    return b;
 };
 SFS2X.DebugHelper._prettyPrint = function (a) {
     for (var b = "", c = a.length - 1; -1 < c; c--) b += a[c] + "\n";
-    return b
+    return b;
 };
 SFS2X.Entities = {};
 SFS2X.Entities.Data = {};
@@ -1219,74 +1219,74 @@ SFS2X.Entities.SFSRoom = Class.extend({
         this.variables = {};
         this.properties = {};
         this._userManager = new SFS2X.Managers.UserManager;
-        this._roomManager = null
+        this._roomManager = null;
     },
     toString: function () {
-        return "[Room: " + this.name + ", Id: " + this.id + ", Group id: " + this.groupId + "]"
+        return "[Room: " + this.name + ", Id: " + this.id + ", Group id: " + this.groupId + "]";
     },
     getUserCount: function () {
         return this.isJoined ?
-            this.isGame ? this.getPlayerList().length : this._userManager.getUserCount() : this._userCount
+            this.isGame ? this.getPlayerList().length : this._userManager.getUserCount() : this._userCount;
     },
     getSpectatorCount: function () {
-        return !this.isGame ? 0 : this.isJoined ? this.getSpectatorList().length : this._specCount
+        return !this.isGame ? 0 : this.isJoined ? this.getSpectatorList().length : this._specCount;
     },
     getCapacity: function () {
-        return this.maxUsers + this.maxSpectators
+        return this.maxUsers + this.maxSpectators;
     },
     getUserByName: function (a) {
-        return this._userManager.getUserByName(a)
+        return this._userManager.getUserByName(a);
     },
     getUserById: function (a) {
-        return this._userManager.getUserById(a)
+        return this._userManager.getUserById(a);
     },
     containsUser: function (a) {
-        return this._userManager.containsUser(a)
+        return this._userManager.containsUser(a);
     },
     getUserList: function () {
-        return this._userManager.getUserList()
+        return this._userManager.getUserList();
     },
     getPlayerList: function () {
         for (var a = [], b = this._userManager.getUserList(), c = 0; c < b.length; c++) {
             var d = b[c];
-            d.isPlayerInRoom(this) && a.push(d)
+            d.isPlayerInRoom(this) && a.push(d);
         }
-        return a
+        return a;
     },
     getSpectatorList: function () {
         for (var a = [], b = this._userManager.getUserList(), c = 0; c < b.length; c++) {
             var d = b[c];
-            d.isSpectatorInRoom(this) && a.push(d)
+            d.isSpectatorInRoom(this) && a.push(d);
         }
-        return a
+        return a;
     },
     getVariable: function (a) {
-        return this.variables[a]
+        return this.variables[a];
     },
     containsVariable: function (a) {
-        return null != this.variables[a]
+        return null != this.variables[a];
     },
     getVariables: function () {
-        return SFS2X.Utils.ArrayUtil.objToArray(this.variables)
+        return SFS2X.Utils.ArrayUtil.objToArray(this.variables);
     },
     getRoomManager: function () {
-        return this._roomManager
+        return this._roomManager;
     },
     _addUser: function (a) {
-        this._userManager._addUser(a)
+        this._userManager._addUser(a);
     },
     _removeUser: function (a) {
-        this._userManager._removeUser(a)
+        this._userManager._removeUser(a);
     },
     _setVariables: function (a) {
-        for (var b = 0; b < a.length; b++) this._setVariable(a[b])
+        for (var b = 0; b < a.length; b++) this._setVariable(a[b]);
     },
     _setVariable: function (a) {
-        a.isNull() ? delete this.variables[a.name] : this.variables[a.name] = a
+        a.isNull() ? delete this.variables[a.name] : this.variables[a.name] = a;
     },
     _setRoomManager: function (a) {
         if (null != this._roomManager) throw new SFS2X.Exceptions.SFSError("Room Manager already assigned to Room " + this.toString());
-        this._roomManager = a
+        this._roomManager = a;
     },
     _merge: function (a) {
         this.variables = [];
@@ -1294,7 +1294,7 @@ SFS2X.Entities.SFSRoom = Class.extend({
             a.variables[b];
         this._userManager._clearAll();
         a = a.getUserList();
-        for (b = 0; b < a.length; b++) this._userManager._addUser(a[b])
+        for (b = 0; b < a.length; b++) this._userManager._addUser(a[b]);
     }
 });
 SFS2X.Entities.SFSRoom.fromArray = function (a) {
@@ -1310,30 +1310,30 @@ SFS2X.Entities.SFSRoom.fromArray = function (a) {
     if (null != d)
         for (var e = 0; e < d.length; e++) {
             var f = SFS2X.Entities.Variables.SFSRoomVariable.fromArray(d[e]);
-            c._setVariable(f)
+            c._setVariable(f);
         }
     c.isGame && (c._specCount = a[9], c.maxSpectators = a[10]);
     b && (c.defaultAOI = SFS2X.Entities.Data.Vec3D.fromArray(a[11]), null !=
     a[13] && (c.lowerMapLimit = SFS2X.Entities.Data.Vec3D.fromArray(a[12]), c.higherMapLimit = SFS2X.Entities.Data.Vec3D.fromArray(a[13])));
-    return c
+    return c;
 };
 SFS2X.Entities.MMORoom = SFS2X.Entities.SFSRoom.extend({
     init: function (a, b, c) {
         this._super(a, b, c);
         this.higherMapLimit = this.lowerMapLimit = this.defaultAOI = null;
-        this._itemsById = {}
+        this._itemsById = {};
     },
     getMMOItem: function (a) {
-        return this._itemsById[a]
+        return this._itemsById[a];
     },
     getMMOItems: function () {
-        return SFS2X.Utils.ArrayUtil.objToArray(this._itemsById)
+        return SFS2X.Utils.ArrayUtil.objToArray(this._itemsById);
     },
     _addMMOItem: function (a) {
-        this._itemsById[a.id] = a
+        this._itemsById[a.id] = a;
     },
     _removeItem: function (a) {
-        delete this._itemsById[a]
+        delete this._itemsById[a];
     }
 });
 SFS2X.Entities.SFSUser = function (a, b, c) {
@@ -1345,7 +1345,7 @@ SFS2X.Entities.SFSUser = function (a, b, c) {
     this.aoiEntryPoint = null;
     this.variables = {};
     this._playerIdByRoomId = {};
-    this._userManager = null
+    this._userManager = null;
 };
 SFS2X.Entities.SFSUser.fromArray = function (a, b) {
     var c = new SFS2X.Entities.SFSUser(a[0], a[1]);
@@ -1355,156 +1355,156 @@ SFS2X.Entities.SFSUser.fromArray = function (a, b) {
     if (null != d)
         for (var e = 0; e < d.length; e++) {
             var f = SFS2X.Entities.Variables.SFSUserVariable.fromArray(d[e]);
-            c._setVariable(f)
+            c._setVariable(f);
         }
-    return c
+    return c;
 };
 SFS2X.Entities.SFSUser.prototype.toString = function () {
-    return "[User: " + this.name + ", Id: " + this.id + ", Is me: " + this.isItMe + "]"
+    return "[User: " + this.name + ", Id: " + this.id + ", Is me: " + this.isItMe + "]";
 };
 SFS2X.Entities.SFSUser.prototype.isJoinedInRoom = function (a) {
-    return a.containsUser(this)
+    return a.containsUser(this);
 };
 SFS2X.Entities.SFSUser.prototype.isGuest = function () {
-    return this.privilegeId == SFS2X.Entities.UserPrivileges.GUEST
+    return this.privilegeId == SFS2X.Entities.UserPrivileges.GUEST;
 };
 SFS2X.Entities.SFSUser.prototype.isStandardUser = function () {
-    return this.privilegeId == SFS2X.Entities.UserPrivileges.STANDARD
+    return this.privilegeId == SFS2X.Entities.UserPrivileges.STANDARD;
 };
 SFS2X.Entities.SFSUser.prototype.isModerator = function () {
-    return this.privilegeId == SFS2X.Entities.UserPrivileges.MODERATOR
+    return this.privilegeId == SFS2X.Entities.UserPrivileges.MODERATOR;
 };
 SFS2X.Entities.SFSUser.prototype.isAdmin = function () {
-    return this.privilegeId == SFS2X.Entities.UserPrivileges.ADMINISTRATOR
+    return this.privilegeId == SFS2X.Entities.UserPrivileges.ADMINISTRATOR;
 };
 SFS2X.Entities.SFSUser.prototype.isPlayer = function () {
-    return this.isPlayerInRoom(this._userManager._sfs.lastJoinedRoom)
+    return this.isPlayerInRoom(this._userManager._sfs.lastJoinedRoom);
 };
 SFS2X.Entities.SFSUser.prototype.isSpectator = function () {
-    return this.isSpectatorInRoom(this._userManager._sfs.lastJoinedRoom)
+    return this.isSpectatorInRoom(this._userManager._sfs.lastJoinedRoom);
 };
 SFS2X.Entities.SFSUser.prototype.getPlayerId = function (a) {
     var b = 0;
     null != this._playerIdByRoomId[a.id] && (b = this._playerIdByRoomId[a.id]);
-    return b
+    return b;
 };
 SFS2X.Entities.SFSUser.prototype.isPlayerInRoom = function (a) {
-    return null != a && a.isGame ? 0 < this._playerIdByRoomId[a.id] : !1
+    return null != a && a.isGame ? 0 < this._playerIdByRoomId[a.id] : !1;
 };
 SFS2X.Entities.SFSUser.prototype.isSpectatorInRoom = function (a) {
-    return null != a && a.isGame ? 0 > this._playerIdByRoomId[a.id] : !1
+    return null != a && a.isGame ? 0 > this._playerIdByRoomId[a.id] : !1;
 };
 SFS2X.Entities.SFSUser.prototype.getVariable = function (a) {
-    return this.variables[a]
+    return this.variables[a];
 };
 SFS2X.Entities.SFSUser.prototype.containsVariable = function (a) {
-    return null != this.variables[a]
+    return null != this.variables[a];
 };
 SFS2X.Entities.SFSUser.prototype.getVariables = function () {
-    return SFS2X.Utils.ArrayUtil.objToArray(this.variables)
+    return SFS2X.Utils.ArrayUtil.objToArray(this.variables);
 };
 SFS2X.Entities.SFSUser.prototype.getUserManager = function () {
-    return this._userManager
+    return this._userManager;
 };
 SFS2X.Entities.SFSUser.prototype._setPlayerId = function (a, b) {
-    this._playerIdByRoomId[b.id] = a
+    this._playerIdByRoomId[b.id] = a;
 };
 SFS2X.Entities.SFSUser.prototype._removePlayerId = function (a) {
-    delete this._playerIdByRoomId[a.id]
+    delete this._playerIdByRoomId[a.id];
 };
 SFS2X.Entities.SFSUser.prototype._setVariables = function (a) {
-    for (var b = 0; b < a.length; b++) this._setVariable(a[b])
+    for (var b = 0; b < a.length; b++) this._setVariable(a[b]);
 };
 SFS2X.Entities.SFSUser.prototype._setVariable = function (a) {
-    a.isNull() ? delete this.variables[a.name] : this.variables[a.name] = a
+    a.isNull() ? delete this.variables[a.name] : this.variables[a.name] = a;
 };
 SFS2X.Entities.SFSUser.prototype._setUserManager = function (a) {
     if (null != this._userManager) throw new SFS2X.Exceptions.SFSError("User Manager already assigned to user " + this.toString());
-    this._userManager = a
+    this._userManager = a;
 };
 SFS2X.Entities.SFSBuddy = function (a, b, c, d) {
     this.id = a;
     this.name = b;
     this.blocked = null != c ? c : !1;
     this.temp = null != d ? d : !1;
-    this.variables = {}
+    this.variables = {};
 };
 SFS2X.Entities.SFSBuddy.fromArray = function (a) {
     for (var b = new SFS2X.Entities.SFSBuddy(a[0], a[1], a[2], 4 < a.length ? a[4] : !1), a = a[3], c = 0; c < a.length; c++) {
         var d = SFS2X.Entities.Variables.SFSBuddyVariable.fromArray(a[c]);
-        b._setVariable(d)
+        b._setVariable(d);
     }
-    return b
+    return b;
 };
 SFS2X.Entities.SFSBuddy.prototype.toString = function () {
-    return "[Buddy: " + this.name + ", Id: " + this.id + "]"
+    return "[Buddy: " + this.name + ", Id: " + this.id + "]";
 };
 SFS2X.Entities.SFSBuddy.prototype.isBlocked = function () {
-    return this.blocked
+    return this.blocked;
 };
 SFS2X.Entities.SFSBuddy.prototype.isTemp = function () {
-    return this.temp
+    return this.temp;
 };
 SFS2X.Entities.SFSBuddy.prototype.isOnline = function () {
     var a = !0,
         b = SFS2X.Entities.Variables.ReservedBuddyVariables.BV_ONLINE;
     this.containsVariable(b) && (a = this.getVariable(b).value);
-    return a && -1 < this.id
+    return a && -1 < this.id;
 };
 SFS2X.Entities.SFSBuddy.prototype.getState = function () {
     var a = SFS2X.Entities.Variables.ReservedBuddyVariables.BV_STATE;
-    return this.containsVariable(a) ? this.getVariable(a).value : null
+    return this.containsVariable(a) ? this.getVariable(a).value : null;
 };
 SFS2X.Entities.SFSBuddy.prototype.getNickName = function () {
     var a = SFS2X.Entities.Variables.ReservedBuddyVariables.BV_NICKNAME;
-    return this.containsVariable(a) ? this.getVariable(a).value : null
+    return this.containsVariable(a) ? this.getVariable(a).value : null;
 };
 SFS2X.Entities.SFSBuddy.prototype.getVariable = function (a) {
-    return this.variables[a]
+    return this.variables[a];
 };
 SFS2X.Entities.SFSBuddy.prototype.containsVariable = function (a) {
-    return null != this.variables[a]
+    return null != this.variables[a];
 };
 SFS2X.Entities.SFSBuddy.prototype.getVariables = function () {
-    return SFS2X.Utils.ArrayUtil.objToArray(this.variables)
+    return SFS2X.Utils.ArrayUtil.objToArray(this.variables);
 };
 SFS2X.Entities.SFSBuddy.prototype.getOfflineVariables = function () {
     var a = [],
         b;
     for (b in this.variables) {
         var c = this.variables[b];
-        c.name.charAt(0) == SFS2X.Entities.Variables.SFSBuddyVariable.OFFLINE_PREFIX && a.push(c)
+        c.name.charAt(0) == SFS2X.Entities.Variables.SFSBuddyVariable.OFFLINE_PREFIX && a.push(c);
     }
-    return a
+    return a;
 };
 SFS2X.Entities.SFSBuddy.prototype.getOnlineVariables = function () {
     var a = [],
         b;
     for (b in this.variables) {
         var c = this.variables[b];
-        c.name.charAt(0) != SFS2X.Entities.Variables.SFSBuddyVariable.OFFLINE_PREFIX && a.push(c)
+        c.name.charAt(0) != SFS2X.Entities.Variables.SFSBuddyVariable.OFFLINE_PREFIX && a.push(c);
     }
-    return a
+    return a;
 };
 SFS2X.Entities.SFSBuddy.prototype._setVariables = function (a) {
-    for (var b = 0; b < a.length; b++) this._setVariable(a[b])
+    for (var b = 0; b < a.length; b++) this._setVariable(a[b]);
 };
 SFS2X.Entities.SFSBuddy.prototype._setVariable = function (a) {
-    a.isNull() ? this._removeVariable(a.name) : this.variables[a.name] = a
+    a.isNull() ? this._removeVariable(a.name) : this.variables[a.name] = a;
 };
 SFS2X.Entities.SFSBuddy.prototype._removeVariable = function (a) {
-    delete this.variables[a]
+    delete this.variables[a];
 };
 SFS2X.Entities.SFSBuddy.prototype._clearVolatileVariables = function () {
     for (var a in this.variables) {
         var b = this.variables[a];
-        b.name.charAt(0) != SFS2X.Entities.Variables.SFSBuddyVariable.OFFLINE_PREFIX && this._removeVariable(b.name)
+        b.name.charAt(0) != SFS2X.Entities.Variables.SFSBuddyVariable.OFFLINE_PREFIX && this._removeVariable(b.name);
     }
 };
 SFS2X.Entities.MMOItem = function (a) {
     this.id = a;
     this.aoiEntryPoint = null;
-    this.variables = {}
+    this.variables = {};
 };
 SFS2X.Entities.MMOItem.fromArray = function (a) {
     var b = new SFS2X.Entities.MMOItem(a[0]),
@@ -1512,101 +1512,101 @@ SFS2X.Entities.MMOItem.fromArray = function (a) {
     if (null != a)
         for (var c = 0; c < a.length; c++) {
             var d = SFS2X.Entities.Variables.MMOItemVariable.fromArray(a[c]);
-            b._setVariable(d)
+            b._setVariable(d);
         }
-    return b
+    return b;
 };
 SFS2X.Entities.MMOItem.prototype.toString = function () {
-    return "[Item: " + this.id + "]"
+    return "[Item: " + this.id + "]";
 };
 SFS2X.Entities.MMOItem.prototype.getVariable = function (a) {
-    return this.variables[a]
+    return this.variables[a];
 };
 SFS2X.Entities.MMOItem.prototype.containsVariable = function (a) {
-    return null != this.variables[a]
+    return null != this.variables[a];
 };
 SFS2X.Entities.MMOItem.prototype.getVariables = function () {
-    return SFS2X.Utils.ArrayUtil.objToArray(this.variables)
+    return SFS2X.Utils.ArrayUtil.objToArray(this.variables);
 };
 SFS2X.Entities.MMOItem.prototype._setVariables = function (a) {
-    for (var b = 0; b < a.length; b++) this._setVariable(a[b])
+    for (var b = 0; b < a.length; b++) this._setVariable(a[b]);
 };
 SFS2X.Entities.MMOItem.prototype._setVariable = function (a) {
-    null != a && (a.isNull() ? delete this.variables[a.name] : this.variables[a.name] = a)
+    null != a && (a.isNull() ? delete this.variables[a.name] : this.variables[a.name] = a);
 };
 SFS2X.Entities.Variables.SFSUserVariable = Class.extend({
     init: function (a, b, c) {
         this.name = a;
         this.value = b;
-        this._setType(c)
+        this._setType(c);
     },
     toString: function () {
-        return "[UserVar: " + this.name + ", Type: " + this.type + ", Value: " + this.value + "]"
+        return "[UserVar: " + this.name + ", Type: " + this.type + ", Value: " + this.value + "]";
     },
     toArray: function () {
-        return [this.name, SFS2X.Entities.Variables.VariableType.getTypeIdFromName(this.type), this.value]
+        return [this.name, SFS2X.Entities.Variables.VariableType.getTypeIdFromName(this.type), this.value];
     },
     isNull: function () {
-        return SFS2X.Entities.Variables.VariableType.getTypeIdFromName(this.type) == SFS2X.Entities.Variables.VariableType.NULL
+        return SFS2X.Entities.Variables.VariableType.getTypeIdFromName(this.type) == SFS2X.Entities.Variables.VariableType.NULL;
     },
     _setType: function (a) {
         null == a && (a = -1);
         -1 < a ? this.type = this.getTypeName(a) : null == this.value ? this.type = this.getTypeName(SFS2X.Entities.Variables.VariableType.NULL) : (a = typeof this.value, "boolean" == a ? this.type = this.getTypeName(SFS2X.Entities.Variables.VariableType.BOOL) : "number" == a ? this.type = this.value === +this.value && this.value === (this.value | 0) ? this.getTypeName(SFS2X.Entities.Variables.VariableType.INT) : this.getTypeName(SFS2X.Entities.Variables.VariableType.DOUBLE) : "string" == a ? this.type = this.getTypeName(SFS2X.Entities.Variables.VariableType.STRING) :
-        "object" == a && (this.type = this.value instanceof Array ? this.getTypeName(SFS2X.Entities.Variables.VariableType.ARRAY) : this.getTypeName(SFS2X.Entities.Variables.VariableType.OBJECT)))
+        "object" == a && (this.type = this.value instanceof Array ? this.getTypeName(SFS2X.Entities.Variables.VariableType.ARRAY) : this.getTypeName(SFS2X.Entities.Variables.VariableType.OBJECT)));
     },
     getTypeName: function (a) {
-        return SFS2X.Entities.Variables.VariableType.getTypeName(a)
+        return SFS2X.Entities.Variables.VariableType.getTypeName(a);
     }
 });
 SFS2X.Entities.Variables.SFSUserVariable.fromArray = function (a) {
-    return new SFS2X.Entities.Variables.SFSUserVariable(a[0], a[2], a[1])
+    return new SFS2X.Entities.Variables.SFSUserVariable(a[0], a[2], a[1]);
 };
 SFS2X.Entities.Variables.SFSRoomVariable = SFS2X.Entities.Variables.SFSUserVariable.extend({
     init: function (a, b, c) {
         this._super(a, b, c);
-        this.isPersistent = this.isPrivate = !1
+        this.isPersistent = this.isPrivate = !1;
     },
     toString: function () {
-        return "[RoomVar: " + this.name + ", Type: " + this.type + ", Value: " + this.value + ", Is private: " + this.isPrivate + "]"
+        return "[RoomVar: " + this.name + ", Type: " + this.type + ", Value: " + this.value + ", Is private: " + this.isPrivate + "]";
     },
     toArray: function () {
         var a = this._super();
         a.push(this.isPrivate);
         a.push(this.isPersistent);
-        return a
+        return a;
     }
 });
 SFS2X.Entities.Variables.SFSRoomVariable.fromArray = function (a) {
     var b = new SFS2X.Entities.Variables.SFSRoomVariable(a[0], a[2], a[1]);
     b.isPrivate = a[3];
     b.isPersistent = a[4];
-    return b
+    return b;
 };
 SFS2X.Entities.Variables.SFSBuddyVariable = SFS2X.Entities.Variables.SFSUserVariable.extend({
     init: function (a, b, c) {
-        this._super(a, b, c)
+        this._super(a, b, c);
     },
     toString: function () {
-        return "[BuddyVar: " + this.name + ", Type: " + this.type + ", Value: " + this.value + "]"
+        return "[BuddyVar: " + this.name + ", Type: " + this.type + ", Value: " + this.value + "]";
     },
     isOffline: function () {
-        return this.name.charAt(0) == SFS2X.Entities.Variables.SFSBuddyVariable.OFFLINE_PREFIX
+        return this.name.charAt(0) == SFS2X.Entities.Variables.SFSBuddyVariable.OFFLINE_PREFIX;
     }
 });
 SFS2X.Entities.Variables.SFSBuddyVariable.OFFLINE_PREFIX = "$";
 SFS2X.Entities.Variables.SFSBuddyVariable.fromArray = function (a) {
-    return new SFS2X.Entities.Variables.SFSBuddyVariable(a[0], a[2], a[1])
+    return new SFS2X.Entities.Variables.SFSBuddyVariable(a[0], a[2], a[1]);
 };
 SFS2X.Entities.Variables.MMOItemVariable = SFS2X.Entities.Variables.SFSUserVariable.extend({
     init: function (a, b, c) {
-        this._super(a, b, c)
+        this._super(a, b, c);
     },
     toString: function () {
-        return "[ItemVar: " + this.name + ", Type: " + this.type + ", Value: " + this.value + "]"
+        return "[ItemVar: " + this.name + ", Type: " + this.type + ", Value: " + this.value + "]";
     }
 });
 SFS2X.Entities.Variables.MMOItemVariable.fromArray = function (a) {
-    return new SFS2X.Entities.Variables.MMOItemVariable(a[0], a[2], a[1])
+    return new SFS2X.Entities.Variables.MMOItemVariable(a[0], a[2], a[1]);
 };
 SFS2X.Entities.Variables.VariableType = {
     _typeStrings: "Null Bool Int Double String Object Array".split(" "),
@@ -1619,10 +1619,10 @@ SFS2X.Entities.Variables.VariableType = {
     ARRAY: 6
 };
 SFS2X.Entities.Variables.VariableType.getTypeName = function (a) {
-    return this._typeStrings[a]
+    return this._typeStrings[a];
 };
 SFS2X.Entities.Variables.VariableType.getTypeIdFromName = function (a) {
-    return this._typeStrings.indexOf(a)
+    return this._typeStrings.indexOf(a);
 };
 SFS2X.Entities.Variables.ReservedBuddyVariables = {};
 SFS2X.Entities.Variables.ReservedBuddyVariables.BV_ONLINE = "$__BV_ONLINE__";
@@ -1639,44 +1639,44 @@ SFS2X.Entities.Match.MatchExpression = function (a, b, c) {
     this.varName = a;
     this.condition = b;
     this.value = c;
-    this._parent = this.next = this.logicOp = null
+    this._parent = this.next = this.logicOp = null;
 };
 SFS2X.Entities.Match.MatchExpression.chainedMatchExpression = function (a, b, c, d, e) {
     a = new SFS2X.Entities.Match.MatchExpression(a, b, c);
     a.logicOp = d;
     a._parent = e;
-    return a
+    return a;
 };
 SFS2X.Entities.Match.MatchExpression.prototype.and = function (a, b, c) {
-    return this.next = SFS2X.Entities.Match.MatchExpression.chainedMatchExpression(a, b, c, SFS2X.Entities.Match.LogicOperator.AND, this)
+    return this.next = SFS2X.Entities.Match.MatchExpression.chainedMatchExpression(a, b, c, SFS2X.Entities.Match.LogicOperator.AND, this);
 };
 SFS2X.Entities.Match.MatchExpression.prototype.or = function (a, b, c) {
-    return this.next = SFS2X.Entities.Match.MatchExpression.chainedMatchExpression(a, b, c, SFS2X.Entities.Match.LogicOperator.OR, this)
+    return this.next = SFS2X.Entities.Match.MatchExpression.chainedMatchExpression(a, b, c, SFS2X.Entities.Match.LogicOperator.OR, this);
 };
 SFS2X.Entities.Match.MatchExpression.prototype.hasNext = function () {
-    return null != this.next
+    return null != this.next;
 };
 SFS2X.Entities.Match.MatchExpression.prototype.rewind = function () {
     for (var a = this; ;)
         if (null != a._parent) a = a._parent;
         else break;
-    return a
+    return a;
 };
 SFS2X.Entities.Match.MatchExpression.prototype.toString = function () {
     for (var a = this.rewind(), b = a._asString(); a.hasNext();) a = a.next, b += a._asString();
-    return b
+    return b;
 };
 SFS2X.Entities.Match.MatchExpression.prototype._asString = function () {
     var a = "";
     null != this.logicOp && (a += " " + this.logicOp.id + " ");
     a = a + "(" + (this.varName + " " + this.condition.symbol + " " + ("string" == typeof this.value ? "'" + this.value + "'" : this.value));
-    return a + ")"
+    return a + ")";
 };
 SFS2X.Entities.Match.MatchExpression.prototype._toArray = function () {
     var a = this.rewind(),
         b = [];
     for (b.push(a._expressionAsArray()); a.hasNext();) a = a.next, b.push(a._expressionAsArray());
-    return b
+    return b;
 };
 SFS2X.Entities.Match.MatchExpression.prototype._expressionAsArray = function () {
     var a = [];
@@ -1685,22 +1685,22 @@ SFS2X.Entities.Match.MatchExpression.prototype._expressionAsArray = function () 
     a.push(this.condition.type);
     a.push(this.condition.symbol);
     a.push(this.value);
-    return a
+    return a;
 };
 SFS2X.Entities.Match.LogicOperator = function (a) {
-    this.id = a
+    this.id = a;
 };
 SFS2X.Entities.Match.LogicOperator.AND = new SFS2X.Entities.Match.LogicOperator("AND");
 SFS2X.Entities.Match.LogicOperator.OR = new SFS2X.Entities.Match.LogicOperator("OR");
 SFS2X.Entities.Match.BoolMatch = function (a) {
     this.type = 0;
-    this.symbol = a
+    this.symbol = a;
 };
 SFS2X.Entities.Match.BoolMatch.EQUALS = new SFS2X.Entities.Match.BoolMatch("==");
 SFS2X.Entities.Match.BoolMatch.NOT_EQUALS = new SFS2X.Entities.Match.BoolMatch("!=");
 SFS2X.Entities.Match.NumberMatch = function (a) {
     this.type = 1;
-    this.symbol = a
+    this.symbol = a;
 };
 SFS2X.Entities.Match.NumberMatch.EQUALS = new SFS2X.Entities.Match.NumberMatch("==");
 SFS2X.Entities.Match.NumberMatch.NOT_EQUALS = new SFS2X.Entities.Match.NumberMatch("!=");
@@ -1710,7 +1710,7 @@ SFS2X.Entities.Match.NumberMatch.LESS_THAN = new SFS2X.Entities.Match.NumberMatc
 SFS2X.Entities.Match.NumberMatch.LESS_THAN_OR_EQUAL_TO = new SFS2X.Entities.Match.NumberMatch("<=");
 SFS2X.Entities.Match.StringMatch = function (a) {
     this.type = 2;
-    this.symbol = a
+    this.symbol = a;
 };
 SFS2X.Entities.Match.StringMatch.EQUALS = new SFS2X.Entities.Match.StringMatch("==");
 SFS2X.Entities.Match.StringMatch.NOT_EQUALS = new SFS2X.Entities.Match.StringMatch("!=");
@@ -1740,7 +1740,7 @@ SFS2X.Entities.Invitation.SFSInvitation = function (a, b, c, d) {
     this.inviter = a;
     this.invitee = b;
     this.secondsForAnswer = null != c ? c : 15;
-    this.params = d
+    this.params = d;
 };
 SFS2X.Entities.Invitation.InvitationReply = {};
 SFS2X.Entities.Invitation.InvitationReply.ACCEPT = 0;
@@ -1748,19 +1748,19 @@ SFS2X.Entities.Invitation.InvitationReply.REFUSE = 1;
 SFS2X.Entities.Data.Vec3D = function (a, b, c) {
     this.px = null != a ? a : 0;
     this.py = null != b ? b : 0;
-    this.pz = null != c ? c : 0
+    this.pz = null != c ? c : 0;
 };
 SFS2X.Entities.Data.Vec3D.fromArray = function (a) {
-    return new SFS2X.Entities.Data.Vec3D(a[0], a[1], a[2])
+    return new SFS2X.Entities.Data.Vec3D(a[0], a[1], a[2]);
 };
 SFS2X.Entities.Data.Vec3D.prototype.isFloat = function () {
-    return !(this.px === parseInt(this.px) && this.py === parseInt(this.py) && this.pz === parseInt(this.pz))
+    return !(this.px === parseInt(this.px) && this.py === parseInt(this.py) && this.pz === parseInt(this.pz));
 };
 SFS2X.Entities.Data.Vec3D.prototype._toString = function () {
-    return "(" + this.px + ", " + this.py + ", " + this.pz + ")"
+    return "(" + this.px + ", " + this.py + ", " + this.pz + ")";
 };
 SFS2X.Entities.Data.Vec3D.prototype._toArray = function () {
-    return [this.px, this.py, this.pz]
+    return [this.px, this.py, this.pz];
 };
 SFS2X.ErrorCodes = {};
 SFS2X.ErrorCodes._errorsByCode = ["Client API version is obsolete: {0}; required version: {1}", "Requested Zone {0} does not exist", "User name {0} is not recognized", "Wrong password for user {0}", "User {0} is banned", "Zone {0} is full", "User {0} is already logged in Zone {1}", "The server is full", "Zone {0} is currently inactive", "User name {0} contains bad words; filtered: {1}", "Guest users not allowed in Zone {0}", "IP address {0} is banned", "A Room with the same name already exists: {0}", "Requested Group is not available - Room: {0}; Group: {1}",
@@ -1769,26 +1769,26 @@ SFS2X.ErrorCodes._errorsByCode = ["Client API version is obsolete: {0}; required
     "Buddy Manager error, was not able to block buddy {0} because offline", "Buddy Manager error, you are attempting to set too many Buddy Variables; limit is {0}", "Game {0} access denied, user does not match access criteria", "QuickJoinGame action failed: no matching Rooms were found", "Your previous invitation reply was invalid or arrived too late"
 ];
 SFS2X.ErrorCodes.setErrorMessage = function (a, b) {
-    this._errorsByCode[a] = b
+    this._errorsByCode[a] = b;
 };
 SFS2X.ErrorCodes.getErrorMessage = function (a, b) {
-    return this.stringFormat(this._errorsByCode[a], b)
+    return this.stringFormat(this._errorsByCode[a], b);
 };
 SFS2X.ErrorCodes.stringFormat = function (a, b) {
     if (null == a) return "";
     if (null != b)
         for (var c = 0; c < b.length; c++) a = a.replace("{" + c + "}", b[c]);
-    return a
+    return a;
 };
 SFS2X.EventDispatcher = function () {
-    this.listenersByEvent = {}
+    this.listenersByEvent = {};
 };
 SFS2X.EventDispatcher.prototype.addEventListener = function (a, b, c) {
     null == this.listenersByEvent[a] && (this.listenersByEvent[a] = []);
     this.listenersByEvent[a].push({
         listener: b,
         scope: c
-    })
+    });
 };
 SFS2X.EventDispatcher.prototype.removeEventListener = function (a, b) {
     var c = this.listenersByEvent[a];
@@ -1796,16 +1796,16 @@ SFS2X.EventDispatcher.prototype.removeEventListener = function (a, b) {
         for (var d = 0; d < c.length; d++)
             if (c[d].listener === b) {
                 c.splice(d, 1);
-                break
+                break;
             }
 };
 SFS2X.EventDispatcher.prototype.dispatchEvent = function (a, b) {
     var c = this.listenersByEvent[a];
     if (c && 0 < c.length)
-        for (var d = 0; d < c.length; d++) c[d].listener.call(c[d].scope, b)
+        for (var d = 0; d < c.length; d++) c[d].listener.call(c[d].scope, b);
 };
 SFS2X.EventDispatcher.prototype.getListeners = function (a) {
-    return listeners[a]
+    return listeners[a];
 };
 SFS2X.SFSEvent = {
     HANDSHAKE: "handshake",
@@ -1869,19 +1869,19 @@ SFS2X.SFSBuddyEvent = {
 SFS2X.Exceptions = {};
 SFS2X.Exceptions.SFSError = Class.extend({
     init: function (a) {
-        this._messsage = a
+        this._messsage = a;
     },
     getMessage: function () {
-        return this._messsage
+        return this._messsage;
     }
 });
 SFS2X.Exceptions.SFSValidationError = SFS2X.Exceptions.SFSError.extend({
     init: function (a, b) {
         this._super(a);
-        this._errrors = b
+        this._errrors = b;
     },
     getErrors: function () {
-        return this._errrors
+        return this._errrors;
     }
 });
 SFS2X.LogLevel = {
@@ -1892,88 +1892,88 @@ SFS2X.LogLevel = {
 };
 SFS2X._Logger = function () {
     this.isAvailable = void 0 != console;
-    this.level = SFS2X.LogLevel.INFO
+    this.level = SFS2X.LogLevel.INFO;
 };
 SFS2X.Logger = new SFS2X._Logger;
 SFS2X._Logger.prototype.setLevel = function (a) {
-    a < SFS2X.LogLevel.DEBUG || a > SFS2X.LogLevel.ERROR || (this.level = a)
+    a < SFS2X.LogLevel.DEBUG || a > SFS2X.LogLevel.ERROR || (this.level = a);
 };
 SFS2X._Logger.prototype.debug = function (a) {
-    this.isAvailable && this.level <= SFS2X.LogLevel.DEBUG && console.log("[DEBUG] " + a)
+    this.isAvailable && this.level <= SFS2X.LogLevel.DEBUG && console.log("[DEBUG] " + a);
 };
 SFS2X._Logger.prototype.info = function (a) {
-    this.isAvailable && this.level <= SFS2X.LogLevel.INFO && console.log("[INFO] " + a)
+    this.isAvailable && this.level <= SFS2X.LogLevel.INFO && console.log("[INFO] " + a);
 };
 SFS2X._Logger.prototype.warn = function (a) {
-    this.isAvailable && this.level <= SFS2X.LogLevel.WARN && console.log("[WARN] " + a)
+    this.isAvailable && this.level <= SFS2X.LogLevel.WARN && console.log("[WARN] " + a);
 };
 SFS2X._Logger.prototype.error = function (a) {
-    this.isAvailable && console.log("[ERROR] " + a)
+    this.isAvailable && console.log("[ERROR] " + a);
 };
 SFS2X.Managers = {};
 SFS2X.Managers.UserManager = Class.extend({
     init: function (a) {
         this._sfs = a;
         this._usersById = new SFS2X.Utils.HashTable;
-        this._usersByName = new SFS2X.Utils.HashTable
+        this._usersByName = new SFS2X.Utils.HashTable;
     },
     containsUserName: function (a) {
-        return this._usersByName.hasItem(a)
+        return this._usersByName.hasItem(a);
     },
     containsUserId: function (a) {
-        return this._usersById.hasItem(a)
+        return this._usersById.hasItem(a);
     },
     containsUser: function (a) {
-        return this._usersById.hasItem(a.id)
+        return this._usersById.hasItem(a.id);
     },
     getUserById: function (a) {
-        return this._usersById.getItem(a)
+        return this._usersById.getItem(a);
     },
     getUserByName: function (a) {
-        return this._usersByName.getItem(a)
+        return this._usersByName.getItem(a);
     },
     getUserCount: function () {
-        return this._usersById.length
+        return this._usersById.length;
     },
     getUserList: function () {
-        return this._usersById.values()
+        return this._usersById.values();
     },
     _addUser: function (a) {
         this._usersById.hasItem(a.id) && SFS2X.Logger.warn("Unexpected, duplicate user in UserManager: " + a.toString());
-        this.__addUser(a)
+        this.__addUser(a);
     },
     __addUser: function (a) {
         this._usersByName.setItem(a.name, a);
-        this._usersById.setItem(a.id, a)
+        this._usersById.setItem(a.id, a);
     },
     _removeUser: function (a) {
-        this.__removeUser(a)
+        this.__removeUser(a);
     },
     __removeUser: function (a) {
         this._usersById.removeItem(a.id);
-        this._usersByName.removeItem(a.name)
+        this._usersByName.removeItem(a.name);
     },
     _removeUserById: function () {
         this._usersById.removeItem(user.id);
-        this._usersByName.removeItem(user.name)
+        this._usersByName.removeItem(user.name);
     },
     _clearAll: function () {
         this._usersById.clear();
-        this._usersByName.clear()
+        this._usersByName.clear();
     }
 });
 SFS2X.Managers.GlobalUserManager = SFS2X.Managers.UserManager.extend({
     init: function (a) {
         this._super(a);
-        this._roomRefCount = []
+        this._roomRefCount = [];
     },
     _addUser: function (a) {
         null == this._roomRefCount[a] ? this._roomRefCount[a] = 1 : this._roomRefCount[a]++;
-        this.__addUser(a)
+        this.__addUser(a);
     },
     _removeUser: function (a) {
         null != this._roomRefCount ? 1 > this._roomRefCount[a] ? SFS2X.Logger.warn("GlobalUserManager RefCount is already at zero. User: " + a) : (this._roomRefCount[a]--, 0 == this._roomRefCount[a] && (this.__removeUser(a), delete this._roomRefCount[a])) : SFS2X.Logger.warn("Can't remove User from GlobalUserManager. RefCount missing. User: " +
-            a)
+            a);
     },
     dumpRefCount: function () {
     }
@@ -1983,16 +1983,16 @@ SFS2X.Managers.RoomManager = function (a) {
     this._ownerZone = null;
     this._groups = [];
     this._roomsById = new SFS2X.Utils.HashTable;
-    this._roomsByName = new SFS2X.Utils.HashTable
+    this._roomsByName = new SFS2X.Utils.HashTable;
 };
 SFS2X.Managers.RoomManager.prototype.getRoomGroups = function () {
-    return this._groups
+    return this._groups;
 };
 SFS2X.Managers.RoomManager.prototype.containsGroup = function (a) {
-    return -1 < this._groups.indexOf(a)
+    return -1 < this._groups.indexOf(a);
 };
 SFS2X.Managers.RoomManager.prototype.containsRoom = function (a) {
-    return "number" == typeof a ? this._roomsById.hasItem(a) : this._roomsByName.hasItem(a)
+    return "number" == typeof a ? this._roomsById.hasItem(a) : this._roomsByName.hasItem(a);
 };
 SFS2X.Managers.RoomManager.prototype.containsRoomInGroup = function (a, b) {
     var c = this.getRoomListFromGroup(b),
@@ -2005,94 +2005,94 @@ SFS2X.Managers.RoomManager.prototype.containsRoomInGroup = function (a, b) {
             if (e) {
                 if (g.id == a) {
                     d = !0;
-                    break
+                    break;
                 }
             } else if (g.name == a) {
                 d = !0;
-                break
+                break;
             }
     }
-    return d
+    return d;
 };
 SFS2X.Managers.RoomManager.prototype.getRoomById = function (a) {
-    return this._roomsById.getItem(a)
+    return this._roomsById.getItem(a);
 };
 SFS2X.Managers.RoomManager.prototype.getRoomByName = function (a) {
-    return this._roomsByName.getItem(a)
+    return this._roomsByName.getItem(a);
 };
 SFS2X.Managers.RoomManager.prototype.getRoomList = function () {
-    return this._roomsById.values()
+    return this._roomsById.values();
 };
 SFS2X.Managers.RoomManager.prototype.getRoomCount = function () {
-    return this._roomsById.length
+    return this._roomsById.length;
 };
 SFS2X.Managers.RoomManager.prototype.getRoomListFromGroup = function (a) {
     var b = [],
         c;
     for (c in this._roomsById.items) {
         var d = this._roomsById.items[c];
-        d instanceof SFS2X.Entities.SFSRoom && d.groupId == a && b.push(d)
+        d instanceof SFS2X.Entities.SFSRoom && d.groupId == a && b.push(d);
     }
-    return b
+    return b;
 };
 SFS2X.Managers.RoomManager.prototype.getJoinedRooms = function () {
     var a = [],
         b;
     for (b in this._roomsById.items) {
         var c = this._roomsById.items[b];
-        c instanceof SFS2X.Entities.SFSRoom && c.isJoined && a.push(c)
+        c instanceof SFS2X.Entities.SFSRoom && c.isJoined && a.push(c);
     }
-    return a
+    return a;
 };
 SFS2X.Managers.RoomManager.prototype.getUserRooms = function (a) {
     var b = [],
         c;
     for (c in this._roomsById.items) {
         var d = this._roomsById.items[c];
-        d instanceof SFS2X.Entities.SFSRoom && d.containsUser(a) && b.push(d)
+        d instanceof SFS2X.Entities.SFSRoom && d.containsUser(a) && b.push(d);
     }
-    return b
+    return b;
 };
 SFS2X.Managers.RoomManager.prototype._addRoom = function (a, b) {
     null == b && (b = !0);
     this._roomsById.setItem(a.id, a);
     this._roomsByName.setItem(a.name, a);
-    b ? this.containsGroup(a.groupId) || this._addGroup(a.groupId) : a._isManaged = !1
+    b ? this.containsGroup(a.groupId) || this._addGroup(a.groupId) : a._isManaged = !1;
 };
 SFS2X.Managers.RoomManager.prototype._replaceRoom = function (a, b) {
     null == b && (b = !0);
     var c = this.getRoomById(a.id);
     if (null != c) return c._merge(a), c;
     this._addRoom(a, b);
-    return a
+    return a;
 };
 SFS2X.Managers.RoomManager.prototype._removeRoom = function (a) {
     this._roomsById.removeItem(a.id);
-    this._roomsByName.removeItem(a.name)
+    this._roomsByName.removeItem(a.name);
 };
 SFS2X.Managers.RoomManager.prototype._removeRoomById = function (a) {
     a = this.getRoomById(a);
-    null != a && this._removeRoom(a)
+    null != a && this._removeRoom(a);
 };
 SFS2X.Managers.RoomManager.prototype._removeRoomByName = function (a) {
     a = this.getRoomByName(a);
-    null != a && this._removeRoom(a)
+    null != a && this._removeRoom(a);
 };
 SFS2X.Managers.RoomManager.prototype._changeRoomName = function (a, b) {
     var c = a.name;
     a.name = b;
     this._roomsByName.setItem(b, a);
-    this._roomsByName.removeItem(c)
+    this._roomsByName.removeItem(c);
 };
 SFS2X.Managers.RoomManager.prototype._changeRoomPasswordState = function (a, b) {
-    a.isPasswordProtected = b
+    a.isPasswordProtected = b;
 };
 SFS2X.Managers.RoomManager.prototype._changeRoomCapacity = function (a, b, c) {
     a.maxUsers = b;
-    a.maxSpectators = c
+    a.maxSpectators = c;
 };
 SFS2X.Managers.RoomManager.prototype._addGroup = function (a) {
-    this._groups.push(a)
+    this._groups.push(a);
 };
 SFS2X.Managers.RoomManager.prototype._removeGroup = function (a) {
     SFS2X.Utils.ArrayUtil.removeItem(this._groups, a);
@@ -2100,13 +2100,13 @@ SFS2X.Managers.RoomManager.prototype._removeGroup = function (a) {
         b;
     for (b in a) {
         var c = a[b];
-        c instanceof SFS2X.Entities.SFSRoom && (c.isJoined ? c._isManaged = !1 : this._removeRoom(c))
+        c instanceof SFS2X.Entities.SFSRoom && (c.isJoined ? c._isManaged = !1 : this._removeRoom(c));
     }
 };
 SFS2X.Managers.RoomManager.prototype._removeUser = function (a) {
     for (var b in this._roomsById.items) {
         var c = this._roomsById.items[b];
-        c instanceof SFS2X.Entities.SFSRoom && c.containsUser(a) && c._removeUser(a)
+        c instanceof SFS2X.Entities.SFSRoom && c.containsUser(a) && c._removeUser(a);
     }
 };
 SFS2X.Managers.BuddyManager = function (a) {
@@ -2114,116 +2114,116 @@ SFS2X.Managers.BuddyManager = function (a) {
     this._buddiesByName = [];
     this._myVariables = [];
     this._inited = !1;
-    this._buddyStates = []
+    this._buddyStates = [];
 };
 SFS2X.Managers.BuddyManager.prototype.isInited = function () {
-    return this._inited
+    return this._inited;
 };
 SFS2X.Managers.BuddyManager.prototype.containsBuddy = function (a) {
-    return null != this.getBuddyByName(a)
+    return null != this.getBuddyByName(a);
 };
 SFS2X.Managers.BuddyManager.prototype.getBuddyById = function (a) {
     if (-1 < a)
         for (var b in this._buddiesByName) {
             var c = this._buddiesByName[b];
-            if (c instanceof SFS2X.Entities.SFSBuddy && c.id == a) return c
+            if (c instanceof SFS2X.Entities.SFSBuddy && c.id == a) return c;
         }
-    return null
+    return null;
 };
 SFS2X.Managers.BuddyManager.prototype.getBuddyByName = function (a) {
-    return this._buddiesByName[a]
+    return this._buddiesByName[a];
 };
 SFS2X.Managers.BuddyManager.prototype.getBuddyByNickName = function (a) {
     for (var b in this._buddiesByName) {
         var c = this._buddiesByName[b];
-        if (c instanceof SFS2X.Entities.SFSBuddy && c.nickName == a) return c
+        if (c instanceof SFS2X.Entities.SFSBuddy && c.nickName == a) return c;
     }
-    return null
+    return null;
 };
 SFS2X.Managers.BuddyManager.prototype.getOfflineBuddies = function () {
     var a = [],
         b;
     for (b in this._buddiesByName) {
         var c = this._buddiesByName[b];
-        c instanceof SFS2X.Entities.SFSBuddy && !c.isOnline() && a.push(c)
+        c instanceof SFS2X.Entities.SFSBuddy && !c.isOnline() && a.push(c);
     }
-    return a
+    return a;
 };
 SFS2X.Managers.BuddyManager.prototype.getOnlineBuddies = function () {
     var a = [],
         b;
     for (b in this._buddiesByName) {
         var c = this._buddiesByName[b];
-        c instanceof SFS2X.Entities.SFSBuddy && c.isOnline() && a.push(c)
+        c instanceof SFS2X.Entities.SFSBuddy && c.isOnline() && a.push(c);
     }
-    return a
+    return a;
 };
 SFS2X.Managers.BuddyManager.prototype.getBuddyList = function () {
-    return SFS2X.Utils.ArrayUtil.objToArray(this._buddiesByName)
+    return SFS2X.Utils.ArrayUtil.objToArray(this._buddiesByName);
 };
 SFS2X.Managers.BuddyManager.prototype.getMyVariable = function (a) {
-    return this._myVariables[a]
+    return this._myVariables[a];
 };
 SFS2X.Managers.BuddyManager.prototype.getMyVariables = function () {
-    return SFS2X.Utils.ArrayUtil.objToArray(this._myVariables)
+    return SFS2X.Utils.ArrayUtil.objToArray(this._myVariables);
 };
 SFS2X.Managers.BuddyManager.prototype.getMyOnlineState = function () {
     if (!this._inited) return !1;
     var a = !0,
         b = this.getMyVariable(SFS2X.Entities.Variables.ReservedBuddyVariables.BV_ONLINE);
     null != b && (a = b.value);
-    return a
+    return a;
 };
 SFS2X.Managers.BuddyManager.prototype.getMyNickName = function () {
     var a = this.getMyVariable(SFS2X.Entities.Variables.ReservedBuddyVariables.BV_NICKNAME);
-    return null != a ? a.value : null
+    return null != a ? a.value : null;
 };
 SFS2X.Managers.BuddyManager.prototype.getMyState = function () {
     var a = this.getMyVariable(SFS2X.Entities.Variables.ReservedBuddyVariables.BV_STATE);
-    return null != a ? a.value : null
+    return null != a ? a.value : null;
 };
 SFS2X.Managers.BuddyManager.prototype.getBuddyStates = function () {
-    return this._buddyStates
+    return this._buddyStates;
 };
 SFS2X.Managers.BuddyManager.prototype._setInited = function () {
-    this._inited = !0
+    this._inited = !0;
 };
 SFS2X.Managers.BuddyManager.prototype._addBuddy = function (a) {
-    this._buddiesByName[a.name] = a
+    this._buddiesByName[a.name] = a;
 };
 SFS2X.Managers.BuddyManager.prototype._clearAll = function () {
-    this._buddiesByName = []
+    this._buddiesByName = [];
 };
 SFS2X.Managers.BuddyManager.prototype._removeBuddyById = function (a) {
     a = this.getBuddyById(a);
     null != a && delete this._buddiesByName[a.name];
-    return a
+    return a;
 };
 SFS2X.Managers.BuddyManager.prototype._removeBuddyByName = function (a) {
     var b = this.getBuddyByName(a);
     null != b && delete this._buddiesByName[a];
-    return b
+    return b;
 };
 SFS2X.Managers.BuddyManager.prototype._setMyVariables = function (a) {
-    for (var b = 0; b < a.length; b++) this._setMyVariable(a[b])
+    for (var b = 0; b < a.length; b++) this._setMyVariable(a[b]);
 };
 SFS2X.Managers.BuddyManager.prototype._setMyVariable = function (a) {
-    a.isNull() ? delete this._myVariables[a.name] : this._myVariables[a.name] = a
+    a.isNull() ? delete this._myVariables[a.name] : this._myVariables[a.name] = a;
 };
 SFS2X.Managers.BuddyManager.prototype._setMyOnlineState = function (a) {
     a = new SFS2X.Entities.Variables.SFSBuddyVariable(SFS2X.Entities.Variables.ReservedBuddyVariables.BV_ONLINE, a);
-    this._setMyVariable(a)
+    this._setMyVariable(a);
 };
 SFS2X.Managers.BuddyManager.prototype._setMyNickName = function (a) {
     a = new SFS2X.Entities.Variables.SFSBuddyVariable(SFS2X.Entities.Variables.ReservedBuddyVariables.BV_NICKNAME, a);
-    this._setMyVariable(a)
+    this._setMyVariable(a);
 };
 SFS2X.Managers.BuddyManager.prototype._setMyState = function (a) {
     a = new SFS2X.Entities.Variables.SFSBuddyVariable(SFS2X.Entities.Variables.ReservedBuddyVariables.BV_STATE, a);
-    this._setMyVariable(a)
+    this._setMyVariable(a);
 };
 SFS2X.Managers.BuddyManager.prototype._setBuddyStates = function (a) {
-    this._buddyStates = a
+    this._buddyStates = a;
 };
 SFS2X.Requests = {};
 SFS2X.Requests.System = {};
@@ -2235,20 +2235,20 @@ SFS2X.Requests._BaseRequest = Class.extend({
         this._reqObj = {};
         this._id = a;
         this._targetController = 0;
-        this._log = SFS2X.Logger
+        this._log = SFS2X.Logger;
     },
     getMessage: function () {
         return {
             a: this._id,
             c: this._targetController,
             p: this._reqObj
-        }
+        };
     },
     validate: function () {
-        this._log.error("BaseRequest.validate = no child-class implementation found!")
+        this._log.error("BaseRequest.validate = no child-class implementation found!");
     },
     execute: function () {
-        this._log.error("BaseRequest.execute = no child-class implementation found!")
+        this._log.error("BaseRequest.execute = no child-class implementation found!");
     }
 });
 SFS2X.Requests.System.HandshakeRequest = SFS2X.Requests._BaseRequest.extend({
@@ -2256,14 +2256,14 @@ SFS2X.Requests.System.HandshakeRequest = SFS2X.Requests._BaseRequest.extend({
         this._super(SFS2X.Requests.Handshake);
         this._apiVersion = a;
         this._clientDetails = b;
-        this._reconnectionToken = c
+        this._reconnectionToken = c;
     },
     validate: function () {
     },
     execute: function () {
         this._reqObj[this.constructor.KEY_API] = this._apiVersion;
         this._reqObj[this.constructor.KEY_CLIENT_TYPE] = this._clientDetails;
-        null != this._reconnectionToken && (this.reqObj[this.constructor.KEY_RECONNECTION_TOKEN] = this._reconnectionToken)
+        null != this._reconnectionToken && (this.reqObj[this.constructor.KEY_RECONNECTION_TOKEN] = this._reconnectionToken);
     }
 });
 SFS2X.Requests.System.HandshakeRequest.KEY_SESSION_TOKEN = "tk";
@@ -2278,7 +2278,7 @@ SFS2X.Requests.System.LoginRequest = SFS2X.Requests._BaseRequest.extend({
         this._userName = a;
         this._password = b;
         this._params = c;
-        this._zoneName = d
+        this._zoneName = d;
     },
     validate: function (a) {
         if (null != a.me) throw new SFS2X.Exceptions.SFSValidationError("LoginRequest error", ["You are already logged in; logout before attempting a new login"]);
@@ -2287,13 +2287,13 @@ SFS2X.Requests.System.LoginRequest = SFS2X.Requests._BaseRequest.extend({
         if (null == a || 0 == a.length) throw new SFS2X.Exceptions.SFSValidationError("LoginRequest Error", ["Missing Zone name"]);
         this._zoneName = a;
         null == this._userName && (this._userName = "");
-        null == this._password && (this._password = "")
+        null == this._password && (this._password = "");
     },
     execute: function (a) {
         this._reqObj[this.constructor.KEY_ZONE_NAME] = this._zoneName;
         this._reqObj[this.constructor.KEY_USER_NAME] = this._userName;
         this._reqObj[this.constructor.KEY_PASSWORD] = 0 < this._password.length ? hex_md5(a.sessionToken + this._password) : "";
-        null != this._params && (this._reqObj[this.constructor.KEY_PARAMS] = this._params)
+        null != this._params && (this._reqObj[this.constructor.KEY_PARAMS] = this._params);
     }
 });
 SFS2X.Requests.System.LoginRequest.KEY_ZONE_NAME = "zn";
@@ -2306,7 +2306,7 @@ SFS2X.Requests.System.LoginRequest.KEY_ROOMLIST = "rl";
 SFS2X.Requests.System.LoginRequest.KEY_RECONNECTION_SECONDS = "rs";
 SFS2X.Requests.System.LogoutRequest = SFS2X.Requests._BaseRequest.extend({
     init: function () {
-        this._super(SFS2X.Requests.Logout)
+        this._super(SFS2X.Requests.Logout);
     },
     validate: function (a) {
         if (null == a.me) throw new SFS2X.Exceptions.SFSValidationError("LogoutRequest error", ["You are not logged in"]);
@@ -2321,7 +2321,7 @@ SFS2X.Requests.System.JoinRoomRequest = SFS2X.Requests._BaseRequest.extend({
         "string" == typeof a ? this._rName = a : "number" == typeof a ? this._rId = a : a instanceof SFS2X.Entities.SFSRoom && (this._rId = a.id, this._rName = a.name);
         this._password = b;
         this._roomIdToLeave = c;
-        this._asSpectator = "boolean" == typeof d ? d : !1
+        this._asSpectator = "boolean" == typeof d ? d : !1;
     },
     validate: function () {
         if (null == this._rId && null == this._rName) throw new SFS2X.Exceptions.SFSValidationError("JoinRoomRequest Error", ["Missing Room id or name, please provide one of the two or an existing Room object"]);
@@ -2331,7 +2331,7 @@ SFS2X.Requests.System.JoinRoomRequest = SFS2X.Requests._BaseRequest.extend({
         0 <= this._rId ? this._reqObj[this.constructor.KEY_ROOM_ID] = this._rId : null != this._rName && (this._reqObj[this.constructor.KEY_ROOM_NAME] = this._rName);
         null != this._password && (this._reqObj[this.constructor.KEY_PASS] = this._password);
         null != this._roomIdToLeave && (this._reqObj[this.constructor.KEY_ROOM_TO_LEAVE] = this._roomIdToLeave);
-        this._asSpectator && (this._reqObj[this.constructor.KEY_AS_SPECTATOR] = this._asSpectator)
+        this._asSpectator && (this._reqObj[this.constructor.KEY_AS_SPECTATOR] = this._asSpectator);
     }
 });
 SFS2X.Requests.System.JoinRoomRequest.KEY_ROOM = "r";
@@ -2346,7 +2346,7 @@ SFS2X.Requests.System.CreateRoomRequest = SFS2X.Requests._BaseRequest.extend({
         this._super(SFS2X.Requests.CreateRoom);
         this._settings = a;
         this._autoJoin = "boolean" == typeof b ? b : !1;
-        this._roomToLeave = c
+        this._roomToLeave = c;
     },
     validate: function () {
         var a = [];
@@ -2372,9 +2372,9 @@ SFS2X.Requests.System.CreateRoomRequest = SFS2X.Requests._BaseRequest.extend({
                 b;
             for (b in this._settings.variables) {
                 var c = this._settings.variables[b];
-                c instanceof SFS2X.Entities.Variables.SFSRoomVariable && a.push(c.toArray())
+                c instanceof SFS2X.Entities.Variables.SFSRoomVariable && a.push(c.toArray());
             }
-            this._reqObj[this.constructor.KEY_ROOMVARS] = a
+            this._reqObj[this.constructor.KEY_ROOMVARS] = a;
         }
         null != this._settings.permissions && (a = [], a.push(this._settings.permissions.allowNameChange), a.push(this._settings.permissions.allowPasswordStateChange), a.push(this._settings.permissions.allowPublicMessages), a.push(this._settings.permissions.allowResizing),
             this._reqObj[this.constructor.KEY_PERMISSIONS] = a);
@@ -2384,7 +2384,7 @@ SFS2X.Requests.System.CreateRoomRequest = SFS2X.Requests._BaseRequest.extend({
         this._settings instanceof SFS2X.Requests.MMO.MMORoomSettings && (this._reqObj[this.constructor.KEY_MMO_DEFAULT_AOI] = this._settings.defaultAOI._toArray(), null != this._settings.mapLimits && (this._reqObj[this.constructor.KEY_MMO_MAP_LOW_LIMIT] = this._settings.mapLimits.lowerLimit._toArray(), this._reqObj[this.constructor.KEY_MMO_MAP_HIGH_LIMIT] =
             this._settings.mapLimits.higherLimit._toArray()), this._reqObj[this.constructor.KEY_MMO_USER_MAX_LIMBO_SECONDS] = this._settings.userMaxLimboSeconds, this._reqObj[this.constructor.KEY_MMO_PROXIMITY_UPDATE_MILLIS] = this._settings.proximityListUpdateMillis, this._reqObj[this.constructor.KEY_MMO_SEND_ENTRY_POINT] = this._settings.sendAOIEntryPoint);
         this._reqObj[this.constructor.KEY_AUTOJOIN] = this._autoJoin;
-        null != this._roomToLeave && (this._reqObj[this.constructor.KEY_ROOM_TO_LEAVE] = this._roomToLeave.id)
+        null != this._roomToLeave && (this._reqObj[this.constructor.KEY_ROOM_TO_LEAVE] = this._roomToLeave.id);
     }
 });
 SFS2X.Requests.System.CreateRoomRequest.KEY_ROOM = "r";
@@ -2414,7 +2414,7 @@ SFS2X.Requests.System.GenericMessageRequest = SFS2X.Requests._BaseRequest.extend
         this._super(SFS2X.Requests.GenericMessage);
         this._type = -1;
         this._recipient = this._params = this._message = this._user = this._room = null;
-        this._sendMode = -1
+        this._sendMode = -1;
     },
     validate: function (a) {
         if (0 > this._type) throw new SFS2X.Exceptions.SFSValidationError("GenericMessageRequest Error", ["Unsupported message type: " + this._type]);
@@ -2434,7 +2434,7 @@ SFS2X.Requests.System.GenericMessageRequest = SFS2X.Requests._BaseRequest.extend
                 this._validateBuddyMessage(a, b);
                 break;
             default:
-                this._validateSuperUserMessage(a, b)
+                this._validateSuperUserMessage(a, b);
         }
         if (0 < b.length) throw new SFS2X.Exceptions.SFSValidationError("GenericMessageRequest Error", b);
     },
@@ -2455,26 +2455,26 @@ SFS2X.Requests.System.GenericMessageRequest = SFS2X.Requests._BaseRequest.extend
                 this._executeBuddyMessage(a);
                 break;
             default:
-                this._executeSuperUserMessage(a)
+                this._executeSuperUserMessage(a);
         }
     },
     _validatePublicMessage: function (a, b) {
         (null == this._message || 0 == this._message.length) &&
         b.push("Public message is empty");
-        null != this._room && !a.me.isJoinedInRoom(this._room) && b.push("You are not joined in the target Room: " + this._room)
+        null != this._room && !a.me.isJoinedInRoom(this._room) && b.push("You are not joined in the target Room: " + this._room);
     },
     _validatePrivateMessage: function (a, b) {
         (null == this._message || 0 == this._message.length) && b.push("Private message is empty");
-        0 > this._recipient && b.push("Invalid recipient id: " + this._recipient)
+        0 > this._recipient && b.push("Invalid recipient id: " + this._recipient);
     },
     _validateObjectMessage: function (a, b) {
-        null == this._params && b.push("Object message is null")
+        null == this._params && b.push("Object message is null");
     },
     _validateBuddyMessage: function (a, b) {
         a.buddyManager.isInited || b.push("Buddy List not yet initialized; please send an InitBuddyRequest first");
         !1 == a.buddyManager.myOnlineState && b.push("Can't send messages while you are offline in the Buddy List system");
         (null == this._message || 0 == this._message.length) && b.push("Buddy message is empty");
-        0 > this._recipient && b.push("Recipient is offline or not in your Buddy List")
+        0 > this._recipient && b.push("Recipient is offline or not in your Buddy List");
     },
     _validateSuperUserMessage: function (a, b) {
         (null == this._message || 0 == this._message.length) && b.push("Moderator message is empty");
@@ -2487,7 +2487,7 @@ SFS2X.Requests.System.GenericMessageRequest = SFS2X.Requests._BaseRequest.extend
                 this._recipient instanceof SFS2X.Entities.SFSRoom || b.push("SFSRoom object expected as recipient");
                 break;
             case SFS2X.Requests.MessageRecipientMode.TO_GROUP:
-                "string" != typeof this._recipient && b.push("String object (the groupId) expected as recipient")
+                "string" != typeof this._recipient && b.push("String object (the groupId) expected as recipient");
         }
     },
     _executePublicMessage: function (a) {
@@ -2496,18 +2496,18 @@ SFS2X.Requests.System.GenericMessageRequest = SFS2X.Requests._BaseRequest.extend
         this._reqObj[SFS2X.Requests.System.GenericMessageRequest.KEY_ROOM_ID] = this._room.id;
         this._reqObj[SFS2X.Requests.System.GenericMessageRequest.KEY_USER_ID] = a.me.id;
         this._reqObj[SFS2X.Requests.System.GenericMessageRequest.KEY_MESSAGE] = this._message;
-        null != this._params && (this._reqObj[SFS2X.Requests.System.GenericMessageRequest.KEY_XTRA_PARAMS] = this._params)
+        null != this._params && (this._reqObj[SFS2X.Requests.System.GenericMessageRequest.KEY_XTRA_PARAMS] = this._params);
     },
     _executePrivateMessage: function () {
         this._reqObj[SFS2X.Requests.System.GenericMessageRequest.KEY_RECIPIENT] = this._recipient;
         this._reqObj[SFS2X.Requests.System.GenericMessageRequest.KEY_MESSAGE] =
             this._message;
-        null != this._params && (this._reqObj[SFS2X.Requests.System.GenericMessageRequest.KEY_XTRA_PARAMS] = this._params)
+        null != this._params && (this._reqObj[SFS2X.Requests.System.GenericMessageRequest.KEY_XTRA_PARAMS] = this._params);
     },
     _executeBuddyMessage: function () {
         this._reqObj[SFS2X.Requests.System.GenericMessageRequest.KEY_RECIPIENT] = this._recipient;
         this._reqObj[SFS2X.Requests.System.GenericMessageRequest.KEY_MESSAGE] = this._message;
-        null != this._params && (this._reqObj[SFS2X.Requests.System.GenericMessageRequest.KEY_XTRA_PARAMS] = this._params)
+        null != this._params && (this._reqObj[SFS2X.Requests.System.GenericMessageRequest.KEY_XTRA_PARAMS] = this._params);
     },
     _executeSuperUserMessage: function () {
         this._reqObj[SFS2X.Requests.System.GenericMessageRequest.KEY_MESSAGE] =
@@ -2523,7 +2523,7 @@ SFS2X.Requests.System.GenericMessageRequest = SFS2X.Requests._BaseRequest.extend
                     this._recipient.id;
                 break;
             case SFS2X.Requests.MessageRecipientMode.TO_GROUP:
-                this._reqObj[SFS2X.Requests.System.GenericMessageRequest.KEY_RECIPIENT] = this._recipient
+                this._reqObj[SFS2X.Requests.System.GenericMessageRequest.KEY_RECIPIENT] = this._recipient;
         }
     },
     _executeObjectMessage: function (a) {
@@ -2536,12 +2536,12 @@ SFS2X.Requests.System.GenericMessageRequest = SFS2X.Requests._BaseRequest.extend
                 b.length);
             for (var c in b) {
                 var d = b[c];
-                d instanceof SFS2X.Entities.SFSUser ? a.push(d.id) : this._log.warn("Bad recipient in ObjectMessage recipient list: " + typeof d + "; expected type: SFSUser")
+                d instanceof SFS2X.Entities.SFSUser ? a.push(d.id) : this._log.warn("Bad recipient in ObjectMessage recipient list: " + typeof d + "; expected type: SFSUser");
             }
         }
         this._reqObj[SFS2X.Requests.System.GenericMessageRequest.KEY_ROOM_ID] = this._room.id;
         this._reqObj[SFS2X.Requests.System.GenericMessageRequest.KEY_XTRA_PARAMS] = this._params;
-        0 < a.length && (this._reqObj[SFS2X.Requests.System.GenericMessageRequest.KEY_RECIPIENT] = a)
+        0 < a.length && (this._reqObj[SFS2X.Requests.System.GenericMessageRequest.KEY_RECIPIENT] = a);
     }
 });
 SFS2X.Requests.System.GenericMessageRequest.KEY_ROOM_ID = "r";
@@ -2556,7 +2556,7 @@ SFS2X.Requests.System.ChangeRoomNameRequest = SFS2X.Requests._BaseRequest.extend
     init: function (a, b) {
         this._super(SFS2X.Requests.ChangeRoomName);
         this._room = a;
-        this._newName = b
+        this._newName = b;
     },
     validate: function () {
         var a = [];
@@ -2567,7 +2567,7 @@ SFS2X.Requests.System.ChangeRoomNameRequest = SFS2X.Requests._BaseRequest.extend
     execute: function () {
         this._reqObj[this.constructor.KEY_ROOM] =
             this._room.id;
-        this._reqObj[this.constructor.KEY_NAME] = this._newName
+        this._reqObj[this.constructor.KEY_NAME] = this._newName;
     }
 });
 SFS2X.Requests.System.ChangeRoomNameRequest.KEY_ROOM = "r";
@@ -2576,7 +2576,7 @@ SFS2X.Requests.System.ChangeRoomPasswordStateRequest = SFS2X.Requests._BaseReque
     init: function (a, b) {
         this._super(SFS2X.Requests.ChangeRoomPassword);
         this._room = a;
-        this._newPass = b
+        this._newPass = b;
     },
     validate: function () {
         var a = [];
@@ -2587,7 +2587,7 @@ SFS2X.Requests.System.ChangeRoomPasswordStateRequest = SFS2X.Requests._BaseReque
     execute: function () {
         this._reqObj[this.constructor.KEY_ROOM] =
             this._room.id;
-        this._reqObj[this.constructor.KEY_PASS] = this._newPass
+        this._reqObj[this.constructor.KEY_PASS] = this._newPass;
     }
 });
 SFS2X.Requests.System.ChangeRoomPasswordStateRequest.KEY_ROOM = "r";
@@ -2598,14 +2598,14 @@ SFS2X.Requests.System.ObjectMessageRequest = SFS2X.Requests.System.GenericMessag
         this._type = SFS2X.Requests.GenericMessageType.OBJECT_MSG;
         this._params = a;
         this._room = b;
-        this._recipient = c
+        this._recipient = c;
     }
 });
 SFS2X.Requests.System.SetRoomVariablesRequest = SFS2X.Requests._BaseRequest.extend({
     init: function (a, b) {
         this._super(SFS2X.Requests.SetRoomVariables);
         this._roomVariables = a;
-        this._room = b
+        this._room = b;
     },
     validate: function (a) {
         var b = [];
@@ -2619,11 +2619,11 @@ SFS2X.Requests.System.SetRoomVariablesRequest = SFS2X.Requests._BaseRequest.exte
             c;
         for (c in this._roomVariables) {
             var d = this._roomVariables[c];
-            d instanceof SFS2X.Entities.Variables.SFSRoomVariable && b.push(d.toArray())
+            d instanceof SFS2X.Entities.Variables.SFSRoomVariable && b.push(d.toArray());
         }
         null == this._room && (this._room = a.lastJoinedRoom);
         this._reqObj[this.constructor.KEY_VAR_LIST] = b;
-        this._reqObj[this.constructor.KEY_VAR_ROOM] = this._room.id
+        this._reqObj[this.constructor.KEY_VAR_ROOM] = this._room.id;
     }
 });
 SFS2X.Requests.System.SetRoomVariablesRequest.KEY_VAR_ROOM = "r";
@@ -2631,7 +2631,7 @@ SFS2X.Requests.System.SetRoomVariablesRequest.KEY_VAR_LIST = "vl";
 SFS2X.Requests.System.SetUserVariablesRequest = SFS2X.Requests._BaseRequest.extend({
     init: function (a) {
         this._super(SFS2X.Requests.SetUserVariables);
-        this._userVariables = a
+        this._userVariables = a;
     },
     validate: function () {
         var a = [];
@@ -2644,9 +2644,9 @@ SFS2X.Requests.System.SetUserVariablesRequest = SFS2X.Requests._BaseRequest.exte
         for (b in this._userVariables) {
             var c = this._userVariables[b];
             c instanceof SFS2X.Entities.Variables.SFSUserVariable &&
-            a.push(c.toArray())
+            a.push(c.toArray());
         }
-        this._reqObj[this.constructor.KEY_VAR_LIST] = a
+        this._reqObj[this.constructor.KEY_VAR_LIST] = a;
     }
 });
 SFS2X.Requests.System.SetUserVariablesRequest.KEY_USER = "u";
@@ -2658,7 +2658,7 @@ SFS2X.Requests.System.ExtensionRequest = SFS2X.Requests._BaseRequest.extend({
         this._extCmd = a;
         this._params = b;
         this._room = c;
-        null == this._params && (this._params = {})
+        null == this._params && (this._params = {});
     },
     validate: function () {
         var a = [];
@@ -2669,7 +2669,7 @@ SFS2X.Requests.System.ExtensionRequest = SFS2X.Requests._BaseRequest.extend({
         this._reqObj[this.constructor.KEY_CMD] =
             this._extCmd;
         this._reqObj[this.constructor.KEY_ROOM] = null == this._room ? -1 : this._room.id;
-        this._reqObj[this.constructor.KEY_PARAMS] = this._params
+        this._reqObj[this.constructor.KEY_PARAMS] = this._params;
     }
 });
 SFS2X.Requests.System.ExtensionRequest.KEY_CMD = "c";
@@ -2678,20 +2678,20 @@ SFS2X.Requests.System.ExtensionRequest.KEY_ROOM = "r";
 SFS2X.Requests.System.LeaveRoomRequest = SFS2X.Requests._BaseRequest.extend({
     init: function (a) {
         this._super(SFS2X.Requests.LeaveRoom);
-        this._room = a
+        this._room = a;
     },
     validate: function (a) {
         if (1 > a.getJoinedRooms().length) throw new SFS2X.Exceptions.SFSValidationError("LeaveRoomRequest Error", ["You are not joined in any room"]);
     },
     execute: function () {
-        null != this._room && (this._reqObj[this.constructor.KEY_ROOM_ID] = this._room.id)
+        null != this._room && (this._reqObj[this.constructor.KEY_ROOM_ID] = this._room.id);
     }
 });
 SFS2X.Requests.System.LeaveRoomRequest.KEY_ROOM_ID = "r";
 SFS2X.Requests.System.SubscribeRoomGroupRequest = SFS2X.Requests._BaseRequest.extend({
     init: function (a) {
         this._super(SFS2X.Requests.SubscribeRoomGroup);
-        this._groupId = a
+        this._groupId = a;
     },
     validate: function () {
         var a = [];
@@ -2699,7 +2699,7 @@ SFS2X.Requests.System.SubscribeRoomGroupRequest = SFS2X.Requests._BaseRequest.ex
         if (0 < a.length) throw new SFS2X.Exceptions.SFSValidationError("SubscribeGroupRequest Error", a);
     },
     execute: function () {
-        this._reqObj[this.constructor.KEY_GROUP_ID] = this._groupId
+        this._reqObj[this.constructor.KEY_GROUP_ID] = this._groupId;
     }
 });
 SFS2X.Requests.System.SubscribeRoomGroupRequest.KEY_GROUP_ID = "g";
@@ -2707,7 +2707,7 @@ SFS2X.Requests.System.SubscribeRoomGroupRequest.KEY_ROOM_LIST = "rl";
 SFS2X.Requests.System.UnsubscribeRoomGroupRequest = SFS2X.Requests._BaseRequest.extend({
     init: function (a) {
         this._super(SFS2X.Requests.UnsubscribeRoomGroup);
-        this._groupId = a
+        this._groupId = a;
     },
     validate: function () {
         var a = [];
@@ -2715,21 +2715,21 @@ SFS2X.Requests.System.UnsubscribeRoomGroupRequest = SFS2X.Requests._BaseRequest.
         if (0 < a.length) throw new SFS2X.Exceptions.SFSValidationError("UnsubscribeGroupRequest Error", a);
     },
     execute: function () {
-        this._reqObj[this.constructor.KEY_GROUP_ID] = this._groupId
+        this._reqObj[this.constructor.KEY_GROUP_ID] = this._groupId;
     }
 });
 SFS2X.Requests.System.UnsubscribeRoomGroupRequest.KEY_GROUP_ID = "g";
 SFS2X.Requests.System.SpectatorToPlayerRequest = SFS2X.Requests._BaseRequest.extend({
     init: function (a) {
         this._super(SFS2X.Requests.SpectatorToPlayer);
-        this._room = a
+        this._room = a;
     },
     validate: function (a) {
         if (1 > a.getJoinedRooms().length) throw new SFS2X.Exceptions.SFSValidationError("SpectatorToPlayerRequest Error", ["You are not joined in any room"]);
     },
     execute: function (a) {
         null == this._room && (this._room = a.lastJoinedRoom);
-        this._reqObj[this.constructor.KEY_ROOM_ID] = this._room.id
+        this._reqObj[this.constructor.KEY_ROOM_ID] = this._room.id;
     }
 });
 SFS2X.Requests.System.SpectatorToPlayerRequest.KEY_ROOM_ID = "r";
@@ -2738,14 +2738,14 @@ SFS2X.Requests.System.SpectatorToPlayerRequest.KEY_PLAYER_ID = "p";
 SFS2X.Requests.System.PlayerToSpectatorRequest = SFS2X.Requests._BaseRequest.extend({
     init: function (a) {
         this._super(SFS2X.Requests.PlayerToSpectator);
-        this._room = a
+        this._room = a;
     },
     validate: function (a) {
         if (1 > a.getJoinedRooms().length) throw new SFS2X.Exceptions.SFSValidationError("PlayerToSpectatorRequest Error", ["You are not joined in any room"]);
     },
     execute: function (a) {
         null == this._room && (this._room = a.lastJoinedRoom);
-        this._reqObj[this.constructor.KEY_ROOM_ID] = this._room.id
+        this._reqObj[this.constructor.KEY_ROOM_ID] = this._room.id;
     }
 });
 SFS2X.Requests.System.PlayerToSpectatorRequest.KEY_ROOM_ID = "r";
@@ -2755,7 +2755,7 @@ SFS2X.Requests.System.ChangeRoomCapacityRequest = SFS2X.Requests._BaseRequest.ex
         this._super(SFS2X.Requests.ChangeRoomCapacity);
         this._room = a;
         this._newMaxUsers = b;
-        this._newMaxSpect = c
+        this._newMaxSpect = c;
     },
     validate: function () {
         var a = [];
@@ -2766,7 +2766,7 @@ SFS2X.Requests.System.ChangeRoomCapacityRequest = SFS2X.Requests._BaseRequest.ex
         this._reqObj[this.constructor.KEY_ROOM] = this._room.id;
         this._reqObj[this.constructor.KEY_USER_SIZE] =
             this._newMaxUsers;
-        this._reqObj[this.constructor.KEY_SPEC_SIZE] = this._newMaxSpect
+        this._reqObj[this.constructor.KEY_SPEC_SIZE] = this._newMaxSpect;
     }
 });
 SFS2X.Requests.System.ChangeRoomCapacityRequest.KEY_ROOM = "r";
@@ -2778,7 +2778,7 @@ SFS2X.Requests.System.PublicMessageRequest = SFS2X.Requests.System.GenericMessag
         this._type = SFS2X.Requests.GenericMessageType.PUBLIC_MSG;
         this._message = a;
         this._room = c;
-        this._params = b
+        this._params = b;
     }
 });
 SFS2X.Requests.System.PrivateMessageRequest = SFS2X.Requests.System.GenericMessageRequest.extend({
@@ -2787,7 +2787,7 @@ SFS2X.Requests.System.PrivateMessageRequest = SFS2X.Requests.System.GenericMessa
         this._type = SFS2X.Requests.GenericMessageType.PRIVATE_MSG;
         this._message = a;
         this._recipient = b;
-        this._params = c
+        this._params = c;
     }
 });
 SFS2X.Requests.System.ModeratorMessageRequest = SFS2X.Requests.System.GenericMessageRequest.extend({
@@ -2798,7 +2798,7 @@ SFS2X.Requests.System.ModeratorMessageRequest = SFS2X.Requests.System.GenericMes
         this._message = a;
         this._params = c;
         this._recipient = b.target;
-        this._sendMode = b.mode
+        this._sendMode = b.mode;
     }
 });
 SFS2X.Requests.System.AdminMessageRequest = SFS2X.Requests.System.GenericMessageRequest.extend({
@@ -2809,7 +2809,7 @@ SFS2X.Requests.System.AdminMessageRequest = SFS2X.Requests.System.GenericMessage
         this._message = a;
         this._params = c;
         this._recipient = b.target;
-        this._sendMode = b.mode
+        this._sendMode = b.mode;
     }
 });
 SFS2X.Requests.System.KickUserRequest = SFS2X.Requests._BaseRequest.extend({
@@ -2819,7 +2819,7 @@ SFS2X.Requests.System.KickUserRequest = SFS2X.Requests._BaseRequest.extend({
         0 > c && (c = 0);
         this._userId = a;
         this._message = b;
-        this._delay = c
+        this._delay = c;
     },
     validate: function (a) {
         var b = [];
@@ -2829,7 +2829,7 @@ SFS2X.Requests.System.KickUserRequest = SFS2X.Requests._BaseRequest.extend({
     execute: function () {
         this._reqObj[this.constructor.KEY_USER_ID] = this._userId;
         this._reqObj[this.constructor.KEY_DELAY] = this._delay;
-        null != this._message && 0 < this._message.length && (this._reqObj[this.constructor.KEY_MESSAGE] = this._message)
+        null != this._message && 0 < this._message.length && (this._reqObj[this.constructor.KEY_MESSAGE] = this._message);
     }
 });
 SFS2X.Requests.System.KickUserRequest.KEY_USER_ID = "u";
@@ -2845,7 +2845,7 @@ SFS2X.Requests.System.BanUserRequest = SFS2X.Requests._BaseRequest.extend({
         this._message = b;
         this._banMode = c;
         this._delay = d;
-        this._durationHours = e
+        this._durationHours = e;
     },
     validate: function (a) {
         var b = [];
@@ -2858,7 +2858,7 @@ SFS2X.Requests.System.BanUserRequest = SFS2X.Requests._BaseRequest.extend({
         this._reqObj[this.constructor.KEY_DELAY] = this._delay;
         this._reqObj[this.constructor.KEY_BAN_MODE] = this._banMode;
         this._reqObj[this.constructor.KEY_BAN_DURATION_HOURS] = this._durationHours;
-        null != this._message && 0 < this._message.length && (this._reqObj[this.constructor.KEY_MESSAGE] = this._message)
+        null != this._message && 0 < this._message.length && (this._reqObj[this.constructor.KEY_MESSAGE] = this._message);
     }
 });
 SFS2X.Requests.System.BanUserRequest.KEY_USER_ID = "u";
@@ -2868,7 +2868,7 @@ SFS2X.Requests.System.BanUserRequest.KEY_BAN_MODE = "b";
 SFS2X.Requests.System.BanUserRequest.KEY_BAN_DURATION_HOURS = "dh";
 SFS2X.Requests.System.ManualDisconnectionRequest = SFS2X.Requests._BaseRequest.extend({
     init: function () {
-        this._super(SFS2X.Requests.ManualDisconnection)
+        this._super(SFS2X.Requests.ManualDisconnection);
     },
     validate: function () {
     },
@@ -2881,7 +2881,7 @@ SFS2X.Requests.System.FindRoomsRequest = SFS2X.Requests._BaseRequest.extend({
         null == c && (c = 0);
         this._matchExpr = a;
         this._groupId = b;
-        this._limit = c
+        this._limit = c;
     },
     validate: function () {
         var a = [];
@@ -2892,7 +2892,7 @@ SFS2X.Requests.System.FindRoomsRequest = SFS2X.Requests._BaseRequest.extend({
         this._reqObj[this.constructor.KEY_EXPRESSION] = this._matchExpr._toArray();
         null != this._groupId && (this._reqObj[this.constructor.KEY_GROUP] =
             this._groupId);
-        0 < this._limit && (this._reqObj[this.constructor.KEY_LIMIT] = this._limit)
+        0 < this._limit && (this._reqObj[this.constructor.KEY_LIMIT] = this._limit);
     }
 });
 SFS2X.Requests.System.FindRoomsRequest.KEY_EXPRESSION = "e";
@@ -2905,7 +2905,7 @@ SFS2X.Requests.System.FindUsersRequest = SFS2X.Requests._BaseRequest.extend({
         null == c && (c = 0);
         this._matchExpr = a;
         this._target = b;
-        this._limit = c
+        this._limit = c;
     },
     validate: function () {
         var a = [];
@@ -2915,7 +2915,7 @@ SFS2X.Requests.System.FindUsersRequest = SFS2X.Requests._BaseRequest.extend({
     execute: function () {
         this._reqObj[this.constructor.KEY_EXPRESSION] = this._matchExpr._toArray();
         null != this._target && (this._target instanceof SFS2X.Entities.SFSRoom ? this._reqObj[this.constructor.KEY_ROOM] = this._target.id : "string" == typeof this._target ? this._reqObj[this.constructor.KEY_GROUP] = this._target : this._log.warn("Unsupport target type for FindUsersRequest: " + this._target));
-        0 < this._limit && (this._reqObj[this.constructor.KEY_LIMIT] = this._limit)
+        0 < this._limit && (this._reqObj[this.constructor.KEY_LIMIT] = this._limit);
     }
 });
 SFS2X.Requests.System.FindUsersRequest.KEY_EXPRESSION = "e";
@@ -2925,7 +2925,7 @@ SFS2X.Requests.System.FindUsersRequest.KEY_LIMIT = "l";
 SFS2X.Requests.System.FindUsersRequest.KEY_FILTERED_USERS = "fu";
 SFS2X.Requests.System.PingPongRequest = SFS2X.Requests._BaseRequest.extend({
     init: function () {
-        this._super(SFS2X.Requests.PingPong)
+        this._super(SFS2X.Requests.PingPong);
     },
     validate: function () {
     },
@@ -2936,7 +2936,7 @@ SFS2X.Requests.MMO.SetUserPositionRequest = SFS2X.Requests._BaseRequest.extend({
     init: function (a, b) {
         this._super(SFS2X.Requests.SetUserPosition);
         this._pos = a;
-        this._room = b
+        this._room = b;
     },
     validate: function (a) {
         var b = [];
@@ -2948,7 +2948,7 @@ SFS2X.Requests.MMO.SetUserPositionRequest = SFS2X.Requests._BaseRequest.extend({
     execute: function () {
         this._reqObj[this.constructor.KEY_ROOM] =
             this._room.id;
-        this._reqObj[this.constructor.KEY_VEC3D] = this._pos._toArray()
+        this._reqObj[this.constructor.KEY_VEC3D] = this._pos._toArray();
     }
 });
 SFS2X.Requests.MMO.SetUserPositionRequest.KEY_ROOM = "r";
@@ -2963,7 +2963,7 @@ SFS2X.Requests.MMO.SetMMOItemVariables.KEY_ITEM_ID = "i";
 SFS2X.Requests.MMO.SetMMOItemVariables.KEY_VAR_LIST = "v";
 SFS2X.Requests.BuddyList.InitBuddyListRequest = SFS2X.Requests._BaseRequest.extend({
     init: function () {
-        this._super(SFS2X.Requests.InitBuddyList)
+        this._super(SFS2X.Requests.InitBuddyList);
     },
     validate: function (a) {
         var b = [];
@@ -2979,7 +2979,7 @@ SFS2X.Requests.BuddyList.InitBuddyListRequest.KEY_MY_VARS = "mv";
 SFS2X.Requests.BuddyList.AddBuddyRequest = SFS2X.Requests._BaseRequest.extend({
     init: function (a) {
         this._super(SFS2X.Requests.AddBuddy);
-        this._name = a
+        this._name = a;
     },
     validate: function (a) {
         var b = [];
@@ -2991,7 +2991,7 @@ SFS2X.Requests.BuddyList.AddBuddyRequest = SFS2X.Requests._BaseRequest.extend({
         if (0 < b.length) throw new SFS2X.Exceptions.SFSValidationError("AddBuddyRequest Error", b);
     },
     execute: function () {
-        this._reqObj[this.constructor.KEY_BUDDY_NAME] = this._name
+        this._reqObj[this.constructor.KEY_BUDDY_NAME] = this._name;
     }
 });
 SFS2X.Requests.BuddyList.AddBuddyRequest.KEY_BUDDY_NAME = "bn";
@@ -2999,7 +2999,7 @@ SFS2X.Requests.BuddyList.BlockBuddyRequest = SFS2X.Requests._BaseRequest.extend(
     init: function (a, b) {
         this._super(SFS2X.Requests.BlockBuddy);
         this._name = a;
-        this._blocked = b
+        this._blocked = b;
     },
     validate: function (a) {
         var b = [];
@@ -3012,7 +3012,7 @@ SFS2X.Requests.BuddyList.BlockBuddyRequest = SFS2X.Requests._BaseRequest.extend(
     },
     execute: function () {
         this._reqObj[this.constructor.KEY_BUDDY_NAME] = this._name;
-        this._reqObj[this.constructor.KEY_BUDDY_BLOCK_STATE] = this._blocked
+        this._reqObj[this.constructor.KEY_BUDDY_BLOCK_STATE] = this._blocked;
     }
 });
 SFS2X.Requests.BuddyList.BlockBuddyRequest.KEY_BUDDY_NAME = "bn";
@@ -3020,7 +3020,7 @@ SFS2X.Requests.BuddyList.BlockBuddyRequest.KEY_BUDDY_BLOCK_STATE = "bs";
 SFS2X.Requests.BuddyList.RemoveBuddyRequest = SFS2X.Requests._BaseRequest.extend({
     init: function (a) {
         this._super(SFS2X.Requests.RemoveBuddy);
-        this._name = a
+        this._name = a;
     },
     validate: function (a) {
         var b = [];
@@ -3030,14 +3030,14 @@ SFS2X.Requests.BuddyList.RemoveBuddyRequest = SFS2X.Requests._BaseRequest.extend
         if (0 < b.length) throw new SFS2X.Exceptions.SFSValidationError("RemoveBuddyRequest Error", b);
     },
     execute: function () {
-        this._reqObj[this.constructor.KEY_BUDDY_NAME] = this._name
+        this._reqObj[this.constructor.KEY_BUDDY_NAME] = this._name;
     }
 });
 SFS2X.Requests.BuddyList.RemoveBuddyRequest.KEY_BUDDY_NAME = "bn";
 SFS2X.Requests.BuddyList.SetBuddyVariablesRequest = SFS2X.Requests._BaseRequest.extend({
     init: function (a) {
         this._super(SFS2X.Requests.SetBuddyVariables);
-        this._buddyVariables = a
+        this._buddyVariables = a;
     },
     validate: function (a) {
         var b = [];
@@ -3051,9 +3051,9 @@ SFS2X.Requests.BuddyList.SetBuddyVariablesRequest = SFS2X.Requests._BaseRequest.
             b;
         for (b in this._buddyVariables) {
             var c = this._buddyVariables[b];
-            c instanceof SFS2X.Entities.Variables.SFSBuddyVariable && a.push(c.toArray())
+            c instanceof SFS2X.Entities.Variables.SFSBuddyVariable && a.push(c.toArray());
         }
-        this._reqObj[this.constructor.KEY_BUDDY_VARS] = a
+        this._reqObj[this.constructor.KEY_BUDDY_VARS] = a;
     }
 });
 SFS2X.Requests.BuddyList.SetBuddyVariablesRequest.KEY_BUDDY_NAME = "bn";
@@ -3061,7 +3061,7 @@ SFS2X.Requests.BuddyList.SetBuddyVariablesRequest.KEY_BUDDY_VARS = "bv";
 SFS2X.Requests.BuddyList.GoOnlineRequest = SFS2X.Requests._BaseRequest.extend({
     init: function (a) {
         this._super(SFS2X.Requests.GoOnline);
-        this._online = a
+        this._online = a;
     },
     validate: function (a) {
         var b = [];
@@ -3070,7 +3070,7 @@ SFS2X.Requests.BuddyList.GoOnlineRequest = SFS2X.Requests._BaseRequest.extend({
     },
     execute: function (a) {
         a.buddyManager._setMyOnlineState(this._online);
-        this._reqObj[this.constructor.KEY_ONLINE] = this._online
+        this._reqObj[this.constructor.KEY_ONLINE] = this._online;
     }
 });
 SFS2X.Requests.BuddyList.GoOnlineRequest.KEY_ONLINE = "o";
@@ -3082,7 +3082,7 @@ SFS2X.Requests.BuddyList.BuddyMessageRequest = SFS2X.Requests.System.GenericMess
         this._type = SFS2X.Requests.GenericMessageType.BUDDY_MSG;
         this._message = a;
         this._recipient = null != b ? b.id : -1;
-        this._params = c
+        this._params = c;
     }
 });
 SFS2X.Requests.Game.InviteUsersRequest = SFS2X.Requests._BaseRequest.extend({
@@ -3090,7 +3090,7 @@ SFS2X.Requests.Game.InviteUsersRequest = SFS2X.Requests._BaseRequest.extend({
         this._super(SFS2X.Requests.InviteUsers);
         this._invitedUsers = a;
         this._secondsForAnswer = b;
-        this._params = c
+        this._params = c;
     },
     validate: function () {
         var a = [];
@@ -3105,11 +3105,11 @@ SFS2X.Requests.Game.InviteUsersRequest = SFS2X.Requests._BaseRequest.extend({
         for (c in this._invitedUsers) {
             var d = this._invitedUsers[c];
             (d instanceof SFS2X.Entities.SFSUser || d instanceof SFS2X.Entities.SFSBuddy) &&
-            d != a.me && b.push(d.id)
+            d != a.me && b.push(d.id);
         }
         this._reqObj[this.constructor.KEY_INVITED_USERS] = b;
         this._reqObj[this.constructor.KEY_TIME] = this._secondsForAnswer;
-        null != this._params && (this._reqObj[this.constructor.KEY_PARAMS] = this._params)
+        null != this._params && (this._reqObj[this.constructor.KEY_PARAMS] = this._params);
     }
 });
 SFS2X.Requests.Game.InviteUsersRequest.KEY_USER = "u";
@@ -3128,7 +3128,7 @@ SFS2X.Requests.Game.InvitationReplyRequest = SFS2X.Requests._BaseRequest.extend(
         this._super(SFS2X.Requests.InvitationReply);
         this._invitation = a;
         this._reply = b;
-        this._params = c
+        this._params = c;
     },
     validate: function () {
         var a = [];
@@ -3139,7 +3139,7 @@ SFS2X.Requests.Game.InvitationReplyRequest = SFS2X.Requests._BaseRequest.extend(
         this._reqObj[this.constructor.KEY_INVITATION_ID] = this._invitation.id;
         this._reqObj[this.constructor.KEY_INVITATION_REPLY] =
             this._reply;
-        null != this._params && (this._reqObj[this.constructor.KEY_INVITATION_PARAMS] = this._params)
+        null != this._params && (this._reqObj[this.constructor.KEY_INVITATION_PARAMS] = this._params);
     }
 });
 SFS2X.Requests.Game.InvitationReplyRequest.KEY_INVITATION_ID = "i";
@@ -3149,14 +3149,14 @@ SFS2X.Requests.Game.CreateSFSGameRequest = SFS2X.Requests._BaseRequest.extend({
     init: function (a) {
         this._super(SFS2X.Requests.CreateSFSGame);
         this._settings = a;
-        this._createRoomRequest = new SFS2X.Requests.System.CreateRoomRequest(a, !1, null)
+        this._createRoomRequest = new SFS2X.Requests.System.CreateRoomRequest(a, !1, null);
     },
     validate: function (a) {
         var b = [];
         try {
-            this._createRoomRequest.validate(a)
+            this._createRoomRequest.validate(a);
         } catch (c) {
-            b = c.getErrors()
+            b = c.getErrors();
         }
         this._settings.minPlayersToStartGame > this._settings.maxUsers && b.push("Minimum number of players to start the game can't be greater than the Room's maximum number of users");
         (this._settings.invitationExpiryTime < SFS2X.Requests.Game.InviteUsersRequest.MIN_EXPIRY_TIME || this._settings.invitationExpiryTime > SFS2X.Requests.Game.InviteUsersRequest.MAX_EXPIRY_TIME) && b.push("Invitation expiration time value is out of range (min: " + SFS2X.Requests.Game.InviteUsersRequest.MIN_EXPIRY_TIME + "; max: " + SFS2X.Requests.Game.InviteUsersRequest.MAX_EXPIRY_TIME + ")");
@@ -3180,12 +3180,12 @@ SFS2X.Requests.Game.CreateSFSGameRequest = SFS2X.Requests._BaseRequest.extend({
                 b;
             for (b in this._settings.invitedPlayers) {
                 var c = this._settings.invitedPlayers[b];
-                (c instanceof SFS2X.Entities.SFSUser || c instanceof SFS2X.Entities.SFSBuddy) && a.push(c.id)
+                (c instanceof SFS2X.Entities.SFSUser || c instanceof SFS2X.Entities.SFSBuddy) && a.push(c.id);
             }
-            this._reqObj[this.constructor.KEY_INVITED_PLAYERS] = a
+            this._reqObj[this.constructor.KEY_INVITED_PLAYERS] = a;
         }
         null != this._settings.searchableRooms && (this._reqObj[this.constructor.KEY_SEARCHABLE_ROOMS] = this._settings.searchableRooms);
-        null != this._settings.invitationParams && (this._reqObj[this.constructor.KEY_INVITATION_PARAMS] = this._settings.invitationParams)
+        null != this._settings.invitationParams && (this._reqObj[this.constructor.KEY_INVITATION_PARAMS] = this._settings.invitationParams);
     }
 });
 SFS2X.Requests.Game.CreateSFSGameRequest.KEY_IS_PUBLIC = "gip";
@@ -3203,7 +3203,7 @@ SFS2X.Requests.Game.QuickJoinGameRequest = SFS2X.Requests._BaseRequest.extend({
         this._super(SFS2X.Requests.QuickJoinGame);
         this._matchExpression = a;
         this._whereToSearch = b;
-        this._roomToLeave = c
+        this._roomToLeave = c;
     },
     validate: function () {
         var a = [];
@@ -3216,12 +3216,12 @@ SFS2X.Requests.Game.QuickJoinGameRequest = SFS2X.Requests._BaseRequest.extend({
         else if (this._whereToSearch[0] instanceof SFS2X.Entities.SFSRoom) {
             for (var a = [], b = 0; b < this._whereToSearch.length; b++) {
                 var c = this._whereToSearch[b];
-                c instanceof SFS2X.Entities.SFSRoom && a.push(c.id)
+                c instanceof SFS2X.Entities.SFSRoom && a.push(c.id);
             }
-            this._reqObj[this.constructor.KEY_ROOM_LIST] = a
+            this._reqObj[this.constructor.KEY_ROOM_LIST] = a;
         } else throw new SFS2X.Exceptions.SFSError("Invalid type in whereToSearch parameter");
         null != this._roomToLeave && (this._reqObj[this.constructor.KEY_ROOM_TO_LEAVE] = this._roomToLeave.id);
-        null != this._matchExpression && (this._reqObj[this.constructor.KEY_MATCH_EXPRESSION] = this._matchExpression._toArray())
+        null != this._matchExpression && (this._reqObj[this.constructor.KEY_MATCH_EXPRESSION] = this._matchExpression._toArray());
     }
 });
 SFS2X.Requests.Game.QuickJoinGameRequest.KEY_ROOM_LIST = "rl";
@@ -3266,7 +3266,7 @@ SFS2X.Requests.QuickJoinGame = 303;
 SFS2X.Requests.getRequestNameFromId = function (a) {
     for (var b in SFS2X.Requests)
         if (SFS2X.Requests[b] == a) return b;
-    return null
+    return null;
 };
 SFS2X.Requests.RoomSettings = Class.extend({
     init: function (a) {
@@ -3278,7 +3278,7 @@ SFS2X.Requests.RoomSettings = Class.extend({
         this.maxSpectators = 0;
         this.maxVariables = 5;
         this.variables = [];
-        this.extension = this.events = this.permissions = null
+        this.extension = this.events = this.permissions = null;
     }
 });
 SFS2X.Requests.Game.SFSGameSettings = SFS2X.Requests.RoomSettings.extend({
@@ -3290,7 +3290,7 @@ SFS2X.Requests.Game.SFSGameSettings = SFS2X.Requests.RoomSettings.extend({
         this.invitationExpiryTime = 15;
         this.leaveLastJoinedRoom = !0;
         this.notifyGameStarted = !1;
-        this.invitationParams = this.spectatorMatchExpression = this.playerMatchExpression = null
+        this.invitationParams = this.spectatorMatchExpression = this.playerMatchExpression = null;
     }
 });
 SFS2X.Requests.MMO.MMORoomSettings = SFS2X.Requests.RoomSettings.extend({
@@ -3299,26 +3299,26 @@ SFS2X.Requests.MMO.MMORoomSettings = SFS2X.Requests.RoomSettings.extend({
         this.mapLimits = this.defaultAOI = null;
         this.userMaxLimboSeconds = 50;
         this.proximityListUpdateMillis = 250;
-        this.sendAOIEntryPoint = !0
+        this.sendAOIEntryPoint = !0;
     }
 });
 SFS2X.Requests.RoomPermissions = function () {
     this.allowPasswordStateChange = this.allowNameChange = !1;
     this.allowPublicMessages = !0;
-    this.allowResizing = !1
+    this.allowResizing = !1;
 };
 SFS2X.Requests.RoomEvents = function () {
-    this.allowUserVariablesUpdate = this.allowUserExit = this.allowUserEnter = this.allowUserCountChange = !1
+    this.allowUserVariablesUpdate = this.allowUserExit = this.allowUserEnter = this.allowUserCountChange = !1;
 };
 SFS2X.Requests.RoomExtension = function (a, b) {
     this.id = a;
     this.className = b;
-    this.propertiesFile = ""
+    this.propertiesFile = "";
 };
 SFS2X.Requests.MMO.MapLimits = function (a, b) {
     if (null == a || null == b) throw new SFS2X.Exceptions.SFSError("Map limits arguments must be both non null!");
     this.lowerLimit = a;
-    this.higherLimit = b
+    this.higherLimit = b;
 };
 SFS2X.Requests.GenericMessageType = {};
 SFS2X.Requests.GenericMessageType.PUBLIC_MSG = 0;
@@ -3330,7 +3330,7 @@ SFS2X.Requests.GenericMessageType.BUDDY_MSG = 5;
 SFS2X.Requests.MessageRecipientMode = function (a, b) {
     if (a < this.TO_USER || a > this.TO_ZONE) throw new SFS2X.Exceptions.SFSError("Illegal recipient mode: " + a);
     this.mode = a;
-    this.target = b
+    this.target = b;
 };
 SFS2X.Requests.MessageRecipientMode.TO_USER = 0;
 SFS2X.Requests.MessageRecipientMode.TO_ROOM = 1;
@@ -3351,36 +3351,36 @@ SFS2X.SocketEngine = function (a) {
     this._reconnectionDelayMillis = 1E3;
     this._attemptingReconnection = this._isReconnecting = !1;
     this._eventDispatcher = new SFS2X.EventDispatcher;
-    this._disconnectionReason = SFS2X.Utils.ClientDisconnectionReason.UNKNOWN
+    this._disconnectionReason = SFS2X.Utils.ClientDisconnectionReason.UNKNOWN;
 };
 SFS2X.SocketEngine.prototype.connect = function (a, b, c) {
-    this.isConnected ? this._log.error("Connection is already active") : this.isConnecting ? this._log.error("A connection attempt is already in progress") : (this.isConnecting = !0, this._socket = new WebSocket("ws" + (c ? "s" : "") + "://" + a + ":" + b + "/websocket"), this._socket._scope = this, this._socket.onopen = this._onSocketConnect, this._socket.onclose = this._onSocketDisconnect, this._socket.onmessage = this._onSocketData, this._socket.onerror = this._onSocketError)
+    this.isConnected ? this._log.error("Connection is already active") : this.isConnecting ? this._log.error("A connection attempt is already in progress") : (this.isConnecting = !0, this._socket = new WebSocket("ws" + (c ? "s" : "") + "://" + a + ":" + b + "/websocket"), this._socket._scope = this, this._socket.onopen = this._onSocketConnect, this._socket.onclose = this._onSocketDisconnect, this._socket.onmessage = this._onSocketData, this._socket.onerror = this._onSocketError);
 };
 SFS2X.SocketEngine.prototype.disconnect = function (a) {
     this._disconnectionReason = a;
-    this._socket.close()
+    this._socket.close();
 };
 SFS2X.SocketEngine.prototype.addEventListener = function (a, b, c) {
-    this._eventDispatcher.addEventListener(a, b, c)
+    this._eventDispatcher.addEventListener(a, b, c);
 };
 SFS2X.SocketEngine.prototype.removeEventListener = function (a, b) {
-    this._eventDispatcher.removeEventListener(a, b)
+    this._eventDispatcher.removeEventListener(a, b);
 };
 SFS2X.SocketEngine.prototype.addController = function (a, b) {
-    null == this._controllers[a] && (this._controllers[a] = b)
+    null == this._controllers[a] && (this._controllers[a] = b);
 };
 SFS2X.SocketEngine.prototype.removeController = function (a) {
-    delete this._controllers[a]
+    delete this._controllers[a];
 };
 SFS2X.SocketEngine.prototype.send = function (a) {
     a = this._encodeMessage(a);
-    this._socket.send(a)
+    this._socket.send(a);
 };
 SFS2X.SocketEngine.prototype._decodeMessage = function (a) {
-    return JSON.parse(a)
+    return JSON.parse(a);
 };
 SFS2X.SocketEngine.prototype._encodeMessage = function (a) {
-    return JSON.stringify(a)
+    return JSON.stringify(a);
 };
 SFS2X.SocketEngine.prototype._onSocketConnect = function () {
     this._scope.isConnected = !0;
@@ -3389,7 +3389,7 @@ SFS2X.SocketEngine.prototype._onSocketConnect = function () {
     this._scope._eventDispatcher.dispatchEvent(SFS2X.SocketEvent.CONNECT, {
         success: !0,
         isReconnection: this._scope._attemptingReconnection
-    })
+    });
 };
 SFS2X.SocketEngine.prototype._onSocketDisconnect = function () {
     this._scope.isConnected = !1;
@@ -3399,16 +3399,16 @@ SFS2X.SocketEngine.prototype._onSocketDisconnect = function () {
             success: !1,
             isReconnection: this._scope._attemptingReconnection
         };
-        this._scope._eventDispatcher.dispatchEvent(SFS2X.SocketEvent.CONNECT, a)
+        this._scope._eventDispatcher.dispatchEvent(SFS2X.SocketEvent.CONNECT, a);
     } else a = {
         reason: this._scope._disconnectionReason
-    }, this._scope._eventDispatcher.dispatchEvent(SFS2X.SocketEvent.DISCONNECT, a), this._scope._disconnectionReason = SFS2X.Utils.ClientDisconnectionReason.UNKNOWN
+    }, this._scope._eventDispatcher.dispatchEvent(SFS2X.SocketEvent.DISCONNECT, a), this._scope._disconnectionReason = SFS2X.Utils.ClientDisconnectionReason.UNKNOWN;
 };
 SFS2X.SocketEngine.prototype._onSocketData = function (a) {
-    this._scope._eventDispatcher.dispatchEvent(SFS2X.SocketEvent.DATA, this._scope._decodeMessage(a.data))
+    this._scope._eventDispatcher.dispatchEvent(SFS2X.SocketEvent.DATA, this._scope._decodeMessage(a.data));
 };
 SFS2X.SocketEngine.prototype._onSocketError = function (a) {
-    this._scope._eventDispatcher.dispatchEvent(SFS2X.SocketEvent.IOERROR, a.data)
+    this._scope._eventDispatcher.dispatchEvent(SFS2X.SocketEvent.IOERROR, a.data);
 };
 SFS2X.SocketEvent = {
     CONNECT: "socketConnect",

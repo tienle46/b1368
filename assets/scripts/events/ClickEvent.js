@@ -5,8 +5,8 @@
 export default class ClickEvent {
     constructor() {
         // this.event = cc.EventListener.MOUSE
-        this.event = cc.EventListener.TOUCH_ONE_BY_ONE
-        this.swallowTouches = true
+        this.event = cc.EventListener.TOUCH_ONE_BY_ONE;
+        this.swallowTouches = true;
     }
 
     // onMouseMove(event){

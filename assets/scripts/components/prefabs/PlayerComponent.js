@@ -2,13 +2,13 @@
  * Created by Thanh on 9/12/2016.
  */
 
-import app from 'app'
-import Player from 'Player'
+import app from 'app';
+import Player from 'Player';
 
 class PlayerComponent extends Player {
     constructor(){
-        super()
-        this.extends = cc.Component
+        super();
+        this.extends = cc.Component;
     }
 
     onLoad(){
@@ -16,4 +16,4 @@ class PlayerComponent extends Player {
     }
 }
 
-app.createComponent(PlayerComponent)
+app.createComponent(PlayerComponent);

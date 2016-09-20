@@ -2,10 +2,10 @@
  * Created by Thanh on 9/16/2016.
  */
 
-import CreateGameException from 'CreateGameException'
-import GameException from 'GameException'
+import CreateGameException from 'CreateGameException';
+import GameException from 'GameException';
 
 export {
     GameException,
     CreateGameException
-}
+};

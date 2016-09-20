@@ -2,80 +2,73 @@
  * Created by Thanh on 9/13/2016.
  */
 
+
 import app from 'app'
 import utils from 'utils'
-import Component from 'Component'
-import Player from 'Player'
+import GameControls from 'GameControls'
 
-class BaseControls extends Component {
+class BaseControls extends GameControls {
     constructor() {
         super();
 
-        this.readyBtn = {
+        this.readyButton = {
             default: null,
-            type: cc.Button
+            type: cc.Node
         }
 
-        this.unreadyBtn = {
+        this.unreadyButton = {
             default: null,
-            type: cc.Button
+            type: cc.Node
         }
-
-        this.board = null;
-        this.scene = null;
-    }
-
-    setBoard(board) {
-        this.board = board;
-    }
-
-    setScene(scene) {
-        this.scene = scene;
     }
 
     onLoad() {
-        utils.hide(this.unreadyBtn)
-        utils.hide(this.readyBtn)
+        super.onLoad();
+        this.hideAllControls();
     }
 
     onClickReadyButton() {
 
+        console.log("onClickReadyButton")
+
         this.scene.showShortLoading('onClickReadyButton');
 
-        app.service.send({ cmd: app.commands.PLAYER_READY, room: this.board.room }, (resObj) => {
+        app.service.send({ cmd: app.commands.PLAYER_READY, room: this.scene.room }, (resObj) => {
 
             this.scene.hideLoading('onClickReadyButton');
 
-            let playerId = resObj[app.keywords.PLAYER_ID]
+            let playerId = resObj[app.keywords.PLAYER_ID];
 
             if (this.scene.playerManager.isItMe(playerId)) {
-                this._onPlayerReady()
+                this._onPlayerReady();
             }
         });
     }
 
     onClickUnreadyButton() {
+
+        console.log("onClickUnreadyButton")
+
         this.scene.showShortLoading('onClickUnreadyButton');
 
-        app.service.send({ cmd: app.commands.PLAYER_UNREADY, room: this.board.room }, (resObj) => {
+        app.service.send({ cmd: app.commands.PLAYER_UNREADY, room: this.scene.room }, (resObj) => {
             this.scene.hideLoading('onClickUnreadyButton');
 
-            let playerId = resObj[app.keywords.PLAYER_ID]
+            let playerId = resObj[app.keywords.PLAYER_ID];
 
             if (this.scene.playerManager.isItMe(playerId)) {
-                this._onPlayerUnready()
+                this._onPlayerUnready();
             }
         });
     }
 
-    _init(board, scene) {
-        this.board = board;
+    _init(scene) {
         this.scene = scene;
 
         let isMeReady = false;
         let playerIds = this.scene.gameData[app.keywords.GAME_LIST_PLAYER];
         if (playerIds) {
-            for (playerId of playerIds) {
+            for (let playerId of playerIds) {
                 if (this.scene.playerManager.isItMe(playerId)) {
                     isMeReady = true;
                     break;
@@ -84,22 +77,31 @@ class BaseControls extends Component {
         }
 
         if (isMeReady) {
-            this._onPlayerReady()
+            this._onPlayerReady();
         } else {
-            this._onPlayerUnready()
+            this._onPlayerUnready();
         }
+
+        console.log(this.readyButton)
     }
 
     _onPlayerReady() {
-        utils.show(this.unreadyBtn)
-        utils.hide(this.readyBtn)
+        utils.active(this.unreadyButton)
+        utils.deactive(this.readyButton)
     }
 
     _onPlayerUnready() {
-        utils.hide(this.unreadyBtn)
-        utils.show(this.readyBtn)
+        utils.deactive(this.unreadyButton)
+        utils.active(this.readyButton)
     }
 
+    hideAllControls() {
+
+        console.log("BaseControls.hideAllControls");
+
+        utils.deactive(this.readyButton)
+        utils.deactive(this.unreadyButton)
+    }
 }
 
-app.createComponent(BaseControls)
+app.createComponent(BaseControls);

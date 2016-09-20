@@ -2,12 +2,12 @@
  * Created by Thanh on 8/23/2016.
  */
 
-import app from 'app'
-import utils from 'utils'
-import Player from 'Player'
-import SFS2X from 'SFS2X'
-import Component from 'Component'
-import CreateGameException from 'CreateGameException'
+import app from 'app';
+import utils from 'utils';
+import Player from 'Player';
+import SFS2X from 'SFS2X';
+import Component from 'Component';
+import CreateGameException from 'CreateGameException';
 
 export default class PlayerManager extends Component {
     constructor() {
@@ -16,42 +16,47 @@ export default class PlayerManager extends Component {
         this.playerPositions = {
             default: null,
             type: cc.Node
-        }
+        };
 
-        this.me = null
-        this.owner = null
-        this.board = null
-        this.parentScene = null
-        this.players = null
-        this.maxPlayerId = 1
-        this._playerPrefab = null
-        this._idToPlayerMap = null
-        this._nameToPlayerMap = null
-
+        this.me = null;
+        this.owner = null;
+        this.board = null;
+        this.scene = null;
+        this.players = null;
+        this.maxPlayerId = 1;
+        this._playerPrefab = null;
+        this._idToPlayerMap = null;
+        this._nameToPlayerMap = null;
+        this.initDoneCb = null;
     }
 
     isItMe(id){
         return this.me.id == id;
     }
 
-    _init(board, scene) {
+    _init(board, scene, cb) {
         this.board = board;
-        this.parentScene = scene;
-        this.gameCode = (this.board && this.board.gameCode) || (app.config.test ? "tnd" : "")
+        this.scene = scene;
+        this.initDoneCb = cb;
+        this.gameCode = (this.board && this.board.gameCode) || (app.config.test ? "tnd" : "");
         this._reset();
 
         this._initPlayerLayer();
     }
 
     _onFinishInitPlayerLayer(){
+
+        this.initDoneCb && this.initDoneCb();
+        console.debug("_onFinishInitPlayerLayer")
+
         cc.loader.loadRes('game/players/Player', (error, prefab) => {
             if(error){
-                throw new CreateGameException("Không thể khởi tạo người chơi")
+                throw new CreateGameException("Không thể khởi tạo người chơi");
                 return;
             }
 
             this._playerPrefab = prefab;
-            this.initPlayers()
+            this.initPlayers();
         });
     }
 
@@ -65,22 +70,22 @@ export default class PlayerManager extends Component {
 
                 if(!error){
                     let prefabObj = cc.instantiate(prefab);
-                    prefabObj.parent = this.parentScene.playerLayer
+                    prefabObj.parent = this.scene.playerLayer;
                     this.playerPositions = prefabObj.getComponent(positionAnchorName);
                 }
 
                 if(!this.playerPositions){
-                    error = {}
+                    error = {};
                 }
 
                 if(error){
-                    throw new CreateGameException("Không thể cài đặt vị trí người chơi")
+                    throw new CreateGameException("Không thể cài đặt vị trí người chơi");
                 }else{
                     this._onFinishInitPlayerLayer();
                 }
-            })
+            });
         } else {
-            throw new CreateGameException("Không tìm thấy cài đặt số người chơi tương ứng với game")
+            throw new CreateGameException("Không tìm thấy cài đặt số người chơi tương ứng với game");
         }
     }
 
@@ -89,11 +94,11 @@ export default class PlayerManager extends Component {
         this.players = [];
         this._idToPlayerMap = {};
         this._nameToPlayerMap = {};
-        this.maxPlayerId = 1
+        this.maxPlayerId = 1;
     }
 
     initPlayers() {
-        let users = this.board.room.getPlayerList()
+        let users = this.board.room.getPlayerList();
         users && users.forEach(user => {
             user.isPlayer() && this._createSinglePlayer(user);
         });
@@ -101,24 +106,24 @@ export default class PlayerManager extends Component {
         if(app.config.test && !users || users.length == 0){
             cc.loader.loadRes('game/players/Player', (error, prefab) => {
                 let prefabObj = cc.instantiate(prefab);
-                this._setPlayerPosition(prefabObj, 1)
-                prefabObj.parent = this.parentScene.playerLayer
+                this._setPlayerPosition(prefabObj, 1);
+                prefabObj.parent = this.scene.playerLayer;
 
                 prefabObj = cc.instantiate(prefab);
-                this._setPlayerPosition(prefabObj, 2)
-                prefabObj.parent = this.parentScene.playerLayer
+                this._setPlayerPosition(prefabObj, 2);
+                prefabObj.parent = this.scene.playerLayer;
 
                 prefabObj = cc.instantiate(prefab);
-                this._setPlayerPosition(prefabObj, 3)
-                prefabObj.parent = this.parentScene.playerLayer
+                this._setPlayerPosition(prefabObj, 3);
+                prefabObj.parent = this.scene.playerLayer;
 
                 prefabObj = cc.instantiate(prefab);
-                this._setPlayerPosition(prefabObj, 4)
-                prefabObj.parent = this.parentScene.playerLayer
+                this._setPlayerPosition(prefabObj, 4);
+                prefabObj.parent = this.scene.playerLayer;
             });
         }
 
-        console.log("initPlayers")
+        console.log("initPlayers");
 
         this._onPlayerDataChanged();
     }
@@ -132,12 +137,13 @@ export default class PlayerManager extends Component {
 
         if(playerClass){
             let playerComponent = app.createComponent(playerClass, this.board, user);
-            let player = playerNode.addComponent(playerComponent)
+            let player = playerNode.addComponent(playerComponent);
+            player._init(this.board, user);
 
             if(player){
-                this._setPlayerPosition(playerNode, player)
-                this._addToPlayerLayer(playerNode)
-                this._addPlayerToList(player)
+                this._setPlayerPosition(playerNode, player);
+                this._addToPlayerLayer(playerNode);
+                this._addPlayerToList(player);
             }
         }
 
@@ -145,12 +151,12 @@ export default class PlayerManager extends Component {
     }
 
     _addToPlayerLayer(playerNode){
-        playerNode.parent = this.parentScene.playerLayer
+        playerNode.parent = this.scene.playerLayer;
     }
 
     _setPlayerPosition(playerNode, player){
-        let anchor = this.playerPositions.getPlayerAnchorByPlayerId(player.id, player.isItMe())
-        playerNode && anchor && playerNode.setPosition(anchor.getPosition())
+        let anchor = this.playerPositions.getPlayerAnchorByPlayerId(player.id, player.isItMe());
+        playerNode && anchor && playerNode.setPosition(anchor.getPosition());
     }
 
     /**
@@ -168,15 +174,15 @@ export default class PlayerManager extends Component {
 
         var ownerId = utils.getVariable(this.board.room, app.keywords.VARIABLE_OWNER);
 
-        console.log("owner: " + ownerId)
+        console.log("owner: " + ownerId);
 
         if (ownerId && (!this.owner || ownerId === this.owner.id)) {
 
-            this.owner && this.owner.setOwner(false)
-            this.owner = this.findPlayer(ownerId)
-            this.owner && this.owner.setOwner(true)
+            this.owner && this.owner.setOwner(false);
+            this.owner = this.findPlayer(ownerId);
+            this.owner && this.owner.setOwner(true);
 
-            console.log("owner player: " + this.owner)
+            console.log("owner player: " + this.owner);
 
             //TODO More action on owner changed
         } else {
@@ -191,13 +197,7 @@ export default class PlayerManager extends Component {
 
             //TODO more action want to apply to player
 
-        })
-
-        if(this.board.isNewBoard() || this.board.isReady()){
-            this.playerPositions.showAllInviteButton();
-        }else{
-            this.playerPositions.hideInviteButton(1);
-        }
+        });
 
         this.maxPlayerId = maxPlayerId;
 
@@ -208,7 +208,7 @@ export default class PlayerManager extends Component {
 
         this.players.forEach(player => {
             maxPlayerId = Math.max(maxPlayerId, player.id);
-        })
+        });
 
         this.maxPlayerId = maxPlayerId;
     }
@@ -218,7 +218,7 @@ export default class PlayerManager extends Component {
             return;
         }
 
-        let playerIndex = this._findPlayerIndex(player.id)
+        let playerIndex = this._findPlayerIndex(player.id);
         if (playerIndex < 0) {
             this.players.push(player);
         }else{
@@ -256,7 +256,7 @@ export default class PlayerManager extends Component {
                 playerIndex = index;
                 return true;
             }
-        })
+        });
         return playerIndex;
     }
 
@@ -270,15 +270,15 @@ export default class PlayerManager extends Component {
         this.players.some((value, i, arr) => {
             if (value.id == player.id) {
 
-                this.players.splice(i, 1)
-                delete this._idToPlayerMap[player.id]
-                delete this._idToPlayerMap[player.user.name]
+                this.players.splice(i, 1);
+                delete this._idToPlayerMap[player.id];
+                delete this._idToPlayerMap[player.user.name];
 
-                this._onPlayerDataChanged()
+                this._onPlayerDataChanged();
 
                 return true;
             }
-        })
+        });
     }
 
     _replaceUser(player, newId) {
@@ -312,7 +312,7 @@ export default class PlayerManager extends Component {
         this.players.forEach(player => {
             if ((this.board.isPlaying() || this.board.isStarting()) && player.isPlaying())
                 count++;
-        })
+        });
 
         return count;
     }
@@ -327,55 +327,55 @@ export default class PlayerManager extends Component {
 
     onBoardMinBetChanged() {
         this.players.forEach(player => {
-            !player.isOwner() && player.resetReadyState()
-        })
+            !player.isOwner() && player.resetReadyState();
+        });
     }
 
     onBoardMasterChanged(master) {
-        this.players.forEach(player => player.onBoardMasterChanged())
+        this.players.forEach(player => player.onBoardMasterChanged());
     }
 
     onBoardOwnerChanged(owner) {
-        this.players.forEach(player => player.onBoardOwnerChanged())
+        this.players.forEach(player => player.onBoardOwnerChanged());
     }
 
-    playerOnBoardBegin(data) {
-        this.players.forEach(player => player.onBoardBegin(data));
+    onGameBegin(data) {
+        this.players.forEach(player => player.onGameBegin(data));
     }
 
-    playerOnBoardStarting(data) {
-        this.players.forEach(player => player.onBoardStarting(data));
+    onGameStarting(data) {
+        this.players.forEach(player => player.onGameStarting(data));
     }
 
-    playerOnBoardStarted(data) {
-        this.players.forEach(player => player.onBoardStarted(data));
+    onGameStarted(data) {
+        this.players.forEach(player => player.onGameStarted(data));
     }
 
-    playerOnBoardPlaying(data) {
-        this.players.forEach(player => player.onBoardPlaying(data));
+    onGamePlaying(data) {
+        this.players.forEach(player => player.onGamePlaying(data));
     }
 
-    playerOnBoardEnd(data) {
-        this.players.forEach(player => player.onBoardEnd(data));
+    onGameEnding(data) {
+        this.players.forEach(player => player.onGameEnding(data));
     }
 
     playerOnPlayerRejoin(playerIds, remainCardSizes, data) {
         playerIds && playerIds.forEach((id, i) => {
             var player = this.findPlayer(playerIds[i]);
             player.onRejoin(remainCardSizes[i], data);
-        })
+        });
     }
 
     onPlayerToSpectator(user) {
         this.players.forEach(player => {
             player.onPlayerToSpectator(user);
-        })
+        });
     }
 
     onSpectatorToPlayer(user) {
         this.players.forEach(player => {
             player.onSpectatorToPlayer(user);
-        })
+        });
     }
 
     onPlayerLeaveBoard(playerOrIdOrName) {
@@ -427,7 +427,7 @@ export default class PlayerManager extends Component {
             if (player.name === sender.name) {
                 player.say(message);
             }
-        })
+        });
     }
 
     onMeRejoinGame(resObj) {

@@ -2,15 +2,15 @@
  * Created by Thanh on 8/23/2016.
  */
 
-import app from 'app'
+import app from 'app';
 
 class GameContext {
 
     constructor() {
-        this.currentRoom = null
-        this.groupId = null
-        this.currentRoom = null
-        this.lastJoinedRoom = null
+        this.currentRoom = null;
+        this.groupId = null;
+        this.currentRoom = null;
+        this.lastJoinedRoom = null;
     }
 
     /**
@@ -22,7 +22,7 @@ class GameContext {
     }
 
     isJoinedGame(){
-        return this.currentRoom && this.currentRoom.isGame
+        return this.currentRoom && this.currentRoom.isGame;
     }
 
     getRoom(roomId){

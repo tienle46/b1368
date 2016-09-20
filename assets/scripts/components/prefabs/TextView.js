@@ -1,6 +1,6 @@
 
-import app from 'app'
-import Component from 'Component'
+import app from 'app';
+import Component from 'Component';
 
 class TextView extends Component{
     constructor() {
@@ -8,9 +8,9 @@ class TextView extends Component{
         this.label = {
             default: null,
             type: cc.Label
-        }
+        };
 
-        this.maxLine = null
+        this.maxLine = null;
     }
 
     onLoad(){
@@ -31,4 +31,4 @@ class TextView extends Component{
     }
 }
 
-app.createComponent(TextView)
+app.createComponent(TextView);

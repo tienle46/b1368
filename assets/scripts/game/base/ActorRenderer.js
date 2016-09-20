@@ -2,7 +2,7 @@
  * Created by Thanh on 9/15/2016.
  */
 
-import Component from 'Component'
+import Component from 'Component';
 
 export default class ActorRenderer extends Component {
     constructor() {
@@ -16,6 +16,6 @@ export default class ActorRenderer extends Component {
     }
 
     onLoad(){
-        this.loaded = true
+        this.loaded = true;
     }
 }

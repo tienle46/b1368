@@ -3,7 +3,7 @@
  */
 
 
-import PlayerCardRenderer from 'PlayerCardRenderer'
+import PlayerCardRenderer from 'PlayerCardRenderer';
 
 export default class PlayerCardTurnBaseRenderer extends PlayerCardRenderer {
     constructor() {
@@ -12,6 +12,6 @@ export default class PlayerCardTurnBaseRenderer extends PlayerCardRenderer {
     }
 
     onLoad(){
-        super.onLoad()
+        super.onLoad();
     }
 }

@@ -2,8 +2,8 @@
  * Created by Thanh on 8/23/2016.
  */
 
-var app = require('app')
-var SFS2X = require('SFS2X')
+var app = require('app');
+var SFS2X = require('SFS2X');
 var Fingerprint2 = require('fingerprinter');
 
 const requestCallbackNames = {
@@ -41,46 +41,46 @@ const requestCallbackNames = {
     [SFS2X.Requests.InvitationReply]: SFS2X.SFSEvent.INVITATION_REPLY,
     [SFS2X.Requests.CreateSFSGame]: SFS2X.SFSEvent.ROOM_ADD,
     [SFS2X.Requests.QuickJoinGame]: SFS2X.SFSEvent.ROOM_JOIN
-}
+};
 
 class Service {
     constructor() {
-        this.client = null
-        this._eventCallbacks = {}
-        this._eventScopes = {}
+        this.client = null;
+        this._eventCallbacks = {};
+        this._eventScopes = {};
 
         this._valueQueue = [];
         this._lagPollingInterval = null;
         this._poorNetwork = false;
 
-        this._initSmartFoxClient()
+        this._initSmartFoxClient();
     }
 
     _initSmartFoxClient() {
 
-        var config = {}
-        config.zone = app.config.zone
-        config.debug = app.config.debug
-        config.useSSL = app.config.useSSL
+        var config = {};
+        config.zone = app.config.zone;
+        config.debug = app.config.debug;
+        config.useSSL = app.config.useSSL;
 
-        this.client = new SFS2X.SmartFox(config)
-        this.client.setClientDetails("MOZILLA", "1.0.0")
+        this.client = new SFS2X.SmartFox(config);
+        this.client.setClientDetails("MOZILLA", "1.0.0");
 
         this._registerSmartFoxEvent();
     }
 
     __testConnection() {
         this.connect((success) => {
-            console.log("success: " + success)
+            console.log("success: " + success);
             if (success) {
                 this.login("crush1", "1234nm", (error, result) => {
                     if (result) {
-                        console.log(`Logged in as ${app.context.getMe().name}`)
+                        console.log(`Logged in as ${app.context.getMe().name}`);
                     }
 
                     if (error) {
-                        console.log("Login error: ")
-                        console.log(error)
+                        console.log("Login error: ");
+                        console.log(error);
                     }
                 });
             }
@@ -89,35 +89,35 @@ class Service {
 
     _registerSmartFoxEvent() {
 
-        this._removeSmartFoxEvent()
+        this._removeSmartFoxEvent();
 
-        this.addEventListener(SFS2X.SFSEvent.LOGIN, this._onLogin)
-        this.addEventListener(SFS2X.SFSEvent.LOGIN_ERROR, this._onLoginError)
-        this.addEventListener(SFS2X.SFSEvent.CONNECTION, this._onConnection)
-        this.addEventListener(SFS2X.SFSEvent.CONNECTION_LOST, this._onConnectionLost)
-        this.addEventListener(SFS2X.SFSEvent.CONNECTION_RESUME, this._onConnectionResume)
-        this.addEventListener(SFS2X.SFSEvent.EXTENSION_RESPONSE, this._onExtensionEvent)
-        this.addEventListener(SFS2X.SFSEvent.ROOM_JOIN, this._onJoinRoomResult)
-        this.addEventListener(SFS2X.SFSEvent.ROOM_JOIN_ERROR, this._onJoinRoomResult)
-        this.addEventListener(SFS2X.SFSEvent.ROOM_CREATION_ERROR, this._onCreateRoomResult)
-        this.addEventListener(SFS2X.SFSEvent.USER_EXIT_ROOM, this._onUserExitRoom)
-        this.addEventListener(SFS2X.SFSEvent.USER_ENTER_ROOM, this._onUserEnterRoom)
-        this.addEventListener(SFS2X.SFSEvent.ROOM_REMOVE, this._onRoomRemove)
+        this.addEventListener(SFS2X.SFSEvent.LOGIN, this._onLogin);
+        this.addEventListener(SFS2X.SFSEvent.LOGIN_ERROR, this._onLoginError);
+        this.addEventListener(SFS2X.SFSEvent.CONNECTION, this._onConnection);
+        this.addEventListener(SFS2X.SFSEvent.CONNECTION_LOST, this._onConnectionLost);
+        this.addEventListener(SFS2X.SFSEvent.CONNECTION_RESUME, this._onConnectionResume);
+        this.addEventListener(SFS2X.SFSEvent.EXTENSION_RESPONSE, this._onExtensionEvent);
+        this.addEventListener(SFS2X.SFSEvent.ROOM_JOIN, this._onJoinRoomResult);
+        this.addEventListener(SFS2X.SFSEvent.ROOM_JOIN_ERROR, this._onJoinRoomResult);
+        this.addEventListener(SFS2X.SFSEvent.ROOM_CREATION_ERROR, this._onCreateRoomResult);
+        this.addEventListener(SFS2X.SFSEvent.USER_EXIT_ROOM, this._onUserExitRoom);
+        this.addEventListener(SFS2X.SFSEvent.USER_ENTER_ROOM, this._onUserEnterRoom);
+        this.addEventListener(SFS2X.SFSEvent.ROOM_REMOVE, this._onRoomRemove);
     }
 
     _removeSmartFoxEvent() {
-        this.removeEventListener(SFS2X.SFSEvent.LOGIN, this._onLogin)
-        this.removeEventListener(SFS2X.SFSEvent.LOGIN_ERROR, this._onLoginError)
-        this.removeEventListener(SFS2X.SFSEvent.CONNECTION, this._onConnection)
-        this.removeEventListener(SFS2X.SFSEvent.CONNECTION_LOST, this._onConnectionLost)
-        this.removeEventListener(SFS2X.SFSEvent.CONNECTION_RESUME, this._onConnectionResume)
-        this.removeEventListener(SFS2X.SFSEvent.EXTENSION_RESPONSE, this._onExtensionEvent)
-        this.removeEventListener(SFS2X.SFSEvent.ROOM_JOIN, this._onJoinRoomResult)
-        this.removeEventListener(SFS2X.SFSEvent.ROOM_JOIN_ERROR, this._onJoinRoomResult)
-        this.removeEventListener(SFS2X.SFSEvent.ROOM_CREATION_ERROR, this._onCreateRoomResult)
-        this.removeEventListener(SFS2X.SFSEvent.USER_EXIT_ROOM, this._onUserExitRoom)
-        this.removeEventListener(SFS2X.SFSEvent.USER_ENTER_ROOM, this._onUserEnterRoom)
-        this.removeEventListener(SFS2X.SFSEvent.ROOM_REMOVE, this._onRoomRemove)
+        this.removeEventListener(SFS2X.SFSEvent.LOGIN, this._onLogin);
+        this.removeEventListener(SFS2X.SFSEvent.LOGIN_ERROR, this._onLoginError);
+        this.removeEventListener(SFS2X.SFSEvent.CONNECTION, this._onConnection);
+        this.removeEventListener(SFS2X.SFSEvent.CONNECTION_LOST, this._onConnectionLost);
+        this.removeEventListener(SFS2X.SFSEvent.CONNECTION_RESUME, this._onConnectionResume);
+        this.removeEventListener(SFS2X.SFSEvent.EXTENSION_RESPONSE, this._onExtensionEvent);
+        this.removeEventListener(SFS2X.SFSEvent.ROOM_JOIN, this._onJoinRoomResult);
+        this.removeEventListener(SFS2X.SFSEvent.ROOM_JOIN_ERROR, this._onJoinRoomResult);
+        this.removeEventListener(SFS2X.SFSEvent.ROOM_CREATION_ERROR, this._onCreateRoomResult);
+        this.removeEventListener(SFS2X.SFSEvent.USER_EXIT_ROOM, this._onUserExitRoom);
+        this.removeEventListener(SFS2X.SFSEvent.USER_ENTER_ROOM, this._onUserEnterRoom);
+        this.removeEventListener(SFS2X.SFSEvent.ROOM_REMOVE, this._onRoomRemove);
     }
 
     _onUserExitRoom(event) {
@@ -133,7 +133,7 @@ class Service {
     }
 
     _onConnection(event) {
-        this._callCallback(SFS2X.SFSEvent.CONNECTION, event.success)
+        this._callCallback(SFS2X.SFSEvent.CONNECTION, event.success);
     }
 
     _onConnectionLost(event) {
@@ -145,7 +145,7 @@ class Service {
     }
 
     _onConnectionResume(event) {
-        console.log("_onConnectionResume")
+        console.log("_onConnectionResume");
         console.log(event);
     }
 
@@ -155,42 +155,48 @@ class Service {
             this._handleLagPollingResponse(event);
         }else{
             if (this._hasCallback(event.cmd)) {
-                this._callCallbackAsync(event.cmd, event.params)
+                this._callCallbackAsync(event.cmd, event.params);
             } else {
-                app.system.emit(event.cmd, event.params, event)
+                app.system.emit(event.cmd, event.params, event);
             }
         }
 
     }
 
     _onLogin(event) {
+        if(event.data[app.keywords.LOGIN_REJOIN_ROOM_GROUP]){
+            this.logout();
+            app.system.info("Hệ thống chưa hỗ trợ kết nối lại khi bàn đang chơi. Vui lòng đăng nhập lại!")
+            return;
+        }
+
         this._callCallback(SFS2X.SFSEvent.LOGIN, null, event.data)
         this.startLagPolling(app.config.pingPongInterval)
     }
 
     _onLoginError() {
-        this._callCallback(SFS2X.SFSEvent.LOGIN, event.data)
+        this._callCallback(SFS2X.SFSEvent.LOGIN, event.data);
     }
 
     sendRequest(request, { cb = null, scope = null, cbName = null } = {}) {
         if (cb) {
-            let cbKey = cbName || requestCallbackNames[request._id]
-            cbKey && this._addCallback(cbKey, cb, scope)
+            let cbKey = cbName || requestCallbackNames[request._id];
+            cbKey && this._addCallback(cbKey, cb, scope);
         }
 
-        this.client.send(request)
+        this.client.send(request);
     }
 
     _callCallback(key, verifyFunc, ...args) {
-        let cbObj = this._getCallbackObject(key)
+        let cbObj = this._getCallbackObject(key);
 
         if (!(verifyFunc instanceof Function)) {
             args = [verifyFunc, ...args];
             verifyFunc = undefined;
         }
 
-        console.log("call callback ")
-        console.log(args)
+        console.log("call callback ");
+        console.log(args);
 
 
         if (cbObj && (!verifyFunc || verifyFunc(cbObj.data))) {
@@ -243,7 +249,7 @@ class Service {
     connect(cb) {
 
         if (this.client.isConnected()) {
-            this._onConnection({ success: true })
+            this._onConnection({ success: true });
         } else {
             this._addCallback(SFS2X.SFSEvent.CONNECTION, cb);
 
@@ -268,7 +274,7 @@ class Service {
      */
     logout() {
         this.disconnect();
-        app.system.loadScene(app.const.scene.LOGIN_SCENE);
+        app.system.loadScene(app.const.scene.ENTRANCE_SCENE);
     }
 
     /**
@@ -318,12 +324,12 @@ class Service {
         if (!options) return;
 
         if (options instanceof SFS2X.Requests._BaseRequest) {
-            this.sendRequest(options)
+            this.sendRequest(options);
         } else {
-            const cmd = options.cmd
+            const cmd = options.cmd;
             if (cmd) {
-                this._addCallback(cmd, cb, scope, options.data)
-                this.sendRequest(new SFS2X.Requests.System.ExtensionRequest(cmd, options.data || {}, options.room))
+                this._addCallback(cmd, cb, scope, options.data);
+                this.sendRequest(new SFS2X.Requests.System.ExtensionRequest(cmd, options.data || {}, options.room));
             }
         }
     }
@@ -354,7 +360,7 @@ class Service {
             let keys = Object.keys(eventCmdObj);
             keys.forEach(key => {
                 delete this._eventCallbacks[key];
-            })
+            });
         }
 
         scope && delete this._eventScopes[scope];
@@ -368,7 +374,7 @@ class Service {
             this._callCallbackAsync(key, event);
         } else {
             this._callCallbackAsync(key, data => {
-                return !data || !data.roomId || (event.room && data.roomId == event.id)
+                return !data || !data.roomId || (event.room && data.roomId == event.id);
             }, null, event);
         }
     }
@@ -385,7 +391,7 @@ class Service {
         this._lagPollingInterval = setInterval(() => {
             let currentTimeInMilis = (new Date()).getTime();
             this.send({cmd: app.commands.XLAG, data: {[app.keywords.XLAG_VALUE]: currentTimeInMilis}});
-         }, this.interval);
+        }, this.interval);
     }
 
     stopLagPolling () {
@@ -415,7 +421,7 @@ class Service {
     _updatePoorNetwork() {
         if (this._valueQueue.length > 0) {
             let totalLatency = 0;
-            this._valueQueue.forEach(value => {totalLatency += value})
+            this._valueQueue.forEach(value => {totalLatency += value;});
             var averageLatency = totalLatency / this._valueQueue.length;
             this._poorNetwork = averageLatency > app.config.poorNetworkThreshold;
         }

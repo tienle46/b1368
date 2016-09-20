@@ -2,20 +2,20 @@
  * Created by Thanh on 9/15/2016.
  */
 
-import app from 'app'
-import Component from 'Component'
+import app from 'app';
+import Component from 'Component';
 
 export default class Actor extends Component {
     constructor() {
-        super()
+        super();
 
         this.renderer = {
             default: null,
             type: cc.Node
-        }
+        };
 
         this.rendererClassName = null;
-        this.renderData = null
+        this.renderData = null;
     }
 
     /**
@@ -44,11 +44,11 @@ export default class Actor extends Component {
         !this.rendererClassName && this._setRenderer();
 
         if (this.rendererClassName) {
-            let renderComponent = app.createComponent(this.rendererClassName)
-            this.renderer = this.addComponent(renderComponent)
+            let renderComponent = app.createComponent(this.rendererClassName);
+            this.renderer = this.addComponent(renderComponent);
             this.renderer._initUI(this.renderData);
         }else{
-            console.error("Cannot initiate renderer for actor")
+            console.error("Cannot initiate renderer for actor");
         }
     }
 }

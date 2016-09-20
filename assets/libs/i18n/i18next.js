@@ -170,7 +170,7 @@
 	  return Logger;
 	}();
 
-	;
+	
 
 	var baseLogger = new Logger();
 
@@ -980,7 +980,7 @@
 	  return LanguageUtil;
 	}();
 
-	;
+	
 
 	// definition http://translate.sourceforge.net/wiki/l10n/pluralforms
 	/* eslint-disable */
@@ -1161,7 +1161,7 @@
 	  return PluralResolver;
 	}();
 
-	;
+	
 
 	var Interpolator = function () {
 	  function Interpolator() {
@@ -1513,7 +1513,7 @@
 	            });
 	          };
 
-	          ;
+	          
 
 	          toLoad.toLoad.forEach(function (name) {
 	            readOne.call(_this5, name);
@@ -1576,7 +1576,7 @@
 	            });
 	          };
 
-	          ;
+	          
 
 	          languages.forEach(function (l) {
 	            namespaces.forEach(function (n) {

@@ -2,8 +2,8 @@
  * Created by Thanh on 9/8/2016.
  */
 
-import app from 'app'
-import PositionManager from 'PositionManager'
+import app from 'app';
+import PositionManager from 'PositionManager';
 
 class EightPlayerPositions extends PositionManager {
     constructor() {
@@ -12,47 +12,47 @@ class EightPlayerPositions extends PositionManager {
         this.anchor1 = {
             default: null,
             type: cc.Node
-        }
+        };
 
         this.anchor2 = {
             default: null,
             type: cc.Node
-        }
+        };
 
         this.anchor3 = {
             default: null,
             type: cc.Node
-        }
+        };
 
         this.anchor4 = {
             default: null,
             type: cc.Node
-        }
+        };
 
         this.anchor5 = {
             default: null,
             type: cc.Node
-        }
+        };
 
         this.anchor6 = {
             default: null,
             type: cc.Node
-        }
+        };
 
         this.anchor7 = {
             default: null,
             type: cc.Node
-        }
+        };
 
         this.anchor8 = {
             default: null,
             type: cc.Node
-        }
+        };
 
         this.myAnchor = {
             default: null,
             type: cc.Node
-        }
+        };
     }
 
     getPlayerPosition(id){
@@ -79,4 +79,4 @@ class EightPlayerPositions extends PositionManager {
     }
 }
 
-app.createComponent(EightPlayerPositions)
+app.createComponent(EightPlayerPositions);

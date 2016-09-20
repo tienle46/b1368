@@ -1,17 +1,17 @@
 {
-  "excludeScenes": [],
-  "orientation": {
-    "landscapeLeft": true,
-    "landscapeRight": true,
-    "portrait": false,
-    "upsideDown": false
-  },
-  "packageName": "com.game.B1368",
-  "startScene": "f3d683ed-d62b-45b7-b459-3ff0820b7e41",
-  "title": "B1368",
-  "webOrientation": "auto",
-  "includeSdk": [
-    "anysdk"
-  ],
-  "includeAnysdk": false
+    "excludeScenes": [],
+    "orientation": {
+        "landscapeLeft": true,
+        "landscapeRight": true,
+        "portrait": false,
+        "upsideDown": false
+    },
+    "packageName": "com.game.B1368",
+    "startScene": "f3d683ed-d62b-45b7-b459-3ff0820b7e41",
+    "title": "B1368",
+    "webOrientation": "auto",
+    "includeSdk": [
+        "anysdk"
+    ],
+    "includeAnysdk": false
 }

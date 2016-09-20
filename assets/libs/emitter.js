@@ -5,7 +5,7 @@
 
 export default class Emitter {
     constructor() {
-        this._callbacks = {}
+        this._callbacks = {};
 
     }
 
@@ -73,7 +73,7 @@ export default class Emitter {
      */
 
     on(event, fn, context = this) {
-        this.addListener(event, fn, context)
+        this.addListener(event, fn, context);
     }
 
     /**
@@ -87,7 +87,7 @@ export default class Emitter {
      */
 
     off(event, fn){
-        this.removeListener(event, fn)
+        this.removeListener(event, fn);
     }
 
 
