@@ -7,6 +7,12 @@ import Component from 'Component';
 import utils from 'utils';
 
 export default class PositionManager extends Component {
+
+    static get ALIGN_TOP() {return 'TOP'};
+    static get ALIGN_BOTTOM() {return 'BOTTOM'};
+    static get ALIGN_LEFT() {return 'LEFT'};
+    static get ALIGN_RIGHT() {return 'RIGHT'};
+
     constructor() {
         super();
         this.playerAnchors = [];

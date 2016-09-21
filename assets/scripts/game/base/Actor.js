@@ -42,19 +42,7 @@ export default class Actor extends Component {
      * Sub class must be call super.onLoad() to init Renderer of actor
      */
     onLoad() {
-        // if(!this.renderer){
-        //     !this.rendererClassName && this._setRenderer();
-        //
-        //     if (this.rendererClassName) {
-        //         let renderComponent = this.renderComponent || app.createComponent(this.rendererClassName);
-        //         this.renderer = this.addComponent(renderComponent);
-        //     }else{
-        //         console.error("Cannot initiate renderer for actor");
-        //     }
-        // }
-
-        console.debug(this.renderer);
-
+        this.renderData = {...this.renderData, actor: this};
         this.renderer && this.renderer._initUI(this.renderData);
     }
 }

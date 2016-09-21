@@ -44,6 +44,8 @@ export default class PlayerRenderer extends ActorRenderer {
             default: null,
             type: cc.Node
         };
+
+        this.align;
     }
 
     _initUI() {

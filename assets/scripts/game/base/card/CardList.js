@@ -1,4 +1,4 @@
-import app from 'app'
+﻿import app from 'app'
 import Component from 'Component'
 import Card from 'Card'
 var _ = require('lodash');
@@ -35,14 +35,12 @@ export default class CardList extends Component {
         this._cardRotate = 0; //TODO
     }
 
-    _init({x = undefined, y = undefined, width = undefined, height = undefined, type = undefined, direction = undefined} = {}){
-        this._layout = this.node.addComponent(cc.Layout);
+    _init({x = this.node.x, y = this.node.y, width = this.node.width, height = this.node.height, type = this._type, direction = this._direction} = {}){
         this._setMaxWidth(width);
         this._setMaxHeight(height);
         this.setPosition(x, y);
         this.setType(type);
         this.setDirection(direction);
-        this.setMaxSize();
 
         this._onConfigChanged();
     }
@@ -77,7 +75,8 @@ export default class CardList extends Component {
 
 
     onLoad () {
-        this._test();
+	this._verifyLayoutInitiated();
+        // this._test();
     }
 
     setPosition(x = 0, y = 0){
@@ -230,9 +229,10 @@ export default class CardList extends Component {
      */
     _fillCards (cards, faceDown, animation){
 
+        this._verifyLayoutInitiated();
+
         const parentHeight = this.node.height;
         const scaleFactor = parentHeight / 130;
-        this.cards = [];
 
         cards.forEach((card, index) => {
 
@@ -242,8 +242,8 @@ export default class CardList extends Component {
             newCard.reveal(true);
             newCard.setOnClickListener(this._onSelectCard.bind(this));
 
-            this.node.addChild(newCard.node, index, index + 1000);
             newCard.node.setScale(scaleFactor,scaleFactor);
+            this.node.addChild(newCard.node, index, index + 1000);
 
             newCard.node.on(cc.Node.EventType.TOUCH_START, (event) => {
 
@@ -304,7 +304,10 @@ export default class CardList extends Component {
     }
 
     _verifyLayoutInitiated(){
-        !this._layout && this._init();
+        if(!this._layout) {
+            this._layout = this.node.addComponent(cc.Layout);
+            this._onConfigChanged();
+        };
     }
 
 }
