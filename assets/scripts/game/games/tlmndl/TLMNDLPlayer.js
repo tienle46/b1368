@@ -27,3 +27,5 @@ export default class TLMNDLPlayer extends PlayerCardTurnBase {
         super.onLoad();
     }
 }
+
+app.createComponent(TLMNDLPlayer)

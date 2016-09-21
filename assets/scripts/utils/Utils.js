@@ -69,4 +69,20 @@ export default class Utils {
     static getGameCode(room) {
         return room && room.isGame && room.name.substring(0, 3);
     }
+
+    static cloneProperties(dest, src){
+
+        Object.getOwnPropertyNames(src).forEach(key => {
+
+            console.debug("Check: ", dest[key], src[key], !dest[key] && src[key])
+            if(!dest[key] && src[key]){
+                dest[key] = src[key];
+            }
+        });
+
+        // dest.node && src.node && (src.node.children.forEach(node => {
+        //     node.parent = null;
+        //     dest.node.addChild(node)
+        // }));
+    }
 }

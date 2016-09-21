@@ -17,6 +17,7 @@ export default class CardList extends Component {
 
     constructor() {
         super();
+
         this.cardPrefab = {
             default: null,
             type: cc.Prefab
@@ -28,6 +29,7 @@ export default class CardList extends Component {
         this._type = CardList.HORIZONTAL;
         this._direction = CardList.LEFT_TO_RIGHT;
         this._layout = cc.Layout;
+        this.draggable = false;
 
         this._cardListRotate = 0; //TODO
         this._cardRotate = 0; //TODO
@@ -69,6 +71,10 @@ export default class CardList extends Component {
         }
     }
 
+    setDraggable(draggable){
+        this.draggable = draggable;
+    }
+
 
     onLoad () {
         this._test();
@@ -92,17 +98,24 @@ export default class CardList extends Component {
     }
 
     _test(){
+        console.log("test")
         this._init();
 
         this.setPosition(17, 100);
-        this.setCards([39,35,11,20,25,14,33].map(byteValue => Card.from(byteValue)));
+        let cards = [39,35,11,21,24,14,33].map(value => Card.from(value));
+        this.setCards(cards);
 
         // this.node.runAction(cc.rotateBy(0,90));
     }
 
     setCards (cards, faceDown, animation){
-        this.cards = [];
+        this.clear();
         this._fillCards(cards, faceDown, animation);
+    }
+
+    clear(){
+        this.cards = [];
+        this.node.removeAllChildren(true);
     }
 
     /**
@@ -219,24 +232,33 @@ export default class CardList extends Component {
 
         const parentHeight = this.node.height;
         const scaleFactor = parentHeight / 130;
+        this.cards = [];
 
-        cards.forEach((card, index) =>{
+        cards.forEach((card, index) => {
 
             var newCard = cc.instantiate(this.cardPrefab).getComponent('Card');
+
             newCard.initFromByte(card.byteValue);
             newCard.reveal(true);
-            newCard.setOnClickListener(this._onSelectCard);
+            newCard.setOnClickListener(this._onSelectCard.bind(this));
 
             this.node.addChild(newCard.node, index, index + 1000);
             newCard.node.setScale(scaleFactor,scaleFactor);
 
-
             newCard.node.on(cc.Node.EventType.TOUCH_START, (event) => {
+
+                if(!this.draggable) return;
+
                 console.log(`touch start position ${event.getLocation().x}`);
+
                 this.node.getComponent(cc.Layout).type = CardList.NONE;
+
             }, this);
 
             newCard.node.on(cc.Node.EventType.TOUCH_MOVE, (event) => {
+
+                if(!this.draggable) return;
+
                 console.log(`touch start position ${event.getLocation().x}`);
 
                 let target = event.target;
@@ -267,6 +289,8 @@ export default class CardList extends Component {
             }, this);
 
             newCard.node.on(cc.Node.EventType.TOUCH_END, (event) => {
+                if(this.draggable) return;
+
                 this.node.getComponent(cc.Layout).type = CardList.HORIZONTAL;
             }, this);
 

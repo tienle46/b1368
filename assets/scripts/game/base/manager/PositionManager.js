@@ -41,11 +41,7 @@ export default class PositionManager extends Component {
         this.playerAnchors.forEach(anchor => {
             if(excludeAnchor !== anchor){
                 let inviteButton = anchor.getChildByName('inviteButton');
-
-
                 utils.active(inviteButton);
-
-                console.log("active: ", inviteButton);
             }
 
         });

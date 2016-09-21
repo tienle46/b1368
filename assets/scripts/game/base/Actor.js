@@ -9,13 +9,14 @@ export default class Actor extends Component {
     constructor() {
         super();
 
-        this.renderer = {
-            default: null,
-            type: cc.Node
-        };
-
+        this.renderer = null;
         this.rendererClassName = null;
         this.renderData = null;
+        this.renderComponent = null;
+    }
+
+    setRenderer(renderer){
+        this.renderer = renderer;
     }
 
     /**
@@ -41,14 +42,19 @@ export default class Actor extends Component {
      * Sub class must be call super.onLoad() to init Renderer of actor
      */
     onLoad() {
-        !this.rendererClassName && this._setRenderer();
+        // if(!this.renderer){
+        //     !this.rendererClassName && this._setRenderer();
+        //
+        //     if (this.rendererClassName) {
+        //         let renderComponent = this.renderComponent || app.createComponent(this.rendererClassName);
+        //         this.renderer = this.addComponent(renderComponent);
+        //     }else{
+        //         console.error("Cannot initiate renderer for actor");
+        //     }
+        // }
 
-        if (this.rendererClassName) {
-            let renderComponent = app.createComponent(this.rendererClassName);
-            this.renderer = this.addComponent(renderComponent);
-            this.renderer._initUI(this.renderData);
-        }else{
-            console.error("Cannot initiate renderer for actor");
-        }
+        console.debug(this.renderer);
+
+        this.renderer && this.renderer._initUI(this.renderData);
     }
 }

@@ -10,15 +10,48 @@ export default class PlayerCardRenderer extends PlayerRenderer {
     constructor() {
         super();
 
+        this.cardListPrefab = {
+            default: null,
+            type: cc.Prefab
+        }
+
+        this.myCardAnchor = {
+            default: null,
+            type: cc.Node
+        }
+
+        this.leftCardAnchor = {
+            default: null,
+            type: cc.Node
+        }
+
+        this.rightCardAnchor = {
+            default: null,
+            type: cc.Node
+        }
+
+        this.topCardAnchor = {
+            default: null,
+            type: cc.Node
+        }
+
+        this.bottomCardAnchor = {
+            default: null,
+            type: cc.Node
+        }
+
         this.cardList = null;
-        
     }
 
     _initUI(data){
         super._initUI();
 
-        let cardListComponent = app.createComponent(CardList)
-        this.cardList = this.node.addComponent(cardListComponent);
+        let cardListNode = cc.instantiate(this.cardListPrefab);
+        cardListNode.setAnchorPoint(0, 0);
+        cardListNode.setPosition(this.myCardAnchor.getPosition());
+
+        this.node.addChild(cardListNode);
+        this.cardList = cardListNode.getComponent('CardList');
     }
 
     onLoad(){
@@ -26,7 +59,10 @@ export default class PlayerCardRenderer extends PlayerRenderer {
     }
 
     renderCards(cards){
-        this.cardList.fillHolderWithCards(cards);
+        console.log("Render cards: ", cards)
+        this.cardList.setCards(cards);
     }
 
 }
+
+app.createComponent(PlayerCardRenderer);

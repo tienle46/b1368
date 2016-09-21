@@ -6,7 +6,7 @@ var app = require('app');
 
 app.config = {};
 app.config.zone = "XGame";
-app.config.debug = true;
+app.config.debug = false;
 app.config.useSSL = false;
 app.config.host = "123.31.12.100";
 app.config.port = 8481;

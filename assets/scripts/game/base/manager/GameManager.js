@@ -15,8 +15,20 @@ const gameCodeToPlayerClassMap = {
     [app.const.gameCode.TLMNDL]: TLMNDLPlayer
 };
 
+const gameCodeToPlayerClassNameMap = {
+    [app.const.gameCode.TLMNDL]: 'TLMNDLPlayer'
+};
+
+const playerRendererClassNameMap = {
+    [app.const.gameCode.TLMNDL]: 'TLMNDLPlayerRenderer'
+};
+
 const gameCodeToGameControlsPathMap = {
     [app.const.gameCode.TLMNDL]: 'game/controls/TLMNDLControlsPrefab'
+}
+
+const gameCodeToPlayerPathMap = {
+    [app.const.gameCode.TLMNDL]: 'game/players/TLMNDLPlayerPrefab'
 }
 
 const gameCodeToGameControlsClassMap = {
@@ -57,8 +69,20 @@ class GameManager {
         return gameCodeToPlayerClassMap[gameCode];
     }
 
+    getPlayerClassName(gameCode){
+        return gameCodeToPlayerClassNameMap[gameCode];
+    }
+
+    getPlayerRendererClassName(gameCode){
+        return playerRendererClassNameMap[gameCode];
+    }
+
     getGameControlsPath(gameCode){
         return gameCodeToGameControlsPathMap[gameCode]
+    }
+
+    getPlayerPath(gameCode){
+        return gameCodeToPlayerPathMap[gameCode]
     }
 
     getGameControlsClass(gameCode){

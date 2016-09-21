@@ -75,9 +75,13 @@
     "_opacityModifyRGB": false,
     "_id": "",
     "_active": true,
-    "_components": [],
+    "_components": [
+      {
+        "__id__": 76
+      }
+    ],
     "_prefab": {
-      "__id__": 76
+      "__id__": 77
     },
     "groupIndex": 0
   },
@@ -1755,7 +1759,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 41,
+      "width": 56,
       "height": 15
     },
     "_children": [],
@@ -2397,6 +2401,32 @@
       "__uuid__": "498f2fac-30aa-46c6-ab21-f13b595982a4"
     },
     "fileId": "12ba2lp/6JFpZ9vr/aI+d2f"
+  },
+  {
+    "__type__": "9c974v/E0ZHbpcNqVHEj93a",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 1
+    },
+    "_enabled": true,
+    "playerNameLabel": {
+      "__id__": 19
+    },
+    "balanceLabel": {
+      "__id__": 23
+    },
+    "status1": {
+      "__id__": 53
+    },
+    "status2": {
+      "__id__": 61
+    },
+    "ownerIcon": {
+      "__id__": 13
+    },
+    "masterIcon": null,
+    "readyIcon": null
   },
   {
     "__type__": "cc.PrefabInfo",

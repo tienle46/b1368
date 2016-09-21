@@ -95,6 +95,10 @@ export default class Player extends Actor {
 
     }
 
+    changeGameState(gameState){
+
+    }
+
     onGameInitiated(data) {
 
     }
@@ -119,3 +123,5 @@ export default class Player extends Actor {
 
     }
 }
+
+app.createComponent(Player);

@@ -10,23 +10,27 @@ app.async = require("async");
 app.keywords = require("Keywords");
 app.commands = require("Commands");
 
-
 require("Constant");
 require("Config");
 require("Resource");
 
-app.createComponent = (className, extendClass = undefined, ...args) => {
-    if (!className) {
+app.createComponent = (classNameOrInstance, extendClass = undefined, ...args) => {
+
+    if (!classNameOrInstance) {
         return;
     }
 
-    if (!(extendClass instanceof Function)) {
-        args = [extendClass, ...args];
-        extendClass = null;
+    let instance;
+    if(typeof classNameOrInstance === 'object'){
+        instance = classNameOrInstance;
+    }else{
+        if (!(extendClass instanceof Function)) {
+            args = [extendClass, ...args];
+            extendClass = null;
+        }
+
+        instance = new classNameOrInstance(...args);
     }
-
-
-    const instance = new className(...args);
 
     instance.properties = instance.properties || {};
     instance.extends = extendClass || instance.extends || cc.Component;
@@ -55,7 +59,7 @@ app.createComponent = (className, extendClass = undefined, ...args) => {
         if (key !== 'extends' && key !== 'properties' && !key.startsWith('__')) {
             // check if property is Object && except instance of cc.Componet
             // such as {default: xxx, type: cc.XXX } => assign to `properties` for displaying value on cocoCcreator
-            // if `instance[key]` is intance of `cc`  
+            // if `instance[key]` is intance of `cc`
             if (instance[key] && isComponentOfCC(instance[key])) {
                 instance.properties[key] = instance[key];
             } else {
@@ -67,7 +71,7 @@ app.createComponent = (className, extendClass = undefined, ...args) => {
     });
 
     const isContainClassPrototype = (obj) => {
-        return className = obj && Object.getPrototypeOf(obj) && Object.getPrototypeOf(obj).constructor.name && Object.getPrototypeOf(obj).constructor.name !== 'Object';
+        return obj && Object.getPrototypeOf(obj) && Object.getPrototypeOf(obj).constructor.name && Object.getPrototypeOf(obj).constructor.name !== 'Object';
     }
 
     let prototypeObj = instance;
@@ -94,12 +98,12 @@ app.createComponent = (className, extendClass = undefined, ...args) => {
      * This function used to assign an object type property.
      * Because cc.Class doesn't allow declare non empty object outside onLoad() and ctor() (while we are using `constructor`)
      * Ex:
-     * 
+     *
      * constructor(){
      *  this.a = {} --> Works
      *  this.a = {a: 1, b:2 } -> Error
      * }
-     * 
+     *
      * ctor: () => {
      *  this.a = {a: 1, b: 2}
      * } ---> Works

@@ -2,6 +2,7 @@
  * Created by Thanh on 9/15/2016.
  */
 
+import app from 'app'
 import ActorRenderer from 'ActorRenderer';
 import utils from 'utils';
 
@@ -46,19 +47,20 @@ export default class PlayerRenderer extends ActorRenderer {
     }
 
     _initUI() {
-        let nameNode = this.node.getChildByName('name');
-        this.playerNameLabel = nameNode && nameNode.getComponent(cc.Label);
 
-        let balanceNode = this.node.getChildByName('balance');
-        this.balanceLabel = cc.find('balance/balanceText', this.node).getComponent(cc.Label);
+        // let nameNode = this.node.getChildByName('name');
+        // this.playerNameLabel = nameNode && nameNode.getComponent(cc.Label);
 
-        this.status1 = cc.find('status/status1', this.node);
-        this.status2 = cc.find('status/status2', this.node);
-        this.ownerIcon = this.node.getChildByName('owner');
-        this.masterIcon = this.node.getChildByName('master');
-        this.readyIcon = this.node.getChildByName('ready');
-
-        console.log("player renderer init ui: ", this.status1 instanceof cc.Node, this.status2 instanceof cc.Node)
+        // let balanceNode = this.node.getChildByName('balance');
+        // this.balanceLabel = cc.find('balance/balanceText', this.node).getComponent(cc.Label);
+        //
+        // this.status1 = cc.find('status/status1', this.node);
+        // this.status2 = cc.find('status/status2', this.node);
+        // this.ownerIcon = this.node.getChildByName('owner');
+        // this.masterIcon = this.node.getChildByName('master');
+        // this.readyIcon = this.node.getChildByName('ready');
+        //
+        // console.log("player renderer init ui: ", this.status1 instanceof cc.Node, this.status2 instanceof cc.Node)
 
         utils.deactive(this.status1);
         utils.deactive(this.status2);
@@ -93,3 +95,5 @@ export default class PlayerRenderer extends ActorRenderer {
         utils.setActive(this.readyIcon, visible)
     }
 }
+
+app.createComponent(PlayerRenderer);

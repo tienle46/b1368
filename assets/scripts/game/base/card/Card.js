@@ -1,14 +1,12 @@
 import app from 'app'
 import Component from 'Component'
 
-export default class Card extends Component{
+export default class Card extends Component {
 
-    constructor(rank, suit, cardByte) {
+    constructor(byteValue) {
         super();
 
-        if(rank && suit){
-            this._init(rank, suit, cardByte);
-        }
+        byteValue && this.initFromByte(byteValue);
 
         this.rankNode = cc.Label;
         this.suitNode = cc.Sprite;
@@ -39,34 +37,26 @@ export default class Card extends Component{
     }
 
     initFromByte(byteValue) {
-        let rank = byteValue >> 2;
-        let suit = byteValue & 0x03;
-        this._init(rank, suit, byteValue);
-        
-        console.log("rank suit: ", rank, suit);
+        if(byteValue){
+            let rank = byteValue >> 2;
+            let suit = byteValue & 0x03;
+            this._init(rank, suit, byteValue);
+        }
     }
 
     _init(rank, suit, byteValue) {
-
-        if(!rank || !suit) return;
-
         this.rank = rank;
         this.suit = suit;
-        this.byteValue = byteValue || (rank << 2 | suit & 0x03);
+        this.byteValue = byteValue;
     }
 
     onLoad() {
+
         this.rankNode.string = this._getRankName();
         this.suitNode.spriteFrame = this.texSuitSmall[this.suit];
         this.rankNode.node.color = this.isRedSuit() ? this.redTextColor : this.blackTextColor;
         //this.rank > 10 => isFaceCard
         this.mainPic.spriteFrame = this.rank > 10 ? this.texFaces[this.rank - 10 - 1] : this.texSuitBig[this.suit];
-    }
-
-    static from(byteValue){
-        let card = new Card();
-        card.initFromByte(byteValue);
-        return card;
     }
 
     _getRankName(){
@@ -106,6 +96,12 @@ export default class Card extends Component{
 
     equals(card){
         return this.byteValue === card.byteValue;
+    }
+
+    static from(value){
+        let card = new Card();
+        card.initFromByte(value);
+        return card;
     }
 }
 

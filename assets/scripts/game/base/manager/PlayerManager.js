@@ -12,7 +12,7 @@ import CreateGameException from 'CreateGameException';
 export default class PlayerManager extends Component {
     constructor() {
         super();
-
+        
         this.playerPositions = {
             default: null,
             type: cc.Node
@@ -27,7 +27,11 @@ export default class PlayerManager extends Component {
         this._playerPrefab = null;
         this._idToPlayerMap = null;
         this._nameToPlayerMap = null;
-        this.initDoneCb = null;
+        this.initLayerDoneCb = null;
+    }
+
+    onLoad(){
+        // this.playerPrefabs = {'aaa': cc.Prefab}
     }
 
     isItMe(id){
@@ -37,7 +41,7 @@ export default class PlayerManager extends Component {
     _init(board, scene, cb) {
         this.board = board;
         this.scene = scene;
-        this.initDoneCb = cb;
+        this.initLayerDoneCb = cb;
         this.gameCode = (this.board && this.board.gameCode) || (app.config.test ? "tnd" : "");
         this._reset();
 
@@ -46,11 +50,13 @@ export default class PlayerManager extends Component {
 
     _onFinishInitPlayerLayer(){
 
-        this.initDoneCb && this.initDoneCb();
+        this.initLayerDoneCb && this.initLayerDoneCb();
         console.debug("_onFinishInitPlayerLayer")
 
-        cc.loader.loadRes('game/players/Player', (error, prefab) => {
+        let playerPrefabPath = app.game.getPlayerPath(this.gameCode)
+        cc.loader.loadRes(playerPrefabPath, (error, prefab) => {
             if(error){
+                console.error(error)
                 throw new CreateGameException("Không thể khởi tạo người chơi");
                 return;
             }
@@ -123,21 +129,25 @@ export default class PlayerManager extends Component {
             });
         }
 
-        console.log("initPlayers");
-
         this._onPlayerDataChanged();
     }
 
     _createSinglePlayer(user){
 
-        let player;
-
         let playerNode = cc.instantiate(this._playerPrefab);
-        let playerClass = app.game.getPlayerClass(this.gameCode);
+        let playerClassName = app.game.getPlayerClassName(this.gameCode);
+        let playerRendererClassName = app.game.getPlayerRendererClassName(this.gameCode);
 
-        if(playerClass){
-            let playerComponent = app.createComponent(playerClass, this.board, user);
-            let player = playerNode.addComponent(playerComponent);
+        let player = playerNode.getComponent(playerClassName);
+        let playerRenderer = playerNode.getComponent(playerRendererClassName);
+        
+        if(player && playerRenderer){
+            // let playerComponent = app.createComponent(playerClass, this.board, user);
+            // let player = playerNode.addComponent(playerComponent);
+
+            console.log("_createSinglePlayer")
+
+            player.setRenderer(playerRenderer);
             player._init(this.board, user);
 
             if(player){
@@ -174,15 +184,12 @@ export default class PlayerManager extends Component {
 
         var ownerId = utils.getVariable(this.board.room, app.keywords.VARIABLE_OWNER);
 
-        console.log("owner: " + ownerId);
 
         if (ownerId && (!this.owner || ownerId === this.owner.id)) {
 
             this.owner && this.owner.setOwner(false);
             this.owner = this.findPlayer(ownerId);
             this.owner && this.owner.setOwner(true);
-
-            console.log("owner player: " + this.owner);
 
             //TODO More action on owner changed
         } else {
@@ -415,7 +422,7 @@ export default class PlayerManager extends Component {
                 : this.board.isEnding() ? app.const.game.board.state.ENDING
                 : undefined;
 
-                boardState && newPlayer.applyBoardState(boardState);
+                boardState && newPlayer.changeGameState(boardState);
             }
 
             return true;
@@ -451,9 +458,9 @@ export default class PlayerManager extends Component {
         //TODO
         this.players.forEach(player => {
             if (player.isItMe()) {
-                this.setCards(cards);
+                player.setCards(cards);
             }else{
-                this.setCards()
+                player.createFakeCards();
             }
         })
     }

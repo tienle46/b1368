@@ -27,7 +27,9 @@ export default class BoardCard extends Board {
 
     _dealCards(data) {
         let cardBytes = data[app.keywords.DEAL_CARD_LIST_KEYWORD] || [];
-        var dealCards = cardBytes.map(cardByte => Card.from(cardByte));
+        let dealCards = cardBytes.map(cardByte => Card.from(cardByte));
+
+        this.scene.playerManager.onDealCards(dealCards);
     }
 
 }

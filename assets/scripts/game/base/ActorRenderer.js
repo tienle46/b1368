@@ -15,6 +15,23 @@ export default class ActorRenderer extends Component {
 
     }
 
+    assign(prefab, componentName){
+        if(!prefab || !componentName) return;
+
+        let baseNode = cc.instantiate(prefab);
+        this._assignPropertiesFrom(baseNode.getComponent(componentName))
+        this.node.addChild(baseNode);
+    }
+
+    _assignPropertiesFrom(src){
+
+        Object.getOwnPropertyNames(src).forEach(key => {
+            if(!this[key] && src[key]){
+                this[key] = src[key];
+            }
+        });
+    }
+
     onLoad(){
         this.loaded = true;
     }
