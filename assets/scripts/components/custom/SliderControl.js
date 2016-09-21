@@ -4,6 +4,7 @@ import Component from 'Component'
 export default class SliderControl extends Component {
 
     constructor() {
+        super();
         this.minimumImage = cc.SpriteFrame;
         this.maximumImage = cc.SpriteFrame;
         this.trackSpriteFrame = cc.SpriteFrame;

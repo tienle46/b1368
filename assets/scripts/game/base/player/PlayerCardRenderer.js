@@ -5,6 +5,7 @@
 import app from 'app'
 import CardList from 'CardList'
 import PlayerRenderer from 'PlayerRenderer';
+import PositionManager from 'PositionManager'
 
 export default class PlayerCardRenderer extends PlayerRenderer {
     constructor() {
@@ -40,18 +41,35 @@ export default class PlayerCardRenderer extends PlayerRenderer {
             type: cc.Node
         }
 
+        this.defaultCardAnchor = {
+            default: null,
+            type: cc.Node
+        }
+
         this.cardList = null;
+        this.scene = null;
     }
 
-    _initUI(data){
+    _initUI(data = {}){
         super._initUI();
 
         let cardListNode = cc.instantiate(this.cardListPrefab);
         cardListNode.setAnchorPoint(0, 0);
-        cardListNode.setPosition(this.myCardAnchor.getPosition());
+        let anchorPoint = this._getCardAnchorPoint(data.actor);
+        cardListNode.setPosition(anchorPoint.getPosition());
 
         this.node.addChild(cardListNode);
         this.cardList = cardListNode.getComponent('CardList');
+    }
+
+    _getCardAnchorPoint(player){
+        let anchorPoint = this.defaultCardAnchor;
+
+        if(player && player.isItMe()){
+            anchorPoint = this.myCardAnchor;
+        }
+
+        return anchorPoint;
     }
 
     onLoad(){
@@ -59,7 +77,6 @@ export default class PlayerCardRenderer extends PlayerRenderer {
     }
 
     renderCards(cards){
-        console.log("Render cards: ", cards)
         this.cardList.setCards(cards);
     }
 
