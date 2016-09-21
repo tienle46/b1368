@@ -48,7 +48,7 @@ export default class PlayerCardRenderer extends PlayerRenderer {
 
         let cardListNode = cc.instantiate(this.cardListPrefab);
         cardListNode.setAnchorPoint(0, 0);
-        cardListNode.setPosition(this.myCardAnchor.getPosition());
+        // cardListNode.setPosition(this.topCardAnchor.getPosition());
 
         this.node.addChild(cardListNode);
         this.cardList = cardListNode.getComponent('CardList');
