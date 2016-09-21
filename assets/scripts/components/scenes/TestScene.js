@@ -15,6 +15,10 @@ cc.Class({
         label1: {
             default:null,
             type:cc.Node
+        },
+        cardListPrefab: {
+            default: null,
+            type: cc.Prefab
         }
     },
 
@@ -32,6 +36,14 @@ cc.Class({
         // this.button2.getComponent(cc.Button).enabled = false;
 
         this.label1.active = false;
+
+
+        let cardListNode = cc.instantiate(this.cardListPrefab);
+        cardListNode.setAnchorPoint(0.5, 0.5);
+
+        this.node.addChild(cardListNode);
+        this.cardList = cardListNode.getComponent('CardList');
+        this.cardList._test();
     },
 
     // called every frame, uncomment this function to activate update callback
