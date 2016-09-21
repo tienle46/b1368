@@ -2,7 +2,7 @@
     "extends": "eslint:recommended",
     "rules": {
         "comma-dangle": 0,
-        "no-console": 0,
+        "no-console": ["error", { "allow": ["log"] }],
         "no-constant-condition": 0,
         "semi": 1
     },
