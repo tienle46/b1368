@@ -8,10 +8,10 @@ import utils from 'utils';
 
 export default class PositionManager extends Component {
 
-    static get ALIGN_TOP() {return 'TOP'};
-    static get ALIGN_BOTTOM() {return 'BOTTOM'};
-    static get ALIGN_LEFT() {return 'LEFT'};
-    static get ALIGN_RIGHT() {return 'RIGHT'};
+    static get ALIGN_TOP() {return 'TOP';}
+    static get ALIGN_BOTTOM() {return 'BOTTOM';}
+    static get ALIGN_LEFT() {return 'LEFT';}
+    static get ALIGN_RIGHT() {return 'RIGHT';}
 
     constructor() {
         super();
@@ -26,7 +26,7 @@ export default class PositionManager extends Component {
 
         this.hideAllInviteButtons();
 
-        console.debug("onLoad PositionManager")
+        console.debug("onLoad PositionManager");
     }
 
     hideAllInviteButtons() {
@@ -41,7 +41,7 @@ export default class PositionManager extends Component {
         let excludeAnchor;
         if(app.context.getMe()){
             excludeAnchor = this.playerAnchors[1];
-            this.hideInviteButton(1)
+            this.hideInviteButton(1);
         }
 
         this.playerAnchors.forEach(anchor => {
@@ -62,7 +62,7 @@ export default class PositionManager extends Component {
 
     getPlayerAnchorIndex(playerId, isItMe) {
 
-        console.log("getPlayerAnchorIndex: ", playerId, isItMe)
+        console.log("getPlayerAnchorIndex: ", playerId, isItMe);
 
         if (isItMe) {
             return 0;

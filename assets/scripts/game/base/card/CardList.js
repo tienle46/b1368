@@ -1,19 +1,19 @@
-﻿import app from 'app'
-import Component from 'Component'
-import Card from 'Card'
+﻿import app from 'app';
+import Component from 'Component';
+import Card from 'Card';
 var _ = require('lodash');
 
 
 export default class CardList extends Component {
 
-    static get VERTICAL() { return cc.Layout.Type.VERTICAL };
-    static get HORIZONTAL() { return cc.Layout.Type.HORIZONTAL };
-    static get LEFT_TO_RIGHT() { return cc.Layout.HorizontalDirection.LEFT_TO_RIGHT };
-    static get RIGHT_TO_LEFT() { return cc.Layout.HorizontalDirection.RIGHT_TO_LEFT };
-    static get TOP_TO_BOTTOM() { return cc.Layout.HorizontalDirection.LEFT_TO_RIGHT };
-    static get BOTTOM_TO_TOP() { return cc.Layout.HorizontalDirection.RIGHT_TO_LEFT };
-    static get WIDTH() { return 800 };
-    static get HEIGHT() { return 150 };
+    static get VERTICAL() { return cc.Layout.Type.VERTICAL; }
+    static get HORIZONTAL() { return cc.Layout.Type.HORIZONTAL; }
+    static get LEFT_TO_RIGHT() { return cc.Layout.HorizontalDirection.LEFT_TO_RIGHT; }
+    static get RIGHT_TO_LEFT() { return cc.Layout.HorizontalDirection.RIGHT_TO_LEFT; }
+    static get TOP_TO_BOTTOM() { return cc.Layout.HorizontalDirection.LEFT_TO_RIGHT; }
+    static get BOTTOM_TO_TOP() { return cc.Layout.HorizontalDirection.RIGHT_TO_LEFT; }
+    static get WIDTH() { return 800; }
+    static get HEIGHT() { return 150; }
 
     constructor() {
         super();
@@ -97,7 +97,7 @@ export default class CardList extends Component {
     }
 
     _test(){
-        console.log("test")
+        console.log("test");
         this._init();
 
         this.setPosition(17, 100);
@@ -124,7 +124,7 @@ export default class CardList extends Component {
      * @param animation
      */
     addCards(cards, faceDown, animation){
-        cards = cards instanceof Card ? [cards] : cards
+        cards = cards instanceof Card ? [cards] : cards;
         this._fillCards(cards, faceDown, animation);
     }
 
@@ -134,7 +134,7 @@ export default class CardList extends Component {
      * @param animation
      */
     removeCards(cards,animation){
-        cards = cards instanceof Card ? [cards] : cards
+        cards = cards instanceof Card ? [cards] : cards;
         cards && cards.forEach(card => {
             this.node.removeChild(card.node);
         });
@@ -175,10 +175,10 @@ export default class CardList extends Component {
     _onSelectCard(card){
 
         if(card.selected){
-            this._lowerCards([card])
+            this._lowerCards([card]);
             _.pullAll(this.selectedCards, [card]);
         }else {
-            this._raiseCards([card])
+            this._raiseCards([card]);
             this.selectedCards.push(card);
         }
 
@@ -307,9 +307,9 @@ export default class CardList extends Component {
         if(!this._layout) {
             this._layout = this.node.addComponent(cc.Layout);
             this._onConfigChanged();
-        };
+        }
     }
 
 }
 
-app.createComponent(CardList)
+app.createComponent(CardList);

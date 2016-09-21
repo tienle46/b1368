@@ -2,7 +2,7 @@
  * Created by Thanh on 9/15/2016.
  */
 
-import app from 'app'
+import app from 'app';
 import ActorRenderer from 'ActorRenderer';
 import utils from 'utils';
 
@@ -74,7 +74,7 @@ export default class PlayerRenderer extends ActorRenderer {
     onLoad() {
         super.onLoad();
 
-        console.log("player renderer")
+        console.log("player renderer");
     }
 
     setName(name) {
@@ -86,15 +86,15 @@ export default class PlayerRenderer extends ActorRenderer {
     }
 
     setVisibleOwner(visible) {
-        utils.setActive(this.ownerIcon, visible)
+        utils.setActive(this.ownerIcon, visible);
     }
 
     setVisibleMaster(visible) {
-        utils.setActive(this.masterIcon, visible)
+        utils.setActive(this.masterIcon, visible);
     }
 
     setVisibleReady(visible) {
-        utils.setActive(this.readyIcon, visible)
+        utils.setActive(this.readyIcon, visible);
     }
 }
 

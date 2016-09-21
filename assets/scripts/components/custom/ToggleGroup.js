@@ -17,45 +17,63 @@ class ToggleGroup extends Component {
     }
 
     ctor() {
-        this._checkedIndex = null;
-    }
-
-    updateToggles(toggle) {
-        this.toggleItem.forEach((item, index) => {
-            if (toggle.isChecked) {
-                if (item !== toggle && item.isChecked && item.enabled) {
-                    item.isChecked = false;
-                }
-                if (item === toggle) {
-                    this._setCheckedIndex(index);
-                }
-            }
-        });
+        this._selectedItem = null;
     }
 
     onLoad() {
         //only allow one toggle to be checked
         this._allowOnlyOneToggleChecked();
+        this.node.on('check-event', (event) => {
+            this.updateToggles(event.target.getComponent(CheckBox));
+        });
     }
 
-    // get index of activation tab
-    getCheckedIndex() {
-        return this._checkedIndex;
-    }
+    updateToggles(toggle) {
+        // console.log('updateToggles');
+        this.setCheckedItem(toggle);
+        console.log('yyy');
 
-    setCheckedIndexByItem(checkbox) {
-        this.toggleItem.forEach((item, i) => {
-            if (item === checkbox) {
-                this._setCheckedIndex(i);
+        console.log(this.toggleItem);
+        this.toggleItem.forEach((item) => {
+            if (toggle.isChecked) {
+                if (item !== toggle && item.isChecked && item.enabled) {
+                    item.isChecked = false;
+                }
             }
         });
+    }
 
-        return this.getCheckedIndex();
+    getVal() {
+        return this._selectedItem.getVal();
+    }
+
+    getCheckedIndex() {
+        return this._selectedItem.index;
+    }
+
+    getCheckedItem() {
+        return this._selectedItem;
+    }
+
+    setCheckedItem(item) {
+        console.log(item);
+
+        this._selectedItem = item;
+    }
+
+    getItems() {
+        return this.toggleItem;
+    }
+
+    addItem(item) {
+        console.log(this.getItems(), 'push');
+        this.toggleItem.push(item);
     }
 
     _allowOnlyOneToggleChecked() {
         var isChecked = false;
         this.toggleItem.forEach((item, index) => {
+            item.index = index;
             if (!item._toggleGroup) {
                 item._toggleGroup = this;
             }
@@ -66,14 +84,10 @@ class ToggleGroup extends Component {
 
             if (item.isChecked && item.enabled) {
                 isChecked = true;
-                this._setCheckedIndex(index);
+                this.setCheckedItem(item);
+                console.log(item.getVal());
             }
         });
-    }
-
-
-    _setCheckedIndex(index) {
-        this._checkedIndex = index;
     }
 }
 

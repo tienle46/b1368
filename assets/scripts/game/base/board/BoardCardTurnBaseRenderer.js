@@ -10,6 +10,6 @@ export default class BoardCardTurnBaseRenderer extends BoardCardRenderer {
     }
 
     _initUI(data) {
-        super._initUI(data)
+        super._initUI(data);
     }
 }

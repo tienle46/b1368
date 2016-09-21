@@ -2,8 +2,8 @@
  * Created by Thanh on 9/19/2016.
  */
 
-import app from 'app'
-import GameControls from 'GameControls'
+import app from 'app';
+import GameControls from 'GameControls';
 
 export default class TLMNDLControls extends GameControls {
     constructor() {
@@ -12,12 +12,12 @@ export default class TLMNDLControls extends GameControls {
         this.baseControlsPrefab = {
             default: null,
             type: cc.Prefab
-        }
+        };
 
         this.cardTurnBaseControlsPrefab = {
             default: null,
             type: cc.Prefab
-        }
+        };
 
         this.baseControls = null;
         this.cardTurnBaseControls = null;
@@ -36,20 +36,20 @@ export default class TLMNDLControls extends GameControls {
         let baseControlsPrefab = cc.instantiate(this.baseControlsPrefab);
         let cardTurnBaseControlPrefabs = cc.instantiate(this.cardTurnBaseControlsPrefab);
 
-        this.node.addChild(baseControlsPrefab)
-        this.node.addChild(cardTurnBaseControlPrefabs)
+        this.node.addChild(baseControlsPrefab);
+        this.node.addChild(cardTurnBaseControlPrefabs);
 
-        this.baseControls = baseControlsPrefab.getComponent("BaseControls")
-        this.cardTurnBaseControls = cardTurnBaseControlPrefabs.getComponent("CardTurnBaseControls")
+        this.baseControls = baseControlsPrefab.getComponent("BaseControls");
+        this.cardTurnBaseControls = cardTurnBaseControlPrefabs.getComponent("CardTurnBaseControls");
 
         this.cardTurnBaseControls.node.on('touchstart', (event) => {
             return true;
-        })
+        });
 
     }
 
     hidePlayControls(){
-        this.cardTurnBaseControls.hideAllControls()
+        this.cardTurnBaseControls.hideAllControls();
     }
 
     hideAllControls(){
@@ -60,10 +60,10 @@ export default class TLMNDLControls extends GameControls {
     hideAllControlsBeforeGameStart(){
         super.hideAllControlsBeforeGameStart();
 
-        console.log("hideAllControlsBeforeGameStart: ")
+        console.log("hideAllControlsBeforeGameStart: ");
 
         this.baseControls.hideAllControls();
     }
 }
 
-app.createComponent(TLMNDLControls)
+app.createComponent(TLMNDLControls);

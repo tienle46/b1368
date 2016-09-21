@@ -1,5 +1,5 @@
-import app from 'app'
-import Component from 'Component'
+import app from 'app';
+import Component from 'Component';
 
 export default class Card extends Component {
 
@@ -20,20 +20,20 @@ export default class Card extends Component {
         this.texFaces = {
             default: [],
             type: cc.SpriteFrame
-        }
+        };
 
         this.texSuitBig = {
             default: [],
             type: cc.SpriteFrame
-        }
+        };
 
         this.texSuitSmall = {
             default: [],
             type: cc.SpriteFrame
-        }
+        };
 
-        this.selected = false
-        this.clickListener = null
+        this.selected = false;
+        this.clickListener = null;
     }
 
     initFromByte(byteValue) {
@@ -62,16 +62,16 @@ export default class Card extends Component {
     _getRankName(){
         switch (this.rank){
             case Card.RANK_J:
-                return 'J'
+                return 'J';
             case Card.RANK_Q:
-                return 'Q'
+                return 'Q';
             case Card.RANK_K:
-                return 'K'
+                return 'K';
             case Card.RANK_AT:
             case Card.RANK_ACE:
-                return 'A'
+                return 'A';
             default:
-                return '' + this.rank
+                return '' + this.rank;
         }
     }
 
@@ -154,4 +154,4 @@ Card.HAND_LEFT_MARGIN_BOTTOM = 50;
 Card.HAND_RIGHT_MARGIN_LEFT = 17;
 Card.HAND_RIGHT_MARGIN_BOTTOM = 30;
 
-app.createComponent(Card)
+app.createComponent(Card);

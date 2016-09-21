@@ -2,9 +2,9 @@
  * Created by Thanh on 9/19/2016.
  */
 
-import app from 'app'
-import utils from 'utils'
-import GameControls from 'GameControls'
+import app from 'app';
+import utils from 'utils';
+import GameControls from 'GameControls';
 
 export default class CardTurnBaseControls extends GameControls {
     constructor() {
@@ -13,17 +13,17 @@ export default class CardTurnBaseControls extends GameControls {
         this.playButton = {
             default: null,
             type: cc.Button
-        }
+        };
 
         this.sortButton = {
             default: null,
             type: cc.Button
-        }
+        };
 
         this.skipTurnButton = {
             default: null,
             type: cc.Button
-        }
+        };
     }
 
     onLoad(){
@@ -33,25 +33,25 @@ export default class CardTurnBaseControls extends GameControls {
 
     hideAllControls(){
 
-        console.log("play button: ", this.playButton instanceof cc.Node)
+        console.log("play button: ", this.playButton instanceof cc.Node);
 
-        utils.deactive(this.playButton)
-        utils.deactive(this.sortButton)
-        utils.deactive(this.skipTurnButton)
+        utils.deactive(this.playButton);
+        utils.deactive(this.sortButton);
+        utils.deactive(this.skipTurnButton);
     }
 
     onClickPlayButton(event){
-        console.log("click play button")
+        console.log("click play button");
     }
 
     onClickSortButton(event){
-        console.log("click sort button")
+        console.log("click sort button");
     }
 
     onClickSkipTurnButton(event){
-        console.log("click skip turn button")
+        console.log("click skip turn button");
     }
 
 }
 
-app.createComponent(CardTurnBaseControls)
+app.createComponent(CardTurnBaseControls);

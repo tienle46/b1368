@@ -31,8 +31,7 @@ class Tab extends Component {
         this._showBody(0);
     }
 
-    onTabClick(checkBox) {
-        this.toggleGroupScript.setCheckedIndexByItem(checkBox);
+    onTabClick() {
         this._showBody(this.toggleGroupScript.getCheckedIndex());
     }
 

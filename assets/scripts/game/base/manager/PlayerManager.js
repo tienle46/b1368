@@ -51,12 +51,12 @@ export default class PlayerManager extends Component {
     _onFinishInitPlayerLayer(){
 
         this.initLayerDoneCb && this.initLayerDoneCb();
-        console.debug("_onFinishInitPlayerLayer")
+        console.debug("_onFinishInitPlayerLayer");
 
-        let playerPrefabPath = app.game.getPlayerPath(this.gameCode)
+        let playerPrefabPath = app.game.getPlayerPath(this.gameCode);
         cc.loader.loadRes(playerPrefabPath, (error, prefab) => {
             if(error){
-                console.error(error)
+                console.error(error);
                 throw new CreateGameException("Không thể khởi tạo người chơi");
                 return;
             }
@@ -145,7 +145,7 @@ export default class PlayerManager extends Component {
             // let playerComponent = app.createComponent(playerClass, this.board, user);
             // let player = playerNode.addComponent(playerComponent);
 
-            console.log("_createSinglePlayer")
+            console.log("_createSinglePlayer");
 
             player.setRenderer(playerRenderer);
             player._init(this.board, user);
@@ -462,6 +462,6 @@ export default class PlayerManager extends Component {
             }else{
                 player.createFakeCards();
             }
-        })
+        });
     }
 }

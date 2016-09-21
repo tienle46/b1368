@@ -2,7 +2,7 @@
  * Created by Thanh on 9/20/2016.
  */
 
-import app from 'app'
+import app from 'app';
 const boardState = app.const.game.board.state;
 
 export default class GameUtils {

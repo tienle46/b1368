@@ -45,7 +45,7 @@ app.createComponent = (classNameOrInstance, extendClass = undefined, ...args) =>
             // sure that `instance[key]['type'] == cc["Component"|"Editbox"...]
             // > instance[key]['type'] = [function cc_Component].name => cc_Component => cc_Component.substr(3) => "Component"
             return typeof element === 'function' && element === cc[element.name.substr(3)];
-        }
+        };
 
         // in case: var a = {type: cc.Component, default: null}
         let isObjectInstance = (element) => {
@@ -64,7 +64,7 @@ app.createComponent = (classNameOrInstance, extendClass = undefined, ...args) =>
                 instance.properties[key] = instance[key];
             } else {
                 // else push it to "properties" property - to using "this" keyword on cc.Class()
-                objPropsMap[key] = instance[key] // {default: xx, xx: asd} <---
+                objPropsMap[key] = instance[key]; // {default: xx, xx: asd} <---
             }
             delete instance[key]; // remove properties because cc.Scene can not detect properties that's outside this.properties = {}
         }
@@ -72,7 +72,7 @@ app.createComponent = (classNameOrInstance, extendClass = undefined, ...args) =>
 
     const isContainClassPrototype = (obj) => {
         return obj && Object.getPrototypeOf(obj) && Object.getPrototypeOf(obj).constructor.name && Object.getPrototypeOf(obj).constructor.name !== 'Object';
-    }
+    };
 
     let prototypeObj = instance;
 
@@ -110,9 +110,9 @@ app.createComponent = (classNameOrInstance, extendClass = undefined, ...args) =>
      */
     instance.ctor = function ctor() {
         Object.getOwnPropertyNames(objPropsMap).forEach(key => {
-            this[key] = objPropsMap[key]
-        })
-    }
+            this[key] = objPropsMap[key];
+        });
+    };
 
     return cc.Class(instance);
 };
@@ -120,13 +120,13 @@ app.createComponent = (classNameOrInstance, extendClass = undefined, ...args) =>
 app.getMessageFromServer = (errorCode, errorMessage = 0) => {
     let M = MESSAGES[game.LANG];
     return (typeof M[errorCode] === 'object') ? M[errorCode][errorMessage] : M[errorCode];
-}
+};
 
 /* INIT GAME */
 _setupGame();
 
 function _setupGame() {
-    require('PreLoader')
+    require('PreLoader');
     app.service = require("Service");
     app.system = require("System");
     app.context = require("Context");

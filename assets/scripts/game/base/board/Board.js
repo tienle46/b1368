@@ -4,7 +4,7 @@
 
 import app from 'app';
 import Component from 'Component';
-import GameUtils from 'GameUtils'
+import GameUtils from 'GameUtils';
 
 export default class Board extends Component {
 
@@ -35,7 +35,7 @@ export default class Board extends Component {
 
     _init(gameData = {}) {
 
-        console.debug("_init Board")
+        console.debug("_init Board");
         
         this.state = app.const.game.board.state.INITED;
 
@@ -54,7 +54,7 @@ export default class Board extends Component {
     onLoad() {
         super.onLoad();
 
-        console.debug("_init Board")
+        console.debug("_init Board");
     }
 
     update(dt) {
@@ -189,7 +189,7 @@ export default class Board extends Component {
 
         let _isInstanceOfPlayingState = (state) => {
             return state === app.const.game.board.state.PLAYING;
-        }
+        };
 
         let localState = state;
         if (_isInstanceOfPlayingState(state)) {
@@ -209,7 +209,7 @@ export default class Board extends Component {
 
     onBoardStateChanged(serverSate, data) {
 
-        let localState = GameUtils.convertToLocalBoardState(serverSate)
+        let localState = GameUtils.convertToLocalBoardState(serverSate);
 
         switch (localState) {
             case app.const.game.board.state.BEGIN:
@@ -232,8 +232,8 @@ export default class Board extends Component {
 
     onInitiated(){
         //TODO
-        console.debug("board initiated")
-        this.onBoardBegin()
+        console.debug("board initiated");
+        this.onBoardBegin();
     }
 
     onBoardBegin(data) {
@@ -272,7 +272,7 @@ export default class Board extends Component {
     }
 
     _dealCards(data) {
-        console.debug("Deal card")
+        console.debug("Deal card");
     }
 
     changeBoardPhaseDuration(data) {

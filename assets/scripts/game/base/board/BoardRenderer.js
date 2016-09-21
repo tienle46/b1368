@@ -2,8 +2,8 @@
  * Created by Thanh on 9/16/2016.
  */
 
-import app from 'app'
-import utils from 'utils'
+import app from 'app';
+import utils from 'utils';
 import ActorRenderer from 'ActorRenderer';
 
 export default class BoardRenderer extends ActorRenderer {
@@ -13,7 +13,7 @@ export default class BoardRenderer extends ActorRenderer {
         this.startTimelinePrefab = {
             default: null,
             type: cc.Prefab
-        }
+        };
 
         this.startBoardTimeLine = cc.Node;
 

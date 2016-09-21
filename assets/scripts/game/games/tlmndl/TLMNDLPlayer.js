@@ -20,7 +20,7 @@ export default class TLMNDLPlayer extends PlayerCardTurnBase {
     }
 
     createFakeCards(size = 13){
-        super.createFakeCards(size)
+        super.createFakeCards(size);
     }
 
     onLoad(){
@@ -28,4 +28,4 @@ export default class TLMNDLPlayer extends PlayerCardTurnBase {
     }
 }
 
-app.createComponent(TLMNDLPlayer)
+app.createComponent(TLMNDLPlayer);

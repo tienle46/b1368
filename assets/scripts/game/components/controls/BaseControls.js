@@ -3,9 +3,9 @@
  */
 
 
-import app from 'app'
-import utils from 'utils'
-import GameControls from 'GameControls'
+import app from 'app';
+import utils from 'utils';
+import GameControls from 'GameControls';
 
 class BaseControls extends GameControls {
     constructor() {
@@ -14,12 +14,12 @@ class BaseControls extends GameControls {
         this.readyButton = {
             default: null,
             type: cc.Node
-        }
+        };
 
         this.unreadyButton = {
             default: null,
             type: cc.Node
-        }
+        };
     }
 
     onLoad() {
@@ -29,7 +29,7 @@ class BaseControls extends GameControls {
 
     onClickReadyButton() {
 
-        console.log("onClickReadyButton")
+        console.log("onClickReadyButton");
 
         this.scene.showShortLoading('onClickReadyButton');
 
@@ -47,7 +47,7 @@ class BaseControls extends GameControls {
 
     onClickUnreadyButton() {
 
-        console.log("onClickUnreadyButton")
+        console.log("onClickUnreadyButton");
 
         this.scene.showShortLoading('onClickUnreadyButton');
 
@@ -82,25 +82,25 @@ class BaseControls extends GameControls {
             this._onPlayerUnready();
         }
 
-        console.log(this.readyButton)
+        console.log(this.readyButton);
     }
 
     _onPlayerReady() {
-        utils.active(this.unreadyButton)
-        utils.deactive(this.readyButton)
+        utils.active(this.unreadyButton);
+        utils.deactive(this.readyButton);
     }
 
     _onPlayerUnready() {
-        utils.deactive(this.unreadyButton)
-        utils.active(this.readyButton)
+        utils.deactive(this.unreadyButton);
+        utils.active(this.readyButton);
     }
 
     hideAllControls() {
 
         console.log("BaseControls.hideAllControls");
 
-        utils.deactive(this.readyButton)
-        utils.deactive(this.unreadyButton)
+        utils.deactive(this.readyButton);
+        utils.deactive(this.unreadyButton);
     }
 }
 
