@@ -32,12 +32,25 @@ export default class CardTurnBaseControls extends GameControls {
     }
 
     hideAllControls(){
-
-        console.log("play button: ", this.playButton instanceof cc.Node);
-
         utils.deactive(this.playButton);
         utils.deactive(this.sortButton);
         utils.deactive(this.skipTurnButton);
+    }
+
+
+    _showWaitTurnControls(){
+        utils.deactive(this.playButton);
+        utils.active(this.sortButton);
+        utils.deactive(this.skipTurnButton);
+    }
+
+    _showOnTurnControls(){
+
+        console.log("_showOnTurnControls")
+
+        utils.active(this.playButton);
+        utils.active(this.sortButton);
+        utils.active(this.skipTurnButton);
     }
 
     onClickPlayButton(event){

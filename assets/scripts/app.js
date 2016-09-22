@@ -131,4 +131,5 @@ function _setupGame() {
     app.system = require("System");
     app.context = require("Context");
     app.game = require("GameManager");
+    app.event = require("Events");
 }

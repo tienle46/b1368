@@ -3,6 +3,7 @@
  */
 
 import app from 'app';
+import Events from 'Events'
 import GameControls from 'GameControls';
 
 export default class TLMNDLControls extends GameControls {
@@ -28,6 +29,16 @@ export default class TLMNDLControls extends GameControls {
 
         this.baseControls._init(scene);
         this.cardTurnBaseControls._init(scene);
+
+        this._registerListener();
+    }
+
+    _registerListener(){
+        this.scene.on(Events.SHOW_WAIT_TURN_CONTROLS, this._showWaitTurnControls);
+        this.scene.on(Events.SHOW_ON_TURN_CONTROLS, this._showOnTurnControls);
+        this.scene.on(Events.SHOW_GAME_BEGIN_CONTROLS, this._showGameBeginControls);
+
+        console.log("_registerListener Controls");
     }
 
     onLoad(){
@@ -48,6 +59,11 @@ export default class TLMNDLControls extends GameControls {
 
     }
 
+    _showGameBeginControls(){
+        this.hideAllControls();
+        super._showGameBeginControls();
+    }
+
     hidePlayControls(){
         this.cardTurnBaseControls.hideAllControls();
     }
@@ -59,8 +75,6 @@ export default class TLMNDLControls extends GameControls {
 
     hideAllControlsBeforeGameStart(){
         super.hideAllControlsBeforeGameStart();
-
-        console.log("hideAllControlsBeforeGameStart: ");
 
         this.baseControls.hideAllControls();
     }

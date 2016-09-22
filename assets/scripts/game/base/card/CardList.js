@@ -75,7 +75,8 @@ export default class CardList extends Component {
 
 
     onLoad () {
-	this._verifyLayoutInitiated();
+	    // this._verifyLayoutInitiated();
+        this._init();
         // this._test();
     }
 

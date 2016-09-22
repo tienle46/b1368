@@ -76,11 +76,11 @@ export default class Player extends Actor {
     }
 
     stopTimeLine() {
-
+        //TODO
     }
 
-    startTimeLine(timeInSeconds) {
-
+    startTimeLine(timeInSeconds = this.board.getTurnDuration()) {
+        //TODO
     }
 
     onSpectatorToPlayer(user) {

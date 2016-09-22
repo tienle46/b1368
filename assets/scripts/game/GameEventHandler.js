@@ -5,6 +5,7 @@
 import app from 'app';
 import SFS2X from 'SFS2X';
 import async from 'async';
+import Events from 'Events'
 
 export default class GameEventHandler {
     constructor(board, scene) {
@@ -47,6 +48,11 @@ export default class GameEventHandler {
         app.system.addListener(app.commands.BOARD_STATE_CHANGE, this._handleChangeBoardState, this);
         app.system.addListener(app.commands.BOARD_MASTER_CHANGE, this.board._handleChangeBoardMaster, this);
         app.system.addListener(app.commands.PLAYER_REJOIN_ROOM, this.board._handlePlayerRejoinGame, this);
+
+        app.system.addListener(app.commands.PLAYER_GET_TURN, this._onPlayerGetTurn, this);
+        app.system.addListener(app.commands.PLAYER_LOSE_TURN, this._onPlayerLoseTurn, this);
+        app.system.addListener(app.commands.PLAYER_SKIP_TURN, this._onPlayerSkipTurn, this);
+        app.system.addListener(app.commands.PLAYER_PLAY_CARD, this._onPlayerPlayCards, this);
     }
 
     removeGameEventListener() {
@@ -66,6 +72,28 @@ export default class GameEventHandler {
         app.system.removeListener(app.commands.BOARD_STATE_CHANGE, this._handleChangeBoardState);
         app.system.removeListener(app.commands.BOARD_MASTER_CHANGE, this.board._handleChangeBoardMaster);
         app.system.removeListener(app.commands.PLAYER_REJOIN_ROOM, this.board._handlePlayerRejoinGame);
+
+        app.system.removeListener(app.commands.PLAYER_GET_TURN, this._onPlayerGetTurn);
+        app.system.removeListener(app.commands.PLAYER_LOSE_TURN, this._onPlayerLoseTurn);
+        app.system.removeListener(app.commands.PLAYER_SKIP_TURN, this._onPlayerSkipTurn);
+        app.system.removeListener(app.commands.PLAYER_PLAY_CARD, this._onPlayerPlayCards)
+    }
+
+    _onPlayerGetTurn(data){
+        console.debug("_onPlayerGetTurn")
+    }
+
+    _onPlayerLoseTurn(data){
+        console.debug("_onPlayerLoseTurn")
+    }
+
+    _onPlayerSkipTurn(data){
+        console.debug("_onPlayerSkipTurn")
+    }
+
+    _onPlayerPlayCards(data){
+        console.debug("_onPlayerPlayCards")
+        this.scene.emit(Events.HANDLE_PLAY_TURN, data);
     }
 
     isCurrentGameRoom(event) {
@@ -73,11 +101,14 @@ export default class GameEventHandler {
     }
 
     _onUserExitRoom(event) {
-        console.log(this);
-        this.scene.goBack();
+        console.log(event)
+        // if(event.user.isItMe()){
+            this.scene.goBack();
+        // }
     }
 
     _onUserEnterRoom(event) {
+
         if (!event.user || !event.room || event.room.id != this.board.room.id) {
             return;
         }
@@ -139,70 +170,4 @@ export default class GameEventHandler {
             app.service.send({ cmd: app.commands.PING_CLIENT, data: data, room: app.context.currentRoom });
         }
     }
-
-    // handleGameEvent(event){
-    //     if (!this.board) {
-    //         return;
-    //     }
-    //
-    //     let roomId = event.sourceRoom;
-    //     let data = event.params;
-    //     let cmd = event.cmd;
-    //
-    //     switch (cmd) {
-    //         case app.commands.SYSTEM_MESSAGE:
-    //             this._handleSystemMessage(data);
-    //             break;
-    //         case app.commands.DOWNLOAD_IMAGE:
-    //             this._handlePlayerAvatar(data);
-    //             break;
-    //         case app.commands.USER_LEVEL_UP:
-    //             this._handleUserLevelUp(data);
-    //             break;
-    //         case app.commands.TASK_FINISH:
-    //             this._handleTaskFinish(data);
-    //             break;
-    //         case app.commands.BUDDY_NEW_INVITATION:
-    //             this._handBuddyNewInvitation(data);
-    //             break;
-    //         case app.commands.ASSETS_USE_ITEM:
-    //             this._handlePlayerUseAssets(data);
-    //             break;
-    //         case app.commands.PING_CLIENT:
-    //             this._handlePingClient(data, roomId)
-    //             break;
-    //         default:
-    //             if (!roomId || roomId != app.context.currentRoom.id) {
-    //                 break;
-    //             }
-    //             switch (cmd) {
-    //                 case app.commands.PLAYERS_BALANCE_CHANGE:
-    //                     this.board._handleChangePlayerBalance(data);
-    //                     break;
-    //                 case app.commands.PLAYER_REENTER_ROOM:
-    //                     this.board._handlePlayerReEnterGame(data);
-    //                     break;
-    //                 case app.commands.BOARD_STATE_CHANGE:
-    //                     this._handleChangeBoardState(data);
-    //                     break;
-    //                 case app.commands.BOARD_MASTER_CHANGE:
-    //                     this.board._handleChangeBoardMaster(data);
-    //                     break;
-    //                 case app.commands.PLAYER_REJOIN_ROOM:
-    //                     this.board._handlePlayerRejoinGame(data);
-    //                     break;
-    //                 case app.commands.SPECTATOR_TO_PLAYER:
-    //                     this.board._handleSpectatorToPlayer(data);
-    //                     break;
-    //                 case app.commands.PLAYER_TO_SPECTATOR:
-    //                     this.board._handlePlayerToSpectator(data);
-    //                     break;
-    //                 default:
-    //                     if (data.hasOwnProperty(app.keywords.PLAYER_ID)) {
-    //                         this.board.playerManager.handleEvent(data[app.keywords.PLAYER_ID], cmd, data);
-    //                     }
-    //
-    //             }
-    //     }
-    // }
 }

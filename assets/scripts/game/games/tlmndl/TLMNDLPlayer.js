@@ -10,8 +10,10 @@ export default class TLMNDLPlayer extends PlayerCardTurnBase {
 
     constructor(board, user) {
         super(board, user);
+    }
 
-        this.rendererClassName = TLMNDLPlayerRenderer;
+    _init(board, user){
+        super._init(board, user);
     }
 
     setCards(cards){

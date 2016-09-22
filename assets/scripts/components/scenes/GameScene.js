@@ -10,6 +10,7 @@ import { TLMNDLBoard, TLMNDLPlayer } from 'TLMNDLBoard';
 import GameMenuPrefab from 'GameMenuPrefab';
 import BaseScene from 'BaseScene';
 import GameEventHandler from 'GameEventHandler';
+import Emitter from 'emitter'
 
 class GameScene extends BaseScene {
 

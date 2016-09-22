@@ -95,10 +95,12 @@ class BaseControls extends GameControls {
         utils.active(this.readyButton);
     }
 
+    _showGameBeginControls(){
+        utils.deactive(this.unreadyButton);
+        utils.active(this.readyButton);
+    }
+
     hideAllControls() {
-
-        console.log("BaseControls.hideAllControls");
-
         utils.deactive(this.readyButton);
         utils.deactive(this.unreadyButton);
     }

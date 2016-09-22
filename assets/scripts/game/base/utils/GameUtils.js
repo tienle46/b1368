@@ -21,7 +21,7 @@ export default class GameUtils {
             case boardState.STARTED:
                 return boardState.STARTED;
 
-            case boardState.TURN_BASE_TRUE_PLAY:
+            case boardState.PLAYING || boardState.TURN_BASE_TRUE_PLAY:
                 return boardState.PLAYING;
 
             case boardState.TURN_BASE_TRUE_PLAY:

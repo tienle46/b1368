@@ -151,6 +151,8 @@ class Service {
 
     _onExtensionEvent(event) {
 
+        console.debug(event);
+
         if(event.cmd === app.commands.XLAG) {
             this._handleLagPollingResponse(event);
         }else{
@@ -164,6 +166,7 @@ class Service {
     }
 
     _onLogin(event) {
+
         if(event.data[app.keywords.LOGIN_REJOIN_ROOM_GROUP]){
             this.logout();
             app.system.info("Hệ thống chưa hỗ trợ kết nối lại khi bàn đang chơi. Vui lòng đăng nhập lại!");
@@ -195,13 +198,12 @@ class Service {
             verifyFunc = undefined;
         }
 
-        console.log("call callback ");
-        console.log(args);
-
 
         if (cbObj && (!verifyFunc || verifyFunc(cbObj.data))) {
             cbObj.cb.apply(null, args);
         }
+
+        this._deleteCallbackObject(key);
     }
 
     _callCallbackAsync(key, verifyFunc, ...args) {
@@ -218,6 +220,10 @@ class Service {
 
     _getCallbackObject(key) {
         return this._eventCallbacks[key];
+    }
+
+    _deleteCallbackObject(key) {
+        delete this._eventCallbacks[key];
     }
 
     _addCallback(key, cb, scope, data) {

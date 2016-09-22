@@ -249,6 +249,8 @@ export default class PlayerManager extends Component {
     }
 
     findPlayer(idOrName) {
+        if(!idOrName) return;
+
         if (utils.isNumber(idOrName)) {
             return this._idToPlayerMap[idOrName];
         } else {
