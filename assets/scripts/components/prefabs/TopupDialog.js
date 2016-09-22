@@ -1,7 +1,7 @@
 var app = require('app');
 var Component = require('Component');
 var ToggleGroup = require('ToggleGroup');
-var CheckBox = require('CheckBox');
+import CheckBox from 'CheckBox';
 
 class TopupDialog extends Component {
     constructor() {
@@ -63,23 +63,28 @@ class TopupDialog extends Component {
         let cardSerial = cc.find('cardSerialEditBox', centerComponent).getComponent(cc.EditBox).string.trim();
         let serialNumber = cc.find('serialNumberEditBox', centerComponent).getComponent(cc.EditBox).string.trim();
 
-        // console.log(data);
-        if (cardSerial === "" || serialNumber === "") {
+        console.log(isNaN(cardSerial), isNaN(serialNumber));
+        if (cardSerial === "" || serialNumber === "" || isNaN(cardSerial) || isNaN(serialNumber)) {
             // var msgDialog = xg.OutGameMessageDialog.create("Vui lòng nhập đầy đủ thông tin", xg.FRAMENAME_OUTGAME_CONFIML_DIALOG_BG, new cc.Color(1, 1, 1), null, 0);
             // msgDialog.show();
-            console.log('hmmmm')
-                //this.dispose();
+            // load prefab
+            cc.loader.loadRes('Popup/BasePopup', (err, prefab) => {
+                let BasePopup = cc.instantiate(prefab);
+                BasePopup.getComponent(require('BasePopup')).setContent('Vui lòng nhập đầy đủ thông tin');
+                this.node.addChild(BasePopup);
+            });
         } else {
             let id = this.toggleGroup.getVal();
 
             let data = {};
             data[app.keywords.CHARGE_CARD_PROVIDER_ID] = id;
-            data[app.keywords.CARD_CODE] = serialNumber;
-            data[app.keywords.CARD_SERIAL] = cardSerial;
+            data[app.keywords.CARD_CODE] = cardSerial;
+            data[app.keywords.CARD_SERIAL] = serialNumber;
             let sendObject = {
                 'cmd': app.commands.USER_SEND_CARD_CHARGE,
                 data
             };
+            console.log(sendObject);
             app.service.send(sendObject, (data) => {
                 console.log(data);
                 if (data) {
