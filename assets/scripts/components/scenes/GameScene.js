@@ -10,6 +10,7 @@ import { TLMNDLBoard, TLMNDLPlayer } from 'TLMNDLBoard';
 import GameMenuPrefab from 'GameMenuPrefab';
 import BaseScene from 'BaseScene';
 import GameEventHandler from 'GameEventHandler';
+import Emitter from 'emitter'
 
 class GameScene extends BaseScene {
 
@@ -73,7 +74,7 @@ class GameScene extends BaseScene {
                 this._onLoadSceneFail();
         }
 
-        console.debug("onLoad GameScene")
+        console.debug("onLoad GameScene");
     }
 
     start() {
@@ -123,7 +124,7 @@ class GameScene extends BaseScene {
             prefabObj.setAnchorPoint(0, 0);
             prefabObj.parent = this.gameControlLayer;
 
-            let gameControlsClass = app.game.getGameControlsClass(this.gameCode)
+            let gameControlsClass = app.game.getGameControlsClass(this.gameCode);
             // let gameControlsClass = "BaseControls"
             this.gameControls = prefabObj.getComponent(gameControlsClass);
             this.gameControls._init(this);

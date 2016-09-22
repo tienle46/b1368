@@ -2,7 +2,7 @@
  * Created by Thanh on 9/20/2016.
  */
 
-import app from 'app'
+import app from 'app';
 const boardState = app.const.game.board.state;
 
 export default class GameUtils {
@@ -21,7 +21,7 @@ export default class GameUtils {
             case boardState.STARTED:
                 return boardState.STARTED;
 
-            case boardState.TURN_BASE_TRUE_PLAY:
+            case boardState.PLAYING || boardState.TURN_BASE_TRUE_PLAY:
                 return boardState.PLAYING;
 
             case boardState.TURN_BASE_TRUE_PLAY:

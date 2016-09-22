@@ -28,6 +28,18 @@ class CheckBox extends Button {
             default: [],
             type: cc.Component.EventHandler
         };
+
+        this.val = null;
+    }
+
+    // use this for initialization
+    onLoad() {
+        //set checkbox value
+        this.transition = cc.Button.Transition.SPRITE; //use sprite transition mode
+
+        this._updateSprites();
+
+        this._registerCheckBoxEvent();
     }
 
     _updateSprites() {
@@ -42,13 +54,14 @@ class CheckBox extends Button {
         }
     }
 
-    // use this for initialization
-    onLoad() {
-        this.transition = cc.Button.Transition.SPRITE; //use sprite transition mode
+    getVal() {
+        console.log("get", this.val);
+        return this.val;
+    }
 
-        this._updateSprites();
-
-        this._registerCheckBoxEvent();
+    setVal(val) {
+        console.log("set", val);
+        this.val = val;
     }
 
     //this method override the parent method...
@@ -69,7 +82,8 @@ class CheckBox extends Button {
         this.isChecked = !this.isChecked;
 
 
-        this.node.emit('check-event', this);
+        this.node.dispatchEvent(new cc.Event('check-event', this));
+
         if (this.checkEvents) {
             cc.Component.EventHandler.emitEvents(this.checkEvents, this);
         }

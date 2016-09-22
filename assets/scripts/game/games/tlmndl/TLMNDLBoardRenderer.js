@@ -7,22 +7,22 @@ import BoardCardTurnBaseRenderer from 'BoardCardTurnBaseRenderer';
 
 export default class TLMNDLBoardRenderer extends BoardCardTurnBaseRenderer {
     constructor() {
-        super()
+        super();
 
         this.deckCardPrefab = {
             default: null,
             type: cc.Node
-        }
+        };
 
         this.anTrangPrefab = {
             default: null,
             type: cc.Node
-        }
+        };
 
         this.dutBaBichPrefab = {
             default: null,
             type: cc.Node
-        }
+        };
     }
 
     onLoad() {

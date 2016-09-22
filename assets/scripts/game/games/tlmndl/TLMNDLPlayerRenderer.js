@@ -2,7 +2,7 @@
  * Created by Thanh on 9/15/2016.
  */
 
-import utils from 'utils'
+import utils from 'utils';
 import app from 'app';
 import PlayerCardTurnBaseRenderer from 'PlayerCardTurnBaseRenderer';
 
@@ -13,12 +13,12 @@ export default class TLMNDLPlayerRenderer extends PlayerCardTurnBaseRenderer {
         this.basePlayerPrefab = {
             default: null,
             type: cc.Prefab
-        }
+        };
 
         this.cardPlayerPrefab = {
             default: null,
             type: cc.Prefab
-        }
+        };
 
         this.rendererClassName = this;
     }
@@ -28,7 +28,7 @@ export default class TLMNDLPlayerRenderer extends PlayerCardTurnBaseRenderer {
         this.assign(this.basePlayerPrefab, 'PlayerRenderer');
         this.assign(this.cardPlayerPrefab, 'PlayerCardRenderer');
 
-        super._initUI(data)
+        super._initUI(data);
     }
 
     onLoad(){

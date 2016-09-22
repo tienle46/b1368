@@ -4,11 +4,11 @@
 
 import app from 'app';
 import Board from 'Board';
-import Card from 'Card'
+import Card from 'Card';
 
 export default class BoardCard extends Board {
     constructor(room, scene) {
-        super(room, scene)
+        super(room, scene);
 
         this.handCardSize = 0;
     }

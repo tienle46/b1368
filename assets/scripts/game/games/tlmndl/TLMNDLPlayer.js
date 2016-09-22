@@ -10,8 +10,10 @@ export default class TLMNDLPlayer extends PlayerCardTurnBase {
 
     constructor(board, user) {
         super(board, user);
+    }
 
-        this.rendererClassName = TLMNDLPlayerRenderer;
+    _init(board, user){
+        super._init(board, user);
     }
 
     setCards(cards){
@@ -20,7 +22,7 @@ export default class TLMNDLPlayer extends PlayerCardTurnBase {
     }
 
     createFakeCards(size = 13){
-        super.createFakeCards(size)
+        super.createFakeCards(size);
     }
 
     onLoad(){
@@ -28,4 +30,4 @@ export default class TLMNDLPlayer extends PlayerCardTurnBase {
     }
 }
 
-app.createComponent(TLMNDLPlayer)
+app.createComponent(TLMNDLPlayer);

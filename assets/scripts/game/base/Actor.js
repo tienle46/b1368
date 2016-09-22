@@ -4,6 +4,7 @@
 
 import app from 'app';
 import Component from 'Component';
+import Emitter from 'emitter'
 
 export default class Actor extends Component {
     constructor() {
@@ -13,6 +14,8 @@ export default class Actor extends Component {
         this.rendererClassName = null;
         this.renderData = null;
         this.renderComponent = null;
+
+        this._eventEmitter = new Emitter;
     }
 
     setRenderer(renderer){
@@ -44,5 +47,18 @@ export default class Actor extends Component {
     onLoad() {
         this.renderData = {...this.renderData, actor: this};
         this.renderer && this.renderer._initUI(this.renderData);
+    }
+
+    emit(name, ...args){
+        this._eventEmitter.emit(name, ...args);
+    }
+
+    on(name, listener, context){
+        this._eventEmitter.on(name, listener.bind(context));
+    }
+
+    plug(adapter){
+        this.adapter = adapter;
+
     }
 }

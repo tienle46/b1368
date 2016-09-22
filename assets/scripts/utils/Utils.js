@@ -66,6 +66,10 @@ export default class Utils {
         return obj.containsVariable && obj.containsVariable(key) && obj.getVariable && obj.getVariable(key).value;
     }
 
+    static getValue(mapObj, key, defaultValue) {
+        return mapObj && mapObj[key] || defaultValue;
+    }
+
     static getGameCode(room) {
         return room && room.isGame && room.name.substring(0, 3);
     }
@@ -74,7 +78,7 @@ export default class Utils {
 
         Object.getOwnPropertyNames(src).forEach(key => {
 
-            console.debug("Check: ", dest[key], src[key], !dest[key] && src[key])
+            console.debug("Check: ", dest[key], src[key], !dest[key] && src[key]);
             if(!dest[key] && src[key]){
                 dest[key] = src[key];
             }

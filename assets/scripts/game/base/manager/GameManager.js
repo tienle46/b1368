@@ -25,15 +25,15 @@ const playerRendererClassNameMap = {
 
 const gameCodeToGameControlsPathMap = {
     [app.const.gameCode.TLMNDL]: 'game/controls/TLMNDLControlsPrefab'
-}
+};
 
 const gameCodeToPlayerPathMap = {
     [app.const.gameCode.TLMNDL]: 'game/players/TLMNDLPlayerPrefab'
-}
+};
 
 const gameCodeToGameControlsClassMap = {
     [app.const.gameCode.TLMNDL]: 'TLMNDLControls'
-}
+};
 
 const maxPlayersMap = {
     [app.const.gameCode.PHOM]: 4,
@@ -78,15 +78,15 @@ class GameManager {
     }
 
     getGameControlsPath(gameCode){
-        return gameCodeToGameControlsPathMap[gameCode]
+        return gameCodeToGameControlsPathMap[gameCode];
     }
 
     getPlayerPath(gameCode){
-        return gameCodeToPlayerPathMap[gameCode]
+        return gameCodeToPlayerPathMap[gameCode];
     }
 
     getGameControlsClass(gameCode){
-        return gameCodeToGameControlsClassMap[gameCode]
+        return gameCodeToGameControlsClassMap[gameCode];
     }
 
     getMaxPlayer(gameCode){

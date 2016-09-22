@@ -5,7 +5,7 @@
 import app from 'app';
 import BoardCardTurnBase from 'BoardCardTurnBase';
 import TLMNDLBoardRenderer from 'TLMNDLBoardRenderer';
-import GameUtils from 'GameUtils'
+import GameUtils from 'GameUtils';
 
 export default class TLMNDLBoard extends BoardCardTurnBase {
 
@@ -25,7 +25,7 @@ export default class TLMNDLBoard extends BoardCardTurnBase {
     }
 
     onLoad() {
-        super.onLoad()
+        super.onLoad();
     }
 
     onResetBoard() {

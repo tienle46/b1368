@@ -471,10 +471,6 @@
       "__id__": 11
     },
     "_enabled": true,
-    "playerPrefabs": [
-      null,
-      null
-    ],
     "playerPositions": null
   },
   {

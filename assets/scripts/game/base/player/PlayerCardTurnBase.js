@@ -8,12 +8,30 @@ import PlayerTurnBaseAdapter from 'PlayerTurnBaseAdapter';
 export default class PlayerCardTurnBase extends PlayerCard {
     constructor(board, user) {
         super(board, user);
-        this.turnAdapter = new PlayerTurnBaseAdapter(board);
     }
+
+    _init(board, user){
+        super._init(board, user);
+
+        this.turnAdapter = new PlayerTurnBaseAdapter();
+        this.turnAdapter._init(board.scene, this);
+    }
+
 
     onLoad(){
         super.onLoad();
-        this.turnAdapter.setBoard(this.board);
-        this.turnAdapter.setPlayer(this);
     }
+
+    onGamePlaying(){
+        if (this.isItMe()) {
+            this._onWaitTurn()
+        }
+    }
+
+    _onWaitTurn(){
+
+    }
+
+    
+
 }
