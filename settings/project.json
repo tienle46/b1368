@@ -6,7 +6,7 @@
   ],
   "excluded-modules": [],
   "group-list": [
-    "default"
+    "cardPrefab"
   ],
   "start-scene": "current"
 }
