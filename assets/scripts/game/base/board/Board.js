@@ -5,6 +5,7 @@
 import app from 'app';
 import Component from 'Component';
 import GameUtils from 'GameUtils';
+import Events from 'Events'
 
 export default class Board extends Component {
 
@@ -49,6 +50,13 @@ export default class Board extends Component {
             this.serverState = gameData[app.keywords.BOARD_STATE_KEYWORD];
             this.state = app.const.game.board.state.BEGIN;
         }
+
+        this.scene.on(Events.ON_GAME_STATE_CHANGE, this.handleGameStateChange, this);
+        this.scene.on(Events.ON_GAME_STATE_BEGIN, this.onBoardBegin, this);
+        this.scene.on(Events.ON_GAME_STATE_STARTING, this.onBoardStarting, this);
+        this.scene.on(Events.ON_GAME_STATE_STARTED, this.onBoardStarted, this);
+        this.scene.on(Events.ON_GAME_STATE_PLAYING, this.onBoardPlaying, this);
+        this.scene.on(Events.ON_GAME_STATE_ENDING, this.onBoardEnding, this);
     }
 
     onLoad() {
@@ -201,70 +209,39 @@ export default class Board extends Component {
         return localState;
     }
 
-    changeBoardState(boardState, data) {
+    handleGameStateChange(boardState, data) {
         this.serverState = boardState;
 
         //TODO Process board state changed here
     }
 
-    onBoardStateChanged(serverSate, data) {
+    _resetBoard(){
 
-        let localState = GameUtils.convertToLocalBoardState(serverSate);
-
-        switch (localState) {
-            case app.const.game.board.state.BEGIN:
-                this.onBoardBegin(data);
-                break;
-            case app.const.game.board.state.STARTING:
-                this.onBoardStarting(data);
-                break;
-            case app.const.game.board.state.STARTED:
-                this.onBoardStarted(data);
-                break;
-            case app.const.game.board.state.PLAYING:
-                this.onBoardPlaying(data);
-                break;
-            case app.const.game.board.state.ENDING:
-                this.onBoardEnding(data);
-                break;
-        }
-    }
-
-    onInitiated(){
-        //TODO
-        console.debug("board initiated");
-        this.onBoardBegin();
     }
 
     onBoardBegin(data) {
+        this._resetBoard()
         this.state = app.const.game.board.state.BEGIN;
-        this.scene.playerManager.playerPositions.showAllInviteButtons();
-        this.scene.playerManager.onGameBegin(data);
     }
 
     onBoardStarting(data) {
         this.state = app.const.game.board.state.STARTING;
         this.scene.gameControls.hideAllControlsBeforeGameStart();
-        this.scene.playerManager.playerPositions.hideAllInviteButtons();
-        this.scene.playerManager.onGameStarting(data);
     }
 
     onBoardStarted(data) {
         this.state = app.const.game.board.state.STARTED;
         //TODO
-        this.scene.playerManager.onGameStarted(data);
     }
 
     onBoardPlaying(data){
         this.state = app.const.game.board.state.PLAYING;
         //TODO
-        this.scene.playerManager.onGamePlaying(data);
     }
 
     onBoardEnding(data) {
         this.state = app.const.game.board.state.ENDING;
         //TODO
-        this.scene.playerManager.onGameEnding(data);
     }
 
     onBoardDestroy() {

@@ -27,4 +27,10 @@ export default class PlayerCard extends Player {
         super.onLoad();
     }
 
+    onGameBegin(data){
+        super.onGameBegin(data)
+
+        this.renderer.cardList.clear();
+    }
+
 }

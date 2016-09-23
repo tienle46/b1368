@@ -11,6 +11,7 @@ import GameMenuPrefab from 'GameMenuPrefab';
 import BaseScene from 'BaseScene';
 import GameEventHandler from 'GameEventHandler';
 import Emitter from 'emitter'
+import Events from 'Events'
 
 class GameScene extends BaseScene {
 
@@ -95,7 +96,7 @@ class GameScene extends BaseScene {
     _loadGameData() {
         this.board._init(this.gameData);
         this.playerManager._init(this.board, this, () => {
-            this.board.onInitiated();
+            this.emit(Events.ON_GAME_STATE_BEGIN)
         });
     }
 

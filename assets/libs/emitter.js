@@ -17,10 +17,10 @@ export default class Emitter {
      * @return {Emitter}
      * @api public
      */
-    addListener(event, fn, context = this) {
+    addListener(event, fn, context) {
 
         if(fn) {
-            fn = fn.bind(context);
+            context && (fn = fn.bind(context));
             (this._callbacks[`$${event}`] = this._callbacks['$' + event] || []).push(fn);
 
         }
@@ -77,7 +77,7 @@ export default class Emitter {
      * @api public
      */
 
-    on(event, fn, context = this) {
+    on(event, fn, context) {
         this.addListener(event, fn, context);
     }
 

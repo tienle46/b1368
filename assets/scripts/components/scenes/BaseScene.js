@@ -4,11 +4,11 @@
 
 import app from 'app';
 import utils from 'utils';
-import Component from 'Component';
+import Actor from 'Actor';
 import BasePopup from 'BasePopup';
 import Emitter from 'emitter'
 
-export default class BaseScene extends Component {
+export default class BaseScene extends Actor {
     constructor() {
         super();
 
@@ -18,8 +18,6 @@ export default class BaseScene extends Component {
             default: null,
             type: cc.Prefab
         };
-
-        this._eventEmitter = new Emitter();
 
         this.onShown = null;
     }
@@ -113,21 +111,6 @@ export default class BaseScene extends Component {
                 cc.director.loadScene(name);
             })
         ));
-    }
-
-    emit(name, ...args){
-        this._eventEmitter.emit(name, ...args);
-    }
-
-    on(eventName, listener, context){
-
-        console.debug("on base scene: ", context)
-
-        this._eventEmitter.addListener(eventName, listener, context);
-    }
-
-    off(eventName, listener, context){
-        this._eventEmitter.removeListener(eventName, listener, context);
     }
 }
 

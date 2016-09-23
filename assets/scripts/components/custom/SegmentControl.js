@@ -20,7 +20,7 @@ export default class SegmentControl extends Component {
         this.rightActiveSpriteFrame = cc.SpriteFrame
         this.textColor = {
             default: null,
-            type:new cc.Color()
+            type: cc.Color()
         }
         this.buttonPrefab = {
             default: null,

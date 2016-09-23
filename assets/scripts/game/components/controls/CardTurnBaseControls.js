@@ -4,6 +4,7 @@
 
 import app from 'app';
 import utils from 'utils';
+import Events from 'Events';
 import GameControls from 'GameControls';
 
 export default class CardTurnBaseControls extends GameControls {
@@ -44,25 +45,26 @@ export default class CardTurnBaseControls extends GameControls {
         utils.deactive(this.skipTurnButton);
     }
 
-    _showOnTurnControls(){
-
-        console.log("_showOnTurnControls")
-
+    _showOnTurnControls(isFirstTurn){
         utils.active(this.playButton);
         utils.active(this.sortButton);
-        utils.active(this.skipTurnButton);
+        isFirstTurn ? utils.deactive(this.skipTurnButton) : utils.active(this.skipTurnButton);
     }
 
     onClickPlayButton(event){
-        console.log("click play button");
+        this.scene.emit(Events.ON_CLICK_PLAY_BUTTON);
+        console.log("emitted click play button")
     }
 
     onClickSortButton(event){
-        console.log("click sort button");
+        this.scene.emit(Events.ON_CLICK_SORT_BUTTON);
+
+        console.log("emitted click sort button")
     }
 
     onClickSkipTurnButton(event){
-        console.log("click skip turn button");
+        this.scene.emit(Events.ON_CLICK_SKIP_TURN_BUTTON);
+        console.log("emitted click skip turn button")
     }
 
 }

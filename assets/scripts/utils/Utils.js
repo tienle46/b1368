@@ -23,6 +23,26 @@ export default class Utils {
         return value === null;
     }
 
+    static disable(node) {
+        if (!node) return;
+
+        if (node instanceof cc.Node) {
+            node.enabled = false;
+        } else {
+            node.node && (node.node.enabled = false);
+        }
+    }
+
+    static enable(node) {
+        if (!node) return;
+
+        if (node instanceof cc.Node) {
+            node.enabled = true;
+        } else {
+            node.node && (node.node.enabled = true);
+        }
+    }
+
     static active(node) {
         this.setActive(node, true);
     }

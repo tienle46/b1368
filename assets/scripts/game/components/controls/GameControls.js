@@ -2,9 +2,9 @@
  * Created by Thanh on 9/19/2016.
  */
 
-import Component from 'Component';
+import Actor from 'Actor'
 
-export default class GameControls extends Component {
+export default class GameControls extends Actor {
     constructor() {
         super();
 

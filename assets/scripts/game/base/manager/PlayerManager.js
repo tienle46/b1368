@@ -78,6 +78,7 @@ export default class PlayerManager extends Component {
                     let prefabObj = cc.instantiate(prefab);
                     prefabObj.parent = this.scene.playerLayer;
                     this.playerPositions = prefabObj.getComponent(positionAnchorName);
+                    this.playerPositions._init(this.scene);
                 }
 
                 if(!this.playerPositions){

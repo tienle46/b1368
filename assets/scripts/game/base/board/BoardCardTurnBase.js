@@ -32,8 +32,8 @@ export default class BoardCardTurnBase extends BoardCard {
         this.turnAdapter.setBoard(this);
     }
 
-    changeBoardState(state, data){
-        super.changeBoardState(state, data);
+    handleGameStateChange(state, data){
+        super.handleGameStateChange(state, data);
 
         if (state == boardConst.state.BOARD_STATE_TURN_BASE_TRUE_PLAY) {
             this._handleBoardTurnBaseTruePlay(data);
@@ -51,8 +51,7 @@ export default class BoardCardTurnBase extends BoardCard {
 
         let nextTurnPlayerId = utils.getValue(data, Keywords.TURN_PLAYER_ID);
         if (nextTurnPlayerId) {
-            console.log("nextTurnPlayerId: ", nextTurnPlayerId)
-            this.scene.emit(Events.HANDLE_CHANGE_TURN, nextTurnPlayerId);
+            this.scene.emit(Events.HANDLE_CHANGE_TURN, nextTurnPlayerId, true);
         }
     }
 

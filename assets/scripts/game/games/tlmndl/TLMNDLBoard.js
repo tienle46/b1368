@@ -35,13 +35,8 @@ export default class TLMNDLBoard extends BoardCardTurnBase {
         this.renderer.setVisibleDutBaBich(false);
     }
 
-    changeBoardState(boardState, data){
-        super.changeBoardState(boardState, data);
+    handleGameStateChange(boardState, data){
+        super.handleGameStateChange(boardState, data);
 
-        if (data && data.hasOwnProperty(app.keywords.DEAL_CARD_LIST_KEYWORD)) {
-            boardState = app.const.game.board.state.DEAL_CARD;
-        }
-
-        this.onBoardStateChanged(boardState);
     }
 }

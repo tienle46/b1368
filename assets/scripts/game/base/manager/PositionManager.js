@@ -5,6 +5,7 @@
 import app from 'app';
 import Component from 'Component';
 import utils from 'utils';
+import Events from 'Events'
 
 export default class PositionManager extends Component {
 
@@ -16,6 +17,14 @@ export default class PositionManager extends Component {
     constructor() {
         super();
         this.playerAnchors = [];
+        this.scene;
+    }
+
+    _init(scene){
+        this.scene = scene;
+
+        this.scene.on(Events.ON_GAME_STATE_BEGIN, this._onGameBegin, this);
+        this.scene.on(Events.ON_GAME_STATE_STARTING, this._onGameStarting, this);
     }
 
     onLoad() {
@@ -25,10 +34,16 @@ export default class PositionManager extends Component {
         }
 
         this.hideAllInviteButtons();
-
-        console.debug("onLoad PositionManager");
     }
 
+    _onGameBegin(){
+        this.showAllInviteButtons();
+    }
+
+    _onGameStarting(){
+        this.hideAllInviteButtons();
+    }
+    
     hideAllInviteButtons() {
         this.playerAnchors.forEach(anchor => {
             let inviteButton = anchor.getChildByName('inviteButton');

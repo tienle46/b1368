@@ -17,8 +17,8 @@ export default class BoardCard extends Board {
         super.onLoad();
     }
 
-    changeBoardState(boardState, data) {
-        super.changeBoardState(boardState, data);
+    handleGameStateChange(boardState, data) {
+        super.handleGameStateChange(boardState, data);
 
         if (data && data.hasOwnProperty(app.keywords.DEAL_CARD_LIST_KEYWORD)) {
             this._dealCards(data);

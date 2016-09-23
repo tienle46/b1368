@@ -158,9 +158,9 @@ class Service {
         }else{
             if (this._hasCallback(event.cmd)) {
                 this._callCallbackAsync(event.cmd, event.params);
-            } else {
-                app.system.emit(event.cmd, event.params, event);
             }
+
+            app.system.emit(event.cmd, event.params, event);
         }
 
     }

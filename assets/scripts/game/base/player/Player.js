@@ -3,6 +3,7 @@ import app from 'app';
 import utils from 'utils';
 import CreateGameException from 'CreateGameException';
 import Actor from 'Actor';
+import Events from 'Events'
 
 export default class Player extends Actor {
 
@@ -32,6 +33,12 @@ export default class Player extends Actor {
         this.username = this.user.name;
         this.id = this.user.getPlayerId(this.board.room);
         this.balance = utils.getVariable(this.user, app.keywords.USER_VARIABLE_BALANCE, 0);
+
+        this.board.scene.on(Events.ON_GAME_STATE_BEGIN, this.onGameBegin, this);
+        this.board.scene.on(Events.ON_GAME_STATE_STARTING, this.onGameStarting, this);
+        this.board.scene.on(Events.ON_GAME_STATE_STARTED, this.onGameStarted, this);
+        this.board.scene.on(Events.ON_GAME_STATE_PLAYING, this.onGamePlaying, this);
+        this.board.scene.on(Events.ON_GAME_STATE_ENDING, this.onGameEnding, this);
     }
 
     onLoad(){
@@ -72,6 +79,10 @@ export default class Player extends Actor {
      * @param message
      */
     say(message) {
+        alert(`${this.name}: ${message}`);
+    }
+
+    notify(message){
         alert(`${this.name}: ${message}`);
     }
 
@@ -122,6 +133,7 @@ export default class Player extends Actor {
     onGameEnding(data) {
 
     }
+
 }
 
 app.createComponent(Player);
