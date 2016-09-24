@@ -29,7 +29,7 @@ export default class LoginScene extends BaseScene {
 
     onLoad() {
         if (this.isRemember) {
-            _loginToDashboard();
+            this._loginToDashboard();
         }
         this.userNameEditBox.string = "crush1";
         this.userPasswordEditBox.string = "1234nm";

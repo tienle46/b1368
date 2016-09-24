@@ -20,13 +20,13 @@ class ButtonScaler extends Component {
         this.scaleDownAction = cc.scaleTo(this.transDuration, this.pressedScale);
         this.scaleUpAction = cc.scaleTo(this.transDuration, this.initScale);
 
-        function onTouchDown(event) {
+        function onTouchDown(e) {
             this.stopAllActions();
             if (audioMng) audioMng.playButton();
             this.runAction(self.scaleDownAction);
         }
 
-        function onTouchUp(event) {
+        function onTouchUp(e) {
             this.stopAllActions();
             this.runAction(self.scaleUpAction);
         }

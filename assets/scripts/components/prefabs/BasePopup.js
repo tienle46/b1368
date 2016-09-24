@@ -4,79 +4,42 @@ import Component from 'Component';
 class BasePopup extends Component {
     constructor() {
         super();
-        this.popUpContainner = {
-            default: null,
-            type: cc.Sprite
-        };
+        this.groupBtnNode = cc.Node;
+        this.bodyContentNode = cc.Node;
 
-        this.closeButton = {
-            default: null,
-            type: cc.Button
-        };
-
-        this.scrollview = {
-            default: null,
-            type: cc.Node
-        };
-
-
+        this.greenButtonNode = cc.Button;
+        this.violetButtonNode = cc.Button;
     }
 
     // use this for initialization
     onLoad() {
-        this.node.on('touchstart', function(event) {
-
+        // prevent click from dialog to below layer
+        this.node.on('touchstart', function() {
+            return;
         });
 
+        // add closeBtn
+        // this._btnRegisterEvents();
     }
 
     handleClosePopupAction() {
-        this.closeButton.getComponent(cc.Animation).play();
+        // this.closeButton.getComponent(cc.Animation).play();
         // console.log(this.node.parent);
         this.node.removeFromParent(true);
     }
 
     setContent(string) {
-        var label = cc.find('layout', this.node).getComponent(cc.Label);
-        label.string = string;
+        this.bodyContentNode.getChildByName('string').getComponent(cc.Label).string = string;
     }
 
+    /* PRIVATE METHODS */
+    // _btnRegisterEvents() {
+    //     let event = new cc.Component.EventHandler();
+    //     event.target = this.node;
+    //     event.component = 'BasePopup';
+    //     event.handler = 'handleClosePopupAction';
+    //     this.closeButton.clickEvents = [event];
+    // }
 }
 
 app.createComponent(BasePopup);
-
-// cc.Class({
-//     extends: cc.Component,
-
-//     properties: {
-
-
-//         popUpContainner: {
-//             default: null,
-//             type: cc.Sprite
-//         },
-
-//         closeButton: {
-//             default: null,
-//             type: cc.Button
-//         }
-
-//     },
-
-//     // use this for initialization
-//     onLoad: function() {
-
-//     },
-
-//     handleClosePopupAction: function() {
-
-
-//         this.closeButton.getComponent(cc.Animation).play();
-//         this.node.removeFromParent(true);
-//     }
-
-//     // called every frame, uncomment this function to activate update callback
-//     // update: function (dt) {
-
-//     // },
-// });
