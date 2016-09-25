@@ -15,25 +15,34 @@ export default class AlertPopupRub extends BasePopupRub {
         this.greenBtnEvent = greenBtnEvent;
     }
 
-    changeVioletBtnState() {
+    _changeVioletBtnState() {
         console.log('changeVioletBtnState');
         this.groupBtn.changeVioletBtnState(false);
     }
 
 
-    registerEvent() {
+    _registerEvent() {
         if (this.greenBtnEvent) {
-            this.greenBtn.clickEvents = [this.greenBtnEvent];
+            this.groupBtn.setBtnEvent(this.greenBtnEvent);
         } else {
             this.closePopup();
         }
     }
 
+    test() {
+        console.log('test xem co goi dc hem ?');
+    }
+
     //override
-    static show(node, string) {
-        return new AlertPopupRub(node, string).init().then((res) => {
-            res.addToNode();
-            res.changeVioletBtnState();
+    static show(node, string, greenBtnEvent = null) {
+        return new AlertPopupRub(node, string, greenBtnEvent).init().then((self) => {
+            self.addToNode();
+            // must call after node's added
+            self._changeVioletBtnState();
+            if (greenBtnEvent)
+                self._registerEvent();
+
+            return self;
         }).catch((err) => {
             console.log('err', err);
         });

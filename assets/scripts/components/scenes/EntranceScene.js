@@ -89,29 +89,27 @@ class EntranceScene extends BaseScene {
         //         });
         //     }
         // });
-        // app.service.connect((success) => {
-        //     console.debug("success: " + success);
-        //     if (success) {
-        //         new Fingerprint2().get((deviceId) => {
-        //             app.service.requestAuthen(this._generateUserName("ysad12", deviceId, 0, 5), this._generateUserName("yz212", deviceId, 0, 6), false, true, (error, result) => {
-        //                 error = JSON.parse(error);
-        //                 if (result) {
-        //                     this.changeScene('DashboardScene');
-        //                 }
+        app.service.connect((success) => {
+            console.debug("success: " + success);
+            if (success) {
+                new Fingerprint2().get((deviceId) => {
+                    app.service.requestAuthen(this._generateUserName("ysad12", deviceId, 0, 5), this._generateUserName("yz212", deviceId, 0, 6), false, true, (error, result) => {
+                        error = JSON.parse(error);
+                        if (result) {
+                            this.changeScene('DashboardScene');
+                        }
 
-        //                 if (error) {
-        //                     this.addPopup(app.getMessageFromServer(error.p.ec));
-        //                 }
-        //             });
-        //         });
-        //     }
-        // });
-
-        AlertPopupRub.show(this.node, "HELLOOOO GUYS");
+                        if (error) {
+                            this.addPopup(app.getMessageFromServer(error.p.ec));
+                        }
+                    });
+                });
+            }
+        });
     }
 
     handleFacebookLoginAction() {
-
+        AlertPopupRub.show(this.node, "Chức năng đang cập nhật!");
     }
 
     _generateUserName(key, deviceId, count, maxCall) {

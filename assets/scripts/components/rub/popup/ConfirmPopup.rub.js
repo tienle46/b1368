@@ -1,6 +1,6 @@
 import BasePopupRub from 'BasePopup.rub';
 
-export default class AlertPopupRub extends BasePopupRub {
+export default class ComfirmPopupRub extends BasePopupRub {
     /**
      * Creates an instance of AlertPopupRub.
      * 

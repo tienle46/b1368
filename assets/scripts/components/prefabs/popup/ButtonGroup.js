@@ -15,28 +15,52 @@ class ButtonGroup extends Component {
 
     // use this for initialization
     onLoad() {
-        console.log("wtf onload ?");
         this.resetWidget = this.node.getComponent(cc.Widget);
-        this.setGreenBtnLabel();
-        this.setVioletBtnLabel();
-    }
-
-    setGreenBtnLabel(string = "Đồng ý".toUpperCase()) {
-        this.greenBtn.node.getChildByName('Label').getComponent(cc.Label).string = string;
-    }
-
-    setVioletBtnLabel(string = "Hủy".toUpperCase()) {
-        this.violetBtn.node.getChildByName('Label').getComponent(cc.Label).string = string;
+        this._setGreenBtnLabel();
+        this._setVioletBtnLabel();
     }
 
     changeVioletBtnState(state) {
-        console.log('XXSS')
-        this.violetBtn.active = state;
+        this.violetBtn.node.active = state;
     }
 
-    // center alignment while button change states
-    resetWidget() {
-        // this.resetWidget
+    /**
+     * add an event to btn
+     * @param {any} cc.Component.EventHandler
+     * 
+     * @memberOf ButtonGroup
+     */
+    setBtnEvent(btn, eventHandler) {
+        btn.clickEvents = [eventHandler];
+    }
+
+    /**
+     * push an event to btn
+     * @param {any} cc.Component.EventHandler
+     * 
+     * @memberOf ButtonGroup
+     */
+    pushBtnEvent(btn, eventHandler) {
+        btn.clickEvents.push(eventHandler);
+    }
+
+    /**
+     * unshift an event to btn
+     * @param {any} cc.Component.EventHandler
+     * 
+     * @memberOf ButtonGroup
+     */
+    unshiftBtnEvent(btn, eventHandler) {
+        // sometimes we want an event runs before close Btn
+        btn.clickEvents.unshift(eventHandler);
+    }
+
+    _setGreenBtnLabel(string = "Đồng ý".toUpperCase()) {
+        this.greenBtn.node.getChildByName('Label').getComponent(cc.Label).string = string;
+    }
+
+    _setVioletBtnLabel(string = "Hủy".toUpperCase()) {
+        this.violetBtn.node.getChildByName('Label').getComponent(cc.Label).string = string;
     }
 }
 

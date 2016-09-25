@@ -2,6 +2,7 @@ var app = require('app');
 var Component = require('Component');
 var ToggleGroup = require('ToggleGroup');
 import CheckBox from 'CheckBox';
+import AlertPopupRub from 'AlertPopupRub';
 
 class TopupDialog extends Component {
     constructor() {
