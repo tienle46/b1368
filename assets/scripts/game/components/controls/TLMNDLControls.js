@@ -2,6 +2,7 @@
  * Created by Thanh on 9/19/2016.
  */
 
+import utils from 'utils'
 import app from 'app';
 import Events from 'Events'
 import GameControls from 'GameControls';

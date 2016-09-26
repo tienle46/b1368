@@ -1,4 +1,4 @@
-import BasePopupRub from 'BasePopup.rub';
+import BasePopupRub from 'BasePopupRub';
 
 export default class ComfirmPopupRub extends BasePopupRub {
     /**
