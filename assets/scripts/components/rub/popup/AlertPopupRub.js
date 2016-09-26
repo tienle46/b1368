@@ -1,4 +1,6 @@
-import BasePopupRub from 'BasePopup.rub';
+
+import app from 'app'
+import BasePopupRub from 'BasePopupRub';
 
 export default class AlertPopupRub extends BasePopupRub {
     /**

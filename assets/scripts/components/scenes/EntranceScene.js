@@ -2,7 +2,7 @@ var app = require('app');
 var BaseScene = require("BaseScene");
 var Fingerprint2 = require('fingerprinter');
 
-import AlertPopupRub from 'AlertPopup.rub';
+import AlertPopupRub from 'AlertPopupRub';
 
 class EntranceScene extends BaseScene {
 
