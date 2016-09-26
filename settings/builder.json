@@ -13,5 +13,5 @@
   "includeSdk": [
     "anysdk"
   ],
-  "includeAnysdk": false
+  "includeAnySDK": false
 }

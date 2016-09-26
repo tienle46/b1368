@@ -6,14 +6,28 @@ var _ = require('lodash');
 
 export default class CardList extends Component {
 
-    static get VERTICAL() { return cc.Layout.Type.VERTICAL; }
-    static get HORIZONTAL() { return cc.Layout.Type.HORIZONTAL; }
-    static get LEFT_TO_RIGHT() { return cc.Layout.HorizontalDirection.LEFT_TO_RIGHT; }
-    static get RIGHT_TO_LEFT() { return cc.Layout.HorizontalDirection.RIGHT_TO_LEFT; }
-    static get TOP_TO_BOTTOM() { return cc.Layout.HorizontalDirection.LEFT_TO_RIGHT; }
-    static get BOTTOM_TO_TOP() { return cc.Layout.HorizontalDirection.RIGHT_TO_LEFT; }
+    static get VERTICAL() { return 1; }
+    static get HORIZONTAL() { return 2; }
+
     static get WIDTH() { return 800; }
     static get HEIGHT() { return 150; }
+
+    static get CARD_WIDTH() { return 100; }
+    static get CARD_HEIGHT() { return 130; }
+
+    static get RELATION () {
+        return {
+            TOP_LEFT : 1,
+            TOP_CENTER : 2,
+            TOP_RIGHT : 3,
+            CENTER_LEFT : 4,
+            CENTER_CENTER : 5,
+            CENTER_RIGHT : 6,
+            BOTTOM_LEFT : 7,
+            BOTTOM_CENTER : 8,
+            BOTTOM_RIGHT: 9
+        }
+    }
 
     constructor() {
         super();
@@ -28,19 +42,24 @@ export default class CardList extends Component {
         this.cardWidth = 0;
         this._type = CardList.HORIZONTAL;
         this._direction = CardList.LEFT_TO_RIGHT;
-        this._layout = cc.Layout;
-        this.draggable = false;
+        this._layout = {
+            default: null,
+            type: cc.Layout
+        }
+        this.draggable = true;
+        this.listWidth = 0;
+        this.listHeight = 60;
 
         this._cardListRotate = 0; //TODO
         this._cardRotate = 0; //TODO
+
+        this._rightAlign = false;
     }
 
-    _init({x = this.node.x, y = this.node.y, width = this.node.width, height = this.node.height, type = this._type, direction = this._direction} = {}){
-        this._setMaxWidth(width);
-        this._setMaxHeight(height);
+    _init({x = this.node.x, y = this.node.y, type = this._type} = {}){
+
         this.setPosition(x, y);
         this.setType(type);
-        this.setDirection(direction);
 
         this._onConfigChanged();
     }
@@ -53,59 +72,23 @@ export default class CardList extends Component {
         this._type = type;
     }
 
-    setDirection(direction = CardList.LEFT_TO_RIGHT){
-        this._direction = direction;
-        this._onDirectionChanged();
-    }
-
-    setSpacing(spacing){
-        if(this._type === CardList.HORIZONTAL){
-            this._layout.horizontalDirection = this._direction;
-            this._layout.spacingX = spacing;
-        }
-        else if (this._type === CardList.VERTICAL){
-            this._layout.verticalDirection = this.direction;
-            this._layout.spacingY = spacing;
-        }
-    }
-
     setDraggable(draggable){
         this.draggable = draggable;
     }
 
-
     onLoad () {
 	    // this._verifyLayoutInitiated();
         this._init();
-        // this._test();
+        this._test();
+
+        if(this._type == CardList.VERTICAL){
+            this.node.runAction(cc.rotateBy(0, 90));
+        }
     }
 
     setPosition(x = 0, y = 0){
         this.node.x = x;
         this.node.y = y;
-    }
-
-    setMaxSize({width = CardList.WIDTH, height = CardList.HEIGHT} = {}){
-        if(this._type == CardList.HORIZONTAL){
-            this._setMaxWidth(width);
-        }
-
-        if(this._type == CardList.VERTICAL){
-            this._setMaxHeight(height);
-        }
-
-        this._onConfigChanged();
-    }
-
-    _test(){
-        console.log("test");
-        this._init();
-
-        this.setPosition(17, 100);
-        let cards = [39,35,11,21,24,14,33].map(value => Card.from(value));
-        this.setCards(cards);
-
-        // this.node.runAction(cc.rotateBy(0,90));
     }
 
     setCards (cards, faceDown, animation){
@@ -156,17 +139,6 @@ export default class CardList extends Component {
 
         this._verifyLayoutInitiated();
 
-        this._layout.type = this._type;
-        this._layout.resizeMode = cc.Layout.ResizeMode.NONE;
-
-        this.cardWidth = 100 * this.node.height / 130;
-        let numberOfCards = this.cards.length;
-        let spacing = 0;
-        if (numberOfCards * this.cardWidth > this.node.width){
-            spacing = - (numberOfCards * this.cardWidth - this.node.width) / (numberOfCards - 1);
-        }
-
-        this.setSpacing(spacing);
     }
 
     /**
@@ -187,11 +159,11 @@ export default class CardList extends Component {
     }
 
     _setMaxWidth(width = CardList.WIDTH){
-        this.node.width = width;
+        this.listWidth = width;
     }
 
     _setMaxHeight(height = CardList.HEIGHT){
-        this.node.height = height;
+        this.listHeight = height;
     }
 
     /**
@@ -232,27 +204,41 @@ export default class CardList extends Component {
 
         this._verifyLayoutInitiated();
 
-        const parentHeight = this.node.height;
-        const scaleFactor = parentHeight / 130;
+        const maxDimension = this.listWidth;
+        const numberOfCards = this.cards.length + cards.length;
+        let spacing = 0;
+
+        const scaleFactor = this.listHeight / CardList.CARD_HEIGHT;
+
+        const wth = maxDimension / scaleFactor;
+        if(numberOfCards * CardList.CARD_WIDTH > wth){
+            spacing = (wth - numberOfCards * CardList.CARD_WIDTH) / numberOfCards - 1;
+            spacing = spacing || 0;
+
+            this._layout.spacingX = spacing
+        }
+
+        if(this._rightAlign){
+            cards.reverse();
+        }
 
         cards.forEach((card, index) => {
 
-            var newCard = cc.instantiate(this.cardPrefab).getComponent('Card');
+            let newCard = cc.instantiate(this.cardPrefab).getComponent('Card');
 
             newCard.initFromByte(card.byteValue);
             newCard.reveal(true);
             newCard.setOnClickListener(this._onSelectCard.bind(this));
 
-            newCard.node.setScale(scaleFactor,scaleFactor);
             this.node.addChild(newCard.node, index, index + 1000);
 
             newCard.node.on(cc.Node.EventType.TOUCH_START, (event) => {
 
-                if(!this.draggable) return;
-
-                console.log(`touch start position ${event.getLocation().x}`);
-
-                this.node.getComponent(cc.Layout).type = CardList.NONE;
+                // //TODO
+                // if(!this.draggable) return;
+                // console.log(`touch start position ${event.getLocation().x}`);
+                //
+                // this.node.getComponent(cc.Layout).type = CardList.NONE;
 
             }, this);
 
@@ -265,49 +251,95 @@ export default class CardList extends Component {
                 let target = event.target;
                 target.x += event.getDelta().x;
 
-                let direction = event.getDelta().x > 0 ? 1 : -1;
-                let spacing = this.node.getComponent(cc.Layout).spacingX || this.node.getComponent(cc.Layout).spacingY;
-                spacing = spacing || 0;
+               console.log(`moving distance ${event.getDelta().x}`);
 
-                let beingSwapNode = this.node.getChildByTag(target.tag + direction);
 
-                if(Math.abs(target.x - beingSwapNode.x) <= 5){
-
-                    // if(beingSwapNode.x + this.cardWidth /2 < parentWidth / 2) {
-                    beingSwapNode.x -= direction * (this.cardWidth - Math.abs(spacing));
-                    // }
-                    let tmp = beingSwapNode.tag;
-                    beingSwapNode.tag = target.tag;
-                    target.tag = tmp;
-
-                    beingSwapNode.zIndex = beingSwapNode.tag;
-                    target.zIndex = target.tag;
-
-                    this.node.children[tmp - 1000] = target;
-                    this.node.children[beingSwapNode.tag - 1000] = beingSwapNode;
-                }
 
             }, this);
 
             newCard.node.on(cc.Node.EventType.TOUCH_END, (event) => {
-                if(this.draggable) return;
 
-                this.node.getComponent(cc.Layout).type = CardList.HORIZONTAL;
+                // if(this.draggable) return;
+                //
+                // this.node.getComponent(cc.Layout).type = CardList.HORIZONTAL;
+
             }, this);
 
             this.cards.push(newCard);
 
         });
 
-        if(this._type === CardList.VERTICAL){
-
-        }
+         /**
+          *  TAG = FIX 
+          *  Func nay call khi anchor change hoặc add mới card
+          *  NOTE: Có thể tối ưu chỉ set lại anchor point của card mới 
+          */
+         this.cards.forEach(card => {
+           card.node.setAnchorPoint(this.node.getAnchorPoint());
+         });
     }
 
     _verifyLayoutInitiated(){
         if(!this._layout) {
             this._layout = this.node.addComponent(cc.Layout);
+            this._layout.type = cc.Layout.Type.HORIZONTAL;
+
+            this._layout.resizeMode = cc.Layout.ResizeMode.CONTAINER;
+            this.node.on('anchor-changed', ()=>{
+                this.node.children.forEach((child)=>{
+                    child.setAnchorPoint(this.node.getAnchorPoint());
+                })
+            });
+            this.node.setScale(this.listHeight / CardList.CARD_HEIGHT, this.listHeight /  CardList.CARD_HEIGHT);
             this._onConfigChanged();
+        }
+    }
+    _test(){
+        console.log("test");
+
+        let cards = [7,11,15,19,23,27,31,35,39,43,47,51,55].map(value => Card.from(value));
+        this.setCards(cards);
+
+    }
+    alignToParent(relation, marginX, marginY){
+        // TOP_LEFT : 1,
+        // TOP_CENTER : 2,
+        // TOP_RIGHT : 3,
+        // CENTER_LEFT : 4,
+        // CENTER_CENTER : 5,
+        // CENTER_RIGHT : 6,
+        // BOTTOM_LEFT : 7,
+        // BOTTOM_CENTER : 8,
+        // BOTTOM_RIGHT: 9
+
+        switch(relation){
+            case CardList.RELATION.TOP_LEFT:
+                this._rightAlign = true;
+                this.setPosition(- marginX,0);
+                this.node.setAnchorPoint(1,0);
+
+                break;
+
+            case CardList.RELATION.CENTER_RIGHT:
+                this._rightAlign = false;
+                this.setPosition( marginX,0);
+
+                this.node.setAnchorPoint(0,0.5);
+                if(this._type == CardList.VERTICAL){
+
+                    this.node.setAnchorPoint(0.5,0.5);
+                }
+
+
+                break;
+
+            case CardList.RELATION.BOTTOM_CENTER:
+                this._rightAlign = false;
+                this.setPosition( 0,-marginY);
+                this.node.setAnchorPoint(0.5 , 1);
+                break;
+
+            default: break;
         }
     }
 
