@@ -2,7 +2,7 @@ var app = require('app');
 var Component = require('Component');
 var ToggleGroup = require('ToggleGroup');
 import CheckBox from 'CheckBox';
-import AlertPopupRub from 'AlertPopupRub';
+import AlertPopupRub from 'AlertPopup.rub';
 
 class TopupDialog extends Component {
     constructor() {
@@ -69,11 +69,7 @@ class TopupDialog extends Component {
             // var msgDialog = xg.OutGameMessageDialog.create("Vui lòng nhập đầy đủ thông tin", xg.FRAMENAME_OUTGAME_CONFIML_DIALOG_BG, new cc.Color(1, 1, 1), null, 0);
             // msgDialog.show();
             // load prefab
-            cc.loader.loadRes('Popup/BasePopup', (err, prefab) => {
-                let BasePopup = cc.instantiate(prefab);
-                BasePopup.getComponent(require('BasePopup')).setContent('Vui lòng nhập đầy đủ thông tin');
-                this.node.addChild(BasePopup);
-            });
+            AlertPopupRub.show(this.node, 'Vui lòng nhập đầy đủ thông tin');
         } else {
             let id = this.toggleGroup.getVal();
 
