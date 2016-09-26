@@ -69,13 +69,10 @@
     "_components": [
       {
         "__id__": 335
-      },
-      {
-        "__id__": 336
       }
     ],
     "_prefab": {
-      "__id__": 337
+      "__id__": 336
     },
     "groupIndex": 0
   },
@@ -10314,15 +10311,6 @@
     },
     "fileId": "9af974dTPdGS6cBTgwiHrai",
     "sync": false
-  },
-  {
-    "__type__": "6adcc4HBLJNsZ2fecmIt1FQ",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 1
-    },
-    "_enabled": true
   },
   {
     "__type__": "2e25au6slxDsLHp+mzqutLC",
