@@ -1,5 +1,6 @@
 import utils from 'utils';
 import CardList from 'CardList'
+import Card from 'Card'
 
 cc.Class({
     extends: cc.Component,
@@ -49,14 +50,33 @@ cc.Class({
         this.player4.getComponent('CardList')._setMaxWidth(200);
         this.player4.getComponent('CardList').alignToParent(CardList.RELATION.CENTER_RIGHT,50,0);
         this.player4.getComponent('CardList')._test();
+
+
+        let cards = [7,11,15,19,23,27,31,35,39,43,47,51].map(value => Card.from(value));
+        this.player1.getComponent('CardList').setCards(cards);
+
+         cards = [7,11,15,19,23,27,31,35,39,43,47].map(value => Card.from(value));
+        this.player2.getComponent('CardList').setCards(cards);
+
+         cards = [7,11,15,19,23,27,31,35,39,43].map(value => Card.from(value));
+        this.player3.getComponent('CardList').setCards(cards);
+
+         cards = [7,11,15,19,23,27,31,35,39,43,47,51,55].map(value => Card.from(value));
+        this.player4.getComponent('CardList').setCards(cards);
+
     },
 
     // called every frame, uncomment this function to activate update callback
     // update: function (dt) {
 
     // },
-    onClick1: function() {
-        console.log('button 1 clicked');
+    onClick1: function(event) {
+       this.player2.getComponent('CardList').transferCards(this.player2.getComponent('CardList').selectedCards,this.player3);
+       //  const p = event.target.convertToNodeSpaceAR(cc.p(568,565));
+       // event.target.runAction(cc.moveTo(0.5,p));
+
+
+        // console.log(`${event.target.convertToNodeSpace(0,0)}`);
     },
     onClick2: function() {
         console.log('button 2 clicked');

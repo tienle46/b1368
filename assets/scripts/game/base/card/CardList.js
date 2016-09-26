@@ -37,8 +37,8 @@ export default class CardList extends Component {
             type: cc.Prefab
         };
 
-        this.cards = [];
-        this.selectedCards = [];
+        // this.cards = [];
+        // this.selectedCards = [];
         this.cardWidth = 0;
         this._type = CardList.HORIZONTAL;
         this._direction = CardList.LEFT_TO_RIGHT;
@@ -48,12 +48,13 @@ export default class CardList extends Component {
         }
         this.draggable = true;
         this.listWidth = 0;
-        this.listHeight = 60;
+        this.listHeight = 50;
 
         this._cardListRotate = 0; //TODO
         this._cardRotate = 0; //TODO
 
         this._rightAlign = false;
+        this.scaleFactor;
     }
 
     _init({x = this.node.x, y = this.node.y, type = this._type} = {}){
@@ -62,6 +63,8 @@ export default class CardList extends Component {
         this.setType(type);
 
         this._onConfigChanged();
+        this.selectedCards = [];
+        this.cards = [];
     }
 
     getSelectedCards(){
@@ -79,7 +82,7 @@ export default class CardList extends Component {
     onLoad () {
 	    // this._verifyLayoutInitiated();
         this._init();
-        this._test();
+        // this._test();
 
         if(this._type == CardList.VERTICAL){
             this.node.runAction(cc.rotateBy(0, 90));
@@ -208,9 +211,7 @@ export default class CardList extends Component {
         const numberOfCards = this.cards.length + cards.length;
         let spacing = 0;
 
-        const scaleFactor = this.listHeight / CardList.CARD_HEIGHT;
-
-        const wth = maxDimension / scaleFactor;
+        const wth = maxDimension / this.scaleFactor;
         if(numberOfCards * CardList.CARD_WIDTH > wth){
             spacing = (wth - numberOfCards * CardList.CARD_WIDTH) / numberOfCards - 1;
             spacing = spacing || 0;
@@ -229,39 +230,56 @@ export default class CardList extends Component {
             newCard.initFromByte(card.byteValue);
             newCard.reveal(true);
             newCard.setOnClickListener(this._onSelectCard.bind(this));
+            newCard.node.tag = index + 1000;
+            this.node.addChild(newCard.node);
 
-            this.node.addChild(newCard.node, index, index + 1000);
 
             newCard.node.on(cc.Node.EventType.TOUCH_START, (event) => {
 
-                // //TODO
                 // if(!this.draggable) return;
                 // console.log(`touch start position ${event.getLocation().x}`);
                 //
-                // this.node.getComponent(cc.Layout).type = CardList.NONE;
+                // this._layout.type = CardList.NONE;
 
             }, this);
 
             newCard.node.on(cc.Node.EventType.TOUCH_MOVE, (event) => {
 
-                if(!this.draggable) return;
-
-                console.log(`touch start position ${event.getLocation().x}`);
-
-                let target = event.target;
-                target.x += event.getDelta().x;
-
-               console.log(`moving distance ${event.getDelta().x}`);
-
-
-
+                // if(!this.draggable) return;
+                //
+                // let target = event.target;
+                // target.x += event.getDelta().x;
+                // let direction = event.getDelta().x > 0 ? 1 : -1;
+                //
+                // //position of nth card within list calculated by
+                // // x = CARD_WIDTH * n + (n-1)* spacing
+                // // x = (CARD_WIDTH + spacing) * n - spacing
+                // // n = (x + spacing) /(CARD_WIDTH + spacing)
+                //
+                // let adjacentIndex = Math.trunc( (target.x + this._layout.spacingX) / (CardList.CARD_WIDTH + spacing));
+                // // console.log(`adjacentIndex ${adjacentIndex}`);
+                // if(adjacentIndex != (target.tag - 1000)){
+                //
+                //     let beingSwapNode = this.node.getChildByTag(adjacentIndex + 1000);
+                //
+                //     beingSwapNode.x = CardList.CARD_WIDTH * (adjacentIndex - direction) + (adjacentIndex - direction -1)* spacing;
+                //
+                //     let tmp = beingSwapNode.tag;
+                //     beingSwapNode.tag = target.tag;
+                //     target.tag = tmp;
+                //
+                //     beingSwapNode.zIndex = beingSwapNode.tag;
+                //     target.zIndex = target.tag;
+                //
+                //     this.node.children[tmp - 1000] = target;
+                //     this.node.children[beingSwapNode.tag - 1000] = beingSwapNode;
+                // }
             }, this);
 
             newCard.node.on(cc.Node.EventType.TOUCH_END, (event) => {
-
-                // if(this.draggable) return;
-                //
-                // this.node.getComponent(cc.Layout).type = CardList.HORIZONTAL;
+                // if(!this.draggable) return;
+                // this._layout.type = CardList.HORIZONTAL;
+                // console.log('card move finished');
 
             }, this);
 
@@ -290,7 +308,13 @@ export default class CardList extends Component {
                     child.setAnchorPoint(this.node.getAnchorPoint());
                 })
             });
-            this.node.setScale(this.listHeight / CardList.CARD_HEIGHT, this.listHeight /  CardList.CARD_HEIGHT);
+            this.node.on('child-added', (event)=>{
+                const newChild = event.detail;
+                newChild.setAnchorPoint(this.node.getAnchorPoint());
+                newChild.setPosi
+            });
+            this.scaleFactor  = this.listHeight / CardList.CARD_HEIGHT;
+            this.node.setScale(this.scaleFactor, this.scaleFactor);
             this._onConfigChanged();
         }
     }
@@ -342,6 +366,44 @@ export default class CardList extends Component {
             default: break;
         }
     }
+
+    /**
+     * Move cards sang card list khac voi animation
+     * @param cards
+     * @param destinationList
+     * @param animation
+     */
+    transferCards(cards, destinationList, animation){
+
+        //get last child of destination list position
+        let destinationPoint = cc.p(0,0);
+        if(destinationList.childrenCount > 0){
+            const lastChild = destinationList.children[destinationList.childrenCount - 1 ];
+            destinationPoint = lastChild.getPosition();
+            destinationPoint.x -= destinationList.getComponent('CardList')._layout.spacingX;
+        }
+
+        destinationList.getComponent('CardList')._layout.type = CardList.NONE;
+
+        cards.forEach((card, index) => {
+
+            const p = card.node.parent.convertToWorldSpaceAR(card.node.getPosition());
+
+            const localPoint = destinationList.convertToNodeSpaceAR(p);
+
+            card.node.parent = destinationList;
+            card.node.setPosition(localPoint);
+            card.node.setLocalZOrder(destinationList.children);
+            console.log(card.node);
+
+            card.node.runAction(cc.moveTo(0.5,destinationPoint.x, destinationPoint.y));
+            destinationPoint.x -= destinationList.getComponent('CardList')._layout.spacingX;
+        });
+
+        _.pullAll(this.selectedCards, cards);
+
+     
+    };
 
 }
 

@@ -62,17 +62,17 @@ export default class Card extends Component {
         //     child.setAnchorPoint(this.node.getAnchorPoint());
         // });
 
-        // this.node.on('anchor-changed', (event)=> {
-        //     console.log(`anchor changed ${this.node}`);
-        //     this.node.children.forEach(child => {
-        //         child.setAnchorPoint(this.node.getAnchorPoint());
-        //     });
-        // });
-        //
-        // this.node.on('child-added', (event) =>{
-        //     const newChild = event.detail;
-        //     newChild.setAnchorPoint(this.node.getAnchorPoint());
-        // });
+        this.node.on('anchor-changed', (event)=> {
+            // console.log(`anchor changed ${this.node}`);
+            // this.node.children.forEach(child => {
+            //     child.setAnchorPoint(this.node.getAnchorPoint());
+            // });
+        });
+
+        this.node.on('child-added', (event) =>{
+            // const newChild = event.detail;
+            // newChild.setAnchorPoint(this.node.getAnchorPoint());
+        });
 
     }
 
