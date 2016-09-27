@@ -2,8 +2,9 @@
  * Created by Thanh on 9/16/2016.
  */
 
+import app from 'app';
 import utils from 'utils';
-import BoardCardTurnBaseRenderer from 'BoardCardTurnBaseRenderer';
+import {BoardCardTurnBaseRenderer}  from 'game-components';
 
 export default class TLMNDLBoardRenderer extends BoardCardTurnBaseRenderer {
     constructor() {
@@ -23,10 +24,13 @@ export default class TLMNDLBoardRenderer extends BoardCardTurnBaseRenderer {
             default: null,
             type: cc.Node
         };
+
+
+        
     }
 
     onLoad() {
-        this.onLoad();
+        super.onLoad();
     }
 
     setVisibleAnTrang(visible) {
@@ -40,4 +44,7 @@ export default class TLMNDLBoardRenderer extends BoardCardTurnBaseRenderer {
     updateDeckCard(cards) {
 
     }
+
 }
+
+app.createComponent(TLMNDLBoardRenderer);

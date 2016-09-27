@@ -513,5 +513,14 @@ app.const.game.getLiengSpecialString = function(liengType) {
         default:
             break;
     }
-    return retString;
+    return retStrapp.const.game.ing;
 };
+
+app.const.game.GAME_TYPE_GENERAL = 0;
+app.const.game.GAME_TYPE_TIENLEN = 1;
+app.const.game.GAME_TYPE_PHOM = 2;
+app.const.game.GAME_TYPE_XAM = 3;
+app.const.game.GAME_TYPE_SPECIAL_XAM = 4;
+app.const.game.GAME_TYPE_CO = 5;
+app.const.game.GAME_TYPE_POKER = 6;
+app.const.game.GAME_TYPE_MAU_BINH = 7;

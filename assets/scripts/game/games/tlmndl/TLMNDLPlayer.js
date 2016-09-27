@@ -25,6 +25,9 @@ export default class TLMNDLPlayer extends PlayerCardTurnBase {
 
     _onPlayTurn(){
 
+        if(!this.isItMe()){
+            return;
+        }
         console.log("_onPlayTurn: ")
         
         let cards = this.getSelectedCards();
@@ -50,7 +53,7 @@ export default class TLMNDLPlayer extends PlayerCardTurnBase {
     }
 
     getPrePlayedCards(){
-        return this.renderer.cardList.selectedCards;
+        return this.board.playedCards;
     }
 
     setCards(cards){

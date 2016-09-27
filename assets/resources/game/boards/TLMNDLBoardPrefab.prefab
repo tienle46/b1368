@@ -10,7 +10,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "BoardCardPrefab",
+    "_name": "TLMNDLBoardPrefab",
     "_objFlags": 0,
     "_opacity": 255,
     "_color": {
@@ -50,11 +50,42 @@
     "_opacityModifyRGB": false,
     "_id": "",
     "_active": true,
-    "_components": [],
+    "_components": [
+      {
+        "__id__": 2
+      },
+      {
+        "__id__": 3
+      }
+    ],
     "_prefab": {
-      "__id__": 2
+      "__id__": 4
     },
     "groupIndex": 0
+  },
+  {
+    "__type__": "19cf0TClZBI9INhdRtYF0c7",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 1
+    },
+    "_enabled": true
+  },
+  {
+    "__type__": "58f2ebhMptDTaDRPoBRnQyT",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 1
+    },
+    "_enabled": true,
+    "startTimelinePrefab": null,
+    "startBoardTimeLine": null,
+    "deckCardRenderer": null,
+    "deckCardPrefab": null,
+    "anTrangPrefab": null,
+    "dutBaBichPrefab": null
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -62,9 +93,9 @@
       "__id__": 1
     },
     "asset": {
-      "__id__": 0
+      "__uuid__": "bfe63714-a1c1-4838-bbb3-28fe7b03519e"
     },
-    "fileId": "11832lBWoJG0q2EGBhGhO3G",
+    "fileId": "c9e4d2Tp4NKYZ3b1cSch286",
     "sync": false
   }
 ]

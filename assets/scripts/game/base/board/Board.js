@@ -3,18 +3,18 @@
  */
 
 import app from 'app';
-import Component from 'Component';
-import GameUtils from 'GameUtils';
-import Events from 'Events'
+import game from 'game'
+import {Actor} from 'components';
+import Events from 'events'
 
-export default class Board extends Component {
+export default class Board extends Actor {
 
-    constructor(room, scene) {
+    constructor() {
         super();
 
-        this.scene = scene;
+        this.scene = null;
 
-        this.room = room;
+        this.room = null;
 
         this.owner = null;
 
@@ -24,7 +24,7 @@ export default class Board extends Component {
 
         this.minBet = null;
 
-        this.state;
+        this.state = null;
 
         this.serverState = app.const.game.board.state.INITED;
 
@@ -34,20 +34,20 @@ export default class Board extends Component {
 
     }
 
-    _init(gameData = {}) {
+    _init(scene) {
 
-        console.debug("_init Board");
-        
+        this.scene = scene;
+        this.room = scene.room;
+        this.gameCode = scene.gameCode;
         this.state = app.const.game.board.state.INITED;
-
-        this.gameCode = this.room.name.substring(0, 3);
+        this.gameData = scene.gameData;
 
         if (this.room.containsVariable(app.keywords.VARIABLE_MIN_BET)) {
             this.minbet = this.room.getVariable(app.keywords.VARIABLE_MIN_BET);
         }
 
-        if (gameData.hasOwnProperty(app.keywords.BOARD_STATE_KEYWORD)) {
-            this.serverState = gameData[app.keywords.BOARD_STATE_KEYWORD];
+        if (this.gameData.hasOwnProperty(app.keywords.BOARD_STATE_KEYWORD)) {
+            this.serverState = this.gameData[app.keywords.BOARD_STATE_KEYWORD];
             this.state = app.const.game.board.state.BEGIN;
         }
 
@@ -123,7 +123,7 @@ export default class Board extends Component {
     }
 
     isSpectator() {
-        return this.playerManager.isSpectator();
+        return this.gamePlayers.isSpectator();
     }
 
     getPlayerSeatID(playerId) {
@@ -138,14 +138,14 @@ export default class Board extends Component {
     _updatePlayerState(boardInfoObj) {
         let playerIds = boardInfoObj[xg.Keywords.GAME_LIST_PLAYER];
         if (playerIds) {
-            this.playerManager.changePlayerState(playerIds, app.const.playerState.READY);
+            this.gamePlayers.changePlayerState(playerIds, app.const.playerState.READY);
         }
     }
 
     _updateBoardMaster(boardInfoObj) {
         let masterPlayerId = boardInfoObj.hasOwnProperty(xg.Keywords.MASTER_PLAYER_ID);
         if (masterPlayerId) {
-            this.setMaster(this.playerManager.findPlayer(masterPlayerId));
+            this.setMaster(this.gamePlayers.findPlayer(masterPlayerId));
         }
     }
 
@@ -157,7 +157,7 @@ export default class Board extends Component {
      * @overrideable
      */
     _shouldUpdateBoardTimeLineOnRejoin() {
-        return (this.isReady() && this.playerManager.shouldMeReady()) || this.isEnding();
+        return (this.isReady() && this.gamePlayers.shouldMeReady()) || this.isEnding();
     }
 
     /**
@@ -172,7 +172,7 @@ export default class Board extends Component {
      * @overrideable
      */
     _shouldStartReadyTimeLine() {
-        return !this.isSpectator() && this.isReady() && this.playerManager.shouldMeReady();
+        return !this.isSpectator() && this.isReady() && this.gamePlayers.shouldMeReady();
     }
 
     /**
@@ -216,7 +216,7 @@ export default class Board extends Component {
     }
 
     _resetBoard(){
-
+        this.renderer && this.renderer._resetBoard();
     }
 
     onBoardBegin(data) {
@@ -280,7 +280,7 @@ export default class Board extends Component {
             this._handleBoardError(app.res.getErrorMessage(data[app.keywords.ERROR]));
         } else {
             //TODO
-            this.playerManager.onPlayerToSpectator();
+            this.gamePlayers.onPlayerToSpectator();
         }
     }
 

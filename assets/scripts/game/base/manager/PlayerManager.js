@@ -4,10 +4,10 @@
 
 import app from 'app';
 import utils from 'utils';
-import Player from 'Player';
 import SFS2X from 'SFS2X';
-import Component from 'Component';
-import CreateGameException from 'CreateGameException';
+import Component from 'components';
+import {gameManager, Player} from 'game';
+import {CreateGameException} from 'exceptions';
 
 export default class PlayerManager extends Component {
     constructor() {
@@ -24,7 +24,6 @@ export default class PlayerManager extends Component {
         this.scene = null;
         this.players = null;
         this.maxPlayerId = 1;
-        this._playerPrefab = null;
         this._idToPlayerMap = null;
         this._nameToPlayerMap = null;
         this.initLayerDoneCb = null;
@@ -52,22 +51,12 @@ export default class PlayerManager extends Component {
 
         this.initLayerDoneCb && this.initLayerDoneCb();
         console.debug("_onFinishInitPlayerLayer");
-
-        let playerPrefabPath = app.game.getPlayerPath(this.gameCode);
-        cc.loader.loadRes(playerPrefabPath, (error, prefab) => {
-            if(error){
-                console.error(error);
-                throw new CreateGameException("Không thể khởi tạo người chơi");
-                return;
-            }
-
-            this._playerPrefab = prefab;
-            this.initPlayers();
-        });
+        this.initPlayers();
     }
 
     _initPlayerLayer() {
-        let maxPlayer = app.game.getMaxPlayer(this.gameCode);
+
+        let maxPlayer = gameManager.getMaxPlayer(this.gameCode);
         let positionAnchorResPath = maxPlayer && app.res.playerAnchorPath[maxPlayer];
         let positionAnchorName = maxPlayer && app.res.playerAnchorName[maxPlayer];
 
@@ -135,27 +124,13 @@ export default class PlayerManager extends Component {
 
     _createSinglePlayer(user){
 
-        let playerNode = cc.instantiate(this._playerPrefab);
-        let playerClassName = app.game.getPlayerClassName(this.gameCode);
-        let playerRendererClassName = app.game.getPlayerRendererClassName(this.gameCode);
+        let {player, playerNode} = gameManager.createPlayer(this.gameCode);
 
-        let player = playerNode.getComponent(playerClassName);
-        let playerRenderer = playerNode.getComponent(playerRendererClassName);
-        
-        if(player && playerRenderer){
-            // let playerComponent = app.createComponent(playerClass, this.board, user);
-            // let player = playerNode.addComponent(playerComponent);
-
-            console.log("_createSinglePlayer");
-
-            player.setRenderer(playerRenderer);
+        if(player){
             player._init(this.board, user);
-
-            if(player){
-                this._setPlayerPosition(playerNode, player);
-                this._addToPlayerLayer(playerNode);
-                this._addPlayerToList(player);
-            }
+            this._setPlayerPosition(playerNode, player);
+            this._addToPlayerLayer(playerNode);
+            this._addPlayerToList(player);
         }
 
         return player;

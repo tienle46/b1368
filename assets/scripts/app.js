@@ -118,7 +118,7 @@ app.createComponent = (classNameOrInstance, extendClass = undefined, ...args) =>
 };
 
 app.getMessageFromServer = (errorCode, errorMessage = 0) => {
-    let M = MESSAGES[game.LANG];
+    let M = MESSAGES[app.LANG];
     return (typeof M[errorCode] === 'object') ? M[errorCode][errorMessage] : M[errorCode];
 };
 
@@ -130,6 +130,5 @@ function _setupGame() {
     app.service = require("Service");
     app.system = require("System");
     app.context = require("Context");
-    app.game = require("GameManager");
     app.event = require("Events");
 }

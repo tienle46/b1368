@@ -54,7 +54,6 @@ export default class PlayerTurnBaseAdapter extends GameAdapter {
     }
 
     _handleGetTurn(data){
-        let onTurnPlayerId = utils.getValue(data, Keywords.TURN_PLAYER_ID);
         this._handleChangeTurn(onTurnPlayerId);
     }
 
@@ -68,11 +67,11 @@ export default class PlayerTurnBaseAdapter extends GameAdapter {
         
         if(this.player.id === turnPlayerId) {
 
-            if(!this.scene.playerManager){
-                console.debug("this.scene.playerManager", this.scene);
+            if(!this.scene.gamePlayers){
+                console.debug("this.scene.gamePlayers", this.scene);
             }
 
-            let preTurnPlayer = this.scene.playerManager.findPlayer(this.preTurnPlayerId);
+            let preTurnPlayer = this.scene.gamePlayers.findPlayer(this.preTurnPlayerId);
             preTurnPlayer && preTurnPlayer.turnAdapter.onLoseTurn();
 
             this.onTurn(isFirstTurn);
@@ -118,6 +117,10 @@ export default class PlayerTurnBaseAdapter extends GameAdapter {
     onTurn(isFirstTurn){
 
         console.log("on Turn")
+
+        if(this.player.id == this.scene.board.lastPlayedTurn){
+            this.scene.emit(Events.CLEAN_TURN_ROUTINE_DATA, this.player.id);
+        }
 
         this.player.startTimeLine(this.turnDuration);
 

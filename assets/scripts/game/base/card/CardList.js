@@ -115,18 +115,35 @@ export default class CardList extends Component {
         this._fillCards(cards, faceDown, animation);
     }
 
+    _findCardComponents(cardModels = []){
+        if(cardModels.length == 0) return []
+
+        let filteredCards = this.cards.filter(card => {
+            for(let cardModel of cardModels){
+                if(card.equals(cardModel)){
+                    return true;
+                }
+            }
+        });
+
+        return filteredCards;
+    }
+
     /**
      *
      * @param cards
      * @param animation
      */
-    removeCards(cards,animation){
+    removeCards(cards, animation){
         cards = cards instanceof Card ? [cards] : cards;
-        cards && cards.forEach(card => {
+
+        let cardComponents = this._findCardComponents(cards);
+        cardComponents && cardComponents.forEach(card => {
             this.node.removeChild(card.node);
         });
 
-        _.pullAll(this.cards, cards);
+        _.pullAll(this.cards, cardComponents);
+        _.pullAll(this.selectedCards, cardComponents);
     }
     /**
      * Rút một quân bài từ lọc vào bài trên tay của Player

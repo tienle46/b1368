@@ -7,10 +7,14 @@ import Board from 'Board';
 import Card from 'Card';
 
 export default class BoardCard extends Board {
-    constructor(room, scene) {
-        super(room, scene);
+    constructor() {
+        super();
 
         this.handCardSize = 0;
+    }
+
+    _init(scene){
+        super._init(scene);
     }
 
     onLoad() {
@@ -29,7 +33,7 @@ export default class BoardCard extends Board {
         let cardBytes = data[app.keywords.DEAL_CARD_LIST_KEYWORD] || [];
         let dealCards = cardBytes.map(cardByte => Card.from(cardByte));
 
-        this.scene.playerManager.onDealCards(dealCards);
+        this.scene.gamePlayers.onDealCards(dealCards);
     }
 
 }

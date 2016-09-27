@@ -22,28 +22,25 @@ class GameMenuPrefab extends Component {
             type: cc.Node
         };
 
-        this.board = null;
         this.scene = null;
     }
 
-    _init(board, scene){
-        this.board = board;
+    _init(scene){
         this.scene = scene;
-        
-        console.log(this.menuBtn);
     }
 
     onClickMenuButton(event){
+        //TODO
         this.scene.showLoading();
         app.service.sendRequest(new SFS2X.Requests.System.LeaveRoomRequest(this.board.room));
     }
 
     onClickChatButton(event){
-        app.system.info("Chức năng đang hoàn thiện");
+        app.system.info(app.res.string('coming_soon'));
     }
 
     onClickTopupButton(event){
-        app.system.info("Chức năng đang hoàn thiện");
+        app.system.info(app.res.string('coming_soon'));
     }
 }
 

@@ -3,6 +3,11 @@
  */
 
 export default class Utils {
+    
+    static isEmptyArray(arr){
+        return !arr || arr.length == 0; 
+    }
+    
     static isNumber(value) {
         return typeof value === 'number';
     }

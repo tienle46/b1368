@@ -40,10 +40,18 @@ export default class PlayerCardTurnBase extends PlayerCard {
     }
     
     _handlePlayCards(data){
+
+        console.log("Handle play card: _handlePlayCards");
+
         let playerId = utils.getValue(data, Keywords.PLAYER_ID);
         let cards = GameUtils.convertBytesToCards(utils.getValue(data, Keywords.GAME_LIST_CARD, []));
 
         if(this.id === playerId && cards.length > 0){
+
+            console.log("On remove cảds");
+
+            this.board.playedCards = cards;
+            //TODO remove cards from player hand and add to deckCards
             this.renderer.cardList.removeCards(cards);
         }
 

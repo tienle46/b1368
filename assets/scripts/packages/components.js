@@ -3,9 +3,13 @@
  */
 
 import Component from 'Component';
+import Actor from 'Actor';
 import Button from 'Button';
 
 export {
+    Actor,
     Component,
     Button
 };
+
+export default Component;

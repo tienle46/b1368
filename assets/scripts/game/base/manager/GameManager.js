@@ -3,36 +3,71 @@
  */
 
 import app from 'app';
-import TLMNDLBoard from 'TLMNDLBoard';
-import TLMNDLPlayer from 'TLMNDLPlayer';
+import {TLMNDLBoard, TLMNDLBoardRenderer} from 'game';
+import {TLMNDLPlayer, TLMNDLPlayerRenderer} from 'game';
 
 
-const gameCodeToBoardClassMap = {
-    [app.const.gameCode.TLMNDL]: TLMNDLBoard
-};
+/***
+ * Players
+ * @type {{}}
+ */
 
-const gameCodeToPlayerClassMap = {
+const playerClassMap = {
     [app.const.gameCode.TLMNDL]: TLMNDLPlayer
 };
 
-const gameCodeToPlayerClassNameMap = {
+const playerRendererMap = {
+    [app.const.gameCode.TLMNDL]: TLMNDLPlayerRenderer
+};
+
+const playerClassNameMap = {
     [app.const.gameCode.TLMNDL]: 'TLMNDLPlayer'
 };
 
-const playerRendererClassNameMap = {
+const playerRendererNameMap = {
     [app.const.gameCode.TLMNDL]: 'TLMNDLPlayerRenderer'
 };
 
-const gameCodeToGameControlsPathMap = {
-    [app.const.gameCode.TLMNDL]: 'game/controls/TLMNDLControlsPrefab'
-};
-
-const gameCodeToPlayerPathMap = {
+const playerPrefabPathMap = {
     [app.const.gameCode.TLMNDL]: 'game/players/TLMNDLPlayerPrefab'
 };
 
-const gameCodeToGameControlsClassMap = {
+/**
+ * Boards
+ * @type {{}}
+ */
+
+const boardClassMap = {
+    [app.const.gameCode.TLMNDL]: TLMNDLBoard
+};
+
+const boardRendererMap = {
+    [app.const.gameCode.TLMNDL]: TLMNDLBoardRenderer
+};
+
+const boardClassNameMap = {
+    [app.const.gameCode.TLMNDL]: 'TLMNDLBoard'
+};
+
+const boardRendererNameMap = {
+    [app.const.gameCode.TLMNDL]: 'TLMNDLBoardRenderer'
+};
+
+const boardPrefabPathMap = {
+    [app.const.gameCode.TLMNDL]: 'game/boards/TLMNDLBoardPrefab'
+};
+
+/**
+ * Controls
+ *
+ * @type {{}}
+ */
+const gameControlsClassMap = {
     [app.const.gameCode.TLMNDL]: 'TLMNDLControls'
+};
+
+const gameControlsPathMap = {
+    [app.const.gameCode.TLMNDL]: 'game/controls/TLMNDLControlsPrefab'
 };
 
 const maxPlayersMap = {
@@ -47,51 +82,119 @@ const maxPlayersMap = {
     [app.const.gameCode.LIENG]: 5,
 };
 
-class GameManager {
+export default class GameManager {
     constructor() {
+
+        this.boardPrefab = {
+            default: null,
+            type: cc.Prefab
+        }
+
+        this.playerPrefab = {
+            default: null,
+            type: cc.Prefab
+        }
     }
 
-    createBoard(gameCode, room){
-        const boardClass = this.getBoardClass(gameCode);
-        return boardClass && new boardClass(room);
+    loadRes(gameCode, cb) {
+        app.async.parallel([
+            (callback) => {
+                let boardPath = boardPrefabPathMap[gameCode];
+                cc.loader.loadRes(boardPath, (error, prefab) => {
+                    if (prefab) {
+                        this.boardPrefab = prefab;
+                        callback(null, true);
+                    } else {
+                        callback();
+                    }
+                });
+            },
+            (callback) => {
+                let playerPath = playerPrefabPathMap[gameCode];
+                cc.loader.loadRes(playerPath, (error, prefab) => {
+                    if (prefab) {
+                        this.playerPrefab = prefab;
+                        callback(null, true);
+                    } else {
+                        callback();
+                    }
+                });
+            }
+        ], function (err, results) {
+
+            let loadedRes = true;
+
+            for (let success of results) {
+                if (!success) {
+                    loadedRes = false;
+                    break;
+                }
+            }
+
+            if (loadedRes) {
+                cb && cb();
+            } else {
+                cb && cb(app.res.string('error.fail_to_create_game'));
+            }
+
+            console.debug("results: ", results);
+            console.debug("err: ", err);
+        });
+
     }
 
-    createPlayer(gameCode, user){
-        const playerClass = this.getPlayerClass(gameCode);
-        return playerClass && new playerClass(room);
+    createBoard(gameCode) {
+        let boardClassName = boardClassNameMap[gameCode];
+        let boardRendererClassName = boardRendererNameMap[gameCode];
+
+        if (this.boardPrefab && boardClassName && boardRendererClassName) {
+            let boardNode = cc.instantiate(this.boardPrefab);
+            let board = boardNode.getComponent(boardClassName);
+            board.setRenderer(boardNode.getComponent(boardRendererClassName));
+
+            return {board: board, boardNode: boardNode};
+        }
     }
 
-    getBoardClass(gameCode){
-        return gameCodeToBoardClassMap[gameCode];
+    createPlayer(gameCode) {
+
+        let playerClassName = playerClassNameMap[gameCode];
+        let playerRendererClassName = playerRendererNameMap[gameCode];
+
+        if(this.playerPrefab && playerClassName && playerRendererClassName){
+            let playerNode = cc.instantiate(this.playerPrefab);
+            let player = playerNode.getComponent(playerClassName);
+            player.setRenderer(playerNode.getComponent(playerRendererClassName));
+
+            return {player: player, playerNode: playerNode};
+        }
     }
 
-    getPlayerClass(gameCode){
-        return gameCodeToPlayerClassMap[gameCode];
+    createGameControls(scene, cb) {
+        let gameControlsPath = gameControlsPathMap[scene.gameCode];
+        let gameControlsClass = gameControlsClassMap[scene.gameCode];
+
+
+        if (gameControlsPath && gameControlsClass) {
+            cc.loader.loadRes(gameControlsPath, (error, prefab) => {
+                let controlsNode = cc.instantiate(prefab);
+                let gameControls = controlsNode.getComponent(gameControlsClass);
+                cb(null, controlsNode, gameControls);
+            });
+        } else {
+            cb({error: app.res.string('error.cannot_create_game_board')})
+        }
     }
 
-    getPlayerClassName(gameCode){
-        return gameCodeToPlayerClassNameMap[gameCode];
+    getBoardClass(gameCode) {
+        return boardClassMap[gameCode];
     }
 
-    getPlayerRendererClassName(gameCode){
-        return playerRendererClassNameMap[gameCode];
+    getPlayerClass(gameCode) {
+        return playerClassMap[gameCode];
     }
 
-    getGameControlsPath(gameCode){
-        return gameCodeToGameControlsPathMap[gameCode];
-    }
-
-    getPlayerPath(gameCode){
-        return gameCodeToPlayerPathMap[gameCode];
-    }
-
-    getGameControlsClass(gameCode){
-        return gameCodeToGameControlsClassMap[gameCode];
-    }
-
-    getMaxPlayer(gameCode){
+    getMaxPlayer(gameCode) {
         return maxPlayersMap[gameCode];
     }
 }
-
-export default new GameManager();

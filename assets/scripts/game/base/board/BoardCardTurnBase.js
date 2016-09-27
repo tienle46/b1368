@@ -12,15 +12,36 @@ const boardConst = app.const.game.board;
 
 export default class BoardCardTurnBase extends BoardCard {
 
-    constructor(room, scene) {
-        super(room, scene);
+    constructor() {
+        super();
 
+        this.deckCards = null;
+        this.playedCards = null;
         this.turnAdapter = new BoardTurnBaseAdapter(this);
     }
 
-    _init(data = {}){
-        super._init(data);
-        this.turnAdapter._init(this.scene);
+    _init(scene){
+        super._init(scene);
+
+
+        this.deckCards = [];
+        this.playedCards = [];
+        this.turnAdapter._init(scene);
+
+        this.scene.on(Events.CLEAN_TURN_ROUTINE_DATA, this._cleanTurnRoutineData, this);
+    }
+
+    _resetBoard(){
+        super._resetBoard();
+
+        this.deckCards = [];
+        this.playedCards = [];
+    }
+
+    _cleanTurnRoutineData(lastPlayedId){
+        this.deckCards = [];
+        this.playedCards = [];
+        this.renderer.cleanDeckCards();
     }
 
     getTurnDuration(){

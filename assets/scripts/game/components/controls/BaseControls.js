@@ -39,7 +39,7 @@ class BaseControls extends GameControls {
 
             let playerId = resObj[app.keywords.PLAYER_ID];
 
-            if (this.scene.playerManager.isItMe(playerId)) {
+            if (this.scene.gamePlayers.isItMe(playerId)) {
                 this._onPlayerReady();
             }
         });
@@ -56,7 +56,7 @@ class BaseControls extends GameControls {
 
             let playerId = resObj[app.keywords.PLAYER_ID];
 
-            if (this.scene.playerManager.isItMe(playerId)) {
+            if (this.scene.gamePlayers.isItMe(playerId)) {
                 this._onPlayerUnready();
             }
         });
@@ -69,7 +69,7 @@ class BaseControls extends GameControls {
         let playerIds = this.scene.gameData[app.keywords.GAME_LIST_PLAYER];
         if (playerIds) {
             for (let playerId of playerIds) {
-                if (this.scene.playerManager.isItMe(playerId)) {
+                if (this.scene.gamePlayers.isItMe(playerId)) {
                     isMeReady = true;
                     break;
                 }

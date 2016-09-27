@@ -4,39 +4,35 @@
 
 import app from 'app';
 import BoardCardTurnBase from 'BoardCardTurnBase';
-import TLMNDLBoardRenderer from 'TLMNDLBoardRenderer';
-import GameUtils from 'GameUtils';
 
 export default class TLMNDLBoard extends BoardCardTurnBase {
 
-    constructor(room, scene) {
-        super(room, scene);
+    constructor() {
+        super();
 
-        this.handCardSize = 13;
-
-        this.deckCards = [];
         this.winRank = 0;
-        this.rendererClassName = TLMNDLBoardRenderer;
+        this.handCardSize = 13;
     }
 
-    _init(data = {}) {
-        super._init(data);
-
+    _init(scene) {
+        super._init(scene);
     }
 
     onLoad() {
         super.onLoad();
     }
 
-    onResetBoard() {
-        super.onResetBoard();
+    _resetBoard() {
+        super._resetBoard();
         this.winRank = 0;
         this.renderer.setVisibleAnTrang(false);
         this.renderer.setVisibleDutBaBich(false);
     }
 
-    handleGameStateChange(boardState, data){
+    handleGameStateChange(boardState, data) {
         super.handleGameStateChange(boardState, data);
 
     }
 }
+
+app.createComponent(TLMNDLBoard);

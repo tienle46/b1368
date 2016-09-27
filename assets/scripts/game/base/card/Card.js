@@ -1,5 +1,6 @@
 import app from 'app';
 import Component from 'Component';
+import GameUtils from 'utils';
 
 export default class Card extends Component {
 
@@ -101,6 +102,39 @@ export default class Card extends Component {
 
     equals(card){
         return this.byteValue === card.byteValue;
+    }
+
+    compareTo(card, gameType, compareRankFirst) {
+
+        if (card) {
+            let thisRank = GameUtils.getRank(this, gameType);
+            let compareRank = GameUtils.getRank(card, gameType);
+
+            if (thisRank === compareRank) {
+                let thisSuit = GameUtils.getSuit(this, gameType);
+                let compareSuit = GameUtils.getSuit(card, gameType);
+
+                return thisSuit - compareSuit;
+            } else {
+                return this.byteValue - card.byteValue;
+            }
+        }
+    }
+
+    isHeo() {
+        return this.rank === 2 || this.rank === 15;
+    }
+
+    isBa() {
+        return this.rank === 3;
+    }
+
+    isAt() {
+        return this.rank === 1 || this.rank === 14;
+    }
+
+    getRank(gameType) {
+        return this.rank;
     }
 
     static from(value){

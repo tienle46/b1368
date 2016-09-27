@@ -14,6 +14,9 @@ Events.SHOW_WAIT_TURN_CONTROLS          = "showWaitTurnControls";
 Events.SHOW_ON_TURN_CONTROLS            = "showOnTurnControls";
 Events.SHOW_GAME_BEGIN_CONTROLS         = "showGameBeginControls";
 
+Events.ON_PLAYED_CARDS                  = "handlePlayedCards"
+Events.CLEAN_TURN_ROUTINE_DATA          = "cleanTurnRoutineData"
+
 Events.ON_CLICK_PLAY_BUTTON             = "onClickPlayButton";
 Events.ON_CLICK_SORT_BUTTON             = "onClickSortButton";
 Events.ON_CLICK_SKIP_TURN_BUTTON        = "onClickSkipTurnButton";

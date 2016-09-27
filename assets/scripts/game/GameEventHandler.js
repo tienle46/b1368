@@ -9,10 +9,10 @@ import Events from 'Events'
 import GameUtils from 'GameUtils'
 
 export default class GameEventHandler {
-    constructor(board, scene) {
-        this.board = board;
+    constructor(scene) {
         this._pendingEvents = [];
         this.scene = scene;
+        this.board = scene.board;
         this._handleEventImediate = true;
     }
 
@@ -119,7 +119,7 @@ export default class GameEventHandler {
             return;
         }
 
-        this.scene.playerManager.onUserEnterRoom(event.user, event.room);
+        this.scene.gamePlayers.onUserEnterRoom(event.user, event.room);
     }
 
     _onRoomRemove(event) {

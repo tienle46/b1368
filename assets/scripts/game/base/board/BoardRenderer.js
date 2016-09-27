@@ -23,6 +23,10 @@ export default class BoardRenderer extends ActorRenderer {
         super._initUI(data);
     }
 
+    _resetBoard(){
+
+    }
+
     hideStartBoardTimeLine(){
         utils.hide(this.startBoardTimeLine);
     }

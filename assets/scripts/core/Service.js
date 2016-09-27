@@ -52,6 +52,7 @@ class Service {
         this._valueQueue = [];
         this._lagPollingInterval = null;
         this._poorNetwork = false;
+        this._loginData = null;
 
         this._initSmartFoxClient();
     }
@@ -137,11 +138,20 @@ class Service {
     }
 
     _onConnectionLost(event) {
-        app.system.loadScene(app.const.scene.ENTRANCE_SCENE, () => {
-            app.system.info("Kết nối tới máy chủ bị gián đoạn. Vui lòng đăng nhập lại!");
-        });
-
         this.stopLagPolling();
+
+        if(this._loginData){
+            app.service.connect((success) => {
+                if (success) {
+                    this.requestAuthen(this._loginData.username, this._loginData.password, false, this._loginData.quickLogin, this._loginData.cb);
+                }
+            });
+        }else{
+            app.system.loadScene(app.const.scene.ENTRANCE_SCENE, () => {
+                app.system.info("Kết nối tới máy chủ bị gián đoạn. Vui lòng đăng nhập lại!");
+            });
+        }
+
     }
 
     _onConnectionResume(event) {
@@ -168,9 +178,12 @@ class Service {
     _onLogin(event) {
 
         if(event.data[app.keywords.LOGIN_REJOIN_ROOM_GROUP]){
-            this.logout();
-            app.system.info("Hệ thống chưa hỗ trợ kết nối lại khi bàn đang chơi. Vui lòng đăng nhập lại!");
+            // this.logout();
+            // app.system.info("Hệ thống chưa hỗ trợ kết nối lại khi bàn đang chơi. Vui lòng đăng nhập lại!");
+            this.disconnect();
             return;
+        }else{
+            this._loginData = null;
         }
 
         this._callCallback(SFS2X.SFSEvent.LOGIN, null, event.data);
@@ -178,6 +191,7 @@ class Service {
     }
 
     _onLoginError() {
+        this._loginData = null;
         this._callCallback(SFS2X.SFSEvent.LOGIN, event.data);
     }
 
@@ -289,7 +303,7 @@ class Service {
      * @param {function} cb
      */
 
-    requestAuthen(username, password, isRegister, isQuickLogin, cb) {
+    requestAuthen(username, password, isRegister = false, isQuickLogin = false, cb) {
         new Fingerprint2().get((printer, components) => {
             let data = {};
             data[app.keywords.IS_REGISTER] = isRegister;
@@ -300,9 +314,12 @@ class Service {
             data[app.keywords.DEVICE_ID] = printer;
             data[app.keywords.QUICK_PLAY] = isQuickLogin; // <-- die here!
 
-            if (isRegister)
+            if (isRegister) {
                 data[app.keywords.PARTNER_ID] = "1"; // <-- or here
-
+                this._loginData = null;
+            } else {
+                this._loginData = {username: username, password: password, quickLogin: isQuickLogin, cb: cb};
+            }
 
             this._addCallback(SFS2X.SFSEvent.LOGIN, cb);
 
