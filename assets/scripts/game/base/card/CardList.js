@@ -38,15 +38,13 @@ export default class CardList extends Component {
         };
 
         // this.cards = [];
-        // this.selectedCards = [];
         this.cardWidth = 0;
         this._type = CardList.HORIZONTAL;
-        this._direction = CardList.LEFT_TO_RIGHT;
         this._layout = {
             default: null,
             type: cc.Layout
         }
-        this.draggable = true;
+        this.draggable = false;
         this.listWidth = 0;
         this.listHeight = 50;
 
@@ -55,6 +53,7 @@ export default class CardList extends Component {
 
         this._rightAlign = false;
         this.scaleFactor;
+        this.cardSpacing = 0;
     }
 
     _init({x = this.node.x, y = this.node.y, type = this._type} = {}){
@@ -63,12 +62,13 @@ export default class CardList extends Component {
         this.setType(type);
 
         this._onConfigChanged();
-        this.selectedCards = [];
-        this.cards = [];
+        this.cards = this.cards || [];
     }
 
     getSelectedCards(){
-        return this.selectedCards;
+        return this.cards.filter((card)=>{
+            return card.selected == true;
+        });
     }
 
     setType(type = CardList.HORIZONTAL){
@@ -152,10 +152,8 @@ export default class CardList extends Component {
 
         if(card.selected){
             this._lowerCards([card]);
-            _.pullAll(this.selectedCards, [card]);
         }else {
             this._raiseCards([card]);
-            this.selectedCards.push(card);
         }
 
         card.selected = !card.selected;
@@ -197,6 +195,21 @@ export default class CardList extends Component {
         }
     }
 
+    updateCardSpacing(numberOfNewCards){
+        const maxDimension = this.listWidth;
+        const numberOfCards = this.cards.length + numberOfNewCards;
+        let spacing = 0;
+
+        const wth = maxDimension / this.scaleFactor;
+        if(numberOfCards * CardList.CARD_WIDTH > wth){
+            spacing = (wth - numberOfCards * CardList.CARD_WIDTH) / numberOfCards - 1;
+            spacing = spacing || 0;
+
+            this.cardSpacing = spacing;
+            this._layout.spacingX = this.cardSpacing;
+        }
+    }
+
     /**
      * Fill cards vào holder area
      * @param cards: Danh sách card được fill vào area
@@ -207,17 +220,7 @@ export default class CardList extends Component {
 
         this._verifyLayoutInitiated();
 
-        const maxDimension = this.listWidth;
-        const numberOfCards = this.cards.length + cards.length;
-        let spacing = 0;
-
-        const wth = maxDimension / this.scaleFactor;
-        if(numberOfCards * CardList.CARD_WIDTH > wth){
-            spacing = (wth - numberOfCards * CardList.CARD_WIDTH) / numberOfCards - 1;
-            spacing = spacing || 0;
-
-            this._layout.spacingX = spacing
-        }
+        this.updateCardSpacing(cards.length);
 
         if(this._rightAlign){
             cards.reverse();
@@ -233,53 +236,51 @@ export default class CardList extends Component {
             newCard.node.tag = index + 1000;
             this.node.addChild(newCard.node);
 
-
             newCard.node.on(cc.Node.EventType.TOUCH_START, (event) => {
 
-                // if(!this.draggable) return;
-                // console.log(`touch start position ${event.getLocation().x}`);
-                //
-                // this._layout.type = CardList.NONE;
+                if(!this.draggable) return;
+                console.log(`touch start position ${event.getLocation().x}`);
+                this._layout.type = cc.Layout.Type.NONE;
 
             }, this);
 
             newCard.node.on(cc.Node.EventType.TOUCH_MOVE, (event) => {
 
-                // if(!this.draggable) return;
-                //
-                // let target = event.target;
-                // target.x += event.getDelta().x;
-                // let direction = event.getDelta().x > 0 ? 1 : -1;
-                //
-                // //position of nth card within list calculated by
-                // // x = CARD_WIDTH * n + (n-1)* spacing
-                // // x = (CARD_WIDTH + spacing) * n - spacing
-                // // n = (x + spacing) /(CARD_WIDTH + spacing)
-                //
-                // let adjacentIndex = Math.trunc( (target.x + this._layout.spacingX) / (CardList.CARD_WIDTH + spacing));
-                // // console.log(`adjacentIndex ${adjacentIndex}`);
-                // if(adjacentIndex != (target.tag - 1000)){
-                //
-                //     let beingSwapNode = this.node.getChildByTag(adjacentIndex + 1000);
-                //
-                //     beingSwapNode.x = CardList.CARD_WIDTH * (adjacentIndex - direction) + (adjacentIndex - direction -1)* spacing;
-                //
-                //     let tmp = beingSwapNode.tag;
-                //     beingSwapNode.tag = target.tag;
-                //     target.tag = tmp;
-                //
-                //     beingSwapNode.zIndex = beingSwapNode.tag;
-                //     target.zIndex = target.tag;
-                //
-                //     this.node.children[tmp - 1000] = target;
-                //     this.node.children[beingSwapNode.tag - 1000] = beingSwapNode;
-                // }
+                if(!this.draggable) return;
+
+                let target = event.target;
+                target.x += event.getDelta().x;
+                let direction = event.getDelta().x > 0 ? 1 : -1;
+
+                //position of nth card within list calculated by
+                // x = CARD_WIDTH * n + (n-1)* spacing
+                // x = (CARD_WIDTH + spacing) * n - spacing
+                // n = (x + spacing) /(CARD_WIDTH + spacing)
+
+                let adjacentIndex = Math.trunc( (target.x + this._layout.spacingX) / (CardList.CARD_WIDTH + spacing));
+                // console.log(`adjacentIndex ${adjacentIndex}`);
+                if(adjacentIndex != (target.tag - 1000)){
+
+                    let beingSwapNode = this.node.getChildByTag(adjacentIndex + 1000);
+
+                    beingSwapNode.x = CardList.CARD_WIDTH * (adjacentIndex - direction) + (adjacentIndex - direction -1)* spacing;
+
+                    let tmp = beingSwapNode.tag;
+                    beingSwapNode.tag = target.tag;
+                    target.tag = tmp;
+
+                    beingSwapNode.zIndex = beingSwapNode.tag;
+                    target.zIndex = target.tag;
+
+                    this.node.children[tmp - 1000] = target;
+                    this.node.children[beingSwapNode.tag - 1000] = beingSwapNode;
+                }
             }, this);
 
             newCard.node.on(cc.Node.EventType.TOUCH_END, (event) => {
-                // if(!this.draggable) return;
-                // this._layout.type = CardList.HORIZONTAL;
-                // console.log('card move finished');
+                if(!this.draggable) return;
+                this._layout.type = cc.Layout.Type.HORIZONTAL;
+                console.log('card move finished');
 
             }, this);
 
@@ -287,32 +288,16 @@ export default class CardList extends Component {
 
         });
 
-         /**
-          *  TAG = FIX 
-          *  Func nay call khi anchor change hoặc add mới card
-          *  NOTE: Có thể tối ưu chỉ set lại anchor point của card mới 
-          */
-         this.cards.forEach(card => {
-           card.node.setAnchorPoint(this.node.getAnchorPoint());
-         });
     }
 
     _verifyLayoutInitiated(){
         if(!this._layout) {
             this._layout = this.node.addComponent(cc.Layout);
             this._layout.type = cc.Layout.Type.HORIZONTAL;
-
+            this._layout.direction = cc.Layout.HorizontalDirection.LEFT_TO_RIGHT;
+            this._layout.spacingY = 0;
             this._layout.resizeMode = cc.Layout.ResizeMode.CONTAINER;
-            this.node.on('anchor-changed', ()=>{
-                this.node.children.forEach((child)=>{
-                    child.setAnchorPoint(this.node.getAnchorPoint());
-                })
-            });
-            this.node.on('child-added', (event)=>{
-                const newChild = event.detail;
-                newChild.setAnchorPoint(this.node.getAnchorPoint());
-                newChild.setPosi
-            });
+
             this.scaleFactor  = this.listHeight / CardList.CARD_HEIGHT;
             this.node.setScale(this.scaleFactor, this.scaleFactor);
             this._onConfigChanged();
@@ -354,7 +339,6 @@ export default class CardList extends Component {
                     this.node.setAnchorPoint(0.5,0.5);
                 }
 
-
                 break;
 
             case CardList.RELATION.BOTTOM_CENTER:
@@ -375,35 +359,46 @@ export default class CardList extends Component {
      */
     transferCards(cards, destinationList, animation){
 
+        const cardListComponent = destinationList.getComponent('CardList');
         //get last child of destination list position
         let destinationPoint = cc.p(0,0);
         if(destinationList.childrenCount > 0){
             const lastChild = destinationList.children[destinationList.childrenCount - 1 ];
             destinationPoint = lastChild.getPosition();
-            destinationPoint.x -= destinationList.getComponent('CardList')._layout.spacingX;
+            destinationPoint.x -= cardListComponent._layout.spacingX;
         }
 
-        destinationList.getComponent('CardList')._layout.type = CardList.NONE;
+        cardListComponent._layout.type = cc.Layout.Type.NONE;
 
+        // let tmp = this.cards.slice(0,1);
         cards.forEach((card, index) => {
 
             const p = card.node.parent.convertToWorldSpaceAR(card.node.getPosition());
 
             const localPoint = destinationList.convertToNodeSpaceAR(p);
 
-            card.node.parent = destinationList;
             card.node.setPosition(localPoint);
-            card.node.setLocalZOrder(destinationList.children);
-            console.log(card.node);
+            card.node.parent = destinationList;
+            //
+            if(index < cards.length - 2){
+                card.node.runAction(cc.moveTo(1,destinationPoint.x,destinationPoint.y));
+            }
+            else{
+                card.node.runAction(cc.sequence(cc.moveTo(0.5,destinationPoint.x,destinationPoint.y), cc.callFunc(()=>{
+                    cardListComponent.updateCardSpacing(cards.length);
+                    cardListComponent._layout.type = cc.Layout.Type.HORIZONTAL;
 
-            card.node.runAction(cc.moveTo(0.5,destinationPoint.x, destinationPoint.y));
-            destinationPoint.x -= destinationList.getComponent('CardList')._layout.spacingX;
+                })))
+            }
+            destinationPoint.x -= cardListComponent._layout.spacingX;
+            cardListComponent.cards.push(card);
         });
 
-        _.pullAll(this.selectedCards, cards);
+        //remove cards khoi card list source
+        _.pullAll(this.cards, cards);
 
-     
     };
+
 
 }
 
