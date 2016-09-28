@@ -25,17 +25,22 @@ export default class TLMNDLPlayer extends PlayerCardTurnBase {
 
     _onPlayTurn(){
 
+        console.log("_onPlayTurn: ", this.isItMe())
+
         if(!this.isItMe()){
             return;
         }
-        console.log("_onPlayTurn: ")
-        
+
         let cards = this.getSelectedCards();
         let preCards = this.getPrePlayedCards();
 
+        console.log("checkPlayCard")
+
         if(TLMNUtils.checkPlayCard(cards, preCards)){
+            console.log("play card valid")
             this.turnAdapter.playTurn(cards);
         }else{
+            console.log("play card invalid")
             this.notify(app.res.string("invalid_play_card"));
         }
     }
@@ -45,11 +50,14 @@ export default class TLMNDLPlayer extends PlayerCardTurnBase {
     }
 
     _onSortCards(){
-
+        if(this.isItMe()){
+            let sortedCard = GameUtils.sortCardAsc(this.renderer.cardList.cards, TLMNUtils.GAME_TYPE, true);
+            this.renderer.cardList.setCards(sortedCard);
+        }
     }
 
     getSelectedCards(){
-        return this.renderer.cardList.selectedCards;
+        return this.renderer.cardList.getSelectedCards();
     }
 
     getPrePlayedCards(){

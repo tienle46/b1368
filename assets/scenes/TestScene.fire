@@ -1729,7 +1729,8 @@
     },
     "player4": {
       "__id__": 31
-    }
+    },
+    "firstRender": true
   },
   {
     "__type__": "cc.Button",

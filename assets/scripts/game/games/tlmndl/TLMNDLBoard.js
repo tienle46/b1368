@@ -25,8 +25,6 @@ export default class TLMNDLBoard extends BoardCardTurnBase {
     _resetBoard() {
         super._resetBoard();
         this.winRank = 0;
-        this.renderer.setVisibleAnTrang(false);
-        this.renderer.setVisibleDutBaBich(false);
     }
 
     handleGameStateChange(boardState, data) {

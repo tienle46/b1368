@@ -39,8 +39,8 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": 480,
-      "y": 320
+      "x": 0,
+      "y": 0
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -80,12 +80,18 @@
       "__id__": 1
     },
     "_enabled": true,
-    "startTimelinePrefab": null,
-    "startBoardTimeLine": null,
-    "deckCardRenderer": null,
+    "timelinePrefab": null,
+    "deckCardAnchor": null,
     "deckCardPrefab": null,
-    "anTrangPrefab": null,
-    "dutBaBichPrefab": null
+    "boardPrefab": {
+      "__uuid__": "7b9845b4-5252-4bee-960d-25d85b6e7a6e"
+    },
+    "boardCardPrefab": {
+      "__uuid__": "6abdfc78-b220-4158-a3bc-2e566abe70f0"
+    },
+    "boardCardTurnBasePrefab": {
+      "__uuid__": "0e046637-e770-45a8-a6d2-bc1c697acf87"
+    }
   },
   {
     "__type__": "cc.PrefabInfo",

@@ -23,7 +23,6 @@ const gameManager = new GameManager();
 const game = {};
 game.const = app.const.game;
 
-
 export {
     game,
     gameManager,

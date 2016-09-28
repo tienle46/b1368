@@ -1,6 +1,6 @@
 import app from 'app';
-import Component from 'Component';
-import GameUtils from 'utils';
+import Component from 'components';
+import {GameUtils} from 'utils';
 
 export default class Card extends Component {
 
@@ -110,7 +110,7 @@ export default class Card extends Component {
             let thisRank = GameUtils.getRank(this, gameType);
             let compareRank = GameUtils.getRank(card, gameType);
 
-            if (thisRank === compareRank) {
+            if (compareRankFirst && thisRank === compareRank) {
                 let thisSuit = GameUtils.getSuit(this, gameType);
                 let compareSuit = GameUtils.getSuit(card, gameType);
 

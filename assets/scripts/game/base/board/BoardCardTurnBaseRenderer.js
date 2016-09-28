@@ -2,21 +2,35 @@
  * Created by Thanh on 9/16/2016.
  */
 
+import app from 'app';
+import CardList from 'CardList';
+import DeckCardRenderer from 'DeckCardRenderer';
 import BoardCardRenderer from 'BoardCardRenderer';
-import CardList from 'CardList'
 
 export default class BoardCardTurnBaseRenderer extends BoardCardRenderer {
     constructor() {
         super();
 
-        this.deckCardRenderer  = {
+        this.deckCardAnchor  = {
             default: null,
             type: cc.Node
         }
+
+        this.deckCardPrefab  = {
+            default: null,
+            type: cc.Prefab
+        }
+
+        this.deckCards = null;
     }
 
     _initUI(data) {
         super._initUI(data);
+
+        let deckCardNode = cc.instantiate(this.deckCardPrefab);
+        this.deckCardAnchor.addChild(deckCardNode);
+
+        this.deckCards = deckCardNode.getComponent('DeckCardRenderer');
     }
 
     _resetBoard(){
@@ -24,13 +38,14 @@ export default class BoardCardTurnBaseRenderer extends BoardCardRenderer {
     }
 
     cleanDeckCards(){
-        // this.deckCardRenderer.children.forEach(cardListNode => {
-        //     let cardList = cardListNode.getComponent(CardList);
-        //     cardList && cardList.clear();
-        // });
+        console.log("Clean deck card")
+        this.deckCards.clear();
     }
 
-    addToDeck(cards){
-
+    addToDeck(cards, srcCardList){
+        this.deckCards.addCards(cards, srcCardList);
     }
 }
+
+app.createComponent(BoardCardTurnBaseRenderer);
+

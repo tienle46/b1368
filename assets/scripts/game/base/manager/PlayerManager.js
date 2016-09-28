@@ -8,6 +8,7 @@ import SFS2X from 'SFS2X';
 import Component from 'components';
 import {gameManager, Player} from 'game';
 import {CreateGameException} from 'exceptions';
+import {Events} from 'events'
 
 export default class PlayerManager extends Component {
     constructor() {
@@ -20,6 +21,7 @@ export default class PlayerManager extends Component {
 
         this.me = null;
         this.owner = null;
+        this.master = null;
         this.board = null;
         this.scene = null;
         this.players = null;
@@ -45,6 +47,13 @@ export default class PlayerManager extends Component {
         this._reset();
 
         this._initPlayerLayer();
+        this.scene.on(Events.GAME_USER_EXIT_ROOM, )
+    }
+
+    _onUserExitGame(user, room){
+        let player = this.findPlayer(user.name);
+
+        player && this._removePlayer(player)
     }
 
     _onFinishInitPlayerLayer(){
@@ -160,7 +169,6 @@ export default class PlayerManager extends Component {
 
         var ownerId = utils.getVariable(this.board.room, app.keywords.VARIABLE_OWNER);
 
-
         if (ownerId && (!this.owner || ownerId === this.owner.id)) {
 
             this.owner && this.owner.setOwner(false);
@@ -264,6 +272,8 @@ export default class PlayerManager extends Component {
                 return true;
             }
         });
+
+        this.scene.playerLayer.removeChild(player.node);
     }
 
     _replaceUser(player, newId) {

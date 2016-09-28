@@ -10,13 +10,10 @@ export default class BoardRenderer extends ActorRenderer {
     constructor() {
         super();
 
-        this.startTimelinePrefab = {
+        this.timelinePrefab = {
             default: null,
             type: cc.Prefab
         };
-
-        this.startBoardTimeLine = cc.Node;
-
     }
 
     _initUI(data){
@@ -31,3 +28,5 @@ export default class BoardRenderer extends ActorRenderer {
         utils.hide(this.startBoardTimeLine);
     }
 }
+
+app.createComponent(BoardRenderer);

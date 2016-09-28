@@ -16,6 +16,7 @@ export default class PlayerTurnBaseAdapter extends GameAdapter {
         this.turnDuration = 20;
         this.preTurnPlayerId = 0;
         this.currentTurnPlayerId = 0;
+        this.lastPlayedTurnPlayerId = 0;
     }
 
     _init(scene, player){
@@ -32,6 +33,7 @@ export default class PlayerTurnBaseAdapter extends GameAdapter {
         this.scene.on(Events.HANDLE_PLAY_TURN, this._handlePlayTurn, this);
         this.scene.on(Events.HANDLE_LOSE_TURN, this._handleLoseTurn, this);
         this.scene.on(Events.HANDLE_SKIP_TURN, this._handleSkipTurn, this);
+        this.scene.on(Events.CLEAN_TURN_ROUTINE_DATA, this._cleanTurnRoutineData, this);
     }
 
     isTurn() {
@@ -42,18 +44,24 @@ export default class PlayerTurnBaseAdapter extends GameAdapter {
         return this.player.skippedTurn || (this.board.lastMove && this.id == this.board.lastMove.id);
     }
 
-    _handleSkipTurn(data){
+    _cleanTurnRoutineData(){
+        this.lastPlayedTurnPlayerId = undefined;
+    }
 
+    _handleSkipTurn(data){
         console.log(data)
 
         let skipTurnPlayerId = utils.getValue(data, Keywords.PLAYER_ID);
-        let onTurnPlayerId = utils.getValue(data, Keywords.TURN_PLAYER_ID);
+        (skipTurnPlayerId == this.player.id) && this._handleLoseTurn(skipTurnPlayerId);
 
-        this._handleLoseTurn(skipTurnPlayerId);
-        this._handleChangeTurn(onTurnPlayerId);
+        let onTurnPlayerId = utils.getValue(data, Keywords.TURN_PLAYER_ID);
+        (onTurnPlayerId == this.player.id) && this._handleChangeTurn(onTurnPlayerId);
     }
 
     _handleGetTurn(data){
+
+        let onTurnPlayerId = utils.getValue(data, Keywords.TURN_PLAYER_ID);
+
         this._handleChangeTurn(onTurnPlayerId);
     }
 
@@ -79,13 +87,20 @@ export default class PlayerTurnBaseAdapter extends GameAdapter {
     }
 
     _handlePlayTurn(data){
+
+        console.log("_handlePlayTurn")
+
         let playerId = utils.getValue(data, Keywords.PLAYER_ID);
 
-        this.player.id === playerId
+        this.player.id === playerId;
         {
             this.handlePlayTurn(data);
             let nextTurnPlayerId = utils.getValue(data, Keywords.TURN_PLAYER_ID);
             nextTurnPlayerId && this.scene.emit(Events.HANDLE_CHANGE_TURN, nextTurnPlayerId);
+
+            console.log("set  lastPlayedTurnPlayerId")
+
+            this.lastPlayedTurnPlayerId = playerId;
         }
     }
 
@@ -116,9 +131,9 @@ export default class PlayerTurnBaseAdapter extends GameAdapter {
 
     onTurn(isFirstTurn){
 
-        console.log("on Turn")
+        console.log("on Turn: ", this.player.id, this.lastPlayedTurnPlayerId)
 
-        if(this.player.id == this.scene.board.lastPlayedTurn){
+        if(this.player.id == this.lastPlayedTurnPlayerId){
             this.scene.emit(Events.CLEAN_TURN_ROUTINE_DATA, this.player.id);
         }
 

@@ -108,6 +108,13 @@ export default class GameEventHandler {
 
     _onUserExitRoom(event) {
         console.log(event)
+
+        if (!event.user || !event.room || event.room.id != this.scene.room.id) {
+            return;
+        }
+
+        this.scene.emit(Events.GAME_USER_EXIT_ROOM, event.user, event.room);
+
         if (event.user && event.user.isItMe) {
             this.scene.goBack();
         }
@@ -115,7 +122,7 @@ export default class GameEventHandler {
 
     _onUserEnterRoom(event) {
 
-        if (!event.user || !event.room || event.room.id != this.board.room.id) {
+        if (!event.user || !event.room || event.room.id != this.scene.room.id) {
             return;
         }
 

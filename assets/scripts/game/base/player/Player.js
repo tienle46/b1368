@@ -39,6 +39,13 @@ export default class Player extends Actor {
         this.board.scene.on(Events.ON_GAME_STATE_STARTED, this.onGameStarted, this);
         this.board.scene.on(Events.ON_GAME_STATE_PLAYING, this.onGamePlaying, this);
         this.board.scene.on(Events.ON_GAME_STATE_ENDING, this.onGameEnding, this);
+        this.board.scene.on(Events.GAME_USER_EXIT_ROOM, this._onUserExitRoom, this);
+    }
+
+    _onUserExitRoom(user, room){
+        if(user.id = this.user.id){
+            this.stopTimeLine();
+        }
     }
 
     onLoad(){

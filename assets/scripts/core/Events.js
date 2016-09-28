@@ -14,7 +14,7 @@ Events.SHOW_WAIT_TURN_CONTROLS          = "showWaitTurnControls";
 Events.SHOW_ON_TURN_CONTROLS            = "showOnTurnControls";
 Events.SHOW_GAME_BEGIN_CONTROLS         = "showGameBeginControls";
 
-Events.ON_PLAYED_CARDS                  = "handlePlayedCards"
+Events.ON_PLAYER_PLAYED_CARDS           = "onPlayerPlayedCards"
 Events.CLEAN_TURN_ROUTINE_DATA          = "cleanTurnRoutineData"
 
 Events.ON_CLICK_PLAY_BUTTON             = "onClickPlayButton";
@@ -27,4 +27,6 @@ Events.ON_GAME_STATE_STARTED            = "onGameStateStarted";
 Events.ON_GAME_STATE_PLAYING            = "onGameStatePlaying";
 Events.ON_GAME_STATE_ENDING             = "onGameStateEnding";
 Events.ON_GAME_STATE_CHANGE             = "onGameStateChange"
-Events.ON_GAME_STATE_CHANGED             = "onGameStateChanged";
+Events.ON_GAME_STATE_CHANGED            = "onGameStateChanged";
+
+Events.GAME_USER_EXIT_ROOM              = "gameUserExitRoom";

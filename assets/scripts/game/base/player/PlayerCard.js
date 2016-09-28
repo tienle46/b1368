@@ -33,4 +33,8 @@ export default class PlayerCard extends Player {
         this.renderer.cardList.clear();
     }
 
+    findCards(cardModels){
+        return this.renderer.findCards(cardModels);
+    }
+
 }

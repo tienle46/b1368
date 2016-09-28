@@ -1,5 +1,5 @@
 import app from 'app';
-import utils from 'utils';
+import {utils} from 'utils';
 import {BaseScene} from 'scenes';
 import {Events, Emitter} from 'events'
 import {CreateGameException} from 'exceptions';

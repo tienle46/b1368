@@ -10,7 +10,7 @@ export default class CardList extends Component {
     static get HORIZONTAL() { return 2; }
 
     static get WIDTH() { return 800; }
-    static get HEIGHT() { return 150; }
+    static get HEIGHT() { return 130; }
 
     static get CARD_WIDTH() { return 100; }
     static get CARD_HEIGHT() { return 130; }
@@ -46,7 +46,7 @@ export default class CardList extends Component {
         }
         this.draggable = false;
         this.listWidth = 0;
-        this.listHeight = 50;
+        this.listHeight = CardList.HEIGHT;
 
         this._cardListRotate = 0; //TODO
         this._cardRotate = 0; //TODO
@@ -54,6 +54,12 @@ export default class CardList extends Component {
         this._rightAlign = false;
         this.scaleFactor;
         this.cardSpacing = 0;
+        this.cards = null;
+        this.selected = false;
+    }
+
+    getRawCards(){
+        return this.cards.filter(card => {return Card.from(card.byteValue)});
     }
 
     _init({x = this.node.x, y = this.node.y, type = this._type} = {}){
@@ -66,9 +72,7 @@ export default class CardList extends Component {
     }
 
     getSelectedCards(){
-        return this.cards.filter((card)=>{
-            return card.selected == true;
-        });
+        return this.cards.filter(card=> card.selected);
     }
 
     setType(type = CardList.HORIZONTAL){
@@ -115,7 +119,7 @@ export default class CardList extends Component {
         this._fillCards(cards, faceDown, animation);
     }
 
-    _findCardComponents(cardModels = []){
+    findCardComponents(cardModels = []){
         if(cardModels.length == 0) return []
 
         let filteredCards = this.cards.filter(card => {
@@ -137,13 +141,22 @@ export default class CardList extends Component {
     removeCards(cards, animation){
         cards = cards instanceof Card ? [cards] : cards;
 
-        let cardComponents = this._findCardComponents(cards);
+        let cardComponents = this.findCardComponents(cards);
         cardComponents && cardComponents.forEach(card => {
             this.node.removeChild(card.node);
         });
 
         _.pullAll(this.cards, cardComponents);
-        _.pullAll(this.selectedCards, cardComponents);
+        // _.pullAll(this.selectedCards, cardComponents);
+    }
+
+    _removeSingleCard(removingCard){
+        this.cards.some((card, index) => {
+            if(card.byteValue == removingCard){
+                this.cards.splice(index, 1);
+                return true;//break;
+            }
+        });
     }
     /**
      * Rút một quân bài từ lọc vào bài trên tay của Player
@@ -169,11 +182,11 @@ export default class CardList extends Component {
 
         if(card.selected){
             this._lowerCards([card]);
+            card.selected = false;
         }else {
             this._raiseCards([card]);
+            card.selected = true;
         }
-
-        card.selected = !card.selected;
     }
 
     _setMaxWidth(width = CardList.WIDTH){
@@ -315,9 +328,15 @@ export default class CardList extends Component {
             this._layout.spacingY = 0;
             this._layout.resizeMode = cc.Layout.ResizeMode.CONTAINER;
 
+            // this.node.on('child-added', (event)=>{
+            //     event.detail.setAnchorPoint(event.detail.parent.getAnchorPoint());
+            // });
+
             this.scaleFactor  = this.listHeight / CardList.CARD_HEIGHT;
             this.node.setScale(this.scaleFactor, this.scaleFactor);
             this._onConfigChanged();
+
+            console.debug("this.scaleFactor: ", this.scaleFactor)
         }
     }
     _test(){
@@ -327,7 +346,18 @@ export default class CardList extends Component {
         this.setCards(cards);
 
     }
-    alignToParent(relation, marginX, marginY){
+
+    _onAnchorChanged(){
+        const anchorPoint = this.node.getAnchorPoint();
+        this.node.children.forEach(node => {
+            node.setAnchorPoint(anchorPoint);
+        })
+    }
+
+    setAnchorPoint(x, y){
+        this.node.setAnchorPoint(x, y);
+        this._rightAlign = y == 1;
+
         // TOP_LEFT : 1,
         // TOP_CENTER : 2,
         // TOP_RIGHT : 3,
@@ -338,34 +368,34 @@ export default class CardList extends Component {
         // BOTTOM_CENTER : 8,
         // BOTTOM_RIGHT: 9
 
-        switch(relation){
-            case CardList.RELATION.TOP_LEFT:
-                this._rightAlign = true;
-                this.setPosition(- marginX,0);
-                this.node.setAnchorPoint(1,0);
-
-                break;
-
-            case CardList.RELATION.CENTER_RIGHT:
-                this._rightAlign = false;
-                this.setPosition( marginX,0);
-
-                this.node.setAnchorPoint(0,0.5);
-                if(this._type == CardList.VERTICAL){
-
-                    this.node.setAnchorPoint(0.5,0.5);
-                }
-
-                break;
-
-            case CardList.RELATION.BOTTOM_CENTER:
-                this._rightAlign = false;
-                this.setPosition( 0,-marginY);
-                this.node.setAnchorPoint(0.5 , 1);
-                break;
-
-            default: break;
-        }
+        // switch(relation){
+        //     case CardList.RELATION.TOP_LEFT:
+        //         this._rightAlign = true;
+        //         this.setPosition(- marginX,0);
+        //         this.node.setAnchorPoint(1,0);
+        //
+        //         break;
+        //
+        //     case CardList.RELATION.CENTER_RIGHT:
+        //         this._rightAlign = false;
+        //         this.setPosition( marginX,0);
+        //
+        //         this.node.setAnchorPoint(0,0.5);
+        //         if(this._type == CardList.VERTICAL){
+        //
+        //             this.node.setAnchorPoint(0.5,0.5);
+        //         }
+        //
+        //         break;
+        //
+        //     case CardList.RELATION.BOTTOM_CENTER:
+        //         this._rightAlign = false;
+        //         this.setPosition( 0,-marginY);
+        //         this.node.setAnchorPoint(0.5 , 1);
+        //         break;
+        //
+        //     default: break;
+        // }
     }
 
     /**
@@ -376,26 +406,34 @@ export default class CardList extends Component {
      */
     transferCards(cards, destinationList, animation){
 
-        const cardListComponent = destinationList.getComponent('CardList');
+        let destCardListNode = destinationList instanceof cc.Node ? destinationList : destinationList.node;
+
+        const cardListComponent = destCardListNode.getComponent('CardList');
         //get last child of destination list position
         let destinationPoint = cc.p(0,0);
-        if(destinationList.childrenCount > 0){
-            const lastChild = destinationList.children[destinationList.childrenCount - 1 ];
+        if(destCardListNode.childrenCount > 0){
+            const lastChild = destCardListNode.children[destCardListNode.childrenCount - 1 ];
             destinationPoint = lastChild.getPosition();
             destinationPoint.x -= cardListComponent._layout.spacingX;
         }
 
         cardListComponent._layout.type = cc.Layout.Type.NONE;
 
+        let cardComponents = this.findCardComponents(cards);
+
         // let tmp = this.cards.slice(0,1);
-        cards.forEach((card, index) => {
+        cardComponents.forEach((card, index) => {
 
             const p = card.node.parent.convertToWorldSpaceAR(card.node.getPosition());
+            const localPoint = destCardListNode.convertToNodeSpaceAR(p);
 
-            const localPoint = destinationList.convertToNodeSpaceAR(p);
+            //Remove from src
+            this.node.removeChild(card.node);
+            this._removeSingleCard(card);
 
+            //Add to des
             card.node.setPosition(localPoint);
-            card.node.parent = destinationList;
+            card.node.parent = destCardListNode;
             //
             if(index < cards.length - 2){
                 card.node.runAction(cc.moveTo(1,destinationPoint.x,destinationPoint.y));
@@ -410,13 +448,7 @@ export default class CardList extends Component {
             destinationPoint.x -= cardListComponent._layout.spacingX;
             cardListComponent.cards.push(card);
         });
-
-        //remove cards khoi card list source
-        _.pullAll(this.cards, cards);
-
     };
-
-
 }
 
 app.createComponent(CardList);

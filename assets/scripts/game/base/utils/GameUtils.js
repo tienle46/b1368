@@ -66,6 +66,8 @@ export default class GameUtils {
                 cards[minIndex] = tmpCard;
             }
         }
+
+        return cards;
     }
 
     static getRank(card, gameType) {

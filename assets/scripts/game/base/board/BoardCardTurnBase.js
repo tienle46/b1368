@@ -29,6 +29,12 @@ export default class BoardCardTurnBase extends BoardCard {
         this.turnAdapter._init(scene);
 
         this.scene.on(Events.CLEAN_TURN_ROUTINE_DATA, this._cleanTurnRoutineData, this);
+        this.scene.on(Events.ON_PLAYER_PLAYED_CARDS, this._onPlayerPlayedCards, this);
+    }
+
+    _onPlayerPlayedCards(playedCards, srcCardList){
+        this.playedCards = playedCards;
+        this.renderer.addToDeck(playedCards, srcCardList);
     }
 
     _resetBoard(){

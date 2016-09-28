@@ -10,7 +10,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "BoardCardPrefab",
+    "_name": "BoardPrefab",
     "_objFlags": 0,
     "_opacity": 255,
     "_color": {
@@ -61,7 +61,7 @@
     "groupIndex": 0
   },
   {
-    "__type__": "e81ceu2wxlKsLk9GlLXfQ4i",
+    "__type__": "2140et27ixOV7Ynrpdhv1sg",
     "_name": "",
     "_objFlags": 0,
     "node": {
@@ -76,9 +76,9 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "6abdfc78-b220-4158-a3bc-2e566abe70f0"
+      "__uuid__": "7b9845b4-5252-4bee-960d-25d85b6e7a6e"
     },
-    "fileId": "11832lBWoJG0q2EGBhGhO3G",
+    "fileId": "957886lU6dJkrew0se38xKn",
     "sync": false
   }
 ]

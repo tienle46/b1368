@@ -54,12 +54,12 @@ export default class PlayerCardRenderer extends PlayerRenderer {
         super._initUI();
 
         let cardListNode = cc.instantiate(this.cardListPrefab);
-        cardListNode.setAnchorPoint(0, 0);
-        let anchorPoint = this._getCardAnchorPoint(data.actor);
-        cardListNode.setPosition(anchorPoint.getPosition());
+        this._getCardAnchorPoint(data.actor).addChild(cardListNode);
 
-        this.node.addChild(cardListNode);
         this.cardList = cardListNode.getComponent('CardList');
+        this.cardList._setMaxWidth(800);
+        this.cardList.setAnchorPoint(0, 0);
+        this.cardList.setPosition(0, 0);
     }
 
     _getCardAnchorPoint(player){
@@ -78,6 +78,10 @@ export default class PlayerCardRenderer extends PlayerRenderer {
 
     renderCards(cards){
         this.cardList.setCards(cards);
+    }
+
+    findCards(cardModels){
+        return this.cardList.findCardComponents(cardModels);
     }
 
 }
