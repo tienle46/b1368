@@ -48,7 +48,8 @@ export default class Card extends Component {
     _init(rank, suit, byteValue) {
         this.rank = rank;
         this.suit = suit;
-        this.byteValue = byteValue;
+        this.byteValue
+            = byteValue;
     }
 
     onLoad() {
@@ -87,7 +88,7 @@ export default class Card extends Component {
 
     reveal(isFaceUp) {
         this.rankNode.node.active = isFaceUp;
-        this.rankNode.node.active = isFaceUp;
+        this.suitNode.node.active = isFaceUp;
         this.mainPic.node.active = isFaceUp;
         this.cardBG.spriteFrame = isFaceUp ? this.texFrontBG : this.texBackBG;
     }

@@ -37,27 +37,30 @@ cc.Class({
     // use this for initialization
     onLoad: function() {
         this.player1.getComponent('CardList')._setMaxWidth(200);
-        this.player1.getComponent('CardList').alignToParent(CardList.RELATION.TOP_LEFT,50,0);
-        this.player1.getComponent('CardList')._test();
+        this.player1.getComponent('CardList')._setMaxHeight(50);
+        this.player1.getComponent('CardList').setAnchorPoint(0, 0);
 
-        this.player2.getComponent('CardList')._setMaxWidth(900);
-        this.player2.getComponent('CardList').alignToParent(CardList.RELATION.CENTER_RIGHT,50,0);
-        this.player2.getComponent('CardList')._test();
-
+        this.player2.getComponent('CardList')._setMaxWidth(500);
+        this.player2.getComponent('CardList')._setMaxHeight(80);
+        this.player2.getComponent('CardList').setAnchorPoint(0, 0);
+        // this.player2.getComponent('CardList')._test();
+        //
         this.player3.getComponent('CardList')._setMaxWidth(200);
-        this.player3.getComponent('CardList').alignToParent(CardList.RELATION.BOTTOM_CENTER,0, 50);
-        this.player3.getComponent('CardList')._test();
+        this.player3.getComponent('CardList')._setMaxHeight(60);
+        this.player3.getComponent('CardList').setAnchorPoint(1, 1);
 
+        // this.player3.getComponent('CardList')._test();
+        //
         this.player4.getComponent('CardList').setType(CardList.VERTICAL);
         this.player4.getComponent('CardList')._setMaxWidth(200);
-        this.player4.getComponent('CardList').alignToParent(CardList.RELATION.CENTER_RIGHT,50,0);
-        this.player4.getComponent('CardList')._test();
+        this.player4.getComponent('CardList')._setMaxHeight(50);
+        this.player4.getComponent('CardList').setAnchorPoint(0, 0);
 
 
         // let cards = [7,11,15,19,23,27,31,35,39,43,47,51].map(value => Card.from(value));
         // this.player1.getComponent('CardList').setCards(cards);
         //
-        //  cards = [7,11,15,19,23,27,31,35,39,43,47].map(value => Card.from(value));
+        // let cards = [7,11,15,19,23,27,31,35,39,43,47].map(value => Card.from(value));
         // this.player2.getComponent('CardList').setCards(cards);
         //
         //  cards = [7,11,15,19,23,27,31,35,39,43].map(value => Card.from(value));
@@ -67,26 +70,9 @@ cc.Class({
         // this.player4.getComponent('CardList').setCards(cards);
 
     },
-
-    update: function(){
-        if(this.firstRender){
-            this.firstRender = false;
-
-            console.log("this.player1")
-            let cards = [7,11,15,19,23,27,31,35,39,43,47,51].map(value => Card.from(value));
-            this.player1.getComponent('CardList').setCards(cards);
-
-            console.log("this.player2")
-            cards = [7,11,15,19,23,27,31,35,39,43,47].map(value => Card.from(value));
-            this.player2.getComponent('CardList').setCards(cards);
-            cards = [7,11,15,19,23,27,31,35,39,43].map(value => Card.from(value));
-
-            this.player3.getComponent('CardList').setCards(cards);
-            console.log("this.player4")
-
-            cards = [7,11,15,19,23,27,31,35,39,43,47,51,55].map(value => Card.from(value));
-            this.player4.getComponent('CardList').setCards(cards);
-        }
+    start(){
+        this.player2.getComponent('CardList').dealCards([7,11,15,19,23,27,31,35,39,43,47]);
+        // this.player3.getComponent('CardList').dealCards([7,11,15,19,23,27,31,35,39,43,47]);
     },
 
     // called every frame, uncomment this function to activate update callback
@@ -100,6 +86,11 @@ cc.Class({
 
 
         // console.log(`${event.target.convertToNodeSpace(0,0)}`);
+        // this.player1.getComponent('CardList').dealCards([7,11,15,19,23,27,31,35,39,43,47]);
+
+
+        //
+        // this.player4.getComponent('CardList').dealCards([7,11,15,19,23,27,31,35,39,43,47]);
     },
     onClick2: function() {
         console.log('button 2 clicked');
