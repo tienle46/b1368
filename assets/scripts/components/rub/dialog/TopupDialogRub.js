@@ -1,7 +1,7 @@
-import Dialog from 'Dialog';
+import DialogRub from 'DialogRub';
 import TopupDialog from 'TopupDialog';
 
-export default class TopUpDialogRub extends Dialog {
+export default class TopUpDialogRub extends DialogRub {
     constructor(node, tabOptions) {
         super(node, tabOptions);
     }
@@ -11,9 +11,5 @@ export default class TopUpDialogRub extends Dialog {
             this.topupDialogComponent = this.prefab.getComponent(TopupDialog);
             return null;
         });
-    }
-
-    static show(node, tabOptions) {
-        return new TopUpDialogRub(node, tabOptions).init();
     }
 }

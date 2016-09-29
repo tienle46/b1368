@@ -58,6 +58,7 @@ export default class DialogRub extends Rub {
     }
 
     static show(node, tabOptions) {
+        console.log("XXXX");
         return new this(node, tabOptions).init();
     }
 }
