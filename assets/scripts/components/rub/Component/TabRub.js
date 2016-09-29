@@ -22,7 +22,7 @@ export default class TabRub extends SegmentControlRub {
 
     addContentPrefabToBody() {
         let activeTab = this.getVal();
-        let prefabURL = `dashboard/dialog/${activeTab}`;
+        let prefabURL = `dashboard/dialog/prefabs/topup/${activeTab}`;
         return this.tabComponent.addContentPrefabToBody(this.bodyNode, prefabURL);
     }
 

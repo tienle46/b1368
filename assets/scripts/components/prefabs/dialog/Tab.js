@@ -17,7 +17,8 @@ class Tab extends Component {
             return;
         });
 
-        this.toggleGroupComponent = this.node.getChildByName('group').getChildByName('toggleGroup').getComponent(ToggleGroup);
+        this.toggleGroupComponent = this.node.getChildByName('group').getComponent(ToggleGroup);
+        // this.toggleGroupComponent = this.node.getChildByName('group').getChildByName('toggleGroup').getComponent(ToggleGroup);
     }
 
     addContentPrefabToBody(node, prefabURL) {
