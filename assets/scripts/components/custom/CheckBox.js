@@ -64,25 +64,13 @@ class CheckBox extends Button {
         this.val = val;
     }
 
-    //this method override the parent method...
-    _registerCheckBoxEvent() {
-        //register checkbox specific event
-        var event = new cc.Component.EventHandler();
-        event.target = this.node;
-        event.component = 'CheckBox';
-        event.handler = 'toggleCheckBoxStatus';
-        this.clickEvents = [event];
-
-    }
-
     toggleCheckBoxStatus() {
         if (this._toggleGroup && this.isChecked) {
             return;
         }
         this.isChecked = !this.isChecked;
 
-
-        this.node.dispatchEvent(new cc.Event('check-event', this));
+        this.node.dispatchEvent(new cc.Event('check-event', true));
 
         if (this.checkEvents) {
             cc.Component.EventHandler.emitEvents(this.checkEvents, this);
@@ -110,6 +98,34 @@ class CheckBox extends Button {
         }
 
         this.isChecked = false;
+    }
+
+
+    setSpriteFrame(propertyName, spriteFrameURL) {
+        cc.loader.loadRes(spriteFrameURL, cc.SpriteFrame, ((err, spriteFrame) => {
+            if (err)
+                console.log(err);
+
+            this[propertyName] = spriteFrame;
+
+            // update sprite immediately after changing spriteFrame
+            this._updateSprites();
+        }).bind(this));
+    }
+
+    pushEvent(event) {
+        this.clickEvents.push = event;
+    }
+
+    //this method override the parent method...
+    _registerCheckBoxEvent() {
+        //register checkbox specific event
+        var event = new cc.Component.EventHandler();
+        event.target = this.node;
+        event.component = 'CheckBox';
+        event.handler = 'toggleCheckBoxStatus';
+        this.clickEvents = [event];
+
     }
 
     _propertySetting(name = null) {

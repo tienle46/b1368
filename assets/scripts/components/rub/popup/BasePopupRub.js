@@ -1,5 +1,6 @@
-var BasePopup = require('BasePopup');
-var ButtonGroup = require('ButtonGroup');
+import BasePopup from 'BasePopup';
+import ButtonGroup from 'ButtonGroup';
+import RubUtils from 'RubUtils';
 
 export default class BasePopUpRub {
     /**
@@ -16,17 +17,13 @@ export default class BasePopUpRub {
     }
 
     init() {
-        return new Promise((resolve, reject) => {
-            cc.loader.loadRes('Popup/BasePopup', (err, prefab) => {
-                if (err)
-                    reject(err);
-                this.prefab = cc.instantiate(prefab);
-                let basePopupComponent = this.prefab.getComponent(BasePopup);
-                // set elements
-                this._setupPopupElement(basePopupComponent);
+        return RubUtils.loadPrefab('Popup/BasePopup').then((prefab) => {
+            this.prefab = cc.instantiate(prefab);
+            let basePopupComponent = this.prefab.getComponent(BasePopup);
+            // set elements
+            this._setupPopupElement(basePopupComponent);
 
-                resolve(this);
-            });
+            return this;
         });
     }
 

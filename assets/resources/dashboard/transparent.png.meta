@@ -5,7 +5,7 @@
   "wrapMode": "clamp",
   "filterMode": "bilinear",
   "subMetas": {
-    "trasnparent": {
+    "transparent": {
       "ver": "1.0.3",
       "uuid": "2c76a745-1fe5-46a6-824d-149dc833481e",
       "rawTextureUuid": "6c6cbcf0-2573-4049-ae88-bfc9ac537f17",

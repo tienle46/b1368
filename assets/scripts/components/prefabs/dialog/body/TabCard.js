@@ -1,19 +1,18 @@
-var app = require('app');
-var Component = require('Component');
-var ToggleGroup = require('ToggleGroup');
-import CheckBox from 'CheckBox';
+import app from 'app';
+import Component from 'Component';
 import AlertPopupRub from 'AlertPopupRub';
+import ToggleGroup from 'ToggleGroup';
+import CheckBox from 'CheckBox';
+import RubUtils from 'RubUtils';
 
-class TopupDialog extends Component {
+class TabCard extends Component {
     constructor() {
         super();
     }
 
     onLoad() {
-        this._initComponents();
-    }
-
-    _initComponents() {
+        // wait til every requests is done
+        this.node.active = false;
         this._initCardsGroup();
     }
 
@@ -25,7 +24,7 @@ class TopupDialog extends Component {
         app.service.send(sendObject, (data) => {
             console.log(data);
             if (data) {
-                let layoutComponent = cc.find('dialog/tab_card/left/layout', this.node);
+                let layoutComponent = cc.find('left/layout', this.node);
                 this.toggleGroup = layoutComponent.getComponent(ToggleGroup);
                 data['il'].forEach((id, index) => {
                     //load prefab
@@ -55,20 +54,20 @@ class TopupDialog extends Component {
                         });
                     });
                 });
+
+                // active node
+                this.node.active = true;
             }
         }, app.const.scene.DASHBOARD_SCENE);
     }
 
     onHanleChargeBtnClick() {
-        let centerComponent = cc.find('dialog/tab_card/center', this.node);
-        let cardSerial = cc.find('cardSerialEditBox', centerComponent).getComponent(cc.EditBox).string.trim();
-        let serialNumber = cc.find('serialNumberEditBox', centerComponent).getComponent(cc.EditBox).string.trim();
+        let centerComponent = this.node.getChildByName('center');
+        let cardSerial = centerComponent.getChildByName('cardSerialEditBox').getComponent(cc.EditBox).string.trim();
+        let serialNumber = centerComponent.getChildByName('serialNumberEditBox').getComponent(cc.EditBox).string.trim();
 
         console.log(isNaN(cardSerial), isNaN(serialNumber));
         if (cardSerial === "" || serialNumber === "" || isNaN(cardSerial) || isNaN(serialNumber)) {
-            // var msgDialog = xg.OutGameMessageDialog.create("Vui lòng nhập đầy đủ thông tin", xg.FRAMENAME_OUTGAME_CONFIML_DIALOG_BG, new cc.Color(1, 1, 1), null, 0);
-            // msgDialog.show();
-            // load prefab
             AlertPopupRub.show(this.node, 'Vui lòng nhập đầy đủ thông tin');
         } else {
             let id = this.toggleGroup.getVal();
@@ -121,4 +120,4 @@ class TopupDialog extends Component {
     }
 }
 
-app.createComponent(TopupDialog);
+app.createComponent(TabCard);

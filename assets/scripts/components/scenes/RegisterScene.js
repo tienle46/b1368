@@ -5,7 +5,6 @@ const CAPTCHA_LENGTH = 4;
 const MINIMUM_PASSWORD = 6;
 const MINIMUM_USERNAME = 6;
 
-
 export default class RegisterScene extends BaseScene {
     constructor() {
         super();
@@ -68,11 +67,12 @@ export default class RegisterScene extends BaseScene {
     }
 
     generateRandomString() {
-        this.captchaLabel.string = this._generateRandomString(6); // genarate from [2, 6] to avoid "0.xxx" in string
+        this.captchaLabel.string = this._generateRandomString(MINIMUM_PASSWORD); // genarate from [2, 6] to avoid "0.xxx" in string
     }
 
     back() { // back to EntranceScene
-        this.changeScene('EntranceScene');
+        // this.changeScene('EntranceScene');
+        SegmentControlRub.show(this.node, [1, 1, 1]);
     }
 
 
@@ -81,7 +81,7 @@ export default class RegisterScene extends BaseScene {
      */
 
     _generateRandomString(number) {
-        return Math.random().toString(36).slice(2, 6);
+        return Math.random().toString(36).slice(2, number);
     }
 
     _isValidUserInputs(username, password) {

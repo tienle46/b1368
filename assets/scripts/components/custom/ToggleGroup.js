@@ -21,19 +21,27 @@ class ToggleGroup extends Component {
     }
 
     onLoad() {
+        console.log('toggle onload');
+
         //only allow one toggle to be checked
         this._allowOnlyOneToggleChecked();
         this.node.on('check-event', (event) => {
+            console.log("TOGGLE GET CMNR NE");
+            console.log(this.toggleItem.length);
             this.updateToggles(event.target.getComponent(CheckBox));
+            console.log(`val ${this.getVal()}`);
+        });
+        this.node.on('check-event2', (event) => {
+            console.log("EVENT 2");
+            console.warn(event);
         });
     }
 
     updateToggles(toggle) {
         // console.log('updateToggles');
         this.setCheckedItem(toggle);
-        console.log('yyy');
 
-        console.log(this.toggleItem);
+        // console.log(this.toggleItem);
         this.toggleItem.forEach((item) => {
             if (toggle.isChecked) {
                 if (item !== toggle && item.isChecked && item.enabled) {
@@ -68,10 +76,13 @@ class ToggleGroup extends Component {
     addItem(item) {
         console.log(this.getItems(), 'push');
         this.toggleItem.push(item);
+        // sure that only one item is checked 
+        this._allowOnlyOneToggleChecked();
     }
 
     _allowOnlyOneToggleChecked() {
         var isChecked = false;
+
         this.toggleItem.forEach((item, index) => {
             item.index = index;
             if (!item._toggleGroup) {
@@ -85,7 +96,6 @@ class ToggleGroup extends Component {
             if (item.isChecked && item.enabled) {
                 isChecked = true;
                 this.setCheckedItem(item);
-                console.log(item.getVal());
             }
         });
     }

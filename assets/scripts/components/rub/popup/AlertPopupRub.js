@@ -16,7 +16,6 @@ export default class AlertPopupRub extends BasePopupRub {
     }
 
     _changeVioletBtnState() {
-        console.log('changeVioletBtnState');
         this.groupBtn.changeVioletBtnState(false);
     }
 
@@ -27,10 +26,6 @@ export default class AlertPopupRub extends BasePopupRub {
         } else {
             this.closePopup();
         }
-    }
-
-    test() {
-        console.log('test xem co goi dc hem ?');
     }
 
     //override
