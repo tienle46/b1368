@@ -15,6 +15,7 @@ Events.SHOW_ON_TURN_CONTROLS            = "showOnTurnControls";
 Events.SHOW_GAME_BEGIN_CONTROLS         = "showGameBeginControls";
 
 Events.ON_PLAYER_PLAYED_CARDS           = "onPlayerPlayedCards"
+Events.ON_PLAYER_TURN               = "onPlayerGetTurn"
 Events.CLEAN_TURN_ROUTINE_DATA          = "cleanTurnRoutineData"
 
 Events.ON_CLICK_PLAY_BUTTON             = "onClickPlayButton";

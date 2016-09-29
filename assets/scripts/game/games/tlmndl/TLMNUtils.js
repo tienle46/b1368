@@ -72,26 +72,26 @@ export default class TLMNUtils {
     };
 
     static get GAME_TYPE() {
-        return app.const.game.GAME_TYPE_TIENLEN
+        return app.const.game.GAME_TYPE_TIENLEN;
     };
 
     constructor() {
     }
 
-    static checkPlayCard(playCards, deckCards, gameType) {
+    static checkPlayCard(playCards, deckCards, gameType = TLMNUtils.GAME_TYPE) {
         let valid = playCards && playCards.length > 0;
 
         !valid && console.warn("Card selected is null");
 
         if (valid && !utils.isEmptyArray(deckCards)){
-            let cards = this.getValidSelectedCards(playCards, deckCards);
+            let cards = this.getValidSelectedCards(playCards, deckCards, gameType);
             valid = cards && cards.length > 0
         }
 
         return valid;
     }
 
-    static getValidSelectedCards(selectedCards = [], deckCards = [], gameType) {
+    static getValidSelectedCards(selectedCards = [], deckCards = [], gameType = TLMNUtils.GAME_TYPE) {
 
         if (selectedCards.length == 0 || deckCards.length == 0) {
             return null;
@@ -172,7 +172,7 @@ export default class TLMNUtils {
         return null;
     }
 
-    static getGroupCardType(selectedCards, gameType) {
+    static getGroupCardType(selectedCards, gameType = TLMNUtils.GAME_TYPE) {
         const numberOfCards = selectedCards.length;
 
         if (numberOfCards == 1) {
@@ -242,7 +242,7 @@ export default class TLMNUtils {
         return this.GROUP_CARD_TYPE_INVALID;
     }
 
-    static isValidSanhRule(selectedCards, gameType) {
+    static isValidSanhRule(selectedCards, gameType = TLMNUtils.GAME_TYPE) {
         let isSanh = true;
 
         for (let i = 1; i < selectedCards.length; i++) {
@@ -268,7 +268,7 @@ export default class TLMNUtils {
         return false;
     }
 
-    static getSanhType(cards, gamePlayType) {
+    static getSanhType(cards, gameType = TLMNUtils.GAME_TYPE) {
 
         let selectedCards = [...cards];
 
@@ -283,7 +283,7 @@ export default class TLMNUtils {
         }
 
         // sanh chua at,2.. or 2,3...
-        if (isContainHeo && gamePlayType == app.const.game.GAME_TYPE_XAM) {
+        if (isContainHeo && gameType == app.const.game.GAME_TYPE_XAM) {
 
             // kiem tra xem co phai loai rank 2,3... hay ko
             GameUtils.sortCardAsc(selectedCards, app.const.game.GAME_TYPE_SPECIAL_XAM);
@@ -296,7 +296,7 @@ export default class TLMNUtils {
         return -1;
     }
 
-    static isValidDoiThongRule(cards, gamePlayType) {
+    static isValidDoiThongRule(cards, gameType = TLMNUtils.GAME_TYPE) {
 
         let lastDoiRank = -1;
         let index = 0;
@@ -308,7 +308,7 @@ export default class TLMNUtils {
 
             if (fCard.rank == sCard.rank) {
 
-                let gRank = GameUtils.getRank(fCard, gamePlayType);
+                let gRank = GameUtils.getRank(fCard, gameType);
 
                 if (index == 0) {
                     lastDoiRank = gRank;
@@ -331,7 +331,7 @@ export default class TLMNUtils {
         return true;
     }
 
-    static isDoiThong(cards, gameType) {
+    static isDoiThong(cards, gameType = TLMNUtils.GAME_TYPE) {
 
         let isDoiThong = false;
         let numberOfCards = cards.length;

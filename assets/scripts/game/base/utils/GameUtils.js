@@ -3,7 +3,8 @@
  */
 
 import app from 'app';
-import Card from 'Card'
+import game from 'game';
+import {Card} from 'game-components'
 const boardState = app.const.game.board.state;
 
 export default class GameUtils {

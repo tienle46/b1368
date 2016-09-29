@@ -152,7 +152,7 @@ export default class CardList extends Component {
 
     _removeSingleCard(removingCard){
         this.cards.some((card, index) => {
-            if(card.byteValue == removingCard){
+            if(card.byteValue == removingCard.byteValue){
                 this.cards.splice(index, 1);
                 return true;//break;
             }
@@ -328,9 +328,9 @@ export default class CardList extends Component {
             this._layout.spacingY = 0;
             this._layout.resizeMode = cc.Layout.ResizeMode.CONTAINER;
 
-            // this.node.on('child-added', (event)=>{
-            //     event.detail.setAnchorPoint(event.detail.parent.getAnchorPoint());
-            // });
+            this.node.on('child-added', (event)=>{
+                event.detail.setAnchorPoint(event.detail.parent.getAnchorPoint());
+            });
 
             this.scaleFactor  = this.listHeight / CardList.CARD_HEIGHT;
             this.node.setScale(this.scaleFactor, this.scaleFactor);
@@ -398,6 +398,16 @@ export default class CardList extends Component {
         // }
     }
 
+    _createNewCard(byteValue, reveal){
+        let newCard = cc.instantiate(this.cardPrefab).getComponent('Card');
+
+        newCard.initFromByte(byteValue);
+        newCard.reveal(reveal);
+        newCard.setOnClickListener(this._onSelectCard.bind(this));
+
+        return newCard;
+    }
+
     /**
      * Move cards sang card list khac voi animation
      * @param cards
@@ -428,25 +438,26 @@ export default class CardList extends Component {
             const localPoint = destCardListNode.convertToNodeSpaceAR(p);
 
             //Remove from src
-            this.node.removeChild(card.node);
+            card.node.removeFromParent(true);
             this._removeSingleCard(card);
 
             //Add to des
-            card.node.setPosition(localPoint);
-            card.node.parent = destCardListNode;
+            const newCard = this._createNewCard(card.byteValue,true);
+            destCardListNode.addChild(newCard.node);
+            newCard.node.setPosition(localPoint);
             //
             if(index < cards.length - 2){
-                card.node.runAction(cc.moveTo(1,destinationPoint.x,destinationPoint.y));
+                newCard.node.runAction(cc.moveTo(1,destinationPoint.x,destinationPoint.y));
             }
             else{
-                card.node.runAction(cc.sequence(cc.moveTo(0.5,destinationPoint.x,destinationPoint.y), cc.callFunc(()=>{
+                newCard.node.runAction(cc.sequence(cc.moveTo(0.5,destinationPoint.x,destinationPoint.y), cc.callFunc(()=>{
                     cardListComponent.updateCardSpacing(cards.length);
                     cardListComponent._layout.type = cc.Layout.Type.HORIZONTAL;
 
                 })))
             }
             destinationPoint.x -= cardListComponent._layout.spacingX;
-            cardListComponent.cards.push(card);
+            cardListComponent.cards.push(newCard);
         });
     };
 }

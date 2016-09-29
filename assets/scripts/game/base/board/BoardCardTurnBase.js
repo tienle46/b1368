@@ -37,6 +37,10 @@ export default class BoardCardTurnBase extends BoardCard {
         this.renderer.addToDeck(playedCards, srcCardList);
     }
 
+    getLastPlayedTurnPlayerId(){
+        return this.turnAdapter.lastPlayedTurn;
+    }
+
     _resetBoard(){
         super._resetBoard();
 
