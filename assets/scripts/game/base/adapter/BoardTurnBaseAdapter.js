@@ -20,10 +20,10 @@ export default class BoardTurnBaseAdapter extends GameAdapter {
 
     _init(scene){
         this.scene = scene;
-        this._registerListener();
+        this._addSystemListener();
     }
 
-    _registerListener(){
+    _addSystemListener(){
         this.scene.on(Events.HANDLE_TURN_DURATION, this._handleTurnDuration, this);
         this.scene.on(Events.HANDLE_CHANGE_TURN, this._handleChangeTurn, this);
         this.scene.on(Events.HANDLE_PLAY_TURN, this._handlePlayTurn, this);

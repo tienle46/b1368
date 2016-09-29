@@ -72,17 +72,19 @@ export default class GameUtils {
     }
 
     static getRank(card, gameType) {
-        if (gameType == app.const.game.GAME_TYPE_MAU_BINH) {
-            if (card.rank == Card.RANK_AT) {
-                return Card.RANK_ACE;
+        if(gameType){
+            if (gameType == app.const.game.GAME_TYPE_MAU_BINH) {
+                if (card.rank == Card.RANK_AT) {
+                    return Card.RANK_ACE;
+                }
             }
-        }
 
-        if (gameType == app.const.game.GAME_TYPE_TIENLEN || gameType == app.const.game.GAME_TYPE_XAM) {
-            if (card.rank == Card.RANK_AT) {
-                return Card.RANK_ACE;
-            } else if (card.rank == Card.RANK_HAI) {
-                return Card.RANK_DEUCE;
+            if (gameType == app.const.game.GAME_TYPE_TIENLEN || gameType == app.const.game.GAME_TYPE_XAM) {
+                if (card.rank == Card.RANK_AT) {
+                    return Card.RANK_ACE;
+                } else if (card.rank == Card.RANK_HAI) {
+                    return Card.RANK_DEUCE;
+                }
             }
         }
 

@@ -53,18 +53,14 @@ export default class CardTurnBaseControls extends GameControls {
 
     onClickPlayButton(event){
         this.scene.emit(Events.ON_CLICK_PLAY_BUTTON);
-        console.log("emitted click play button")
     }
 
     onClickSortButton(event){
         this.scene.emit(Events.ON_CLICK_SORT_BUTTON);
-
-        console.log("emitted click sort button")
     }
 
     onClickSkipTurnButton(event){
         this.scene.emit(Events.ON_CLICK_SKIP_TURN_BUTTON);
-        console.log("emitted click skip turn button")
     }
 
 }

@@ -83,22 +83,18 @@ export default class GameEventHandler {
     }
 
     _onPlayerGetTurn(data) {
-        console.debug("_onPlayerGetTurn");
         this.scene.emit(Events.HANDLE_GET_TURN, data);
     }
 
     _onPlayerLoseTurn(data) {
-        console.debug("_onPlayerLoseTurn");
         this.scene.emit(Events.HANDLE_LOSE_TURN, data);
     }
 
     _onPlayerSkipTurn(data) {
-        console.debug("_onPlayerSkipTurn")
         this.scene.emit(Events.HANDLE_SKIP_TURN, data);
     }
 
     _onPlayerPlayCards(data) {
-        console.debug("_onPlayerPlayCards")
         this.scene.emit(Events.HANDLE_PLAY_TURN, data);
     }
 

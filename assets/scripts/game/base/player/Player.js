@@ -23,6 +23,7 @@ export default class Player extends Actor {
 
     _init(board, user){
 
+        this.scene = board.scene;
         this.board = board;
         this.user = user;
 
@@ -34,12 +35,12 @@ export default class Player extends Actor {
         this.id = this.user.getPlayerId(this.board.room);
         this.balance = utils.getVariable(this.user, app.keywords.USER_VARIABLE_BALANCE, 0);
 
-        this.board.scene.on(Events.ON_GAME_STATE_BEGIN, this.onGameBegin, this);
-        this.board.scene.on(Events.ON_GAME_STATE_STARTING, this.onGameStarting, this);
-        this.board.scene.on(Events.ON_GAME_STATE_STARTED, this.onGameStarted, this);
-        this.board.scene.on(Events.ON_GAME_STATE_PLAYING, this.onGamePlaying, this);
-        this.board.scene.on(Events.ON_GAME_STATE_ENDING, this.onGameEnding, this);
-        this.board.scene.on(Events.GAME_USER_EXIT_ROOM, this._onUserExitRoom, this);
+        this.scene.on(Events.ON_GAME_STATE_BEGIN, this.onGameBegin, this);
+        this.scene.on(Events.ON_GAME_STATE_STARTING, this.onGameStarting, this);
+        this.scene.on(Events.ON_GAME_STATE_STARTED, this.onGameStarted, this);
+        this.scene.on(Events.ON_GAME_STATE_PLAYING, this.onGamePlaying, this);
+        this.scene.on(Events.ON_GAME_STATE_ENDING, this.onGameEnding, this);
+        this.scene.on(Events.GAME_USER_EXIT_ROOM, this._onUserExitRoom, this);
     }
 
     _onUserExitRoom(user, room){

@@ -45,6 +45,11 @@ export default class PlayerRenderer extends ActorRenderer {
             type: cc.Node
         };
 
+        this.playerTimeLinePrefab = {
+            default: null,
+            type: cc.Prefab
+        };
+
         this.align;
     }
 

@@ -3,6 +3,7 @@
  */
 
 import app from 'app';
+import game from 'game';
 import Events from 'Events'
 import GameUtils from 'GameUtils'
 import TLMNUtils from 'TLMNUtils'
@@ -51,7 +52,7 @@ export default class TLMNDLPlayer extends PlayerCardTurnBase {
 
     _onSortCards(){
         if(this.isItMe()){
-            let sortedCard = GameUtils.sortCardAsc(this.renderer.cardList.cards, TLMNUtils.GAME_TYPE, true);
+            let sortedCard = GameUtils.sortCardAsc(this.renderer.cardList.cards, game.const.GAME_TYPE_TIENLEN);
             this.renderer.cardList.setCards(sortedCard);
         }
     }

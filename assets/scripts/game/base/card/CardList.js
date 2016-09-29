@@ -15,6 +15,8 @@ export default class CardList extends Component {
     static get CARD_WIDTH() { return 100; }
     static get CARD_HEIGHT() { return 130; }
 
+    static get MOVE_CARD_DURATION() { return 0.1; }
+
     static get RELATION () {
         return {
             TOP_LEFT : 1,
@@ -210,19 +212,25 @@ export default class CardList extends Component {
      * Khi Player lựa chọn quân bài, thực hiện nâng quân bài cao hơn so với các quân bài bình thường
      * @param cards
      */
-    _raiseCards (cards){
-        this._moveCards(cards,0,50);
+    _raiseCards (cards, time = CardList.MOVE_CARD_DURATION){
+        this._moveCards(cards, 0, 50, time);
     }
 
-    _lowerCards (cards){
+    _lowerCards (cards, time = CardList.MOVE_CARD_DURATION){
         this._moveCards(cards,0,-50);
     }
 
-    _moveCards (cards, deltaX, deltaY){
-        var nodeAction = cc.moveBy(0.1, deltaX, deltaY);
+    _moveCards (cards, deltaX, deltaY, time = CardList.MOVE_CARD_DURATION){
+
+        let nodeAction = cc.moveBy(time, deltaX, deltaY);
+
         for (let card of cards) {
             card.node.runAction(nodeAction);
         }
+    }
+
+    resetCardPosition(){
+        this._lowerCards(this.getSelectedCards());
     }
 
     updateCardSpacing(numberOfNewCards){

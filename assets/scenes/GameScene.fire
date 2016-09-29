@@ -361,7 +361,8 @@
     },
     "gameMenuLayer": {
       "__id__": 14
-    }
+    },
+    "boardPrefab": null
   },
   {
     "__type__": "cc.Node",
@@ -464,7 +465,7 @@
     "groupIndex": 0
   },
   {
-    "__type__": "f65ddez21FA765wUwQxbuVP",
+    "__type__": "05b59PuA3pEJojeROtgH8Cl",
     "_name": "",
     "_objFlags": 0,
     "node": {

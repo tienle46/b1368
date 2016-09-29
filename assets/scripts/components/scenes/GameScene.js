@@ -89,6 +89,7 @@ class GameScene extends BaseScene {
 
     onDestroy() {
         console.debug("GameScene onDestroy");
+        super.onDestroy();
         this.gameEventHandler && this.gameEventHandler.removeGameEventListener();
     }
 
@@ -120,9 +121,8 @@ class GameScene extends BaseScene {
     }
 
     _loadGameData() {
-        this.gamePlayers._init(this.board, this, () => {
-            this.emit(Events.ON_GAME_STATE_BEGIN)
-        });
+        this.gamePlayers._init(this.board, this);
+        this.emit(Events.ON_GAME_STATE_BEGIN);
     }
 
     // _initBoardLayer() {
@@ -149,7 +149,10 @@ class GameScene extends BaseScene {
     // }
 
     _initPlayerLayer() {
-        this.gamePlayers = this.playerLayer.getComponent('PlayerManagerComponent');
+
+        this.gamePlayers = this.playerLayer.getComponent('GamePlayers');
+        console.debug("gamePlayers: ", this, this.gamePlayers);
+
     }
 
     _initGameControlLayer() {

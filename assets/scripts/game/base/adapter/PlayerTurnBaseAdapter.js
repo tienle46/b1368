@@ -21,12 +21,12 @@ export default class PlayerTurnBaseAdapter extends GameAdapter {
     _init(scene, player){
         this.scene = scene;
         this.player = player;
-        this._registerListener();
+        this._addSystemListener();
         
         console.log("init turn: ", this.player.id);
     }
 
-    _registerListener(){
+    _addSystemListener(){
         this.scene.on(Events.HANDLE_TURN_DURATION, this._handleTurnDuration, this);
         this.scene.on(Events.HANDLE_CHANGE_TURN, this._handleChangeTurn, this);
         this.scene.on(Events.HANDLE_PLAY_TURN, this._handlePlayTurn, this);
@@ -66,7 +66,9 @@ export default class PlayerTurnBaseAdapter extends GameAdapter {
     _handleChangeTurn(turnPlayerId, isFirstTurn){
         this.preTurnPlayerId = this.currentTurnPlayerId;
         this.currentTurnPlayerId = turnPlayerId;
-        
+
+        console.log("handle change turn");
+
         if(this.player.id === turnPlayerId) {
 
             if(!this.scene.gamePlayers){
@@ -120,6 +122,8 @@ export default class PlayerTurnBaseAdapter extends GameAdapter {
     }
 
     onTurn(isFirstTurn){
+
+        console.log("Player onturn: ", this.player.isItMe());
 
         this.scene.emit(Events.ON_PLAYER_TURN, this.player.id);
 

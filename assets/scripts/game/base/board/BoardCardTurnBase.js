@@ -73,7 +73,7 @@ export default class BoardCardTurnBase extends BoardCard {
 
     _handleBoardTurnBaseTruePlay(data){
 
-        console.log("_handleBoardTurnBaseTruePlay")
+        console.log("_handleBoardTurnBaseTruePlay", data);
 
         let turnDuration = utils.getValue(data, Keywords.TURN_BASE_PLAYER_TURN_DURATION)
         if (turnDuration) {

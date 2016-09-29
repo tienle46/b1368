@@ -7,7 +7,7 @@ import Component from 'Component';
 import utils from 'utils';
 import Events from 'Events'
 
-export default class PositionManager extends Component {
+export default class PlayerPositions extends Component {
 
     static get ALIGN_TOP() {return 'TOP';}
     static get ALIGN_BOTTOM() {return 'BOTTOM';}
@@ -16,18 +16,28 @@ export default class PositionManager extends Component {
 
     constructor() {
         super();
-        this.playerAnchors = [];
+        this.playerAnchors = null;
         this.scene;
     }
 
     _init(scene){
         this.scene = scene;
 
+        console.debug("Init PlayerPositions");
+
+        this._initPlayerAnchors();
+
         this.scene.on(Events.ON_GAME_STATE_BEGIN, this._onGameBegin, this);
         this.scene.on(Events.ON_GAME_STATE_STARTING, this._onGameStarting, this);
+
+        console.debug(this)
     }
 
     onLoad() {
+    }
+
+    _initPlayerAnchors(){
+        this.playerAnchors = [];
         this.playerAnchors[0] = this.myAnchor;
         for (let i = 1; i <= this.ceilAnchor; i++) {
             this.playerAnchors[i] = this['anchor' + i];
@@ -37,6 +47,7 @@ export default class PositionManager extends Component {
     }
 
     _onGameBegin(){
+        console.debug("_onGameBegin")
         this.showAllInviteButtons();
     }
 
@@ -52,6 +63,8 @@ export default class PositionManager extends Component {
     }
 
     showAllInviteButtons() {
+
+        console.debug("showAllInviteButtons: ", this)
 
         let excludeAnchor;
         if(app.context.getMe()){

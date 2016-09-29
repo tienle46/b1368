@@ -21,26 +21,6 @@ export default class Actor extends Component {
         this.renderer = renderer;
     }
 
-    //
-    // /**
-    //  * Subclass must be call this method before onLoad call first time. If not, renderer of this actor cannot
-    //  * created and all logic code to update the renderer will be hit error or exception.
-    //  *
-    //  * If you are inherit multi levels you can override this method and call super._setRenderer and pass params into it,
-    //  * or init two properties rendererClassName && renderData in constructor.
-    //  * On first time onLoad called, if two properties haven't initiated, _initRenderer will be call with out params passed to.
-    //  *
-    //  * NOTE: You make sure that all onLoad override method in subclass must be call super.onLoad() in the body
-    //  *
-    //  * @param rendererClassName
-    //  * @param renderData
-    //  * @private
-    //  */
-    // _setRenderer(rendererClassName, renderData = {}){
-    //     this.rendererClassName = rendererClassName;
-    //     this.renderData = renderData;
-    // }
-
     /**
      * Sub class must be call super.onLoad() to init Renderer of actor
      */
@@ -49,25 +29,39 @@ export default class Actor extends Component {
         this.renderer && this.renderer._initUI(this.renderData);
     }
 
-    onActive(){
-        if(!this._isRegisterdListener){
-            this._registerListener();
-        }
-    }
-
-    onDisable(){
-        this._removeListener();
-    }
-
-    _registerListener(){
+    /**
+     * This func to add listener to handler data from server or a custom action into game system
+     *
+     * If event is belong to UI let use listener of cc.Node (node.on, node.off, node.emit, etc...) instead
+     *
+     * NOTE: Don't forget to add remove this event have been added into _removeSystemListener func to avoid memory leak
+     *
+     * Example:
+     *      [instanceof actor]._addSystemListener('adminMessage', () => {
+     *          //Show admin message
+     *      })
+     *
+     * @private
+     */
+    _addSystemListener(){
         if(this._isRegisterdListener){
-            this._removeListener();
+            this._removeSystemListener();
         }
 
         this._isRegisterdListener = true;
     }
 
-    _removeListener(){
+    /**
+     * Use this func to remove listener from game system. System events will be remove from system by default
+     * NOTE: Make sure that sub class implementation ```onDestroy``` method must be call ```super.onDestroy()```
+     * Example:
+     *      [instanceof actor]._removeSystemListener('adminMessage', () => {
+     *          //Show admin message
+     *      })
+     *
+     * @private
+     */
+    _removeSystemListener(){
         this._isRegisterdListener = false;
     }
 
@@ -81,5 +75,14 @@ export default class Actor extends Component {
 
     off(eventName, listener, context){
         this._eventEmitter.removeListener(eventName, listener, context);
+    }
+
+    removeAllListener(){
+        this.off();
+    }
+
+    onDestroy(){
+        this.removeAllListener();
+        this._removeSystemListener();
     }
 }

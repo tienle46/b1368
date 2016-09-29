@@ -3,7 +3,7 @@
  */
 
 import app from 'app';
-import PositionManager from 'PositionManager';
+import PositionManager from 'PlayerPositions';
 
 class EightPlayerPositions extends PositionManager {
     constructor() {

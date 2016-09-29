@@ -68,7 +68,10 @@
       "__id__": 1
     },
     "_enabled": true,
-    "timelinePrefab": null
+    "timelinePrefab": {
+      "__uuid__": "f195b8fb-6013-43fc-9af2-69c8125d672c"
+    },
+    "playerPositionPrefab": null
   },
   {
     "__type__": "cc.PrefabInfo",

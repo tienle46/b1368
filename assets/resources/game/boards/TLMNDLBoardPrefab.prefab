@@ -81,8 +81,14 @@
     },
     "_enabled": true,
     "timelinePrefab": null,
+    "playerPositionPrefab": {
+      "__uuid__": "e196cc5e-9dfe-4a2b-b80d-c51895c3295d"
+    },
+    "playerPositionComponentName": null,
     "deckCardAnchor": null,
-    "deckCardPrefab": null,
+    "deckCardPrefab": {
+      "__uuid__": "e46ea9f5-2341-4501-90ba-6894cdd06b0e"
+    },
     "boardPrefab": {
       "__uuid__": "7b9845b4-5252-4bee-960d-25d85b6e7a6e"
     },
