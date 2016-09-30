@@ -32,6 +32,7 @@ export default class PlayerTurnBaseAdapter extends GameAdapter {
         this.scene.on(Events.HANDLE_PLAY_TURN, this._handlePlayTurn, this);
         this.scene.on(Events.HANDLE_LOSE_TURN, this._handleLoseTurn, this);
         this.scene.on(Events.HANDLE_SKIP_TURN, this._handleSkipTurn, this);
+        this.scene.on(Events.ON_GAME_STATE_ENDING, this._onGameEnding, this);
     }
 
     isTurn() {
@@ -123,8 +124,6 @@ export default class PlayerTurnBaseAdapter extends GameAdapter {
 
     onTurn(isFirstTurn){
 
-        console.log("Player onturn: ", this.player.isItMe());
-
         this.scene.emit(Events.ON_PLAYER_TURN, this.player.id);
 
         this.player.startTimeLine(this.turnDuration);
@@ -142,5 +141,9 @@ export default class PlayerTurnBaseAdapter extends GameAdapter {
         this.player.isItMe() && this.scene.emit(Events.SHOW_WAIT_TURN_CONTROLS);
     }
 
+    _onGameEnding(data){
+        if(this.player.id == this.currentTurnPlayerId){
+            this.onLoseTurn();
+        }
+    }
 }
-

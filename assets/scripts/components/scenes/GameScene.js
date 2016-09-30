@@ -1,5 +1,6 @@
 import app from 'app';
-import {utils} from 'utils';
+import {utils, GameUtils} from 'utils';
+import {Keywords} from 'core';
 import {BaseScene} from 'scenes';
 import {Events, Emitter} from 'events'
 import {CreateGameException} from 'exceptions';
@@ -84,11 +85,9 @@ class GameScene extends BaseScene {
     }
 
     start() {
-        this.gameEventHandler && this.gameEventHandler.setHandleEventImmediate(true);
     }
 
     onDestroy() {
-        console.debug("GameScene onDestroy");
         super.onDestroy();
         this.gameEventHandler && this.gameEventHandler.removeGameEventListener();
     }
@@ -100,12 +99,13 @@ class GameScene extends BaseScene {
             boardNode.parent = this.boardLayer;
 
             this.board = board;
-            this.board._init(this)
+            this.board._init(this);
+            this.gameEventHandler = new GameEventHandler(this);
 
             this._initPlayerLayer();
-            this._initGameControlLayer();;
+            this._initGameControlLayer();
             this._loadGameData();
-            this._initGameEvent();
+            this._addGameEvents();
 
             this.hideLoading("GameScene");
 
@@ -114,45 +114,47 @@ class GameScene extends BaseScene {
         }
     }
 
-    _initGameEvent() {
-        this.gameEventHandler = new GameEventHandler(this);
-        this.gameEventHandler.setHandleEventImmediate(false);
+    _addGameEvents() {
+        this.on(Events.ON_GAME_STATE_CHANGE, this._onGameStateChange, this);
         this.gameEventHandler.addGameEventListener();
     }
 
     _loadGameData() {
         this.gamePlayers._init(this.board, this);
-        this.emit(Events.ON_GAME_STATE_BEGIN);
+
+        this._loadPlayerReadyState();
+
+        let currentGameState = utils.getValue(this.gameData, Keywords.BOARD_STATE_KEYWORD);
+        let isGamePlaying = GameUtils.isPlayingState(currentGameState);
+
+        /**
+         * Current is call board._initPlayingData && board._loadGamePlayData directly. But when player or other component need to get data,
+         * below line code will be switch to using emit via scene emitter
+         */
+        if (isGamePlaying) {
+            this.board._initPlayingData(this.gameData);
+        }
+
+        this.emit(Events.ON_GAME_LOAD_PLAY_DATA, this.gameData);
+
+        console.debug("currentGameState: ", currentGameState, isGamePlaying, app.context.rejoiningGame);
+
+        if (isGamePlaying) {
+            !app.context.rejoiningGame && this._onGameStateChange(currentGameState, this.gameData, true);
+        } else {
+            this.emit(Events.ON_GAME_STATE_BEGIN, this.gameData);
+        }
     }
 
-    // _initBoardLayer() {
-    //
-    //     console.log("gameManager: ", gameManager);
-    //
-    //     gameManager.createBoard(this, (error, boardNode, board) => {
-    //         if(board){
-    //             boardNode.parent = this.boardLayer;
-    //
-    //             this._onBoardFinishInit(board);
-    //         }else{
-    //             throw new CreateGameException((error && error.error) || app.res.string('error.fail_to_create_game'));
-    //         }
-    //     });
-    //
-    //     // let boardClass = app.game.getBoardClass(this.gameCode);
-    //     // let boardComponent = app.createComponent(boardClass, this.room, this);
-    //     // this.board = this.boardLayer.addComponent(boardComponent);
-    //     //
-    //     // if (!this.board) {
-    //     //     throw new CreateGameException("Không thể khởi tạo bàn chơi");
-    //     // }
-    // }
+    _loadPlayerReadyState() {
+        let readyPlayerIds = this.gameData[Keywords.GAME_LIST_PLAYER];
+        readyPlayerIds && readyPlayerIds.forEach(id => {
+            this.emit(Events.ON_PLAYER_SET_READY_STATE, id);
+        });
+    }
 
     _initPlayerLayer() {
-
         this.gamePlayers = this.playerLayer.getComponent('GamePlayers');
-        console.debug("gamePlayers: ", this, this.gamePlayers);
-
     }
 
     _initGameControlLayer() {
@@ -196,6 +198,32 @@ class GameScene extends BaseScene {
             app.system.loadScene(app.const.scene.LIST_TABLE_SCENE);
         } else {
             app.system.loadScene(app.const.scene.LOGIN_SCENE);
+        }
+    }
+
+    _onGameStateChange(state, data, isJustJoined){
+        let localState = GameUtils.convertToLocalGameState(state);
+        this.gameState = state;
+        this.gameLocalState = localState;
+
+        console.debug("Game state: ", state, localState);
+
+        switch (localState) {
+            case app.const.game.board.state.BEGIN:
+                this.emit(Events.ON_GAME_STATE_BEGIN, data, isJustJoined);
+                break;
+            case app.const.game.board.state.STARTING:
+                this.emit(Events.ON_GAME_STATE_STARTING, data, isJustJoined);
+                break;
+            case app.const.game.board.state.STARTED:
+                this.emit(Events.ON_GAME_STATE_STARTED, data, isJustJoined);
+                break;
+            case app.const.game.board.state.PLAYING:
+                this.emit(Events.ON_GAME_STATE_PLAYING, data, isJustJoined);
+                break;
+            case app.const.game.board.state.ENDING:
+                this.emit(Events.ON_GAME_STATE_ENDING, data, isJustJoined);
+                break;
         }
     }
 }

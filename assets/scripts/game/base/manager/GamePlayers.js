@@ -21,6 +21,7 @@ export default class GamePlayers extends Component {
 
         this.me = null;
         this.owner = null;
+        this.ownerId = null;
         this.master = null;
         this.board = null;
         this.scene = null;
@@ -136,21 +137,17 @@ export default class GamePlayers extends Component {
 
         this.me = this.findPlayer(app.context.getMe().getPlayerId(this.board.room));
 
-        var ownerId = utils.getVariable(this.board.room, app.keywords.VARIABLE_OWNER);
-
+        let newOwner = null;
+        let ownerId = utils.getVariable(this.board.room, app.keywords.VARIABLE_OWNER);
         if (ownerId && (!this.owner || ownerId === this.owner.id)) {
-
             this.owner && this.owner.setOwner(false);
-            this.owner = this.findPlayer(ownerId);
-            this.owner && this.owner.setOwner(true);
-
+            newOwner = this.findPlayer(ownerId);
             //TODO More action on owner changed
-        } else {
-            this.owner = null;
         }
 
-        //TODO change board master
+        this._setOwner(null, ownerId);
 
+        //TODO change board master
         let maxPlayerId = 1;
         this.players.forEach(player => {
             maxPlayerId = Math.max(maxPlayerId, player.id);
@@ -160,7 +157,20 @@ export default class GamePlayers extends Component {
         });
 
         this.maxPlayerId = maxPlayerId;
+    }
 
+    isOwner(playerId){
+        return this.playerId == this.ownerId;
+    }
+
+    meIsOwner(){
+        return this.ownerId == this.me.id;
+    }
+
+    _setOwner(owner, ownerId){
+        this.owner = owner;
+        this.owner && this.owner.setOwner(true);
+        this.ownerId = true;
     }
 
     _updateMaxPlayerId() {
@@ -257,7 +267,7 @@ export default class GamePlayers extends Component {
         userObj.push(oldUser.name);
         userObj.push(oldUser.privilegeId);
         userObj.push(player.id);
-        userObj.push(this.__getUserVariablesData(oldUser));
+        userObj.push(this._getUserVariablesData(oldUser));
 
         let newUser = SFS2X.Entities.SFSUser.fromArray(userObj, this.board.room);
         newUser._setUserManager(app.service.client.userManager);

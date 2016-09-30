@@ -21,11 +21,11 @@ const playerRendererMap = {
 };
 
 const playerClassNameMap = {
-    [app.const.gameCode.TLMNDL]: 'TLMNDLPlayer'
+    [app.const.gameCode.TLMNDL]: 'PlayerTLMNDL'
 };
 
 const playerRendererNameMap = {
-    [app.const.gameCode.TLMNDL]: 'TLMNDLPlayerRenderer'
+    [app.const.gameCode.TLMNDL]: 'PlayerTLMNDLRenderer'
 };
 
 const playerPrefabPathMap = {
@@ -46,11 +46,11 @@ const boardRendererMap = {
 };
 
 const boardClassNameMap = {
-    [app.const.gameCode.TLMNDL]: 'TLMNDLBoard'
+    [app.const.gameCode.TLMNDL]: 'BoardTLMNDL'
 };
 
 const boardRendererNameMap = {
-    [app.const.gameCode.TLMNDL]: 'TLMNDLBoardRenderer'
+    [app.const.gameCode.TLMNDL]: 'BoardTLMNDLRenderer'
 };
 
 const boardPrefabPathMap = {

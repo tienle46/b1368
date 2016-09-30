@@ -71,22 +71,22 @@ export default class PlayerRenderer extends ActorRenderer {
 
         utils.deactive(this.status1);
         utils.deactive(this.status2);
-        utils.deactive(this.ownerIcon);
-        utils.deactive(this.masterIcon);
-        utils.deactive(this.readyIcon);
-    }
 
-    onLoad() {
-        super.onLoad();
+        this.setVisibleOwner(false);
+        this.setVisibleMaster(false);
+        this.setVisibleReady(false);
 
-        console.log("player renderer");
+        // utils.deactive(this.ownerIcon);
+        // utils.deactive(this.masterIcon);
+        // utils.deactive(this.readyIcon);
     }
 
     setName(name) {
         this.playerNameLabel.string = name;
     }
 
-    setBalance(balance) {
+    setBalance(balance, runPlusAnimation) {
+        //TODO if(runPlusAnimation)
         this.balanceLabel.string = `${balance}`;
     }
 
@@ -99,7 +99,8 @@ export default class PlayerRenderer extends ActorRenderer {
     }
 
     setVisibleReady(visible) {
-        utils.setActive(this.readyIcon, visible);
+        // utils.setActive(this.readyIcon, visible);
+        this.node.setOpacityModifyRGB(visible ? 255 : 120);
     }
 }
 

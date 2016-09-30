@@ -9,6 +9,7 @@ export default class PlayerCard extends Player {
         super(board, user);
 
         this.cards = [];
+        this.remainCardCount = 0;
     }
 
     setCards(cards){

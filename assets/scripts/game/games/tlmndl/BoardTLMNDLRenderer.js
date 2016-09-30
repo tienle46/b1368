@@ -8,7 +8,7 @@ import BoardRenderer from 'BoardRenderer';
 import BoardCardRenderer from 'BoardCardRenderer';
 import BoardCardTurnBaseRenderer from 'BoardCardTurnBaseRenderer';
 
-export default class TLMNDLBoardRenderer extends BoardCardTurnBaseRenderer {
+export default class BoardTLMNDLRenderer extends BoardCardTurnBaseRenderer {
     constructor() {
         super();
 
@@ -46,4 +46,4 @@ export default class TLMNDLBoardRenderer extends BoardCardTurnBaseRenderer {
 
 }
 
-app.createComponent(TLMNDLBoardRenderer);
+app.createComponent(BoardTLMNDLRenderer);

@@ -1,9 +1,11 @@
 
 import app from 'app';
-import utils from 'utils';
+import {utils, GameUtils} from 'utils';
+import SFS2X from 'SFS2X';
 import CreateGameException from 'CreateGameException';
 import Actor from 'Actor';
 import Events from 'Events'
+import {Keywords} from 'core';
 
 export default class Player extends Actor {
 
@@ -33,7 +35,7 @@ export default class Player extends Actor {
 
         this.username = this.user.name;
         this.id = this.user.getPlayerId(this.board.room);
-        this.balance = utils.getVariable(this.user, app.keywords.USER_VARIABLE_BALANCE, 0);
+        this.balance = GameUtils.getUserBalance(user); //utils.getVariable(this.user, app.keywords.USER_VARIABLE_BALANCE, 0);
 
         this.scene.on(Events.ON_GAME_STATE_BEGIN, this.onGameBegin, this);
         this.scene.on(Events.ON_GAME_STATE_STARTING, this.onGameStarting, this);
@@ -41,6 +43,32 @@ export default class Player extends Actor {
         this.scene.on(Events.ON_GAME_STATE_PLAYING, this.onGamePlaying, this);
         this.scene.on(Events.ON_GAME_STATE_ENDING, this.onGameEnding, this);
         this.scene.on(Events.GAME_USER_EXIT_ROOM, this._onUserExitRoom, this);
+        this.scene.on(Events.ON_PLAYER_SET_READY_STATE, this._onSetReadyState, this);
+        this.scene.on(Events.ON_PLAYER_CHANGE_BALANCE, this._onPlayerChangeBalance, this);
+        this.scene.on(Events.ON_USER_UPDATE_BALANCE, this._onUserUpdateBalance, this);
+    }
+
+    _onPlayerChangeBalance(id, newBalance) {
+        if(this.player.id == id){
+            var balanceVariable = this.player.user.variables[Keywords.USER_VARIABLE_BALANCE];
+            var newBalanceVariable = new SFS2X.Entities.Variables.SFSUserVariable(balanceVariable.name, newBalance, balanceVariable.type);
+            this.user._setVariable(newBalanceVariable);
+
+            this._setBalance(balance, true);
+        }
+    }
+
+    _onUserUpdateBalance (user) {
+        if(this.user.name == user.name){
+            let newBalance = GameUtils.getUserBalance(user);
+            this.renderer.setBalance(newBalance)
+        }
+    }
+
+    _onSetReadyState(playerId, ready = true){
+        if(playerId == this.id) {
+            this.setReady(ready);
+        }
     }
 
     _onUserExitRoom(user, room){
@@ -57,6 +85,11 @@ export default class Player extends Actor {
         this.renderer.setVisibleOwner(this.isOwner);
         
         console.log("on load: ", this.username, this.id, this.board, this.board.room);
+    }
+
+    _setBalance(balance, showPlusAnimation){
+        this.balance = balance;
+        this.renderer.setBalance(balance, showPlusAnimation);
     }
 
     setOwner(isOwner){
@@ -118,28 +151,32 @@ export default class Player extends Actor {
 
     }
 
-    onGameInitiated(data) {
+    onGameBegin(data, isJustJoined) {
 
     }
 
-    onGameBegin(data) {
-
+    onGameStarting(data, isJustJoined) {
+        if(isJustJoined){
+            this.onGameBegin({}, isJustJoined);
+        }
     }
 
-    onGameStarting(data) {
-
+    onGameStarted(data, isJustJoined) {
+        if(isJustJoined){
+            this.onGameStarting({}, isJustJoined);
+        }
     }
 
-    onGameStarted(data) {
-
+    onGamePlaying(data, isJustJoined) {
+        if(isJustJoined){
+            this.onGameStarted({}, isJustJoined);
+        }
     }
 
-    onGamePlaying(data) {
-
-    }
-
-    onGameEnding(data) {
-
+    onGameEnding(data, isJustJoined) {
+        if(isJustJoined){
+            this.onGamePlaying({}, isJustJoined);
+        }
     }
 
 }
