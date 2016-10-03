@@ -83,7 +83,7 @@ export default class BaseScene extends Actor {
         var popupBase = new cc.instantiate(this.popUp);
         popupBase.position = cc.p(0, 0);
         popupBase.getComponent(BasePopup).setContent(string);
-        this.node.addChild(popupBase, 10);
+        this.node.addChild(popupBase);
     }
 
     changeScene(name, duration = 0.5) {

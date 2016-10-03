@@ -55,10 +55,12 @@ export default class DashboardScene extends BaseScene {
     }
 
     _initItemListGame() {
+
         const height = this.scrollerContentView.node.height;
         const itemDimension = height / 2.0 - 50;
 
         this.gameList.forEach(gc => {
+            "use strict";
             let gameIconPath = app.res.gameIcon[gc];
 
             gameIconPath && cc.loader.loadRes(gameIconPath, cc.SpriteFrame, (err, spriteFrame) => {
