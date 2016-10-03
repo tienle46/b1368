@@ -22,7 +22,7 @@ export default class DialogRub extends Rub {
     }
 
     init() {
-        return RubUtils.loadPrefab('dashboard/dialog/prefabs/dialog').then((prefab) => {
+        return RubUtils.loadRes('dashboard/dialog/prefabs/dialog').then((prefab) => {
             this.prefab = cc.instantiate(prefab);
 
             this.prefab.x = 0;
@@ -45,7 +45,6 @@ export default class DialogRub extends Rub {
         // add Tab
         let tabs = tabOptions.tabs;
         let options = tabOptions.options;
-
         return TabRub.show(paginationNode, bodyNode, tabs, options).then((tabRub) => {
             tabRub.prefab.x = 0;
             tabRub.prefab.y = 0;
@@ -58,7 +57,6 @@ export default class DialogRub extends Rub {
     }
 
     static show(node, tabOptions) {
-        console.log("XXXX");
         return new this(node, tabOptions).init();
     }
 }

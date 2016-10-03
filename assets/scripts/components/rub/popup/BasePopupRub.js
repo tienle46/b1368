@@ -17,7 +17,7 @@ export default class BasePopUpRub {
     }
 
     init() {
-        return RubUtils.loadPrefab('Popup/BasePopup').then((prefab) => {
+        return RubUtils.loadRes('Popup/BasePopup').then((prefab) => {
             this.prefab = cc.instantiate(prefab);
             let basePopupComponent = this.prefab.getComponent(BasePopup);
             // set elements

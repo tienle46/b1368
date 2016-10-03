@@ -1,5 +1,6 @@
-var Button = require('Button');
-var app = require('app');
+import Button from 'Button';
+import app from 'app';
+import RubUtils from 'RubUtils';
 
 class CheckBox extends Button {
     constructor() {
@@ -102,15 +103,12 @@ class CheckBox extends Button {
 
 
     setSpriteFrame(propertyName, spriteFrameURL) {
-        cc.loader.loadRes(spriteFrameURL, cc.SpriteFrame, ((err, spriteFrame) => {
-            if (err)
-                console.log(err);
-
+        RubUtils.loadRes(spriteFrameURL, true).then((spriteFrame) => {
             this[propertyName] = spriteFrame;
 
             // update sprite immediately after changing spriteFrame
             this._updateSprites();
-        }).bind(this));
+        });
     }
 
     pushEvent(event) {

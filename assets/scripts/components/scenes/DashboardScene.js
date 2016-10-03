@@ -27,11 +27,6 @@ export default class DashboardScene extends BaseScene {
             default: null,
             type: cc.Prefab
         };
-
-        this.popUps = {
-            default: null,
-            type: cc.Prefab
-        };
     }
 
     onLoad() {
@@ -60,12 +55,10 @@ export default class DashboardScene extends BaseScene {
     }
 
     _initItemListGame() {
-
         const height = this.scrollerContentView.node.height;
         const itemDimension = height / 2.0 - 50;
 
         this.gameList.forEach(gc => {
-            "use strict";
             let gameIconPath = app.res.gameIcon[gc];
 
             gameIconPath && cc.loader.loadRes(gameIconPath, cc.SpriteFrame, (err, spriteFrame) => {
@@ -97,10 +90,12 @@ export default class DashboardScene extends BaseScene {
         const bottomBarNode = new cc.instantiate(this.bottomBar);
 
         bottomBarNode.getComponent('BottomBar').listenClickTopBarItem((buttonType) => {
-            console.log("dashboard:" + buttonType);
             switch (buttonType) {
                 case app.bottomBarButtonType.NAPXU:
                     this.addNapXuPopUp();
+                    break;
+                case app.bottomBarButtonType.EXCHANGEAWARD:
+                    this.addExchangePopUp();
                     break;
                 default:
                     this.addPopup();
@@ -141,6 +136,27 @@ export default class DashboardScene extends BaseScene {
 
         let options = {
             itemHeight: 26.5
+        };
+
+        let tabOptions = { tabs, options };
+        TopupDialogRub.show(this.node, tabOptions);
+    }
+
+    addExchangePopUp() {
+        let tabs = [{
+            title: 'Thẻ cào',
+            value: 'tab_exchange_card'
+        }, {
+            title: 'SMS',
+            value: 'tab_sms'
+        }, {
+            title: 'IAP',
+            value: 'tab_iap'
+        }];
+
+        let options = {
+            itemHeight: 26.5,
+            tabBodyPrefabType: 'exchange'
         };
 
         let tabOptions = { tabs, options };

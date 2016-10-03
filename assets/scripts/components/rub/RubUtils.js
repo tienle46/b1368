@@ -1,12 +1,18 @@
 export default {
-    loadPrefab: (prefabURL) => {
+    loadRes: (resURL, isSpriteFrame = false) => {
         return new Promise((resolve, reject) => {
-            cc.loader.loadRes(prefabURL, (err, prefab) => {
+            function handler(err, prefab) {
                 if (err)
-                    reject('err', err);
+                    reject(err);
 
                 resolve(prefab);
-            });
+            }
+
+            if (isSpriteFrame) {
+                cc.loader.loadRes(resURL, cc.SpriteFrame, handler);
+            } else {
+                cc.loader.loadRes(resURL, handler);
+            }
         });
     }
 };

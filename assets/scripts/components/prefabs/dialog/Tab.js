@@ -23,14 +23,14 @@ class Tab extends Component {
 
     addContentPrefabToBody(node, prefabURL) {
         node.removeAllChildren();
-        return RubUtils.loadPrefab(prefabURL).then((prefab) => {
+        return RubUtils.loadRes(prefabURL).then((prefab) => {
             let p = cc.instantiate(prefab);
             // add to node
             node.addChild(p);
 
             return p;
         }).catch((e) => {
-            console.log('err', e);
+            console.error('err', e);
         });
     }
 

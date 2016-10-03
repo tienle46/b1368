@@ -11,10 +11,6 @@ export default class Rub {
      * @memberOf Rub
      */
     addToNode(element = null) {
-        try {
-            this.node.addChild(element ? element : this.prefab);
-        } catch (e) {
-            console.error('err', e);
-        }
+        this.node.addChild(element ? element : this.prefab);
     }
 }
