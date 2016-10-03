@@ -6,7 +6,7 @@ import utils from 'utils';
 import app from 'app';
 import PlayerCardTurnBaseRenderer from 'PlayerCardTurnBaseRenderer';
 
-export default class TLMNDLPlayerRenderer extends PlayerCardTurnBaseRenderer {
+export default class PlayerTLMNDLRenderer extends PlayerCardTurnBaseRenderer {
     constructor() {
         super();
 
@@ -36,4 +36,4 @@ export default class TLMNDLPlayerRenderer extends PlayerCardTurnBaseRenderer {
     }
 }
 
-app.createComponent(TLMNDLPlayerRenderer);
+app.createComponent(PlayerTLMNDLRenderer);

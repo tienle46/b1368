@@ -30,7 +30,7 @@ export default class BoardRenderer extends ActorRenderer {
     }
 
     hideStartBoardTimeLine(){
-        utils.hide(this.startBoardTimeLine);
+
     }
 }
 

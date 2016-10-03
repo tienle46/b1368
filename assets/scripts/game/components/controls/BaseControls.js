@@ -6,6 +6,7 @@
 import app from 'app';
 import utils from 'utils';
 import GameControls from 'GameControls';
+import {Events} from 'events';
 
 class BaseControls extends GameControls {
     constructor() {

@@ -4,8 +4,8 @@
 
 import app from 'app'
 import GameManager from 'GameManager'
-import TLMNDLBoard from 'TLMNDLBoard';
-import TLMNDLPlayer from 'TLMNDLPlayer';
+import TLMNDLBoard from 'BoardTLMNDL';
+import TLMNDLPlayer from 'PlayerTLMNDL';
 import Board from 'Board';
 import BoardCard from 'BoardCard';
 import BoardCardTurnBase from 'BoardCardTurnBase';
@@ -22,6 +22,8 @@ const gameManager = new GameManager();
 
 const game = {};
 game.const = app.const.game;
+
+export default game;
 
 export {
     game,
@@ -41,4 +43,3 @@ export {
     GameEventHandler
 };
 
-export default game;

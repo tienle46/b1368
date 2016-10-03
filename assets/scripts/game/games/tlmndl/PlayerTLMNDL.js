@@ -8,12 +8,16 @@ import Events from 'Events'
 import GameUtils from 'GameUtils'
 import TLMNUtils from 'TLMNUtils'
 import PlayerCardTurnBase from 'PlayerCardTurnBase';
-import TLMNDLPlayerRenderer from 'TLMNDLPlayerRenderer';
+import TLMNDLPlayerRenderer from 'PlayerTLMNDLRenderer';
 
-export default class TLMNDLPlayer extends PlayerCardTurnBase {
+export default class PlayerTLMNDL extends PlayerCardTurnBase {
+
+    static get DEFAULT_HAND_CARD_COUNT() {return 13};
 
     constructor(board, user) {
         super(board, user);
+
+        this.remainCardCount = PlayerTLMNDL.DEFAULT_HAND_CARD_COUNT;
     }
 
     _init(board, user){
@@ -22,6 +26,18 @@ export default class TLMNDLPlayer extends PlayerCardTurnBase {
         this.board.scene.on(Events.ON_CLICK_PLAY_BUTTON, this._onPlayTurn, this);
         this.board.scene.on(Events.ON_CLICK_SKIP_TURN_BUTTON, this._onSkipTurn, this);
         this.board.scene.on(Events.ON_CLICK_SORT_BUTTON, this._onSortCards, this);
+        this.board.scene.on(Events.ON_PLAYER_REMAIN_CARD_COUNT, this._setRemainCardCount, this);
+    }
+
+    _setRemainCardCount(id, remain = 0){
+        if(id == this.id){
+            this.setRemainCardCount(remain);
+        }
+    }
+
+    setRemainCardCount(remain){
+        this.remainCardCount = remain;
+        this.createFakeCards(remain);
     }
 
     _onPlayTurn(){
@@ -35,13 +51,9 @@ export default class TLMNDLPlayer extends PlayerCardTurnBase {
         let cards = this.getSelectedCards();
         let preCards = this.getPrePlayedCards();
 
-        console.log("checkPlayCard")
-
         if(TLMNUtils.checkPlayCard(cards, preCards)){
-            console.log("play card valid")
             this.turnAdapter.playTurn(cards);
         }else{
-            console.log("play card invalid")
             this.notify(app.res.string("invalid_play_card"));
         }
     }
@@ -69,7 +81,7 @@ export default class TLMNDLPlayer extends PlayerCardTurnBase {
         super.setCards(cards);
     }
 
-    createFakeCards(size = 13){
+    createFakeCards(size = PlayerTLMNDL.DEFAULT_HAND_CARD_COUNT){
         super.createFakeCards(size);
     }
 
@@ -79,4 +91,4 @@ export default class TLMNDLPlayer extends PlayerCardTurnBase {
 
 }
 
-app.createComponent(TLMNDLPlayer);
+app.createComponent(PlayerTLMNDL);
