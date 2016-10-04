@@ -149,10 +149,10 @@ export default class DashboardScene extends BaseScene {
             title: 'Thẻ cào',
             value: 'tab_exchange_card'
         }, {
-            title: 'SMS',
-            value: 'tab_sms'
+            title: 'Vật phẩm',
+            value: 'tab_exchange_item'
         }, {
-            title: 'IAP',
+            title: 'Lịch sử',
             value: 'tab_iap'
         }];
 

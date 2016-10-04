@@ -1,7 +1,7 @@
-import RubUtils from 'RubUtils';
 import ToggleGroup from 'ToggleGroup';
 import CheckBox from 'CheckBox';
 import Rub from 'Rub';
+import RubUtils from 'RubUtils';
 
 export default class SegmentControlRub extends Rub {
     /**
@@ -62,18 +62,17 @@ export default class SegmentControlRub extends Rub {
     }
 
     _initComponents(prefab) {
-        // let bg = prefab.node.getChildByName('bg');
         let toggleGroupNode = prefab.getChildByName('group');
-        // let toggleGroupNode = prefab.getChildByName('group').getChildByName('toggleGroup');
         let toggleGroupComponent = toggleGroupNode.getComponent(ToggleGroup);
 
 
         this.segments.forEach((e, i) => {
             // create checkbox
             let newNode = new cc.Node();
-            newNode.width = this.options.itemWidth || 155.1;
-            newNode.height = this.options.itemHeight || 31.7;
-
+            let newNodeWidth = this.options.itemWidth || 155.1;
+            let newNodeHeight = this.options.itemHeight || 31.7;
+            newNode.setContentSize(cc.size(newNodeWidth, newNodeHeight));
+            console.log('pos', newNode.getPosition());
             // add to node
             toggleGroupNode.addChild(newNode);
 
@@ -86,21 +85,22 @@ export default class SegmentControlRub extends Rub {
             // set checkBox value
             e.value && checkBox.setVal(e.value);
             let checkBoxSprite = newNode.addComponent(cc.Sprite);
-
-            cc.loader.loadRes(i === 0 ? 'dashboard/popup-tab-active' : 'dashboard/transparent', cc.SpriteFrame, (err, spriteFrame) => {
-                checkBoxSprite.spriteFrame = spriteFrame;
-                checkBoxSprite.type = cc.Sprite.Type.SLICED;
-                checkBoxSprite.sizeMode = cc.Sprite.SizeMode.CUSTOM;
-                newNode.width = this.options.itemWidth || 155.1;
-                newNode.height = this.options.itemHeight || 31.7;
+            RubUtils.loadSpriteFrame(checkBoxSprite, i === 0 ? 'dashboard/popup-tab-active' : 'dashboard/transparent', (sprite) => {
+                newNode.setContentSize(cc.size(newNodeWidth, newNodeHeight));
             });
+            // cc.loader.loadRes(i === 0 ? 'dashboard/popup-tab-active' : 'dashboard/transparent', cc.SpriteFrame, (err, spriteFrame) => {
+            //     checkBoxSprite.spriteFrame = spriteFrame;
+            //     checkBoxSprite.type = cc.Sprite.Type.SLICED;
+            //     checkBoxSprite.sizeMode = cc.Sprite.SizeMode.CUSTOM;
+            //     newNode.width = this.options.itemWidth || 155.1;
+            //     newNode.height = this.options.itemHeight || 31.7;
+            // });
             let labelNode = new cc.Node();
             let label = labelNode.addComponent(cc.Label);
             label.fontSize = 18;
             label.lineHeight = 20;
             label.string = e.title;
             newNode.addChild(labelNode);
-
 
             // push to toggleGroup
             toggleGroupComponent.addItem(checkBox);

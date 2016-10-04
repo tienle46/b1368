@@ -1,18 +1,17 @@
 import app from 'app';
 import Component from 'Component';
 import AlertPopupRub from 'AlertPopupRub';
-import ToggleGroup from 'ToggleGroup';
-import CheckBox from 'CheckBox';
 import ButtonScaler from 'ButtonScaler';
+import RubUtils from 'RubUtils';
 
-class TabCard extends Component {
+class TabExchangeCard extends Component {
     constructor() {
         super();
     }
 
     onLoad() {
         // wait til every requests is done
-        // this.node.active = false;
+        this.node.active = false;
 
         // get content node
         this.contentNode = this.node.getChildByName('view').getChildByName('content');
@@ -31,11 +30,11 @@ class TabCard extends Component {
 
         if (data[app.keywords.RESPONSE_RESULT] && data[app.keywords.EXCHANGE_LIST.RESPONSE.ITEM_TYPE] === 1) {
             let rowNode;
-            let textureCache;
             for (let i = 0; i < data[app.keywords.EXCHANGE_LIST.RESPONSE.ITEM_ID_LIST].length; i++) {
                 let itemId = data[app.keywords.EXCHANGE_LIST.RESPONSE.ITEM_ID_LIST][i];
-                // let itemGold = data[app.keywords.EXCHANGE_LIST.RESPONSE.ITEM_GOLD_LIST][i];
                 let itemIcon = data[app.keywords.EXCHANGE_LIST.RESPONSE.ITEM_ICON_LIST][i];
+                let itemGold = data[app.keywords.EXCHANGE_LIST.RESPONSE.ITEM_GOLD_LIST][i];
+
                 if (i % 3 === 0) {
                     rowNode = null;
                     rowNode = this._initRowNode();
@@ -46,29 +45,22 @@ class TabCard extends Component {
                     // create item Note
                     let itemNode = new cc.Node();
                     itemNode.itemId = itemId;
+                    itemNode.itemGold = itemGold;
 
                     rowNode.addChild(itemNode);
 
-                    itemNode.width = 245;
-                    itemNode.height = 131;
-                    itemNode.x = -254 + (i % 3) * (itemNode.width + 13);
-                    itemNode.y = 0;
-
                     // add Spite 
                     let sprite = itemNode.addComponent(cc.Sprite);
-                    textureCache = cc.textureCache.addImage(itemIcon);
-
-                    // let spriteFrame = new cc.SpriteFrame(texture);
-                    let spriteFrame = new cc.SpriteFrame(textureCache);
-                    sprite.spriteFrame = spriteFrame;
-                    sprite.type = cc.Sprite.Type.SLICED;
-                    sprite.sizeMode = cc.Sprite.SizeMode.CUSTOM;
-                    itemNode.width = 245;
-                    itemNode.height = 131;
+                    RubUtils.loadSpriteFrame(sprite, itemIcon, (spriteFrame) => {
+                        let itemNodeWidth = 245;
+                        let itemNodeHeight = 131;
+                        spriteFrame.node.setContentSize(cc.size(itemNodeWidth, itemNodeHeight));
+                        spriteFrame.node.x = -254 + (i % 3) * (itemNodeWidth + 13);
+                        spriteFrame.node.y = 0;
+                    }, true);
 
                     // add Button
                     let btn = itemNode.addComponent(cc.Button);
-                    btn.spriteFrame = spriteFrame;
 
                     let event = new cc.Component.EventHandler();
                     event.target = this.node;
@@ -78,14 +70,17 @@ class TabCard extends Component {
 
                     // add ButtonScaler component
                     itemNode.addComponent(ButtonScaler);
-
                 }
             }
-            cc.textureCache.removeTexture(textureCache);
+            this.node.active = true;
         }
     }
 
     onHandleExchangeBtnClick(event) {
+        let itemGold = event.currentTarget.itemGold;
+        // TODO
+        // if user gold less than itemGold -> show AlertPopupRub
+        // else send request
         let id = event.currentTarget.itemId;
 
         let data = {};
@@ -112,4 +107,4 @@ class TabCard extends Component {
     }
 }
 
-app.createComponent(TabCard);
+app.createComponent(TabExchangeCard);
