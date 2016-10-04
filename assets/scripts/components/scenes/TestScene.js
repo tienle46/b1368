@@ -44,13 +44,14 @@ cc.Class({
         // this.player2.getComponent('CardList')._test([37,7,37,7,9,15,18,48,40,50,22,20,14,52,16]);
         //
         //
-        // this.player4.getComponent('CardList')._init(50,300,CardList.ORIENTATION.VERTICAL, CardList.VERTICAL_ALIGNMENT.TOP);
-        // this.player4.getComponent('CardList').setCardAnchor(cc.v2(0,));
-        // this.player4.getComponent('CardList')._test([37,7,37,7,9,15]);
+        this.player4.getComponent('CardList')._init(50,200,CardList.ORIENTATION.VERTICAL, CardList.VERTICAL_ALIGNMENT.TOP);
+        this.player4.getComponent('CardList').setCardAnchor(cc.v2(0,));
+        this.player4.getComponent('CardList').drawCards([37,7,37,7,9,15]);
         //
-        // this.player3.getComponent('CardList')._init(300,75,CardList.ORIENTATION.HORIZONTAL,CardList.HORIZONTAL_ALIGNMENT.LEFT);
-        // this.player3.getComponent('CardList').setCardAnchor(cc.v2(0,));
-        // this.player3.getComponent('CardList')._test([37,7,37,7,9,15]);
+        this.player3.getComponent('CardList')._init(300,75,CardList.ORIENTATION.HORIZONTAL,CardList.HORIZONTAL_ALIGNMENT.LEFT);
+        this.player3.getComponent('CardList').setCardAnchor(cc.v2(0,));
+        this.player3.getComponent('CardList').drawCards([37,7,37,7,9,15]);
+
         this.player2.getComponent('CardList').drawCards([37,7,9,15,18,48,40,50,22,20,14,52,16]);
     },
 
@@ -59,9 +60,9 @@ cc.Class({
 
     // },
     onClick1: function(event) {
-        // this.player2.getComponent('CardList').transfer(this.player2.getComponent('CardList').getSelectedCards(),this.player3);
+        this.player2.getComponent('CardList').transfer(this.player2.getComponent('CardList').getSelectedCards(),this.player3);
 
-        this.player2.getComponent('CardList')._shiftCards(5);
+        // this.player2.getComponent('CardList')._shiftCards(5);
     },
     onClick2: function() {
     },
