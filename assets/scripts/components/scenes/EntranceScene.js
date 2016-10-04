@@ -3,6 +3,7 @@ var BaseScene = require("BaseScene");
 var Fingerprint2 = require('fingerprinter');
 
 import AlertPopupRub from 'AlertPopupRub';
+
 class EntranceScene extends BaseScene {
 
     constructor() {
@@ -88,27 +89,35 @@ class EntranceScene extends BaseScene {
         //         });
         //     }
         // });
-        // app.service.connect((success) => {
-        //     console.debug("success: " + success);
-        //     if (success) {
-        //         new Fingerprint2().get((deviceId) => {
-        //             app.service.requestAuthen(this._generateUserName("ysad12", deviceId, 0, 5), this._generateUserName("yz212", deviceId, 0, 6), false, true, (error, result) => {
-        //                 error = JSON.parse(error);
-        //                 if (result) {
-        //                     this.changeScene('DashboardScene');
-        //                 }
+        app.service.connect((success) => {
+            console.debug("success: " + success);
+            if (success) {
+                new Fingerprint2().get((deviceId) => {
+                    app.service.requestAuthen(this._generateUserName("ysad12", deviceId, 0, 5), this._generateUserName("yz212", deviceId, 0, 6), false, true, (error, result) => {
+                        error = JSON.parse(error);
+                        if (result) {
+                            this.changeScene('DashboardScene');
+                        }
 
-        //                 if (error) {
-        //                     this.addPopup(app.getMessageFromServer(error.p.ec));
-        //                 }
-        //             });
-        //         });
-        //     }
-        // });
+                        if (error) {
+                            this.addPopup(app.getMessageFromServer(error.p.ec));
+                        }
+                    });
+                });
+            }
+        });
     }
 
     handleFacebookLoginAction() {
-        AlertPopupRub.show(this.node, "Chức năng đang cập nhật!");
+        // AlertPopupRub.show(this.node, "Chức năng đang cập nhật!");
+        cc.loader.loadRes('dashboard/dialog/prefabs/dialog', (err, prefab) => {
+            err && (() => { console.log(err); })();
+
+            let p = cc.instantiate(prefab);
+            p.x = 0;
+            p.y = 0;
+            this.node.addChild(p);
+        })
     }
 
     _generateUserName(key, deviceId, count, maxCall) {

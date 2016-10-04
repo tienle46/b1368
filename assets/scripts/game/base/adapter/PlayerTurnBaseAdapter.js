@@ -21,17 +21,18 @@ export default class PlayerTurnBaseAdapter extends GameAdapter {
     _init(scene, player){
         this.scene = scene;
         this.player = player;
-        this._registerListener();
+        this._addSystemListener();
         
         console.log("init turn: ", this.player.id);
     }
 
-    _registerListener(){
+    _addSystemListener(){
         this.scene.on(Events.HANDLE_TURN_DURATION, this._handleTurnDuration, this);
         this.scene.on(Events.HANDLE_CHANGE_TURN, this._handleChangeTurn, this);
         this.scene.on(Events.HANDLE_PLAY_TURN, this._handlePlayTurn, this);
         this.scene.on(Events.HANDLE_LOSE_TURN, this._handleLoseTurn, this);
         this.scene.on(Events.HANDLE_SKIP_TURN, this._handleSkipTurn, this);
+        this.scene.on(Events.ON_GAME_STATE_ENDING, this._onGameEnding, this);
     }
 
     isTurn() {
@@ -66,7 +67,9 @@ export default class PlayerTurnBaseAdapter extends GameAdapter {
     _handleChangeTurn(turnPlayerId, isFirstTurn){
         this.preTurnPlayerId = this.currentTurnPlayerId;
         this.currentTurnPlayerId = turnPlayerId;
-        
+
+        console.log("handle change turn");
+
         if(this.player.id === turnPlayerId) {
 
             if(!this.scene.gamePlayers){
@@ -138,5 +141,9 @@ export default class PlayerTurnBaseAdapter extends GameAdapter {
         this.player.isItMe() && this.scene.emit(Events.SHOW_WAIT_TURN_CONTROLS);
     }
 
+    _onGameEnding(data){
+        if(this.player.id == this.currentTurnPlayerId){
+            this.onLoseTurn();
+        }
+    }
 }
-

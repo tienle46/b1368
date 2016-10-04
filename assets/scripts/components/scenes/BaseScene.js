@@ -22,20 +22,7 @@ export default class BaseScene extends Actor {
         this.onShown = null;
     }
 
-    /**
-     * This func to add listener to handler data from server or a custom action into game system
-     *
-     * If event is belong to UI let use listener of cc.Node (node.on, node.off, node.emit, etc...) instead
-     *
-     * NOTE: Don't forget to add remove this event have been added into _removeListener func to avoid memory leak
-     *
-     * Example:
-     *      app.system.addListener('adminMessage', () => {
-     *          //Show admin message
-     *      })
-     *
-     * @private
-     */
+
     _addListener() {
         //TODO
     }
@@ -50,7 +37,7 @@ export default class BaseScene extends Actor {
      *
      * @private
      */
-    _removeListener() {
+    _removeSystemListener() {
         //TODO
     }
 
@@ -62,13 +49,8 @@ export default class BaseScene extends Actor {
         }
     }
 
-    onLoad() {
-        this._addListener();
-    }
-
     onDestroy() {
-        this._removeListener();
-        this._eventEmitter.removeListener();
+        super.onDestroy();
     }
 
     showShortLoading(payload, message = '') {
@@ -101,7 +83,7 @@ export default class BaseScene extends Actor {
         var popupBase = new cc.instantiate(this.popUp);
         popupBase.position = cc.p(0, 0);
         popupBase.getComponent(BasePopup).setContent(string);
-        this.node.addChild(popupBase, 10);
+        this.node.addChild(popupBase);
     }
 
     changeScene(name, duration = 0.5) {

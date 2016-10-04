@@ -32,7 +32,7 @@ class GameMenuPrefab extends Component {
     onClickMenuButton(event){
         //TODO
         this.scene.showLoading();
-        app.service.sendRequest(new SFS2X.Requests.System.LeaveRoomRequest(this.board.room));
+        app.service.sendRequest(new SFS2X.Requests.System.LeaveRoomRequest(this.scene.room));
     }
 
     onClickChatButton(event){

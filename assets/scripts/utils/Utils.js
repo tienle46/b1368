@@ -88,7 +88,7 @@ export default class Utils {
     }
 
     static getVariable(obj, key) {
-        return obj.containsVariable && obj.containsVariable(key) && obj.getVariable && obj.getVariable(key).value;
+        return obj && obj.containsVariable && obj.containsVariable(key) && obj.getVariable && obj.getVariable(key).value;
     }
 
     static getValue(mapObj, key, defaultValue) {

@@ -105,19 +105,31 @@ export default class Card extends Component {
         return this.byteValue === card.byteValue;
     }
 
-    compareTo(card, gameType, compareRankFirst) {
+    static toByte(rank, suit){
+        return rank << 2 | suit & 0x03;
+    }
+
+    /**
+     *
+     *
+     * @param card
+     * @param gameType
+     * @param compareType: true: Compare rank first, otherwise: Compare suit first
+     * @returns {number}
+     */
+    compareTo(card, gameType, compareType = true) {
 
         if (card) {
             let thisRank = GameUtils.getRank(this, gameType);
             let compareRank = GameUtils.getRank(card, gameType);
+            let thisSuit = GameUtils.getSuit(this, gameType);
+            let compareSuit = GameUtils.getSuit(card, gameType);
 
-            if (compareRankFirst && thisRank === compareRank) {
-                let thisSuit = GameUtils.getSuit(this, gameType);
-                let compareSuit = GameUtils.getSuit(card, gameType);
-
-                return thisSuit - compareSuit;
-            } else {
-                return this.byteValue - card.byteValue;
+            if(compareType){
+                return thisRank == compareRank ? (thisSuit - compareSuit) : (thisRank - compareRank);
+            }
+            else{
+                return thisSuit == compareSuit ? (thisRank - compareRank) : (thisSuit - compareSuit);
             }
         }
     }

@@ -11,6 +11,7 @@ class GameContext {
         this.groupId = null;
         this.currentRoom = null;
         this.lastJoinedRoom = null;
+        this.rejoiningGame = false;
     }
 
     /**
@@ -23,6 +24,10 @@ class GameContext {
 
     isJoinedGame(){
         return this.currentRoom && this.currentRoom.isGame;
+    }
+
+    isJoinedInGameRoom(roomId){
+        return this.currentRoom && this.currentRoom.isGame && roomId == this.currentRoom.id;
     }
 
     getRoom(roomId){

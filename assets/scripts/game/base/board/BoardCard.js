@@ -6,6 +6,8 @@ import app from 'app';
 import Board from 'Board';
 import Card from 'Card';
 
+import {Events} from 'events';
+
 export default class BoardCard extends Board {
     constructor() {
         super();
@@ -33,7 +35,12 @@ export default class BoardCard extends Board {
         let cardBytes = data[app.keywords.DEAL_CARD_LIST_KEYWORD] || [];
         let dealCards = cardBytes.map(cardByte => Card.from(cardByte));
 
+        console.debug('this.scene.gamePlayers: ', this.scene, this.scene.gamePlayers)
+
         this.scene.gamePlayers.onDealCards(dealCards);
+
+        //TODO: On deal card done
+        this.scene.emit(Events.ON_GAME_STATE_STARTED);
     }
 
 }

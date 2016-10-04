@@ -2,10 +2,12 @@
  * Created by Thanh on 8/23/2016.
  */
 
+import utils from 'utils';
 import app from 'app';
 import game from 'game'
 import {Actor} from 'components';
 import Events from 'events'
+import {Keywords} from 'core';
 
 export default class Board extends Actor {
 
@@ -57,6 +59,7 @@ export default class Board extends Actor {
         this.scene.on(Events.ON_GAME_STATE_STARTED, this.onBoardStarted, this);
         this.scene.on(Events.ON_GAME_STATE_PLAYING, this.onBoardPlaying, this);
         this.scene.on(Events.ON_GAME_STATE_ENDING, this.onBoardEnding, this);
+        this.scene.on(Events.ON_GAME_LOAD_PLAY_DATA, this._loadGamePlayData, this);
     }
 
     onLoad() {
@@ -75,6 +78,12 @@ export default class Board extends Actor {
 
     onDestroy() {
 
+    }
+
+    /**
+     * @abstract
+     */
+    get gameType(){
     }
 
     setState(state) {
@@ -131,7 +140,7 @@ export default class Board extends Actor {
         // return this.positionManager.getPlayerSeatID(playerId);
     }
 
-    stopBoardTimeLine() {
+    stopTimeLine() {
         //TODO
     }
 
@@ -179,7 +188,11 @@ export default class Board extends Actor {
      * @overrideable
      */
     _shouldStartPhaseTimeline() {
-        return this._shouldStartReadyTimeline() || this.isEnding();
+        return this._shouldStartReadyTimeLine() || this.isEnding();
+    }
+
+    startTimeLine(){
+        //TODO
     }
 
     /**
@@ -212,6 +225,10 @@ export default class Board extends Actor {
     handleGameStateChange(boardState, data) {
         this.serverState = boardState;
 
+        if (data.hasOwnProperty(app.keywords.BOARD_PHASE_DURATION)) {
+            this.changeBoardPhaseDuration(data);
+        }
+
         //TODO Process board state changed here
     }
 
@@ -219,27 +236,53 @@ export default class Board extends Actor {
         this.renderer && this.renderer._resetBoard();
     }
 
-    onBoardBegin(data) {
-        this._resetBoard()
+    onBoardBegin(data = {}) {
+        this._resetBoard();
+
+        let boardTimeLine = utils.getValue(data, Keywords.BOARD_PHASE_DURATION);
+        if(boardTimeLine){
+            if(this.scene.gamePlayers.meIsOwner){
+                boardTimeLine *= 2;
+            }
+
+            this.startTimeLine();
+        }
+
         this.state = app.const.game.board.state.BEGIN;
     }
 
-    onBoardStarting(data) {
+    onBoardStarting(data = {}, isJustJoined) {
+        if(isJustJoined){
+            this.onBoardStarting({}, isJustJoined);
+        }
+
         this.state = app.const.game.board.state.STARTING;
         this.scene.gameControls.hideAllControlsBeforeGameStart();
     }
 
-    onBoardStarted(data) {
+    onBoardStarted(data = {}, isJustJoined) {
+        if(isJustJoined){
+            this.onBoardStarting({}, isJustJoined);
+        }
+
         this.state = app.const.game.board.state.STARTED;
         //TODO
     }
 
-    onBoardPlaying(data){
+    onBoardPlaying(data = {}, isJustJoined){
+        if(isJustJoined){
+            this.onBoardStarting({}, isJustJoined);
+        }
+
         this.state = app.const.game.board.state.PLAYING;
         //TODO
     }
 
-    onBoardEnding(data) {
+    onBoardEnding(data = {}, isJustJoined) {
+        if(isJustJoined){
+            this.onBoardStarting({}, isJustJoined);
+        }
+
         this.state = app.const.game.board.state.ENDING;
         //TODO
     }
@@ -290,5 +333,12 @@ export default class Board extends Actor {
         } else {
             //TODO
         }
+    }
+
+    _initPlayingData(data){
+
+    }
+
+    _loadGamePlayData(data){
     }
 }

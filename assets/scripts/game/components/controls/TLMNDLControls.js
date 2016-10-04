@@ -33,11 +33,11 @@ export default class TLMNDLControls extends GameControls {
         this.baseControls && this.baseControls._init(scene);
         this.cardTurnBaseControls && this.cardTurnBaseControls._init(scene);
 
-        this._registerListener();
+        this._addSystemListener();
     }
 
-    _registerListener(){
-        super._registerListener();
+    _addSystemListener(){
+        super._addSystemListener();
 
         if(!this.scene) return;
 
@@ -84,6 +84,9 @@ export default class TLMNDLControls extends GameControls {
      * @private
      */
     _onGamePlaying(data){
+        
+        console.log("_onGamePlaying")
+        
         let nextTurnPlayerId = utils.getValue(data, Keywords.TURN_PLAYER_ID);
         if (!nextTurnPlayerId) {
             this._showWaitTurnControls();
@@ -91,12 +94,10 @@ export default class TLMNDLControls extends GameControls {
     }
 
     _showOnTurnControls(isFirstTurn){
-        console.log("_showOnTurnControls")
         this.cardTurnBaseControls._showOnTurnControls(isFirstTurn);
     }
 
     _showWaitTurnControls(){
-        console.log("_showWaitTurnControls")
         this.cardTurnBaseControls._showWaitTurnControls();
     }
 

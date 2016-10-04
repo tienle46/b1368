@@ -15,9 +15,9 @@
     "_opacity": 255,
     "_color": {
       "__type__": "cc.Color",
-      "r": 211,
-      "g": 30,
-      "b": 30,
+      "r": 250,
+      "g": 247,
+      "b": 247,
       "a": 255
     },
     "_cascadeOpacityEnabled": true,
@@ -60,13 +60,10 @@
     "_components": [
       {
         "__id__": 6
-      },
-      {
-        "__id__": 7
       }
     ],
     "_prefab": {
-      "__id__": 8
+      "__id__": 7
     },
     "groupIndex": 0
   },
@@ -104,7 +101,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": 50
+      "y": 60
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -209,32 +206,6 @@
     "cardList2Anchor": {
       "__id__": 2
     }
-  },
-  {
-    "__type__": "cc.Sprite",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 1
-    },
-    "_enabled": true,
-    "_spriteFrame": {
-      "__uuid__": "d7c1d3a8-53f5-4eb6-99ac-86271cc898a1"
-    },
-    "_type": 0,
-    "_sizeMode": 1,
-    "_fillType": 0,
-    "_fillCenter": {
-      "__type__": "cc.Vec2",
-      "x": 0,
-      "y": 0
-    },
-    "_fillStart": 0,
-    "_fillRange": 0,
-    "_isTrimmedMode": true,
-    "_srcBlendFactor": 770,
-    "_dstBlendFactor": 771,
-    "_atlas": null
   },
   {
     "__type__": "cc.PrefabInfo",

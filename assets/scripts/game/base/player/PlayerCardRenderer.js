@@ -5,7 +5,6 @@
 import app from 'app';
 import CardList from 'CardList';
 import PlayerRenderer from 'PlayerRenderer';
-import PositionManager from 'PositionManager';
 
 export default class PlayerCardRenderer extends PlayerRenderer {
     constructor() {
@@ -74,6 +73,10 @@ export default class PlayerCardRenderer extends PlayerRenderer {
 
     onLoad(){
         super.onLoad();
+    }
+
+    clearCards(){
+        this.cardList.clear();
     }
 
     renderCards(cards){

@@ -3,10 +3,11 @@
  */
 
 import app from 'app';
+import {utils, GameUtils} from 'utils';
 import SFS2X from 'SFS2X';
 import async from 'async';
-import Events from 'Events'
-import GameUtils from 'GameUtils'
+import {Events} from 'events'
+import {Keywords} from 'core';
 
 export default class GameEventHandler {
     constructor(scene) {
@@ -35,70 +36,103 @@ export default class GameEventHandler {
     }
 
     addGameEventListener() {
+
         app.system.addListener(SFS2X.SFSEvent.USER_EXIT_ROOM, this._onUserExitRoom, this);
         app.system.addListener(SFS2X.SFSEvent.USER_ENTER_ROOM, this._onUserEnterRoom, this);
         app.system.addListener(SFS2X.SFSEvent.ROOM_REMOVE, this._onRoomRemove, this);
+        app.system.addListener(SFS2X.SFSEvent.USER_VARIABLES_UPDATE, this._onUserVariablesUpdate, this);
 
         app.system.addListener(app.commands.SYSTEM_MESSAGE, this._handleSystemMessage, this);
         app.system.addListener(app.commands.DOWNLOAD_IMAGE, this._handlePlayerAvatar, this);
         app.system.addListener(app.commands.USER_LEVEL_UP, this._handleUserLevelUp, this);
         app.system.addListener(app.commands.TASK_FINISH, this._handleTaskFinish, this);
         app.system.addListener(app.commands.BUDDY_NEW_INVITATION, this._handBuddyNewInvitation, this);
+
         app.system.addListener(app.commands.ASSETS_USE_ITEM, this._handlePlayerUseAssets, this);
         app.system.addListener(app.commands.PING_CLIENT, this._handlePingClient, this);
-        app.system.addListener(app.commands.PLAYERS_BALANCE_CHANGE, this.board._handleChangePlayerBalance, this);
+        app.system.addListener(app.commands.PLAYERS_BALANCE_CHANGE, this._handleChangePlayerBalance, this);
         app.system.addListener(app.commands.PLAYER_REENTER_ROOM, this.board._handlePlayerReEnterGame, this);
         app.system.addListener(app.commands.BOARD_STATE_CHANGE, this._handleGameStateChange, this);
         app.system.addListener(app.commands.BOARD_MASTER_CHANGE, this.board._handleChangeBoardMaster, this);
         app.system.addListener(app.commands.PLAYER_REJOIN_ROOM, this.board._handlePlayerRejoinGame, this);
-
         app.system.addListener(app.commands.PLAYER_GET_TURN, this._onPlayerGetTurn, this);
         app.system.addListener(app.commands.PLAYER_LOSE_TURN, this._onPlayerLoseTurn, this);
         app.system.addListener(app.commands.PLAYER_SKIP_TURN, this._onPlayerSkipTurn, this);
         app.system.addListener(app.commands.PLAYER_PLAY_CARD, this._onPlayerPlayCards, this);
+        app.system.addListener(app.commands.PLAYER_READY, this._onPlayerReady, this);
+        app.system.addListener(app.commands.PLAYER_UNREADY, this._onPlayerUnready, this);
     }
 
     removeGameEventListener() {
+
         app.system.removeListener(SFS2X.SFSEvent.USER_EXIT_ROOM, this._onUserExitRoom);
         app.system.removeListener(SFS2X.SFSEvent.USER_ENTER_ROOM, this._onUserEnterRoom);
         app.system.removeListener(SFS2X.SFSEvent.ROOM_REMOVE, this._onRoomRemove);
+        app.system.removeListener(SFS2X.SFSEvent.USER_VARIABLES_UPDATE, this._onUserVariablesUpdate);
 
         app.system.removeListener(app.commands.SYSTEM_MESSAGE, this._handleSystemMessage);
         app.system.removeListener(app.commands.DOWNLOAD_IMAGE, this._handlePlayerAvatar);
         app.system.removeListener(app.commands.USER_LEVEL_UP, this._handleUserLevelUp);
         app.system.removeListener(app.commands.TASK_FINISH, this._handleTaskFinish);
         app.system.removeListener(app.commands.BUDDY_NEW_INVITATION, this._handBuddyNewInvitation);
+
         app.system.removeListener(app.commands.ASSETS_USE_ITEM, this._handlePlayerUseAssets);
         app.system.removeListener(app.commands.PING_CLIENT, this._handlePingClient);
-        app.system.removeListener(app.commands.PLAYERS_BALANCE_CHANGE, this.board._handleChangePlayerBalance);
+        app.system.removeListener(app.commands.PLAYERS_BALANCE_CHANGE, this._handleChangePlayerBalance);
         app.system.removeListener(app.commands.PLAYER_REENTER_ROOM, this.board._handlePlayerReEnterGame);
         app.system.removeListener(app.commands.BOARD_STATE_CHANGE, this._handleGameStateChange);
         app.system.removeListener(app.commands.BOARD_MASTER_CHANGE, this.board._handleChangeBoardMaster);
         app.system.removeListener(app.commands.PLAYER_REJOIN_ROOM, this.board._handlePlayerRejoinGame);
-
         app.system.removeListener(app.commands.PLAYER_GET_TURN, this._onPlayerGetTurn);
         app.system.removeListener(app.commands.PLAYER_LOSE_TURN, this._onPlayerLoseTurn);
         app.system.removeListener(app.commands.PLAYER_SKIP_TURN, this._onPlayerSkipTurn);
-        app.system.removeListener(app.commands.PLAYER_PLAY_CARD, this._onPlayerPlayCards)
+        app.system.removeListener(app.commands.PLAYER_PLAY_CARD, this._onPlayerPlayCards);
+        app.system.removeListener(app.commands.PLAYER_READY, this._onPlayerReady);
+        app.system.removeListener(app.commands.PLAYER_UNREADY, this._onPlayerUnready);
+    }
+
+    _onUserVariablesUpdate(event){
+        let changedVars = event.changedVars;
+        let user = event.user;
+
+        changedVars && changedVars.forEach((varName) => {
+            if (Keywords.USER_VARIABLE_BALANCE == varName) {
+                this.scene.emit(Events.ON_USER_UPDATE_BALANCE, user);
+            }
+            else if (Keywords.USER_VARIABLE_LEVEL == varName) {
+                this.scene.emit(Events.ON_USER_UPDATE_LEVEL, user);
+            }
+            else if (Keywords.USER_VARIABLE_EXP_POINT == varName) {
+                this.scene.emit(Events.ON_USER_UPDATE_EXP_POINT, user);
+            }
+        });
+
+        for (var i = 0; i < sfsEvent.changedVars.length; i++) {
+            if (xg.Keywords.USER_VARIABLE_BALANCE == sfsEvent.changedVars[i]) {
+                this._boardEventHandler.onHandleEvent("handleUserBalanceChange", [sfsEvent.user]);
+            }else if (xg.Keywords.USER_VARIABLE_LEVEL == sfsEvent.changedVars[i]) {
+                this._boardEventHandler.onHandleEvent("handleUserLevelChange", [sfsEvent.user]);
+            }else if (xg.Keywords.USER_VARIABLE_EXP_POINT == sfsEvent.changedVars[i]) {
+                this._boardEventHandler.onHandleEvent("handleUserExpPointChange", [sfsEvent.user]);
+            }
+        }
+
+        this.handleUserVariableUpdate(user, changedVars);
     }
 
     _onPlayerGetTurn(data) {
-        console.debug("_onPlayerGetTurn");
         this.scene.emit(Events.HANDLE_GET_TURN, data);
     }
 
     _onPlayerLoseTurn(data) {
-        console.debug("_onPlayerLoseTurn");
         this.scene.emit(Events.HANDLE_LOSE_TURN, data);
     }
 
     _onPlayerSkipTurn(data) {
-        console.debug("_onPlayerSkipTurn")
         this.scene.emit(Events.HANDLE_SKIP_TURN, data);
     }
 
     _onPlayerPlayCards(data) {
-        console.debug("_onPlayerPlayCards")
         this.scene.emit(Events.HANDLE_PLAY_TURN, data);
     }
 
@@ -134,43 +168,8 @@ export default class GameEventHandler {
     }
 
     _handleGameStateChange(data) {
-        if (data.hasOwnProperty(app.keywords.BOARD_PHASE_DURATION)) {
-            this.board && this.board.changeBoardPhaseDuration(data);
-        }
-
-        if (data.hasOwnProperty(app.keywords.BOARD_STATE_KEYWORD)) {
-
-            let state = data[app.keywords.BOARD_STATE_KEYWORD];
-
-            this.scene.emit(Events.ON_GAME_STATE_CHANGE, state, data);
-
-            let localState = GameUtils.convertToLocalBoardState(state);
-            this.scene.gameState = state;
-            this.scene.gameLocalState = localState;
-
-            console.debug("Game state: ", state, localState);
-
-            switch (localState) {
-                case app.const.game.board.state.BEGIN:
-                    this.scene.emit(Events.ON_GAME_STATE_BEGIN, data);
-                    break;
-                case app.const.game.board.state.STARTING:
-                    this.scene.emit(Events.ON_GAME_STATE_STARTING, data);
-                    break;
-                case app.const.game.board.state.STARTED:
-                    this.scene.emit(Events.ON_GAME_STATE_STARTED, data);
-                    break;
-                case app.const.game.board.state.PLAYING:
-                    this.scene.emit(Events.ON_GAME_STATE_PLAYING, data);
-                    break;
-                case app.const.game.board.state.ENDING:
-                    this.scene.emit(Events.ON_GAME_STATE_ENDING, data);
-                    break;
-            }
-
-            // this.board.handleGameStateChange(state, data);
-        }
-
+        let state = utils.getValue(data, app.keywords.BOARD_STATE_KEYWORD);
+        state && this.scene.emit(Events.ON_GAME_STATE_CHANGE, state, data);
     }
 
     _handleSystemMessage(data) {
@@ -207,8 +206,28 @@ export default class GameEventHandler {
     }
 
     _handlePingClient(data, roomId = -1) {
-        if (app.context.isJoinedGame() && roomId == app.context.currentRoom.id) {
+        if (app.context.isJoinedInGameRoom(roomId)) {
             app.service.send({cmd: app.commands.PING_CLIENT, data: data, room: app.context.currentRoom});
         }
+    }
+
+    _onPlayerReady(data){
+        let playerId = utils.getValue(data, app.keywords.PLAYER_ID);
+        playerId && this.scene.emit(Events.ON_PLAYER_SET_READY_STATE, playerId, true);
+    }
+
+    _onPlayerUnready(data){
+        let playerId = utils.getValue(data, app.keywords.PLAYER_ID);
+        playerId && this.scene.emit(Events.ON_PLAYER_SET_READY_STATE, playerId, false);
+    }
+
+    _handleChangePlayerBalance(data){
+        let playerIds = utils.getValue(Keywords.GAME_LIST_PLAYER);
+        let playersBalances = utils.getValue(Keywords.USER_VARIABLE_BALANCE);
+        playerIds && playersBalances && playerIds.forEach((id, index) => {
+            this.scene.emit(Events.ON_PLAYER_CHANGE_BALANCE, id, playersBalances[index]);
+        });
+
+        // this.playerManager.changePlayerBalance(playerIds, playersBalances);
     }
 }

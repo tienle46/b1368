@@ -196,6 +196,12 @@ class Service {
     }
 
     sendRequest(request, { cb = null, scope = null, cbName = null } = {}) {
+
+        if(!this.client.isConnected()){
+            this._onConnectionLost();
+            return;
+        }
+
         if (cb) {
             let cbKey = cbName || requestCallbackNames[request._id];
             cbKey && this._addCallback(cbKey, cb, scope);
@@ -345,6 +351,11 @@ class Service {
     send(options, cb, scope) {
 
         if (!options) return;
+
+        if(!this.client.isConnected()){
+            this._onConnectionLost();
+            return;
+        }
 
         if (options instanceof SFS2X.Requests._BaseRequest) {
             this.sendRequest(options);

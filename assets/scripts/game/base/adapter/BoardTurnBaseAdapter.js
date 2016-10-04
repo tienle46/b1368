@@ -20,14 +20,15 @@ export default class BoardTurnBaseAdapter extends GameAdapter {
 
     _init(scene){
         this.scene = scene;
-        this._registerListener();
+        this._addSystemListener();
     }
 
-    _registerListener(){
+    _addSystemListener(){
         this.scene.on(Events.HANDLE_TURN_DURATION, this._handleTurnDuration, this);
         this.scene.on(Events.HANDLE_CHANGE_TURN, this._handleChangeTurn, this);
         this.scene.on(Events.HANDLE_PLAY_TURN, this._handlePlayTurn, this);
         this.scene.on(Events.ON_PLAYER_TURN, this._onPlayerTurn, this);
+        this.scene.on(Events.ON_GAME_LOAD_PLAY_DATA, this._loadGamePlayData, this);
     }
 
     _handleTurnDuration(duration){
@@ -47,6 +48,10 @@ export default class BoardTurnBaseAdapter extends GameAdapter {
         if(turnPlayerId == this.lastPlayedTurn){
             this.scene.emit(Events.CLEAN_TURN_ROUTINE_DATA, turnPlayerId);
         }
+    }
+
+    _loadGamePlayData(data){
+        this.lastPlayedTurn = utils.getValue(Keywords.LAST_MOVE_PLAYER_ID);
     }
 }
 

@@ -14,6 +14,11 @@ export default class BoardRenderer extends ActorRenderer {
             default: null,
             type: cc.Prefab
         };
+
+        this.playerPositionPrefab = {
+            default: null,
+            type: cc.Prefab
+        }
     }
 
     _initUI(data){
@@ -25,7 +30,7 @@ export default class BoardRenderer extends ActorRenderer {
     }
 
     hideStartBoardTimeLine(){
-        utils.hide(this.startBoardTimeLine);
+
     }
 }
 

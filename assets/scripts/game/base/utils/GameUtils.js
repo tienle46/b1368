@@ -4,12 +4,17 @@
 
 import app from 'app';
 import game from 'game';
+import utils from 'utils';
 import {Card} from 'game-components'
 const boardState = app.const.game.board.state;
 
 export default class GameUtils {
 
-    static convertToLocalBoardState(state) {
+    static isPlayingState(boardState) {
+        return boardState && boardState != boardState.READY;
+    }
+
+    static convertToLocalGameState(state) {
 
         // if (data && data.hasOwnProperty(app.keywords.DEAL_CARD_LIST_KEYWORD)) {
         //     state = boardState.DEAL_CARD;
@@ -72,17 +77,19 @@ export default class GameUtils {
     }
 
     static getRank(card, gameType) {
-        if (gameType == app.const.game.GAME_TYPE_MAU_BINH) {
-            if (card.rank == Card.RANK_AT) {
-                return Card.RANK_ACE;
+        if(gameType){
+            if (gameType == app.const.game.GAME_TYPE_MAU_BINH) {
+                if (card.rank == Card.RANK_AT) {
+                    return Card.RANK_ACE;
+                }
             }
-        }
 
-        if (gameType == app.const.game.GAME_TYPE_TIENLEN || gameType == app.const.game.GAME_TYPE_XAM) {
-            if (card.rank == Card.RANK_AT) {
-                return Card.RANK_ACE;
-            } else if (card.rank == Card.RANK_HAI) {
-                return Card.RANK_DEUCE;
+            if (gameType == app.const.game.GAME_TYPE_TIENLEN || gameType == app.const.game.GAME_TYPE_XAM) {
+                if (card.rank == Card.RANK_AT) {
+                    return Card.RANK_ACE;
+                } else if (card.rank == Card.RANK_HAI) {
+                    return Card.RANK_DEUCE;
+                }
             }
         }
 
@@ -91,5 +98,9 @@ export default class GameUtils {
 
     static getSuit(card, gameType) {
         return card.suit;
+    }
+
+    static getUserBalance(user){
+        return utils.getVariable(user, app.keywords.USER_VARIABLE_BALANCE, 0);
     }
 }

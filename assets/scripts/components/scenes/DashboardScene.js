@@ -1,6 +1,6 @@
 var app = require('app');
-var item = require('item');
 var BaseScene = require('BaseScene');
+import TopupDialogRub from 'TopupDialogRub';
 
 export default class DashboardScene extends BaseScene {
     constructor() {
@@ -24,11 +24,6 @@ export default class DashboardScene extends BaseScene {
         };
 
         this.topBar = {
-            default: null,
-            type: cc.Prefab
-        };
-
-        this.popUps = {
             default: null,
             type: cc.Prefab
         };
@@ -97,10 +92,12 @@ export default class DashboardScene extends BaseScene {
         const bottomBarNode = new cc.instantiate(this.bottomBar);
 
         bottomBarNode.getComponent('BottomBar').listenClickTopBarItem((buttonType) => {
-            console.log("dashboard:" + buttonType);
             switch (buttonType) {
                 case app.bottomBarButtonType.NAPXU:
                     this.addNapXuPopUp();
+                    break;
+                case app.bottomBarButtonType.EXCHANGEAWARD:
+                    this.addExchangePopUp();
                     break;
                 default:
                     this.addPopup();
@@ -121,9 +118,51 @@ export default class DashboardScene extends BaseScene {
     }
 
     addNapXuPopUp() {
-        var popupBase = new cc.instantiate(this.popUps);
-        popupBase.position = cc.p(0, 0);
-        this.node.addChild(popupBase, 10);
+        // var popupBase = new cc.instantiate(this.popUps);
+        // popupBase.position = cc.p(0, 0);
+        // this.node.addChild(popupBase, 10);
+
+        let tabs = [{
+            title: 'Thẻ cào',
+            value: 'tab_card'
+        }, {
+            title: 'SMS',
+            value: 'tab_sms'
+        }, {
+            title: 'IAP',
+            value: 'tab_iap'
+        }, {
+            title: 'kiot',
+            value: 'tab_kiot'
+        }];
+
+        let options = {
+            itemHeight: 26.5
+        };
+
+        let tabOptions = { tabs, options };
+        TopupDialogRub.show(this.node, tabOptions);
+    }
+
+    addExchangePopUp() {
+        let tabs = [{
+            title: 'Thẻ cào',
+            value: 'tab_exchange_card'
+        }, {
+            title: 'SMS',
+            value: 'tab_sms'
+        }, {
+            title: 'IAP',
+            value: 'tab_iap'
+        }];
+
+        let options = {
+            itemHeight: 26.5,
+            tabBodyPrefabType: 'exchange'
+        };
+
+        let tabOptions = { tabs, options };
+        TopupDialogRub.show(this.node, tabOptions);
     }
 }
 

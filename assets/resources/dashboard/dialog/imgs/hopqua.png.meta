@@ -1,0 +1,30 @@
+{
+  "ver": "1.0.0",
+  "uuid": "8e99268b-393e-49ac-ab78-893d32b6770b",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "subMetas": {
+    "hopqua": {
+      "ver": "1.0.3",
+      "uuid": "d9e06aa9-bea2-486d-832f-bbb775419909",
+      "rawTextureUuid": "8e99268b-393e-49ac-ab78-893d32b6770b",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": -0.5,
+      "trimX": 0,
+      "trimY": 1,
+      "width": 118,
+      "height": 125,
+      "rawWidth": 118,
+      "rawHeight": 126,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}

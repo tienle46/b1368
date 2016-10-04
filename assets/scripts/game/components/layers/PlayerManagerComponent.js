@@ -3,6 +3,6 @@
  */
 
 import app from 'app';
-import PlayerManager from 'PlayerManager';
+import PlayerManager from 'GamePlayers';
 
 app.createComponent(PlayerManager);

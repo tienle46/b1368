@@ -9,18 +9,17 @@ export default class PlayerCard extends Player {
         super(board, user);
 
         this.cards = [];
+        this.remainCardCount = 0;
     }
 
     setCards(cards){
-
         console.log("Set card to player");
-
         this.cards = cards;
         this.renderer.renderCards(cards);
     }
 
     createFakeCards(size){
-        //TODO
+
     }
 
     onLoad(){
@@ -35,6 +34,11 @@ export default class PlayerCard extends Player {
 
     findCards(cardModels){
         return this.renderer.findCards(cardModels);
+    }
+
+    onGameEnding(data = {}){
+        super.onGameEnding(data);
+        this.renderer.clearCards();
     }
 
 }

@@ -22,9 +22,6 @@ export default class BoardCardTurnBase extends BoardCard {
 
     _init(scene){
         super._init(scene);
-
-
-        this.deckCards = [];
         this.playedCards = [];
         this.turnAdapter._init(scene);
 
@@ -43,15 +40,16 @@ export default class BoardCardTurnBase extends BoardCard {
 
     _resetBoard(){
         super._resetBoard();
-
-        this.deckCards = [];
         this.playedCards = [];
     }
 
     _cleanTurnRoutineData(lastPlayedId){
-        this.deckCards = [];
         this.playedCards = [];
         this.renderer.cleanDeckCards();
+    }
+
+    addToDeck(cards){
+        this.renderer.deckCards.addCards(cards);
     }
 
     getTurnDuration(){
@@ -73,7 +71,7 @@ export default class BoardCardTurnBase extends BoardCard {
 
     _handleBoardTurnBaseTruePlay(data){
 
-        console.log("_handleBoardTurnBaseTruePlay")
+        console.log("_handleBoardTurnBaseTruePlay", data);
 
         let turnDuration = utils.getValue(data, Keywords.TURN_BASE_PLAYER_TURN_DURATION)
         if (turnDuration) {
