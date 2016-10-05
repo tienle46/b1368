@@ -54,11 +54,11 @@ export default class DeckCardRenderer extends Component {
             if (this.cardList2.cards.length > 0) {
                 this.cardList2.clear();
             }
-            this.cardList1.transferCards(this.cardList1.cards, this.cardList2);
+            this.cardList1.transfer(this.cardList1.cards, this.cardList2);
         }
 
         if (srcCardList) {
-            srcCardList.transferCards(cards, this.cardList1)
+            srcCardList.transfer(cards, this.cardList1)
         } else {
             this.cardList1.setCards(cards);
         }
@@ -68,8 +68,8 @@ export default class DeckCardRenderer extends Component {
         let cardListNode = cc.instantiate(this.cardListPrefab);
         let cardList = cardListNode.getComponent('CardList');
         cardList.setAnchorPoint(0.5, 0.5);
-        cardList._setMaxHeight(CardList.HEIGHT * DeckCardRenderer.DEFAULT_SCALE);
-        cardList._setMaxWidth(500);
+        cardList.setScale(DeckCardRenderer.DEFAULT_SCALE);
+        cardList.setMaxDimension(500);
         return cardList;
     }
 

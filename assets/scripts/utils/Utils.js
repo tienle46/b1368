@@ -3,7 +3,11 @@
  */
 
 export default class Utils {
-    
+
+    static isEmpty(str){
+        return !str || (Utils.isString(str) && str.trim().length == 0);
+    }
+
     static isEmptyArray(arr){
         return !arr || arr.length == 0; 
     }
@@ -17,7 +21,7 @@ export default class Utils {
     }
 
     static isString(value) {
-        return typeof value === 'boolean';
+        return typeof value === 'string';
     }
 
     static isObject(value) {

@@ -362,7 +362,10 @@
     "gameMenuLayer": {
       "__id__": 14
     },
-    "boardPrefab": null
+    "boardPrefab": null,
+    "gameResultPopupPrefab": {
+      "__uuid__": "13af3e19-4431-492e-bc6d-c0412c0ab05a"
+    }
   },
   {
     "__type__": "cc.Node",

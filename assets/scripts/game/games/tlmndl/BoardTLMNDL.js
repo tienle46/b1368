@@ -72,6 +72,82 @@ export default class BoardTLMNDL extends BoardCardTurnBase {
          * Get current player win rank. TLMNDL don't need to get player win rank
          */
     }
+
+    onBoardEnding(data) {
+
+        let playerNames = this.scene.gamePlayers.getPlayerNames();
+
+        let playerIds = utils.getValue(data, Keywords.GAME_LIST_PLAYER);
+
+        let balanceChangeAmounts = this._getPlayerBalanceChangeAmounts(playerIds, data);
+        let playerHandCards = this._getPlayerHandCards(playerIds, data);
+        let gameResultInfos = this._getGameResultInfos(playerIds, data);
+        let resultIconPaths = this._getGameResultIconPaths(playerIds, data);
+
+        super.onBoardEnding(data);
+
+        let models = Object.keys(playerNames).map(id => {
+            return {
+                playerName: playerNames[id],
+                balanceChanged: balanceChangeAmounts[id],
+                iconPath: resultIconPaths[id],
+                info: gameResultInfos[id],
+                cards: playerHandCards[id]
+            }
+        });
+
+        this.scene.showGameResult(models);
+    }
+
+    _getGameResultIconPaths(playerIds, data){
+        let thoiData = this._getThoiData(data);
+        let congPlayerIds = this._getCongData(data);
+
+        let iconMaps = {};
+
+        congPlayerIds && congPlayerIds.forEach(id => {
+            iconMaps[id] = 'game/images/ingame_bet';
+        });
+
+        return iconMaps;
+    }
+
+    _getGameResultInfos(playerIds = [], data){
+        let thoiData = this._getThoiData(data);
+        let congPlayerId = this._getCongData(data);
+
+        return playerIds.map(id => 'Chưa có thông tin');
+    }
+
+    _getThoiData(data) {
+        let thoiData = {};
+
+        let thoiPlayerIds = utils.getValue(data, Keywords.THOI_PLAYER_LIST);
+        if (thoiPlayerIds) {
+
+            let thoiTypeArrayIndex = 0;
+            const thoiPlayerTypesCount = utils.getValue(data, Keywords.THOI_PLAYER_TYPES_COUNT);
+            const thoiTypesArray = utils.getValue(data, Keywords.THOI_TYPES_ARRAY);
+            const thoiTypeCountArray = utils.getValue(data, Keywords.THOI_TYPE_COUNT);
+
+            thoiPlayerIds && thoiTypesArray && thoiPlayerIds.forEach((id, index) => {
+                let typeCount = thoiPlayerTypesCount[index];
+
+                let types = thoiTypesArray.slice(thoiTypeArrayIndex, thoiTypeArrayIndex + typeCount);
+                let counts = thoiTypeCountArray.slice(thoiTypeCountArray, thoiTypeArrayIndex, thoiTypeArrayIndex + typeCount);
+
+                thoiData[id] = {types: types, counts: counts};
+
+                thoiTypeArrayIndex += typeCount;
+            });
+
+        }
+    }
+
+    _getCongData(data) {
+        return utils.getValue(data, Keywords.CONG_PLAYER_LIST, []);
+    }
+
 }
 
 app.createComponent(BoardTLMNDL);

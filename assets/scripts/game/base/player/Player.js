@@ -46,6 +46,15 @@ export default class Player extends Actor {
         this.scene.on(Events.ON_PLAYER_SET_READY_STATE, this._onSetReadyState, this);
         this.scene.on(Events.ON_PLAYER_CHANGE_BALANCE, this._onPlayerChangeBalance, this);
         this.scene.on(Events.ON_USER_UPDATE_BALANCE, this._onUserUpdateBalance, this);
+        this.scene.on(Events.ON_PLAYER_SET_BALANCE, this._onPlayerSetBalance, this);
+    }
+
+    _onPlayerSetBalance(id, newBalance){
+        if(this.id = id){
+            let balanceVariable = this.player.user.variables[Keywords.USER_VARIABLE_BALANCE];
+            var newBalanceVariable = new SFS2X.Entities.Variables.SFSUserVariable(balanceVariable.name, newBalance, balanceVariable.type);
+            this.player.user._setVariable(newBalanceVariable);
+        }
     }
 
     _onPlayerChangeBalance(id, newBalance) {
@@ -152,7 +161,7 @@ export default class Player extends Actor {
     }
 
     onGameBegin(data, isJustJoined) {
-
+        this._reset();
     }
 
     onGameStarting(data, isJustJoined) {
@@ -177,6 +186,10 @@ export default class Player extends Actor {
         if(isJustJoined){
             this.onGamePlaying({}, isJustJoined);
         }
+    }
+
+    _reset(){
+
     }
 
 }

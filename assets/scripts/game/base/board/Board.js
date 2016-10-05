@@ -83,7 +83,7 @@ export default class Board extends Actor {
     /**
      * @abstract
      */
-    get gameType(){
+    get gameType() {
     }
 
     setState(state) {
@@ -191,7 +191,7 @@ export default class Board extends Actor {
         return this._shouldStartReadyTimeLine() || this.isEnding();
     }
 
-    startTimeLine(){
+    startTimeLine() {
         //TODO
     }
 
@@ -232,7 +232,8 @@ export default class Board extends Actor {
         //TODO Process board state changed here
     }
 
-    _resetBoard(){
+    _resetBoard() {
+        this.scene.hideGameResult();
         this.renderer && this.renderer._resetBoard();
     }
 
@@ -240,8 +241,8 @@ export default class Board extends Actor {
         this._resetBoard();
 
         let boardTimeLine = utils.getValue(data, Keywords.BOARD_PHASE_DURATION);
-        if(boardTimeLine){
-            if(this.scene.gamePlayers.meIsOwner){
+        if (boardTimeLine) {
+            if (this.scene.gamePlayers.meIsOwner) {
                 boardTimeLine *= 2;
             }
 
@@ -252,7 +253,7 @@ export default class Board extends Actor {
     }
 
     onBoardStarting(data = {}, isJustJoined) {
-        if(isJustJoined){
+        if (isJustJoined) {
             this.onBoardStarting({}, isJustJoined);
         }
 
@@ -261,7 +262,7 @@ export default class Board extends Actor {
     }
 
     onBoardStarted(data = {}, isJustJoined) {
-        if(isJustJoined){
+        if (isJustJoined) {
             this.onBoardStarting({}, isJustJoined);
         }
 
@@ -269,8 +270,8 @@ export default class Board extends Actor {
         //TODO
     }
 
-    onBoardPlaying(data = {}, isJustJoined){
-        if(isJustJoined){
+    onBoardPlaying(data = {}, isJustJoined) {
+        if (isJustJoined) {
             this.onBoardStarting({}, isJustJoined);
         }
 
@@ -279,12 +280,48 @@ export default class Board extends Actor {
     }
 
     onBoardEnding(data = {}, isJustJoined) {
-        if(isJustJoined){
+        if (isJustJoined) {
             this.onBoardStarting({}, isJustJoined);
         }
 
         this.state = app.const.game.board.state.ENDING;
-        //TODO
+
+        // TODO Khi cần show hiệu ứng thì dùng thông tin này để hiển thị các trường hợp đặc biệt
+        // Byte tbBoardWinType = resObj.getByte(SmartfoxKeyword.KEYWORD_WIN_TYPE);
+        // if (tbBoardWinType != null) {
+        //     setWinType(tbBoardWinType.byteValue());
+        // }
+
+        this._handleSetPlayerBalance();
+    }
+
+    _getPlayerBalanceChangeAmounts(playerIds, data){
+
+        let balanceChanges = {};
+        let currentPlayerBalances = this.scene.gamePlayers.getCurrentPlayerBalances();
+        let playersBalance = utils.getValue(data, Keywords.USER_BALANCE, []);
+
+        playersBalance && playerIds && playerIds.forEach((id, i) => {
+            let newBalance = playersBalance[i];
+            let currentBalance = currentPlayerBalances[id] || 0;
+            balanceChanges[id] = newBalance - currentBalance;
+        });
+
+        return balanceChanges;
+    }
+
+    _handleSetPlayerBalance(playerIds, data) {
+
+        let playersBalance = utils.getValue(data, Keywords.USER_BALANCE, []);
+        let playersExp = utils.getValue(data, Keywords.BOARD_EXP_POINT_LIST, []);
+
+        playersBalance && playersExp && playerIds.forEach((id, i) => {
+            let newBalance = playersBalance[i];
+            let newExp = playersExp[i];
+
+            this.scene.emit(Events.ON_PLAYER_SET_BALANCE, id, newBalance);
+            //TODO chưa xử lý exp
+        });
     }
 
     onBoardDestroy() {
@@ -335,10 +372,10 @@ export default class Board extends Actor {
         }
     }
 
-    _initPlayingData(data){
+    _initPlayingData(data) {
 
     }
 
-    _loadGamePlayData(data){
+    _loadGamePlayData(data) {
     }
 }

@@ -100,7 +100,8 @@ export default class PlayerRenderer extends ActorRenderer {
 
     setVisibleReady(visible) {
         // utils.setActive(this.readyIcon, visible);
-        this.node.setOpacityModifyRGB(visible ? 255 : 120);
+        this.node.cascadeOpacity = true;
+        this.node.opacity = visible ? 255 : 100;
     }
 }
 

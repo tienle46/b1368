@@ -9,7 +9,6 @@ import Emitter from 'emitter';
 class GameSystem {
 
     constructor() {
-        this._currentScene = null;
 
         this.eventEmitter = new Emitter;
 
@@ -26,17 +25,20 @@ class GameSystem {
      */
     loadScene(sceneName, onLaunch, onShown){
         cc.director.loadScene(sceneName, onLaunch);
-        let currentScene = cc.director.getScene();
-        if (currentScene)  currentScene.onShown = onShown;
+        if (this.currentScene)  this.currentScene.onShown = onShown;
     }
 
 
-    /**
-     *
-     * @returns {BaseScene}
-     */
-    currentScene(){
-        return this._currentScene;
+    // /**
+    //  *
+    //  * @returns {BaseScene}
+    //  */
+    // currentScene(){
+    //     return this._currentScene;
+    // }
+
+    get currentScene(){
+        return cc.director.getScene();
     }
 
 
@@ -45,7 +47,7 @@ class GameSystem {
      * @param {BaseScene} scene - Current scene
      */
     setCurrentScene(scene){
-        this.currentScene = scene;
+        this._currentScene = scene;
     }
 
     info(title, message){
@@ -86,19 +88,19 @@ class GameSystem {
 
     emit(name, ...args){
         this.eventEmitter.emit(name, ...args);
-        this._emitToScene(name, ...args);
+        // this._emitToScene(name, ...args);
     }
 
-    /**
-     *
-     * This func is in considering because it's conflict with event of cocos node
-     *
-     * @deprecated
-     */
-    _emitToScene(){
-        this._currentScene && this._currentScene.node.emit(name, ...args);
-
-    }
+    // /**
+    //  *
+    //  * This func is in considering because it's conflict with event of cocos node
+    //  *
+    //  * @deprecated
+    //  */
+    // _emitToScene(){
+    //     this.currentScene && this.currentScene.emit(name, ...args);
+    //
+    // }
 
 
     addListener(eventName, listener, context){

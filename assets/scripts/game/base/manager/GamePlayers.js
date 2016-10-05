@@ -3,7 +3,7 @@
  */
 
 import app from 'app';
-import utils from 'utils';
+import {utils, GameUtils} from 'utils';
 import SFS2X from 'SFS2X';
 import Component from 'components';
 import {gameManager, Player} from 'game';
@@ -430,6 +430,20 @@ export default class GamePlayers extends Component {
                 player.createFakeCards();
             }
         });
+    }
+
+    getCurrentPlayerBalances(){
+        return this.players.map(player => GameUtils.getUserBalance(player.user));
+    }
+
+    getPlayerNames(){
+        let playerNames = {};
+
+        this.players.forEach(player => {
+            playerNames[player.id] = player.user.name
+        });
+
+        return playerNames;
     }
 }
 

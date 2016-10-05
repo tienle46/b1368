@@ -87,4 +87,8 @@ export default class BoardCardTurnBase extends BoardCard {
     onBoardPlaying(data){
 
     }
+
+    onBoardEnding(data){
+
+    }
 }
