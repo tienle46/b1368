@@ -284,7 +284,7 @@ export default class CardList extends Component {
                 childPosition.x -= this.cards.length * estimateCardDistance;
             }
             else if (this._isCenterAlignment()){
-                let newStartXPosition = (this._getMaxSpaceAvailable() * (0.5 - this.node.anchorX) - estimateCardDistance * (this.cards.length)) / 2 - this._space  * this.node.anchorX;
+                let newStartXPosition = (this._getMaxSpaceAvailable() * (0.5 - this.node.anchorX) - estimateCardDistance * (this.cards.length)) / 2 - this._space * (0.5 - this.node.anchorX);
                 childPosition.x = newStartXPosition + this.cards.length * estimateCardDistance;
             }
         }
