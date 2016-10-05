@@ -42,11 +42,10 @@ cc.Class({
     },
     start(){
         this.player2.getComponent('CardList').setProperties({maxDimension: 500});
-        this.player2.getComponent('CardList').setAnchorPoint(cc.v2(0,0));
-        // this.player2.getComponent('CardList')._test([37,7,37,7,9,15,18,48,40,50,22,20,14,52,16]);
+        this.player2.getComponent('CardList').setAnchorPoint(0,0);
+        this.player2.getComponent('CardList').drawCards(GameUtils.convertBytesToCards([37,7,9,15,18,48,40,50,22,20,14,52,16]));
         //
-        //
-        this.player3.getComponent('CardList').setProperties({scale: 0.5, maxDimension: 200, orientation: CardList.VERTICAL, alignment: CardList.ALIGN_BOTTOM_LEFT});
+        this.player4.getComponent('CardList').setProperties({scale: 0.5, maxDimension: 200, orientation: CardList.VERTICAL, alignment: CardList.ALIGN_BOTTOM_LEFT});
         this.player4.getComponent('CardList').setAnchorPoint(0, 0);
         this.player4.getComponent('CardList').drawCards(GameUtils.convertBytesToCards([37,7,37,7,9,15]));
         //
@@ -54,9 +53,6 @@ cc.Class({
         this.player3.getComponent('CardList').setAnchorPoint(0.5, 0.5);
         this.player3.getComponent('CardList').drawCards(GameUtils.convertBytesToCards([37,7,37,7,9,15]));
 
-        this.player3.getComponent('CardList').setProperties({scale: 0.5, maxDimension: 300, alignment: CardList.ALIGN_BOTTOM_LEFT});
-        this.player3.getComponent('CardList').setAnchorPoint(0, 0);
-        this.player2.getComponent('CardList').drawCards(GameUtils.convertBytesToCards([37,7,9,15,18,48,40,50,22,20,14,52,16]));
     },
 
     // called every frame, uncomment this function to activate update callback
