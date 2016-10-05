@@ -230,7 +230,7 @@ export default class CardList extends Component {
             //Với trường hợp alignment là center, mỗi card được add vào đều trigger sự kiện sắp xếp lại card
             this._updateCardSpacing();
 
-            let newStartXPosition = (this._getMaxSpaceAvailable() - this._getCardDistance() * (this.cards.length - 1)) / 2 - this._space  * this.node.anchorX;
+            let newStartXPosition = (this._getMaxSpaceAvailable() * (0.5 - this.node.anchorX) - this._getCardDistance() * (this.cards.length - 1)) / 2 - this._space  * (0.5 - this.node.anchorX);
             this.cards.forEach((card, index)=>{
                 card.node.x = newStartXPosition + index * this._getCardDistance();
                 card.node.setLocalZOrder(index);
@@ -251,8 +251,7 @@ export default class CardList extends Component {
                 return cc.v2(x,0);
             }
             else if (this._isCenterAlignment()){
-                //WARNING : Không có nhiều ý nghĩa vì sẽ được tính toán lại ở hàm _adjustCardsPosition()
-                let x = this._getMaxSpaceAvailable() * (0.5 - this.node.anchorX) - this._space * this.node.anchorX;
+                let x = this._getMaxSpaceAvailable() * (0.5 - this.node.anchorX) - this._space * (0.5 - this.node.anchorX);
                 return cc.v2(x,0);
             }
         }
@@ -285,7 +284,7 @@ export default class CardList extends Component {
                 childPosition.x -= this.cards.length * estimateCardDistance;
             }
             else if (this._isCenterAlignment()){
-                let newStartXPosition = (this._getMaxSpaceAvailable() - estimateCardDistance * (this.cards.length)) / 2 - this._space  * this.node.anchorX;
+                let newStartXPosition = (this._getMaxSpaceAvailable() * (0.5 - this.node.anchorX) - estimateCardDistance * (this.cards.length)) / 2 - this._space  * this.node.anchorX;
                 childPosition.x = newStartXPosition + this.cards.length * estimateCardDistance;
             }
         }
@@ -504,7 +503,7 @@ export default class CardList extends Component {
             const worldPoint = card.node.parent.convertToWorldSpaceAR(card.node.getPosition());
             const localDestinationPoint = destCardListNode.convertToNodeSpaceAR(worldPoint);
 
-            card.node.removeFromParent(true);
+            card.node.removeFromParent(false);
 
             const newCardToDest = cardListComponent._createNewCard(card.byteValue,true);
 
