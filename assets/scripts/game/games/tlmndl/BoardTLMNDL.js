@@ -9,6 +9,8 @@ import {Keywords} from 'core';
 import {Events} from 'events';
 import BoardCardTurnBase from 'BoardCardTurnBase';
 import PlayerTLMNDL from 'PlayerTLMNDL';
+import TLMNUtils from 'TLMNUtils';
+import Card from 'Card';
 
 export default class BoardTLMNDL extends BoardCardTurnBase {
 
@@ -81,8 +83,7 @@ export default class BoardTLMNDL extends BoardCardTurnBase {
 
         let balanceChangeAmounts = this._getPlayerBalanceChangeAmounts(playerIds, data);
         let playerHandCards = this._getPlayerHandCards(playerIds, data);
-        let gameResultInfos = this._getGameResultInfos(playerIds, data);
-        let resultIconPaths = this._getGameResultIconPaths(playerIds, data);
+        let {gameResultInfos, resultIconPaths} = this._getGameResultInfos(playerIds, playerHandCards, data);
 
         super.onBoardEnding(data);
 
@@ -99,24 +100,86 @@ export default class BoardTLMNDL extends BoardCardTurnBase {
         this.scene.showGameResult(models);
     }
 
-    _getGameResultIconPaths(playerIds, data){
+    _getGameResultIconPaths(playerIds, data) {
         let thoiData = this._getThoiData(data);
-        let congPlayerIds = this._getCongData(data);
+        let congPlayerIds = this._getCongPlayers(data);
 
         let iconMaps = {};
 
         congPlayerIds && congPlayerIds.forEach(id => {
-            iconMaps[id] = 'game/images/ingame_bet';
+            iconMaps[id] = 'game/images/ingame_cong';
         });
 
         return iconMaps;
     }
 
-    _getGameResultInfos(playerIds = [], data){
+    _getGameResultInfos(playerIds = [], playerHandCards, data) {
         let thoiData = this._getThoiData(data);
-        let congPlayerId = this._getCongData(data);
+        let congPlayerIds = this._getCongPlayers(data);
 
-        return playerIds.map(id => 'Chưa có thông tin');
+        /**
+         * Get game result icon
+         * @type {Array}
+         */
+        let resultIconPaths = {};
+        let winType = utils.getValue(data, Keywords.WIN_TYPE);
+        let playersWinRanks = utils.getValue(data, Keywords.GAME_LIST_WIN);
+        playerIds.forEach((id, i) => {
+            if (playersWinRanks[i] == app.const.game.rank.GAME_RANK_FIRST) {
+                switch (winType) {
+                    case app.const.game.TLMN_WIN_TYPE_AN_TRANG:
+                        resultIconPaths[id] = 'game/images/ingame_an_trang';
+                        break;
+                    case app.const.game.TLMN_WIN_TYPE_DUT_BA_BICH:
+                        resultIconPaths[id] = 'game/images/ingame_dut_ba_bich';
+                        break;
+                    case app.const.game.TLMN_WIN_TYPE_LUNG:
+                        resultIconPaths[id] = 'game/images/ingame_lung';
+                        break;
+                    default:
+                        resultIconPaths[id] = 'game/images/ingame_thang';
+                }
+            } else {
+                switch (winType) {
+                    case app.const.game.TLMN_WIN_TYPE_THOI_BA_BICH:
+                        if (GameUtils.containsCard(playerHandCards[id], Card.from(Card.RANK_BA, Card.SUIT_BICH)))
+                            resultIconPaths[id] = 'game/images/ingame_thoi_ba_bich';
+                        break;
+                    default:
+                        resultIconPaths[id] = 'game/images/ingame_thua';
+                }
+            }
+        });
+
+        congPlayerIds && congPlayerIds.forEach(id => resultIconPaths[id] = 'game/images/ingame_cong');
+
+        /**
+         * Get game result detail info
+         * @type {Array}
+         */
+        let gameResultInfos = {};
+        playerIds.map(id => {
+            gameResultInfos[id] = playerHandCards[id] ? `${playerHandCards[id].length} lá` : "";
+        });
+
+        Object.keys(thoiData).forEach(id => {
+            let {types, counts} = thoiData[id];
+
+            if (types && types.length > 0) {
+                let str = `${app.res.string('game_thoi')} `;
+
+                types.forEach((type, i) => {
+                    let typeName = TLMNUtils.getTLMNThoiString(type);
+                    let subfix = i < types.length - 1 ? ', ' : '';
+
+                    str += `${counts[i]} ${typeName}${subfix}`;
+                });
+
+                gameResultInfos[id] = str + (!utils.isEmpty(gameResultInfos[id]) ? `, ${gameResultInfos[id]}` : '');
+            }
+        });
+
+        return {gameResultInfos: gameResultInfos, resultIconPaths: resultIconPaths};
     }
 
     _getThoiData(data) {
@@ -134,7 +197,7 @@ export default class BoardTLMNDL extends BoardCardTurnBase {
                 let typeCount = thoiPlayerTypesCount[index];
 
                 let types = thoiTypesArray.slice(thoiTypeArrayIndex, thoiTypeArrayIndex + typeCount);
-                let counts = thoiTypeCountArray.slice(thoiTypeCountArray, thoiTypeArrayIndex, thoiTypeArrayIndex + typeCount);
+                let counts = thoiTypeCountArray.slice(thoiTypeArrayIndex, thoiTypeArrayIndex + typeCount);
 
                 thoiData[id] = {types: types, counts: counts};
 
@@ -142,9 +205,11 @@ export default class BoardTLMNDL extends BoardCardTurnBase {
             });
 
         }
+
+        return thoiData;
     }
 
-    _getCongData(data) {
+    _getCongPlayers(data) {
         return utils.getValue(data, Keywords.CONG_PLAYER_LIST, []);
     }
 

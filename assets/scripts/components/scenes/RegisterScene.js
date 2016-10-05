@@ -1,5 +1,6 @@
 var BaseScene = require('BaseScene');
 var app = require('app');
+import SegmentControlRub from 'SegmentControlRub';
 
 const CAPTCHA_LENGTH = 4;
 const MINIMUM_PASSWORD = 6;

@@ -223,7 +223,10 @@ export default class GameEventHandler {
 
     _handleChangePlayerBalance(data){
         let playerIds = utils.getValue(Keywords.GAME_LIST_PLAYER);
-        let playersBalances = utils.getValue(Keywords.USER_VARIABLE_BALANCE);
+        let playersBalances = utils.getValue(Keywords.USER_BALANCE);
+
+        console.debug("_handleChangePlayerBalance: ", playersBalances);
+
         playerIds && playersBalances && playerIds.forEach((id, index) => {
             this.scene.emit(Events.ON_PLAYER_CHANGE_BALANCE, id, playersBalances[index]);
         });

@@ -5,6 +5,7 @@
 import app from 'app';
 import {Component} from 'components';
 import {Card, CardList} from 'game-components';
+import GameUtils from 'GameUtils';
 
 export default class DeckCardRenderer extends Component {
     static get DEFAULT_SCALE() {
@@ -50,11 +51,15 @@ export default class DeckCardRenderer extends Component {
 
     _addNewCardList(cards, srcCardList) {
 
+        console.debug("_addNewCardList: ", cards, this.cardList1._align, this.cardList2._align)
+
         if (this.cardList1.cards.length > 0) {
             if (this.cardList2.cards.length > 0) {
                 this.cardList2.clear();
             }
-            this.cardList1.transfer(this.cardList1.cards, this.cardList2);
+
+            console.debug("transfer cards: ", this.cardList1.cards)
+            this.cardList1.transfer(this.cardList1.getRawCards(), this.cardList2);
         }
 
         if (srcCardList) {
@@ -62,14 +67,14 @@ export default class DeckCardRenderer extends Component {
         } else {
             this.cardList1.setCards(cards);
         }
+
     }
 
     _createCardList() {
         let cardListNode = cc.instantiate(this.cardListPrefab);
         let cardList = cardListNode.getComponent('CardList');
+        cardList.setProperties({scale: DeckCardRenderer.DEFAULT_SCALE, x: 0, y: 0, maxDimension: 500})
         cardList.setAnchorPoint(0.5, 0.5);
-        cardList.setScale(DeckCardRenderer.DEFAULT_SCALE);
-        cardList.setMaxDimension(500);
         return cardList;
     }
 

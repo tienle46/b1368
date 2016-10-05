@@ -33,6 +33,7 @@ export default class PlayerTurnBaseAdapter extends GameAdapter {
         this.scene.on(Events.HANDLE_LOSE_TURN, this._handleLoseTurn, this);
         this.scene.on(Events.HANDLE_SKIP_TURN, this._handleSkipTurn, this);
         this.scene.on(Events.ON_GAME_STATE_ENDING, this._onGameEnding, this);
+        this.scene.on(Events.CLEAN_TURN_ROUTINE_DATA, this._cleanTurnRoutineData, this);
     }
 
     isTurn() {
@@ -41,6 +42,13 @@ export default class PlayerTurnBaseAdapter extends GameAdapter {
 
     isSkippedTurn () {
         return this.player.skippedTurn || (this.board.lastMove && this.id == this.board.lastMove.id);
+    }
+
+    _cleanTurnRoutineData(){
+        console.debug("player turn adapter (CLEAN_TURN_ROUTINE_DATA): ")
+        this.preTurnPlayerId = 0;
+        this.currentTurnPlayerId = 0;
+        this.player.skippedTurn = false;
     }
 
     _handleSkipTurn(data){
@@ -64,7 +72,7 @@ export default class PlayerTurnBaseAdapter extends GameAdapter {
         this.player.turnDuration = duration;
     }
 
-    _handleChangeTurn(turnPlayerId, isFirstTurn){
+    _handleChangeTurn(turnPlayerId){
         this.preTurnPlayerId = this.currentTurnPlayerId;
         this.currentTurnPlayerId = turnPlayerId;
 
@@ -79,7 +87,7 @@ export default class PlayerTurnBaseAdapter extends GameAdapter {
             let preTurnPlayer = this.scene.gamePlayers.findPlayer(this.preTurnPlayerId);
             preTurnPlayer && preTurnPlayer.turnAdapter.onLoseTurn();
 
-            this.onTurn(isFirstTurn);
+            this.onTurn();
         }
     }
 
@@ -122,7 +130,7 @@ export default class PlayerTurnBaseAdapter extends GameAdapter {
         }
     }
 
-    onTurn(isFirstTurn){
+    onTurn(){
 
         this.scene.emit(Events.ON_PLAYER_TURN, this.player.id);
 
@@ -130,8 +138,10 @@ export default class PlayerTurnBaseAdapter extends GameAdapter {
 
         //TODO play sound
 
+        let showPlayControlOnly = this.preTurnPlayerId == 0;
+
         if(this.player.isItMe()) {
-            this.scene.emit(Events.SHOW_ON_TURN_CONTROLS, isFirstTurn)
+            this.scene.emit(Events.SHOW_ON_TURN_CONTROLS, showPlayControlOnly);
         }
     }
 

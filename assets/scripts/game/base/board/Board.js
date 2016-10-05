@@ -292,17 +292,20 @@ export default class Board extends Actor {
         //     setWinType(tbBoardWinType.byteValue());
         // }
 
-        this._handleSetPlayerBalance();
+
+        this._handleSetPlayerBalance(data);
     }
 
     _getPlayerBalanceChangeAmounts(playerIds, data){
 
         let balanceChanges = {};
         let currentPlayerBalances = this.scene.gamePlayers.getCurrentPlayerBalances();
-        let playersBalance = utils.getValue(data, Keywords.USER_BALANCE, []);
+        let newPlayersBalance = utils.getValue(data, Keywords.USER_BALANCE, []);
 
-        playersBalance && playerIds && playerIds.forEach((id, i) => {
-            let newBalance = playersBalance[i];
+        console.debug("currentPlayerBalances: ", currentPlayerBalances,newPlayersBalance)
+
+        playerIds && playerIds.forEach((id, i) => {
+            let newBalance = newPlayersBalance[i];
             let currentBalance = currentPlayerBalances[id] || 0;
             balanceChanges[id] = newBalance - currentBalance;
         });
@@ -310,12 +313,15 @@ export default class Board extends Actor {
         return balanceChanges;
     }
 
-    _handleSetPlayerBalance(playerIds, data) {
+    _handleSetPlayerBalance(data) {
 
+        let playerIds = utils.getValue(data, Keywords.GAME_LIST_PLAYER);
         let playersBalance = utils.getValue(data, Keywords.USER_BALANCE, []);
         let playersExp = utils.getValue(data, Keywords.BOARD_EXP_POINT_LIST, []);
 
-        playersBalance && playersExp && playerIds.forEach((id, i) => {
+        console.debug("_handleSetPlayerBalance: ", playersBalance, playersExp);
+
+        playerIds && playersBalance && playersExp && playerIds.forEach((id, i) => {
             let newBalance = playersBalance[i];
             let newExp = playersExp[i];
 

@@ -108,20 +108,27 @@ export default class GamePlayers extends Component {
         if (player) {
             player._init(this.board, user);
             this._setPlayerPosition(playerNode, player);
-            this._addToPlayerLayer(playerNode);
+            this._addToPlayerLayer(playerNode, player);
             this._addPlayerToList(player);
         }
 
         return player;
     }
 
-    _addToPlayerLayer(playerNode) {
+    _addToPlayerLayer(playerNode, player) {
         playerNode.parent = this.scene.playerLayer;
+        this.playerPositions.hideInviteButtonByPlayerId(player.id);
     }
 
     _setPlayerPosition(playerNode, player) {
-        let anchor = this.playerPositions.getPlayerAnchorByPlayerId(player.id, player.isItMe());
-        playerNode && anchor && playerNode.setPosition(anchor.getPosition());
+        if(!playerNode || !player){
+            return;
+        }
+
+        let anchorIndex = this.playerPositions.getPlayerAnchorIndex(player.id, player.isItMe());
+        let anchor = this.playerPositions.getPlayerAnchor(anchorIndex);
+        anchor && playerNode.setPosition(anchor.getPosition());
+        player.anchorIndex = anchorIndex;
     }
 
     /**
@@ -160,11 +167,11 @@ export default class GamePlayers extends Component {
     }
 
     isOwner(playerId){
-        return this.playerId == this.ownerId;
+        return playerId == this.ownerId;
     }
 
     meIsOwner(){
-        return this.ownerId == this.me.id;
+        return this.me && this.ownerId == this.me.id;
     }
 
     _setOwner(owner, ownerId){
@@ -204,11 +211,15 @@ export default class GamePlayers extends Component {
     }
 
     isMePlaying() {
-        return !this.isSpectator() && this.me.isPlaying();
+        return this.me && this.me.isPlaying();
+    }
+
+    isMePlayGame(){
+        return this.me;
     }
 
     isShouldMeReady() {
-        return this.Me && !this.me.isOwner() && !this.me.isReady();
+        return this.me && !this.me.isOwner() && !this.me.isReady();
     }
 
     findPlayer(idOrName) {
@@ -247,6 +258,7 @@ export default class GamePlayers extends Component {
                 delete this._idToPlayerMap[player.user.name];
 
                 this.scene.playerLayer.removeChild(player.node);
+                this.playerPositions.showInviteButtonByPlayerId(player.id);
                 this._onPlayerDataChanged();
 
                 return true;
@@ -314,23 +326,23 @@ export default class GamePlayers extends Component {
     }
 
     onGameBegin(data) {
-        this.players.forEach(player => player.onGameBegin(data));
+
     }
 
     onGameStarting(data) {
-        this.players.forEach(player => player.onGameStarting(data));
+
     }
 
     onGameStarted(data) {
-        this.players.forEach(player => player.onGameStarted(data));
+
     }
 
     onGamePlaying(data) {
-        this.players.forEach(player => player.onGamePlaying(data));
+
     }
 
     onGameEnding(data) {
-        this.players.forEach(player => player.onGameEnding(data));
+
     }
 
     playerOnPlayerRejoin(playerIds, remainCardSizes, data) {
@@ -433,7 +445,13 @@ export default class GamePlayers extends Component {
     }
 
     getCurrentPlayerBalances(){
-        return this.players.map(player => GameUtils.getUserBalance(player.user));
+        let playerBalances = {};
+
+        this.players.map(player => {
+            playerBalances[player.id] = GameUtils.getUserBalance(player.user);
+        });
+
+        return playerBalances;
     }
 
     getPlayerNames(){

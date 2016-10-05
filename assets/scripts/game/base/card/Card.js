@@ -150,9 +150,15 @@ export default class Card extends Component {
         return this.rank;
     }
 
-    static from(value){
+    static from(...args){
         let card = new Card();
-        card.initFromByte(value);
+
+        if(args.length == 1){
+            card.initFromByte(args[0]);
+        }else if(args.length == 2){
+            card.initFromByte(Card.toByte(args[0], args[1]));
+        }
+
         return card;
     }
 }

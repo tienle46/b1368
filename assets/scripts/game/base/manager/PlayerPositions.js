@@ -9,10 +9,21 @@ import Events from 'Events'
 
 export default class PlayerPositions extends Component {
 
-    static get ALIGN_TOP() {return 'TOP';}
-    static get ALIGN_BOTTOM() {return 'BOTTOM';}
-    static get ALIGN_LEFT() {return 'LEFT';}
-    static get ALIGN_RIGHT() {return 'RIGHT';}
+    static get ALIGN_TOP() {
+        return 'TOP';
+    }
+
+    static get ALIGN_BOTTOM() {
+        return 'BOTTOM';
+    }
+
+    static get ALIGN_LEFT() {
+        return 'LEFT';
+    }
+
+    static get ALIGN_RIGHT() {
+        return 'RIGHT';
+    }
 
     constructor() {
         super();
@@ -20,7 +31,7 @@ export default class PlayerPositions extends Component {
         this.scene;
     }
 
-    _init(scene){
+    _init(scene) {
         this.scene = scene;
 
         console.debug("Init PlayerPositions");
@@ -36,7 +47,7 @@ export default class PlayerPositions extends Component {
     onLoad() {
     }
 
-    _initPlayerAnchors(){
+    _initPlayerAnchors() {
         this.playerAnchors = [];
         this.playerAnchors[0] = this.myAnchor;
         for (let i = 1; i <= this.ceilAnchor; i++) {
@@ -46,45 +57,35 @@ export default class PlayerPositions extends Component {
         this.hideAllInviteButtons();
     }
 
-    _onGameBegin(){
-        console.debug("_onGameBegin")
-        this.showAllInviteButtons();
+    _onGameBegin() {
+        console.debug("_onGameBegin");
+        let hidingAnchorIndexes = this.scene.gamePlayers.players.map(player => player.anchorIndex);
+        this.showAllInviteButtons(hidingAnchorIndexes);
     }
 
-    _onGameStarting(){
+    _onGameStarting() {
         this.hideAllInviteButtons();
     }
-    
+
     hideAllInviteButtons() {
-        this.playerAnchors.forEach(anchor => {
+        this.playerAnchors.forEach((anchor, index) => {
             let inviteButton = anchor.getChildByName('inviteButton');
             utils.deactive(inviteButton);
         });
     }
 
-    showAllInviteButtons() {
-
-        console.debug("showAllInviteButtons: ", this)
-
-        let excludeAnchor;
-        if(app.context.getMe()){
-            excludeAnchor = this.playerAnchors[1];
-            this.hideInviteButton(1);
-        }
+    showAllInviteButtons(excludeAnchorIndexes = []) {
 
         this.playerAnchors.forEach(anchor => {
-            if(excludeAnchor !== anchor){
-                let inviteButton = anchor.getChildByName('inviteButton');
-                utils.active(inviteButton);
-            }
-
+            let inviteButton = anchor.getChildByName('inviteButton');
+            utils.active(inviteButton);
         });
+
+        this.scene.gamePlayers.isMePlayGame() && excludeAnchorIndexes.push(1);
+        excludeAnchorIndexes.forEach(index => this.hideInviteButton(index));
     }
 
     getPlayerAnchorByPlayerId(playerId, isItMe) {
-
-        console.log("Player Id: " + playerId + " " + isItMe);
-
         return this.getPlayerAnchor(this.getPlayerAnchorIndex(playerId, isItMe));
     }
 
@@ -104,6 +105,20 @@ export default class PlayerPositions extends Component {
                 tmpIndex = playerId;
                 return tmpIndex; //TODO
             }
+        }
+    }
+
+    hideInviteButtonByPlayerId(playerId) {
+        let anchorIndex = this.getPlayerAnchorIndex(playerId, app.context.getMe().id == playerId);
+        if (anchorIndex) {
+            this.hideInviteButton(anchorIndex);
+        }
+    }
+
+    showInviteButtonByPlayerId(playerId) {
+        let anchorIndex = this.getPlayerAnchorIndex(playerId, app.context.getMe().id == playerId);
+        if (anchorIndex) {
+            this.showInviteButton(anchorIndex);
         }
     }
 

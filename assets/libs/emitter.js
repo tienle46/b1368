@@ -17,11 +17,16 @@ export default class Emitter {
      * @return {Emitter}
      * @api public
      */
-    addListener(event, fn, context) {
+    addListener(event, fn, context, priority) {
 
         if(fn) {
             context && (fn = fn.bind(context));
-            (this._callbacks[`$${event}`] = this._callbacks['$' + event] || []).push(fn);
+
+            if(typeof priority == 'number' && priority >= 0){
+                (this._callbacks[`$${event}`] = this._callbacks['$' + event] || []).splice(priority, 0, fn);
+            }else{
+                (this._callbacks[`$${event}`] = this._callbacks['$' + event] || []).push(fn);
+            }
 
         }
 
@@ -77,8 +82,8 @@ export default class Emitter {
      * @api public
      */
 
-    on(event, fn, context) {
-        this.addListener(event, fn, context);
+    on(event, fn, context, priority) {
+        this.addListener(event, fn, context, priority);
     }
 
     /**

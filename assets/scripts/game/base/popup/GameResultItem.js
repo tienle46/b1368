@@ -39,13 +39,17 @@ export default class GameResultItem extends Actor {
         this.setResultIcon(iconPath);
 
         let cardListNode = cc.instantiate(this.cardListPrefab);
+        this.dataContainer.addChild(cardListNode);
         this.cardList = cardListNode.getComponent(CardList.name);
 
-        this.cardList.setAnchorPoint(0, 0.5);
-        this.cardList.setScale(0.6);
-        this.cardList.setMaxDimension(450);
+        this.cardList.setProperties({
+            x: 0,
+            y: 0,
+            scale: 0.6,
+            alignment: CardList.ALIGN_CENTER_LEFT,
+            maxDimension: 460,
+        });
         this.cardList.setCards(cards);
-        this.dataContainer.addChild(this.cardList.node);
     }
 }
 

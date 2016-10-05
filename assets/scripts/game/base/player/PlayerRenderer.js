@@ -85,8 +85,7 @@ export default class PlayerRenderer extends ActorRenderer {
         this.playerNameLabel.string = name;
     }
 
-    setBalance(balance, runPlusAnimation) {
-        //TODO if(runPlusAnimation)
+    setBalance(balance) {
         this.balanceLabel.string = `${balance}`;
     }
 

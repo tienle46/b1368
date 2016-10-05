@@ -103,4 +103,14 @@ export default class GameUtils {
     static getUserBalance(user){
         return utils.getVariable(user, app.keywords.USER_VARIABLE_BALANCE, 0);
     }
+
+    static containsCard(cards, checkCard){
+        if(!utils.isEmptyArray(cards)){
+            for(let card of cards){
+                if(checkCard.byteValue == card.byteValue){
+                    return true;
+                }
+            }
+        }
+    }
 }
