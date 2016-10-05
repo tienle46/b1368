@@ -60,6 +60,35 @@ export default class CardList extends Component {
 
     setAlignment(align){
         this._align = align;
+
+        switch (align){
+            case CardList.ALIGN_BOTTOM_LEFT:
+                this.node.setAnchorPoint(0, 0);
+                break;
+            case CardList.ALIGN_BOTTOM_CENTER:
+                this.node.setAnchorPoint(0.5, 0);
+                break;
+            case CardList.ALIGN_BOTTOM_RIGHT:
+                this.node.setAnchorPoint(1, 0);
+                break;
+            case CardList.ALIGN_TOP_LEFT:
+                this.node.setAnchorPoint(0, 1);
+                break;
+            case CardList.ALIGN_TOP_CENTER:
+                this.node.setAnchorPoint(0.5, 1);
+                break;
+            case CardList.ALIGN_TOP_RIGHT:
+                this.node.setAnchorPoint(1, 1);
+                break;
+            case CardList.ALIGN_CENTER_LEFT:
+                this.node.setAnchorPoint(0, 0.5);
+                break;
+            case CardList.ALIGN_CENTER_RIGHT:
+                this.node.setAnchorPoint(1, 0.5);
+                break;
+            default:
+                this.node.setAnchorPoint(0.5, 0.5);
+        }
     }
 
     setProperties({ scale = 1, x = 0, y = 0, orientation = CardList.HORIZONTAL, alignment = CardList.ALIGN_CENTER_LEFT, maxDimension = undefined} = {}){
@@ -101,21 +130,21 @@ export default class CardList extends Component {
         if(x < 0.5 && y < 0.5){
             this._align = CardList.ALIGN_BOTTOM_LEFT;
         }else if(x < 0.5 && y == 0.5){
-            this._align = CardList.ALIGN_BOTTOM_CENTER;
+            this._align = CardList.ALIGN_CENTER_LEFT;
         }else if(x < 0.5 && y > 0.5){
-            this._align = CardList.ALIGN_BOTTOM_RIGHT;
+            this._align = CardList.ALIGN_TOP_LEFT;
         }else if(x == 0.5 && y < 0.5){
             this._align = CardList.ALIGN_BOTTOM_CENTER;
-        }else if(x == 0.5 && y == 0.5){
-            this._align = CardList.ALIGN_CENTER;
         }else if(x == 0.5 && y > 0.5){
             this._align = CardList.ALIGN_TOP_CENTER;
         }else if(x > 0.5 && y < 0.5){
             this._align = CardList.ALIGN_BOTTOM_RIGHT;
         }else if(x > 0.5 && y == 0.5){
             this._align = CardList.ALIGN_CENTER_RIGHT;
-        }else{
+        }else if(x > 0.5 && y > 0.5){
             this._align = CardList.ALIGN_TOP_RIGHT;
+        }else{
+            this._align = CardList.ALIGN_CENTER;
         }
     }
 
@@ -284,7 +313,7 @@ export default class CardList extends Component {
                 childPosition.x -= this.cards.length * estimateCardDistance;
             }
             else if (this._isCenterAlignment()){
-                let newStartXPosition = (this._getMaxSpaceAvailable() * (0.5 - this.node.anchorX) - estimateCardDistance * (this.cards.length)) / 2 - this._space  * this.node.anchorX;
+                let newStartXPosition = (this._getMaxSpaceAvailable() * (0.5 - this.node.anchorX) - estimateCardDistance * (this.cards.length)) / 2 - this._space  * (0.5 - this.node.anchorX);
                 childPosition.x = newStartXPosition + this.cards.length * estimateCardDistance;
             }
         }

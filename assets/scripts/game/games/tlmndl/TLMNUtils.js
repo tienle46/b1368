@@ -355,4 +355,38 @@ export default class TLMNUtils {
         return false;
     }
 
+    static getTLMNThoiString(thoiType) {
+        let retString = "";
+        switch (thoiType) {
+            case TLMNUtils.THOI_TYPE_HEO_DEN:
+                retString = app.res.string('game_heo_den');
+                break;
+            case TLMNUtils.THOI_TYPE_HEO_DO:
+                retString = app.res.string('game_heo_do');
+                break;
+            case TLMNUtils.THOI_TYPE_BA_DOI_THONG:
+                retString = app.res.string('game_ba_doi_thong');
+                break;
+            case TLMNUtils.THOI_TYPE_TU_QUY:
+                retString = app.res.string('game_tu_quy');
+                break;
+            case TLMNUtils.THOI_TYPE_BON_DOI_THONG:
+                retString = app.res.string('game_bon_doi_thong');
+                break;
+            case TLMNUtils.THOI_TYPE_BA_BICH:
+                retString = app.res.string('game_ba_bich');
+                break;
+        }
+        return retString;
+    }
+
 }
+
+
+TLMNUtils.THOI_TYPE_HEO_DEN = 0;
+TLMNUtils.THOI_TYPE_HEO_DO = 1;
+TLMNUtils.THOI_TYPE_BA_DOI_THONG = 2;
+TLMNUtils.THOI_TYPE_TU_QUY = 3;
+TLMNUtils.THOI_TYPE_BON_DOI_THONG = 4;
+TLMNUtils.THOI_TYPE_BA_BICH = 5;
+

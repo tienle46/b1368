@@ -93,8 +93,8 @@ export default class TLMNDLControls extends GameControls {
         }
     }
 
-    _showOnTurnControls(isFirstTurn){
-        this.cardTurnBaseControls._showOnTurnControls(isFirstTurn);
+    _showOnTurnControls(showPlayControlOnly){
+        this.cardTurnBaseControls._showOnTurnControls(showPlayControlOnly);
     }
 
     _showWaitTurnControls(){

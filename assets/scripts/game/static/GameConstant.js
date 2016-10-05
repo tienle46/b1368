@@ -350,23 +350,6 @@ app.const.game.TLMN_THOI_TYPE_TU_QUY = 3;
 app.const.game.TLMN_THOI_TYPE_BON_DOI_THONG = 4;
 app.const.game.TLMN_THOI_TYPE_BA_BICH = 5;
 
-app.const.game.getTLMNThoiString = function(thoiType){
-    switch (thoiType) {
-        case app.const.game.TLMN_THOI_TYPE_HEO_DEN:
-            return "Heo đen";
-        case app.const.game.TLMN_THOI_TYPE_HEO_DO:
-            return "Heo đỏ";
-        case app.const.game.TLMN_THOI_TYPE_BA_DOI_THONG:
-            return "Ba đôi thông";
-        case app.const.game.TLMN_THOI_TYPE_TU_QUY:
-            return "Tứ quý";
-        case app.const.game.TLMN_THOI_TYPE_BON_DOI_THONG:
-            return "Bốn đôi thông";
-        case app.const.game.TLMN_THOI_TYPE_BA_BICH:
-            return "Thối Ba Bích";
-    }
-};
-
 app.const.game.getTLMNFirstRankSpecialString = function(winType) {
     var retString = "";
     switch (winType) {
@@ -461,33 +444,6 @@ app.const.game.getXiToSpecialString = function (xitoType) {
             break;
         case app.const.game.XAM_XAM_TYPE_MAU:
             retString = app.const.game.MESSAGE_XITO_MAU;
-            break;
-        default:
-            break;
-    }
-    return retString;
-};
-
-app.const.game.getTLMNThoiString = function(thoiType) {
-    var retString = "";
-    switch (thoiType) {
-        case app.const.game.TLMN_THOI_TYPE_HEO_DEN:
-            retString = "Heo đen";
-            break;
-        case app.const.game.TLMN_THOI_TYPE_HEO_DO:
-            retString = "Heo đỏ";
-            break;
-        case app.const.game.TLMN_THOI_TYPE_BA_DOI_THONG:
-            retString = "Ba đôi thông";
-            break;
-        case app.const.game.TLMN_THOI_TYPE_TU_QUY:
-            retString = "Tứ quý";
-            break;
-        case app.const.game.TLMN_THOI_TYPE_BON_DOI_THONG:
-            retString = "Bốn đôi thông";
-            break;
-        case app.const.game.TLMN_THOI_TYPE_BA_BICH:
-            retString = "Ba Bích";
             break;
         default:
             break;

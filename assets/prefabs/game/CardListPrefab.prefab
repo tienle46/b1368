@@ -15,9 +15,9 @@
     "_opacity": 255,
     "_color": {
       "__type__": "cc.Color",
-      "r": 255,
-      "g": 255,
-      "b": 255,
+      "r": 231,
+      "g": 122,
+      "b": 122,
       "a": 255
     },
     "_cascadeOpacityEnabled": true,
@@ -70,8 +70,7 @@
     "_enabled": true,
     "cardPrefab": {
       "__uuid__": "1be1ace3-b9b3-4bf4-9c45-5c1d9eccac08"
-    },
-    "_layout": null
+    }
   },
   {
     "__type__": "cc.PrefabInfo",
