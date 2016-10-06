@@ -51,13 +51,12 @@ class TabExchangeCard extends Component {
 
                     // add Spite 
                     let sprite = itemNode.addComponent(cc.Sprite);
-                    RubUtils.loadSpriteFrame(sprite, itemIcon, (spriteFrame) => {
-                        let itemNodeWidth = 245;
-                        let itemNodeHeight = 131;
-                        spriteFrame.node.setContentSize(cc.size(itemNodeWidth, itemNodeHeight));
+                    let itemNodeWidth = 245;
+                    let itemNodeHeight = 131;
+                    RubUtils.loadSpriteFrame(sprite, itemIcon, cc.size(itemNodeWidth, itemNodeHeight), true, (spriteFrame) => {
                         spriteFrame.node.x = -254 + (i % 3) * (itemNodeWidth + 13);
                         spriteFrame.node.y = 0;
-                    }, true);
+                    });
 
                     // add Button
                     let btn = itemNode.addComponent(cc.Button);

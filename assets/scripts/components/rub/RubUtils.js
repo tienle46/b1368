@@ -15,13 +15,22 @@ let RubUtils = {
             }
         });
     },
-    loadSpriteFrame: (spriteComponent, resURL, cb, isCORS = false) => {
+
+    /**
+     * @spriteComponent: (cc.Component) sprite we need to add spriteFrame to
+     * @resURL: (string) resource url || image url we need to load before adding
+     * @ccSize: (cc.size), used to resize spriteFrame to slice image fit to current node ( node will be reset its size based on spriteFrame's size after adding )
+     * cb: (function) callback function
+     * isCORS: (boolean) if resURL is http protocol, it need to be `true`
+     */
+    loadSpriteFrame: (spriteComponent, resURL, ccSize, isCORS = false, cb) => {
         let textureCache;
 
         function spriteFrameDefaultConfig(spriteComponent) {
             spriteComponent.type = cc.Sprite.Type.SLICED;
             spriteComponent.sizeMode = cc.Sprite.SizeMode.CUSTOM;
-            cb(spriteComponent);
+            spriteComponent.node.setContentSize(ccSize);
+            cb && cb(spriteComponent);
         }
 
         if (isCORS) {

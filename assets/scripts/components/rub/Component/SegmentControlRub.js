@@ -12,6 +12,7 @@ export default class SegmentControlRub extends Rub {
      *  {
      *      title: string,
      *      value: any,
+     *      isNode: boolean (optional) # by default dialog body using loading prefab after adding to `dialog/body` node. When isNode is set to `true`, it adding a given node to `dialog/body` node
      *      eventHander: {
      *          target: cc.Node,
      *          component: string,
@@ -23,7 +24,6 @@ export default class SegmentControlRub extends Rub {
      * @param {any} options={} style options of segment group, includes:
      *  {
      *      bg: string;  # /resources url for segment background
-     *      bgChild: string; # /resources url for child background (if not any, use transparent texture)
      *      bgWidth: number;
      *      bgHeight: number;
      *      inActiveNormalSprite : string # /resources url for segment inactive state
@@ -43,8 +43,14 @@ export default class SegmentControlRub extends Rub {
         super(node);
         // this.node = node;
         this.segments = segments;
-        this.options = options;
 
+        let defaultOptions = {
+
+        };
+
+        let opts = Object.assign({}, defaultOptions, options);
+
+        this.options = opts;
     }
 
     init() {
@@ -72,7 +78,7 @@ export default class SegmentControlRub extends Rub {
             let newNodeWidth = this.options.itemWidth || 155.1;
             let newNodeHeight = this.options.itemHeight || 31.7;
             newNode.setContentSize(cc.size(newNodeWidth, newNodeHeight));
-            console.log('pos', newNode.getPosition());
+
             // add to node
             toggleGroupNode.addChild(newNode);
 
@@ -84,17 +90,14 @@ export default class SegmentControlRub extends Rub {
 
             // set checkBox value
             e.value && checkBox.setVal(e.value);
+
+            // check if node represents body instead of using prefab
+            newNode.isNode = e.isNode || false;
+
+
             let checkBoxSprite = newNode.addComponent(cc.Sprite);
-            RubUtils.loadSpriteFrame(checkBoxSprite, i === 0 ? 'dashboard/popup-tab-active' : 'dashboard/transparent', (sprite) => {
-                newNode.setContentSize(cc.size(newNodeWidth, newNodeHeight));
-            });
-            // cc.loader.loadRes(i === 0 ? 'dashboard/popup-tab-active' : 'dashboard/transparent', cc.SpriteFrame, (err, spriteFrame) => {
-            //     checkBoxSprite.spriteFrame = spriteFrame;
-            //     checkBoxSprite.type = cc.Sprite.Type.SLICED;
-            //     checkBoxSprite.sizeMode = cc.Sprite.SizeMode.CUSTOM;
-            //     newNode.width = this.options.itemWidth || 155.1;
-            //     newNode.height = this.options.itemHeight || 31.7;
-            // });
+            RubUtils.loadSpriteFrame(checkBoxSprite, i === 0 ? 'dashboard/popup-tab-active' : 'dashboard/transparent', cc.size(newNodeWidth, newNodeHeight));
+
             let labelNode = new cc.Node();
             let label = labelNode.addComponent(cc.Label);
             label.fontSize = 18;
