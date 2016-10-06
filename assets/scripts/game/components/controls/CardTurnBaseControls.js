@@ -45,10 +45,10 @@ export default class CardTurnBaseControls extends GameControls {
         utils.deactive(this.skipTurnButton);
     }
 
-    _showOnTurnControls(isFirstTurn){
+    _showOnTurnControls(showPlayControlOnly){
         utils.active(this.playButton);
         utils.active(this.sortButton);
-        isFirstTurn ? utils.deactive(this.skipTurnButton) : utils.active(this.skipTurnButton);
+        showPlayControlOnly ? utils.deactive(this.skipTurnButton) : utils.active(this.skipTurnButton);
     }
 
     onClickPlayButton(event){

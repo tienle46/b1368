@@ -56,7 +56,7 @@ export default class PlayerCardRenderer extends PlayerRenderer {
         this._getCardAnchorPoint(data.actor).addChild(cardListNode);
 
         this.cardList = cardListNode.getComponent('CardList');
-        this.cardList._setMaxWidth(800);
+        this.cardList.setMaxDimension(800);
         this.cardList.setAnchorPoint(0, 0);
         this.cardList.setPosition(0, 0);
     }

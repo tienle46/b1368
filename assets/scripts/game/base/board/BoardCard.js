@@ -2,9 +2,11 @@
  * Created by Thanh on 8/23/2016.
  */
 
+import {utils, GameUtils} from 'utils';
 import app from 'app';
 import Board from 'Board';
 import Card from 'Card';
+import {Keywords} from 'core';
 
 import {Events} from 'events';
 
@@ -34,13 +36,27 @@ export default class BoardCard extends Board {
     _dealCards(data) {
         let cardBytes = data[app.keywords.DEAL_CARD_LIST_KEYWORD] || [];
         let dealCards = cardBytes.map(cardByte => Card.from(cardByte));
-
-        console.debug('this.scene.gamePlayers: ', this.scene, this.scene.gamePlayers)
-
         this.scene.gamePlayers.onDealCards(dealCards);
-
-        //TODO: On deal card done
         this.scene.emit(Events.ON_GAME_STATE_STARTED);
+    }
+
+    _getPlayerHandCards(playerIds, data) {
+        let playerHandCards = {};
+
+        let handCardIndex = 0;
+        const handCardSizes = utils.getValue(data, Keywords.GAME_LIST_PLAYER_CARDS_SIZE);
+        const handCards = utils.getValue(data, Keywords.GAME_LIST_CARD);
+
+        playerIds && handCards && handCardSizes && playerIds.forEach((id, i) => {
+            let playerCardCount = handCardSizes[i];
+
+            let playerCardBytes = handCards.slice(handCardIndex, handCardIndex + playerCardCount);
+            playerHandCards[id] = GameUtils.convertBytesToCards(playerCardBytes);
+
+            handCardIndex += playerCardCount;
+        });
+
+        return playerHandCards;
     }
 
 }

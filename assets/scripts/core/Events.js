@@ -22,6 +22,9 @@ Events.ON_PLAYER_SET_READY_STATE        = "onPlayerSetReadyState";
 Events.ON_PLAYER_REMAIN_CARD_COUNT      = "onPlayerSetReadyState";
 Events.ON_PLAYER_TURN                   = "onPlayerGetTurn";
 Events.ON_PLAYER_CHANGE_BALANCE         = "onPlayerChangeBalance";
+Events.ON_PLAYER_CONG                   = "onPlayerCong";
+Events.ON_PLAYER_THOI                   = "onPlayerThoi";
+Events.ON_PLAYER_SET_BALANCE            = "onPlayerSetBalance";
 
 Events.ON_USER_UPDATE_BALANCE           = "onUserUpdateBalance";
 Events.ON_USER_UPDATE_LEVEL             = "onUserUpdateLevel";

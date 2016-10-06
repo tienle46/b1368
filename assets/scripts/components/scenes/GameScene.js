@@ -6,6 +6,7 @@ import {Events, Emitter} from 'events'
 import {CreateGameException} from 'exceptions';
 import {GameMenuPrefab} from 'game-components';
 import {gameManager, GameEventHandler, Board, TLMNDLBoard, TLMNDLPlayer} from 'game';
+import GameResultPopup from 'GameResultPopup';
 
 class GameScene extends BaseScene {
 
@@ -45,6 +46,8 @@ class GameScene extends BaseScene {
         this.gameData = null;
         this.gameEventHandler = null;
         this.gameCode = null;
+        this.gameResultPopupPrefab = cc.Prefab;
+        this.gameResultPopup = null;
     }
 
     onLoad() {
@@ -225,6 +228,22 @@ class GameScene extends BaseScene {
                 this.emit(Events.ON_GAME_STATE_ENDING, data, isJustJoined);
                 break;
         }
+    }
+
+    showGameResult(models){
+        if(utils.isEmptyArray(models)){
+            return;
+        }
+
+        if(!this.gameResultPopup){
+            this.gameResultPopup = cc.instantiate(this.gameResultPopupPrefab).getComponent(GameResultPopup.name);
+        }
+
+        this.gameResultPopup.show(models);
+    }
+
+    hideGameResult(){
+        this.gameResultPopup && this.gameResultPopup.hide();
     }
 }
 

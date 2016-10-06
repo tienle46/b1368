@@ -21,6 +21,7 @@ export default class Player extends Actor {
         this.isOwner = false;
         this.isMaster = false;
         this.ready = false;
+        this.anchorIndex = -1;
     }
 
     _init(board, user){
@@ -46,22 +47,33 @@ export default class Player extends Actor {
         this.scene.on(Events.ON_PLAYER_SET_READY_STATE, this._onSetReadyState, this);
         this.scene.on(Events.ON_PLAYER_CHANGE_BALANCE, this._onPlayerChangeBalance, this);
         this.scene.on(Events.ON_USER_UPDATE_BALANCE, this._onUserUpdateBalance, this);
+        this.scene.on(Events.ON_PLAYER_SET_BALANCE, this._onPlayerSetBalance, this);
     }
 
-    _onPlayerChangeBalance(id, newBalance) {
-        if(this.player.id == id){
-            var balanceVariable = this.player.user.variables[Keywords.USER_VARIABLE_BALANCE];
+    _onPlayerSetBalance(id, newBalance){
+        if(this.id = id){
+            let balanceVariable = this.user.variables[Keywords.USER_VARIABLE_BALANCE];
             var newBalanceVariable = new SFS2X.Entities.Variables.SFSUserVariable(balanceVariable.name, newBalance, balanceVariable.type);
             this.user._setVariable(newBalanceVariable);
 
-            this._setBalance(balance, true);
+            this._setBalance(newBalance);
+        }
+    }
+
+    _onPlayerChangeBalance(id, newBalance) {
+        if(this.id == id){
+            var balanceVariable = this.user.variables[Keywords.USER_VARIABLE_BALANCE];
+            var newBalanceVariable = new SFS2X.Entities.Variables.SFSUserVariable(balanceVariable.name, newBalance, balanceVariable.type);
+            this.user._setVariable(newBalanceVariable);
+
+            this._setBalance(newBalance);
         }
     }
 
     _onUserUpdateBalance (user) {
         if(this.user.name == user.name){
             let newBalance = GameUtils.getUserBalance(user);
-            this.renderer.setBalance(newBalance)
+            this._setBalance(newBalance);
         }
     }
 
@@ -87,9 +99,9 @@ export default class Player extends Actor {
         console.log("on load: ", this.username, this.id, this.board, this.board.room);
     }
 
-    _setBalance(balance, showPlusAnimation){
+    _setBalance(balance){
         this.balance = balance;
-        this.renderer.setBalance(balance, showPlusAnimation);
+        this.renderer.setBalance(balance);
     }
 
     setOwner(isOwner){
@@ -152,13 +164,15 @@ export default class Player extends Actor {
     }
 
     onGameBegin(data, isJustJoined) {
-
+        this._reset();
     }
 
     onGameStarting(data, isJustJoined) {
         if(isJustJoined){
             this.onGameBegin({}, isJustJoined);
         }
+
+        this.renderer.setVisibleReady(true);
     }
 
     onGameStarted(data, isJustJoined) {
@@ -177,6 +191,10 @@ export default class Player extends Actor {
         if(isJustJoined){
             this.onGamePlaying({}, isJustJoined);
         }
+    }
+
+    _reset(){
+        this.renderer.setVisibleReady(false);
     }
 
 }
