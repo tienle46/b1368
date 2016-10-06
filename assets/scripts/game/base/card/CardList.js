@@ -95,7 +95,8 @@ export default class CardList extends Component {
         this.setScale(scale);
         this.setPosition(x, y);
         this.setOrientation(orientation);
-        this.setMaxDimension(orientation == CardList.VERTICAL ? CardList.DEFAULT_MAX_HEIGHT : CardList.DEFAULT_MAX_WIDTH);
+        maxDimension = maxDimension || (orientation == CardList.VERTICAL ? CardList.DEFAULT_MAX_HEIGHT : CardList.DEFAULT_MAX_WIDTH);
+        this.setMaxDimension(maxDimension);
         this.setAlignment(alignment);
     }
 
@@ -216,7 +217,12 @@ export default class CardList extends Component {
         if(cardDistance > this._space) {
             cardDistance = this._space;
         }
-        return (cardDistance - this._space);
+        let cardSpacing = cardDistance - this._space;
+        if(cardSpacing < - this._space){
+            cardSpacing = -this._space;
+        }
+
+        return cardSpacing;
     }
 
     _updateCardSpacing(){ 
@@ -572,7 +578,7 @@ export default class CardList extends Component {
      * Chia bai
      * @param cardBytes
      */
-    drawCards(cards){
+    drawCards(cards, deckScale){
         //determine center point of scene
         const centerPoint = cc.v2(480,320);
         this.cards = [];
@@ -582,22 +588,23 @@ export default class CardList extends Component {
         let actions = [];
 
         const localDestinationPoint = this.node.convertToNodeSpaceAR(centerPoint);
-        const kCardFlipTime = 0.3;
         const delay = cc.delayTime(0.1);
 
-        const scale = cc.scaleTo(kCardFlipTime / 2, 0, this._scale);
-        const scaleReverse = cc.scaleTo(kCardFlipTime / 2 , this._scale, this._scale);
+        const scale = cc.scaleTo(CardList.CARD_FLIP_TIME / 2, 0, this._scale);
+        const scaleReverse = cc.scaleTo(CardList.CARD_FLIP_TIME / 2 , this._scale, this._scale);
 
 
         this.cards.forEach((card, index)=>{
 
-            const cardPosition = card.node.getPosition().clone();
+            const cardPosition = card.node.getPosition();
+            const originalScale = card.node.getScale();
+            card.node.setScale(deckScale);
 
             actions.push(cc.callFunc(()=>{
 
                 card.node.active = true;
 
-                let animation= cc.sequence(cc.moveTo(0.2,cardPosition.x, cardPosition.y),scale.clone(), cc.callFunc(()=>{
+                let animation= cc.sequence(cc.spawn(cc.moveTo(CardList.DRAW_CARD_DURATION,cardPosition.x, cardPosition.y),cc.scaleTo(CardList.DRAW_CARD_DURATION,originalScale)),scale.clone(), cc.callFunc(()=>{
                     card.reveal(true);
                 }), scaleReverse.clone());
                 card.node.runAction(animation);
@@ -610,6 +617,59 @@ export default class CardList extends Component {
         });
 
         this.node.runAction(cc.sequence(actions));
+    }
+
+    static dealCards(deckScale, playersCardLists, cardLength, cb){
+        const centerPoint = cc.v2(480,320);
+        const fakeCards = Array(cardLength).fill(5).map(byteValue => Card.from(byteValue));
+
+        const delay = cc.delayTime(0.1);
+
+        let actions = [];
+
+        playersCardLists.forEach((cardList)=>{
+            cardList.fillCards(Array.from(fakeCards), false, false);
+        })
+
+        for(let i = 0 ; i < cardLength ; i++){
+            for(let j = 0 ; j < playersCardLists.length ; j++) {
+
+                const scale = cc.scaleTo(CardList.CARD_FLIP_TIME / 2, 0, playersCardLists[j]._scale);
+                const scaleReverse = cc.scaleTo(CardList.CARD_FLIP_TIME / 2 , playersCardLists[j]._scale, playersCardLists[j]._scale);
+
+                const card = playersCardLists[j].cards[i];
+                const localDestinationPoint = card.node.parent.convertToNodeSpaceAR(centerPoint);
+
+                const cardPosition = card.node.getPosition();
+                const originalScale = card.node.getScale();
+                card.node.setScale(deckScale);
+
+                actions.push(cc.callFunc(()=>{
+
+                    card.node.active = true;
+
+                    let animation;
+
+                    if( i < cardLength - 1 || j < playersCardLists.length - 1 ){
+                        animation= cc.sequence(cc.spawn(cc.moveTo(CardList.DRAW_CARD_DURATION,cardPosition.x, cardPosition.y),cc.scaleTo(CardList.DRAW_CARD_DURATION,originalScale)),scale.clone(), cc.callFunc(()=>{
+                            card.reveal(true);
+                        }), scaleReverse.clone());
+                    }
+                    else{
+                        animation= cc.sequence(cc.spawn(cc.moveTo(CardList.DRAW_CARD_DURATION,cardPosition.x, cardPosition.y),cc.scaleTo(CardList.DRAW_CARD_DURATION,originalScale)),scale.clone(),cc.delayTime(1), cc.callFunc(()=>{
+                            card.reveal(false);
+                            cb();
+                        }), scaleReverse.clone());
+                    }
+                    card.node.runAction(animation);
+
+                }))
+                card.node.setPosition(localDestinationPoint);
+                actions.push(delay.clone());
+            }
+        }
+
+        return actions;
     }
 }
 
@@ -629,5 +689,7 @@ CardList.CARD_HEIGHT = 130;
 CardList.DEFAULT_MAX_WIDTH = 600;
 CardList.DEFAULT_MAX_HEIGHT = 300;
 CardList.TRANSFER_CARD_DURATION = 0.4;
+CardList.DRAW_CARD_DURATION = 1;
+CardList.CARD_FLIP_TIME = 0.3;
 
 app.createComponent(CardList);
