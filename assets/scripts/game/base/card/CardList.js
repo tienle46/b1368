@@ -26,6 +26,8 @@ export default class CardList extends Component {
 
         this.cards = null;
         this.selectCardChangeListener = null;
+        this._reveal = true;
+
 
     }
     setSelectCardChangeListener(listener){
@@ -53,6 +55,9 @@ export default class CardList extends Component {
             this.node.height = this._maxDimension;
             this._space = this._maxDimension == 0 ? 0 : this._scale * CardList.CARD_WIDTH;
         }
+    }
+    setReveal(reveal){
+        this._reveal = reveal;
     }
 
     setMaxDimension(value){
@@ -175,7 +180,7 @@ export default class CardList extends Component {
      * @private
      */
     _isCenterAlignment(){
-        return this._align == CardList.ALIGN_CENTER || this._align == CardList.ALIGN_TOP_CENTER || this._align == CardList.ALIGN_BOTTOM_CENTER;
+        return this._align == CardList.ALIGN_CENTER;
     }
 
     /**
@@ -357,12 +362,13 @@ export default class CardList extends Component {
         [this.node.children[idx1], this.node.children[idx2]] = [this.node.children[idx2], this.node.children[idx1]];
     }
 
-    setCards(cards){
+    setCards(cards, active, reveal){
         this.clear();
-        this.fillCards(cards);
+        this.fillCards(cards, active, reveal);
+
     }
 
-    fillCards(cards, active = true, reveal = true){
+    fillCards(cards, active = true, reveal = this._reveal){
         cards.forEach((card,index) => {
             const newCard = this._createNewCard(card.byteValue, reveal);
             newCard.node.active = active;
@@ -409,15 +415,8 @@ export default class CardList extends Component {
                 dragCard.node.x = this._getStartPosition().x + dragCardIndex * this._getCardDistance();
             }, this);
 
-            // if(this._isCenterAlignment()){
-            //     this._adjustCardsPosition();
-            // }
         });
 
-        //check to see if need to overlap cards to fit space
-        // if(!this._isCenterAlignment()){
-        //     this._adjustCardsPosition();
-        // }
         this._adjustCardsPosition();
     }
 
@@ -449,7 +448,6 @@ export default class CardList extends Component {
         // if(this._orientation == CardList.VERTICAL){
         //     newCard.runAction(cc.rotateBy(0,90));
         // }
-        newCard.node.setPosition(this._getPositionForNextCard());
 
         newCard.setOnClickListener(this._onSelectCard.bind(this));
 
@@ -522,7 +520,7 @@ export default class CardList extends Component {
                 card.node.runAction(cc.moveBy(0.2,-this._selectedMargin,0));
             }
         }
-        this.selectCardChangeListener && this.selectCardChangeListener();
+        this.selectCardChangeListener && this.selectCardChangeListener(this.getSelectedCards());
     }
 
     /**
@@ -542,41 +540,31 @@ export default class CardList extends Component {
 
         let actions = [];
 
+        const currentDestLength = cardListComponent.cards.length;
+
+        cardListComponent.fillCards(cards,true,true);
+        cardListComponent._adjustCardsPosition();
+
         cards.forEach((card, index)=>{
+
+            const animatingCard = cardListComponent.cards[currentDestLength + index];
 
             const worldPoint = card.node.parent.convertToWorldSpaceAR(card.node.getPosition());
             const localDestinationPoint = destCardListNode.convertToNodeSpaceAR(worldPoint);
 
-            card.node.removeFromParent(false);
+            const originalScale = card.node.getScale();
+            const scaleTo = animatingCard.node.getScale();
 
-            const newCardToDest = cardListComponent._createNewCard(card.byteValue,true);
-
-            const moveToPosition = newCardToDest.node.getPosition();
-            const newScale = newCardToDest.node.getScale();
-
-            newCardToDest.node.setPosition(localDestinationPoint);
-            newCardToDest.node.setScale(card.node.getScale());
-            newCardToDest.node.setLocalZOrder(52);//set gia tri cao nhat de quan bai bay tren quan bai khac
-
-            cardListComponent.cards.push(newCardToDest);
-            destCardListNode.addChild(newCardToDest.node);
+            const moveToPosition = animatingCard.node.getPosition();
+            animatingCard.node.setPosition(cc.v2(localDestinationPoint.x,localDestinationPoint.y));
+            animatingCard.node.setScale(originalScale);
 
             actions.push(cc.callFunc(() => {
-
-                console.log(`move to x ${moveToPosition.x}`);
-
-                if(index < cards.length - 1){
-                    newCardToDest.node.runAction(cc.spawn(cc.moveTo(CardList.TRANSFER_CARD_DURATION,moveToPosition.x, moveToPosition.y), cc.scaleTo(CardList.TRANSFER_CARD_DURATION,newScale)));
-                }
-                else{
-                    newCardToDest.node.runAction(cc.sequence(
-                        cc.spawn(cc.moveTo(CardList.TRANSFER_CARD_DURATION,moveToPosition.x, moveToPosition.y), cc.scaleTo(CardList.TRANSFER_CARD_DURATION,newScale)),
-                        cc.delayTime(0.1),cc.callFunc(() => {cardListComponent._adjustCardsPosition()})
-                    ));
-                }
+                animatingCard.node.runAction(cc.spawn(cc.moveTo(CardList.TRANSFER_CARD_DURATION,moveToPosition.x, moveToPosition.y), cc.scaleTo(CardList.TRANSFER_CARD_DURATION,scaleTo)));
             }));
+            actions.push(cc.delayTime(0.1));
 
-            // actions.push(cc.delayTime(0.1));
+            card.node.removeFromParent(true);
         });
 
         actions.length > 0 && destCardListNode.runAction(cc.sequence(actions));
@@ -628,10 +616,11 @@ export default class CardList extends Component {
         this.node.runAction(cc.sequence(actions));
     }
 
-    static dealCards(deckScale, playersCardLists, cardLength, cb){
-        const centerPoint = cc.v2(480,320);
-        const fakeCards = Array(cardLength).fill(5).map(byteValue => Card.from(byteValue));
+    static dealCards(deckNode, playersCardLists, cardLength, cb){
 
+        const centerPoint = deckNode.parent.convertToWorldSpace(deckNode.getPosition());
+        const fakeCards = Array(cardLength).fill(5).map(byteValue => Card.from(byteValue));
+        const deckScale = deckNode.getComponent('CardList')._scale;
         const delay = cc.delayTime(0.1);
 
         let actions = [];
