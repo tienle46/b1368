@@ -22,6 +22,7 @@ export default class Player extends Actor {
         this.isMaster = false;
         this.ready = false;
         this.anchorIndex = -1;
+
     }
 
     _init(board, user){
@@ -96,7 +97,7 @@ export default class Player extends Actor {
         this.renderer.setBalance(this.balance);
         this.renderer.setVisibleOwner(this.isOwner);
         
-        console.log("on load: ", this.username, this.id, this.board, this.board.room);
+        // console.log("on load: ", this.username, this.id, this.board, this.board.room);
     }
 
     _setBalance(balance){

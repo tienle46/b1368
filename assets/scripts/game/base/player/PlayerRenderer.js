@@ -51,6 +51,10 @@ export default class PlayerRenderer extends ActorRenderer {
         };
 
         this.align;
+        this.callCounter = {
+            default: null,
+            type: cc.ProgressBar
+        };
     }
 
     _initUI() {
@@ -79,6 +83,10 @@ export default class PlayerRenderer extends ActorRenderer {
         // utils.deactive(this.ownerIcon);
         // utils.deactive(this.masterIcon);
         // utils.deactive(this.readyIcon);
+
+        this.isCounting = true;
+        this.counterTimer = 0;
+        this.turnDuration = 20;
     }
 
     setName(name) {
@@ -101,6 +109,32 @@ export default class PlayerRenderer extends ActorRenderer {
         // utils.setActive(this.readyIcon, visible);
         this.node.cascadeOpacity = true;
         this.node.opacity = visible ? 255 : 100;
+    }
+
+    update(dt) {
+        if (this.isCounting) {
+            this.callCounter.progress = this.counterTimer / this.turnDuration;
+            this.counterTimer += dt;
+            if (this.counterTimer >= this.turnDuration) {
+                this.isCounting = false;
+                this.callCounter.progress = 1;
+            }
+        }
+    }
+
+    startCountdown() {
+        if (this.callCounter) {
+            this.isCounting = true;
+            this.counterTimer = 0;
+        }
+    }
+
+    resetCountdown() {
+        if (this.callCounter) {
+            this.isCounting = false;
+            this.counterTimer = 0;
+            this.callCounter.progress = 0;
+        }
     }
 }
 
