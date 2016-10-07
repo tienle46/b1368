@@ -25,8 +25,15 @@ export default class CardList extends Component {
         this._selectedMargin = 40;
 
         this.cards = null;
-    }
+        this.selectCardChangeListener = null;
 
+    }
+    setSelectCardChangeListener(listener){
+        this.selectCardChangeListener = listener;
+    }
+    setSelectable(selectable){
+        this._selectable = selectable;
+    }
     getRawCards(){
         return this.cards.filter(card => {return Card.from(card.byteValue)});
     }
@@ -40,11 +47,11 @@ export default class CardList extends Component {
         if(this._isHorizontal()){
             this.node.width = this._maxDimension;
             this.node.height = this._scale * CardList.CARD_HEIGHT;
-            this._space = this._scale * CardList.CARD_WIDTH;
+            this._space = this._maxDimension == 0 ? 0 : this._scale * CardList.CARD_WIDTH;
         }else{
             this.node.width = this._scale * CardList.CARD_WIDTH;
             this.node.height = this._maxDimension;
-            this._space = this._scale * CardList.CARD_HEIGHT;
+            this._space = this._maxDimension == 0 ? 0 : this._scale * CardList.CARD_WIDTH;
         }
     }
 
@@ -168,8 +175,7 @@ export default class CardList extends Component {
      * @private
      */
     _isCenterAlignment(){
-        return this._align == CardList.ALIGN_CENTER_LEFT || this._align == CardList.ALIGN_CENTER || this._align == CardList.ALIGN_CENTER_RIGHT
-                || this._align == CardList.ALIGN_TOP_CENTER || this._align == CardList.ALIGN_BOTTOM_CENTER;
+        return this._align == CardList.ALIGN_CENTER || this._align == CardList.ALIGN_TOP_CENTER || this._align == CardList.ALIGN_BOTTOM_CENTER;
     }
 
     /**
@@ -265,7 +271,8 @@ export default class CardList extends Component {
             //Với trường hợp alignment là center, mỗi card được add vào đều trigger sự kiện sắp xếp lại card
             this._updateCardSpacing();
 
-            let newStartXPosition = (this._getMaxSpaceAvailable() * (0.5 - this.node.anchorX) - this._getCardDistance() * (this.cards.length - 1)) / 2 - this._space  * (0.5 - this.node.anchorX);
+
+            let newStartXPosition =  (0.5 - this.node.anchorX) * (this._getMaxSpaceAvailable() - (this._getCardDistance() * (this.cards.length - 1) + this._space)) / 2 + this._space * (0.5 - this.node.anchorX);
             this.cards.forEach((card, index)=>{
                 card.node.x = newStartXPosition + index * this._getCardDistance();
                 card.node.setLocalZOrder(index);
@@ -402,15 +409,16 @@ export default class CardList extends Component {
                 dragCard.node.x = this._getStartPosition().x + dragCardIndex * this._getCardDistance();
             }, this);
 
-            if(this._isCenterAlignment()){
-                this._adjustCardsPosition();
-            }
+            // if(this._isCenterAlignment()){
+            //     this._adjustCardsPosition();
+            // }
         });
 
         //check to see if need to overlap cards to fit space
-        if(!this._isCenterAlignment()){
-            this._adjustCardsPosition();
-        }
+        // if(!this._isCenterAlignment()){
+        //     this._adjustCardsPosition();
+        // }
+        this._adjustCardsPosition();
     }
 
     findCardComponents(cardModels = []){
@@ -514,6 +522,7 @@ export default class CardList extends Component {
                 card.node.runAction(cc.moveBy(0.2,-this._selectedMargin,0));
             }
         }
+        this.selectCardChangeListener && this.selectCardChangeListener();
     }
 
     /**
