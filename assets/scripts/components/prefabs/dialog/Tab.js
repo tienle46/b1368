@@ -21,12 +21,12 @@ class Tab extends Component {
         // this.toggleGroupComponent = this.node.getChildByName('group').getChildByName('toggleGroup').getComponent(ToggleGroup);
     }
 
-    addContentPrefabToBody(node, prefabURL) {
-        node.removeAllChildren();
+    addContentPrefabToBody(bodyNode, prefabURL) {
+        this.clearBody(bodyNode);
         return RubUtils.loadRes(prefabURL).then((prefab) => {
             let p = cc.instantiate(prefab);
             // add to node
-            node.addChild(p);
+            bodyNode.addChild(p);
 
             return p;
         }).catch((e) => {
@@ -34,8 +34,18 @@ class Tab extends Component {
         });
     }
 
+    addContentNodeToBody(bodyNode, contentNode) {
+        this.clearBody(bodyNode);
+
+        bodyNode.addChild(contentNode);
+    }
+
     getToggleGroup() {
         return this.toggleGroupComponent;
+    }
+
+    clearBody(bodyNode) {
+        bodyNode.removeAllChildren();
     }
 }
 

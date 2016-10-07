@@ -11,16 +11,14 @@ export default class TabRub extends SegmentControlRub {
      * @param {any} [options={}]
      *  {
      *  ...
-     *  tabBodyPrefabType: string // name of folder that placed in prefab/dialog folder to load prefabs inside
+     *  isPrefab : boolean # indicates 
+     *  tabBodyPrefabType: string # name of folder that placed in prefab/dialog folder to load prefabs inside
      *  }
      * @memberOf TabRub
      */
     constructor(node, bodyNode, segments, options = {}) {
         super(node, segments, options);
         this.bodyNode = bodyNode;
-
-        let url = 'dashboard/dialog/prefabs/';
-        this.options.tabBodyPrefabUrl = this.options.hasOwnProperty('tabBodyPrefabType') ? `${url}${this.options.tabBodyPrefabType}/` : `${url}topup/`;
     }
 
     init() {
@@ -32,14 +30,18 @@ export default class TabRub extends SegmentControlRub {
         });
     }
 
-    _tabEventHandler(event) {
-        this.addContentPrefabToBody();
+    addContentPrefabToBody() {
+        let url = 'dashboard/dialog/prefabs/';
+        let tabBodyPrefabUrl = this.options.hasOwnProperty('tabBodyPrefabType') ? `${url}${this.options.tabBodyPrefabType}/` : `${url}topup/`;
+        let activeTab = this.getVal();
+        let prefabURL = `${tabBodyPrefabUrl}${activeTab}`;
+        return this.tabComponent.addContentPrefabToBody(this.bodyNode, prefabURL);
     }
 
-    addContentPrefabToBody() {
-        let activeTab = this.getVal();
-        let prefabURL = `${this.options.tabBodyPrefabUrl}${activeTab}`;
-        return this.tabComponent.addContentPrefabToBody(this.bodyNode, prefabURL);
+    addContentNodeToBody(node) {
+        console.log('try to add new node here !');
+        // return this.tabComponent.addContentPrefabTobody(this.bodyNode, node);
+        this.tabComponent.clearBody(this.bodyNode);
     }
 
     getVal() {
@@ -49,5 +51,18 @@ export default class TabRub extends SegmentControlRub {
     //override
     static show(node, bodyNode, segments, options) {
         return new TabRub(node, bodyNode, segments, options).init();
+    }
+
+
+    _tabEventHandler(event) {
+        if (this._segementIsNode(event.target)) {
+            this.addContentNodeToBody();
+        } else {
+            this.addContentPrefabToBody();
+        }
+    }
+
+    _segementIsNode(target) {
+        return target.isNode || false;
     }
 }

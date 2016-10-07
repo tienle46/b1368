@@ -153,7 +153,7 @@ export default class DashboardScene extends BaseScene {
             value: 'tab_exchange_item'
         }, {
             title: 'Lịch sử',
-            value: 'tab_iap'
+            value: 'tab_exchange_history'
         }];
 
         let options = {

@@ -57,9 +57,7 @@ class TabExchangeItem extends Component {
                     rowNode.addChild(itemNode);
 
                     let itemSprite = itemNode.addComponent(cc.Sprite);
-                    RubUtils.loadSpriteFrame(itemSprite, 'dashboard/dialog/imgs/bg-napthe', (sprite) => {
-                        sprite.node.setContentSize(cc.size(itemNodeWidth, itemNodeHeight));
-                    });
+                    RubUtils.loadSpriteFrame(itemSprite, 'dashboard/dialog/imgs/bg-napthe', cc.size(itemNodeWidth, itemNodeHeight));
 
                     // image background node
                     this._initBackgroundNode(itemNode, itemIcon);
@@ -132,12 +130,12 @@ class TabExchangeItem extends Component {
         lblComponent.overflow = cc.Label.Overflow.RESIZE_HEIGHT;
 
         let lblNode2 = new cc.Node();
-        lblNode2.color = new cc.Color(246, 255, 41);
         lblNode2.setContentSize(cc.size(lblNodeWidth, lblNodeHeight));
         lblContainerNode.addChild(lblNode2);
 
         let lblComponent2 = lblNode2.addComponent(cc.Label);
         lblComponent2.string = numeral(itemGold).format('0,0');
+        lblComponent2.node.color = new cc.Color(246, 255, 41);
         lblComponent2.horizontalAlign = cc.Label.HorizontalAlign.CENTER;
         lblComponent2.verticalAlign = cc.Label.VerticalAlign.CENTER;
         lblComponent2.fontSize = 16;
@@ -154,10 +152,7 @@ class TabExchangeItem extends Component {
         itemNode.addChild(imgBgNode);
 
         let imgBgSprite = imgBgNode.addComponent(cc.Sprite);
-        RubUtils.loadSpriteFrame(imgBgSprite, 'dashboard/dialog/imgs/bg-napthe-1', (sprite) => {
-            sprite.node.setContentSize(cc.size(imgBgNodeWidth, imgBgNodeHeight));
-        });
-
+        RubUtils.loadSpriteFrame(imgBgSprite, 'dashboard/dialog/imgs/bg-napthe-1', cc.size(imgBgNodeWidth, imgBgNodeHeight));
 
         let imgBgWidget = imgBgNode.addComponent(cc.Widget);
         imgBgWidget.top = 10.5;
@@ -168,10 +163,9 @@ class TabExchangeItem extends Component {
         imgBgNode.addChild(imgNode);
 
         let imgSprite = imgNode.addComponent(cc.Sprite);
-        RubUtils.loadSpriteFrame(imgSprite, itemIcon, (sprite) => {
-            sprite.node.setContentSize(cc.size(205, 134));
-        }, true);
+        RubUtils.loadSpriteFrame(imgSprite, itemIcon, cc.size(205, 134), true);
     }
+
     _initRowNode() {
         let rowNode = new cc.Node();
         rowNode.width = 780;
