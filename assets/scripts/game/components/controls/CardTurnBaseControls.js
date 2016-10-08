@@ -27,6 +27,16 @@ export default class CardTurnBaseControls extends GameControls {
         };
     }
 
+    _init(scene){
+        super._init(scene);
+
+        this.scene.on(Events.SET_INTERACTABLE_PLAY_CONTROL, this._setInteractablePlayControl, this);
+    }
+
+    _setInteractablePlayControl(interactable){
+        this.setInteractable(this.playButton, interactable);
+    }
+
     onLoad(){
         super.onLoad();
         this.hideAllControls();
@@ -48,6 +58,7 @@ export default class CardTurnBaseControls extends GameControls {
     _showOnTurnControls(showPlayControlOnly){
         utils.active(this.playButton);
         utils.active(this.sortButton);
+        this.setInteractable(this.playButton, false);
         showPlayControlOnly ? utils.deactive(this.skipTurnButton) : utils.active(this.skipTurnButton);
     }
 

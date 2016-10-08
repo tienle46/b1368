@@ -57,7 +57,11 @@ export default class PlayerRenderer extends ActorRenderer {
         };
     }
 
-    _initUI() {
+    _initUI(data = {}) {
+
+        super._initUI(data);
+
+        this.scene = data.scene;
 
         // let nameNode = this.node.getChildByName('name');
         // this.playerNameLabel = nameNode && nameNode.getComponent(cc.Label);
@@ -84,9 +88,9 @@ export default class PlayerRenderer extends ActorRenderer {
         // utils.deactive(this.masterIcon);
         // utils.deactive(this.readyIcon);
 
-        this.isCounting = true;
+        this.isCounting = false;
         this.counterTimer = 0;
-        this.turnDuration = 20;
+        this.timelineDuration = 0;
     }
 
     setName(name) {
@@ -112,25 +116,28 @@ export default class PlayerRenderer extends ActorRenderer {
     }
 
     update(dt) {
-        if (this.isCounting) {
-            this.callCounter.progress = this.counterTimer / this.turnDuration;
+        if (this.isCounting && this.timelineDuration > 0) {
+            this.callCounter.progress = this.counterTimer / this.timelineDuration;
             this.counterTimer += dt;
-            if (this.counterTimer >= this.turnDuration) {
+            if (this.counterTimer >= this.timelineDuration) {
                 this.isCounting = false;
                 this.callCounter.progress = 1;
+                this.stopCountdown();
             }
         }
     }
 
-    startCountdown() {
+    startCountdown(duration) {
         if (this.callCounter) {
+            this.timelineDuration = duration;
             this.isCounting = true;
             this.counterTimer = 0;
         }
     }
 
-    resetCountdown() {
+    stopCountdown(){
         if (this.callCounter) {
+            this.timelineDuration = 0;
             this.isCounting = false;
             this.counterTimer = 0;
             this.callCounter.progress = 0;

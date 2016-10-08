@@ -33,7 +33,7 @@ export default class BoardCardTurnBaseRenderer extends BoardCardRenderer {
         this.deckCards = deckCardNode.getComponent('DeckCardRenderer');
     }
 
-    _resetBoard(){
+    _reset(){
         this.cleanDeckCards();
     }
 

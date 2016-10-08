@@ -1,5 +1,8 @@
 import app from 'app';
 import BaseScene from 'BaseScene';
+import Keywords from 'Keywords';
+import Commands from 'Commands';
+import SFS2X from 'SFS2X';
 
 export default class ListTableScene extends BaseScene {
     constructor() {
@@ -60,6 +63,8 @@ export default class ListTableScene extends BaseScene {
         const width = this.containnerTableView.node.width;
         const itemDimension = width;
 
+        app.system.addListener(SFS2X.SFSEvent.ROOM_JOIN, this._onJoinRoomResult, this);
+
         for (let i = 0; i < 14; i++) {
 
             const listCell = new cc.instantiate(this.tableListCell);
@@ -68,11 +73,37 @@ export default class ListTableScene extends BaseScene {
             listCell.setPosition(cc.p(0, 0));
 
             const cellComponent = listCell.getComponent('TableListCell');
-            cellComponent.setOnClickListener(() => {
-                this._createRoom(app.const.gameCode.TLMNDL, 1, 2);
-            });
+            if((i / 2) == 0){
+                cellComponent.setOnClickListener(() => {
+                    this._createRoom(app.const.gameCode.TLMNDL, 1, 2);
+                });
+            }else{
+                cellComponent.setOnClickListener(() => {
+                    let data = {};
+                    data[Keywords.GAME_CODE] = 'tnd';
+                    data[Keywords.IS_SPECTATOR] = false;
+                    data[Keywords.QUICK_JOIN_BET] = 1;
+
+                    console.log("join room request");
+
+                    app.service.send({cmd: Commands.USER_QUICK_JOIN_ROOM, data: data});
+                });
+            }
 
             this.contentInScroll.node.addChild(listCell);
+        }
+    }
+
+    _onJoinRoomResult(resultEvent){
+        if(resultEvent.errorCode){
+            app.system.error(event.errorMessage);
+        }else{
+
+            app.context.lastJoinRoom = resultEvent.room;
+            if (resultEvent.room.isJoined && resultEvent.room.isGame) {
+                app.context.currentRoom = resultEvent.room;
+                app.system.loadScene(app.const.scene.GAME_SCENE);
+            }
         }
     }
 
@@ -84,18 +115,20 @@ export default class ListTableScene extends BaseScene {
         requestParam[app.keywords.ROOM_PASSWORD] = password;
         requestParam[app.keywords.ROOM_CAPACITY] = roomCapacity;
 
-        app.service.send({cmd: app.commands.USER_CREATE_ROOM, data: requestParam, room: null /*app.context.currentRoom*/}, (error, result) => {
+        app.service.send({cmd: app.commands.USER_CREATE_ROOM, data: requestParam, room: null /*app.context.currentRoom*/} , (error, resultEvent) => {
 
-            if(event.errorCode){
-                app.system.error(event.errorMessage);
-            }else{
+            this._onJoinRoomResult(resultEvent);
 
-                app.context.lastJoinRoom = result.room;
-                if (result.room.isJoined && result.room.isGame) {
-                    app.context.currentRoom = result.room;
-                    app.system.loadScene(app.const.scene.GAME_SCENE);
-                }
-            }
+            // if(resultEvent.errorCode){
+            //     app.system.error(event.errorMessage);
+            // }else{
+            //
+            //     app.context.lastJoinRoom = resultEvent.room;
+            //     if (resultEvent.room.isJoined && resultEvent.room.isGame) {
+            //         app.context.currentRoom = resultEvent.room;
+            //         app.system.loadScene(app.const.scene.GAME_SCENE);
+            //     }
+            // }
 
         });
     }

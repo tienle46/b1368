@@ -616,11 +616,11 @@ export default class CardList extends Component {
         this.node.runAction(cc.sequence(actions));
     }
 
-    static dealCards(deckNode, playersCardLists, cardLength, cb){
+    static dealCards(dealDeckCard, playersCardLists, cardLength, cb){
 
-        const centerPoint = deckNode.parent.convertToWorldSpace(deckNode.getPosition());
+        const centerPoint = dealDeckCard.node.parent.convertToWorldSpace(dealDeckCard.node.getPosition());
         const fakeCards = Array(cardLength).fill(5).map(byteValue => Card.from(byteValue));
-        const deckScale = deckNode.getComponent('CardList')._scale;
+        const deckScale = dealDeckCard.node.getComponent('CardList')._scale;
         const delay = cc.delayTime(0.1);
 
         let actions = [];
@@ -649,15 +649,33 @@ export default class CardList extends Component {
                     let animation;
 
                     if( i < cardLength - 1 || j < playersCardLists.length - 1 ){
-                        animation= cc.sequence(cc.spawn(cc.moveTo(CardList.DRAW_CARD_DURATION,cardPosition.x, cardPosition.y),cc.scaleTo(CardList.DRAW_CARD_DURATION,originalScale)),scale.clone(), cc.callFunc(()=>{
-                            card.reveal(true);
-                        }), scaleReverse.clone());
+                        animation= cc.sequence(
+                            cc.spawn(
+                                cc.moveTo(CardList.DRAW_CARD_DURATION,cardPosition.x, cardPosition.y),
+                                cc.scaleTo(CardList.DRAW_CARD_DURATION,originalScale),
+                                // cc.rotateTo(CardList.DRAW_CARD_DURATION,-180)
+                            ),
+                            scale.clone(),
+                            // cc.callFunc(() => {card.reveal(true);}),
+                            cc.rotateTo(0, 0),
+                            scaleReverse.clone()
+                        );
                     }
                     else{
-                        animation= cc.sequence(cc.spawn(cc.moveTo(CardList.DRAW_CARD_DURATION,cardPosition.x, cardPosition.y),cc.scaleTo(CardList.DRAW_CARD_DURATION,originalScale)),scale.clone(),cc.delayTime(1), cc.callFunc(()=>{
-                            card.reveal(false);
-                            cb();
-                        }), scaleReverse.clone());
+                        animation= cc.sequence(
+                            cc.spawn(
+                                cc.moveTo(CardList.DRAW_CARD_DURATION,cardPosition.x, cardPosition.y),
+                                cc.scaleTo(CardList.DRAW_CARD_DURATION,originalScale),
+                                // cc.rotateTo(CardList.DRAW_CARD_DURATION,-180)
+                            ),
+                            scale.clone(),
+                            cc.rotateTo(0, 0),
+                            cc.delayTime(1),
+                            cc.callFunc(() => {
+                                // card.reveal(false);
+                                cb();
+                            }),
+                            scaleReverse.clone());
                     }
                     card.node.runAction(animation);
 
@@ -687,7 +705,7 @@ CardList.CARD_HEIGHT = 130;
 CardList.DEFAULT_MAX_WIDTH = 600;
 CardList.DEFAULT_MAX_HEIGHT = 300;
 CardList.TRANSFER_CARD_DURATION = 0.4;
-CardList.DRAW_CARD_DURATION = 1;
+CardList.DRAW_CARD_DURATION = 0.4;
 CardList.CARD_FLIP_TIME = 0.3;
 
 app.createComponent(CardList);

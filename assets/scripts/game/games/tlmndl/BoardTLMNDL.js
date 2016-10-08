@@ -33,8 +33,8 @@ export default class BoardTLMNDL extends BoardCardTurnBase {
         return app.const.game.GAME_TYPE_TIENLEN;
     }
 
-    _resetBoard() {
-        super._resetBoard();
+    _reset() {
+        super._reset();
         this.winRank = 0;
     }
 

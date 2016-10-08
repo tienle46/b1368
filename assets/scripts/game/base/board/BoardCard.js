@@ -6,6 +6,7 @@ import {utils, GameUtils} from 'utils';
 import app from 'app';
 import Board from 'Board';
 import Card from 'Card';
+import CardList from 'CardList';
 import {Keywords} from 'core';
 
 import {Events} from 'events';
@@ -36,8 +37,19 @@ export default class BoardCard extends Board {
     _dealCards(data) {
         let cardBytes = data[app.keywords.DEAL_CARD_LIST_KEYWORD] || [];
         let dealCards = cardBytes.map(cardByte => Card.from(cardByte));
-        this.scene.gamePlayers.onDealCards(dealCards);
-        this.scene.emit(Events.ON_GAME_STATE_STARTED);
+
+        let playerHandCardLists = this.scene.gamePlayers.getPlayerHandCardLists();
+        let actions = CardList.dealCards(this.renderer.dealCardList, playerHandCardLists, dealCards.length, () => {
+
+            console.log("ON_GAME_STATE_STARTED: ");
+
+            this.scene.gamePlayers.onDealCards(dealCards);
+            this.scene.emit(Events.ON_GAME_STATE_STARTED);
+        });
+
+        this.scene.node.runAction(cc.sequence(actions));
+
+        this.scene.emit(Events.ON_GAME_STATE_STARTING);
     }
 
     _getPlayerHandCards(playerIds, data) {

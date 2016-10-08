@@ -402,18 +402,24 @@ class Service {
 
     _onJoinRoomResult(event) {
 
+        console.log("_onJoinRoomResult: ", event);
         const key = this._hasCallback(app.commands.USER_CREATE_ROOM) ? app.commands.USER_CREATE_ROOM : SFS2X.SFSEvent.ROOM_JOIN;
 
-        if (event.errorCode) {
-            this._callCallbackAsync(key, event);
-        } else {
-            this._callCallbackAsync(key, data => {
-                return !data || !data.roomId || (event.room && data.roomId == event.id);
-            }, null, event);
+        if(this._hasCallback(key)){
+            if (event.errorCode) {
+                this._callCallbackAsync(key, event);
+            } else {
+                this._callCallbackAsync(key, data => {
+                    return !data || !data.roomId || (event.room && data.roomId == event.id);
+                }, null, event);
+            }
+        }else{
+            app.system.emit(key, event);
         }
     }
 
     _onCreateRoomResult(event) {
+        console.log("_onCreateRoomResult: ", event);
         if (event.errorCode) {
             this._callCallbackAsync(app.commands.USER_CREATE_ROOM, event);
         }

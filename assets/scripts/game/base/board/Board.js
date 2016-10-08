@@ -60,12 +60,17 @@ export default class Board extends Actor {
         this.scene.on(Events.ON_GAME_STATE_PLAYING, this.onBoardPlaying, this);
         this.scene.on(Events.ON_GAME_STATE_ENDING, this.onBoardEnding, this);
         this.scene.on(Events.ON_GAME_LOAD_PLAY_DATA, this._loadGamePlayData, this);
+        this.scene.on(Events.ON_PLAYER_READY_STATE_CHANGED, this._onPlayerSetReadyState, this);
     }
 
     onLoad() {
         super.onLoad();
 
         console.debug("_init Board");
+    }
+
+    _onPlayerSetReadyState(playerId, ready, isItMe) {
+        isItMe && (ready ? this.stopTimeLine() : this.startTimeLine(this.readyPhaseDuration));
     }
 
     update(dt) {
@@ -77,7 +82,7 @@ export default class Board extends Actor {
     }
 
     onDestroy() {
-
+        this.stopTimeLine();
     }
 
     /**
@@ -140,10 +145,6 @@ export default class Board extends Actor {
         // return this.positionManager.getPlayerSeatID(playerId);
     }
 
-    stopTimeLine() {
-        //TODO
-    }
-
     _updatePlayerState(boardInfoObj) {
         let playerIds = boardInfoObj[xg.Keywords.GAME_LIST_PLAYER];
         if (playerIds) {
@@ -191,8 +192,27 @@ export default class Board extends Actor {
         return this._shouldStartReadyTimeLine() || this.isEnding();
     }
 
-    startTimeLine() {
-        //TODO
+    startTimeLine(timeInSecond, message = "", timeoutCb) {
+        this.stopTimeLine();
+
+        this.renderer.showTimeLine(timeInSecond, message);
+
+        this.timelineRemain = timeInSecond;
+        this.timelineInterval = setInterval(()=> {
+            this.timelineRemain--;
+            if(this.timelineRemain < 0){
+                this.stopTimeLine();
+                timeoutCb && timeoutCb();
+            } else {
+                this.renderer.setTimeLineRemainTime(this.timelineRemain);
+            }
+        }, 1000);
+
+    }
+
+    stopTimeLine() {
+        this.timelineInterval && clearInterval(this.timelineInterval);
+        this.renderer.hideTimeLine();
     }
 
     /**
@@ -226,27 +246,31 @@ export default class Board extends Actor {
         this.serverState = boardState;
 
         if (data.hasOwnProperty(app.keywords.BOARD_PHASE_DURATION)) {
-            this.changeBoardPhaseDuration(data);
+            this.changeBoardPhaseDuration(boardState, data);
         }
 
         //TODO Process board state changed here
     }
 
-    _resetBoard() {
+    _reset() {
         this.scene.hideGameResult();
-        this.renderer && this.renderer._resetBoard();
+        this.renderer && this.renderer._reset();
     }
 
     onBoardBegin(data = {}) {
-        this._resetBoard();
+        this._reset();
+
+        console.log("on board begin check board timeline: ", Keywords.BOARD_PHASE_DURATION, data)
 
         let boardTimeLine = utils.getValue(data, Keywords.BOARD_PHASE_DURATION);
         if (boardTimeLine) {
-            if (this.scene.gamePlayers.meIsOwner) {
+            if (this.scene.gamePlayers.meIsOwner()) {
                 boardTimeLine *= 2;
             }
 
-            this.startTimeLine();
+            this.readyPhaseDuration = boardTimeLine;
+
+            this.startTimeLine(boardTimeLine, () => {this.scene.emit(Events.ON_ACTION_EXIT_GAME)});
         }
 
         this.state = app.const.game.board.state.BEGIN;
@@ -254,11 +278,12 @@ export default class Board extends Actor {
 
     onBoardStarting(data = {}, isJustJoined) {
         if (isJustJoined) {
-            this.onBoardStarting({}, isJustJoined);
+            this.onBoardBegin({}, isJustJoined);
         }
 
         this.state = app.const.game.board.state.STARTING;
         this.scene.gameControls.hideAllControlsBeforeGameStart();
+        this.stopTimeLine();
     }
 
     onBoardStarted(data = {}, isJustJoined) {
@@ -272,7 +297,7 @@ export default class Board extends Actor {
 
     onBoardPlaying(data = {}, isJustJoined) {
         if (isJustJoined) {
-            this.onBoardStarting({}, isJustJoined);
+            this.onBoardStarted({}, isJustJoined);
         }
 
         this.state = app.const.game.board.state.PLAYING;
@@ -281,8 +306,15 @@ export default class Board extends Actor {
 
     onBoardEnding(data = {}, isJustJoined) {
         if (isJustJoined) {
-            this.onBoardStarting({}, isJustJoined);
+            this.onBoardPlaying({}, isJustJoined);
         }
+
+        /**
+         * Donn't need to show end phase timeline
+         * @type {number}
+         */
+        // let boardTimeLine = utils.getValue(data, Keywords.BOARD_PHASE_DURATION);
+        // boardTimeLine && this.startTimeLine(boardTimeLine);
 
         this.state = app.const.game.board.state.ENDING;
 
@@ -339,6 +371,7 @@ export default class Board extends Actor {
     }
 
     changeBoardPhaseDuration(data) {
+
         //TODO on board timeline changed
     }
 

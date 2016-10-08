@@ -3,6 +3,7 @@
  */
 
 import app from 'app';
+import utils from 'utils';
 import CardList from 'CardList';
 import PlayerRenderer from 'PlayerRenderer';
 
@@ -46,19 +47,39 @@ export default class PlayerCardRenderer extends PlayerRenderer {
         };
 
         this.cardList = null;
-        this.scene = null;
     }
 
     _initUI(data = {}){
-        super._initUI();
+        super._initUI(data);
 
         let cardListNode = cc.instantiate(this.cardListPrefab);
         this._getCardAnchorPoint(data.actor).addChild(cardListNode);
 
-        this.cardList = cardListNode.getComponent('CardList');
-        this.cardList.setMaxDimension(800);
-        this.cardList.setAnchorPoint(0, 0);
-        this.cardList.setPosition(0, 0);
+        let cardList = cardListNode.getComponent('CardList');
+        if(data.isItMe){
+            cardList.setMaxDimension(800);
+            cardList.setDraggable(true);
+            cardList.setSelectable(true);
+        } else {
+            cardList.setMaxDimension(0);
+            cardList.setScale(0.5);
+            cardList.setDraggable(false);
+            cardList.setSelectable(false);
+            cardList.setReveal(false);
+        }
+
+        cardList.setAnchorPoint(0, 0);
+        cardList.setPosition(0, 0);
+
+        this.cardList = cardList;
+    }
+
+    setSelectCardChangeListener(listener){
+        this.cardList.setSelectCardChangeListener(listener);
+    }
+
+    hideNotMeHandCard(isItMe){
+        !isItMe && utils.deactive(this.cardList);
     }
 
     _getCardAnchorPoint(player){
@@ -79,8 +100,8 @@ export default class PlayerCardRenderer extends PlayerRenderer {
         this.cardList.clear();
     }
 
-    renderCards(cards){
-        this.cardList.setCards(cards);
+    renderCards(cards, reveal){
+        this.cardList.setCards(cards, true, reveal);
     }
 
     findCards(cardModels){

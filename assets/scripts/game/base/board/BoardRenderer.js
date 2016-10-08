@@ -15,22 +15,57 @@ export default class BoardRenderer extends ActorRenderer {
             type: cc.Prefab
         };
 
+        this.timeline = {
+            default: null,
+            type: cc.Node
+        };
+
         this.playerPositionPrefab = {
             default: null,
             type: cc.Prefab
         }
+
+        this.timelineMessageNode = cc.Node;
+        this.timelineTextView = null;
+        this.timelineRemainTime = cc.Label;
     }
 
     _initUI(data){
         super._initUI(data);
+
+        this.timelineTextView = this.timelineMessageNode.getComponent('TextView');
+
+        utils.deactive(this.timeline);
     }
 
-    _resetBoard(){
-
+    _reset(){
+        this.hideTimeLine();
     }
 
-    hideStartBoardTimeLine(){
+    hideTimeLine(){
+        utils.deactive(this.timeline);
+    }
 
+    showTimeLine(timeInSecond = 0, message){
+        if(timeInSecond <= 0){
+            return;
+        }
+
+        if(!utils.isString(message) || utils.isEmpty(message)){
+            message = app.res.string('game_waiting_time');
+        }
+
+        utils.active(this.timeline);
+        this.setTimeLineMessage(message);
+        this.setTimeLineRemainTime(timeInSecond);
+    }
+
+    setTimeLineMessage(message){
+        this.timelineTextView.setText(message);
+    }
+
+    setTimeLineRemainTime(second){
+        this.timelineRemainTime.string = `${second}`;
     }
 }
 

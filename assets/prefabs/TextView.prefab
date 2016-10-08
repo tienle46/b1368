@@ -57,19 +57,16 @@
     "_components": [
       {
         "__id__": 5
-      },
-      {
-        "__id__": 6
       }
     ],
     "_prefab": {
-      "__id__": 7
+      "__id__": 6
     },
     "groupIndex": 0
   },
   {
     "__type__": "cc.Node",
-    "_name": "Label",
+    "_name": "label",
     "_objFlags": 0,
     "_opacity": 255,
     "_color": {
@@ -90,8 +87,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 140,
-      "height": 25
+      "width": 100,
+      "height": 20
     },
     "_children": [],
     "_rotationX": 0,
@@ -130,9 +127,9 @@
     },
     "_enabled": true,
     "_useOriginalSize": false,
-    "_actualFontSize": 12,
-    "_fontSize": 12,
-    "_lineHeight": 25,
+    "_actualFontSize": 14,
+    "_fontSize": 14,
+    "_lineHeight": 20,
     "_enableWrapText": true,
     "_N$file": null,
     "_isSystemFontUsed": true,
@@ -149,33 +146,8 @@
     "asset": {
       "__uuid__": "da6873d4-b8f9-49a8-9c2f-4776dab2d298"
     },
-    "fileId": "4fea1LtdM5LS4384whdwkWT"
-  },
-  {
-    "__type__": "cc.Sprite",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 1
-    },
-    "_enabled": true,
-    "_spriteFrame": {
-      "__uuid__": "e3a6bbbf-9036-49b0-99dc-e7c42a9b729b"
-    },
-    "_type": 1,
-    "_sizeMode": 0,
-    "_fillType": 0,
-    "_fillCenter": {
-      "__type__": "cc.Vec2",
-      "x": 0,
-      "y": 0
-    },
-    "_fillStart": 0,
-    "_fillRange": 0,
-    "_isTrimmedMode": true,
-    "_srcBlendFactor": 770,
-    "_dstBlendFactor": 771,
-    "_atlas": null
+    "fileId": "4fea1LtdM5LS4384whdwkWT",
+    "sync": false
   },
   {
     "__type__": "b3837dARIBD8bYyj9HXmkPB",
@@ -185,8 +157,9 @@
       "__id__": 1
     },
     "_enabled": true,
-    "label": null,
-    "maxLine": null
+    "label": {
+      "__id__": 3
+    }
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -196,6 +169,7 @@
     "asset": {
       "__uuid__": "da6873d4-b8f9-49a8-9c2f-4776dab2d298"
     },
-    "fileId": "0da54+s2uVPhbpIQV+ySI9y"
+    "fileId": "0da54+s2uVPhbpIQV+ySI9y",
+    "sync": false
   }
 ]

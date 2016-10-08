@@ -444,6 +444,10 @@ export default class GamePlayers extends Component {
         });
     }
 
+    getPlayerHandCardLists(){
+        return this.players.map(player => player.renderer.cardList);
+    }
+
     getCurrentPlayerBalances(){
         let playerBalances = {};
 

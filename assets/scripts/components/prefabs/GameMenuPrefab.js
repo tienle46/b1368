@@ -2,6 +2,7 @@
 import app from 'app';
 import Component from 'Component';
 import SFS2X from 'SFS2X';
+import Events from 'Events';
 
 class GameMenuPrefab extends Component {
     constructor() {
@@ -30,9 +31,9 @@ class GameMenuPrefab extends Component {
     }
 
     onClickMenuButton(event){
-        //TODO
-        this.scene.showLoading();
-        app.service.sendRequest(new SFS2X.Requests.System.LeaveRoomRequest(this.scene.room));
+        this.scene.emit(Events.ON_ACTION_EXIT_GAME);
+        // this.scene.showLoading();
+        // app.service.sendRequest(new SFS2X.Requests.System.LeaveRoomRequest(this.scene.room));
     }
 
     onClickChatButton(event){

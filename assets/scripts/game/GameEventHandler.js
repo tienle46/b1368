@@ -213,17 +213,17 @@ export default class GameEventHandler {
 
     _onPlayerReady(data){
         let playerId = utils.getValue(data, app.keywords.PLAYER_ID);
-        playerId && this.scene.emit(Events.ON_PLAYER_SET_READY_STATE, playerId, true);
+        playerId && this.scene.emit(Events.ON_PLAYER_READY_STATE_CHANGED, playerId, true, this.scene.gamePlayers.isItMe(playerId));
     }
 
     _onPlayerUnready(data){
         let playerId = utils.getValue(data, app.keywords.PLAYER_ID);
-        playerId && this.scene.emit(Events.ON_PLAYER_SET_READY_STATE, playerId, false);
+        playerId && this.scene.emit(Events.ON_PLAYER_READY_STATE_CHANGED, playerId, false, this.scene.gamePlayers.isItMe(playerId));
     }
 
     _handleChangePlayerBalance(data){
-        let playerIds = utils.getValue(Keywords.GAME_LIST_PLAYER);
-        let playersBalances = utils.getValue(Keywords.USER_BALANCE);
+        let playerIds = utils.getValue(data, Keywords.GAME_LIST_PLAYER);
+        let playersBalances = utils.getValue(data, Keywords.USER_BALANCE);
 
         console.debug("_handleChangePlayerBalance: ", playersBalances);
 
