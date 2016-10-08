@@ -39,7 +39,7 @@ let RubUtils = {
             spriteComponent.spriteFrame = spriteFrame;
             spriteFrameDefaultConfig(spriteComponent);
         } else {
-            RubUtils.loadRes(resURL, true).then((spriteFrame) => {
+            return RubUtils.loadRes(resURL, true).then((spriteFrame) => {
                 spriteComponent.spriteFrame = spriteFrame;
                 spriteFrameDefaultConfig(spriteComponent);
             });

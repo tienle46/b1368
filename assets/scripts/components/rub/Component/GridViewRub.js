@@ -18,12 +18,13 @@ export default class GridViewRub extends Rub {
      * @param {any} opts
      * {
      *  bg: new cc.Color() || string: resource URL # `content` node background
+     *  position: cc.v2() # default : cc.v2(0, 0);
      *  width: number # grid width
      *  height: number # grid height
      *  isHorizontal: boolean # default false
      *  isVertical: boolean # default true
-     *  spacingX: number # default 3px
-     *  spacingY: boolean # default 3px
+     *  spacingX: number # default 2px
+     *  spacingY: boolean # default 2px
      *  colWidth: array[number || null] # array of width per column ['', 500, 20]
      *      # assuming you have `content` node with width = 100 and 3 columns ['', 50, 20]
      *      # while the first element in array `colWidth` is empty || null its width will be 100 - (50 + 20)
@@ -34,16 +35,16 @@ export default class GridViewRub extends Rub {
     constructor(node, data, opts = {}) {
         super(node);
         let defaultOptions = {
+            position: cc.v2(0, 0),
             width: 585,
             height: 250,
-            spacingX: 3,
-            spacingY: 3,
+            spacingX: 2,
+            spacingY: 2,
             isHorizontal: false,
             isVertical: true
         };
 
         this.options = Object.assign({}, defaultOptions, opts);
-
         this.data = this._validData(data);
     }
 
@@ -53,7 +54,7 @@ export default class GridViewRub extends Rub {
         return RubUtils.loadRes(scrollviewPrefab).then((prefab) => {
             this.prefab = cc.instantiate(prefab);
 
-            this.addToNode();
+            // this.addToNode();
 
             this.viewNode = this.prefab.getChildByName('view');
             this.contentNode = this.viewNode.getChildByName('content');
@@ -65,8 +66,7 @@ export default class GridViewRub extends Rub {
             return null;
         }).then(() => {
             this.data.length > 0 && this.data[0] instanceof Array && this.data[0].length > 0 && this._initCell();
-
-            return null;
+            return this;
         });
     }
 
@@ -107,6 +107,7 @@ export default class GridViewRub extends Rub {
 
     // resize content node by parent ( dont know why widget does not work )
     _resize(prefab) {
+        prefab.setPosition(this.options.position);
         // set prefab size
         prefab.setContentSize(cc.size(this.options.width, this.options.height));
         // `view` node size
@@ -124,8 +125,7 @@ export default class GridViewRub extends Rub {
                 let cellOpts = {
                     width: width[j]
                 };
-                console.log(this.getContentNodeWidth(), cellOpts.width);
-                let cellNode = new CellRub(data[i][j], cellOpts).cell();
+                let cellNode = new CellRub(data[i][j] || '', cellOpts).cell();
                 this.contentNode.addChild(cellNode);
             }
         }
@@ -156,12 +156,13 @@ export default class GridViewRub extends Rub {
      *  ['content1', 'content2', 'content3'] # column 1
      *  ['value1', 'value2', 'value3'] # column 2
      *  ['any1', 'any2', 'any3'] # column 3
+     *  [] # column 4
      * ]
      *  => 
      * output = [
-     *  ['content1', 'value1', 'any1'],
-     *  ['content2', 'value2', 'any2'],
-     *  ['content3', 'value3', 'any3']
+     *  ['content1', 'value1', 'any1', ''],
+     *  ['content2', 'value2', 'any2', ''],
+     *  ['content3', 'value3', 'any3', '']
      * ]
      * @static
      * @param {Array} input
@@ -173,12 +174,24 @@ export default class GridViewRub extends Rub {
         let out = [];
         while (input[0].length > 0) {
             for (let i = 0; i < input.length; i++) {
-                tmp.push(input[i].shift());
+                tmp.push(input[i].shift() || null);
             }
             out.push(tmp);
             tmp = [];
         }
 
         return out;
+    }
+
+    _getNode() {
+        return this.prefab;
+    }
+
+
+    // return Promise which attaches `cc.Node`
+    static node(node, data, opts = {}) {
+        return new GridViewRub(node, data, opts).init().then((a) => {
+            return a._getNode();
+        });
     }
 }

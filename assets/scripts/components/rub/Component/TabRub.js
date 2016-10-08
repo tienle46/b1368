@@ -11,7 +11,6 @@ export default class TabRub extends SegmentControlRub {
      * @param {any} [options={}]
      *  {
      *  ...
-     *  isPrefab : boolean # indicates 
      *  tabBodyPrefabType: string # name of folder that placed in prefab/dialog folder to load prefabs inside
      *  }
      * @memberOf TabRub
@@ -26,22 +25,24 @@ export default class TabRub extends SegmentControlRub {
         return super.init().then((toggleGroup) => {
             this.tabComponent = this.prefab.addComponent(Tab);
             this.tabComponent.node.on('check-event', this._tabEventHandler.bind(this));
+            return null;
+        }).then(() => {
+            this._tabEventHandler();
             return this;
         });
     }
 
     addContentPrefabToBody() {
         let url = 'dashboard/dialog/prefabs/';
-        let tabBodyPrefabUrl = this.options.hasOwnProperty('tabBodyPrefabType') ? `${url}${this.options.tabBodyPrefabType}/` : `${url}topup/`;
+        let tabBodyPrefabUrl = `${url}${this.options.tabBodyPrefabType}/`;
         let activeTab = this.getVal();
         let prefabURL = `${tabBodyPrefabUrl}${activeTab}`;
         return this.tabComponent.addContentPrefabToBody(this.bodyNode, prefabURL);
     }
 
-    addContentNodeToBody(node) {
-        console.log('try to add new node here !');
+    addContentNodeToBody() {
+        this.tabComponent.addContentNodeToBody(this.bodyNode, this.getVal());
         // return this.tabComponent.addContentPrefabTobody(this.bodyNode, node);
-        this.tabComponent.clearBody(this.bodyNode);
     }
 
     getVal() {
@@ -53,16 +54,15 @@ export default class TabRub extends SegmentControlRub {
         return new TabRub(node, bodyNode, segments, options).init();
     }
 
-
-    _tabEventHandler(event) {
-        if (this._segementIsNode(event.target)) {
+    _tabEventHandler() {
+        if (this._isNode()) {
             this.addContentNodeToBody();
         } else {
             this.addContentPrefabToBody();
         }
     }
 
-    _segementIsNode(target) {
-        return target.isNode || false;
+    _isNode() {
+        return this.getVal() instanceof cc.Node || this.getVal() instanceof Promise;
     }
 }

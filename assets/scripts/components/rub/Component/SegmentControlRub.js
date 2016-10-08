@@ -11,8 +11,9 @@ export default class SegmentControlRub extends Rub {
      * [
      *  {
      *      title: string,
-     *      value: any,
-     *      isNode: boolean (optional) # by default dialog body using loading prefab after adding to `dialog/body` node. When isNode is set to `true`, it adding a given node to `dialog/body` node
+     *      value: Promise || Node || string 
+     *          + Promise || Node -> this segement behaves as a node, and added immediately to body
+     *          + string -> prefab url, behaves as prefab, need to load before adding to body
      *      eventHander: {
      *          target: cc.Node,
      *          component: string,
@@ -23,34 +24,48 @@ export default class SegmentControlRub extends Rub {
      * ]
      * @param {any} options={} style options of segment group, includes:
      *  {
-     *      bg: string;  # /resources url for segment background
-     *      bgWidth: number;
-     *      bgHeight: number;
-     *      inActiveNormalSprite : string # /resources url for segment inactive state
-     *      activeNormalSprite : string # /resources url for segment active state
-     *      itemWidth: number 
-     *      itemHeight: number
-     *      // if round border
-     *      isRoundBorder: boolean;
-     *      // active when isRoundBorder == true
-     *      activeNormalSprite2: string
-     *      tabPrefabUrl: string
-     *  }
+     *      bg: string;  # default: 'dashboard/dialog/imgs/tab-bg' : `resources` assets url for segment background
+     *      width: number; # default: 81.7 # control width
+     *      height: number; # default: 52
+     *      activeNormalSprite: string # default: 'dashboard/popup-tab-active' : `resources` url for segment inactive state
+     *      inactiveNormalSprite : string # default: 'dashboard/transparent' : We only set transparent bg for inactive node while one is activated 
+     *      itemWidth: number # default: 155.1 : segment width
+     *      itemHeight: number # default: 31.7 
+     *      isRoundedBorder: boolean;  # default: true : if segement has rounded border <=> true : [ rounded border | nonround | nonround | rounded border ]
+     *      activeNormalSprite2: string // active when `isRoundedBorder` is true. 
+     *      tabBodyPrefabType: string # default: 'topup' : name of folder that placed in prefab/dialog folder to load prefabs inside
+     *      hasEdge: boolean # default: true; // sometimes we dont want to have any distance between active state and control background ( look at exchange -> history -> item tab)
+     *      edge: {top, left, right, height} # default edge aligment options : group.getComponent(cc.Widget)'s setting, activated while hasSpace is setted to `true`
+     * }
      * 
      * @memberOf SegmentControlRub
      */
     constructor(node, segments, options = {}) {
         super(node);
-        // this.node = node;
-        this.segments = segments;
 
         let defaultOptions = {
-
+            width: 88,
+            height: 74,
+            bg: 'dashboard/dialog/imgs/tab-bg',
+            activeNormalSprite: 'dashboard/popup-tab-active',
+            inactiveNormalSprite: 'dashboard/transparent',
+            isRoundedBorder: true,
+            activeNormalSprite2: 'dashboard/popup-tab-active2',
+            itemWidth: 155.1,
+            itemHeight: 31.7,
+            tabBodyPrefabType: 'topup',
+            hasEdge: true,
+            edge: {
+                top: -0.5,
+                bottom: 1.9,
+                left: 12.1,
+                right: 12.5
+            }
         };
 
-        let opts = Object.assign({}, defaultOptions, options);
+        this.segments = segments;
 
-        this.options = opts;
+        this.options = Object.assign({}, defaultOptions, options);
     }
 
     init() {
@@ -60,29 +75,64 @@ export default class SegmentControlRub extends Rub {
             this.addToNode();
 
             return this.prefab;
-        }).then((prefab) => {
-            return this._initComponents(prefab);
+        }).then(() => {
+            return this._setupComponentByOptions();
+        }).then(() => {
+            return this._initComponents();
         }).then((toggleGroupComponent) => {
             return this._createCheckBoxStyle(toggleGroupComponent);
         });
     }
 
-    _initComponents(prefab) {
+    _setupComponentByOptions() {
+        // segementControl node bg
+        let size = cc.size(this.options.width, this.options.height);
+        this.prefab.setContentSize(size);
+        let bgSpriteComponent = this.prefab.getComponent(cc.Sprite);
+        RubUtils.loadRes(this.options.bg, true).then((spriteFrame) => {
+            bgSpriteComponent.spriteFrame = spriteFrame;
+            bgSpriteComponent.type = cc.Sprite.Type.SLICED;
+            bgSpriteComponent.sizeMode = cc.Sprite.SizeMode.CUSTOM;
+        });
+        this._resizeGroupNodeByOptions();
+    }
+
+    // sometimes we dont want to have any distance between active state and control background ( look at exchange -> history -> item tab)
+    _resizeGroupNodeByOptions() {
+        let groupNode = this.prefab.getChildByName('group');
+        let groupWidget = groupNode.getComponent(cc.Widget);
+        if (this.options.hasEdge) {
+            groupWidget.top = this.options.edge.top;
+            groupWidget.left = this.options.edge.left;
+            groupWidget.right = this.options.edge.right;
+            groupWidget.bottom = this.options.edge.bottom;
+        } else {
+            groupWidget.top = 0;
+            groupWidget.left = 0;
+            groupWidget.right = 0;
+            groupWidget.bottom = 0;
+        }
+    }
+
+    _initComponents() {
+        let prefab = this.prefab;
         let toggleGroupNode = prefab.getChildByName('group');
         let toggleGroupComponent = toggleGroupNode.getComponent(ToggleGroup);
-
 
         this.segments.forEach((e, i) => {
             // create checkbox
             let newNode = new cc.Node();
-            let newNodeWidth = this.options.itemWidth || 155.1;
-            let newNodeHeight = this.options.itemHeight || 31.7;
-            newNode.setContentSize(cc.size(newNodeWidth, newNodeHeight));
+            let newNodeWidth = this.options.itemWidth;
+            let newNodeHeight = this.options.itemHeight;
+            let newNodeSize = cc.size(newNodeWidth, newNodeHeight);
+            newNode.setContentSize(newNodeSize);
 
             // add to node
             toggleGroupNode.addChild(newNode);
 
-            this.prefab.width += 155;
+            // resize prefab by segment size
+            this.prefab.width += newNodeWidth;
+            this.prefab.height = newNodeHeight;
 
             let checkBox = newNode.addComponent(CheckBox);
             // add checkBox event
@@ -91,12 +141,12 @@ export default class SegmentControlRub extends Rub {
             // set checkBox value
             e.value && checkBox.setVal(e.value);
 
-            // check if node represents body instead of using prefab
-            newNode.isNode = e.isNode || false;
+            // // check if node represents body instead of using prefab
+            // newNode.isNode = e.isNode || false;
 
 
             let checkBoxSprite = newNode.addComponent(cc.Sprite);
-            RubUtils.loadSpriteFrame(checkBoxSprite, i === 0 ? 'dashboard/popup-tab-active' : 'dashboard/transparent', cc.size(newNodeWidth, newNodeHeight));
+            RubUtils.loadSpriteFrame(checkBoxSprite, i === 0 ? this.options.activeNormalSprite : this.options.inactiveNormalSprite, newNodeSize);
 
             let labelNode = new cc.Node();
             let label = labelNode.addComponent(cc.Label);
@@ -117,17 +167,24 @@ export default class SegmentControlRub extends Rub {
 
         checkBoxes.map((checkBox, i) => {
             checkBox.isChecked = i === 0;
-            checkBox.setSpriteFrame('inActiveNormalSprite', 'dashboard/transparent');
+            checkBox.setSpriteFrame('inActiveNormalSprite', this.options.inactiveNormalSprite);
 
-            if (i === 0 || (i === checkBoxes.length - 1)) {
-                checkBox.setSpriteFrame('activeNormalSprite', 'dashboard/popup-tab-active');
-                (i === checkBoxes.length - 1) && (() => {
-                    checkBox.node.scaleX = -1;
-                    checkBox.node.children[0].scaleX = -1;
-                })();
+            if (this.options.isRoundedBorder) {
+                if (i === 0 || (i === checkBoxes.length - 1)) {
+                    checkBox.setSpriteFrame('activeNormalSprite', this.options.activeNormalSprite);
+                    (i === checkBoxes.length - 1) && (() => {
+                        // rotate Z axis itself
+                        checkBox.node.scaleX = -1;
+                        // and its 1st child ( the node contains cc.Label )
+                        checkBox.node.children[0].scaleX = -1;
+                    })();
+                } else {
+                    checkBox.setSpriteFrame('activeNormalSprite', this.options.activeNormalSprite2);
+                }
             } else {
-                checkBox.setSpriteFrame('activeNormalSprite', 'dashboard/popup-tab-active2');
+                checkBox.setSpriteFrame('activeNormalSprite', this.options.activeNormalSprite);
             }
+
         });
 
         return toggleGroup;

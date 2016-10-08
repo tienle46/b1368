@@ -56,7 +56,6 @@ class CheckBox extends Button {
     }
 
     getVal() {
-        console.log("get", this.val);
         return this.val;
     }
 
@@ -71,14 +70,14 @@ class CheckBox extends Button {
         }
         this.isChecked = !this.isChecked;
 
-        this.node.dispatchEvent(new cc.Event('check-event', true));
 
         if (this.checkEvents) {
             cc.Component.EventHandler.emitEvents(this.checkEvents, this);
         }
 
         if (this._toggleGroup) {
-            this._toggleGroup.updateToggles(this);
+            this.node.dispatchEvent(new cc.Event('check-event', true));
+            // this._toggleGroup.updateToggles(this);
         }
     }
 
