@@ -283,11 +283,19 @@ export default class CardList extends Component {
         else{
             //Với trường hợp alignment là center, mỗi card được add vào đều trigger sự kiện sắp xếp lại card
             this._updateCardSpacing();
-            let newStartXPosition = this._getMaxSpaceAvailable() * (0.5 - this.node.anchorX) - this.cards.length * this._getCardDistance() / 2 + this._space * this.node.anchorX;
+
+            let newStartXPosition;
+            if (this._overlapSpace == 0){
+                newStartXPosition = this._getMaxSpaceAvailable() * (0.5 - this.node.anchorX) - this.cards.length * this._getCardDistance() / 2 + this._space * this.node.anchorX;
+            }
+            else{
+                newStartXPosition = 0 - this._getMaxSpaceAvailable() * this.node.anchorX + this._space * this.node.anchorX;
+            }
             this.cards.forEach((card, index)=>{
                 card.node.x = newStartXPosition + index * this._getCardDistance();
                 card.node.setLocalZOrder(index);
             });
+
 
         }
     }
