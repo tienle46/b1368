@@ -51,14 +51,11 @@ export default class DeckCardRenderer extends Component {
 
     _addNewCardList(cards, srcCardList) {
 
-        console.debug("_addNewCardList: ", cards, this.cardList1._align, this.cardList2._align)
-
         if (this.cardList1.cards.length > 0) {
             if (this.cardList2.cards.length > 0) {
                 this.cardList2.clear();
             }
 
-            console.debug("transfer cards: ", this.cardList1.cards)
             this.cardList1.transfer(this.cardList1.getRawCards(), this.cardList2);
         }
 

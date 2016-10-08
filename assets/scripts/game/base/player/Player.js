@@ -194,6 +194,8 @@ export default class Player extends Actor {
         if(isJustJoined){
             this.onGamePlaying({}, isJustJoined);
         }
+
+        this.stopTimeLine();
     }
 
     _reset(){

@@ -88,9 +88,7 @@ export default class PlayerRenderer extends ActorRenderer {
         // utils.deactive(this.masterIcon);
         // utils.deactive(this.readyIcon);
 
-        this.isCounting = false;
-        this.counterTimer = 0;
-        this.timelineDuration = 0;
+        this.stopCountdown();
     }
 
     setName(name) {
@@ -136,7 +134,11 @@ export default class PlayerRenderer extends ActorRenderer {
     }
 
     stopCountdown(){
+        console.log("stopCountdown: ")
         if (this.callCounter) {
+
+            console.log("stopCountdown exist callCounter");
+
             this.timelineDuration = 0;
             this.isCounting = false;
             this.counterTimer = 0;

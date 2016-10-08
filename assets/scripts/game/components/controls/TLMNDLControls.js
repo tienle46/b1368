@@ -95,7 +95,9 @@ export default class TLMNDLControls extends GameControls {
 
     _showGameBeginControls(){
         this.hideAllControls();
-        this.baseControls._showGameBeginControls();
+        if(this.scene.board.isBegin()){
+            this.baseControls._showGameBeginControls();
+        }
     }
 
     hidePlayControls(){

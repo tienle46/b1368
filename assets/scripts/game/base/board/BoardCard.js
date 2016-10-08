@@ -39,7 +39,7 @@ export default class BoardCard extends Board {
         let dealCards = cardBytes.map(cardByte => Card.from(cardByte));
 
         let playerHandCardLists = this.scene.gamePlayers.getPlayerHandCardLists();
-        let actions = CardList.dealCards(this.renderer.dealCardList, playerHandCardLists, dealCards.length, () => {
+        let dealCardAction = CardList.dealCards(this.renderer.dealCardList, playerHandCardLists, dealCards.length, () => {
 
             console.log("ON_GAME_STATE_STARTED: ");
 
@@ -47,7 +47,7 @@ export default class BoardCard extends Board {
             this.scene.emit(Events.ON_GAME_STATE_STARTED);
         });
 
-        this.scene.node.runAction(cc.sequence(actions));
+        this.scene.node.runAction(dealCardAction);
 
         this.scene.emit(Events.ON_GAME_STATE_STARTING);
     }

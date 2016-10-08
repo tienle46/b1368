@@ -150,6 +150,7 @@ export default class PlayerTurnBaseAdapter extends GameAdapter {
     }
 
     onLoseTurn(){
+        console.log("onLoseTurn: ", this.player.id);
         this.player.skippedTurn = true;
         this.player.stopTimeLine();
         this.player.isItMe() && this.scene.emit(Events.SHOW_WAIT_TURN_CONTROLS);
