@@ -7,6 +7,13 @@ import Component from 'Component';
 import utils from 'utils';
 import Events from 'Events'
 
+const fourPlayerSeats = {
+    [1]: {1: 0, 2: 3, 3: 2, 4: 4},
+    [2]: {1: 3, 2: 0, 3: 4, 4: 2},
+    [3]: {1: 4, 2: 2, 3: 0, 4: 3},
+    [4]: {1: 2, 2: 4, 3: 3, 4: 0}
+};
+
 export default class PlayerPositions extends Component {
 
     static get ALIGN_TOP() {
@@ -89,21 +96,31 @@ export default class PlayerPositions extends Component {
         return this.getPlayerAnchor(this.getPlayerAnchorIndex(playerId, isItMe));
     }
 
-    getPlayerAnchorIndex(playerId, isItMe) {
+    _getPlayerSeatIndexs(gameCode){
+        return fourPlayerSeats;
+        //TODO
+    }
+
+    getPlayerAnchorIndex(playerId, isItMe, gameCode) {
 
         console.log("getPlayerAnchorIndex: ", playerId, isItMe);
 
         if (isItMe) {
             return 0;
         } else {
-            let tmpIndex = 0;
+            let seatIndex = 0;
 
             if (app.context.getMe()) {
-                tmpIndex = (playerId + 5) % 4; //TODO
-                return tmpIndex;
+                let seatIndexs = this._getPlayerSeatIndexs(gameCode);
+                let meId = app.context.getMe().getPlayerId(this.scene.board.room);
+                seatIndex = seatIndexs[meId][playerId];
+
+                console.log("getPlayerAnchor Me: ", meId, seatIndex, seatIndexs);
+
+                return seatIndex;
             } else {
-                tmpIndex = playerId;
-                return tmpIndex; //TODO
+                seatIndex = playerId;
+                return seatIndex; //TODO
             }
         }
     }

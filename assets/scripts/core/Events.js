@@ -18,7 +18,7 @@ Events.SHOW_GAME_BEGIN_CONTROLS         = "showGameBeginControls";
 Events.CLEAN_TURN_ROUTINE_DATA          = "cleanTurnRoutineData";
 
 Events.ON_PLAYER_PLAYED_CARDS           = "onPlayerPlayedCards";
-Events.ON_PLAYER_SET_READY_STATE        = "onPlayerSetReadyState";
+Events.ON_PLAYER_READY_STATE_CHANGED    = "player.readyStateChanged";
 Events.ON_PLAYER_REMAIN_CARD_COUNT      = "onPlayerSetReadyState";
 Events.ON_PLAYER_TURN                   = "onPlayerGetTurn";
 Events.ON_PLAYER_CHANGE_BALANCE         = "onPlayerChangeBalance";
@@ -43,3 +43,7 @@ Events.ON_GAME_STATE_CHANGE             = "onGameStateChange"
 Events.ON_GAME_LOAD_PLAY_DATA           = "onGameLoadPlayData";
 
 Events.GAME_USER_EXIT_ROOM              = "gameUserExitRoom";
+
+Events.ON_ACTION_EXIT_GAME                 = "action.exitGame";
+
+Events.SET_INTERACTABLE_PLAY_CONTROL    = "set.interactablePlayControl";

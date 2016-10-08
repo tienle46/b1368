@@ -13,5 +13,6 @@ export default {
   game_bon_doi_thong: '4 đôi thông',
   game_tu_quy: 'tứ quý',
   game_ba_bich: '3 bích',
-  game_thoi: 'Thối'
+  game_thoi: 'Thối',
+  game_waiting_time: 'Thời gian chờ'
 };

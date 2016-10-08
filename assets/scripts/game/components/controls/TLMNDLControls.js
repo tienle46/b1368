@@ -33,14 +33,6 @@ export default class TLMNDLControls extends GameControls {
         this.baseControls && this.baseControls._init(scene);
         this.cardTurnBaseControls && this.cardTurnBaseControls._init(scene);
 
-        this._addSystemListener();
-    }
-
-    _addSystemListener(){
-        super._addSystemListener();
-
-        if(!this.scene) return;
-
         this.scene.on(Events.SHOW_WAIT_TURN_CONTROLS, this._showWaitTurnControls, this);
         this.scene.on(Events.SHOW_ON_TURN_CONTROLS, this._showOnTurnControls, this);
         this.scene.on(Events.SHOW_GAME_BEGIN_CONTROLS, this._showGameBeginControls, this);
@@ -103,7 +95,9 @@ export default class TLMNDLControls extends GameControls {
 
     _showGameBeginControls(){
         this.hideAllControls();
-        this.baseControls._showGameBeginControls();
+        if(this.scene.board.isBegin()){
+            this.baseControls._showGameBeginControls();
+        }
     }
 
     hidePlayControls(){

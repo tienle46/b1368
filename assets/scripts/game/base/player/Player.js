@@ -44,14 +44,14 @@ export default class Player extends Actor {
         this.scene.on(Events.ON_GAME_STATE_PLAYING, this.onGamePlaying, this);
         this.scene.on(Events.ON_GAME_STATE_ENDING, this.onGameEnding, this);
         this.scene.on(Events.GAME_USER_EXIT_ROOM, this._onUserExitRoom, this);
-        this.scene.on(Events.ON_PLAYER_SET_READY_STATE, this._onSetReadyState, this);
+        this.scene.on(Events.ON_PLAYER_READY_STATE_CHANGED, this._onSetReadyState, this);
         this.scene.on(Events.ON_PLAYER_CHANGE_BALANCE, this._onPlayerChangeBalance, this);
         this.scene.on(Events.ON_USER_UPDATE_BALANCE, this._onUserUpdateBalance, this);
         this.scene.on(Events.ON_PLAYER_SET_BALANCE, this._onPlayerSetBalance, this);
     }
 
     _onPlayerSetBalance(id, newBalance){
-        if(this.id = id){
+        if(this.id == id){
             let balanceVariable = this.user.variables[Keywords.USER_VARIABLE_BALANCE];
             var newBalanceVariable = new SFS2X.Entities.Variables.SFSUserVariable(balanceVariable.name, newBalance, balanceVariable.type);
             this.user._setVariable(newBalanceVariable);
@@ -84,18 +84,21 @@ export default class Player extends Actor {
     }
 
     _onUserExitRoom(user, room){
-        if(user.id = this.user.id){
+        if(user.id == this.user.id){
             this.stopTimeLine();
         }
     }
 
     onLoad(){
+
+        this.renderData = {...this.renderData, isItMe: this.user.isItMe, scene: this.scene};
+
         super.onLoad();
 
         this.renderer.setName(this.username);
         this.renderer.setBalance(this.balance);
         this.renderer.setVisibleOwner(this.isOwner);
-        
+
         console.log("on load: ", this.username, this.id, this.board, this.board.room);
     }
 
@@ -140,11 +143,11 @@ export default class Player extends Actor {
     }
 
     stopTimeLine() {
-        //TODO
+        this.renderer.stopCountdown();
     }
 
     startTimeLine(timeInSeconds = this.board.getTurnDuration()) {
-        //TODO
+        this.renderer.startCountdown(timeInSeconds);
     }
 
     onSpectatorToPlayer(user) {
@@ -191,6 +194,8 @@ export default class Player extends Actor {
         if(isJustJoined){
             this.onGamePlaying({}, isJustJoined);
         }
+
+        this.stopTimeLine();
     }
 
     _reset(){

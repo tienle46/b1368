@@ -1,4 +1,5 @@
 import app from 'app';
+import SFS2X from 'SFS2X';
 import {utils, GameUtils} from 'utils';
 import {Keywords} from 'core';
 import {BaseScene} from 'scenes';
@@ -119,7 +120,13 @@ class GameScene extends BaseScene {
 
     _addGameEvents() {
         this.on(Events.ON_GAME_STATE_CHANGE, this._onGameStateChange, this);
+        this.on(Events.ON_ACTION_EXIT_GAME, this._onActionExitGame, this);
         this.gameEventHandler.addGameEventListener();
+    }
+
+    _onActionExitGame(){
+        this.showLoading();
+        app.service.sendRequest(new SFS2X.Requests.System.LeaveRoomRequest(this.room));
     }
 
     _loadGameData() {
@@ -152,7 +159,7 @@ class GameScene extends BaseScene {
     _loadPlayerReadyState() {
         let readyPlayerIds = this.gameData[Keywords.GAME_LIST_PLAYER];
         readyPlayerIds && readyPlayerIds.forEach(id => {
-            this.emit(Events.ON_PLAYER_SET_READY_STATE, id);
+            this.emit(Events.ON_PLAYER_READY_STATE_CHANGED, id);
         });
     }
 

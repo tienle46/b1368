@@ -32,35 +32,35 @@ class BaseControls extends GameControls {
 
         console.log("onClickReadyButton");
 
-        this.scene.showShortLoading('onClickReadyButton');
+        this.scene.showShortLoading('ready');
 
-        app.service.send({ cmd: app.commands.PLAYER_READY, room: this.scene.room }, (resObj) => {
+        app.service.send({cmd: app.commands.PLAYER_READY, room: this.scene.room} /*, (resObj) => {
 
-            this.scene.hideLoading('onClickReadyButton');
+            this.scene.hideLoading('ready');
 
             let playerId = resObj[app.keywords.PLAYER_ID];
 
             if (this.scene.gamePlayers.isItMe(playerId)) {
                 this._onPlayerReady();
             }
-        });
+        }*/);
     }
 
     onClickUnreadyButton() {
 
         console.log("onClickUnreadyButton");
 
-        this.scene.showShortLoading('onClickUnreadyButton');
+        this.scene.showShortLoading('ready');
 
-        app.service.send({ cmd: app.commands.PLAYER_UNREADY, room: this.scene.room }, (resObj) => {
-            this.scene.hideLoading('onClickUnreadyButton');
-
-            let playerId = resObj[app.keywords.PLAYER_ID];
-
-            if (this.scene.gamePlayers.isItMe(playerId)) {
-                this._onPlayerUnready();
-            }
-        });
+        app.service.send({cmd: app.commands.PLAYER_UNREADY, room: this.scene.room}/*, (resObj) => {
+            // this.scene.hideLoading('ready');
+            //
+            // let playerId = resObj[app.keywords.PLAYER_ID];
+            //
+            // if (this.scene.gamePlayers.isItMe(playerId)) {
+            //     this._onPlayerUnready();
+            // }
+        }*/);
     }
 
     _init(scene) {
@@ -83,8 +83,14 @@ class BaseControls extends GameControls {
             this._onPlayerUnready();
         }
 
-        console.log(this.readyButton);
+        this.scene.on(Events.ON_PLAYER_READY_STATE_CHANGED, this._onPlayerSetReadyState, this);
     }
+
+    _onPlayerSetReadyState(playerId, ready, isItMe) {
+        this.scene.hideLoading('ready');
+        isItMe && (ready ? this._onPlayerReady() : this._onPlayerUnready());
+    }
+
 
     _onPlayerReady() {
         utils.active(this.unreadyButton);
@@ -96,7 +102,7 @@ class BaseControls extends GameControls {
         utils.active(this.readyButton);
     }
 
-    _showGameBeginControls(){
+    _showGameBeginControls() {
         utils.deactive(this.unreadyButton);
         utils.active(this.readyButton);
     }

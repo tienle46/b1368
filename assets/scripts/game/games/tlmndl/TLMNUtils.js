@@ -5,71 +5,8 @@
 import app from 'app'
 import {GameUtils, utils} from 'utils'
 
+
 export default class TLMNUtils {
-
-    static get GROUP_CARD_TYPE_INVALID() {
-        return 0
-    };
-
-    static get GROUP_CARD_TYPE_RAC() {
-        return 1
-    };
-
-    static get GROUP_CARD_TYPE_DOI() {
-        return 2
-    };
-
-    static get GROUP_CARD_TYPE_SAM_CO() {
-        return 3
-    };
-
-    static get GROUP_CARD_TYPE_SANH() {
-        return 4
-    };
-
-    static get GROUP_CARD_TYPE_SANH_RONG() {
-        return 5
-    };
-
-    static get GROUP_CARD_TYPE_TU_QUY() {
-        return 6
-    };
-
-    static get GROUP_CARD_TYPE_DOI_THONG() {
-        return 7
-    };
-
-    static get GROUP_CARD_TYPE_BA_DOI_THONG() {
-        return 8
-    };
-
-    static get GROUP_CARD_TYPE_BON_DOI_THONG() {
-        return 9
-    };
-
-    static get GROUP_CARD_TYPE_NAM_DOI_THONG() {
-        return 10
-    };
-
-    static get GROUP_CARD_TYPE_SAU_DOI_THONG() {
-        return 11
-    };
-
-    static get GROUP_CARD_TYPE_SAU_DOI() {
-        return 12
-    };
-
-    static get GROUP_CARD_TYPE_DOI_HEO() {
-        return 13
-    };
-
-    static get GROUP_CARD_TYPE_TU_QUY_HEO() {
-        return 14
-    };
-
-    static get GROUP_CARD_TYPE_TU_QUY_BA() {
-        return 15
-    };
 
     static get GAME_TYPE() {
         return app.const.game.GAME_TYPE_TIENLEN;
@@ -352,7 +289,7 @@ export default class TLMNUtils {
             }
         }
 
-        return false;
+        return isDoiThong;
     }
 
     static getTLMNThoiString(thoiType) {
@@ -389,4 +326,19 @@ TLMNUtils.THOI_TYPE_BA_DOI_THONG = 2;
 TLMNUtils.THOI_TYPE_TU_QUY = 3;
 TLMNUtils.THOI_TYPE_BON_DOI_THONG = 4;
 TLMNUtils.THOI_TYPE_BA_BICH = 5;
-
+TLMNUtils.GROUP_CARD_TYPE_INVALID = 0;
+TLMNUtils.GROUP_CARD_TYPE_RAC = 1;
+TLMNUtils.GROUP_CARD_TYPE_DOI = 2;
+TLMNUtils.GROUP_CARD_TYPE_SAM_CO = 3;
+TLMNUtils.GROUP_CARD_TYPE_SANH = 4;
+TLMNUtils.GROUP_CARD_TYPE_SANH_RONG = 5;
+TLMNUtils.GROUP_CARD_TYPE_TU_QUY = 6;
+TLMNUtils.GROUP_CARD_TYPE_DOI_THONG = 7;
+TLMNUtils.GROUP_CARD_TYPE_BA_DOI_THONG = 8;
+TLMNUtils.GROUP_CARD_TYPE_BON_DOI_THONG = 9;
+TLMNUtils.GROUP_CARD_TYPE_NAM_DOI_THONG = 1;
+TLMNUtils.GROUP_CARD_TYPE_SAU_DOI_THONG = 1;
+TLMNUtils.GROUP_CARD_TYPE_SAU_DOI = 1;
+TLMNUtils.GROUP_CARD_TYPE_DOI_HEO = 1;
+TLMNUtils.GROUP_CARD_TYPE_TU_QUY_HEO = 1;
+TLMNUtils.GROUP_CARD_TYPE_TU_QUY_BA = 1;

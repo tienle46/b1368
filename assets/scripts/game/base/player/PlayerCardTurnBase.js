@@ -37,4 +37,9 @@ export default class PlayerCardTurnBase extends PlayerCard {
 
     }
 
+    _reset(){
+        super._reset();
+        this.turnAdapter && this.turnAdapter._reset();
+    }
+
 }

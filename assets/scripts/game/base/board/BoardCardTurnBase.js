@@ -38,9 +38,10 @@ export default class BoardCardTurnBase extends BoardCard {
         return this.turnAdapter.lastPlayedTurn;
     }
 
-    _resetBoard(){
-        super._resetBoard();
+    _reset(){
+        super._reset();
         this.playedCards = [];
+        this.turnAdapter && this.turnAdapter._reset();
     }
 
     _cleanTurnRoutineData(lastPlayedId){
@@ -53,7 +54,7 @@ export default class BoardCardTurnBase extends BoardCard {
     }
 
     getTurnDuration(){
-        this.turnAdapter.turnDuration;
+        this.turnAdapter.timelineDuration;
     }
 
     onLoad(){
@@ -64,6 +65,7 @@ export default class BoardCardTurnBase extends BoardCard {
     handleGameStateChange(state, data){
         super.handleGameStateChange(state, data);
 
+        console.debug("handle game state change: ", state, " ", data);
         if (state == boardConst.state.BOARD_STATE_TURN_BASE_TRUE_PLAY) {
             this._handleBoardTurnBaseTruePlay(data);
         }
@@ -82,6 +84,8 @@ export default class BoardCardTurnBase extends BoardCard {
         if (nextTurnPlayerId) {
             this.scene.emit(Events.HANDLE_CHANGE_TURN, nextTurnPlayerId);
         }
+
+        console.debug("nextTurnPlayerId: ", nextTurnPlayerId)
     }
 
     onBoardPlaying(data){

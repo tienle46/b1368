@@ -30,4 +30,8 @@ export default class GameControls extends Actor {
     hideAllControlsBeforeGameStart(){
 
     }
+
+    setInteractable(control, interactable){
+        control instanceof cc.Button && (control.interactable = interactable);
+    }
 }

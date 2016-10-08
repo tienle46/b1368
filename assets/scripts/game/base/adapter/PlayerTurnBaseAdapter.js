@@ -13,7 +13,7 @@ export default class PlayerTurnBaseAdapter extends GameAdapter {
 
     constructor() {
         super();
-        this.turnDuration = 20;
+        this.timelineDuration = 20;
         this.preTurnPlayerId = 0;
         this.currentTurnPlayerId = 0;
     }
@@ -22,8 +22,11 @@ export default class PlayerTurnBaseAdapter extends GameAdapter {
         this.scene = scene;
         this.player = player;
         this._addSystemListener();
-        
-        console.log("init turn: ", this.player.id);
+    }
+
+    _reset(){
+        this.preTurnPlayerId = 0;
+        this.currentTurnPlayerId = 0;
     }
 
     _addSystemListener(){
@@ -69,16 +72,17 @@ export default class PlayerTurnBaseAdapter extends GameAdapter {
     }
 
     _handleTurnDuration(duration){
-        this.player.turnDuration = duration;
+        this.player.timelineDuration = duration;
     }
 
     _handleChangeTurn(turnPlayerId){
         this.preTurnPlayerId = this.currentTurnPlayerId;
         this.currentTurnPlayerId = turnPlayerId;
 
-        console.log("handle change turn");
 
         if(this.player.id === turnPlayerId) {
+
+            console.log("handle change turn: ", this.player.id, turnPlayerId);
 
             if(!this.scene.gamePlayers){
                 console.debug("this.scene.gamePlayers", this.scene);
@@ -134,7 +138,7 @@ export default class PlayerTurnBaseAdapter extends GameAdapter {
 
         this.scene.emit(Events.ON_PLAYER_TURN, this.player.id);
 
-        this.player.startTimeLine(this.turnDuration);
+        this.player.startTimeLine(this.timelineDuration);
 
         //TODO play sound
 
@@ -146,6 +150,7 @@ export default class PlayerTurnBaseAdapter extends GameAdapter {
     }
 
     onLoseTurn(){
+        console.log("onLoseTurn: ", this.player.id);
         this.player.skippedTurn = true;
         this.player.stopTimeLine();
         this.player.isItMe() && this.scene.emit(Events.SHOW_WAIT_TURN_CONTROLS);

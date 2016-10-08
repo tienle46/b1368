@@ -51,9 +51,17 @@ export default class PlayerRenderer extends ActorRenderer {
         };
 
         this.align;
+        this.callCounter = {
+            default: null,
+            type: cc.ProgressBar
+        };
     }
 
-    _initUI() {
+    _initUI(data = {}) {
+
+        super._initUI(data);
+
+        this.scene = data.scene;
 
         // let nameNode = this.node.getChildByName('name');
         // this.playerNameLabel = nameNode && nameNode.getComponent(cc.Label);
@@ -79,6 +87,8 @@ export default class PlayerRenderer extends ActorRenderer {
         // utils.deactive(this.ownerIcon);
         // utils.deactive(this.masterIcon);
         // utils.deactive(this.readyIcon);
+
+        this.stopCountdown();
     }
 
     setName(name) {
@@ -101,6 +111,39 @@ export default class PlayerRenderer extends ActorRenderer {
         // utils.setActive(this.readyIcon, visible);
         this.node.cascadeOpacity = true;
         this.node.opacity = visible ? 255 : 100;
+    }
+
+    update(dt) {
+        if (this.isCounting && this.timelineDuration > 0) {
+            this.callCounter.progress = this.counterTimer / this.timelineDuration;
+            this.counterTimer += dt;
+            if (this.counterTimer >= this.timelineDuration) {
+                this.isCounting = false;
+                this.callCounter.progress = 1;
+                this.stopCountdown();
+            }
+        }
+    }
+
+    startCountdown(duration) {
+        if (this.callCounter) {
+            this.timelineDuration = duration;
+            this.isCounting = true;
+            this.counterTimer = 0;
+        }
+    }
+
+    stopCountdown(){
+        console.log("stopCountdown: ")
+        if (this.callCounter) {
+
+            console.log("stopCountdown exist callCounter");
+
+            this.timelineDuration = 0;
+            this.isCounting = false;
+            this.counterTimer = 0;
+            this.callCounter.progress = 0;
+        }
     }
 }
 

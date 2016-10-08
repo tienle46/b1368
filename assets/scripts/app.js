@@ -2,6 +2,8 @@
  * Created by Thanh on 8/23/2016.
  */
 
+'use strict';
+
 var app = module.exports;
 var MESSAGES = require('GameErrorMessage');
 

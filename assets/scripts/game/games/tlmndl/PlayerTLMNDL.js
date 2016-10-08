@@ -87,6 +87,13 @@ export default class PlayerTLMNDL extends PlayerCardTurnBase {
 
     onLoad(){
         super.onLoad();
+
+        if(this.isItMe()){
+            this.renderer.setSelectCardChangeListener((selectedCards) => {
+                let interactable = TLMNUtils.checkPlayCard(selectedCards, this.getPrePlayedCards(), app.const.game.GAME_TYPE_TIENLEN);
+                this.scene.emit(Events.SET_INTERACTABLE_PLAY_CONTROL, interactable);
+            });
+        }
     }
 
 }
