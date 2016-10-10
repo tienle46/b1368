@@ -60,7 +60,7 @@ class CheckBox extends Button {
     }
 
     setVal(val) {
-        log("set", val);
+        console.log("set", val);
         this.val = val;
     }
 

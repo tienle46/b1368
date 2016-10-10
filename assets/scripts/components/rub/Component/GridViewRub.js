@@ -102,7 +102,6 @@ export default class GridViewRub extends Rub {
                 contentNode.color = this.options.bg;
             }
         });
-
     }
 
     // resize content node by parent ( dont know why widget does not work )
