@@ -29,7 +29,6 @@ class ToggleGroup extends Component {
     }
 
     updateToggles(toggle) {
-        log('updateToggles');
         this.setCheckedItem(toggle);
 
         // log(this.toggleItem);
@@ -82,7 +81,6 @@ class ToggleGroup extends Component {
             }
 
             if (item.isChecked && item.enabled) {
-                log('_allowOnlyOneToggleChecked');
                 isChecked = true;
                 this.setCheckedItem(item);
             }

@@ -42,14 +42,14 @@ export default class DeckCardRenderer extends Component {
         this.cardList2Anchor.addChild(this.cardList2.node);
     }
 
-    addCards(cards, srcCardList) {
+    addCards(cards, srcCardList, isItMe) {
         if (!cards) return;
 
         cards = cards instanceof Card ? [cards] : cards;
-        this._addNewCardList(cards, srcCardList);
+        this._addNewCardList(cards, srcCardList, isItMe);
     }
 
-    _addNewCardList(cards, srcCardList) {
+    _addNewCardList(cards, srcCardList, isItMe) {
 
         if (this.cardList1.cards.length > 0) {
             if (this.cardList2.cards.length > 0) {
@@ -60,7 +60,13 @@ export default class DeckCardRenderer extends Component {
         }
 
         if (srcCardList) {
-            srcCardList.transfer(cards, this.cardList1)
+            if (isItMe) {
+                srcCardList.transfer(cards, this.cardList1);
+            } else {
+                srcCardList.removeCards(cards.length);
+                let addedCards = srcCardList.addCards(cards, true, true);
+                srcCardList.transfer(addedCards, this.cardList1);
+            }
         } else {
             this.cardList1.setCards(cards);
         }

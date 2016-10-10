@@ -52,6 +52,7 @@ export default class ListTableScene extends BaseScene {
         this.topBar = {
             default: null,
             type: cc.Prefab
+
         };
     }
 
@@ -63,7 +64,7 @@ export default class ListTableScene extends BaseScene {
         const width = this.containnerTableView.node.width;
         const itemDimension = width;
 
-        app.system.addListener(SFS2X.SFSEvent.ROOM_JOIN, this._onJoinRoomResult, this);
+        this._addSystemListener();
 
         for (let i = 0; i < 14; i++) {
 
@@ -75,7 +76,7 @@ export default class ListTableScene extends BaseScene {
             const cellComponent = listCell.getComponent('TableListCell');
             if((i / 2) == 0){
                 cellComponent.setOnClickListener(() => {
-                    this._createRoom(app.const.gameCode.TLMNDL, 1, 2);
+                    this._createRoom(app.const.gameCode.TLMNDL, 1, 4);
                 });
             }else{
                 cellComponent.setOnClickListener(() => {
@@ -92,6 +93,16 @@ export default class ListTableScene extends BaseScene {
 
             this.contentInScroll.node.addChild(listCell);
         }
+    }
+
+    _addSystemListener(){
+        super._addSystemListener();
+        app.system.addListener(SFS2X.SFSEvent.ROOM_JOIN, this._onJoinRoomResult, this);
+    }
+
+    _removeSystemListener(){
+        super._removeSystemListener();
+        app.system.removeListener(SFS2X.SFSEvent.ROOM_JOIN, this._onJoinRoomResult, this);
     }
 
     _onJoinRoomResult(resultEvent){

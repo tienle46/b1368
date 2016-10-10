@@ -435,13 +435,7 @@ export default class GamePlayers extends Component {
 
     onDealCards(cards) {
         //TODO
-        this.players.forEach(player => {
-            if (player.isItMe()) {
-                player.setCards(cards);
-            } else {
-                player.createFakeCards();
-            }
-        });
+        this.players.forEach(player => player.isReady() && (player.isItMe() ? player.setCards(cards) : player.createFakeCards()));
     }
 
     getPlayerHandCardLists(){

@@ -23,21 +23,9 @@ export default class PlayerCardTurnBaseAdapter extends PlayerTurnBaseAdapter {
         let playerId = utils.getValue(data, Keywords.PLAYER_ID);
         let cards = GameUtils.convertBytesToCards(utils.getValue(data, Keywords.GAME_LIST_CARD, []));
 
-
         if(this.player.id === playerId && cards.length > 0){
-            if(this.player.isItMe()){
-                let cardsOnHand = this.player.findCards(cards);
-                if(cardsOnHand){
-                    this.scene.emit(Events.ON_PLAYER_PLAYED_CARDS, cardsOnHand, this.player.renderer.cardList);
-                }
-            }else{
-                this.scene.emit(Events.ON_PLAYER_PLAYED_CARDS, cards);
-            }
-
-            //
-            // this.board.playedCards = cards;
-            // //TODO remove cards from player hand and add to deckCards
-            // this.renderer.cardList.removeCards(cards);
+            this.player.isItMe() && (cards = this.player.findCards(cards));
+            this.scene.emit(Events.ON_PLAYER_PLAYED_CARDS, cards, this.player.renderer.cardList, this.player.isItMe());
         }
     }
 

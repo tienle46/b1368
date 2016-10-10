@@ -24,6 +24,7 @@ class GameSystem {
      * @param {function} onLaunch - On launch custom function
      */
     loadScene(sceneName, onLaunch, onShown){
+        log("loadScene: ", sceneName);
         cc.director.loadScene(sceneName, onLaunch);
         if (this.currentScene)  this.currentScene.onShown = onShown;
     }

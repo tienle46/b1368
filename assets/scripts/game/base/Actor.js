@@ -41,7 +41,7 @@ export default class Actor extends Component {
      *          //Show admin message
      *      })
      *
-     * @private
+     * @abstract
      */
     _addSystemListener(){
         if(this._isRegisterdListener){
@@ -59,7 +59,7 @@ export default class Actor extends Component {
      *          //Show admin message
      *      })
      *
-     * @private
+     * @abstract
      */
     _removeSystemListener(){
         this._isRegisterdListener = false;

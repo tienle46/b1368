@@ -50,7 +50,6 @@ export default class PlayerRenderer extends ActorRenderer {
             type: cc.Prefab
         };
 
-        this.align;
         this.callCounter = {
             default: null,
             type: cc.ProgressBar
@@ -63,30 +62,12 @@ export default class PlayerRenderer extends ActorRenderer {
 
         this.scene = data.scene;
 
-        // let nameNode = this.node.getChildByName('name');
-        // this.playerNameLabel = nameNode && nameNode.getComponent(cc.Label);
-
-        // let balanceNode = this.node.getChildByName('balance');
-        // this.balanceLabel = cc.find('balance/balanceText', this.node).getComponent(cc.Label);
-        //
-        // this.status1 = cc.find('status/status1', this.node);
-        // this.status2 = cc.find('status/status2', this.node);
-        // this.ownerIcon = this.node.getChildByName('owner');
-        // this.masterIcon = this.node.getChildByName('master');
-        // this.readyIcon = this.node.getChildByName('ready');
-        //
-        // log("player renderer init ui: ", this.status1 instanceof cc.Node, this.status2 instanceof cc.Node)
-
         utils.deactive(this.status1);
         utils.deactive(this.status2);
 
-        this.setVisibleOwner(false);
-        this.setVisibleMaster(false);
-        this.setVisibleReady(false);
-
-        // utils.deactive(this.ownerIcon);
-        // utils.deactive(this.masterIcon);
-        // utils.deactive(this.readyIcon);
+        this.setVisibleOwner(data.owner);
+        this.setVisibleMaster(data.master);
+        this.setVisibleReady(data.ready);
 
         this.stopCountdown();
     }
@@ -108,7 +89,7 @@ export default class PlayerRenderer extends ActorRenderer {
     }
 
     setVisibleReady(visible) {
-        // utils.setActive(this.readyIcon, visible);
+        this.ready = visible;
         this.node.cascadeOpacity = true;
         this.node.opacity = visible ? 255 : 100;
     }
@@ -138,11 +119,7 @@ export default class PlayerRenderer extends ActorRenderer {
     }
 
     stopCountdown(){
-        log("stopCountdown: ")
         if (this.callCounter) {
-
-            log("stopCountdown exist callCounter");
-
             this.timelineDuration = 0;
             this.isCounting = false;
             this.counterTimer = 0;
