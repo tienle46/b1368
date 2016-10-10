@@ -23,13 +23,13 @@ let RubUtils = {
      * cb: (function) callback function
      * isCORS: (boolean) if resURL is http protocol, it need to be `true`
      */
-    loadSpriteFrame: (spriteComponent, resURL, ccSize, isCORS = false, cb) => {
+    loadSpriteFrame: (spriteComponent, resURL, ccSize = null, isCORS = false, cb) => {
         let textureCache;
 
         function spriteFrameDefaultConfig(spriteComponent) {
             spriteComponent.type = cc.Sprite.Type.SLICED;
             spriteComponent.sizeMode = cc.Sprite.SizeMode.CUSTOM;
-            spriteComponent.node.setContentSize(ccSize);
+            ccSize && spriteComponent.node.setContentSize(ccSize);
             cb && cb(spriteComponent);
         }
 

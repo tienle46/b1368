@@ -1,6 +1,7 @@
-var app = require('app');
-var BaseScene = require('BaseScene');
+import app from 'app';
+import BaseScene from 'BaseScene';
 import TopupDialogRub from 'TopupDialogRub';
+import ExchangeDialogRub from 'ExchangeDialogRub';
 
 export default class DashboardScene extends BaseScene {
     constructor() {
@@ -162,7 +163,7 @@ export default class DashboardScene extends BaseScene {
         };
 
         let tabOptions = { tabs, options };
-        TopupDialogRub.show(this.node, tabOptions);
+        ExchangeDialogRub.show(this.node, tabOptions);
     }
 }
 

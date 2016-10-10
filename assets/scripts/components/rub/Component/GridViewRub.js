@@ -7,6 +7,12 @@ export default class GridViewRub extends Rub {
      * Creates an instance of GridViewRub.
      * 
      * @param {any} node
+     * @head {Array || object } table header array
+     * {
+     *  data: ['text', 'text', 'text'] # string array represent for label text inside header
+     *      # head.data.length must equal to length of @param {Array [[]]} data.length
+     *  options: {...cellRub's options }
+     * }
      * @param {Array [[]]} data # multiple mapping array 
      * let data = [
      *  ['1', 2, 3], # colum 1                  1   |   a  |  c1
@@ -29,11 +35,32 @@ export default class GridViewRub extends Rub {
      *      # assuming you have `content` node with width = 100 and 3 columns ['', 50, 20]
      *      # while the first element in array `colWidth` is empty || null its width will be 100 - (50 + 20)
      *      # if we have colWidth = ['', '', 50, 20] -> (100 - (50 + 20)) / 2
+     *  cell: { // CellRub options
+     *      spriteFrame: string
+     *      bgColor: new cc.Color
+     *      width: number
+     *      height: number
+     *      fontColor: new cc.Color
+     *      fontSize: number
+     *      fontLineHeight: number
+     *      // TODO 
+     *      button & clickEvent handler when cell contains button. button with/without label
+     *  }
      * }
      * @memberOf GridViewRub
      */
-    constructor(node, data, opts = {}) {
+    constructor(node, head = null, data, opts = {}) {
         super(node);
+        // CellRub default options
+        let cell = {
+            bgColor: new cc.Color(68, 25, 97), // # violet
+            width: 100,
+            height: 50,
+            fontColor: new cc.Color(246, 255, 41), // # yellow
+            fontSize: 16,
+            fontLineHeight: 40
+        };
+
         let defaultOptions = {
             position: cc.v2(0, 0),
             width: 585,
@@ -41,11 +68,24 @@ export default class GridViewRub extends Rub {
             spacingX: 2,
             spacingY: 2,
             isHorizontal: false,
-            isVertical: true
+            isVertical: true,
+            cell
+        };
+
+        let defaultHead = {
+            data: [],
+
         };
 
         this.options = Object.assign({}, defaultOptions, opts);
         this.data = this._validData(data);
+        if (data instanceof Array) {
+            this.head = {
+                data: head
+            };
+        } else {
+            this.head = Object.assign({}, defaultHead, head);
+        }
     }
 
     init() {
@@ -117,13 +157,27 @@ export default class GridViewRub extends Rub {
 
     _initCell() {
         let data = this.data;
+        let width = this._setCellSize(data);
 
-        let width = this._setCellSize();
+        if (this.head.data && this.head.data.length > 0) {
+            let cellOpts = Object.assign({}, this.options.cell, this.head.options || {});
+
+            for (let i = 0; i < this.head.data.length; i++) {
+                cellOpts.width = width[i];
+                let cellNode = new CellRub(this.head.data[i] || '', cellOpts).cell();
+                this.contentNode.addChild(cellNode);
+            }
+        }
+
+
+        let cellOpts = Object.assign({}, this.options.cell);
+
         for (let i = 0; i < data.length; i++) {
             for (let j = 0; j < data[i].length; j++) {
-                let cellOpts = {
-                    width: width[j]
-                };
+                cellOpts.width = width[j];
+                cellOpts.fontColor = new cc.Color(255, 255, 255);
+
+                // body
                 let cellNode = new CellRub(data[i][j] || '', cellOpts).cell();
                 this.contentNode.addChild(cellNode);
             }
@@ -188,8 +242,8 @@ export default class GridViewRub extends Rub {
 
 
     // return Promise which attaches `cc.Node`
-    static node(node, data, opts = {}) {
-        return new GridViewRub(node, data, opts).init().then((a) => {
+    static node(node, head, data, opts = {}) {
+        return new GridViewRub(node, head, data, opts).init().then((a) => {
             return a._getNode();
         });
     }

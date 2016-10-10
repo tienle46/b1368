@@ -5,41 +5,45 @@ export default class AlertPopupRub extends BasePopupRub {
      * Creates an instance of AlertPopupRub.
      * 
      * @param {cc.Node} node : where this popup will be added 
-     * @param {string} [string=""] : popup content
-     * @param {cc.Component.EventHandler || null} greenBtnEvent
+     * @param {string} # popup content
+     * @param {cc.Component.EventHandler || Function || null} green Btn EventHandler
+     * @param {any} context of EventHandler while its type is Function
      * 
      * @memberOf AlertPopupRub
      */
-    constructor(node, string = "", greenBtnEvent = null) {
+    constructor(node, string = "", greenBtnEvent = null, context = null) {
         super(node, string);
         this.greenBtnEvent = greenBtnEvent;
+        this.context = context;
     }
+
+    init() {
+        return super.init().then(() => {
+            this._changeVioletBtnState();
+            return null;
+        }).then(() => {
+            // set green btn state
+            this._registerEvent();
+            return null;
+        });
+    }
+
 
     _changeVioletBtnState() {
         this.groupBtn.changeVioletBtnState(false);
     }
 
-
     _registerEvent() {
+        // this.greenBtn has setted own EventHandler already. (close popup);        
         if (this.greenBtnEvent) {
-            this.groupBtn.setBtnEvent(this.greenBtnEvent);
-        } else {
-            this.closePopup();
+            this.groupBtn.setBtnEvent(this.greenBtn, this.greenBtnEvent, this.context);
         }
     }
 
     //override
-    static show(node, string, greenBtnEvent = null) {
-        return new AlertPopupRub(node, string, greenBtnEvent).init().then((self) => {
-            self.addToNode();
-            // must call after node's added
-            self._changeVioletBtnState();
-            if (greenBtnEvent)
-                self._registerEvent();
-
-            return self;
-        }).catch((err) => {
-            log('err', err);
+    static show(node, string, greenBtnEvent = null, context = null) {
+        return new AlertPopupRub(node, string, greenBtnEvent, context).init().then(() => {}).catch((err) => {
+            console.error('err', err);
         });
     }
 }

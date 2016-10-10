@@ -27,31 +27,21 @@ class TabCard extends Component {
                 let layoutComponent = cc.find('left/layout', this.node);
                 this.toggleGroup = layoutComponent.getComponent(ToggleGroup);
                 data['il'].forEach((id, index) => {
-                    //load prefab
-                    cc.loader.loadRes('dashboard/topup/cardItem', (err, prefab) => {
-                        if (err) {
-                            console.log("error", err);
-                            return;
-                        }
+                    RubUtils.loadRes('dashboard/topup/cardItem').then((prefab) => {
                         let cardPrefab = cc.instantiate(prefab);
-                        // load frame 
-                        cc.loader.loadRes(`dashboard/popup-card-${data['nl'][index].toLowerCase()}`, cc.SpriteFrame, (err, spriteFrame) => {
-                            if (err) {
-                                console.log("err", err);
-                            }
-                            cardPrefab.children[0].getComponent(cc.Sprite).spriteFrame = spriteFrame;
+                        let spriteComponent = cardPrefab.children[0].getComponent(cc.Sprite);
+                        RubUtils.loadSpriteFrame(spriteComponent, `dashboard/popup-card-${data['nl'][index].toLowerCase()}`);
 
-                            let card = cardPrefab.getComponent(CheckBox);
-                            card.setVal(id);
-                            card.isChecked = index === 0;
+                        let card = cardPrefab.getComponent(CheckBox);
+                        card.setVal(id);
+                        card.isChecked = index === 0;
 
-                            // get left/layout
-                            layoutComponent.addChild(cardPrefab);
-                            // push card checkbox to toggleGroup
-                            this.toggleGroup.addItem(card);
-                            //reset state
-                            index === 0 && this.toggleGroup.onLoad();
-                        });
+                        // get left/layout
+                        layoutComponent.addChild(cardPrefab);
+                        // push card checkbox to toggleGroup
+                        this.toggleGroup.addItem(card);
+                        //reset state
+                        index === 0 && this.toggleGroup.onLoad();
                     });
                 });
 
@@ -80,41 +70,8 @@ class TabCard extends Component {
                 'cmd': app.commands.USER_SEND_CARD_CHARGE,
                 data
             };
-            console.log(sendObject);
             app.service.send(sendObject, (data) => {
                 console.log(data);
-                if (data) {
-                    let layoutComponent = cc.find('dialog/tab_card/left/layout', this.node);
-                    this.toggleGroup = layoutComponent.getComponent(ToggleGroup);
-                    data['il'].forEach((id, index) => {
-                        //load prefab
-                        cc.loader.loadRes('dashboard/topup/cardItem', (err, prefab) => {
-                            if (err) {
-                                console.log("error", err);
-                                return;
-                            }
-                            let cardPrefab = cc.instantiate(prefab);
-                            // load frame 
-                            cc.loader.loadRes(`dashboard/popup-card-${data['nl'][index].toLowerCase()}`, cc.SpriteFrame, (err, spriteFrame) => {
-                                if (err) {
-                                    console.log("err", err);
-                                }
-                                cardPrefab.children[0].getComponent(cc.Sprite).spriteFrame = spriteFrame;
-
-                                let card = cardPrefab.getComponent(CheckBox);
-                                card.setVal(id);
-                                card.isChecked = index === 0;
-
-                                // get left/layout
-                                layoutComponent.addChild(cardPrefab);
-                                // push card checkbox to toggleGroup
-                                this.toggleGroup.addItem(card);
-                                //reset state
-                                index === 0 && this.toggleGroup.onLoad();
-                            });
-                        });
-                    });
-                }
             }, app.const.scene.DASHBOARD_SCENE);
         }
     }

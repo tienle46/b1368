@@ -4,11 +4,7 @@ import Component from 'Component';
 class BasePopup extends Component {
     constructor() {
         super();
-        this.groupBtnNode = cc.Node;
         this.bodyContentNode = cc.Node;
-
-        this.greenButtonNode = cc.Button;
-        this.violetButtonNode = cc.Button;
     }
 
     // use this for initialization
