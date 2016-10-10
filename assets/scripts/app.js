@@ -134,3 +134,29 @@ function _setupGame() {
     app.context = require("Context");
     app.event = require("Events");
 }
+
+(function () {
+
+    window.log = function log(...args){
+        console.log(...args);
+    }
+
+    window.debug = function debug(...args){
+        if(app.config.buildForMobile){
+            console.log(...args);
+        }else{
+            console.debug(...args);
+        }
+    }
+
+    window.error = function error(...args){
+        console.error(...args);
+    }
+
+    window.warn = function warn(...args){
+        console.warn(...args);
+    }
+
+    window.app = app;
+    window.game = app.game;
+})();

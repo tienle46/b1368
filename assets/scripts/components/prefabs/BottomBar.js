@@ -52,38 +52,38 @@ cc.Class({
     // handle click button in bottomBar
 
     onClickNapXuAction: function() {
-        console.log("nap xu");
+        log("nap xu");
 
         this.handleClickTopbarItem(app.bottomBarButtonType.NAPXU);
     },
 
     onClickTopRankAction: function() {
-        console.log("rank");
+        log("rank");
         this.handleClickTopbarItem(app.bottomBarButtonType.TOPRANK);
     },
 
     onClickNotifiAction: function() {
-        console.log("Notifi");
+        log("Notifi");
         this.handleClickTopbarItem(app.bottomBarButtonType.NOTIFI);
     },
 
     onClickTransferAwardAction: function() {
-        console.log("Award");
+        log("Award");
         this.handleClickTopbarItem(app.bottomBarButtonType.EXCHANGEAWARD);
     },
 
     onClickHotlineAction: function() {
-        console.log("Hotline");
+        log("Hotline");
         this.handleClickTopbarItem(app.bottomBarButtonType.HOTLINE);
     },
 
     onClickMessageAction: function() {
-        console.log("Message");
+        log("Message");
         this.handleClickTopbarItem(app.bottomBarButtonType.MESSAGE);
     },
 
     onClickUserInfoAction: function() {
-        console.log("UserInfo");
+        log("UserInfo");
         this.handleClickTopbarItem(app.bottomBarButtonType.USERINFO);
     },
 
@@ -93,7 +93,7 @@ cc.Class({
 
     // truyen vao button type (xác định đang xử lý sự kiện cho button ).
     handleClickTopbarItem: function(buttonType) {
-        console.log("type: " + buttonType);
+        log("type: " + buttonType);
         this._clickListener && this._clickListener(buttonType);
     }
 

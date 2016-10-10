@@ -7661,7 +7661,7 @@ declare module cc {
 		```js
 		---
 		var url = cc.url.raw("textures/myTexture.png");
-		console.log(url);   // "resources/raw/textures/myTexture.png"
+		log(url);   // "resources/raw/textures/myTexture.png"
 		
 		``` 
 		*/
@@ -7672,7 +7672,7 @@ declare module cc {
 		```js
 		---
 		var url = cc.url.builtinRaw("textures/myTexture.png");
-		console.log(url);   // "resources/default-raw/textures/myTexture.png"
+		log(url);   // "resources/default-raw/textures/myTexture.png"
 		
 		``` 
 		*/

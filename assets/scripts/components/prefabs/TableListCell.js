@@ -44,7 +44,7 @@ class TableListCell extends Component{
     }
 
     onClickEvent(){
-        console.log("on click event");
+        log("on click event");
         this._onClickListener && this._onClickListener();
     }
 }

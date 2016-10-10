@@ -13,7 +13,7 @@ class Tab extends Component {
     }
 
     onLoad() {
-        console.log('tab onload');
+        log('tab onload');
         this.node.on('touchstart', function() {
             return;
         });
@@ -31,7 +31,7 @@ class Tab extends Component {
 
             return p;
         }).catch((e) => {
-            console.error('err', e);
+            error('err', e);
         });
     }
 

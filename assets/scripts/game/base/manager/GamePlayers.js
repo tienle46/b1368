@@ -67,7 +67,7 @@ export default class GamePlayers extends Component {
 
     _initPlayerLayer() {
 
-        console.log("_initPlayerLayer")
+        log("_initPlayerLayer")
 
         let maxPlayer = gameManager.getMaxPlayer(this.gameCode);
         let positionAnchorName = maxPlayer && app.res.playerAnchorName[maxPlayer];

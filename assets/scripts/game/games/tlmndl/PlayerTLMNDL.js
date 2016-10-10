@@ -42,7 +42,7 @@ export default class PlayerTLMNDL extends PlayerCardTurnBase {
 
     _onPlayTurn(){
 
-        console.log("_onPlayTurn: ", this.isItMe())
+        log("_onPlayTurn: ", this.isItMe())
 
         if(!this.isItMe()){
             return;

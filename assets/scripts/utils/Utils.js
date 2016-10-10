@@ -107,7 +107,7 @@ export default class Utils {
 
         Object.getOwnPropertyNames(src).forEach(key => {
 
-            console.log("Check: ", dest[key], src[key], !dest[key] && src[key]);
+            log("Check: ", dest[key], src[key], !dest[key] && src[key]);
             if(!dest[key] && src[key]){
                 dest[key] = src[key];
             }

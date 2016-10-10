@@ -30,7 +30,7 @@ class BaseControls extends GameControls {
 
     onClickReadyButton() {
 
-        console.log("onClickReadyButton");
+        log("onClickReadyButton");
 
         this.scene.showShortLoading('ready');
 
@@ -48,7 +48,7 @@ class BaseControls extends GameControls {
 
     onClickUnreadyButton() {
 
-        console.log("onClickUnreadyButton");
+        log("onClickUnreadyButton");
 
         this.scene.showShortLoading('ready');
 

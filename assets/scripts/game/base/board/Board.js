@@ -66,7 +66,7 @@ export default class Board extends Actor {
     onLoad() {
         super.onLoad();
 
-        console.log("_init Board");
+        log("_init Board");
     }
 
     _onPlayerSetReadyState(playerId, ready, isItMe) {
@@ -260,7 +260,7 @@ export default class Board extends Actor {
     onBoardBegin(data = {}) {
         this._reset();
 
-        console.log("on board begin check board timeline: ", Keywords.BOARD_PHASE_DURATION, data)
+        log("on board begin check board timeline: ", Keywords.BOARD_PHASE_DURATION, data)
 
         let boardTimeLine = utils.getValue(data, Keywords.BOARD_PHASE_DURATION);
         if (boardTimeLine) {
@@ -334,7 +334,7 @@ export default class Board extends Actor {
         let currentPlayerBalances = this.scene.gamePlayers.getCurrentPlayerBalances();
         let newPlayersBalance = utils.getValue(data, Keywords.USER_BALANCE, []);
 
-        console.log("currentPlayerBalances: ", currentPlayerBalances,newPlayersBalance)
+        log("currentPlayerBalances: ", currentPlayerBalances,newPlayersBalance)
 
         playerIds && playerIds.forEach((id, i) => {
             let newBalance = newPlayersBalance[i];
@@ -351,7 +351,7 @@ export default class Board extends Actor {
         let playersBalance = utils.getValue(data, Keywords.USER_BALANCE, []);
         let playersExp = utils.getValue(data, Keywords.BOARD_EXP_POINT_LIST, []);
 
-        console.log("_handleSetPlayerBalance: ", playersBalance, playersExp);
+        log("_handleSetPlayerBalance: ", playersBalance, playersExp);
 
         playerIds && playersBalance && playersExp && playerIds.forEach((id, i) => {
             let newBalance = playersBalance[i];
@@ -367,7 +367,7 @@ export default class Board extends Actor {
     }
 
     _dealCards(data) {
-        console.log("Deal card");
+        log("Deal card");
     }
 
     changeBoardPhaseDuration(data) {

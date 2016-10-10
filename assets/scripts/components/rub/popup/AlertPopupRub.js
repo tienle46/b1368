@@ -39,7 +39,7 @@ export default class AlertPopupRub extends BasePopupRub {
 
             return self;
         }).catch((err) => {
-            console.log('err', err);
+            log('err', err);
         });
     }
 }

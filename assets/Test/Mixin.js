@@ -28,7 +28,7 @@
 //     }
 //
 //     bFunc(){
-//         console.log(this)
+//         log(this)
 //     }
 // }
 //
@@ -48,7 +48,7 @@
 //     }
 //
 //     cFunc(){
-//         console.log(this)
+//         log(this)
 //     }
 // }
 //

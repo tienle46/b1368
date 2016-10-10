@@ -77,7 +77,7 @@ export default class TLMNDLControls extends GameControls {
      */
     _onGamePlaying(data){
         
-        console.log("_onGamePlaying")
+        log("_onGamePlaying")
         
         let nextTurnPlayerId = utils.getValue(data, Keywords.TURN_PLAYER_ID);
         if (!nextTurnPlayerId) {

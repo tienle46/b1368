@@ -88,12 +88,12 @@ class TabExchangeCard extends Component {
             'cmd': app.commands.EXCHANGE,
             data
         };
-        console.log(sendObject);
+        log(sendObject);
         // this.node -> dialogbody node -> dialog node
         AlertPopupRub.show(this.node.parent.parent, 'clicked !');
 
         app.service.send(sendObject, (data) => {
-            console.log(data);
+            log(data);
         });
     }
 

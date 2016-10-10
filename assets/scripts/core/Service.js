@@ -72,16 +72,16 @@ class Service {
 
     __testConnection() {
         this.connect((success) => {
-            console.log("success: " + success);
+            log("success: " + success);
             if (success) {
                 this.login("crush1", "1234nm", (error, result) => {
                     if (result) {
-                        console.log(`Logged in as ${app.context.getMe().name}`);
+                        log(`Logged in as ${app.context.getMe().name}`);
                     }
 
                     if (error) {
-                        console.log("Login error: ");
-                        console.log(error);
+                        log("Login error: ");
+                        log(error);
                     }
                 });
             }
@@ -155,13 +155,13 @@ class Service {
     }
 
     _onConnectionResume(event) {
-        console.log("_onConnectionResume");
-        console.log(event);
+        log("_onConnectionResume");
+        log(event);
     }
 
     _onExtensionEvent(event) {
 
-        console.log(event);
+        log(event);
 
         if(event.cmd === app.commands.XLAG) {
             this._handleLagPollingResponse(event);
@@ -279,7 +279,7 @@ class Service {
         } else {
             this._addCallback(SFS2X.SFSEvent.CONNECTION, cb);
 
-            console.log(`Connecting to: ${app.config.host}:${app.config.port}`);
+            log(`Connecting to: ${app.config.host}:${app.config.port}`);
 
             this.client.connect(app.config.host, app.config.port);
         }
@@ -402,7 +402,7 @@ class Service {
 
     _onJoinRoomResult(event) {
 
-        console.log("_onJoinRoomResult: ", event);
+        log("_onJoinRoomResult: ", event);
         const key = this._hasCallback(app.commands.USER_CREATE_ROOM) ? app.commands.USER_CREATE_ROOM : SFS2X.SFSEvent.ROOM_JOIN;
 
         if(this._hasCallback(key)){
@@ -419,7 +419,7 @@ class Service {
     }
 
     _onCreateRoomResult(event) {
-        console.log("_onCreateRoomResult: ", event);
+        log("_onCreateRoomResult: ", event);
         if (event.errorCode) {
             this._callCallbackAsync(app.commands.USER_CREATE_ROOM, event);
         }

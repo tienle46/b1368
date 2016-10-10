@@ -281,7 +281,7 @@ export default class CardList extends Component {
                         card.node.y = this._getStartPosition().x + this._getCardDistance() * index;
                     }
                 }
-                // console.log(`${node.getComponent('Card').rank} index ${index} / zIndex ${node.zIndex}`);
+                // log(`${node.getComponent('Card').rank} index ${index} / zIndex ${node.zIndex}`);
             });
             // }
         }
@@ -408,12 +408,12 @@ export default class CardList extends Component {
                 dragCard.node.x += event.getDelta().x;
 
                 // let localPoint = this.node.convertToNodeSpaceAR(event.getLocation());
-                // console.log(`local point x ${localPoint.x}`);
+                // log(`local point x ${localPoint.x}`);
 
                 let direction = event.getDelta().x > 0 ? 1 : -1;
 
                 let dragCardIndex = this.cards.indexOf(dragCard);
-                // console.log(`dragCardIndex ${dragCardIndex}`);
+                // log(`dragCardIndex ${dragCardIndex}`);
                 let swapCard = this.cards[dragCardIndex + direction];
                 if (swapCard) {
                     if (Math.abs(swapCard.node.x - dragCard.node.x) < this._getCardDistance() / 2) {
@@ -539,6 +539,11 @@ export default class CardList extends Component {
                 card.node.runAction(cc.moveBy(0.2, -this._selectedMargin, 0));
             }
         }
+
+        this.onSelectedCardChanged();
+    }
+
+    onSelectedCardChanged(){
         this.selectCardChangeListener && this.selectCardChangeListener(this.getSelectedCards());
     }
 

@@ -65,12 +65,12 @@ export default class SegmentControl extends Component {
         });
 
         this.node.on('segment-item-clicked', function(event) {
-            console.log(`need to toggle state of other segment item except segment with index ${event.detail.selectedIndex}`);
+            log(`need to toggle state of other segment item except segment with index ${event.detail.selectedIndex}`);
         });
     }
 
     _segmentItemClicked(event) {
-        // console.log(`item at index ${event.target.tag} clicked`);
+        // log(`item at index ${event.target.tag} clicked`);
         event.target.parent.emit('segment-item-clicked', { selectedIndex: event.target.tag });
         event.target.selected = true;
     }

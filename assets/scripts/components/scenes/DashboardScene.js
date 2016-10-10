@@ -36,13 +36,13 @@ export default class DashboardScene extends BaseScene {
                 'pid': 1
             }
         };
-        console.log('request list game');
+        log('request list game');
         app.service.send(sendObject, (data) => {
-            console.log(data);
+            log(data);
 
 
             this.gameList = data["cl"];
-            console.log(this.gameList);
+            log(this.gameList);
 
             this._initItemListGame();
         }, app.const.scene.DASHBOARD_SCENE);
@@ -73,7 +73,7 @@ export default class DashboardScene extends BaseScene {
 
                 itemComponent.gameCode = gc;
                 itemComponent.listenOnClickListener((gameCode) => {
-                    console.log(`click Item ${gameCode}`);
+                    log(`click Item ${gameCode}`);
 
                     this.changeScene('ListTableScene');
                 });
@@ -111,7 +111,7 @@ export default class DashboardScene extends BaseScene {
         const topBarNode = new cc.instantiate(this.topBar);
 
         // topBarNode.getComponent('TopBar').listenClickTopBarItem( (buttonType) => {
-        //     console.log("dashboard:" + buttonType);
+        //     log("dashboard:" + buttonType);
         //     this.addPopup();
         // });
         this.node.addChild(topBarNode);

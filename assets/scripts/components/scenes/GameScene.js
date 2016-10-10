@@ -79,13 +79,13 @@ class GameScene extends BaseScene {
             this._initGameMenuLayer();
 
         } catch (e) {
-            console.error(e);
+            error(e);
 
             if (e instanceof CreateGameException)
                 this._onLoadSceneFail();
         }
 
-        console.log("onLoad GameScene");
+        log("onLoad GameScene");
     }
 
     start() {
@@ -147,7 +147,7 @@ class GameScene extends BaseScene {
 
         this.emit(Events.ON_GAME_LOAD_PLAY_DATA, this.gameData);
 
-        console.log("currentGameState: ", currentGameState, isGamePlaying, app.context.rejoiningGame);
+        log("currentGameState: ", currentGameState, isGamePlaying, app.context.rejoiningGame);
 
         if (isGamePlaying) {
             !app.context.rejoiningGame && this._onGameStateChange(currentGameState, this.gameData, true);
@@ -216,7 +216,7 @@ class GameScene extends BaseScene {
         this.gameState = state;
         this.gameLocalState = localState;
 
-        console.log("Game state: ", state, localState);
+        log("Game state: ", state, localState);
 
         switch (localState) {
             case app.const.game.board.state.BEGIN:

@@ -18,7 +18,7 @@ export default class TLMNUtils {
     static checkPlayCard(playCards, deckCards, gameType = TLMNUtils.GAME_TYPE) {
         let valid = playCards && playCards.length > 0;
 
-        !valid && console.warn("Card selected is null");
+        !valid && warn("Card selected is null");
 
         if (valid && !utils.isEmptyArray(deckCards)){
             let cards = this.getValidSelectedCards(playCards, deckCards, gameType);

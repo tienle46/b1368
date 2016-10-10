@@ -75,7 +75,7 @@ export default class PlayerRenderer extends ActorRenderer {
         // this.masterIcon = this.node.getChildByName('master');
         // this.readyIcon = this.node.getChildByName('ready');
         //
-        // console.log("player renderer init ui: ", this.status1 instanceof cc.Node, this.status2 instanceof cc.Node)
+        // log("player renderer init ui: ", this.status1 instanceof cc.Node, this.status2 instanceof cc.Node)
 
         utils.deactive(this.status1);
         utils.deactive(this.status2);
@@ -116,11 +116,15 @@ export default class PlayerRenderer extends ActorRenderer {
     update(dt) {
         if (this.isCounting && this.timelineDuration > 0) {
             this.callCounter.progress = this.counterTimer / this.timelineDuration;
+
+            if(this.counterTimer >= this.timelineDuration){
+                this.stopCountdown();
+            }
+
             this.counterTimer += dt;
             if (this.counterTimer >= this.timelineDuration) {
                 this.isCounting = false;
                 this.callCounter.progress = 1;
-                this.stopCountdown();
             }
         }
     }
@@ -134,10 +138,10 @@ export default class PlayerRenderer extends ActorRenderer {
     }
 
     stopCountdown(){
-        console.log("stopCountdown: ")
+        log("stopCountdown: ")
         if (this.callCounter) {
 
-            console.log("stopCountdown exist callCounter");
+            log("stopCountdown exist callCounter");
 
             this.timelineDuration = 0;
             this.isCounting = false;

@@ -45,12 +45,12 @@ export default class RegisterScene extends BaseScene {
                     app.service.requestAuthen(username, password, true, false, (error, result) => {
                         error = JSON.parse(error);
                         if (error) {
-                            console.log('Login error:');
+                            log('Login error:');
                             this.addPopup(app.getMessageFromServer(error.p.ec));
                         }
                         if (result) {
-                            console.log(result);
-                            console.log(`Logged in as ${app.context.getMe().name}`);
+                            log(result);
+                            log(`Logged in as ${app.context.getMe().name}`);
                             this.changeScene('DashboardScene');
                         }
                     });

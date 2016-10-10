@@ -41,14 +41,14 @@ export default class PlayerPositions extends Component {
     _init(scene) {
         this.scene = scene;
 
-        console.log("Init PlayerPositions");
+        log("Init PlayerPositions");
 
         this._initPlayerAnchors();
 
         this.scene.on(Events.ON_GAME_STATE_BEGIN, this._onGameBegin, this);
         this.scene.on(Events.ON_GAME_STATE_STARTING, this._onGameStarting, this);
 
-        console.log(this)
+        log(this)
     }
 
     onLoad() {
@@ -65,7 +65,7 @@ export default class PlayerPositions extends Component {
     }
 
     _onGameBegin() {
-        console.log("_onGameBegin");
+        log("_onGameBegin");
         let hidingAnchorIndexes = this.scene.gamePlayers.players.map(player => player.anchorIndex);
         this.showAllInviteButtons(hidingAnchorIndexes);
     }
@@ -103,7 +103,7 @@ export default class PlayerPositions extends Component {
 
     getPlayerAnchorIndex(playerId, isItMe, gameCode) {
 
-        console.log("getPlayerAnchorIndex: ", playerId, isItMe);
+        log("getPlayerAnchorIndex: ", playerId, isItMe);
 
         if (isItMe) {
             return 0;
@@ -115,7 +115,7 @@ export default class PlayerPositions extends Component {
                 let meId = app.context.getMe().getPlayerId(this.scene.board.room);
                 seatIndex = seatIndexs[meId][playerId];
 
-                console.log("getPlayerAnchor Me: ", meId, seatIndex, seatIndexs);
+                log("getPlayerAnchor Me: ", meId, seatIndex, seatIndexs);
 
                 return seatIndex;
             } else {

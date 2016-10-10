@@ -13,5 +13,5 @@ let checkSelectedCards = [
 ]
 
 let a = TLMNUtils.getValidSelectedCards(checkSelectedCards, [Card.from(Card.RANK_HAI, Card.SUIT_BICH)]);
-console.log(a);
+log(a);
 

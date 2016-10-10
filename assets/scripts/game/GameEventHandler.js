@@ -141,7 +141,7 @@ export default class GameEventHandler {
     }
 
     _onUserExitRoom(event) {
-        console.log(event)
+        log(event)
 
         if (!event.user || !event.room || event.room.id != this.scene.room.id) {
             return;
@@ -225,7 +225,7 @@ export default class GameEventHandler {
         let playerIds = utils.getValue(data, Keywords.GAME_LIST_PLAYER);
         let playersBalances = utils.getValue(data, Keywords.USER_BALANCE);
 
-        console.log("_handleChangePlayerBalance: ", playersBalances);
+        log("_handleChangePlayerBalance: ", playersBalances);
 
         playerIds && playersBalances && playerIds.forEach((id, index) => {
             this.scene.emit(Events.ON_PLAYER_CHANGE_BALANCE, id, playersBalances[index]);

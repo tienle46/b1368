@@ -137,8 +137,8 @@ export default class GameManager {
                 cb && cb(app.res.string('error.fail_to_create_game'));
             }
 
-            console.log("results: ", results);
-            console.log("err: ", err);
+            log("results: ", results);
+            log("err: ", err);
         });
 
     }

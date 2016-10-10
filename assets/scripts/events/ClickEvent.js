@@ -10,23 +10,23 @@ export default class ClickEvent {
     }
 
     // onMouseMove(event){
-    //     console.log("onMouseMove: ")
-    //     console.log(event.getTarget());
+    //     log("onMouseMove: ")
+    //     log(event.getTarget());
     // }
     //
     // onMouseUp(event){
-    //     console.log("onMouseMove: ")
-    //     console.log(event.getTarget());
+    //     log("onMouseMove: ")
+    //     log(event.getTarget());
     // }
     //
     // onMouseDown(event){
-    //     console.log("onMouseMove: ")
-    //     console.log(event.getTarget());
+    //     log("onMouseMove: ")
+    //     log(event.getTarget());
     // }
     //
     // onMouseScroll(event){
-    //     console.log("onMouseMove: ")
-    //     console.log(event.getTarget());
+    //     log("onMouseMove: ")
+    //     log(event.getTarget());
     // }
 
     //onTouchBegan event callback function

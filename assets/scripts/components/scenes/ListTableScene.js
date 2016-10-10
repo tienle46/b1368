@@ -84,7 +84,7 @@ export default class ListTableScene extends BaseScene {
                     data[Keywords.IS_SPECTATOR] = false;
                     data[Keywords.QUICK_JOIN_BET] = 1;
 
-                    console.log("join room request");
+                    log("join room request");
 
                     app.service.send({cmd: Commands.USER_QUICK_JOIN_ROOM, data: data});
                 });
@@ -140,7 +140,7 @@ export default class ListTableScene extends BaseScene {
         const bottomBarNode = new cc.instantiate(this.bottomBar);
 
         bottomBarNode.getComponent('BottomBar').listenClickTopBarItem((buttonType) => {
-            console.log("dashboard:" + buttonType);
+            log("dashboard:" + buttonType);
             this.addPopup();
         });
 

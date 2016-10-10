@@ -62,7 +62,7 @@ export default class Card extends Component {
 
     }
     start(){
-        // console.log(`card x ${this.node.children[0].x} card y ${this.node.children[0].y}`);
+        // log(`card x ${this.node.children[0].x} card y ${this.node.children[0].y}`);
     }
 
 
