@@ -1,6 +1,7 @@
 ﻿import app from 'app';
 import Component from 'Component';
 import Card from 'Card';
+import utils from 'utils';
 var _ = require('lodash');
 
 
@@ -27,8 +28,7 @@ export default class CardList extends Component {
         this.cards = null;
         this.selectCardChangeListener = null;
         this._reveal = true;
-
-
+        this._selectable = false;
     }
 
     setSelectCardChangeListener(listener) {
@@ -383,17 +383,23 @@ export default class CardList extends Component {
 
     setCards(cards, active, reveal) {
         this.clear();
-        this.fillCards(cards, active, reveal);
+        this._fillCards(cards, active, reveal);
 
     }
 
-    fillCards(cards, active = true, reveal = this._reveal) {
+    addCards(cards, active, reveal) {
+        return this._fillCards(cards, active, reveal);
+    }
+
+    _fillCards(cards, active = true, reveal = this._reveal) {
+        let addedCards = [];
         cards.forEach((card, index) => {
             const newCard = this._createNewCard(card.byteValue, reveal);
             newCard.node.active = active;
 
             this.cards.push(newCard);
             this.node.addChild(newCard.node);
+            addedCards.push(newCard);
 
             newCard.node.on(cc.Node.EventType.TOUCH_START, (event) => {
                 if (!this._draggable) return;
@@ -437,6 +443,8 @@ export default class CardList extends Component {
         });
 
         this._adjustCardsPosition();
+
+        return addedCards;
     }
 
     findCardComponents(cardModels = []) {
@@ -453,11 +461,20 @@ export default class CardList extends Component {
         return filteredCards;
     }
 
-    removeCards(cards) {
-        _.pullAll(this.cards, cards);
-        cards.forEach((card, index) => card.node.removeFromParent(true));
+    _getSubCards(size){
+        return size && this.cards.slice(0, size);
     }
 
+    removeCards(cards) {
+        let removedCards = this._removeCardModelOnly(cards);
+        removedCards.forEach((card, index) => card.node.removeFromParent(true));
+    }
+
+    _removeCardModelOnly(cardsOrRemoveAmount){
+        let removingCards = utils.isNumber(cardsOrRemoveAmount) ? this._getSubCards(cardsOrRemoveAmount) : this.findCardComponents(cardsOrRemoveAmount);
+        _.pullAll(this.cards, removingCards);
+        return removingCards;
+    }
 
     _createNewCard(byte, reveal) {
         let newCard = cc.instantiate(this.cardPrefab).getComponent('Card');
@@ -482,7 +499,7 @@ export default class CardList extends Component {
     }
 
     _test(cards) {
-        this.fillCards(cards);
+        this._fillCards(cards);
     }
 
     onLoad() {
@@ -522,6 +539,10 @@ export default class CardList extends Component {
 
     _onSelectCard(card) {
 
+        if(!this._selectable){
+            return;
+        }
+
         card.selected = !card.selected;
         if (card.selected) {
             if (this._isHorizontal()) {
@@ -550,28 +571,29 @@ export default class CardList extends Component {
     /**
      *
      * @param cards
-     * @param destinationList
+     * @param dest
      */
-    transfer(cards, destinationList, runAnimation) {
-
-        let destCardListNode = destinationList instanceof cc.Node ? destinationList : destinationList.node;
-
-        const cardListComponent = destCardListNode.getComponent('CardList');
+    transfer(cards, dest, runAnimation) {
 
         // Xoá model object ngay lập tức, sau đó thực hiện animation
         // tránh trường hợp có exception can thiệp animation chưa thực hiện xong để đảm bảo tính nhất quán dữ liệu
-        _.pullAll(this.cards, cards);
+        if(!dest){
+            this.removeCards(cards);
+            return;
+        }
 
-        let actions = [];
+        this._removeCardModelOnly(cards);
 
-        const currentDestLength = cardListComponent.cards.length;
+        const actions = [];
+        const destCardListNode = dest instanceof cc.Node ? dest : dest.node;
+        const destCardList = destCardListNode.getComponent(CardList.name);
+        const currentDestLength = destCardList.cards.length;
 
-        cardListComponent.fillCards(cards, true, true);
-        cardListComponent._adjustCardsPosition();
-
+        destCardList._fillCards(cards, true, true);
+        destCardList._adjustCardsPosition();
         cards.forEach((card, index)=> {
 
-            const animatingCard = cardListComponent.cards[currentDestLength + index];
+            const animatingCard = destCardList.cards[currentDestLength + index];
 
             const worldPoint = card.node.parent.convertToWorldSpaceAR(card.node.getPosition());
             const localDestinationPoint = destCardListNode.convertToNodeSpaceAR(worldPoint);
@@ -584,7 +606,12 @@ export default class CardList extends Component {
             animatingCard.node.setScale(originalScale);
 
             actions.push(cc.callFunc(() => {
-                animatingCard.node.runAction(cc.spawn(cc.moveTo(CardList.TRANSFER_CARD_DURATION, moveToPosition.x, moveToPosition.y), cc.scaleTo(CardList.TRANSFER_CARD_DURATION, scaleTo)));
+                animatingCard.node.runAction(
+                    cc.spawn(
+                        cc.moveTo(CardList.TRANSFER_CARD_DURATION, moveToPosition.x, moveToPosition.y),
+                        cc.scaleTo(CardList.TRANSFER_CARD_DURATION, scaleTo)
+                    )
+                );
             }));
             // actions.push(cc.delayTime(0.1));
 
@@ -606,7 +633,7 @@ export default class CardList extends Component {
         let actions = [];
 
         playersCardLists.forEach((cardList)=> {
-            cardList.fillCards(Array.from(fakeCards), false, false);
+            cardList._fillCards(Array.from(fakeCards), false, false);
         })
 
         for (let i = 0; i < cardLength; i++) {

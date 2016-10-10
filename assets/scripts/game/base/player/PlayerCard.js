@@ -23,6 +23,10 @@ export default class PlayerCard extends Player {
         super._init(board, user);
     }
 
+    removeFakeCard(length){
+        this.renderer.cardList.removeCards(length);
+    }
+
     createFakeCards(size){
         let cardBytes = new Array(size).fill(5);
         this.setCards(GameUtils.convertBytesToCards(cardBytes));

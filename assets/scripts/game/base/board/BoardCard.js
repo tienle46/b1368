@@ -41,15 +41,13 @@ export default class BoardCard extends Board {
         let playerHandCardLists = this.scene.gamePlayers.getPlayerHandCardLists();
         let dealCardAction = CardList.dealCards(this.renderer.dealCardList, playerHandCardLists, dealCards.length, () => {
 
-            log("ON_GAME_STATE_STARTED: ");
-
             this.scene.gamePlayers.onDealCards(dealCards);
-            this.scene.emit(Events.ON_GAME_STATE_STARTED);
+            this.scene.emit(Events.ON_GAME_STATE_STARTED, data);
         });
 
         this.scene.node.runAction(dealCardAction);
 
-        this.scene.emit(Events.ON_GAME_STATE_STARTING);
+        this.scene.emit(Events.ON_GAME_STATE_STARTING, data);
     }
 
     _getPlayerHandCards(playerIds, data) {

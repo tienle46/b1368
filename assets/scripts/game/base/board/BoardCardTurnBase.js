@@ -29,9 +29,9 @@ export default class BoardCardTurnBase extends BoardCard {
         this.scene.on(Events.ON_PLAYER_PLAYED_CARDS, this._onPlayerPlayedCards, this);
     }
 
-    _onPlayerPlayedCards(playedCards, srcCardList){
+    _onPlayerPlayedCards(playedCards, srcCardList, isItMe){
         this.playedCards = playedCards;
-        this.renderer.addToDeck(playedCards, srcCardList);
+        this.renderer.addToDeck(playedCards, srcCardList, isItMe);
     }
 
     getLastPlayedTurnPlayerId(){
@@ -47,10 +47,6 @@ export default class BoardCardTurnBase extends BoardCard {
     _cleanTurnRoutineData(lastPlayedId){
         this.playedCards = [];
         this.renderer.cleanDeckCards();
-    }
-
-    addToDeck(cards){
-        this.renderer.deckCards.addCards(cards);
     }
 
     getTurnDuration(){

@@ -26,6 +26,8 @@ export default class Player extends Actor {
 
     _init(board, user){
 
+        console.log("Init player: ", board, user);
+
         this.scene = board.scene;
         this.board = board;
         this.user = user;
@@ -98,8 +100,6 @@ export default class Player extends Actor {
         this.renderer.setName(this.username);
         this.renderer.setBalance(this.balance);
         this.renderer.setVisibleOwner(this.isOwner);
-
-        log("on load: ", this.username, this.id, this.board, this.board.room);
     }
 
     _setBalance(balance){
@@ -115,6 +115,10 @@ export default class Player extends Actor {
     setMaster(isMaster){
         this.isMaster = isMaster;
         this.renderer.setVisibleMaster(isMaster);
+    }
+
+    isReady(){
+        return this.ready;
     }
 
     setReady(ready){
@@ -167,7 +171,9 @@ export default class Player extends Actor {
     }
 
     onGameBegin(data, isJustJoined) {
-        this._reset();
+        if(!isJustJoined){
+            this._reset();
+        }
     }
 
     onGameStarting(data, isJustJoined) {

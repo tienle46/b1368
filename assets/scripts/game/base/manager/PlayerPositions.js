@@ -65,7 +65,6 @@ export default class PlayerPositions extends Component {
     }
 
     _onGameBegin() {
-        log("_onGameBegin");
         let hidingAnchorIndexes = this.scene.gamePlayers.players.map(player => player.anchorIndex);
         this.showAllInviteButtons(hidingAnchorIndexes);
     }

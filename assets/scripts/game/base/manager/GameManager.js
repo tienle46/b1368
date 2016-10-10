@@ -5,6 +5,7 @@
 import app from 'app';
 import {TLMNDLBoard, TLMNDLBoardRenderer} from 'game';
 import {TLMNDLPlayer, TLMNDLPlayerRenderer} from 'game';
+import TLMNDLControls from 'TLMNDLControls';
 
 
 /***
@@ -63,10 +64,10 @@ const boardPrefabPathMap = {
  * @type {{}}
  */
 const gameControlsClassMap = {
-    [app.const.gameCode.TLMNDL]: 'TLMNDLControls'
+    [app.const.gameCode.TLMNDL]: TLMNDLControls
 };
 
-const gameControlsPathMap = {
+const gameControlsPrefabPathMap = {
     [app.const.gameCode.TLMNDL]: 'game/controls/TLMNDLControlsPrefab'
 };
 
@@ -94,6 +95,11 @@ export default class GameManager {
             default: null,
             type: cc.Prefab
         }
+
+        this.gameControlPrefab = {
+            default: null,
+            type: cc.Prefab
+        }
     }
 
     loadRes(gameCode, cb) {
@@ -114,6 +120,17 @@ export default class GameManager {
                 cc.loader.loadRes(playerPath, (error, prefab) => {
                     if (prefab) {
                         this.playerPrefab = prefab;
+                        callback(null, true);
+                    } else {
+                        callback();
+                    }
+                });
+            },
+            (callback) => {
+                let playerPath = gameControlsPrefabPathMap[gameCode];
+                cc.loader.loadRes(playerPath, (error, prefab) => {
+                    if (prefab) {
+                        this.gameControlPrefab = prefab;
                         callback(null, true);
                     } else {
                         callback();
@@ -170,19 +187,14 @@ export default class GameManager {
         }
     }
 
-    createGameControls(scene, cb) {
-        let gameControlsPath = gameControlsPathMap[scene.gameCode];
-        let gameControlsClass = gameControlsClassMap[scene.gameCode];
+    createGameControls(gameCode) {
+        let gameControlsClass = gameControlsClassMap[gameCode];
 
+        if(this.gameControlPrefab && gameControlsClass){
+            let gameControlsNode = cc.instantiate(this.gameControlPrefab);
+            let gameControls = gameControlsNode.getComponent(gameControlsClass.name);
 
-        if (gameControlsPath && gameControlsClass) {
-            cc.loader.loadRes(gameControlsPath, (error, prefab) => {
-                let controlsNode = cc.instantiate(prefab);
-                let gameControls = controlsNode.getComponent(gameControlsClass);
-                cb(null, controlsNode, gameControls);
-            });
-        } else {
-            cb({error: app.res.string('error.cannot_create_game_board')})
+            return {gameControls: gameControls, gameControlsNode: gameControlsNode};
         }
     }
 

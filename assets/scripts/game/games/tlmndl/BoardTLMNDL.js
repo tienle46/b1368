@@ -54,7 +54,7 @@ export default class BoardTLMNDL extends BoardCardTurnBase {
 
             let cards = GameUtils.convertBytesToCards(deckCardsBytes);
             cards = GameUtils.sortCardAsc(cards, this.gameType);
-            this.addToDeck(cards);
+            this.renderer.addToDeck(cards);
 
             //TODO On android need to get card group type
             //TLMNUtil.getGroupCardType(deckCardsVector, getGameType());

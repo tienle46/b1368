@@ -30,20 +30,9 @@ class BaseControls extends GameControls {
 
     onClickReadyButton() {
 
-        log("onClickReadyButton");
-
         this.scene.showShortLoading('ready');
 
-        app.service.send({cmd: app.commands.PLAYER_READY, room: this.scene.room} /*, (resObj) => {
-
-            this.scene.hideLoading('ready');
-
-            let playerId = resObj[app.keywords.PLAYER_ID];
-
-            if (this.scene.gamePlayers.isItMe(playerId)) {
-                this._onPlayerReady();
-            }
-        }*/);
+        app.service.send({cmd: app.commands.PLAYER_READY, room: this.scene.room});
     }
 
     onClickUnreadyButton() {
@@ -52,37 +41,11 @@ class BaseControls extends GameControls {
 
         this.scene.showShortLoading('ready');
 
-        app.service.send({cmd: app.commands.PLAYER_UNREADY, room: this.scene.room}/*, (resObj) => {
-            // this.scene.hideLoading('ready');
-            //
-            // let playerId = resObj[app.keywords.PLAYER_ID];
-            //
-            // if (this.scene.gamePlayers.isItMe(playerId)) {
-            //     this._onPlayerUnready();
-            // }
-        }*/);
+        app.service.send({cmd: app.commands.PLAYER_UNREADY, room: this.scene.room});
     }
 
     _init(scene) {
         this.scene = scene;
-
-        let isMeReady = false;
-        let playerIds = this.scene.gameData[app.keywords.GAME_LIST_PLAYER];
-        if (playerIds) {
-            for (let playerId of playerIds) {
-                if (this.scene.gamePlayers.isItMe(playerId)) {
-                    isMeReady = true;
-                    break;
-                }
-            }
-        }
-
-        if (isMeReady) {
-            this._onPlayerReady();
-        } else {
-            this._onPlayerUnready();
-        }
-
         this.scene.on(Events.ON_PLAYER_READY_STATE_CHANGED, this._onPlayerSetReadyState, this);
     }
 

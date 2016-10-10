@@ -38,12 +38,12 @@ export default class BoardCardTurnBaseRenderer extends BoardCardRenderer {
     }
 
     cleanDeckCards(){
-        log("Clean deck card")
         this.deckCards.clear();
     }
 
-    addToDeck(cards, srcCardList){
-        this.deckCards.addCards(cards, srcCardList);
+    addToDeck(cards, srcCardList, isItMe){
+        debug("add to DECK")
+        this.deckCards.addCards(cards, srcCardList, isItMe);
     }
 }
 

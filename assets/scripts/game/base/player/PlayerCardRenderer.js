@@ -63,8 +63,6 @@ export default class PlayerCardRenderer extends PlayerRenderer {
         } else {
             cardList.setMaxDimension(0);
             cardList.setScale(0.5);
-            cardList.setDraggable(false);
-            cardList.setSelectable(false);
             cardList.setReveal(false);
         }
 
