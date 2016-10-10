@@ -38,7 +38,7 @@ class EntranceScene extends BaseScene {
 
     handleLoginAction() {
         app.service.connect((success) => {
-            console.debug("success: " + success);
+            console.log("success: " + success);
             if (success) {
                 new Fingerprint2().get((deviceId) => {
                     app.service.requestAuthen('crush1', "1234nm", false, true, (error, result) => {
@@ -62,11 +62,11 @@ class EntranceScene extends BaseScene {
 
     handlePlayNowButton() {
         // app.service.connect((success) => {
-        //     console.debug("success: " + success);
+        //     console.log("success: " + success);
         //     if (success) {
         //         app.service.login("crush1", "1234nm", (error, result) => {
         //             if (result) {
-        //                 // console.debug(`Logged in as ${app.context.getMe().name}`)
+        //                 // console.log(`Logged in as ${app.context.getMe().name}`)
 
         //                 // if(app.context.getMe()){
         //                 //     let ListTableScene = require('ListTableScene');
@@ -83,14 +83,14 @@ class EntranceScene extends BaseScene {
         //             }
 
         //             if (error) {
-        //                 console.debug("Login error: ")
-        //                 console.debug(error)
+        //                 console.log("Login error: ")
+        //                 console.log(error)
         //             }
         //         });
         //     }
         // });
         app.service.connect((success) => {
-            console.debug("success: " + success);
+            console.log("success: " + success);
             if (success) {
                 new Fingerprint2().get((deviceId) => {
                     app.service.requestAuthen(this._generateUserName("ysad12", deviceId, 0, 5), this._generateUserName("yz212", deviceId, 0, 6), false, true, (error, result) => {

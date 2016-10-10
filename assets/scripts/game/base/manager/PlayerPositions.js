@@ -41,14 +41,14 @@ export default class PlayerPositions extends Component {
     _init(scene) {
         this.scene = scene;
 
-        console.debug("Init PlayerPositions");
+        console.log("Init PlayerPositions");
 
         this._initPlayerAnchors();
 
         this.scene.on(Events.ON_GAME_STATE_BEGIN, this._onGameBegin, this);
         this.scene.on(Events.ON_GAME_STATE_STARTING, this._onGameStarting, this);
 
-        console.debug(this)
+        console.log(this)
     }
 
     onLoad() {
@@ -65,7 +65,7 @@ export default class PlayerPositions extends Component {
     }
 
     _onGameBegin() {
-        console.debug("_onGameBegin");
+        console.log("_onGameBegin");
         let hidingAnchorIndexes = this.scene.gamePlayers.players.map(player => player.anchorIndex);
         this.showAllInviteButtons(hidingAnchorIndexes);
     }

@@ -65,7 +65,7 @@ export default class BoardCardTurnBase extends BoardCard {
     handleGameStateChange(state, data){
         super.handleGameStateChange(state, data);
 
-        console.debug("handle game state change: ", state, " ", data);
+        console.log("handle game state change: ", state, " ", data);
         if (state == boardConst.state.BOARD_STATE_TURN_BASE_TRUE_PLAY) {
             this._handleBoardTurnBaseTruePlay(data);
         }
@@ -85,7 +85,7 @@ export default class BoardCardTurnBase extends BoardCard {
             this.scene.emit(Events.HANDLE_CHANGE_TURN, nextTurnPlayerId);
         }
 
-        console.debug("nextTurnPlayerId: ", nextTurnPlayerId)
+        console.log("nextTurnPlayerId: ", nextTurnPlayerId)
     }
 
     onBoardPlaying(data){

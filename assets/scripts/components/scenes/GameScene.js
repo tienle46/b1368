@@ -85,7 +85,7 @@ class GameScene extends BaseScene {
                 this._onLoadSceneFail();
         }
 
-        console.debug("onLoad GameScene");
+        console.log("onLoad GameScene");
     }
 
     start() {
@@ -147,7 +147,7 @@ class GameScene extends BaseScene {
 
         this.emit(Events.ON_GAME_LOAD_PLAY_DATA, this.gameData);
 
-        console.debug("currentGameState: ", currentGameState, isGamePlaying, app.context.rejoiningGame);
+        console.log("currentGameState: ", currentGameState, isGamePlaying, app.context.rejoiningGame);
 
         if (isGamePlaying) {
             !app.context.rejoiningGame && this._onGameStateChange(currentGameState, this.gameData, true);
@@ -216,7 +216,7 @@ class GameScene extends BaseScene {
         this.gameState = state;
         this.gameLocalState = localState;
 
-        console.debug("Game state: ", state, localState);
+        console.log("Game state: ", state, localState);
 
         switch (localState) {
             case app.const.game.board.state.BEGIN:

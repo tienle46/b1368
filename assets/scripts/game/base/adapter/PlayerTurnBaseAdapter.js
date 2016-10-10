@@ -48,7 +48,7 @@ export default class PlayerTurnBaseAdapter extends GameAdapter {
     }
 
     _cleanTurnRoutineData(){
-        console.debug("player turn adapter (CLEAN_TURN_ROUTINE_DATA): ")
+        console.log("player turn adapter (CLEAN_TURN_ROUTINE_DATA): ")
         this.preTurnPlayerId = 0;
         this.currentTurnPlayerId = 0;
         this.player.skippedTurn = false;
@@ -85,7 +85,7 @@ export default class PlayerTurnBaseAdapter extends GameAdapter {
             console.log("handle change turn: ", this.player.id, turnPlayerId);
 
             if(!this.scene.gamePlayers){
-                console.debug("this.scene.gamePlayers", this.scene);
+                console.log("this.scene.gamePlayers", this.scene);
             }
 
             let preTurnPlayer = this.scene.gamePlayers.findPlayer(this.preTurnPlayerId);

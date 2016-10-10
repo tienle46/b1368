@@ -161,7 +161,7 @@ class Service {
 
     _onExtensionEvent(event) {
 
-        console.debug(event);
+        console.log(event);
 
         if(event.cmd === app.commands.XLAG) {
             this._handleLagPollingResponse(event);

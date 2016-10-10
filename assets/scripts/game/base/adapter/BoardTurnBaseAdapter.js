@@ -52,7 +52,7 @@ export default class BoardTurnBaseAdapter extends GameAdapter {
 
     _onPlayerTurn(turnPlayerId){
         if(turnPlayerId == this.lastPlayedTurn){
-            console.debug('CLEAN_TURN_ROUTINE_DATA: ', turnPlayerId);
+            console.log('CLEAN_TURN_ROUTINE_DATA: ', turnPlayerId);
             this.preTurnPlayerId = 0;
             this.lastPlayedTurn = 0;
             this.currentTurnPlayerId = 0;
