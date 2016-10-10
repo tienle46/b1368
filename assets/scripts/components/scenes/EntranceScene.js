@@ -109,15 +109,7 @@ class EntranceScene extends BaseScene {
     }
 
     handleFacebookLoginAction() {
-        // AlertPopupRub.show(this.node, "Chức năng đang cập nhật!");
-        cc.loader.loadRes('dashboard/dialog/prefabs/dialog', (err, prefab) => {
-            err && (() => { console.log(err); })();
-
-            let p = cc.instantiate(prefab);
-            p.x = 0;
-            p.y = 0;
-            this.node.addChild(p);
-        })
+        AlertPopupRub.show(this.node, "Chức năng đang cập nhật!");
     }
 
     _generateUserName(key, deviceId, count, maxCall) {

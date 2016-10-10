@@ -25,7 +25,7 @@
     "_anchorPoint": {
       "__type__": "cc.Vec2",
       "x": 0.5,
-      "y": 0.5
+      "y": 1
     },
     "_contentSize": {
       "__type__": "cc.Size",
@@ -47,7 +47,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": -28
+      "y": 0
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -105,7 +105,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 292.5,
-      "y": 0
+      "y": -125
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -374,7 +374,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": 0
+      "y": -125
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -481,7 +481,7 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": -175.5,
+      "x": -176,
       "y": -25
     },
     "_skewX": 0,
