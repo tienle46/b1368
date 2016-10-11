@@ -190,5 +190,6 @@ class TabExchangeCard extends Component {
                 break;
         }
     }
+}
 
-    app.createComponent(TabExchangeCard);
+app.createComponent(TabExchangeCard);
