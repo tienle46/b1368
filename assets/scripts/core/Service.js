@@ -140,13 +140,13 @@ class Service {
     _onConnectionLost(event) {
         this.stopLagPolling();
 
-        if(this._loginData){
+        if (this._loginData) {
             app.service.connect((success) => {
                 if (success) {
                     this.requestAuthen(this._loginData.username, this._loginData.password, false, this._loginData.quickLogin, this._loginData.cb);
                 }
             });
-        }else{
+        } else {
             app.system.loadScene(app.const.scene.ENTRANCE_SCENE, () => {
                 app.system.info("Kết nối tới máy chủ bị gián đoạn. Vui lòng đăng nhập lại!");
             });
@@ -163,9 +163,9 @@ class Service {
 
         log(event);
 
-        if(event.cmd === app.commands.XLAG) {
+        if (event.cmd === app.commands.XLAG) {
             this._handleLagPollingResponse(event);
-        }else{
+        } else {
             if (this._hasCallback(event.cmd)) {
                 this._callCallbackAsync(event.cmd, event.params);
             }
@@ -177,12 +177,12 @@ class Service {
 
     _onLogin(event) {
 
-        if(event.data[app.keywords.LOGIN_REJOIN_ROOM_GROUP]){
+        if (event.data[app.keywords.LOGIN_REJOIN_ROOM_GROUP]) {
             // this.logout();
             // app.system.info("Hệ thống chưa hỗ trợ kết nối lại khi bàn đang chơi. Vui lòng đăng nhập lại!");
             this.disconnect();
             return;
-        }else{
+        } else {
             this._loginData = null;
         }
 
@@ -197,7 +197,7 @@ class Service {
 
     sendRequest(request, { cb = null, scope = null, cbName = null } = {}) {
 
-        if(!this.client.isConnected()){
+        if (!this.client.isConnected()) {
             this._onConnectionLost();
             return;
         }
@@ -321,10 +321,10 @@ class Service {
             data[app.keywords.QUICK_PLAY] = isQuickLogin; // <-- die here!
 
             if (isRegister) {
-                data[app.keywords.PARTNER_ID] = "1"; // <-- or here
+                data[app.keywords.PARTNER_ID] = 1; // <-- or here
                 this._loginData = null;
             } else {
-                this._loginData = {username: username, password: password, quickLogin: isQuickLogin, cb: cb};
+                this._loginData = { username: username, password: password, quickLogin: isQuickLogin, cb: cb };
             }
 
             this._addCallback(SFS2X.SFSEvent.LOGIN, cb);
@@ -352,7 +352,7 @@ class Service {
 
         if (!options) return;
 
-        if(!this.client.isConnected()){
+        if (!this.client.isConnected()) {
             this._onConnectionLost();
             return;
         }
@@ -405,7 +405,7 @@ class Service {
         log("_onJoinRoomResult: ", event);
         const key = this._hasCallback(app.commands.USER_CREATE_ROOM) ? app.commands.USER_CREATE_ROOM : SFS2X.SFSEvent.ROOM_JOIN;
 
-        if(this._hasCallback(key)){
+        if (this._hasCallback(key)) {
             if (event.errorCode) {
                 this._callCallbackAsync(key, event);
             } else {
@@ -413,7 +413,7 @@ class Service {
                     return !data || !data.roomId || (event.room && data.roomId == event.id);
                 }, null, event);
             }
-        }else{
+        } else {
             app.system.emit(key, event);
         }
     }
@@ -430,11 +430,12 @@ class Service {
         this.interval = pollingInterval;
         this._lagPollingInterval = setInterval(() => {
             let currentTimeInMilis = (new Date()).getTime();
-            this.send({cmd: app.commands.XLAG, data: {[app.keywords.XLAG_VALUE]: currentTimeInMilis}});
+            this.send({ cmd: app.commands.XLAG, data: {
+                    [app.keywords.XLAG_VALUE]: currentTimeInMilis } });
         }, this.interval);
     }
 
-    stopLagPolling () {
+    stopLagPolling() {
         if (this._lagPollingInterval) {
             clearInterval(this._lagPollingInterval);
             this._valueQueue = [];
@@ -443,12 +444,12 @@ class Service {
     }
 
     _handleLagPollingResponse(event) {
-        if(event.cmd === app.commands.XLAG) {
+        if (event.cmd === app.commands.XLAG) {
 
             let resObj = event.params;
             let curRecVal = (new Date()).getTime();
             let curSendVal = resObj[app.keywords.XLAG_VALUE];
-            if(curSendVal) {
+            if (curSendVal) {
                 if (this._valueQueue.length >= app.config.pingPongPollQueueSize) {
                     this._valueQueue.splice(0, 1);
                 }
@@ -461,7 +462,7 @@ class Service {
     _updatePoorNetwork() {
         if (this._valueQueue.length > 0) {
             let totalLatency = 0;
-            this._valueQueue.forEach(value => {totalLatency += value;});
+            this._valueQueue.forEach(value => { totalLatency += value; });
             var averageLatency = totalLatency / this._valueQueue.length;
             this._poorNetwork = averageLatency > app.config.poorNetworkThreshold;
         }

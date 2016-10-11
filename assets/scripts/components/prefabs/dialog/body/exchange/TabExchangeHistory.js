@@ -66,10 +66,10 @@ class TabExchangeHistory extends Component {
         // add Tab
         let tabs = [{
             title: 'Thẻ cào',
-            value: GridViewRub.node(bodyNode, d.cards, { position: cc.v2(2, 94), width: 715 })
+            value: GridViewRub.node(bodyNode, ['x', 'x', 'x'], d.cards, { position: cc.v2(2, 94), width: 715 })
         }, {
             title: 'Vật phẩm',
-            value: GridViewRub.node(bodyNode, d.items, { position: cc.v2(2, 94), width: 715 })
+            value: GridViewRub.node(bodyNode, {}, d.items, { position: cc.v2(2, 94), width: 715 })
         }];
         let options = {
             itemHeight: 46.5,

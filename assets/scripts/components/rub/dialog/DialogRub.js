@@ -33,6 +33,9 @@ export default class DialogRub extends Rub {
             this.dialogNode = this.prefab.getChildByName('dialog');
             return null;
         }).then(() => {
+            this._closeBtnEventRegister();
+            return null;
+        }).then(() => {
             return this._initTab(this.tabOptions);
         });
     }
@@ -56,6 +59,15 @@ export default class DialogRub extends Rub {
         // .then((tabRub) => {
         //     return tabRub.addContentPrefabToBody();
         // })
+    }
+
+    // close Btn Event
+    _closeBtnEventRegister() {
+        this.closeBtnNode = this.dialogNode.getChildByName('close_btn');
+
+        this.closeBtnNode.on(cc.Node.EventType.TOUCH_END, (() => {
+            this.prefab.removeFromParent(true);
+        }).bind(this));
     }
 
     // return tabRub

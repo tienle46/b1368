@@ -8,7 +8,7 @@ export default class TopUpDialogRub extends DialogRub {
 
     init() {
         return super.init().then(() => {
-            this.topupDialogComponent = this.prefab.getComponent(TopupDialog);
+            this.topupDialogComponent = this.prefab.addComponent(TopupDialog);
             return null;
         }).catch(e => {
             error(e);

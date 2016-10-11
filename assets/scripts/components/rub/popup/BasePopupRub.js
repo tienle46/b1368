@@ -19,23 +19,31 @@ export default class BasePopUpRub {
     init() {
         return RubUtils.loadRes('Popup/BasePopup').then((prefab) => {
             this.prefab = cc.instantiate(prefab);
-            let basePopupComponent = this.prefab.getComponent(BasePopup);
-            // set elements
-            this._setupPopupElement(basePopupComponent);
+            this.addToNode();
 
-            return this;
+            this.basePopupComponent = this.prefab.getComponent(BasePopup);
+            this.popup_bkgNode = this.prefab.getChildByName('popup_bkg');
+
+            return null;
+        }).then(() => {
+            // set elements
+            this._setupPopupElement();
+            return null;
+        }).then(() => {
+            this._setupPopupContent();
+            return null;
         });
     }
 
-    _setupPopupElement(basePopupComponent) {
-        this.greenBtn = basePopupComponent.greenButtonNode.getComponent(cc.Button);
-        this.violetBtn = basePopupComponent.greenButtonNode.getComponent(cc.Button);
-        this.groupBtn = basePopupComponent.groupBtnNode.getComponent(ButtonGroup);
-        this._setupPopup(basePopupComponent);
+    _setupPopupElement() {
+        let btnGroupNode = this.popup_bkgNode.getChildByName('footer').getChildByName('groupBtn');
+        this.greenBtn = btnGroupNode.getChildByName('greenBtn').getComponent(cc.Button);
+        this.violetBtn = btnGroupNode.getChildByName('violetBtn').getComponent(cc.Button);
+        this.groupBtn = btnGroupNode.getComponent(ButtonGroup);
     }
 
-    _setupPopup(basePopupComponent) {
-        basePopupComponent.setContent(this.string.trim());
+    _setupPopupContent() {
+        this.basePopupComponent.setContent(this.string.trim());
     }
 
     changeText(string) {
@@ -44,9 +52,5 @@ export default class BasePopUpRub {
 
     addToNode() {
         this.node.addChild(this.prefab);
-    }
-
-    closePopup() {
-        this.prefab.getComponent(BasePopup).handleClosePopupAction();
     }
 }

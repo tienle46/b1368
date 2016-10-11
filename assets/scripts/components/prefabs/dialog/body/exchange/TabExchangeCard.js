@@ -3,6 +3,7 @@ import Component from 'Component';
 import AlertPopupRub from 'AlertPopupRub';
 import ButtonScaler from 'ButtonScaler';
 import RubUtils from 'RubUtils';
+import ConfirmPopupRub from 'ConfirmPopupRub';
 
 class TabExchangeCard extends Component {
     constructor() {
@@ -97,7 +98,15 @@ class TabExchangeCard extends Component {
         };
         log(sendObject);
         // this.node -> dialogbody node -> dialog node
-        AlertPopupRub.show(this.node.parent.parent, 'clicked !');
+        // AlertPopupRub.show(this.node.parent.parent, 'clicked !', function() {
+        //     console.log('123');
+        // }, this);
+        // AlertPopupRub.show(this.node.parent.parent, 'clicked !');
+        ConfirmPopupRub.show(this.node.parent.parent, 'clicked !', function() {
+            console.log(123);
+        }, function(e) {
+            console.log(e);
+        }, this);
 
         app.service.send(sendObject, (data) => {
             log(data);

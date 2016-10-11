@@ -30,8 +30,12 @@ class ButtonGroup extends Component {
      * 
      * @memberOf ButtonGroup
      */
-    setBtnEvent(btn, eventHandler) {
-        btn.clickEvents = [eventHandler];
+    setBtnEvent(btn, eventHandler, context) {
+        if (eventHandler instanceof cc.Component.EventHandler) {
+            btn.clickEvents = [eventHandler];
+        } else if (eventHandler instanceof Function) {
+            btn.node.on(cc.Node.EventType.TOUCH_END, eventHandler.bind(context));
+        }
     }
 
     /**

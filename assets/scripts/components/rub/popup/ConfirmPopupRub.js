@@ -1,32 +1,45 @@
-import BasePopupRub from 'BasePopupRub';
+import AlertPopupRub from 'AlertPopupRub';
 
-export default class ComfirmPopupRub extends BasePopupRub {
+export default class ConfirmPopupRub extends AlertPopupRub {
     /**
      * Creates an instance of AlertPopupRub.
      * 
      * @param {cc.Node} node : where this popup will be added 
      * @param {string} [string=""] : popup content
-     * @param {cc.Component.EventHandler || null} greenBtnEvent
-     * @param {cc.Component.EventHandler || null} violetBtnEvent
+     * @param {cc.Component.EventHandler || null || function } green Btn EventHandler
+     * @param {cc.Component.EventHandler || null || function } violet Btn EventHandler
      * 
      * @memberOf AlertPopupRub
      */
-    constructor(node, string = "", greenBtnEvent = null, violetBtnEvent = null) {
-        super(node, string = "");
-        this.greenBtnEvent = greenBtnEvent;
+    constructor(node, string = "", greenBtnEvent = null, violetBtnEvent = null, context = null) {
+        super(node, string, greenBtnEvent, context);
         this.violetBtnEvent = violetBtnEvent;
-        this.registerEvent();
     }
 
-    registerEvent() {
-        if (this.greenBtnEvent) {
-            this.greenBtn.clickEvents = [this.greenBtnEvent];
-        }
+    init() {
+        return super.init().then(() => {
+            // registerEvent for violet Btn
+            this._registerVioletBtnEvent();
+        });
+    }
 
+    _changeVioletBtnState() {
+        this.groupBtn.changeVioletBtnState(true);
+    }
+
+    _registerVioletBtnEvent() {
+        // this.violetBtn has setted own EventHandler already. (close popup);        
         if (this.violetBtnEvent) {
-            this.violetBtnEvent.clickEvents = [this.violetBtnEvent];
-        } else {
-            this.closePopup();
+            this.groupBtn.setBtnEvent(this.violetBtn, this.violetBtnEvent, this.context);
         }
+    }
+
+    //override
+    static show(node, string = "", greenBtnEvent = null, violetBtnEvent = null, context = null) {
+        return new ConfirmPopupRub(node, string, greenBtnEvent, violetBtnEvent, context).init().then(() => {
+
+        }).catch((err) => {
+            console.error('err', err);
+        });
     }
 }
