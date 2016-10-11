@@ -4,6 +4,8 @@ import AlertPopupRub from 'AlertPopupRub';
 import ButtonScaler from 'ButtonScaler';
 import RubUtils from 'RubUtils';
 import ConfirmPopupRub from 'ConfirmPopupRub';
+import ExchangeDialog from 'ExchangeDialog';
+import numeral from 'numeral';
 
 class TabExchangeCard extends Component {
     constructor() {
@@ -16,6 +18,7 @@ class TabExchangeCard extends Component {
 
         // get content node
         this.contentNode = this.node.getChildByName('view').getChildByName('content');
+        this._getExchangeDialogComponent().hideUpdatePhone();
         this._initCardsList();
     }
 
@@ -35,6 +38,7 @@ class TabExchangeCard extends Component {
                 let itemId = data[app.keywords.EXCHANGE_LIST.RESPONSE.ITEM_ID_LIST][i];
                 let itemIcon = data[app.keywords.EXCHANGE_LIST.RESPONSE.ITEM_ICON_LIST][i];
                 let itemGold = data[app.keywords.EXCHANGE_LIST.RESPONSE.ITEM_GOLD_LIST][i];
+                let itemName = data[app.keywords.EXCHANGE_LIST.RESPONSE.ITEM_NAME_LIST][i];
 
                 if (i % 3 === 0) {
                     rowNode = null;
@@ -47,6 +51,7 @@ class TabExchangeCard extends Component {
                     let itemNode = new cc.Node();
                     itemNode.itemId = itemId;
                     itemNode.itemGold = itemGold;
+                    itemNode.itemName = itemName;
 
                     rowNode.addChild(itemNode);
 
@@ -78,40 +83,70 @@ class TabExchangeCard extends Component {
 
     onHandleExchangeBtnClick(event) {
         let itemGold = event.currentTarget.itemGold;
-        // TODO
-        // if user gold less than itemGold -> show AlertPopupRub
-        // else send request
-        let id = event.currentTarget.itemId;
+        let itemName = event.currentTarget.itemName;
 
-        let data = {};
-        data[app.keywords.EXCHANGE.REQUEST.ID] = id;
-        let sendObject = {
-            'cmd': app.commands.EXCHANGE,
-            data
-        };
-        log(sendObject);
-        // this.node -> dialogbody node -> dialog node
-        // AlertPopupRub.show(this.node.parent.parent, 'clicked !', function() {
-        //     console.log('123');
-        // }, this);
-        // AlertPopupRub.show(this.node.parent.parent, 'clicked !');
-        ConfirmPopupRub.show(this.node.parent.parent, 'clicked !', function() {
-            console.log(123);
-        }, function(e) {
-            console.log(e);
-        }, this);
+        let parentNode = this.node.parent.parent;
 
-        app.service.send(sendObject, (data) => {
-            log(data);
-        });
+        ConfirmPopupRub.show(parentNode, `Bạn có muốn đổi ${numeral(itemGold).format('0,0')} chip để nhận ${itemName} ?`, this._onConfirmDialogBtnClick, null, this);
     }
 
+    _onConfirmDialogBtnClick() {
+        let itemGold = event.currentTarget.itemGold;
+        let itemName = event.currentTarget.itemName;
+
+        let parentNode = this.node.parent.parent;
+
+        if (app.context.needUpdatePhoneNumber()) {
+            // hide this node
+            this._hide();
+            // show update_phone_number
+            this._getExchangeDialogComponent().showUpdatePhone();
+        } else {
+            // TODO
+            // if user gold less than itemGold -> show AlertPopupRub
+            let myCoin = app.context.getMyInfo().coin;
+            console.log(myCoin);
+            if (Number(myCoin) < Number(itemGold)) {
+                AlertPopupRub.show(parentNode, `Số tiền hiện tại ${numeral(myCoin).format('0,0')} không đủ để đổi vật phẩm ${itemName}`);
+                return;
+            }
+            // else send request
+            let id = event.currentTarget.itemId;
+
+            let data = {};
+            data[app.keywords.EXCHANGE.REQUEST.ID] = id;
+            let sendObject = {
+                'cmd': app.commands.EXCHANGE,
+                data
+            };
+            log(sendObject);
+            app.service.send(sendObject, (data) => {
+                log(data);
+            });
+        }
+    }
     _initRowNode() {
         let rowNode = new cc.Node();
         rowNode.width = 780;
         rowNode.height = 124;
         rowNode.name = 'container';
         return rowNode;
+    }
+
+    _getExchangeDialogComponent() {
+        // this node -> body -> dialog -> dialog (parent)
+        let dialogNode = this.node.parent.parent.parent;
+        console.log(dialogNode.getComponent(ExchangeDialog));
+
+        return dialogNode.getComponent(ExchangeDialog);
+    }
+
+    _getUpdatePhoneNode() {
+        return this._getExchangeDialogComponent().updatePhoneNode();
+    }
+
+    _hide() {
+        this.node.active = false;
     }
 }
 

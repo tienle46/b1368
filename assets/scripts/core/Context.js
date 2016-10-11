@@ -22,16 +22,33 @@ class GameContext {
         return app.service.client.me;
     }
 
-    isJoinedGame(){
+    getMyInfo() {
+        let me = this.getMe();
+        let user = {
+            "id": me.id,
+            "isItMe": me.isItMe,
+            "name": me.name,
+            "coin": me.variables.coin.value,
+            "level": me.variables.lv
+        };
+
+        return user;
+    }
+
+    isJoinedGame() {
         return this.currentRoom && this.currentRoom.isGame;
     }
 
-    isJoinedInGameRoom(roomId){
+    isJoinedInGameRoom(roomId) {
         return this.currentRoom && this.currentRoom.isGame && roomId == this.currentRoom.id;
     }
 
-    getRoom(roomId){
+    getRoom(roomId) {
         return app.service.getClient().getRoomById(roomId);
+    }
+
+    needUpdatePhoneNumber() {
+        return this.getMe()[app.keywords.UPDATE_PHONE_NUMBER];
     }
 }
 

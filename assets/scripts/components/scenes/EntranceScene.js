@@ -44,6 +44,7 @@ class EntranceScene extends BaseScene {
                     app.service.requestAuthen('crush1', "1234nm", false, true, (error, result) => {
                         error = JSON.parse(error);
                         if (result) {
+                            console.log(app.context.getMe());
                             this.changeScene('DashboardScene');
                         }
 

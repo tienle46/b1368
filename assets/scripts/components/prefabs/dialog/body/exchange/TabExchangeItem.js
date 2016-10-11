@@ -4,7 +4,8 @@ import AlertPopupRub from 'AlertPopupRub';
 import ButtonScaler from 'ButtonScaler';
 import RubUtils from 'RubUtils';
 import numeral from 'numeral';
-
+import ExchangeDialog from 'ExchangeDialog';
+import ConfirmPopupRub from 'ConfirmPopupRub';
 
 class TabExchangeItem extends Component {
     constructor() {
@@ -17,6 +18,7 @@ class TabExchangeItem extends Component {
 
         // get content node
         this.contentNode = this.node.getChildByName('view').getChildByName('content');
+        this._getExchangeDialogComponent().hideUpdatePhone();
         this._initItemsList();
     }
 
@@ -49,15 +51,18 @@ class TabExchangeItem extends Component {
                     let itemNode = new cc.Node();
                     let itemNodeWidth = 234;
                     let itemNodeHeight = 262;
-                    itemNode.x = -260 + (i % 3) * (itemNodeWidth + 21);
-                    itemNode.y = 0;
 
                     itemNode.itemId = itemId;
                     itemNode.itemGold = itemGold;
+                    itemNode.itemName = itemName;
+
                     rowNode.addChild(itemNode);
 
                     let itemSprite = itemNode.addComponent(cc.Sprite);
-                    RubUtils.loadSpriteFrame(itemSprite, 'dashboard/dialog/imgs/bg-napthe', cc.size(itemNodeWidth, itemNodeHeight));
+                    RubUtils.loadSpriteFrame(itemSprite, 'dashboard/dialog/imgs/bg-napthe', cc.size(itemNodeWidth, itemNodeHeight), false, (sprite) => {
+                        sprite.node.x = -260 + (i % 3) * (itemNodeWidth + 21);
+                        sprite.node.y = 0;
+                    });
 
                     // image background node
                     this._initBackgroundNode(itemNode, itemIcon);
@@ -84,23 +89,46 @@ class TabExchangeItem extends Component {
 
     onHandleExchangeBtnClick(event) {
         let itemGold = event.currentTarget.itemGold;
-        // TODO
-        // if user gold less than itemGold -> show AlertPopupRub
-        // else send request
-        let id = event.currentTarget.itemId;
-        let data = {};
-        data[app.keywords.EXCHANGE.REQUEST.ID] = id;
-        let sendObject = {
-            'cmd': app.commands.EXCHANGE,
-            data
-        };
-        log(sendObject);
-        // this.node -> dialogbody node -> dialog node
-        AlertPopupRub.show(this.node.parent.parent, 'clicked !');
+        let itemName = event.currentTarget.itemName;
 
-        app.service.send(sendObject, (data) => {
-            log(data);
-        });
+        let parentNode = this.node.parent.parent;
+
+        ConfirmPopupRub.show(parentNode, `Bạn có muốn đổi ${numeral(itemGold).format('0,0')} chip để nhận ${itemName} ?`, this._onConfirmDialogBtnClick, null, this);
+    }
+
+    _onConfirmDialogBtnClick() {
+        let itemGold = event.currentTarget.itemGold;
+        let itemName = event.currentTarget.itemName;
+
+        let parentNode = this.node.parent.parent;
+        if (app.context.needUpdatePhoneNumber()) {
+            // hide this node
+            this._hide();
+            // show update_phone_number
+            this._getExchangeDialogComponent().showUpdatePhone();
+        } else {
+            // TODO
+            // if user gold less than itemGold -> show AlertPopupRub
+            let myCoin = app.context.getMyInfo().coin;
+            console.log(myCoin);
+            if (Number(myCoin) < Number(itemGold)) {
+                AlertPopupRub.show(parentNode, `Số tiền hiện tại ${numeral(myCoin).format('0,0')} không đủ để đổi vật phẩm ${itemName}`);
+                return;
+            }
+            // else send request
+            let id = event.currentTarget.itemId;
+
+            let data = {};
+            data[app.keywords.EXCHANGE.REQUEST.ID] = id;
+            let sendObject = {
+                'cmd': app.commands.EXCHANGE,
+                data
+            };
+            log(sendObject);
+            app.service.send(sendObject, (data) => {
+                log(data);
+            });
+        }
     }
 
     _initLabelNode(itemNode, itemName, itemGold) {
@@ -172,6 +200,20 @@ class TabExchangeItem extends Component {
         rowNode.height = 267;
         rowNode.name = 'container';
         return rowNode;
+    }
+
+    _getExchangeDialogComponent() {
+        // this node -> body -> dialog -> dialog (parent)
+        let dialogNode = this.node.parent.parent.parent;
+        return dialogNode.getComponent(ExchangeDialog);
+    }
+
+    _getUpdatePhoneNode() {
+        return this._getExchangeDialogComponent().updatePhoneNode();
+    }
+
+    _hide() {
+        this.node.active = false;
     }
 }
 

@@ -42,7 +42,7 @@ export default class AlertPopupRub extends BasePopupRub {
 
     //override
     static show(node, string, greenBtnEvent = null, context = null) {
-        return new AlertPopupRub(node, string, greenBtnEvent, context).init().then(() => {}).catch((err) => {
+        return new AlertPopupRub(node, string, greenBtnEvent, context).init().catch((err) => {
             console.error('err', err);
         });
     }

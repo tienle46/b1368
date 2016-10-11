@@ -176,6 +176,9 @@ class Service {
     }
 
     _onLogin(event) {
+        if (event.data[app.keywords.UPDATE_PHONE_NUMBER]) {
+            app.context.getMe().upn = event.data[app.keywords.UPDATE_PHONE_NUMBER] || true;
+        }
 
         if (event.data[app.keywords.LOGIN_REJOIN_ROOM_GROUP]) {
             // this.logout();
@@ -310,7 +313,7 @@ class Service {
      */
 
     requestAuthen(username, password, isRegister = false, isQuickLogin = false, cb) {
-        new Fingerprint2().get((printer, components) => {
+        new Fingerprint2().get((printer) => {
             let data = {};
             data[app.keywords.IS_REGISTER] = isRegister;
             data[app.keywords.RAW_PASSWORD] = password;
@@ -430,8 +433,12 @@ class Service {
         this.interval = pollingInterval;
         this._lagPollingInterval = setInterval(() => {
             let currentTimeInMilis = (new Date()).getTime();
-            this.send({ cmd: app.commands.XLAG, data: {
-                    [app.keywords.XLAG_VALUE]: currentTimeInMilis } });
+            this.send({
+                cmd: app.commands.XLAG,
+                data: {
+                    [app.keywords.XLAG_VALUE]: currentTimeInMilis
+                }
+            });
         }, this.interval);
     }
 
