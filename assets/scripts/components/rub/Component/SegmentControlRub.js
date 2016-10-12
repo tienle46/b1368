@@ -135,6 +135,7 @@ export default class SegmentControlRub extends Rub {
             this.prefab.height = newNodeHeight;
 
             let checkBox = newNode.addComponent(CheckBox);
+
             // add checkBox event
             e.eventHander && this._registerEvents(checkBox, e.eventHander);
 

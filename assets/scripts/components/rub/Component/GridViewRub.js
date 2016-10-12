@@ -35,6 +35,7 @@ export default class GridViewRub extends Rub {
      *      # assuming you have `content` node with width = 100 and 3 columns ['', 50, 20]
      *      # while the first element in array `colWidth` is empty || null its width will be 100 - (50 + 20)
      *      # if we have colWidth = ['', '', 50, 20] -> (100 - (50 + 20)) / 2
+     *  event: cc.EventHandler || null # add a scroll event to scrollView
      *  cell: { // CellRub options
      *      spriteFrame: string
      *      bgColor: new cc.Color
@@ -105,6 +106,7 @@ export default class GridViewRub extends Rub {
 
             return null;
         }).then(() => {
+            // init cell
             this.data.length > 0 && this.data[0] instanceof Array && this.data[0].length > 0 && this._initCell();
             return this;
         });
@@ -114,6 +116,19 @@ export default class GridViewRub extends Rub {
         return this.contentNode.getContentSize().width;
     }
 
+    getNode() {
+        return this.init().then(() => {
+            return this.prefab;
+        });
+    }
+
+    updateData(data) {
+        data = this._validData(data);
+        // this.data = [...this.data, ...data];
+        // this.prefab.active = false;
+        this._insertCellBody(data);
+    }
+
     _setupComponentsByOptions(prefab) {
         this._resize(prefab);
 
@@ -121,6 +136,9 @@ export default class GridViewRub extends Rub {
         let scrollView = prefab.getComponent(cc.ScrollView);
         scrollView.horizontal = this.options.isHorizontal;
         scrollView.vertical = this.options.isVertical;
+        // register scrollview scrollEvent
+        scrollView.scrollEvents = [];
+        this.options.event && scrollView.scrollEvents.push(this.options.event);
 
         // content/layout
         let contentLayout = this.contentNode.getComponent(cc.Layout);
@@ -157,19 +175,27 @@ export default class GridViewRub extends Rub {
 
     _initCell() {
         let data = this.data;
-        let width = this._setCellSize(data);
 
         if (this.head.data && this.head.data.length > 0) {
-            let cellOpts = Object.assign({}, this.options.cell, this.head.options || {});
-
-            for (let i = 0; i < this.head.data.length; i++) {
-                cellOpts.width = width[i];
-                let cellNode = new CellRub(this.head.data[i] || '', cellOpts).cell();
-                this.contentNode.addChild(cellNode);
-            }
+            this._insertCellHead(data);
         }
 
+        this._insertCellBody(data);
+    }
 
+    _insertCellHead(data) {
+        let width = this._setCellSize(data);
+        let cellOpts = Object.assign({}, this.options.cell, this.head.options || {});
+
+        for (let i = 0; i < this.head.data.length; i++) {
+            cellOpts.width = width[i];
+            let cellNode = new CellRub(this.head.data[i] || '', cellOpts).cell();
+            this.contentNode.addChild(cellNode);
+        }
+    }
+
+    _insertCellBody(data) {
+        let width = this._setCellSize(data);
         let cellOpts = Object.assign({}, this.options.cell);
 
         for (let i = 0; i < data.length; i++) {
@@ -183,7 +209,6 @@ export default class GridViewRub extends Rub {
             }
         }
     }
-
     _setCellSize() {
         if (this.options.colWidth) {
             let colWidth = this.options.colWidth;
@@ -247,4 +272,5 @@ export default class GridViewRub extends Rub {
             return a._getNode();
         });
     }
+
 }
