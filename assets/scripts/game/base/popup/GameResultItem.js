@@ -6,6 +6,7 @@ import app from 'app';
 import utils from 'utils';
 import {Actor} from 'components';
 import {CardList} from 'game-components';
+import TextView from 'TextView';
 
 export default class GameResultItem extends Actor {
     constructor() {
@@ -16,14 +17,18 @@ export default class GameResultItem extends Actor {
         this.playerName = cc.Label;
         this.dataContainer = cc.Node;
         this.balanceLabel = cc.Label;
-        this.infoLabel = cc.Label;
-        
+        this.infoTextViewNode = cc.Node;
+        this.infoTextView = TextView;
+
         this.cardList = null;
         this.cardListPrefab = cc.Prefab;
+        this.info = "";
     }
 
     onLoad(){
         this.resultIcon = this.resultIconNode.getComponent(cc.Sprite);
+        this.infoTextView = this.infoTextViewNode.getComponent(TextView.name);
+        this.infoTextView.setText(this.info);
     }
 
     setResultIcon(url){
@@ -32,10 +37,16 @@ export default class GameResultItem extends Actor {
         });
     }
 
-    setModel({playerName = "", iconPath = "", balanceChanged = 0, info = "", cards = []} = {}){
-        this.infoLabel.string = info;
-        this.playerName.string = playerName;
-        this.balanceLabel.string = balanceChanged > 0 ? `+${balanceChanged}` : `${balanceChanged}`;
+    setModel({name = "", iconPath = "", balanceChanged = NaN, info = "", cards = []} = {}){
+
+        if(this.infoTextView.setText){
+            this.infoTextView.setText(info);
+        }else{
+           this.info = info;
+        }
+
+        this.playerName.string = name;
+        this.balanceLabel.string = Number.isNaN(balanceChanged) ? "" : balanceChanged > 0 ? `+${balanceChanged}` : `${balanceChanged}`;
         this.setResultIcon(iconPath);
 
         let cardListNode = cc.instantiate(this.cardListPrefab);
@@ -47,7 +58,7 @@ export default class GameResultItem extends Actor {
             y: 0,
             scale: 0.6,
             alignment: CardList.ALIGN_CENTER_LEFT,
-            maxDimension: 460,
+            maxDimension: this.dataContainer.width,
         });
         this.cardList.setCards(cards);
     }

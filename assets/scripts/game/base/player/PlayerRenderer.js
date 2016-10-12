@@ -76,11 +76,12 @@ export default class PlayerRenderer extends ActorRenderer {
         this.playerNameLabel.string = name;
     }
 
-    setBalance(balance) {
+    setBalance(balance = 0) {
         this.balanceLabel.string = `${balance}`;
     }
 
     setVisibleOwner(visible) {
+        console.log("setVisibleOwner: ", visible);
         utils.setActive(this.ownerIcon, visible);
     }
 

@@ -29,6 +29,7 @@ export default class TLMNDLControls extends GameControls {
     }
 
     _init( scene) {
+        debug("init TLMNDL control")
         super._init(scene);
         this.baseControls && this.baseControls._init(scene);
         this.cardTurnBaseControls && this.cardTurnBaseControls._init(scene);
@@ -37,11 +38,13 @@ export default class TLMNDLControls extends GameControls {
         this.scene.on(Events.SHOW_ON_TURN_CONTROLS, this._showOnTurnControls, this);
         this.scene.on(Events.SHOW_GAME_BEGIN_CONTROLS, this._showGameBeginControls, this);
 
-        this.scene.on(Events.ON_GAME_STATE_BEGIN, this._showGameBeginControls, this);
+        this.scene.on(Events.ON_GAME_STATE_BEGIN, this._onGameBegin, this);
         this.scene.on(Events.ON_GAME_STATE_STARTING, this._onGameStarting, this);
         this.scene.on(Events.ON_GAME_STATE_STARTED, this._onGameStarted, this);
         this.scene.on(Events.ON_GAME_STATE_PLAYING, this._onGamePlaying, this);
         this.scene.on(Events.ON_GAME_STATE_ENDING, this.hideAllControls, this);
+
+        debug("done init TLMNDL control")
     }
 
     onLoad(){
@@ -56,9 +59,12 @@ export default class TLMNDLControls extends GameControls {
         this.baseControls = baseControlsPrefab.getComponent("BaseControls");
         this.cardTurnBaseControls = cardTurnBaseControlPrefabs.getComponent("CardTurnBaseControls");
 
-        this.cardTurnBaseControls.node.on('touchstart', (event) => {
-            return true;
-        });
+        this.cardTurnBaseControls.node.on('touchstart', (event) => true);
+    }
+
+    _onGameBegin(){
+        debug("on game controls begin");
+        this._showGameBeginControls();
     }
 
     _onGameStarting(){
@@ -90,10 +96,12 @@ export default class TLMNDLControls extends GameControls {
     }
 
     _showWaitTurnControls(){
+        debug("_showWaitTurnControls TLMNDL")
         this.cardTurnBaseControls._showWaitTurnControls();
     }
 
     _showGameBeginControls(){
+        console.log("_showGameBeginControls")
         this.hideAllControls();
         if(this.scene.board.isBegin()){
             this.baseControls._showGameBeginControls();

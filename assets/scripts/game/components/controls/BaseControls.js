@@ -29,18 +29,12 @@ class BaseControls extends GameControls {
     }
 
     onClickReadyButton() {
-
         this.scene.showShortLoading('ready');
-
         app.service.send({cmd: app.commands.PLAYER_READY, room: this.scene.room});
     }
 
     onClickUnreadyButton() {
-
-        log("onClickUnreadyButton");
-
         this.scene.showShortLoading('ready');
-
         app.service.send({cmd: app.commands.PLAYER_UNREADY, room: this.scene.room});
     }
 
@@ -53,7 +47,6 @@ class BaseControls extends GameControls {
         this.scene.hideLoading('ready');
         isItMe && (ready ? this._onPlayerReady() : this._onPlayerUnready());
     }
-
 
     _onPlayerReady() {
         utils.active(this.unreadyButton);

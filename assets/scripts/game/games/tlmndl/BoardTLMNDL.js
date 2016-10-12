@@ -51,24 +51,23 @@ export default class BoardTLMNDL extends BoardCardTurnBase {
          */
         let deckCardsBytes = utils.getValue(data, Keywords.GAME_LIST_PLAYED_CARDS);
         if (deckCardsBytes) {
-
             let cards = GameUtils.convertBytesToCards(deckCardsBytes);
             cards = GameUtils.sortCardAsc(cards, this.gameType);
             this.renderer.addToDeck(cards);
-
-            //TODO On android need to get card group type
-            //TLMNUtil.getGroupCardType(deckCardsVector, getGameType());
         }
+
+        console.log("_loadGamePlayData: ", data);
 
         /**
          * Get remain player card size
          */
         let playerIds = utils.getValue(data, Keywords.GAME_LIST_PLAYER);
-        let playerRemainCardSize = utils.getValue(data, Keywords.GAME_LIST_PLAYER_CARDS_SIZE);
-        playerIds && playerRemainCardSize && playerIds.forEach((id, index) => {
-            this.scene.emit(Events.ON_PLAYER_REMAIN_CARD_COUNT, id, playerRemainCardSize);
-        });
+        let playerRemainCardSizes = utils.getValue(data, Keywords.GAME_LIST_PLAYER_CARDS_SIZE,
+            playerIds && new Array(playerIds.length).fill(PlayerTLMNDL.DEFAULT_HAND_CARD_COUNT));
 
+        playerIds && playerRemainCardSizes && playerIds.forEach((id, index) => {
+            this.scene.emit(Events.ON_PLAYER_REMAIN_CARD_COUNT, id, playerRemainCardSizes[index]);
+        });
 
         /**
          * Get current player win rank. TLMNDL don't need to get player win rank
@@ -77,9 +76,9 @@ export default class BoardTLMNDL extends BoardCardTurnBase {
 
     onBoardEnding(data) {
 
-        let playerNames = this.scene.gamePlayers.getPlayerNames();
-
-        let playerIds = utils.getValue(data, Keywords.GAME_LIST_PLAYER);
+        let playerIds = utils.getValue(data, Keywords.GAME_LIST_PLAYER, []);
+        let playingPlayerIds = this.scene.gamePlayers.filterPlayingPlayer(playerIds);
+        let playerInfos = this.scene.gamePlayers.getBasicPlayerInfo(playerIds);
 
         let balanceChangeAmounts = this._getPlayerBalanceChangeAmounts(playerIds, data);
         let playerHandCards = this._getPlayerHandCards(playerIds, data);
@@ -87,16 +86,14 @@ export default class BoardTLMNDL extends BoardCardTurnBase {
 
         super.onBoardEnding(data);
 
-        let models = Object.keys(playerNames).map(id => {
+        let models = playerIds.filter(playerId => (playingPlayerIds.indexOf(playerId) >= 0)).map(playerId => {
             return {
-                playerName: playerNames[id],
-                balanceChanged: balanceChangeAmounts[id],
-                iconPath: resultIconPaths[id],
-                info: gameResultInfos[id],
-                cards: playerHandCards[id]
-            }
-        });
-
+                name: playerInfos[playerId].name,
+                balanceChanged: balanceChangeAmounts[playerId],
+                iconPath: resultIconPaths[playerId],
+                info: gameResultInfos[playerId],
+                cards: playerHandCards[playerId]
+            }});
         this.scene.showGameResult(models);
     }
 
@@ -159,7 +156,8 @@ export default class BoardTLMNDL extends BoardCardTurnBase {
          */
         let gameResultInfos = {};
         playerIds.map(id => {
-            gameResultInfos[id] = playerHandCards[id] ? `${playerHandCards[id].length} lá` : "";
+            var handCard = playerHandCards[id];
+            gameResultInfos[id] = handCard && handCard.length > 0 ? `${handCard.length} lá` : "";
         });
 
         Object.keys(thoiData).forEach(id => {

@@ -26,8 +26,6 @@ export default class Player extends Actor {
 
     _init(board, user){
 
-        console.log("Init player: ", board, user);
-
         this.scene = board.scene;
         this.board = board;
         this.user = user;
@@ -40,6 +38,12 @@ export default class Player extends Actor {
         this.id = this.user.getPlayerId(this.board.room);
         this.balance = GameUtils.getUserBalance(user); //utils.getVariable(this.user, app.keywords.USER_VARIABLE_BALANCE, 0);
 
+        this._addGlobalListener();
+    }
+
+    _addGlobalListener(){
+        super._addGlobalListener();
+
         this.scene.on(Events.ON_GAME_STATE_BEGIN, this.onGameBegin, this);
         this.scene.on(Events.ON_GAME_STATE_STARTING, this.onGameStarting, this);
         this.scene.on(Events.ON_GAME_STATE_STARTED, this.onGameStarted, this);
@@ -50,6 +54,21 @@ export default class Player extends Actor {
         this.scene.on(Events.ON_PLAYER_CHANGE_BALANCE, this._onPlayerChangeBalance, this);
         this.scene.on(Events.ON_USER_UPDATE_BALANCE, this._onUserUpdateBalance, this);
         this.scene.on(Events.ON_PLAYER_SET_BALANCE, this._onPlayerSetBalance, this);
+    }
+
+    _removeGlobalListener(){
+        super._removeGlobalListener();
+
+        this.scene.off(Events.ON_GAME_STATE_BEGIN, this.onGameBegin);
+        this.scene.off(Events.ON_GAME_STATE_STARTING, this.onGameStarting);
+        this.scene.off(Events.ON_GAME_STATE_STARTED, this.onGameStarted);
+        this.scene.off(Events.ON_GAME_STATE_PLAYING, this.onGamePlaying);
+        this.scene.off(Events.ON_GAME_STATE_ENDING, this.onGameEnding);
+        this.scene.off(Events.GAME_USER_EXIT_ROOM, this._onUserExitRoom);
+        this.scene.off(Events.ON_PLAYER_READY_STATE_CHANGED, this._onSetReadyState);
+        this.scene.off(Events.ON_PLAYER_CHANGE_BALANCE, this._onPlayerChangeBalance);
+        this.scene.off(Events.ON_USER_UPDATE_BALANCE, this._onUserUpdateBalance);
+        this.scene.off(Events.ON_PLAYER_SET_BALANCE, this._onPlayerSetBalance);
     }
 
     _onPlayerSetBalance(id, newBalance){
@@ -93,13 +112,12 @@ export default class Player extends Actor {
 
     onLoad(){
 
-        this.renderData = {...this.renderData, isItMe: this.user.isItMe, scene: this.scene};
+        this.renderData = {...this.renderData, isItMe: this.user.isItMe, scene: this.scene, owner: this.isOwner};
 
         super.onLoad();
 
         this.renderer.setName(this.username);
         this.renderer.setBalance(this.balance);
-        this.renderer.setVisibleOwner(this.isOwner);
     }
 
     _setBalance(balance){
@@ -179,9 +197,9 @@ export default class Player extends Actor {
     onGameStarting(data, isJustJoined) {
         if(isJustJoined){
             this.onGameBegin({}, isJustJoined);
+        }else{
+            this.setReady(true);
         }
-
-        this.renderer.setVisibleReady(true);
     }
 
     onGameStarted(data, isJustJoined) {

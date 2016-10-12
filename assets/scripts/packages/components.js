@@ -5,11 +5,13 @@
 import Component from 'Component';
 import Actor from 'Actor';
 import Button from 'Button';
+import TextView from 'TextView';
 
 export {
     Actor,
     Component,
-    Button
+    Button,
+    TextView
 };
 
 export default Component;

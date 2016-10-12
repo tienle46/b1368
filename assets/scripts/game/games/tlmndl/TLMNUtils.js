@@ -18,11 +18,9 @@ export default class TLMNUtils {
     static checkPlayCard(playCards, deckCards, gameType = TLMNUtils.GAME_TYPE) {
         let valid = playCards && playCards.length > 0;
 
-        !valid && warn("Card selected is null");
-
-        if (valid && !utils.isEmptyArray(deckCards)){
+        if (valid){
             let cards = this.getValidSelectedCards(playCards, deckCards, gameType);
-            valid = cards && cards.length > 0
+            valid = !utils.isEmptyArray(cards);
         }
 
         return valid;
@@ -30,7 +28,7 @@ export default class TLMNUtils {
 
     static getValidSelectedCards(selectedCards = [], deckCards = [], gameType = TLMNUtils.GAME_TYPE) {
 
-        if (selectedCards.length == 0 || deckCards.length == 0) {
+        if (selectedCards.length == 0) {
             return null;
         }
 

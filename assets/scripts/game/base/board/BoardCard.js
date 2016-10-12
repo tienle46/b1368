@@ -40,9 +40,8 @@ export default class BoardCard extends Board {
 
         let playerHandCardLists = this.scene.gamePlayers.getPlayerHandCardLists();
         let dealCardAction = CardList.dealCards(this.renderer.dealCardList, playerHandCardLists, dealCards.length, () => {
-
-            this.scene.gamePlayers.onDealCards(dealCards);
-            this.scene.emit(Events.ON_GAME_STATE_STARTED, data);
+            // this.scene.gamePlayers.onDealCards(dealCards);
+            this.scene.emit(Events.ON_GAME_STATE_STARTED, dealCards);
         });
 
         this.scene.node.runAction(dealCardAction);
@@ -54,10 +53,10 @@ export default class BoardCard extends Board {
         let playerHandCards = {};
 
         let handCardIndex = 0;
-        const handCardSizes = utils.getValue(data, Keywords.GAME_LIST_PLAYER_CARDS_SIZE);
-        const handCards = utils.getValue(data, Keywords.GAME_LIST_CARD);
+        let handCardSizes = utils.getValue(data, Keywords.GAME_LIST_PLAYER_CARDS_SIZE, []);
+        let handCards = utils.getValue(data, Keywords.GAME_LIST_CARD, []);
 
-        playerIds && handCards && handCardSizes && playerIds.forEach((id, i) => {
+        playerIds.forEach((id, i) => {
             let playerCardCount = handCardSizes[i];
 
             let playerCardBytes = handCards.slice(handCardIndex, handCardIndex + playerCardCount);

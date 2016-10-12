@@ -27,7 +27,12 @@ export default class PlayerCardTurnBase extends PlayerCard {
         super.onLoad();
     }
 
-    onGamePlaying(){
+    onDisable(){
+        this.turnAdapter.onDisable();
+    }
+
+    onGamePlaying(data, isJustJoined){
+        super.onGamePlaying(data, isJustJoined);
         if (this.isItMe()) {
             this._onWaitTurn()
         }

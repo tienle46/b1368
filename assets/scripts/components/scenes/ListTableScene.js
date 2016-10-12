@@ -64,7 +64,7 @@ export default class ListTableScene extends BaseScene {
         const width = this.containnerTableView.node.width;
         const itemDimension = width;
 
-        this._addSystemListener();
+        this._addGlobalListener();
 
         for (let i = 0; i < 14; i++) {
 
@@ -95,13 +95,13 @@ export default class ListTableScene extends BaseScene {
         }
     }
 
-    _addSystemListener(){
-        super._addSystemListener();
+    _addGlobalListener(){
+        super._addGlobalListener();
         app.system.addListener(SFS2X.SFSEvent.ROOM_JOIN, this._onJoinRoomResult, this);
     }
 
-    _removeSystemListener(){
-        super._removeSystemListener();
+    _removeGlobalListener(){
+        super._removeGlobalListener();
         app.system.removeListener(SFS2X.SFSEvent.ROOM_JOIN, this._onJoinRoomResult, this);
     }
 

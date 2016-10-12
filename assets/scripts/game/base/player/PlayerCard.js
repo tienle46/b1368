@@ -2,8 +2,10 @@
  * Created by Thanh on 8/23/2016.
  */
 
-import {GameUtils} from 'utils';
+import {utils, GameUtils} from 'utils';
 import Player from 'Player';
+import Events from 'Events';
+import {Keywords} from 'core';
 
 export default class PlayerCard extends Player {
     constructor(board, user) {
@@ -13,10 +15,27 @@ export default class PlayerCard extends Player {
         this.remainCardCount = 0;
     }
 
-    setCards(cards){
-        log("Set card to player");
+    _addGlobalListener(){
+        super._addGlobalListener();
+
+        this.scene.on(Events.ON_GAME_REJOIN, this._onGameRejoin, this);
+    }
+
+    _removeGlobalListener(){
+        super._removeGlobalListener();
+        this.scene.off(Events.ON_GAME_REJOIN, this._onGameRejoin, this);
+    }
+
+    _onGameRejoin(data){
+        if (this.isItMe() && this.isPlaying()) {
+            let cards = utils.convertBytesToCards(utils.getValue(data, Keywords.GAME_LIST_CARD, []));
+            cards.length > 0 && this.setCards(cards) && this.emit(Events.ON_CLICK_SORT_BUTTON);
+        }
+    }
+
+    setCards(cards, reveal){
         this.cards = cards;
-        this.renderer.renderCards(cards);
+        this.renderer.renderCards(cards, reveal);
     }
 
     _init(board, user){
@@ -29,25 +48,43 @@ export default class PlayerCard extends Player {
 
     createFakeCards(size){
         let cardBytes = new Array(size).fill(5);
-        this.setCards(GameUtils.convertBytesToCards(cardBytes));
+        this.setCards(GameUtils.convertBytesToCards(cardBytes), false);
     }
 
     onLoad(){
         super.onLoad();
     }
 
-    onGameBegin(data){
-        super.onGameBegin(data)
+    onGameBegin(data, isJustJoined){
+        super.onGameBegin(data, isJustJoined)
 
         this.renderer.cardList.clear();
+    }
+
+    onGameStarting(data, isJustJoined){
+
+        super.onGameStarting(data, isJustJoined);
+
+        if(isJustJoined){
+            !this.isItMe() && this.isReady() && this.createFakeCards();
+        }
+    }
+
+    onGameStarted(data, isJustJoined){
+
+        super.onGameStarted(data, isJustJoined);
+
+        if(data instanceof Array){
+            this.isItMe() ? this.setCards(data) : this.isReady() && this.createFakeCards();
+        }
     }
 
     findCards(cardModels){
         return this.renderer.findCards(cardModels);
     }
 
-    onGameEnding(data = {}){
-        super.onGameEnding(data);
+    onGameEnding(data = {}, isJustJoined){
+        super.onGameEnding(data, isJustJoined);
         this.renderer.clearCards();
     }
 
