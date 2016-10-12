@@ -99,6 +99,30 @@ class GameScene extends BaseScene {
         this.gameEventHandler && this.gameEventHandler.removeGameEventListener();
     }
 
+    isPlaying() {
+        return this.state === app.const.game.board.state.PLAYING;
+    }
+
+    isStarting() {
+        return this.state === app.const.game.board.state.STARTING;
+    }
+
+    isReady() {
+        return this.state === app.const.game.board.state.READY;
+    }
+
+    isBegin() {
+        return this.state === app.const.game.board.state.BEGIN;
+    }
+
+    isNewBoard() {
+        return this.state === app.const.game.board.state.INITED;
+    }
+
+    isEnding() {
+        return this.state === app.const.game.board.state.ENDING;
+    }
+
     _initGameScene() {
         let {board, boardNode} = gameManager.createBoard(this.gameCode);
 
@@ -136,8 +160,26 @@ class GameScene extends BaseScene {
                 args: args
             }))
         }, this);
+
+        this.on(Events.ON_GAME_REJOIN, this._handleGameRejoin, (...args) => {
+            this.initiated ? this._handleGameRejoin(...args) : (this._penddingEvents.push({
+                fn: this._handleGameRejoin,
+                args: args
+            }))
+        });
+
         this.on(Events.ON_ACTION_EXIT_GAME, this._onActionExitGame, this);
+
         this.gameEventHandler.addGameEventListener();
+    }
+
+    _handleGameRejoin(data) {
+        if (this.isPlaying()) {
+            let state = utils.getValue(data, app.keywords.BOARD_STATE_KEYWORD);
+            state && this.emit(Events.ON_GAME_STATE_CHANGE, state, data);
+
+            this.gamePlayers.isMePlaying() && this.gamePlayers.me.onGameRejoin(data);
+        }
     }
 
     _onActionExitGame() {
@@ -162,15 +204,13 @@ class GameScene extends BaseScene {
 
         this.emit(Events.ON_GAME_LOAD_PLAY_DATA, this.gameData);
 
-        log("currentGameState: ", currentGameState, isGamePlaying, app.context.rejoiningGame);
-
+        this._loadPlayerReadyState();
         if (isGamePlaying) {
             !app.context.rejoiningGame && this._onGameStateChange(currentGameState, this.gameData, true);
         } else {
             this.emit(Events.ON_GAME_STATE_BEGIN, this.gameData);
         }
 
-        this._loadPlayerReadyState();
     }
 
     _loadPlayerReadyState() {

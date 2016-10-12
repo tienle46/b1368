@@ -3,6 +3,7 @@ import BaseScene from 'BaseScene';
 import Keywords from 'Keywords';
 import Commands from 'Commands';
 import SFS2X from 'SFS2X';
+import RubUtils from 'RubUtils';
 
 export default class ListTableScene extends BaseScene {
     constructor() {
@@ -44,11 +45,6 @@ export default class ListTableScene extends BaseScene {
             type: cc.Prefab
         };
 
-        this.bottomBar = {
-            default: null,
-            type: cc.Prefab
-        };
-
         this.topBar = {
             default: null,
             type: cc.Prefab
@@ -64,7 +60,7 @@ export default class ListTableScene extends BaseScene {
         const width = this.containnerTableView.node.width;
         const itemDimension = width;
 
-        this._addSystemListener();
+        this._addGlobalListener();
 
         for (let i = 0; i < 14; i++) {
 
@@ -74,11 +70,11 @@ export default class ListTableScene extends BaseScene {
             listCell.setPosition(cc.p(0, 0));
 
             const cellComponent = listCell.getComponent('TableListCell');
-            if((i / 2) == 0){
+            if ((i / 2) == 0) {
                 cellComponent.setOnClickListener(() => {
                     this._createRoom(app.const.gameCode.TLMNDL, 1, 4);
                 });
-            }else{
+            } else {
                 cellComponent.setOnClickListener(() => {
                     let data = {};
                     data[Keywords.GAME_CODE] = 'tnd';
@@ -87,7 +83,7 @@ export default class ListTableScene extends BaseScene {
 
                     log("join room request");
 
-                    app.service.send({cmd: Commands.USER_QUICK_JOIN_ROOM, data: data});
+                    app.service.send({ cmd: Commands.USER_QUICK_JOIN_ROOM, data: data });
                 });
             }
 
@@ -95,20 +91,20 @@ export default class ListTableScene extends BaseScene {
         }
     }
 
-    _addSystemListener(){
-        super._addSystemListener();
+    _addGlobalListener() {
+        super._addGlobalListener();
         app.system.addListener(SFS2X.SFSEvent.ROOM_JOIN, this._onJoinRoomResult, this);
     }
 
-    _removeSystemListener(){
-        super._removeSystemListener();
+    _removeGlobalListener() {
+        super._removeGlobalListener();
         app.system.removeListener(SFS2X.SFSEvent.ROOM_JOIN, this._onJoinRoomResult, this);
     }
 
-    _onJoinRoomResult(resultEvent){
-        if(resultEvent.errorCode){
+    _onJoinRoomResult(resultEvent) {
+        if (resultEvent.errorCode) {
             app.system.error(event.errorMessage);
-        }else{
+        } else {
 
             app.context.lastJoinRoom = resultEvent.room;
             if (resultEvent.room.isJoined && resultEvent.room.isGame) {
@@ -118,7 +114,7 @@ export default class ListTableScene extends BaseScene {
         }
     }
 
-    _createRoom(gameCode = null, minBet = 0, roomCapacity = 2, password = undefined){
+    _createRoom(gameCode = null, minBet = 0, roomCapacity = 2, password = undefined) {
 
         const requestParam = {};
         requestParam[app.keywords.ROOM_BET] = minBet;
@@ -126,7 +122,7 @@ export default class ListTableScene extends BaseScene {
         requestParam[app.keywords.ROOM_PASSWORD] = password;
         requestParam[app.keywords.ROOM_CAPACITY] = roomCapacity;
 
-        app.service.send({cmd: app.commands.USER_CREATE_ROOM, data: requestParam, room: null /*app.context.currentRoom*/} , (error, resultEvent) => {
+        app.service.send({ cmd: app.commands.USER_CREATE_ROOM, data: requestParam, room: null /*app.context.currentRoom*/ }, (error, resultEvent) => {
 
             this._onJoinRoomResult(resultEvent);
 
@@ -147,15 +143,11 @@ export default class ListTableScene extends BaseScene {
     // Listen Bottom Bar Event (Click button In Bottom Bar)
 
     addBottomBar() {
+        RubUtils.loadRes('bottombar/bottombar').then((prefab) => {
+            let bottomBarNode = cc.instantiate(prefab);
 
-        const bottomBarNode = new cc.instantiate(this.bottomBar);
-
-        bottomBarNode.getComponent('BottomBar').listenClickTopBarItem((buttonType) => {
-            log("dashboard:" + buttonType);
-            this.addPopup();
+            this.node.addChild(bottomBarNode);
         });
-
-        this.node.addChild(bottomBarNode);
     }
 
     addTopBar() {

@@ -1,5 +1,5 @@
-import app from 'app'
-import Component from 'Component'
+import app from 'app';
+import Component from 'Component';
 
 export default class SegmentControl extends Component {
 

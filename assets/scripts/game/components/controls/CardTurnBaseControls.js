@@ -53,6 +53,8 @@ export default class CardTurnBaseControls extends GameControls {
         utils.deactive(this.playButton);
         utils.active(this.sortButton);
         utils.deactive(this.skipTurnButton);
+
+        debug("_showWaitTurnControls: ")
     }
 
     _showOnTurnControls(showPlayControlOnly){
@@ -60,6 +62,8 @@ export default class CardTurnBaseControls extends GameControls {
         utils.active(this.sortButton);
         this.setInteractable(this.playButton, false);
         showPlayControlOnly ? utils.deactive(this.skipTurnButton) : utils.active(this.skipTurnButton);
+
+        debug("_showOnTurnControls: ")
     }
 
     onClickPlayButton(event){

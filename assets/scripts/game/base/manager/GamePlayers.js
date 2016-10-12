@@ -30,6 +30,7 @@ export default class GamePlayers extends Component {
         this._idToPlayerMap = null;
         this._nameToPlayerMap = null;
         this.initLayerDoneCb = null;
+        this.exittedPlayers = null;
     }
 
     onLoad() {
@@ -49,12 +50,44 @@ export default class GamePlayers extends Component {
 
         this._initPlayerLayer();
         this.scene.on(Events.GAME_USER_EXIT_ROOM, this._onUserExitGame, this);
+        this.scene.on(Events.ON_ROOM_CHANGE_OWNER, this._onChangeRoomOwner, this);
+        // this.scene.on(Events.ON_PLAYER_REENTER_GAME, this._onPlayerReEnterGame, this);
+    }
+
+    _onPlayerReEnterGame(playerId, userId) {
+        let player = this.findPlayer(playerId);
+        player && this._replaceUser(player, userId);
+    }
+
+    _onChangeRoomOwner(room) {
+
+        if (room.id != this.board.room.id) {
+            return;
+        }
+
+        let newOwner = null;
+        let ownerId = utils.getVariable(room, app.keywords.VARIABLE_OWNER);
+        if (ownerId && (!this.owner || ownerId == this.owner.id)) {
+            this.owner && this.owner.setOwner(false);
+            newOwner = this.findPlayer(ownerId);
+        }
+
+        console.log("_onChangeRoomOwner: ", room.id, ownerId, this._idToPlayerMap);
+
+        this.owner = newOwner;
+        this.owner && this.owner.setOwner(true);
+        this.ownerId = ownerId;
     }
 
     _onUserExitGame(user, room) {
         let player = this.findPlayer(user.name);
 
         if (player) {
+            player.isReady() && this.exittedPlayers.push({
+                id: player.id,
+                name: player.user.name,
+                balance: GameUtils.getUserBalance(player.user)
+            });
             this._removePlayer(player);
         }
         //If not found player mean user just spectator
@@ -63,6 +96,19 @@ export default class GamePlayers extends Component {
                 this.scene.goBack();
             }
         }
+    }
+
+    filterPlayingPlayer(playerIds) {
+        let playingPlayerIds = [];
+
+        this.exittedPlayers.forEach(quitPlayerInfo => {
+            playingPlayerIds.push(quitPlayerInfo.id)
+        });
+        this.players.forEach(player => {
+            player.isReady() && playingPlayerIds.push(player.id)
+        });
+
+        return playingPlayerIds;
     }
 
     _initPlayerLayer() {
@@ -87,6 +133,7 @@ export default class GamePlayers extends Component {
     _reset() {
         this.me = null;
         this.players = [];
+        this.exittedPlayers = [];
         this._idToPlayerMap = {};
         this._nameToPlayerMap = {};
         this.maxPlayerId = 1;
@@ -97,6 +144,8 @@ export default class GamePlayers extends Component {
         users && users.forEach(user => {
             user.isPlayer() && this._createSinglePlayer(user);
         });
+
+        console.log("user list: ", users);
 
         this._onPlayerDataChanged();
     }
@@ -121,7 +170,7 @@ export default class GamePlayers extends Component {
     }
 
     _setPlayerPosition(playerNode, player) {
-        if(!playerNode || !player){
+        if (!playerNode || !player) {
             return;
         }
 
@@ -144,15 +193,7 @@ export default class GamePlayers extends Component {
 
         this.me = this.findPlayer(app.context.getMe().getPlayerId(this.board.room));
 
-        let newOwner = null;
-        let ownerId = utils.getVariable(this.board.room, app.keywords.VARIABLE_OWNER);
-        if (ownerId && (!this.owner || ownerId === this.owner.id)) {
-            this.owner && this.owner.setOwner(false);
-            newOwner = this.findPlayer(ownerId);
-            //TODO More action on owner changed
-        }
-
-        this._setOwner(null, ownerId);
+        this._onChangeRoomOwner(this.board.room);
 
         //TODO change board master
         let maxPlayerId = 1;
@@ -166,18 +207,12 @@ export default class GamePlayers extends Component {
         this.maxPlayerId = maxPlayerId;
     }
 
-    isOwner(playerId){
+    isOwner(playerId) {
         return playerId == this.ownerId;
     }
 
-    meIsOwner(){
+    meIsOwner() {
         return this.me && this.ownerId == this.me.id;
-    }
-
-    _setOwner(owner, ownerId){
-        this.owner = owner;
-        this.owner && this.owner.setOwner(true);
-        this.ownerId = true;
     }
 
     _updateMaxPlayerId() {
@@ -214,7 +249,7 @@ export default class GamePlayers extends Component {
         return this.me && this.me.isPlaying();
     }
 
-    isMePlayGame(){
+    isMePlayGame() {
         return this.me;
     }
 
@@ -270,7 +305,7 @@ export default class GamePlayers extends Component {
     _replaceUser(player, newId) {
 
         let oldUser = player.user;
-        if (oldUser == null) {
+        if (!oldUser) {
             return;
         }
 
@@ -290,7 +325,7 @@ export default class GamePlayers extends Component {
         app.service.client.userManager._addUser(newUser);
 
         this.board.room._addUser(newUser);
-        player.setUser(newUser);
+        player.user = newUser;
     }
 
     countPlayingPlayers() {
@@ -301,14 +336,6 @@ export default class GamePlayers extends Component {
         });
 
         return count;
-    }
-
-    getPlayerSeatId(playerId) {
-        return this.board.positionManager.getPlayerSeatId(playerId);
-    }
-
-    getPlayerPosition(playerId) {
-        return this.board.positionManager.getPlayerSeatPosition(playerId);
     }
 
     onBoardMinBetChanged() {
@@ -433,33 +460,38 @@ export default class GamePlayers extends Component {
 
     }
 
-    onDealCards(cards) {
-        //TODO
-        this.players.forEach(player => player.isReady() && (player.isItMe() ? player.setCards(cards) : player.createFakeCards()));
-    }
+    // onDealCards(cards) {
+    //     //TODO
+    //     this.players.forEach(player => player.isReady() && (player.isItMe() ? player.setCards(cards) : player.createFakeCards()));
+    // }
 
-    getPlayerHandCardLists(){
+    getPlayerHandCardLists() {
         return this.players.map(player => player.renderer.cardList);
     }
 
-    getCurrentPlayerBalances(){
+    getCurrentPlayerBalances(playerIds) {
         let playerBalances = {};
 
-        this.players.map(player => {
-            playerBalances[player.id] = GameUtils.getUserBalance(player.user);
+        this.players.forEach(player => {
+            playerBalances[player.id] = GameUtils.getUserBalance(player.user)
         });
 
         return playerBalances;
     }
 
-    getPlayerNames(){
-        let playerNames = {};
+    getBasicPlayerInfo(playerIds) {
+        let playerInfos = {};
 
-        this.players.forEach(player => {
-            playerNames[player.id] = player.user.name
-        });
+        if (!utils.isEmptyArray(playerIds)) {
+            this.exittedPlayers.forEach(info => playerInfos[info.id] = info);
+            this.players.forEach(player => playerInfos[player.id] = {
+                id: player.id,
+                name: player.user.name,
+                balance: GameUtils.getUserBalance(player.user)
+            });
+        }
 
-        return playerNames;
+        return playerInfos;
     }
 }
 

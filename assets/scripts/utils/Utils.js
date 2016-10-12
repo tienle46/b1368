@@ -91,8 +91,8 @@ export default class Utils {
         });
     }
 
-    static getVariable(obj, key) {
-        return obj && obj.containsVariable && obj.containsVariable(key) && obj.getVariable && obj.getVariable(key).value;
+    static getVariable(obj, key, defaultValue) {
+        return (obj && obj.containsVariable && obj.containsVariable(key) && obj.getVariable && obj.getVariable(key).value) || defaultValue;
     }
 
     static getValue(mapObj, key, defaultValue) {

@@ -25,10 +25,14 @@ Events.ON_PLAYER_CHANGE_BALANCE         = "onPlayerChangeBalance";
 Events.ON_PLAYER_CONG                   = "onPlayerCong";
 Events.ON_PLAYER_THOI                   = "onPlayerThoi";
 Events.ON_PLAYER_SET_BALANCE            = "onPlayerSetBalance";
+Events.ON_PLAYER_REENTER_GAME           = "on.player.reenterGame";
 
 Events.ON_USER_UPDATE_BALANCE           = "onUserUpdateBalance";
 Events.ON_USER_UPDATE_LEVEL             = "onUserUpdateLevel";
 Events.ON_USER_UPDATE_EXP_POINT         = "onUserUpdateExpPoint";
+
+Events.ON_ROOM_CHANGE_OWNER             = "on.room.changeOwner";
+Events.ON_ROOM_CHANGE_MIN_BET           = "on.room.changeMinBet";
 
 Events.ON_CLICK_PLAY_BUTTON             = "onClickPlayButton";
 Events.ON_CLICK_SORT_BUTTON             = "onClickSortButton";
@@ -41,6 +45,7 @@ Events.ON_GAME_STATE_PLAYING            = "onGameStatePlaying";
 Events.ON_GAME_STATE_ENDING             = "onGameStateEnding";
 Events.ON_GAME_STATE_CHANGE             = "onGameStateChange"
 Events.ON_GAME_LOAD_PLAY_DATA           = "onGameLoadPlayData";
+Events.ON_GAME_REJOIN                   = "on.game.rejoin";
 
 Events.GAME_USER_EXIT_ROOM              = "gameUserExitRoom";
 

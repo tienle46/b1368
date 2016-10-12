@@ -40,15 +40,9 @@ export default class PlayerPositions extends Component {
 
     _init(scene) {
         this.scene = scene;
-
-        log("Init PlayerPositions");
-
         this._initPlayerAnchors();
-
         this.scene.on(Events.ON_GAME_STATE_BEGIN, this._onGameBegin, this);
         this.scene.on(Events.ON_GAME_STATE_STARTING, this._onGameStarting, this);
-
-        log(this)
     }
 
     onLoad() {
@@ -102,8 +96,6 @@ export default class PlayerPositions extends Component {
 
     getPlayerAnchorIndex(playerId, isItMe, gameCode) {
 
-        log("getPlayerAnchorIndex: ", playerId, isItMe);
-
         if (isItMe) {
             return 0;
         } else {
@@ -113,8 +105,6 @@ export default class PlayerPositions extends Component {
                 let seatIndexs = this._getPlayerSeatIndexs(gameCode);
                 let meId = app.context.getMe().getPlayerId(this.scene.board.room);
                 seatIndex = seatIndexs[meId][playerId];
-
-                log("getPlayerAnchor Me: ", meId, seatIndex, seatIndexs);
 
                 return seatIndex;
             } else {

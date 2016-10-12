@@ -456,7 +456,6 @@ Keywords.CHAT_AVATAR_LIST = "al";
 //
 Keywords.CHAT_LEAVE_ROOM_RESULT = "lrr";
 Keywords.CHAT_ROOM_CAPACITY_LIST = "cl";
-Keywords.USER_VARIABLE_BALANCE = "ba";
 Keywords.USER_VARIABLE_LEVEL = "lv";
 Keywords.USER_VARIABLE_EXP_POINT = "uep";
 Keywords.MASTER_PLAYER_ID = "ma";

@@ -7,7 +7,7 @@ import {utils, GameUtils} from 'utils';
 import SFS2X from 'SFS2X';
 import async from 'async';
 import {Events} from 'events'
-import {Keywords} from 'core';
+import {Keywords, Commands} from 'core';
 
 export default class GameEventHandler {
     constructor(scene) {
@@ -41,26 +41,29 @@ export default class GameEventHandler {
         app.system.addListener(SFS2X.SFSEvent.USER_ENTER_ROOM, this._onUserEnterRoom, this);
         app.system.addListener(SFS2X.SFSEvent.ROOM_REMOVE, this._onRoomRemove, this);
         app.system.addListener(SFS2X.SFSEvent.USER_VARIABLES_UPDATE, this._onUserVariablesUpdate, this);
+        app.system.addListener(SFS2X.SFSEvent.ROOM_VARIABLES_UPDATE, this._onRoomVariablesUpdate, this);
 
-        app.system.addListener(app.commands.SYSTEM_MESSAGE, this._handleSystemMessage, this);
-        app.system.addListener(app.commands.DOWNLOAD_IMAGE, this._handlePlayerAvatar, this);
-        app.system.addListener(app.commands.USER_LEVEL_UP, this._handleUserLevelUp, this);
-        app.system.addListener(app.commands.TASK_FINISH, this._handleTaskFinish, this);
-        app.system.addListener(app.commands.BUDDY_NEW_INVITATION, this._handBuddyNewInvitation, this);
+        app.system.addListener(Commands.SYSTEM_MESSAGE, this._handleSystemMessage, this);
+        app.system.addListener(Commands.DOWNLOAD_IMAGE, this._handlePlayerAvatar, this);
+        app.system.addListener(Commands.USER_LEVEL_UP, this._handleUserLevelUp, this);
+        app.system.addListener(Commands.TASK_FINISH, this._handleTaskFinish, this);
+        app.system.addListener(Commands.BUDDY_NEW_INVITATION, this._handBuddyNewInvitation, this);
 
-        app.system.addListener(app.commands.ASSETS_USE_ITEM, this._handlePlayerUseAssets, this);
-        app.system.addListener(app.commands.PING_CLIENT, this._handlePingClient, this);
-        app.system.addListener(app.commands.PLAYERS_BALANCE_CHANGE, this._handleChangePlayerBalance, this);
-        app.system.addListener(app.commands.PLAYER_REENTER_ROOM, this.board._handlePlayerReEnterGame, this);
-        app.system.addListener(app.commands.BOARD_STATE_CHANGE, this._handleGameStateChange, this);
-        app.system.addListener(app.commands.BOARD_MASTER_CHANGE, this.board._handleChangeBoardMaster, this);
-        app.system.addListener(app.commands.PLAYER_REJOIN_ROOM, this.board._handlePlayerRejoinGame, this);
-        app.system.addListener(app.commands.PLAYER_GET_TURN, this._onPlayerGetTurn, this);
-        app.system.addListener(app.commands.PLAYER_LOSE_TURN, this._onPlayerLoseTurn, this);
-        app.system.addListener(app.commands.PLAYER_SKIP_TURN, this._onPlayerSkipTurn, this);
-        app.system.addListener(app.commands.PLAYER_PLAY_CARD, this._onPlayerPlayCards, this);
-        app.system.addListener(app.commands.PLAYER_READY, this._onPlayerReady, this);
-        app.system.addListener(app.commands.PLAYER_UNREADY, this._onPlayerUnready, this);
+        app.system.addListener(Commands.ASSETS_USE_ITEM, this._handlePlayerUseAssets, this);
+        app.system.addListener(Commands.PING_CLIENT, this._handlePingClient, this);
+        app.system.addListener(Commands.PLAYERS_BALANCE_CHANGE, this._handleChangePlayerBalance, this);
+        app.system.addListener(Commands.PLAYER_REENTER_ROOM, this._handlePlayerReEnterGame, this);
+        app.system.addListener(Commands.BOARD_STATE_CHANGE, this._handleGameStateChange, this);
+        app.system.addListener(Commands.BOARD_MASTER_CHANGE, this.board._handleChangeBoardMaster, this);
+        app.system.addListener(Commands.PLAYER_REJOIN_ROOM, this._handlePlayerRejoinGame, this);
+        app.system.addListener(Commands.PLAYER_GET_TURN, this._onPlayerGetTurn, this);
+        app.system.addListener(Commands.PLAYER_LOSE_TURN, this._onPlayerLoseTurn, this);
+        app.system.addListener(Commands.PLAYER_SKIP_TURN, this._onPlayerSkipTurn, this);
+        app.system.addListener(Commands.PLAYER_PLAY_CARD, this._onPlayerPlayCards, this);
+        app.system.addListener(Commands.PLAYER_READY, this._onPlayerReady, this);
+        app.system.addListener(Commands.PLAYER_UNREADY, this._onPlayerUnready, this);
+
+        console.log("addGameEventListener")
     }
 
     removeGameEventListener() {
@@ -69,29 +72,43 @@ export default class GameEventHandler {
         app.system.removeListener(SFS2X.SFSEvent.USER_ENTER_ROOM, this._onUserEnterRoom);
         app.system.removeListener(SFS2X.SFSEvent.ROOM_REMOVE, this._onRoomRemove);
         app.system.removeListener(SFS2X.SFSEvent.USER_VARIABLES_UPDATE, this._onUserVariablesUpdate);
+        app.system.removeListener(SFS2X.SFSEvent.ROOM_VARIABLES_UPDATE, this._onRoomVariablesUpdate);
 
-        app.system.removeListener(app.commands.SYSTEM_MESSAGE, this._handleSystemMessage);
-        app.system.removeListener(app.commands.DOWNLOAD_IMAGE, this._handlePlayerAvatar);
-        app.system.removeListener(app.commands.USER_LEVEL_UP, this._handleUserLevelUp);
-        app.system.removeListener(app.commands.TASK_FINISH, this._handleTaskFinish);
-        app.system.removeListener(app.commands.BUDDY_NEW_INVITATION, this._handBuddyNewInvitation);
+        app.system.removeListener(Commands.SYSTEM_MESSAGE, this._handleSystemMessage);
+        app.system.removeListener(Commands.DOWNLOAD_IMAGE, this._handlePlayerAvatar);
+        app.system.removeListener(Commands.USER_LEVEL_UP, this._handleUserLevelUp);
+        app.system.removeListener(Commands.TASK_FINISH, this._handleTaskFinish);
+        app.system.removeListener(Commands.BUDDY_NEW_INVITATION, this._handBuddyNewInvitation);
 
-        app.system.removeListener(app.commands.ASSETS_USE_ITEM, this._handlePlayerUseAssets);
-        app.system.removeListener(app.commands.PING_CLIENT, this._handlePingClient);
-        app.system.removeListener(app.commands.PLAYERS_BALANCE_CHANGE, this._handleChangePlayerBalance);
-        app.system.removeListener(app.commands.PLAYER_REENTER_ROOM, this.board._handlePlayerReEnterGame);
-        app.system.removeListener(app.commands.BOARD_STATE_CHANGE, this._handleGameStateChange);
-        app.system.removeListener(app.commands.BOARD_MASTER_CHANGE, this.board._handleChangeBoardMaster);
-        app.system.removeListener(app.commands.PLAYER_REJOIN_ROOM, this.board._handlePlayerRejoinGame);
-        app.system.removeListener(app.commands.PLAYER_GET_TURN, this._onPlayerGetTurn);
-        app.system.removeListener(app.commands.PLAYER_LOSE_TURN, this._onPlayerLoseTurn);
-        app.system.removeListener(app.commands.PLAYER_SKIP_TURN, this._onPlayerSkipTurn);
-        app.system.removeListener(app.commands.PLAYER_PLAY_CARD, this._onPlayerPlayCards);
-        app.system.removeListener(app.commands.PLAYER_READY, this._onPlayerReady);
-        app.system.removeListener(app.commands.PLAYER_UNREADY, this._onPlayerUnready);
+        app.system.removeListener(Commands.ASSETS_USE_ITEM, this._handlePlayerUseAssets);
+        app.system.removeListener(Commands.PING_CLIENT, this._handlePingClient);
+        app.system.removeListener(Commands.PLAYERS_BALANCE_CHANGE, this._handleChangePlayerBalance);
+        app.system.removeListener(Commands.PLAYER_REENTER_ROOM, this._handlePlayerReEnterGame);
+        app.system.removeListener(Commands.BOARD_STATE_CHANGE, this._handleGameStateChange);
+        app.system.removeListener(Commands.BOARD_MASTER_CHANGE, this.board._handleChangeBoardMaster);
+        app.system.removeListener(Commands.PLAYER_REJOIN_ROOM, this._handlePlayerRejoinGame);
+        app.system.removeListener(Commands.PLAYER_GET_TURN, this._onPlayerGetTurn);
+        app.system.removeListener(Commands.PLAYER_LOSE_TURN, this._onPlayerLoseTurn);
+        app.system.removeListener(Commands.PLAYER_SKIP_TURN, this._onPlayerSkipTurn);
+        app.system.removeListener(Commands.PLAYER_PLAY_CARD, this._onPlayerPlayCards);
+        app.system.removeListener(Commands.PLAYER_READY, this._onPlayerReady);
+        app.system.removeListener(Commands.PLAYER_UNREADY, this._onPlayerUnready);
+    }
+
+    _handlePlayerRejoinGame(data){
+        this.scene.emit(Events.ON_GAME_REJOIN, data);
+    }
+
+    _handlePlayerReEnterGame(data) {
+        let playerId = utils.getValue(data, Keywords.PLAYER_ID, 0);
+        let userId = utils.getValue(data, Keywords.USER_ID, 0);
+        this.scene.emit(Events.ON_PLAYER_REENTER_GAME, playerId, userId);
     }
 
     _onUserVariablesUpdate(event){
+
+        console.log("_onUserVariablesUpdate: ", event)
+
         let changedVars = event.changedVars;
         let user = event.user;
 
@@ -106,18 +123,21 @@ export default class GameEventHandler {
                 this.scene.emit(Events.ON_USER_UPDATE_EXP_POINT, user);
             }
         });
+    }
 
-        for (var i = 0; i < sfsEvent.changedVars.length; i++) {
-            if (xg.Keywords.USER_VARIABLE_BALANCE == sfsEvent.changedVars[i]) {
-                this._boardEventHandler.onHandleEvent("handleUserBalanceChange", [sfsEvent.user]);
-            }else if (xg.Keywords.USER_VARIABLE_LEVEL == sfsEvent.changedVars[i]) {
-                this._boardEventHandler.onHandleEvent("handleUserLevelChange", [sfsEvent.user]);
-            }else if (xg.Keywords.USER_VARIABLE_EXP_POINT == sfsEvent.changedVars[i]) {
-                this._boardEventHandler.onHandleEvent("handleUserExpPointChange", [sfsEvent.user]);
+    _onRoomVariablesUpdate(event){
+        let changedVars = event.changedVars;
+        let room = event.room;
+
+        changedVars && changedVars.forEach((varName) => {
+            if (varName == Keywords.VARIABLE_OWNER) {
+                this.scene.emit(Events.ON_ROOM_CHANGE_OWNER, room);
             }
-        }
 
-        this.handleUserVariableUpdate(user, changedVars);
+            if (varName == Keywords.VARIABLE_MIN_BET) {
+                this.scene.emit(Events.ON_ROOM_CHANGE_MIN_BET, room);
+            }
+        });
     }
 
     _onPlayerGetTurn(data) {
@@ -207,11 +227,12 @@ export default class GameEventHandler {
 
     _handlePingClient(data, roomId = -1) {
         if (app.context.isJoinedInGameRoom(roomId)) {
-            app.service.send({cmd: app.commands.PING_CLIENT, data: data, room: app.context.currentRoom});
+            app.service.send({cmd: Keywords.PING_CLIENT, data: data, room: app.context.currentRoom});
         }
     }
 
     _onPlayerReady(data){
+        console.log("on player ready: ", data)
         let playerId = utils.getValue(data, app.keywords.PLAYER_ID);
         playerId && this.scene.emit(Events.ON_PLAYER_READY_STATE_CHANGED, playerId, true, this.scene.gamePlayers.isItMe(playerId));
     }

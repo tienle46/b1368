@@ -22,11 +22,26 @@ export default class PlayerTLMNDL extends PlayerCardTurnBase {
 
     _init(board, user){
         super._init(board, user);
+    }
+
+    _addGlobalListener(){
+        super._addGlobalListener();
 
         this.board.scene.on(Events.ON_CLICK_PLAY_BUTTON, this._onPlayTurn, this);
         this.board.scene.on(Events.ON_CLICK_SKIP_TURN_BUTTON, this._onSkipTurn, this);
         this.board.scene.on(Events.ON_CLICK_SORT_BUTTON, this._onSortCards, this);
         this.board.scene.on(Events.ON_PLAYER_REMAIN_CARD_COUNT, this._setRemainCardCount, this);
+    }
+
+    _removeGlobalListener(){
+        super._removeGlobalListener();
+
+        debug("Player TLMNDL: ", this)
+
+        this.board.scene.off(Events.ON_CLICK_PLAY_BUTTON, this._onPlayTurn);
+        this.board.scene.off(Events.ON_CLICK_SKIP_TURN_BUTTON, this._onSkipTurn);
+        this.board.scene.off(Events.ON_CLICK_SORT_BUTTON, this._onSortCards);
+        this.board.scene.off(Events.ON_PLAYER_REMAIN_CARD_COUNT, this._setRemainCardCount);
     }
 
     _setRemainCardCount(id, remain = 0){
@@ -41,8 +56,6 @@ export default class PlayerTLMNDL extends PlayerCardTurnBase {
     }
 
     _onPlayTurn(){
-
-        log("_onPlayTurn: ", this.isItMe())
 
         if(!this.isItMe()){
             return;
@@ -77,8 +90,8 @@ export default class PlayerTLMNDL extends PlayerCardTurnBase {
         return this.board.playedCards;
     }
 
-    setCards(cards){
-        super.setCards(cards);
+    setCards(cards, reveal){
+        super.setCards(cards, reveal);
     }
 
     createFakeCards(size = PlayerTLMNDL.DEFAULT_HAND_CARD_COUNT){
@@ -94,6 +107,18 @@ export default class PlayerTLMNDL extends PlayerCardTurnBase {
                 this.scene.emit(Events.SET_INTERACTABLE_PLAY_CONTROL, interactable);
             });
         }
+    }
+
+    onDisable(){
+        super.onDisable();
+
+        debug("player on onDisable: ", this.board.scene);
+    }
+
+    onDestroy(){
+        debug("player on destroy: ", this.board.scene);
+        super.onDestroy();
+
     }
 
 }

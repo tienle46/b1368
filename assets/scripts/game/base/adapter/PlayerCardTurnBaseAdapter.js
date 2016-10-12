@@ -43,7 +43,7 @@ export default class PlayerCardTurnBaseAdapter extends PlayerTurnBaseAdapter {
         }
 
         app.service.send(sendParams);
-        this.scene.emit(Events.SHOW_WAIT_TURN_CONTROLS);
+        this.player.isItMe() && this.scene.emit(Events.SHOW_WAIT_TURN_CONTROLS);
     }
 
     onTurn(){

@@ -20,12 +20,6 @@ class TabExchangeCard extends Component {
         this.contentNode = this.node.getChildByName('view').getChildByName('content');
         this._getExchangeDialogComponent().hideUpdatePhone();
 
-        let event = new cc.Component.EventHandler();
-        event.target = this.node;
-        event.component = 'TabExchangeCard';
-        event.handler = 'scrollEvent';
-
-        this.node.getComponent(cc.ScrollView).scrollEvents.push(event);
         this._initCardsList();
     }
 

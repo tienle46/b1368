@@ -1,105 +1,145 @@
-var app = require('app');
+import app from 'app';
+import Component from 'Component';
+import TopupDialogRub from 'TopupDialogRub';
+import ExchangeDialogRub from 'ExchangeDialogRub';
+import PersonalInfoDialogRub from 'PersonalInfoDialogRub';
 
-cc.Class({
-    extends: cc.Component,
+class BottomBar extends Component {
+    constructor() {
+        super();
 
-    properties: {
-
-        napxuButton: {
+        this.napxuButton = {
             default: null,
             type: cc.Button
-        },
+        };
 
-        topRankButton: {
+        this.topRankButton = {
             default: null,
             type: cc.Button
-        },
+        };
 
-        notifiButton: {
+        this.notifiButton = {
             default: null,
             type: cc.Button
-        },
+        };
 
-        awardTransferButton: {
+        this.awardTransferButton = {
             default: null,
             type: cc.Button
-        },
+        };
 
-        hotlineButton: {
+        this.hotlineButton = {
             default: null,
             type: cc.Button
-        },
+        };
 
-        messageButton: {
+        this.messageButton = {
             default: null,
             type: cc.Button
-        },
+        };
 
-        userInfoButton: {
+        this.userInfoButton = {
             default: null,
             type: cc.Button
-        },
-
-        _clickListener: null
-
-    },
-
-    // use this for initialization
-    onLoad: function() {
-
-    },
-
-    // handle click button in bottomBar
-
-    onClickNapXuAction: function() {
-        log("nap xu");
-
-        this.handleClickTopbarItem(app.bottomBarButtonType.NAPXU);
-    },
-
-    onClickTopRankAction: function() {
-        log("rank");
-        this.handleClickTopbarItem(app.bottomBarButtonType.TOPRANK);
-    },
-
-    onClickNotifiAction: function() {
-        log("Notifi");
-        this.handleClickTopbarItem(app.bottomBarButtonType.NOTIFI);
-    },
-
-    onClickTransferAwardAction: function() {
-        log("Award");
-        this.handleClickTopbarItem(app.bottomBarButtonType.EXCHANGEAWARD);
-    },
-
-    onClickHotlineAction: function() {
-        log("Hotline");
-        this.handleClickTopbarItem(app.bottomBarButtonType.HOTLINE);
-    },
-
-    onClickMessageAction: function() {
-        log("Message");
-        this.handleClickTopbarItem(app.bottomBarButtonType.MESSAGE);
-    },
-
-    onClickUserInfoAction: function() {
-        log("UserInfo");
-        this.handleClickTopbarItem(app.bottomBarButtonType.USERINFO);
-    },
-
-    listenClickTopBarItem: function(cb) {
-        this._clickListener = cb;
-    },
-
-    // truyen vao button type (xác định đang xử lý sự kiện cho button ).
-    handleClickTopbarItem: function(buttonType) {
-        log("type: " + buttonType);
-        this._clickListener && this._clickListener(buttonType);
+        };
     }
 
+    onLoad() {
 
-    // called every frame, uncomment this function to activate update callback
-    // update: function (dt) {
+    }
 
-    // },
-});
+    onClickNapXuAction() {
+        let tabs = [{
+            title: 'Thẻ cào',
+            value: 'tab_card'
+        }, {
+            title: 'SMS',
+            value: 'tab_sms'
+        }, {
+            title: 'IAP',
+            value: 'tab_iap'
+        }, {
+            title: 'kiot',
+            value: 'tab_kiot'
+        }];
+
+        let options = {
+            itemHeight: 26.5
+        };
+
+        let tabOptions = { tabs, options };
+        // bottombar -> dashboard scene node
+        TopupDialogRub.show(this.node.parent, tabOptions);
+    }
+
+    onClickTopRankAction() {
+        log("rank");
+    }
+
+    onClickNotifiAction() {
+        log("Notifi");
+    }
+
+    onClickTransferAwardAction() {
+        let tabs = [{
+            title: 'Thẻ cào',
+            value: 'tab_exchange_card'
+        }, {
+            title: 'Vật phẩm',
+            value: 'tab_exchange_item'
+        }, {
+            title: 'Lịch sử',
+            value: 'tab_exchange_history'
+        }];
+
+        let options = {
+            itemHeight: 26.5,
+            tabBodyPrefabType: 'exchange'
+        };
+
+        let tabOptions = { tabs, options };
+        // bottombar -> dashboard scene node
+        ExchangeDialogRub.show(this.node.parent, tabOptions);
+    }
+
+    onClickHotlineAction() {
+        log("Hotline");
+    }
+
+    onClickMessageAction() {
+        log("Message");
+    }
+
+    onClickUserInfoAction() {
+        let tabs = [{
+            title: 'Cá nhân',
+            value: null
+        }, {
+            title: 'Thành tích',
+            value: null
+        }, {
+            title: 'Gift Code',
+            value: null
+        }, {
+            title: 'Chuyển chip',
+            value: null
+        }, {
+            title: 'Nhận chip',
+            value: null
+        }, {
+            title: 'Lịch sử',
+            value: null
+        }, ];
+
+        let options = {
+            itemHeight: 26.5,
+            itemWidth: 112,
+            tabBodyPrefabType: 'exchange'
+        };
+
+        let tabOptions = { tabs, options };
+        PersonalInfoDialogRub.show(this.node.parent, tabOptions);
+    }
+}
+
+app.createComponent(BottomBar);

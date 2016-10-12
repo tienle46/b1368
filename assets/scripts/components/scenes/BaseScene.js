@@ -23,8 +23,8 @@ export default class BaseScene extends Actor {
     }
 
 
-    _addSystemListener() {
-        super._addSystemListener();
+    _addGlobalListener() {
+        super._addGlobalListener();
     }
 
     /**
@@ -37,8 +37,8 @@ export default class BaseScene extends Actor {
      *
      * @private
      */
-    _removeSystemListener() {
-        super._removeSystemListener();
+    _removeGlobalListener() {
+        super._removeGlobalListener();
     }
 
     start() {

@@ -99,6 +99,7 @@ export default class PlayerCardRenderer extends PlayerRenderer {
     }
 
     renderCards(cards, reveal){
+        console.log("Render card: ", cards, reveal);
         this.cardList.setCards(cards, true, reveal);
     }
 

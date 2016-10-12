@@ -14,17 +14,22 @@ export default class Actor extends Component {
         this.renderData = null;
         this._isRegisterdListener;
 
-        this._eventEmitter = new Emitter;
+        this._eventEmitter = null;
     }
 
     setRenderer(renderer){
         this.renderer = renderer;
     }
 
+    _assertEmitter(){
+        !this._eventEmitter && (this._eventEmitter = new Emitter());
+    }
+
     /**
      * Sub class must be call super.onLoad() to init Renderer of actor
      */
     onLoad() {
+        this._assertEmitter();
         this.renderData = {...this.renderData, actor: this};
         this.renderer && this.renderer._initUI(this.renderData);
     }
@@ -34,20 +39,17 @@ export default class Actor extends Component {
      *
      * If event is belong to UI let use listener of cc.Node (node.on, node.off, node.emit, etc...) instead
      *
-     * NOTE: Don't forget to add remove this event have been added into _removeSystemListener func to avoid memory leak
+     * NOTE: Don't forget to add remove this event have been added into _removeGlobalListener func to avoid memory leak
      *
      * Example:
-     *      [instanceof actor]._addSystemListener('adminMessage', () => {
+     *      [instanceof actor]._addGlobalListener('adminMessage', () => {
      *          //Show admin message
      *      })
      *
      * @abstract
      */
-    _addSystemListener(){
-        if(this._isRegisterdListener){
-            this._removeSystemListener();
-        }
-
+    _addGlobalListener(){
+        this._assertEmitter();
         this._isRegisterdListener = true;
     }
 
@@ -55,26 +57,29 @@ export default class Actor extends Component {
      * Use this func to remove listener from game system. System events will be remove from system by default
      * NOTE: Make sure that sub class implementation ```onDestroy``` method must be call ```super.onDestroy()```
      * Example:
-     *      [instanceof actor]._removeSystemListener('adminMessage', () => {
+     *      [instanceof actor]._removeGlobalListener('adminMessage', () => {
      *          //Show admin message
      *      })
      *
      * @abstract
+     * @override
      */
-    _removeSystemListener(){
+    _removeGlobalListener(){
+        this._assertEmitter();
         this._isRegisterdListener = false;
     }
 
     emit(name, ...args){
-        this._eventEmitter.emit(name, ...args);
+        this._eventEmitter && this._eventEmitter.emit(name, ...args);
     }
 
     on(name, listener, context){
+        this._assertEmitter();
         this._eventEmitter.addListener(name, listener, context);
     }
 
     off(eventName, listener, context){
-        this._eventEmitter.removeListener(eventName, listener, context);
+        this._eventEmitter && this._eventEmitter.removeListener(eventName, listener, context);
     }
 
     removeAllListener(){
@@ -82,7 +87,22 @@ export default class Actor extends Component {
     }
 
     onDestroy(){
-        this.removeAllListener();
-        this._removeSystemListener();
+        // if(this._isRegisterdListener){
+        //     this.removeAllListener();
+        //     this._removeGlobalListener();
+        // }
     }
+
+    onDisable(){
+        this._removeGlobalListener();
+        this.removeAllListener();
+    }
+
+    onActive(){
+        if(!this._isRegisterdListener){
+            this._addGlobalListener();
+        }
+    }
+
+
 }

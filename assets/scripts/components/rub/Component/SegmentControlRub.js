@@ -89,11 +89,7 @@ export default class SegmentControlRub extends Rub {
         let size = cc.size(this.options.width, this.options.height);
         this.prefab.setContentSize(size);
         let bgSpriteComponent = this.prefab.getComponent(cc.Sprite);
-        RubUtils.loadRes(this.options.bg, true).then((spriteFrame) => {
-            bgSpriteComponent.spriteFrame = spriteFrame;
-            bgSpriteComponent.type = cc.Sprite.Type.SLICED;
-            bgSpriteComponent.sizeMode = cc.Sprite.SizeMode.CUSTOM;
-        });
+        RubUtils.loadSpriteFrame(bgSpriteComponent, this.options.bg, null);
         this._resizeGroupNodeByOptions();
     }
 
@@ -135,6 +131,7 @@ export default class SegmentControlRub extends Rub {
             this.prefab.height = newNodeHeight;
 
             let checkBox = newNode.addComponent(CheckBox);
+
             // add checkBox event
             e.eventHander && this._registerEvents(checkBox, e.eventHander);
 

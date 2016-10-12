@@ -1,7 +1,6 @@
 import app from 'app';
 import BaseScene from 'BaseScene';
-import TopupDialogRub from 'TopupDialogRub';
-import ExchangeDialogRub from 'ExchangeDialogRub';
+import RubUtils from 'RubUtils';
 
 export default class DashboardScene extends BaseScene {
     constructor() {
@@ -15,11 +14,6 @@ export default class DashboardScene extends BaseScene {
         };
 
         this.item = {
-            default: null,
-            type: cc.Prefab
-        };
-
-        this.bottomBar = {
             default: null,
             type: cc.Prefab
         };
@@ -90,22 +84,11 @@ export default class DashboardScene extends BaseScene {
     // Listen Bottom Bar Event (Click button In Bottom Bar)
 
     _addBottomBar() {
-        const bottomBarNode = new cc.instantiate(this.bottomBar);
+        RubUtils.loadRes('bottombar/bottombar').then((prefab) => {
+            let bottomBarNode = cc.instantiate(prefab);
 
-        bottomBarNode.getComponent('BottomBar').listenClickTopBarItem((buttonType) => {
-            switch (buttonType) {
-                case app.bottomBarButtonType.NAPXU:
-                    this.addNapXuPopUp();
-                    break;
-                case app.bottomBarButtonType.EXCHANGEAWARD:
-                    this.addExchangePopUp();
-                    break;
-                default:
-                    this.addPopup();
-                    break;
-            }
+            this.node.addChild(bottomBarNode);
         });
-        this.node.addChild(bottomBarNode);
     }
 
     _addTopBar() {
@@ -116,54 +99,6 @@ export default class DashboardScene extends BaseScene {
         //     this.addPopup();
         // });
         this.node.addChild(topBarNode);
-    }
-
-    addNapXuPopUp() {
-        // var popupBase = new cc.instantiate(this.popUps);
-        // popupBase.position = cc.p(0, 0);
-        // this.node.addChild(popupBase, 10);
-
-        let tabs = [{
-            title: 'Thẻ cào',
-            value: 'tab_card'
-        }, {
-            title: 'SMS',
-            value: 'tab_sms'
-        }, {
-            title: 'IAP',
-            value: 'tab_iap'
-        }, {
-            title: 'kiot',
-            value: 'tab_kiot'
-        }];
-
-        let options = {
-            itemHeight: 26.5
-        };
-
-        let tabOptions = { tabs, options };
-        TopupDialogRub.show(this.node, tabOptions);
-    }
-
-    addExchangePopUp() {
-        let tabs = [{
-            title: 'Thẻ cào',
-            value: 'tab_exchange_card'
-        }, {
-            title: 'Vật phẩm',
-            value: 'tab_exchange_item'
-        }, {
-            title: 'Lịch sử',
-            value: 'tab_exchange_history'
-        }];
-
-        let options = {
-            itemHeight: 26.5,
-            tabBodyPrefabType: 'exchange'
-        };
-
-        let tabOptions = { tabs, options };
-        ExchangeDialogRub.show(this.node, tabOptions);
     }
 }
 

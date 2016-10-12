@@ -1,7 +1,5 @@
 import app from 'app';
 import Component from 'Component';
-import ButtonScaler from 'ButtonScaler';
-import RubUtils from 'RubUtils';
 import TabRub from 'TabRub';
 import GridViewRub from 'GridViewRub';
 import ExchangeDialog from 'ExchangeDialog';
@@ -9,6 +7,13 @@ import ExchangeDialog from 'ExchangeDialog';
 class TabExchangeHistory extends Component {
     constructor() {
         super();
+        this.GridViewCardTabRub = null;
+        this.GridViewItemTabRub = null;
+
+        this.GridViewItemTabNode = null;
+        this.GridViewCardTabNode = null;
+
+        this.flag = null;
     }
 
     onLoad() {
@@ -66,13 +71,23 @@ class TabExchangeHistory extends Component {
         let bodyNode = this.node.getChildByName('body');
 
         // add Tab
+        let event = cc.Component.EventHandler(this.node, 'TabExchangeHistory', 'updateDataCardTab');
+        this.GridViewCardTabRub = new GridViewRub(bodyNode, ['x', 'x', 'x'], d.cards, { position: cc.v2(2, 94), width: 715, event });
+        this.GridViewCardTabNode = this.GridViewCardTabRub.getNode();
+
+        let event2 = cc.Component.EventHandler(this.node, 'TabExchangeHistory', 'updateDataItemTab');
+        this.GridViewItemTabRub = new GridViewRub(bodyNode, ['x', 'x', 'x'], d.items, { position: cc.v2(2, 94), width: 715, event2 });
+        this.GridViewItemTabNode = this.GridViewItemTabRub.getNode();
+
+
         let tabs = [{
             title: 'Thẻ cào',
-            value: GridViewRub.node(bodyNode, ['x', 'x', 'x'], d.cards, { position: cc.v2(2, 94), width: 715 })
+            value: this.GridViewCardTabNode
         }, {
             title: 'Vật phẩm',
-            value: GridViewRub.node(bodyNode, {}, d.items, { position: cc.v2(2, 94), width: 715 })
+            value: this.GridViewItemTabNode
         }];
+
         let options = {
             itemHeight: 46.5,
             itemWidth: 296.5,
@@ -95,6 +110,47 @@ class TabExchangeHistory extends Component {
 
     _getUpdatePhoneNode() {
         return this._getExchangeDialogComponent().updatePhoneNode();
+    }
+
+    updateDataCardTab(sender, type) {
+        if (type === app.const.SCROLL_EVENT.SCROLL_TO_BOTTOM) {
+            this.flag = 'top';
+        }
+
+        if (this.flag === 'top' && type === app.const.SCROLL_EVENT.AUTO_SCROLL_ENDED) {
+            this._requestCardData();
+            this.flag = null;
+        }
+    }
+    updateDataItemTab(sender, type) {
+        if (type === app.const.SCROLL_EVENT.SCROLL_TO_BOTTOM) {
+            this.flag = 'top';
+        }
+
+        if (this.flag === 'top' && type === app.const.SCROLL_EVENT.AUTO_SCROLL_ENDED) {
+            this._requestItemData();
+            this.flag = null;
+        }
+    }
+
+    _sendGetCardData() {
+        this.GridViewCardTabNode.then(() => {
+            this.GridViewCardTabRub.updateData([
+                ['01-08-2016 09:15:46', '07-07-2016 16:16:26', '01-07-2016 16:24:17', '01-07-2016 16:23:18', '13-06-2016 11:36:45', '07-06-2016 11:24:33', '05-06-2016 20:07:24', '05-06-2016 19:56:36', '04-06-2016 21:40:28', '04-06-2016 21:35:11'],
+                ['Vina 50K', 'Viettel 50K', 'Viettel 20K', 'Viettel 20K', 'Viettel 20K', 'Viettel 20K', 'Viettel 20K', 'Viettel 20K', ' Mobi 20K', 'Vina 20K'],
+                []
+            ]);
+        });
+    }
+
+    _requestItemData() {
+        this.GridViewItemTabNode.then(() => {
+            this.GridViewItemTabRub.updateData([
+                ['01-08-2016 09:15:46', '07-07-2016 16:16:26', '01-07-2016 16:24:17', '01-07-2016 16:23:18', '13-06-2016 11:36:45', '07-06-2016 11:24:33', '05-06-2016 20:07:24', '05-06-2016 19:56:36', '04-06-2016 21:40:28', '04-06-2016 21:35:11'],
+                ['Vina 50K', 'Viettel 50K', 'Viettel 20K', 'Viettel 20K', 'Viettel 20K', 'Viettel 20K', 'Viettel 20K', 'Viettel 20K', ' Mobi 20K', 'Vina 20K'],
+                []
+            ]);
+        });
     }
 }
 

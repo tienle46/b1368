@@ -104,6 +104,8 @@ class Service {
         this.addEventListener(SFS2X.SFSEvent.USER_EXIT_ROOM, this._onUserExitRoom);
         this.addEventListener(SFS2X.SFSEvent.USER_ENTER_ROOM, this._onUserEnterRoom);
         this.addEventListener(SFS2X.SFSEvent.ROOM_REMOVE, this._onRoomRemove);
+        this.addEventListener(SFS2X.SFSEvent.USER_VARIABLES_UPDATE, this._onUserVariableUpdate);
+        this.addEventListener(SFS2X.SFSEvent.ROOM_VARIABLES_UPDATE, this._onRoomVariableUpdate);
     }
 
     _removeSmartFoxEvent() {
@@ -119,6 +121,16 @@ class Service {
         this.removeEventListener(SFS2X.SFSEvent.USER_EXIT_ROOM, this._onUserExitRoom);
         this.removeEventListener(SFS2X.SFSEvent.USER_ENTER_ROOM, this._onUserEnterRoom);
         this.removeEventListener(SFS2X.SFSEvent.ROOM_REMOVE, this._onRoomRemove);
+        this.removeEventListener(SFS2X.SFSEvent.USER_VARIABLES_UPDATE, this._onUserVariableUpdate);
+        this.removeEventListener(SFS2X.SFSEvent.ROOM_VARIABLES_UPDATE, this._onRoomVariableUpdate);
+    }
+
+    _onUserVariableUpdate(event){
+        app.system.emit(SFS2X.SFSEvent.USER_VARIABLES_UPDATE, event);
+    }
+
+    _onRoomVariableUpdate(event){
+        app.system.emit(SFS2X.SFSEvent.ROOM_VARIABLES_UPDATE, event);
     }
 
     _onUserExitRoom(event) {

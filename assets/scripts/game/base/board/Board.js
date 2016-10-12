@@ -69,10 +69,6 @@ export default class Board extends Actor {
         log("_init Board");
     }
 
-    _onPlayerSetReadyState(playerId, ready, isItMe) {
-        isItMe && (ready ? this.stopTimeLine() : this.startTimeLine(this.readyPhaseDuration));
-    }
-
     update(dt) {
 
     }
@@ -85,6 +81,12 @@ export default class Board extends Actor {
         this.stopTimeLine();
     }
 
+    _onPlayerSetReadyState(playerId, ready, isItMe) {
+        isItMe && (ready ? this.stopTimeLine() : this.startTimeLine(this.readyPhaseDuration));
+    }
+
+
+
     /**
      * @abstract
      */
@@ -96,27 +98,27 @@ export default class Board extends Actor {
     }
 
     isPlaying() {
-        return this.state === app.const.game.board.state.PLAYING;
+        this.scene.isPlaying();
     }
 
     isStarting() {
-        return this.state === app.const.game.board.state.STARTING;
+        this.scene.isStarting();
     }
 
     isReady() {
-        return this.state === app.const.game.board.state.READY;
+        this.scene.isReady();
     }
 
     isBegin() {
-        return this.state === app.const.game.board.state.BEGIN;
+        this.scene.isBegin();
     }
 
     isNewBoard() {
-        return this.state === app.const.game.board.state.INITED;
+        this.scene.isNewBoard();
     }
 
     isEnding() {
-        return this.state === app.const.game.board.state.ENDING;
+        this.scene.isEnding();
     }
 
     getRoomNumber() {
@@ -328,21 +330,19 @@ export default class Board extends Actor {
         this._handleSetPlayerBalance(data);
     }
 
-    _getPlayerBalanceChangeAmounts(playerIds, data){
+    _getPlayerBalanceChangeAmounts(playerIds = [], data){
 
-        let balanceChanges = {};
-        let currentPlayerBalances = this.scene.gamePlayers.getCurrentPlayerBalances();
+        let balanceChangedAmounts = {};
+        let currentPlayerBalances = this.scene.gamePlayers.getCurrentPlayerBalances(playerIds);
         let newPlayersBalance = utils.getValue(data, Keywords.USER_BALANCE, []);
 
-        log("currentPlayerBalances: ", currentPlayerBalances,newPlayersBalance)
-
-        playerIds && playerIds.forEach((id, i) => {
+        playerIds.forEach((id, i) => {
             let newBalance = newPlayersBalance[i];
-            let currentBalance = currentPlayerBalances[id] || 0;
-            balanceChanges[id] = newBalance - currentBalance;
+            let currentBalance = currentPlayerBalances[id];
+            balanceChangedAmounts[id] = newBalance - currentBalance;
         });
 
-        return balanceChanges;
+        return balanceChangedAmounts;
     }
 
     _handleSetPlayerBalance(data) {
@@ -357,7 +357,7 @@ export default class Board extends Actor {
             let newBalance = playersBalance[i];
             let newExp = playersExp[i];
 
-            this.scene.emit(Events.ON_PLAYER_SET_BALANCE, id, newBalance);
+            newBalance && this.scene.emit(Events.ON_PLAYER_SET_BALANCE, id, newBalance);
             //TODO chưa xử lý exp
         });
     }
@@ -376,10 +376,6 @@ export default class Board extends Actor {
     }
 
     _handleChangePlayerBalance(data) {
-
-    }
-
-    _handlePlayerReEnterGame(data) {
 
     }
 
