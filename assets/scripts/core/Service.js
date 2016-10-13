@@ -53,6 +53,8 @@ class Service {
         this._lagPollingInterval = null;
         this._poorNetwork = false;
         this._loginData = null;
+        this.isConnecting = false;
+        this._pendingRequests = [];
 
         this._initSmartFoxClient();
     }
@@ -70,27 +72,11 @@ class Service {
         this._registerSmartFoxEvent();
     }
 
-    __testConnection() {
-        this.connect((success) => {
-            log("success: " + success);
-            if (success) {
-                this.login("crush1", "1234nm", (error, result) => {
-                    if (result) {
-                        log(`Logged in as ${app.context.getMe().name}`);
-                    }
-
-                    if (error) {
-                        log("Login error: ");
-                        log(error);
-                    }
-                });
-            }
-        });
-    }
-
     _registerSmartFoxEvent() {
 
         this._removeSmartFoxEvent();
+
+        console.log("_registerSmartFoxEvent: ");
 
         this.addEventListener(SFS2X.SFSEvent.LOGIN, this._onLogin);
         this.addEventListener(SFS2X.SFSEvent.LOGIN_ERROR, this._onLoginError);
@@ -98,9 +84,9 @@ class Service {
         this.addEventListener(SFS2X.SFSEvent.CONNECTION_LOST, this._onConnectionLost);
         this.addEventListener(SFS2X.SFSEvent.CONNECTION_RESUME, this._onConnectionResume);
         this.addEventListener(SFS2X.SFSEvent.EXTENSION_RESPONSE, this._onExtensionEvent);
-        this.addEventListener(SFS2X.SFSEvent.ROOM_JOIN, this._onJoinRoomResult);
-        this.addEventListener(SFS2X.SFSEvent.ROOM_JOIN_ERROR, this._onJoinRoomResult);
-        this.addEventListener(SFS2X.SFSEvent.ROOM_CREATION_ERROR, this._onCreateRoomResult);
+        this.addEventListener(SFS2X.SFSEvent.ROOM_JOIN, this._onJoinRoomSuccess);
+        this.addEventListener(SFS2X.SFSEvent.ROOM_JOIN_ERROR, this._onJoinRoomSuccess);
+        this.addEventListener(SFS2X.SFSEvent.ROOM_CREATION_ERROR, this._onCreateRoomError);
         this.addEventListener(SFS2X.SFSEvent.USER_EXIT_ROOM, this._onUserExitRoom);
         this.addEventListener(SFS2X.SFSEvent.USER_ENTER_ROOM, this._onUserEnterRoom);
         this.addEventListener(SFS2X.SFSEvent.ROOM_REMOVE, this._onRoomRemove);
@@ -115,9 +101,9 @@ class Service {
         this.removeEventListener(SFS2X.SFSEvent.CONNECTION_LOST, this._onConnectionLost);
         this.removeEventListener(SFS2X.SFSEvent.CONNECTION_RESUME, this._onConnectionResume);
         this.removeEventListener(SFS2X.SFSEvent.EXTENSION_RESPONSE, this._onExtensionEvent);
-        this.removeEventListener(SFS2X.SFSEvent.ROOM_JOIN, this._onJoinRoomResult);
-        this.removeEventListener(SFS2X.SFSEvent.ROOM_JOIN_ERROR, this._onJoinRoomResult);
-        this.removeEventListener(SFS2X.SFSEvent.ROOM_CREATION_ERROR, this._onCreateRoomResult);
+        this.removeEventListener(SFS2X.SFSEvent.ROOM_JOIN, this._onJoinRoomSuccess);
+        this.removeEventListener(SFS2X.SFSEvent.ROOM_JOIN_ERROR, this._onJoinRoomError);
+        this.removeEventListener(SFS2X.SFSEvent.ROOM_CREATION_ERROR, this._onCreateRoomError);
         this.removeEventListener(SFS2X.SFSEvent.USER_EXIT_ROOM, this._onUserExitRoom);
         this.removeEventListener(SFS2X.SFSEvent.USER_ENTER_ROOM, this._onUserEnterRoom);
         this.removeEventListener(SFS2X.SFSEvent.ROOM_REMOVE, this._onRoomRemove);
@@ -146,16 +132,24 @@ class Service {
     }
 
     _onConnection(event) {
+        this.isConnecting = false;
         this._callCallback(SFS2X.SFSEvent.CONNECTION, event.success);
+
+        this._pendingRequests.forEach(requestArgs => this.sendRequest(...requestArgs));
+        this._pendingRequests = [];
     }
 
     _onConnectionLost(event) {
+
+        this.isConnecting = false;
+        this._pendingRequests = [];
         this.stopLagPolling();
 
         if (this._loginData) {
-            app.service.connect((success) => {
+            this.connect((success) => {
                 if (success) {
                     this.requestAuthen(this._loginData.username, this._loginData.password, false, this._loginData.quickLogin, this._loginData.cb);
+                    this._loginData = null;
                 }
             });
         } else {
@@ -167,13 +161,12 @@ class Service {
     }
 
     _onConnectionResume(event) {
-        log("_onConnectionResume");
-        log(event);
+        //Do nothing
     }
 
     _onExtensionEvent(event) {
 
-        log(event);
+        debug(event);
 
         if (event.cmd === app.commands.XLAG) {
             this._handleLagPollingResponse(event);
@@ -188,20 +181,21 @@ class Service {
     }
 
     _onLogin(event) {
+        debug("_onLogin: ", event)
         if (event.data[app.keywords.UPDATE_PHONE_NUMBER]) {
             app.context.getMe().upn = event.data[app.keywords.UPDATE_PHONE_NUMBER] || true;
         }
 
-        if (event.data[app.keywords.LOGIN_REJOIN_ROOM_GROUP]) {
-            // this.logout();
-            // app.system.info("Hệ thống chưa hỗ trợ kết nối lại khi bàn đang chơi. Vui lòng đăng nhập lại!");
-            this.disconnect();
-            return;
+        let rejoinGroup = event.data[app.keywords.LOGIN_REJOIN_ROOM_GROUP];
+        if (rejoinGroup) {
+            app.context.rejoinGroup = rejoinGroup;
+            app.context.rejoiningGame = true;
+            app.system.enablePendingGameEvent = true;
         } else {
             this._loginData = null;
+            this._callCallback(SFS2X.SFSEvent.LOGIN, null, event.data);
         }
 
-        this._callCallback(SFS2X.SFSEvent.LOGIN, null, event.data);
         this.startLagPolling(app.config.pingPongInterval);
     }
 
@@ -212,8 +206,16 @@ class Service {
 
     sendRequest(request, { cb = null, scope = null, cbName = null } = {}) {
 
-        if (!this.client.isConnected()) {
+        console.log("sendRequest: ", this.client.isConnected(), this.isConnecting);
+
+        if (!this.client.isConnected() && !this.isConnecting) {
+            console.log("_onConnectionLost sendRequest");
             this._onConnectionLost();
+            return;
+        }
+
+        if(this.isConnecting){
+            this._pendingRequests.push(arguments);
             return;
         }
 
@@ -289,6 +291,10 @@ class Service {
      */
     connect(cb) {
 
+        console.log("connect: ", cb)
+
+        this.isConnecting = true;
+
         if (this.client.isConnected()) {
             this._onConnection({ success: true });
         } else {
@@ -305,6 +311,11 @@ class Service {
      * Disconnect to game server
      */
     disconnect() {
+
+        this.isConnecting = false;
+        
+        console.log("call disconnect: ")
+        
         if (this.client.isConnected()) {
             this.client.disconnect();
         }
@@ -338,9 +349,11 @@ class Service {
             if (isRegister) {
                 data[app.keywords.PARTNER_ID] = 1; // <-- or here
                 this._loginData = null;
-            } else {
-                this._loginData = { username: username, password: password, quickLogin: isQuickLogin, cb: cb };
             }
+
+            // else {
+            //     this._loginData = { username: username, password: password, quickLogin: isQuickLogin, cb: cb };
+            // }
 
             this._addCallback(SFS2X.SFSEvent.LOGIN, cb);
 
@@ -368,6 +381,7 @@ class Service {
         if (!options) return;
 
         if (!this.client.isConnected()) {
+            console.log("_onConnectionLost  send ");
             this._onConnectionLost();
             return;
         }
@@ -415,28 +429,23 @@ class Service {
         scope && delete this._eventScopes[scope];
     }
 
-    _onJoinRoomResult(event) {
-
-        log("_onJoinRoomResult: ", event);
-        const key = this._hasCallback(app.commands.USER_CREATE_ROOM) ? app.commands.USER_CREATE_ROOM : SFS2X.SFSEvent.ROOM_JOIN;
-
-        if (this._hasCallback(key)) {
-            if (event.errorCode) {
-                this._callCallbackAsync(key, event);
-            } else {
-                this._callCallbackAsync(key, data => {
-                    return !data || !data.roomId || (event.room && data.roomId == event.id);
-                }, null, event);
-            }
-        } else {
-            app.system.emit(key, event);
+    _onJoinRoomError(event) {
+        console.log("_onJoinRoomError: ", event);
+        if(event.errorCode){
+            this._hasCallback(SFS2X.SFSEvent.ROOM_JOIN_ERROR) && this._callCallbackAsync(SFS2X.SFSEvent.ROOM_JOIN_ERROR, event);
         }
     }
 
-    _onCreateRoomResult(event) {
-        log("_onCreateRoomResult: ", event);
+    _onJoinRoomSuccess(event) {
+        console.log("_onJoinRoomSuccess: ", event)
+        app.system.emit(SFS2X.SFSEvent.ROOM_JOIN, event);
+    }
+
+    _onCreateRoomError(event) {
+        log("_onCreateRoomError: ", event);
         if (event.errorCode) {
             this._callCallbackAsync(app.commands.USER_CREATE_ROOM, event);
+            this._deleteCallbackObject(app.commands.USER_CREATE_ROOM);
         }
     }
 

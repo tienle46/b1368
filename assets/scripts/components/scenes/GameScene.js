@@ -9,52 +9,38 @@ import {GameMenuPrefab} from 'game-components';
 import {gameManager, GameEventHandler, Board, TLMNDLBoard, TLMNDLPlayer} from 'game';
 import GameResultPopup from 'GameResultPopup';
 
-class GameScene extends BaseScene {
+export default class GameScene extends BaseScene {
 
     constructor() {
         super();
 
-        this.boardLayer = {
-            default: null,
-            type: cc.Node
-        };
+        this.boardLayer = cc.Node;
+        this.playerLayer = cc.Node;
+        this.gameMenuLayer = cc.Node;
+        this.gameControlLayer = cc.Node;
 
-        this.playerLayer = {
-            default: null,
-            type: cc.Node
-        };
 
-        this.gameControlLayer = {
-            default: null,
-            type: cc.Node
-        };
+        this.boardPrefab = cc.Prefab;
+        this.gameResultPopupPrefab = cc.Prefab;
 
-        this.gameMenuLayer = {
-            default: null,
-            type: cc.Node
-        };
-
-        this.boardPrefab = {
-            default: null,
-            type: cc.Prefab
-        };
-
-        this.board = null;
         this.room = null;
+        this.board = null;
+        this.gameCode = null;
         this.gameMenu = null;
+        this.gameData = null;
+        this.initiated = false;
         this.gamePlayers = null;
         this.gameControls = null;
-        this.gameData = null;
         this.gameEventHandler = null;
-        this.gameCode = null;
-        this.gameResultPopupPrefab = cc.Prefab;
         this.gameResultPopup = null;
-
-        this.initiated = false;
         this._penddingEvents = [];
     }
 
     onLoad() {
+
+        super.onLoad();
+
+        console.log("Game Scene on load");
 
         try {
             this.room = app.context.currentRoom;
@@ -83,9 +69,11 @@ class GameScene extends BaseScene {
 
         } catch (e) {
             error(e);
+            app.system.enablePendingGameEvent = false;
 
             if (e instanceof CreateGameException)
                 this._onLoadSceneFail();
+
         }
 
         log("onLoad GameScene");
@@ -100,27 +88,27 @@ class GameScene extends BaseScene {
     }
 
     isPlaying() {
-        return this.state === app.const.game.board.state.PLAYING;
+        return this.board.state === app.const.game.state.PLAYING;
     }
 
     isStarting() {
-        return this.state === app.const.game.board.state.STARTING;
+        return this.board.state === app.const.game.state.STARTING;
     }
 
     isReady() {
-        return this.state === app.const.game.board.state.READY;
+        return this.board.state === app.const.game.state.READY;
     }
 
     isBegin() {
-        return this.state === app.const.game.board.state.BEGIN;
+        return this.board.state === app.const.game.state.BEGIN;
     }
 
     isNewBoard() {
-        return this.state === app.const.game.board.state.INITED;
+        return this.board.state === app.const.game.state.INITED;
     }
 
     isEnding() {
-        return this.state === app.const.game.board.state.ENDING;
+        return this.board.state === app.const.game.state.ENDING;
     }
 
     _initGameScene() {
@@ -131,12 +119,11 @@ class GameScene extends BaseScene {
 
             this.board = board;
             this.board._init(this);
-            this.gameEventHandler = new GameEventHandler(this);
 
             this._initPlayerLayer();
             this._initGameControlLayer();
             this._loadGameData();
-            this._addGameEvents();
+            this._initGameEvents();
             this._onDoneInitGameScene();
         } else {
             throw new CreateGameException(app.res.string('error.fail_to_create_game'));
@@ -145,15 +132,23 @@ class GameScene extends BaseScene {
 
     _onDoneInitGameScene() {
         this.initiated = true;
-        this._penddingEvents.forEach(event => {
-            event.fn(...event.args);
-        });
-        this._penddingEvents = [];
+
+        app.system.enablePendingGameEvent = false;
+        app.system.handlePendingEvents();
+
+        this._handlePendingEvents();
         this.hideLoading("GameScene");
     }
 
-    _addGameEvents() {
+    _handlePendingEvents(){
+        this._penddingEvents.forEach(event => event.fn(...event.args));
         this._penddingEvents = [];
+    }
+
+    _initGameEvents() {
+        this._penddingEvents = [];
+        this.gameEventHandler = new GameEventHandler(this);
+
         this.on(Events.ON_GAME_STATE_CHANGE, (...args) => {
             this.initiated ? this._onGameStateChange(...args) : (this._penddingEvents.push({
                 fn: this._onGameStateChange,
@@ -161,15 +156,15 @@ class GameScene extends BaseScene {
             }))
         }, this);
 
-        this.on(Events.ON_GAME_REJOIN, this._handleGameRejoin, (...args) => {
+        this.on(Events.ON_GAME_REJOIN, (...args) => {
+            debug("ON_GAME_REJOIN: ", args)
             this.initiated ? this._handleGameRejoin(...args) : (this._penddingEvents.push({
                 fn: this._handleGameRejoin,
                 args: args
             }))
-        });
+        }, this);
 
         this.on(Events.ON_ACTION_EXIT_GAME, this._onActionExitGame, this);
-
         this.gameEventHandler.addGameEventListener();
     }
 
@@ -177,8 +172,6 @@ class GameScene extends BaseScene {
         if (this.isPlaying()) {
             let state = utils.getValue(data, app.keywords.BOARD_STATE_KEYWORD);
             state && this.emit(Events.ON_GAME_STATE_CHANGE, state, data);
-
-            this.gamePlayers.isMePlaying() && this.gamePlayers.me.onGameRejoin(data);
         }
     }
 
@@ -192,6 +185,7 @@ class GameScene extends BaseScene {
 
 
         let currentGameState = utils.getValue(this.gameData, Keywords.BOARD_STATE_KEYWORD);
+
         let isGamePlaying = GameUtils.isPlayingState(currentGameState);
 
         /**
@@ -204,19 +198,22 @@ class GameScene extends BaseScene {
 
         this.emit(Events.ON_GAME_LOAD_PLAY_DATA, this.gameData);
 
-        this._loadPlayerReadyState();
+        debug("isGamePlaying: ", isGamePlaying);
         if (isGamePlaying) {
+            this._loadPlayerReadyState();
             !app.context.rejoiningGame && this._onGameStateChange(currentGameState, this.gameData, true);
         } else {
-            this.emit(Events.ON_GAME_STATE_BEGIN, this.gameData);
+            this.emit(Events.ON_GAME_STATE_BEGIN, this.gameData, app.context.rejoiningGame);
+            this._loadPlayerReadyState();
         }
 
     }
 
     _loadPlayerReadyState() {
+        debug("_loadPlayerReadyState")
         let readyPlayerIds = this.gameData[Keywords.GAME_LIST_PLAYER];
         readyPlayerIds && readyPlayerIds.forEach(id => {
-            this.emit(Events.ON_PLAYER_READY_STATE_CHANGED, id);
+            this.emit(Events.ON_PLAYER_READY_STATE_CHANGED, id, true);
         });
     }
 
@@ -280,34 +277,29 @@ class GameScene extends BaseScene {
         log("Game state: ", state, localState);
 
         switch (localState) {
-            case app.const.game.board.state.BEGIN:
+            case app.const.game.state.BEGIN:
                 this.emit(Events.ON_GAME_STATE_BEGIN, data, isJustJoined);
                 break;
-            case app.const.game.board.state.STARTING:
+            case app.const.game.state.STARTING:
                 this.emit(Events.ON_GAME_STATE_STARTING, data, isJustJoined);
                 break;
-            case app.const.game.board.state.STARTED:
+            case app.const.game.state.STARTED:
                 this.emit(Events.ON_GAME_STATE_STARTED, data, isJustJoined);
                 break;
-            case app.const.game.board.state.PLAYING:
+            case app.const.game.state.PLAYING:
                 this.emit(Events.ON_GAME_STATE_PLAYING, data, isJustJoined);
                 break;
-            case app.const.game.board.state.ENDING:
+            case app.const.game.state.ENDING:
                 this.emit(Events.ON_GAME_STATE_ENDING, data, isJustJoined);
                 break;
         }
     }
 
     showGameResult(models) {
-        if (utils.isEmptyArray(models)) {
-            return;
+        if (!utils.isEmptyArray(models)) {
+            !this.gameResultPopup && (this.gameResultPopup = cc.instantiate(this.gameResultPopupPrefab).getComponent(GameResultPopup.name));
+            this.gameResultPopup.show(models);
         }
-
-        if (!this.gameResultPopup) {
-            this.gameResultPopup = cc.instantiate(this.gameResultPopupPrefab).getComponent(GameResultPopup.name);
-        }
-
-        this.gameResultPopup.show(models);
     }
 
     hideGameResult() {

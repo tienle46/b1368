@@ -28,7 +28,7 @@ export default class Board extends Actor {
 
         this.state = null;
 
-        this.serverState = app.const.game.board.state.INITED;
+        this.serverState = app.const.game.state.INITED;
 
         this.readyPhaseDuration = app.const.DEFAULT_READY_PHASE_DURATION;
 
@@ -41,7 +41,7 @@ export default class Board extends Actor {
         this.scene = scene;
         this.room = scene.room;
         this.gameCode = scene.gameCode;
-        this.state = app.const.game.board.state.INITED;
+        this.state = app.const.game.state.INITED;
         this.gameData = scene.gameData;
 
         if (this.room.containsVariable(app.keywords.VARIABLE_MIN_BET)) {
@@ -50,7 +50,7 @@ export default class Board extends Actor {
 
         if (this.gameData.hasOwnProperty(app.keywords.BOARD_STATE_KEYWORD)) {
             this.serverState = this.gameData[app.keywords.BOARD_STATE_KEYWORD];
-            this.state = app.const.game.board.state.BEGIN;
+            this.state = app.const.game.state.BEGIN;
         }
 
         this.scene.on(Events.ON_GAME_STATE_CHANGE, this.handleGameStateChange, this);
@@ -61,6 +61,7 @@ export default class Board extends Actor {
         this.scene.on(Events.ON_GAME_STATE_ENDING, this.onBoardEnding, this);
         this.scene.on(Events.ON_GAME_LOAD_PLAY_DATA, this._loadGamePlayData, this);
         this.scene.on(Events.ON_PLAYER_READY_STATE_CHANGED, this._onPlayerSetReadyState, this);
+        this.scene.on(Events.ON_GAME_REJOIN, this._onGameRejoin, this);
     }
 
     onLoad() {
@@ -74,18 +75,23 @@ export default class Board extends Actor {
     }
 
     start() {
-        // this.onBoardStateChanged(app.const.game.board.state.INITED);
+        // this.onBoardStateChanged(app.const.game.state.INITED);
     }
 
     onDestroy() {
         this.stopTimeLine();
     }
 
+    _onGameRejoin(data){
+        if(!this.scene.isPlaying()) {
+            let remainTime = utils.getValue(data, Keywords.PLAYER_REJOIN_TURN_COUNT_REMAIN);
+            remainTime && this.startTimeLine(remainTime);
+        }
+    }
+
     _onPlayerSetReadyState(playerId, ready, isItMe) {
         isItMe && (ready ? this.stopTimeLine() : this.startTimeLine(this.readyPhaseDuration));
     }
-
-
 
     /**
      * @abstract
@@ -98,27 +104,27 @@ export default class Board extends Actor {
     }
 
     isPlaying() {
-        this.scene.isPlaying();
+        return this.scene.isPlaying();
     }
 
     isStarting() {
-        this.scene.isStarting();
+        return this.scene.isStarting();
     }
 
     isReady() {
-        this.scene.isReady();
+        return this.scene.isReady();
     }
 
     isBegin() {
-        this.scene.isBegin();
+        return this.scene.isBegin();
     }
 
     isNewBoard() {
-        this.scene.isNewBoard();
+        return this.scene.isNewBoard();
     }
 
     isEnding() {
-        this.scene.isEnding();
+        return this.scene.isEnding();
     }
 
     getRoomNumber() {
@@ -231,7 +237,7 @@ export default class Board extends Actor {
     convertToLocalBoardState(state) {
 
         let _isInstanceOfPlayingState = (state) => {
-            return state === app.const.game.board.state.PLAYING;
+            return state === app.const.game.state.PLAYING;
         };
 
         let localState = state;
@@ -259,23 +265,24 @@ export default class Board extends Actor {
         this.renderer && this.renderer._reset();
     }
 
-    onBoardBegin(data = {}) {
-        this._reset();
+    onBoardBegin(data = {}, isJustJoined) {
 
-        log("on board begin check board timeline: ", Keywords.BOARD_PHASE_DURATION, data)
+        if(!isJustJoined){
+            this._reset();
+        }
 
         let boardTimeLine = utils.getValue(data, Keywords.BOARD_PHASE_DURATION);
-        if (boardTimeLine) {
+        this.readyPhaseDuration = boardTimeLine;
+
+        if (boardTimeLine && !this.scene.gamePlayers.me.isReady()) {
             if (this.scene.gamePlayers.meIsOwner()) {
                 boardTimeLine *= 2;
             }
 
-            this.readyPhaseDuration = boardTimeLine;
-
             this.startTimeLine(boardTimeLine, () => {this.scene.emit(Events.ON_ACTION_EXIT_GAME)});
         }
 
-        this.state = app.const.game.board.state.BEGIN;
+        this.state = app.const.game.state.BEGIN;
     }
 
     onBoardStarting(data = {}, isJustJoined) {
@@ -283,7 +290,7 @@ export default class Board extends Actor {
             this.onBoardBegin({}, isJustJoined);
         }
 
-        this.state = app.const.game.board.state.STARTING;
+        this.state = app.const.game.state.STARTING;
         this.scene.gameControls.hideAllControlsBeforeGameStart();
         this.stopTimeLine();
     }
@@ -293,7 +300,7 @@ export default class Board extends Actor {
             this.onBoardStarting({}, isJustJoined);
         }
 
-        this.state = app.const.game.board.state.STARTED;
+        this.state = app.const.game.state.STARTED;
         //TODO
     }
 
@@ -302,7 +309,7 @@ export default class Board extends Actor {
             this.onBoardStarted({}, isJustJoined);
         }
 
-        this.state = app.const.game.board.state.PLAYING;
+        this.state = app.const.game.state.PLAYING;
         //TODO
     }
 
@@ -318,7 +325,7 @@ export default class Board extends Actor {
         // let boardTimeLine = utils.getValue(data, Keywords.BOARD_PHASE_DURATION);
         // boardTimeLine && this.startTimeLine(boardTimeLine);
 
-        this.state = app.const.game.board.state.ENDING;
+        this.state = app.const.game.state.ENDING;
 
         // TODO Khi cần show hiệu ứng thì dùng thông tin này để hiển thị các trường hợp đặc biệt
         // Byte tbBoardWinType = resObj.getByte(SmartfoxKeyword.KEYWORD_WIN_TYPE);

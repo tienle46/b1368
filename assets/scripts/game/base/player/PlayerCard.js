@@ -28,8 +28,8 @@ export default class PlayerCard extends Player {
 
     _onGameRejoin(data){
         if (this.isItMe() && this.isPlaying()) {
-            let cards = utils.convertBytesToCards(utils.getValue(data, Keywords.GAME_LIST_CARD, []));
-            cards.length > 0 && this.setCards(cards) && this.emit(Events.ON_CLICK_SORT_BUTTON);
+            let cards = GameUtils.convertBytesToCards(utils.getValue(data, Keywords.GAME_LIST_CARD, []));
+            cards.length > 0 && this.setCards(cards, true) && this.emit(Events.ON_CLICK_SORT_BUTTON);
         }
     }
 

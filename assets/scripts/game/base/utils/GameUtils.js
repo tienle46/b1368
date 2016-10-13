@@ -6,40 +6,40 @@ import app from 'app';
 import game from 'game';
 import utils from 'utils';
 import {Card} from 'game-components'
-const boardState = app.const.game.board.state;
+const gameState = app.const.game.state;
 
 export default class GameUtils {
 
-    static isPlayingState(boardState) {
-        return boardState && boardState != boardState.READY;
+    static isPlayingState(checkState) {
+        return checkState && checkState != gameState.INITED && checkState != gameState.READY && checkState != gameState.BEGIN;
     }
 
     static convertToLocalGameState(state) {
 
         // if (data && data.hasOwnProperty(app.keywords.DEAL_CARD_LIST_KEYWORD)) {
-        //     state = boardState.DEAL_CARD;
+        //     state = gameState.DEAL_CARD;
         // }
 
         switch (state) {
-            case boardState.INITED:
-                return boardState.INITED;
+            case gameState.INITED:
+                return gameState.INITED;
 
-            case boardState.READY:
-                return boardState.BEGIN;
+            case gameState.READY:
+                return gameState.BEGIN;
 
-            case boardState.DEAL_CARD:
-            case boardState.BOARD_STATE_ARRANGE_CARD:
-                return boardState.STARTING;
+            case gameState.DEAL_CARD:
+            case gameState.BOARD_STATE_ARRANGE_CARD:
+                return gameState.STARTING;
 
-            case boardState.STARTED:
-                return boardState.STARTED;
+            case gameState.STARTED:
+                return gameState.STARTED;
 
-            case boardState.PLAYING:
-            case boardState.TURN_BASE_TRUE_PLAY:
-                return boardState.PLAYING;
+            case gameState.PLAYING:
+            case gameState.TURN_BASE_TRUE_PLAY:
+                return gameState.PLAYING;
 
-            case boardState.BOARD_STATE_END:
-                return boardState.ENDING;
+            case gameState.BOARD_STATE_END:
+                return gameState.ENDING;
 
         }
     }
