@@ -1,46 +1,88 @@
 import RubUtils from 'RubUtils';
-import Rub from 'Rub';
 
-export default class LoaderRub extends Rub {
-    constructor(node, opts = {}) {
-        super(node);
+export default class LoaderRub {
+    constructor(node, hideBg = false, opts = {}) {
         let defaultOptions = {
             position: cc.v2(0, 0)
         };
         this.options = Object.assign({}, defaultOptions, opts);
+        this.hideBg = hideBg;
+        this.node = node;
+
+        this._node();
     }
 
-    init() {
-        let url = 'Common/spin_loader';
-        return RubUtils.loadRes(url).then((prefab) => {
-            this.prefab = cc.instantiate(prefab);
-            this.circleNode = this.prefab.getChildByName('loader').getChildByName('circle');
-            return null;
-        }).then(() => {
-            this._setRotateAction();
-            return this;
-        });
+    _node() {
+        this.spinLoaderNode = new cc.Node();
+        this.spinLoaderNode.name = 'spin_loader';
+        this.spinLoaderNode.setPosition(cc.v2(0, 0));
+        this.spinLoaderNode.setContentSize(cc.size(960, 640));
+
+        // spin_loader -> bgNode
+        let bgNode = new cc.Node();
+        bgNode.name = 'bg';
+        bgNode.setPosition(0, 0);
+        bgNode.setContentSize(cc.size(960, 640));
+        bgNode.color = new cc.Color(0, 0, 0);
+        bgNode.opacity = 190;
+        bgNode.active = !this.hideBg;
+        this.spinLoaderNode.addChild(bgNode);
+
+        // bg sprite
+        let bgSprite = bgNode.addComponent(cc.Sprite);
+        RubUtils.loadSpriteFrame(bgSprite, 'textures/50x50', bgNode.getContentSize());
+
+        // spin_loader -> loader Node
+        let loaderNode = new cc.Node();
+        loaderNode.name = 'loader';
+        loaderNode.setPosition(0, 0);
+        loaderNode.setContentSize(cc.size(113, 113));
+        this.spinLoaderNode.addChild(loaderNode);
+
+        // loader -> cricle Node
+        let circleNode = new cc.Node();
+        circleNode.name = 'circle';
+        circleNode.setPosition(0, 0);
+        circleNode.setContentSize(cc.size(115.6, 115.6));
+        loaderNode.addChild(circleNode);
+
+        let circleSprite = circleNode.addComponent(cc.Sprite);
+        RubUtils.loadSpriteFrame(circleSprite, 'textures/loading-1', circleNode.getContentSize());
+
+        // rotate cricle node
+        circleNode.runAction(cc.repeatForever(cc.rotateBy(1.0, 360)));
+
+        // cricle -> light
+        let lightNode = new cc.Node();
+        lightNode.name = 'light';
+        lightNode.setPosition(0, 54.07);
+        lightNode.setContentSize(cc.size(43, 36));
+
+        circleNode.addChild(lightNode);
+
+        let lightSprite = lightNode.addComponent(cc.Sprite);
+        RubUtils.loadSpriteFrame(lightSprite, 'textures/light-indicator', lightNode.getContentSize());
+
+        // loader -> spade Node
+        let spadeNode = new cc.Node();
+        spadeNode.name = 'spade';
+        spadeNode.setPosition(0, 0);
+        spadeNode.setContentSize(53, 53);
+
+        loaderNode.addChild(spadeNode);
+
+        let spadeSprite = spadeNode.addComponent(cc.Sprite);
+        RubUtils.loadSpriteFrame(spadeSprite, 'textures/bich', spadeNode.getContentSize());
+
+        this.node.addChild(this.spinLoaderNode);
+        this.hide();
     }
 
-    _setRotateAction() {
-        let repeat = cc.repeatForever(cc.rotateBy(1.0, 360));
-        this.circleNode.runAction(repeat);
+    show() {
+        this.spinLoaderNode.active = true;
     }
 
-    _hideBackground() {
-        let bgNode = this.prefab.getChildByName('bg');
-        bgNode.active = false;
-    }
-
-    static show(node, opts = {}, showBg = true) {
-        return new LoaderRub(node, opts).init().then((a) => {
-            a.addToNode();
-
-            console.log(showBg);
-            if (!showBg) {
-                console.log(showBg);
-                a._hideBackground();
-            }
-        });
+    hide() {
+        this.spinLoaderNode.active = false;
     }
 }

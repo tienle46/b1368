@@ -9,7 +9,7 @@ class PreloadScene extends Component {
     }
 
     onLoad() {
-        LoaderRub.show(this.node, {}, false);
+        new LoaderRub(this.node, true).show();
 
         // progress bar
         // let progressBarNode = this.node.getChildByName('progressBar');

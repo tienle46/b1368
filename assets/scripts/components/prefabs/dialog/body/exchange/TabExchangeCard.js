@@ -6,6 +6,7 @@ import RubUtils from 'RubUtils';
 import ConfirmPopupRub from 'ConfirmPopupRub';
 import ExchangeDialog from 'ExchangeDialog';
 import numeral from 'numeral';
+import LoaderRub from 'LoaderRub';
 
 class TabExchangeCard extends Component {
     constructor() {
@@ -13,13 +14,15 @@ class TabExchangeCard extends Component {
     }
 
     onLoad() {
+        this.loader = new LoaderRub(this.node);
+
         // wait til every requests is done
         this.node.active = false;
-
+        // show loader
+        this.loader.show();
         // get content node
         this.contentNode = this.node.getChildByName('view').getChildByName('content');
         this._getExchangeDialogComponent().hideUpdatePhone();
-
         this._initCardsList();
     }
 
@@ -78,6 +81,8 @@ class TabExchangeCard extends Component {
                     itemNode.addComponent(ButtonScaler);
                 }
             }
+            // hide loader
+            this.loader.hide();
             this.node.active = true;
         }
     }
@@ -121,11 +126,19 @@ class TabExchangeCard extends Component {
                 data
             };
             log(sendObject);
+            // show loader
+            this.loader.show();
+
+            setTimeout(() => {
+                this.loader.hide();
+            }, 2000)
             app.service.send(sendObject, (data) => {
-                log(data);
+                console.log(data);
             });
         }
     }
+
+
     _initRowNode() {
         let rowNode = new cc.Node();
         rowNode.width = 780;
