@@ -1,3 +1,4 @@
+
 import app from 'app';
 import Component from 'Component';
 import AlertPopupRub from 'AlertPopupRub';
@@ -7,30 +8,40 @@ import ConfirmPopupRub from 'ConfirmPopupRub';
 import ExchangeDialog from 'ExchangeDialog';
 import numeral from 'numeral';
 
-class TabTransferVC extends Component {
+class TabTransferTransaction extends Component {
     constructor() {
         super()
-        this.receiverLabel = {
-            default: null,
-            type:cc.Label
-        }
-        this.receiverInput = {
-            default: null,
-            type:cc.EditBox
+        this.contentNode = {
+            default : null,
+            type: cc.Node
         }
     }
 
     onLoad() {
-        // wait til every requests is done
         this.node.active = true;
+        // get content node
+        let event = new cc.Component.EventHandler();
+        event.target = this.node;
+        event.component = 'TabTransferTransaction';
+        event.handler = 'scrollEvent';
 
-        // let event = new cc.Component.EventHandler();
-        // event.target = this.node;
-        // event.component = 'TabExchangeCard';
-        // event.handler = 'scrollEvent';
-        //
         // this.node.getComponent(cc.ScrollView).scrollEvents.push(event);
+
+        RubUtils.loadRes('dashboard/dialog/prefabs/userinfo/transaction_item').then((preFab)=>{
+            for(let i = 0 ; i < 10; i++){
+                const transactionItem = cc.instantiate(preFab);
+                const widget = transactionItem.addComponent(cc.Widget);
+                widget.isAlignLeft = true;
+                widget.isAlignRight = true;
+
+                widget.left = 0;
+                widget.right = 0;
+
+                this.contentNode.addChild(transactionItem);
+            }
+        })
     }
+
 
     _hide() {
         this.node.active = false;
@@ -72,4 +83,4 @@ class TabTransferVC extends Component {
     }
 }
 
-app.createComponent(TabTransferVC);
+app.createComponent(TabTransferTransaction);

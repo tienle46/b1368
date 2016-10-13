@@ -29,6 +29,8 @@ class BaseControls extends GameControls {
     }
 
     onClickReadyButton() {
+        debug("onClickReadyButton");
+
         this.scene.showShortLoading('ready');
         app.service.send({cmd: app.commands.PLAYER_READY, room: this.scene.room});
     }
@@ -43,7 +45,10 @@ class BaseControls extends GameControls {
         this.scene.on(Events.ON_PLAYER_READY_STATE_CHANGED, this._onPlayerSetReadyState, this);
     }
 
-    _onPlayerSetReadyState(playerId, ready, isItMe) {
+    _onPlayerSetReadyState(playerId, ready, isItMe = this.scene.gamePlayers.isItMe(playerId)) {
+
+        log("_onPlayerSetReadyState: ", playerId, ready, isItMe);
+
         this.scene.hideLoading('ready');
         isItMe && (ready ? this._onPlayerReady() : this._onPlayerUnready());
     }

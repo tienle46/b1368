@@ -32,6 +32,7 @@ Events.ON_USER_UPDATE_LEVEL             = "onUserUpdateLevel";
 Events.ON_USER_UPDATE_EXP_POINT         = "onUserUpdateExpPoint";
 
 Events.ON_ROOM_CHANGE_OWNER             = "on.room.changeOwner";
+Events.ON_ROOM_CHANGE_MASTER            = "on.room.changeMaster";
 Events.ON_ROOM_CHANGE_MIN_BET           = "on.room.changeMinBet";
 
 Events.ON_CLICK_PLAY_BUTTON             = "onClickPlayButton";

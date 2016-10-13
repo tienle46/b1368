@@ -422,10 +422,10 @@ export default class GamePlayers extends Component {
             let newPlayer = this._addPlayer(user);
 
             if (newPlayer) {
-                let boardState = this.board.isPlaying() || this.board.isStarting() ? app.const.game.board.state.PLAYING
-                    : this.board.isBegin() ? app.const.game.board.state.BEGIN
-                    : this.board.isReady() ? app.const.game.board.state.READY
-                    : this.board.isEnding() ? app.const.game.board.state.ENDING
+                let boardState = this.board.isPlaying() || this.board.isStarting() ? app.const.game.state.PLAYING
+                    : this.board.isBegin() ? app.const.game.state.BEGIN
+                    : this.board.isReady() ? app.const.game.state.READY
+                    : this.board.isEnding() ? app.const.game.state.ENDING
                     : undefined;
 
                 boardState && newPlayer.changeGameState(boardState);

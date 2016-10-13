@@ -20,8 +20,13 @@ export default class BaseScene extends Actor {
         };
 
         this.onShown = null;
+        this.isLoaded = false;
     }
 
+    _addToPendingAddPopup(message){
+        !this._pendingAddPopup && (this._pendingAddPopup = []);
+        message && this._pendingAddPopup.push(message);
+    }
 
     _addGlobalListener() {
         super._addGlobalListener();
@@ -39,6 +44,13 @@ export default class BaseScene extends Actor {
      */
     _removeGlobalListener() {
         super._removeGlobalListener();
+    }
+
+    onLoad(){
+        this.isLoaded = true;
+        this._pendingAddPopup && this._pendingAddPopup.forEach(msg => {
+            this.addPopup(msg);
+        })
     }
 
     start() {
@@ -80,10 +92,18 @@ export default class BaseScene extends Actor {
 
     // show popup
     addPopup(string = null) {
-        var popupBase = new cc.instantiate(this.popUp);
-        popupBase.position = cc.p(0, 0);
-        popupBase.getComponent(BasePopup).setContent(string);
-        this.node.addChild(popupBase);
+        if(utils.isEmpty(string)){
+            return;
+        }
+
+        if(this.popUp){
+            var popupBase = new cc.instantiate(this.popUp);
+            popupBase.position = cc.p(0, 0);
+            popupBase.getComponent(BasePopup).setContent(string);
+            this.node.addChild(popupBase);
+        }else{
+            this._addToPendingAddPopup(string);
+        }
     }
 
     changeScene(name, duration = 0.5) {

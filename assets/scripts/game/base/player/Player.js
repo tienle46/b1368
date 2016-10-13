@@ -152,6 +152,10 @@ export default class Player extends Actor {
         return this.user && this.user.isItMe;
     }
 
+    isPlaying(){
+        return this.isReady();
+    }
+
     /**
      * Show message player want to say
      * @param message
