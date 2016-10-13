@@ -62,7 +62,7 @@ export default class TLMNDLControls extends GameControls {
         this.cardTurnBaseControls.node.on('touchstart', (event) => true);
     }
 
-    _onGameBegin(){
+    _onGameBegin(data){
         debug("on game controls begin");
         this._showGameBeginControls();
     }

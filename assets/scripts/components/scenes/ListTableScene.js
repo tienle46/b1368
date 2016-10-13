@@ -93,25 +93,10 @@ export default class ListTableScene extends BaseScene {
 
     _addGlobalListener() {
         super._addGlobalListener();
-        app.system.addListener(SFS2X.SFSEvent.ROOM_JOIN, this._onJoinRoomResult, this);
     }
 
     _removeGlobalListener() {
         super._removeGlobalListener();
-        app.system.removeListener(SFS2X.SFSEvent.ROOM_JOIN, this._onJoinRoomResult, this);
-    }
-
-    _onJoinRoomResult(resultEvent) {
-        if (resultEvent.errorCode) {
-            app.system.error(event.errorMessage);
-        } else {
-
-            app.context.lastJoinRoom = resultEvent.room;
-            if (resultEvent.room.isJoined && resultEvent.room.isGame) {
-                app.context.currentRoom = resultEvent.room;
-                app.system.loadScene(app.const.scene.GAME_SCENE);
-            }
-        }
     }
 
     _createRoom(gameCode = null, minBet = 0, roomCapacity = 2, password = undefined) {
@@ -122,21 +107,13 @@ export default class ListTableScene extends BaseScene {
         requestParam[app.keywords.ROOM_PASSWORD] = password;
         requestParam[app.keywords.ROOM_CAPACITY] = roomCapacity;
 
-        app.service.send({ cmd: app.commands.USER_CREATE_ROOM, data: requestParam, room: null /*app.context.currentRoom*/ }, (error, resultEvent) => {
-
-            this._onJoinRoomResult(resultEvent);
-
-            // if(resultEvent.errorCode){
-            //     app.system.error(event.errorMessage);
-            // }else{
-            //
-            //     app.context.lastJoinRoom = resultEvent.room;
-            //     if (resultEvent.room.isJoined && resultEvent.room.isGame) {
-            //         app.context.currentRoom = resultEvent.room;
-            //         app.system.loadScene(app.const.scene.GAME_SCENE);
-            //     }
-            // }
-
+        /**
+         * If create room successfully, response going handle by join room success follow
+         */
+        app.service.send({ cmd: app.commands.USER_CREATE_ROOM, data: requestParam, room: null}, (error) => {
+            if (error.errorCode) {
+                app.system.error(error.errorMessage);
+            }
         });
     }
 

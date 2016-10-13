@@ -61,13 +61,15 @@ export default class BoardTLMNDL extends BoardCardTurnBase {
         /**
          * Get remain player card size
          */
-        let playerIds = utils.getValue(data, Keywords.GAME_LIST_PLAYER);
-        let playerRemainCardSizes = utils.getValue(data, Keywords.GAME_LIST_PLAYER_CARDS_SIZE,
-            playerIds && new Array(playerIds.length).fill(PlayerTLMNDL.DEFAULT_HAND_CARD_COUNT));
+        if(this.isPlaying()){
+            let playerIds = utils.getValue(data, Keywords.GAME_LIST_PLAYER);
+            let playerRemainCardSizes = utils.getValue(data, Keywords.GAME_LIST_PLAYER_CARDS_SIZE,
+                playerIds && new Array(playerIds.length).fill(PlayerTLMNDL.DEFAULT_HAND_CARD_COUNT));
 
-        playerIds && playerRemainCardSizes && playerIds.forEach((id, index) => {
-            this.scene.emit(Events.ON_PLAYER_REMAIN_CARD_COUNT, id, playerRemainCardSizes[index]);
-        });
+            playerIds && playerRemainCardSizes && playerIds.forEach((id, index) => {
+                this.scene.emit(Events.ON_PLAYER_REMAIN_CARD_COUNT, id, playerRemainCardSizes[index]);
+            });
+        }
 
         /**
          * Get current player win rank. TLMNDL don't need to get player win rank
