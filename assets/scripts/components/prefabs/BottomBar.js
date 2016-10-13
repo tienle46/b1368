@@ -113,28 +113,28 @@ class BottomBar extends Component {
     onClickUserInfoAction() {
         let tabs = [{
             title: 'Cá nhân',
-            value: null
+            value: 'tab_user_info'
         }, {
             title: 'Thành tích',
             value: null
         }, {
             title: 'Gift Code',
-            value: null
+            value: 'tab_gift_code'
         }, {
             title: 'Chuyển chip',
-            value: null
+            value: 'tab_transfer_vc'
         }, {
             title: 'Nhận chip',
-            value: null
+            value: 'tab_transfer_transaction'
         }, {
             title: 'Lịch sử',
-            value: null
+            value: 'tab_transaction_history'
         }, ];
 
         let options = {
             itemHeight: 26.5,
             itemWidth: 112,
-            tabBodyPrefabType: 'exchange'
+            tabBodyPrefabType: 'userinfo'
         };
 
         let tabOptions = { tabs, options };
