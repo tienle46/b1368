@@ -1,5 +1,5 @@
 import DialogRub from 'DialogRub';
-// import ExchangeDialog from 'ExchangeDialog';
+import PersonalInfoDialog from 'PersonalInfoDialog';
 
 export default class PersonalInfoDialogRub extends DialogRub {
     constructor(node, tabOptions) {
@@ -8,7 +8,7 @@ export default class PersonalInfoDialogRub extends DialogRub {
 
     init() {
         return super.init().then(() => {
-            // this.exchangeDialogComponent = this.prefab.addComponent(ExchangeDialog);
+            this.personalInfoDialogComponent = this.prefab.addComponent(PersonalInfoDialog);
 
             return null;
         }).catch(e => {

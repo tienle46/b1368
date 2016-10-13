@@ -1,7 +1,6 @@
 import app from 'app';
 import Component from 'Component';
 import AlertPopupRub from 'AlertPopupRub';
-import ButtonScaler from 'ButtonScaler';
 import RubUtils from 'RubUtils';
 import ConfirmPopupRub from 'ConfirmPopupRub';
 import ExchangeDialog from 'ExchangeDialog';
@@ -12,11 +11,11 @@ class TabGiftCode extends Component {
         super()
         this.messageLabel = {
             default: null,
-            type:cc.Label
+            type: cc.Label
         }
         this.giftCodeInput = {
             default: null,
-            type:cc.EditBox
+            type: cc.EditBox
         }
     }
 
@@ -27,13 +26,13 @@ class TabGiftCode extends Component {
         this.messageLabel.horizontalAlign = cc.Label.HorizontalAlign.CENTER;
         this.messageLabel.overflow = cc.Label.Overflow.RESIZE_HEIGHT;
         this.messageLabel.enableWrapText = true;
-        let userName = 'cuongnat';
-        // this.messageLabel.string = `Bạn đang sử dụng tài khoản ${userName} để nhận thưởng`;
-        this.messageLabel.string = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Hanc quoque iucunditatem, si vis, transfer in animum; Est enim tanti philosophi tamque nobilis audacter sua decreta defendere';
+        let userName = app.context.getMyInfo().name;
+        this.messageLabel.string = `Bạn đang sử dụng tài khoản "${userName}" để nhận thưởng`;
+        // this.messageLabel.string = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Hanc quoque iucunditatem, si vis, transfer in animum; Est enim tanti philosophi tamque nobilis audacter sua decreta defendere';
         //trungnt: customize font is not available yet
 
         this.messageLabel.isSystemFontUsed = false;
-        RubUtils.loadRes('fonts/UTMFACEBOOKK_ITALIC').then((font)=>{
+        RubUtils.loadRes('fonts/UTMFACEBOOKK_ITALIC').then((font) => {
             this.messageLabel.font = font;
             this.messageLabel.fontSize = 28;
         })

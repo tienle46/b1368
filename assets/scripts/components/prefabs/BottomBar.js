@@ -119,10 +119,10 @@ class BottomBar extends Component {
             value: null
         }, {
             title: 'Gift Code',
-            value: null
+            value: 'gift_code'
         }, {
             title: 'Chuyển chip',
-            value: null
+            value: 'transfer_vc'
         }, {
             title: 'Nhận chip',
             value: null
@@ -134,7 +134,7 @@ class BottomBar extends Component {
         let options = {
             itemHeight: 26.5,
             itemWidth: 112,
-            tabBodyPrefabType: 'exchange'
+            tabBodyPrefabType: 'userinfo'
         };
 
         let tabOptions = { tabs, options };
