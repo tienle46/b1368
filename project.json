@@ -1,4 +1,4 @@
 {
-  "engine": "cocos-creator-js",
-  "packages": "packages"
+    "engine": "cocos-creator-js",
+    "packages": "packages"
 }

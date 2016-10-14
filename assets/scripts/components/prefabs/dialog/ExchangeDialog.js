@@ -1,9 +1,7 @@
 import app from 'app';
-// import Component from 'Component';
-// import ToggleGroup from 'ToggleGroup';
-// import CheckBox from 'CheckBox';
-// import AlertPopupRub from 'AlertPopupRub';
 import Dialog from 'Dialog';
+import LoaderRub from 'LoaderRub';
+
 
 class ExchangeDialog extends Dialog {
     constructor() {

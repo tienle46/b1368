@@ -10,7 +10,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "change_password",
+    "_name": "gift_code",
     "_objFlags": 0,
     "_opacity": 255,
     "_color": {
@@ -96,7 +96,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 452.02,
+      "width": 753.37,
       "height": 40
     },
     "_children": [],
@@ -139,14 +139,14 @@
     },
     "_enabled": true,
     "_useOriginalSize": false,
-    "_actualFontSize": 18,
-    "_fontSize": 18,
+    "_actualFontSize": 30,
+    "_fontSize": 30,
     "_lineHeight": 40,
     "_enableWrapText": true,
     "_N$file": null,
     "_isSystemFontUsed": true,
     "_N$string": "Bạn đang sử dụng tài khoản \"cuongnat\" để nhận thưởng",
-    "_N$horizontalAlign": 0,
+    "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
     "_N$overflow": 0
   },
@@ -160,8 +160,8 @@
     "_enabled": true,
     "isAlignOnce": true,
     "_alignFlags": 41,
-    "_left": 20,
-    "_right": 20,
+    "_left": 50,
+    "_right": 50,
     "_top": 0,
     "_bottom": 0,
     "_verticalCenter": 0,
@@ -220,7 +220,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": 62
+      "y": 42
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -360,7 +360,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": -38.5
+      "y": -78.5
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -385,7 +385,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "deleteBtn",
+    "_name": "backBtn",
     "_objFlags": 0,
     "_opacity": 255,
     "_color": {
@@ -516,7 +516,7 @@
     "_enableWrapText": false,
     "_N$file": null,
     "_isSystemFontUsed": true,
-    "_N$string": "Xoá",
+    "_N$string": "Quay lại",
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
     "_N$overflow": 1
@@ -761,7 +761,7 @@
     "_enableWrapText": false,
     "_N$file": null,
     "_isSystemFontUsed": true,
-    "_N$string": "Gửi",
+    "_N$string": "Xác nhận",
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
     "_N$overflow": 1
@@ -959,7 +959,7 @@
     "_N$startAxis": 0,
     "_N$padding": 0,
     "_N$spacingX": 0,
-    "_N$spacingY": 20,
+    "_N$spacingY": 40,
     "_N$verticalDirection": 1,
     "_N$horizontalDirection": 0
   },

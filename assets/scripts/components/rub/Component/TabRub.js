@@ -55,6 +55,8 @@ export default class TabRub extends SegmentControlRub {
     }
 
     _tabEventHandler() {
+        if (this.getVal() === null)
+            return;
         if (this._isNode()) {
             this.addContentNodeToBody();
         } else {

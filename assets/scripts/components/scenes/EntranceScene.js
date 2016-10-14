@@ -3,6 +3,7 @@ var BaseScene = require("BaseScene");
 var Fingerprint2 = require('fingerprinter');
 
 import AlertPopupRub from 'AlertPopupRub';
+import LoaderRub from 'LoaderRub';
 
 class EntranceScene extends BaseScene {
 
@@ -29,14 +30,17 @@ class EntranceScene extends BaseScene {
             default: null,
             type: cc.Button
         };
+
     }
 
     // use this for initialization
     onLoad() {
+        this.loader = new LoaderRub(this.node);
         super.onLoad();
     }
 
     handleLoginAction() {
+        this.loader.show();
         app.service.connect((success) => {
             log("success: " + success);
             if (success) {
@@ -45,6 +49,7 @@ class EntranceScene extends BaseScene {
                         error = JSON.parse(error);
                         if (result) {
                             console.log(app.context.getMe());
+                            this.loader.hide();
                             this.changeScene('DashboardScene');
                         }
 
