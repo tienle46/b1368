@@ -481,6 +481,7 @@ export default class CardList extends Component {
         newCard.initFromByte(byte);
         newCard.reveal(reveal);
         newCard.node.setScale(this._scale);
+
         // if(this._orientation == CardList.VERTICAL){
         //     newCard.runAction(cc.rotateBy(0,90));
         // }

@@ -4,14 +4,14 @@
 // import app from 'app';
 import TabEvents from 'TabEvents';
 
-class TabSystemMessage extends TabEvents{
+class TabPersonalMessages extends TabEvents{
     constructor(){
         super();
     }
     onLoad(){
-        this.groupType = app.const.DYNAMIC_GROUP_NOTIFY;
+        this.groupType = app.const.DYNAMIC_GROUP_SYSTEM_MESSAGE;
         super.onLoad();
     }
 }
 
-app.createComponent(TabSystemMessage);
+app.createComponent(TabPersonalMessages);

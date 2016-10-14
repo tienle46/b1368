@@ -11,7 +11,14 @@ export default class ListItem extends Component {
             default : null,
             type: cc.Layout
         }
-
+        this.titleLabel = {
+            default : null,
+            type: cc.Label
+        }
+        this.subTitleLabel = {
+            default : null,
+            type: cc.Label
+        }
         this.descriptionLabel = {
             default : null,
             type: cc.Label
@@ -55,6 +62,12 @@ export default class ListItem extends Component {
     initWithStyle(style, expandable = false){
         this._style = style;
         this._expandable = expandable;
+    }
+    fillData({title = '', sub = '', detail = '', image = null} = {}){
+        this.titleLabel.string = title;
+        this.subTitleLabel.string = sub;
+        this.descriptionLabel.string = detail;
+
     }
 
     toggleClicked(sender, event) {
