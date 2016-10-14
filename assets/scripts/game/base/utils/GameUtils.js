@@ -3,12 +3,16 @@
  */
 
 import app from 'app';
-import game from 'game';
 import utils from 'utils';
 import {Card} from 'game-components'
+import numeral from 'numeral';
 const gameState = app.const.game.state;
 
 export default class GameUtils {
+
+    static formatBalance(balance){
+        return utils.isNumber(balance) ? numeral(balance).format((balance < 1000000 ? '0,0' : '0.00a')) : "";
+    }
 
     static isPlayingState(checkState) {
         return checkState && checkState != gameState.INITED && checkState != gameState.READY && checkState != gameState.BEGIN;

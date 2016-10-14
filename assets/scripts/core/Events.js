@@ -47,6 +47,7 @@ Events.ON_GAME_STATE_ENDING             = "onGameStateEnding";
 Events.ON_GAME_STATE_CHANGE             = "onGameStateChange"
 Events.ON_GAME_LOAD_PLAY_DATA           = "onGameLoadPlayData";
 Events.ON_GAME_REJOIN                   = "on.game.rejoin";
+Events.ON_GAME_SET_LAST_MOVE            = "on.game.setLastMove";
 
 Events.GAME_USER_EXIT_ROOM              = "gameUserExitRoom";
 

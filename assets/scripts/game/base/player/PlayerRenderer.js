@@ -3,8 +3,8 @@
  */
 
 import app from 'app';
+import {utils, GameUtils} from 'utils';
 import ActorRenderer from 'ActorRenderer';
-import utils from 'utils';
 
 export default class PlayerRenderer extends ActorRenderer {
     constructor() {
@@ -77,7 +77,7 @@ export default class PlayerRenderer extends ActorRenderer {
     }
 
     setBalance(balance = 0) {
-        this.balanceLabel.string = `${balance}`;
+        this.balanceLabel.string = GameUtils.formatBalance(balance);
     }
 
     setVisibleOwner(visible) {

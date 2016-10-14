@@ -36,11 +36,35 @@ export default class GameScene extends BaseScene {
         this._penddingEvents = [];
     }
 
+    _addGlobalListener(){
+        this.on(Events.ON_GAME_STATE_CHANGE, (...args) => {
+            this.initiated ? this._onGameStateChange(...args) : (this._penddingEvents.push({
+                fn: this._onGameStateChange,
+                args: args
+            }))
+        }, this, 1);
+
+        // this.on(Events.ON_GAME_REJOIN, (...args) => {
+        //     debug("ON_GAME_REJOIN: ", args)
+        //     this.initiated ? this._onGameRejoin(...args) : (this._penddingEvents.push({
+        //         fn: this._onGameRejoin,
+        //         args: args
+        //     }))
+        // }, this, 1);
+        this.on(Events.ON_ACTION_EXIT_GAME, this._onActionExitGame, this);
+    }
+
+    handleRejoinGame(...args){
+        this.initiated ? this._onGameRejoin(...args) : (this._penddingEvents.push({
+            fn: this._onGameRejoin,
+            args: args
+        }))
+    }
+
     onLoad() {
 
         super.onLoad();
-
-        console.log("Game Scene on load");
+        this._addGlobalListener();
 
         try {
             this.room = app.context.currentRoom;
@@ -148,31 +172,13 @@ export default class GameScene extends BaseScene {
     _initGameEvents() {
         this._penddingEvents = [];
         this.gameEventHandler = new GameEventHandler(this);
-
-        this.on(Events.ON_GAME_STATE_CHANGE, (...args) => {
-            this.initiated ? this._onGameStateChange(...args) : (this._penddingEvents.push({
-                fn: this._onGameStateChange,
-                args: args
-            }))
-        }, this);
-
-        this.on(Events.ON_GAME_REJOIN, (...args) => {
-            debug("ON_GAME_REJOIN: ", args)
-            this.initiated ? this._handleGameRejoin(...args) : (this._penddingEvents.push({
-                fn: this._handleGameRejoin,
-                args: args
-            }))
-        }, this);
-
-        this.on(Events.ON_ACTION_EXIT_GAME, this._onActionExitGame, this);
         this.gameEventHandler.addGameEventListener();
     }
 
-    _handleGameRejoin(data) {
-        if (this.isPlaying()) {
-            let state = utils.getValue(data, app.keywords.BOARD_STATE_KEYWORD);
-            state && this.emit(Events.ON_GAME_STATE_CHANGE, state, data);
-        }
+    _onGameRejoin(data) {
+        let state = utils.getValue(this.gameData, app.keywords.BOARD_STATE_KEYWORD);
+        state && this.emit(Events.ON_GAME_STATE_CHANGE, state, this.gameData, true);
+        this.emit(Events.ON_GAME_REJOIN, data);
     }
 
     _onActionExitGame() {
@@ -183,10 +189,8 @@ export default class GameScene extends BaseScene {
     _loadGameData() {
         this.gamePlayers._init(this.board, this);
 
-
-        let currentGameState = utils.getValue(this.gameData, Keywords.BOARD_STATE_KEYWORD);
-
         let isGamePlaying = GameUtils.isPlayingState(currentGameState);
+        let currentGameState = utils.getValue(this.gameData, Keywords.BOARD_STATE_KEYWORD);
 
         /**
          * Current is call board._initPlayingData && board._loadGamePlayData directly. But when player or other component need to get data,
@@ -213,7 +217,7 @@ export default class GameScene extends BaseScene {
         debug("_loadPlayerReadyState")
         let readyPlayerIds = this.gameData[Keywords.GAME_LIST_PLAYER];
         readyPlayerIds && readyPlayerIds.forEach(id => {
-            this.emit(Events.ON_PLAYER_READY_STATE_CHANGED, id, true);
+            this.emit(Events.ON_PLAYER_READY_STATE_CHANGED, id, true, this.gamePlayers.isItMe(id));
         });
     }
 
@@ -268,7 +272,7 @@ export default class GameScene extends BaseScene {
 
     _onGameStateChange(state, data, isJustJoined) {
 
-        console.log("_onGameStateChange: ", this);
+        console.log("_onGameStateChange: state=", state, " isJustJoined=", isJustJoined, " data=", data);
 
         let localState = GameUtils.convertToLocalGameState(state);
         this.gameState = state;

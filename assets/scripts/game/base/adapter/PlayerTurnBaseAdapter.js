@@ -63,8 +63,10 @@ export default class PlayerTurnBaseAdapter extends GameAdapter {
 
     _onGameRejoin(data){
         if(this.scene.isPlaying()) {
+            let onTurnPlayerId = utils.getValue(this.scene.gameData, Keywords.TURN_PLAYER_ID);
             let remainTime = utils.getValue(data, Keywords.PLAYER_REJOIN_TURN_COUNT_REMAIN);
-            remainTime && this.player.startTimeLine(remainTime);
+
+            onTurnPlayerId == this.player.id && remainTime && this.player.startTimeLine(remainTime);
         }
     }
 
@@ -188,7 +190,7 @@ export default class PlayerTurnBaseAdapter extends GameAdapter {
 
         //TODO play sound
 
-        let showPlayControlOnly = this.preTurnPlayerId == 0;
+        let showPlayControlOnly = this.preTurnPlayerId == 0 && this.lastPlayedTurn == 0;
 
         if(this.player.isItMe()) {
             this.scene.emit(Events.SHOW_ON_TURN_CONTROLS, showPlayControlOnly);
@@ -211,7 +213,7 @@ export default class PlayerTurnBaseAdapter extends GameAdapter {
     }
 
     _loadGamePlayData(data){
-        this.lastPlayedTurn = utils.getValue(data, Keywords.LAST_MOVE_PLAYER_ID);
+        this.lastPlayedTurn = utils.getValue(data, Keywords.LAST_MOVE_PLAYER_ID, 0);
 
         /**
          * Start on turn player time line.
