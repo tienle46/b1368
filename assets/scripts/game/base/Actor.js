@@ -73,9 +73,9 @@ export default class Actor extends Component {
         this._eventEmitter && this._eventEmitter.emit(name, ...args);
     }
 
-    on(name, listener, context){
+    on(name, listener, context, priority){
         this._assertEmitter();
-        this._eventEmitter.addListener(name, listener, context);
+        this._eventEmitter.addListener(name, listener, context, priority);
     }
 
     off(eventName, listener, context){

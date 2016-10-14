@@ -83,7 +83,7 @@ export default class Board extends Actor {
     }
 
     _onGameRejoin(data){
-        if(!this.scene.isPlaying()) {
+        if(this.scene.isBegin()) {
             let remainTime = utils.getValue(data, Keywords.PLAYER_REJOIN_TURN_COUNT_REMAIN);
             remainTime && this.startTimeLine(remainTime);
         }
@@ -274,7 +274,9 @@ export default class Board extends Actor {
         let boardTimeLine = utils.getValue(data, Keywords.BOARD_PHASE_DURATION);
         this.readyPhaseDuration = boardTimeLine;
 
-        if (boardTimeLine && !this.scene.gamePlayers.me.isReady()) {
+        debug("onBoardBegin: ", this.scene.isBegin(), boardTimeLine, this.scene.gamePlayers.me.isReady());
+
+        if (boardTimeLine && this.scene.isBegin() && !this.scene.gamePlayers.me.isReady()) {
             if (this.scene.gamePlayers.meIsOwner()) {
                 boardTimeLine *= 2;
             }
@@ -286,6 +288,9 @@ export default class Board extends Actor {
     }
 
     onBoardStarting(data = {}, isJustJoined) {
+
+        debug("onBoardStarting: ", isJustJoined);
+
         if (isJustJoined) {
             this.onBoardBegin({}, isJustJoined);
         }
@@ -296,6 +301,7 @@ export default class Board extends Actor {
     }
 
     onBoardStarted(data = {}, isJustJoined) {
+        debug("onBoardStarted: ", isJustJoined);
         if (isJustJoined) {
             this.onBoardStarting({}, isJustJoined);
         }
@@ -305,6 +311,9 @@ export default class Board extends Actor {
     }
 
     onBoardPlaying(data = {}, isJustJoined) {
+
+        debug("onBoardPlaying: ", isJustJoined);
+
         if (isJustJoined) {
             this.onBoardStarted({}, isJustJoined);
         }
