@@ -1,8 +1,7 @@
-import Rub from 'Rub';
 import RubUtils from 'RubUtils';
 import CellRub from 'CellRub';
 
-export default class GridViewRub extends Rub {
+export default class GridViewRub {
     /**
      * Creates an instance of GridViewRub.
      * 
@@ -50,8 +49,7 @@ export default class GridViewRub extends Rub {
      * }
      * @memberOf GridViewRub
      */
-    constructor(node, head = null, data, opts = {}) {
-        super(node);
+    constructor(head = null, data, opts = {}) {
         // CellRub default options
         let cell = {
             bgColor: new cc.Color(68, 25, 97), // # violet
@@ -112,6 +110,10 @@ export default class GridViewRub extends Rub {
         });
     }
 
+    initNode() {
+
+    }
+
     getContentNodeWidth() {
         return this.contentNode.getContentSize().width;
     }
@@ -151,10 +153,11 @@ export default class GridViewRub extends Rub {
 
     _setupContent(contentNode) {
         // create spriteFrame
-        let contentSprite = contentNode.addComponent(cc.Sprite);
+        let contentSprite = contentNode.getComponent(cc.Sprite);
+
         let size = contentNode.getContentSize();
-        let defaultSpriteFrame = 'textures/50x50';
-        RubUtils.loadSpriteFrame(contentSprite, typeof this.options.bg === 'string' ? this.options.bg : defaultSpriteFrame, size, (sprite) => {
+        let defaultSpriteFrame = 'textures/50x50.png';
+        RubUtils.loadSpriteFrame(contentSprite, typeof this.options.bg === 'string' ? this.options.bg : defaultSpriteFrame, size, false, () => {
             if (typeof this.options.bg !== 'string') {
                 // set color to node
                 contentNode.color = this.options.bg;

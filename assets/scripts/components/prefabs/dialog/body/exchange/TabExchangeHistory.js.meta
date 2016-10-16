@@ -2,5 +2,7 @@
   "ver": "1.0.2",
   "uuid": "102f11d8-bbf7-42ba-a6bc-6bd9a12b6033",
   "isPlugin": false,
+  "loadPluginInWeb": true,
+  "loadPluginInNative": true,
   "subMetas": {}
 }

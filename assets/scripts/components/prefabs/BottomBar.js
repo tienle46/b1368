@@ -3,6 +3,7 @@ import Component from 'Component';
 import TopupDialogRub from 'TopupDialogRub';
 import ExchangeDialogRub from 'ExchangeDialogRub';
 import PersonalInfoDialogRub from 'PersonalInfoDialogRub';
+import GridViewRub from 'GridViewRub';
 
 class BottomBar extends Component {
     constructor() {
@@ -116,7 +117,7 @@ class BottomBar extends Component {
             value: 'tab_user_info'
         }, {
             title: 'Thành tích',
-            value: null
+            value: this._getX()
         }, {
             title: 'Gift Code',
             value: 'tab_gift_code'
@@ -139,6 +140,21 @@ class BottomBar extends Component {
 
         let tabOptions = { tabs, options };
         PersonalInfoDialogRub.show(this.node.parent, tabOptions);
+    }
+
+    _getX() {
+
+        let a = new GridViewRub(['x', 'x', 'x'], [
+            ['x'],
+            ['x'],
+            ['y']
+        ], {
+            bg: new cc.Color(68, 25, 97),
+            position: cc.v2(2, 64),
+            width: 715
+        });
+
+        return a.getNode();
     }
 }
 

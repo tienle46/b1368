@@ -72,11 +72,11 @@ class TabExchangeHistory extends Component {
 
         // add Tab
         let event = cc.Component.EventHandler(this.node, 'TabExchangeHistory', 'updateDataCardTab');
-        this.GridViewCardTabRub = new GridViewRub(bodyNode, ['x', 'x', 'x'], d.cards, { position: cc.v2(2, 94), width: 715, event });
+        this.GridViewCardTabRub = new GridViewRub(['x', 'x', 'x'], d.cards, { position: cc.v2(2, 94), width: 715, event });
         this.GridViewCardTabNode = this.GridViewCardTabRub.getNode();
 
         let event2 = cc.Component.EventHandler(this.node, 'TabExchangeHistory', 'updateDataItemTab');
-        this.GridViewItemTabRub = new GridViewRub(bodyNode, ['x', 'x', 'x'], d.items, { position: cc.v2(2, 94), width: 715, event2 });
+        this.GridViewItemTabRub = new GridViewRub(['x', 'x', 'x'], d.items, { position: cc.v2(2, 94), width: 715, event2 });
         this.GridViewItemTabNode = this.GridViewItemTabRub.getNode();
 
 
