@@ -50,3 +50,17 @@ app.const.SCROLL_EVENT.BOUNCE_LEFT = 7;
 app.const.SCROLL_EVENT.BOUNCE_RIGHT = 8;
 app.const.SCROLL_EVENT.AUTO_SCROLL_ENDED = 9; // while we pull scroll bar over ended edge
 app.const.SCROLL_EVENT.TOUCH_ENDED = 10; // touch ended
+
+app.const.DYNAMIC_ACTION_BROWSE        =  1;
+app.const.DYNAMIC_ACTION_OTHER         =  2;
+app.const.DYNAMIC_ACTION_INFO          =  3;
+app.const.DYNAMIC_GROUP_NEW_EVENT      =  1;
+
+app.const.DYNAMIC_GROUP_ENTERTAINMENT  =  2;
+app.const.DYNAMIC_GROUP_LEADER_BOARD   =  3;
+app.const.DYNAMIC_GROUP_NOTIFY         =  4;
+app.const.DYNAMIC_GROUP_SYSTEM_MESSAGE =  5;
+app.const.DYNAMIC_GROUP_INTRODUCTION   =  6;
+app.const.DYNAMIC_NODE_TYPE_ITEM       =  1;
+app.const.DYNAMIC_NODE_TYPE_DETAIL     =  2;
+app.const.DYNAMIC_NODE_TYPE_USER       =  3;

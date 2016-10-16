@@ -43,6 +43,9 @@ export default class PlayerPositions extends Component {
         this._initPlayerAnchors();
         this.scene.on(Events.ON_GAME_STATE_BEGIN, this._onGameBegin, this);
         this.scene.on(Events.ON_GAME_STATE_STARTING, this._onGameStarting, this);
+        this.scene.on(Events.ON_GAME_STATE_STARTED, this._onGameStarted, this);
+        this.scene.on(Events.ON_GAME_STATE_PLAYING, this._onGamePlaying, this);
+        this.scene.on(Events.ON_GAME_STATE_ENDING, this._onGameEnding, this);
     }
 
     onLoad() {
@@ -65,6 +68,24 @@ export default class PlayerPositions extends Component {
 
     _onGameStarting() {
         this.hideAllInviteButtons();
+    }
+
+    _onGameStarted(data, isJustJoined) {
+        if(isJustJoined){
+            this._onGameStarting(data, isJustJoined);
+        }
+    }
+
+    _onGamePlaying(data, isJustJoined) {
+        if(isJustJoined){
+            this._onGameStarted(data, isJustJoined);
+        }
+    }
+
+    _onGameEnding(data, isJustJoined) {
+        if(isJustJoined){
+            this._onGamePlaying(data, isJustJoined);
+        }
     }
 
     hideAllInviteButtons() {

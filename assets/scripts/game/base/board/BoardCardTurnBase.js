@@ -8,7 +8,6 @@ import BoardTurnBaseAdapter from 'BoardTurnBaseAdapter';
 import BoardCard from 'BoardCard';
 import Keywords from 'Keywords'
 import Events from 'Events'
-const boardConst = app.const.game.board;
 
 export default class BoardCardTurnBase extends BoardCard {
 
@@ -62,7 +61,7 @@ export default class BoardCardTurnBase extends BoardCard {
         super.handleGameStateChange(state, data);
 
         log("handle game state change: ", state, " ", data);
-        if (state == boardConst.state.BOARD_STATE_TURN_BASE_TRUE_PLAY) {
+        if (state == app.const.game.state.BOARD_STATE_TURN_BASE_TRUE_PLAY) {
             this._handleBoardTurnBaseTruePlay(data);
         }
     }
@@ -84,11 +83,11 @@ export default class BoardCardTurnBase extends BoardCard {
         log("nextTurnPlayerId: ", nextTurnPlayerId)
     }
 
-    onBoardPlaying(data){
-        super.onBoardPlaying(data);
+    onBoardPlaying(data, isJustJoined){
+        super.onBoardPlaying(data, isJustJoined);
     }
 
-    onBoardEnding(data){
-        super.onBoardEnding(data);
+    onBoardEnding(data, isJustJoined){
+        super.onBoardEnding(data, isJustJoined);
     }
 }

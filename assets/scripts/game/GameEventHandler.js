@@ -97,9 +97,7 @@ export default class GameEventHandler {
     }
 
     _handlePlayerRejoinGame(data){
-        debug("_handlePlayerRejoinGame: ", data);
-        this.scene.emit(Events.ON_GAME_REJOIN, data);
-        app.context.rejoiningGame = false;
+        this.scene.handleRejoinGame(data);
     }
 
     _handlePlayerReEnterGame(data) {
@@ -191,6 +189,7 @@ export default class GameEventHandler {
     }
 
     _handleGameStateChange(data) {
+        console.log("_handleGameStateChange: ", data);
         let state = utils.getValue(data, app.keywords.BOARD_STATE_KEYWORD);
         state && this.scene.emit(Events.ON_GAME_STATE_CHANGE, state, data);
     }
