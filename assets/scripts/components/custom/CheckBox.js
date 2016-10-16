@@ -53,6 +53,13 @@ class CheckBox extends Button {
             this.pressedSprite = this.inActivePressedSprite;
             this.disabledSprite = this.inActiveDisabledSprite;
         }
+
+        // update sprite component
+        if (this.node) {
+            let spriteComponent = this.node.getComponent(cc.Sprite);
+            if (spriteComponent)
+                spriteComponent.spriteFrame = this.normalSprite;
+        }
     }
 
     getVal() {
@@ -69,7 +76,6 @@ class CheckBox extends Button {
             return;
         }
         this.isChecked = !this.isChecked;
-
 
         if (this.checkEvents) {
             cc.Component.EventHandler.emitEvents(this.checkEvents, this);

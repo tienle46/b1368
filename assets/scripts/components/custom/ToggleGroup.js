@@ -25,9 +25,7 @@ class ToggleGroup extends Component {
         this._allowOnlyOneToggleChecked();
         this.node.on('check-event', (event) => {
             this.updateToggles(event.target.getComponent(CheckBox));
-        });
-        this.node.on('clgt', (e) => {
-            console.warn("CLGT ???");
+            return true;
         });
     }
 

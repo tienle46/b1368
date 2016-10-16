@@ -50,6 +50,9 @@ declare module cc {
 	@param subst JavaScript objects with which to replace substitution strings within msg. This gives you additional control over the format of the output. 
 	*/
 	export function info(obj : any, subst : any) : void;	
+	export var dragonBonesJson : string;	
+	export var atlasJson : string;	
+	export var texture : cc.Texture2D;	
 	/** !#en
 	Creates the speed action which changes the speed of an action, making it take longer (speed > 1)
 	or less (speed < 1) time. <br/>
@@ -734,8 +737,8 @@ declare module cc {
 	``` 
 	*/
 	export function repeat(action : FiniteTimeAction, times : number) : ActionInterval;	
-	/** !#en Create a acton which repeat forever
-	!#zh 永远地重复一个动作，有限次数内重复一个动作请使用 repeat 动作。
+	/** !#en Create a acton which repeat forever, as it runs forever, it can't be added into cc.sequence and cc.spawn.
+	!#zh 永远地重复一个动作，有限次数内重复一个动作请使用 repeat 动作，由于这个动作不会停止，所以不能被添加到 cc.sequence 或 cc.spawn 中。
 	
 	@example 
 	```js
@@ -1878,6 +1881,236 @@ declare module cc {
 		WARN_FOR_WEB_PAGE = 0,
 		ERROR_FOR_WEB_PAGE = 0,	
 	}		
+		/** !#en
+		The Armature Display of DragonBones <br/>
+		<br/>
+		(Armature Display has a reference to a DragonBonesAsset and stores the state for ArmatureDisplay instance,
+		which consists of the current pose's bone SRT, slot colors, and which slot attachments are visible. <br/>
+		Multiple Armature Display can use the same DragonBonesAsset which includes all animations, skins, and attachments.) <br/>
+		!#zh
+		DragonBones 骨骼动画 <br/>
+		<br/>
+		(Armature Display 具有对骨骼数据的引用并且存储了骨骼实例的状态，
+		它由当前的骨骼动作，slot 颜色，和可见的 slot attachments 组成。<br/>
+		多个 Armature Display 可以使用相同的骨骼数据，其中包括所有的动画，皮肤和 attachments。)<br/> */
+		export class ArmatureDisplay extends cc._RendererUnderSG {		
+		constructor();		
+		/** !#en
+		The DragonBones data contains the armatures information (bind pose bones, slots, draw order,
+		attachments, skins, etc) and animations but does not hold any state.<br/>
+		Multiple ArmatureDisplay can share the same DragonBones data.
+		!#zh
+		骨骼数据包含了骨骼信息（绑定骨骼动作，slots，渲染顺序，
+		attachments，皮肤等等）和动画但不持有任何状态。<br/>
+		多个 ArmatureDisplay 可以共用相同的骨骼数据。 */
+		dragonAsset : DragonBonesAsset;		
+		/** !#en
+		The atlas asset for the DragonBones.
+		!#zh
+		骨骼数据所需的 Atlas Texture 数据。 */
+		dragonAtlasAsset : DragonBonesAtlasAsset;		
+		/** !#en The name of current armature.
+		!#zh 当前的 Armature 名称。 */
+		armatureName : string;		
+		/** !#en The name of current playing animation.
+		!#zh 当前播放的动画名称。 */
+		animationName : string;		
+		_defaultArmatureIndex : number;		
+		/** !#en The time scale of this armature.
+		!#zh 当前骨骼中所有动画的时间缩放率。 */
+		timeScale : number;		
+		/** !#en The play times of the default animation.
+		     -1 means using the value of config file;
+		     0 means repeat for ever
+		     >0 means repeat times
+		!#zh 播放默认动画的循环次数
+		     -1 表示使用配置文件中的默认值;
+		     0 表示无限循环
+		     >0 表示循环次数 */
+		playTimes : number;		
+		/** !#en Indicates whether open debug bones.
+		!#zh 是否显示 bone 的 debug 信息。 */
+		debugBones : boolean;		
+		/** !#en
+		Play the specified animation.
+		Parameter animName specify the animation name.
+		Parameter playTimes specify the repeat times of the animation.
+		-1 means use the value of the config file.
+		0 means play the animation for ever.
+		>0 means repeat times.
+		!#zh
+		播放指定的动画.
+		animName 指定播放动画的名称。
+		playTimes 指定播放动画的次数。
+		-1 为使用配置文件中的次数。
+		0 为无限循环播放。
+		>0 为动画的重复次数。 
+		*/
+		playAnimation(animName : string, playTimes : number) : dragonBones.AnimationState;		
+		/** !#en
+		Get the all armature names in the DragonBones Data.
+		!#zh
+		获取 DragonBones 数据中所有的 armature 名称 
+		*/
+		getArmatureNames() : any[];		
+		/** !#en
+		Get the all animation names of specified armature.
+		!#zh
+		获取指定的 armature 的所有动画名称。 
+		*/
+		getAnimationNames(armatureName : string) : any[];		
+		/** !#en
+		Add event listener for the DragonBones Event.
+		!#zh
+		添加 DragonBones 事件监听器。 
+		*/
+		addEventListener(eventType : dragonBones.EventObject, listener : Function, target : any) : void;		
+		/** !#en
+		Remove the event listener for the DragonBones Event.
+		!#zh
+		移除 DragonBones 事件监听器。 
+		*/
+		removeEventListener(eventType : dragonBones.EventObject, listener : Function, target : any) : void;		
+		/** !#en
+		Build the armature for specified name.
+		!#zh
+		构建指定名称的 armature 对象 
+		*/
+		buildArmature(armatureName : string) : dragonBones.Armature;		
+		/** !#en
+		Get the current armature object of the ArmatureDisplay.
+		!#zh
+		获取 ArmatureDisplay 当前使用的 Armature 对象 
+		*/
+		armature() : any;	
+	}		
+		/** !#en
+		 cc.NodePool is the cache pool designed for node type.<br/>
+		 It can helps you to improve your game performance for objects which need frequent release and recreate operations<br/>
+		
+		It's recommended to create cc.NodePool instances by node type, the type corresponds to node type in game design, not the class,
+		for example, a prefab is a specific node type. <br/>
+		When you create a node pool, you can pass a Component which contains `unuse`, `reuse` functions to control the content of node.<br/>
+		
+		Some common use case is :<br/>
+		     1. Bullets in game (die very soon, massive creation and recreation, no side effect on other objects)<br/>
+		     2. Blocks in candy crash (massive creation and recreation)<br/>
+		     etc...
+		!#zh
+		cc.NodePool 是用于管理节点对象的对象缓存池。<br/>
+		它可以帮助您提高游戏性能，适用于优化对象的反复创建和销毁<br/>
+		以前 cocos2d-x 中的 cc.pool 和新的节点事件注册系统不兼容，因此请使用 cc.NodePool 来代替。
+		
+		新的 NodePool 需要实例化之后才能使用，每种不同的节点对象池需要一个不同的对象池实例，这里的种类对应于游戏中的节点设计，一个 prefab 相当于一个种类的节点。<br/>
+		在创建缓冲池时，可以传入一个包含 unuse, reuse 函数的组件类型用于节点的回收和复用逻辑。<br/>
+		
+		一些常见的用例是：<br/>
+		     1.在游戏中的子弹（死亡很快，频繁创建，对其他对象无副作用）<br/>
+		     2.糖果粉碎传奇中的木块（频繁创建）。
+		     等等.... */
+		export class NodePool {		
+		/** !#en
+		Constructor for creating a pool for a specific node template (usually a prefab). You can pass a component (type or name) argument for handling event for reusing and recycling node.
+		!#zh
+		使用构造函数来创建一个节点专用的对象池，您可以传递一个组件类型或名称，用于处理节点回收和复用时的事件逻辑。
+		@param poolHandlerComp !#en The constructor or the class name of the component to control the unuse/reuse logic. !#zh 处理节点回收和复用事件逻辑的组件类型或名称。
+		
+		@example 
+		```js
+		properties: {
+		   template: cc.Prefab
+		 },
+		 onLoad () {
+		// MyTemplateHandler is a component with 'unuse' and 'reuse' to handle events when node is reused or recycled.
+		   this.myPool = new cc.NodePool('MyTemplateHandler');
+		 }
+		``` 
+		*/
+		NodePool(poolHandlerComp : [Function|String]) : void;		
+		/** !#en The pool handler component, it could be the class name or the constructor.
+		!#zh 缓冲池处理组件，用于节点的回收和复用逻辑，这个属性可以是组件类名或组件的构造函数。 */
+		poolHandlerComp : Function|string;		
+		/** !#en The current available size in the pool
+		!#zh 获取当前缓冲池的可用对象数量 
+		*/
+		size() : void;		
+		/** !#en Destroy all cached nodes in the pool
+		!#zh 销毁对象池中缓存的所有节点 
+		*/
+		clear() : void;		
+		/** !#en Put a new Node into the pool.
+		It will automatically remove the node from its parent without cleanup.
+		It will also invoke unuse method of the poolHandlerComp if exist.
+		!#zh 向缓冲池中存入一个不再需要的节点对象。
+		这个函数会自动将目标节点从父节点上移除，但是不会进行 cleanup 操作。
+		这个函数会调用 poolHandlerComp 的 unuse 函数，如果组件和函数都存在的话。
+		
+		@example 
+		```js
+		let myNode = cc.instantiate(this.template);
+		  this.myPool.put(myNode);
+		``` 
+		*/
+		put() : void;		
+		/** !#en Get a obj from pool, if no available object in pool, null will be returned.
+		This function will invoke the reuse function of poolHandlerComp if exist.
+		!#zh 获取对象池中的对象，如果对象池没有可用对象，则返回空。
+		这个函数会调用 poolHandlerComp 的 reuse 函数，如果组件和函数都存在的话。
+		@param params !#en Params to pass to 'reuse' method in poolHandlerComp !#zh 向 poolHandlerComp 中的 'reuse' 函数传递的参数
+		
+		@example 
+		```js
+		let newNode = this.myPool.get();
+		``` 
+		*/
+		get(params : any) : any;	
+	}		
+		/** !#en
+		 Attention: In creator, it's strongly not recommended to use cc.pool to manager cc.Node.
+		 We provided {{#crossLink "NodePool"}}cc.NodePool{{/crossLink}} instead.
+		
+		 cc.pool is a singleton object serves as an object cache pool.<br/>
+		 It can helps you to improve your game performance for objects which need frequent release and recreate operations<br/>
+		!#zh
+		首先请注意，在 Creator 中我们强烈不建议使用 cc.pool 来管理 cc.Node 节点对象，请使用 {{#crossLink "NodePool"}}cc.NodePool{{/crossLink}} 代替
+		因为 cc.pool 是面向类来设计的，而 cc.Node 中使用 Component 来进行组合，它的类永远都一样，实际却千差万别。
+		
+		cc.pool 是一个单例对象，用作为对象缓存池。<br/>
+		它可以帮助您提高游戏性能，适用于优化对象的反复创建和销毁<br/> */
+		export class pool {		
+		/** !#en Put the obj in pool.
+		!#zh 加入对象到对象池中。
+		@param obj The need put in pool object.
+		
+		@example 
+		```js
+		---------------------------------
+		var sp = new _ccsg.Sprite("a.png");
+		this.addChild(sp);
+		cc.pool.putInPool(sp);
+		cc.pool.getFromPool(_ccsg.Sprite, "a.png");
+		
+		``` 
+		*/
+		putInPool(obj : any) : void;		
+		/** !#en Check if this kind of obj has already in pool.
+		!#zh 检查对象池中是否有指定对象的存在。
+		@param objClass The check object class. 
+		*/
+		hasObject(objClass : any) : boolean;		
+		/** !#en Remove the obj if you want to delete it.
+		!#zh 移除在对象池中指定的对象。 
+		*/
+		removeObject() : void;		
+		/** !#en Get the obj from pool.
+		!#zh 获取对象池中的指定对象。 
+		*/
+		getFromPool() : any;		
+		/** !#en Remove all objs in pool and reset the pool.
+		!#zh 移除对象池中的所有对象，并且重置对象池。 
+		*/
+		drainAllPools() : void;	
+	}		
 		/** !#en Class for animation data handling.
 		!#zh 动画剪辑，用于存储动画数据。 */
 		export class AnimationClip extends Asset {		
@@ -2015,213 +2248,6 @@ declare module cc {
 		!#zh 动画当前的时间，秒。 */
 		time : number;	
 	}		
-		/** !#en cc.audioEngine is the singleton object, it provide simple audio APIs.
-		!#zh
-		cc.audioengine是单例对象。<br/>
-		主要用来播放背景音乐和音效，背景音乐同一时间只能播放一个，而音效则可以同时播放多个。<br/>
-		注意：<br/>
-		在 Android 系统浏览器上，不同浏览器，不同版本的效果不尽相同。<br/>
-		比如说：大多数浏览器都需要用户物理交互才可以开始播放音效，有一些不支持 WebAudio，<br/>
-		有一些不支持多音轨播放。总之如果对音乐依赖比较强，请做尽可能多的测试。 */
-		export class audioEngine {		
-		/** !#en Play music.
-		!#zh
-		播放指定音乐，并可以设置是否循环播放。<br/>
-		注意：音乐播放接口不支持多音轨，同一时间只能播放一个音乐。
-		@param url The path of the music file without filename extension.
-		@param loop Whether the music loop or not.
-		
-		@example 
-		```js
-		//example
-		cc.audioEngine.playMusic(path, false);
-		``` 
-		*/
-		playMusic(url : string, loop : boolean) : void;		
-		/** !#en Stop playing music.
-		!#zh 停止当前音乐。
-		@param releaseData If release the music data or not.As default value is false.
-		
-		@example 
-		```js
-		//example
-		cc.audioEngine.stopMusic();
-		``` 
-		*/
-		stopMusic(releaseData? : boolean) : void;		
-		/** !#en Pause playing music.
-		!#zh 暂停正在播放音乐。
-		
-		@example 
-		```js
-		//example
-		cc.audioEngine.pauseMusic();
-		``` 
-		*/
-		pauseMusic() : void;		
-		/** !#en Resume playing music.
-		!#zh 恢复音乐播放。
-		
-		@example 
-		```js
-		//example
-		cc.audioEngine.resumeMusic();
-		``` 
-		*/
-		resumeMusic() : void;		
-		/** !#en Rewind playing music.
-		!#zh 从头开始重新播放当前音乐。
-		
-		@example 
-		```js
-		//example
-		cc.audioEngine.rewindMusic();
-		``` 
-		*/
-		rewindMusic() : void;		
-		/** !#en The volume of the music max value is 1.0,the min value is 0.0 .
-		!#zh 获取音量（0.0 ~ 1.0）。
-		
-		@example 
-		```js
-		//example
-		var volume = cc.audioEngine.getMusicVolume();
-		``` 
-		*/
-		getMusicVolume() : number;		
-		/** !#en Set the volume of music.
-		!#zh 设置音量（0.0 ~ 1.0）。
-		@param volume Volume must be in 0.0~1.0 .
-		
-		@example 
-		```js
-		//example
-		cc.audioEngine.setMusicVolume(0.5);
-		``` 
-		*/
-		setMusicVolume(volume : number) : void;		
-		/** !#en Whether the music is playing.
-		!#zh 音乐是否正在播放。
-		
-		@example 
-		```js
-		//example
-		 if (cc.audioEngine.isMusicPlaying()) {
-		     cc.log("music is playing");
-		 }
-		 else {
-		     cc.log("music is not playing");
-		 }
-		``` 
-		*/
-		isMusicPlaying() : boolean;		
-		/** !#en Play sound effect.
-		!#zh
-		播放指定音效，并可以设置是否循环播放。<br/>
-		注意：在部分不支持多音轨的浏览器上，这个接口会失效，请使用 playMusic
-		@param url The path of the sound effect with filename extension.
-		@param loop Whether to loop the effect playing, default value is false
-		
-		@example 
-		```js
-		//example
-		var soundId = cc.audioEngine.playEffect(path);
-		``` 
-		*/
-		playEffect(url : string, loop : boolean, volume : boolean) : number;		
-		/** !#en Set the volume of sound effects.
-		!#zh 设置音效音量（0.0 ~ 1.0）。
-		@param volume Volume must be in 0.0~1.0 .
-		
-		@example 
-		```js
-		//example
-		cc.audioEngine.setEffectsVolume(0.5);
-		``` 
-		*/
-		setEffectsVolume(volume : number) : void;		
-		/** !#en The volume of the effects max value is 1.0,the min value is 0.0 .
-		!#zh 获取音效音量（0.0 ~ 1.0）。
-		
-		@example 
-		```js
-		//example
-		var effectVolume = cc.audioEngine.getEffectsVolume();
-		``` 
-		*/
-		getEffectsVolume() : number;		
-		/** !#en Pause playing sound effect.
-		!#zh 暂停指定的音效。
-		@param audio The return value of function playEffect.
-		
-		@example 
-		```js
-		//example
-		cc.audioEngine.pauseEffect(audioID);
-		``` 
-		*/
-		pauseEffect(audio : number) : void;		
-		/** !#en Pause all playing sound effect.
-		!#zh 暂停现在正在播放的所有音效。
-		
-		@example 
-		```js
-		//example
-		cc.audioEngine.pauseAllEffects();
-		``` 
-		*/
-		pauseAllEffects() : void;		
-		/** !#en Resume playing sound effect.
-		!#zh 恢复播放指定的音效。
-		@param audioID The return value of function playEffect. 
-		*/
-		resumeEffect(audioID : number) : void;		
-		/** !#en Resume all playing sound effect.
-		!#zh 恢复播放所有之前暂停的所有音效。
-		
-		@example 
-		```js
-		//example
-		cc.audioEngine.resumeAllEffects();
-		``` 
-		*/
-		resumeAllEffects() : void;		
-		/** !#en Stop playing sound effect.
-		!#zh 停止播放指定音效。
-		@param audioID The return value of function playEffect.
-		
-		@example 
-		```js
-		//example
-		cc.audioEngine.stopEffect(audioID);
-		``` 
-		*/
-		stopEffect(audioID : number) : void;		
-		/** !#en Stop all playing sound effects.
-		!#zh 停止正在播放的所有音效。
-		
-		@example 
-		```js
-		//example
-		cc.audioEngine.stopAllEffects();
-		``` 
-		*/
-		stopAllEffects() : void;		
-		/** !#en Unload the preloaded effect from internal buffer.
-		!#zh 卸载预加载的音效。
-		
-		@example 
-		```js
-		//example
-		cc.audioEngine.unloadEffect(EFFECT_FILE);
-		``` 
-		*/
-		unloadEffect(url : string) : void;		
-		/** !#en End music and effects.
-		!#zh 停止所有音乐和音效的播放。 
-		*/
-		end() : void;	
-	}		
 		/** !#en Base class cc.Action for action classes.
 		!#zh Action 类是所有动作类型的基类。 */
 		export class Action {		
@@ -2350,6 +2376,256 @@ declare module cc {
 		*/
 		repeatForever() : ActionInterval;	
 	}		
+		/** !#en cc.audioEngine is the singleton object, it provide simple audio APIs.
+		!#zh
+		cc.audioengine是单例对象。<br/>
+		主要用来播放音频，播放的时候会返回一个 audioID，之后都可以通过这个 audioID 来操作这个音频对象。<br/>
+		不使用的时候，请使用 cc.audioEngine.uncache(filePath); 进行资源释放 <br/>
+		注意：<br/>
+		在 Android 系统浏览器上，不同浏览器，不同版本的效果不尽相同。<br/>
+		比如说：大多数浏览器都需要用户物理交互才可以开始播放音效，有一些不支持 WebAudio，<br/>
+		有一些不支持多音轨播放。总之如果对音乐依赖比较强，请做尽可能多的测试。 */
+		export class audioEngine {		
+		/** !#en Play audio.
+		!#zh 播放音频
+		@param filePath The path of the audio file without filename extension.
+		@param loop Whether the music loop or not.
+		@param volume Volume size.
+		
+		@example 
+		```js
+		//example
+		var audioID = cc.audioEngine.play(path, false, 0.5);
+		``` 
+		*/
+		play(filePath : string, loop : boolean, volume : number) : number;		
+		/** !#en Set audio loop.
+		!#zh 设置音频是否循环。
+		@param audioID audio id.
+		@param loop Whether cycle.
+		
+		@example 
+		```js
+		//example
+		cc.audioEngine.setLoop(id, true);
+		``` 
+		*/
+		setLoop(audioID : number, loop : boolean) : void;		
+		/** !#en Get audio cycle state.
+		!#zh 获取音频的循环状态。
+		@param audioID audio id.
+		
+		@example 
+		```js
+		//example
+		cc.audioEngine.isLoop(id);
+		``` 
+		*/
+		isLoop(audioID : number) : boolean;		
+		/** !#en Set the volume of audio.
+		!#zh 设置音量（0.0 ~ 1.0）。
+		@param audioID audio id.
+		@param volume Volume must be in 0.0~1.0 .
+		
+		@example 
+		```js
+		//example
+		cc.audioEngine.setVolume(0.5);
+		``` 
+		*/
+		setVolume(audioID : number, volume : number) : void;		
+		/** !#en The volume of the music max value is 1.0,the min value is 0.0 .
+		!#zh 获取音量（0.0 ~ 1.0）。
+		@param audioID audio id.
+		
+		@example 
+		```js
+		//example
+		var volume = cc.audioEngine.getVolume(id);
+		``` 
+		*/
+		getVolume(audioID : number) : boolean;		
+		/** !#en Set current time
+		!#zh 设置当前的音频时间。
+		@param audioID audio id.
+		@param sec current time.
+		
+		@example 
+		```js
+		//example
+		cc.audioEngine.setCurrentTime(id, 2);
+		``` 
+		*/
+		setCurrentTime(audioID : number, sec : number) : boolean;		
+		/** !#en Get current time
+		!#zh 获取当前的音频播放时间。
+		@param audioID audio id.
+		
+		@example 
+		```js
+		//example
+		var time = cc.audioEngine.getCurrentTime(id);
+		``` 
+		*/
+		getCurrentTime(audioID : number) : number;		
+		/** !#en Get audio duration
+		!#zh 获取音频总时长。
+		@param audioID audio id.
+		
+		@example 
+		```js
+		//example
+		var time = cc.audioEngine.getDuration(id);
+		``` 
+		*/
+		getDuration(audioID : number) : number;		
+		/** !#en Get audio state
+		!#zh 获取音频状态。
+		@param audioID audio id.
+		
+		@example 
+		```js
+		//example
+		var state = cc.audioEngine.getState(id);
+		``` 
+		*/
+		getState(audioID : number) : cc.audioEngine.AudioState;		
+		/** !#en Get audio state
+		!#zh 获取音频状态。
+		@param audioID audio id.
+		@param callback loaded callback.
+		
+		@example 
+		```js
+		//example
+		cc.audioEngine.setFinishCallback(id, function () {});
+		``` 
+		*/
+		getState(audioID : number, callback : Function) : void;		
+		/** !#en Pause playing audio.
+		!#zh 暂停正在播放音频。
+		@param audioID The return value of function play.
+		
+		@example 
+		```js
+		//example
+		cc.audioEngine.pause(audioID);
+		``` 
+		*/
+		pause(audioID : number) : void;		
+		/** !#en Pause all playing audio
+		!#zh 暂停现在正在播放的所有音频。
+		
+		@example 
+		```js
+		//example
+		cc.audioEngine.pauseAll();
+		``` 
+		*/
+		pauseAll() : void;		
+		/** !#en Resume playing audio.
+		!#zh 恢复播放指定的音频。
+		@param audioID The return value of function play.
+		//example
+		cc.audioEngine.resume(audioID); 
+		*/
+		resume(audioID : number) : void;		
+		/** !#en Resume all playing audio.
+		!#zh 恢复播放所有之前暂停的所有音频。
+		
+		@example 
+		```js
+		//example
+		cc.audioEngine.resumeAll();
+		``` 
+		*/
+		resumeAll() : void;		
+		/** !#en Stop playing audio.
+		!#zh 停止播放指定音频。
+		@param audioID The return value of function play.
+		
+		@example 
+		```js
+		//example
+		cc.audioEngine.stop(audioID);
+		``` 
+		*/
+		stop(audioID : number) : void;		
+		/** !#en Stop all playing audio.
+		!#zh 停止正在播放的所有音频。
+		
+		@example 
+		```js
+		//example
+		cc.audioEngine.stopAll();
+		``` 
+		*/
+		stopAll() : void;		
+		/** !#en Set up an audio can generate a few examples.
+		!#zh 设置一个音频可以设置几个实例
+		@param num a number of instances to be created from within an audio
+		
+		@example 
+		```js
+		//example
+		cc.audioEngine.setMaxAudioInstance(20);
+		``` 
+		*/
+		setMaxAudioInstance(num : number) : void;		
+		/** !#en Getting audio can produce several examples.
+		!#zh 获取一个音频可以设置几个实例
+		
+		@example 
+		```js
+		//example
+		cc.audioEngine.getMaxAudioInstance();
+		``` 
+		*/
+		getMaxAudioInstance() : number;		
+		/** !#en Unload the preloaded audio from internal buffer.
+		!#zh 卸载预加载的音频。
+		
+		@example 
+		```js
+		//example
+		cc.audioEngine.uncache(filePath);
+		``` 
+		*/
+		uncache(filePath : string) : void;		
+		/** !#en Unload all audio from internal buffer.
+		!#zh 卸载所有音频。
+		
+		@example 
+		```js
+		//example
+		cc.audioEngine.uncacheAll();
+		``` 
+		*/
+		uncacheAll() : void;		
+		/** !#en Preload audio file.
+		!#zh 预加载一个音频
+		@param filePath The file path of an audio.
+		@param callback The callback of an audio.
+		
+		@example 
+		```js
+		//example
+		cc.audioEngine.preload(path);
+		``` 
+		*/
+		preload(filePath : void, callback : void) : void;		
+		/** !#en Set a size, the unit is KB，Over this size is directly resolved into DOM nodes
+		!#zh 设置一个以kb为单位的尺寸，大于这个尺寸的音频在加载的时候会强制使用 dom 方式加载
+		@param kb The file path of an audio.
+		
+		@example 
+		```js
+		//example
+		cc.audioEngine.setMaxWebAudioSize(300);
+		``` 
+		*/
+		setMaxWebAudioSize(kb : void) : void;	
+	}		
 		/** !#en
 		cc.ActionManager is a class that can manage actions.<br/>
 		Normally you won't need to use this class directly. 99% of the cases you will use the CCNode interface,
@@ -2415,7 +2691,7 @@ declare module cc {
 		 - 如果您正在运行 7 个动作组成的序列动作（Sequence），这个函数将返回 1。<br/>
 		 - 如果你正在运行 2 个序列动作（Sequence）和 5 个普通动作，这个函数将返回 7。<br/> 
 		*/
-		numberOfRunningActionsInTarget(target : any) : number;		
+		getNumberOfRunningActionsInTarget(target : any) : number;		
 		/** !#en Pauses the target: all running actions and newly added actions will be paused.
 		!#zh 暂停指定对象：所有正在运行的动作和新添加的动作都将会暂停。 
 		*/
@@ -2810,6 +3086,10 @@ declare module cc {
 		!#zh 重新开始游戏 
 		*/
 		restart() : void;		
+		/** !#en End game, it will close the game window
+		!#zh 退出游戏 
+		*/
+		end() : void;		
 		/** !#en Prepare game.
 		!#zh 准备引擎，请不要直接调用这个函数。 
 		*/
@@ -2957,7 +3237,8 @@ declare module cc {
 		在节点上注册指定类型的回调函数，也可以设置 target 用于绑定响应函数的调用者。<br/>
 		同时您可以将事件派发到父节点或者通过调用 stopPropagation 拦截它。<br/>
 		推荐使用这种方式来监听节点上的触摸或鼠标事件，请不要在节点上直接使用 cc.eventManager。
-		@param type A string representing the event type to listen for.
+		@param type A string representing the event type to listen for.<br>
+		                       See {{#crossLink "Node/position-changed:event"}}Node Events{{/crossLink}} for all builtin events.
 		@param callback The callback that will be invoked when the event is dispatched.
 		                             The callback is ignored if it is a duplicate (the callbacks are unique).
 		@param target The target to invoke the callback, can be null
@@ -2968,11 +3249,12 @@ declare module cc {
 		
 		@example 
 		```js
-		// add Node Touch Event
+		this.node.on(cc.Node.EventType.TOUCH_START, this.memberFunction, this);  // if "this" is component and the "memberFunction" declared in CCClass.
 		node.on(cc.Node.EventType.TOUCH_START, callback, this.node);
 		node.on(cc.Node.EventType.TOUCH_MOVE, callback, this.node);
 		node.on(cc.Node.EventType.TOUCH_END, callback, this.node);
 		node.on(cc.Node.EventType.TOUCH_CANCEL, callback, this.node);
+		node.on("anchor-changed", callback, this);
 		``` 
 		*/
 		on(type : string, callback: (param: Event) => void, target? : any, useCapture : boolean) : Function;		
@@ -2990,9 +3272,9 @@ declare module cc {
 		
 		@example 
 		```js
-		// remove Node TOUCH_START Event.
-		node.on(cc.Node.EventType.TOUCH_START, callback, this.node);
+		this.node.off(cc.Node.EventType.TOUCH_START, this.memberFunction, this);
 		node.off(cc.Node.EventType.TOUCH_START, callback, this.node);
+		node.off("anchor-changed", callback, this);
 		``` 
 		*/
 		off(type : string, callback : Function, target? : any, useCapture : boolean) : void;		
@@ -3354,48 +3636,6 @@ declare module cc {
 		!#zh 用户调度最低优先级。 */
 		PRIORITY_NON_SYSTEM : number;	
 	}		
-		/** !#en
-		cc.MotionStreak manages a Ribbon based on it's motion in absolute space.                 <br/>
-		You construct it with a fadeTime, minimum segment size, texture path, texture            <br/>
-		length and color. The fadeTime controls how long it takes each vertex in                 <br/>
-		the streak to fade out, the minimum segment size it how many pixels the                  <br/>
-		streak will move before adding a new ribbon segment, and the texture                     <br/>
-		length is the how many pixels the texture is stretched across. The texture               <br/>
-		is vertically aligned along the streak segment.
-		!#zh 运动轨迹，用于游戏对象的运动轨迹上实现拖尾渐隐效果。 */
-		export class MotionStreak extends Component {		
-		/** !#en
-		!#zh 在编辑器模式下预览拖尾效果。 */
-		preview : boolean;		
-		/** !#en The fade time to fade.
-		!#zh 拖尾的渐隐时间，以秒为单位。 */
-		fadeTime : number;		
-		/** !#en The minimum segment size.
-		!#zh 拖尾之间最小距离。 */
-		minSeg : number;		
-		/** !#en The stroke's width.
-		!#zh 拖尾的宽度。 */
-		stroke : number;		
-		/** !#en The texture of the MotionStreak.
-		!#zh 拖尾的贴图。 */
-		texture : Texture2D;		
-		/** !#en The color of the MotionStreak.
-		!#zh 拖尾的颜色 */
-		color : Color;		
-		/** !#en The fast Mode.
-		!#zh 是否启用了快速模式。当启用快速模式，新的点会被更快地添加，但精度较低。 */
-		fastMode : boolean;		
-		/** !#en Remove all living segments of the ribbon.
-		!#zh 删除当前所有的拖尾片段。
-		
-		@example 
-		```js
-		// stop particle system.
-		myParticleSystem.stopSystem();
-		``` 
-		*/
-		reset() : void;	
-	}		
 		/** Particle System base class. <br/>
 		Attributes of a Particle System:<br/>
 		 - emmision rate of the particles<br/>
@@ -3624,101 +3864,71 @@ declare module cc {
 		*/
 		setTextureWithRect(texture : Texture2D, rect : Rect) : void;	
 	}		
-		/** !#en cc.TMXObjectGroup represents the TMX object group.
-		!#zh TMXObjectGroup 用来表示 TMX 对象组。 */
-		export class TMXObjectGroup extends cc._Class {		
-		/** Properties from the group. They can be added using tilemap editors. */
-		properties : any[];		
-		/** Name of the group */
-		groupName : string;		
-		/** <p>The cc.TMXObjectGroup's constructor. <br/>
-		This function will automatically be invoked when you create a node using new construction: "var node = new cc.TMXObjectGroup()".<br/>
-		Override it to extend its behavior, remember to call "this._super()" in the extended "ctor" function.</p> 
-		*/
-		ctor() : void;		
-		/** !#en Offset position of child objects.
-		!#zh 获取子对象的偏移位置。
-		
-		@example 
-		```js
-		var offset = tMXObjectGroup.getPositionOffset();
-		``` 
-		*/
-		getPositionOffset() : Vec2;		
-		/** !#en Offset position of child objects.
-		!#zh 设置子对象的偏移位置。
-		
-		@example 
-		```js
-		tMXObjectGroup.setPositionOffset(cc.v2(5, 5));
-		``` 
-		*/
-		setPositionOffset(offset : Vec2) : void;		
-		/** !#en List of properties stored in a dictionary.
-		!#zh 以映射的形式获取属性列表。
-		
-		@example 
-		```js
-		var offset = tMXObjectGroup.getProperties();
-		``` 
-		*/
-		getProperties() : any[];		
-		/** !#en List of properties stored in a dictionary.
-		!#zh 设置属性列表。
-		
-		@example 
-		```js
-		tMXObjectGroup.setProperties(obj);
-		``` 
-		*/
-		setProperties(Var : any) : void;		
-		/** !#en Gets the Group name.
-		!#zh 获取组名称。
-		
-		@example 
-		```js
-		var groupName = tMXObjectGroup.getGroupName;
-		``` 
-		*/
-		getGroupName() : string;		
-		/** !#en Set the Group name.
-		!#zh 设置组名称。
-		
-		@example 
-		```js
-		tMXObjectGroup.setGroupName("New Group");
-		``` 
-		*/
-		setGroupName(groupName : string) : void;		
 		/** !#en
-		Return the object for the specific object name. <br />
-		It will return the 1st object found on the array for the given name.
-		!#zh 获取指定的对象。
+		cc.MotionStreak manages a Ribbon based on it's motion in absolute space.                 <br/>
+		You construct it with a fadeTime, minimum segment size, texture path, texture            <br/>
+		length and color. The fadeTime controls how long it takes each vertex in                 <br/>
+		the streak to fade out, the minimum segment size it how many pixels the                  <br/>
+		streak will move before adding a new ribbon segment, and the texture                     <br/>
+		length is the how many pixels the texture is stretched across. The texture               <br/>
+		is vertically aligned along the streak segment.
+		!#zh 运动轨迹，用于游戏对象的运动轨迹上实现拖尾渐隐效果。 */
+		export class MotionStreak extends Component {		
+		/** !#en
+		!#zh 在编辑器模式下预览拖尾效果。 */
+		preview : boolean;		
+		/** !#en The fade time to fade.
+		!#zh 拖尾的渐隐时间，以秒为单位。 */
+		fadeTime : number;		
+		/** !#en The minimum segment size.
+		!#zh 拖尾之间最小距离。 */
+		minSeg : number;		
+		/** !#en The stroke's width.
+		!#zh 拖尾的宽度。 */
+		stroke : number;		
+		/** !#en The texture of the MotionStreak.
+		!#zh 拖尾的贴图。 */
+		texture : Texture2D;		
+		/** !#en The color of the MotionStreak.
+		!#zh 拖尾的颜色 */
+		color : Color;		
+		/** !#en The fast Mode.
+		!#zh 是否启用了快速模式。当启用快速模式，新的点会被更快地添加，但精度较低。 */
+		fastMode : boolean;		
+		/** !#en Remove all living segments of the ribbon.
+		!#zh 删除当前所有的拖尾片段。
 		
 		@example 
 		```js
-		var object = tMXObjectGroup.getObject("Group");
+		// stop particle system.
+		myParticleSystem.stopSystem();
 		``` 
 		*/
-		getObject(objectName : string) : any;		
-		/** !#en Gets the objects.
-		!#zh 获取对象数组。
-		
-		@example 
-		```js
-		var objects = tMXObjectGroup.getObjects();
-		``` 
+		reset() : void;	
+	}		
+		/** !#en Renders the TMX object.
+		!#zh 渲染 tmx object。 */
+		export class TMXObject {		
+		/** !#en Get the name of object
+		!#zh 获取对象的名称 
 		*/
-		getObjects() : any[];		
-		/** !#en Set the objects.
-		!#zh 设置对象数组。
-		
-		@example 
-		```js
-		tMXObjectGroup.setObjects(objects);
-		``` 
+		getObjectName() : string;		
+		/** !#en Get the property of object
+		!#zh 获取对象的属性 
 		*/
-		setObjects(objects : any) : void;	
+		getProperty() : any;		
+		/** !#en Get the properties of object
+		!#zh 获取对象的属性 
+		*/
+		getProperties() : any;		
+		/** !#en Set the object name
+		!#zh 设置对象名称 
+		*/
+		setObjectName(name : string) : void;		
+		/** !#en Set the properties of the object
+		!#zh 设置对象的属性 
+		*/
+		setProperties(props : any) : void;	
 	}		
 		/** !#en Render the TMX layer.
 		!#zh 渲染 TMX layer。 */
@@ -4072,16 +4282,7 @@ declare module cc {
 		}
 		``` 
 		*/
-		getObjectGroups() : any[];		
-		/** !#en object groups.
-		!#zh 设置所有的对象层。
-		
-		@example 
-		```js
-		titledMap.setObjectGroups(groups);
-		``` 
-		*/
-		setObjectGroups(groups : any[]) : void;		
+		getObjectGroups() : cc.TiledObjectGroup[];		
 		/** !#en Gets the map properties.
 		!#zh 获取地图的属性。
 		
@@ -4114,7 +4315,7 @@ declare module cc {
 		}
 		``` 
 		*/
-		allLayers() : Node[];		
+		allLayers() : cc.TiledLayer[];		
 		/** !#en return the cc.TiledLayer for the specific layer.
 		!#zh 获取指定名称的 layer。
 		
@@ -4134,7 +4335,7 @@ declare module cc {
 		cc.log("ObjectGroup: " + group);
 		``` 
 		*/
-		getObjectGroup(groupName : string) : TMXObjectGroup;		
+		getObjectGroup(groupName : string) : cc.TiledObjectGroup;		
 		/** !#en Return the value for the specific property name.
 		!#zh 通过属性名称，获取指定的属性。
 		
@@ -4160,132 +4361,83 @@ declare module cc {
 		export class TiledMapAsset extends Asset {		
 		constructor();	
 	}		
+		/** !#en Renders the TMX object group.
+		!#zh 渲染 tmx object group。 */
+		export class TiledObjectGroup extends _SGComponent {		
+		/** !#en Offset position of child objects.
+		!#zh 获取子对象的偏移位置。
+		
+		@example 
+		```js
+		var offset = tMXObjectGroup.getPositionOffset();
+		``` 
+		*/
+		getPositionOffset() : Vec2;		
+		/** !#en Offset position of child objects.
+		!#zh 设置子对象的偏移位置。
+		
+		@example 
+		```js
+		tMXObjectGroup.setPositionOffset(cc.v2(5, 5));
+		``` 
+		*/
+		setPositionOffset(offset : Vec2) : void;		
+		/** !#en List of properties stored in a dictionary.
+		!#zh 以映射的形式获取属性列表。
+		
+		@example 
+		```js
+		var offset = tMXObjectGroup.getProperties();
+		``` 
+		*/
+		getProperties() : any;		
+		/** !#en Set the properties of the object group.
+		!#zh 设置属性列表。
+		
+		@example 
+		```js
+		tMXObjectGroup.setProperties(obj);
+		``` 
+		*/
+		setProperties(Var : any) : void;		
+		/** !#en Gets the Group name.
+		!#zh 获取组名称。
+		
+		@example 
+		```js
+		var groupName = tMXObjectGroup.getGroupName;
+		``` 
+		*/
+		getGroupName() : string;		
+		/** !#en Set the Group name.
+		!#zh 设置组名称。
+		
+		@example 
+		```js
+		tMXObjectGroup.setGroupName("New Group");
+		``` 
+		*/
+		setGroupName(groupName : string) : void;		
 		/** !#en
-		 cc.NodePool is the cache pool designed for node type.<br/>
-		 It can helps you to improve your game performance for objects which need frequent release and recreate operations<br/>
-		
-		It's recommended to create cc.NodePool instances by node type, the type corresponds to node type in game design, not the class,
-		for example, a prefab is a specific node type. <br/>
-		When you create a node pool, you can pass a Component which contains `unuse`, `reuse` functions to control the content of node.<br/>
-		
-		Some common use case is :<br/>
-		     1. Bullets in game (die very soon, massive creation and recreation, no side effect on other objects)<br/>
-		     2. Blocks in candy crash (massive creation and recreation)<br/>
-		     etc...
-		!#zh
-		cc.NodePool 是用于管理节点对象的对象缓存池。<br/>
-		它可以帮助您提高游戏性能，适用于优化对象的反复创建和销毁<br/>
-		以前 cocos2d-x 中的 cc.pool 和新的节点事件注册系统不兼容，因此请使用 cc.NodePool 来代替。
-		
-		新的 NodePool 需要实例化之后才能使用，每种不同的节点对象池需要一个不同的对象池实例，这里的种类对应于游戏中的节点设计，一个 prefab 相当于一个种类的节点。<br/>
-		在创建缓冲池时，可以传入一个包含 unuse, reuse 函数的组件类型用于节点的回收和复用逻辑。<br/>
-		
-		一些常见的用例是：<br/>
-		     1.在游戏中的子弹（死亡很快，频繁创建，对其他对象无副作用）<br/>
-		     2.糖果粉碎传奇中的木块（频繁创建）。
-		     等等.... */
-		export class NodePool {		
-		/** !#en
-		Constructor for creating a pool for a specific node template (usually a prefab). You can pass a component (type or name) argument for handling event for reusing and recycling node.
-		!#zh
-		使用构造函数来创建一个节点专用的对象池，您可以传递一个组件类型或名称，用于处理节点回收和复用时的事件逻辑。
-		@param poolHandlerComp !#en The constructor or the class name of the component to control the unuse/reuse logic. !#zh 处理节点回收和复用事件逻辑的组件类型或名称。
+		Return the object for the specific object name. <br />
+		It will return the 1st object found on the array for the given name.
+		!#zh 获取指定的对象。
 		
 		@example 
 		```js
-		properties: {
-		   template: cc.Prefab
-		 },
-		 onLoad () {
-		// MyTemplateHandler is a component with 'unuse' and 'reuse' to handle events when node is reused or recycled.
-		   this.myPool = new cc.NodePool('MyTemplateHandler');
-		 }
+		var object = tMXObjectGroup.getObject("Group");
 		``` 
 		*/
-		NodePool(poolHandlerComp : [Function|String]) : void;		
-		/** !#en The pool handler component, it could be the class name or the constructor.
-		!#zh 缓冲池处理组件，用于节点的回收和复用逻辑，这个属性可以是组件类名或组件的构造函数。 */
-		poolHandlerComp : Function|string;		
-		/** !#en The current available size in the pool
-		!#zh 获取当前缓冲池的可用对象数量 
-		*/
-		size() : void;		
-		/** !#en Destroy all cached nodes in the pool
-		!#zh 销毁对象池中缓存的所有节点 
-		*/
-		clear() : void;		
-		/** !#en Put a new Node into the pool.
-		It will automatically remove the node from its parent without cleanup.
-		It will also invoke unuse method of the poolHandlerComp if exist.
-		!#zh 向缓冲池中存入一个不再需要的节点对象。
-		这个函数会自动将目标节点从父节点上移除，但是不会进行 cleanup 操作。
-		这个函数会调用 poolHandlerComp 的 unuse 函数，如果组件和函数都存在的话。
+		getObject(objectName : string) : any;		
+		/** !#en Gets the objects.
+		!#zh 获取对象数组。
 		
 		@example 
 		```js
-		let myNode = cc.instantiate(this.template);
-		  this.myPool.put(myNode);
+		var objects = tMXObjectGroup.getObjects();
 		``` 
 		*/
-		put() : void;		
-		/** !#en Get a obj from pool, if no available object in pool, null will be returned.
-		This function will invoke the reuse function of poolHandlerComp if exist.
-		!#zh 获取对象池中的对象，如果对象池没有可用对象，则返回空。
-		这个函数会调用 poolHandlerComp 的 reuse 函数，如果组件和函数都存在的话。
-		@param params !#en Params to pass to 'reuse' method in poolHandlerComp !#zh 向 poolHandlerComp 中的 'reuse' 函数传递的参数
-		
-		@example 
-		```js
-		let newNode = this.myPool.get();
-		``` 
-		*/
-		get(params : any) : any;	
-	}		
-		/** !#en
-		 Attention: In creator, it's strongly not recommended to use cc.pool to manager cc.Node.
-		 We provided {{#crossLink "NodePool"}}cc.NodePool{{/crossLink}} instead.
-		
-		 cc.pool is a singleton object serves as an object cache pool.<br/>
-		 It can helps you to improve your game performance for objects which need frequent release and recreate operations<br/>
-		!#zh
-		首先请注意，在 Creator 中我们强烈不建议使用 cc.pool 来管理 cc.Node 节点对象，请使用 {{#crossLink "NodePool"}}cc.NodePool{{/crossLink}} 代替
-		因为 cc.pool 是面向类来设计的，而 cc.Node 中使用 Component 来进行组合，它的类永远都一样，实际却千差万别。
-		
-		cc.pool 是一个单例对象，用作为对象缓存池。<br/>
-		它可以帮助您提高游戏性能，适用于优化对象的反复创建和销毁<br/> */
-		export class pool {		
-		/** !#en Put the obj in pool.
-		!#zh 加入对象到对象池中。
-		@param obj The need put in pool object.
-		
-		@example 
-		```js
-		---------------------------------
-		var sp = new _ccsg.Sprite("a.png");
-		this.addChild(sp);
-		cc.pool.putInPool(sp);
-		cc.pool.getFromPool(_ccsg.Sprite, "a.png");
-		
-		``` 
-		*/
-		putInPool(obj : any) : void;		
-		/** !#en Check if this kind of obj has already in pool.
-		!#zh 检查对象池中是否有指定对象的存在。
-		@param objClass The check object class. 
-		*/
-		hasObject(objClass : any) : boolean;		
-		/** !#en Remove the obj if you want to delete it.
-		!#zh 移除在对象池中指定的对象。 
-		*/
-		removeObject() : void;		
-		/** !#en Get the obj from pool.
-		!#zh 获取对象池中的指定对象。 
-		*/
-		getFromPool() : any;		
-		/** !#en Remove all objs in pool and reset the pool.
-		!#zh 移除对象池中的所有对象，并且重置对象池。 
-		*/
-		drainAllPools() : void;	
+		getObjects() : any[];	
 	}		
 		/** !#en
 		Base class for handling assets used in Fireball. This class can be instantiate.
@@ -4411,1381 +4563,6 @@ declare module cc {
 		!#zh 文本资源类。 */
 		export class TextAsset extends Asset {		
 		constructor();	
-	}		
-		/** !#en Box Collider.
-		!#zh 包围盒碰撞组件 */
-		export class BoxCollider extends Component {		
-		/** !#en Position offset
-		!#zh 位置偏移量 */
-		offset : Vec2;		
-		/** !#en Box size
-		!#zh 包围盒大小 */
-		size : Size;	
-	}		
-		/** !#en Circle Collider.
-		!#zh 圆形碰撞组件 */
-		export class CircleCollider extends Component {		
-		/** !#en Position offset
-		!#zh 位置偏移量 */
-		offset : Vec2;		
-		/** !#en Circle radius
-		!#zh 圆形半径 */
-		radius : number;	
-	}		
-		/** !#en Collider component base class.
-		!#zh 碰撞组件基类 */
-		export class Collider extends Component {		
-		/** !#en Tag. If a node has several collider components, you can judge which type of collider is collided according to the tag.
-		!#zh 标签。当一个节点上有多个碰撞组件时，在发生碰撞后，可以使用此标签来判断是节点上的哪个碰撞组件被碰撞了。 */
-		tag : Integer;	
-	}		
-		/** !#en
-		A simple collision manager class.
-		It will calculate whether the collider collides other colliders, if collides then call the callbacks.
-		!#zh
-		一个简单的碰撞组件管理类，用于处理节点之间的碰撞组件是否产生了碰撞，并调用相应回调函数。 */
-		export class CollisionManager {		
-		/** !#en
-		!#zh
-		是否开启碰撞管理，默认为不开启 */
-		enabled : boolean;		
-		/** !#en
-		!#zh
-		是否绘制碰撞组件的包围盒，默认为不绘制 */
-		enabledDrawBoundingBox : boolean;		
-		/** !#en
-		!#zh
-		是否绘制碰撞组件的形状，默认为不绘制 */
-		enabledDebugDraw : boolean;	
-	}		
-		/** !#en Intersection helper class
-		!#zh 辅助类，用于测试形状与形状是否相交 */
-		export class Intersection {		
-		/** !#en Test line and line
-		!#zh 测试线段与线段是否相交
-		@param a1 The start point of the first line
-		@param a2 The end point of the first line
-		@param b1 The start point of the second line
-		@param b2 The end point of the second line 
-		*/
-		lineLine(a1 : Vec2, a2 : Vec2, b1 : Vec2, b2 : Vec2) : boolean;		
-		/** !#en Test line and rect
-		!#zh 测试线段与矩形是否相交
-		@param a1 The start point of the line
-		@param a2 The end point of the line
-		@param b The rect 
-		*/
-		lineRect(a1 : Vec2, a2 : Vec2, b : Rect) : boolean;		
-		/** !#en Test line and polygon
-		!#zh 测试线段与多边形是否相交
-		@param a1 The start point of the line
-		@param a2 The end point of the line
-		@param b The polygon, a set of points 
-		*/
-		linePolygon(a1 : Vec2, a2 : Vec2, b : [Vec2]) : boolean;		
-		/** !#en Test rect and rect
-		!#zh 测试矩形与矩形是否相交
-		@param a The first rect
-		@param b The second rect 
-		*/
-		rectRect(a : Rect, b : Rect) : boolean;		
-		/** !#en Test rect and polygon
-		!#zh 测试矩形与多边形是否相交
-		@param a The rect
-		@param b The polygon, a set of points 
-		*/
-		rectPolygon(a : Rect, b : [Vec2]) : boolean;		
-		/** !#en Test polygon and polygon
-		!#zh 测试多边形与多边形是否相交
-		@param a The first polygon, a set of points
-		@param b The second polygon, a set of points 
-		*/
-		polygonPolygon(a : [Vec2], b : [Vec2]) : boolean;		
-		/** !#en Test circle and circle
-		!#zh 测试圆形与圆形是否相交
-		@param a Object contains position and radius
-		@param b Object contains position and radius 
-		*/
-		circleCircle(a : any, b : any) : boolean;		
-		/** !#en Test polygon and circle
-		!#zh 测试矩形与圆形是否相交
-		@param polygon The Polygon, a set of points
-		@param circle Object contains position and radius 
-		*/
-		polygonCircle(polygon : [Vec2], circle : any) : boolean;		
-		/** !#en Test whether the point is in the polygon
-		!#zh 测试一个点是否在一个多边形中
-		@param point The point
-		@param polygon The polygon, a set of points 
-		*/
-		pointInPolygon(point : Vec2, polygon : [Vec2]) : boolean;		
-		/** !#en Calculate the distance of point to line.
-		!#zh 计算点到直线的距离。如果这是一条线段并且垂足不在线段内，则会计算点到线段端点的距离。
-		@param point The point
-		@param start The start point of line
-		@param end The end point of line
-		@param isSegment whether this line is a segment 
-		*/
-		pointLineDistance(point : Vec2, start : Vec2, end : Vec2, isSegment : boolean) : boolean;	
-	}		
-		/** !#en Polygon Collider.
-		!#zh 多边形碰撞组件 */
-		export class PolygonCollider extends Component {		
-		/** !#en Position offset
-		!#zh 位置偏移量 */
-		offset : Vec2;		
-		/** !#en Polygon points
-		!#zh 多边形顶点数组 */
-		points : [Vec2];	
-	}		
-		/** !#en The animation component is used to play back animations.
-		
-		Animation provide several events to register：
-		 - play : Emit when egine playing animation
-		 - stop : Emit when stop playing animation
-		 - pause : Emit when pause animation
-		 - resume : Emit when resume animation
-		 - lastframe : If animation repeat coutn is larger than 1, emit when animation play to the last frame
-		 - finished : Emit when finish playing animation
-		
-		!#zh Animation 组件用于播放动画。你能指定动画剪辑到动画组件并从脚本控制播放。
-		
-		Animation 提供了一系列可注册的事件：
-		 - play : 开始播放时
-		 - stop : 停止播放时
-		 - pause : 暂停播放时
-		 - resume : 恢复播放时
-		 - lastframe : 假如动画循环次数大于 1，当动画播放到最后一帧时
-		 - finished : 动画播放完成时 */
-		export class Animation extends CCComponent {		
-		/** !#en Animation will play the default clip when start game.
-		!#zh 在勾选自动播放或调用 play() 时默认播放的动画剪辑。 */
-		defaultClip : AnimationClip;		
-		/** !#en Current played clip.
-		!#zh 当前播放的动画剪辑。 */
-		currentClip : AnimationClip;		
-		/** !#en Whether the animation should auto play the default clip when start game.
-		!#zh 是否在运行游戏后自动播放默认动画剪辑。 */
-		playOnLoad : boolean;		
-		/** !#en Get all the clips used in this animation.
-		!#zh 获取动画组件上的所有动画剪辑。 
-		*/
-		getClips() : AnimationClip[];		
-		/** !#en Plays an animation and stop other animations.
-		!#zh 播放当前或者指定的动画，并且停止当前正在播放动画。
-		@param name The name of animation to play. If no name is supplied then the default animation will be played.
-		@param startTime play an animation from startTime
-		
-		@example 
-		```js
-		var animCtrl = this.node.getComponent(cc.Animation);
-		animCtrl.play("linear");
-		``` 
-		*/
-		play(name? : string, startTime? : number) : AnimationState;		
-		/** !#en
-		Plays an additive animation, it will not stop other animations.
-		If there are other animations playing, then will play several animations at the same time.
-		!#zh 播放当前或者指定的动画（将不会停止当前播放的动画）。
-		@param name The name of animation to play. If no name is supplied then the default animation will be played.
-		@param startTime play an animation from startTime
-		
-		@example 
-		```js
-		// linear_1 and linear_2 at the same time playing.
-		var animCtrl = this.node.getComponent(cc.Animation);
-		animCtrl.playAdditive("linear_1");
-		animCtrl.playAdditive("linear_2");
-		``` 
-		*/
-		playAdditive(name? : string, startTime? : number) : AnimationState;		
-		/** !#en Stops an animation named name. If no name is supplied then stops all playing animations that were started with this Animation. <br/>
-		Stopping an animation also Rewinds it to the Start.
-		!#zh 停止当前或者指定的动画。如果没有指定名字，则停止所有动画。
-		@param name The animation to stop, if not supplied then stops all playing animations. 
-		*/
-		stop(name? : string) : void;		
-		/** !#en Pauses an animation named name. If no name is supplied then pauses all playing animations that were started with this Animation.
-		!#zh 暂停当前或者指定的动画。如果没有指定名字，则暂停当前正在播放的动画。
-		@param name The animation to pauses, if not supplied then pauses all playing animations. 
-		*/
-		pause(name? : string) : void;		
-		/** !#en Resumes an animation named name. If no name is supplied then resumes all paused animations that were started with this Animation.
-		!#zh 重新播放指定的动画，如果没有指定名字，则重新播放当前正在播放的动画。
-		@param name The animation to resumes, if not supplied then resumes all paused animations. 
-		*/
-		resume(name? : string) : void;		
-		/** !#en Make an animation named name go to the specified time. If no name is supplied then make all animations go to the specified time.
-		!#zh 设置指定动画的播放时间。如果没有指定名字，则设置所有动画的播放时间。
-		@param time The time to go to
-		@param name Specified animation name, if not supplied then make all animations go to the time. 
-		*/
-		setCurrentTime(time? : number, name? : string) : void;		
-		/** !#en Returns the animation state named name. If no animation with the specified name, the function will return null.
-		!#zh 获取当前或者指定的动画状态，如果未找到指定动画剪辑则返回 null。 
-		*/
-		getAnimationState(name : string) : AnimationState;		
-		/** !#en Adds a clip to the animation with name newName. If a clip with that name already exists it will be replaced with the new clip.
-		!#zh 添加动画剪辑，并且可以重新设置该动画剪辑的名称。
-		@param clip the clip to add 
-		*/
-		addClip(clip : AnimationClip, newName? : string) : AnimationState;		
-		/** !#en
-		Remove clip from the animation list. This will remove the clip and any animation states based on it.
-		If there are animation states depand on the clip are playing or clip is defaultClip, it will not delete the clip.
-		But if force is true, then will always remove the clip and any animation states based on it. If clip is defaultClip, defaultClip will be reset to null
-		!#zh
-		从动画列表中移除指定的动画剪辑，<br/>
-		如果依赖于 clip 的 AnimationState 正在播放或者 clip 是 defaultClip 的话，默认是不会删除 clip 的。
-		但是如果 force 参数为 true，则会强制停止该动画，然后移除该动画剪辑和相关的动画。这时候如果 clip 是 defaultClip，defaultClip 将会被重置为 null。
-		@param force If force is true, then will always remove the clip and any animation states based on it. 
-		*/
-		removeClip(clip : AnimationClip, force : boolean) : void;		
-		/** !#en
-		Samples animations at the current state.<br/>
-		This is useful when you explicitly want to set up some animation state, and sample it once.
-		!#zh 对当前动画进行采样。你可以手动将动画设置到某一个状态，然后采样一次。 
-		*/
-		sample() : void;		
-		/** !#en
-		Register animation event callback.
-		The event argumetns will provide the AnimationState which emit the event.
-		When play an animation, will auto register the event callback to the AnimationState, and unregister the event callback from the AnimationState when animation stopped.
-		!#zh
-		注册动画事件回调。
-		回调的事件里将会附上发送事件的 AnimationState。
-		当播放一个动画时，会自动将事件注册到对应的 AnimationState 上，停止播放时会将事件从这个 AnimationState 上取消注册。
-		@param type A string representing the event type to listen for.
-		@param callback The callback that will be invoked when the event is dispatched.
-		                             The callback is ignored if it is a duplicate (the callbacks are unique).
-		@param target The target to invoke the callback, can be null
-		@param useCapture When set to true, the capture argument prevents callback
-		                             from being invoked when the event's eventPhase attribute value is BUBBLING_PHASE.
-		                             When false, callback will NOT be invoked when event's eventPhase attribute value is CAPTURING_PHASE.
-		                             Either way, callback will be invoked when event's eventPhase attribute value is AT_TARGET.
-		
-		@example 
-		```js
-		onPlay: function (event) {
-		    var state = event.detail;    // state instanceof cc.AnimationState
-		    var type = event.type;       // type === 'play';
-		}
-		
-		// register event to all animation
-		animation.on('', 'play',      this.onPlay,        this);
-		``` 
-		*/
-		on(type : string, callback: (param: Event) => void, target : any, useCapture : boolean) : void;		
-		/** !#en
-		Unregister animation event callback.
-		!#zh
-		取消注册动画事件回调。
-		@param type A string representing the event type being removed.
-		@param callback The callback to remove.
-		@param target The target to invoke the callback, if it's not given, only callback without target will be removed
-		@param useCapture Specifies whether the callback being removed was registered as a capturing callback or not.
-		                             If not specified, useCapture defaults to false. If a callback was registered twice,
-		                             one with capture and one without, each must be removed separately. Removal of a capturing callback
-		                             does not affect a non-capturing version of the same listener, and vice versa.
-		
-		@example 
-		```js
-		// unregister event to all animation
-		animation.off('', 'play',      this.onPlay,        this);
-		``` 
-		*/
-		off(type : string, callback : Function, target : any, useCapture : boolean) : void;	
-	}		
-		/** !#en Audio Source.
-		!#zh 音频源组件，能对音频剪辑。 */
-		export class AudioSource extends Component {		
-		/** !#en
-		Is the audio source playing (Read Only). <br/>
-		Note: isPlaying is not supported for Native platforms.
-		!#zh
-		该音频剪辑是否正播放（只读）。<br/>
-		注意：Native 平台暂时不支持 isPlaying。 */
-		isPlaying : boolean;		
-		/** !#en The clip of the audio source.
-		!#zh 默认要播放的音频剪辑。 */
-		clip : AudioClip;		
-		/** !#en The volume of the audio source.
-		!#zh 音频源的音量（0.0 ~ 1.0）。 */
-		volume : number;		
-		/** !#en Is the audio source mute?
-		!#zh 是否静音音频源。Mute 是设置音量为 0，取消静音是恢复原来的音量。 */
-		mute : boolean;		
-		/** !#en Is the audio source looping?
-		!#zh 音频源是否循环播放？ */
-		loop : boolean;		
-		/** !#en If set to true, the audio source will automatically start playing on onLoad.
-		!#zh 如果设置为true，音频源将在 onLoad 时自动播放。 */
-		playOnLoad : boolean;		
-		/** !#en Plays the clip.
-		!#zh 播放音频剪辑。 
-		*/
-		play() : void;		
-		/** !#en Stops the clip.
-		!#zh 停止当前音频剪辑。 
-		*/
-		stop() : void;		
-		/** !#en Pause the clip.
-		!#zh 暂停当前音频剪辑。 
-		*/
-		pause() : void;		
-		/** !#en Resume the clip.
-		!#zh 恢复播放。 
-		*/
-		resume() : void;		
-		/** !#en Rewind playing music.
-		!#zh 从头开始播放。 
-		*/
-		rewind() : void;	
-	}		
-		/** !#en
-		Button has 3 Transition types
-		When Button state changed:
-		 If Transition type is Button.Transition.NONE, Button will do nothing
-		 If Transition type is Button.Transition.COLOR, Button will change target's color
-		 If Transition type is Button.Transition.SPRITE, Button will change target Sprite's sprite
-		
-		Button will trigger 5 events:
-		 Button.EVENT_TOUCH_DOWN
-		 Button.EVENT_TOUCH_UP
-		 Button.EVENT_HOVER_IN
-		 Button.EVENT_HOVER_MOVE
-		 Button.EVENT_HOVER_OUT
-		
-		!#zh
-		按钮组件。可以被按下,或者点击。</br>
-		
-		按钮可以通过修改 Transition 来设置按钮状态过渡的方式：</br>
-		  -Button.Transition.NONE   // 不做任何过渡</br>
-		  -Button.Transition.COLOR  // 进行颜色之间过渡</br>
-		  -Button.Transition.SPRITE // 进行精灵之间过渡</br>
-		
-		按钮可以绑定事件（但是必须要在按钮的 Node 上才能绑定事件）：</br>
-		  // 以下事件可以在全平台上都触发</br>
-		  -cc.Node.EventType.TOUCH_START  // 按下时事件</br>
-		  -cc.Node.EventType.TOUCH_Move   // 按住移动后事件</br>
-		  -cc.Node.EventType.TOUCH_END    // 按下后松开后事件</br>
-		  -cc.Node.EventType.TOUCH_CANCEL // 按下取消事件</br>
-		  // 以下事件只在 PC 平台上触发</br>
-		  -cc.Node.EventType.MOUSE_DOWN  // 鼠标按下时事件</br>
-		  -cc.Node.EventType.MOUSE_MOVE  // 鼠标按住移动后事件</br>
-		  -cc.Node.EventType.MOUSE_ENTER // 鼠标进入目标事件</br>
-		  -cc.Node.EventType.MOUSE_LEAVE // 鼠标离开目标事件</br>
-		  -cc.Node.EventType.MOUSE_UP    // 鼠标松开事件</br>
-		  -cc.Node.EventType.MOUSE_WHEEL // 鼠标滚轮事件</br> */
-		export class Button extends Component {		
-		/** !#en
-		Whether the Button is disabled.
-		If true, the Button will trigger event and do transition.
-		!#zh
-		按钮事件是否被响应，如果为 false，则按钮将被禁用。 */
-		interactable : boolean;		
-		/** !#en Transition type
-		!#zh 按钮状态改变时过渡方式。 */
-		transition : Button.Transition;		
-		/** !#en Normal state color.
-		!#zh 普通状态下按钮所显示的颜色。 */
-		normalColor : Color;		
-		/** !#en Pressed state color
-		!#zh 按下状态时按钮所显示的颜色。 */
-		pressedColor : Color;		
-		/** !#en Hover state color
-		!#zh 悬停状态下按钮所显示的颜色。 */
-		hoverColor : Color;		
-		/** !#en Disabled state color
-		!#zh 禁用状态下按钮所显示的颜色。 */
-		disabledColor : Color;		
-		/** !#en Color transition duration
-		!#zh 颜色过渡时所需时间 */
-		duration : number;		
-		/** !#en Normal state sprite
-		!#zh 普通状态下按钮所显示的 Sprite 。 */
-		normalSprite : SpriteFrame;		
-		/** !#en Pressed state sprite
-		!#zh 按下状态时按钮所显示的 Sprite 。 */
-		pressedSprite : SpriteFrame;		
-		/** !#en Hover state sprite
-		!#zh 悬停状态下按钮所显示的 Sprite 。 */
-		hoverSprite : SpriteFrame;		
-		/** !#en Disabled state sprite
-		!#zh 禁用状态下按钮所显示的 Sprite 。 */
-		disabledSprite : SpriteFrame;		
-		/** !#en
-		Transition target.
-		When Button state changed:
-		 If Transition type is Button.Transition.NONE, Button will do nothing
-		 If Transition type is Button.Transition.COLOR, Button will change target's color
-		 If Transition type is Button.Transition.SPRITE, Button will change target Sprite's sprite
-		!#zh
-		需要过渡的目标。
-		当前按钮状态改变有：
-		-如果 Transition type 选择 Button.Transition.NONE，按钮不做任何过渡。
-		-如果 Transition type 选择 Button.Transition.COLOR，按钮会对目标颜色进行颜色之间的过渡。
-		-如果 Transition type 选择 Button.Transition.NONE，按钮会对目标 Sprite 进行 Sprite 之间的过渡。 */
-		target : Node;		
-		/** !#en If Button is clicked, it will trigger event's handler
-		!#zh 按钮的点击事件列表。 */
-		clickEvents : Component.EventHandler[];	
-	}		
-		/** !#zh: 作为 UI 根节点，为所有子节点提供视窗四边的位置信息以供对齐，另外提供屏幕适配策略接口，方便从编辑器设置。
-		注：由于本节点的尺寸会跟随屏幕拉伸，所以 anchorPoint 只支持 (0.5, 0.5)，否则适配不同屏幕时坐标会有偏差。 */
-		export class Canvas extends Component {		
-		/** !#en Current active canvas, the scene should only have one active canvas at the same time.
-		!#zh 当前激活的画布组件，场景同一时间只能有一个激活的画布。 */
-		instance : Canvas;		
-		/** !#en The desigin resolution for current scene.
-		!#zh 当前场景设计分辨率。 */
-		designResolution : cc.Size;		
-		/** !#en TODO
-		!#zh: 是否优先将设计分辨率高度撑满视图高度。 */
-		fitHeight : boolean;		
-		/** !#en TODO
-		!#zh: 是否优先将设计分辨率宽度撑满视图宽度。 */
-		fitWidth : boolean;	
-	}		
-		/** !#en
-		Base class for everything attached to Node(Entity).<br/>
-		<br/>
-		NOTE: Not allowed to use construction parameters for Component's subclasses,
-		      because Component is created by the engine.
-		!#zh
-		所有附加到节点的基类。<br/>
-		<br/>
-		注意：不允许使用组件的子类构造参数，因为组件是由引擎创建的。 */
-		export class Component extends Object {		
-		constructor();		
-		/** !#en The node this component is attached to. A component is always attached to a node.
-		!#zh 该组件被附加到的节点。组件总会附加到一个节点。 */
-		node : Node;		
-		/** !#en The uuid for editor.
-		!#zh 组件的 uuid，用于编辑器。 */
-		uuid : string;		
-		/** !#en indicates whether this component is enabled or not.
-		!#zh 表示该组件自身是否启用。 */
-		enabled : boolean;		
-		/** !#en indicates whether this component is enabled and its node is also active in the hierarchy.
-		!#zh 表示该组件是否被启用并且所在的节点也处于激活状态。。 */
-		enabledInHierarchy : boolean;		
-		/** !#en TODO
-		!#zh onLoad 是否被调用。 */
-		_isOnLoadCalled : boolean;		
-		/** !#en Update is called every frame, if the Component is enabled.
-		!#zh 如果该组件启用，则每帧调用 update。 
-		*/
-		update() : void;		
-		/** !#en LateUpdate is called every frame, if the Component is enabled.
-		!#zh 如果该组件启用，则每帧调用 LateUpdate。 
-		*/
-		lateUpdate() : void;		
-		/** !#en When attaching to an active node or its node first activated.
-		!#zh 当附加到一个激活的节点上或者其节点第一次激活时候调用。 
-		*/
-		onLoad() : void;		
-		/** !#en Called before all scripts' update if the Component is enabled the first time.
-		!#zh 如果该组件第一次启用，则在所有组件的 update 之前调用。 
-		*/
-		start() : void;		
-		/** !#en Called when this component becomes enabled and its node is active.
-		!#zh 当该组件被启用，并且它的节点也激活时。 
-		*/
-		onEnable() : void;		
-		/** !#en Called when this component becomes disabled or its node becomes inactive.
-		!#zh 当该组件被禁用或节点变为无效时调用。 
-		*/
-		onDisable() : void;		
-		/** !#en Called when this component will be destroyed.
-		!#zh 当该组件被销毁时调用 
-		*/
-		onDestroy() : void;		
-		onFocusInEditor() : void;		
-		onLostFocusInEditor() : void;		
-		/** !#en Adds a component class to the node. You can also add component to node by passing in the name of the script.
-		!#zh 向节点添加一个组件类，你还可以通过传入脚本的名称来添加组件。
-		@param typeOrTypename the constructor or the class name of the component to add
-		
-		@example 
-		```js
-		var sprite = node.addComponent(cc.Sprite);
-		var test = node.addComponent("Test");
-		``` 
-		*/
-		addComponent(typeOrTypename : Function|string) : Component;		
-		/** !#en
-		Returns the component of supplied type if the node has one attached, null if it doesn't.<br/>
-		You can also get component in the node by passing in the name of the script.
-		!#zh
-		获取节点上指定类型的组件，如果节点有附加指定类型的组件，则返回，如果没有则为空。<br/>
-		传入参数也可以是脚本的名称。
-		
-		@example 
-		```js
-		// get sprite component.
-		var sprite = node.getComponent(cc.Sprite);
-		// get custom test calss.
-		var test = node.getComponent("Test");
-		``` 
-		*/
-		getComponent(typeOrClassName : Function|string) : Component;		
-		/** !#en Returns all components of supplied Type in the node.
-		!#zh 返回节点上指定类型的所有组件。
-		
-		@example 
-		```js
-		var sprites = node.getComponents(cc.Sprite);
-		var tests = node.getComponents("Test");
-		``` 
-		*/
-		getComponents(typeOrClassName : Function|string) : Component[];		
-		/** !#en Returns the component of supplied type in any of its children using depth first search.
-		!#zh 递归查找所有子节点中第一个匹配指定类型的组件。
-		
-		@example 
-		```js
-		var sprite = node.getComponentInChildren(cc.Sprite);
-		var Test = node.getComponentInChildren("Test");
-		``` 
-		*/
-		getComponentInChildren(typeOrClassName : Function|string) : Component;		
-		/** !#en Returns the components of supplied type in self or any of its children using depth first search.
-		!#zh 递归查找自身或所有子节点中指定类型的组件
-		
-		@example 
-		```js
-		var sprites = node.getComponentsInChildren(cc.Sprite);
-		var tests = node.getComponentsInChildren("Test");
-		``` 
-		*/
-		getComponentsInChildren(typeOrClassName : Function|string) : Component[];		
-		/** !#en
-		If the component's bounding box is different from the node's, you can implement this method to supply
-		a custom axis aligned bounding box (AABB), so the editor's scene view can perform hit test properly.
-		!#zh
-		如果组件的包围盒与节点不同，您可以实现该方法以提供自定义的轴向对齐的包围盒（AABB），
-		以便编辑器的场景视图可以正确地执行点选测试。
-		@param out_rect the Rect to receive the bounding box 
-		*/
-		_getLocalBounds(out_rect : Rect) : void;		
-		/** !#en
-		onRestore is called after the user clicks the Reset item in the Inspector's context menu or performs
-		an undo operation on this component.<br/>
-		<br/>
-		If the component contains the "internal state", short for "temporary member variables which not included<br/>
-		in its CCClass properties", then you may need to implement this function.<br/>
-		<br/>
-		The editor will call the getset accessors of your component to record/restore the component's state<br/>
-		for undo/redo operation. However, in extreme cases, it may not works well. Then you should implement<br/>
-		this function to manually synchronize your component's "internal states" with its public properties.<br/>
-		Once you implement this function, all the getset accessors of your component will not be called when<br/>
-		the user performs an undo/redo operation. Which means that only the properties with default value<br/>
-		will be recorded or restored by editor.<br/>
-		<br/>
-		Similarly, the editor may failed to reset your component correctly in extreme cases. Then if you need<br/>
-		to support the reset menu, you should manually synchronize your component's "internal states" with its<br/>
-		properties in this function. Once you implement this function, all the getset accessors of your component<br/>
-		will not be called during reset operation. Which means that only the properties with default value<br/>
-		will be reset by editor.
-		
-		This function is only called in editor mode.
-		!#zh
-		onRestore 是用户在检查器菜单点击 Reset 时，对此组件执行撤消操作后调用的。<br/>
-		<br/>
-		如果组件包含了“内部状态”（不在 CCClass 属性中定义的临时成员变量），那么你可能需要实现该方法。<br/>
-		<br/>
-		编辑器执行撤销/重做操作时，将调用组件的 get set 来录制和还原组件的状态。
-		然而，在极端的情况下，它可能无法良好运作。<br/>
-		那么你就应该实现这个方法，手动根据组件的属性同步“内部状态”。
-		一旦你实现这个方法，当用户撤销或重做时，组件的所有 get set 都不会再被调用。
-		这意味着仅仅指定了默认值的属性将被编辑器记录和还原。<br/>
-		<br/>
-		同样的，编辑可能无法在极端情况下正确地重置您的组件。<br/>
-		于是如果你需要支持组件重置菜单，你需要在该方法中手工同步组件属性到“内部状态”。<br/>
-		一旦你实现这个方法，组件的所有 get set 都不会在重置操作时被调用。
-		这意味着仅仅指定了默认值的属性将被编辑器重置。
-		<br/>
-		此方法仅在编辑器下会被调用。 
-		*/
-		onRestore() : void;		
-		/** !#en
-		Schedules a custom selector.<br/>
-		If the selector is already scheduled, then the interval parameter will be updated without scheduling it again.
-		!#zh
-		调度一个自定义的回调函数。<br/>
-		如果回调函数已调度，那么将不会重复调度它，只会更新时间间隔参数。
-		@param callback The callback function
-		@param interval Tick interval in seconds. 0 means tick every frame. If interval = 0, it's recommended to use scheduleUpdate() instead.
-		@param repeat The selector will be executed (repeat + 1) times, you can use kCCRepeatForever for tick infinitely.
-		@param delay The amount of time that the first tick will wait before execution.
-		
-		@example 
-		```js
-		var timeCallback = function (dt) {
-		  cc.log("time: " + dt);
-		}
-		this.schedule(timeCallback, 1);
-		``` 
-		*/
-		schedule(callback : Function, interval? : number, repeat? : number, delay? : number) : void;		
-		/** !#en Schedules a callback function that runs only once, with a delay of 0 or larger.
-		!#zh 调度一个只运行一次的回调函数，可以指定 0 让回调函数在下一帧立即执行或者在一定的延时之后执行。
-		@param callback A function wrapped as a selector
-		@param delay The amount of time that the first tick will wait before execution.
-		
-		@example 
-		```js
-		var timeCallback = function (dt) {
-		  cc.log("time: " + dt);
-		}
-		this.scheduleOnce(timeCallback, 2);
-		``` 
-		*/
-		scheduleOnce(callback : Function, delay? : number) : void;		
-		/** !#en Unschedules a custom callback function.
-		!#zh 取消调度一个自定义的回调函数。
-		@param callback_fn A function wrapped as a selector
-		
-		@example 
-		```js
-		this.unschedule(_callback);
-		``` 
-		*/
-		unschedule(callback_fn : Function) : void;		
-		/** !#en
-		unschedule all scheduled callback functions: custom callback functions, and the 'update' callback function.<br/>
-		Actions are not affected by this method.
-		!#zh 取消调度所有已调度的回调函数：定制的回调函数以及 'update' 回调函数。动作不受此方法影响。
-		
-		@example 
-		```js
-		this.unscheduleAllCallbacks();
-		``` 
-		*/
-		unscheduleAllCallbacks() : void;	
-	}		
-		/** !#en cc.EditBox is a component for inputing text, you can use it to gather small amounts of text from users.
-		!#zh EditBox 组件，用于获取用户的输入文本。 */
-		export class EditBox extends _RendererUnderSG {		
-		/** !#en Input string of EditBox.
-		!#zh 输入框的初始输入内容，如果为空则会显示占位符的文本。 */
-		string : string;		
-		/** !#en The background image of EditBox.
-		!#zh 输入框的背景图片 */
-		backGroundImage : SpriteFrame;		
-		/** !#en
-		The return key type of EditBox.
-		Note: it is meaningless for web platforms and desktop platforms.
-		!#zh
-		指定移动设备上面回车按钮的样式。
-		注意：这个选项对 web 平台与 desktop 平台无效。 */
-		returnType : EditBox.KeyboardReturnType;		
-		/** !#en Set the input flags that are to be applied to the EditBox.
-		!#zh 指定输入标志位，可以指定输入方式为密码或者单词首字母大写。 */
-		inputFlag : EditBox.InputFlag;		
-		/** !#en
-		Set the input mode of the edit box.
-		If you pass ANY, it will create a multiline EditBox.
-		!#zh
-		指定输入模式: ANY表示多行输入，其它都是单行输入，移动平台上还可以指定键盘样式。 */
-		inputMode : EditBox.InputMode;		
-		/** !#en Font size of the input text.
-		!#zh 输入框文本的字体大小 */
-		fontSize : number;		
-		/** !#en Change the lineHeight of displayed text.
-		!#zh 输入框文本的行高。 */
-		lineHeight : number;		
-		/** !#en Font color of the input text.
-		!#zh 输入框文本的颜色。 */
-		fontColor : Color;		
-		/** !#en The display text of placeholder.
-		!#zh 输入框占位符的文本内容。 */
-		placeholder : string;		
-		/** !#en The font size of placeholder.
-		!#zh 输入框占位符的字体大小。 */
-		placeholderFontSize : number;		
-		/** !#en The font color of placeholder.
-		!#zh 输入框最大允许输入的字符个数。 */
-		placeholderFontColor : Color;		
-		/** !#en The maximize input length of EditBox.
-		!#zh 输入框最大允许输入的字符个数。 */
-		maxLength : number;		
-		/** !#en The event handler to be called when EditBox began to edit text.
-		!#zh 开始编辑文本输入框触发的事件回调。 */
-		editingDidBegin : Component.EventHandler;		
-		/** !#en The event handler to be called when EditBox text changes.
-		!#zh 编辑文本输入框时触发的事件回调。 */
-		textChanged : Component.EventHandler;		
-		/** !#en The event handler to be called when EditBox edit ends.
-		!#zh 结束编辑文本输入框时触发的事件回调。 */
-		editingDidEnded : Component.EventHandler;		
-		/** !#en The event handler to be called when return key is pressed. Windows is not supported.
-		!#zh 当用户按下回车按键时的事件回调，目前不支持 windows 平台 */
-		editingReturn : Component.EventHandler;	
-	}		
-		/** !#en The Label Component.
-		!#zh 文字标签组件 */
-		export class Label extends _RendererUnderSG {		
-		/** !#en Content string of label.
-		!#zh 标签显示的文本内容。 */
-		string : string;		
-		/** !#en Horizontal Alignment of label.
-		!#zh 文本内容的水平对齐方式。 */
-		horizontalAlign : Label.HorizontalAlign;		
-		/** !#en Vertical Alignment of label.
-		!#zh 文本内容的垂直对齐方式。 */
-		verticalAlign : Label.VerticalAlign;		
-		/** !#en The actual rendering font size in shrink mode
-		!#zh SHRINK 模式下面文本实际渲染的字体大小 */
-		actualFontSize : number;		
-		/** !#en Font size of label.
-		!#zh 文本字体大小。 */
-		fontSize : number;		
-		/** !#en Line Height of label.
-		!#zh 文本行高。 */
-		lineHeight : number;		
-		/** !#en Overflow of label.
-		!#zh 文字显示超出范围时的处理方式。 */
-		overflow : Label.Overflow;		
-		/** !#en Whether auto wrap label when string width is large than label width.
-		!#zh 是否自动换行。 */
-		enableWrapText : boolean;		
-		/** !#en The font of label.
-		!#zh 文本字体。 */
-		font : cc.Font;		
-		/** !#en Whether use system font name or not.
-		!#zh 是否使用系统字体。 */
-		isSystemFontUsed : boolean;	
-	}		
-		/** !#en Outline effect used to change the display, only used for TTF font
-		!#zh 描边效果组件,用于字体描边,只能用于系统字体 */
-		export class LabelOutline extends Component {		
-		/** !#en Change the outline color
-		!#zh 改变描边的颜色 */
-		color : Color;		
-		/** !#en Change the outline width
-		!#zh 改变描边的宽度 */
-		width : number;	
-	}		
-		/** !#en The Layout is a container component, use it to arrange child elements easily.
-		!#zh Layout 组件相当于一个容器，能自动对它的所有子节点进行统一排版。 */
-		export class Layout extends Component {		
-		/** !#en The layout type.
-		!#zh 布局类型 */
-		type : Layout.Type;		
-		/** !#en
-		The are three resize modes for Layout.
-		None, resize Container and resize children.
-		!#zh 缩放模式 */
-		resizeMode : Layout.ResizeMode;		
-		/** !#en The cell size for grid layout.
-		!#zh 每个格子的大小，只有布局类型为 GRID 的时候才有效。 */
-		cellSize : Size;		
-		/** !#en
-		The start axis for grid layout. If you choose horizontal, then children will layout horizontally at first,
-		and then break line on demand. Choose vertical if you want to layout vertically at first .
-		!#zh 起始轴方向类型，可进行水平和垂直布局排列，只有布局类型为 GRID 的时候才有效。 */
-		startAxis : Layout.AxisDirection;		
-		/** !#en The padding of layout, it only effect the layout in one direction.
-		!#zh 容器内边距，只会在布局方向上生效。 */
-		padding : number;		
-		/** !#en The distance in x-axis between each element in layout.
-		!#zh 子节点之间的水平间距。 */
-		spacingX : number;		
-		/** !#en The distance in y-axis between each element in layout.
-		!#zh 子节点之间的垂直间距。 */
-		spacingY : number;		
-		/** !#en
-		Only take effect in Vertical layout mode.
-		This option changes the start element's positioning.
-		!#zh 垂直排列子节点的方向。 */
-		verticalDirection : Layout.VerticalDirection;		
-		/** !#en
-		Only take effect in Horizontal layout mode.
-		This option changes the start element's positioning.
-		!#zh 水平排列子节点的方向。 */
-		horizontalDirection : Layout.HorizontalDirection;	
-	}		
-		/** undefined */
-		export class Mask extends _RendererInSG {	
-	}		
-		/** !#en
-		Visual indicator of progress in some operation.
-		Displays a bar to the user representing how far the operation has progressed.
-		!#zh
-		进度条组件，可用于显示加载资源时的进度。 */
-		export class ProgressBar extends Component {		
-		/** !#en The targeted Sprite which will be changed progressively.
-		!#zh 用来显示进度条比例的 Sprite 对象。 */
-		barSprite : Sprite;		
-		/** !#en The progress mode, there are two modes supported now: horizontal and vertical.
-		!#zh 进度条的模式 */
-		mode : ProgressBar.Mode;		
-		/** !#en The total width or height of the bar sprite.
-		!#zh 进度条实际的总长度 */
-		totalLength : number;		
-		/** !#en The current progress of the bar sprite. The valid value is between 0-1.
-		!#zh 当前进度值，该数值的区间是 0-1 之间。 */
-		progress : number;		
-		/** !#en Whether reverse the progress direction of the bar sprite.
-		!#zh 进度条是否进行反方向变化。 */
-		reverse : boolean;	
-	}		
-		/** Rendering component in scene graph.
-		Maintains a node which will be the scene graph of component's Node. */
-		export class _RendererInSG extends _SGComponent {	
-	}		
-		/** The base rendering component which will attach a leaf node to the cocos2d scene graph. */
-		export class _RendererUnderSG extends _SGComponent {	
-	}		
-		/** The base class for all rendering component in scene graph.
-		
-		You should override:
-		- _createSgNode
-		- _initSgNode */
-		export class _SGComponent extends Component {	
-	}		
-		/** !#en
-		The Scrollbar control allows the user to scroll an image or other view that is too large to see completely
-		!#zh 滚动条组件 */
-		export class Scrollbar extends Component {		
-		/** !#en The "handle" part of the scrollbar.
-		!#zh 作为当前滚动区域位置显示的滑块 Sprite。 */
-		handle : cc.Sprite;		
-		/** !#en The direction of scrollbar.
-		!#zh ScrollBar 的滚动方向。 */
-		direction : Scrollbar.Direction;		
-		/** !#en Whehter enable auto hide or not.
-		!#zh 是否在没有滚动动作时自动隐藏 ScrollBar。 */
-		enableAutoHide : boolean;		
-		/** !#en
-		The time to hide scrollbar when scroll finished.
-		Note: This value is only useful when enableAutoHide is true.
-		!#zh
-		没有滚动动作后经过多久会自动隐藏。
-		注意：只要当 “enableAutoHide” 为 true 时，才有效。 */
-		autoHideTime : number;	
-	}		
-		/** !#en
-		Layout container for a view hierarchy that can be scrolled by the user,
-		allowing it to be larger than the physical display.
-		
-		!#zh
-		滚动视图组件 */
-		export class ScrollView extends Component {		
-		/** !#en This is a reference to the UI element to be scrolled.
-		!#zh 可滚动展示内容的节点。 */
-		content : Node;		
-		/** !#en Enable horizontal scroll.
-		!#zh 是否开启水平滚动。 */
-		horizontal : boolean;		
-		/** !#en Enable vertical scroll.
-		!#zh 是否开启垂直滚动。 */
-		vertical : boolean;		
-		/** !#en When inertia is set, the content will continue to move when touch ended.
-		!#zh 是否开启滚动惯性。 */
-		inertia : boolean;		
-		/** !#en
-		It determines how quickly the content stop moving. A value of 1 will stop the movement immediately.
-		A value of 0 will never stop the movement until it reaches to the boundary of scrollview.
-		!#zh
-		开启惯性后，在用户停止触摸后滚动多快停止，0表示永不停止，1表示立刻停止。 */
-		brake : number;		
-		/** !#en When elastic is set, the content will be bounce back when move out of boundary.
-		!#zh 是否允许滚动内容超过边界，并在停止触摸后回弹。 */
-		elastic : boolean;		
-		/** !#en The elapse time of bouncing back. A value of 0 will bounce back immediately.
-		!#zh 回弹持续的时间，0 表示将立即反弹。 */
-		bounceDuration : number;		
-		/** !#en The horizontal scrollbar reference.
-		!#zh 水平滚动的 ScrollBar。 */
-		horizontalScrollBar : Scrollbar;		
-		/** !#en The vertical scrollbar reference.
-		!#zh 垂直滚动的 ScrollBar。 */
-		verticalScrollBar : Scrollbar;		
-		/** !#en Scrollview events callback
-		!#zh 滚动视图的事件回调函数 */
-		scrollEvents : Component.EventHandler[];		
-		/** !#en If cancelInnerEvents is set to true, the scroll behavior will cancel touch events on inner content nodes of the scroll view
-		It's set to true by default.
-		!#zh 如果这个属性被设置为 true，那么滚动行为会取消 ScrollView 的子节点上注册的触摸事件，默认被设置为 true。
-		注意，子节点上的 touchstart 事件仍然会触发，触点移动距离非常短的情况下 touchmove 和 touchend 也不会受影响。 */
-		cancelInnerEvents : boolean;		
-		/** !#en Scroll the content to the bottom boundary of ScrollView.
-		!#zh 视图内容将在规定时间内滚动到视图底部。
-		@param timeInSecond Scroll time in second, if you don't pass timeInSecond,
-		the content will jump to the bottom boundary immediately.
-		@param attenuated Whether the scroll acceleration attenuated, default is true.
-		
-		@example 
-		```js
-		// Scroll to the bottom of the view.
-		scrollView.scrollToBottom(0.1);
-		``` 
-		*/
-		scrollToBottom(timeInSecond? : number, attenuated? : boolean) : void;		
-		/** !#en Scroll the content to the top boundary of ScrollView.
-		!#zh 视图内容将在规定时间内滚动到视图顶部。
-		@param timeInSecond Scroll time in second, if you don't pass timeInSecond,
-		the content will jump to the top boundary immediately.
-		@param attenuated Whether the scroll acceleration attenuated, default is true.
-		
-		@example 
-		```js
-		// Scroll to the top of the view.
-		scrollView.scrollToTop(0.1);
-		``` 
-		*/
-		scrollToTop(timeInSecond? : number, attenuated? : boolean) : void;		
-		/** !#en Scroll the content to the left boundary of ScrollView.
-		!#zh 视图内容将在规定时间内滚动到视图左边。
-		@param timeInSecond Scroll time in second, if you don't pass timeInSecond,
-		the content will jump to the left boundary immediately.
-		@param attenuated Whether the scroll acceleration attenuated, default is true.
-		
-		@example 
-		```js
-		// Scroll to the left of the view.
-		scrollView.scrollToLeft(0.1);
-		``` 
-		*/
-		scrollToLeft(timeInSecond? : number, attenuated? : boolean) : void;		
-		/** !#en Scroll the content to the right boundary of ScrollView.
-		!#zh 视图内容将在规定时间内滚动到视图右边。
-		@param timeInSecond Scroll time in second, if you don't pass timeInSecond,
-		the content will jump to the right boundary immediately.
-		@param attenuated Whether the scroll acceleration attenuated, default is true.
-		
-		@example 
-		```js
-		// Scroll to the right of the view.
-		scrollView.scrollToRight(0.1);
-		``` 
-		*/
-		scrollToRight(timeInSecond? : number, attenuated? : boolean) : void;		
-		/** !#en Scroll the content to the top left boundary of ScrollView.
-		!#zh 视图内容将在规定时间内滚动到视图左上角。
-		@param timeInSecond Scroll time in second, if you don't pass timeInSecond,
-		the content will jump to the top left boundary immediately.
-		@param attenuated Whether the scroll acceleration attenuated, default is true.
-		
-		@example 
-		```js
-		// Scroll to the upper left corner of the view.
-		scrollView.scrollToTopLeft(0.1);
-		``` 
-		*/
-		scrollToTopLeft(timeInSecond? : number, attenuated? : boolean) : void;		
-		/** !#en Scroll the content to the top right boundary of ScrollView.
-		!#zh 视图内容将在规定时间内滚动到视图右上角。
-		@param timeInSecond Scroll time in second, if you don't pass timeInSecond,
-		the content will jump to the top right boundary immediately.
-		@param attenuated Whether the scroll acceleration attenuated, default is true.
-		
-		@example 
-		```js
-		// Scroll to the top right corner of the view.
-		scrollView.scrollToTopRight(0.1);
-		``` 
-		*/
-		scrollToTopRight(timeInSecond? : number, attenuated? : boolean) : void;		
-		/** !#en Scroll the content to the bottom left boundary of ScrollView.
-		!#zh 视图内容将在规定时间内滚动到视图左下角。
-		@param timeInSecond Scroll time in second, if you don't pass timeInSecond,
-		the content will jump to the bottom left boundary immediately.
-		@param attenuated Whether the scroll acceleration attenuated, default is true.
-		
-		@example 
-		```js
-		// Scroll to the lower left corner of the view.
-		scrollView.scrollToBottomLeft(0.1);
-		``` 
-		*/
-		scrollToBottomLeft(timeInSecond? : number, attenuated? : boolean) : void;		
-		/** !#en Scroll the content to the bottom right boundary of ScrollView.
-		!#zh 视图内容将在规定时间内滚动到视图右下角。
-		@param timeInSecond Scroll time in second, if you don't pass timeInSecond,
-		the content will jump to the bottom right boundary immediately.
-		@param attenuated Whether the scroll acceleration attenuated, default is true.
-		
-		@example 
-		```js
-		// Scroll to the lower right corner of the view.
-		scrollView.scrollToBottomRight(0.1);
-		``` 
-		*/
-		scrollToBottomRight(timeInSecond? : number, attenuated? : boolean) : void;		
-		/** !#en Scroll with an offset related to the ScrollView's top left origin, if timeInSecond is omitted, then it will jump to the
-		      specific offset immediately.
-		!#zh 视图内容在规定时间内将滚动到 ScrollView 相对左上角原点的偏移位置, 如果 timeInSecond参数不传，则立即滚动到指定偏移位置。
-		@param offset A Vec2, the value of which each axis between 0 and maxScrollOffset
-		@param timeInSecond Scroll time in second, if you don't pass timeInSecond,
-		the content will jump to the specific offset of ScrollView immediately.
-		@param attenuated Whether the scroll acceleration attenuated, default is true.
-		
-		@example 
-		```js
-		// Scroll to middle position in 0.1 second in x-axis
-		var maxScrollOffset = this.getMaxScrollOffset();
-		scrollView.scrollToOffset(cc.p(maxScrollOffset.x / 2, 0), 0.1);
-		``` 
-		*/
-		scrollToOffset(offset : Vec2, timeInSecond? : number, attenuated? : boolean) : void;		
-		/** !#en  Get the positive offset value corresponds to the content's top left boundary.
-		!#zh  获取滚动视图相对于左上角原点的当前滚动偏移 
-		*/
-		getScrollOffset() : Vec2;		
-		/** !#en Get the maximize available  scroll offset
-		!#zh 获取滚动视图最大可以滚动的偏移量 
-		*/
-		getMaxScrollOffset() : Vec2;		
-		/** !#en Scroll the content to the horizontal percent position of ScrollView.
-		!#zh 视图内容在规定时间内将滚动到 ScrollView 水平方向的百分比位置上。
-		@param percent A value between 0 and 1.
-		@param timeInSecond Scroll time in second, if you don't pass timeInSecond,
-		the content will jump to the horizontal percent position of ScrollView immediately.
-		@param attenuated Whether the scroll acceleration attenuated, default is true.
-		
-		@example 
-		```js
-		// Scroll to middle position.
-		scrollView.scrollToBottomRight(0.5, 0.1);
-		``` 
-		*/
-		scrollToPercentHorizontal(percent : number, timeInSecond? : number, attenuated? : boolean) : void;		
-		/** !#en Scroll the content to the percent position of ScrollView in any direction.
-		!#zh 视图内容在规定时间内进行垂直方向和水平方向的滚动，并且滚动到指定百分比位置上。
-		@param anchor A point which will be clamp between cc.p(0,0) and cc.p(1,1).
-		@param timeInSecond Scroll time in second, if you don't pass timeInSecond,
-		the content will jump to the percent position of ScrollView immediately.
-		@param attenuated Whether the scroll acceleration attenuated, default is true.
-		
-		@example 
-		```js
-		// Vertical scroll to the bottom of the view.
-		scrollView.scrollTo(cc.p(0, 1), 0.1);
-		
-		// Horizontal scroll to view right.
-		scrollView.scrollTo(cc.p(1, 0), 0.1);
-		``` 
-		*/
-		scrollTo(anchor : Vec2, timeInSecond? : number, attenuated? : boolean) : void;		
-		/** !#en Scroll the content to the vertical percent position of ScrollView.
-		!#zh 视图内容在规定时间内滚动到 ScrollView 垂直方向的百分比位置上。
-		@param percent A value between 0 and 1.
-		@param timeInSecond Scroll time in second, if you don't pass timeInSecond,
-		the content will jump to the vertical percent position of ScrollView immediately.
-		@param attenuated Whether the scroll acceleration attenuated, default is true.
-		// Scroll to middle position.
-		scrollView.scrollToPercentVertical(0.5, 0.1); 
-		*/
-		scrollToPercentVertical(percent : number, timeInSecond? : number, attenuated? : boolean) : void;		
-		/** !#en  Stop auto scroll immediately
-		!#zh  停止自动滚动, 调用此 API 可以让 Scrollview 立即停止滚动 
-		*/
-		stopAutoScroll() : void;		
-		/** !#en Modify the content position.
-		!#zh 设置当前视图内容的坐标点。
-		@param position The position in content's parent space. 
-		*/
-		setContentPosition(position : Vec2) : void;		
-		/** !#en Query the content's position in its parent space.
-		!#zh 获取当前视图内容的坐标点。 
-		*/
-		getContentPosition() : Position;	
-	}		
-		/** !#en A distortion used to change the rendering of simple sprite.If will take effect after sprite component is added.
-		!#zh 扭曲效果组件,用于改变SIMPLE类型sprite的渲染,只有当sprite组件已经添加后,才能起作用. */
-		export class SpriteDistortion extends Component {		
-		/** !#en Change the UV offset for distortion rendering.
-		!#zh 在渲染时改变UV的整体偏移. */
-		offset : Vec2;		
-		/** !#en Change the UV scale for distortion rendering.
-		!#zh 在渲染时改变UV的寻址系数 */
-		tiling : Vec2;	
-	}		
-		/** !#en cc.VideoPlayer is a component for playing videos, you can use it for showing videos in your game.
-		!#zh Video 组件，用于在游戏中播放视频 */
-		export class VideoPlayer extends _RendererUnderSG {		
-		/** !#en The resource type of videoplayer, REMOTE for remote url and LOCAL for local file path.
-		!#zh 视频来源：REMOTE 表示远程视频 URL，LOCAL 表示本地视频地址。 */
-		resourceType : VideoPlayer.ResourceType;		
-		/** !#en The remote URL of video.
-		!#zh 远程视频的 URL */
-		remoteURL : string;		
-		/** !#en The local video full path.
-		!#zh 本地视频的 URL */
-		video : string;		
-		/** !#en The current playback time of the now playing item in seconds, you could also change the start playback time.
-		!#zh 指定视频从什么时间点开始播放，单位是秒，也可以用来获取当前视频播放的时间进度。 */
-		currentTime : number;		
-		/** !#en Whether keep the aspect ration of the original video.
-		!#zh 是否保持视频原来的宽高比 */
-		keepAspectRatio : boolean;		
-		/** !#en Whether play video in fullscreen mode.
-		!#zh 是否全屏播放视频 */
-		isFullscreen : boolean;		
-		/** !#en the video player's callback, it will be triggered when certain event occurs, like: playing, paused, stopped and completed.
-		!#zh 视频播放回调函数，该回调函数会在特定情况被触发，比如播放中，暂时，停止和完成播放。 */
-		videoPlayerEvent : cc.Component.EventHandler[];		
-		/** !#en If a video is paused, call this method could resume playing. If a video is stopped, call this method to play from scratch.
-		!#zh 如果视频被暂停播放了，调用这个接口可以继续播放。如果视频被停止播放了，调用这个接口可以从头开始播放。 
-		*/
-		play() : void;		
-		/** !#en If a video is paused, call this method to resume playing.
-		!#zh 如果一个视频播放被暂停播放了，调用这个接口可以继续播放。 
-		*/
-		resume() : void;		
-		/** !#en If a video is playing, call this method to pause playing.
-		!#zh 如果一个视频正在播放，调用这个接口可以暂停播放。 
-		*/
-		pause() : void;		
-		/** !#en If a video is playing, call this method to stop playing immediately.
-		!#zh 如果一个视频正在播放，调用这个接口可以立马停止播放。 
-		*/
-		stop() : void;	
-	}		
-		/** !#en Renders a sprite in the scene.
-		!#zh 该组件用于在场景中渲染精灵。 */
-		export class Sprite extends _RendererUnderSG {		
-		/** !#en The sprite frame of the sprite.
-		!#zh 精灵的精灵帧 */
-		spriteFrame : SpriteFrame;		
-		/** !#en The sprite render type.
-		!#zh 精灵渲染类型 */
-		type : Sprite.SpriteType;		
-		/** !#en
-		The fill type, This will only have any effect if the "type" is set to “cc.Sprite.Type.FILLED”.
-		!#zh
-		精灵填充类型，仅渲染类型设置为 cc.Sprite.SpriteType.FILLED 时有效。 */
-		fillType : Sprite.FillType;		
-		/** !#en
-		The fill Center, This will only have any effect if the "type" is set to “cc.Sprite.Type.FILLED”.
-		!#zh
-		填充中心点，仅渲染类型设置为 cc.Sprite.SpriteType.FILLED 时有效。 */
-		fillCenter : Vec2;		
-		/** !#en
-		The fill Start, This will only have any effect if the "type" is set to “cc.Sprite.Type.FILLED”.
-		!#zh
-		填充起始点，仅渲染类型设置为 cc.Sprite.SpriteType.FILLED 时有效。 */
-		fillStart : number;		
-		/** !#en
-		The fill Range, This will only have any effect if the "type" is set to “cc.Sprite.Type.FILLED”.
-		!#zh
-		填充范围，仅渲染类型设置为 cc.Sprite.SpriteType.FILLED 时有效。 */
-		fillRange : number;		
-		/** !#en specify the frame is trimmed or not.
-		!#zh 是否使用裁剪模式 */
-		trim : boolean;		
-		/** !#en specify the source Blend Factor.
-		!#zh 指定原图的混合模式 */
-		srcBlendFactor : BlendFactor;		
-		/** !#en specify the destination Blend Factor.
-		!#zh 指定目标的混合模式 */
-		dstBlendFactor : BlendFactor;		
-		/** !#en specify the size tracing mode.
-		!#zh 精灵尺寸调整模式 */
-		sizeMode : Sprite.SizeMode;		
-		/** !#en Change the left sprite's cap inset.
-		!#zh 设置精灵左边框-用于九宫格。
-		@param insetLeft The values to use for the cap inset.
-		
-		@example 
-		```js
-		sprite.setInsetLeft(5);
-		``` 
-		*/
-		setInsetLeft(insetLeft : number) : void;		
-		/** !#en Query the left sprite's cap inset.
-		!#zh 获取精灵左边框
-		
-		@example 
-		```js
-		var insetLeft = sprite.getInsetLeft();
-		cc.log("Inset Left:" + insetLeft);
-		``` 
-		*/
-		getInsetLeft() : number;		
-		/** !#en Change the top sprite's cap inset.
-		!#zh 设置精灵上边框-用于九宫格。
-		@param insetTop The values to use for the cap inset.
-		
-		@example 
-		```js
-		sprite.setInsetTop(5);
-		``` 
-		*/
-		setInsetTop(insetTop : number) : void;		
-		/** !#en Query the top sprite's cap inset.
-		!#zh 获取精灵上边框。
-		
-		@example 
-		```js
-		var insetTop = sprite.getInsetTop();
-		cc.log("Inset Top:" + insetTop);
-		``` 
-		*/
-		getInsetTop() : number;		
-		/** !#en Change the right sprite's cap inset.
-		!#zh 设置精灵右边框-用于九宫格。
-		@param insetRight The values to use for the cap inset.
-		
-		@example 
-		```js
-		sprite.setInsetRight(5);
-		``` 
-		*/
-		setInsetRight(insetRight : number) : void;		
-		/** !#en Query the right sprite's cap inset.
-		!#zh 获取精灵右边框。
-		
-		@example 
-		```js
-		var insetRight = sprite.getInsetRight();
-		cc.log("Inset Right:" + insetRight);
-		``` 
-		*/
-		getInsetRight() : number;		
-		/** !#en Change the bottom sprite's cap inset.
-		!#zh 设置精灵下边框-用于九宫格。
-		@param bottomInset The values to use for the cap inset.
-		
-		@example 
-		```js
-		sprite.setInsetBottom(5);
-		``` 
-		*/
-		setInsetBottom(bottomInset : number) : void;		
-		/** !#en Query the bottom sprite's cap inset.
-		!#zh 获取精灵下边框。
-		
-		@example 
-		```js
-		var insetBottom = sprite.getInsetBottom();
-		cc.log("Inset Bottom:" + insetBottom);
-		``` 
-		*/
-		getInsetBottom() : number;	
-	}		
-		/** !#en cc.WebView is a component for display web pages in the game
-		!#zh WebView 组件，用于在游戏中显示网页 */
-		export class WebView extends _RendererUnderSG {		
-		/** !#en A given URL to be loaded by the WebView, it should have a http or https prefix.
-		!#zh 指定 WebView 加载的网址，它应该是一个 http 或者 https 开头的字符串 */
-		url : string;		
-		/** !#en The webview's event callback , it will be triggered when certain webview event occurs.
-		!#zh WebView 的回调事件，当网页加载过程中，加载完成后或者加载出错时都会回调此函数 */
-		webviewLoadedEvents : cc.Component.EventHandler[];	
-	}		
-		/** !#en
-		Stores and manipulate the anchoring based on its parent.
-		Widget are used for GUI but can also be used for other things.
-		Widget will adjust current node's position and size automatically, but the results after adjustment can not be obtained until the next frame.
-		!#zh
-		Widget 组件，用于设置和适配其相对于父节点的边距，Widget 通常被用于 UI 界面，也可以用于其他地方。
-		Widget 会自动调整当前节点的坐标和宽高，不过目前调整后的结果要到下一帧才能在脚本里获取到。 */
-		export class Widget extends Component {		
-		/** !#en Whether to align the top.
-		!#zh 是否对齐上边。 */
-		isAlignTop : boolean;		
-		/** !#en
-		Vertically aligns the midpoint, This will open the other vertical alignment options cancel.
-		!#zh
-		是否垂直方向对齐中点，开启此项会将垂直方向其他对齐选项取消。 */
-		isAlignVerticalCenter : boolean;		
-		/** !#en Whether to align the bottom.
-		!#zh 是否对齐下边。 */
-		isAlignBottom : boolean;		
-		/** !#en Whether to align the left.
-		!#zh 是否对齐左边 */
-		isAlignLeft : boolean;		
-		/** !#en
-		Horizontal aligns the midpoint. This will open the other horizontal alignment options canceled.
-		!#zh
-		是否水平方向对齐中点，开启此选项会将水平方向其他对齐选项取消。 */
-		isAlignHorizontalCenter : boolean;		
-		/** !#en Whether to align the right.
-		!#zh 是否对齐右边。 */
-		isAlignRight : boolean;		
-		/** !#en
-		Whether the stretched horizontally, when enable the left and right alignment will be stretched horizontally,
-		the width setting is invalid (read only).
-		!#zh
-		当前是否水平拉伸。当同时启用左右对齐时，节点将会被水平拉伸，此时节点的宽度只读。 */
-		isStretchWidth : boolean;		
-		/** !#en
-		Whether the stretched vertically, when enable the left and right alignment will be stretched vertically,
-		then height setting is invalid (read only)
-		!#zh
-		当前是否垂直拉伸。当同时启用上下对齐时，节点将会被垂直拉伸，此时节点的高度只读。 */
-		isStretchHeight : boolean;		
-		/** !#en
-		The margins between the top of this node and the top of parent node,
-		the value can be negative, Only available in 'isAlignTop' open.
-		!#zh
-		本节点顶边和父节点顶边的距离，可填写负值，只有在 isAlignTop 开启时才有作用。 */
-		top : number;		
-		/** !#en
-		The margins between the bottom of this node and the bottom of parent node,
-		the value can be negative, Only available in 'isAlignBottom' open.
-		!#zh
-		本节点底边和父节点底边的距离，可填写负值，只有在 isAlignBottom 开启时才有作用。 */
-		bottom : number;		
-		/** !#en
-		The margins between the left of this node and the left of parent node,
-		the value can be negative, Only available in 'isAlignLeft' open.
-		!#zh
-		本节点左边和父节点左边的距离，可填写负值，只有在 isAlignLeft 开启时才有作用。 */
-		left : number;		
-		/** !#en
-		The margins between the right of this node and the right of parent node,
-		the value can be negative, Only available in 'isAlignRight' open.
-		!#zh
-		本节点右边和父节点右边的距离，可填写负值，只有在 isAlignRight 开启时才有作用。 */
-		right : number;		
-		/** !#en
-		Horizontal aligns the midpoint offset value,
-		the value can be negative, Only available in 'isAlignHorizontalCenter' open.
-		!#zh 水平居中的偏移值，可填写负值，只有在 isAlignHorizontalCenter 开启时才有作用。 */
-		horizontalCenter : number;		
-		/** !#en
-		Vertical aligns the midpoint offset value,
-		the value can be negative, Only available in 'isAlignVerticalCenter' open.
-		!#zh 垂直居中的偏移值，可填写负值，只有在 isAlignVerticalCenter 开启时才有作用。 */
-		verticalCenter : number;		
-		/** !#en If true, horizontalCenter is pixel margin, otherwise is percentage (0 - 1) margin.
-		!#zh 如果为 true，"horizontalCenter" 将会以像素作为偏移值，反之为百分比（0 到 1）。 */
-		isAbsoluteHorizontalCenter : boolean;		
-		/** !#en If true, verticalCenter is pixel margin, otherwise is percentage (0 - 1) margin.
-		!#zh 如果为 true，"verticalCenter" 将会以像素作为偏移值，反之为百分比（0 到 1）。 */
-		isAbsoluteVerticalCenter : boolean;		
-		/** !#en
-		If true, top is pixel margin, otherwise is percentage (0 - 1) margin relative to the parent's height.
-		!#zh
-		如果为 true，"top" 将会以像素作为边距，否则将会以相对父物体高度的百分比（0 到 1）作为边距。 */
-		isAbsoluteTop : boolean;		
-		/** !#en
-		If true, bottom is pixel margin, otherwise is percentage (0 - 1) margin relative to the parent's height.
-		!#zh
-		如果为 true，"bottom" 将会以像素作为边距，否则将会以相对父物体高度的百分比（0 到 1）作为边距。 */
-		isAbsoluteBottom : boolean;		
-		/** !#en
-		If true, left is pixel margin, otherwise is percentage (0 - 1) margin relative to the parent's width.
-		!#zh
-		如果为 true，"left" 将会以像素作为边距，否则将会以相对父物体宽度的百分比（0 到 1）作为边距。 */
-		isAbsoluteLeft : boolean;		
-		/** !#en
-		If true, right is pixel margin, otherwise is percentage (0 - 1) margin relative to the parent's width.
-		!#zh
-		如果为 true，"right" 将会以像素作为边距，否则将会以相对父物体宽度的百分比（0 到 1）作为边距。 */
-		isAbsoluteRight : boolean;		
-		/** !#en TODO
-		!#zh
-		开启后仅会在 onEnable 的当帧结束时对齐一次，然后立刻禁用当前组件。
-		这样便于脚本或动画继续控制当前节点。
-		注意：onEnable 时所在的那一帧仍然会进行对齐。 */
-		isAlignOnce : boolean;	
 	}		
 		/** !#en
 		EventTarget is an object to which an event is dispatched when something has occurred.
@@ -5988,6 +4765,703 @@ declare module cc {
 		!#zh 冒泡阶段， 包括回程遇到到层次根节点的任何后续节点。 */
 		BUBBLING_PHASE : number;	
 	}		
+		/** !#en Box Collider.
+		!#zh 包围盒碰撞组件 */
+		export class BoxCollider extends Component {		
+		/** !#en Position offset
+		!#zh 位置偏移量 */
+		offset : Vec2;		
+		/** !#en Box size
+		!#zh 包围盒大小 */
+		size : Size;	
+	}		
+		/** !#en Circle Collider.
+		!#zh 圆形碰撞组件 */
+		export class CircleCollider extends Component {		
+		/** !#en Position offset
+		!#zh 位置偏移量 */
+		offset : Vec2;		
+		/** !#en Circle radius
+		!#zh 圆形半径 */
+		radius : number;	
+	}		
+		/** !#en Collider component base class.
+		!#zh 碰撞组件基类 */
+		export class Collider extends Component {		
+		/** !#en Tag. If a node has several collider components, you can judge which type of collider is collided according to the tag.
+		!#zh 标签。当一个节点上有多个碰撞组件时，在发生碰撞后，可以使用此标签来判断是节点上的哪个碰撞组件被碰撞了。 */
+		tag : Integer;	
+	}		
+		/** !#en
+		A simple collision manager class.
+		It will calculate whether the collider collides other colliders, if collides then call the callbacks.
+		!#zh
+		一个简单的碰撞组件管理类，用于处理节点之间的碰撞组件是否产生了碰撞，并调用相应回调函数。 */
+		export class CollisionManager {		
+		/** !#en
+		!#zh
+		是否开启碰撞管理，默认为不开启 */
+		enabled : boolean;		
+		/** !#en
+		!#zh
+		是否绘制碰撞组件的包围盒，默认为不绘制 */
+		enabledDrawBoundingBox : boolean;		
+		/** !#en
+		!#zh
+		是否绘制碰撞组件的形状，默认为不绘制 */
+		enabledDebugDraw : boolean;	
+	}		
+		/** !#en Intersection helper class
+		!#zh 辅助类，用于测试形状与形状是否相交 */
+		export class Intersection {		
+		/** !#en Test line and line
+		!#zh 测试线段与线段是否相交
+		@param a1 The start point of the first line
+		@param a2 The end point of the first line
+		@param b1 The start point of the second line
+		@param b2 The end point of the second line 
+		*/
+		lineLine(a1 : Vec2, a2 : Vec2, b1 : Vec2, b2 : Vec2) : boolean;		
+		/** !#en Test line and rect
+		!#zh 测试线段与矩形是否相交
+		@param a1 The start point of the line
+		@param a2 The end point of the line
+		@param b The rect 
+		*/
+		lineRect(a1 : Vec2, a2 : Vec2, b : Rect) : boolean;		
+		/** !#en Test line and polygon
+		!#zh 测试线段与多边形是否相交
+		@param a1 The start point of the line
+		@param a2 The end point of the line
+		@param b The polygon, a set of points 
+		*/
+		linePolygon(a1 : Vec2, a2 : Vec2, b : [Vec2]) : boolean;		
+		/** !#en Test rect and rect
+		!#zh 测试矩形与矩形是否相交
+		@param a The first rect
+		@param b The second rect 
+		*/
+		rectRect(a : Rect, b : Rect) : boolean;		
+		/** !#en Test rect and polygon
+		!#zh 测试矩形与多边形是否相交
+		@param a The rect
+		@param b The polygon, a set of points 
+		*/
+		rectPolygon(a : Rect, b : [Vec2]) : boolean;		
+		/** !#en Test polygon and polygon
+		!#zh 测试多边形与多边形是否相交
+		@param a The first polygon, a set of points
+		@param b The second polygon, a set of points 
+		*/
+		polygonPolygon(a : [Vec2], b : [Vec2]) : boolean;		
+		/** !#en Test circle and circle
+		!#zh 测试圆形与圆形是否相交
+		@param a Object contains position and radius
+		@param b Object contains position and radius 
+		*/
+		circleCircle(a : any, b : any) : boolean;		
+		/** !#en Test polygon and circle
+		!#zh 测试矩形与圆形是否相交
+		@param polygon The Polygon, a set of points
+		@param circle Object contains position and radius 
+		*/
+		polygonCircle(polygon : [Vec2], circle : any) : boolean;		
+		/** !#en Test whether the point is in the polygon
+		!#zh 测试一个点是否在一个多边形中
+		@param point The point
+		@param polygon The polygon, a set of points 
+		*/
+		pointInPolygon(point : Vec2, polygon : [Vec2]) : boolean;		
+		/** !#en Calculate the distance of point to line.
+		!#zh 计算点到直线的距离。如果这是一条线段并且垂足不在线段内，则会计算点到线段端点的距离。
+		@param point The point
+		@param start The start point of line
+		@param end The end point of line
+		@param isSegment whether this line is a segment 
+		*/
+		pointLineDistance(point : Vec2, start : Vec2, end : Vec2, isSegment : boolean) : boolean;	
+	}		
+		/** !#en Polygon Collider.
+		!#zh 多边形碰撞组件 */
+		export class PolygonCollider extends Component {		
+		/** !#en Position offset
+		!#zh 位置偏移量 */
+		offset : Vec2;		
+		/** !#en Polygon points
+		!#zh 多边形顶点数组 */
+		points : [Vec2];	
+	}		
+		/** undefined */
+		export class Graphics extends _RendererUnderSG {		
+		/** !#en
+		Current line width.
+		!#zh
+		当前线条宽度 */
+		lineWidth : number;		
+		/** !#en
+		lineJoin determines how two connecting segments (of lines, arcs or curves) with non-zero lengths in a shape are joined together.
+		!#zh
+		lineJoin 用来设置2个长度不为0的相连部分（线段，圆弧，曲线）如何连接在一起的属性。 */
+		lineJoin : Graphics.LineJoin;		
+		/** !#en
+		lineCap determines how the end points of every line are drawn.
+		!#zh
+		lineCap 指定如何绘制每一条线段末端。 */
+		lineCap : Graphics.LineCap;		
+		/** !#en
+		stroke color
+		!#zh
+		线段颜色 */
+		strokeColor : Color;		
+		/** !#en
+		fill color
+		!#zh
+		填充颜色 */
+		fillColor : Color;		
+		/** !#en
+		Sets the miter limit ratio
+		!#zh
+		设置斜接面限制比例 */
+		miterLimit : number;		
+		/** !#en Move path start point to (x,y).
+		!#zh 移动路径起点到坐标(x, y)
+		@param x The x axis of the coordinate for the end point.
+		@param y The y axis of the coordinate for the end point. 
+		*/
+		moveTo(x? : number, y? : number) : void;		
+		/** !#en Adds a straight line to the path
+		!#zh 绘制直线路径
+		@param x The x axis of the coordinate for the end point.
+		@param y The y axis of the coordinate for the end point. 
+		*/
+		lineTo(x? : number, y? : number) : void;		
+		/** !#en Adds a cubic Bézier curve to the path
+		!#zh 绘制三次贝赛尔曲线路径
+		@param c1x The x axis of the coordinate for the first control point.
+		@param c1y The y axis of the coordinate for first control point.
+		@param c2x The x axis of the coordinate for the second control point.
+		@param c2y The y axis of the coordinate for the second control point.
+		@param x The x axis of the coordinate for the end point.
+		@param y The y axis of the coordinate for the end point. 
+		*/
+		bezierCurveTo(c1x? : number, c1y? : number, c2x? : number, c2y? : number, x? : number, y? : number) : void;		
+		/** !#en Adds a quadratic Bézier curve to the path
+		!#zh 绘制二次贝赛尔曲线路径
+		@param cx The x axis of the coordinate for the control point.
+		@param cy The y axis of the coordinate for the control point.
+		@param x The x axis of the coordinate for the end point.
+		@param y The y axis of the coordinate for the end point. 
+		*/
+		quadraticCurveTo(cx? : number, cy? : number, x? : number, y? : number) : void;		
+		/** !#en Adds an arc to the path which is centered at (cx, cy) position with radius r starting at startAngle and ending at endAngle going in the given direction by counterclockwise (defaulting to false).
+		!#zh 绘制圆弧路径。圆弧路径的圆心在 (cx, cy) 位置，半径为 r ，根据 counterclockwise （默认为false）指定的方向从 startAngle 开始绘制，到 endAngle 结束。
+		@param cx The x axis of the coordinate for the center point.
+		@param cy The y axis of the coordinate for the center point.
+		@param r The arc's radius.
+		@param startAngle The angle at which the arc starts, measured clockwise from the positive x axis and expressed in radians.
+		@param endAngle The angle at which the arc ends, measured clockwise from the positive x axis and expressed in radians.
+		@param counterclockwise An optional Boolean which, if true, causes the arc to be drawn counter-clockwise between the two angles. By default it is drawn clockwise. 
+		*/
+		arc(cx? : number, cy? : number, r? : number, startAngle? : number, endAngle? : number, counterclockwise? : number) : void;		
+		/** !#en Adds an ellipse to the path.
+		!#zh 绘制椭圆路径。
+		@param cx The x axis of the coordinate for the center point.
+		@param cy The y axis of the coordinate for the center point.
+		@param rx The ellipse's x-axis radius.
+		@param ry The ellipse's y-axis radius. 
+		*/
+		ellipse(cx? : number, cy? : number, rx? : number, ry? : number) : void;		
+		/** !#en Adds an circle to the path.
+		!#zh 绘制圆形路径。
+		@param cx The x axis of the coordinate for the center point.
+		@param cy The y axis of the coordinate for the center point.
+		@param r The circle's radius. 
+		*/
+		circle(cx? : number, cy? : number, r? : number) : void;		
+		/** !#en Adds an rectangle to the path.
+		!#zh 绘制矩形路径。
+		@param x The x axis of the coordinate for the rectangle starting point.
+		@param y The y axis of the coordinate for the rectangle starting point.
+		@param w The rectangle's width.
+		@param h The rectangle's height. 
+		*/
+		rect(x? : number, y? : number, w? : number, h? : number) : void;		
+		/** !#en Adds an round corner rectangle to the path.
+		!#zh 绘制圆角矩形路径。
+		@param x The x axis of the coordinate for the rectangle starting point.
+		@param y The y axis of the coordinate for the rectangle starting point.
+		@param w The rectangles width.
+		@param h The rectangle's height.
+		@param r The radius of the rectangle. 
+		*/
+		roundRect(x? : number, y? : number, w? : number, h? : number, r? : number) : void;		
+		/** !#en Draws a filled rectangle.
+		!#zh 绘制填充矩形。
+		@param x The x axis of the coordinate for the rectangle starting point.
+		@param y The y axis of the coordinate for the rectangle starting point.
+		@param w The rectangle's width.
+		@param h The rectangle's height. 
+		*/
+		fillRect(x? : number, y? : number, w? : number, h? : number) : void;		
+		/** !#en Erasing any previously drawn content.
+		!#zh 擦除之前绘制的所有内容的方法。 
+		*/
+		clear() : void;		
+		/** !#en Causes the point of the pen to move back to the start of the current path. It tries to add a straight line from the current point to the start.
+		!#zh 将笔点返回到当前路径起始点的。它尝试从当前点到起始点绘制一条直线。 
+		*/
+		close() : void;		
+		/** !#en Strokes the current or given path with the current stroke style.
+		!#zh 根据当前的画线样式，绘制当前或已经存在的路径。 
+		*/
+		stroke() : void;		
+		/** !#en Fills the current or given path with the current fill style.
+		!#zh 根据当前的画线样式，填充当前或已经存在的路径。 
+		*/
+		stroke() : void;	
+	}		
+		/** Loader for resource loading process. It's a singleton object. */
+		export class loader extends Pipeline {		
+		/** The downloader in cc.loader's pipeline, it's by default the first pipe.
+		It's used to download files with several handlers: pure text, image, script, audio, font, uuid.
+		You can add your own download function with addDownloadHandlers */
+		downloader : any;		
+		/** The downloader in cc.loader's pipeline, it's by default the second pipe.
+		It's used to parse downloaded content with several handlers: JSON, image, plist, fnt, uuid.
+		You can add your own download function with addLoadHandlers */
+		loader : any;		
+		/** Add custom supported types handler or modify existing type handler for download process.
+		@param extMap Custom supported types with corresponded handler
+		
+		@example 
+		```js
+		cc.loader.addDownloadHandlers({
+		     // This will match all url with `.scene` extension or all url with `scene` type
+		     'scene' : function (url, callback) {}
+		 });
+		``` 
+		*/
+		addDownloadHandlers(extMap : any) : void;		
+		/** Add custom supported types handler or modify existing type handler for load process.
+		@param extMap Custom supported types with corresponded handler
+		
+		@example 
+		```js
+		cc.loader.addLoadHandlers({
+		     // This will match all url with `.scene` extension or all url with `scene` type
+		     'scene' : function (url, callback) {}
+		 });
+		``` 
+		*/
+		addLoadHandlers(extMap : any) : void;		
+		/** Load resources with a progression callback and a complete callback.
+		The progression callback is the same as Pipeline's {{#crossLink "Pipeline/onProgress:method"}}onProgress{{/crossLink}}
+		The complete callback is almost the same as Pipeline's {{#crossLink "Pipeline/onComplete:method"}}onComplete{{/crossLink}}
+		The only difference is when user pass a single url as resources, the complete callback will set its result directly as the second parameter.
+		@param resources Url list in an array
+		@param progressCallback Callback invoked when progression change
+		@param completeCallback Callback invoked when all resources loaded
+		
+		@example 
+		```js
+		cc.loader.load('a.png', function (err, tex) {
+		    cc.log('Result should be a texture: ' + (tex instanceof cc.Texture2D));
+		});
+		
+		cc.loader.load('http://example.com/a.png', function (err, tex) {
+		    cc.log('Should load a texture from external url: ' + (tex instanceof cc.Texture2D));
+		});
+		
+		cc.loader.load({id: 'http://example.com/getImageREST?file=a.png', type: 'png'}, function (err, tex) {
+		    cc.log('Should load a texture from RESTful API by specify the type: ' + (tex instanceof cc.Texture2D));
+		});
+		
+		cc.loader.load(['a.png', 'b.json'], function (errors, results) {
+		    if (errors) {
+		        for (var i = 0; i < errors.length; i++) {
+		            cc.log('Error url [' + errors[i] + ']: ' + results.getError(errors[i]));
+		        }
+		    }
+		    var aTex = results.getContent('a.png');
+		    var bJsonObj = results.getContent('b.json');
+		});
+		``` 
+		*/
+		load(resources : string|any[], progressCallback? : Function, completeCallback : Function) : void;		
+		/** Load resources from the "resources" folder inside the "assets" folder of your project.<br>
+		<br>
+		Note: All asset urls in Creator use forward slashes, urls using backslashes will not work.
+		@param url Url of the target resource.
+		                      The url is relative to the "resources" folder, extensions must be omitted.
+		@param type Only asset of type will be loaded if this argument is supplied.
+		@param completeCallback Callback invoked when the resource loaded.
+		
+		@example 
+		```js
+		// load the prefab (project/assets/resources/misc/character/cocos) from resources folder
+		cc.loader.loadRes('misc/character/cocos', function (err, prefab) {
+		    if (err) {
+		        cc.error(err.message || err);
+		        return;
+		    }
+		    cc.log('Result should be a prefab: ' + (prefab instanceof cc.Prefab));
+		});
+		
+		// load the sprite frame of (project/assets/resources/imgs/cocos.png) from resources folder
+		cc.loader.loadRes('imgs/cocos', cc.SpriteFrame, function (err, spriteFrame) {
+		    if (err) {
+		        cc.error(err.message || err);
+		        return;
+		    }
+		    cc.log('Result should be a sprite frame: ' + (spriteFrame instanceof cc.SpriteFrame));
+		});
+		``` 
+		*/
+		loadRes(url : string, type? : Function, completeCallback: (error: Error, resource: any) => void) : void;		
+		/** Load all assets in a folder inside the "assets/resources" folder of your project.<br>
+		<br>
+		Note: All asset urls in Creator use forward slashes, urls using backslashes will not work.
+		@param url Url of the target folder.
+		                      The url is relative to the "resources" folder, extensions must be omitted.
+		@param type Only asset of type will be loaded if this argument is supplied.
+		@param completeCallback A callback which is called when all assets have been loaded, or an error occurs.
+		
+		@example 
+		```js
+		// load the texture (resources/imgs/cocos.png) and the corresponding sprite frame
+		cc.loader.loadResAll('imgs/cocos', function (err, assets) {
+		    if (err) {
+		        cc.error(err);
+		        return;
+		    }
+		    var texture = assets[0];
+		    var spriteFrame = assets[1];
+		});
+		
+		// load all textures in "resources/imgs/"
+		cc.loader.loadResAll('imgs', cc.Texture2D, function (err, textures) {
+		    if (err) {
+		        cc.error(err);
+		        return;
+		    }
+		    var texture1 = textures[0];
+		    var texture2 = textures[1];
+		});
+		``` 
+		*/
+		loadResAll(url : string, type? : Function, completeCallback: (error: Error, assets: any[]) => void) : void;		
+		/** Get resource data by id. <br>
+		When you load resources with {{#crossLink "loader/load:method"}}{{/crossLink}} or {{#crossLink "loader/loadRes:method"}}{{/crossLink}},
+		the url will be the unique identity of the resource.
+		After loaded, you can acquire them by passing the url to this API. 
+		*/
+		getRes(url : string) : any;		
+		/** Release the cache of resource by url. 
+		*/
+		release(url : string) : void;		
+		/** Release the loaded cache of asset. 
+		*/
+		releaseAsset(asset : Asset) : void;		
+		/** Release the cache of resource which loaded by {{#crossLink "loader/loadRes:method"}}{{/crossLink}}. 
+		*/
+		releaseRes(url : string) : void;		
+		/** Resource cache of all resources. 
+		*/
+		releaseAll() : void;		
+		/** !#en
+		Indicates whether to release the asset when loading a new scene.<br>
+		By default, when loading a new scene, all assets in the previous scene will be released or preserved
+		according to whether the previous scene checked the "Auto Release Assets" option.
+		On the other hand, assets dynamically loaded by using `cc.loader.loadRes` or `cc.loader.loadResAll`
+		will not be affected by that option, remain not released by default.<br>
+		Use this API to change the default behavior on a single asset, to force preserve or release specified asset when scene switching.<br>
+		<br>
+		See: {{#crossLink "loader/setAutoReleaseRecursively:method"}}cc.loader.setAutoReleaseRecursively{{/crossLink}}, {{#crossLink "loader/isAutoRelease:method"}}cc.loader.isAutoRelease{{/crossLink}}
+		!#zh
+		设置当场景切换时是否自动释放资源。<br>
+		默认情况下，当加载新场景时，旧场景的资源根据旧场景是否勾选“Auto Release Assets”，将会被释放或者保留。
+		而使用 `cc.loader.loadRes` 或 `cc.loader.loadResAll` 动态加载的资源，则不受场景设置的影响，默认不自动释放。<br>
+		使用这个 API 可以在单个资源上改变这个默认行为，强制在切换场景时保留或者释放指定资源。<br>
+		<br>
+		参考：{{#crossLink "loader/setAutoReleaseRecursively:method"}}cc.loader.setAutoReleaseRecursively{{/crossLink}}，{{#crossLink "loader/isAutoRelease:method"}}cc.loader.isAutoRelease{{/crossLink}}
+		@param assetOrUrlOrUuid asset object or the raw asset's url or uuid
+		@param autoRelease indicates whether should release automatically
+		
+		@example 
+		```js
+		// auto release the texture event if "Auto Release Assets" disabled in current scene
+		cc.loader.setAutoRelease(texture2d, true);
+		// don't release the texture even if "Auto Release Assets" enabled in current scene
+		cc.loader.setAutoRelease(texture2d, false);
+		// first parameter can be url
+		cc.loader.setAutoRelease(audioUrl, false);
+		``` 
+		*/
+		setAutoRelease(assetOrUrlOrUuid : Asset|string, autoRelease : boolean) : void;		
+		/** !#en
+		Indicates whether to release the asset and its referenced other assets when loading a new scene.<br>
+		By default, when loading a new scene, all assets in the previous scene will be released or preserved
+		according to whether the previous scene checked the "Auto Release Assets" option.
+		On the other hand, assets dynamically loaded by using `cc.loader.loadRes` or `cc.loader.loadResAll`
+		will not be affected by that option, remain not released by default.<br>
+		Use this API to change the default behavior on the specified asset and its recursively referenced assets, to force preserve or release specified asset when scene switching.<br>
+		<br>
+		See: {{#crossLink "loader/setAutoRelease:method"}}cc.loader.setAutoRelease{{/crossLink}}, {{#crossLink "loader/isAutoRelease:method"}}cc.loader.isAutoRelease{{/crossLink}}
+		!#zh
+		设置当场景切换时是否自动释放资源及资源引用的其它资源。<br>
+		默认情况下，当加载新场景时，旧场景的资源根据旧场景是否勾选“Auto Release Assets”，将会被释放或者保留。
+		而使用 `cc.loader.loadRes` 或 `cc.loader.loadResAll` 动态加载的资源，则不受场景设置的影响，默认不自动释放。<br>
+		使用这个 API 可以在指定资源及资源递归引用到的所有资源上改变这个默认行为，强制在切换场景时保留或者释放指定资源。<br>
+		<br>
+		参考：{{#crossLink "loader/setAutoRelease:method"}}cc.loader.setAutoRelease{{/crossLink}}，{{#crossLink "loader/isAutoRelease:method"}}cc.loader.isAutoRelease{{/crossLink}}
+		@param assetOrUrlOrUuid asset object or the raw asset's url or uuid
+		@param autoRelease indicates whether should release automatically
+		
+		@example 
+		```js
+		// auto release the SpriteFrame and its Texture event if "Auto Release Assets" disabled in current scene
+		cc.loader.setAutoReleaseRecursively(spriteFrame, true);
+		// don't release the SpriteFrame and its Texture even if "Auto Release Assets" enabled in current scene
+		cc.loader.setAutoReleaseRecursively(spriteFrame, false);
+		// don't release the Prefab and all the referenced assets
+		cc.loader.setAutoReleaseRecursively(prefab, false);
+		``` 
+		*/
+		setAutoReleaseRecursively(assetOrUrlOrUuid : Asset|string, autoRelease : boolean) : void;		
+		/** !#en
+		Returns whether the asset is configured as auto released, despite how "Auto Release Assets" property is set on scene asset.<br>
+		<br>
+		See: {{#crossLink "loader/setAutoRelease:method"}}cc.loader.setAutoRelease{{/crossLink}}, {{#crossLink "loader/setAutoReleaseRecursively:method"}}cc.loader.setAutoReleaseRecursively{{/crossLink}}
+		
+		!#zh
+		返回指定的资源是否有被设置为自动释放，不论场景的“Auto Release Assets”如何设置。<br>
+		<br>
+		参考：{{#crossLink "loader/setAutoRelease:method"}}cc.loader.setAutoRelease{{/crossLink}}，{{#crossLink "loader/setAutoReleaseRecursively:method"}}cc.loader.setAutoReleaseRecursively{{/crossLink}}
+		@param assetOrUrl asset object or the raw asset's url 
+		*/
+		isAutoRelease(assetOrUrl : Asset|string) : boolean;	
+	}		
+		/** !#en
+		LoadingItems is the queue of items which can flow them into the loading pipeline.</br>
+		Please don't construct it directly, use {{#crossLink "LoadingItems.create"}}LoadingItems.create{{/crossLink}} instead, because we use an internal pool to recycle the queues.</br>
+		It hold a map of items, each entry in the map is a url to object key value pair.</br>
+		Each item always contains the following property:</br>
+		- id: The identification of the item, usually it's identical to url</br>
+		- url: The url </br>
+		- type: The type, it's the extension name of the url by default, could be specified manually too.</br>
+		- error: The error happened in pipeline will be stored in this property.</br>
+		- content: The content processed by the pipeline, the final result will also be stored in this property.</br>
+		- complete: The flag indicate whether the item is completed by the pipeline.</br>
+		- states: An object stores the states of each pipe the item go through, the state can be: Pipeline.ItemState.WORKING | Pipeline.ItemState.ERROR | Pipeline.ItemState.COMPLETE</br>
+		</br>
+		Item can hold other custom properties.</br>
+		Each LoadingItems object will be destroyed for recycle after onComplete callback</br>
+		So please don't hold its reference for later usage, you can copy properties in it though.
+		!#zh
+		LoadingItems 是一个加载对象队列，可以用来输送加载对象到加载管线中。</br>
+		请不要直接使用 new 构造这个类的对象，你可以使用 {{#crossLink "LoadingItems.create"}}LoadingItems.create{{/crossLink}} 来创建一个新的加载队列，这样可以允许我们的内部对象池回收并重利用加载队列。
+		它有一个 map 属性用来存放加载项，在 map 对象中已 url 为 key 值。</br>
+		每个对象都会包含下列属性：</br>
+		- id：该对象的标识，通常与 url 相同。</br>
+		- url：路径 </br>
+		- type: 类型，它这是默认的 URL 的扩展名，可以手动指定赋值。</br>
+		- error：pipeline 中发生的错误将被保存在这个属性中。</br>
+		- content: pipeline 中处理的临时结果，最终的结果也将被存储在这个属性中。</br>
+		- complete：该标志表明该对象是否通过 pipeline 完成。</br>
+		- states：该对象存储每个管道中对象经历的状态，状态可以是 Pipeline.ItemState.WORKING | Pipeline.ItemState.ERROR | Pipeline.ItemState.COMPLETE</br>
+		</br>
+		对象可容纳其他自定义属性。</br>
+		每个 LoadingItems 对象都会在 onComplete 回调之后被销毁，所以请不要持有它的引用并在结束回调之后依赖它的内容执行任何逻辑，有这种需求的话你可以提前复制它的内容。 */
+		export class LoadingItems extends CallbacksInvoker {		
+		/** !#en This is a callback which will be invoked while an item flow out the pipeline.
+		You can pass the callback function in LoadingItems.create or set it later.
+		!#zh 这个回调函数将在 item 加载结束后被调用。你可以在构造时传递这个回调函数或者是在构造之后直接设置。
+		@param completedCount The number of the items that are already completed.
+		@param totalCount The total number of the items.
+		@param item The latest item which flow out the pipeline.
+		
+		@example 
+		```js
+		loadingItems.onProgress = function (completedCount, totalCount, item) {
+		     var progress = (100 * completedCount / totalCount).toFixed(2);
+		     cc.log(progress + '%');
+		 }
+		``` 
+		*/
+		onProgress(completedCount : number, totalCount : number, item : any) : void;		
+		/** !#en This is a callback which will be invoked while all items is completed,
+		You can pass the callback function in LoadingItems.create or set it later.
+		!#zh 该函数将在加载队列全部完成时被调用。你可以在构造时传递这个回调函数或者是在构造之后直接设置。
+		@param errors All errored urls will be stored in this array, if no error happened, then it will be null
+		@param items All items.
+		
+		@example 
+		```js
+		loadingItems.onComplete = function (errors, items) {
+		     if (error)
+		         cc.log('Completed with ' + errors.length + ' errors');
+		     else
+		         cc.log('Completed ' + items.totalCount + ' items');
+		 }
+		``` 
+		*/
+		onComplete(errors : any[], items : LoadingItems) : void;		
+		/** !#en The map of all items.
+		!#zh 存储所有加载项的对象。 */
+		map : any;		
+		/** !#en The map of completed items.
+		!#zh 存储已经完成的加载项。 */
+		completed : any;		
+		/** !#en Total count of all items.
+		!#zh 所有加载项的总数。 */
+		totalCount : number;		
+		/** !#en Total count of completed items.
+		!#zh 所有完成加载项的总数。 */
+		completedCount : number;		
+		/** !#en Activated or not.
+		!#zh 是否启用。 */
+		active : boolean;	
+	}		
+		/** !#en
+		A pipeline describes a sequence of manipulations, each manipulation is called a pipe.</br>
+		It's designed for loading process. so items should be urls, and the url will be the identity of each item during the process.</br>
+		A list of items can flow in the pipeline and it will output the results of all pipes.</br>
+		They flow in the pipeline like water in tubes, they go through pipe by pipe separately.</br>
+		Finally all items will flow out the pipeline and the process is finished.
+		
+		!#zh
+		pipeline 描述了一系列的操作，每个操作都被称为 pipe。</br>
+		它被设计来做加载过程的流程管理。所以 item 应该是 url，并且该 url 将是在处理中的每个 item 的身份标识。</br>
+		一个 item 列表可以在 pipeline 中流动，它将输出加载项经过所有 pipe 之后的结果。</br>
+		它们穿过 pipeline 就像水在管子里流动，将会按顺序流过每个 pipe。</br>
+		最后当所有加载项都流出 pipeline 时，整个加载流程就结束了。 */
+		export class Pipeline {		
+		/** !#en
+		Constructor, pass an array of pipes to construct a new Pipeline,
+		the pipes will be chained in the given order.</br>
+		A pipe is an object which must contain an `id` in string and a `handle` function,
+		the id must be unique in the pipeline.</br>
+		It can also include `async` property to identify whether it's an asynchronous process.
+		!#zh
+		构造函数，通过一系列的 pipe 来构造一个新的 pipeline，pipes 将会在给定的顺序中被锁定。</br>
+		一个 pipe 就是一个对象，它包含了字符串类型的 ‘id’ 和 ‘handle’ 函数，在 pipeline 中 id 必须是唯一的。</br>
+		它还可以包括 ‘async’ 属性以确定它是否是一个异步过程。
+		
+		@example 
+		```js
+		var pipeline = new Pipeline([
+		     {
+		         id: 'Downloader',
+		         handle: function (item, callback) {},
+		         async: true
+		     },
+		     {id: 'Parser', handle: function (item) {}, async: false}
+		 ]);
+		``` 
+		*/
+		Pipeline(pipes : any[]) : void;		
+		/** !#en
+		Insert a new pipe at the given index of the pipeline. </br>
+		A pipe must contain an `id` in string and a `handle` function, the id must be unique in the pipeline.
+		!#zh
+		在给定的索引位置插入一个新的 pipe。</br>
+		一个 pipe 必须包含一个字符串类型的 ‘id’ 和 ‘handle’ 函数，该 id 在 pipeline 必须是唯一标识。
+		@param pipe The pipe to be inserted
+		@param index The index to insert 
+		*/
+		insertPipe(pipe : any, index : number) : void;		
+		/** !#en
+		Add a new pipe at the end of the pipeline. </br>
+		A pipe must contain an `id` in string and a `handle` function, the id must be unique in the pipeline.
+		!#zh
+		添加一个新的 pipe 到 pipeline 尾部。 </br>
+		该 pipe 必须包含一个字符串类型 ‘id’ 和 ‘handle’ 函数，该 id 在 pipeline 必须是唯一标识。
+		@param pipe The pipe to be appended 
+		*/
+		appendPipe(pipe : any) : void;		
+		/** !#en
+		Let new items flow into the pipeline. </br>
+		Each item can be a simple url string or an object,
+		if it's an object, it must contain `id` property. </br>
+		You can specify its type by `type` property, by default, the type is the extension name in url. </br>
+		By adding a `skips` property including pipe ids, you can skip these pipe. </br>
+		The object can contain any supplementary property as you want. </br>
+		!#zh
+		让新的 item 流入 pipeline 中。</br>
+		这里的每个 item 可以是一个简单字符串类型的 url 或者是一个对象,
+		如果它是一个对象的话，他必须要包含 ‘id’ 属性。</br>
+		你也可以指定它的 ‘type’ 属性类型，默认情况下，该类型是 ‘url’ 的后缀名。</br>
+		也通过添加一个 包含 ‘skips’ 属性的 item 对象，你就可以跳过 skips 中包含的 pipe。</br>
+		该对象可以包含任何附加属性。
+		
+		@example 
+		```js
+		pipeline.flowIn([
+		     'res/Background.png',
+		     {
+		         id: 'res/scene.json',
+		         type: 'scene',
+		         name: 'scene',
+		         skips: ['Downloader']
+		     }
+		 ]);
+		``` 
+		*/
+		flowIn(items : any[]) : void;		
+		/** !#en
+		Let new items flow into the pipeline and give a callback when the list of items are all completed. </br>
+		This is for loading dependencies for an existing item in flow, usually used in a pipe logic. </br>
+		For example, we have a loader for scene configuration file in JSON, the scene will only be fully loaded  </br>
+		after all its dependencies are loaded, then you will need to use function to flow in all dependencies  </br>
+		found in the configuration file, and finish the loader pipe only after all dependencies are loaded (in the callback).
+		!#zh
+		让新 items 流入 pipeline 并且当 item 列表完成时进行回调函数。</br>
+		这个 API 的使用通常是为了加载依赖项。</br>
+		例如：</br>
+		我们需要加载一个场景配置的 JSON 文件，该场景会将所有的依赖项全部都加载完毕以后，进行回调表示加载完毕。 
+		*/
+		flowInDeps(urlList : any[], callback : Function) : any[];		
+		/** !#en
+		Copy the item states from one source item to all destination items. </br>
+		It's quite useful when a pipe generate new items from one source item,</br>
+		then you should flowIn these generated items into pipeline, </br>
+		but you probably want them to skip all pipes the source item already go through,</br>
+		you can achieve it with this API. </br>
+		</br>
+		For example, an unzip pipe will generate more items, but you won't want them to pass unzip or download pipe again.
+		!#zh
+		从一个源 item 向所有目标 item 复制它的 pipe 状态，用于避免重复通过部分 pipe。</br>
+		当一个源 item 生成了一系列新的 items 时很有用，</br>
+		你希望让这些新的依赖项进入 pipeline，但是又不希望它们通过源 item 已经经过的 pipe，</br>
+		但是你可能希望他们源 item 已经通过并跳过所有 pipes，</br>
+		这个时候就可以使用这个 API。
+		@param srcItem The source item
+		@param dstItems A single destination item or an array of destination items 
+		*/
+		copyItemStates(srcItem : any, dstItems : any[]|any) : void;		
+		/** !#en Returns whether the pipeline is flowing (contains item) currently.
+		!#zh 获取 pipeline 当前是否正在处理中。 
+		*/
+		isFlowing() : boolean;		
+		/** !#en Returns all items in pipeline.
+		!#zh 获取 pipeline 中的所有 items。 
+		*/
+		getItems() : LoadingItems;		
+		/** !#en Returns an item in pipeline.
+		!#zh 根据 id 获取一个 item
+		@param id The id of the item 
+		*/
+		getItem(id : any) : any;		
+		/** !#en Removes an item in pipeline, no matter it's in progress or completed.
+		!#zh 移除指定 item，无论是进行时还是已完成。
+		@param id The id of the item 
+		*/
+		removeItem(id : any) : boolean;		
+		/** !#en Clear the current pipeline, this function will clean up the items.
+		!#zh 清空当前 pipeline，该函数将清理 items。 
+		*/
+		clear() : void;	
+	}		
 		/** !#en
 		<p>
 		    The base class of event listener.                                                                        <br/>
@@ -6161,6 +5635,10 @@ declare module cc {
 		*/
 		isEnabled() : boolean;	
 	}		
+		/** !#en The System event, it currently supports the key events and accelerometer events
+		!#zh 系统事件，它目前支持按键事件和重力感应事件 */
+		export class SystemEvent extends EventTarget {	
+	}		
 		/** !#en The touch event class
 		!#zh 封装了触摸相关的信息。 */
 		export class Touch {		
@@ -6209,622 +5687,6 @@ declare module cc {
 		*/
 		setTouchInfo(id : number, x : number, y : number) : void;	
 	}		
-		/** Loader for resource loading process. It's a singleton object. */
-		export class loader extends Pipeline {		
-		/** The downloader in cc.loader's pipeline, it's by default the first pipe.
-		It's used to download files with several handlers: pure text, image, script, audio, font, uuid.
-		You can add your own download function with addDownloadHandlers */
-		downloader : any;		
-		/** The downloader in cc.loader's pipeline, it's by default the second pipe.
-		It's used to parse downloaded content with several handlers: JSON, image, plist, fnt, uuid.
-		You can add your own download function with addLoadHandlers */
-		loader : any;		
-		/** Add custom supported types handler or modify existing type handler for download process.
-		@param extMap Custom supported types with corresponded handler
-		
-		@example 
-		```js
-		cc.loader.addDownloadHandlers({
-		     // This will match all url with `.scene` extension or all url with `scene` type
-		     'scene' : function (url, callback) {}
-		 });
-		``` 
-		*/
-		addDownloadHandlers(extMap : any) : void;		
-		/** Add custom supported types handler or modify existing type handler for load process.
-		@param extMap Custom supported types with corresponded handler
-		
-		@example 
-		```js
-		cc.loader.addLoadHandlers({
-		     // This will match all url with `.scene` extension or all url with `scene` type
-		     'scene' : function (url, callback) {}
-		 });
-		``` 
-		*/
-		addLoadHandlers(extMap : any) : void;		
-		/** Load resources with a progression callback and a complete callback.
-		The progression callback is the same as Pipeline's {{#crossLink "Pipeline/onProgress:method"}}onProgress{{/crossLink}}
-		The complete callback is almost the same as Pipeline's {{#crossLink "Pipeline/onComplete:method"}}onComplete{{/crossLink}}
-		The only difference is when user pass a single url as resources, the complete callback will set its result directly as the second parameter.
-		@param resources Url list in an array
-		@param progressCallback Callback invoked when progression change
-		@param completeCallback Callback invoked when all resources loaded
-		
-		@example 
-		```js
-		cc.loader.load('a.png', function (err, tex) {
-		    cc.log('Result should be a texture: ' + (tex instanceof cc.Texture2D));
-		});
-		
-		cc.loader.load('http://example.com/a.png', function (err, tex) {
-		    cc.log('Should load a texture from external url: ' + (tex instanceof cc.Texture2D));
-		});
-		
-		cc.loader.load({id: 'http://example.com/getImageREST?file=a.png', type: 'png'}, function (err, tex) {
-		    cc.log('Should load a texture from RESTful API by specify the type: ' + (tex instanceof cc.Texture2D));
-		});
-		
-		cc.loader.load(['a.png', 'b.json'], function (errors, results) {
-		    if (errors) {
-		        for (var i = 0; i < errors.length; i++) {
-		            cc.log('Error url [' + errors[i] + ']: ' + results.getError(errors[i]));
-		        }
-		    }
-		    var aTex = results.getContent('a.png');
-		    var bJsonObj = results.getContent('b.json');
-		});
-		``` 
-		*/
-		load(resources : string|any[], progressCallback? : Function, completeCallback : Function) : void;		
-		/** Load resources from the "resources" folder inside the "assets" folder of your project.<br>
-		<br>
-		Note: All asset urls in Creator use forward slashes, urls using backslashes will not work.
-		@param url Url of the target resource.
-		                      The url is relative to the "resources" folder, extensions must be omitted.
-		@param type Only asset of type will be loaded if this argument is supplied.
-		@param completeCallback Callback invoked when the resource loaded.
-		
-		@example 
-		```js
-		// load the prefab (project/assets/resources/misc/character/cocos) from resources folder
-		cc.loader.loadRes('misc/character/cocos', function (err, prefab) {
-		    if (err) {
-		        cc.error(err.message || err);
-		        return;
-		    }
-		    cc.log('Result should be a prefab: ' + (prefab instanceof cc.Prefab));
-		});
-		
-		// load the sprite frame (project/assets/resources/imgs/cocos.png/cocos) from resources folder
-		cc.loader.loadRes('imgs/cocos', cc.SpriteFrame, function (err, spriteFrame) {
-		    if (err) {
-		        cc.error(err.message || err);
-		        return;
-		    }
-		    cc.log('Result should be a sprite frame: ' + (spriteFrame instanceof cc.SpriteFrame));
-		});
-		``` 
-		*/
-		loadRes(url : string, type? : Function, completeCallback: (error: Error, resource: any) => void) : void;		
-		/** Load all assets in a folder inside the "assets/resources" folder of your project.<br>
-		<br>
-		Note: All asset urls in Creator use forward slashes, urls using backslashes will not work.
-		@param url Url of the target folder.
-		                      The url is relative to the "resources" folder, extensions must be omitted.
-		@param type Only asset of type will be loaded if this argument is supplied.
-		@param completeCallback A callback which is called when all assets have been loaded, or an error occurs.
-		
-		@example 
-		```js
-		// load the texture (resources/imgs/cocos.png) and sprite frame (resources/imgs/cocos.png/cocos)
-		cc.loader.loadResAll('imgs/cocos', function (err, assets) {
-		    if (err) {
-		        cc.error(err);
-		        return;
-		    }
-		    var texture = assets[0];
-		    var spriteFrame = assets[1];
-		});
-		
-		// load all textures in "resources/imgs/"
-		cc.loader.loadResAll('imgs', cc.Texture2D, function (err, textures) {
-		    if (err) {
-		        cc.error(err);
-		        return;
-		    }
-		    var texture1 = textures[0];
-		    var texture2 = textures[1];
-		});
-		``` 
-		*/
-		loadResAll(url : string, type? : Function, completeCallback: (error: Error, assets: any[]) => void) : void;		
-		/** Get resource data by id. <br>
-		When you load resources with {{#crossLink "loader/load:method"}}{{/crossLink}} or {{#crossLink "loader/loadRes:method"}}{{/crossLink}},
-		the url will be the unique identity of the resource.
-		After loaded, you can acquire them by passing the url to this API. 
-		*/
-		getRes(url : string) : any;		
-		/** Returns an item in pipeline. 
-		*/
-		getItem() : any;		
-		/** Release the cache of resource by url. 
-		*/
-		release(url : string) : void;		
-		/** Release the loaded cache of asset. 
-		*/
-		releaseAsset(asset : Asset) : void;		
-		/** Release the cache of resource which loaded by {{#crossLink "loader/loadRes:method"}}{{/crossLink}}. 
-		*/
-		releaseRes(url : string) : void;		
-		/** Resource cache of all resources. 
-		*/
-		releaseAll() : void;		
-		/** !#en
-		Indicates whether to release the asset when loading a new scene.<br>
-		By default, when loading a new scene, all assets in the previous scene will be released or preserved
-		according to whether the previous scene checked the "Auto Release Assets" option.
-		On the other hand, assets dynamically loaded by using `cc.loader.loadRes` or `cc.loader.loadResAll`
-		will not be affected by that option, remain not released by default.<br>
-		Use this API to change the default behavior on a single asset, to force preserve or release specified asset when scene switching.<br>
-		<br>
-		See: {{#crossLink "loader/setAutoReleaseRecursively:method"}}cc.loader.setAutoReleaseRecursively{{/crossLink}}, {{#crossLink "loader/isAutoRelease:method"}}cc.loader.isAutoRelease{{/crossLink}}
-		!#zh
-		设置当场景切换时是否自动释放资源。<br>
-		默认情况下，当加载新场景时，旧场景的资源根据旧场景是否勾选“Auto Release Assets”，将会被释放或者保留。
-		而使用 `cc.loader.loadRes` 或 `cc.loader.loadResAll` 动态加载的资源，则不受场景设置的影响，默认不自动释放。<br>
-		使用这个 API 可以在单个资源上改变这个默认行为，强制在切换场景时保留或者释放指定资源。<br>
-		<br>
-		参考：{{#crossLink "loader/setAutoReleaseRecursively:method"}}cc.loader.setAutoReleaseRecursively{{/crossLink}}，{{#crossLink "loader/isAutoRelease:method"}}cc.loader.isAutoRelease{{/crossLink}}
-		@param assetOrUrl asset object or the raw asset's url
-		@param autoRelease indicates whether should release automatically
-		
-		@example 
-		```js
-		// auto release the texture event if "Auto Release Assets" disabled in current scene
-		cc.loader.setAutoRelease(texture2d, true);
-		// don't release the texture even if "Auto Release Assets" enabled in current scene
-		cc.loader.setAutoRelease(texture2d, false);
-		// first parameter can be url
-		cc.loader.setAutoRelease(audioUrl, false);
-		``` 
-		*/
-		setAutoRelease(assetOrUrl : Asset|string, autoRelease : boolean) : void;		
-		/** !#en
-		Indicates whether to release the asset and its referenced other assets when loading a new scene.<br>
-		By default, when loading a new scene, all assets in the previous scene will be released or preserved
-		according to whether the previous scene checked the "Auto Release Assets" option.
-		On the other hand, assets dynamically loaded by using `cc.loader.loadRes` or `cc.loader.loadResAll`
-		will not be affected by that option, remain not released by default.<br>
-		Use this API to change the default behavior on the specified asset and its recursively referenced assets, to force preserve or release specified asset when scene switching.<br>
-		<br>
-		See: {{#crossLink "loader/setAutoRelease:method"}}cc.loader.setAutoRelease{{/crossLink}}, {{#crossLink "loader/isAutoRelease:method"}}cc.loader.isAutoRelease{{/crossLink}}
-		!#zh
-		设置当场景切换时是否自动释放资源及资源引用的其它资源。<br>
-		默认情况下，当加载新场景时，旧场景的资源根据旧场景是否勾选“Auto Release Assets”，将会被释放或者保留。
-		而使用 `cc.loader.loadRes` 或 `cc.loader.loadResAll` 动态加载的资源，则不受场景设置的影响，默认不自动释放。<br>
-		使用这个 API 可以在指定资源及资源递归引用到的所有资源上改变这个默认行为，强制在切换场景时保留或者释放指定资源。<br>
-		<br>
-		参考：{{#crossLink "loader/setAutoRelease:method"}}cc.loader.setAutoRelease{{/crossLink}}，{{#crossLink "loader/isAutoRelease:method"}}cc.loader.isAutoRelease{{/crossLink}}
-		@param assetOrUrl asset object or the raw asset's url
-		@param autoRelease indicates whether should release automatically
-		
-		@example 
-		```js
-		// auto release the SpriteFrame and its Texture event if "Auto Release Assets" disabled in current scene
-		cc.loader.setAutoReleaseRecursively(spriteFrame, true);
-		// don't release the SpriteFrame and its Texture even if "Auto Release Assets" enabled in current scene
-		cc.loader.setAutoReleaseRecursively(spriteFrame, false);
-		// don't release the Prefab and all the referenced assets
-		cc.loader.setAutoReleaseRecursively(prefab, false);
-		``` 
-		*/
-		setAutoReleaseRecursively(assetOrUrl : Asset|string, autoRelease : boolean) : void;		
-		/** !#en
-		Returns whether the asset is configured as auto released, despite how "Auto Release Assets" property is set on scene asset.<br>
-		<br>
-		See: {{#crossLink "loader/setAutoRelease:method"}}cc.loader.setAutoRelease{{/crossLink}}, {{#crossLink "loader/setAutoReleaseRecursively:method"}}cc.loader.setAutoReleaseRecursively{{/crossLink}}
-		
-		!#zh
-		返回指定的资源是否有被设置为自动释放，不论场景的“Auto Release Assets”如何设置。<br>
-		<br>
-		参考：{{#crossLink "loader/setAutoRelease:method"}}cc.loader.setAutoRelease{{/crossLink}}，{{#crossLink "loader/setAutoReleaseRecursively:method"}}cc.loader.setAutoReleaseRecursively{{/crossLink}}
-		@param assetOrUrl asset object or the raw asset's url 
-		*/
-		isAutoRelease(assetOrUrl : Asset|string) : boolean;	
-	}		
-		/** !#en
-		LoadingItems is the manager of items in pipeline.</br>
-		It hold a map of items, each entry in the map is a url to object key value pair.</br>
-		Each item always contains the following property:</br>
-		- id: The identification of the item, usually it's identical to url</br>
-		- url: The url </br>
-		- type: The type, it's the extension name of the url by default, could be specified manually too.</br>
-		- error: The error happened in pipeline will be stored in this property.</br>
-		- content: The content processed by the pipeline, the final result will also be stored in this property.</br>
-		- complete: The flag indicate whether the item is completed by the pipeline.</br>
-		- states: An object stores the states of each pipe the item go through, the state can be: Pipeline.ItemState.WORKING | Pipeline.ItemState.ERROR | Pipeline.ItemState.COMPLETE</br>
-		</br>
-		Item can hold other custom properties.
-		!#zh
-		LoadingItems 负责管理 pipeline 中的对象</br>
-		它有一个 map 属性用来存放加载项，在 map 对象中已 url 为 key 值。</br>
-		每个对象都会包含下列属性：</br>
-		- id：该对象的标识，通常与 url 相同。</br>
-		- url：路径 </br>
-		- type: 类型，它这是默认的 URL 的扩展名，可以手动指定赋值。</br>
-		- error：pipeline 中发生的错误将被保存在这个属性中。</br>
-		- content: pipeline 中处理的内容时，最终的结果也将被存储在这个属性中。</br>
-		- complete：该标志表明该对象是否通过 pipeline 完成。</br>
-		- states：该对象存储每个管道中对象经历的状态，状态可以是 Pipeline.ItemState.WORKING | Pipeline.ItemState.ERROR | Pipeline.ItemState.COMPLETE</br>
-		</br>
-		对象可容纳其他自定义属性。 */
-		export class LoadingItems extends CallbacksInvoker {		
-		/** !#en The map of all items.
-		!#zh 存储所有加载项的对象。 */
-		map : any;		
-		/** !#en The map of completed items.
-		!#zh 存储已经完成的加载项。 */
-		completed : any;		
-		/** !#en Total count of all items.
-		!#zh 所有加载项的总数。 */
-		totalCount : number;		
-		/** !#en Total count of completed items.
-		!#zh 所有完成加载项的总数。 */
-		completedCount : number;		
-		/** !#en Check whether all items are completed.
-		!#zh 检查是否所有加载项都已经完成。 
-		*/
-		isCompleted() : boolean;		
-		/** !#en Check whether an item is completed.
-		!#zh 通过 id 检查指定加载项是否已经加载完成。
-		@param id The item's id. 
-		*/
-		isItemCompleted(id : string) : boolean;		
-		/** !#en Check whether an item exists.
-		!#zh 通过 id 检查加载项是否存在。
-		@param id The item's id. 
-		*/
-		exists(id : string) : boolean;		
-		/** !#en Returns the content of an internal item.
-		!#zh 通过 id 获取指定对象的内容。
-		@param id The item's id. 
-		*/
-		getContent(id : string) : any;		
-		/** !#en Returns the error of an internal item.
-		!#zh 通过 id 获取指定对象的错误信息。
-		@param id The item's id. 
-		*/
-		getError(id : string) : any;		
-		/** !#en Add a listener for an item, the callback will be invoked when the item is completed.
-		!#zh 监听加载项（通过 key 指定）的完成事件。
-		@param callback can be null
-		@param target can be null 
-		*/
-		addListener(key : string, callback : Function, target : any) : boolean;		
-		/** !#en
-		Check if the specified key has any registered callback. </br>
-		If a callback is also specified, it will only return true if the callback is registered.
-		!#zh
-		检查指定的加载项是否有完成事件监听器。</br>
-		如果同时还指定了一个回调方法，并且回调有注册，它只会返回 true。 
-		*/
-		hasListener(key : string, callback? : Function, target? : any) : boolean;		
-		/** !#en
-		Removes a listener. </br>
-		It will only remove when key, callback, target all match correctly.
-		!#zh
-		移除指定加载项已经注册的完成事件监听器。</br>
-		只会删除 key, callback, target 均匹配的监听器。 
-		*/
-		remove(key : string, callback : Function, target : any) : boolean;		
-		/** !#en
-		Removes all callbacks registered in a certain event
-		type or all callbacks registered with a certain target.
-		!#zh 删除指定目标的所有完成事件监听器。
-		@param key The event key to be removed or the target to be removed 
-		*/
-		removeAllListeners(key : string|any) : void;	
-	}		
-		/** !#en
-		A pipeline describes a sequence of manipulations, each manipulation is called a pipe.</br>
-		It's designed for loading process. so items should be urls, and the url will be the identity of each item during the process.</br>
-		A list of items can flow in the pipeline and it will output the results of all pipes.</br>
-		They flow in the pipeline like water in tubes, they go through pipe by pipe separately.</br>
-		Finally all items will flow out the pipeline and the process is finished.
-		
-		!#zh
-		pipeline 描述了一系列的操作，每个操作都被称为 pipe。</br>
-		它被设计来做加载过程的流程管理。所以 item 应该是 url，并且该 url 将是在处理中的每个 item 的身份标识。</br>
-		一个 item 列表可以在 pipeline 中流动，它将输出加载项经过所有 pipe 之后的结果。</br>
-		它们穿过 pipeline 就像水在管子里流动，将会按顺序流过每个 pipe。</br>
-		最后当所有加载项都流出 pipeline 时，整个加载流程就结束了。 */
-		export class Pipeline {		
-		/** !#en
-		Constructor, pass an array of pipes to construct a new Pipeline,
-		the pipes will be chained in the given order.</br>
-		A pipe is an object which must contain an `id` in string and a `handle` function,
-		the id must be unique in the pipeline.</br>
-		It can also include `async` property to identify whether it's an asynchronous process.
-		!#zh
-		构造函数，通过一系列的 pipe 来构造一个新的 pipeline，pipes 将会在给定的顺序中被锁定。</br>
-		一个 pipe 就是一个对象，它包含了字符串类型的 ‘id’ 和 ‘handle’ 函数，在 pipeline 中 id 必须是唯一的。</br>
-		它还可以包括 ‘async’ 属性以确定它是否是一个异步过程。
-		
-		@example 
-		```js
-		var pipeline = new Pipeline([
-		     {
-		         id: 'Downloader',
-		         handle: function (item, callback) {},
-		         async: true
-		     },
-		     {id: 'Parser', handle: function (item) {}, async: false}
-		 ]);
-		``` 
-		*/
-		Pipeline(pipes : any[]) : void;		
-		/** !#en
-		Insert a new pipe at the given index of the pipeline. </br>
-		A pipe must contain an `id` in string and a `handle` function, the id must be unique in the pipeline.
-		!#zh
-		在给定的索引位置插入一个新的 pipe。</br>
-		一个 pipe 必须包含一个字符串类型的 ‘id’ 和 ‘handle’ 函数，该 id 在 pipeline 必须是唯一标识。
-		@param pipe The pipe to be inserted
-		@param index The index to insert 
-		*/
-		insertPipe(pipe : any, index : number) : void;		
-		/** !#en
-		Add a new pipe at the end of the pipeline. </br>
-		A pipe must contain an `id` in string and a `handle` function, the id must be unique in the pipeline.
-		!#zh
-		添加一个新的 pipe 到 pipeline 尾部。 </br>
-		该 pipe 必须包含一个字符串类型 ‘id’ 和 ‘handle’ 函数，该 id 在 pipeline 必须是唯一标识。
-		@param pipe The pipe to be appended 
-		*/
-		appendPipe(pipe : any) : void;		
-		/** !#en
-		Let new items flow into the pipeline. </br>
-		Each item can be a simple url string or an object,
-		if it's an object, it must contain `id` property. </br>
-		You can specify its type by `type` property, by default, the type is the extension name in url. </br>
-		By adding a `skips` property including pipe ids, you can skip these pipe. </br>
-		The object can contain any supplementary property as you want. </br>
-		!#zh
-		让新的 item 流入 pipeline 中。</br>
-		这里的每个 item 可以是一个简单字符串类型的 url 或者是一个对象,
-		如果它是一个对象的话，他必须要包含 ‘id’ 属性。</br>
-		你也可以指定它的 ‘type’ 属性类型，默认情况下，该类型是 ‘url’ 的后缀名。</br>
-		也通过添加一个 包含 ‘skips’ 属性的 item 对象，你就可以跳过 skips 中包含的 pipe。</br>
-		该对象可以包含任何附加属性。
-		
-		@example 
-		```js
-		pipeline.flowIn([
-		     'res/Background.png',
-		     {
-		         id: 'res/scene.json',
-		         type: 'scene',
-		         name: 'scene',
-		         skips: ['Downloader']
-		     }
-		 ]);
-		``` 
-		*/
-		flowIn(urlList : any[]) : any[];		
-		/** !#en
-		Let new items flow into the pipeline and give a callback when the list of items are all completed. </br>
-		This is for loading dependencies for an existing item in flow, usually used in a pipe logic. </br>
-		For example, we have a loader for scene configuration file in JSON, the scene will only be fully loaded  </br>
-		after all its dependencies are loaded, then you will need to use function to flow in all dependencies  </br>
-		found in the configuration file, and finish the loader pipe only after all dependencies are loaded (in the callback).
-		!#zh
-		让新 items 流入 pipeline 并且当 item 列表完成时进行回调函数。</br>
-		这个 API 的使用通常是为了加载依赖项。</br>
-		例如：</br>
-		我们需要加载一个场景配置的 JSON 文件，该场景会将所有的依赖项全部都加载完毕以后，进行回调表示加载完毕。 
-		*/
-		flowInDeps(urlList : any[], callback : Function) : any[];		
-		/** !#en
-		Copy the item states from one source item to all destination items. </br>
-		It's quite useful when a pipe generate new items from one source item,</br>
-		then you should flowIn these generated items into pipeline, </br>
-		but you probably want them to skip all pipes the source item already go through,</br>
-		you can achieve it with this API. </br>
-		</br>
-		For example, an unzip pipe will generate more items, but you won't want them to pass unzip or download pipe again.
-		!#zh
-		从一个源 item 向所有目标 item 复制它的 pipe 状态，用于避免重复通过部分 pipe。</br>
-		当一个源 item 生成了一系列新的 items 时很有用，</br>
-		你希望让这些新的依赖项进入 pipeline，但是又不希望它们通过源 item 已经经过的 pipe，</br>
-		但是你可能希望他们源 item 已经通过并跳过所有 pipes，</br>
-		这个时候就可以使用这个 API。
-		@param srcItem The source item
-		@param dstItems A single destination item or an array of destination items 
-		*/
-		copyItemStates(srcItem : any, dstItems : any[]|any) : void;		
-		/** !#en Returns whether the pipeline is flowing (contains item) currently.
-		!#zh 获取 pipeline 当前是否正在处理中。 
-		*/
-		isFlowing() : boolean;		
-		/** !#en Returns all items in pipeline.
-		!#zh 获取 pipeline 中的所有 items。 
-		*/
-		getItems() : LoadingItems;		
-		/** !#en Returns an item in pipeline.
-		!#zh 获取指定 item。 
-		*/
-		getItem() : LoadingItems;		
-		/** !#en Removes an item in pipeline, no matter it's in progress or completed.
-		!#zh 移除指定 item，无论是进行时还是已完成。 
-		*/
-		removeItem() : boolean;		
-		/** !#en Clear the current pipeline, this function will clean up the items.
-		!#zh 清空当前 pipeline，该函数将清理 items。 
-		*/
-		clear() : void;		
-		/** !#en This is a callback which will be invoked while an item flow out the pipeline, you should overwrite this function.
-		!#zh 这个回调函数将在 item 流出 pipeline 时被调用，你应该重写该函数。
-		@param completedCount The number of the items that are already completed.
-		@param totalCount The total number of the items.
-		@param item The latest item which flow out the pipeline.
-		
-		@example 
-		```js
-		pipeline.onProgress = function (completedCount, totalCount, item) {
-		     var progress = (100 * completedCount / totalCount).toFixed(2);
-		     cc.log(progress + '%');
-		 }
-		``` 
-		*/
-		onProgress(completedCount : number, totalCount : number, item : any) : void;		
-		/** !#en This is a callback which will be invoked while all items flow out the pipeline,
-		you should overwirte this function.
-		!#zh 该函数将在所有 item 流出 pipeline 时被调用，你应该重写该函数。
-		@param error All errored urls will be stored in this array, if no error happened, then it will be null
-		@param items All items.
-		
-		@example 
-		```js
-		pipeline.onComplete = function (error, items) {
-		     if (error)
-		         cc.log('Completed with ' + error.length + ' errors');
-		     else
-		         cc.log('Completed ' + items.totalCount + ' items');
-		 }
-		``` 
-		*/
-		onComplete(error : any[], items : LoadingItems) : void;	
-	}		
-		/** undefined */
-		export class Graphics extends _RendererUnderSG {		
-		/** !#en
-		Current line width.
-		!#zh
-		当前线条宽度 */
-		lineWidth : number;		
-		/** !#en
-		lineJoin determines how two connecting segments (of lines, arcs or curves) with non-zero lengths in a shape are joined together.
-		!#zh
-		lineJoin 用来设置2个长度不为0的相连部分（线段，圆弧，曲线）如何连接在一起的属性。 */
-		lineJoin : Graphics.LineJoin;		
-		/** !#en
-		lineCap determines how the end points of every line are drawn.
-		!#zh
-		lineCap 指定如何绘制每一条线段末端。 */
-		lineCap : Graphics.LineCap;		
-		/** !#en
-		stroke color
-		!#zh
-		线段颜色 */
-		strokeColor : Color;		
-		/** !#en
-		fill color
-		!#zh
-		填充颜色 */
-		fillColor : Color;		
-		/** !#en
-		Sets the miter limit ratio
-		!#zh
-		设置斜接面限制比例 */
-		miterLimit : number;		
-		/** !#en Move path start point to (x,y).
-		!#zh 移动路径起点到坐标(x, y)
-		@param x The x axis of the coordinate for the end point.
-		@param y The y axis of the coordinate for the end point. 
-		*/
-		moveTo(x? : number, y? : number) : void;		
-		/** !#en Adds a straight line to the path
-		!#zh 绘制直线路径
-		@param x The x axis of the coordinate for the end point.
-		@param y The y axis of the coordinate for the end point. 
-		*/
-		lineTo(x? : number, y? : number) : void;		
-		/** !#en Adds a cubic Bézier curve to the path
-		!#zh 绘制三次贝赛尔曲线路径
-		@param c1x The x axis of the coordinate for the first control point.
-		@param c1y The y axis of the coordinate for first control point.
-		@param c2x The x axis of the coordinate for the second control point.
-		@param c2y The y axis of the coordinate for the second control point.
-		@param x The x axis of the coordinate for the end point.
-		@param y The y axis of the coordinate for the end point. 
-		*/
-		bezierCurveTo(c1x? : number, c1y? : number, c2x? : number, c2y? : number, x? : number, y? : number) : void;		
-		/** !#en Adds a quadratic Bézier curve to the path
-		!#zh 绘制二次贝赛尔曲线路径
-		@param cx The x axis of the coordinate for the control point.
-		@param cy The y axis of the coordinate for the control point.
-		@param x The x axis of the coordinate for the end point.
-		@param y The y axis of the coordinate for the end point. 
-		*/
-		quadraticCurveTo(cx? : number, cy? : number, x? : number, y? : number) : void;		
-		/** !#en Adds an arc to the path which is centered at (cx, cy) position with radius r starting at startAngle and ending at endAngle going in the given direction by counterclockwise (defaulting to false).
-		!#zh 绘制圆弧路径。圆弧路径的圆心在 (cx, cy) 位置，半径为 r ，根据 counterclockwise （默认为false）指定的方向从 startAngle 开始绘制，到 endAngle 结束。
-		@param cx The x axis of the coordinate for the center point.
-		@param cy The y axis of the coordinate for the center point.
-		@param r The arc's radius.
-		@param startAngle The angle at which the arc starts, measured clockwise from the positive x axis and expressed in radians.
-		@param endAngle The angle at which the arc ends, measured clockwise from the positive x axis and expressed in radians.
-		@param counterclockwise An optional Boolean which, if true, causes the arc to be drawn counter-clockwise between the two angles. By default it is drawn clockwise. 
-		*/
-		arc(cx? : number, cy? : number, r? : number, startAngle? : number, endAngle? : number, counterclockwise? : number) : void;		
-		/** !#en Adds an ellipse to the path.
-		!#zh 绘制椭圆路径。
-		@param cx The x axis of the coordinate for the center point.
-		@param cy The y axis of the coordinate for the center point.
-		@param rx The ellipse's x-axis radius.
-		@param ry The ellipse's y-axis radius. 
-		*/
-		ellipse(cx? : number, cy? : number, rx? : number, ry? : number) : void;		
-		/** !#en Adds an circle to the path.
-		!#zh 绘制圆形路径。
-		@param cx The x axis of the coordinate for the center point.
-		@param cy The y axis of the coordinate for the center point.
-		@param r The circle's radius. 
-		*/
-		circle(cx? : number, cy? : number, r? : number) : void;		
-		/** !#en Adds an rectangle to the path.
-		!#zh 绘制矩形路径。
-		@param x The x axis of the coordinate for the rectangle starting point.
-		@param y The y axis of the coordinate for the rectangle starting point.
-		@param w The rectangle's width.
-		@param h The rectangle's height. 
-		*/
-		rect(x? : number, y? : number, w? : number, h? : number) : void;		
-		/** !#en Adds an round corner rectangle to the path.
-		!#zh 绘制圆角矩形路径。
-		@param x The x axis of the coordinate for the rectangle starting point.
-		@param y The y axis of the coordinate for the rectangle starting point.
-		@param w The rectangles width.
-		@param h The rectangle's height.
-		@param r The radius of the rectangle. 
-		*/
-		roundRect(x? : number, y? : number, w? : number, h? : number, r? : number) : void;		
-		/** !#en Draws a filled rectangle.
-		!#zh 绘制填充矩形。
-		@param x The x axis of the coordinate for the rectangle starting point.
-		@param y The y axis of the coordinate for the rectangle starting point.
-		@param w The rectangle's width.
-		@param h The rectangle's height. 
-		*/
-		fillRect(x? : number, y? : number, w? : number, h? : number) : void;		
-		/** !#en Erasing any previously drawn content.
-		!#zh 擦除之前绘制的所有内容的方法。 
-		*/
-		clear() : void;		
-		/** !#en Causes the point of the pen to move back to the start of the current path. It tries to add a straight line from the current point to the start.
-		!#zh 将笔点返回到当前路径起始点的。它尝试从当前点到起始点绘制一条直线。 
-		*/
-		close() : void;		
-		/** !#en Strokes the current or given path with the current stroke style.
-		!#zh 根据当前的画线样式，绘制当前或已经存在的路径。 
-		*/
-		stroke() : void;		
-		/** !#en Fills the current or given path with the current fill style.
-		!#zh 根据当前的画线样式，填充当前或已经存在的路径。 
-		*/
-		stroke() : void;	
-	}		
 		/** <p>
 		 This class manages all events of input. include: touch, mouse, accelerometer, keyboard                                       <br/>
 		</p> */
@@ -6872,7 +5734,8 @@ declare module cc {
 		*/
 		update(dt : number) : void;	
 	}	
-	/** Key map for keyboard event */
+	/** !#en Key map for keyboard event
+	!#zh 键盘事件的按键值 */
 	export enum KEY {		
 		none = 0,
 		back = 0,
@@ -7351,6 +6214,15 @@ declare module cc {
 		Only useful on web 
 		*/
 		isRetinaEnabled() : boolean;		
+		/** !#en Whether to Enable on anti-alias
+		!#zh 控制抗锯齿是否开启
+		@param enabled Enable or not anti-alias 
+		*/
+		enableAntiAlias(enabled : boolean) : void;		
+		/** !#en Returns whether the current enable on anti-alias
+		!#zh 返回当前是否抗锯齿 
+		*/
+		isAntiAliasEnabled() : boolean;		
 		/** If enabled, the application will try automatically to enter full screen mode on mobile devices<br/>
 		You can pass true as parameter to enable it and disable it by passing false.<br/>
 		Only useful on web
@@ -7661,7 +6533,7 @@ declare module cc {
 		```js
 		---
 		var url = cc.url.raw("textures/myTexture.png");
-		log(url);   // "resources/raw/textures/myTexture.png"
+		console.log(url);   // "resources/raw/textures/myTexture.png"
 		
 		``` 
 		*/
@@ -7672,7 +6544,7 @@ declare module cc {
 		```js
 		---
 		var url = cc.url.builtinRaw("textures/myTexture.png");
-		log(url);   // "resources/default-raw/textures/myTexture.png"
+		console.log(url);   // "resources/default-raw/textures/myTexture.png"
 		
 		``` 
 		*/
@@ -8058,6 +6930,10 @@ declare module cc {
 		``` 
 		*/
 		getTextureColors(texture : Image) : any[];		
+		/** #en get all textures
+		#zh 获取所有贴图 
+		*/
+		getAllTextures() : Texture2D[];		
 		/** <p>Purges the dictionary of loaded textures. <br />
 		Call this method if you receive the "Memory Warning"  <br />
 		In the short term: it will free some resources preventing your app from being killed  <br />
@@ -8116,6 +6992,1454 @@ declare module cc {
 		If "key" is null, then a new texture will be created each time.</p> 
 		*/
 		addUIImage(image : HTMLImageElement|HTMLCanvasElement, key : string) : Texture2D;	
+	}		
+		/** !#en The animation component is used to play back animations.
+		
+		Animation provide several events to register：
+		 - play : Emit when egine playing animation
+		 - stop : Emit when stop playing animation
+		 - pause : Emit when pause animation
+		 - resume : Emit when resume animation
+		 - lastframe : If animation repeat coutn is larger than 1, emit when animation play to the last frame
+		 - finished : Emit when finish playing animation
+		
+		!#zh Animation 组件用于播放动画。你能指定动画剪辑到动画组件并从脚本控制播放。
+		
+		Animation 提供了一系列可注册的事件：
+		 - play : 开始播放时
+		 - stop : 停止播放时
+		 - pause : 暂停播放时
+		 - resume : 恢复播放时
+		 - lastframe : 假如动画循环次数大于 1，当动画播放到最后一帧时
+		 - finished : 动画播放完成时 */
+		export class Animation extends CCComponent {		
+		/** !#en Animation will play the default clip when start game.
+		!#zh 在勾选自动播放或调用 play() 时默认播放的动画剪辑。 */
+		defaultClip : AnimationClip;		
+		/** !#en Current played clip.
+		!#zh 当前播放的动画剪辑。 */
+		currentClip : AnimationClip;		
+		/** !#en Whether the animation should auto play the default clip when start game.
+		!#zh 是否在运行游戏后自动播放默认动画剪辑。 */
+		playOnLoad : boolean;		
+		/** !#en Get all the clips used in this animation.
+		!#zh 获取动画组件上的所有动画剪辑。 
+		*/
+		getClips() : AnimationClip[];		
+		/** !#en Plays an animation and stop other animations.
+		!#zh 播放当前或者指定的动画，并且停止当前正在播放动画。
+		@param name The name of animation to play. If no name is supplied then the default animation will be played.
+		@param startTime play an animation from startTime
+		
+		@example 
+		```js
+		var animCtrl = this.node.getComponent(cc.Animation);
+		animCtrl.play("linear");
+		``` 
+		*/
+		play(name? : string, startTime? : number) : AnimationState;		
+		/** !#en
+		Plays an additive animation, it will not stop other animations.
+		If there are other animations playing, then will play several animations at the same time.
+		!#zh 播放当前或者指定的动画（将不会停止当前播放的动画）。
+		@param name The name of animation to play. If no name is supplied then the default animation will be played.
+		@param startTime play an animation from startTime
+		
+		@example 
+		```js
+		// linear_1 and linear_2 at the same time playing.
+		var animCtrl = this.node.getComponent(cc.Animation);
+		animCtrl.playAdditive("linear_1");
+		animCtrl.playAdditive("linear_2");
+		``` 
+		*/
+		playAdditive(name? : string, startTime? : number) : AnimationState;		
+		/** !#en Stops an animation named name. If no name is supplied then stops all playing animations that were started with this Animation. <br/>
+		Stopping an animation also Rewinds it to the Start.
+		!#zh 停止当前或者指定的动画。如果没有指定名字，则停止所有动画。
+		@param name The animation to stop, if not supplied then stops all playing animations. 
+		*/
+		stop(name? : string) : void;		
+		/** !#en Pauses an animation named name. If no name is supplied then pauses all playing animations that were started with this Animation.
+		!#zh 暂停当前或者指定的动画。如果没有指定名字，则暂停当前正在播放的动画。
+		@param name The animation to pauses, if not supplied then pauses all playing animations. 
+		*/
+		pause(name? : string) : void;		
+		/** !#en Resumes an animation named name. If no name is supplied then resumes all paused animations that were started with this Animation.
+		!#zh 重新播放指定的动画，如果没有指定名字，则重新播放当前正在播放的动画。
+		@param name The animation to resumes, if not supplied then resumes all paused animations. 
+		*/
+		resume(name? : string) : void;		
+		/** !#en Make an animation named name go to the specified time. If no name is supplied then make all animations go to the specified time.
+		!#zh 设置指定动画的播放时间。如果没有指定名字，则设置所有动画的播放时间。
+		@param time The time to go to
+		@param name Specified animation name, if not supplied then make all animations go to the time. 
+		*/
+		setCurrentTime(time? : number, name? : string) : void;		
+		/** !#en Returns the animation state named name. If no animation with the specified name, the function will return null.
+		!#zh 获取当前或者指定的动画状态，如果未找到指定动画剪辑则返回 null。 
+		*/
+		getAnimationState(name : string) : AnimationState;		
+		/** !#en Adds a clip to the animation with name newName. If a clip with that name already exists it will be replaced with the new clip.
+		!#zh 添加动画剪辑，并且可以重新设置该动画剪辑的名称。
+		@param clip the clip to add 
+		*/
+		addClip(clip : AnimationClip, newName? : string) : AnimationState;		
+		/** !#en
+		Remove clip from the animation list. This will remove the clip and any animation states based on it.
+		If there are animation states depand on the clip are playing or clip is defaultClip, it will not delete the clip.
+		But if force is true, then will always remove the clip and any animation states based on it. If clip is defaultClip, defaultClip will be reset to null
+		!#zh
+		从动画列表中移除指定的动画剪辑，<br/>
+		如果依赖于 clip 的 AnimationState 正在播放或者 clip 是 defaultClip 的话，默认是不会删除 clip 的。
+		但是如果 force 参数为 true，则会强制停止该动画，然后移除该动画剪辑和相关的动画。这时候如果 clip 是 defaultClip，defaultClip 将会被重置为 null。
+		@param force If force is true, then will always remove the clip and any animation states based on it. 
+		*/
+		removeClip(clip : AnimationClip, force : boolean) : void;		
+		/** !#en
+		Samples animations at the current state.<br/>
+		This is useful when you explicitly want to set up some animation state, and sample it once.
+		!#zh 对当前动画进行采样。你可以手动将动画设置到某一个状态，然后采样一次。 
+		*/
+		sample() : void;		
+		/** !#en
+		Register animation event callback.
+		The event argumetns will provide the AnimationState which emit the event.
+		When play an animation, will auto register the event callback to the AnimationState, and unregister the event callback from the AnimationState when animation stopped.
+		!#zh
+		注册动画事件回调。
+		回调的事件里将会附上发送事件的 AnimationState。
+		当播放一个动画时，会自动将事件注册到对应的 AnimationState 上，停止播放时会将事件从这个 AnimationState 上取消注册。
+		@param type A string representing the event type to listen for.
+		@param callback The callback that will be invoked when the event is dispatched.
+		                             The callback is ignored if it is a duplicate (the callbacks are unique).
+		@param target The target to invoke the callback, can be null
+		@param useCapture When set to true, the capture argument prevents callback
+		                             from being invoked when the event's eventPhase attribute value is BUBBLING_PHASE.
+		                             When false, callback will NOT be invoked when event's eventPhase attribute value is CAPTURING_PHASE.
+		                             Either way, callback will be invoked when event's eventPhase attribute value is AT_TARGET.
+		
+		@example 
+		```js
+		onPlay: function (event) {
+		    var state = event.detail;    // state instanceof cc.AnimationState
+		    var type = event.type;       // type === 'play';
+		}
+		
+		// register event to all animation
+		animation.on('', 'play',      this.onPlay,        this);
+		``` 
+		*/
+		on(type : string, callback: (param: Event) => void, target : any, useCapture : boolean) : void;		
+		/** !#en
+		Unregister animation event callback.
+		!#zh
+		取消注册动画事件回调。
+		@param type A string representing the event type being removed.
+		@param callback The callback to remove.
+		@param target The target to invoke the callback, if it's not given, only callback without target will be removed
+		@param useCapture Specifies whether the callback being removed was registered as a capturing callback or not.
+		                             If not specified, useCapture defaults to false. If a callback was registered twice,
+		                             one with capture and one without, each must be removed separately. Removal of a capturing callback
+		                             does not affect a non-capturing version of the same listener, and vice versa.
+		
+		@example 
+		```js
+		// unregister event to all animation
+		animation.off('', 'play',      this.onPlay,        this);
+		``` 
+		*/
+		off(type : string, callback : Function, target : any, useCapture : boolean) : void;	
+	}		
+		/** !#en Audio Source.
+		!#zh 音频源组件，能对音频剪辑。 */
+		export class AudioSource extends Component {		
+		/** !#en
+		Is the audio source playing (Read Only). <br/>
+		Note: isPlaying is not supported for Native platforms.
+		!#zh
+		该音频剪辑是否正播放（只读）。<br/>
+		注意：Native 平台暂时不支持 isPlaying。 */
+		isPlaying : boolean;		
+		/** !#en The clip of the audio source.
+		!#zh 默认要播放的音频剪辑。 */
+		clip : AudioClip;		
+		/** !#en The volume of the audio source.
+		!#zh 音频源的音量（0.0 ~ 1.0）。 */
+		volume : number;		
+		/** !#en Is the audio source mute?
+		!#zh 是否静音音频源。Mute 是设置音量为 0，取消静音是恢复原来的音量。 */
+		mute : boolean;		
+		/** !#en Is the audio source looping?
+		!#zh 音频源是否循环播放？ */
+		loop : boolean;		
+		/** !#en If set to true, the audio source will automatically start playing on onLoad.
+		!#zh 如果设置为true，音频源将在 onLoad 时自动播放。 */
+		playOnLoad : boolean;		
+		/** !#en Plays the clip.
+		!#zh 播放音频剪辑。 
+		*/
+		play() : void;		
+		/** !#en Stops the clip.
+		!#zh 停止当前音频剪辑。 
+		*/
+		stop() : void;		
+		/** !#en Pause the clip.
+		!#zh 暂停当前音频剪辑。 
+		*/
+		pause() : void;		
+		/** !#en Resume the clip.
+		!#zh 恢复播放。 
+		*/
+		resume() : void;		
+		/** !#en Rewind playing music.
+		!#zh 从头开始播放。 
+		*/
+		rewind() : void;		
+		/** !#en Get current time
+		!#zh 获取当前的播放时间 
+		*/
+		getCurrentTime() : void;		
+		/** !#en Set current time
+		!#zh 设置当前的播放时间 
+		*/
+		setCurrentTime(time : number) : void;		
+		/** !#en Get audio duration
+		!#zh 获取当前音频的长度 
+		*/
+		getDuration() : void;	
+	}		
+		/** !#en
+		Button has 4 Transition types
+		When Button state changed:
+		 If Transition type is Button.Transition.NONE, Button will do nothing
+		 If Transition type is Button.Transition.COLOR, Button will change target's color
+		 If Transition type is Button.Transition.SPRITE, Button will change target Sprite's sprite
+		 If Transition type is Button.Transition.SCALE, Button will change target node's scale
+		
+		Button will trigger 5 events:
+		 Button.EVENT_TOUCH_DOWN
+		 Button.EVENT_TOUCH_UP
+		 Button.EVENT_HOVER_IN
+		 Button.EVENT_HOVER_MOVE
+		 Button.EVENT_HOVER_OUT
+		
+		!#zh
+		按钮组件。可以被按下,或者点击。</br>
+		
+		按钮可以通过修改 Transition 来设置按钮状态过渡的方式：</br>
+		  -Button.Transition.NONE   // 不做任何过渡</br>
+		  -Button.Transition.COLOR  // 进行颜色之间过渡</br>
+		  -Button.Transition.SPRITE // 进行精灵之间过渡</br>
+		  -Button.Transition.SCALE // 进行缩放过渡</br>
+		
+		按钮可以绑定事件（但是必须要在按钮的 Node 上才能绑定事件）：</br>
+		  // 以下事件可以在全平台上都触发</br>
+		  -cc.Node.EventType.TOUCH_START  // 按下时事件</br>
+		  -cc.Node.EventType.TOUCH_Move   // 按住移动后事件</br>
+		  -cc.Node.EventType.TOUCH_END    // 按下后松开后事件</br>
+		  -cc.Node.EventType.TOUCH_CANCEL // 按下取消事件</br>
+		  // 以下事件只在 PC 平台上触发</br>
+		  -cc.Node.EventType.MOUSE_DOWN  // 鼠标按下时事件</br>
+		  -cc.Node.EventType.MOUSE_MOVE  // 鼠标按住移动后事件</br>
+		  -cc.Node.EventType.MOUSE_ENTER // 鼠标进入目标事件</br>
+		  -cc.Node.EventType.MOUSE_LEAVE // 鼠标离开目标事件</br>
+		  -cc.Node.EventType.MOUSE_UP    // 鼠标松开事件</br>
+		  -cc.Node.EventType.MOUSE_WHEEL // 鼠标滚轮事件</br> */
+		export class Button extends Component {		
+		/** !#en
+		Whether the Button is disabled.
+		If true, the Button will trigger event and do transition.
+		!#zh
+		按钮事件是否被响应，如果为 false，则按钮将被禁用。 */
+		interactable : boolean;		
+		/** !#en When this flag is true, Button target sprite will turn gray when interactable is false.
+		!#zh 如果这个标记为 true，当 button 的 interactable 属性为 false 的时候，会使用内置 shader 让 button 的 target 节点的 sprite 组件变灰 */
+		enableAutoGrayEffect : boolean;		
+		/** !#en Transition type
+		!#zh 按钮状态改变时过渡方式。 */
+		transition : Button.Transition;		
+		/** !#en Normal state color.
+		!#zh 普通状态下按钮所显示的颜色。 */
+		normalColor : Color;		
+		/** !#en Pressed state color
+		!#zh 按下状态时按钮所显示的颜色。 */
+		pressedColor : Color;		
+		/** !#en Hover state color
+		!#zh 悬停状态下按钮所显示的颜色。 */
+		hoverColor : Color;		
+		/** !#en Disabled state color
+		!#zh 禁用状态下按钮所显示的颜色。 */
+		disabledColor : Color;		
+		/** !#en Color and Scale transition duration
+		!#zh 颜色过渡和缩放过渡时所需时间 */
+		duration : number;		
+		/** !#en  When user press the button, the button will zoom to a scale.
+		The final scale of the button  equals (button original scale * zoomScale)
+		!#zh 当用户点击按钮后，按钮会缩放到一个值，这个值等于 Button 原始 scale * zoomScale */
+		zoomScale : number;		
+		/** !#en Normal state sprite
+		!#zh 普通状态下按钮所显示的 Sprite 。 */
+		normalSprite : SpriteFrame;		
+		/** !#en Pressed state sprite
+		!#zh 按下状态时按钮所显示的 Sprite 。 */
+		pressedSprite : SpriteFrame;		
+		/** !#en Hover state sprite
+		!#zh 悬停状态下按钮所显示的 Sprite 。 */
+		hoverSprite : SpriteFrame;		
+		/** !#en Disabled state sprite
+		!#zh 禁用状态下按钮所显示的 Sprite 。 */
+		disabledSprite : SpriteFrame;		
+		/** !#en
+		Transition target.
+		When Button state changed:
+		 If Transition type is Button.Transition.NONE, Button will do nothing
+		 If Transition type is Button.Transition.COLOR, Button will change target's color
+		 If Transition type is Button.Transition.SPRITE, Button will change target Sprite's sprite
+		!#zh
+		需要过渡的目标。
+		当前按钮状态改变规则：
+		-如果 Transition type 选择 Button.Transition.NONE，按钮不做任何过渡。
+		-如果 Transition type 选择 Button.Transition.COLOR，按钮会对目标颜色进行颜色之间的过渡。
+		-如果 Transition type 选择 Button.Transition.Sprite，按钮会对目标 Sprite 进行 Sprite 之间的过渡。 */
+		target : Node;		
+		/** !#en If Button is clicked, it will trigger event's handler
+		!#zh 按钮的点击事件列表。 */
+		clickEvents : Component.EventHandler[];	
+	}		
+		/** !#zh: 作为 UI 根节点，为所有子节点提供视窗四边的位置信息以供对齐，另外提供屏幕适配策略接口，方便从编辑器设置。
+		注：由于本节点的尺寸会跟随屏幕拉伸，所以 anchorPoint 只支持 (0.5, 0.5)，否则适配不同屏幕时坐标会有偏差。 */
+		export class Canvas extends Component {		
+		/** !#en Current active canvas, the scene should only have one active canvas at the same time.
+		!#zh 当前激活的画布组件，场景同一时间只能有一个激活的画布。 */
+		instance : Canvas;		
+		/** !#en The desigin resolution for current scene.
+		!#zh 当前场景设计分辨率。 */
+		designResolution : cc.Size;		
+		/** !#en TODO
+		!#zh: 是否优先将设计分辨率高度撑满视图高度。 */
+		fitHeight : boolean;		
+		/** !#en TODO
+		!#zh: 是否优先将设计分辨率宽度撑满视图宽度。 */
+		fitWidth : boolean;	
+	}		
+		/** !#en
+		Base class for everything attached to Node(Entity).<br/>
+		<br/>
+		NOTE: Not allowed to use construction parameters for Component's subclasses,
+		      because Component is created by the engine.
+		!#zh
+		所有附加到节点的基类。<br/>
+		<br/>
+		注意：不允许使用组件的子类构造参数，因为组件是由引擎创建的。 */
+		export class Component extends Object {		
+		constructor();		
+		/** !#en The node this component is attached to. A component is always attached to a node.
+		!#zh 该组件被附加到的节点。组件总会附加到一个节点。 */
+		node : Node;		
+		/** !#en The uuid for editor.
+		!#zh 组件的 uuid，用于编辑器。 */
+		uuid : string;		
+		/** !#en indicates whether this component is enabled or not.
+		!#zh 表示该组件自身是否启用。 */
+		enabled : boolean;		
+		/** !#en indicates whether this component is enabled and its node is also active in the hierarchy.
+		!#zh 表示该组件是否被启用并且所在的节点也处于激活状态。。 */
+		enabledInHierarchy : boolean;		
+		/** !#en TODO
+		!#zh onLoad 是否被调用。 */
+		_isOnLoadCalled : boolean;		
+		/** !#en Update is called every frame, if the Component is enabled.
+		!#zh 如果该组件启用，则每帧调用 update。 
+		*/
+		update() : void;		
+		/** !#en LateUpdate is called every frame, if the Component is enabled.
+		!#zh 如果该组件启用，则每帧调用 LateUpdate。 
+		*/
+		lateUpdate() : void;		
+		/** !#en When attaching to an active node or its node first activated.
+		!#zh 当附加到一个激活的节点上或者其节点第一次激活时候调用。 
+		*/
+		onLoad() : void;		
+		/** !#en Called before all scripts' update if the Component is enabled the first time.
+		!#zh 如果该组件第一次启用，则在所有组件的 update 之前调用。 
+		*/
+		start() : void;		
+		/** !#en Called when this component becomes enabled and its node is active.
+		!#zh 当该组件被启用，并且它的节点也激活时。 
+		*/
+		onEnable() : void;		
+		/** !#en Called when this component becomes disabled or its node becomes inactive.
+		!#zh 当该组件被禁用或节点变为无效时调用。 
+		*/
+		onDisable() : void;		
+		/** !#en Called when this component will be destroyed.
+		!#zh 当该组件被销毁时调用 
+		*/
+		onDestroy() : void;		
+		onFocusInEditor() : void;		
+		onLostFocusInEditor() : void;		
+		/** !#en Adds a component class to the node. You can also add component to node by passing in the name of the script.
+		!#zh 向节点添加一个组件类，你还可以通过传入脚本的名称来添加组件。
+		@param typeOrTypename the constructor or the class name of the component to add
+		
+		@example 
+		```js
+		var sprite = node.addComponent(cc.Sprite);
+		var test = node.addComponent("Test");
+		``` 
+		*/
+		addComponent(typeOrTypename : Function|string) : Component;		
+		/** !#en
+		Returns the component of supplied type if the node has one attached, null if it doesn't.<br/>
+		You can also get component in the node by passing in the name of the script.
+		!#zh
+		获取节点上指定类型的组件，如果节点有附加指定类型的组件，则返回，如果没有则为空。<br/>
+		传入参数也可以是脚本的名称。
+		
+		@example 
+		```js
+		// get sprite component.
+		var sprite = node.getComponent(cc.Sprite);
+		// get custom test calss.
+		var test = node.getComponent("Test");
+		``` 
+		*/
+		getComponent(typeOrClassName : Function|string) : Component;		
+		/** !#en Returns all components of supplied Type in the node.
+		!#zh 返回节点上指定类型的所有组件。
+		
+		@example 
+		```js
+		var sprites = node.getComponents(cc.Sprite);
+		var tests = node.getComponents("Test");
+		``` 
+		*/
+		getComponents(typeOrClassName : Function|string) : Component[];		
+		/** !#en Returns the component of supplied type in any of its children using depth first search.
+		!#zh 递归查找所有子节点中第一个匹配指定类型的组件。
+		
+		@example 
+		```js
+		var sprite = node.getComponentInChildren(cc.Sprite);
+		var Test = node.getComponentInChildren("Test");
+		``` 
+		*/
+		getComponentInChildren(typeOrClassName : Function|string) : Component;		
+		/** !#en Returns the components of supplied type in self or any of its children using depth first search.
+		!#zh 递归查找自身或所有子节点中指定类型的组件
+		
+		@example 
+		```js
+		var sprites = node.getComponentsInChildren(cc.Sprite);
+		var tests = node.getComponentsInChildren("Test");
+		``` 
+		*/
+		getComponentsInChildren(typeOrClassName : Function|string) : Component[];		
+		/** !#en
+		If the component's bounding box is different from the node's, you can implement this method to supply
+		a custom axis aligned bounding box (AABB), so the editor's scene view can perform hit test properly.
+		!#zh
+		如果组件的包围盒与节点不同，您可以实现该方法以提供自定义的轴向对齐的包围盒（AABB），
+		以便编辑器的场景视图可以正确地执行点选测试。
+		@param out_rect the Rect to receive the bounding box 
+		*/
+		_getLocalBounds(out_rect : Rect) : void;		
+		/** !#en
+		onRestore is called after the user clicks the Reset item in the Inspector's context menu or performs
+		an undo operation on this component.<br/>
+		<br/>
+		If the component contains the "internal state", short for "temporary member variables which not included<br/>
+		in its CCClass properties", then you may need to implement this function.<br/>
+		<br/>
+		The editor will call the getset accessors of your component to record/restore the component's state<br/>
+		for undo/redo operation. However, in extreme cases, it may not works well. Then you should implement<br/>
+		this function to manually synchronize your component's "internal states" with its public properties.<br/>
+		Once you implement this function, all the getset accessors of your component will not be called when<br/>
+		the user performs an undo/redo operation. Which means that only the properties with default value<br/>
+		will be recorded or restored by editor.<br/>
+		<br/>
+		Similarly, the editor may failed to reset your component correctly in extreme cases. Then if you need<br/>
+		to support the reset menu, you should manually synchronize your component's "internal states" with its<br/>
+		properties in this function. Once you implement this function, all the getset accessors of your component<br/>
+		will not be called during reset operation. Which means that only the properties with default value<br/>
+		will be reset by editor.
+		
+		This function is only called in editor mode.
+		!#zh
+		onRestore 是用户在检查器菜单点击 Reset 时，对此组件执行撤消操作后调用的。<br/>
+		<br/>
+		如果组件包含了“内部状态”（不在 CCClass 属性中定义的临时成员变量），那么你可能需要实现该方法。<br/>
+		<br/>
+		编辑器执行撤销/重做操作时，将调用组件的 get set 来录制和还原组件的状态。
+		然而，在极端的情况下，它可能无法良好运作。<br/>
+		那么你就应该实现这个方法，手动根据组件的属性同步“内部状态”。
+		一旦你实现这个方法，当用户撤销或重做时，组件的所有 get set 都不会再被调用。
+		这意味着仅仅指定了默认值的属性将被编辑器记录和还原。<br/>
+		<br/>
+		同样的，编辑可能无法在极端情况下正确地重置您的组件。<br/>
+		于是如果你需要支持组件重置菜单，你需要在该方法中手工同步组件属性到“内部状态”。<br/>
+		一旦你实现这个方法，组件的所有 get set 都不会在重置操作时被调用。
+		这意味着仅仅指定了默认值的属性将被编辑器重置。
+		<br/>
+		此方法仅在编辑器下会被调用。 
+		*/
+		onRestore() : void;		
+		/** !#en
+		Schedules a custom selector.<br/>
+		If the selector is already scheduled, then the interval parameter will be updated without scheduling it again.
+		!#zh
+		调度一个自定义的回调函数。<br/>
+		如果回调函数已调度，那么将不会重复调度它，只会更新时间间隔参数。
+		@param callback The callback function
+		@param interval Tick interval in seconds. 0 means tick every frame. If interval = 0, it's recommended to use scheduleUpdate() instead.
+		@param repeat The selector will be executed (repeat + 1) times, you can use kCCRepeatForever for tick infinitely.
+		@param delay The amount of time that the first tick will wait before execution.
+		
+		@example 
+		```js
+		var timeCallback = function (dt) {
+		  cc.log("time: " + dt);
+		}
+		this.schedule(timeCallback, 1);
+		``` 
+		*/
+		schedule(callback : Function, interval? : number, repeat? : number, delay? : number) : void;		
+		/** !#en Schedules a callback function that runs only once, with a delay of 0 or larger.
+		!#zh 调度一个只运行一次的回调函数，可以指定 0 让回调函数在下一帧立即执行或者在一定的延时之后执行。
+		@param callback A function wrapped as a selector
+		@param delay The amount of time that the first tick will wait before execution.
+		
+		@example 
+		```js
+		var timeCallback = function (dt) {
+		  cc.log("time: " + dt);
+		}
+		this.scheduleOnce(timeCallback, 2);
+		``` 
+		*/
+		scheduleOnce(callback : Function, delay? : number) : void;		
+		/** !#en Unschedules a custom callback function.
+		!#zh 取消调度一个自定义的回调函数。
+		@param callback_fn A function wrapped as a selector
+		
+		@example 
+		```js
+		this.unschedule(_callback);
+		``` 
+		*/
+		unschedule(callback_fn : Function) : void;		
+		/** !#en
+		unschedule all scheduled callback functions: custom callback functions, and the 'update' callback function.<br/>
+		Actions are not affected by this method.
+		!#zh 取消调度所有已调度的回调函数：定制的回调函数以及 'update' 回调函数。动作不受此方法影响。
+		
+		@example 
+		```js
+		this.unscheduleAllCallbacks();
+		``` 
+		*/
+		unscheduleAllCallbacks() : void;	
+	}		
+		/** !#en cc.EditBox is a component for inputing text, you can use it to gather small amounts of text from users.
+		!#zh EditBox 组件，用于获取用户的输入文本。 */
+		export class EditBox extends _RendererUnderSG {		
+		/** !#en Input string of EditBox.
+		!#zh 输入框的初始输入内容，如果为空则会显示占位符的文本。 */
+		string : string;		
+		/** !#en The background image of EditBox.
+		!#zh 输入框的背景图片 */
+		backGroundImage : SpriteFrame;		
+		/** !#en
+		The return key type of EditBox.
+		Note: it is meaningless for web platforms and desktop platforms.
+		!#zh
+		指定移动设备上面回车按钮的样式。
+		注意：这个选项对 web 平台与 desktop 平台无效。 */
+		returnType : EditBox.KeyboardReturnType;		
+		/** !#en Set the input flags that are to be applied to the EditBox.
+		!#zh 指定输入标志位，可以指定输入方式为密码或者单词首字母大写。 */
+		inputFlag : EditBox.InputFlag;		
+		/** !#en
+		Set the input mode of the edit box.
+		If you pass ANY, it will create a multiline EditBox.
+		!#zh
+		指定输入模式: ANY表示多行输入，其它都是单行输入，移动平台上还可以指定键盘样式。 */
+		inputMode : EditBox.InputMode;		
+		/** !#en Font size of the input text.
+		!#zh 输入框文本的字体大小 */
+		fontSize : number;		
+		/** !#en Change the lineHeight of displayed text.
+		!#zh 输入框文本的行高。 */
+		lineHeight : number;		
+		/** !#en Font color of the input text.
+		!#zh 输入框文本的颜色。 */
+		fontColor : Color;		
+		/** !#en The display text of placeholder.
+		!#zh 输入框占位符的文本内容。 */
+		placeholder : string;		
+		/** !#en The font size of placeholder.
+		!#zh 输入框占位符的字体大小。 */
+		placeholderFontSize : number;		
+		/** !#en The font color of placeholder.
+		!#zh 输入框最大允许输入的字符个数。 */
+		placeholderFontColor : Color;		
+		/** !#en The maximize input length of EditBox.
+		- If pass a value less than 0, it won't limit the input number of characters.
+		- If pass 0, it doesn't allow input any characters.
+		!#zh 输入框最大允许输入的字符个数。
+		- 如果值为小于 0 的值，则不会限制输入字符个数。
+		- 如果值为 0，则不允许用户进行任何输入。 */
+		maxLength : number;		
+		/** !#en The input is always visible and be on top of the game view.
+		!zh 输入框总是可见，并且永远在游戏视图的上面
+		Note: only available on Web at the moment. */
+		stayOnTop : boolean;		
+		/** !#en Set the tabIndex of the DOM input element, only useful on Web.
+		!#zh 修改 DOM 输入元素的 tabIndex，这个属性只有在 Web 上面修改有意义。 */
+		tabIndex : number;		
+		/** !#en The event handler to be called when EditBox began to edit text.
+		!#zh 开始编辑文本输入框触发的事件回调。 */
+		editingDidBegin : Component.EventHandler;		
+		/** !#en The event handler to be called when EditBox text changes.
+		!#zh 编辑文本输入框时触发的事件回调。 */
+		textChanged : Component.EventHandler;		
+		/** !#en The event handler to be called when EditBox edit ends.
+		!#zh 结束编辑文本输入框时触发的事件回调。 */
+		editingDidEnded : Component.EventHandler;		
+		/** !#en The event handler to be called when return key is pressed. Windows is not supported.
+		!#zh 当用户按下回车按键时的事件回调，目前不支持 windows 平台 */
+		editingReturn : Component.EventHandler;		
+		/** !#en Let the EditBox get focus, only valid when stayOnTop is true.
+		!#zh 让当前 EditBox 获得焦点，只有在 stayOnTop 为 true 的时候设置有效
+		Note: only available on Web at the moment. 
+		*/
+		setFocus() : void;		
+		/** !#en Determine whether EditBox is getting focus or not.
+		!#zh 判断 EditBox 是否获得了焦点
+		Note: only available on Web at the moment. 
+		*/
+		isFocused() : void;	
+	}		
+		/** !#en The Label Component.
+		!#zh 文字标签组件 */
+		export class Label extends _RendererUnderSG {		
+		/** !#en Content string of label.
+		!#zh 标签显示的文本内容。 */
+		string : string;		
+		/** !#en Horizontal Alignment of label.
+		!#zh 文本内容的水平对齐方式。 */
+		horizontalAlign : Label.HorizontalAlign;		
+		/** !#en Vertical Alignment of label.
+		!#zh 文本内容的垂直对齐方式。 */
+		verticalAlign : Label.VerticalAlign;		
+		/** !#en The actual rendering font size in shrink mode
+		!#zh SHRINK 模式下面文本实际渲染的字体大小 */
+		actualFontSize : number;		
+		/** !#en Font size of label.
+		!#zh 文本字体大小。 */
+		fontSize : number;		
+		/** !#en Line Height of label.
+		!#zh 文本行高。 */
+		lineHeight : number;		
+		/** !#en Overflow of label.
+		!#zh 文字显示超出范围时的处理方式。 */
+		overflow : Label.Overflow;		
+		/** !#en Whether auto wrap label when string width is large than label width.
+		!#zh 是否自动换行。 */
+		enableWrapText : boolean;		
+		/** !#en The font of label.
+		!#zh 文本字体。 */
+		font : cc.Font;		
+		/** !#en Whether use system font name or not.
+		!#zh 是否使用系统字体。 */
+		isSystemFontUsed : boolean;	
+	}		
+		/** !#en Outline effect used to change the display, only used for TTF font
+		!#zh 描边效果组件,用于字体描边,只能用于系统字体 */
+		export class LabelOutline extends Component {		
+		/** !#en Change the outline color
+		!#zh 改变描边的颜色 */
+		color : Color;		
+		/** !#en Change the outline width
+		!#zh 改变描边的宽度 */
+		width : number;	
+	}		
+		/** !#en The Layout is a container component, use it to arrange child elements easily.
+		!#zh Layout 组件相当于一个容器，能自动对它的所有子节点进行统一排版。 */
+		export class Layout extends Component {		
+		/** !#en The layout type.
+		!#zh 布局类型 */
+		type : Layout.Type;		
+		/** !#en
+		The are three resize modes for Layout.
+		None, resize Container and resize children.
+		!#zh 缩放模式 */
+		resizeMode : Layout.ResizeMode;		
+		/** !#en The cell size for grid layout.
+		!#zh 每个格子的大小，只有布局类型为 GRID 的时候才有效。 */
+		cellSize : Size;		
+		/** !#en
+		The start axis for grid layout. If you choose horizontal, then children will layout horizontally at first,
+		and then break line on demand. Choose vertical if you want to layout vertically at first .
+		!#zh 起始轴方向类型，可进行水平和垂直布局排列，只有布局类型为 GRID 的时候才有效。 */
+		startAxis : Layout.AxisDirection;		
+		/** !#en The padding of layout, it only effect the layout in one direction.
+		!#zh 容器内边距，只会在布局方向上生效。 */
+		padding : number;		
+		/** !#en The distance in x-axis between each element in layout.
+		!#zh 子节点之间的水平间距。 */
+		spacingX : number;		
+		/** !#en The distance in y-axis between each element in layout.
+		!#zh 子节点之间的垂直间距。 */
+		spacingY : number;		
+		/** !#en
+		Only take effect in Vertical layout mode.
+		This option changes the start element's positioning.
+		!#zh 垂直排列子节点的方向。 */
+		verticalDirection : Layout.VerticalDirection;		
+		/** !#en
+		Only take effect in Horizontal layout mode.
+		This option changes the start element's positioning.
+		!#zh 水平排列子节点的方向。 */
+		horizontalDirection : Layout.HorizontalDirection;	
+	}		
+		/** undefined */
+		export class Mask extends _RendererInSG {	
+	}		
+		/** !#en The PageView control
+		!#zh 页面视图组件 */
+		export class PageView extends ScrollView {		
+		/** !#en The page view direction
+		!#zh 页面视图滚动类型 */
+		direction : PageView.Direction;		
+		/** !#en
+		The scroll threshold value, when drag exceeds this value,
+		release the next page will automatically scroll, less than the restore
+		!#zh 滚动临界值，默认单位百分比，当拖拽超出该数值时，松开会自动滚动下一页，小于时则还原。 */
+		scrollThreshold : number;		
+		/** !#en Change the AutoScroll stop epsilon value of PageView, change this value could adjust the PageView's
+		     event triggerring timing.
+		!#zh 设置 PageView 页面自动滚动动画结束的阈值，修改此值可以调整 PageView 事件的发送时机。 */
+		autoScrollStopEpsilon : number;		
+		/** !#en The Page View Indicator
+		!#zh 页面视图指示器组件 */
+		indicator : PageViewIndicator;		
+		/** !#en PageView events callback
+		!#zh 滚动视图的事件回调函数 */
+		pageEvents : Component.EventHandler[];		
+		/** !#en Returns current page index
+		!#zh 返回当前页面索引 
+		*/
+		getCurrentPageIndex() : number;		
+		/** !#en Set current page index
+		!#zh 设置当前页面索引 
+		*/
+		setCurrentPageIndex(index : number) : void;		
+		/** !#en Returns all pages of pageview
+		!#zh 返回视图中的所有页面 
+		*/
+		getPages() : Node[];		
+		/** !#en At the end of the current page view to insert a new view
+		!#zh 在当前页面视图的尾部插入一个新视图 
+		*/
+		addPage(page : Node) : void;		
+		/** !#en Inserts a page in the specified location
+		!#zh 将页面插入指定位置中 
+		*/
+		insertPage(page : Node, index : number) : void;		
+		/** !#en Removes a page from PageView.
+		!#zh 移除指定页面 
+		*/
+		removePage(page : Node) : void;		
+		/** !#en Removes a page at index of PageView.
+		!#zh 移除指定下标的页面 
+		*/
+		removePageAtIndex(index : number) : void;		
+		/** !#en Removes all pages from PageView
+		!#zh 移除所有页面 
+		*/
+		removeAllPages() : void;		
+		/** !#en Scroll PageView to index.
+		!#zh 滚动到指定页面
+		@param idx index of page.
+		@param immediately immediately jumps 
+		*/
+		scrollToPage(idx : number, immediately : boolean) : void;	
+	}		
+		/** !#en The Page View Indicator Component
+		!#zh 页面视图每页标记组件 */
+		export class PageViewIndicator extends Component {		
+		/** !#en The spriteFrame for each element.
+		!#zh 每个页面标记显示的图片 */
+		spriteFrame : SpriteFrame;		
+		/** !#en The location direction of PageViewIndicator.
+		!#zh 页面标记摆放方向 */
+		direction : PageViewIndicator.Direction;		
+		/** !#en The cellSize for each element.
+		!#zh 每个页面标记的大小 */
+		cellSize : Size;		
+		/** !#en The distance between each element.
+		!#zh 每个页面标记之间的边距 */
+		spacing : number;		
+		/** !#en Set Page View
+		!#zh 设置页面视图 
+		*/
+		setPageView(target : PageView) : void;	
+	}		
+		/** !#en
+		Visual indicator of progress in some operation.
+		Displays a bar to the user representing how far the operation has progressed.
+		!#zh
+		进度条组件，可用于显示加载资源时的进度。 */
+		export class ProgressBar extends Component {		
+		/** !#en The targeted Sprite which will be changed progressively.
+		!#zh 用来显示进度条比例的 Sprite 对象。 */
+		barSprite : Sprite;		
+		/** !#en The progress mode, there are two modes supported now: horizontal and vertical.
+		!#zh 进度条的模式 */
+		mode : ProgressBar.Mode;		
+		/** !#en The total width or height of the bar sprite.
+		!#zh 进度条实际的总长度 */
+		totalLength : number;		
+		/** !#en The current progress of the bar sprite. The valid value is between 0-1.
+		!#zh 当前进度值，该数值的区间是 0-1 之间。 */
+		progress : number;		
+		/** !#en Whether reverse the progress direction of the bar sprite.
+		!#zh 进度条是否进行反方向变化。 */
+		reverse : boolean;	
+	}		
+		/** Rendering component in scene graph.
+		Maintains a node which will be the scene graph of component's Node. */
+		export class _RendererInSG extends _SGComponent {	
+	}		
+		/** The base rendering component which will attach a leaf node to the cocos2d scene graph. */
+		export class _RendererUnderSG extends _SGComponent {	
+	}		
+		/** !#en The RichText Component.
+		!#zh 富文本组件 */
+		export class RichText extends Component {		
+		/** !#en Content string of RichText.
+		!#zh 富文本显示的文本内容。 */
+		string : string;		
+		/** !#en Horizontal Alignment of each line in RichText.
+		!#zh 文本内容的水平对齐方式。 */
+		horizontalAlign : RichText.HorizontalAlign;		
+		/** !#en Font size of RichText.
+		!#zh 富文本字体大小。 */
+		fontSize : number;		
+		/** !#en The maximize width of the RichText
+		!#zh 富文本的最大宽度 */
+		maxWidth : number;		
+		/** !#en Line Height of RichText.
+		!#zh 富文本行高。 */
+		lineHeight : number;		
+		/** !#en The image atlas for the img tag. For each src value in the img tag, there should be a valid spriteFrame in the image atlas.
+		!#zh 对于 img 标签里面的 src 属性名称，都需要在 imageAtlas 里面找到一个有效的 spriteFrame，否则 img tag 会判定为无效。 */
+		imageAtlas : cc.SpriteAtlas;	
+	}		
+		/** The base class for all rendering component in scene graph.
+		
+		You should override:
+		- _createSgNode
+		- _initSgNode */
+		export class _SGComponent extends Component {	
+	}		
+		/** !#en
+		The Scrollbar control allows the user to scroll an image or other view that is too large to see completely
+		!#zh 滚动条组件 */
+		export class Scrollbar extends Component {		
+		/** !#en The "handle" part of the scrollbar.
+		!#zh 作为当前滚动区域位置显示的滑块 Sprite。 */
+		handle : cc.Sprite;		
+		/** !#en The direction of scrollbar.
+		!#zh ScrollBar 的滚动方向。 */
+		direction : Scrollbar.Direction;		
+		/** !#en Whehter enable auto hide or not.
+		!#zh 是否在没有滚动动作时自动隐藏 ScrollBar。 */
+		enableAutoHide : boolean;		
+		/** !#en
+		The time to hide scrollbar when scroll finished.
+		Note: This value is only useful when enableAutoHide is true.
+		!#zh
+		没有滚动动作后经过多久会自动隐藏。
+		注意：只要当 “enableAutoHide” 为 true 时，才有效。 */
+		autoHideTime : number;	
+	}		
+		/** !#en
+		Layout container for a view hierarchy that can be scrolled by the user,
+		allowing it to be larger than the physical display.
+		
+		!#zh
+		滚动视图组件 */
+		export class ScrollView extends Component {		
+		/** !#en This is a reference to the UI element to be scrolled.
+		!#zh 可滚动展示内容的节点。 */
+		content : Node;		
+		/** !#en Enable horizontal scroll.
+		!#zh 是否开启水平滚动。 */
+		horizontal : boolean;		
+		/** !#en Enable vertical scroll.
+		!#zh 是否开启垂直滚动。 */
+		vertical : boolean;		
+		/** !#en When inertia is set, the content will continue to move when touch ended.
+		!#zh 是否开启滚动惯性。 */
+		inertia : boolean;		
+		/** !#en
+		It determines how quickly the content stop moving. A value of 1 will stop the movement immediately.
+		A value of 0 will never stop the movement until it reaches to the boundary of scrollview.
+		!#zh
+		开启惯性后，在用户停止触摸后滚动多快停止，0表示永不停止，1表示立刻停止。 */
+		brake : number;		
+		/** !#en When elastic is set, the content will be bounce back when move out of boundary.
+		!#zh 是否允许滚动内容超过边界，并在停止触摸后回弹。 */
+		elastic : boolean;		
+		/** !#en The elapse time of bouncing back. A value of 0 will bounce back immediately.
+		!#zh 回弹持续的时间，0 表示将立即反弹。 */
+		bounceDuration : number;		
+		/** !#en The horizontal scrollbar reference.
+		!#zh 水平滚动的 ScrollBar。 */
+		horizontalScrollBar : Scrollbar;		
+		/** !#en The vertical scrollbar reference.
+		!#zh 垂直滚动的 ScrollBar。 */
+		verticalScrollBar : Scrollbar;		
+		/** !#en Scrollview events callback
+		!#zh 滚动视图的事件回调函数 */
+		scrollEvents : Component.EventHandler[];		
+		/** !#en If cancelInnerEvents is set to true, the scroll behavior will cancel touch events on inner content nodes
+		It's set to true by default.
+		!#zh 如果这个属性被设置为 true，那么滚动行为会取消子节点上注册的触摸事件，默认被设置为 true。
+		注意，子节点上的 touchstart 事件仍然会触发，触点移动距离非常短的情况下 touchmove 和 touchend 也不会受影响。 */
+		cancelInnerEvents : boolean;		
+		/** !#en Scroll the content to the bottom boundary of ScrollView.
+		!#zh 视图内容将在规定时间内滚动到视图底部。
+		@param timeInSecond Scroll time in second, if you don't pass timeInSecond,
+		the content will jump to the bottom boundary immediately.
+		@param attenuated Whether the scroll acceleration attenuated, default is true.
+		
+		@example 
+		```js
+		// Scroll to the bottom of the view.
+		scrollView.scrollToBottom(0.1);
+		``` 
+		*/
+		scrollToBottom(timeInSecond? : number, attenuated? : boolean) : void;		
+		/** !#en Scroll the content to the top boundary of ScrollView.
+		!#zh 视图内容将在规定时间内滚动到视图顶部。
+		@param timeInSecond Scroll time in second, if you don't pass timeInSecond,
+		the content will jump to the top boundary immediately.
+		@param attenuated Whether the scroll acceleration attenuated, default is true.
+		
+		@example 
+		```js
+		// Scroll to the top of the view.
+		scrollView.scrollToTop(0.1);
+		``` 
+		*/
+		scrollToTop(timeInSecond? : number, attenuated? : boolean) : void;		
+		/** !#en Scroll the content to the left boundary of ScrollView.
+		!#zh 视图内容将在规定时间内滚动到视图左边。
+		@param timeInSecond Scroll time in second, if you don't pass timeInSecond,
+		the content will jump to the left boundary immediately.
+		@param attenuated Whether the scroll acceleration attenuated, default is true.
+		
+		@example 
+		```js
+		// Scroll to the left of the view.
+		scrollView.scrollToLeft(0.1);
+		``` 
+		*/
+		scrollToLeft(timeInSecond? : number, attenuated? : boolean) : void;		
+		/** !#en Scroll the content to the right boundary of ScrollView.
+		!#zh 视图内容将在规定时间内滚动到视图右边。
+		@param timeInSecond Scroll time in second, if you don't pass timeInSecond,
+		the content will jump to the right boundary immediately.
+		@param attenuated Whether the scroll acceleration attenuated, default is true.
+		
+		@example 
+		```js
+		// Scroll to the right of the view.
+		scrollView.scrollToRight(0.1);
+		``` 
+		*/
+		scrollToRight(timeInSecond? : number, attenuated? : boolean) : void;		
+		/** !#en Scroll the content to the top left boundary of ScrollView.
+		!#zh 视图内容将在规定时间内滚动到视图左上角。
+		@param timeInSecond Scroll time in second, if you don't pass timeInSecond,
+		the content will jump to the top left boundary immediately.
+		@param attenuated Whether the scroll acceleration attenuated, default is true.
+		
+		@example 
+		```js
+		// Scroll to the upper left corner of the view.
+		scrollView.scrollToTopLeft(0.1);
+		``` 
+		*/
+		scrollToTopLeft(timeInSecond? : number, attenuated? : boolean) : void;		
+		/** !#en Scroll the content to the top right boundary of ScrollView.
+		!#zh 视图内容将在规定时间内滚动到视图右上角。
+		@param timeInSecond Scroll time in second, if you don't pass timeInSecond,
+		the content will jump to the top right boundary immediately.
+		@param attenuated Whether the scroll acceleration attenuated, default is true.
+		
+		@example 
+		```js
+		// Scroll to the top right corner of the view.
+		scrollView.scrollToTopRight(0.1);
+		``` 
+		*/
+		scrollToTopRight(timeInSecond? : number, attenuated? : boolean) : void;		
+		/** !#en Scroll the content to the bottom left boundary of ScrollView.
+		!#zh 视图内容将在规定时间内滚动到视图左下角。
+		@param timeInSecond Scroll time in second, if you don't pass timeInSecond,
+		the content will jump to the bottom left boundary immediately.
+		@param attenuated Whether the scroll acceleration attenuated, default is true.
+		
+		@example 
+		```js
+		// Scroll to the lower left corner of the view.
+		scrollView.scrollToBottomLeft(0.1);
+		``` 
+		*/
+		scrollToBottomLeft(timeInSecond? : number, attenuated? : boolean) : void;		
+		/** !#en Scroll the content to the bottom right boundary of ScrollView.
+		!#zh 视图内容将在规定时间内滚动到视图右下角。
+		@param timeInSecond Scroll time in second, if you don't pass timeInSecond,
+		the content will jump to the bottom right boundary immediately.
+		@param attenuated Whether the scroll acceleration attenuated, default is true.
+		
+		@example 
+		```js
+		// Scroll to the lower right corner of the view.
+		scrollView.scrollToBottomRight(0.1);
+		``` 
+		*/
+		scrollToBottomRight(timeInSecond? : number, attenuated? : boolean) : void;		
+		/** !#en Scroll with an offset related to the ScrollView's top left origin, if timeInSecond is omitted, then it will jump to the
+		      specific offset immediately.
+		!#zh 视图内容在规定时间内将滚动到 ScrollView 相对左上角原点的偏移位置, 如果 timeInSecond参数不传，则立即滚动到指定偏移位置。
+		@param offset A Vec2, the value of which each axis between 0 and maxScrollOffset
+		@param timeInSecond Scroll time in second, if you don't pass timeInSecond,
+		the content will jump to the specific offset of ScrollView immediately.
+		@param attenuated Whether the scroll acceleration attenuated, default is true.
+		
+		@example 
+		```js
+		// Scroll to middle position in 0.1 second in x-axis
+		var maxScrollOffset = this.getMaxScrollOffset();
+		scrollView.scrollToOffset(cc.p(maxScrollOffset.x / 2, 0), 0.1);
+		``` 
+		*/
+		scrollToOffset(offset : Vec2, timeInSecond? : number, attenuated? : boolean) : void;		
+		/** !#en  Get the positive offset value corresponds to the content's top left boundary.
+		!#zh  获取滚动视图相对于左上角原点的当前滚动偏移 
+		*/
+		getScrollOffset() : Vec2;		
+		/** !#en Get the maximize available  scroll offset
+		!#zh 获取滚动视图最大可以滚动的偏移量 
+		*/
+		getMaxScrollOffset() : Vec2;		
+		/** !#en Scroll the content to the horizontal percent position of ScrollView.
+		!#zh 视图内容在规定时间内将滚动到 ScrollView 水平方向的百分比位置上。
+		@param percent A value between 0 and 1.
+		@param timeInSecond Scroll time in second, if you don't pass timeInSecond,
+		the content will jump to the horizontal percent position of ScrollView immediately.
+		@param attenuated Whether the scroll acceleration attenuated, default is true.
+		
+		@example 
+		```js
+		// Scroll to middle position.
+		scrollView.scrollToBottomRight(0.5, 0.1);
+		``` 
+		*/
+		scrollToPercentHorizontal(percent : number, timeInSecond? : number, attenuated? : boolean) : void;		
+		/** !#en Scroll the content to the percent position of ScrollView in any direction.
+		!#zh 视图内容在规定时间内进行垂直方向和水平方向的滚动，并且滚动到指定百分比位置上。
+		@param anchor A point which will be clamp between cc.p(0,0) and cc.p(1,1).
+		@param timeInSecond Scroll time in second, if you don't pass timeInSecond,
+		the content will jump to the percent position of ScrollView immediately.
+		@param attenuated Whether the scroll acceleration attenuated, default is true.
+		
+		@example 
+		```js
+		// Vertical scroll to the bottom of the view.
+		scrollView.scrollTo(cc.p(0, 1), 0.1);
+		
+		// Horizontal scroll to view right.
+		scrollView.scrollTo(cc.p(1, 0), 0.1);
+		``` 
+		*/
+		scrollTo(anchor : Vec2, timeInSecond? : number, attenuated? : boolean) : void;		
+		/** !#en Scroll the content to the vertical percent position of ScrollView.
+		!#zh 视图内容在规定时间内滚动到 ScrollView 垂直方向的百分比位置上。
+		@param percent A value between 0 and 1.
+		@param timeInSecond Scroll time in second, if you don't pass timeInSecond,
+		the content will jump to the vertical percent position of ScrollView immediately.
+		@param attenuated Whether the scroll acceleration attenuated, default is true.
+		// Scroll to middle position.
+		scrollView.scrollToPercentVertical(0.5, 0.1); 
+		*/
+		scrollToPercentVertical(percent : number, timeInSecond? : number, attenuated? : boolean) : void;		
+		/** !#en  Stop auto scroll immediately
+		!#zh  停止自动滚动, 调用此 API 可以让 Scrollview 立即停止滚动 
+		*/
+		stopAutoScroll() : void;		
+		/** !#en Modify the content position.
+		!#zh 设置当前视图内容的坐标点。
+		@param position The position in content's parent space. 
+		*/
+		setContentPosition(position : Vec2) : void;		
+		/** !#en Query the content's position in its parent space.
+		!#zh 获取当前视图内容的坐标点。 
+		*/
+		getContentPosition() : Position;	
+	}		
+		/** !#en The Slider Control
+		!#zh 滑动器组件 */
+		export class Slider extends Component {		
+		/** !#en The "handle" part of the slider
+		!#zh 滑动器滑块按钮部件 */
+		handle : cc.Button;		
+		/** !#en The slider direction
+		!#zh 滑动器方向 */
+		direction : Slider.Direction;		
+		/** !#en The current progress of the slider. The valid value is between 0-1
+		!#zh 当前进度值，该数值的区间是 0-1 之间 */
+		progress : number;		
+		/** !#en The slider events callback
+		!#zh 滑动器组件事件回调函数 */
+		slideEvents : Component.EventHandler[];	
+	}		
+		/** !#en Renders a sprite in the scene.
+		!#zh 该组件用于在场景中渲染精灵。 */
+		export class Sprite extends _RendererUnderSG {		
+		/** !#en The sprite frame of the sprite.
+		!#zh 精灵的精灵帧 */
+		spriteFrame : SpriteFrame;		
+		/** !#en The sprite render type.
+		!#zh 精灵渲染类型 */
+		type : Sprite.SpriteType;		
+		/** !#en
+		The fill type, This will only have any effect if the "type" is set to “cc.Sprite.Type.FILLED”.
+		!#zh
+		精灵填充类型，仅渲染类型设置为 cc.Sprite.SpriteType.FILLED 时有效。 */
+		fillType : Sprite.FillType;		
+		/** !#en
+		The fill Center, This will only have any effect if the "type" is set to “cc.Sprite.Type.FILLED”.
+		!#zh
+		填充中心点，仅渲染类型设置为 cc.Sprite.SpriteType.FILLED 时有效。 */
+		fillCenter : Vec2;		
+		/** !#en
+		The fill Start, This will only have any effect if the "type" is set to “cc.Sprite.Type.FILLED”.
+		!#zh
+		填充起始点，仅渲染类型设置为 cc.Sprite.SpriteType.FILLED 时有效。 */
+		fillStart : number;		
+		/** !#en
+		The fill Range, This will only have any effect if the "type" is set to “cc.Sprite.Type.FILLED”.
+		!#zh
+		填充范围，仅渲染类型设置为 cc.Sprite.SpriteType.FILLED 时有效。 */
+		fillRange : number;		
+		/** !#en specify the frame is trimmed or not.
+		!#zh 是否使用裁剪模式 */
+		trim : boolean;		
+		/** !#en specify the source Blend Factor.
+		!#zh 指定原图的混合模式 */
+		srcBlendFactor : BlendFactor;		
+		/** !#en specify the destination Blend Factor.
+		!#zh 指定目标的混合模式 */
+		dstBlendFactor : BlendFactor;		
+		/** !#en specify the size tracing mode.
+		!#zh 精灵尺寸调整模式 */
+		sizeMode : Sprite.SizeMode;		
+		/** !#en Change the left sprite's cap inset.
+		!#zh 设置精灵左边框-用于九宫格。
+		@param insetLeft The values to use for the cap inset.
+		
+		@example 
+		```js
+		sprite.setInsetLeft(5);
+		``` 
+		*/
+		setInsetLeft(insetLeft : number) : void;		
+		/** !#en Query the left sprite's cap inset.
+		!#zh 获取精灵左边框
+		
+		@example 
+		```js
+		var insetLeft = sprite.getInsetLeft();
+		cc.log("Inset Left:" + insetLeft);
+		``` 
+		*/
+		getInsetLeft() : number;		
+		/** !#en Change the top sprite's cap inset.
+		!#zh 设置精灵上边框-用于九宫格。
+		@param insetTop The values to use for the cap inset.
+		
+		@example 
+		```js
+		sprite.setInsetTop(5);
+		``` 
+		*/
+		setInsetTop(insetTop : number) : void;		
+		/** !#en Query the top sprite's cap inset.
+		!#zh 获取精灵上边框。
+		
+		@example 
+		```js
+		var insetTop = sprite.getInsetTop();
+		cc.log("Inset Top:" + insetTop);
+		``` 
+		*/
+		getInsetTop() : number;		
+		/** !#en Change the right sprite's cap inset.
+		!#zh 设置精灵右边框-用于九宫格。
+		@param insetRight The values to use for the cap inset.
+		
+		@example 
+		```js
+		sprite.setInsetRight(5);
+		``` 
+		*/
+		setInsetRight(insetRight : number) : void;		
+		/** !#en Query the right sprite's cap inset.
+		!#zh 获取精灵右边框。
+		
+		@example 
+		```js
+		var insetRight = sprite.getInsetRight();
+		cc.log("Inset Right:" + insetRight);
+		``` 
+		*/
+		getInsetRight() : number;		
+		/** !#en Change the bottom sprite's cap inset.
+		!#zh 设置精灵下边框-用于九宫格。
+		@param bottomInset The values to use for the cap inset.
+		
+		@example 
+		```js
+		sprite.setInsetBottom(5);
+		``` 
+		*/
+		setInsetBottom(bottomInset : number) : void;		
+		/** !#en Query the bottom sprite's cap inset.
+		!#zh 获取精灵下边框。
+		
+		@example 
+		```js
+		var insetBottom = sprite.getInsetBottom();
+		cc.log("Inset Bottom:" + insetBottom);
+		``` 
+		*/
+		getInsetBottom() : number;	
+	}		
+		/** !#en A distortion used to change the rendering of simple sprite.If will take effect after sprite component is added.
+		!#zh 扭曲效果组件,用于改变SIMPLE类型sprite的渲染,只有当sprite组件已经添加后,才能起作用. */
+		export class SpriteDistortion extends Component {		
+		/** !#en Change the UV offset for distortion rendering.
+		!#zh 在渲染时改变UV的整体偏移. */
+		offset : Vec2;		
+		/** !#en Change the UV scale for distortion rendering.
+		!#zh 在渲染时改变UV的寻址系数 */
+		tiling : Vec2;	
+	}		
+		/** !#en The toggle component is a CheckBox, when it used together with a ToggleGroup, it
+		could be treated as a RadioButton.
+		!#zh Toggle 是一个 CheckBox，当它和 ToggleGroup 一起使用的时候，可以变成 RadioButton。 */
+		export class Toggle extends Button {		
+		/** !#en When this value is true, the check mark component will be enabled, otherwise
+		the check mark component will be disabled.
+		!#zh 如果这个设置为 true，则 check mark 组件会处于 enabled 状态，否则处于 disabled 状态。 */
+		isChecked : boolean;		
+		/** !#en The toggle group which the toggle belongs to, when it is null, the toggle is a CheckBox.
+		Otherwise, the toggle is a RadioButton.
+		!#zh Toggle 所属的 ToggleGroup，这个属性是可选的。如果这个属性为 null，则 Toggle 是一个 CheckBox，
+		否则，Toggle 是一个 RadioButton。 */
+		toggleGroup : cc.ToggleGroup;		
+		/** !#en The image used for the checkmark.
+		!#zh Toggle 处于选中状态时显示的图片 */
+		checkMark : cc.Sprite;		
+		/** !#en If Toggle is clicked, it will trigger event's handler
+		!#zh Toggle 按钮的点击事件列表。 */
+		checkEvents : Component.EventHandler[];		
+		/** !#en Make the toggle button checked.
+		!#zh 使 toggle 按钮处于选中状态 
+		*/
+		check() : void;		
+		/** !#en Make the toggle button unchecked.
+		!#zh 使 toggle 按钮处于未选中状态 
+		*/
+		uncheck() : void;	
+	}		
+		/** !#en ToggleGroup is not a visiable UI component but a way to modify the behavior of a set of Toggles.
+		Toggles that belong to the same group could only have one of them to be switched on at a time.
+		!#zh ToggleGroup 不是一个可见的 UI 组件，它可以用来修改一组 Toggle  组件的行为。当一组 Toggle 属于同一个 ToggleGroup 的时候，
+		任何时候只能有一个 Toggle 处于选中状态。 */
+		export class ToggleGroup extends Component {		
+		/** !#en If this setting is true, a toggle could be switched off and on when pressed.
+		If it is false, it will make sure there is always only one toggle could be switched on
+		and the already switched on toggle can't be switched off.
+		!#zh 如果这个设置为 true， 那么 toggle 按钮在被点击的时候可以反复地被选中和未选中。 */
+		allowSwitchOff : boolean;	
+	}		
+		/** !#en cc.VideoPlayer is a component for playing videos, you can use it for showing videos in your game.
+		!#zh Video 组件，用于在游戏中播放视频 */
+		export class VideoPlayer extends _RendererUnderSG {		
+		/** !#en The resource type of videoplayer, REMOTE for remote url and LOCAL for local file path.
+		!#zh 视频来源：REMOTE 表示远程视频 URL，LOCAL 表示本地视频地址。 */
+		resourceType : VideoPlayer.ResourceType;		
+		/** !#en The remote URL of video.
+		!#zh 远程视频的 URL */
+		remoteURL : string;		
+		/** !#en The local video full path.
+		!#zh 本地视频的 URL */
+		clip : string;		
+		/** !#en The current playback time of the now playing item in seconds, you could also change the start playback time.
+		!#zh 指定视频从什么时间点开始播放，单位是秒，也可以用来获取当前视频播放的时间进度。 */
+		currentTime : number;		
+		/** !#en Whether keep the aspect ration of the original video.
+		!#zh 是否保持视频原来的宽高比 */
+		keepAspectRatio : boolean;		
+		/** !#en Whether play video in fullscreen mode.
+		!#zh 是否全屏播放视频 */
+		isFullscreen : boolean;		
+		/** !#en the video player's callback, it will be triggered when certain event occurs, like: playing, paused, stopped and completed.
+		!#zh 视频播放回调函数，该回调函数会在特定情况被触发，比如播放中，暂时，停止和完成播放。 */
+		videoPlayerEvent : cc.Component.EventHandler[];		
+		/** !#en If a video is paused, call this method could resume playing. If a video is stopped, call this method to play from scratch.
+		!#zh 如果视频被暂停播放了，调用这个接口可以继续播放。如果视频被停止播放了，调用这个接口可以从头开始播放。 
+		*/
+		play() : void;		
+		/** !#en If a video is paused, call this method to resume playing.
+		!#zh 如果一个视频播放被暂停播放了，调用这个接口可以继续播放。 
+		*/
+		resume() : void;		
+		/** !#en If a video is playing, call this method to pause playing.
+		!#zh 如果一个视频正在播放，调用这个接口可以暂停播放。 
+		*/
+		pause() : void;		
+		/** !#en If a video is playing, call this method to stop playing immediately.
+		!#zh 如果一个视频正在播放，调用这个接口可以立马停止播放。 
+		*/
+		stop() : void;	
+	}		
+		/** !#en cc.WebView is a component for display web pages in the game
+		!#zh WebView 组件，用于在游戏中显示网页 */
+		export class WebView extends _RendererUnderSG {		
+		/** !#en A given URL to be loaded by the WebView, it should have a http or https prefix.
+		!#zh 指定 WebView 加载的网址，它应该是一个 http 或者 https 开头的字符串 */
+		url : string;		
+		/** !#en The webview's event callback , it will be triggered when certain webview event occurs.
+		!#zh WebView 的回调事件，当网页加载过程中，加载完成后或者加载出错时都会回调此函数 */
+		webviewLoadedEvents : cc.Component.EventHandler[];	
+	}		
+		/** !#en
+		Stores and manipulate the anchoring based on its parent.
+		Widget are used for GUI but can also be used for other things.
+		Widget will adjust current node's position and size automatically, but the results after adjustment can not be obtained until the next frame.
+		!#zh
+		Widget 组件，用于设置和适配其相对于父节点的边距，Widget 通常被用于 UI 界面，也可以用于其他地方。
+		Widget 会自动调整当前节点的坐标和宽高，不过目前调整后的结果要到下一帧才能在脚本里获取到。 */
+		export class Widget extends Component {		
+		/** !#en Whether to align the top.
+		!#zh 是否对齐上边。 */
+		isAlignTop : boolean;		
+		/** !#en
+		Vertically aligns the midpoint, This will open the other vertical alignment options cancel.
+		!#zh
+		是否垂直方向对齐中点，开启此项会将垂直方向其他对齐选项取消。 */
+		isAlignVerticalCenter : boolean;		
+		/** !#en Whether to align the bottom.
+		!#zh 是否对齐下边。 */
+		isAlignBottom : boolean;		
+		/** !#en Whether to align the left.
+		!#zh 是否对齐左边 */
+		isAlignLeft : boolean;		
+		/** !#en
+		Horizontal aligns the midpoint. This will open the other horizontal alignment options canceled.
+		!#zh
+		是否水平方向对齐中点，开启此选项会将水平方向其他对齐选项取消。 */
+		isAlignHorizontalCenter : boolean;		
+		/** !#en Whether to align the right.
+		!#zh 是否对齐右边。 */
+		isAlignRight : boolean;		
+		/** !#en
+		Whether the stretched horizontally, when enable the left and right alignment will be stretched horizontally,
+		the width setting is invalid (read only).
+		!#zh
+		当前是否水平拉伸。当同时启用左右对齐时，节点将会被水平拉伸，此时节点的宽度只读。 */
+		isStretchWidth : boolean;		
+		/** !#en
+		Whether the stretched vertically, when enable the left and right alignment will be stretched vertically,
+		then height setting is invalid (read only)
+		!#zh
+		当前是否垂直拉伸。当同时启用上下对齐时，节点将会被垂直拉伸，此时节点的高度只读。 */
+		isStretchHeight : boolean;		
+		/** !#en
+		The margins between the top of this node and the top of parent node,
+		the value can be negative, Only available in 'isAlignTop' open.
+		!#zh
+		本节点顶边和父节点顶边的距离，可填写负值，只有在 isAlignTop 开启时才有作用。 */
+		top : number;		
+		/** !#en
+		The margins between the bottom of this node and the bottom of parent node,
+		the value can be negative, Only available in 'isAlignBottom' open.
+		!#zh
+		本节点底边和父节点底边的距离，可填写负值，只有在 isAlignBottom 开启时才有作用。 */
+		bottom : number;		
+		/** !#en
+		The margins between the left of this node and the left of parent node,
+		the value can be negative, Only available in 'isAlignLeft' open.
+		!#zh
+		本节点左边和父节点左边的距离，可填写负值，只有在 isAlignLeft 开启时才有作用。 */
+		left : number;		
+		/** !#en
+		The margins between the right of this node and the right of parent node,
+		the value can be negative, Only available in 'isAlignRight' open.
+		!#zh
+		本节点右边和父节点右边的距离，可填写负值，只有在 isAlignRight 开启时才有作用。 */
+		right : number;		
+		/** !#en
+		Horizontal aligns the midpoint offset value,
+		the value can be negative, Only available in 'isAlignHorizontalCenter' open.
+		!#zh 水平居中的偏移值，可填写负值，只有在 isAlignHorizontalCenter 开启时才有作用。 */
+		horizontalCenter : number;		
+		/** !#en
+		Vertical aligns the midpoint offset value,
+		the value can be negative, Only available in 'isAlignVerticalCenter' open.
+		!#zh 垂直居中的偏移值，可填写负值，只有在 isAlignVerticalCenter 开启时才有作用。 */
+		verticalCenter : number;		
+		/** !#en If true, horizontalCenter is pixel margin, otherwise is percentage (0 - 1) margin.
+		!#zh 如果为 true，"horizontalCenter" 将会以像素作为偏移值，反之为百分比（0 到 1）。 */
+		isAbsoluteHorizontalCenter : boolean;		
+		/** !#en If true, verticalCenter is pixel margin, otherwise is percentage (0 - 1) margin.
+		!#zh 如果为 true，"verticalCenter" 将会以像素作为偏移值，反之为百分比（0 到 1）。 */
+		isAbsoluteVerticalCenter : boolean;		
+		/** !#en
+		If true, top is pixel margin, otherwise is percentage (0 - 1) margin relative to the parent's height.
+		!#zh
+		如果为 true，"top" 将会以像素作为边距，否则将会以相对父物体高度的百分比（0 到 1）作为边距。 */
+		isAbsoluteTop : boolean;		
+		/** !#en
+		If true, bottom is pixel margin, otherwise is percentage (0 - 1) margin relative to the parent's height.
+		!#zh
+		如果为 true，"bottom" 将会以像素作为边距，否则将会以相对父物体高度的百分比（0 到 1）作为边距。 */
+		isAbsoluteBottom : boolean;		
+		/** !#en
+		If true, left is pixel margin, otherwise is percentage (0 - 1) margin relative to the parent's width.
+		!#zh
+		如果为 true，"left" 将会以像素作为边距，否则将会以相对父物体宽度的百分比（0 到 1）作为边距。 */
+		isAbsoluteLeft : boolean;		
+		/** !#en
+		If true, right is pixel margin, otherwise is percentage (0 - 1) margin relative to the parent's width.
+		!#zh
+		如果为 true，"right" 将会以像素作为边距，否则将会以相对父物体宽度的百分比（0 到 1）作为边距。 */
+		isAbsoluteRight : boolean;		
+		/** !#en TODO
+		!#zh
+		开启后仅会在 onEnable 的当帧结束时对齐一次，然后立刻禁用当前组件。
+		这样便于脚本或动画继续控制当前节点。
+		注意：onEnable 时所在的那一帧仍然会进行对齐。 */
+		isAlignOnce : boolean;	
 	}		
 		/** A base node for CCNode and CCEScene, it will:
 		- provide the same api with origin cocos2d rendering node (SGNode)
@@ -8188,8 +8512,8 @@ declare module cc {
 		/** !#en Opacity of node, default value is 255.
 		!#zh 节点透明度，默认值为 255。 */
 		opacity : number;		
-		/** !#en Indicate whether node's opacity value affect its child nodes, default value is false.
-		!#zh 节点的不透明度值是否影响其子节点，默认值为 false。 */
+		/** !#en Indicate whether node's opacity value affect its child nodes, default value is true.
+		!#zh 节点的不透明度值是否影响其子节点，默认值为 true。 */
 		cascadeOpacity : boolean;		
 		/** !#en Color of node, default value is white: (255, 255, 255).
 		!#zh 节点颜色。默认为白色，数值为：（255，255，255）。 */
@@ -9879,7 +10203,7 @@ declare module cc {
 		ZERO : Vec2;		
 		/** !#en return a Vec2 object with x = 0 and y = 1.
 		!#zh 返回 x = 0 和 y = 1 的 Vec2 对象。 */
-		up : Vec2;		
+		UP : Vec2;		
 		/** !#en return a Vec2 object with x = 1 and y = 0.
 		!#zh 返回 x = 1 和 y = 0 的 Vec2 对象。 */
 		RIGHT : Vec2;	
@@ -9963,6 +10287,359 @@ declare module cc {
 	}	
 	
 	/****************************************************
+	* Event
+	*****************************************************/
+	
+	export module Event {			
+			/** !#en The Custom event
+			!#zh 自定义事件 */
+			export class EventCustom extends Event {			
+			constructor();			
+			/** 
+			@param type The name of the event (case-sensitive), e.g. "click", "fire", or "submit"
+			@param bubbles A boolean indicating whether the event bubbles up through the tree or not 
+			*/
+			EventCustom(type : string, bubbles : boolean) : EventCustom;			
+			/** !#en A reference to the detailed data of the event
+			!#zh 事件的详细数据 */
+			detail : any;			
+			/** !#en Sets user data
+			!#zh 设置用户数据 
+			*/
+			setUserData(data : any) : void;			
+			/** !#en Gets user data
+			!#zh 获取用户数据 
+			*/
+			getUserData() : any;			
+			/** !#en Gets event name
+			!#zh 获取事件名称 
+			*/
+			getEventName() : string;		
+		}	
+	}	
+	
+	/****************************************************
+	* Graphics
+	*****************************************************/
+	
+	export module Graphics {		
+		/** !#en Enum for LineCap.
+		!#zh 线段末端属性 */
+		export enum LineCap {			
+			BUTT = 0,
+			ROUND = 0,
+			SQUARE = 0,		
+		}	
+	}	
+	
+	/****************************************************
+	* Graphics
+	*****************************************************/
+	
+	export module Graphics {		
+		/** !#en Enum for LineJoin.
+		!#zh 线段拐角属性 */
+		export enum LineJoin {			
+			BEVEL = 0,
+			ROUND = 0,
+			MITER = 0,		
+		}	
+	}	
+	
+	/****************************************************
+	* Pipeline
+	*****************************************************/
+	
+	export module Pipeline {			
+			/** The downloader pipe, it can download several types of files:
+			1. Text
+			2. Image
+			3. Script
+			4. Audio
+			All unknown type will be downloaded as plain text.
+			You can pass custom supported types in the constructor. */
+			export class Downloader {			
+			/** Constructor of Downloader, you can pass custom supported types.
+			@param extMap Custom supported types with corresponded handler
+			
+			@example 
+			```js
+			var downloader = new Downloader({
+			     // This will match all url with `.scene` extension or all url with `scene` type
+			     'scene' : function (url, callback) {}
+			 });
+			``` 
+			*/
+			Downloader(extMap : any) : void;			
+			/** Add custom supported types handler or modify existing type handler.
+			@param extMap Custom supported types with corresponded handler 
+			*/
+			addHandlers(extMap : any) : void;		
+		}	
+	}	
+	
+	/****************************************************
+	* Pipeline
+	*****************************************************/
+	
+	export module Pipeline {			
+			/** The loader pipe, it can load several types of files:
+			1. Images
+			2. JSON
+			3. Plist
+			4. Audio
+			5. Font
+			6. Cocos Creator scene
+			It will not interfere with items of unknown type.
+			You can pass custom supported types in the constructor. */
+			export class Loader {			
+			/** Constructor of Loader, you can pass custom supported types.
+			@param extMap Custom supported types with corresponded handler
+			
+			@example 
+			```js
+			var loader = new Loader({
+			     // This will match all url with `.scene` extension or all url with `scene` type
+			     'scene' : function (url, callback) {}
+			 });
+			``` 
+			*/
+			Loader(extMap : any) : void;			
+			/** Add custom supported types handler or modify existing type handler.
+			@param extMap Custom supported types with corresponded handler 
+			*/
+			addHandlers(extMap : any) : void;		
+		}	
+	}	
+	
+	/****************************************************
+	* LoadingItems
+	*****************************************************/
+	
+	export module LoadingItems {		
+		/** !#en The item states of the LoadingItems, its value could be LoadingItems.ItemState.WORKING | LoadingItems.ItemState.COMPLETET | LoadingItems.ItemState.ERROR
+		!#zh LoadingItems 队列中的加载项状态，状态的值可能是 LoadingItems.ItemState.WORKING | LoadingItems.ItemState.COMPLETET | LoadingItems.ItemState.ERROR */
+		export enum ItemState {			
+			create = 0,
+			getQueue = 0,
+			itemComplete = 0,
+			append = 0,
+			allComplete = 0,
+			isCompleted = 0,
+			isItemCompleted = 0,
+			exists = 0,
+			getContent = 0,
+			getError = 0,
+			addListener = 0,
+			hasListener = 0,
+			remove = 0,
+			removeAllListeners = 0,
+			itemComplete = 0,
+			destroy = 0,		
+		}	
+	}	
+	
+	/****************************************************
+	* Event
+	*****************************************************/
+	
+	export module Event {			
+			/** !#en The mouse event
+			!#zh 鼠标事件类型 */
+			export class EventMouse extends Event {			
+			/** 
+			@param eventType The mouse event type, UP, DOWN, MOVE, CANCELED
+			@param bubbles A boolean indicating whether the event bubbles up through the tree or not 
+			*/
+			constructor(eventType : number, bubbles? : boolean);			
+			/** !#en Sets scroll data.
+			!#zh 设置鼠标的滚动数据。 
+			*/
+			setScrollData(scrollX : number, scrollY : number) : void;			
+			/** !#en Returns the x axis scroll value.
+			!#zh 获取鼠标滚动的X轴距离，只有滚动时才有效。 
+			*/
+			getScrollX() : number;			
+			/** !#en Returns the y axis scroll value.
+			!#zh 获取滚轮滚动的 Y 轴距离，只有滚动时才有效。 
+			*/
+			getScrollY() : number;			
+			/** !#en Sets cursor location.
+			!#zh 设置当前鼠标位置。 
+			*/
+			setLocation(x : number, y : number) : void;			
+			/** !#en Returns cursor location.
+			!#zh 获取鼠标位置对象，对象包含 x 和 y 属性。 
+			*/
+			getLocation() : Vec2;			
+			/** !#en Returns the current cursor location in screen coordinates.
+			!#zh 获取当前事件在游戏窗口内的坐标位置对象，对象包含 x 和 y 属性。 
+			*/
+			getLocationInView() : Vec2;			
+			/** !#en Returns the previous touch location.
+			!#zh 获取鼠标点击在上一次事件时的位置对象，对象包含 x 和 y 属性。 
+			*/
+			getPreviousLocation() : Vec2;			
+			/** !#en Returns the delta distance from the previous location to current location.
+			!#zh 获取鼠标距离上一次事件移动的距离对象，对象包含 x 和 y 属性。 
+			*/
+			getDelta() : Vec2;			
+			/** !#en Returns the X axis delta distance from the previous location to current location.
+			!#zh 获取鼠标距离上一次事件移动的 X 轴距离。 
+			*/
+			getDeltaX() : number;			
+			/** !#en Returns the Y axis delta distance from the previous location to current location.
+			!#zh 获取鼠标距离上一次事件移动的 Y 轴距离。 
+			*/
+			getDeltaY() : number;			
+			/** !#en Sets mouse button.
+			!#zh 设置鼠标按键。 
+			*/
+			setButton(button : number) : void;			
+			/** !#en Returns mouse button.
+			!#zh 获取鼠标按键。 
+			*/
+			getButton() : number;			
+			/** !#en Returns location X axis data.
+			!#zh 获取鼠标当前位置 X 轴。 
+			*/
+			getLocationX() : number;			
+			/** !#en Returns location Y axis data.
+			!#zh 获取鼠标当前位置 Y 轴。 
+			*/
+			getLocationY() : number;		
+		}	
+	}	
+	
+	/****************************************************
+	* Event
+	*****************************************************/
+	
+	export module Event {			
+			/** !#en The touch event
+			!#zh 触摸事件 */
+			export class EventTouch extends Event {			
+			/** 
+			@param touchArr The array of the touches
+			@param bubbles A boolean indicating whether the event bubbles up through the tree or not 
+			*/
+			constructor(touchArr : any[], bubbles : boolean);			
+			/** !#en Returns event code.
+			!#zh 获取事件类型。 
+			*/
+			getEventCode() : number;			
+			/** !#en Returns touches of event.
+			!#zh 获取触摸点的列表。 
+			*/
+			getTouches() : any[];			
+			/** !#en Sets touch location.
+			!#zh 设置当前触点位置 
+			*/
+			setLocation(x : number, y : number) : void;			
+			/** !#en Returns touch location.
+			!#zh 获取触点位置。 
+			*/
+			getLocation() : Vec2;			
+			/** !#en Returns the current touch location in screen coordinates.
+			!#zh 获取当前触点在游戏窗口中的位置。 
+			*/
+			getLocationInView() : Vec2;			
+			/** !#en Returns the previous touch location.
+			!#zh 获取触点在上一次事件时的位置对象，对象包含 x 和 y 属性。 
+			*/
+			getPreviousLocation() : Vec2;			
+			/** !#en Returns the start touch location.
+			!#zh 获获取触点落下时的位置对象，对象包含 x 和 y 属性。 
+			*/
+			getStartLocation() : Vec2;			
+			/** !#en Returns the id of cc.Touch.
+			!#zh 触点的标识 ID，可以用来在多点触摸中跟踪触点。 
+			*/
+			getID() : number;			
+			/** !#en Returns the delta distance from the previous location to current location.
+			!#zh 获取触点距离上一次事件移动的距离对象，对象包含 x 和 y 属性。 
+			*/
+			getDelta() : Vec2;			
+			/** !#en Returns the X axis delta distance from the previous location to current location.
+			!#zh 获取触点距离上一次事件移动的 x 轴距离。 
+			*/
+			getDeltaX() : number;			
+			/** !#en Returns the Y axis delta distance from the previous location to current location.
+			!#zh 获取触点距离上一次事件移动的 y 轴距离。 
+			*/
+			getDeltaY() : number;			
+			/** !#en Returns location X axis data.
+			!#zh 获取当前触点 X 轴位置。 
+			*/
+			getLocationX() : number;			
+			/** !#en Returns location Y axis data.
+			!#zh 获取当前触点 Y 轴位置。 
+			*/
+			getLocationY() : number;		
+		}	
+	}	
+	
+	/****************************************************
+	* Event
+	*****************************************************/
+	
+	export module Event {			
+			/** !#en The acceleration event
+			!#zh 加速度事件 */
+			export class EventAcceleration extends Event {			
+			/** 
+			@param acc The acceleration
+			@param bubbles A boolean indicating whether the event bubbles up through the tree or not 
+			*/
+			constructor(acc : any, bubbles : boolean);		
+		}	
+	}	
+	
+	/****************************************************
+	* Event
+	*****************************************************/
+	
+	export module Event {			
+			/** !#en The keyboard event
+			!#zh 键盘事件 */
+			export class EventKeyboard extends Event {			
+			/** 
+			@param keyCode The key code of which triggered this event
+			@param isPressed A boolean indicating whether the key have been pressed
+			@param bubbles A boolean indicating whether the event bubbles up through the tree or not 
+			*/
+			constructor(keyCode : number, isPressed : boolean, bubbles : boolean);		
+		}	
+	}	
+	
+	/****************************************************
+	* SystemEvent
+	*****************************************************/
+	
+	export module SystemEvent {		
+		/** !#en The event type supported by SystemEvent
+		!#zh SystemEvent 支持的事件类型 */
+		export enum EventType {			
+			KEY_DOWN = 0,
+			KEY_UP = 0,
+			DEVICEMOTION = 0,		
+		}	
+	}	
+	
+	/****************************************************
+	* Texture2D
+	*****************************************************/
+	
+	export module Texture2D {		
+		/** The texture wrap mode */
+		export enum WrapMode {			
+			REPEAT = 0,
+			CLAMP_TO_EDGE = 0,
+			MIRRORED_REPEAT = 0,		
+		}	
+	}	
+	
+	/****************************************************
 	* Button
 	*****************************************************/
 	
@@ -9972,7 +10649,8 @@ declare module cc {
 		export enum Transition {			
 			NONE = 0,
 			COLOR = 0,
-			SPRITE = 0,		
+			SPRITE = 0,
+			SCALE = 0,		
 		}	
 	}	
 	
@@ -10210,6 +10888,44 @@ declare module cc {
 	}	
 	
 	/****************************************************
+	* PageView
+	*****************************************************/
+	
+	export module PageView {		
+		/** !#en The Page View Direction
+		!#zh 页面视图滚动类型 */
+		export enum Direction {			
+			Horizontal = 0,
+			Vertical = 0,		
+		}	
+	}	
+	
+	/****************************************************
+	* PageView
+	*****************************************************/
+	
+	export module PageView {		
+		/** !#en Enum for ScrollView event type.
+		!#zh 滚动视图事件类型 */
+		export enum EventType {			
+			PAGE_TURNING = 0,		
+		}	
+	}	
+	
+	/****************************************************
+	* PageViewIndicator
+	*****************************************************/
+	
+	export module PageViewIndicator {		
+		/** !#en Enum for PageView Indicator direction
+		!#zh 页面视图指示器的摆放方向 */
+		export enum Direction {			
+			HORIZONTAL = 0,
+			VERTICAL = 0,		
+		}	
+	}	
+	
+	/****************************************************
 	* ProgressBar
 	*****************************************************/
 	
@@ -10252,35 +10968,21 @@ declare module cc {
 			BOUNCE_BOTTOM = 0,
 			BOUNCE_LEFT = 0,
 			BOUNCE_RIGHT = 0,
-			AUTOSCROLL_ENDED = 0,		
+			AUTOSCROLL_ENDED = 0,
+			TOUCH_UP = 0,		
 		}	
 	}	
 	
 	/****************************************************
-	* VideoPlayer
+	* Slider
 	*****************************************************/
 	
-	export module VideoPlayer {		
-		/** !#en Video event type
-		!#zh 视频事件类型 */
-		export enum EventType {			
-			PLAYING = 0,
-			PAUSED = 0,
-			STOPPED = 0,
-			COMPLETED = 0,		
-		}	
-	}	
-	
-	/****************************************************
-	* VideoPlayer
-	*****************************************************/
-	
-	export module VideoPlayer {		
-		/** !#en Enum for video resouce type type.
-		!#zh 视频来源 */
-		export enum ResourceType {			
-			REMOTE = 0,
-			LOCAL = 0,		
+	export module Slider {		
+		/** !#en The Slider Direction
+		!#zh 滑动器方向 */
+		export enum Direction {			
+			Horizontal = 0,
+			Vertical = 0,		
 		}	
 	}	
 	
@@ -10328,6 +11030,34 @@ declare module cc {
 	}	
 	
 	/****************************************************
+	* VideoPlayer
+	*****************************************************/
+	
+	export module VideoPlayer {		
+		/** !#en Video event type
+		!#zh 视频事件类型 */
+		export enum EventType {			
+			PLAYING = 0,
+			PAUSED = 0,
+			STOPPED = 0,
+			COMPLETED = 0,		
+		}	
+	}	
+	
+	/****************************************************
+	* VideoPlayer
+	*****************************************************/
+	
+	export module VideoPlayer {		
+		/** !#en Enum for video resouce type type.
+		!#zh 视频来源 */
+		export enum ResourceType {			
+			REMOTE = 0,
+			LOCAL = 0,		
+		}	
+	}	
+	
+	/****************************************************
 	* WebView
 	*****************************************************/
 	
@@ -10338,318 +11068,6 @@ declare module cc {
 			LOADED = 0,
 			LOADING = 0,
 			ERROR = 0,		
-		}	
-	}	
-	
-	/****************************************************
-	* Event
-	*****************************************************/
-	
-	export module Event {			
-			/** !#en The Custom event
-			!#zh 自定义事件 */
-			export class EventCustom extends Event {			
-			constructor();			
-			/** 
-			@param type The name of the event (case-sensitive), e.g. "click", "fire", or "submit"
-			@param bubbles A boolean indicating whether the event bubbles up through the tree or not 
-			*/
-			EventCustom(type : string, bubbles : boolean) : EventCustom;			
-			/** !#en A reference to the detailed data of the event
-			!#zh 事件的详细数据 */
-			detail : any;			
-			/** !#en Sets user data
-			!#zh 设置用户数据 
-			*/
-			setUserData(data : any) : void;			
-			/** !#en Gets user data
-			!#zh 获取用户数据 
-			*/
-			getUserData() : any;			
-			/** !#en Gets event name
-			!#zh 获取事件名称 
-			*/
-			getEventName() : string;		
-		}	
-	}	
-	
-	/****************************************************
-	* Event
-	*****************************************************/
-	
-	export module Event {			
-			/** !#en The mouse event
-			!#zh 鼠标事件类型 */
-			export class EventMouse extends Event {			
-			/** 
-			@param eventType The mouse event type, UP, DOWN, MOVE, CANCELED
-			@param bubbles A boolean indicating whether the event bubbles up through the tree or not 
-			*/
-			constructor(eventType : number, bubbles? : boolean);			
-			/** !#en Sets scroll data.
-			!#zh 设置鼠标的滚动数据。 
-			*/
-			setScrollData(scrollX : number, scrollY : number) : void;			
-			/** !#en Returns the x axis scroll value.
-			!#zh 获取鼠标滚动的X轴距离，只有滚动时才有效。 
-			*/
-			getScrollX() : number;			
-			/** !#en Returns the y axis scroll value.
-			!#zh 获取滚轮滚动的 Y 轴距离，只有滚动时才有效。 
-			*/
-			getScrollY() : number;			
-			/** !#en Sets cursor location.
-			!#zh 设置当前鼠标位置。 
-			*/
-			setLocation(x : number, y : number) : void;			
-			/** !#en Returns cursor location.
-			!#zh 获取鼠标位置对象，对象包含 x 和 y 属性。 
-			*/
-			getLocation() : Vec2;			
-			/** !#en Returns the current cursor location in screen coordinates.
-			!#zh 获取当前事件在游戏窗口内的坐标位置对象，对象包含 x 和 y 属性。 
-			*/
-			getLocationInView() : Vec2;			
-			/** !#en Returns the previous touch location.
-			!#zh 获取鼠标点击在上一次事件时的位置对象，对象包含 x 和 y 属性。 
-			*/
-			getPreviousLocation() : Vec2;			
-			/** !#en Returns the delta distance from the previous location to current location.
-			!#zh 获取鼠标距离上一次事件移动的距离对象，对象包含 x 和 y 属性。 
-			*/
-			getDelta() : Vec2;			
-			/** !#en Returns the X axis delta distance from the previous location to current location.
-			!#zh 获取鼠标距离上一次事件移动的 X 轴距离。 
-			*/
-			getDeltaX() : number;			
-			/** !#en Returns the Y axis delta distance from the previous location to current location.
-			!#zh 获取鼠标距离上一次事件移动的 Y 轴距离。 
-			*/
-			getDeltaY() : number;			
-			/** !#en Sets mouse button.
-			!#zh 设置鼠标按键。 
-			*/
-			setButton(button : number) : void;			
-			/** !#en Returns mouse button.
-			!#zh 获取鼠标按键。 
-			*/
-			getButton() : number;			
-			/** !#en Returns location X axis data.
-			!#zh 获取鼠标当前位置 X 轴。 
-			*/
-			getLocationX() : number;			
-			/** !#en Returns location Y axis data.
-			!#zh 获取鼠标当前位置 Y 轴。 
-			*/
-			getLocationY() : number;		
-		}	
-	}	
-	
-	/****************************************************
-	* Event
-	*****************************************************/
-	
-	export module Event {			
-			/** !#en The touch event
-			!#zh 触摸事件 */
-			export class EventTouch extends Event {			
-			/** 
-			@param touchArr The array of the touches
-			@param bubbles A boolean indicating whether the event bubbles up through the tree or not 
-			*/
-			constructor(touchArr : any[], bubbles : boolean);			
-			/** !#en Returns event code.
-			!#zh 获取事件类型。 
-			*/
-			getEventCode() : number;			
-			/** !#en Returns touches of event.
-			!#zh 获取触摸点的列表。 
-			*/
-			getTouches() : any[];			
-			/** !#en Sets touch location.
-			!#zh 设置当前触点位置 
-			*/
-			setLocation(x : number, y : number) : void;			
-			/** !#en Returns touch location.
-			!#zh 获取触点位置。 
-			*/
-			getLocation() : Vec2;			
-			/** !#en Returns the current touch location in screen coordinates.
-			!#zh 获取当前触点在游戏窗口中的位置。 
-			*/
-			getLocationInView() : Vec2;			
-			/** !#en Returns the previous touch location.
-			!#zh 获取触点在上一次事件时的位置对象，对象包含 x 和 y 属性。 
-			*/
-			getPreviousLocation() : Vec2;			
-			/** !#en Returns the start touch location.
-			!#zh 获获取触点落下时的位置对象，对象包含 x 和 y 属性。 
-			*/
-			getStartLocation() : Vec2;			
-			/** !#en Returns the id of cc.Touch.
-			!#zh 触点的标识 ID，可以用来在多点触摸中跟踪触点。 
-			*/
-			getID() : number;			
-			/** !#en Returns the delta distance from the previous location to current location.
-			!#zh 获取触点距离上一次事件移动的距离对象，对象包含 x 和 y 属性。 
-			*/
-			getDelta() : Vec2;			
-			/** !#en Returns the X axis delta distance from the previous location to current location.
-			!#zh 获取触点距离上一次事件移动的 x 轴距离。 
-			*/
-			getDeltaX() : number;			
-			/** !#en Returns the Y axis delta distance from the previous location to current location.
-			!#zh 获取触点距离上一次事件移动的 y 轴距离。 
-			*/
-			getDeltaY() : number;			
-			/** !#en Returns location X axis data.
-			!#zh 获取当前触点 X 轴位置。 
-			*/
-			getLocationX() : number;			
-			/** !#en Returns location Y axis data.
-			!#zh 获取当前触点 Y 轴位置。 
-			*/
-			getLocationY() : number;		
-		}	
-	}	
-	
-	/****************************************************
-	* Event
-	*****************************************************/
-	
-	export module Event {			
-			/** !#en The acceleration event
-			!#zh 加速度事件 */
-			export class EventAcceleration extends Event {			
-			/** 
-			@param acc The acceleration
-			@param bubbles A boolean indicating whether the event bubbles up through the tree or not 
-			*/
-			constructor(acc : any, bubbles : boolean);		
-		}	
-	}	
-	
-	/****************************************************
-	* Event
-	*****************************************************/
-	
-	export module Event {			
-			/** !#en The keyboard event
-			!#zh 键盘事件 */
-			export class EventKeyboard extends Event {			
-			/** 
-			@param keyCode The key code of which triggered this event
-			@param isPressed A boolean indicating whether the key have been pressed
-			@param bubbles A boolean indicating whether the event bubbles up through the tree or not 
-			*/
-			constructor(keyCode : number, isPressed : boolean, bubbles : boolean);		
-		}	
-	}	
-	
-	/****************************************************
-	* Pipeline
-	*****************************************************/
-	
-	export module Pipeline {			
-			/** The downloader pipe, it can download several types of files:
-			1. Text
-			2. Image
-			3. Script
-			4. Audio
-			All unknown type will be downloaded as plain text.
-			You can pass custom supported types in the constructor. */
-			export class Downloader {			
-			/** Constructor of Downloader, you can pass custom supported types.
-			@param extMap Custom supported types with corresponded handler
-			
-			@example 
-			```js
-			var downloader = new Downloader({
-			     // This will match all url with `.scene` extension or all url with `scene` type
-			     'scene' : function (url, callback) {}
-			 });
-			``` 
-			*/
-			Downloader(extMap : any) : void;			
-			/** Add custom supported types handler or modify existing type handler.
-			@param extMap Custom supported types with corresponded handler 
-			*/
-			addHandlers(extMap : any) : void;		
-		}	
-	}	
-	
-	/****************************************************
-	* Pipeline
-	*****************************************************/
-	
-	export module Pipeline {			
-			/** The loader pipe, it can load several types of files:
-			1. Images
-			2. JSON
-			3. Plist
-			4. Audio
-			5. Font
-			6. Cocos Creator scene
-			It will not interfere with items of unknown type.
-			You can pass custom supported types in the constructor. */
-			export class Loader {			
-			/** Constructor of Loader, you can pass custom supported types.
-			@param extMap Custom supported types with corresponded handler
-			
-			@example 
-			```js
-			var loader = new Loader({
-			     // This will match all url with `.scene` extension or all url with `scene` type
-			     'scene' : function (url, callback) {}
-			 });
-			``` 
-			*/
-			Loader(extMap : any) : void;			
-			/** Add custom supported types handler or modify existing type handler.
-			@param extMap Custom supported types with corresponded handler 
-			*/
-			addHandlers(extMap : any) : void;		
-		}	
-	}	
-	
-	/****************************************************
-	* Graphics
-	*****************************************************/
-	
-	export module Graphics {		
-		/** !#en Enum for LineCap.
-		!#zh 线段末端属性 */
-		export enum LineCap {			
-			BUTT = 0,
-			ROUND = 0,
-			SQUARE = 0,		
-		}	
-	}	
-	
-	/****************************************************
-	* Graphics
-	*****************************************************/
-	
-	export module Graphics {		
-		/** !#en Enum for LineJoin.
-		!#zh 线段拐角属性 */
-		export enum LineJoin {			
-			BEVEL = 0,
-			ROUND = 0,
-			MITER = 0,		
-		}	
-	}	
-	
-	/****************************************************
-	* Texture2D
-	*****************************************************/
-	
-	export module Texture2D {		
-		/** The texture wrap mode */
-		export enum WrapMode {			
-			REPEAT = 0,
-			CLAMP_TO_EDGE = 0,
-			MIRRORED_REPEAT = 0,		
 		}	
 	}
 }
@@ -11807,19 +12225,20 @@ declare module anysdk {
 	}
 }
 /** !#en
+The global main namespace of DragonBones, all classes, functions,
+properties and constants of DragonBones are defined in this namespace
+!#zh
+DragonBones 的全局的命名空间，
+与 DragonBones 相关的所有的类，函数，属性，常量都在这个命名空间中定义。 */
+declare module db {
+}
+/** !#en
 The global main namespace of Spine, all classes, functions,
 properties and constants of Spine are defined in this namespace
 !#zh
 Spine 的全局的命名空间，
 与 Spine 相关的所有的类，函数，属性，常量都在这个命名空间中定义。 */
-declare module sp {	
-	/** !#en
-	The official spine runtime.<br/>
-	See http://en.esotericsoftware.com/spine-using-runtimes
-	!#zh
-	官方 Spine Runtime。<br/>
-	可查看 Spine 官方文档 http://en.esotericsoftware.com/spine-using-runtimes */
-	export var spine : any;		
+declare module sp {		
 		/** !#en
 		The skeleton of Spine <br/>
 		<br/>
@@ -11859,6 +12278,12 @@ declare module sp {
 		/** !#en TODO
 		!#zh 是否循环播放当前骨骼动画。 */
 		loop : boolean;		
+		/** !#en Indicates whether to enable premultiplied alpha.
+		You should disable this option when image's transparent area appears to have opaque pixels,
+		or enable this option when image's half transparent area appears to be darken.
+		!#zh 是否启用贴图预乘。
+		当图片的透明区域出现色块时需要关闭该选项，当图片的半透明区域颜色变黑时需要启用该选项。 */
+		premultipliedAlpha : boolean;		
 		/** !#en The time scale of this skeleton.
 		!#zh 当前骨骼中所有动画的时间缩放率。 */
 		timeScale : number;		
@@ -11904,38 +12329,42 @@ declare module sp {
 		setSlotsToSetupPose() : void;		
 		/** !#en
 		Finds a bone by name.
-		This does a string comparison for every bone.
+		This does a string comparison for every bone.<br>
+		Returns a {{#crossLinkModule "sp.spine"}}sp.spine{{/crossLinkModule}}.Bone object.
 		!#zh
 		通过名称查找 bone。
-		这里对每个 bone 的名称进行了对比。 
+		这里对每个 bone 的名称进行了对比。<br>
+		返回一个 {{#crossLinkModule "sp.spine"}}sp.spine{{/crossLinkModule}}.Bone 对象。 
 		*/
-		findBone(boneName : string) : spine.Bone;		
+		findBone(boneName : string) : sp.spine.Bone;		
 		/** !#en
-		Finds a slot by name.
-		This does a string comparison for every slot.
+		Finds a slot by name. This does a string comparison for every slot.<br>
+		Returns a {{#crossLinkModule "sp.spine"}}sp.spine{{/crossLinkModule}}.Slot object.
 		!#zh
-		通过名称查找 slot。
-		这里对每个 slot 的名称进行了比较。 
+		通过名称查找 slot。这里对每个 slot 的名称进行了比较。<br>
+		返回一个 {{#crossLinkModule "sp.spine"}}sp.spine{{/crossLinkModule}}.Slot 对象。 
 		*/
-		findSlot(slotName : string) : spine.Slot;		
+		findSlot(slotName : string) : sp.spine.Slot;		
 		/** !#en
 		Finds a skin by name and makes it the active skin.
-		This does a string comparison for every skin.
-		Note that setting the skin does not change which attachments are visible.
+		This does a string comparison for every skin.<br>
+		Note that setting the skin does not change which attachments are visible.<br>
+		Returns a {{#crossLinkModule "sp.spine"}}sp.spine{{/crossLinkModule}}.Skin object.
 		!#zh
-		按名称查找皮肤，激活该皮肤。
-		这里对每个皮肤的名称进行了比较。
-		注意：设置皮肤不会改变 attachment 的可见性。。 
+		按名称查找皮肤，激活该皮肤。这里对每个皮肤的名称进行了比较。<br>
+		注意：设置皮肤不会改变 attachment 的可见性。<br>
+		返回一个 {{#crossLinkModule "sp.spine"}}sp.spine{{/crossLinkModule}}.Skin 对象。 
 		*/
-		setSkin(skinName : string) : spine.Skin;		
+		setSkin(skinName : string) : sp.spine.Skin;		
 		/** !#en
 		Returns the attachment for the slot and attachment name.
-		The skeleton looks first in its skin, then in the skeleton data’s default skin.
+		The skeleton looks first in its skin, then in the skeleton data’s default skin.<br>
+		Returns a {{#crossLinkModule "sp.spine"}}sp.spine{{/crossLinkModule}}.Attachment object.
 		!#zh
-		通过 slot 和 attachment 的名称获取 attachment。
-		Skeleton 优先查找它的皮肤，然后才是 Skeleton Data 中默认的皮肤。 
+		通过 slot 和 attachment 的名称获取 attachment。Skeleton 优先查找它的皮肤，然后才是 Skeleton Data 中默认的皮肤。<br>
+		返回一个 {{#crossLinkModule "sp.spine"}}sp.spine{{/crossLinkModule}}.Attachment 对象。 
 		*/
-		getAttachment(slotName : string, attachmentName : string) : spine.RegionAttachment;		
+		getAttachment(slotName : string, attachmentName : string) : sp.spine.Attachment;		
 		/** !#en
 		Sets the attachment for the slot and attachment name.
 		The skeleton looks first in its skin, then in the skeleton data’s default skin.
@@ -11947,11 +12376,13 @@ declare module sp {
 		/** !#en Sets skeleton data to sp.Skeleton.
 		!#zh 设置 Skeleton 中的 Skeleton Data。 
 		*/
-		setSkeletonData(skeletonData : spine.SkeletonData, ownsSkeletonData : spine.SkeletonData) : void;		
-		/** !#en Sets animation state data.
-		!#zh 设置动画状态数据。 
+		setSkeletonData(skeletonData : sp.spine.SkeletonData, ownsSkeletonData : sp.spine.SkeletonData) : void;		
+		/** !#en Sets animation state data.<br>
+		The parameter type is {{#crossLinkModule "sp.spine"}}sp.spine{{/crossLinkModule}}.AnimationStateData.
+		!#zh 设置动画状态数据。<br>
+		参数是 {{#crossLinkModule "sp.spine"}}sp.spine{{/crossLinkModule}}.AnimationStateData。 
 		*/
-		setAnimationStateData(stateData : spine.AnimationStateData) : void;		
+		setAnimationStateData(stateData : sp.spine.AnimationStateData) : void;		
 		/** !#en
 		Mix applies all keyframe values,
 		interpolated for the specified time and mixed with the current values.
@@ -11962,18 +12393,24 @@ declare module sp {
 		!#zh 设置动画事件监听器。 
 		*/
 		setAnimationListener(target : any, callback : Function) : void;		
-		/** !#en Set the current animation. Any queued animations are cleared.
-		!#zh 设置当前动画。队列中的任何的动画将被清除。 
+		/** !#en Set the current animation. Any queued animations are cleared.<br>
+		Returns a {{#crossLinkModule "sp.spine"}}sp.spine{{/crossLinkModule}}.TrackEntry object.
+		!#zh 设置当前动画。队列中的任何的动画将被清除。<br>
+		返回一个 {{#crossLinkModule "sp.spine"}}sp.spine{{/crossLinkModule}}.TrackEntry 对象。 
 		*/
-		setAnimation(trackIndex : number, name : string, loop : boolean) : spine.TrackEntry;		
-		/** !#en Adds an animation to be played delay seconds after the current or last queued animation.
-		!#zh 添加一个动画到动画队列尾部，还可以延迟指定的秒数。 
+		setAnimation(trackIndex : number, name : string, loop : boolean) : sp.spine.TrackEntry;		
+		/** !#en Adds an animation to be played delay seconds after the current or last queued animation.<br>
+		Returns a {{#crossLinkModule "sp.spine"}}sp.spine{{/crossLinkModule}}.TrackEntry object.
+		!#zh 添加一个动画到动画队列尾部，还可以延迟指定的秒数。<br>
+		返回一个 {{#crossLinkModule "sp.spine"}}sp.spine{{/crossLinkModule}}.TrackEntry 对象。 
 		*/
-		addAnimation(trackIndex : number, name : string, loop : boolean, delay? : number) : spine.TrackEntry;		
-		/** !#en Returns track entry by trackIndex.
-		!#zh 通过 track 索引获取 TrackEntry。 
+		addAnimation(trackIndex : number, name : string, loop : boolean, delay? : number) : sp.spine.TrackEntry;		
+		/** !#en Returns track entry by trackIndex.<br>
+		Returns a {{#crossLinkModule "sp.spine"}}sp.spine{{/crossLinkModule}}.TrackEntry object.
+		!#zh 通过 track 索引获取 TrackEntry。<br>
+		返回一个 {{#crossLinkModule "sp.spine"}}sp.spine{{/crossLinkModule}}.TrackEntry 对象。 
 		*/
-		getCurrent(trackIndex : void) : spine.TrackEntry;		
+		getCurrent(trackIndex : void) : sp.spine.TrackEntry;		
 		/** !#en Clears all tracks of animation state.
 		!#zh 清除所有 track 的动画状态。 
 		*/
@@ -12009,10 +12446,12 @@ declare module sp {
 		see http://en.esotericsoftware.com/spine-using-runtimes#Scaling
 		!#zh 可查看 Spine 官方文档： http://zh.esotericsoftware.com/spine-using-runtimes#Scaling */
 		scale : number;		
-		/** !#en Get the included SkeletonData used in spine runtime.
-		!#zh 获取 Spine Runtime 使用的 SkeletonData。 
+		/** !#en Get the included SkeletonData used in spine runtime.<br>
+		Returns a {{#crossLinkModule "sp.spine"}}sp.spine{{/crossLinkModule}}.SkeletonData object.
+		!#zh 获取 Spine Runtime 使用的 SkeletonData。<br>
+		返回一个 {{#crossLinkModule "sp.spine"}}sp.spine{{/crossLinkModule}}.SkeletonData 对象。 
 		*/
-		getRuntimeData(quiet? : boolean) : spine.SkeletonData;	
+		getRuntimeData(quiet? : boolean) : sp.spine.SkeletonData;	
 	}	
 	/** !#en The event type of spine skeleton animation.
 	!#zh 骨骼动画事件类型。 */
@@ -12022,6 +12461,13 @@ declare module sp {
 		COMPLETE = 0,
 		EVENT = 0,	
 	}
+}
+/** !#en
+`sp.spine` is the namespace for official Spine Runtime, which officially implemented and maintained by Spine.<br>
+Please refer to the official documentation for its detailed usage: [http://en.esotericsoftware.com/spine-using-runtimes](http://en.esotericsoftware.com/spine-using-runtimes)
+!#zh
+sp.spine 模块是 Spine 官方运行库的 API 入口，由 Spine 官方统一实现和维护，具体用法请参考：[http://zh.esotericsoftware.com/spine-using-runtimes](http://zh.esotericsoftware.com/spine-using-runtimes) */
+declare module sp.spine {
 }
 /** This module provides some JavaScript utilities.
 All members can be accessed with cc.js */
