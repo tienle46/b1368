@@ -7,6 +7,7 @@ import utils from 'utils';
 import Actor from 'Actor';
 import BasePopup from 'BasePopup';
 import Emitter from 'emitter'
+import FullSceneProgress from 'FullSceneProgress';
 
 export default class BaseScene extends Actor {
     constructor() {
@@ -19,6 +20,8 @@ export default class BaseScene extends Actor {
             type: cc.Prefab
         };
 
+        this.progressPrefab = cc.Prefab;
+        this.progress = null;
         this.onShown = null;
         this.isLoaded = false;
     }
@@ -47,10 +50,17 @@ export default class BaseScene extends Actor {
     }
 
     onLoad(){
-        this.isLoaded = true;
+        let progressNode = this.progressPrefab && cc.instantiate(this.progressPrefab);
+        if(progressNode){
+            progressNode.parent = this.node;
+            this.progress = progressNode.getComponent(FullSceneProgress.name);
+        }
+
         this._pendingAddPopup && this._pendingAddPopup.forEach(msg => {
             this.addPopup(msg);
-        })
+        });
+
+        this.isLoaded = true;
     }
 
     start() {
@@ -78,16 +88,17 @@ export default class BaseScene extends Actor {
 
         if (utils.isNumber(message)) {
             timeoutInSeconds = message;
+            message = "";
         }
 
-        //TODO
+        this.progress && this.progress.show(message, timeoutInSeconds);
 
         this.loading = true;
     }
 
     hideLoading(payload) {
         this.loading = false;
-        //TODO
+        this.progress && this.progress.hide();
     }
 
     // show popup

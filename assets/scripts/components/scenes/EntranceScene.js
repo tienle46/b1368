@@ -141,6 +141,10 @@ class EntranceScene extends BaseScene {
             throw new Error('hashCode: ' + e);
         }
     }
+
+    start(){
+        this.showLoading("", 5);
+    }
 }
 
 app.createComponent(EntranceScene);

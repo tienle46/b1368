@@ -689,7 +689,6 @@
       "a": 127.5
     },
     "duration": 0.1,
-    "zoomScale": 1.2,
     "pressedSprite": null,
     "hoverSprite": null,
     "clickEvents": [
@@ -698,7 +697,6 @@
       }
     ],
     "_N$interactable": true,
-    "_N$enableAutoGrayEffect": false,
     "_N$normalColor": {
       "__type__": "cc.Color",
       "r": 255,
@@ -940,7 +938,6 @@
       "a": 255
     },
     "duration": 0.1,
-    "zoomScale": 1.2,
     "pressedSprite": null,
     "hoverSprite": null,
     "clickEvents": [
@@ -949,7 +946,6 @@
       }
     ],
     "_N$interactable": true,
-    "_N$enableAutoGrayEffect": false,
     "_N$normalColor": {
       "__type__": "cc.Color",
       "r": 255,
@@ -1191,7 +1187,6 @@
       "a": 127.5
     },
     "duration": 0.1,
-    "zoomScale": 1.2,
     "pressedSprite": null,
     "hoverSprite": null,
     "clickEvents": [
@@ -1200,7 +1195,6 @@
       }
     ],
     "_N$interactable": true,
-    "_N$enableAutoGrayEffect": false,
     "_N$normalColor": {
       "__type__": "cc.Color",
       "r": 255,
@@ -1442,7 +1436,6 @@
       "a": 127.5
     },
     "duration": 0.1,
-    "zoomScale": 1.2,
     "pressedSprite": null,
     "hoverSprite": null,
     "clickEvents": [
@@ -1451,7 +1444,6 @@
       }
     ],
     "_N$interactable": true,
-    "_N$enableAutoGrayEffect": false,
     "_N$normalColor": {
       "__type__": "cc.Color",
       "r": 255,
@@ -1690,7 +1682,6 @@
       "a": 255
     },
     "duration": 0.1,
-    "zoomScale": 1.2,
     "pressedSprite": {
       "__uuid__": "e672756d-f535-4c84-96f9-b1ff522e02c0"
     },
@@ -1701,7 +1692,6 @@
       }
     ],
     "_N$interactable": true,
-    "_N$enableAutoGrayEffect": false,
     "_N$normalColor": {
       "__type__": "cc.Color",
       "r": 214,
@@ -1791,6 +1781,9 @@
     "_enabled": true,
     "popUp": {
       "__uuid__": "b304b073-0867-4e3e-a771-770ac6349d22"
+    },
+    "progressPrefab": {
+      "__uuid__": "e3817d59-05ca-4bf3-8ca9-89a91e43595b"
     },
     "loginButton": {
       "__id__": 17

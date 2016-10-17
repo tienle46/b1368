@@ -52,6 +52,7 @@ export default class GameScene extends BaseScene {
         //     }))
         // }, this, 1);
         this.on(Events.ON_ACTION_EXIT_GAME, this._onActionExitGame, this);
+        this.on(Events.ON_ACTION_LOAD_GAME_GUIDE, this._onActionLoadGameGuide, this);
     }
 
     handleRejoinGame(...args){
@@ -186,11 +187,23 @@ export default class GameScene extends BaseScene {
         app.service.sendRequest(new SFS2X.Requests.System.LeaveRoomRequest(this.room));
     }
 
+    _onActionShowMenu() {
+
+    }
+
+    _onActionHideMenu() {
+
+    }
+
+    _onActionLoadGameGuide(){
+        app.system.info(app.res.string('coming_soon'));
+    }
+
     _loadGameData() {
         this.gamePlayers._init(this.board, this);
 
-        let isGamePlaying = GameUtils.isPlayingState(currentGameState);
         let currentGameState = utils.getValue(this.gameData, Keywords.BOARD_STATE_KEYWORD);
+        let isGamePlaying = GameUtils.isPlayingState(currentGameState);
 
         /**
          * Current is call board._initPlayingData && board._loadGamePlayData directly. But when player or other component need to get data,
