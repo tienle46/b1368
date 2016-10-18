@@ -43,6 +43,8 @@ class BottomBar extends Component {
             default: null,
             type: cc.Button
         };
+
+        // data essential
     }
 
     onLoad() {
@@ -60,7 +62,7 @@ class BottomBar extends Component {
             title: 'IAP',
             value: 'tab_iap'
         }, {
-            title: 'kiot',
+            title: 'Đại lí',
             value: 'tab_kiot'
         }];
 
@@ -112,12 +114,19 @@ class BottomBar extends Component {
     }
 
     onClickUserInfoAction() {
+        // personal tabs
+        this._getPersonalInfoTabOptions((personalInfoTabOptions) => {
+            PersonalInfoDialogRub.show(this.node.parent, personalInfoTabOptions);
+        });
+    }
+
+    _getPersonalInfoTabOptions(cb) {
         let tabs = [{
             title: 'Cá nhân',
             value: 'tab_user_info'
         }, {
             title: 'Thành tích',
-            value: this._getX()
+            value: this._initAchievementsTab()
         }, {
             title: 'Gift Code',
             value: 'tab_gift_code'
@@ -138,23 +147,57 @@ class BottomBar extends Component {
             tabBodyPrefabType: 'userinfo'
         };
 
-        let tabOptions = { tabs, options };
-        PersonalInfoDialogRub.show(this.node.parent, tabOptions);
+        cb({ tabs, options });
     }
 
-    _getX() {
-
-        let a = new GridViewRub(['x', 'x', 'x'], [
-            ['x'],
-            ['x'],
-            ['y']
+    _initAchievementsTab() {
+        let achievementsTab = new GridViewRub(null, [
+            ['x', 'x1', 'x2'],
+            ['z', 'z1', 'z2'],
+            ['y', 'y1', 'y2']
         ], {
-            bg: new cc.Color(68, 25, 97),
-            position: cc.v2(2, 64),
-            width: 715
+            position: cc.v2(2, 140),
+            width: 800,
+            spacingX: 0,
+            spacingY: 0,
+            cell: {
+                horizontalSeparate: {
+                    pattern: new cc.Color(102, 45, 145)
+                }
+            },
+            group: {
+                colors: [null, app.const.COLOR_YELLOW, null]
+            }
         });
 
-        return a.getNode();
+        this._getAchievementsDataFromServer(achievementsTab);
+
+        return achievementsTab.getNode();
+    }
+
+    _getAchievementsDataFromServer(achievementsTab) {
+        let sendObj = {
+            cmd: app.commands.USER_ACHIEVEMENT
+        };
+        console.log(sendObj);
+        app.service.send(sendObj, (res) => {
+            if (res) {
+                let gameListCol = res[app.keywords.GAME_NAME_LIST] || [];
+                let levelCol = res[app.keywords.LEVEL_LIST].map((e) => `Cấp độ ${e}`) || [];
+                // let levelCol = res[app.keywords.LEVEL_TITLE_LIST]|| []; 
+                let winLostCol = res[app.keywords.WIN_LIST].map((e, i) => `${e}/${res[app.keywords.LOST_LIST][i]}`) || [];
+
+                let data = [
+                    gameListCol,
+                    levelCol,
+                    winLostCol,
+                ];
+
+                if (achievementsTab)
+                    achievementsTab.resetData(data);
+            }
+
+        });
     }
 }
 

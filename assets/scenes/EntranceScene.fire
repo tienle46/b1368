@@ -78,9 +78,6 @@
       },
       {
         "__id__": 9
-      },
-      {
-        "__id__": 44
       }
     ],
     "_rotationX": 0,
@@ -102,10 +99,10 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 49
+        "__id__": 44
       },
       {
-        "__id__": 50
+        "__id__": 45
       }
     ],
     "_prefab": null,
@@ -1582,188 +1579,6 @@
     "_isAbsVerticalCenter": true,
     "_originalWidth": 0,
     "_originalHeight": 0
-  },
-  {
-    "__type__": "cc.Node",
-    "_name": "CheckBox3",
-    "_objFlags": 0,
-    "_opacity": 255,
-    "_color": {
-      "__type__": "cc.Color",
-      "r": 255,
-      "g": 255,
-      "b": 255,
-      "a": 255
-    },
-    "_cascadeOpacityEnabled": true,
-    "_parent": {
-      "__id__": 2
-    },
-    "_anchorPoint": {
-      "__type__": "cc.Vec2",
-      "x": 0.5,
-      "y": 0.5
-    },
-    "_contentSize": {
-      "__type__": "cc.Size",
-      "width": 28,
-      "height": 28
-    },
-    "_children": [],
-    "_rotationX": 0,
-    "_rotationY": 0,
-    "_scaleX": 1,
-    "_scaleY": 1,
-    "_position": {
-      "__type__": "cc.Vec2",
-      "x": -25,
-      "y": 163
-    },
-    "_skewX": 0,
-    "_skewY": 0,
-    "_localZOrder": 0,
-    "_globalZOrder": 0,
-    "_tag": -1,
-    "_opacityModifyRGB": false,
-    "_id": "d5df3WzMttN14NghmlhyFKL",
-    "_active": true,
-    "_components": [
-      {
-        "__id__": 45
-      },
-      {
-        "__id__": 46
-      }
-    ],
-    "_prefab": {
-      "__id__": 48
-    },
-    "groupIndex": 0
-  },
-  {
-    "__type__": "cc.Sprite",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 44
-    },
-    "_enabled": true,
-    "_spriteFrame": {
-      "__uuid__": "e672756d-f535-4c84-96f9-b1ff522e02c0"
-    },
-    "_type": 0,
-    "_sizeMode": 1,
-    "_fillType": 0,
-    "_fillCenter": {
-      "__type__": "cc.Vec2",
-      "x": 0,
-      "y": 0
-    },
-    "_fillStart": 0,
-    "_fillRange": 0,
-    "_isTrimmedMode": true,
-    "_srcBlendFactor": 770,
-    "_dstBlendFactor": 771,
-    "_atlas": null
-  },
-  {
-    "__type__": "c28eb0XT2pB5KhW971x5R80",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 44
-    },
-    "_enabled": true,
-    "transition": 2,
-    "pressedColor": {
-      "__type__": "cc.Color",
-      "r": 211,
-      "g": 211,
-      "b": 211,
-      "a": 255
-    },
-    "hoverColor": {
-      "__type__": "cc.Color",
-      "r": 255,
-      "g": 255,
-      "b": 255,
-      "a": 255
-    },
-    "duration": 0.1,
-    "zoomScale": 1.2,
-    "pressedSprite": {
-      "__uuid__": "e672756d-f535-4c84-96f9-b1ff522e02c0"
-    },
-    "hoverSprite": null,
-    "clickEvents": [
-      {
-        "__id__": 47
-      }
-    ],
-    "_N$interactable": true,
-    "_N$enableAutoGrayEffect": false,
-    "_N$normalColor": {
-      "__type__": "cc.Color",
-      "r": 214,
-      "g": 214,
-      "b": 214,
-      "a": 255
-    },
-    "_N$disabledColor": {
-      "__type__": "cc.Color",
-      "r": 124,
-      "g": 124,
-      "b": 124,
-      "a": 255
-    },
-    "_N$normalSprite": {
-      "__uuid__": "e672756d-f535-4c84-96f9-b1ff522e02c0"
-    },
-    "_N$disabledSprite": {
-      "__uuid__": "e672756d-f535-4c84-96f9-b1ff522e02c0"
-    },
-    "_N$target": {
-      "__id__": 44
-    },
-    "checkEvents": [],
-    "_N$isChecked": true,
-    "_N$activeNormalSprite": {
-      "__uuid__": "e672756d-f535-4c84-96f9-b1ff522e02c0"
-    },
-    "_N$activePressedSprite": {
-      "__uuid__": "e672756d-f535-4c84-96f9-b1ff522e02c0"
-    },
-    "_N$activeDisabledSprite": {
-      "__uuid__": "e672756d-f535-4c84-96f9-b1ff522e02c0"
-    },
-    "_N$inActiveNormalSprite": {
-      "__uuid__": "d670970d-f126-4886-a5b7-9de05980a3f0"
-    },
-    "_N$inActivePressedSprite": {
-      "__uuid__": "d670970d-f126-4886-a5b7-9de05980a3f0"
-    },
-    "_N$inActiveDisabledSprite": {
-      "__uuid__": "d670970d-f126-4886-a5b7-9de05980a3f0"
-    }
-  },
-  {
-    "__type__": "cc.ClickEvent",
-    "target": {
-      "__id__": 44
-    },
-    "component": "CheckBox",
-    "handler": "toggleCheckBoxStatus"
-  },
-  {
-    "__type__": "cc.PrefabInfo",
-    "root": {
-      "__id__": 44
-    },
-    "asset": {
-      "__uuid__": "fd7ce26c-5fa7-468f-8f32-6b74eedb7bc9"
-    },
-    "fileId": "f33a6zziYhJEaE2/XX9TlQN",
-    "sync": false
   },
   {
     "__type__": "cc.Canvas",

@@ -5,6 +5,7 @@
 var app = require('app');
 var SFS2X = require('SFS2X');
 var Fingerprint2 = require('fingerprinter');
+import AlertPopupRub from 'AlertPopupRub';
 
 const requestCallbackNames = {
     [SFS2X.Requests.Handshake]: SFS2X.SFSEvent.HANDSHAKE,
@@ -111,11 +112,11 @@ class Service {
         this.removeEventListener(SFS2X.SFSEvent.ROOM_VARIABLES_UPDATE, this._onRoomVariableUpdate);
     }
 
-    _onUserVariableUpdate(event){
+    _onUserVariableUpdate(event) {
         app.system.emit(SFS2X.SFSEvent.USER_VARIABLES_UPDATE, event);
     }
 
-    _onRoomVariableUpdate(event){
+    _onRoomVariableUpdate(event) {
         app.system.emit(SFS2X.SFSEvent.ROOM_VARIABLES_UPDATE, event);
     }
 
@@ -170,11 +171,13 @@ class Service {
 
         if (event.cmd === app.commands.XLAG) {
             this._handleLagPollingResponse(event);
+        } else if (event.cmd === app.commands.SYSTEM_MESSAGE) {
+            // AlertPopupRub()
+
         } else {
             if (this._hasCallback(event.cmd)) {
                 this._callCallbackAsync(event.cmd, event.params);
             }
-
             app.system.emit(event.cmd, event.params, event);
         }
 
@@ -214,7 +217,7 @@ class Service {
             return;
         }
 
-        if(this.isConnecting){
+        if (this.isConnecting) {
             this._pendingRequests.push(arguments);
             return;
         }
@@ -313,9 +316,9 @@ class Service {
     disconnect() {
 
         this.isConnecting = false;
-        
+
         console.log("call disconnect: ")
-        
+
         if (this.client.isConnected()) {
             this.client.disconnect();
         }
@@ -431,7 +434,7 @@ class Service {
 
     _onJoinRoomError(event) {
         console.log("_onJoinRoomError: ", event);
-        if(event.errorCode){
+        if (event.errorCode) {
             this._hasCallback(SFS2X.SFSEvent.ROOM_JOIN_ERROR) && this._callCallbackAsync(SFS2X.SFSEvent.ROOM_JOIN_ERROR, event);
         }
     }

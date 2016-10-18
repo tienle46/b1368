@@ -22,7 +22,6 @@ class TabCard extends Component {
         };
 
         app.service.send(sendObject, (data) => {
-            console.log(data);
             if (data) {
                 let layoutComponent = cc.find('left/layout', this.node);
                 this.toggleGroup = layoutComponent.getComponent(ToggleGroup);
@@ -56,7 +55,6 @@ class TabCard extends Component {
         let cardSerial = centerComponent.getChildByName('cardSerialEditBox').getComponent(cc.EditBox).string.trim();
         let serialNumber = centerComponent.getChildByName('serialNumberEditBox').getComponent(cc.EditBox).string.trim();
 
-        console.log(isNaN(cardSerial), isNaN(serialNumber));
         if (cardSerial === "" || serialNumber === "" || isNaN(cardSerial) || isNaN(serialNumber)) {
             AlertPopupRub.show(this.node, 'Vui lòng nhập đầy đủ thông tin');
         } else {
@@ -70,8 +68,9 @@ class TabCard extends Component {
                 'cmd': app.commands.USER_SEND_CARD_CHARGE,
                 data
             };
+            console.log(sendObject);
             app.service.send(sendObject, (data) => {
-                console.log(data);
+                console.log('xxxxx');
             }, app.const.scene.DASHBOARD_SCENE);
         }
     }

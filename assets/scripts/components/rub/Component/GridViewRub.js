@@ -1,24 +1,46 @@
 import RubUtils from 'RubUtils';
 import CellRub from 'CellRub';
+import app from 'app';
 
 export default class GridViewRub {
     /**
      * Creates an instance of GridViewRub.
      * 
      * @param {any} node
-     * @head {Array || object } table header array
+     * @head {Array || null } table header array
      * {
      *  data: ['text', 'text', 'text'] # string array represent for label text inside header
      *      # head.data.length must equal to length of @param {Array [[]]} data.length
      *  options: {...cellRub's options }
      * }
-     * @param {Array [[]]} data # multiple mapping array 
+     * @param {Array [[]]} data # multiple string mapping array 
      * let data = [
      *  ['1', 2, 3], # colum 1                  1   |   a  |  c1
      *  ['a', 'b', 'c'], # column 2         =>  2   |   b  |  c2
      *  ['c1', 'c2', 'c3'], # column 3          3   |   c  |  c3
      *  ... # column N
      * ];
+    //  *  or
+    //  *  ['1', '2', '3'],
+    //  *  [{obj}, {obj}, {obj}]
+    //  *  Therein obj includes:
+    //  *  {
+    //  *      text: string # display string of label
+    //  *      color: new cc.Color() # color of node which includes label above
+    //  *      button: {
+    //  *          spriteFrame: string,
+    //  *          eventHandler: function || cc.Component.EventHandler,
+    //  *          width: number # button width
+    //  *          height: number # button height
+    //  *      }
+    //  *      width: number # width of cell. it's higher priority than below `opts`->`colWidth` property
+    //  *      height: number # height of cell. it's higher priority than below `opts`->`colWidth` property
+    //  *      spriteFrame: string # cell background spriteFrame
+    //  *      bgColor: new cc.Color
+    //  *      fontColor: new cc.Color
+    //  *      fontSize: number
+    //  *      fontLineHeight: number
+    //  *  }
      * 
      * @param {any} opts
      * {
@@ -30,11 +52,24 @@ export default class GridViewRub {
      *  isVertical: boolean # default true
      *  spacingX: number # default 2px
      *  spacingY: boolean # default 2px
-     *  colWidth: array[number || null] # array of width per column ['', 500, 20]
-     *      # assuming you have `content` node with width = 100 and 3 columns ['', 50, 20]
-     *      # while the first element in array `colWidth` is empty || null its width will be 100 - (50 + 20)
-     *      # if we have colWidth = ['', '', 50, 20] -> (100 - (50 + 20)) / 2
      *  event: cc.EventHandler || null # add a scroll event to scrollView
+     * 
+     *  group: {
+     *      widths: array[number || null] # array of width per cell ['', 500, 20]
+     *          # assuming you have `content` node with width = 100 and 3 columns ['', 50, 20]
+     *          # while the first element in array `width` is empty || null its width will be 100 - (50 + 20)
+     *          # if we have width = ['', '', 50, 20] -> (100 - (50 + 20)) / 2
+     *      colors: array[new cc.Color || null] # array of setting color of text. default cc.Color(225, 255, 255)
+     *      buttons: array[{ # if this property is setted. Default text label will be put inside it's child node.
+     *          width: number # btn width
+     *          height: number # btn height
+     *          events: {
+     *              handler: function || cc.Component.EventHandler,
+     *              context: <object> context
+     *          } || null
+     *      } || null]
+     *  }
+     * 
      *  cell: { // CellRub options
      *      spriteFrame: string
      *      bgColor: new cc.Color
@@ -42,23 +77,34 @@ export default class GridViewRub {
      *      height: number
      *      fontColor: new cc.Color
      *      fontSize: number
-     *      fontLineHeight: number
-     *      // TODO 
-     *      button & clickEvent handler when cell contains button. button with/without label
+     *      fontLineHeight: number,
+     *      horizontalSeparate: {
+     *          pattern: string || cc.Color,
+     *          size: cc.size()
+     *          align: string
+     *      }
+     *      verticalSeparate: {
+     *          pattern: string || cc.Color,
+     *          size: cc.size(),
+     *          align: string
+     *      }
      *  }
      * }
-     * @memberOf GridViewRub
+     * 
+     * @memberOf GridViewRub ( cc.Node )
      */
     constructor(head = null, data, opts = {}) {
         // CellRub default options
-        let cell = {
-            bgColor: new cc.Color(68, 25, 97), // # violet
+        let cell = Object.assign({}, {
+            bgColor: app.const.COLOR_VIOLET, // # violet
             width: 100,
             height: 50,
-            fontColor: new cc.Color(246, 255, 41), // # yellow
+            fontColor: app.const.COLOR_YELLOW, // # yellow
             fontSize: 16,
-            fontLineHeight: 40
-        };
+            fontLineHeight: 40,
+            horizontalSeparate: null,
+            verticalSeparate: null
+        }, opts.cell || {});
 
         let defaultOptions = {
             position: cc.v2(0, 0),
@@ -68,12 +114,12 @@ export default class GridViewRub {
             spacingY: 2,
             isHorizontal: false,
             isVertical: true,
+            group: {},
             cell
         };
 
         let defaultHead = {
             data: [],
-
         };
 
         this.options = Object.assign({}, defaultOptions, opts);
@@ -110,18 +156,22 @@ export default class GridViewRub {
         });
     }
 
-    initNode() {
-
-    }
-
     getContentNodeWidth() {
-        return this.contentNode.getContentSize().width;
+        return this.contentNode && (() => this.contentNode.getContentSize().width || 0)();
     }
 
     getNode() {
         return this.init().then(() => {
             return this.prefab;
         });
+    }
+
+    resetData(data) {
+        this.data = this._validData(data);
+        // reset body
+        this.contentNode && this.contentNode.removeAllChildren(true);
+        // reinsert
+        this._insertCellBody(data);
     }
 
     updateData(data) {
@@ -199,12 +249,30 @@ export default class GridViewRub {
 
     _insertCellBody(data) {
         let width = this._setCellSize(data);
-        let cellOpts = Object.assign({}, this.options.cell);
+
 
         for (let i = 0; i < data.length; i++) {
             for (let j = 0; j < data[i].length; j++) {
+                let jMax = data[i].length - 1;
+                let cellOpts = Object.assign({}, this.options.cell);
                 cellOpts.width = width[j];
-                cellOpts.fontColor = new cc.Color(255, 255, 255);
+                if (this.options.group.colors)
+                    cellOpts.fontColor = this.options.group.colors[j] || app.const.COLOR_WHITE;
+
+                // add separate if any.   
+                if (cellOpts.horizontalSeparate) {
+                    let separateWidth = (j === 0 || j === jMax ? 80 : 100) * cellOpts.width / 100;
+                    cellOpts.horizontalSeparate.size = cc.size(separateWidth, cellOpts.horizontalSeparate.size ? cellOpts.horizontalSeparate.size.height : 2);
+                    if (j === 0)
+                        cellOpts.horizontalSeparate.align = 'right';
+                    else if (j === jMax)
+                        cellOpts.horizontalSeparate.align = 'left';
+                    else
+                        cellOpts.horizontalSeparate.align = 'full';
+
+                    if (i === data.length - 1)
+                        cellOpts.horizontalSeparate.align = 'none';
+                }
 
                 // body
                 let cellNode = new CellRub(data[i][j] || '', cellOpts).cell();
@@ -212,18 +280,19 @@ export default class GridViewRub {
             }
         }
     }
+
     _setCellSize() {
-        if (this.options.colWidth) {
-            let colWidth = this.options.colWidth;
+        if (this.options.group.widths) {
+            let groupWidth = this.options.group.widths;
 
             // total width inside array
-            let totalWidth = colWidth.reduce((p, n) => !isNaN(p) && (Number(p) + Number(n)));
+            let totalWidth = groupWidth.reduce((p, n) => !isNaN(p) && (Number(p) + Number(n)));
 
             // remaing array which cotains null -> ["", ""]
-            let remains = colWidth.filter((e) => !isNaN(e) && Number(e) === 0);
+            let remains = groupWidth.filter((e) => !isNaN(e) && Number(e) === 0);
             let n = this.getContentNodeWidth() > totalWidth ? this.getContentNodeWidth() - totalWidth : 0;
 
-            return colWidth.map((e) => (!isNaN(e) && Number(e) === 0 && n / remains.length - this.options.spacingX) || e - this.options.spacingX);
+            return groupWidth.map((e) => (!isNaN(e) && Number(e) === 0 && n / remains.length - this.options.spacingX) || e - this.options.spacingX);
 
         } else {
             let numberOfColumns = this.data[0].length; // converted this.data 
