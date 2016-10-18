@@ -51,6 +51,7 @@ Events.ON_GAME_SET_LAST_MOVE            = "on.game.setLastMove";
 
 Events.GAME_USER_EXIT_ROOM              = "gameUserExitRoom";
 
-Events.ON_ACTION_EXIT_GAME                 = "action.exitGame";
+Events.ON_ACTION_EXIT_GAME              = "action.exitGame";
+Events.ON_ACTION_LOAD_GAME_GUIDE        = "action.loadGameGuide";
 
 Events.SET_INTERACTABLE_PLAY_CONTROL    = "set.interactablePlayControl";

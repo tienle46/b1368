@@ -14,5 +14,9 @@ export default {
   game_tu_quy: 'tứ quý',
   game_ba_bich: '3 bích',
   game_thoi: 'Thối',
-  game_waiting_time: 'Thời gian chờ'
+  game_waiting_time: 'Thời gian chờ',
+  label_accept: 'Đồng ý',
+  label_deny: 'Hủy',
+  label_close: 'Đóng',
+
 };

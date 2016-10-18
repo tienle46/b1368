@@ -52,6 +52,7 @@ export default class GameScene extends BaseScene {
         //     }))
         // }, this, 1);
         this.on(Events.ON_ACTION_EXIT_GAME, this._onActionExitGame, this);
+        this.on(Events.ON_ACTION_LOAD_GAME_GUIDE, this._onActionLoadGameGuide, this);
     }
 
     handleRejoinGame(...args){
@@ -78,11 +79,11 @@ export default class GameScene extends BaseScene {
                 throw new CreateGameException(app.res.string('error.fail_to_load_game_data'));
             }
 
-            this.showLongLoading("GameScene");
+            this.showLongLoading(GameScene.name);
 
             gameManager.loadRes(this.gameCode, (error) => {
                 if (error) {
-                    this.hideLoading("GameScene");
+                    this.hideLoading(GameScene.name);
                     throw new CreateGameException(error);
                 } else {
                     this._initGameScene();
@@ -152,6 +153,8 @@ export default class GameScene extends BaseScene {
         } else {
             throw new CreateGameException(app.res.string('error.fail_to_create_game'));
         }
+
+        debug(this.node);
     }
 
     _onDoneInitGameScene() {
@@ -161,7 +164,7 @@ export default class GameScene extends BaseScene {
         app.system.handlePendingEvents();
 
         this._handlePendingEvents();
-        this.hideLoading("GameScene");
+        this.hideLoading(GameScene.name);
     }
 
     _handlePendingEvents(){
@@ -182,15 +185,27 @@ export default class GameScene extends BaseScene {
     }
 
     _onActionExitGame() {
-        this.showLoading();
+        this.showLoading(GameScene.name);
         app.service.sendRequest(new SFS2X.Requests.System.LeaveRoomRequest(this.room));
+    }
+
+    _onActionShowMenu() {
+
+    }
+
+    _onActionHideMenu() {
+
+    }
+
+    _onActionLoadGameGuide(){
+        app.system.info(app.res.string('coming_soon'));
     }
 
     _loadGameData() {
         this.gamePlayers._init(this.board, this);
 
-        let isGamePlaying = GameUtils.isPlayingState(currentGameState);
         let currentGameState = utils.getValue(this.gameData, Keywords.BOARD_STATE_KEYWORD);
+        let isGamePlaying = GameUtils.isPlayingState(currentGameState);
 
         /**
          * Current is call board._initPlayingData && board._loadGamePlayData directly. But when player or other component need to get data,
@@ -247,6 +262,7 @@ export default class GameScene extends BaseScene {
     }
 
     _onLoadSceneFail() {
+        this.hideLoading()
         if (app.config.debug) {
             return;
         }

@@ -7,6 +7,7 @@ import utils from 'utils';
 import Actor from 'Actor';
 import BasePopup from 'BasePopup';
 import Emitter from 'emitter'
+import FullSceneProgress from 'FullSceneProgress';
 
 export default class BaseScene extends Actor {
     constructor() {
@@ -19,11 +20,13 @@ export default class BaseScene extends Actor {
             type: cc.Prefab
         };
 
+        this.progressPrefab = cc.Prefab;
+        this.progress = null;
         this.onShown = null;
         this.isLoaded = false;
     }
 
-    _addToPendingAddPopup(message){
+    _addToPendingAddPopup(message) {
         !this._pendingAddPopup && (this._pendingAddPopup = []);
         message && this._pendingAddPopup.push(message);
     }
@@ -46,16 +49,26 @@ export default class BaseScene extends Actor {
         super._removeGlobalListener();
     }
 
-    onLoad(){
-        this.isLoaded = true;
+    onLoad() {
+        let progressNode = this.progressPrefab && cc.instantiate(this.progressPrefab);
+        if (progressNode) {
+            progressNode.active = false;
+            this.node.addChild(progressNode, 10000);
+            this.progress = progressNode.getComponent(FullSceneProgress.name);
+        }
+
         this._pendingAddPopup && this._pendingAddPopup.forEach(msg => {
             this.addPopup(msg);
-        })
+        });
+
+        this.isLoaded = true;
+    }
+
+    onActive() {
+        app.system.setCurrentScene(this);
     }
 
     start() {
-        app.system.setCurrentScene(this);
-
         if (this.onShown && this.onShown instanceof Function) {
             this.onShown();
         }
@@ -73,35 +86,36 @@ export default class BaseScene extends Actor {
         this.showLoading(payload, message, 20);
     }
 
-    showLoading(payload, message, timeoutInSeconds = 10) {
+    showLoading(payload, message = '', timeoutInSeconds = 10) {
         this.hideLoading(payload);
 
         if (utils.isNumber(message)) {
             timeoutInSeconds = message;
+            message = "";
         }
 
-        //TODO
+        this.progress && this.progress.show(message, timeoutInSeconds);
 
         this.loading = true;
     }
 
     hideLoading(payload) {
         this.loading = false;
-        //TODO
+        this.progress && this.progress.hide();
     }
 
     // show popup
     addPopup(string = null) {
-        if(utils.isEmpty(string)){
+        if (utils.isEmpty(string)) {
             return;
         }
 
-        if(this.popUp){
+        if (this.popUp) {
             var popupBase = new cc.instantiate(this.popUp);
             popupBase.position = cc.p(0, 0);
             popupBase.getComponent(BasePopup).setContent(string);
             this.node.addChild(popupBase);
-        }else{
+        } else {
             this._addToPendingAddPopup(string);
         }
     }
@@ -109,7 +123,7 @@ export default class BaseScene extends Actor {
     changeScene(name, duration = 0.5) {
         this.node.runAction(cc.sequence(
             cc.fadeOut(duration),
-            cc.callFunc(function() {
+            cc.callFunc(function () {
                 cc.director.loadScene(name);
             })
         ));

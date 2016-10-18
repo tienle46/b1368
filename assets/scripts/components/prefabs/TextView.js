@@ -6,7 +6,7 @@ export default class TextView extends Component {
         super();
         this.label = cc.Label;
         this.lines = 1;
-        this.lineWidth = 100;
+        this.lineWidth = 0;
         this.maxWidth = 1000;
         this.lineHeight = 20;
         this.resizeWidth = true;
@@ -14,7 +14,7 @@ export default class TextView extends Component {
 
     onLoad() {
         this.lineHeight = this.label.node.height;
-        this.label.node.width = this.lineWidth;
+        this.lineWidth = this.label.node.width;
         this.label.overflow = cc.Label.Overflow.RESIZE_HEIGHT;
     }
 
