@@ -26,7 +26,7 @@ export default class BaseScene extends Actor {
         this.isLoaded = false;
     }
 
-    _addToPendingAddPopup(message){
+    _addToPendingAddPopup(message) {
         !this._pendingAddPopup && (this._pendingAddPopup = []);
         message && this._pendingAddPopup.push(message);
     }
@@ -49,10 +49,11 @@ export default class BaseScene extends Actor {
         super._removeGlobalListener();
     }
 
-    onLoad(){
+    onLoad() {
         let progressNode = this.progressPrefab && cc.instantiate(this.progressPrefab);
-        if(progressNode){
-            progressNode.parent = this.node;
+        if (progressNode) {
+            progressNode.active = false;
+            this.node.addChild(progressNode, 10000);
             this.progress = progressNode.getComponent(FullSceneProgress.name);
         }
 
@@ -63,9 +64,11 @@ export default class BaseScene extends Actor {
         this.isLoaded = true;
     }
 
-    start() {
+    onActive() {
         app.system.setCurrentScene(this);
+    }
 
+    start() {
         if (this.onShown && this.onShown instanceof Function) {
             this.onShown();
         }
@@ -83,7 +86,7 @@ export default class BaseScene extends Actor {
         this.showLoading(payload, message, 20);
     }
 
-    showLoading(payload, message, timeoutInSeconds = 10) {
+    showLoading(payload, message = '', timeoutInSeconds = 10) {
         this.hideLoading(payload);
 
         if (utils.isNumber(message)) {
@@ -103,16 +106,16 @@ export default class BaseScene extends Actor {
 
     // show popup
     addPopup(string = null) {
-        if(utils.isEmpty(string)){
+        if (utils.isEmpty(string)) {
             return;
         }
 
-        if(this.popUp){
+        if (this.popUp) {
             var popupBase = new cc.instantiate(this.popUp);
             popupBase.position = cc.p(0, 0);
             popupBase.getComponent(BasePopup).setContent(string);
             this.node.addChild(popupBase);
-        }else{
+        } else {
             this._addToPendingAddPopup(string);
         }
     }
@@ -120,7 +123,7 @@ export default class BaseScene extends Actor {
     changeScene(name, duration = 0.5) {
         this.node.runAction(cc.sequence(
             cc.fadeOut(duration),
-            cc.callFunc(function() {
+            cc.callFunc(function () {
                 cc.director.loadScene(name);
             })
         ));

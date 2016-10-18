@@ -3,6 +3,7 @@ import Component from 'Component';
 import SFS2X from 'SFS2X';
 import Events from 'Events';
 import utils from 'utils';
+import TopupDialogRub from 'TopupDialogRub';
 
 class GameMenuPrefab extends Component {
     constructor() {
@@ -41,35 +42,44 @@ class GameMenuPrefab extends Component {
         this.scene = scene;
     }
 
+    _onClickMenuItem(eventName, ...args){
+        this.hide();
+        this.scene.emit(eventName, ...args);
+    }
+
     onClickExitButton(event)
     {
-        this.scene.emit(Events.ON_ACTION_EXIT_GAME);
+        this._onClickMenuItem(Events.ON_ACTION_EXIT_GAME);
     }
 
     onClickGuideButton()
     {
-        this.scene.emit(Events.ON_ACTION_LOAD_GAME_GUIDE);
+        this._onClickMenuItem(Events.ON_ACTION_LOAD_GAME_GUIDE);
     }
 
     onClickMenuButton(event) {
-        this.isMenuPopupShown ? this.hideMenuPopup() : this.showMenuPopup();
+        this.isMenuPopupShown ? this.hide() : this.show();
     }
 
     onClickOutsideMenuPopup() {
-        this.hideMenuPopup();
+        this.hide();
     }
 
     _onTouchGameMenu(){
-        this.isMenuPopupShown && this.hideMenuPopup();
+        this.isMenuPopupShown && this.hide();
     }
 
-    showMenuPopup(){
+    onDisable(){
+        this.menuPopup.off('touchstart', this._onTouchGameMenu, this);
+    }
+
+    show(){
         utils.active(this.menuPopup);
         this.isMenuPopupShown = true;
         this.menuPopup.on('touchstart', this._onTouchGameMenu, this);
     }
 
-    hideMenuPopup(){
+    hide(){
         utils.deactive(this.menuPopup);
         this.isMenuPopupShown = false;
         this.menuPopup.off('touchstart', this._onTouchGameMenu, this);
@@ -80,7 +90,7 @@ class GameMenuPrefab extends Component {
     }
 
     onClickTopupButton(event) {
-        app.system.info(app.res.string('coming_soon'));
+        TopupDialogRub.show(this.scene.node);
     }
 }
 

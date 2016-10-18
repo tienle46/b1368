@@ -7,6 +7,7 @@ import SFS2X from 'SFS2X';
 import BaseScene from 'BaseScene';
 import Emitter from 'emitter';
 import GameScene from 'GameScene';
+import AlertPopupRub from 'AlertPopupRub';
 
 class GameSystem {
 
@@ -63,7 +64,7 @@ class GameSystem {
     }
 
     get currentScene() {
-        return cc.director.getScene();
+        return this._currentScene;
     }
 
     /**
@@ -81,8 +82,7 @@ class GameSystem {
             title = app.res.string('system');
         }
 
-        alert(message);
-        //TODO
+        AlertPopupRub.show(this.currentScene.node, message);
     }
 
     error(message, closeCb) {

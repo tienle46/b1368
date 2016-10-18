@@ -79,11 +79,11 @@ export default class GameScene extends BaseScene {
                 throw new CreateGameException(app.res.string('error.fail_to_load_game_data'));
             }
 
-            this.showLongLoading("GameScene");
+            this.showLongLoading(GameScene.name);
 
             gameManager.loadRes(this.gameCode, (error) => {
                 if (error) {
-                    this.hideLoading("GameScene");
+                    this.hideLoading(GameScene.name);
                     throw new CreateGameException(error);
                 } else {
                     this._initGameScene();
@@ -153,6 +153,8 @@ export default class GameScene extends BaseScene {
         } else {
             throw new CreateGameException(app.res.string('error.fail_to_create_game'));
         }
+
+        debug(this.node);
     }
 
     _onDoneInitGameScene() {
@@ -162,7 +164,7 @@ export default class GameScene extends BaseScene {
         app.system.handlePendingEvents();
 
         this._handlePendingEvents();
-        this.hideLoading("GameScene");
+        this.hideLoading(GameScene.name);
     }
 
     _handlePendingEvents(){
@@ -183,7 +185,7 @@ export default class GameScene extends BaseScene {
     }
 
     _onActionExitGame() {
-        this.showLoading();
+        this.showLoading(GameScene.name);
         app.service.sendRequest(new SFS2X.Requests.System.LeaveRoomRequest(this.room));
     }
 
@@ -260,6 +262,7 @@ export default class GameScene extends BaseScene {
     }
 
     _onLoadSceneFail() {
+        this.hideLoading()
         if (app.config.debug) {
             return;
         }

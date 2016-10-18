@@ -35,12 +35,11 @@ class EntranceScene extends BaseScene {
 
     // use this for initialization
     onLoad() {
-        this.loader = new LoaderRub(this.node);
         super.onLoad();
     }
 
     handleLoginAction() {
-        this.loader.show();
+        this.showLoading();
         app.service.connect((success) => {
             log("success: " + success);
             if (success) {
@@ -49,7 +48,7 @@ class EntranceScene extends BaseScene {
                         error = JSON.parse(error);
                         if (result) {
                             console.log(app.context.getMe());
-                            this.loader.hide();
+                            this.hideLoading();
                             this.changeScene('DashboardScene');
                         }
 
@@ -140,10 +139,6 @@ class EntranceScene extends BaseScene {
         } catch (e) {
             throw new Error('hashCode: ' + e);
         }
-    }
-
-    start(){
-        this.showLoading("", 5);
     }
 }
 
