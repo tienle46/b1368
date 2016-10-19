@@ -546,8 +546,6 @@ Keywords.CO_TOTAL_TIME_REMAIN_ARRAY = "rtl";
 Keywords.CO_EATEN_ROLE = "er";
 Keywords.CO_EATEN_FLIP = "ef";
 Keywords.CO_EATEN_SIZE = "es";
-// Agency
-Keywords.AGENCY = 'agent';
 
 //RANK REQUEST
 Keywords.RANK_ACTION_TYPE = "ac";

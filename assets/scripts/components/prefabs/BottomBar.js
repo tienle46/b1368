@@ -52,27 +52,10 @@ class BottomBar extends Component {
     }
 
     onClickNapXuAction() {
-        let tabs = [{
-            title: 'Thẻ cào',
-            value: 'tab_card'
-        }, {
-            title: 'SMS',
-            value: 'tab_sms'
-        }, {
-            title: 'IAP',
-            value: 'tab_iap'
-        }, {
-            title: 'Đại lí',
-            value: 'tab_kiot'
-        }];
-
-        let options = {
-            itemHeight: 26.5
-        };
-
-        let tabOptions = { tabs, options };
-        // bottombar -> dashboard scene node
-        TopupDialogRub.show(this.node.parent, tabOptions);
+        this._getTopupTabOptions((tabOptions) => {
+            // bottombar -> dashboard scene node
+            TopupDialogRub.show(this.node.parent, tabOptions);
+        });
     }
 
     onClickTopRankAction() {
@@ -120,6 +103,29 @@ class BottomBar extends Component {
         });
     }
 
+    _getTopupTabOptions(cb) {
+        let tabs = [{
+            title: 'Thẻ cào',
+            value: 'tab_card'
+        }, {
+            title: 'SMS',
+            value: 'tab_sms'
+        }, {
+            title: 'IAP',
+            value: 'tab_iap'
+        }, {
+            title: 'Đại lí',
+            value: this._initAgencyTab()
+                // value: 'kiot_tab'
+        }];
+
+        let options = {
+            itemHeight: 26.5
+        };
+
+        cb({ tabs, options });
+    }
+
     _getPersonalInfoTabOptions(cb) {
         let tabs = [{
             title: 'Cá nhân',
@@ -148,6 +154,58 @@ class BottomBar extends Component {
         };
 
         cb({ tabs, options });
+    }
+
+    _initAgencyTab() {
+        let agencyTab = new GridViewRub(null, [
+            ['x', 'x1', 'x2'],
+            ['z', 'z1', 'z2'],
+            ['y', 'y1', 'y2']
+        ], {
+            position: cc.v2(2, 140),
+            width: 800,
+            spacingX: 0,
+            spacingY: 0,
+            cell: {
+                horizontalSeparate: {
+                    pattern: new cc.Color(102, 45, 145)
+                }
+            },
+            group: {
+                colors: [null, app.const.COLOR_YELLOW, null]
+            }
+        });
+
+        this._getAgencyDataFromServer(agencyTab);
+
+        return agencyTab.getNode();
+    }
+
+    _getAgencyDataFromServer(agencyTab) {
+        let sendObj = {
+            cmd: app.commands.AGENCY
+        };
+
+        console.log(sendObj);
+        app.service.send(sendObj, (res) => {
+            console.log(res)
+                // if (res) {
+                //     let gameListCol = res[app.keywords.GAME_NAME_LIST] || [];
+                //     let levelCol = res[app.keywords.LEVEL_LIST].map((e) => `Cấp độ ${e}`) || [];
+                //     // let levelCol = res[app.keywords.LEVEL_TITLE_LIST]|| []; 
+                //     let winLostCol = res[app.keywords.WIN_LIST].map((e, i) => `${e}/${res[app.keywords.LOST_LIST][i]}`) || [];
+
+            //     let data = [
+            //         gameListCol,
+            //         levelCol,
+            //         winLostCol,
+            //     ];
+
+            //     if (agencyTab)
+            //         agencyTab.resetData(data);
+            // }
+
+        });
     }
 
     _initAchievementsTab() {

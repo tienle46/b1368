@@ -227,4 +227,6 @@ Commands.ADMIN_SYSTEM_MESSAGE = "dcn";
 //high light message
 Commands.HIGH_LIGHT_MESSAGE = "hm";
 
+// Agency
+Commands.AGENCY = "agent";
 module.exports = Commands;
