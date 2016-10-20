@@ -157,22 +157,24 @@ class BottomBar extends Component {
     }
 
     _initAgencyTab() {
-        let agencyTab = new GridViewRub(null, [
-            ['x', 'x1', 'x2'],
-            ['z', 'z1', 'z2'],
-            ['y', 'y1', 'y2']
+        let agencyTab = new GridViewRub({
+            data: ['Thời gian làm việc', 'Đại lý', 'Số điện thoại', 'Địa chỉ', 'facebook'],
+            options: {
+                bgColor: new cc.Color(53, 135, 217),
+                fontColor: app.const.COLOR_WHITE
+            }
+        }, [
+            ['x', 'x1', 'x2', 'x1', 'x2'],
+            ['z', 'z1', 'z2', 'z1', 'z2'],
+            ['y', 'y1', 'y2', 'y1', 'y2'],
+            ['y', 'y1', 'y2', 'y1', 'y2'],
+            ['y', 'y1', 'y2', 'y1', 'y2']
         ], {
             position: cc.v2(2, 140),
-            width: 800,
-            spacingX: 0,
-            spacingY: 0,
-            cell: {
-                horizontalSeparate: {
-                    pattern: new cc.Color(102, 45, 145)
-                }
-            },
+            width: 750,
+            height: 350,
             group: {
-                colors: [null, app.const.COLOR_YELLOW, null]
+                colors: [null, null, new cc.Color(65, 94, 160), null, null]
             }
         });
 

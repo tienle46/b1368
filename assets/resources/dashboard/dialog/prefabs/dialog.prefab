@@ -516,7 +516,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 719,
+      "width": 765,
       "height": 45
     },
     "_children": [],
@@ -526,7 +526,7 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": -13,
+      "x": 1,
       "y": 141
     },
     "_skewX": 0,
@@ -588,7 +588,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 391,
-      "y": 164
+      "y": 183
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -638,6 +638,7 @@
       "a": 255
     },
     "duration": 0.1,
+    "zoomScale": 1.2,
     "pressedSprite": {
       "__uuid__": "7e3843cb-6bf5-49be-9a0d-990f210345a0"
     },
@@ -648,6 +649,7 @@
       }
     ],
     "_N$interactable": true,
+    "_N$enableAutoGrayEffect": false,
     "_N$normalColor": {
       "__type__": "cc.Color",
       "r": 214,

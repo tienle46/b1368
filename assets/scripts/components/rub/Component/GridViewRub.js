@@ -6,7 +6,6 @@ export default class GridViewRub {
     /**
      * Creates an instance of GridViewRub.
      * 
-     * @param {any} node
      * @head {Array || null } table header array
      * {
      *  data: ['text', 'text', 'text'] # string array represent for label text inside header
@@ -20,27 +19,21 @@ export default class GridViewRub {
      *  ['c1', 'c2', 'c3'], # column 3          3   |   c  |  c3
      *  ... # column N
      * ];
-    //  *  or
-    //  *  ['1', '2', '3'],
-    //  *  [{obj}, {obj}, {obj}]
-    //  *  Therein obj includes:
-    //  *  {
-    //  *      text: string # display string of label
-    //  *      color: new cc.Color() # color of node which includes label above
-    //  *      button: {
-    //  *          spriteFrame: string,
-    //  *          eventHandler: function || cc.Component.EventHandler,
-    //  *          width: number # button width
-    //  *          height: number # button height
-    //  *      }
-    //  *      width: number # width of cell. it's higher priority than below `opts`->`colWidth` property
-    //  *      height: number # height of cell. it's higher priority than below `opts`->`colWidth` property
-    //  *      spriteFrame: string # cell background spriteFrame
-    //  *      bgColor: new cc.Color
-    //  *      fontColor: new cc.Color
-    //  *      fontSize: number
-    //  *      fontLineHeight: number
-    //  *  }
+     *  or
+     *  ['1', '2', '3'],
+     *  [{obj}, {obj}, {obj}]
+     *  Therein {obj} are an object includes:
+     *  {
+     *      text: string # display string of label
+     *      color: new cc.Color() # color of node which includes label above
+     *      button: { # if this property is exist. Default a label will be contained inside button < if above `text` is availabe >
+     *          spriteFrame: string,
+     *          eventHandler: function || cc.Component.EventHandler,
+     *          width: number # button width
+     *          value: {any} // button's value
+     *          height: number # button height
+     *      }
+     *  }
      * 
      * @param {any} opts
      * {
@@ -60,14 +53,7 @@ export default class GridViewRub {
      *          # while the first element in array `width` is empty || null its width will be 100 - (50 + 20)
      *          # if we have width = ['', '', 50, 20] -> (100 - (50 + 20)) / 2
      *      colors: array[new cc.Color || null] # array of setting color of text. default cc.Color(225, 255, 255)
-     *      buttons: array[{ # if this property is setted. Default text label will be put inside it's child node.
-     *          width: number # btn width
-     *          height: number # btn height
-     *          events: {
-     *              handler: function || cc.Component.EventHandler,
-     *              context: <object> context
-     *          } || null
-     *      } || null]
+     *      buttons: array[ || null]
      *  }
      * 
      *  cell: { // CellRub options
@@ -124,7 +110,7 @@ export default class GridViewRub {
 
         this.options = Object.assign({}, defaultOptions, opts);
         this.data = this._validData(data);
-        if (data instanceof Array) {
+        if (head instanceof Array) {
             this.head = {
                 data: head
             };
@@ -227,9 +213,10 @@ export default class GridViewRub {
     }
 
     _initCell() {
-        let data = this.data;
+        let data = this.data; // body data
+        let headData = this.head.data;
 
-        if (this.head.data && this.head.data.length > 0) {
+        if (headData && headData.length > 0) {
             this._insertCellHead(data);
         }
 
@@ -238,11 +225,12 @@ export default class GridViewRub {
 
     _insertCellHead(data) {
         let width = this._setCellSize(data);
+        let headData = this.head.data;
         let cellOpts = Object.assign({}, this.options.cell, this.head.options || {});
 
-        for (let i = 0; i < this.head.data.length; i++) {
+        for (let i = 0; i < headData.length; i++) {
             cellOpts.width = width[i];
-            let cellNode = new CellRub(this.head.data[i] || '', cellOpts).cell();
+            let cellNode = new CellRub(headData[i] || '', cellOpts).node();
             this.contentNode.addChild(cellNode);
         }
     }
@@ -275,7 +263,7 @@ export default class GridViewRub {
                 }
 
                 // body
-                let cellNode = new CellRub(data[i][j] || '', cellOpts).cell();
+                let cellNode = new CellRub(data[i][j] || '', cellOpts).node();
                 this.contentNode.addChild(cellNode);
             }
         }
@@ -339,8 +327,8 @@ export default class GridViewRub {
 
 
     // return Promise which attaches `cc.Node`
-    static node(node, head, data, opts = {}) {
-        return new GridViewRub(node, head, data, opts).init().then((a) => {
+    static node(head, data, opts = {}) {
+        return new GridViewRub(head, data, opts).init().then((a) => {
             return a._getNode();
         });
     }

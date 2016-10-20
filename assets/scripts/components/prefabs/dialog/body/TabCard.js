@@ -70,7 +70,8 @@ class TabCard extends Component {
             };
             console.log(sendObject);
             app.service.send(sendObject, (data) => {
-                console.log('xxxxx');
+                // console.log('xxxxx');
+                // return a system message
             }, app.const.scene.DASHBOARD_SCENE);
         }
     }
