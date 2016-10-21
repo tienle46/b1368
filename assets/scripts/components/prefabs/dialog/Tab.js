@@ -40,7 +40,8 @@ class Tab extends Component {
         this.clearBody(bodyNode);
 
         if (content instanceof cc.Node) {
-            bodyNode.addChild(content);
+            let node = _.cloneDeep(content);
+            bodyNode.addChild(node);
         } else if (content instanceof Promise) {
             content.then((node) => {
                 // wait until resources are loaded.

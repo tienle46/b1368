@@ -157,18 +157,6 @@ class TabExchangeItem extends Component {
         lblComponent.lineHeight = 20;
         lblComponent.overflow = cc.Label.Overflow.RESIZE_HEIGHT;
 
-        // let lblNode2 = new cc.Node();
-        // lblNode2.setContentSize(cc.size(lblNodeWidth, lblNodeHeight));
-        // lblContainerNode.addChild(lblNode2);
-
-        // let lblComponent2 = lblNode2.addComponent(cc.Label);
-        // lblComponent2.string = numeral(itemGold).format('0,0');
-        // lblComponent2.node.color = new cc.Color(246, 255, 41);
-        // lblComponent2.horizontalAlign = cc.Label.HorizontalAlign.CENTER;
-        // lblComponent2.verticalAlign = cc.Label.VerticalAlign.CENTER;
-        // lblComponent2.fontSize = 16;
-        // lblComponent2.lineHeight = 20;
-        // lblComponent2.overflow = cc.Label.Overflow.RESIZE_HEIGHT;
         let lblNode2 = cc.instantiate(lblNode);
         lblContainerNode.addChild(lblNode2);
 

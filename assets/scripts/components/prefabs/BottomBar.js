@@ -157,6 +157,12 @@ class BottomBar extends Component {
     }
 
     _initAgencyTab() {
+        let event = new cc.Component.EventHandler();
+        event.target = this.node;
+        event.component = 'BottomBar';
+        event.handler = 'testClick';
+
+
         let agencyTab = new GridViewRub({
             data: ['Thời gian làm việc', 'Đại lý', 'Số điện thoại', 'Địa chỉ', 'facebook'],
             options: {
@@ -168,7 +174,7 @@ class BottomBar extends Component {
             ['z', 'z1', 'z2', 'z1', 'z2'],
             ['y', 'y1', 'y2', 'y1', 'y2'],
             ['y', 'y1', 'y2', 'y1', 'y2'],
-            ['y', 'y1', 'y2', 'y1', 'y2']
+            [{ text: 'y', button: { eventHandler: event } }, { text: 'y1' }, { text: 'y2' }, { text: 'y3' }, { text: 'y4' }]
         ], {
             position: cc.v2(2, 140),
             width: 750,
@@ -181,6 +187,10 @@ class BottomBar extends Component {
         this._getAgencyDataFromServer(agencyTab);
 
         return agencyTab.getNode();
+    }
+
+    testClick() {
+        console.log('testclick');
     }
 
     _getAgencyDataFromServer(agencyTab) {

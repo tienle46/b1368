@@ -28,7 +28,7 @@ export default class GridViewRub {
      *      color: new cc.Color() # color of node which includes label above
      *      button: { # if this property is exist. Default a label will be contained inside button < if above `text` is availabe >
      *          spriteFrame: string,
-     *          eventHandler: function || cc.Component.EventHandler,
+     *          eventHandler: cc.Component.EventHandler,
      *          width: number # button width
      *          value: {any} // button's value
      *          height: number # button height
