@@ -175,6 +175,8 @@ export default class GameManager {
 
     createPlayer(gameCode) {
 
+        console.log("createPlayer: ", gameCode);
+
         let playerClassName = playerClassNameMap[gameCode];
         let playerRendererClassName = playerRendererNameMap[gameCode];
 

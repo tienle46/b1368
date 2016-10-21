@@ -16,7 +16,7 @@ export default class ConfirmPopup extends MessagePopup {
         this.denyButtonLabel.string = app.res.string('label_deny');
     }
 
-    confirm(parentNode, message, acceptCb){
-        this.show(parentNode, message, null, acceptCb);
+    confirm(parentNode, message, denyCb, acceptCb){
+        this.show(parentNode, message, denyCb, acceptCb);
     }
 }

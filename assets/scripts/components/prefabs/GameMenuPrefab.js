@@ -4,6 +4,11 @@ import SFS2X from 'SFS2X';
 import Events from 'Events';
 import utils from 'utils';
 import TopupDialogRub from 'TopupDialogRub';
+import Keywords from 'Keywords';
+import Commands from 'Commands';
+import ScrollMessagePopup from 'ScrollMessagePopup';
+
+const ACTION_LUAT_CHOI = 1;
 
 class GameMenuPrefab extends Component {
     constructor() {
@@ -49,12 +54,24 @@ class GameMenuPrefab extends Component {
 
     onClickExitButton(event)
     {
+        this.hide();
         this._onClickMenuItem(Events.ON_ACTION_EXIT_GAME);
     }
 
-    onClickGuideButton()
-    {
-        this._onClickMenuItem(Events.ON_ACTION_LOAD_GAME_GUIDE);
+    onClickGuideButton(){
+        this.hide();
+
+        let data = {
+            [Keywords.SERVICE_ID] : this.scene.gameCode,
+            [Keywords.CLIENT_VERSION] : 1,
+            [Keywords.ACTION] : ACTION_LUAT_CHOI,
+            "testMode": false
+        }
+
+        ScrollMessagePopup.show(this.scene.node, {cmd: Commands.RULE_OF_GAME, data: data, parser: (data) => {
+            return data[Keywords.GAME_RULE] ? data[Keywords.GAME_RULE] : data[Keywords.GAME_GUIDE];
+        }});
+
     }
 
     onClickMenuButton(event) {
@@ -86,10 +103,12 @@ class GameMenuPrefab extends Component {
     }
 
     onClickChatButton(event) {
+        this.hide();
         app.system.info(app.res.string('coming_soon'));
     }
 
     onClickTopupButton(event) {
+        this.hide();
         TopupDialogRub.show(this.scene.node);
     }
 }

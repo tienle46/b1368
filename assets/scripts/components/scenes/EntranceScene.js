@@ -4,6 +4,7 @@ var Fingerprint2 = require('fingerprinter');
 
 import AlertPopupRub from 'AlertPopupRub';
 import LoaderRub from 'LoaderRub';
+import ScrollMessagePopup from 'ScrollMessagePopup';
 
 class EntranceScene extends BaseScene {
 

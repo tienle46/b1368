@@ -56,7 +56,6 @@ export default class PlayerTLMNDL extends PlayerCardTurnBase {
     }
 
     _onPlayTurn(){
-
         if(!this.isItMe()){
             return;
         }
@@ -119,6 +118,11 @@ export default class PlayerTLMNDL extends PlayerCardTurnBase {
         debug("player on destroy: ", this.board.scene);
         super.onDestroy();
 
+    }
+
+    start() {
+        super.start();
+        debug("start player PlayerTLMNDL");
     }
 
 }

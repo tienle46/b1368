@@ -90,10 +90,6 @@ export default class PlayerCardRenderer extends PlayerRenderer {
         return anchorPoint;
     }
 
-    onLoad(){
-        super.onLoad();
-    }
-
     clearCards(){
         this.cardList.clear();
     }
@@ -105,6 +101,34 @@ export default class PlayerCardRenderer extends PlayerRenderer {
 
     findCards(cardModels){
         return this.cardList.findCardComponents(cardModels);
+    }
+
+    update() {
+
+    }
+
+    lateUpdate() {
+
+    }
+
+    onLoad() {
+
+    }
+
+    start() {
+
+    }
+
+    onEnable() {
+
+    }
+
+    onDisable() {
+
+    }
+
+    onDestroy() {
+
     }
 
 }

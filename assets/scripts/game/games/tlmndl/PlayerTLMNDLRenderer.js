@@ -23,7 +23,7 @@ export default class PlayerTLMNDLRenderer extends PlayerCardTurnBaseRenderer {
         this.rendererClassName = this;
     }
 
-    _initUI(data){
+    _initUI(data) {
 
         this.assign(this.basePlayerPrefab, 'PlayerRenderer');
         this.assign(this.cardPlayerPrefab, 'PlayerCardRenderer');
@@ -31,8 +31,32 @@ export default class PlayerTLMNDLRenderer extends PlayerCardTurnBaseRenderer {
         super._initUI(data);
     }
 
-    onLoad(){
-        super.onLoad();
+    update() {
+
+    }
+
+    lateUpdate() {
+
+    }
+
+    onLoad() {
+
+    }
+
+    start() {
+
+    }
+
+    onEnable() {
+
+    }
+
+    onDisable() {
+
+    }
+
+    onDestroy() {
+
     }
 }
 

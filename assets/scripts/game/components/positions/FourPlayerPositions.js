@@ -3,9 +3,9 @@
  */
 
 import app from 'app';
-import PositionManager from 'PlayerPositions';
+import PlayerPositions from 'PlayerPositions';
 
-class FourPlayerPositions extends PositionManager {
+class FourPlayerPositions extends PlayerPositions {
 
     constructor() {
         super();

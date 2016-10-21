@@ -1,3 +1,6 @@
+
+import app from 'app';
+
 const bottomBarButtonType = {
     DEFAULT: 0,
     NAPXU: 0,
@@ -16,19 +19,22 @@ cc.Class({
     properties: {
         buttonType: app.bottomBarButtonType.NAPXU,
         pressedScale: 0.8,
-        transDuration: 0.1
+        transDuration: 0.1,
+        isTouching: false
     },
 
     onLoad: function() {
         this.initScale = this.node.scale;
         this.button = this.getComponent(cc.Button);
         this.scaleDownAction = cc.scaleTo(this.transDuration, this.pressedScale);
-        this.scaleUpAction = cc.scaleTo(this.transDuration, this.initScale);
+        this.scaleUpAction = cc.sequence(cc.scaleTo(this.transDuration, this.initScale), cc.callFunc(() => this.isTouching = false));
+        this.resetScaleAction = cc.sequence(cc.scaleTo(0, this.initScale), cc.callFunc(() => this.isTouching = false));
 
         var self = this;
         function onTouchDown(event) {
             this.stopAllActions();
             this.runAction(self.scaleDownAction);
+            this.isTouching = true;
         }
 
         function onTouchUp(event) {
@@ -36,9 +42,10 @@ cc.Class({
             this.runAction(self.scaleUpAction);
         }
 
-        function onTouchUp(event) {
+        function onTouchCancel(event) {
             this.stopAllActions();
-            this.runAction(self.scaleUpAction);
+            this.runAction(self.resetScaleAction);
+            this.isTouching = false;
         }
 
         this.node.on('touchstart', onTouchDown, this.node);

@@ -16,6 +16,10 @@ export default class Utils {
         return typeof value === 'number';
     }
 
+    static isFunction(value) {
+        return typeof value === 'function';
+    }
+
     static isBoolean(value) {
         return typeof value === 'boolean';
     }
@@ -118,4 +122,5 @@ export default class Utils {
         //     dest.node.addChild(node)
         // }));
     }
+
 }

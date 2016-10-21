@@ -5,6 +5,7 @@
 import app from 'app';
 import {utils, GameUtils} from 'utils';
 import ActorRenderer from 'ActorRenderer';
+import PlusBalanceAnimation from 'PlusBalanceAnimation';
 
 export default class PlayerRenderer extends ActorRenderer {
     constructor() {
@@ -54,6 +55,11 @@ export default class PlayerRenderer extends ActorRenderer {
             default: null,
             type: cc.ProgressBar
         };
+
+        this.plusBalanceNode = cc.Node;
+        this.plusBalanceLabel = cc.Label;
+        this.plusBalanceAnimation = null;
+
     }
 
     _initUI(data = {}) {
@@ -73,6 +79,7 @@ export default class PlayerRenderer extends ActorRenderer {
     }
 
     setName(name) {
+        this.playerName = name;
         this.playerNameLabel.string = name;
     }
 
@@ -126,6 +133,29 @@ export default class PlayerRenderer extends ActorRenderer {
             this.counterTimer = 0;
             this.callCounter.progress = 0;
         }
+    }
+
+    onLoad(){
+        this.plusBalanceAnimation = this.plusBalanceNode.getComponent(PlusBalanceAnimation.name);
+        this.plusBalanceAnimation.setup({player: this, endCallback: this._onDonePlusBalanceAnimation.bind(this)});
+
+        this.loaded = true;
+    }
+
+    startPlusBalanceAnimation(balance){
+
+        if(!this.loaded || isNaN(balance)) return;
+
+        if(this.plusBalanceLabel && this.plusBalanceNode){
+            this.plusBalanceLabel.string = GameUtils.toChangedBalanceString(balance);
+            this.plusBalanceAnimation.play();
+        }
+
+    }
+
+    _onDonePlusBalanceAnimation(){
+        console.log("_onDonePlusBalanceAnimation");
+        this.plusBalanceLabel.string = "";
     }
 }
 

@@ -547,6 +547,7 @@ Keywords.CO_EATEN_ROLE = "er";
 Keywords.CO_EATEN_FLIP = "ef";
 Keywords.CO_EATEN_SIZE = "es";
 
+
 //RANK REQUEST
 Keywords.RANK_ACTION_TYPE = "ac";
 Keywords.RANK_GROUP_TYPE = "gt";
@@ -648,3 +649,5 @@ Keywords.USER_VARIABLE_BALANCE = "coin";
 
 //
 Keywords.APP_VERSION_KEY = "avrsn";
+Keywords.GAME_RULE = "r";
+Keywords.GAME_GUIDE = "g";

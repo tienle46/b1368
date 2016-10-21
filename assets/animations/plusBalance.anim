@@ -1,0 +1,80 @@
+{
+  "__type__": "cc.AnimationClip",
+  "_name": "plusBalance",
+  "_objFlags": 0,
+  "_rawFiles": null,
+  "_duration": 1.5,
+  "sample": 60,
+  "speed": 1,
+  "wrapMode": 1,
+  "curveData": {
+    "props": {
+      "scaleX": [
+        {
+          "frame": 0,
+          "value": 0.6,
+          "curve": [
+            -0.42,
+            2.32,
+            0.95,
+            2.86
+          ]
+        },
+        {
+          "frame": 1.5,
+          "value": 0.8
+        }
+      ],
+      "scaleY": [
+        {
+          "frame": 0,
+          "value": 0.6,
+          "curve": [
+            -0.5,
+            2.94,
+            1.19,
+            3.18
+          ]
+        },
+        {
+          "frame": 1.5,
+          "value": 0.8
+        }
+      ],
+      "position": [
+        {
+          "frame": 0,
+          "value": [
+            0,
+            -60
+          ],
+          "curve": [
+            0.3,
+            1.44,
+            0.77,
+            1.41
+          ]
+        },
+        {
+          "frame": 1.5,
+          "value": [
+            0,
+            70
+          ]
+        }
+      ]
+    }
+  },
+  "events": [
+    {
+      "frame": 0,
+      "func": "onAnimationStart",
+      "params": []
+    },
+    {
+      "frame": 1.5,
+      "func": "onAnimationEnd",
+      "params": []
+    }
+  ]
+}

@@ -88,4 +88,9 @@ export default class PlayerCard extends Player {
         this.renderer.clearCards();
     }
 
+    start() {
+        super.start();
+        debug("start player card");
+    }
+
 }

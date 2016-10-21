@@ -14,6 +14,10 @@ export default class GameUtils {
         return utils.isNumber(balance) ? numeral(balance).format((balance < 1000000 ? '0,0' : '0.00a')) : "";
     }
 
+    static toChangedBalanceString(changeAmount){
+        return isNaN(changeAmount) ? '' : changeAmount > 0 ? `+${changeAmount}` : `${changeAmount}`;
+    }
+
     static isPlayingState(checkState) {
         return checkState && checkState != gameState.INITED && checkState != gameState.READY && checkState != gameState.BEGIN;
     }

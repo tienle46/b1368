@@ -5,6 +5,7 @@
 import app from 'app';
 import Component from 'Component';
 import utils from 'utils';
+import CCUtils from 'CCUtils';
 import Events from 'Events'
 
 const fourPlayerSeats = {
@@ -39,6 +40,9 @@ export default class PlayerPositions extends Component {
     }
 
     _init(scene) {
+
+        debug('PositionNAme: ', this.name);
+
         this.scene = scene;
         this._initPlayerAnchors();
         this.scene.on(Events.ON_GAME_STATE_BEGIN, this._onGameBegin, this);
@@ -54,11 +58,17 @@ export default class PlayerPositions extends Component {
     _initPlayerAnchors() {
         this.playerAnchors = [];
         this.playerAnchors[0] = this.myAnchor;
+
         for (let i = 1; i <= this.ceilAnchor; i++) {
             this.playerAnchors[i] = this['anchor' + i];
         }
 
         this.hideAllInviteButtons();
+    }
+
+    onClickAnchorButton(){
+        app.service.send({cmd: app.commands.PLAYER_INVITE, data: {}, room: this.scene.room});
+        app.system.info(app.res.string('random_invite_player_successfully'));
     }
 
     _onGameBegin() {

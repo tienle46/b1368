@@ -222,10 +222,11 @@ Commands.EXCHANGE_HISTORY = "awd_his";
 Commands.EXCHANGE_HISTORY_DETAIL = "awd_hisd";
 
 //admin message
-Commands.ADMIN_SYSTEM_MESSAGE = "dcn";
+Commands.SYSTEM_MESSAGE = "dcn";
 
 //high light message
 Commands.HIGH_LIGHT_MESSAGE = "hm";
+Commands.INGAME_CHAT_MESSAGE_LIST = "gicml";
 
 // Agency
 Commands.AGENCY = "agent";

@@ -54,6 +54,8 @@ export default class ListTableScene extends BaseScene {
 
     onLoad() {
 
+        super.onLoad();
+
         this.addBottomBar();
         this.addTopBar();
 

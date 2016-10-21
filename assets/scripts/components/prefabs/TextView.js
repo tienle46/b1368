@@ -1,4 +1,5 @@
 import app from 'app';
+import utils from 'utils';
 import Component from 'Component';
 
 export default class TextView extends Component {
@@ -6,16 +7,27 @@ export default class TextView extends Component {
         super();
         this.label = cc.Label;
         this.lines = 1;
-        this.lineWidth = 0;
+        this.lineWidth = 100;
         this.maxWidth = 1000;
         this.lineHeight = 20;
         this.resizeWidth = true;
+        this.text = "";
+        this.isLoaded = false;
     }
 
     onLoad() {
-        this.lineHeight = this.label.node.height;
+        // console.log("onLoad textview: ", this.label.lineHeight);
+
+        this.lineHeight = this.label.lineHeight;
         this.lineWidth = this.label.node.width;
         this.label.overflow = cc.Label.Overflow.RESIZE_HEIGHT;
+
+        this.isLoaded = true;
+
+        if(!utils.isEmpty(this.text)){
+            this.setText(this.text);
+            this.text = null;
+        }
     }
 
     setMaxWidth(maxWidth = 1000) {
@@ -36,19 +48,26 @@ export default class TextView extends Component {
     }
 
     setText(text) {
+
+        if(!this.isLoaded){
+            this.text = text;
+            return;
+        }
+
         this._setTextViewSize();
-
         this.label.string = text;
-
         this._adjustSize();
     }
 
     _adjustSize() {
-        let lines = this.label.node.height / this.lineHeight;
+
+        let lines = Math.floor(this.label.node.height / this.lineHeight);
+        // debug("label width: ", this.label.node.width, "lines: ", lines, "lineHeight: ", this.lineHeight);
+
         if (lines > this.lines) {
             if(this.resizeWidth){
-                if (this.label.node.width <= this.maxWidth - 30) {
-                    this.label.node.width += 30;
+                if (this.label.node.width <= this.maxWidth - 50) {
+                    this.label.node.width += 50;
                     this._adjustSize();
                 }
             }else{
@@ -63,6 +82,10 @@ export default class TextView extends Component {
     _setTextViewSize() {
         this.label.node.width = this.lineWidth;
         this.label.node.height = this.lineHeight;
+    }
+
+    getWidth(){
+        return this.label.node.width;
     }
 }
 

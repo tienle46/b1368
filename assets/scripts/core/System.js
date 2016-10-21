@@ -8,6 +8,8 @@ import BaseScene from 'BaseScene';
 import Emitter from 'emitter';
 import GameScene from 'GameScene';
 import AlertPopupRub from 'AlertPopupRub';
+import MessagePopup from 'MessagePopup';
+import ConfirmPopup from 'ConfirmPopup';
 
 class GameSystem {
 
@@ -82,24 +84,15 @@ class GameSystem {
             title = app.res.string('system');
         }
 
-        AlertPopupRub.show(this.currentScene.node, message);
+        MessagePopup.show(this.currentScene.node, message);
     }
 
     error(message, closeCb) {
-
-        alert(message);
-
-        closeCb && closeCb();
-        //TODO
+        MessagePopup.show(this.currentScene.node, message, closeCb);
     }
 
-    confirm(message, okCallback, cancelCallback) {
-        var r = confirm(message);
-        if (r == true) {
-            okCallback && okCallback();
-        } else {
-            cancelCallback && cancelCallback();
-        }
+    confirm(message, cancelCallback, okCallback) {
+        ConfirmPopup.confirm(this.currentScene.node, message, cancelCallback, okCallback);
     }
 
     /**

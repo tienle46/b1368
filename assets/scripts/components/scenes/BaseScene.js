@@ -64,7 +64,7 @@ export default class BaseScene extends Actor {
         this.isLoaded = true;
     }
 
-    onActive() {
+    onEnable(){
         app.system.setCurrentScene(this);
     }
 

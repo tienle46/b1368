@@ -36,7 +36,7 @@ export default class TopUpDialogRub extends DialogRub {
         });
     }
 
-    show(parentNode, tabOptions = defaultTopUpTabOptions){
-        super.show(parentNode, defaultTopUpTabOptions);
+    show(parentNode, tabOptions = defaultTopUpTabOptions, cb){
+        super.show(parentNode, defaultTopUpTabOptions, cb);
     }
 }

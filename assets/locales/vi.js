@@ -18,5 +18,6 @@ export default {
   label_accept: 'Đồng ý',
   label_deny: 'Hủy',
   label_close: 'Đóng',
+  random_invite_player_successfully: 'Lời mời vào bàn chơi đã được gửi đi',
 
 };

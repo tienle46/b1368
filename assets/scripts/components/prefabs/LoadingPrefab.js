@@ -2,6 +2,7 @@
  * Created by Thanh on 10/14/2016.
  */
 
+import app from 'app';
 import utils from 'utils';
 
 export default class LoadingPrefab {
