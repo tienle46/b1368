@@ -21,7 +21,16 @@ export default class Player extends Actor {
         this.isOwner = false;
         this.isMaster = false;
         this.ready = false;
-        this.anchorIndex = -1;
+        this._anchorIndex = -1;
+    }
+
+    setAnchorIndex(anchorIndex){
+        this._anchorIndex = anchorIndex;
+        this.renderer.updatePlayerAnchor(anchorIndex);
+    }
+
+    get anchorIndex() {
+        return this._anchorIndex;
     }
 
     _init(board, user){
@@ -54,6 +63,7 @@ export default class Player extends Actor {
         this.scene.on(Events.ON_PLAYER_CHANGE_BALANCE, this._onPlayerChangeBalance, this);
         this.scene.on(Events.ON_USER_UPDATE_BALANCE, this._onUserUpdateBalance, this);
         this.scene.on(Events.ON_PLAYER_SET_BALANCE, this._onPlayerSetBalance, this);
+        this.scene.on(Events.ON_PLAYER_CHAT_MESSAGE, this._onPlayerChatMessage, this);
     }
 
     _removeGlobalListener(){
@@ -69,6 +79,13 @@ export default class Player extends Actor {
         this.scene.off(Events.ON_PLAYER_CHANGE_BALANCE, this._onPlayerChangeBalance);
         this.scene.off(Events.ON_USER_UPDATE_BALANCE, this._onUserUpdateBalance);
         this.scene.off(Events.ON_PLAYER_SET_BALANCE, this._onPlayerSetBalance);
+        this.scene.off(Events.ON_PLAYER_CHAT_MESSAGE, this._onPlayerChatMessage, this);
+    }
+
+    _onPlayerChatMessage(sender, message){
+        if(sender.name == this.user.name){
+            this.say(message);
+        }
     }
 
     _onPlayerSetBalance(id, newBalance){
@@ -166,11 +183,11 @@ export default class Player extends Actor {
      * @param message
      */
     say(message) {
-        alert(`${this.name}: ${message}`);
+        this.renderer.showMessage(message);
     }
 
     notify(message){
-        alert(`${this.name}: ${message}`);
+        this.renderer.showMessage(message);
     }
 
     stopTimeLine() {

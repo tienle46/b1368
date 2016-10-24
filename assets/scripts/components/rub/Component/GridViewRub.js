@@ -53,7 +53,7 @@ export default class GridViewRub {
      *          # while the first element in array `width` is empty || null its width will be 100 - (50 + 20)
      *          # if we have width = ['', '', 50, 20] -> (100 - (50 + 20)) / 2
      *      colors: array[new cc.Color || null] # array of setting color of text. default cc.Color(225, 255, 255)
-     *      buttons: array[ || null]
+     *      events: array[ || null] # only affected with cell button.
      *  }
      * 
      *  cell: { // CellRub options
@@ -283,7 +283,7 @@ export default class GridViewRub {
             return groupWidth.map((e) => (!isNaN(e) && Number(e) === 0 && n / remains.length - this.options.spacingX) || e - this.options.spacingX);
 
         } else {
-            let numberOfColumns = this.data[0].length; // converted this.data 
+            let numberOfColumns = this.data[0] ? this.data[0].length : 0; // converted this.data 
             return new Array(numberOfColumns).fill(0).map(() => this.getContentNodeWidth() / numberOfColumns - this.options.spacingX);
         }
     }

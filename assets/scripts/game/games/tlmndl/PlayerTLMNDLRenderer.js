@@ -29,6 +29,8 @@ export default class PlayerTLMNDLRenderer extends PlayerCardTurnBaseRenderer {
         this.assign(this.cardPlayerPrefab, 'PlayerCardRenderer');
 
         super._initUI(data);
+        
+        console.log("init ui TLMNDL")
     }
 
     update() {
@@ -40,7 +42,7 @@ export default class PlayerTLMNDLRenderer extends PlayerCardTurnBaseRenderer {
     }
 
     onLoad() {
-
+        console.log("onload: Player renderer: ", this.sayMessageComponent);
     }
 
     start() {

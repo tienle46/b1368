@@ -8,6 +8,7 @@ import {CreateGameException} from 'exceptions';
 import {GameMenuPrefab} from 'game-components';
 import {gameManager, GameEventHandler, Board, TLMNDLBoard, TLMNDLPlayer} from 'game';
 import GameResultPopup from 'GameResultPopup';
+import IngameChatComponent from 'IngameChatComponent';
 
 export default class GameScene extends BaseScene {
 
@@ -18,6 +19,8 @@ export default class GameScene extends BaseScene {
         this.playerLayer = cc.Node;
         this.gameMenuLayer = cc.Node;
         this.gameControlLayer = cc.Node;
+        this.chatComponentNode = cc.Node;
+        this.chatComponent = null;
 
 
         this.boardPrefab = cc.Prefab;
@@ -53,6 +56,11 @@ export default class GameScene extends BaseScene {
         // }, this, 1);
         this.on(Events.ON_ACTION_EXIT_GAME, this._onActionExitGame, this);
         this.on(Events.ON_ACTION_LOAD_GAME_GUIDE, this._onActionLoadGameGuide, this);
+        this.on(Events.VISIBLE_INGAME_CHAT_COMPONENT, this._onVisibleIngameChatComponent, this);
+    }
+
+    _onVisibleIngameChatComponent(){
+        this.chatComponent.setVisible();
     }
 
     handleRejoinGame(...args){
@@ -66,6 +74,9 @@ export default class GameScene extends BaseScene {
 
         super.onLoad();
         this._addGlobalListener();
+
+        this.chatComponent = this.chatComponentNode.getComponent(IngameChatComponent.name);
+        this.chatComponent.setup(this);
 
         try {
             this.room = app.context.currentRoom;

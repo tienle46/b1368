@@ -41,6 +41,7 @@ export default class GameEventHandler {
         app.system.addGameListener(SFS2X.SFSEvent.ROOM_REMOVE, this._onRoomRemove, this);
         app.system.addGameListener(SFS2X.SFSEvent.USER_VARIABLES_UPDATE, this._onUserVariablesUpdate, this);
         app.system.addGameListener(SFS2X.SFSEvent.ROOM_VARIABLES_UPDATE, this._onRoomVariablesUpdate, this);
+        app.system.addGameListener(SFS2X.SFSEvent.PUBLIC_MESSAGE, this._onPlayerPublishMessage, this);
 
         app.system.addGameListener(Commands.SYSTEM_MESSAGE, this._handleSystemMessage, this);
         app.system.addGameListener(Commands.DOWNLOAD_IMAGE, this._handlePlayerAvatar, this);
@@ -70,6 +71,7 @@ export default class GameEventHandler {
         app.system.removeGameListener(SFS2X.SFSEvent.ROOM_REMOVE, this._onRoomRemove);
         app.system.removeGameListener(SFS2X.SFSEvent.USER_VARIABLES_UPDATE, this._onUserVariablesUpdate);
         app.system.removeGameListener(SFS2X.SFSEvent.ROOM_VARIABLES_UPDATE, this._onRoomVariablesUpdate);
+        app.system.removeGameListener(SFS2X.SFSEvent.PUBLIC_MESSAGE, this._onPlayerPublishMessage);
 
         app.system.removeGameListener(Commands.SYSTEM_MESSAGE, this._handleSystemMessage);
         app.system.removeGameListener(Commands.DOWNLOAD_IMAGE, this._handlePlayerAvatar);
@@ -90,6 +92,10 @@ export default class GameEventHandler {
         app.system.removeGameListener(Commands.PLAYER_PLAY_CARD, this._onPlayerPlayCards);
         app.system.removeGameListener(Commands.PLAYER_READY, this._onPlayerReady);
         app.system.removeGameListener(Commands.PLAYER_UNREADY, this._onPlayerUnready);
+    }
+
+    _onPlayerPublishMessage(event){
+        this.scene.emit(Events.ON_PLAYER_CHAT_MESSAGE, event.sender, event.message);
     }
 
     _handleChangeBoardMaster(data){

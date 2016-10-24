@@ -42,6 +42,10 @@ class FourPlayerPositions extends PlayerPositions {
         super.onLoad();
     }
 
+    isPositionOnTop(anchorIndex) {
+        return anchorIndex == 3;
+    }
+
     getPlayerAnchor(id){
         switch (id){
             case 1:

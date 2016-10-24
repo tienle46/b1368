@@ -52,6 +52,10 @@ export default class PlayerPositions extends Component {
         this.scene.on(Events.ON_GAME_STATE_ENDING, this._onGameEnding, this);
     }
 
+    isPositionOnTop(){
+        return false;
+    }
+
     onLoad() {
     }
 

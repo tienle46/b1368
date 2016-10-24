@@ -20,4 +20,11 @@ export default class CCUtils {
         eventHandler.handler = handlerFn.name;
         return eventHandler;
     }
+
+    static setAnchorPoint(node, x, y){
+        if(!node) return;
+
+        node.setAnchorPoint(x, y);
+        node.childrenCount > 0 && this.children.forEach(child => CCUtils.setAnchorPoint(child, x, y));
+    }
 }

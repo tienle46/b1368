@@ -6,6 +6,7 @@ import app from 'app';
 import {utils, GameUtils} from 'utils';
 import ActorRenderer from 'ActorRenderer';
 import PlusBalanceAnimation from 'PlusBalanceAnimation';
+import PlayerMessageComponent from 'PlayerMessageComponent';
 
 export default class PlayerRenderer extends ActorRenderer {
     constructor() {
@@ -58,8 +59,18 @@ export default class PlayerRenderer extends ActorRenderer {
 
         this.plusBalanceNode = cc.Node;
         this.plusBalanceLabel = cc.Label;
+        this.messageAnchorTop = cc.Node;
+        this.messageAnchorBottom = cc.Node;
+        this.sayMessageNode = cc.Node;
+        this.sayMessageComponent = null;
+        this.messageAnchor = null;
         this.plusBalanceAnimation = null;
+        this.anchorIndex = null;
+    }
 
+    updatePlayerAnchor(anchorIndex){
+        this.anchorIndex = anchorIndex;
+        this.sayMessageComponent && this.sayMessageComponent.updateAnchor(anchorIndex);
     }
 
     _initUI(data = {}) {
@@ -75,7 +86,14 @@ export default class PlayerRenderer extends ActorRenderer {
         this.setVisibleMaster(data.master);
         this.setVisibleReady(data.ready);
 
+        this.plusBalanceAnimation = this.plusBalanceNode.getComponent(PlusBalanceAnimation.name);
+        this.plusBalanceAnimation.setup({player: this, endCallback: this._onDonePlusBalanceAnimation.bind(this)});
+
+        this.sayMessageComponent = this.sayMessageNode.getComponent(PlayerMessageComponent.name);
+        this.sayMessageComponent.setup(this);
+
         this.stopCountdown();
+        this.loaded = true;
     }
 
     setName(name) {
@@ -135,11 +153,12 @@ export default class PlayerRenderer extends ActorRenderer {
         }
     }
 
-    onLoad(){
-        this.plusBalanceAnimation = this.plusBalanceNode.getComponent(PlusBalanceAnimation.name);
-        this.plusBalanceAnimation.setup({player: this, endCallback: this._onDonePlusBalanceAnimation.bind(this)});
-
-        this.loaded = true;
+    showMessage(message){
+        
+        console.log("showMessage: ", this);
+        
+        if(utils.isEmpty(message)) return;
+        this.sayMessageComponent.show(message);
     }
 
     startPlusBalanceAnimation(balance){
