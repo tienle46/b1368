@@ -4,6 +4,7 @@ import TopupDialogRub from 'TopupDialogRub';
 import ExchangeDialogRub from 'ExchangeDialogRub';
 import PersonalInfoDialogRub from 'PersonalInfoDialogRub';
 import GridViewRub from 'GridViewRub';
+import _ from 'lodash';
 
 class BottomBar extends Component {
     constructor() {
@@ -48,7 +49,14 @@ class BottomBar extends Component {
     }
 
     onLoad() {
+        this._fillUserData();
+    }
 
+    _fillUserData() {
+        let usernameLbl = this.userInfoButton.node.getChildByName('usernameLbl').getComponent(cc.Label);
+        usernameLbl.string = app.context.getMyInfo().name;
+        let usercoinLbl = this.userInfoButton.node.getChildByName('userCoinLbl').getComponent(cc.Label);
+        usercoinLbl.string = app.context.getMyInfo().coin;
     }
 
     onClickNapXuAction() {
@@ -240,16 +248,16 @@ class BottomBar extends Component {
             }
         });
 
-        this._getAchievementsDataFromServer(achievementsTab);
-
+        this._getAchievementsDataFromServer((data) => {
+            achievementsTab.resetData(data);
+        });
         return achievementsTab.getNode();
     }
 
-    _getAchievementsDataFromServer(achievementsTab) {
+    _getAchievementsDataFromServer(cb) {
         let sendObj = {
             cmd: app.commands.USER_ACHIEVEMENT
         };
-        console.log(sendObj);
         app.service.send(sendObj, (res) => {
             if (res) {
                 let gameListCol = res[app.keywords.GAME_NAME_LIST] || [];
@@ -263,8 +271,7 @@ class BottomBar extends Component {
                     winLostCol,
                 ];
 
-                if (achievementsTab)
-                    achievementsTab.resetData(data);
+                cb(_.cloneDeep(data));
             }
 
         });
