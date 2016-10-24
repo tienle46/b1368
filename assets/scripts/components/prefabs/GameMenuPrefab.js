@@ -103,12 +103,10 @@ class GameMenuPrefab extends Component {
     }
 
     onClickChatButton(event) {
-        this.hide();
-        app.system.info(app.res.string('coming_soon'));
+        this.scene.emit(Events.VISIBLE_INGAME_CHAT_COMPONENT);
     }
 
     onClickTopupButton(event) {
-        this.hide();
         TopupDialogRub.show(this.scene.node);
     }
 }

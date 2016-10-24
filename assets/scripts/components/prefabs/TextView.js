@@ -13,6 +13,8 @@ export default class TextView extends Component {
         this.resizeWidth = true;
         this.text = "";
         this.isLoaded = false;
+        this.increaseWidth = 40;
+        this.padding = 5;
     }
 
     onLoad() {
@@ -30,8 +32,12 @@ export default class TextView extends Component {
         }
     }
 
+    setIncreaseWidth(amount = 40){
+        this.increaseWidth = amount;
+    }
+
     setMaxWidth(maxWidth = 1000) {
-        this.maxWidth = maxWidth;
+        this.maxWidth = maxWidth - this.padding * 2;
     }
 
     setLineHeight(lineHeight = 20) {
@@ -66,8 +72,9 @@ export default class TextView extends Component {
 
         if (lines > this.lines) {
             if(this.resizeWidth){
-                if (this.label.node.width <= this.maxWidth - 50) {
-                    this.label.node.width += 50;
+                if (this.label.node.width <= this.maxWidth - this.increaseWidth) {
+                    this.label.node.width += this.increaseWidth;
+                    this.node.width = this.label.node.width + this.padding * 2;
                     this._adjustSize();
                 }
             }else{

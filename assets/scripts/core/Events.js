@@ -15,7 +15,7 @@ Events.HANDLE_GAME_STATE_CHANGE        = "handleGameStateChange";
 Events.SHOW_WAIT_TURN_CONTROLS          = "showWaitTurnControls";
 Events.SHOW_ON_TURN_CONTROLS            = "showOnTurnControls";
 Events.SHOW_GAME_BEGIN_CONTROLS         = "showGameBeginControls";
-Events.CLEAN_TURN_ROUTINE_DATA          = "cleanTurnRoutineData";
+Events.VISIBLE_INGAME_CHAT_COMPONENT    = "visible.ingameChatComponent";
 
 Events.ON_PLAYER_PLAYED_CARDS           = "onPlayerPlayedCards";
 Events.ON_PLAYER_READY_STATE_CHANGED    = "player.readyStateChanged";
@@ -26,6 +26,7 @@ Events.ON_PLAYER_CONG                   = "onPlayerCong";
 Events.ON_PLAYER_THOI                   = "onPlayerThoi";
 Events.ON_PLAYER_SET_BALANCE            = "onPlayerSetBalance";
 Events.ON_PLAYER_REENTER_GAME           = "on.player.reenterGame";
+Events.ON_PLAYER_CHAT_MESSAGE           = "on.player.chatMessage";
 
 Events.ON_USER_UPDATE_BALANCE           = "onUserUpdateBalance";
 Events.ON_USER_UPDATE_LEVEL             = "onUserUpdateLevel";
@@ -48,6 +49,7 @@ Events.ON_GAME_STATE_CHANGE             = "onGameStateChange"
 Events.ON_GAME_LOAD_PLAY_DATA           = "onGameLoadPlayData";
 Events.ON_GAME_REJOIN                   = "on.game.rejoin";
 Events.ON_GAME_SET_LAST_MOVE            = "on.game.setLastMove";
+Events.CLEAN_TURN_ROUTINE_DATA          = "cleanTurnRoutineData";
 
 Events.GAME_USER_EXIT_ROOM              = "gameUserExitRoom";
 

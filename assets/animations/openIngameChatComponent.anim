@@ -24,26 +24,6 @@
               "frame": 0.3333333333333333,
               "value": 320
             }
-          ],
-          "scaleX": [
-            {
-              "frame": 0,
-              "value": 0.5
-            },
-            {
-              "frame": 0.3333333333333333,
-              "value": 1
-            }
-          ],
-          "scaleY": [
-            {
-              "frame": 0,
-              "value": 0.5
-            },
-            {
-              "frame": 0.3333333333333333,
-              "value": 1
-            }
           ]
         }
       }
@@ -52,7 +32,7 @@
   "events": [
     {
       "frame": 0,
-      "func": "",
+      "func": "onShow",
       "params": []
     },
     {

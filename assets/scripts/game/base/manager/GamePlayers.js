@@ -177,7 +177,7 @@ export default class GamePlayers extends Component {
         let anchorIndex = this.playerPositions.getPlayerAnchorIndex(player.id, player.isItMe());
         let anchor = this.playerPositions.getPlayerAnchor(anchorIndex);
         anchor && playerNode.setPosition(anchor.getPosition());
-        player.anchorIndex = anchorIndex;
+        player.setAnchorIndex(anchorIndex);
     }
 
     /**
