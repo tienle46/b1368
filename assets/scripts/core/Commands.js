@@ -222,7 +222,7 @@ Commands.EXCHANGE_HISTORY = "awd_his";
 Commands.EXCHANGE_HISTORY_DETAIL = "awd_hisd";
 
 //admin message
-Commands.SYSTEM_MESSAGE = "dcn";
+Commands.LIST_SYSTEM_MESSAGE = "dcn";
 
 //high light message
 Commands.HIGH_LIGHT_MESSAGE = "hm";

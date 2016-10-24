@@ -34,7 +34,8 @@ export default class TabEvents extends Component {
     }
     _requestEventList(){
         var sendObject = {
-            'cmd': app.commands.SYSTEM_MESSAGE,
+            'cmd': app.commands.LIST_SYSTEM_MESSAGE,
+            'cbKey':'dcn',
             'data': {
                 [app.keywords.SYSTEM_MESSAGE.REQUEST.ACTION_TYPE] : app.const.DYNAMIC_ACTION_BROWSE,
                 [app.keywords.SYSTEM_MESSAGE.REQUEST.GROUP_TYPE]: this.groupType,
@@ -43,7 +44,7 @@ export default class TabEvents extends Component {
         };
 
         app.service.send(sendObject, (data) => {
-            // log(data);
+            log(data);
             if(data){
                 //convert raw data to list models
                 this.currentPage = data[app.keywords.SYSTEM_MESSAGE.RESPONSE.CURRENT_PAGE];
@@ -61,7 +62,27 @@ export default class TabEvents extends Component {
                 this._displayEvents(events);
             }
 
-        }, app.const.scene.DASHBOARD_SCENE);
+        }, app.const.scene.BOTTOM_BAR);
+    }
+
+    _requestEventDetail(nodeId){
+        var sendObject = {
+            'cmd': app.commands.LIST_SYSTEM_MESSAGE,
+            'cbKey':'dcn',
+            'data': {
+                [app.keywords.SYSTEM_MESSAGE.REQUEST.ACTION_TYPE] : app.const.DYNAMIC_ACTION_BROWSE,
+                [app.keywords.SYSTEM_MESSAGE.REQUEST.GROUP_TYPE]: this.groupType,
+                [app.keywords.SYSTEM_MESSAGE.REQUEST.NODE_ID]: nodeId,
+            }
+        };
+
+        app.service.send(sendObject, (data) => {
+            log(data);
+            if(data){
+
+            }
+
+        }, app.const.scene.BOTTOM_BAR);
     }
     _displayEvents(events){
         RubUtils.loadRes('dashboard/dialog/prefabs/userinfo/list_item').then((preFab)=>{
