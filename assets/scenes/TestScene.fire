@@ -1773,6 +1773,7 @@
       "a": 255
     },
     "duration": 0.1,
+    "zoomScale": 1.2,
     "pressedSprite": {
       "__uuid__": "e9ec654c-97a2-4787-9325-e6a10375219a"
     },
@@ -1785,6 +1786,7 @@
       }
     ],
     "_N$interactable": true,
+    "_N$enableAutoGrayEffect": false,
     "_N$normalColor": {
       "__type__": "cc.Color",
       "r": 255,
@@ -1815,7 +1817,8 @@
       "__id__": 2
     },
     "component": "TestScene",
-    "handler": "onClick1"
+    "handler": "onClick1",
+    "customEventData": ""
   },
   {
     "__type__": "cc.Sprite",
@@ -2232,6 +2235,8 @@
     "readyIcon": null,
     "playerTimeLinePrefab": null,
     "callCounter": null,
+    "plusBalanceNode": null,
+    "plusBalanceLabel": null,
     "cardListPrefab": {
       "__uuid__": "651b1f49-8953-4b6f-9e06-0d829c049b4a"
     },
@@ -2775,6 +2780,7 @@
       "a": 255
     },
     "duration": 0.1,
+    "zoomScale": 1.2,
     "pressedSprite": null,
     "hoverSprite": null,
     "clickEvents": [
@@ -2783,6 +2789,7 @@
       }
     ],
     "_N$interactable": true,
+    "_N$enableAutoGrayEffect": false,
     "_N$normalColor": {
       "__type__": "cc.Color",
       "r": 214,
@@ -2809,6 +2816,7 @@
       "__id__": 2
     },
     "component": "TestScene",
-    "handler": "onClick3"
+    "handler": "onClick3",
+    "customEventData": ""
   }
 ]

@@ -399,8 +399,10 @@ class Service {
             this.sendRequest(options);
         } else {
             const cmd = options.cmd;
+            const cbKey = options.cbKey || options.cmd;
+
             if (cmd) {
-                this._addCallback(cmd, cb, scope, options.data);
+                this._addCallback(cbKey, cb, scope, options.data);
                 this.sendRequest(new SFS2X.Requests.System.ExtensionRequest(cmd, options.data || {}, options.room));
             }
         }

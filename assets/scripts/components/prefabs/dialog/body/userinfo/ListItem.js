@@ -34,12 +34,13 @@ export default class ListItem extends Component {
         this.resizeRequired = false;
         this._style;
         this._expandable = false;
+
     }
 
     onLoad(){
-        this.descriptionLabel.node.on('active-in-hierarchy-changed', ()=>{
-            console.log(`active changed`);
-        });
+        // this.descriptionLabel.node.on('active-in-hierarchy-changed', ()=>{
+        //     console.log(`active changed`);
+        // });
 
         const toggleEventHandle = new cc.Component.EventHandler();
         toggleEventHandle.target = this.node;
@@ -97,6 +98,8 @@ export default class ListItem extends Component {
             }))
             this.resizeRequired = false;
         }
+
+        //chờ vòng update sau để cập nhật lại chiều cao của item
         if(this.verticalLayout._layoutDirty){
             this.resizeRequired = true;
         }

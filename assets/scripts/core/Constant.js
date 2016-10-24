@@ -14,6 +14,7 @@ app.const.scene.REGISTER_SCENE = "RegisterScene";
 app.const.scene.DASHBOARD_SCENE = "DashboardScene";
 app.const.scene.GAME_SCENE = "GameScene";
 app.const.scene.LIST_TABLE_SCENE = "ListTableScene";
+app.const.scene.BOTTOM_BAR = "BottomBar";
 
 app.const.gameCode = {};
 app.const.gameCode.PHOM = 'pom';
