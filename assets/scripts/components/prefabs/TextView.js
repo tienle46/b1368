@@ -76,6 +76,8 @@ export default class TextView extends Component {
                     this.label.node.width += this.increaseWidth;
                     this.node.width = this.label.node.width + this.padding * 2;
                     this._adjustSize();
+                }else{
+                    this.node.width = this.label.node.width + this.padding * 2 + this.increaseWidth;
                 }
             }else{
                 if(fontSize > 8){
