@@ -6,30 +6,57 @@ export default class TextView extends Component {
     constructor() {
         super();
         this.label = cc.Label;
-        this.lines = 1;
-        this.lineWidth = 100;
-        this.maxWidth = 1000;
+        this.lines = {
+            default: 1,
+            type: cc.Integer
+        };
+        this.minWidth = {
+            default: 100,
+            type: cc.Integer
+        };
+
+        this.maxWidth = {
+            default: 1000,
+            type: cc.Integer
+        };
+
+        this.resizeWidth = {
+            default: true,
+            type: cc.Boolean
+        };
+
+        this.increaseWidth = {
+            default: 40,
+            type: cc.Integer
+        };
+
+        this.margin = {
+            default: 5,
+            type: cc.Integer
+        };
+
         this.lineHeight = 20;
-        this.resizeWidth = true;
-        this.text = "";
         this.isLoaded = false;
-        this.increaseWidth = 40;
-        this.padding = 5;
     }
 
     onLoad() {
         // console.log("onLoad textview: ", this.label.lineHeight);
-
         this.lineHeight = this.label.lineHeight;
-        this.lineWidth = this.label.node.width;
         this.label.overflow = cc.Label.Overflow.RESIZE_HEIGHT;
-
+        this.label.string = "";
         this.isLoaded = true;
+    }
 
+    onEnable(){
         if(!utils.isEmpty(this.text)){
-            this.setText(this.text);
+            let text = this.text;
             this.text = null;
+            this.setText(text);
         }
+    }
+
+    setMargin(margin){
+        this.margin = margin;
     }
 
     setIncreaseWidth(amount = 40){
@@ -37,7 +64,7 @@ export default class TextView extends Component {
     }
 
     setMaxWidth(maxWidth = 1000) {
-        this.maxWidth = maxWidth - this.padding * 2;
+        this.maxWidth = maxWidth;
     }
 
     setLineHeight(lineHeight = 20) {
@@ -68,16 +95,17 @@ export default class TextView extends Component {
     _adjustSize() {
 
         let lines = Math.floor(this.label.node.height / this.lineHeight);
-        // debug("label width: ", this.label.node.width, "lines: ", lines, "lineHeight: ", this.lineHeight);
+        // debug("label width: ", this.label.node.width, "lines: ", lines);
 
         if (lines > this.lines) {
             if(this.resizeWidth){
                 if (this.label.node.width <= this.maxWidth - this.increaseWidth) {
                     this.label.node.width += this.increaseWidth;
-                    this.node.width = this.label.node.width + this.padding * 2;
+                    this.node.width = this.label.node.width + this.margin * 2;
                     this._adjustSize();
                 }else{
-                    this.node.width = this.label.node.width + this.padding * 2 + this.increaseWidth;
+                    this.label.node.width = this.maxWidth;
+                    this.node.width = this.maxWidth + this.margin * 2;
                 }
             }else{
                 if(fontSize > 8){
@@ -85,11 +113,13 @@ export default class TextView extends Component {
                     this._adjustSize();
                 }
             }
+        } else {
+            this.node.width = this.label.node.width + this.margin * 2;
         }
     }
 
     _setTextViewSize() {
-        this.label.node.width = this.lineWidth;
+        this.label.node.width = this.minWidth;
         this.label.node.height = this.lineHeight;
     }
 

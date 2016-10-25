@@ -54,7 +54,7 @@ export default class DashboardScene extends BaseScene {
         const height = this.scrollerContentView.node.height;
         const itemDimension = height / 2.0 - 50;
 
-        this.gameList.forEach(gc => {
+        this.gameList.some(gc => {
             "use strict";
             let gameIconPath = app.res.gameIcon[gc];
 
@@ -75,8 +75,9 @@ export default class DashboardScene extends BaseScene {
 
                 this.scrollerContentView.node.addChild(nodeItem);
 
-
             });
+
+            if(gameIconPath) return true;
         });
 
     }
