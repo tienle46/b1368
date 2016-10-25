@@ -34,6 +34,9 @@
     "_children": [
       {
         "__id__": 2
+      },
+      {
+        "__id__": 80
       }
     ],
     "_localZOrder": 0,
@@ -2237,6 +2240,9 @@
     "callCounter": null,
     "plusBalanceNode": null,
     "plusBalanceLabel": null,
+    "messageAnchorTop": null,
+    "messageAnchorBottom": null,
+    "sayMessageNode": null,
     "cardListPrefab": {
       "__uuid__": "651b1f49-8953-4b6f-9e06-0d829c049b4a"
     },
@@ -2329,7 +2335,7 @@
     "_tag": -1,
     "_opacityModifyRGB": false,
     "_id": "464d1vNZyREGpuf8O29zcRW",
-    "_active": true,
+    "_active": false,
     "_components": [
       {
         "__id__": 74
@@ -2818,5 +2824,69 @@
     "component": "TestScene",
     "handler": "onClick3",
     "customEventData": ""
+  },
+  {
+    "__type__": "cc.Node",
+    "_name": "webview",
+    "_objFlags": 0,
+    "_opacity": 255,
+    "_color": {
+      "__type__": "cc.Color",
+      "r": 255,
+      "g": 255,
+      "b": 255,
+      "a": 255
+    },
+    "_cascadeOpacityEnabled": true,
+    "_parent": {
+      "__id__": 1
+    },
+    "_anchorPoint": {
+      "__type__": "cc.Vec2",
+      "x": 0.5,
+      "y": 0.5
+    },
+    "_contentSize": {
+      "__type__": "cc.Size",
+      "width": 600,
+      "height": 400
+    },
+    "_children": [],
+    "_rotationX": 0,
+    "_rotationY": 0,
+    "_scaleX": 1,
+    "_scaleY": 1,
+    "_position": {
+      "__type__": "cc.Vec2",
+      "x": 463,
+      "y": 357
+    },
+    "_skewX": 0,
+    "_skewY": 0,
+    "_localZOrder": 0,
+    "_globalZOrder": 0,
+    "_tag": -1,
+    "_opacityModifyRGB": false,
+    "_id": "b5211ADGQRAZoFKVWpr1/R4",
+    "_active": true,
+    "_components": [
+      {
+        "__id__": 81
+      }
+    ],
+    "_prefab": null,
+    "groupIndex": 0
+  },
+  {
+    "__type__": "cc.WebView",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 80
+    },
+    "_enabled": true,
+    "_useOriginalSize": false,
+    "_url": "http://baibamien.com/",
+    "webviewEvents": []
   }
 ]
