@@ -11,6 +11,8 @@ class PersonalInfoDialog extends Dialog {
         this.node.on('touchstart', function() {
             return;
         });
+
+
     }
 }
 

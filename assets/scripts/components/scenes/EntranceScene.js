@@ -37,6 +37,8 @@ class EntranceScene extends BaseScene {
     // use this for initialization
     onLoad() {
         super.onLoad();
+
+        this.loader = new LoaderRub(this.node);
     }
 
     handleLoginAction() {
@@ -67,34 +69,6 @@ class EntranceScene extends BaseScene {
     }
 
     handlePlayNowButton() {
-        // app.service.connect((success) => {
-        //     log("success: " + success);
-        //     if (success) {
-        //         app.service.login("crush1", "1234nm", (error, result) => {
-        //             if (result) {
-        //                 // log(`Logged in as ${app.context.getMe().name}`)
-
-        //                 // if(app.context.getMe()){
-        //                 //     let ListTableScene = require('ListTableScene');
-        //                 //     new ListTableScene()._createRoom(app.const.gameCode.TLMNDL, 1, 2)
-        //                 // }else{
-        //                 this.node.runAction(cc.sequence(
-        //                     cc.fadeOut(0.5),
-        //                     cc.callFunc(function() {
-        //                         cc.director.loadScene('DashboardScene');
-        //                     })
-        //                 ));
-        //                 // }
-
-        //             }
-
-        //             if (error) {
-        //                 log("Login error: ")
-        //                 log(error)
-        //             }
-        //         });
-        //     }
-        // });
         app.service.connect((success) => {
             log("success: " + success);
             if (success) {
@@ -140,6 +114,14 @@ class EntranceScene extends BaseScene {
         } catch (e) {
             throw new Error('hashCode: ' + e);
         }
+    }
+
+    showLoading() {
+        this.loader.show();
+    }
+
+    hideLoading() {
+        this.loader.hide();
     }
 }
 

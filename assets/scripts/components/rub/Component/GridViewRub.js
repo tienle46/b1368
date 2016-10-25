@@ -157,7 +157,7 @@ export default class GridViewRub {
         // reset body
         this.contentNode && this.contentNode.removeAllChildren(true);
         // reinsert
-        this._insertCellBody(data);
+        this._insertCellBody(this.data);
     }
 
     updateData(data) {
@@ -264,7 +264,7 @@ export default class GridViewRub {
 
                 // body
                 let cellNode = new CellRub(data[i][j] || '', cellOpts).node();
-                this.contentNode.addChild(cellNode);
+                this.contentNode && this.contentNode.addChild(cellNode);
             }
         }
     }
