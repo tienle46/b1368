@@ -10,6 +10,7 @@ import GameScene from 'GameScene';
 import AlertPopupRub from 'AlertPopupRub';
 import MessagePopup from 'MessagePopup';
 import ConfirmPopup from 'ConfirmPopup';
+import Toast from 'Toast';
 
 class GameSystem {
 
@@ -20,12 +21,32 @@ class GameSystem {
         this.pendingGameEvents = [];
         this.gameEventEmitter = new Emitter;
         this.enablePendingGameEvent = false;
+        this.toast = null;
+        this._currentSceneNode = cc.Node;
+        this._currentScene = cc.Node;
+        this.toastPrefab = null;
 
-        this._init();
+        this.initEventListener();
     }
 
-    _init() {
-        this.initEventListener();
+    load(cb) {
+        cc.loader.loadRes('toast/Toast', (err, prefab) => {this.toastPrefab = prefab; cb && cb()});
+    }
+
+    showToast(message, duration){
+        this.toast && this.toast.info(message, duration);
+    }
+
+    showLongToast(message){
+        this.toast && this.toast.longInfo(message);
+    }
+
+    showErrorToast(error){
+        this.toast && this.toast.error(error);
+    }
+
+    showLongErrorToast(error){
+        this.toast && this.toast.longError(error);
     }
 
     /**
@@ -75,6 +96,19 @@ class GameSystem {
      */
     setCurrentScene(scene) {
         this._currentScene = scene;
+
+        //TODO move to loading scene
+        if(this.toastPrefab){
+            this._addToastToScene();
+        }else{
+            app.system.load(() => this._addToastToScene());
+        }
+    }
+
+    _addToastToScene(){
+        let toastNode = cc.instantiate(this.toastPrefab);
+        this.toast = toastNode.getComponent(Toast.name);
+        this.currentScene && this.currentScene.node.addChild(toastNode, app.const.toastZIndex);
     }
 
     info(title, message) {

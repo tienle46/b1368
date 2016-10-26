@@ -5,6 +5,8 @@
 var app = require('app');
 
 app.const = {};
+app.const.topupZIndex = 10000;
+app.const.toastZIndex = 10001;
 app.const.LANGUAGE = "vi"; // set the language used in app. Default: "vi"
 
 app.const.scene = {};

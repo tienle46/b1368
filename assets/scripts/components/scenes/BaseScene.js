@@ -121,12 +121,13 @@ export default class BaseScene extends Actor {
     }
 
     changeScene(name, duration = 0.5) {
-        this.node.runAction(cc.sequence(
-            cc.fadeOut(duration),
-            cc.callFunc(function () {
-                cc.director.loadScene(name);
-            })
-        ));
+        app.system.loadScene(name);
+        // this.node.runAction(cc.sequence(
+        //     cc.fadeOut(duration),
+        //     cc.callFunc(function () {
+        //         cc.director.loadScene(name);
+        //     })
+        // ));
     }
 }
 
