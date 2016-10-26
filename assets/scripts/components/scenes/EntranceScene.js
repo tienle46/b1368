@@ -1,12 +1,9 @@
 var app = require('app');
-var BaseScene = require("BaseScene");
 var Fingerprint2 = require('fingerprinter');
-
 import AlertPopupRub from 'AlertPopupRub';
-import LoaderRub from 'LoaderRub';
-import ScrollMessagePopup from 'ScrollMessagePopup';
+import BaseScene from 'BaseScene';
 
-class EntranceScene extends BaseScene {
+export default class EntranceScene extends BaseScene {
 
     constructor() {
 
@@ -38,16 +35,17 @@ class EntranceScene extends BaseScene {
     onLoad() {
         super.onLoad();
 
-        this.loader = new LoaderRub(this.node);
+        console.log("on load EntranceScene");
     }
 
     handleLoginAction() {
         this.showLoading();
+
         app.service.connect((success) => {
             log("success: " + success);
             if (success) {
                 new Fingerprint2().get((deviceId) => {
-                    app.service.requestAuthen('pinocchio', "hhmmss24", false, true, (error, result) => {
+                    app.service.requestAuthen('crush1', "1234nm", false, true, (error, result) => {
                         error = JSON.parse(error);
                         if (result) {
                             console.log(app.context.getMe());
@@ -114,14 +112,6 @@ class EntranceScene extends BaseScene {
         } catch (e) {
             throw new Error('hashCode: ' + e);
         }
-    }
-
-    showLoading() {
-        this.loader.show();
-    }
-
-    hideLoading() {
-        this.loader.hide();
     }
 }
 

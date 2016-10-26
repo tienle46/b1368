@@ -7,10 +7,6 @@ export default class Component {
         this.extends = cc.Component;
     }
 
-    onTouchBegan(touch, event){
-        return true;
-    }
-
     onLoad(){
 
     }

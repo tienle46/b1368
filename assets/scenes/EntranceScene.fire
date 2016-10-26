@@ -66,8 +66,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 960,
-      "height": 640
+      "width": 1280,
+      "height": 720
     },
     "_children": [
       {
@@ -86,8 +86,8 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": 480,
-      "y": 320
+      "x": 640,
+      "y": 360
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -131,8 +131,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 960,
-      "height": 640
+      "width": 1280,
+      "height": 720
     },
     "_children": [],
     "_rotationX": 0,
@@ -175,7 +175,7 @@
       "__uuid__": "310a0229-5f0c-4305-b746-6d743b573a00"
     },
     "_type": 0,
-    "_sizeMode": 2,
+    "_sizeMode": 0,
     "_fillType": 0,
     "_fillCenter": {
       "__type__": "cc.Vec2",
@@ -247,8 +247,8 @@
     "_scaleY": 0.5,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": -275.5,
-      "y": -82.75
+      "x": -435.5,
+      "y": -122.75
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -369,8 +369,8 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": 204,
-      "y": -4.5
+      "x": 364,
+      "y": -44.5
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -727,7 +727,8 @@
       "__id__": 2
     },
     "component": "EntranceScene",
-    "handler": "handleLoginAction"
+    "handler": "handleLoginAction",
+    "customEventData": ""
   },
   {
     "__type__": "cc.Widget",
@@ -990,7 +991,8 @@
       "__id__": 2
     },
     "component": "EntranceScene",
-    "handler": "handleRegisterButton"
+    "handler": "handleRegisterButton",
+    "customEventData": ""
   },
   {
     "__type__": "cc.Widget",
@@ -1253,7 +1255,8 @@
       "__id__": 2
     },
     "component": "EntranceScene",
-    "handler": "handlePlayNowButton"
+    "handler": "handlePlayNowButton",
+    "customEventData": ""
   },
   {
     "__type__": "cc.Widget",
@@ -1516,7 +1519,8 @@
       "__id__": 2
     },
     "component": "EntranceScene",
-    "handler": "handleFacebookLoginAction"
+    "handler": "handleFacebookLoginAction",
+    "customEventData": ""
   },
   {
     "__type__": "cc.Widget",
@@ -1638,11 +1642,11 @@
     "_enabled": true,
     "_designResolution": {
       "__type__": "cc.Size",
-      "width": 960,
-      "height": 640
+      "width": 1280,
+      "height": 720
     },
-    "_fitWidth": false,
-    "_fitHeight": false
+    "_fitWidth": true,
+    "_fitHeight": true
   },
   {
     "__type__": "25951iED8tGUYBeLpoWDCiQ",
@@ -1655,7 +1659,9 @@
     "popUp": {
       "__uuid__": "b304b073-0867-4e3e-a771-770ac6349d22"
     },
-    "progressPrefab": null,
+    "progressPrefab": {
+      "__uuid__": "e3817d59-05ca-4bf3-8ca9-89a91e43595b"
+    },
     "loginButton": {
       "__id__": 17
     },
@@ -1667,6 +1673,9 @@
     },
     "facebookButton": {
       "__id__": 41
+    },
+    "gameResultPopupPrefab": {
+      "__uuid__": "13af3e19-4431-492e-bc6d-c0412c0ab05a"
     }
   }
 ]

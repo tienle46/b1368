@@ -195,6 +195,7 @@ export default class Player extends Actor {
     }
 
     startTimeLine(timeInSeconds = this.board.getTurnDuration()) {
+        console.log("start timeline: ", timeInSeconds);
         this.renderer.startCountdown(timeInSeconds);
     }
 

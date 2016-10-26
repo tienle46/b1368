@@ -5,41 +5,50 @@
 import app from 'app';
 import Component from 'Component';
 
-export default class Progress extends Component{
+export default class Progress extends Component {
     constructor() {
         super();
 
         this.spinNode = cc.Node;
-        this.duration = 1;
-        this.showing = false;
+        this.duration = 2;
+        this.timeoutCb = null;
+        this.pending = false;
+        this.active = true;
     }
 
-    onLoad(){
-        !this.showing && (this.node.active = false);
-    }
-
-    show(duration = 1, timeoutCb){
-        this.showing = true;
-        this.node.active = true;
-        this.duration = duration;
-
+    onEnable(){
         this.spinNode.runAction(cc.repeatForever(cc.rotateBy(1.0, 360)));
-        this.interval = setInterval(() => {
 
-            this.interval && clearInterval(this.interval);
-            timeoutCb ? timeoutCb() : this.hide();
+        console.log("Progress onEnable: ", this.parent, this.node.active, Date.now());
 
-        }, this.duration * 1000);
+        if (this.duration) {
+            this.interval = setInterval(() => {
+                this.interval && clearInterval(this.interval);
+                this.timeoutCb ? this.timeoutCb() : this.hide();
+            }, this.duration * 1000);
+        }
     }
 
-    hide(){
-        this.showing = false;
-        this.node.active = false;
-    }
+    onDisable() {
+        console.log("Progress onDisable: ", this.parent, this.node.active, Date.now());
 
-    onDisable(){
-        this.spinNode.stopAllActions();
+        this.spinNode && this.spinNode.stopAllActions() && (this.spinNode.active = false);
+
         this.interval && clearInterval(this.interval);
+    }
+
+    show(duration = 60, timeoutCb) {
+        this.hide();
+
+        this.duration = duration;
+        this.timeoutCb = timeoutCb;
+        this.node.active = true;
+    }
+
+    hide() {
+        console.log("Progress hide: ", this.node.active, this.node);
+        this.node.active = false;
+
     }
 }
 

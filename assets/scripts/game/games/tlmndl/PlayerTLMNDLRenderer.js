@@ -33,8 +33,8 @@ export default class PlayerTLMNDLRenderer extends PlayerCardTurnBaseRenderer {
         console.log("init ui TLMNDL")
     }
 
-    update() {
-
+    update(dt) {
+        this._updateCountDown(dt)
     }
 
     lateUpdate() {
@@ -42,7 +42,7 @@ export default class PlayerTLMNDLRenderer extends PlayerCardTurnBaseRenderer {
     }
 
     onLoad() {
-        console.log("onload: Player renderer: ", this.sayMessageComponent);
+
     }
 
     start() {

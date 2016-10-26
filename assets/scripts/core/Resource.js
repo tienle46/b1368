@@ -6,6 +6,12 @@ import app from 'app';
 import i18next from 'i18next';
 
 app.res = {};
+app.res.prefab = {};
+
+app.res.prefab.toast = cc.Prefab;
+app.res.prefab.loading = cc.Prefab;
+app.res.prefab.fullSceneLoading = cc.Prefab;
+
 
 app.res.getString = app.res.string = (key, params) => {
     return i18next.t(key, params);

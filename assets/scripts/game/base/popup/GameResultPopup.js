@@ -55,7 +55,8 @@ export default class GameResultPopup extends Actor {
 
     show(models){
         this.addItems(models);
-        app.system.currentScene.addChild(this.node);
+
+        app.system.currentScene.node.parent.addChild(this.node);
     }
 
     hide(){

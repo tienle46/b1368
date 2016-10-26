@@ -196,7 +196,7 @@ export default class GameScene extends BaseScene {
     }
 
     _onActionExitGame() {
-        this.showLoading(GameScene.name);
+        this.showLoading();
         app.service.sendRequest(new SFS2X.Requests.System.LeaveRoomRequest(this.room));
     }
 
@@ -299,13 +299,11 @@ export default class GameScene extends BaseScene {
 
     _onGameStateChange(state, data, isJustJoined) {
 
-        console.log("_onGameStateChange: state=", state, " isJustJoined=", isJustJoined, " data=", data);
-
         let localState = GameUtils.convertToLocalGameState(state);
         this.gameState = state;
         this.gameLocalState = localState;
 
-        log("Game state: ", state, localState);
+        console.log("_onGameStateChange: state=", state, " local State: ", localState, " isJustJoined=", isJustJoined, " data=", data);
 
         switch (localState) {
             case app.const.game.state.BEGIN:

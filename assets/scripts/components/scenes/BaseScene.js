@@ -20,7 +20,6 @@ export default class BaseScene extends Actor {
             type: cc.Prefab
         };
 
-        this.progressPrefab = cc.Prefab;
         this.progress = null;
         this.onShown = null;
         this.isLoaded = false;
@@ -50,12 +49,16 @@ export default class BaseScene extends Actor {
     }
 
     onLoad() {
-        let progressNode = this.progressPrefab && cc.instantiate(this.progressPrefab);
+
+        super.onLoad();
+        
+        let progressNode = cc.instantiate(app.res.prefab.fullSceneLoading);
         if (progressNode) {
-            progressNode.active = false;
-            this.node.addChild(progressNode, 10000);
+            this.node.parent.addChild(progressNode, app.const.loadingZIndex);
             this.progress = progressNode.getComponent(FullSceneProgress.name);
         }
+
+        console.log(this);
 
         this._pendingAddPopup && this._pendingAddPopup.forEach(msg => {
             this.addPopup(msg);
@@ -64,29 +67,26 @@ export default class BaseScene extends Actor {
         this.isLoaded = true;
     }
 
-    onEnable(){
-        app.system.setCurrentScene(this);
-    }
-
     start() {
         if (this.onShown && this.onShown instanceof Function) {
             this.onShown();
         }
+        this.progress && this.progress.hide();
     }
 
     onDestroy() {
         super.onDestroy();
     }
 
-    showShortLoading(payload, message = '') {
+    showShortLoading(message = '', payload = '') {
         this.showLoading(payload, message, 5);
     }
 
-    showLongLoading(payload, message = '') {
+    showLongLoading(message = '', payload = '') {
         this.showLoading(payload, message, 20);
     }
 
-    showLoading(payload, message = '', timeoutInSeconds = 10) {
+    showLoading(message = '', timeoutInSeconds = 10, payload = '') {
         this.hideLoading(payload);
 
         if (utils.isNumber(message)) {

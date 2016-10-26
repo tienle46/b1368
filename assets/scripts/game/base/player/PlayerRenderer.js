@@ -120,8 +120,11 @@ export default class PlayerRenderer extends ActorRenderer {
         this.node.opacity = visible ? 255 : 100;
     }
 
-    update(dt) {
+    _updateCountDown(dt) {
         if (this.isCounting && this.timelineDuration > 0) {
+
+            debug("startCountdown: ", this.isCounting, this.timelineDuration)
+
             this.callCounter.progress = this.counterTimer / this.timelineDuration;
 
             if(this.counterTimer >= this.timelineDuration){

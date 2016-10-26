@@ -20,7 +20,7 @@ export default class PlusBalanceAnimation extends Component {
     }
 
     play(){
-        this.node.getComponent(cc.Component).play();
+        this.node.getComponent(cc.Animation).play();
     }
 
     onAnimationStart(){

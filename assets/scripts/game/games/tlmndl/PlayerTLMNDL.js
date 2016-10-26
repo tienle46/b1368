@@ -36,8 +36,6 @@ export default class PlayerTLMNDL extends PlayerCardTurnBase {
     _removeGlobalListener(){
         super._removeGlobalListener();
 
-        debug("Player TLMNDL: ", this)
-
         this.board.scene.off(Events.ON_CLICK_PLAY_BUTTON, this._onPlayTurn);
         this.board.scene.off(Events.ON_CLICK_SKIP_TURN_BUTTON, this._onSkipTurn);
         this.board.scene.off(Events.ON_CLICK_SORT_BUTTON, this._onSortCards);
@@ -110,19 +108,14 @@ export default class PlayerTLMNDL extends PlayerCardTurnBase {
 
     onDisable(){
         super.onDisable();
-
-        debug("player on onDisable: ", this.board.scene);
     }
 
     onDestroy(){
-        debug("player on destroy: ", this.board.scene);
         super.onDestroy();
-
     }
 
     start() {
         super.start();
-        debug("start player PlayerTLMNDL");
     }
 
 }

@@ -17,8 +17,6 @@ export default class Toast extends Component {
 
 
     onLoad(){
-        debug("onloaded Toast");
-
         this.node.on('touchstart', () => true);
         cc.find('scrollView/scroll', this.node)
     }

@@ -825,7 +825,8 @@
     },
     "progressNode": {
       "__id__": 6
-    }
+    },
+    "active": true
   },
   {
     "__type__": "cc.PrefabInfo",

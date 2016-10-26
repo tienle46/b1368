@@ -1,44 +1,52 @@
 import app from 'app';
 import Component from 'Component';
 import LoaderRub from 'LoaderRub';
-// import _ from 'lodash';
+import EntranceScene from 'EntranceScene';
+import FullSceneProgress from 'FullSceneProgress';
 
 class PreloadScene extends Component {
     constructor() {
         super();
+
+        this.fullSceneLoadingPrefab = cc.Prefab;
+        this.loadingPrefab = cc.Prefab;
+        this.loading = cc.Node;
     }
 
     onLoad() {
-        new LoaderRub(this.node, true).show();
+        app.res.prefab.loading = this.loadingPrefab;
+        app.res.prefab.fullSceneLoading = this.fullSceneLoadingPrefab;
+        this.loading.getComponent(FullSceneProgress.name).show(app.res.string('loading_data'));
+    }
 
-        // progress bar
-        // let progressBarNode = this.node.getChildByName('progressBar');
-        // let progressBar = progressBarNode.getComponent(cc.ProgressBar);
-        // let innerProgress = progressBarNode.getChildByName('bar');
-        let endTime = 5; // 5s
-        let counter = 0;
-        let n = setInterval(() => {
-            counter++;
-            // progressBar.progress = (counter * _.random(1.97, 2.0, true)) / 100;
-            // innerProgress.width = progressBar.progress * progressBarNode.width;
-            if (counter == endTime * 10) {
-                clearInterval(n);
-                this.node.runAction(cc.sequence(
-                    cc.fadeOut(0.8),
-                    cc.callFunc(function() {
-                        app.system.loadScene(app.const.scene.ENTRANCE_SCENE);
-                    })
-                ));
+    start(){
+        app.async.parallel([
+            (callback) => {
+                cc.loader.loadRes('toast/Toast', (err, prefab) => {
+                    app.res.prefab.toast = prefab;
+                    prefab ? callback(null, true) : callback();
+                });
+            },
+        ], (err, results) => {
+
+            let loadedRes = true;
+            for (let success of results) {
+                if (!success) {
+                    loadedRes = false;
+                    break;
+                }
             }
-        }, 100); // 1/10 s
-        // cc.loader.load(resources, (completedCount, totalCount) => {
-        //     var progress = (100 * completedCount / totalCount).toFixed(2);
-        //     cc.log(progress + '%');
-        //     cc.log(completedCount, totalCount);
-        // }, (a) => {
-        //     cc.log(a);
-        //     cc.log('done');
-        // });
+
+            if (loadedRes) {
+                this.onLoadResourceDone();
+            } else {
+                app.system.error(app.res.string('error_cannot_load_data'));
+            }
+        });
+    }
+
+    onLoadResourceDone(){
+        app.system.loadScene(EntranceScene.name);
     }
 }
 

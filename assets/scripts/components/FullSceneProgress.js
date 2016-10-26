@@ -13,53 +13,51 @@ export default class FullSceneProgress extends Component {
         this.label = cc.Label;
         this.progressNode = cc.Node;
         this.progress = null;
-        this.pendingToShow = false;
-        this.duration = null;
+        this.duration = 60;
         this.timeoutCb = null;
         this.text = null;
-        this.showing = false;
+        this.active = {
+            default: true,
+            type: cc.Boolean
+        };
     }
 
     onLoad(){
-
-        !this.showing && (this.node.active = false);
-
+        // console.log("FullSceneProgress onLoad")
+        this.node.active = this.active;
         this.progress = this.progressNode.getComponent(Progress.name);
-        if(this.pendingToShow){
-            this.pendingToShow = false;
-            this.show(this.text, this.duration, this.timeoutCb);
-        }
-
         this.node.on('touchstart', () => {});
-
     }
 
-    setText(text = ""){
-        this.label.string = text;
+    onEnable(){
+        if(this.active){
+            // console.log("FullSceneProgress onEnable")
+            this.label.string = this.text || "";
+            this.progress.show(this.duration, () => {
+                this.hide();
+                this.timeoutCb && this.timeoutCb();
+            });
+        }
     }
 
-    show(text = "", duration, timeoutCb){
-        this.showing = true;
-        this.setText(text);
+    onDisable(){
+        // console.log("FullSceneProgress onDisable", this, this.progress)
+        this.progress.hide();
+    }
+
+    show(text = "", duration = this.duration, timeoutCb){
+
+        this.hide();
+
         this.text = text;
         this.duration = duration;
         this.timeoutCb = timeoutCb;
-
-        if(this.progress) {
-            this.node.active = true;
-            this.progress.show(duration, () => {
-                this.hide();
-                timeoutCb && timeoutCb();
-            });
-        }else{
-            this.pendingToShow = true;
-        }
+        this.node.active = true;
     }
 
     hide(){
-        this.showing = false;
-        this.node.active = false;
         this.progress && this.progress.hide();
+        this.node.active = false;
     }
 }
 

@@ -24,13 +24,7 @@ class GameSystem {
         this.toast = null;
         this._currentSceneNode = cc.Node;
         this._currentScene = cc.Node;
-        this.toastPrefab = null;
-
         this.initEventListener();
-    }
-
-    load(cb) {
-        cc.loader.loadRes('toast/Toast', (err, prefab) => {this.toastPrefab = prefab; cb && cb()});
     }
 
     showToast(message, duration){
@@ -55,7 +49,8 @@ class GameSystem {
      */
     loadScene(sceneName, onLaunch, onShown) {
         cc.director.loadScene(sceneName, onLaunch);
-        this.currentScene && (this.currentScene.onShown = onShown);
+        this._currentScene = cc.director.getScene().children[0].getComponent(sceneName);
+        this._currentScene && (this._currentScene.onShown = onShown);
     }
 
     initEventListener() {
@@ -80,7 +75,7 @@ class GameSystem {
         app.context.lastJoinRoom = resultEvent.room;
         if (resultEvent.room.isJoined && resultEvent.room.isGame) {
             app.context.currentRoom = resultEvent.room;
-            this.currentScene.hideLoading && this.currentScene.hideLoading();
+            this._currentScene && this._currentScene.hideLoading();
             this.loadScene(GameScene.name);
         }
 
@@ -96,17 +91,11 @@ class GameSystem {
      */
     setCurrentScene(scene) {
         this._currentScene = scene;
-
-        //TODO move to loading scene
-        if(this.toastPrefab){
-            this._addToastToScene();
-        }else{
-            app.system.load(() => this._addToastToScene());
-        }
+        this._addToastToScene();
     }
 
     _addToastToScene(){
-        let toastNode = cc.instantiate(this.toastPrefab);
+        let toastNode = cc.instantiate(app.res.prefab.toast);
         this.toast = toastNode.getComponent(Toast.name);
         this.currentScene && this.currentScene.node.addChild(toastNode, app.const.toastZIndex);
     }

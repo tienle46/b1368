@@ -55,8 +55,8 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": 0,
-      "y": 0
+      "x": -640,
+      "y": -360
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -869,6 +869,7 @@
       "a": 255
     },
     "duration": 0.1,
+    "zoomScale": 1.2,
     "pressedSprite": null,
     "hoverSprite": null,
     "clickEvents": [
@@ -877,6 +878,7 @@
       }
     ],
     "_N$interactable": true,
+    "_N$enableAutoGrayEffect": false,
     "_N$normalColor": {
       "__type__": "cc.Color",
       "r": 255,
@@ -905,7 +907,8 @@
       "__id__": 1
     },
     "component": "GameResultPopup",
-    "handler": "onClickCloseButton"
+    "handler": "onClickCloseButton",
+    "customEventData": ""
   },
   {
     "__type__": "1c0c91FVspFPZAB7lifOTk3",
@@ -917,7 +920,8 @@
     "_enabled": true,
     "buttonType": 0,
     "pressedScale": 0.9,
-    "transDuration": 0.1
+    "transDuration": 0.1,
+    "isTouching": false
   },
   {
     "__type__": "cc.PrefabInfo",

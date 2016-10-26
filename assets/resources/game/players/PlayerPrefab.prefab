@@ -2804,7 +2804,13 @@
     "_enabled": true,
     "label": {
       "__id__": 84
-    }
+    },
+    "lines": 1,
+    "minWidth": 100,
+    "maxWidth": 1000,
+    "resizeWidth": true,
+    "increaseWidth": 40,
+    "margin": 5
   },
   {
     "__type__": "cc.Sprite",

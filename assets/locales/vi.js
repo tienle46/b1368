@@ -19,5 +19,7 @@ export default {
   label_deny: 'Hủy',
   label_close: 'Đóng',
   random_invite_player_successfully: 'Lời mời vào bàn chơi đã được gửi đi',
+  error_cannot_load_data: 'Không thể tải dữ liệu',
+  loading_data: 'Đang tải dữ liệu...',
 
 };
