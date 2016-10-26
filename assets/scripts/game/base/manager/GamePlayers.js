@@ -38,7 +38,7 @@ export default class GamePlayers extends Component {
     }
 
     isItMe(id) {
-        return this.me.id == id;
+        return this.me && this.me.id == id;
     }
 
     _init(board, scene, cb) {

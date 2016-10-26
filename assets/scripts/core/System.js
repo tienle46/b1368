@@ -48,9 +48,11 @@ class GameSystem {
      * @param {function} onLaunch - On launch custom function
      */
     loadScene(sceneName, onLaunch, onShown) {
-        cc.director.loadScene(sceneName, onLaunch);
-        this._currentScene = cc.director.getScene().children[0].getComponent(sceneName);
-        this._currentScene && (this._currentScene.onShown = onShown);
+        cc.director.loadScene(sceneName, () => {
+            this._currentScene = cc.director.getScene().children[0].getComponent(sceneName);
+            this._currentScene && this._addToastToScene() && (this._currentScene.onShown = onShown);
+            onLaunch && onLaunch();
+        });
     }
 
     initEventListener() {
@@ -97,7 +99,7 @@ class GameSystem {
     _addToastToScene(){
         let toastNode = cc.instantiate(app.res.prefab.toast);
         this.toast = toastNode.getComponent(Toast.name);
-        this.currentScene && this.currentScene.node.addChild(toastNode, app.const.toastZIndex);
+        this._currentScene && this._currentScene.node.addChild(toastNode, app.const.toastZIndex);
     }
 
     info(title, message) {
