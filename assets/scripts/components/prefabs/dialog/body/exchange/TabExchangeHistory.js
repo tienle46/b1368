@@ -30,7 +30,7 @@ class TabExchangeHistory extends Component {
         let sendObject = {
             'cmd': app.commands.EXCHANGE_HISTORY,
             'data': {
-                [app.keywords.PAGE]: 0,
+                [app.keywords.PAGE]: 1,
             }
         };
 

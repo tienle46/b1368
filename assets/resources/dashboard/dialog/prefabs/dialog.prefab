@@ -678,7 +678,8 @@
       "__id__": 1
     },
     "component": "TopupDialog",
-    "handler": "onCloseBtnClick"
+    "handler": "onCloseBtnClick",
+    "customEventData": ""
   },
   {
     "__type__": "d2d23CyXOhMxYG3ydeJ57ya",
