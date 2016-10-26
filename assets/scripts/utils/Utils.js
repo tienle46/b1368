@@ -4,14 +4,14 @@
 
 export default class Utils {
 
-    static isEmpty(str){
+    static isEmpty(str) {
         return !str || (Utils.isString(str) && str.trim().length == 0);
     }
 
-    static isEmptyArray(arr){
-        return !arr || arr.length == 0; 
+    static isEmptyArray(arr) {
+        return !arr || arr.length == 0;
     }
-    
+
     static isNumber(value) {
         return typeof value === 'number';
     }
@@ -107,12 +107,12 @@ export default class Utils {
         return room && room.isGame && room.name.substring(0, 3);
     }
 
-    static cloneProperties(dest, src){
+    static cloneProperties(dest, src) {
 
         Object.getOwnPropertyNames(src).forEach(key => {
 
             log("Check: ", dest[key], src[key], !dest[key] && src[key]);
-            if(!dest[key] && src[key]){
+            if (!dest[key] && src[key]) {
                 dest[key] = src[key];
             }
         });

@@ -1,18 +1,12 @@
-
 import app from 'app';
 import Component from 'Component';
-import AlertPopupRub from 'AlertPopupRub';
-import ButtonScaler from 'ButtonScaler';
-import RubUtils from 'RubUtils';
-import ConfirmPopupRub from 'ConfirmPopupRub';
-import ExchangeDialog from 'ExchangeDialog';
-import numeral from 'numeral';
+import ListItemBasicRub from 'ListItemBasicRub';
 
 class TabTransferTransaction extends Component {
     constructor() {
-        super()
+        super();
         this.contentNode = {
-            default : null,
+            default: null,
             type: cc.Node
         }
     }
@@ -26,20 +20,24 @@ class TabTransferTransaction extends Component {
         event.handler = 'scrollEvent';
 
         // this.node.getComponent(cc.ScrollView).scrollEvents.push(event);
+        for (let i = 0; i < 10; i++) {
+            let transactionItem = new ListItemBasicRub().node();
 
-        RubUtils.loadRes('dashboard/dialog/prefabs/userinfo/transaction_item').then((preFab)=>{
-            for(let i = 0 ; i < 10; i++){
-                const transactionItem = cc.instantiate(preFab);
-                const widget = transactionItem.addComponent(cc.Widget);
-                widget.isAlignLeft = true;
-                widget.isAlignRight = true;
+            this.contentNode.addChild(transactionItem);
+        }
+        // RubUtils.loadRes('dashboard/dialog/prefabs/userinfo/transaction_item').then((preFab)=>{
+        //     for(let i = 0 ; i < 10; i++){
+        //         const transactionItem = cc.instantiate(preFab);
+        //         const widget = transactionItem.addComponent(cc.Widget);
+        //         widget.isAlignLeft = true;
+        //         widget.isAlignRight = true;
 
-                widget.left = 0;
-                widget.right = 0;
+        //         widget.left = 0;
+        //         widget.right = 0;
 
-                this.contentNode.addChild(transactionItem);
-            }
-        })
+        //         this.contentNode.addChild(transactionItem);
+        //     }
+        // })
     }
 
 
