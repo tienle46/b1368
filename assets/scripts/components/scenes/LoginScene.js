@@ -31,8 +31,8 @@ export default class LoginScene extends BaseScene {
         if (this.isRemember) {
             this._loginToDashboard();
         }
-        this.userNameEditBox.string = "pinocchio";
-        this.userPasswordEditBox.string = "hhmmss24";
+        this.userNameEditBox.string = "";
+        this.userPasswordEditBox.string = "";
     }
 
     handleLoginAction() {
