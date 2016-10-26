@@ -33,51 +33,67 @@ class TabExchangeCard extends Component {
 
         app.service.send(sendObject, (data) => {
             log(data);
-            if (data[app.keywords.RESPONSE_RESULT] && data[app.keywords.EXCHANGE_LIST.RESPONSE.ITEM_TYPE] === 1) {
-                let rowNode;
-                for (let i = 0; i < data[app.keywords.EXCHANGE_LIST.RESPONSE.ITEM_ID_LIST].length; i++) {
-                    let itemId = data[app.keywords.EXCHANGE_LIST.RESPONSE.ITEM_ID_LIST][i];
-                    let itemIcon = data[app.keywords.EXCHANGE_LIST.RESPONSE.ITEM_ICON_LIST][i];
-                    let itemGold = data[app.keywords.EXCHANGE_LIST.RESPONSE.ITEM_GOLD_LIST][i];
-                    let itemName = data[app.keywords.EXCHANGE_LIST.RESPONSE.ITEM_NAME_LIST][i];
+            if (data[app.keywords.EXCHANGE_LIST.RESPONSE.TYPES]) {
 
-                    if (i % 3 === 0) {
-                        rowNode = null;
-                        rowNode = this._initRowNode();
-                        this.contentNode.addChild(rowNode);
+                const exchangeTypes = data[app.keywords.EXCHANGE_LIST.RESPONSE.TYPES];
+                exchangeTypes.forEach((type, index)=>{
+                    if(type[app.keywords.EXCHANGE_LIST.RESPONSE.ITEM_TYPE] ===  '1'){
+                        const idList = type[app.keywords.EXCHANGE_LIST.RESPONSE.ITEM_ID_LIST];
+                        const nameList = type[app.keywords.EXCHANGE_LIST.RESPONSE.ITEM_NAME_LIST];
+                        const goldList = type[app.keywords.EXCHANGE_LIST.RESPONSE.ITEM_GOLD_LIST];
+                        const iconList = type[app.keywords.EXCHANGE_LIST.RESPONSE.ITEM_ICON_LIST];
+
+                        const cnt = idList.length;
+
+                        let rowNode;
+
+                        for(let i = 0 ; i < cnt; i++){
+                            let itemId = idList[i];
+                            let itemIcon = iconList[i].replace('thumb.','');
+                            let itemGold = goldList[i];
+                            let itemName = nameList[i];
+
+                            if (i % 3 === 0) {
+                                rowNode = null;
+                                rowNode = this._initRowNode();
+                                this.contentNode.addChild(rowNode);
+                            }
+
+                            if (rowNode) {
+                                // create item Note
+                                let itemNode = new cc.Node();
+                                itemNode.itemId = itemId;
+                                itemNode.itemGold = itemGold;
+                                itemNode.itemName = itemName;
+
+                                rowNode.addChild(itemNode);
+
+                                // add Spite
+                                let sprite = itemNode.addComponent(cc.Sprite);
+                                let itemNodeWidth = 245;
+                                let itemNodeHeight = 131;
+                                RubUtils.loadSpriteFrame(sprite, itemIcon, cc.size(itemNodeWidth, itemNodeHeight), true, (spriteFrame) => {
+                                    spriteFrame.node.x = -254 + (i % 3) * (itemNodeWidth + 13);
+                                    spriteFrame.node.y = 0;
+                                });
+
+                                // add Button
+                                let btn = itemNode.addComponent(cc.Button);
+
+                                let event = new cc.Component.EventHandler();
+                                event.target = this.node;
+                                event.component = 'TabExchangeCard';
+                                event.handler = 'onHandleExchangeBtnClick';
+                                btn.clickEvents = [event];
+
+                                // add ButtonScaler component
+                                itemNode.addComponent(ButtonScaler);
+                            }
+                        }
+
                     }
+                });
 
-                    if (rowNode) {
-                        // create item Note
-                        let itemNode = new cc.Node();
-                        itemNode.itemId = itemId;
-                        itemNode.itemGold = itemGold;
-                        itemNode.itemName = itemName;
-
-                        rowNode.addChild(itemNode);
-
-                        // add Spite
-                        let sprite = itemNode.addComponent(cc.Sprite);
-                        let itemNodeWidth = 245;
-                        let itemNodeHeight = 131;
-                        RubUtils.loadSpriteFrame(sprite, itemIcon, cc.size(itemNodeWidth, itemNodeHeight), true, (spriteFrame) => {
-                            spriteFrame.node.x = -254 + (i % 3) * (itemNodeWidth + 13);
-                            spriteFrame.node.y = 0;
-                        });
-
-                        // add Button
-                        let btn = itemNode.addComponent(cc.Button);
-
-                        let event = new cc.Component.EventHandler();
-                        event.target = this.node;
-                        event.component = 'TabExchangeCard';
-                        event.handler = 'onHandleExchangeBtnClick';
-                        btn.clickEvents = [event];
-
-                        // add ButtonScaler component
-                        itemNode.addComponent(ButtonScaler);
-                    }
-                }
                 // hide loader
                 this.loader.hide();
                 this.node.active = true;

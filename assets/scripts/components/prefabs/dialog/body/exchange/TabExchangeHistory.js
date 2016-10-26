@@ -34,11 +34,17 @@ class TabExchangeHistory extends Component {
     _initData() {
         let sendObject = {
             'cmd': app.commands.EXCHANGE_HISTORY,
+            'data': {
+                [app.keywords.PAGE]: 0,
+            }
         };
 
 
         return new Promise((resolve, reject) => {
             app.service.send(sendObject, (res) => {
+
+                log(res);
+
                 let data = {
                     p: 1,
                     il: ['60573', '50669', '47930', '47929', '36103', '30948', '29833', '29822', '29280', '29277'],

@@ -5,6 +5,7 @@ import ExchangeDialogRub from 'ExchangeDialogRub';
 import PersonalInfoDialogRub from 'PersonalInfoDialogRub';
 import GridViewRub from 'GridViewRub';
 import _ from 'lodash';
+import MessageCenterDialogRub from 'MessageCenterDialogRub';
 
 class BottomBar extends Component {
     constructor() {
@@ -101,7 +102,25 @@ class BottomBar extends Component {
     }
 
     onClickMessageAction() {
-        log("Message");
+        let tabs = [{
+            title: 'Thông báo',
+            value: 'tab_system_messages'
+        }, {
+            title: 'Sự kiện',
+            value: 'tab_events'
+        }, {
+            title: 'Tin nhắn',
+            value: 'tab_personal_messages'
+        }];
+
+        let options = {
+            itemHeight: 26.5,
+            itemWidth: 112,
+            tabBodyPrefabType: 'messagecenter'
+        };
+        let tabOptions = { tabs, options };
+        MessageCenterDialogRub.show(this.node.parent, tabOptions);
+
     }
 
     onClickUserInfoAction() {
