@@ -316,12 +316,14 @@
     "_fontSize": 20,
     "_lineHeight": 25,
     "_enableWrapText": false,
-    "_N$file": null,
-    "_isSystemFontUsed": true,
-    "_N$string": "Player Name",
+    "_N$file": {
+      "__uuid__": "200ad895-dd04-48f0-918a-815f86b13ff7"
+    },
+    "_isSystemFontUsed": false,
+    "_N$string": "Player name",
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
-    "_N$overflow": 2
+    "_N$overflow": 1
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -708,7 +710,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 77.86,
+      "width": 155,
       "height": 45
     },
     "_children": [],
@@ -748,16 +750,18 @@
     },
     "_enabled": true,
     "_useOriginalSize": false,
-    "_actualFontSize": 28,
-    "_fontSize": 28,
+    "_actualFontSize": 30,
+    "_fontSize": 30,
     "_lineHeight": 45,
     "_enableWrapText": true,
-    "_N$file": null,
-    "_isSystemFontUsed": true,
+    "_N$file": {
+      "__uuid__": "200ad895-dd04-48f0-918a-815f86b13ff7"
+    },
+    "_isSystemFontUsed": false,
     "_N$string": "10000",
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
-    "_N$overflow": 0
+    "_N$overflow": 2
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -923,7 +927,13 @@
     "_enabled": true,
     "label": {
       "__id__": 24
-    }
+    },
+    "lines": 1,
+    "minWidth": 100,
+    "maxWidth": 155,
+    "resizeWidth": true,
+    "increaseWidth": 10,
+    "margin": 0
   },
   {
     "__type__": "cc.PrefabInfo",

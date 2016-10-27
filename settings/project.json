@@ -1,12 +1,78 @@
 {
   "collision-matrix": [
     [
+      true,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+    ],
+    [
+      false,
+      true,
+      false,
+      false,
+      false,
+      false,
+      false
+    ],
+    [
+      false,
+      false,
+      true,
+      false,
+      false,
+      false,
+      false
+    ],
+    [
+      false,
+      false,
+      false,
+      true,
+      false,
+      false,
+      false
+    ],
+    [
+      false,
+      false,
+      false,
+      false,
+      true,
+      false,
+      false
+    ],
+    [
+      false,
+      false,
+      false,
+      false,
+      false,
+      true,
+      false
+    ],
+    [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
       true
     ]
   ],
   "excluded-modules": [],
   "group-list": [
-    "cardPrefab"
+    "cardPrefab",
+    "core",
+    "game",
+    "game_core",
+    "components",
+    "game_components",
+    "scenes"
   ],
   "start-scene": "19d77baf-45a8-424b-b934-835d4149344d"
 }

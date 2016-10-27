@@ -466,7 +466,12 @@ export default class GamePlayers extends Component {
     // }
 
     getPlayerHandCardLists() {
-        return this.players.map(player => player.renderer.cardList);
+        let cardLists = [];
+        this.players.forEach(player => {
+            !player.isItMe() && cardLists.splice(player.anchorIndex, 0, player.renderer.cardList);
+        });
+
+        return cardLists;
     }
 
     getCurrentPlayerBalances(playerIds) {

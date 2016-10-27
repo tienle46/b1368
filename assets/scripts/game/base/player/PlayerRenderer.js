@@ -122,9 +122,6 @@ export default class PlayerRenderer extends ActorRenderer {
 
     _updateCountDown(dt) {
         if (this.isCounting && this.timelineDuration > 0) {
-
-            debug("startCountdown: ", this.isCounting, this.timelineDuration)
-
             this.callCounter.progress = this.counterTimer / this.timelineDuration;
 
             if(this.counterTimer >= this.timelineDuration){
@@ -176,7 +173,6 @@ export default class PlayerRenderer extends ActorRenderer {
     }
 
     _onDonePlusBalanceAnimation(){
-        console.log("_onDonePlusBalanceAnimation");
         this.plusBalanceLabel.string = "";
     }
 }

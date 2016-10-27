@@ -417,8 +417,8 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": 55,
-      "y": -48
+      "x": 78,
+      "y": -20
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -460,6 +460,13 @@
     "ownerIcon": null,
     "masterIcon": null,
     "readyIcon": null,
+    "playerTimeLinePrefab": null,
+    "callCounter": null,
+    "plusBalanceNode": null,
+    "plusBalanceLabel": null,
+    "messageAnchorTop": null,
+    "messageAnchorBottom": null,
+    "sayMessageNode": null,
     "cardListPrefab": null,
     "myCardAnchor": {
       "__id__": 2

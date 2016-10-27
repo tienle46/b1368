@@ -21,16 +21,12 @@ export default class Player extends Actor {
         this.isOwner = false;
         this.isMaster = false;
         this.ready = false;
-        this._anchorIndex = -1;
+        this.anchorIndex = -1;
     }
 
     setAnchorIndex(anchorIndex){
-        this._anchorIndex = anchorIndex;
+        this.anchorIndex = anchorIndex;
         this.renderer.updatePlayerAnchor(anchorIndex);
-    }
-
-    get anchorIndex() {
-        return this._anchorIndex;
     }
 
     _init(board, user){
@@ -223,7 +219,7 @@ export default class Player extends Actor {
 
     onGameStarting(data, isJustJoined) {
         if(isJustJoined){
-            this.onGameBegin({}, isJustJoined);
+
         }else{
             this.setReady(true);
         }
@@ -231,19 +227,19 @@ export default class Player extends Actor {
 
     onGameStarted(data, isJustJoined) {
         if(isJustJoined){
-            this.onGameStarting({}, isJustJoined);
+
         }
     }
 
     onGamePlaying(data, isJustJoined) {
         if(isJustJoined){
-            this.onGameStarted({}, isJustJoined);
+
         }
     }
 
     onGameEnding(data, isJustJoined) {
         if(isJustJoined){
-            this.onGamePlaying({}, isJustJoined);
+
         }
 
         this.stopTimeLine();

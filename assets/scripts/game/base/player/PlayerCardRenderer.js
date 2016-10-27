@@ -60,13 +60,13 @@ export default class PlayerCardRenderer extends PlayerRenderer {
             cardList.setMaxDimension(800);
             cardList.setDraggable(true);
             cardList.setSelectable(true);
+            cardList.setAnchorPoint(0, 0);
         } else {
             cardList.setMaxDimension(0);
-            cardList.setScale(0.5);
+            cardList.setScale(app.const.game.DECK_CARD_SCALE);
             cardList.setReveal(false);
         }
 
-        cardList.setAnchorPoint(0, 0);
         cardList.setPosition(0, 0);
 
         this.cardList = cardList;

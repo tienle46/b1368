@@ -884,8 +884,7 @@
     "_enabled": true,
     "spinNode": {
       "__id__": 10
-    },
-    "active": true
+    }
   },
   {
     "__type__": "cc.Widget",

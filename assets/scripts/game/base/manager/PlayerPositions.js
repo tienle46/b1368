@@ -75,30 +75,30 @@ export default class PlayerPositions extends Component {
         app.system.showToast(app.res.string('random_invite_player_successfully'));
     }
 
-    _onGameBegin() {
+    _onGameBegin(data, isJustJoined) {
         let hidingAnchorIndexes = this.scene.gamePlayers.players.map(player => player.anchorIndex);
         this.showAllInviteButtons(hidingAnchorIndexes);
     }
 
-    _onGameStarting() {
+    _onGameStarting(data, isJustJoined) {
         this.hideAllInviteButtons();
     }
 
     _onGameStarted(data, isJustJoined) {
         if(isJustJoined){
-            this._onGameStarting(data, isJustJoined);
+            this.hideAllInviteButtons();
         }
     }
 
     _onGamePlaying(data, isJustJoined) {
         if(isJustJoined){
-            this._onGameStarted(data, isJustJoined);
+            this.hideAllInviteButtons();
         }
     }
 
     _onGameEnding(data, isJustJoined) {
         if(isJustJoined){
-            this._onGamePlaying(data, isJustJoined);
+            this.hideAllInviteButtons();
         }
     }
 
@@ -110,6 +110,8 @@ export default class PlayerPositions extends Component {
     }
 
     showAllInviteButtons(excludeAnchorIndexes = []) {
+
+        debug("Show all invite button: ", excludeAnchorIndexes);
 
         this.playerAnchors.forEach(anchor => {
             let inviteButton = anchor.getChildByName('inviteButton');

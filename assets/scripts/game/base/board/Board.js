@@ -274,8 +274,6 @@ export default class Board extends Actor {
         let boardTimeLine = utils.getValue(data, Keywords.BOARD_PHASE_DURATION);
         this.readyPhaseDuration = boardTimeLine;
 
-        debug("onBoardBegin: ", this.scene.isBegin(), boardTimeLine, this.scene.gamePlayers.me.isReady());
-
         if (boardTimeLine && this.scene.isBegin() && !this.scene.gamePlayers.me.isReady()) {
             if (this.scene.gamePlayers.meIsOwner()) {
                 boardTimeLine *= 2;
@@ -289,10 +287,8 @@ export default class Board extends Actor {
 
     onBoardStarting(data = {}, isJustJoined) {
 
-        debug("onBoardStarting: ", isJustJoined);
-
         if (isJustJoined) {
-            this.onBoardBegin({}, isJustJoined);
+
         }
 
         this.state = app.const.game.state.STARTING;
@@ -301,21 +297,15 @@ export default class Board extends Actor {
     }
 
     onBoardStarted(data = {}, isJustJoined) {
-        debug("onBoardStarted: ", isJustJoined);
         if (isJustJoined) {
-            this.onBoardStarting({}, isJustJoined);
+
         }
 
         this.state = app.const.game.state.STARTED;
-        //TODO
     }
 
     onBoardPlaying(data = {}, isJustJoined) {
-
-        debug("onBoardPlaying: ", isJustJoined);
-
         if (isJustJoined) {
-            this.onBoardStarted({}, isJustJoined);
         }
 
         this.state = app.const.game.state.PLAYING;
@@ -324,7 +314,6 @@ export default class Board extends Actor {
 
     onBoardEnding(data = {}, isJustJoined) {
         if (isJustJoined) {
-            this.onBoardPlaying({}, isJustJoined);
         }
 
         /**
@@ -367,8 +356,6 @@ export default class Board extends Actor {
         let playersBalance = utils.getValue(data, Keywords.USER_BALANCE, []);
         let playersExp = utils.getValue(data, Keywords.BOARD_EXP_POINT_LIST, []);
 
-        log("_handleSetPlayerBalance: ", playersBalance, playersExp);
-
         playerIds && playersBalance && playersExp && playerIds.forEach((id, i) => {
             let newBalance = playersBalance[i];
             let newExp = playersExp[i];
@@ -383,22 +370,9 @@ export default class Board extends Actor {
     }
 
     _dealCards(data) {
-        log("Deal card");
     }
 
     changeBoardPhaseDuration(data) {
-
-        //TODO on board timeline changed
-    }
-
-    _handleChangePlayerBalance(data) {
-
-    }
-
-    _handleChangeBoardMaster(data) {
-    }
-
-    _handlePlayerRejoinGame(data) {
 
     }
 

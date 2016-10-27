@@ -29,7 +29,6 @@ export default class TLMNDLControls extends GameControls {
     }
 
     _init( scene) {
-        debug("init TLMNDL control")
         super._init(scene);
         this.baseControls && this.baseControls._init(scene);
         this.cardTurnBaseControls && this.cardTurnBaseControls._init(scene);
@@ -40,11 +39,9 @@ export default class TLMNDLControls extends GameControls {
 
         this.scene.on(Events.ON_GAME_STATE_BEGIN, this._onGameBegin, this);
         this.scene.on(Events.ON_GAME_STATE_STARTING, this._onGameStarting, this);
-        this.scene.on(Events.ON_GAME_STATE_STARTED, this._onGameStarted, this);
+        this.scene.on(Events.ON_GAME_STATE_STARTED, this._onGameStarted, this, 0);
         this.scene.on(Events.ON_GAME_STATE_PLAYING, this._onGamePlaying, this);
         this.scene.on(Events.ON_GAME_STATE_ENDING, this.hideAllControls, this);
-
-        debug("done init TLMNDL control")
     }
 
     onLoad(){
@@ -62,17 +59,20 @@ export default class TLMNDLControls extends GameControls {
         this.cardTurnBaseControls.node.on('touchstart', (event) => true);
     }
 
-    _onGameBegin(data){
-        debug("on game controls begin");
+    _onGameBegin(data, isJustJoined){
         this._showGameBeginControls();
     }
 
-    _onGameStarting(){
+    _onGameStarting(data, isJustJoined){
         this.hideAllControlsBeforeGameStart();
     }
 
-    _onGameStarted(){
-        this._showWaitTurnControls();
+    _onGameStarted(data, isJustJoined){
+        if(isJustJoined){
+            this._showWaitTurnControls();
+        }else{
+            this.scene.isStarting() && this._showWaitTurnControls();
+        }
     }
 
     /**
@@ -81,13 +81,12 @@ export default class TLMNDLControls extends GameControls {
      * @param data
      * @private
      */
-    _onGamePlaying(data){
-        
-        log("_onGamePlaying")
-        
+    _onGamePlaying(data, isJustJoined){
         let nextTurnPlayerId = utils.getValue(data, Keywords.TURN_PLAYER_ID);
         if (!nextTurnPlayerId) {
             this._showWaitTurnControls();
+        }else{
+            this.hideAllControlsBeforeGameStart();
         }
     }
 
@@ -120,11 +119,7 @@ export default class TLMNDLControls extends GameControls {
     }
 
     hideAllControlsBeforeGameStart(){
-
-        console.log("hideAllControlsBeforeGameStart");
-
         super.hideAllControlsBeforeGameStart();
-
         this.baseControls.hideAllControls();
     }
 }

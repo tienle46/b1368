@@ -27,4 +27,9 @@ export default class CCUtils {
         node.setAnchorPoint(x, y);
         node.childrenCount > 0 && this.children.forEach(child => CCUtils.setAnchorPoint(child, x, y));
     }
+
+    convertToCenterAnchor(node){
+        let anchor = node.getAnchorPoint();
+
+    }
 }

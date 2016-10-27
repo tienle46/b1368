@@ -95,7 +95,8 @@ export default class BoardTLMNDL extends BoardCardTurnBase {
                 iconPath: resultIconPaths[playerId],
                 info: gameResultInfos[playerId],
                 cards: playerHandCards[playerId]
-            }});
+            }
+        });
         this.scene.showGameResult(models);
     }
 

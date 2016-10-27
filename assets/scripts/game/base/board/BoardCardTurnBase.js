@@ -60,7 +60,6 @@ export default class BoardCardTurnBase extends BoardCard {
     handleGameStateChange(state, data){
         super.handleGameStateChange(state, data);
 
-        log("handle game state change: ", state, " ", data);
         if (state == app.const.game.state.BOARD_STATE_TURN_BASE_TRUE_PLAY) {
             this._handleBoardTurnBaseTruePlay(data);
         }

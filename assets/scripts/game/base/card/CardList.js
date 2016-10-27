@@ -39,6 +39,11 @@ export default class CardList extends Component {
         this._selectable = selectable;
     }
 
+    setScale(scale){
+        this._scale = scale;
+        this.cards.forEach(card => {card.node.setScale(scale)});
+    }
+
     getRawCards() {
         return this.cards.filter(card => {
             return Card.from(card.byteValue)
@@ -614,7 +619,6 @@ export default class CardList extends Component {
                     )
                 );
             }));
-            // actions.push(cc.delayTime(0.1));
 
             card.node.removeFromParent(true);
         });
@@ -623,66 +627,77 @@ export default class CardList extends Component {
         this._adjustCardsPosition();
     }
 
+    /**
+     * If cardLengths is array, make sure that
+     * @param dealDeckCard
+     * @param playersCardLists
+     * @param cardLengths
+     * @param cb
+     * @returns {ActionInterval}
+     */
+    static dealCards(dealDeckCard, playersCardLists, cardLengths, cb) {
 
-    static dealCards(dealDeckCard, playersCardLists, cardLength, cb) {
-
+        let maxLength = 0;
+        const delayTime = 0.07 + (4 - playersCardLists.length) * 0.02;
+        const delay = cc.delayTime(delayTime);
+        const actions = [delay.clone()];
         const centerPoint = dealDeckCard.node.parent.convertToWorldSpace(dealDeckCard.node.getPosition());
-        const fakeCards = Array(cardLength).fill(5).map(byteValue => Card.from(byteValue));
-        const deckScale = dealDeckCard.node.getComponent('CardList')._scale;
-        const delay = cc.delayTime(0.1);
+        const deckScale = dealDeckCard._scale;
 
-        let actions = [];
+        if(utils.isNumber(cardLengths)){
 
-        playersCardLists.forEach((cardList)=> {
-            cardList._fillCards(Array.from(fakeCards), false, false);
-        })
+            maxLength = cardLengths;
 
-        for (let i = 0; i < cardLength; i++) {
+            const fakeCards = Array(cardLengths).fill(5).map(byteValue => Card.from(byteValue));
+
+            playersCardLists.forEach(cardList => cardList.setCards(fakeCards, true, false));
+
+        }else{
+            maxLength = Math.max(...cardLengths);
+
+            playersCardLists.forEach((cardList, i) => {
+
+                let fakeCards = Array(cardLengths[i]).fill(5).map(byteValue => Card.from(byteValue));
+                cardList.setCards(fakeCards, true, false)
+
+            });
+        }
+
+        let order = 52;
+        for (let i = 0; i < maxLength; i++) {
             for (let j = 0; j < playersCardLists.length; j++) {
 
-                // const scale = cc.scaleTo(CardList.CARD_FLIP_TIME / 2, 0, playersCardLists[j]._scale);
-                // const scaleReverse = cc.scaleTo(CardList.CARD_FLIP_TIME / 2 , playersCardLists[j]._scale, playersCardLists[j]._scale);
+                if(i >= playersCardLists[j].cards.length) continue;
 
                 const card = playersCardLists[j].cards[i];
+                card.node.zIndex = order--;
+                const cardPosition = card.node.getPosition();
                 const localDestinationPoint = card.node.parent.convertToNodeSpaceAR(centerPoint);
 
-                const cardPosition = card.node.getPosition();
-                const originalScale = card.node.getScale();
                 card.node.setScale(deckScale);
-
-                actions.push(cc.callFunc(()=> {
-
-                    card.node.active = true;
-
-                    let animation;
-
-                    if (i < cardLength - 1 || j < playersCardLists.length - 1) {
-                        animation = cc.spawn(
-                            cc.moveTo(CardList.DRAW_CARD_DURATION, cardPosition.x, cardPosition.y),
-                            cc.scaleTo(CardList.DRAW_CARD_DURATION, originalScale),
-                        );
-                    }
-                    else {
-                        animation = cc.sequence(
-                            cc.spawn(
-                                cc.moveTo(CardList.DRAW_CARD_DURATION, cardPosition.x, cardPosition.y),
-                                cc.scaleTo(CardList.DRAW_CARD_DURATION, originalScale),
-                            ),
-                            cc.delayTime(1),
-                            cc.callFunc(() => {
-                                cb();
-                            }),
-                        );
-                    }
-                    card.node.runAction(animation);
-
-                }))
                 card.node.setPosition(localDestinationPoint);
+
+                let animation = cc.spawn(
+                    cc.moveTo(CardList.DRAW_CARD_DURATION, cardPosition.x, cardPosition.y),
+                    cc.rotateBy(CardList.DRAW_CARD_DURATION, 720),
+                );
+
+                if(i == maxLength - 1 && j == playersCardLists.length - 1){
+                    animation = cc.sequence(
+                        animation,
+                        cc.delayTime(CardList.DRAW_CARD_DURATION + 0.1),
+                        cc.callFunc(() => {
+                            cb && cb();
+                        })
+                    );
+                }
+
+                actions.push(cc.callFunc(()=> card.node.runAction(animation)));
                 actions.push(delay.clone());
             }
         }
 
-        return cc.sequence(actions);
+        dealDeckCard.node.parent.runAction(cc.sequence(actions));
     }
 }
 
@@ -701,7 +716,7 @@ CardList.CARD_WIDTH = 100;
 CardList.CARD_HEIGHT = 130;
 CardList.DEFAULT_MAX_WIDTH = 600;
 CardList.DEFAULT_MAX_HEIGHT = 300;
-CardList.TRANSFER_CARD_DURATION = 0.4;
+CardList.TRANSFER_CARD_DURATION = 0.3;
 CardList.DRAW_CARD_DURATION = 0.4;
 CardList.CARD_FLIP_TIME = 0.3;
 

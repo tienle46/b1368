@@ -42,6 +42,21 @@ cc.Class({
             type: cc.Node
         },
 
+        deckCard: {
+            default:null,
+            type: cc.Node
+        },
+
+        playCard: {
+            default:null,
+            type: cc.Node
+        },
+
+        bottomCard: {
+            default:null,
+            type: cc.Node
+        },
+
         firstRender: true
     },
 
@@ -51,6 +66,29 @@ cc.Class({
         // player.setRenderer(this.myselfNode.getComponent('PlayerTLMNDLRenderer'));
     },
     start(){
+        //
+        const fakeCards = Array(13).fill(5).map(byteValue => Card.from(byteValue));
+        var deckCardList = this.deckCard.getComponent('CardList');
+        var playCardList = this.playCard.getComponent('CardList');
+        var bottomCardList = this.bottomCard.getComponent('CardList');
+
+        deckCardList.setReveal(false);
+        deckCardList.setScale(0.5);
+        deckCardList.setMaxDimension(0);
+
+        playCardList.setReveal(false);
+        playCardList.setScale(0.5);
+        playCardList.setMaxDimension(0);
+
+        bottomCardList.setReveal(false);
+        bottomCardList.setScale(0.5);
+
+        // deckCardList.setCards(fakeCards);
+        // playCardList.setCards(fakeCards);
+
+        setTimeout(() => {
+            CardList.dealCards(deckCardList, [bottomCardList, playCardList], 13);
+        }, 3000);
 
         // this.cardFilter.getComponent('CardList').setProperties({scale: 0.5, maxDimension: 50, orientation:CardList.HORIZONTAL});
         // this.cardFilter.getComponent('CardList').setAnchorPoint(0,0);
