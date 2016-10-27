@@ -53,7 +53,7 @@ export default class GridViewRub {
      *          # while the first element in array `width` is empty || null its width will be 100 - (50 + 20)
      *          # if we have width = ['', '', 50, 20] -> (100 - (50 + 20)) / 2
      *      colors: array[new cc.Color || null] # array of setting color of text. default cc.Color(225, 255, 255)
-     *      events: array[ || null] # only affected with cell button.
+     *      events: array[ cc.Component.EventHandler || null] # only affected to all button or mapped by array position.
      *  }
      * 
      *  cell: { // CellRub options
@@ -246,6 +246,15 @@ export default class GridViewRub {
                 cellOpts.width = width[j];
                 if (this.options.group.colors)
                     cellOpts.fontColor = this.options.group.colors[j] || app.const.COLOR_WHITE;
+
+                if (this.options.group.events) {
+                    let event = this.options.group.events[j] || this.options.group.events[0] || null;
+                    if (event) {
+                        if (data[i][j] instanceof Object && data[i][j].button && !data[i][j].button.hasOwnProperty('eventHandler')) {
+                            data[i][j].button.eventHandler = event;
+                        }
+                    }
+                }
 
                 // add separate if any.   
                 if (cellOpts.horizontalSeparate) {

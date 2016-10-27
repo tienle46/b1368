@@ -3,7 +3,6 @@
  */
 
 import app from 'app';
-import BasePopup from 'BasePopup';
 import TextView from 'TextView';
 import utils from 'utils';
 import RubUtils from 'RubUtils';

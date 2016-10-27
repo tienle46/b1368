@@ -1,6 +1,5 @@
 import app from 'app';
 import Component from 'Component';
-import LoaderRub from 'LoaderRub';
 import EntranceScene from 'EntranceScene';
 import FullSceneProgress from 'FullSceneProgress';
 
@@ -19,7 +18,7 @@ class PreloadScene extends Component {
         this.loading.getComponent(FullSceneProgress.name).show(app.res.string('loading_data'));
     }
 
-    start(){
+    start() {
         app.async.parallel([
             (callback) => {
                 cc.loader.loadRes('toast/Toast', (err, prefab) => {
@@ -45,7 +44,7 @@ class PreloadScene extends Component {
         });
     }
 
-    onLoadResourceDone(){
+    onLoadResourceDone() {
         app.system.loadScene(EntranceScene.name);
     }
 }

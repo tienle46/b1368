@@ -201,13 +201,14 @@ class BottomBar extends Component {
             ['z', 'z1', 'z2', 'z1', 'z2'],
             ['y', 'y1', 'y2', 'y1', 'y2'],
             ['y', 'y1', 'y2', 'y1', 'y2'],
-            [{ text: 'y', button: { eventHandler: event } }, { text: 'y1' }, { text: 'y2' }, { text: 'y3' }, { text: 'y4' }]
+            [{ text: 'y', button: {} }, { text: 'y1' }, { text: 'y2' }, { text: 'y3' }, { text: 'y4' }]
         ], {
             position: cc.v2(2, 140),
             width: 750,
             height: 350,
             group: {
-                colors: [null, null, new cc.Color(65, 94, 160), null, null]
+                colors: [null, null, new cc.Color(65, 94, 160), null, null],
+                events: [event]
             }
         });
 
