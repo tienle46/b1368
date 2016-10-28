@@ -10,31 +10,16 @@ export default class BoardRenderer extends ActorRenderer {
     constructor() {
         super();
 
-        this.timelinePrefab = {
-            default: null,
-            type: cc.Prefab
-        };
-
-        this.timeline = {
-            default: null,
-            type: cc.Node
-        };
-
-        this.playerPositionPrefab = {
-            default: null,
-            type: cc.Prefab
-        }
-
-        this.timelineMessageNode = cc.Node;
+        this.timeline = cc.Node;
         this.timelineTextView = null;
         this.timelineRemainTime = cc.Label;
+        this.timelineTextViewNode = cc.Node;
+        this.playerPositionPrefab = cc.Prefab;
     }
 
     _initUI(data){
         super._initUI(data);
-
-        this.timelineTextView = this.timelineMessageNode.getComponent('TextView');
-
+        this.timelineTextView = this.timelineTextViewNode.getComponent('TextView');
         utils.deactive(this.timeline);
     }
 

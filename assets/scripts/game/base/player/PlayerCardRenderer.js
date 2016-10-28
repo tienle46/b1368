@@ -102,35 +102,6 @@ export default class PlayerCardRenderer extends PlayerRenderer {
     findCards(cardModels){
         return this.cardList.findCardComponents(cardModels);
     }
-
-    update() {
-
-    }
-
-    lateUpdate() {
-
-    }
-
-    onLoad() {
-
-    }
-
-    start() {
-
-    }
-
-    onEnable() {
-
-    }
-
-    onDisable() {
-
-    }
-
-    onDestroy() {
-
-    }
-
 }
 
 app.createComponent(PlayerCardRenderer);

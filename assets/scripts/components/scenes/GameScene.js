@@ -324,10 +324,10 @@ export default class GameScene extends BaseScene {
         }
     }
 
-    showGameResult(models) {
+    showGameResult(models, cb) {
         if (!utils.isEmptyArray(models)) {
             !this.gameResultPopup && (this.gameResultPopup = cc.instantiate(this.gameResultPopupPrefab).getComponent(GameResultPopup.name));
-            this.gameResultPopup.show(models);
+            this.gameResultPopup.show(models, cb);
         }
     }
 

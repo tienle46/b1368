@@ -81,13 +81,9 @@
     "_opacityModifyRGB": false,
     "_id": "",
     "_active": true,
-    "_components": [
-      {
-        "__id__": 100
-      }
-    ],
+    "_components": [],
     "_prefab": {
-      "__id__": 101
+      "__id__": 100
     },
     "groupIndex": 0
   },
@@ -3105,53 +3101,6 @@
     },
     "fileId": "155e33uTeRD05oivMmMc2Lh",
     "sync": false
-  },
-  {
-    "__type__": "9c974v/E0ZHbpcNqVHEj93a",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 1
-    },
-    "_enabled": true,
-    "playerNameLabel": {
-      "__id__": 25
-    },
-    "balanceLabel": {
-      "__id__": 29
-    },
-    "status1": {
-      "__id__": 59
-    },
-    "status2": {
-      "__id__": 67
-    },
-    "ownerIcon": {
-      "__id__": 19
-    },
-    "masterIcon": null,
-    "readyIcon": null,
-    "playerTimeLinePrefab": {
-      "__uuid__": "a19ed1ee-03e3-43d8-b978-0515940775bf"
-    },
-    "callCounter": {
-      "__id__": 4
-    },
-    "plusBalanceNode": {
-      "__id__": 93
-    },
-    "plusBalanceLabel": {
-      "__id__": 95
-    },
-    "messageAnchorTop": {
-      "__id__": 77
-    },
-    "messageAnchorBottom": {
-      "__id__": 79
-    },
-    "sayMessageNode": {
-      "__id__": 81
-    }
   },
   {
     "__type__": "cc.PrefabInfo",

@@ -5,9 +5,9 @@
 import app from 'app';
 import game from 'game';
 import Card from 'Card';
-import Events from 'Events'
-import GameUtils from 'GameUtils'
-import TLMNUtils from 'TLMNUtils'
+import Events from 'Events';
+import GameUtils from 'GameUtils';
+import TLMNUtils from 'TLMNUtils';
 import PlayerCardTurnBase from 'PlayerCardTurnBase';
 import TLMNDLPlayerRenderer from 'PlayerTLMNDLRenderer';
 

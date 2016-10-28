@@ -9,26 +9,22 @@ import {GameUtils} from 'utils';
 
 export default class GameResultPopup extends Actor {
     constructor() {
-
         super();
-
-        this.itemPrefab = {
-            default: null,
-            type: cc.Prefab
-        }
-
-        this.content = {
-            default: null,
-            type: cc.Node
-        }
-
         this.title = cc.Label;
+        this.content = cc.Node;
+        this.itemPrefab = cc.Prefab;
+        this._shownTime = 0;
+        this._closeCb = null;
     }
 
     onLoad(){
-
+        super.onLoad();
         this.node.setPosition(cc.winSize.width / 2, cc.winSize.height / 2)
         this.node.on('touchstart', () => false);
+    }
+
+    start(){
+        this._shownTime = Date.now();
     }
 
     onClickCloseButton(){
@@ -53,10 +49,15 @@ export default class GameResultPopup extends Actor {
         this.content.removeAllChildren();
     }
 
-    show(models){
+    show(models, closeCb){
         this.addItems(models);
+        this._closeCb = closeCb;
 
         app.system.currentScene.node.parent.addChild(this.node);
+    }
+
+    onDisable(){
+        this._closeCb && this._closeCb(Math.ceil((Date.now() - this._shownTime) / 1000));
     }
 
     hide(){

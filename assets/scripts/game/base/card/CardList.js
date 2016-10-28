@@ -4,31 +4,54 @@ import Card from 'Card';
 import utils from 'utils';
 var _ = require('lodash');
 
-
 export default class CardList extends Component {
 
     constructor() {
         super();
 
-        this.cardPrefab = {
-            default: null,
-            type: cc.Prefab
+        this.cardPrefab = cc.Prefab;
+
+        this.scale = {
+            default: 1,
+            type: cc.Float
         };
 
-        this._scale = 1;
-        this._draggable = false;
-        this._orientation = CardList.HORIZONTAL;
-        this._align = CardList.ALIGN_CENTER_LEFT;
-        this._maxDimension = CardList.DEFAULT_MAX_WIDTH;
+        this.reveal = {
+            default: true,
+            type: cc.Boolean
+        };
 
-        this._space = CardList.CARD_WIDTH;
-        this._overlapSpace = 0;
-        this._selectedMargin = 40;
+        this.selectable = {
+            default: false,
+            type: cc.Boolean
+        };
+
+        this.space = {
+            default: CardList.CARD_WIDTH,
+            type: cc.Integer
+        };
+
+        this.maxDimension = {
+            default: CardList.DEFAULT_MAX_WIDTH,
+            type: cc.Integer
+        };
+
+        this.orientation = {
+            default: CardList.HORIZONTAL,
+            type: cc.Integer
+        };
+
+        this.align = {
+            default: CardList.ALIGN_CENTER_LEFT,
+            type: cc.Integer
+        };
 
         this.cards = null;
+        this._draggable = false;
+        this._overlapSpace = 0;
+        this._selectedMargin = 40;
         this.selectCardChangeListener = null;
-        this._reveal = true;
-        this._selectable = false;
+
     }
 
     setSelectCardChangeListener(listener) {
@@ -36,11 +59,11 @@ export default class CardList extends Component {
     }
 
     setSelectable(selectable) {
-        this._selectable = selectable;
+        this.selectable = selectable;
     }
 
     setScale(scale){
-        this._scale = scale;
+        this.scale = scale;
         this.cards.forEach(card => {card.node.setScale(scale)});
     }
 
@@ -57,32 +80,32 @@ export default class CardList extends Component {
 
     _updateNodeSize() {
         if (this._isHorizontal()) {
-            this.node.width = this._maxDimension;
-            this.node.height = this._scale * CardList.CARD_HEIGHT;
-            this._space = this._maxDimension == 0 ? 0 : this._scale * CardList.CARD_WIDTH;
+            this.node.width = this.maxDimension;
+            this.node.height = this.scale * CardList.CARD_HEIGHT;
+            this.space = this.maxDimension == 0 ? 0 : this.scale * CardList.CARD_WIDTH;
         } else {
-            this.node.width = this._scale * CardList.CARD_WIDTH;
-            this.node.height = this._maxDimension;
-            this._space = this._maxDimension == 0 ? 0 : this._scale * CardList.CARD_WIDTH;
+            this.node.width = this.scale * CardList.CARD_WIDTH;
+            this.node.height = this.maxDimension;
+            this.space = this.maxDimension == 0 ? 0 : this.scale * CardList.CARD_WIDTH;
         }
     }
 
     setReveal(reveal) {
-        this._reveal = reveal;
+        this.reveal = reveal;
     }
 
     setMaxDimension(value) {
-        this._maxDimension = value;
+        this.maxDimension = value;
         this._updateNodeSize();
     }
 
     setOrientation(orientation) {
-        this._orientation = orientation;
+        this.orientation = orientation;
         this._updateNodeSize();
     }
 
     setAlignment(align) {
-        this._align = align;
+        this.align = align;
 
         switch (align) {
             case CardList.ALIGN_BOTTOM_LEFT:
@@ -124,7 +147,7 @@ export default class CardList extends Component {
     }
 
     setScale(scale) {
-        this._scale = scale;
+        this.scale = scale;
         this._updateNodeSize();
     }
 
@@ -133,7 +156,7 @@ export default class CardList extends Component {
     }
 
     _getMaxSpaceAvailable() {
-        return this._maxDimension;
+        return this.maxDimension;
     }
 
     // _setHorizontalAlignment(alignment = CardList.HORIZONTAL_ALIGNMENT.LEFT){
@@ -152,36 +175,36 @@ export default class CardList extends Component {
         this.node.setAnchorPoint(x, y);
 
         if (x < 0.5 && y < 0.5) {
-            this._align = CardList.ALIGN_BOTTOM_LEFT;
+            this.align = CardList.ALIGN_BOTTOM_LEFT;
         } else if (x < 0.5 && y == 0.5) {
-            this._align = CardList.ALIGN_CENTER_LEFT;
+            this.align = CardList.ALIGN_CENTER_LEFT;
         } else if (x < 0.5 && y > 0.5) {
-            this._align = CardList.ALIGN_TOP_LEFT;
+            this.align = CardList.ALIGN_TOP_LEFT;
         } else if (x == 0.5 && y < 0.5) {
-            this._align = CardList.ALIGN_BOTTOM_CENTER;
+            this.align = CardList.ALIGN_BOTTOM_CENTER;
         } else if (x == 0.5 && y > 0.5) {
-            this._align = CardList.ALIGN_TOP_CENTER;
+            this.align = CardList.ALIGN_TOP_CENTER;
         } else if (x > 0.5 && y < 0.5) {
-            this._align = CardList.ALIGN_BOTTOM_RIGHT;
+            this.align = CardList.ALIGN_BOTTOM_RIGHT;
         } else if (x > 0.5 && y == 0.5) {
-            this._align = CardList.ALIGN_CENTER_RIGHT;
+            this.align = CardList.ALIGN_CENTER_RIGHT;
         } else if (x > 0.5 && y > 0.5) {
-            this._align = CardList.ALIGN_TOP_RIGHT;
+            this.align = CardList.ALIGN_TOP_RIGHT;
         } else {
-            this._align = CardList.ALIGN_CENTER;
+            this.align = CardList.ALIGN_CENTER;
         }
     }
 
     _getCardDistance() {
-        return (this._space + this._overlapSpace);
+        return (this.space + this._overlapSpace);
     }
 
     _isHorizontal() {
-        return this._orientation == CardList.HORIZONTAL;
+        return this.orientation == CardList.HORIZONTAL;
     }
 
     _isVertical() {
-        return this._orientation == CardList.VERTICAL;
+        return this.orientation == CardList.VERTICAL;
     }
 
     /**
@@ -192,10 +215,10 @@ export default class CardList extends Component {
      */
     _isCenterAlignment() {
 
-        let horizontalCenter = (this._orientation == CardList.HORIZONTAL &&
-        (this._align == CardList.ALIGN_CENTER || this._align == CardList.ALIGN_TOP_CENTER || this._align == CardList.ALIGN_BOTTOM_CENTER));
+        let horizontalCenter = (this.orientation == CardList.HORIZONTAL &&
+        (this.align == CardList.ALIGN_CENTER || this.align == CardList.ALIGN_TOP_CENTER || this.align == CardList.ALIGN_BOTTOM_CENTER));
 
-        let verticalCenter = this._orientation == CardList.VERTICAL && (this._align == CardList.ALIGN_CENTER);
+        let verticalCenter = this.orientation == CardList.VERTICAL && (this.align == CardList.ALIGN_CENTER);
 
         return horizontalCenter || verticalCenter;
 
@@ -209,7 +232,7 @@ export default class CardList extends Component {
      */
     _isLeftAlignment() {
 
-        return this._align == CardList.ALIGN_CENTER_LEFT || this._align == CardList.ALIGN_TOP_LEFT || this._align == CardList.ALIGN_BOTTOM_LEFT
+        return this.align == CardList.ALIGN_CENTER_LEFT || this.align == CardList.ALIGN_TOP_LEFT || this.align == CardList.ALIGN_BOTTOM_LEFT
     }
 
     /**
@@ -219,7 +242,7 @@ export default class CardList extends Component {
      * @private
      */
     _isRightAlignment() {
-        return this._align == CardList.ALIGN_TOP_RIGHT || this._align == CardList.ALIGN_CENTER_RIGHT || this._align == CardList.ALIGN_BOTTOM_RIGHT;
+        return this.align == CardList.ALIGN_TOP_RIGHT || this.align == CardList.ALIGN_CENTER_RIGHT || this.align == CardList.ALIGN_BOTTOM_RIGHT;
     }
 
     /**
@@ -229,7 +252,7 @@ export default class CardList extends Component {
      * @private
      */
     _isTopAlignment() {
-        return this._align == CardList.ALIGN_TOP_LEFT || this._align == CardList.ALIGN_TOP_CENTER || this._align == CardList.ALIGN_TOP_RIGHT;
+        return this.align == CardList.ALIGN_TOP_LEFT || this.align == CardList.ALIGN_TOP_CENTER || this.align == CardList.ALIGN_TOP_RIGHT;
     }
 
     /**
@@ -239,17 +262,17 @@ export default class CardList extends Component {
      * @private
      */
     _isBottomAlignment() {
-        return this._align == CardList.ALIGN_BOTTOM_LEFT || this._align == CardList.ALIGN_BOTTOM_CENTER || this._align == CardList.ALIGN_BOTTOM_RIGHT;
+        return this.align == CardList.ALIGN_BOTTOM_LEFT || this.align == CardList.ALIGN_BOTTOM_CENTER || this.align == CardList.ALIGN_BOTTOM_RIGHT;
     }
 
     _estimateCardSpacing(numberOfCards) {
-        let cardDistance = (this._getMaxSpaceAvailable() - this._space) / (numberOfCards - 1);
-        if (cardDistance > this._space) {
-            cardDistance = this._space;
+        let cardDistance = (this._getMaxSpaceAvailable() - this.space) / (numberOfCards - 1);
+        if (cardDistance > this.space) {
+            cardDistance = this.space;
         }
-        let cardSpacing = cardDistance - this._space;
-        if (cardSpacing < -this._space) {
-            cardSpacing = -this._space;
+        let cardSpacing = cardDistance - this.space;
+        if (cardSpacing < -this.space) {
+            cardSpacing = -this.space;
         }
 
         return cardSpacing;
@@ -264,7 +287,7 @@ export default class CardList extends Component {
 
         // Với trường hợp không phải là căn giữa, việc sắp xếp lại toàn bộ card chỉ xảy ra khi số lượng quân bài lớn vượt quá vùng hiển thị
         if (!this._isCenterAlignment()) {
-            // if(numberOfCards * this._getCardDistance() + this._space > this._getMaxSpaceAvailable()){
+            // if(numberOfCards * this._getCardDistance() + this.space > this._getMaxSpaceAvailable()){
 
             this._updateCardSpacing();
 
@@ -296,10 +319,10 @@ export default class CardList extends Component {
 
             let newStartXPosition;
             if (this._overlapSpace == 0) {
-                newStartXPosition = this._getMaxSpaceAvailable() * (0.5 - this.node.anchorX) - this.cards.length * this._getCardDistance() / 2 + this._space * this.node.anchorX;
+                newStartXPosition = this._getMaxSpaceAvailable() * (0.5 - this.node.anchorX) - this.cards.length * this._getCardDistance() / 2 + this.space * this.node.anchorX;
             }
             else {
-                newStartXPosition = 0 - this._getMaxSpaceAvailable() * this.node.anchorX + this._space * this.node.anchorX;
+                newStartXPosition = 0 - this._getMaxSpaceAvailable() * this.node.anchorX + this.space * this.node.anchorX;
             }
             this.cards.forEach((card, index)=> {
                 card.node.x = newStartXPosition + index * this._getCardDistance();
@@ -314,26 +337,26 @@ export default class CardList extends Component {
 
         if (this._isHorizontal()) {
             if (this._isLeftAlignment()) {
-                let x = 0 - this._getMaxSpaceAvailable() * this.node.anchorX + this._space * this.node.anchorX;
+                let x = 0 - this._getMaxSpaceAvailable() * this.node.anchorX + this.space * this.node.anchorX;
                 return cc.v2(x, 0);
             }
             else if (this._isRightAlignment()) {
-                let x = this._getMaxSpaceAvailable() * this.node.anchorX - this._space * this.node.anchorX;
+                let x = this._getMaxSpaceAvailable() * this.node.anchorX - this.space * this.node.anchorX;
                 return cc.v2(x, 0);
             }
             else if (this._isCenterAlignment()) {
-                let x = this._getMaxSpaceAvailable() * (0.5 - this.node.anchorX) - this._space * (0.5 - this.node.anchorX);
+                let x = this._getMaxSpaceAvailable() * (0.5 - this.node.anchorX) - this.space * (0.5 - this.node.anchorX);
                 return cc.v2(x, 0);
             }
         }
         else {
             //TODO
             if (this._isTopAlignment()) {
-                let y = 0 - this._getMaxSpaceAvailable() * this.node.anchorY + this._space * this.node.anchorY;
+                let y = 0 - this._getMaxSpaceAvailable() * this.node.anchorY + this.space * this.node.anchorY;
                 return cc.v2(0, y);
             }
             else if (this._isBottomAlignment()) {
-                let y = this._getMaxSpaceAvailable() * (this.node.anchorY - 1) - this._space * this.node.anchorY;
+                let y = this._getMaxSpaceAvailable() * (this.node.anchorY - 1) - this.space * this.node.anchorY;
                 return cc.v2(0, y);
             }
             else if (this._isCenterAlignment()) {
@@ -345,7 +368,7 @@ export default class CardList extends Component {
     _getPositionForNextCard() {
         //Note this method called for card being added to list, not in list yet
         let childPosition = this._getStartPosition();
-        let estimateCardDistance = this._space + this._estimateCardSpacing(this.cards.length + 1);
+        let estimateCardDistance = this.space + this._estimateCardSpacing(this.cards.length + 1);
         if (this._isHorizontal()) {
 
             if (this._isLeftAlignment()) {
@@ -355,11 +378,11 @@ export default class CardList extends Component {
                 childPosition.x -= this.cards.length * estimateCardDistance;
             }
             else if (this._isCenterAlignment()) {
-                let newStartXPosition = (this._getMaxSpaceAvailable() * (0.5 - this.node.anchorX) - estimateCardDistance * (this.cards.length)) / 2 - this._space * (0.5 - this.node.anchorX);
+                let newStartXPosition = (this._getMaxSpaceAvailable() * (0.5 - this.node.anchorX) - estimateCardDistance * (this.cards.length)) / 2 - this.space * (0.5 - this.node.anchorX);
                 childPosition.x = newStartXPosition + this.cards.length * estimateCardDistance;
             }
         }
-        else if (this._orientation == CardList.VERTICAL) {
+        else if (this.orientation == CardList.VERTICAL) {
             if (this._isTopAlignment()) {
                 childPosition.y -= this.cards.length * estimateCardDistance;
             }
@@ -396,7 +419,7 @@ export default class CardList extends Component {
         return this._fillCards(cards, active, reveal);
     }
 
-    _fillCards(cards, active = true, reveal = this._reveal) {
+    _fillCards(cards, active = true, reveal = this.reveal) {
         let addedCards = [];
         cards.forEach((card, index) => {
             const newCard = this._createNewCard(card.byteValue, reveal);
@@ -485,9 +508,9 @@ export default class CardList extends Component {
         let newCard = cc.instantiate(this.cardPrefab).getComponent('Card');
         newCard.initFromByte(byte);
         newCard.reveal(reveal);
-        newCard.node.setScale(this._scale);
+        newCard.node.setScale(this.scale);
 
-        // if(this._orientation == CardList.VERTICAL){
+        // if(this.orientation == CardList.VERTICAL){
         //     newCard.runAction(cc.rotateBy(0,90));
         // }
 
@@ -545,7 +568,7 @@ export default class CardList extends Component {
 
     _onSelectCard(card) {
 
-        if(!this._selectable){
+        if(!this.selectable){
             return;
         }
 
@@ -635,14 +658,15 @@ export default class CardList extends Component {
      * @param cb
      * @returns {ActionInterval}
      */
-    static dealCards(dealDeckCard, playersCardLists, cardLengths, cb) {
+    static dealCards(dealCardAnchor, playersCardLists, cardLengths, cb) {
 
         let maxLength = 0;
         const delayTime = 0.07 + (4 - playersCardLists.length) * 0.02;
         const delay = cc.delayTime(delayTime);
         const actions = [delay.clone()];
-        const centerPoint = dealDeckCard.node.parent.convertToWorldSpace(dealDeckCard.node.getPosition());
-        const deckScale = dealDeckCard._scale;
+        const centerPoint = dealCardAnchor.parent.convertToWorldSpaceAR(dealCardAnchor.getPosition());
+
+        debug("centerPoint: ", centerPoint);
 
         if(utils.isNumber(cardLengths)){
 
@@ -670,12 +694,11 @@ export default class CardList extends Component {
                 if(i >= playersCardLists[j].cards.length) continue;
 
                 const card = playersCardLists[j].cards[i];
-                card.node.zIndex = order--;
                 const cardPosition = card.node.getPosition();
                 const localDestinationPoint = card.node.parent.convertToNodeSpaceAR(centerPoint);
 
-                card.node.setScale(deckScale);
                 card.node.setPosition(localDestinationPoint);
+                card.node.zIndex = order--;
 
                 let animation = cc.spawn(
                     cc.moveTo(CardList.DRAW_CARD_DURATION, cardPosition.x, cardPosition.y),
@@ -697,7 +720,7 @@ export default class CardList extends Component {
             }
         }
 
-        dealDeckCard.node.parent.runAction(cc.sequence(actions));
+        dealCardAnchor.parent.runAction(cc.sequence(actions));
     }
 }
 

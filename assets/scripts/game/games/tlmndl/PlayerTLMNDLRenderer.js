@@ -9,56 +9,16 @@ import PlayerCardTurnBaseRenderer from 'PlayerCardTurnBaseRenderer';
 export default class PlayerTLMNDLRenderer extends PlayerCardTurnBaseRenderer {
     constructor() {
         super();
-
-        this.basePlayerPrefab = {
-            default: null,
-            type: cc.Prefab
-        };
-
-        this.cardPlayerPrefab = {
-            default: null,
-            type: cc.Prefab
-        };
-
-        this.rendererClassName = this;
     }
 
     _initUI(data) {
 
-        this.assign(this.basePlayerPrefab, 'PlayerRenderer');
-        this.assign(this.cardPlayerPrefab, 'PlayerCardRenderer');
+        // this.assign(this.basePlayerPrefab, 'PlayerRenderer');
+        // this.assign(this.cardPlayerPrefab, 'PlayerCardRenderer');
 
         super._initUI(data);
         
         console.log("init ui TLMNDL")
-    }
-
-    update(dt) {
-        this._updateCountDown(dt)
-    }
-
-    lateUpdate() {
-
-    }
-
-    onLoad() {
-
-    }
-
-    start() {
-
-    }
-
-    onEnable() {
-
-    }
-
-    onDisable() {
-
-    }
-
-    onDestroy() {
-
     }
 }
 

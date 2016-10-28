@@ -10,32 +10,4 @@ export default class PlayerCardTurnBaseRenderer extends PlayerCardRenderer {
         super();
 
     }
-
-    update() {
-
-    }
-
-    lateUpdate() {
-
-    }
-
-    onLoad() {
-
-    }
-
-    start() {
-
-    }
-
-    onEnable() {
-
-    }
-
-    onDisable() {
-
-    }
-
-    onDestroy() {
-
-    }
 }

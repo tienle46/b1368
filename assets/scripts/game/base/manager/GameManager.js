@@ -55,7 +55,7 @@ const boardRendererNameMap = {
 };
 
 const boardPrefabPathMap = {
-    [app.const.gameCode.TLMNDL]: 'game/boards/TLMNDLBoardPrefab'
+    [app.const.gameCode.TLMNDL]: 'game/boards/BoardTLMNDLPrefab'
 };
 
 /**
@@ -106,6 +106,9 @@ export default class GameManager {
         app.async.parallel([
             (callback) => {
                 let boardPath = boardPrefabPathMap[gameCode];
+                
+                console.log("boardPath: ", boardPath);
+                
                 cc.loader.loadRes(boardPath, (error, prefab) => {
                     if (prefab) {
                         this.boardPrefab = prefab;
@@ -148,14 +151,15 @@ export default class GameManager {
                 }
             }
 
+            log("results: ", results);
+            log("err: ", err);
+
             if (loadedRes) {
                 cb && cb();
             } else {
                 cb && cb(app.res.string('error.fail_to_create_game'));
             }
 
-            log("results: ", results);
-            log("err: ", err);
         });
 
     }

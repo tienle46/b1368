@@ -7,7 +7,7 @@ import Component from 'Component';
 import TextView from 'TextView';
 import {CCUtils, utils} from 'utils';
 
-export default class PlayerMessageComponent extends Component {
+export default class PlayerMessage extends Component {
     constructor() {
         super();
 
@@ -26,8 +26,6 @@ export default class PlayerMessageComponent extends Component {
     setup(player){
         this.playerRenderer = player;
         this.anchorIndex = this.playerRenderer.anchorIndex;
-        this.updateAnchor(this.anchorIndex);
-        this._setMessage(this.message);
     }
 
     onLoad(){
@@ -35,8 +33,10 @@ export default class PlayerMessageComponent extends Component {
         this.textView.setMaxWidth(220);
         this.textView.setLines(1);
         this.textView.setIncreaseWidth(10);
-
         this.loaded = true;
+
+        this.updateAnchor(this.anchorIndex);
+        this._setMessage(this.message);
     }
 
     updateAnchor(anchorIndex){
@@ -91,4 +91,4 @@ export default class PlayerMessageComponent extends Component {
 
 }
 
-app.createComponent(PlayerMessageComponent);
+app.createComponent(PlayerMessage);

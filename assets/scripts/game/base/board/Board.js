@@ -15,23 +15,15 @@ export default class Board extends Actor {
         super();
 
         this.scene = null;
-
         this.room = null;
-
         this.owner = null;
-
         this.ownerId = 0;
-
         this.master = null;
-
         this.minBet = null;
-
         this.state = null;
-
         this.serverState = app.const.game.state.INITED;
-
         this.readyPhaseDuration = app.const.DEFAULT_READY_PHASE_DURATION;
-
+        this.timelineRemain = 0;
         this.gameCode = "";
 
     }
@@ -312,18 +304,19 @@ export default class Board extends Actor {
         //TODO
     }
 
+    _startEndBoardTimeLine(duration){
+        duration && duration > 0 && this.startTimeLine(duration, app.res.string('game_replay_waiting_time'));
+    }
+
     onBoardEnding(data = {}, isJustJoined) {
+        this.timelineRemain = utils.getValue(data, Keywords.BOARD_PHASE_DURATION);
+
         if (isJustJoined) {
+            this._startEndBoardTimeLine(this.timelineRemain);
         }
 
-        /**
-         * Donn't need to show end phase timeline
-         * @type {number}
-         */
-        // let boardTimeLine = utils.getValue(data, Keywords.BOARD_PHASE_DURATION);
-        // boardTimeLine && this.startTimeLine(boardTimeLine);
-
         this.state = app.const.game.state.ENDING;
+        this._handleSetPlayerBalance(data);
 
         // TODO Khi cần show hiệu ứng thì dùng thông tin này để hiển thị các trường hợp đặc biệt
         // Byte tbBoardWinType = resObj.getByte(SmartfoxKeyword.KEYWORD_WIN_TYPE);
@@ -331,8 +324,6 @@ export default class Board extends Actor {
         //     setWinType(tbBoardWinType.byteValue());
         // }
 
-
-        this._handleSetPlayerBalance(data);
     }
 
     _getPlayerBalanceChangeAmounts(playerIds = [], data){

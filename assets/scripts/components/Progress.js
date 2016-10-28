@@ -19,8 +19,6 @@ export default class Progress extends Component {
     onEnable(){
         this.spinNode.runAction(cc.repeatForever(cc.rotateBy(1.0, 360)));
 
-        console.log("Progress onEnable: ", this.parent, this.node.active, Date.now());
-
         if (this.duration) {
             this.interval = setInterval(() => {
                 this.interval && clearInterval(this.interval);
@@ -30,11 +28,8 @@ export default class Progress extends Component {
     }
 
     onDisable() {
-        console.log("Progress onDisable: ", this.parent, this.node.active, Date.now());
-
-        this.spinNode && this.spinNode.stopAllActions() && (this.spinNode.active = false);
-
         this.interval && clearInterval(this.interval);
+        this.spinNode && this.spinNode.stopAllActions() && (this.spinNode.active = false);
     }
 
     show(duration = 60, timeoutCb) {
@@ -46,9 +41,7 @@ export default class Progress extends Component {
     }
 
     hide() {
-        console.log("Progress hide: ", this.node.active, this.node);
         this.node.active = false;
-
     }
 }
 

@@ -94,12 +94,12 @@ cc.Class({
         // this.cardFilter.getComponent('CardList').setAnchorPoint(0,0);
         //
         //
-        // let deckCards = [];
+        // let deckCardRenderer = [];
         // for(let i = 5 ; i < 57; i++){
-        //     deckCards.push(i);
+        //     deckCardRenderer.push(i);
         // }
         //
-        // this.cardFilter.getComponent('CardList').setCards(deckCards.map(byteValue => Card.from(byteValue)));
+        // this.cardFilter.getComponent('CardList').setCards(deckCardRenderer.map(byteValue => Card.from(byteValue)));
         //
         // this.player1.getComponent('CardList').setProperties({maxDimension: 50, orientation:CardList.VERTICAL});
         // this.player1.getComponent('CardList').setAnchorPoint(0,0);
@@ -159,7 +159,7 @@ cc.Class({
         //     renderer.resetCountdown();
         // }
         // else{
-        //     renderer.startCountdown();
+        //     renderer._startCountdown();
         // }
 
     },

@@ -11,26 +11,19 @@ export default class BoardCardTurnBaseRenderer extends BoardCardRenderer {
     constructor() {
         super();
 
-        this.deckCardAnchor  = {
-            default: null,
-            type: cc.Node
-        }
-
-        this.deckCardPrefab  = {
-            default: null,
-            type: cc.Prefab
-        }
-
-        this.deckCards = null;
+        this.deckCardAnchor  = cc.Node;
+        this.deckCardPrefab  = cc.Prefab;
+        this.deckCardRenderer = null;
     }
 
     _initUI(data) {
         super._initUI(data);
+    }
 
+    _initCenterDeckCard(){
         let deckCardNode = cc.instantiate(this.deckCardPrefab);
         this.deckCardAnchor.addChild(deckCardNode);
-
-        this.deckCards = deckCardNode.getComponent('DeckCardRenderer');
+        this.deckCardRenderer = deckCardNode.getComponent(DeckCardRenderer.name);
     }
 
     _reset(){
@@ -38,12 +31,11 @@ export default class BoardCardTurnBaseRenderer extends BoardCardRenderer {
     }
 
     cleanDeckCards(){
-        this.deckCards.clear();
+        this.deckCardRenderer.clear();
     }
 
     addToDeck(cards, srcCardList, isItMe){
-        debug("add to DECK")
-        this.deckCards.addCards(cards, srcCardList, isItMe);
+        this.deckCardRenderer.addCards(cards, srcCardList, isItMe);
     }
 }
 

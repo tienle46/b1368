@@ -11,6 +11,7 @@ import BoardCardTurnBase from 'BoardCardTurnBase';
 import PlayerTLMNDL from 'PlayerTLMNDL';
 import TLMNUtils from 'TLMNUtils';
 import Card from 'Card';
+import CardList from 'CardList';
 
 export default class BoardTLMNDL extends BoardCardTurnBase {
 
@@ -56,8 +57,6 @@ export default class BoardTLMNDL extends BoardCardTurnBase {
             this.renderer.addToDeck(cards);
         }
 
-        console.log("_loadGamePlayData: ", data);
-
         /**
          * Get remain player card size
          */
@@ -97,7 +96,13 @@ export default class BoardTLMNDL extends BoardCardTurnBase {
                 cards: playerHandCards[playerId]
             }
         });
-        this.scene.showGameResult(models);
+
+        setTimeout(() => this.scene.showGameResult(models, (shownTime) => {
+            let remainTime = this.timelineRemain - shownTime;
+            if(remainTime > 0 && this.scene.isEnding()){
+                this._startEndBoardTimeLine(remainTime);
+            }
+        }), 1000);
     }
 
     _getGameResultIconPaths(playerIds, data) {
