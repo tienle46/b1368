@@ -216,18 +216,19 @@ class BottomBar extends Component {
                 fontColor: app.const.COLOR_WHITE
             }
         }, [
-            ['x', 'x1', 'x2', 'x1', 'x2'],
-            ['z', 'z1', 'z2', 'z1', 'z2'],
-            ['y', 'y1', 'y2', 'y1', 'y2'],
-            ['y', 'y1', 'y2', 'y1', 'y2'],
-            [{ text: 'y', button: {} }, { text: 'y1' }, { text: 'y2' }, { text: 'y3' }, { text: 'y4' }]
+            ['x', 'x1', 'x2', 'x1', 'x2', 'x'],
+            ['z', 'z1', 'z2', 'z1', 'z2', 'z2'],
+            ['y', 'y1', 'y2', 'y1', 'y2', 'z2'],
+            ['Thông tin trả thưởng: Vina 500K, Mã thẻ/vật phẩm: 29299168616934, Seri: 36129500460942, Ngày HH: 00:00:00 31/12/2020', 'y1', 'y2', 'y1', 'y2', 'z2'],
+            [{ text: 'y', button: {} }, { text: 'y1' }, { text: 'y2' }, { text: 'y3' }, { text: 'y4' }, 'z2']
         ], {
             position: cc.v2(2, 140),
             width: 750,
             height: 350,
             group: {
                 colors: [null, null, new cc.Color(65, 94, 160), null, null],
-                events: [event]
+                events: [event],
+                widths: [200, 100, 100, 250, 100]
             }
         });
 

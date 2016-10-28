@@ -229,10 +229,22 @@ export default class GridViewRub {
         let headData = this.head.data;
         let cellOpts = Object.assign({}, this.options.cell, this.head.options || {});
 
+        let rowHeight = cellOpts.height;
+
+        let cellsInRow = [];
         for (let i = 0; i < headData.length; i++) {
             cellOpts.width = width[i];
-            let cellNode = new CellRub(headData[i] || '', cellOpts).node();
-            this.contentNode.addChild(cellNode);
+            let cellRub = new CellRub(headData[i] || '', cellOpts);
+            rowHeight = rowHeight > cellRub.getHeight() ? rowHeight : cellRub.getHeight();
+            cellsInRow.push(cellRub);
+            this.contentNode && this.contentNode.addChild(cellRub.node());
+        }
+
+        if (rowHeight !== cellOpts.height && cellsInRow.length > 0) {
+            for (let x = 0; x < cellsInRow.length; x++) {
+                cellsInRow[x].resizeHeight(rowHeight);
+            }
+            cellsInRow = [];
         }
     }
 
@@ -241,6 +253,9 @@ export default class GridViewRub {
 
 
         for (let i = 0; i < data.length; i++) {
+            let rowHeight = this.options.cell.height;
+            let cellsInRow = [];
+
             for (let j = 0; j < data[i].length; j++) {
                 let jMax = data[i].length - 1;
                 let cellOpts = Object.assign({}, this.options.cell);
@@ -273,8 +288,16 @@ export default class GridViewRub {
                 }
 
                 // body
-                let cellNode = new CellRub(data[i][j] || '', cellOpts).node();
-                this.contentNode && this.contentNode.addChild(cellNode);
+                let cellRub = new CellRub(data[i][j] || '', cellOpts);
+                rowHeight = rowHeight > cellRub.getHeight() ? rowHeight : cellRub.getHeight();
+                cellsInRow.push(cellRub);
+                this.contentNode && this.contentNode.addChild(cellRub.node());
+            }
+
+            if (rowHeight !== this.options.cell.height && cellsInRow.length > 0) {
+                for (let x = 0; x < cellsInRow.length; x++) {
+                    cellsInRow[x].resizeHeight(rowHeight);
+                }
             }
         }
     }
