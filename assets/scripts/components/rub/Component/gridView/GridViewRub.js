@@ -117,6 +117,8 @@ export default class GridViewRub {
         } else {
             this.head = Object.assign({}, defaultHead, head);
         }
+
+        this.CONTENT_NODE_HORIZONTAL_PADDING = 30;
     }
 
     init() {
@@ -207,7 +209,7 @@ export default class GridViewRub {
         // set prefab size
         prefab.setContentSize(cc.size(this.options.width, this.options.height));
         // `view` node size
-        this.viewNode.setContentSize(cc.size(this.options.width - 30, this.options.height));
+        this.viewNode.setContentSize(cc.size(this.options.width - this.CONTENT_NODE_HORIZONTAL_PADDING, this.options.height));
         // `view/content` node size
         this.contentNode.setContentSize(this.viewNode.getContentSize());
     }
@@ -215,7 +217,6 @@ export default class GridViewRub {
     _initCell() {
         let data = this.data; // body data
         let headData = this.head.data;
-
         if (headData && headData.length > 0) {
             this._insertCellHead(data);
         }
@@ -284,12 +285,11 @@ export default class GridViewRub {
 
             // total width inside array
             let totalWidth = groupWidth.reduce((p, n) => !isNaN(p) && (Number(p) + Number(n)));
-
             // remaing array which cotains null -> ["", ""]
             let remains = groupWidth.filter((e) => !isNaN(e) && Number(e) === 0);
             let n = this.getContentNodeWidth() > totalWidth ? this.getContentNodeWidth() - totalWidth : 0;
 
-            return groupWidth.map((e) => (!isNaN(e) && Number(e) === 0 && n / remains.length - this.options.spacingX) || e - this.options.spacingX);
+            return groupWidth.map((e) => (!isNaN(e) && Number(e) === 0 && n / remains.length - this.options.spacingX - this.CONTENT_NODE_HORIZONTAL_PADDING / groupWidth.length) || e - this.options.spacingX - this.CONTENT_NODE_HORIZONTAL_PADDING / groupWidth.length);
 
         } else {
             let numberOfColumns = this.data[0] ? this.data[0].length : 0; // converted this.data 
