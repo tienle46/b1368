@@ -201,7 +201,7 @@ class BottomBar extends Component {
             ['z', 'z1', 'z2', 'z1', 'z2', 'z2'],
             ['y', 'y1', 'y2', 'y1', 'y2', 'z2'],
             ['Thông tin trả thưởng: Vina 500K, Mã thẻ/vật phẩm: 29299168616934, Seri: 36129500460942, Ngày HH: 00:00:00 31/12/2020', 'y1', 'y2', 'y1', 'y2', 'z2'],
-            [{ text: 'y', button: {} }, { text: 'y1' }, { text: 'y2' }, { text: 'y3' }, { text: 'y4' }, 'z2']
+            [{ text: 'NAP XU VAO GAME', fontSize: 4, fontLineHeight: 5, button: {} }, { text: 'y1' }, { text: 'y2' }, { text: 'y3' }, { text: 'y4' }, 'z2']
         ], {
             position: cc.v2(2, 140),
             width: 750,
@@ -209,7 +209,7 @@ class BottomBar extends Component {
             group: {
                 colors: [null, null, new cc.Color(65, 94, 160), null, null],
                 events: [event],
-                widths: [200, 100, 100, 250, 100]
+                widths: [100, 100, 100, 250, 200]
             }
         });
 

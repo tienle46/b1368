@@ -26,6 +26,8 @@ export default class GridViewRub {
      *  {
      *      text: string # display string of label
      *      color: new cc.Color() # color of node which includes label above
+     *      fontSize : number # number of fontSize, it has higher priority than opts.cell.fontSize
+     *      fontLineHeight: number
      *      button: { # if this property is exist. Default a label will be contained inside button < if above `text` is availabe >
      *          spriteFrame: string,
      *          eventHandler: cc.Component.EventHandler,
@@ -260,6 +262,14 @@ export default class GridViewRub {
                 let jMax = data[i].length - 1;
                 let cellOpts = Object.assign({}, this.options.cell);
                 cellOpts.width = width[j];
+
+                if (data[i][j] instanceof Object) {
+                    if (data[i][j].fontSize)
+                        cellOpts.fontSize = data[i][j].fontSize;
+                    if (data[i][j].fontLineHeight)
+                        cellOpts.fontLineHeight = data[i][j].fontLineHeight;
+                }
+
                 if (this.options.group.colors)
                     cellOpts.fontColor = this.options.group.colors[j] || app.const.COLOR_WHITE;
 
