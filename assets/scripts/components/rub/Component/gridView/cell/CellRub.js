@@ -49,7 +49,7 @@ export default class CellRub {
             height: 50,
             fontColor: app.const.COLOR_YELLOW, // # yellow
             fontSize: 16,
-            fontLineHeight: 40,
+            fontLineHeight: 20,
             horizontalSeparate: null,
             verticalSeparate: null
         };
@@ -70,6 +70,20 @@ export default class CellRub {
         return this.cellNode;
     }
 
+    getHeight() {
+        return this.cellNode.getContentSize().height;
+    }
+
+    resizeHeight(height) {
+        if (this.cellNode) {
+            let size = this.cellNode.getContentSize();
+            size.height = height;
+            // resize
+            let cellSprite = this.cellNode.getComponent(cc.Sprite);
+            RubUtils.loadSpriteFrame(cellSprite, this.options.spriteFrame || 'textures/50x50', size);
+        }
+    }
+
     // resettingHorizontalSeparate(width) {
 
     // }
@@ -80,6 +94,18 @@ export default class CellRub {
         let size = cc.size(this.options.width, this.options.height);
         this.cellNode.setContentSize(size);
 
+        if (this.cell instanceof Object && this.cell.button)
+            this._initButton(this.cellNode);
+        else
+            this._initLabel(this.cellNode); // init label
+
+        let lblChildNode = this.cellNode.getChildByName('label');
+        if (lblChildNode) {
+            if (lblChildNode.getLineCount() > 1)
+                this.cellNode.height *= lblChildNode.getLineCount();
+        }
+
+        size.height = this.cellNode.height;
         let cellSprite = this.cellNode.addComponent(cc.Sprite);
         RubUtils.loadSpriteFrame(cellSprite, this.options.spriteFrame || 'textures/50x50', size);
 
@@ -87,11 +113,6 @@ export default class CellRub {
             // fill color to sprite
             cellSprite.node.color = this.options.bgColor;
         }
-
-        if (this.cell instanceof Object && this.cell.button)
-            this._initButton(this.cellNode);
-        else
-            this._initLabel(this.cellNode); // init label
 
         // if hasHorizontalSeparate
         if (this.options.horizontalSeparate && this.options.horizontalSeparate.align !== 'none') {
@@ -150,7 +171,7 @@ export default class CellRub {
 
     _initButton(parentNode) {
         let btnNode = new cc.Node();
-
+        btnNode.name = 'button';
         parentNode.addChild(btnNode);
 
         let size = null;
@@ -192,17 +213,26 @@ export default class CellRub {
 
     _initLabel(parentNode) {
         let lblNode = new cc.Node();
+        lblNode.name = 'label';
         lblNode.setContentSize(parentNode.getContentSize());
 
-        let lbl = lblNode.addComponent(cc.Label);
-        lbl.string = this.cell instanceof Object ? this.cell.text : this.cell;
-        lbl.node.color = this.options.fontColor;
-        lbl.horizontalAlign = cc.Label.HorizontalAlign.CENTER;
-        lbl.verticalAlign = cc.Label.VerticalAlign.CENTER;
-        lbl.fontSize = this.options.fontSize;
-        lbl.lineHeight = this.options.fontLineHeight;
-        lbl.overflow = cc.Label.Overflow.RESIZE_HEIGHT;
+        // let lbl = lblNode.addComponent(cc.Label);
+        // lbl.string = this.cell instanceof Object ? this.cell.text : this.cell;
+        // lbl.node.color = this.options.fontColor;
+        // lbl.horizontalAlign = cc.Label.HorizontalAlign.CENTER;
+        // lbl.verticalAlign = cc.Label.VerticalAlign.CENTER;
+        // lbl.fontSize = this.options.fontSize;
+        // lbl.lineHeight = this.options.fontLineHeight;
+        // lbl.overflow = cc.Label.Overflow.RESIZE_HEIGHT;
 
+        let rich = lblNode.addComponent(cc.RichText);
+        rich.maxWidth = (parentNode.getContentSize().width - 20) / 2;
+        rich.fontSize = this.options.fontSize;
+        rich.lineHeight = this.options.fontLineHeight;
+        rich.horizontalAlign = cc.Label.HorizontalAlign.CENTER;
+        rich.string = this.cell instanceof Object ? this.cell.text : this.cell;
+
+        lblNode.getLineCount = () => rich._lineCount;
         parentNode.addChild(lblNode);
     }
 }
