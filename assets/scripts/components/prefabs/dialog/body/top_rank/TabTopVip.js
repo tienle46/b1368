@@ -1,7 +1,7 @@
 import app from 'app';
 import Component from 'Component';
 import GridViewRub from 'GridViewRub';
-import ExchangeDialog from 'ExchangeDialog';
+import RubUtils from 'RubUtils';
 
 class TabTopVip extends Component {
     constructor() {
@@ -11,6 +11,19 @@ class TabTopVip extends Component {
         this.flag = null;
         this.topNodeId = 14;
         this.currentPage = 1;
+        this.bodyNode = {
+            default: null,
+            type: cc.Node
+        }
+        this.top1Sprite = {
+            default : null,
+            type: cc.Sprite
+        }
+
+        this.top1Name = {
+            default : null,
+            type: cc.Label
+        }
     }
 
     onLoad() {
@@ -45,12 +58,24 @@ class TabTopVip extends Component {
 
                 const data = [
                     res['unl'].map((status, index)=>{
-                        return index;
+                        return (index +  1) + '';
                     }),
                     res['unl'],
                     res['ui1l'],
                     res['ui2l'],
                 ]
+
+                if(res['unl'].length > 0){
+                    const topVipName = res['unl'][0];
+
+                    this.top1Name.string = topVipName;
+
+                    const top1Icon = `http://${app.config.host}:3767/img/xgameupload/images/avatar/${topVipName}`;
+                    log(top1Icon);
+                    RubUtils.loadSpriteFrame(this.top1Sprite, top1Icon, cc.size(128, 128), true, (spriteFrame) => {
+
+                    });
+                }
 
                 resolve(data);
             });
@@ -58,9 +83,8 @@ class TabTopVip extends Component {
     }
 
     _initBody(d) {
-        let bodyNode = this.node.getChildByName('container').getChildByName('body');
 
-        GridViewRub.show(bodyNode, null, d, { position: cc.v2(2, 120), width: 500, group: {widths:[50,200,200,50]} }).then((rub) => {
+        GridViewRub.show(this.bodyNode, null, d, { position: cc.v2(2, 120), width: 600, group: {widths:[80,290,150,80]} }).then((rub) => {
             this.GridViewCardTabRub = rub;
             this.GridViewCardTabNode = this.GridViewCardTabRub._getNode();
         });
