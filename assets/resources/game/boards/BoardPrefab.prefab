@@ -144,8 +144,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 443.84,
-      "height": 90
+      "width": 450,
+      "height": 100
     },
     "_children": [
       {
@@ -212,7 +212,7 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": 100,
+      "x": 100.43120000000005,
       "y": 0
     },
     "_skewX": 0,
@@ -262,8 +262,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 186.09,
-      "height": 32
+      "width": 250,
+      "height": 40
     },
     "_children": [],
     "_rotationX": 0,
@@ -302,16 +302,16 @@
     },
     "_enabled": true,
     "_useOriginalSize": false,
-    "_actualFontSize": 30,
-    "_fontSize": 30,
-    "_lineHeight": 32,
+    "_actualFontSize": 36,
+    "_fontSize": 36,
+    "_lineHeight": 40,
     "_enableWrapText": true,
     "_N$file": null,
     "_isSystemFontUsed": true,
     "_N$string": "Thời gian chờ",
     "_N$horizontalAlign": 2,
     "_N$verticalAlign": 1,
-    "_N$overflow": 0
+    "_N$overflow": 3
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -335,12 +335,12 @@
     "label": {
       "__id__": 6
     },
-    "lines": 1,
-    "minWidth": 100,
-    "maxWidth": 1000,
-    "resizeWidth": true,
-    "increaseWidth": 40,
-    "margin": 5
+    "lines": 2,
+    "minWidth": 250,
+    "maxWidth": 250,
+    "resizeWidth": false,
+    "increaseWidth": 15,
+    "margin": 0
   },
   {
     "__type__": "cc.Sprite",
@@ -706,19 +706,16 @@
       "__id__": 1
     },
     "_enabled": true,
-    "timelinePrefab": {
-      "__uuid__": "f195b8fb-6013-43fc-9af2-69c8125d672c"
-    },
     "timeline": {
       "__id__": 2
     },
-    "playerPositionPrefab": null,
+    "timelineRemainTime": {
+      "__id__": 18
+    },
     "timelineTextViewNode": {
       "__id__": 4
     },
-    "timelineRemainTime": {
-      "__id__": 18
-    }
+    "playerPositionPrefab": null
   },
   {
     "__type__": "cc.PrefabInfo",

@@ -189,7 +189,7 @@ export default class PlayerPositions extends Component {
     }
 
     hideAnchor(index) {
-        let anchor = this.getPlayerAnchor(index);
+        let anchor = index >= 0 && this.getPlayerAnchor(index);
         if (anchor) anchor.active = false;
     }
 

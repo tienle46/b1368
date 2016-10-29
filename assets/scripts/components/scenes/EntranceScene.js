@@ -45,14 +45,13 @@ export default class EntranceScene extends BaseScene {
             log("success: " + success);
             if (success) {
                 new Fingerprint2().get((deviceId) => {
-                    app.service.requestAuthen('pinocchio', "hhmmss24", false, true, (error, result) => {
+                    app.service.requestAuthen('crush1', "1234nm", false, true, (error, result) => {
                         error = JSON.parse(error);
                         if (result) {
                             console.log(app.context.getMe());
                             this.hideLoading();
                             this.changeScene('DashboardScene');
                         }
-
                         if (error) {
                             this.addPopup(app.getMessageFromServer(error.p.ec));
                         }

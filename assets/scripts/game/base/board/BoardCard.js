@@ -67,4 +67,7 @@ export default class BoardCard extends Board {
         return playerHandCards;
     }
 
+    onBoardEnding(data = {}, isJustJoined) {
+        super.onBoardEnding(data, isJustJoined);
+    }
 }

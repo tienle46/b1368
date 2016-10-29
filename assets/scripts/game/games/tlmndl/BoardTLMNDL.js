@@ -100,6 +100,7 @@ export default class BoardTLMNDL extends BoardCardTurnBase {
         setTimeout(() => this.scene.showGameResult(models, (shownTime) => {
             let remainTime = this.timelineRemain - shownTime;
             if(remainTime > 0 && this.scene.isEnding()){
+                this.renderer.cleanDeckCards();
                 this._startEndBoardTimeLine(remainTime);
             }
         }), 1000);

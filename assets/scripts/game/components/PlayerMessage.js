@@ -68,11 +68,15 @@ export default class PlayerMessage extends Component {
     }
 
     hide(){
+        if(!this.loaded){
+            return;
+        }
+
         this.timeoutId && clearTimeout(this.timeoutId);
         this.timeoutId = null;
+        this.message = null;
 
         this.node.active = false;
-        this.message = null;
         this.textView.setText("");
     }
 

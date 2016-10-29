@@ -22,8 +22,6 @@ export default class GameScene extends BaseScene {
         this.chatComponentNode = cc.Node;
         this.chatComponent = null;
 
-
-        this.boardPrefab = cc.Prefab;
         this.gameResultPopupPrefab = cc.Prefab;
 
         this.room = null;

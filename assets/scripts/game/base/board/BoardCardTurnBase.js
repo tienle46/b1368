@@ -85,8 +85,4 @@ export default class BoardCardTurnBase extends BoardCard {
     onBoardPlaying(data, isJustJoined){
         super.onBoardPlaying(data, isJustJoined);
     }
-
-    onBoardEnding(data, isJustJoined){
-        super.onBoardEnding(data, isJustJoined);
-    }
 }
