@@ -15,7 +15,15 @@ export default class IngameChatComponent extends Component {
         super();
         this.loadingComponent = cc.Node;
         this.messageListContent = cc.Node;
-        this.messageListComponent = cc.Node;
+        this.showAnimName = {
+            default: "",
+            type: cc.String
+        };
+        this.hideAnimName = {
+            default: "",
+            type: cc.String
+        };
+
         this.loading = null;
         this.messages = null;
         this.animation = null;
@@ -30,27 +38,26 @@ export default class IngameChatComponent extends Component {
     }
 
     onLoad(){
-        debug("IngameChatComponent: ", this.node);
         this.animation = this.node.getComponent(cc.Animation);
         this.loading = this.loadingComponent.getComponentInChildren(Progress.name);
         this.node.active = false;
     }
 
     setVisible(){
-        console.log("setVisible: ", this.showing);
         this.showing ? this.hide() : this.show();
         debug(this.animation);
     }
 
     show(){
         this.node.active = true;
-        this.animation && this.animation.play('openIngameChatComponent');
+        this.animation && this.animation.play(this.showAnimName);
+        this.onShow();
         this.showing = true;
     }
 
     hide(){
         this.node.active = false;
-        this.animation && this.animation.play('closeIngameChatComponent');
+        this.animation && this.animation.play(this.hideAnimName);
         this.showing = false;
     }
 
@@ -62,11 +69,15 @@ export default class IngameChatComponent extends Component {
 
     initMessages(){
 
+        debug("initMessages: ", this.messages);
+
         this.messageListContent.removeAllChildren(true);
 
         this.messages.forEach(message => {
             let chatItemNode = cc.instantiate(this.gameChatItemPrefab);
             let gameChatItem = chatItemNode.getComponent(GameChatItem.name);
+
+            debug("gameChatItem: ", gameChatItem)
 
             if(gameChatItem){
                 gameChatItem.text = message;
@@ -86,6 +97,9 @@ export default class IngameChatComponent extends Component {
         if(!this.messages){
             this.loading.show(120);
             app.service.send({cmd: app.commands.INGAME_CHAT_MESSAGE_LIST, data: {[app.keywords.GAME_CODE]: this.scene.gameCode}}, (data) => {
+
+                debug(data);
+
                 let gameCode = utils.getValue(data, app.keywords.GAME_CODE);
                 if(gameCode == this.scene.gameCode){
                     this.messages = utils.getValue(data, app.keywords.MESSAGE_LIST);

@@ -11,37 +11,19 @@ import BoardCardTurnBaseRenderer from 'BoardCardTurnBaseRenderer';
 export default class BoardTLMNDLRenderer extends BoardCardTurnBaseRenderer {
     constructor() {
         super();
-
-        this.boardPrefab = {
-            default: null,
-            type: cc.Prefab
-        };
-
-        this.boardCardPrefab = {
-            default: null,
-            type: cc.Prefab
-        };
-
-        this.boardCardTurnBasePrefab = {
-            default: null,
-            type: cc.Prefab
-        };
     }
 
     _initUI(data){
-        this.assign(this.boardPrefab, 'BoardRenderer');
-        this.assign(this.boardCardPrefab, 'BoardCardRenderer');
-        this.assign(this.boardCardTurnBasePrefab, 'BoardCardTurnBaseRenderer');
+        // this.assign(this.boardPrefab, 'BoardRenderer');
+        // this.assign(this.boardCardPrefab, 'BoardCardRenderer');
+        // this.assign(this.boardCardTurnBasePrefab, 'BoardCardTurnBaseRenderer');
 
         super._initUI(data)
+        this._initCenterDeckCard();
     }
 
     onLoad() {
         super.onLoad();
-    }
-
-    updateDeckCard(cards) {
-
     }
 
 }

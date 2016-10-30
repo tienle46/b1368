@@ -6,77 +6,36 @@ import app from 'app';
 import {utils, GameUtils} from 'utils';
 import ActorRenderer from 'ActorRenderer';
 import PlusBalanceAnimation from 'PlusBalanceAnimation';
-import PlayerMessageComponent from 'PlayerMessageComponent';
+import PlayerMessage from 'PlayerMessage';
 
 export default class PlayerRenderer extends ActorRenderer {
     constructor() {
         super();
 
-        this.playerNameLabel = {
-            default: null,
-            type: cc.Label
-        };
-
-        this.balanceLabel = {
-            default: null,
-            type: cc.Label
-        };
-
-        this.status1 = {
-            default: null,
-            type: cc.Node
-        };
-
-        this.status2 = {
-            default: null,
-            type: cc.Node
-        };
-
-        this.ownerIcon = {
-            default: null,
-            type: cc.Node
-        };
-
-        this.masterIcon = {
-            default: null,
-            type: cc.Node
-        };
-
-        this.readyIcon = {
-            default: null,
-            type: cc.Node
-        };
-
-        this.playerTimeLinePrefab = {
-            default: null,
-            type: cc.Prefab
-        };
-
-        this.callCounter = {
-            default: null,
-            type: cc.ProgressBar
-        };
-
+        this.playerNameLabel = cc.Label;
+        this.balanceLabel = cc.Label;
+        this.status1 = cc.Node;
+        this.status2 = cc.Node;
+        this.ownerIcon = cc.Node;
+        this.masterIcon = cc.Node;
         this.plusBalanceNode = cc.Node;
         this.plusBalanceLabel = cc.Label;
-        this.messageAnchorTop = cc.Node;
-        this.messageAnchorBottom = cc.Node;
-        this.sayMessageNode = cc.Node;
-        this.sayMessageComponent = null;
-        this.messageAnchor = null;
-        this.plusBalanceAnimation = null;
+        this.playerMessageNode = cc.Node;
+        this.playerTimeLineProgress = cc.ProgressBar;
+
+        this.playerMessage = null;
+        this.plusBalanceAnim = null;
         this.anchorIndex = null;
     }
 
     updatePlayerAnchor(anchorIndex){
         this.anchorIndex = anchorIndex;
-        this.sayMessageComponent && this.sayMessageComponent.updateAnchor(anchorIndex);
+        this.playerMessage && this.playerMessage.updateAnchor(anchorIndex);
     }
 
     _initUI(data = {}) {
 
         super._initUI(data);
-
         this.scene = data.scene;
 
         utils.deactive(this.status1);
@@ -86,13 +45,13 @@ export default class PlayerRenderer extends ActorRenderer {
         this.setVisibleMaster(data.master);
         this.setVisibleReady(data.ready);
 
-        this.plusBalanceAnimation = this.plusBalanceNode.getComponent(PlusBalanceAnimation.name);
-        this.plusBalanceAnimation.setup({player: this, endCallback: this._onDonePlusBalanceAnimation.bind(this)});
+        this.plusBalanceAnim = this.plusBalanceNode.getComponent(PlusBalanceAnimation.name);
+        this.plusBalanceAnim.setup({player: this, endCallback: this._onDonePlusBalanceAnimation.bind(this)});
 
-        this.sayMessageComponent = this.sayMessageNode.getComponent(PlayerMessageComponent.name);
-        this.sayMessageComponent.setup(this);
+        this.playerMessage = this.playerMessageNode.getComponent(PlayerMessage.name);
+        this.playerMessage.setup(this);
 
-        this.stopCountdown();
+        this._stopCountdown();
         this.loaded = true;
     }
 
@@ -106,7 +65,6 @@ export default class PlayerRenderer extends ActorRenderer {
     }
 
     setVisibleOwner(visible) {
-        console.log("setVisibleOwner: ", visible);
         utils.setActive(this.ownerIcon, visible);
     }
 
@@ -117,59 +75,54 @@ export default class PlayerRenderer extends ActorRenderer {
     setVisibleReady(visible) {
         this.ready = visible;
         this.node.cascadeOpacity = true;
-        this.node.opacity = visible ? 255 : 100;
+        this.node.opacity = visible ? 255 : 150;
     }
 
-    _updateCountDown(dt) {
+    update(dt) {
         if (this.isCounting && this.timelineDuration > 0) {
-            this.callCounter.progress = this.counterTimer / this.timelineDuration;
+            this.playerTimeLineProgress.progress = this.counterTimer / this.timelineDuration;
 
             if(this.counterTimer >= this.timelineDuration){
-                this.stopCountdown();
+                this._stopCountdown();
             }
 
             this.counterTimer += dt;
             if (this.counterTimer >= this.timelineDuration) {
                 this.isCounting = false;
-                this.callCounter.progress = 1;
+                this.playerTimeLineProgress.progress = 1;
             }
         }
     }
 
-    startCountdown(duration) {
-        if (this.callCounter) {
+    showMessage(message){
+        if(utils.isEmpty(message)) return;
+        this.playerMessage.show(message);
+    }
+
+    startPlusBalanceAnimation(balance){
+        if(!this.loaded || isNaN(balance)) return;
+
+        if(this.plusBalanceLabel && this.plusBalanceNode){
+            this.plusBalanceLabel.string = GameUtils.toChangedBalanceString(balance);
+            this.plusBalanceAnim.play();
+        }
+    }
+
+    _startCountdown(duration) {
+        if (this.playerTimeLineProgress) {
             this.timelineDuration = duration;
             this.isCounting = true;
             this.counterTimer = 0;
         }
     }
 
-    stopCountdown(){
-        if (this.callCounter) {
+    _stopCountdown(){
+        if (this.playerTimeLineProgress) {
             this.timelineDuration = 0;
             this.isCounting = false;
             this.counterTimer = 0;
-            this.callCounter.progress = 0;
+            this.playerTimeLineProgress.progress = 0;
         }
-    }
-
-    showMessage(message){
-        
-        console.log("showMessage: ", this);
-        
-        if(utils.isEmpty(message)) return;
-        this.sayMessageComponent.show(message);
-    }
-
-    startPlusBalanceAnimation(balance){
-
-        if(!this.loaded || isNaN(balance)) return;
-
-        if(this.plusBalanceLabel && this.plusBalanceNode){
-            this.plusBalanceLabel.string = GameUtils.toChangedBalanceString(balance);
-            this.plusBalanceAnimation.play();
-        }
-
     }
 
     _onDonePlusBalanceAnimation(){

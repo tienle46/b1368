@@ -1027,14 +1027,14 @@
       "__id__": 1
     },
     "_enabled": true,
-    "itemPrefab": {
-      "__uuid__": "92457a2f-f453-4dc8-8abe-9e34749c4ebd"
+    "title": {
+      "__id__": 32
     },
     "content": {
       "__id__": 15
     },
-    "title": {
-      "__id__": 32
+    "itemPrefab": {
+      "__uuid__": "92457a2f-f453-4dc8-8abe-9e34749c4ebd"
     }
   },
   {

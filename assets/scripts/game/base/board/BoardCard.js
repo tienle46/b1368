@@ -40,7 +40,7 @@ export default class BoardCard extends Board {
         let playerHandCardLists = this.scene.gamePlayers.getPlayerHandCardLists();
         playerHandCardLists.splice(0, 0, this.renderer.meDealCardList);
 
-        CardList.dealCards(this.renderer.dealCardList, playerHandCardLists, dealCards.length, () => {
+        CardList.dealCards(this.renderer.dealCardAnchor, playerHandCardLists, dealCards.length, () => {
             this.renderer.meDealCardList.clear();
             this.scene.emit(Events.ON_GAME_STATE_STARTED, dealCards);
         });
@@ -67,4 +67,7 @@ export default class BoardCard extends Board {
         return playerHandCards;
     }
 
+    onBoardEnding(data = {}, isJustJoined) {
+        super.onBoardEnding(data, isJustJoined);
+    }
 }

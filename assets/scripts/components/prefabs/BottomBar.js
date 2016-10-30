@@ -1,5 +1,6 @@
 import app from 'app';
 import Component from 'Component';
+import DialogRub from 'DialogRub';
 import TopupDialogRub from 'TopupDialogRub';
 import ExchangeDialogRub from 'ExchangeDialogRub';
 import PersonalInfoDialogRub from 'PersonalInfoDialogRub';
@@ -68,7 +69,25 @@ class BottomBar extends Component {
     }
 
     onClickTopRankAction() {
-        log("rank");
+        let tabs = [{
+            title: 'Top VIP',
+            value: 'tab_top_vip'
+        }, {
+            title: 'Top Cao thủ',
+            value: null
+        }, {
+            title: 'Top Đại gia',
+            value: null
+        }];
+
+        let options = {
+            itemHeight: 26.5,
+            tabBodyPrefabType: 'rank'
+        };
+
+        let tabOptions = { tabs, options };
+        // bottombar -> dashboard scene node
+        DialogRub.show(this.node.parent, tabOptions);
     }
 
     onClickNotifiAction() {

@@ -14,7 +14,7 @@ export default class BoardCardTurnBase extends BoardCard {
     constructor() {
         super();
 
-        this.deckCards = null;
+        this.deckCardRenderer = null;
         this.playedCards = null;
         this.turnAdapter = new BoardTurnBaseAdapter(this);
     }
@@ -84,9 +84,5 @@ export default class BoardCardTurnBase extends BoardCard {
 
     onBoardPlaying(data, isJustJoined){
         super.onBoardPlaying(data, isJustJoined);
-    }
-
-    onBoardEnding(data, isJustJoined){
-        super.onBoardEnding(data, isJustJoined);
     }
 }

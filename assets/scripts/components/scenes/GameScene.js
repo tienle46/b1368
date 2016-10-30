@@ -22,8 +22,6 @@ export default class GameScene extends BaseScene {
         this.chatComponentNode = cc.Node;
         this.chatComponent = null;
 
-
-        this.boardPrefab = cc.Prefab;
         this.gameResultPopupPrefab = cc.Prefab;
 
         this.room = null;
@@ -324,10 +322,10 @@ export default class GameScene extends BaseScene {
         }
     }
 
-    showGameResult(models) {
+    showGameResult(models, cb) {
         if (!utils.isEmptyArray(models)) {
             !this.gameResultPopup && (this.gameResultPopup = cc.instantiate(this.gameResultPopupPrefab).getComponent(GameResultPopup.name));
-            this.gameResultPopup.show(models);
+            this.gameResultPopup.show(models, cb);
         }
     }
 

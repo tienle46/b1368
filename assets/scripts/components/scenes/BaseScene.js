@@ -58,8 +58,6 @@ export default class BaseScene extends Actor {
             this.progress = progressNode.getComponent(FullSceneProgress.name);
         }
 
-        console.log(this);
-
         this._pendingAddPopup && this._pendingAddPopup.forEach(msg => {
             this.addPopup(msg);
         });

@@ -88,6 +88,7 @@ export default class GamePlayers extends Component {
                 name: player.user.name,
                 balance: GameUtils.getUserBalance(player.user)
             });
+            this.playerPositions.hideAnchor(player.anchorIndex);
             this._removePlayer(player);
         }
         //If not found player mean user just spectator

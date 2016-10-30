@@ -41,7 +41,7 @@ export default class Player extends Actor {
 
         this.username = this.user.name;
         this.id = this.user.getPlayerId(this.board.room);
-        this.balance = GameUtils.getUserBalance(user); //utils.getVariable(this.user, app.keywords.USER_VARIABLE_BALANCE, 0);
+        this.balance = GameUtils.getUserBalance(user);
 
         this._addGlobalListener();
     }
@@ -129,11 +129,9 @@ export default class Player extends Actor {
     }
 
     onLoad(){
-
         this.renderData = {...this.renderData, isItMe: this.user.isItMe, scene: this.scene, owner: this.isOwner};
 
         super.onLoad();
-
         this.renderer.setName(this.username);
         this.renderer.setBalance(this.balance);
     }
@@ -187,12 +185,11 @@ export default class Player extends Actor {
     }
 
     stopTimeLine() {
-        this.renderer.stopCountdown();
+        this.renderer._stopCountdown();
     }
 
     startTimeLine(timeInSeconds = this.board.getTurnDuration()) {
-        console.log("start timeline: ", timeInSeconds);
-        this.renderer.startCountdown(timeInSeconds);
+        this.renderer._startCountdown(timeInSeconds);
     }
 
     onSpectatorToPlayer(user) {

@@ -335,7 +335,12 @@
     "_enabled": true,
     "cardPrefab": {
       "__uuid__": "1be1ace3-b9b3-4bf4-9c45-5c1d9eccac08"
-    }
+    },
+    "scale": 1,
+    "reveal": true,
+    "selectable": false,
+    "space": 100,
+    "maxDimension": 600
   },
   {
     "__type__": "cc.Sprite",
@@ -650,7 +655,12 @@
     "_enabled": true,
     "cardPrefab": {
       "__uuid__": "1be1ace3-b9b3-4bf4-9c45-5c1d9eccac08"
-    }
+    },
+    "scale": 1,
+    "reveal": true,
+    "selectable": false,
+    "space": 100,
+    "maxDimension": 600
   },
   {
     "__type__": "cc.Sprite",
@@ -997,7 +1007,12 @@
     "_enabled": true,
     "cardPrefab": {
       "__uuid__": "1be1ace3-b9b3-4bf4-9c45-5c1d9eccac08"
-    }
+    },
+    "scale": 1,
+    "reveal": true,
+    "selectable": false,
+    "space": 100,
+    "maxDimension": 600
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -1373,7 +1388,12 @@
     "_enabled": true,
     "cardPrefab": {
       "__uuid__": "1be1ace3-b9b3-4bf4-9c45-5c1d9eccac08"
-    }
+    },
+    "scale": 1,
+    "reveal": true,
+    "selectable": false,
+    "space": 100,
+    "maxDimension": 600
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -2055,7 +2075,12 @@
     "_enabled": true,
     "cardPrefab": {
       "__uuid__": "1be1ace3-b9b3-4bf4-9c45-5c1d9eccac08"
-    }
+    },
+    "scale": 1,
+    "reveal": true,
+    "selectable": false,
+    "space": 100,
+    "maxDimension": 600
   },
   {
     "__type__": "cc.Sprite",
@@ -2319,14 +2344,10 @@
     "status2": null,
     "ownerIcon": null,
     "masterIcon": null,
-    "readyIcon": null,
-    "playerTimeLinePrefab": null,
-    "callCounter": null,
     "plusBalanceNode": null,
     "plusBalanceLabel": null,
-    "messageAnchorTop": null,
-    "messageAnchorBottom": null,
-    "sayMessageNode": null,
+    "playerMessageNode": null,
+    "playerTimeLineProgress": null,
     "cardListPrefab": {
       "__uuid__": "651b1f49-8953-4b6f-9e06-0d829c049b4a"
     },
@@ -2335,13 +2356,7 @@
     "rightCardAnchor": null,
     "topCardAnchor": null,
     "bottomCardAnchor": null,
-    "defaultCardAnchor": null,
-    "basePlayerPrefab": {
-      "__uuid__": "498f2fac-30aa-46c6-ab21-f13b595982a4"
-    },
-    "cardPlayerPrefab": {
-      "__uuid__": "b15b67c4-e656-4b52-aaaf-bf8de34119ba"
-    }
+    "defaultCardAnchor": null
   },
   {
     "__type__": "425c6z3Dm1Nup3yAFh6hmlS",
@@ -2921,7 +2936,12 @@
     "_enabled": true,
     "cardPrefab": {
       "__uuid__": "1be1ace3-b9b3-4bf4-9c45-5c1d9eccac08"
-    }
+    },
+    "scale": 1,
+    "reveal": true,
+    "selectable": false,
+    "space": 100,
+    "maxDimension": 600
   },
   {
     "__type__": "cc.Sprite",
@@ -3027,7 +3047,12 @@
     "_enabled": true,
     "cardPrefab": {
       "__uuid__": "1be1ace3-b9b3-4bf4-9c45-5c1d9eccac08"
-    }
+    },
+    "scale": 1,
+    "reveal": true,
+    "selectable": false,
+    "space": 100,
+    "maxDimension": 600
   },
   {
     "__type__": "cc.Sprite",
@@ -3133,7 +3158,12 @@
     "_enabled": true,
     "cardPrefab": {
       "__uuid__": "1be1ace3-b9b3-4bf4-9c45-5c1d9eccac08"
-    }
+    },
+    "scale": 1,
+    "reveal": true,
+    "selectable": false,
+    "space": 100,
+    "maxDimension": 600
   },
   {
     "__type__": "cc.Sprite",

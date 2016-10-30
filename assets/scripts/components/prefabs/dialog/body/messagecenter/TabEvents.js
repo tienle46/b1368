@@ -88,8 +88,15 @@ export default class TabEvents extends Component {
         RubUtils.loadRes('dashboard/dialog/prefabs/userinfo/list_item').then((preFab)=>{
             events.forEach((event)=>{
                 const transactionItem = cc.instantiate(preFab);
-                transactionItem.getComponent('ListItem').initWithStyle(ListItem.TYPE.STYLE1, true);
+                transactionItem.getComponent('ListItem').initWithStyle(ListItem.TYPE.STYLE2, true);
                 transactionItem.getComponent('ListItem').fillData({title : event.title, sub : event.sub});
+
+                if(this.groupType == app.const.DYNAMIC_GROUP_NEW_EVENT){
+                    RubUtils.loadSpriteFrame(transactionItem.getComponent('ListItem').imageView, 'dashboard/dialog/imgs/thongbao-ico');
+                }
+                else if (this.groupType == app.const.DYNAMIC_GROUP_NOTIFY){
+                    RubUtils.loadSpriteFrame(transactionItem.getComponent('ListItem').imageView, 'dashboard/dialog/imgs/hopqua');
+                }
 
                 const widget = transactionItem.addComponent(cc.Widget);
                 widget.isAlignLeft = true;

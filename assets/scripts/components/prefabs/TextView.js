@@ -35,6 +35,7 @@ export default class TextView extends Component {
             type: cc.Integer
         };
 
+        this.currentWidth = 0;
         this.lineHeight = 20;
         this.isLoaded = false;
     }
@@ -45,6 +46,7 @@ export default class TextView extends Component {
         this.label.overflow = cc.Label.Overflow.RESIZE_HEIGHT;
         this.label.string = "";
         this.isLoaded = true;
+        this.currentWidth = this.node.width;
     }
 
     onEnable(){
@@ -81,7 +83,6 @@ export default class TextView extends Component {
     }
 
     setText(text) {
-
         if(!this.isLoaded){
             this.text = text;
             return;
@@ -89,7 +90,12 @@ export default class TextView extends Component {
 
         this._setTextViewSize();
         this.label.string = text;
+
         this._adjustSize();
+    }
+
+    _setNodeWidth(width){
+        this.node.width = Math.max(this.currentWidth, width);
     }
 
     _adjustSize() {
@@ -101,11 +107,13 @@ export default class TextView extends Component {
             if(this.resizeWidth){
                 if (this.label.node.width <= this.maxWidth - this.increaseWidth) {
                     this.label.node.width += this.increaseWidth;
-                    this.node.width = this.label.node.width + this.margin * 2;
+                    this._setNodeWidth(this.label.node.width + this.margin * 2);
+                    // this.node.width = this.label.node.width + this.margin * 2;
                     this._adjustSize();
                 }else{
                     this.label.node.width = this.maxWidth;
-                    this.node.width = this.maxWidth + this.margin * 2;
+                    this._setNodeWidth(this.maxWidth + this.margin * 2);
+                    // this.node.width = this.maxWidth + this.margin * 2;
                 }
             }else{
                 if(fontSize > 8){
@@ -114,7 +122,8 @@ export default class TextView extends Component {
                 }
             }
         } else {
-            this.node.width = this.label.node.width + this.margin * 2;
+            this._setNodeWidth(this.label.node.width + this.margin * 2);
+            // this.node.width = this.label.node.width + this.margin * 2;
         }
     }
 

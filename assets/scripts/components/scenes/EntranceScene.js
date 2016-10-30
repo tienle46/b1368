@@ -52,7 +52,6 @@ export default class EntranceScene extends BaseScene {
                             this.hideLoading();
                             this.changeScene('DashboardScene');
                         }
-
                         if (error) {
                             this.addPopup(app.getMessageFromServer(error.p.ec));
                         }
