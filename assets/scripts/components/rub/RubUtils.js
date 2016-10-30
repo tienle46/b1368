@@ -38,10 +38,12 @@ let RubUtils = {
             let spriteFrame = new cc.SpriteFrame(textureCache);
             spriteComponent.spriteFrame = spriteFrame;
             spriteFrameDefaultConfig(spriteComponent);
+
         } else {
             return RubUtils.loadRes(resURL, true).then((spriteFrame) => {
                 spriteComponent.spriteFrame = spriteFrame;
                 spriteFrameDefaultConfig(spriteComponent);
+
             });
         }
     }

@@ -230,4 +230,7 @@ Commands.INGAME_CHAT_MESSAGE_LIST = "gicml";
 
 // Agency
 Commands.AGENCY = "agent";
+
+//TRANSFER TRANSACTION
+Commands.TRANSFER_TRANSACTION = 'b_ath';
 module.exports = Commands;

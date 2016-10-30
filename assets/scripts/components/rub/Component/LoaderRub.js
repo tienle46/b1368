@@ -18,6 +18,21 @@ export default class LoaderRub {
         this.spinLoaderNode.setPosition(cc.v2(0, 0));
         this.spinLoaderNode.setContentSize(cc.size(960, 640));
 
+        // widget
+        let widget = this.spinLoaderNode.addComponent(cc.Widget);
+        widget.isAlignOnce = false;
+
+        widget.isAlignTop = true;
+        widget.isAlignBottom = true;
+        widget.isAlignLeft = true;
+        widget.isAlignRight = true;
+
+        widget.top = 0;
+        widget.bottom = 0;
+        widget.left = 0;
+        widget.right = 0;
+
+
         // spin_loader -> bgNode
         let bgNode = new cc.Node();
         bgNode.name = 'bg';

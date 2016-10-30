@@ -30,7 +30,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 960,
-      "height": 60
+      "height": 73
     },
     "_children": [
       {
@@ -93,8 +93,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 950,
-      "height": 10
+      "width": 1000,
+      "height": 40
     },
     "_children": [],
     "_rotationX": 0,
@@ -103,7 +103,7 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": 5,
+      "x": 30,
       "y": 0
     },
     "_skewX": 0,
@@ -128,26 +128,6 @@
     "groupIndex": 0
   },
   {
-    "__type__": "cc.Label",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 2
-    },
-    "_enabled": true,
-    "_useOriginalSize": false,
-    "_actualFontSize": 16,
-    "_fontSize": 16,
-    "_lineHeight": 40,
-    "_enableWrapText": true,
-    "_N$file": null,
-    "_isSystemFontUsed": true,
-    "_N$string": "Tusi đã chuyển cho bạn 5000 Chip",
-    "_N$horizontalAlign": 0,
-    "_N$verticalAlign": 1,
-    "_N$overflow": 3
-  },
-  {
     "__type__": "cc.Widget",
     "_name": "",
     "_objFlags": 0,
@@ -155,8 +135,8 @@
       "__id__": 2
     },
     "_enabled": true,
-    "isAlignOnce": true,
-    "_alignFlags": 45,
+    "isAlignOnce": false,
+    "_alignFlags": 13,
     "_left": 10,
     "_right": 0,
     "_top": 25,
@@ -169,8 +149,23 @@
     "_isAbsBottom": true,
     "_isAbsHorizontalCenter": true,
     "_isAbsVerticalCenter": true,
-    "_originalWidth": 97.87,
+    "_originalWidth": 537.0000000000005,
     "_originalHeight": 40
+  },
+  {
+    "__type__": "cc.RichText",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 2
+    },
+    "_enabled": true,
+    "_N$string": "<color=#eeaa22>Rich</c><color=#ffffff>Text</color>",
+    "_N$horizontalAlign": 0,
+    "_N$fontSize": 20,
+    "_N$maxWidth": 1000,
+    "_N$lineHeight": 40,
+    "_N$imageAtlas": null
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -283,7 +278,7 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": 0.37000000000000455,
+      "x": 0,
       "y": 0
     },
     "_skewX": 0,
@@ -319,7 +314,7 @@
     "_actualFontSize": 20,
     "_fontSize": 20,
     "_lineHeight": 40,
-    "_enableWrapText": false,
+    "_enableWrapText": true,
     "_N$file": {
       "__uuid__": "7f59998c-5dc6-4d9b-8720-0c20d4c8db8c"
     },
@@ -338,20 +333,20 @@
     },
     "_enabled": true,
     "isAlignOnce": false,
-    "_alignFlags": 18,
-    "_left": 0,
-    "_right": 0,
+    "_alignFlags": 40,
+    "_left": 18.43,
+    "_right": 18.43,
     "_top": 0,
     "_bottom": 0,
     "_verticalCenter": 0,
-    "_horizontalCenter": 0.37000000000000455,
+    "_horizontalCenter": -0.7000000000000028,
     "_isAbsLeft": true,
     "_isAbsRight": true,
     "_isAbsTop": true,
     "_isAbsBottom": true,
     "_isAbsHorizontalCenter": true,
     "_isAbsVerticalCenter": true,
-    "_originalWidth": 0,
+    "_originalWidth": 77.14,
     "_originalHeight": 0
   },
   {

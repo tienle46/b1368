@@ -48,7 +48,7 @@ export default class EntranceScene extends BaseScene {
                     app.service.requestAuthen('crush1', "1234nm", false, true, (error, result) => {
                         error = JSON.parse(error);
                         if (result) {
-                            console.log(app.context.getMe());
+                            console.debug(app.context.getMe());
                             this.hideLoading();
                             this.changeScene('DashboardScene');
                         }
@@ -63,10 +63,12 @@ export default class EntranceScene extends BaseScene {
     }
 
     handleRegisterButton() {
+        this.showLoading();
         this.changeScene('RegisterScene');
     }
 
     handlePlayNowButton() {
+        this.showLoading();
         app.service.connect((success) => {
             log("success: " + success);
             if (success) {
@@ -74,6 +76,7 @@ export default class EntranceScene extends BaseScene {
                     app.service.requestAuthen(this._generateUserName("ysad12", deviceId, 0, 5), this._generateUserName("yz212", deviceId, 0, 6), false, true, (error, result) => {
                         error = JSON.parse(error);
                         if (result) {
+                            this.hideLoading();
                             this.changeScene('DashboardScene');
                         }
 

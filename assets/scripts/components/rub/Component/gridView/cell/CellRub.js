@@ -102,7 +102,7 @@ export default class CellRub {
         let lblChildNode = this.cellNode.getChildByName('label');
         if (lblChildNode) {
             if (lblChildNode.getLineCount() > 1)
-                this.cellNode.height *= lblChildNode.getLineCount();
+                this.cellNode.height *= lblChildNode.getLineCount() * 3 / 2;
         }
 
         size.height = this.cellNode.height;
@@ -226,7 +226,7 @@ export default class CellRub {
         // lbl.overflow = cc.Label.Overflow.RESIZE_HEIGHT;
 
         let rich = lblNode.addComponent(cc.RichText);
-        rich.maxWidth = (parentNode.getContentSize().width - 20) / 2;
+        rich.maxWidth = (parentNode.getContentSize().width - 10);
         rich.fontSize = this.options.fontSize;
         rich.lineHeight = this.options.fontLineHeight;
         rich.horizontalAlign = cc.Label.HorizontalAlign.CENTER;

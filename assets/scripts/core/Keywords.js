@@ -588,6 +588,18 @@ Keywords.EXCHANGE_HISTORY = {
     }
 };
 
+Keywords.TRANSFER_TRANSACTION = {
+    REQUEST: {
+        PAGE: 'p' // number #page
+    },
+    RESPONSE: {
+        ITEM_LIST: "il",
+        GOLD: "gold",
+        TIME_LIST: "ttl",
+        USER_SENDER_LIST: "unl"
+    }
+};
+
 Keywords.EXCHANGE_HISTORY_DETAIL = {
     REQUEST: {
         ID: 'i'

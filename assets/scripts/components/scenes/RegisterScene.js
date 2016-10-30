@@ -2,9 +2,7 @@ var BaseScene = require('BaseScene');
 var app = require('app');
 import SegmentControlRub from 'SegmentControlRub';
 
-const CAPTCHA_LENGTH = 4;
 const MINIMUM_PASSWORD = 6;
-const MINIMUM_USERNAME = 6;
 
 export default class RegisterScene extends BaseScene {
     constructor() {
@@ -36,6 +34,7 @@ export default class RegisterScene extends BaseScene {
     }
 
     handleRegistryAction() {
+        this.showLoading();
         let username = this.userNameEditBox.string.trim();
         let password = this.userPasswordEditBox.string.trim();
 
@@ -44,6 +43,8 @@ export default class RegisterScene extends BaseScene {
                 if (success) {
                     app.service.requestAuthen(username, password, true, false, (error, result) => {
                         error = JSON.parse(error);
+                        this.hideLoading();
+
                         if (error) {
                             log('Login error:');
                             this.addPopup(app.getMessageFromServer(error.p.ec));
@@ -57,6 +58,8 @@ export default class RegisterScene extends BaseScene {
                 }
             });
         } else {
+            this.hideLoading();
+
             if (!this._isValidUsernameInput(username)) {
                 this.addPopup(app.getMessageFromServer("LOGIN_ERROR_USERNAME_NOT_VALID"));
             } else if (!this._isValidPasswordInput(password)) {
@@ -72,8 +75,8 @@ export default class RegisterScene extends BaseScene {
     }
 
     back() { // back to EntranceScene
-        // this.changeScene('EntranceScene');
-        SegmentControlRub.show(this.node, [1, 1, 1]);
+        this.showLoading();
+        this.changeScene('EntranceScene');
     }
 
 
