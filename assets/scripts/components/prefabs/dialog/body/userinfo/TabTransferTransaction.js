@@ -18,12 +18,6 @@ class TabTransferTransaction extends Component {
         this._getTransactionItems();
     }
 
-    onConfirmBtnClick(e) {
-        e.stopPropagation();
-        console.debug(e.currentTarget.value);
-    }
-
-
     _hide() {
         this.node.active = false;
     }
@@ -47,21 +41,17 @@ class TabTransferTransaction extends Component {
             let items = res[app.keywords.TRANSFER_TRANSACTION.RESPONSE.ITEM_LIST];
             let senders = res[app.keywords.TRANSFER_TRANSACTION.RESPONSE.USER_SENDER_LIST];
             let times = res[app.keywords.TRANSFER_TRANSACTION.RESPONSE.TIME_LIST];
-            if (items.length > 0) {
-
-                let btnClickEvent = new cc.Component.EventHandler();
-                btnClickEvent.target = this.node;
-                btnClickEvent.component = 'TabTransferTransaction'; // this
-                btnClickEvent.handler = 'onConfirmBtnClick'; // -->this.onConfirmBtnClick()
-
+            if (items && items.length > 0) {
                 for (let i = 0; i < items.length; i++) {
                     let transactionItem = new ListItemBasicRub(`<color=eeaa22>${senders[i]}</color> đã chuyển <color=eeaa22>${numeral(golds[i]).format('0,0')}</color> coin cho bạn`, { contentWidth: 470 });
                     transactionItem.initChild();
                     // let image = {
                     //     type: 'button',
                     //     spriteFrame: 'dashboard/dialog/imgs/hopqua',
-                    //     width: 118,
-                    //     height: 126,
+                    //     size: {
+                    //         width: 118,
+                    //         height: 126
+                    //     },
                     //     event: event,
                     //     value: { a: 123 },
 
@@ -73,7 +63,9 @@ class TabTransferTransaction extends Component {
                     let label = {
                         type: 'label',
                         text: moment(times[i]).format('DD/MM/YYYY - hh:mm'),
-                        width: 170,
+                        size: {
+                            width: 170
+                        },
                         align: {
                             right: 0,
                             horizontalAlign: cc.Label.HorizontalAlign.RIGHT,
