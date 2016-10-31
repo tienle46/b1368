@@ -130,19 +130,18 @@ export default class ListItemBasicRub {
         let element = Object.assign({}, defaultElement, el);
 
         if (this.itemNode) {
-            let isNode = element instanceof cc.Node;
-            // resize item
-            if (element.height && element.height > this.itemNode.getContentSize().height) {
-                let newSize = cc.size(this.itemNode.getContentSize().width, element.height + (element.align.top || 10) + (element.align.top || 10));
-                // resize parent height.
-                this._resizeHeight(this.itemNode.getComponent(cc.Sprite), newSize);
-            }
-
+            let isNode = el instanceof cc.Node;
             let node;
             if (isNode) {
-                node = element;
+                node = el;
             } else {
-                let node = new cc.Node();
+                // resize item
+                if (element.height && element.height > this.itemNode.getContentSize().height) {
+                    let newSize = cc.size(this.itemNode.getContentSize().width, element.height + (element.align.top || 10) + (element.align.top || 10));
+                    // resize parent height.
+                    this._resizeHeight(this.itemNode.getComponent(cc.Sprite), newSize);
+                }
+                node = new cc.Node();
                 if (element.width) {
                     let nodeSize = cc.size(element.width, element.height || this.itemNode.getContentSize().height);
                     node.setContentSize(nodeSize);
