@@ -40,6 +40,8 @@ export default class CellRub {
      *  // TODO 
      *  button & clickEvent handler when cell contains button. button with/without label
      * }
+     * 
+     * @param isNode {boolean} if this cell is instance of cc.Node, ignore `opts` param
      * @memberOf CellRub 
      */
     constructor(cell, opts = {}) {
@@ -56,14 +58,19 @@ export default class CellRub {
 
         this.options = Object.assign({}, defaultOptions, opts);
 
-        if (cell instanceof Object) {
-            let defaultCellObject = {
-                text: ''
-            };
-            cell = Object.assign({}, defaultCellObject, cell);
-        }
         this.cell = cell;
-        this._initCell();
+
+        if (this.cell instanceof cc.Node) {
+            this._addNodeToCell(this.cell);
+        } else {
+            if (this.cell instanceof Object) {
+                let defaultCellObject = {
+                    text: ''
+                };
+                this.cell = Object.assign({}, defaultCellObject, this.cell);
+            }
+            this._initCell();
+        }
     }
 
     node() {
@@ -87,6 +94,10 @@ export default class CellRub {
     // resettingHorizontalSeparate(width) {
 
     // }
+
+    _addNodeToCell(node) {
+        this.cellNode && this.cellNode.addChild(cc.instantiate(node));
+    }
 
     _initCell() {
         this.cellNode = new cc.Node();
@@ -122,8 +133,6 @@ export default class CellRub {
         if (this.options.verticalSeparate && this.options.verticalSeparate.align !== 'none') {
             this._initVerticalSeparate(this.cellNode);
         }
-
-
     }
 
     _initHorizontalSeparate(parentNode) {

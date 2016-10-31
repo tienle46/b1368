@@ -262,45 +262,51 @@ export default class GridViewRub {
                 let jMax = data[i].length - 1;
                 let cellOpts = Object.assign({}, this.options.cell);
                 cellOpts.width = width[j];
+                let cell = data[i][j];
+                let isNode = cell instanceof cc.Node;
+                if (!isNode) {
+                    if (cell instanceof Object) {
+                        if (cell.fontSize)
+                            cellOpts.fontSize = cell.fontSize;
+                        if (cell.fontLineHeight)
+                            cellOpts.fontLineHeight = cell.fontLineHeight;
+                    }
 
-                if (data[i][j] instanceof Object) {
-                    if (data[i][j].fontSize)
-                        cellOpts.fontSize = data[i][j].fontSize;
-                    if (data[i][j].fontLineHeight)
-                        cellOpts.fontLineHeight = data[i][j].fontLineHeight;
-                }
+                    if (this.options.group.colors)
+                        cellOpts.fontColor = this.options.group.colors[j] || app.const.COLOR_WHITE;
 
-                if (this.options.group.colors)
-                    cellOpts.fontColor = this.options.group.colors[j] || app.const.COLOR_WHITE;
-
-                if (this.options.group.events) {
-                    let event = this.options.group.events[j] || this.options.group.events[0] || null;
-                    if (event) {
-                        if (data[i][j] instanceof Object && data[i][j].button && !data[i][j].button.hasOwnProperty('eventHandler')) {
-                            data[i][j].button.eventHandler = event;
+                    if (this.options.group.events) {
+                        let event = this.options.group.events[j] || this.options.group.events[0] || null;
+                        if (event) {
+                            if (cell instanceof Object && cell.button && !cell.button.hasOwnProperty('eventHandler')) {
+                                cell.button.eventHandler = event;
+                            }
                         }
+                    }
+
+                    // add separate if any.   
+                    if (cellOpts.horizontalSeparate) {
+                        let separateWidth = (j === 0 || j === jMax ? 80 : 100) * cellOpts.width / 100;
+                        cellOpts.horizontalSeparate.size = cc.size(separateWidth, cellOpts.horizontalSeparate.size ? cellOpts.horizontalSeparate.size.height : 2);
+                        if (j === 0)
+                            cellOpts.horizontalSeparate.align = 'right';
+                        else if (j === jMax)
+                            cellOpts.horizontalSeparate.align = 'left';
+                        else
+                            cellOpts.horizontalSeparate.align = 'full';
+
+                        if (i === data.length - 1)
+                            cellOpts.horizontalSeparate.align = 'none';
                     }
                 }
 
-                // add separate if any.   
-                if (cellOpts.horizontalSeparate) {
-                    let separateWidth = (j === 0 || j === jMax ? 80 : 100) * cellOpts.width / 100;
-                    cellOpts.horizontalSeparate.size = cc.size(separateWidth, cellOpts.horizontalSeparate.size ? cellOpts.horizontalSeparate.size.height : 2);
-                    if (j === 0)
-                        cellOpts.horizontalSeparate.align = 'right';
-                    else if (j === jMax)
-                        cellOpts.horizontalSeparate.align = 'left';
-                    else
-                        cellOpts.horizontalSeparate.align = 'full';
-
-                    if (i === data.length - 1)
-                        cellOpts.horizontalSeparate.align = 'none';
-                }
-
                 // body
-                let cellRub = new CellRub(data[i][j] || '', cellOpts);
-                rowHeight = rowHeight > cellRub.getHeight() ? rowHeight : cellRub.getHeight();
-                cellsInRow.push(cellRub);
+                let cellRub = new CellRub(cell || '', cellOpts);
+                if(!isNode) {
+                    rowHeight = rowHeight > cellRub.getHeight() ? rowHeight : cellRub.getHeight();
+                    cellsInRow.push(cellRub);
+                }
+                
                 this.contentNode && this.contentNode.addChild(cellRub.node());
             }
 

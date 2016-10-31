@@ -78,7 +78,7 @@ export default class ListItemBasicRub {
      * 
      * @param {any} [el={}]
      * {
-     *      *type: string {image || label || button } # kind of UI will be pushed to recent item,
+     *      *type: string {image || label || button || node} # kind of UI will be pushed to recent item,
      *      *width: number
      *      height: number
      *      value: {any} # defined button value
@@ -115,6 +115,8 @@ export default class ListItemBasicRub {
                 right: 20
             }
         }; 
+
+        //@param {boolean} isNode: if this parameter is true, el will be immediately pushed to itemNode . 
      */
     pushEl(el = {}) {
         let defaultElement = {
@@ -128,6 +130,7 @@ export default class ListItemBasicRub {
         let element = Object.assign({}, defaultElement, el);
 
         if (this.itemNode) {
+            let isNode = element instanceof cc.Node;
             // resize item
             if (element.height && element.height > this.itemNode.getContentSize().height) {
                 let newSize = cc.size(this.itemNode.getContentSize().width, element.height + (element.align.top || 10) + (element.align.top || 10));
@@ -135,49 +138,54 @@ export default class ListItemBasicRub {
                 this._resizeHeight(this.itemNode.getComponent(cc.Sprite), newSize);
             }
 
-            let node = new cc.Node();
-            if (element.width) {
-                let nodeSize = cc.size(element.width, element.height || this.itemNode.getContentSize().height);
-                node.setContentSize(nodeSize);
+            let node;
+            if (isNode) {
+                node = element;
             } else {
-                console.error('element object need a width property');
-                return;
-            }
-            let createSprite = (node) => {
-                let nodeSprite = node.addComponent(cc.Sprite);
-                RubUtils.loadSpriteFrame(nodeSprite, element.spriteFrame || '', node.getContentSize());
-            };
-
-            let createLabel = (text, node) => {
-                let lblOpts = {
-                    horizontalAlign: cc.Label.HorizontalAlign.CENTER,
-                    fontSize: element.fontSize || this.options.fontSize,
-                    fontColor: element.fontColor || null,
-                    fontLineHeight: element.fontLineHeight || this.options.fontLineHeight,
-                    align: element.align
+                let node = new cc.Node();
+                if (element.width) {
+                    let nodeSize = cc.size(element.width, element.height || this.itemNode.getContentSize().height);
+                    node.setContentSize(nodeSize);
+                } else {
+                    console.error('element object need a width property');
+                    return;
+                }
+                let createSprite = (node) => {
+                    let nodeSprite = node.addComponent(cc.Sprite);
+                    RubUtils.loadSpriteFrame(nodeSprite, element.spriteFrame || '', node.getContentSize());
                 };
-                this._addChildLabelNode(text, node, lblOpts);
-            };
 
-            if (element.type === 'image') {
-                createSprite(node);
-            } else if (element.type === 'button') {
-                createSprite(node);
-                let nodeBtn = node.addComponent(cc.Button);
+                let createLabel = (text, node) => {
+                    let lblOpts = {
+                        horizontalAlign: cc.Label.HorizontalAlign.CENTER,
+                        fontSize: element.fontSize || this.options.fontSize,
+                        fontColor: element.fontColor || null,
+                        fontLineHeight: element.fontLineHeight || this.options.fontLineHeight,
+                        align: element.align
+                    };
+                    this._addChildLabelNode(text, node, lblOpts);
+                };
 
-                element.value && (node.value = element.value);
-                // add Event Handler
-                element.event && (nodeBtn.clickEvents = [element.event]);
+                if (element.type === 'image') {
+                    createSprite(node);
+                } else if (element.type === 'button') {
+                    createSprite(node);
+                    let nodeBtn = node.addComponent(cc.Button);
 
-                node.addComponent(ButtonScaler);
+                    element.value && (node.value = element.value);
+                    // add Event Handler
+                    element.event && (nodeBtn.clickEvents = [element.event]);
 
-                element.text && createLabel(element.text, nodeBtn);
-            } else {
-                element.text && createLabel(element.text, node);
+                    node.addComponent(ButtonScaler);
+
+                    element.text && createLabel(element.text, nodeBtn);
+                } else {
+                    element.text && createLabel(element.text, node);
+                }
+
+                // widget
+                this._addWidgetComponentToNode(node, 10, element.align);
             }
-
-            // widget
-            this._addWidgetComponentToNode(node, 10, element.align);
 
             this.itemNode.addChild(node);
         }
