@@ -41,7 +41,7 @@ let RubUtils = {
 
         } else {
             return RubUtils.loadRes(resURL, true).then((spriteFrame) => {
-                spriteComponent.spriteFrame = spriteFrame;
+                spriteFrame && (spriteComponent.spriteFrame = spriteFrame);
                 spriteFrameDefaultConfig(spriteComponent);
 
             });

@@ -79,8 +79,11 @@ export default class ListItemBasicRub {
      * @param {any} [el={} || cc.Node]
      * {
      *      *type: string {image || label || button} # kind of UI will be pushed to recent item,
-     *      *width: number
-     *      height: number
+     *      *size: {
+     *          *width: number
+     *          height: number
+     *      }
+     *      position: {x, y}
      *      value: {any} # defined button value
      *      text: string # if element is kind of label
      *      fontSize,
@@ -135,25 +138,28 @@ export default class ListItemBasicRub {
      */
     pushEl(el = {}, opts = {}) {
         let defaultOptions = {
-            position: {
-                x: 0,
-                y: 0
-            },
+            // position: {
+            //     x: 0,
+            //     y: 0
+            // },
         };
 
         let options = Object.assign({}, defaultOptions, opts);
-
         if (this.itemNode) {
             let isNode = el instanceof cc.Node;
             let node;
+
             if (isNode) {
                 node = el;
-                node.setPosition(options.position);
+                options.position && node.setPosition(options.position);
                 let nodeCurrentSize = node.getContentSize();
                 options.size && node.setContentSize(options.size.width || nodeCurrentSize.width || 0, options.size.height || nodeCurrentSize.height || 0);
+
+                !options.size && (options.size = node.getContentSize());
+
                 // resize item
-                if (options.size.height && options.size.height > this.itemNode.getContentSize().height) {
-                    let newSize = cc.size(this.itemNode.getContentSize().width, options.size.height + (options.align.top || 10) + (options.align.top || 10));
+                if (options.size && options.size.height && options.size.height > this.itemNode.getContentSize().height) {
+                    let newSize = cc.size(this.itemNode.getContentSize().width, options.size.height + ((options.align && (options.align.top || 10) + (options.align.bottom || 10)) || 20));
                     // resize parent height.
                     this._resizeHeight(this.itemNode.getComponent(cc.Sprite), newSize);
                 }
@@ -169,7 +175,7 @@ export default class ListItemBasicRub {
                 let element = Object.assign({}, defaultElement, el, options);
 
                 // resize item
-                if (element.size.height && element.size.height > this.itemNode.getContentSize().height) {
+                if (element.size && element.size.height && element.size.height > this.itemNode.getContentSize().height) {
                     let newSize = cc.size(this.itemNode.getContentSize().width, element.size.height + (element.align.top || 10) + (element.align.top || 10));
                     // resize parent height.
                     this._resizeHeight(this.itemNode.getComponent(cc.Sprite), newSize);
@@ -260,7 +266,7 @@ export default class ListItemBasicRub {
             let lblOpts = {
                 horizontalAlign: this.options.horizontalAlign,
                 fontSize: this.options.fontSize,
-                fontColor: this.options.fontSize,
+                fontColor: this.options.fontColor,
                 fontLineHeight: this.options.fontLineHeight,
                 align: this.options.align
             };
