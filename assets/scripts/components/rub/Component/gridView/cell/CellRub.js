@@ -235,6 +235,7 @@ export default class CellRub {
         // lbl.overflow = cc.Label.Overflow.RESIZE_HEIGHT;
 
         let rich = lblNode.addComponent(cc.RichText);
+        rich.node.color = this.options.fontColor;
         rich.maxWidth = (parentNode.getContentSize().width - 10);
         rich.fontSize = this.options.fontSize;
         rich.lineHeight = this.options.fontLineHeight;
