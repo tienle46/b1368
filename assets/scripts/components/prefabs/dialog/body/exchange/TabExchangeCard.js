@@ -60,22 +60,27 @@ class TabExchangeCard extends Component {
                             }
 
                             if (rowNode) {
-                                // create item Note
                                 let itemNode = new cc.Node();
+                                let itemNodeWidth = 234;
+                                let itemNodeHeight = 262;
+
                                 itemNode.itemId = itemId;
                                 itemNode.itemGold = itemGold;
                                 itemNode.itemName = itemName;
 
                                 rowNode.addChild(itemNode);
 
-                                // add Spite
-                                let sprite = itemNode.addComponent(cc.Sprite);
-                                let itemNodeWidth = 245;
-                                let itemNodeHeight = 131;
-                                RubUtils.loadSpriteFrame(sprite, itemIcon, cc.size(itemNodeWidth, itemNodeHeight), true, (spriteFrame) => {
-                                    spriteFrame.node.x = -254 + (i % 3) * (itemNodeWidth + 13);
-                                    spriteFrame.node.y = 0;
+                                let itemSprite = itemNode.addComponent(cc.Sprite);
+                                RubUtils.loadSpriteFrame(itemSprite, 'dashboard/dialog/imgs/bg-napthe', cc.size(itemNodeWidth, itemNodeHeight), false, (sprite) => {
+                                    sprite.node.x = -260 + (i % 3) * (itemNodeWidth + 21);
+                                    sprite.node.y = 0;
                                 });
+
+                                // image background node
+                                this._initBackgroundNode(itemNode, itemIcon);
+
+                                // lblContainerNode
+                                this._initLabelNode(itemNode, itemName, itemGold);
 
                                 // add Button
                                 let btn = itemNode.addComponent(cc.Button);
@@ -165,11 +170,68 @@ class TabExchangeCard extends Component {
         }
     }
 
+    _initLabelNode(itemNode, itemName, itemGold) {
+        let lblContainerNode = new cc.Node();
+        lblContainerNode.name = 'lblContainerNode';
+        lblContainerNode.setContentSize(cc.size(220, 73));
+        lblContainerNode.setPositionY(-76);
+        itemNode.addChild(lblContainerNode);
+        // add layout
+        let layout = lblContainerNode.addComponent(cc.Layout);
+        layout.type = cc.Layout.Type.VERTICAL;
+        layout.padding = 10;
+        layout.spacingY = 10;
+
+        let lblNode = new cc.Node();
+        let lblNodeWidth = 215;
+        let lblNodeHeight = 20;
+        lblNode.setContentSize(cc.size(lblNodeWidth, lblNodeHeight));
+        lblContainerNode.addChild(lblNode);
+
+        let lblComponent = lblNode.addComponent(cc.Label);
+        lblComponent.string = `${numeral(itemGold).format('0,0')} Chips`;
+        lblComponent.horizontalAlign = cc.Label.HorizontalAlign.CENTER;
+        lblComponent.verticalAlign = cc.Label.VerticalAlign.CENTER;
+        lblComponent.fontSize = 16;
+        lblComponent.lineHeight = 20;
+        lblComponent.overflow = cc.Label.Overflow.RESIZE_HEIGHT;
+        lblComponent.node.color = new cc.Color(246, 255, 41);
+
+        // let lblNode2 = cc.instantiate(lblNode);
+        // lblContainerNode.addChild(lblNode2);
+        //
+        // let lblComponent2 = lblNode2.getComponent(cc.Label);
+        // lblComponent2.string = numeral(itemGold).format('0,0');
+        // lblComponent2.node.color = new cc.Color(246, 255, 41);
+    }
+
+    _initBackgroundNode(itemNode, itemIcon) {
+        // create item/img-bg Node
+        let imgBgNode = new cc.Node();
+        let imgBgNodeWidth = 214;
+        let imgBgNodeHeight = 159;
+        imgBgNode.y = 41;
+        itemNode.addChild(imgBgNode);
+
+        // let imgBgSprite = imgBgNode.addComponent(cc.Sprite);
+        // RubUtils.loadSpriteFrame(imgBgSprite, 'dashboard/dialog/imgs/bg-napthe-1', cc.size(imgBgNodeWidth, imgBgNodeHeight));
+
+        let imgBgWidget = imgBgNode.addComponent(cc.Widget);
+        imgBgWidget.top = 10.5;
+        imgBgWidget.right = 10;
+        imgBgWidget.left = 10;
+
+        let imgNode = new cc.Node();
+        imgBgNode.addChild(imgNode);
+
+        let imgSprite = imgNode.addComponent(cc.Sprite);
+        RubUtils.loadSpriteFrame(imgSprite, itemIcon, cc.size(205, 134), true);
+    }
 
     _initRowNode() {
         let rowNode = new cc.Node();
         rowNode.width = 780;
-        rowNode.height = 124;
+        rowNode.height = 180;
         rowNode.name = 'container';
         return rowNode;
     }

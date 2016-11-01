@@ -178,7 +178,7 @@
     "_tag": -1,
     "_opacityModifyRGB": false,
     "_id": "e736fdI3rdG1KLbo3Xh55kW",
-    "_active": true,
+    "_active": false,
     "_components": [
       {
         "__id__": 4
@@ -340,7 +340,9 @@
     "reveal": true,
     "selectable": false,
     "space": 100,
-    "maxDimension": 600
+    "maxDimension": 600,
+    "orientation": 1,
+    "align": 7
   },
   {
     "__type__": "cc.Sprite",
@@ -660,7 +662,9 @@
     "reveal": true,
     "selectable": false,
     "space": 100,
-    "maxDimension": 600
+    "maxDimension": 600,
+    "orientation": 1,
+    "align": 7
   },
   {
     "__type__": "cc.Sprite",
@@ -1012,7 +1016,9 @@
     "reveal": true,
     "selectable": false,
     "space": 100,
-    "maxDimension": 600
+    "maxDimension": 600,
+    "orientation": 1,
+    "align": 7
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -1393,7 +1399,9 @@
     "reveal": true,
     "selectable": false,
     "space": 100,
-    "maxDimension": 600
+    "maxDimension": 600,
+    "orientation": 1,
+    "align": 7
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -2080,7 +2088,9 @@
     "reveal": true,
     "selectable": false,
     "space": 100,
-    "maxDimension": 600
+    "maxDimension": 600,
+    "orientation": 1,
+    "align": 7
   },
   {
     "__type__": "cc.Sprite",
@@ -2864,7 +2874,7 @@
     "_tag": -1,
     "_opacityModifyRGB": false,
     "_id": "c5169ZroytIwIJ/2DepITu1",
-    "_active": true,
+    "_active": false,
     "_components": [],
     "_prefab": null,
     "groupIndex": 0
@@ -2941,7 +2951,9 @@
     "reveal": true,
     "selectable": false,
     "space": 100,
-    "maxDimension": 600
+    "maxDimension": 600,
+    "orientation": 1,
+    "align": 7
   },
   {
     "__type__": "cc.Sprite",
@@ -3052,7 +3064,9 @@
     "reveal": true,
     "selectable": false,
     "space": 100,
-    "maxDimension": 600
+    "maxDimension": 600,
+    "orientation": 1,
+    "align": 7
   },
   {
     "__type__": "cc.Sprite",
@@ -3163,7 +3177,9 @@
     "reveal": true,
     "selectable": false,
     "space": 100,
-    "maxDimension": 600
+    "maxDimension": 600,
+    "orientation": 1,
+    "align": 7
   },
   {
     "__type__": "cc.Sprite",
@@ -3367,7 +3383,7 @@
     "_tag": -1,
     "_opacityModifyRGB": false,
     "_id": "b5211ADGQRAZoFKVWpr1/R4",
-    "_active": true,
+    "_active": false,
     "_components": [
       {
         "__id__": 96

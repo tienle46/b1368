@@ -29,7 +29,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 960,
+      "width": 1280,
       "height": 60
     },
     "_children": [
@@ -87,7 +87,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 960,
+      "width": 1280,
       "height": 60
     },
     "_children": [
@@ -107,7 +107,7 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": 480,
+      "x": 640,
       "y": -30
     },
     "_skewX": 0,
@@ -164,7 +164,7 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": -397.76,
+      "x": -557.76,
       "y": -0.5
     },
     "_skewX": 0,
@@ -476,7 +476,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 114,
-      "height": 47
+      "height": 45
     },
     "_children": [
       {
@@ -489,7 +489,7 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": 378.5,
+      "x": 538.5,
       "y": -3
     },
     "_skewX": 0,
@@ -628,10 +628,12 @@
       "a": 255
     },
     "duration": 0.1,
+    "zoomScale": 1.2,
     "pressedSprite": null,
     "hoverSprite": null,
     "clickEvents": [],
     "_N$interactable": true,
+    "_N$enableAutoGrayEffect": false,
     "_N$normalColor": {
       "__type__": "cc.Color",
       "r": 214,

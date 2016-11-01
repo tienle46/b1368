@@ -67,9 +67,9 @@ class TabExchangeHistory extends Component {
                         switch (status){
                             case 1:
                             case 2:
-                                return { text: 'NHẬN LẠI CHIP', button: { eventHandler: null } }
+                                return { text: 'NHẬN LẠI CHIP', button: { eventHandler: null, width:150, height : 45} }
                             case 3:
-                                return { text: 'NẠP VÀO GAME', button: { eventHandler: null } }
+                                return { text: 'NẠP VÀO GAME', button: { eventHandler: null, width:150, height : 45 } }
                             default:
                                 return '';
                         }
@@ -83,8 +83,8 @@ class TabExchangeHistory extends Component {
     _initBody(d) {
         let bodyNode = this.node.getChildByName('body');
 
-        let event = cc.Component.EventHandler(this.node, 'TabExchangeHistory', 'updateDataCardTab');
-        GridViewRub.show(bodyNode, ['Thời gian', 'Loại vật phẩm', 'Thông tin',''], d, { position: cc.v2(2, 120), width: 715, event }).then((rub) => {
+        let event = null;
+        GridViewRub.show(bodyNode, ['Thời gian', 'Loại vật phẩm', 'Thông tin',''], d, { position: cc.v2(2, 120), width: 780, event }).then((rub) => {
             this.GridViewCardTabRub = rub;
             this.GridViewCardTabNode = this.GridViewCardTabRub._getNode();
         });
@@ -96,30 +96,6 @@ class TabExchangeHistory extends Component {
         return dialogNode.getComponent(ExchangeDialog);
     }
 
-    _getUpdatePhoneNode() {
-        return this._getExchangeDialogComponent().updatePhoneNode();
-    }
-
-    updateDataCardTab(sender, type) {
-        if (type === app.const.SCROLL_EVENT.SCROLL_TO_BOTTOM) {
-            this.flag = 'top';
-        }
-
-        if (this.flag === 'top' && type === app.const.SCROLL_EVENT.AUTO_SCROLL_ENDED) {
-            this._requestCardData();
-            this.flag = null;
-        }
-    }
-
-    _requestCardData() {
-        this.GridViewCardTabNode.then(() => {
-            this.GridViewCardTabRub.updateData([
-                ['01-08-2016 09:15:46', '07-07-2016 16:16:26', '01-07-2016 16:24:17', '01-07-2016 16:23:18', '13-06-2016 11:36:45', '07-06-2016 11:24:33', '05-06-2016 20:07:24', '05-06-2016 19:56:36', '04-06-2016 21:40:28', '04-06-2016 21:35:11'],
-                ['Vina 50K', 'Viettel 50K', 'Viettel 20K', 'Viettel 20K', 'Viettel 20K', 'Viettel 20K', 'Viettel 20K', 'Viettel 20K', ' Mobi 20K', 'Vina 20K'],
-                []
-            ]);
-        });
-    }
 }
 
 app.createComponent(TabExchangeHistory);

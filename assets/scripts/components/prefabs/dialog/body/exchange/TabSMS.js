@@ -156,6 +156,7 @@ class TabSMS extends Component {
                 widget.right = 0;
 
                 transactionItem.getChildByName('bg').getChildByName('titleLabel').getComponent(cc.Label).string = smsModel['moneyLost'];
+                transactionItem.getChildByName('bg').getChildByName('valueLabel').getComponent(cc.Label).string = smsModel['xCoinGot'];
 
                 this.contentNode.addChild(transactionItem);
             })

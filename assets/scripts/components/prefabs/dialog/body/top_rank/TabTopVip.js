@@ -83,7 +83,9 @@ class TabTopVip extends Component {
             let label = {
                 type: 'label',
                 text: ul[i],
-                width: 150,
+                size: {
+                    width: 150,
+                },
                 align: {
                     left: 20,
                     horizontalAlign: cc.Label.HorizontalAlign.LEFT,
@@ -96,6 +98,7 @@ class TabTopVip extends Component {
             const layoutComponent = medalContainer.addComponent(cc.Layout);
             layoutComponent.type = cc.Layout.Type.HORIZONTAL;
             layoutComponent.spacingX = 5;
+            layoutComponent.padding = 5;
 
             for( let j = 0 ; j < 5 - i; j++){
 
@@ -108,8 +111,9 @@ class TabTopVip extends Component {
 
                 });
             }
-            medalContainer.size = cc.Size(180 , 60);
-            medalContainer.position = cc.v2(190,0);
+            medalContainer.setContentSize(200 , 60);
+
+            medalContainer.position = cc.v2(150,0);
             transactionItem.pushEl(medalContainer);
 
             this.contentNode.addChild(transactionItem.node());

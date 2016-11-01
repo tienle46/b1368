@@ -77,7 +77,7 @@ class BottomBar extends Component {
             value: null
         }, {
             title: 'Top Đại gia',
-            value: null
+            value: 'tab_top_dai_gia'
         }];
 
         let options = {
@@ -210,7 +210,7 @@ class BottomBar extends Component {
 
 
         let agencyTab = new GridViewRub({
-            data: ['Thời gian làm việc', 'Đại lý', 'Số điện thoại', 'Địa chỉ', 'facebook'],
+            data: ['TGLV', 'Đại lý', 'Số DT', 'Địa chỉ', 'facebook'],
             options: {
                 bgColor: new cc.Color(53, 135, 217),
                 fontColor: app.const.COLOR_WHITE
@@ -223,12 +223,12 @@ class BottomBar extends Component {
             [{ text: 'NAP XU VAO GAME', fontSize: 4, fontLineHeight: 5, button: {} }, { text: 'y1' }, { text: 'y2' }, { text: 'y3' }, { text: 'y4' }, 'z2']
         ], {
             position: cc.v2(2, 140),
-            width: 750,
+            width: 780,
             height: 350,
             group: {
                 colors: [null, null, new cc.Color(65, 94, 160), null, null],
                 events: [event],
-                widths: [100, 100, 100, 250, 200]
+                widths: [100, 100, 130, 250, 200]
             }
         });
 

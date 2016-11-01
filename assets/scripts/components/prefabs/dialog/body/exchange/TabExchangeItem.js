@@ -191,7 +191,7 @@ class TabExchangeItem extends Component {
         lblContainerNode.addChild(lblNode2);
 
         let lblComponent2 = lblNode2.getComponent(cc.Label);
-        lblComponent2.string = numeral(itemGold).format('0,0');
+        lblComponent2.string = `${numeral(itemGold).format('0,0')} Chips`;
         lblComponent2.node.color = new cc.Color(246, 255, 41);
     }
 
@@ -203,8 +203,8 @@ class TabExchangeItem extends Component {
         imgBgNode.y = 41;
         itemNode.addChild(imgBgNode);
 
-        let imgBgSprite = imgBgNode.addComponent(cc.Sprite);
-        RubUtils.loadSpriteFrame(imgBgSprite, 'dashboard/dialog/imgs/bg-napthe-1', cc.size(imgBgNodeWidth, imgBgNodeHeight));
+        // let imgBgSprite = imgBgNode.addComponent(cc.Sprite);
+        // RubUtils.loadSpriteFrame(imgBgSprite, 'dashboard/dialog/imgs/bg-napthe-1', cc.size(imgBgNodeWidth, imgBgNodeHeight));
 
         let imgBgWidget = imgBgNode.addComponent(cc.Widget);
         imgBgWidget.top = 10.5;

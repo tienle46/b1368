@@ -238,7 +238,7 @@ export default class CellRub {
         rich.maxWidth = (parentNode.getContentSize().width - 10);
         rich.fontSize = this.options.fontSize;
         rich.lineHeight = this.options.fontLineHeight;
-        rich.horizontalAlign = cc.Label.HorizontalAlign.CENTER;
+        rich.horizontalAlign = cc.RichText.HorizontalAlign.CENTER;
         rich.string = this.cell instanceof Object ? this.cell.text : this.cell;
 
         lblNode.getLineCount = () => rich._lineCount;
