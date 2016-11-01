@@ -1,6 +1,6 @@
 import app from 'app';
 import Component from 'Component';
-import GridViewRub from 'GridViewRub';
+import ListItemBasicRub from 'ListItemBasicRub';
 import RubUtils from 'RubUtils';
 
 class TabTopVip extends Component {
@@ -11,7 +11,7 @@ class TabTopVip extends Component {
         this.flag = null;
         this.topNodeId = 14;
         this.currentPage = 1;
-        this.bodyNode = {
+        this.contentNode = {
             default: null,
             type: cc.Node
         }
@@ -53,41 +53,67 @@ class TabTopVip extends Component {
 
         return new Promise((resolve, reject) => {
             app.service.send(sendObject, (res) => {
-
                 log(res);
 
-                const data = [
-                    res['unl'].map((status, index)=>{
-                        return (index +  1) + '';
-                    }),
-                    res['unl'],
-                    res['ui1l'],
-                    res['ui2l'],
-                ]
-
-                if(res['unl'].length > 0){
-                    const topVipName = res['unl'][0];
-
-                    this.top1Name.string = topVipName;
-
-                    const top1Icon = `http://${app.config.host}:3767/img/xgameupload/images/avatar/${topVipName}`;
-                    log(top1Icon);
-                    RubUtils.loadSpriteFrame(this.top1Sprite, top1Icon, cc.size(128, 128), true, (spriteFrame) => {
-
-                    });
-                }
-
-                resolve(data);
+                resolve(res);
             });
         });
     }
 
     _initBody(d) {
+        const ul = d['unl'];
 
-        GridViewRub.show(this.bodyNode, null, d, { position: cc.v2(2, 120), width: 600, group: {widths:[80,290,150,80]} }).then((rub) => {
-            this.GridViewCardTabRub = rub;
-            this.GridViewCardTabNode = this.GridViewCardTabRub._getNode();
-        });
+        if(ul.length > 0){
+            const topVipName = ul[0];
+
+            this.top1Name.string = topVipName;
+
+            // const top1Icon = `http://${app.config.host}:3767/img/xgameupload/images/avatar/${topVipName}`;
+            const top1Icon = 'https://upload.wikimedia.org/wikipedia/commons/f/f7/Tamia_striatus_eating.jpg';
+            log(top1Icon);
+            RubUtils.loadSpriteFrame(this.top1Sprite, top1Icon, cc.size(128, 128), true, (spriteFrame) => {
+
+            });
+        }
+
+        for (let i = 0; i < ul.length; i++) {
+            let transactionItem = new ListItemBasicRub(`<color=ffffff>${i + 1}.</color>`, {contentWidth: 60});
+            transactionItem.initChild();
+
+            let label = {
+                type: 'label',
+                text: ul[i],
+                width: 150,
+                align: {
+                    left: 20,
+                    horizontalAlign: cc.Label.HorizontalAlign.LEFT,
+                }
+            };
+
+            transactionItem.pushEl(label);
+
+            const medalContainer = new cc.Node();
+            const layoutComponent = medalContainer.addComponent(cc.Layout);
+            layoutComponent.type = cc.Layout.Type.HORIZONTAL;
+            layoutComponent.spacingX = 5;
+
+            for( let j = 0 ; j < 5 - i; j++){
+
+                const medal = new cc.Node();
+                const sprite = medal.addComponent(cc.Sprite);
+
+                medalContainer.addChild(medal);
+
+                RubUtils.loadSpriteFrame(sprite, `textures/medal_${j+1}`, cc.size(32, 34), false, (spriteFrame) => {
+
+                });
+            }
+            medalContainer.size = cc.Size(180 , 60);
+            medalContainer.position = cc.v2(190,0);
+            transactionItem.pushEl(medalContainer);
+
+            this.contentNode.addChild(transactionItem.node());
+        }
     }
 }
 
