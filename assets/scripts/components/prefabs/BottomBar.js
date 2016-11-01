@@ -74,7 +74,7 @@ class BottomBar extends Component {
             value: 'tab_top_vip'
         }, {
             title: 'Top Cao thủ',
-            value: null
+            value: 'tab_top_cao_thu'
         }, {
             title: 'Top Đại gia',
             value: 'tab_top_dai_gia'
