@@ -3,9 +3,11 @@
  */
 
 import app from 'app';
-import {TLMNDLBoard, TLMNDLBoardRenderer} from 'game';
-import {TLMNDLPlayer, TLMNDLPlayerRenderer} from 'game';
 import TLMNDLControls from 'TLMNDLControls';
+import PlayerTLMNDLRenderer from 'PlayerTLMNDLRenderer';
+import PlayerTLMNDL from 'PlayerTLMNDL';
+import BoardTLMNDL from 'BoardTLMNDL';
+import BoardTLMNDLRenderer from 'BoardTLMNDLRenderer';
 
 
 /***
@@ -14,48 +16,24 @@ import TLMNDLControls from 'TLMNDLControls';
  */
 
 const playerClassMap = {
-    [app.const.gameCode.TLMNDL]: TLMNDLPlayer
+    [app.const.gameCode.TLMNDL]: PlayerTLMNDL
 };
 
 const playerRendererMap = {
-    [app.const.gameCode.TLMNDL]: TLMNDLPlayerRenderer
+    [app.const.gameCode.TLMNDL]: PlayerTLMNDLRenderer
 };
 
-const playerClassNameMap = {
-    [app.const.gameCode.TLMNDL]: 'PlayerTLMNDL'
-};
-
-const playerRendererNameMap = {
-    [app.const.gameCode.TLMNDL]: 'PlayerTLMNDLRenderer'
-};
-
-const playerPrefabPathMap = {
-    [app.const.gameCode.TLMNDL]: 'game/players/TLMNDLPlayerPrefab'
-};
 
 /**
  * Boards
  * @type {{}}
  */
-
 const boardClassMap = {
-    [app.const.gameCode.TLMNDL]: TLMNDLBoard
+    [app.const.gameCode.TLMNDL]: BoardTLMNDL
 };
 
 const boardRendererMap = {
-    [app.const.gameCode.TLMNDL]: TLMNDLBoardRenderer
-};
-
-const boardClassNameMap = {
-    [app.const.gameCode.TLMNDL]: 'BoardTLMNDL'
-};
-
-const boardRendererNameMap = {
-    [app.const.gameCode.TLMNDL]: 'BoardTLMNDLRenderer'
-};
-
-const boardPrefabPathMap = {
-    [app.const.gameCode.TLMNDL]: 'game/boards/BoardTLMNDLPrefab'
+    [app.const.gameCode.TLMNDL]: BoardTLMNDLRenderer
 };
 
 /**
@@ -106,8 +84,6 @@ export default class GameManager {
         app.async.parallel([
             (callback) => {
                 let boardPath = boardPrefabPathMap[gameCode];
-                
-                console.log("boardPath: ", boardPath);
                 
                 cc.loader.loadRes(boardPath, (error, prefab) => {
                     if (prefab) {
@@ -164,45 +140,45 @@ export default class GameManager {
 
     }
 
-    createBoard(gameCode) {
-        let boardClassName = boardClassNameMap[gameCode];
-        let boardRendererClassName = boardRendererNameMap[gameCode];
-
-        if (this.boardPrefab && boardClassName && boardRendererClassName) {
-            let boardNode = cc.instantiate(this.boardPrefab);
-            let board = boardNode.getComponent(boardClassName);
-            board.setRenderer(boardNode.getComponent(boardRendererClassName));
-
-            return {board: board, boardNode: boardNode};
-        }
-    }
-
-    createPlayer(gameCode) {
-
-        console.log("createPlayer: ", gameCode);
-
-        let playerClassName = playerClassNameMap[gameCode];
-        let playerRendererClassName = playerRendererNameMap[gameCode];
-
-        if(this.playerPrefab && playerClassName && playerRendererClassName){
-            let playerNode = cc.instantiate(this.playerPrefab);
-            let player = playerNode.getComponent(playerClassName);
-            player.setRenderer(playerNode.getComponent(playerRendererClassName));
-
-            return {player: player, playerNode: playerNode};
-        }
-    }
-
-    createGameControls(gameCode) {
-        let gameControlsClass = gameControlsClassMap[gameCode];
-
-        if(this.gameControlPrefab && gameControlsClass){
-            let gameControlsNode = cc.instantiate(this.gameControlPrefab);
-            let gameControls = gameControlsNode.getComponent(gameControlsClass.name);
-
-            return {gameControls: gameControls, gameControlsNode: gameControlsNode};
-        }
-    }
+    // createBoard(gameCode) {
+    //     let boardClassName = boardClassNameMap[gameCode];
+    //     let boardRendererClassName = boardRendererNameMap[gameCode];
+    //
+    //     if (this.boardPrefab && boardClassName && boardRendererClassName) {
+    //         let boardNode = cc.instantiate(this.boardPrefab);
+    //         let board = boardNode.getComponent(boardClassName);
+    //         board.setRenderer(boardNode.getComponent(boardRendererClassName));
+    //
+    //         return {board: board, boardNode: boardNode};
+    //     }
+    // }
+    //
+    // createPlayer(gameCode) {
+    //
+    //     console.log("createPlayer: ", gameCode);
+    //
+    //     let playerClass = playerClassMap[gameCode];
+    //     let playerRendererClassName = playerRendererNameMap[gameCode];
+    //
+    //     if(this.playerPrefab && playerClass && playerRendererClassName){
+    //         let playerNode = cc.instantiate(this.playerPrefab);
+    //         let player = playerNode.getComponent(playerClass);
+    //         player.setRenderer(playerNode.getComponent(playerRendererClassName));
+    //
+    //         return {player: player, playerNode: playerNode};
+    //     }
+    // }
+    //
+    // createGameControls(gameCode) {
+    //     let gameControlsClass = gameControlsClassMap[gameCode];
+    //
+    //     if(this.gameControlPrefab && gameControlsClass){
+    //         let gameControlsNode = cc.instantiate(this.gameControlPrefab);
+    //         let gameControls = gameControlsNode.getComponent(gameControlsClass.name);
+    //
+    //         return {gameControls: gameControls, gameControlsNode: gameControlsNode};
+    //     }
+    // }
 
     getBoardClass(gameCode) {
         return boardClassMap[gameCode];

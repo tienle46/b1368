@@ -28,16 +28,47 @@ export default class Board extends Actor {
 
     }
 
-    _init(scene) {
+    // _init(scene) {
+    //
+    //     console.log("onload Board: " + this);
+    //
+    //     this.scene = scene;
+    //     this.room = scene.room;
+    //     this.gameCode = scene.gameCode;
+    //     this.state = app.const.game.state.INITED;
+    //     this.gameData = scene.gameData;
+    //
+    //     if (this.room.containsVariable(app.keywords.VARIABLE_MIN_BET)) {
+    //         this.minBet = utils.getVariable(this.room, app.keywords.VARIABLE_MIN_BET);
+    //     }
+    //
+    //     if (this.gameData.hasOwnProperty(app.keywords.BOARD_STATE_KEYWORD)) {
+    //         this.serverState = this.gameData[app.keywords.BOARD_STATE_KEYWORD];
+    //         this.state = app.const.game.state.BEGIN;
+    //     }
+    //
+    //     this.scene.on(Events.ON_GAME_STATE_CHANGE, this.handleGameStateChange, this);
+    //     this.scene.on(Events.ON_GAME_STATE_BEGIN, this.onBoardBegin, this);
+    //     this.scene.on(Events.ON_GAME_STATE_STARTING, this.onBoardStarting, this);
+    //     this.scene.on(Events.ON_GAME_STATE_STARTED, this.onBoardStarted, this);
+    //     this.scene.on(Events.ON_GAME_STATE_PLAYING, this.onBoardPlaying, this);
+    //     this.scene.on(Events.ON_GAME_STATE_ENDING, this.onBoardEnding, this);
+    //     this.scene.on(Events.ON_GAME_LOAD_PLAY_DATA, this._loadGamePlayData, this);
+    //     this.scene.on(Events.ON_PLAYER_READY_STATE_CHANGED, this._onPlayerSetReadyState, this);
+    //     this.scene.on(Events.ON_GAME_REJOIN, this._onGameRejoin, this);
+    // }
 
-        this.scene = scene;
-        this.room = scene.room;
-        this.gameCode = scene.gameCode;
+    onEnable(...args) {
+        super.onEnable(...args);
+
+        this.scene = app.system.currentScene;
+        this.room = this.scene.room;
+        this.gameCode = this.scene.gameCode;
         this.state = app.const.game.state.INITED;
-        this.gameData = scene.gameData;
+        this.gameData = this.scene.gameData;
 
         if (this.room.containsVariable(app.keywords.VARIABLE_MIN_BET)) {
-            this.minbet = this.room.getVariable(app.keywords.VARIABLE_MIN_BET);
+            this.minBet = utils.getVariable(this.room, app.keywords.VARIABLE_MIN_BET);
         }
 
         if (this.gameData.hasOwnProperty(app.keywords.BOARD_STATE_KEYWORD)) {
@@ -56,21 +87,8 @@ export default class Board extends Actor {
         this.scene.on(Events.ON_GAME_REJOIN, this._onGameRejoin, this);
     }
 
-    onLoad() {
-        super.onLoad();
-
-        log("_init Board");
-    }
-
-    update(dt) {
-
-    }
-
-    start() {
-        // this.onBoardStateChanged(app.const.game.state.INITED);
-    }
-
     onDestroy() {
+        super.onDestroy();
         this.stopTimeLine();
     }
 
@@ -264,9 +282,9 @@ export default class Board extends Actor {
         }
 
         let boardTimeLine = utils.getValue(data, Keywords.BOARD_PHASE_DURATION);
-        this.readyPhaseDuration = boardTimeLine;
+        boardTimeLine && (this.readyPhaseDuration = boardTimeLine);
 
-        if (boardTimeLine && this.scene.isBegin() && !this.scene.gamePlayers.me.isReady()) {
+        if (this.readyPhaseDuration && !this.scene.gamePlayers.me.isReady()) {
             if (this.scene.gamePlayers.meIsOwner()) {
                 boardTimeLine *= 2;
             }

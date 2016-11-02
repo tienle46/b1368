@@ -8,8 +8,4 @@ export default class BoardCardBetTurnRenderer extends BoardCardRenderer {
     constructor() {
         super();
     }
-
-    _initUI(data){
-        super._initUI(data);
-    }
 }

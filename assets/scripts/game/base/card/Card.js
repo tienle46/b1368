@@ -61,10 +61,6 @@ export default class Card extends Component {
         this.mainPic.spriteFrame = this.rank > 10 ? this.texFaces[this.rank - 10 - 1] : this.texSuitBig[this.suit];
 
     }
-    start(){
-        // log(`card x ${this.node.children[0].x} card y ${this.node.children[0].y}`);
-    }
-
 
     _getRankName(){
         switch (this.rank){

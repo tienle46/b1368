@@ -11,10 +11,11 @@ export default class ActorRenderer extends Component {
     constructor() {
         super();
         this.loaded = false;
+        this.data = null;
     }
 
-    _initUI() {
-
+    _init(data){
+        this.data = data;
     }
 
     assign(prefab, componentName) {

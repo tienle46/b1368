@@ -12,6 +12,7 @@ import PlayerTLMNDL from 'PlayerTLMNDL';
 import TLMNUtils from 'TLMNUtils';
 import Card from 'Card';
 import CardList from 'CardList';
+import BoardTLMNDLRenderer from 'BoardTLMNDLRenderer';
 
 export default class BoardTLMNDL extends BoardCardTurnBase {
 
@@ -22,12 +23,9 @@ export default class BoardTLMNDL extends BoardCardTurnBase {
         this.handCardSize = PlayerTLMNDL.DEFAULT_HAND_CARD_COUNT;
     }
 
-    _init(scene) {
-        super._init(scene);
-    }
-
-    onLoad() {
-        super.onLoad();
+    onEnable(){
+        this.renderer = this.node.getComponent(BoardTLMNDLRenderer.name);
+        super.onEnable();
     }
 
     get gameType() {
@@ -41,7 +39,6 @@ export default class BoardTLMNDL extends BoardCardTurnBase {
 
     handleGameStateChange(boardState, data) {
         super.handleGameStateChange(boardState, data);
-
     }
 
     _loadGamePlayData(data) {

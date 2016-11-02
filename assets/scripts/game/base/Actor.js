@@ -12,27 +12,45 @@ export default class Actor extends Component {
 
         this.renderer = null;
         this.renderData = null;
-        this._isRegisterdListener;
-
+        this.initiated = false;
+        this._isRegisteredListener;
         this._eventEmitter = null;
-    }
-
-    setRenderer(renderer){
-        this.renderer = renderer;
-    }
-
-    _assertEmitter(){
-        !this._eventEmitter && (this._eventEmitter = new Emitter());
+        this.__pendingEmitEvents = null;
     }
 
     /**
      * Sub class must be call super.onLoad() to init Renderer of actor
      */
     onLoad() {
+        this.renderData = {};
+        this.__pendingEmitEvents = {};
         this._assertEmitter();
-        this.renderData = {...this.renderData, actor: this};
-        this.renderer && this.renderer._initUI(this.renderData);
     }
+
+    onEnable(renderer = this.renderer, renderData = this.renderData){
+        this.renderer = renderer;
+        this.renderData = {...renderData, actor: this};
+        this.renderer && this.renderer._init(this.renderData);
+    }
+
+    start(){
+        if(!this._isRegisteredListener){
+            this._addGlobalListener();
+        }
+
+        this.initiated = true;
+        this._emitPendingEvent();
+    }
+
+    onDisable(){
+        this._removeGlobalListener();
+        this.removeAllListener();
+    }
+
+    _assertEmitter(){
+        !this._eventEmitter && (this._eventEmitter = new Emitter());
+    }
+
 
     /**
      * This func to add listener to handler data from server or a custom action into game system
@@ -50,7 +68,7 @@ export default class Actor extends Component {
      */
     _addGlobalListener(){
         this._assertEmitter();
-        this._isRegisterdListener = true;
+        this._isRegisteredListener = true;
     }
 
     /**
@@ -66,11 +84,21 @@ export default class Actor extends Component {
      */
     _removeGlobalListener(){
         this._assertEmitter();
-        this._isRegisterdListener = false;
+        this._isRegisteredListener = false;
     }
 
     emit(name, ...args){
-        this._eventEmitter && this._eventEmitter.emit(name, ...args);
+        if(this.initiated){
+            this._eventEmitter.emit(name, ...args);
+        }else{
+            this._assertPendingEmitEvents();
+            !this.__pendingEmitEvents.hasOwnProperty(name) && (this.__pendingEmitEvents[name] = []);
+            this.__pendingEmitEvents[name].push(args);
+        }
+    }
+
+    _assertPendingEmitEvents(){
+        !this.__pendingEmitEvents && (this.__pendingEmitEvents = {});
     }
 
     on(name, listener, context, priority){
@@ -86,23 +114,14 @@ export default class Actor extends Component {
         this.off();
     }
 
-    onDestroy(){
-        // if(this._isRegisterdListener){
-        //     this.removeAllListener();
-        //     this._removeGlobalListener();
-        // }
+    _emitPendingEvent(){
+        this.__pendingEmitEvents && Object.getOwnPropertyNames(this.__pendingEmitEvents).forEach(name => {
+            let argArr = this.__pendingEmitEvents[name];
+            argArr && argArr.forEach(args => {
+               this._eventEmitter.emit(name, ...args);
+            });
+        });
+
+        this.__pendingEmitEvents = {};
     }
-
-    onDisable(){
-        this._removeGlobalListener();
-        this.removeAllListener();
-    }
-
-    onActive(){
-        if(!this._isRegisterdListener){
-            this._addGlobalListener();
-        }
-    }
-
-
 }

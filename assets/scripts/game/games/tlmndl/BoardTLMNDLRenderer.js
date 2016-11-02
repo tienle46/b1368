@@ -13,19 +13,10 @@ export default class BoardTLMNDLRenderer extends BoardCardTurnBaseRenderer {
         super();
     }
 
-    _initUI(data){
-        // this.assign(this.boardPrefab, 'BoardRenderer');
-        // this.assign(this.boardCardPrefab, 'BoardCardRenderer');
-        // this.assign(this.boardCardTurnBasePrefab, 'BoardCardTurnBaseRenderer');
-
-        super._initUI(data)
+    onEnable(){
+        super.onEnable();
         this._initCenterDeckCard();
     }
-
-    onLoad() {
-        super.onLoad();
-    }
-
 }
 
 app.createComponent(BoardTLMNDLRenderer);

@@ -6,7 +6,7 @@ import app from 'app';
 import {utils, GameUtils} from 'utils';
 import SFS2X from 'SFS2X';
 import Component from 'components';
-import {gameManager, Player} from 'game';
+import {gameManager, Player, PlayerRenderer} from 'game';
 import {CreateGameException} from 'exceptions';
 import {Events} from 'events'
 
@@ -14,10 +14,10 @@ export default class GamePlayers extends Component {
     constructor() {
         super();
 
-        this.playerPositions = {
-            default: null,
-            type: cc.Node
-        };
+        this.properties = {
+            ...this.properties,
+            playerClassName: ""
+        }
 
         this.me = null;
         this.owner = null;
@@ -31,10 +31,24 @@ export default class GamePlayers extends Component {
         this._nameToPlayerMap = null;
         this.initLayerDoneCb = null;
         this.exittedPlayers = null;
+        this.playerPositions = null;
+    }
+
+    onEnable(){
+        super.onEnable();
+
+        this.scene = app.system.currentScene;
+        this.board = this.scene.board;
+        this.gameCode = (this.board && this.board.gameCode) || (app.config.test ? "tnd" : "");
+        this.playerPositions = this.scene.playerPositions;
+        this._reset();
+        this.initPlayers();
+
+        this.scene.on(Events.ON_USER_EXIT_ROOM, this._onUserExitGame, this);
+        this.scene.on(Events.ON_ROOM_CHANGE_OWNER, this._onChangeRoomOwner, this);
     }
 
     onLoad() {
-        // this.playerPrefabs = {'aaa': cc.Prefab}
     }
 
     isItMe(id) {
@@ -45,13 +59,6 @@ export default class GamePlayers extends Component {
         this.board = board;
         this.scene = scene;
         this.initLayerDoneCb = cb;
-        this.gameCode = (this.board && this.board.gameCode) || (app.config.test ? "tnd" : "");
-        this._reset();
-
-        this._initPlayerLayer();
-        this.scene.on(Events.GAME_USER_EXIT_ROOM, this._onUserExitGame, this);
-        this.scene.on(Events.ON_ROOM_CHANGE_OWNER, this._onChangeRoomOwner, this);
-        // this.scene.on(Events.ON_PLAYER_REENTER_GAME, this._onPlayerReEnterGame, this);
     }
 
     _onPlayerReEnterGame(playerId, userId) {
@@ -72,8 +79,6 @@ export default class GamePlayers extends Component {
             newOwner = this.findPlayer(ownerId);
         }
 
-        console.log("_onChangeRoomOwner: ", room.id, ownerId, this._idToPlayerMap);
-
         this.owner = newOwner;
         this.owner && this.owner.setOwner(true);
         this.ownerId = ownerId;
@@ -88,7 +93,11 @@ export default class GamePlayers extends Component {
                 name: player.user.name,
                 balance: GameUtils.getUserBalance(player.user)
             });
-            this.playerPositions.hideAnchor(player.anchorIndex);
+
+            if(!this.scene.isBegin()){
+                this.playerPositions.hideAnchor(player.anchorIndex);
+            }
+
             this._removePlayer(player);
         }
         //If not found player mean user just spectator
@@ -112,25 +121,6 @@ export default class GamePlayers extends Component {
         return playingPlayerIds;
     }
 
-    _initPlayerLayer() {
-
-        log("_initPlayerLayer")
-
-        let maxPlayer = gameManager.getMaxPlayer(this.gameCode);
-        let positionAnchorName = maxPlayer && app.res.playerAnchorName[maxPlayer];
-        let playerPositionPrefabs = this.board.renderer.playerPositionPrefab;
-
-        if (playerPositionPrefabs) {
-            let prefabObj = cc.instantiate(playerPositionPrefabs);
-            prefabObj.parent = this.scene.playerLayer;
-            this.playerPositions = prefabObj.getComponent(positionAnchorName);
-            this.playerPositions._init(this.scene);
-            this.initPlayers();
-        } else {
-            throw new CreateGameException("Không thể cài đặt vị trí người chơi");
-        }
-    }
-
     _reset() {
         this.me = null;
         this.players = [];
@@ -146,18 +136,16 @@ export default class GamePlayers extends Component {
             user.isPlayer() && this._createSinglePlayer(user);
         });
 
-        console.log("user list: ", users);
-
         this._onPlayerDataChanged();
     }
 
     _createSinglePlayer(user) {
 
-        let {player, playerNode} = gameManager.createPlayer(this.gameCode);
+        let playerNode = cc.instantiate(this.scene.playerPrefab);
+        let player = playerNode.getComponent(this.playerClassName);
 
         if (player) {
             player._init(this.board, user);
-            this._setPlayerPosition(playerNode, player);
             this._addToPlayerLayer(playerNode, player);
             this._addPlayerToList(player);
         }
@@ -168,17 +156,6 @@ export default class GamePlayers extends Component {
     _addToPlayerLayer(playerNode, player) {
         playerNode.parent = this.scene.playerLayer;
         this.playerPositions.hideInviteButtonByPlayerId(player.id);
-    }
-
-    _setPlayerPosition(playerNode, player) {
-        if (!playerNode || !player) {
-            return;
-        }
-
-        let anchorIndex = this.playerPositions.getPlayerAnchorIndex(player.id, player.isItMe());
-        let anchor = this.playerPositions.getPlayerAnchor(anchorIndex);
-        anchor && playerNode.setPosition(anchor.getPosition());
-        player.setAnchorIndex(anchorIndex);
     }
 
     /**

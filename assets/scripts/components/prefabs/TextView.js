@@ -6,39 +6,21 @@ export default class TextView extends Component {
     constructor() {
         super();
         this.label = cc.Label;
-        this.lines = {
-            default: 1,
-            type: cc.Integer
-        };
-        this.minWidth = {
-            default: 100,
-            type: cc.Integer
-        };
-
-        this.maxWidth = {
-            default: 1000,
-            type: cc.Integer
-        };
-
-        this.resizeWidth = {
-            default: true,
-            type: cc.Boolean
-        };
-
-        this.increaseWidth = {
-            default: 40,
-            type: cc.Integer
-        };
-
-        this.margin = {
-            default: 5,
-            type: cc.Integer
-        };
-
         this.currentWidth = 0;
         this.lineHeight = 20;
         this.isLoaded = false;
+
+        this.properties = {
+            ...this.properties,
+            lines: 1,
+            minWidth: 100,
+            maxWidth: 1000,
+            resizeWidth: true,
+            increaseWidth: 40,
+            margin: 5
+        };
     }
+
 
     onLoad() {
         // console.log("onLoad textview: ", this.label.lineHeight);
@@ -50,6 +32,8 @@ export default class TextView extends Component {
     }
 
     onEnable(){
+        super.onEnable();
+
         if(!utils.isEmpty(this.text)){
             let text = this.text;
             this.text = null;

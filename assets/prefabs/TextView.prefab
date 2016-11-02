@@ -152,7 +152,7 @@
       "__id__": 1
     },
     "asset": {
-      "__id__": 0
+      "__uuid__": "43be34a3-9217-4e9c-883d-d38ba1de76ae"
     },
     "fileId": "6cf93OL0ztGwKuJ2s+B7IUl",
     "sync": false
@@ -165,6 +165,13 @@
       "__id__": 1
     },
     "_enabled": true,
+    "path": "",
+    "lines": 1,
+    "minWidth": 100,
+    "maxWidth": 1000,
+    "resizeWidth": true,
+    "increaseWidth": 40,
+    "margin": 5,
     "label": {
       "__id__": 3
     }
@@ -228,7 +235,7 @@
       "__id__": 1
     },
     "asset": {
-      "__id__": 0
+      "__uuid__": "43be34a3-9217-4e9c-883d-d38ba1de76ae"
     },
     "fileId": "edbc0u07M5HkI1fAzEG3Uww",
     "sync": false

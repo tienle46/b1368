@@ -40,6 +40,29 @@ app.createComponent = (classNameOrInstance, extendClass = undefined, ...args) =>
 
     const objPropsMap = {}; // contains keys which belong to "Object" type ( {a:1, b:2} ) and aren't empty object ( {} )
 
+    let isCocosComponent = (element) => {
+        return typeof element === 'function' && element === cc[element.name.substr(3)];
+    };
+
+    // in case: var a = {type: cc.Component, default: null}
+    let isCocosProperty = (element) => {
+        return typeof element === 'object' && ((element.hasOwnProperty('type') && isCocosComponent(element['type'])) || element.hasOwnProperty('default'));
+    };
+
+    let getCocosValue = (element, key) => {
+        if(!element){
+            return element;
+        }
+
+        switch(element) {
+            case cc.String:
+                console.log("cc.String: " + key + " = ", element)
+                return "";
+            default:
+                return isCocosComponent(element) || isCocosProperty(element) ? element : undefined;
+        }
+    }
+
     // Check if element is instance of cc[xxx]
     function isComponentOfCC(el) {
         // in case: var a = cc.Component
@@ -62,8 +85,12 @@ app.createComponent = (classNameOrInstance, extendClass = undefined, ...args) =>
             // check if property is Object && except instance of cc.Componet
             // such as {default: xxx, type: cc.XXX } => assign to `properties` for displaying value on cocoCcreator
             // if `instance[key]` is intance of `cc`
-            if (instance[key] && isComponentOfCC(instance[key])) {
-                instance.properties[key] = instance[key];
+
+
+            // if (instance[key] && isComponentOfCC(instance[key])) {
+            let value = getCocosValue(instance[key], key);
+            if (value) {
+                instance.properties[key] = value;//instance[key];
             } else {
                 // else push it to "properties" property - to using "this" keyword on cc.Class()
                 objPropsMap[key] = instance[key]; // {default: xx, xx: asd} <---
@@ -110,11 +137,13 @@ app.createComponent = (classNameOrInstance, extendClass = undefined, ...args) =>
      *  this.a = {a: 1, b: 2}
      * } ---> Works
      */
-    instance.ctor = function ctor() {
-        Object.getOwnPropertyNames(objPropsMap).forEach(key => {
-            this[key] = objPropsMap[key];
-        });
-    };
+    if(Object.keys(objPropsMap).length > 0){
+        instance.ctor = function ctor() {
+            Object.getOwnPropertyNames(objPropsMap).forEach(key => {
+                this[key] = objPropsMap[key];
+            });
+        };
+    }
 
     return cc.Class(instance);
 };

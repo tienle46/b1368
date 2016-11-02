@@ -4,9 +4,9 @@ export default {
   change_language_fail: "Đổi ngôn ngữ thất bại",
   invalid_play_card: "Bài không hợp lệ",
   coming_soon: "Chức năng đang hoàn thiện!",
-  'error.not_support_game': "Game không được hỗ trợ",
-  "error.fail_to_create_game": "Không thể khởi tạo bàn chơi",
-  'error.fail_to_load_game_data': "Không thể tải dữ liệu bàn chơi",
+  error_not_support_game: "Game không được hỗ trợ",
+  error_fail_to_create_game: "Không thể khởi tạo bàn chơi",
+  error_fail_to_load_game_data: "Không thể tải dữ liệu bàn chơi",
   game_heo_den: 'heo đen',
   game_heo_do: 'heo đỏ',
   game_ba_doi_thong: '3 đôi thông',
@@ -22,5 +22,6 @@ export default {
   random_invite_player_successfully: 'Lời mời vào bàn chơi đã được gửi đi',
   error_cannot_load_data: 'Không thể tải dữ liệu',
   loading_data: 'Đang tải dữ liệu...',
+  game_table_name: 'P{{roomName}} - B{{tableName}} - {{minBet}}',
 
 };

@@ -39,24 +39,20 @@ export default class PlayerPositions extends Component {
         this.scene;
     }
 
-    _init(scene) {
+    isPositionOnTop(){
+        return false;
+    }
 
-        debug('PositionNAme: ', this.name);
-
-        this.scene = scene;
+    onEnable() {
+        super.onEnable();
         this._initPlayerAnchors();
+
+        this.scene = app.system.currentScene;
         this.scene.on(Events.ON_GAME_STATE_BEGIN, this._onGameBegin, this);
         this.scene.on(Events.ON_GAME_STATE_STARTING, this._onGameStarting, this);
         this.scene.on(Events.ON_GAME_STATE_STARTED, this._onGameStarted, this);
         this.scene.on(Events.ON_GAME_STATE_PLAYING, this._onGamePlaying, this);
         this.scene.on(Events.ON_GAME_STATE_ENDING, this._onGameEnding, this);
-    }
-
-    isPositionOnTop(){
-        return false;
-    }
-
-    onLoad() {
     }
 
     _initPlayerAnchors() {
@@ -111,8 +107,6 @@ export default class PlayerPositions extends Component {
 
     showAllInviteButtons(excludeAnchorIndexes = []) {
 
-        debug("Show all invite button: ", excludeAnchorIndexes);
-
         this.playerAnchors.forEach(anchor => {
             let inviteButton = anchor.getChildByName('inviteButton');
             utils.active(inviteButton);
@@ -140,7 +134,7 @@ export default class PlayerPositions extends Component {
 
             if (app.context.getMe()) {
                 let seatIndexs = this._getPlayerSeatIndexs(gameCode);
-                let meId = app.context.getMe().getPlayerId(this.scene.board.room);
+                let meId = app.context.getMe().getPlayerId(app.system.currentScene.board.room);
                 seatIndex = seatIndexs[meId][playerId];
 
                 return seatIndex;

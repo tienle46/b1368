@@ -12,20 +12,19 @@ class BaseControls extends GameControls {
     constructor() {
         super();
 
-        this.readyButton = {
-            default: null,
-            type: cc.Node
-        };
-
-        this.unreadyButton = {
-            default: null,
-            type: cc.Node
-        };
+        this.properties = {
+            ...this.properties,
+            readyButton: cc.Node,
+            unreadyButton: cc.Node
+        }
     }
 
-    onLoad() {
-        super.onLoad();
+    onEnable() {
+        super.onEnable();
+        this.scene = app.system.currentScene;
         this.hideAllControls();
+
+        this.scene.on(Events.ON_PLAYER_READY_STATE_CHANGED, this._onPlayerSetReadyState, this);
     }
 
     onClickReadyButton() {
@@ -38,11 +37,6 @@ class BaseControls extends GameControls {
     onClickUnreadyButton() {
         this.scene.showShortLoading('ready');
         app.service.send({cmd: app.commands.PLAYER_UNREADY, room: this.scene.room});
-    }
-
-    _init(scene) {
-        this.scene = scene;
-        this.scene.on(Events.ON_PLAYER_READY_STATE_CHANGED, this._onPlayerSetReadyState, this);
     }
 
     _onPlayerSetReadyState(playerId, ready, isItMe = this.scene.gamePlayers.isItMe(playerId)) {

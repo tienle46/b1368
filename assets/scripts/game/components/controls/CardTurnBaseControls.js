@@ -11,25 +11,20 @@ export default class CardTurnBaseControls extends GameControls {
     constructor() {
         super();
 
-        this.playButton = {
-            default: null,
-            type: cc.Button
-        };
-
-        this.sortButton = {
-            default: null,
-            type: cc.Button
-        };
-
-        this.skipTurnButton = {
-            default: null,
-            type: cc.Button
-        };
+        this.properties = {
+            ...this.properties,
+            playButton: cc.Button,
+            sortButton: cc.Button,
+            skipTurnButton: cc.Button
+        }
     }
 
-    _init(scene){
-        super._init(scene);
+    onEnable(){
+        super.onEnable();
 
+        this.hideAllControls();
+
+        this.scene = app.system.currentScene;
         this.scene.on(Events.SET_INTERACTABLE_PLAY_CONTROL, this._setInteractablePlayControl, this);
     }
 
@@ -37,17 +32,11 @@ export default class CardTurnBaseControls extends GameControls {
         this.setInteractable(this.playButton, interactable);
     }
 
-    onLoad(){
-        super.onLoad();
-        this.hideAllControls();
-    }
-
     hideAllControls(){
         utils.deactive(this.playButton);
         utils.deactive(this.sortButton);
         utils.deactive(this.skipTurnButton);
     }
-
 
     _showWaitTurnControls(){
         utils.deactive(this.playButton);

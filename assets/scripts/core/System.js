@@ -11,6 +11,8 @@ import AlertPopupRub from 'AlertPopupRub';
 import MessagePopup from 'MessagePopup';
 import ConfirmPopup from 'ConfirmPopup';
 import Toast from 'Toast';
+import utils from 'utils';
+import TLMNDLScene from 'TLMNDLScene';
 
 class GameSystem {
 
@@ -47,10 +49,12 @@ class GameSystem {
      * @param {string} sceneName - Scene Name want to load. The name of scene have been configured in {source} app.const.scene.*
      * @param {function} onLaunch - On launch custom function
      */
-    loadScene(sceneName, onLaunch, onShown) {
+    loadScene(sceneName, onLaunch) {
         cc.director.loadScene(sceneName, () => {
-            this._currentScene = cc.director.getScene().children[0].getComponent(sceneName);
-            this._currentScene && this._addToastToScene() && (this._currentScene.onShown = onShown);
+            if(cc.director.getScene().children[0]){
+                this._currentScene = cc.director.getScene().children[0].getComponent(sceneName);
+                this._currentScene && this._addToastToScene();
+            }
             onLaunch && onLaunch();
         });
     }
@@ -75,12 +79,22 @@ class GameSystem {
         if (!resultEvent.room) return;
 
         app.context.lastJoinRoom = resultEvent.room;
-        if (resultEvent.room.isJoined && resultEvent.room.isGame) {
+
+        if (resultEvent.room && resultEvent.room.isJoined && resultEvent.room.isGame) {
+
             app.context.currentRoom = resultEvent.room;
             this._currentScene && this._currentScene.hideLoading();
-            this.loadScene(GameScene.name);
-        }
 
+            let gameScene = null;
+            let gameCode = utils.getGameCode(resultEvent.room);
+            switch (gameCode){
+                case app.const.gameCode.TLMNDL:
+                    gameScene = TLMNDLScene;
+                    break;
+            }
+
+            gameScene && this.loadScene(gameScene.name);
+        }
     }
 
     get currentScene() {

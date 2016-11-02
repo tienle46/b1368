@@ -11,13 +11,12 @@ export default class BoardCardTurnBaseRenderer extends BoardCardRenderer {
     constructor() {
         super();
 
-        this.deckCardAnchor  = cc.Node;
-        this.deckCardPrefab  = cc.Prefab;
-        this.deckCardRenderer = null;
-    }
-
-    _initUI(data) {
-        super._initUI(data);
+        this.properties = {
+            ...this.properties,
+            deckCardAnchor: cc.Node,
+            deckCardPrefab: cc.Prefab,
+            deckCardRenderer: null,
+        }
     }
 
     _initCenterDeckCard(){

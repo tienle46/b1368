@@ -174,7 +174,7 @@ export default class GameEventHandler {
             return;
         }
 
-        this.scene.emit(Events.GAME_USER_EXIT_ROOM, event.user, event.room);
+        this.scene.emit(Events.ON_USER_EXIT_ROOM, event.user, event.room);
 
         if (event.user && event.user.isItMe) {
             this.scene.goBack();

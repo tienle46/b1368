@@ -8,18 +8,20 @@ import GameAdapter from 'GameAdapter';
 import {Keywords} from 'core'
 
 export default class BoardTurnBaseAdapter extends GameAdapter {
-    constructor(board) {
+    constructor() {
         super();
 
-        this.board = board;
+        this.board = null;
         this.preTurnPlayerId;
         this.currentTurnPlayerId;
         this.lastPlayedTurn;
         this.timelineDuration = 20;
     }
 
-    _init(scene){
-        this.scene = scene;
+    onEnable(){
+        super.onEnable();
+        this.scene = app.system.currentScene;
+        this.board = this.scene.board;
         this._addGlobalListener();
     }
 

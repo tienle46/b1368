@@ -8,5 +8,9 @@ export default class PlayerBetTurnAdapter extends GameAdapter {
     constructor() {
         super();
     }
+
+    _init(board, player){
+
+    }
 }
 

@@ -13,16 +13,14 @@ import GameChatItem from 'GameChatItem';
 export default class IngameChatComponent extends Component {
     constructor() {
         super();
-        this.loadingComponent = cc.Node;
-        this.messageListContent = cc.Node;
-        this.showAnimName = {
-            default: "",
-            type: cc.String
-        };
-        this.hideAnimName = {
-            default: "",
-            type: cc.String
-        };
+        this.properties = {
+            ...this.properties,
+            loadingComponent: cc.Node,
+            messageListContent: cc.Node,
+            showAnimName: "showIngameChat",
+            hideAnimName: "hideIngameChat",
+            gameChatItemPrefab: cc.Prefab
+        }
 
         this.loading = null;
         this.messages = null;
@@ -30,41 +28,39 @@ export default class IngameChatComponent extends Component {
         this.showing = false;
         this.inited = false;
 
-        this.gameChatItemPrefab = cc.Prefab;
     }
 
-    setup(scene){
-        this.scene = scene;
-    }
-
-    onLoad(){
+    onEnable(){
+        super.onEnable();
+        this.scene = app.system.currentScene;
         this.animation = this.node.getComponent(cc.Animation);
         this.loading = this.loadingComponent.getComponentInChildren(Progress.name);
+    }
+
+    start(){
+        super.start();
         this.node.active = false;
     }
 
     setVisible(){
         this.showing ? this.hide() : this.show();
-        debug(this.animation);
     }
 
     show(){
         this.node.active = true;
         this.animation && this.animation.play(this.showAnimName);
-        this.onShow();
-        this.showing = true;
+        if(!this.inited && this.messages) {
+            this.initMessages();
+        }
     }
 
     hide(){
-        this.node.active = false;
         this.animation && this.animation.play(this.hideAnimName);
         this.showing = false;
     }
 
     onShow(){
-        if(!this.inited && this.messages) {
-            this.initMessages();
-        }
+
     }
 
     initMessages(){

@@ -31,6 +31,7 @@ Events.ON_PLAYER_CHAT_MESSAGE           = "on.player.chatMessage";
 Events.ON_USER_UPDATE_BALANCE           = "onUserUpdateBalance";
 Events.ON_USER_UPDATE_LEVEL             = "onUserUpdateLevel";
 Events.ON_USER_UPDATE_EXP_POINT         = "onUserUpdateExpPoint";
+Events.ON_USER_EXIT_ROOM                = "on.userExitRoom";
 
 Events.ON_ROOM_CHANGE_OWNER             = "on.room.changeOwner";
 Events.ON_ROOM_CHANGE_MASTER            = "on.room.changeMaster";
@@ -51,7 +52,6 @@ Events.ON_GAME_REJOIN                   = "on.game.rejoin";
 Events.ON_GAME_SET_LAST_MOVE            = "on.game.setLastMove";
 Events.CLEAN_TURN_ROUTINE_DATA          = "cleanTurnRoutineData";
 
-Events.GAME_USER_EXIT_ROOM              = "gameUserExitRoom";
 
 Events.ON_ACTION_EXIT_GAME              = "action.exitGame";
 Events.ON_ACTION_LOAD_GAME_GUIDE        = "action.loadGameGuide";
