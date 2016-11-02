@@ -29,21 +29,12 @@ class TabTopCaoThu extends Component {
             default: null,
             type: cc.Node
         }
+
     }
 
     onLoad() {
-        // wait til every requests is done
-        // this.node.active = false;
 
-        // get content node
-        // this.contentNode = this.node.getChildByName('view').getChildByName('content');
-        // this._initItemsList();
-        // init tabRub
         this._initGameList();
-
-        // this._initData().then((data) => {
-        //     this._initBody(data);
-        // });
 
     }
 
@@ -58,36 +49,59 @@ class TabTopCaoThu extends Component {
             }
         };
         app.service.send(sendObject, (res) => {
+            this.gameList = res;
 
-            const node = new cc.Node();
-            node.setContentSize(60,60);
+            this.gameList['iml'].forEach((imgName, index)=>{
 
-            const button = node.addComponent(cc.Button);
-            RubUtils.loadSpriteFrame(this.top1Sprite,
-                'https://upload.wikimedia.org/wikipedia/commons/f/f7/Tamia_striatus_eating.jpg'
-                , cc.size(60, 60), true, (spriteFrame) => {
+                const node = new cc.Node();
+                node.setContentSize(60,60);
 
+                node.dNodeId =  this.gameList['itl'][index];
+
+                const button = node.addComponent(cc.Button);
+                const nodeSprite = node.addComponent(cc.Sprite);
+
+                RubUtils.loadSpriteFrame(nodeSprite,
+                    'https://upload.wikimedia.org/wikipedia/commons/f/f7/Tamia_striatus_eating.jpg'
+                    , cc.size(60, 60), true, (spriteFrame) => {
+                        log(`image loaded`);
+                });
+
+                let event = new cc.Component.EventHandler();
+                event.target = this.node;
+                event.component = 'TabTopCaoThu';
+                event.handler = 'onGameItemClicked';
+                button.clickEvents = [event];
+
+                this.gamePicker.addChild(node);
             });
 
-            this.gamePicker.addChild(node);
         });
     }
 
-    _initData() {
+    onGameItemClicked(event) {
+        let dNodeId = event.currentTarget.dNodeId;
+
+        this._showTopPlayers(dNodeId).then((data) => {
+            this._initBody(data);
+        });
+    }
+
+    _showTopPlayers(dNodeId) {
+        log(dNodeId);
         let sendObject = {
             'cmd': app.commands.RANK_GROUP,
             'data': {
                 [app.keywords.RANK_GROUP_TYPE]: app.const.DYNAMIC_GROUP_LEADER_BOARD,
                 [app.keywords.RANK_ACTION_TYPE]: app.const.DYNAMIC_ACTION_BROWSE,
                 [app.keywords.PAGE]: this.currentPage,
-                [app.keywords.RANK_NODE_ID]: 330,
+                [app.keywords.RANK_NODE_ID]: dNodeId,
             }
         };
 
         return new Promise((resolve, reject) => {
             app.service.send(sendObject, (res) => {
                 log(res);
-
 
                 if(res['unl'].length > 0){
                     const topVipName = res['unl'][0];
@@ -101,8 +115,7 @@ class TabTopCaoThu extends Component {
 
                     });
                 }
-
-                const data = [
+              const data = [
                     res['unl'].map((status, index)=>{
                         return `${index + 1}. `
                     }),
@@ -120,6 +133,8 @@ class TabTopCaoThu extends Component {
 
         let event = null;
         let body = this.contentNode;
+        body.removeAllChildren();
+
         GridViewRub.show(body, {data: ['STT', 'Tài khoản', 'Thắng','Thua'], options : {fontColor: app.const.COLOR_YELLOW
             }}, d, { position: cc.v2(2, 120), width: 480, event,group: {widths:[80,200,100,100]} },
             ).then((rub) => {

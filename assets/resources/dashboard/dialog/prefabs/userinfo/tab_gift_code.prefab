@@ -96,7 +96,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 753.37,
+      "width": 431.5,
       "height": 40
     },
     "_children": [],
@@ -139,12 +139,14 @@
     },
     "_enabled": true,
     "_useOriginalSize": false,
-    "_actualFontSize": 30,
-    "_fontSize": 30,
+    "_actualFontSize": 25,
+    "_fontSize": 25,
     "_lineHeight": 40,
     "_enableWrapText": true,
-    "_N$file": null,
-    "_isSystemFontUsed": true,
+    "_N$file": {
+      "__uuid__": "52c5bb2a-6f45-49fb-9c54-ad4ff6a8f557"
+    },
+    "_isSystemFontUsed": false,
     "_N$string": "Bạn đang sử dụng tài khoản \"cuongnat\" để nhận thưởng",
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
@@ -160,8 +162,8 @@
     "_enabled": true,
     "isAlignOnce": true,
     "_alignFlags": 41,
-    "_left": 50,
-    "_right": 50,
+    "_left": 60.25999999999999,
+    "_right": 60.25999999999999,
     "_top": 0,
     "_bottom": 0,
     "_verticalCenter": 0,
@@ -210,7 +212,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 630,
-      "height": 69
+      "height": 40
     },
     "_children": [],
     "_rotationX": 0,
@@ -220,7 +222,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": 42
+      "y": 56.5
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -253,6 +255,7 @@
     "_enabled": true,
     "_useOriginalSize": false,
     "_string": "",
+    "_tabIndex": 0,
     "editingDidBegan": [],
     "textChanged": [],
     "editingDidEnded": [],
@@ -273,7 +276,7 @@
       "a": 255
     },
     "_N$placeholder": "Nhập mã code ...",
-    "_N$placeholderFontSize": 30,
+    "_N$placeholderFontSize": 18,
     "_N$placeholderFontColor": {
       "__type__": "cc.Color",
       "r": 127.5,
@@ -281,7 +284,8 @@
       "b": 127.5,
       "a": 255
     },
-    "_N$maxLength": 11
+    "_N$maxLength": 11,
+    "_N$stayOnTop": false
   },
   {
     "__type__": "cc.Widget",
@@ -360,7 +364,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": -78.5
+      "y": -49.5
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -407,7 +411,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 170,
-      "height": 72
+      "height": 50
     },
     "_children": [
       {
@@ -510,12 +514,14 @@
     },
     "_enabled": true,
     "_useOriginalSize": false,
-    "_actualFontSize": 30,
-    "_fontSize": 30,
+    "_actualFontSize": 20,
+    "_fontSize": 20,
     "_lineHeight": 40,
     "_enableWrapText": false,
-    "_N$file": null,
-    "_isSystemFontUsed": true,
+    "_N$file": {
+      "__uuid__": "52c5bb2a-6f45-49fb-9c54-ad4ff6a8f557"
+    },
+    "_isSystemFontUsed": false,
     "_N$string": "Quay lại",
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
@@ -582,10 +588,12 @@
       "a": 255
     },
     "duration": 0.1,
+    "zoomScale": 1.2,
     "pressedSprite": null,
     "hoverSprite": null,
     "clickEvents": [],
     "_N$interactable": true,
+    "_N$enableAutoGrayEffect": false,
     "_N$normalColor": {
       "__type__": "cc.Color",
       "r": 255,
@@ -652,7 +660,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 170,
-      "height": 72
+      "height": 50
     },
     "_children": [
       {
@@ -755,12 +763,14 @@
     },
     "_enabled": true,
     "_useOriginalSize": false,
-    "_actualFontSize": 30,
-    "_fontSize": 30,
+    "_actualFontSize": 20,
+    "_fontSize": 20,
     "_lineHeight": 40,
     "_enableWrapText": false,
-    "_N$file": null,
-    "_isSystemFontUsed": true,
+    "_N$file": {
+      "__uuid__": "52c5bb2a-6f45-49fb-9c54-ad4ff6a8f557"
+    },
+    "_isSystemFontUsed": false,
     "_N$string": "Xác nhận",
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
@@ -827,10 +837,12 @@
       "a": 255
     },
     "duration": 0.1,
+    "zoomScale": 1.2,
     "pressedSprite": null,
     "hoverSprite": null,
     "clickEvents": [],
     "_N$interactable": true,
+    "_N$enableAutoGrayEffect": false,
     "_N$normalColor": {
       "__type__": "cc.Color",
       "r": 255,

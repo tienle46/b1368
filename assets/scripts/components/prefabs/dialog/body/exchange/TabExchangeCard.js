@@ -208,8 +208,8 @@ class TabExchangeCard extends Component {
     _initBackgroundNode(itemNode, itemIcon) {
         // create item/img-bg Node
         let imgBgNode = new cc.Node();
-        let imgBgNodeWidth = 214;
-        let imgBgNodeHeight = 159;
+        // let imgBgNodeWidth = 214;
+        // let imgBgNodeHeight = 159;
         imgBgNode.y = 41;
         itemNode.addChild(imgBgNode);
 

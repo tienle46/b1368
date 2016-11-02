@@ -29,7 +29,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 981,
+      "width": 1301,
       "height": 288
     },
     "_children": [
@@ -46,7 +46,7 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": 491,
+      "x": 651,
       "y": 149
     },
     "_skewX": 0,
@@ -113,7 +113,7 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": 490.5,
+      "x": 650.5,
       "y": 0
     },
     "_skewX": 0,
@@ -298,7 +298,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 961,
+      "width": 1281,
       "height": 10
     },
     "_children": [
@@ -362,7 +362,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 961,
+      "width": 1281,
       "height": 288
     },
     "_children": [
@@ -617,10 +617,12 @@
       "a": 255
     },
     "duration": 0.1,
+    "zoomScale": 1.2,
     "pressedSprite": null,
     "hoverSprite": null,
     "clickEvents": [],
     "_N$interactable": true,
+    "_N$enableAutoGrayEffect": false,
     "_N$normalColor": {
       "__type__": "cc.Color",
       "r": 214,
@@ -773,10 +775,12 @@
       "a": 255
     },
     "duration": 0.1,
+    "zoomScale": 1.2,
     "pressedSprite": null,
     "hoverSprite": null,
     "clickEvents": [],
     "_N$interactable": true,
+    "_N$enableAutoGrayEffect": false,
     "_N$normalColor": {
       "__type__": "cc.Color",
       "r": 214,
@@ -929,10 +933,12 @@
       "a": 255
     },
     "duration": 0.1,
+    "zoomScale": 1.2,
     "pressedSprite": null,
     "hoverSprite": null,
     "clickEvents": [],
     "_N$interactable": true,
+    "_N$enableAutoGrayEffect": false,
     "_N$normalColor": {
       "__type__": "cc.Color",
       "r": 214,
@@ -1365,7 +1371,7 @@
     "_enabled": true,
     "_layoutSize": {
       "__type__": "cc.Size",
-      "width": 961,
+      "width": 1281,
       "height": 10
     },
     "_resize": 1,

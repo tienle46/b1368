@@ -94,27 +94,25 @@ class TabTopVip extends Component {
 
             transactionItem.pushEl(label);
 
-            const medalContainer = new cc.Node();
-            const layoutComponent = medalContainer.addComponent(cc.Layout);
-            layoutComponent.type = cc.Layout.Type.HORIZONTAL;
-            layoutComponent.spacingX = 5;
-            layoutComponent.padding = 5;
-
-            for( let j = 0 ; j < 5 - i; j++){
-
-                const medal = new cc.Node();
-                const sprite = medal.addComponent(cc.Sprite);
-
-                medalContainer.addChild(medal);
-
-                RubUtils.loadSpriteFrame(sprite, `textures/medal_${j+1}`, cc.size(32, 34), false, (spriteFrame) => {
-
-                });
-            }
-            medalContainer.setContentSize(200 , 60);
-
-            medalContainer.position = cc.v2(150,0);
-            transactionItem.pushEl(medalContainer);
+            // const medalContainer = new cc.Node();
+            // const layoutComponent = medalContainer.addComponent(cc.Layout);
+            // layoutComponent.type = cc.Layout.Type.HORIZONTAL;
+            // layoutComponent.spacingX = 5;
+            //
+            // for( let j = 0 ; j < 5 - i; j++){
+            //
+            //     const medal = new cc.Node();
+            //     const sprite = medal.addComponent(cc.Sprite);
+            //
+            //     medalContainer.addChild(medal);
+            //
+            //     RubUtils.loadSpriteFrame(sprite, `textures/medal_${j+1}`, cc.size(32, 34), false, (spriteFrame) => {
+            //
+            //     });
+            // }
+            // medalContainer.size = cc.Size(180 , 60);
+            // medalContainer.position = cc.v2(190,0);
+            // transactionItem.pushEl(medalContainer);
 
             this.contentNode.addChild(transactionItem.node());
         }

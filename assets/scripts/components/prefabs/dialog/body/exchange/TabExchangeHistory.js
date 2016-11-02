@@ -6,8 +6,6 @@ import ExchangeDialog from 'ExchangeDialog';
 class TabExchangeHistory extends Component {
     constructor() {
         super();
-        this.GridViewCardTabRub = null;
-        this.GridViewCardTabNode = null;
         this.flag = null;
     }
 
@@ -33,7 +31,6 @@ class TabExchangeHistory extends Component {
                 [app.keywords.PAGE]: 1,
             }
         };
-
 
         return new Promise((resolve, reject) => {
             app.service.send(sendObject, (res) => {
@@ -85,8 +82,7 @@ class TabExchangeHistory extends Component {
 
         let event = null;
         GridViewRub.show(bodyNode, ['Thời gian', 'Loại vật phẩm', 'Thông tin',''], d, { position: cc.v2(2, 120), width: 780, event }).then((rub) => {
-            this.GridViewCardTabRub = rub;
-            this.GridViewCardTabNode = this.GridViewCardTabRub._getNode();
+
         });
     }
 

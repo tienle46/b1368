@@ -154,8 +154,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 84.48,
-      "height": 40
+      "width": 47.74,
+      "height": 20
     },
     "_children": [],
     "_rotationX": 0,
@@ -164,7 +164,7 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": -557.76,
+      "x": -560.01,
       "y": -0.5
     },
     "_skewX": 0,
@@ -197,12 +197,14 @@
     },
     "_enabled": true,
     "_useOriginalSize": false,
-    "_actualFontSize": 20,
-    "_fontSize": 20,
-    "_lineHeight": 40,
+    "_actualFontSize": 18,
+    "_fontSize": 18,
+    "_lineHeight": 20,
     "_enableWrapText": true,
-    "_N$file": null,
-    "_isSystemFontUsed": true,
+    "_N$file": {
+      "__uuid__": "52c5bb2a-6f45-49fb-9c54-ad4ff6a8f557"
+    },
+    "_isSystemFontUsed": false,
     "_N$string": "SMS 50K",
     "_N$horizontalAlign": 0,
     "_N$verticalAlign": 1,
@@ -218,7 +220,7 @@
     "_enabled": true,
     "isAlignOnce": true,
     "_alignFlags": 8,
-    "_left": 40,
+    "_left": 56.11999999999999,
     "_right": 0,
     "_top": 0,
     "_bottom": 0,
@@ -267,8 +269,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 35.59,
-      "height": 40
+      "width": 21.13,
+      "height": 20
     },
     "_children": [
       {
@@ -335,7 +337,7 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": -52.41,
+      "x": -66.87,
       "y": 0
     },
     "_skewX": 0,
@@ -430,12 +432,14 @@
     },
     "_enabled": true,
     "_useOriginalSize": false,
-    "_actualFontSize": 20,
-    "_fontSize": 20,
-    "_lineHeight": 40,
+    "_actualFontSize": 18,
+    "_fontSize": 18,
+    "_lineHeight": 20,
     "_enableWrapText": true,
-    "_N$file": null,
-    "_isSystemFontUsed": true,
+    "_N$file": {
+      "__uuid__": "52c5bb2a-6f45-49fb-9c54-ad4ff6a8f557"
+    },
+    "_isSystemFontUsed": false,
     "_N$string": "50K",
     "_N$horizontalAlign": 2,
     "_N$verticalAlign": 1,
@@ -475,8 +479,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 114,
-      "height": 45
+      "width": 88,
+      "height": 30
     },
     "_children": [
       {
@@ -542,8 +546,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 38.19,
-      "height": 40
+      "width": 19.96,
+      "height": 20
     },
     "_children": [],
     "_rotationX": 0,
@@ -582,12 +586,14 @@
     },
     "_enabled": true,
     "_useOriginalSize": false,
-    "_actualFontSize": 20,
-    "_fontSize": 20,
-    "_lineHeight": 40,
+    "_actualFontSize": 18,
+    "_fontSize": 18,
+    "_lineHeight": 20,
     "_enableWrapText": true,
-    "_N$file": null,
-    "_isSystemFontUsed": true,
+    "_N$file": {
+      "__uuid__": "52c5bb2a-6f45-49fb-9c54-ad4ff6a8f557"
+    },
+    "_isSystemFontUsed": false,
     "_N$string": "GỬI",
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
@@ -702,7 +708,7 @@
     "isAlignOnce": true,
     "_alignFlags": 32,
     "_left": 0,
-    "_right": 44.5,
+    "_right": 57.5,
     "_top": 0,
     "_bottom": 0,
     "_verticalCenter": 0,
