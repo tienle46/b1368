@@ -46,6 +46,45 @@ let RubUtils = {
 
             });
         }
+    },
+    calcWidthByGroup: (parentWidth, widths = [], spaceX = 0, padding = 0) => {
+        // parentWidth -= 2 * padding;
+
+        // ['', '10%', 30, '']
+        widths = widths.map((width) => {
+            let w;
+
+            if (width) {
+                if (!isNaN(Number(width))) {
+                    w = Number(width);
+                } else {
+                    if (width.indexOf('%') > 0) {
+                        w = Number(width.replace('%', '')) * parentWidth / 100;
+                    } else
+                        w = null;
+                }
+                if (w && w < 0)
+                    w = null;
+            } else
+                w = null;
+
+            return w;
+        }); // => [null, 10*parentWidth/100, 30, null]
+
+        // total width inside array
+        let totalWidth = widths.reduce((p, n) => !isNaN(p) && (Number(p) + Number(n)));
+
+        // remaing array which cotains null -> ["", null...]
+        let remains = widths.filter((e) => !isNaN(e) && Number(e) === 0).length;
+
+        // remaining width for null array, it will be equally divided.
+        let n = parentWidth > totalWidth ? parentWidth - totalWidth : 0;
+        let equallyDivided = n / remains;
+
+        return widths.map((e) => {
+            let number = ((e === null && Number(e) === 0 && equallyDivided) || e) - spaceX - padding / widths.length;
+            return number > 0 ? number : 0;
+        });
     }
 };
 export default RubUtils;

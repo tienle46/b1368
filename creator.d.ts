@@ -2238,6 +2238,135 @@ declare module cc {
 		*/
 		repeatForever() : ActionInterval;	
 	}		
+		/** !#en Class for animation data handling.
+		!#zh 动画剪辑，用于存储动画数据。 */
+		export class AnimationClip extends Asset {		
+		/** !#en Duration of this animation.
+		!#zh 动画的持续时间。 */
+		duration : number;		
+		/** !#en FrameRate of this animation.
+		!#zh 动画的帧速率。 */
+		sample : number;		
+		/** !#en Speed of this animation.
+		!#zh 动画的播放速度。 */
+		speed : number;		
+		/** !#en WrapMode of this animation.
+		!#zh 动画的循环模式。 */
+		wrapMode : WrapMode;		
+		/** !#en Curve data.
+		!#zh 曲线数据。 */
+		curveData : any;		
+		/** !#en Event data.
+		!#zh 事件数据。 */
+		events : any[];		
+		/** !#en Crate clip with a set of sprite frames
+		!#zh 使用一组序列帧图片来创建动画剪辑
+		
+		@example 
+		```js
+		var clip = cc.AnimationClip.createWithSpriteFrames(spriteFrames, 10);
+		``` 
+		*/
+		createWithSpriteFrames(spriteFrames : [SpriteFrame], sample : number) : AnimationClip;	
+	}		
+		/** !#en
+		The AnimationState gives full control over animation playback process.
+		In most cases the Animation Component is sufficient and easier to use. Use the AnimationState if you need full control.
+		!#zh
+		AnimationState 完全控制动画播放过程。<br/>
+		大多数情况下 动画组件 是足够和易于使用的。如果您需要更多的动画控制接口，请使用 AnimationState。 */
+		export class AnimationState extends AnimationNode {		
+		/**  
+		*/
+		AnimationState(clip : AnimationClip, name? : string) : AnimationState;		
+		/** !#en The clip that is being played by this animation state.
+		!#zh 此动画状态正在播放的剪辑。 */
+		clip : AnimationClip;		
+		/** !#en The name of the playing animation.
+		!#zh 动画的名字 */
+		name : string;	
+	}		
+		/** undefined */
+		export class Playable {		
+		/** !#en Is playing or paused in play mode?
+		!#zh 当前是否正在播放。 */
+		isPlaying : boolean;		
+		/** !#en Is currently paused? This can be true even if in edit mode(isPlaying == false).
+		!#zh 当前是否正在暂停 */
+		isPaused : boolean;		
+		/** !#en Play this animation.
+		!#zh 播放动画。 
+		*/
+		play() : void;		
+		/** !#en Stop this animation.
+		!#zh 停止动画播放。 
+		*/
+		stop() : void;		
+		/** !#en Pause this animation.
+		!#zh 暂停动画。 
+		*/
+		pause() : void;		
+		/** !#en Resume this animation.
+		!#zh 重新播放动画。 
+		*/
+		resume() : void;		
+		/** !#en Perform a single frame step.
+		!#zh 执行一帧动画。 
+		*/
+		step() : void;	
+	}	
+	/** !#en Specifies how time is treated when it is outside of the keyframe range of an Animation.
+	!#zh 动画使用的循环模式。 */
+	export enum WrapMode {		
+		Default = 0,
+		Normal = 0,
+		Reverse = 0,
+		Loop = 0,
+		LoopReverse = 0,
+		PingPong = 0,
+		PingPongReverse = 0,	
+	}		
+		/** !#en The abstract interface for all playing animation.
+		!#zh 所有播放动画的抽象接口。 */
+		export class AnimationNodeBase extends Playable {	
+	}		
+		/** !#en The collection and instance of playing animations.
+		!#zh 动画曲线的集合，根据当前时间计算出每条曲线的状态。 */
+		export class AnimationNode extends AnimationNodeBase {		
+		/** !#en The curves list.
+		!#zh 曲线列表。 */
+		curves : AnimCurve[];		
+		/** !#en The start delay which represents the number of seconds from an animation's start time to the start of
+		the active interval.
+		!#zh 延迟多少秒播放。 */
+		delay : number;		
+		/** !#en The animation's iteration count property.
+		
+		A real number greater than or equal to zero (including positive infinity) representing the number of times
+		to repeat the animation node.
+		
+		Values less than zero and NaN values are treated as the value 1.0 for the purpose of timing model
+		calculations.
+		
+		!#zh 迭代次数，指动画播放多少次后结束, normalize time。 如 2.5（2次半） */
+		repeatCount : number;		
+		/** !#en The iteration duration of this animation in seconds. (length)
+		!#zh 单次动画的持续时间，秒。 */
+		duration : number;		
+		/** !#en The animation's playback speed. 1 is normal playback speed.
+		!#zh 播放速率。 */
+		speed : number;		
+		/** !#en
+		Wrapping mode of the playing animation.
+		Notice : dynamic change wrapMode will reset time and repeatCount property
+		!#zh
+		动画循环方式。
+		需要注意的是，动态修改 wrapMode 时，会重置 time 以及 repeatCount */
+		wrapMode : WrapMode;		
+		/** !#en The current time of this animation in seconds.
+		!#zh 动画当前的时间，秒。 */
+		time : number;	
+	}		
 		/** !#en cc.audioEngine is the singleton object, it provide simple audio APIs.
 		!#zh
 		cc.audioengine是单例对象。<br/>
@@ -2487,135 +2616,6 @@ declare module cc {
 		``` 
 		*/
 		setMaxWebAudioSize(kb : void) : void;	
-	}		
-		/** !#en Class for animation data handling.
-		!#zh 动画剪辑，用于存储动画数据。 */
-		export class AnimationClip extends Asset {		
-		/** !#en Duration of this animation.
-		!#zh 动画的持续时间。 */
-		duration : number;		
-		/** !#en FrameRate of this animation.
-		!#zh 动画的帧速率。 */
-		sample : number;		
-		/** !#en Speed of this animation.
-		!#zh 动画的播放速度。 */
-		speed : number;		
-		/** !#en WrapMode of this animation.
-		!#zh 动画的循环模式。 */
-		wrapMode : WrapMode;		
-		/** !#en Curve data.
-		!#zh 曲线数据。 */
-		curveData : any;		
-		/** !#en Event data.
-		!#zh 事件数据。 */
-		events : any[];		
-		/** !#en Crate clip with a set of sprite frames
-		!#zh 使用一组序列帧图片来创建动画剪辑
-		
-		@example 
-		```js
-		var clip = cc.AnimationClip.createWithSpriteFrames(spriteFrames, 10);
-		``` 
-		*/
-		createWithSpriteFrames(spriteFrames : [SpriteFrame], sample : number) : AnimationClip;	
-	}		
-		/** !#en
-		The AnimationState gives full control over animation playback process.
-		In most cases the Animation Component is sufficient and easier to use. Use the AnimationState if you need full control.
-		!#zh
-		AnimationState 完全控制动画播放过程。<br/>
-		大多数情况下 动画组件 是足够和易于使用的。如果您需要更多的动画控制接口，请使用 AnimationState。 */
-		export class AnimationState extends AnimationNode {		
-		/**  
-		*/
-		AnimationState(clip : AnimationClip, name? : string) : AnimationState;		
-		/** !#en The clip that is being played by this animation state.
-		!#zh 此动画状态正在播放的剪辑。 */
-		clip : AnimationClip;		
-		/** !#en The name of the playing animation.
-		!#zh 动画的名字 */
-		name : string;	
-	}		
-		/** undefined */
-		export class Playable {		
-		/** !#en Is playing or paused in play mode?
-		!#zh 当前是否正在播放。 */
-		isPlaying : boolean;		
-		/** !#en Is currently paused? This can be true even if in edit mode(isPlaying == false).
-		!#zh 当前是否正在暂停 */
-		isPaused : boolean;		
-		/** !#en Play this animation.
-		!#zh 播放动画。 
-		*/
-		play() : void;		
-		/** !#en Stop this animation.
-		!#zh 停止动画播放。 
-		*/
-		stop() : void;		
-		/** !#en Pause this animation.
-		!#zh 暂停动画。 
-		*/
-		pause() : void;		
-		/** !#en Resume this animation.
-		!#zh 重新播放动画。 
-		*/
-		resume() : void;		
-		/** !#en Perform a single frame step.
-		!#zh 执行一帧动画。 
-		*/
-		step() : void;	
-	}	
-	/** !#en Specifies how time is treated when it is outside of the keyframe range of an Animation.
-	!#zh 动画使用的循环模式。 */
-	export enum WrapMode {		
-		Default = 0,
-		Normal = 0,
-		Reverse = 0,
-		Loop = 0,
-		LoopReverse = 0,
-		PingPong = 0,
-		PingPongReverse = 0,	
-	}		
-		/** !#en The abstract interface for all playing animation.
-		!#zh 所有播放动画的抽象接口。 */
-		export class AnimationNodeBase extends Playable {	
-	}		
-		/** !#en The collection and instance of playing animations.
-		!#zh 动画曲线的集合，根据当前时间计算出每条曲线的状态。 */
-		export class AnimationNode extends AnimationNodeBase {		
-		/** !#en The curves list.
-		!#zh 曲线列表。 */
-		curves : AnimCurve[];		
-		/** !#en The start delay which represents the number of seconds from an animation's start time to the start of
-		the active interval.
-		!#zh 延迟多少秒播放。 */
-		delay : number;		
-		/** !#en The animation's iteration count property.
-		
-		A real number greater than or equal to zero (including positive infinity) representing the number of times
-		to repeat the animation node.
-		
-		Values less than zero and NaN values are treated as the value 1.0 for the purpose of timing model
-		calculations.
-		
-		!#zh 迭代次数，指动画播放多少次后结束, normalize time。 如 2.5（2次半） */
-		repeatCount : number;		
-		/** !#en The iteration duration of this animation in seconds. (length)
-		!#zh 单次动画的持续时间，秒。 */
-		duration : number;		
-		/** !#en The animation's playback speed. 1 is normal playback speed.
-		!#zh 播放速率。 */
-		speed : number;		
-		/** !#en
-		Wrapping mode of the playing animation.
-		Notice : dynamic change wrapMode will reset time and repeatCount property
-		!#zh
-		动画循环方式。
-		需要注意的是，动态修改 wrapMode 时，会重置 time 以及 repeatCount */
-		wrapMode : WrapMode;		
-		/** !#en The current time of this animation in seconds.
-		!#zh 动画当前的时间，秒。 */
-		time : number;	
 	}		
 		/** !#en
 		cc.ActionManager is a class that can manage actions.<br/>
@@ -4430,6 +4430,245 @@ declare module cc {
 		getObjects() : any[];	
 	}		
 		/** !#en
+		Base class for handling assets used in Fireball. This class can be instantiate.
+		
+		You may want to override:<br/>
+		- createNode<br/>
+		- cc.Object._serialize<br/>
+		- cc.Object._deserialize<br/>
+		!#zh
+		资源基类，该类可以被实例化。<br/>
+		
+		您可能需要重写：<br/>
+		- createNode <br/>
+		- cc.Object._serialize<br/>
+		- cc.Object._deserialize<br/> */
+		export class Asset extends RawAsset {		
+		/** !#en
+		Returns the url of this asset's first raw file, if none of rawFile exists,
+		it will returns an empty string.
+		!#zh 返回该资源的原始文件的 URL，如果不支持 RAW 文件，它将返回一个空字符串。 */
+		rawUrl : string;		
+		/** !#en
+		Returns the url of this asset's raw files, if none of rawFile exists,
+		it will returns an empty array.
+		!#zh 返回该资源的原文件的 URL 数组，如果不支持 RAW 文件，它将返回一个空数组。 */
+		rawUrls : String[];		
+		/** !#en Indicates whether its dependent raw assets can support deferred load if the owner scene is marked as `asyncLoadAssets`.
+		!#zh 当场景被标记为 `asyncLoadAssets`，禁止延迟加载该资源所依赖的其它 RawAsset。 */
+		preventDeferredLoadDependents : boolean;		
+		/** !#en
+		Create a new node using this asset in the scene.<br/>
+		If this type of asset dont have its corresponding node type, this method should be null.
+		!#zh
+		使用该资产在场景中创建一个新节点。<br/>
+		如果这类资产没有相应的节点类型，该方法应该是空的。 
+		*/
+		createNode(callback: (error: string, node: any) => void) : void;	
+	}		
+		/** !#en Class for audio data handling.
+		!#zh 音频资源类。 */
+		export class AudioClip extends RawAsset {	
+	}		
+		/** !#en Class for BitmapFont handling.
+		!#zh 位图字体资源类。 */
+		export class BitmapFont extends RawAsset {	
+	}		
+		/** !#en Class for Font handling.
+		!#zh 字体资源类。 */
+		export class Font extends RawAsset {	
+	}		
+		/** !#en Class for prefab handling.
+		!#zh 预制资源类。 */
+		export class Prefab extends Asset {	
+	}		
+		/** !#en
+		The base class for registering asset types.
+		
+		You may want to override:
+		- createNode (static)
+		!#zh
+		注册用的资源基类。<br/>
+		你可能要重写：<br/>
+		- createNode (static) */
+		export class RawAsset extends CCObject {		
+		/** !#en
+		Create a new node in the scene.<br/>
+		If this type of asset dont have its corresponding node type, this method should be null.
+		!#zh
+		在场景中创建一个新节点。<br/>
+		如果这类资源没有相应的节点类型，该方法应该是空的。 
+		*/
+		createNodeByInfo(Info : any, callback: (error: string, node: any) => void) : void;	
+	}		
+		/** !#en Class for scene handling.
+		!#zh 场景资源类。 */
+		export class SceneAsset extends Asset {		
+		scene : Scene;		
+		/** !#en Indicates the raw assets of this scene can be load after scene launched.
+		!#zh 指示该场景依赖的资源可否在场景切换后再延迟加载。 */
+		asyncLoadAssets : boolean;	
+	}		
+		/** !#en Class for script handling.
+		!#zh Script 资源类。 */
+		export class _Script extends Asset {	
+	}		
+		/** !#en Class for JavaScript handling.
+		!#zh JavaScript 资源类。 */
+		export class _JavaScript extends Asset {	
+	}		
+		/** !#en Class for coffee script handling.
+		!#zh CoffeeScript 资源类。 */
+		export class CoffeeScript extends Asset {	
+	}		
+		/** !#en Class for sprite atlas handling.
+		!#zh 精灵图集资源类。 */
+		export class SpriteAtlas extends RawAsset {		
+		/** Returns the texture of the sprite atlas 
+		*/
+		getTexture() : Texture2D;		
+		/** Returns the sprite frame correspond to the given key in sprite atlas. 
+		*/
+		getSpriteFrame(key : string) : SpriteFrame;		
+		/** Returns the sprite frames in sprite atlas. 
+		*/
+		getSpriteFrames() : [SpriteFrame];	
+	}		
+		/** !#en Class for TTFFont handling.
+		!#zh TTF 字体资源类。 */
+		export class TTFFont extends Asset {	
+	}		
+		/** !#en Class for text file.
+		!#zh 文本资源类。 */
+		export class TextAsset extends Asset {	
+	}		
+		/** !#en Box Collider.
+		!#zh 包围盒碰撞组件 */
+		export class BoxCollider extends Component {		
+		/** !#en Position offset
+		!#zh 位置偏移量 */
+		offset : Vec2;		
+		/** !#en Box size
+		!#zh 包围盒大小 */
+		size : Size;	
+	}		
+		/** !#en Circle Collider.
+		!#zh 圆形碰撞组件 */
+		export class CircleCollider extends Component {		
+		/** !#en Position offset
+		!#zh 位置偏移量 */
+		offset : Vec2;		
+		/** !#en Circle radius
+		!#zh 圆形半径 */
+		radius : number;	
+	}		
+		/** !#en Collider component base class.
+		!#zh 碰撞组件基类 */
+		export class Collider extends Component {		
+		/** !#en Tag. If a node has several collider components, you can judge which type of collider is collided according to the tag.
+		!#zh 标签。当一个节点上有多个碰撞组件时，在发生碰撞后，可以使用此标签来判断是节点上的哪个碰撞组件被碰撞了。 */
+		tag : Integer;	
+	}		
+		/** !#en
+		A simple collision manager class.
+		It will calculate whether the collider collides other colliders, if collides then call the callbacks.
+		!#zh
+		一个简单的碰撞组件管理类，用于处理节点之间的碰撞组件是否产生了碰撞，并调用相应回调函数。 */
+		export class CollisionManager {		
+		/** !#en
+		!#zh
+		是否开启碰撞管理，默认为不开启 */
+		enabled : boolean;		
+		/** !#en
+		!#zh
+		是否绘制碰撞组件的包围盒，默认为不绘制 */
+		enabledDrawBoundingBox : boolean;		
+		/** !#en
+		!#zh
+		是否绘制碰撞组件的形状，默认为不绘制 */
+		enabledDebugDraw : boolean;	
+	}		
+		/** !#en Intersection helper class
+		!#zh 辅助类，用于测试形状与形状是否相交 */
+		export class Intersection {		
+		/** !#en Test line and line
+		!#zh 测试线段与线段是否相交
+		@param a1 The start point of the first line
+		@param a2 The end point of the first line
+		@param b1 The start point of the second line
+		@param b2 The end point of the second line 
+		*/
+		lineLine(a1 : Vec2, a2 : Vec2, b1 : Vec2, b2 : Vec2) : boolean;		
+		/** !#en Test line and rect
+		!#zh 测试线段与矩形是否相交
+		@param a1 The start point of the line
+		@param a2 The end point of the line
+		@param b The rect 
+		*/
+		lineRect(a1 : Vec2, a2 : Vec2, b : Rect) : boolean;		
+		/** !#en Test line and polygon
+		!#zh 测试线段与多边形是否相交
+		@param a1 The start point of the line
+		@param a2 The end point of the line
+		@param b The polygon, a set of points 
+		*/
+		linePolygon(a1 : Vec2, a2 : Vec2, b : [Vec2]) : boolean;		
+		/** !#en Test rect and rect
+		!#zh 测试矩形与矩形是否相交
+		@param a The first rect
+		@param b The second rect 
+		*/
+		rectRect(a : Rect, b : Rect) : boolean;		
+		/** !#en Test rect and polygon
+		!#zh 测试矩形与多边形是否相交
+		@param a The rect
+		@param b The polygon, a set of points 
+		*/
+		rectPolygon(a : Rect, b : [Vec2]) : boolean;		
+		/** !#en Test polygon and polygon
+		!#zh 测试多边形与多边形是否相交
+		@param a The first polygon, a set of points
+		@param b The second polygon, a set of points 
+		*/
+		polygonPolygon(a : [Vec2], b : [Vec2]) : boolean;		
+		/** !#en Test circle and circle
+		!#zh 测试圆形与圆形是否相交
+		@param a Object contains position and radius
+		@param b Object contains position and radius 
+		*/
+		circleCircle(a : any, b : any) : boolean;		
+		/** !#en Test polygon and circle
+		!#zh 测试矩形与圆形是否相交
+		@param polygon The Polygon, a set of points
+		@param circle Object contains position and radius 
+		*/
+		polygonCircle(polygon : [Vec2], circle : any) : boolean;		
+		/** !#en Test whether the point is in the polygon
+		!#zh 测试一个点是否在一个多边形中
+		@param point The point
+		@param polygon The polygon, a set of points 
+		*/
+		pointInPolygon(point : Vec2, polygon : [Vec2]) : boolean;		
+		/** !#en Calculate the distance of point to line.
+		!#zh 计算点到直线的距离。如果这是一条线段并且垂足不在线段内，则会计算点到线段端点的距离。
+		@param point The point
+		@param start The start point of line
+		@param end The end point of line
+		@param isSegment whether this line is a segment 
+		*/
+		pointLineDistance(point : Vec2, start : Vec2, end : Vec2, isSegment : boolean) : boolean;	
+	}		
+		/** !#en Polygon Collider.
+		!#zh 多边形碰撞组件 */
+		export class PolygonCollider extends Component {		
+		/** !#en Position offset
+		!#zh 位置偏移量 */
+		offset : Vec2;		
+		/** !#en Polygon points
+		!#zh 多边形顶点数组 */
+		points : [Vec2];	
+	}		
+		/** !#en
 		EventTarget is an object to which an event is dispatched when something has occurred.
 		Entity are the most common event targets, but other objects can be event targets too.
 		
@@ -4628,132 +4867,6 @@ declare module cc {
 		see http://www.w3.org/TR/DOM-Level-3-Events/#event-flow
 		!#zh 冒泡阶段， 包括回程遇到到层次根节点的任何后续节点。 */
 		BUBBLING_PHASE : number;	
-	}		
-		/** !#en Box Collider.
-		!#zh 包围盒碰撞组件 */
-		export class BoxCollider extends Component {		
-		/** !#en Position offset
-		!#zh 位置偏移量 */
-		offset : Vec2;		
-		/** !#en Box size
-		!#zh 包围盒大小 */
-		size : Size;	
-	}		
-		/** !#en Circle Collider.
-		!#zh 圆形碰撞组件 */
-		export class CircleCollider extends Component {		
-		/** !#en Position offset
-		!#zh 位置偏移量 */
-		offset : Vec2;		
-		/** !#en Circle radius
-		!#zh 圆形半径 */
-		radius : number;	
-	}		
-		/** !#en Collider component base class.
-		!#zh 碰撞组件基类 */
-		export class Collider extends Component {		
-		/** !#en Tag. If a node has several collider components, you can judge which type of collider is collided according to the tag.
-		!#zh 标签。当一个节点上有多个碰撞组件时，在发生碰撞后，可以使用此标签来判断是节点上的哪个碰撞组件被碰撞了。 */
-		tag : Integer;	
-	}		
-		/** !#en
-		A simple collision manager class.
-		It will calculate whether the collider collides other colliders, if collides then call the callbacks.
-		!#zh
-		一个简单的碰撞组件管理类，用于处理节点之间的碰撞组件是否产生了碰撞，并调用相应回调函数。 */
-		export class CollisionManager {		
-		/** !#en
-		!#zh
-		是否开启碰撞管理，默认为不开启 */
-		enabled : boolean;		
-		/** !#en
-		!#zh
-		是否绘制碰撞组件的包围盒，默认为不绘制 */
-		enabledDrawBoundingBox : boolean;		
-		/** !#en
-		!#zh
-		是否绘制碰撞组件的形状，默认为不绘制 */
-		enabledDebugDraw : boolean;	
-	}		
-		/** !#en Intersection helper class
-		!#zh 辅助类，用于测试形状与形状是否相交 */
-		export class Intersection {		
-		/** !#en Test line and line
-		!#zh 测试线段与线段是否相交
-		@param a1 The start point of the first line
-		@param a2 The end point of the first line
-		@param b1 The start point of the second line
-		@param b2 The end point of the second line 
-		*/
-		lineLine(a1 : Vec2, a2 : Vec2, b1 : Vec2, b2 : Vec2) : boolean;		
-		/** !#en Test line and rect
-		!#zh 测试线段与矩形是否相交
-		@param a1 The start point of the line
-		@param a2 The end point of the line
-		@param b The rect 
-		*/
-		lineRect(a1 : Vec2, a2 : Vec2, b : Rect) : boolean;		
-		/** !#en Test line and polygon
-		!#zh 测试线段与多边形是否相交
-		@param a1 The start point of the line
-		@param a2 The end point of the line
-		@param b The polygon, a set of points 
-		*/
-		linePolygon(a1 : Vec2, a2 : Vec2, b : [Vec2]) : boolean;		
-		/** !#en Test rect and rect
-		!#zh 测试矩形与矩形是否相交
-		@param a The first rect
-		@param b The second rect 
-		*/
-		rectRect(a : Rect, b : Rect) : boolean;		
-		/** !#en Test rect and polygon
-		!#zh 测试矩形与多边形是否相交
-		@param a The rect
-		@param b The polygon, a set of points 
-		*/
-		rectPolygon(a : Rect, b : [Vec2]) : boolean;		
-		/** !#en Test polygon and polygon
-		!#zh 测试多边形与多边形是否相交
-		@param a The first polygon, a set of points
-		@param b The second polygon, a set of points 
-		*/
-		polygonPolygon(a : [Vec2], b : [Vec2]) : boolean;		
-		/** !#en Test circle and circle
-		!#zh 测试圆形与圆形是否相交
-		@param a Object contains position and radius
-		@param b Object contains position and radius 
-		*/
-		circleCircle(a : any, b : any) : boolean;		
-		/** !#en Test polygon and circle
-		!#zh 测试矩形与圆形是否相交
-		@param polygon The Polygon, a set of points
-		@param circle Object contains position and radius 
-		*/
-		polygonCircle(polygon : [Vec2], circle : any) : boolean;		
-		/** !#en Test whether the point is in the polygon
-		!#zh 测试一个点是否在一个多边形中
-		@param point The point
-		@param polygon The polygon, a set of points 
-		*/
-		pointInPolygon(point : Vec2, polygon : [Vec2]) : boolean;		
-		/** !#en Calculate the distance of point to line.
-		!#zh 计算点到直线的距离。如果这是一条线段并且垂足不在线段内，则会计算点到线段端点的距离。
-		@param point The point
-		@param start The start point of line
-		@param end The end point of line
-		@param isSegment whether this line is a segment 
-		*/
-		pointLineDistance(point : Vec2, start : Vec2, end : Vec2, isSegment : boolean) : boolean;	
-	}		
-		/** !#en Polygon Collider.
-		!#zh 多边形碰撞组件 */
-		export class PolygonCollider extends Component {		
-		/** !#en Position offset
-		!#zh 位置偏移量 */
-		offset : Vec2;		
-		/** !#en Polygon points
-		!#zh 多边形顶点数组 */
-		points : [Vec2];	
 	}		
 		/** !#en The animation component is used to play back animations.
 		
@@ -6206,119 +6319,6 @@ declare module cc {
 		isAlignOnce : boolean;	
 	}		
 		/** !#en
-		Base class for handling assets used in Fireball. This class can be instantiate.
-		
-		You may want to override:<br/>
-		- createNode<br/>
-		- cc.Object._serialize<br/>
-		- cc.Object._deserialize<br/>
-		!#zh
-		资源基类，该类可以被实例化。<br/>
-		
-		您可能需要重写：<br/>
-		- createNode <br/>
-		- cc.Object._serialize<br/>
-		- cc.Object._deserialize<br/> */
-		export class Asset extends RawAsset {		
-		/** !#en
-		Returns the url of this asset's first raw file, if none of rawFile exists,
-		it will returns an empty string.
-		!#zh 返回该资源的原始文件的 URL，如果不支持 RAW 文件，它将返回一个空字符串。 */
-		rawUrl : string;		
-		/** !#en
-		Returns the url of this asset's raw files, if none of rawFile exists,
-		it will returns an empty array.
-		!#zh 返回该资源的原文件的 URL 数组，如果不支持 RAW 文件，它将返回一个空数组。 */
-		rawUrls : String[];		
-		/** !#en Indicates whether its dependent raw assets can support deferred load if the owner scene is marked as `asyncLoadAssets`.
-		!#zh 当场景被标记为 `asyncLoadAssets`，禁止延迟加载该资源所依赖的其它 RawAsset。 */
-		preventDeferredLoadDependents : boolean;		
-		/** !#en
-		Create a new node using this asset in the scene.<br/>
-		If this type of asset dont have its corresponding node type, this method should be null.
-		!#zh
-		使用该资产在场景中创建一个新节点。<br/>
-		如果这类资产没有相应的节点类型，该方法应该是空的。 
-		*/
-		createNode(callback: (error: string, node: any) => void) : void;	
-	}		
-		/** !#en Class for audio data handling.
-		!#zh 音频资源类。 */
-		export class AudioClip extends RawAsset {	
-	}		
-		/** !#en Class for BitmapFont handling.
-		!#zh 位图字体资源类。 */
-		export class BitmapFont extends RawAsset {	
-	}		
-		/** !#en Class for Font handling.
-		!#zh 字体资源类。 */
-		export class Font extends RawAsset {	
-	}		
-		/** !#en Class for prefab handling.
-		!#zh 预制资源类。 */
-		export class Prefab extends Asset {	
-	}		
-		/** !#en
-		The base class for registering asset types.
-		
-		You may want to override:
-		- createNode (static)
-		!#zh
-		注册用的资源基类。<br/>
-		你可能要重写：<br/>
-		- createNode (static) */
-		export class RawAsset extends CCObject {		
-		/** !#en
-		Create a new node in the scene.<br/>
-		If this type of asset dont have its corresponding node type, this method should be null.
-		!#zh
-		在场景中创建一个新节点。<br/>
-		如果这类资源没有相应的节点类型，该方法应该是空的。 
-		*/
-		createNodeByInfo(Info : any, callback: (error: string, node: any) => void) : void;	
-	}		
-		/** !#en Class for scene handling.
-		!#zh 场景资源类。 */
-		export class SceneAsset extends Asset {		
-		scene : Scene;		
-		/** !#en Indicates the raw assets of this scene can be load after scene launched.
-		!#zh 指示该场景依赖的资源可否在场景切换后再延迟加载。 */
-		asyncLoadAssets : boolean;	
-	}		
-		/** !#en Class for script handling.
-		!#zh Script 资源类。 */
-		export class _Script extends Asset {	
-	}		
-		/** !#en Class for JavaScript handling.
-		!#zh JavaScript 资源类。 */
-		export class _JavaScript extends Asset {	
-	}		
-		/** !#en Class for coffee script handling.
-		!#zh CoffeeScript 资源类。 */
-		export class CoffeeScript extends Asset {	
-	}		
-		/** !#en Class for sprite atlas handling.
-		!#zh 精灵图集资源类。 */
-		export class SpriteAtlas extends RawAsset {		
-		/** Returns the texture of the sprite atlas 
-		*/
-		getTexture() : Texture2D;		
-		/** Returns the sprite frame correspond to the given key in sprite atlas. 
-		*/
-		getSpriteFrame(key : string) : SpriteFrame;		
-		/** Returns the sprite frames in sprite atlas. 
-		*/
-		getSpriteFrames() : [SpriteFrame];	
-	}		
-		/** !#en Class for TTFFont handling.
-		!#zh TTF 字体资源类。 */
-		export class TTFFont extends Asset {	
-	}		
-		/** !#en Class for text file.
-		!#zh 文本资源类。 */
-		export class TextAsset extends Asset {	
-	}		
-		/** !#en
 		<p>
 		    The base class of event listener.                                                                        <br/>
 		    If you need custom listener which with different callback, you need to inherit this class.               <br/>
@@ -6542,6 +6542,557 @@ declare module cc {
 		!#zh 设置触摸相关的信息。用于监控触摸事件。 
 		*/
 		setTouchInfo(id : number, x : number, y : number) : void;	
+	}		
+		/** Loader for resource loading process. It's a singleton object. */
+		export class loader extends Pipeline {		
+		/** The downloader in cc.loader's pipeline, it's by default the first pipe.
+		It's used to download files with several handlers: pure text, image, script, audio, font, uuid.
+		You can add your own download function with addDownloadHandlers */
+		downloader : any;		
+		/** The downloader in cc.loader's pipeline, it's by default the second pipe.
+		It's used to parse downloaded content with several handlers: JSON, image, plist, fnt, uuid.
+		You can add your own download function with addLoadHandlers */
+		loader : any;		
+		/** Add custom supported types handler or modify existing type handler for download process.
+		@param extMap Custom supported types with corresponded handler
+		
+		@example 
+		```js
+		cc.loader.addDownloadHandlers({
+		     // This will match all url with `.scene` extension or all url with `scene` type
+		     'scene' : function (url, callback) {}
+		 });
+		``` 
+		*/
+		addDownloadHandlers(extMap : any) : void;		
+		/** Add custom supported types handler or modify existing type handler for load process.
+		@param extMap Custom supported types with corresponded handler
+		
+		@example 
+		```js
+		cc.loader.addLoadHandlers({
+		     // This will match all url with `.scene` extension or all url with `scene` type
+		     'scene' : function (url, callback) {}
+		 });
+		``` 
+		*/
+		addLoadHandlers(extMap : any) : void;		
+		/** Load resources with a progression callback and a complete callback.
+		The progression callback is the same as Pipeline's {{#crossLink "Pipeline/onProgress:method"}}onProgress{{/crossLink}}
+		The complete callback is almost the same as Pipeline's {{#crossLink "Pipeline/onComplete:method"}}onComplete{{/crossLink}}
+		The only difference is when user pass a single url as resources, the complete callback will set its result directly as the second parameter.
+		@param resources Url list in an array
+		@param progressCallback Callback invoked when progression change
+		@param completeCallback Callback invoked when all resources loaded
+		
+		@example 
+		```js
+		cc.loader.load('a.png', function (err, tex) {
+		    cc.log('Result should be a texture: ' + (tex instanceof cc.Texture2D));
+		});
+		
+		cc.loader.load('http://example.com/a.png', function (err, tex) {
+		    cc.log('Should load a texture from external url: ' + (tex instanceof cc.Texture2D));
+		});
+		
+		cc.loader.load({id: 'http://example.com/getImageREST?file=a.png', type: 'png'}, function (err, tex) {
+		    cc.log('Should load a texture from RESTful API by specify the type: ' + (tex instanceof cc.Texture2D));
+		});
+		
+		cc.loader.load(['a.png', 'b.json'], function (errors, results) {
+		    if (errors) {
+		        for (var i = 0; i < errors.length; i++) {
+		            cc.log('Error url [' + errors[i] + ']: ' + results.getError(errors[i]));
+		        }
+		    }
+		    var aTex = results.getContent('a.png');
+		    var bJsonObj = results.getContent('b.json');
+		});
+		``` 
+		*/
+		load(resources : string|any[], progressCallback? : Function, completeCallback : Function) : void;		
+		/** Load resources from the "resources" folder inside the "assets" folder of your project.<br>
+		<br>
+		Note: All asset urls in Creator use forward slashes, urls using backslashes will not work.
+		@param url Url of the target resource.
+		                      The url is relative to the "resources" folder, extensions must be omitted.
+		@param type Only asset of type will be loaded if this argument is supplied.
+		@param completeCallback Callback invoked when the resource loaded.
+		
+		@example 
+		```js
+		// load the prefab (project/assets/resources/misc/character/cocos) from resources folder
+		cc.loader.loadRes('misc/character/cocos', function (err, prefab) {
+		    if (err) {
+		        cc.error(err.message || err);
+		        return;
+		    }
+		    cc.log('Result should be a prefab: ' + (prefab instanceof cc.Prefab));
+		});
+		
+		// load the sprite frame of (project/assets/resources/imgs/cocos.png) from resources folder
+		cc.loader.loadRes('imgs/cocos', cc.SpriteFrame, function (err, spriteFrame) {
+		    if (err) {
+		        cc.error(err.message || err);
+		        return;
+		    }
+		    cc.log('Result should be a sprite frame: ' + (spriteFrame instanceof cc.SpriteFrame));
+		});
+		``` 
+		*/
+		loadRes(url : string, type? : Function, completeCallback: (error: Error, resource: any) => void) : void;		
+		/** Load all assets in a folder inside the "assets/resources" folder of your project.<br>
+		<br>
+		Note: All asset urls in Creator use forward slashes, urls using backslashes will not work.
+		@param url Url of the target folder.
+		                      The url is relative to the "resources" folder, extensions must be omitted.
+		@param type Only asset of type will be loaded if this argument is supplied.
+		@param completeCallback A callback which is called when all assets have been loaded, or an error occurs.
+		
+		@example 
+		```js
+		// load the texture (resources/imgs/cocos.png) and the corresponding sprite frame
+		cc.loader.loadResAll('imgs/cocos', function (err, assets) {
+		    if (err) {
+		        cc.error(err);
+		        return;
+		    }
+		    var texture = assets[0];
+		    var spriteFrame = assets[1];
+		});
+		
+		// load all textures in "resources/imgs/"
+		cc.loader.loadResAll('imgs', cc.Texture2D, function (err, textures) {
+		    if (err) {
+		        cc.error(err);
+		        return;
+		    }
+		    var texture1 = textures[0];
+		    var texture2 = textures[1];
+		});
+		``` 
+		*/
+		loadResAll(url : string, type? : Function, completeCallback: (error: Error, assets: any[]) => void) : void;		
+		/** Get resource data by id. <br>
+		When you load resources with {{#crossLink "loader/load:method"}}{{/crossLink}} or {{#crossLink "loader/loadRes:method"}}{{/crossLink}},
+		the url will be the unique identity of the resource.
+		After loaded, you can acquire them by passing the url to this API. 
+		*/
+		getRes(url : string) : any;		
+		/** Release the cache of resource by id which is usually the url. 
+		*/
+		release(id : string) : void;		
+		/** Release the loaded cache of asset. 
+		*/
+		releaseAsset(asset : Asset) : void;		
+		/** Release the cache of resource which loaded by {{#crossLink "loader/loadRes:method"}}{{/crossLink}}. 
+		*/
+		releaseRes(url : string) : void;		
+		/** Resource cache of all resources. 
+		*/
+		releaseAll() : void;		
+		/** !#en
+		Indicates whether to release the asset when loading a new scene.<br>
+		By default, when loading a new scene, all assets in the previous scene will be released or preserved
+		according to whether the previous scene checked the "Auto Release Assets" option.
+		On the other hand, assets dynamically loaded by using `cc.loader.loadRes` or `cc.loader.loadResAll`
+		will not be affected by that option, remain not released by default.<br>
+		Use this API to change the default behavior on a single asset, to force preserve or release specified asset when scene switching.<br>
+		<br>
+		See: {{#crossLink "loader/setAutoReleaseRecursively:method"}}cc.loader.setAutoReleaseRecursively{{/crossLink}}, {{#crossLink "loader/isAutoRelease:method"}}cc.loader.isAutoRelease{{/crossLink}}
+		!#zh
+		设置当场景切换时是否自动释放资源。<br>
+		默认情况下，当加载新场景时，旧场景的资源根据旧场景是否勾选“Auto Release Assets”，将会被释放或者保留。
+		而使用 `cc.loader.loadRes` 或 `cc.loader.loadResAll` 动态加载的资源，则不受场景设置的影响，默认不自动释放。<br>
+		使用这个 API 可以在单个资源上改变这个默认行为，强制在切换场景时保留或者释放指定资源。<br>
+		<br>
+		参考：{{#crossLink "loader/setAutoReleaseRecursively:method"}}cc.loader.setAutoReleaseRecursively{{/crossLink}}，{{#crossLink "loader/isAutoRelease:method"}}cc.loader.isAutoRelease{{/crossLink}}
+		@param assetOrUrlOrUuid asset object or the raw asset's url or uuid
+		@param autoRelease indicates whether should release automatically
+		
+		@example 
+		```js
+		// auto release the texture event if "Auto Release Assets" disabled in current scene
+		cc.loader.setAutoRelease(texture2d, true);
+		// don't release the texture even if "Auto Release Assets" enabled in current scene
+		cc.loader.setAutoRelease(texture2d, false);
+		// first parameter can be url
+		cc.loader.setAutoRelease(audioUrl, false);
+		``` 
+		*/
+		setAutoRelease(assetOrUrlOrUuid : Asset|string, autoRelease : boolean) : void;		
+		/** !#en
+		Indicates whether to release the asset and its referenced other assets when loading a new scene.<br>
+		By default, when loading a new scene, all assets in the previous scene will be released or preserved
+		according to whether the previous scene checked the "Auto Release Assets" option.
+		On the other hand, assets dynamically loaded by using `cc.loader.loadRes` or `cc.loader.loadResAll`
+		will not be affected by that option, remain not released by default.<br>
+		Use this API to change the default behavior on the specified asset and its recursively referenced assets, to force preserve or release specified asset when scene switching.<br>
+		<br>
+		See: {{#crossLink "loader/setAutoRelease:method"}}cc.loader.setAutoRelease{{/crossLink}}, {{#crossLink "loader/isAutoRelease:method"}}cc.loader.isAutoRelease{{/crossLink}}
+		!#zh
+		设置当场景切换时是否自动释放资源及资源引用的其它资源。<br>
+		默认情况下，当加载新场景时，旧场景的资源根据旧场景是否勾选“Auto Release Assets”，将会被释放或者保留。
+		而使用 `cc.loader.loadRes` 或 `cc.loader.loadResAll` 动态加载的资源，则不受场景设置的影响，默认不自动释放。<br>
+		使用这个 API 可以在指定资源及资源递归引用到的所有资源上改变这个默认行为，强制在切换场景时保留或者释放指定资源。<br>
+		<br>
+		参考：{{#crossLink "loader/setAutoRelease:method"}}cc.loader.setAutoRelease{{/crossLink}}，{{#crossLink "loader/isAutoRelease:method"}}cc.loader.isAutoRelease{{/crossLink}}
+		@param assetOrUrlOrUuid asset object or the raw asset's url or uuid
+		@param autoRelease indicates whether should release automatically
+		
+		@example 
+		```js
+		// auto release the SpriteFrame and its Texture event if "Auto Release Assets" disabled in current scene
+		cc.loader.setAutoReleaseRecursively(spriteFrame, true);
+		// don't release the SpriteFrame and its Texture even if "Auto Release Assets" enabled in current scene
+		cc.loader.setAutoReleaseRecursively(spriteFrame, false);
+		// don't release the Prefab and all the referenced assets
+		cc.loader.setAutoReleaseRecursively(prefab, false);
+		``` 
+		*/
+		setAutoReleaseRecursively(assetOrUrlOrUuid : Asset|string, autoRelease : boolean) : void;		
+		/** !#en
+		Returns whether the asset is configured as auto released, despite how "Auto Release Assets" property is set on scene asset.<br>
+		<br>
+		See: {{#crossLink "loader/setAutoRelease:method"}}cc.loader.setAutoRelease{{/crossLink}}, {{#crossLink "loader/setAutoReleaseRecursively:method"}}cc.loader.setAutoReleaseRecursively{{/crossLink}}
+		
+		!#zh
+		返回指定的资源是否有被设置为自动释放，不论场景的“Auto Release Assets”如何设置。<br>
+		<br>
+		参考：{{#crossLink "loader/setAutoRelease:method"}}cc.loader.setAutoRelease{{/crossLink}}，{{#crossLink "loader/setAutoReleaseRecursively:method"}}cc.loader.setAutoReleaseRecursively{{/crossLink}}
+		@param assetOrUrl asset object or the raw asset's url 
+		*/
+		isAutoRelease(assetOrUrl : Asset|string) : boolean;	
+	}		
+		/** !#en
+		LoadingItems is the queue of items which can flow them into the loading pipeline.</br>
+		Please don't construct it directly, use {{#crossLink "LoadingItems.create"}}LoadingItems.create{{/crossLink}} instead, because we use an internal pool to recycle the queues.</br>
+		It hold a map of items, each entry in the map is a url to object key value pair.</br>
+		Each item always contains the following property:</br>
+		- id: The identification of the item, usually it's identical to url</br>
+		- url: The url </br>
+		- type: The type, it's the extension name of the url by default, could be specified manually too.</br>
+		- error: The error happened in pipeline will be stored in this property.</br>
+		- content: The content processed by the pipeline, the final result will also be stored in this property.</br>
+		- complete: The flag indicate whether the item is completed by the pipeline.</br>
+		- states: An object stores the states of each pipe the item go through, the state can be: Pipeline.ItemState.WORKING | Pipeline.ItemState.ERROR | Pipeline.ItemState.COMPLETE</br>
+		</br>
+		Item can hold other custom properties.</br>
+		Each LoadingItems object will be destroyed for recycle after onComplete callback</br>
+		So please don't hold its reference for later usage, you can copy properties in it though.
+		!#zh
+		LoadingItems 是一个加载对象队列，可以用来输送加载对象到加载管线中。</br>
+		请不要直接使用 new 构造这个类的对象，你可以使用 {{#crossLink "LoadingItems.create"}}LoadingItems.create{{/crossLink}} 来创建一个新的加载队列，这样可以允许我们的内部对象池回收并重利用加载队列。
+		它有一个 map 属性用来存放加载项，在 map 对象中已 url 为 key 值。</br>
+		每个对象都会包含下列属性：</br>
+		- id：该对象的标识，通常与 url 相同。</br>
+		- url：路径 </br>
+		- type: 类型，它这是默认的 URL 的扩展名，可以手动指定赋值。</br>
+		- error：pipeline 中发生的错误将被保存在这个属性中。</br>
+		- content: pipeline 中处理的临时结果，最终的结果也将被存储在这个属性中。</br>
+		- complete：该标志表明该对象是否通过 pipeline 完成。</br>
+		- states：该对象存储每个管道中对象经历的状态，状态可以是 Pipeline.ItemState.WORKING | Pipeline.ItemState.ERROR | Pipeline.ItemState.COMPLETE</br>
+		</br>
+		对象可容纳其他自定义属性。</br>
+		每个 LoadingItems 对象都会在 onComplete 回调之后被销毁，所以请不要持有它的引用并在结束回调之后依赖它的内容执行任何逻辑，有这种需求的话你可以提前复制它的内容。 */
+		export class LoadingItems extends CallbacksInvoker {		
+		/** !#en This is a callback which will be invoked while an item flow out the pipeline.
+		You can pass the callback function in LoadingItems.create or set it later.
+		!#zh 这个回调函数将在 item 加载结束后被调用。你可以在构造时传递这个回调函数或者是在构造之后直接设置。
+		@param completedCount The number of the items that are already completed.
+		@param totalCount The total number of the items.
+		@param item The latest item which flow out the pipeline.
+		
+		@example 
+		```js
+		loadingItems.onProgress = function (completedCount, totalCount, item) {
+		     var progress = (100 * completedCount / totalCount).toFixed(2);
+		     cc.log(progress + '%');
+		 }
+		``` 
+		*/
+		onProgress(completedCount : number, totalCount : number, item : any) : void;		
+		/** !#en This is a callback which will be invoked while all items is completed,
+		You can pass the callback function in LoadingItems.create or set it later.
+		!#zh 该函数将在加载队列全部完成时被调用。你可以在构造时传递这个回调函数或者是在构造之后直接设置。
+		@param errors All errored urls will be stored in this array, if no error happened, then it will be null
+		@param items All items.
+		
+		@example 
+		```js
+		loadingItems.onComplete = function (errors, items) {
+		     if (error)
+		         cc.log('Completed with ' + errors.length + ' errors');
+		     else
+		         cc.log('Completed ' + items.totalCount + ' items');
+		 }
+		``` 
+		*/
+		onComplete(errors : any[], items : LoadingItems) : void;		
+		/** !#en The map of all items.
+		!#zh 存储所有加载项的对象。 */
+		map : any;		
+		/** !#en The map of completed items.
+		!#zh 存储已经完成的加载项。 */
+		completed : any;		
+		/** !#en Total count of all items.
+		!#zh 所有加载项的总数。 */
+		totalCount : number;		
+		/** !#en Total count of completed items.
+		!#zh 所有完成加载项的总数。 */
+		completedCount : number;		
+		/** !#en Activated or not.
+		!#zh 是否启用。 */
+		active : boolean;		
+		/** !#en The constructor function of LoadingItems, this will use recycled LoadingItems in the internal pool if possible.
+		You can pass onProgress and onComplete callbacks to visualize the loading process.
+		!#zh LoadingItems 的构造函数，这种构造方式会重用内部对象缓冲池中的 LoadingItems 队列，以尽量避免对象创建。
+		你可以传递 onProgress 和 onComplete 回调函数来获知加载进度信息。
+		@param pipeline The pipeline to process the queue.
+		@param urlList The items array.
+		@param onProgress The progression callback, refer to {{#crossLink "LoadingItems.onProgress"}}{{/crossLink}}
+		@param onComplete The completion callback, refer to {{#crossLink "LoadingItems.onComplete"}}{{/crossLink}}
+		
+		@example 
+		```js
+		LoadingItems.create(cc.loader, ['a.png', 'b.plist'], function (completedCount, totalCount, item) {
+		     var progress = (100 * completedCount / totalCount).toFixed(2);
+		     cc.log(progress + '%');
+		 }, function (errors, items) {
+		     if (errors) {
+		         for (var i = 0; i < errors.length; ++i) {
+		             cc.log('Error url: ' + errors[i] + ', error: ' + items.getError(errors[i]));
+		         }
+		     }
+		     else {
+		         var result_a = items.getContent('a.png');
+		         // ...
+		     }
+		 })
+		``` 
+		*/
+		create(pipeline : Pipeline, urlList : any[], onProgress : Function, onComplete : Function) : LoadingItems;		
+		/** !#en Retrieve the LoadingItems queue object for an item.
+		!#zh 通过 item 对象获取它的 LoadingItems 队列。
+		@param item The item to query 
+		*/
+		getQueue(item : any) : LoadingItems;		
+		/** !#en Complete an item in the LoadingItems queue, please do not call this method unless you know what's happening.
+		!#zh 通知 LoadingItems 队列一个 item 对象已完成，请不要调用这个函数，除非你知道自己在做什么。
+		@param item The item which has completed 
+		*/
+		itemComplete(item : any) : void;		
+		/** !#en Add urls to the LoadingItems queue.
+		!#zh 向一个 LoadingItems 队列添加加载项。
+		@param urlList The url list to be appended, the url can be object or string 
+		*/
+		append(urlList : any[]) : any[];		
+		/** !#en Complete a LoadingItems queue, please do not call this method unless you know what's happening.
+		!#zh 完成一个 LoadingItems 队列，请不要调用这个函数，除非你知道自己在做什么。 
+		*/
+		allComplete() : void;		
+		/** !#en Check whether all items are completed.
+		!#zh 检查是否所有加载项都已经完成。 
+		*/
+		isCompleted() : boolean;		
+		/** !#en Check whether an item is completed.
+		!#zh 通过 id 检查指定加载项是否已经加载完成。
+		@param id The item's id. 
+		*/
+		isItemCompleted(id : string) : boolean;		
+		/** !#en Check whether an item exists.
+		!#zh 通过 id 检查加载项是否存在。
+		@param id The item's id. 
+		*/
+		exists(id : string) : boolean;		
+		/** !#en Returns the content of an internal item.
+		!#zh 通过 id 获取指定对象的内容。
+		@param id The item's id. 
+		*/
+		getContent(id : string) : any;		
+		/** !#en Returns the error of an internal item.
+		!#zh 通过 id 获取指定对象的错误信息。
+		@param id The item's id. 
+		*/
+		getError(id : string) : any;		
+		/** !#en Add a listener for an item, the callback will be invoked when the item is completed.
+		!#zh 监听加载项（通过 key 指定）的完成事件。
+		@param callback can be null
+		@param target can be null 
+		*/
+		addListener(key : string, callback : Function, target : any) : boolean;		
+		/** !#en
+		Check if the specified key has any registered callback. </br>
+		If a callback is also specified, it will only return true if the callback is registered.
+		!#zh
+		检查指定的加载项是否有完成事件监听器。</br>
+		如果同时还指定了一个回调方法，并且回调有注册，它只会返回 true。 
+		*/
+		hasListener(key : string, callback? : Function, target? : any) : boolean;		
+		/** !#en
+		Removes a listener. </br>
+		It will only remove when key, callback, target all match correctly.
+		!#zh
+		移除指定加载项已经注册的完成事件监听器。</br>
+		只会删除 key, callback, target 均匹配的监听器。 
+		*/
+		remove(key : string, callback : Function, target : any) : boolean;		
+		/** !#en
+		Removes all callbacks registered in a certain event
+		type or all callbacks registered with a certain target.
+		!#zh 删除指定目标的所有完成事件监听器。
+		@param key The event key to be removed or the target to be removed 
+		*/
+		removeAllListeners(key : string|any) : void;		
+		/** !#en Complete an item in the LoadingItems queue, please do not call this method unless you know what's happening.
+		!#zh 通知 LoadingItems 队列一个 item 对象已完成，请不要调用这个函数，除非你知道自己在做什么。
+		@param item The item id 
+		*/
+		itemComplete(item : string) : void;		
+		/** !#en Destroy the LoadingItems queue, the queue object won't be garbage collected, it will be recycled, so every after destroy is not reliable.
+		!#zh 销毁一个 LoadingItems 队列，这个队列对象会被内部缓冲池回收，所以销毁后的所有内部信息都是不可依赖的。 
+		*/
+		destroy() : void;	
+	}		
+		/** !#en
+		A pipeline describes a sequence of manipulations, each manipulation is called a pipe.</br>
+		It's designed for loading process. so items should be urls, and the url will be the identity of each item during the process.</br>
+		A list of items can flow in the pipeline and it will output the results of all pipes.</br>
+		They flow in the pipeline like water in tubes, they go through pipe by pipe separately.</br>
+		Finally all items will flow out the pipeline and the process is finished.
+		
+		!#zh
+		pipeline 描述了一系列的操作，每个操作都被称为 pipe。</br>
+		它被设计来做加载过程的流程管理。所以 item 应该是 url，并且该 url 将是在处理中的每个 item 的身份标识。</br>
+		一个 item 列表可以在 pipeline 中流动，它将输出加载项经过所有 pipe 之后的结果。</br>
+		它们穿过 pipeline 就像水在管子里流动，将会按顺序流过每个 pipe。</br>
+		最后当所有加载项都流出 pipeline 时，整个加载流程就结束了。 */
+		export class Pipeline {		
+		/** !#en
+		Constructor, pass an array of pipes to construct a new Pipeline,
+		the pipes will be chained in the given order.</br>
+		A pipe is an object which must contain an `id` in string and a `handle` function,
+		the id must be unique in the pipeline.</br>
+		It can also include `async` property to identify whether it's an asynchronous process.
+		!#zh
+		构造函数，通过一系列的 pipe 来构造一个新的 pipeline，pipes 将会在给定的顺序中被锁定。</br>
+		一个 pipe 就是一个对象，它包含了字符串类型的 ‘id’ 和 ‘handle’ 函数，在 pipeline 中 id 必须是唯一的。</br>
+		它还可以包括 ‘async’ 属性以确定它是否是一个异步过程。
+		
+		@example 
+		```js
+		var pipeline = new Pipeline([
+		     {
+		         id: 'Downloader',
+		         handle: function (item, callback) {},
+		         async: true
+		     },
+		     {id: 'Parser', handle: function (item) {}, async: false}
+		 ]);
+		``` 
+		*/
+		Pipeline(pipes : any[]) : void;		
+		/** !#en
+		Insert a new pipe at the given index of the pipeline. </br>
+		A pipe must contain an `id` in string and a `handle` function, the id must be unique in the pipeline.
+		!#zh
+		在给定的索引位置插入一个新的 pipe。</br>
+		一个 pipe 必须包含一个字符串类型的 ‘id’ 和 ‘handle’ 函数，该 id 在 pipeline 必须是唯一标识。
+		@param pipe The pipe to be inserted
+		@param index The index to insert 
+		*/
+		insertPipe(pipe : any, index : number) : void;		
+		/** !#en
+		Add a new pipe at the end of the pipeline. </br>
+		A pipe must contain an `id` in string and a `handle` function, the id must be unique in the pipeline.
+		!#zh
+		添加一个新的 pipe 到 pipeline 尾部。 </br>
+		该 pipe 必须包含一个字符串类型 ‘id’ 和 ‘handle’ 函数，该 id 在 pipeline 必须是唯一标识。
+		@param pipe The pipe to be appended 
+		*/
+		appendPipe(pipe : any) : void;		
+		/** !#en
+		Let new items flow into the pipeline. </br>
+		Each item can be a simple url string or an object,
+		if it's an object, it must contain `id` property. </br>
+		You can specify its type by `type` property, by default, the type is the extension name in url. </br>
+		By adding a `skips` property including pipe ids, you can skip these pipe. </br>
+		The object can contain any supplementary property as you want. </br>
+		!#zh
+		让新的 item 流入 pipeline 中。</br>
+		这里的每个 item 可以是一个简单字符串类型的 url 或者是一个对象,
+		如果它是一个对象的话，他必须要包含 ‘id’ 属性。</br>
+		你也可以指定它的 ‘type’ 属性类型，默认情况下，该类型是 ‘url’ 的后缀名。</br>
+		也通过添加一个 包含 ‘skips’ 属性的 item 对象，你就可以跳过 skips 中包含的 pipe。</br>
+		该对象可以包含任何附加属性。
+		
+		@example 
+		```js
+		pipeline.flowIn([
+		     'res/Background.png',
+		     {
+		         id: 'res/scene.json',
+		         type: 'scene',
+		         name: 'scene',
+		         skips: ['Downloader']
+		     }
+		 ]);
+		``` 
+		*/
+		flowIn(items : any[]) : void;		
+		/** !#en
+		Let new items flow into the pipeline and give a callback when the list of items are all completed. </br>
+		This is for loading dependencies for an existing item in flow, usually used in a pipe logic. </br>
+		For example, we have a loader for scene configuration file in JSON, the scene will only be fully loaded  </br>
+		after all its dependencies are loaded, then you will need to use function to flow in all dependencies  </br>
+		found in the configuration file, and finish the loader pipe only after all dependencies are loaded (in the callback).
+		!#zh
+		让新 items 流入 pipeline 并且当 item 列表完成时进行回调函数。</br>
+		这个 API 的使用通常是为了加载依赖项。</br>
+		例如：</br>
+		我们需要加载一个场景配置的 JSON 文件，该场景会将所有的依赖项全部都加载完毕以后，进行回调表示加载完毕。 
+		*/
+		flowInDeps(urlList : any[], callback : Function) : any[];		
+		/** !#en
+		Copy the item states from one source item to all destination items. </br>
+		It's quite useful when a pipe generate new items from one source item,</br>
+		then you should flowIn these generated items into pipeline, </br>
+		but you probably want them to skip all pipes the source item already go through,</br>
+		you can achieve it with this API. </br>
+		</br>
+		For example, an unzip pipe will generate more items, but you won't want them to pass unzip or download pipe again.
+		!#zh
+		从一个源 item 向所有目标 item 复制它的 pipe 状态，用于避免重复通过部分 pipe。</br>
+		当一个源 item 生成了一系列新的 items 时很有用，</br>
+		你希望让这些新的依赖项进入 pipeline，但是又不希望它们通过源 item 已经经过的 pipe，</br>
+		但是你可能希望他们源 item 已经通过并跳过所有 pipes，</br>
+		这个时候就可以使用这个 API。
+		@param srcItem The source item
+		@param dstItems A single destination item or an array of destination items 
+		*/
+		copyItemStates(srcItem : any, dstItems : any[]|any) : void;		
+		/** !#en Returns whether the pipeline is flowing (contains item) currently.
+		!#zh 获取 pipeline 当前是否正在处理中。 
+		*/
+		isFlowing() : boolean;		
+		/** !#en Returns all items in pipeline.
+		!#zh 获取 pipeline 中的所有 items。 
+		*/
+		getItems() : LoadingItems;		
+		/** !#en Returns an item in pipeline.
+		!#zh 根据 id 获取一个 item
+		@param id The id of the item 
+		*/
+		getItem(id : any) : any;		
+		/** !#en Removes an item in pipeline, no matter it's in progress or completed.
+		!#zh 移除指定 item，无论是进行时还是已完成。
+		@param id The id of the item 
+		*/
+		removeItem(id : any) : boolean;		
+		/** !#en Clear the current pipeline, this function will clean up the items.
+		!#zh 清空当前 pipeline，该函数将清理 items。 
+		*/
+		clear() : void;	
 	}		
 		/** undefined */
 		export class Graphics extends _RendererUnderSG {		
@@ -7534,659 +8085,6 @@ declare module cc {
 		``` 
 		*/
 		builtinRaw(url : string) : string;	
-	}		
-		/** Loader for resource loading process. It's a singleton object. */
-		export class loader extends Pipeline {		
-		/** The downloader in cc.loader's pipeline, it's by default the first pipe.
-		It's used to download files with several handlers: pure text, image, script, audio, font, uuid.
-		You can add your own download function with addDownloadHandlers */
-		downloader : any;		
-		/** The downloader in cc.loader's pipeline, it's by default the second pipe.
-		It's used to parse downloaded content with several handlers: JSON, image, plist, fnt, uuid.
-		You can add your own download function with addLoadHandlers */
-		loader : any;		
-		/** Add custom supported types handler or modify existing type handler for download process.
-		@param extMap Custom supported types with corresponded handler
-		
-		@example 
-		```js
-		cc.loader.addDownloadHandlers({
-		     // This will match all url with `.scene` extension or all url with `scene` type
-		     'scene' : function (url, callback) {}
-		 });
-		``` 
-		*/
-		addDownloadHandlers(extMap : any) : void;		
-		/** Add custom supported types handler or modify existing type handler for load process.
-		@param extMap Custom supported types with corresponded handler
-		
-		@example 
-		```js
-		cc.loader.addLoadHandlers({
-		     // This will match all url with `.scene` extension or all url with `scene` type
-		     'scene' : function (url, callback) {}
-		 });
-		``` 
-		*/
-		addLoadHandlers(extMap : any) : void;		
-		/** Load resources with a progression callback and a complete callback.
-		The progression callback is the same as Pipeline's {{#crossLink "Pipeline/onProgress:method"}}onProgress{{/crossLink}}
-		The complete callback is almost the same as Pipeline's {{#crossLink "Pipeline/onComplete:method"}}onComplete{{/crossLink}}
-		The only difference is when user pass a single url as resources, the complete callback will set its result directly as the second parameter.
-		@param resources Url list in an array
-		@param progressCallback Callback invoked when progression change
-		@param completeCallback Callback invoked when all resources loaded
-		
-		@example 
-		```js
-		cc.loader.load('a.png', function (err, tex) {
-		    cc.log('Result should be a texture: ' + (tex instanceof cc.Texture2D));
-		});
-		
-		cc.loader.load('http://example.com/a.png', function (err, tex) {
-		    cc.log('Should load a texture from external url: ' + (tex instanceof cc.Texture2D));
-		});
-		
-		cc.loader.load({id: 'http://example.com/getImageREST?file=a.png', type: 'png'}, function (err, tex) {
-		    cc.log('Should load a texture from RESTful API by specify the type: ' + (tex instanceof cc.Texture2D));
-		});
-		
-		cc.loader.load(['a.png', 'b.json'], function (errors, results) {
-		    if (errors) {
-		        for (var i = 0; i < errors.length; i++) {
-		            cc.log('Error url [' + errors[i] + ']: ' + results.getError(errors[i]));
-		        }
-		    }
-		    var aTex = results.getContent('a.png');
-		    var bJsonObj = results.getContent('b.json');
-		});
-		``` 
-		*/
-		load(resources : string|any[], progressCallback? : Function, completeCallback : Function) : void;		
-		/** Load resources from the "resources" folder inside the "assets" folder of your project.<br>
-		<br>
-		Note: All asset urls in Creator use forward slashes, urls using backslashes will not work.
-		@param url Url of the target resource.
-		                      The url is relative to the "resources" folder, extensions must be omitted.
-		@param type Only asset of type will be loaded if this argument is supplied.
-		@param completeCallback Callback invoked when the resource loaded.
-		
-		@example 
-		```js
-		// load the prefab (project/assets/resources/misc/character/cocos) from resources folder
-		cc.loader.loadRes('misc/character/cocos', function (err, prefab) {
-		    if (err) {
-		        cc.error(err.message || err);
-		        return;
-		    }
-		    cc.log('Result should be a prefab: ' + (prefab instanceof cc.Prefab));
-		});
-		
-		// load the sprite frame of (project/assets/resources/imgs/cocos.png) from resources folder
-		cc.loader.loadRes('imgs/cocos', cc.SpriteFrame, function (err, spriteFrame) {
-		    if (err) {
-		        cc.error(err.message || err);
-		        return;
-		    }
-		    cc.log('Result should be a sprite frame: ' + (spriteFrame instanceof cc.SpriteFrame));
-		});
-		``` 
-		*/
-		loadRes(url : string, type? : Function, completeCallback: (error: Error, resource: any) => void) : void;		
-		/** Load all assets in a folder inside the "assets/resources" folder of your project.<br>
-		<br>
-		Note: All asset urls in Creator use forward slashes, urls using backslashes will not work.
-		@param url Url of the target folder.
-		                      The url is relative to the "resources" folder, extensions must be omitted.
-		@param type Only asset of type will be loaded if this argument is supplied.
-		@param completeCallback A callback which is called when all assets have been loaded, or an error occurs.
-		
-		@example 
-		```js
-		// load the texture (resources/imgs/cocos.png) and the corresponding sprite frame
-		cc.loader.loadResAll('imgs/cocos', function (err, assets) {
-		    if (err) {
-		        cc.error(err);
-		        return;
-		    }
-		    var texture = assets[0];
-		    var spriteFrame = assets[1];
-		});
-		
-		// load all textures in "resources/imgs/"
-		cc.loader.loadResAll('imgs', cc.Texture2D, function (err, textures) {
-		    if (err) {
-		        cc.error(err);
-		        return;
-		    }
-		    var texture1 = textures[0];
-		    var texture2 = textures[1];
-		});
-		``` 
-		*/
-		loadResAll(url : string, type? : Function, completeCallback: (error: Error, assets: any[]) => void) : void;		
-		/** Get resource data by id. <br>
-		When you load resources with {{#crossLink "loader/load:method"}}{{/crossLink}} or {{#crossLink "loader/loadRes:method"}}{{/crossLink}},
-		the url will be the unique identity of the resource.
-		After loaded, you can acquire them by passing the url to this API. 
-		*/
-		getRes(url : string) : any;		
-		/** Release the cache of resource by id which is usually the url. 
-		*/
-		release(id : string) : void;		
-		/** Release the loaded cache of asset. 
-		*/
-		releaseAsset(asset : Asset) : void;		
-		/** Release the cache of resource which loaded by {{#crossLink "loader/loadRes:method"}}{{/crossLink}}. 
-		*/
-		releaseRes(url : string) : void;		
-		/** Resource cache of all resources. 
-		*/
-		releaseAll() : void;		
-		/** !#en
-		Indicates whether to release the asset when loading a new scene.<br>
-		By default, when loading a new scene, all assets in the previous scene will be released or preserved
-		according to whether the previous scene checked the "Auto Release Assets" option.
-		On the other hand, assets dynamically loaded by using `cc.loader.loadRes` or `cc.loader.loadResAll`
-		will not be affected by that option, remain not released by default.<br>
-		Use this API to change the default behavior on a single asset, to force preserve or release specified asset when scene switching.<br>
-		<br>
-		See: {{#crossLink "loader/setAutoReleaseRecursively:method"}}cc.loader.setAutoReleaseRecursively{{/crossLink}}, {{#crossLink "loader/isAutoRelease:method"}}cc.loader.isAutoRelease{{/crossLink}}
-		!#zh
-		设置当场景切换时是否自动释放资源。<br>
-		默认情况下，当加载新场景时，旧场景的资源根据旧场景是否勾选“Auto Release Assets”，将会被释放或者保留。
-		而使用 `cc.loader.loadRes` 或 `cc.loader.loadResAll` 动态加载的资源，则不受场景设置的影响，默认不自动释放。<br>
-		使用这个 API 可以在单个资源上改变这个默认行为，强制在切换场景时保留或者释放指定资源。<br>
-		<br>
-		参考：{{#crossLink "loader/setAutoReleaseRecursively:method"}}cc.loader.setAutoReleaseRecursively{{/crossLink}}，{{#crossLink "loader/isAutoRelease:method"}}cc.loader.isAutoRelease{{/crossLink}}
-		@param assetOrUrlOrUuid asset object or the raw asset's url or uuid
-		@param autoRelease indicates whether should release automatically
-		
-		@example 
-		```js
-		// auto release the texture event if "Auto Release Assets" disabled in current scene
-		cc.loader.setAutoRelease(texture2d, true);
-		// don't release the texture even if "Auto Release Assets" enabled in current scene
-		cc.loader.setAutoRelease(texture2d, false);
-		// first parameter can be url
-		cc.loader.setAutoRelease(audioUrl, false);
-		``` 
-		*/
-		setAutoRelease(assetOrUrlOrUuid : Asset|string, autoRelease : boolean) : void;		
-		/** !#en
-		Indicates whether to release the asset and its referenced other assets when loading a new scene.<br>
-		By default, when loading a new scene, all assets in the previous scene will be released or preserved
-		according to whether the previous scene checked the "Auto Release Assets" option.
-		On the other hand, assets dynamically loaded by using `cc.loader.loadRes` or `cc.loader.loadResAll`
-		will not be affected by that option, remain not released by default.<br>
-		Use this API to change the default behavior on the specified asset and its recursively referenced assets, to force preserve or release specified asset when scene switching.<br>
-		<br>
-		See: {{#crossLink "loader/setAutoRelease:method"}}cc.loader.setAutoRelease{{/crossLink}}, {{#crossLink "loader/isAutoRelease:method"}}cc.loader.isAutoRelease{{/crossLink}}
-		!#zh
-		设置当场景切换时是否自动释放资源及资源引用的其它资源。<br>
-		默认情况下，当加载新场景时，旧场景的资源根据旧场景是否勾选“Auto Release Assets”，将会被释放或者保留。
-		而使用 `cc.loader.loadRes` 或 `cc.loader.loadResAll` 动态加载的资源，则不受场景设置的影响，默认不自动释放。<br>
-		使用这个 API 可以在指定资源及资源递归引用到的所有资源上改变这个默认行为，强制在切换场景时保留或者释放指定资源。<br>
-		<br>
-		参考：{{#crossLink "loader/setAutoRelease:method"}}cc.loader.setAutoRelease{{/crossLink}}，{{#crossLink "loader/isAutoRelease:method"}}cc.loader.isAutoRelease{{/crossLink}}
-		@param assetOrUrlOrUuid asset object or the raw asset's url or uuid
-		@param autoRelease indicates whether should release automatically
-		
-		@example 
-		```js
-		// auto release the SpriteFrame and its Texture event if "Auto Release Assets" disabled in current scene
-		cc.loader.setAutoReleaseRecursively(spriteFrame, true);
-		// don't release the SpriteFrame and its Texture even if "Auto Release Assets" enabled in current scene
-		cc.loader.setAutoReleaseRecursively(spriteFrame, false);
-		// don't release the Prefab and all the referenced assets
-		cc.loader.setAutoReleaseRecursively(prefab, false);
-		``` 
-		*/
-		setAutoReleaseRecursively(assetOrUrlOrUuid : Asset|string, autoRelease : boolean) : void;		
-		/** !#en
-		Returns whether the asset is configured as auto released, despite how "Auto Release Assets" property is set on scene asset.<br>
-		<br>
-		See: {{#crossLink "loader/setAutoRelease:method"}}cc.loader.setAutoRelease{{/crossLink}}, {{#crossLink "loader/setAutoReleaseRecursively:method"}}cc.loader.setAutoReleaseRecursively{{/crossLink}}
-		
-		!#zh
-		返回指定的资源是否有被设置为自动释放，不论场景的“Auto Release Assets”如何设置。<br>
-		<br>
-		参考：{{#crossLink "loader/setAutoRelease:method"}}cc.loader.setAutoRelease{{/crossLink}}，{{#crossLink "loader/setAutoReleaseRecursively:method"}}cc.loader.setAutoReleaseRecursively{{/crossLink}}
-		@param assetOrUrl asset object or the raw asset's url 
-		*/
-		isAutoRelease(assetOrUrl : Asset|string) : boolean;	
-	}		
-		/** !#en
-		LoadingItems is the queue of items which can flow them into the loading pipeline.</br>
-		Please don't construct it directly, use {{#crossLink "LoadingItems.create"}}LoadingItems.create{{/crossLink}} instead, because we use an internal pool to recycle the queues.</br>
-		It hold a map of items, each entry in the map is a url to object key value pair.</br>
-		Each item always contains the following property:</br>
-		- id: The identification of the item, usually it's identical to url</br>
-		- url: The url </br>
-		- type: The type, it's the extension name of the url by default, could be specified manually too.</br>
-		- error: The error happened in pipeline will be stored in this property.</br>
-		- content: The content processed by the pipeline, the final result will also be stored in this property.</br>
-		- complete: The flag indicate whether the item is completed by the pipeline.</br>
-		- states: An object stores the states of each pipe the item go through, the state can be: Pipeline.ItemState.WORKING | Pipeline.ItemState.ERROR | Pipeline.ItemState.COMPLETE</br>
-		</br>
-		Item can hold other custom properties.</br>
-		Each LoadingItems object will be destroyed for recycle after onComplete callback</br>
-		So please don't hold its reference for later usage, you can copy properties in it though.
-		!#zh
-		LoadingItems 是一个加载对象队列，可以用来输送加载对象到加载管线中。</br>
-		请不要直接使用 new 构造这个类的对象，你可以使用 {{#crossLink "LoadingItems.create"}}LoadingItems.create{{/crossLink}} 来创建一个新的加载队列，这样可以允许我们的内部对象池回收并重利用加载队列。
-		它有一个 map 属性用来存放加载项，在 map 对象中已 url 为 key 值。</br>
-		每个对象都会包含下列属性：</br>
-		- id：该对象的标识，通常与 url 相同。</br>
-		- url：路径 </br>
-		- type: 类型，它这是默认的 URL 的扩展名，可以手动指定赋值。</br>
-		- error：pipeline 中发生的错误将被保存在这个属性中。</br>
-		- content: pipeline 中处理的临时结果，最终的结果也将被存储在这个属性中。</br>
-		- complete：该标志表明该对象是否通过 pipeline 完成。</br>
-		- states：该对象存储每个管道中对象经历的状态，状态可以是 Pipeline.ItemState.WORKING | Pipeline.ItemState.ERROR | Pipeline.ItemState.COMPLETE</br>
-		</br>
-		对象可容纳其他自定义属性。</br>
-		每个 LoadingItems 对象都会在 onComplete 回调之后被销毁，所以请不要持有它的引用并在结束回调之后依赖它的内容执行任何逻辑，有这种需求的话你可以提前复制它的内容。 */
-		export class LoadingItems extends CallbacksInvoker {		
-		/** !#en This is a callback which will be invoked while an item flow out the pipeline.
-		You can pass the callback function in LoadingItems.create or set it later.
-		!#zh 这个回调函数将在 item 加载结束后被调用。你可以在构造时传递这个回调函数或者是在构造之后直接设置。
-		@param completedCount The number of the items that are already completed.
-		@param totalCount The total number of the items.
-		@param item The latest item which flow out the pipeline.
-		
-		@example 
-		```js
-		loadingItems.onProgress = function (completedCount, totalCount, item) {
-		     var progress = (100 * completedCount / totalCount).toFixed(2);
-		     cc.log(progress + '%');
-		 }
-		``` 
-		*/
-		onProgress(completedCount : number, totalCount : number, item : any) : void;		
-		/** !#en This is a callback which will be invoked while all items is completed,
-		You can pass the callback function in LoadingItems.create or set it later.
-		!#zh 该函数将在加载队列全部完成时被调用。你可以在构造时传递这个回调函数或者是在构造之后直接设置。
-		@param errors All errored urls will be stored in this array, if no error happened, then it will be null
-		@param items All items.
-		
-		@example 
-		```js
-		loadingItems.onComplete = function (errors, items) {
-		     if (error)
-		         cc.log('Completed with ' + errors.length + ' errors');
-		     else
-		         cc.log('Completed ' + items.totalCount + ' items');
-		 }
-		``` 
-		*/
-		onComplete(errors : any[], items : LoadingItems) : void;		
-		/** !#en The map of all items.
-		!#zh 存储所有加载项的对象。 */
-		map : any;		
-		/** !#en The map of completed items.
-		!#zh 存储已经完成的加载项。 */
-		completed : any;		
-		/** !#en Total count of all items.
-		!#zh 所有加载项的总数。 */
-		totalCount : number;		
-		/** !#en Total count of completed items.
-		!#zh 所有完成加载项的总数。 */
-		completedCount : number;		
-		/** !#en Activated or not.
-		!#zh 是否启用。 */
-		active : boolean;		
-		/** !#en The constructor function of LoadingItems, this will use recycled LoadingItems in the internal pool if possible.
-		You can pass onProgress and onComplete callbacks to visualize the loading process.
-		!#zh LoadingItems 的构造函数，这种构造方式会重用内部对象缓冲池中的 LoadingItems 队列，以尽量避免对象创建。
-		你可以传递 onProgress 和 onComplete 回调函数来获知加载进度信息。
-		@param pipeline The pipeline to process the queue.
-		@param urlList The items array.
-		@param onProgress The progression callback, refer to {{#crossLink "LoadingItems.onProgress"}}{{/crossLink}}
-		@param onComplete The completion callback, refer to {{#crossLink "LoadingItems.onComplete"}}{{/crossLink}}
-		
-		@example 
-		```js
-		LoadingItems.create(cc.loader, ['a.png', 'b.plist'], function (completedCount, totalCount, item) {
-		     var progress = (100 * completedCount / totalCount).toFixed(2);
-		     cc.log(progress + '%');
-		 }, function (errors, items) {
-		     if (errors) {
-		         for (var i = 0; i < errors.length; ++i) {
-		             cc.log('Error url: ' + errors[i] + ', error: ' + items.getError(errors[i]));
-		         }
-		     }
-		     else {
-		         var result_a = items.getContent('a.png');
-		         // ...
-		     }
-		 })
-		``` 
-		*/
-		create(pipeline : Pipeline, urlList : any[], onProgress : Function, onComplete : Function) : LoadingItems;		
-		/** !#en Retrieve the LoadingItems queue object for an item.
-		!#zh 通过 item 对象获取它的 LoadingItems 队列。
-		@param item The item to query 
-		*/
-		getQueue(item : any) : LoadingItems;		
-		/** !#en Complete an item in the LoadingItems queue, please do not call this method unless you know what's happening.
-		!#zh 通知 LoadingItems 队列一个 item 对象已完成，请不要调用这个函数，除非你知道自己在做什么。
-		@param item The item which has completed 
-		*/
-		itemComplete(item : any) : void;		
-		/** !#en Add urls to the LoadingItems queue.
-		!#zh 向一个 LoadingItems 队列添加加载项。
-		@param urlList The url list to be appended, the url can be object or string 
-		*/
-		append(urlList : any[]) : any[];		
-		/** !#en Complete a LoadingItems queue, please do not call this method unless you know what's happening.
-		!#zh 完成一个 LoadingItems 队列，请不要调用这个函数，除非你知道自己在做什么。 
-		*/
-		allComplete() : void;		
-		/** !#en Check whether all items are completed.
-		!#zh 检查是否所有加载项都已经完成。 
-		*/
-		isCompleted() : boolean;		
-		/** !#en Check whether an item is completed.
-		!#zh 通过 id 检查指定加载项是否已经加载完成。
-		@param id The item's id. 
-		*/
-		isItemCompleted(id : string) : boolean;		
-		/** !#en Check whether an item exists.
-		!#zh 通过 id 检查加载项是否存在。
-		@param id The item's id. 
-		*/
-		exists(id : string) : boolean;		
-		/** !#en Returns the content of an internal item.
-		!#zh 通过 id 获取指定对象的内容。
-		@param id The item's id. 
-		*/
-		getContent(id : string) : any;		
-		/** !#en Returns the error of an internal item.
-		!#zh 通过 id 获取指定对象的错误信息。
-		@param id The item's id. 
-		*/
-		getError(id : string) : any;		
-		/** !#en Add a listener for an item, the callback will be invoked when the item is completed.
-		!#zh 监听加载项（通过 key 指定）的完成事件。
-		@param callback can be null
-		@param target can be null 
-		*/
-		addListener(key : string, callback : Function, target : any) : boolean;		
-		/** !#en
-		Check if the specified key has any registered callback. </br>
-		If a callback is also specified, it will only return true if the callback is registered.
-		!#zh
-		检查指定的加载项是否有完成事件监听器。</br>
-		如果同时还指定了一个回调方法，并且回调有注册，它只会返回 true。 
-		*/
-		hasListener(key : string, callback? : Function, target? : any) : boolean;		
-		/** !#en
-		Removes a listener. </br>
-		It will only remove when key, callback, target all match correctly.
-		!#zh
-		移除指定加载项已经注册的完成事件监听器。</br>
-		只会删除 key, callback, target 均匹配的监听器。 
-		*/
-		remove(key : string, callback : Function, target : any) : boolean;		
-		/** !#en
-		Removes all callbacks registered in a certain event
-		type or all callbacks registered with a certain target.
-		!#zh 删除指定目标的所有完成事件监听器。
-		@param key The event key to be removed or the target to be removed 
-		*/
-		removeAllListeners(key : string|any) : void;		
-		/** !#en Complete an item in the LoadingItems queue, please do not call this method unless you know what's happening.
-		!#zh 通知 LoadingItems 队列一个 item 对象已完成，请不要调用这个函数，除非你知道自己在做什么。
-		@param item The item id 
-		*/
-		itemComplete(item : string) : void;		
-		/** !#en Destroy the LoadingItems queue, the queue object won't be garbage collected, it will be recycled, so every after destroy is not reliable.
-		!#zh 销毁一个 LoadingItems 队列，这个队列对象会被内部缓冲池回收，所以销毁后的所有内部信息都是不可依赖的。 
-		*/
-		destroy() : void;	
-	}		
-		/** !#en
-		A pipeline describes a sequence of manipulations, each manipulation is called a pipe.</br>
-		It's designed for loading process. so items should be urls, and the url will be the identity of each item during the process.</br>
-		A list of items can flow in the pipeline and it will output the results of all pipes.</br>
-		They flow in the pipeline like water in tubes, they go through pipe by pipe separately.</br>
-		Finally all items will flow out the pipeline and the process is finished.
-		
-		!#zh
-		pipeline 描述了一系列的操作，每个操作都被称为 pipe。</br>
-		它被设计来做加载过程的流程管理。所以 item 应该是 url，并且该 url 将是在处理中的每个 item 的身份标识。</br>
-		一个 item 列表可以在 pipeline 中流动，它将输出加载项经过所有 pipe 之后的结果。</br>
-		它们穿过 pipeline 就像水在管子里流动，将会按顺序流过每个 pipe。</br>
-		最后当所有加载项都流出 pipeline 时，整个加载流程就结束了。 */
-		export class Pipeline {		
-		/** !#en
-		Constructor, pass an array of pipes to construct a new Pipeline,
-		the pipes will be chained in the given order.</br>
-		A pipe is an object which must contain an `id` in string and a `handle` function,
-		the id must be unique in the pipeline.</br>
-		It can also include `async` property to identify whether it's an asynchronous process.
-		!#zh
-		构造函数，通过一系列的 pipe 来构造一个新的 pipeline，pipes 将会在给定的顺序中被锁定。</br>
-		一个 pipe 就是一个对象，它包含了字符串类型的 ‘id’ 和 ‘handle’ 函数，在 pipeline 中 id 必须是唯一的。</br>
-		它还可以包括 ‘async’ 属性以确定它是否是一个异步过程。
-		
-		@example 
-		```js
-		var pipeline = new Pipeline([
-		     {
-		         id: 'Downloader',
-		         handle: function (item, callback) {},
-		         async: true
-		     },
-		     {id: 'Parser', handle: function (item) {}, async: false}
-		 ]);
-		``` 
-		*/
-		Pipeline(pipes : any[]) : void;		
-		/** !#en
-		Insert a new pipe at the given index of the pipeline. </br>
-		A pipe must contain an `id` in string and a `handle` function, the id must be unique in the pipeline.
-		!#zh
-		在给定的索引位置插入一个新的 pipe。</br>
-		一个 pipe 必须包含一个字符串类型的 ‘id’ 和 ‘handle’ 函数，该 id 在 pipeline 必须是唯一标识。
-		@param pipe The pipe to be inserted
-		@param index The index to insert 
-		*/
-		insertPipe(pipe : any, index : number) : void;		
-		/** !#en
-		Add a new pipe at the end of the pipeline. </br>
-		A pipe must contain an `id` in string and a `handle` function, the id must be unique in the pipeline.
-		!#zh
-		添加一个新的 pipe 到 pipeline 尾部。 </br>
-		该 pipe 必须包含一个字符串类型 ‘id’ 和 ‘handle’ 函数，该 id 在 pipeline 必须是唯一标识。
-		@param pipe The pipe to be appended 
-		*/
-		appendPipe(pipe : any) : void;		
-		/** !#en
-		Let new items flow into the pipeline. </br>
-		Each item can be a simple url string or an object,
-		if it's an object, it must contain `id` property. </br>
-		You can specify its type by `type` property, by default, the type is the extension name in url. </br>
-		By adding a `skips` property including pipe ids, you can skip these pipe. </br>
-		The object can contain any supplementary property as you want. </br>
-		!#zh
-		让新的 item 流入 pipeline 中。</br>
-		这里的每个 item 可以是一个简单字符串类型的 url 或者是一个对象,
-		如果它是一个对象的话，他必须要包含 ‘id’ 属性。</br>
-		你也可以指定它的 ‘type’ 属性类型，默认情况下，该类型是 ‘url’ 的后缀名。</br>
-		也通过添加一个 包含 ‘skips’ 属性的 item 对象，你就可以跳过 skips 中包含的 pipe。</br>
-		该对象可以包含任何附加属性。
-		
-		@example 
-		```js
-		pipeline.flowIn([
-		     'res/Background.png',
-		     {
-		         id: 'res/scene.json',
-		         type: 'scene',
-		         name: 'scene',
-		         skips: ['Downloader']
-		     }
-		 ]);
-		``` 
-		*/
-		flowIn(items : any[]) : void;		
-		/** !#en
-		Let new items flow into the pipeline and give a callback when the list of items are all completed. </br>
-		This is for loading dependencies for an existing item in flow, usually used in a pipe logic. </br>
-		For example, we have a loader for scene configuration file in JSON, the scene will only be fully loaded  </br>
-		after all its dependencies are loaded, then you will need to use function to flow in all dependencies  </br>
-		found in the configuration file, and finish the loader pipe only after all dependencies are loaded (in the callback).
-		!#zh
-		让新 items 流入 pipeline 并且当 item 列表完成时进行回调函数。</br>
-		这个 API 的使用通常是为了加载依赖项。</br>
-		例如：</br>
-		我们需要加载一个场景配置的 JSON 文件，该场景会将所有的依赖项全部都加载完毕以后，进行回调表示加载完毕。 
-		*/
-		flowInDeps(urlList : any[], callback : Function) : any[];		
-		/** !#en
-		Copy the item states from one source item to all destination items. </br>
-		It's quite useful when a pipe generate new items from one source item,</br>
-		then you should flowIn these generated items into pipeline, </br>
-		but you probably want them to skip all pipes the source item already go through,</br>
-		you can achieve it with this API. </br>
-		</br>
-		For example, an unzip pipe will generate more items, but you won't want them to pass unzip or download pipe again.
-		!#zh
-		从一个源 item 向所有目标 item 复制它的 pipe 状态，用于避免重复通过部分 pipe。</br>
-		当一个源 item 生成了一系列新的 items 时很有用，</br>
-		你希望让这些新的依赖项进入 pipeline，但是又不希望它们通过源 item 已经经过的 pipe，</br>
-		但是你可能希望他们源 item 已经通过并跳过所有 pipes，</br>
-		这个时候就可以使用这个 API。
-		@param srcItem The source item
-		@param dstItems A single destination item or an array of destination items 
-		*/
-		copyItemStates(srcItem : any, dstItems : any[]|any) : void;		
-		/** !#en Returns whether the pipeline is flowing (contains item) currently.
-		!#zh 获取 pipeline 当前是否正在处理中。 
-		*/
-		isFlowing() : boolean;		
-		/** !#en Returns all items in pipeline.
-		!#zh 获取 pipeline 中的所有 items。 
-		*/
-		getItems() : LoadingItems;		
-		/** !#en Returns an item in pipeline.
-		!#zh 根据 id 获取一个 item
-		@param id The id of the item 
-		*/
-		getItem(id : any) : any;		
-		/** !#en Removes an item in pipeline, no matter it's in progress or completed.
-		!#zh 移除指定 item，无论是进行时还是已完成。
-		@param id The id of the item 
-		*/
-		removeItem(id : any) : boolean;		
-		/** !#en Clear the current pipeline, this function will clean up the items.
-		!#zh 清空当前 pipeline，该函数将清理 items。 
-		*/
-		clear() : void;	
-	}		
-		/** !#en
-		A cc.SpriteFrame has:<br/>
-		 - texture: A cc.Texture2D that will be used by the _ccsg.Sprite<br/>
-		 - rectangle: A rectangle of the texture
-		
-		!#zh
-		一个 SpriteFrame 包含：<br/>
-		 - 纹理：会被 Sprite 使用的 Texture2D 对象。<br/>
-		 - 矩形：在纹理中的矩形区域。 */
-		export class SpriteFrame extends Asset {		
-		/** !#en
-		Constructor of SpriteFrame class.
-		!#zh
-		SpriteFrame 类的构造函数。
-		@param rotated Whether the frame is rotated in the texture
-		@param offset The offset of the frame in the texture
-		@param originalSize The size of the frame in the texture 
-		*/
-		SpriteFrame(filename? : string|Texture2D, rect? : Rect, rotated? : boolean, offset? : Vec2, originalSize? : Size) : void;		
-		/** !#en Top border of the sprite
-		!#zh sprite 的顶部边框 */
-		insetTop : number;		
-		/** !#en Bottom border of the sprite
-		!#zh sprite 的底部边框 */
-		insetBottom : number;		
-		/** !#en Left border of the sprite
-		!#zh sprite 的左边边框 */
-		insetLeft : number;		
-		/** !#en Right border of the sprite
-		!#zh sprite 的左边边框 */
-		insetRight : number;		
-		/** !#en Returns whether the texture have been loaded
-		!#zh 返回是否已加载纹理 
-		*/
-		textureLoaded() : boolean;		
-		/** Add a event listener for texture loaded event. 
-		*/
-		addLoadedEventListener(callback : Function, target : any) : void;		
-		/** !#en Returns whether the sprite frame is rotated in the texture.
-		!#zh 获取 SpriteFrame 是否旋转 
-		*/
-		isRotated() : boolean;		
-		/** !#en Set whether the sprite frame is rotated in the texture.
-		!#zh 设置 SpriteFrame 是否旋转 
-		*/
-		setRotated(bRotated : boolean) : void;		
-		/** !#en Returns the rect of the sprite frame in the texture.
-		!#zh 获取 SpriteFrame 的纹理矩形区域 
-		*/
-		getRect() : Rect;		
-		/** !#en Sets the rect of the sprite frame in the texture.
-		!#zh 设置 SpriteFrame 的纹理矩形区域 
-		*/
-		setRect(rect : Rect) : void;		
-		/** !#en Returns the original size of the trimmed image.
-		!#zh 获取修剪前的原始大小 
-		*/
-		getOriginalSize() : Size;		
-		/** !#en Sets the original size of the trimmed image.
-		!#zh 设置修剪前的原始大小 
-		*/
-		setOriginalSize(size : Size) : void;		
-		/** !#en Returns the texture of the frame.
-		!#zh 获取使用的纹理实例 
-		*/
-		getTexture() : Texture2D;		
-		/** !#en Sets the texture of the frame, the texture is retained automatically.
-		!#zh 设置使用的纹理实例，会被 retain。 
-		*/
-		_refreshTexture(texture : Texture2D) : void;		
-		/** !#en Returns the offset of the frame in the texture.
-		!#zh 获取偏移量 
-		*/
-		getOffset() : Vec2;		
-		/** !#en Sets the offset of the frame in the texture.
-		!#zh 设置偏移量 
-		*/
-		setOffset(offsets : Vec2) : void;		
-		/** !#en Clone the sprite frame.
-		!#zh 克隆 SpriteFrame 
-		*/
-		clone() : SpriteFrame;		
-		/** !#en If a loading scene is marked as `asyncLoadAssets`, all the textures of the SpriteFrame which
-		associated by user's custom Components in the scene, will not preload automatically.
-		These textures will be load when Sprite component is going to render the SpriteFrames.
-		You can call this method if you want to load the texture early.
-		!#zh 当加载中的场景被标记为 `asyncLoadAssets` 时，用户在场景中由自定义组件关联到的所有 SpriteFrame 的贴图都不会被提前加载。
-		只有当 Sprite 组件要渲染这些 SpriteFrame 时，才会检查贴图是否加载。如果你希望加载过程提前，你可以手工调用这个方法。
-		
-		@example 
-		```js
-		if (spriteFrame.textureLoaded()) {
-		    this._onSpriteFrameLoaded();
-		}
-		else {
-		    spriteFrame.once('load', this._onSpriteFrameLoaded, this);
-		    spriteFrame.ensureLoadTexture();
-		}
-		``` 
-		*/
-		ensureLoadTexture() : void;	
 	}		
 		/** <p>
 		This class allows to easily create OpenGL or Canvas 2D textures from images, text or raw data.                                    <br/>
@@ -10270,6 +10168,123 @@ declare module cc {
 		/** !#en return a Vec2 object with x = 1 and y = 0.
 		!#zh 返回 x = 1 和 y = 0 的 Vec2 对象。 */
 		RIGHT : Vec2;	
+	}		
+		/** !#en
+		A cc.SpriteFrame has:<br/>
+		 - texture: A cc.Texture2D that will be used by the _ccsg.Sprite<br/>
+		 - rectangle: A rectangle of the texture
+		
+		!#zh
+		一个 SpriteFrame 包含：<br/>
+		 - 纹理：会被 Sprite 使用的 Texture2D 对象。<br/>
+		 - 矩形：在纹理中的矩形区域。 */
+		export class SpriteFrame extends Asset {		
+		/** !#en
+		Constructor of SpriteFrame class.
+		!#zh
+		SpriteFrame 类的构造函数。
+		@param rect !#en
+		Constructor of cc.Rect class.
+		see {{#crossLink "cc/rect:method"}} cc.rect {{/crossLink}} for convenience method.
+		!#zh
+		cc.Rect类的构造函数。可以通过 {{#crossLink "cc/rect:method"}} cc.rect {{/crossLink}} 简便方法进行创建。
+		@param rotated Whether the frame is rotated in the texture
+		@param offset The offset of the frame in the texture
+		@param originalSize The size of the frame in the texture 
+		*/
+		SpriteFrame(filename? : string|Texture2D, rect: (x: number, y: number, w: number, h: number) => void, rotated? : boolean, offset: (x: number, y: number) => void, originalSize: (width: number, height: number) => void) : void;		
+		/** !#en Top border of the sprite
+		!#zh sprite 的顶部边框 */
+		insetTop : number;		
+		/** !#en Bottom border of the sprite
+		!#zh sprite 的底部边框 */
+		insetBottom : number;		
+		/** !#en Left border of the sprite
+		!#zh sprite 的左边边框 */
+		insetLeft : number;		
+		/** !#en Right border of the sprite
+		!#zh sprite 的左边边框 */
+		insetRight : number;		
+		/** !#en Returns whether the texture have been loaded
+		!#zh 返回是否已加载纹理 
+		*/
+		textureLoaded() : boolean;		
+		/** Add a event listener for texture loaded event. 
+		*/
+		addLoadedEventListener(callback : Function, target : any) : void;		
+		/** !#en Returns whether the sprite frame is rotated in the texture.
+		!#zh 获取 SpriteFrame 是否旋转 
+		*/
+		isRotated() : boolean;		
+		/** !#en Set whether the sprite frame is rotated in the texture.
+		!#zh 设置 SpriteFrame 是否旋转 
+		*/
+		setRotated(bRotated : boolean) : void;		
+		/** !#en Returns the rect of the sprite frame in the texture.
+		!#zh 获取 SpriteFrame 的纹理矩形区域 
+		*/
+		getRect() : Rect;		
+		/** !#en Sets the rect of the sprite frame in the texture.
+		!#zh 设置 SpriteFrame 的纹理矩形区域
+		@param rect !#en
+		Constructor of cc.Rect class.
+		see {{#crossLink "cc/rect:method"}} cc.rect {{/crossLink}} for convenience method.
+		!#zh
+		cc.Rect类的构造函数。可以通过 {{#crossLink "cc/rect:method"}} cc.rect {{/crossLink}} 简便方法进行创建。 
+		*/
+		setRect(rect: (x: number, y: number, w: number, h: number) => void) : void;		
+		/** !#en Returns the original size of the trimmed image.
+		!#zh 获取修剪前的原始大小 
+		*/
+		getOriginalSize() : Size;		
+		/** !#en Sets the original size of the trimmed image.
+		!#zh 设置修剪前的原始大小 
+		*/
+		setOriginalSize(size: (width: number, height: number) => void) : void;		
+		/** !#en Returns the texture of the frame.
+		!#zh 获取使用的纹理实例 
+		*/
+		getTexture() : Texture2D;		
+		/** !#en Sets the texture of the frame, the texture is retained automatically.
+		!#zh 设置使用的纹理实例，会被 retain。 
+		*/
+		_refreshTexture(texture : Texture2D) : void;		
+		/** !#en Returns the offset of the frame in the texture.
+		!#zh 获取偏移量 
+		*/
+		getOffset() : Vec2;		
+		/** !#en Sets the offset of the frame in the texture.
+		!#zh 设置偏移量
+		@param offsets !#en
+		Constructor
+		see {{#crossLink "cc/vec2:method"}}cc.v2{{/crossLink}} or {{#crossLink "cc/p:method"}}cc.p{{/crossLink}}
+		!#zh
+		构造函数，可查看 {{#crossLink "cc/vec2:method"}}cc.v2{{/crossLink}} 或者 {{#crossLink "cc/p:method"}}cc.p{{/crossLink}} 
+		*/
+		setOffset(offsets: (x: number, y: number) => void) : void;		
+		/** !#en Clone the sprite frame.
+		!#zh 克隆 SpriteFrame 
+		*/
+		clone() : SpriteFrame;		
+		/** !#en If a loading scene is marked as `asyncLoadAssets`, all the textures of the SpriteFrame which
+		associated by user's custom Components in the scene, will not preload automatically.
+		These textures will be load when Sprite component is going to render the SpriteFrames.
+		You can call this method if you want to load the texture early.
+		!#zh 当加载中的场景被标记为 `asyncLoadAssets` 时，用户在场景中由自定义组件关联到的所有 SpriteFrame 的贴图都不会被提前加载。
+		只有当 Sprite 组件要渲染这些 SpriteFrame 时，才会检查贴图是否加载。如果你希望加载过程提前，你可以手工调用这个方法。
+		
+		@example 
+		```js
+		if (spriteFrame.textureLoaded()) {
+		    this._onSpriteFrameLoaded();
+		}
+		else {
+		    spriteFrame.once('load', this._onSpriteFrameLoaded, this);
+		    spriteFrame.ensureLoadTexture();
+		}
+		``` 
+		*/
+		ensureLoadTexture() : void;	
 	}	
 	
 	/****************************************************
@@ -10997,34 +11012,6 @@ declare module cc {
 	}	
 	
 	/****************************************************
-	* Graphics
-	*****************************************************/
-	
-	export module Graphics {		
-		/** !#en Enum for LineCap.
-		!#zh 线段末端属性 */
-		export enum LineCap {			
-			BUTT = 0,
-			ROUND = 0,
-			SQUARE = 0,		
-		}	
-	}	
-	
-	/****************************************************
-	* Graphics
-	*****************************************************/
-	
-	export module Graphics {		
-		/** !#en Enum for LineJoin.
-		!#zh 线段拐角属性 */
-		export enum LineJoin {			
-			BEVEL = 0,
-			ROUND = 0,
-			MITER = 0,		
-		}	
-	}	
-	
-	/****************************************************
 	* Pipeline
 	*****************************************************/
 	
@@ -11101,6 +11088,34 @@ declare module cc {
 			WORKING = 0,
 			COMPLETET = 0,
 			ERROR = 0,		
+		}	
+	}	
+	
+	/****************************************************
+	* Graphics
+	*****************************************************/
+	
+	export module Graphics {		
+		/** !#en Enum for LineCap.
+		!#zh 线段末端属性 */
+		export enum LineCap {			
+			BUTT = 0,
+			ROUND = 0,
+			SQUARE = 0,		
+		}	
+	}	
+	
+	/****************************************************
+	* Graphics
+	*****************************************************/
+	
+	export module Graphics {		
+		/** !#en Enum for LineJoin.
+		!#zh 线段拐角属性 */
+		export enum LineJoin {			
+			BEVEL = 0,
+			ROUND = 0,
+			MITER = 0,		
 		}	
 	}	
 	

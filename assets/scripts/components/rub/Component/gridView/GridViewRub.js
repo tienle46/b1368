@@ -87,7 +87,7 @@ export default class GridViewRub {
             bgColor: app.const.COLOR_VIOLET, // # violet
             width: 100,
             height: 50,
-            fontColor: app.const.COLOR_YELLOW, // # yellow
+            fontColor: app.const.COLOR_WHITE, // # yellow
             fontSize: 16,
             fontLineHeight: 40,
             horizontalSeparate: null,
@@ -302,11 +302,11 @@ export default class GridViewRub {
 
                 // body
                 let cellRub = new CellRub(cell || '', cellOpts);
-                if(!isNode) {
+                if (!isNode) {
                     rowHeight = rowHeight > cellRub.getHeight() ? rowHeight : cellRub.getHeight();
                     cellsInRow.push(cellRub);
                 }
-                
+
                 this.contentNode && this.contentNode.addChild(cellRub.node());
             }
 
@@ -319,21 +319,28 @@ export default class GridViewRub {
     }
 
     _setCellSize() {
-        if (this.options.group.widths) {
-            let groupWidth = this.options.group.widths;
+        let numberOfColumns = this.data[0] ? this.data[0].length : 0; // converted this.data 
+        let groupWidth = this.options.group.widths || new Array(numberOfColumns).fill(null);
+        let padding = this.CONTENT_NODE_HORIZONTAL_PADDING;
+        let spacingX = this.options.spacingX;
+        let parentWidth = this.getContentNodeWidth();
+        return RubUtils.calcWidthByGroup(parentWidth, groupWidth, spacingX, padding);
 
-            // total width inside array
-            let totalWidth = groupWidth.reduce((p, n) => !isNaN(p) && (Number(p) + Number(n)));
-            // remaing array which cotains null -> ["", ""]
-            let remains = groupWidth.filter((e) => !isNaN(e) && Number(e) === 0);
-            let n = this.getContentNodeWidth() > totalWidth ? this.getContentNodeWidth() - totalWidth : 0;
+        // if (this.options.group.widths) {
+        // let groupWidth = this.options.group.widths
+        //     // total width inside array
+        //     let totalWidth = groupWidth.reduce((p, n) => !isNaN(p) && (Number(p) + Number(n)));
+        //     // length of remaining array which cotains null -> ["", ""]
+        //     let remains = groupWidth.filter((e) => !isNaN(e) && Number(e) === 0).length;
+        //     // remaining width for null array, it will be equally divided.
+        //     let n = this.getContentNodeWidth() > totalWidth ? this.getContentNodeWidth() - totalWidth : 0;
 
-            return groupWidth.map((e) => (!isNaN(e) && Number(e) === 0 && n / remains.length - this.options.spacingX - this.CONTENT_NODE_HORIZONTAL_PADDING / groupWidth.length) || e - this.options.spacingX - this.CONTENT_NODE_HORIZONTAL_PADDING / groupWidth.length);
+        //     return groupWidth.map((e) => (!isNaN(e) && Number(e) === 0 && n / remains - this.options.spacingX - this.CONTENT_NODE_HORIZONTAL_PADDING / groupWidth.length) || e - this.options.spacingX - this.CONTENT_NODE_HORIZONTAL_PADDING / groupWidth.length);
 
-        } else {
-            let numberOfColumns = this.data[0] ? this.data[0].length : 0; // converted this.data 
-            return new Array(numberOfColumns).fill(0).map(() => this.getContentNodeWidth() / numberOfColumns - this.options.spacingX);
-        }
+        // } else {
+        // let numberOfColumns = this.data[0] ? this.data[0].length : 0; // converted this.data 
+        //     return new Array(numberOfColumns).fill(0).map(() => this.getContentNodeWidth() / numberOfColumns - this.options.spacingX);
+        // }
     }
 
     /**

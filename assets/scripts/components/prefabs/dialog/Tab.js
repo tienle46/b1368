@@ -27,7 +27,7 @@ class Tab extends Component {
         return RubUtils.loadRes(prefabURL).then((prefab) => {
             let p = cc.instantiate(prefab);
             // add to node
-            bodyNode.addChild(p);
+            this._addChildToBody(bodyNode, p);
 
             return p;
         }).catch((e) => {
@@ -41,13 +41,14 @@ class Tab extends Component {
 
         if (content instanceof cc.Node) {
             let node = _.cloneDeep(content);
-            bodyNode.addChild(node);
+
+            this._addChildToBody(bodyNode, node);
         } else if (content instanceof Promise) {
             content.then((node) => {
                 // wait until resources are loaded.
                 setTimeout(() => {
                     let n = _.cloneDeep(node);
-                    bodyNode.addChild(n);
+                    this._addChildToBody(bodyNode, n);
                 });
             });
         }
@@ -59,6 +60,26 @@ class Tab extends Component {
 
     clearBody(bodyNode) {
         bodyNode.removeAllChildren(true);
+    }
+
+    _addWidgetToNode(node) {
+        let widget = node.getComponent(cc.Widget) || node.addComponent(cc.Widget);
+        widget.isAlignOnce = false;
+
+        widget.isAlignTop = true;
+        widget.isAlignBottom = true;
+        widget.isAlignRight = true;
+        widget.isAlignLeft = true;
+
+        widget.top = 0;
+        widget.bottom = 0;
+        widget.right = 0;
+        widget.left = 0;
+    }
+
+    _addChildToBody(bodyNode, node) {
+        this._addWidgetToNode(node);
+        bodyNode.addChild(node);
     }
 }
 

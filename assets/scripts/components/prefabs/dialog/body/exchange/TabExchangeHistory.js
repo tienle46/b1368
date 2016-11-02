@@ -40,33 +40,33 @@ class TabExchangeHistory extends Component {
                 let d = [
                     res['dl'],
                     res['nl'],
-                    res['sl'].map((status, index)=>{
-                        switch (status){
+                    res['sl'].map((status, index) => {
+                        switch (status) {
                             case 1:
                             case 10:
-                                return 'Không đủ điều kiện'
+                                return 'Không đủ điều kiện';
                             case 2:
                             case 11:
                                 return 'Đang chờ duyệt thẻ';
                             case 3:
                             case 12:
-                                if(pattern.exec(res['dtl'][index]).length > 0){
+                                if (pattern.exec(res['dtl'][index]).length > 0) {
                                     return pattern.exec(res['dtl'][index])[0];
                                 }
                                 return '';
 
                             case 100:
-                                return 'Giao dịch bị huỷ bỏ'
+                                return 'Giao dịch bị huỷ bỏ';
 
                         }
                     }),
-                    res['sl'].map((status)=>{
-                        switch (status){
+                    res['sl'].map((status) => {
+                        switch (status) {
                             case 1:
                             case 2:
-                                return { text: 'NHẬN LẠI CHIP', button: { eventHandler: null, width:150, height : 45} }
+                                return { text: 'NHẬN LẠI CHIP', button: { eventHandler: null, width: 150, height: 45 } };
                             case 3:
-                                return { text: 'NẠP VÀO GAME', button: { eventHandler: null, width:150, height : 45 } }
+                                return { text: 'NẠP VÀO GAME', button: { eventHandler: null, width: 150, height: 45 } };
                             default:
                                 return '';
                         }
@@ -81,7 +81,7 @@ class TabExchangeHistory extends Component {
         let bodyNode = this.node.getChildByName('body');
 
         let event = null;
-        GridViewRub.show(bodyNode, ['Thời gian', 'Loại vật phẩm', 'Thông tin',''], d, { position: cc.v2(2, 120), width: 780, event }).then((rub) => {
+        GridViewRub.show(bodyNode, { data: ['Thời gian', 'Loại vật phẩm', 'Thông tin', ''], options: { fontColor: app.const.COLOR_YELLOW } }, d, { position: cc.v2(2, 120), width: 780, event }).then((rub) => {
 
         });
     }

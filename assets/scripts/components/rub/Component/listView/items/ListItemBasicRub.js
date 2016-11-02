@@ -325,6 +325,9 @@ export default class ListItemBasicRub {
      * @param {any} parent
      * @param {any} [opts={}]
      * {
+     *  (height: 100%)
+     *  width: number
+     *  name: string, # node name
      *  fontSize: number,
      *  fontColor: new cc.Color
      *  fontLineHeight: number,
@@ -342,7 +345,7 @@ export default class ListItemBasicRub {
         let labelNode = new cc.Node();
         let parentSize = parent.getContentSize();
         labelNode.setContentSize(cc.size(opts.width || parentSize.width, parentSize.height));
-        labelNode.name = 'label';
+        labelNode.name = opts.name || 'label';
         opts.fontColor && (labelNode.color = opts.fontColor);
 
         parent.addChild(labelNode);
@@ -391,9 +394,9 @@ export default class ListItemBasicRub {
         });
     }
 
-    _addWidgetComponentToNode(node, defaultValue, opts) {
-        let widget = node.addComponent(cc.Widget);
-        widget.isAlignOnce = false;
+    _addWidgetComponentToNode(node, defaultValue, opts, isAlignOnce) {
+        let widget = node.getComponent(cc.Widget) || node.addComponent(cc.Widget);
+        widget.isAlignOnce = isAlignOnce || false;
 
         widget.isAlignVerticalCenter = opts.verticalCenter || false;
 
