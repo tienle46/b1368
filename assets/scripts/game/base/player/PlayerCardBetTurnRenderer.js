@@ -10,8 +10,8 @@ export default class PlayerCardBetTurnRenderer extends PlayerCardRenderer {
 
     }
 
-    _init(controller, data = {}){
-        super._init(controller, data);
+    _init(data = {}){
+        super._init(data);
     }
 
     _attachComponent(){

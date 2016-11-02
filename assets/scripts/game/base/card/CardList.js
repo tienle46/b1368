@@ -9,42 +9,17 @@ export default class CardList extends Component {
     constructor() {
         super();
 
-        this.cardPrefab = cc.Prefab;
-
-        this.scale = {
-            default: 1,
-            type: cc.Float
-        };
-
-        this.reveal = {
-            default: true,
-            type: cc.Boolean
-        };
-
-        this.selectable = {
-            default: false,
-            type: cc.Boolean
-        };
-
-        this.space = {
-            default: CardList.CARD_WIDTH,
-            type: cc.Integer
-        };
-
-        this.maxDimension = {
-            default: CardList.DEFAULT_MAX_WIDTH,
-            type: cc.Integer
-        };
-
-        this.orientation = {
-            default: CardList.HORIZONTAL,
-            type: cc.Integer
-        };
-
-        this.align = {
-            default: CardList.ALIGN_CENTER_LEFT,
-            type: cc.Integer
-        };
+        this.properties = {
+            ...this.properties,
+            scale: 1.0,
+            reveal: true,
+            selectable: false,
+            space: CardList.CARD_WIDTH,
+            maxDimension: CardList.DEFAULT_MAX_WIDTH,
+            orientation: CardList.HORIZONTAL,
+            align: CardList.ALIGN_CENTER_LEFT,
+            cardPrefab: cc.Prefab
+        }
 
         this.cards = null;
         this._draggable = false;

@@ -5,6 +5,10 @@
 export default class Component {
     constructor() {
         this.extends = cc.Component;
+
+        this.properties = {
+            path: ""
+        }
     }
 
     onLoad(){
@@ -19,7 +23,7 @@ export default class Component {
 
     }
 
-    onActive(){
+    onEnable(){
 
     }
 

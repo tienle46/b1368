@@ -15,10 +15,9 @@ export default class Toast extends Component {
         this.toastList = cc.Node;
     }
 
-
-    onLoad(){
+    onEnable(){
+        super.onEnable();
         this.node.on('touchstart', () => true);
-        cc.find('scrollView/scroll', this.node)
     }
 
     info(message, duration = Toast.SHORT_TIME){

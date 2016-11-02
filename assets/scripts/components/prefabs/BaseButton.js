@@ -20,7 +20,8 @@ cc.Class({
         buttonType: app.bottomBarButtonType.NAPXU,
         pressedScale: 0.8,
         transDuration: 0.1,
-        isTouching: false
+        isTouching: false,
+        path: "aaaa"
     },
 
     onLoad: function() {

@@ -26,7 +26,7 @@ export default class Player extends Actor {
 
     setAnchorIndex(anchorIndex){
         this.anchorIndex = anchorIndex;
-        this.renderer.updatePlayerAnchor(anchorIndex);
+        this.renderer && this.renderer.updatePlayerAnchor(anchorIndex);
     }
 
     _init(board, user){
@@ -38,12 +38,6 @@ export default class Player extends Actor {
         if(!this.board || !this.user){
             throw new CreateGameException("Dữ liệu khởi tạo bàn chơi không đúng");
         }
-
-        this.username = this.user.name;
-        this.id = this.user.getPlayerId(this.board.room);
-        this.balance = GameUtils.getUserBalance(user);
-
-        this._addGlobalListener();
     }
 
     _addGlobalListener(){
@@ -54,7 +48,7 @@ export default class Player extends Actor {
         this.scene.on(Events.ON_GAME_STATE_STARTED, this.onGameStarted, this);
         this.scene.on(Events.ON_GAME_STATE_PLAYING, this.onGamePlaying, this);
         this.scene.on(Events.ON_GAME_STATE_ENDING, this.onGameEnding, this);
-        this.scene.on(Events.GAME_USER_EXIT_ROOM, this._onUserExitRoom, this);
+        this.scene.on(Events.ON_USER_EXIT_ROOM, this._onUserExitRoom, this);
         this.scene.on(Events.ON_PLAYER_READY_STATE_CHANGED, this._onSetReadyState, this);
         this.scene.on(Events.ON_PLAYER_CHANGE_BALANCE, this._onPlayerChangeBalance, this);
         this.scene.on(Events.ON_USER_UPDATE_BALANCE, this._onUserUpdateBalance, this);
@@ -70,7 +64,7 @@ export default class Player extends Actor {
         this.scene.off(Events.ON_GAME_STATE_STARTED, this.onGameStarted);
         this.scene.off(Events.ON_GAME_STATE_PLAYING, this.onGamePlaying);
         this.scene.off(Events.ON_GAME_STATE_ENDING, this.onGameEnding);
-        this.scene.off(Events.GAME_USER_EXIT_ROOM, this._onUserExitRoom);
+        this.scene.off(Events.ON_USER_EXIT_ROOM, this._onUserExitRoom);
         this.scene.off(Events.ON_PLAYER_READY_STATE_CHANGED, this._onSetReadyState);
         this.scene.off(Events.ON_PLAYER_CHANGE_BALANCE, this._onPlayerChangeBalance);
         this.scene.off(Events.ON_USER_UPDATE_BALANCE, this._onUserUpdateBalance);
@@ -128,12 +122,27 @@ export default class Player extends Actor {
         }
     }
 
-    onLoad(){
-        this.renderData = {...this.renderData, isItMe: this.user.isItMe, scene: this.scene, owner: this.isOwner};
+    onEnable(renderer, renderData = {}){
+        super.onEnable(renderer, {...renderData, isItMe: this.user.isItMe, scene: this.scene, owner: this.isOwner});
 
-        super.onLoad();
+        this.username = this.user.name;
+        this.id = this.user.getPlayerId(this.board.room);
+        this.balance = GameUtils.getUserBalance(this.user);
+
         this.renderer.setName(this.username);
         this.renderer.setBalance(this.balance);
+
+        this._updatePlayerAnchor();
+        this._addGlobalListener();
+    }
+
+    _updatePlayerAnchor() {
+        let anchorIndex = this.scene.playerPositions.getPlayerAnchorIndex(this.id, this.isItMe())
+        let anchor = this.scene.playerPositions.getPlayerAnchor(anchorIndex);
+        anchor && this.node.setPosition(anchor.getPosition());
+        this.setAnchorIndex(anchorIndex)
+
+        console.log("updatePlayerAnchor: ", anchorIndex, anchor);
     }
 
     _setBalance(balance){
