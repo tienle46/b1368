@@ -11,16 +11,8 @@ export default class GameControls extends Actor {
         this.scene = null;
     }
 
-    _init(scene){
-        this.scene = scene;
-    }
-    
     setScene(scene) {
         this.scene = scene;
-    }
-
-    onLoad(){
-
     }
 
     hideAllControls(){

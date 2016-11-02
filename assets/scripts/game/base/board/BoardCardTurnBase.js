@@ -16,13 +16,17 @@ export default class BoardCardTurnBase extends BoardCard {
 
         this.deckCardRenderer = null;
         this.playedCards = null;
-        this.turnAdapter = new BoardTurnBaseAdapter(this);
+        this.turnAdapter = null;
     }
 
-    _init(scene){
-        super._init(scene);
+    onLoad(){
+        super.onLoad();
         this.playedCards = [];
-        this.turnAdapter._init(scene);
+    }
+
+    onEnable(renderer){
+        super.onEnable();
+        this.turnAdapter = new BoardTurnBaseAdapter();
 
         this.scene.on(Events.CLEAN_TURN_ROUTINE_DATA, this._cleanTurnRoutineData, this);
         this.scene.on(Events.ON_PLAYER_PLAYED_CARDS, this._onPlayerPlayedCards, this);
@@ -50,11 +54,6 @@ export default class BoardCardTurnBase extends BoardCard {
 
     getTurnDuration(){
         this.turnAdapter.timelineDuration;
-    }
-
-    onLoad(){
-        super.onLoad();
-        this.turnAdapter.setBoard(this);
     }
 
     handleGameStateChange(state, data){

@@ -26,6 +26,7 @@ export default class GameResultItem extends Actor {
     }
 
     onLoad(){
+        super.onLoad();
         this.resultIcon = this.resultIconNode.getComponent(cc.Sprite);
         this.infoTextView = this.infoTextViewNode.getComponent(TextView.name);
         this.infoTextView.setText(this.info);

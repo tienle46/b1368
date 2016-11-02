@@ -18,7 +18,7 @@ class PreloadScene extends Component {
         this.loading.getComponent(FullSceneProgress.name).show(app.res.string('loading_data'));
     }
 
-    start() {
+    onEnable() {
         app.async.parallel([
             (callback) => {
                 cc.loader.loadRes('toast/Toast', (err, prefab) => {

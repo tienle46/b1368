@@ -14,49 +14,33 @@ export default class TLMNDLControls extends GameControls {
     constructor() {
         super();
 
-        this.baseControlsPrefab = {
-            default: null,
-            type: cc.Prefab
-        };
+        this.properties = {
+            ...this.properties,
+            baseControlsNode: cc.Node,
+            cardTurnBaseControlsNode: cc.Node
+        }
 
-        this.cardTurnBaseControlsPrefab = {
-            default: null,
-            type: cc.Prefab
-        };
-
-        this.baseControls = BaseControls;
-        this.cardTurnBaseControls = CardTurnBaseControls;
+        this.baseControls = null;
+        this.cardTurnBaseControls = null;
     }
 
-    _init( scene) {
-        super._init(scene);
-        this.baseControls && this.baseControls._init(scene);
-        this.cardTurnBaseControls && this.cardTurnBaseControls._init(scene);
+    onEnable(){
+        super.onEnable();
+
+        this.scene = app.system.currentScene;
+
+        this.baseControls = this.baseControlsNode.getComponent(BaseControls.name);
+        this.cardTurnBaseControls = this.cardTurnBaseControlsNode.getComponent(CardTurnBaseControls.name);
+        this.cardTurnBaseControls.node.on('touchstart', (event) => true);
 
         this.scene.on(Events.SHOW_WAIT_TURN_CONTROLS, this._showWaitTurnControls, this);
         this.scene.on(Events.SHOW_ON_TURN_CONTROLS, this._showOnTurnControls, this);
         this.scene.on(Events.SHOW_GAME_BEGIN_CONTROLS, this._showGameBeginControls, this);
-
         this.scene.on(Events.ON_GAME_STATE_BEGIN, this._onGameBegin, this);
         this.scene.on(Events.ON_GAME_STATE_STARTING, this._onGameStarting, this);
         this.scene.on(Events.ON_GAME_STATE_STARTED, this._onGameStarted, this, 0);
         this.scene.on(Events.ON_GAME_STATE_PLAYING, this._onGamePlaying, this);
         this.scene.on(Events.ON_GAME_STATE_ENDING, this.hideAllControls, this);
-    }
-
-    onLoad(){
-        super.onLoad();
-
-        let baseControlsPrefab = cc.instantiate(this.baseControlsPrefab);
-        let cardTurnBaseControlPrefabs = cc.instantiate(this.cardTurnBaseControlsPrefab);
-
-        this.node.addChild(baseControlsPrefab);
-        this.node.addChild(cardTurnBaseControlPrefabs);
-
-        this.baseControls = baseControlsPrefab.getComponent("BaseControls");
-        this.cardTurnBaseControls = cardTurnBaseControlPrefabs.getComponent("CardTurnBaseControls");
-
-        this.cardTurnBaseControls.node.on('touchstart', (event) => true);
     }
 
     _onGameBegin(data, isJustJoined){
@@ -97,12 +81,10 @@ export default class TLMNDLControls extends GameControls {
 
     _showWaitTurnControls(){
         this.hideAllControls();
-        debug("_showWaitTurnControls TLMNDL")
         this.cardTurnBaseControls._showWaitTurnControls();
     }
 
     _showGameBeginControls(){
-        console.log("_showGameBeginControls");
         this.hideAllControls();
         if(this.scene.board.isBegin()){
             this.baseControls._showGameBeginControls();

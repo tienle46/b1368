@@ -15,16 +15,30 @@ export default class GameResultPopup extends Actor {
         this.itemPrefab = cc.Prefab;
         this._shownTime = 0;
         this._closeCb = null;
+        this.animation = null;
+        this.loaded = false;
+        this.models = null;
+
+        this.properties = {
+            ...this.properties,
+            showAnimName: 'showGameResult',
+            hideAnimName: 'hideGameResult',
+        }
     }
 
-    onLoad(){
-        super.onLoad();
-        this.node.setPosition(cc.winSize.width / 2, cc.winSize.height / 2)
-        this.node.on('touchstart', () => false);
+    onEnable(){
+        super.onEnable();
+
+        this.animation = this.node.getComponent(cc.Animation);
+        this.loaded = true;
+
+        this._showResultData(this.models);
     }
 
     start(){
-        this._shownTime = Date.now();
+        super.start();
+
+        this.node.active = false;
     }
 
     onClickCloseButton(){
@@ -46,23 +60,47 @@ export default class GameResultPopup extends Actor {
     }
 
     clear(){
+        this.models = null;
         this.content.removeAllChildren();
     }
 
-    show(models, closeCb){
-        this.addItems(models);
-        this._closeCb = closeCb;
+    _showResultData(models){
+        if(!models) return;
 
-        app.system.currentScene.node.parent.addChild(this.node);
+        this.node.active = true;
+        this.addItems(models);
+        this._shownTime = Date.now();
+        this.animation && this.animation.play(this.showAnimName);
+        this.node.on('touchstart', () => false);
     }
 
-    onDisable(){
+    show(models, closeCb){
+
+        this._closeCb = closeCb;
+
+        if(this.loaded){
+            this._showResultData(models);
+        }else{
+            this.models = models;
+        }
+    }
+
+    onShown(){
+    }
+
+    onHidden(){
+        this.node.active = false;
+        this.clear();
         this._closeCb && this._closeCb(Math.ceil((Date.now() - this._shownTime) / 1000));
+        this.node.off('touchstart');
+    }
+
+    _callCloseCallback(){
     }
 
     hide(){
-        this.clear();
-        this.node.removeFromParent(true);
+        this.animation && this.animation.play(this.hideAnimName);
+        this.node.off('touchstart');
     }
 }
 

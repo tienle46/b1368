@@ -10,16 +10,6 @@ export default class PlayerTLMNDLRenderer extends PlayerCardTurnBaseRenderer {
     constructor() {
         super();
     }
-
-    _initUI(data) {
-
-        // this.assign(this.basePlayerPrefab, 'PlayerRenderer');
-        // this.assign(this.cardPlayerPrefab, 'PlayerCardRenderer');
-
-        super._initUI(data);
-        
-        console.log("init ui TLMNDL")
-    }
 }
 
 app.createComponent(PlayerTLMNDLRenderer);

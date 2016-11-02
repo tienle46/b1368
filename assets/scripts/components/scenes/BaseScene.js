@@ -13,13 +13,12 @@ export default class BaseScene extends Actor {
     constructor() {
         super();
 
+        this.properties = {
+            ...this.properties,
+            popUp: cc.Prefab
+        }
+
         this.loading = true;
-
-        this.popUp = {
-            default: null,
-            type: cc.Prefab
-        };
-
         this.progress = null;
         this.onShown = null;
         this.isLoaded = false;
@@ -65,7 +64,8 @@ export default class BaseScene extends Actor {
         this.isLoaded = true;
     }
 
-    start() {
+    onEnable() {
+        super.onEnable();
         if (this.onShown && this.onShown instanceof Function) {
             this.onShown();
         }

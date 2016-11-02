@@ -52,7 +52,7 @@ export default class DashboardScene extends BaseScene {
     _initItemListGame() {
 
         const height = this.scrollerContentView.node.height;
-        const itemDimension = height / 2.0 - 50;
+        const itemDimension = height / 2.0 - 70;
 
         this.gameList.some(gc => {
             "use strict";

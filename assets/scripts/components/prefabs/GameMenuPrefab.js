@@ -10,41 +10,31 @@ import ScrollMessagePopup from 'ScrollMessagePopup';
 
 const ACTION_LUAT_CHOI = 1;
 
-class GameMenuPrefab extends Component {
+export default class GameMenuPrefab extends Component {
     constructor() {
         super();
 
-        this.menuBtn = {
-            default: null,
-            type: cc.Node
-        };
+        this.properties = {
+            ...this.properties,
+            menuBtn: cc.Node,
+            chatBtn: cc.Node,
+            topupBtn: cc.Node,
+            menuPopup: cc.Node,
+            exitButton: cc.Button,
+            guideButton: cc.Button,
+            exitLabel: cc.Label,
+            guideLabel: cc.Label
+        }
 
-        this.chatBtn = {
-            default: null,
-            type: cc.Node
-        };
-
-        this.topupBtn = {
-            default: null,
-            type: cc.Node
-        };
-
-        this.menuPopup = cc.Node;
-        this.exitButton = cc.Button;
-        this.guideButton = cc.Button;
-        this.exitLabel = cc.Label;
-        this.guideLabel = cc.Label;
 
         this.scene = null;
         this.isMenuPopupShown = false;
     }
 
-    onLoad(){
+    onEnable(){
+        super.onEnable();
+        this.scene = app.system.currentScene;
         utils.deactive(this.menuPopup);
-    }
-
-    _init(scene) {
-        this.scene = scene;
     }
 
     _onClickMenuItem(eventName, ...args){
@@ -107,7 +97,8 @@ class GameMenuPrefab extends Component {
     }
 
     onClickTopupButton(event) {
-        TopupDialogRub.show(this.scene.node);
+        this.scene.showGameResult([{}]);
+        // TopupDialogRub.show(this.scene.node);
     }
 }
 

@@ -10,15 +10,17 @@ export default class BoardCardRenderer extends BoardRenderer {
     constructor() {
         super();
 
-        this.dealCardAnchor = cc.Node;
-        this.meDealCardListNode = cc.Node;
+        this.properties = {
+            ...this.properties,
+            dealCardAnchor: cc.Node,
+            meDealCardListNode: cc.Node
+        }
 
         this.meDealCardList = null;
     }
 
-    _initUI(data){
-        super._initUI(data);
-
+    onEnable(){
+        super.onEnable();
         this.meDealCardList = this.meDealCardListNode.getComponent(CardList.name);
     }
 }

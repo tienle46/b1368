@@ -762,8 +762,8 @@
     },
     "_enabled": true,
     "_useOriginalSize": false,
-    "_actualFontSize": 24,
-    "_fontSize": 24,
+    "_actualFontSize": 18,
+    "_fontSize": 18,
     "_lineHeight": 24,
     "_enableWrapText": true,
     "_N$file": null,
@@ -882,7 +882,7 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": 103,
+      "x": 83,
       "y": -5
     },
     "_skewX": 0,
@@ -1674,7 +1674,7 @@
     },
     "_N$startAxis": 0,
     "_N$padding": 0,
-    "_N$spacingX": 20,
+    "_N$spacingX": 0,
     "_N$spacingY": 0,
     "_N$verticalDirection": 1,
     "_N$horizontalDirection": 0

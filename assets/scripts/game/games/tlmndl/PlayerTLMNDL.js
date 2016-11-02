@@ -23,10 +23,6 @@ export default class PlayerTLMNDL extends PlayerCardTurnBase {
         this.remainCardCount = PlayerTLMNDL.DEFAULT_HAND_CARD_COUNT;
     }
 
-    _init(board, user) {
-        super._init(board, user);
-    }
-
     _addGlobalListener() {
         super._addGlobalListener();
 
@@ -98,8 +94,8 @@ export default class PlayerTLMNDL extends PlayerCardTurnBase {
         super.createFakeCards(size);
     }
 
-    onLoad() {
-        super.onLoad();
+    onEnable() {
+        super.onEnable(this.getComponent(TLMNDLPlayerRenderer.name));
 
         if (this.isItMe()) {
             this.renderer.setSelectCardChangeListener((selectedCards) => {
@@ -109,18 +105,6 @@ export default class PlayerTLMNDL extends PlayerCardTurnBase {
         }
     }
 
-    onDisable() {
-        super.onDisable();
-    }
-
-    onDestroy() {
-        super.onDestroy();
-    }
-
-    start() {
-        super.start();
-    }
-
     _onGameRejoin(data) {
         super._onGameRejoin(data);
         if (this.isPlaying() && !this.scene.isEnding() && !this.isItMe()) {
@@ -128,7 +112,6 @@ export default class PlayerTLMNDL extends PlayerCardTurnBase {
             this.setCards(cards, false);
         }
     }
-
 }
 
 app.createComponent(PlayerTLMNDL);

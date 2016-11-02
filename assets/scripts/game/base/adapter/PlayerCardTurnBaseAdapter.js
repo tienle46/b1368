@@ -9,9 +9,11 @@ import {Commands, Keywords} from 'core';
 import {Events} from 'events';
 
 export default class PlayerCardTurnBaseAdapter extends PlayerTurnBaseAdapter {
-    constructor() {
+    constructor(scene, player) {
         super();
 
+        this.scene = scene;
+        this.player = player;
     }
 
     /**

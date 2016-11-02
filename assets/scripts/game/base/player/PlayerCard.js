@@ -40,10 +40,6 @@ export default class PlayerCard extends Player {
         this.renderer.renderCards(cards, reveal);
     }
 
-    _init(board, user){
-        super._init(board, user);
-    }
-
     removeFakeCard(length){
         this.renderer.cardList.removeCards(length);
     }
@@ -51,10 +47,6 @@ export default class PlayerCard extends Player {
     createFakeCards(size){
         let cardBytes = new Array(size).fill(5);
         this.setCards(GameUtils.convertBytesToCards(cardBytes), false);
-    }
-
-    onLoad(){
-        super.onLoad();
     }
 
     onGameBegin(data, isJustJoined){
@@ -88,11 +80,6 @@ export default class PlayerCard extends Player {
     onGameEnding(data = {}, isJustJoined){
         super.onGameEnding(data, isJustJoined);
         this.renderer.clearCards();
-    }
-
-    start() {
-        super.start();
-        debug("start player card");
     }
 
 }

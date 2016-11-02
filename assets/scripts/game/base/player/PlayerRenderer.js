@@ -12,16 +12,19 @@ export default class PlayerRenderer extends ActorRenderer {
     constructor() {
         super();
 
-        this.playerNameLabel = cc.Label;
-        this.balanceLabel = cc.Label;
-        this.status1 = cc.Node;
-        this.status2 = cc.Node;
-        this.ownerIcon = cc.Node;
-        this.masterIcon = cc.Node;
-        this.plusBalanceNode = cc.Node;
-        this.plusBalanceLabel = cc.Label;
-        this.playerMessageNode = cc.Node;
-        this.playerTimeLineProgress = cc.ProgressBar;
+        this.properties = {
+            ...this.properties,
+            playerNameLabel: cc.Label,
+            balanceLabel: cc.Label,
+            status1: cc.Node,
+            status2: cc.Node,
+            ownerIcon: cc.Node,
+            masterIcon: cc.Node,
+            plusBalanceNode: cc.Node,
+            plusBalanceLabel: cc.Label,
+            playerMessageNode: cc.Node,
+            playerTimeLineProgress: cc.ProgressBar,
+        }
 
         this.playerMessage = null;
         this.plusBalanceAnim = null;
@@ -33,17 +36,23 @@ export default class PlayerRenderer extends ActorRenderer {
         this.playerMessage && this.playerMessage.updateAnchor(anchorIndex);
     }
 
-    _initUI(data = {}) {
+    _init(data){
+        console.log("init player renderer")
+        super._init(data);
+        this.scene = app.system.currentScene;
+    }
 
-        super._initUI(data);
-        this.scene = data.scene;
+    onEnable(){
+        super.onEnable();
+
+        console.log("PlayerRenderer: ", this.data);
 
         utils.deactive(this.status1);
         utils.deactive(this.status2);
 
-        this.setVisibleOwner(data.owner);
-        this.setVisibleMaster(data.master);
-        this.setVisibleReady(data.ready);
+        this.setVisibleOwner(this.data.owner);
+        this.setVisibleMaster(this.data.master);
+        this.setVisibleReady(this.data.ready);
 
         this.plusBalanceAnim = this.plusBalanceNode.getComponent(PlusBalanceAnimation.name);
         this.plusBalanceAnim.setup({player: this, endCallback: this._onDonePlusBalanceAnimation.bind(this)});
@@ -51,7 +60,10 @@ export default class PlayerRenderer extends ActorRenderer {
         this.playerMessage = this.playerMessageNode.getComponent(PlayerMessage.name);
         this.playerMessage.setup(this);
 
+        this.gamePlayers = this.player
+
         this._stopCountdown();
+
         this.loaded = true;
     }
 

@@ -13,9 +13,8 @@ export default class PlayerCardBetTurn extends PlayerCard {
 
     onLoad(){
         super.onLoad();
-        this.betAdapter.setBoard(this.board);
-        this.betAdapter.setPlayer(this);
-    }
 
+        this.betAdapter._init(this.board, this);
+    }
 
 }

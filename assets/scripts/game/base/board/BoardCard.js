@@ -18,14 +18,6 @@ export default class BoardCard extends Board {
         this.handCardSize = 0;
     }
 
-    _init(scene){
-        super._init(scene);
-    }
-
-    onLoad() {
-        super.onLoad();
-    }
-
     handleGameStateChange(boardState, data) {
         super.handleGameStateChange(boardState, data);
 

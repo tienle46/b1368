@@ -68,6 +68,14 @@
       "__id__": 1
     },
     "_enabled": true,
+    "path": "",
+    "scale": 1,
+    "reveal": true,
+    "selectable": false,
+    "space": 100,
+    "maxDimension": 600,
+    "orientation": 1,
+    "align": 7,
     "cardPrefab": {
       "__uuid__": "1be1ace3-b9b3-4bf4-9c45-5c1d9eccac08"
     }
