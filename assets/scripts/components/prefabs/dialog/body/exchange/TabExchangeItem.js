@@ -24,10 +24,10 @@ class TabExchangeItem extends Component {
         this._initItemsList();
     }
 
-    _initItemsList(){
+    _initItemsList() {
         var sendObject = {
             'cmd': app.commands.EXCHANGE_LIST,
-            'data':{}
+            'data': {}
         };
 
         app.service.send(sendObject, (data) => {
@@ -35,8 +35,9 @@ class TabExchangeItem extends Component {
             if (data[app.keywords.EXCHANGE_LIST.RESPONSE.TYPES]) {
 
                 const exchangeTypes = data[app.keywords.EXCHANGE_LIST.RESPONSE.TYPES];
-                exchangeTypes.forEach((type, index)=>{
-                    if(type[app.keywords.EXCHANGE_LIST.RESPONSE.ITEM_TYPE] ===  '2'){
+                exchangeTypes.forEach((type, index) => {
+
+                    if (type[app.keywords.EXCHANGE_LIST.RESPONSE.ITEM_TYPE] === '2') {
                         const idList = type[app.keywords.EXCHANGE_LIST.RESPONSE.ITEM_ID_LIST];
                         const nameList = type[app.keywords.EXCHANGE_LIST.RESPONSE.ITEM_NAME_LIST];
                         const goldList = type[app.keywords.EXCHANGE_LIST.RESPONSE.ITEM_GOLD_LIST];
@@ -46,9 +47,9 @@ class TabExchangeItem extends Component {
 
                         let rowNode;
 
-                        for(let i = 0 ; i < cnt; i++){
+                        for (let i = 0; i < cnt; i++) {
                             let itemId = idList[i];
-                            let itemIcon = iconList[i].replace('thumb.','');
+                            let itemIcon = iconList[i].replace('thumb.', '');
                             let itemGold = goldList[i];
                             let itemName = nameList[i];
 
@@ -74,7 +75,6 @@ class TabExchangeItem extends Component {
                                     sprite.node.x = -260 + (i % 3) * (itemNodeWidth + 21);
                                     sprite.node.y = 0;
                                 });
-
                                 // image background node
                                 this._initBackgroundNode(itemNode, itemIcon);
 
