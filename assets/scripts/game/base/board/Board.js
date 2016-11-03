@@ -100,7 +100,7 @@ export default class Board extends Actor {
     }
 
     _onPlayerSetReadyState(playerId, ready, isItMe) {
-        isItMe && (ready ? this.stopTimeLine() : this.startTimeLine(this.readyPhaseDuration));
+        isItMe && (ready ? this.stopTimeLine() : this.startTimeLine(this.readyPhaseDuration * 2));
     }
 
     /**

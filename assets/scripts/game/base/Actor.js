@@ -13,7 +13,6 @@ export default class Actor extends Component {
         this.renderer = null;
         this.renderData = null;
         this.initiated = false;
-        this._isRegisteredListener;
         this._eventEmitter = null;
         this.__pendingEmitEvents = null;
     }
@@ -31,13 +30,11 @@ export default class Actor extends Component {
         this.renderer = renderer;
         this.renderData = {...renderData, actor: this};
         this.renderer && this.renderer._init(this.renderData);
+        this._addGlobalListener();
     }
 
     start(){
-        if(!this._isRegisteredListener){
-            this._addGlobalListener();
-        }
-
+        super.start();
         this.initiated = true;
         this._emitPendingEvent();
     }
@@ -68,7 +65,6 @@ export default class Actor extends Component {
      */
     _addGlobalListener(){
         this._assertEmitter();
-        this._isRegisteredListener = true;
     }
 
     /**
@@ -84,7 +80,6 @@ export default class Actor extends Component {
      */
     _removeGlobalListener(){
         this._assertEmitter();
-        this._isRegisteredListener = false;
     }
 
     emit(name, ...args){

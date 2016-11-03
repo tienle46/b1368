@@ -1,9 +1,9 @@
 /**
  * Created by Thanh on 9/16/2016.
  */
-import Actor from 'Actor'
+import Component from 'Component'
 
-export default class GameAdapter extends Actor {
+export default class GameAdapter extends Component {
     constructor() {
         super();
     }

@@ -24,7 +24,7 @@ export default class TLMNDLControls extends GameControls {
         this.cardTurnBaseControls = null;
     }
 
-    onEnable(){
+    onEnable() {
         super.onEnable();
 
         this.scene = app.system.currentScene;
@@ -43,18 +43,18 @@ export default class TLMNDLControls extends GameControls {
         this.scene.on(Events.ON_GAME_STATE_ENDING, this.hideAllControls, this);
     }
 
-    _onGameBegin(data, isJustJoined){
+    _onGameBegin(data, isJustJoined) {
         this._showGameBeginControls();
     }
 
-    _onGameStarting(data, isJustJoined){
+    _onGameStarting(data, isJustJoined) {
         this.hideAllControlsBeforeGameStart();
     }
 
-    _onGameStarted(data, isJustJoined){
-        if(isJustJoined){
+    _onGameStarted(data, isJustJoined) {
+        if (isJustJoined) {
             this._showWaitTurnControls();
-        }else{
+        } else {
             this.scene.isStarting() && this._showWaitTurnControls();
         }
     }
@@ -65,42 +65,42 @@ export default class TLMNDLControls extends GameControls {
      * @param data
      * @private
      */
-    _onGamePlaying(data, isJustJoined){
+    _onGamePlaying(data, isJustJoined) {
         let nextTurnPlayerId = utils.getValue(data, Keywords.TURN_PLAYER_ID);
         if (!nextTurnPlayerId) {
             this._showWaitTurnControls();
-        }else{
+        } else {
             this.hideAllControlsBeforeGameStart();
         }
     }
 
-    _showOnTurnControls(showPlayControlOnly){
+    _showOnTurnControls(showPlayControlOnly) {
         this.hideAllControls();
         this.cardTurnBaseControls._showOnTurnControls(showPlayControlOnly);
     }
 
-    _showWaitTurnControls(){
+    _showWaitTurnControls() {
         this.hideAllControls();
         this.cardTurnBaseControls._showWaitTurnControls();
     }
 
-    _showGameBeginControls(){
+    _showGameBeginControls() {
         this.hideAllControls();
-        if(this.scene.board.isBegin()){
+        if (this.scene.board.isBegin()) {
             this.baseControls._showGameBeginControls();
         }
     }
 
-    hidePlayControls(){
+    hidePlayControls() {
         this.cardTurnBaseControls.hideAllControls();
     }
 
-    hideAllControls(){
+    hideAllControls() {
         this.baseControls.hideAllControls();
         this.cardTurnBaseControls.hideAllControls();
     }
 
-    hideAllControlsBeforeGameStart(){
+    hideAllControlsBeforeGameStart() {
         super.hideAllControlsBeforeGameStart();
         this.baseControls.hideAllControls();
     }

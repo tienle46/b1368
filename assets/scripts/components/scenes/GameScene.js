@@ -38,10 +38,12 @@ export default class GameScene extends BaseScene {
         this.gameControls = null;
         this.gameEventHandler = null;
         this.gameResultPopup = null;
-        this._penddingEvents = [];
+        this._penddingEvents = null;
     }
 
     _addGlobalListener(){
+        super._addGlobalListener();
+
         this.on(Events.ON_GAME_STATE_CHANGE, (...args) => {
             this.initiated ? this._onGameStateChange(...args) : (this._penddingEvents.push({
                 fn: this._onGameStateChange,
@@ -96,8 +98,6 @@ export default class GameScene extends BaseScene {
                 throw new CreateGameException(app.res.string('error_fail_to_load_game_data'));
             }
 
-            this._initGameEvents();
-            this._addGlobalListener();
             this._setTableNameLabel(this.room);
             this._loadGameData();
 
@@ -107,21 +107,19 @@ export default class GameScene extends BaseScene {
             e instanceof CreateGameException && this._onLoadSceneFail();
 
         }
-
-        console.log("start GameScene");
     }
 
     start(){
         super.start();
 
+        this._initGameEvents();
         app.system.enablePendingGameEvent = false;
         this._handlePendingEvents();
-
-        console.log("on enable GameScene: ", this.__pendingEmitEvents);
     }
 
     onDestroy() {
         super.onDestroy();
+        this.removeAllListener();
         this.gameEventHandler && this.gameEventHandler.removeGameEventListener();
     }
 
@@ -238,7 +236,7 @@ export default class GameScene extends BaseScene {
         this.gameState = state;
         this.gameLocalState = localState;
 
-        console.log("_onGameStateChange: state=", state, " local State: ", localState, " isJustJoined=", isJustJoined, " data=", data);
+        // console.log("_onGameStateChange: state=", state, " local State: ", localState, " isJustJoined=", isJustJoined, " data=", data);
 
         switch (localState) {
             case app.const.game.state.BEGIN:
@@ -265,10 +263,6 @@ export default class GameScene extends BaseScene {
 
     hideGameResult() {
         this.gameResultPopup && this.gameResultPopup.hide();
-    }
-
-    showClickEvent(event){
-        console.log("Click: ", event);
     }
 }
 

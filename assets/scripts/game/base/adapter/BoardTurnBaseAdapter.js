@@ -2,16 +2,16 @@
  * Created by Thanh on 8/23/2016.
  */
 
+import app from 'app';
 import utils from 'utils'
 import Events from 'Events'
 import GameAdapter from 'GameAdapter';
 import {Keywords} from 'core'
 
 export default class BoardTurnBaseAdapter extends GameAdapter {
-    constructor() {
+    constructor(board) {
         super();
-
-        this.board = null;
+        this.board = board;
         this.preTurnPlayerId;
         this.currentTurnPlayerId;
         this.lastPlayedTurn;
@@ -21,8 +21,12 @@ export default class BoardTurnBaseAdapter extends GameAdapter {
     onEnable(){
         super.onEnable();
         this.scene = app.system.currentScene;
-        this.board = this.scene.board;
-        this._addGlobalListener();
+        this._addListener();
+    }
+
+    onDisable(){
+        super.onDisable();
+        this._removeListener();
     }
 
     _reset(){
@@ -31,7 +35,7 @@ export default class BoardTurnBaseAdapter extends GameAdapter {
         this.lastPlayedTurn = 0;
     }
 
-    _addGlobalListener(){
+    _addListener(){
         this.scene.on(Events.HANDLE_TURN_DURATION, this._handleTurnDuration, this);
         this.scene.on(Events.HANDLE_CHANGE_TURN, this._handleChangeTurn, this);
         this.scene.on(Events.HANDLE_PLAY_TURN, this._handlePlayTurn, this);
@@ -39,12 +43,7 @@ export default class BoardTurnBaseAdapter extends GameAdapter {
         this.scene.on(Events.ON_GAME_LOAD_PLAY_DATA, this._loadGamePlayData, this);
     }
 
-    _removeGlobalListener(){
-
-        debug("Remove BoardTurnBaseAdapter");
-
-        super._removeGlobalListener();
-
+    _removeListener(){
         this.scene.off(Events.HANDLE_TURN_DURATION, this._handleTurnDuration, this);
         this.scene.off(Events.HANDLE_CHANGE_TURN, this._handleChangeTurn, this);
         this.scene.off(Events.HANDLE_PLAY_TURN, this._handlePlayTurn, this);
@@ -67,11 +66,10 @@ export default class BoardTurnBaseAdapter extends GameAdapter {
 
     _onPlayerTurn(turnPlayerId){
         if(turnPlayerId == this.lastPlayedTurn){
-            debug('CLEAN_TURN_ROUTINE_DATA: ', turnPlayerId);
             this.preTurnPlayerId = 0;
             this.lastPlayedTurn = 0;
             this.currentTurnPlayerId = 0;
-            this.scene.emit(Events.CLEAN_TURN_ROUTINE_DATA, turnPlayerId);
+            this.scene.emit(Events.ON_GAME_CLEAN_TURN_ROUTINE_DATA, turnPlayerId);
         }
     }
 
@@ -79,4 +77,3 @@ export default class BoardTurnBaseAdapter extends GameAdapter {
         this.lastPlayedTurn = utils.getValue(data, Keywords.LAST_MOVE_PLAYER_ID);
     }
 }
-

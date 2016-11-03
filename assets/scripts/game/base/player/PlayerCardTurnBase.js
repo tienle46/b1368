@@ -12,7 +12,8 @@ export default class PlayerCardTurnBase extends PlayerCard {
 
     onEnable(...args){
         super.onEnable(...args);
-        this.turnAdapter = new PlayerCardTurnBaseAdapter(this.board.scene, this);
+        this.turnAdapter = new PlayerCardTurnBaseAdapter(this);
+        this.turnAdapter.onEnable();
     }
 
     onDisable(){
