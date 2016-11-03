@@ -173,16 +173,16 @@ class GameSystem {
     //
     // }
 
-    addGameListener(eventName, listener, context) {
-        this.gameEventEmitter.addListener(eventName, listener, context);
+    addGameListener(eventName, listener, context, priority) {
+        this.gameEventEmitter.addListener(eventName, listener, context, priority);
     }
 
     removeGameListener(eventName, listener, context) {
         this.gameEventEmitter.removeListener(eventName, listener, context);
     }
 
-    addListener(eventName, listener, context) {
-        this.eventEmitter.addListener(eventName, listener, context);
+    addListener(eventName, listener, context, priority) {
+        this.eventEmitter.addListener(eventName, listener, context, priority);
     }
 
     removeListener(eventName, listener) {

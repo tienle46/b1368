@@ -66,32 +66,32 @@ export default class GameEventHandler {
 
     removeGameEventListener() {
 
-        app.system.removeGameListener(SFS2X.SFSEvent.USER_EXIT_ROOM, this._onUserExitRoom);
-        app.system.removeGameListener(SFS2X.SFSEvent.USER_ENTER_ROOM, this._onUserEnterRoom);
-        app.system.removeGameListener(SFS2X.SFSEvent.ROOM_REMOVE, this._onRoomRemove);
-        app.system.removeGameListener(SFS2X.SFSEvent.USER_VARIABLES_UPDATE, this._onUserVariablesUpdate);
-        app.system.removeGameListener(SFS2X.SFSEvent.ROOM_VARIABLES_UPDATE, this._onRoomVariablesUpdate);
-        app.system.removeGameListener(SFS2X.SFSEvent.PUBLIC_MESSAGE, this._onPlayerPublishMessage);
+        app.system.removeGameListener(SFS2X.SFSEvent.USER_EXIT_ROOM, this._onUserExitRoom, this);
+        app.system.removeGameListener(SFS2X.SFSEvent.USER_ENTER_ROOM, this._onUserEnterRoom, this);
+        app.system.removeGameListener(SFS2X.SFSEvent.ROOM_REMOVE, this._onRoomRemove, this);
+        app.system.removeGameListener(SFS2X.SFSEvent.USER_VARIABLES_UPDATE, this._onUserVariablesUpdate, this);
+        app.system.removeGameListener(SFS2X.SFSEvent.ROOM_VARIABLES_UPDATE, this._onRoomVariablesUpdate, this);
+        app.system.removeGameListener(SFS2X.SFSEvent.PUBLIC_MESSAGE, this._onPlayerPublishMessage, this);
 
-        app.system.removeGameListener(Commands.SYSTEM_MESSAGE, this._handleSystemMessage);
-        app.system.removeGameListener(Commands.DOWNLOAD_IMAGE, this._handlePlayerAvatar);
-        app.system.removeGameListener(Commands.USER_LEVEL_UP, this._handleUserLevelUp);
-        app.system.removeGameListener(Commands.TASK_FINISH, this._handleTaskFinish);
-        app.system.removeGameListener(Commands.BUDDY_NEW_INVITATION, this._handBuddyNewInvitation);
+        app.system.removeGameListener(Commands.SYSTEM_MESSAGE, this._handleSystemMessage, this);
+        app.system.removeGameListener(Commands.DOWNLOAD_IMAGE, this._handlePlayerAvatar, this);
+        app.system.removeGameListener(Commands.USER_LEVEL_UP, this._handleUserLevelUp, this);
+        app.system.removeGameListener(Commands.TASK_FINISH, this._handleTaskFinish, this);
+        app.system.removeGameListener(Commands.BUDDY_NEW_INVITATION, this._handBuddyNewInvitation, this);
 
-        app.system.removeGameListener(Commands.ASSETS_USE_ITEM, this._handlePlayerUseAssets);
-        app.system.removeGameListener(Commands.PING_CLIENT, this._handlePingClient);
-        app.system.removeGameListener(Commands.PLAYERS_BALANCE_CHANGE, this._handleChangePlayerBalance);
-        app.system.removeGameListener(Commands.PLAYER_REENTER_ROOM, this._handlePlayerReEnterGame);
-        app.system.removeGameListener(Commands.BOARD_STATE_CHANGE, this._handleGameStateChange);
-        app.system.removeGameListener(Commands.BOARD_MASTER_CHANGE, this._handleChangeBoardMaster);
-        app.system.removeGameListener(Commands.PLAYER_REJOIN_ROOM, this._handlePlayerRejoinGame);
-        app.system.removeGameListener(Commands.PLAYER_GET_TURN, this._onPlayerGetTurn);
-        app.system.removeGameListener(Commands.PLAYER_LOSE_TURN, this._onPlayerLoseTurn);
-        app.system.removeGameListener(Commands.PLAYER_SKIP_TURN, this._onPlayerSkipTurn);
-        app.system.removeGameListener(Commands.PLAYER_PLAY_CARD, this._onPlayerPlayCards);
-        app.system.removeGameListener(Commands.PLAYER_READY, this._onPlayerReady);
-        app.system.removeGameListener(Commands.PLAYER_UNREADY, this._onPlayerUnready);
+        app.system.removeGameListener(Commands.ASSETS_USE_ITEM, this._handlePlayerUseAssets, this);
+        app.system.removeGameListener(Commands.PING_CLIENT, this._handlePingClient, this);
+        app.system.removeGameListener(Commands.PLAYERS_BALANCE_CHANGE, this._handleChangePlayerBalance, this);
+        app.system.removeGameListener(Commands.PLAYER_REENTER_ROOM, this._handlePlayerReEnterGame, this);
+        app.system.removeGameListener(Commands.BOARD_STATE_CHANGE, this._handleGameStateChange, this);
+        app.system.removeGameListener(Commands.BOARD_MASTER_CHANGE, this._handleChangeBoardMaster, this);
+        app.system.removeGameListener(Commands.PLAYER_REJOIN_ROOM, this._handlePlayerRejoinGame, this);
+        app.system.removeGameListener(Commands.PLAYER_GET_TURN, this._onPlayerGetTurn, this);
+        app.system.removeGameListener(Commands.PLAYER_LOSE_TURN, this._onPlayerLoseTurn, this);
+        app.system.removeGameListener(Commands.PLAYER_SKIP_TURN, this._onPlayerSkipTurn, this);
+        app.system.removeGameListener(Commands.PLAYER_PLAY_CARD, this._onPlayerPlayCards, this);
+        app.system.removeGameListener(Commands.PLAYER_READY, this._onPlayerReady, this);
+        app.system.removeGameListener(Commands.PLAYER_UNREADY, this._onPlayerUnready, this);
     }
 
     _onPlayerPublishMessage(event){
@@ -168,9 +168,9 @@ export default class GameEventHandler {
     }
 
     _onUserExitRoom(event) {
-        log(event)
+        console.log(event)
 
-        if (!event.user || !event.room || event.room.id != this.scene.room.id) {
+        if (!event.user || !event.room ||  !this.scene.room || event.room.id != this.scene.room.id) {
             return;
         }
 

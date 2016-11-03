@@ -45,8 +45,6 @@ export default class PlayerRenderer extends ActorRenderer {
     onEnable(){
         super.onEnable();
 
-        console.log("PlayerRenderer: ", this.data);
-
         utils.deactive(this.status1);
         utils.deactive(this.status2);
 
@@ -59,8 +57,6 @@ export default class PlayerRenderer extends ActorRenderer {
 
         this.playerMessage = this.playerMessageNode.getComponent(PlayerMessage.name);
         this.playerMessage.setup(this);
-
-        this.gamePlayers = this.player
 
         this._stopCountdown();
 

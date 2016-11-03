@@ -97,8 +97,7 @@ export default class GameMenuPrefab extends Component {
     }
 
     onClickTopupButton(event) {
-        this.scene.showGameResult([{}]);
-        // TopupDialogRub.show(this.scene.node);
+        TopupDialogRub.show(this.scene.node);
     }
 }
 

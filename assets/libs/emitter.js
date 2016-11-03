@@ -2,11 +2,10 @@
  * Created by Thanh on 9/13/2016.
  */
 
-
 export default class Emitter {
     constructor() {
         this._callbacks = {};
-
+        this._callbacksByContext = {};
     }
 
     /**
@@ -20,7 +19,10 @@ export default class Emitter {
     addListener(event, fn, context, priority) {
 
         if(fn) {
-            context && (fn = fn.bind(context));
+            if(context){
+                fn = fn.bind(context);
+                fn.__context = context;
+            }
 
             if(typeof priority == 'number' && priority >= 0){
                 (this._callbacks[`$${event}`] = this._callbacks['$' + event] || []).splice(priority, 0, fn);
@@ -33,6 +35,14 @@ export default class Emitter {
         return this;
     }
 
+    _checkContext(cb, context) {
+        return cb && (!context || (cb.__context === context || (cb.fn && cb.fn.__context === context )));
+    }
+
+    _isSameInstance(fn1, fn2){
+        return typeof fn1 == 'function' && typeof fn2 == 'function' && fn1.name.split(' ').pop() === fn2.name.split(' ').pop();
+    }
+
     /**
      * Remove the given callback for `event` or all
      * registered callbacks.
@@ -43,7 +53,7 @@ export default class Emitter {
      * @api public
      */
 
-    removeListener(event, fn) {
+    removeListener(event, fn, context) {
         this._callbacks = this._callbacks || {};
 
         // all
@@ -57,16 +67,22 @@ export default class Emitter {
         if (!callbacks) return this;
 
         // remove all handlers
-        if (event) {
-            delete this._callbacks[`$${event}`];
+        if (event && !fn) {
+            if(!context){
+                delete this._callbacks[`$${event}`];
+            }else{
+                for (let i = 0; i < callbacks.length; i++) {
+                    this._checkContext(callbacks[i], context) && callbacks.splice(i--, 1);
+                }
+            }
+
             return this;
         }
 
-        for (var i = 0; i < callbacks.length; i++) {
+        for (let i = 0; i < callbacks.length; i++) {
             let cb = callbacks[i];
-            if (cb === fn || cb.fn === fn) {
-                callbacks.splice(i, 1);
-                break;
+            if (this._checkContext(cb, context) && this._isSameInstance(cb, fn)) {
+                callbacks.splice(i--, 1);
             }
         }
 
@@ -96,8 +112,8 @@ export default class Emitter {
      * @api public
      */
 
-    off(event, fn){
-        this.removeListener(event, fn);
+    off(event, fn, context){
+        this.removeListener(event, fn, context);
     }
 
 

@@ -11,18 +11,13 @@ import Keywords from 'Keywords'
 
 export default class PlayerTurnBaseAdapter extends GameAdapter {
 
-    constructor() {
+    constructor(player) {
         super();
+        this.player = player;
         this.timelineDuration = 20;
         this.preTurnPlayerId = 0;
         this.currentTurnPlayerId = 0;
         this.lastPlayedTurn = 0;
-    }
-
-    _init(scene, player){
-        this.scene = scene;
-        this.player = player;
-        this._addGlobalListener();
     }
 
     _reset(){
@@ -32,8 +27,18 @@ export default class PlayerTurnBaseAdapter extends GameAdapter {
         this.lastPlayedTurn = 0;
     }
 
-    _addGlobalListener(){
-        super._addGlobalListener();
+    onEnable(){
+        super.onEnable();
+        this.scene = app.system.currentScene;
+        this._addListener();
+    }
+
+    onDisable(){
+        super.onDisable();
+        this._removeListener();
+    }
+
+    _addListener(){
 
         this.scene.on(Events.HANDLE_TURN_DURATION, this._handleTurnDuration, this);
         this.scene.on(Events.HANDLE_CHANGE_TURN, this._handleChangeTurn, this);
@@ -41,22 +46,19 @@ export default class PlayerTurnBaseAdapter extends GameAdapter {
         this.scene.on(Events.HANDLE_LOSE_TURN, this._handleLoseTurn, this);
         this.scene.on(Events.HANDLE_SKIP_TURN, this._handleSkipTurn, this);
         this.scene.on(Events.ON_GAME_STATE_ENDING, this._onGameEnding, this);
-        this.scene.on(Events.CLEAN_TURN_ROUTINE_DATA, this._cleanTurnRoutineData, this);
+        this.scene.on(Events.ON_GAME_CLEAN_TURN_ROUTINE_DATA, this._cleanTurnRoutineData, this);
         this.scene.on(Events.ON_GAME_LOAD_PLAY_DATA, this._loadGamePlayData, this);
         this.scene.on(Events.ON_GAME_REJOIN, this._onGameRejoin, this);
     }
 
-
-    _removeGlobalListener(){
-        super._removeGlobalListener();
-
+    _removeListener(){
         this.scene.off(Events.HANDLE_TURN_DURATION, this._handleTurnDuration, this);
         this.scene.off(Events.HANDLE_CHANGE_TURN, this._handleChangeTurn, this);
         this.scene.off(Events.HANDLE_PLAY_TURN, this._handlePlayTurn, this);
         this.scene.off(Events.HANDLE_LOSE_TURN, this._handleLoseTurn, this);
         this.scene.off(Events.HANDLE_SKIP_TURN, this._handleSkipTurn, this);
         this.scene.off(Events.ON_GAME_STATE_ENDING, this._onGameEnding, this);
-        this.scene.off(Events.CLEAN_TURN_ROUTINE_DATA, this._cleanTurnRoutineData, this);
+        this.scene.off(Events.ON_GAME_CLEAN_TURN_ROUTINE_DATA, this._cleanTurnRoutineData, this);
         this.scene.off(Events.ON_GAME_LOAD_PLAY_DATA, this._loadGamePlayData, this);
         this.scene.off(Events.ON_GAME_REJOIN, this._onGameRejoin, this);
     }
@@ -83,7 +85,6 @@ export default class PlayerTurnBaseAdapter extends GameAdapter {
     }
 
     _handleSkipTurn(data){
-        log(data)
 
         let skipTurnPlayerId = utils.getValue(data, Keywords.PLAYER_ID);
         (skipTurnPlayerId == this.player.id) && this._handleLoseTurn(skipTurnPlayerId);
@@ -107,29 +108,14 @@ export default class PlayerTurnBaseAdapter extends GameAdapter {
         this.preTurnPlayerId = this.currentTurnPlayerId;
         this.currentTurnPlayerId = turnPlayerId;
 
-
         if(this.player.id === turnPlayerId) {
-
-            log("handle change turn: ", this.player.id, turnPlayerId);
-
-            if(!this.scene.gamePlayers){
-                debug("this.scene.gamePlayers", this.scene);
-            }
-
             let preTurnPlayer = this.scene.gamePlayers.findPlayer(this.preTurnPlayerId);
-            
-            log("pre turn: ", this.preTurnPlayerId, preTurnPlayer);
             preTurnPlayer && preTurnPlayer.turnAdapter.onLoseTurn();
-
             this.onTurn();
-
-            debug("Done _handleChangeTurn: ");
         }
     }
 
     _handlePlayTurn(data){
-
-        log("_handlePlayTurn")
 
         let playerId = utils.getValue(data, Keywords.PLAYER_ID);
         this.lastPlayedTurn = playerId;
@@ -145,13 +131,9 @@ export default class PlayerTurnBaseAdapter extends GameAdapter {
             // debug("how wait turn on _handlePlayTurn")
             // this._showWaitTurnControls();
         }
-
-        log("Done _handlePlayTurn")
-        
     }
 
     _showWaitTurnControls(){
-        debug("_showWaitTurnControls adapter: ", this.player.isItMe())
         this.player.isItMe() && this.scene.emit(Events.SHOW_WAIT_TURN_CONTROLS);
     }
 
@@ -182,10 +164,7 @@ export default class PlayerTurnBaseAdapter extends GameAdapter {
 
     onTurn(){
 
-        debug("onturn: ", this.player.isItMe());
-
         this.scene.emit(Events.ON_PLAYER_TURN, this.player.id);
-
         this.player.startTimeLine(this.timelineDuration);
 
         //TODO play sound
@@ -198,11 +177,8 @@ export default class PlayerTurnBaseAdapter extends GameAdapter {
     }
 
     onLoseTurn(){
-        log("onLoseTurn: ", this.player.id);
         this.player.skippedTurn = true;
         this.player.stopTimeLine();
-
-        debug("onLoseTurn show wait turn")
         this._showWaitTurnControls();
     }
 

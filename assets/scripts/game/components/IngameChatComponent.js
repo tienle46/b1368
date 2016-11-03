@@ -59,21 +59,11 @@ export default class IngameChatComponent extends Component {
         this.showing = false;
     }
 
-    onShow(){
-
-    }
-
     initMessages(){
-
-        debug("initMessages: ", this.messages);
-
         this.messageListContent.removeAllChildren(true);
-
         this.messages.forEach(message => {
             let chatItemNode = cc.instantiate(this.gameChatItemPrefab);
             let gameChatItem = chatItemNode.getComponent(GameChatItem.name);
-
-            debug("gameChatItem: ", gameChatItem)
 
             if(gameChatItem){
                 gameChatItem.text = message;
@@ -85,6 +75,9 @@ export default class IngameChatComponent extends Component {
         this.inited = true;
     }
 
+    /**
+     * This method going to call on animation hide chat component finish. Going to edit component to see this callback
+     */
     onHidden(){
         this.node.active = false;
     }

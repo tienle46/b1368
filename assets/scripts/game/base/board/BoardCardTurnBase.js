@@ -27,9 +27,15 @@ export default class BoardCardTurnBase extends BoardCard {
     onEnable(renderer){
         super.onEnable();
         this.turnAdapter = new BoardTurnBaseAdapter();
+        this.turnAdapter.onEnable();
 
-        this.scene.on(Events.CLEAN_TURN_ROUTINE_DATA, this._cleanTurnRoutineData, this);
+        this.scene.on(Events.ON_GAME_CLEAN_TURN_ROUTINE_DATA, this._cleanTurnRoutineData, this);
         this.scene.on(Events.ON_PLAYER_PLAYED_CARDS, this._onPlayerPlayedCards, this);
+    }
+
+    onDisable(){
+        super.onDisable();
+        this.turnAdapter.onDisable();
     }
 
     _onPlayerPlayedCards(playedCards, srcCardList, isItMe){
@@ -66,6 +72,7 @@ export default class BoardCardTurnBase extends BoardCard {
 
     _handleBoardTurnBaseTruePlay(data){
 
+        console.log(this.scene._eventEmitter);
         log("_handleBoardTurnBaseTruePlay", data);
 
         let turnDuration = utils.getValue(data, Keywords.TURN_BASE_PLAYER_TURN_DURATION)
