@@ -52,7 +52,7 @@ export default class SegmentControlRub extends Rub {
             isRoundedBorder: true,
             activeNormalSprite2: 'dashboard/popup-tab-active2',
             itemWidth: 155.1,
-            itemHeight: 31.7,
+            itemHeight: 50,
             tabBodyPrefabType: 'topup',
             hasEdge: true,
             edge: {
@@ -97,6 +97,7 @@ export default class SegmentControlRub extends Rub {
     _resizeGroupNodeByOptions() {
         let groupNode = this.prefab.getChildByName('group');
         let groupWidget = groupNode.getComponent(cc.Widget);
+        groupWidget.isAlignOnce = false;
         if (this.options.hasEdge) {
             groupWidget.top = this.options.edge.top;
             groupWidget.left = this.options.edge.left;
@@ -155,6 +156,8 @@ export default class SegmentControlRub extends Rub {
             // push to toggleGroup
             toggleGroupComponent.addItem(checkBox);
         });
+
+        // fit width of group and tab
 
         return toggleGroupComponent;
     }

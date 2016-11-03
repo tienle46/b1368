@@ -385,10 +385,19 @@ export default class ListItemBasicRub {
     }
 
     // resize height when exist a child height higher than parent 
-    _resizeHeight(spriteComponent, size) {
+    /**
+     * 
+     * 
+     * @param {any} spriteComponent
+     * @param {any} size
+     * @param {boolean} isToggle # if list is kind of toggleable, it needs to change own height in toggleable way
+     * 
+     * @memberOf ListItemBasicRub
+     */
+    _resizeHeight(spriteComponent, size, isToggle = false) {
         // need to reload spriteFrame to display correctly.
         RubUtils.loadSpriteFrame(spriteComponent, this.options.spriteFrame || 'textures/50x50', null, false, (s) => {
-            if (s.node.getContentSize().height < size.height) {
+            if (s.node.getContentSize().height < size.height || isToggle) {
                 s.node.setContentSize(size);
             }
         });
@@ -410,6 +419,8 @@ export default class ListItemBasicRub {
                 widget.top = opts.top || defaultValue;
                 widget.bottom = opts.bottom || defaultValue;
             }
+        } else {
+            widget.verticalCenter = 0;
         }
 
         if (opts.hasOwnProperty('right')) {

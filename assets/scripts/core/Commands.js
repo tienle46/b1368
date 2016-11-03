@@ -233,4 +233,7 @@ Commands.AGENCY = "agent";
 
 //TRANSFER TRANSACTION
 Commands.TRANSFER_TRANSACTION = 'b_ath';
+
+//TRANSACTION HISTORY
+Commands.TRANSACTION_HISTORY = 'b_arh';
 module.exports = Commands;
