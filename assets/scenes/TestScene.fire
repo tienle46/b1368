@@ -333,16 +333,17 @@
       "__id__": 6
     },
     "_enabled": true,
-    "cardPrefab": {
-      "__uuid__": "1be1ace3-b9b3-4bf4-9c45-5c1d9eccac08"
-    },
+    "path": "",
     "scale": 1,
     "reveal": true,
     "selectable": false,
     "space": 100,
     "maxDimension": 600,
     "orientation": 1,
-    "align": 7
+    "align": 7,
+    "cardPrefab": {
+      "__uuid__": "1be1ace3-b9b3-4bf4-9c45-5c1d9eccac08"
+    }
   },
   {
     "__type__": "cc.Sprite",
@@ -585,7 +586,7 @@
     "_tag": -1,
     "_opacityModifyRGB": false,
     "_id": "95d03ZE3ipM5Y4yOVfqFoyM",
-    "_active": false,
+    "_active": true,
     "_components": [],
     "_prefab": null,
     "groupIndex": 0
@@ -655,16 +656,17 @@
       "__id__": 15
     },
     "_enabled": true,
-    "cardPrefab": {
-      "__uuid__": "1be1ace3-b9b3-4bf4-9c45-5c1d9eccac08"
-    },
+    "path": "",
     "scale": 1,
     "reveal": true,
     "selectable": false,
     "space": 100,
     "maxDimension": 600,
     "orientation": 1,
-    "align": 7
+    "align": 7,
+    "cardPrefab": {
+      "__uuid__": "1be1ace3-b9b3-4bf4-9c45-5c1d9eccac08"
+    }
   },
   {
     "__type__": "cc.Sprite",
@@ -1009,16 +1011,17 @@
       "__id__": 25
     },
     "_enabled": true,
-    "cardPrefab": {
-      "__uuid__": "1be1ace3-b9b3-4bf4-9c45-5c1d9eccac08"
-    },
+    "path": "",
     "scale": 1,
     "reveal": true,
     "selectable": false,
     "space": 100,
     "maxDimension": 600,
     "orientation": 1,
-    "align": 7
+    "align": 7,
+    "cardPrefab": {
+      "__uuid__": "1be1ace3-b9b3-4bf4-9c45-5c1d9eccac08"
+    }
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -1392,16 +1395,17 @@
       "__id__": 36
     },
     "_enabled": true,
-    "cardPrefab": {
-      "__uuid__": "1be1ace3-b9b3-4bf4-9c45-5c1d9eccac08"
-    },
+    "path": "",
     "scale": 1,
     "reveal": true,
     "selectable": false,
     "space": 100,
     "maxDimension": 600,
     "orientation": 1,
-    "align": 7
+    "align": 7,
+    "cardPrefab": {
+      "__uuid__": "1be1ace3-b9b3-4bf4-9c45-5c1d9eccac08"
+    }
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -2081,16 +2085,17 @@
       "__id__": 55
     },
     "_enabled": true,
-    "cardPrefab": {
-      "__uuid__": "1be1ace3-b9b3-4bf4-9c45-5c1d9eccac08"
-    },
+    "path": "",
     "scale": 1,
     "reveal": true,
     "selectable": false,
     "space": 100,
     "maxDimension": 600,
     "orientation": 1,
-    "align": 7
+    "align": 7,
+    "cardPrefab": {
+      "__uuid__": "1be1ace3-b9b3-4bf4-9c45-5c1d9eccac08"
+    }
   },
   {
     "__type__": "cc.Sprite",
@@ -2348,6 +2353,7 @@
       "__id__": 63
     },
     "_enabled": true,
+    "path": "",
     "playerNameLabel": null,
     "balanceLabel": null,
     "status1": null,
@@ -2375,7 +2381,8 @@
     "node": {
       "__id__": 63
     },
-    "_enabled": true
+    "_enabled": true,
+    "path": ""
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -2944,16 +2951,17 @@
       "__id__": 79
     },
     "_enabled": true,
-    "cardPrefab": {
-      "__uuid__": "1be1ace3-b9b3-4bf4-9c45-5c1d9eccac08"
-    },
+    "path": "",
     "scale": 1,
     "reveal": true,
     "selectable": false,
     "space": 100,
     "maxDimension": 600,
     "orientation": 1,
-    "align": 7
+    "align": 7,
+    "cardPrefab": {
+      "__uuid__": "1be1ace3-b9b3-4bf4-9c45-5c1d9eccac08"
+    }
   },
   {
     "__type__": "cc.Sprite",
@@ -3057,16 +3065,17 @@
       "__id__": 83
     },
     "_enabled": true,
-    "cardPrefab": {
-      "__uuid__": "1be1ace3-b9b3-4bf4-9c45-5c1d9eccac08"
-    },
+    "path": "",
     "scale": 1,
     "reveal": true,
     "selectable": false,
     "space": 100,
     "maxDimension": 600,
     "orientation": 1,
-    "align": 7
+    "align": 7,
+    "cardPrefab": {
+      "__uuid__": "1be1ace3-b9b3-4bf4-9c45-5c1d9eccac08"
+    }
   },
   {
     "__type__": "cc.Sprite",
@@ -3170,16 +3179,17 @@
       "__id__": 87
     },
     "_enabled": true,
-    "cardPrefab": {
-      "__uuid__": "1be1ace3-b9b3-4bf4-9c45-5c1d9eccac08"
-    },
+    "path": "",
     "scale": 1,
     "reveal": true,
     "selectable": false,
     "space": 100,
     "maxDimension": 600,
     "orientation": 1,
-    "align": 7
+    "align": 7,
+    "cardPrefab": {
+      "__uuid__": "1be1ace3-b9b3-4bf4-9c45-5c1d9eccac08"
+    }
   },
   {
     "__type__": "cc.Sprite",

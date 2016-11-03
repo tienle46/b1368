@@ -133,7 +133,6 @@ export default class Player extends Actor {
         this.renderer.setBalance(this.balance);
 
         this._updatePlayerAnchor();
-        this._addGlobalListener();
     }
 
     _updatePlayerAnchor() {
@@ -141,8 +140,6 @@ export default class Player extends Actor {
         let anchor = this.scene.playerPositions.getPlayerAnchor(anchorIndex);
         anchor && this.node.setPosition(anchor.getPosition());
         this.setAnchorIndex(anchorIndex)
-
-        console.log("updatePlayerAnchor: ", anchorIndex, anchor);
     }
 
     _setBalance(balance){

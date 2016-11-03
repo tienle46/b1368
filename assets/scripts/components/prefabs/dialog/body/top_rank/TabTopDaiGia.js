@@ -89,7 +89,7 @@ class TabTopDaiGia extends Component {
         let event = null;
         let body = this.contentNode;
         GridViewRub.show(body, {data: ['STT', 'Tài khoản', 'Chips'], options : {fontColor: app.const.COLOR_YELLOW
-            }}, d, { position: cc.v2(2, 120), width: 480, event,group: {widths:[80,200,200]} },
+            }}, d, { position: cc.v2(0, 155), width: 660, event,group: {widths:[80,280,280]} },
             ).then((rub) => {
 
         });

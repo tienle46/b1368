@@ -62,8 +62,6 @@ export default class ListTableScene extends BaseScene {
         const width = this.containnerTableView.node.width;
         const itemDimension = width;
 
-        this._addGlobalListener();
-
         for (let i = 0; i < 14; i++) {
 
             const listCell = new cc.instantiate(this.tableListCell);
@@ -84,6 +82,8 @@ export default class ListTableScene extends BaseScene {
                     data[Keywords.QUICK_JOIN_BET] = 1;
 
                     log("join room request");
+                    console.log(app.system.gameEventEmitter)
+                    console.log(app.system.eventEmitter)
 
                     app.service.send({ cmd: Commands.USER_QUICK_JOIN_ROOM, data: data });
                 });

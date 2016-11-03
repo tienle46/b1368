@@ -74,6 +74,8 @@ export default class BoardTLMNDL extends BoardCardTurnBase {
 
     onBoardEnding(data) {
 
+        console.log("Scene Emit: ", this.scene._eventEmitter);
+
         let playerIds = utils.getValue(data, Keywords.GAME_LIST_PLAYER, []);
         let playingPlayerIds = this.scene.gamePlayers.filterPlayingPlayer(playerIds);
         let playerInfos = this.scene.gamePlayers.getBasicPlayerInfo(playerIds);
@@ -100,7 +102,7 @@ export default class BoardTLMNDL extends BoardCardTurnBase {
                 this.renderer.cleanDeckCards();
                 this._startEndBoardTimeLine(remainTime);
             }
-        }), 1000);
+        }), 500);
     }
 
     _getGameResultIconPaths(playerIds, data) {

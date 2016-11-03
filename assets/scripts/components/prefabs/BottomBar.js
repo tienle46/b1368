@@ -108,6 +108,7 @@ class BottomBar extends Component {
 
         let options = {
             itemHeight: 26.5,
+            itemWidth: 285,
             tabBodyPrefabType: 'exchange'
         };
 
@@ -122,19 +123,21 @@ class BottomBar extends Component {
 
     onClickMessageAction() {
         let tabs = [{
-            title: 'Thông báo',
+            title: 'Thông báo hệ thống',
             value: 'tab_system_messages'
-        }, {
-            title: 'Sự kiện',
-            value: 'tab_events'
-        }, {
-            title: 'Tin nhắn',
+        },
+        // {
+        //     title: 'Sự kiện',
+        //     value: 'tab_events'
+        // },
+        {
+            title: 'Tin nhắn cá nhân',
             value: 'tab_personal_messages'
         }];
 
         let options = {
             itemHeight: 26.5,
-            itemWidth: 112,
+            itemWidth: 428,
             tabBodyPrefabType: 'messagecenter'
         };
         let tabOptions = { tabs, options };

@@ -32,7 +32,7 @@ class TabGiftCode extends Component {
         //trungnt: customize font is not available yet
 
         this.messageLabel.isSystemFontUsed = false;
-        RubUtils.loadRes('fonts/UTMFACEBOOKK_ITALIC').then((font) => {
+        RubUtils.loadRes('fonts/MYRIADPRO-COND').then((font) => {
             this.messageLabel.font = font;
             this.messageLabel.fontSize = 28;
         })
