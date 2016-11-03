@@ -45,7 +45,7 @@ export default class EntranceScene extends BaseScene {
             log("success: " + success);
             if (success) {
                 new Fingerprint2().get((deviceId) => {
-                    app.service.requestAuthen('crush1', "1234nm", false, true, (error, result) => {
+                    app.service.requestAuthen('pinocchio', "hhmmss24", false, true, (error, result) => {
                         error = JSON.parse(error);
                         if (result) {
                             console.debug(app.context.getMe());

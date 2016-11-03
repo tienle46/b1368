@@ -67,28 +67,28 @@ cc.Class({
     },
     start(){
         //
-        const fakeCards = Array(13).fill(5).map(byteValue => Card.from(byteValue));
-        var deckCardList = this.deckCard.getComponent('CardList');
-        var playCardList = this.playCard.getComponent('CardList');
-        var bottomCardList = this.bottomCard.getComponent('CardList');
-
-        deckCardList.setReveal(false);
-        deckCardList.setScale(0.5);
-        deckCardList.setMaxDimension(0);
-
-        playCardList.setReveal(false);
-        playCardList.setScale(0.5);
-        playCardList.setMaxDimension(0);
-
-        bottomCardList.setReveal(false);
-        bottomCardList.setScale(0.5);
+        // const fakeCards = Array(13).fill(5).map(byteValue => Card.from(byteValue));
+        // var deckCardList = this.deckCard.getComponent('CardList');
+        // var playCardList = this.playCard.getComponent('CardList');
+        // var bottomCardList = this.bottomCard.getComponent('CardList');
+        //
+        // deckCardList.setReveal(false);
+        // deckCardList.setScale(0.5);
+        // deckCardList.setMaxDimension(0);
+        //
+        // playCardList.setReveal(false);
+        // playCardList.setScale(0.5);
+        // playCardList.setMaxDimension(0);
+        //
+        // bottomCardList.setReveal(false);
+        // bottomCardList.setScale(0.5);
 
         // deckCardList.setCards(fakeCards);
         // playCardList.setCards(fakeCards);
 
-        setTimeout(() => {
-            CardList.dealCards(deckCardList, [bottomCardList, playCardList], 13);
-        }, 3000);
+        // setTimeout(() => {
+        //     CardList.dealCards(deckCardList, [bottomCardList, playCardList], 13);
+        // }, 3000);
 
         // this.cardFilter.getComponent('CardList').setProperties({scale: 0.5, maxDimension: 50, orientation:CardList.HORIZONTAL});
         // this.cardFilter.getComponent('CardList').setAnchorPoint(0,0);
@@ -105,9 +105,9 @@ cc.Class({
         // this.player1.getComponent('CardList').setAnchorPoint(0,0);
         // // this.player1.getComponent('CardList').drawCards(GameUtils.convertBytesToCards([37,7,9,15,18,48,40,50,22,20,14,52,16]));
         //
-        // this.player2.getComponent('CardList').setProperties({scale:0.6, maxDimension: 500});
-        // this.player2.getComponent('CardList').setAnchorPoint(0,0);
-        // // this.player2.getComponent('CardList').setCards(GameUtils.convertBytesToCards([37,7,9,15,18,48,40,50,22,20,14,52,16]), 0.1);
+        this.player2.getComponent('CardList').setProperties({scale:1, maxDimension: 1000});
+        this.player2.getComponent('CardList').setAnchorPoint(0,0);
+        this.player2.getComponent('CardList').setCards(GameUtils.convertBytesToCards([37,7,9,15,18,48,40,50,22,20,14,52,16]), 0.1);
         // //
         // // this.player4.getComponent('CardList').setProperties({scale: 0.5, maxDimension: 200, orientation: CardList.VERTICAL, alignment: CardList.ALIGN_BOTTOM_LEFT});
         // this.player4.getComponent('CardList').setProperties({scale: 0.5, x: -100, maxDimension: 200,orientation:CardList.VERTICAL, alignment: CardList.ALIGN_BOTTOM_LEFT});

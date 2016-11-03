@@ -1,0 +1,30 @@
+{
+  "ver": "1.0.0",
+  "uuid": "3c24e72a-1e07-43c7-bb6a-4b56a4238b27",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "subMetas": {
+    "sam_solo_ico": {
+      "ver": "1.0.3",
+      "uuid": "d613a887-bd68-45f8-9808-c897c0c7e8b5",
+      "rawTextureUuid": "3c24e72a-1e07-43c7-bb6a-4b56a4238b27",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 2.5,
+      "trimX": 9,
+      "trimY": 6,
+      "width": 182,
+      "height": 183,
+      "rawWidth": 200,
+      "rawHeight": 200,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}

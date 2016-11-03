@@ -49,32 +49,38 @@ class TabTopCaoThu extends Component {
             }
         };
         app.service.send(sendObject, (res) => {
-            this.gameList = res;
 
-            this.gameList['iml'].forEach((imgName, index)=>{
+            if(res['itl'] && res['itl'].length > 0 ){
+                this.gameList = res;
 
-                const node = new cc.Node();
-                node.setContentSize(60,60);
+                this.gameList['iml'].forEach((imgName, index)=>{
 
-                node.dNodeId =  this.gameList['itl'][index];
+                    const node = new cc.Node();
 
-                const button = node.addComponent(cc.Button);
-                const nodeSprite = node.addComponent(cc.Sprite);
+                    node.dNodeId =  this.gameList['itl'][index];
 
-                RubUtils.loadSpriteFrame(nodeSprite,
-                    'https://upload.wikimedia.org/wikipedia/commons/f/f7/Tamia_striatus_eating.jpg'
-                    , cc.size(60, 60), true, (spriteFrame) => {
-                        log(`image loaded`);
+                    const button = node.addComponent(cc.Button);
+                    const nodeSprite = node.addComponent(cc.Sprite);
+                    // log( app.res.gameTopCapThuIcon[imgName]);
+                    RubUtils.loadSpriteFrame(nodeSprite,
+                        app.res.gameTopCapThuIcon[imgName]
+                        , cc.size(100, 100), false, (spriteFrame) => {
+                            log(`image loaded`);
+                        });
+
+                    let event = new cc.Component.EventHandler();
+                    event.target = this.node;
+                    event.component = 'TabTopCaoThu';
+                    event.handler = 'onGameItemClicked';
+                    button.clickEvents = [event];
+
+                    this.gamePicker.addChild(node);
                 });
 
-                let event = new cc.Component.EventHandler();
-                event.target = this.node;
-                event.component = 'TabTopCaoThu';
-                event.handler = 'onGameItemClicked';
-                button.clickEvents = [event];
-
-                this.gamePicker.addChild(node);
-            });
+                this._showTopPlayers(this.gameList['itl'][0]).then((data) => {
+                    this._initBody(data);
+                });
+            }
 
         });
     }

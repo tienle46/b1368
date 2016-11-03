@@ -329,9 +329,7 @@
     "_fontSize": 18,
     "_lineHeight": 40,
     "_enableWrapText": true,
-    "_N$file": {
-      "__uuid__": "7f59998c-5dc6-4d9b-8720-0c20d4c8db8c"
-    },
+    "_N$file": null,
     "_isSystemFontUsed": false,
     "_N$string": "Bạn chuyển 5000 Chip đến Tusi",
     "_N$horizontalAlign": 0,
@@ -444,9 +442,7 @@
     "_fontSize": 16,
     "_lineHeight": 40,
     "_enableWrapText": true,
-    "_N$file": {
-      "__uuid__": "33c414de-cd3b-44e7-8003-6eced634a20f"
-    },
+    "_N$file": null,
     "_isSystemFontUsed": false,
     "_N$string": "12:54 - 23/06/2016",
     "_N$horizontalAlign": 0,
@@ -559,9 +555,7 @@
     "_fontSize": 16,
     "_lineHeight": 40,
     "_enableWrapText": true,
-    "_N$file": {
-      "__uuid__": "33c414de-cd3b-44e7-8003-6eced634a20f"
-    },
+    "_N$file": null,
     "_isSystemFontUsed": false,
     "_N$string": "12:54 - 23/06/2016",
     "_N$horizontalAlign": 0,
@@ -790,7 +784,8 @@
     "node": {
       "__id__": 21
     },
-    "_enabled": true
+    "_enabled": true,
+    "path": ""
   },
   {
     "__type__": "cc.Widget",

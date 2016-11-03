@@ -1,0 +1,30 @@
+{
+  "ver": "1.0.0",
+  "uuid": "b194a6fa-2d69-4cd5-8139-4a8dc62bdee3",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "subMetas": {
+    "lieng1368_ico_s": {
+      "ver": "1.0.3",
+      "uuid": "648aa4f3-7bbf-4f66-87bf-2ea9ad926f96",
+      "rawTextureUuid": "b194a6fa-2d69-4cd5-8139-4a8dc62bdee3",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": -0.5,
+      "offsetY": 1.5,
+      "trimX": 3,
+      "trimY": 2,
+      "width": 93,
+      "height": 93,
+      "rawWidth": 100,
+      "rawHeight": 100,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}
