@@ -179,10 +179,12 @@ class BottomBar extends Component {
         let tabs = [{
             title: 'Cá nhân',
             value: 'tab_user_info'
-        }, {
-            title: 'Thành tích',
-            value: this._initAchievementsTab()
-        }, {
+        }
+        // , {
+        //     title: 'Thành tích',
+        //     value: this._initAchievementsTab()
+        // }
+        , {
             title: 'Gift Code',
             value: 'tab_gift_code'
         }, {
