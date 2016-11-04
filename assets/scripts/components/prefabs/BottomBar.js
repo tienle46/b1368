@@ -81,7 +81,6 @@ class BottomBar extends Component {
         }];
 
         let options = {
-            itemHeight: 26.5,
             tabBodyPrefabType: 'rank'
         };
 
@@ -107,7 +106,6 @@ class BottomBar extends Component {
         }];
 
         let options = {
-            itemHeight: 26.5,
             itemWidth: 285,
             tabBodyPrefabType: 'exchange'
         };
@@ -123,20 +121,20 @@ class BottomBar extends Component {
 
     onClickMessageAction() {
         let tabs = [{
-            title: 'Thông báo hệ thống',
-            value: 'tab_system_messages'
-        },
-        // {
-        //     title: 'Sự kiện',
-        //     value: 'tab_events'
-        // },
-        {
-            title: 'Tin nhắn cá nhân',
-            value: 'tab_personal_messages'
-        }];
+                title: 'Thông báo hệ thống',
+                value: 'tab_system_messages'
+            },
+            // {
+            //     title: 'Sự kiện',
+            //     value: 'tab_events'
+            // },
+            {
+                title: 'Tin nhắn cá nhân',
+                value: 'tab_personal_messages'
+            }
+        ];
 
         let options = {
-            itemHeight: 26.5,
             itemWidth: 428,
             tabBodyPrefabType: 'messagecenter'
         };
@@ -169,7 +167,7 @@ class BottomBar extends Component {
         }];
 
         let options = {
-            itemHeight: 26.5
+            // itemHeight: 26.5
         };
 
         cb({ tabs, options });
@@ -199,7 +197,7 @@ class BottomBar extends Component {
         }, ];
 
         let options = {
-            itemHeight: 26.5,
+            // itemHeight: 26.5,
             itemWidth: 112,
             tabBodyPrefabType: 'userinfo'
         };

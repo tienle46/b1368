@@ -51,21 +51,10 @@ export default class ListItemToggleableRub extends ListItemBasicRub {
             padding: 10
         };
         this.options = Object.assign({}, this.options || {}, defaultOptions, opts);
+        [this.upSprite, this.downSprite] = [null, null];
         this.initItem();
     }
 
-    initItem() {
-        super.initItem();
-        if (this.itemNode) {
-            let layout = this.itemNode.getComponent(cc.Layout);
-            if (!layout)
-                layout = this.itemNode.addComponent(cc.Layout);
-            layout.type = cc.Layout.Type.HORIZONTAL;
-            layout.resizeMode = cc.Layout.ResizeMode.NONE;
-            layout.padding = this.options.padding;
-            layout.spacingX = this.options.spacingX;
-        }
-    }
 
     /**
      * 
@@ -84,7 +73,7 @@ export default class ListItemToggleableRub extends ListItemBasicRub {
      * 
      * @memberOf ListItemToggleableRub
      */
-    _initItem(image, body, button, opts = {}) {
+    initElement(body, image, button, opts = {}) {
         let defaultOptions = {
             size: {
                 width: 860,
@@ -99,11 +88,56 @@ export default class ListItemToggleableRub extends ListItemBasicRub {
 
         let options = Object.assign({}, defaultOptions, opts);
 
-        let widths = this._resetSizeByOptions(options);
+        let sizes = this._resetSizeByOptions(options);
 
-        image && this._initImage(image, widths[0]);
-        body && this._initBody(body, widths[1]);
-        button && this._toggleButton(button, widths[2]);
+        let s = this._setupComponentBySizes(sizes, image, body, button);
+
+        image && s.imageSize && this._initImage(image, s.imageSize);
+        body && s.bodySize && this._initBody(body, s.bodySize);
+        button && s.buttonSize && this._toggleButton(button, s.buttonSize);
+    }
+
+
+    /**
+     * Setup component's size by array size
+     * 
+     * widths = ['x'] => body-x [0]
+     * widths = ['x', 'y'] => image-x [0], body-y [1]
+     * widths = ['x', 'y', 'z'] => image-x[0], body-y[1], button-z [2]
+     * 
+     * @param {any} sizes
+     * @returns
+     * 
+     * @memberOf ListItemToggleableRub
+     */
+    _setupComponentBySizes(sizes, image, body, button) {
+        let lenSize = sizes.length;
+
+        let [imageSize, bodySize, buttonSize] = [null, null, null];
+
+        if (lenSize >= 3) {
+            imageSize = sizes[0];
+            bodySize = sizes[1];
+            buttonSize = sizes[2];
+        } else if (lenSize >= 2) {
+            if (image) {
+                imageSize = sizes[0];
+                bodySize = sizes[1];
+            } else if (button) {
+                bodySize = sizes[0];
+                buttonSize = sizes[1];
+            }
+        } else if (lenSize >= 1) {
+            if (image) {
+                imageSize = sizes[0];
+            } else if (body) {
+                bodySize = sizes[0];
+            } else if (button) {
+                buttonSize = sizes[0];
+            }
+        }
+
+        return { imageSize, bodySize, buttonSize };
     }
 
     _resetSizeByOptions(options) {
@@ -182,7 +216,7 @@ export default class ListItemToggleableRub extends ListItemBasicRub {
      *          detail: {
      *              content: string,
      *              options: {} // _addChildLabelNode's options
-     *          }
+     *          },
      *      }
      *
      * }
@@ -200,21 +234,23 @@ export default class ListItemToggleableRub extends ListItemBasicRub {
                 }
             }
         };
+
         body = Object.assign({}, defaultBody, body);
 
-        let options = {};
+        let options = Object.assign({}, body.options);
         options.size = size;
 
         let node = new cc.Node();
         node.name = 'body';
 
         options.size && node.setContentSize(options.size);
-
         let layout = node.addComponent(cc.Layout);
         layout.type = cc.Layout.Type.VERTICAL;
         layout.resizeMode = cc.Layout.ResizeMode.CONTAINER;
+        layout.padding = 10;
+        layout.spacingY = 10;
 
-        this._addWidgetComponentToNode(node, 10, body.options.align);
+        this._addWidgetComponentToNode(node, 10, options.align);
 
         // init children
         let defaultOptions = {
@@ -232,22 +268,26 @@ export default class ListItemToggleableRub extends ListItemBasicRub {
 
         // title
         let titleOptions = Object.assign({}, defaultOptions, body.title.options || {});
-        titleOptions.fontColor = app.const.COLOR_YELLOW;
+        titleOptions.fontColor = titleOptions.fontColor || app.const.COLOR_YELLOW;
         titleOptions.name = 'titleLabel';
-        this._addChildLabelNode(body.title.content || '', node, titleOptions);
+        this._addChildLabelNode(`<b>${body.title.content || ''}</b>`, node, titleOptions);
 
         // subTitle
         let subTitleOptions = Object.assign({}, defaultOptions, body.subTitle.options || {});
-        subTitleOptions.fontSize = 16;
+        subTitleOptions.fontSize = subTitleOptions.fontSize || 16;
         subTitleOptions.name = 'subTitleLabel';
-        this._addChildLabelNode(body.subTitle.content || '', node, subTitleOptions);
+        this._addChildLabelNode(`<i>${body.subTitle.content || ''}</i>`, node, subTitleOptions);
+
+        // this._resizeHeight(this.itemNode.getComponent(cc.Sprite), node.getContentSize());
 
         // detail
-        // let detailOptions = Object.assign({}, defaultOptions, body.detail.options || {});
-        // detailOptions.fontSize = 16;
-        // detailOptions.name = 'detailLabel';
-        // this._addChildLabelNode(body.detail.content || '', node, detailOptions);
-        this._resizeHeight(this.itemNode.getComponent(cc.Sprite), node.getContentSize());
+        let detailOptions = Object.assign({}, defaultOptions, body.detail.options || {});
+        detailOptions.fontSize = detailOptions.fontSize || 16;
+        detailOptions.name = 'detailLabel';
+        this._addChildLabelNode(body.detail.content || '', node, detailOptions, false);
+
+        this.detailLabelNode = node.getChildByName('detailLabel');
+        this.detailLabelNode.active = false;
         this.pushEl(node);
     }
 
@@ -274,8 +314,9 @@ export default class ListItemToggleableRub extends ListItemBasicRub {
      * }
      * @memberOf ListItemBasicRub
      */
-    _addChildLabelNode(text, parent, opts = {}) {
+    _addChildLabelNode(text, parent, opts = {}, immediateResize = true) {
         let labelNode = new cc.Node();
+
         let parentSize = parent.getContentSize();
         labelNode.setContentSize(cc.size(parentSize.width, opts.height));
         labelNode.name = opts.name || 'label';
@@ -293,7 +334,8 @@ export default class ListItemToggleableRub extends ListItemBasicRub {
         labelNode.getLineCount = () => rich._lineCount;
 
         let lineCount = labelNode.getLineCount();
-        if (lineCount > 1) {
+
+        if (immediateResize && lineCount > 1) {
             if (!parent.getComponent(cc.Button)) {
                 //resize parent's height
                 // parentSize.height *= (lineCount * 2 / 3);
@@ -315,51 +357,120 @@ export default class ListItemToggleableRub extends ListItemBasicRub {
      * 
      * @param {any || cc.Node} image
      * {
-     *      *spriteFrame,
+     *      *downSpriteFrame,
      *      position: {x, y},
-     *      event: cc.Component.EventHandler
+     *      //event: cc.Component.EventHandler
      *      align: {top,left,right,bottom}
      * }
      * @memberOf ListItemToggleableRub
      */
     _toggleButton(button, size) {
-        let node = new cc.Node();
+        this.toggletBtnNode = new cc.Node();
+        this.toggletBtnNode.name = 'toggleButton';
+
+
         let options = {
-            spriteFrame: 'dashboard/dialog/imgs/xuong',
+            downSpriteFrame: 'dashboard/dialog/imgs/xuong',
+            upSpriteFrame: 'dashboard/dialog/imgs/len',
             align: {
-                right: 10,
-                isOnBottom: true
+                right: 20,
+                bottom: 20,
+                isAlignBottom: true,
+                verticalCenter: true
             },
             height: 45
         };
+
         options = Object.assign({}, options, button);
         options.size = size;
         options.size.height = options.height;
 
-        options.size && node.setContentSize(options.size);
-        node.name = 'toggleButton';
+        options.size && this.toggletBtnNode.setContentSize(options.size);
 
         // btn
-        let btn = node.addComponent(cc.Button);
-        options.event && (btn.clickEvents = [options.event]);
+        let btn = this.toggletBtnNode.addComponent(cc.Button);
+        // options.event && (btn.clickEvents = [options.event]);
 
         // btn scaler
-        node.addComponent(ButtonScaler);
+        this.toggletBtnNode.addComponent(ButtonScaler);
 
-        let sprite = node.addComponent(cc.Sprite);
-        options.spriteFrame && RubUtils.loadSpriteFrame(sprite, options.spriteFrame, options.size, false, (s) => {
+        let sprite = this.toggletBtnNode.addComponent(cc.Sprite);
+
+        (!this.upSprite) && options.upSpriteFrame && RubUtils.loadSpriteFrame(sprite, options.upSpriteFrame, options.size, false, (s) => {
             btn.normalSprite = s.spriteFrame;
+            this.upSprite = s.spriteFrame;
         });
 
-        this._addWidgetComponentToNode(node, 20, options.align);
+        (!this.downSprite) && options.downSpriteFrame && RubUtils.loadSpriteFrame(sprite, options.downSpriteFrame, options.size, false, (s) => {
+            btn.normalSprite = s.spriteFrame;
+            this.downSprite = s.spriteFrame;
+        });
+
+        // widget
+        this._addWidgetComponentToNode(this.toggletBtnNode, 20, options.align);
+        options.align.bottom && (this.toggletBtnNode.getComponent(cc.Widget).bottom = options.align.bottom);
+        options.align.top && (this.toggletBtnNode.getComponent(cc.Widget).top = options.align.top);
 
         this._addToggleableClick(btn);
-        this.pushEl(node);
+
+        this.pushEl(this.toggletBtnNode);
     }
 
     _addToggleableClick(btn) {
-        btn.node.on(cc.Node.EventType.TOUCH_END, ((e) => {
-            console.debug(e, 'TOOOOGGGGLLLLLEEEEE');
-        }).bind(this));
+        btn.node.on(cc.Node.EventType.TOUCH_END, this._onToggleableBtnClick.bind(this));
+    }
+
+    _onToggleableBtnClick(e) {
+        e.stopPropagation();
+        let widget = e.currentTarget.getComponent(cc.Widget);
+        widget.isAlignBottom = !widget.isAlignBottom;
+
+        if (this.detailLabelNode) {
+            this.detailLabelNode.active = !this.detailLabelNode.active;
+            let sprite = this.toggletBtnNode.getComponent(cc.Sprite);
+            let btn = this.toggletBtnNode.getComponent(cc.Button);
+            if (this.detailLabelNode.active) {
+                sprite.spriteFrame = this.upSprite;
+                btn.normalSprite = this.upSprite;
+            } else {
+                sprite.spriteFrame = this.downSprite;
+                btn.normalSprite = this.downSprite;
+            }
+
+            let size = this.itemNode.getContentSize();
+            size.height += (this.detailLabelNode.active ? 1 : -1) * this.detailLabelNode.getContentSize().height;
+
+            this._resizeHeight(this.itemNode.getComponent(cc.Sprite), size, true);
+            if (!widget.isAlignBottom) {
+                widget.isAlignVerticalCenter = true;
+            }
+        }
+    }
+
+    /**
+     * 
+     * 
+     * @static
+     * @param {any} [body={}] initElement's body object
+     * @param {any} [options={}] initElement's options
+     * params [body, image, button, options]
+     * if params 
+     *  +> = [body, p1, p2] => p1 = image, p2 = options
+     *  +> = [body, p1, p2, p3] => p1 = image, p2 = button, p3 = options 
+     * @memberOf ListItemToggleableRub
+     */
+    static create(body, options, ...args) {
+        let item = new ListItemToggleableRub();
+        let [image, button] = [{}, {}];
+        let length = args.length;
+        if (length >= 1) {
+            image = options;
+            options = args[length - 1];
+        }
+
+        length >= 2 && (button = args[1]);
+        item.initElement(body, image, button, options);
+
+        return item;
     }
 }

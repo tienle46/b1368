@@ -590,13 +590,27 @@ Keywords.EXCHANGE_HISTORY = {
 
 Keywords.TRANSFER_TRANSACTION = {
     REQUEST: {
-        PAGE: 'p' // number #page
+        PAGE: "p" // number #page
     },
     RESPONSE: {
         ITEM_LIST: "il",
         GOLD: "gold",
         TIME_LIST: "ttl",
-        USER_SENDER_LIST: "unl"
+        USER_SENDER_LIST: "unl",
+        PAGE: "p"
+    }
+};
+
+Keywords.TRANSACTION_HISTORY = {
+    REQUEST: {
+        PAGE: "p" // number #page
+    },
+    RESPONSE: {
+        ITEM_LIST: "il",
+        GOLD: "gold",
+        TIME_LIST: "ttl",
+        USER_SENDER_LIST: "unl",
+        PAGE: "p"
     }
 };
 

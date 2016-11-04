@@ -1,19 +1,13 @@
 import app from 'app';
 import Component from 'Component';
-import AlertPopupRub from 'AlertPopupRub';
-import ButtonScaler from 'ButtonScaler';
-import RubUtils from 'RubUtils';
-import  ListItem from 'ListItem';
-import MessageEvent from 'MessageEvent'
-import ConfirmPopupRub from 'ConfirmPopupRub';
-import ExchangeDialog from 'ExchangeDialog';
-import numeral from 'numeral';
+import MessageEvent from 'MessageEvent';
+import ListItemToggleableRub from 'ListItemToggleableRub';
 
 export default class TabEvents extends Component {
     constructor() {
         super()
         this.contentNode = {
-            default : null,
+            default: null,
             type: cc.Node
         }
         this.currentPage = 0;
@@ -21,31 +15,23 @@ export default class TabEvents extends Component {
     }
 
     onLoad() {
-        this.node.active = true;
-        // get content node
-        let event = new cc.Component.EventHandler();
-        event.target = this.node;
-        event.component = 'TabEvents';
-        event.handler = 'scrollEvent';
-
-        // this.node.getComponent(cc.ScrollView).scrollEvents.push(event);
-
         this._requestEventList();
     }
-    _requestEventList(){
+
+    _requestEventList() {
         var sendObject = {
             'cmd': app.commands.LIST_SYSTEM_MESSAGE,
-            'cbKey':'dcn',
+            'cbKey': 'dcn',
             'data': {
-                [app.keywords.SYSTEM_MESSAGE.REQUEST.ACTION_TYPE] : app.const.DYNAMIC_ACTION_BROWSE,
+                [app.keywords.SYSTEM_MESSAGE.REQUEST.ACTION_TYPE]: app.const.DYNAMIC_ACTION_BROWSE,
                 [app.keywords.SYSTEM_MESSAGE.REQUEST.GROUP_TYPE]: this.groupType,
                 [app.keywords.SYSTEM_MESSAGE.REQUEST.NODE_ID]: 0,
             }
         };
 
         app.service.send(sendObject, (data) => {
-            log(data);
-            if(data){
+            console.debug(data);
+            if (data) {
                 //convert raw data to list models
                 this.currentPage = data[app.keywords.SYSTEM_MESSAGE.RESPONSE.CURRENT_PAGE];
 
@@ -54,8 +40,8 @@ export default class TabEvents extends Component {
                 const listIds = data[app.keywords.SYSTEM_MESSAGE.RESPONSE.ID_ITEM_LIST];
 
                 const events = [];
-                for(let i = 0 ; i < listHeader.length; i++){
-                    const event = new MessageEvent({title:listHeader[i], sub: listSub[i], nodeId : listIds[i]});
+                for (let i = 0; i < listHeader.length; i++) {
+                    const event = new MessageEvent({ title: listHeader[i], sub: listSub[i], nodeId: listIds[i] });
                     events.push(event);
                 }
 
@@ -65,12 +51,12 @@ export default class TabEvents extends Component {
         }, app.const.scene.BOTTOM_BAR);
     }
 
-    _requestEventDetail(nodeId){
+    _requestEventDetail(nodeId) {
         var sendObject = {
             'cmd': app.commands.LIST_SYSTEM_MESSAGE,
-            'cbKey':'dcn',
+            'cbKey': 'dcn',
             'data': {
-                [app.keywords.SYSTEM_MESSAGE.REQUEST.ACTION_TYPE] : app.const.DYNAMIC_ACTION_BROWSE,
+                [app.keywords.SYSTEM_MESSAGE.REQUEST.ACTION_TYPE]: app.const.DYNAMIC_ACTION_BROWSE,
                 [app.keywords.SYSTEM_MESSAGE.REQUEST.GROUP_TYPE]: this.groupType,
                 [app.keywords.SYSTEM_MESSAGE.REQUEST.NODE_ID]: nodeId,
             }
@@ -78,75 +64,51 @@ export default class TabEvents extends Component {
 
         app.service.send(sendObject, (data) => {
             log(data);
-            if(data){
+            if (data) {
 
             }
 
         }, app.const.scene.BOTTOM_BAR);
     }
-    _displayEvents(events){
-        RubUtils.loadRes('dashboard/dialog/prefabs/userinfo/list_item').then((preFab)=>{
-            events.forEach((event)=>{
-                const transactionItem = cc.instantiate(preFab);
-                transactionItem.getComponent('ListItem').initWithStyle(ListItem.TYPE.STYLE2, true);
-                transactionItem.getComponent('ListItem').fillData({title : event.title, sub : event.sub});
 
-                if(this.groupType == app.const.DYNAMIC_GROUP_NEW_EVENT){
-                    RubUtils.loadSpriteFrame(transactionItem.getComponent('ListItem').imageView, 'dashboard/dialog/imgs/thongbao-ico');
+    _displayEvents(events) {
+        events.forEach((event) => {
+            let body = {
+                title: {
+                    content: `${event.title}`
+                },
+                subTitle: {
+                    content: `${event.sub}`
+                },
+                detail: {
+                    content: `${event.title}`
+                },
+                options: {
+                    align: {
+                        left: 100
+                    }
                 }
-                else if (this.groupType == app.const.DYNAMIC_GROUP_NOTIFY){
-                    RubUtils.loadSpriteFrame(transactionItem.getComponent('ListItem').imageView, 'dashboard/dialog/imgs/hopqua');
+            };
+
+            let options = {
+                group: {
+                    widths: [80, '80%', 54]
                 }
+            };
 
-                const widget = transactionItem.addComponent(cc.Widget);
-                widget.isAlignLeft = true;
-                widget.isAlignRight = true;
+            let image = {
+                spriteFrame: ''
+            };
 
-                widget.left = 0;
-                widget.right = 0;
+            if (this.groupType == app.const.DYNAMIC_GROUP_SYSTEM_MESSAGE) {
+                image.spriteFrame = 'dashboard/dialog/imgs/thongbao-ico';
+            } else if (this.groupType == app.const.DYNAMIC_GROUP_NOTIFY) {
+                image.spriteFrame = 'dashboard/dialog/imgs/hopqua';
+            }
 
-                this.contentNode.addChild(transactionItem);
-            });
-        })
-    }
-
-    _hide() {
-        this.node.active = false;
-    }
-
-    scrollEvent(sender, event) {
-        switch (event) {
-            case 0:
-                console.log('Scroll to Top');
-                break;
-            case 1:
-                console.log('Scroll to Bottom');
-                break;
-            case 2:
-                console.log('Scroll to left');
-                break;
-            case 3:
-                console.log('Scroll to right');
-                break;
-            case 4:
-                console.log('Scrolling');
-                break;
-            case 5:
-                console.log('Bounce Top');
-                break;
-            case 6:
-                console.log('Bounce bottom');
-                break;
-            case 7:
-                console.log('Bounce left');
-                break;
-            case 8:
-                console.log('Bounce right');
-                break;
-            case 9:
-                console.log('Auto scroll ended');
-                break;
-        }
+            let item = ListItemToggleableRub.create(body, image, options);
+            this.contentNode.addChild(item.node());
+        });
     }
 }
 

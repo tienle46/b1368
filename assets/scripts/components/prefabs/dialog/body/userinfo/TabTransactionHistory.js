@@ -1,8 +1,8 @@
 import app from 'app';
 import Component from 'Component';
-import RubUtils from 'RubUtils';
-import ListItem from 'ListItem';
 import ListItemToggleableRub from 'ListItemToggleableRub';
+import numeral from 'numeral';
+import moment from 'moment';
 
 class TabTransactionHistory extends Component {
     constructor() {
@@ -14,59 +14,63 @@ class TabTransactionHistory extends Component {
     }
 
     onLoad() {
-        // this.node.getComponent(cc.ScrollView).scrollEvents.push(event);
-        let data = {
-            p: 1
-        };
+        // for (let i = 0; i < 3; i++) {
+        //     
+        // }
+
+        this._getTransactionItems();
+    }
+
+    _getTransactionsFromServer(cb) {
+        let data = {};
+        data[app.keywords.TRANSACTION_HISTORY.REQUEST.PAGE] = 1;
         let sendObj = {
-            cmd: "b_ath",
+            cmd: app.commands.TRANSACTION_HISTORY,
             data
         };
 
         app.service.send(sendObj, (data) => {
-            console.log(data);
-            // RubUtils.loadRes('dashboard/dialog/prefabs/userinfo/list_item').then((preFab) => {
-            //     for (let i = 0; i < 10; i++) {
-            //         const transactionItem = cc.instantiate(preFab);
-            //         transactionItem.getComponent('ListItem').initWithStyle(ListItem.TYPE.STYLE1, true);
-            //         const widget = transactionItem.addComponent(cc.Widget);
-            //         widget.isAlignLeft = true;
-            //         widget.isAlignRight = true;
-
-            //         widget.left = 0;
-            //         widget.right = 0;
-
-            //         this.contentNode.addChild(transactionItem);
-            //     }
-            // });
+            cb(data);
         });
-        for (let i = 0; i < 3; i++) {
-            let transactionItem = new ListItemToggleableRub();
-
-            let body = {
-                title: {
-                    content: '????'
-                },
-                subTitle: {
-                    content: '????'
-                },
-                detail: {
-                    content: '???? ???? ???? ???? ???? ???? ???? ???? ???? ???? ???? ???? ???? ???? ???? ???? ???? ???? ???? ???? ???? ???? ???? ???? ???? ???? ???? ???? ???? ???? ???? ???? ???? ???? ???? ???? ???? ???? ???? ???? ???? ???? ???? ???? ???? ???? ???? ???? ???? ???? ???? ???? ???? ???? ???? ???? ???? ???? ???? ???? ???? ???? ???? ???? ???? ???? ???? ???? ???? ???? ???? ???? ???? ???? '
-                },
-            };
-
-            transactionItem._initItem({}, body, {}, {
-                group: {
-                    widths: [60, '80%', 54]
-                }
-            });
-            this.contentNode.addChild(transactionItem.node());
-        }
     }
 
+    _getTransactionItems() {
+        this._getTransactionsFromServer((res) => {
+            let golds = res[app.keywords.TRANSACTION_HISTORY.RESPONSE.GOLD];
+            let items = res[app.keywords.TRANSACTION_HISTORY.RESPONSE.ITEM_LIST];
+            let senders = res[app.keywords.TRANSACTION_HISTORY.RESPONSE.USER_SENDER_LIST];
+            let times = res[app.keywords.TRANSACTION_HISTORY.RESPONSE.TIME_LIST];
+            if (items && items.length > 0) {
+                for (let i = 0; i < items.length; i++) {
+                    let body = {
+                        title: {
+                            content: `${senders[i]} đã chuyển ${numeral(golds[i]).format('0,0')} coin cho bạn`
+                        },
+                        subTitle: {
+                            content: `${moment(times[i]).format('DD/MM/YYYY - hh:mm')}`
+                        },
+                        detail: {
+                            content: `${senders[i]} đã chuyển ${numeral(golds[i]).format('0,0')} coin cho bạn`
+                        },
+                        options: {
+                            align: {
+                                left: 10
+                            }
+                        }
+                    };
 
-    _hide() {
-        this.node.active = false;
+                    let options = {
+                        group: {
+                            widths: ['80%', 54]
+                        }
+                    };
+
+                    let item = ListItemToggleableRub.create(body, null, options);
+
+                    this.contentNode.addChild(item.node());
+                }
+            }
+        });
     }
 }
 
