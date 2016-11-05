@@ -3,6 +3,7 @@
  */
 
 import MessagePopup from 'MessagePopup';
+import app from 'app';
 
 export default class ConfirmPopup extends MessagePopup {
     constructor() {

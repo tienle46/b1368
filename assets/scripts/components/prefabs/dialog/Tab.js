@@ -26,6 +26,7 @@ class Tab extends Component {
         this.clearBody(bodyNode);
         return RubUtils.loadRes(prefabURL).then((prefab) => {
             let p = cc.instantiate(prefab);
+            p.setPosition(cc.v2(0, 0));
             // add to node
             this._addChildToBody(bodyNode, p);
 
@@ -41,13 +42,14 @@ class Tab extends Component {
 
         if (content instanceof cc.Node) {
             let node = _.cloneDeep(content);
-
+            node.setPosition(cc.v2(0, 0));
             this._addChildToBody(bodyNode, node);
         } else if (content instanceof Promise) {
             content.then((node) => {
                 // wait until resources are loaded.
                 setTimeout(() => {
                     let n = _.cloneDeep(node);
+                    n.setPosition(cc.v2(0, 0));
                     this._addChildToBody(bodyNode, n);
                 });
             });

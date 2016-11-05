@@ -48,17 +48,10 @@ export default class DialogRub extends Rub {
         // add Tab
         let tabs = tabOptions.tabs;
         let options = tabOptions.options;
-
-        return TabRub.show(paginationNode, this.bodyNode, tabs, options).then((tabRub) => {
-            tabRub.prefab.x = 0;
-            tabRub.prefab.y = 0;
-            // tabRub.prefab.height = 50;
-
-            return tabRub;
-        });
-        // .then((tabRub) => {
-        //     return tabRub.addContentPrefabToBody();
-        // })
+        return TabRub.show(paginationNode, this.bodyNode, tabs, options)
+            .then((tabRub) => {
+                tabRub.fitToParent(paginationNode);
+            });
     }
 
     // close Btn Event

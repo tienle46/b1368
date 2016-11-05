@@ -41,8 +41,8 @@ export default class GridViewRub {
      * {
      *  bg: new cc.Color() || string: resource URL # `content` node background
      *  position: cc.v2() # default : cc.v2(0, 0);
-     *  width: number # grid width
-     *  height: number # grid height
+    //  *  width: number # grid width 
+    //  *  height: number # grid height
      *  isHorizontal: boolean # default false
      *  isVertical: boolean # default true
      *  spacingX: number # default 2px
@@ -96,7 +96,7 @@ export default class GridViewRub {
 
         let defaultOptions = {
             position: cc.v2(0, 0),
-            width: 585,
+            // width: 585,
             height: 250,
             spacingX: 2,
             spacingY: 2,

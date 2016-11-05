@@ -164,7 +164,7 @@
       "__id__": 2
     },
     "_enabled": true,
-    "isAlignOnce": true,
+    "isAlignOnce": false,
     "_alignFlags": 45,
     "_left": 0,
     "_right": 0,
@@ -283,7 +283,7 @@
       "__id__": 6
     },
     "_enabled": true,
-    "isAlignOnce": true,
+    "isAlignOnce": false,
     "_alignFlags": 9,
     "_left": 0.4,
     "_right": 0,
@@ -402,7 +402,7 @@
       "__id__": 10
     },
     "_enabled": true,
-    "isAlignOnce": true,
+    "isAlignOnce": false,
     "_alignFlags": 33,
     "_left": 0,
     "_right": 0.4,
@@ -559,7 +559,7 @@
       "__id__": 15
     },
     "_enabled": true,
-    "isAlignOnce": true,
+    "isAlignOnce": false,
     "_alignFlags": 40,
     "_left": 90,
     "_right": 90,
@@ -748,7 +748,7 @@
       "__id__": 18
     },
     "_enabled": true,
-    "isAlignOnce": true,
+    "isAlignOnce": false,
     "_alignFlags": 33,
     "_left": 0,
     "_right": 40,
@@ -810,7 +810,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": -16.5
+      "y": -74
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -838,12 +838,12 @@
       "__id__": 24
     },
     "_enabled": true,
-    "isAlignOnce": true,
+    "isAlignOnce": false,
     "_alignFlags": 44,
     "_left": 90,
     "_right": 90,
     "_top": 0,
-    "_bottom": 100,
+    "_bottom": 42.5,
     "_verticalCenter": 0,
     "_horizontalCenter": 0,
     "_isAbsLeft": true,
@@ -936,7 +936,7 @@
       "__id__": 1
     },
     "_enabled": true,
-    "isAlignOnce": true,
+    "isAlignOnce": false,
     "_alignFlags": 45,
     "_left": 0,
     "_right": 0,

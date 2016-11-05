@@ -56,10 +56,10 @@ export default class SegmentControlRub extends Rub {
             tabBodyPrefabType: 'topup',
             hasEdge: true,
             edge: {
-                top: -0.5,
-                bottom: 1.9,
-                left: 12.1,
-                right: 12.5
+                top: 12.55,
+                bottom: 13.85,
+                left: 14.75,
+                right: 14.75
             }
         };
 
@@ -89,7 +89,8 @@ export default class SegmentControlRub extends Rub {
         let size = cc.size(this.options.width, this.options.height);
         this.prefab.setContentSize(size);
         let bgSpriteComponent = this.prefab.getComponent(cc.Sprite);
-        RubUtils.loadSpriteFrame(bgSpriteComponent, this.options.bg, null);
+        RubUtils.loadSpriteFrame(bgSpriteComponent, this.options.bg, size)
+
         this._resizeGroupNodeByOptions();
     }
 
@@ -98,6 +99,12 @@ export default class SegmentControlRub extends Rub {
         let groupNode = this.prefab.getChildByName('group');
         let groupWidget = groupNode.getComponent(cc.Widget);
         groupWidget.isAlignOnce = false;
+
+        groupWidget.isAlignTop = true;
+        groupWidget.isAlignBottom = true;
+        groupWidget.isAlignRight = true;
+        groupWidget.isAlignLeft = true;
+
         if (this.options.hasEdge) {
             groupWidget.top = this.options.edge.top;
             groupWidget.left = this.options.edge.left;
@@ -120,7 +127,7 @@ export default class SegmentControlRub extends Rub {
             // create checkbox
             let newNode = new cc.Node();
             let newNodeWidth = this.options.itemWidth;
-            let newNodeHeight = this.options.itemHeight;
+            let newNodeHeight = this.options.itemHeight - 10;
             let newNodeSize = cc.size(newNodeWidth, newNodeHeight);
             newNode.setContentSize(newNodeSize);
 

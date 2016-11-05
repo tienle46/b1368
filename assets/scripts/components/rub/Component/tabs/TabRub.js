@@ -22,14 +22,12 @@ export default class TabRub extends SegmentControlRub {
 
     init() {
         // data == null
-        return super.init().then((toggleGroup) => {
+        return super.init().then(() => {
             this.tabComponent = this.prefab.addComponent(Tab);
+            this.prefab.setPosition(cc.v2(0, 0));
             this.tabComponent.node.on('check-event', this._tabEventHandler.bind(this));
             return null;
-        }).then(() => {
-            this._tabEventHandler();
-            return this;
-        });
+        }).then(this._tabEventHandler.bind(this));
     }
 
     addContentPrefabToBody() {
@@ -54,6 +52,25 @@ export default class TabRub extends SegmentControlRub {
         return new TabRub(node, bodyNode, segments, options).init();
     }
 
+    fitToParent(parentNode) {
+        if (this.prefab) {
+            this.prefab.setContentSize(parentNode.getContentSize());
+
+            let widget = this.prefab.getComponent(cc.Widget) || this.prefab.addComponent(cc.Widget);
+            widget.isAlignOnce = false;
+
+            widget.isAlignTop = true;
+            widget.isAlignBottom = true;
+            widget.isAlignRight = true;
+            widget.isAlignLeft = true;
+
+            widget.left = 0;
+            widget.right = 0;
+            widget.top = 0;
+            widget.bottom = 0;
+        }
+    }
+
     _tabEventHandler() {
         if (this.getVal() === null)
             return;
@@ -62,6 +79,8 @@ export default class TabRub extends SegmentControlRub {
         } else {
             this.addContentPrefabToBody();
         }
+
+        return this;
     }
 
     _isNode() {
