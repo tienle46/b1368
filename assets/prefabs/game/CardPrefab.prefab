@@ -325,9 +325,9 @@
     "_opacity": 255,
     "_color": {
       "__type__": "cc.Color",
-      "r": 202,
-      "g": 5,
-      "b": 5,
+      "r": 228,
+      "g": 46,
+      "b": 36,
       "a": 255
     },
     "_cascadeOpacityEnabled": true,
@@ -341,8 +341,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 16.01,
-      "height": 24
+      "width": 20.78,
+      "height": 30
     },
     "_children": [],
     "_rotationX": 0,
@@ -384,12 +384,14 @@
     },
     "_enabled": true,
     "_useOriginalSize": false,
-    "_actualFontSize": 24,
-    "_fontSize": 24,
-    "_lineHeight": 24,
+    "_actualFontSize": 28,
+    "_fontSize": 28,
+    "_lineHeight": 30,
     "_enableWrapText": true,
-    "_N$file": null,
-    "_isSystemFontUsed": true,
+    "_N$file": {
+      "__uuid__": "9734429c-ec8b-4381-af1d-c0784f13a132"
+    },
+    "_isSystemFontUsed": false,
     "_N$string": "A",
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
@@ -405,9 +407,9 @@
     "_enabled": true,
     "isAlignOnce": true,
     "_alignFlags": 9,
-    "_left": 12.659999999999998,
+    "_left": 10.274999999999997,
     "_right": 0,
-    "_top": 8,
+    "_top": 5,
     "_bottom": 0,
     "_verticalCenter": 0,
     "_horizontalCenter": 0,

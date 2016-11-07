@@ -13,7 +13,7 @@ export default class Card extends Component {
         this.suitNode = cc.Sprite;
         this.mainPic = cc.Sprite;
         this.cardBG = cc.Sprite;
-        this.redTextColor = new cc.Color().fromHEX('#C01E2E');
+        this.redTextColor = new cc.Color().fromHEX('#E42E24');
         this.blackTextColor = new cc.Color().fromHEX('#2B2B2B');
         this.texFrontBG = cc.SpriteFrame;
         this.texBackBG = cc.SpriteFrame;
