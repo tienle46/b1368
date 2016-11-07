@@ -50,7 +50,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": 25
+      "y": 0
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -62,11 +62,11 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 87
+        "__id__": 86
       }
     ],
     "_prefab": {
-      "__id__": 88
+      "__id__": 87
     },
     "groupIndex": 0
   },
@@ -111,7 +111,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": 0
+      "y": 70
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -1972,7 +1972,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 422,
-      "y": 9
+      "y": 70
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -2028,7 +2028,7 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": -153,
+      "x": -134,
       "y": -64
     },
     "_skewX": 0,
@@ -2184,7 +2184,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": 0
+      "y": 70
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -2196,7 +2196,7 @@
     "_active": true,
     "_components": [],
     "_prefab": {
-      "__id__": 86
+      "__id__": 85
     },
     "groupIndex": 0
   },
@@ -2701,14 +2701,14 @@
         "__id__": 81
       },
       {
-        "__id__": 83
+        "__id__": 82
       },
       {
-        "__id__": 84
+        "__id__": 83
       }
     ],
     "_prefab": {
-      "__id__": 85
+      "__id__": 84
     },
     "groupIndex": 0
   },
@@ -2825,9 +2825,7 @@
     "pressedSprite": null,
     "hoverSprite": null,
     "clickEvents": [
-      {
-        "__id__": 82
-      }
+      null
     ],
     "_N$interactable": true,
     "_N$enableAutoGrayEffect": false,
@@ -2852,15 +2850,6 @@
     "_N$target": {
       "__id__": 77
     }
-  },
-  {
-    "__type__": "cc.ClickEvent",
-    "target": {
-      "__id__": 1
-    },
-    "component": "TabCard",
-    "handler": "onHanleChargeBtnClick",
-    "customEventData": ""
   },
   {
     "__type__": "cc.Sprite",
