@@ -1,3 +1,4 @@
+
 /**
  * Created by Thanh on 9/15/2016.
  */
@@ -113,7 +114,7 @@ export default class Actor extends Component {
         this.__pendingEmitEvents && Object.getOwnPropertyNames(this.__pendingEmitEvents).forEach(name => {
             let argArr = this.__pendingEmitEvents[name];
             argArr && argArr.forEach(args => {
-               this._eventEmitter.emit(name, ...args);
+                this._eventEmitter.emit(name, ...args);
             });
         });
 

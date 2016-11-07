@@ -20,7 +20,7 @@ export default class TabUserInfo extends Component {
             default : null,
             type: cc.RichText,
         }
-        this.verefiedStatus = {
+        this.verifiedStatus = {
             default : null,
             type: cc.RichText,
         }
@@ -60,11 +60,21 @@ export default class TabUserInfo extends Component {
     }
 
     _fillData(userData) {
+
+        // console.log(userData);
+
         this.userName.string = `<color = ${app.const.HX_COLOR_WHITE}>Tên: </color><color = ${app.const.HX_COLOR_YELLOW}>${app.context.getMyInfo().name}</color>`;
         this.chipAmout.string = `<color = ${app.const.HX_COLOR_WHITE}>Chip: </color><color = ${app.const.HX_COLOR_YELLOW}>${numeral(app.context.getMyInfo().coin).format('0,0')}</color>`;
 
 
         this.vipLevel.string = `<color = ${app.const.HX_COLOR_WHITE}>Cấp độ: </color><color = ${app.const.HX_COLOR_YELLOW}>Tỉ phú</color>`;
+
+        if (app.context.needUpdatePhoneNumber()) {
+            this.verifiedStatus.string = `<color = ${app.const.HX_COLOR_WHITE}>Phone: </color><color = ${app.const.HX_COLOR_YELLOW}>Chưa cập nhật</color>`;
+        }
+        else{
+            this.verifiedStatus.string = `<color = ${app.const.HX_COLOR_WHITE}>Phone: </color><color = ${app.const.HX_COLOR_YELLOW}>${userData.p}</color>`;
+        }
 
         this._initAchievementsTab();
     }

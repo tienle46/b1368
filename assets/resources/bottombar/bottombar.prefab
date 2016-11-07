@@ -122,7 +122,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": -529,
-      "y": -5
+      "y": 0
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -253,7 +253,7 @@
     "_left": 10,
     "_right": 0,
     "_top": 0,
-    "_bottom": 8.5,
+    "_bottom": 13.5,
     "_verticalCenter": 0,
     "_horizontalCenter": 0,
     "_isAbsLeft": true,
@@ -319,8 +319,8 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": -386,
-      "y": -16
+      "x": -363,
+      "y": -10
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -448,10 +448,10 @@
     "_enabled": true,
     "isAlignOnce": true,
     "_alignFlags": 12,
-    "_left": 229,
+    "_left": 252,
     "_right": 0,
     "_top": 0,
-    "_bottom": 12,
+    "_bottom": 18,
     "_verticalCenter": 0,
     "_horizontalCenter": 0,
     "_isAbsLeft": true,
@@ -517,8 +517,8 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": -302,
-      "y": -16
+      "x": -278,
+      "y": -10
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -648,10 +648,10 @@
     "_enabled": true,
     "isAlignOnce": true,
     "_alignFlags": 12,
-    "_left": 318.5,
+    "_left": 342.5,
     "_right": 0,
     "_top": 0,
-    "_bottom": 12,
+    "_bottom": 18,
     "_verticalCenter": 0,
     "_horizontalCenter": 0,
     "_isAbsLeft": true,
@@ -923,8 +923,8 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": 290,
-      "y": -16
+      "x": 278,
+      "y": -10
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -1055,9 +1055,9 @@
     "isAlignOnce": true,
     "_alignFlags": 36,
     "_left": 0,
-    "_right": 321,
+    "_right": 333,
     "_top": 0,
-    "_bottom": 12,
+    "_bottom": 18,
     "_verticalCenter": 0,
     "_horizontalCenter": 0,
     "_isAbsLeft": true,
@@ -1123,8 +1123,8 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": 370,
-      "y": -16
+      "x": 367,
+      "y": -10
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -1255,9 +1255,9 @@
     "isAlignOnce": true,
     "_alignFlags": 36,
     "_left": 0,
-    "_right": 249.5,
+    "_right": 252.5,
     "_top": 0,
-    "_bottom": 12,
+    "_bottom": 18,
     "_verticalCenter": 0,
     "_horizontalCenter": 0,
     "_isAbsLeft": true,
@@ -1337,7 +1337,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 527,
-      "y": -5
+      "y": 0
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -1828,7 +1828,7 @@
     "_left": 0,
     "_right": 13,
     "_top": 0,
-    "_bottom": 8,
+    "_bottom": 13,
     "_verticalCenter": 0,
     "_horizontalCenter": 0,
     "_isAbsLeft": true,

@@ -3177,7 +3177,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 127.87,
+      "width": 115.09,
       "height": 28
     },
     "_children": [],
@@ -3218,7 +3218,7 @@
     "_enabled": true,
     "_N$string": "<color=#00ff00>Tên: </c><color=#0fffff>cuongnat</color>",
     "_N$horizontalAlign": 0,
-    "_N$fontSize": 20,
+    "_N$fontSize": 18,
     "_N$maxWidth": 0,
     "_N$lineHeight": 28,
     "_N$imageAtlas": null
@@ -3257,7 +3257,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 136.75,
+      "width": 123.07000000000001,
       "height": 28
     },
     "_children": [],
@@ -3298,7 +3298,7 @@
     "_enabled": true,
     "_N$string": "<color=#00ff00>Cấp độ: </c><color=#0fffff>Tỷ phú</color>",
     "_N$horizontalAlign": 0,
-    "_N$fontSize": 20,
+    "_N$fontSize": 18,
     "_N$maxWidth": 0,
     "_N$lineHeight": 28,
     "_N$imageAtlas": null
@@ -3337,7 +3337,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 91.16,
+      "width": 82.04,
       "height": 28
     },
     "_children": [],
@@ -3378,7 +3378,7 @@
     "_enabled": true,
     "_N$string": "<color=#00ff00>Chip: </c><color=#0fffff>10M</color>",
     "_N$horizontalAlign": 0,
-    "_N$fontSize": 20,
+    "_N$fontSize": 18,
     "_N$maxWidth": 0,
     "_N$lineHeight": 28,
     "_N$imageAtlas": null
@@ -3396,7 +3396,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "verefiedStatus",
+    "_name": "verifiedStatus",
     "_objFlags": 0,
     "_opacity": 255,
     "_color": {
@@ -3417,7 +3417,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 201.31,
+      "width": 181.18,
       "height": 28
     },
     "_children": [],
@@ -3458,7 +3458,7 @@
     "_enabled": true,
     "_N$string": "<color=#00ff00>Phone: </c><color=#0fffff>Chưa cập nhật</color>",
     "_N$horizontalAlign": 0,
-    "_N$fontSize": 20,
+    "_N$fontSize": 18,
     "_N$maxWidth": 0,
     "_N$lineHeight": 28,
     "_N$imageAtlas": null
@@ -3507,8 +3507,8 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": 0,
-      "y": -60
+      "x": -10,
+      "y": -70
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -3538,10 +3538,10 @@
     "_enabled": true,
     "isAlignOnce": true,
     "_alignFlags": 45,
-    "_left": 50,
-    "_right": 50,
-    "_top": 140,
-    "_bottom": 20,
+    "_left": 40,
+    "_right": 60,
+    "_top": 150,
+    "_bottom": 10,
     "_verticalCenter": 0,
     "_horizontalCenter": 0,
     "_isAbsLeft": true,
@@ -3671,7 +3671,7 @@
     "chipAmout": {
       "__id__": 110
     },
-    "verefiedStatus": {
+    "verifiedStatus": {
       "__id__": 113
     },
     "statisticPanel": {

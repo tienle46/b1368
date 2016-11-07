@@ -477,12 +477,14 @@
       "a": 255
     },
     "duration": 0.1,
+    "zoomScale": 1.2,
     "pressedSprite": null,
     "hoverSprite": null,
     "clickEvents": [
       null
     ],
     "_N$interactable": true,
+    "_N$enableAutoGrayEffect": false,
     "_N$normalColor": {
       "__type__": "cc.Color",
       "r": 214,
@@ -730,12 +732,14 @@
       "a": 255
     },
     "duration": 0.1,
+    "zoomScale": 1.2,
     "pressedSprite": null,
     "hoverSprite": null,
     "clickEvents": [
       null
     ],
     "_N$interactable": true,
+    "_N$enableAutoGrayEffect": false,
     "_N$normalColor": {
       "__type__": "cc.Color",
       "r": 214,
@@ -983,12 +987,14 @@
       "a": 255
     },
     "duration": 0.1,
+    "zoomScale": 1.2,
     "pressedSprite": null,
     "hoverSprite": null,
     "clickEvents": [
       null
     ],
     "_N$interactable": true,
+    "_N$enableAutoGrayEffect": false,
     "_N$normalColor": {
       "__type__": "cc.Color",
       "r": 214,
@@ -1199,12 +1205,14 @@
       "a": 255
     },
     "duration": 0.1,
+    "zoomScale": 1.2,
     "pressedSprite": null,
     "hoverSprite": null,
     "clickEvents": [
       null
     ],
     "_N$interactable": true,
+    "_N$enableAutoGrayEffect": false,
     "_N$normalColor": {
       "__type__": "cc.Color",
       "r": 214,
@@ -1489,12 +1497,14 @@
       "a": 255
     },
     "duration": 0.1,
+    "zoomScale": 1.2,
     "pressedSprite": null,
     "hoverSprite": null,
     "clickEvents": [
       null
     ],
     "_N$interactable": true,
+    "_N$enableAutoGrayEffect": false,
     "_N$normalColor": {
       "__type__": "cc.Color",
       "r": 214,
@@ -1742,12 +1752,14 @@
       "a": 255
     },
     "duration": 0.1,
+    "zoomScale": 1.2,
     "pressedSprite": null,
     "hoverSprite": null,
     "clickEvents": [
       null
     ],
     "_N$interactable": true,
+    "_N$enableAutoGrayEffect": false,
     "_N$normalColor": {
       "__type__": "cc.Color",
       "r": 214,
@@ -1854,6 +1866,7 @@
       "__id__": 6
     },
     "_enabled": true,
+    "path": "",
     "toggleItem": []
   },
   {
@@ -2368,6 +2381,7 @@
     "_enabled": true,
     "_useOriginalSize": false,
     "_string": "",
+    "_tabIndex": 0,
     "editingDidBegan": [],
     "textChanged": [],
     "editingDidEnded": [],
@@ -2396,7 +2410,8 @@
       "b": 127.5,
       "a": 255
     },
-    "_N$maxLength": 20
+    "_N$maxLength": 20,
+    "_N$stayOnTop": false
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -2590,6 +2605,7 @@
     "_enabled": true,
     "_useOriginalSize": false,
     "_string": "",
+    "_tabIndex": 0,
     "editingDidBegan": [],
     "textChanged": [],
     "editingDidEnded": [],
@@ -2618,7 +2634,8 @@
       "b": 127.5,
       "a": 255
     },
-    "_N$maxLength": 20
+    "_N$maxLength": 20,
+    "_N$stayOnTop": false
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -2804,6 +2821,7 @@
       "a": 255
     },
     "duration": 0.1,
+    "zoomScale": 1.2,
     "pressedSprite": null,
     "hoverSprite": null,
     "clickEvents": [
@@ -2812,6 +2830,7 @@
       }
     ],
     "_N$interactable": true,
+    "_N$enableAutoGrayEffect": false,
     "_N$normalColor": {
       "__type__": "cc.Color",
       "r": 214,
@@ -2840,7 +2859,8 @@
       "__id__": 1
     },
     "component": "TabCard",
-    "handler": "onHanleChargeBtnClick"
+    "handler": "onHanleChargeBtnClick",
+    "customEventData": ""
   },
   {
     "__type__": "cc.Sprite",
@@ -2875,7 +2895,8 @@
     "node": {
       "__id__": 77
     },
-    "_enabled": true
+    "_enabled": true,
+    "path": ""
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -2906,7 +2927,8 @@
     "node": {
       "__id__": 1
     },
-    "_enabled": true
+    "_enabled": true,
+    "path": ""
   },
   {
     "__type__": "cc.PrefabInfo",
