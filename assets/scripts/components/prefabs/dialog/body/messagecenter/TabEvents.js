@@ -30,7 +30,7 @@ export default class TabEvents extends Component {
         };
 
         app.service.send(sendObject, (data) => {
-            console.debug(data);
+            debug(data);
             if (data) {
                 //convert raw data to list models
                 this.currentPage = data[app.keywords.SYSTEM_MESSAGE.RESPONSE.CURRENT_PAGE];

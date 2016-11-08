@@ -171,6 +171,10 @@ if (cc.sys.isBrowser) {
         console.debug(app.DEVICE_ID);
     });
 }
+else if(cc.sys.IOS){
+    app.DEVICE_ID = jsb.reflection.callStaticMethod("FCUUID", "uuidForDevice");
+    log(`ios udid ${app.DEVICE_ID}`);
+}
 (function() {
 
     window.log = function log(...args) {
