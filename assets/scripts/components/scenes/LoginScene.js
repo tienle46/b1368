@@ -2,8 +2,6 @@
 
 var BaseScene = require('BaseScene');
 var app = require('app');
-var Fingerprint2 = require('fingerprinter');
-
 
 const CAPTCHA_LENGTH = 4;
 const MINIMUM_PASSWORD = 6;

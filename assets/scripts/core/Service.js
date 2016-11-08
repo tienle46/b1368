@@ -4,7 +4,6 @@
 
 var app = require('app');
 var SFS2X = require('SFS2X');
-var Fingerprint2 = require('fingerprinter');
 
 const requestCallbackNames = {
     [SFS2X.Requests.Handshake]: SFS2X.SFSEvent.HANDSHAKE,
@@ -350,7 +349,7 @@ class Service {
         data[app.keywords.APP_SECRET_KEY] = "63d9ccc8-9ce1-4165-80c8-b15eb84a780a"; //
         // data[app.keywords.APP_VERSION_KEY] = "1.0.1"; //
         // data[app.keywords.VERSION] = "1.0.0"; //
-        data[app.keywords.DEVICE_ID] = app.DEVICE_ID || 'a19c8e4ae2e82ef1c7846f32628d4ead3';
+        data[app.keywords.DEVICE_ID] = app.DEVICE_ID;
         data[app.keywords.QUICK_PLAY] = isQuickLogin; // <-- die here!
 
         if (isRegister) {
