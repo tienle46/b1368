@@ -56,8 +56,8 @@ export default class ListTableScene extends BaseScene {
 
         super.onLoad();
 
-        this.addBottomBar();
-        this.addTopBar();
+        this._addBottomBar();
+        this._addTopBar();
 
         const width = this.containnerTableView.node.width;
         const itemDimension = width;
@@ -112,7 +112,7 @@ export default class ListTableScene extends BaseScene {
         /**
          * If create room successfully, response going handle by join room success follow
          */
-        app.service.send({ cmd: app.commands.USER_CREATE_ROOM, data: requestParam, room: null}, (error) => {
+        app.service.send({ cmd: app.commands.USER_CREATE_ROOM, data: requestParam, room: null }, (error) => {
             if (error.errorCode) {
                 app.system.error(error.errorMessage);
             }
@@ -121,7 +121,7 @@ export default class ListTableScene extends BaseScene {
 
     // Listen Bottom Bar Event (Click button In Bottom Bar)
 
-    addBottomBar() {
+    _addBottomBar() {
         RubUtils.loadRes('bottombar/bottombar').then((prefab) => {
             let bottomBarNode = cc.instantiate(prefab);
 
@@ -129,18 +129,15 @@ export default class ListTableScene extends BaseScene {
         });
     }
 
-    addTopBar() {
+    _addTopBar() {
         let topBarNode = new cc.instantiate(this.topBar);
 
         let topBarScript = topBarNode.getComponent('TopBar');
         topBarScript.showBackButton();
-        topBarScript.addListennerBackAction(() => {
-            cc.director.loadScene('DashboardScene');
-        });
 
-        let winsize = cc.director.getWinSize();
+        // let winsize = cc.director.getWinSize();
 
-        topBarNode.setContentSize(winsize.width, 100);
+        // topBarNode.setContentSize(winsize.width, 100);
         this.node.addChild(topBarNode);
     }
 
