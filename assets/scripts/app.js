@@ -6,6 +6,7 @@
 
 var app = module.exports;
 var MESSAGES = require('GameErrorMessage');
+var Fingerprint2 = require('fingerprinter');
 
 app.LANG = "vi";
 app.async = require("async");
@@ -23,9 +24,9 @@ app.createComponent = (classNameOrInstance, extendClass = undefined, ...args) =>
     }
 
     let instance;
-    if(typeof classNameOrInstance === 'object'){
+    if (typeof classNameOrInstance === 'object') {
         instance = classNameOrInstance;
-    }else{
+    } else {
         if (!(extendClass instanceof Function)) {
             args = [extendClass, ...args];
             extendClass = null;
@@ -50,11 +51,11 @@ app.createComponent = (classNameOrInstance, extendClass = undefined, ...args) =>
     };
 
     let getCocosValue = (element, key) => {
-        if(!element){
+        if (!element) {
             return element;
         }
 
-        switch(element) {
+        switch (element) {
             case cc.String:
                 console.log("cc.String: " + key + " = ", element)
                 return "";
@@ -90,7 +91,7 @@ app.createComponent = (classNameOrInstance, extendClass = undefined, ...args) =>
             // if (instance[key] && isComponentOfCC(instance[key])) {
             let value = getCocosValue(instance[key], key);
             if (value) {
-                instance.properties[key] = value;//instance[key];
+                instance.properties[key] = value; //instance[key];
             } else {
                 // else push it to "properties" property - to using "this" keyword on cc.Class()
                 objPropsMap[key] = instance[key]; // {default: xx, xx: asd} <---
@@ -137,7 +138,7 @@ app.createComponent = (classNameOrInstance, extendClass = undefined, ...args) =>
      *  this.a = {a: 1, b: 2}
      * } ---> Works
      */
-    if(Object.keys(objPropsMap).length > 0){
+    if (Object.keys(objPropsMap).length > 0) {
         instance.ctor = function ctor() {
             Object.getOwnPropertyNames(objPropsMap).forEach(key => {
                 this[key] = objPropsMap[key];
@@ -163,26 +164,32 @@ function _setupGame() {
     app.context = require("Context");
     app.event = require("Events");
 }
+// if browser
+if (cc.sys.isBrowser) {
+    new Fingerprint2().get((printer) => {
+        app.DEVICE_ID = printer;
+        console.debug(app.DEVICE_ID);
+    });
+}
+(function() {
 
-(function () {
-
-    window.log = function log(...args){
+    window.log = function log(...args) {
         console.log(...args);
     }
 
-    window.debug = function debug(...args){
-        if(app.config.buildForMobile){
+    window.debug = function debug(...args) {
+        if (app.config.buildForMobile) {
             console.log(...args);
-        }else{
+        } else {
             console.debug(...args);
         }
     }
 
-    window.error = function error(...args){
+    window.error = function error(...args) {
         console.error(...args);
     }
 
-    window.warn = function warn(...args){
+    window.warn = function warn(...args) {
         console.warn(...args);
     }
 

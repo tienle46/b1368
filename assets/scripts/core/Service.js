@@ -5,7 +5,6 @@
 var app = require('app');
 var SFS2X = require('SFS2X');
 var Fingerprint2 = require('fingerprinter');
-import AlertPopupRub from 'AlertPopupRub';
 
 const requestCallbackNames = {
     [SFS2X.Requests.Handshake]: SFS2X.SFSEvent.HANDSHAKE,
@@ -114,7 +113,7 @@ class Service {
         this.removeEventListener(SFS2X.SFSEvent.PUBLIC_MESSAGE, this._onPublicMessage);
     }
 
-    _onPublicMessage(event){
+    _onPublicMessage(event) {
         app.system.emit(SFS2X.SFSEvent.PUBLIC_MESSAGE, event);
     }
 
@@ -345,29 +344,26 @@ class Service {
      */
 
     requestAuthen(username, password, isRegister = false, isQuickLogin = false, cb) {
-        new Fingerprint2().get((printer) => {
-            let data = {};
-            data[app.keywords.IS_REGISTER] = isRegister;
-            data[app.keywords.RAW_PASSWORD] = password;
-            data[app.keywords.APP_SECRET_KEY] = "63d9ccc8-9ce1-4165-80c8-b15eb84a780a"; //
-            // data[app.keywords.APP_VERSION_KEY] = "1.0.1"; //
-            // data[app.keywords.VERSION] = "1.0.0"; //
-            data[app.keywords.DEVICE_ID] = printer;
-            data[app.keywords.QUICK_PLAY] = isQuickLogin; // <-- die here!
+        let data = {};
+        data[app.keywords.IS_REGISTER] = isRegister;
+        data[app.keywords.RAW_PASSWORD] = password;
+        data[app.keywords.APP_SECRET_KEY] = "63d9ccc8-9ce1-4165-80c8-b15eb84a780a"; //
+        // data[app.keywords.APP_VERSION_KEY] = "1.0.1"; //
+        // data[app.keywords.VERSION] = "1.0.0"; //
+        data[app.keywords.DEVICE_ID] = app.DEVICE_ID || 'a19c8e4ae2e82ef1c7846f32628d4ead3';
+        data[app.keywords.QUICK_PLAY] = isQuickLogin; // <-- die here!
 
-            if (isRegister) {
-                data[app.keywords.PARTNER_ID] = 1; // <-- or here
-                this._loginData = null;
-            }
+        if (isRegister) {
+            data[app.keywords.PARTNER_ID] = 1; // <-- or here
+            this._loginData = null;
+        }
 
-            // else {
-            //     this._loginData = { username: username, password: password, quickLogin: isQuickLogin, cb: cb };
-            // }
+        // else {
+        //     this._loginData = { username: username, password: password, quickLogin: isQuickLogin, cb: cb };
+        // }
+        this._addCallback(SFS2X.SFSEvent.LOGIN, cb);
 
-            this._addCallback(SFS2X.SFSEvent.LOGIN, cb);
-
-            this.sendRequest(new SFS2X.Requests.System.LoginRequest(username, password, data, app.config.zone));
-        });
+        this.sendRequest(new SFS2X.Requests.System.LoginRequest(username, password, data, app.config.zone));
     }
 
     _checkConnection() {

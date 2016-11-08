@@ -1337,7 +1337,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 630,
-      "height": 315
+      "height": 353
     },
     "_children": [
       {
@@ -1351,7 +1351,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": -8,
-      "y": 22
+      "y": 4
     },
     "_skewX": 0,
     "_skewY": 0,

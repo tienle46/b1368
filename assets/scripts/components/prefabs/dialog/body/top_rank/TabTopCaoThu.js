@@ -16,12 +16,12 @@ class TabTopCaoThu extends Component {
             type: cc.Node
         }
         this.top1Sprite = {
-            default : null,
+            default: null,
             type: cc.Sprite
         }
 
         this.top1Name = {
-            default : null,
+            default: null,
             type: cc.Label
         }
 
@@ -38,7 +38,7 @@ class TabTopCaoThu extends Component {
 
     }
 
-    _initGameList(){
+    _initGameList() {
         let sendObject = {
             'cmd': app.commands.RANK_GROUP,
             'data': {
@@ -49,22 +49,22 @@ class TabTopCaoThu extends Component {
             }
         };
         app.service.send(sendObject, (res) => {
-
-            if(res['itl'] && res['itl'].length > 0 ){
+            if (res['itl'] && res['itl'].length > 0) {
                 this.gameList = res;
 
-                this.gameList['iml'].forEach((imgName, index)=>{
+                let dNodeIds = this.gameList['itl'];
+                let gameImages = this.gameList['iml'];
 
+                gameImages.forEach((imgName, index) => {
                     const node = new cc.Node();
 
-                    node.dNodeId =  this.gameList['itl'][index];
+                    node.dNodeId = dNodeIds[index];
 
                     const button = node.addComponent(cc.Button);
                     const nodeSprite = node.addComponent(cc.Sprite);
                     // log( app.res.gameTopCapThuIcon[imgName]);
                     RubUtils.loadSpriteFrame(nodeSprite,
-                        app.res.gameTopCapThuIcon[imgName]
-                        , cc.size(100, 100), false, (spriteFrame) => {
+                        app.res.gameTopCapThuIcon[imgName], cc.size(100, 100), false, (spriteFrame) => {
                             log(`image loaded`);
                         });
 
@@ -77,8 +77,11 @@ class TabTopCaoThu extends Component {
                     this.gamePicker.addChild(node);
                 });
 
-                this._showTopPlayers(this.gameList['itl'][0]).then((data) => {
-                    this._initBody(data);
+                // last call
+                setTimeout(() => {
+                    this._showTopPlayers(dNodeIds[0], (data) => {
+                        this._initBody(data);
+                    });
                 });
             }
 
@@ -88,13 +91,12 @@ class TabTopCaoThu extends Component {
     onGameItemClicked(event) {
         let dNodeId = event.currentTarget.dNodeId;
 
-        this._showTopPlayers(dNodeId).then((data) => {
+        this._showTopPlayers(dNodeId, (data) => {
             this._initBody(data);
         });
     }
 
-    _showTopPlayers(dNodeId) {
-        log(dNodeId);
+    _showTopPlayers(dNodeId, cb) {
         let sendObject = {
             'cmd': app.commands.RANK_GROUP,
             'data': {
@@ -104,48 +106,44 @@ class TabTopCaoThu extends Component {
                 [app.keywords.RANK_NODE_ID]: dNodeId,
             }
         };
+        app.service.send(sendObject, (res) => {
 
-        return new Promise((resolve, reject) => {
-            app.service.send(sendObject, (res) => {
-                log(res);
+            if (res['unl'].length > 0) {
+                const topVipName = res['unl'][0];
 
-                if(res['unl'].length > 0){
-                    const topVipName = res['unl'][0];
+                this.top1Name.string = topVipName;
 
-                    this.top1Name.string = topVipName;
+                // const top1Icon = `http://${app.config.host}:3767/img/xgameupload/images/avatar/${topVipName}`;
+                const top1Icon = 'https://upload.wikimedia.org/wikipedia/commons/f/f7/Tamia_striatus_eating.jpg';
+                log(top1Icon);
+                RubUtils.loadSpriteFrame(this.top1Sprite, top1Icon, cc.size(128, 128), true, (spriteFrame) => {
 
-                    // const top1Icon = `http://${app.config.host}:3767/img/xgameupload/images/avatar/${topVipName}`;
-                    const top1Icon = 'https://upload.wikimedia.org/wikipedia/commons/f/f7/Tamia_striatus_eating.jpg';
-                    log(top1Icon);
-                    RubUtils.loadSpriteFrame(this.top1Sprite, top1Icon, cc.size(128, 128), true, (spriteFrame) => {
+                });
+            }
+            const data = [
+                res['unl'].map((status, index) => {
+                    return `${index + 1}. `;
+                }),
+                res['unl'],
+                res['ui1l'],
+                res['ui2l'],
+            ];
 
-                    });
-                }
-              const data = [
-                    res['unl'].map((status, index)=>{
-                        return `${index + 1}. `
-                    }),
-                    res['unl'],
-                    res['ui1l'],
-                    res['ui2l'],
-                ];
-
-                resolve(data);
-            });
+            cb(data);
         });
     }
 
     _initBody(d) {
-
         let event = null;
         let body = this.contentNode;
         body.removeAllChildren();
 
-        GridViewRub.show(body, {data: ['STT', 'Tài khoản', 'Thắng','Thua'], options : {fontColor: app.const.COLOR_YELLOW
-            }}, d, { position: cc.v2(2, 120), width: 480, event,group: {widths:[80,200,100,100]} },
-            ).then((rub) => {
-
-        });
+        GridViewRub.show(body, {
+            data: ['STT', 'Tài khoản', 'Thắng', 'Thua'],
+            options: {
+                fontColor: app.const.COLOR_YELLOW
+            }
+        }, d, { position: cc.v2(2, 172), width: 480, height: 356, event, group: { widths: [80, 200, 100, 100] } });
     }
 }
 

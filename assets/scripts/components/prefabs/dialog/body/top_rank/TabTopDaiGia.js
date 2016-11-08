@@ -16,12 +16,12 @@ class TabTopDaiGia extends Component {
             type: cc.Node
         }
         this.top1Sprite = {
-            default : null,
+            default: null,
             type: cc.Sprite
         }
 
         this.top1Name = {
-            default : null,
+            default: null,
             type: cc.Label
         }
     }
@@ -55,7 +55,7 @@ class TabTopDaiGia extends Component {
             app.service.send(sendObject, (res) => {
                 log(res);
 
-                if(res['unl'].length > 0){
+                if (res['unl'].length > 0) {
                     const topVipName = res['unl'][0];
 
                     this.top1Name.string = topVipName;
@@ -69,11 +69,11 @@ class TabTopDaiGia extends Component {
                 }
 
                 const data = [
-                    res['unl'].map((status, index)=>{
+                    res['unl'].map((status, index) => {
                         return `${index + 1}. `
                     }),
                     res['unl'],
-                    res['ui1l'].map((amount) =>{
+                    res['ui1l'].map((amount) => {
                         return `${numeral(amount).format('0,0')}`;
                     }),
 
@@ -88,9 +88,12 @@ class TabTopDaiGia extends Component {
 
         let event = null;
         let body = this.contentNode;
-        GridViewRub.show(body, {data: ['STT', 'Tài khoản', 'Chips'], options : {fontColor: app.const.COLOR_YELLOW
-            }}, d, { position: cc.v2(0, 155), width: 660, event,group: {widths:[80,280,280]} },
-            ).then((rub) => {
+        GridViewRub.show(body, {
+            data: ['STT', 'Tài khoản', 'Chips'],
+            options: {
+                fontColor: app.const.COLOR_YELLOW
+            }
+        }, d, { position: cc.v2(0, 172), width: 660, height: 356, event, group: { widths: [80, 280, 280] } }, ).then((rub) => {
 
         });
     }

@@ -17,7 +17,7 @@ app.res.getString = app.res.string = (key, params) => {
     return i18next.t(key, params);
 };
 
-app.res.getErrorMessage = function (key) {
+app.res.getErrorMessage = function(key) {
     //TODO
 };
 
@@ -34,7 +34,7 @@ app.res.loadLanguage = (defaultLocale, cb) => {
         i18next.init({
             lng: defaultLocale,
             resources: {
-                [defaultLocale]: {translation: newLang}
+                [defaultLocale]: { translation: newLang }
             }
         }, (err, t) => {
             err && cb && cb(errMsg);
@@ -44,7 +44,7 @@ app.res.loadLanguage = (defaultLocale, cb) => {
     }
 };
 
-app.res.loadLanguage(app.config.defaultLocale, (err) => { if (err) throw new Error("Không thể khởi tạo ngôn ngữ"); } );
+app.res.loadLanguage(app.config.defaultLocale, (err) => { if (err) throw new Error("Không thể khởi tạo ngôn ngữ"); });
 
 app.res.playerAnchorPath = {
     4: "game/players/FourPlayerPositions",
@@ -68,7 +68,7 @@ app.res.gameIcon = {
     "tnd": "dashboard/tlmn_ico",
     "tds": "dashboard/tlmn_solo_ico",
     "xam": "dashboard/sam_ico",
-    "xms" : "dashboard/sam_solo_ico",
+    "xms": "dashboard/sam_solo_ico",
     "bcy": "dashboard/bacay_ico",
     "lie": "dashboard/lieng_ico",
     "pom": "dashboard/phom_ico",
@@ -77,16 +77,20 @@ app.res.gameIcon = {
 
 };
 app.res.gameTopCapThuIcon = {
-    "dnode/list329.png": "dashboard/thumbs/tlmn_ico_s",
-    "dnode/tds": "dashboard/tlmn_solo_ico_s",
-    "dnode/list330.png": "dashboard/thumbs/sam_ico_s",
-    "dnode/xms" : "dashboard/sam_solo_ico_s",
-    "dnode/list333.png": "dashboard/thumbs/bacay_ico_s",
-    "dnode/list331.png": "dashboard/thumbs/lieng_ico_s",
+    // bai 3 mien
+    "dnode/list324.png": "dashboard/thumbs/phom_ico_s",
     "dnode/list327.png": "dashboard/thumbs/phom_ico_s",
     "dnode/list328.png": "dashboard/thumbs/tlmn_ico_s",
+    "dnode/list329.png": "dashboard/thumbs/tlmn_ico_s",
+    "dnode/list330.png": "dashboard/thumbs/sam_ico_s",
+    "dnode/list331.png": "dashboard/thumbs/lieng_ico_s",
     "dnode/list332.png": "dashboard/thumbs/xito_ico_s",
-    "dnode/list374.png": "dashboard/thumbs/tlmn_ico_s"
+    "dnode/list333.png": "dashboard/thumbs/bacay_ico_s",
+    // tlmn moi
+    "dnode/list368.png": "dashboard/thumbs/tlmn_ico_s",
+    "dnode/list374.png": "dashboard/thumbs/tlmn_ico_s",
+    "dnode/tds": "dashboard/tlmn_solo_ico_s",
+    "dnode/xms": "dashboard/sam_solo_ico_s",
 
 };
 

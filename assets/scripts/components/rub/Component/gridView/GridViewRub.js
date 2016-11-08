@@ -48,7 +48,10 @@ export default class GridViewRub {
      *  spacingX: number # default 2px
      *  spacingY: boolean # default 2px
      *  event: cc.EventHandler || null # add a scroll event to scrollView
-     * 
+     *  align: {
+     *      top, left, right, bottom: number
+     *      filParent: boolean (if true, grid will be full fill to its parent)
+     *  }
      *  group: {
      *      widths: array[number || null] # array of width per cell ['', 500, 20]
      *          # assuming you have `content` node with width = 100 and 3 columns ['', 50, 20]
@@ -207,9 +210,46 @@ export default class GridViewRub {
 
     // resize content node by parent ( dont know why widget does not work )
     _resize(prefab) {
+
         prefab.setPosition(this.options.position);
         // set prefab size
         prefab.setContentSize(cc.size(this.options.width, this.options.height));
+        let prefabAlign = this.options.align;
+        if (prefabAlign) {
+            let __setUpWidgetAlign = (widget, align, number) => {
+                if (align == 'right') {
+                    widget.isAlignRight = true;
+                    widget.right = number;
+                } else if (align == 'left') {
+                    widget.isAlignLeft = true;
+                    widget.left = number;
+                } else if (align == 'top') {
+                    widget.isAlignTop = true;
+                    widget.top = number;
+                } else {
+                    widget.isAlignBottom = true;
+                    widget.bottom = number;
+                }
+            };
+
+            let widget = prefab.getComponent(cc.Widget) || prefab.addComponent(cc.Widget);
+            if (prefabAlign.filParent) {
+                widget.isAlignTop = true;
+                widget.isAlignLeft = true;
+                widget.isAlignRight = true;
+                widget.isAlignBottom = true;
+
+                widget.top = 0;
+                widget.left = 0;
+                widget.bottom = 0;
+                widget.right = 0;
+            } else {
+                prefabAlign.top && __setUpWidgetAlign(widget, 'top', prefabAlign.top);
+                prefabAlign.bottom && __setUpWidgetAlign(widget, 'bottom', prefabAlign.bottom);
+                prefabAlign.left && __setUpWidgetAlign(widget, 'left', prefabAlign.left);
+                prefabAlign.right && __setUpWidgetAlign(widget, 'right', prefabAlign.right);
+            }
+        }
         // `view` node size
         this.viewNode.setContentSize(cc.size(this.options.width - this.CONTENT_NODE_HORIZONTAL_PADDING, this.options.height));
         // `view/content` node size

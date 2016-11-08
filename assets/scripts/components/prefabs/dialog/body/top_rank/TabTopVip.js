@@ -34,13 +34,13 @@ class TabTopVip extends Component {
         // this.contentNode = this.node.getChildByName('view').getChildByName('content');
         // this._initItemsList();
         // init tabRub
-        this._initData().then((data) => {
+        this._initData((data) => {
             this._initBody(data);
         });
         // this._initTabs();
     }
 
-    _initData() {
+    _initData(cb) {
         let sendObject = {
             'cmd': app.commands.RANK_GROUP,
             'data': {
@@ -51,12 +51,8 @@ class TabTopVip extends Component {
             }
         };
 
-        return new Promise((resolve, reject) => {
-            app.service.send(sendObject, (res) => {
-                log(res);
-
-                resolve(res);
-            });
+        app.service.send(sendObject, (res) => {
+            cb(res);
         });
     }
 
@@ -70,7 +66,6 @@ class TabTopVip extends Component {
 
             // const top1Icon = `http://${app.config.host}:3767/img/xgameupload/images/avatar/${topVipName}`;
             const top1Icon = 'https://upload.wikimedia.org/wikipedia/commons/f/f7/Tamia_striatus_eating.jpg';
-            log(top1Icon);
             RubUtils.loadSpriteFrame(this.top1Sprite, top1Icon, cc.size(128, 128), true);
         }
 
