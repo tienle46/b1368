@@ -9,25 +9,25 @@ export default class TabUserInfo extends Component {
     constructor() {
         super();
         this.userName = {
-            default : null,
+            default: null,
             type: cc.RichText,
-        }
+        };
         this.vipLevel = {
-            default : null,
+            default: null,
             type: cc.RichText,
-        }
+        };
         this.chipAmout = {
-            default : null,
+            default: null,
             type: cc.RichText,
-        }
+        };
         this.verifiedStatus = {
-            default : null,
+            default: null,
             type: cc.RichText,
-        }
+        };
         this.statisticPanel = {
-            default : null,
+            default: null,
             type: cc.Node,
-        }
+        };
     }
 
     onLoad() {
@@ -71,8 +71,7 @@ export default class TabUserInfo extends Component {
 
         if (app.context.needUpdatePhoneNumber()) {
             this.verifiedStatus.string = `<color = ${app.const.HX_COLOR_WHITE}>Phone: </color><color = ${app.const.HX_COLOR_YELLOW}>Chưa cập nhật</color>`;
-        }
-        else{
+        } else {
             this.verifiedStatus.string = `<color = ${app.const.HX_COLOR_WHITE}>Phone: </color><color = ${app.const.HX_COLOR_YELLOW}>${userData.p}</color>`;
         }
 
@@ -87,6 +86,7 @@ export default class TabUserInfo extends Component {
         ], {
             position: cc.v2(2, 140),
             width: 600,
+            height: 240,
             spacingX: 0,
             spacingY: 0,
             cell: {
@@ -102,7 +102,7 @@ export default class TabUserInfo extends Component {
         this._getAchievementsDataFromServer((data) => {
             achievementsTab.resetData(data);
 
-            achievementsTab.getNode().then((prefab)=>{
+            achievementsTab.getNode().then((prefab) => {
                 this.statisticPanel.addChild(prefab);
 
                 // const widget = prefab.addComponent(cc.Widget);

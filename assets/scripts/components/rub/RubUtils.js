@@ -72,7 +72,7 @@ let RubUtils = {
         }); // => [null, 10*parentWidth/100, 30, null]
 
         // total width inside array
-        let totalWidth = widths.reduce((p, n) => !isNaN(p) && (Number(p) + Number(n)));
+        let totalWidth = widths.reduce((p, n) => !isNaN(p) && (Number(p) + Number(n)), 0);
 
         // remaing array which cotains null -> ["", null...]
         let remains = widths.filter((e) => !isNaN(e) && Number(e) === 0).length;

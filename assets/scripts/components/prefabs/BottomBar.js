@@ -190,14 +190,12 @@ class BottomBar extends Component {
                 title: 'Nhận chip',
                 value: 'tab_transfer_transaction'
             }, {
-                title: 'Lịch sử',
+                title: 'Lịch sử giao dịch',
                 value: 'tab_transaction_history'
             },
         ];
 
         let options = {
-            // itemHeight: 26.5,
-            itemWidth: 112,
             tabBodyPrefabType: 'userinfo'
         };
 
