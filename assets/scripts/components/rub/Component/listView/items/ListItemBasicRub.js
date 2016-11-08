@@ -46,8 +46,10 @@ export default class ListItemBasicRub {
         let defaultOptions = {
             contentWidth: 520,
             height: 60,
-            spriteFrame: 'textures/50x50',
-            color: app.const.COLOR_VIOLET,
+            // spriteFrame: 'textures/50x50',
+            spriteFrame: 'game/images/ingame_menu_item_bg',
+            // color: app.const.COLOR_VIOLET,
+            color: app.const.COLOR_WHITE,
             fontSize: 16,
             fontLineHeight: 20,
             fontColor: app.const.COLOR_WHITE,
