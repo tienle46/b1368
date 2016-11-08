@@ -914,7 +914,7 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": 29,
+      "x": 44,
       "y": 7
     },
     "_skewX": 0,
@@ -1724,7 +1724,7 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": 354,
+      "x": 384,
       "y": 0
     },
     "_skewX": 0,
@@ -2247,8 +2247,8 @@
     "_enabled": true,
     "isAlignOnce": true,
     "_alignFlags": 41,
-    "_left": 738,
-    "_right": 30,
+    "_left": 768,
+    "_right": 0,
     "_top": 0,
     "_bottom": -50,
     "_verticalCenter": 0,
@@ -2295,7 +2295,7 @@
     },
     "_N$startAxis": 0,
     "_N$padding": 0,
-    "_N$spacingX": 5,
+    "_N$spacingX": 20,
     "_N$spacingY": 0,
     "_N$verticalDirection": 1,
     "_N$horizontalDirection": 0

@@ -16,12 +16,12 @@ class TabTopVip extends Component {
             type: cc.Node
         }
         this.top1Sprite = {
-            default : null,
+            default: null,
             type: cc.Sprite
         }
 
         this.top1Name = {
-            default : null,
+            default: null,
             type: cc.Label
         }
     }
@@ -63,7 +63,7 @@ class TabTopVip extends Component {
     _initBody(d) {
         const ul = d['unl'];
 
-        if(ul.length > 0){
+        if (ul.length > 0) {
             const topVipName = ul[0];
 
             this.top1Name.string = topVipName;
@@ -71,13 +71,11 @@ class TabTopVip extends Component {
             // const top1Icon = `http://${app.config.host}:3767/img/xgameupload/images/avatar/${topVipName}`;
             const top1Icon = 'https://upload.wikimedia.org/wikipedia/commons/f/f7/Tamia_striatus_eating.jpg';
             log(top1Icon);
-            RubUtils.loadSpriteFrame(this.top1Sprite, top1Icon, cc.size(128, 128), true, (spriteFrame) => {
-
-            });
+            RubUtils.loadSpriteFrame(this.top1Sprite, top1Icon, cc.size(128, 128), true);
         }
 
         for (let i = 0; i < ul.length; i++) {
-            let transactionItem = new ListItemBasicRub(`<color=ffffff>${i + 1}.</color>`, {contentWidth: 60});
+            let transactionItem = new ListItemBasicRub(`${i + 1}.`, { contentWidth: 60 });
             transactionItem.initChild();
 
             let label = {
@@ -86,9 +84,10 @@ class TabTopVip extends Component {
                 size: {
                     width: 150,
                 },
+                fontColor: app.const.COLOR_WHITE,
+                horizontalAlign: cc.Label.HorizontalAlign.LEFT,
                 align: {
-                    left: 20,
-                    horizontalAlign: cc.Label.HorizontalAlign.LEFT,
+                    left: 20
                 }
             };
 
@@ -99,19 +98,17 @@ class TabTopVip extends Component {
             layoutComponent.type = cc.Layout.Type.HORIZONTAL;
             layoutComponent.spacingX = 5;
 
-            for( let j = 0 ; j < 5 - i; j++){
+            for (let j = 0; j < 5 - i; j++) {
 
                 const medal = new cc.Node();
                 const sprite = medal.addComponent(cc.Sprite);
 
                 medalContainer.addChild(medal);
 
-                RubUtils.loadSpriteFrame(sprite, `textures/medal_${j+1}`, cc.size(32, 34), false, (spriteFrame) => {
-
-                });
+                RubUtils.loadSpriteFrame(sprite, `textures/medal_${j+1}`, cc.size(32, 34));
             }
-            medalContainer.size = cc.Size(180 , 60);
-            medalContainer.position = cc.v2(190,0);
+            medalContainer.size = cc.Size(180, 60);
+            medalContainer.position = cc.v2(190, 0);
             transactionItem.pushEl(medalContainer);
 
             this.contentNode.addChild(transactionItem.node());

@@ -365,13 +365,14 @@ export default class GridViewRub {
     _validData(input) {
         let tmp = [];
         let out = [];
-        while (input[0].length > 0) {
-            for (let i = 0; i < input.length; i++) {
-                tmp.push(input[i].shift() || null);
+        if (input[0])
+            while (input[0].length > 0) {
+                for (let i = 0; i < input.length; i++) {
+                    tmp.push(input[i].shift() || null);
+                }
+                out.push(tmp);
+                tmp = [];
             }
-            out.push(tmp);
-            tmp = [];
-        }
 
         return out;
     }

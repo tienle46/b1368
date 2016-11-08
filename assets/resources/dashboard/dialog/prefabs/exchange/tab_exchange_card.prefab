@@ -652,7 +652,8 @@
     "node": {
       "__id__": 14
     },
-    "_enabled": true
+    "_enabled": true,
+    "path": ""
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -810,7 +811,8 @@
     "node": {
       "__id__": 19
     },
-    "_enabled": true
+    "_enabled": true,
+    "path": ""
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -968,7 +970,8 @@
     "node": {
       "__id__": 24
     },
-    "_enabled": true
+    "_enabled": true,
+    "path": ""
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -1517,7 +1520,8 @@
     "node": {
       "__id__": 1
     },
-    "_enabled": true
+    "_enabled": true,
+    "path": ""
   },
   {
     "__type__": "cc.PrefabInfo",

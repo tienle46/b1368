@@ -25,19 +25,18 @@ class TabExchangeCard extends Component {
         this._getExchangeDialogComponent().hideUpdatePhone();
         this._initCardsList();
     }
-    _initCardsList(){
+    _initCardsList() {
         var sendObject = {
             'cmd': app.commands.EXCHANGE_LIST,
-            'data':{}
+            'data': {}
         };
 
         app.service.send(sendObject, (data) => {
-            log(data);
             if (data[app.keywords.EXCHANGE_LIST.RESPONSE.TYPES]) {
 
                 const exchangeTypes = data[app.keywords.EXCHANGE_LIST.RESPONSE.TYPES];
-                exchangeTypes.forEach((type, index)=>{
-                    if(type[app.keywords.EXCHANGE_LIST.RESPONSE.ITEM_TYPE] ===  '1'){
+                exchangeTypes.forEach((type) => {
+                    if (type[app.keywords.EXCHANGE_LIST.RESPONSE.ITEM_TYPE] === '1') {
                         const idList = type[app.keywords.EXCHANGE_LIST.RESPONSE.ITEM_ID_LIST];
                         const nameList = type[app.keywords.EXCHANGE_LIST.RESPONSE.ITEM_NAME_LIST];
                         const goldList = type[app.keywords.EXCHANGE_LIST.RESPONSE.ITEM_GOLD_LIST];
@@ -47,9 +46,9 @@ class TabExchangeCard extends Component {
 
                         let rowNode;
 
-                        for(let i = 0 ; i < cnt; i++){
+                        for (let i = 0; i < cnt; i++) {
                             let itemId = idList[i];
-                            let itemIcon = iconList[i].replace('thumb.','');
+                            let itemIcon = iconList[i].replace('thumb.', '');
                             let itemGold = goldList[i];
                             let itemName = nameList[i];
 
@@ -231,7 +230,7 @@ class TabExchangeCard extends Component {
     _initRowNode() {
         let rowNode = new cc.Node();
         rowNode.width = 780;
-        rowNode.height = 180;
+        rowNode.height = 280;
         rowNode.name = 'container';
         return rowNode;
     }

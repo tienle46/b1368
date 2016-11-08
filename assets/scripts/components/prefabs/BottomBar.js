@@ -135,12 +135,10 @@ class BottomBar extends Component {
         ];
 
         let options = {
-            itemWidth: 428,
             tabBodyPrefabType: 'messagecenter'
         };
         let tabOptions = { tabs, options };
         MessageCenterDialogRub.show(this.node.parent, tabOptions);
-
     }
 
     onClickUserInfoAction() {
@@ -175,26 +173,27 @@ class BottomBar extends Component {
 
     _getPersonalInfoTabOptions(cb) {
         let tabs = [{
-            title: 'Cá nhân',
-            value: 'tab_user_info'
-        }
-        // , {
-        //     title: 'Thành tích',
-        //     value: this._initAchievementsTab()
-        // }
-        , {
-            title: 'Gift Code',
-            value: 'tab_gift_code'
-        }, {
-            title: 'Chuyển chip',
-            value: 'tab_transfer_vc'
-        }, {
-            title: 'Nhận chip',
-            value: 'tab_transfer_transaction'
-        }, {
-            title: 'Lịch sử',
-            value: 'tab_transaction_history'
-        }, ];
+                title: 'Cá nhân',
+                value: 'tab_user_info'
+            }
+            // , {
+            //     title: 'Thành tích',
+            //     value: this._initAchievementsTab()
+            // }
+            , {
+                title: 'Gift Code',
+                value: 'tab_gift_code'
+            }, {
+                title: 'Chuyển chip',
+                value: 'tab_transfer_vc'
+            }, {
+                title: 'Nhận chip',
+                value: 'tab_transfer_transaction'
+            }, {
+                title: 'Lịch sử',
+                value: 'tab_transaction_history'
+            },
+        ];
 
         let options = {
             // itemHeight: 26.5,

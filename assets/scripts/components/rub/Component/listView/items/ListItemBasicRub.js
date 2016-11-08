@@ -90,12 +90,12 @@ export default class ListItemBasicRub {
      *      fontColor,
      *      fontLineHeight,
      *      spriteFrame: string (if element is kind of image or button, this property must be declared)
+     *      horizontalAlign: text's horizontalAlign (ins't node)
      *      *align: {
      *          left: number,
      *          right: number,
      *          top: number, #default 10
      *          bottom: number #default 10
-     *          horizontalAlign,
      *          isOnTop, isOnBottom: boolean # while there's one in these is true, element will be placed on Top/Bot of item and padding by top/bottom property
      *      }
      * }
@@ -211,6 +211,9 @@ export default class ListItemBasicRub {
                 fontLineHeight: options.fontLineHeight || this.options.fontLineHeight,
                 align: options.align
             };
+
+            options.hasOwnProperty('horizontalAlign') && options.horizontalAlign === 0 && (lblOpts.horizontalAlign = options.horizontalAlign);
+
             this._addChildLabelNode(text, node, lblOpts);
         };
 
