@@ -52,6 +52,7 @@ export default class GridViewRub {
      *      top, left, right, bottom: number
      *      filParent: boolean (if true, grid will be full fill to its parent)
      *  }
+     *  dataValidated: boolean # sometimes we dont need to validate our getted data # default: false
      *  group: {
      *      widths: array[number || null] # array of width per cell ['', 500, 20]
      *          # assuming you have `content` node with width = 100 and 3 columns ['', 50, 20]
@@ -99,13 +100,14 @@ export default class GridViewRub {
 
         let defaultOptions = {
             position: cc.v2(0, 0),
-            // width: 585,
+            width: 872,
             height: 250,
             spacingX: 2,
             spacingY: 2,
             isHorizontal: false,
             isVertical: true,
             group: {},
+            dataValidated: false,
             cell
         };
 
@@ -114,7 +116,7 @@ export default class GridViewRub {
         };
 
         this.options = Object.assign({}, defaultOptions, opts);
-        this.data = this._validData(data);
+        this.data = this.options.dataValidated ? data : this._validateData(data);
         if (head instanceof Array) {
             this.head = {
                 data: head
@@ -159,8 +161,8 @@ export default class GridViewRub {
         });
     }
 
-    resetData(data) {
-        this.data = this._validData(data);
+    resetData(data, isValidated) {
+        this.data = isValidated ? data : this._validateData(data);
         // reset body
         this.contentNode && this.contentNode.removeAllChildren(true);
         // reinsert
@@ -168,7 +170,7 @@ export default class GridViewRub {
     }
 
     updateData(data) {
-        data = this._validData(data);
+        data = this._validateData(data);
         // this.data = [...this.data, ...data];
         // this.prefab.active = false;
         this._insertCellBody(data);
@@ -367,7 +369,7 @@ export default class GridViewRub {
         return RubUtils.calcWidthByGroup(parentWidth, groupWidth, spacingX, padding);
 
         // if (this.options.group.widths) {
-        // let groupWidth = this.options.group.widths
+        // let groupWidth = this.options.group.widths;
         //     // total width inside array
         //     let totalWidth = groupWidth.reduce((p, n) => !isNaN(p) && (Number(p) + Number(n)));
         //     // length of remaining array which cotains null -> ["", ""]
@@ -402,7 +404,7 @@ export default class GridViewRub {
      * 
      * @memberOf GridViewRub
      */
-    _validData(input) {
+    _validateData(input) {
         let tmp = [];
         let out = [];
         if (input[0])

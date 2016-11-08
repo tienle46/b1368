@@ -1,5 +1,4 @@
 var app = require('app');
-var Fingerprint2 = require('fingerprinter');
 import AlertPopupRub from 'AlertPopupRub';
 import BaseScene from 'BaseScene';
 
@@ -44,18 +43,16 @@ export default class EntranceScene extends BaseScene {
         app.service.connect((success) => {
             log("success: " + success);
             if (success) {
-                new Fingerprint2().get((deviceId) => {
-                    app.service.requestAuthen('pinocchio', "hhmmss24", false, true, (error, result) => {
-                        error = JSON.parse(error);
-                        if (result) {
-                            console.debug(app.context.getMe());
-                            this.hideLoading();
-                            this.changeScene('DashboardScene');
-                        }
-                        if (error) {
-                            this.addPopup(app.getMessageFromServer(error.p.ec));
-                        }
-                    });
+                app.service.requestAuthen('pinocchio', "hhmmss24", false, true, (error, result) => {
+                    error = JSON.parse(error);
+                    if (result) {
+                        console.debug(app.context.getMe());
+                        this.hideLoading();
+                        this.changeScene('DashboardScene');
+                    }
+                    if (error) {
+                        this.addPopup(app.getMessageFromServer(error.p.ec));
+                    }
                 });
             }
         });
@@ -71,18 +68,16 @@ export default class EntranceScene extends BaseScene {
         app.service.connect((success) => {
             log("success: " + success);
             if (success) {
-                new Fingerprint2().get((deviceId) => {
-                    app.service.requestAuthen(this._generateUserName("ysad12", deviceId, 0, 5), this._generateUserName("yz212", deviceId, 0, 6), false, true, (error, result) => {
-                        error = JSON.parse(error);
-                        if (result) {
-                            this.hideLoading();
-                            this.changeScene('DashboardScene');
-                        }
+                app.service.requestAuthen(this._generateUserName("ysad12", app.DEVICE_ID, 0, 5), this._generateUserName("yz212", app.DEVICE_ID, 0, 6), false, true, (error, result) => {
+                    error = JSON.parse(error);
+                    if (result) {
+                        this.hideLoading();
+                        this.changeScene('DashboardScene');
+                    }
 
-                        if (error) {
-                            this.addPopup(app.getMessageFromServer(error.p.ec));
-                        }
-                    });
+                    if (error) {
+                        this.addPopup(app.getMessageFromServer(error.p.ec));
+                    }
                 });
             }
         });
