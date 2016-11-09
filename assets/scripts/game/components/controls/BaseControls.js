@@ -21,15 +21,14 @@ class BaseControls extends GameControls {
 
     onEnable() {
         super.onEnable();
-        this.scene = app.system.currentScene;
         this.hideAllControls();
+
+        this.node.on('touchstart', (event) => true);
 
         this.scene.on(Events.ON_PLAYER_READY_STATE_CHANGED, this._onPlayerSetReadyState, this);
     }
 
     onClickReadyButton() {
-        debug("onClickReadyButton");
-
         this.scene.showShortLoading('ready');
         app.service.send({cmd: app.commands.PLAYER_READY, room: this.scene.room});
     }
@@ -40,9 +39,6 @@ class BaseControls extends GameControls {
     }
 
     _onPlayerSetReadyState(playerId, ready, isItMe = this.scene.gamePlayers.isItMe(playerId)) {
-
-        log("_onPlayerSetReadyState: ", playerId, ready, isItMe);
-
         this.scene.hideLoading('ready');
         isItMe && (ready ? this._onPlayerReady() : this._onPlayerUnready());
     }

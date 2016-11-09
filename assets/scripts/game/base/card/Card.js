@@ -1,44 +1,54 @@
 import app from 'app';
 import Component from 'components';
-import {GameUtils} from 'utils';
+import {utils, GameUtils} from 'utils';
 
 export default class Card extends Component {
 
     constructor(byteValue) {
         super();
 
+        this.properties = {
+            ...this.properties,
+            rankNode: cc.Label,
+            suitNode: cc.Sprite,
+            mainPic: cc.Sprite,
+            cardBG: cc.Sprite,
+            redTextColor: new cc.Color().fromHEX('#E42E24'),
+            blackTextColor: new cc.Color().fromHEX('#2B2B2B'),
+            texFrontBG: cc.SpriteFrame,
+            texBackBG: cc.SpriteFrame,
+            highlightNode: cc.Node,
+
+            texFaces: {
+                default: [],
+                type: cc.SpriteFrame
+            },
+
+            texSuitBig: {
+                default: [],
+                type: cc.SpriteFrame
+            },
+
+            texSuitSmall: {
+                default: [],
+                type: cc.SpriteFrame
+            },
+        }
+
         byteValue && this.initFromByte(byteValue);
-
-        this.rankNode = cc.Label;
-        this.suitNode = cc.Sprite;
-        this.mainPic = cc.Sprite;
-        this.cardBG = cc.Sprite;
-        this.redTextColor = new cc.Color().fromHEX('#E42E24');
-        this.blackTextColor = new cc.Color().fromHEX('#2B2B2B');
-        this.texFrontBG = cc.SpriteFrame;
-        this.texBackBG = cc.SpriteFrame;
-
-        this.texFaces = {
-            default: [],
-            type: cc.SpriteFrame
-        };
-
-        this.texSuitBig = {
-            default: [],
-            type: cc.SpriteFrame
-        };
-
-        this.texSuitSmall = {
-            default: [],
-            type: cc.SpriteFrame
-        };
-
         this.selected = false;
+        this.highlight = false;
         this.clickListener = null;
     }
 
+    setHighlight(highlight) {
+        this.highlight = highlight;
+
+        utils.deactive(this.highlightNode);
+    }
+
     initFromByte(byteValue) {
-        if(byteValue){
+        if (byteValue) {
             let rank = byteValue >> 2;
             let suit = byteValue & 0x03;
             this._init(rank, suit, byteValue);
@@ -62,8 +72,8 @@ export default class Card extends Component {
 
     }
 
-    _getRankName(){
-        switch (this.rank){
+    _getRankName() {
+        switch (this.rank) {
             case Card.RANK_J:
                 return 'J';
             case Card.RANK_Q:
@@ -78,7 +88,7 @@ export default class Card extends Component {
         }
     }
 
-    isRedSuit(){
+    isRedSuit() {
         return this.suit === Card.SUIT_ZO || this.suit === Card.SUIT_CO;
     }
 
@@ -97,11 +107,11 @@ export default class Card extends Component {
         this._clickListener && this._clickListener(this);
     }
 
-    equals(card){
+    equals(card) {
         return this.byteValue === card.byteValue;
     }
 
-    static toByte(rank, suit){
+    static toByte(rank, suit) {
         return rank << 2 | suit & 0x03;
     }
 
@@ -121,10 +131,10 @@ export default class Card extends Component {
             let thisSuit = GameUtils.getSuit(this, gameType);
             let compareSuit = GameUtils.getSuit(card, gameType);
 
-            if(compareType){
+            if (compareType) {
                 return thisRank == compareRank ? (thisSuit - compareSuit) : (thisRank - compareRank);
             }
-            else{
+            else {
                 return thisSuit == compareSuit ? (thisRank - compareRank) : (thisSuit - compareSuit);
             }
         }
@@ -146,12 +156,12 @@ export default class Card extends Component {
         return this.rank;
     }
 
-    static from(...args){
+    static from(...args) {
         let card = new Card();
 
-        if(args.length == 1){
+        if (args.length == 1) {
             card.initFromByte(args[0]);
-        }else if(args.length == 2){
+        } else if (args.length == 2) {
             card.initFromByte(Card.toByte(args[0], args[1]));
         }
 

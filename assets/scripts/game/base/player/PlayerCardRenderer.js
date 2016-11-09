@@ -20,6 +20,7 @@ export default class PlayerCardRenderer extends PlayerRenderer {
             topCardAnchor: cc.Node,
             bottomCardAnchor: cc.Node,
             defaultCardAnchor: cc.Node,
+            defaultCardAnchor2: cc.Node,
         }
 
         this.cardList = null;
@@ -41,6 +42,7 @@ export default class PlayerCardRenderer extends PlayerRenderer {
         } else {
             cardList.setMaxDimension(0);
             cardList.setScale(app.const.game.DECK_CARD_SCALE);
+            cardList.setAlign(CardList.ALIGN_CENTER);
             cardList.setReveal(false);
         }
 

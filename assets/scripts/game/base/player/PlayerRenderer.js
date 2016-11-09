@@ -31,6 +31,11 @@ export default class PlayerRenderer extends ActorRenderer {
         this.anchorIndex = null;
     }
 
+    convertFromBoardToPlayerLocalPosition(position){
+        let global = this.scene.board.renderer.node.parent.convertToWorldSpaceAR(position);
+        return this.node.parent.convertToNodeSpaceAR(global);
+    }
+
     updatePlayerAnchor(anchorIndex){
         this.anchorIndex = anchorIndex;
         this.playerMessage && this.playerMessage.updateAnchor(anchorIndex);
@@ -40,6 +45,7 @@ export default class PlayerRenderer extends ActorRenderer {
         console.log("init player renderer")
         super._init(data);
         this.scene = app.system.currentScene;
+        this.isItMe = data.isItMe;
     }
 
     onEnable(){
@@ -135,6 +141,14 @@ export default class PlayerRenderer extends ActorRenderer {
 
     _onDonePlusBalanceAnimation(){
         this.plusBalanceLabel.string = "";
+    }
+
+    /**
+     *
+     * @abstract
+     */
+    _reset(){
+        this.setVisibleReady(false);
     }
 }
 

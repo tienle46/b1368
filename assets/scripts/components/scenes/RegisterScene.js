@@ -8,6 +8,10 @@ export default class RegisterScene extends BaseScene {
     constructor() {
         super();
 
+        this.properties = {
+            resetCaptcha : cc.Node,
+        }
+
         this.userNameEditBox = {
             default: null,
             type: cc.EditBox
@@ -23,7 +27,6 @@ export default class RegisterScene extends BaseScene {
             type: cc.EditBox
         };
 
-        this.resetCaptcha = cc.Node;
     }
 
     onLoad() {

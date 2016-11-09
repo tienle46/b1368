@@ -9,7 +9,10 @@ export default class Progress extends Component {
     constructor() {
         super();
 
-        this.spinNode = cc.Node;
+        this.spinNode = {
+            default : null,
+            type : cc.Node
+        };
         this.duration = 2;
         this.timeoutCb = null;
         this.pending = false;

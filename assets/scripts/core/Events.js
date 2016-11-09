@@ -11,10 +11,19 @@ Events.HANDLE_LOSE_TURN                 = "handle.loseTurn";
 Events.HANDLE_SKIP_TURN                 = "handle.skipTurn";
 Events.HANDLE_GET_TURN                  = "handle.getTurn";
 Events.HANDLE_GAME_STATE_CHANGE         = "handle.gameStateChange";
+Events.HANDLE_PLAYER_TAKE_CARD          = "handle.playerTakeCard";
+Events.HANDLE_PLAYER_EAT_CARD           = "handle.playerEatCard";
+Events.HANDLE_PLAYER_DOWN_CARD          = "handle.playerDownCard";
+Events.HANDLE_PLAYER_HELP_CARD          = "handle.playerHelpCard";
+Events.HANDLE_PLAYER_LEAVE_BOARD        = "handle.playerLeaveBoard";
 
+Events.SHOW_GAME_BEGIN_CONTROLS         = "show.gameBeginControls";
 Events.SHOW_WAIT_TURN_CONTROLS          = "show.waitTurnControls";
 Events.SHOW_ON_TURN_CONTROLS            = "show.onTurnControls";
-Events.SHOW_GAME_BEGIN_CONTROLS         = "show.gameBeginControls";
+Events.SHOW_EAT_AND_TAKE_CONTROLS       = "show.eatAndTakeControls";
+
+Events.HIDE_ALL_CONTROLS                = "hide.allControls";
+Events.HIDE_GAME_BEGIN_CONTROLS         = "hide.gameBeginControls";
 
 Events.VISIBLE_INGAME_CHAT_COMPONENT    = "visible.inGameChatComponent";
 
@@ -41,6 +50,8 @@ Events.ON_ROOM_CHANGE_MIN_BET           = "on.room.changeMinBet";
 Events.ON_CLICK_PLAY_BUTTON             = "on.click.playButton";
 Events.ON_CLICK_SORT_BUTTON             = "on.click.sortButton";
 Events.ON_CLICK_SKIP_TURN_BUTTON        = "on.click.skipTurnButton";
+Events.ON_CLICK_EAT_CARD_BUTTON         = "on.click.eatCardButton";
+Events.ON_CLICK_TAKE_CARD_BUTTON        = "on.click.takeCardButton";
 
 Events.ON_GAME_STATE_BEGIN              = "on.game.stateBegin";
 Events.ON_GAME_STATE_STARTING           = "on.game.stateStarting";

@@ -177,7 +177,7 @@ if (cc.sys.isBrowser) {
 } else {
     window.Promise = Promise;
 
-    if (cc.sys.IOS) {
+    if (cc.sys.platform == cc.sys.IPHONE || cc.sys.platform == cc.sys.IPAD) {
         app.DEVICE_ID = jsb.reflection.callStaticMethod("FCUUID", "uuidForDevice");
         log(`ios udid ${app.DEVICE_ID}`);
     } else {

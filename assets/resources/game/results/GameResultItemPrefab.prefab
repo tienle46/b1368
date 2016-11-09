@@ -456,9 +456,7 @@
       "__id__": 9
     },
     "_enabled": true,
-    "_spriteFrame": {
-      "__uuid__": "8de22c63-c128-4a66-b741-12fbee580389"
-    },
+    "_spriteFrame": null,
     "_type": 0,
     "_sizeMode": 0,
     "_fillType": 0,
@@ -925,6 +923,7 @@
       "__id__": 22
     },
     "_enabled": true,
+    "path": "",
     "label": {
       "__id__": 24
     },
@@ -1189,6 +1188,7 @@
       "__id__": 1
     },
     "_enabled": true,
+    "path": "",
     "resultIconNode": {
       "__id__": 9
     },

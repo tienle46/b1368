@@ -463,6 +463,9 @@
     },
     "_enabled": true,
     "path": "",
+    "playerPrefab": {
+      "__uuid__": "44c85142-ac8b-486f-b9b3-7fbb888e5945"
+    },
     "playerClassName": "PlayerTLMNDL"
   },
   {
@@ -798,9 +801,6 @@
     },
     "tableNameLabel": {
       "__id__": 7
-    },
-    "playerPrefab": {
-      "__uuid__": "44c85142-ac8b-486f-b9b3-7fbb888e5945"
     },
     "gameResultPopupNode": {
       "__id__": 24
