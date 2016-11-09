@@ -34,13 +34,13 @@ class TabTopDaiGia extends Component {
         // this.contentNode = this.node.getChildByName('view').getChildByName('content');
         // this._initItemsList();
         // init tabRub
-        this._initData().then((data) => {
+        this._initData((data) => {
             this._initBody(data);
         });
         // this._initTabs();
     }
 
-    _initData() {
+    _initData(cb) {
         let sendObject = {
             'cmd': app.commands.RANK_GROUP,
             'data': {
@@ -51,41 +51,34 @@ class TabTopDaiGia extends Component {
             }
         };
 
-        return new Promise((resolve, reject) => {
-            app.service.send(sendObject, (res) => {
-                log(res);
+        app.service.send(sendObject, (res) => {
+            if (res['unl'].length > 0) {
+                const topVipName = res['unl'][0];
 
-                if (res['unl'].length > 0) {
-                    const topVipName = res['unl'][0];
+                this.top1Name.string = topVipName;
 
-                    this.top1Name.string = topVipName;
+                // const top1Icon = `http://${app.config.host}:3767/img/xgameupload/images/avatar/${topVipName}`;
+                const top1Icon = 'https://upload.wikimedia.org/wikipedia/commons/f/f7/Tamia_striatus_eating.jpg';
+                log(top1Icon);
+                RubUtils.loadSpriteFrame(this.top1Sprite, top1Icon, cc.size(128, 128), true);
+            }
 
-                    // const top1Icon = `http://${app.config.host}:3767/img/xgameupload/images/avatar/${topVipName}`;
-                    const top1Icon = 'https://upload.wikimedia.org/wikipedia/commons/f/f7/Tamia_striatus_eating.jpg';
-                    log(top1Icon);
-                    RubUtils.loadSpriteFrame(this.top1Sprite, top1Icon, cc.size(128, 128), true, (spriteFrame) => {
+            const data = [
+                res['unl'].map((status, index) => {
+                    return `${index + 1}. `;
+                }),
+                res['unl'],
+                res['ui1l'].map((amount) => {
+                    return `${numeral(amount).format('0,0')}`;
+                }),
 
-                    });
-                }
+            ];
 
-                const data = [
-                    res['unl'].map((status, index) => {
-                        return `${index + 1}. `
-                    }),
-                    res['unl'],
-                    res['ui1l'].map((amount) => {
-                        return `${numeral(amount).format('0,0')}`;
-                    }),
-
-                ];
-
-                resolve(data);
-            });
+            cb(data);
         });
     }
 
     _initBody(d) {
-
         let event = null;
         let body = this.contentNode;
         GridViewRub.show(body, {
@@ -93,9 +86,7 @@ class TabTopDaiGia extends Component {
             options: {
                 fontColor: app.const.COLOR_YELLOW
             }
-        }, d, { position: cc.v2(0, 172), width: 660, height: 356, event, group: { widths: [80, 280, 280] } }, ).then((rub) => {
-
-        });
+        }, d, { position: cc.v2(0, 172), width: 660, height: 356, event, group: { widths: [80, 280, 280] } });
     }
 }
 
