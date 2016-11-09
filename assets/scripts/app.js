@@ -169,12 +169,13 @@ if (cc.sys.isBrowser) {
     new Fingerprint2().get((printer) => {
         app.DEVICE_ID = printer;
     });
-} else {
-    app.DEVICE_ID = 'a19c8e4ae2e82ef1c7846f32628d4ead3';
 }
 else if(cc.sys.IOS){
     app.DEVICE_ID = jsb.reflection.callStaticMethod("FCUUID", "uuidForDevice");
     log(`ios udid ${app.DEVICE_ID}`);
+}
+else {
+    app.DEVICE_ID = 'a19c8e4ae2e82ef1c7846f32628d4ead3';
 }
 (function() {
 

@@ -46,7 +46,7 @@ export default class EntranceScene extends BaseScene {
                 app.service.requestAuthen('pinocchio', "hhmmss24", false, true, (error, result) => {
                     error = JSON.parse(error);
                     if (result) {
-                        console.debug(app.context.getMe());
+                        log(app.context.getMe());
                         this.hideLoading();
                         this.changeScene('DashboardScene');
                     }
