@@ -16,6 +16,7 @@ export default class GamePlayers extends Component {
 
         this.properties = {
             ...this.properties,
+            playerPrefab: cc.Prefab,
             playerClassName: ""
         }
 
@@ -141,8 +142,8 @@ export default class GamePlayers extends Component {
 
     _createSinglePlayer(user) {
 
-        let playerNode = cc.instantiate(this.scene.playerPrefab);
-        let player = playerNode.getComponent(this.playerClassName);
+        let playerNode = cc.instantiate(this.playerPrefab);
+        let player = playerNode.getComponent(this.playerClassName) || (playerNode._components && playerNode._components[0]);
 
         if (player) {
             player._init(this.board, user);

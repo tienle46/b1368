@@ -22,7 +22,6 @@ export default class GameScene extends BaseScene {
             playerLayer: cc.Node,
             chatComponentNode: cc.Node,
             tableNameLabel: cc.Label,
-            playerPrefab: cc.Prefab,
             gameResultPopupNode: cc.Node,
             playerPositionAnchorsNode: cc.Node,
             maxPlayers: 4

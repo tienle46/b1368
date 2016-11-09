@@ -5,13 +5,13 @@ import Component from 'Component';
 export default class TextView extends Component {
     constructor() {
         super();
-        this.label = cc.Label;
         this.currentWidth = 0;
         this.lineHeight = 20;
         this.isLoaded = false;
 
         this.properties = {
             ...this.properties,
+            label: cc.Label,
             lines: 1,
             minWidth: 100,
             maxWidth: 1000,

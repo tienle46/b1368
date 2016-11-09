@@ -15,8 +15,8 @@ export default class BoardCardTurnBaseRenderer extends BoardCardRenderer {
             ...this.properties,
             deckCardAnchor: cc.Node,
             deckCardPrefab: cc.Prefab,
-            deckCardRenderer: null,
-        }
+         }
+
     }
 
     _initCenterDeckCard(){

@@ -5,6 +5,7 @@
 import app from 'app';
 import utils from 'utils';
 import ActorRenderer from 'ActorRenderer';
+import TextView from 'TextView';
 
 export default class BoardRenderer extends ActorRenderer {
     constructor() {
@@ -24,7 +25,7 @@ export default class BoardRenderer extends ActorRenderer {
     onEnable(){
         super.onEnable();
 
-        this.timelineTextView = this.timelineTextViewNode.getComponent('TextView');
+        this.timelineTextView = this.timelineTextViewNode.getComponent(TextView.name);
         utils.deactive(this.timeline);
     }
 
