@@ -93,7 +93,7 @@ let RubUtils = {
      *  {
      *      top, left, bottom, right : number
      *      isOnBottom, isOnTop: boolean # node will not be resized when parent/its height's changed
-     *      verticalCenter: boolean # when this property equals true, node will be align by verticalCenter to parent's height without using top and bottom
+     *      verticalCenter, hortizontalCenter: boolean # when this property equals true, node will be align by verticalCenter/horizontalCenter from parent's height without using top and bottom
      *  }
      * @param isAlignOnce : boolean # default = false
      */
@@ -102,6 +102,7 @@ let RubUtils = {
         widget.isAlignOnce = isAlignOnce;
 
         widget.isAlignVerticalCenter = opts.verticalCenter || false;
+        widget.isAlignHorizontalCenter = opts.hortizontalCenter || false;
 
         if (!opts.verticalCenter) {
             if (opts.hasOwnProperty('isOnBottom') || opts.hasOwnProperty('isOnTop')) {

@@ -7,6 +7,7 @@ import PersonalInfoDialogRub from 'PersonalInfoDialogRub';
 import GridViewRub from 'GridViewRub';
 import _ from 'lodash';
 import MessageCenterDialogRub from 'MessageCenterDialogRub';
+import DropDownRub from 'DropDownRub';
 
 class BottomBar extends Component {
     constructor() {
@@ -115,8 +116,19 @@ class BottomBar extends Component {
         ExchangeDialogRub.show(this.node.parent, tabOptions);
     }
 
-    onClickHotlineAction() {
+    onClickHotlineAction(e) {
         log("Hotline");
+        let options = {
+            arrow: {
+                direction: app.const.MENU.ARROW_DIRECTION.DOWN,
+                align: {
+                    left: 25
+                }
+            }
+        };
+
+        let dropdown = new DropDownRub(e.currentTarget, [1, 2, 3], options);
+        this.node.addChild(dropdown.node());
     }
 
     onClickMessageAction() {

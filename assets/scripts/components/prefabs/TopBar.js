@@ -51,14 +51,15 @@ class TopBar extends Component {
         this._showBack = true;
     }
 
-    handleSettingAction() {
-        // if (this._showBack) {
-
-        // } else {
-
-        // }
-        let dropdown = new DropDownRub();
-        console.debug(dropdown.node());
+    handleSettingAction(e) {
+        let options = {
+            arrow: {
+                align: {
+                    left: 25
+                }
+            }
+        };
+        let dropdown = new DropDownRub(e.currentTarget, [], options);
         this.node.addChild(dropdown.node());
     }
 
