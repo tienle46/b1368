@@ -249,7 +249,7 @@ export default class Player extends Actor {
     }
 
     _reset(){
-        this.renderer.setVisibleReady(false);
+        this.renderer._reset();
     }
 
 }

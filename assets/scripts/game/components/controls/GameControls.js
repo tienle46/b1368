@@ -3,27 +3,21 @@
  */
 
 import Actor from 'Actor'
+import Events from 'Events';
 
 export default class GameControls extends Actor {
     constructor() {
         super();
-
         this.scene = null;
     }
 
-    setScene(scene) {
-        this.scene = scene;
+    onEnable() {
+        super.onEnable();
+        this.hideAllControls();
+        this.scene = app.system.currentScene;
     }
 
-    hideAllControls(){
-
-    }
-
-    hideAllControlsBeforeGameStart(){
-
-    }
-
-    setInteractable(control, interactable){
+    setInteractable(control, interactable) {
         control instanceof cc.Button && (control.interactable = interactable);
     }
 }

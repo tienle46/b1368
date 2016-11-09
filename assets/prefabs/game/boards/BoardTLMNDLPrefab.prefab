@@ -453,15 +453,15 @@
     },
     "_enabled": true,
     "path": "",
+    "label": {
+      "__id__": 8
+    },
     "lines": 2,
     "minWidth": 250,
     "maxWidth": 250,
     "resizeWidth": false,
     "increaseWidth": 15,
-    "margin": 0,
-    "label": {
-      "__id__": 8
-    }
+    "margin": 0
   },
   {
     "__type__": "cc.Sprite",
@@ -899,7 +899,7 @@
     "space": 100,
     "maxDimension": 800,
     "orientation": 1,
-    "align": 10,
+    "align": 9,
     "cardPrefab": {
       "__uuid__": "1be1ace3-b9b3-4bf4-9c45-5c1d9eccac08"
     }
@@ -1114,8 +1114,7 @@
     },
     "deckCardPrefab": {
       "__uuid__": "e46ea9f5-2341-4501-90ba-6894cdd06b0e"
-    },
-    "deckCardRenderer": null
+    }
   },
   {
     "__type__": "cc.PrefabInfo",

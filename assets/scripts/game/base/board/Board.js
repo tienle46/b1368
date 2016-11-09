@@ -302,7 +302,7 @@ export default class Board extends Actor {
         }
 
         this.state = app.const.game.state.STARTING;
-        this.scene.gameControls.hideAllControlsBeforeGameStart();
+        // this.scene.gameControls.hideAllControlsBeforeGameStart();
         this.stopTimeLine();
     }
 

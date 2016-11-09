@@ -13,6 +13,7 @@ import ConfirmPopup from 'ConfirmPopup';
 import Toast from 'Toast';
 import utils from 'utils';
 import TLMNDLScene from 'TLMNDLScene';
+import PhomScene from 'PhomScene';
 
 class GameSystem {
 
@@ -50,7 +51,14 @@ class GameSystem {
      * @param {function} onLaunch - On launch custom function
      */
     loadScene(sceneName, onLaunch) {
+
+        console.log("sceneName: ", sceneName)
+
         cc.director.loadScene(sceneName, () => {
+
+
+            console.log("load scene result", sceneName, cc.director.getScene())
+
             if(cc.director.getScene().children[0]){
                 this._currentScene = cc.director.getScene().children[0].getComponent(sceneName);
                 this._currentScene && this._addToastToScene();
@@ -85,15 +93,18 @@ class GameSystem {
             app.context.currentRoom = resultEvent.room;
             this._currentScene && this._currentScene.hideLoading();
 
-            let gameScene = null;
+            let gameSceneName = null;
             let gameCode = utils.getGameCode(resultEvent.room);
             switch (gameCode){
                 case app.const.gameCode.TLMNDL:
-                    gameScene = TLMNDLScene;
+                    gameSceneName = TLMNDLScene.name;
+                    break;
+                case app.const.gameCode.PHOM:
+                    gameSceneName = PhomScene.name;
                     break;
             }
 
-            gameScene && this.loadScene(gameScene.name);
+            gameSceneName && this.loadScene(gameSceneName);
         }
     }
 
