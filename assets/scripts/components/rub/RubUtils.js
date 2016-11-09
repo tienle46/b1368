@@ -17,11 +17,11 @@ let RubUtils = {
     },
 
     /**
-     * @spriteComponent: (cc.Component) sprite we need to add spriteFrame to
-     * @resURL: (string) resource url || image url we need to load before adding
-     * @ccSize: (cc.size), used to resize spriteFrame to slice image fit to current node ( node will be reset its size based on spriteFrame's size after adding )
-     * cb: (function) callback function
-     * isCORS: (boolean) if resURL is http protocol, it need to be `true`
+     * @param spriteComponent: (cc.Component) sprite we need to add spriteFrame to
+     * @param resURL: (string) resource url || image url we need to load before adding
+     * @param ccSize: (cc.size), used to resize spriteFrame to slice image fit to current node ( node will be reset its size based on spriteFrame's size after adding )
+     * @param cb: (function) callback function
+     * @param isCORS: (boolean) if resURL is http protocol, it need to be `true`
      */
     loadSpriteFrame: (spriteComponent, resURL, ccSize = null, isCORS = false, cb) => {
         let textureCache;
@@ -85,6 +85,51 @@ let RubUtils = {
             let number = ((e === null && Number(e) === 0 && equallyDivided) || e) - spaceX - padding / widths.length;
             return number > 0 ? number : 0;
         });
+    },
+    /**
+     * @param node {cc.Node} node where widget to be added
+     * @param defaultValue: defaultValue of top and bottom align
+     * @param opts {any}
+     *  {
+     *      top, left, bottom, right : number
+     *      isOnBottom, isOnTop: boolean # node will not be resized when parent/its height's changed
+     *      verticalCenter: boolean # when this property equals true, node will be align by verticalCenter to parent's height without using top and bottom
+     *  }
+     * @param isAlignOnce : boolean # default = false
+     */
+    addWidgetComponentToNode: (node, opts = {}, defaultValue = 10, isAlignOnce = false) => {
+        let widget = node.getComponent(cc.Widget) || node.addComponent(cc.Widget);
+        widget.isAlignOnce = isAlignOnce;
+
+        widget.isAlignVerticalCenter = opts.verticalCenter || false;
+
+        if (!opts.verticalCenter) {
+            if (opts.hasOwnProperty('isOnBottom') || opts.hasOwnProperty('isOnTop')) {
+                opts.isOnTop && (widget.isAlignTop = true) && (widget.top = opts.top || defaultValue);
+                opts.isOnBottom && (widget.isAlignBottom = true) && (widget.bottom = opts.bottom || defaultValue);
+            } else {
+                if (opts.hasOwnProperty('top')) {
+                    widget.isAlignTop = true;
+                    widget.top = opts.top;
+                }
+                if (opts.hasOwnProperty('bottom')) {
+                    widget.isAlignBottom = true;
+                    widget.bottom = opts.bottom;
+                }
+            }
+        } else {
+            widget.verticalCenter = 0;
+        }
+
+        if (opts.hasOwnProperty('right')) {
+            widget.isAlignRight = true;
+            widget.right = opts.right;
+        }
+
+        if (opts.hasOwnProperty('left')) {
+            widget.isAlignLeft = true;
+            widget.left = opts.left;
+        }
     }
 };
 export default RubUtils;
