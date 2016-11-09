@@ -41,7 +41,7 @@ app.const.SYSTEM_MESSAGE_TYPE_POPUP = 0;
 app.const.SYSTEM_MESSAGE_TYPE_ACTIVITY = 2;
 
 /**
- * SCROLL EVENT TYPE
+ * ========================== SCROLL EVENT TYPES ========================== 
  */
 app.const.SCROLL_EVENT = {};
 app.const.SCROLL_EVENT.SCROLL_TO_TOP = 0;
@@ -57,7 +57,25 @@ app.const.SCROLL_EVENT.AUTO_SCROLL_ENDED = 9; // while we pull scroll bar over e
 app.const.SCROLL_EVENT.TOUCH_ENDED = 10; // touch ended
 
 
+/**
+ * ========================== MENU TYPES && ARROW DIRECTIONS ========================== 
+ */
+app.const.MENU = {};
+app.const.MENU.TYPE = {};
+app.const.MENU.TYPE.VERTICAL = 0;
+app.const.MENU.TYPE.HORIZONTAL = 1;
 
+app.const.MENU.DIRECTION = {};
+app.const.MENU.DIRECTION.TOP = 0;
+app.const.MENU.DIRECTION.LEFT = 1;
+app.const.MENU.DIRECTION.RIGHT = 2;
+app.const.MENU.DIRECTION.BOTTOM = 3;
+
+/**
+ * =============================================== 
+ *  DYNAMIC_ACTION && DYNAMIC_GROUP 
+ * =============================================== 
+ */
 app.const.DYNAMIC_ACTION_BROWSE = 1;
 app.const.DYNAMIC_ACTION_OTHER = 2;
 app.const.DYNAMIC_ACTION_INFO = 3;
@@ -72,9 +90,9 @@ app.const.DYNAMIC_NODE_TYPE_ITEM = 1;
 app.const.DYNAMIC_NODE_TYPE_DETAIL = 2;
 app.const.DYNAMIC_NODE_TYPE_USER = 3;
 
-// COLORS
+// ============================ COLORS ============================
 app.const.COLOR_YELLOW = new cc.Color(246, 255, 41);
-app.const.HX_COLOR_YELLOW = '#F6FF29';
+app.const.HX_COLOR_YELLOW = cc.colorToHex(app.const.COLOR_YELLOW); //'#F6FF29';
 app.const.COLOR_VIOLET = new cc.Color(68, 25, 97);
 app.const.COLOR_WHITE = new cc.Color(255, 255, 255);
-app.const.HX_COLOR_WHITE = '#ffffff';
+app.const.HX_COLOR_WHITE = cc.colorToHex(app.const.COLOR_WHITE); //'#ffffff';

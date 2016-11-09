@@ -80,9 +80,9 @@ export default class ListItemBasicRub {
      * 
      * @param {any} [el={} || cc.Node]
      * {
-     *      *type: string {image || label || button} # kind of UI will be pushed to recent item,
-     *      *size: {
-     *          *width: number
+     *      @required type: string {image || label || button} # kind of UI will be pushed to recent item,
+     *      @required size: {
+     *          @required width: number
      *          height: number
      *      }
      *      position: {x, y}
@@ -92,8 +92,8 @@ export default class ListItemBasicRub {
      *      fontColor,
      *      fontLineHeight,
      *      spriteFrame: string (if element is kind of image or button, this property must be declared)
-     *      horizontalAlign: text's horizontalAlign (ins't node)
-     *      *align: {
+     *      horizontalAlign: text's horizontalAlign (isn't node)
+     *      @required align: {
      *          left: number,
      *          right: number,
      *          top: number, #default 10
@@ -344,7 +344,7 @@ export default class ListItemBasicRub {
      *      isOnTop, isOnBottom: boolean # while there's one in these is true, element will be placed on Top/Bot of item and padding by top/bottom property
      *  }
      * }
-     * @memberOf ListItemBasicRub
+     * @param memberOf ListItemBasicRub
      */
     _addChildLabelNode(text, parent, opts = {}) {
         let labelNode = new cc.Node();

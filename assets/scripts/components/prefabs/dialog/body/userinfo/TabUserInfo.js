@@ -35,27 +35,25 @@ export default class TabUserInfo extends Component {
         this.loader = new LoaderRub(this.node.parent.parent);
         this.loader.show();
 
-        this._initUserData().then((userData) => {
+        this._initUserData((userData) => {
             this._fillData(userData);
         });
     }
 
-    _initUserData() {
-        return new Promise((resolve) => {
-            let data = {};
-            data[app.keywords.USER_NAME] = app.context.getMyInfo().name;
+    _initUserData(cb) {
+        let data = {};
+        data[app.keywords.USER_NAME] = app.context.getMyInfo().name;
 
-            let sendObj = {
-                cmd: app.commands.USER_PROFILE,
-                data
-            };
+        let sendObj = {
+            cmd: app.commands.USER_PROFILE,
+            data
+        };
 
-            app.service.send(sendObj, (data) => {
-                if (data) {
-                    resolve(data);
-                    this.loader.hide();
-                }
-            });
+        app.service.send(sendObj, (data) => {
+            if (data) {
+                cb(data);
+                this.loader.hide();
+            }
         });
     }
 
@@ -115,8 +113,7 @@ export default class TabUserInfo extends Component {
                 // widget.right = 0;
                 // widget.top = 0
                 // widget.bottom = 0;
-
-            })
+            });
         });
 
     }

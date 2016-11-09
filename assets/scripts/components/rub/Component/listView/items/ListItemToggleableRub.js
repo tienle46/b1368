@@ -154,7 +154,7 @@ export default class ListItemToggleableRub extends ListItemBasicRub {
      * 
      * @param {any || cc.Node} image
      * {
-     *      *spriteFrame,
+     *      @required spriteFrame,
      *      position: {x, y},
      *      align: {top,left,right,bottom}
      * }
