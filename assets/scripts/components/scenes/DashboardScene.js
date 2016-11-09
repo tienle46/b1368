@@ -77,7 +77,7 @@ export default class DashboardScene extends BaseScene {
 
             });
 
-            if(gameIconPath) return true;
+            // if(gameIconPath) return true;
         });
 
     }

@@ -7,15 +7,30 @@ class PreloadScene extends Component {
     constructor() {
         super();
 
-        this.fullSceneLoadingPrefab = cc.Prefab;
-        this.loadingPrefab = cc.Prefab;
-        this.loading = cc.Node;
+        this.fullSceneLoadingPrefab = {
+            default : null,
+            type : cc.Prefab
+        };
+        this.loadingPrefab = {
+            default : null,
+            type : cc.Prefab
+        };
+        this.loading = {
+            default: null,
+            type: cc.Node
+        };
     }
 
     onLoad() {
         app.res.prefab.loading = this.loadingPrefab;
         app.res.prefab.fullSceneLoading = this.fullSceneLoadingPrefab;
-        this.loading.getComponent(FullSceneProgress.name).show(app.res.string('loading_data'));
+        if(this.loading){
+            debug(this.loading);
+            this.loading.getComponent(FullSceneProgress.name).show(app.res.string('loading_data'));
+        }
+        else{
+            debug(`what the heck?`);
+        }
     }
 
     onEnable() {
@@ -29,12 +44,12 @@ class PreloadScene extends Component {
         ], (err, results) => {
 
             let loadedRes = true;
-            for (let success of results) {
+            results.some((success)=>{
                 if (!success) {
                     loadedRes = false;
-                    break;
+                    return true;
                 }
-            }
+            });
 
             if (loadedRes) {
                 this.onLoadResourceDone();

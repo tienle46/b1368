@@ -82,7 +82,7 @@ class CheckBox extends Button {
         }
 
         if (this._toggleGroup) {
-            this.node.dispatchEvent(new cc.Event('check-event', true));
+            this.node.dispatchEvent(new cc.Event.EventCustom('check-event', true));
             // this._toggleGroup.updateToggles(this);
         }
     }

@@ -8,6 +8,7 @@ import Component from 'Component';
 
 export default class FullSceneProgress extends Component {
     constructor() {
+
         super();
 
         this.properties = {

@@ -308,12 +308,12 @@ class BottomBar extends Component {
                 d.push(a.fblink);
                 data.push(d);
             });
-            console.debug(data);
+            debug(data);
             agencyTab.resetData(data, true);
         }
 
         app.service.send(sendObj, (res) => {
-            console.log(res)
+            log(res)
                 // if (res) {
                 //     let gameListCol = res[app.keywords.GAME_NAME_LIST] || [];
                 //     let levelCol = res[app.keywords.LEVEL_LIST].map((e) => `Cấp độ ${e}`) || [];
