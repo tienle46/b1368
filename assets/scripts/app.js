@@ -8,7 +8,7 @@ var app = module.exports;
 var MESSAGES = require('GameErrorMessage');
 var Fingerprint2 = require('fingerprinter');
 var Promise = require('Promise-polyfill');
-
+import _ from 'lodash';
 
 app.LANG = "vi";
 app.async = require("async");
@@ -167,37 +167,15 @@ function _setupGame() {
     app.event = require("Events");
 }
 // if browser
+// deep merge for Object.assign 
+Object.assign = _.merge;
+
 if (cc.sys.isBrowser) {
     new Fingerprint2().get((printer) => {
         app.DEVICE_ID = printer;
     });
 } else {
     window.Promise = Promise;
-
-    if (typeof Object.assign != 'function') {
-        (function() {
-            Object.assign = function(target) {
-                'use strict';
-                // We must check against these specific cases.
-                if (target === undefined || target === null) {
-                    throw new TypeError('Cannot convert undefined or null to object');
-                }
-
-                var output = Object(target);
-                for (var index = 1; index < arguments.length; index++) {
-                    var source = arguments[index];
-                    if (source !== undefined && source !== null) {
-                        for (var nextKey in source) {
-                            if (source.hasOwnProperty(nextKey)) {
-                                output[nextKey] = source[nextKey];
-                            }
-                        }
-                    }
-                }
-                return output;
-            };
-        })();
-    }
 
     if (cc.sys.platform == cc.sys.IPHONE || cc.sys.platform == cc.sys.IPAD) {
         app.DEVICE_ID = jsb.reflection.callStaticMethod("FCUUID", "uuidForDevice");

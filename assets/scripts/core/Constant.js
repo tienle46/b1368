@@ -65,11 +65,11 @@ app.const.MENU.TYPE = {};
 app.const.MENU.TYPE.VERTICAL = 0;
 app.const.MENU.TYPE.HORIZONTAL = 1;
 
-app.const.MENU.DIRECTION = {};
-app.const.MENU.DIRECTION.TOP = 0;
-app.const.MENU.DIRECTION.LEFT = 1;
-app.const.MENU.DIRECTION.RIGHT = 2;
-app.const.MENU.DIRECTION.BOTTOM = 3;
+app.const.MENU.ARROW_DIRECTION = {};
+app.const.MENU.ARROW_DIRECTION.UP = 0;
+app.const.MENU.ARROW_DIRECTION.LEFT = 1;
+app.const.MENU.ARROW_DIRECTION.RIGHT = 2;
+app.const.MENU.ARROW_DIRECTION.DOWN = 3;
 
 /**
  * =============================================== 
