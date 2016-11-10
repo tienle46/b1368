@@ -25,17 +25,18 @@ export default class TextView extends Component {
     onLoad() {
         // console.log("onLoad textview: ", this.label.lineHeight);
 
-        // this.lineHeight = this.label.lineHeight;
-        this.lineHeight = 24;
+        this.lineHeight = this.label.lineHeight;
+        // this.lineHeight = 24;
         this.label.overflow = cc.Label.Overflow.RESIZE_HEIGHT;
         this.label.string = "";
         this.isLoaded = true;
         this.currentWidth = this.node.width;
+
     }
 
     onEnable(){
         super.onEnable();
-
+        this.fontSize = this.label.fontSize;
         if(!utils.isEmpty(this.text)){
             let text = this.text;
             this.text = null;
@@ -102,7 +103,7 @@ export default class TextView extends Component {
                     // this.node.width = this.maxWidth + this.margin * 2;
                 }
             }else{
-                if(this.label.fontSize > 8){
+                if(this.fontSize > 8){
                     this.setFontSize(this.label.fontSize - 1);
                     this._adjustSize();
                 }
@@ -116,6 +117,7 @@ export default class TextView extends Component {
     _setTextViewSize() {
         this.label.node.width = this.minWidth;
         this.label.node.height = this.lineHeight;
+        this.label.fontSize = this.fontSize;
     }
 
     getWidth(){

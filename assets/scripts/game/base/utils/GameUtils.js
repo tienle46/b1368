@@ -114,11 +114,17 @@ export default class GameUtils {
 
     static containsCard(cards, checkCard){
         if(!utils.isEmptyArray(cards)){
-            for(let card of cards){
+
+            let rs = false;
+
+            cards.some((card)=>{
                 if(checkCard.byteValue == card.byteValue){
+                    rs = true;
                     return true;
                 }
-            }
+            });
+
+            return rs;
         }
     }
 }

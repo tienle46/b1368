@@ -120,12 +120,12 @@ export default class GameManager {
 
             let loadedRes = true;
 
-            for (let success of results) {
+            results.some((success)=>{
                 if (!success) {
                     loadedRes = false;
-                    break;
+                    return true;
                 }
-            }
+            });
 
             log("results: ", results);
             log("err: ", err);
