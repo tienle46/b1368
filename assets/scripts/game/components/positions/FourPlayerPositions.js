@@ -5,7 +5,7 @@
 import app from 'app';
 import PlayerPositions from 'PlayerPositions';
 
-class FourPlayerPositions extends PlayerPositions {
+export default class FourPlayerPositions extends PlayerPositions {
 
     constructor() {
         super();

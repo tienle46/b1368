@@ -172,13 +172,12 @@ export default class PlayerPositions extends Component {
     _setVisibleInviteButton(anchor, visible) {
         if (anchor) {
 
-            for (let node of anchor.children) {
-
+            anchor.children.some((node)=>{
                 if (node.name == 'inviteButton') {
                     node.active = visible;
-                    break;
+                    return true;
                 }
-            }
+            });
         }
     }
 

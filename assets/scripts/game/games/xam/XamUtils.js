@@ -197,10 +197,17 @@ export default class TLMNUtils {
     }
 
     static isContainHeo(selectedCards) {
-        for (let card of selectedCards) {
-            if (card.isHeo()) return true;
-        }
-        return false;
+
+        let heoContained = false;
+
+        selectedCards.some((card)=>{
+            if (card.isHeo()) {
+                heoContained = true;
+                return true;
+            }
+        });
+
+        return heoContained;
     }
 
     static getSanhType(cards, gameType = TLMNUtils.GAME_TYPE) {

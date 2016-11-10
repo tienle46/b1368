@@ -30,7 +30,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 216,
-      "height": 40
+      "height": 41
     },
     "_children": [
       {
@@ -319,7 +319,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 176,
-      "height": 40
+      "height": 41
     },
     "_children": [
       {
@@ -449,6 +449,7 @@
       "__id__": 9
     },
     "_enabled": true,
+    "path": "",
     "label": {
       "__id__": 11
     },
@@ -470,7 +471,7 @@
     "_layoutSize": {
       "__type__": "cc.Size",
       "width": 176,
-      "height": 40
+      "height": 41
     },
     "_resize": 1,
     "_N$layoutType": 2,
@@ -534,7 +535,7 @@
     "_layoutSize": {
       "__type__": "cc.Size",
       "width": 216,
-      "height": 40
+      "height": 41
     },
     "_resize": 1,
     "_N$layoutType": 0,
@@ -558,6 +559,7 @@
       "__id__": 1
     },
     "_enabled": true,
+    "path": "",
     "textViewNode": {
       "__id__": 9
     }
