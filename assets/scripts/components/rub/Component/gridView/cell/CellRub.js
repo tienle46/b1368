@@ -1,6 +1,7 @@
 import RubUtils from 'RubUtils';
 import app from 'app';
 import ButtonScaler from 'ButtonScaler';
+import NodeRub from 'NodeRub';
 
 export default class CellRub {
     /**
@@ -136,6 +137,16 @@ export default class CellRub {
     }
 
     _initHorizontalSeparate(parentNode) {
+        let nodeOptions = {
+            position: cc.v2(0, 0),
+            size: this.options.horizontalSeparate.size || cc.size(parentNode.getContentSize().width, 2),
+            sprite: {
+                spriteFrame: typeof this.options.horizontalSeparate.pattern === 'string' ? this.options.horizontalSeparate.pattern : 'textures/50x50'
+            },
+            widget: this.options.horizontalSeparate.align,
+
+        };
+        nodeOptions.widget.bottom = 0;
         this.horizontalSeparateNode = new cc.Node();
         this.horizontalSeparateNode.setPosition(cc.v2(0, 0));
 
@@ -221,9 +232,20 @@ export default class CellRub {
     }
 
     _initLabel(parentNode) {
-        let lblNode = new cc.Node();
-        lblNode.name = 'label';
-        lblNode.setContentSize(parentNode.getContentSize());
+        let nodeOptions = {
+            name: 'label',
+            color: this.options.fontColor,
+            size: parentNode.getContentSize(),
+            rich: {
+                maxWidth: (parentNode.getContentSize().width - 10),
+                fontSize: this.options.fontSize,
+                lineHeight: this.options.fontLineHeight,
+                horizontalAlign: cc.RichText.HorizontalAlign.CENTER,
+                text: this.cell instanceof Object ? this.cell.text : this.cell
+            }
+        };
+
+        let lblNode = NodeRub.createNodeByOptions(nodeOptions);
 
         // let lbl = lblNode.addComponent(cc.Label);
         // lbl.string = this.cell instanceof Object ? this.cell.text : this.cell;
@@ -234,15 +256,14 @@ export default class CellRub {
         // lbl.lineHeight = this.options.fontLineHeight;
         // lbl.overflow = cc.Label.Overflow.RESIZE_HEIGHT;
 
-        let rich = lblNode.addComponent(cc.RichText);
-        rich.node.color = this.options.fontColor;
-        rich.maxWidth = (parentNode.getContentSize().width - 10);
-        rich.fontSize = this.options.fontSize;
-        rich.lineHeight = this.options.fontLineHeight;
-        rich.horizontalAlign = cc.RichText.HorizontalAlign.CENTER;
-        rich.string = this.cell instanceof Object ? this.cell.text : this.cell;
+        // let rich = lblNode.addComponent(cc.RichText);
+        // rich.node.color = this.options.fontColor;
+        // rich.maxWidth = (parentNode.getContentSize().width - 10);
+        // rich.fontSize = this.options.fontSize;
+        // rich.lineHeight = this.options.fontLineHeight;
+        // rich.horizontalAlign = cc.RichText.HorizontalAlign.CENTER;
+        // rich.string = this.cell instanceof Object ? this.cell.text : this.cell;
 
-        lblNode.getLineCount = () => rich._lineCount;
         parentNode.addChild(lblNode);
     }
 }

@@ -1,14 +1,14 @@
 {
   "ver": "1.0.0",
-  "uuid": "05117275-156b-4e82-a884-30d322bb63c8",
+  "uuid": "bf631ca3-0988-4fe6-9de0-062a2fa49c9e",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "bilinear",
   "subMetas": {
-    "bottombar_doithuong_icon": {
+    "ingame-tooltip-huongdan": {
       "ver": "1.0.3",
-      "uuid": "e0284bf5-e347-44c4-af63-bf71180852b4",
-      "rawTextureUuid": "05117275-156b-4e82-a884-30d322bb63c8",
+      "uuid": "72e01df5-9363-4290-a35e-953e86795d5a",
+      "rawTextureUuid": "bf631ca3-0988-4fe6-9de0-062a2fa49c9e",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": false,
@@ -16,10 +16,10 @@
       "offsetY": 0,
       "trimX": 0,
       "trimY": 0,
-      "width": 279,
-      "height": 71,
-      "rawWidth": 279,
-      "rawHeight": 71,
+      "width": 40,
+      "height": 40,
+      "rawWidth": 40,
+      "rawHeight": 40,
       "borderTop": 0,
       "borderBottom": 0,
       "borderLeft": 0,

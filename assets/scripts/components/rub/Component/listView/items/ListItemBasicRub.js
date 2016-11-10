@@ -18,6 +18,7 @@ export default class ListItemBasicRub {
             fontLineHeight: number, # default 20
             fontColor: new cc.Color # default COLOR_WHITE
             horizontalAlign:,
+            padding: number # node's padding
             align: { # position of content inside node, default padding-left: 10 (left:0, right:0 => align center)
                 left: 10, 
                 right: number,
@@ -96,6 +97,7 @@ export default class ListItemBasicRub {
      *      @required align: {
      *          left: number,
      *          right: number,
+     *          verticalCenter: true,
      *          top: number, #default 10
      *          bottom: number #default 10
      *          isOnTop, isOnBottom: boolean # while there's one in these is true, element will be placed on Top/Bot of item and padding by top/bottom property
@@ -108,7 +110,7 @@ export default class ListItemBasicRub {
         event.target = this.node;
         event.component = 'TabTransferTransaction';
         event.handler = 'testEvent';
-     * let image = {
+     * let button = {
             type: 'button',
             spriteFrame: 'dashboard/dialog/imgs/hopqua',
             size: {
@@ -207,7 +209,7 @@ export default class ListItemBasicRub {
 
         let createLabel = (text, node) => {
             let lblOpts = {
-                horizontalAlign: cc.Label.HorizontalAlign.CENTER,
+                horizontalAlign: options.horizontalAlign || cc.Label.HorizontalAlign.CENTER,
                 fontSize: options.fontSize || this.options.fontSize,
                 fontColor: options.fontColor || null,
                 fontLineHeight: options.fontLineHeight || this.options.fontLineHeight,
@@ -262,8 +264,8 @@ export default class ListItemBasicRub {
         itemNodeWidget.isAlignLeft = true;
         itemNodeWidget.isAlignRight = true;
 
-        itemNodeWidget.left = 0;
-        itemNodeWidget.right = 0;
+        itemNodeWidget.left = this.options.padding || 0;
+        itemNodeWidget.right = this.options.padding || 0;
     }
 
     initChild() {

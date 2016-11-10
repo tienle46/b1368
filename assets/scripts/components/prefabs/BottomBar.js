@@ -7,7 +7,7 @@ import PersonalInfoDialogRub from 'PersonalInfoDialogRub';
 import GridViewRub from 'GridViewRub';
 import _ from 'lodash';
 import MessageCenterDialogRub from 'MessageCenterDialogRub';
-import DropDownRub from 'DropDownRub';
+import HorizontalDropDownRub from 'HorizontalDropDownRub';
 
 class BottomBar extends Component {
     constructor() {
@@ -94,7 +94,7 @@ class BottomBar extends Component {
         log("Notifi");
     }
 
-    onClickTransferAwardAction() {
+    onClickTransferAwardAction(e) {
         let tabs = [{
             title: 'Thẻ cào',
             value: 'tab_exchange_card'
@@ -117,17 +117,18 @@ class BottomBar extends Component {
     }
 
     onClickHotlineAction(e) {
-        log("Hotline");
-        let options = {
-            arrow: {
-                direction: app.const.MENU.ARROW_DIRECTION.DOWN,
-                align: {
-                    left: 25
-                }
+        let dropdown = new HorizontalDropDownRub(e.currentTarget, [{
+                icon: null,
+                content: null
+            }, {
+                icon: null,
+                content: null
+            },
+            {
+                icon: null,
+                content: null
             }
-        };
-
-        let dropdown = new DropDownRub(e.currentTarget, [1, 2, 3], options);
+        ]);
         this.node.addChild(dropdown.node());
     }
 

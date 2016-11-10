@@ -1,6 +1,6 @@
 import app from 'app';
 import Component from 'Component';
-import DropDownRub from 'DropDownRub';
+import VerticalDropDownRub from 'VerticalDropDownRub';
 
 class TopBar extends Component {
     constructor() {
@@ -59,8 +59,15 @@ class TopBar extends Component {
                 }
             }
         };
-        let dropdown = new DropDownRub(e.currentTarget, [], options);
+        let dropdown = new VerticalDropDownRub(e.currentTarget, [{
+            icon: null,
+            content: null
+        }, {
+            icon: null,
+            content: null
+        }], options);
         this.node.addChild(dropdown.node());
+
     }
 
     handleChatAction() {

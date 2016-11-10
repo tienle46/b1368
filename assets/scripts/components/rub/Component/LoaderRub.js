@@ -13,10 +13,13 @@ export default class LoaderRub {
     }
 
     _node() {
+        let winsize = cc.director.getWinSize();
+
         this.spinLoaderNode = new cc.Node();
+        this.spinLoaderNode.zIndex = 100;
         this.spinLoaderNode.name = 'spin_loader';
         this.spinLoaderNode.setPosition(cc.v2(0, 0));
-        this.spinLoaderNode.setContentSize(cc.size(960, 640));
+        this.spinLoaderNode.setContentSize(winsize);
 
         // widget
         let widget = this.spinLoaderNode.addComponent(cc.Widget);
@@ -37,7 +40,7 @@ export default class LoaderRub {
         let bgNode = new cc.Node();
         bgNode.name = 'bg';
         bgNode.setPosition(0, 0);
-        bgNode.setContentSize(cc.size(960, 640));
+        bgNode.setContentSize(winsize);
         bgNode.color = new cc.Color(0, 0, 0);
         bgNode.opacity = 190;
         bgNode.active = !this.hideBg;

@@ -24,7 +24,7 @@ export default class DialogRub extends Rub {
     init() {
         return RubUtils.loadRes('dashboard/dialog/prefabs/dialog').then((prefab) => {
             this.prefab = cc.instantiate(prefab);
-
+            this.prefab.zIndex = 20;
             this.prefab.x = 0;
             this.prefab.y = 0;
 

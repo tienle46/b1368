@@ -1,14 +1,14 @@
 {
   "ver": "1.0.0",
-  "uuid": "05117275-156b-4e82-a884-30d322bb63c8",
+  "uuid": "d64bc515-584b-40d5-98c6-c1200dcd3a46",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "bilinear",
   "subMetas": {
-    "bottombar_doithuong_icon": {
+    "bottombar_tooltip_gopy": {
       "ver": "1.0.3",
-      "uuid": "e0284bf5-e347-44c4-af63-bf71180852b4",
-      "rawTextureUuid": "05117275-156b-4e82-a884-30d322bb63c8",
+      "uuid": "ccb955e4-be92-4a16-a4e2-f1d607e3abbd",
+      "rawTextureUuid": "d64bc515-584b-40d5-98c6-c1200dcd3a46",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": false,
@@ -16,10 +16,10 @@
       "offsetY": 0,
       "trimX": 0,
       "trimY": 0,
-      "width": 279,
-      "height": 71,
-      "rawWidth": 279,
-      "rawHeight": 71,
+      "width": 40,
+      "height": 40,
+      "rawWidth": 40,
+      "rawHeight": 40,
       "borderTop": 0,
       "borderBottom": 0,
       "borderLeft": 0,

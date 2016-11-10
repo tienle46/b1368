@@ -1,3 +1,5 @@
+import ButtonScaler from 'ButtonScaler';
+
 let RubUtils = {
     loadRes: (resURL, isSpriteFrame = false) => {
         return new Promise((resolve, reject) => {
@@ -85,52 +87,6 @@ let RubUtils = {
             let number = ((e === null && Number(e) === 0 && equallyDivided) || e) - spaceX - padding / widths.length;
             return number > 0 ? number : 0;
         });
-    },
-    /**
-     * @param node {cc.Node} node where widget to be added
-     * @param defaultValue: defaultValue of top and bottom align
-     * @param opts {any}
-     *  {
-     *      top, left, bottom, right : number
-     *      isOnBottom, isOnTop: boolean # node will not be resized when parent/its height's changed
-     *      verticalCenter, hortizontalCenter: boolean # when this property equals true, node will be align by verticalCenter/horizontalCenter from parent's height without using top and bottom
-     *  }
-     * @param isAlignOnce : boolean # default = false
-     */
-    addWidgetComponentToNode: (node, opts = {}, defaultValue = 10, isAlignOnce = false) => {
-        let widget = node.getComponent(cc.Widget) || node.addComponent(cc.Widget);
-        widget.isAlignOnce = isAlignOnce;
-
-        widget.isAlignVerticalCenter = opts.verticalCenter || false;
-        widget.isAlignHorizontalCenter = opts.hortizontalCenter || false;
-
-        if (!opts.verticalCenter) {
-            if (opts.hasOwnProperty('isOnBottom') || opts.hasOwnProperty('isOnTop')) {
-                opts.isOnTop && (widget.isAlignTop = true) && (widget.top = opts.top || defaultValue);
-                opts.isOnBottom && (widget.isAlignBottom = true) && (widget.bottom = opts.bottom || defaultValue);
-            } else {
-                if (opts.hasOwnProperty('top')) {
-                    widget.isAlignTop = true;
-                    widget.top = opts.top;
-                }
-                if (opts.hasOwnProperty('bottom')) {
-                    widget.isAlignBottom = true;
-                    widget.bottom = opts.bottom;
-                }
-            }
-        } else {
-            widget.verticalCenter = 0;
-        }
-
-        if (opts.hasOwnProperty('right')) {
-            widget.isAlignRight = true;
-            widget.right = opts.right;
-        }
-
-        if (opts.hasOwnProperty('left')) {
-            widget.isAlignLeft = true;
-            widget.left = opts.left;
-        }
     }
 };
 export default RubUtils;

@@ -1,6 +1,7 @@
 import RubUtils from 'RubUtils';
 import CellRub from 'CellRub';
 import app from 'app';
+import NodeRub from 'NodeRub';
 
 export default class GridViewRub {
     /**
@@ -217,42 +218,16 @@ export default class GridViewRub {
         // set prefab size
         prefab.setContentSize(cc.size(this.options.width, this.options.height));
         let prefabAlign = this.options.align;
-        if (prefabAlign) {
-            let __setUpWidgetAlign = (widget, align, number) => {
-                if (align == 'right') {
-                    widget.isAlignRight = true;
-                    widget.right = number;
-                } else if (align == 'left') {
-                    widget.isAlignLeft = true;
-                    widget.left = number;
-                } else if (align == 'top') {
-                    widget.isAlignTop = true;
-                    widget.top = number;
-                } else {
-                    widget.isAlignBottom = true;
-                    widget.bottom = number;
-                }
-            };
-
-            let widget = prefab.getComponent(cc.Widget) || prefab.addComponent(cc.Widget);
-            if (prefabAlign.filParent) {
-                widget.isAlignTop = true;
-                widget.isAlignLeft = true;
-                widget.isAlignRight = true;
-                widget.isAlignBottom = true;
-
-                widget.top = 0;
-                widget.left = 0;
-                widget.bottom = 0;
-                widget.right = 0;
-            } else {
-                prefabAlign.top && __setUpWidgetAlign(widget, 'top', prefabAlign.top);
-                prefabAlign.bottom && __setUpWidgetAlign(widget, 'bottom', prefabAlign.bottom);
-                prefabAlign.left && __setUpWidgetAlign(widget, 'left', prefabAlign.left);
-                prefabAlign.right && __setUpWidgetAlign(widget, 'right', prefabAlign.right);
+        prefabAlign.filParent && (
+            prefabAlign = {
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
             }
-        }
-        // `view` node size
+        );
+        NodeRub.addWidgetComponentToNode(prefab, prefabAlign);
+            // `view` node size
         this.viewNode.setContentSize(cc.size(this.options.width - this.CONTENT_NODE_HORIZONTAL_PADDING, this.options.height));
         // `view/content` node size
         this.contentNode.setContentSize(this.viewNode.getContentSize());

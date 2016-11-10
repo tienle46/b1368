@@ -93,13 +93,12 @@ export default class DashboardScene extends BaseScene {
     }
 
     _addTopBar() {
-        const topBarNode = new cc.instantiate(this.topBar);
+        RubUtils.loadRes('dashboard/Topbar').then((prefab) => {
+            let topbarNode = cc.instantiate(prefab);
 
-        // topBarNode.getComponent('TopBar').listenClickTopBarItem( (buttonType) => {
-        //     log("dashboard:" + buttonType);
-        //     this.addPopup();
-        // });
-        this.node.addChild(topBarNode);
+            this.node.addChild(topbarNode);
+        });
+
     }
 }
 

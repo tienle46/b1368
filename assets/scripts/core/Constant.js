@@ -61,6 +61,7 @@ app.const.SCROLL_EVENT.TOUCH_ENDED = 10; // touch ended
  * ========================== MENU TYPES && ARROW DIRECTIONS ========================== 
  */
 app.const.MENU = {};
+
 app.const.MENU.TYPE = {};
 app.const.MENU.TYPE.VERTICAL = 0;
 app.const.MENU.TYPE.HORIZONTAL = 1;
@@ -70,6 +71,18 @@ app.const.MENU.ARROW_DIRECTION.UP = 0;
 app.const.MENU.ARROW_DIRECTION.LEFT = 1;
 app.const.MENU.ARROW_DIRECTION.RIGHT = 2;
 app.const.MENU.ARROW_DIRECTION.DOWN = 3;
+
+
+/**
+ * ========================== ELEMENT TYPE (LIST ITEM BASIC)========================== 
+ */
+app.const.LIST_ITEM = {};
+
+app.const.LIST_ITEM.TYPE = {};
+app.const.LIST_ITEM.TYPE.LABEL = 'label';
+app.const.LIST_ITEM.TYPE.IMAGE = 'image';
+app.const.LIST_ITEM.TYPE.BUTTON = 'button';
+
 
 /**
  * =============================================== 

@@ -1,17 +1,17 @@
 import app from 'app';
 import RubUtils from 'RubUtils';
+import _ from 'lodash';
+import NodeRub from 'NodeRub';
 
 export default class DropDownRub {
     /**
      * Creates an instance of DropDownRub.
      * @param @required target {cc.Node || cc.Component} represent to where dropdown clicked. 
-     * @param {Array[{any}]} items : menu items
+     * @param {Array[{cc.Node} || {any}]} items : menu items 
      * {
-     *      size: {width, height} // item size
-     *      align: {top, left, right, bottom: number
-     *              verticalCenter, horizontalCenter, isOnBottom, isOnTop: boolean
-     *      }
-     *      event: cc.Component.EventHandler
+     *  @required icon: string,
+     *  @required content: string || cc.Node
+     *  @required event: cc.component.eventHandler
      * }
      * @param {any} opts : menu options
      * {
@@ -22,6 +22,7 @@ export default class DropDownRub {
      *                 align: {} # same as above item's `align` property
      *      }
      * }
+     
      * @memberOf DropDownRub
     
      */
@@ -36,11 +37,14 @@ export default class DropDownRub {
         };
 
         this.options = Object.assign({}, defaultOptions, opts);
-
         if (!this.options.arrow.hasOwnProperty('align'))
             this.options.arrow.align = {};
         this.target = target instanceof cc.Node ? target : target.node;
+        this.items = items;
         this.winsize = cc.director.getWinSize();
+
+        this.state = true;
+
         this._initNode();
     }
 
@@ -48,137 +52,87 @@ export default class DropDownRub {
         return this.menu;
     }
 
+    toggle() {
+        this.state = !this.state;
+        this.menu && (this.menu.active = this.state);
+    }
+
     _initNode() {
+        let popupbg = new cc.Node();
+        popupbg.setContentSize(cc.size(5000, 2200));
+        popupbg.on(cc.Node.EventType.TOUCH_START, ((e) => {
+            e.stopPropagationImmediate();
+            this.toggle();
+        }).bind(this));
+
         this.menu = new cc.Node();
         this.menu.setContentSize(this.options.size);
         this.menu.setAnchorPoint(cc.v2(0, 0.5));
 
+        this.menu.addChild(popupbg);
+
         // node -> background node
-        this._initBackground(this.menu);
+        this.menu && this._initBackground();
 
-        this._setupPopupDirection();
-
-        this._setupDropArrowDirection();
-        this._setupDropArrowAlign();
+        this.menu && this._initMenuItems();
     }
 
-    _setupPopupDirection() {
-        if (this.target) {
-            let menuSize = this.menu.getContentSize();
-            // target's local position
-            let tp = this.target.getPosition();
-            // target's position by world
-            let tpw = this.target.parent.convertToWorldSpace(tp);
-            // menu's position
-            let mp = cc.v2(0, 0);
+    _initMenuItems() {
+        // menu node
+        let nodeOptions = {
+            name: 'menu'
+        };
 
-            // VERTICAL DIRECTION
-            let marginY = menuSize.height / 2 + DropDownRub.PADDING_Y;
-            if (tpw.y <= marginY) { // up
-                mp.y = tp.y + marginY + 30;
-            } else { // down
-                mp.y = tp.y - marginY;
-            }
+        let size = cc.size(this.bgNode.getContentSize().width, this.bgNode.getContentSize().height - 20);
 
-            // VERTICAL DIRECTION
-            // edge = [-640, 640] =>    [-640 ... -320 ... 0 ... +320 ... +640]
-            //                           ----- L ----|---- C -----|---- R ----
-
-            let marginX = DropDownRub.PADDING_X;
-            mp.x = tp.x - marginX < -640 ? -630 : tp.x - marginX;
-
-            this.menu.setPosition(mp);
-
-            cc.warn('l', this.target.getPosition(), this.menu.getPosition());
-            cc.warn('r', tpw, cc.window);
+        if (this.options.type === app.const.MENU.TYPE.VERTICAL) {
+            nodeOptions = Object.assign(nodeOptions, {
+                size: size,
+                widget: {
+                    top: 30,
+                    left: 0,
+                    right: 0,
+                    bottom: 10
+                },
+                layout: {
+                    type: cc.Layout.Type.VERTICAL,
+                    resizeMode: cc.Layout.ResizeMode.NONE,
+                    padding: 10,
+                    spacingY: 20,
+                    verticalDirection: cc.Layout.VerticalDirection.TOP_TO_BOTTOM
+                }
+            });
+        } else {
+            nodeOptions = Object.assign(nodeOptions, {
+                size: cc.size(size.width, size.height + 5),
+                widget: {
+                    top: 15,
+                    left: 0,
+                    right: 0,
+                    bottom: 10
+                },
+                layout: {
+                    type: cc.Layout.Type.HORIZONTAL,
+                    resizeMode: cc.Layout.ResizeMode.NONE,
+                    padding: 10,
+                    horizontalDirection: cc.Layout.HorizontalDirection.LEFT_TO_RIGHT
+                }
+            });
         }
+
+        let node = NodeRub.createNodeByOptions(nodeOptions);
+
+        this.items.forEach((item) => {
+            node.addChild(item);
+        });
+
+        this.menu.addChild(node);
     }
 
-    // // VERTICAL DIRECTION
-    // // assume winsize width equals 1280 -> edge = [-640, 640] =>
-    // // [-640 ... -320 ... 0 ... +320 ... +640]
-    // //  -- LEFT --|--- CENTER ---|-- RIGHT -- 
-    // _detectHorizontalPopupEdge(target) {
-    //     // LEFT [-640, -320]
-    // }
+    _initBackground() {
+        this.bgNode = new cc.Node();
+        this.bgNode.name = 'background';
 
-    // // Assume window size = 1280 -> half size = [-640, 640]
-    // // PaddingX = (marginX + 1/2 menu width)
-    // // TargetX - PaddingX < -640 --> over edge
-    // // TargetX + PaddingX > 640 --> over edge
-    // _isOverEdgeInHorizontal() {
-    //     let tx = this.target.getPosition().x;
-    //     let menuWidth = this.menu.getContentSize().width;
-    //     let px = menuWidth + DropDownRub.PADDING_X;
-    //     // half size
-    //     let hs = this.winsize.width / 2;
-
-    //     return ((tx - DropDownRub.PADDING_X) < -hs) || ((tx + px) > hs);
-    // }
-
-    _setupDropArrowDirection() {
-        if (this.arrowNode) {
-            switch (this.options.arrow.direction) {
-                case app.const.MENU.ARROW_DIRECTION.LEFT:
-                    // rotate to arrow change rotation to -> [<]
-                    this.arrowNode.rotation = -90;
-                    break;
-                case app.const.MENU.ARROW_DIRECTION.RIGHT:
-                    // rotate to arrow change rotation to -> [>]
-                    this.arrowNode.rotation = 90;
-                    break;
-                case app.const.MENU.ARROW_DIRECTION.DOWN:
-                    // flipY -1 to arrow change rotation to -> [v]
-                    this.arrowNode.rotation = 180;
-                    break;
-                default: // up -> [^]
-                    this.arrowNode.rotation = 0;
-                    break;
-            }
-        }
-    }
-
-    _setupDropArrowAlign() {
-        if (this.arrowNode) {
-            let align = {};
-            let arrowOptions = this.options.arrow;
-
-
-            switch (arrowOptions.direction) {
-                case app.const.MENU.ARROW_DIRECTION.LEFT:
-                case app.const.MENU.ARROW_DIRECTION.RIGHT:
-                    if (!arrowOptions.align.hasOwnProperty('top') || !arrowOptions.align.hasOwnProperty('bottom')) {
-                        align.verticalAlign = true;
-                    }
-
-                    if (arrowOptions.direction === app.const.MENU.ARROW_DIRECTION.LEFT) {
-                        align.left = -12;
-                    } else {
-                        align.right = -12;
-                    }
-                    break;
-                case app.const.MENU.ARROW_DIRECTION.UP:
-                case app.const.MENU.ARROW_DIRECTION.DOWN:
-                    if (!arrowOptions.align.hasOwnProperty('left') || !arrowOptions.align.hasOwnProperty('right')) {
-                        align.horizontalAlign = true;
-                    }
-
-                    if (arrowOptions.direction === app.const.MENU.ARROW_DIRECTION.UP) {
-                        align.top = -8;
-                    } else {
-                        align.bottom = -12;
-                    }
-                    break;
-            }
-
-            align = Object.assign({}, align, arrowOptions.align || {});
-            console.debug('algn', align);
-            RubUtils.addWidgetComponentToNode(this.arrowNode, align);
-        }
-    }
-
-    _initBackground(parent) {
-        let node = new cc.Node();
         let paddingTop = 10;
         let nodeOptions = {
             size: cc.size(this.options.size.width, this.options.size.height - paddingTop),
@@ -189,21 +143,22 @@ export default class DropDownRub {
                 right: 0
             }
         };
-        node.opacity = 200;
-
+        this.bgNode.opacity = 200;
+        this.bgNode.setContentSize(nodeOptions.size);
         // widget
-        RubUtils.addWidgetComponentToNode(node, nodeOptions.align);
-
+        NodeRub.addWidgetComponentToNode(this.bgNode, nodeOptions.align);
 
 
         // arrow node
         let arrowNodeOptions = {
             spriteFrame: 'game/images/menu-arrow-bg',
-            size: cc.size(14, 13)
+            size: cc.size(14, 13),
+            name: 'arrow'
         };
         this.arrowNode = this._configurateBackgroundByOptions(arrowNodeOptions);
-        node.addChild(this.arrowNode);
+        this.bgNode.addChild(this.arrowNode);
 
+        this._setupPopupAndArrow();
 
         // body node
         let bodyPaddingTop = 5;
@@ -215,12 +170,113 @@ export default class DropDownRub {
                 left: 0,
                 right: 0,
                 bottom: 0
-            }
+            },
+            name: 'body'
         };
-        this.bodyNode = this._configurateBackgroundByOptions(bodyNodeOptions);;
-        node.addChild(this.bodyNode);
 
-        parent.addChild(node);
+        this.bodyNode = this._configurateBackgroundByOptions(bodyNodeOptions);
+        this.bgNode.addChild(this.bodyNode);
+
+        this.menu.addChild(this.bgNode);
+    }
+
+    _setupPopupAndArrow() {
+        this.target && this._setupPopupPosition();
+        this.arrowNode && this._setupDropArrowDirection();
+        this.arrowNode && this._setupDropArrowAlign();
+    }
+
+    _setupPopupPosition() {
+        let menuSize = this.menu.getContentSize();
+        // target's local position
+        let tp = this.target.getPosition();
+        // target's position by world
+        let tpw = this.target.parent.convertToWorldSpace(tp);
+        // menu's position
+        let mp = cc.v2(0, 0);
+
+        // BY VERTICAL DIRECTION
+        let marginY = menuSize.height / 2 + DropDownRub.PADDING_Y;
+        if (tpw.y <= marginY) { // up
+            mp.y = tp.y + marginY + 30;
+        } else { // down
+            mp.y = tp.y - marginY;
+        }
+
+        // BY HORIZONTAL DIRECTION
+        // edge = [-640, 640] => 
+        //  [-640 ... -320 ... 0 ... +320 ... +640]
+        //   ----- L ----|---- C -----|---- R ----
+
+        let marginX = DropDownRub.PADDING_X;
+        let x = tp.x - marginX;
+        if (_.inRange(x, -640, -320)) {
+            x < -640 && (x = -630);
+        } else if (_.inRange(x, -320, 320)) {
+            x -= menuSize.width / 2 - marginX;
+        } else if (_.inRange(x, 320, 640)) {
+            if (x + menuSize.width > 640) {
+                x -= menuSize.width - 2 * marginX;
+            }
+        }
+        mp.x = x;
+
+        this.menu.setPosition(mp);
+    }
+
+    _setupDropArrowDirection() {
+        switch (this.options.arrow.direction) {
+            case app.const.MENU.ARROW_DIRECTION.LEFT:
+                // rotate to arrow change rotation to -> [<]
+                this.arrowNode.rotation = -90;
+                break;
+            case app.const.MENU.ARROW_DIRECTION.RIGHT:
+                // rotate to arrow change rotation to -> [>]
+                this.arrowNode.rotation = 90;
+                break;
+            case app.const.MENU.ARROW_DIRECTION.DOWN:
+                // flipY -1 to arrow change rotation to -> [v]
+                this.arrowNode.rotation = 180;
+                break;
+            default: // up -> [^]
+                this.arrowNode.rotation = 0;
+                break;
+        }
+    }
+
+    _setupDropArrowAlign() {
+        let align = {};
+        let arrowOptions = this.options.arrow;
+
+        switch (arrowOptions.direction) {
+            case app.const.MENU.ARROW_DIRECTION.LEFT:
+            case app.const.MENU.ARROW_DIRECTION.RIGHT:
+                if (!arrowOptions.align.hasOwnProperty('top') || !arrowOptions.align.hasOwnProperty('bottom')) {
+                    align.verticalAlign = true;
+                }
+
+                if (arrowOptions.direction === app.const.MENU.ARROW_DIRECTION.LEFT) {
+                    align.left = -12;
+                } else {
+                    align.right = -12;
+                }
+                break;
+            case app.const.MENU.ARROW_DIRECTION.UP:
+            case app.const.MENU.ARROW_DIRECTION.DOWN:
+                if (!arrowOptions.align.hasOwnProperty('left') || !arrowOptions.align.hasOwnProperty('right')) {
+                    align.horizontalAlign = true;
+                }
+
+                if (arrowOptions.direction === app.const.MENU.ARROW_DIRECTION.UP) {
+                    align.top = -8;
+                } else {
+                    align.bottom = -13;
+                }
+                break;
+        }
+
+        align = Object.assign({}, align, arrowOptions.align || {});
+        NodeRub.addWidgetComponentToNode(this.arrowNode, align);
     }
 
     /**
@@ -229,12 +285,14 @@ export default class DropDownRub {
      *  spriteFrame: string,
      *  size: cc.Size
      *  align: {top, left, right, bottom}
+     *  name : string
      * }
      * 
      * @return cc.Node
      */
     _configurateBackgroundByOptions(options) {
         let node = new cc.Node();
+        options.name && (node.name = options.name);
 
         node.setContentSize(options.size);
 
@@ -243,7 +301,7 @@ export default class DropDownRub {
         RubUtils.loadSpriteFrame(bodySprite, options.spriteFrame, options.size);
 
         // widget
-        options.align && RubUtils.addWidgetComponentToNode(node, options.align);
+        options.align && NodeRub.addWidgetComponentToNode(node, options.align);
 
         return node;
     }
