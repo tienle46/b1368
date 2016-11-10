@@ -360,11 +360,17 @@ export default class CardList extends Component {
         if (cardModels.length == 0) return []
 
         let filteredCards = this.cards.filter(card => {
-            for (let cardModel of cardModels) {
+
+            let cardFound = false;
+
+            cardModels.some((cardModel)=>{
                 if (card.equals(cardModel)) {
+                    cardFound = true;
                     return true;
                 }
-            }
+            });
+
+            return cardFound;
         });
 
         return filteredCards;

@@ -8,7 +8,7 @@ import utils from 'utils';
 import GameControls from 'GameControls';
 import {Events} from 'events';
 
-class BaseControls extends GameControls {
+export default class BaseControls extends GameControls {
     constructor() {
         super();
 

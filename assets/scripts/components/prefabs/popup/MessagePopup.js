@@ -15,15 +15,19 @@ export default class MessagePopup extends Component {
     constructor() {
         super();
 
-        this.messageNode = cc.Node;
-        this.acceptButton = cc.Button;
-        this.acceptButtonLabel = cc.Label;
-        this.denyButtonLabel = cc.Label;
-        this.messageTextView = null;
+        this.properties = {
+            ...this.properties,
+            messageNode : cc.Node,
+            acceptButton : cc.Button,
+            acceptButtonLabel : cc.Label,
+            denyButtonLabel : cc.Label,
+            loadingComponent : cc.Node,
+            contentComponent : cc.Node,
+            popupComponent : cc.Node,
 
-        this.loadingComponent = cc.Node;
-        this.contentComponent = cc.Node;
-        this.popupComponent = cc.Node;
+        }
+
+        this.messageTextView = null;
 
         this.loading = null;
         this.messageLines = 2;

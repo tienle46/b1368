@@ -2804,6 +2804,7 @@
       "__id__": 82
     },
     "_enabled": true,
+    "path": "",
     "label": {
       "__id__": 84
     },
@@ -2886,6 +2887,7 @@
       "__id__": 81
     },
     "_enabled": true,
+    "path": "",
     "textViewNode": {
       "__id__": 82
     },
@@ -3071,7 +3073,8 @@
     "node": {
       "__id__": 93
     },
-    "_enabled": true
+    "_enabled": true,
+    "path": ""
   },
   {
     "__type__": "cc.Animation",

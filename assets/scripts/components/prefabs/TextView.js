@@ -24,7 +24,9 @@ export default class TextView extends Component {
 
     onLoad() {
         // console.log("onLoad textview: ", this.label.lineHeight);
-        this.lineHeight = this.label.lineHeight;
+
+        // this.lineHeight = this.label.lineHeight;
+        this.lineHeight = 24;
         this.label.overflow = cc.Label.Overflow.RESIZE_HEIGHT;
         this.label.string = "";
         this.isLoaded = true;
@@ -100,7 +102,7 @@ export default class TextView extends Component {
                     // this.node.width = this.maxWidth + this.margin * 2;
                 }
             }else{
-                if(fontSize > 8){
+                if(this.label.fontSize > 8){
                     this.setFontSize(this.label.fontSize - 1);
                     this._adjustSize();
                 }

@@ -137,10 +137,8 @@
     "_fontSize": 15,
     "_lineHeight": 20,
     "_enableWrapText": true,
-    "_N$file": {
-      "__uuid__": "fc08811f-de1c-4fe9-91dc-c4d6bac9e438"
-    },
-    "_isSystemFontUsed": false,
+    "_N$file": null,
+    "_isSystemFontUsed": true,
     "_N$string": "",
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
@@ -166,15 +164,15 @@
     },
     "_enabled": true,
     "path": "",
+    "label": {
+      "__id__": 3
+    },
     "lines": 1,
     "minWidth": 100,
     "maxWidth": 1000,
     "resizeWidth": true,
     "increaseWidth": 40,
-    "margin": 5,
-    "label": {
-      "__id__": 3
-    }
+    "margin": 5
   },
   {
     "__type__": "cc.Sprite",

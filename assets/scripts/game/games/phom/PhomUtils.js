@@ -205,9 +205,10 @@ export default class PhomUtils {
     }
 
     static isContainHeo(selectedCards) {
-        for (let card of selectedCards) {
+        selectedCards.some((card)=>{
             if (card.isHeo()) return true;
-        }
+        });
+
         return false;
     }
 

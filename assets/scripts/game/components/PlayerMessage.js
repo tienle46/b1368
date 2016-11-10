@@ -11,9 +11,12 @@ export default class PlayerMessage extends Component {
     constructor() {
         super();
 
-        this.textViewNode = cc.Node;
-        this.anchorTop = cc.Node;
-        this.anchorBottom = cc.Node;
+        this.properties = {
+            ...this.properties,
+            textViewNode : cc.Node,
+            anchorTop : cc.Node,
+            anchorBottom : cc.Node
+        }
 
         this.message = null;
         this.textView = null;
