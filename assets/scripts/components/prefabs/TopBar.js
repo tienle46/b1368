@@ -60,11 +60,14 @@ class TopBar extends Component {
             }
         };
         let dropdown = new VerticalDropDownRub(e.currentTarget, [{
-            icon: null,
-            content: null
+            icon: 'bottombar/bottombar_tooltip_fanpage',
+            content: 'Fanpage'
         }, {
-            icon: null,
-            content: null
+            icon: 'bottombar/bottombar_tooltip_sound',
+            content: 'Âm lượng'
+        }, {
+            icon: 'game/images/ingame_exit_icon',
+            content: 'Thoát'
         }], options);
         this.node.addChild(dropdown.node());
 

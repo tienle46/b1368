@@ -5,7 +5,7 @@
   "wrapMode": "clamp",
   "filterMode": "bilinear",
   "subMetas": {
-    "ingame-tooltip-huongdan": {
+    "bottombar_tooltip_huongdan": {
       "ver": "1.0.3",
       "uuid": "72e01df5-9363-4290-a35e-953e86795d5a",
       "rawTextureUuid": "bf631ca3-0988-4fe6-9de0-062a2fa49c9e",

@@ -5,7 +5,7 @@
   "wrapMode": "clamp",
   "filterMode": "bilinear",
   "subMetas": {
-    "bootombar_tooltip_fanpage": {
+    "bottombar_tooltip_fanpage": {
       "ver": "1.0.3",
       "uuid": "5f126026-4078-4eca-998b-c752d307d24e",
       "rawTextureUuid": "3db11999-a22f-4b84-a301-1be68113d547",

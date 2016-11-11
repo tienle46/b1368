@@ -85,6 +85,35 @@ let NodeRub = {
         node.getLineCount = () => rich._lineCount;
     },
     /**
+     * {
+     * type: cc.Layout.Type.VERTICAL,
+     * resizeMode: cc.Layout.ResizeMode.NONE,
+     * padding: 10,
+     * spacingY: 20,
+     * spacingX: 20,
+     * verticalDirection: cc.Layout.VerticalDirection.TOP_TO_BOTTOM
+     * horizontalDirection: cc.Layout.HorizontalDirection.LEFT_TO_RIGHT
+     * }
+     */
+    addLayoutComponentToNode: (node, options = {}) => {
+        let layout = node.addComponent(cc.Layout);
+        for (var key in options) {
+            layout[key] = options[key];
+        }
+    },
+    /**
+     * {
+     * event: cc.Event
+     * spriteFrame: string
+     * }
+     */
+    addButtonComponentToNode: (node, options = {}) => {
+        let button = node.addComponent(cc.Button);
+        options.event && (button.clickEvents = [options.event]);
+
+        node.addComponent(ButtonScaler);
+    },
+    /**
      * @param {any} options
      * {
      *      name: string,
@@ -99,6 +128,7 @@ let NodeRub = {
      *      sprite: {
      *          spriteFrame: string,
      *          cb: [function] rubutils' load cb
+     *          isCORS: boolean
      *      }
      *      button: {
      *          event: cc.Event
@@ -141,31 +171,19 @@ let NodeRub = {
         // sprite
         if (options.sprite) {
             let bodySprite = node.addComponent(cc.Sprite);
-            RubUtils.loadSpriteFrame(bodySprite, options.sprite.spriteFrame, options.size);
+            RubUtils.loadSpriteFrame(bodySprite, options.sprite.spriteFrame, options.size, options.isCORS || false, options.cb);
         }
 
         // widget
         options.widget && NodeRub.addWidgetComponentToNode(node, options.widget);
 
-        if (options.layout) {
-            let layout = node.addComponent(cc.Layout);
-            layout.type = options.layout.type;
-            layout.resizeMode = options.layout.resizeMode;
-            layout.padding = options.layout.padding;
-            options.layout.spacingY && (layout.spacingY = options.layout.spacingY);
-            options.layout.spacingX && (layout.spacingX = options.layout.spacingX);
-            options.layout.verticalDirection && (layout.verticalDirection = options.layout.verticalDirection);
-            options.layout.horizontalDirection && (layout.horizontalDirection = options.layout.horizontalDirection);
-        }
+        options.layout && NodeRub.addLayoutComponentToNode(node, options.layout);
 
-        if (options.button) {
-            let button = node.addComponent(cc.Button);
-            options.button.events && (button.clickEvents = [options.button.events]);
-
-            node.addComponent(ButtonScaler);
-        }
+        options.button && NodeRub.addButtonComponentToNode(node, options.button);
 
         options.label && NodeRub.addLabelComponentToNode(node, options.label);
+
+        options.richtext && NodeRub.addRichTextComponentToNode(node, options.richtext);
 
         return node;
     }

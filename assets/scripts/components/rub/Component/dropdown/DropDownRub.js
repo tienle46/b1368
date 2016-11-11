@@ -14,7 +14,8 @@ export default class DropDownRub {
      *  @required event: cc.component.eventHandler
      * }
      * @param {any} opts : menu options
-     * {
+     * {    
+     *      color : new cc.color # bgcolor
      *      @required size: {width, height} // menu size
      *      @required type: number "vertical = 0 || |horizontal = 1" # define what kind of style you wanna use , default : 0
      *      @required arrow: {
@@ -97,8 +98,8 @@ export default class DropDownRub {
                 layout: {
                     type: cc.Layout.Type.VERTICAL,
                     resizeMode: cc.Layout.ResizeMode.NONE,
-                    padding: 10,
-                    spacingY: 20,
+                    padding: 0,
+                    spacingY: 30,
                     verticalDirection: cc.Layout.VerticalDirection.TOP_TO_BOTTOM
                 }
             });
@@ -114,14 +115,13 @@ export default class DropDownRub {
                 layout: {
                     type: cc.Layout.Type.HORIZONTAL,
                     resizeMode: cc.Layout.ResizeMode.NONE,
-                    padding: 10,
+                    padding: 24,
                     horizontalDirection: cc.Layout.HorizontalDirection.LEFT_TO_RIGHT
                 }
             });
         }
 
         let node = NodeRub.createNodeByOptions(nodeOptions);
-
         this.items.forEach((item) => {
             node.addChild(item);
         });
@@ -143,7 +143,7 @@ export default class DropDownRub {
                 right: 0
             }
         };
-        this.bgNode.opacity = 200;
+        this.bgNode.opacity = 220;
         this.bgNode.setContentSize(nodeOptions.size);
         // widget
         NodeRub.addWidgetComponentToNode(this.bgNode, nodeOptions.align);
@@ -151,11 +151,14 @@ export default class DropDownRub {
 
         // arrow node
         let arrowNodeOptions = {
-            spriteFrame: 'game/images/menu-arrow-bg',
+            color: this.options.color,
+            sprite: {
+                spriteFrame: 'game/images/menu-arrow-bg',
+            },
             size: cc.size(14, 13),
             name: 'arrow'
         };
-        this.arrowNode = this._configurateBackgroundByOptions(arrowNodeOptions);
+        this.arrowNode = NodeRub.createNodeByOptions(arrowNodeOptions);
         this.bgNode.addChild(this.arrowNode);
 
         this._setupPopupAndArrow();
@@ -163,9 +166,12 @@ export default class DropDownRub {
         // body node
         let bodyPaddingTop = 5;
         let bodyNodeOptions = {
-            spriteFrame: 'game/images/menu-body-bg',
+            color: this.options.color,
+            sprite: {
+                spriteFrame: 'game/images/menu-body-bg',
+            },
             size: cc.size(nodeOptions.size.width, nodeOptions.size.width - bodyPaddingTop),
-            align: {
+            widget: {
                 top: bodyPaddingTop,
                 left: 0,
                 right: 0,
@@ -174,7 +180,7 @@ export default class DropDownRub {
             name: 'body'
         };
 
-        this.bodyNode = this._configurateBackgroundByOptions(bodyNodeOptions);
+        this.bodyNode = NodeRub.createNodeByOptions(bodyNodeOptions);
         this.bgNode.addChild(this.bodyNode);
 
         this.menu.addChild(this.bgNode);
@@ -277,33 +283,6 @@ export default class DropDownRub {
 
         align = Object.assign({}, align, arrowOptions.align || {});
         NodeRub.addWidgetComponentToNode(this.arrowNode, align);
-    }
-
-    /**
-     * @param {any} options
-     * {
-     *  spriteFrame: string,
-     *  size: cc.Size
-     *  align: {top, left, right, bottom}
-     *  name : string
-     * }
-     * 
-     * @return cc.Node
-     */
-    _configurateBackgroundByOptions(options) {
-        let node = new cc.Node();
-        options.name && (node.name = options.name);
-
-        node.setContentSize(options.size);
-
-        // sprite
-        let bodySprite = node.addComponent(cc.Sprite);
-        RubUtils.loadSpriteFrame(bodySprite, options.spriteFrame, options.size);
-
-        // widget
-        options.align && NodeRub.addWidgetComponentToNode(node, options.align);
-
-        return node;
     }
 }
 

@@ -5,7 +5,7 @@
   "wrapMode": "clamp",
   "filterMode": "bilinear",
   "subMetas": {
-    "bootombar_sound_indicator": {
+    "bottombar_sound_indicator": {
       "ver": "1.0.3",
       "uuid": "b2158745-6423-48ab-a434-7d25b6b18cb6",
       "rawTextureUuid": "0438741f-d55a-4ad5-b78c-ed1a5efff2e0",

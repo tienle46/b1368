@@ -118,15 +118,19 @@ class BottomBar extends Component {
 
     onClickHotlineAction(e) {
         let dropdown = new HorizontalDropDownRub(e.currentTarget, [{
-                icon: null,
-                content: null
+                icon: 'bottombar/bottombar_tooltip_facebook',
+                content: 'Fanpage'
             }, {
-                icon: null,
-                content: null
+                icon: 'bottombar/bottombar_tooltip_hotline',
+                content: 'Hotline'
             },
             {
-                icon: null,
-                content: null
+                icon: 'bottombar/bottombar_tooltip_gopy',
+                content: 'Góp ý'
+            },
+            {
+                icon: 'bottombar/bottombar_tooltip_huongdan',
+                content: 'Hướng dẫn'
             }
         ]);
         this.node.addChild(dropdown.node());

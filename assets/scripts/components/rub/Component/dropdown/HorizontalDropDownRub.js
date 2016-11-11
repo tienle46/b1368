@@ -1,6 +1,5 @@
 import app from 'app';
 import DropDownRub from 'DropDownRub';
-import RubUtils from 'RubUtils';
 import NodeRub from 'NodeRub';
 
 export default class HorizontalDropDownRub {
@@ -13,25 +12,58 @@ export default class HorizontalDropDownRub {
      *  content: string || cc.Node
      *  event: cc.component.eventHandler
      * }
-     * @param {any} options
+     * @param {any} options #dropDownRub options
      * {
      * 
      * }
+     * @param {any} childrens # child elements options
+     * {    
+     *      btnWrap: {
+     *          padding: 0,
+     *          spacingY: 3
+     *      },
+     *      icon: {
+     *          size: cc.size
+     *      }
+     *      label: {
+     *          fontSize: number
+     *          color: cc.Color
+     *      }
+     * }
      * @memberOf HorizontalDropDownRub
      */
-    constructor(target, items = [], options = {}) {
+    constructor(target, items = [], options = {}, childrens) {
         let defaultOptions = {
-            size: cc.size(450, 153),
+            color: new cc.Color(178, 101, 201),
+            size: cc.size(360, 65),
             type: app.const.MENU.TYPE.HORIZONTAL,
             arrow: {
                 direction: app.const.MENU.ARROW_DIRECTION.DOWN,
-                align: {
-                    right: 25
-                }
             }
         };
 
         this.options = Object.assign({}, defaultOptions, options);
+
+        let defaultChildrenOptions = {
+            layout: {
+                padding: 24,
+                spacingX: 0
+            },
+            btnWrap: {
+                padding: 0,
+                spacingY: 3
+            },
+            icon: {
+                size: cc.size(22, 22)
+            },
+            label: {
+                fontSize: 13,
+                color: app.const.COLOR_WHITE
+            }
+        };
+
+        this.childOptions = Object.assign({}, defaultChildrenOptions, childrens);
+
         this.items = this._initItems(items);
         this.dropDownRub = new DropDownRub(target, this.items, this.options);
     }
@@ -41,32 +73,30 @@ export default class HorizontalDropDownRub {
     }
 
     _initItems(items) {
+        let wrapbtnSize = cc.size((this.options.size.width - 2 * this.childOptions.layout.padding) / items.length, this.options.size.height - 25); // 25 = bgNodebgNode
+
         return items.map(item => {
             if (item instanceof cc.Node)
                 return item;
 
             let buttonWrapOptions = {
-                size: cc.size(127, 115),
+                size: wrapbtnSize,
                 button: {
                     event: null
                 },
                 layout: {
                     type: cc.Layout.Type.VERTICAL,
                     resizeMode: cc.Layout.ResizeMode.NONE,
-                    padding: 15,
-                    spacingY: 10,
+                    spacingY: this.childOptions.btnWrap.spacingY,
+                    padding: this.childOptions.btnWrap.padding,
                     verticalDirection: cc.Layout.VerticalDirection.TOP_TO_BOTTOM
-                },
-                widget: {
-                    top: 6.5,
-                    bottom: 6.5
                 }
             };
 
             let buttonWrap = NodeRub.createNodeByOptions(buttonWrapOptions);
 
             let iconOptions = {
-                size: cc.size(42, 38),
+                size: this.childOptions.icon.size,
                 sprite: {
                     spriteFrame: item.icon || 'game/images/ingame_exit_icon'
                 },
@@ -78,12 +108,14 @@ export default class HorizontalDropDownRub {
             let iconNode = NodeRub.createNodeByOptions(iconOptions);
             buttonWrap.addChild(iconNode);
 
+            let lblSize = cc.size(wrapbtnSize.width, wrapbtnSize.height - this.childOptions.icon.size.height - this.childOptions.btnWrap.padding * 2 - this.childOptions.btnWrap.spacingY);
             let labelOptions = {
-                size: cc.size(127, 50),
+                size: lblSize,
+                color: this.childOptions.label.fontColor,
                 label: {
                     text: item.content || 'Thoát',
-                    fontSize: 30,
-                    lineHeight: 50,
+                    fontSize: this.childOptions.label.fontSize,
+                    lineHeight: lblSize.height,
                     horizontalALign: cc.Label.HorizontalAlign.CENTER,
                     verticalALign: cc.Label.VerticalAlign.CENTER,
                     overFlow: cc.Label.Overflow.CLAMP

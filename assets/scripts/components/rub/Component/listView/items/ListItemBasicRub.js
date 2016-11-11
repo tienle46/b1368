@@ -192,6 +192,12 @@ export default class ListItemBasicRub {
         }
     }
 
+    pushEls(elements = []) {
+        elements.forEach((element) => {
+            this.pushEl(element);
+        });
+    }
+
     _createElement(options) {
         let node = new cc.Node();
         options.position && node.setPosition(options.position);
