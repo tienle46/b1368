@@ -45,21 +45,21 @@ export default class SegmentControlRub extends Rub {
 
         let defaultOptions = {
             width: 88,
-            height: 74,
+            height: 50,
             bg: 'dashboard/dialog/imgs/tab-bg',
             activeNormalSprite: 'dashboard/popup-tab-active',
             inactiveNormalSprite: 'dashboard/transparent',
             isRoundedBorder: true,
             activeNormalSprite2: 'dashboard/popup-tab-active2',
             itemWidth: 155.1,
-            itemHeight: 50,
+            itemHeight: 53,
             tabBodyPrefabType: 'topup',
             hasEdge: true,
             edge: {
-                top: 12.55,
-                bottom: 13.85,
-                left: 14.75,
-                right: 14.75
+                top: 9,
+                bottom: 9,
+                left: 9,
+                right: 9
             }
         };
 
