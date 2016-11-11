@@ -86,7 +86,7 @@ class TabTopDaiGia extends Component {
             options: {
                 fontColor: app.const.COLOR_YELLOW
             }
-        }, d, { position: cc.v2(0, 172), width: 660, height: 356, event, group: { widths: [80, 280, 280] } });
+        }, d, { width: 670, height: 356, event, group: { widths: [90, 280, 280] } });
     }
 }
 

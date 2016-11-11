@@ -15,15 +15,12 @@ const tabs = [{
     value: 'tab_kiot'
 }];
 
-const options = {
-    itemHeight: 26.5
-};
 
-const defaultTopUpTabOptions = { tabs, options };
+const defaultTopUpTabOptions = { tabs };
 
 export default class TopUpDialogRub extends DialogRub {
 
-    constructor(node, tabOptions = defaultTopUpTabOptions) {
+    constructor(node, tabOptions = {}) {
         super(node, tabOptions);
     }
 
@@ -36,7 +33,7 @@ export default class TopUpDialogRub extends DialogRub {
         });
     }
 
-    show(parentNode, tabOptions = defaultTopUpTabOptions, cb){
+    show(parentNode, tabOptions = defaultTopUpTabOptions, cb) {
         super.show(parentNode, defaultTopUpTabOptions, cb);
     }
 }

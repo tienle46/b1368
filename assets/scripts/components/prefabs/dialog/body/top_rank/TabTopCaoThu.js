@@ -62,7 +62,7 @@ class TabTopCaoThu extends Component {
 
                     const button = node.addComponent(cc.Button);
                     const nodeSprite = node.addComponent(cc.Sprite);
-                    // log( app.res.gameTopCapThuIcon[imgName]);
+                    console.debug(imgName, app.res.gameTopCapThuIcon[imgName]);
                     RubUtils.loadSpriteFrame(nodeSprite,
                         app.res.gameTopCapThuIcon[imgName], cc.size(100, 100), false, (spriteFrame) => {
                             log(`image loaded`);
@@ -143,7 +143,7 @@ class TabTopCaoThu extends Component {
             options: {
                 fontColor: app.const.COLOR_YELLOW
             }
-        }, d, { position: cc.v2(2, 172), width: 480, height: 356, event, group: { widths: [80, 200, 100, 100] } });
+        }, d, { width: 480, height: 356, event, group: { widths: [80, 200, 100, 100] } });
     }
 }
 

@@ -108,6 +108,7 @@ export default class GridViewRub {
             isHorizontal: false,
             isVertical: true,
             group: {},
+            align: {},
             dataValidated: false,
             cell
         };
@@ -125,8 +126,6 @@ export default class GridViewRub {
         } else {
             this.head = Object.assign({}, defaultHead, head);
         }
-
-        this.CONTENT_NODE_HORIZONTAL_PADDING = 30;
     }
 
     init() {
@@ -217,18 +216,18 @@ export default class GridViewRub {
         prefab.setPosition(this.options.position);
         // set prefab size
         prefab.setContentSize(cc.size(this.options.width, this.options.height));
-        let prefabAlign = this.options.align;
-        prefabAlign.filParent && (
-            prefabAlign = {
-                top: 0,
-                left: 0,
-                right: 0,
-                bottom: 0,
-            }
-        );
-        NodeRub.addWidgetComponentToNode(prefab, prefabAlign);
-            // `view` node size
-        this.viewNode.setContentSize(cc.size(this.options.width - this.CONTENT_NODE_HORIZONTAL_PADDING, this.options.height));
+        // let prefabAlign = this.options.align; //once
+        // prefabAlign.filParent && (
+        //     prefabAlign = {
+        //         top: 0,
+        //         left: 0,
+        //         right: 0,
+        //         bottom: 0,
+        //     }
+        // );
+        // NodeRub.addWidgetComponentToNode(prefab, prefabAlign);
+        // `view` node size
+        this.viewNode.setContentSize(cc.size(this.options.width, this.options.height));
         // `view/content` node size
         this.contentNode.setContentSize(this.viewNode.getContentSize());
     }
@@ -338,7 +337,7 @@ export default class GridViewRub {
     _setCellSize() {
         let numberOfColumns = this.data[0] ? this.data[0].length : 0; // converted this.data 
         let groupWidth = this.options.group.widths || new Array(numberOfColumns).fill(null);
-        let padding = this.CONTENT_NODE_HORIZONTAL_PADDING;
+        let padding = 0;
         let spacingX = this.options.spacingX;
         let parentWidth = this.getContentNodeWidth();
         return RubUtils.calcWidthByGroup(parentWidth, groupWidth, spacingX, padding);

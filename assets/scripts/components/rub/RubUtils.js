@@ -84,7 +84,7 @@ let RubUtils = {
         let equallyDivided = n / remains;
 
         return widths.map((e) => {
-            let number = ((e === null && Number(e) === 0 && equallyDivided) || e) - spaceX - padding / widths.length;
+            let number = ((e === null && Number(e) === 0 && equallyDivided) || e) - spaceX;
             return number > 0 ? number : 0;
         });
     }

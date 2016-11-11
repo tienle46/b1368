@@ -137,16 +137,6 @@ export default class CellRub {
     }
 
     _initHorizontalSeparate(parentNode) {
-        let nodeOptions = {
-            position: cc.v2(0, 0),
-            size: this.options.horizontalSeparate.size || cc.size(parentNode.getContentSize().width, 2),
-            sprite: {
-                spriteFrame: typeof this.options.horizontalSeparate.pattern === 'string' ? this.options.horizontalSeparate.pattern : 'textures/50x50'
-            },
-            widget: this.options.horizontalSeparate.align,
-
-        };
-        nodeOptions.widget.bottom = 0;
         this.horizontalSeparateNode = new cc.Node();
         this.horizontalSeparateNode.setPosition(cc.v2(0, 0));
 
@@ -236,7 +226,7 @@ export default class CellRub {
             name: 'label',
             color: this.options.fontColor,
             size: parentNode.getContentSize(),
-            rich: {
+            richtext: {
                 maxWidth: (parentNode.getContentSize().width - 10),
                 fontSize: this.options.fontSize,
                 lineHeight: this.options.fontLineHeight,
