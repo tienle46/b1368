@@ -82,7 +82,6 @@ export default class TabUserInfo extends Component {
             ['z', 'z1', 'z2'],
             ['y', 'y1', 'y2']
         ], {
-            position: cc.v2(2, 140),
             width: 600,
             height: 240,
             spacingX: 0,

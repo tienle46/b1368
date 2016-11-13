@@ -3,10 +3,11 @@ import Component from 'Component';
 import ListItemToggleableRub from 'ListItemToggleableRub';
 import numeral from 'numeral';
 import moment from 'moment';
+import ListViewRub from 'ListViewRub';
 
 class TabTransactionHistory extends Component {
     constructor() {
-        super()
+        super();
         this.contentNode = {
             default: null,
             type: cc.Node
@@ -40,6 +41,7 @@ class TabTransactionHistory extends Component {
             let items = res[app.keywords.TRANSACTION_HISTORY.RESPONSE.ITEM_LIST];
             let senders = res[app.keywords.TRANSACTION_HISTORY.RESPONSE.USER_SENDER_LIST];
             let times = res[app.keywords.TRANSACTION_HISTORY.RESPONSE.TIME_LIST];
+            let data = [];
             if (items && items.length > 0) {
                 for (let i = 0; i < items.length; i++) {
                     let body = {
@@ -66,9 +68,11 @@ class TabTransactionHistory extends Component {
                     };
 
                     let item = ListItemToggleableRub.create(body, null, options);
-
-                    this.contentNode.addChild(item.node());
+                    data.push(item.node());
+                    // this.contentNode.addChild(item.node());
                 }
+                console.debug(data);
+                ListViewRub.show(this.node, data);
             }
         });
     }

@@ -237,7 +237,7 @@ class BottomBar extends Component {
             ['z', 'z1', 'z2', 'z1', 'z2', 'z2'],
             ['y', 'y1', 'y2', 'y1', 'y2', 'z2'],
             ['y0', 'y1', 'y2', 'y1', 'y2', 'z2'],
-            [{ text: 'NAP XU VAO GAME', fontSize: 4, fontLineHeight: 5, button: {} }, { text: 'y1' }, { text: 'y2' }, { text: 'y3' }, { text: 'y4' }, 'z2']
+            ['y1', { text: 'y1' }, { text: 'y2' }, { text: 'y3' }, { text: 'y4' }, 'z2']
         ], {
             position: cc.v2(2, 140),
             width: 872,
@@ -325,7 +325,6 @@ class BottomBar extends Component {
                 d.push(a.fblink);
                 data.push(d);
             });
-            debug(data);
             agencyTab.resetData(data, true);
         }
 

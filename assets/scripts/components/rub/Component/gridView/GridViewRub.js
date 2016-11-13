@@ -41,18 +41,13 @@ export default class GridViewRub {
      * @param {any} opts
      * {
      *  bg: new cc.Color() || string: resource URL # `content` node background
-     *  position: cc.v2() # default : cc.v2(0, 0);
-    //  *  width: number # grid width 
-    //  *  height: number # grid height
+     *  @required position: cc.v2() # default : cc.v2(0, 0);
+     *  @required width: number # grid width 
+     *  @required height: number # grid height
      *  isHorizontal: boolean # default false
      *  isVertical: boolean # default true
-     *  spacingX: number # default 2px
-     *  spacingY: boolean # default 2px
-     *  event: cc.EventHandler || null # add a scroll event to scrollView
-     *  align: {
-     *      top, left, right, bottom: number
-     *      filParent: boolean (if true, grid will be full fill to its parent)
-     *  }
+     *  @required spacingX: number # default 2px
+     *  @required spacingY: boolean # default 2px
      *  dataValidated: boolean # sometimes we dont need to validate our getted data # default: false
      *  group: {
      *      widths: array[number || null] # array of width per cell ['', 500, 20]
@@ -62,8 +57,12 @@ export default class GridViewRub {
      *      colors: array[new cc.Color || null] # array of setting color of text. default cc.Color(225, 255, 255)
      *      events: array[ cc.Component.EventHandler || null] # only affected to all button or mapped by array position.
      *  }
+     *  paging: {
+     *      previous: cc.Component.EventHandler
+     *      next: cc.Component.EventHandler
+     *  }
      * 
-     *  cell: { // CellRub options
+     *  @required cell: { // CellRub options
      *      spriteFrame: string
      *      bgColor: new cc.Color
      *      width: number
@@ -101,15 +100,15 @@ export default class GridViewRub {
 
         let defaultOptions = {
             position: cc.v2(0, 0),
-            width: 872,
-            height: 250,
-            spacingX: 2,
-            spacingY: 2,
+            width: 585,
+            height: 200,
+            spacingX: 1,
+            spacingY: 1,
             isHorizontal: false,
             isVertical: true,
-            group: {},
-            align: {},
+            group: null,
             dataValidated: false,
+            paging: null,
             cell
         };
 
@@ -135,16 +134,14 @@ export default class GridViewRub {
             this.prefab = cc.instantiate(prefab);
 
             // this.addToNode();
+            this.bodyNode = this.prefab.getChildByName('body');
+            this.pagingNode = this.prefab.getChildByName('paging');
 
-            this.viewNode = this.prefab.getChildByName('view');
+            this.viewNode = this.bodyNode.getChildByName('view');
             this.contentNode = this.viewNode.getChildByName('content');
 
-            return this.prefab;
-        }).then((prefab) => {
-            this._setupComponentsByOptions(prefab);
-
-            return null;
-        }).then(() => {
+            return this.bodyNode;
+        }).then(this._setupComponentsByOptions.bind(this)).then(() => {
             // init cell
             this.data.length > 0 && this.data[0] instanceof Array && this.data[0].length > 0 && this._initCell();
             return this;
@@ -176,16 +173,16 @@ export default class GridViewRub {
         this._insertCellBody(data);
     }
 
-    _setupComponentsByOptions(prefab) {
-        this._resize(prefab);
+    _setupComponentsByOptions(scroll) {
+        this._resize(scroll);
 
         // scrollview
-        let scrollView = prefab.getComponent(cc.ScrollView);
+        let scrollView = scroll.getComponent(cc.ScrollView);
         scrollView.horizontal = this.options.isHorizontal;
         scrollView.vertical = this.options.isVertical;
         // register scrollview scrollEvent
-        scrollView.scrollEvents = [];
-        this.options.event && scrollView.scrollEvents.push(this.options.event);
+        // scrollView.scrollEvents = [];
+        // this.options.event && scrollView.scrollEvents.push(this.options.event);
 
         // content/layout
         let contentLayout = this.contentNode.getComponent(cc.Layout);
@@ -194,6 +191,8 @@ export default class GridViewRub {
 
         // setup content background
         this.options.bg && this._setupContent(this.contentNode);
+
+        return null;
     }
 
     _setupContent(contentNode) {
@@ -211,23 +210,26 @@ export default class GridViewRub {
     }
 
     // resize content node by parent ( dont know why widget does not work )
-    _resize(prefab) {
+    _resize(scroll) {
+        if (!this.options.paging) {
+            // hide paging Node
+            this.pagingNode.active = false;
 
-        prefab.setPosition(this.options.position);
+            // fit to 100% by body
+            let widget = {
+                left: 0,
+                right: 0,
+                bottom: 0,
+                top: 0
+            };
+            NodeRub.addWidgetComponentToNode(this.bodyNode, widget);
+        }
+        this.prefab.setPosition(this.options.position);
         // set prefab size
-        prefab.setContentSize(cc.size(this.options.width, this.options.height));
-        // let prefabAlign = this.options.align; //once
-        // prefabAlign.filParent && (
-        //     prefabAlign = {
-        //         top: 0,
-        //         left: 0,
-        //         right: 0,
-        //         bottom: 0,
-        //     }
-        // );
-        // NodeRub.addWidgetComponentToNode(prefab, prefabAlign);
+        this.prefab.setContentSize(cc.size(this.options.width, this.options.height));
+        scroll.setContentSize(cc.size(this.options.width, this.options.height - 50));
         // `view` node size
-        this.viewNode.setContentSize(cc.size(this.options.width, this.options.height));
+        this.viewNode.setContentSize(scroll.getContentSize());
         // `view/content` node size
         this.contentNode.setContentSize(this.viewNode.getContentSize());
     }
@@ -288,14 +290,16 @@ export default class GridViewRub {
                             cellOpts.fontLineHeight = cell.fontLineHeight;
                     }
 
-                    if (this.options.group.colors)
-                        cellOpts.fontColor = this.options.group.colors[j] || app.const.COLOR_WHITE;
+                    if (this.options.group) {
+                        if (this.options.group.colors)
+                            cellOpts.fontColor = this.options.group.colors[j] || app.const.COLOR_WHITE;
 
-                    if (this.options.group.events) {
-                        let event = this.options.group.events[j] || this.options.group.events[0] || null;
-                        if (event) {
-                            if (cell instanceof Object && cell.button && !cell.button.hasOwnProperty('eventHandler')) {
-                                cell.button.eventHandler = event;
+                        if (this.options.group.events) {
+                            let event = this.options.group.events[j] || this.options.group.events[0] || null;
+                            if (event) {
+                                if (cell instanceof Object && cell.button && !cell.button.hasOwnProperty('eventHandler')) {
+                                    cell.button.eventHandler = event;
+                                }
                             }
                         }
                     }
@@ -336,7 +340,7 @@ export default class GridViewRub {
 
     _setCellSize() {
         let numberOfColumns = this.data[0] ? this.data[0].length : 0; // converted this.data 
-        let groupWidth = this.options.group.widths || new Array(numberOfColumns).fill(null);
+        let groupWidth = (this.options.group && this.options.group.widths) || new Array(numberOfColumns).fill(null);
         let padding = 0;
         let spacingX = this.options.spacingX;
         let parentWidth = this.getContentNodeWidth();

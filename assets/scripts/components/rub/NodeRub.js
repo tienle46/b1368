@@ -96,7 +96,7 @@ let NodeRub = {
      * }
      */
     addLayoutComponentToNode: (node, options = {}) => {
-        let layout = node.addComponent(cc.Layout);
+        let layout = node.getComponent(cc.Layout) || node.addComponent(cc.Layout);
         for (var key in options) {
             layout[key] = options[key];
         }
@@ -108,7 +108,7 @@ let NodeRub = {
      * }
      */
     addButtonComponentToNode: (node, options = {}) => {
-        let button = node.addComponent(cc.Button);
+        let button = node.getComponent(cc.Button) || node.addComponent(cc.Button);
         options.event && (button.clickEvents = [options.event]);
 
         node.addComponent(ButtonScaler);

@@ -80,7 +80,7 @@ export default class ListItemToggleableRub extends ListItemBasicRub {
                 height: 80
             },
             group: {
-                widths: [60, 360, 54]
+                widths: []
             },
             padding: 10,
             spacingX: 10
@@ -452,7 +452,7 @@ export default class ListItemToggleableRub extends ListItemBasicRub {
      * 
      * @static
      * @param {any} [body={}] initElement's body object
-     * @param {any} [options={}] initElement's options
+     * @param {any} [options={} || image] initElement's options
      * params [body, image, button, options]
      * if params 
      *  +> = [body, p1, p2] => p1 = image, p2 = options
