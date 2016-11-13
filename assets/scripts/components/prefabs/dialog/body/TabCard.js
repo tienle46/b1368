@@ -4,6 +4,7 @@ import AlertPopupRub from 'AlertPopupRub';
 import ToggleGroup from 'ToggleGroup';
 import CheckBox from 'CheckBox';
 import RubUtils from 'RubUtils';
+import LoaderRub from 'LoaderRub';
 
 class TabCard extends Component {
     constructor() {
@@ -11,8 +12,12 @@ class TabCard extends Component {
     }
 
     onLoad() {
+        this.loader = new LoaderRub(this.node.parent);
         // wait til every requests is done
         this.node.active = false;
+        // show loader
+        this.loader.show();
+
         this._initCardsGroup();
     }
 
@@ -43,9 +48,11 @@ class TabCard extends Component {
                         index === 0 && this.toggleGroup.onLoad();
                     });
                 });
-
+                console.debug('card')
+                this.loader.hide();
                 // active node
                 this.node.active = true;
+
             }
         }, app.const.scene.DASHBOARD_SCENE);
     }

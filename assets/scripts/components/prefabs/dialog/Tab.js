@@ -6,6 +6,7 @@ import Component from 'Component';
 import ToggleGroup from 'ToggleGroup';
 import RubUtils from 'RubUtils';
 import _ from 'lodash';
+import NodeRub from 'NodeRub';
 
 class Tab extends Component {
     constructor() {
@@ -42,14 +43,14 @@ class Tab extends Component {
 
         if (content instanceof cc.Node) {
             let node = _.cloneDeep(content);
-            node.setPosition(cc.v2(0, 0));
+
             this._addChildToBody(bodyNode, node);
         } else if (content instanceof Promise) {
             content.then((node) => {
                 // wait until resources are loaded.
                 setTimeout(() => {
                     let n = _.cloneDeep(node);
-                    n.setPosition(cc.v2(0, 0));
+
                     this._addChildToBody(bodyNode, n);
                 });
             });
@@ -64,23 +65,15 @@ class Tab extends Component {
         bodyNode.removeAllChildren(true);
     }
 
-    _addWidgetToNode(node) {
-        let widget = node.getComponent(cc.Widget) || node.addComponent(cc.Widget);
-        widget.isAlignOnce = false;
-
-        widget.isAlignTop = true;
-        widget.isAlignBottom = true;
-        widget.isAlignRight = true;
-        widget.isAlignLeft = true;
-
-        widget.top = 0;
-        widget.bottom = 0;
-        widget.right = 0;
-        widget.left = 0;
-    }
-
     _addChildToBody(bodyNode, node) {
-        this._addWidgetToNode(node);
+        let widget = {
+            left: 0,
+            top: 0,
+            bottom: 0,
+            right: 0
+        };
+        NodeRub.addWidgetComponentToNode(node, widget);
+        node.setPosition(cc.v2(0, 0));
         bodyNode.addChild(node);
     }
 }

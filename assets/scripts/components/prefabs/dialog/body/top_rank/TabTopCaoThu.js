@@ -3,6 +3,7 @@ import Component from 'Component';
 import GridViewRub from 'GridViewRub';
 import numeral from 'numeral';
 import RubUtils from 'RubUtils';
+import LoaderRub from 'LoaderRub';
 
 class TabTopCaoThu extends Component {
     constructor() {
@@ -14,25 +15,28 @@ class TabTopCaoThu extends Component {
         this.contentNode = {
             default: null,
             type: cc.Node
-        }
+        };
         this.top1Sprite = {
             default: null,
             type: cc.Sprite
-        }
+        };
 
         this.top1Name = {
             default: null,
             type: cc.Label
-        }
+        };
 
         this.gamePicker = {
             default: null,
             type: cc.Node
-        }
+        };
 
     }
 
     onLoad() {
+        this.loader = new LoaderRub(this.node);
+        // show loader
+        this.loader.show();
 
         this._initGameList();
 
@@ -144,6 +148,9 @@ class TabTopCaoThu extends Component {
                 fontColor: app.const.COLOR_YELLOW
             }
         }, d, { width: 480, height: 356, event, group: { widths: [80, 200, 100, 100] } });
+
+        // show loader
+        this.loader.hide();
     }
 }
 

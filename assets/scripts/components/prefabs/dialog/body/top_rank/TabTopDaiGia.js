@@ -3,6 +3,7 @@ import Component from 'Component';
 import GridViewRub from 'GridViewRub';
 import numeral from 'numeral';
 import RubUtils from 'RubUtils';
+import LoaderRub from 'LoaderRub';
 
 class TabTopDaiGia extends Component {
     constructor() {
@@ -14,25 +15,23 @@ class TabTopDaiGia extends Component {
         this.contentNode = {
             default: null,
             type: cc.Node
-        }
+        };
         this.top1Sprite = {
             default: null,
             type: cc.Sprite
-        }
+        };
 
         this.top1Name = {
             default: null,
             type: cc.Label
-        }
+        };
     }
 
     onLoad() {
-        // wait til every requests is done
-        // this.node.active = false;
+        this.loader = new LoaderRub(this.node);
+        // show loader
+        this.loader.show();
 
-        // get content node
-        // this.contentNode = this.node.getChildByName('view').getChildByName('content');
-        // this._initItemsList();
         // init tabRub
         this._initData((data) => {
             this._initBody(data);
@@ -87,6 +86,8 @@ class TabTopDaiGia extends Component {
                 fontColor: app.const.COLOR_YELLOW
             }
         }, d, { width: 670, height: 356, event, group: { widths: [90, 280, 280] } });
+        this.loader.hide();
+
     }
 }
 

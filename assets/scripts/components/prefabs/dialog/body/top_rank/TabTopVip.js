@@ -28,13 +28,10 @@ class TabTopVip extends Component {
     }
 
     onLoad() {
-        // wait til every requests is done
-        // this.node.active = false;
+        this.loader = new LoaderRub(this.node);
+        // show loader
+        this.loader.show();
 
-        // get content node
-        // this.contentNode = this.node.getChildByName('view').getChildByName('content');
-        // this._initItemsList();
-        // init tabRub
         this._initData((data) => {
             this._initBody(data);
         });
@@ -109,6 +106,7 @@ class TabTopVip extends Component {
 
             this.contentNode.addChild(transactionItem.node());
         }
+        this.loader.hide();
     }
 }
 
