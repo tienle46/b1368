@@ -3,14 +3,11 @@ import Component from 'Component';
 import ListItemBasicRub from 'ListItemBasicRub';
 import numeral from 'numeral';
 import moment from 'moment';
+import ListViewRub from 'ListViewRub';
 
 class TabTransferTransaction extends Component {
     constructor() {
         super();
-        this.contentNode = {
-            default: null,
-            type: cc.Node
-        }
     }
 
     onLoad() {
@@ -41,6 +38,7 @@ class TabTransferTransaction extends Component {
             let items = res[app.keywords.TRANSFER_TRANSACTION.RESPONSE.ITEM_LIST];
             let senders = res[app.keywords.TRANSFER_TRANSACTION.RESPONSE.USER_SENDER_LIST];
             let times = res[app.keywords.TRANSFER_TRANSACTION.RESPONSE.TIME_LIST];
+            let data = [];
             if (items && items.length > 0) {
                 for (let i = 0; i < items.length; i++) {
                     let transactionItem = new ListItemBasicRub(`<color=eeaa22>${senders[i]}</color> đã chuyển <color=eeaa22>${numeral(golds[i]).format('0,0')}</color> coin cho bạn`, { contentWidth: 470 });
@@ -73,9 +71,9 @@ class TabTransferTransaction extends Component {
                         }
                     };
                     transactionItem.pushEl(label);
-
-                    this.contentNode.addChild(transactionItem.node());
+                    data.push(transactionItem.node());
                 }
+                ListViewRub.show(this.node, data);
             }
 
         });

@@ -8,10 +8,6 @@ import ListViewRub from 'ListViewRub';
 class TabTransactionHistory extends Component {
     constructor() {
         super();
-        this.contentNode = {
-            default: null,
-            type: cc.Node
-        }
     }
 
     onLoad() {
@@ -69,9 +65,7 @@ class TabTransactionHistory extends Component {
 
                     let item = ListItemToggleableRub.create(body, null, options);
                     data.push(item.node());
-                    // this.contentNode.addChild(item.node());
                 }
-                console.debug(data);
                 ListViewRub.show(this.node, data);
             }
         });

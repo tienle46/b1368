@@ -2,6 +2,7 @@ import app from 'app';
 import Component from 'Component';
 import ListItemBasicRub from 'ListItemBasicRub';
 import RubUtils from 'RubUtils';
+import LoaderRub from 'LoaderRub';
 
 class TabTopVip extends Component {
     constructor() {
@@ -14,16 +15,16 @@ class TabTopVip extends Component {
         this.contentNode = {
             default: null,
             type: cc.Node
-        }
+        };
         this.top1Sprite = {
             default: null,
             type: cc.Sprite
-        }
+        };
 
         this.top1Name = {
             default: null,
             type: cc.Label
-        }
+        };
     }
 
     onLoad() {

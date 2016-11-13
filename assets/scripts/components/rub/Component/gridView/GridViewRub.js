@@ -125,6 +125,8 @@ export default class GridViewRub {
         } else {
             this.head = Object.assign({}, defaultHead, head);
         }
+
+        this.SCROLL_VIEW_PADDING_BOTTOM = 40;
     }
 
     init() {
@@ -227,7 +229,7 @@ export default class GridViewRub {
         this.prefab.setPosition(this.options.position);
         // set prefab size
         this.prefab.setContentSize(cc.size(this.options.width, this.options.height));
-        scroll.setContentSize(cc.size(this.options.width, this.options.height - 50));
+        scroll.setContentSize(cc.size(this.options.width, this.options.height - this.SCROLL_VIEW_PADDING_BOTTOM));
         // `view` node size
         this.viewNode.setContentSize(scroll.getContentSize());
         // `view/content` node size

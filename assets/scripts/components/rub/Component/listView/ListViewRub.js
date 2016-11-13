@@ -21,15 +21,17 @@ export default class ListViewRub {
     constructor(data, opts = {}) {
         let defaultOptions = {
             position: cc.v2(0, 0),
-            width: 585,
-            height: 250,
+            width: 872,
+            height: 350,
             isHorizontal: false,
-            spacingY: 30,
+            spacingY: 20,
+            padding: 10,
             isVertical: true
         };
 
         this.options = Object.assign({}, defaultOptions, opts);
         this.data = data;
+        this.SCROLL_VIEW_PADDING_BOTTOM = 40;
     }
 
     init() {
@@ -50,7 +52,10 @@ export default class ListViewRub {
     }
 
     _initRow() {
-        this.contentNode.addChild(this.data[0]);
+        this.data.forEach((node) => {
+            if (node instanceof cc.Node)
+                this.contentNode.addChild(node);
+        });
         return this;
     }
 
@@ -82,19 +87,21 @@ export default class ListViewRub {
         let layout = {
             type: cc.Layout.Type.VERTICAL,
             spacingY: this.options.spacingY,
-            padding: 10,
+            resizeMode: cc.Layout.ResizeMode.CONTAINER,
+            padding: this.options.padding,
             verticalDirection: cc.Layout.VerticalDirection.TOP_TO_BOTTOM
         };
         NodeRub.addLayoutComponentToNode(this.contentNode, layout);
-
         return null;
     }
 
     // resize content node by parent ( dont know why widget does not work )
-    _resize(prefab) {
-        prefab.setPosition(this.options.position);
+    _resize(scroll) {
+        this.prefab.setPosition(this.options.position);
         // set prefab size
-        prefab.setContentSize(cc.size(this.options.width, this.options.height));
+        this.prefab.setContentSize(cc.size(this.options.width, this.options.height));
+
+        scroll.setContentSize(cc.size(this.options.width, this.options.height - this.SCROLL_VIEW_PADDING_BOTTOM));
         // `view` node size
         this.viewNode.setContentSize(cc.size(this.options.width - 30, this.options.height));
         // `view/content` node size
@@ -116,7 +123,9 @@ export default class ListViewRub {
 
     static show(node, data, opts = {}) {
         return new ListViewRub(data, opts).init().then((a) => {
-            node.addChild(a._getNode());
+            let n = a._getNode();
+
+            node.addChild(n);
             return a;
         });
     }
