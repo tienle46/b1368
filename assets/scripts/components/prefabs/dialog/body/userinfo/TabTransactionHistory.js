@@ -4,32 +4,26 @@ import ListItemToggleableRub from 'ListItemToggleableRub';
 import numeral from 'numeral';
 import moment from 'moment';
 import ListViewRub from 'ListViewRub';
+import LoaderRub from 'LoaderRub';
 
 class TabTransactionHistory extends Component {
     constructor() {
         super();
         this.currentPage = 1;
+        this.endPage = false;
+        this.itemPerPage = 0;
     }
 
     onLoad() {
-        this.viewRub = new ListViewRub([], { paging: {} });
-        this.viewRub.getNode().then((view) => {
-            let prev = new cc.Component.EventHandler();
-            prev.target = this.node;
-            prev.component = 'TabTransactionHistory';
-            prev.handler = 'onPreviousBtnClick';
+        this.loader = new LoaderRub(this.node.parent.parent);
 
-            let next = new cc.Component.EventHandler();
-            next.target = this.node;
-            next.component = 'TabTransactionHistory';
-            next.handler = 'onNextBtnClick';
+        this.loader.show();
+        let next = this.onNextBtnClick.bind(this);
+        let prev = this.onPreviousBtnClick.bind(this);
 
-            this.view = view;
-            console.debug(this.view.parent);
-            this.viewRub.addEventPagingBtn(prev, next);
+        this.viewRub = new ListViewRub([], { paging: { next, prev } });
 
-            this._getTransactionItems(this.currentPage);
-        });
+        this._getTransactionItems(this.currentPage);
     }
 
     _getTransactionsFromServer(page, cb) {
@@ -51,10 +45,15 @@ class TabTransactionHistory extends Component {
             this.currentPage = 1;
             return null;
         }
+        this.loader.show();
         this._getTransactionItems(this.currentPage);
     }
 
     onNextBtnClick() {
+        if (this.endPage) {
+            return null;
+        }
+        this.loader.show();
         this.currentPage += 1;
         this._getTransactionItems(this.currentPage);
     }
@@ -67,6 +66,11 @@ class TabTransactionHistory extends Component {
             let times = res[app.keywords.TRANSACTION_HISTORY.RESPONSE.TIME_LIST];
             let data = [];
             if (items && items.length > 0) {
+                if (this.currentPage == 1) {
+                    this.itemPerPage = items.length;
+                } else {
+                    this.endPage = items.length < this.itemPerPage;
+                }
                 for (let i = 0; i < items.length; i++) {
                     let body = {
                         title: {
@@ -95,8 +99,13 @@ class TabTransactionHistory extends Component {
                     data.push(item.node());
                 }
                 this.viewRub.resetData(data);
-                (!this.view.parent) && this.node.addChild(this.view);
+                let node = this.viewRub.getNode();
+
+                (!node.parent) && this.node.addChild(node);
+            } else {
+                this.endPage = true;
             }
+            this.loader.hide();
         });
     }
 }

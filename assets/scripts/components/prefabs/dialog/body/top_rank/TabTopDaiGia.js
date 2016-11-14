@@ -12,6 +12,7 @@ class TabTopDaiGia extends Component {
         this.flag = null;
         this.topNodeId = 8;
         this.currentPage = 1;
+
         this.contentNode = {
             default: null,
             type: cc.Node
@@ -25,27 +26,51 @@ class TabTopDaiGia extends Component {
             default: null,
             type: cc.Label
         };
+
+        this.gridViewRub = null;
     }
 
     onLoad() {
         this.loader = new LoaderRub(this.node);
+
+        let head = {
+            data: ['STT', 'Tài khoản', 'Chips'],
+            options: {
+                fontColor: app.const.COLOR_YELLOW
+            }
+        };
+
+        let next = this.onNextBtnClick.bind(this);
+        let prev = this.onPreviousBtnClick.bind(this);
+
+        let rubOptions = {
+            paging: { prev, next },
+            width: 670,
+            height: 356,
+            group: { widths: [90, 280, 280] }
+        };
+
+        this.gridViewRub = new GridViewRub(head, [], rubOptions);
+
         // show loader
         this.loader.show();
 
-        // init tabRub
-        this._initData((data) => {
-            this._initBody(data);
-        });
-        // this._initTabs();
+        this._initItems(this.currentPage);
     }
 
-    _initData(cb) {
+    _initItems(page) {
+        this._getDataFromServer(page, (data) => {
+            this._initBody(data);
+        });
+    }
+
+    _getDataFromServer(page, cb) {
         let sendObject = {
             'cmd': app.commands.RANK_GROUP,
             'data': {
                 [app.keywords.RANK_GROUP_TYPE]: app.const.DYNAMIC_GROUP_LEADER_BOARD,
                 [app.keywords.RANK_ACTION_TYPE]: app.const.DYNAMIC_ACTION_BROWSE,
-                [app.keywords.PAGE]: this.currentPage,
+                [app.keywords.PAGE]: page,
                 [app.keywords.RANK_NODE_ID]: this.topNodeId,
             }
         };
@@ -77,17 +102,32 @@ class TabTopDaiGia extends Component {
         });
     }
 
-    _initBody(d) {
-        let event = null;
-        let body = this.contentNode;
-        GridViewRub.show(body, {
-            data: ['STT', 'Tài khoản', 'Chips'],
-            options: {
-                fontColor: app.const.COLOR_YELLOW
-            }
-        }, d, { width: 670, height: 356, event, group: { widths: [90, 280, 280] } });
-        this.loader.hide();
+    onPreviousBtnClick() {
+        this.currentPage -= 1;
+        if (this.currentPage < 1) {
+            this.currentPage = 1;
+            return null;
+        }
+        this.loader.show();
+        this._initItems(this.currentPage);
+    }
 
+    onNextBtnClick() {
+        this.loader.show();
+
+        this.currentPage += 1;
+        this._initItems(this.currentPage);
+    }
+
+    _initBody(data) {
+        let body = this.contentNode;
+
+        this.gridViewRub.resetData(data);
+
+        let node = this.gridViewRub.getNode();
+        (!node.parent) && body.addChild(node);
+
+        this.loader.hide();
     }
 }
 

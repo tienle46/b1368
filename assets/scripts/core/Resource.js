@@ -9,6 +9,7 @@ app.res = {};
 app.res.prefab = {};
 
 app.res.prefab.toast = cc.Prefab;
+app.res.prefab.scrollview = cc.Prefab;
 app.res.prefab.loading = cc.Prefab;
 app.res.prefab.fullSceneLoading = cc.Prefab;
 

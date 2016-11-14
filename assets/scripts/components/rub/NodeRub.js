@@ -91,6 +91,7 @@ let NodeRub = {
      * padding: 10,
      * spacingY: 20,
      * spacingX: 20,
+     * startAxis: cc.Layout.AxisDirection.HORIZONTAL, (grid)
      * verticalDirection: cc.Layout.VerticalDirection.TOP_TO_BOTTOM
      * horizontalDirection: cc.Layout.HorizontalDirection.LEFT_TO_RIGHT
      * }
@@ -155,6 +156,7 @@ let NodeRub = {
      *          resizeMode: cc.Layout.ResizeMode.NONE,
      *          padding: 10,
      *          spacingY: 20,
+     *          startAxis: cc.Layout.AxisDirection.HORIZONTAL,
      *          verticalDirection: cc.Layout.VerticalDirection.TOP_TO_BOTTOM
      *      }
      * }

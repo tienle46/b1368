@@ -1,7 +1,7 @@
-import RubUtils from 'RubUtils';
 import NodeRub from 'NodeRub';
+import ScrollViewRub from 'ScrollViewRub';
 
-export default class ListViewRub {
+export default class ListViewRub extends ScrollViewRub {
     /**
      * Creates an instance of ListViewRub.
      * 
@@ -19,6 +19,7 @@ export default class ListViewRub {
      * @memberOf ListViewRub
      */
     constructor(data, opts = {}) {
+        super(data, opts);
         let defaultOptions = {
             position: cc.v2(0, 0),
             width: 872,
@@ -29,26 +30,15 @@ export default class ListViewRub {
             isVertical: true
         };
 
-        this.options = Object.assign({}, defaultOptions, opts);
-        this.data = data;
-        this.SCROLL_VIEW_PADDING_BOTTOM = 40;
+        this.options = Object.assign(this.options, defaultOptions, opts);
+
+        this.init();
     }
 
     init() {
-        let scrollviewPrefab = 'dashboard/dialog/prefabs/scrollview';
+        super.init();
 
-        return RubUtils.loadRes(scrollviewPrefab).then((prefab) => {
-            this.prefab = cc.instantiate(prefab);
-
-            // this.addToNode();
-            this.bodyNode = this.prefab.getChildByName('body');
-            this.pagingNode = this.prefab.getChildByName('paging');
-
-            this.viewNode = this.bodyNode.getChildByName('view');
-            this.contentNode = this.viewNode.getChildByName('content');
-
-            return this.bodyNode;
-        }).then(this._setupComponentsByOptions.bind(this)).then(this._addRows.bind(this));
+        this._addRows();
     }
 
     _addRows() {
@@ -59,11 +49,6 @@ export default class ListViewRub {
         return this;
     }
 
-    getNode() {
-        return this.init().then(() => {
-            return this.prefab;
-        });
-    }
 
     resetData(data) {
         this.data = data;
@@ -73,25 +58,9 @@ export default class ListViewRub {
         this._addRows();
     }
 
-    // push data
-    // updateData(data) {
-    //     data = this._validData(data);
-    //     // this.data = [...this.data, ...data];
-    //     // this.prefab.active = false;
-    //     this._insertCellBody(data);
-    // }
-
-    _setupComponentsByOptions(scroll) {
-        this._initPaging();
-        this._resize(scroll);
-
-        // scrollview
-        let scrollView = scroll.getComponent(cc.ScrollView);
-        scrollView.horizontal = this.options.isHorizontal;
-        scrollView.vertical = this.options.isVertical;
-        // register scrollview scrollEvent
-        // scrollView.scrollEvents = [];
-        // this.options.event && scrollView.scrollEvents.push(this.options.event);
+    // override
+    _setupComponentsByOptions(body) {
+        super._setupComponentsByOptions(body);
 
         // content/layout
         let layout = {
@@ -102,74 +71,14 @@ export default class ListViewRub {
             verticalDirection: cc.Layout.VerticalDirection.TOP_TO_BOTTOM
         };
         NodeRub.addLayoutComponentToNode(this.contentNode, layout);
-        return null;
     }
-
-    // resize content node by parent ( dont know why widget does not work )
-    _resize(scroll) {
-        this.prefab.setPosition(this.options.position);
-        // set prefab size
-        this.prefab.setContentSize(cc.size(this.options.width, this.options.height));
-
-        scroll.setContentSize(cc.size(this.options.width, this.options.height - this.SCROLL_VIEW_PADDING_BOTTOM));
-        // `view` node size
-        this.viewNode.setContentSize(cc.size(this.options.width - 30, this.options.height));
-        // `view/content` node size
-        this.contentNode.setContentSize(this.viewNode.getContentSize());
-    }
-
-    _initPaging() {
-        if (!this.options.paging) {
-            // hide paging Node
-            this.pagingNode.active = false;
-
-            // fit to 100% by body
-            let widget = {
-                left: 0,
-                right: 0,
-                bottom: 0,
-                top: 0
-            };
-            NodeRub.addWidgetComponentToNode(this.bodyNode, widget);
-        } else {
-            this.pagingNode.active = true;
-            let prevEvent = this.options.paging.prev;
-            let nextEvent = this.options.paging.next;
-            this.addEventPagingBtn(prevEvent, nextEvent);
-
-        }
-    }
-
-    addEventPagingBtn(prevEvent, nextEvent) {
-        if (prevEvent && prevEvent instanceof cc.Component.EventHandler) {
-            let backBtn = this.pagingNode.getChildByName('previous').getComponent(cc.Button);
-            backBtn.clickEvents = [prevEvent];
-        }
-
-        if (nextEvent && nextEvent instanceof cc.Component.EventHandler) {
-            let nextBtn = this.pagingNode.getChildByName('next').getComponent(cc.Button);
-            nextBtn.clickEvents = [nextEvent];
-        }
-    }
-
-    _getNode() {
-        return this.prefab;
-    }
-
 
     // return Promise which attaches `cc.Node`
     static node(data, opts = {}) {
-        return new ListViewRub(data, opts).init().then((a) => {
-            return a._getNode();
-        });
+        return new ListViewRub(data, opts).getNode();
     }
 
     static show(node, data, opts = {}) {
-        return new ListViewRub(data, opts).init().then((a) => {
-            let n = a._getNode();
-
-            node.addChild(n);
-            return a;
-        });
+        node.addChild(new ListViewRub(data, opts).getNode());
     }
 }
