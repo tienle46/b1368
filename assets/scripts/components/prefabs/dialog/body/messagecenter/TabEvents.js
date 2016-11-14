@@ -2,23 +2,52 @@ import app from 'app';
 import Component from 'Component';
 import MessageEvent from 'MessageEvent';
 import ListItemToggleableRub from 'ListItemToggleableRub';
+import ListViewRub from 'ListViewRub';
+import LoaderRub from 'LoaderRub';
 
 export default class TabEvents extends Component {
     constructor() {
-        super()
-        this.contentNode = {
-            default: null,
-            type: cc.Node
-        }
-        this.currentPage = 0;
+        super();
+
+        this.endPage = false;
+        this.itemPerPage = 0;
+        this.currentPage = 1;
+
         this.groupType = app.const.DYNAMIC_GROUP_NEW_EVENT;
     }
 
     onLoad() {
-        this._requestEventList();
+        this.loader = new LoaderRub(this.node.parent.parent);
+
+        this.loader.show();
+        let next = this.onNextBtnClick.bind(this);
+        let prev = this.onPreviousBtnClick.bind(this);
+
+        this.viewRub = new ListViewRub([], { paging: { next, prev } });
+
+        this._requestEventList(this.currentPage);
     }
 
-    _requestEventList() {
+    onPreviousBtnClick() {
+        this.currentPage -= 1;
+        if (this.currentPage < 1) {
+            this.currentPage = 1;
+            return null;
+        }
+        this.loader.show();
+        this._requestEventList(this.currentPage);
+    }
+
+    onNextBtnClick() {
+        if (this.endPage) {
+            return null;
+        }
+        this.loader.show();
+        this.currentPage += 1;
+        this._requestEventList(this.currentPage);
+    }
+
+    _requestEventList(page) {
         var sendObject = {
             'cmd': app.commands.LIST_SYSTEM_MESSAGE,
             'cbKey': 'dcn',
@@ -26,14 +55,15 @@ export default class TabEvents extends Component {
                 [app.keywords.SYSTEM_MESSAGE.REQUEST.ACTION_TYPE]: app.const.DYNAMIC_ACTION_BROWSE,
                 [app.keywords.SYSTEM_MESSAGE.REQUEST.GROUP_TYPE]: this.groupType,
                 [app.keywords.SYSTEM_MESSAGE.REQUEST.NODE_ID]: 0,
+                [app.keywords.SYSTEM_MESSAGE.REQUEST.PAGE_NUMBER]: page
             }
         };
 
         app.service.send(sendObject, (data) => {
-            debug(data);
+            console.debug(data);
             if (data) {
                 //convert raw data to list models
-                this.currentPage = data[app.keywords.SYSTEM_MESSAGE.RESPONSE.CURRENT_PAGE];
+                // this.currentPage = data[app.keywords.SYSTEM_MESSAGE.RESPONSE.CURRENT_PAGE];
 
                 const listHeader = data[app.keywords.SYSTEM_MESSAGE.RESPONSE.TITLE_LIST];
                 const listSub = data[app.keywords.SYSTEM_MESSAGE.RESPONSE.TIME_LIST];
@@ -51,28 +81,30 @@ export default class TabEvents extends Component {
         }, app.const.scene.BOTTOM_BAR);
     }
 
-    _requestEventDetail(nodeId) {
-        var sendObject = {
-            'cmd': app.commands.LIST_SYSTEM_MESSAGE,
-            'cbKey': 'dcn',
-            'data': {
-                [app.keywords.SYSTEM_MESSAGE.REQUEST.ACTION_TYPE]: app.const.DYNAMIC_ACTION_BROWSE,
-                [app.keywords.SYSTEM_MESSAGE.REQUEST.GROUP_TYPE]: this.groupType,
-                [app.keywords.SYSTEM_MESSAGE.REQUEST.NODE_ID]: nodeId,
-            }
-        };
+    // _requestEventDetail(nodeId) {
+    //     var sendObject = {
+    //         'cmd': app.commands.LIST_SYSTEM_MESSAGE,
+    //         'cbKey': 'dcn',
+    //         'data': {
+    //             [app.keywords.SYSTEM_MESSAGE.REQUEST.ACTION_TYPE]: app.const.DYNAMIC_ACTION_BROWSE,
+    //             [app.keywords.SYSTEM_MESSAGE.REQUEST.GROUP_TYPE]: this.groupType,
+    //             [app.keywords.SYSTEM_MESSAGE.REQUEST.NODE_ID]: nodeId,
+    //         }
+    //     };
 
-        app.service.send(sendObject, (data) => {
-            log(data);
-            if (data) {
+    //     app.service.send(sendObject, (data) => {
+    //         log(data);
+    //         if (data) {
 
-            }
+    //         }
 
-        }, app.const.scene.BOTTOM_BAR);
-    }
+    //     }, app.const.scene.BOTTOM_BAR);
+    // }
 
     _displayEvents(events) {
-        events.forEach((event) => {
+        let data = [];
+        for (let i = 0; i < events.length; i++) {
+            let event = events[i];
             let body = {
                 title: {
                     content: `${event.title}`
@@ -107,8 +139,15 @@ export default class TabEvents extends Component {
             }
 
             let item = ListItemToggleableRub.create(body, image, options);
-            this.contentNode.addChild(item.node());
-        });
+            data.push(item.node());
+            // this.contentNode.addChild(item.node());
+        }
+        this.viewRub.resetData(data);
+        let node = this.viewRub.getNode();
+
+        (!node.parent) && this.node.addChild(node);
+
+        this.loader.hide();
     }
 }
 
