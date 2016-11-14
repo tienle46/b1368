@@ -8,19 +8,33 @@ import ListViewRub from 'ListViewRub';
 class TabTransactionHistory extends Component {
     constructor() {
         super();
+        this.currentPage = 1;
     }
 
     onLoad() {
-        // for (let i = 0; i < 3; i++) {
-        //     
-        // }
+        this.viewRub = new ListViewRub([], { paging: {} });
+        this.viewRub.getNode().then((view) => {
+            let prev = new cc.Component.EventHandler();
+            prev.target = this.node;
+            prev.component = 'TabTransactionHistory';
+            prev.handler = 'onPreviousBtnClick';
 
-        this._getTransactionItems();
+            let next = new cc.Component.EventHandler();
+            next.target = this.node;
+            next.component = 'TabTransactionHistory';
+            next.handler = 'onNextBtnClick';
+
+            this.view = view;
+            console.debug(this.view.parent);
+            this.viewRub.addEventPagingBtn(prev, next);
+
+            this._getTransactionItems(this.currentPage);
+        });
     }
 
-    _getTransactionsFromServer(cb) {
+    _getTransactionsFromServer(page, cb) {
         let data = {};
-        data[app.keywords.TRANSACTION_HISTORY.REQUEST.PAGE] = 1;
+        data[app.keywords.TRANSACTION_HISTORY.REQUEST.PAGE] = page;
         let sendObj = {
             cmd: app.commands.TRANSACTION_HISTORY,
             data
@@ -31,8 +45,22 @@ class TabTransactionHistory extends Component {
         });
     }
 
-    _getTransactionItems() {
-        this._getTransactionsFromServer((res) => {
+    onPreviousBtnClick() {
+        this.currentPage -= 1;
+        if (this.currentPage < 1) {
+            this.currentPage = 1;
+            return null;
+        }
+        this._getTransactionItems(this.currentPage);
+    }
+
+    onNextBtnClick() {
+        this.currentPage += 1;
+        this._getTransactionItems(this.currentPage);
+    }
+
+    _getTransactionItems(page) {
+        this._getTransactionsFromServer(page, (res) => {
             let golds = res[app.keywords.TRANSACTION_HISTORY.RESPONSE.GOLD];
             let items = res[app.keywords.TRANSACTION_HISTORY.RESPONSE.ITEM_LIST];
             let senders = res[app.keywords.TRANSACTION_HISTORY.RESPONSE.USER_SENDER_LIST];
@@ -66,7 +94,8 @@ class TabTransactionHistory extends Component {
                     let item = ListItemToggleableRub.create(body, null, options);
                     data.push(item.node());
                 }
-                ListViewRub.show(this.node, data);
+                this.viewRub.resetData(data);
+                (!this.view.parent) && this.node.addChild(this.view);
             }
         });
     }

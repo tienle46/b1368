@@ -12,7 +12,7 @@ export default class ListViewRub {
      *  @required width: number
      *  @required height: number
      *  paging: {
-     *      previous: cc.Component.EventHandler
+     *      prev: cc.Component.EventHandler
      *      next: cc.Component.EventHandler
      *  }
      * }
@@ -48,10 +48,10 @@ export default class ListViewRub {
             this.contentNode = this.viewNode.getChildByName('content');
 
             return this.bodyNode;
-        }).then(this._setupComponentsByOptions.bind(this)).then(this._initRow.bind(this));
+        }).then(this._setupComponentsByOptions.bind(this)).then(this._addRows.bind(this));
     }
 
-    _initRow() {
+    _addRows() {
         this.data.forEach((node) => {
             if (node instanceof cc.Node)
                 this.contentNode.addChild(node);
@@ -65,14 +65,24 @@ export default class ListViewRub {
         });
     }
 
-    updateData(data) {
-        data = this._validData(data);
-        // this.data = [...this.data, ...data];
-        // this.prefab.active = false;
-        this._insertCellBody(data);
+    resetData(data) {
+        this.data = data;
+        // reset body
+        this.contentNode && this.contentNode.removeAllChildren(true);
+        // reinsert
+        this._addRows();
     }
 
+    // push data
+    // updateData(data) {
+    //     data = this._validData(data);
+    //     // this.data = [...this.data, ...data];
+    //     // this.prefab.active = false;
+    //     this._insertCellBody(data);
+    // }
+
     _setupComponentsByOptions(scroll) {
+        this._initPaging();
         this._resize(scroll);
 
         // scrollview
@@ -108,6 +118,39 @@ export default class ListViewRub {
         this.contentNode.setContentSize(this.viewNode.getContentSize());
     }
 
+    _initPaging() {
+        if (!this.options.paging) {
+            // hide paging Node
+            this.pagingNode.active = false;
+
+            // fit to 100% by body
+            let widget = {
+                left: 0,
+                right: 0,
+                bottom: 0,
+                top: 0
+            };
+            NodeRub.addWidgetComponentToNode(this.bodyNode, widget);
+        } else {
+            this.pagingNode.active = true;
+            let prevEvent = this.options.paging.prev;
+            let nextEvent = this.options.paging.next;
+            this.addEventPagingBtn(prevEvent, nextEvent);
+
+        }
+    }
+
+    addEventPagingBtn(prevEvent, nextEvent) {
+        if (prevEvent && prevEvent instanceof cc.Component.EventHandler) {
+            let backBtn = this.pagingNode.getChildByName('previous').getComponent(cc.Button);
+            backBtn.clickEvents = [prevEvent];
+        }
+
+        if (nextEvent && nextEvent instanceof cc.Component.EventHandler) {
+            let nextBtn = this.pagingNode.getChildByName('next').getComponent(cc.Button);
+            nextBtn.clickEvents = [nextEvent];
+        }
+    }
 
     _getNode() {
         return this.prefab;
