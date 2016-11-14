@@ -31,6 +31,8 @@ class PreloadScene extends Component {
         else{
             debug(`what the heck?`);
         }
+
+        cc.game.setFrameRate(30.0);
     }
 
     onEnable() {
