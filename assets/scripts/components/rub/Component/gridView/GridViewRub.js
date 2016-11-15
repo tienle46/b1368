@@ -2,8 +2,10 @@ import RubUtils from 'RubUtils';
 import CellRub from 'CellRub';
 import app from 'app';
 import NodeRub from 'NodeRub';
+import _ from 'lodash';
+import ScrollViewRub from 'ScrollViewRub';
 
-export default class GridViewRub {
+export default class GridViewRub extends ScrollViewRub {
     /**
      * Creates an instance of GridViewRub.
      * 
@@ -86,6 +88,7 @@ export default class GridViewRub {
      * @memberOf GridViewRub ( cc.Node )
      */
     constructor(head = null, data, opts = {}) {
+        super(data, opts);
         // CellRub default options
         let cell = Object.assign({}, {
             bgColor: app.const.COLOR_VIOLET, // # violet
@@ -99,16 +102,6 @@ export default class GridViewRub {
         }, opts.cell || {});
 
         let defaultOptions = {
-            position: cc.v2(0, 0),
-            width: 585,
-            height: 200,
-            spacingX: 1,
-            spacingY: 1,
-            isHorizontal: false,
-            isVertical: true,
-            group: null,
-            dataValidated: false,
-            paging: null,
             cell
         };
 
@@ -116,8 +109,11 @@ export default class GridViewRub {
             data: [],
         };
 
-        this.options = Object.assign({}, defaultOptions, opts);
+        // this.options = Object.assign({}, defaultOptions, opts);
+        this.options = Object.assign(this.options, defaultOptions, opts);
+
         this.data = this.options.dataValidated ? data : this._validateData(data);
+
         if (head instanceof Array) {
             this.head = {
                 data: head
@@ -126,114 +122,41 @@ export default class GridViewRub {
             this.head = Object.assign({}, defaultHead, head);
         }
 
-        this.SCROLL_VIEW_PADDING_BOTTOM = 40;
+        this.init();
     }
 
+    // Override
     init() {
-        let scrollviewPrefab = 'dashboard/dialog/prefabs/scrollview';
+        super.init();
 
-        return RubUtils.loadRes(scrollviewPrefab).then((prefab) => {
-            this.prefab = cc.instantiate(prefab);
-
-            // this.addToNode();
-            this.bodyNode = this.prefab.getChildByName('body');
-            this.pagingNode = this.prefab.getChildByName('paging');
-
-            this.viewNode = this.bodyNode.getChildByName('view');
-            this.contentNode = this.viewNode.getChildByName('content');
-
-            return this.bodyNode;
-        }).then(this._setupComponentsByOptions.bind(this)).then(() => {
-            // init cell
-            this.data.length > 0 && this.data[0] instanceof Array && this.data[0].length > 0 && this._initCell();
-            return this;
-        });
+        //init cell
+        this.data.length > 0 && this.data[0] instanceof Array && this.data[0].length > 0 && this._initCell();
     }
 
-    getContentNodeWidth() {
-        return this.contentNode && (() => this.contentNode.getContentSize().width || 0)();
-    }
 
-    getNode() {
-        return this.init().then(() => {
-            return this.prefab;
-        });
-    }
-
-    resetData(data, isValidated) {
+    resetData(data, isValidated = false) {
         this.data = isValidated ? data : this._validateData(data);
         // reset body
         this.contentNode && this.contentNode.removeAllChildren(true);
         // reinsert
-        this._insertCellBody(this.data);
+        this._initCell();
     }
 
-    updateData(data) {
-        data = this._validateData(data);
-        // this.data = [...this.data, ...data];
-        // this.prefab.active = false;
-        this._insertCellBody(data);
-    }
-
-    _setupComponentsByOptions(scroll) {
-        this._resize(scroll);
-
-        // scrollview
-        let scrollView = scroll.getComponent(cc.ScrollView);
-        scrollView.horizontal = this.options.isHorizontal;
-        scrollView.vertical = this.options.isVertical;
-        // register scrollview scrollEvent
-        // scrollView.scrollEvents = [];
-        // this.options.event && scrollView.scrollEvents.push(this.options.event);
-
+    _setupComponentsByOptions(body) {
+        super._setupComponentsByOptions(body);
         // content/layout
-        let contentLayout = this.contentNode.getComponent(cc.Layout);
-        contentLayout.spacingX = this.options.spacingX;
-        contentLayout.spacingY = this.options.spacingY;
+        let layout = {
+            type: cc.Layout.Type.GRID,
+            resizeMode: cc.Layout.ResizeMode.CONTAINER,
+            startAxis: cc.Layout.AxisDirection.HORIZONTAL,
+            verticalDirection: cc.Layout.VerticalDirection.TOP_TO_BOTTOM,
+            horizontalDirection: cc.Layout.HorizontalDirection.LEFT_TO_RIGHT,
+            spacingX: this.options.spacingX,
+            spacingY: this.options.spacingY,
+            padding: 0
+        };
 
-        // setup content background
-        this.options.bg && this._setupContent(this.contentNode);
-
-        return null;
-    }
-
-    _setupContent(contentNode) {
-        // create spriteFrame
-        let contentSprite = contentNode.getComponent(cc.Sprite);
-
-        let size = contentNode.getContentSize();
-        let defaultSpriteFrame = 'textures/50x50.png';
-        RubUtils.loadSpriteFrame(contentSprite, typeof this.options.bg === 'string' ? this.options.bg : defaultSpriteFrame, size, false, () => {
-            if (typeof this.options.bg !== 'string') {
-                // set color to node
-                contentNode.color = this.options.bg;
-            }
-        });
-    }
-
-    // resize content node by parent ( dont know why widget does not work )
-    _resize(scroll) {
-        if (!this.options.paging) {
-            // hide paging Node
-            this.pagingNode.active = false;
-
-            // fit to 100% by body
-            let widget = {
-                left: 0,
-                right: 0,
-                bottom: 0,
-                top: 0
-            };
-            NodeRub.addWidgetComponentToNode(this.bodyNode, widget);
-        }
-        this.prefab.setPosition(this.options.position);
-        // set prefab size
-        this.prefab.setContentSize(cc.size(this.options.width, this.options.height));
-        scroll.setContentSize(cc.size(this.options.width, this.options.height - this.SCROLL_VIEW_PADDING_BOTTOM));
-        // `view` node size
-        this.viewNode.setContentSize(scroll.getContentSize());
-        // `view/content` node size
-        this.contentNode.setContentSize(this.viewNode.getContentSize());
+        NodeRub.addLayoutComponentToNode(this.contentNode, layout);
     }
 
     _initCell() {
@@ -385,6 +308,7 @@ export default class GridViewRub {
      * @memberOf GridViewRub
      */
     _validateData(input) {
+        input = _.cloneDeep(input);
         let tmp = [];
         let out = [];
         if (input[0])
@@ -399,22 +323,12 @@ export default class GridViewRub {
         return out;
     }
 
-    _getNode() {
-        return this.prefab;
-    }
-
-
     // return Promise which attaches `cc.Node`
     static node(head, data, opts = {}) {
-        return new GridViewRub(head, data, opts).init().then((a) => {
-            return a._getNode();
-        });
+        return new GridViewRub(head, data, opts).getNode();
     }
 
     static show(node, head, data, opts = {}) {
-        return new GridViewRub(head, data, opts).init().then((a) => {
-            node.addChild(a._getNode());
-            return a;
-        });
+        node.addChild(new GridViewRub(head, data, opts).getNode());
     }
 }

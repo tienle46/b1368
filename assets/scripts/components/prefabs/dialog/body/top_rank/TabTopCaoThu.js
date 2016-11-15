@@ -1,7 +1,6 @@
 import app from 'app';
 import Component from 'Component';
 import GridViewRub from 'GridViewRub';
-import numeral from 'numeral';
 import RubUtils from 'RubUtils';
 import LoaderRub from 'LoaderRub';
 
@@ -147,7 +146,7 @@ class TabTopCaoThu extends Component {
             options: {
                 fontColor: app.const.COLOR_YELLOW
             }
-        }, d, { width: 480, height: 356, event, group: { widths: [80, 200, 100, 100] } });
+        }, d, { paging: {}, width: 480, height: 356, event, group: { widths: [80, 200, 100, 100] } });
 
         // show loader
         this.loader.hide();

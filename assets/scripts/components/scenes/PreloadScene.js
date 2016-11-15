@@ -8,12 +8,12 @@ class PreloadScene extends Component {
         super();
 
         this.fullSceneLoadingPrefab = {
-            default : null,
-            type : cc.Prefab
+            default: null,
+            type: cc.Prefab
         };
         this.loadingPrefab = {
-            default : null,
-            type : cc.Prefab
+            default: null,
+            type: cc.Prefab
         };
         this.loading = {
             default: null,
@@ -24,15 +24,12 @@ class PreloadScene extends Component {
     onLoad() {
         app.res.prefab.loading = this.loadingPrefab;
         app.res.prefab.fullSceneLoading = this.fullSceneLoadingPrefab;
-        if(this.loading){
+        if (this.loading) {
             debug(this.loading);
             this.loading.getComponent(FullSceneProgress.name).show(app.res.string('loading_data'));
-        }
-        else{
+        } else {
             debug(`what the heck?`);
         }
-
-        cc.game.setFrameRate(30.0);
     }
 
     onEnable() {
@@ -43,10 +40,16 @@ class PreloadScene extends Component {
                     prefab ? callback(null, true) : callback();
                 });
             },
+            (callback) => {
+                cc.loader.loadRes('dashboard/dialog/prefabs/scrollview', (err, prefab) => {
+                    app.res.prefab.scrollview = prefab;
+                    prefab ? callback(null, true) : callback();
+                });
+            }
         ], (err, results) => {
 
             let loadedRes = true;
-            results.some((success)=>{
+            results.some((success) => {
                 if (!success) {
                     loadedRes = false;
                     return true;

@@ -98,21 +98,7 @@ export default class TabUserInfo extends Component {
 
         this._getAchievementsDataFromServer((data) => {
             achievementsTab.resetData(data);
-
-            achievementsTab.getNode().then((prefab) => {
-                this.statisticPanel.addChild(prefab);
-
-                // const widget = prefab.addComponent(cc.Widget);
-                // widget.isAlignLeft = true;
-                // widget.isAlignRight = true;
-                // widget.isAlignTop = true;
-                // widget.isAlignBottom = true;
-                //
-                // widget.left = 0;
-                // widget.right = 0;
-                // widget.top = 0
-                // widget.bottom = 0;
-            });
+            this.statisticPanel.addChild(achievementsTab.getNode());
         });
 
     }

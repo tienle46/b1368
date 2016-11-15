@@ -1,5 +1,3 @@
-import ButtonScaler from 'ButtonScaler';
-
 let RubUtils = {
     loadRes: (resURL, isSpriteFrame = false) => {
         return new Promise((resolve, reject) => {
@@ -51,7 +49,6 @@ let RubUtils = {
     },
     calcWidthByGroup: (parentWidth, widths = [], spaceX = 0, padding = 0) => {
         // parentWidth -= 2 * padding;
-
         // ['', '10%', 30, '']
         widths = widths.map((width) => {
             let w;
