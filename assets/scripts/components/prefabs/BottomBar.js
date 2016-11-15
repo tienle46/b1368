@@ -23,7 +23,7 @@ class BottomBar extends Component {
             type: cc.Button
         };
 
-        this.notifiButton = {
+        this.eventButton = {
             default: null,
             type: cc.Button
         };
@@ -90,7 +90,7 @@ class BottomBar extends Component {
         DialogRub.show(this.node.parent, tabOptions);
     }
 
-    onClickNotifiAction() {
+    onClickEventAction() {
         log("Notifi");
     }
 

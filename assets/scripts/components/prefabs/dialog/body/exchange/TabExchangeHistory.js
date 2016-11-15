@@ -77,8 +77,7 @@ class TabExchangeHistory extends Component {
     _initBody(d) {
         let bodyNode = this.node.getChildByName('body');
 
-        let event = null;
-        GridViewRub.show(bodyNode, { data: ['Thời gian', 'Loại vật phẩm', 'Thông tin', ''], options: { fontColor: app.const.COLOR_YELLOW } }, d, { position: cc.v2(2, 120), width: 780, event });
+        GridViewRub.show(bodyNode, { data: ['Thời gian', 'Loại vật phẩm', 'Thông tin', ''], options: { fontColor: app.const.COLOR_YELLOW } }, d, { width: 780 });
     }
 
     _getExchangeDialogComponent() {

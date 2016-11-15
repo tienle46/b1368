@@ -1,6 +1,7 @@
 import RubUtils from 'RubUtils';
 import TabRub from 'TabRub';
 import Rub from 'Rub';
+import app from 'app';
 
 export default class DialogRub extends Rub {
     /**
@@ -15,29 +16,27 @@ export default class DialogRub extends Rub {
      * 
      * @memberOf DialogRub
      */
-    constructor(node, tabOptions) {
+    constructor(node, tabOptions = null) {
         super(node);
         // this.node = node;
         this.tabOptions = tabOptions;
     }
 
     init() {
-        return RubUtils.loadRes('dashboard/dialog/prefabs/dialog').then((prefab) => {
-            this.prefab = cc.instantiate(prefab);
-            this.prefab.zIndex = 20;
-            this.prefab.x = 0;
-            this.prefab.y = 0;
+        let dialog = app.res.prefab.dialog;
+        this.prefab = cc.instantiate(dialog);
+        this.addToNode();
 
-            this.addToNode();
+        this.prefab.zIndex = 20;
+        this.prefab.x = 0;
+        this.prefab.y = 0;
 
-            this.dialogNode = this.prefab.getChildByName('dialog');
-            return null;
-        }).then(() => {
-            this._closeBtnEventRegister();
-            return null;
-        }).then(() => {
-            return this._initTab(this.tabOptions);
-        });
+        this.dialogNode = this.prefab.getChildByName('dialog');
+
+        // event registeration
+        this._closeBtnEventRegister();
+
+        this.tabOptions && this._initTab(this.tabOptions);
     }
 
     // add Tab to prefab/pagination node
@@ -48,10 +47,8 @@ export default class DialogRub extends Rub {
         // add Tab
         let tabs = tabOptions.tabs;
         let options = tabOptions.options;
-        return TabRub.show(paginationNode, this.bodyNode, tabs, options)
-            .then((tabRub) => {
-                tabRub.fitToParent(paginationNode);
-            });
+
+        new TabRub(paginationNode, this.bodyNode, tabs, options).fitToParent();
     }
 
     // close Btn Event

@@ -7,12 +7,7 @@ export default class PersonalInfoDialogRub extends DialogRub {
     }
 
     init() {
-        return super.init().then(() => {
-            this.personalInfoDialogComponent = this.prefab.addComponent(PersonalInfoDialog);
-
-            return null;
-        }).catch(e => {
-            console.error(e);
-        });
+        super.init();
+        this.personalInfoDialogComponent = this.prefab.addComponent(PersonalInfoDialog);
     }
 }

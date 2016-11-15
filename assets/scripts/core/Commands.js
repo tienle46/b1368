@@ -224,6 +224,9 @@ Commands.EXCHANGE_HISTORY_DETAIL = "awd_hisd";
 //admin message
 Commands.LIST_SYSTEM_MESSAGE = "dcn";
 
+//events
+Commands.LIST_SYSTEM_MESSAGE = "dcn";
+
 //high light message
 Commands.HIGH_LIGHT_MESSAGE = "hm";
 Commands.INGAME_CHAT_MESSAGE_LIST = "gicml";

@@ -7,11 +7,11 @@ import LoaderRub from 'LoaderRub';
 class TabTopVip extends Component {
     constructor() {
         super();
-        this.GridViewCardTabRub = null;
-        this.GridViewCardTabNode = null;
+
         this.flag = null;
         this.topNodeId = 14;
         this.currentPage = 1;
+        
         this.contentNode = {
             default: null,
             type: cc.Node

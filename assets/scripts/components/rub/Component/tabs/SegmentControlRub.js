@@ -2,6 +2,7 @@ import ToggleGroup from 'ToggleGroup';
 import CheckBox from 'CheckBox';
 import Rub from 'Rub';
 import RubUtils from 'RubUtils';
+import app from 'app';
 
 export default class SegmentControlRub extends Rub {
     /**
@@ -69,19 +70,19 @@ export default class SegmentControlRub extends Rub {
     }
 
     init() {
-        return RubUtils.loadRes('dashboard/dialog/prefabs/segmentControl').then((prefab) => {
-            this.prefab = cc.instantiate(prefab);
+        let segement = app.res.prefab.segmentControl;
 
-            this.addToNode();
+        this.prefab = cc.instantiate(segement);
+        this.toggleGroupNode = this.prefab.getChildByName('group');
+        this.toggleGroupComponent = this.toggleGroupNode.getComponent(ToggleGroup);
 
-            return this.prefab;
-        }).then(() => {
-            return this._setupComponentByOptions();
-        }).then(() => {
-            return this._initComponents();
-        }).then((toggleGroupComponent) => {
-            return this._createCheckBoxStyle(toggleGroupComponent);
-        });
+        this.addToNode();
+
+        this._setupComponentByOptions();
+
+        this._initComponents();
+
+        this._createCheckBoxStyle();
     }
 
     _setupComponentByOptions() {
@@ -89,7 +90,7 @@ export default class SegmentControlRub extends Rub {
         let size = cc.size(this.options.width, this.options.height);
         this.prefab.setContentSize(size);
         let bgSpriteComponent = this.prefab.getComponent(cc.Sprite);
-        RubUtils.loadSpriteFrame(bgSpriteComponent, this.options.bg, size)
+        RubUtils.loadSpriteFrame(bgSpriteComponent, this.options.bg, size);
 
         this._resizeGroupNodeByOptions();
     }
@@ -119,10 +120,6 @@ export default class SegmentControlRub extends Rub {
     }
 
     _initComponents() {
-        let prefab = this.prefab;
-        let toggleGroupNode = prefab.getChildByName('group');
-        let toggleGroupComponent = toggleGroupNode.getComponent(ToggleGroup);
-
         this.segments.forEach((e, i) => {
             // create checkbox
             let newNode = new cc.Node();
@@ -132,7 +129,7 @@ export default class SegmentControlRub extends Rub {
             newNode.setContentSize(newNodeSize);
 
             // add to node
-            toggleGroupNode.addChild(newNode);
+            this.toggleGroupNode.addChild(newNode);
 
             // resize prefab by segment size
             this.prefab.width += newNodeWidth;
@@ -161,16 +158,12 @@ export default class SegmentControlRub extends Rub {
             newNode.addChild(labelNode);
 
             // push to toggleGroup
-            toggleGroupComponent.addItem(checkBox);
+            this.toggleGroupComponent.addItem(checkBox);
         });
-
-        // fit width of group and tab
-
-        return toggleGroupComponent;
     }
 
-    _createCheckBoxStyle(toggleGroup) {
-        let checkBoxes = toggleGroup.getItems();
+    _createCheckBoxStyle() {
+        let checkBoxes = this.toggleGroupComponent.getItems();
 
         checkBoxes.map((checkBox, i) => {
             checkBox.isChecked = i === 0;
@@ -193,8 +186,6 @@ export default class SegmentControlRub extends Rub {
             }
 
         });
-
-        return toggleGroup;
     }
 
     /**
@@ -218,6 +209,6 @@ export default class SegmentControlRub extends Rub {
     }
 
     static show(node, segments, options) {
-        return new SegmentControlRub(node, segments, options).init();
+        return new SegmentControlRub(node, segments, options);
     }
 }

@@ -93,6 +93,8 @@ class TabTopCaoThu extends Component {
 
     onGameItemClicked(event) {
         let dNodeId = event.currentTarget.dNodeId;
+        // show loader
+        this.loader.show();
 
         this._showTopPlayers(dNodeId, (data) => {
             this._initBody(data);

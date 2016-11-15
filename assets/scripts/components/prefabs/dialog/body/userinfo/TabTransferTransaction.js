@@ -73,6 +73,7 @@ class TabTransferTransaction extends Component {
                 } else {
                     this.endPage = items.length < this.itemPerPage;
                 }
+
                 for (let i = 0; i < items.length; i++) {
                     let transactionItem = new ListItemBasicRub(`<color=eeaa22>${senders[i]}</color> đã chuyển <color=eeaa22>${numeral(golds[i]).format('0,0')}</color> coin cho bạn`, { contentWidth: 470 });
                     transactionItem.initChild();
@@ -100,8 +101,8 @@ class TabTransferTransaction extends Component {
             } else {
                 this.endPage = true;
             }
-            this.loader.hide();
         });
+        this.loader.hide();
     }
 }
 

@@ -50,12 +50,11 @@ class TabTransactionHistory extends Component {
     }
 
     onNextBtnClick() {
-        if (this.endPage) {
-            return null;
+        if (!this.endPage) {
+            this.loader.show();
+            this.currentPage += 1;
+            this._getTransactionItems(this.currentPage);
         }
-        this.loader.show();
-        this.currentPage += 1;
-        this._getTransactionItems(this.currentPage);
     }
 
     _getTransactionItems(page) {
@@ -70,7 +69,9 @@ class TabTransactionHistory extends Component {
                     this.itemPerPage = items.length;
                 } else {
                     this.endPage = items.length < this.itemPerPage;
+                    console.debug(this.endPage);
                 }
+
                 for (let i = 0; i < items.length; i++) {
                     let body = {
                         title: {
@@ -98,6 +99,7 @@ class TabTransactionHistory extends Component {
                     let item = ListItemToggleableRub.create(body, null, options);
                     data.push(item.node());
                 }
+
                 this.viewRub.resetData(data);
                 let node = this.viewRub.getNode();
 
@@ -105,8 +107,8 @@ class TabTransactionHistory extends Component {
             } else {
                 this.endPage = true;
             }
-            this.loader.hide();
         });
+        this.loader.hide();
     }
 }
 

@@ -583,7 +583,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "notifyBtn",
+    "_name": "eventBtn",
     "_objFlags": 0,
     "_opacity": 255,
     "_color": {
@@ -734,7 +734,7 @@
       "__id__": 1
     },
     "component": "BottomBar",
-    "handler": "onClickNotifiAction",
+    "handler": "onClickEventAction",
     "customEventData": ""
   },
   {
@@ -2118,9 +2118,7 @@
     "topRankButton": {
       "__id__": 14
     },
-    "notifiButton": {
-      "__id__": 21
-    },
+    "eventButton": null,
     "awardTransferButton": {
       "__id__": 28
     },

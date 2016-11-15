@@ -75,10 +75,15 @@ export default class TabEvents extends Component {
                     events.push(event);
                 }
 
-                this._displayEvents(events);
+                if (events.length < 1) {
+                    this.endPage = true;
+                } else {
+                    this._displayEvents(events);
+                }
             }
 
         }, app.const.scene.BOTTOM_BAR);
+        this.loader.hide();
     }
 
     // _requestEventDetail(nodeId) {

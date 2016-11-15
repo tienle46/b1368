@@ -33,21 +33,21 @@ class PreloadScene extends Component {
     }
 
     onEnable() {
-        app.async.parallel([
-            (callback) => {
-                cc.loader.loadRes('toast/Toast', (err, prefab) => {
-                    app.res.prefab.toast = prefab;
-                    prefab ? callback(null, true) : callback();
-                });
-            },
-            (callback) => {
-                cc.loader.loadRes('dashboard/dialog/prefabs/scrollview', (err, prefab) => {
-                    app.res.prefab.scrollview = prefab;
-                    prefab ? callback(null, true) : callback();
-                });
-            }
-        ], (err, results) => {
+        let resources = [
+            { dir: 'toast/Toast', name: 'toast' },
+            { dir: 'dashboard/dialog/prefabs/scrollview', name: 'scrollview' },
+            { dir: 'dashboard/dialog/prefabs/segmentControl', name: 'segmentControl' },
+            { dir: 'dashboard/dialog/prefabs/dialog', name: 'dialog' }
+        ];
 
+        app.async.parallel(resources.map((res) => {
+            return (callback) => {
+                cc.loader.loadRes(res.dir, (err, prefab) => {
+                    app.res.prefab[res.name] = prefab;
+                    prefab ? callback(null, true) : callback();
+                });
+            };
+        }), (err, results) => {
             let loadedRes = true;
             results.some((success) => {
                 if (!success) {
