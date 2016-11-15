@@ -1,4 +1,3 @@
-import RubUtils from 'RubUtils';
 import TabRub from 'TabRub';
 import Rub from 'Rub';
 import app from 'app';

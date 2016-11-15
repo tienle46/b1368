@@ -10,6 +10,9 @@ export default class LoaderRub {
         this.node = node;
 
         this._node();
+        this.time = 3000 * 10;
+
+        this._setTimer(this.time);
     }
 
     _node() {
@@ -98,9 +101,17 @@ export default class LoaderRub {
 
     show() {
         this.spinLoaderNode.active = true;
+        this._setTimer(this.time);
     }
 
     hide() {
         this.spinLoaderNode.active = false;
+        clearTimeout(this.timer);
+    }
+
+    _setTimer(time) {
+        this.timer = setTimeout((() => {
+            this.spinLoaderNode.active && this.hide();
+        }).bind(this), time);
     }
 }
