@@ -1,6 +1,8 @@
 import TabRub from 'TabRub';
 import Rub from 'Rub';
 import app from 'app';
+import RubUtils from 'RubUtils';
+import NodeRub from 'NodeRub';
 
 export default class DialogRub extends Rub {
     /**
@@ -19,6 +21,7 @@ export default class DialogRub extends Rub {
         super(node);
         // this.node = node;
         this.tabOptions = tabOptions;
+        this.init();
     }
 
     init() {
@@ -31,6 +34,7 @@ export default class DialogRub extends Rub {
         this.prefab.y = 0;
 
         this.dialogNode = this.prefab.getChildByName('dialog');
+        this.bodyNode = this.dialogNode.getChildByName('body');
 
         // event registeration
         this._closeBtnEventRegister();
@@ -41,7 +45,6 @@ export default class DialogRub extends Rub {
     // add Tab to prefab/pagination node
     _initTab(tabOptions) {
         let paginationNode = this.dialogNode.getChildByName('pagination');
-        this.bodyNode = this.dialogNode.getChildByName('body');
 
         // add Tab
         let tabs = tabOptions.tabs;
@@ -59,8 +62,35 @@ export default class DialogRub extends Rub {
         }).bind(this));
     }
 
+    /**
+     * add body to dialog
+     * 
+     * @param {cc.Node || string} node || prefab directory
+     * 
+     * @memberOf DialogRub
+     */
+    addBody(node) {
+        let widget = {
+            top: 140,
+            left: 90,
+            right: 90,
+            bottom: 50
+        };
+
+        NodeRub.addWidgetComponentToNode(this.bodyNode, widget);
+
+        if (node instanceof cc.Node) {
+            this.bodyNode.addChild(node);
+        } else {
+            RubUtils.loadRes(node).then((prefab) => {
+                let n = cc.instantiate(prefab);
+                this.bodyNode.addChild(n);
+            });
+        }
+    }
+
     // return tabRub
     static show(node, tabOptions) {
-        return new this(node, tabOptions).init();
+        return new this(node, tabOptions);
     }
 }

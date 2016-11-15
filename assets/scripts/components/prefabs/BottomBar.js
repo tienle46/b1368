@@ -91,7 +91,8 @@ class BottomBar extends Component {
     }
 
     onClickEventAction() {
-        log("Notifi");
+        let dialog = new DialogRub(this.node.parent);
+        dialog.addBody('dashboard/dialog/prefabs/messagecenter/tab_events');
     }
 
     onClickTransferAwardAction(e) {
@@ -251,10 +252,6 @@ class BottomBar extends Component {
         this._getAgencyDataFromServer(agencyTab);
 
         return agencyTab.getNode();
-    }
-
-    testClick() {
-        console.log('testclick');
     }
 
     _getAgencyDataFromServer(agencyTab) {

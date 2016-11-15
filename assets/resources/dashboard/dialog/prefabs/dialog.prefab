@@ -842,7 +842,7 @@
     "_alignFlags": 44,
     "_left": 90,
     "_right": 90,
-    "_top": 0,
+    "_top": 164,
     "_bottom": 50,
     "_verticalCenter": 0,
     "_horizontalCenter": 0,
@@ -853,7 +853,7 @@
     "_isAbsHorizontalCenter": true,
     "_isAbsVerticalCenter": true,
     "_originalWidth": 805,
-    "_originalHeight": 0
+    "_originalHeight": 350
   },
   {
     "__type__": "cc.PrefabInfo",
