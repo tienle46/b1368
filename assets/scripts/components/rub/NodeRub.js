@@ -110,7 +110,13 @@ let NodeRub = {
      */
     addButtonComponentToNode: (node, options = {}) => {
         let button = node.getComponent(cc.Button) || node.addComponent(cc.Button);
-        options.event && (button.clickEvents = [options.event]);
+        if (options.event) {
+            if (options.event instanceof cc.Node)
+                button.clickEvents = [options.event];
+            else if (options.event instanceof Function) {
+                node.on(cc.Node.EventType.TOUCH_END, options.event);
+            }
+        }
 
         node.addComponent(ButtonScaler);
     },
@@ -120,7 +126,8 @@ let NodeRub = {
      *      name: string,
      *      position: cc.v2
      *      size: cc.size
-     *      color: new cc.Color
+     *      color: new cc.Color,
+     *      anchor: cc.v2
      *      widget: {
      *          isAlignOnce: boolean
      *          isAlignVerticalCenter, isAlignHorizontalCenter: boolean
@@ -169,11 +176,12 @@ let NodeRub = {
         options.size && node.setContentSize(options.size);
         options.color && (node.color = options.color);
         options.position && node.setPosition(options.position);
+        options.anchor && node.setAnchorPoint(options.anchor);
 
         // sprite
         if (options.sprite) {
             let bodySprite = node.addComponent(cc.Sprite);
-            RubUtils.loadSpriteFrame(bodySprite, options.sprite.spriteFrame, options.size, options.isCORS || false, options.cb);
+            RubUtils.loadSpriteFrame(bodySprite, options.sprite.spriteFrame, options.size, options.sprite.isCORS || false, options.sprite.cb);
         }
 
         // widget

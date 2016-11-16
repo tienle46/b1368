@@ -82,7 +82,7 @@ export default class HorizontalDropDownRub {
             let buttonWrapOptions = {
                 size: wrapbtnSize,
                 button: {
-                    event: null
+                    event: item.event || null
                 },
                 layout: {
                     type: cc.Layout.Type.VERTICAL,

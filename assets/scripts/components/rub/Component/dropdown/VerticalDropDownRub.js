@@ -83,7 +83,9 @@ export default class VerticalDropDownRub {
             let i = new ListItemBasicRub(null, { padding: 10 });
             // add btn
             let node = i.node();
-            NodeRub.addButtonComponentToNode(node, {});
+            NodeRub.addButtonComponentToNode(node, {
+                event: item.event || null
+            });
             let size = node.getContentSize();
             let layoutOptions = {
                 type: cc.Layout.Type.HORIZONTAL,

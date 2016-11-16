@@ -1,5 +1,4 @@
 import app from 'app';
-import RubUtils from 'RubUtils';
 import _ from 'lodash';
 import NodeRub from 'NodeRub';
 
