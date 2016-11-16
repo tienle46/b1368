@@ -92,7 +92,7 @@ class BottomBar extends Component {
 
     onClickEventAction() {
         let dialog = new DialogRub(this.node.parent);
-        dialog.addBody('dashboard/dialog/prefabs/messagecenter/tab_events');
+        dialog.addBody('dashboard/dialog/prefabs/event/event_dialog');
     }
 
     onClickTransferAwardAction(e) {
@@ -117,13 +117,24 @@ class BottomBar extends Component {
         ExchangeDialogRub.show(this.node.parent, tabOptions);
     }
 
+    testClick(e) {
+        console.debug(e);
+    }
+
     onClickHotlineAction(e) {
+        var event = new cc.Component.EventHandler();
+        event.target = this.node;
+        event.component = 'BottomBar';
+        event.handler = 'testClick';
+
         let dropdown = new HorizontalDropDownRub(e.currentTarget, [{
                 icon: 'bottombar/bottombar_tooltip_facebook',
-                content: 'Fanpage'
+                content: 'Fanpage',
+                event
             }, {
                 icon: 'bottombar/bottombar_tooltip_hotline',
-                content: 'Hotline'
+                content: 'Hotline',
+                event: this.testClick.bind(this)
             },
             {
                 icon: 'bottombar/bottombar_tooltip_gopy',
