@@ -14,25 +14,24 @@ export default class ScrollMessagePopup extends MessagePopup {
         this.messageLabel = cc.Label;
     }
 
-    initMessageNode(){
-    }
+    initMessageNode() {}
 
-    setMessage(message = ""){
+    setMessage(message = "") {
         this._hideLoading();
         this.messageLabel && (this.messageLabel.string = message);
     }
 
-    hide(){
+    hide() {
         super.hide();
         currentPopup = null;
     }
 
-    static show(parentNode, textOrRequestData, denyCb, acceptCb){
+    static show(parentNode, textOrRequestData, denyCb, acceptCb) {
 
         currentPopup && currentPopup.hide();
         let args = [parentNode, textOrRequestData, denyCb, acceptCb];
 
-        parentNode && textOrRequestData && RubUtils.loadRes('popup/ScrollMessagePopup').then((prefab) => {
+        parentNode && textOrRequestData && RubUtils.loadRes('Popup/ScrollMessagePopup').then((prefab) => {
 
             let messagePopupNode = cc.instantiate(prefab);
             let messagePopup = messagePopupNode.getComponent(ScrollMessagePopup.name);
@@ -40,7 +39,7 @@ export default class ScrollMessagePopup extends MessagePopup {
 
             currentPopup = messagePopup;
 
-        }).catch((error) => {console.error('error: ', error)});
+        }).catch((error) => { console.error('error: ', error) });
 
     }
 }

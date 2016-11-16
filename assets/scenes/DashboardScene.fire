@@ -412,12 +412,12 @@
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
-      "x": 0.5,
+      "x": 0,
       "y": 0.5
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 1000,
+      "width": 970,
       "height": 515
     },
     "_children": [],
@@ -427,7 +427,7 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": -30,
+      "x": -500,
       "y": 1
     },
     "_skewX": 0,
@@ -459,7 +459,7 @@
     "_enabled": true,
     "_layoutSize": {
       "__type__": "cc.Size",
-      "width": 1000,
+      "width": 970,
       "height": 515
     },
     "_resize": 1,
@@ -486,7 +486,7 @@
     "_enabled": true,
     "isAlignOnce": true,
     "_alignFlags": 45,
-    "_left": -30,
+    "_left": 0,
     "_right": 30,
     "_top": 16.5,
     "_bottom": 18.5,
@@ -708,10 +708,10 @@
       "__id__": 2
     },
     "_enabled": true,
+    "path": "",
     "popUp": {
       "__uuid__": "b304b073-0867-4e3e-a771-770ac6349d22"
     },
-    "progressPrefab": null,
     "scrollerContentView": {
       "__id__": 10
     },

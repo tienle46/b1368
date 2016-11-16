@@ -17,13 +17,13 @@ export default class MessagePopup extends Component {
 
         this.properties = {
             ...this.properties,
-            messageNode : cc.Node,
-            acceptButton : cc.Button,
-            acceptButtonLabel : cc.Label,
-            denyButtonLabel : cc.Label,
-            loadingComponent : cc.Node,
-            contentComponent : cc.Node,
-            popupComponent : cc.Node,
+            messageNode: cc.Node,
+            acceptButton: cc.Button,
+            acceptButtonLabel: cc.Label,
+            denyButtonLabel: cc.Label,
+            loadingComponent: cc.Node,
+            contentComponent: cc.Node,
+            popupComponent: cc.Node,
 
         }
 
@@ -136,7 +136,7 @@ export default class MessagePopup extends Component {
 
         let args = [parentNode, textOrRequestData, denyCb, acceptCb];
 
-        parentNode && textOrRequestData && RubUtils.loadRes('popup/MessagePopup').then((prefab) => {
+        parentNode && textOrRequestData && RubUtils.loadRes('Popup/MessagePopup').then((prefab) => {
 
             let messagePopupNode = cc.instantiate(prefab);
             let messagePopup = messagePopupNode.getComponent(MessagePopup.name);

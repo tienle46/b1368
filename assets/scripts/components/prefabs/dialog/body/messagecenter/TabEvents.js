@@ -81,7 +81,6 @@ export default class TabEvents extends Component {
                     this._displayEvents(events);
                 }
             }
-
         }, app.const.scene.BOTTOM_BAR);
         this.loader.hide();
     }

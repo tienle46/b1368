@@ -1,7 +1,5 @@
 import app from 'app';
 import Dialog from 'Dialog';
-import LoaderRub from 'LoaderRub';
-
 
 class ExchangeDialog extends Dialog {
     constructor() {

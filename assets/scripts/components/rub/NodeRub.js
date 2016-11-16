@@ -165,6 +165,9 @@ let NodeRub = {
      *          spacingY: 20,
      *          startAxis: cc.Layout.AxisDirection.HORIZONTAL,
      *          verticalDirection: cc.Layout.VerticalDirection.TOP_TO_BOTTOM
+     *      },
+     *      toggle: {
+     *          toggleGroup: cc.Node || null
      *      }
      * }
      * @returns  cc.Node
@@ -182,6 +185,12 @@ let NodeRub = {
         if (options.sprite) {
             let bodySprite = node.addComponent(cc.Sprite);
             RubUtils.loadSpriteFrame(bodySprite, options.sprite.spriteFrame, options.size, options.sprite.isCORS || false, options.sprite.cb);
+        }
+
+        if (options.toggle) {
+            let toggle = node.addComponent(cc.Toggle);
+            options.toggle.toggleGroup && (toggle.toggleGroup = options.toggle.toggleGroup);
+            options.toggle.event && (toggle.checkEvents = [options.toggle.event]);
         }
 
         // widget
