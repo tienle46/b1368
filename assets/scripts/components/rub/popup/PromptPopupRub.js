@@ -1,6 +1,6 @@
 import AlertPopupRub from 'AlertPopupRub';
 
-export default class ConfirmPopupRub extends AlertPopupRub {
+export default class PromptPopup extends AlertPopupRub {
     /**
      * Creates an instance of AlertPopupRub.
      * 
@@ -36,6 +36,6 @@ export default class ConfirmPopupRub extends AlertPopupRub {
 
     //override
     static show(node, string = "", greenBtnEvent = null, violetBtnEvent = null, context = null) {
-        return new ConfirmPopupRub(node, string, greenBtnEvent, violetBtnEvent, context);
+        return new PromptPopup(node, string, greenBtnEvent, violetBtnEvent, context);
     }
 }

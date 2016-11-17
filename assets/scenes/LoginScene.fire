@@ -484,7 +484,7 @@
       "b": 127.5,
       "a": 255
     },
-    "_N$maxLength": 0,
+    "_N$maxLength": 12,
     "_N$stayOnTop": false
   },
   {
@@ -708,7 +708,7 @@
       "b": 127.5,
       "a": 0
     },
-    "_N$maxLength": 0,
+    "_N$maxLength": 12,
     "_N$stayOnTop": false
   },
   {
@@ -1333,6 +1333,7 @@
       "__id__": 32
     },
     "_enabled": true,
+    "path": "",
     "popUp": {
       "__uuid__": "b304b073-0867-4e3e-a771-770ac6349d22"
     },
@@ -1375,7 +1376,8 @@
     "node": {
       "__id__": 26
     },
-    "_enabled": true
+    "_enabled": true,
+    "path": ""
   },
   {
     "__type__": "cc.Widget",
