@@ -1803,7 +1803,7 @@
     "meDealCardListNode": {
       "__id__": 35
     },
-    "deckCardAnchor": {
+    "deckCardNode": {
       "__id__": 41
     },
     "deckCardPrefab": {

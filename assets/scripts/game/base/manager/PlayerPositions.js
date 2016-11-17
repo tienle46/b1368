@@ -130,19 +130,21 @@ export default class PlayerPositions extends Component {
         if (isItMe) {
             return 0;
         } else {
-            let seatIndex = 0;
-
             if (app.context.getMe()) {
-                let seatIndexs = this._getPlayerSeatIndexs(gameCode);
-                let meId = app.context.getMe().getPlayerId(app.system.currentScene.board.room);
-                seatIndex = seatIndexs[meId][playerId];
-
+                let {seatIndex} = this._getPlayerSeatIndex(playerId, gameCode);
                 return seatIndex;
+
             } else {
-                seatIndex = playerId;
-                return seatIndex; //TODO
+                return playerId;
             }
         }
+    }
+
+    _getPlayerSeatIndex(playerId, gameCode){
+        let seatIndexs = this._getPlayerSeatIndexs(gameCode);
+        let meId = app.context.getMe().getPlayerId(app.system.currentScene.board.room);
+        let seatIndex = seatIndexs[meId][playerId];
+        return {seatIndex, seatIndexs, meId};
     }
 
     hideInviteButtonByPlayerId(playerId) {
@@ -172,12 +174,13 @@ export default class PlayerPositions extends Component {
     _setVisibleInviteButton(anchor, visible) {
         if (anchor) {
 
-            anchor.children.some((node)=>{
+            for (let i = 0; i < anchor.children.length; i++) {
+                let node = anchor[i];
                 if (node.name == 'inviteButton') {
                     node.active = visible;
-                    return true;
+                    break;
                 }
-            });
+            }
         }
     }
 
@@ -189,5 +192,75 @@ export default class PlayerPositions extends Component {
     showAnchor(index) {
         let anchor = this.getPlayerAnchor(index);
         if (anchor) anchor.active = true;
+    }
+
+    _getNextSeatIndex(seatIndex){
+
+        let nextIndex = null;
+
+        switch (seatIndex){
+            case 0:
+            case 1:
+                nextIndex = 4;
+                break;
+            case 2:
+                nextIndex = this.scene.gamePlayers.me ? 0 : 1;
+                break;
+            case 3:
+                nextIndex = 2;
+                break;
+            case 4:
+                nextIndex = 3;
+                break;
+        }
+
+        return nextIndex;
+    }
+
+    _getPreviousSeatIndex(seatIndex){
+        let preIndex = null;
+        switch (seatIndex){
+            case 0:
+            case 1:
+                preIndex = 2;
+                break;
+            case 2:
+                preIndex = 3;
+                break;
+            case 3:
+                preIndex = 4;
+                break;
+            case 4:
+                preIndex = this.scene.gamePlayers.me ? 0 : 1;
+                break;
+        }
+
+        return preIndex;
+    }
+
+    getNextNeighbourID(playerId) {
+        let {seatIndex, seatIndexs, meId} = this._getPlayerSeatIndex(playerId, this.scene.gameCode);
+        let nextSeatIndex = this._getNextSeatIndex(seatIndex);
+
+        return this._getPlayerIdBySeatIndex(seatIndexs, nextSeatIndex, meId);
+    }
+
+    getPreviousNeighbourPlayerID(playerId){
+        let {seatIndex, seatIndexs, meId} = this._getPlayerSeatIndex(playerId, this.scene.gameCode);
+        let nextSeatIndex = this._getPreviousSeatIndex(seatIndex);
+        return this._getPlayerIdBySeatIndex(seatIndexs, nextSeatIndex, meId);
+    }
+
+    _getPlayerIdBySeatIndex(seatIndexs, seatIndex, meId) {
+        let nextPlayerId = 0;
+        let seatIndexMap = seatIndexs[meId];
+        Object.getOwnPropertyNames(seatIndexMap).some(name => {
+            if (seatIndexMap[name] == seatIndex) {
+                nextPlayerId = Number.parseInt(name);
+                return true;
+            }
+        });
+
+        return nextPlayerId;
     }
 }

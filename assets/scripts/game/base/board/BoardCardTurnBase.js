@@ -14,7 +14,6 @@ export default class BoardCardTurnBase extends BoardCard {
     constructor() {
         super();
 
-        this.deckCardRenderer = null;
         this.playedCards = null;
         this.turnAdapter = null;
     }
@@ -22,6 +21,10 @@ export default class BoardCardTurnBase extends BoardCard {
     onLoad(){
         super.onLoad();
         this.playedCards = [];
+    }
+
+    getLastMovePlayer(){
+        return this.scene.gamePlayers.findPlayer(this.turnAdapter.lastPlayedTurn);
     }
 
     onEnable(renderer){
@@ -90,5 +93,9 @@ export default class BoardCardTurnBase extends BoardCard {
 
     onBoardPlaying(data, isJustJoined){
         super.onBoardPlaying(data, isJustJoined);
+    }
+
+    getDeckCards(){
+        return this.renderer.deckCardRenderer;
     }
 }

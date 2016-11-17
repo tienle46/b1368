@@ -17,11 +17,12 @@ export default class DialogRub extends Rub {
      * 
      * @memberOf DialogRub
      */
-    constructor(node, tabOptions = null) {
+    constructor(node, tabOptions = null, isAddToNode = true) {
         super(node);
         // this.node = node;
         this.tabOptions = tabOptions;
         this.init();
+        this.isAddToNode = isAddToNode;
     }
 
     init() {
@@ -88,6 +89,11 @@ export default class DialogRub extends Rub {
             });
         }
     }
+
+    addComponent(component) {
+        return (!this.prefab.getComponent(component)) && this.prefab.addComponent(component);
+    }
+
 
     // return tabRub
     static show(node, tabOptions) {

@@ -114,17 +114,20 @@ export default class GameUtils {
 
     static containsCard(cards, checkCard){
         if(!utils.isEmptyArray(cards)){
-
-            let rs = false;
-
-            cards.some((card)=>{
+            for (let i = 0; i < cards.length; i++) {
+                let card = cards[i];
                 if(checkCard.byteValue == card.byteValue){
-                    rs = true;
                     return true;
                 }
-            });
-
-            return rs;
+            }
         }
+    }
+
+    static swapCards(index1, index2, cardList){
+        let card1 = cardList.cards[index1];
+        cardList.cards[index1] = cardList.cards[index2];
+        cardList.cards[index1] = card1;
+
+
     }
 }

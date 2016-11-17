@@ -15,17 +15,14 @@ export default class AlertPopupRub extends BasePopupRub {
         super(node, string);
         this.greenBtnEvent = greenBtnEvent;
         this.context = context;
+        this.init();
     }
 
     init() {
-        return super.init().then(() => {
-            this._changeVioletBtnState();
-            return null;
-        }).then(() => {
-            // set green btn state
-            this._registerEvent();
-            return null;
-        });
+        super.init();
+
+        this._changeVioletBtnState();
+        this._registerEvent();
     }
 
 
@@ -42,8 +39,6 @@ export default class AlertPopupRub extends BasePopupRub {
 
     //override
     static show(node, string, greenBtnEvent = null, context = null) {
-        return new AlertPopupRub(node, string, greenBtnEvent, context).init().catch((err) => {
-            console.error('err', err);
-        });
+        return new AlertPopupRub(node, string, greenBtnEvent, context);
     }
 }

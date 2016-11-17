@@ -1730,7 +1730,7 @@
     "meDealCardListNode": {
       "__id__": 44
     },
-    "deckCardAnchor": {
+    "deckCardNode": {
       "__id__": 50
     },
     "deckCardPrefab": {

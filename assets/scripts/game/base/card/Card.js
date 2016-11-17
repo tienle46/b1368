@@ -18,6 +18,8 @@ export default class Card extends Component {
             texFrontBG: cc.SpriteFrame,
             texBackBG: cc.SpriteFrame,
             highlightNode: cc.Node,
+            lockedNode: cc.Node,
+            emptyNode: cc.Node,
 
             texFaces: {
                 default: [],
@@ -39,12 +41,36 @@ export default class Card extends Component {
         this.selected = false;
         this.highlight = false;
         this.clickListener = null;
+        this._selectedMargin = 40;
+        this.group = -1;
+        this.locked = false;
+    }
+
+    setLocked(locked){
+        if(!this.loaded){
+            this.__locked = locked;
+            return;
+        }
+        this.locked = locked;
+        utils.setVisible(this.lockedNode, locked);
+    }
+
+    setGroup(group){
+        this.group = group;
+    }
+
+    isEmpty(){
+        return this.byteValue < 5;
     }
 
     setHighlight(highlight) {
-        this.highlight = highlight;
+        if(!this.loaded){
+            this.__highlight = highlight;
+            return;
+        }
 
-        utils.deactive(this.highlightNode);
+        this.highlight = highlight;
+        utils.setVisible(this.highlightNode, highlight);
     }
 
     initFromByte(byteValue) {
@@ -58,18 +84,38 @@ export default class Card extends Component {
     _init(rank, suit, byteValue) {
         this.rank = rank;
         this.suit = suit;
-        this.byteValue
-            = byteValue;
+        this.byteValue = byteValue;
     }
 
     onLoad() {
 
         this.rankNode.string = this._getRankName();
-        this.suitNode.spriteFrame = this.texSuitSmall[this.suit];
+        this.suitNode.spriteFrame = this.texSuitSmall[this.suit] || this.emptyNode;
         this.rankNode.node.color = this.isRedSuit() ? this.redTextColor : this.blackTextColor;
         //this.rank > 10 => isFaceCard
-        this.mainPic.spriteFrame = this.rank > 10 ? this.texFaces[this.rank - 10 - 1] : this.texSuitBig[this.suit];
+        this.mainPic.spriteFrame = this.rank > 10 ? this.texFaces[this.rank - 10 - 1] : this.texSuitBig[this.suit] || this.emptyNode;
 
+    }
+
+    onEnable(){
+        super.onEnable();
+
+        utils.setVisible(this.lockedNode, this.locked);
+        utils.setVisible(this.highlightNode, this.highlight);
+
+        this.loaded = true;
+
+        if(this.__locked){
+            this.setLocked(this.__locked);
+        }
+
+        if(this.__highlight){
+            this.setLocked(this.__highlight);
+        }
+    }
+
+    onActive(){
+        super.onActive();
     }
 
     _getRankName() {
@@ -85,6 +131,18 @@ export default class Card extends Component {
                 return 'A';
             default:
                 return '' + this.rank;
+        }
+    }
+
+    setSelected(selected, skipAnim = false){
+        if(this.selected == selected) return;
+
+        this.selected = selected;
+
+        if(skipAnim){
+            this.node.setPositionY(selected ? this._selectedMargin : 0);
+        }else {
+            this.node.runAction(cc.moveTo(0.2, this.node.x, selected ? this._selectedMargin : 0));
         }
     }
 
@@ -166,6 +224,10 @@ export default class Card extends Component {
         }
 
         return card;
+    }
+
+    value(){
+        return this.byteValue;
     }
 }
 

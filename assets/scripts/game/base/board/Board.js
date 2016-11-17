@@ -77,11 +77,11 @@ export default class Board extends Actor {
         }
 
         this.scene.on(Events.ON_GAME_STATE_CHANGE, this.handleGameStateChange, this);
-        this.scene.on(Events.ON_GAME_STATE_BEGIN, this.onBoardBegin, this);
-        this.scene.on(Events.ON_GAME_STATE_STARTING, this.onBoardStarting, this);
-        this.scene.on(Events.ON_GAME_STATE_STARTED, this.onBoardStarted, this);
-        this.scene.on(Events.ON_GAME_STATE_PLAYING, this.onBoardPlaying, this);
-        this.scene.on(Events.ON_GAME_STATE_ENDING, this.onBoardEnding, this);
+        this.scene.on(Events.ON_GAME_STATE_BEGIN, this.onBoardBegin, this, 0);
+        this.scene.on(Events.ON_GAME_STATE_STARTING, this.onBoardStarting, this, 0);
+        this.scene.on(Events.ON_GAME_STATE_STARTED, this.onBoardStarted, this, 0);
+        this.scene.on(Events.ON_GAME_STATE_PLAYING, this.onBoardPlaying, this, 0);
+        this.scene.on(Events.ON_GAME_STATE_ENDING, this.onBoardEnding, this, 0);
         this.scene.on(Events.ON_GAME_LOAD_PLAY_DATA, this._loadGamePlayData, this);
         this.scene.on(Events.ON_PLAYER_READY_STATE_CHANGED, this._onPlayerSetReadyState, this);
         this.scene.on(Events.ON_GAME_REJOIN, this._onGameRejoin, this);
@@ -356,10 +356,14 @@ export default class Board extends Actor {
             balanceChangedAmounts[id] = newBalance - currentBalance;
         });
 
+        console.log("currentPlayerBalances: ", currentPlayerBalances, newPlayersBalance);
+
         return balanceChangedAmounts;
     }
 
     _handleSetPlayerBalance(data) {
+        
+        console.log("_handleSetPlayerBalance: ", data);
 
         let playerIds = utils.getValue(data, Keywords.GAME_LIST_PLAYER);
         let playersBalance = utils.getValue(data, Keywords.USER_BALANCE, []);

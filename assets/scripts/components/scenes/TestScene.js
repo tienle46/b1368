@@ -4,6 +4,7 @@ import Card from 'Card'
 
 import GameUtils from 'GameUtils';
 import Phom from "../../game/games/phom/Phom";
+import PhomList from "../../game/games/phom/PhomList";
 
 cc.Class({
     extends: cc.Component,
@@ -69,15 +70,44 @@ cc.Class({
     start(){
 
         let cardList = this.deckCard.getComponent("CardList");
-        cardList.setCards(GameUtils.convertBytesToCards([5, 6, 7, 10, 11, 12]));
+        cardList.setCards(GameUtils.convertBytesToCards([38, 5, 6, 7, 10, 11, 12, 17, 18, 19, 30, 32]));
+        cardList.node.setPositionY(200)
 
-        // let phomList = this.playCard.getComponent('PhomList');
-        // phomList.setAlign(CardList.ALIGN_TOP_RIGHT);
-        //
+        setTimeout(() => {
+            "use strict";
+
+            let phomList = new PhomList([
+                new Phom(GameUtils.convertBytesToCards([5, 6, 7])),
+                new Phom(GameUtils.convertBytesToCards([10, 11, 12])),
+                new Phom(GameUtils.convertBytesToCards([17, 18, 19]))
+            ])
+
+            let downPhomList = this.playCard.getComponent('PhomList');
+            phomList.forEach((phom, i) => {
+                
+                console.log("I: " + i)
+
+                if (i < 3 && (i== 2 || i == 1)) {
+                    let phomComponent = downPhomList.phomNodes[i].getComponent(Phom.name);
+
+                    console.log("phom before " + i + ": ", phomComponent.node);
+
+                    cardList.transfer(phom.cards, phomComponent, null, false);
+                }
+            });
+
+            downPhomList.forEach(phom => {
+                console.log("phom cards: ", phom.cards);
+            })
+
+            // cardList._adjustCardsPosition();
+        }, 2000);
+
+
         // let phom = new Phom(GameUtils.convertBytesToCards([5, 6, 7]));
-        // phomList.add(phom);
-        // phomList.add(new Phom(GameUtils.convertBytesToCards([5, 6, 7, 8, 9])));
-        // phomList.add(new Phom(GameUtils.convertBytesToCards([5, 6, 7, 10, 11, 12])));
+        // downPhomList.add(phom);
+        // downPhomList.add(new Phom(GameUtils.convertBytesToCards([10, 11, 12])));
+        // downPhomList.add(new Phom(GameUtils.convertBytesToCards([17, 18, 19])));
 
         // const fakeCards = Array(13).fill(5).map(byteValue => Card.from(byteValue));
         // var deckCardList = this.deckCard.getComponent('CardList');

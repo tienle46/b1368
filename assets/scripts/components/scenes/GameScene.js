@@ -31,6 +31,7 @@ export default class GameScene extends BaseScene {
         this.room = null;
         this.board = null;
         this.gameCode = null;
+        this.gameState = null;
         this.gameMenu = null;
         this.gameData = null;
         this.gamePlayers = null;
@@ -63,12 +64,14 @@ export default class GameScene extends BaseScene {
         this.initiated ? this._onGameRejoin(...args) : (this._penddingEvents.push({
             fn: this._onGameRejoin,
             args: args
-        }))
+        }));
     }
 
     onLoad() {
         super.onLoad();
         this._penddingEvents = [];
+
+        this.node.children.forEach(child => { child.opacity = 255})
     }
 
     _setTableNameLabel(room){
@@ -81,6 +84,7 @@ export default class GameScene extends BaseScene {
 
     onEnable() {
         super.onEnable();
+
         app.system.setCurrentScene(this);
         this.chatComponent = this.chatComponentNode.getComponent(IngameChatComponent.name);
         this.gamePlayers = this.playerLayer.getComponent(GamePlayers.name);
@@ -104,7 +108,6 @@ export default class GameScene extends BaseScene {
             error(e);
             app.system.enablePendingGameEvent = false;
             e instanceof CreateGameException && this._onLoadSceneFail();
-
         }
     }
 
@@ -235,7 +238,7 @@ export default class GameScene extends BaseScene {
         this.gameState = state;
         this.gameLocalState = localState;
 
-        // console.log("_onGameStateChange: state=", state, " local State: ", localState, " isJustJoined=", isJustJoined, " data=", data);
+        console.log("_onGameStateChange: state=", state, " local State: ", localState, " isJustJoined=", isJustJoined, " data=", data);
 
         switch (localState) {
             case app.const.game.state.BEGIN:

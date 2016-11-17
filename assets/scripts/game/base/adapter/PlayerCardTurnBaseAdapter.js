@@ -17,13 +17,12 @@ export default class PlayerCardTurnBaseAdapter extends PlayerTurnBaseAdapter {
      * @abstract
      */
     handlePlayTurn(data){
-        log("Handle play card: _handlePlayCards");
-
         let playerId = utils.getValue(data, Keywords.PLAYER_ID);
         let cards = GameUtils.convertBytesToCards(utils.getValue(data, Keywords.GAME_LIST_CARD, []));
 
         if(this.player.id === playerId && cards.length > 0){
             this.player.isItMe() && (cards = this.player.findCards(cards));
+            this.player._onPlayerPlayedCards && this.player._onPlayerPlayedCards(cards, this.player.renderer.cardList, this.player.isItMe());
             this.scene.emit(Events.ON_PLAYER_PLAYED_CARDS, cards, this.player.renderer.cardList, this.player.isItMe());
         }
     }

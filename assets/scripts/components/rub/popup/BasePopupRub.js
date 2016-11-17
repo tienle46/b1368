@@ -1,6 +1,6 @@
 import BasePopup from 'BasePopup';
 import ButtonGroup from 'ButtonGroup';
-import RubUtils from 'RubUtils';
+import app from 'app';
 
 export default class BasePopUpRub {
     /**
@@ -17,22 +17,16 @@ export default class BasePopUpRub {
     }
 
     init() {
-        return RubUtils.loadRes('popup/BasePopup').then((prefab) => {
-            this.prefab = cc.instantiate(prefab);
-            this.addToNode();
+        let basePopup = app.res.prefab.basePopup;
+        this.prefab = cc.instantiate(basePopup);
+        this.addToNode();
 
-            this.basePopupComponent = this.prefab.getComponent(BasePopup);
-            this.popup_bkgNode = this.prefab.getChildByName('popup_bkg');
+        this.basePopupComponent = this.prefab.getComponent(BasePopup);
+        this.popup_bkgNode = this.prefab.getChildByName('popup_bkg');
 
-            return null;
-        }).then(() => {
-            // set elements
-            this._setupPopupElement();
-            return null;
-        }).then(() => {
-            this._setupPopupContent();
-            return null;
-        });
+        this._setupPopupElement();
+
+        this._setupPopupContent();
     }
 
     _setupPopupElement() {
@@ -52,5 +46,14 @@ export default class BasePopUpRub {
 
     addToNode() {
         this.node.addChild(this.prefab);
+    }
+
+    /**
+     * @param {cc.Node || cc.Prefab || prefab dir} element
+     * 
+     * @memberOf BasePopUpRub
+     */
+    addToBody(element) {
+        this.basePopupComponent.addToBody(element);
     }
 }

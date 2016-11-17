@@ -21,11 +21,15 @@ Events.SHOW_GAME_BEGIN_CONTROLS         = "show.gameBeginControls";
 Events.SHOW_WAIT_TURN_CONTROLS          = "show.waitTurnControls";
 Events.SHOW_ON_TURN_CONTROLS            = "show.onTurnControls";
 Events.SHOW_EAT_AND_TAKE_CONTROLS       = "show.eatAndTakeControls";
+Events.SHOW_PLAY_CONTROL_ONLY           = "show.playControlOnly";
+Events.SHOW_JOIN_PHOM_CONTROLS          = "show.joinPhomControls";
+Events.SHOW_DOWN_PHOM_CONTROLS          = "show.downPhomControls";
 
 Events.HIDE_ALL_CONTROLS                = "hide.allControls";
 Events.HIDE_GAME_BEGIN_CONTROLS         = "hide.gameBeginControls";
 
 Events.VISIBLE_INGAME_CHAT_COMPONENT    = "visible.inGameChatComponent";
+Events.VISIBLE_GAME_PHOM_HIGHLIGNT      = "visible.gamePhomHighlight";
 
 Events.ON_PLAYER_PLAYED_CARDS           = "on.player.playedCards";
 Events.ON_PLAYER_READY_STATE_CHANGED    = "on.player.readyStateChanged";
@@ -52,6 +56,11 @@ Events.ON_CLICK_SORT_BUTTON             = "on.click.sortButton";
 Events.ON_CLICK_SKIP_TURN_BUTTON        = "on.click.skipTurnButton";
 Events.ON_CLICK_EAT_CARD_BUTTON         = "on.click.eatCardButton";
 Events.ON_CLICK_TAKE_CARD_BUTTON        = "on.click.takeCardButton";
+Events.ON_CLICK_JOIN_PHOM_BUTTON        = "on.click.joinPhomButton";
+Events.ON_CLICK_SKIP_JOIN_PHOM_BUTTON   = "on.click.skipJoinButton";
+Events.ON_CLICK_DOWN_PHOM_BUTTON        = "on.click.downPhomButton";
+Events.ON_CLICK_SKIP_DOWN_PHOM_BUTTON   = "on.click.skipDownButton";
+Events.ON_CLICK_CHANGE_PHOM_BUTTON      = "on.click.changePhomButton";
 
 Events.ON_GAME_STATE_BEGIN              = "on.game.stateBegin";
 Events.ON_GAME_STATE_STARTING           = "on.game.stateStarting";
@@ -68,3 +77,4 @@ Events.ON_ACTION_EXIT_GAME              = "on.action.exitGame";
 Events.ON_ACTION_LOAD_GAME_GUIDE        = "on.action.loadGameGuide";
 
 Events.SET_INTERACTABLE_PLAY_CONTROL    = "set.interactablePlayControl";
+Events.SET_INTERACTABLE_HA_PHOM_CONTROL = "set.interactableHaPhomControl";

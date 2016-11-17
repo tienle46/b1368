@@ -49,9 +49,13 @@ export default class PlayerPhomRenderer extends PlayerCardTurnBaseRenderer {
         this.playedCardList.clear();
         this.eatenCardList.clear();
         this.downPhomList.clear();
+        this.cardList.clear();
     }
 
     _reloadComponentOnIndexChanged(){
+
+        console.log("this.anchorIndex: ", this.anchorIndex);
+
         this.playedCardListNode.forEach((node, index) => {
             if(index == this.anchorIndex){
                 this.playedCardList = node.getComponent(CardList.name);
@@ -90,27 +94,27 @@ export default class PlayerPhomRenderer extends PlayerCardTurnBaseRenderer {
     }
 
     addHelpCard(cards, srcCardList, phomIndex){
-        let helpPhom = phomIndex && this.downPhomList.getPhomAt(phomIndex);
+        let helpPhom = phomIndex && this.downPhomList[phomIndex];
         if(helpPhom){
             if(srcCardList){
-                helpPhom.transferFrom(cards, srcCardList, {reveal: true});
+                helpPhom.transferFrom(srcCardList, cards);
             }else {
                 helpPhom.addCards(cards);
             }
         }
     }
 
-    addPlayedCard(card, srcCardList, isItMe){
+    addPlayedCard(cards, srcCardList, isItMe){
         if(srcCardList){
-            this.playedCardList.transferFrom([card], srcCardList, {reveal: true});
+            this.playedCardList.transferFrom(srcCardList, cards);
         }else {
-            this.playedCardList.addCards([card]);
+            this.playedCardList.addCards(cards);
         }
     }
 
     addEatenCard(card, srcCardList, isItMe){
         if(srcCardList){
-            this.eatenCardList.transferFrom([card], srcCardList, {reveal: true});
+            this.eatenCardList.transferFrom(srcCardList, [card]);
         }else {
             this.eatenCardList.addCards([card]);
         }
@@ -121,7 +125,7 @@ export default class PlayerPhomRenderer extends PlayerCardTurnBaseRenderer {
     }
 
     _getCardAnchorPoint(player) {
-        return player.anchorIndex == 3 ? this.defaultCardAnchor2 : super._getCardAnchorPoint(player);
+        return player.anchorIndex == 4 ? this.defaultCardAnchor2 : super._getCardAnchorPoint(player);
     }
 
     /**
@@ -131,7 +135,7 @@ export default class PlayerPhomRenderer extends PlayerCardTurnBaseRenderer {
      */
     _getEatenCardComponent(){
         let player = this.data.actor;
-        let eatenCardNode = this.anchorIndex == 1 || this.anchorIndex == 3 ? this.eatenCardListNode2 : this.eatenCardListNode;
+        let eatenCardNode = this.anchorIndex == 1 || this.anchorIndex == 4 ? this.eatenCardListNode2 : this.eatenCardListNode;
         return eatenCardNode.getComponent(CardList.name);
     }
 }

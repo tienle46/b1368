@@ -10,10 +10,11 @@ class BasePopup extends Component {
     // use this for initialization
     onLoad() {
         // prevent click from dialog to below layer
-        this.node.on('touchstart', function() {
+        this.node.on(cc.Node.EventType.TOUCH_START, function() {
             return;
         });
 
+        this.bodyNode = this.node.getChildByName('popup_bkg').getChildByName('body');
         // add closeBtn
         // this._btnRegisterEvents();
     }
@@ -26,6 +27,11 @@ class BasePopup extends Component {
 
     setContent(string) {
         this.bodyContentNode.getChildByName('string').getComponent(cc.Label).string = string;
+    }
+
+    addToBody(element) {
+        if (element instanceof cc.Node)
+            this.bodyNode.addChild(element);
     }
 
     /* PRIVATE METHODS */

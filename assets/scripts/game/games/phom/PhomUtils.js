@@ -3,8 +3,14 @@
  */
 
 import app from 'app'
+import PhomList from 'PhomList';
+import CardList from 'CardList';
 import {GameUtils, utils} from 'utils'
-
+import JoinSolution from "./JoinSolution";
+import JoinNode from "./JoinNode";
+import Card from 'Card';
+import Phom from 'Phom';
+import PhomGenerator from "./PhomGenerator";
 
 export default class PhomUtils {
 
@@ -15,337 +21,416 @@ export default class PhomUtils {
     constructor() {
     }
 
-    static getUPhomList(cards){
-
+    static isCa(card, caCard, isRank) {
+        if (isRank) {
+            return (card.rank == caCard.rank && card.suit != caCard.suit);
+        } else {
+            return ((card.suit == caCard.suit) && ((caCard.rank == (card.rank + 1)) || (caCard.rank == (card.rank + 2))
+            || (caCard.rank == (card.rank - 1)) || (caCard.rank == (card.rank - 2))));
+        }
     }
 
-    static checkUTron(cards){
+    static validateJoinPhom(cards, player) {
 
+        let joinPhomList = null;
+        let valid = !(player.currentGuiPhomSolutions.length == 0 || player.currentGuiPhomSolutions[0] < player.getSelectedCards().length);
+
+        if(valid){
+            let solution = player.currentGuiPhomSolutions[player.guiPhomSolutionId];
+            joinPhomList = solution && PhomUtils.bestPhomList(player.board.allPhomList);
+        }
+
+        return {valid, joinPhomList}
     }
 
-    static checkPlayCard(playCards, deckCards, gameType = PhomUtils.GAME_TYPE) {
-        let valid = playCards && playCards.length > 0;
+    static checkDownPhom(cards, player) {
 
-        if (valid){
-            let cards = this.getValidSelectedCards(playCards, deckCards, gameType);
-            valid = !utils.isEmptyArray(cards);
+        let solutionIndex = -1;
+        let haphomList = PhomUtils.bestPhomList(cards);
+        let haphomValue = haphomList.value();
+
+        player.currentHaPhomSolutions.some((phomList, i) => {
+            
+            console.log("haphomValue: ", haphomValue, " ", phomList.value())
+            
+            if(phomList.value() == haphomValue){
+                solutionIndex = i;
+                return true;
+            }
+        });
+
+        return solutionIndex >= 0;
+    }
+
+    static validateDownPhom(cards, player) {
+        let downPhomList = null;
+
+        let selectedCards = player.getSelectedCards();
+        let valid = player.currentHaPhomSolutions.length > 0 && player.currentHaPhomSolutions[player.haPhomSolutionId].getCards().length == selectedCards.length;
+
+        console.log("selectedCards: ", valid, selectedCards, player.currentHaPhomSolutions);
+
+        valid && player.eatenCards.some(eatenCard => {
+            if (selectedCards.indexOf(eatenCard) == -1) {
+                valid = false;
+                return true;
+            }
+        });
+
+        valid && (downPhomList = player.currentHaPhomSolutions[player.haPhomSolutionId]);
+
+        return {valid, downPhomList}
+    }
+
+    static isEaten(card){
+        return card.locked;
+    }
+
+    static setEaten(card, eaten = true){
+        card.setLocked(eaten);
+    }
+
+    static bestPhomList(cards) {
+        let phomLists = PhomGenerator.generate(cards);
+        return phomLists.length > 0 ? phomLists[0] : new PhomList();
+    }
+
+    static isUTron(phomList, player) {
+        if (player.handCards.length != 10 || player.eatenCards.length > 2 || phomList.getCards().length != player.handCards.length) {
+            return false;
+        }
+        return true;
+    }
+
+    static getJoinPhomSolutions(phoms, cards) {
+
+        let solutions = [];
+        let branch = new JoinSolution();
+
+        PhomUtils.generateJoinPhomSolutions(phoms, cards, branch, solutions);
+
+        JoinSolution.sortSolution(solutions);
+        JoinSolution.removeSubSolution(solutions);
+        JoinSolution.removeEmptySolution(solutions);
+
+        return solutions;
+    }
+
+    static generateJoinPhomSolutions(phoms, cards, branch, solutions) {
+        if (phoms.length == 0) return;
+
+        for (let i = 0; i < cards.length; i++) {
+
+            let card = cards[i];
+
+            for (let j = 0; j < phoms.length; j++) {
+                let phom = phoms[j];
+                let checkJoinResult = phom.joinCard(card);
+
+                if (checkJoinResult != -1) {
+
+                    cards.splice(i, 1);
+                    let node = new JoinNode(card, j);
+                    branch.addNode(node);
+
+                    PhomUtils.generateJoinPhomSolutions(phoms, cards, branch, solutions);
+
+                    branch.removeNodeAt(branch.length - 1);
+                    cards.splice(i, 0, card);
+                    CardList.removeAllCards(phom.cards, [card]);
+                }
+            }
+        }
+
+        let isInside = false;
+
+        for (let i = 0; i < solutions.length; i++) {
+            let solution = solutions[i];
+            if (solution.equals(branch)) {
+                isInside = true;
+                break;
+            }
+        }
+
+        if (!isInside) {
+            solutions.add(new JoinSolution(branch));
+        }
+    }
+
+    static findPhomListAt(cards, index) {
+        let pl = new PhomList();
+        if (cards.length < 3) return pl;
+
+        let firstCard = cards[index];
+        pl.join(PhomUtils.findPhomListByRank(cards, firstCard, false));
+        pl.join(PhomUtils.findPhomListBySuit(cards, firstCard, false));
+
+        return pl;
+    }
+
+    static isMom(player) {
+        let isMom = true;
+        
+        console.log("isMom: ",  player.renderer.downPhomList);
+        
+        player.renderer.downPhomList.some(phom => {
+            if (phom.cards.length > 0) {
+                isMom = false;
+                return true;
+            }
+        });
+
+        return isMom;
+    }
+
+    static checkPlayCard(playCards = [], cards = []) {
+
+        if (playCards.length != 1) return false;
+
+        let playingCard = playCards[0];
+        let eatenCards = cards.filter(card => PhomUtils.isEaten(card));
+        let valid = eatenCards.length == 0 || !CardList.contains(eatenCards, playingCard);
+
+        if(valid){
+            let checkingCards = [...cards];
+            CardList.removeCard(checkingCards, playingCard);
+            valid = this.isValidCards(checkingCards, eatenCards);
         }
 
         return valid;
     }
 
-    static getValidSelectedCards(selectedCards = [], deckCards = [], gameType = PhomUtils.GAME_TYPE) {
+    static isValidCards(cards, eatenCards) {
 
-        if (selectedCards.length == 0) {
-            return null;
-        }
+        let valid = true;
+        let eatenPhoms = PhomGenerator.generatePhomByEatenCard(cards, eatenCards);
 
-        const tempSelectedCards = [...selectedCards];
-        const tempDeckCards = [...deckCards];
-        const numberOfPlayCards = tempSelectedCards.length;
+        eatenCards.some(eatenCard => {
+            let phoms = eatenPhoms[eatenCard];
 
-        GameUtils.sortCardAsc(tempSelectedCards, gameType);
-
-        let selectedCardsGroupType = this.getGroupCardType(tempSelectedCards, gameType);
-
-        if (utils.isEmptyArray(tempDeckCards)) {
-            if (selectedCardsGroupType != this.GROUP_CARD_TYPE_INVALID) {
-                return tempSelectedCards;
+            if(!(phoms.length > 0)){
+                valid = false;
+                return true;
             }
-        } else {
-            let deckCardsGroupType = this.getGroupCardType(tempDeckCards, gameType);
-            /**
-             * Neu cung loai bai thi check xem bai danh ra co to hon bai cua
-             * nguoi truoc danh khong Neu khac loai bai thi kiem tra cac truong
-             * hop chat duoc biet
-             */
-            let maxSelectedCard = tempSelectedCards[numberOfPlayCards - 1];
-            let maxDeckCard = tempDeckCards[tempDeckCards.length - 1];
-
-            if (selectedCardsGroupType == deckCardsGroupType) {
-                if (selectedCardsGroupType == this.GROUP_CARD_TYPE_SANH && numberOfPlayCards != tempDeckCards.length) {
-                    return null;
-                }
-                return maxSelectedCard.compareTo(maxDeckCard, gameType) >= 0 ? tempSelectedCards : null;
-            } else {
-                switch (selectedCardsGroupType) {
-                    case this.GROUP_CARD_TYPE_DOI_HEO:
-                        if (deckCardsGroupType == this.GROUP_CARD_TYPE_DOI) {
-                            return tempSelectedCards;
-                        }
-                        break;
-                    case this.GROUP_CARD_TYPE_TU_QUY:
-                        switch (deckCardsGroupType) {
-                            case this.GROUP_CARD_TYPE_TU_QUY:
-                                return maxSelectedCard.compareTo(maxDeckCard, gameType) >= 0 ? tempSelectedCards : null;
-                            case this.GROUP_CARD_TYPE_BA_DOI_THONG:
-                                return tempSelectedCards;
-                            case this.GROUP_CARD_TYPE_DOI_HEO:
-                                return gameType == app.const.game.GAME_TYPE_XAM ? null : tempSelectedCards;
-                            case this.GROUP_CARD_TYPE_RAC:
-                                return maxDeckCard.isHeo() ? tempSelectedCards : null;
-                            default:
-                                return null;
-                        }
-                    case this.GROUP_CARD_TYPE_BON_DOI_THONG:
-                        switch (deckCardsGroupType) {
-                            case this.GROUP_CARD_TYPE_TU_QUY:
-                                return tempSelectedCards;
-                            case this.GROUP_CARD_TYPE_BA_DOI_THONG:
-                                return tempSelectedCards;
-                            case this.GROUP_CARD_TYPE_DOI_HEO:
-                                return tempSelectedCards;
-                            case this.GROUP_CARD_TYPE_RAC:
-                                return maxDeckCard.isHeo() ? tempSelectedCards : null;
-                            default:
-                                return null;
-                        }
-                    case this.GROUP_CARD_TYPE_BA_DOI_THONG:
-                        switch (deckCardsGroupType) {
-                            case this.GROUP_CARD_TYPE_RAC:
-                                return maxDeckCard.isHeo() ? tempSelectedCards : null;
-                            default:
-                                return null;
-                        }
-                    default:
-                        return null;
-                }
-            }
-        }
-        return null;
-    }
-
-    static getGroupCardType(selectedCards, gameType = PhomUtils.GAME_TYPE) {
-        const numberOfCards = selectedCards.length;
-
-        if (numberOfCards == 1) {
-            return this.GROUP_CARD_TYPE_RAC;
-        } else if (numberOfCards > 1) {
-
-            let minCard = selectedCards[0];
-            let maxCard = selectedCards[numberOfCards - 1];
-            let minRank = GameUtils.getRank(minCard, gameType);
-            let maxRank = GameUtils.getRank(maxCard, gameType);
-
-            if (minRank == maxRank) {
-                switch (numberOfCards) {
-                    case 2:
-                        return minCard.isHeo() ? this.GROUP_CARD_TYPE_DOI_HEO : this.GROUP_CARD_TYPE_DOI;
-                    case 3:
-                        return this.GROUP_CARD_TYPE_SAM_CO;
-                    case 4:
-                        return minCard.isHeo() ? this.GROUP_CARD_TYPE_TU_QUY_HEO : this.GROUP_CARD_TYPE_TU_QUY;
-                    default:
-                        return this.GROUP_CARD_TYPE_INVALID;
-                }
-            } else if (numberOfCards == 2) {
-                return this.GROUP_CARD_TYPE_INVALID;
-            } else {
-                let sanhType = this.getSanhType(selectedCards, gameType);
-
-                if (sanhType > 0) {
-                    return sanhType;
-                }
-
-                if (this.isDoiThong(selectedCards, gameType)) {
-                    switch (numberOfCards) {
-                        case 6:
-                            return this.GROUP_CARD_TYPE_BA_DOI_THONG;
-                        case 8:
-                            return this.GROUP_CARD_TYPE_BON_DOI_THONG;
-                        case 10:
-                            return this.GROUP_CARD_TYPE_NAM_DOI_THONG;
-                        case 12:
-                            return this.GROUP_CARD_TYPE_SAU_DOI_THONG;
-                        default:
-                            return this.GROUP_CARD_TYPE_INVALID;
-                    }
-                }
-
-                if (numberOfCards == 12) {
-                    let is6Doi = true;
-                    for (let i = 1; i < numberOfCards; i += 2) {
-
-                        let cardBig1 = GameUtils.getRank(selectedCards[i], gameType);
-                        let cardBig2 = GameUtils.getRank(selectedCards[i - 1], gameType);
-
-                        if (cardBig1 == cardBig2) {
-                            continue;
-                        }
-
-                        is6Doi = false;
-                        break;
-                    }
-                    if (is6Doi) {
-                        return this.GROUP_CARD_TYPE_SAU_DOI;
-                    }
-                }
-            }
-        }
-        return this.GROUP_CARD_TYPE_INVALID;
-    }
-
-    static isValidSanhRule(selectedCards, gameType = PhomUtils.GAME_TYPE) {
-        let isSanh = true;
-
-        for (let i = 1; i < selectedCards.length; i++) {
-
-            let rank1 = GameUtils.getRank(selectedCards[i], gameType);
-            let rank2 = GameUtils.getRank(selectedCards[i - 1], gameType);
-
-            if ((rank1 - rank2) == 1) {
-                continue;
-            }
-
-            isSanh = false;
-            break;
-        }
-
-        return isSanh;
-    }
-
-    static isContainHeo(selectedCards) {
-        selectedCards.some((card)=>{
-            if (card.isHeo()) return true;
         });
 
-        return false;
+        return valid;
     }
 
-    static getSanhType(cards, gameType = PhomUtils.GAME_TYPE) {
-
-        let selectedCards = [...cards];
-
-        let isSanh = this.isValidSanhRule(selectedCards);
-        let isContainHeo = this.isContainHeo(selectedCards);
-
-        if (isSanh && !isContainHeo) {
-            if (selectedCards[0].isBa() && selectedCards[selectedCards.length - 1].isAt()) {
-                return this.GROUP_CARD_TYPE_SANH_RONG;
-            }
-            return this.GROUP_CARD_TYPE_SANH;
+    static findPhomListAt(cards, index) {
+        let pl = new PhomList();
+        if (cards.length >= 3) {
+            let firstCard = cards[index];
+            pl.join(PhomUtils.findPhomListByRank(cards, firstCard, false));
+            pl.join(PhomUtils.findPhomListBySuit(cards, firstCard, false));
         }
-
-        // sanh chua at,2.. or 2,3...
-        if (isContainHeo && gameType == app.const.game.GAME_TYPE_XAM) {
-
-            // kiem tra xem co phai loai rank 2,3... hay ko
-            GameUtils.sortCardAsc(selectedCards, app.const.game.GAME_TYPE_SPECIAL_XAM);
-
-            if (this.isValidSanhRule(selectedCards, app.const.game.GAME_TYPE_SPECIAL_XAM)) {
-                return this.GROUP_CARD_TYPE_SANH;
-            }
-        }
-
-        return -1;
+        return pl;
     }
 
-    static isValidDoiThongRule(cards, gameType = PhomUtils.GAME_TYPE) {
+    static findPhomListByEatenCard(cards, eatenCard) {
 
-        let lastDoiRank = -1;
-        let index = 0;
+        let pl = new PhomList();
 
-        while (index < cards.length) {
+        if (!eatenCard.locked || cards.length < 3) return pl;
 
-            let fCard = cards[index];
-            let sCard = cards[index + 1];
+        pl.join(PhomUtils.findPhomListByRank(cards, eatenCard, true));
+        pl.join(PhomUtils.findPhomListBySuit(cards, eatenCard, true));
 
-            if (fCard.rank == sCard.rank) {
+        return pl;
+    }
 
-                let gRank = GameUtils.getRank(fCard, gameType);
+    static findPhomListByRank(cards, rankCard, isFullCase) {
+        let pl = new PhomList();
+        let generateRankCards = [];
+        let indexOfRankCard = -1;
+        let begin = 0;
 
-                if (index == 0) {
-                    lastDoiRank = gRank;
-                } else {
-                    if (gRank - lastDoiRank != 1) {
-                        // khong phai hai doi thong
-                        return false;
-                    } else {
-                        lastDoiRank = gRank;
-                    }
+        if (!isFullCase) {
+            begin = rankCard.suit;
+        }
+
+        for (let suit = begin; suit < 4; suit++) {
+            indexOfRankCard = cards.indexOf(Card.from(rankCard.rank, suit));
+            if (indexOfRankCard != -1) {
+                generateRankCards.push(cards[indexOfRankCard]);
+            }
+        }
+
+        CardList.removeCard(cards, rankCard);
+        for (let i = 0; i < generateRankCards.length - 1; i++) {
+            for (let j = i + 1; j < generateRankCards.length; j++) {
+
+                let rankPhom = new Phom();
+                rankPhom.push(rankCard);
+                rankPhom.push(generateRankCards[i]);
+                rankPhom.push(generateRankCards[j]);
+
+                if (PhomUtils.isValidEatenPhom(rankPhom)) {
+                    pl.add(rankPhom);
                 }
-            } else {
-                // khong phai doi
-                return false;
             }
-
-            index += 2;
         }
 
+        return pl;
+    }
+
+    static findPhomListBySuit(cards, suitCard, isFullCase) {
+        let pl = new PhomList();
+
+        let generateSuitCard0, generateSuitCard1, generateSuitCard3, generateSuitCard4;
+
+        if (isFullCase) {
+            generateSuitCard0 = Card.from(suitCard.rank - 2, suitCard.suit);
+            generateSuitCard1 = Card.from(suitCard.rank - 1, suitCard.suit);
+        }
+
+        generateSuitCard3 = Card.from(suitCard.rank + 1, suitCard.suit);
+        generateSuitCard4 = Card.from(suitCard.rank + 2, suitCard.suit);
+
+        let i0 = cards.indexOf(generateSuitCard0);
+        let i1 = cards.indexOf(generateSuitCard1);
+        let i3 = cards.indexOf(generateSuitCard3);
+        let i4 = cards.indexOf(generateSuitCard4);
+
+        if (i0 != -1 && i1 != -1) {
+            let suitPhom = new Phom();
+            suitPhom.push(suitCard);
+            suitPhom.push(cards[i0]);
+            suitPhom.push(cards[i1]);
+            if (PhomUtils.isValidEatenPhom(suitPhom)) {
+                pl.add(suitPhom);
+            }
+        }
+
+        if (i1 != -1 && i3 != -1) {
+            let suitPhom = new Phom();
+            suitPhom.push(suitCard);
+            suitPhom.push(cards[i1]);
+            suitPhom.push(cards[i3]);
+            if (PhomUtils.isValidEatenPhom(suitPhom)) {
+                pl.add(suitPhom);
+            }
+        }
+
+        if (i3 != -1 && i4 != -1) {
+            let suitPhom = new Phom();
+            suitPhom.push(suitCard);
+            suitPhom.push(cards[i3]);
+            suitPhom.push(cards[i4]);
+            if (PhomUtils.isValidEatenPhom(suitPhom)) {
+                pl.push(suitPhom);
+            }
+        }
+
+        return pl;
+    }
+
+    static findPhomListByEatenCard(cards, eatenCard) {
+        let pl = new PhomList();
+
+        if (!eatenCard.locked || cards.length < 3) return pl;
+
+        pl.join(PhomUtils.findPhomListByRank(cards, eatenCard, true));
+        pl.join(PhomUtils.findPhomListBySuit(cards, eatenCard, true));
+
+        return pl;
+    }
+
+    static isValidEatenPhom(phom) {
+        let eatenCount = 0;
+        for (let i = 0; i < phom.length; i++) {
+
+            let phomCard = phom.cards[i];
+            if (phomCard.locked) {
+                eatenCount++;
+                if (eatenCount > 1) {
+                    return false;
+                }
+            }
+        }
         return true;
     }
 
-    static isDoiThong(cards, gameType = PhomUtils.GAME_TYPE) {
+    /**
+     *
+     * @param card {Card}
+     * @param type {Number} - PhomUtils.SORT_BY_RANK || PhomUtils.SORT_BY_SUIT;
+     */
+    static sortAsc(cards, type = PhomUtils.SORT_BY_RANK) {
+        if(!cards) return;
 
-        let isDoiThong = false;
-        let numberOfCards = cards.length;
-
-        if (numberOfCards >= 6 && numberOfCards % 2 == 0) {
-
-            let selectedCards = [...cards];
-            let isContainHeo = this.isContainHeo(selectedCards);
-
-            //Neu la xam thi xet ca truong hop 1, 2, 3,....
-            if (isContainHeo) {
-                if (gameType == app.const.game.GAME_TYPE_XAM) {
-                    GameUtils.sortCardAsc(selectedCards, app.const.game.GAME_TYPE_SPECIAL_XAM);
-                    isDoiThong = this.isValidDoiThongRule(selectedCards, app.const.game.GAME_TYPE_SPECIAL_XAM);
+        switch (type){
+            case PhomUtils.SORT_BY_RANK:
+                return cards.sort(PhomUtils._compareByRank);
+                break;
+            case PhomUtils.SORT_BY_SUIT:
+                return cards.sort(PhomUtils._compareBySuit);
+                break;
+            case PhomUtils.SORT_BY_PHOM_FIRST:
+                cards.sort(PhomUtils._compareByRank);
+                this._sortSingleCards(cards);
+                return cards;
+                break;
+            case PhomUtils.SORT_BY_PHOM_SOLUTION:
+                let phomListSolutions = PhomGenerator.generate(cards);
+                if (phomListSolutions.length > 0) {
+                    let phomCards = phomListSolutions[0].getCards();
+                    CardList.removeAllCards(cards, phomCards);
+                    this._sortSingleCards(cards);
+                    cards.splice(0, 0, ...phomCards);
+                } else {
+                    cards.sort(PhomUtils._compareByRank);
                 }
+
+                return cards;
+
+                break;
+            default:
+                return cards.sort(PhomUtils._compareByRank);
+        }
+    }
+
+    static _sortSingleCards(cards) {
+        let index = 0;
+        let singleCards = [];
+        while (index < cards.length) {
+            let indexCard = cards[index];
+            if (!PhomUtils.isCa(indexCard, cards)) {
+                singleCards.push(indexCard);
+                cards.splice(index, 1);
             } else {
-                isDoiThong = this.isValidDoiThongRule(selectedCards, gameType);
+                index++;
             }
         }
 
-        return isDoiThong;
+        cards.push(...singleCards);
     }
 
-    static getPhomThoiString(thoiType) {
-        let retString = "";
-        switch (thoiType) {
-            case PhomUtils.THOI_TYPE_HEO_DEN:
-                retString = app.res.string('game_heo_den');
-                break;
-            case PhomUtils.THOI_TYPE_HEO_DO:
-                retString = app.res.string('game_heo_do');
-                break;
-            case PhomUtils.THOI_TYPE_BA_DOI_THONG:
-                retString = app.res.string('game_ba_doi_thong');
-                break;
-            case PhomUtils.THOI_TYPE_TU_QUY:
-                retString = app.res.string('game_tu_quy');
-                break;
-            case PhomUtils.THOI_TYPE_BON_DOI_THONG:
-                retString = app.res.string('game_bon_doi_thong');
-                break;
-            case PhomUtils.THOI_TYPE_BA_BICH:
-                retString = app.res.string('game_ba_bich');
-                break;
+    static compareCard(card1, card2, type){
+        if (type == PhomUtils.SORT_BY_RANK) {
+            return PhomUtils._compareByRank(card1, card2);
+        } else {
+            let compareBySuit = PhomUtils._compareBySuit(card1, card2);
+            return compareBySuit != 0 ? compareBySuit : PhomUtils._compareByRank(card1, card2);
         }
-        return retString;
+    }
+
+    static _compareByRank(card1, card2){
+        return card1.rank - card2.rank;
+    }
+
+    static _compareBySuit(card1, card2){
+        return card1.suit - card2.suit;
     }
 
 }
 
 
-PhomUtils.THOI_TYPE_HEO_DEN = 0;
-PhomUtils.THOI_TYPE_HEO_DO = 1;
-PhomUtils.THOI_TYPE_BA_DOI_THONG = 2;
-PhomUtils.THOI_TYPE_TU_QUY = 3;
-PhomUtils.THOI_TYPE_BON_DOI_THONG = 4;
-PhomUtils.THOI_TYPE_BA_BICH = 5;
-PhomUtils.GROUP_CARD_TYPE_INVALID = 0;
-PhomUtils.GROUP_CARD_TYPE_RAC = 1;
-PhomUtils.GROUP_CARD_TYPE_DOI = 2;
-PhomUtils.GROUP_CARD_TYPE_SAM_CO = 3;
-PhomUtils.GROUP_CARD_TYPE_SANH = 4;
-PhomUtils.GROUP_CARD_TYPE_SANH_RONG = 5;
-PhomUtils.GROUP_CARD_TYPE_TU_QUY = 6;
-PhomUtils.GROUP_CARD_TYPE_DOI_THONG = 7;
-PhomUtils.GROUP_CARD_TYPE_BA_DOI_THONG = 8;
-PhomUtils.GROUP_CARD_TYPE_BON_DOI_THONG = 9;
-PhomUtils.GROUP_CARD_TYPE_NAM_DOI_THONG = 1;
-PhomUtils.GROUP_CARD_TYPE_SAU_DOI_THONG = 1;
-PhomUtils.GROUP_CARD_TYPE_SAU_DOI = 1;
-PhomUtils.GROUP_CARD_TYPE_DOI_HEO = 1;
-PhomUtils.GROUP_CARD_TYPE_TU_QUY_HEO = 1;
-PhomUtils.GROUP_CARD_TYPE_TU_QUY_BA = 1;
+
+PhomUtils.SORT_BY_RANK = 1;
+PhomUtils.SORT_BY_SUIT = 2;
+PhomUtils.SORT_BY_PHOM_FIRST = 3;
+PhomUtils.SORT_BY_PHOM_SOLUTION = 4;
+
+PhomUtils.COMPARE_RANK = 1;
+PhomUtils.COMPARE_SUIT = 2;
