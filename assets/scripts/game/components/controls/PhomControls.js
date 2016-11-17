@@ -7,6 +7,7 @@ import utils from 'utils';
 import GameControls from 'GameControls';
 import BaseControls from 'BaseControls';
 import CardTurnBaseControls from 'CardTurnBaseControls';
+import Keywords from 'Keywords';
 import {Events} from 'events';
 
 export default class PhomControls extends GameControls {
@@ -19,7 +20,14 @@ export default class PhomControls extends GameControls {
             baseControlsNode: cc.Node,
             cardTurnBaseControlsNode: cc.Node,
             eatButton: cc.Button,
-            takeButton: cc.Button
+            takeButton: cc.Button,
+            joinPhomButton: cc.Button,
+            skipJoinButton: cc.Button,
+            downPhomButton: cc.Button,
+            skipDownButton: cc.Button,
+            changePhomButton: cc.Button,
+            uButton: cc.Button,
+            doiUTronButton: cc.Button,
         }
 
         this.baseControls = null;
@@ -39,18 +47,55 @@ export default class PhomControls extends GameControls {
         this.scene.on(Events.ON_GAME_STATE_ENDING, this._onGameEnding, this);
         this.scene.on(Events.SHOW_GAME_BEGIN_CONTROLS, this._showGameBeginControls, this);
         this.scene.on(Events.SHOW_WAIT_TURN_CONTROLS, this._showWaitTurnControls, this);
-        this.scene.on(Events.SHOW_ON_TURN_CONTROLS, this._showOnTurnControls, this);
+        // this.scene.on(Events.SHOW_ON_TURN_CONTROLS, this._showOnTurnControls, this);
         this.scene.on(Events.HIDE_ALL_CONTROLS, this.hideAllControls, this);
         this.scene.on(Events.SHOW_EAT_AND_TAKE_CONTROLS, this._showEatAndTakeControls, this);
+        this.scene.on(Events.SHOW_PLAY_CONTROL_ONLY, this._showPlayControl, this);
+        this.scene.on(Events.SHOW_DOWN_PHOM_CONTROLS, this._showDownPhomControls, this);
+        this.scene.on(Events.SHOW_JOIN_PHOM_CONTROLS, this._showJoinPhomControls, this);
+        this.scene.on(Events.SET_INTERACTABLE_HA_PHOM_CONTROL, this._setInteractableHaPhomControl, this);
     }
 
-    _showOnTurnControls(showPlayControlOnly) {
+    _setInteractableHaPhomControl(interactable){
+        this.setInteractable(this.downPhomButton, interactable);
+    }
+
+    _showDownPhomControls(hideSkip, hideChange){
         this.hideAllControls();
-        this.cardTurnBaseControls._showOnTurnControls(showPlayControlOnly);
+        utils.active(this.downPhomButton);
+
+        if(hideSkip){
+            utils.deactive(this.skipDownButton);
+        }else{
+            utils.active(this.skipDownButton);
+        }
+
+        if(hideChange){
+            utils.deactive(this.changePhomButton);
+        }else{
+            utils.active(this.changePhomButton);
+        }
+
+    }
+
+    _showJoinPhomControls(){
+        this.hideAllControls();
+        utils.active(this.joinPhomButton);
+        utils.active(this.skipJoinButton);
+    }
+
+    _showOnTurnControls(){
+        /**
+         * On game phom don't handle this event
+         */
+    }
+
+    _showPlayControl(){
+        this.hideAllControls();
+        this.cardTurnBaseControls._showOnTurnControls(true);
     }
 
     _onGameBegin(data, isJustJoined) {
-        this.hideAllControls();
         this._showGameBeginControls();
     }
 
@@ -74,6 +119,11 @@ export default class PhomControls extends GameControls {
 
         utils.deactive(this.eatButton);
         utils.deactive(this.takeButton);
+        utils.deactive(this.joinPhomButton);
+        utils.deactive(this.skipJoinButton);
+        utils.deactive(this.downPhomButton);
+        utils.deactive(this.skipDownButton);
+        utils.deactive(this.changePhomButton);
     }
 
     _showWaitTurnControls(){
@@ -82,10 +132,11 @@ export default class PhomControls extends GameControls {
     }
 
     _showEatAndTakeControls(){
-        super.hideAllControls();
+        this.hideAllControls();
+
+        this.cardTurnBaseControls._showWaitTurnControls();
         utils.active(this.eatButton);
         utils.active(this.takeButton);
-        utils.active(this.sortButton);
     }
 
     _onGamePlaying(data, isJustJoined) {
@@ -103,7 +154,7 @@ export default class PhomControls extends GameControls {
 
     _showGameBeginControls() {
         this.hideAllControls();
-        if (this.scene.board.isBegin()) {
+        if (this.scene.isBegin()) {
             this.baseControls._showGameBeginControls();
         }
     }
@@ -118,6 +169,26 @@ export default class PhomControls extends GameControls {
 
     onClickTakeButton(event){
         this.scene.emit(Events.ON_CLICK_TAKE_CARD_BUTTON);
+    }
+
+    onClickJoinPhomButton(event){
+        this.scene.emit(Events.ON_CLICK_JOIN_PHOM_BUTTON);
+    }
+
+    onClickSkipJoinButton(event){
+        this.scene.emit(Events.ON_CLICK_SKIP_JOIN_PHOM_BUTTON);
+    }
+
+    onClickDownPhomButton(event){
+        this.scene.emit(Events.ON_CLICK_DOWN_PHOM_BUTTON);
+    }
+
+    onClickSkipDownButton(event){
+        this.scene.emit(Events.ON_CLICK_SKIP_DOWN_PHOM_BUTTON);
+    }
+
+    onClickChangePhomButton(event){
+        this.scene.emit(Events.ON_CLICK_CHANGE_PHOM_BUTTON);
     }
 }
 

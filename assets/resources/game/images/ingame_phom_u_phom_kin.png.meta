@@ -1,0 +1,30 @@
+{
+  "ver": "1.0.0",
+  "uuid": "45836697-e95c-41b8-9d00-29cb49710c1f",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "subMetas": {
+    "ingame_phom_u_phom_kin": {
+      "ver": "1.0.3",
+      "uuid": "448cda23-26ca-4fe3-92f9-61a8796de650",
+      "rawTextureUuid": "45836697-e95c-41b8-9d00-29cb49710c1f",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": -0.5,
+      "offsetY": -4.5,
+      "trimX": 2,
+      "trimY": 12,
+      "width": 95,
+      "height": 35,
+      "rawWidth": 100,
+      "rawHeight": 50,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}

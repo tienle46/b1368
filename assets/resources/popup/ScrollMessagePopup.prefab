@@ -2079,6 +2079,7 @@
       "__id__": 47
     },
     "_enabled": true,
+    "path": "",
     "spinNode": {
       "__id__": 48
     }
@@ -2586,7 +2587,8 @@
     "buttonType": 0,
     "pressedScale": 0.8,
     "transDuration": 0.1,
-    "isTouching": false
+    "isTouching": false,
+    "path": "aaaa"
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -2850,7 +2852,8 @@
     "buttonType": 0,
     "pressedScale": 0.8,
     "transDuration": 0.1,
-    "isTouching": false
+    "isTouching": false,
+    "path": "aaaa"
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -2995,6 +2998,7 @@
       "__id__": 1
     },
     "_enabled": true,
+    "path": "",
     "messageNode": null,
     "acceptButton": {
       "__id__": 78

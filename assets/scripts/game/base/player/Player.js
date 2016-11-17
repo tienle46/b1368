@@ -86,9 +86,13 @@ export default class Player extends Actor {
 
             this._setBalance(newBalance);
         }
+        console.log("_onPlayerSetBalance: ", id, newBalance);
     }
 
     _onPlayerChangeBalance(id, newBalance) {
+
+        console.log("_onPlayerChangeBalance: ", id, newBalance);
+
         if(this.id == id){
             let balanceVariable = this.user.variables[Keywords.USER_VARIABLE_BALANCE];
             let currentBalance = balanceVariable.value;
@@ -136,7 +140,6 @@ export default class Player extends Actor {
     }
 
     _updatePlayerAnchor() {
-
         let anchorIndex = this.scene.playerPositions.getPlayerAnchorIndex(this.id, this.isItMe())
         let anchor = this.scene.playerPositions.getPlayerAnchor(anchorIndex);
         anchor && this.node.setPosition(anchor.getPosition());
@@ -253,6 +256,9 @@ export default class Player extends Actor {
         this.renderer._reset();
     }
 
+    equals(otherPlayer){
+        return otherPlayer && otherPlayer.id == this.id;
+    }
 }
 
 app.createComponent(Player);

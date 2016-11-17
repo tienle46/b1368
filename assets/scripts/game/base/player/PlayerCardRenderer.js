@@ -38,6 +38,7 @@ export default class PlayerCardRenderer extends PlayerRenderer {
             cardList.setMaxDimension(800);
             cardList.setDraggable(true);
             cardList.setSelectable(true);
+            cardList.setAlign(CardList.ALIGN_BOTTOM_CENTER);
             cardList.setAnchorPoint(0, 0);
         } else {
             cardList.setMaxDimension(0);
@@ -54,6 +55,7 @@ export default class PlayerCardRenderer extends PlayerRenderer {
 
     setSelectCardChangeListener(listener) {
         this.selectCardChangeListener = listener;
+        this.cardList && this.cardList.setSelectCardChangeListener(listener);
     }
 
     hideNotMeHandCard(isItMe) {

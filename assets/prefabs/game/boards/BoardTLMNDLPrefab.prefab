@@ -1109,12 +1109,13 @@
     "meDealCardListNode": {
       "__id__": 26
     },
-    "deckCardAnchor": {
+    "deckCardNode": {
       "__id__": 32
     },
     "deckCardPrefab": {
       "__uuid__": "e46ea9f5-2341-4501-90ba-6894cdd06b0e"
-    }
+    },
+    "deckCardName": "DeckCardRenderer"
   },
   {
     "__type__": "cc.PrefabInfo",

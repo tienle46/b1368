@@ -72,12 +72,12 @@ export default class ListTableScene extends BaseScene {
             const cellComponent = listCell.getComponent('TableListCell');
             if ((i / 2) == 0) {
                 cellComponent.setOnClickListener(() => {
-                    this._createRoom(app.const.gameCode.TLMNDL, 1, 4);
+                    this._createRoom(app.const.gameCode.PHOM, 1, 4);
                 });
             } else {
                 cellComponent.setOnClickListener(() => {
                     let data = {};
-                    data[Keywords.GAME_CODE] = 'tnd';
+                    data[Keywords.GAME_CODE] = app.const.gameCode.PHOM;
                     data[Keywords.IS_SPECTATOR] = false;
                     data[Keywords.QUICK_JOIN_BET] = 1;
 

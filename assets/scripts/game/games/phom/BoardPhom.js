@@ -15,6 +15,7 @@ import CardList from 'CardList';
 import BoardPhomRenderer from 'BoardPhomRenderer';
 import PhomList from 'PhomList';
 import Phom from 'Phom';
+import PhomUtils from "./PhomUtils";
 
 export default class BoardPhom extends BoardCardTurnBase {
 
@@ -24,12 +25,12 @@ export default class BoardPhom extends BoardCardTurnBase {
         this.winRank = 0;
         this.handCardSize = PlayerPhom.DEFAULT_HAND_CARD_COUNT;
         this.lastPlayedCard = null;
-        this.downPhomList = null;
+        this.allPhomList = null;
     }
 
     onLoad() {
         super.onLoad();
-        this.downPhomList = new PhomList();
+        this.allPhomList = new PhomList();
     }
 
     onEnable() {
@@ -44,10 +45,10 @@ export default class BoardPhom extends BoardCardTurnBase {
     _reset() {
         super._reset();
         this.winRank = 0;
-        this.downPhomList.clear();
+        this.allPhomList.clear();
     }
 
-    _onPlayerPlayedCards(playedCards, srcCardList, isItMe){
+    _onPlayerPlayedCards(playedCards, srcCardList, isItMe) {
         //DO nothing, thic event will be handle on player instead
     }
 
@@ -105,13 +106,13 @@ export default class BoardPhom extends BoardCardTurnBase {
                     let phomCount = currentNumberOfPhomByPlayerId[i];
                     for (let j = 0; j < phomCount; j++) {
 
-                        let phom = allPhomList.getPhomAt(j + phomPlayerCount);
-                        let processingPhom = pl.downPhomList.getPhomAt(j);
+                        let phom = allPhomList[j + phomPlayerCount];
+                        let processingPhom = player.renderer.downPhomList[j];
 
                         processingPhom.setCards(phom);
-                        processingPhom.setOwner(pl.id);
+                        processingPhom.setOwner(player.id);
 
-                        this.downPhomList.add(processingPhom);
+                        this.allPhomList.add(processingPhom);
 
                     }
 
@@ -127,7 +128,7 @@ export default class BoardPhom extends BoardCardTurnBase {
                 let cardSize = currentBoardEatenCardSize[i];
                 let player = this.scene.gamePlayers.findPlayer(eatenId);
 
-                if (pl != null) {
+                if (player != null) {
                     let eatenCardBytes = currentBoardEatenCards.slice(eatenCardsIndex, eatenCardsIndex + cardSize);
                     player.setEatenCards(GameUtils.convertBytesToCards(eatenCardBytes));
                 }
@@ -141,179 +142,157 @@ export default class BoardPhom extends BoardCardTurnBase {
         }
 
         let lastPlayedTurn = utils.getValue(data, Keywords.LAST_MOVE_PLAYER_ID);
-        if(lastPlayedTurn){
+        if (lastPlayedTurn) {
             let playedPlayer = this.scene.gamePlayers.findPlayer(lastPlayedTurn);
             playedPlayer && playedPlayer.playedCards.length > 0 && (this.lastPlayedCard = playedPlayer.playedCards[playedPlayer.playedCards.length - 1]);
         }
     }
 
-    _setDeckFakeCard(){
-        if (this.getTotalPlayedCardsSize() < 16) {
-            this.renderer.deckCards.fillFakeCards();
+    swapPlayedCards() {
+        let lastMovePlayer = this.getLastMovePlayer();
+
+        if (lastMovePlayer) {
+            let i = 4;
+            while (i-- >= 0) {
+                let nextPlayer = this.scene.gamePlayers.getNextNeighbour(lastMovePlayer.id);
+                if (nextPlayer == null || nextPlayer.equals(lastMovePlayer)) break;
+
+                if (nextPlayer.playedCards.length > lastMovePlayer.playedCards.length) {
+                    let changeCard = nextPlayer.playedCards[nextPlayer.playedCards.length - 1];
+                    nextPlayer.renderer.playedCardList.transfer([changeCard], lastMovePlayer.renderer.playedCardList);
+                    break;
+                }
+            }
+        }
+    }
+
+    deHighLightPhomList(){
+        this.allPhomList.forEach(phom => phom.cleanHighlight());
+    }
+
+    _setDeckFakeCard(fakeCount) {
+        if (fakeCount > 0 || this.getTotalPlayedCardsSize() < 16) {
+            this.renderer.fillDeckFakeCards();
         } else {
             this.renderer.cleanDeckCards();
         }
     }
 
     getTotalPlayedCardsSize() {
-        return this.scene.gamePlayers.players.reduce((pre, player) => {
-            return total += pl.playedCards.size();
+        let totalPlayedCard = this.scene.gamePlayers.players.reduce((total, player) => {
+            return total += player.renderer.playedCardList.cards.length;
         }, 0);
+
+        console.log("totalPlayedCard: ", totalPlayedCard);
+        
+        return totalPlayedCard;
     }
 
-    onBoardPlaying(data, isJustJoined){
-        super.onBoardPlaying();
-
-        if(isJustJoined && this.scene.gameState == game.state.PLAY_FAKED) {
-            this._setDeckFakeCard();
-        }
+    onBoardStarting(data, isJustJoined) {
+        super.onBoardStarting();
+        this._setDeckFakeCard(16);
     }
 
     onBoardEnding(data) {
+
+        let playerIds = utils.getValue(data, Keywords.GAME_LIST_PLAYER, []);
+        let playingPlayerIds = this.scene.gamePlayers.filterPlayingPlayer(playerIds);
+        let playerInfos = this.scene.gamePlayers.getBasicPlayerInfo(playerIds);
+        let balanceChangeAmounts = this._getPlayerBalanceChangeAmounts(playerIds, data);
+
+        let playerHandCards = this._getPlayerHandCards(playerIds, data);
+        let {gameResultInfos, resultIconPaths} = this._getGameResultInfos(playerIds, playerHandCards, data);
+
         super.onBoardEnding(data);
-        //
-        // let playerIds = utils.getValue(data, Keywords.GAME_LIST_PLAYER, []);
-        // let playingPlayerIds = this.scene.gamePlayers.filterPlayingPlayer(playerIds);
-        // let playerInfos = this.scene.gamePlayers.getBasicPlayerInfo(playerIds);
-        //
-        // let balanceChangeAmounts = this._getPlayerBalanceChangeAmounts(playerIds, data);
-        // let playerHandCards = this._getPlayerHandCards(playerIds, data);
-        // let {gameResultInfos, resultIconPaths} = this._getGameResultInfos(playerIds, playerHandCards, data);
-        //
-        // super.onBoardEnding(data);
-        //
-        // let models = playerIds.filter(playerId => (playingPlayerIds.indexOf(playerId) >= 0)).map(playerId => {
-        //     return {
-        //         name: playerInfos[playerId].name,
-        //         balanceChanged: balanceChangeAmounts[playerId],
-        //         iconPath: resultIconPaths[playerId],
-        //         info: gameResultInfos[playerId],
-        //         cards: playerHandCards[playerId]
-        //     }
-        // });
-        //
-        // setTimeout(() => this.scene.showGameResult(models, (shownTime) => {
-        //     let remainTime = this.timelineRemain - shownTime;
-        //     if (remainTime > 0 && this.scene.isEnding()) {
-        //         this.renderer.cleanDeckCards();
-        //         this._startEndBoardTimeLine(remainTime);
-        //     }
-        // }), 500);
+
+        let models = playerIds.filter(playerId => (playingPlayerIds.indexOf(playerId) >= 0)).map(playerId => {
+            return {
+                name: playerInfos[playerId].name,
+                balanceChanged: balanceChangeAmounts[playerId],
+                iconPath: resultIconPaths[playerId],
+                info: gameResultInfos[playerId],
+                cards: playerHandCards[playerId]
+            }
+        });
+
+        setTimeout(() => this.scene.showGameResult(models, (shownTime) => {
+            let remainTime = this.timelineRemain - shownTime;
+            if (remainTime > 0 && this.scene.isEnding()) {
+                this.renderer.cleanDeckCards();
+                this._startEndBoardTimeLine(remainTime);
+            }
+        }), 500);
     }
 
-    // _getGameResultIconPaths(playerIds, data) {
-    //     let thoiData = this._getThoiData(data);
-    //     let congPlayerIds = this._getCongPlayers(data);
-    //
-    //     let iconMaps = {};
-    //
-    //     congPlayerIds && congPlayerIds.forEach(id => {
-    //         iconMaps[id] = 'game/images/ingame_cong';
-    //     });
-    //
-    //     return iconMaps;
-    // }
-    //
-    // _getGameResultInfos(playerIds = [], playerHandCards, data) {
-    //     let thoiData = this._getThoiData(data);
-    //     let congPlayerIds = this._getCongPlayers(data);
-    //
-    //     /**
-    //      * Get game result icon
-    //      * @type {Array}
-    //      */
-    //     let resultIconPaths = {};
-    //     let winType = utils.getValue(data, Keywords.WIN_TYPE);
-    //     let playersWinRanks = utils.getValue(data, Keywords.GAME_LIST_WIN);
-    //     playerIds.forEach((id, i) => {
-    //         if (playersWinRanks[i] == app.const.game.rank.GAME_RANK_FIRST) {
-    //             switch (winType) {
-    //                 case app.const.game.TLMN_WIN_TYPE_AN_TRANG:
-    //                     resultIconPaths[id] = 'game/images/ingame_an_trang';
-    //                     break;
-    //                 case app.const.game.TLMN_WIN_TYPE_DUT_BA_BICH:
-    //                     resultIconPaths[id] = 'game/images/ingame_dut_ba_bich';
-    //                     break;
-    //                 case app.const.game.TLMN_WIN_TYPE_LUNG:
-    //                     resultIconPaths[id] = 'game/images/ingame_lung';
-    //                     break;
-    //                 default:
-    //                     resultIconPaths[id] = 'game/images/ingame_thang';
-    //             }
-    //         } else {
-    //             switch (winType) {
-    //                 case app.const.game.TLMN_WIN_TYPE_THOI_BA_BICH:
-    //                     if (GameUtils.containsCard(playerHandCards[id], Card.from(Card.RANK_BA, Card.SUIT_BICH)))
-    //                         resultIconPaths[id] = 'game/images/ingame_thoi_ba_bich';
-    //                     break;
-    //                 default:
-    //                     resultIconPaths[id] = 'game/images/ingame_thua';
-    //             }
-    //         }
-    //     });
-    //
-    //     congPlayerIds && congPlayerIds.forEach(id => resultIconPaths[id] = 'game/images/ingame_cong');
-    //
-    //     /**
-    //      * Get game result detail info
-    //      * @type {Array}
-    //      */
-    //     let gameResultInfos = {};
-    //     playerIds.map(id => {
-    //         var handCard = playerHandCards[id];
-    //         gameResultInfos[id] = handCard && handCard.length > 0 ? `${handCard.length} lá` : "";
-    //     });
-    //
-    //     Object.keys(thoiData).forEach(id => {
-    //         let {types, counts} = thoiData[id];
-    //
-    //         if (types && types.length > 0) {
-    //             let str = `${app.res.string('game_thoi')} `;
-    //
-    //             types.forEach((type, i) => {
-    //                 let typeName = TLMNUtils.getTLMNThoiString(type);
-    //                 let subfix = i < types.length - 1 ? ', ' : '';
-    //
-    //                 str += `${counts[i]} ${typeName}${subfix}`;
-    //             });
-    //
-    //             gameResultInfos[id] = str + (!utils.isEmpty(gameResultInfos[id]) ? `, ${gameResultInfos[id]}` : '');
-    //         }
-    //     });
-    //
-    //     return {gameResultInfos: gameResultInfos, resultIconPaths: resultIconPaths};
-    // }
-    //
-    // _getThoiData(data) {
-    //     let thoiData = {};
-    //
-    //     let thoiPlayerIds = utils.getValue(data, Keywords.THOI_PLAYER_LIST);
-    //     if (thoiPlayerIds) {
-    //
-    //         let thoiTypeArrayIndex = 0;
-    //         const thoiPlayerTypesCount = utils.getValue(data, Keywords.THOI_PLAYER_TYPES_COUNT);
-    //         const thoiTypesArray = utils.getValue(data, Keywords.THOI_TYPES_ARRAY);
-    //         const thoiTypeCountArray = utils.getValue(data, Keywords.THOI_TYPE_COUNT);
-    //
-    //         thoiPlayerIds && thoiTypesArray && thoiPlayerIds.forEach((id, index) => {
-    //             let typeCount = thoiPlayerTypesCount[index];
-    //
-    //             let types = thoiTypesArray.slice(thoiTypeArrayIndex, thoiTypeArrayIndex + typeCount);
-    //             let counts = thoiTypeCountArray.slice(thoiTypeArrayIndex, thoiTypeArrayIndex + typeCount);
-    //
-    //             thoiData[id] = {types: types, counts: counts};
-    //
-    //             thoiTypeArrayIndex += typeCount;
-    //         });
-    //
-    //     }
-    //
-    //     return thoiData;
-    // }
-    //
-    // _getCongPlayers(data) {
-    //     return utils.getValue(data, Keywords.CONG_PLAYER_LIST, []);
-    // }
+    _getGameResultInfos(playerIds = [], playerHandCards, data) {
+        /**
+         * Get game result icon
+         * @type {Array}
+         */
+        let resultIconPaths = {};
+        let winType = utils.getValue(data, Keywords.WIN_TYPE);
+        let playersWinRanks = utils.getValue(data, Keywords.GAME_LIST_WIN);
+        let rank = utils.getValue(data, Keywords.GAME_RANK_WIN);
+        playerIds.forEach((id, i) => {
+            var playersWinRank = playersWinRanks[i];
+
+            if (playersWinRank == app.const.game.rank.GAME_RANK_FIRST) {
+                switch (winType) {
+                    case app.const.game.PHOM_WIN_TYPE_U_THUONG:
+                        resultIconPaths[id] = 'game/images/ingame_phom_u';
+                        break;
+                    case app.const.game.PHOM_WIN_TYPE_U_DEN:
+                        resultIconPaths[id] = 'game/images/ingame_phom_u_den';
+                        break;
+                    case app.const.game.PHOM_WIN_TYPE_U_KHAN:
+                        resultIconPaths[id] = 'game/images/ingame_phom_u_khan';
+                        break;
+                    case app.const.game.PHOM_WIN_TYPE_U_TRON:
+                        resultIconPaths[id] = 'game/images/ingame_phom_u_tron';
+                        break;
+                    case app.const.game.PHOM_WIN_TYPE_U_PHOM_KIN:
+                        resultIconPaths[id] = 'game/images/ingame_phom_u_phom_kin';
+                        break;
+                    default:
+                        resultIconPaths[id] = 'game/images/ingame_thang';
+                }
+            } else {
+                let player = this.scene.gamePlayers.findPlayer(id);
+                if(player && PhomUtils.isMom(player)){
+                    resultIconPaths[id] = 'game/images/ingame_phom_mom';
+                }else{
+                    switch (playersWinRank) {
+                        case app.const.game.GAME_RANK_SECOND:
+                            resultIconPaths[id] = 'game/images/ingame_nhi';
+                            break;
+                        case app.const.game.GAME_RANK_THIRD:
+                            resultIconPaths[id] = 'game/images/ingame_ba';
+                            break;
+                        case app.const.game.GAME_RANK_FOURTH:
+                            resultIconPaths[id] = 'game/images/ingame_bet';
+                            break;
+                    }
+                }
+            }
+        });
+
+        /**
+         * Get game result detail info
+         * @type {Array}
+         */
+        let gameResultInfos = {};
+        playerIds.map(id => {
+
+            let player = this.scene.gamePlayers.findPlayer();
+            if(!player) return "";
+
+            let handCards = playerHandCards[id];
+            let point = handCards.reduce((value, card) => value += card.rank, 0);
+            gameResultInfos[id] = winType != app.const.game.GENERAL_WIN_TYPE_NORMAL && PhomUtils.isMom(player) ? "" : `${point} điểm`;
+        });
+
+        return {gameResultInfos, resultIconPaths};
+    }
 
 }
 

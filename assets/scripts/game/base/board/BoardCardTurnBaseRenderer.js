@@ -13,16 +13,21 @@ export default class BoardCardTurnBaseRenderer extends BoardCardRenderer {
 
         this.properties = {
             ...this.properties,
-            deckCardAnchor: cc.Node,
+            deckCardNode: cc.Node,
             deckCardPrefab: cc.Prefab,
+            deckCardName: "CardList"
          }
 
     }
 
     _initCenterDeckCard(){
-        let deckCardNode = cc.instantiate(this.deckCardPrefab);
-        this.deckCardAnchor.addChild(deckCardNode);
-        this.deckCardRenderer = deckCardNode.getComponent(DeckCardRenderer.name);
+        if(this.deckCardPrefab){
+            let newDeckCardNode = cc.instantiate(this.deckCardPrefab);
+            this.deckCardNode.addChild(newDeckCardNode);
+            this.deckCardRenderer = this.deckCardName && newDeckCardNode.getComponent(this.deckCardName);
+        }else{
+            this.deckCardRenderer = this.deckCardNode.getComponent(CardList.name);
+        }
     }
 
     _reset(){
@@ -30,7 +35,7 @@ export default class BoardCardTurnBaseRenderer extends BoardCardRenderer {
     }
 
     cleanDeckCards(){
-        this.deckCardRenderer.clear();
+        this.deckCardRenderer && this.deckCardRenderer.clear();
     }
 
     addToDeck(cards, srcCardList, isItMe){

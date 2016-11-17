@@ -62,6 +62,10 @@ export default class GameEventHandler {
         app.system.addGameListener(Commands.PLAYER_PLAY_CARD, this._onPlayerPlayCards, this);
         app.system.addGameListener(Commands.PLAYER_READY, this._onPlayerReady, this);
         app.system.addGameListener(Commands.PLAYER_UNREADY, this._onPlayerUnready, this);
+        app.system.addGameListener(Commands.PLAYER_TAKE_CARD, this._onPlayerTakeCard, this);
+        app.system.addGameListener(Commands.PLAYER_EAT_CARD, this._onPlayerEatCard, this);
+        app.system.addGameListener(Commands.PLAYER_DOWN_CARD, this._onPlayerDownCard, this);
+        app.system.addGameListener(Commands.PLAYER_HELP_CARD, this._onPlayerHelpCard, this);
     }
 
     removeGameEventListener() {
@@ -92,6 +96,32 @@ export default class GameEventHandler {
         app.system.removeGameListener(Commands.PLAYER_PLAY_CARD, this._onPlayerPlayCards, this);
         app.system.removeGameListener(Commands.PLAYER_READY, this._onPlayerReady, this);
         app.system.removeGameListener(Commands.PLAYER_UNREADY, this._onPlayerUnready, this);
+
+        app.system.removeGameListener(Commands.PLAYER_TAKE_CARD, this._onPlayerTakeCard, this);
+        app.system.removeGameListener(Commands.PLAYER_EAT_CARD, this._onPlayerEatCard, this);
+        app.system.removeGameListener(Commands.PLAYER_DOWN_CARD, this._onPlayerDownCard, this);
+        app.system.removeGameListener(Commands.PLAYER_HELP_CARD, this._onPlayerHelpCard, this);
+
+    }
+
+    _onPlayerDownCard(data){
+        let playerId = utils.getValue(data, Keywords.PLAYER_ID);
+        playerId && this.scene.emit(Events.HANDLE_PLAYER_DOWN_CARD, playerId, data);
+    }
+
+    _onPlayerTakeCard(data){
+        let playerId = utils.getValue(data, Keywords.PLAYER_ID);
+        playerId && this.scene.emit(Events.HANDLE_PLAYER_TAKE_CARD, playerId, data);
+    }
+
+    _onPlayerEatCard(data){
+        let playerId = utils.getValue(data, Keywords.PLAYER_ID);
+        playerId && this.scene.emit(Events.HANDLE_PLAYER_EAT_CARD, playerId, data);
+    }
+
+    _onPlayerHelpCard(data){
+        let playerId = utils.getValue(data, Keywords.PLAYER_ID);
+        playerId && this.scene.emit(Events.HANDLE_PLAYER_HELP_CARD, playerId, data);
     }
 
     _onPlayerPublishMessage(event){
@@ -113,9 +143,6 @@ export default class GameEventHandler {
     }
 
     _onUserVariablesUpdate(event){
-
-        console.log("_onUserVariablesUpdate: ", event)
-
         let changedVars = event.changedVars;
         let user = event.user;
 

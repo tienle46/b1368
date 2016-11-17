@@ -35,7 +35,7 @@ export default class GamePlayers extends Component {
         this.playerPositions = null;
     }
 
-    onEnable(){
+    onEnable() {
         super.onEnable();
 
         this.scene = app.system.currentScene;
@@ -95,7 +95,7 @@ export default class GamePlayers extends Component {
                 balance: GameUtils.getUserBalance(player.user)
             });
 
-            if(!this.scene.isBegin()){
+            if (!this.scene.isBegin()) {
                 this.playerPositions.hideAnchor(player.anchorIndex);
             }
 
@@ -237,13 +237,7 @@ export default class GamePlayers extends Component {
     }
 
     findPlayer(idOrName) {
-        if (!idOrName) return;
-
-        if (utils.isNumber(idOrName)) {
-            return this._idToPlayerMap[idOrName];
-        } else {
-            return this._nameToPlayerMap[idOrName];
-        }
+        return idOrName && (utils.isNumber(idOrName) ? this._idToPlayerMap[idOrName] : this._nameToPlayerMap[idOrName]);
     }
 
     _findPlayerIndex(playerId) {
@@ -476,6 +470,32 @@ export default class GamePlayers extends Component {
         }
 
         return playerInfos;
+    }
+
+    getNextNeighbour(lastPlayedId) {
+        return this._getNeighbour(lastPlayedId, true);
+    }
+
+    getPreviousNeighbour(lastPlayedId) {
+        return this._getNeighbour(lastPlayedId, false);
+    }
+
+    _getNeighbour(lastPlayedId, isNext) {
+
+        let count = 0;
+        let findPlayerId = lastPlayedId;
+        let retPlayer = null;
+        do {
+            findPlayerId = isNext ? this.playerPositions.getNextNeighbourID(findPlayerId) : this.playerPositions.getPreviousNeighbourPlayerID(findPlayerId);
+            retPlayer = this.findPlayer(findPlayerId);
+
+            if (retPlayer != null && lastPlayedId == retPlayer.id) return null;
+
+            if(count++ > 4) break;
+
+        } while (retPlayer == null || !retPlayer.isPlaying());
+
+        return retPlayer;
     }
 }
 
