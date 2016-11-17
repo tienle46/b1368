@@ -1,6 +1,7 @@
 import app from 'app';
 import Component from 'Component';
 import NodeRub from 'NodeRub';
+import LoaderRub from 'LoaderRub';
 
 class EventDialog extends Component {
     constructor() {
@@ -9,28 +10,35 @@ class EventDialog extends Component {
             default: null,
             type: cc.Node
         };
-
         this.groupType = app.const.DYNAMIC_GROUP_NEW_EVENT;
     }
 
     onLoad() {
+        this.loader = new LoaderRub();
+        this.loader.show();
+
         this.node.on('touch-start', () => {
             return null;
         });
+
         this.node.on('touch-end', () => {
             return null;
         });
+
         this._init();
 
         this._getEventsFromServer();
-        this.node.on('event-clicked', (e) => {
-            console.debug('click cmnr haha', e.detail);
-        });
+
+        this.node.on('event-clicked', ((e) => {
+            this.selectedId = e.detail.id;
+            this.selectedUrl = e.detail.url;
+        }).bind(this));
     }
 
     _init() {
         this.scrollview = this.node.getChildByName('scrollview');
-        this.webview = this.contentNode.parent.parent.getChildByName('webview');
+        this.view = this.scrollview.getChildByName('view');
+        this.webview = this.scrollview.getChildByName('webview');
 
         let btnGroupNode = this.node.getChildByName('btnGroup');
         this.policyBtn = btnGroupNode.getChildByName('policy').getComponent(cc.Button);
@@ -38,6 +46,10 @@ class EventDialog extends Component {
         this.backBtn = btnGroupNode.getChildByName('back').getComponent(cc.Button);
 
         this._initState();
+    }
+
+    viewLoaded() {
+        console.debug('xxxxxxxx');
     }
 
     _initView(data) {
@@ -54,40 +66,60 @@ class EventDialog extends Component {
             event.handler = 'testCheckEvent';
 
             for (var i = 0; i < listHeader.length; i++) {
+                let isChecked = i === 0;
                 let nodeOptions = {
                     anchor: cc.v2(0, 1),
                     name: 'item',
                     size: size,
                     sprite: {
-                        spriteFrame: 'https://s-media-cache-ak0.pinimg.com/originals/6a/7c/e9/6a7ce948bca69401e159c648dcf22176.jpg',
+                        spriteFrame: 'http://photoservice.gamesao.vn/Resources/Upload/Images/Game/4cf35d11-19cc-43da-a3db-e089c7b787c7.jpg',
                         isCORS: true
                     },
                     toggle: {
                         toggleGroup: this.contentNode.getComponent(cc.ToggleGroup),
-                        event
+                        event,
+                        isChecked
                     }
                 };
 
                 let node = NodeRub.createNodeByOptions(nodeOptions);
                 node.nodeId = listIds[i];
+                node.urlContent = `http://dantri.com.vn`;
                 this.contentNode.addChild(node);
+
+                if (!isChecked) {
+                    node.opacity = 120;
+                    this.node.emit('event-clicked', { id: node.nodeId, url: node.urlContent });
+                }
             }
+            this.loader.hide();
         }
     }
 
     testCheckEvent(e) {
         e.node.parent.children.forEach((child) => {
             if (child === e.node) {
-                e.node.opacity = 120;
+                e.node.opacity = 255;
             } else {
-                child.opacity = 255;
+                child.opacity = 120;
             }
         });
-        this.node.emit('event-clicked', e.node.nodeId);
+        this.node.emit('event-clicked', { id: e.node.nodeId, url: e.node.urlContent });
     }
 
+    // hide main -> show webview
     onPolicyBtnClick() {
+        // hide main
+        this._hide();
 
+        let webview = this.webview.getChildByName('view').getComponent(cc.WebView);
+        webview.url = this.selectedUrl;
+        console.debug(this.selectedUrl);
+    }
+
+    // hide webview -> show main
+    onBackBtnClick() {
+        this._show();
     }
 
     _getEventsFromServer() {
@@ -112,8 +144,9 @@ class EventDialog extends Component {
         this._show();
     }
 
+    // show scroll list
     _show() {
-        this.scrollview.active = true;
+        this.view.active = true;
         this.policyBtn.node.active = true;
 
         this.webview.active = false;
@@ -121,7 +154,7 @@ class EventDialog extends Component {
     }
 
     _hide() {
-        this.scrollview.active = false;
+        this.view.active = false;
         this.policyBtn.node.active = false;
 
         this.webview.active = true;

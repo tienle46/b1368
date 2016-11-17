@@ -1,7 +1,7 @@
 import RubUtils from 'RubUtils';
 
 export default class LoaderRub {
-    constructor(node, hideBg = false, opts = {}) {
+    constructor(node = cc.director.getScene(), hideBg = false, opts = {}) {
         let defaultOptions = {
             position: cc.v2(0, 0)
         };

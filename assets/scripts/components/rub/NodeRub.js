@@ -191,6 +191,7 @@ let NodeRub = {
             let toggle = node.addComponent(cc.Toggle);
             options.toggle.toggleGroup && (toggle.toggleGroup = options.toggle.toggleGroup);
             options.toggle.event && (toggle.checkEvents = [options.toggle.event]);
+            options.toggle.isChecked && (toggle.isChecked = options.toggle.isChecked);
         }
 
         // widget
