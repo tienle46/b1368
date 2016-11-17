@@ -1,7 +1,7 @@
 import app from 'app';
 import Component from 'Component';
 import VerticalDropDownRub from 'VerticalDropDownRub';
-
+import  ConfirmPopupRub from 'ConfirmPopupRub'
 class TopBar extends Component {
     constructor() {
         super();
@@ -51,6 +51,17 @@ class TopBar extends Component {
         this._showBack = true;
     }
 
+    onClickLogout() {
+        let parentNode = cc.director.getScene();
+
+        ConfirmPopupRub.show(parentNode, `Bạn có chắc chắn muốn thoát`, this._onConfirmLogoutClick, null, this);
+    }
+    _onConfirmLogoutClick() {
+        log(`about to logout`);
+
+        app.service.manuallyDisconnect();
+    }
+
     handleSettingAction(e) {
         let options = {
             arrow: {
@@ -67,7 +78,8 @@ class TopBar extends Component {
             content: 'Âm lượng'
         }, {
             icon: 'game/images/ingame_exit_icon',
-            content: 'Thoát'
+            content: 'Thoát',
+            event : this.onClickLogout.bind(this),
         }], options);
         this.node.addChild(dropdown.node());
 

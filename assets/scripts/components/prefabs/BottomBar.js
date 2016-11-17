@@ -117,8 +117,11 @@ class BottomBar extends Component {
         ExchangeDialogRub.show(this.node.parent, tabOptions);
     }
 
-    testClick(e) {
-        console.debug(e);
+    fanpageClicked(e){
+        cc.sys.openURL(`https://www.messenger.com/t/${app.config.fbAppId}`);
+    }
+    callSupportClicked(e){
+        cc.sys.openURL(`tel:${app.config.supportHotline}`);
     }
 
     onClickHotlineAction(e) {
@@ -130,11 +133,11 @@ class BottomBar extends Component {
         let dropdown = new HorizontalDropDownRub(e.currentTarget, [{
                 icon: 'bottombar/bottombar_tooltip_facebook',
                 content: 'Fanpage',
-                event
+                event: this.fanpageClicked.bind(this)
             }, {
                 icon: 'bottombar/bottombar_tooltip_hotline',
                 content: 'Hotline',
-                event: this.testClick.bind(this)
+                event: this.callSupportClicked.bind(this)
             },
             {
                 icon: 'bottombar/bottombar_tooltip_gopy',

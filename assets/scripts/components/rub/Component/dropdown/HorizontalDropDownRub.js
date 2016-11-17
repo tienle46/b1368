@@ -35,7 +35,7 @@ export default class HorizontalDropDownRub {
     constructor(target, items = [], options = {}, childrens) {
         let defaultOptions = {
             color: new cc.Color(178, 101, 201),
-            size: cc.size(360, 65),
+            size: cc.size(360, 90),
             type: app.const.MENU.TYPE.HORIZONTAL,
             arrow: {
                 direction: app.const.MENU.ARROW_DIRECTION.DOWN,
@@ -47,14 +47,14 @@ export default class HorizontalDropDownRub {
         let defaultChildrenOptions = {
             layout: {
                 padding: 24,
-                spacingX: 0
+                spacingX: 10
             },
             btnWrap: {
                 padding: 0,
                 spacingY: 3
             },
             icon: {
-                size: cc.size(22, 22)
+                size: cc.size(41, 41)
             },
             label: {
                 fontSize: 13,
