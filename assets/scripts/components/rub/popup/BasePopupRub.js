@@ -47,4 +47,13 @@ export default class BasePopUpRub {
     addToNode() {
         this.node.addChild(this.prefab);
     }
+
+    /**
+     * @param {cc.Node || cc.Prefab || prefab dir} element
+     * 
+     * @memberOf BasePopUpRub
+     */
+    addToBody(element) {
+        this.basePopupComponent.addToBody(element);
+    }
 }
