@@ -14,12 +14,12 @@ export default class ConfirmPopupRub extends AlertPopupRub {
     constructor(node, string = "", greenBtnEvent = null, violetBtnEvent = null, context = null) {
         super(node, string, greenBtnEvent, context);
         this.violetBtnEvent = violetBtnEvent;
-        this.init();
     }
 
     init() {
         super.init();
-        // registerEvent for violet Btn
+        console.debug('init')
+            // registerEvent for violet Btn
         this._registerVioletBtnEvent();
     }
 
@@ -36,6 +36,6 @@ export default class ConfirmPopupRub extends AlertPopupRub {
 
     //override
     static show(node, string = "", greenBtnEvent = null, violetBtnEvent = null, context = null) {
-        return new ConfirmPopupRub(node, string, greenBtnEvent, violetBtnEvent, context);
+        return new ConfirmPopupRub(node, string, greenBtnEvent, violetBtnEvent, context).init();
     }
 }

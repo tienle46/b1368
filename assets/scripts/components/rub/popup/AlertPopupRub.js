@@ -15,7 +15,6 @@ export default class AlertPopupRub extends BasePopupRub {
         super(node, string);
         this.greenBtnEvent = greenBtnEvent;
         this.context = context;
-        this.init();
     }
 
     init() {
@@ -39,6 +38,6 @@ export default class AlertPopupRub extends BasePopupRub {
 
     //override
     static show(node, string, greenBtnEvent = null, context = null) {
-        return new AlertPopupRub(node, string, greenBtnEvent, context);
+        return new AlertPopupRub(node, string, greenBtnEvent, context).init();
     }
 }
