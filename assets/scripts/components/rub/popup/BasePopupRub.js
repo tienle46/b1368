@@ -31,6 +31,7 @@ export default class BasePopUpRub {
 
     _setupPopupElement() {
         let btnGroupNode = this.popup_bkgNode.getChildByName('footer').getChildByName('groupBtn');
+        this.bodyNode = this.basePopupComponent.bodyNode;
         this.greenBtn = btnGroupNode.getChildByName('greenBtn').getComponent(cc.Button);
         this.violetBtn = btnGroupNode.getChildByName('violetBtn').getComponent(cc.Button);
         this.groupBtn = btnGroupNode.getComponent(ButtonGroup);
@@ -55,5 +56,11 @@ export default class BasePopUpRub {
      */
     addToBody(element) {
         this.basePopupComponent.addToBody(element);
+    }
+
+    removeScrollView() {
+        console.debug(this.bodyNode);
+        let scrollview = this.bodyNode.getChildByName('scrollview');
+        this.bodyNode.removeChild(scrollview);
     }
 }

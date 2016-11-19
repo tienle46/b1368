@@ -18,8 +18,7 @@ export default class ConfirmPopupRub extends AlertPopupRub {
 
     init() {
         super.init();
-        console.debug('init')
-            // registerEvent for violet Btn
+        // registerEvent for violet Btn
         this._registerVioletBtnEvent();
     }
 
