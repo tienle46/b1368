@@ -74,7 +74,7 @@ app.res.gameIcon = {
     "lie": "dashboard/lieng_ico",
     "pom": "dashboard/phom_ico",
     "xit": "dashboard/xito_ico",
-    "mbh": "dashboard/tlmn_ico"
+    "mbh": "dashboard/maubinh_ico"
 
 };
 app.res.gameTopCapThuIcon = {

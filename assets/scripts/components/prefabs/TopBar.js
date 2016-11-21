@@ -45,6 +45,8 @@ class TopBar extends Component {
         } else {
             this.backButton.node.removeFromParent();
         }
+
+        this.chatButton.node.runAction(cc.hide());
     }
 
     showBackButton() {
