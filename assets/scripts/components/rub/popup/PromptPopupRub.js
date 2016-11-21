@@ -9,16 +9,40 @@ export default class PromptPopupRub extends ConfirmPopupRub {
      * @param {cc.Node} body # NodeRub options 
      * @param {any} [events={}]  # button events
      * {
-     *  green : cc.Component.EventHandler || function(context)
-     *  violet : cc.Component.EventHandler || function(context)
+     *  confirmBtn : cc.Component.EventHandler || function(context)
+     *  cancelBtn : cc.Component.EventHandler || function(context)
      * }
      * @param {any} options
+     * {
+     *  label : {
+     *      text: '',
+     *      // NodeRub Label
+     *  }
+     *  editbox: {
+     *      // EditBox Label
+     *  }
+     * }
      * @param {any} context
      * 
      * @memberOf PromptPopup
      */
     constructor(node, events = {}, options, context = null) {
-        super(node, "", events.green || null, null, context);
+        super(node, "", events.confirmBtn || null, events.cancelBtn || null, context);
+        let opts = {
+            label: {
+                fontsize: 40,
+                lineHeight: 40,
+                text: 'Label:Label:Label',
+                horizontalAlign: cc.Label.HorizontalAlign.LEFT,
+                overflow: cc.Label.Overflow.CLAMP,
+                enableWrapText: false
+            },
+            editbox: {
+                inputMode: cc.EditBox.InputMode.ANY,
+                fontColor: new cc.Color(0, 0, 0)
+            }
+        };
+        this.options = Object.assign({}, opts, options);
     }
 
     init() {
@@ -60,24 +84,14 @@ export default class PromptPopupRub extends ConfirmPopupRub {
                 left: 10,
                 right: 10
             },
-            label: {
-                fontsize: 40,
-                lineHeight: 40,
-                text: 'Label:Label:Label',
-                horizontalAlign: cc.Label.HorizontalAlign.LEFT,
-                overflow: cc.Label.Overflow.CLAMP,
-                enableWrapText: false
-            }
+            label: this.options.label
         };
 
         let inputOptions = {
             name: 'editbox',
             size: cc.size(inputBgOptions.size.width - 40, 199.5),
             // position: cc.v2(-10, -34.75),
-            editbox: {
-                inputMode: cc.EditBox.InputMode.ANY,
-                fontColor: new cc.Color(0, 0, 0)
-            },
+            editbox: this.options.editbox,
             widget: {
                 left: 10,
                 right: 30

@@ -90,7 +90,7 @@ export default class EntranceScene extends BaseScene {
 
     handleFacebookLoginAction() {
         // AlertPopupRub.show(this.node, "Chức năng đang cập nhật!");
-        this.prom = new PromptPopupRub(this.node, { green: this.test }, null, this);
+        this.prom = new PromptPopupRub(this.node, { confirmBtn: this.test }, { label: { text: 'dafuq ?' } }, this);
         this.prom.init();
     }
 
