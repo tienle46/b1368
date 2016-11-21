@@ -130,15 +130,14 @@ export default class ListTableScene extends BaseScene {
     }
 
     _addTopBar() {
-        let topBarNode = new cc.instantiate(this.topBar);
+        RubUtils.loadRes('dashboard/Topbar').then((prefab) => {
+            let topbarNode = cc.instantiate(prefab);
 
-        let topBarScript = topBarNode.getComponent('TopBar');
-        topBarScript.showBackButton();
+            let topBarScript = topbarNode.getComponent('TopBar');
+            topBarScript.showBackButton();
 
-        // let winsize = cc.director.getWinSize();
-
-        // topBarNode.setContentSize(winsize.width, 100);
-        this.node.addChild(topBarNode);
+            this.node.addChild(topbarNode);
+        });
     }
 
     createTableView() {
