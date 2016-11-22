@@ -8,6 +8,7 @@ import GridViewRub from 'GridViewRub';
 import _ from 'lodash';
 import MessageCenterDialogRub from 'MessageCenterDialogRub';
 import HorizontalDropDownRub from 'HorizontalDropDownRub';
+import PromptPopupRub from 'PromptPopupRub';
 
 class BottomBar extends Component {
     constructor() {
@@ -118,9 +119,41 @@ class BottomBar extends Component {
     fanpageClicked(e){
         cc.sys.openURL(`https://www.messenger.com/t/${app.config.fbAppId}`);
     }
+
     callSupportClicked(e){
         cc.sys.openURL(`tel:${app.config.supportHotline}`);
     }
+
+    onFeedbackConfirmed(){
+        //collect user feedback and send to server
+        if(this.prom.getVal() && this.prom.getVal().length > 0){
+            var sendObject = {
+                    'cmd': app.commands.SEND_FEEDBACK,
+                    'data': {
+                        [app.keywords.REQUEST_FEEDBACK] : this.prom.getVal()
+            }
+            };
+
+            app.service.send(sendObject, (data) => {
+                log(data);
+
+                if(data && data["s"]){
+                    app.system.showToast('Cảm ơn bạn, feedback của bạn đã được gửi tới ban quản trị');
+                }
+                else{
+                    app.system.showToast('Gửi góp ý thất bại, xin vui lòng thử lại');
+                }
+
+            }, app.const.scene.DASHBOARD_SCENE);
+        }
+
+    }
+
+    giveFeedbackClicked(e){
+        this.prom = new PromptPopupRub(cc.director.getScene(), { green: this.onFeedbackConfirmed }, null, this);
+        this.prom.init();
+    }
+
 
     onClickHotlineAction(e) {
         var event = new cc.Component.EventHandler();
@@ -139,7 +172,8 @@ class BottomBar extends Component {
             },
             {
                 icon: 'bottombar/bottombar_tooltip_gopy',
-                content: 'Góp ý'
+                content: 'Góp ý',
+                event: this.giveFeedbackClicked.bind(this)
             },
             {
                 icon: 'bottombar/bottombar_tooltip_huongdan',
