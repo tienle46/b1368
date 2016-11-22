@@ -30,7 +30,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 1301,
-      "height": 288
+      "height": 450
     },
     "_children": [
       {
@@ -46,8 +46,8 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": 0,
-      "y": 0
+      "x": 651,
+      "y": 149
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -152,7 +152,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 622,
-      "height": 253
+      "height": 350
     },
     "_children": [],
     "_rotationX": 0,
@@ -196,7 +196,8 @@
     "node": {
       "__id__": 1
     },
-    "_enabled": true
+    "_enabled": true,
+    "path": ""
   },
   {
     "__type__": "cc.PrefabInfo",

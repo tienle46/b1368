@@ -1,6 +1,7 @@
 var app = require('app');
 import AlertPopupRub from 'AlertPopupRub';
 import BaseScene from 'BaseScene';
+import PromptPopupRub from 'PromptPopupRub';
 
 export default class EntranceScene extends BaseScene {
 
@@ -83,8 +84,14 @@ export default class EntranceScene extends BaseScene {
         });
     }
 
+    test() {
+        console.debug(this.prom.getVal());
+    }
+
     handleFacebookLoginAction() {
-        AlertPopupRub.show(this.node, "Chức năng đang cập nhật!");
+        // AlertPopupRub.show(this.node, "Chức năng đang cập nhật!");
+        this.prom = new PromptPopupRub(this.node, { confirmBtn: this.test }, { label: { text: 'dafuq ?' } }, this);
+        this.prom.init();
     }
 
     _generateUserName(key, deviceId, count, maxCall) {

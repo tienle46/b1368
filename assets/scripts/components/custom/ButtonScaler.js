@@ -4,7 +4,7 @@ var app = require('app');
 class ButtonScaler extends Component {
     constructor() {
         super();
-        this.pressedScale = 0.85;
+        this.pressedScale = 1.1;
         this.transDuration = 0.1;
     }
 
@@ -17,18 +17,18 @@ class ButtonScaler extends Component {
         this.initScale = this.node.scale;
         this.button = this.getComponent(cc.Button);
 
-        this.scaleDownAction = cc.scaleTo(this.transDuration, this.pressedScale);
-        this.scaleUpAction = cc.scaleTo(this.transDuration, this.initScale);
+        this.scaleUpAction = cc.scaleTo(this.transDuration, this.pressedScale);
+        this.scaleDownAction = cc.scaleTo(this.transDuration, this.initScale);
 
         function onTouchDown(e) {
             this.stopAllActions();
             if (audioMng) audioMng.playButton();
-            this.runAction(self.scaleDownAction);
+            this.runAction(self.scaleUpAction);
         }
 
         function onTouchUp(e) {
             this.stopAllActions();
-            this.runAction(self.scaleUpAction);
+            this.runAction(self.scaleDownAction);
         }
         this.node.on('touchstart', onTouchDown, this.node);
         this.node.on('touchend', onTouchUp, this.node);
