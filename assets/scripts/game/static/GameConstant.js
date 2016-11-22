@@ -12,7 +12,7 @@ app.const.game.player.state = {};
 app.const.game.position = {};
 app.const.game.seat = {};
 
-app.const.game.DECK_CARD_SCALE = 0.5;
+app.const.game.DECK_CARD_SCALE = 0.6;
 
 /**
  * Init Board state

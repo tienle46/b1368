@@ -1,0 +1,30 @@
+{
+  "ver": "1.0.0",
+  "uuid": "22229f48-0844-4ab7-805d-a29af0a3a8b5",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "subMetas": {
+    "ingame_phom_u_khan": {
+      "ver": "1.0.3",
+      "uuid": "b7e4540b-3cd5-4a5d-b714-6b7b1cbbb0c5",
+      "rawTextureUuid": "22229f48-0844-4ab7-805d-a29af0a3a8b5",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": -0.5,
+      "offsetY": -1,
+      "trimX": 0,
+      "trimY": 2,
+      "width": 99,
+      "height": 48,
+      "rawWidth": 100,
+      "rawHeight": 50,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}

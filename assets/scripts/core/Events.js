@@ -63,6 +63,8 @@ Events.ON_CLICK_SKIP_JOIN_PHOM_BUTTON   = "on.click.skipJoinButton";
 Events.ON_CLICK_DOWN_PHOM_BUTTON        = "on.click.downPhomButton";
 Events.ON_CLICK_SKIP_DOWN_PHOM_BUTTON   = "on.click.skipDownButton";
 Events.ON_CLICK_CHANGE_PHOM_BUTTON      = "on.click.changePhomButton";
+Events.ON_CLICK_U_BUTTON                = "on.click.uButton";
+Events.ON_CLICK_DOI_U_TRON_BUTTON       = "on.click.doiUTronButton";
 
 Events.ON_GAME_STATE_BEGIN              = "on.game.stateBegin";
 Events.ON_GAME_STATE_STARTING           = "on.game.stateStarting";

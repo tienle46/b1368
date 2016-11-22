@@ -74,11 +74,11 @@
     "selectable": false,
     "space": 30,
     "maxDimension": 300,
-    "orientation": 1,
-    "align": 9,
     "cardPrefab": {
       "__uuid__": "1be1ace3-b9b3-4bf4-9c45-5c1d9eccac08"
-    }
+    },
+    "orientation": 1,
+    "align": 9
   },
   {
     "__type__": "cc.PrefabInfo",

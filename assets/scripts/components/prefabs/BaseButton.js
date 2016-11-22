@@ -18,8 +18,8 @@ cc.Class({
 
     properties: {
         buttonType: app.bottomBarButtonType.NAPXU,
-        pressedScale: 0.8,
-        transDuration: 0.1,
+        pressedScale: 1.12,
+        transDuration: 0.08,
         isTouching: false,
         path: "aaaa"
     },

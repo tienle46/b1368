@@ -117,7 +117,11 @@ export default class CardList extends Component {
     }
 
     setReveal(reveal) {
-        this.reveal = reveal;
+        if(this.initiated){
+            this.reveal = reveal;
+        }else{
+            this.__reveal = reveal;
+        }
     }
 
     setMaxDimension(value) {
@@ -466,7 +470,7 @@ export default class CardList extends Component {
 
         let newCard = cc.instantiate(this.cardPrefab).getComponent('Card');
         newCard.initFromByte(byte);
-        newCard.reveal(reveal);
+        newCard.setReveal(reveal);
         newCard.node.setScale(this.scale);
         newCard.setOnClickListener(this._onSelectCard.bind(this));
 
@@ -524,6 +528,14 @@ export default class CardList extends Component {
 
         this.setAlign(this._settedAlign || this.align);
         this._updateNodeSize();
+
+        this.initiated = true;
+    }
+
+    start(){
+        if(this.__reveal != undefined){
+            this.setReveal(this.__reveal);
+        }
     }
 
     setSelecteds(cards, selected = true) {
@@ -557,8 +569,11 @@ export default class CardList extends Component {
         if (src.reveal) {
             src.transferTo(this, cards, cb);
         } else {
+            
+            console.log("transferFrom: ", this.reveal, src.reveal);
             let reveal = cbOrOption && cbOrOption.hasOwnProperty('reveal') ? cbOrOption.reveal : this.reveal;
             let addedCards = src.addCards(cards, true, reveal);
+            console.log("transferFrom before transferTo: ", this.reveal, src.reveal);
             src.transferTo(this, addedCards , cb);
         }
     }
@@ -568,7 +583,7 @@ export default class CardList extends Component {
      * @param cards
      * @param dest
      */
-    transferTo(dest = null, cards = [], cb = null, autoAdjustPosition = true) {
+    transferTo(dest = null, cards = [], cb = null, reveal = dest && dest.reveal) {
 
         this.cleanSelectedCard();
 
@@ -587,7 +602,7 @@ export default class CardList extends Component {
         const actions = [];
         const removedCards = this._removeCardModelOnly(cards);
         const currentDestLength = destCardList.cards.length;
-        const addedCards = destCardList._fillCards(removedCards, true, true);
+        const addedCards = destCardList._fillCards(removedCards, true, reveal);
 
         destCardList._adjustCardsPosition();
         removedCards.forEach((card, index) => {
@@ -622,7 +637,7 @@ export default class CardList extends Component {
         });
 
         actions.length > 0 && destCardList.node.runAction(cc.sequence(actions));
-        autoAdjustPosition && this._adjustCardsPosition();
+        this._adjustCardsPosition();
     }
 
     /**

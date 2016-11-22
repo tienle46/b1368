@@ -11,6 +11,8 @@ import BoardCardTurnBase from 'BoardCardTurnBase';
 import PlayerPhom from 'PlayerPhom';
 import BoardPhomRenderer from 'BoardPhomRenderer';
 import Phom from 'Phom';
+import CardList from 'CardList';
+import ArrayUtils from "../../../utils/ArrayUtils";
 
 export default class BoardPhom extends BoardCardTurnBase {
 
@@ -69,28 +71,31 @@ export default class BoardPhom extends BoardCardTurnBase {
         let currentBoardEatenCardSize = utils.getValue(data, Keywords.GAME_PHOM_EATEN_CARD_SIZE);
         let currentBoardEatenPlayers = utils.getValue(data, Keywords.GAME_PHOM_EATEN_PLAYERS);
 
-        if (!utils.isEmptyArray(currentBoardPlayedCardSize)) {
+        if (!ArrayUtils.isEmpty(currentBoardPlayedCardSize)) {
             let generalPlayedCardIndex = 0;
 
             playerIds && playerIds.forEach((playerId, i) => {
                 let player = this.scene.gamePlayers.findPlayer(playerId);
+                let playedCardLength = currentBoardPlayedCardSize[i];
+
                 if (player) {
                     //Set played cards
-                    let cards = currentBoardPlayedCards.slice(generalPlayedCardIndex, generalPlayedCardIndex + currentBoardPlayedCardSize[i]);
-                    player.setPlayedCards(cards);
-                    generalPlayedCardIndex += currentBoardPlayedCardSize[i];
+                    let cards = currentBoardPlayedCards.slice(generalPlayedCardIndex, generalPlayedCardIndex + playedCardLength);
+                    player.setPlayedCards(GameUtils.convertBytesToCards(cards));
                 }
+
+                generalPlayedCardIndex += playedCardLength;
             });
         }
 
-        if (!utils.isEmptyArray(currentBoardPhomsSize)) {
-            let onLoadAllPhoms = [];
+        if (!ArrayUtils.isEmpty(currentBoardPhomsSize)) {
+            let currentAllPhoms = [];
             let phomListCardIndex = 0;
 
-            currentBoardPhomsCards && currentBoardPhomsCards.forEach((phomSize, i) => {
-                let phomCards = currentBoardPhomsCards.slice(phomListCardIndex, phomListCardIndex + phomSize);
-                let phom = new Phom(GameUtils.convertToBytes(phomCards));
-                onLoadAllPhoms.push(phom);
+            currentBoardPhomsSize && currentBoardPhomsSize.forEach((phomSize, i) => {
+                let phomCardBytes = currentBoardPhomsCards.slice(phomListCardIndex, phomListCardIndex + phomSize);
+                let phom = new Phom(GameUtils.convertToBytes(phomCardBytes));
+                currentAllPhoms.push(phom);
                 phomListCardIndex += phomSize;
             });
 
@@ -103,14 +108,15 @@ export default class BoardPhom extends BoardCardTurnBase {
                     let phomCount = currentNumberOfPhomByPlayerId[i];
                     for (let j = 0; j < phomCount; j++) {
 
-                        let phom = onLoadAllPhoms[j + phomPlayerCount];
+                        let phom = currentAllPhoms[j + phomPlayerCount];
                         let processingPhom = player.renderer.downPhomList[j];
 
-                        processingPhom.setCards(phom);
+                        if(!phom || !processingPhom) continue;
+
+                        processingPhom.setCards(phom.cards);
                         processingPhom.setOwner(player.id);
 
-                        this.allPhomList.push(processingPhom);
-
+                        this.allPhomList.push(processingPhom.clone());
                     }
 
                     phomPlayerCount += phomCount;
@@ -118,30 +124,30 @@ export default class BoardPhom extends BoardCardTurnBase {
             });
         }
 
-        if (!utils.isEmptyArray(currentBoardEatenPlayers)) {
+        if (!ArrayUtils.isEmpty(currentBoardEatenPlayers)) {
             let eatenCardsIndex = 0;
             currentBoardEatenPlayers.forEach((eatenId, i) => {
 
-                let cardSize = currentBoardEatenCardSize[i];
                 let player = this.scene.gamePlayers.findPlayer(eatenId);
+                let eatenCardLength = currentBoardEatenCardSize[i];
 
                 if (player != null) {
-                    let eatenCardBytes = currentBoardEatenCards.slice(eatenCardsIndex, eatenCardsIndex + cardSize);
+                    let eatenCardBytes = currentBoardEatenCards.slice(eatenCardsIndex, eatenCardsIndex + eatenCardLength);
                     player.setEatenCards(GameUtils.convertBytesToCards(eatenCardBytes));
                 }
 
-                eatenCardsIndex += cardSize;
+                eatenCardsIndex += eatenCardLength;
             });
-        }
-
-        if (this.scene.isPlaying()) {
-            this._setDeckFakeCard();
         }
 
         let lastPlayedTurn = utils.getValue(data, Keywords.LAST_MOVE_PLAYER_ID);
         if (lastPlayedTurn) {
+
             let playedPlayer = this.scene.gamePlayers.findPlayer(lastPlayedTurn);
-            playedPlayer && playedPlayer.playedCards.length > 0 && (this.lastPlayedCard = playedPlayer.playedCards[playedPlayer.playedCards.length - 1]);
+
+            if(playedPlayer && playedPlayer.playedCards.length > 0){
+                this.lastPlayedCard = playedPlayer.playedCards[playedPlayer.playedCards.length - 1];
+            }
         }
     }
 
@@ -167,7 +173,7 @@ export default class BoardPhom extends BoardCardTurnBase {
         this.allPhomList.forEach(phom => phom.cleanHighlight());
     }
 
-    _setDeckFakeCard(fakeCount) {
+    _setDeckFakeCard(fakeCount = 16) {
         if (fakeCount > 0 || this.getTotalPlayedCardsSize() < 16) {
             this.renderer.fillDeckFakeCards();
         } else {
@@ -183,6 +189,15 @@ export default class BoardPhom extends BoardCardTurnBase {
         console.log("totalPlayedCard: ", totalPlayedCard);
         
         return totalPlayedCard;
+    }
+
+    onBoardPlaying(data, isJustJoined){
+
+        super.onBoardPlaying(data, isJustJoined);
+
+        if(isJustJoined){
+            this._setDeckFakeCard();
+        }
     }
 
     onBoardStarting(data, isJustJoined) {
@@ -218,7 +233,7 @@ export default class BoardPhom extends BoardCardTurnBase {
                 this.renderer.cleanDeckCards();
                 this._startEndBoardTimeLine(remainTime);
             }
-        }), 500);
+        }), CardList.TRANSFER_CARD_DURATION * 1000);
     }
 
     _getGameResultInfos(playerIds = [], playerHandCards, data) {

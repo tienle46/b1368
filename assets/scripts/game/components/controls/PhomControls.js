@@ -28,6 +28,7 @@ export default class PhomControls extends GameControls {
             changePhomButton: cc.Button,
             uButton: cc.Button,
             doiUTronButton: cc.Button,
+            doiGuiButton: cc.Button,
         }
 
         this.baseControls = null;
@@ -94,6 +95,7 @@ export default class PhomControls extends GameControls {
         this.hideAllControls();
         utils.active(this.joinPhomButton);
         utils.active(this.skipJoinButton);
+        utils.active(this.doiGuiButton);
     }
 
     _showOnTurnControls(){
@@ -138,6 +140,7 @@ export default class PhomControls extends GameControls {
         utils.deactive(this.changePhomButton);
         utils.deactive(this.uButton);
         utils.deactive(this.doiUTronButton);
+        utils.deactive(this.doiGuiButton);
     }
 
     _showWaitTurnControls(){
@@ -205,6 +208,14 @@ export default class PhomControls extends GameControls {
 
     onClickChangePhomButton(event){
         this.scene.emit(Events.ON_CLICK_CHANGE_PHOM_BUTTON);
+    }
+
+    onClickUButton(event){
+        this.scene.emit(Events.ON_CLICK_U_BUTTON);
+    }
+
+    onClickDoiUTronButton(event){
+        this.scene.emit(Events.ON_CLICK_DOI_U_TRON_BUTTON);
     }
 }
 

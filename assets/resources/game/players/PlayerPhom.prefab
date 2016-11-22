@@ -3851,7 +3851,7 @@
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
-      "x": 0,
+      "x": 0.5,
       "y": 0
     },
     "_contentSize": {
@@ -4207,7 +4207,7 @@
     ],
     "cardScale": 0.7,
     "space": 60,
-    "align": 1
+    "align": 2
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -4268,7 +4268,7 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": 140,
+      "x": 130,
       "y": 0
     },
     "_skewX": 0,
@@ -4720,7 +4720,7 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": -150,
+      "x": -155,
       "y": 0
     },
     "_skewX": 0,
@@ -4755,8 +4755,8 @@
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
-      "x": 1,
-      "y": 0
+      "x": 0.5,
+      "y": 0.5
     },
     "_contentSize": {
       "__type__": "cc.Size",
@@ -4780,7 +4780,7 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": 50,
+      "x": 0,
       "y": 0
     },
     "_skewX": 0,
@@ -4838,7 +4838,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": 216
+      "y": 108
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -4876,7 +4876,7 @@
       "__uuid__": "1be1ace3-b9b3-4bf4-9c45-5c1d9eccac08"
     },
     "orientation": 1,
-    "align": 8
+    "align": 9
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -4923,7 +4923,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": 158
+      "y": 50
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -4961,7 +4961,7 @@
       "__uuid__": "1be1ace3-b9b3-4bf4-9c45-5c1d9eccac08"
     },
     "orientation": 1,
-    "align": 8
+    "align": 9
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -5008,7 +5008,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": 100
+      "y": -8
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -5046,7 +5046,7 @@
       "__uuid__": "1be1ace3-b9b3-4bf4-9c45-5c1d9eccac08"
     },
     "orientation": 1,
-    "align": 8
+    "align": 9
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -5111,7 +5111,7 @@
     ],
     "cardScale": 0.7,
     "space": 60,
-    "align": 8
+    "align": 9
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -6519,7 +6519,7 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": -93,
+      "x": -100,
       "y": 0
     },
     "_skewX": 0,
@@ -6580,7 +6580,7 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": 66,
+      "x": 75,
       "y": 0
     },
     "_skewX": 0,
@@ -6642,7 +6642,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": 77
+      "y": 85
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -6703,7 +6703,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": -82
+      "y": -90
     },
     "_skewX": 0,
     "_skewY": 0,

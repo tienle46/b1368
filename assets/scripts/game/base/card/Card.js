@@ -42,6 +42,7 @@ export default class Card extends Component {
         this.highlight = false;
         this.clickListener = null;
         this._selectedMargin = 40;
+        this.reveal = true;
         this.group = -1;
         this.locked = false;
     }
@@ -120,6 +121,8 @@ export default class Card extends Component {
         if(this.__highlight){
             this.setLocked(this.__highlight);
         }
+
+        this.setReveal(this.reveal);
     }
 
     onActive(){
@@ -158,7 +161,8 @@ export default class Card extends Component {
         return this.suit === Card.SUIT_ZO || this.suit === Card.SUIT_CO;
     }
 
-    reveal(isFaceUp) {
+    setReveal(isFaceUp) {
+        this.reveal = isFaceUp;
         this.rankNode.node.active = isFaceUp;
         this.suitNode.node.active = isFaceUp;
         this.mainPic.node.active = isFaceUp;

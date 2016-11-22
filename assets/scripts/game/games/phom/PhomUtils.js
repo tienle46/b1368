@@ -50,6 +50,15 @@ export default class PhomUtils {
         }
     }
 
+    static checkCa(checkCard, cards){
+        for (let i = 0; i < cards.length; i++) {
+            if (this.isCa(checkCard, cards[i], true) || this.isCa(checkCard, cards[i], false)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     static validateGuiPhom(cards, player) {
 
         let valid = false;
@@ -158,19 +167,9 @@ export default class PhomUtils {
     static getJoinPhomSolutions(phoms, cards) {
 
         let solutions = [];
-        let branch = new JoinSolution();
+        let joinSolution = new JoinSolution();
 
-        console.log("on get join phom solution", cards);
-        phoms.forEach(phom => {
-            console.log(phom, phom.cards.length);
-        })
-
-        PhomUtils.generateJoinPhomSolutions(phoms, cards, branch, solutions);
-
-        console.log("after on get join phom solution", cards);
-        phoms.forEach(phom => {
-            console.log(phom, phom.cards.length);
-        })
+        PhomUtils.generateJoinPhomSolutions(phoms, cards, joinSolution, solutions);
 
         JoinSolution.sortSolution(solutions);
         JoinSolution.removeSubSolution(solutions);
@@ -179,7 +178,7 @@ export default class PhomUtils {
         return solutions;
     }
 
-    static generateJoinPhomSolutions(phoms, cards, branch, solutions) {
+    static generateJoinPhomSolutions(phoms, cards, joinSolution, solutions) {
         if (phoms.length == 0) return;
 
         for (let i = 0; i < cards.length; i++) {
@@ -194,29 +193,20 @@ export default class PhomUtils {
 
                     cards.splice(i, 1);
                     let node = new JoinNode(card, j);
-                    branch.addNode(node);
+                    joinSolution.addNode(node);
 
-                    PhomUtils.generateJoinPhomSolutions(phoms, cards, branch, solutions);
+                    PhomUtils.generateJoinPhomSolutions(phoms, cards, joinSolution, solutions);
 
-                    branch.removeNodeAt(branch.length - 1);
+                    joinSolution.removeNodeAt(joinSolution.length - 1);
                     cards.splice(i, 0, card);
                     ArrayUtils.remove(phom.cards, card);
                 }
             }
         }
 
-        let isInside = false;
-
-        for (let i = 0; i < solutions.length; i++) {
-            let solution = solutions[i];
-            if (solution.equals(branch)) {
-                isInside = true;
-                break;
-            }
-        }
-
+        let isInside = ArrayUtils.contains(solutions, joinSolution);
         if (!isInside) {
-            solutions.push(new JoinSolution(branch));
+            solutions.push(new JoinSolution(joinSolution));
         }
     }
 
@@ -299,7 +289,7 @@ export default class PhomUtils {
         let singleCards = [];
         while (index < cards.length) {
             let indexCard = cards[index];
-            if (!PhomUtils.isCa(indexCard, cards)) {
+            if (!PhomUtils.checkCa(indexCard, cards)) {
                 singleCards.push(indexCard);
                 cards.splice(index, 1);
             } else {
