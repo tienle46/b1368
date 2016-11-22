@@ -3,7 +3,7 @@
  */
 
 import app from 'app';
-import {Component} from 'components';
+import Component from 'components';
 import {Card, CardList} from 'game-components';
 import GameUtils from 'GameUtils';
 
@@ -56,16 +56,16 @@ export default class DeckCardRenderer extends Component {
                 this.cardList2.clear();
             }
 
-            this.cardList1.transfer(this.cardList1.getRawCards(), this.cardList2);
+            this.cardList1.transferTo(this.cardList2, this.cardList1.getRawCards());
         }
 
         if (srcCardList) {
             if (isItMe) {
-                srcCardList.transfer(cards, this.cardList1);
+                srcCardList.transferTo(this.cardList1, cards);
             } else {
                 srcCardList.removeCards(cards.length);
                 let addedCards = srcCardList.addCards(cards, true, true);
-                srcCardList.transfer(addedCards, this.cardList1);
+                srcCardList.transferTo(this.cardList1, addedCards);
             }
         } else {
             this.cardList1.setCards(cards);

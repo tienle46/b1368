@@ -175,7 +175,7 @@ export default class PlayerPositions extends Component {
         if (anchor) {
 
             for (let i = 0; i < anchor.children.length; i++) {
-                let node = anchor[i];
+                let node = anchor.children[i];
                 if (node.name == 'inviteButton') {
                     node.active = visible;
                     break;

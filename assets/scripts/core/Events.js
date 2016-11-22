@@ -24,6 +24,8 @@ Events.SHOW_EAT_AND_TAKE_CONTROLS       = "show.eatAndTakeControls";
 Events.SHOW_PLAY_CONTROL_ONLY           = "show.playControlOnly";
 Events.SHOW_JOIN_PHOM_CONTROLS          = "show.joinPhomControls";
 Events.SHOW_DOWN_PHOM_CONTROLS          = "show.downPhomControls";
+Events.SHOW_U_PHOM_CONTROLS             = "show.showUPhomControls";
+Events.SHOW_PHOM_HIGHLIGHT              = "show.phomHighlight";
 
 Events.HIDE_ALL_CONTROLS                = "hide.allControls";
 Events.HIDE_GAME_BEGIN_CONTROLS         = "hide.gameBeginControls";
@@ -78,3 +80,4 @@ Events.ON_ACTION_LOAD_GAME_GUIDE        = "on.action.loadGameGuide";
 
 Events.SET_INTERACTABLE_PLAY_CONTROL    = "set.interactablePlayControl";
 Events.SET_INTERACTABLE_HA_PHOM_CONTROL = "set.interactableHaPhomControl";
+Events.SET_INTERACTABLE_EAT_CONTROL     = "set.interactableEatControl";

@@ -136,7 +136,7 @@ export default class MessagePopup extends Component {
 
         let args = [parentNode, textOrRequestData, denyCb, acceptCb];
 
-        parentNode && textOrRequestData && RubUtils.loadRes('Popup/MessagePopup').then((prefab) => {
+        parentNode && textOrRequestData && RubUtils.loadRes('popup/MessagePopup').then((prefab) => {
 
             let messagePopupNode = cc.instantiate(prefab);
             let messagePopup = messagePopupNode.getComponent(MessagePopup.name);

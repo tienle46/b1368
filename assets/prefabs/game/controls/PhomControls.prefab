@@ -47,6 +47,9 @@
       },
       {
         "__id__": 94
+      },
+      {
+        "__id__": 117
       }
     ],
     "_rotationX": 0,
@@ -68,11 +71,11 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 127
+        "__id__": 150
       }
     ],
     "_prefab": {
-      "__id__": 128
+      "__id__": 151
     },
     "groupIndex": 0
   },
@@ -1437,7 +1440,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "turnControls",
+    "_name": "uControls",
     "_objFlags": 0,
     "_opacity": 255,
     "_color": {
@@ -1494,7 +1497,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "takeButton",
+    "_name": "uButton",
     "_objFlags": 0,
     "_opacity": 255,
     "_color": {
@@ -1630,7 +1633,7 @@
       "__uuid__": "200ad895-dd04-48f0-918a-815f86b13ff7"
     },
     "_isSystemFontUsed": false,
-    "_N$string": "BỐC",
+    "_N$string": "Ù",
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
     "_N$overflow": 1
@@ -1736,7 +1739,7 @@
       "__id__": 1
     },
     "component": "PhomControls",
-    "handler": "onClickTakeButton",
+    "handler": "onClickJoinPhomButton",
     "customEventData": ""
   },
   {
@@ -1793,7 +1796,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "eatTurnButton",
+    "_name": "doiUTronButton",
     "_objFlags": 0,
     "_opacity": 255,
     "_color": {
@@ -1814,7 +1817,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 130,
+      "width": 145,
       "height": 50
     },
     "_children": [
@@ -1881,7 +1884,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 130,
+      "width": 145,
       "height": 50
     },
     "_children": [],
@@ -1932,7 +1935,7 @@
       "__uuid__": "200ad895-dd04-48f0-918a-815f86b13ff7"
     },
     "_isSystemFontUsed": false,
-    "_N$string": "ĂN",
+    "_N$string": " ĐỢI Ù TRÒN ",
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
     "_N$overflow": 1
@@ -2050,7 +2053,7 @@
       "__id__": 1
     },
     "component": "PhomControls",
-    "handler": "onClickEatButton",
+    "handler": "onClickSkipJoinButton",
     "customEventData": ""
   },
   {
@@ -2063,7 +2066,7 @@
     "_enabled": true,
     "_layoutSize": {
       "__type__": "cc.Size",
-      "width": 130,
+      "width": 145,
       "height": 50
     },
     "_resize": 1,
@@ -2118,7 +2121,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "joinPhomControls",
+    "_name": "turnControls",
     "_objFlags": 0,
     "_opacity": 255,
     "_color": {
@@ -2175,7 +2178,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "jonPhomButton",
+    "_name": "eatButton",
     "_objFlags": 0,
     "_opacity": 255,
     "_color": {
@@ -2311,7 +2314,7 @@
       "__uuid__": "200ad895-dd04-48f0-918a-815f86b13ff7"
     },
     "_isSystemFontUsed": false,
-    "_N$string": "GỬI",
+    "_N$string": "ĂN",
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
     "_N$overflow": 1
@@ -2417,7 +2420,7 @@
       "__id__": 1
     },
     "component": "PhomControls",
-    "handler": "onClickJoinPhomButton",
+    "handler": "onClickEatButton",
     "customEventData": ""
   },
   {
@@ -2456,7 +2459,7 @@
     },
     "_enabled": true,
     "buttonType": 0,
-    "pressedScale": 0.9,
+    "pressedScale": 1.1,
     "transDuration": 0.05,
     "isTouching": false,
     "path": "aaaa"
@@ -2474,7 +2477,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "skipJoinButton",
+    "_name": "takeButton",
     "_objFlags": 0,
     "_opacity": 255,
     "_color": {
@@ -2613,7 +2616,7 @@
       "__uuid__": "200ad895-dd04-48f0-918a-815f86b13ff7"
     },
     "_isSystemFontUsed": false,
-    "_N$string": "BỎ GỬI",
+    "_N$string": "BỐC",
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
     "_N$overflow": 1
@@ -2731,7 +2734,7 @@
       "__id__": 1
     },
     "component": "PhomControls",
-    "handler": "onClickSkipJoinButton",
+    "handler": "onClickTakeButton",
     "customEventData": ""
   },
   {
@@ -2770,7 +2773,7 @@
     },
     "_enabled": true,
     "buttonType": 0,
-    "pressedScale": 0.9,
+    "pressedScale": 1.1,
     "transDuration": 0.05,
     "isTouching": false,
     "path": "aaaa"
@@ -2799,7 +2802,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "downPhomControls",
+    "_name": "joinPhomControls",
     "_objFlags": 0,
     "_opacity": 255,
     "_color": {
@@ -2829,9 +2832,6 @@
       },
       {
         "__id__": 105
-      },
-      {
-        "__id__": 116
       }
     ],
     "_rotationX": 0,
@@ -2853,13 +2853,13 @@
     "_active": true,
     "_components": [],
     "_prefab": {
-      "__id__": 126
+      "__id__": 116
     },
     "groupIndex": 0
   },
   {
     "__type__": "cc.Node",
-    "_name": "downPhomButton",
+    "_name": "jonPhomButton",
     "_objFlags": 0,
     "_opacity": 255,
     "_color": {
@@ -2995,7 +2995,7 @@
       "__uuid__": "200ad895-dd04-48f0-918a-815f86b13ff7"
     },
     "_isSystemFontUsed": false,
-    "_N$string": "HẠ PHỎM",
+    "_N$string": "GỬI",
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
     "_N$overflow": 1
@@ -3101,7 +3101,7 @@
       "__id__": 1
     },
     "component": "PhomControls",
-    "handler": "onClickDownPhomButton",
+    "handler": "onClickJoinPhomButton",
     "customEventData": ""
   },
   {
@@ -3158,7 +3158,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "skipDownButton",
+    "_name": "skipJoinButton",
     "_objFlags": 0,
     "_opacity": 255,
     "_color": {
@@ -3297,7 +3297,7 @@
       "__uuid__": "200ad895-dd04-48f0-918a-815f86b13ff7"
     },
     "_isSystemFontUsed": false,
-    "_N$string": "BỎ HẠ",
+    "_N$string": "BỎ GỬI",
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
     "_N$overflow": 1
@@ -3415,7 +3415,7 @@
       "__id__": 1
     },
     "component": "PhomControls",
-    "handler": "onClickSkipDownButton",
+    "handler": "onClickSkipJoinButton",
     "customEventData": ""
   },
   {
@@ -3471,6 +3471,690 @@
     "sync": false
   },
   {
+    "__type__": "cc.PrefabInfo",
+    "root": {
+      "__id__": 1
+    },
+    "asset": {
+      "__uuid__": "ca044a88-9adc-40d4-a58d-c94d0930e0e6"
+    },
+    "fileId": "12047nZTfhNapwwQP4CvuKj",
+    "sync": false
+  },
+  {
+    "__type__": "cc.Node",
+    "_name": "downPhomControls",
+    "_objFlags": 0,
+    "_opacity": 255,
+    "_color": {
+      "__type__": "cc.Color",
+      "r": 255,
+      "g": 255,
+      "b": 255,
+      "a": 255
+    },
+    "_cascadeOpacityEnabled": true,
+    "_parent": {
+      "__id__": 1
+    },
+    "_anchorPoint": {
+      "__type__": "cc.Vec2",
+      "x": 0.5,
+      "y": 0.5
+    },
+    "_contentSize": {
+      "__type__": "cc.Size",
+      "width": 0,
+      "height": 0
+    },
+    "_children": [
+      {
+        "__id__": 118
+      },
+      {
+        "__id__": 128
+      },
+      {
+        "__id__": 139
+      }
+    ],
+    "_rotationX": 0,
+    "_rotationY": 0,
+    "_scaleX": 1,
+    "_scaleY": 1,
+    "_position": {
+      "__type__": "cc.Vec2",
+      "x": 0,
+      "y": 0
+    },
+    "_skewX": 0,
+    "_skewY": 0,
+    "_localZOrder": 0,
+    "_globalZOrder": 0,
+    "_tag": -1,
+    "_opacityModifyRGB": false,
+    "_id": "",
+    "_active": true,
+    "_components": [],
+    "_prefab": {
+      "__id__": 149
+    },
+    "groupIndex": 0
+  },
+  {
+    "__type__": "cc.Node",
+    "_name": "downPhomButton",
+    "_objFlags": 0,
+    "_opacity": 255,
+    "_color": {
+      "__type__": "cc.Color",
+      "r": 255,
+      "g": 255,
+      "b": 255,
+      "a": 255
+    },
+    "_cascadeOpacityEnabled": true,
+    "_parent": {
+      "__id__": 117
+    },
+    "_anchorPoint": {
+      "__type__": "cc.Vec2",
+      "x": 1,
+      "y": 0
+    },
+    "_contentSize": {
+      "__type__": "cc.Size",
+      "width": 130,
+      "height": 50
+    },
+    "_children": [
+      {
+        "__id__": 119
+      }
+    ],
+    "_rotationX": 0,
+    "_rotationY": 0,
+    "_scaleX": 1,
+    "_scaleY": 1,
+    "_position": {
+      "__type__": "cc.Vec2",
+      "x": 1250,
+      "y": 140
+    },
+    "_skewX": 0,
+    "_skewY": 0,
+    "_localZOrder": 0,
+    "_globalZOrder": 0,
+    "_tag": -1,
+    "_opacityModifyRGB": false,
+    "_id": "",
+    "_active": true,
+    "_components": [
+      {
+        "__id__": 122
+      },
+      {
+        "__id__": 123
+      },
+      {
+        "__id__": 125
+      },
+      {
+        "__id__": 126
+      }
+    ],
+    "_prefab": {
+      "__id__": 127
+    },
+    "groupIndex": 0
+  },
+  {
+    "__type__": "cc.Node",
+    "_name": "Label",
+    "_objFlags": 0,
+    "_opacity": 255,
+    "_color": {
+      "__type__": "cc.Color",
+      "r": 252,
+      "g": 248,
+      "b": 248,
+      "a": 255
+    },
+    "_cascadeOpacityEnabled": true,
+    "_parent": {
+      "__id__": 118
+    },
+    "_anchorPoint": {
+      "__type__": "cc.Vec2",
+      "x": 1,
+      "y": 0
+    },
+    "_contentSize": {
+      "__type__": "cc.Size",
+      "width": 130,
+      "height": 50
+    },
+    "_children": [],
+    "_rotationX": 0,
+    "_rotationY": 0,
+    "_scaleX": 1,
+    "_scaleY": 1,
+    "_position": {
+      "__type__": "cc.Vec2",
+      "x": 0,
+      "y": 0
+    },
+    "_skewX": 0,
+    "_skewY": 0,
+    "_localZOrder": 0,
+    "_globalZOrder": 0,
+    "_tag": -1,
+    "_opacityModifyRGB": false,
+    "_id": "",
+    "_active": true,
+    "_components": [
+      {
+        "__id__": 120
+      }
+    ],
+    "_prefab": {
+      "__id__": 121
+    },
+    "groupIndex": 0
+  },
+  {
+    "__type__": "cc.Label",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 119
+    },
+    "_enabled": true,
+    "_useOriginalSize": false,
+    "_actualFontSize": 20,
+    "_fontSize": 20,
+    "_lineHeight": 40,
+    "_enableWrapText": false,
+    "_N$file": {
+      "__uuid__": "200ad895-dd04-48f0-918a-815f86b13ff7"
+    },
+    "_isSystemFontUsed": false,
+    "_N$string": "HẠ PHỎM",
+    "_N$horizontalAlign": 1,
+    "_N$verticalAlign": 1,
+    "_N$overflow": 1
+  },
+  {
+    "__type__": "cc.PrefabInfo",
+    "root": {
+      "__id__": 1
+    },
+    "asset": {
+      "__uuid__": "ca044a88-9adc-40d4-a58d-c94d0930e0e6"
+    },
+    "fileId": "883d5qiEINC9Y9/RFjKem5+",
+    "sync": false
+  },
+  {
+    "__type__": "cc.Sprite",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 118
+    },
+    "_enabled": true,
+    "_spriteFrame": {
+      "__uuid__": "40b81dd2-3b71-4236-b397-401417b837ab"
+    },
+    "_type": 1,
+    "_sizeMode": 0,
+    "_fillType": 0,
+    "_fillCenter": {
+      "__type__": "cc.Vec2",
+      "x": 0,
+      "y": 0
+    },
+    "_fillStart": 0,
+    "_fillRange": 0,
+    "_isTrimmedMode": true,
+    "_srcBlendFactor": 770,
+    "_dstBlendFactor": 771,
+    "_atlas": null
+  },
+  {
+    "__type__": "cc.Button",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 118
+    },
+    "_enabled": true,
+    "transition": 2,
+    "pressedColor": {
+      "__type__": "cc.Color",
+      "r": 255,
+      "g": 255,
+      "b": 255,
+      "a": 255
+    },
+    "hoverColor": {
+      "__type__": "cc.Color",
+      "r": 255,
+      "g": 255,
+      "b": 255,
+      "a": 255
+    },
+    "duration": 0.1,
+    "zoomScale": 1.2,
+    "pressedSprite": null,
+    "hoverSprite": null,
+    "clickEvents": [
+      {
+        "__id__": 124
+      }
+    ],
+    "_N$interactable": true,
+    "_N$enableAutoGrayEffect": false,
+    "_N$normalColor": {
+      "__type__": "cc.Color",
+      "r": 255,
+      "g": 255,
+      "b": 255,
+      "a": 255
+    },
+    "_N$disabledColor": {
+      "__type__": "cc.Color",
+      "r": 255,
+      "g": 255,
+      "b": 255,
+      "a": 255
+    },
+    "_N$normalSprite": {
+      "__uuid__": "40b81dd2-3b71-4236-b397-401417b837ab"
+    },
+    "_N$disabledSprite": {
+      "__uuid__": "1fd64a73-51fb-4db1-aad3-b166780d4fab"
+    },
+    "_N$target": {
+      "__id__": 118
+    }
+  },
+  {
+    "__type__": "cc.ClickEvent",
+    "target": {
+      "__id__": 1
+    },
+    "component": "PhomControls",
+    "handler": "onClickDownPhomButton",
+    "customEventData": ""
+  },
+  {
+    "__type__": "cc.Layout",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 118
+    },
+    "_enabled": true,
+    "_layoutSize": {
+      "__type__": "cc.Size",
+      "width": 130,
+      "height": 50
+    },
+    "_resize": 1,
+    "_N$layoutType": 1,
+    "_N$cellSize": {
+      "__type__": "cc.Size",
+      "width": 40,
+      "height": 40
+    },
+    "_N$startAxis": 0,
+    "_N$padding": 0,
+    "_N$spacingX": 0,
+    "_N$spacingY": 0,
+    "_N$verticalDirection": 1,
+    "_N$horizontalDirection": 0
+  },
+  {
+    "__type__": "1c0c91FVspFPZAB7lifOTk3",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 118
+    },
+    "_enabled": true,
+    "buttonType": 0,
+    "pressedScale": 0.9,
+    "transDuration": 0.05,
+    "isTouching": false,
+    "path": "aaaa"
+  },
+  {
+    "__type__": "cc.PrefabInfo",
+    "root": {
+      "__id__": 1
+    },
+    "asset": {
+      "__uuid__": "ca044a88-9adc-40d4-a58d-c94d0930e0e6"
+    },
+    "fileId": "64a29rZ2WRC4bs3JFSK8s6G",
+    "sync": false
+  },
+  {
+    "__type__": "cc.Node",
+    "_name": "skipDownButton",
+    "_objFlags": 0,
+    "_opacity": 255,
+    "_color": {
+      "__type__": "cc.Color",
+      "r": 255,
+      "g": 255,
+      "b": 255,
+      "a": 255
+    },
+    "_cascadeOpacityEnabled": true,
+    "_parent": {
+      "__id__": 117
+    },
+    "_anchorPoint": {
+      "__type__": "cc.Vec2",
+      "x": 1,
+      "y": 0
+    },
+    "_contentSize": {
+      "__type__": "cc.Size",
+      "width": 130,
+      "height": 50
+    },
+    "_children": [
+      {
+        "__id__": 129
+      }
+    ],
+    "_rotationX": 0,
+    "_rotationY": 0,
+    "_scaleX": 1,
+    "_scaleY": 1,
+    "_position": {
+      "__type__": "cc.Vec2",
+      "x": 1090,
+      "y": 140
+    },
+    "_skewX": 0,
+    "_skewY": 0,
+    "_localZOrder": 0,
+    "_globalZOrder": 0,
+    "_tag": -1,
+    "_opacityModifyRGB": false,
+    "_id": "",
+    "_active": true,
+    "_components": [
+      {
+        "__id__": 133
+      },
+      {
+        "__id__": 134
+      },
+      {
+        "__id__": 136
+      },
+      {
+        "__id__": 137
+      }
+    ],
+    "_prefab": {
+      "__id__": 138
+    },
+    "groupIndex": 0
+  },
+  {
+    "__type__": "cc.Node",
+    "_name": "Label",
+    "_objFlags": 0,
+    "_opacity": 255,
+    "_color": {
+      "__type__": "cc.Color",
+      "r": 252,
+      "g": 248,
+      "b": 248,
+      "a": 255
+    },
+    "_cascadeOpacityEnabled": true,
+    "_parent": {
+      "__id__": 128
+    },
+    "_anchorPoint": {
+      "__type__": "cc.Vec2",
+      "x": 1,
+      "y": 0
+    },
+    "_contentSize": {
+      "__type__": "cc.Size",
+      "width": 130,
+      "height": 50
+    },
+    "_children": [],
+    "_rotationX": 0,
+    "_rotationY": 0,
+    "_scaleX": 1,
+    "_scaleY": 1,
+    "_position": {
+      "__type__": "cc.Vec2",
+      "x": 0,
+      "y": 0
+    },
+    "_skewX": 0,
+    "_skewY": 0,
+    "_localZOrder": 0,
+    "_globalZOrder": 0,
+    "_tag": -1,
+    "_opacityModifyRGB": false,
+    "_id": "",
+    "_active": true,
+    "_components": [
+      {
+        "__id__": 130
+      },
+      {
+        "__id__": 131
+      }
+    ],
+    "_prefab": {
+      "__id__": 132
+    },
+    "groupIndex": 0
+  },
+  {
+    "__type__": "cc.Label",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 129
+    },
+    "_enabled": true,
+    "_useOriginalSize": false,
+    "_actualFontSize": 20,
+    "_fontSize": 20,
+    "_lineHeight": 40,
+    "_enableWrapText": false,
+    "_N$file": {
+      "__uuid__": "200ad895-dd04-48f0-918a-815f86b13ff7"
+    },
+    "_isSystemFontUsed": false,
+    "_N$string": "BỎ HẠ",
+    "_N$horizontalAlign": 1,
+    "_N$verticalAlign": 1,
+    "_N$overflow": 1
+  },
+  {
+    "__type__": "1c0c91FVspFPZAB7lifOTk3",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 129
+    },
+    "_enabled": true,
+    "buttonType": 0,
+    "pressedScale": 0.9,
+    "transDuration": 0.05,
+    "isTouching": false,
+    "path": "aaaa"
+  },
+  {
+    "__type__": "cc.PrefabInfo",
+    "root": {
+      "__id__": 1
+    },
+    "asset": {
+      "__uuid__": "ca044a88-9adc-40d4-a58d-c94d0930e0e6"
+    },
+    "fileId": "883d5qiEINC9Y9/RFjKem5+",
+    "sync": false
+  },
+  {
+    "__type__": "cc.Sprite",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 128
+    },
+    "_enabled": true,
+    "_spriteFrame": {
+      "__uuid__": "eee75e82-8daf-4a9c-87be-8c13a7195d7e"
+    },
+    "_type": 1,
+    "_sizeMode": 0,
+    "_fillType": 0,
+    "_fillCenter": {
+      "__type__": "cc.Vec2",
+      "x": 0,
+      "y": 0
+    },
+    "_fillStart": 0,
+    "_fillRange": 0,
+    "_isTrimmedMode": true,
+    "_srcBlendFactor": 770,
+    "_dstBlendFactor": 771,
+    "_atlas": null
+  },
+  {
+    "__type__": "cc.Button",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 128
+    },
+    "_enabled": true,
+    "transition": 2,
+    "pressedColor": {
+      "__type__": "cc.Color",
+      "r": 255,
+      "g": 255,
+      "b": 255,
+      "a": 255
+    },
+    "hoverColor": {
+      "__type__": "cc.Color",
+      "r": 255,
+      "g": 255,
+      "b": 255,
+      "a": 255
+    },
+    "duration": 0.1,
+    "zoomScale": 1.2,
+    "pressedSprite": null,
+    "hoverSprite": null,
+    "clickEvents": [
+      {
+        "__id__": 135
+      }
+    ],
+    "_N$interactable": true,
+    "_N$enableAutoGrayEffect": false,
+    "_N$normalColor": {
+      "__type__": "cc.Color",
+      "r": 255,
+      "g": 255,
+      "b": 255,
+      "a": 255
+    },
+    "_N$disabledColor": {
+      "__type__": "cc.Color",
+      "r": 255,
+      "g": 255,
+      "b": 255,
+      "a": 255
+    },
+    "_N$normalSprite": {
+      "__uuid__": "eee75e82-8daf-4a9c-87be-8c13a7195d7e"
+    },
+    "_N$disabledSprite": null,
+    "_N$target": {
+      "__id__": 128
+    }
+  },
+  {
+    "__type__": "cc.ClickEvent",
+    "target": {
+      "__id__": 1
+    },
+    "component": "PhomControls",
+    "handler": "onClickSkipDownButton",
+    "customEventData": ""
+  },
+  {
+    "__type__": "cc.Layout",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 128
+    },
+    "_enabled": true,
+    "_layoutSize": {
+      "__type__": "cc.Size",
+      "width": 130,
+      "height": 50
+    },
+    "_resize": 1,
+    "_N$layoutType": 1,
+    "_N$cellSize": {
+      "__type__": "cc.Size",
+      "width": 40,
+      "height": 40
+    },
+    "_N$startAxis": 0,
+    "_N$padding": 0,
+    "_N$spacingX": 0,
+    "_N$spacingY": 0,
+    "_N$verticalDirection": 1,
+    "_N$horizontalDirection": 0
+  },
+  {
+    "__type__": "1c0c91FVspFPZAB7lifOTk3",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 128
+    },
+    "_enabled": true,
+    "buttonType": 0,
+    "pressedScale": 0.9,
+    "transDuration": 0.05,
+    "isTouching": false,
+    "path": "aaaa"
+  },
+  {
+    "__type__": "cc.PrefabInfo",
+    "root": {
+      "__id__": 1
+    },
+    "asset": {
+      "__uuid__": "ca044a88-9adc-40d4-a58d-c94d0930e0e6"
+    },
+    "fileId": "64a29rZ2WRC4bs3JFSK8s6G",
+    "sync": false
+  },
+  {
     "__type__": "cc.Node",
     "_name": "changePhomButton",
     "_objFlags": 0,
@@ -3484,7 +4168,7 @@
     },
     "_cascadeOpacityEnabled": true,
     "_parent": {
-      "__id__": 94
+      "__id__": 117
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -3498,7 +4182,7 @@
     },
     "_children": [
       {
-        "__id__": 117
+        "__id__": 140
       }
     ],
     "_rotationX": 0,
@@ -3520,20 +4204,20 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 120
+        "__id__": 143
       },
       {
-        "__id__": 121
+        "__id__": 144
       },
       {
-        "__id__": 123
+        "__id__": 146
       },
       {
-        "__id__": 124
+        "__id__": 147
       }
     ],
     "_prefab": {
-      "__id__": 125
+      "__id__": 148
     },
     "groupIndex": 0
   },
@@ -3551,7 +4235,7 @@
     },
     "_cascadeOpacityEnabled": true,
     "_parent": {
-      "__id__": 116
+      "__id__": 139
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -3583,11 +4267,11 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 118
+        "__id__": 141
       }
     ],
     "_prefab": {
-      "__id__": 119
+      "__id__": 142
     },
     "groupIndex": 0
   },
@@ -3596,7 +4280,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 117
+      "__id__": 140
     },
     "_enabled": true,
     "_useOriginalSize": false,
@@ -3629,7 +4313,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 116
+      "__id__": 139
     },
     "_enabled": true,
     "_spriteFrame": {
@@ -3655,7 +4339,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 116
+      "__id__": 139
     },
     "_enabled": true,
     "transition": 2,
@@ -3679,7 +4363,7 @@
     "hoverSprite": null,
     "clickEvents": [
       {
-        "__id__": 122
+        "__id__": 145
       }
     ],
     "_N$interactable": true,
@@ -3703,7 +4387,7 @@
     },
     "_N$disabledSprite": null,
     "_N$target": {
-      "__id__": 116
+      "__id__": 139
     }
   },
   {
@@ -3720,7 +4404,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 116
+      "__id__": 139
     },
     "_enabled": true,
     "isAlignOnce": true,
@@ -3745,7 +4429,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 116
+      "__id__": 139
     },
     "_enabled": true,
     "buttonType": 0,
@@ -3792,28 +4476,32 @@
       "__id__": 25
     },
     "eatButton": {
-      "__id__": 65
-    },
-    "takeButton": {
-      "__id__": 54
-    },
-    "joinPhomButton": {
       "__id__": 77
     },
-    "skipJoinButton": {
+    "takeButton": {
       "__id__": 88
     },
-    "downPhomButton": {
+    "joinPhomButton": {
       "__id__": 100
     },
-    "skipDownButton": {
+    "skipJoinButton": {
       "__id__": 111
     },
-    "changePhomButton": {
-      "__id__": 121
+    "downPhomButton": {
+      "__id__": 123
     },
-    "uButton": null,
-    "doiUTronButton": null
+    "skipDownButton": {
+      "__id__": 134
+    },
+    "changePhomButton": {
+      "__id__": 144
+    },
+    "uButton": {
+      "__id__": 54
+    },
+    "doiUTronButton": {
+      "__id__": 65
+    }
   },
   {
     "__type__": "cc.PrefabInfo",

@@ -29,7 +29,7 @@ export default class JoinSolution extends Array {
 
         this.forEach(node => {
             if (phomIds.indexOf(node.phomId) < 0) {
-                phomIds.add(node.phomId);
+                phomIds.push(node.phomId);
             }
             value += node.card.rank;
         });
@@ -98,12 +98,12 @@ export default class JoinSolution extends Array {
         }
     }
 
-    getPhomList(phomList) {
+    getPhomList(phoms) {
         let pl = new PhomList();
         let phomIds = []
         this.forEach(node => {
             if (phomIds.indexOf(node.phomId) == -1) {
-                pl.push(phomList[node.phomId]);
+                pl.push(phoms[node.phomId]);
                 phomIds.push(node.phomId);
             }
         });

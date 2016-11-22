@@ -200,7 +200,7 @@ export default class DropDownRub {
         // menu's position
         let mp = cc.v2(0, 0);
 
-        // BY VERTICAL DIRECTION
+        // BY VERTICAL ORIENTATION
         let marginY = menuSize.height / 2 + DropDownRub.PADDING_Y;
         if (tpw.y <= marginY) { // up
             mp.y = tp.y + marginY + 30;
@@ -208,7 +208,7 @@ export default class DropDownRub {
             mp.y = tp.y - marginY;
         }
 
-        // BY HORIZONTAL DIRECTION
+        // BY HORIZONTAL ORIENTATION
         // edge = [-640, 640] => 
         //  [-640 ... -320 ... 0 ... +320 ... +640]
         //   ----- L ----|---- C -----|---- R ----

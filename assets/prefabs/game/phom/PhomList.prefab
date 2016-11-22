@@ -329,33 +329,6 @@
     "sync": false
   },
   {
-    "__type__": "ffa8dMifixCurmKqwJHLrXK",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 1
-    },
-    "_enabled": true,
-    "path": "",
-    "phomPrefab": {
-      "__uuid__": "907c7e45-cba4-4509-93b7-fb280bc8da71"
-    },
-    "phomNodes": [
-      {
-        "__id__": 8
-      },
-      {
-        "__id__": 5
-      },
-      {
-        "__id__": 2
-      }
-    ],
-    "cardScale": 0.6,
-    "space": 60,
-    "align": 9
-  },
-  {
     "__type__": "cc.Layout",
     "_name": "",
     "_objFlags": 0,
@@ -381,6 +354,33 @@
     "_N$spacingY": -42,
     "_N$verticalDirection": 1,
     "_N$horizontalDirection": 0
+  },
+  {
+    "__type__": "43ae2C7f5pPXaMyzEChO49v",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 1
+    },
+    "_enabled": true,
+    "path": "",
+    "phomPrefab": {
+      "__uuid__": "907c7e45-cba4-4509-93b7-fb280bc8da71"
+    },
+    "phomNodes": [
+      {
+        "__id__": 8
+      },
+      {
+        "__id__": 5
+      },
+      {
+        "__id__": 2
+      }
+    ],
+    "cardScale": 0.7,
+    "space": 60,
+    "align": 9
   },
   {
     "__type__": "cc.PrefabInfo",

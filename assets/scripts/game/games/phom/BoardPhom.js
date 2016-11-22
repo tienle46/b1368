@@ -9,13 +9,8 @@ import {Keywords} from 'core';
 import {Events} from 'events';
 import BoardCardTurnBase from 'BoardCardTurnBase';
 import PlayerPhom from 'PlayerPhom';
-import TLMNUtils from 'TLMNUtils';
-import Card from 'Card';
-import CardList from 'CardList';
 import BoardPhomRenderer from 'BoardPhomRenderer';
-import PhomList from 'PhomList';
 import Phom from 'Phom';
-import PhomUtils from "./PhomUtils";
 
 export default class BoardPhom extends BoardCardTurnBase {
 
@@ -30,7 +25,7 @@ export default class BoardPhom extends BoardCardTurnBase {
 
     onLoad() {
         super.onLoad();
-        this.allPhomList = new PhomList();
+        this.allPhomList = [];//new PhomList();
     }
 
     onEnable() {
@@ -45,7 +40,9 @@ export default class BoardPhom extends BoardCardTurnBase {
     _reset() {
         super._reset();
         this.winRank = 0;
-        this.allPhomList.clear();
+
+        console.log("cllear on reset board phom")
+        this.allPhomList = [];//.clear();
     }
 
     _onPlayerPlayedCards(playedCards, srcCardList, isItMe) {
@@ -87,13 +84,13 @@ export default class BoardPhom extends BoardCardTurnBase {
         }
 
         if (!utils.isEmptyArray(currentBoardPhomsSize)) {
-            let allPhomList = new PhomList();
+            let onLoadAllPhoms = [];
             let phomListCardIndex = 0;
 
             currentBoardPhomsCards && currentBoardPhomsCards.forEach((phomSize, i) => {
                 let phomCards = currentBoardPhomsCards.slice(phomListCardIndex, phomListCardIndex + phomSize);
                 let phom = new Phom(GameUtils.convertToBytes(phomCards));
-                allPhomList.add(phom);
+                onLoadAllPhoms.push(phom);
                 phomListCardIndex += phomSize;
             });
 
@@ -106,13 +103,13 @@ export default class BoardPhom extends BoardCardTurnBase {
                     let phomCount = currentNumberOfPhomByPlayerId[i];
                     for (let j = 0; j < phomCount; j++) {
 
-                        let phom = allPhomList[j + phomPlayerCount];
+                        let phom = onLoadAllPhoms[j + phomPlayerCount];
                         let processingPhom = player.renderer.downPhomList[j];
 
                         processingPhom.setCards(phom);
                         processingPhom.setOwner(player.id);
 
-                        this.allPhomList.add(processingPhom);
+                        this.allPhomList.push(processingPhom);
 
                     }
 
@@ -159,7 +156,7 @@ export default class BoardPhom extends BoardCardTurnBase {
 
                 if (nextPlayer.playedCards.length > lastMovePlayer.playedCards.length) {
                     let changeCard = nextPlayer.playedCards[nextPlayer.playedCards.length - 1];
-                    nextPlayer.renderer.playedCardList.transfer([changeCard], lastMovePlayer.renderer.playedCardList);
+                    nextPlayer.renderer.playedCardList.transferTo(lastMovePlayer.renderer.playedCardList, [changeCard]);
                     break;
                 }
             }
@@ -230,10 +227,17 @@ export default class BoardPhom extends BoardCardTurnBase {
          * @type {Array}
          */
         let resultIconPaths = {};
+        /**
+         * Get game result detail info
+         * @type {Array}
+         */
+        let gameResultInfos = {};
+
         let winType = utils.getValue(data, Keywords.WIN_TYPE);
         let playersWinRanks = utils.getValue(data, Keywords.GAME_LIST_WIN);
         let rank = utils.getValue(data, Keywords.GAME_RANK_WIN);
         playerIds.forEach((id, i) => {
+            let isMom = playerHandCards[id].length == 9;
             var playersWinRank = playersWinRanks[i];
 
             if (playersWinRank == app.const.game.rank.GAME_RANK_FIRST) {
@@ -257,8 +261,7 @@ export default class BoardPhom extends BoardCardTurnBase {
                         resultIconPaths[id] = 'game/images/ingame_thang';
                 }
             } else {
-                let player = this.scene.gamePlayers.findPlayer(id);
-                if(player && PhomUtils.isMom(player)){
+                if(isMom){
                     resultIconPaths[id] = 'game/images/ingame_phom_mom';
                 }else{
                     switch (playersWinRank) {
@@ -271,27 +274,28 @@ export default class BoardPhom extends BoardCardTurnBase {
                         case app.const.game.GAME_RANK_FOURTH:
                             resultIconPaths[id] = 'game/images/ingame_bet';
                             break;
+                        default:
+                            resultIconPaths[id] = 'game/images/ingame_thua';
                     }
                 }
             }
-        });
 
-        /**
-         * Get game result detail info
-         * @type {Array}
-         */
-        let gameResultInfos = {};
-        playerIds.map(id => {
+            let player = this.scene.gamePlayers.findPlayer(id);
+            if(player){
+                let handCards = playerHandCards[id];
+                let point = handCards.reduce((value, card) => value += card.rank, 0);
+                gameResultInfos[id] = isMom && winType != app.const.game.GENERAL_WIN_TYPE_NORMAL ? "" : `${point} điểm`;
+            } else{
+                gameResultInfos[id] = "";
+            }
 
-            let player = this.scene.gamePlayers.findPlayer();
-            if(!player) return "";
-
-            let handCards = playerHandCards[id];
-            let point = handCards.reduce((value, card) => value += card.rank, 0);
-            gameResultInfos[id] = winType != app.const.game.GENERAL_WIN_TYPE_NORMAL && PhomUtils.isMom(player) ? "" : `${point} điểm`;
         });
 
         return {gameResultInfos, resultIconPaths};
+    }
+
+    _cleanTurnRoutineData(playerId){
+        super._cleanTurnRoutineData(playerId, false);
     }
 
 }

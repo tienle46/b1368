@@ -3,6 +3,7 @@
  */
 
 import app from 'app'
+import GameConstant from 'GameConstant';
 import GameManager from 'GameManager'
 import TLMNDLBoard from 'BoardTLMNDL';
 import TLMNDLPlayer from 'PlayerTLMNDL';
@@ -28,6 +29,7 @@ export default game;
 export {
     game,
     gameManager,
+    GameConstant,
     TLMNDLBoard,
     TLMNDLPlayer,
     Board,

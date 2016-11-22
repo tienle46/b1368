@@ -47,6 +47,7 @@ export default class PhomControls extends GameControls {
         this.scene.on(Events.ON_GAME_STATE_ENDING, this._onGameEnding, this);
         this.scene.on(Events.SHOW_GAME_BEGIN_CONTROLS, this._showGameBeginControls, this);
         this.scene.on(Events.SHOW_WAIT_TURN_CONTROLS, this._showWaitTurnControls, this);
+        this.scene.on(Events.SHOW_U_PHOM_CONTROLS, this._showUPhomControls, this);
         // this.scene.on(Events.SHOW_ON_TURN_CONTROLS, this._showOnTurnControls, this);
         this.scene.on(Events.HIDE_ALL_CONTROLS, this.hideAllControls, this);
         this.scene.on(Events.SHOW_EAT_AND_TAKE_CONTROLS, this._showEatAndTakeControls, this);
@@ -54,10 +55,21 @@ export default class PhomControls extends GameControls {
         this.scene.on(Events.SHOW_DOWN_PHOM_CONTROLS, this._showDownPhomControls, this);
         this.scene.on(Events.SHOW_JOIN_PHOM_CONTROLS, this._showJoinPhomControls, this);
         this.scene.on(Events.SET_INTERACTABLE_HA_PHOM_CONTROL, this._setInteractableHaPhomControl, this);
+        this.scene.on(Events.SET_INTERACTABLE_EAT_CONTROL, this._setInteractableEatControl, this);
     }
 
     _setInteractableHaPhomControl(interactable){
         this.setInteractable(this.downPhomButton, interactable);
+    }
+
+    _setInteractableEatControl(interactable){
+        this.setInteractable(this.eatButton, interactable);
+    }
+
+    _showUPhomControls(){
+        this.hideAllControls();
+        utils.active(this.uButton);
+        utils.active(this.doiUTronButton);
     }
 
     _showDownPhomControls(hideSkip, hideChange){
@@ -124,6 +136,8 @@ export default class PhomControls extends GameControls {
         utils.deactive(this.downPhomButton);
         utils.deactive(this.skipDownButton);
         utils.deactive(this.changePhomButton);
+        utils.deactive(this.uButton);
+        utils.deactive(this.doiUTronButton);
     }
 
     _showWaitTurnControls(){
@@ -137,6 +151,8 @@ export default class PhomControls extends GameControls {
         this.cardTurnBaseControls._showWaitTurnControls();
         utils.active(this.eatButton);
         utils.active(this.takeButton);
+
+        this.setInteractable(this.eatButton, false);
     }
 
     _onGamePlaying(data, isJustJoined) {

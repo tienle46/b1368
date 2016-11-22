@@ -56,9 +56,9 @@ export default class BoardCardTurnBase extends BoardCard {
         this.turnAdapter && this.turnAdapter._reset();
     }
 
-    _cleanTurnRoutineData(lastPlayedId){
+    _cleanTurnRoutineData(lastPlayedId, cleanDeck = true){
         this.playedCards = [];
-        this.renderer.cleanDeckCards();
+        cleanDeck && this.renderer.cleanDeckCards();
     }
 
     getTurnDuration(){

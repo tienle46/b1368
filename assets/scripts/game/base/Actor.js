@@ -11,6 +11,10 @@ export default class Actor extends Component {
     constructor() {
         super();
 
+        /**
+         *
+         * @type {ActorRenderer}
+         */
         this.renderer = null;
         this.renderData = null;
         this.initiated = false;

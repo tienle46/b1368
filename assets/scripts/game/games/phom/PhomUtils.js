@@ -4,21 +4,41 @@
 
 import app from 'app'
 import PhomList from 'PhomList';
-import CardList from 'CardList';
 import {GameUtils, utils} from 'utils'
-import JoinSolution from "./JoinSolution";
-import JoinNode from "./JoinNode";
+import JoinSolution from "JoinSolution";
+import JoinNode from "JoinNode";
 import Card from 'Card';
-import Phom from 'Phom';
-import PhomGenerator from "./PhomGenerator";
+import PhomGenerator from "PhomGenerator";
+import ArrayUtils from "ArrayUtils";
 
 export default class PhomUtils {
+
+    constructor(){}
 
     static get GAME_TYPE() {
         return app.const.game.GAME_TYPE_TIENLEN;
     };
 
-    constructor() {
+    static isPhomByRank(cards, sorted = false) {
+        let sortedCards = sorted ? cards : PhomUtils.sortAsc([...cards], PhomUtils.SORT_BY_RANK);
+        return sortedCards[0].rank == sortedCards[sortedCards.length - 1].rank;
+    }
+
+    static isPhomBySuit(cards, sorted = false) {
+        let sortedCards = sorted ? cards : PhomUtils.sortAsc([...cards], PhomUtils.SORT_BY_RANK);
+        return (sortedCards[0].suit == sortedCards[sortedCards.length - 1].suit)
+            && ( sortedCards[sortedCards.length - 1].rank - sortedCards[0].rank == (sortedCards.length - 1) );
+    }
+
+    static getAllCards(phoms){
+        
+        console.log("getAllCards: ", phoms.reduce((cards, phom) => {
+            return [...cards, ...phom.cards];
+        }, []));
+        
+        return !ArrayUtils.isEmpty(phoms) && phoms.reduce((cards, phom) => {
+            return [...cards, ...phom.cards];
+        }, []) || [];
     }
 
     static isCa(card, caCard, isRank) {
@@ -30,36 +50,69 @@ export default class PhomUtils {
         }
     }
 
-    static validateJoinPhom(cards, player) {
+    static validateGuiPhom(cards, player) {
 
-        let joinPhomList = null;
-        let valid = !(player.currentGuiPhomSolutions.length == 0 || player.currentGuiPhomSolutions[0] < player.getSelectedCards().length);
+        let valid = false;
+        let guiSolution = null;
+        let selectedCards = player.getSelectedCards();
 
-        if(valid){
-            let solution = player.currentGuiPhomSolutions[player.guiPhomSolutionId];
-            joinPhomList = solution && PhomUtils.bestPhomList(player.board.allPhomList);
+        if(player.currentGuiPhomSolutions.length > 0 && selectedCards.length > 0){
+            player.currentGuiPhomSolutions.some(solution => {
+                let joinCards = solution.map(joinNode => joinNode.card);
+                if(ArrayUtils.containsAll(cards, joinCards)){
+                    guiSolution = solution;
+                    valid= true;
+                    return true;
+                }
+            });
         }
 
-        return {valid, joinPhomList}
+        return {valid, guiSolution}
     }
 
     static checkDownPhom(cards, player) {
 
         let solutionIndex = -1;
         let haphomList = PhomUtils.bestPhomList(cards);
-        let haphomValue = haphomList.value();
 
-        player.currentHaPhomSolutions.some((phomList, i) => {
-            
-            console.log("haphomValue: ", haphomValue, " ", phomList.value())
-            
-            if(phomList.value() == haphomValue){
-                solutionIndex = i;
-                return true;
-            }
-        });
+        if(haphomList.getCards().length == cards.length){
+            let haphomValue = haphomList.value();
+            player.currentHaPhomSolutions.some((phomList, i) => {
+
+                console.log("haphomValue: ", haphomValue, " ", phomList.value())
+
+                if(phomList.value() == haphomValue){
+                    solutionIndex = i;
+                    return true;
+                }
+            });
+        }
 
         return solutionIndex >= 0;
+    }
+
+    static isPhom(cards){
+        this.sortAsc(cards);
+        return this.isPhomByRank(cards, true) || this.isPhomBySuit(cards, true);
+    }
+
+    static checkEatPhom(cards, eatingCard, player) {
+        let eatable = cards.length == 2 && this.isPhom([...cards, eatingCard])
+            && (player.eatenCards.length == 0 || !ArrayUtils.containsSome(cards, player.eatenCards));
+
+        if(eatable){
+            let checkPhomCards = [...player.handCards];
+            ArrayUtils.removeAll(checkPhomCards, cards);
+            let allGeneratedPhomList = PhomGenerator.generate(checkPhomCards);
+            allGeneratedPhomList.some(phomList => {
+                if(ArrayUtils.containsAll(phomList.getCards(), player.eatenCards)){
+                    eatable = true;
+                    return true;
+                }
+            });
+        }
+
+        return eatable;
     }
 
     static validateDownPhom(cards, player) {
@@ -71,7 +124,7 @@ export default class PhomUtils {
         console.log("selectedCards: ", valid, selectedCards, player.currentHaPhomSolutions);
 
         valid && player.eatenCards.some(eatenCard => {
-            if (selectedCards.indexOf(eatenCard) == -1) {
+            if (ArrayUtils.findIndex(selectedCards, eatenCard) == -1) {
                 valid = false;
                 return true;
             }
@@ -107,7 +160,17 @@ export default class PhomUtils {
         let solutions = [];
         let branch = new JoinSolution();
 
+        console.log("on get join phom solution", cards);
+        phoms.forEach(phom => {
+            console.log(phom, phom.cards.length);
+        })
+
         PhomUtils.generateJoinPhomSolutions(phoms, cards, branch, solutions);
+
+        console.log("after on get join phom solution", cards);
+        phoms.forEach(phom => {
+            console.log(phom, phom.cards.length);
+        })
 
         JoinSolution.sortSolution(solutions);
         JoinSolution.removeSubSolution(solutions);
@@ -137,7 +200,7 @@ export default class PhomUtils {
 
                     branch.removeNodeAt(branch.length - 1);
                     cards.splice(i, 0, card);
-                    CardList.removeAllCards(phom.cards, [card]);
+                    ArrayUtils.remove(phom.cards, card);
                 }
             }
         }
@@ -153,34 +216,8 @@ export default class PhomUtils {
         }
 
         if (!isInside) {
-            solutions.add(new JoinSolution(branch));
+            solutions.push(new JoinSolution(branch));
         }
-    }
-
-    static findPhomListAt(cards, index) {
-        let pl = new PhomList();
-        if (cards.length < 3) return pl;
-
-        let firstCard = cards[index];
-        pl.join(PhomUtils.findPhomListByRank(cards, firstCard, false));
-        pl.join(PhomUtils.findPhomListBySuit(cards, firstCard, false));
-
-        return pl;
-    }
-
-    static isMom(player) {
-        let isMom = true;
-        
-        console.log("isMom: ",  player.renderer.downPhomList);
-        
-        player.renderer.downPhomList.some(phom => {
-            if (phom.cards.length > 0) {
-                isMom = false;
-                return true;
-            }
-        });
-
-        return isMom;
     }
 
     static checkPlayCard(playCards = [], cards = []) {
@@ -189,18 +226,18 @@ export default class PhomUtils {
 
         let playingCard = playCards[0];
         let eatenCards = cards.filter(card => PhomUtils.isEaten(card));
-        let valid = eatenCards.length == 0 || !CardList.contains(eatenCards, playingCard);
+        let valid = eatenCards.length == 0 || !ArrayUtils.contains(eatenCards, playingCard);
 
         if(valid){
             let checkingCards = [...cards];
-            CardList.removeCard(checkingCards, playingCard);
-            valid = this.isValidCards(checkingCards, eatenCards);
+            ArrayUtils.remove(checkingCards, playingCard);
+            valid = this.isContainPhomWithEatenCards(checkingCards, eatenCards);
         }
 
         return valid;
     }
 
-    static isValidCards(cards, eatenCards) {
+    static isContainPhomWithEatenCards(cards, eatenCards) {
 
         let valid = true;
         let eatenPhoms = PhomGenerator.generatePhomByEatenCard(cards, eatenCards);
@@ -215,140 +252,6 @@ export default class PhomUtils {
         });
 
         return valid;
-    }
-
-    static findPhomListAt(cards, index) {
-        let pl = new PhomList();
-        if (cards.length >= 3) {
-            let firstCard = cards[index];
-            pl.join(PhomUtils.findPhomListByRank(cards, firstCard, false));
-            pl.join(PhomUtils.findPhomListBySuit(cards, firstCard, false));
-        }
-        return pl;
-    }
-
-    static findPhomListByEatenCard(cards, eatenCard) {
-
-        let pl = new PhomList();
-
-        if (!eatenCard.locked || cards.length < 3) return pl;
-
-        pl.join(PhomUtils.findPhomListByRank(cards, eatenCard, true));
-        pl.join(PhomUtils.findPhomListBySuit(cards, eatenCard, true));
-
-        return pl;
-    }
-
-    static findPhomListByRank(cards, rankCard, isFullCase) {
-        let pl = new PhomList();
-        let generateRankCards = [];
-        let indexOfRankCard = -1;
-        let begin = 0;
-
-        if (!isFullCase) {
-            begin = rankCard.suit;
-        }
-
-        for (let suit = begin; suit < 4; suit++) {
-            indexOfRankCard = cards.indexOf(Card.from(rankCard.rank, suit));
-            if (indexOfRankCard != -1) {
-                generateRankCards.push(cards[indexOfRankCard]);
-            }
-        }
-
-        CardList.removeCard(cards, rankCard);
-        for (let i = 0; i < generateRankCards.length - 1; i++) {
-            for (let j = i + 1; j < generateRankCards.length; j++) {
-
-                let rankPhom = new Phom();
-                rankPhom.push(rankCard);
-                rankPhom.push(generateRankCards[i]);
-                rankPhom.push(generateRankCards[j]);
-
-                if (PhomUtils.isValidEatenPhom(rankPhom)) {
-                    pl.add(rankPhom);
-                }
-            }
-        }
-
-        return pl;
-    }
-
-    static findPhomListBySuit(cards, suitCard, isFullCase) {
-        let pl = new PhomList();
-
-        let generateSuitCard0, generateSuitCard1, generateSuitCard3, generateSuitCard4;
-
-        if (isFullCase) {
-            generateSuitCard0 = Card.from(suitCard.rank - 2, suitCard.suit);
-            generateSuitCard1 = Card.from(suitCard.rank - 1, suitCard.suit);
-        }
-
-        generateSuitCard3 = Card.from(suitCard.rank + 1, suitCard.suit);
-        generateSuitCard4 = Card.from(suitCard.rank + 2, suitCard.suit);
-
-        let i0 = cards.indexOf(generateSuitCard0);
-        let i1 = cards.indexOf(generateSuitCard1);
-        let i3 = cards.indexOf(generateSuitCard3);
-        let i4 = cards.indexOf(generateSuitCard4);
-
-        if (i0 != -1 && i1 != -1) {
-            let suitPhom = new Phom();
-            suitPhom.push(suitCard);
-            suitPhom.push(cards[i0]);
-            suitPhom.push(cards[i1]);
-            if (PhomUtils.isValidEatenPhom(suitPhom)) {
-                pl.add(suitPhom);
-            }
-        }
-
-        if (i1 != -1 && i3 != -1) {
-            let suitPhom = new Phom();
-            suitPhom.push(suitCard);
-            suitPhom.push(cards[i1]);
-            suitPhom.push(cards[i3]);
-            if (PhomUtils.isValidEatenPhom(suitPhom)) {
-                pl.add(suitPhom);
-            }
-        }
-
-        if (i3 != -1 && i4 != -1) {
-            let suitPhom = new Phom();
-            suitPhom.push(suitCard);
-            suitPhom.push(cards[i3]);
-            suitPhom.push(cards[i4]);
-            if (PhomUtils.isValidEatenPhom(suitPhom)) {
-                pl.push(suitPhom);
-            }
-        }
-
-        return pl;
-    }
-
-    static findPhomListByEatenCard(cards, eatenCard) {
-        let pl = new PhomList();
-
-        if (!eatenCard.locked || cards.length < 3) return pl;
-
-        pl.join(PhomUtils.findPhomListByRank(cards, eatenCard, true));
-        pl.join(PhomUtils.findPhomListBySuit(cards, eatenCard, true));
-
-        return pl;
-    }
-
-    static isValidEatenPhom(phom) {
-        let eatenCount = 0;
-        for (let i = 0; i < phom.length; i++) {
-
-            let phomCard = phom.cards[i];
-            if (phomCard.locked) {
-                eatenCount++;
-                if (eatenCount > 1) {
-                    return false;
-                }
-            }
-        }
-        return true;
     }
 
     /**
@@ -373,9 +276,10 @@ export default class PhomUtils {
                 break;
             case PhomUtils.SORT_BY_PHOM_SOLUTION:
                 let phomListSolutions = PhomGenerator.generate(cards);
+
                 if (phomListSolutions.length > 0) {
                     let phomCards = phomListSolutions[0].getCards();
-                    CardList.removeAllCards(cards, phomCards);
+                    ArrayUtils.removeAll(cards, phomCards);
                     this._sortSingleCards(cards);
                     cards.splice(0, 0, ...phomCards);
                 } else {

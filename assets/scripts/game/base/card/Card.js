@@ -19,7 +19,7 @@ export default class Card extends Component {
             texBackBG: cc.SpriteFrame,
             highlightNode: cc.Node,
             lockedNode: cc.Node,
-            emptyNode: cc.Node,
+            emptySprite: cc.SpriteFrame,
 
             texFaces: {
                 default: [],
@@ -37,7 +37,7 @@ export default class Card extends Component {
             },
         }
 
-        byteValue && this.initFromByte(byteValue);
+        !utils.isNull(byteValue) && this.initFromByte(byteValue);
         this.selected = false;
         this.highlight = false;
         this.clickListener = null;
@@ -73,12 +73,20 @@ export default class Card extends Component {
         utils.setVisible(this.highlightNode, highlight);
     }
 
-    initFromByte(byteValue) {
-        if (byteValue) {
-            let rank = byteValue >> 2;
-            let suit = byteValue & 0x03;
-            this._init(rank, suit, byteValue);
+    initFromByte(...args) {
+        let rank, suit, byteValue;
+
+        if (args.length == 1) {
+            byteValue = args[0];
+            rank = byteValue >> 2;
+            suit = byteValue & 0x03;
+        } else if (args.length == 2) {
+            rank = args[0];
+            suit = args[1];
+            byteValue = Card.toByte(rank, suit);
         }
+
+        this._init(rank, suit, byteValue);
     }
 
     _init(rank, suit, byteValue) {
@@ -93,7 +101,7 @@ export default class Card extends Component {
         this.suitNode.spriteFrame = this.texSuitSmall[this.suit] || this.emptyNode;
         this.rankNode.node.color = this.isRedSuit() ? this.redTextColor : this.blackTextColor;
         //this.rank > 10 => isFaceCard
-        this.mainPic.spriteFrame = this.rank > 10 ? this.texFaces[this.rank - 10 - 1] : this.texSuitBig[this.suit] || this.emptyNode;
+        this.mainPic.spriteFrame = this.rank > 10 ? this.texFaces[this.rank - 10 - 1] : this.texSuitBig[this.suit] || this.emptySprite;
 
     }
 
@@ -166,7 +174,7 @@ export default class Card extends Component {
     }
 
     equals(card) {
-        return this.byteValue === card.byteValue;
+        return this.byteValue == card.byteValue;
     }
 
     static toByte(rank, suit) {

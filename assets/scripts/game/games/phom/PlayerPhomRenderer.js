@@ -5,7 +5,7 @@
 import utils from 'utils';
 import app from 'app';
 import CardList from 'CardList';
-import PhomList from 'PhomList';
+import PhomListComponent from 'PhomListComponent';
 import PlayerCardTurnBaseRenderer from 'PlayerCardTurnBaseRenderer';
 
 export default class PlayerPhomRenderer extends PlayerCardTurnBaseRenderer {
@@ -18,12 +18,12 @@ export default class PlayerPhomRenderer extends PlayerCardTurnBaseRenderer {
             eatenCardListNode2: cc.Node,
             anChotAnimName: "",
 
-            playedCardListNode: {
+            playedCardListNodes: {
                 default: [],
                 type: [cc.Node]
             },
 
-            downPhomListNode: {
+            downPhomListNodes: {
                 default: [],
                 type: [cc.Node]
             },
@@ -32,6 +32,12 @@ export default class PlayerPhomRenderer extends PlayerCardTurnBaseRenderer {
         this.playedCardList = null;
         this.eatenCardList = null;
         this.downPhomList = null;
+
+        /**
+         * @type {PhomListComponent}
+         * @private
+         */
+        this._downPhomListComponent = null;
         this.animation = null;
         this._enabledPlayerPhomRenderer = false
     }
@@ -46,17 +52,31 @@ export default class PlayerPhomRenderer extends PlayerCardTurnBaseRenderer {
     _reset(){
         super._reset();
 
+        console.log("clean reset Phom renderer")
+        
         this.playedCardList.clear();
         this.eatenCardList.clear();
-        this.downPhomList.clear();
         this.cardList.clear();
+        this.downPhomList && this.downPhomList.clear();
+    }
+
+    setHighlightPhom(phom, highlight){
+        this._downPhomListComponent.setHighlight(phom, highlight);
+    }
+
+    downPhom(playerPhomList, player){
+        return this._downPhomListComponent.setPhomList(playerPhomList, player);
+    }
+
+    cleanHighlightDownPhom(){
+        this._downPhomListComponent.cleanHighlight();
     }
 
     _reloadComponentOnIndexChanged(){
 
         console.log("this.anchorIndex: ", this.anchorIndex);
 
-        this.playedCardListNode.forEach((node, index) => {
+        this.playedCardListNodes.forEach((node, index) => {
             if(index == this.anchorIndex){
                 this.playedCardList = node.getComponent(CardList.name);
             }else{
@@ -64,15 +84,24 @@ export default class PlayerPhomRenderer extends PlayerCardTurnBaseRenderer {
             }
         });
 
-        this.downPhomListNode.forEach((node, index) => {
+        this.downPhomListNodes.forEach((node, index) => {
             if(index == this.anchorIndex){
-                this.downPhomList = node.getComponent(PhomList.name);
+                this._downPhomListComponent = node.getComponent(PhomListComponent.name);
+                this.downPhomList = this._downPhomListComponent.phomList;
             }else{
                 node.active = false;
             }
         });
 
         this.eatenCardList = this._getEatenCardComponent();
+    }
+
+    start(){
+        super.start();
+        /**
+         * In first time load player, method _reloadComponentOnIndexChanged call before this._downPhomListComponent.phomList assigned
+         */
+        this.downPhomList = this._downPhomListComponent.phomList
     }
 
     /**

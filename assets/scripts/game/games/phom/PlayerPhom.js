@@ -13,11 +13,10 @@ import PhomPlayerRenderer from 'PlayerPhomRenderer';
 import PhomList from 'PhomList';
 import Commands from 'Commands';
 import Phom from 'Phom';
-import CardList from 'CardList';
 import Keywords from 'Keywords';
-import PhomUtils from "./PhomUtils";
-import JoinSolution from "./JoinSolution";
-import PhomGenerator from "./PhomGenerator";
+import PhomUtils from "PhomUtils";
+import PhomGenerator from "PhomGenerator";
+import ArrayUtils from "ArrayUtils";
 
 export default class PlayerPhom extends PlayerCardTurnBase {
 
@@ -77,6 +76,7 @@ export default class PlayerPhom extends PlayerCardTurnBase {
         this.scene.on(Events.ON_CLICK_SKIP_DOWN_PHOM_BUTTON, this._onSkipDownPhom, this);
         this.scene.on(Events.ON_CLICK_JOIN_PHOM_BUTTON, this._onJoinPhom, this);
         this.scene.on(Events.ON_CLICK_SKIP_JOIN_PHOM_BUTTON, this._onSkipJoinPhom, this);
+        this.scene.on(Events.ON_CLICK_SKIP_JOIN_PHOM_BUTTON, this._onSkipJoinPhom, this);
         this.scene.on(Events.ON_CLICK_CHANGE_PHOM_BUTTON, this._onChangePhom, this);
 
         this.scene.on(Events.ON_PLAYER_REMAIN_CARD_COUNT, this._setRemainCardCount, this);
@@ -87,6 +87,8 @@ export default class PlayerPhom extends PlayerCardTurnBase {
         this.scene.on(Events.HANDLE_PLAYER_HELP_CARD, this._handlePlayerHelpCard, this);
         this.scene.on(Events.HANDLE_PLAYER_LEAVE_BOARD, this._handlePlayerLeaveBoard, this);
         this.scene.on(Events.ON_PLAYER_TURN, this._onPlayerTurn, this);
+
+        this.scene.on(Events.SHOW_PHOM_HIGHLIGHT, this._setPhomHighlight, this);
 
         // this.scene.on(Events.ON_PLAYER_PLAYED_CARDS, this._onPlayerPlayedCards, this);
     }
@@ -113,16 +115,21 @@ export default class PlayerPhom extends PlayerCardTurnBase {
         this.scene.off(Events.HANDLE_PLAYER_LEAVE_BOARD, this._handlePlayerLeaveBoard, this);
         this.scene.off(Events.ON_PLAYER_TURN, this._onPlayerTurn, this);
 
+        this.scene.off(Events.SHOW_PHOM_HIGHLIGHT, this._setPhomHighlight, this);
+
         // this.scene.off(Events.ON_PLAYER_PLAYED_CARDS, this._onPlayerPlayedCards, this);
+    }
+
+    _setPhomHighlight(phom, highlight){
+        if(!this.isItMe()){
+            this.renderer.setHighlightPhom(phom, highlight);
+        }
     }
 
     _onDownPhom() {
         if (!this.isItMe()) return;
 
         let {valid, downPhomList} = PhomUtils.validateDownPhom(this.getSelectedCards(), this);
-
-        console.log("valid, down: ", valid, downPhomList);
-
         if (!valid) {
             //TODO Play invalid
             return;
@@ -133,10 +140,7 @@ export default class PlayerPhom extends PlayerCardTurnBase {
             [Keywords.GAME_LIST_CARD]: downPhomList.toBytes()
         };
 
-        console.log("data: ", data);
-
         app.service.send({cmd: Commands.PLAYER_DOWN_CARD, data: data, room: this.scene.room});
-
         this.setState(PlayerPhom.STATE_ACTION_WAIT);
     }
 
@@ -152,33 +156,35 @@ export default class PlayerPhom extends PlayerCardTurnBase {
     _onJoinPhom() {
         if (!this.isItMe()) return;
 
-        let {valid, joinPhomList} = PhomUtils.validateJoinPhom(this.getSelectedCards(), this);
+        let {valid, guiSolution} = PhomUtils.validateGuiPhom(this.getSelectedCards(), this);
 
         if (!valid) {
             //TODO play show invalid
             return;
         }
 
+        let phomList = guiSolution.getPhomList(this.board.allPhomList);
+
         let jc = [];
         let ji = [];
-        let pl = joinPhomList.map(phom => {
-            return phom.owner
-        });
+        let pl = phomList.map(phom =>  phom.owner);
 
-        joinPhomList.forEach((node, i) => {
+        guiSolution.forEach((node, i) => {
             let phom = this.board.allPhomList[node.phomId];
             jc[i] = node.card.byteValue;
-            ji[i] = joinPhomList.indexOf(phom);
+            ji[i] = ArrayUtils.findIndex(phomList, phom);
         });
 
         app.service.send({
-            cmd: Commands.PLAYER_HELP_CARD, data: {
-                [Keywords.GAME_LIST_PLAYER_CARDS_SIZE]: joinPhomList.getPhomLengths(),
-                [Keywords.GAME_LIST_CARD]: joinPhomList.toBytes(),
+            cmd: Commands.PLAYER_HELP_CARD,
+            data: {
+                [Keywords.GAME_LIST_PLAYER_CARDS_SIZE]: phomList.getPhomLengths(),
+                [Keywords.GAME_LIST_CARD]: phomList.toBytes(),
                 [Keywords.GAME_LIST_JOIN_CARD]: jc,
                 [Keywords.GAME_LIST_JOIN_CARD_TO_PHOM_ID]: ji,
                 [Keywords.GAME_LIST_PLAYER]: pl
-            }, room: this.scene.room
+            },
+            room: this.scene.room
         })
 
         this.board.deHighLightPhomList();
@@ -283,9 +289,11 @@ export default class PlayerPhom extends PlayerCardTurnBase {
 
         switch (state) {
             case PlayerPhom.STATE_PHOM_PLAY:
+                this.tempHoUPhoms && (this.tempHoUPhoms = null);
                 this.scene.emit(Events.SHOW_PLAY_CONTROL_ONLY);
                 break;
             case PlayerPhom.STATE_PHOM_JOIN:
+                this.tempHoUPhoms && (this.tempHoUPhoms = null);
                 this.scene.emit(Events.SHOW_JOIN_PHOM_CONTROLS);
                 break;
             case PlayerPhom.STATE_PHOM_EAT_TAKE:
@@ -293,6 +301,9 @@ export default class PlayerPhom extends PlayerCardTurnBase {
                 break;
             case PlayerPhom.STATE_PHOM_DOWN:
                 this.scene.emit(Events.SHOW_DOWN_PHOM_CONTROLS);
+                break;
+            case PlayerPhom.STATE_PHOM_PLAY_HO_U:
+                this.scene.emit(Events.SHOW_U_PHOM_CONTROLS);
                 break;
             default:
                 this.scene.emit(Events.SHOW_WAIT_TURN_CONTROLS);
@@ -331,7 +342,7 @@ export default class PlayerPhom extends PlayerCardTurnBase {
         if (this.isItMe()) {
             // this.renderer.cardList.cleanSelectedCard();
             if (this.renderer.playedCardList.length == 3) {
-                this.renderer.downPhomList.cleanHighlight();
+                this.renderer.cleanHighlightDownPhom();
             }
         }
 
@@ -363,7 +374,7 @@ export default class PlayerPhom extends PlayerCardTurnBase {
             this.board.cleanDeckCards();
         }
 
-        let card = this.isItMe() ? Card.from(utils.getValue(data, Keywords.GAME_LIST_CARD)) : Card.from(5);
+        let card = this.isItMe() ? Card.from(utils.getValue(data, Keywords.GAME_LIST_CARD)) : Card.from(0);
         if (!card.isEmpty()) {
             this.renderer.cardList.transferFrom(this.board.getDeckCards(), [card], () => {
                 if (this.isItMe()) {
@@ -377,6 +388,10 @@ export default class PlayerPhom extends PlayerCardTurnBase {
 
     _handlePlayerEatCard(playerId, data) {
         if (this.id != playerId) return;
+
+        console.log("_handlePlayerEatCard: ", playerId)
+
+        this.renderer.cardList.cleanHighlight();
 
         let eatenCard = Card.from(utils.getValue(data, Keywords.GAME_LIST_CARD));
         let lastPlayedTurnPlayer = this.scene.gamePlayers.findPlayer(this.board.turnAdapter.lastPlayedTurn);
@@ -403,7 +418,6 @@ export default class PlayerPhom extends PlayerCardTurnBase {
         // TODO play sound eat
     }
 
-
     _processAfterEatOrTake() {
         let currentPhomList = PhomUtils.bestPhomList(this.renderer.cardList.cards);
 
@@ -420,7 +434,7 @@ export default class PlayerPhom extends PlayerCardTurnBase {
             if (currentPhomList.length > 0 && currentPhomCards.length >= 9) {
                 // co the u duoc
                 this.tempHoUPhoms = currentPhomList;
-                currentPhomCards.forEach(card => CardList.setSelected(card, true));
+                this.renderer.cardList.setHighlight(currentPhomCards);
                 this.setState(PlayerPhom.STATE_PHOM_PLAY_HO_U);
             }
             else {
@@ -478,8 +492,6 @@ export default class PlayerPhom extends PlayerCardTurnBase {
             return;
         }
 
-        console.log("haPhomSolutionId: ", haPhomSolutionId, this.currentHaPhomSolutions);
-
         let currentPhomList = this.currentHaPhomSolutions[this.haPhomSolutionId];
         currentPhomList.forEach((phom, i) => {
             phom.cards.forEach(card => {
@@ -491,12 +503,19 @@ export default class PlayerPhom extends PlayerCardTurnBase {
     }
 
     _processJoinPhomPhase(isAllCard) {
+        
+        console.log("_processJoinPhomPhase this.board.allPhomList: ", this.board.allPhomList);
 
-        let processCards = isAllCard ? [...this.renderer.cardList.cards] : [...this.renderer.cardList.cards.getSelectedCards()];
+        let processCards = isAllCard ? [...this.renderer.cardList.cards] : [...this.getSelectedCards()];
 
-        this.board.deHighLightPhomList();
+        // this.board.deHighLightPhomList();
 
         this.currentGuiPhomSolutions = PhomUtils.getJoinPhomSolutions([...this.board.allPhomList], processCards);
+
+        console.log("currentGuiPhomSolutions: ", this.currentGuiPhomSolutions);
+        console.log("this.board.allPhomList: ", this.board.allPhomList);
+        console.warn("down phom render: ", this.renderer._downPhomListComponent);
+
 
         if (this.currentGuiPhomSolutions.length == 0) {
             if (isAllCard) {
@@ -505,7 +524,7 @@ export default class PlayerPhom extends PlayerCardTurnBase {
                 this._setJoinPhomPhraseState(PlayerPhom.STATE_DOWN_JOIN_PHASE_SKIP);
             }
         } else {
-            if (PhomUtils.isMom(this)) {
+            if (this.renderer.cardList.cards.length >= 9) {
                 this.setState(PlayerPhom.STATE_PHOM_PLAY);
             } else {
                 if (this.currentGuiPhomSolutions.length > 1) {
@@ -533,16 +552,21 @@ export default class PlayerPhom extends PlayerCardTurnBase {
             return;
         }
 
-        this.renderer.cardList.clean();
+        console.warn("down phom render on change gui: ", this.renderer._downPhomListComponent);
+
         this.board.deHighLightPhomList();
+        this.isItMe() && this.renderer.cardList.clean();
 
         let currentGuiSolution = this.currentGuiPhomSolutions[this.guiPhomSolutionId];
-        currentGuiSolution((node, k) => {
+        currentGuiSolution.forEach((node, k) => {
             let nodeCard = node.card;
             nodeCard.setHighlight(true);
             nodeCard.setSelected(true);
-            this.board.allPhomList[node.phomId].setHighlight(true);
+            // this.scene.emit(Events.SHOW_PHOM_HIGHLIGHT,  this.board.allPhomList[node.phomId]);
+            // this.board.allPhomList[node.phomId].setHighlightAll(true);
         });
+
+        console.warn("after phom render on change gui: ", this.renderer._downPhomListComponent);
     }
 
     _handlePlayerDownCard(playerId, data) {
@@ -553,21 +577,23 @@ export default class PlayerPhom extends PlayerCardTurnBase {
         let phomData = utils.getValue(data, Keywords.GAME_LIST_CARD);
 
         let dataIndex = 0;
-        let downPhomList = new PhomList();
+        let playerPhomList = new PhomList();
         phomDataSize.forEach((size, i) => {
             let phom = new Phom(GameUtils.convertBytesToCards(phomData.slice(dataIndex, dataIndex + size)));
 
             dataIndex += size;
             phom.setOwner(this.id);
 
-            downPhomList.add(phom);
+            playerPhomList.add(phom);
         });
 
-        this.renderer.downPhomList.clear();
+
+        console.log("cllear on eatenCardList")
+
         this.renderer.eatenCardList.clear();
 
-        downPhomList = this.renderer.downPhomList.setPhomList(downPhomList, this);
-        this.board.allPhomList.push(...downPhomList);
+        this.renderer.downPhom(playerPhomList, this);
+        this.board.allPhomList.push(...playerPhomList);
 
         if (this.isItMe()) {
             this.isItMe() && this.renderer.cardList.cleanCardGroup();
@@ -587,49 +613,53 @@ export default class PlayerPhom extends PlayerCardTurnBase {
         this.id == playerId && this.setState(PlayerPhom.STATE_PHOM_JOIN);
     }
 
-    _handlePlayerHelpCard(data) {
+    _handlePlayerHelpCard(playerId, data) {
+
+        if(playerId != this.id) return;
 
         let phomDataSize = utils.getValue(data, Keywords.GAME_LIST_PLAYER_CARDS_SIZE);
         let phomData = utils.getValue(data, Keywords.GAME_LIST_CARD);
         let jc = utils.getValue(data, Keywords.GAME_LIST_JOIN_CARD);
         let ji = utils.getValue(data, Keywords.GAME_LIST_JOIN_CARD_TO_PHOM_ID);
         let pl = utils.getValue(data, Keywords.GAME_LIST_PLAYER);
-
+        //
         let joinedPhomList = new PhomList();
         let dataIndex = 0;
 
         for (let i = 0; i < phomDataSize.length; i++) {
-            let phom = new Phom();
-
-            for (let j = 0; j < phomDataSize[i]; j++) {
-                phom.add(Card.from(phomData[dataIndex + j]));
-            }
-
+            let phom = new Phom(GameUtils.convertBytesToCards(phomData.slice(dataIndex, dataIndex + phomDataSize[i])));
             phom.sortAsc();
             dataIndex += phomDataSize[i];
-            joinedPhomList.push(this.board.allPhomList[this.board.allPhomList.indexOf(phom)]);
+
+            let index = ArrayUtils.findIndex(this.board.allPhomList, phom);
+
+            joinedPhomList.push(index >= 0 ? this.board.allPhomList[index].renderComponent : null);
         }
 
         let joiningCards = GameUtils.convertBytesToCards(jc);
+        for (let i = 0; i < joiningCards.length; i++) {
+            let card = joiningCards[i];
+            let joinPhom = joinedPhomList[i];
 
-        if (!this.isItMe()) {
-            this.renderer.cardList.setCards(joiningCards);
-        }
-
-        let joinedCards = this.renderer.cardList.removeCards(joiningCards);
-
-        for (let i = 0; i < joinedCards.size(); i++) {
-            let joinedPhom = joinedPhomList.getPhomAt(ji[i]);
-            joinedPhom.joinCard(joinedCards[i]);
+            if (this.isItMe()) {
+                if(joinPhom){
+                    this.renderer.cardList.transferTo(joinPhom, [card]);
+                }else{
+                    this.renderer.cardList.removeCards([card]);
+                }
+            }else{
+                if(joinPhom){
+                    joinPhom.transferFrom(this.renderer.cardList, [card]);
+                }
+            }
         }
 
         if (this.isItMe()) {
             this.setState(PlayerPhom.STATE_PHOM_PLAY);
         }
 
-        // TODO sound join phom
+        // // TODO sound join phom
     }
-
 
     _handlePlayerLeaveBoard() {
         if (this.state == PlayerPhom.STATE_PHOM_JOIN) {
@@ -646,16 +676,6 @@ export default class PlayerPhom extends PlayerCardTurnBase {
     setRemainCardCount(remain) {
         this.remainCardCount = remain;
         this.createFakeCards(remain);
-    }
-
-    onGamePlaying() {
-        if (this.scene.gameState == PlayerPhom.STATE_PHOM_PLAY) {
-            this.turnPharse = PlayerPhom.TURN_PHRASE_PLAY_CARD
-        } else if (this.scene.gameState == PlayerPhom.STATE_PHOM_EAT_TAKE) {
-            this.turnPharse = PlayerPhom.TURN_PHRASE_TAKE_OR_EAT_CARD
-        } else {
-            this.turnPharse = 0;
-        }
     }
 
     _onPlayTurn() {
@@ -703,8 +723,6 @@ export default class PlayerPhom extends PlayerCardTurnBase {
     //TODO
     _onSortCards() {
 
-        console.log("this.sortCardSolutionIndex: ", this.sortCardSolutionIndex, this.isItMe());
-
         if (this.isItMe()) {
             switch (this.sortCardSolutionIndex) {
                 case PlayerPhom.SORT_CARD_SOLUTION_1:
@@ -717,16 +735,13 @@ export default class PlayerPhom extends PlayerCardTurnBase {
                     PhomUtils.sortAsc(this.renderer.cardList.cards);
             }
 
-            console.log("this.renderer.cardList.cards: ", this.renderer.cardList.cards);
-
             this._updateSortCardSolutionIndex();
             this.renderer.cardList.onCardsChanged();
         }
     }
 
     _updateSortCardSolutionIndex() {
-        this.sortCardSolutionIndex++;
-        if (this.sortCardSolutionIndex > PlayerPhom.SORT_CARD_SOLUTION_MAX) {
+        if (++this.sortCardSolutionIndex > PlayerPhom.SORT_CARD_SOLUTION_MAX) {
             this.sortCardSolutionIndex = 0;
         }
     }
@@ -749,15 +764,37 @@ export default class PlayerPhom extends PlayerCardTurnBase {
         if (this.isItMe()) {
             this.renderer.setSelectCardChangeListener((selectedCards) => {
 
-                if (this.state == PlayerPhom.STATE_PHOM_PLAY) {
-                    let interactable = PhomUtils.checkPlayCard([...selectedCards], this.handCards);
-                    this.scene.emit(Events.SET_INTERACTABLE_PLAY_CONTROL, interactable);
-                }else if(this.state == PlayerPhom.STATE_PHOM_DOWN){
-                    let interactable = PhomUtils.checkDownPhom([...selectedCards], this);
-                    this.scene.emit(Events.SET_INTERACTABLE_HA_PHOM_CONTROL, interactable);
-                    if(!interactable){
-                        this.renderer.cardList.cleanHighlight();
-                    }
+                switch (this.state) {
+                    case PlayerPhom.STATE_PHOM_PLAY:
+                        let playable = PhomUtils.checkPlayCard([...selectedCards], this.handCards);
+                        this.scene.emit(Events.SET_INTERACTABLE_PLAY_CONTROL, playable);
+                        break;
+                    case PlayerPhom.STATE_PHOM_DOWN:
+                        let downable = PhomUtils.checkDownPhom([...selectedCards], this);
+                        this.scene.emit(Events.SET_INTERACTABLE_HA_PHOM_CONTROL, downable);
+                        if (downable) {
+                            this.renderer.cardList.setHighlight(selectedCards);
+                        } else {
+                            this.renderer.cardList.cleanHighlight();
+                        }
+                        break;
+                    case PlayerPhom.STATE_PHOM_EAT_TAKE:
+                        let eatable = PhomUtils.checkEatPhom([...selectedCards], this.board.lastPlayedCard, this);
+                        this.scene.emit(Events.SET_INTERACTABLE_EAT_CONTROL, eatable);
+
+                        if (eatable) {
+                            this.renderer.cardList.setHighlight(selectedCards);
+                        } else {
+                            this.renderer.cardList.cleanHighlight();
+                        }
+                        break;
+                    case PlayerPhom.STATE_PHOM_PLAY_HO_U:
+                        if(this.tempHoUPhoms){
+                            let phomCards = this.tempHoUPhoms.getCards();
+                            this.renderer.cardList.setSelecteds(phomCards);
+                            this.renderer.cardList.setHighlight(phomCards);
+                        }
+                        break;
                 }
             });
         }
@@ -767,67 +804,30 @@ export default class PlayerPhom extends PlayerCardTurnBase {
         super._onGameRejoin(data);
 
         if (this.isPlaying() && !this.scene.isEnding() && !this.isItMe()) {
-            let cards = Array(PlayerPhom.DEFAULT_HAND_CARD_COUNT).fill(5).map(value => {
+            let cards = Array(PlayerPhom.DEFAULT_HAND_CARD_COUNT).fill(0).map(value => {
                 return Card.from(value)
             });
             this.setCards(cards, false);
         }
     }
 
-    //     @Override
-    //     public void showWinLoseInfo(byte winType, byte rankType, byte rank) {
-    // //		super.showWinLoseInfo(winType, rankType, rank);
-    //     if (winType == GameWin.PHOM_WIN_TYPE_U_DEN) {
-    //     //thang thua kieu u den thi ko show thang thua icon cho nhung thang kia
-    //     if (rank == GameRank.GAME_RANK_FIRST || rank == GameRank.GAME_RANK_FOURTH) {
-    //     // nhat hoac bet duoc show icon nhat nhi ba bet
-    //     showWinDrawLoseIcon(winType, rankType, rank);
-    // }
-    // }
-    // else {
-    //     showWinDrawLoseIcon(winType, rankType, rank);
-    // }
-    //
-    // //		if ( (rank != GameRank.GAME_RANK_FIRST) ) {// && winType != GameWin.PHOM_WIN_TYPE_U_KHAN || (winType == GameWin.PHOM_WIN_TYPE_U_KHAN && rank != GameRank.GAME_RANK_FIRST)) {
-    // //			// truong hop u khan thang nhat cung mom dam ra ko duoc show
-    // //			if (isMom()) {
-    // //				((UIPlayerPhom) getUIPlayer()).showMomAvatar(true);
-    // //			}
-    // //		}
-    //
-    // if (winType == GameWin.GENERAL_WIN_TYPE_NORMAL) {
-    //     if (rank != GameRank.GAME_RANK_FIRST && isMom()) {
-    //         //chi truong hop thang thua binh thuong moi show mom
-    // //				if (isMom()) {
-    //         ((UIPlayerPhom) getUIPlayer()).showMomAvatar(true);
-    // //				}
-    //     }
-    //     showFirstLastRankIcon(winType, rankType, rank);
-    // }
-    //
-    // showInfo(getWinLoseString(winType, rankType, rank), 5000);
-    // }
+    onGamePlaying(data, isJustJoined){
 
-    //     @Override
-    //     public String getWinLoseString(byte winType, byte rankType, byte rank) {
-    //     if (getBoardPhom().winType != GameWin.GENERAL_WIN_TYPE_NORMAL) {
-    //     if (rank == GameRank.GAME_RANK_FIRST) {
-    //     return GameWin.getPhomFirstRankSpecialString(getBoardPhom().winType);
-    // } else {
-    //     return super.getWinLoseString(winType, rankType, rank);
-    // }
-    // }
-    //
-    // if (!isMom()) {
-    //     CardVector hands = getHandCards();
-    //     int cardsPoint = 0;
-    //     for (int i = 0; i < hands.size(); i++) {
-    //         cardsPoint += hands.getCardAt(i).getRank();
-    //     }
-    //     return LanguageManager.getString(R.string.diem, cardsPoint);
-    // }
-    // return super.getWinLoseString(winType, rankType, rank);
-    // }
+        !this.isItMe() && this.renderer.cardList.clear();
+
+        if (this.scene.gameState == PlayerPhom.STATE_PHOM_PLAY) {
+            this.turnPharse = PlayerPhom.TURN_PHRASE_PLAY_CARD
+        } else if (this.scene.gameState == PlayerPhom.STATE_PHOM_EAT_TAKE) {
+            this.turnPharse = PlayerPhom.TURN_PHRASE_TAKE_OR_EAT_CARD
+        } else {
+            this.turnPharse = 0;
+        }
+    }
+
+    onGameEnding(data){
+        super.onGameEnding(data);
+        this.renderer.playedCardList.clear();
+    }
 }
 
 PlayerPhom.TURN_PHRASE_TAKE_OR_EAT_CARD = 1;

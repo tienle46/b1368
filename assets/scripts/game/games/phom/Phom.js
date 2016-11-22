@@ -4,7 +4,7 @@
 
 import app from 'app';
 import CardList from 'CardList';
-import PhomUtils from "./PhomUtils";
+import PhomUtils from "PhomUtils";
 
 export default class Phom extends CardList {
     constructor(cards = [], keepReference) {
@@ -17,6 +17,12 @@ export default class Phom extends CardList {
 
     }
 
+    clear(){
+        super.clear();
+
+        warn("clear phom: ", this.cards.length);
+    }
+
     setCards(cards){
         super.setCards(PhomUtils.sortAsc(cards, PhomUtils.SORT_BY_RANK));
     }
@@ -27,25 +33,19 @@ export default class Phom extends CardList {
 
     static from(cards) {
         let phom = new Phom(cards);
-        return Phom.isPhomByRank(phom.cards) || !Phom.isPhomBySuit(phom.cards) ? phom : null;
+        return PhomUtils.isPhomByRank(phom.cards) || !PhomUtils.isPhomBySuit(phom.cards) ? phom : null;
     }
 
     equals(phom) {
-        return this.cards.length > 2
-            && this.cards.length == phom.cards.length
-            && this.cards[0].byteValue == phom.cards[0].byteValue
-            && this.cards[this.cards.length - 1].byteValue == phom.cards[this.cards.length - 1].byteValue
-    }
+        let equals = false;
 
-    static isPhomByRank(cards) {
-        let sortedCards = PhomUtils.sortAsc([...cards], PhomUtils.SORT_BY_RANK);
-        return sortedCards[0].rank == sortedCards[sortedCards.length - 1].rank;
-    }
+        if(phom.cards.length > 2 && this.cards.length == phom.cards.length){
+            PhomUtils.sortAsc(phom.cards);
+            equals = this.cards[0].byteValue == phom.cards[0].byteValue
+                && this.cards[this.cards.length - 1].equals(phom.cards[this.cards.length - 1]);
+        }
 
-    static isPhomBySuit(cards) {
-        let sortedCards = PhomUtils.sortAsc([...cards], PhomUtils.SORT_BY_RANK);
-        return (sortedCards[0].suit == sortedCards[sortedCards.length - 1].suit)
-            && ( sortedCards[sortedCards.length - 1].rank - sortedCards[0].rank == (sortedCards.length - 1) );
+        return equals;
     }
 
     value() {

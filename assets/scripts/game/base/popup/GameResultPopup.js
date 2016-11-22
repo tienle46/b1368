@@ -6,6 +6,7 @@ import app from 'app';
 import Actor from 'Actor';
 import GameResultItem from 'GameResultItem';
 import {GameUtils} from 'utils';
+import * as Commands from "../../../core/Commands";
 
 export default class GameResultPopup extends Actor {
     constructor() {
@@ -93,6 +94,9 @@ export default class GameResultPopup extends Actor {
         this.clear();
         this._closeCb && this._closeCb(Math.ceil((Date.now() - this._shownTime) / 1000));
         this.node.off('touchstart');
+
+        let currentScene = app.system.currentScene;
+        currentScene && currentScene.room && app.service.send({cmd: Commands.PLAYER_CONTINUE, data: {}, room: currentScene.room});
     }
 
     _callCloseCallback(){

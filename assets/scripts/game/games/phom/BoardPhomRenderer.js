@@ -13,7 +13,7 @@ export default class BoardPhomRenderer extends BoardCardTurnBaseRenderer {
     }
 
     fillDeckFakeCards(){
-        this.deckCardNode.getComponent(CardList.name).setCards(GameUtils.convertBytesToCards(Array(16).fill(5)));
+        this.deckCardRenderer.setCards(GameUtils.convertBytesToCards(Array(16).fill(0)));
     }
 
     onLoad(){

@@ -4,6 +4,10 @@
 
 export default class Utils {
 
+    static isNull(val){
+        return val == undefined || val == null;
+    }
+
     static isEmpty(str) {
         return !str || (Utils.isString(str) && str.trim().length == 0);
     }

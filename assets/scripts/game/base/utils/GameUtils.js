@@ -4,7 +4,7 @@
 
 import app from 'app';
 import utils from 'utils';
-import {Card} from 'game-components'
+import Card from 'Card'
 import numeral from 'numeral';
 const gameState = app.const.game.state;
 
