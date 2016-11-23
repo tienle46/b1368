@@ -54,7 +54,7 @@ export default class BaseScene extends Actor {
         let progressNode = cc.instantiate(app.res.prefab.fullSceneLoading);
         if (progressNode) {
             this.node.parent.addChild(progressNode, app.const.loadingZIndex);
-            this.progress = progressNode.getComponent(FullSceneProgress.name);
+            this.progress = progressNode.getComponent('FullSceneProgress');
         }
 
         this._pendingAddPopup && this._pendingAddPopup.forEach(msg => {

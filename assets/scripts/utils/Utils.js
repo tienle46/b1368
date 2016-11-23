@@ -60,12 +60,19 @@ export default class Utils {
         }
     }
 
-    static active(node) {
+    static active(node, opacity) {
         this.setActive(node, true);
+        if(opacity){
+            //TODO
+        }
     }
 
-    static deactive(node) {
+    static deactive(node, opacity) {
         this.setActive(node, false);
+
+        if(opacity){
+            //TODO
+        }
     }
 
     static setActive(node, active) {

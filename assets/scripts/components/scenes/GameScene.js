@@ -89,8 +89,8 @@ export default class GameScene extends BaseScene {
         super.onEnable();
 
         app.system.setCurrentScene(this);
-        this.chatComponent = this.chatComponentNode.getComponent(IngameChatComponent.name);
-        this.gamePlayers = this.playerLayer.getComponent(GamePlayers.name);
+        this.chatComponent = this.chatComponentNode.getComponent('IngameChatComponent');
+        this.gamePlayers = this.playerLayer.getComponent('GamePlayers');
 
         try {
             this.room = app.context.currentRoom;
@@ -197,7 +197,7 @@ export default class GameScene extends BaseScene {
             this._loadPlayerReadyState();
             !app.context.rejoiningGame && this._onGameStateChange(currentGameState, this.gameData, true);
         } else {
-            this.emit(Events.ON_GAME_STATE_BEGIN, this.gameData, app.context.rejoiningGame);
+            this._onGameStateBegin(this.gameData, app.context.rejoiningGame)
             this._loadPlayerReadyState();
         }
 
@@ -235,6 +235,11 @@ export default class GameScene extends BaseScene {
         }
     }
 
+    _onGameStateBegin(data, isJustJoined){
+        this.emit(Events.ON_GAME_RESET);
+        this.emit(Events.ON_GAME_STATE_BEGIN, data, isJustJoined);
+    }
+
     _onGameStateChange(state, data, isJustJoined) {
 
         let localState = GameUtils.convertToLocalGameState(state);
@@ -245,7 +250,7 @@ export default class GameScene extends BaseScene {
 
         switch (localState) {
             case app.const.game.state.BEGIN:
-                this.emit(Events.ON_GAME_STATE_BEGIN, data, isJustJoined);
+                this._onGameStateBegin(data, isJustJoined);
                 break;
             case app.const.game.state.STARTING:
                 this.emit(Events.ON_GAME_STATE_STARTING, data, isJustJoined);

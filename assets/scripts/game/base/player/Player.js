@@ -38,11 +38,14 @@ export default class Player extends Actor {
         if(!this.board || !this.user){
             throw new CreateGameException("Dữ liệu khởi tạo bàn chơi không đúng");
         }
+
+        console.log("init player: ", board, user);
     }
 
     _addGlobalListener(){
         super._addGlobalListener();
 
+        this.scene.on(Events.ON_GAME_RESET, this.onGameReset, this);
         this.scene.on(Events.ON_GAME_STATE_BEGIN, this.onGameBegin, this);
         this.scene.on(Events.ON_GAME_STATE_STARTING, this.onGameStarting, this);
         this.scene.on(Events.ON_GAME_STATE_STARTED, this.onGameStarted, this);
@@ -59,6 +62,7 @@ export default class Player extends Actor {
     _removeGlobalListener(){
         super._removeGlobalListener();
 
+        this.scene.off(Events.ON_GAME_RESET, this.onGameReset, this);
         this.scene.off(Events.ON_GAME_STATE_BEGIN, this.onGameBegin);
         this.scene.off(Events.ON_GAME_STATE_STARTING, this.onGameStarting);
         this.scene.off(Events.ON_GAME_STATE_STARTED, this.onGameStarted);
@@ -220,7 +224,7 @@ export default class Player extends Actor {
 
     onGameBegin(data, isJustJoined) {
         if(!isJustJoined){
-            this._reset();
+            this.onGameReset();
         }
     }
 
@@ -252,7 +256,8 @@ export default class Player extends Actor {
         this.stopTimeLine();
     }
 
-    _reset(){
+    onGameReset(){
+        this.ready = false;
         this.renderer._reset();
     }
 

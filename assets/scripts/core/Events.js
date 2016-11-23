@@ -66,6 +66,7 @@ Events.ON_CLICK_CHANGE_PHOM_BUTTON      = "on.click.changePhomButton";
 Events.ON_CLICK_U_BUTTON                = "on.click.uButton";
 Events.ON_CLICK_DOI_U_TRON_BUTTON       = "on.click.doiUTronButton";
 
+Events.ON_GAME_RESET                    = "on.game.reset";
 Events.ON_GAME_STATE_BEGIN              = "on.game.stateBegin";
 Events.ON_GAME_STATE_STARTING           = "on.game.stateStarting";
 Events.ON_GAME_STATE_STARTED            = "on.game.stateStarted";

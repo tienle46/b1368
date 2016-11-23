@@ -11,7 +11,12 @@ export default class PhomGenerator {
 
     static generate(cards) {
 
+        console.log("cards: ", cards.map(card => card.byteValue));
+
         let allPhoms = this.generateAllPhom(cards);
+
+        console.log("allPhoms: ", allPhoms);
+
         let generatedPhomLists = [...allPhoms.map(phom => new PhomList([phom]))];
         
         this._generateSubsetAlgorithm(allPhoms.map((phom, i) => i), 2, (indexArr) => {
@@ -40,7 +45,13 @@ export default class PhomGenerator {
 
     static generateAllPhom(cards){
         cards = PhomUtils.sortAsc(cards);
-        return [...this._findPhomByRank([...cards]), ...this._findPhomBySuit([...cards])];
+        let phomByRanks = this._findPhomByRank([...cards]);
+        let phomBySuits = this._findPhomBySuit([...cards]);
+
+        console.log("phomByRanks: ", phomByRanks);
+        console.log("phomBySuits: ", phomBySuits);
+
+        return [...phomByRanks, ...phomBySuits];
     }
 
     static _sortPhomLists(phomLists) {
@@ -86,7 +97,6 @@ export default class PhomGenerator {
         let isSuitPhom = this._isValidPhomLength(cards);
         cards.some(card => {
             if (preCard) {
-                console.log(card.rank, preCard.rank)
                 if (card.rank - preCard.rank != 1) {
                     isSuitPhom = false;
                     return true;
@@ -110,14 +120,12 @@ export default class PhomGenerator {
                 let sameRankCards = cards.filter(card => { return card.rank == rank });
                 findRanks.push(rank)
 
-                let phomCardsArr = [];
+                let phomCardsArr = [sameRankCards];
                 if(sameRankCards.length == 4){
-                    phomCardsArr[0] = [sameRankCards[0], sameRankCards[1], sameRankCards[2]];
-                    phomCardsArr[1] = [sameRankCards[0], sameRankCards[1], sameRankCards[3]];
-                    phomCardsArr[2] = [sameRankCards[0], sameRankCards[2], sameRankCards[3]];
-                    phomCardsArr[3] = [sameRankCards[1], sameRankCards[2], sameRankCards[3]];
-                }else{
-                    phomCardsArr[sameRankCards];
+                    phomCardsArr.push([sameRankCards[0], sameRankCards[1], sameRankCards[2]]);
+                    phomCardsArr.push([sameRankCards[0], sameRankCards[1], sameRankCards[3]]);
+                    phomCardsArr.push([sameRankCards[0], sameRankCards[2], sameRankCards[3]]);
+                    phomCardsArr.push([sameRankCards[1], sameRankCards[2], sameRankCards[3]]);
                 }
 
                 phomCardsArr.forEach(phomCards => {
@@ -133,19 +141,19 @@ export default class PhomGenerator {
 
     static _findPhomBySuit(cards) {
         const phoms = [];
-        cards.forEach(card => console.log("rank: ", card.rank, " suit: ", card.suit));
+        // cards.forEach(card => console.log("rank: ", card.rank, " suit: ", card.suit));
 
         for (let suit = 0; suit < 4; suit++) {
 
             let sameSuitCards = cards.filter(card => card.suit == suit);
             let sortedCards = PhomUtils.sortAsc(sameSuitCards);
-            sortedCards.forEach(card => console.log("rank: ", card.rank, " suit: ", card.suit));
+            // sortedCards.forEach(card => console.log("rank: ", card.rank, " suit: ", card.suit));
 
             for (let i = 3; i <= sortedCards.length && i < 6; i++) {
                 for (let j = 0; j <= sortedCards.length - i; j++) {
 
                     let checkCards = sortedCards.slice(j, j + i);
-                    checkCards.forEach(card => console.log("rank: ", card.rank, " suit: ", card.suit));
+                    // checkCards.forEach(card => console.log("rank: ", card.rank, " suit: ", card.suit));
 
                     if (PhomGenerator._isSuitPhom(checkCards)) {
                         phoms.push(new Phom(checkCards));

@@ -5,6 +5,8 @@ import Card from 'Card'
 import GameUtils from 'GameUtils';
 import Phom from "../../game/games/phom/Phom";
 import PhomList from "../../game/games/phom/PhomList";
+import PhomUtils from "../../game/games/phom/PhomUtils";
+import PhomGenerator from "../../game/games/phom/PhomGenerator";
 
 cc.Class({
     extends: cc.Component,
@@ -71,37 +73,76 @@ cc.Class({
 
         let cardList = this.deckCard.getComponent("CardList");
         cardList.setCards(GameUtils.convertBytesToCards([38, 5, 6, 7, 10, 11, 12, 17, 18, 19, 30, 32]));
-        cardList.node.setPositionY(200)
+        cardList.node.setPositionY(200);
 
-        setTimeout(() => {
-            "use strict";
-
-            let phomList = new PhomList([
-                new Phom(GameUtils.convertBytesToCards([5, 6, 7])),
-                new Phom(GameUtils.convertBytesToCards([10, 11, 12])),
-                new Phom(GameUtils.convertBytesToCards([17, 18, 19]))
+        let phomList = new PhomList([
+            new Phom([
+                Card.from(Card.RANK_CHIN, Card.SUIT_BICH),
+                Card.from(Card.RANK_CHIN, Card.SUIT_TEP),
+                Card.from(Card.RANK_CHIN, Card.SUIT_ZO),
+            ]),
+            new Phom([
+                Card.from(Card.RANK_Q, Card.SUIT_BICH),
+                Card.from(Card.RANK_Q, Card.SUIT_TEP),
+                Card.from(Card.RANK_Q, Card.SUIT_CO),
+            ]),
+            new Phom([
+                Card.from(Card.RANK_K, Card.SUIT_BICH),
+                Card.from(Card.RANK_K, Card.SUIT_TEP),
+                Card.from(Card.RANK_K, Card.SUIT_ZO),
+                Card.from(Card.RANK_K, Card.SUIT_CO),
             ])
+        ]);
 
-            let downPhomList = this.playCard.getComponent('PhomList');
-            phomList.forEach((phom, i) => {
-                
-                console.log("I: " + i)
+        let currentPhomList = PhomUtils.bestPhomList(phomList.getCards());
 
-                if (i < 3 && (i== 2 || i == 1)) {
-                    let phomComponent = downPhomList.phomNodes[i].getComponent(Phom.name);
+        console.log("currentPhomList: ", currentPhomList);
 
-                    console.log("phom before " + i + ": ", phomComponent.node);
+        // let cards = [
+        //     Card.from(Card.RANK_HAI, Card.SUIT_BICH),
+        //     Card.from(Card.RANK_HAI, Card.SUIT_ZO),
+        //     Card.from(Card.RANK_HAI, Card.SUIT_CO),
+        //     Card.from(Card.RANK_HAI, Card.SUIT_TEP),
+        //     Card.from(Card.RANK_BA, Card.SUIT_CO),
+        //     Card.from(Card.RANK_BON, Card.SUIT_CO),
+        //     Card.from(Card.RANK_Q, Card.SUIT_CO),
+        //     Card.from(Card.RANK_MUOI, Card.SUIT_CO),
+        //     Card.from(Card.RANK_SIX, Card.SUIT_CO),
+        // ]
+        //
+        // let phoms = PhomGenerator.generate(cards);
+        //
+        // console.log(phoms);
 
-                    cardList.transfer(phom.cards, phomComponent, null, false);
-                }
-            });
-
-            downPhomList.forEach(phom => {
-                console.log("phom cards: ", phom.cards);
-            })
-
-            // cardList._adjustCardsPosition();
-        }, 2000);
+        // setTimeout(() => {
+        //     "use strict";
+        //
+        //     let phomList = new PhomList([
+        //         new Phom(GameUtils.convertBytesToCards([5, 6, 7])),
+        //         new Phom(GameUtils.convertBytesToCards([10, 11, 12])),
+        //         new Phom(GameUtils.convertBytesToCards([17, 18, 19]))
+        //     ])
+        //
+        //     let downPhomList = this.playCard.getComponent('PhomList');
+        //     phomList.forEach((phom, i) => {
+        //
+        //         console.log("I: " + i)
+        //
+        //         if (i < 3 && (i== 2 || i == 1)) {
+        //             let phomComponent = downPhomList.phomNodes[i].getComponent(Phom.name);
+        //
+        //             console.log("phom before " + i + ": ", phomComponent.node);
+        //
+        //             cardList.transfer(phom.cards, phomComponent, null, false);
+        //         }
+        //     });
+        //
+        //     downPhomList.forEach(phom => {
+        //         console.log("phom cards: ", phom.cards);
+        //     })
+        //
+        //     // cardList._adjustCardsPosition();
+        // }, 2000);
 
 
         // let phom = new Phom(GameUtils.convertBytesToCards([5, 6, 7]));

@@ -124,7 +124,7 @@ class GameSystem {
 
     _addToastToScene() {
         let toastNode = cc.instantiate(app.res.prefab.toast);
-        this.toast = toastNode.getComponent(Toast.name);
+        this.toast = toastNode.getComponent('Toast');
         this._currentScene && this._currentScene.node.addChild(toastNode, app.const.toastZIndex);
     }
 

@@ -26,7 +26,7 @@ export default class BoardCardTurnBaseRenderer extends BoardCardRenderer {
             this.deckCardNode.addChild(newDeckCardNode);
             this.deckCardRenderer = this.deckCardName && newDeckCardNode.getComponent(this.deckCardName);
         }else{
-            this.deckCardRenderer = this.deckCardNode.getComponent(CardList.name);
+            this.deckCardRenderer = this.deckCardNode.getComponent('CardList');
         }
     }
 

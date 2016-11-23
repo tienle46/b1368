@@ -41,18 +41,27 @@ export default class PhomUtils {
         }, []) || [];
     }
 
+    static isCaRank(card, caCard) {
+        return card.rank == caCard.rank && card.suit != caCard.suit;
+    }
+
+    static isCaSuit(card, caCard){
+        return (card.suit == caCard.suit) && ((caCard.rank == (card.rank + 1)) || (caCard.rank == (card.rank + 2))
+            || (caCard.rank == (card.rank - 1)) || (caCard.rank == (card.rank - 2)));
+    }
+
     static isCa(card, caCard, isRank) {
         if (isRank) {
             return (card.rank == caCard.rank && card.suit != caCard.suit);
         } else {
-            return ((card.suit == caCard.suit) && ((caCard.rank == (card.rank + 1)) || (caCard.rank == (card.rank + 2))
-            || (caCard.rank == (card.rank - 1)) || (caCard.rank == (card.rank - 2))));
+            return (card.suit == caCard.suit) && ((caCard.rank == (card.rank + 1)) || (caCard.rank == (card.rank + 2))
+            || (caCard.rank == (card.rank - 1)) || (caCard.rank == (card.rank - 2)));
         }
     }
 
     static checkCa(checkCard, cards){
         for (let i = 0; i < cards.length; i++) {
-            if (this.isCa(checkCard, cards[i], true) || this.isCa(checkCard, cards[i], false)) {
+            if (this.isCaRank(checkCard, cards[i]) || this.isCaSuit(checkCard, cards[i])) {
                 return true;
             }
         }

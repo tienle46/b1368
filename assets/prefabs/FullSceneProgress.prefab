@@ -337,8 +337,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 170,
-      "height": 170
+      "width": 171,
+      "height": 171
     },
     "_children": [],
     "_rotationX": 0,
@@ -687,6 +687,7 @@
       "__id__": 6
     },
     "_enabled": true,
+    "path": "",
     "spinNode": {
       "__id__": 7
     }
@@ -820,13 +821,14 @@
       "__id__": 1
     },
     "_enabled": true,
-    "label": {
-      "__id__": 24
-    },
+    "path": "",
+    "active": true,
     "progressNode": {
       "__id__": 6
     },
-    "active": true
+    "label": {
+      "__id__": 24
+    }
   },
   {
     "__type__": "cc.PrefabInfo",

@@ -31,7 +31,7 @@ export default class BoardPhom extends BoardCardTurnBase {
     }
 
     onEnable() {
-        this.renderer = this.node.getComponent(BoardPhomRenderer.name);
+        this.renderer = this.node.getComponent('BoardPhomRenderer');
         super.onEnable();
     }
 
@@ -231,7 +231,7 @@ export default class BoardPhom extends BoardCardTurnBase {
             let remainTime = this.timelineRemain - shownTime;
             if (remainTime > 0 && this.scene.isEnding()) {
                 this.renderer.cleanDeckCards();
-                this._startEndBoardTimeLine(remainTime);
+                // this._startEndBoardTimeLine(remainTime);
             }
         }), CardList.TRANSFER_CARD_DURATION * 1000);
     }

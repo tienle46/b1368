@@ -34,7 +34,7 @@ export default class IngameChatComponent extends Component {
         super.onEnable();
         this.scene = app.system.currentScene;
         this.animation = this.node.getComponent(cc.Animation);
-        this.loading = this.loadingComponent.getComponentInChildren(Progress.name);
+        this.loading = this.loadingComponent.getComponentInChildren('Progress');
     }
 
     start(){
@@ -63,7 +63,7 @@ export default class IngameChatComponent extends Component {
         this.messageListContent.removeAllChildren(true);
         this.messages.forEach(message => {
             let chatItemNode = cc.instantiate(this.gameChatItemPrefab);
-            let gameChatItem = chatItemNode.getComponent(GameChatItem.name);
+            let gameChatItem = chatItemNode.getComponent('GameChatItem');
 
             if(gameChatItem){
                 gameChatItem.text = message;
@@ -106,7 +106,7 @@ export default class IngameChatComponent extends Component {
 
     onClickChatMessage(event){
         this.hide();
-        let text = event.target.getComponent(GameChatItem.name).text;
+        let text = event.target.getComponent('GameChatItem').text;
         app.service.sendRequest(new SFS2X.Requests.System.PublicMessageRequest(text));
     }
 }

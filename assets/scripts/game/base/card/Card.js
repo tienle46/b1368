@@ -19,6 +19,8 @@ export default class Card extends Component {
             texBackBG: cc.SpriteFrame,
             highlightNode: cc.Node,
             lockedNode: cc.Node,
+            groupNode: cc.Node,
+            groupNumberLabel: cc.Label,
             emptySprite: cc.SpriteFrame,
 
             texFaces: {
@@ -58,6 +60,12 @@ export default class Card extends Component {
 
     setGroup(group){
         this.group = group;
+        if(group > 0){
+            this.groupNumberLabel && (this.groupNumberLabel.string = group);
+            utils.active(this.groupNode, 255);
+        }else{
+            utils.deactive(this.groupNode, 0);
+        }
     }
 
     isEmpty(){
@@ -145,15 +153,15 @@ export default class Card extends Component {
         }
     }
 
-    setSelected(selected, skipAnim = false){
+    setSelected(selected, runAction = true){
         if(this.selected == selected) return;
 
         this.selected = selected;
 
-        if(skipAnim){
-            this.node.setPositionY(selected ? this._selectedMargin : 0);
-        }else {
+        if(runAction){
             this.node.runAction(cc.moveTo(0.2, this.node.x, selected ? this._selectedMargin : 0));
+        }else {
+            this.node.setPositionY(selected ? this._selectedMargin : 0);
         }
     }
 
