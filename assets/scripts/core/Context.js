@@ -12,6 +12,19 @@ class GameContext {
         this.currentRoom = null;
         this.lastJoinedRoom = null;
         this.rejoiningGame = false;
+        this.selectedGame = null; // selected game code
+    }
+
+    setSelectedGame(selectedGame) {
+        this.selectedGame = selectedGame;
+    }
+
+    getSelectedGame() {
+        return this.selectedGame;
+    }
+
+    getLastJoinedRoom() {
+        return this.lastJoinedRoom;
     }
 
     /**
@@ -36,6 +49,7 @@ class GameContext {
         }
         return null;
     }
+
 
     isJoinedGame() {
         return this.currentRoom && this.currentRoom.isGame;

@@ -89,9 +89,9 @@ export default class EntranceScene extends BaseScene {
     }
 
     handleFacebookLoginAction() {
-        // AlertPopupRub.show(this.node, "Chức năng đang cập nhật!");
-        this.prom = new PromptPopupRub(this.node, { confirmBtn: this.test }, { label: { text: 'dafuq ?' } }, this);
-        this.prom.init();
+        AlertPopupRub.show(this.node, "Chức năng đang cập nhật!");
+        // this.prom = new PromptPopupRub(this.node, { confirmBtn: this.test }, { label: { text: 'dafuq ?' } }, this);
+        // this.prom.init();
     }
 
     _generateUserName(key, deviceId, count, maxCall) {

@@ -70,7 +70,10 @@ export default class DashboardScene extends BaseScene {
                 itemComponent.listenOnClickListener((gameCode) => {
                     log(`click Item ${gameCode}`);
 
-                    this.changeScene('ListTableScene');
+                    // set game context
+                    app.context.setSelectedGame(gc);
+
+                    this.changeScene(app.const.scene.LIST_TABLE_SCENE);
                 });
 
                 this.scrollerContentView.node.addChild(nodeItem);

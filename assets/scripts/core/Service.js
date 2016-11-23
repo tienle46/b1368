@@ -501,15 +501,15 @@ class Service {
             this._poorNetwork = averageLatency > app.config.poorNetworkThreshold;
         }
     }
-    _goOffline(){
-        if(this.client.buddyManager.getMyOnlineState()){
+    _goOffline() {
+        if (this.client.buddyManager.getMyOnlineState()) {
             this.sendRequest(new SFS2X.Requests.System.GoOnlineRequest(false));
         }
     }
-    manuallyDisconnect(){
+    manuallyDisconnect() {
         this._goOffline();
 
-        if(this.client._socketEngine.reconnectionSeconds == 0){
+        if (this.client._socketEngine.reconnectionSeconds == 0) {
             this.sendRequest(new SFS2X.Requests.System.ManualDisconnectionRequest());
         }
 

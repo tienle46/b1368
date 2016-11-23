@@ -50,7 +50,7 @@ export default class BaseScene extends Actor {
     onLoad() {
 
         super.onLoad();
-        
+
         let progressNode = cc.instantiate(app.res.prefab.fullSceneLoading);
         if (progressNode) {
             this.node.parent.addChild(progressNode, app.const.loadingZIndex);
@@ -118,8 +118,8 @@ export default class BaseScene extends Actor {
         }
     }
 
-    changeScene(name, duration = 0.5) {
-        app.system.loadScene(name);
+    changeScene(name, onLaunched) {
+        app.system.loadScene(name, onLaunched);
         // this.node.runAction(cc.sequence(
         //     cc.fadeOut(duration),
         //     cc.callFunc(function () {

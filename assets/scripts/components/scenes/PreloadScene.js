@@ -56,7 +56,7 @@ class PreloadScene extends Component {
                     return true;
                 }
             });
-            
+
             console.log("results: ", results);
 
             if (loadedRes) {

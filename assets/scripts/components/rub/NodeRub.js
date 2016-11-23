@@ -129,6 +129,25 @@ let NodeRub = {
     /**
      * @param options
      * {
+     * event: cc.Event
+     * spriteFrame: string
+     * }
+     */
+    addWebViewComponentToNode: (node, options = {}) => {
+        let button = node.getComponent(cc.Button) || node.addComponent(cc.Button);
+        if (options.event) {
+            if (options.event instanceof cc.Node)
+                button.clickEvents = [options.event];
+            else if (options.event instanceof Function) {
+                node.on(cc.Node.EventType.TOUCH_END, options.event);
+            }
+        }
+
+        node.addComponent(ButtonScaler);
+    },
+    /**
+     * @param options
+     * {
      * string: '',
      * backgroundImage: '', # string dir resources || spriteFrame 
      * returnType: '', #cc.EditBox.KeyboardReturnType
@@ -253,6 +272,9 @@ let NodeRub = {
      *          textChanged: cc.Component.EventHandler,
      *          editingDidEnded : cc.Component.EventHandler,
      *          editingReturn : cc.Component.EventHandler,
+     *      },
+     *      webview: {
+     *          url : string
      *      }
      * 
      *      @optional children: [{options}, {options}]
@@ -299,6 +321,9 @@ let NodeRub = {
 
         // editbox
         options.editbox && NodeRub.addEditBoxComponentToNode(node, options.editbox);
+
+        // webView
+        options.webview && NodeRub.addWebViewComponentToNode(node, options.webview);
 
         if (options.children && options.children.length > 0) {
             options.children.forEach((childOption) => {

@@ -30,19 +30,19 @@ class GameSystem {
         this.initEventListener();
     }
 
-    showToast(message, duration){
+    showToast(message, duration) {
         this.toast && this.toast.info(message, duration);
     }
 
-    showLongToast(message){
+    showLongToast(message) {
         this.toast && this.toast.longInfo(message);
     }
 
-    showErrorToast(error){
+    showErrorToast(error) {
         this.toast && this.toast.error(error);
     }
 
-    showLongErrorToast(error){
+    showLongErrorToast(error) {
         this.toast && this.toast.longError(error);
     }
 
@@ -59,7 +59,7 @@ class GameSystem {
 
             console.log("load scene result", sceneName, cc.director.getScene())
 
-            if(cc.director.getScene().children[0]){
+            if (cc.director.getScene().children[0]) {
                 this._currentScene = cc.director.getScene().children[0].getComponent(sceneName);
                 this._currentScene && this._addToastToScene();
             }
@@ -84,10 +84,11 @@ class GameSystem {
     }
 
     _onJoinRoomSuccess(resultEvent) {
+        console.debug(resultEvent);
+
         if (!resultEvent.room) return;
 
-        app.context.lastJoinRoom = resultEvent.room;
-
+        app.context.lastJoinedRoom = resultEvent.room;
         if (resultEvent.room && resultEvent.room.isJoined && resultEvent.room.isGame) {
 
             app.context.currentRoom = resultEvent.room;
@@ -95,7 +96,7 @@ class GameSystem {
 
             let gameSceneName = null;
             let gameCode = utils.getGameCode(resultEvent.room);
-            switch (gameCode){
+            switch (gameCode) {
                 case app.const.gameCode.TLMNDL:
                     gameSceneName = TLMNDLScene.name;
                     break;
@@ -121,7 +122,7 @@ class GameSystem {
         this._addToastToScene();
     }
 
-    _addToastToScene(){
+    _addToastToScene() {
         let toastNode = cc.instantiate(app.res.prefab.toast);
         this.toast = toastNode.getComponent(Toast.name);
         this._currentScene && this._currentScene.node.addChild(toastNode, app.const.toastZIndex);
@@ -160,7 +161,7 @@ class GameSystem {
 
     _emitGameEvent(name, ...args) {
         if (this.enablePendingGameEvent) {
-            this.pendingGameEvents.push({name, args: args});
+            this.pendingGameEvents.push({ name, args: args });
         } else {
             this.gameEventEmitter.emit(name, ...args);
         }
