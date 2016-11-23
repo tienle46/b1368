@@ -70,8 +70,7 @@ export default class ListTableScene extends BaseScene {
         }
 
         let cond = { max, min };
-
-        this._renderList(this.item, cond);
+        this._renderList(this.items, cond);
     }
 
     _initGameLabel(gameCode) {
@@ -126,7 +125,6 @@ export default class ListTableScene extends BaseScene {
                         room
                     };
                     app.service.send(sendObject, (data) => {
-                        console.debug(this.node);
                         this.node && this._initRoomsList(data);
                     });
                 }
@@ -214,6 +212,11 @@ export default class ListTableScene extends BaseScene {
         if (!cond)
             return items;
 
+        console.debug(items);
+        items.filter((item) => {
+            console.debug(item.getComponent('TableListCell').minBet);
+            item.getComponent('TableListCell').minBet >= cond.min && item.getComponent('TableListCell').minBet <= cond.max
+        });
         return items.filter((item) => item.getComponent('TableListCell').minBet >= cond.min && item.getComponent('TableListCell').minBet <= cond.max);
     }
 
