@@ -185,8 +185,6 @@ export default class BoardPhom extends BoardCardTurnBase {
         let totalPlayedCard = this.scene.gamePlayers.players.reduce((total, player) => {
             return total += player.renderer.playedCardList.cards.length;
         }, 0);
-
-        console.log("totalPlayedCard: ", totalPlayedCard);
         
         return totalPlayedCard;
     }

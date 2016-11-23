@@ -1043,11 +1043,11 @@
     "_enabled": true,
     "path": "",
     "active": true,
-    "label": {
-      "__id__": 29
-    },
     "progressNode": {
       "__id__": 9
+    },
+    "label": {
+      "__id__": 29
     }
   },
   {

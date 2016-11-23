@@ -98,10 +98,10 @@ class GameSystem {
             let gameCode = utils.getGameCode(resultEvent.room);
             switch (gameCode) {
                 case app.const.gameCode.TLMNDL:
-                    gameSceneName = TLMNDLScene.name;
+                    gameSceneName = 'TLMNDLScene';
                     break;
                 case app.const.gameCode.PHOM:
-                    gameSceneName = PhomScene.name;
+                    gameSceneName = 'PhomScene';
                     break;
             }
 
