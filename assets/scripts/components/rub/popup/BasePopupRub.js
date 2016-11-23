@@ -63,4 +63,7 @@ export default class BasePopUpRub {
         let scrollview = this.bodyNode.getChildByName('scrollview');
         this.bodyNode.removeChild(scrollview);
     }
+    static show(node, string, greenBtnEvent = null, context = null) {
+        return new BasePopupRub(node, string, greenBtnEvent, context).init();
+    }
 }

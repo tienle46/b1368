@@ -39,7 +39,6 @@ export default class JoinSolution extends Array {
         return value;
     }
 
-
     equals(solution) {
         let isSame = false;
 
@@ -68,7 +67,7 @@ export default class JoinSolution extends Array {
 
     static sortSolution(solutions) {
         solutions.sort((solution1, solution2) => {
-            return solution1.value() - solution2.value();
+            return solution2.value() - solution1.value();
         });
     }
 

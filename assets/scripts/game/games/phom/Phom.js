@@ -17,6 +17,12 @@ export default class Phom extends CardList {
 
     }
 
+    clone(){
+        let clonedPhom = new Phom(this.cards);
+        clonedPhom.owner = this.owner;
+        return clonedPhom;
+    }
+
     clear(){
         super.clear();
 
@@ -63,6 +69,7 @@ export default class Phom extends CardList {
 
     sortAsc(){
         PhomUtils.sortAsc(this.cards, PhomUtils.SORT_BY_RANK);
+        return this;
     }
 
     isLongPhom() {
@@ -117,6 +124,12 @@ export default class Phom extends CardList {
         }
 
         return -1;
+    }
+
+    getDump(){
+        return this.cards.reduce((str, card) => {
+           return str += " - [" + card.rank + "-" + card.suit + "]";
+        }, "");
     }
 }
 

@@ -45,6 +45,9 @@ export default class GameScene extends BaseScene {
         super._addGlobalListener();
 
         this.on(Events.ON_GAME_STATE_CHANGE, (...args) => {
+
+            console.log("Events.ON_GAME_STATE_CHANGE: ", args)
+
             this.initiated ? this._onGameStateChange(...args) : (this._penddingEvents.push({
                 fn: this._onGameStateChange,
                 args: args

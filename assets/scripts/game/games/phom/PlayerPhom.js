@@ -7,7 +7,6 @@ import game from 'game';
 import Card from 'Card';
 import Events from 'Events';
 import {utils, GameUtils} from 'utils';
-import TLMNUtils from 'TLMNUtils';
 import PlayerCardTurnBase from 'PlayerCardTurnBase';
 import PhomPlayerRenderer from 'PlayerPhomRenderer';
 import PhomList from 'PhomList';
@@ -25,7 +24,7 @@ export default class PlayerPhom extends PlayerCardTurnBase {
     };
 
     static get DEFAULT_SORT_CARD_SOLUTION() {
-        return 2
+        return
     };
 
     constructor() {
@@ -78,6 +77,8 @@ export default class PlayerPhom extends PlayerCardTurnBase {
         this.scene.on(Events.ON_CLICK_SKIP_JOIN_PHOM_BUTTON, this._onSkipJoinPhom, this);
         this.scene.on(Events.ON_CLICK_SKIP_JOIN_PHOM_BUTTON, this._onSkipJoinPhom, this);
         this.scene.on(Events.ON_CLICK_CHANGE_PHOM_BUTTON, this._onChangePhom, this);
+        this.scene.on(Events.ON_CLICK_U_BUTTON, this._onUPhom, this);
+        this.scene.on(Events.ON_CLICK_DOI_U_TRON_BUTTON, this._onDoiUTron, this);
 
         this.scene.on(Events.ON_PLAYER_REMAIN_CARD_COUNT, this._setRemainCardCount, this);
 
@@ -91,6 +92,8 @@ export default class PlayerPhom extends PlayerCardTurnBase {
         this.scene.on(Events.SHOW_PHOM_HIGHLIGHT, this._setPhomHighlight, this);
 
         // this.scene.on(Events.ON_PLAYER_PLAYED_CARDS, this._onPlayerPlayedCards, this);
+
+        console.log("add game phom listener: ");
     }
 
     _removeGlobalListener() {
@@ -120,10 +123,19 @@ export default class PlayerPhom extends PlayerCardTurnBase {
         // this.scene.off(Events.ON_PLAYER_PLAYED_CARDS, this._onPlayerPlayedCards, this);
     }
 
-    _setPhomHighlight(phom, highlight){
-        if(!this.isItMe()){
+    _setPhomHighlight(phom, highlight) {
+        if (!this.isItMe()) {
             this.renderer.setHighlightPhom(phom, highlight);
         }
+    }
+
+    _onUPhom(){
+        this.sendUCommand(this.tempHoUPhoms);
+    }
+
+    _onDoiUtron(){
+        this.renderer.cardList.cleanHighlight();
+        this.setState(PlayerPhom.STATE_PHOM_PLAY);
     }
 
     _onDownPhom() {
@@ -167,7 +179,7 @@ export default class PlayerPhom extends PlayerCardTurnBase {
 
         let jc = [];
         let ji = [];
-        let pl = phomList.map(phom =>  phom.owner);
+        let pl = phomList.map(phom => phom.owner);
 
         guiSolution.forEach((node, i) => {
             let phom = this.board.allPhomList[node.phomId];
@@ -247,14 +259,14 @@ export default class PlayerPhom extends PlayerCardTurnBase {
 
         this.renderer.cardList.cards.forEach(card => {
             this.renderer.eatenCardList.cards.forEach(eatCard => {
-                card.equals(eatCard) && card.setHighlight(true);
+                card.equals(eatCard) && PhomUtils.setEaten(card, true);
             });
         });
 
-        if (!this.player.turnAdapter.isTurn()) return;
+        if (!this.turnAdapter.isTurn()) return;
 
         let doneActionsInTurn = utils.getValue(data, Keywords.GAME_LIST_DONE_ACTION_WHEN_REJOIN);
-        if (doneActionsInTurn != null) {
+        if (doneActionsInTurn) {
 
             let isGui, isHa, isAnOrBoc;
 
@@ -277,7 +289,7 @@ export default class PlayerPhom extends PlayerCardTurnBase {
                 this.setState(PlayerPhom.STATE_PHOM_PLAY);
             } else if (isHa) {
                 this.setState(PlayerPhom.STATE_PHOM_JOIN);
-                this._onPlayerJoinPhom();
+                this._processJoinPhomPhase(true);
             } else if (isAnOrBoc) {
                 this._processAfterEatOrTake();
             }
@@ -313,8 +325,6 @@ export default class PlayerPhom extends PlayerCardTurnBase {
     _onPlayerTurn(playerId) {
 
         if (this.id != playerId) return;
-
-        console.log("_onPlayerTurn: ")
 
         if (this.isItMe()) {
             if (this.renderer.cardList.cards.length > PlayerPhom.DEFAULT_HAND_CARD_COUNT) {
@@ -371,25 +381,21 @@ export default class PlayerPhom extends PlayerCardTurnBase {
         if (this.id != playerId) return;
 
         if (this.board.getTotalPlayedCardsSize() == 15) {
-            this.board.cleanDeckCards();
+            this.board.renderer.cleanDeckCards();
         }
 
-        let card = this.isItMe() ? Card.from(utils.getValue(data, Keywords.GAME_LIST_CARD)) : Card.from(0);
-        if (!card.isEmpty()) {
-            this.renderer.cardList.transferFrom(this.board.getDeckCards(), [card], () => {
-                if (this.isItMe()) {
-                    this._processAfterEatOrTake();
-                } else {
-                    this.renderer.cardList.clear();
-                }
-            });
-        }
+        let card = this.isItMe() ? Card.from(utils.getValue(data, Keywords.GAME_LIST_CARD)) : Card.from(5);
+        this.renderer.cardList.transferFrom(this.board.getDeckCards(), [card], () => {
+            if (this.isItMe()) {
+                this._processAfterEatOrTake();
+            } else {
+                this.renderer.cardList.clear();
+            }
+        });
     }
 
     _handlePlayerEatCard(playerId, data) {
         if (this.id != playerId) return;
-
-        console.log("_handlePlayerEatCard: ", playerId)
 
         this.renderer.cardList.cleanHighlight();
 
@@ -409,7 +415,6 @@ export default class PlayerPhom extends PlayerCardTurnBase {
         });
 
         this.board.swapPlayedCards();
-
 
         if (this.renderer.playedCardList.length == 3) {
             this.renderer.showAnChot();
@@ -442,6 +447,7 @@ export default class PlayerPhom extends PlayerCardTurnBase {
             }
 
             this.sortCardSolutionIndex = PlayerPhom.DEFAULT_SORT_CARD_SOLUTION;
+            this._onSortCards();
         }
     }
 
@@ -482,7 +488,7 @@ export default class PlayerPhom extends PlayerCardTurnBase {
     _changeHaPhomSolution(haPhomSolutionId = 0) {
         this.haPhomSolutionId = haPhomSolutionId;
 
-        if(this.haPhomSolutionId >= this.currentHaPhomSolutions.length){
+        if (this.haPhomSolutionId >= this.currentHaPhomSolutions.length) {
             this.haPhomSolutionId = 0;
         }
 
@@ -503,7 +509,7 @@ export default class PlayerPhom extends PlayerCardTurnBase {
     }
 
     _processJoinPhomPhase(isAllCard) {
-        
+
         console.log("_processJoinPhomPhase this.board.allPhomList: ", this.board.allPhomList);
 
         let processCards = isAllCard ? [...this.renderer.cardList.cards] : [...this.getSelectedCards()];
@@ -544,7 +550,7 @@ export default class PlayerPhom extends PlayerCardTurnBase {
     _changeGuiPhomSolution(guiPhomSolutionId) {
         this.guiPhomSolutionId = guiPhomSolutionId;
 
-        if(this.guiPhomSolutionId >= this.currentGuiPhomSolutions.length){
+        if (this.guiPhomSolutionId >= this.currentGuiPhomSolutions.length) {
             this.guiPhomSolutionId = 0;
         }
 
@@ -615,7 +621,7 @@ export default class PlayerPhom extends PlayerCardTurnBase {
 
     _handlePlayerHelpCard(playerId, data) {
 
-        if(playerId != this.id) return;
+        if (playerId != this.id) return;
 
         let phomDataSize = utils.getValue(data, Keywords.GAME_LIST_PLAYER_CARDS_SIZE);
         let phomData = utils.getValue(data, Keywords.GAME_LIST_CARD);
@@ -627,9 +633,10 @@ export default class PlayerPhom extends PlayerCardTurnBase {
         let dataIndex = 0;
 
         for (let i = 0; i < phomDataSize.length; i++) {
-            let phom = new Phom(GameUtils.convertBytesToCards(phomData.slice(dataIndex, dataIndex + phomDataSize[i])));
-            phom.sortAsc();
-            dataIndex += phomDataSize[i];
+            let phomLength = phomDataSize[i];
+
+            let phom = new Phom(GameUtils.convertBytesToCards(phomData.slice(dataIndex, dataIndex + phomLength))).sortAsc();
+            dataIndex += phomLength;
 
             let index = ArrayUtils.findIndex(this.board.allPhomList, phom);
 
@@ -642,13 +649,13 @@ export default class PlayerPhom extends PlayerCardTurnBase {
             let joinPhom = joinedPhomList[i];
 
             if (this.isItMe()) {
-                if(joinPhom){
+                if (joinPhom) {
                     this.renderer.cardList.transferTo(joinPhom, [card]);
-                }else{
+                } else {
                     this.renderer.cardList.removeCards([card]);
                 }
-            }else{
-                if(joinPhom){
+            } else {
+                if (joinPhom) {
                     joinPhom.transferFrom(this.renderer.cardList, [card]);
                 }
             }
@@ -724,6 +731,7 @@ export default class PlayerPhom extends PlayerCardTurnBase {
     _onSortCards() {
 
         if (this.isItMe()) {
+
             switch (this.sortCardSolutionIndex) {
                 case PlayerPhom.SORT_CARD_SOLUTION_1:
                     PhomUtils.sortAsc(this.renderer.cardList.cards, PhomUtils.SORT_BY_PHOM_FIRST);
@@ -789,7 +797,7 @@ export default class PlayerPhom extends PlayerCardTurnBase {
                         }
                         break;
                     case PlayerPhom.STATE_PHOM_PLAY_HO_U:
-                        if(this.tempHoUPhoms){
+                        if (this.tempHoUPhoms) {
                             let phomCards = this.tempHoUPhoms.getCards();
                             this.renderer.cardList.setSelecteds(phomCards);
                             this.renderer.cardList.setHighlight(phomCards);
@@ -800,18 +808,8 @@ export default class PlayerPhom extends PlayerCardTurnBase {
         }
     }
 
-    _onGameRejoin(data) {
-        super._onGameRejoin(data);
-
-        if (this.isPlaying() && !this.scene.isEnding() && !this.isItMe()) {
-            let cards = Array(PlayerPhom.DEFAULT_HAND_CARD_COUNT).fill(0).map(value => {
-                return Card.from(value)
-            });
-            this.setCards(cards, false);
-        }
-    }
-
-    onGamePlaying(data, isJustJoined){
+    onGamePlaying(data, isJustJoined) {
+        super.onGamePlaying(data, isJustJoined);
 
         !this.isItMe() && this.renderer.cardList.clear();
 
@@ -824,7 +822,7 @@ export default class PlayerPhom extends PlayerCardTurnBase {
         }
     }
 
-    onGameEnding(data){
+    onGameEnding(data) {
         super.onGameEnding(data);
         this.renderer.playedCardList.clear();
     }

@@ -108,10 +108,23 @@ export default class PhomGenerator {
 
             if (findRanks.indexOf(rank) < 0) {
                 let sameRankCards = cards.filter(card => { return card.rank == rank });
-                if (this._isValidPhomEatenCard(sameRankCards) && this._isValidPhomLength(sameRankCards)) {
-                    phoms.push(new Phom(sameRankCards));
-                }
                 findRanks.push(rank)
+
+                let phomCardsArr = [];
+                if(sameRankCards.length == 4){
+                    phomCardsArr[0] = [sameRankCards[0], sameRankCards[1], sameRankCards[2]];
+                    phomCardsArr[1] = [sameRankCards[0], sameRankCards[1], sameRankCards[3]];
+                    phomCardsArr[2] = [sameRankCards[0], sameRankCards[2], sameRankCards[3]];
+                    phomCardsArr[3] = [sameRankCards[1], sameRankCards[2], sameRankCards[3]];
+                }else{
+                    phomCardsArr[sameRankCards];
+                }
+
+                phomCardsArr.forEach(phomCards => {
+                    if (this._isValidPhomEatenCard(phomCards) && this._isValidPhomLength(phomCards)) {
+                        phoms.push(new Phom(phomCards));
+                    }
+                });
             }
         });
 
