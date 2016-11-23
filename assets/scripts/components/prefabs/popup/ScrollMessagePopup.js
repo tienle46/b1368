@@ -34,7 +34,7 @@ export default class ScrollMessagePopup extends MessagePopup {
         parentNode && textOrRequestData && RubUtils.loadRes('Popup/ScrollMessagePopup').then((prefab) => {
 
             let messagePopupNode = cc.instantiate(prefab);
-            let messagePopup = messagePopupNode.getComponent(ScrollMessagePopup.name);
+            let messagePopup = messagePopupNode.getComponent('ScrollMessagePopup');
             messagePopup.onShow(...args);
 
             currentPopup = messagePopup;

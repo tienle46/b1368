@@ -13,6 +13,7 @@ export default class Progress extends Component {
             default : null,
             type : cc.Node
         };
+
         this.duration = 2;
         this.timeoutCb = null;
         this.pending = false;

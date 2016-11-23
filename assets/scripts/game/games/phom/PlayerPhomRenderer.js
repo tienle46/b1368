@@ -16,7 +16,8 @@ export default class PlayerPhomRenderer extends PlayerCardTurnBaseRenderer {
             ...this.properties,
             eatenCardListNode: cc.Node,
             eatenCardListNode2: cc.Node,
-            anChotAnimName: "",
+            anChotNode: cc.Node,
+            anChotAnimName: "showAnChot",
 
             playedCardListNodes: {
                 default: [],
@@ -47,6 +48,8 @@ export default class PlayerPhomRenderer extends PlayerCardTurnBaseRenderer {
         this.animation = this.getComponent(cc.Animation);
         this._enabledPlayerPhomRenderer = true;
         this._reloadComponentOnIndexChanged();
+
+        utils.active(this.anChotNode);
     }
 
     _reset(){
@@ -78,7 +81,7 @@ export default class PlayerPhomRenderer extends PlayerCardTurnBaseRenderer {
 
         this.playedCardListNodes.forEach((node, index) => {
             if(index == this.anchorIndex){
-                this.playedCardList = node.getComponent(CardList.name);
+                this.playedCardList = node.getComponent('CardList');
             }else{
                 node.active = false;
             }
@@ -86,7 +89,7 @@ export default class PlayerPhomRenderer extends PlayerCardTurnBaseRenderer {
 
         this.downPhomListNodes.forEach((node, index) => {
             if(index == this.anchorIndex){
-                this._downPhomListComponent = node.getComponent(PhomListComponent.name);
+                this._downPhomListComponent = node.getComponent('PhomListComponent');
                 this.downPhomList = this._downPhomListComponent.phomList;
             }else{
                 node.active = false;
@@ -165,7 +168,7 @@ export default class PlayerPhomRenderer extends PlayerCardTurnBaseRenderer {
     _getEatenCardComponent(){
         let player = this.data.actor;
         let eatenCardNode = this.anchorIndex == 1 || this.anchorIndex == 4 ? this.eatenCardListNode2 : this.eatenCardListNode;
-        return eatenCardNode.getComponent(CardList.name);
+        return eatenCardNode.getComponent('CardList');
     }
 }
 

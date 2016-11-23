@@ -21,7 +21,7 @@ export default class BoardCardRenderer extends BoardRenderer {
 
     onEnable(){
         super.onEnable();
-        this.meDealCardList = this.meDealCardListNode.getComponent(CardList.name);
+        this.meDealCardList = this.meDealCardListNode.getComponent('CardList');
     }
 }
 

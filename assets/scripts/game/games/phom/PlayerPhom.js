@@ -217,8 +217,8 @@ export default class PlayerPhom extends PlayerCardTurnBase {
         this._changeHaPhomSolution(++this.haPhomSolutionId);
     }
 
-    _reset() {
-        super._reset();
+    onGameReset() {
+        super.onGameReset();
 
         this.turnPharse = 0;
         this.state = -1;
@@ -288,7 +288,6 @@ export default class PlayerPhom extends PlayerCardTurnBase {
             if (isGui) {
                 this.setState(PlayerPhom.STATE_PHOM_PLAY);
             } else if (isHa) {
-                this.setState(PlayerPhom.STATE_PHOM_JOIN);
                 this._processJoinPhomPhase(true);
             } else if (isAnOrBoc) {
                 this._processAfterEatOrTake();
@@ -301,11 +300,9 @@ export default class PlayerPhom extends PlayerCardTurnBase {
 
         switch (state) {
             case PlayerPhom.STATE_PHOM_PLAY:
-                this.tempHoUPhoms && (this.tempHoUPhoms = null);
                 this.scene.emit(Events.SHOW_PLAY_CONTROL_ONLY);
                 break;
             case PlayerPhom.STATE_PHOM_JOIN:
-                this.tempHoUPhoms && (this.tempHoUPhoms = null);
                 this.scene.emit(Events.SHOW_JOIN_PHOM_CONTROLS);
                 break;
             case PlayerPhom.STATE_PHOM_EAT_TAKE:
@@ -360,6 +357,9 @@ export default class PlayerPhom extends PlayerCardTurnBase {
     }
 
     sendUCommand(phomList) {
+
+        if(!phomList) return;
+
         let phomDataSize = phomList.getPhomLengths();
         let phomCardsByte = phomList.toBytes();
 
@@ -406,6 +406,7 @@ export default class PlayerPhom extends PlayerCardTurnBase {
             return;
         }
 
+        let playedCardLength = this.renderer.playedCardList.cards.length;
         let eatenCardList = this.isItMe() ? this.renderer.cardList : this.renderer.eatenCardList;
         eatenCardList.transferFrom(lastPlayedTurnPlayer.renderer.playedCardList, [eatenCard], (cards) => {
             cards && cards.forEach(card => PhomUtils.setEaten(card));
@@ -416,7 +417,7 @@ export default class PlayerPhom extends PlayerCardTurnBase {
 
         this.board.swapPlayedCards();
 
-        if (this.renderer.playedCardList.length == 3) {
+        if (playedCardLength == 3) {
             this.renderer.showAnChot();
         }
 
@@ -424,6 +425,7 @@ export default class PlayerPhom extends PlayerCardTurnBase {
     }
 
     _processAfterEatOrTake() {
+        this.tempHoUPhoms = null;
         let currentPhomList = PhomUtils.bestPhomList(this.renderer.cardList.cards);
 
         if (PhomUtils.isUTron(currentPhomList, this)) {
@@ -446,8 +448,8 @@ export default class PlayerPhom extends PlayerCardTurnBase {
                 this.setState(PlayerPhom.STATE_PHOM_PLAY);
             }
 
-            this.sortCardSolutionIndex = PlayerPhom.DEFAULT_SORT_CARD_SOLUTION;
-            this._onSortCards();
+            // this.sortCardSolutionIndex = PlayerPhom.DEFAULT_SORT_CARD_SOLUTION;
+            // this._onSortCards();
         }
     }
 
@@ -463,7 +465,6 @@ export default class PlayerPhom extends PlayerCardTurnBase {
 
         if (this.currentHaPhomSolutions.length == 0) {
             if (allCard) {
-                this.setState(PlayerPhom.STATE_PHOM_JOIN);
                 this._processJoinPhomPhase(allCard);
             } else {
                 this._isEmptyEatenCards() && this._setDownPhraseState(PlayerPhom.STATE_DOWN_JOIN_PHASE_SKIP);
@@ -510,18 +511,13 @@ export default class PlayerPhom extends PlayerCardTurnBase {
 
     _processJoinPhomPhase(isAllCard) {
 
-        console.log("_processJoinPhomPhase this.board.allPhomList: ", this.board.allPhomList);
+        this.setState(PlayerPhom.STATE_PHOM_JOIN);
 
         let processCards = isAllCard ? [...this.renderer.cardList.cards] : [...this.getSelectedCards()];
 
         // this.board.deHighLightPhomList();
 
         this.currentGuiPhomSolutions = PhomUtils.getJoinPhomSolutions([...this.board.allPhomList], processCards);
-
-        console.log("currentGuiPhomSolutions: ", this.currentGuiPhomSolutions);
-        console.log("this.board.allPhomList: ", this.board.allPhomList);
-        console.warn("down phom render: ", this.renderer._downPhomListComponent);
-
 
         if (this.currentGuiPhomSolutions.length == 0) {
             if (isAllCard) {
@@ -731,16 +727,10 @@ export default class PlayerPhom extends PlayerCardTurnBase {
     _onSortCards() {
 
         if (this.isItMe()) {
-
-            switch (this.sortCardSolutionIndex) {
-                case PlayerPhom.SORT_CARD_SOLUTION_1:
-                    PhomUtils.sortAsc(this.renderer.cardList.cards, PhomUtils.SORT_BY_PHOM_FIRST);
-                    break;
-                case PlayerPhom.SORT_CARD_SOLUTION_2:
-                    PhomUtils.sortAsc(this.renderer.cardList.cards, PhomUtils.SORT_BY_PHOM_SOLUTION);
-                    break;
-                default:
-                    PhomUtils.sortAsc(this.renderer.cardList.cards);
+            if(this.sortCardSolutionIndex == PlayerPhom.SORT_CARD_BY_PHOM_SOLUTION){
+                PhomUtils.sortAsc(this.renderer.cardList.cards, PhomUtils.SORT_BY_PHOM_SOLUTION);
+            }else{
+                PhomUtils.sortAsc(this.renderer.cardList.cards, PhomUtils.SORT_BY_PHOM_FIRST);
             }
 
             this._updateSortCardSolutionIndex();
@@ -750,7 +740,7 @@ export default class PlayerPhom extends PlayerCardTurnBase {
 
     _updateSortCardSolutionIndex() {
         if (++this.sortCardSolutionIndex > PlayerPhom.SORT_CARD_SOLUTION_MAX) {
-            this.sortCardSolutionIndex = 0;
+            this.sortCardSolutionIndex = 1;
         }
     }
 
@@ -767,7 +757,7 @@ export default class PlayerPhom extends PlayerCardTurnBase {
     }
 
     onEnable() {
-        super.onEnable(this.getComponent(PhomPlayerRenderer.name));
+        super.onEnable(this.getComponent('PhomPlayerRenderer'));
 
         if (this.isItMe()) {
             this.renderer.setSelectCardChangeListener((selectedCards) => {
@@ -831,8 +821,8 @@ export default class PlayerPhom extends PlayerCardTurnBase {
 PlayerPhom.TURN_PHRASE_TAKE_OR_EAT_CARD = 1;
 PlayerPhom.TURN_PHRASE_PLAY_CARD = 2;
 PlayerPhom.SORT_CARD_SOLUTION_MAX = 2;
-PlayerPhom.SORT_CARD_SOLUTION_1 = 2;
-PlayerPhom.SORT_CARD_SOLUTION_2 = 1;
+PlayerPhom.SORT_CARD_BY_PHOM_FIRST = 2;
+PlayerPhom.SORT_CARD_BY_PHOM_SOLUTION = 1;
 PlayerPhom.SORT_CARD_SOLUTION_3 = 0;
 PlayerPhom.SERVER_STATE_DANH = 0;
 PlayerPhom.SERVER_STATE_AN = 1;

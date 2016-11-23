@@ -32,7 +32,7 @@ export default class PlayerMessage extends Component {
     }
 
     onLoad(){
-        this.textView = this.textViewNode.getComponent(TextView.name);
+        this.textView = this.textViewNode.getComponent('TextView');
         this.textView.setMaxWidth(220);
         this.textView.setLines(1);
         this.textView.setIncreaseWidth(10);

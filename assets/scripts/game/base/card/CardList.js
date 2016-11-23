@@ -63,14 +63,14 @@ export default class CardList extends Component {
 
     clean() {
         this.cards.forEach(card => {
-            card.setSelected(false, true)
+            card.setSelected(false, false);
             card.setHighlight(false)
             card.setGroup();
         });
     }
 
     cleanSelectedCard() {
-        this.cards.forEach(card => card.setSelected(false, true));
+        this.cards.forEach(card => card.setSelected(false, false));
     }
 
     cleanHighlight() {
@@ -302,15 +302,14 @@ export default class CardList extends Component {
 
             if (this._isRightAlignment()) {
                 this.cards.forEach((card, index) => {
+                    card.setSelected(false, false);
                     card.node.setPosition(startPosition.x - index * this._overlapSpace, startPosition.y);
                     card.node.setLocalZOrder(52 - index);
                 });
             }
             else {
                 this.cards.forEach((card, index) => {
-                    if (!card.node) {
-                        console.log(card);
-                    }
+                    card.setSelected(false, false);
                     card.node.setPosition(startPosition.x + index * this._overlapSpace, startPosition.y)
                     card.node.setLocalZOrder(index);
                 });
@@ -319,12 +318,14 @@ export default class CardList extends Component {
         else {
             if (this._isBottomAlignment()) {
                 this.cards.forEach((card, index) => {
+                    card.setSelected(false, false);
                     card.node.setPosition(startPosition.x, startPosition.y + index * this._overlapSpace);
                     card.node.setLocalZOrder(52 - index);
                 });
             }
             else {
                 this.cards.forEach((card, index) => {
+                    card.setSelected(false, false);
                     card.node.setPosition(startPosition.x, startPosition.y - index * this._overlapSpace)
                     card.node.setLocalZOrder(index);
                 });
@@ -593,7 +594,7 @@ export default class CardList extends Component {
             return;
         }
 
-        const destCardList = dest && dest instanceof cc.Node ? dest.getComponent(CardList.name) : dest;
+        const destCardList = dest && dest instanceof cc.Node ? dest.getComponent('CardList') : dest;
         if (!destCardList || !destCardList.cards || !destCardList.node) {
             this.removeCards(cards);
             return;

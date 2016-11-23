@@ -58,10 +58,10 @@ export default class PlayerRenderer extends ActorRenderer {
         this.setVisibleMaster(this.data.master);
         this.setVisibleReady(this.data.ready);
 
-        this.plusBalanceAnim = this.plusBalanceNode.getComponent(PlusBalanceAnimation.name);
+        this.plusBalanceAnim = this.plusBalanceNode.getComponent('PlusBalanceAnimation');
         this.plusBalanceAnim.setup({player: this, endCallback: this._onDonePlusBalanceAnimation.bind(this)});
 
-        this.playerMessage = this.playerMessageNode.getComponent(PlayerMessage.name);
+        this.playerMessage = this.playerMessageNode.getComponent('PlayerMessage');
         this.playerMessage.setup(this);
 
         this._stopCountdown();

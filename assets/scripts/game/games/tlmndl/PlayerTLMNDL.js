@@ -95,7 +95,7 @@ export default class PlayerTLMNDL extends PlayerCardTurnBase {
     }
 
     onEnable() {
-        super.onEnable(this.getComponent(TLMNDLPlayerRenderer.name));
+        super.onEnable(this.getComponent('TLMNDLPlayerRenderer'));
 
         if (this.isItMe()) {
             this.renderer.setSelectCardChangeListener((selectedCards) => {

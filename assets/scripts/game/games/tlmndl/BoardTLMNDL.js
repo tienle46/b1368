@@ -24,7 +24,7 @@ export default class BoardTLMNDL extends BoardCardTurnBase {
     }
 
     onEnable(){
-        this.renderer = this.node.getComponent(BoardTLMNDLRenderer.name);
+        this.renderer = this.node.getComponent('BoardTLMNDLRenderer');
         super.onEnable();
     }
 

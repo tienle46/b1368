@@ -56,7 +56,7 @@ export default class GameResultPopup extends Actor {
 
         let itemNode = cc.instantiate(this.itemPrefab);
         itemNode.setPosition(0, - (this.content.childrenCount * (itemNode.height + space)));
-        itemNode.getComponent(GameResultItem.name).setModel(model);
+        itemNode.getComponent('GameResultItem').setModel(model);
         this.content.addChild(itemNode);
     }
 

@@ -24,7 +24,7 @@ export default class ToastItem extends Component {
 
         debug("onload toast: ", this.message)
 
-        let textView = this.textViewNode.getComponent(TextView.name);
+        let textView = this.textViewNode.getComponent('TextView');
         textView.setText(this.message || "");
 
         let animation = this.node.getComponent(cc.Animation);

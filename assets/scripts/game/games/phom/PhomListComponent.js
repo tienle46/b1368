@@ -46,7 +46,7 @@ export default class PhomListComponent extends Component {
         super.onEnable();
 
         this.phomNodes.forEach((phomNode, i) => {
-            let phom = phomNode.getComponent(Phom.name);
+            let phom = phomNode.getComponent('Phom');
             phom.setAlign(this.align);
             phom.setSpace(this.space);
             phom.setScale(this.cardScale);

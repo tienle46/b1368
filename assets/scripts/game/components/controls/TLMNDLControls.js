@@ -26,8 +26,8 @@ export default class TLMNDLControls extends GameControls {
 
     onEnable() {
 
-        this.baseControls = this.baseControlsNode.getComponent(BaseControls.name);
-        this.cardTurnBaseControls = this.cardTurnBaseControlsNode.getComponent(CardTurnBaseControls.name);
+        this.baseControls = this.baseControlsNode.getComponent('BaseControls');
+        this.cardTurnBaseControls = this.cardTurnBaseControlsNode.getComponent('CardTurnBaseControls');
 
         super.onEnable();
 

@@ -47,7 +47,7 @@ export default class MessagePopup extends Component {
         this.acceptButton.node.active = false;
 
         this.denyButtonLabel.string = app.res.string('label_close');
-        this.loading = this.loadingComponent.getComponentInChildren(Progress.name);
+        this.loading = this.loadingComponent.getComponentInChildren('Progress');
         this.initMessageNode();
 
         if (this.requestData) {
@@ -68,7 +68,7 @@ export default class MessagePopup extends Component {
     }
 
     initMessageNode() {
-        this.messageTextView = this.messageNode.getComponent(TextView.name);
+        this.messageTextView = this.messageNode.getComponent('TextView');
         this.messageTextView.setMaxWidth(this.maxPopupWidth - 30);
     }
 
@@ -139,7 +139,7 @@ export default class MessagePopup extends Component {
         parentNode && textOrRequestData && RubUtils.loadRes('popup/MessagePopup').then((prefab) => {
 
             let messagePopupNode = cc.instantiate(prefab);
-            let messagePopup = messagePopupNode.getComponent(MessagePopup.name);
+            let messagePopup = messagePopupNode.getComponent('MessagePopup');
             messagePopup.onShow(...args);
 
             currentPopup = messagePopup;

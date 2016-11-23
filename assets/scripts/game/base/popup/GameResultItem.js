@@ -28,7 +28,7 @@ export default class GameResultItem extends Actor {
     onLoad(){
         super.onLoad();
         this.resultIcon = this.resultIconNode.getComponent(cc.Sprite);
-        this.infoTextView = this.infoTextViewNode.getComponent(TextView.name);
+        this.infoTextView = this.infoTextViewNode.getComponent('TextView');
         this.infoTextView.setText(this.info);
     }
 
@@ -52,7 +52,7 @@ export default class GameResultItem extends Actor {
 
         let cardListNode = cc.instantiate(this.cardListPrefab);
         this.dataContainer.addChild(cardListNode);
-        this.cardList = cardListNode.getComponent(CardList.name);
+        this.cardList = cardListNode.getComponent('CardList');
 
         this.cardList.setProperties({
             x: 0,

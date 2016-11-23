@@ -95,7 +95,7 @@ export default class PlayerXam extends PlayerCardTurnBase {
     }
 
     onEnable() {
-        super.onEnable(this.getComponent(XamPlayerRenderer.name));
+        super.onEnable(this.getComponent('XamPlayerRenderer'));
 
         if (this.isItMe()) {
             this.renderer.setSelectCardChangeListener((selectedCards) => {

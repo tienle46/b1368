@@ -26,7 +26,7 @@ class PreloadScene extends Component {
         app.res.prefab.fullSceneLoading = this.fullSceneLoadingPrefab;
         if (this.loading) {
             debug(this.loading);
-            this.loading.getComponent(FullSceneProgress.name).show(app.res.string('loading_data'));
+            this.loading.getComponent('FullSceneProgress').show(app.res.string('loading_data'));
         } else {
             debug(`what the heck?`);
         }
@@ -68,7 +68,7 @@ class PreloadScene extends Component {
     }
 
     onLoadResourceDone() {
-        app.system.loadScene(EntranceScene.name);
+        app.system.loadScene('EntranceScene');
     }
 }
 

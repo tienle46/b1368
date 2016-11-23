@@ -23,7 +23,7 @@ export default class BoardXam extends BoardCardTurnBase {
     }
 
     onEnable(){
-        this.renderer = this.node.getComponent(BoardXamRenderer.name);
+        this.renderer = this.node.getComponent('BoardXamRenderer');
         super.onEnable();
     }
 

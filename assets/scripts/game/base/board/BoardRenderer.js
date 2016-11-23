@@ -25,7 +25,7 @@ export default class BoardRenderer extends ActorRenderer {
     onEnable(){
         super.onEnable();
 
-        this.timelineTextView = this.timelineTextViewNode.getComponent(TextView.name);
+        this.timelineTextView = this.timelineTextViewNode.getComponent('TextView');
         utils.deactive(this.timeline);
     }
 

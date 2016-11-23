@@ -14,21 +14,30 @@ export default class FullSceneProgress extends Component {
         this.properties = {
             ...this.properties,
             active: false,
-            label: cc.Label,
-            progressNode:cc.Node
+        }
+
+        this.progressNode = {
+            default: null,
+            type: cc.Node
+        }
+
+        this.label = {
+            default: null,
+            type: cc.Label
         }
 
         this.text = null;
         this.duration = 60;
+        /**
+         *
+         * @type {Progress}
+         */
         this.progress = null;
         this.timeoutCb = null;
     }
 
     onLoad(){
         super.onLoad();
-
-        this.node.active = this.active;
-        this.progress = this.progressNode.getComponent(Progress.name);
     }
 
     onEnable(){
@@ -36,6 +45,10 @@ export default class FullSceneProgress extends Component {
 
         this.node.on('touchstart', () => {});
 
+        this.node.active = this.active;
+        console.log("on Enable: ", this.active, this.node.active);
+
+        this.progress = this.progressNode.getComponent('Progress');
         if(this.active){
             this.label.string = this.text || "";
             this.progress.show(this.duration, () => {
@@ -62,6 +75,7 @@ export default class FullSceneProgress extends Component {
     hide(){
         this.progress && this.progress.hide();
         this.node.active = false;
+        this.active = false;
     }
 }
 

@@ -16,10 +16,10 @@ export default class PhomScene extends GameScene {
 
     onEnable(){
 
-        this.board = this.boardNode.getComponent(BoardPhom.name);
-        this.gameControls = this.gameControlsNode.getComponent(PhomControls.name);
-        this.playerPositions = this.playerPositionAnchorsNode.getComponent(FourPlayerPositions.name);
-        this.gameResultPopup = this.gameResultPopupNode.getComponent(GameResultPopup.name);
+        this.board = this.boardNode.getComponent('BoardPhom');
+        this.gameControls = this.gameControlsNode.getComponent('PhomControls');
+        this.playerPositions = this.playerPositionAnchorsNode.getComponent('FourPlayerPositions');
+        this.gameResultPopup = this.gameResultPopupNode.getComponent('GameResultPopup');
 
         super.onEnable();
     }
