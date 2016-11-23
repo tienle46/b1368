@@ -1,4 +1,3 @@
-
 /**
  * Created by Thanh on 9/15/2016.
  */
@@ -31,25 +30,25 @@ export default class Actor extends Component {
         this._assertEmitter();
     }
 
-    onEnable(renderer = this.renderer, renderData = this.renderData){
+    onEnable(renderer = this.renderer, renderData = this.renderData) {
         this.renderer = renderer;
-        this.renderData = {...renderData, actor: this};
+        this.renderData = {...renderData, actor: this };
         this.renderer && this.renderer._init(this.renderData);
         this._addGlobalListener();
     }
 
-    start(){
+    start() {
         super.start();
         this.initiated = true;
         this._emitPendingEvent();
     }
 
-    onDisable(){
+    onDisable() {
         this._removeGlobalListener();
         this.removeAllListener();
     }
 
-    _assertEmitter(){
+    _assertEmitter() {
         !this._eventEmitter && (this._eventEmitter = new Emitter());
     }
 
@@ -68,7 +67,7 @@ export default class Actor extends Component {
      *
      * @abstract
      */
-    _addGlobalListener(){
+    _addGlobalListener() {
         this._assertEmitter();
     }
 
@@ -83,38 +82,38 @@ export default class Actor extends Component {
      * @abstract
      * @override
      */
-    _removeGlobalListener(){
+    _removeGlobalListener() {
         this._assertEmitter();
     }
 
-    emit(name, ...args){
-        if(this.initiated){
+    emit(name, ...args) {
+        if (this.initiated) {
             this._eventEmitter.emit(name, ...args);
-        }else{
+        } else {
             this._assertPendingEmitEvents();
             !this.__pendingEmitEvents.hasOwnProperty(name) && (this.__pendingEmitEvents[name] = []);
             this.__pendingEmitEvents[name].push(args);
         }
     }
 
-    _assertPendingEmitEvents(){
+    _assertPendingEmitEvents() {
         !this.__pendingEmitEvents && (this.__pendingEmitEvents = {});
     }
 
-    on(name, listener, context, priority){
+    on(name, listener, context, priority) {
         this._assertEmitter();
         this._eventEmitter.addListener(name, listener, context, priority);
     }
 
-    off(eventName, listener, context){
+    off(eventName, listener, context) {
         this._eventEmitter && this._eventEmitter.removeListener(eventName, listener, context);
     }
 
-    removeAllListener(){
+    removeAllListener() {
         this.off();
     }
 
-    _emitPendingEvent(){
+    _emitPendingEvent() {
         this.__pendingEmitEvents && Object.getOwnPropertyNames(this.__pendingEmitEvents).forEach(name => {
 
             let argArr = this.__pendingEmitEvents[name];

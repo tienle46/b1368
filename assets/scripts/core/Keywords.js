@@ -355,12 +355,13 @@ Keywords.GROUP_ROOM_MONNEY_TYPE = "cl";
 Keywords.INVITATION_ROOM_SFSID = "ri";
 
 //roomList
-Keywords.ROOM_INDEX_OF_GROUP = "ci";
+Keywords.ROOM_CUSTOM_ID = "ci";
 Keywords.ROOM_SFSID = "i";
-Keywords.ROOM_MIN_BEST = "mb";
+Keywords.ROOM_MIN_BET = "mb";
 Keywords.ROOM_PASSWORD = "p";
 Keywords.ROOM_USER_COUNT = "uc";
 Keywords.ROOM_USER_MAX = "um";
+Keywords.ROOM_SOLO_ONLY = "s";
 
 
 //Event
@@ -503,7 +504,7 @@ Keywords.NEWS_DATE_TIME = "d";
 Keywords.NEWS_AUTHOR = "a";
 Keywords.NEWS_DESCRIPTION = "s";
 Keywords.USER_BALANCE = "ba";
-Keywords.SERVICE_ID = "s";
+// Keywords.SERVICE_ID = "s";
 Keywords.CLIENT_VERSION = "v";
 Keywords.ACTION = "a";
 Keywords.TEST_MODE = "testMode";
