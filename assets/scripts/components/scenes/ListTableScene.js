@@ -30,10 +30,9 @@ export default class ListTableScene extends BaseScene {
         this._addTopBar();
 
         app.context.getSelectedGame() && (this.gameCode = app.context.getSelectedGame());
+        this.gameCode && this._initGameLabel(this.gameCode);
 
         this._initFilterBtns();
-
-        this._initGameLabel(this.gameCode);
 
         this._getFirstGameLobbyFromServer();
     }
@@ -89,7 +88,7 @@ export default class ListTableScene extends BaseScene {
         };
 
         app.service.send(reqObject, (data) => {
-            if (data && data[app.keywords.GAME_LIST_RESULT] === this.gameCode) {
+            if (data && data[app.keywords.GAME_LIST_RESULT] && data[app.keywords.GAME_LIST_RESULT] === this.gameCode) {
                 let roomIds = data[app.keywords.GROUP_LIST_GROUP][app.keywords.GROUP_SHORT_NAME];
                 let lobby = null;
                 roomIds && roomIds.length > 0 && (lobby = roomIds[0]);
@@ -115,7 +114,6 @@ export default class ListTableScene extends BaseScene {
 
     _addGlobalListener() {
         super._addGlobalListener();
-
         app.system.addListener(SFS2X.SFSEvent.ROOM_JOIN, (event) => {
             let room = event.room;
             if (room) {
@@ -129,6 +127,7 @@ export default class ListTableScene extends BaseScene {
                     });
                 }
             }
+
         }, this);
     }
 

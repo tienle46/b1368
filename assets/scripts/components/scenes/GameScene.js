@@ -153,7 +153,8 @@ export default class GameScene extends BaseScene {
     }
 
     _handlePendingEvents(){
-        app.system.handlePendingEvents();
+        // app.system.handlePendingEvents();
+        app.system._handlePendingGameEvents();
 
         this._penddingEvents.forEach(event => event.fn(...event.args));
         this._penddingEvents = [];
