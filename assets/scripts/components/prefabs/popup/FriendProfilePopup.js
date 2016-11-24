@@ -11,10 +11,24 @@ export default class FriendProfilePopup extends Component {
             type: cc.Layout,
         };
 
+        this.rtUserName = {
+            default: null,
+            type : cc.RichText,
+        };
+
+        this.rtBalance = {
+            default: null,
+            type : cc.RichText,
+        };
     }
 
     onLoad() {
         this.node.on(cc.Node.EventType.TOUCH_START, () => null);
+    }
+
+    displayUserDetail(user){
+        this.rtUserName.string = `<color=${app.const.HX_COLOR_YELLOW}>Tên:</color> ${user["u"]}`;
+        this.rtBalance.string = `<color=${app.const.HX_COLOR_YELLOW}>Số xu:</color> ${user["coin"]}`;
     }
 
     propsItemClicked(e) {
