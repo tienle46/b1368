@@ -13,6 +13,10 @@ export default class FriendProfilePopup extends Component {
 
     }
 
+    onLoad() {
+        this.node.on(cc.Node.EventType.TOUCH_START, () => null);
+    }
+
     propsItemClicked(e) {
 
         const clipName = e.target.name;
