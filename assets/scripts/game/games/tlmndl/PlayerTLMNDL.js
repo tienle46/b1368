@@ -74,7 +74,8 @@ export default class PlayerTLMNDL extends PlayerCardTurnBase {
     _onSortCards() {
         if (this.isItMe()) {
             let sortedCard = GameUtils.sortCardAsc(this.renderer.cardList.cards, game.const.GAME_TYPE_TIENLEN);
-            this.renderer.cardList.setCards(sortedCard);
+            // this.renderer.cardList.setCards(sortedCard);
+            this.renderer.cardList.onCardsChanged();
         }
     }
 
@@ -95,7 +96,10 @@ export default class PlayerTLMNDL extends PlayerCardTurnBase {
     }
 
     onEnable() {
-        super.onEnable(this.getComponent('TLMNDLPlayerRenderer'));
+        
+        console.log("Renderer: ", this.node.getComponent('PlayerTLMNDLRenderer'));
+        
+        super.onEnable(this.node.getComponent('PlayerTLMNDLRenderer'));
 
         if (this.isItMe()) {
             this.renderer.setSelectCardChangeListener((selectedCards) => {

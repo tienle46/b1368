@@ -7,18 +7,29 @@ import Actor from 'Actor';
 import GameResultItem from 'GameResultItem';
 import {GameUtils} from 'utils';
 import * as Commands from "../../../core/Commands";
+import ArrayUtils from "../../../utils/ArrayUtils";
 
 export default class GameResultPopup extends Actor {
     constructor() {
         super();
-        this.title = cc.Label;
-        this.content = cc.Node;
-        this.itemPrefab = cc.Prefab;
+        this.title = {
+            default: null,
+            type: cc.Label
+        };
+        this.content = {
+            default: null,
+            type: cc.Node
+        };
+        this.itemPrefab = {
+            default: null,
+            type: cc.Prefab
+        };
+
         this._shownTime = 0;
         this._closeCb = null;
         this.animation = null;
         this.loaded = false;
-        this.models = null;
+        this.__models__ = null;
 
         this.properties = {
             ...this.properties,
@@ -27,18 +38,19 @@ export default class GameResultPopup extends Actor {
         }
     }
 
+    onLoad(){
+        this.loaded = false;
+        this.animation = this.node.getComponent(cc.Animation);
+    }
+
     onEnable(){
         super.onEnable();
-
-        this.animation = this.node.getComponent(cc.Animation);
         this.loaded = true;
-
-        this._showResultData(this.models);
+        this._showResultData(this.__models__);
     }
 
     start(){
         super.start();
-
         this.node.active = false;
     }
 
@@ -46,33 +58,31 @@ export default class GameResultPopup extends Actor {
         this.hide();
     }
 
-    addItems(models){
-        this.clear();
-        models && models.forEach(model => this.addItem(model));
-    }
-
-    addItem(model){
+    _addItem(model){
         let space = 20;
-
-        let itemNode = cc.instantiate(this.itemPrefab);
-        itemNode.setPosition(0, - (this.content.childrenCount * (itemNode.height + space)));
-        itemNode.getComponent('GameResultItem').setModel(model);
-        this.content.addChild(itemNode);
+        let gameResultItem = cc.instantiate(this.itemPrefab).getComponent('GameResultItem');
+        gameResultItem.setModel(model);
+        gameResultItem.node.setPosition(0, - (this.content.childrenCount * (gameResultItem.node.height + space)));
+        this.content.addChild(gameResultItem.node);
     }
 
     clear(){
-        this.models = null;
+        this.__models__ = null;
         this.content.removeAllChildren();
     }
 
     _showResultData(models){
-        if(!models) return;
+        if(ArrayUtils.isEmpty(models) || !this.loaded) return;
+
+        this.clear();
+        this.__models__ = models || [];
+        this.__models__.forEach(model => this._addItem(model));
+        this._shownTime = Date.now();
 
         this.node.active = true;
-        this.addItems(models);
-        this._shownTime = Date.now();
-        this.animation && this.animation.play(this.showAnimName);
         this.node.on('touchstart', () => false);
+        this.animation && this.animation.play(this.showAnimName);
+
     }
 
     show(models, closeCb){
@@ -82,8 +92,10 @@ export default class GameResultPopup extends Actor {
         if(this.loaded){
             this._showResultData(models);
         }else{
-            this.models = models;
+            this.__models__ = models;
         }
+
+        this.active = true;
     }
 
     onShown(){

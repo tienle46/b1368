@@ -8,7 +8,6 @@ import Card from 'Card';
 import Events from 'Events';
 import {utils, GameUtils} from 'utils';
 import PlayerCardTurnBase from 'PlayerCardTurnBase';
-import PhomPlayerRenderer from 'PlayerPhomRenderer';
 import PhomList from 'PhomList';
 import Commands from 'Commands';
 import Phom from 'Phom';
@@ -581,7 +580,7 @@ export default class PlayerPhom extends PlayerCardTurnBase {
         let dataIndex = 0;
         let playerPhomList = new PhomList();
         phomDataSize.forEach((size, i) => {
-            let phom = new Phom(GameUtils.convertBytesToCards(phomData.slice(dataIndex, dataIndex + size)));
+            let phom = new Phom(GameUtils.convertBytesToCards(phomData.slice(dataIndex, dataIndex + size))).sortAsc();
 
             dataIndex += size;
             phom.setOwner(this.id);
@@ -757,7 +756,7 @@ export default class PlayerPhom extends PlayerCardTurnBase {
     }
 
     onEnable() {
-        super.onEnable(this.getComponent('PhomPlayerRenderer'));
+        super.onEnable(this.node.getComponent('PlayerPhomRenderer'));
 
         if (this.isItMe()) {
             this.renderer.setSelectCardChangeListener((selectedCards) => {

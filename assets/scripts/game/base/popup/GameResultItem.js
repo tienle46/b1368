@@ -12,24 +12,49 @@ export default class GameResultItem extends Actor {
     constructor() {
         super();
 
-        this.resultIconNode = cc.Node;
-        this.resultIcon = cc.Sprite;
-        this.playerName = cc.Label;
-        this.dataContainer = cc.Node;
-        this.balanceLabel = cc.Label;
-        this.infoTextViewNode = cc.Node;
-        this.infoTextView = TextView;
+        this.resultIconNode = {
+            default: null,
+            type: cc.Node
+        };
+        this.resultIcon = {
+            default: null,
+            type: cc.Sprite
+        };
+        this.playerName = {
+            default: null,
+            type: cc.Label
+        };
+        this.dataContainer = {
+            default: null,
+            type: cc.Node
+        };
+
+        this.balanceLabel = {
+            default: null,
+            type: cc.Label
+        }
+
+        this.infoTextViewNode = {
+            default: null,
+            type: cc.Node
+        }
+
+        this.infoTextView = null;
 
         this.cardList = null;
-        this.cardListPrefab = cc.Prefab;
+        this.cardListPrefab = {
+            default: null,
+            type: cc.Prefab
+        }
         this.info = "";
+        this.model = null;
     }
 
-    onLoad(){
-        super.onLoad();
+    onEnable(){
+        super.onEnable();
         this.resultIcon = this.resultIconNode.getComponent(cc.Sprite);
         this.infoTextView = this.infoTextViewNode.getComponent('TextView');
-        this.infoTextView.setText(this.info);
+        this.model && this._renderData(this.model);
     }
 
     setResultIcon(url){
@@ -38,7 +63,11 @@ export default class GameResultItem extends Actor {
         });
     }
 
-    setModel({name = "", iconPath = "", balanceChanged = NaN, info = "", cards = []} = {}){
+    setModel(model){
+        this.model = model;
+    }
+
+    _renderData({name = "", iconPath = "", balanceChanged = NaN, info = "", cards = []} = {}){
 
         if(this.infoTextView.setText){
             this.infoTextView.setText(info);

@@ -1,5 +1,6 @@
 import app from 'app';
 import Component from 'Component';
+import RubUtils from 'RubUtils';
 
 class BasePopup extends Component {
     constructor() {
@@ -29,9 +30,22 @@ class BasePopup extends Component {
         this.bodyContentNode.getChildByName('string').getComponent(cc.Label).string = string;
     }
 
+    /**
+     * 
+     * @param {cc.Node || cc.Prefab} element
+     * 
+     * @memberOf BasePopup
+     */
     addToBody(element) {
         if (element instanceof cc.Node)
             this.bodyNode.addChild(element);
+        else if (element instanceof cc.Prefab)
+            this.bodyNode.addChild(cc.instantiate(element))
+        else if (element instanceof String) {
+            RubUtils.loadRes(element).then((prefab) => {
+                this.bodyNode.addChild(cc.instantiate(prefab));
+            });
+        }
     }
 
     /* PRIVATE METHODS */

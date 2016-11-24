@@ -37,7 +37,7 @@ class PreloadScene extends Component {
             { dir: 'toast/Toast', name: 'toast' },
             { dir: 'dashboard/dialog/prefabs/scrollview', name: 'scrollview' },
             { dir: 'dashboard/dialog/prefabs/segmentControl', name: 'segmentControl' },
-            { dir: 'Popup/BasePopup', name: 'basePopup' },
+            { dir: 'popup/BasePopup', name: 'basePopup' },
             { dir: 'dashboard/dialog/prefabs/dialog', name: 'dialog' }
         ];
 

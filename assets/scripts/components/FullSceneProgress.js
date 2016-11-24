@@ -75,7 +75,6 @@ export default class FullSceneProgress extends Component {
     hide(){
         this.progress && this.progress.hide();
         this.node.active = false;
-        this.active = false;
     }
 }
 

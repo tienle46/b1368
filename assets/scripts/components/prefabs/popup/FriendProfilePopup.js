@@ -1,6 +1,6 @@
 import app from 'app';
 import Component from 'Component';
-import  NodeRub from 'NodeRub';
+import NodeRub from 'NodeRub';
 
 export default class FriendProfilePopup extends Component {
     constructor() {
@@ -12,7 +12,8 @@ export default class FriendProfilePopup extends Component {
         };
 
     }
-    propsItemClicked(e){
+
+    propsItemClicked(e) {
 
         const clipName = e.target.name;
 
@@ -32,8 +33,8 @@ export default class FriendProfilePopup extends Component {
 
     }
 
-    loadPropsAssets(){
-        cc.loader.loadResAll('props/thumbs',cc.SpriteFrame, function (err, assets) {
+    loadPropsAssets() {
+        cc.loader.loadResAll('props/thumbs', cc.SpriteFrame, function(err, assets) {
             if (err) {
                 cc.error(err);
                 return;
@@ -42,34 +43,32 @@ export default class FriendProfilePopup extends Component {
             let gridViewHeigh = this.propsGridView.node.height;
             gridViewHeigh = (gridViewHeigh) / 2.0;
 
-            assets.forEach((asset, index) => {
+            assets.forEach((asset) => {
                 // console.debug(`${index} `, asset);
-
-                const node = new cc.Node();
-                node.width = gridViewHeigh;
-                node.height = gridViewHeigh;
-
-                const spr = node.addComponent(cc.Sprite);
-                spr.spriteFrame  = asset;
-
-                const button = node.addComponent(cc.Button);
-
                 const clickEvent = new cc.Component.EventHandler();
                 clickEvent.target = this.node;
                 clickEvent.component = 'FriendProfilePopup';
                 clickEvent.handler = 'propsItemClicked';
 
-                node.name = asset.name;
-                button.clickEvents = [clickEvent];
+                let o = {
+                    name: asset.name,
+                    size: cc.size(gridViewHeigh, gridViewHeigh),
+                    sprite: {
+                        spriteFrame: asset
+                    },
+                    button: {
+                        event: clickEvent
+                    }
+                };
+                const node = NodeRub.createNodeByOptions(o);
 
                 this.propsGridView.node.addChild(node);
-
             });
         }.bind(this));
     }
 
 
-    onLoad(){
+    onLoad() {
         this.loadPropsAssets();
     }
 }

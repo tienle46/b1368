@@ -117,7 +117,7 @@ let NodeRub = {
     addButtonComponentToNode: (node, options = {}) => {
         let button = node.getComponent(cc.Button) || node.addComponent(cc.Button);
         if (options.event) {
-            if (options.event instanceof cc.Node)
+            if (options.event instanceof cc.Component.EventHandler)
                 button.clickEvents = [options.event];
             else if (options.event instanceof Function) {
                 node.on(cc.Node.EventType.TOUCH_END, options.event);
@@ -129,21 +129,47 @@ let NodeRub = {
     /**
      * @param options
      * {
-     * event: cc.Event
-     * spriteFrame: string
+     *   spriteFrame: string || cc.SpriteFrame,
+     *   cb: [function] rubutils' load cb
+     *   isCORS: boolean
+     * }
+     */
+    addSpriteComponentToNode: (node, options = {}) => {
+        let sprite = node.addComponent(cc.Sprite);
+        let spriteFrame = options.spriteFrame;
+
+        if (typeof spriteFrame === 'string')
+            RubUtils.loadSpriteFrame(sprite, spriteFrame, node.getContentSize(), options.isCORS || false, options.cb);
+        else if (spriteFrame instanceof cc.SpriteFrame) {
+            sprite.spriteFrame = spriteFrame;
+            node.setContentSize(node.getContentSize());
+        }
+    },
+    /**
+     * @param options
+     * {
+     * url: String
      * }
      */
     addWebViewComponentToNode: (node, options = {}) => {
-        let button = node.getComponent(cc.Button) || node.addComponent(cc.Button);
-        if (options.event) {
-            if (options.event instanceof cc.Node)
-                button.clickEvents = [options.event];
-            else if (options.event instanceof Function) {
-                node.on(cc.Node.EventType.TOUCH_END, options.event);
-            }
-        }
-
-        node.addComponent(ButtonScaler);
+        let webView = node.getComponent(cc.WebView) || node.addComponent(cc.WebView);
+        webView.url = options.url;
+    },
+    /**
+     * 
+     * @param {any} options
+     * {
+     *  toggleGroup: cc.Node || null,
+     *  event : cc.Component.EventHandler
+     *  sChecked: boolean
+     * }
+     * @returns
+     */
+    addToggleComponentToNode: (node, options = {}) => {
+        let toggle = node.addComponent(cc.Toggle);
+        options.toggleGroup && (toggle.toggleGroup = options.toggleGroup);
+        options.event && (toggle.checkEvents = [options.event]);
+        options.isChecked && (toggle.isChecked = options.isChecked);
     },
     /**
      * @param options
@@ -217,7 +243,7 @@ let NodeRub = {
      *          left, right, top, bottom: boolean
      *      }
      *      sprite: {
-     *          spriteFrame: string,
+     *          spriteFrame: string || cc.SpriteFrame,
      *          cb: [function] rubutils' load cb
      *          isCORS: boolean
      *      }
@@ -251,7 +277,9 @@ let NodeRub = {
      *          verticalDirection: cc.Layout.VerticalDirection.TOP_TO_BOTTOM
      *      },
      *      toggle: {
-     *          toggleGroup: cc.Node || null
+     *          toggleGroup: cc.Node || null,
+     *          event : cc.Component.EventHandler
+     *          isChecked: boolean
      *      },
      *      editbox: {
      *          string: '',
@@ -292,17 +320,10 @@ let NodeRub = {
         options.scale && node.setScale(options.scale);
 
         // sprite
-        if (options.sprite) {
-            let bodySprite = node.addComponent(cc.Sprite);
-            RubUtils.loadSpriteFrame(bodySprite, options.sprite.spriteFrame, options.size, options.sprite.isCORS || false, options.sprite.cb);
-        }
+        options.sprite && NodeRub.addSpriteComponentToNode(node, options.sprite);
 
-        if (options.toggle) {
-            let toggle = node.addComponent(cc.Toggle);
-            options.toggle.toggleGroup && (toggle.toggleGroup = options.toggle.toggleGroup);
-            options.toggle.event && (toggle.checkEvents = [options.toggle.event]);
-            options.toggle.isChecked && (toggle.isChecked = options.toggle.isChecked);
-        }
+        // toggle
+        options.toggle && NodeRub.addToggleComponentToNode(node, options.toggle);
 
         // widget
         options.widget && NodeRub.addWidgetComponentToNode(node, options.widget);

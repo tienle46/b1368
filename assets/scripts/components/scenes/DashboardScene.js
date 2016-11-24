@@ -1,6 +1,7 @@
 import app from 'app';
 import BaseScene from 'BaseScene';
 import RubUtils from 'RubUtils';
+import ArrayUtils from "../../utils/ArrayUtils";
 
 export default class DashboardScene extends BaseScene {
     constructor() {
@@ -31,14 +32,10 @@ export default class DashboardScene extends BaseScene {
                 'pid': 1
             }
         };
-        log('request list game');
+
         app.service.send(sendObject, (data) => {
             log(data);
-
-
-            this.gameList = data["cl"];
-            log(this.gameList);
-
+            this.gameList = this._filterClientSupportedGames(data["cl"]);
             this._initItemListGame();
         }, app.const.scene.DASHBOARD_SCENE);
 
@@ -49,13 +46,19 @@ export default class DashboardScene extends BaseScene {
         this._addTopBar();
     }
 
+    _filterClientSupportedGames(gameCodes){
+        return ArrayUtils.isEmpty(gameCodes) ? [] : gameCodes.filter(gc => {
+            return gc == app.const.gameCode.PHOM || gc == app.const.gameCode.TLMNDL
+        })
+    }
+
     _initItemListGame() {
 
         const height = this.scrollerContentView.node.height;
         const itemDimension = height / 2.0 - 70;
 
         this.gameList.some(gc => {
-            "use strict";
+
             let gameIconPath = app.res.gameIcon[gc];
 
             gameIconPath && cc.loader.loadRes(gameIconPath, cc.SpriteFrame, (err, spriteFrame) => {

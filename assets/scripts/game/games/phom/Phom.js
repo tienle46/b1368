@@ -11,7 +11,6 @@ export default class Phom extends CardList {
         super();
 
         this.cards = keepReference ? cards : [...cards];
-        PhomUtils.sortAsc(this.cards, PhomUtils.SORT_BY_RANK);
 
         this.owner = 0;
 
@@ -20,7 +19,7 @@ export default class Phom extends CardList {
     clone(){
         let clonedPhom = new Phom(this.cards);
         clonedPhom.owner = this.owner;
-        return clonedPhom;
+        return clonedPhom.sortAsc();
     }
 
     clear(){
@@ -38,7 +37,7 @@ export default class Phom extends CardList {
     }
 
     static from(cards) {
-        let phom = new Phom(cards);
+        let phom = new Phom(cards).sortAsc();
         return PhomUtils.isPhomByRank(phom.cards) || !PhomUtils.isPhomBySuit(phom.cards) ? phom : null;
     }
 
