@@ -4,7 +4,7 @@
 
 export default class ArrayUtils {
 
-    clear(arr){
+    static clear(arr){
         this.isArray(arr) && arr.splice(0, arr.length);
     }
 
