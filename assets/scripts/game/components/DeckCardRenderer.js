@@ -59,7 +59,9 @@ export default class DeckCardRenderer extends Component {
             this.cardList1.transferTo(this.cardList2, this.cardList1.getRawCards());
         }
 
+
         if (srcCardList) {
+        console.log("srcCardList before: ", srcCardList.cards.length);
             if (isItMe) {
                 srcCardList.transferTo(this.cardList1, cards);
             } else {
@@ -67,9 +69,11 @@ export default class DeckCardRenderer extends Component {
                 let addedCards = srcCardList.addCards(cards, true, true);
                 srcCardList.transferTo(this.cardList1, addedCards);
             }
+        console.log("srcCardList after: ", srcCardList.cards.length);
         } else {
             this.cardList1.setCards(cards);
         }
+
 
     }
 

@@ -285,8 +285,8 @@ Keywords.GAME_LIST_LIENG_TYPE = "ct";
 Keywords.PLAYER_BET_AMOUNT = "b";
 //PlayerBoardXam
 Keywords.IS_BAO_XAM = "bx";
-Keywords.GAME_LIST_PLAYER_BAO_XAM = "px";
-Keywords.BAO_XAM_SUCCESS_PLAYER_ID = "p";
+// Keywords.GAME_LIST_PLAYER_BAO_XAM = "px";
+Keywords.BAO_XAM_SUCCESS_PLAYER_ID = "px";
 //    Keywords.IS_BAO_XAM_PHASE = "xp";
 Keywords.XAM_BAO_1_PLAYER_ID = "b1";
 //TLMN

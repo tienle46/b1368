@@ -71,6 +71,10 @@ cc.Class({
     },
     start(){
 
+        setTimeout(() => {
+            this.bottomCard.active = true;
+        }, 2000);
+
         let cardList = this.deckCard.getComponent("CardList");
         cardList.setCards(GameUtils.convertBytesToCards([38, 5, 6, 7, 10, 11, 12, 17, 18, 19, 30, 32]));
         cardList.node.setPositionY(200);

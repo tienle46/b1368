@@ -153,7 +153,7 @@ export default class GameScene extends BaseScene {
     }
 
     _handlePendingEvents(){
-        app.system.handlePendingEvents();
+        app.system._handlePendingGameEvents();
 
         this._penddingEvents.forEach(event => event.fn(...event.args));
         this._penddingEvents = [];
@@ -246,7 +246,7 @@ export default class GameScene extends BaseScene {
         this.gameState = state;
         this.gameLocalState = localState;
 
-        console.log("_onGameStateChange: state=", state, " local State: ", localState, " isJustJoined=", isJustJoined, " data=", data);
+        console.log("_onGameState: state=", state, " local State: ", localState, " isJustJoined=", isJustJoined, " data=", data);
 
         switch (localState) {
             case app.const.game.state.BEGIN:
@@ -264,6 +264,8 @@ export default class GameScene extends BaseScene {
             case app.const.game.state.ENDING:
                 this.emit(Events.ON_GAME_STATE_ENDING, data, isJustJoined);
                 break;
+            default:
+                this.emit(Events.ON_GAME_STATE, this.gameState, data, isJustJoined);
         }
     }
 

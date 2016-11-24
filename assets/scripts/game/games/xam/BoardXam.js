@@ -67,8 +67,27 @@ export default class BoardXam extends BoardCardTurnBase {
         }
 
         /**
-         * Get current player win rank. Xam don't need to get player win rank
+         * Get bao xam player data
          */
+
+        if (this.scene.gameState != app.const.game.state.BOARD_STATE_BAO_XAM) {
+            let baoXamPlayerId = GameUtils.getPlayerId(data);
+            baoXamPlayerId && this.scene.emit(Events.ON_PLAYER_BAO_XAM, baoXamPlayerId);
+        } else {
+            let currentBaoXamStatus = utils.getValue(data, Keywords.IS_BAO_XAM);
+            let currentBaoXamPlayerIds = utils.getValue(data, Keywords.BAO_XAM_SUCCESS_PLAYER_ID);
+
+            currentBaoXamPlayerIds && currentBaoXamStatus && currentBaoXamPlayerIds.forEach((baoXamPlayerId, i) => {
+                    let sentBaoXamValue = currentBaoXamStatus[i] ? 1 : 0;
+                    baoXamPlayerId && this.scene.emit(Events.ON_PLAYER_BAO_XAM, sentBaoXamValue, sentBaoXamValue);
+            })
+        }
+
+        /**
+         * get player bao 1 data
+         */
+        let currentBaoUPlayerIds = utils.getValue(data, Keywords.XAM_BAO_1_PLAYER_ID);
+        currentBaoUPlayerIds && currentBaoUPlayerIds.forEach(playerId => this.scene.emit(Events.ON_PLAYER_BAO_1, playerId))
     }
 
     onBoardEnding(data) {
@@ -104,7 +123,7 @@ export default class BoardXam extends BoardCardTurnBase {
 
     _getGameResultIconPaths(playerIds, data) {
         let thoiData = this._getThoiData(data);
-        let congPlayerIds = this._getCongPlayers(data);
+        let congPlayerIds = this._getTreoPlayers(data);
 
         let iconMaps = {};
 
@@ -117,7 +136,7 @@ export default class BoardXam extends BoardCardTurnBase {
 
     _getGameResultInfos(playerIds = [], playerHandCards, data) {
         let thoiData = this._getThoiData(data);
-        let congPlayerIds = this._getCongPlayers(data);
+        let treoPlayerIds = this._getTreoPlayers(data);
 
         /**
          * Get game result icon
@@ -129,31 +148,24 @@ export default class BoardXam extends BoardCardTurnBase {
         playerIds.forEach((id, i) => {
             if (playersWinRanks[i] == app.const.game.rank.GAME_RANK_FIRST) {
                 switch (winType) {
-                    case app.const.game.TLMN_WIN_TYPE_AN_TRANG:
+                    case app.const.game.XAM_WIN_TYPE_THANG_XAM:
                         resultIconPaths[id] = 'game/images/ingame_an_trang';
                         break;
-                    case app.const.game.TLMN_WIN_TYPE_DUT_BA_BICH:
+                    case app.const.game.XAM_WIN_TYPE_DEN_XAM:
                         resultIconPaths[id] = 'game/images/ingame_dut_ba_bich';
                         break;
-                    case app.const.game.TLMN_WIN_TYPE_LUNG:
+                    case app.const.game.XAM_WIN_TYPE_DEN_THOI_HEO:
                         resultIconPaths[id] = 'game/images/ingame_lung';
                         break;
                     default:
                         resultIconPaths[id] = 'game/images/ingame_thang';
                 }
-            } else {
-                switch (winType) {
-                    case app.const.game.TLMN_WIN_TYPE_THOI_BA_BICH:
-                        if (GameUtils.containsCard(playerHandCards[id], Card.from(Card.RANK_BA, Card.SUIT_BICH)))
-                            resultIconPaths[id] = 'game/images/ingame_thoi_ba_bich';
-                        break;
-                    default:
-                        resultIconPaths[id] = 'game/images/ingame_thua';
-                }
+            }else{
+                resultIconPaths[id] = 'game/images/ingame_thua';
             }
         });
 
-        congPlayerIds && congPlayerIds.forEach(id => resultIconPaths[id] = 'game/images/ingame_cong');
+        treoPlayerIds && treoPlayerIds.forEach(id => resultIconPaths[id] = 'game/images/ingame_cong');
 
         /**
          * Get game result detail info
@@ -161,7 +173,7 @@ export default class BoardXam extends BoardCardTurnBase {
          */
         let gameResultInfos = {};
         playerIds.map(id => {
-            var handCard = playerHandCards[id];
+            let handCard = playerHandCards[id];
             gameResultInfos[id] = handCard && handCard.length > 0 ? `${handCard.length} lá` : "";
         });
 
@@ -212,9 +224,58 @@ export default class BoardXam extends BoardCardTurnBase {
         return thoiData;
     }
 
-    _getCongPlayers(data) {
+    _getTreoPlayers(data) {
         return utils.getValue(data, Keywords.CONG_PLAYER_LIST, []);
     }
+
+//     @Override
+//     public void showWinLoseInfo(byte winType, byte rankType, byte rank) {
+//     // show icon chien thang cho thang nhat
+//     showWinDrawLoseIcon(winType, rankType, rank);
+//
+//     if (winType == GameWin.GENERAL_WIN_TYPE_NORMAL) {
+//     if (rank != GameRank.GAME_RANK_FIRST && getHandCards().size() == getBoardXam().getDefaultHandCardsSize()) {
+//     // truong hop thang thua binh thuong ma bi treo
+// ((UIPlayerXam) getUIPlayer()).showTreoAvatar(true);
+// }
+// }
+//
+// showInfo(getWinLoseString(winType, GameConstant.gameRankTypes[GameContext.getInstance().getGameID()], rank), 5000);
+// }
+//
+// @Override
+// public String getWinLoseString(byte wintype, byte rankType, byte rank) {
+//     String retString = "";
+//
+//     if (wintype == GameWin.XAM_WIN_TYPE_DEN_XAM) {
+//         if (isDenXam) {
+//             return GameWin.getXamSpecialString(wintype);
+//         }
+//     }
+//
+//     if (wintype == GameWin.XAM_WIN_TYPE_THANG_XAM) {
+//         if (isThangXam) {
+//             return GameWin.getXamSpecialString(wintype);
+//         }
+//     }
+//
+//     if (wintype == GameWin.XAM_WIN_TYPE_DEN_THOI_HEO) {
+//         if (isDenThoiHeo) {
+//             return GameWin.getXamSpecialString(wintype);
+//         }
+//     }
+//
+//     if (wintype == GameWin.GENERAL_WIN_TYPE_NORMAL) {
+//         if (getRank() != GameRank.GAME_RANK_FIRST) {
+//             if (getHandCards().size() > 0 && getHandCards().size() != getBoardXam().getDefaultHandCardsSize()) {
+//                 // truong hop thang thua binh thuong ma bi thua la'
+//                 return LanguageManager.getString(R.string.la, getHandCards().size());
+//             }
+//         }
+//     }
+//
+//     return retString;
+// }
 
 }
 
