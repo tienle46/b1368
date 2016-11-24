@@ -14,6 +14,9 @@ export default class BasePopUpRub {
     constructor(node, string = "") {
         this.string = string;
         this.node = node;
+        this.time = 3000 * 10;
+
+        this._setTimer(this.time);
     }
 
     init() {
@@ -59,11 +62,17 @@ export default class BasePopUpRub {
     }
 
     removeScrollView() {
-        console.debug(this.bodyNode);
         let scrollview = this.bodyNode.getChildByName('scrollview');
         this.bodyNode.removeChild(scrollview);
     }
+
+    _setTimer(time) {
+        this.timer = setTimeout((() => {
+            this.prefab.removeFromParent();
+        }).bind(this), time);
+    }
+
     static show(node, string, greenBtnEvent = null, context = null) {
-        return new BasePopupRub(node, string, greenBtnEvent, context).init();
+        return new BasePopUpRub(node, string, greenBtnEvent, context).init();
     }
 }

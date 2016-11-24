@@ -143,19 +143,32 @@ let NodeRub = {
     /**
      * @param options
      * {
-     *   spriteFrame: string || cc.SpriteFrame,
-     *   cb: [function] rubutils' load cb
-     *   isCORS: boolean
+     *  spriteFrame: string || cc.SpriteFrame,
+     *  cb: [function] rubutils' load cb
+     *  isCORS: boolean
+     *  type: cc.Sprite.Type.SLICE,
+     *  sizeMode: cc.Sprite.SizeMode.CUSTOM,
+     *  trim: boolean,
      * }
      */
     addSpriteComponentToNode: (node, options = {}) => {
         let sprite = node.addComponent(cc.Sprite);
         let spriteFrame = options.spriteFrame;
+        let o = {
+            type: cc.Sprite.Type.SLICED,
+            sizeMode: cc.Sprite.SizeMode.CUSTOM
+        };
+        options.type && (o.type = options.type);
+        options.sizeMode && (o.sizeMode = options.sizeMode);
+        options.trim && (o.trim = options.trim);
 
         if (typeof spriteFrame === 'string')
-            RubUtils.loadSpriteFrame(sprite, spriteFrame, node.getContentSize(), options.isCORS || false, options.cb);
+            RubUtils.loadSpriteFrame(sprite, spriteFrame, node.getContentSize(), options.isCORS || false, options.cb, o);
         else if (spriteFrame instanceof cc.SpriteFrame) {
             sprite.spriteFrame = spriteFrame;
+            for (let key in o) {
+                sprite[key] = o[key];
+            }
             node.setContentSize(node.getContentSize());
         }
     },
@@ -261,6 +274,9 @@ let NodeRub = {
      *          spriteFrame: string || cc.SpriteFrame,
      *          cb: [function] rubutils' load cb
      *          isCORS: boolean
+     *          type: cc.Sprite.Type.SLICE,
+     *          sizeMode: cc.Sprite.SizeMode.CUSTOM,
+     *          trim: boolean,
      *      }
      *      button: {
      *          event: cc.Event

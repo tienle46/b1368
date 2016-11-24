@@ -116,31 +116,30 @@ class BottomBar extends Component {
         ExchangeDialogRub.show(this.node.parent, tabOptions);
     }
 
-    fanpageClicked(e){
+    fanpageClicked(e) {
         cc.sys.openURL(`https://www.messenger.com/t/${app.config.fbAppId}`);
     }
 
-    callSupportClicked(e){
+    callSupportClicked(e) {
         cc.sys.openURL(`tel:${app.config.supportHotline}`);
     }
 
-    onFeedbackConfirmed(){
+    onFeedbackConfirmed() {
         //collect user feedback and send to server
-        if(this.prom.getVal() && this.prom.getVal().length > 0){
+        if (this.prom.getVal() && this.prom.getVal().length > 0) {
             var sendObject = {
-                    'cmd': app.commands.SEND_FEEDBACK,
-                    'data': {
-                        [app.keywords.REQUEST_FEEDBACK] : this.prom.getVal()
-            }
+                'cmd': app.commands.SEND_FEEDBACK,
+                'data': {
+                    [app.keywords.REQUEST_FEEDBACK]: this.prom.getVal()
+                }
             };
 
             app.service.send(sendObject, (data) => {
                 log(data);
 
-                if(data && data["s"]){
+                if (data && data["s"]) {
                     app.system.showToast('Cảm ơn bạn, feedback của bạn đã được gửi tới ban quản trị');
-                }
-                else{
+                } else {
                     app.system.showToast('Gửi góp ý thất bại, xin vui lòng thử lại');
                 }
 
@@ -149,8 +148,8 @@ class BottomBar extends Component {
 
     }
 
-    giveFeedbackClicked(e){
-        this.prom = new PromptPopupRub(cc.director.getScene(), { green: this.onFeedbackConfirmed }, null, this);
+    giveFeedbackClicked() {
+        this.prom = new PromptPopupRub(cc.director.getScene(), { green: this.onFeedbackConfirmed }, { label: { text: 'Enter text here:' } }, this);
         this.prom.init();
     }
 

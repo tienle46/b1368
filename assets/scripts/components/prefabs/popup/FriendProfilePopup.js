@@ -58,7 +58,10 @@ export default class FriendProfilePopup extends Component {
                     name: asset.name,
                     size: cc.size(gridViewHeigh, gridViewHeigh),
                     sprite: {
-                        spriteFrame: asset
+                        spriteFrame: asset,
+                        trim: false,
+                        type: cc.Sprite.Type.SIMPLE,
+                        sizeMode: cc.Sprite.SizeMode.CUSTOM
                     },
                     button: {
                         event: clickEvent

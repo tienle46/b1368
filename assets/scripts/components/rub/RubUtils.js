@@ -22,13 +22,26 @@ let RubUtils = {
      * @param ccSize: (cc.size), used to resize spriteFrame to slice image fit to current node ( node will be reset its size based on spriteFrame's size after adding )
      * @param cb: (function) callback function
      * @param isCORS: (boolean) if resURL is http protocol, it need to be `true`
+     * @param options: (any) spriteFrame options
+     * {
+     *  type: cc.Sprite.Type.SLICE,
+     *  sizeMode: cc.Sprite.SizeMode.CUSTOM,
+     *  trim: boolean,
+     * }
      */
-    loadSpriteFrame: (spriteComponent, resURL, ccSize = null, isCORS = false, cb) => {
+    loadSpriteFrame: (spriteComponent, resURL, ccSize = null, isCORS = false, cb, options = {}) => {
         let textureCache;
+        let o = {
+            type: cc.Sprite.Type.SLICED,
+            sizeMode: cc.Sprite.SizeMode.CUSTOM
+        };
+        options = Object.assign({}, o, options);
 
         function spriteFrameDefaultConfig(spriteComponent) {
-            spriteComponent.type = cc.Sprite.Type.SLICED;
-            spriteComponent.sizeMode = cc.Sprite.SizeMode.CUSTOM;
+            for (let key in options) {
+                spriteComponent[key] = options[key];
+            }
+
             ccSize && spriteComponent.node.setContentSize(ccSize);
             cb && cb(spriteComponent);
         }
