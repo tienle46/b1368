@@ -249,7 +249,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": 0
+      "y": 16
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -417,7 +417,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 970,
+      "width": 913,
       "height": 515
     },
     "_children": [],
@@ -427,7 +427,7 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": -500,
+      "x": -456.5,
       "y": 1
     },
     "_skewX": 0,
@@ -459,7 +459,7 @@
     "_enabled": true,
     "_layoutSize": {
       "__type__": "cc.Size",
-      "width": 970,
+      "width": 913,
       "height": 515
     },
     "_resize": 1,
@@ -471,7 +471,7 @@
     },
     "_N$startAxis": 1,
     "_N$padding": 20,
-    "_N$spacingX": 60,
+    "_N$spacingX": 112,
     "_N$spacingY": 20,
     "_N$verticalDirection": 1,
     "_N$horizontalDirection": 0
@@ -485,9 +485,9 @@
     },
     "_enabled": true,
     "isAlignOnce": true,
-    "_alignFlags": 45,
+    "_alignFlags": 21,
     "_left": 0,
-    "_right": 30,
+    "_right": 87,
     "_top": 16.5,
     "_bottom": 18.5,
     "_verticalCenter": 0,
@@ -671,8 +671,8 @@
     "_alignFlags": 45,
     "_left": 0.15,
     "_right": 0.15,
-    "_top": 80,
-    "_bottom": 80,
+    "_top": 64,
+    "_bottom": 96,
     "_verticalCenter": 0,
     "_horizontalCenter": 0,
     "_isAbsLeft": false,

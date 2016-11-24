@@ -4,11 +4,11 @@
 
 export default class ArrayUtils {
 
-    clear(arr){
+    static clear(arr) {
         this.isArray(arr) && arr.splice(0, arr.length);
     }
 
-    static isArray(arr){
+    static isArray(arr) {
         return arr && (typeof arr == 'array');
     }
 
@@ -16,7 +16,7 @@ export default class ArrayUtils {
         return !arr || arr.length == 0;
     }
 
-    static findFirst(arr, findItem, equalsFn){
+    static findFirst(arr, findItem, equalsFn) {
         let index = this.findIndex(arr, removing, equalsFn);
         return index >= 0 && arr[index];
     }
@@ -28,25 +28,25 @@ export default class ArrayUtils {
      * @param {function} equalsFn
      * @returns {number} index of finding item or -1 if not found
      */
-    static findIndex(arr, findItem, equalsFn){
-        if(!arr || !findItem) return -1;
+    static findIndex(arr, findItem, equalsFn) {
+        if (!arr || !findItem) return -1;
 
         let index = -1;
-        if(equalsFn || findItem.equals){
+        if (equalsFn || findItem.equals) {
             equalsFn = equalsFn || ((obj1, obj2) => obj1.equals(obj2));
             arr.some((val, i) => {
 
-                if(equalsFn(val, findItem)) {
+                if (equalsFn(val, findItem)) {
                     index = i;
                     return true;
                 }
             });
-        }else{
+        } else {
             index = arr.indexOf(findItem);
         }
 
-         return index;
-    };
+        return index;
+    }
 
     /**
      *
@@ -55,9 +55,9 @@ export default class ArrayUtils {
      * @param {function} equalsFn
      * @returns {Array} remove item has removed
      */
-    static remove(arr, removing, equalsFn){
+    static remove(arr, removing, equalsFn) {
         let index = this.findIndex(arr, removing, equalsFn);
-        if(index >= 0){
+        if (index >= 0) {
             let removedObj = arr[index];
             arr.splice(index, 1);
             return removedObj;
@@ -71,8 +71,8 @@ export default class ArrayUtils {
      * @param {function} equalsFn
      * @returns {Array} remove items has removed
      */
-    static removeAll(arr, removingArr, equalsFn){
-        if(!arr || !removingArr || removingArr.length == 0) return arr;
+    static removeAll(arr, removingArr, equalsFn) {
+        if (!arr || !removingArr || removingArr.length == 0) return arr;
 
         console.warn("remove arr: ", arr);
         console.warn("remove removingArr: ", removingArr);
@@ -96,7 +96,7 @@ export default class ArrayUtils {
      * @param {function} equalsFn
      * @returns {boolean}
      */
-    static contains(arr, checkObj, equalsFn){
+    static contains(arr, checkObj, equalsFn) {
         return this.findIndex(arr, checkObj, equalsFn) >= 0;
     }
 
@@ -107,9 +107,9 @@ export default class ArrayUtils {
      * @param {function} equalsFn
      * @returns {boolean} true if all item in checkArr has contains in arr
      */
-    static containsAll(arr, checkArr, equalsFn){
+    static containsAll(arr, checkArr, equalsFn) {
 
-        if(!arr || !checkArr || arr.length != checkArr.length) return false;
+        if (!arr || !checkArr || arr.length != checkArr.length) return false;
 
         let containObjs = arr.filter(obj => this.findIndex(checkArr, obj, equalsFn) >= 0);
         return containObjs.length == arr.length;
@@ -123,11 +123,11 @@ export default class ArrayUtils {
      * @param {function} equalsFn
      * @returns {boolean} true if some item in checkArr has contains in arr
      */
-    static containsSome(arr, checkArr, count = 1, equalsFn){
+    static containsSome(arr, checkArr, count = 1, equalsFn) {
         let containCount = 0;
         let contain = false;
         arr.some(obj => {
-            if(this.findIndex(checkArr, obj, equalsFn) >= 0 && ++containCount == count){
+            if (this.findIndex(checkArr, obj, equalsFn) >= 0 && ++containCount == count) {
                 contain = true;
                 return true;
             }

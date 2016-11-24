@@ -110,8 +110,10 @@ let NodeRub = {
     /**
      * @param options
      * {
-     * event: cc.Event
-     * spriteFrame: string
+     *  value: btn value
+     *  event: cc.Event
+    //  * spriteFrame: string
+     *  label: {addLabel's options}    
      * }
      */
     addButtonComponentToNode: (node, options = {}) => {
@@ -124,7 +126,19 @@ let NodeRub = {
             }
         }
 
+        button.value && (button.value = options.value);
+
         node.addComponent(ButtonScaler);
+
+        if (options.label) {
+            let o = {
+                name: 'btnLabel',
+                label: options.label
+            };
+
+            let lblNode = NodeRub.createNodeByOptions(o);
+            node.addChild(lblNode);
+        }
     },
     /**
      * @param options
@@ -231,12 +245,13 @@ let NodeRub = {
     /**
      * @param {any} options
      * {
-     *      name: string,
-     *      position: cc.v2
-     *      size: cc.size
-     *      color: new cc.Color,
-     *      anchor: cc.v2,
-     *      scale: cc.v2
+     *      name: <string>,
+     *      position: <cc.v2>,
+     *      size: <cc.size>,
+     *      color: <new cc.Color>,
+     *      anchor: <cc.v2>,
+     *      scale: <cc.v2>,
+     *      opacity: <number>,
      *      widget: {
      *          isAlignOnce: boolean
      *          isAlignVerticalCenter, isAlignHorizontalCenter: boolean
@@ -249,7 +264,9 @@ let NodeRub = {
      *      }
      *      button: {
      *          event: cc.Event
-     *          spriteFrame: string
+     *          value: btn value
+    //  *          spriteFrame: string
+     *          label: {} // like below    
      *      },
      *      label: {
      *          fontSize: number,
@@ -312,6 +329,7 @@ let NodeRub = {
     createNodeByOptions(options) {
         let node = new cc.Node();
         options.name && (node.name = options.name);
+        options.opacity && (node.opacity = options.opacity);
 
         options.size && node.setContentSize(options.size);
         options.color && (node.color = options.color);

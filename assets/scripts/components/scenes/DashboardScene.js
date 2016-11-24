@@ -46,7 +46,7 @@ export default class DashboardScene extends BaseScene {
         this._addTopBar();
     }
 
-    _filterClientSupportedGames(gameCodes){
+    _filterClientSupportedGames(gameCodes) {
         return ArrayUtils.isEmpty(gameCodes) ? [] : gameCodes.filter(gc => {
             return gc == app.const.gameCode.PHOM || gc == app.const.gameCode.TLMNDL
         })
@@ -55,7 +55,7 @@ export default class DashboardScene extends BaseScene {
     _initItemListGame() {
 
         const height = this.scrollerContentView.node.height;
-        const itemDimension = height / 2.0 - 70;
+        const itemDimension = Math.floor(height / 2.0 - 37);
 
         this.gameList.some(gc => {
 
