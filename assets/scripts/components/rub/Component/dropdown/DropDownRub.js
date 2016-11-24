@@ -129,42 +129,35 @@ export default class DropDownRub {
     }
 
     _initBackground() {
-        this.bgNode = new cc.Node();
-        this.bgNode.name = 'background';
-
         let paddingTop = 10;
+
+        // bgNode options
         let nodeOptions = {
+            name: 'background',
             size: cc.size(this.options.size.width, this.options.size.height - paddingTop),
-            align: {
+            opacity: 220,
+            widget: {
                 top: 5,
                 bottom: 5,
                 left: 0,
                 right: 0
             }
         };
-        this.bgNode.opacity = 220;
-        this.bgNode.setContentSize(nodeOptions.size);
-        // widget
-        NodeRub.addWidgetComponentToNode(this.bgNode, nodeOptions.align);
 
-
-        // arrow node
+        // arrow node options
         let arrowNodeOptions = {
+            name: 'arrow',
             color: this.options.color,
             sprite: {
                 spriteFrame: 'game/images/menu-arrow-bg',
             },
             size: cc.size(14, 13),
-            name: 'arrow'
         };
-        this.arrowNode = NodeRub.createNodeByOptions(arrowNodeOptions);
-        this.bgNode.addChild(this.arrowNode);
 
-        this._setupPopupAndArrow();
-
-        // body node
+        // body node options
         let bodyPaddingTop = 5;
         let bodyNodeOptions = {
+            name: 'body',
             color: this.options.color,
             sprite: {
                 spriteFrame: 'game/images/menu-body-bg',
@@ -176,11 +169,17 @@ export default class DropDownRub {
                 right: 0,
                 bottom: 0
             },
-            name: 'body'
         };
 
-        this.bodyNode = NodeRub.createNodeByOptions(bodyNodeOptions);
-        this.bgNode.addChild(this.bodyNode);
+
+        nodeOptions.children = [arrowNodeOptions, bodyNodeOptions];
+
+
+        this.bgNode = NodeRub.createNodeByOptions(nodeOptions);
+        this.arrowNode = this.bgNode.getChildByName('arrow');
+        this.bodyNode = this.bgNode.getChildByName('body');
+
+        this._setupPopupAndArrow();
 
         this.menu.addChild(this.bgNode);
     }

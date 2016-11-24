@@ -301,19 +301,6 @@ export default class ListTableScene extends BaseScene {
             this.node.addChild(topbarNode);
         });
     }
-
-    createTableView() {
-
-        // var winSize = cc.Director.getInstance().getWinSize();
-
-        // var tableView = cc.TableView.create();
-        // // tableView.setDirection(cc.SCROLLVIEW_DIRECTION_VERTICAL);
-        // tableView.setPosition(cc.p(winSize.width /2, winSize.height / 2 ));
-        // // tableView.setDelegate(this);
-        // tableView.setVerticalFillOrder(cc.TABLEVIEW_FILL_TOPDOWN);
-        // // tableView.reloadData();
-        // this.containnerTableView.node.addChild(tableView);
-    }
 }
 
 app.createComponent(ListTableScene);

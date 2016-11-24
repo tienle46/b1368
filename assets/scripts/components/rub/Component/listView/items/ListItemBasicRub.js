@@ -1,6 +1,7 @@
 import RubUtils from 'RubUtils';
 import app from 'app';
 import ButtonScaler from 'ButtonScaler';
+import NodeRub from 'NodeRub';
 
 export default class ListItemBasicRub {
     /**
@@ -231,15 +232,14 @@ export default class ListItemBasicRub {
             createSprite(node);
         } else if (options.type === 'button') {
             createSprite(node);
-            let nodeBtn = node.addComponent(cc.Button);
+            let btnOption = {
+                event: options.event || null,
+                value: options.value || null,
+            };
 
-            options.value && (node.value = options.value);
-            // add Event Handler
-            options.event && (nodeBtn.clickEvents = [options.event]);
+            NodeRub.addButtonComponentToNode(node, btnOption);
 
-            node.addComponent(ButtonScaler);
-
-            options.text && createLabel(options.text, nodeBtn);
+            options.text && createLabel(options.text, node);
         } else {
             options.text && createLabel(options.text, node);
         }
@@ -355,30 +355,21 @@ export default class ListItemBasicRub {
      * @param memberOf ListItemBasicRub
      */
     _addChildLabelNode(text, parent, opts = {}) {
-        let labelNode = new cc.Node();
         let parentSize = parent.getContentSize();
-        labelNode.setContentSize(cc.size(opts.width || parentSize.width, parentSize.height));
-        labelNode.name = opts.name || 'label';
-        opts.fontColor && (labelNode.color = opts.fontColor);
-
+        let nodeOptions = {
+            name: opts.name || 'label',
+            size: cc.size(opts.width || parentSize.width, parentSize.height),
+            color: opts.fontColor,
+            richtext: {
+                maxWidth: parentSize.width - 10,
+                fontSize: opts.fontSize,
+                lineHeight: opts.fontLineHeight,
+                horizontalAlign: opts.horizontalAlign,
+                text: text
+            }
+        };
+        let labelNode = NodeRub.createNodeByOptions(nodeOptions);
         parent.addChild(labelNode);
-
-        // let labelNodeLbl = labelNode.addComponent(cc.Label);
-        // labelNodeLbl.string = text;
-        // labelNodeLbl.horizontalAlign = opts.horizontalAlign || cc.Label.HorizontalAlign.LEFT;
-        // labelNodeLbl.verticalAlign = opts.verticalAlign || cc.Label.VerticalAlign.CENTER;
-        // labelNodeLbl.fontSize = opts.fontSize;
-        // labelNodeLbl.lineHeight = opts.fontLineHeight;
-        // labelNodeLbl.overflow = cc.Label.Overflow.RESIZE_HEIGHT;
-
-        let rich = labelNode.addComponent(cc.RichText);
-        rich.maxWidth = (parentSize.width - 10);
-        rich.fontSize = opts.fontSize;
-        rich.lineHeight = opts.fontLineHeight;
-        rich.horizontalAlign = opts.horizontalAlign;
-        rich.string = text;
-
-        labelNode.getLineCount = () => rich._lineCount;
 
         let lineCount = labelNode.getLineCount();
         if (lineCount > 1) {

@@ -2,7 +2,7 @@ import app from 'app';
 import ListItemBasicRub from 'ListItemBasicRub';
 import RubUtils from 'RubUtils';
 import ButtonScaler from 'ButtonScaler';
-// import ListItem from 'ListItem';
+import NodeRub from 'NodeRub';
 
 export default class ListItemToggleableRub extends ListItemBasicRub {
     /**
@@ -315,23 +315,21 @@ export default class ListItemToggleableRub extends ListItemBasicRub {
      * @memberOf ListItemBasicRub
      */
     _addChildLabelNode(text, parent, opts = {}, immediateResize = true) {
-        let labelNode = new cc.Node();
-
         let parentSize = parent.getContentSize();
-        labelNode.setContentSize(cc.size(parentSize.width, opts.height));
-        labelNode.name = opts.name || 'label';
-        labelNode.color = opts.fontColor || app.const.COLOR_WHITE;
-
+        let nodeOptions = {
+            name: opts.name || 'label',
+            size: cc.size(opts.width || parentSize.width, parentSize.height),
+            color: opts.fontColor || app.const.COLOR_WHITE,
+            richtext: {
+                maxWidth: parentSize.width - 10,
+                fontSize: opts.fontSize,
+                lineHeight: opts.fontLineHeight,
+                horizontalAlign: opts.horizontalAlign,
+                text: text
+            }
+        };
+        let labelNode = NodeRub.createNodeByOptions(nodeOptions);
         parent.addChild(labelNode);
-
-        let rich = labelNode.addComponent(cc.RichText);
-        rich.maxWidth = (parentSize.width - 10);
-        rich.fontSize = opts.fontSize;
-        rich.lineHeight = opts.fontLineHeight;
-        rich.horizontalAlign = opts.horizontalAlign;
-        rich.string = text;
-
-        labelNode.getLineCount = () => rich._lineCount;
 
         let lineCount = labelNode.getLineCount();
 
