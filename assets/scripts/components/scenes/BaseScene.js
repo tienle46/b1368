@@ -66,14 +66,22 @@ export default class BaseScene extends Actor {
 
     onEnable() {
         super.onEnable();
+
+
         if (this.onShown && this.onShown instanceof Function) {
             this.onShown();
         }
         this.progress && this.progress.hide();
     }
 
+    start(){
+        super.start();
+        app.system.setSceneChanging(false);
+    }
+
     onDestroy() {
         super.onDestroy();
+        app.system.setSceneChanging(true);
     }
 
     showShortLoading(message = '', payload = '') {

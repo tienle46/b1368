@@ -14,6 +14,7 @@ import Toast from 'Toast';
 import utils from 'utils';
 import TLMNDLScene from 'TLMNDLScene';
 import PhomScene from 'PhomScene';
+import ArrayUtils from "../utils/ArrayUtils";
 
 class GameSystem {
 
@@ -22,9 +23,11 @@ class GameSystem {
         this.eventEmitter = new Emitter;
 
         this.pendingGameEvents = [];
+        this.__pendingEventOnSceneChanging = [];
         this.gameEventEmitter = new Emitter;
         this.enablePendingGameEvent = false;
         this.toast = null;
+        this.sceneChanging = false;
         this._currentSceneNode = cc.Node;
         this._currentScene = cc.Node;
         this.initEventListener();
@@ -103,6 +106,9 @@ class GameSystem {
                 case app.const.gameCode.PHOM:
                     gameSceneName = 'PhomScene';
                     break;
+                case app.const.gameCode.XAM:
+                    gameSceneName = 'XamScene';
+                    break;
             }
 
             gameSceneName && this.loadScene(gameSceneName);
@@ -155,8 +161,13 @@ class GameSystem {
     }
 
     emit(name, ...args) {
-        this.eventEmitter.emit(name, ...args);
-        this._emitGameEvent(name, ...args);
+        if(this.sceneChanging){
+            !this.__pendingEventOnSceneChanging.hasOwnProperty(name) && (this.__pendingEventOnSceneChanging[name] = []);
+            this.__pendingEventOnSceneChanging[name].push(args);
+        }else{
+            this.eventEmitter.emit(name, ...args);
+            this._emitGameEvent(name, ...args);
+        }
     }
 
     _emitGameEvent(name, ...args) {
@@ -167,12 +178,31 @@ class GameSystem {
         }
     }
 
-    handlePendingEvents() {
+    _handlePendingGameEvents() {
         if (this.pendingGameEvents.length > 0) {
             this.pendingGameEvents.forEach(event => this.gameEventEmitter.emit(event.name, ...event.args));
             this.pendingGameEvents = [];
         }
     }
+
+    setSceneChanging(changing){
+
+        if(!changing){
+            this.__pendingEventOnSceneChanging && Object.getOwnPropertyNames(this.__pendingEventOnSceneChanging).forEach(name => {
+
+                let argArr = this.__pendingEventOnSceneChanging[name];
+                argArr && argArr.forEach(args => {
+                    this.emit(name, ...args);
+                });
+            });
+
+            ArrayUtils.clear(this.__pendingEventOnSceneChanging);
+        }
+
+        this.sceneChanging = changing;
+    }
+
+
 
     // /**
     //  *

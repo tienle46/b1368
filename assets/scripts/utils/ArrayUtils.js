@@ -4,6 +4,14 @@
 
 export default class ArrayUtils {
 
+    clear(arr){
+        this.isArray(arr) && arr.splice(0, arr.length);
+    }
+
+    static isArray(arr){
+        return arr && (typeof arr == 'array');
+    }
+
     static isEmpty(arr) {
         return !arr || arr.length == 0;
     }
