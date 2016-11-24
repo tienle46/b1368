@@ -6,16 +6,16 @@ import app from 'app'
 import {GameUtils, utils} from 'utils'
 
 
-export default class TLMNUtils {
+export default class XamUtils {
 
     static get GAME_TYPE() {
-        return app.const.game.GAME_TYPE_TIENLEN;
+        return app.const.game.GAME_TYPE_XAM;
     };
 
     constructor() {
     }
 
-    static checkPlayCard(playCards, deckCards, gameType = TLMNUtils.GAME_TYPE) {
+    static checkPlayCard(playCards, deckCards, gameType = XamUtils.GAME_TYPE) {
         let valid = playCards && playCards.length > 0;
 
         if (valid){
@@ -26,7 +26,7 @@ export default class TLMNUtils {
         return valid;
     }
 
-    static getValidSelectedCards(selectedCards = [], deckCards = [], gameType = TLMNUtils.GAME_TYPE) {
+    static getValidSelectedCards(selectedCards = [], deckCards = [], gameType = XamUtils.GAME_TYPE) {
 
         if (selectedCards.length == 0) {
             return null;
@@ -107,7 +107,7 @@ export default class TLMNUtils {
         return null;
     }
 
-    static getGroupCardType(selectedCards, gameType = TLMNUtils.GAME_TYPE) {
+    static getGroupCardType(selectedCards, gameType = XamUtils.GAME_TYPE) {
         const numberOfCards = selectedCards.length;
 
         if (numberOfCards == 1) {
@@ -177,7 +177,7 @@ export default class TLMNUtils {
         return this.GROUP_CARD_TYPE_INVALID;
     }
 
-    static isValidSanhRule(selectedCards, gameType = TLMNUtils.GAME_TYPE) {
+    static isValidSanhRule(selectedCards, gameType = XamUtils.GAME_TYPE) {
         let isSanh = true;
 
         for (let i = 1; i < selectedCards.length; i++) {
@@ -210,7 +210,7 @@ export default class TLMNUtils {
         return heoContained;
     }
 
-    static getSanhType(cards, gameType = TLMNUtils.GAME_TYPE) {
+    static getSanhType(cards, gameType = XamUtils.GAME_TYPE) {
 
         let selectedCards = [...cards];
 
@@ -238,7 +238,7 @@ export default class TLMNUtils {
         return -1;
     }
 
-    static isValidDoiThongRule(cards, gameType = TLMNUtils.GAME_TYPE) {
+    static isValidDoiThongRule(cards, gameType = XamUtils.GAME_TYPE) {
 
         let lastDoiRank = -1;
         let index = 0;
@@ -273,7 +273,7 @@ export default class TLMNUtils {
         return true;
     }
 
-    static isDoiThong(cards, gameType = TLMNUtils.GAME_TYPE) {
+    static isDoiThong(cards, gameType = XamUtils.GAME_TYPE) {
 
         let isDoiThong = false;
         let numberOfCards = cards.length;
@@ -297,25 +297,25 @@ export default class TLMNUtils {
         return isDoiThong;
     }
 
-    static getTLMNThoiString(thoiType) {
+    static getXamThoiString(thoiType) {
         let retString = "";
         switch (thoiType) {
-            case TLMNUtils.THOI_TYPE_HEO_DEN:
+            case XamUtils.THOI_TYPE_HEO_DEN:
                 retString = app.res.string('game_heo_den');
                 break;
-            case TLMNUtils.THOI_TYPE_HEO_DO:
+            case XamUtils.THOI_TYPE_HEO_DO:
                 retString = app.res.string('game_heo_do');
                 break;
-            case TLMNUtils.THOI_TYPE_BA_DOI_THONG:
+            case XamUtils.THOI_TYPE_BA_DOI_THONG:
                 retString = app.res.string('game_ba_doi_thong');
                 break;
-            case TLMNUtils.THOI_TYPE_TU_QUY:
+            case XamUtils.THOI_TYPE_TU_QUY:
                 retString = app.res.string('game_tu_quy');
                 break;
-            case TLMNUtils.THOI_TYPE_BON_DOI_THONG:
+            case XamUtils.THOI_TYPE_BON_DOI_THONG:
                 retString = app.res.string('game_bon_doi_thong');
                 break;
-            case TLMNUtils.THOI_TYPE_BA_BICH:
+            case XamUtils.THOI_TYPE_BA_BICH:
                 retString = app.res.string('game_ba_bich');
                 break;
         }
@@ -325,25 +325,25 @@ export default class TLMNUtils {
 }
 
 
-TLMNUtils.THOI_TYPE_HEO_DEN = 0;
-TLMNUtils.THOI_TYPE_HEO_DO = 1;
-TLMNUtils.THOI_TYPE_BA_DOI_THONG = 2;
-TLMNUtils.THOI_TYPE_TU_QUY = 3;
-TLMNUtils.THOI_TYPE_BON_DOI_THONG = 4;
-TLMNUtils.THOI_TYPE_BA_BICH = 5;
-TLMNUtils.GROUP_CARD_TYPE_INVALID = 0;
-TLMNUtils.GROUP_CARD_TYPE_RAC = 1;
-TLMNUtils.GROUP_CARD_TYPE_DOI = 2;
-TLMNUtils.GROUP_CARD_TYPE_SAM_CO = 3;
-TLMNUtils.GROUP_CARD_TYPE_SANH = 4;
-TLMNUtils.GROUP_CARD_TYPE_SANH_RONG = 5;
-TLMNUtils.GROUP_CARD_TYPE_TU_QUY = 6;
-TLMNUtils.GROUP_CARD_TYPE_DOI_THONG = 7;
-TLMNUtils.GROUP_CARD_TYPE_BA_DOI_THONG = 8;
-TLMNUtils.GROUP_CARD_TYPE_BON_DOI_THONG = 9;
-TLMNUtils.GROUP_CARD_TYPE_NAM_DOI_THONG = 1;
-TLMNUtils.GROUP_CARD_TYPE_SAU_DOI_THONG = 1;
-TLMNUtils.GROUP_CARD_TYPE_SAU_DOI = 1;
-TLMNUtils.GROUP_CARD_TYPE_DOI_HEO = 1;
-TLMNUtils.GROUP_CARD_TYPE_TU_QUY_HEO = 1;
-TLMNUtils.GROUP_CARD_TYPE_TU_QUY_BA = 1;
+XamUtils.THOI_TYPE_HEO_DEN = 0;
+XamUtils.THOI_TYPE_HEO_DO = 1;
+XamUtils.THOI_TYPE_BA_DOI_THONG = 2;
+XamUtils.THOI_TYPE_TU_QUY = 3;
+XamUtils.THOI_TYPE_BON_DOI_THONG = 4;
+XamUtils.THOI_TYPE_BA_BICH = 5;
+XamUtils.GROUP_CARD_TYPE_INVALID = 0;
+XamUtils.GROUP_CARD_TYPE_RAC = 1;
+XamUtils.GROUP_CARD_TYPE_DOI = 2;
+XamUtils.GROUP_CARD_TYPE_SAM_CO = 3;
+XamUtils.GROUP_CARD_TYPE_SANH = 4;
+XamUtils.GROUP_CARD_TYPE_SANH_RONG = 5;
+XamUtils.GROUP_CARD_TYPE_TU_QUY = 6;
+XamUtils.GROUP_CARD_TYPE_DOI_THONG = 7;
+XamUtils.GROUP_CARD_TYPE_BA_DOI_THONG = 8;
+XamUtils.GROUP_CARD_TYPE_BON_DOI_THONG = 9;
+XamUtils.GROUP_CARD_TYPE_NAM_DOI_THONG = 1;
+XamUtils.GROUP_CARD_TYPE_SAU_DOI_THONG = 1;
+XamUtils.GROUP_CARD_TYPE_SAU_DOI = 1;
+XamUtils.GROUP_CARD_TYPE_DOI_HEO = 1;
+XamUtils.GROUP_CARD_TYPE_TU_QUY_HEO = 1;
+XamUtils.GROUP_CARD_TYPE_TU_QUY_BA = 1;

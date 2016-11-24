@@ -26,6 +26,7 @@ Events.SHOW_JOIN_PHOM_CONTROLS          = "show.joinPhomControls";
 Events.SHOW_DOWN_PHOM_CONTROLS          = "show.downPhomControls";
 Events.SHOW_U_PHOM_CONTROLS             = "show.showUPhomControls";
 Events.SHOW_PHOM_HIGHLIGHT              = "show.phomHighlight";
+Events.SHOW_BAO_XAM_CONTROLS            = "show.baoXamControls";
 
 Events.HIDE_ALL_CONTROLS                = "hide.allControls";
 Events.HIDE_GAME_BEGIN_CONTROLS         = "hide.gameBeginControls";
@@ -43,6 +44,8 @@ Events.ON_PLAYER_THOI                   = "on.player.thoi";
 Events.ON_PLAYER_SET_BALANCE            = "on.player.setBalance";
 Events.ON_PLAYER_REENTER_GAME           = "on.player.reenterGame";
 Events.ON_PLAYER_CHAT_MESSAGE           = "on.player.chatMessage";
+Events.ON_PLAYER_BAO_XAM                = "on.player.baoXam";
+Events.ON_PLAYER_BAO_1                  = "on.player.bao1";
 
 Events.ON_USER_UPDATE_BALANCE           = "on.user.updateBalance";
 Events.ON_USER_UPDATE_LEVEL             = "on.user.updateLevel";
@@ -65,6 +68,8 @@ Events.ON_CLICK_SKIP_DOWN_PHOM_BUTTON   = "on.click.skipDownButton";
 Events.ON_CLICK_CHANGE_PHOM_BUTTON      = "on.click.changePhomButton";
 Events.ON_CLICK_U_BUTTON                = "on.click.uButton";
 Events.ON_CLICK_DOI_U_TRON_BUTTON       = "on.click.doiUTronButton";
+Events.ON_CLICK_BAO_XAM_BUTTON          = "on.click.baoXamButton";
+Events.ON_CLICK_BO_BAO_XAM_BUTTON       = "on.click.boBaoXamButton";
 
 Events.ON_GAME_RESET                    = "on.game.reset";
 Events.ON_GAME_STATE_BEGIN              = "on.game.stateBegin";
@@ -73,6 +78,8 @@ Events.ON_GAME_STATE_STARTED            = "on.game.stateStarted";
 Events.ON_GAME_STATE_PLAYING            = "on.game.statePlaying";
 Events.ON_GAME_STATE_ENDING             = "on.game.stateEnding";
 Events.ON_GAME_STATE_CHANGE             = "on.game.stateChange"
+Events.ON_GAME_STATE                    = "on.game.state"
+Events.ON_GAME_STATE_TRUE_PLAY          = "on.game.stateTruePlay"
 Events.ON_GAME_LOAD_PLAY_DATA           = "on.game.loadPlayData";
 Events.ON_GAME_REJOIN                   = "on.game.rejoin";
 Events.ON_GAME_SET_LAST_MOVE            = "on.game.setLastMove";

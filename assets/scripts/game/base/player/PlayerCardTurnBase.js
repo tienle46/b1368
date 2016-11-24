@@ -31,6 +31,14 @@ export default class PlayerCardTurnBase extends PlayerCard {
 
     }
 
+    _onSkipTurn() {
+        this.turnAdapter.skipTurn();
+    }
+
+    getPrePlayedCards() {
+        return this.board.playedCards;
+    }
+
     onGameReset(){
         super.onGameReset();
         this.turnAdapter && this.turnAdapter._reset();

@@ -6,6 +6,7 @@ import app from 'app';
 import utils from 'utils';
 import Card from 'Card'
 import numeral from 'numeral';
+import * as Keywords from "../../../core/Keywords";
 const gameState = app.const.game.state;
 
 export default class GameUtils {
@@ -112,6 +113,10 @@ export default class GameUtils {
         return utils.getVariable(user, app.keywords.USER_VARIABLE_BALANCE, 0);
     }
 
+    static getPlayerId(dataObj){
+        return utils.getValue(app.keywords.PLAYER_ID);
+    }
+
     static containsCard(cards, checkCard){
         if(!utils.isEmptyArray(cards)){
             for (let i = 0; i < cards.length; i++) {
@@ -127,7 +132,5 @@ export default class GameUtils {
         let card1 = cardList.cards[index1];
         cardList.cards[index1] = cardList.cards[index2];
         cardList.cards[index1] = card1;
-
-
     }
 }
