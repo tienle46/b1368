@@ -7,7 +7,6 @@ import _ from 'lodash';
 
 export default class ListTableScene extends BaseScene {
     constructor() {
-
         super();
 
         this.contentInScroll = {
@@ -21,20 +20,60 @@ export default class ListTableScene extends BaseScene {
         };
 
         this.items = [];
+
+        this.time = 2500 * 10; // creating new request for updating tables every 25s
+        this.interval = null;
+
+        // filter button conditional 
+        this.filterCond = null;
+
+        // room lobby Id
+        this.lobbyId = null;
+    }
+
+    onDestroy() {
+        super.onDestroy();
+        this._clearInterval();
+    }
+
+    // clear interval
+    _clearInterval() {
+        this.interval && clearInterval(this.interval);
+    }
+
+
+    onEnable() {
+        super.onEnable();
+
+        this._setInterval();
+    }
+
+    // interval for updating tables state by creating new request to server
+    _setInterval() {
+        (!this.interval) && (
+            this.interval = setInterval(() => {
+                this.node && this.lobby && this._getRoomList(this.lobby);
+            }, this.time)
+        );
     }
 
     onLoad() {
         super.onLoad();
 
+        this._initComponents();
+
+        this._getFirstGameLobbyFromServer();
+    }
+
+    _initComponents() {
         this._addBottomBar();
         this._addTopBar();
 
         app.context.getSelectedGame() && (this.gameCode = app.context.getSelectedGame());
+
         this.gameCode && this._initGameLabel(this.gameCode);
 
         this._initFilterBtns();
-
-        this._getFirstGameLobbyFromServer();
     }
 
     _initFilterBtns() {
@@ -68,8 +107,8 @@ export default class ListTableScene extends BaseScene {
                 break;
         }
 
-        let cond = { max, min };
-        this._renderList(this.items, cond);
+        this.filterCond = { max, min };
+        this._renderList(this.items, this.filterCond);
     }
 
     _initGameLabel(gameCode) {
@@ -90,9 +129,8 @@ export default class ListTableScene extends BaseScene {
         app.service.send(reqObject, (data) => {
             if (data && data[app.keywords.GAME_LIST_RESULT] && data[app.keywords.GAME_LIST_RESULT] === this.gameCode) {
                 let roomIds = data[app.keywords.GROUP_LIST_GROUP][app.keywords.GROUP_SHORT_NAME];
-                let lobby = null;
-                roomIds && roomIds.length > 0 && (lobby = roomIds[0]);
-                lobby && this._getRoomList(lobby);
+                roomIds && roomIds.length > 0 && (this.lobby = roomIds[0]);
+                this.lobby && this._getRoomList(this.lobby);
 
                 // assume server will be response minbet for filtering based on its minbet
             } else {
@@ -102,6 +140,11 @@ export default class ListTableScene extends BaseScene {
     }
 
     _getRoomList(lobbyId) {
+        if (!lobbyId) {
+            console.error('where is our lobby !');
+            return;
+        }
+
         let data = {};
         data[app.keywords.GROUP_ID] = `${this.gameCode}${lobbyId}`;
 
@@ -123,7 +166,7 @@ export default class ListTableScene extends BaseScene {
                         room
                     };
                     app.service.send(sendObject, (data) => {
-                        this.node && this._initRoomsList(data);
+                        this.node && this._initRoomsListFromData(data);
                     });
                 }
             }
@@ -131,7 +174,10 @@ export default class ListTableScene extends BaseScene {
         }, this);
     }
 
-    _initRoomsList(data) {
+    _initRoomsListFromData(data) {
+        if (!data)
+            return;
+
         this.items = [];
         const itemDimension = this.contentInScroll.width || 300;
         let customIds = data[app.keywords.ID],
@@ -173,7 +219,7 @@ export default class ListTableScene extends BaseScene {
                 // this.contentInScroll.addChild(listCell);
             }
 
-            this._renderList(this.items);
+            this._renderList(this.items, this.filterCond);
         }
     }
 
@@ -254,7 +300,6 @@ export default class ListTableScene extends BaseScene {
             data,
             // room: app.context.getLastJoinedRoom()
         };
-        console.debug(sendObject);
         app.service.send(sendObject);
     }
 
@@ -281,7 +326,6 @@ export default class ListTableScene extends BaseScene {
     }
 
     // Listen Bottom Bar Event (Click button In Bottom Bar)
-
     _addBottomBar() {
         RubUtils.loadRes('bottombar/bottombar').then((prefab) => {
             let bottomBarNode = cc.instantiate(prefab);
