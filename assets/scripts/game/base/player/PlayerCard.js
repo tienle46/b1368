@@ -45,7 +45,7 @@ export default class PlayerCard extends Player {
     }
 
     createFakeCards(size){
-        let cardBytes = new Array(size).fill(5);
+        let cardBytes = new Array(size).fill(0);
         this.setCards(GameUtils.convertBytesToCards(cardBytes), false);
     }
 
@@ -71,6 +71,10 @@ export default class PlayerCard extends Player {
         if(data instanceof Array){
             this.isItMe() ? this.setCards(data) : this.isReady() && this.createFakeCards();
         }
+    }
+
+    getSelectedCards() {
+        return this.renderer.cardList.getSelectedCards();
     }
 
     findCards(cardModels){

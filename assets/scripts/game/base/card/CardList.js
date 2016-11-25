@@ -459,10 +459,11 @@ export default class CardList extends Component {
     }
 
     _removeCardModelOnly(cardsOrRemoveAmount) {
-        let removingCards = utils.isNumber(cardsOrRemoveAmount) ? this._getSubCards(cardsOrRemoveAmount) : cardsOrRemoveAmount;
-        let removedCards = ArrayUtils.removeAll(this.cards, removingCards, null, true);
-        return removedCards;
-
+        if(utils.isNumber(cardsOrRemoveAmount)){
+            return this.cards.splice(0, cardsOrRemoveAmount);
+        }else{
+            return ArrayUtils.removeAll(this.cards, cardsOrRemoveAmount, null, true);
+        }
         // let removingCards = utils.isNumber(cardsOrRemoveAmount) ? this._getSubCards(cardsOrRemoveAmount) : this.findCardComponents(cardsOrRemoveAmount);
         // _.pullAll(this.cards, removingCards);
     }
@@ -734,7 +735,7 @@ CardList.ALIGN_CENTER_RIGHT = 8;
 CardList.ALIGN_CENTER = 9;
 CardList.HORIZONTAL = 1;
 CardList.VERTICAL = 2;
-CardList.CARD_WIDTH = 100;
+CardList.CARD_WIDTH = 96;
 CardList.CARD_HEIGHT = 130;
 CardList.DEFAULT_MAX_WIDTH = 600;
 CardList.DEFAULT_MAX_HEIGHT = 300;

@@ -716,7 +716,7 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": -28.175000000000004,
+      "x": -28.455000000000005,
       "y": 45
     },
     "_skewX": 0,
@@ -772,7 +772,7 @@
     "_enabled": true,
     "isAlignOnce": true,
     "_alignFlags": 9,
-    "_left": 9.434999999999993,
+    "_left": 9.154999999999992,
     "_right": 0,
     "_top": 5,
     "_bottom": 0,
@@ -845,6 +845,8 @@
     "lockedNode": {
       "__id__": 6
     },
+    "groupNode": null,
+    "groupNumberLabel": null,
     "emptySprite": {
       "__uuid__": "d7c1d3a8-53f5-4eb6-99ac-86271cc898a1"
     },

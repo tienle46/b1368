@@ -7,18 +7,23 @@ import game from 'game';
 import Card from 'Card';
 import Events from 'Events';
 import GameUtils from 'GameUtils';
-import TLMNUtils from 'TLMNUtils';
+import XamUtils from 'XamUtils';
 import PlayerCardTurnBase from 'PlayerCardTurnBase';
-import XamPlayerRenderer from 'PlayerXamRenderer';
+import utils from "../../../utils/Utils";
 
 export default class PlayerXam extends PlayerCardTurnBase {
 
     static get DEFAULT_HAND_CARD_COUNT() {
-        return 13
+        return 10
     };
 
     constructor(board, user) {
         super(board, user);
+
+        this.sentBaoXamValue = -1;
+        this.isDenXam = false;
+        this.isThangXam = false;
+        this.isDenThoiHeo = false;
 
         this.remainCardCount = PlayerXam.DEFAULT_HAND_CARD_COUNT;
     }
@@ -29,7 +34,14 @@ export default class PlayerXam extends PlayerCardTurnBase {
         this.board.scene.on(Events.ON_CLICK_PLAY_BUTTON, this._onPlayTurn, this);
         this.board.scene.on(Events.ON_CLICK_SKIP_TURN_BUTTON, this._onSkipTurn, this);
         this.board.scene.on(Events.ON_CLICK_SORT_BUTTON, this._onSortCards, this);
+        this.board.scene.on(Events.ON_CLICK_BAO_XAM_BUTTON, this._onBaoXam, this);
+        this.board.scene.on(Events.ON_CLICK_BO_BAO_XAM_BUTTON, this._onBoBaoXam, this);
         this.board.scene.on(Events.ON_PLAYER_REMAIN_CARD_COUNT, this._setRemainCardCount, this);
+        this.board.scene.on(Events.HANDLE_PLAY_TURN, this._onPlayerPlayedTurn, this);
+        this.board.scene.on(Events.ON_GAME_STATE, this._onGameState, this);
+        this.board.scene.on(Events.ON_GAME_STATE_TRUE_PLAY, this._onGameTruePlay, this);
+        this.board.scene.on(Events.ON_PLAYER_BAO_XAM, this._onPlayerBaoXam, this);
+        this.board.scene.on(Events.ON_PLAYER_BAO_1, this._onPlayerBao1, this);
     }
 
     _removeGlobalListener() {
@@ -39,6 +51,25 @@ export default class PlayerXam extends PlayerCardTurnBase {
         this.board.scene.off(Events.ON_CLICK_SKIP_TURN_BUTTON, this._onSkipTurn);
         this.board.scene.off(Events.ON_CLICK_SORT_BUTTON, this._onSortCards);
         this.board.scene.off(Events.ON_PLAYER_REMAIN_CARD_COUNT, this._setRemainCardCount);
+        this.board.scene.off(Events.ON_CLICK_BAO_XAM_BUTTON, this._onBaoXam, this);
+        this.board.scene.off(Events.ON_CLICK_BO_BAO_XAM_BUTTON, this._onBoBaoXam, this);
+        this.board.scene.off(Events.HANDLE_PLAY_TURN, this._onPlayerPlayedTurn, this);
+        this.board.scene.off(Events.ON_GAME_STATE, this._onGameState, this);
+        this.board.scene.off(Events.ON_PLAYER_BAO_XAM, this._onPlayerBaoXam, this);
+        this.board.scene.off(Events.ON_PLAYER_BAO_1, this._onPlayerBao1, this);
+    }
+
+    _onPlayerBao1(playerId){
+        if(this.id == playerId && !this.isItMe()){
+            this.renderer.showBao1();
+        }
+    }
+
+    _onPlayerBaoXam(playerId, baoXamValue = true){
+        if(this.id == playerId && this.isPlaying()){
+            this.sentBaoXamValue = 1;
+            this.renderer.showBaoXam(baoXamValue);
+        }
     }
 
     _setRemainCardCount(id, remain = 0) {
@@ -52,6 +83,38 @@ export default class PlayerXam extends PlayerCardTurnBase {
         this.createFakeCards(remain);
     }
 
+    _onBaoXam(){
+        app.service.send({cmd: app.commands.PLAYER_BAO_XAM, data: {[app.keywords.IS_BAO_XAM]: true}, room: this.board.scene.room}, (data) => {
+            this._handlePlayerBaoXam(data);
+        });
+        this.board.scene.emit(Events.SHOW_WAIT_TURN_CONTROLS);
+    }
+
+    _onBoBaoXam(){
+        app.service.send({cmd: app.commands.PLAYER_BAO_XAM, data: {[app.keywords.IS_BAO_XAM]: false}, room: this.board.scene.room}, (data) => {
+            this._handlePlayerBaoXam(data);
+        });
+        this.board.scene.emit(Events.SHOW_WAIT_TURN_CONTROLS);
+    }
+
+    _onPlayerPlayedTurn(data){
+        let playerId = utils.getValue(data, app.keywords.PLAYER_ID);
+        if(playerId == this.id && !this.isItMe()) {
+            let isBao1 = utils.getValue(data, app.keywords.XAM_BAO_1_PLAYER_ID);
+            isBao1 && this.renderer.showBao1();
+        }
+    }
+
+    __
+
+    _handlePlayerBaoXam(data){
+        this.sentBaoXamValue = utils.getValue(data, app.keywords.IS_BAO_XAM) ? 1 : 0;
+
+        if (this.sentBaoXamValue == 1) {
+            this.renderer.showBaoXam(true);
+        }
+    }
+
     _onPlayTurn() {
         if (!this.isItMe()) {
             return;
@@ -60,34 +123,18 @@ export default class PlayerXam extends PlayerCardTurnBase {
         let cards = this.getSelectedCards();
         let preCards = this.getPrePlayedCards();
 
-        if (TLMNUtils.checkPlayCard(cards, preCards)) {
+        if (XamUtils.checkPlayCard(cards, preCards)) {
             this.turnAdapter.playTurn(cards);
         } else {
             this.notify(app.res.string("invalid_play_card"));
         }
     }
 
-    _onSkipTurn() {
-        this.turnAdapter.skipTurn();
-    }
-
     _onSortCards() {
         if (this.isItMe()) {
-            let sortedCard = GameUtils.sortCardAsc(this.renderer.cardList.cards, game.const.GAME_TYPE_TIENLEN);
-            this.renderer.cardList.setCards(sortedCard);
+            GameUtils.sortCardAsc(this.renderer.cardList.cards, game.const.GAME_TYPE_TIENLEN);
+            this.renderer.cardList.onCardsChanged();
         }
-    }
-
-    getSelectedCards() {
-        return this.renderer.cardList.getSelectedCards();
-    }
-
-    getPrePlayedCards() {
-        return this.board.playedCards;
-    }
-
-    setCards(cards, reveal) {
-        super.setCards(cards, reveal);
     }
 
     createFakeCards(size = PlayerXam.DEFAULT_HAND_CARD_COUNT) {
@@ -95,11 +142,11 @@ export default class PlayerXam extends PlayerCardTurnBase {
     }
 
     onEnable() {
-        super.onEnable(this.getComponent('XamPlayerRenderer'));
+        super.onEnable(this.getComponent('PlayerXamRenderer'));
 
         if (this.isItMe()) {
             this.renderer.setSelectCardChangeListener((selectedCards) => {
-                let interactable = TLMNUtils.checkPlayCard(selectedCards, this.getPrePlayedCards(), app.const.game.GAME_TYPE_TIENLEN);
+                let interactable = XamUtils.checkPlayCard(selectedCards, this.getPrePlayedCards(), app.const.game.GAME_TYPE_TIENLEN);
                 this.scene.emit(Events.SET_INTERACTABLE_PLAY_CONTROL, interactable);
             });
         }
@@ -108,9 +155,39 @@ export default class PlayerXam extends PlayerCardTurnBase {
     _onGameRejoin(data) {
         super._onGameRejoin(data);
         if (this.isPlaying() && !this.scene.isEnding() && !this.isItMe()) {
-            let cards = Array(PlayerXam.DEFAULT_HAND_CARD_COUNT).fill(5).map(value => {return Card.from(value)});
+            let cards = Array(PlayerXam.DEFAULT_HAND_CARD_COUNT).fill(0).map(value => {return Card.from(value)});
             this.setCards(cards, false);
         }
+    }
+
+    _onGameState(state, data, isJustJoined){
+        if(state == app.const.game.state.BOARD_STATE_BAO_XAM){
+            this.board.scene.emit(Events.SHOW_BAO_XAM_CONTROLS);
+        }
+    }
+
+    _onGameTruePlay(data){
+        let pId = utils.getValue(data, app.keywords.BAO_XAM_SUCCESS_PLAYER_ID);
+        if(pId == this.id){
+            this.sentBaoXamValue = 1;
+            this.renderer.showBaoXam(true);
+        }else{
+            this.sentBaoXamValue = -1;
+            this.renderer.showBaoXam(false);
+        }
+    }
+
+    onGameEnding(...args){
+        super.onGameEnding(...args);
+        this.renderer.showBao1(false);
+        this.renderer.showBaoXam(false);
+    }
+
+    onGameReset(...args){
+        super.onGameReset(...args);
+        this.renderer.showBao1(false);
+        this.renderer.showBaoXam(false);
+
     }
 }
 
