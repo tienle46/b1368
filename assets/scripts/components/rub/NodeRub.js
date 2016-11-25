@@ -158,9 +158,10 @@ let NodeRub = {
             type: cc.Sprite.Type.SLICED,
             sizeMode: cc.Sprite.SizeMode.CUSTOM
         };
-        options.type && (o.type = options.type);
-        options.sizeMode && (o.sizeMode = options.sizeMode);
-        options.trim && (o.trim = options.trim);
+
+        options.hasOwnProperty('type') && (o.type = options.type);
+        options.hasOwnProperty('sizeMode') && (o.sizeMode = options.sizeMode);
+        options.hasOwnProperty('trim') && (o.trim = options.trim);
 
         if (typeof spriteFrame === 'string')
             RubUtils.loadSpriteFrame(sprite, spriteFrame, node.getContentSize(), options.isCORS || false, options.cb, o);
@@ -194,9 +195,9 @@ let NodeRub = {
      */
     addToggleComponentToNode: (node, options = {}) => {
         let toggle = node.addComponent(cc.Toggle);
-        options.toggleGroup && (toggle.toggleGroup = options.toggleGroup);
-        options.event && (toggle.checkEvents = [options.event]);
-        options.isChecked && (toggle.isChecked = options.isChecked);
+        options.hasOwnProperty('toggleGroup') && (toggle.toggleGroup = options.toggleGroup);
+        options.hasOwnProperty('event') && (toggle.checkEvents = [options.event]);
+        options.hasOwnProperty('isChecked') && (toggle.isChecked = options.isChecked);
     },
     /**
      * @param options
