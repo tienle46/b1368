@@ -9,6 +9,8 @@ import Progress from 'Progress';
 import CCUtils from 'CCUtils';
 import SFS2X from 'SFS2X';
 import GameChatItem from 'GameChatItem';
+import NodeRub from 'NodeRub';
+import Props from 'Props';
 
 export default class IngameChatComponent extends Component {
     constructor() {
@@ -19,7 +21,8 @@ export default class IngameChatComponent extends Component {
             messageListContent: cc.Node,
             showAnimName: "showIngameChat",
             hideAnimName: "hideIngameChat",
-            gameChatItemPrefab: cc.Prefab
+            gameChatItemPrefab: cc.Prefab,
+            emotionsPanel : cc.Node,
         }
 
         this.loading = null;
@@ -35,6 +38,8 @@ export default class IngameChatComponent extends Component {
         this.scene = app.system.currentScene;
         this.animation = this.node.getComponent(cc.Animation);
         this.loading = this.loadingComponent.getComponentInChildren('Progress');
+
+        this.initEmotions();
     }
 
     start(){
@@ -74,6 +79,49 @@ export default class IngameChatComponent extends Component {
 
         this.inited = true;
     }
+    emotionClicked(e){
+        this.hide();
+        if(this.scene.gamePlayers.me){
+            Props.playPropName(e.target.name, 'emotions',4, this.scene.gamePlayers.me.node);
+        }
+    }
+    initEmotions(){
+
+        this.emotionsPanel.removeAllChildren();
+
+        cc.loader.loadResAll('emotions/thumbs', cc.SpriteFrame, (err, assets) => {
+            if (err) {
+                cc.error(err);
+                return;
+            }
+
+            assets.forEach((asset, index) => {
+                // console.debug(`${index} `, asset);
+                const clickEvent = new cc.Component.EventHandler();
+                clickEvent.target = this.node;
+                clickEvent.component = 'IngameChatComponent';
+                clickEvent.handler = 'emotionClicked';
+
+                let o = {
+                    name: asset.name,
+                    size: cc.size(75, 75),
+                    sprite: {
+                        spriteFrame: asset,
+                        trim: true,
+                        type: cc.Sprite.Type.SIMPLE,
+                        sizeMode: cc.Sprite.SizeMode.CUSTOM
+                    },
+                    button: {
+                        event: clickEvent
+                    }
+                };
+                const node = NodeRub.createNodeByOptions(o);
+
+                this.emotionsPanel.addChild(node);
+            });
+
+        });
+    }
 
     /**
      * This method going to call on animation hide chat component finish. Going to edit component to see this callback
@@ -83,6 +131,7 @@ export default class IngameChatComponent extends Component {
     }
 
     onShown(){
+
         if(!this.messages){
             this.loading.show(120);
             app.service.send({cmd: app.commands.INGAME_CHAT_MESSAGE_LIST, data: {[app.keywords.GAME_CODE]: this.scene.gameCode}}, (data) => {
@@ -98,6 +147,7 @@ export default class IngameChatComponent extends Component {
                 this.loading.hide();
             });
         }
+
     }
 
     onClickCloseButton(...args){

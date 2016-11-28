@@ -66,7 +66,7 @@ export default class GameEventHandler {
         app.system.addGameListener(Commands.PLAYER_EAT_CARD, this._onPlayerEatCard, this);
         app.system.addGameListener(Commands.PLAYER_DOWN_CARD, this._onPlayerDownCard, this);
         app.system.addGameListener(Commands.PLAYER_HELP_CARD, this._onPlayerHelpCard, this);
-    }
+    }0
 
     removeGameEventListener() {
 

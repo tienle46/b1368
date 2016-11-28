@@ -25,10 +25,10 @@ export default class Props extends Component {
 
     }
 
-    static playPropName(prosName,startNode,endNode, finishCallback){
-        cc.loader.loadRes(`props/${prosName}`, cc.SpriteAtlas, (err, atlas) => {
+    static playPropName(prosName, resPath,sample, startNode, endNode, finishCallback){
+        cc.loader.loadRes(`${resPath}/${prosName}`, cc.SpriteAtlas, (err, atlas) => {
 
-            cc.loader.loadRes(`props/thumbs/${prosName}`, cc.SpriteFrame, (err, spriteFrame) => {
+            cc.loader.loadRes(`${resPath}/thumbs/${prosName}`, cc.SpriteFrame, (err, spriteFrame) => {
 
                 const animatingNode = new cc.Node();
                 const animation = animatingNode.addComponent(cc.Animation);
@@ -39,13 +39,18 @@ export default class Props extends Component {
                 animatingNode.position = startNode.getPosition();
                 startNode.parent.addChild(animatingNode);
 
-                const moveToAction = cc.moveTo(0.7, endNode.getPosition());
+                let moveToAction = cc.callFunc(()=> null);
+
+                if(endNode){
+                    moveToAction = cc.moveTo(0.7, endNode.getPosition());
+                }
+
                 const seq = cc.sequence(moveToAction, cc.callFunc(()=>{
 
 
                     var spriteFrames = atlas.getSpriteFrames();
 
-                    var clip = cc.AnimationClip.createWithSpriteFrames(spriteFrames, 8);
+                    var clip = cc.AnimationClip.createWithSpriteFrames(spriteFrames, sample);
                     clip.name = 'run';
                     clip.wrapMode = cc.WrapMode.Default;
 
@@ -66,7 +71,7 @@ export default class Props extends Component {
     static playPropAtIndex(propIndex, startNode,endNode){
         const propName = props[propIndex];
 
-        Props.playPropName(propName, startNode, endNode);
+        Props.playPropName(propName,'pros', startNode, endNode);
     }
 }
 

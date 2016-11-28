@@ -64,7 +64,7 @@ export default class FriendProfilePopup extends Component {
     performAnimation(prosName, startNode, destinationNode){
         this.node.opacity = 0;
 
-        Props.playPropName(prosName, startNode, destinationNode, ()=>{
+        Props.playPropName(prosName,'pros',8, startNode, destinationNode, ()=>{
             this.node.removeFromParent();
         });
 
@@ -94,9 +94,9 @@ export default class FriendProfilePopup extends Component {
                     size: cc.size(75, 75),
                     sprite: {
                         spriteFrame: asset,
-                        trim: true,
+                        trim: false,
                         type: cc.Sprite.Type.SIMPLE,
-                        sizeMode: cc.Sprite.SizeMode.CUSTOM
+                        sizeMode: cc.Sprite.SizeMode.RAW
                     },
                     button: {
                         event: clickEvent
