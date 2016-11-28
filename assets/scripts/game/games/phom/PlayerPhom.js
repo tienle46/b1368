@@ -311,7 +311,6 @@ export default class PlayerPhom extends PlayerCardTurnBase {
                 break;
             case PlayerPhom.STATE_PHOM_DOWN:
                 this.scene.emit(Events.SHOW_DOWN_PHOM_CONTROLS);
-                this._checkInteractableOnStateChanged();
                 break;
             case PlayerPhom.STATE_PHOM_PLAY_HO_U:
                 this.scene.emit(Events.SHOW_U_PHOM_CONTROLS);
