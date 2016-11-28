@@ -74,7 +74,7 @@ export default class BaseScene extends Actor {
         this.progress && this.progress.hide();
     }
 
-    start(){
+    start() {
         super.start();
         app.system.setSceneChanging(false);
     }

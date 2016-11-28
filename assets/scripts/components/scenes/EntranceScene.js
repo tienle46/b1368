@@ -1,7 +1,7 @@
 var app = require('app');
 import AlertPopupRub from 'AlertPopupRub';
 import BaseScene from 'BaseScene';
-// import FriendProfilePopupRub from 'FriendProfilePopupRub';
+import FriendProfilePopupRub from 'FriendProfilePopupRub';
 
 export default class EntranceScene extends BaseScene {
 
@@ -44,7 +44,7 @@ export default class EntranceScene extends BaseScene {
         app.service.connect((success) => {
             log("success: " + success);
             if (success) {
-                app.service.requestAuthen('crush1', "1234nm", false, true, (error, result) => {
+                app.service.requestAuthen('anhlavip', "hhmmss24", false, true, (error, result) => {
                     error = JSON.parse(error);
                     if (result) {
                         log(app.context.getMe());
@@ -89,10 +89,10 @@ export default class EntranceScene extends BaseScene {
     }
 
     handleFacebookLoginAction() {
-        AlertPopupRub.show(this.node, "Chức năng đang cập nhật!");
+        // AlertPopupRub.show(this.node, "Chức năng đang cập nhật!");
         // this.prom = new PromptPopupRub(this.node, { confirmBtn: this.test }, { label: { text: 'dafuq ?' } }, this);
         // this.prom.init();
-        // FriendProfilePopupRub.show(this.node);
+        FriendProfilePopupRub.show(this.node);
     }
 
     _generateUserName(key, deviceId, count, maxCall) {

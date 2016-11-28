@@ -14,16 +14,16 @@ export default class FriendProfilePopup extends Component {
 
         this.rtUserName = {
             default: null,
-            type : cc.RichText,
+            type: cc.RichText,
         };
 
         this.rtBalance = {
             default: null,
-            type : cc.RichText,
+            type: cc.RichText,
         };
         this.bgNode = {
-            default : null,
-            type : cc.Node
+            default: null,
+            type: cc.Node
         }
     }
 
@@ -39,7 +39,7 @@ export default class FriendProfilePopup extends Component {
         this.loadPropsAssets();
     }
 
-    displayUserDetail(userName){
+    displayUserDetail(userName) {
         this.friendName = userName;
         var sendObject = {
             'cmd': app.commands.SELECT_PROFILE,
@@ -61,10 +61,10 @@ export default class FriendProfilePopup extends Component {
         this.performAnimation(prosName, this.startAnimNode, this.endAnimNode);
 
     }
-    performAnimation(prosName, startNode, destinationNode){
+    performAnimation(prosName, startNode, destinationNode) {
         this.node.opacity = 0;
 
-        Props.playPropName(prosName, startNode, destinationNode, ()=>{
+        Props.playPropName(prosName, startNode, destinationNode, () => {
             this.node.removeFromParent();
         });
 
@@ -110,16 +110,16 @@ export default class FriendProfilePopup extends Component {
     }
 
 
-    kickUser(){
+    kickUser() {
         //kick user khoi ban choi
     }
 
-    inviteFriend(){
+    inviteFriend() {
         //invite user to be friend
-         var sendObject = {
+        var sendObject = {
             'cmd': app.commands.BUDDY_INVITE_FRIEND,
             'data': {
-                [app.keywords.BUDDY_NAME] : this.friendName
+                [app.keywords.BUDDY_NAME]: this.friendName
             }
         };
 
@@ -128,7 +128,7 @@ export default class FriendProfilePopup extends Component {
         }, app.const.scene.GAME_SCENE);
     }
 
-    close(){
+    close() {
         this.node.removeFromParent();
     }
 }
