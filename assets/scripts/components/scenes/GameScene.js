@@ -27,17 +27,42 @@ export default class GameScene extends BaseScene {
             maxPlayers: 4
         }
 
+        /**
+         * @type {IngameChatComponent}
+         */
         this.chatComponent = null;
+        /**
+         * @type {SFSRoom}
+         */
         this.room = null;
+        /**
+         * @type {Board}
+         */
         this.board = null;
+        /**
+         * @type {GameMenu}
+         */
+        this.gameMenu = null;
+        /**
+         * @type {GamePlayers}
+         */
+        this.gamePlayers = null;
+        /**
+         * @type {GameControls}
+         */
+        this.gameControls = null;
+        /**
+         * @type {GameEventHandler}
+         */
+        this.gameEventHandler = null;
+        /**
+         * @type {GameResultPopup}
+         */
+        this.gameResultPopup = null;
+
         this.gameCode = null;
         this.gameState = null;
-        this.gameMenu = null;
         this.gameData = null;
-        this.gamePlayers = null;
-        this.gameControls = null;
-        this.gameEventHandler = null;
-        this.gameResultPopup = null;
         this._penddingEvents = null;
     }
 
@@ -45,9 +70,6 @@ export default class GameScene extends BaseScene {
         super._addGlobalListener();
 
         this.on(Events.ON_GAME_STATE_CHANGE, (...args) => {
-
-            console.log("Events.ON_GAME_STATE_CHANGE: ", args)
-
             this.initiated ? this._onGameStateChange(...args) : (this._penddingEvents.push({
                 fn: this._onGameStateChange,
                 args: args
@@ -57,6 +79,7 @@ export default class GameScene extends BaseScene {
         this.on(Events.ON_ACTION_EXIT_GAME, this._onActionExitGame, this);
         this.on(Events.ON_ACTION_LOAD_GAME_GUIDE, this._onActionLoadGameGuide, this);
         this.on(Events.VISIBLE_INGAME_CHAT_COMPONENT, this._onVisibleIngameChatComponent, this);
+        this.on(Events.ON_GAME_LOAD_DATA_AFTER_SCENE_START, this._loadGameDataAfterSceneStart, this);
     }
 
     _onVisibleIngameChatComponent(){
@@ -153,7 +176,6 @@ export default class GameScene extends BaseScene {
     }
 
     _handlePendingEvents(){
-        // app.system.handlePendingEvents();
         app.system._handlePendingGameEvents();
 
         this._penddingEvents.forEach(event => event.fn(...event.args));
@@ -167,7 +189,7 @@ export default class GameScene extends BaseScene {
 
     _onGameRejoin(data) {
         let state = utils.getValue(this.gameData, app.keywords.BOARD_STATE_KEYWORD);
-        state && this.emit(Events.ON_GAME_STATE_CHANGE, state, this.gameData, true);
+        state && this.emit(Events.ON_GAME_STATE_CHANGE, state, this.gameData, true, true);
         this.emit(Events.ON_GAME_REJOIN, data);
     }
 
@@ -193,21 +215,29 @@ export default class GameScene extends BaseScene {
         }
 
         this.emit(Events.ON_GAME_LOAD_PLAY_DATA, this.gameData);
+        this.emit(Events.ON_GAME_LOAD_DATA_AFTER_SCENE_START, this.gameData);
+    }
 
+    _loadGameDataAfterSceneStart(data){
+        let currentGameState = utils.getValue(data, Keywords.BOARD_STATE_KEYWORD);
+        let isGamePlaying = GameUtils.isPlayingState(currentGameState);
         if (isGamePlaying) {
             this._loadPlayerReadyState();
-            !app.context.rejoiningGame && this._onGameStateChange(currentGameState, this.gameData, true);
+            !app.context.rejoiningGame && this._onGameStateChange(currentGameState, data, true);
         } else {
-            this._onGameStateBegin(this.gameData, app.context.rejoiningGame)
+            this._onGameStateBegin(data, app.context.rejoiningGame)
             this._loadPlayerReadyState();
         }
-
     }
 
     _loadPlayerReadyState() {
+
         let readyPlayerIds = this.gameData[Keywords.GAME_LIST_PLAYER];
+        console.warn("_loadPlayerReadyState", readyPlayerIds, );
+
         readyPlayerIds && readyPlayerIds.forEach(id => {
             this.emit(Events.ON_PLAYER_READY_STATE_CHANGED, id, true, this.gamePlayers.isItMe(id));
+            console.warn("_loadPlayerReadyState single: ", id, this.gamePlayers.isItMe(id));
         });
     }
 
@@ -236,12 +266,14 @@ export default class GameScene extends BaseScene {
         }
     }
 
-    _onGameStateBegin(data, isJustJoined){
-        this.emit(Events.ON_GAME_RESET);
+    _onGameStateBegin(data, isJustJoined, isRejoining){
+        if(!isRejoining){
+            this.emit(Events.ON_GAME_RESET);
+        }
         this.emit(Events.ON_GAME_STATE_BEGIN, data, isJustJoined);
     }
 
-    _onGameStateChange(state, data, isJustJoined) {
+    _onGameStateChange(state, data, isJustJoined, rejoining) {
 
         let localState = GameUtils.convertToLocalGameState(state);
         this.gameState = state;
@@ -251,7 +283,7 @@ export default class GameScene extends BaseScene {
 
         switch (localState) {
             case app.const.game.state.BEGIN:
-                this._onGameStateBegin(data, isJustJoined);
+                this._onGameStateBegin(data, isJustJoined, rejoining);
                 break;
             case app.const.game.state.STARTING:
                 this.emit(Events.ON_GAME_STATE_STARTING, data, isJustJoined);

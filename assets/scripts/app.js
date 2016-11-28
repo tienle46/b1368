@@ -165,6 +165,9 @@ function _setupGame() {
     require('PreLoader');
     app.service = require("Service");
     app.system = require("System");
+    /**
+     * @type {Context}
+     */
     app.context = require("Context");
     app.event = require("Events");
 }

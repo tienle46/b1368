@@ -7,11 +7,11 @@ import game from 'game';
 import Card from 'Card';
 import Events from 'Events';
 import GameUtils from 'GameUtils';
-import XamUtils from 'XamUtils';
+import SamUtils from 'SamUtils';
 import PlayerCardTurnBase from 'PlayerCardTurnBase';
 import utils from "../../../utils/Utils";
 
-export default class PlayerXam extends PlayerCardTurnBase {
+export default class PlayerSam extends PlayerCardTurnBase {
 
     static get DEFAULT_HAND_CARD_COUNT() {
         return 10
@@ -25,7 +25,7 @@ export default class PlayerXam extends PlayerCardTurnBase {
         this.isThangXam = false;
         this.isDenThoiHeo = false;
 
-        this.remainCardCount = PlayerXam.DEFAULT_HAND_CARD_COUNT;
+        this.remainCardCount = PlayerSam.DEFAULT_HAND_CARD_COUNT;
     }
 
     _addGlobalListener() {
@@ -105,8 +105,6 @@ export default class PlayerXam extends PlayerCardTurnBase {
         }
     }
 
-    __
-
     _handlePlayerBaoXam(data){
         this.sentBaoXamValue = utils.getValue(data, app.keywords.IS_BAO_XAM) ? 1 : 0;
 
@@ -123,7 +121,7 @@ export default class PlayerXam extends PlayerCardTurnBase {
         let cards = this.getSelectedCards();
         let preCards = this.getPrePlayedCards();
 
-        if (XamUtils.checkPlayCard(cards, preCards)) {
+        if (SamUtils.checkPlayCard(cards, preCards)) {
             this.turnAdapter.playTurn(cards);
         } else {
             this.notify(app.res.string("invalid_play_card"));
@@ -132,21 +130,23 @@ export default class PlayerXam extends PlayerCardTurnBase {
 
     _onSortCards() {
         if (this.isItMe()) {
-            GameUtils.sortCardAsc(this.renderer.cardList.cards, game.const.GAME_TYPE_TIENLEN);
+            SamUtils.sortAsc(this.renderer.cardList.cards);
             this.renderer.cardList.onCardsChanged();
+
+            console.log("_onSortCards")
         }
     }
 
-    createFakeCards(size = PlayerXam.DEFAULT_HAND_CARD_COUNT) {
+    createFakeCards(size = PlayerSam.DEFAULT_HAND_CARD_COUNT) {
         super.createFakeCards(size);
     }
 
     onEnable() {
-        super.onEnable(this.getComponent('PlayerXamRenderer'));
+        super.onEnable(this.getComponent('PlayerSamRenderer'));
 
         if (this.isItMe()) {
             this.renderer.setSelectCardChangeListener((selectedCards) => {
-                let interactable = XamUtils.checkPlayCard(selectedCards, this.getPrePlayedCards(), app.const.game.GAME_TYPE_TIENLEN);
+                let interactable = SamUtils.checkPlayCard(selectedCards, this.getPrePlayedCards(), app.const.game.GAME_TYPE_TIENLEN);
                 this.scene.emit(Events.SET_INTERACTABLE_PLAY_CONTROL, interactable);
             });
         }
@@ -155,7 +155,7 @@ export default class PlayerXam extends PlayerCardTurnBase {
     _onGameRejoin(data) {
         super._onGameRejoin(data);
         if (this.isPlaying() && !this.scene.isEnding() && !this.isItMe()) {
-            let cards = Array(PlayerXam.DEFAULT_HAND_CARD_COUNT).fill(0).map(value => {return Card.from(value)});
+            let cards = Array(PlayerSam.DEFAULT_HAND_CARD_COUNT).fill(0).map(value => {return Card.from(value)});
             this.setCards(cards, false);
         }
     }
@@ -174,6 +174,7 @@ export default class PlayerXam extends PlayerCardTurnBase {
         }else{
             this.sentBaoXamValue = -1;
             this.renderer.showBaoXam(false);
+            this.board.scene.emit(Events.SHOW_WAIT_TURN_CONTROLS);
         }
     }
 
@@ -191,4 +192,4 @@ export default class PlayerXam extends PlayerCardTurnBase {
     }
 }
 
-app.createComponent(PlayerXam);
+app.createComponent(PlayerSam);

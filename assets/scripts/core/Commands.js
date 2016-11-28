@@ -102,7 +102,7 @@ Commands.PLAYER_HELP_CARD = "hc";
  * Player receive a card or cards from the -- boc
  */
 Commands.PLAYER_TAKE_CARD = "rc";
-//PlayerXam
+//PlayerSam
 Commands.PLAYER_BAO_XAM = "bx";
 Commands.PLAYER_BAO_XAM_SUCCESS = "px";
 //TLMN

@@ -283,7 +283,7 @@ Keywords.GAME_LIST_LIENG_TYPE = "ct";
 //    Keywords.XITO_FACE_DOWN_PHASE = "ccd";
 //Player
 Keywords.PLAYER_BET_AMOUNT = "b";
-//PlayerBoardXam
+//PlayerBoardSam
 Keywords.IS_BAO_XAM = "bx";
 // Keywords.GAME_LIST_PLAYER_BAO_XAM = "px";
 Keywords.BAO_XAM_SUCCESS_PLAYER_ID = "px";

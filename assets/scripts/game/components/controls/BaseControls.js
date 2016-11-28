@@ -39,6 +39,9 @@ export default class BaseControls extends GameControls {
     }
 
     _onPlayerSetReadyState(playerId, ready, isItMe = this.scene.gamePlayers.isItMe(playerId)) {
+
+        console.warn("_onPlayerSetReadyState: playeId: ", playerId, " ready=", ready, "isItMe=", isItMe);
+
         this.scene.hideLoading('ready');
         isItMe && (ready ? this._onPlayerReady() : this._onPlayerUnready());
     }
@@ -54,8 +57,11 @@ export default class BaseControls extends GameControls {
     }
 
     _showGameBeginControls() {
-        utils.deactive(this.unreadyButton);
-        utils.active(this.readyButton);
+        if(this.scene.gamePlayers.isMeReady()){
+           this._onPlayerReady();
+        }else{
+           this._onPlayerUnready();
+        }
     }
 
     hideAllControls() {

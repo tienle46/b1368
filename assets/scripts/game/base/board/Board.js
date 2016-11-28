@@ -284,7 +284,7 @@ export default class Board extends Actor {
         let boardTimeLine = utils.getValue(data, Keywords.BOARD_PHASE_DURATION);
         boardTimeLine && (this.readyPhaseDuration = boardTimeLine);
 
-        console.log("on board begin: ", this.readyPhaseDuration, !this.scene.gamePlayers.me.isReady());
+        console.warn("on board begin: readyDuration: ", this.readyPhaseDuration, " justJoined: ", isJustJoined, " meReady: ", this.scene.gamePlayers.me.isReady());
         
         if (this.readyPhaseDuration && !this.scene.gamePlayers.me.isReady()) {
             if (this.scene.gamePlayers.meIsOwner()) {

@@ -111,7 +111,10 @@ export default class Utils {
     }
 
     static getValue(mapObj, key, defaultValue) {
-        return mapObj && mapObj[key] || defaultValue;
+        if(mapObj && mapObj.hasOwnProperty(key)){
+            return mapObj[key];
+        }
+        return defaultValue;
     }
 
     static getGameCode(room) {

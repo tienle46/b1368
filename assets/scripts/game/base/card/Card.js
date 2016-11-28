@@ -249,6 +249,14 @@ export default class Card extends Component {
     value(){
         return this.byteValue;
     }
+
+    static compareRank(card1, card2){
+        return card1.rank - card2.rank;
+    }
+
+    static compareSuit(card1, card2){
+        return card1.suit - card2.suit;
+    }
 }
 
 Card.RANK_AT = 1;

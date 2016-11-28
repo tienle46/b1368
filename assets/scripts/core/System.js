@@ -96,10 +96,6 @@ class GameSystem {
 
             let gameSceneName = null;
             let gameCode = utils.getGameCode(resultEvent.room);
-
-            // check whether app.context.selectedGame is exists. if not re-set it
-            (!app.context.getSelectedGame()) && app.context.setSelectedGame(gameCode);
-
             switch (gameCode) {
                 case app.const.gameCode.TLMNDL:
                     gameSceneName = 'TLMNDLScene';
@@ -108,7 +104,7 @@ class GameSystem {
                     gameSceneName = 'PhomScene';
                     break;
                 case app.const.gameCode.XAM:
-                    gameSceneName = 'XamScene';
+                    gameSceneName = 'SamScene';
                     break;
             }
 
@@ -166,10 +162,10 @@ class GameSystem {
     }
 
     emit(name, ...args) {
-        if (this.sceneChanging) {
+        if(this.sceneChanging){
             !this.__pendingEventOnSceneChanging.hasOwnProperty(name) && (this.__pendingEventOnSceneChanging[name] = []);
             this.__pendingEventOnSceneChanging[name].push(args);
-        } else {
+        }else{
             this.eventEmitter.emit(name, ...args);
             this._emitGameEvent(name, ...args);
         }
@@ -190,9 +186,9 @@ class GameSystem {
         }
     }
 
-    setSceneChanging(changing) {
+    setSceneChanging(changing){
 
-        if (!changing) {
+        if(!changing){
             this.__pendingEventOnSceneChanging && Object.getOwnPropertyNames(this.__pendingEventOnSceneChanging).forEach(name => {
 
                 let argArr = this.__pendingEventOnSceneChanging[name];

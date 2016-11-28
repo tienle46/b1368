@@ -10,7 +10,7 @@ import BaseControls from 'BaseControls';
 import Keywords from 'Keywords'
 import CardTurnBaseControls from 'CardTurnBaseControls';
 
-export default class XamControls extends GameControls {
+export default class SamControls extends GameControls {
     constructor() {
         super();
 
@@ -22,7 +22,13 @@ export default class XamControls extends GameControls {
             boBaoXamBtn: cc.Button
         }
 
+        /**
+         * @type {BaseControls}
+         */
         this.baseControls = null;
+        /**
+         * @type {CardTurnBaseControls}
+         */
         this.cardTurnBaseControls = null;
     }
 
@@ -40,7 +46,7 @@ export default class XamControls extends GameControls {
         this.scene.on(Events.ON_GAME_STATE_ENDING, this._onGameEnding, this);
         this.scene.on(Events.SHOW_GAME_BEGIN_CONTROLS, this._showGameBeginControls, this);
         this.scene.on(Events.SHOW_WAIT_TURN_CONTROLS, this._showWaitTurnControls, this);
-        this.scene.on(Events.SHOW_BAO_XAM_CONTROLS, this._showBaoXamControls, this);
+        this.scene.on(Events.SHOW_BAO_XAM_CONTROLS, this._showBaoSamControls, this);
         this.scene.on(Events.SHOW_ON_TURN_CONTROLS, this._showOnTurnControls, this);
         this.scene.on(Events.HIDE_ALL_CONTROLS, this.hideAllControls, this);
     }
@@ -50,7 +56,7 @@ export default class XamControls extends GameControls {
         this.cardTurnBaseControls._showOnTurnControls(showPlayControlOnly);
     }
 
-    _showBaoXamControls() {
+    _showBaoSamControls() {
         this.hideAllControls();
         utils.active(this.cardTurnBaseControls.sortButton);
         utils.active(this.baoXamBtn);
@@ -125,4 +131,4 @@ export default class XamControls extends GameControls {
     }
 }
 
-app.createComponent(XamControls);
+app.createComponent(SamControls);
