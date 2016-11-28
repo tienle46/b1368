@@ -300,15 +300,18 @@ export default class PlayerPhom extends PlayerCardTurnBase {
         switch (state) {
             case PlayerPhom.STATE_PHOM_PLAY:
                 this.scene.emit(Events.SHOW_PLAY_CONTROL_ONLY);
+                this._checkInteractableOnStateChanged();
                 break;
             case PlayerPhom.STATE_PHOM_JOIN:
                 this.scene.emit(Events.SHOW_JOIN_PHOM_CONTROLS);
                 break;
             case PlayerPhom.STATE_PHOM_EAT_TAKE:
                 this.scene.emit(Events.SHOW_EAT_AND_TAKE_CONTROLS);
+                this._checkInteractableOnStateChanged();
                 break;
             case PlayerPhom.STATE_PHOM_DOWN:
                 this.scene.emit(Events.SHOW_DOWN_PHOM_CONTROLS);
+                this._checkInteractableOnStateChanged();
                 break;
             case PlayerPhom.STATE_PHOM_PLAY_HO_U:
                 this.scene.emit(Events.SHOW_U_PHOM_CONTROLS);
@@ -794,6 +797,24 @@ export default class PlayerPhom extends PlayerCardTurnBase {
                         break;
                 }
             });
+        }
+    }
+
+    _checkInteractableOnStateChanged(){
+        let selectedCards = this.getSelectedCards();
+        switch (this.state) {
+            case PlayerPhom.STATE_PHOM_PLAY:
+                let playable = PhomUtils.checkPlayCard([...selectedCards], this.handCards);
+                this.scene.emit(Events.SET_INTERACTABLE_PLAY_CONTROL, playable);
+                break;
+            case PlayerPhom.STATE_PHOM_DOWN:
+                let downable = PhomUtils.checkDownPhom([...selectedCards], this);
+                this.scene.emit(Events.SET_INTERACTABLE_HA_PHOM_CONTROL, downable);
+                break;
+            case PlayerPhom.STATE_PHOM_EAT_TAKE:
+                let eatable = PhomUtils.checkEatPhom([...selectedCards], this.board.lastPlayedCard, this);
+                this.scene.emit(Events.SET_INTERACTABLE_EAT_CONTROL, eatable);
+                break;
         }
     }
 

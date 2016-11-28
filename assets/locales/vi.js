@@ -23,5 +23,12 @@ export default {
   error_cannot_load_data: 'Không thể tải dữ liệu',
   loading_data: 'Đang tải dữ liệu...',
   game_table_name: 'P{{roomName}} - B{{tableName}} - {{minBet}}',
+  game_sam_thang_sam: 'Thắng Sâm',
+  game_sam_den_sam: 'Đền Sâm',
+  game_sam_den_thoi_heo: 'Đền Thối Heo',
+  game_sam_treo: 'Treo',
+  game_thua: 'Thua',
+  game_thang: 'Thắng',
+  game_result_card_count: '{{count}} lá',
 
 };

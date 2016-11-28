@@ -342,7 +342,7 @@
     "_prefab": {
       "__id__": 10
     },
-    "_name": "BoardXamPrefab",
+    "_name": "BoardSamPrefab",
     "_active": true,
     "_position": {
       "__type__": "cc.Vec2",
@@ -466,7 +466,7 @@
     "playerPrefab": {
       "__uuid__": "40af7986-8762-4575-8908-7f6ccf86d67f"
     },
-    "playerClassName": "PlayerXam"
+    "playerClassName": "PlayerSam"
   },
   {
     "__type__": "cc.Node",
@@ -530,7 +530,7 @@
     "_prefab": {
       "__id__": 17
     },
-    "_name": "XamControlsPrefab",
+    "_name": "SamControlsPrefab",
     "_active": true,
     "_position": {
       "__type__": "cc.Vec2",

@@ -4,12 +4,12 @@
 
 import app from 'app';
 import GameScene from 'GameScene';
-import BoardXam from 'BoardXam';
-import XamControls from 'XamControls';
+import BoardSam from 'BoardSam';
+import SamControls from 'SamControls';
 import FourPlayerPositions from 'FourPlayerPositions';
 import GameResultPopup from 'GameResultPopup';
 
-export default class XamScene extends GameScene {
+export default class SamScene extends GameScene {
     constructor() {
         super();
     }
@@ -19,8 +19,8 @@ export default class XamScene extends GameScene {
     }
 
     onEnable(){
-        this.board = this.boardNode.getComponent('BoardXam');
-        this.gameControls = this.gameControlsNode.getComponent('XamControls');
+        this.board = this.boardNode.getComponent('BoardSam');
+        this.gameControls = this.gameControlsNode.getComponent('SamControls');
         this.playerPositions = this.playerPositionAnchorsNode.getComponent('FourPlayerPositions');
         this.gameResultPopup = this.gameResultPopupNode.getComponent('GameResultPopup');
 
@@ -29,5 +29,5 @@ export default class XamScene extends GameScene {
 
 }
 
-app.createComponent(XamScene);
+app.createComponent(SamScene);
 

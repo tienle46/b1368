@@ -10,7 +10,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "XamControlsPrefab",
+    "_name": "SamControlsPrefab",
     "_objFlags": 0,
     "_opacity": 255,
     "_color": {
@@ -1986,7 +1986,7 @@
     "target": {
       "__id__": 1
     },
-    "component": "XamControls",
+    "component": "SamControls",
     "handler": "onClickBaoXamBtn",
     "customEventData": ""
   },
@@ -2298,7 +2298,7 @@
     "target": {
       "__id__": 1
     },
-    "component": "XamControls",
+    "component": "SamControls",
     "handler": "onClickBoBaoXamBtn",
     "customEventData": ""
   },

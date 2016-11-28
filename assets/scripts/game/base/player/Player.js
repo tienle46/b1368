@@ -119,6 +119,9 @@ export default class Player extends Actor {
     }
 
     _onSetReadyState(playerId, ready = true){
+
+        console.log("_onSetReadyState: playerId=", playerId, " ready=", ready);
+
         if(playerId == this.id) {
             this.setReady(ready);
         }

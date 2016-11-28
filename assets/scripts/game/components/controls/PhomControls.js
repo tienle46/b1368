@@ -31,7 +31,13 @@ export default class PhomControls extends GameControls {
             doiGuiButton: cc.Button,
         }
 
+        /**
+         * @type {BaseControls}
+         */
         this.baseControls = null;
+        /**
+         * @type {CardTurnBaseControls}
+         */
         this.cardTurnBaseControls = null;
     }
 

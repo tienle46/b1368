@@ -52,6 +52,10 @@ export default class GamePlayers extends Component {
     onLoad() {
     }
 
+    isMeReady(){
+        return this.me && this.me.isReady();
+    }
+
     isItMe(id) {
         return this.me && this.me.id == id;
     }

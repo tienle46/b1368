@@ -34,18 +34,31 @@ export default class GameResultItem extends Actor {
             type: cc.Label
         }
 
+        this.resultText = {
+            default: null,
+            type: cc.Label
+        }
+
         this.infoTextViewNode = {
             default: null,
             type: cc.Node
         }
 
-        this.infoTextView = null;
-
-        this.cardList = null;
         this.cardListPrefab = {
             default: null,
             type: cc.Prefab
         }
+
+        /**
+         *
+         * @type {TextView}
+         */
+        this.infoTextView = null;
+
+        /**
+         * @type {CardList}
+         */
+        this.cardList = null;
         this.info = "";
         this.model = null;
     }
@@ -57,8 +70,8 @@ export default class GameResultItem extends Actor {
         this.model && this._renderData(this.model);
     }
 
-    setResultIcon(url){
-        !utils.isEmpty(url) && cc.loader.loadRes(url, cc.SpriteFrame, (err, spriteFrame) => {
+    _setResultIcon(url){
+        cc.loader.loadRes(url, cc.SpriteFrame, (err, spriteFrame) => {
             this.resultIcon.spriteFrame = spriteFrame;
         });
     }
@@ -67,17 +80,22 @@ export default class GameResultItem extends Actor {
         this.model = model;
     }
 
-    _renderData({name = "", iconPath = "", balanceChanged = NaN, info = "", cards = []} = {}){
+    _renderData({name = "", text = null, iconPath = "", balanceChanged = NaN, info = "", cards = []} = {}){
 
-        if(this.infoTextView.setText){
-            this.infoTextView.setText(info);
-        }else{
-           this.info = info;
-        }
+        this.infoTextView && this.infoTextView.setText(info);
 
         this.playerName.string = name;
         this.balanceLabel.string = Number.isNaN(balanceChanged) ? "" : balanceChanged > 0 ? `+${balanceChanged}` : `${balanceChanged}`;
-        this.setResultIcon(iconPath);
+
+        if(utils.isEmpty(iconPath)){
+            text && this.resultText && (this.resultText.string = text);
+            utils.active(this.resultText);
+            utils.deactive(this.resultIcon);
+        }else{
+            utils.active(this.resultIcon);
+            utils.deactive(this.resultText);
+            this._setResultIcon(iconPath);
+        }
 
         let cardListNode = cc.instantiate(this.cardListPrefab);
         this.dataContainer.addChild(cardListNode);
@@ -90,6 +108,7 @@ export default class GameResultItem extends Actor {
             alignment: CardList.ALIGN_CENTER_LEFT,
             maxDimension: this.dataContainer.width,
         });
+
         this.cardList.setCards(cards);
     }
 }

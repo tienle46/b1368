@@ -117,20 +117,17 @@ export default class GameUtils {
         return utils.getValue(app.keywords.PLAYER_ID);
     }
 
-    static containsCard(cards, checkCard){
-        if(!utils.isEmptyArray(cards)){
-            for (let i = 0; i < cards.length; i++) {
-                let card = cards[i];
-                if(checkCard.byteValue == card.byteValue){
-                    return true;
-                }
-            }
-        }
-    }
+    static isContainHeo(selectedCards) {
 
-    static swapCards(index1, index2, cardList){
-        let card1 = cardList.cards[index1];
-        cardList.cards[index1] = cardList.cards[index2];
-        cardList.cards[index1] = card1;
+        let heoContained = false;
+
+        selectedCards.some((card)=>{
+            if (card.isHeo()) {
+                heoContained = true;
+                return true;
+            }
+        });
+
+        return heoContained;
     }
 }

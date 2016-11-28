@@ -6,7 +6,7 @@ import utils from 'utils';
 import app from 'app';
 import PlayerCardTurnBaseRenderer from 'PlayerCardTurnBaseRenderer';
 
-export default class PlayerXamRenderer extends PlayerCardTurnBaseRenderer {
+export default class PlayerSamRenderer extends PlayerCardTurnBaseRenderer {
     constructor() {
         super();
 
@@ -19,8 +19,6 @@ export default class PlayerXamRenderer extends PlayerCardTurnBaseRenderer {
 
     showBaoXam(active = true){
         utils.setActive(this.baoXamNode, active);
-
-        console.log("this.baoXamNode: ", this.baoXamNode.active, this.baoXamNode);
     }
 
     showBao1(active = true){
@@ -28,4 +26,4 @@ export default class PlayerXamRenderer extends PlayerCardTurnBaseRenderer {
     }
 }
 
-app.createComponent(PlayerXamRenderer);
+app.createComponent(PlayerSamRenderer);

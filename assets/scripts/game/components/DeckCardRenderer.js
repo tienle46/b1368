@@ -73,8 +73,6 @@ export default class DeckCardRenderer extends Component {
         } else {
             this.cardList1.setCards(cards);
         }
-
-
     }
 
     _createCardList() {

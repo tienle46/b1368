@@ -8,7 +8,7 @@ import BoardRenderer from 'BoardRenderer';
 import BoardCardRenderer from 'BoardCardRenderer';
 import BoardCardTurnBaseRenderer from 'BoardCardTurnBaseRenderer';
 
-export default class BoardXamRenderer extends BoardCardTurnBaseRenderer {
+export default class BoardSamRenderer extends BoardCardTurnBaseRenderer {
     constructor() {
         super();
     }
@@ -19,4 +19,4 @@ export default class BoardXamRenderer extends BoardCardTurnBaseRenderer {
     }
 }
 
-app.createComponent(BoardXamRenderer);
+app.createComponent(BoardSamRenderer);
