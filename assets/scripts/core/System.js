@@ -4,29 +4,24 @@
 
 import app from 'app';
 import SFS2X from 'SFS2X';
-import BaseScene from 'BaseScene';
 import Emitter from 'emitter';
-import GameScene from 'GameScene';
-import AlertPopupRub from 'AlertPopupRub';
+import HighLightMessageRub from 'HighLightMessageRub';
 import MessagePopup from 'MessagePopup';
 import ConfirmPopup from 'ConfirmPopup';
-import Toast from 'Toast';
 import utils from 'utils';
-import TLMNDLScene from 'TLMNDLScene';
-import PhomScene from 'PhomScene';
 import ArrayUtils from "../utils/ArrayUtils";
 
 class GameSystem {
 
     constructor() {
-
         this.eventEmitter = new Emitter;
-
         this.pendingGameEvents = [];
         this.__pendingEventOnSceneChanging = [];
         this.gameEventEmitter = new Emitter;
         this.enablePendingGameEvent = false;
         this.toast = null;
+        // high light message
+        (!this.hlm) && (this.hlm = new HighLightMessageRub());
         this.sceneChanging = false;
         this._currentSceneNode = cc.Node;
         this._currentScene = cc.Node;
@@ -73,11 +68,13 @@ class GameSystem {
     initEventListener() {
         this.addListener(SFS2X.SFSEvent.ROOM_JOIN, this._onJoinRoomSuccess, this);
         this.addListener(SFS2X.SFSEvent.ROOM_JOIN_ERROR, this._onJoinRoomError, this);
+        this.addListener(app.commands.HIGH_LIGHT_MESSAGE, this._onHighLightMessage, this);
     }
 
     removeEventListener() {
         this.removeListener(SFS2X.SFSEvent.ROOM_JOIN, this._onJoinRoomSuccess);
         this.removeListener(SFS2X.SFSEvent.ROOM_JOIN_ERROR, this._onJoinRoomError);
+        this.removeListener(app.commands.HIGH_LIGHT_MESSAGE, this._onHighLightMessage);
     }
 
     _onJoinRoomError(resultEvent) {
@@ -113,6 +110,10 @@ class GameSystem {
 
             gameSceneName && this.loadScene(gameSceneName);
         }
+    }
+
+    _onHighLightMessage(resultEvent) {
+        resultEvent && this.hlm.pushMessage(resultEvent);
     }
 
     get currentScene() {

@@ -170,7 +170,6 @@ let NodeRub = {
             for (let key in o) {
                 sprite[key] = o[key];
             }
-            node.setContentSize(node.getContentSize());
         }
     },
     /**
