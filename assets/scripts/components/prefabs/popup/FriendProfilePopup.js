@@ -14,32 +14,84 @@ export default class FriendProfilePopup extends Component {
 
         this.rtUserName = {
             default: null,
-            type : cc.RichText,
+            type: cc.RichText,
         };
 
         this.rtBalance = {
             default: null,
-            type : cc.RichText,
+            type: cc.RichText,
         };
+
         this.bgNode = {
-            default : null,
-            type : cc.Node
-        }
+            default: null,
+            type: cc.Node
+        };
+
+        this.leftBtn = {
+            default: null,
+            type: cc.Button
+        };
+
+        this.rightBtn = {
+            default: null,
+            type: cc.Button
+        };
+
+        // paging
+        this.itemsPerPage = 8;
+        this.currentPage = 1;
+
+        this.totalPage = null;
+        this.totalItems = null;
     }
 
     onLoad() {
-        this.node.on(cc.Node.EventType.TOUCH_START, () => {
-            return null;
-        });
-        this.bgNode.on(cc.Node.EventType.TOUCH_START, ((e) => {
-            e.stopPropagationImmediate();
-            this.close();
-        }).bind(this));
+        this._initTouchEvent();
+
+        this._initNodeEvents();
 
         this.loadPropsAssets();
     }
 
-    displayUserDetail(userName){
+    _changePaginationState() {
+        if (this.currentPage === 1) {
+            // hide left Btn
+            this.rightBtn.node.active = true;
+            this.leftBtn.node.active = false;
+        } else if (this.totalPage && this.currentPage === this.totalPage) {
+            // hide right Btn
+            this.rightBtn.node.active = false;
+            this.leftBtn.node.active = true;
+        } else {
+            this.rightBtn.node.active = true;
+            this.leftBtn.node.active = true;
+        }
+    }
+
+    _initNodeEvents() {
+        this.node.on('change-paging-state', this._changePaginationState.bind(this));
+    }
+
+    _initTouchEvent() {
+        let dialog = this.node.getChildByName('popup_bkg');
+        dialog.zIndex = 10000;
+
+        dialog.on(cc.Node.EventType.TOUCH_START, () => {
+            return true;
+        });
+
+        this.node.on(cc.Node.EventType.TOUCH_START, () => {
+            return true;
+        });
+
+        this.bgNode.on(cc.Node.EventType.TOUCH_START, (e) => {
+            e.stopPropagationImmediate();
+            this.close();
+            return true;
+        });
+    }
+
+    displayUserDetail(userName) {
         this.friendName = userName;
         var sendObject = {
             'cmd': app.commands.SELECT_PROFILE,
@@ -52,22 +104,19 @@ export default class FriendProfilePopup extends Component {
             this.rtUserName.string = `<color=${app.const.HX_COLOR_YELLOW}>Tên:</color> ${user["u"]}`;
             this.rtBalance.string = `<color=${app.const.HX_COLOR_YELLOW}>Số xu:</color> ${user["coin"]}`;
         }, app.const.scene.GAME_SCENE);
-
     }
 
     propsItemClicked(e) {
-
         const prosName = e.target.name;
         this.performAnimation(prosName, this.startAnimNode, this.endAnimNode);
-
     }
-    performAnimation(prosName, startNode, destinationNode){
+
+    performAnimation(prosName, startNode, destinationNode) {
         this.node.opacity = 0;
 
-        Props.playPropName(prosName,'pros',8, startNode, destinationNode, ()=>{
+        Props.playPropName(prosName, 'pros', 8, startNode, destinationNode, () => {
             this.node.removeFromParent();
         });
-
     }
 
     setCallbackOptions(startAnimNode, endAnimNode) {
@@ -82,6 +131,9 @@ export default class FriendProfilePopup extends Component {
                 return;
             }
 
+            this.totalItems = assets.length;
+            this.totalPage = Math.ceil(this.totalItems / this.itemsPerPage);
+
             assets.forEach((asset) => {
                 // console.debug(`${index} `, asset);
                 const clickEvent = new cc.Component.EventHandler();
@@ -91,12 +143,11 @@ export default class FriendProfilePopup extends Component {
 
                 let o = {
                     name: asset.name,
-                    size: cc.size(75, 75),
                     sprite: {
                         spriteFrame: asset,
                         trim: false,
                         type: cc.Sprite.Type.SIMPLE,
-                        sizeMode: cc.Sprite.SizeMode.RAW
+                        sizeMode: cc.Sprite.SizeMode.SIMPLE
                     },
                     button: {
                         event: clickEvent
@@ -106,20 +157,50 @@ export default class FriendProfilePopup extends Component {
 
                 this.propsGridView.node.addChild(node);
             });
+
+            this.node.emit('change-paging-state');
         }.bind(this));
     }
 
+    onLeftBtnClick(e) {
+        e.stopPropagation();
+        let cp = this.currentPage;
+        if (--cp < 1) {
+            this.currentPage = 1;
+            return;
+        }
+        this.currentPage = cp;
+        this._runPropsGridViewAction(true);
+    }
 
-    kickUser(){
+    onRightBtnClick(e) {
+        e.stopPropagation();
+        let cp = this.currentPage;
+        if (++cp > this.totalPage) {
+            this.currentPage = this.totalPage;
+            return;
+        }
+        this.currentPage = cp;
+        this._runPropsGridViewAction(false);
+    }
+
+    _runPropsGridViewAction(isLeft = true) {
+        let width = this.propsGridView.node.parent.getContentSize().width;
+        let action = cc.moveBy(0.1, cc.v2(isLeft ? width : -width, 0));
+        this.propsGridView.node.runAction(action);
+        this.node.emit('change-paging-state');
+    }
+
+    kickUser() {
         //kick user khoi ban choi
     }
 
-    inviteFriend(){
+    inviteFriend() {
         //invite user to be friend
-         var sendObject = {
+        var sendObject = {
             'cmd': app.commands.BUDDY_INVITE_FRIEND,
             'data': {
-                [app.keywords.BUDDY_NAME] : this.friendName
+                [app.keywords.BUDDY_NAME]: this.friendName
             }
         };
 
@@ -128,7 +209,7 @@ export default class FriendProfilePopup extends Component {
         }, app.const.scene.GAME_SCENE);
     }
 
-    close(){
+    close() {
         this.node.removeFromParent();
     }
 }
