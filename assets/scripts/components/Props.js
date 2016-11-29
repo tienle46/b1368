@@ -28,7 +28,17 @@ export default class Props extends Component {
     static playPropName(prosName, resPath,sample, startNode, endNode, finishCallback){
         cc.loader.loadRes(`${resPath}/${prosName}`, cc.SpriteAtlas, (err, atlas) => {
 
+            if(err){
+                console.debug(err);
+                return;
+            }
+
             cc.loader.loadRes(`${resPath}/thumbs/${prosName}`, cc.SpriteFrame, (err, spriteFrame) => {
+
+                if(err){
+                    console.debug(err);
+                    return;
+                }
 
                 const animatingNode = new cc.Node();
                 const animation = animatingNode.addComponent(cc.Animation);
@@ -71,7 +81,7 @@ export default class Props extends Component {
     static playPropAtIndex(propIndex, startNode,endNode){
         const propName = props[propIndex];
 
-        Props.playPropName(propName,'pros', startNode, endNode);
+        Props.playPropName(propName,'props/',10, startNode, endNode);
     }
 }
 

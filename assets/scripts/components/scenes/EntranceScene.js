@@ -73,7 +73,7 @@ export default class EntranceScene extends BaseScene {
                     error = JSON.parse(error);
                     if (result) {
                         this.hideLoading();
-                        this.changeScene('DashboardScene');
+                        this.changeScene('TestScene');
                     }
 
                     if (error) {
