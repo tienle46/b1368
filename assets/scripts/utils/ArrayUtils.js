@@ -74,9 +74,6 @@ export default class ArrayUtils {
     static removeAll(arr, removingArr, equalsFn) {
         if (!arr || !removingArr || removingArr.length == 0) return arr;
 
-        console.warn("remove arr: ", arr);
-        console.warn("remove removingArr: ", removingArr);
-
         let removedCards = [];
         let filteredArr = arr.filter(obj => {
             let index = this.findIndex(removingArr, obj, equalsFn);

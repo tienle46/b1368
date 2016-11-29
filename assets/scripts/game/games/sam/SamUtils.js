@@ -21,8 +21,11 @@ export default class SamUtils {
     static getValidSelectedCards(selectedCards = [], prePlayedCards = []) {
         if (ArrayUtils.isEmpty(selectedCards)) return null;
 
-        let playedCardsGroupType = this.getGroupCardType([...prePlayedCards]);
-        let selectedCardsGroupType = this.getGroupCardType(this.sortAsc([...selectedCards]));
+        let prePlayedSortedCards = this.sortAsc([...prePlayedCards]);
+        let selectedSortedCards = this.sortAsc([...selectedCards]);
+
+        let playedCardsGroupType = this.getGroupCardType(prePlayedSortedCards);
+        let selectedCardsGroupType = this.getGroupCardType(this.sortAsc(selectedSortedCards));
 
         if (ArrayUtils.isEmpty(prePlayedCards)) {
             if (selectedCardsGroupType != SamUtils.GROUP_CARD_TYPE_INVALID) {
@@ -34,8 +37,8 @@ export default class SamUtils {
              * nguoi truoc danh khong Neu khac loai bai thi kiem tra cac truong
              * hop chat duoc biet
              */
-            let maxSelectedCard = selectedCards[selectedCards.length - 1];
-            let maxPlayedCard = prePlayedCards[prePlayedCards.length - 1];
+            let maxSelectedCard = selectedSortedCards[selectedCards.length - 1];
+            let maxPlayedCard = prePlayedSortedCards[prePlayedCards.length - 1];
             let compareMaxCardValue = SamUtils.compareSamRank(maxSelectedCard, maxPlayedCard);
 
             if (selectedCardsGroupType == playedCardsGroupType) {
@@ -85,6 +88,7 @@ export default class SamUtils {
                 }
             }
         }
+
         return null;
     }
 

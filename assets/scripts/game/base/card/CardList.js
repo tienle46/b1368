@@ -64,7 +64,7 @@ export default class CardList extends Component {
     clean() {
         this.cards.forEach(card => {
             card.setSelected(false, false);
-            card.setHighlight(false)
+            card.setHighlight(false);
             card.setGroup();
         });
     }
@@ -117,9 +117,9 @@ export default class CardList extends Component {
     }
 
     setReveal(reveal) {
-        if(this.initiated){
+        if (this.initiated) {
             this.reveal = reveal;
-        }else{
+        } else {
             this.__reveal = reveal;
         }
     }
@@ -292,26 +292,41 @@ export default class CardList extends Component {
         this._overlapSpace = cardDistance < this.space ? cardDistance : this.space;
     }
 
-    _adjustCardsPosition() {
+    _isSamePosition(pos1, pos2){
+        return pos1 && pos2 && pos1.x == pos2.x && pos1.y == pos2.y;
+    }
+
+    _adjustCardsPosition(autoUpdate = true, duration = CardList.TRANSFER_CARD_DURATION) {
 
         this._updateCardSpacing();
-
         let startPosition = this._getStartPosition();
+
         if (this._isHorizontal()) {
-
-
             if (this._isRightAlignment()) {
                 this.cards.forEach((card, index) => {
                     card.setSelected(false, false);
-                    card.node.setPosition(startPosition.x - index * this._overlapSpace, startPosition.y);
                     card.node.setLocalZOrder(52 - index);
+                    let position = cc.v2(startPosition.x - index * this._overlapSpace, startPosition.y);
+                    let currentPosition = this.node.getPosition();
+                    if(this._isSamePosition(currentPosition, card.__originalInfo.position)){
+                        this.setPosition(position);
+                    }
+
+                    card.setOriginalInfo({position});
                 });
             }
             else {
                 this.cards.forEach((card, index) => {
                     card.setSelected(false, false);
-                    card.node.setPosition(startPosition.x + index * this._overlapSpace, startPosition.y)
+                    let position = cc.v2(startPosition.x + index * this._overlapSpace, startPosition.y);
                     card.node.setLocalZOrder(index);
+
+                    let currentPosition = this.node.getPosition();
+                    if(this._isSamePosition(currentPosition, card.__originalInfo.position)){
+                        this.setPosition(position);
+                    }
+
+                    card.setOriginalInfo({position});
                 });
             }
         }
@@ -319,24 +334,42 @@ export default class CardList extends Component {
             if (this._isBottomAlignment()) {
                 this.cards.forEach((card, index) => {
                     card.setSelected(false, false);
-                    card.node.setPosition(startPosition.x, startPosition.y + index * this._overlapSpace);
+                    let position = cc.v2(startPosition.x, startPosition.y + index * this._overlapSpace);
                     card.node.setLocalZOrder(52 - index);
+
+                    let currentPosition = this.node.getPosition();
+                    if(this._isSamePosition(currentPosition, card.__originalInfo.position)){
+                        this.setPosition(position);
+                    }
+
+                    card.setOriginalInfo({position});
                 });
             }
             else {
                 this.cards.forEach((card, index) => {
                     card.setSelected(false, false);
-                    card.node.setPosition(startPosition.x, startPosition.y - index * this._overlapSpace)
+                    let position = cc.v2(startPosition.x, startPosition.y - index * this._overlapSpace)
                     card.node.setLocalZOrder(index);
+
+                    let currentPosition = this.node.getPosition();
+                    if(this._isSamePosition(currentPosition, card.__originalInfo.position)){
+                        this.setPosition(position);
+                    }
+
+                    card.setOriginalInfo({position});
                 });
             }
         }
 
+        autoUpdate && this.runCardActions(duration);
+    }
 
+    updateFinalPosition(){
+        this.cards.forEach(card => card.updateFinalPosition());
     }
 
     onCardsChanged() {
-        this._adjustCardsPosition();
+        this._adjustCardsPosition(true, 0);
     }
 
     _getStartPosition() {
@@ -349,32 +382,20 @@ export default class CardList extends Component {
         }
     }
 
-    _swapCard(idx1, idx2) {
-
-        [this.cards[idx1], this.cards[idx2]] = [this.cards[idx2], this.cards[idx1]];
-        this.node.children[idx1].setLocalZOrder(idx2);
-        this.node.children[idx2].setLocalZOrder(idx1);
-        [this.node.children[idx1], this.node.children[idx2]] = [this.node.children[idx2], this.node.children[idx1]];
-    }
-
     push(card) {
         this.cards.push(card);
     }
 
-    addAll(cards) {
-        this.cards.push(...cards);
-    }
-
     setCards(cards, active, reveal) {
         this.clear();
-        this._fillCards(cards, active, reveal);
+        this._fillCards(cards, active, reveal, true, 0);
     }
 
     addCards(cards, active, reveal) {
         return this._fillCards(cards, active, reveal);
     }
 
-    _fillCards(cards, active = true, reveal = this.reveal, log) {
+    _fillCards(cards, active = true, reveal = this.reveal, autoAdjust, adjustDuration) {
 
         this.cleanSelectedCard();
 
@@ -428,8 +449,7 @@ export default class CardList extends Component {
 
         });
 
-        this._adjustCardsPosition();
-
+        this._adjustCardsPosition(autoAdjust, adjustDuration);
         return addedCards;
     }
 
@@ -459,9 +479,9 @@ export default class CardList extends Component {
     }
 
     _removeCardModelOnly(cardsOrRemoveAmount) {
-        if(utils.isNumber(cardsOrRemoveAmount)){
+        if (utils.isNumber(cardsOrRemoveAmount)) {
             return this.cards.splice(0, cardsOrRemoveAmount);
-        }else{
+        } else {
             return ArrayUtils.removeAll(this.cards, cardsOrRemoveAmount, null, true);
         }
         // let removingCards = utils.isNumber(cardsOrRemoveAmount) ? this._getSubCards(cardsOrRemoveAmount) : this.findCardComponents(cardsOrRemoveAmount);
@@ -487,10 +507,6 @@ export default class CardList extends Component {
 
     setDraggable(draggable) {
         this._draggable = draggable;
-    }
-
-    _test(cards) {
-        this._fillCards(cards);
     }
 
     onLoad() {
@@ -534,10 +550,8 @@ export default class CardList extends Component {
         this.initiated = true;
     }
 
-    start(){
-        if(this.__reveal != undefined){
-            this.setReveal(this.__reveal);
-        }
+    start() {
+        this.__reveal != undefined && this.setReveal(this.__reveal);
     }
 
     setSelecteds(cards, selected = true) {
@@ -571,12 +585,9 @@ export default class CardList extends Component {
         if (src.reveal) {
             src.transferTo(this, cards, cb);
         } else {
-            
-            console.log("transferFrom: ", this.reveal, src.reveal);
             let reveal = cbOrOption && cbOrOption.hasOwnProperty('reveal') ? cbOrOption.reveal : this.reveal;
             let addedCards = src.addCards(cards, true, reveal);
-            console.log("transferFrom before transferTo: ", this.reveal, src.reveal);
-            src.transferTo(this, addedCards , cb);
+            src.transferTo(this, addedCards, cb);
         }
     }
 
@@ -591,9 +602,7 @@ export default class CardList extends Component {
 
         // Xoá model object ngay lập tức, sau đó thực hiện animation
         // tránh trường hợp có exception can thiệp animation chưa thực hiện xong để đảm bảo tính nhất quán dữ liệu
-        if (cards.length == 0) {
-            return;
-        }
+        if (cards.length == 0) return;
 
         const destCardList = dest && dest instanceof cc.Node ? dest.getComponent('CardList') : dest;
         if (!destCardList || !destCardList.cards || !destCardList.node) {
@@ -601,45 +610,68 @@ export default class CardList extends Component {
             return;
         }
 
+        this.stopAllCardActions();
+        destCardList.stopAllCardActions();
+
         const actions = [];
         const removedCards = this._removeCardModelOnly(cards);
         const currentDestLength = destCardList.cards.length;
-        const addedCards = destCardList._fillCards(removedCards, true, reveal);
+        const addedCards = destCardList._fillCards(removedCards, true, reveal, false);
+        destCardList.__endActionCb = () => cb && cb(addedCards);
 
-        destCardList._adjustCardsPosition();
         removedCards.forEach((card, index) => {
 
-            const animatingCard = destCardList.cards[currentDestLength + index];
-
-            const worldPoint = card.node.parent.convertToWorldSpaceAR(card.node.getPosition());
-            const localDestinationPoint = destCardList.node.convertToNodeSpaceAR(worldPoint);
-
             const originalScale = card.node.getScale();
+            const worldPoint = card.node.parent.convertToWorldSpaceAR(card.node.getPosition());
+
+            const animatingCard = destCardList.cards[currentDestLength + index];
+            const localDestinationPoint = destCardList.node.convertToNodeSpaceAR(worldPoint);
             const scaleTo = animatingCard.node.getScale();
+            const moveToPosition = animatingCard.__originalInfo.position || animatingCard.node.getPosition();
 
-            const moveToPosition = animatingCard.node.getPosition();
-            animatingCard.node.setPosition(cc.v2(localDestinationPoint.x, localDestinationPoint.y));
+            animatingCard.node.setPosition(localDestinationPoint);
             animatingCard.node.setScale(originalScale);
-
-            actions.push(cc.callFunc(() => {
-
-                let animation = cc.spawn(
-                    cc.moveTo(CardList.TRANSFER_CARD_DURATION, moveToPosition.x, moveToPosition.y),
-                    cc.scaleTo(CardList.TRANSFER_CARD_DURATION, scaleTo)
-                );
-
-                animatingCard.node.runAction(
-                    cb ? cc.sequence(animation, cc.delayTime(CardList.TRANSFER_CARD_DURATION + 0.01), cc.callFunc(() => {
-                        cb && cb(addedCards)
-                    })) : animation
-                );
-            }));
+            animatingCard.setOriginalInfo({position: moveToPosition, scale: scaleTo})
 
             card.node.removeFromParent(true);
         });
 
-        actions.length > 0 && destCardList.node.runAction(cc.sequence(actions));
+        destCardList.runCardActions();
+        destCardList.node.runAction(
+            cc.sequence(
+                cc.delayTime(CardList.TRANSFER_CARD_DURATION + 0.01),
+                cc.callFunc(() => {
+                    destCardList.finishAllCardActions(destCardList, addedCards);
+                })
+            )
+        );
+
         this._adjustCardsPosition();
+    }
+
+    runCardActions(duration = CardList.TRANSFER_CARD_DURATION){
+        this.cards.forEach(card => {
+            let action = card.createActionFromOriginalInfo(duration);
+            action && card.node.runAction(action);
+        });
+    }
+
+    stopAllCardActions(cardList = this, ...args) {
+        cardList.node && this.node.stopAllActions();
+        cardList.cards.forEach(card => card.node.stopAllActions());
+        if (this.__endActionCb) {
+            this.__endActionCb(...args);
+            this.__endActionCb = null;
+        }
+    }
+
+    finishAllCardActions(cardList = this, ...args) {
+        cardList.node && this.node.stopAllActions();
+        cardList.cards.forEach(card => card.finishCardAction());
+        if (this.__endActionCb) {
+            this.__endActionCb(...args);
+            this.__endActionCb = null;
+        }
     }
 
     /**

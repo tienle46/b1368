@@ -47,6 +47,53 @@ export default class Card extends Component {
         this.reveal = true;
         this.group = -1;
         this.locked = false;
+        this.__originalInfo = {};
+    }
+
+    setOriginalInfo(info = {}){
+        this.__originalInfo = {...this.__originalInfo, ...info};
+    }
+
+    updateFinalPosition(){
+        let position = this.__originalInfo.position;
+        position && this.node.setPosition(position);
+    }
+
+    getFinalScale(){
+        return this.__originalInfo.scale || this.node.scale;
+    }
+
+    getFinalPosition(){
+        return this.__originalInfo.position || this.node.position;
+    }
+
+    finishCardAction(){
+        this.node.stopAllActions();
+
+        let {position, rotation, scale} = this.__originalInfo;
+
+        position && this.node.setPosition(position);
+        rotation && (this.node.rotation = rotation);
+        scale && this.node.setScale(scale);
+    }
+
+    createActionFromOriginalInfo(duration){
+        let actions = [];
+        let {position, rotation, scale} = this.__originalInfo;
+
+        if(position && (position != this.node.position)){
+            actions.push(cc.moveTo(duration, position));
+        }
+
+        if(rotation && (rotation != this.node.rotation)){
+        actions.push(cc.rotateTo(duration, rotation));
+        }
+
+        if(scale && (scale != this.node.scale)){
+            actions.push(cc.scaleTo(duration, scale));
+        }
+
+        return actions.length > 0 ? cc.spawn(actions) : null;
     }
 
     setLocked(locked){

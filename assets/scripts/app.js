@@ -59,13 +59,7 @@ app.createComponent = (classNameOrInstance, extendClass = undefined, ...args) =>
             return element;
         }
 
-        switch (element) {
-            case cc.String:
-                console.log("cc.String: " + key + " = ", element)
-                return "";
-            default:
-                return isCocosComponent(element) || isCocosProperty(element) ? element : undefined;
-        }
+        return isCocosComponent(element) || isCocosProperty(element) ? element : undefined;
     }
 
     // Check if element is instance of cc[xxx]
@@ -86,7 +80,7 @@ app.createComponent = (classNameOrInstance, extendClass = undefined, ...args) =>
     }
 
     Object.getOwnPropertyNames(instance).forEach(key => {
-        if (key !== 'extends' && key !== 'properties' && !key.startsWith('__')) {
+        if (key !== 'extends' && key !== 'properties' /*&& !key.startsWith('__')*/) {
             // check if property is Object && except instance of cc.Componet
             // such as {default: xxx, type: cc.XXX } => assign to `properties` for displaying value on cocoCcreator
             // if `instance[key]` is intance of `cc`
