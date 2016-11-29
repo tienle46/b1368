@@ -80,8 +80,9 @@ cc.Class({
 
     // },
     onClick1(){
-        FriendProfilePopupRub.show(this.node, 'pinocchio', this.player1, this.player2);
+        // FriendProfilePopupRub.show(this.node, 'pinocchio', this.player1, this.player2);
         // Props.playPropAtIndex(0, this.player1, this.player2);
+        Props.playPropAtIndex(0, this.player1);
     },
 
 });
