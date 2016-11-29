@@ -157,23 +157,32 @@ export default class ListTableScene extends BaseScene {
 
     _addGlobalListener() {
         super._addGlobalListener();
-        app.system.addListener(SFS2X.SFSEvent.ROOM_JOIN, (event) => {
-            let room = event.room;
-            if (room) {
-                if (room.isGame === false && room.name && room.name.indexOf('lobby') > -1) {
-                    let sendObject = {
-                        cmd: app.commands.USER_LIST_ROOM,
-                        room
-                    };
-                    app.service.send(sendObject, (data) => {
-                        this.node && this._initRoomsListFromData(data);
-                    });
-                }
-            }
-
-        }, this);
+        app.system.addListener(SFS2X.SFSEvent.ROOM_JOIN, this._handleRoomJoinEvent, this);
     }
 
+    _removeGlobalListener() {
+        super._removeGlobalListener();
+        app.system.removeListener(SFS2X.SFSEvent.ROOM_JOIN, this._handleRoomJoinEvent);
+    }
+
+    _handleRoomJoinEvent(event) {
+        let room = event.room;
+        if (room) {
+            if (room.isGame === false && room.name && room.name.indexOf('lobby') > -1) {
+                let sendObject = {
+                    cmd: app.commands.USER_LIST_ROOM,
+                    room
+                };
+                app.service.send(sendObject, (data) => {
+                    this.node && this._initRoomsListFromData(data);
+                });
+            }
+        } else {
+            if (event.errorCode) {
+                app.system.error(event.errorMessage);
+            }
+        }
+    }
     _initRoomsListFromData(data) {
         if (!data)
             return;
@@ -304,9 +313,6 @@ export default class ListTableScene extends BaseScene {
         app.service.send(sendObject);
     }
 
-    _removeGlobalListener() {
-        super._removeGlobalListener();
-    }
 
     _createRoom(gameCode = null, minBet = 0, roomCapacity = 2, password = undefined) {
 
