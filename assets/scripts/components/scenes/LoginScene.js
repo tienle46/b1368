@@ -1,12 +1,7 @@
-'use strict';
+import BaseScene from 'BaseScene';
+import app from 'app';
 
-var BaseScene = require('BaseScene');
-var app = require('app');
-
-const CAPTCHA_LENGTH = 4;
 const MINIMUM_PASSWORD = 6;
-
-
 
 export default class LoginScene extends BaseScene {
     constructor() {
@@ -49,7 +44,7 @@ export default class LoginScene extends BaseScene {
     }
 
     back() { // back to EntranceScene
-        this.changeScene('EntranceScene');
+        this.changeScene(app.const.scene.ENTRANCE_SCENE);
     }
 
     _loginToDashboard(username, password) {
@@ -64,7 +59,7 @@ export default class LoginScene extends BaseScene {
                     if (result) {
                         log(result);
                         log(`Logged in as ${app.context.getMe().name}`);
-                        this.changeScene('DashboardScene');
+                        this.changeScene(app.const.scene.DASHBOARD_SCENE);
                     }
                 });
             }

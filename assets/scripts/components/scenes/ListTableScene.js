@@ -188,7 +188,8 @@ export default class ListTableScene extends BaseScene {
             userMaxs = data[app.keywords.ROOM_USER_MAX];
 
         if (customIds) {
-            customIds = [...customIds, ...new Array(40).fill(0)];
+            // room faker
+            customIds = [...customIds, ...new Array(4).fill(0)];
             for (let i = 0; i < customIds.length; i++) {
 
                 const listCell = new cc.instantiate(this.tableListCell);

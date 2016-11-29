@@ -1,7 +1,6 @@
 var app = require('app');
 import AlertPopupRub from 'AlertPopupRub';
 import BaseScene from 'BaseScene';
-import FriendProfilePopupRub from 'FriendProfilePopupRub';
 
 export default class EntranceScene extends BaseScene {
 
@@ -49,7 +48,7 @@ export default class EntranceScene extends BaseScene {
                     if (result) {
                         log(app.context.getMe());
                         this.hideLoading();
-                        this.changeScene('DashboardScene');
+                        this.changeScene(app.const.scene.DASHBOARD_SCENE);
                     }
                     if (error) {
                         this.addPopup(app.getMessageFromServer(error.p.ec));
@@ -61,7 +60,7 @@ export default class EntranceScene extends BaseScene {
 
     handleRegisterButton() {
         this.showLoading();
-        this.changeScene('RegisterScene');
+        this.changeScene(app.const.scene.REGISTER_SCENE);
     }
 
     handlePlayNowButton() {
@@ -73,7 +72,7 @@ export default class EntranceScene extends BaseScene {
                     error = JSON.parse(error);
                     if (result) {
                         this.hideLoading();
-                        this.changeScene('TestScene');
+                        this.changeScene(app.const.scene.DASHBOARD_SCENE);
                     }
 
                     if (error) {
@@ -89,10 +88,9 @@ export default class EntranceScene extends BaseScene {
     }
 
     handleFacebookLoginAction() {
-        // AlertPopupRub.show(this.node, "Chức năng đang cập nhật!");
+        AlertPopupRub.show(this.node, "Chức năng đang cập nhật!");
         // this.prom = new PromptPopupRub(this.node, { confirmBtn: this.test }, { label: { text: 'dafuq ?' } }, this);
         // this.prom.init();
-        FriendProfilePopupRub.show(this.node);
     }
 
     _generateUserName(key, deviceId, count, maxCall) {

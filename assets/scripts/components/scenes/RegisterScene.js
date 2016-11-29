@@ -1,6 +1,5 @@
 var BaseScene = require('BaseScene');
 var app = require('app');
-import SegmentControlRub from 'SegmentControlRub';
 
 const MINIMUM_PASSWORD = 6;
 
@@ -9,7 +8,7 @@ export default class RegisterScene extends BaseScene {
         super();
 
         this.properties = {
-            resetCaptcha : cc.Node,
+            resetCaptcha: cc.Node,
         }
 
         this.userNameEditBox = {
@@ -55,7 +54,7 @@ export default class RegisterScene extends BaseScene {
                         if (result) {
                             log(result);
                             log(`Logged in as ${app.context.getMe().name}`);
-                            this.changeScene('DashboardScene');
+                            this.changeScene(app.const.scene.DASHBOARD_SCENE);
                         }
                     });
                 }
@@ -79,7 +78,7 @@ export default class RegisterScene extends BaseScene {
 
     back() { // back to EntranceScene
         this.showLoading();
-        this.changeScene('EntranceScene');
+        this.changeScene(app.const.scene.ENTRANCE_SCENE);
     }
 
 
