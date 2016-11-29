@@ -9,6 +9,11 @@ export default class DashboardScene extends BaseScene {
         super();
         this.gameList = [];
 
+        this.pageView = {
+            default: null,
+            type: cc.PageView
+        };
+
         this.viewContainer = {
             default: null,
             type: cc.Node
@@ -61,12 +66,6 @@ export default class DashboardScene extends BaseScene {
             name: 'pageNode',
             size: cc.size(998, 515),
             // position: cc.v2(500, 0),
-            widget: {
-                top: 0,
-                // left: 0,
-                // right: 0,
-                bottom: 0
-            },
             layout: {
                 type: cc.Layout.Type.GRID,
                 resizeMode: cc.Layout.ResizeMode.CHILDREN,
@@ -80,20 +79,20 @@ export default class DashboardScene extends BaseScene {
             }
         };
 
-        this.gameList = [...this.gameList];
-
         var node = null;
-
-        this.gameList.forEach((gc, i) => {
-            if (i % 6 === 0) {
-                node = NodeRub.createNodeByOptions(pageNodeOptions);
-                this.viewContainer.addChild(node);
-            }
-
+        let count = 0;
+        app.async.mapSeries(this.gameList, (gc, cb) => {
             let gameIconPath = app.res.gameIcon[gc];
-
-            gameIconPath && cc.loader.loadRes(gameIconPath, cc.SpriteFrame, (err, spriteFrame) => {
-
+            if (count > 6 && !indicator) {
+                var indicator = this.pageView.indicator.node;
+                indicator && indicator.opacity < 255 && (indicator.opacity = 255);
+            }
+            if (count % 6 === 0) {
+                node = NodeRub.createNodeByOptions(pageNodeOptions);
+                // this.viewContainer.addChild(node);
+                this.pageView.addPage(node);
+            }
+            gameIconPath && RubUtils.loadRes(gameIconPath, true).then((spriteFrame) => {
                 const nodeItem = new cc.instantiate(this.item);
                 nodeItem.getComponent(cc.Sprite).spriteFrame = spriteFrame;
                 nodeItem.setContentSize(itemDimension, itemDimension);
@@ -111,14 +110,15 @@ export default class DashboardScene extends BaseScene {
                 });
 
                 node && node.addChild(nodeItem);
-            });
 
-            // if(gameIconPath) return true;
+                count++;
+                cb(); // next ->
+            });
         });
     }
 
-    // Listen Bottom Bar Event (Click button In Bottom Bar)
 
+    // Listen Bottom Bar Event (Click button In Bottom Bar)
     _addBottomBar() {
         RubUtils.loadRes('bottombar/bottombar').then((prefab) => {
             let bottomBarNode = cc.instantiate(prefab);
