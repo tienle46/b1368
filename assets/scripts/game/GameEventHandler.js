@@ -3,11 +3,11 @@
  */
 
 import app from 'app';
-import {utils, GameUtils} from 'utils';
+import { utils, GameUtils } from 'utils';
 import SFS2X from 'SFS2X';
 import async from 'async';
-import {Events} from 'events'
-import {Keywords, Commands} from 'core';
+import { Events } from 'events'
+import { Keywords, Commands } from 'core';
 
 export default class GameEventHandler {
     constructor(scene) {
@@ -66,7 +66,7 @@ export default class GameEventHandler {
         app.system.addGameListener(Commands.PLAYER_EAT_CARD, this._onPlayerEatCard, this);
         app.system.addGameListener(Commands.PLAYER_DOWN_CARD, this._onPlayerDownCard, this);
         app.system.addGameListener(Commands.PLAYER_HELP_CARD, this._onPlayerHelpCard, this);
-    }0
+    }
 
     removeGameEventListener() {
 
@@ -104,35 +104,35 @@ export default class GameEventHandler {
 
     }
 
-    _onPlayerDownCard(data){
+    _onPlayerDownCard(data) {
         let playerId = utils.getValue(data, Keywords.PLAYER_ID);
         playerId && this.scene.emit(Events.HANDLE_PLAYER_DOWN_CARD, playerId, data);
     }
 
-    _onPlayerTakeCard(data){
+    _onPlayerTakeCard(data) {
         let playerId = utils.getValue(data, Keywords.PLAYER_ID);
         playerId && this.scene.emit(Events.HANDLE_PLAYER_TAKE_CARD, playerId, data);
     }
 
-    _onPlayerEatCard(data){
+    _onPlayerEatCard(data) {
         let playerId = utils.getValue(data, Keywords.PLAYER_ID);
         playerId && this.scene.emit(Events.HANDLE_PLAYER_EAT_CARD, playerId, data);
     }
 
-    _onPlayerHelpCard(data){
+    _onPlayerHelpCard(data) {
         let playerId = utils.getValue(data, Keywords.PLAYER_ID);
         playerId && this.scene.emit(Events.HANDLE_PLAYER_HELP_CARD, playerId, data);
     }
 
-    _onPlayerPublishMessage(event){
+    _onPlayerPublishMessage(event) {
         this.scene.emit(Events.ON_PLAYER_CHAT_MESSAGE, event.sender, event.message);
     }
 
-    _handleChangeBoardMaster(data){
+    _handleChangeBoardMaster(data) {
 
     }
 
-    _handlePlayerRejoinGame(data){
+    _handlePlayerRejoinGame(data) {
         this.scene.handleRejoinGame(data);
     }
 
@@ -142,24 +142,22 @@ export default class GameEventHandler {
         this.scene.emit(Events.ON_PLAYER_REENTER_GAME, playerId, userId);
     }
 
-    _onUserVariablesUpdate(event){
+    _onUserVariablesUpdate(event) {
         let changedVars = event.changedVars;
         let user = event.user;
 
         changedVars && changedVars.forEach((varName) => {
             if (Keywords.USER_VARIABLE_BALANCE == varName) {
                 this.scene.emit(Events.ON_USER_UPDATE_BALANCE, user);
-            }
-            else if (Keywords.USER_VARIABLE_LEVEL == varName) {
+            } else if (Keywords.USER_VARIABLE_LEVEL == varName) {
                 this.scene.emit(Events.ON_USER_UPDATE_LEVEL, user);
-            }
-            else if (Keywords.USER_VARIABLE_EXP_POINT == varName) {
+            } else if (Keywords.USER_VARIABLE_EXP_POINT == varName) {
                 this.scene.emit(Events.ON_USER_UPDATE_EXP_POINT, user);
             }
         });
     }
 
-    _onRoomVariablesUpdate(event){
+    _onRoomVariablesUpdate(event) {
         let changedVars = event.changedVars;
         let room = event.room;
 
@@ -197,7 +195,7 @@ export default class GameEventHandler {
     _onUserExitRoom(event) {
         console.log(event)
 
-        if (!event.user || !event.room ||  !this.scene.room || event.room.id != this.scene.room.id) {
+        if (!event.user || !event.room || !this.scene.room || event.room.id != this.scene.room.id) {
             return;
         }
 
@@ -261,22 +259,22 @@ export default class GameEventHandler {
 
     _handlePingClient(data, roomId = -1) {
         if (app.context.isJoinedInGameRoom(roomId)) {
-            app.service.send({cmd: Keywords.PING_CLIENT, data: data, room: app.context.currentRoom});
+            app.service.send({ cmd: Keywords.PING_CLIENT, data: data, room: app.context.currentRoom });
         }
     }
 
-    _onPlayerReady(data){
+    _onPlayerReady(data) {
         console.log("on player ready: ", data)
         let playerId = utils.getValue(data, app.keywords.PLAYER_ID);
         playerId && this.scene.emit(Events.ON_PLAYER_READY_STATE_CHANGED, playerId, true, this.scene.gamePlayers.isItMe(playerId));
     }
 
-    _onPlayerUnready(data){
+    _onPlayerUnready(data) {
         let playerId = utils.getValue(data, app.keywords.PLAYER_ID);
         playerId && this.scene.emit(Events.ON_PLAYER_READY_STATE_CHANGED, playerId, false, this.scene.gamePlayers.isItMe(playerId));
     }
 
-    _handleChangePlayerBalance(data){
+    _handleChangePlayerBalance(data) {
         let playerIds = utils.getValue(data, Keywords.GAME_LIST_PLAYER);
         let playersBalances = utils.getValue(data, Keywords.USER_BALANCE);
 
