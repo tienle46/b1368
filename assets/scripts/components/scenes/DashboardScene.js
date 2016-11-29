@@ -1,6 +1,7 @@
 import app from 'app';
 import BaseScene from 'BaseScene';
 import RubUtils from 'RubUtils';
+import NodeRub from 'NodeRub';
 import ArrayUtils from "../../utils/ArrayUtils";
 
 export default class DashboardScene extends BaseScene {
@@ -8,10 +9,9 @@ export default class DashboardScene extends BaseScene {
         super();
         this.gameList = [];
 
-
-        this.scrollerContentView = {
+        this.viewContainer = {
             default: null,
-            type: cc.Layout
+            type: cc.Node
         };
 
         this.item = {
@@ -54,10 +54,41 @@ export default class DashboardScene extends BaseScene {
 
     _initItemListGame() {
 
-        const height = this.scrollerContentView.node.height;
+        const height = this.viewContainer.height || 200;
         const itemDimension = Math.floor(height / 2.0 - 37);
 
-        this.gameList.some(gc => {
+        let pageNodeOptions = {
+            name: 'pageNode',
+            size: cc.size(998, 515),
+            // position: cc.v2(500, 0),
+            widget: {
+                top: 0,
+                // left: 0,
+                // right: 0,
+                bottom: 0
+            },
+            layout: {
+                type: cc.Layout.Type.GRID,
+                resizeMode: cc.Layout.ResizeMode.CHILDREN,
+                startAxis: cc.Layout.AxisDirection.VERTICAL,
+                cellSize: cc.size(240, 240),
+                padding: 0,
+                spacingX: 125,
+                spacingY: 20,
+                verticalDirection: cc.Layout.VerticalDirection.TOP_TO_BOTTOM,
+                horizontalDirection: cc.Layout.HorizontalDirection.LEFT_TO_RIGHT
+            }
+        };
+
+        this.gameList = [...this.gameList];
+
+        var node = null;
+
+        this.gameList.forEach((gc, i) => {
+            if (i % 6 === 0) {
+                node = NodeRub.createNodeByOptions(pageNodeOptions);
+                this.viewContainer.addChild(node);
+            }
 
             let gameIconPath = app.res.gameIcon[gc];
 
@@ -79,13 +110,11 @@ export default class DashboardScene extends BaseScene {
                     this.changeScene(app.const.scene.LIST_TABLE_SCENE);
                 });
 
-                this.scrollerContentView.node.addChild(nodeItem);
-
+                node && node.addChild(nodeItem);
             });
 
             // if(gameIconPath) return true;
         });
-
     }
 
     // Listen Bottom Bar Event (Click button In Bottom Bar)

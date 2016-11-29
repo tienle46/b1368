@@ -93,6 +93,7 @@ let NodeRub = {
      * {
      * type: cc.Layout.Type.VERTICAL,
      * resizeMode: cc.Layout.ResizeMode.NONE,
+     * cellSize: cc.size(), // children resize mode
      * padding: 10,
      * spacingY: 20,
      * spacingX: 20,
