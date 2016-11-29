@@ -427,11 +427,11 @@
     "_parent": {
       "__id__": 11
     },
-    "_id": "645ac8DWOBHvrqTOCxQ392u",
+    "_id": "fa043X07VVLcbJ3rFelrwVU",
     "_prefab": {
       "__id__": 13
     },
-    "_name": "FourPlayerPositionsPrefab",
+    "_name": "FivePlayerPositions",
     "_active": true,
     "_position": {
       "__type__": "cc.Vec2",
@@ -449,9 +449,9 @@
       "__id__": 12
     },
     "asset": {
-      "__uuid__": "e196cc5e-9dfe-4a2b-b80d-c51895c3295d"
+      "__uuid__": "09ea7b47-4865-4009-9ab4-7462abdb7f9a"
     },
-    "fileId": "4df81Xfr+ZJV7R71XhoGjxJ",
+    "fileId": "ee2a89eyhhI1a7QS1WzVVii",
     "sync": true
   },
   {
@@ -808,6 +808,6 @@
     "playerPositionAnchorsNode": {
       "__id__": 12
     },
-    "maxPlayers": 4
+    "maxPlayers": 5
   }
 ]

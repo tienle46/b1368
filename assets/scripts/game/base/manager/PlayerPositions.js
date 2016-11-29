@@ -8,13 +8,6 @@ import utils from 'utils';
 import CCUtils from 'CCUtils';
 import Events from 'Events'
 
-const fourPlayerSeats = {
-    [1]: {1: 0, 2: 3, 3: 2, 4: 4},
-    [2]: {1: 3, 2: 0, 3: 4, 4: 2},
-    [3]: {1: 4, 2: 2, 3: 0, 4: 3},
-    [4]: {1: 2, 2: 4, 3: 3, 4: 0}
-};
-
 export default class PlayerPositions extends Component {
 
     static get ALIGN_TOP() {
@@ -35,6 +28,11 @@ export default class PlayerPositions extends Component {
 
     constructor() {
         super();
+
+        this.properties = {
+            ...this.properties,
+            inviteButtonName: 'inviteButton'
+        }
         this.playerAnchors = null;
         this.scene;
     }
@@ -100,7 +98,7 @@ export default class PlayerPositions extends Component {
 
     hideAllInviteButtons() {
         this.playerAnchors.forEach((anchor, index) => {
-            let inviteButton = anchor.getChildByName('inviteButton');
+            let inviteButton = anchor.getChildByName(this.inviteButtonName);
             utils.deactive(inviteButton);
         });
     }
@@ -108,7 +106,7 @@ export default class PlayerPositions extends Component {
     showAllInviteButtons(excludeAnchorIndexes = []) {
 
         this.playerAnchors.forEach(anchor => {
-            let inviteButton = anchor.getChildByName('inviteButton');
+            let inviteButton = anchor.getChildByName(this.inviteButtonName);
             utils.active(inviteButton);
         });
 
@@ -120,9 +118,13 @@ export default class PlayerPositions extends Component {
         return this.getPlayerAnchor(this.getPlayerAnchorIndex(playerId, isItMe));
     }
 
+    /**
+     * @param gameCode
+     * @returns {{}}
+     * @abstract
+     */
     _getPlayerSeatIndexs(gameCode){
-        return fourPlayerSeats;
-        //TODO
+        return {};
     }
 
     getPlayerAnchorIndex(playerId, isItMe, gameCode) {
@@ -176,7 +178,7 @@ export default class PlayerPositions extends Component {
 
             for (let i = 0; i < anchor.children.length; i++) {
                 let node = anchor.children[i];
-                if (node.name == 'inviteButton') {
+                if (node.name == this.inviteButtonName) {
                     node.active = visible;
                     break;
                 }
@@ -194,49 +196,17 @@ export default class PlayerPositions extends Component {
         if (anchor) anchor.active = true;
     }
 
-    _getNextSeatIndex(seatIndex){
+    /**
+     * @param seatIndex
+     * @abstract
+     */
+    _getNextSeatIndex(seatIndex){}
 
-        let nextIndex = null;
-
-        switch (seatIndex){
-            case 0:
-            case 1:
-                nextIndex = 4;
-                break;
-            case 2:
-                nextIndex = this.scene.gamePlayers.me ? 0 : 1;
-                break;
-            case 3:
-                nextIndex = 2;
-                break;
-            case 4:
-                nextIndex = 3;
-                break;
-        }
-
-        return nextIndex;
-    }
-
-    _getPreviousSeatIndex(seatIndex){
-        let preIndex = null;
-        switch (seatIndex){
-            case 0:
-            case 1:
-                preIndex = 2;
-                break;
-            case 2:
-                preIndex = 3;
-                break;
-            case 3:
-                preIndex = 4;
-                break;
-            case 4:
-                preIndex = this.scene.gamePlayers.me ? 0 : 1;
-                break;
-        }
-
-        return preIndex;
-    }
+    /**
+     * @param seatIndex
+     * @abstract
+     */
+    _getPreviousSeatIndex(seatIndex){}
 
     getNextNeighbourID(playerId) {
         let {seatIndex, seatIndexs, meId} = this._getPlayerSeatIndex(playerId, this.scene.gameCode);

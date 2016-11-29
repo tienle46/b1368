@@ -65,9 +65,7 @@ quick_gen_project_*_autogen.sh.meta
 .idea/modules.xml
 .idea/vcs.xml
 .idea/workspace.xml
-/assets/scripts/components/scenes/TestScene.js
-
-CardHolder.js
-CardHolder.js.meta
+assets/scripts/components/scenes/TestScene.js
+assets/scenes/TestScene.fire.meta
 assets/test/TestScene.fire
 assets/test/TestScene.fire.meta

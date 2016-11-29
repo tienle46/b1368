@@ -3,11 +3,21 @@
  */
 
 import app from 'app';
-import PositionManager from 'PlayerPositions';
+import PlayerPositions from 'PlayerPositions';
 
-class FivePlayerPositions extends PositionManager {
+const fivePlayerSeats = {
+    [1]: {1: 0, 2: 5, 3: 4, 4: 3, 5: 2},
+    [2]: {1: 2, 2: 0, 3: 5, 4: 4, 5: 3},
+    [3]: {1: 3, 2: 2, 3: 0, 4: 5, 5: 4},
+    [4]: {1: 4, 2: 3, 3: 2, 4: 0, 5: 5},
+    [5]: {1: 5, 2: 4, 3: 3, 4: 2, 5: 0}
+};
+
+class FivePlayerPositions extends PlayerPositions {
     constructor() {
         super();
+
+        this.ceilAnchor = 5;
 
         this.anchor1 = {
             default: null,
@@ -40,7 +50,11 @@ class FivePlayerPositions extends PositionManager {
         };
     }
 
-    getPlayerPosition(id){
+    isPositionOnTop(anchorIndex) {
+        return anchorIndex == 3 || anchorIndex == 4;
+    }
+
+    getPlayerAnchor(id){
         switch (id){
             case 1:
                 return this.anchor1;
@@ -55,6 +69,60 @@ class FivePlayerPositions extends PositionManager {
             default:
                 return this.myAnchor;
         }
+    }
+
+    _getPlayerSeatIndexs(gameCode){
+        return fivePlayerSeats;
+    }
+
+    _getNextSeatIndex(seatIndex){
+
+        let nextIndex = null;
+
+        switch (seatIndex){
+            case 0:
+            case 1:
+                nextIndex = 5;
+                break;
+            case 2:
+                nextIndex = this.scene.gamePlayers.me ? 0 : 1;
+                break;
+            case 3:
+                nextIndex = 2;
+                break;
+            case 4:
+                nextIndex = 3;
+                break;
+            case 5:
+                nextIndex = 4;
+                break;
+        }
+
+        return nextIndex;
+    }
+
+    _getPreviousSeatIndex(seatIndex){
+        let preIndex = null;
+        switch (seatIndex){
+            case 0:
+            case 1:
+                preIndex = 2;
+                break;
+            case 2:
+                preIndex = 3;
+                break;
+            case 3:
+                preIndex = 4;
+                break;
+            case 4:
+                preIndex = this.scene.gamePlayers.me ? 0 : 1;
+                break;
+            case 5:
+                preIndex = this.scene.gamePlayers.me ? 0 : 1;
+                break;
+        }
+
+        return preIndex;
     }
 }
 

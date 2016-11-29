@@ -308,9 +308,9 @@ export default class CardList extends Component {
                     card.node.setLocalZOrder(52 - index);
                     let position = cc.v2(startPosition.x - index * this._overlapSpace, startPosition.y);
                     let currentPosition = this.node.getPosition();
-                    if(this._isSamePosition(currentPosition, card.__originalInfo.position)){
-                        this.setPosition(position);
-                    }
+                    // if(this._isSamePosition(currentPosition, card.__originalInfo.position)){
+                    //     this.setPosition(position);
+                    // }
 
                     card.setOriginalInfo({position});
                 });
@@ -322,9 +322,9 @@ export default class CardList extends Component {
                     card.node.setLocalZOrder(index);
 
                     let currentPosition = this.node.getPosition();
-                    if(this._isSamePosition(currentPosition, card.__originalInfo.position)){
-                        this.setPosition(position);
-                    }
+                    // if(this._isSamePosition(currentPosition, card.__originalInfo.position)){
+                    //     this.setPosition(position);
+                    // }
 
                     card.setOriginalInfo({position});
                 });
@@ -338,9 +338,9 @@ export default class CardList extends Component {
                     card.node.setLocalZOrder(52 - index);
 
                     let currentPosition = this.node.getPosition();
-                    if(this._isSamePosition(currentPosition, card.__originalInfo.position)){
-                        this.setPosition(position);
-                    }
+                    // if(this._isSamePosition(currentPosition, card.__originalInfo.position)){
+                    //     this.setPosition(position);
+                    // }
 
                     card.setOriginalInfo({position});
                 });
@@ -352,9 +352,9 @@ export default class CardList extends Component {
                     card.node.setLocalZOrder(index);
 
                     let currentPosition = this.node.getPosition();
-                    if(this._isSamePosition(currentPosition, card.__originalInfo.position)){
-                        this.setPosition(position);
-                    }
+                    // if(this._isSamePosition(currentPosition, card.__originalInfo.position)){
+                    //     this.setPosition(position);
+                    // }
 
                     card.setOriginalInfo({position});
                 });
@@ -369,7 +369,7 @@ export default class CardList extends Component {
     }
 
     onCardsChanged() {
-        this._adjustCardsPosition(true, 0);
+        this._adjustCardsPosition();
     }
 
     _getStartPosition() {
@@ -650,6 +650,9 @@ export default class CardList extends Component {
     }
 
     runCardActions(duration = CardList.TRANSFER_CARD_DURATION){
+
+        duration == 0 && this.updateFinalPosition();
+
         this.cards.forEach(card => {
             let action = card.createActionFromOriginalInfo(duration);
             action && card.node.runAction(action);

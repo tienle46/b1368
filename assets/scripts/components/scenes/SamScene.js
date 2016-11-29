@@ -6,7 +6,7 @@ import app from 'app';
 import GameScene from 'GameScene';
 import BoardSam from 'BoardSam';
 import SamControls from 'SamControls';
-import FourPlayerPositions from 'FourPlayerPositions';
+import FivePlayerPositions from 'FivePlayerPositions';
 import GameResultPopup from 'GameResultPopup';
 
 export default class SamScene extends GameScene {
@@ -21,7 +21,7 @@ export default class SamScene extends GameScene {
     onEnable(){
         this.board = this.boardNode.getComponent('BoardSam');
         this.gameControls = this.gameControlsNode.getComponent('SamControls');
-        this.playerPositions = this.playerPositionAnchorsNode.getComponent('FourPlayerPositions');
+        this.playerPositions = this.playerPositionAnchorsNode.getComponent('FivePlayerPositions');
         this.gameResultPopup = this.gameResultPopupNode.getComponent('GameResultPopup');
 
         super.onEnable();

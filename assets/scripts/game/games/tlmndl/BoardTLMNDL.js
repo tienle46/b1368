@@ -13,7 +13,7 @@ import TLMNUtils from 'TLMNUtils';
 import Card from 'Card';
 import CardList from 'CardList';
 import BoardTLMNDLRenderer from 'BoardTLMNDLRenderer';
-import ArrrayUtils from "../../base/utils/GameUtils";
+import ArrayUtils from "../../../utils/ArrayUtils";
 
 export default class BoardTLMNDL extends BoardCardTurnBase {
 
@@ -77,8 +77,6 @@ export default class BoardTLMNDL extends BoardCardTurnBase {
     }
 
     onBoardEnding(data) {
-
-        console.log("Scene Emit: ", this.scene._eventEmitter);
 
         let playerIds = utils.getValue(data, Keywords.GAME_LIST_PLAYER, []);
         let playingPlayerIds = this.scene.gamePlayers.filterPlayingPlayer(playerIds);
@@ -152,7 +150,7 @@ export default class BoardTLMNDL extends BoardCardTurnBase {
                 switch (winType) {
                     case app.const.game.TLMN_WIN_TYPE_THOI_BA_BICH:
                         // if (GameUtils.containsCard(playerHandCards[id], Card.from(Card.RANK_BA, Card.SUIT_BICH)))
-                        if (ArrrayUtils.contains(playerHandCards[id], Card.from(Card.RANK_BA, Card.SUIT_BICH)))
+                        if (ArrayUtils.contains(playerHandCards[id], Card.from(Card.RANK_BA, Card.SUIT_BICH)))
                             resultIconPaths[id] = 'game/images/ingame_thoi_ba_bich';
                         break;
                     default:

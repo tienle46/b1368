@@ -5,6 +5,13 @@
 import app from 'app';
 import PlayerPositions from 'PlayerPositions';
 
+const fourPlayerSeats = {
+    [1]: {1: 0, 2: 3, 3: 2, 4: 4},
+    [2]: {1: 3, 2: 0, 3: 4, 4: 2},
+    [3]: {1: 4, 2: 2, 3: 0, 4: 3},
+    [4]: {1: 2, 2: 4, 3: 3, 4: 0}
+};
+
 export default class FourPlayerPositions extends PlayerPositions {
 
     constructor() {
@@ -59,6 +66,61 @@ export default class FourPlayerPositions extends PlayerPositions {
             default:
                 return this.myAnchor;
         }
+    }
+
+    _getPlayerSeatIndexs(gameCode){
+        switch (gameCode){
+            case app.const.gameCode.TLMNDL:
+                return fourPlayerSeats;
+            case app.const.gameCode.PHOM:
+                return fourPlayerSeats;
+            default:
+                return fourPlayerSeats;
+        }
+    }
+
+    _getNextSeatIndex(seatIndex){
+
+        let nextIndex = null;
+
+        switch (seatIndex){
+            case 0:
+            case 1:
+                nextIndex = 4;
+                break;
+            case 2:
+                nextIndex = this.scene.gamePlayers.me ? 0 : 1;
+                break;
+            case 3:
+                nextIndex = 2;
+                break;
+            case 4:
+                nextIndex = 3;
+                break;
+        }
+
+        return nextIndex;
+    }
+
+    _getPreviousSeatIndex(seatIndex){
+        let preIndex = null;
+        switch (seatIndex){
+            case 0:
+            case 1:
+                preIndex = 2;
+                break;
+            case 2:
+                preIndex = 3;
+                break;
+            case 3:
+                preIndex = 4;
+                break;
+            case 4:
+                preIndex = this.scene.gamePlayers.me ? 0 : 1;
+                break;
+        }
+
+        return preIndex;
     }
 }
 

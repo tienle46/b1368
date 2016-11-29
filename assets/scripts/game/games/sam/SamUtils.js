@@ -25,7 +25,7 @@ export default class SamUtils {
         let selectedSortedCards = this.sortAsc([...selectedCards]);
 
         let playedCardsGroupType = this.getGroupCardType(prePlayedSortedCards);
-        let selectedCardsGroupType = this.getGroupCardType(this.sortAsc(selectedSortedCards));
+        let selectedCardsGroupType = this.getGroupCardType(selectedSortedCards);
 
         if (ArrayUtils.isEmpty(prePlayedCards)) {
             if (selectedCardsGroupType != SamUtils.GROUP_CARD_TYPE_INVALID) {
@@ -40,7 +40,7 @@ export default class SamUtils {
             let maxSelectedCard = selectedSortedCards[selectedCards.length - 1];
             let maxPlayedCard = prePlayedSortedCards[prePlayedCards.length - 1];
             let compareMaxCardValue = SamUtils.compareSamRank(maxSelectedCard, maxPlayedCard);
-
+            
             if (selectedCardsGroupType == playedCardsGroupType) {
                 // if (selectedCardsGroupType == SamUtils.GROUP_CARD_TYPE_SANH && selectedCards.length != tempPlayedCards.length) {
                 //     return null;
@@ -107,11 +107,11 @@ export default class SamUtils {
             if (minRank == maxRank) {
                 switch (numberOfCards) {
                     case 2:
-                        return minCard.isHeo() ? SamUtils.GROUP_CARD_TYPE_DOI_HEO : SamUtils.GROUP_CARD_TYPE_DOI;
+                        return SamUtils.GROUP_CARD_TYPE_DOI;
                     case 3:
                         return SamUtils.GROUP_CARD_TYPE_SAM_CO;
                     case 4:
-                        return minCard.isHeo() ? SamUtils.GROUP_CARD_TYPE_TU_QUY_HEO : SamUtils.GROUP_CARD_TYPE_TU_QUY;
+                        return SamUtils.GROUP_CARD_TYPE_TU_QUY;
                     default:
                         return SamUtils.GROUP_CARD_TYPE_INVALID;
                 }
