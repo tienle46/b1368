@@ -34,7 +34,16 @@ export default class PlayerCardRenderer extends PlayerRenderer {
         this._getCardAnchorPoint(this.data.actor).addChild(cardListNode);
 
         let cardList = cardListNode.getComponent('CardList');
-        if (this.data.isItMe) {
+        this._initHandCardList(cardList, this.data.isItMe);
+
+        cardList.setPosition(0, 0);
+        cardList.setSelectCardChangeListener(this.selectCardChangeListener);
+
+        this.cardList = cardList;
+    }
+
+    _initHandCardList(cardList, isItMe){
+        if (isItMe) {
             cardList.setMaxDimension(800);
             cardList.setDraggable(true);
             cardList.setSelectable(true);
@@ -47,11 +56,6 @@ export default class PlayerCardRenderer extends PlayerRenderer {
             cardList.setAlign(CardList.ALIGN_CENTER);
             cardList.setReveal(false);
         }
-
-        cardList.setPosition(0, 0);
-        cardList.setSelectCardChangeListener(this.selectCardChangeListener);
-
-        this.cardList = cardList;
     }
 
     setSelectCardChangeListener(listener) {

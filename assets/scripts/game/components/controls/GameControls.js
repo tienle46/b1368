@@ -3,7 +3,7 @@
  */
 
 import Actor from 'Actor'
-import Events from 'Events';
+import utils from 'utils';
 
 export default class GameControls extends Actor {
     constructor() {
@@ -13,11 +13,22 @@ export default class GameControls extends Actor {
 
     onEnable() {
         super.onEnable();
-        this.hideAllControls();
         this.scene = app.system.currentScene;
     }
 
     setInteractable(control, interactable) {
         control instanceof cc.Button && (control.interactable = interactable);
+    }
+
+    setVisible(btn, visible = true){
+        utils.setVisible(btn, visible);
+    }
+
+    enable(btn){
+        this.setInteractable(btn, true);
+    }
+
+    disable(btn){
+        this.setInteractable(btn, false);
     }
 }

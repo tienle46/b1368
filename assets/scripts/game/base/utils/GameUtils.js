@@ -130,4 +130,13 @@ export default class GameUtils {
 
         return heoContained;
     }
+
+    static createFakeCard(length){
+        let cardBytes = new Array(length).fill(0);
+        return GameUtils.convertBytesToCards(cardBytes);
+    }
+
+    static getTotalPoint(cards = []){
+        return cards.reduce((point, card) =>  point + card.rank, 0);
+    }
 }

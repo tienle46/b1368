@@ -40,6 +40,20 @@ export default class PlayerCard extends Player {
         this.renderer.renderCards(cards, reveal);
     }
 
+    /**
+     * @returns {null|Array}
+     */
+    getCards(){
+        return this.renderer.cardList.cards || [];
+    }
+
+    /**
+     * @returns {null|CardList}
+     */
+    getCardList(){
+        return this.renderer.cardList;
+    }
+
     removeFakeCard(length){
         this.renderer.cardList.removeCards(length);
     }
@@ -82,6 +96,9 @@ export default class PlayerCard extends Player {
     }
 
     onGameEnding(data = {}, isJustJoined){
+
+        console.log("onGameEnding player")
+
         super.onGameEnding(data, isJustJoined);
         this.renderer.clearCards();
     }

@@ -110,6 +110,9 @@ class GameSystem {
                 case app.const.gameCode.XAM:
                     gameSceneName = 'SamScene';
                     break;
+                case app.const.gameCode.BA_CAY:
+                    gameSceneName = 'BaCayScene';
+                    break;
             }
 
             gameSceneName && this.loadScene(gameSceneName);

@@ -18,7 +18,6 @@ export default class Board extends Actor {
         this.room = null;
         this.owner = null;
         this.ownerId = 0;
-        this.master = null;
         this.minBet = null;
         this.state = null;
         this.serverState = app.const.game.state.INITED;
@@ -145,10 +144,6 @@ export default class Board extends Actor {
         return app.context.groupId.length >= 3 && app.context.groupId.substring(3);
     }
 
-    setMaster(master) {
-        this.master = master;
-    }
-
     getSeatType() {
         //TODO
         // return xg.GameConstant.gameTableSeatType[xg.GameContext.getInstance().getGameID()];
@@ -167,13 +162,6 @@ export default class Board extends Actor {
         let playerIds = boardInfoObj[xg.Keywords.GAME_LIST_PLAYER];
         if (playerIds) {
             this.gamePlayers.changePlayerState(playerIds, app.const.playerState.READY);
-        }
-    }
-
-    _updateBoardMaster(boardInfoObj) {
-        let masterPlayerId = boardInfoObj.hasOwnProperty(xg.Keywords.MASTER_PLAYER_ID);
-        if (masterPlayerId) {
-            this.setMaster(this.gamePlayers.findPlayer(masterPlayerId));
         }
     }
 
@@ -263,9 +251,7 @@ export default class Board extends Actor {
     handleGameStateChange(boardState, data) {
         this.serverState = boardState;
 
-        if (data.hasOwnProperty(app.keywords.BOARD_PHASE_DURATION)) {
-            this.changeBoardPhaseDuration(boardState, data);
-        }
+        console.log("handleGameStateChange...", data);
 
         //TODO Process board state changed here
     }
@@ -380,19 +366,13 @@ export default class Board extends Actor {
         });
     }
 
-    onBoardDestroy() {
-        //TODO
-    }
-
-    _dealCards(data) {
-    }
-
-    changeBoardPhaseDuration(data) {
-
+    changeBoardPhaseDuration(duration) {
+        this.stopTimeLine();
+        this.startTimeLine(duration);
     }
 
     _handleBoardError(errMsg) {
-
+        app.system.showToast(errMsg);
     }
 
     _handlePlayerToSpectator(data) {
@@ -412,10 +392,19 @@ export default class Board extends Actor {
         }
     }
 
+    /**
+     * @param data
+     * @abstract
+     */
     _initPlayingData(data) {
 
     }
 
+    /**
+     * @param data
+     * @abstract
+     */
     _loadGamePlayData(data) {
+        this.scene.gamePlayers.updateBoardMaster(data);
     }
 }

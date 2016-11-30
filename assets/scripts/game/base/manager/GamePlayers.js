@@ -163,6 +163,17 @@ export default class GamePlayers extends Component {
         this.playerPositions.hideInviteButtonByPlayerId(player.id);
     }
 
+    updateBoardMaster(boardInfoObj = this.scene.gameData) {
+        let masterPlayerId = boardInfoObj && boardInfoObj.hasOwnProperty(app.keywords.MASTER_PLAYER_ID);
+        if (masterPlayerId) {
+            this.setMaster(this.findPlayer(masterPlayerId));
+        }
+    }
+
+    setMaster(master) {
+        this.master = master;
+    }
+
     /**
      * This function will be update all feature of player when data change
      *
@@ -376,7 +387,7 @@ export default class GamePlayers extends Component {
                 leaveBoardPlayer.stopTimeLine();
             } else {
                 if (leaveBoardPlayer.isMaster) {
-                    this.board.setMaster(null);
+                    this.setMaster(null);
                 }
 
                 this._removePlayer(leaveBoardPlayer);

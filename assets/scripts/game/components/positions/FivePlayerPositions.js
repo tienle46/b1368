@@ -115,7 +115,7 @@ class FivePlayerPositions extends PlayerPositions {
                 preIndex = 4;
                 break;
             case 4:
-                preIndex = this.scene.gamePlayers.me ? 0 : 1;
+                preIndex = 5;
                 break;
             case 5:
                 preIndex = this.scene.gamePlayers.me ? 0 : 1;

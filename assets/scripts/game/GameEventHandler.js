@@ -66,6 +66,7 @@ export default class GameEventHandler {
         app.system.addGameListener(Commands.PLAYER_EAT_CARD, this._onPlayerEatCard, this);
         app.system.addGameListener(Commands.PLAYER_DOWN_CARD, this._onPlayerDownCard, this);
         app.system.addGameListener(Commands.PLAYER_HELP_CARD, this._onPlayerHelpCard, this);
+        app.system.addGameListener(Commands.PLAYER_BET, this._onPlayerBet, this);
     }
 
     removeGameEventListener() {
@@ -101,7 +102,13 @@ export default class GameEventHandler {
         app.system.removeGameListener(Commands.PLAYER_EAT_CARD, this._onPlayerEatCard, this);
         app.system.removeGameListener(Commands.PLAYER_DOWN_CARD, this._onPlayerDownCard, this);
         app.system.removeGameListener(Commands.PLAYER_HELP_CARD, this._onPlayerHelpCard, this);
+        app.system.removeGameListener(Commands.PLAYER_BET, this._onPlayerBet, this);
 
+    }
+
+    _onPlayerBet(data){
+        let playerId = utils.getValue(data, Keywords.PLAYER_ID);
+        playerId && this.scene.emit(Events.HANDLE_PLAYER_BET, playerId, data);
     }
 
     _onPlayerDownCard(data) {

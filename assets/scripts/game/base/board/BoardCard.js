@@ -31,7 +31,10 @@ export default class BoardCard extends Board {
         let dealCards = cardBytes.map(cardByte => Card.from(cardByte));
         let playerHandCardLists = this.scene.gamePlayers.getPlayerHandCardLists();
         playerHandCardLists.splice(0, 0, this.renderer.meDealCardList);
+        this.onDealCard(playerHandCardLists, dealCards);
+    }
 
+    onDealCard(playerHandCardLists, dealCards){
         CardList.dealCards(this.renderer.dealCardAnchor, playerHandCardLists, dealCards.length, () => {
             this.renderer.meDealCardList.clear();
             this.scene.emit(Events.ON_GAME_STATE_STARTED, dealCards);

@@ -16,6 +16,8 @@ Events.HANDLE_PLAYER_EAT_CARD           = "handle.playerEatCard";
 Events.HANDLE_PLAYER_DOWN_CARD          = "handle.playerDownCard";
 Events.HANDLE_PLAYER_HELP_CARD          = "handle.playerHelpCard";
 Events.HANDLE_PLAYER_LEAVE_BOARD        = "handle.playerLeaveBoard";
+Events.HANDLE_PLAYER_BET                = "handle.playerBet";
+Events.HANDLE_PLAYER_DOWN_CARD          = "handle.playerBet";
 
 Events.SHOW_GAME_BEGIN_CONTROLS         = "show.gameBeginControls";
 Events.SHOW_WAIT_TURN_CONTROLS          = "show.waitTurnControls";
@@ -27,6 +29,8 @@ Events.SHOW_DOWN_PHOM_CONTROLS          = "show.downPhomControls";
 Events.SHOW_U_PHOM_CONTROLS             = "show.showUPhomControls";
 Events.SHOW_PHOM_HIGHLIGHT              = "show.phomHighlight";
 Events.SHOW_BAO_XAM_CONTROLS            = "show.baoSamControls";
+Events.SHOW_BACAY_BET_CONTROLS          = "show.betControls";
+Events.SHOW_DOWN_CARD_CONTROLS          = "show.downCardControls";
 
 Events.HIDE_ALL_CONTROLS                = "hide.allControls";
 Events.HIDE_GAME_BEGIN_CONTROLS         = "hide.gameBeginControls";
@@ -70,6 +74,11 @@ Events.ON_CLICK_U_BUTTON                = "on.click.uButton";
 Events.ON_CLICK_DOI_U_TRON_BUTTON       = "on.click.doiUTronButton";
 Events.ON_CLICK_BAO_XAM_BUTTON          = "on.click.baoXamButton";
 Events.ON_CLICK_BO_BAO_XAM_BUTTON       = "on.click.boBaoXamButton";
+Events.ON_CLICK_BET_BUTTON              = "on.click.betButton";
+Events.ON_CLICK_HUC_BUTTON              = "on.click.hucButton";
+Events.ON_CLICK_KE_BUTTON               = "on.click.keButton";
+Events.ON_CLICK_REVEAL_BUTTON           = "on.click.revealButton";
+Events.ON_CLICK_DOWN_BUTTON             = "on.click.downButton";
 
 Events.ON_GAME_RESET                        = "on.game.reset";
 Events.ON_GAME_STATE_BEGIN                  = "on.game.stateBegin";
@@ -92,3 +101,5 @@ Events.ON_ACTION_LOAD_GAME_GUIDE        = "on.action.loadGameGuide";
 Events.SET_INTERACTABLE_PLAY_CONTROL    = "set.interactablePlayControl";
 Events.SET_INTERACTABLE_HA_PHOM_CONTROL = "set.interactableHaPhomControl";
 Events.SET_INTERACTABLE_EAT_CONTROL     = "set.interactableEatControl";
+
+Events.ADD_BET_TO_MASTER                = "add.betToMaster";

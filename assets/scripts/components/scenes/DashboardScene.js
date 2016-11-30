@@ -53,7 +53,10 @@ export default class DashboardScene extends BaseScene {
 
     _filterClientSupportedGames(gameCodes) {
         return ArrayUtils.isEmpty(gameCodes) ? [] : gameCodes.filter(gc => {
-            return gc == app.const.gameCode.PHOM || gc == app.const.gameCode.TLMNDL || gc == app.const.gameCode.XAM
+            return gc == app.const.gameCode.PHOM
+                || gc == app.const.gameCode.TLMNDL
+                || gc == app.const.gameCode.XAM
+                || gc == app.const.gameCode.BA_CAY
         })
     }
 

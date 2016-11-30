@@ -37,6 +37,7 @@ export default class CardList extends Component {
         this._overlapSpace = 0;
         this.selectCardChangeListener = null;
         this.highlight = false;
+        this._revealOnClick = false;
     }
 
     cleanCardGroup() {
@@ -83,6 +84,10 @@ export default class CardList extends Component {
 
     setSelectable(selectable) {
         this.selectable = selectable;
+    }
+
+    setRevealOnClick(revealOnClick) {
+        this._revealOnClick = revealOnClick;
     }
 
     getRawCards() {
@@ -560,11 +565,20 @@ export default class CardList extends Component {
 
     _onSelectCard(card) {
 
+        if(this._revealOnClick){
+            this._revealSingleCard(card);
+            return;
+        }
+
         if (!this.selectable)  return;
 
         card.setSelected(!card.selected);
 
         this.onSelectedCardChanged();
+    }
+
+    _revealSingleCard(card){
+        card.setReveal(true);
     }
 
     onSelectedCardChanged() {

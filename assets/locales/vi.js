@@ -30,5 +30,9 @@ export default {
   game_thua: 'Thua',
   game_thang: 'Thắng',
   game_result_card_count: '{{count}} lá',
+  game_result_point: '{{point}} điểm',
+  game_bet_time: 'Đặt cược',
+  game_down_card_time: 'Hạ bài',
+  game_bacay_sap: 'Sáp',
 
 };
