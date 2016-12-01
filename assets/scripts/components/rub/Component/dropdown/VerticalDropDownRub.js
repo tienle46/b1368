@@ -1,6 +1,5 @@
 import app from 'app';
 import DropDownRub from 'DropDownRub';
-import ButtonScaler from 'ButtonScaler';
 import ListItemBasicRub from 'ListItemBasicRub';
 import NodeRub from 'NodeRub';
 

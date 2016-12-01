@@ -39,6 +39,12 @@ class TopBar extends Component {
         };
 
         this._showBack = false;
+
+        this.soundControl = {
+            default: null,
+            type: cc.Node
+        };
+
         this.time = 2000; // display high light message after 2s, if any
     }
 
@@ -130,6 +136,10 @@ class TopBar extends Component {
         app.service.manuallyDisconnect();
     }
 
+    onSoundBtnClick() {
+        this.soundControl && this.soundControl.getComponent('SoundControl').show();
+    }
+
     handleSettingAction(e) {
         let options = {
             arrow: {
@@ -144,7 +154,8 @@ class TopBar extends Component {
             content: 'Fanpage'
         }, {
             icon: 'bottombar/bottombar_tooltip_sound',
-            content: 'Âm lượng'
+            content: 'Âm lượng',
+            event: this.onSoundBtnClick.bind(this)
         }, {
             icon: 'game/images/ingame_exit_icon',
             content: 'Thoát',
