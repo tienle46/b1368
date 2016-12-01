@@ -68,6 +68,8 @@ export default class Board extends Actor {
 
         if (this.room.containsVariable(app.keywords.VARIABLE_MIN_BET)) {
             this.minBet = utils.getVariable(this.room, app.keywords.VARIABLE_MIN_BET);
+
+            console.warn("this.minBet Board: ", this.minBet);
         }
 
         if (this.gameData.hasOwnProperty(app.keywords.BOARD_STATE_KEYWORD)) {
@@ -75,7 +77,7 @@ export default class Board extends Actor {
             this.state = app.const.game.state.BEGIN;
         }
 
-        this.scene.on(Events.ON_GAME_STATE_CHANGE, this.handleGameStateChange, this);
+        this.scene.on(Events.ON_GAME_STATE_CHANGE, this.handleGameStateChange, this, 0);
         this.scene.on(Events.ON_GAME_STATE_BEGIN, this.onBoardBegin, this, 0);
         this.scene.on(Events.ON_GAME_STATE_STARTING, this.onBoardStarting, this, 0);
         this.scene.on(Events.ON_GAME_STATE_STARTED, this.onBoardStarted, this, 0);
@@ -164,7 +166,6 @@ export default class Board extends Actor {
             this.gamePlayers.changePlayerState(playerIds, app.const.playerState.READY);
         }
     }
-
 
     /**
      * Start board timeline trong cac truong hop: Cho sansang, ket thuc van chuan bi sang van moi (tiep tuc)

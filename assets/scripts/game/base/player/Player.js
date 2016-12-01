@@ -234,9 +234,11 @@ export default class Player extends Actor {
     onGameStarting(data, isJustJoined) {
         if(isJustJoined){
 
-        }else{
-            this.setReady(true);
         }
+
+        console.log("onGameStarting: ", data);
+
+        this.setReady(true);
     }
 
     onGameStarted(data, isJustJoined) {

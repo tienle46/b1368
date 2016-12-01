@@ -162,7 +162,7 @@ export default class ListTableScene extends BaseScene {
 
     _removeGlobalListener() {
         super._removeGlobalListener();
-        app.system.removeListener(SFS2X.SFSEvent.ROOM_JOIN, this._handleRoomJoinEvent);
+        app.system.removeListener(SFS2X.SFSEvent.ROOM_JOIN, this._handleRoomJoinEvent, this);
     }
 
     _handleRoomJoinEvent(event) {
@@ -209,7 +209,7 @@ export default class ListTableScene extends BaseScene {
                 const cellComponent = listCell.getComponent('TableListCell');
 
                 if (!minBets[i]) {
-                    minBets[i] = _.random(1, 10);
+                    minBets[i] = 5;
                     customIds[i] = null;
                     userCounts[i] = 0;
                     userMaxs[i] = 4;

@@ -46,10 +46,13 @@ export default class BoardBaCay extends BoardCardBetTurn {
         let message;
         if (boardState == app.const.game.state.STATE_BET) {
             message = app.res.string('game_bet_time');
+
+            console.log("ON_GAME_STATE_STARTING--- ")
             this.scene.emit(Events.ON_GAME_STATE_STARTING);
         } else if (boardState == app.const.game.state.STATE_DOWN) {
             message = app.res.string('game_down_card_time');
             this._handleBaCayDownCardPhrase(data);
+
         }
 
         let duration = utils.getValue(data, app.keywords.BOARD_PHASE_DURATION);
@@ -140,11 +143,7 @@ export default class BoardBaCay extends BoardCardBetTurn {
         let playerHandCards = this._getPlayerHandCards(playerIds, data);
         let {resultTexts, gameResultInfos, resultIconPaths} = this._getGameResultInfos(playerIds, playerHandCards, data);
 
-        console.log("playerHandCards: ", playerHandCards);
-
         super.onBoardEnding(data);
-
-        console.log("playerHandCards 2: ", playerHandCards);
 
         let models = playerIds.filter(playerId => (playingPlayerIds.indexOf(playerId) >= 0)).map(playerId => {
             return {

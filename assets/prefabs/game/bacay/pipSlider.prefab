@@ -46,8 +46,8 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": 0,
-      "y": 0
+      "x": 640,
+      "y": 360
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -59,11 +59,11 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 24
+        "__id__": 25
       }
     ],
     "_prefab": {
-      "__id__": 25
+      "__id__": 26
     },
     "groupIndex": 0
   },
@@ -211,11 +211,11 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 22
+        "__id__": 23
       }
     ],
     "_prefab": {
-      "__id__": 23
+      "__id__": 24
     },
     "groupIndex": 0
   },
@@ -456,7 +456,7 @@
       }
     ],
     "_prefab": {
-      "__id__": 21
+      "__id__": 22
     },
     "groupIndex": 0
   },
@@ -584,8 +584,8 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": 0,
-      "y": -125
+      "x": -2.2737367544323206e-13,
+      "y": -124.99999999999997
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -715,12 +715,23 @@
     "_enabled": true,
     "direction": 1,
     "slideEvents": [
-      null
+      {
+        "__id__": 21
+      }
     ],
     "_N$handle": {
       "__id__": 18
     },
     "_N$progress": 0
+  },
+  {
+    "__type__": "cc.ClickEvent",
+    "target": {
+      "__id__": 1
+    },
+    "component": "BetSlider",
+    "handler": "onSliderChange",
+    "customEventData": ""
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -781,7 +792,7 @@
     "slider": {
       "__id__": 20
     },
-    "betAmount": {
+    "betAmountLabel": {
       "__id__": 8
     },
     "bgNode": {

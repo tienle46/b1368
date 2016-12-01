@@ -83,6 +83,7 @@ export default class PlayerRenderer extends ActorRenderer {
     }
 
     setVisibleMaster(visible) {
+        console.warn("setVisibleMaster: ", visible);
         utils.setActive(this.masterIcon, visible);
     }
 

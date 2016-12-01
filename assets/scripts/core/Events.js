@@ -50,6 +50,7 @@ Events.ON_PLAYER_REENTER_GAME           = "on.player.reenterGame";
 Events.ON_PLAYER_CHAT_MESSAGE           = "on.player.chatMessage";
 Events.ON_PLAYER_BAO_XAM                = "on.player.baoXam";
 Events.ON_PLAYER_BAO_1                  = "on.player.bao1";
+Events.ON_PLAYER_BACAY_CHANGE_BET       = "on.player.bacayChangeBet";
 
 Events.ON_USER_UPDATE_BALANCE           = "on.user.updateBalance";
 Events.ON_USER_UPDATE_LEVEL             = "on.user.updateLevel";
@@ -79,6 +80,7 @@ Events.ON_CLICK_HUC_BUTTON              = "on.click.hucButton";
 Events.ON_CLICK_KE_BUTTON               = "on.click.keButton";
 Events.ON_CLICK_REVEAL_BUTTON           = "on.click.revealButton";
 Events.ON_CLICK_DOWN_BUTTON             = "on.click.downButton";
+Events.ON_CLICK_CHOOSE_BET_BUTTON       = "on.click.downButton";
 
 Events.ON_GAME_RESET                        = "on.game.reset";
 Events.ON_GAME_STATE_BEGIN                  = "on.game.stateBegin";

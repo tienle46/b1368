@@ -86,13 +86,13 @@
         "__id__": 15
       },
       {
-        "__id__": 18
-      },
-      {
         "__id__": 21
       },
       {
         "__id__": 24
+      },
+      {
+        "__id__": 27
       }
     ],
     "_rotationX": 0,
@@ -114,10 +114,10 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 27
+        "__id__": 30
       },
       {
-        "__id__": 28
+        "__id__": 31
       }
     ],
     "_prefab": null,
@@ -497,6 +497,9 @@
     "_children": [
       {
         "__id__": 16
+      },
+      {
+        "__id__": 19
       }
     ],
     "_rotationX": 0,
@@ -522,40 +525,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_objFlags": 0,
-    "_parent": {
-      "__id__": 15
-    },
-    "_id": "00cd8/II09CVZO3a9CJcsR7",
-    "_prefab": {
-      "__id__": 17
-    },
-    "_name": "BaCayControls",
-    "_active": true,
-    "_position": {
-      "__type__": "cc.Vec2",
-      "x": 0,
-      "y": 0
-    },
-    "_rotationX": 0,
-    "_rotationY": 0,
-    "_localZOrder": 0,
-    "_globalZOrder": 0
-  },
-  {
-    "__type__": "cc.PrefabInfo",
-    "root": {
-      "__id__": 16
-    },
-    "asset": {
-      "__uuid__": "341fdfbe-64aa-4a54-a7e2-5c86a6deba39"
-    },
-    "fileId": "3596cBw5n1MCozbM8atol9M",
-    "sync": true
-  },
-  {
-    "__type__": "cc.Node",
-    "_name": "gameMenu",
+    "_name": "betComponent",
     "_objFlags": 0,
     "_opacity": 255,
     "_color": {
@@ -567,7 +537,7 @@
     },
     "_cascadeOpacityEnabled": true,
     "_parent": {
-      "__id__": 2
+      "__id__": 15
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -576,12 +546,12 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 1280,
-      "height": 720
+      "width": 0,
+      "height": 0
     },
     "_children": [
       {
-        "__id__": 19
+        "__id__": 17
       }
     ],
     "_rotationX": 0,
@@ -599,7 +569,7 @@
     "_globalZOrder": 0,
     "_tag": -1,
     "_opacityModifyRGB": false,
-    "_id": "b46dbNJtwNPS5817oeYEFtP",
+    "_id": "2b500lGCv1Pob86OP030c1y",
     "_active": true,
     "_components": [],
     "_prefab": null,
@@ -609,13 +579,46 @@
     "__type__": "cc.Node",
     "_objFlags": 0,
     "_parent": {
+      "__id__": 16
+    },
+    "_id": "fdb8dt+H4lPgZq2zjpYxofT",
+    "_prefab": {
       "__id__": 18
     },
-    "_id": "57d74aBkXVGAIu1HurHXcVd",
+    "_name": "pipSlider",
+    "_active": false,
+    "_position": {
+      "__type__": "cc.Vec2",
+      "x": 640,
+      "y": 360
+    },
+    "_rotationX": 0,
+    "_rotationY": 0,
+    "_localZOrder": 0,
+    "_globalZOrder": 0
+  },
+  {
+    "__type__": "cc.PrefabInfo",
+    "root": {
+      "__id__": 17
+    },
+    "asset": {
+      "__uuid__": "42c9f91c-5aa4-433a-8044-9bf434258142"
+    },
+    "fileId": "926f6d36v1C5rQiVYQ98J94",
+    "sync": true
+  },
+  {
+    "__type__": "cc.Node",
+    "_objFlags": 0,
+    "_parent": {
+      "__id__": 15
+    },
+    "_id": "00cd8/II09CVZO3a9CJcsR7",
     "_prefab": {
       "__id__": 20
     },
-    "_name": "GameMenuPrefab",
+    "_name": "BaCayControls",
     "_active": true,
     "_position": {
       "__type__": "cc.Vec2",
@@ -633,21 +636,21 @@
       "__id__": 19
     },
     "asset": {
-      "__uuid__": "a83d103a-eb85-48cf-a31c-c74bb4993783"
+      "__uuid__": "341fdfbe-64aa-4a54-a7e2-5c86a6deba39"
     },
-    "fileId": "ccb63YA3FRNQaL3iJX3sXGL",
+    "fileId": "3596cBw5n1MCozbM8atol9M",
     "sync": true
   },
   {
     "__type__": "cc.Node",
-    "_name": "gameChat",
+    "_name": "gameMenu",
     "_objFlags": 0,
     "_opacity": 255,
     "_color": {
       "__type__": "cc.Color",
-      "r": 35,
-      "g": 1,
-      "b": 46,
+      "r": 255,
+      "g": 255,
+      "b": 255,
       "a": 255
     },
     "_cascadeOpacityEnabled": true,
@@ -684,7 +687,7 @@
     "_globalZOrder": 0,
     "_tag": -1,
     "_opacityModifyRGB": false,
-    "_id": "c41aevnOf5IZYpDi6DTV0J9",
+    "_id": "b46dbNJtwNPS5817oeYEFtP",
     "_active": true,
     "_components": [],
     "_prefab": null,
@@ -696,9 +699,94 @@
     "_parent": {
       "__id__": 21
     },
-    "_id": "536fcYl301Glq0hn3sNBOoW",
+    "_id": "57d74aBkXVGAIu1HurHXcVd",
     "_prefab": {
       "__id__": 23
+    },
+    "_name": "GameMenuPrefab",
+    "_active": true,
+    "_position": {
+      "__type__": "cc.Vec2",
+      "x": 0,
+      "y": 0
+    },
+    "_rotationX": 0,
+    "_rotationY": 0,
+    "_localZOrder": 0,
+    "_globalZOrder": 0
+  },
+  {
+    "__type__": "cc.PrefabInfo",
+    "root": {
+      "__id__": 22
+    },
+    "asset": {
+      "__uuid__": "a83d103a-eb85-48cf-a31c-c74bb4993783"
+    },
+    "fileId": "ccb63YA3FRNQaL3iJX3sXGL",
+    "sync": true
+  },
+  {
+    "__type__": "cc.Node",
+    "_name": "gameChat",
+    "_objFlags": 0,
+    "_opacity": 255,
+    "_color": {
+      "__type__": "cc.Color",
+      "r": 35,
+      "g": 1,
+      "b": 46,
+      "a": 255
+    },
+    "_cascadeOpacityEnabled": true,
+    "_parent": {
+      "__id__": 2
+    },
+    "_anchorPoint": {
+      "__type__": "cc.Vec2",
+      "x": 0.5,
+      "y": 0.5
+    },
+    "_contentSize": {
+      "__type__": "cc.Size",
+      "width": 1280,
+      "height": 720
+    },
+    "_children": [
+      {
+        "__id__": 25
+      }
+    ],
+    "_rotationX": 0,
+    "_rotationY": 0,
+    "_scaleX": 1,
+    "_scaleY": 1,
+    "_position": {
+      "__type__": "cc.Vec2",
+      "x": 0,
+      "y": 0
+    },
+    "_skewX": 0,
+    "_skewY": 0,
+    "_localZOrder": 0,
+    "_globalZOrder": 0,
+    "_tag": -1,
+    "_opacityModifyRGB": false,
+    "_id": "c41aevnOf5IZYpDi6DTV0J9",
+    "_active": true,
+    "_components": [],
+    "_prefab": null,
+    "groupIndex": 0
+  },
+  {
+    "__type__": "cc.Node",
+    "_objFlags": 0,
+    "_parent": {
+      "__id__": 24
+    },
+    "_id": "536fcYl301Glq0hn3sNBOoW",
+    "_prefab": {
+      "__id__": 26
     },
     "_name": "IngameChatComponent",
     "_active": false,
@@ -715,7 +803,7 @@
   {
     "__type__": "cc.PrefabInfo",
     "root": {
-      "__id__": 22
+      "__id__": 25
     },
     "asset": {
       "__uuid__": "08ec5e93-045e-4890-83a9-4cfc4e51a44a"
@@ -751,7 +839,7 @@
     },
     "_children": [
       {
-        "__id__": 25
+        "__id__": 28
       }
     ],
     "_rotationX": 0,
@@ -779,11 +867,11 @@
     "__type__": "cc.Node",
     "_objFlags": 0,
     "_parent": {
-      "__id__": 24
+      "__id__": 27
     },
     "_id": "40c10I9VMRDSpo//MaQlYHq",
     "_prefab": {
-      "__id__": 26
+      "__id__": 29
     },
     "_name": "GameResultPopupPrefab",
     "_active": true,
@@ -800,7 +888,7 @@
   {
     "__type__": "cc.PrefabInfo",
     "root": {
-      "__id__": 25
+      "__id__": 28
     },
     "asset": {
       "__uuid__": "13af3e19-4431-492e-bc6d-c0412c0ab05a"
@@ -840,26 +928,29 @@
       "__id__": 9
     },
     "gameMenuNode": {
-      "__id__": 19
+      "__id__": 22
     },
     "gameControlsNode": {
-      "__id__": 16
+      "__id__": 19
     },
     "playerLayer": {
       "__id__": 11
     },
     "chatComponentNode": {
-      "__id__": 22
+      "__id__": 25
     },
     "tableNameLabel": {
       "__id__": 7
     },
     "gameResultPopupNode": {
-      "__id__": 25
+      "__id__": 28
     },
     "playerPositionAnchorsNode": {
       "__id__": 12
     },
-    "maxPlayers": 4
+    "maxPlayers": 4,
+    "chooseBetSliderNode": {
+      "__id__": 17
+    }
   }
 ]

@@ -34,6 +34,7 @@ export default class PlayerBaCay extends PlayerCardBetTurn {
         this.board.scene.on(Events.HANDLE_PLAYER_DOWN_CARD, this._handlePlayerDown, this);
         this.board.scene.on(Events.ON_GAME_STATE, this._onGameState, this);
         this.board.scene.on(Events.ADD_BET_TO_MASTER, this._onAddBetToMaster, this);
+        this.board.scene.on(Events.ON_PLAYER_BACAY_CHANGE_BET, this._onPlayerChangeBet, this);
     }
 
     _removeGlobalListener() {
@@ -46,6 +47,16 @@ export default class PlayerBaCay extends PlayerCardBetTurn {
         this.board.scene.off(Events.HANDLE_PLAYER_DOWN_CARD, this._handlePlayerDown, this);
         this.board.scene.off(Events.ON_GAME_STATE, this._onGameState, this);
         this.board.scene.off(Events.ADD_BET_TO_MASTER, this._onAddBetToMaster, this);
+        this.board.scene.off(Events.ON_PLAYER_BACAY_CHANGE_BET, this._onPlayerChangeBet, this);
+    }
+
+    _onPlayerChangeBet(betAmount){
+        if (betAmount <= 0 || this.board.scene.gameState != app.const.game.state.STATE_BET || !BaCayUtils.checkBetValue(betAmount, this)) {
+            //Show message && play sound invalid
+            return;
+        }
+
+        app.service.send({cmd: app.commands.PLAYER_BET, data: {[app.keywords.PLAYER_BET_AMOUNT]: 10}, room: this.board.room});
     }
 
     _onAddBetToMaster(amount, player){
@@ -56,9 +67,9 @@ export default class PlayerBaCay extends PlayerCardBetTurn {
     }
 
     _handlePlayerBet(playerId, data){
-        if(this.id != playerId && !this.isMaster) return;
+        if(this.id != playerId) return;
 
-        let uBet = utils.getValue(app.keywords.PLAYER_BET_AMOUNT);
+        let uBet = utils.getValue(data, app.keywords.PLAYER_BET_AMOUNT);
         let addToMasterBestAmount = uBet - this.betAmount;
 
         this.emit(Events.ADD_BET_TO_MASTER, addToMasterBestAmount, this);
@@ -82,17 +93,8 @@ export default class PlayerBaCay extends PlayerCardBetTurn {
     }
 
     _onPlayerBet(){
-        if (!this.board.scene.gamePlayers.master) return;
-
-        //TODO show choose Bet UI
-
-        let betAmount = 2;
-        if (betAmount <= 0 || this.board.scene.gameState != app.const.game.state.STATE_BET || !BaCayUtils.checkBetValue(betAmount, this)) {
-            //Show message && play sound invalid
-            return;
-        }
-
-        app.service.send({cmd: app.commands.PLAYER_BET, data: {[app.keywords.PLAYER_BET_AMOUNT]: betAmount}, room: this.board.room});
+        if (!this.isItMe() || !this.board.scene.gamePlayers.master) return;
+        this.board.scene.showChooseBetSlider(this.betAmount);
     }
 
     _onPlayerDownCard(){
@@ -124,16 +126,29 @@ export default class PlayerBaCay extends PlayerCardBetTurn {
     }
 
     _onGameState(state, data, isJustJoined){
+        this._onGameStateBet();
 
         if(!this.isItMe()) return;
 
         if(state == app.const.game.state.STATE_BET){
             this.scene.emit(Events.SHOW_BACAY_BET_CONTROLS);
         }else if(state == app.const.game.state.STATE_DOWN) {
+            this.scene.hideChooseBetSlider();
             this.scene.emit(Events.SHOW_DOWN_CARD_CONTROLS);
         }
     }
 
+    _onGameStateBet(){
+        if(this.isPlaying() && !this.isMaster){
+            this.setBetAmount(this.board.minBet);
+            this._onAddBetToMaster(this.board.minBet, this);
+        }
+    }
+
+    onGameReset(){
+        super.onGameReset();
+        this.setBetAmount(0);
+    }
 }
 
 app.createComponent(PlayerBaCay);

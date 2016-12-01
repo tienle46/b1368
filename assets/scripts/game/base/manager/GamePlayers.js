@@ -47,6 +47,7 @@ export default class GamePlayers extends Component {
 
         this.scene.on(Events.ON_USER_EXIT_ROOM, this._onUserExitGame, this);
         this.scene.on(Events.ON_ROOM_CHANGE_OWNER, this._onChangeRoomOwner, this);
+        this.scene.on(Events.ON_GAME_STATE_ENDING, this._onGameEnding, this);
     }
 
     onLoad() {
@@ -64,6 +65,17 @@ export default class GamePlayers extends Component {
         this.board = board;
         this.scene = scene;
         this.initLayerDoneCb = cb;
+    }
+
+    _onGameEnding(data){
+        let masterPlayerId = utils.getValue(data, app.keywords.MASTER_PLAYER_ID);
+        masterPlayerId && this.setMaster(this.findPlayer(masterPlayerId));
+    }
+
+    setMaster(masterPlayer){
+        this.master && this.master.setMaster(false);
+        this.master = masterPlayer;
+        this.master && this.master.setMaster(true);
     }
 
     _onPlayerReEnterGame(playerId, userId) {
@@ -164,14 +176,10 @@ export default class GamePlayers extends Component {
     }
 
     updateBoardMaster(boardInfoObj = this.scene.gameData) {
-        let masterPlayerId = boardInfoObj && boardInfoObj.hasOwnProperty(app.keywords.MASTER_PLAYER_ID);
+        let masterPlayerId = utils.getValue(boardInfoObj, app.keywords.MASTER_PLAYER_ID);
         if (masterPlayerId) {
             this.setMaster(this.findPlayer(masterPlayerId));
         }
-    }
-
-    setMaster(master) {
-        this.master = master;
     }
 
     /**
