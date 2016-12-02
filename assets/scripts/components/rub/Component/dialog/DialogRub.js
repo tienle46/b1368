@@ -30,7 +30,7 @@ export default class DialogRub extends Rub {
         this.prefab = cc.instantiate(dialog);
         this.addToNode();
 
-        this.prefab.zIndex = 20;
+        this.prefab.zIndex = app.const.topupZIndex;
         this.prefab.x = 0;
         this.prefab.y = 0;
 

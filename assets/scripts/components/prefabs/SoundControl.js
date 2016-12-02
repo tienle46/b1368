@@ -19,6 +19,7 @@ class SoundControl extends Component {
     onLoad() {
         this.progressBarComponent = this.slider.getComponent(cc.ProgressBar);
         this.sliderComponent = this.slider.getComponent(cc.Slider);
+        this.node.zIndex = app.const.soundControl;
         this.hide();
     }
 

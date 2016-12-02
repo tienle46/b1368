@@ -1,4 +1,5 @@
 import RubUtils from 'RubUtils';
+import app from 'app';
 
 export default class LoaderRub {
     constructor(node = cc.director.getScene(), hideBg = false, opts = {}) {
@@ -19,7 +20,7 @@ export default class LoaderRub {
         let winsize = cc.director.getWinSize();
 
         this.spinLoaderNode = new cc.Node();
-        this.spinLoaderNode.zIndex = 100;
+        this.spinLoaderNode.zIndex = app.const.loadingZIndex;
         this.spinLoaderNode.name = 'spin_loader';
         this.spinLoaderNode.setPosition(cc.v2(0, 0));
         this.spinLoaderNode.setContentSize(winsize.width, winsize.height + 500);

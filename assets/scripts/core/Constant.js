@@ -8,6 +8,7 @@ app.const = {};
 app.const.topupZIndex = 10000;
 app.const.loadingZIndex = 10000;
 app.const.toastZIndex = 10001;
+app.const.soundControl = 10002;
 app.const.LANGUAGE = "vi"; // set the language used in app. Default: "vi"
 
 app.const.scene = {};

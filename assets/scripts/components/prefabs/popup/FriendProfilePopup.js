@@ -74,7 +74,7 @@ export default class FriendProfilePopup extends Component {
 
     _initTouchEvent() {
         let dialog = this.node.getChildByName('popup_bkg');
-        dialog.zIndex = 10000;
+        dialog.zIndex = app.const.topupZIndex;
 
         dialog.on(cc.Node.EventType.TOUCH_START, () => {
             return true;

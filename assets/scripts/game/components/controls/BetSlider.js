@@ -26,7 +26,7 @@ class BetSlider extends Component {
             this.hide();
             return true;
         });
-        this.container.zIndex = 9999;
+        this.container.zIndex = app.const.app.const.topupZIndex;
         this.container.on(cc.Node.EventType.TOUCH_END, () => true);
     }
 
@@ -36,14 +36,14 @@ class BetSlider extends Component {
     }
 
     onSliderChange(e) {
-        
+
         console.log("e.progress: ", e.progress)
 
-        
+
         this._setChooseAmount(this.minValue + Math.round(e.progress * (this.maxValue - this.minValue)));
     }
 
-    _setChooseAmount(value){
+    _setChooseAmount(value) {
         this._chooseAmount = !value || value < this.minValue ? this.minValue : value;
         this.betAmountLabel.string = `${this._chooseAmount}`;
     }
