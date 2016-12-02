@@ -123,10 +123,17 @@ class TabExchangeItem extends Component {
 
         let parentNode = this.node.parent.parent;
 
-        ConfirmPopupRub.show(parentNode, `Bạn có muốn đổi ${numeral(itemGold).format('0,0')} chip để nhận ${itemName} ?`, this._onConfirmDialogBtnClick, null, this);
+        ConfirmPopupRub.show(parentNode, `Bạn có muốn đổi ${numeral(itemGold).format('0,0')} chip để nhận ${itemName} ?`, this._onConfirmDialogBtnClick.bind(this, event));
     }
 
-    _onConfirmDialogBtnClick() {
+    /**
+     * 
+     * @param {any} event onHandleExchangeBtnClick's event
+     * @returns
+     * 
+     * @memberOf TabExchangeCard
+     */
+    _onConfirmDialogBtnClick(event) {
         let itemGold = event.currentTarget.itemGold;
         let itemName = event.currentTarget.itemName;
 
@@ -154,9 +161,17 @@ class TabExchangeItem extends Component {
                 'cmd': app.commands.EXCHANGE,
                 data
             };
-            log(sendObject);
+            // show loader
+            this.loader.show();
             app.service.send(sendObject, (data) => {
-                log(data);
+                console.log(data);
+                this.loader.hide();
+                if (data[app.keywords.RESPONSE_RESULT] === false) {
+                    AlertPopupRub.show(parentNode, `${data[app.keywords.RESPONSE_MESSAGE]}`);
+                    // app.system.info(`${data[app.keywords.RESPONSE_MESSAGE]}`);
+                } else { // true
+                    console.error('chua xu ly cho nay :\'(');
+                }
             });
         }
     }

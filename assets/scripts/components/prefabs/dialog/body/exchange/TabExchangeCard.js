@@ -124,10 +124,17 @@ class TabExchangeCard extends Component {
 
         let parentNode = this.node.parent.parent;
 
-        ConfirmPopupRub.show(parentNode, `Bạn có muốn đổi ${numeral(itemGold).format('0,0')} chip để nhận ${itemName} ?`, this._onConfirmDialogBtnClick, null, this);
+        ConfirmPopupRub.show(parentNode, `Bạn có muốn đổi ${numeral(itemGold).format('0,0')} chip để nhận ${itemName} ?`, this._onConfirmDialogBtnClick.bind(this, event));
     }
 
-    _onConfirmDialogBtnClick() {
+    /**
+     * 
+     * @param {any} event onHandleExchangeBtnClick's event
+     * @returns
+     * 
+     * @memberOf TabExchangeCard
+     */
+    _onConfirmDialogBtnClick(event) {
         let itemGold = event.currentTarget.itemGold;
         let itemName = event.currentTarget.itemName;
 
@@ -142,7 +149,6 @@ class TabExchangeCard extends Component {
             // TODO
             // if user gold less than itemGold -> show AlertPopupRub
             let myCoin = app.context.getMyInfo().coin;
-            console.log(myCoin);
             if (Number(myCoin) < Number(itemGold)) {
                 AlertPopupRub.show(parentNode, `Số tiền hiện tại ${numeral(myCoin).format('0,0')} không đủ để đổi vật phẩm ${itemName}`);
                 return;
@@ -156,15 +162,18 @@ class TabExchangeCard extends Component {
                 'cmd': app.commands.EXCHANGE,
                 data
             };
-            log(sendObject);
+
             // show loader
             this.loader.show();
-
-            setTimeout(() => {
-                this.loader.hide();
-            }, 2000)
             app.service.send(sendObject, (data) => {
                 console.log(data);
+                this.loader.hide();
+                if (data[app.keywords.RESPONSE_RESULT] === false) {
+                    AlertPopupRub.show(parentNode, `${data[app.keywords.RESPONSE_MESSAGE]}`);
+                    // app.system.info(`${data[app.keywords.RESPONSE_MESSAGE]}`);
+                } else { // true
+                    console.error('chua xu ly cho nay :\'(');
+                }
             });
         }
     }

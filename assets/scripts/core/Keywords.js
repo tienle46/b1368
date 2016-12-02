@@ -20,6 +20,7 @@ Keywords.BASE_EVENT_CHANGED_VARS = "changedVars";
 Keywords.BASE_EVENT_IS_IT_ME = "isItMe";
 Keywords.BASE_EVENT_MESSAGE = "message";
 Keywords.RESPONSE_RESULT = "su";
+Keywords.RESPONSE_MESSAGE = "msg";
 //
 Keywords.PAGE = "p";
 Keywords.PAGE_COUNT = "pc";
