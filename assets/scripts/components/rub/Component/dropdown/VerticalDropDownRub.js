@@ -79,21 +79,30 @@ export default class VerticalDropDownRub {
             if (item instanceof cc.Node)
                 return item;
 
-            let i = new ListItemBasicRub(null, { padding: 10 });
+            let size = {
+                width: this.options.size.width - 20,
+            };
+
+            let i = new ListItemBasicRub(null, { contentWidth: size.width, padding: 10 });
+
             // add btn
             let node = i.node();
-            NodeRub.addButtonComponentToNode(node, {
-                event: item.event || null
-            });
-            let size = node.getContentSize();
-            let layoutOptions = {
-                type: cc.Layout.Type.HORIZONTAL,
-                resizeMode: cc.Layout.ResizeMode.NONE,
-                padding: 15,
-                spacingX: 10,
-                horizontalDirection: cc.Layout.HorizontalDirection.LEFT_TO_RIGHT
+            let components = {
+                button: {
+                    event: item.event || null
+                },
+                layout: {
+                    type: cc.Layout.Type.HORIZONTAL,
+                    resizeMode: cc.Layout.ResizeMode.CONTAINER,
+                    padding: 15,
+                    spacingX: 10,
+                    horizontalDirection: cc.Layout.HorizontalDirection.LEFT_TO_RIGHT
+                }
             };
-            NodeRub.addLayoutComponentToNode(node, layoutOptions);
+
+            size.height = node.getContentSize().height;
+
+            NodeRub.addComponentsToNodeByOptions(node, components);
 
             var el = {
                 type: app.const.LIST_ITEM.TYPE.IMAGE,
@@ -113,7 +122,7 @@ export default class VerticalDropDownRub {
                 horizontalAlign: cc.Label.HorizontalAlign.LEFT,
                 size: cc.size(size.width - this.childOptions.icon.size.width - this.childOptions.btnWrap.padding * 2 - this.childOptions.btnWrap.spacingX, size.height),
                 align: {
-                    left: 35,
+                    left: 15,
                     verticalCenter: true
                 }
             };

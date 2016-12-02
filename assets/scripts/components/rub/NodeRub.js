@@ -266,6 +266,35 @@ let NodeRub = {
      *      anchor: <cc.v2>,
      *      scale: <cc.v2>,
      *      opacity: <number>,
+     *      // addComponentsToNodeByOptions's options
+     * 
+     *      @optional children: [{options}, {options}]
+     * }
+     * @returns  cc.Node
+     */
+    createNodeByOptions(options) {
+        let node = new cc.Node();
+        options.name && (node.name = options.name);
+        options.opacity && (node.opacity = options.opacity);
+
+        options.size && node.setContentSize(options.size);
+        options.color && (node.color = options.color);
+        options.position && node.setPosition(options.position);
+        options.anchor && node.setAnchorPoint(options.anchor);
+        options.scale && node.setScale(options.scale);
+
+        NodeRub.addComponentsToNodeByOptions(node, options);
+
+        if (options.children && options.children.length > 0) {
+            options.children.forEach((childOption) => {
+                let n = NodeRub.createNodeByOptions(childOption);
+                node.addChild(n);
+            });
+        }
+
+        return node;
+    },
+    /**
      *      widget: {
      *          isAlignOnce: boolean
      *          isAlignVerticalCenter, isAlignHorizontalCenter: boolean
@@ -338,22 +367,8 @@ let NodeRub = {
      *      webview: {
      *          url : string
      *      }
-     * 
-     *      @optional children: [{options}, {options}]
-     * }
-     * @returns  cc.Node
      */
-    createNodeByOptions(options) {
-        let node = new cc.Node();
-        options.name && (node.name = options.name);
-        options.opacity && (node.opacity = options.opacity);
-
-        options.size && node.setContentSize(options.size);
-        options.color && (node.color = options.color);
-        options.position && node.setPosition(options.position);
-        options.anchor && node.setAnchorPoint(options.anchor);
-        options.scale && node.setScale(options.scale);
-
+    addComponentsToNodeByOptions(node, options) {
         // sprite
         options.sprite && NodeRub.addSpriteComponentToNode(node, options.sprite);
 
@@ -380,15 +395,6 @@ let NodeRub = {
 
         // webView
         options.webview && NodeRub.addWebViewComponentToNode(node, options.webview);
-
-        if (options.children && options.children.length > 0) {
-            options.children.forEach((childOption) => {
-                let n = NodeRub.createNodeByOptions(childOption);
-                node.addChild(n);
-            });
-        }
-
-        return node;
     }
 };
 

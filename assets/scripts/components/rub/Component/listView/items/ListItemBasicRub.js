@@ -255,23 +255,19 @@ export default class ListItemBasicRub {
     }
 
     initItem() {
-        this.itemNode = new cc.Node();
-        let itemNodeSize = cc.size(this.options.contentWidth, this.options.height);
-        this.itemNode.setContentSize(itemNodeSize);
+        let itemNodeOptions = {
+            size: cc.size(this.options.contentWidth, this.options.height),
+            color: this.options.color || null,
+            sprite: {
+                spriteFrame: this.options.spriteFrame || 'textures/50x50'
+            },
+            widget: {
+                left: this.options.padding || 0,
+                right: this.options.padding || 0
+            }
+        };
 
-        let itemNodeSprite = this.itemNode.addComponent(cc.Sprite);
-        RubUtils.loadSpriteFrame(itemNodeSprite, this.options.spriteFrame || 'textures/50x50', itemNodeSize, null, (sprite) => {
-            if (this.options.color) sprite.node.color = this.options.color;
-        });
-
-        let itemNodeWidget = this.itemNode.addComponent(cc.Widget);
-        itemNodeWidget.isAlignOnce = false;
-
-        itemNodeWidget.isAlignLeft = true;
-        itemNodeWidget.isAlignRight = true;
-
-        itemNodeWidget.left = this.options.padding || 0;
-        itemNodeWidget.right = this.options.padding || 0;
+        this.itemNode = NodeRub.createNodeByOptions(itemNodeOptions);
     }
 
     initChild() {
