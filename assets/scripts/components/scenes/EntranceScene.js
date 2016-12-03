@@ -145,7 +145,7 @@ export default class EntranceScene extends BaseScene {
 
     // check if the user information saved.
     _isSaved() {
-        return localStorage.getItem(app.const.USER_LOCAL_STORAGE);
+        return cc.sys.localStorage.getItem(app.const.USER_LOCAL_STORAGE);
     }
 }
 

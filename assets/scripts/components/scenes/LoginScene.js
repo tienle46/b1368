@@ -42,7 +42,7 @@ export default class LoginScene extends BaseScene {
             // set storage
             let userInfo = `${username}:${password}`;
 
-            localStorage.setItem(app.const.USER_LOCAL_STORAGE, userInfo);
+            cc.sys.localStorage.setItem(app.const.USER_LOCAL_STORAGE, userInfo);
         }
         this._loginToDashboard(username, password);
 
