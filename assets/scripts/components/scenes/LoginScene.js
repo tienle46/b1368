@@ -1,5 +1,6 @@
 import BaseScene from 'BaseScene';
 import app from 'app';
+import Base64 from 'Base64';
 
 const MINIMUM_PASSWORD = 6;
 
@@ -17,6 +18,11 @@ export default class LoginScene extends BaseScene {
             type: cc.EditBox
         };
 
+        this.checkBox = {
+            default: null,
+            type: cc.Toggle
+        };
+
         this.isRemember = false;
     }
 
@@ -32,8 +38,16 @@ export default class LoginScene extends BaseScene {
         let username = this.userNameEditBox.string.trim();
         let password = this.userPasswordEditBox.string.trim();
 
-        // if (this._isValidUserInputs(username, password)) {
+        if (this._isChecked()) {
+            // set storage
+            let userInfo = `${username}:${password}`;
+
+            localStorage.setItem(app.const.USER_LOCAL_STORAGE, userInfo);
+        }
         this._loginToDashboard(username, password);
+
+        // if (this._isValidUserInputs(username, password)) {
+        // this._loginToDashboard(username, password);
         // } else {
         //     if (!this._isValidUsernameInput(username)) {
         //         this.addPopup(app.getMessageFromServer("LOGIN_ERROR_USERNAME_NOT_VALID"));
@@ -47,11 +61,17 @@ export default class LoginScene extends BaseScene {
         this.changeScene(app.const.scene.ENTRANCE_SCENE);
     }
 
+    _isChecked() {
+        return this.checkBox.isChecked;
+    }
+
     _loginToDashboard(username, password) {
+        this.showLoading();
         app.service.connect((success) => {
             if (success) {
                 app.service.requestAuthen(username, password, false, false, (error, result) => {
                     error = JSON.parse(error);
+                    this.hideLoading();
                     if (error) {
                         log('Login error:');
                         this.addPopup(app.getMessageFromServer(error.p.ec));

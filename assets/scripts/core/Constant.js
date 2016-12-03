@@ -11,6 +11,8 @@ app.const.toastZIndex = 10001;
 app.const.soundControl = 10002;
 app.const.LANGUAGE = "vi"; // set the language used in app. Default: "vi"
 
+app.const.USER_LOCAL_STORAGE = "userInfo";
+
 app.const.scene = {};
 app.const.scene.ENTRANCE_SCENE = "EntranceScene";
 app.const.scene.LOGIN_SCENE = "LoginScene";

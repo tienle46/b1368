@@ -33,25 +33,51 @@ export default class EntranceScene extends BaseScene {
     // use this for initialization
     onLoad() {
         super.onLoad();
-
-        console.log("on load EntranceScene");
     }
 
     handleLoginAction() {
-        this.showLoading();
+        if (this._isSaved()) {
+            let [username, password] = this._isSaved().split(':');
+            this._loginToDashboard(username, password);
 
+            return;
+        }
+
+        this.changeScene(app.const.scene.LOGIN_SCENE);
+        // this.showLoading();
+        // app.service.connect((success) => {
+        //     log("success: " + success);
+        //     if (success) {
+        //         app.service.requestAuthen('crush1', "1234nm", false, true, (error, result) => {
+        //             error = JSON.parse(error);
+        //             this.hideLoading();
+        //             if (result) {
+        //                 log(app.context.getMe());
+        //                 this.changeScene(app.const.scene.DASHBOARD_SCENE);
+        //             }
+        //             if (error) {
+        //                 this.addPopup(app.getMessageFromServer(error.p.ec));
+        //             }
+        //         });
+        //     }
+        // });
+    }
+
+    _loginToDashboard(username, password) {
+        this.showLoading();
         app.service.connect((success) => {
-            log("success: " + success);
             if (success) {
-                app.service.requestAuthen('crush1', "1234nm", false, true, (error, result) => {
+                app.service.requestAuthen(username, password, false, true, (error, result) => {
                     error = JSON.parse(error);
-                    if (result) {
-                        log(app.context.getMe());
-                        this.hideLoading();
-                        this.changeScene(app.const.scene.DASHBOARD_SCENE);
-                    }
+                    this.hideLoading();
                     if (error) {
+                        log('Login error:');
                         this.addPopup(app.getMessageFromServer(error.p.ec));
+                    }
+                    if (result) {
+                        log(result);
+                        log(`Logged in as ${app.context.getMe().name}`);
+                        this.changeScene(app.const.scene.DASHBOARD_SCENE);
                     }
                 });
             }
@@ -115,6 +141,11 @@ export default class EntranceScene extends BaseScene {
         } catch (e) {
             throw new Error('hashCode: ' + e);
         }
+    }
+
+    // check if the user information saved.
+    _isSaved() {
+        return localStorage.getItem(app.const.USER_LOCAL_STORAGE);
     }
 }
 
