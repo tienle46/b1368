@@ -26,7 +26,7 @@ class BetSlider extends Component {
             this.hide();
             return true;
         });
-        this.container.zIndex = app.const.app.const.topupZIndex;
+        this.container.zIndex = app.const.topupZIndex;
         this.container.on(cc.Node.EventType.TOUCH_END, () => true);
     }
 
