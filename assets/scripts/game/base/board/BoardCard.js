@@ -2,14 +2,14 @@
  * Created by Thanh on 8/23/2016.
  */
 
-import {utils, GameUtils} from 'utils';
+import { utils, GameUtils } from 'utils';
 import app from 'app';
 import Board from 'Board';
 import Card from 'Card';
 import CardList from 'CardList';
-import {Keywords} from 'core';
+import { Keywords } from 'core';
 
-import {Events} from 'events';
+import { Events } from 'events';
 
 export default class BoardCard extends Board {
     constructor() {
@@ -31,10 +31,10 @@ export default class BoardCard extends Board {
         let dealCards = cardBytes.map(cardByte => Card.from(cardByte));
         let playerHandCardLists = this.scene.gamePlayers.getPlayerHandCardLists();
         playerHandCardLists.splice(0, 0, this.renderer.meDealCardList);
-        this.onDealCard(playerHandCardLists, dealCards);
+        this.onDealCard(playerHandCardLists, dealCards, data);
     }
 
-    onDealCard(playerHandCardLists, dealCards){
+    onDealCard(playerHandCardLists, dealCards, data) {
         CardList.dealCards(this.renderer.dealCardAnchor, playerHandCardLists, dealCards.length, () => {
             this.renderer.meDealCardList.clear();
             this.scene.emit(Events.ON_GAME_STATE_STARTED, dealCards);

@@ -31,36 +31,39 @@ export default class GameMenuPrefab extends Component {
         this.isMenuPopupShown = false;
     }
 
-    onEnable(){
+    onEnable() {
         super.onEnable();
         this.scene = app.system.currentScene;
         utils.deactive(this.menuPopup);
     }
 
-    _onClickMenuItem(eventName, ...args){
+    _onClickMenuItem(eventName, ...args) {
         this.hide();
         this.scene.emit(eventName, ...args);
     }
 
-    onClickExitButton(event)
-    {
+    onClickExitButton(event) {
         this.hide();
         this._onClickMenuItem(Events.ON_ACTION_EXIT_GAME);
     }
 
-    onClickGuideButton(){
+    onClickGuideButton() {
         this.hide();
 
         let data = {
-            [Keywords.SERVICE_ID] : this.scene.gameCode,
-            [Keywords.CLIENT_VERSION] : 1,
-            [Keywords.ACTION] : ACTION_LUAT_CHOI,
+            [Keywords.SERVICE_ID]: this.scene.gameCode,
+            [Keywords.CLIENT_VERSION]: 1,
+            [Keywords.ACTION]: ACTION_LUAT_CHOI,
             "testMode": false
         }
 
-        ScrollMessagePopup.show(this.scene.node, {cmd: Commands.RULE_OF_GAME, data: data, parser: (data) => {
-            return data[Keywords.GAME_RULE] ? data[Keywords.GAME_RULE] : data[Keywords.GAME_GUIDE];
-        }});
+        ScrollMessagePopup.show(this.scene.node, {
+            cmd: Commands.RULE_OF_GAME,
+            data: data,
+            parser: (data) => {
+                return data[Keywords.GAME_RULE] ? data[Keywords.GAME_RULE] : data[Keywords.GAME_GUIDE];
+            }
+        });
 
     }
 
@@ -72,28 +75,30 @@ export default class GameMenuPrefab extends Component {
         this.hide();
     }
 
-    _onTouchGameMenu(){
+    _onTouchGameMenu() {
         this.isMenuPopupShown && this.hide();
     }
 
-    onDisable(){
+    onDisable() {
         this.menuPopup.off('touchstart', this._onTouchGameMenu, this);
     }
 
-    show(){
+    show() {
         utils.active(this.menuPopup);
         this.isMenuPopupShown = true;
         this.menuPopup.on('touchstart', this._onTouchGameMenu, this);
     }
 
-    hide(){
+    hide() {
         utils.deactive(this.menuPopup);
         this.isMenuPopupShown = false;
         this.menuPopup.off('touchstart', this._onTouchGameMenu, this);
     }
 
     onClickChatButton(event) {
-        this.scene.emit(Events.VISIBLE_INGAME_CHAT_COMPONENT);
+        console.debug('localStorage.getItem("testModel")', JSON.parse(localStorage.getItem("testModel")));
+        this.scene.showGameResult(JSON.parse(localStorage.getItem("testModel")));
+        // this.scene.emit(Events.VISIBLE_INGAME_CHAT_COMPONENT);
     }
 
     onClickTopupButton(event) {

@@ -4,9 +4,9 @@
 
 import app from 'app';
 import game from 'game';
-import {utils, GameUtils} from 'utils';
-import {Keywords} from 'core';
-import {Events} from 'events';
+import { utils, GameUtils } from 'utils';
+import { Keywords } from 'core';
+import { Events } from 'events';
 import BoardCardTurnBase from 'BoardCardTurnBase';
 import PlayerTLMNDL from 'PlayerTLMNDL';
 import TLMNUtils from 'TLMNUtils';
@@ -24,7 +24,7 @@ export default class BoardTLMNDL extends BoardCardTurnBase {
         this.handCardSize = PlayerTLMNDL.DEFAULT_HAND_CARD_COUNT;
     }
 
-    onEnable(){
+    onEnable() {
         /**
          * @type {BoardTLMNDLRenderer}
          */
@@ -61,7 +61,7 @@ export default class BoardTLMNDL extends BoardCardTurnBase {
         /**
          * Get remain player card size
          */
-        if(this.isPlaying()){
+        if (this.isPlaying()) {
             let playerIds = utils.getValue(data, Keywords.GAME_LIST_PLAYER);
             let playerRemainCardSizes = utils.getValue(data, Keywords.GAME_LIST_PLAYER_CARDS_SIZE,
                 playerIds && new Array(playerIds.length).fill(PlayerTLMNDL.DEFAULT_HAND_CARD_COUNT));
@@ -84,9 +84,10 @@ export default class BoardTLMNDL extends BoardCardTurnBase {
 
         let balanceChangeAmounts = this._getPlayerBalanceChangeAmounts(playerIds, data);
         let playerHandCards = this._getPlayerHandCards(playerIds, data);
-        let {gameResultInfos, resultIconPaths} = this._getGameResultInfos(playerIds, playerHandCards, data);
+        let { gameResultInfos, resultIconPaths } = this._getGameResultInfos(playerIds, playerHandCards, data);
 
         super.onBoardEnding(data);
+
 
         let models = playerIds.filter(playerId => (playingPlayerIds.indexOf(playerId) >= 0)).map(playerId => {
             return {
@@ -94,13 +95,24 @@ export default class BoardTLMNDL extends BoardCardTurnBase {
                 balanceChanged: balanceChangeAmounts[playerId],
                 iconPath: resultIconPaths[playerId],
                 info: gameResultInfos[playerId],
-                cards: playerHandCards[playerId]
-            }
+                cards: playerHandCards[playerId],
+                // isWinner: true
+            };
         });
 
+        // if (models) {
+
+        //     if (localStorage.getItem("testModel")) {
+        //         console.debug("testModel", JSON.parse(localStorage.getItem("testModel")));
+        //         console.debug(JSON.parse(localStorage.getItem("testModel")));
+        //     } else {
+        //         console.debug("models", JSON.stringify(models));
+        //         localStorage.setItem("testModel", JSON.stringify(models));
+        //     }
+        // }
         setTimeout(() => this.scene.showGameResult(models, (shownTime) => {
             let remainTime = this.timelineRemain - shownTime;
-            if(remainTime > 0 && this.scene.isEnding()){
+            if (remainTime > 0 && this.scene.isEnding()) {
                 this.renderer.cleanDeckCards();
                 this._startEndBoardTimeLine(remainTime);
             }
@@ -172,7 +184,7 @@ export default class BoardTLMNDL extends BoardCardTurnBase {
         });
 
         Object.keys(thoiData).forEach(id => {
-            let {types, counts} = thoiData[id];
+            let { types, counts } = thoiData[id];
 
             if (types && types.length > 0) {
                 let str = `${app.res.string('game_thoi')} `;
@@ -188,7 +200,7 @@ export default class BoardTLMNDL extends BoardCardTurnBase {
             }
         });
 
-        return {gameResultInfos: gameResultInfos, resultIconPaths: resultIconPaths};
+        return { gameResultInfos: gameResultInfos, resultIconPaths: resultIconPaths };
     }
 
     _getThoiData(data) {
@@ -208,7 +220,7 @@ export default class BoardTLMNDL extends BoardCardTurnBase {
                 let types = thoiTypesArray.slice(thoiTypeArrayIndex, thoiTypeArrayIndex + typeCount);
                 let counts = thoiTypeCountArray.slice(thoiTypeArrayIndex, thoiTypeArrayIndex + typeCount);
 
-                thoiData[id] = {types: types, counts: counts};
+                thoiData[id] = { types: types, counts: counts };
 
                 thoiTypeArrayIndex += typeCount;
             });

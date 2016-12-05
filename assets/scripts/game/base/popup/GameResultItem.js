@@ -4,8 +4,8 @@
 
 import app from 'app';
 import utils from 'utils';
-import {Actor} from 'components';
-import {CardList} from 'game-components';
+import { Actor } from 'components';
+import { CardList } from 'game-components';
 import TextView from 'TextView';
 
 export default class GameResultItem extends Actor {
@@ -32,22 +32,27 @@ export default class GameResultItem extends Actor {
         this.balanceLabel = {
             default: null,
             type: cc.Label
-        }
+        };
 
         this.resultText = {
             default: null,
             type: cc.Label
-        }
+        };
 
         this.infoTextViewNode = {
             default: null,
             type: cc.Node
-        }
+        };
 
         this.cardListPrefab = {
             default: null,
             type: cc.Prefab
-        }
+        };
+
+        this.winnerBoxNode = {
+            default: null,
+            type: cc.Node
+        };
 
         /**
          *
@@ -58,58 +63,71 @@ export default class GameResultItem extends Actor {
         /**
          * @type {CardList}
          */
-        this.cardList = null;
+        this.cardListNode = {
+            default: null,
+            type: cc.Node
+        };
+
         this.info = "";
         this.model = null;
     }
 
-    onEnable(){
+    onEnable() {
         super.onEnable();
         this.resultIcon = this.resultIconNode.getComponent(cc.Sprite);
         this.infoTextView = this.infoTextViewNode.getComponent('TextView');
         this.model && this._renderData(this.model);
     }
 
-    _setResultIcon(url){
+    _setResultIcon(url) {
         cc.loader.loadRes(url, cc.SpriteFrame, (err, spriteFrame) => {
             this.resultIcon.spriteFrame = spriteFrame;
         });
     }
 
-    setModel(model){
+    setModel(model) {
         this.model = model;
     }
 
-    _renderData({name = "", text = null, iconPath = "", balanceChanged = NaN, info = "", cards = []} = {}){
+    _renderData({ name = "", text = null, iconPath = "", balanceChanged = NaN, info = "", cards = [], isWinner = false } = {}) {
+
+        isWinner && this.showWinnerBox();
 
         this.infoTextView && this.infoTextView.setText(info);
 
         this.playerName.string = name;
         this.balanceLabel.string = Number.isNaN(balanceChanged) ? "" : balanceChanged > 0 ? `+${balanceChanged}` : `${balanceChanged}`;
 
-        if(utils.isEmpty(iconPath)){
+        if (utils.isEmpty(iconPath)) {
             text && this.resultText && (this.resultText.string = text);
             utils.active(this.resultText);
             utils.deactive(this.resultIcon);
-        }else{
+        } else {
             utils.active(this.resultIcon);
             utils.deactive(this.resultText);
             this._setResultIcon(iconPath);
         }
 
-        let cardListNode = cc.instantiate(this.cardListPrefab);
-        this.dataContainer.addChild(cardListNode);
-        this.cardList = cardListNode.getComponent('CardList');
+        // let cardListNode = cc.instantiate(this.cardListPrefab);
+        // this.dataContainer.addChild(cardListNode);
+        // this.cardList = cardListNode.getComponent('CardList');
+        this.cardList = this.cardListNode.getComponent('CardList');
 
-        this.cardList.setProperties({
-            x: 0,
-            y: 0,
-            scale: 0.6,
-            alignment: CardList.ALIGN_CENTER_LEFT,
-            maxDimension: this.dataContainer.width,
-        });
+        // this.cardList.setProperties({
+        //     x: 0,
+        //     y: 0,
+        //     scale: 0.6,
+        //     alignment: CardList.ALIGN_CENTER_LEFT,
+        //     maxDimension: this.dataContainer.width,
+        // });
 
         this.cardList.setCards(cards);
+    }
+
+    showWinnerBox() {
+        this.winnerBoxNode.opacity = 255;
+        // hide info bg
+        this.infoTextViewNode.opacity = 0;
     }
 }
 
