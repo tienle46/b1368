@@ -36,13 +36,6 @@ export default class EntranceScene extends BaseScene {
     }
 
     handleLoginAction() {
-        if (this._isSaved()) {
-            let [username, password] = this._isSaved().split(':');
-            this._loginToDashboard(username, password);
-
-            return;
-        }
-
         this.changeScene(app.const.scene.LOGIN_SCENE);
         // this.showLoading();
         // app.service.connect((success) => {
@@ -63,26 +56,26 @@ export default class EntranceScene extends BaseScene {
         // });
     }
 
-    _loginToDashboard(username, password) {
-        this.showLoading();
-        app.service.connect((success) => {
-            if (success) {
-                app.service.requestAuthen(username, password, false, true, (error, result) => {
-                    error = JSON.parse(error);
-                    this.hideLoading();
-                    if (error) {
-                        log('Login error:');
-                        this.addPopup(app.getMessageFromServer(error.p.ec));
-                    }
-                    if (result) {
-                        log(result);
-                        log(`Logged in as ${app.context.getMe().name}`);
-                        this.changeScene(app.const.scene.DASHBOARD_SCENE);
-                    }
-                });
-            }
-        });
-    }
+    // _loginToDashboard(username, password) {
+    //     this.showLoading();
+    //     app.service.connect((success) => {
+    //         if (success) {
+    //             app.service.requestAuthen(username, password, false, true, (error, result) => {
+    //                 error = JSON.parse(error);
+    //                 this.hideLoading();
+    //                 if (error) {
+    //                     log('Login error:');
+    //                     this.addPopup(app.getMessageFromServer(error.p.ec));
+    //                 }
+    //                 if (result) {
+    //                     log(result);
+    //                     log(`Logged in as ${app.context.getMe().name}`);
+    //                     this.changeScene(app.const.scene.DASHBOARD_SCENE);
+    //                 }
+    //             });
+    //         }
+    //     });
+    // }
 
     handleRegisterButton() {
         this.showLoading();
@@ -143,10 +136,7 @@ export default class EntranceScene extends BaseScene {
         }
     }
 
-    // check if the user information saved.
-    _isSaved() {
-        return cc.sys.localStorage.getItem(app.const.USER_LOCAL_STORAGE);
-    }
+
 }
 
 app.createComponent(EntranceScene);

@@ -32,6 +32,12 @@ export default class LoginScene extends BaseScene {
         }
         this.userNameEditBox.string = "";
         this.userPasswordEditBox.string = "";
+
+        if (this._isSaved()) {
+            let [username, password] = this._isSaved().split(':');
+            this.userNameEditBox.string = username;
+            this.userPasswordEditBox.string = password;
+        }
     }
 
     handleLoginAction() {
@@ -59,6 +65,11 @@ export default class LoginScene extends BaseScene {
 
     back() { // back to EntranceScene
         this.changeScene(app.const.scene.ENTRANCE_SCENE);
+    }
+
+    // check if the user information saved.
+    _isSaved() {
+        return cc.sys.localStorage.getItem(app.const.USER_LOCAL_STORAGE);
     }
 
     _isChecked() {
