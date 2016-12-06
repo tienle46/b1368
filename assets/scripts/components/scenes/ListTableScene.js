@@ -3,7 +3,8 @@ import BaseScene from 'BaseScene';
 import SFS2X from 'SFS2X';
 import RubUtils from 'RubUtils';
 import AlertPopupRub from 'AlertPopupRub';
-import _ from 'lodash';
+import ConfirmPopupRub from 'ConfirmPopupRub';
+// import _ from 'lodash';
 
 export default class ListTableScene extends BaseScene {
     constructor() {
@@ -29,6 +30,9 @@ export default class ListTableScene extends BaseScene {
 
         // room lobby Id
         this.lobbyId = null;
+
+        // invitation popup showed
+        this.invitationShowed = false;
     }
 
     onDestroy() {
@@ -158,11 +162,41 @@ export default class ListTableScene extends BaseScene {
     _addGlobalListener() {
         super._addGlobalListener();
         app.system.addListener(SFS2X.SFSEvent.ROOM_JOIN, this._handleRoomJoinEvent, this);
+        app.system.addListener(app.commands.PLAYER_INVITE, this._onPlayerInviteEvent, this);
     }
 
     _removeGlobalListener() {
         super._removeGlobalListener();
         app.system.removeListener(SFS2X.SFSEvent.ROOM_JOIN, this._handleRoomJoinEvent, this);
+        app.system.removeListener(app.commands.PLAYER_INVITE, this._onPlayerInviteEvent, this);
+    }
+
+    _onPlayerInviteEvent(event) {
+        // console.debug('this.invitationShowed', this.invitationShowed);
+        if (this.invitationShowed == false) {
+            let room = {
+                id: event[app.keywords.INVITATION_ROOM_SFSID],
+                isSpectator: false,
+                minBet: event[app.keywords.QUICK_JOIN_BET]
+            };
+            this.invitationShowed = true;
+
+            this.invitationShowed && ConfirmPopupRub.show(null, `${event.u} muốn mời bạn vào phòng chơi bet ${event.b}.`, this._onConfirmInvitationBtnClick.bind(this, room), this._onCancelInvitationBtnClick.bind(this));
+        }
+    }
+
+    _onConfirmInvitationBtnClick(room) {
+        this.invitationShowed = false;
+
+        // console.debug('this.invitationShowed comfirmed', this.invitationShowed);
+
+        this._requestJoinRoom(room);
+    }
+
+    _onCancelInvitationBtnClick() {
+        this.invitationShowed = false;
+
+        // console.debug('this.invitationShowed canceled', this.invitationShowed);
     }
 
     _handleRoomJoinEvent(event) {
@@ -183,6 +217,7 @@ export default class ListTableScene extends BaseScene {
             }
         }
     }
+
     _initRoomsListFromData(data) {
         if (!data)
             return;
@@ -288,7 +323,7 @@ export default class ListTableScene extends BaseScene {
 
     onUserRequestJoinRoom(cell) {
         if (cell.minBet > cell.balance) {
-            AlertPopupRub.show(cc.director.getScene(), "rằng thì là mà .... minbet > balance");
+            AlertPopupRub.show(null, "rằng thì là mà .... minbet > balance");
         } else {
             if (cell.password) {
                 console.warn('password wth ?');
@@ -298,12 +333,18 @@ export default class ListTableScene extends BaseScene {
         }
     }
 
-    _requestJoinRoom(cell) {
+    /**
+     * 
+     * @param {any} cell {id, isSpectator, minBet, password}
+     * 
+     * @memberOf ListTableScene
+     */
+    _requestJoinRoom(room) {
         let data = {};
-        data[app.keywords.ROOM_ID] = cell.id;
-        data[app.keywords.IS_SPECTATOR] = false;
-        data[app.keywords.ROOM_BET] = cell.minBet;
-        cell.password && (data[app.keywords.ROOM_PASSWORD] = cell.password);
+        data[app.keywords.ROOM_ID] = room.id;
+        data[app.keywords.IS_SPECTATOR] = room.isSpectator || false;
+        data[app.keywords.ROOM_BET] = room.minBet;
+        room.password && (data[app.keywords.ROOM_PASSWORD] = room.password);
 
         let sendObject = {
             cmd: app.commands.USER_JOIN_ROOM,

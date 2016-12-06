@@ -35,8 +35,8 @@ export default class BasePopUpRub {
     _setupPopupElement() {
         let btnGroupNode = this.popup_bkgNode.getChildByName('footer').getChildByName('groupBtn');
         this.bodyNode = this.basePopupComponent.bodyNode;
-        this.greenBtn = btnGroupNode.getChildByName('greenBtn').getComponent(cc.Button);
-        this.violetBtn = btnGroupNode.getChildByName('violetBtn').getComponent(cc.Button);
+        this.confirmBtn = btnGroupNode.getChildByName('greenBtn').getComponent(cc.Button);
+        this.cancelBtn = btnGroupNode.getChildByName('violetBtn').getComponent(cc.Button);
         this.groupBtn = btnGroupNode.getComponent(ButtonGroup);
     }
 

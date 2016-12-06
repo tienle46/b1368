@@ -110,6 +110,7 @@ export default class PromptPopupRub extends ConfirmPopupRub {
 
     //override
     static show(node, events = {}, options, context = null) {
+        (!node) && (node = cc.director.getScene());
         return new PromptPopupRub(node, events, options, context).init();
     }
 }

@@ -11,9 +11,9 @@ export default class ConfirmPopupRub extends AlertPopupRub {
      * 
      * @memberOf AlertPopupRub
      */
-    constructor(node, string = "", greenBtnEvent = null, violetBtnEvent = null, context = null) {
-        super(node, string, greenBtnEvent, context);
-        this.violetBtnEvent = violetBtnEvent;
+    constructor(node, string = "", confirmBtnEvent = null, cancelBtnEvent = null, context = null) {
+        super(node, string, confirmBtnEvent, context);
+        this.cancelBtnEvent = cancelBtnEvent;
     }
 
     init() {
@@ -28,13 +28,14 @@ export default class ConfirmPopupRub extends AlertPopupRub {
 
     _registerVioletBtnEvent() {
         // this.violetBtn has setted own EventHandler already. (close popup);        
-        if (this.violetBtnEvent) {
-            this.groupBtn.setBtnEvent(this.violetBtn, this.violetBtnEvent, this.context);
+        if (this.cancelBtnEvent) {
+            this.groupBtn.setBtnEvent(this.cancelBtn, this.cancelBtnEvent, this.context);
         }
     }
 
     //override
-    static show(node, string = "", greenBtnEvent = null, violetBtnEvent = null, context = null) {
-        return new ConfirmPopupRub(node, string, greenBtnEvent, violetBtnEvent, context).init();
+    static show(node, string = "", confirmBtnEvent = null, cancelBtnEvent = null, context = null) {
+        (!node) && (node = cc.director.getScene());
+        return new ConfirmPopupRub(node, string, confirmBtnEvent, cancelBtnEvent, context).init();
     }
 }
