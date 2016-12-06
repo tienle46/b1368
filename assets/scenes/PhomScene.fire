@@ -41,7 +41,7 @@
     "_tag": -1,
     "_opacityModifyRGB": false,
     "_id": "ab083865-8d4b-43db-8e97-b6cb9317f6f2",
-    "autoReleaseAssets": true
+    "autoReleaseAssets": false
   },
   {
     "__type__": "cc.Node",
@@ -794,11 +794,11 @@
     "_parent": {
       "__id__": 25
     },
-    "_id": "1907fwzBCJI06sGMzIx3QHU",
+    "_id": "7322a06+11AObwEPXyLzPAn",
     "_prefab": {
       "__id__": 27
     },
-    "_name": "GameResultPopupPrefab",
+    "_name": "GameResultPopup2Prefab",
     "_active": true,
     "_position": {
       "__type__": "cc.Vec2",
@@ -818,7 +818,7 @@
     "asset": {
       "__uuid__": "13af3e19-4431-492e-bc6d-c0412c0ab05a"
     },
-    "fileId": "b4f1fxTVWNK4LAkzoL2zDBS",
+    "fileId": "1cb7cR4MAFDSoDPzgYZ1gAZ",
     "sync": true
   },
   {

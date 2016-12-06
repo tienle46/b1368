@@ -114,10 +114,10 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 26
+        "__id__": 27
       },
       {
-        "__id__": 27
+        "__id__": 28
       }
     ],
     "_prefab": null,
@@ -725,15 +725,67 @@
   },
   {
     "__type__": "cc.Node",
+    "_name": "gameResult",
     "_objFlags": 0,
+    "_opacity": 255,
+    "_color": {
+      "__type__": "cc.Color",
+      "r": 255,
+      "g": 255,
+      "b": 255,
+      "a": 255
+    },
+    "_cascadeOpacityEnabled": true,
     "_parent": {
       "__id__": 2
     },
-    "_id": "40c10I9VMRDSpo//MaQlYHq",
-    "_prefab": {
-      "__id__": 25
+    "_anchorPoint": {
+      "__type__": "cc.Vec2",
+      "x": 0.5,
+      "y": 0.5
     },
-    "_name": "GameResultPopupPrefab",
+    "_contentSize": {
+      "__type__": "cc.Size",
+      "width": 0,
+      "height": 0
+    },
+    "_children": [
+      {
+        "__id__": 25
+      }
+    ],
+    "_rotationX": 0,
+    "_rotationY": 0,
+    "_scaleX": 1,
+    "_scaleY": 1,
+    "_position": {
+      "__type__": "cc.Vec2",
+      "x": 0,
+      "y": 0
+    },
+    "_skewX": 0,
+    "_skewY": 0,
+    "_localZOrder": 0,
+    "_globalZOrder": 0,
+    "_tag": -1,
+    "_opacityModifyRGB": false,
+    "_id": "014bfG23hRD0b38+4FufYJ/",
+    "_active": true,
+    "_components": [],
+    "_prefab": null,
+    "groupIndex": 0
+  },
+  {
+    "__type__": "cc.Node",
+    "_objFlags": 0,
+    "_parent": {
+      "__id__": 24
+    },
+    "_id": "6699fGdhnJJVbWDqsAl+p/I",
+    "_prefab": {
+      "__id__": 26
+    },
+    "_name": "GameResultPopup2Prefab",
     "_active": true,
     "_position": {
       "__type__": "cc.Vec2",
@@ -748,12 +800,12 @@
   {
     "__type__": "cc.PrefabInfo",
     "root": {
-      "__id__": 24
+      "__id__": 25
     },
     "asset": {
       "__uuid__": "13af3e19-4431-492e-bc6d-c0412c0ab05a"
     },
-    "fileId": "b4f1fxTVWNK4LAkzoL2zDBS",
+    "fileId": "1cb7cR4MAFDSoDPzgYZ1gAZ",
     "sync": true
   },
   {
@@ -803,7 +855,7 @@
       "__id__": 7
     },
     "gameResultPopupNode": {
-      "__id__": 24
+      "__id__": 25
     },
     "playerPositionAnchorsNode": {
       "__id__": 12
