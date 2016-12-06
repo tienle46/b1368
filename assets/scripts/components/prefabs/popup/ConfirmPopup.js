@@ -2,22 +2,27 @@
  * Created by Thanh on 10/18/2016.
  */
 
-import MessagePopup from 'MessagePopup';
 import app from 'app';
+import utils from 'utils';
+import MessagePopup from 'MessagePopup';
 
 export default class ConfirmPopup extends MessagePopup {
     constructor() {
         super();
     }
 
-    onLoad() {
-        super.onLoad();
-        this.acceptButton.node.active = true;
-
-        this.denyButtonLabel.string = app.res.string('label_deny');
+    onEnable(){
+        super.onEnable();
+        utils.active(this.acceptButton);
     }
 
-    confirm(parentNode, message, denyCb, acceptCb) {
-        this.show(parentNode, message, denyCb, acceptCb);
+    getDenyText() {
+        return app.res.string('label_deny');
+    }
+
+    static confirm(parentNode, message, denyCb, acceptCb) {
+        this.show(parentNode, message, denyCb, acceptCb, 'ConfirmPopup');
     }
 }
+
+app.createComponent(ConfirmPopup)

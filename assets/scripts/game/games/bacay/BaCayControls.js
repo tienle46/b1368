@@ -60,10 +60,10 @@ export default class BaCayControls extends GameControls {
         showKe && this.setVisible(this.keBtn);
     }
 
-    _showDownCardControls(){
+    _showDownCardControls(show = true){
         this.hideAllControls();
-        this.setVisible(this.downBtn);
-        this.setVisible(this.revealAllBtn);
+        this.setVisible(this.downBtn, show);
+        this.setVisible(this.revealAllBtn, show);
     }
 
     _showWaitTurnControls() {

@@ -17,7 +17,9 @@ Events.HANDLE_PLAYER_DOWN_CARD          = "handle.playerDownCard";
 Events.HANDLE_PLAYER_HELP_CARD          = "handle.playerHelpCard";
 Events.HANDLE_PLAYER_LEAVE_BOARD        = "handle.playerLeaveBoard";
 Events.HANDLE_PLAYER_BET                = "handle.playerBet";
-Events.HANDLE_PLAYER_DOWN_CARD          = "handle.playerBet";
+Events.HANDLE_PLAYER_DOWN_CARD          = "handle.playerDownCard";
+Events.HANDLE_PLAYER_CUOC_BIEN             = "handle.playerGaHuc";
+Events.HANDLE_PLAYER_ACCEPT_CUOC_BIEN         = "handle.playerAcceptHuc";
 
 Events.SHOW_GAME_BEGIN_CONTROLS         = "show.gameBeginControls";
 Events.SHOW_WAIT_TURN_CONTROLS          = "show.waitTurnControls";
@@ -80,7 +82,7 @@ Events.ON_CLICK_HUC_BUTTON              = "on.click.hucButton";
 Events.ON_CLICK_KE_BUTTON               = "on.click.keButton";
 Events.ON_CLICK_REVEAL_BUTTON           = "on.click.revealButton";
 Events.ON_CLICK_DOWN_BUTTON             = "on.click.downButton";
-Events.ON_CLICK_CHOOSE_BET_BUTTON       = "on.click.downButton";
+Events.ON_CLICK_CHOOSE_BET_BUTTON       = "on.click.chooseBetButton";
 
 Events.ON_GAME_RESET                        = "on.game.reset";
 Events.ON_GAME_STATE_BEGIN                  = "on.game.stateBegin";
@@ -96,6 +98,7 @@ Events.ON_GAME_REJOIN                       = "on.game.rejoin";
 Events.ON_GAME_SET_LAST_MOVE                = "on.game.setLastMove";
 Events.ON_GAME_CLEAN_TURN_ROUTINE_DATA      = "on.game.cleanTurnRoutineData";
 Events.ON_GAME_LOAD_DATA_AFTER_SCENE_START  = "on.game.loadDataAfterSceneStart";
+Events.ON_GAME_MASTER_CHANGED                = "on.game.masterChanged";
 
 Events.ON_ACTION_EXIT_GAME              = "on.action.exitGame";
 Events.ON_ACTION_LOAD_GAME_GUIDE        = "on.action.loadGameGuide";

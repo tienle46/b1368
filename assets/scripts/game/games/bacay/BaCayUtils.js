@@ -66,4 +66,82 @@ export default class BaCayUtils {
 
         return true;
     }
+
+    static calculateMaxCuocBien(player){
+        let maxValue = player.board.minBet * 5;
+        //TODO
+        return maxValue;
+    }
+
+    static checkCuocBienWithPlayer(me, player){
+        let checkResult = true;
+        let msg = '';
+
+        let board = me.board;
+        let usernames = [me.user.name, player.user.name];
+        let cuocBienPlayers = utils.getAllKeys(board._pendingCuocBiens, board._pendingBiCuocBiens, me.hucList, me.biHucList, player.hucList, player.biHucList);
+
+        console.log("cuocBienPlayers: ", cuocBienPlayers, "usernames: ", usernames);
+
+        if(ArrayUtils.containsSome(cuocBienPlayers, usernames)){
+            checkResult = false
+            msg = app.res.string('game_bacay_chi_cuoc_bien_mot_lan');
+        }else{
+            //More check action
+        }
+
+        return {checkResult, msg};
+    }
+
+    static checkAcceptCuocBienWithPlayer(me, player){
+        let checkResult = true;
+        let msg = '';
+
+        let board = me.board;
+        let usernames = [me.user.name, player.user.name];
+        let excludePlayers = [...me.getExcludeCuocBienPlayers(), ...player.getExcludeCuocBienPlayers()];
+
+        if(ArrayUtils.containsSome(excludePlayers, usernames)){
+            checkResult = false
+            msg = app.res.string('game_bacay_chi_cuoc_bien_mot_lan');
+        }else{
+            //More check action
+        }
+
+        return {checkResult, msg};
+    }
+
+    static validateCuocBienValue(value, me, player){
+        let valid = true;
+        let {checkResult, msg} = this.checkCuocBienWithPlayer(me, player);
+
+        if(checkResult){
+            //TODO vevify cuoc bien value
+        }else{
+            valid = false;
+        }
+
+        return {valid, msg};
+    }
+
+    static validateAcceptCuocBienValue(value, me, player){
+        let valid = true;
+        let {checkResult, msg} = this.checkAcceptCuocBienWithPlayer(me, player);
+
+        if(checkResult){
+            //TODO vevify cuoc bien value
+        }else{
+            valid = false;
+        }
+
+        return {valid, msg};
+    }
+
+    static calculateMaxBet(player){
+        return player && player.board.minBet * 5;
+    }
+
+    static validateBetValue(value, player){
+        return {valid: true, msg: ''};
+    }
 }

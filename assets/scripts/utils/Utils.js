@@ -137,4 +137,8 @@ export default class Utils {
         // }));
     }
 
+    static getAllKeys(...args){
+        return args.map(arg => this.isObject(arg) ? Object.keys(arg) : []).reduce((keys, keyArr) => {return [...keys, ...keyArr]}, []);
+    }
+
 }

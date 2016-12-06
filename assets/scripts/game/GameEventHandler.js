@@ -67,6 +67,8 @@ export default class GameEventHandler {
         app.system.addGameListener(Commands.PLAYER_DOWN_CARD, this._onPlayerDownCard, this);
         app.system.addGameListener(Commands.PLAYER_HELP_CARD, this._onPlayerHelpCard, this);
         app.system.addGameListener(Commands.PLAYER_BET, this._onPlayerBet, this);
+        app.system.addGameListener(Commands.BACAY_PLAYER_GA_HUC, this._onPlayerGaHuc, this);
+        app.system.addGameListener(Commands.BACAY_PLAYER_HUC_ACCEPTED, this._onPlayerHucAccepted, this);
     }
 
     removeGameEventListener() {
@@ -103,7 +105,21 @@ export default class GameEventHandler {
         app.system.removeGameListener(Commands.PLAYER_DOWN_CARD, this._onPlayerDownCard, this);
         app.system.removeGameListener(Commands.PLAYER_HELP_CARD, this._onPlayerHelpCard, this);
         app.system.removeGameListener(Commands.PLAYER_BET, this._onPlayerBet, this);
+        app.system.removeGameListener(Commands.PLAYER_BET, this._onPlayerBet, this);
+        app.system.removeGameListener(Commands.BACAY_PLAYER_GA_HUC, this._onPlayerGaHuc, this);
+        app.system.removeGameListener(Commands.BACAY_PLAYER_HUC_ACCEPTED, this._onPlayerHucAccepted, this);
 
+    }
+
+    _onPlayerHucAccepted(data){
+        let gaHucPlayerId = utils.getValue(data, app.keywords.BACAY_GA_HUC_PLAYER_ID);
+        let biHucPlayerId = utils.getValue(data, app.keywords.BACAY_BI_HUC_PLAYER_ID);
+        gaHucPlayerId && this.scene.emit(Events.HANDLE_PLAYER_ACCEPT_CUOC_BIEN, gaHucPlayerId, biHucPlayerId, data);
+    }
+
+    _onPlayerGaHuc(data){
+        let gaHucPlayerId = utils.getValue(data, app.keywords.BACAY_GA_HUC_PLAYER_ID);
+        gaHucPlayerId && this.scene.emit(Events.HANDLE_PLAYER_CUOC_BIEN, gaHucPlayerId, data);
     }
 
     _onPlayerBet(data){

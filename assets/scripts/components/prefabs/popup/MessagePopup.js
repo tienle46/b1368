@@ -24,7 +24,7 @@ export default class MessagePopup extends Component {
             loadingComponent: cc.Node,
             contentComponent: cc.Node,
             popupComponent: cc.Node,
-
+            componentName: 'MessagePopup'
         }
 
         this.messageTextView = null;
@@ -39,15 +39,19 @@ export default class MessagePopup extends Component {
         this.loadingHeight = 100;
     }
 
-    onLoad() {
-
+    onLoad(){
+        super.onLoad();
         this.node.on('touchstart', () => false);
-
         this.loadingHeight = this.loadingComponent.height;
-        this.acceptButton.node.active = false;
-
-        this.denyButtonLabel.string = app.res.string('label_close');
         this.loading = this.loadingComponent.getComponentInChildren('Progress');
+    }
+
+    onEnable() {
+        super.onEnable();
+
+        this.acceptButtonLabel.string = this.getAcceptText();
+        this.denyButtonLabel.string = this.getDenyText();
+
         this.initMessageNode();
 
         if (this.requestData) {
@@ -108,11 +112,11 @@ export default class MessagePopup extends Component {
     }
 
     getDenyText() {
-        app.res.string('label_deny');
+        return app.res.string('label_close');
     }
 
     getAcceptText() {
-        app.res.string('label_accept');
+        return app.res.string('label_accept');
     }
 
     onShow(parentNode, textOrRequestData, denyCb, acceptCb) {
@@ -130,16 +134,16 @@ export default class MessagePopup extends Component {
         parentNode.addChild(this.node, 10000);
     }
 
-    static show(parentNode, textOrRequestData, denyCb, acceptCb) {
+    static show(parentNode, textOrRequestData, denyCb, acceptCb, componentName = 'MessagePopup') {
 
         currentPopup && currentPopup.hide();
 
         let args = [parentNode, textOrRequestData, denyCb, acceptCb];
 
-        parentNode && textOrRequestData && RubUtils.loadRes('popup/MessagePopup').then((prefab) => {
+        parentNode && textOrRequestData && RubUtils.loadRes(`popup/${componentName}`).then((prefab) => {
 
             let messagePopupNode = cc.instantiate(prefab);
-            let messagePopup = messagePopupNode.getComponent('MessagePopup');
+            let messagePopup = messagePopupNode.getComponent(`${componentName}`);
             messagePopup.onShow(...args);
 
             currentPopup = messagePopup;
