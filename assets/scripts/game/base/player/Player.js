@@ -64,17 +64,28 @@ export default class Player extends Actor {
         super._removeGlobalListener();
 
         this.scene.off(Events.ON_GAME_RESET, this.onGameReset, this);
-        this.scene.off(Events.ON_GAME_STATE_BEGIN, this.onGameBegin);
-        this.scene.off(Events.ON_GAME_STATE_STARTING, this.onGameStarting);
-        this.scene.off(Events.ON_GAME_STATE_STARTED, this.onGameStarted);
-        this.scene.off(Events.ON_GAME_STATE_PLAYING, this.onGamePlaying);
-        this.scene.off(Events.ON_GAME_STATE_ENDING, this.onGameEnding);
-        this.scene.off(Events.ON_USER_EXIT_ROOM, this._onUserExitRoom);
-        this.scene.off(Events.ON_PLAYER_READY_STATE_CHANGED, this._onSetReadyState);
-        this.scene.off(Events.ON_PLAYER_CHANGE_BALANCE, this._onPlayerChangeBalance);
-        this.scene.off(Events.ON_USER_UPDATE_BALANCE, this._onUserUpdateBalance);
-        this.scene.off(Events.ON_PLAYER_SET_BALANCE, this._onPlayerSetBalance);
+        this.scene.off(Events.ON_GAME_STATE_BEGIN, this.onGameBegin, this);
+        this.scene.off(Events.ON_GAME_STATE_STARTING, this.onGameStarting, this);
+        this.scene.off(Events.ON_GAME_STATE_STARTED, this.onGameStarted, this);
+        this.scene.off(Events.ON_GAME_STATE_PLAYING, this.onGamePlaying, this);
+        this.scene.off(Events.ON_GAME_STATE_ENDING, this.onGameEnding, this);
+        this.scene.off(Events.ON_USER_EXIT_ROOM, this._onUserExitRoom, this);
+        this.scene.off(Events.ON_PLAYER_READY_STATE_CHANGED, this._onSetReadyState, this);
+        this.scene.off(Events.ON_PLAYER_CHANGE_BALANCE, this._onPlayerChangeBalance,this);
+        this.scene.off(Events.ON_USER_UPDATE_BALANCE, this._onUserUpdateBalance, this);
+        this.scene.off(Events.ON_PLAYER_SET_BALANCE, this._onPlayerSetBalance, this);
         this.scene.off(Events.ON_PLAYER_CHAT_MESSAGE, this._onPlayerChatMessage, this);
+        this.board.scene.off(Events.ON_GAME_MASTER_CHANGED, this._onGameMasterChanged, this);
+    }
+
+    _onGameMasterChanged(playerId, player){
+        if(this.id == playerId){
+            this.isMaster = true;
+        }else{
+            this.isMaster = false;
+        }
+
+        this.renderer.setVisibleMaster(this.isMaster);
     }
 
     _onPlayerChatMessage(sender, message){``
@@ -121,7 +132,7 @@ export default class Player extends Actor {
 
     _onSetReadyState(playerId, ready = true){
 
-        console.log("_onSetReadyState: playerId=", playerId, " ready=", ready);
+        console.log("_onSetReadyState: playerId=", playerId, " ready=", ready, " this.id: ", this.id);
 
         if(playerId == this.id) {
             this.setReady(ready);

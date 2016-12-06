@@ -17,19 +17,34 @@ export default class BasePopUpRub {
         this.time = 3000 * 10;
 
         this._setTimer(this.time);
+        this.NAME = 'base_popup';
     }
 
     init() {
         let basePopup = app.res.prefab.basePopup;
         this.prefab = cc.instantiate(basePopup);
-        this.addToNode();
+        this.prefab.zindex = app.const.popupZIndex;
+        this.setPrefabName(this.NAME);
 
-        this.basePopupComponent = this.prefab.getComponent(BasePopup);
-        this.popup_bkgNode = this.prefab.getChildByName('popup_bkg');
+        if (!this.isAlreadyExist()) {
+            this.addToNode();
 
-        this._setupPopupElement();
+            this.basePopupComponent = this.prefab.getComponent(BasePopup);
+            this.popup_bkgNode = this.prefab.getChildByName('popup_bkg');
 
-        this._setupPopupContent();
+            this._setupPopupElement();
+
+            this._setupPopupContent();
+        }
+    }
+
+    // check if prefab is already added to node
+    isAlreadyExist() {
+        return (this.node && this.node.getChildByName(this.NAME)) ? true : false;
+    }
+
+    setPrefabName(name) {
+        this.prefab && (this.prefab.name = name);
     }
 
     _setupPopupElement() {
@@ -72,7 +87,7 @@ export default class BasePopUpRub {
         }).bind(this), time);
     }
 
-    static show(node, string, greenBtnEvent = null, context = null) {
-        return new BasePopUpRub(node, string, greenBtnEvent, context).init();
-    }
+    // static show(node, string, greenBtnEvent = null, context = null) {
+    //     return new BasePopUpRub(node, string, greenBtnEvent, context).init();
+    // }
 }

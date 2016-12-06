@@ -62,11 +62,11 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 86
+        "__id__": 87
       }
     ],
     "_prefab": {
-      "__id__": 87
+      "__id__": 88
     },
     "groupIndex": 0
   },
@@ -1846,13 +1846,17 @@
     },
     "_resize": 1,
     "_N$layoutType": 2,
+    "_N$padding": 0,
     "_N$cellSize": {
       "__type__": "cc.Size",
       "width": 40,
       "height": 40
     },
     "_N$startAxis": 0,
-    "_N$padding": 0,
+    "_N$paddingLeft": 0,
+    "_N$paddingRight": 0,
+    "_N$paddingTop": 0,
+    "_N$paddingBottom": 0,
     "_N$spacingX": 0,
     "_N$spacingY": 0,
     "_N$verticalDirection": 1,
@@ -2196,7 +2200,7 @@
     "_active": true,
     "_components": [],
     "_prefab": {
-      "__id__": 85
+      "__id__": 86
     },
     "groupIndex": 0
   },
@@ -2701,14 +2705,14 @@
         "__id__": 81
       },
       {
-        "__id__": 82
+        "__id__": 83
       },
       {
-        "__id__": 83
+        "__id__": 84
       }
     ],
     "_prefab": {
-      "__id__": 84
+      "__id__": 85
     },
     "groupIndex": 0
   },
@@ -2825,7 +2829,9 @@
     "pressedSprite": null,
     "hoverSprite": null,
     "clickEvents": [
-      null
+      {
+        "__id__": 82
+      }
     ],
     "_N$interactable": true,
     "_N$enableAutoGrayEffect": false,
@@ -2850,6 +2856,15 @@
     "_N$target": {
       "__id__": 77
     }
+  },
+  {
+    "__type__": "cc.ClickEvent",
+    "target": {
+      "__id__": 1
+    },
+    "component": "TabCard",
+    "handler": "onHanleChargeBtnClick",
+    "customEventData": ""
   },
   {
     "__type__": "cc.Sprite",

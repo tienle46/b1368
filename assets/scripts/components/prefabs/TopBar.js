@@ -109,7 +109,7 @@ class TopBar extends Component {
     }
 
     _removeGlobalListeners() {
-        app.system.removeListener(app.commands.HIGH_LIGHT_MESSAGE, this._onHLMListener);
+        app.system.removeListener(app.commands.HIGH_LIGHT_MESSAGE, this._onHLMListener, this);
     }
 
     onEnable() {

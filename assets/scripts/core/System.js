@@ -72,9 +72,9 @@ class GameSystem {
     }
 
     removeEventListener() {
-        this.removeListener(SFS2X.SFSEvent.ROOM_JOIN, this._onJoinRoomSuccess, context);
-        this.removeListener(SFS2X.SFSEvent.ROOM_JOIN_ERROR, this._onJoinRoomError, context);
-        this.removeListener(app.commands.HIGH_LIGHT_MESSAGE, this._onHighLightMessage, context);
+        this.removeListener(SFS2X.SFSEvent.ROOM_JOIN, this._onJoinRoomSuccess, this);
+        this.removeListener(SFS2X.SFSEvent.ROOM_JOIN_ERROR, this._onJoinRoomError, this);
+        this.removeListener(app.commands.HIGH_LIGHT_MESSAGE, this._onHighLightMessage, this);
     }
 
     _onJoinRoomError(resultEvent) {

@@ -32,24 +32,24 @@ export default class PlayerRenderer extends ActorRenderer {
         this.anchorIndex = null;
     }
 
-    convertFromBoardToPlayerLocalPosition(position){
+    convertFromBoardToPlayerLocalPosition(position) {
         let global = this.scene.board.renderer.node.parent.convertToWorldSpaceAR(position);
         return this.node.parent.convertToNodeSpaceAR(global);
     }
 
-    updatePlayerAnchor(anchorIndex){
+    updatePlayerAnchor(anchorIndex) {
         this.anchorIndex = anchorIndex;
         this.playerMessage && this.playerMessage.updateAnchor(anchorIndex);
     }
 
-    _init(data){
+    _init(data) {
         console.log("init player renderer")
         super._init(data);
         this.scene = app.system.currentScene;
         this.isItMe = data.isItMe;
     }
 
-    onEnable(){
+    onEnable() {
         super.onEnable();
 
         utils.deactive(this.status1);
@@ -84,7 +84,6 @@ export default class PlayerRenderer extends ActorRenderer {
     }
 
     setVisibleMaster(visible) {
-        console.warn("setVisibleMaster: ", visible);
         utils.setActive(this.masterIcon, visible);
     }
 
@@ -98,7 +97,7 @@ export default class PlayerRenderer extends ActorRenderer {
         if (this.isCounting && this.timelineDuration > 0) {
             this.playerTimeLineProgress.progress = this.counterTimer / this.timelineDuration;
 
-            if(this.counterTimer >= this.timelineDuration){
+            if (this.counterTimer >= this.timelineDuration) {
                 this._stopCountdown();
             }
 
@@ -110,15 +109,15 @@ export default class PlayerRenderer extends ActorRenderer {
         }
     }
 
-    showMessage(message){
-        if(utils.isEmpty(message)) return;
+    showMessage(message) {
+        if (utils.isEmpty(message)) return;
         this.playerMessage.show(message);
     }
 
-    startPlusBalanceAnimation(balance){
-        if(!this.loaded || isNaN(balance)) return;
+    startPlusBalanceAnimation(balance) {
+        if (!this.loaded || isNaN(balance)) return;
 
-        if(this.plusBalanceLabel && this.plusBalanceNode){
+        if (this.plusBalanceLabel && this.plusBalanceNode) {
             this.plusBalanceLabel.string = GameUtils.toChangedBalanceString(balance);
             this.plusBalanceAnim.play();
         }
@@ -132,7 +131,7 @@ export default class PlayerRenderer extends ActorRenderer {
         }
     }
 
-    _stopCountdown(){
+    _stopCountdown() {
         if (this.playerTimeLineProgress) {
             this.timelineDuration = 0;
             this.isCounting = false;
@@ -141,7 +140,7 @@ export default class PlayerRenderer extends ActorRenderer {
         }
     }
 
-    _onDonePlusBalanceAnimation(){
+    _onDonePlusBalanceAnimation() {
         this.plusBalanceLabel.string = "";
     }
 
@@ -149,8 +148,25 @@ export default class PlayerRenderer extends ActorRenderer {
      *
      * @abstract
      */
-    _reset(){
+    _reset() {
         this.setVisibleReady(false);
+        this.stopAllAnimation();
+    }
+
+    stopAllAnimation(){
+
+    }
+
+    showStatus(status, text = '', show = true) {
+        utils.setActive(status, show);
+        if (show) {
+            let statusLabel = this._findStatusLabel();
+            statusLabel && (statusLabel.string = text)
+        }
+    }
+
+    _findStatusLabel(statusNode) {
+        return statusNode ? statusNode.children.filter(child => child instanceof cc.Label).pop() : null;
     }
 }
 

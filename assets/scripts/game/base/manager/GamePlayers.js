@@ -69,7 +69,11 @@ export default class GamePlayers extends Component {
 
     _onGameEnding(data){
         let masterPlayerId = utils.getValue(data, app.keywords.MASTER_PLAYER_ID);
-        masterPlayerId && this.setMaster(this.findPlayer(masterPlayerId));
+        if(masterPlayerId){
+            let masterPlayer = this.findPlayer(masterPlayerId);
+            this.setMaster(masterPlayer)
+            this.scene.emit(Events.ON_GAME_MASTER_CHANGED, masterPlayerId, masterPlayer);
+        }
     }
 
     setMaster(masterPlayer){
@@ -179,6 +183,8 @@ export default class GamePlayers extends Component {
         let masterPlayerId = utils.getValue(boardInfoObj, app.keywords.MASTER_PLAYER_ID);
         if (masterPlayerId) {
             this.setMaster(this.findPlayer(masterPlayerId));
+        }else if(boardInfoObj.masterIdOwner){
+            this.setMaster(this.owner);
         }
     }
 
@@ -341,7 +347,7 @@ export default class GamePlayers extends Component {
     }
 
     onBoardMasterChanged(master) {
-        this.players.forEach(player => player.onBoardMasterChanged());
+        this.players.forEach(player => player.onBoardMasterChanged(master));
     }
 
     onBoardOwnerChanged(owner) {

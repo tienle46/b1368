@@ -30,8 +30,9 @@ class TabCard extends Component {
             if (data) {
                 let layoutComponent = cc.find('left/layout', this.node);
                 this.toggleGroup = layoutComponent.getComponent(ToggleGroup);
-                data['il'].forEach((id, index) => {
+                data[app.keywords.EXCHANGE_LIST.RESPONSE.ITEM_ID_LIST].forEach((id, index) => {
                     RubUtils.loadRes('dashboard/topup/cardItem').then((prefab) => {
+                        console.debug(`data['nl'][index]`, data['nl'][index]);
                         let cardPrefab = cc.instantiate(prefab);
                         let spriteComponent = cardPrefab.children[0].getComponent(cc.Sprite);
                         RubUtils.loadSpriteFrame(spriteComponent, `dashboard/popup-card-${data['nl'][index].toLowerCase()}`);
@@ -48,7 +49,7 @@ class TabCard extends Component {
                         index === 0 && this.toggleGroup.onLoad();
                     });
                 });
-                console.debug('card')
+
                 this.loader.hide();
                 // active node
                 this.node.active = true;
@@ -63,7 +64,7 @@ class TabCard extends Component {
         let serialNumber = centerComponent.getChildByName('serialNumberEditBox').getComponent(cc.EditBox).string.trim();
 
         if (cardSerial === "" || serialNumber === "" || isNaN(cardSerial) || isNaN(serialNumber)) {
-            AlertPopupRub.show(this.node, 'Vui lòng nhập đầy đủ thông tin');
+            AlertPopupRub.show(null, 'Vui lòng nhập đầy đủ thông tin');
         } else {
             let id = this.toggleGroup.getVal();
 

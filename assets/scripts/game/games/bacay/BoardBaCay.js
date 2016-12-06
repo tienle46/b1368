@@ -21,6 +21,10 @@ export default class BoardBaCay extends BoardCardBetTurn {
         this.handCardSize = PlayerBaCay.DEFAULT_HAND_CARD_COUNT;
     }
 
+    onLoad(){
+        super.onLoad();
+    }
+
     onEnable() {
         /**
          * @type {BoardBaCayRenderer}
@@ -63,54 +67,52 @@ export default class BoardBaCay extends BoardCardBetTurn {
 
         console.log("_handleBaCayDownCardPhrase: ", data)
 
-        let pID = utils.getValue(data, app.keywords.GAME_LIST_PLAYER);
-        let bCards = utils.getValue(data, app.keywords.GAME_LIST_CARD);
-        if (pID && bCards) {
-            for (let i = 0; i < pID.length; i++) {
-                let player = this.scene.gamePlayers.findPlayer(pID[i]);
+        let playerIds = utils.getValue(data, app.keywords.GAME_LIST_PLAYER);
+        let handCardBytes = utils.getValue(data, app.keywords.GAME_LIST_CARD);
+        if (playerIds && handCardBytes) {
+            for (let i = 0; i < playerIds.length; i++) {
+                let player = this.scene.gamePlayers.findPlayer(playerIds[i]);
                 if (player) {
-                    let cards = GameUtils.convertBytesToCards(bCards.slice(i * 3, (i + 1) * 3));
+                    let cards = GameUtils.convertBytesToCards(handCardBytes.slice(i * 3, (i + 1) * 3));
                     player.setCards(cards, false);
                 }
             }
         }
     }
 
-    onDealCard(playerHandCardLists, dealCards = []) {
-
-        console.warn('onDealCard: ', dealCards);
-
-        playerHandCardLists.forEach((cardList, i) => {
-            if (i == 0) {
-                cardList.setCards(dealCards);
-            } else {
-                cardList.setCards(GameUtils.createFakeCards(dealCards.length))
-            }
-        });
-    }
-
     _loadGamePlayData(data) {
-        super._loadGamePlayData(data);
+        super._loadGamePlayData({...data, masterIdOwner: true});
 
-        this._handleBaCayDownCardPhrase(data);
+        let gamePhrase = utils.getValue(data, app.keywords.BOARD_STATE_KEYWORD);
+        if(gamePhrase == app.const.game.state.STATE_DOWN) {
+            this._handleBaCayDownCardPhrase(data);
+        }
 
         /**
          * Load player down card & player bet amount
          */
         let playerIds = utils.getValue(data, Keywords.GAME_LIST_PLAYER, []);
-        let downPlayerIds = utils.getValue(app.keywords.GAME_LIST_DOWN);
-        let betAmounts = utils.getValue(app.keywords.GAME_LIST_BET);
+        let downPlayerIds = utils.getValue(data, app.keywords.GAME_LIST_DOWN);
+        let betAmounts = utils.getValue(data, app.keywords.GAME_LIST_BET);
+        let bCards = utils.getValue(data, app.keywords.GAME_LIST_CARD);
 
         for (let i = 0; i < playerIds.length; i++) {
-            let pl = this.scene.gamePlayers.findPlayer(playerIds[i]);
-            if (pl != null) {
-                if (betAmounts != null) {
-                    pl.setBetAmount(betAmounts[i]);
+            let player = this.scene.gamePlayers.findPlayer(playerIds[i]);
+            if (player != null) {
+                if (betAmounts) {
+                    player.setBetAmount(betAmounts[i]);
                 }
-                if (downPlayerIds != null) {
-                    pl.isDown = downPlayerIds[i];
-                    if (pl.isDown) {
-                        pl.renderer.revealAllCards();
+
+                // let cardBytes = bCards ? bCards.slice(i * 3, (i + 1) * 3) : [0, 0, 0];
+                // player.setCards(GameUtils.convertBytesToCards(cardBytes));
+
+                if (downPlayerIds) {
+                    player.isDown = downPlayerIds[i];
+
+                    console.log("player.isDown: ", player.id, player.isDown);
+
+                    if (player.isDown) {
+                        player.renderer.revealAllCards();
                     }
                 }
             }
@@ -122,9 +124,6 @@ export default class BoardBaCay extends BoardCardBetTurn {
         let result = {};
         playerIds.forEach(id => {
             let player = this.scene.gamePlayers.findPlayer(id);
-
-            console.log("player ---- ", player);
-
             result[id] = player ? [...player.getCards()] : [];
         });
 
@@ -132,8 +131,7 @@ export default class BoardBaCay extends BoardCardBetTurn {
     }
 
     onBoardEnding(data) {
-
-        console.log("onGameEnding Board")
+        console.log("onGameEnding Board");
 
         let playerIds = utils.getValue(data, Keywords.GAME_LIST_PLAYER, []);
         let playingPlayerIds = this.scene.gamePlayers.filterPlayingPlayer(playerIds);

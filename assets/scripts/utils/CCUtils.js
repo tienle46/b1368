@@ -30,6 +30,15 @@ export default class CCUtils {
 
     convertToCenterAnchor(node){
         let anchor = node.getAnchorPoint();
-
     }
+
+    /**
+     * @param node node to find
+     * @param type type want to find
+     * @returns {Array|Array.<T>|*}
+     */
+    findChildByType(node, type){
+        return node && type ? node.children.filter(child => child instanceof type) : [];
+    }
+
 }
