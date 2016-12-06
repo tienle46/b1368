@@ -10,7 +10,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "GameResultPopup2Prefab",
+    "_name": "GameResultPopup",
     "_objFlags": 0,
     "_opacity": 255,
     "_color": {
