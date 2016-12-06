@@ -151,7 +151,8 @@ class TopBar extends Component {
 
         let dropdown = new VerticalDropDownRub(e.currentTarget, [{
             icon: 'bottombar/bottombar_tooltip_fanpage',
-            content: 'Fanpage'
+            content: 'Fanpage',
+            event: this.fanpageClicked.bind(this)
         }, {
             icon: 'bottombar/bottombar_tooltip_sound',
             content: 'Âm lượng',
@@ -164,7 +165,9 @@ class TopBar extends Component {
         this.node.addChild(dropdown.node());
 
     }
-
+    fanpageClicked(e) {
+        cc.sys.openURL(`https://www.messenger.com/t/${app.config.fbAppId}`);
+    }
     handleChatAction() {
 
     }

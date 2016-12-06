@@ -24,6 +24,7 @@ export default class PlayerRenderer extends ActorRenderer {
             plusBalanceLabel: cc.Label,
             playerMessageNode: cc.Node,
             playerTimeLineProgress: cc.ProgressBar,
+            avatarNode : cc.Node,
         }
 
         this.playerMessage = null;

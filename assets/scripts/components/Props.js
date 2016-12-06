@@ -46,13 +46,14 @@ export default class Props extends Component {
                 sprite.trim = false;
                 sprite.spriteFrame = spriteFrame;
 
-                animatingNode.position = startNode.getPosition();
-                startNode.parent.addChild(animatingNode);
+                animatingNode.position = startNode.parent.convertToWorldSpaceAR(startNode.getPosition());
+
+                cc.director.getScene().addChild(animatingNode);
 
                 let moveToAction = cc.callFunc(()=> null);
 
                 if(endNode){
-                    moveToAction = cc.moveTo(0.7, endNode.getPosition());
+                    moveToAction = cc.moveTo(0.6, endNode.parent.convertToWorldSpaceAR(endNode.getPosition()));
                 }
 
                 const seq = cc.sequence(moveToAction, cc.callFunc(()=>{

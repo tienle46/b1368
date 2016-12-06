@@ -28,5 +28,6 @@ export default class FriendProfilePopupRub {
     static show(node, userName, startAnimNode, endAnimNode) {
         let popup = new FriendProfilePopupRub(userName, startAnimNode, endAnimNode);
         node.addChild(popup.getNode());
+
     }
 }

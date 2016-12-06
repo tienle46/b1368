@@ -114,7 +114,7 @@ export default class FriendProfilePopup extends Component {
     performAnimation(prosName, startNode, destinationNode) {
         this.node.opacity = 0;
 
-        Props.playPropName(prosName, 'pros', 8, startNode, destinationNode, () => {
+        Props.playPropName(prosName, 'props', 8, startNode, destinationNode, () => {
             this.node.removeFromParent();
         });
     }

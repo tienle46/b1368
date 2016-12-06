@@ -41,7 +41,7 @@
     "_tag": -1,
     "_opacityModifyRGB": false,
     "_id": "ab083865-8d4b-43db-8e97-b6cb9317f6f2",
-    "autoReleaseAssets": true
+    "autoReleaseAssets": false
   },
   {
     "__type__": "cc.Node",
@@ -114,10 +114,10 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 28
+        "__id__": 30
       },
       {
-        "__id__": 29
+        "__id__": 31
       }
     ],
     "_prefab": null,
@@ -765,6 +765,9 @@
     "_children": [
       {
         "__id__": 26
+      },
+      {
+        "__id__": 28
       }
     ],
     "_rotationX": 0,
@@ -799,7 +802,7 @@
       "__id__": 27
     },
     "_name": "GameResultPopupPrefab",
-    "_active": true,
+    "_active": false,
     "_position": {
       "__type__": "cc.Vec2",
       "x": 0,
@@ -819,6 +822,39 @@
       "__uuid__": "13af3e19-4431-492e-bc6d-c0412c0ab05a"
     },
     "fileId": "b4f1fxTVWNK4LAkzoL2zDBS",
+    "sync": true
+  },
+  {
+    "__type__": "cc.Node",
+    "_objFlags": 0,
+    "_parent": {
+      "__id__": 25
+    },
+    "_id": "f9963QH0jBPrLAJ1xIKcpcL",
+    "_prefab": {
+      "__id__": 29
+    },
+    "_name": "GameResultPopup2Prefab",
+    "_active": true,
+    "_position": {
+      "__type__": "cc.Vec2",
+      "x": 0,
+      "y": 0
+    },
+    "_rotationX": 0,
+    "_rotationY": 0,
+    "_localZOrder": 0,
+    "_globalZOrder": 0
+  },
+  {
+    "__type__": "cc.PrefabInfo",
+    "root": {
+      "__id__": 28
+    },
+    "asset": {
+      "__uuid__": "493be115-e523-4f54-a5d2-0b9c14c9b25f"
+    },
+    "fileId": "1cb7cR4MAFDSoDPzgYZ1gAZ",
     "sync": true
   },
   {
@@ -868,7 +904,7 @@
       "__id__": 7
     },
     "gameResultPopupNode": {
-      "__id__": 26
+      "__id__": 28
     },
     "playerPositionAnchorsNode": {
       "__id__": 13

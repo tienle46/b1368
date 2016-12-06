@@ -6,6 +6,7 @@ import CreateGameException from 'CreateGameException';
 import Actor from 'Actor';
 import Events from 'Events'
 import {Keywords} from 'core';
+import FriendProfilePopupRub from 'FriendProfilePopupRub';
 
 export default class Player extends Actor {
 
@@ -76,7 +77,7 @@ export default class Player extends Actor {
         this.scene.off(Events.ON_PLAYER_CHAT_MESSAGE, this._onPlayerChatMessage, this);
     }
 
-    _onPlayerChatMessage(sender, message){
+    _onPlayerChatMessage(sender, message){``
         if(sender.name == this.user.name){
             this.say(message);
         }
@@ -144,6 +145,11 @@ export default class Player extends Actor {
         this.renderer.setBalance(this.balance);
 
         this._updatePlayerAnchor();
+    }
+    avatarCLicked(){
+        // console.log(`Avatar clicked`);
+        const startNode = this.scene.gamePlayers.playerPositions.getPlayerAnchorByPlayerId(this.scene.gamePlayers.me.id, this.isItMe());
+        FriendProfilePopupRub.show(this.scene.node, this.user.userName, startNode, this.node);
     }
 
     _updatePlayerAnchor() {
