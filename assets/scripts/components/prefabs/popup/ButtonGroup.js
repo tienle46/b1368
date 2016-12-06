@@ -21,7 +21,7 @@ class ButtonGroup extends Component {
     }
 
     changeVioletBtnState(state) {
-        this.violetBtn.node.active = state;
+        this.violetBtn && (this.violetBtn.node.active = state);
     }
 
     /**

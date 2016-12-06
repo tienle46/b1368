@@ -2,8 +2,8 @@
  * Created by Thanh on 8/23/2016.
  */
 
-var app = require('app');
-var SFS2X = require('SFS2X');
+import app from 'app';
+import SFS2X from 'SFS2X';
 
 const requestCallbackNames = {
     [SFS2X.Requests.Handshake]: SFS2X.SFSEvent.HANDSHAKE,
@@ -177,7 +177,7 @@ class Service {
             this._handleLagPollingResponse(event);
         } else if (event.cmd === app.commands.SYSTEM_MESSAGE) {
             // AlertPopupRub()
-
+            console.debug('ahahahahah', event);
         } else {
             if (this._hasCallback(event.cmd)) {
                 this._callCallbackAsync(event.cmd, event.params);

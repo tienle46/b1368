@@ -5,10 +5,12 @@
 var app = require('app');
 
 app.const = {};
+app.const.dialogZIndex = 9999;
 app.const.topupZIndex = 10000;
 app.const.loadingZIndex = 10000;
 app.const.toastZIndex = 10001;
 app.const.soundControl = 10002;
+app.const.popupZIndex = 10003;
 app.const.LANGUAGE = "vi"; // set the language used in app. Default: "vi"
 
 app.const.USER_LOCAL_STORAGE = "userInfo";
