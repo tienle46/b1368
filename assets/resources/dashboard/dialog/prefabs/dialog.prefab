@@ -661,7 +661,7 @@
       "__id__": 18
     },
     "_enabled": true,
-    "transition": 2,
+    "transition": 0,
     "pressedColor": {
       "__type__": "cc.Color",
       "r": 211,
@@ -728,7 +728,7 @@
     "_spriteFrame": {
       "__uuid__": "7e3843cb-6bf5-49be-9a0d-990f210345a0"
     },
-    "_type": 0,
+    "_type": 1,
     "_sizeMode": 0,
     "_fillType": 0,
     "_fillCenter": {

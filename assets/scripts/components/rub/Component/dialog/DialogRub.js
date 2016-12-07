@@ -59,7 +59,7 @@ export default class DialogRub extends Rub {
         this.closeBtnNode = this.dialogNode.getChildByName('close_btn');
 
         this.closeBtnNode.on(cc.Node.EventType.TOUCH_END, (() => {
-            this.prefab.removeFromParent(true);
+            this.prefab.removeFromParent(false);
         }).bind(this));
     }
 

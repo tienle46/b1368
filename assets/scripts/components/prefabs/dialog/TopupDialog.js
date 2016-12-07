@@ -27,15 +27,17 @@ class TopupDialog extends Dialog {
     }
 
     onEnable() {
+        console.debug('onEnable');
         this._addGlobalListeners();
     }
 
     onDestroy() {
+        console.debug('onDestroy');
         this._removeGlobalListeners();
     }
 
     _onExtensionResponse(event) {
-        console.debug('_onExtensionResponse', event);
+        // console.debug('_onExtensionResponse', event);
         if (event[app.keywords.BASE_EVENT_CMD] === app.commands.SYSTEM_MESSAGE) {
             let params = event[app.keywords.BASE_EVENT_PARAMS];
             let messageList = params[app.keywords.MESSAGE_LIST];

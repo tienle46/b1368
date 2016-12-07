@@ -9,6 +9,16 @@ import LoaderRub from 'LoaderRub';
 class TabCard extends Component {
     constructor() {
         super();
+
+        this.ratioItem = {
+            default: null,
+            type: cc.Prefab
+        };
+
+        this.ratioContainer = {
+            default: null,
+            type: cc.Node
+        };
     }
 
     onLoad() {
@@ -19,6 +29,20 @@ class TabCard extends Component {
         this.loader.show();
 
         this._initCardsGroup();
+
+        this._initRatioGroup();
+    }
+
+    _initRatioGroup() {
+        let rateFaker = 0.8;
+        let typesFaker = [10, 20, 50, 100, 200, 500];
+
+        typesFaker.forEach(type => {
+            let ratioItem = cc.instantiate(this.ratioItem);
+            let ratioItemComponent = ratioItem.getComponent('RatioItem');
+            ratioItemComponent.initItem(type, rateFaker);
+            this.ratioContainer.addChild(ratioItem);
+        });
     }
 
     _initCardsGroup() {
@@ -30,12 +54,16 @@ class TabCard extends Component {
             if (data) {
                 let layoutComponent = cc.find('left/layout', this.node);
                 this.toggleGroup = layoutComponent.getComponent(ToggleGroup);
-                data[app.keywords.EXCHANGE_LIST.RESPONSE.ITEM_ID_LIST].forEach((id, index) => {
+                let cardListIds = data[app.keywords.EXCHANGE_LIST.RESPONSE.ITEM_ID_LIST];
+                cardListIds = [...cardListIds, ...cardListIds];
+                cardListIds.pop();
+                cardListIds.forEach((id, index) => {
                     RubUtils.loadRes('dashboard/topup/cardItem').then((prefab) => {
-                        console.debug(`data['nl'][index]`, data['nl'][index]);
+                        let cardName = data['nl'][index] || `mega`;
                         let cardPrefab = cc.instantiate(prefab);
+
                         let spriteComponent = cardPrefab.children[0].getComponent(cc.Sprite);
-                        RubUtils.loadSpriteFrame(spriteComponent, `dashboard/popup-card-${data['nl'][index].toLowerCase()}`);
+                        RubUtils.loadSpriteFrame(spriteComponent, `dashboard/popup-card-${cardName.toLowerCase()}`);
 
                         let card = cardPrefab.getComponent(CheckBox);
                         card.setVal(id);
@@ -77,10 +105,7 @@ class TabCard extends Component {
                 data
             };
             console.log(sendObject);
-            app.service.send(sendObject, (data) => {
-                // console.log('xxxxx');
-                // return a system message
-            }, app.const.scene.DASHBOARD_SCENE);
+            app.service.send(sendObject); // send request and get `smsg` (system_message) response from server
         }
     }
 }

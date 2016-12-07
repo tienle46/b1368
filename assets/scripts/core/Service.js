@@ -177,7 +177,7 @@ class Service {
             this._handleLagPollingResponse(event);
         } else if (event.cmd === app.commands.SYSTEM_MESSAGE) {
             // AlertPopupRub()
-            console.debug('ahahahahah', event);
+            // console.debug('ahahahahah', event);
         } else {
             if (this._hasCallback(event.cmd)) {
                 this._callCallbackAsync(event.cmd, event.params);
