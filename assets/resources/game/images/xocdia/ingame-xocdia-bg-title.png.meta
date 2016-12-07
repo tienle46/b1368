@@ -1,0 +1,30 @@
+{
+  "ver": "1.0.0",
+  "uuid": "1e2ebadd-3de2-4ef8-ac52-ff9502bc7b78",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "subMetas": {
+    "ingame-xocdia-bg-title": {
+      "ver": "1.0.3",
+      "uuid": "3860c6fc-03f3-411e-bf60-88e405b39892",
+      "rawTextureUuid": "1e2ebadd-3de2-4ef8-ac52-ff9502bc7b78",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0.5,
+      "offsetY": -0.5,
+      "trimX": 4,
+      "trimY": 4,
+      "width": 193,
+      "height": 193,
+      "rawWidth": 200,
+      "rawHeight": 200,
+      "borderTop": 20,
+      "borderBottom": 20,
+      "borderLeft": 20,
+      "borderRight": 20,
+      "subMetas": {}
+    }
+  }
+}

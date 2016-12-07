@@ -1,0 +1,30 @@
+{
+  "ver": "1.0.0",
+  "uuid": "f13f8d07-c31c-4e58-abe1-137bce5d2bef",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "subMetas": {
+    "chon-muc-cuoc": {
+      "ver": "1.0.3",
+      "uuid": "9c9a600b-734a-4345-9d7b-c7facadb3ea3",
+      "rawTextureUuid": "f13f8d07-c31c-4e58-abe1-137bce5d2bef",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 1,
+      "trimY": 1,
+      "width": 135,
+      "height": 135,
+      "rawWidth": 137,
+      "rawHeight": 137,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}
