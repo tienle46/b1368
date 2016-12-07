@@ -817,11 +817,11 @@
     "_parent": {
       "__id__": 26
     },
-    "_id": "79378bMlV1NmbLIQ84rjmbn",
+    "_id": "fcffaC1fn5KL5fHRTdgMrUo",
     "_prefab": {
       "__id__": 28
     },
-    "_name": "GameResultPopup3Prefab",
+    "_name": "GameResult2ColumnsPopupPrefab",
     "_active": true,
     "_position": {
       "__type__": "cc.Vec2",

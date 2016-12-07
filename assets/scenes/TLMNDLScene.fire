@@ -781,11 +781,11 @@
     "_parent": {
       "__id__": 24
     },
-    "_id": "a89cetFW4VDU4D0IlITkPTU",
+    "_id": "cc004yp7PBA/I8urt/Covio",
     "_prefab": {
       "__id__": 26
     },
-    "_name": "GameResultPopup2Prefab",
+    "_name": "GameResult1ColumPopupPrefab",
     "_active": true,
     "_position": {
       "__type__": "cc.Vec2",

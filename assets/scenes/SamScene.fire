@@ -781,11 +781,11 @@
     "_parent": {
       "__id__": 24
     },
-    "_id": "ea5e8gIF6lADJbipUSkB9Ca",
+    "_id": "6a4bcE3MJ1LU7jNTx3J+Zn9",
     "_prefab": {
       "__id__": 26
     },
-    "_name": "GameResultPopup2Prefab",
+    "_name": "GameResult2ColumnsPopupPrefab",
     "_active": true,
     "_position": {
       "__type__": "cc.Vec2",
@@ -803,9 +803,9 @@
       "__id__": 25
     },
     "asset": {
-      "__uuid__": "13af3e19-4431-492e-bc6d-c0412c0ab05a"
+      "__uuid__": "493be115-e523-4f54-a5d2-0b9c14c9b25f"
     },
-    "fileId": "1cb7cR4MAFDSoDPzgYZ1gAZ",
+    "fileId": "8a1a1petztB5agIcz8sRram",
     "sync": true
   },
   {
