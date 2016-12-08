@@ -79,9 +79,12 @@ export default class BaCayUtils {
 
         let board = me.board;
         let usernames = [me.user.name, player.user.name];
-        let cuocBienPlayers = utils.getAllKeys(board._pendingCuocBiens, board._pendingBiCuocBiens, me.hucList, me.biHucList, player.hucList, player.biHucList);
-
-        console.log("cuocBienPlayers: ", cuocBienPlayers, "usernames: ", usernames);
+        let cuocBienPlayers = [
+            ...me.getExcludeCuocBienPlayers(),
+            ...player.getExcludeCuocBienPlayers(),
+            ...utils.getAllKeys(me.pendingBiCuocBiens),
+            ...utils.getAllKeys(player.pendingBiCuocBiens)
+        ];
 
         if(ArrayUtils.containsSome(cuocBienPlayers, usernames)){
             checkResult = false

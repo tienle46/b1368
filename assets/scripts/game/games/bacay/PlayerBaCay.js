@@ -24,8 +24,8 @@ export default class PlayerBaCay extends PlayerCardBetTurn {
         this.betAmount = 0;
         this.hucList = null;
         this.biHucList= null;
-        this._pendingCuocBiens = null;
-        this._pendingBiCuocBiens = null;
+        this.pendingCuocBiens = null;
+        this.pendingBiCuocBiens = null;
         this.currentCuocBien = 0;
     }
 
@@ -60,7 +60,7 @@ export default class PlayerBaCay extends PlayerCardBetTurn {
     }
 
     getExcludeCuocBienPlayers(){
-        return utils.getAllKeys(this._pendingCuocBiens, this.hucList, this.biHucList);
+        return utils.getAllKeys(this.pendingCuocBiens, this.hucList, this.biHucList);
     }
 
     _onPlayerChangeBet(betAmount){
@@ -137,8 +137,8 @@ export default class PlayerBaCay extends PlayerCardBetTurn {
         super.onLoad();
         this.hucList = {};
         this.biHucList = {};
-        this._pendingCuocBiens = {}
-        this._pendingBiCuocBiens = {}
+        this.pendingCuocBiens = {};
+        this.pendingBiCuocBiens = {};
     }
 
     onEnable() {
@@ -175,7 +175,7 @@ export default class PlayerBaCay extends PlayerCardBetTurn {
                         biHucPlayer._updateCuocBienValue(hucValue);
                         gaHucPlayer._updateCuocBienValue(hucValue);
                     } else {
-                        this._pendingCuocBiens[biHucPlayer.user.name] = -1 * hucValue;
+                        this.pendingCuocBiens[biHucPlayer.user.name] = -1 * hucValue;
                     }
                 } else if (this.equals(biHucPlayer)) {
                     // thang khac ga huc minh
@@ -222,8 +222,8 @@ export default class PlayerBaCay extends PlayerCardBetTurn {
         super.onGameReset();
         this.hucList = {};
         this.biHucList = {};
-        this._pendingCuocBiens = {};
-        this._pendingBiCuocBiens = {};
+        this.pendingCuocBiens = {};
+        this.pendingBiCuocBiens = {};
         this.currentCuocBien = 0;
         this.setBetAmount(0);
         this.renderer.hideCuocBienValue();
@@ -242,7 +242,9 @@ export default class PlayerBaCay extends PlayerCardBetTurn {
     }
 
     onClickCuocBienBtn(){
-        let {checkResult, msg} = BaCayUtils.checkCuocBienWithPlayer(this.scene.gamePlayers.me, this);
+        let mePlayer = this.scene.gamePlayers.me;
+
+        let {checkResult, msg} = BaCayUtils.checkCuocBienWithPlayer(mePlayer, this);
         if(!checkResult){
             if(msg.length == 0) msg = app.res.string('game_bacay_khong_the_cuoc_bien');
             app.system.showToast(msg);
@@ -250,7 +252,7 @@ export default class PlayerBaCay extends PlayerCardBetTurn {
             return;
         }
 
-        let maxCuocBienValue = BaCayUtils.calculateMaxCuocBien(this.scene.gamePlayers.me, this);
+        let maxCuocBienValue = BaCayUtils.calculateMaxCuocBien(mePlayer, this);
         if(maxCuocBienValue > 0){
             this.scene.showCuocBienPopup(maxCuocBienValue, (cuocValue) => {
                 let {valid, msg} = BaCayUtils.validateCuocBienValue(cuocValue, this.scene.gamePlayers.me, this);
@@ -260,7 +262,7 @@ export default class PlayerBaCay extends PlayerCardBetTurn {
                         [app.keywords.BACAY_HUC_VALUE]: [cuocValue]
                     }});
 
-                    this._pendingCuocBiens[this.user.name] = cuocValue;
+                    mePlayer.pendingCuocBiens[this.user.name] = cuocValue;
                     this.renderer.showCuocBienBtn(false);
                 }else{
                     //     SoundUtil.playSound(SoundConstant.INVALID_SELECTION);
@@ -273,11 +275,13 @@ export default class PlayerBaCay extends PlayerCardBetTurn {
     _onPlayerCuocBien(gaHucPlayerId, data){
         if(!this.isItMe() || this.id == gaHucPlayerId) return;
 
-        let requestMoney = utils.getValue(data, app.keywords.BACAY_HUC_VALUE);
         let gaHucPlayer = this.scene.gamePlayers.findPlayer(gaHucPlayerId);
         if(!gaHucPlayer) return;
 
-        let denyCb = () => delete this._pendingBiCuocBiens[this.user.name];
+        let mePlayer = this.scene.gamePlayers.me;
+        let requestPlayerName = gaHucPlayer.user.name;
+        let requestMoney = utils.getValue(data, app.keywords.BACAY_HUC_VALUE);
+        let denyCb = () => delete mePlayer.pendingBiCuocBiens[requestPlayerName];
         let okCallback = () => {
             let {valid, msg} = gaHucPlayer && BaCayUtils.validateAcceptCuocBienValue(requestMoney, this, gaHucPlayer);
 
@@ -295,9 +299,12 @@ export default class PlayerBaCay extends PlayerCardBetTurn {
             }
         };
 
-        this._pendingBiCuocBiens[this.user.name] = requestMoney;
-        let cuocBienMessage = app.res.string('game_bacay_ask_to_accept_cuoc_bien', {player: gaHucPlayer.user.name, value: requestMoney});
-        app.system.confirm(cuocBienMessage, denyCb, okCallback);
+        mePlayer.pendingBiCuocBiens[requestPlayerName] = requestMoney;
+        app.system.confirm(
+            app.res.string('game_bacay_ask_to_accept_cuoc_bien', {player: requestPlayerName, value: requestMoney}),
+            denyCb,
+            okCallback
+        );
     }
 
     _updateCuocBienValue(value){
@@ -315,33 +322,35 @@ export default class PlayerBaCay extends PlayerCardBetTurn {
     _onPlayerAcceptCuocBien(gaHucPlayerId, biHucPlayerId, data){
         if(!this.isItMe()) return;
 
+        console.log("_onPlayerAcceptCuocBien: ", gaHucPlayerId, biHucPlayerId);
+
         let gaHucPlayer = this.scene.gamePlayers.findPlayer(gaHucPlayerId);
         let biHucPlayer = this.scene.gamePlayers.findPlayer(biHucPlayerId);
         if (!biHucPlayer || !gaHucPlayer) return;
 
         let hucValue;
         let biHucName = biHucPlayer.user.name;
-        let gaHucName = this.user.name;
+        let gaHucName = gaHucPlayer.user.name;
 
-        if (gaHucPlayer.isItMe() && this._pendingCuocBiens.hasOwnProperty(biHucName)) {
+        if (gaHucPlayer.isItMe() && gaHucPlayer.pendingCuocBiens.hasOwnProperty(biHucName)) {
             // Truong hop minh la thang ga huc
-            hucValue = this._pendingCuocBiens[biHucName];
-            delete this._pendingCuocBiens[biHucName];
-            this.hucList[biHucName] = hucValue;
+            hucValue = gaHucPlayer.pendingCuocBiens[biHucName];
+            delete gaHucPlayer.pendingCuocBiens[biHucName];
+            gaHucPlayer.hucList[biHucName] = hucValue;
             //TODO notify huc
         }
 
-        if (biHucPlayer.isItMe() && this._pendingBiCuocBiens.hasOwnProperty(gaHucName)) {
-            hucValue = this._pendingBiCuocBiens[gaHucName];
-            this.biHucList[gaHucName] = hucValue;
-            delete this._pendingBiCuocBiens[gaHucName];
+        if (biHucPlayer.isItMe() && biHucPlayer.pendingBiCuocBiens.hasOwnProperty(gaHucName)) {
+            hucValue = biHucPlayer.pendingBiCuocBiens[gaHucName];
+            biHucPlayer.biHucList[gaHucName] = hucValue;
+            delete biHucPlayer.pendingBiCuocBiens[gaHucName];
             //TODO notify bi huc
         }
 
         biHucPlayer._updateCuocBienValue(hucValue);
         gaHucPlayer._updateCuocBienValue(hucValue);
 
-        this.renderer.showCuocBienBtn(false);
+        gaHucPlayer.renderer.showCuocBienBtn(false);
         biHucPlayer.renderer.showCuocBienBtn(false);
     }
 }
