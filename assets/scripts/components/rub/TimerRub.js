@@ -31,7 +31,7 @@ export default class TimerRub {
 
     _init() {
         this.startTime = new Date().getTime();
-        this.timerId = setInterval(this.cb, this.interval);
+        (!this.timerId) && (this.timerId = setInterval(this.cb, this.interval));
         this.state = 1;
     }
 
@@ -50,7 +50,10 @@ export default class TimerRub {
         if (this.state != 2) return;
 
         this.state = 3;
-        setTimeout(this.timeoutCallback.bind(this), this.remaining);
+        timeout && clearTimeout(timeout);
+        var timeout = null;
+        timeout = null;
+        timeout = setTimeout(this.timeoutCallback.bind(this), this.remaining);
     }
 
     timeoutCallback() {
@@ -58,7 +61,9 @@ export default class TimerRub {
         // this.cb();
 
         this.startTime = new Date().getTime();
-        this.timerId = setInterval(this.cb, this.interval);
+        this.timerId && clearInterval(this.timerId);
+        this.timerId = null;
+        (!this.timerId) && (this.timerId = setInterval(this.cb, this.interval));
         this.remaining = 0;
         this.state = 1;
     }

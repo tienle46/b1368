@@ -32,31 +32,31 @@ export default class ListTableScene extends BaseScene {
         this.invitationShowed = false;
     }
 
-    onDestroy() {
-        super.onDestroy();
-        // this._clearInterval();
-    }
+    // onDestroy() {
+    //     super.onDestroy();
+    //     // this._clearInterval();
+    // }
 
-    // clear interval
-    _clearInterval() {
-        this.interval && clearInterval(this.interval);
-    }
+    // // clear interval
+    // _clearInterval() {
+    //     this.interval && clearInterval(this.interval);
+    // }
 
 
-    onEnable() {
-        super.onEnable();
+    // onEnable() {
+    //     super.onEnable();
 
-        // this._setInterval();
-    }
+    //     // this._setInterval();
+    // }
 
-    // interval for updating tables state by creating new request to server
-    _setInterval() {
-        (!this.interval) && (
-            this.interval = setInterval(() => {
-                this.node && this.lobby && this._getRoomList(this.lobby);
-            }, this.time)
-        );
-    }
+    // // interval for updating tables state by creating new request to server
+    // _setInterval() {
+    //     (!this.interval) && (
+    //         this.interval = setInterval(() => {
+    //             this.node && this.lobby && this._getRoomList(this.lobby);
+    //         }, this.time)
+    //     );
+    // }
 
     onLoad() {
         super.onLoad();
@@ -156,8 +156,8 @@ export default class ListTableScene extends BaseScene {
         };
         app.service.send(reqObject); // emit user join event
 
-        var timeout = null;
         timeout && clearTimeout(timeout);
+        var timeout = null;
         timeout = null;
 
         timeout = setTimeout(() => {
