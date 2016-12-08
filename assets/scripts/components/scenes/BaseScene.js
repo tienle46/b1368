@@ -81,7 +81,6 @@ export default class BaseScene extends Actor {
 
     onDestroy() {
         super.onDestroy();
-        this._clearInterval();
         app.system.setSceneChanging(true);
     }
 
@@ -135,19 +134,6 @@ export default class BaseScene extends Actor {
         //         cc.director.loadScene(name);
         //     })
         // ));
-    }
-
-    // clear setTimeout/ setInterval setted on scene
-    _clearInterval() {
-        let highestTimeoutId = setTimeout(";");
-        for (let i = 0; i < highestTimeoutId; i++) {
-            clearTimeout(i);
-        }
-
-        let highestIntervalId = setInterval(";");
-        for (let i = 0; i < highestIntervalId; i++) {
-            clearInterval(i);
-        }
     }
 }
 

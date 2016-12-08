@@ -30,20 +30,21 @@ export default class ListTableScene extends BaseScene {
 
         // invitation popup showed
         this.invitationShowed = false;
+
+        // timeout setTimeout
+        this.timeout = null;
     }
 
-    // onDestroy() {
-    //     super.onDestroy();
-    //     this._clearInterval();
-    // }
+    onDestroy() {
+        super.onDestroy();
+        this._clearInterval();
+    }
 
     // clear interval
-    // _clearInterval() {
-    //     // let highestTimeoutId = setTimeout(";");
-    //     // for (let i = 0; i < highestTimeoutId; i++) {
-    //     //     clearTimeout(i);
-    //     // }
-    // }
+    _clearInterval() {
+        this.timeout && clearTimeout(this.timeout);
+        this.timeout = null;
+    }
 
 
     // onEnable() {
@@ -159,11 +160,10 @@ export default class ListTableScene extends BaseScene {
         };
         app.service.send(reqObject); // emit user join event
 
-        timeout && clearTimeout(timeout);
-        var timeout = null;
-        timeout = null;
+        this.timeout && clearTimeout(this.timeout);
+        this.timeout = null;
 
-        timeout = setTimeout(() => {
+        this.timeout = setTimeout(() => {
             this._getRoomList(lobbyId);
         }, this.time);
     }
