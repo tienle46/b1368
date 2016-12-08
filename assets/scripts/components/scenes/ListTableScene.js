@@ -34,12 +34,15 @@ export default class ListTableScene extends BaseScene {
 
     // onDestroy() {
     //     super.onDestroy();
-    //     // this._clearInterval();
+    //     this._clearInterval();
     // }
 
-    // // clear interval
+    // clear interval
     // _clearInterval() {
-    //     this.interval && clearInterval(this.interval);
+    //     // let highestTimeoutId = setTimeout(";");
+    //     // for (let i = 0; i < highestTimeoutId; i++) {
+    //     //     clearTimeout(i);
+    //     // }
     // }
 
 
@@ -219,6 +222,7 @@ export default class ListTableScene extends BaseScene {
             }
         } else {
             if (event.errorCode) {
+                // console.debug('_handleRoomJoinEvent');
                 app.system.error(event.errorMessage);
             }
         }
