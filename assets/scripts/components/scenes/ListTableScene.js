@@ -28,16 +28,13 @@ export default class ListTableScene extends BaseScene {
         // filter button conditional 
         this.filterCond = null;
 
-        // room lobby Id
-        this.lobbyId = null;
-
         // invitation popup showed
         this.invitationShowed = false;
     }
 
     onDestroy() {
         super.onDestroy();
-        this._clearInterval();
+        // this._clearInterval();
     }
 
     // clear interval
@@ -49,7 +46,7 @@ export default class ListTableScene extends BaseScene {
     onEnable() {
         super.onEnable();
 
-        this._setInterval();
+        // this._setInterval();
     }
 
     // interval for updating tables state by creating new request to server
@@ -133,8 +130,9 @@ export default class ListTableScene extends BaseScene {
         app.service.send(reqObject, (data) => {
             if (data && data[app.keywords.GAME_LIST_RESULT] && data[app.keywords.GAME_LIST_RESULT] === this.gameCode) {
                 let roomIds = data[app.keywords.GROUP_LIST_GROUP][app.keywords.GROUP_SHORT_NAME];
-                roomIds && roomIds.length > 0 && (this.lobby = roomIds[0]);
-                this.lobby && this._getRoomList(this.lobby);
+                let lobby = null;
+                roomIds && roomIds.length > 0 && (lobby = roomIds[0]);
+                lobby && this._getRoomList(lobby);
 
                 // assume server will be response minbet for filtering based on its minbet
             } else {
@@ -157,6 +155,14 @@ export default class ListTableScene extends BaseScene {
             data
         };
         app.service.send(reqObject); // emit user join event
+
+        var timeout = null;
+        timeout && clearTimeout(timeout);
+        timeout = null;
+
+        timeout = setTimeout(() => {
+            this._getRoomList(lobbyId);
+        }, this.time);
     }
 
     _addGlobalListener() {
