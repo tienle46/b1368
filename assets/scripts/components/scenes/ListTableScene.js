@@ -4,7 +4,6 @@ import SFS2X from 'SFS2X';
 import RubUtils from 'RubUtils';
 import AlertPopupRub from 'AlertPopupRub';
 import ConfirmPopupRub from 'ConfirmPopupRub';
-// import _ from 'lodash';
 
 export default class ListTableScene extends BaseScene {
     constructor() {

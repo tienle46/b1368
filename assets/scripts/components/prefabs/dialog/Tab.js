@@ -5,7 +5,6 @@ import app from 'app';
 import Component from 'Component';
 import ToggleGroup from 'ToggleGroup';
 import RubUtils from 'RubUtils';
-import _ from 'lodash';
 import NodeRub from 'NodeRub';
 
 class Tab extends Component {
@@ -42,14 +41,14 @@ class Tab extends Component {
         this.clearBody(bodyNode);
 
         if (content instanceof cc.Node) {
-            let node = _.cloneDeep(content);
+            let node = app._.cloneDeep(content);
 
             this._addChildToBody(bodyNode, node);
         } else if (content instanceof Promise) {
             content.then((node) => {
                 // wait until resources are loaded.
                 setTimeout(() => {
-                    let n = _.cloneDeep(node);
+                    let n = app._.cloneDeep(node);
 
                     this._addChildToBody(bodyNode, n);
                 });

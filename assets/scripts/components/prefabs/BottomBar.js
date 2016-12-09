@@ -5,7 +5,6 @@ import TopupDialogRub from 'TopupDialogRub';
 import ExchangeDialogRub from 'ExchangeDialogRub';
 import PersonalInfoDialogRub from 'PersonalInfoDialogRub';
 import GridViewRub from 'GridViewRub';
-import _ from 'lodash';
 import MessageCenterDialogRub from 'MessageCenterDialogRub';
 import HorizontalDropDownRub from 'HorizontalDropDownRub';
 import PromptPopupRub from 'PromptPopupRub';
@@ -286,7 +285,7 @@ class BottomBar extends Component {
                     winLostCol,
                 ];
 
-                cb(_.cloneDeep(data));
+                cb(app._.cloneDeep(data));
             }
 
         });

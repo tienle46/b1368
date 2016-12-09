@@ -114,3 +114,7 @@ app.const.HX_COLOR_YELLOW = cc.colorToHex(app.const.COLOR_YELLOW); //'#F6FF29';
 app.const.COLOR_VIOLET = new cc.Color(68, 25, 97);
 app.const.COLOR_WHITE = new cc.Color(255, 255, 255);
 app.const.HX_COLOR_WHITE = cc.colorToHex(app.const.COLOR_WHITE); //'#ffffff';
+app.const.COLOR_RED = new cc.Color(255, 0, 0);
+app.const.COLOR_ORANGE = new cc.Color(255, 155, 0);
+app.const.COLOR_GREEN = new cc.Color(100, 173, 45);
+app.const.COLOR_BLACK = new cc.Color(0, 0, 0);
