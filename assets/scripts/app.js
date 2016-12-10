@@ -16,6 +16,7 @@ app.LANG = "vi";
 app.async = require("async");
 app.keywords = require("Keywords");
 app.commands = require("Commands");
+app._ = _;
 
 require("Constant");
 require("Config");
@@ -62,25 +63,25 @@ app.createComponent = (classNameOrInstance, extendClass = undefined, ...args) =>
         return isCocosComponent(element) || isCocosProperty(element) ? element : undefined;
     }
 
-    // Check if element is instance of cc[xxx]
-    function isComponentOfCC(el) {
-        // in case: var a = cc.Component
-        let isFunctionInstance = (element) => {
-            // sure that `instance[key]['type'] == cc["Component"|"Editbox"...]
-            // > instance[key]['type'] = [function cc_Component].name => cc_Component => cc_Component.substr(3) => "Component"
-            return typeof element === 'function' && element === cc[element.name.substr(3)];
-        };
+    // // Check if element is instance of cc[xxx]
+    // function isComponentOfCC(el) {
+    //     // in case: var a = cc.Component
+    //     let isFunctionInstance = (element) => {
+    //         // sure that `instance[key]['type'] == cc["Component"|"Editbox"...]
+    //         // > instance[key]['type'] = [function cc_Component].name => cc_Component => cc_Component.substr(3) => "Component"
+    //         return typeof element === 'function' && element === cc[element.name.substr(3)];
+    //     };
 
-        // in case: var a = {type: cc.Component, default: null}
-        let isObjectInstance = (element) => {
-            return typeof element === 'object' && ((element.hasOwnProperty('type') && isFunctionInstance(element['type'])) || element.hasOwnProperty('default'));
-        };
+    //     // in case: var a = {type: cc.Component, default: null}
+    //     let isObjectInstance = (element) => {
+    //         return typeof element === 'object' && ((element.hasOwnProperty('type') && isFunctionInstance(element['type'])) || element.hasOwnProperty('default'));
+    //     };
 
-        return isFunctionInstance(el) || isObjectInstance(el);
-    }
+    //     return isFunctionInstance(el) || isObjectInstance(el);
+    // }
 
     Object.getOwnPropertyNames(instance).forEach(key => {
-        if (key !== 'extends' && key !== 'properties' /*&& !key.startsWith('__')*/) {
+        if (key !== 'extends' && key !== 'properties' /*&& !key.startsWith('__')*/ ) {
             // check if property is Object && except instance of cc.Componet
             // such as {default: xxx, type: cc.XXX } => assign to `properties` for displaying value on cocoCcreator
             // if `instance[key]` is intance of `cc`
@@ -167,7 +168,7 @@ function _setupGame() {
 }
 // if browser
 // deep merge for Object.assign 
-Object.assign = _.merge;
+Object.assign = app._.merge;
 
 if (cc.sys.isBrowser) {
     new Fingerprint2().get((printer) => {

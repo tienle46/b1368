@@ -2,7 +2,6 @@ import RubUtils from 'RubUtils';
 import CellRub from 'CellRub';
 import app from 'app';
 import NodeRub from 'NodeRub';
-import _ from 'lodash';
 import ScrollViewRub from 'ScrollViewRub';
 
 export default class GridViewRub extends ScrollViewRub {
@@ -308,7 +307,7 @@ export default class GridViewRub extends ScrollViewRub {
      * @memberOf GridViewRub
      */
     _validateData(input) {
-        input = _.cloneDeep(input);
+        input = app._.cloneDeep(input);
         let tmp = [];
         let out = [];
         if (input[0])

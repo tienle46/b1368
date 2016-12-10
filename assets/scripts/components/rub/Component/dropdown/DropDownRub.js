@@ -1,5 +1,4 @@
 import app from 'app';
-import _ from 'lodash';
 import NodeRub from 'NodeRub';
 
 export default class DropDownRub {
@@ -214,11 +213,11 @@ export default class DropDownRub {
 
         let marginX = DropDownRub.PADDING_X;
         let x = tp.x - marginX;
-        if (_.inRange(x, -640, -320)) {
+        if (app._.inRange(x, -640, -320)) {
             x < -640 && (x = -630);
-        } else if (_.inRange(x, -320, 320)) {
+        } else if (app._.inRange(x, -320, 320)) {
             x -= menuSize.width / 2 - marginX;
-        } else if (_.inRange(x, 320, 640)) {
+        } else if (app._.inRange(x, 320, 640)) {
             if (x + menuSize.width > 640) {
                 x -= menuSize.width - 2 * marginX;
             }

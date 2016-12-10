@@ -3,7 +3,6 @@ import Component from 'Component';
 import LoaderRub from 'LoaderRub';
 import numeral from 'numeral';
 import GridViewRub from 'GridViewRub';
-import _ from 'lodash';
 
 export default class TabUserInfo extends Component {
     constructor() {
@@ -120,7 +119,7 @@ export default class TabUserInfo extends Component {
                     winLostCol,
                 ];
 
-                cb(_.cloneDeep(data));
+                cb(app._.cloneDeep(data));
             }
 
         });
