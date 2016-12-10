@@ -29,14 +29,14 @@ export default class Props extends Component {
         cc.loader.loadRes(`${resPath}/${prosName}`, cc.SpriteAtlas, (err, atlas) => {
 
             if(err){
-                console.debug(err);
+                debug(err);
                 return;
             }
 
             cc.loader.loadRes(`${resPath}/thumbs/${prosName}`, cc.SpriteFrame, (err, spriteFrame) => {
 
                 if(err){
-                    console.debug(err);
+                    debug(err);
                     return;
                 }
 

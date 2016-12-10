@@ -69,7 +69,7 @@ class TabTransactionHistory extends Component {
                     this.itemPerPage = items.length;
                 } else {
                     this.endPage = items.length < this.itemPerPage;
-                    console.debug(this.endPage);
+                    debug(this.endPage);
                 }
 
                 for (let i = 0; i < items.length; i++) {

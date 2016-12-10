@@ -65,7 +65,7 @@ class TabTopCaoThu extends Component {
 
                     const button = node.addComponent(cc.Button);
                     const nodeSprite = node.addComponent(cc.Sprite);
-                    console.debug(imgName, app.res.gameTopCapThuIcon[imgName]);
+                    debug(imgName, app.res.gameTopCapThuIcon[imgName]);
                     RubUtils.loadSpriteFrame(nodeSprite,
                         app.res.gameTopCapThuIcon[imgName], cc.size(100, 100), false, (spriteFrame) => {
                             log(`image loaded`);

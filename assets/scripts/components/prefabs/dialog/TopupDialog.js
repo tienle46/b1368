@@ -27,12 +27,12 @@ class TopupDialog extends Dialog {
     }
 
     onEnable() {
-        console.debug('onEnable');
+        debug('onEnable');
         this._addGlobalListeners();
     }
 
     onDestroy() {
-        console.debug('onDestroy');
+        debug('onDestroy');
         this._removeGlobalListeners();
     }
 
