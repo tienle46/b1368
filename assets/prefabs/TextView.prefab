@@ -215,13 +215,17 @@
     },
     "_resize": 1,
     "_N$layoutType": 2,
+    "_N$padding": 0,
     "_N$cellSize": {
       "__type__": "cc.Size",
       "width": 40,
       "height": 40
     },
     "_N$startAxis": 0,
-    "_N$padding": 7,
+    "_N$paddingLeft": 7,
+    "_N$paddingRight": 7,
+    "_N$paddingTop": 7,
+    "_N$paddingBottom": 7,
     "_N$spacingX": 0,
     "_N$spacingY": 0,
     "_N$verticalDirection": 1,

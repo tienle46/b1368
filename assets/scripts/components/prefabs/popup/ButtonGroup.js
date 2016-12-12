@@ -9,8 +9,14 @@ import Component from 'Component';
 class ButtonGroup extends Component {
     constructor() {
         super();
-        this.greenBtn = cc.Button;
-        this.violetBtn = cc.Button;
+        this.greenBtn = {
+            default : null,
+            type : cc.Button,
+        };
+        this.violetBtn = {
+            default : null,
+            type : cc.Button,
+        };
     }
 
     // use this for initialization

@@ -84,7 +84,7 @@ class GameSystem {
     }
 
     _onJoinRoomSuccess(resultEvent) {
-        console.debug(resultEvent);
+        debug(resultEvent);
 
         if (!resultEvent.room) return;
 

@@ -22,6 +22,7 @@ class PreloadScene extends Component {
     }
 
     onLoad() {
+        // cc.game.setFrameRate(30);
         app.res.prefab.loading = this.loadingPrefab;
         app.res.prefab.fullSceneLoading = this.fullSceneLoadingPrefab;
         if (this.loading) {

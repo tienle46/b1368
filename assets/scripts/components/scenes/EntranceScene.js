@@ -83,7 +83,7 @@ export default class EntranceScene extends BaseScene {
     }
 
     test() {
-        console.debug(this.prom.getVal());
+        debug(this.prom.getVal());
     }
 
     handleFacebookLoginAction() {

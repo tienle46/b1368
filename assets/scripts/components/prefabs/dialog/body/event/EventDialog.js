@@ -49,7 +49,7 @@ class EventDialog extends Component {
     }
 
     viewLoaded() {
-        console.debug('xxxxxxxx');
+        debug('xxxxxxxx');
     }
 
     _initView(data) {
@@ -114,7 +114,7 @@ class EventDialog extends Component {
 
         let webview = this.webview.getChildByName('view').getComponent(cc.WebView);
         webview.url = this.selectedUrl;
-        console.debug(this.selectedUrl);
+        debug(this.selectedUrl);
     }
 
     // hide webview -> show main

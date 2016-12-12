@@ -6,7 +6,7 @@ export default class TextView extends Component {
     constructor() {
         super();
         this.currentWidth = 0;
-        this.lineHeight = 20;
+        this.lineHeight = 24;
         this.isLoaded = false;
 
         this.properties = {
@@ -25,12 +25,19 @@ export default class TextView extends Component {
     onLoad() {
         // console.log("onLoad textview: ", this.label.lineHeight);
 
-        this.lineHeight = this.label.lineHeight;
-        // this.lineHeight = 24;
+        this.lineHeight = this.getLabelLineHeight();
         this.label.overflow = cc.Label.Overflow.RESIZE_HEIGHT;
         this.label.string = "";
         this.isLoaded = true;
         this.currentWidth = this.node.width;
+
+    }
+    getLabelLineHeight(){
+        if (cc.sys.isBrowser) {
+            return this.label.lineHeight;
+        }
+
+        return this.lineHeight;
 
     }
 

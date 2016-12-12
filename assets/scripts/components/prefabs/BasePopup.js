@@ -5,7 +5,10 @@ import RubUtils from 'RubUtils';
 class BasePopup extends Component {
     constructor() {
         super();
-        this.bodyContentNode = cc.Node;
+        this.bodyContentNode = {
+            default : null,
+            type : cc.Node
+        };
     }
 
     // use this for initialization
