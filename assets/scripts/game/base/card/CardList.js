@@ -38,6 +38,7 @@ export default class CardList extends Component {
         this.selectCardChangeListener = null;
         this.highlight = false;
         this._revealOnClick = false;
+        this.__initCards = null;
     }
 
     cleanCardGroup() {
@@ -392,8 +393,12 @@ export default class CardList extends Component {
     }
 
     setCards(cards, active, reveal) {
-        this.clear();
-        this._fillCards(cards, active, reveal, true, 0);
+        if (this.initiated) {
+            this.clear();
+            this._fillCards(cards, active, reveal, true, 0);
+        }else{
+            this.__initCards = [...cards];
+        }
     }
 
     addCards(cards, active, reveal) {
@@ -515,13 +520,15 @@ export default class CardList extends Component {
     }
 
     onLoad() {
+
+        console.log("on load")
+
         this.cards = [];
         this.loaded = true;
-    }
-
-    onEnable() {
-        super.onEnable();
         this.node.on('child-added', (event) => {
+            
+            console.log("child-added");
+            
             let newChild = event.detail;
             newChild.setAnchorPoint(this.node.getAnchorPoint());
 
@@ -548,14 +555,24 @@ export default class CardList extends Component {
                 }
             }
         });
+    }
+
+    onEnable() {
+        super.onEnable();
 
         this.setAlign(this._settedAlign || this.align);
         this._updateNodeSize();
-
         this.initiated = true;
+
+        if(this.__initCards){
+            this.setCards(this.__initCards);
+            this.__initCards = null;
+        }
+
     }
 
     start() {
+        console.log("cards: ", this.cards)
         this.__reveal != undefined && this.setReveal(this.__reveal);
     }
 

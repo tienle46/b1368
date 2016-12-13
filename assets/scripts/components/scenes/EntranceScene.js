@@ -34,24 +34,24 @@ export default class EntranceScene extends BaseScene {
     // use this for initialization
     onLoad() {
 
-        sdkbox.PluginFacebook.setListener({
-            onLogin: (isLogin, msg) => {
-                if(isLogin){
-                    const fbId = sdkbox.PluginFacebook.getUserID();
-                    this.accessToken = sdkbox.PluginFacebook.getAccessToken();
-                    log(`fbId ${fbId} and token ${this.accessToken}`);
-                    this.getUserByFbId(fbId , this.accessToken);
-                }
-                else{
-
-                }
-            },
-            onAPI: function(tag, data) {},
-            onSharedSuccess: function(data) {},
-            onSharedFailed: function(data) {},
-            onSharedCancel: function() {},
-            onPermission: function(isLogin, msg) {}
-        });
+        // sdkbox.PluginFacebook.setListener({
+        //     onLogin: (isLogin, msg) => {
+        //         if(isLogin){
+        //             const fbId = sdkbox.PluginFacebook.getUserID();
+        //             this.accessToken = sdkbox.PluginFacebook.getAccessToken();
+        //             log(`fbId ${fbId} and token ${this.accessToken}`);
+        //             this.getUserByFbId(fbId , this.accessToken);
+        //         }
+        //         else{
+        //
+        //         }
+        //     },
+        //     onAPI: function(tag, data) {},
+        //     onSharedSuccess: function(data) {},
+        //     onSharedFailed: function(data) {},
+        //     onSharedCancel: function() {},
+        //     onPermission: function(isLogin, msg) {}
+        // });
 
         super.onLoad();
     }
