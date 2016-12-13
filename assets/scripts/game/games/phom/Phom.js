@@ -29,7 +29,7 @@ export default class Phom extends CardList {
     }
 
     setCards(cards){
-        super.setCards(PhomUtils.sortAsc(cards, PhomUtils.SORT_BY_RANK));
+        super.setCards(PhomUtils.sortAsc([...cards], PhomUtils.SORT_BY_RANK));
     }
 
     setOwner(owner) {
@@ -45,7 +45,7 @@ export default class Phom extends CardList {
         let equals = false;
 
         if(phom.cards.length > 2 && this.cards.length == phom.cards.length){
-            PhomUtils.sortAsc(phom.cards);
+            PhomUtils.sortAsc([...phom.cards]);
             equals = this.cards[0].byteValue == phom.cards[0].byteValue
                 && this.cards[this.cards.length - 1].equals(phom.cards[this.cards.length - 1]);
         }

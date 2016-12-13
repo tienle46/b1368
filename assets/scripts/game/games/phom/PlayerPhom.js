@@ -444,6 +444,7 @@ export default class PlayerPhom extends PlayerCardTurnBase {
             if (currentPhomList.length > 0 && currentPhomCards.length >= 9) {
                 // co the u duoc
                 this.tempHoUPhoms = currentPhomList;
+                this.renderer.cardList.setSelecteds(currentPhomCards);
                 this.renderer.cardList.setHighlight(currentPhomCards);
                 this.setState(PlayerPhom.STATE_PHOM_PLAY_HO_U);
             }
@@ -649,13 +650,17 @@ export default class PlayerPhom extends PlayerCardTurnBase {
 
             if (this.isItMe()) {
                 if (joinPhom) {
-                    this.renderer.cardList.transferTo(joinPhom, [card]);
+                    this.renderer.cardList.transferTo(joinPhom, [card], () => {
+                        this._sortCardList(joinPhom);
+                    });
                 } else {
                     this.renderer.cardList.removeCards([card]);
                 }
             } else {
                 if (joinPhom) {
-                    joinPhom.transferFrom(this.renderer.cardList, [card]);
+                    joinPhom.transferFrom(this.renderer.cardList, [card], () => {
+                        this._sortCardList(joinPhom);
+                    });
                 }
             }
         }
@@ -724,6 +729,13 @@ export default class PlayerPhom extends PlayerCardTurnBase {
     _onTakeCard() {
         this.isItMe() && app.service.send({cmd: Commands.PLAYER_TAKE_CARD, data: {}, room: this.scene.room});
         this.setState(PlayerPhom.STATE_ACTION_WAIT);
+    }
+
+    _sortCardList(cardList){
+        if(cardList){
+            PhomUtils.sortAsc(cardList.cards);
+            cardList.onCardsChanged();
+        }
     }
 
     //TODO

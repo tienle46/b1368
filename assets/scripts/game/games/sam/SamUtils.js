@@ -18,6 +18,11 @@ export default class SamUtils {
         return playCards && playCards.length > 0 && !ArrayUtils.isEmpty(this.getValidSelectedCards(playCards, playedCards));
     }
 
+    /**
+     * @param {Array} selectedCards
+     * @param {Array} prePlayedCards
+     * @returns {*}
+     */
     static getValidSelectedCards(selectedCards = [], prePlayedCards = []) {
         if (ArrayUtils.isEmpty(selectedCards)) return null;
 
@@ -37,10 +42,10 @@ export default class SamUtils {
              * nguoi truoc danh khong Neu khac loai bai thi kiem tra cac truong
              * hop chat duoc biet
              */
-            let maxSelectedCard = selectedSortedCards[selectedCards.length - 1];
-            let maxPlayedCard = prePlayedSortedCards[prePlayedCards.length - 1];
+            let maxSelectedCard = selectedSortedCards[selectedSortedCards.length - 1];
+            let maxPlayedCard = prePlayedSortedCards[prePlayedSortedCards.length - 1];
             let compareMaxCardValue = SamUtils.compareSamRank(maxSelectedCard, maxPlayedCard);
-            
+
             if (selectedCardsGroupType == playedCardsGroupType) {
                 // if (selectedCardsGroupType == SamUtils.GROUP_CARD_TYPE_SANH && selectedCards.length != tempPlayedCards.length) {
                 //     return null;
@@ -51,6 +56,24 @@ export default class SamUtils {
                     /**
                      * Trường hợp cùng đôi 2 thì đã được bắt ở trên
                      */
+                    case SamUtils.GROUP_CARD_TYPE_SANH_RONG:
+                        if (playedCardsGroupType == SamUtils.GROUP_CARD_TYPE_SANH || playedCardsGroupType == SamUtils.GROUP_CARD_TYPE_SANH_SPECIAL) {
+                            return selectedCards;
+                        }
+                        break;
+                    case SamUtils.GROUP_CARD_TYPE_SANH:
+                        switch (playedCardsGroupType) {
+                            case SamUtils.GROUP_CARD_TYPE_SANH:
+                                return compareMaxCardValue > 0 ? selectedCards : null;
+                            case SamUtils.GROUP_CARD_TYPE_SANH_SPECIAL:
+                                return selectedCards;
+                        }
+                        break;
+                    case SamUtils.GROUP_CARD_TYPE_SANH_SPECIAL:
+                        if (playedCardsGroupType == SamUtils.GROUP_CARD_TYPE_SANH_SPECIAL) {
+                            return compareMaxCardValue > 0 ? selectedCards : null;
+                        }
+                        break;
                     case SamUtils.GROUP_CARD_TYPE_DOI:
                         if (playedCardsGroupType == SamUtils.GROUP_CARD_TYPE_DOI && compareMaxCardValue) {
                             return selectedCards;
@@ -81,7 +104,7 @@ export default class SamUtils {
                         }
                         break;
                     case SamUtils.GROUP_CARD_TYPE_BA_DOI_THONG:
-                        if(playedCardsGroupType == SamUtils.GROUP_CARD_TYPE_RAC) {
+                        if (playedCardsGroupType == SamUtils.GROUP_CARD_TYPE_RAC) {
                             return maxPlayedCard.isHeo() ? selectedCards : null;
                         }
                         break;
@@ -138,15 +161,15 @@ export default class SamUtils {
         return SamUtils.GROUP_CARD_TYPE_INVALID;
     }
 
-    static isValidSanhRule(selectedCards) {
+    static isValidSanhRule(selectedCards, gameType = this.GAME_TYPE) {
         let isSanh = true;
 
         for (let i = 1; i < selectedCards.length; i++) {
 
-            let rank1 = GameUtils.getRank(selectedCards[i], this.GAME_TYPE);
-            let rank2 = GameUtils.getRank(selectedCards[i - 1], this.GAME_TYPE);
+            let rank1 = GameUtils.getRank(selectedCards[i], gameType);
+            let rank2 = GameUtils.getRank(selectedCards[i - 1], gameType);
 
-            if ((rank1 - rank2) != 1){
+            if ((rank1 - rank2) != 1) {
                 isSanh = false;
                 break;
             }
@@ -170,7 +193,7 @@ export default class SamUtils {
 
         // sanh chua at,2.. or 2,3...
         if (isContainHeo && this.isValidSanhRule(this.sortSpecialAsc(selectedCards), app.const.game.GAME_TYPE_SPECIAL_XAM)) {
-            return SamUtils.GROUP_CARD_TYPE_SANH;
+            return SamUtils.GROUP_CARD_TYPE_SANH_SPECIAL;
         }
 
         return -1;
@@ -220,7 +243,7 @@ export default class SamUtils {
 
             let selectedCards = [...cards];
             if (GameUtils.isContainHeo(selectedCards)) {
-                    isDoiThong = this.isValidDoiThongRule(this.sortSpecialAsc(selectedCards, app.const.game.GAME_TYPE_SPECIAL_XAM));
+                isDoiThong = this.isValidDoiThongRule(this.sortSpecialAsc(selectedCards, app.const.game.GAME_TYPE_SPECIAL_XAM));
             } else {
                 isDoiThong = this.isValidDoiThongRule(selectedCards);
             }
@@ -229,15 +252,15 @@ export default class SamUtils {
         return isDoiThong;
     }
 
-    static sortAsc(cards){
+    static sortAsc(cards) {
         return cards.sort(this.compareSamRank);
     }
 
-    static sortSpecialAsc(cards){
-        return cards.sort(this.compareRank);
+    static sortSpecialAsc(cards) {
+        return cards.sort(Card.compareRank);
     }
 
-    static compareSamRank(card1, card2){
+    static compareSamRank(card1, card2) {
         return GameUtils.getRank(card1, app.const.game.GAME_TYPE_XAM) - GameUtils.getRank(card2, app.const.game.GAME_TYPE_XAM);
     }
 }
@@ -253,6 +276,7 @@ SamUtils.GROUP_CARD_TYPE_INVALID = 0;
 SamUtils.GROUP_CARD_TYPE_RAC = 1;
 SamUtils.GROUP_CARD_TYPE_DOI = 2;
 SamUtils.GROUP_CARD_TYPE_SAM_CO = 3;
+SamUtils.GROUP_CARD_TYPE_SANH_SPECIAL = 3;
 SamUtils.GROUP_CARD_TYPE_SANH = 4;
 SamUtils.GROUP_CARD_TYPE_SANH_RONG = 5;
 SamUtils.GROUP_CARD_TYPE_TU_QUY = 6;

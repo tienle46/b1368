@@ -66,11 +66,7 @@ export default class Board extends Actor {
         this.state = app.const.game.state.INITED;
         this.gameData = this.scene.gameData;
 
-        if (this.room.containsVariable(app.keywords.VARIABLE_MIN_BET)) {
-            this.minBet = utils.getVariable(this.room, app.keywords.VARIABLE_MIN_BET);
-
-            console.warn("this.minBet Board: ", this.minBet);
-        }
+        this._loadBoardMinBet();
 
         if (this.gameData.hasOwnProperty(app.keywords.BOARD_STATE_KEYWORD)) {
             this.serverState = this.gameData[app.keywords.BOARD_STATE_KEYWORD];
@@ -86,6 +82,17 @@ export default class Board extends Actor {
         this.scene.on(Events.ON_GAME_LOAD_PLAY_DATA, this._loadGamePlayData, this);
         this.scene.on(Events.ON_PLAYER_READY_STATE_CHANGED, this._onPlayerSetReadyState, this);
         this.scene.on(Events.ON_GAME_REJOIN, this._onGameRejoin, this);
+        this.scene.on(Events.ON_ROOM_CHANGE_MIN_BET, this._onRoomMinBetChanged, this);
+    }
+
+    _onRoomMinBetChanged(){
+        this._loadBoardMinBet();
+    }
+
+    _loadBoardMinBet(){
+        if (this.room.containsVariable(app.keywords.VARIABLE_MIN_BET)) {
+            this.minBet = utils.getVariable(this.room, app.keywords.VARIABLE_MIN_BET);
+        }
     }
 
     onDestroy() {

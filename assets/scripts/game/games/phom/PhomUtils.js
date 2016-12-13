@@ -110,8 +110,9 @@ export default class PhomUtils {
     }
 
     static isPhom(cards){
-        this.sortAsc(cards);
-        return this.isPhomByRank(cards, true) || this.isPhomBySuit(cards, true);
+        let cardsCopy = [...cards];
+        this.sortAsc(cardsCopy);
+        return this.isPhomByRank(cardsCopy, true) || this.isPhomBySuit(cardsCopy, true);
     }
 
     static checkEatPhom(cards, eatingCard, player) {

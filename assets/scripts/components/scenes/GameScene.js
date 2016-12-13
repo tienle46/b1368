@@ -80,6 +80,7 @@ export default class GameScene extends BaseScene {
         this.on(Events.ON_ACTION_LOAD_GAME_GUIDE, this._onActionLoadGameGuide, this);
         this.on(Events.VISIBLE_INGAME_CHAT_COMPONENT, this._onVisibleIngameChatComponent, this);
         this.on(Events.ON_GAME_LOAD_DATA_AFTER_SCENE_START, this._loadGameDataAfterSceneStart, this);
+        this.on(Events.ON_ROOM_CHANGE_MIN_BET, this._onRoomMinBetChanged, this);
     }
 
     _onVisibleIngameChatComponent(){
@@ -98,6 +99,10 @@ export default class GameScene extends BaseScene {
         this._penddingEvents = [];
 
         this.node.children.forEach(child => { child.opacity = 255})
+    }
+
+    _onRoomMinBetChanged(){
+        this._setTableNameLabel(this.room);
     }
 
     _setTableNameLabel(room){
