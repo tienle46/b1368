@@ -125,7 +125,7 @@ class BottomBar extends Component {
 
     onFeedbackConfirmed() {
         //collect user feedback and send to server
-        if (this.prom.getVal() && this.prom.getVal().length > 0) {
+        if (this.prom.getVal() && this.prom.getVal().trim().length > 0) {
             var sendObject = {
                 'cmd': app.commands.SEND_FEEDBACK,
                 'data': {

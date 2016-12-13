@@ -153,7 +153,7 @@ class Service {
         if (this._loginData) {
             this.connect((success) => {
                 if (success) {
-                    this.requestAuthen(this._loginData.username, this._loginData.password, false, this._loginData.quickLogin, this._loginData.cb);
+                    this.requestAuthen(this._loginData.username, this._loginData.password, false, this._loginData.quickLogin,null, this._loginData.cb);
                     this._loginData = null;
                 }
             });
@@ -188,19 +188,22 @@ class Service {
     }
 
     _onLogin(event) {
-        debug("_onLogin: ", event)
+        debug("_onLogin 1: ", event)
         if (event.data[app.keywords.UPDATE_PHONE_NUMBER]) {
             app.context.getMe().upn = event.data[app.keywords.UPDATE_PHONE_NUMBER] || true;
         }
-
+        debug("_onLogin 2: ", event)
         let rejoinGroup = event.data[app.keywords.LOGIN_REJOIN_ROOM_GROUP];
+        debug("_onLogin 3: ", event)
         if (rejoinGroup) {
             app.context.rejoinGroup = rejoinGroup;
             app.context.rejoiningGame = true;
             app.system.enablePendingGameEvent = true;
         } else {
             this._loginData = null;
+            debug("_onLogin 4: ", event)
             this._callCallback(SFS2X.SFSEvent.LOGIN, null, event.data);
+            debug("_onLogin 5: ", event)
         }
 
         this.startLagPolling(app.config.pingPongInterval);
@@ -342,7 +345,7 @@ class Service {
      * @param {function} cb
      */
 
-    requestAuthen(username, password, isRegister = false, isQuickLogin = false, cb) {
+    requestAuthen(username, password, isRegister = false, isQuickLogin = false,accessToken = null, cb) {
         let data = {};
         data[app.keywords.IS_REGISTER] = isRegister;
         data[app.keywords.RAW_PASSWORD] = password;
@@ -351,7 +354,9 @@ class Service {
         // data[app.keywords.VERSION] = "1.0.0"; //
         data[app.keywords.DEVICE_ID] = app.DEVICE_ID;
         data[app.keywords.QUICK_PLAY] = isQuickLogin; // <-- die here!
-
+        if(accessToken && accessToken.length > 0){
+            data[app.keywords.ACCESS_TOKEN] = accessToken;
+        }
         if (isRegister) {
             data[app.keywords.PARTNER_ID] = 1; // <-- or here
             this._loginData = null;
