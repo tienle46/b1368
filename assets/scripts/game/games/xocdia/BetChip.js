@@ -52,6 +52,27 @@ class BetChip extends Component {
         this.color = this.amountLbl.node.color;
         this.size = cc.size(20, 20);
     }
+
+    getChipInfoByAmount(a) {
+        let amount, color, size;
+        amount = a;
+        size = cc.size(20, 20);
+        switch (amount) {
+            case 1:
+                color = app.const.COLOR_RED;
+                break;
+            case 5:
+                color = app.const.COLOR_GREEN;
+                break;
+            case 10:
+                color = app.const.COLOR_ORANGE;
+                break;
+            case 50:
+                color = app.const.COLOR_BLACK;
+                break;
+        }
+        return { amount, color, size };
+    }
 }
 
 app.createComponent(BetChip);

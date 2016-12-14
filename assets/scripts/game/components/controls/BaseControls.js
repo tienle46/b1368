@@ -6,7 +6,7 @@
 import app from 'app';
 import utils from 'utils';
 import GameControls from 'GameControls';
-import {Events} from 'events';
+import { Events } from 'events';
 
 export default class BaseControls extends GameControls {
     constructor() {
@@ -29,13 +29,14 @@ export default class BaseControls extends GameControls {
     }
 
     onClickReadyButton() {
+        console.debug('onClickReadyButton');
         this.scene.showShortLoading('ready');
-        app.service.send({cmd: app.commands.PLAYER_READY, room: this.scene.room});
+        app.service.send({ cmd: app.commands.PLAYER_READY, room: this.scene.room });
     }
 
     onClickUnreadyButton() {
-        this.scene.showShortLoading('ready');
-        app.service.send({cmd: app.commands.PLAYER_UNREADY, room: this.scene.room});
+        this.scene.showShortLoading('unready');
+        app.service.send({ cmd: app.commands.PLAYER_UNREADY, room: this.scene.room });
     }
 
     _onPlayerSetReadyState(playerId, ready, isItMe = this.scene.gamePlayers.isItMe(playerId)) {
@@ -57,10 +58,11 @@ export default class BaseControls extends GameControls {
     }
 
     _showGameBeginControls() {
-        if(this.scene.gamePlayers.isMeReady()){
-           this._onPlayerReady();
-        }else{
-           this._onPlayerUnready();
+        console.debug('_showGameBeginControls')
+        if (this.scene.gamePlayers.isMeReady()) {
+            this._onPlayerReady();
+        } else {
+            this._onPlayerUnready();
         }
     }
 

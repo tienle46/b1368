@@ -113,6 +113,9 @@ class GameSystem {
                 case app.const.gameCode.BA_CAY:
                     gameSceneName = 'BaCayScene';
                     break;
+                case app.const.gameCode.XOC_DIA:
+                    gameSceneName = 'XocDiaScene';
+                    break;
             }
 
             gameSceneName && this.loadScene(gameSceneName);

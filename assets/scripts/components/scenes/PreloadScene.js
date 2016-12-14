@@ -40,7 +40,8 @@ class PreloadScene extends Component {
             { dir: 'dashboard/dialog/prefabs/segmentControl', name: 'segmentControl' },
             { dir: 'popup/BasePopup', name: 'basePopup' },
             { dir: 'popup/FriendProfilePopup', name: 'friendProfilePopup' },
-            { dir: 'dashboard/dialog/prefabs/dialog', name: 'dialog' }
+            { dir: 'dashboard/dialog/prefabs/dialog', name: 'dialog' },
+            { dir: 'game/xocdia/minichip', name: 'miniChip' }
         ];
 
         app.async.parallel(resources.map((res) => {

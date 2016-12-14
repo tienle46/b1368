@@ -15,16 +15,90 @@ class BetContainerButton extends Component {
             default: null,
             type: cc.Prefab
         };
+
+        this.nEven = {
+            default: null,
+            type: cc.Node
+        };
+        this.nOdd = {
+            default: null,
+            type: cc.Node
+        };
+        this.n4Blacks = {
+            default: null,
+            type: cc.Node
+        };
+        this.n4Reds = {
+            default: null,
+            type: cc.Node
+        };
+        this.n3Reds1Black = {
+            default: null,
+            type: cc.Node
+        };
+        this.n3Blacks1Red = {
+            default: null,
+            type: cc.Node
+        };
     }
 
     onLoad() {
+        this._typeSetup();
+    }
 
+    _typeSetup() {
+        this.nEven.id = 1;
+        this.nOdd.id = 2;
+        this.n4Reds.id = 3;
+        this.n4Blacks.id = 4;
+        this.n3Reds1Black.id = 5;
+        this.n3Blacks1Red.id = 6;
+    }
+
+    // @type 1: Chẵn, 2: Lẻ, 3: 4 Đỏ, 4: 4 Đen, 5: 3 Đỏ 1 Đen, 6: 3 Đen 1 Đỏ
+    getBetTypeByTypeId(id) {
+        let type = null;
+        switch (id) {
+            case 1:
+                type = this.nEven;
+                break;
+            case 2:
+                type = this.nOdd;
+                break;
+            case 3:
+                type = this.n4Reds;
+                break;
+            case 4:
+                type = this.n4Blacks;
+                break;
+            case 5:
+                type = this.n3Reds1Black;
+                break;
+            case 6:
+                type = this.n3Blacks1Red;
+                break;
+        }
+
+        return type;
+    }
+
+    getBetTypePositionById(id) {
+        let type = this.getBetTypeByTypeId(id);
+
+        return type.getPosition();
+    }
+
+    getRealBetTypePositionById(id) {
+        let type = this.getBetTypeByTypeId(id);
+        let position = type.getPosition();
+        let realPosition = type.parent.convertToWorldSpaceAR(position);
+        return type.getPosition(realPosition);
     }
 
     onBetWrapItemClick(event) {
         // a node where chip would be started from
         let fromNode = this.betOptionsGroup.getCheckedItem();
-        let chipInfo = fromNode.getComponent('BetChip').getChipInfo()
+        let chipInfo = fromNode.getComponent('BetChip').getChipInfo();
         let startPoint = fromNode.parent.convertToWorldSpaceAR(fromNode.getPosition());
 
         // and node where chip would be tossed to
@@ -46,7 +120,7 @@ class BetContainerButton extends Component {
             cc.director.getScene().addChild(miniChip);
             let action = cc.moveTo(0.1, realEndPoint);
 
-            miniChip.runAction(cc.sequence(action, cc.delayTime(2), cc.fadeOut(1), cc.callFunc(() => {
+            miniChip.runAction(cc.sequence(action.clone(), cc.delayTime(2).clone(), cc.fadeOut(1).clone(), cc.callFunc(() => {
                 miniChip.removeFromParent();
             })));
         });

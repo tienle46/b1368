@@ -36,6 +36,7 @@ app.const.gameCode.LIENG = 'lie';
 app.const.gameCode.XAM = 'xam';
 app.const.gameCode.BAU_CUA = 'tcc';
 app.const.gameCode.ALL = 'xga';
+app.const.gameCode.XOC_DIA = 'xod';
 
 /**
  * System message type

@@ -644,6 +644,58 @@ Keywords.SYSTEM_MESSAGE = {
     }
 };
 
+// Xoc dia bet
+Keywords.XOCDIA_BET = {
+    AMOUNT: "b",
+    TYPE: "bo",
+    REQUEST: {
+        BET_LIST: "bl", // array {b: int, bo: int} 
+        // b: AMOUNT
+        // bo: BET_TYPE : 1: Chẵn, 2: Lẻ, 3: 4 Đỏ, 4: 4 Đen, 5: 3 Đỏ 1 Đen, 6: 3 Đen 1 Đỏ
+        AMOUNT: "b",
+        TYPE: "bo",
+    },
+    RESPONSE: {
+        BET_LIST: "bl",
+        TYPE: "bo",
+        PLAYER: "p", // id user
+        IS_SUCCESS: "s",
+        ERROR_MSG: "errMsg"
+    }
+};
+
+Keywords.XOCDIA_CANCEL_BET = {
+    RESPONSE: {
+        PLAYER: "p", // id user
+        IS_SUCCESS: "s",
+        ERROR_MSG: "errMsg"
+    }
+};
+
+Keywords.XOCDIA_REGISTER_MASTER = {
+    REQUEST: {
+        IS_REGISTER: "register", // true if wanna be master, otherwise `false`
+    },
+    RESPONSE: {
+        PLAYER: "p", // id user
+        IS_SUCCESS: "s",
+        ERROR_MSG: "errMsg",
+        IS_REGISTER: "register" // (only sent from server while in unregisteration step)
+    }
+};
+
+// Keywords.XOCDIA_HISTORY = {
+//     REQUEST: {
+//         IS_REGISTER: "shakeHistory", // true if wanna be master, otherwise `false`
+//     },
+//     RESPONSE: {
+//         PLAYER: "p", // id user
+//         IS_SUCCESS: "s",
+//         ERROR_MSG: "errMsg",
+//         IS_REGISTER: "register" // (only sent from server while in unregisteration step)
+//     }
+// };
+
 //Admin message detail
 Keywords.SYSTEM_MESSAGE_DETAIL = {
     REQUEST: {

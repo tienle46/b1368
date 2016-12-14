@@ -3,7 +3,7 @@
  */
 
 import app from 'app';
-import {utils, GameUtils} from 'utils';
+import { utils, GameUtils } from 'utils';
 import ActorRenderer from 'ActorRenderer';
 import PlusBalanceAnimation from 'PlusBalanceAnimation';
 import PlayerMessage from 'PlayerMessage';
@@ -24,7 +24,7 @@ export default class PlayerRenderer extends ActorRenderer {
             plusBalanceLabel: cc.Label,
             playerMessageNode: cc.Node,
             playerTimeLineProgress: cc.ProgressBar,
-            avatarNode : cc.Node,
+            avatarNode: cc.Node,
         }
 
         this.playerMessage = null;
@@ -60,7 +60,7 @@ export default class PlayerRenderer extends ActorRenderer {
         this.setVisibleReady(this.data.ready);
 
         this.plusBalanceAnim = this.plusBalanceNode.getComponent('PlusBalanceAnimation');
-        this.plusBalanceAnim.setup({player: this, endCallback: this._onDonePlusBalanceAnimation.bind(this)});
+        this.plusBalanceAnim.setup({ player: this, endCallback: this._onDonePlusBalanceAnimation.bind(this) });
 
         this.playerMessage = this.playerMessageNode.getComponent('PlayerMessage');
         this.playerMessage.setup(this);
@@ -153,7 +153,7 @@ export default class PlayerRenderer extends ActorRenderer {
         this.stopAllAnimation();
     }
 
-    stopAllAnimation(){
+    stopAllAnimation() {
 
     }
 

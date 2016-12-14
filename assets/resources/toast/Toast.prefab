@@ -473,13 +473,17 @@
     },
     "_resize": 1,
     "_N$layoutType": 2,
+    "_N$padding": 0,
     "_N$cellSize": {
       "__type__": "cc.Size",
       "width": 40,
       "height": 40
     },
     "_N$startAxis": 0,
-    "_N$padding": 10,
+    "_N$paddingLeft": 10,
+    "_N$paddingRight": 10,
+    "_N$paddingTop": 10,
+    "_N$paddingBottom": 10,
     "_N$spacingX": 0,
     "_N$spacingY": 15,
     "_N$verticalDirection": 1,
@@ -577,6 +581,7 @@
       "__id__": 1
     },
     "_enabled": true,
+    "path": "",
     "toastItemPrefab": {
       "__uuid__": "2d1a5085-9650-4903-8807-fd1187b99ce8"
     },
