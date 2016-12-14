@@ -57,12 +57,15 @@ export default class EntranceScene extends BaseScene {
     }
 
     onUserDonePickupName() {
+
         if (this.prom.getVal() && this.prom.getVal().trim().length > 0) {
             //
+            const userName = this.prom.getVal();
+            // debug(`user picked ${userName} for his facebook account`);
             app.service.connect((success) => {
                 if (success) {
-                    app.service.requestAuthen(userName, "", true, false,this.accessToken , (error, result) => {
-
+                    app.service.requestAuthen(userName, "", true, false, this.accessToken , (error, result) => {
+                        debug(`error ${error} , result ${result}`);
                         this.hideLoading();
 
                         if (error) {
@@ -100,20 +103,20 @@ export default class EntranceScene extends BaseScene {
 
                         app.service.connect((success) => {
                             if (success) {
-                                app.service.requestAuthen(userName, "", false, false,accessToken , (error, result) => {
+                                app.service.requestAuthen(userName, "", false, false, accessToken , (error, result) => {
 
                                     debug(`error ${error} result ${result}`);
-                                    debug(`===> this `, this);
+                                    // debug(`===> this `, this);
                                     this.hideLoading();
 
                                     if (error) {
                                         error = JSON.parse(error);
-                                        log('Login error:');
+                                        // log('Login error:');
                                         this.addPopup(app.getMessageFromServer(error.p.ec));
                                     }
                                     if (result) {
-                                        log(result);
-                                        log(`Logged in as ${app.context.getMe().name}`);
+                                        // log(result);
+                                        // log(`Logged in as ${app.context.getMe().name}`);
                                         this.changeScene(app.const.scene.DASHBOARD_SCENE);
                                     }
                                 });
@@ -121,7 +124,7 @@ export default class EntranceScene extends BaseScene {
                         });
                     }
                     else{
-                        this.prom = new PromptPopupRub(cc.director.getScene(), { green: this.onUserDonePickupName }, { label: { text: 'Chọn tên đăng nhập:' } }, this);
+                        this.prom = new PromptPopupRub(cc.director.getScene(), { confirmBtn: this.onUserDonePickupName }, { label: { text: 'Chọn tên đăng nhập:' } }, this);
                         this.prom.init();
                     }
                 }
@@ -211,7 +214,7 @@ export default class EntranceScene extends BaseScene {
         // AlertPopupRub.show(this.node, "Chức năng đang cập nhật!");
         // this.prom = new PromptPopupRub(this.node, { confirmBtn: this.test }, { label: { text: 'dafuq ?' } }, this);
         // this.prom.init();
-
+        debug(`login by facebook btn clicked`);
         if(cc.sys.isMobile) {
 
             if(!sdkbox.PluginFacebook.isLoggedIn()){

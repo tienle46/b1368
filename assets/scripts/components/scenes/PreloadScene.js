@@ -31,7 +31,9 @@ class PreloadScene extends Component {
         } else {
             debug(`what the heck?`);
         }
-        // sdkbox.PluginFacebook.init();
+        if(cc.sys.isMobile) {
+            sdkbox.PluginFacebook.init();
+        }
     }
 
     onEnable() {

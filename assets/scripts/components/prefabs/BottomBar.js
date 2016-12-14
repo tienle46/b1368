@@ -148,7 +148,7 @@ class BottomBar extends Component {
     }
 
     giveFeedbackClicked() {
-        this.prom = new PromptPopupRub(cc.director.getScene(), { green: this.onFeedbackConfirmed }, { label: { text: 'Enter text here:' } }, this);
+        this.prom = new PromptPopupRub(cc.director.getScene(), { confirmBtn: this.onFeedbackConfirmed }, { label: { text: 'Enter text here:' } }, this);
         this.prom.init();
     }
 

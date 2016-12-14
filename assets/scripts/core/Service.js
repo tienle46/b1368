@@ -188,30 +188,29 @@ class Service {
     }
 
     _onLogin(event) {
-        debug("_onLogin 1: ", event)
         if (event.data[app.keywords.UPDATE_PHONE_NUMBER]) {
             app.context.getMe().upn = event.data[app.keywords.UPDATE_PHONE_NUMBER] || true;
         }
-        debug("_onLogin 2: ", event)
+
         let rejoinGroup = event.data[app.keywords.LOGIN_REJOIN_ROOM_GROUP];
-        debug("_onLogin 3: ", event)
+
         if (rejoinGroup) {
             app.context.rejoinGroup = rejoinGroup;
             app.context.rejoiningGame = true;
             app.system.enablePendingGameEvent = true;
         } else {
             this._loginData = null;
-            debug("_onLogin 4: ", event)
+
             this._callCallback(SFS2X.SFSEvent.LOGIN, null, event.data);
-            debug("_onLogin 5: ", event)
+
         }
 
         this.startLagPolling(app.config.pingPongInterval);
     }
 
-    _onLoginError() {
+    _onLoginError(event) {
         this._loginData = null;
-        this._callCallback(SFS2X.SFSEvent.LOGIN, event.data);
+        this._callCallback(SFS2X.SFSEvent.LOGIN,null, event.data);
     }
 
     sendRequest(request, { cb = null, scope = null, cbName = null } = {}) {
