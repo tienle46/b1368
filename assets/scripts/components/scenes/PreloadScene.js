@@ -31,6 +31,7 @@ class PreloadScene extends Component {
         } else {
             debug(`what the heck?`);
         }
+        // sdkbox.PluginFacebook.init();
     }
 
     onEnable() {

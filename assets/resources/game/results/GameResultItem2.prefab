@@ -1292,8 +1292,8 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": 45,
-      "y": 0
+      "x": 67,
+      "y": -37
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -1325,7 +1325,7 @@
     "scale": 0.6,
     "reveal": true,
     "selectable": false,
-    "space": 55,
+    "space": 70,
     "maxDimension": 125,
     "cardPrefab": {
       "__uuid__": "1be1ace3-b9b3-4bf4-9c45-5c1d9eccac08"

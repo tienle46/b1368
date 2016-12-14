@@ -80,11 +80,12 @@ export default class LoginScene extends BaseScene {
         this.showLoading();
         app.service.connect((success) => {
             if (success) {
-                app.service.requestAuthen(username, password, false, false, (error, result) => {
-                    error = JSON.parse(error);
+                app.service.requestAuthen(username, password, false, false,null, (error, result) => {
+
                     this.hideLoading();
                     if (error) {
                         log('Login error:');
+                        error = JSON.parse(error);
                         this.addPopup(app.getMessageFromServer(error.p.ec));
                     }
                     if (result) {

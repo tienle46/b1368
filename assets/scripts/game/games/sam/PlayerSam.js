@@ -132,8 +132,6 @@ export default class PlayerSam extends PlayerCardTurnBase {
         if (this.isItMe()) {
             SamUtils.sortAsc(this.renderer.cardList.cards);
             this.renderer.cardList.onCardsChanged();
-
-            console.log("_onSortCards")
         }
     }
 

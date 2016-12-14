@@ -44,7 +44,7 @@ export default class PhomGenerator {
     }
 
     static generateAllPhom(cards){
-        cards = PhomUtils.sortAsc(cards);
+        cards = PhomUtils.sortAsc([...cards]);
         let phomByRanks = this._findPhomByRank([...cards]);
         let phomBySuits = this._findPhomBySuit([...cards]);
 

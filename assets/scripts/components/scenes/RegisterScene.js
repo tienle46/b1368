@@ -43,12 +43,13 @@ export default class RegisterScene extends BaseScene {
         if (this._isValidUserInputs(username, password)) {
             app.service.connect((success) => {
                 if (success) {
-                    app.service.requestAuthen(username, password, true, false, (error, result) => {
-                        error = JSON.parse(error);
+                    app.service.requestAuthen(username, password, true, false,null, (error, result) => {
+
                         this.hideLoading();
 
                         if (error) {
                             log('Login error:');
+                            error = JSON.parse(error);
                             this.addPopup(app.getMessageFromServer(error.p.ec));
                         }
                         if (result) {

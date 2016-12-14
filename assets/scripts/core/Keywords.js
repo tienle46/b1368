@@ -77,6 +77,7 @@ Keywords.DEVICE_ID = "di";
 Keywords.CLIENT_TYPE = "ct";
 Keywords.VERSION = "v";
 Keywords.QUICK_PLAY = "qply";
+Keywords.ACCESS_TOKEN = "at";
 Keywords.PARTNER_ID = "pid";
 Keywords.IS_UPDATE = "iu";
 Keywords.DOWNLOAD_LINK = "dl";

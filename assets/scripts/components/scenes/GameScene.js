@@ -1,11 +1,11 @@
 import app from 'app';
 import SFS2X from 'SFS2X';
-import { utils, GameUtils } from 'utils';
-import { Keywords } from 'core';
-import { BaseScene } from 'scenes';
-import { Events, Emitter } from 'events'
-import { CreateGameException } from 'exceptions';
-import { gameManager, GameEventHandler, Board, TLMNDLBoard, TLMNDLPlayer } from 'game';
+import {utils, GameUtils} from 'utils';
+import {Keywords} from 'core';
+import {BaseScene} from 'scenes';
+import {Events, Emitter} from 'events'
+import {CreateGameException} from 'exceptions';
+import {gameManager, GameEventHandler, Board, TLMNDLBoard, TLMNDLPlayer} from 'game';
 import IngameChatComponent from 'IngameChatComponent';
 import GamePlayers from 'GamePlayers';
 
@@ -66,7 +66,7 @@ export default class GameScene extends BaseScene {
         this._penddingEvents = null;
     }
 
-    _addGlobalListener() {
+    _addGlobalListener(){
         super._addGlobalListener();
 
         this.on(Events.ON_GAME_STATE_CHANGE, (...args) => {
@@ -80,13 +80,14 @@ export default class GameScene extends BaseScene {
         this.on(Events.ON_ACTION_LOAD_GAME_GUIDE, this._onActionLoadGameGuide, this);
         this.on(Events.VISIBLE_INGAME_CHAT_COMPONENT, this._onVisibleIngameChatComponent, this);
         this.on(Events.ON_GAME_LOAD_DATA_AFTER_SCENE_START, this._loadGameDataAfterSceneStart, this);
+        this.on(Events.ON_ROOM_CHANGE_MIN_BET, this._onRoomMinBetChanged, this);
     }
 
-    _onVisibleIngameChatComponent() {
+    _onVisibleIngameChatComponent(){
         this.chatComponent.setVisible();
     }
 
-    handleRejoinGame(...args) {
+    handleRejoinGame(...args){
         this.initiated ? this._onGameRejoin(...args) : (this._penddingEvents.push({
             fn: this._onGameRejoin,
             args: args
@@ -97,15 +98,19 @@ export default class GameScene extends BaseScene {
         super.onLoad();
         this._penddingEvents = [];
 
-        this.node.children.forEach(child => { child.opacity = 255 })
+        this.node.children.forEach(child => { child.opacity = 255})
     }
 
-    _setTableNameLabel(room) {
+    _onRoomMinBetChanged(){
+        this._setTableNameLabel(this.room);
+    }
+
+    _setTableNameLabel(room){
         let roomName = room.name.substring(3, 5);
         let tableName = room.name.substring(5, room.name.length);
         let minBet = utils.getVariable(room, app.keywords.VARIABLE_MIN_BET, "");
 
-        this.tableNameLabel.string = app.res.string('game_table_name', { roomName, tableName, minBet });
+        this.tableNameLabel.string = app.res.string('game_table_name', {roomName, tableName, minBet});
     }
 
     onEnable() {
@@ -137,7 +142,7 @@ export default class GameScene extends BaseScene {
         }
     }
 
-    start() {
+    start(){
         super.start();
 
         this._initGameEvents();
@@ -175,7 +180,7 @@ export default class GameScene extends BaseScene {
         return this.board.state === app.const.game.state.ENDING;
     }
 
-    _handlePendingEvents() {
+    _handlePendingEvents(){
         app.system._handlePendingGameEvents();
 
         this._penddingEvents.forEach(event => event.fn(...event.args));
@@ -198,7 +203,7 @@ export default class GameScene extends BaseScene {
         app.service.sendRequest(new SFS2X.Requests.System.LeaveRoomRequest(this.room));
     }
 
-    _onActionLoadGameGuide() {
+    _onActionLoadGameGuide(){
         app.system.info(app.res.string('coming_soon'));
     }
 
@@ -218,8 +223,7 @@ export default class GameScene extends BaseScene {
         this.emit(Events.ON_GAME_LOAD_DATA_AFTER_SCENE_START, this.gameData);
     }
 
-    _loadGameDataAfterSceneStart(data) {
-        console.debug('_loadGameDataAfterSceneStart', data);
+    _loadGameDataAfterSceneStart(data){
         let currentGameState = utils.getValue(data, Keywords.BOARD_STATE_KEYWORD);
         let isGamePlaying = GameUtils.isPlayingState(currentGameState);
         if (isGamePlaying) {
@@ -267,8 +271,8 @@ export default class GameScene extends BaseScene {
         }
     }
 
-    _onGameStateBegin(data, isJustJoined, isRejoining) {
-        if (!isRejoining) {
+    _onGameStateBegin(data, isJustJoined, isRejoining){
+        if(!isRejoining){
             this.emit(Events.ON_GAME_RESET);
         }
         this.emit(Events.ON_GAME_STATE_BEGIN, data, isJustJoined);
@@ -284,28 +288,21 @@ export default class GameScene extends BaseScene {
 
         switch (localState) {
             case app.const.game.state.BEGIN:
-                console.debug('app.const.game.state.BEGIN', app.const.game.state.BEGIN)
                 this._onGameStateBegin(data, isJustJoined, rejoining);
                 break;
             case app.const.game.state.STARTING:
-                console.debug('app.const.game.state.STARTING', app.const.game.state.STARTING)
                 this.emit(Events.ON_GAME_STATE_STARTING, data, isJustJoined);
                 break;
             case app.const.game.state.STARTED:
-                console.debug('app.const.game.state.STARTED', app.const.game.state.STARTED)
                 this.emit(Events.ON_GAME_STATE_STARTED, data, isJustJoined);
                 break;
             case app.const.game.state.PLAYING:
-                console.debug('app.const.game.state.PLAYING', app.const.game.state.PLAYING)
                 this.emit(Events.ON_GAME_STATE_PLAYING, data, isJustJoined);
                 break;
             case app.const.game.state.ENDING:
-                console.debug('app.const.game.state.ENDING', app.const.game.state.ENDING)
                 this.emit(Events.ON_GAME_STATE_ENDING, data, isJustJoined);
                 break;
             default:
-                console.debug('app.const.game.state.ON_GAME_STATE', this.gameState)
-
                 this.emit(Events.ON_GAME_STATE, this.gameState, data, isJustJoined);
         }
     }
