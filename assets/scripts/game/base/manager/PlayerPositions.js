@@ -37,7 +37,7 @@ export default class PlayerPositions extends Component {
         this.scene;
     }
 
-    isPositionOnTop(){
+    isPositionOnTop() {
         return false;
     }
 
@@ -64,8 +64,8 @@ export default class PlayerPositions extends Component {
         this.hideAllInviteButtons();
     }
 
-    onClickAnchorButton(){
-        app.service.send({cmd: app.commands.PLAYER_INVITE, data: {}, room: this.scene.room});
+    onClickAnchorButton() {
+        app.service.send({ cmd: app.commands.PLAYER_INVITE, data: {}, room: this.scene.room });
         app.system.showToast(app.res.string('random_invite_player_successfully'));
     }
 
@@ -79,19 +79,19 @@ export default class PlayerPositions extends Component {
     }
 
     _onGameStarted(data, isJustJoined) {
-        if(isJustJoined){
+        if (isJustJoined) {
             this.hideAllInviteButtons();
         }
     }
 
     _onGamePlaying(data, isJustJoined) {
-        if(isJustJoined){
+        if (isJustJoined) {
             this.hideAllInviteButtons();
         }
     }
 
     _onGameEnding(data, isJustJoined) {
-        if(isJustJoined){
+        if (isJustJoined) {
             this.hideAllInviteButtons();
         }
     }
@@ -123,17 +123,19 @@ export default class PlayerPositions extends Component {
      * @returns {{}}
      * @abstract
      */
-    _getPlayerSeatIndexs(gameCode){
+    _getPlayerSeatIndexs(gameCode) {
         return {};
     }
 
     getPlayerAnchorIndex(playerId, isItMe, gameCode) {
+        console.debug('getPlayerAnchorIndex', app.context.getMe())
 
         if (isItMe) {
             return 0;
         } else {
+            console.debug('getPlayerAnchorIndex2', app.context.getMe())
             if (app.context.getMe()) {
-                let {seatIndex} = this._getPlayerSeatIndex(playerId, gameCode);
+                let { seatIndex } = this._getPlayerSeatIndex(playerId, gameCode);
                 return seatIndex;
 
             } else {
@@ -142,11 +144,13 @@ export default class PlayerPositions extends Component {
         }
     }
 
-    _getPlayerSeatIndex(playerId, gameCode){
+
+    _getPlayerSeatIndex(playerId, gameCode) {
         let seatIndexs = this._getPlayerSeatIndexs(gameCode);
         let meId = app.context.getMe().getPlayerId(app.system.currentScene.board.room);
         let seatIndex = seatIndexs[meId][playerId];
-        return {seatIndex, seatIndexs, meId};
+        console.debug('playerId', playerId, 'meId', meId, 'seatIndex', seatIndex);
+        return { seatIndex, seatIndexs, meId };
     }
 
     hideInviteButtonByPlayerId(playerId) {
@@ -200,23 +204,23 @@ export default class PlayerPositions extends Component {
      * @param seatIndex
      * @abstract
      */
-    _getNextSeatIndex(seatIndex){}
+    _getNextSeatIndex(seatIndex) {}
 
     /**
      * @param seatIndex
      * @abstract
      */
-    _getPreviousSeatIndex(seatIndex){}
+    _getPreviousSeatIndex(seatIndex) {}
 
     getNextNeighbourID(playerId) {
-        let {seatIndex, seatIndexs, meId} = this._getPlayerSeatIndex(playerId, this.scene.gameCode);
+        let { seatIndex, seatIndexs, meId } = this._getPlayerSeatIndex(playerId, this.scene.gameCode);
         let nextSeatIndex = this._getNextSeatIndex(seatIndex);
 
         return this._getPlayerIdBySeatIndex(seatIndexs, nextSeatIndex, meId);
     }
 
-    getPreviousNeighbourPlayerID(playerId){
-        let {seatIndex, seatIndexs, meId} = this._getPlayerSeatIndex(playerId, this.scene.gameCode);
+    getPreviousNeighbourPlayerID(playerId) {
+        let { seatIndex, seatIndexs, meId } = this._getPlayerSeatIndex(playerId, this.scene.gameCode);
         let nextSeatIndex = this._getPreviousSeatIndex(seatIndex);
         return this._getPlayerIdBySeatIndex(seatIndexs, nextSeatIndex, meId);
     }

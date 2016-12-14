@@ -5,9 +5,9 @@
 import utils from 'utils';
 import app from 'app';
 import game from 'game'
-import {Actor} from 'components';
+import { Actor } from 'components';
 import Events from 'events'
-import {Keywords} from 'core';
+import { Keywords } from 'core';
 
 export default class Board extends Actor {
 
@@ -100,8 +100,8 @@ export default class Board extends Actor {
         this.stopTimeLine();
     }
 
-    _onGameRejoin(data){
-        if(this.scene.isBegin()) {
+    _onGameRejoin(data) {
+        if (this.scene.isBegin()) {
             let remainTime = utils.getValue(data, Keywords.PLAYER_REJOIN_TURN_COUNT_REMAIN);
             remainTime && this.startTimeLine(remainTime);
         }
@@ -114,8 +114,7 @@ export default class Board extends Actor {
     /**
      * @abstract
      */
-    get gameType() {
-    }
+    get gameType() {}
 
     setState(state) {
         this.state = state;
@@ -207,14 +206,15 @@ export default class Board extends Actor {
     }
 
     startTimeLine(timeInSecond, message = "", timeoutCb) {
+        console.debug('startTimeLine');
         this.stopTimeLine();
 
         this.renderer.showTimeLine(timeInSecond, message);
 
         this.timelineRemain = timeInSecond;
-        this.timelineInterval = setInterval(()=> {
+        this.timelineInterval = setInterval(() => {
             this.timelineRemain--;
-            if(this.timelineRemain < 0){
+            if (this.timelineRemain < 0) {
                 this.stopTimeLine();
                 timeoutCb && timeoutCb();
             } else {
@@ -271,7 +271,7 @@ export default class Board extends Actor {
 
     onBoardBegin(data = {}, isJustJoined) {
 
-        if(!isJustJoined){
+        if (!isJustJoined) {
             this._reset();
         }
 
@@ -279,13 +279,13 @@ export default class Board extends Actor {
         boardTimeLine && (this.readyPhaseDuration = boardTimeLine);
 
         console.warn("on board begin: readyDuration: ", this.readyPhaseDuration, " justJoined: ", isJustJoined, " meReady: ", this.scene.gamePlayers.me.isReady());
-        
+
         if (this.readyPhaseDuration && !this.scene.gamePlayers.me.isReady()) {
             if (this.scene.gamePlayers.meIsOwner()) {
                 boardTimeLine *= 2;
             }
 
-            this.startTimeLine(boardTimeLine, () => {this.scene.emit(Events.ON_ACTION_EXIT_GAME)});
+            this.startTimeLine(boardTimeLine, () => { this.scene.emit(Events.ON_ACTION_EXIT_GAME) });
         }
 
         this.state = app.const.game.state.BEGIN;
@@ -311,14 +311,13 @@ export default class Board extends Actor {
     }
 
     onBoardPlaying(data = {}, isJustJoined) {
-        if (isJustJoined) {
-        }
+        if (isJustJoined) {}
 
         this.state = app.const.game.state.PLAYING;
         //TODO
     }
 
-    _startEndBoardTimeLine(duration){
+    _startEndBoardTimeLine(duration) {
         duration && duration > 0 && this.startTimeLine(duration, app.res.string('game_replay_waiting_time'));
     }
 
@@ -340,7 +339,7 @@ export default class Board extends Actor {
 
     }
 
-    _getPlayerBalanceChangeAmounts(playerIds = [], data){
+    _getPlayerBalanceChangeAmounts(playerIds = [], data) {
 
         let balanceChangedAmounts = {};
         let currentPlayerBalances = this.scene.gamePlayers.getCurrentPlayerBalances(playerIds);
@@ -358,7 +357,7 @@ export default class Board extends Actor {
     }
 
     _handleSetPlayerBalance(data) {
-        
+
         console.log("_handleSetPlayerBalance: ", data);
 
         let playerIds = utils.getValue(data, Keywords.GAME_LIST_PLAYER);

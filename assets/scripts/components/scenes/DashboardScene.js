@@ -53,10 +53,11 @@ export default class DashboardScene extends BaseScene {
 
     _filterClientSupportedGames(gameCodes) {
         return ArrayUtils.isEmpty(gameCodes) ? [] : gameCodes.filter(gc => {
-            return gc == app.const.gameCode.PHOM
-                || gc == app.const.gameCode.TLMNDL
-                || gc == app.const.gameCode.XAM
-                || gc == app.const.gameCode.BA_CAY
+            return gc == app.const.gameCode.PHOM ||
+                gc == app.const.gameCode.TLMNDL ||
+                gc == app.const.gameCode.XAM ||
+                gc == app.const.gameCode.BA_CAY ||
+                gc == app.const.gameCode.XOC_DIA
         })
     }
 
@@ -131,11 +132,14 @@ export default class DashboardScene extends BaseScene {
     }
 
     _addTopBar() {
-        RubUtils.loadRes('dashboard/Topbar').then((prefab) => {
-            let topbarNode = cc.instantiate(prefab);
+        // RubUtils.loadRes('dashboard/Topbar').then((prefab) => {
+        //     let topbarNode = cc.instantiate(prefab);
 
-            this.node.addChild(topbarNode);
-        });
+        //     this.node.addChild(topbarNode);
+        // });
+        let topbarNode = cc.instantiate(this.topBar);
+        topbarNode.setPosition(cc.v2(0, 360));
+        this.node.addChild(topbarNode);
 
     }
 }

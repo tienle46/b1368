@@ -7,7 +7,7 @@ import GameScene from 'GameScene';
 import Events from 'Events';
 import HorizontalBetPopup from 'HorizontalBetPopup';
 
-export default class BaCayScene extends GameScene {
+export default class XocDiaScene extends GameScene {
     constructor() {
         super();
 
@@ -31,11 +31,11 @@ export default class BaCayScene extends GameScene {
     }
 
     onEnable() {
-        this.board = this.boardNode.getComponent('BoardBaCay');
-        this.gameControls = this.gameControlsNode.getComponent('BaCayControls');
-        this.playerPositions = this.playerPositionAnchorsNode.getComponent('SixPlayerPositions');
-        this.gameResultPopup = this.gameResultPopupNode.getComponent('GameResultPopup');
-        this._betPopup = this.chooseBetSliderNode.getComponent('HorizontalBetPopup');
+        this.board = this.boardNode.getComponent('BoardXocDia');
+        this.gameControls = this.gameControlsNode.getComponent('XocDiaControls');
+        this.playerPositions = this.playerPositionAnchorsNode.getComponent('EightPlayerPositions');
+        // this.gameResultPopup = this.gameResultPopupNode.getComponent('GameResultPopup');
+        // this._betPopup = this.chooseBetSliderNode.getComponent('HorizontalBetPopup');
 
         super.onEnable();
 
@@ -77,4 +77,4 @@ export default class BaCayScene extends GameScene {
     }
 }
 
-app.createComponent(BaCayScene);
+app.createComponent(XocDiaScene);

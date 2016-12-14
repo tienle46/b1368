@@ -22,27 +22,28 @@ export default class BoardRenderer extends ActorRenderer {
         this.timelineTextView = null;
     }
 
-    onEnable(){
+    onEnable() {
         super.onEnable();
 
         this.timelineTextView = this.timelineTextViewNode.getComponent('TextView');
-        utils.deactive(this.timeline);
+        this.hideTimeLine();
+        // utils.deactive(this.timeline);
     }
 
-    _reset(){
+    _reset() {
         this.hideTimeLine();
     }
 
-    hideTimeLine(){
+    hideTimeLine() {
         utils.deactive(this.timeline);
     }
 
-    showTimeLine(timeInSecond = 0, message){
-        if(timeInSecond <= 0){
+    showTimeLine(timeInSecond = 0, message) {
+        if (timeInSecond <= 0) {
             return;
         }
 
-        if(!utils.isString(message) || utils.isEmpty(message)){
+        if (!utils.isString(message) || utils.isEmpty(message)) {
             message = app.res.string('game_waiting_time');
         }
 
@@ -51,11 +52,11 @@ export default class BoardRenderer extends ActorRenderer {
         this.setTimeLineRemainTime(timeInSecond);
     }
 
-    setTimeLineMessage(message){
+    setTimeLineMessage(message) {
         this.timelineTextView.setText(message);
     }
 
-    setTimeLineRemainTime(second){
+    setTimeLineRemainTime(second) {
         this.timelineRemainTime.string = `${second}`;
     }
 }

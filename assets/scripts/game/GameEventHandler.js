@@ -69,6 +69,10 @@ export default class GameEventHandler {
         app.system.addGameListener(Commands.PLAYER_BET, this._onPlayerBet, this);
         app.system.addGameListener(Commands.BACAY_PLAYER_GA_HUC, this._onPlayerGaHuc, this);
         app.system.addGameListener(Commands.BACAY_PLAYER_HUC_ACCEPTED, this._onPlayerHucAccepted, this);
+
+
+        app.system.addGameListener(Commands.XOCDIA_BET, this._onXocDiaPLayerBet, this);
+        app.system.addGameListener(Commands.XOCDIA_CANCLE_BET, this._onXocDiaPLayerBet, this);
     }
 
     removeGameEventListener() {
@@ -109,20 +113,39 @@ export default class GameEventHandler {
         app.system.removeGameListener(Commands.BACAY_PLAYER_GA_HUC, this._onPlayerGaHuc, this);
         app.system.removeGameListener(Commands.BACAY_PLAYER_HUC_ACCEPTED, this._onPlayerHucAccepted, this);
 
+        app.system.removeGameListener(Commands.XOCDIA_BET, this._onXocDiaPLayerBet, this);
+        app.system.removeGameListener(Commands.XOCDIA_CANCLE_BET, this._onXocDiaPLayerCancelBet, this);
+
     }
 
-    _onPlayerHucAccepted(data){
+    _onXocDiaPLayerCancelBet(data) {
+        let playerId = utils.getValue(data, app.keywords.XOCDIA_BET.RESPONSE.PLAYER);
+        console.debug('_onXocDiaPLayerCancelBet GameEventHandler', data, playerId);
+        this.scene.emit('xocdia.on.player.cancelBet', data);
+    }
+
+    _onXocDiaPLayerBet(data) {
+        let playerId = utils.getValue(data, app.keywords.XOCDIA_BET.RESPONSE.PLAYER);
+        let betsList = utils.getValue(data, app.keywords.XOCDIA_BET.RESPONSE.BET_LIST);
+        let isSuccess = utils.getValue(data, app.keywords.XOCDIA_BET.RESPONSE.IS_SUCCESS);
+        let err = utils.getValue(data, app.keywords.XOCDIA_BET.RESPONSE.ERROR_MSG);
+        console.debug('_onXocDiaPLayerBet GameEventHandler', data);
+        let d = { playerId, betsList, isSuccess, err };
+        this.scene && this.scene.emit('xocdia.on.player.bet', d);
+    }
+
+    _onPlayerHucAccepted(data) {
         let gaHucPlayerId = utils.getValue(data, app.keywords.BACAY_GA_HUC_PLAYER_ID);
         let biHucPlayerId = utils.getValue(data, app.keywords.BACAY_BI_HUC_PLAYER_ID);
         gaHucPlayerId && this.scene.emit(Events.HANDLE_PLAYER_ACCEPT_CUOC_BIEN, gaHucPlayerId, biHucPlayerId, data);
     }
 
-    _onPlayerGaHuc(data){
+    _onPlayerGaHuc(data) {
         let gaHucPlayerId = utils.getValue(data, app.keywords.BACAY_GA_HUC_PLAYER_ID);
         gaHucPlayerId && this.scene.emit(Events.HANDLE_PLAYER_CUOC_BIEN, gaHucPlayerId, data);
     }
 
-    _onPlayerBet(data){
+    _onPlayerBet(data) {
         let playerId = utils.getValue(data, Keywords.PLAYER_ID);
         playerId && this.scene.emit(Events.HANDLE_PLAYER_BET, playerId, data);
     }

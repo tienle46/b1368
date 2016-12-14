@@ -4,9 +4,9 @@
 
 import app from 'app';
 import game from 'game';
-import {utils, GameUtils} from 'utils';
-import {Keywords} from 'core';
-import {Events} from 'events';
+import { utils, GameUtils } from 'utils';
+import { Keywords } from 'core';
+import { Events } from 'events';
 import BoardCardBetTurn from 'BoardCardBetTurn';
 import PlayerBaCay from 'PlayerBaCay';
 import BoardBaCayRenderer from 'BoardBaCayRenderer';
@@ -21,7 +21,7 @@ export default class BoardBaCay extends BoardCardBetTurn {
         this.handCardSize = PlayerBaCay.DEFAULT_HAND_CARD_COUNT;
     }
 
-    onLoad(){
+    onLoad() {
         super.onLoad();
     }
 
@@ -81,10 +81,10 @@ export default class BoardBaCay extends BoardCardBetTurn {
     }
 
     _loadGamePlayData(data) {
-        super._loadGamePlayData({...data, masterIdOwner: true});
+        super._loadGamePlayData({...data, masterIdOwner: true });
 
         let gamePhrase = utils.getValue(data, app.keywords.BOARD_STATE_KEYWORD);
-        if(gamePhrase == app.const.game.state.STATE_DOWN) {
+        if (gamePhrase == app.const.game.state.STATE_DOWN) {
             this._handleBaCayDownCardPhrase(data);
         }
 
@@ -139,7 +139,7 @@ export default class BoardBaCay extends BoardCardBetTurn {
 
         let balanceChangeAmounts = this._getPlayerBalanceChangeAmounts(playerIds, data);
         let playerHandCards = this._getPlayerHandCards(playerIds, data);
-        let {resultTexts, gameResultInfos, resultIconPaths} = this._getGameResultInfos(playerIds, playerHandCards, data);
+        let { resultTexts, gameResultInfos, resultIconPaths } = this._getGameResultInfos(playerIds, playerHandCards, data);
 
         super.onBoardEnding(data);
 
@@ -195,7 +195,7 @@ export default class BoardBaCay extends BoardCardBetTurn {
             resultTexts[id] = resultText;
         })
 
-        return {resultTexts, gameResultInfos, resultIconPaths};
+        return { resultTexts, gameResultInfos, resultIconPaths };
     }
 }
 
