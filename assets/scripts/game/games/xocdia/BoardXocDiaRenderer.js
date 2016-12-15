@@ -16,7 +16,7 @@ export default class BoardXocDiaRenderer extends BoardRenderer {
     onEnable() {
         super.onEnable();
 
-        this.dishContainerNode.zIndex = 9999;
+        this.dishContainerNode.zIndex = 999999;
     }
 
     hideElements() {
@@ -27,6 +27,10 @@ export default class BoardXocDiaRenderer extends BoardRenderer {
     showElements() {
         utils.active(this.dishContainerNode);
         utils.active(this.statisticTableNode);
+    }
+
+    runDishShakeAnim() {
+        this.dishContainerNode.getComponent('BowlDishControl').dishShaker();
     }
 }
 

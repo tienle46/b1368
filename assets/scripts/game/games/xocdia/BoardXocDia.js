@@ -23,25 +23,28 @@ export default class BoardXocDia extends BoardCardBetTurn {
         this.scene.on(Events.ON_GAME_STATE_BEGIN, this._onGameBegin, this);
         this.scene.on(Events.ON_GAME_STATE, this._onGameState, this);
         this.scene.on('xocdia.on.player.bet', this._onPlayerBet, this);
+        this.renderer.showElements();
+
     }
 
-    // _addGlobalListener() {
-    //     super._addGlobalListener();
-    // }
+    onDestroy() {
+        super.onDestroy();
+
+        this.scene.off(Events.ON_GAME_STATE_BEGIN, this._onGameBegin, this);
+        this.scene.off(Events.ON_GAME_STATE, this._onGameState, this);
+        this.scene.off('xocdia.on.player.bet', this._onPlayerBet, this);
+    }
 
     _reset() {
         super._reset();
         // 
-        console.debug('_reset');
-    }
-
-    _extension() {
-        console.debug('on extension');
+        console.debug('_reset BoardXocDia.js');
+        this.renderer.hideElements();
     }
 
     _onPlayerBet(data) {
-        console.debug('_onPlayerBet BoardXocDia', data);
-        let { playerId, betsList, isSuccess, err } = data;
+        // console.debug('_onPlayerBet BoardXocDia', data);
+        // let { playerId, betsList, isSuccess, err } = data;
 
         // XocDiaAnim.tossChip(myPos, toNode, chipInfo, (() => {
         //     console.debug('scene', this.scene);
@@ -54,6 +57,7 @@ export default class BoardXocDia extends BoardCardBetTurn {
 
         if (boardState === app.const.game.state.STATE_BET) {
             this.scene.emit(Events.ON_GAME_STATE_STARTING);
+
             // todo anything
             this.renderer.showElements();
         }
@@ -75,8 +79,8 @@ export default class BoardXocDia extends BoardCardBetTurn {
     // }
 
     _onGameState(state, data, isJustJoined) {
-        if (state === app.const.game.state.STATE_BET) {
-
+        if (state === app.const.game.state.BOARD_STATE_SHAKE) {
+            this.renderer.runDishShakeAnim();
         }
     }
 

@@ -24,6 +24,8 @@ export default class PlayerXocDia extends PlayerCardBetTurn {
         this.pendingCuocBiens = null;
         this.pendingBiCuocBiens = null;
         this.currentCuocBien = 0;
+
+        this.betData = [];
     }
 
     _addGlobalListener() {
@@ -38,8 +40,8 @@ export default class PlayerXocDia extends PlayerCardBetTurn {
         this.scene.on(Events.ON_PLAYER_BACAY_CHANGE_BET, this._onPlayerChangeBet, this);
         this.scene.on(Events.HANDLE_PLAYER_CUOC_BIEN, this._onPlayerCuocBien, this);
         this.scene.on(Events.HANDLE_PLAYER_ACCEPT_CUOC_BIEN, this._onPlayerAcceptCuocBien, this);
-        // this.scene.on('xocdia.on.control.bet', this._test, this);
         this.scene.on('xocdia.on.player.bet', this._onPlayerBet, this);
+        this.scene.on('xocdia.on.player.cancelBet', this._onPlayerCancelBet, this);
     }
 
     _removeGlobalListener() {
@@ -55,6 +57,7 @@ export default class PlayerXocDia extends PlayerCardBetTurn {
         this.scene.off(Events.HANDLE_PLAYER_CUOC_BIEN, this._onPlayerCuocBien, this);
         this.scene.off(Events.HANDLE_PLAYER_ACCEPT_CUOC_BIEN, this._onPlayerAcceptCuocBien, this);
         this.scene.off('xocdia.on.player.bet', this._onPlayerBet, this);
+        this.scene.off('xocdia.on.player.cancelBet', this._onPlayerCancelBet, this);
     }
 
     onLoad() {
@@ -114,7 +117,6 @@ export default class PlayerXocDia extends PlayerCardBetTurn {
     }
 
     _onGameState(state, data, isJustJoined) {
-        debug('_onGameState PlayerXocDia', state, data, isJustJoined);
         if (state == app.const.game.state.STATE_BET) {
             this._onGameStateBet();
             !this.isItMe() && this.scene.gamePlayers.isMePlaying() && this.renderer.showCuocBienBtn();
@@ -141,6 +143,8 @@ export default class PlayerXocDia extends PlayerCardBetTurn {
 
     onGameReset() {
         super.onGameReset();
+        this.betData = [];
+
         // this.hucList = {};
         // this.biHucList = {};
         // this.pendingCuocBiens = {};
@@ -179,15 +183,33 @@ export default class PlayerXocDia extends PlayerCardBetTurn {
         if (data.playerId != this.id) return;
 
         let { playerId, betsList, isSuccess, err } = data;
+        this.betData = betsList;
 
-        let myPos = this.scene.gamePlayers.playerPositions.getPlayerAnchorByPlayerId(playerId, this.scene.gamePlayers.isItMe(playerId));
-        // console.debug('_test PlayerXocDia.js', info, data);
-        let node = this.node.parent ? this.node.parent : this.node;
-        myPos = node.convertToWorldSpaceAR(myPos);
+        if (isSuccess) {
+            let isItMe = this.scene.gamePlayers.isItMe(playerId);
+            let myPos = this.scene.gamePlayers.playerPositions.getPlayerAnchorByPlayerId(playerId, isItMe);
+            let node = this.node.parent ? this.node.parent : this.node;
+            myPos = node.convertToWorldSpaceAR(myPos);
+            this.scene.emit('xocdia.on.player.tosschip', { myPos, betsList, isItMe });
+        } else {
+            console.error('PlayerXocDia.js > _onPlayerBet', err);
+        }
 
-        console.debug('_onPlayerBet PlayerXocDia', myPos);
+    }
 
-        this.scene.emit('xocdia.on.player.tosschip', { myPos, betsList });
+    _onPlayerCancelBet(data) {
+        if (data.playerId != this.id) return;
+        let betsList = this.betData;
+        let { playerId, isSuccess, err } = data;
+        if (isSuccess) {
+            let myPos = this.scene.gamePlayers.playerPositions.getPlayerAnchorByPlayerId(playerId, isItMe);
+            let isItMe = this.scene.gamePlayers.isItMe(playerId);
+
+            this.scene.emit('xocdia.on.player.cancel.bet.success', { myPos, isItMe, betsList });
+            this.betData = [];
+        } else {
+            console.error('PlayerXocDia.js > _onPlayerCancelBet', err);
+        }
     }
 
     // getExcludeCuocBienPlayers() {

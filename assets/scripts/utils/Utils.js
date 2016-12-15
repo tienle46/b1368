@@ -4,7 +4,7 @@
 
 export default class Utils {
 
-    static isNull(val){
+    static isNull(val) {
         return val == undefined || val == null;
     }
 
@@ -14,6 +14,10 @@ export default class Utils {
 
     static isEmptyArray(arr) {
         return !arr || arr.length == 0;
+    }
+
+    static isArray(arr) {
+        return arr instanceof Array;
     }
 
     static isNumber(value) {
@@ -62,7 +66,7 @@ export default class Utils {
 
     static active(node, opacity) {
         this.setActive(node, true);
-        if(opacity){
+        if (opacity) {
             //TODO
         }
     }
@@ -70,7 +74,7 @@ export default class Utils {
     static deactive(node, opacity) {
         this.setActive(node, false);
 
-        if(opacity){
+        if (opacity) {
             //TODO
         }
     }
@@ -111,7 +115,7 @@ export default class Utils {
     }
 
     static getValue(mapObj, key, defaultValue) {
-        if(mapObj && mapObj.hasOwnProperty(key)){
+        if (mapObj && mapObj.hasOwnProperty(key)) {
             return mapObj[key];
         }
         return defaultValue;
@@ -137,8 +141,8 @@ export default class Utils {
         // }));
     }
 
-    static getAllKeys(...args){
-        return args.map(arg => this.isObject(arg) ? Object.keys(arg) : []).reduce((keys, keyArr) => {return [...keys, ...keyArr]}, []);
+    static getAllKeys(...args) {
+        return args.map(arg => this.isObject(arg) ? Object.keys(arg) : []).reduce((keys, keyArr) => { return [...keys, ...keyArr] }, []);
     }
 
 }

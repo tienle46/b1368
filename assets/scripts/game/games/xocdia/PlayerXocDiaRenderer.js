@@ -77,7 +77,7 @@ export default class PlayerXocDiaRenderer extends PlayerCardBetTurnRenderer {
     setVisibleReady(visible) {
         super.setVisibleReady(visible);
         // hide user while playing game or fade while waiting
-        this.node.opacity = visible ? ((this.scene.gamePlayers.isMePlaying() && this.scene.gamePlayers.board.isPlaying()) ? 0 : 255) : 150;
+        this.node.opacity = visible ? ((this.isItMe && this.scene.isStarting()) ? 0 : 255) : 150;
     }
 
     revealAllCards() {

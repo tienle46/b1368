@@ -72,7 +72,7 @@ export default class GameEventHandler {
 
 
         app.system.addGameListener(Commands.XOCDIA_BET, this._onXocDiaPLayerBet, this);
-        app.system.addGameListener(Commands.XOCDIA_CANCLE_BET, this._onXocDiaPLayerBet, this);
+        app.system.addGameListener(Commands.XOCDIA_CANCEL_BET, this._onXocDiaPLayerCancelBet, this);
     }
 
     removeGameEventListener() {
@@ -114,14 +114,17 @@ export default class GameEventHandler {
         app.system.removeGameListener(Commands.BACAY_PLAYER_HUC_ACCEPTED, this._onPlayerHucAccepted, this);
 
         app.system.removeGameListener(Commands.XOCDIA_BET, this._onXocDiaPLayerBet, this);
-        app.system.removeGameListener(Commands.XOCDIA_CANCLE_BET, this._onXocDiaPLayerCancelBet, this);
+        app.system.removeGameListener(Commands.XOCDIA_CANCEL_BET, this._onXocDiaPLayerCancelBet, this);
 
     }
 
     _onXocDiaPLayerCancelBet(data) {
-        let playerId = utils.getValue(data, app.keywords.XOCDIA_BET.RESPONSE.PLAYER);
+        let playerId = utils.getValue(data, app.keywords.XOCDIA_CANCEL_BET.RESPONSE.PLAYER);
+        let isSuccess = utils.getValue(data, app.keywords.XOCDIA_CANCEL_BET.RESPONSE.IS_SUCCESS);
+        let err = utils.getValue(data, app.keywords.XOCDIA_CANCEL_BET.RESPONSE.ERROR_MSG);
+        let d = { playerId, isSuccess, err };
         console.debug('_onXocDiaPLayerCancelBet GameEventHandler', data, playerId);
-        this.scene.emit('xocdia.on.player.cancelBet', data);
+        playerId && this.scene.emit('xocdia.on.player.cancelBet', d);
     }
 
     _onXocDiaPLayerBet(data) {
@@ -129,9 +132,8 @@ export default class GameEventHandler {
         let betsList = utils.getValue(data, app.keywords.XOCDIA_BET.RESPONSE.BET_LIST);
         let isSuccess = utils.getValue(data, app.keywords.XOCDIA_BET.RESPONSE.IS_SUCCESS);
         let err = utils.getValue(data, app.keywords.XOCDIA_BET.RESPONSE.ERROR_MSG);
-        console.debug('_onXocDiaPLayerBet GameEventHandler', data);
         let d = { playerId, betsList, isSuccess, err };
-        this.scene && this.scene.emit('xocdia.on.player.bet', d);
+        playerId && this.scene.emit('xocdia.on.player.bet', d);
     }
 
     _onPlayerHucAccepted(data) {

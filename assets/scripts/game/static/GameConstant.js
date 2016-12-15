@@ -28,6 +28,7 @@ app.const.game.state.BOARD_STATE_FACE_DOWN = 5;
 app.const.game.state.BOARD_STATE_BET = 5;
 app.const.game.state.BOARD_STATE_DOWN = 6;
 app.const.game.state.BOARD_STATE_SPIN = 6;
+app.const.game.state.BOARD_STATE_SHAKE = 7; // xóc đĩa
 app.const.game.state.EXPLODING_RING_SPRITE_TAG = 20;
 app.const.game.state.TIMELINE_SPRITE_ZORDER = 20;
 app.const.game.state.CENTER_Y_PADDING_BOTTOM = 28;
@@ -161,14 +162,16 @@ app.const.game.rank.getRankString = function(rankType, rank) {
 };
 
 app.const.game.gameMenuString = [
-        "Phỏm", "Xì tố", "Ba cây", "Liêng",
-        "Tiến lên MN", "TLMN Kiểu Mới", "TLMN Đếm lá", "Xâm",
-        "Bầu cua", "Cờ úp", " Cờ Tướng"];
+    "Phỏm", "Xì tố", "Ba cây", "Liêng",
+    "Tiến lên MN", "TLMN Kiểu Mới", "TLMN Đếm lá", "Xâm",
+    "Bầu cua", "Cờ úp", " Cờ Tướng"
+];
 
 app.const.game.gameMenuStringShort = [
-        "Phỏm", "Xì tố", "Ba cây", "Liêng",
-        "TLMN", "TLMN Mới", "TLMN Đếm lá", "Xâm",
-        "Bầu cua", "Cờ úp", " Cờ Tướng"];
+    "Phỏm", "Xì tố", "Ba cây", "Liêng",
+    "TLMN", "TLMN Mới", "TLMN Đếm lá", "Xâm",
+    "Bầu cua", "Cờ úp", " Cờ Tướng"
+];
 
 app.const.game.gameServiceString = {
     "pom": app.const.game.GAME_PHOM_ID,
@@ -201,38 +204,38 @@ app.const.game.gameCodes = [
 ];
 
 app.const.game.gameTableSeatType = [
-        4, 5, 6, 6,
-        4, 4, 4, 5,
-        6, 2, 2, null
-        //4, /*6, 6, 6*/
+    4, 5, 6, 6,
+    4, 4, 4, 5,
+    6, 2, 2, null
+    //4, /*6, 6, 6*/
 ];
 
 app.const.game.gameCardHandCardsFocusable = [
-        true, false, true, false,
-        true, true, true, true,
-        false, false, false, false
-        //true
+    true, false, true, false,
+    true, true, true, true,
+    false, false, false, false
+    //true
 ];
 
 app.const.game.gameDefaultHandCardsSize = [
-        9,2,3,3,
-        13,13,13,10,
-        0,0,0,0,13
+    9, 2, 3, 3,
+    13, 13, 13, 10,
+    0, 0, 0, 0, 13
 ];
 
 app.const.game.gameIsTurnBase = [
-        true, true, false, true,
-        true, true, true, true,
-        false, false, false, false,
-        //false
+    true, true, false, true,
+    true, true, true, true,
+    false, false, false, false,
+    //false
 ];
 
 
 app.const.game.showHandCardWhenPlaying = [
-        false, true, true, true,
-        true, false, false, false,
-        false, false , false, false,
-        //false
+    false, true, true, true,
+    true, false, false, false,
+    false, false, false, false,
+    //false
 ];
 
 app.const.game.defaultGroupRoomRole = {};
@@ -417,7 +420,7 @@ app.const.game.getXamSpecialString = function(winType) {
     return retString;
 };
 
-app.const.game.getXiToSpecialString = function (xitoType) {
+app.const.game.getXiToSpecialString = function(xitoType) {
     var retString = "";
     switch (xitoType) {
         case app.const.game.XAM_XAM_TYPE_THUNG_PHA_SANH:
