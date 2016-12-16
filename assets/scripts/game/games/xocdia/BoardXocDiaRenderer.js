@@ -16,7 +16,9 @@ export default class BoardXocDiaRenderer extends BoardRenderer {
     onEnable() {
         super.onEnable();
 
-        this.dishContainerNode.zIndex = 999999;
+        this.dishContainerNode.zIndex = 999;
+
+        this.bowlDishControl = this.dishContainerNode.getComponent('BowlDishControl');
     }
 
     hideElements() {
@@ -30,7 +32,15 @@ export default class BoardXocDiaRenderer extends BoardRenderer {
     }
 
     runDishShakeAnim() {
-        this.dishContainerNode.getComponent('BowlDishControl').dishShaker();
+        this.bowlDishControl.dishShaker();
+    }
+
+    stopDishShakeAnim() {
+        this.bowlDishControl.stopDishShaker();
+    }
+
+    openBowlAnim() {
+        this.bowlDishControl.openBowlAnim();
     }
 }
 

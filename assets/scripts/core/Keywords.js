@@ -673,21 +673,9 @@ Keywords.XOCDIA_CANCEL_BET = {
     }
 };
 
-Keywords.XOCDIA_REGISTER_MASTER = {
-    REQUEST: {
-        IS_REGISTER: "register", // true if wanna be master, otherwise `false`
-    },
-    RESPONSE: {
-        PLAYER: "p", // id user
-        IS_SUCCESS: "s",
-        ERROR_MSG: "errMsg",
-        IS_REGISTER: "register" // (only sent from server while in unregisteration step)
-    }
-};
-
-// Keywords.XOCDIA_HISTORY = {
+// Keywords.XOCDIA_REGISTER_MASTER = {
 //     REQUEST: {
-//         IS_REGISTER: "shakeHistory", // true if wanna be master, otherwise `false`
+//         IS_REGISTER: "register", // true if wanna be master, otherwise `false`
 //     },
 //     RESPONSE: {
 //         PLAYER: "p", // id user
@@ -696,6 +684,9 @@ Keywords.XOCDIA_REGISTER_MASTER = {
 //         IS_REGISTER: "register" // (only sent from server while in unregisteration step)
 //     }
 // };
+
+// xoc dia history
+Keywords.VARIABLE_XOCDIA_HISTORY = 'shakeHistory';
 
 //Admin message detail
 Keywords.SYSTEM_MESSAGE_DETAIL = {

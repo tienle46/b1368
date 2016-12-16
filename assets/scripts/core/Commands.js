@@ -243,7 +243,6 @@ Commands.TRANSACTION_HISTORY = 'b_arh';
 //Xoc Dia
 Commands.XOCDIA_BET = 'bet';
 Commands.XOCDIA_CANCEL_BET = 'cancelBet';
-Commands.XOCDIA_REGISTER_MASTER = 'registerMaster';
 Commands.XOCDIA_HISTORY = 'shakeHistory';
 
 module.exports = Commands;

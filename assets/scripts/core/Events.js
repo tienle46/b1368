@@ -91,7 +91,7 @@ Events.ON_GAME_STATE_STARTING = "on.game.stateStarting";
 Events.ON_GAME_STATE_STARTED = "on.game.stateStarted";
 Events.ON_GAME_STATE_PLAYING = "on.game.statePlaying";
 Events.ON_GAME_STATE_ENDING = "on.game.stateEnding";
-Events.ON_GAME_STATE_CHANGE = "on.game.stateChange"
+Events.ON_GAME_STATE_CHANGE = "on.game.stateChange";
 Events.ON_GAME_STATE = "on.game.state";
 Events.ON_GAME_STATE_TRUE_PLAY = "on.game.stateTruePlay";
 Events.ON_GAME_LOAD_PLAY_DATA = "on.game.loadPlayData";
@@ -109,3 +109,7 @@ Events.SET_INTERACTABLE_HA_PHOM_CONTROL = "set.interactableHaPhomControl";
 Events.SET_INTERACTABLE_EAT_CONTROL = "set.interactableEatControl";
 
 Events.ADD_BET_TO_MASTER = "add.betToMaster";
+
+Events.XOCDIA_ON_BOARD_UPDATE_PREVIOUS_RESULT_HISTORY = "xocdia.on.board.update.previous.result.history";
+Events.XOCDIA_ON_PLAYER_CANCELBET = "xocdia.on.player.cancelBet";
+Events.XOCDIA_ON_PLAYER_BET = "xocdia.on.player.bet";

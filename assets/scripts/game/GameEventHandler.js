@@ -123,8 +123,7 @@ export default class GameEventHandler {
         let isSuccess = utils.getValue(data, app.keywords.XOCDIA_CANCEL_BET.RESPONSE.IS_SUCCESS);
         let err = utils.getValue(data, app.keywords.XOCDIA_CANCEL_BET.RESPONSE.ERROR_MSG);
         let d = { playerId, isSuccess, err };
-        console.debug('_onXocDiaPLayerCancelBet GameEventHandler', data, playerId);
-        playerId && this.scene.emit('xocdia.on.player.cancelBet', d);
+        playerId && this.scene.emit(Events.XOCDIA_ON_PLAYER_CANCELBET, d);
     }
 
     _onXocDiaPLayerBet(data) {
@@ -133,7 +132,7 @@ export default class GameEventHandler {
         let isSuccess = utils.getValue(data, app.keywords.XOCDIA_BET.RESPONSE.IS_SUCCESS);
         let err = utils.getValue(data, app.keywords.XOCDIA_BET.RESPONSE.ERROR_MSG);
         let d = { playerId, betsList, isSuccess, err };
-        playerId && this.scene.emit('xocdia.on.player.bet', d);
+        playerId && this.scene.emit(Events.XOCDIA_ON_PLAYER_BET, d);
     }
 
     _onPlayerHucAccepted(data) {
@@ -208,14 +207,20 @@ export default class GameEventHandler {
     _onRoomVariablesUpdate(event) {
         let changedVars = event.changedVars;
         let room = event.room;
-
+        console.debug('_onRoomVariablesUpdate GameEventHandler.js > event', event);
         changedVars && changedVars.forEach((varName) => {
+            console.debug('_onRoomVariablesUpdate GameEventHandler.js > varName', varName);
+
             if (varName == Keywords.VARIABLE_OWNER) {
                 this.scene.emit(Events.ON_ROOM_CHANGE_OWNER, room);
             }
 
             if (varName == Keywords.VARIABLE_MIN_BET) {
                 this.scene.emit(Events.ON_ROOM_CHANGE_MIN_BET, room);
+            }
+
+            if (varName == Keywords.VARIABLE_XOCDIA_HISTORY) {
+                this.scene.emit(Events.XOCDIA_ON_BOARD_UPDATE_PREVIOUS_RESULT_HISTORY, room);
             }
         });
     }

@@ -57,9 +57,10 @@ export default class BoardXocDia extends BoardCardBetTurn {
 
         if (boardState === app.const.game.state.STATE_BET) {
             this.scene.emit(Events.ON_GAME_STATE_STARTING);
-
             // todo anything
             this.renderer.showElements();
+        } else if (boardState === app.const.game.state.BOARD_STATE_SHAKE) {
+            this.renderer.runDishShakeAnim();
         }
 
         let duration = utils.getValue(data, app.keywords.BOARD_PHASE_DURATION);
@@ -89,8 +90,16 @@ export default class BoardXocDia extends BoardCardBetTurn {
     }
 
     onBoardEnding(data) {
-        console.debug("onGameEnding Board");
+        console.debug("onGameEnding BoardXocDia.js > data", data);
+        let playerIds = utils.getValue(data, Keywords.GAME_LIST_PLAYER, []);
+        let balanceChangeAmounts = this._getPlayerBalanceChangeAmounts(playerIds, data);
+        console.debug("onGameEnding BoardXocDia.js > balanceChangeAmounts", balanceChangeAmounts);
+
         super.onBoardEnding(data);
+        this.renderer.stopDishShakeAnim();
+        setTimeout(() => {
+
+        }, 700);
     }
 
     _onGameBegin() {
