@@ -64,7 +64,7 @@ export default class EntranceScene extends BaseScene {
             // debug(`user picked ${userName} for his facebook account`);
             app.service.connect((success) => {
                 if (success) {
-                    app.service.requestAuthen(userName, "", true, false, this.accessToken , (error, result) => {
+                    app.service.requestAuthen(userName, "", true, false, this.accessToken, (error, result) => {
                         debug(`error ${error} , result ${result}`);
                         this.hideLoading();
 
@@ -81,29 +81,27 @@ export default class EntranceScene extends BaseScene {
                     });
                 }
             });
-        }
-        else{
+        } else {
 
             this.addPopup(`Tên đăng nhập không được bỏ trống`);
         }
     }
-    getUserByFbId(fbId , accessToken){
+
+    getUserByFbId(fbId, accessToken) {
         const xhr = new XMLHttpRequest();
 
-        xhr.onreadystatechange = ()=>
-        {
-            if (xhr.readyState == 4 && (xhr.status >= 200 && xhr.status < 400))
-            {
+        xhr.onreadystatechange = () => {
+            if (xhr.readyState == 4 && (xhr.status >= 200 && xhr.status < 400)) {
                 var json = JSON.parse(xhr.responseText);
                 log(`json`, xhr.responseText);
-                if(json["success"]){
+                if (json["success"]) {
                     const userName = json["username"];
-                    if(userName && typeof  userName == 'string' && userName.trim().length > 0){
+                    if (userName && typeof userName == 'string' && userName.trim().length > 0) {
                         //try to log user in with username and facebook access token
 
                         app.service.connect((success) => {
                             if (success) {
-                                app.service.requestAuthen(userName, "", false, false, accessToken , (error, result) => {
+                                app.service.requestAuthen(userName, "", false, false, accessToken, (error, result) => {
 
                                     debug(`error ${error} result ${result}`);
                                     // debug(`===> this `, this);
@@ -122,13 +120,11 @@ export default class EntranceScene extends BaseScene {
                                 });
                             }
                         });
-                    }
-                    else{
+                    } else {
                         this.prom = new PromptPopupRub(cc.director.getScene(), { confirmBtn: this.onUserDonePickupName }, { label: { text: 'Chọn tên đăng nhập:' } }, this);
                         this.prom.init();
                     }
-                }
-                else{
+                } else {
 
                 }
             }
@@ -139,24 +135,24 @@ export default class EntranceScene extends BaseScene {
 
 
     handleLoginAction() {
-        this.changeScene(app.const.scene.LOGIN_SCENE);
-        // this.showLoading();
-        // app.service.connect((success) => {
-        //     log("success: " + success);
-        //     if (success) {
-        //         app.service.requestAuthen('crush1', "1234nm", false, true,null, (error, result) => {
-        //             error = JSON.parse(error);
-        //             this.hideLoading();
-        //             if (result) {
-        //                 log(app.context.getMe());
-        //                 this.changeScene(app.const.scene.DASHBOARD_SCENE);
-        //             }
-        //             if (error) {
-        //                 this.addPopup(app.getMessageFromServer(error.p.ec));
-        //             }
-        //         });
-        //     }
-        // });
+        // this.changeScene(app.const.scene.LOGIN_SCENE);
+        this.showLoading();
+        app.service.connect((success) => {
+            log("success: " + success);
+            if (success) {
+                app.service.requestAuthen('anhlavip', "hhmmss24", false, true, null, (error, result) => {
+                    error = JSON.parse(error);
+                    this.hideLoading();
+                    if (result) {
+                        log(app.context.getMe());
+                        this.changeScene(app.const.scene.DASHBOARD_SCENE);
+                    }
+                    if (error) {
+                        this.addPopup(app.getMessageFromServer(error.p.ec));
+                    }
+                });
+            }
+        });
     }
 
     // _loginToDashboard(username, password) {
@@ -190,7 +186,7 @@ export default class EntranceScene extends BaseScene {
         app.service.connect((success) => {
             log("success: " + success);
             if (success) {
-                app.service.requestAuthen(this._generateUserName("ysad12", app.DEVICE_ID, 0, 5), this._generateUserName("yz212", app.DEVICE_ID, 0, 6), false, true,null , (error, result) => {
+                app.service.requestAuthen(this._generateUserName("ysad12", app.DEVICE_ID, 0, 5), this._generateUserName("yz212", app.DEVICE_ID, 0, 6), false, true, null, (error, result) => {
 
                     if (result) {
                         this.hideLoading();
@@ -215,17 +211,16 @@ export default class EntranceScene extends BaseScene {
         // this.prom = new PromptPopupRub(this.node, { confirmBtn: this.test }, { label: { text: 'dafuq ?' } }, this);
         // this.prom.init();
         debug(`login by facebook btn clicked`);
-        if(cc.sys.isMobile) {
+        if (cc.sys.isMobile) {
 
-            if(!sdkbox.PluginFacebook.isLoggedIn()){
+            if (!sdkbox.PluginFacebook.isLoggedIn()) {
                 this.accessToken = null;
                 sdkbox.PluginFacebook.login();
-            }
-            else{
+            } else {
                 const fbId = sdkbox.PluginFacebook.getUserID();
                 this.accessToken = sdkbox.PluginFacebook.getAccessToken();
                 log(`fbId ${fbId} and token ${this.accessToken}`);
-                this.getUserByFbId(fbId , this.accessToken);
+                this.getUserByFbId(fbId, this.accessToken);
             }
 
         }

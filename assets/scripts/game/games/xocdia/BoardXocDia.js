@@ -22,9 +22,7 @@ export default class BoardXocDia extends BoardCardBetTurn {
 
         this.scene.on(Events.ON_GAME_STATE_BEGIN, this._onGameBegin, this);
         this.scene.on(Events.ON_GAME_STATE, this._onGameState, this);
-        this.scene.on('xocdia.on.player.bet', this._onPlayerBet, this);
-        this.renderer.showElements();
-
+        this.scene.on(Events.XOCDIA_ON_BOARD_UPDATE_PREVIOUS_RESULT_HISTORY, this._onUpdateBoardResultHistory, this);
     }
 
     onDestroy() {
@@ -32,7 +30,7 @@ export default class BoardXocDia extends BoardCardBetTurn {
 
         this.scene.off(Events.ON_GAME_STATE_BEGIN, this._onGameBegin, this);
         this.scene.off(Events.ON_GAME_STATE, this._onGameState, this);
-        this.scene.off('xocdia.on.player.bet', this._onPlayerBet, this);
+        this.scene.off(Events.XOCDIA_ON_BOARD_UPDATE_PREVIOUS_RESULT_HISTORY, this._onUpdateBoardResultHistory, this);
     }
 
     _reset() {
@@ -42,13 +40,10 @@ export default class BoardXocDia extends BoardCardBetTurn {
         this.renderer.hideElements();
     }
 
-    _onPlayerBet(data) {
-        // console.debug('_onPlayerBet BoardXocDia', data);
-        // let { playerId, betsList, isSuccess, err } = data;
-
-        // XocDiaAnim.tossChip(myPos, toNode, chipInfo, (() => {
-        //     console.debug('scene', this.scene);
-        // }).bind(this));
+    _onUpdateBoardResultHistory(room) {
+        if (room.variables[app.keywords.VARIABLE_XOCDIA_HISTORY].value) {
+            // this.renderer.updateBoardResultHistory();
+        }
     }
 
     handleGameStateChange(boardState, data, isJustJoined) {
@@ -59,8 +54,6 @@ export default class BoardXocDia extends BoardCardBetTurn {
             this.scene.emit(Events.ON_GAME_STATE_STARTING);
             // todo anything
             this.renderer.showElements();
-        } else if (boardState === app.const.game.state.BOARD_STATE_SHAKE) {
-            this.renderer.runDishShakeAnim();
         }
 
         let duration = utils.getValue(data, app.keywords.BOARD_PHASE_DURATION);
@@ -89,6 +82,7 @@ export default class BoardXocDia extends BoardCardBetTurn {
         super._loadGamePlayData({...data, masterIdOwner: true });
     }
 
+    // state === app.const.game.state.ENDING
     onBoardEnding(data) {
         console.debug("onGameEnding BoardXocDia.js > data", data);
         let playerIds = utils.getValue(data, Keywords.GAME_LIST_PLAYER, []);
@@ -96,10 +90,18 @@ export default class BoardXocDia extends BoardCardBetTurn {
         console.debug("onGameEnding BoardXocDia.js > balanceChangeAmounts", balanceChangeAmounts);
 
         super.onBoardEnding(data);
-        this.renderer.stopDishShakeAnim();
-        setTimeout(() => {
 
-        }, 700);
+
+        this.renderer.stopDishShakeAnim();
+        let dots = data[app.keywords.XOCDIA_RESULT_END_PHASE];
+        if (dots && dots.length > 0) {
+            this.renderer.initDots(dots);
+            setTimeout(() => {
+                this.renderer.openBowlAnim();
+            }, 700);
+        }
+
+        this.scene.emit(Events.XOCDIA_ON_CONTROL_SAVE_PREVIOUS_BETDATA, data[app.keywords.XOCDIA_BET.AMOUNT], playerIds);
     }
 
     _onGameBegin() {

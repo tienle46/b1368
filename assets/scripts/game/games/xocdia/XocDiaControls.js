@@ -38,7 +38,7 @@ export default class XocDiaControls extends GameControls {
 
         this.isInReBetPhase = false;
         this.isInCancelPhase = false;
-
+        this.playerId = null; // used when get playerId from previous event
     }
 
     onEnable() {
@@ -59,8 +59,9 @@ export default class XocDiaControls extends GameControls {
 
         this.scene.on(Events.SHOW_GAME_BEGIN_CONTROLS, this._showGameBeginControls, this);
         this.scene.on(Events.HIDE_ALL_CONTROLS, this.hideAllControls, this);
-        this.scene.on('xocdia.on.player.tosschip', this._onPlayerTossChip, this);
-        this.scene.on('xocdia.on.player.cancel.bet.success', this._onPlayerCancelBetSuccess, this);
+        this.scene.on(Events.XOCDIA_ON_PLAYER_TOSSCHIP, this._onPlayerTossChip, this);
+        this.scene.on(Events.XOCDIA_ON_PLAYER_CANCEL_BET_SUCCESS, this._onPlayerCancelBetSuccess, this);
+        this.scene.on(Events.XOCDIA_ON_CONTROL_SAVE_PREVIOUS_BETDATA, this._onSavePreviousBetData, this);
     }
 
     onDestroy() {
@@ -77,8 +78,9 @@ export default class XocDiaControls extends GameControls {
         this.scene.off(Events.SHOW_GAME_BEGIN_CONTROLS, this._showGameBeginControls, this);
         this.scene.off(Events.HIDE_ALL_CONTROLS, this.hideAllControls, this);
 
-        this.scene.off('xocdia.on.player.tosschip', this._onPlayerTossChip, this);
-        this.scene.off('xocdia.on.player.cancel.bet.success', this._onPlayerCancelBetSuccess, this);
+        this.scene.off(Events.XOCDIA_ON_PLAYER_TOSSCHIP, this._onPlayerTossChip, this);
+        this.scene.off(Events.XOCDIA_ON_PLAYER_CANCEL_BET_SUCCESS, this._onPlayerCancelBetSuccess, this);
+        this.scene.off(Events.XOCDIA_ON_CONTROL_SAVE_PREVIOUS_BETDATA, this._onSavePreviousBetData, this);
     }
 
     _showGameControls() {
@@ -90,6 +92,25 @@ export default class XocDiaControls extends GameControls {
 
     updateUserGoldLbl(amount) {
         this.betOptionsGroup.updateUserGoldLbl(amount);
+    }
+
+    _onSavePreviousBetData(previousBetData, playerIds) {
+        let playerId = playerIds.find((id) => this.player === id);
+
+        if (playerId && previousBetData && previousBetData.length > 0) {
+            // dataObject : [<betType> : <gold amount>] -> [{1: 3},{2: 31}] 
+            let dataObject = previousBetData[playerId - 1]; // cuz we are only have a limit number playerID in a room
+            let dataArray = [];
+            for (let key in dataObject) {
+                // object : {b: <gold amount>, bo : <betType>}
+                let object = {};
+                object[app.keywords.XOCDIA_BET.AMOUNT] = dataObject[key];
+                object[app.keywords.XOCDIA_BET.TYPE] = key;
+                dataArray.push(object);
+            }
+
+            this.previousBetData = dataArray;
+        }
     }
 
     onBetBtnClick(event) {
@@ -128,7 +149,9 @@ export default class XocDiaControls extends GameControls {
     }
 
     _onPlayerTossChip(data) {
-        let { betsList, myPos, isItMe } = data;
+        let { betsList, myPos, isItMe, playerId } = data;
+        playerId && isItMe && (this.playerId = playerId);
+
         if (this.isInReBetPhase && betsList.length > 0) {
             betsList.forEach((list) => {
                 this._onTossChipAnim(list, myPos, isItMe);
@@ -183,8 +206,13 @@ export default class XocDiaControls extends GameControls {
     }
 
     onReBetBtnClick() {
-        this.isInReBetPhase = true;
-        this._sendBetRequest(this.previousBetData);
+        this.isInCancelPhase = false;
+        console.debug('WTF this.previousBetData', this.previousBetData);
+        if (this.previousBetData.length > 0) {
+            console.debug('CO CMNR', this.previousBetData);
+            this.isInReBetPhase = true;
+            this._sendBetRequest(this.previousBetData);
+        }
     }
 
     // // @type 1: Chẵn, 2: Lẻ, 3: 4 Đỏ, 4: 4 Đen, 5: 3 Đỏ 1 Đen, 6: 3 Đen 1 Đỏ
@@ -193,6 +221,8 @@ export default class XocDiaControls extends GameControls {
     // }
 
     onCancelBetBtnClick() {
+        this.isInReBetPhase = false;
+
         let [data] = [{}];
 
         let sendObject = {

@@ -646,6 +646,7 @@ Keywords.SYSTEM_MESSAGE = {
 };
 
 // Xoc dia bet
+Keywords.XOCDIA_RESULT_END_PHASE = "s";
 Keywords.XOCDIA_BET = {
     AMOUNT: "b",
     TYPE: "bo",
@@ -653,8 +654,6 @@ Keywords.XOCDIA_BET = {
         BET_LIST: "bl", // array {b: int, bo: int} 
         // b: AMOUNT
         // bo: BET_TYPE : 1: Chẵn, 2: Lẻ, 3: 4 Đỏ, 4: 4 Đen, 5: 3 Đỏ 1 Đen, 6: 3 Đen 1 Đỏ
-        AMOUNT: "b",
-        TYPE: "bo",
     },
     RESPONSE: {
         BET_LIST: "bl",
@@ -664,7 +663,6 @@ Keywords.XOCDIA_BET = {
         ERROR_MSG: "errMsg"
     }
 };
-
 Keywords.XOCDIA_CANCEL_BET = {
     RESPONSE: {
         PLAYER: "p", // id user

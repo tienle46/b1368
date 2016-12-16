@@ -6,7 +6,7 @@ export default {
         let toNodeSize = toNode.getContentSize();
         let toNodePos = toNode.getPosition();
         let amount = chipInfo.amount;
-        let randomRange = amount > 30 ? 30 : amount;
+        let randomRange = amount > 15 ? 15 : amount;
 
         // tosschip animation
         new Array(app._.random(Math.ceil(randomRange / 2), randomRange)).fill(0).map(() => {

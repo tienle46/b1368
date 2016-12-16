@@ -1,5 +1,6 @@
 import app from 'app';
 import Component from 'Component';
+import NodeRub from 'NodeRub';
 
 class BowlDishControl extends Component {
     constructor() {
@@ -15,12 +16,20 @@ class BowlDishControl extends Component {
             type: cc.Node
         };
 
-
+        this.circleGroup = {
+            default: null,
+            type: cc.Node
+        };
     }
 
     onLoad() {
         this.bowlPos = this.bowlNode.getPosition();
         this.wrapper.zIndex = 9999;
+    }
+
+    resetBowlPosition() {
+        this.bowlNode.setPosition(this.bowlPos);
+        this.circleGroup.removeAllChildren();
     }
 
     dishShaker() {
@@ -51,6 +60,43 @@ class BowlDishControl extends Component {
         this.bowlNode.runAction(cc.sequence(action), cc.callFunc(() => {
             this.bowlPos = bowlPos;
         }));
+    }
+
+    initDotsArray(dots = []) {
+        // 0: red, 1: black
+        let colors = ['game/images/xocdia/ingame-xocdia-red', 'game/images/xocdia/ingame-xocdia-black'];
+
+        /**
+         *              ^
+         * IV(-1, 1)    | +1        I(1;1)
+         *  -1          |         +1
+         * <-|----------0----------|->
+         *              | 
+         * III(-1, -1)  | -1        II(1, -1)
+         *              v
+         */
+        let randomPosInRange = [{ x: 1, y: 1 }, { x: 1, y: -1 }, { x: -1, y: -1 }, { x: -1, y: 1 }];
+        let acceptedArea = this.circleGroup.getContentSize();
+        let random = app._.random;
+        let size = cc.size(18, 18);
+
+        dots.forEach((dot, i) => {
+            let posX = random(random(0, 1 / 2), randomPosInRange[i].x * (acceptedArea.width - size.width) / 2);
+            let posY = random(random(0, 1 / 2), randomPosInRange[i].y * (acceptedArea.height - size.height) / 2);
+            let nodeOptions = {
+                size: size,
+                position: cc.v2(posX, posY),
+                name: 'dot',
+                sprite: {
+                    spriteFrame: colors[dot],
+                    type: cc.Sprite.Type.SLICE,
+                    sizeMode: cc.Sprite.SizeMode.CUSTOM,
+                }
+            };
+
+            let node = NodeRub.createNodeByOptions(nodeOptions);
+            this.circleGroup.addChild(node);
+        });
     }
 }
 

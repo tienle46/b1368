@@ -40,8 +40,8 @@ export default class PlayerXocDia extends PlayerCardBetTurn {
         this.scene.on(Events.ON_PLAYER_BACAY_CHANGE_BET, this._onPlayerChangeBet, this);
         this.scene.on(Events.HANDLE_PLAYER_CUOC_BIEN, this._onPlayerCuocBien, this);
         this.scene.on(Events.HANDLE_PLAYER_ACCEPT_CUOC_BIEN, this._onPlayerAcceptCuocBien, this);
-        this.scene.on('xocdia.on.player.bet', this._onPlayerBet, this);
-        this.scene.on('xocdia.on.player.cancelBet', this._onPlayerCancelBet, this);
+        this.scene.on(Events.XOCDIA_ON_PLAYER_BET, this._onPlayerBet, this);
+        this.scene.on(Events.XOCDIA_ON_PLAYER_CANCELBET, this._onPlayerCancelBet, this);
     }
 
     _removeGlobalListener() {
@@ -56,8 +56,8 @@ export default class PlayerXocDia extends PlayerCardBetTurn {
         this.scene.off(Events.ON_PLAYER_BACAY_CHANGE_BET, this._onPlayerChangeBet, this);
         this.scene.off(Events.HANDLE_PLAYER_CUOC_BIEN, this._onPlayerCuocBien, this);
         this.scene.off(Events.HANDLE_PLAYER_ACCEPT_CUOC_BIEN, this._onPlayerAcceptCuocBien, this);
-        this.scene.off('xocdia.on.player.bet', this._onPlayerBet, this);
-        this.scene.off('xocdia.on.player.cancelBet', this._onPlayerCancelBet, this);
+        this.scene.off(Events.XOCDIA_ON_PLAYER_BET, this._onPlayerBet, this);
+        this.scene.off(Events.XOCDIA_ON_PLAYER_CANCELBET, this._onPlayerCancelBet, this);
     }
 
     onLoad() {
@@ -190,7 +190,7 @@ export default class PlayerXocDia extends PlayerCardBetTurn {
             let myPos = this.scene.gamePlayers.playerPositions.getPlayerAnchorByPlayerId(playerId, isItMe);
             let node = this.node.parent ? this.node.parent : this.node;
             myPos = node.convertToWorldSpaceAR(myPos);
-            this.scene.emit('xocdia.on.player.tosschip', { myPos, betsList, isItMe });
+            this.scene.emit(Events.XOCDIA_ON_PLAYER_TOSSCHIP, { myPos, betsList, isItMe, playerId });
         } else {
             console.error('PlayerXocDia.js > _onPlayerBet', err);
         }
@@ -205,7 +205,7 @@ export default class PlayerXocDia extends PlayerCardBetTurn {
             let myPos = this.scene.gamePlayers.playerPositions.getPlayerAnchorByPlayerId(playerId, isItMe);
             let isItMe = this.scene.gamePlayers.isItMe(playerId);
 
-            this.scene.emit('xocdia.on.player.cancel.bet.success', { myPos, isItMe, betsList });
+            this.scene.emit(Events.XOCDIA_ON_PLAYER_CANCEL_BET_SUCCESS, { myPos, isItMe, betsList });
             this.betData = [];
         } else {
             console.error('PlayerXocDia.js > _onPlayerCancelBet', err);

@@ -22,11 +22,15 @@ export default class BoardXocDiaRenderer extends BoardRenderer {
     }
 
     hideElements() {
+        this.bowlDishControl.resetBowlPosition();
+
         utils.deactive(this.dishContainerNode);
         utils.deactive(this.statisticTableNode);
     }
 
     showElements() {
+        this.bowlDishControl.resetBowlPosition();
+
         utils.active(this.dishContainerNode);
         utils.active(this.statisticTableNode);
     }
@@ -41,6 +45,14 @@ export default class BoardXocDiaRenderer extends BoardRenderer {
 
     openBowlAnim() {
         this.bowlDishControl.openBowlAnim();
+    }
+
+    initDots(dots = []) {
+        this.bowlDishControl.initDotsArray(dots);
+    }
+
+    updateBoardResultHistory(results) {
+        // this.
     }
 }
 

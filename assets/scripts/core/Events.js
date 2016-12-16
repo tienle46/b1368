@@ -111,5 +111,8 @@ Events.SET_INTERACTABLE_EAT_CONTROL = "set.interactableEatControl";
 Events.ADD_BET_TO_MASTER = "add.betToMaster";
 
 Events.XOCDIA_ON_BOARD_UPDATE_PREVIOUS_RESULT_HISTORY = "xocdia.on.board.update.previous.result.history";
+Events.XOCDIA_ON_CONTROL_SAVE_PREVIOUS_BETDATA = "xocdia.on.control.save.previous.betData";
 Events.XOCDIA_ON_PLAYER_CANCELBET = "xocdia.on.player.cancelBet";
 Events.XOCDIA_ON_PLAYER_BET = "xocdia.on.player.bet";
+Events.XOCDIA_ON_PLAYER_TOSSCHIP = "xocdia.on.player.tosschip";
+Events.XOCDIA_ON_PLAYER_CANCEL_BET_SUCCESS = "xocdia.on.player.cancel.bet.success";
