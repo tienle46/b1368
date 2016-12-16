@@ -131,7 +131,7 @@ export default class XocDiaControls extends GameControls {
         this._sendBetRequest(bet);
     }
 
-    _sendBetRequest(bet) {
+    _sendBetRequest(bet, isReplace) {
         let data = {};
         if (utils.isArray(bet)) {
             this.betData = bet;
@@ -145,6 +145,8 @@ export default class XocDiaControls extends GameControls {
             data,
             room: this.scene.room
         };
+        isReplace && (sendObject.replace = true);
+
         app.service.send(sendObject);
     }
 
@@ -211,7 +213,7 @@ export default class XocDiaControls extends GameControls {
         if (this.previousBetData.length > 0) {
             console.debug('CO CMNR', this.previousBetData);
             this.isInReBetPhase = true;
-            this._sendBetRequest(this.previousBetData);
+            this._sendBetRequest(this.previousBetData, true);
         }
     }
 
