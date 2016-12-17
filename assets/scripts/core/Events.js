@@ -116,3 +116,5 @@ Events.XOCDIA_ON_PLAYER_CANCELBET = "xocdia.on.player.cancelBet";
 Events.XOCDIA_ON_PLAYER_BET = "xocdia.on.player.bet";
 Events.XOCDIA_ON_PLAYER_TOSSCHIP = "xocdia.on.player.tosschip";
 Events.XOCDIA_ON_PLAYER_CANCEL_BET_SUCCESS = "xocdia.on.player.cancel.bet.success";
+Events.XOCDIA_ON_PLAYER_GET_CHIP = "xocdia.on.player.get.chip";
+Events.XOCDIA_ON_PLAYER_GET_CHIP_SUCCESS = "xocdia.on.player.get.chip.success";

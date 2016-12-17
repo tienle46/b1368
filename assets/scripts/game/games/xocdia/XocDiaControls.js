@@ -271,8 +271,7 @@ export default class XocDiaControls extends GameControls {
 
         this._resetBoardControlBtns();
         this._resetBetData();
-        this.hideAllControls();
-
+        // this.hideAllControls();
     }
 
     hideAllControls() {

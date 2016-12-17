@@ -19,6 +19,7 @@ export default class BoardXocDiaRenderer extends BoardRenderer {
         this.dishContainerNode.zIndex = 999;
 
         this.bowlDishControl = this.dishContainerNode.getComponent('BowlDishControl');
+        this.statisticTable = this.statisticTableNode.getComponent('StatisticTable');
     }
 
     hideElements() {
@@ -52,7 +53,7 @@ export default class BoardXocDiaRenderer extends BoardRenderer {
     }
 
     updateBoardResultHistory(results) {
-        // this.
+        this.statisticTable.updateSeparateTable(results);
     }
 }
 

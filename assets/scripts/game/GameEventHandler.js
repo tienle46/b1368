@@ -207,7 +207,6 @@ export default class GameEventHandler {
     _onRoomVariablesUpdate(event) {
         let changedVars = event.changedVars;
         let room = event.room;
-        console.debug('_onRoomVariablesUpdate GameEventHandler.js > event', event);
         changedVars && changedVars.forEach((varName) => {
 
             if (varName == Keywords.VARIABLE_OWNER) {
@@ -219,9 +218,7 @@ export default class GameEventHandler {
             }
 
             if (varName == Keywords.VARIABLE_XOCDIA_HISTORY) {
-                console.debug('_onRoomVariablesUpdate GameEventHandler.js > varName', varName);
-                console.debug('_onRoomVariablesUpdate GameEventHandler.js > shakeHistory > room', varName);
-                this.scene.emit(Events.XOCDIA_ON_BOARD_UPDATE_PREVIOUS_RESULT_HISTORY, room);
+                this.scene.emit(Events.XOCDIA_ON_BOARD_UPDATE_PREVIOUS_RESULT_HISTORY, room.variables[varName].value);
             }
         });
     }

@@ -63,6 +63,7 @@ class BowlDishControl extends Component {
     }
 
     initDotsArray(dots = []) {
+        console.debug('initDotsArray', dots);
         // 0: red, 1: black
         let colors = ['game/images/xocdia/ingame-xocdia-red', 'game/images/xocdia/ingame-xocdia-black'];
 

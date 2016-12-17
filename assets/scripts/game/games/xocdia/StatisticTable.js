@@ -31,23 +31,27 @@ class StatisticTable extends Component {
 
     }
 
-    updateSeparateTable(cells) {
+    updateSeparateTable(histories) {
         //only update newest 32 cells
         let numberCellsInTable = 32;
-        let newDatas = cells.reverse().slice(0, numberCellsInTable + 1).reverse();
+        if (histories.length > numberCellsInTable)
+            histories = histories.slice(0, numberCellsInTable + 1);
 
-        newDatas.forEach((data) => {
+        //clear table
+        this.separateSideNode.removeAllChildren();
+
+        histories.forEach((data) => {
             let cell = this.addChildToSeparateSide(data);
 
             this.separateSideNode.addChild(cell);
         });
 
         //0: even, 1: odd
-        let evens = newDatas.filter((type) => type === 0).length;
-        let odds = newDatas.filter((type) => type === 0).length;
+        let evens = histories.filter((type) => type === 0).length;
+        let odds = histories.filter((type) => type === 1).length;
 
-        this.oddLbl.string = evens;
-        this.evenLbl.string = odds;
+        this.evenLbl.string = evens;
+        this.oddLbl.string = odds;
     }
 
     // @param type:  0: even, 1: odd
@@ -56,6 +60,8 @@ class StatisticTable extends Component {
         let colors = ['game/images/xocdia/ingame-xocdia-red', 'game/images/xocdia/ingame-xocdia-black'];
 
         let cell = cc.instantiate(this.cellNode);
+        cell.active = true;
+
         let sprite = {
             spriteFrame: colors[type],
             type: cc.Sprite.Type.SLICE,
@@ -67,3 +73,5 @@ class StatisticTable extends Component {
         return cell;
     }
 }
+
+app.createComponent(StatisticTable);

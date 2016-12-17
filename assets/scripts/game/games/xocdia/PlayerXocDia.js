@@ -42,6 +42,7 @@ export default class PlayerXocDia extends PlayerCardBetTurn {
         this.scene.on(Events.HANDLE_PLAYER_ACCEPT_CUOC_BIEN, this._onPlayerAcceptCuocBien, this);
         this.scene.on(Events.XOCDIA_ON_PLAYER_BET, this._onPlayerBet, this);
         this.scene.on(Events.XOCDIA_ON_PLAYER_CANCELBET, this._onPlayerCancelBet, this);
+        this.scene.on(Events.XOCDIA_ON_PLAYER_GET_CHIP, this._onPlayerGetChip, this);
     }
 
     _removeGlobalListener() {
@@ -58,6 +59,7 @@ export default class PlayerXocDia extends PlayerCardBetTurn {
         this.scene.off(Events.HANDLE_PLAYER_ACCEPT_CUOC_BIEN, this._onPlayerAcceptCuocBien, this);
         this.scene.off(Events.XOCDIA_ON_PLAYER_BET, this._onPlayerBet, this);
         this.scene.off(Events.XOCDIA_ON_PLAYER_CANCELBET, this._onPlayerCancelBet, this);
+        this.scene.off(Events.XOCDIA_ON_PLAYER_GET_CHIP, this._onPlayerGetChip, this);
     }
 
     onLoad() {
@@ -70,6 +72,16 @@ export default class PlayerXocDia extends PlayerCardBetTurn {
 
     onEnable() {
         super.onEnable(this.getComponent('PlayerXocDiaRenderer'));
+    }
+
+    _onPlayerGetChip(data) {
+        let { playingPlayerIds, bets, playerResults } = data;
+        let winner = playerResults.find(result => result === 1);
+        if (winner) {
+            let playerWinerIndex = playerResults.findIndex(result => result === 1);
+            let playerId = playingPlayerIds.find(id => id === this.id);
+            if (playerId) {}
+        }
     }
 
     _onGameRejoin(data) {

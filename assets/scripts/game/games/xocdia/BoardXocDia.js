@@ -40,10 +40,9 @@ export default class BoardXocDia extends BoardCardBetTurn {
         this.renderer.hideElements();
     }
 
-    _onUpdateBoardResultHistory(room) {
-        if (room.variables[app.keywords.VARIABLE_XOCDIA_HISTORY].value) {
-            // this.renderer.updateBoardResultHistory();
-        }
+    _onUpdateBoardResultHistory(histories) {
+        console.debug('_onUpdateBoardResultHistory histories', histories)
+        histories && this.renderer.updateBoardResultHistory(histories);
     }
 
     handleGameStateChange(boardState, data, isJustJoined) {
@@ -86,14 +85,17 @@ export default class BoardXocDia extends BoardCardBetTurn {
     onBoardEnding(data) {
         console.debug("onGameEnding BoardXocDia.js > data", data);
         let playerIds = utils.getValue(data, Keywords.GAME_LIST_PLAYER, []);
+        let bets = utils.getValue(data, Keywords.XOCDIA_BET.AMOUNT, []);
+        let playingPlayerIds = this.scene.gamePlayers.filterPlayingPlayer(playerIds);
         let balanceChangeAmounts = this._getPlayerBalanceChangeAmounts(playerIds, data);
+        let playerResults = utils.getValue(data, Keywords.WIN, []);
+
         console.debug("onGameEnding BoardXocDia.js > balanceChangeAmounts", balanceChangeAmounts);
 
         super.onBoardEnding(data);
 
-
         this.renderer.stopDishShakeAnim();
-        let dots = data[app.keywords.XOCDIA_RESULT_END_PHASE];
+        let dots = utils.getValue(data, Keywords.XOCDIA_RESULT_END_PHASE);
         if (dots && dots.length > 0) {
             this.renderer.initDots(dots);
             setTimeout(() => {
@@ -101,12 +103,18 @@ export default class BoardXocDia extends BoardCardBetTurn {
             }, 700);
         }
 
-        this.scene.emit(Events.XOCDIA_ON_CONTROL_SAVE_PREVIOUS_BETDATA, data[app.keywords.XOCDIA_BET.AMOUNT], playerIds);
+        this.scene.emit(Events.XOCDIA_ON_CONTROL_SAVE_PREVIOUS_BETDATA, bets, playerIds);
+        this.scene.emit(Events.XOCDIA_ON_PLAYER_GET_CHIP, { playingPlayerIds, bets, playerResults });
     }
 
     _onGameBegin() {
         // hiding all bets and table on game board
         this.renderer.hideElements();
+        // check if room has history, preload data
+        if (this.room.variables[Keywords.VARIABLE_XOCDIA_HISTORY]) {
+            let histories = this.room.variables[Keywords.VARIABLE_XOCDIA_HISTORY].value;
+            histories && this.renderer.updateBoardResultHistory(histories);
+        }
     }
 
 }
