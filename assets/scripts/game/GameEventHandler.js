@@ -109,7 +109,6 @@ export default class GameEventHandler {
         app.system.removeGameListener(Commands.PLAYER_DOWN_CARD, this._onPlayerDownCard, this);
         app.system.removeGameListener(Commands.PLAYER_HELP_CARD, this._onPlayerHelpCard, this);
         app.system.removeGameListener(Commands.PLAYER_BET, this._onPlayerBet, this);
-        app.system.removeGameListener(Commands.PLAYER_BET, this._onPlayerBet, this);
         app.system.removeGameListener(Commands.BACAY_PLAYER_GA_HUC, this._onPlayerGaHuc, this);
         app.system.removeGameListener(Commands.BACAY_PLAYER_HUC_ACCEPTED, this._onPlayerHucAccepted, this);
 
@@ -131,7 +130,8 @@ export default class GameEventHandler {
         let betsList = utils.getValue(data, app.keywords.XOCDIA_BET.RESPONSE.BET_LIST);
         let isSuccess = utils.getValue(data, app.keywords.XOCDIA_BET.RESPONSE.IS_SUCCESS);
         let err = utils.getValue(data, app.keywords.XOCDIA_BET.RESPONSE.ERROR_MSG);
-        let d = { playerId, betsList, isSuccess, err };
+        let isReplace = utils.getValue(data, app.keywords.XOCDIA_BET.RESPONSE.IS_REPLACE);
+        let d = { playerId, betsList, isSuccess, err, isReplace };
         playerId && this.scene.emit(Events.XOCDIA_ON_PLAYER_BET, d);
     }
 

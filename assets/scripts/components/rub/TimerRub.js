@@ -6,6 +6,7 @@
  *   alert("Done!");
  * }, 5000);
  * 
+ * or:
  * setTimeout(() => {
  *      // after 2s pause the timer
  *      timer.pause(); 

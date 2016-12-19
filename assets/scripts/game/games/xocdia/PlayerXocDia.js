@@ -7,13 +7,12 @@ import BaCayUtils from 'BaCayUtils';
 import CardList from 'CardList';
 import PlayerCardBetTurn from 'PlayerCardBetTurn';
 import utils from "../../../utils/Utils";
-import XocDiaAnim from 'XocDiaAnim';
 
 export default class PlayerXocDia extends PlayerCardBetTurn {
 
     static get DEFAULT_HAND_CARD_COUNT() {
-        return 3
-    };
+        return 3;
+    }
 
     constructor(board, user) {
         super(board, user);
@@ -25,41 +24,25 @@ export default class PlayerXocDia extends PlayerCardBetTurn {
         this.pendingBiCuocBiens = null;
         this.currentCuocBien = 0;
 
-        this.betData = [];
+        this.betData = []; // used to save currently in-phase-betted data of this user, because client's connection will be occured while betting, it is more neccessary when save betData on its event emitter `XOCDIA_ON_PLAYER_BET`;
     }
 
     _addGlobalListener() {
         super._addGlobalListener();
 
-        this.scene.on(Events.ON_CLICK_DOWN_BUTTON, this._onPlayerDownCard, this);
-        this.scene.on(Events.ON_CLICK_REVEAL_BUTTON, this._onPlayerRevealCard, this);
-        this.scene.on(Events.HANDLE_PLAYER_BET, this._handlePlayerBet, this);
-        this.scene.on(Events.HANDLE_PLAYER_DOWN_CARD, this._handlePlayerDown, this);
         this.scene.on(Events.ON_GAME_STATE, this._onGameState, this);
-        this.scene.on(Events.ADD_BET_TO_MASTER, this._onAddBetToMaster, this);
-        this.scene.on(Events.ON_PLAYER_BACAY_CHANGE_BET, this._onPlayerChangeBet, this);
-        this.scene.on(Events.HANDLE_PLAYER_CUOC_BIEN, this._onPlayerCuocBien, this);
-        this.scene.on(Events.HANDLE_PLAYER_ACCEPT_CUOC_BIEN, this._onPlayerAcceptCuocBien, this);
         this.scene.on(Events.XOCDIA_ON_PLAYER_BET, this._onPlayerBet, this);
         this.scene.on(Events.XOCDIA_ON_PLAYER_CANCELBET, this._onPlayerCancelBet, this);
-        this.scene.on(Events.XOCDIA_ON_PLAYER_GET_CHIP, this._onPlayerGetChip, this);
+        this.scene.on(Events.XOCDIA_ON_DISTRIBUTE_CHIP, this._onDistributeChip, this);
     }
 
     _removeGlobalListener() {
         super._removeGlobalListener();
 
-        this.scene.off(Events.ON_CLICK_DOWN_BUTTON, this._onPlayerDownCard, this);
-        this.scene.off(Events.ON_CLICK_REVEAL_BUTTON, this._onPlayerRevealCard, this);
-        this.scene.off(Events.HANDLE_PLAYER_BET, this._handlePlayerBet, this);
-        this.scene.off(Events.HANDLE_PLAYER_DOWN_CARD, this._handlePlayerDown, this);
         this.scene.off(Events.ON_GAME_STATE, this._onGameState, this);
-        this.scene.off(Events.ADD_BET_TO_MASTER, this._onAddBetToMaster, this);
-        this.scene.off(Events.ON_PLAYER_BACAY_CHANGE_BET, this._onPlayerChangeBet, this);
-        this.scene.off(Events.HANDLE_PLAYER_CUOC_BIEN, this._onPlayerCuocBien, this);
-        this.scene.off(Events.HANDLE_PLAYER_ACCEPT_CUOC_BIEN, this._onPlayerAcceptCuocBien, this);
         this.scene.off(Events.XOCDIA_ON_PLAYER_BET, this._onPlayerBet, this);
         this.scene.off(Events.XOCDIA_ON_PLAYER_CANCELBET, this._onPlayerCancelBet, this);
-        this.scene.off(Events.XOCDIA_ON_PLAYER_GET_CHIP, this._onPlayerGetChip, this);
+        this.scene.off(Events.XOCDIA_ON_DISTRIBUTE_CHIP, this._onDistributeChip, this);
     }
 
     onLoad() {
@@ -74,15 +57,30 @@ export default class PlayerXocDia extends PlayerCardBetTurn {
         super.onEnable(this.getComponent('PlayerXocDiaRenderer'));
     }
 
-    _onPlayerGetChip(data) {
-        let { playingPlayerIds, bets, playerResults } = data;
+    _onDistributeChip(data) {
+        let { playingPlayerIds, bets, playerResults, dots } = data;
         let winner = playerResults.find(result => result === 1);
+
         if (winner) {
             let playerWinerIndex = playerResults.findIndex(result => result === 1);
-            let playerId = playingPlayerIds.find(id => id === this.id);
-            if (playerId) {}
+            let playerId = playingPlayerIds[playerWinerIndex];
+            if (!playerId || playerId != this.id)
+                return;
+            // remove it for other user
+            playerResults[playerWinerIndex] = undefined;
+
+            let { myPos } = this._getPosBasedOnWorldSpace(playerId);
+            let userPos = myPos;
+            let previousDataTypes = bets[playerWinerIndex];
+
+            // user will be get chip after dealer got it
+            setTimeout(() => {
+                this.scene.emit(Events.XOCDIA_ON_PLAYER_RECEIVE_CHIP_ANIMATION, { userPos, previousDataTypes, dots });
+            }, 500);
         }
+        return;
     }
+
 
     _onGameRejoin(data) {
         super._onGameRejoin(data);
@@ -91,62 +89,62 @@ export default class PlayerXocDia extends PlayerCardBetTurn {
         //     this.setCards(cards, false);
         // }
 
-        if (data && data.hasOwnProperty(app.keywords.BACAY_BI_HUC_PLAYER_ID)) {
-            // danh sach bi huc chua nhung thang huc minh
-            let biHucPlayerId = utils.getValue(app.keywords.BACAY_BI_HUC_PLAYER_ID);
-            let gaHucPlayerId = utils.getValue(app.keywords.BACAY_GA_HUC_PLAYER_LIST);
-            let hucAmount = utils.getValue(app.keywords.BACAY_HUC_VALUE);
+        // if (data && data.hasOwnProperty(app.keywords.BACAY_BI_HUC_PLAYER_ID)) {
+        //     // danh sach bi huc chua nhung thang huc minh
+        //     let biHucPlayerId = utils.getValue(app.keywords.BACAY_BI_HUC_PLAYER_ID);
+        //     let gaHucPlayerId = utils.getValue(app.keywords.BACAY_GA_HUC_PLAYER_LIST);
+        //     let hucAmount = utils.getValue(app.keywords.BACAY_HUC_VALUE);
 
-            for (let i = 0; i < biHucPlayerId.length; i++) {
-                let biHucPlayer = this.scene.gamePlayers.findPlayer(biHucPlayerId[i]);
-                let gaHucPlayer = this.scene.gamePlayers.findPlayer(gaHucPlayerId[i]);
-                if (biHucPlayer == null || gaHucPlayer == null) {
-                    continue;
-                }
+        //     for (let i = 0; i < biHucPlayerId.length; i++) {
+        //         let biHucPlayer = this.scene.gamePlayers.findPlayer(biHucPlayerId[i]);
+        //         let gaHucPlayer = this.scene.gamePlayers.findPlayer(gaHucPlayerId[i]);
+        //         if (biHucPlayer == null || gaHucPlayer == null) {
+        //             continue;
+        //         }
 
-                let hucValue = hucAmount[i];
+        //         let hucValue = hucAmount[i];
 
-                if (this.equals(gaHucPlayer)) {
-                    if (hucValue > 0) {
-                        // minh di ga huc thang khac
-                        this.hucList[biHucPlayer.user.name] = hucValue;
+        //         if (this.equals(gaHucPlayer)) {
+        //             if (hucValue > 0) {
+        //                 // minh di ga huc thang khac
+        //                 this.hucList[biHucPlayer.user.name] = hucValue;
 
-                        biHucPlayer._updateCuocBienValue(hucValue);
-                        gaHucPlayer._updateCuocBienValue(hucValue);
-                    } else {
-                        this.pendingCuocBiens[biHucPlayer.user.name] = -1 * hucValue;
-                    }
-                } else if (this.equals(biHucPlayer)) {
-                    // thang khac ga huc minh
-                    this.biHucList[gaHucPlayer.user.name] = hucValue;
+        //                 biHucPlayer._updateCuocBienValue(hucValue);
+        //                 gaHucPlayer._updateCuocBienValue(hucValue);
+        //             } else {
+        //                 this.pendingCuocBiens[biHucPlayer.user.name] = -1 * hucValue;
+        //             }
+        //         } else if (this.equals(biHucPlayer)) {
+        //             // thang khac ga huc minh
+        //             this.biHucList[gaHucPlayer.user.name] = hucValue;
 
-                    biHucPlayer._updateCuocBienValue(hucValue);
-                    gaHucPlayer._updateCuocBienValue(hucValue);
-                }
-            }
-        }
+        //             biHucPlayer._updateCuocBienValue(hucValue);
+        //             gaHucPlayer._updateCuocBienValue(hucValue);
+        //         }
+        //     }
+        // }
 
     }
 
     _onGameState(state, data, isJustJoined) {
-        if (state == app.const.game.state.STATE_BET) {
-            this._onGameStateBet();
-            !this.isItMe() && this.scene.gamePlayers.isMePlaying() && this.renderer.showCuocBienBtn();
-        } else {
-            this.renderer.showCuocBienBtn(false);
-            this.scene.hideChooseBetSlider();
-        }
+        // if (state == app.const.game.state.STATE_BET) {
+        //     this._onGameStateBet();
+        //     !this.isItMe() && this.scene.gamePlayers.isMePlaying() && this.renderer.showCuocBienBtn();
+        // } else {
+        //     this.renderer.showCuocBienBtn(false);
+        //     this.scene.hideChooseBetSlider();
+        // }
 
-        if (!this.isItMe() || !this.isPlaying() || !this.scene.gamePlayers.isMePlaying()) return;
+        // if (!this.isItMe() || !this.isPlaying() || !this.scene.gamePlayers.isMePlaying()) return;
 
-        if (state == app.const.game.state.STATE_BET) {
-            if (!this.isMaster) {
-                this.scene.emit(Events.SHOW_BACAY_BET_CONTROLS);
-                this.scene.showChooseBetSlider(this.betAmount);
-            }
-        } else if (state == app.const.game.state.STATE_DOWN) {
-            this.scene.emit(Events.SHOW_DOWN_CARD_CONTROLS);
-        }
+        // if (state == app.const.game.state.STATE_BET) {
+        //     if (!this.isMaster) {
+        //         this.scene.emit(Events.SHOW_BACAY_BET_CONTROLS);
+        //         this.scene.showChooseBetSlider(this.betAmount);
+        //     }
+        // } else if (state == app.const.game.state.STATE_DOWN) {
+        //     this.scene.emit(Events.SHOW_DOWN_CARD_CONTROLS);
+        // }
     }
 
     _onGameStateBet() {
@@ -166,11 +164,11 @@ export default class PlayerXocDia extends PlayerCardBetTurn {
         // this.renderer.hideCuocBienValue();
     }
 
-    _onGameMasterChanged(playerId, player) {
-        if (this.id != playerId || !this.scene.isEnding()) return;
+    // _onGameMasterChanged(playerId, player) {
+    //     if (this.id != playerId || !this.scene.isEnding()) return;
 
-        this.showChangeMasterAnimation()
-    }
+    //     this.showChangeMasterAnimation()
+    // }
 
     onGameEnding() {
         super.onGameEnding();
@@ -178,35 +176,30 @@ export default class PlayerXocDia extends PlayerCardBetTurn {
         this.renderer.stopAllAnimation();
     }
 
-    _handlePlayerDown(playerId, data) {
-        if (this.id != playerId) return;
-        let message = BaCayUtils.createPlayerHandCardInfo([...this.renderer.cardList.cards]);
-
-        this.renderer.showAction(message);
-        this.renderer.revealAllCards();
-
-        if (this.isItMe()) {
-            this.scene.emit(Events.SHOW_DOWN_CARD_CONTROLS, false);
-        }
-    }
 
     _onPlayerBet(data) {
         // if (!this.isItMe() || !this.board.scene.gamePlayers.master) return;
         if (data.playerId != this.id) return;
 
-        let { playerId, betsList, isSuccess, err } = data;
+        let { playerId, betsList, isSuccess, err, isReplace } = data;
         this.betData = betsList;
 
         if (isSuccess) {
-            let isItMe = this.scene.gamePlayers.isItMe(playerId);
-            let myPos = this.scene.gamePlayers.playerPositions.getPlayerAnchorByPlayerId(playerId, isItMe);
-            let node = this.node.parent ? this.node.parent : this.node;
-            myPos = node.convertToWorldSpaceAR(myPos);
-            this.scene.emit(Events.XOCDIA_ON_PLAYER_TOSSCHIP, { myPos, betsList, isItMe, playerId });
+            let { myPos, isItMe } = this._getPosBasedOnWorldSpace(playerId);
+            this.scene.emit(Events.XOCDIA_ON_PLAYER_TOSSCHIP_ANIMATION, { myPos, betsList, isItMe, playerId, isReplace });
         } else {
             console.error('PlayerXocDia.js > _onPlayerBet', err);
         }
 
+    }
+
+    _getPosBasedOnWorldSpace(playerId) {
+        let isItMe = this.scene.gamePlayers.isItMe(playerId);
+        let myPos = this.scene.gamePlayers.playerPositions.getPlayerAnchorByPlayerId(playerId, isItMe);
+        let node = this.node.parent ? this.node.parent : this.node;
+        myPos = node.convertToWorldSpaceAR(myPos);
+
+        return { myPos, isItMe };
     }
 
     _onPlayerCancelBet(data) {

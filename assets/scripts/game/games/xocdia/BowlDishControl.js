@@ -24,6 +24,7 @@ class BowlDishControl extends Component {
 
     onLoad() {
         this.bowlPos = this.bowlNode.getPosition();
+        this.wrapPos = this.wrapper.getPosition();
         this.wrapper.zIndex = 9999;
     }
 
@@ -47,10 +48,13 @@ class BowlDishControl extends Component {
     }
 
     stopDishShaker() {
-        let startPos = this.wrapper.getPosition();
+        let startPos = this.wrapPos;
         this.wrapper.stopAllActions();
         let actions = [cc.fadeOut(0.1).clone(), cc.moveTo(0.1, startPos).clone(), cc.scaleTo(0.2, 1), cc.fadeIn(0.1).clone()];
-        let sequence = cc.sequence(actions);
+        let sequence = cc.sequence(actions, cc.callFunc(() => {
+            this.wrapper.setPosition(startPos);
+            this.wrapPos = startPos;
+        }));
         this.wrapper.runAction(sequence);
     }
 

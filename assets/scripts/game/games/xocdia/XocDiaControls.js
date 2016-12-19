@@ -7,7 +7,6 @@ import app from 'app';
 import Events from 'Events';
 import GameControls from 'GameControls';
 import BaseControls from 'BaseControls';
-import Keywords from 'Keywords'
 import CardBetTurnControls from 'CardBetTurnControls';
 import XocDiaAnim from 'XocDiaAnim';
 
@@ -15,13 +14,15 @@ export default class XocDiaControls extends GameControls {
     constructor() {
         super();
 
+
         this.properties = {
             ...this.properties,
             baseControlsNode: cc.Node,
             betOptionsGroupNode: cc.Node,
             btnGroupNode: cc.Node,
             betContainerNode: cc.Node,
-            miniChip: cc.Prefab
+            miniChip: cc.Prefab,
+            dealer: cc.Node
         }
 
         /**
@@ -33,6 +34,10 @@ export default class XocDiaControls extends GameControls {
          */
         this.cardBetTurnControls = null;
 
+
+        // used to save currently in-phase-betted data of this user, 
+        // because client's connection will be occured while betting, 
+        // it is more neccessary when save betData on its event emitter `XOCDIA_ON_PLAYER_BET`;
         this.betData = [];
         this.previousBetData = [];
 
@@ -59,9 +64,13 @@ export default class XocDiaControls extends GameControls {
 
         this.scene.on(Events.SHOW_GAME_BEGIN_CONTROLS, this._showGameBeginControls, this);
         this.scene.on(Events.HIDE_ALL_CONTROLS, this.hideAllControls, this);
-        this.scene.on(Events.XOCDIA_ON_PLAYER_TOSSCHIP, this._onPlayerTossChip, this);
+
+        this.scene.on(Events.XOCDIA_ON_PLAYER_TOSSCHIP_ANIMATION, this._onPlayerTossChip, this);
+        this.scene.on(Events.XOCDIA_ON_PLAYER_BET, this._onPlayerBet, this, 0);
         this.scene.on(Events.XOCDIA_ON_PLAYER_CANCEL_BET_SUCCESS, this._onPlayerCancelBetSuccess, this);
         this.scene.on(Events.XOCDIA_ON_CONTROL_SAVE_PREVIOUS_BETDATA, this._onSavePreviousBetData, this);
+        this.scene.on(Events.XOCDIA_ON_DISTRIBUTE_CHIP, this._onDistributeChip, this);
+        this.scene.on(Events.XOCDIA_ON_PLAYER_RECEIVE_CHIP_ANIMATION, this._onPlayerReceiveChip, this);
     }
 
     onDestroy() {
@@ -78,8 +87,10 @@ export default class XocDiaControls extends GameControls {
         this.scene.off(Events.SHOW_GAME_BEGIN_CONTROLS, this._showGameBeginControls, this);
         this.scene.off(Events.HIDE_ALL_CONTROLS, this.hideAllControls, this);
 
-        this.scene.off(Events.XOCDIA_ON_PLAYER_TOSSCHIP, this._onPlayerTossChip, this);
+        this.scene.off(Events.XOCDIA_ON_PLAYER_BET, this._onPlayerBet, this, 0);
+        this.scene.off(Events.XOCDIA_ON_PLAYER_TOSSCHIP_ANIMATION, this._onPlayerTossChip, this);
         this.scene.off(Events.XOCDIA_ON_PLAYER_CANCEL_BET_SUCCESS, this._onPlayerCancelBetSuccess, this);
+        this.scene.off(Events.XOCDIA_ON_DISTRIBUTE_CHIP, this._onDistributeChip, this);
         this.scene.off(Events.XOCDIA_ON_CONTROL_SAVE_PREVIOUS_BETDATA, this._onSavePreviousBetData, this);
     }
 
@@ -120,7 +131,6 @@ export default class XocDiaControls extends GameControls {
         let betTypeId = event.currentTarget.id;
         // let startPoint = chipOptionsNode.parent.convertToWorldSpaceAR(chipOptionsNode.getPosition());
 
-        this.isInReBetPhase = false;
         this.isInCancelPhase = false;
 
         // sent bet request
@@ -140,28 +150,92 @@ export default class XocDiaControls extends GameControls {
         }
 
         data[app.keywords.XOCDIA_BET.REQUEST.BET_LIST] = this.betData;
+        isReplace && (data[app.keywords.XOCDIA_BET.REQUEST.IS_REPLACE] = true);
+
         let sendObject = {
             cmd: app.commands.XOCDIA_BET,
             data,
             room: this.scene.room
         };
-        isReplace && (sendObject.replace = true);
-
         app.service.send(sendObject);
     }
 
     _onPlayerTossChip(data) {
-        let { betsList, myPos, isItMe, playerId } = data;
+        let { betsList, myPos, isItMe, playerId, isReplace } = data;
         playerId && isItMe && (this.playerId = playerId);
 
-        if (this.isInReBetPhase && betsList.length > 0) {
-            betsList.forEach((list) => {
+        if (!this.isInReBetPhase && isReplace && betsList.length > 0) {
+            for (let i = 0; i < betsList.length; i++) {
                 this._onTossChipAnim(list, myPos, isItMe);
-            });
+
+                if (i == betsList.length - 1) {
+                    this.isInReBetPhase = true;
+                }
+            }
         } else {
             let lastList = betsList.length && betsList[betsList.length - 1];
             this._onTossChipAnim(lastList, myPos, isItMe);
         }
+    }
+
+    _onDistributeChip(data) {
+        let { playingPlayerIds, bets, playerResults, dots } = data;
+        playerResults.forEach((result, index) => {
+            if (result === 0) {
+                let dataTypes = bets[index];
+                let destination = this.dealer.parent.convertToWorldSpaceAR(this.dealer.getPosition());
+                this._runDistributeChipsAnim(dataTypes, dots, destination);
+            }
+        });
+    }
+
+    /**
+     * @param userPos: cc.v2
+     * @param previousDataTypes: {<betid1> : <amount>, <betid2> : <amount>}
+     */
+    _onPlayerReceiveChip(data) {
+        let { userPos, previousDataTypes, dots } = data;
+
+        this._runDistributeChipsAnim(previousDataTypes, dots, userPos, true);
+    }
+
+    /**
+     * @dataTypes: bets Object  {<betid1> : <amount>, <betid2> : <amount>}
+     * @resultDots: Array result dots
+     * @destination: cc.v2 -> endPoint where chip will be placed, if player lost chip, they will be flied to dealer position
+     */
+    _runDistributeChipsAnim(dataTypes, resultDots, destination, isWinner) {
+        let dataDifferences = this._convertDataType(dataTypes, this.betContainerButton.isShakedDotsReturnEvenResult(resultDots), isWinner);
+        let dealerPosition = this.dealer.parent.convertToWorldSpaceAR(this.dealer.getPosition());
+
+        dataDifferences.forEach((type) => {
+            let { id, amount } = type;
+            let fromNode = this.betContainerButton.getBetTypeByTypeId(id);
+
+            let chipInfo = this.betOptionsGroup.getChipInfoByAmount(Math.abs(amount), true);
+            destination = amount > 0 ? destination : dealerPosition;
+
+            XocDiaAnim.receiveChip(fromNode, destination, chipInfo);
+        });
+    }
+
+    /**
+     * @param typeObj  {<betid1> : <amount>, <betid2> : <amount>} => [{id: <typeId1>, amount: <amount>}]
+     * @param isWinner boolean: if you're winner, need to check exactly bet type you earned and lost
+     * @param isEven boolean : if true, betId == 1||3||4 will be positive, others will be negative
+     */
+    _convertDataType(types, isEven, isWinner = false) {
+        console.debug('isEven', isEven);
+        let rs = [];
+        for (let id in types) {
+            let amount = types[id];
+            if (isWinner && (isEven && (id == 2 || id == 5 || id == 6)) || (!isEven && (id == 1 || id == 3 || id == 4))) {
+                amount *= -1;
+            }
+
+            rs.push({ id, amount });
+        }
+        return rs;
     }
 
     _onTossChipAnim(data = { b: null, bo: null }, fromPos, isItMe) {
@@ -170,7 +244,9 @@ export default class XocDiaControls extends GameControls {
 
         if (data && utils.isNumber(amount) && utils.isNumber(typeId)) {
             let toNode = this.betContainerButton.getBetTypeByTypeId(typeId);
-            let chipInfo = this.betOptionsGroup.getChipInfoByAmount(amount);
+            let chipInfo = this.betOptionsGroup.getChipInfoByAmount(amount, true);
+            console.table(chipInfo)
+
             // update gold
             this._updateGoldAmountOnControl(typeId, amount, isItMe);
             // user gold
@@ -194,15 +270,18 @@ export default class XocDiaControls extends GameControls {
                 betTypeBtn.updateAllLbl(amount, isMinus);
             }
         }
-
     }
 
     _onPlayerCancelBetSuccess(data) {
         let { myPos, isItMe, betsList } = data;
+        console.debug('_onPlayerCancelBetSuccess XocDiaControls.js > data', data);
         this.isInCancelPhase = true;
+        this.isInReBetPhase && (this.isInReBetPhase = false);
+
         for (let i = 0; i < betsList.length; i++) {
             let betTypeId = betsList[i][app.keywords.XOCDIA_BET.TYPE];
-            let amount = betsList[i][app.keywords.XOCDIA_BET.TYPE];
+            let amount = betsList[i][app.keywords.XOCDIA_BET.AMOUNT];
+            console.debug('_onPlayerCancelBetSuccess XocDiaControls.js > amount', amount);
             this._updateGoldAmountOnControl(betTypeId, amount, isItMe, true);
         }
     }
@@ -212,7 +291,6 @@ export default class XocDiaControls extends GameControls {
         console.debug('WTF this.previousBetData', this.previousBetData);
         if (this.previousBetData.length > 0) {
             console.debug('CO CMNR', this.previousBetData);
-            this.isInReBetPhase = true;
             this._sendBetRequest(this.previousBetData, true);
         }
     }
@@ -223,8 +301,6 @@ export default class XocDiaControls extends GameControls {
     // }
 
     onCancelBetBtnClick() {
-        this.isInReBetPhase = false;
-
         let [data] = [{}];
 
         let sendObject = {
@@ -255,6 +331,8 @@ export default class XocDiaControls extends GameControls {
 
     _onGameStarted(data, isJustJoined) {
         console.debug('_onGameStarted', data, isJustJoined);
+        // update betOptions lbls
+        this._setBetOptionsLblsByRoomBet();
 
         this._hideGameBeginControls();
     }
@@ -279,7 +357,7 @@ export default class XocDiaControls extends GameControls {
 
         this.setVisible(this.betOptionsGroupNode, false);
         this.setVisible(this.btnGroupNode, false);
-        this.setVisible(this.betContainerNode, false);
+        this.setVisible(this.betContainerNode, true);
     }
 
     _showGameBeginControls() {
@@ -294,7 +372,13 @@ export default class XocDiaControls extends GameControls {
             this._resetBetData();
             // all users are already
             this._showGameControls();
+
+            this._setBetOptionsLblsByRoomBet();
         }
+    }
+
+    _setBetOptionsLblsByRoomBet() {
+        this.betOptionsGroup.setLblOptions(this.scene.room.variables[app.keywords.ROOM_BET].value);
     }
 
     _hideGameBeginControls() {
