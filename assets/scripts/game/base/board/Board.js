@@ -206,7 +206,7 @@ export default class Board extends Actor {
     }
 
     startTimeLine(timeInSecond, message = "", timeoutCb) {
-        console.debug('startTimeLine');
+        debug('startTimeLine');
         this.stopTimeLine();
 
         this.renderer.showTimeLine(timeInSecond, message);

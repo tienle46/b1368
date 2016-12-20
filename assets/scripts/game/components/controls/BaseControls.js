@@ -29,7 +29,7 @@ export default class BaseControls extends GameControls {
     }
 
     onClickReadyButton() {
-        console.debug('onClickReadyButton');
+        debug('onClickReadyButton');
         this.scene.showShortLoading('ready');
         app.service.send({ cmd: app.commands.PLAYER_READY, room: this.scene.room });
     }
@@ -58,7 +58,7 @@ export default class BaseControls extends GameControls {
     }
 
     _showGameBeginControls() {
-        console.debug('_showGameBeginControls')
+        debug('_showGameBeginControls')
         if (this.scene.gamePlayers.isMeReady()) {
             this._onPlayerReady();
         } else {

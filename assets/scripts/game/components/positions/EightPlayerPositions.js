@@ -3,7 +3,7 @@
  */
 
 import app from 'app';
-import PositionManager from 'PlayerPositions';
+import PlayerPositions from 'PlayerPositions';
 
 const eightPlayerSeats = {
     [1]: { 1: 0, 2: 8, 3: 7, 4: 6, 5: 5, 6: 4, 7: 3, 8: 2 },
@@ -16,7 +16,7 @@ const eightPlayerSeats = {
     [8]: { 1: 8, 2: 7, 3: 6, 4: 5, 5: 4, 6: 3, 7: 2, 8: 0 }
 };
 
-class EightPlayerPositions extends PositionManager {
+class EightPlayerPositions extends PlayerPositions {
     constructor() {
         super();
 

@@ -45,6 +45,7 @@ export default class PlayerPositions extends Component {
         super.onEnable();
         this._initPlayerAnchors();
 
+
         this.scene = app.system.currentScene;
         this.scene.on(Events.ON_GAME_STATE_BEGIN, this._onGameBegin, this);
         this.scene.on(Events.ON_GAME_STATE_STARTING, this._onGameStarting, this);
@@ -128,12 +129,12 @@ export default class PlayerPositions extends Component {
     }
 
     getPlayerAnchorIndex(playerId, isItMe, gameCode) {
-        console.debug('getPlayerAnchorIndex', app.context.getMe())
+        debug('getPlayerAnchorIndex', app.context.getMe())
 
         if (isItMe) {
             return 0;
         } else {
-            console.debug('getPlayerAnchorIndex2', app.context.getMe())
+            debug('getPlayerAnchorIndex2', app.context.getMe())
             if (app.context.getMe()) {
                 let { seatIndex } = this._getPlayerSeatIndex(playerId, gameCode);
                 return seatIndex;
@@ -149,7 +150,7 @@ export default class PlayerPositions extends Component {
         let seatIndexs = this._getPlayerSeatIndexs(gameCode);
         let meId = app.context.getMe().getPlayerId(app.system.currentScene.board.room);
         let seatIndex = seatIndexs[meId][playerId];
-        console.debug('playerId', playerId, 'meId', meId, 'seatIndex', seatIndex);
+        debug('playerId', playerId, 'meId', meId, 'seatIndex', seatIndex);
         return { seatIndex, seatIndexs, meId };
     }
 

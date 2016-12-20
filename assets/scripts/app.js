@@ -184,6 +184,10 @@ if (cc.sys.isBrowser) {
     //     app.DEVICE_ID = 'a19c8e4ae2e82ef1c7846f32628d4ead3';
     // }
 }
+if(cc.sys.isMobile) {
+    sdkbox.PluginFacebook.init();
+    sdkbox.PluginGoogleAnalytics.init();
+}
 
 (function() {
     window.log = function log(...args) {

@@ -36,18 +36,18 @@ export default class BoardXocDia extends BoardCardBetTurn {
     _reset() {
         super._reset();
         // 
-        console.debug('_reset BoardXocDia.js');
+        debug('_reset BoardXocDia.js');
         this.renderer.hideElements();
     }
 
     _onUpdateBoardResultHistory(histories) {
-        console.debug('_onUpdateBoardResultHistory histories', histories)
+        debug('_onUpdateBoardResultHistory histories', histories)
         histories && this.renderer.updateBoardResultHistory(histories);
     }
 
     handleGameStateChange(boardState, data, isJustJoined) {
         super.handleGameStateChange(boardState, data);
-        console.debug('handleGameStateChange', boardState, data, isJustJoined);
+        debug('handleGameStateChange', boardState, data, isJustJoined);
 
         if (boardState === app.const.game.state.STATE_BET) {
             this.scene.emit(Events.ON_GAME_STATE_STARTING);
@@ -83,14 +83,14 @@ export default class BoardXocDia extends BoardCardBetTurn {
 
     // state === app.const.game.state.ENDING
     onBoardEnding(data) {
-        console.debug("onGameEnding BoardXocDia.js > data", data);
+        debug("onGameEnding BoardXocDia.js > data", data);
         let playerIds = utils.getValue(data, Keywords.GAME_LIST_PLAYER, []);
         let bets = utils.getValue(data, Keywords.XOCDIA_BET.AMOUNT, []);
         let playingPlayerIds = this.scene.gamePlayers.filterPlayingPlayer(playerIds);
         let balanceChangeAmounts = this._getPlayerBalanceChangeAmounts(playerIds, data);
         let playerResults = utils.getValue(data, Keywords.WIN, []);
 
-        console.debug("onGameEnding BoardXocDia.js > balanceChangeAmounts", balanceChangeAmounts);
+        debug("onGameEnding BoardXocDia.js > balanceChangeAmounts", balanceChangeAmounts);
 
         super.onBoardEnding(data);
 

@@ -184,7 +184,7 @@ export default class XocDiaControls extends GameControls {
         let betTypeBtn = toNode.getComponent('BetTypeBtn');
         // control gold
         if (this.isInCancelPhase) {
-            console.debug('isInCancelPhase', this.isInCancelPhase);
+            debug('isInCancelPhase', this.isInCancelPhase);
             betTypeBtn.updateLbls(amount, isMinus);
             this.isInCancelPhase = false;
         } else {
@@ -209,9 +209,9 @@ export default class XocDiaControls extends GameControls {
 
     onReBetBtnClick() {
         this.isInCancelPhase = false;
-        console.debug('WTF this.previousBetData', this.previousBetData);
+        debug('WTF this.previousBetData', this.previousBetData);
         if (this.previousBetData.length > 0) {
-            console.debug('CO CMNR', this.previousBetData);
+            debug('CO CMNR', this.previousBetData);
             this.isInReBetPhase = true;
             this._sendBetRequest(this.previousBetData, true);
         }
@@ -231,7 +231,7 @@ export default class XocDiaControls extends GameControls {
             cmd: app.commands.XOCDIA_CANCEL_BET,
             room: this.scene.room
         };
-        console.debug(sendObject);
+        debug(sendObject);
         app.service.send(sendObject);
     }
 
@@ -248,24 +248,24 @@ export default class XocDiaControls extends GameControls {
     }
 
     _onGameStarting(data, isJustJoined) {
-        console.debug('_onGameStarting', data, isJustJoined);
+        debug('_onGameStarting', data, isJustJoined);
 
         this._hideGameBeginControls();
     }
 
     _onGameStarted(data, isJustJoined) {
-        console.debug('_onGameStarted', data, isJustJoined);
+        debug('_onGameStarted', data, isJustJoined);
 
         this._hideGameBeginControls();
     }
 
     _onGamePlaying(data, isJustJoined) {
-        console.debug('_onGamePlaying', data, isJustJoined);
+        debug('_onGamePlaying', data, isJustJoined);
         this._hideGameBeginControls();
     }
 
     _onGameEnding(data, isJustJoined) {
-        console.debug('_onGameEnding', data, isJustJoined);
+        debug('_onGameEnding', data, isJustJoined);
         // save previous data before empty it 
         this.previousBetData = this.betData;
 

@@ -63,8 +63,8 @@ class TabTopVip extends Component {
             this.top1Name.string = topVipName;
 
             // const top1Icon = `http://${app.config.host}:3767/img/xgameupload/images/avatar/${topVipName}`;
-            const top1Icon = 'https://upload.wikimedia.org/wikipedia/commons/f/f7/Tamia_striatus_eating.jpg';
-            RubUtils.loadSpriteFrame(this.top1Sprite, top1Icon, cc.size(128, 128), true);
+            // const top1Icon = 'https://upload.wikimedia.org/wikipedia/commons/f/f7/Tamia_striatus_eating.jpg';
+            // RubUtils.loadSpriteFrame(this.top1Sprite, top1Icon, cc.size(128, 128), true);
         }
 
         for (let i = 0; i < ul.length; i++) {
