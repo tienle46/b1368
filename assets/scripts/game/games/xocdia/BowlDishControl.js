@@ -60,7 +60,7 @@ class BowlDishControl extends Component {
 
     openBowlAnim() {
         let bowlPos = this.bowlPos;
-        let action = cc.moveTo(1, cc.v2(this.bowlPos.x - 2 / 3 * this.bowlNode.getContentSize().width, bowlPos.y));
+        let action = cc.moveTo(1, cc.v2(this.bowlPos.x - 2 / 3 * this.bowlNode.getContentSize().width + 10, bowlPos.y));
         this.bowlNode.runAction(cc.sequence(action), cc.callFunc(() => {
             this.bowlPos = bowlPos;
         }));

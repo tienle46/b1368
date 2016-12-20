@@ -155,20 +155,8 @@ export default class PlayerXocDia extends PlayerCardBetTurn {
         super.onGameReset();
         this.betData = [];
 
-        // this.hucList = {};
-        // this.biHucList = {};
-        // this.pendingCuocBiens = {};
-        // this.pendingBiCuocBiens = {};
-        // this.currentCuocBien = 0;
-        // this.setBetAmount(0);
-        // this.renderer.hideCuocBienValue();
     }
 
-    // _onGameMasterChanged(playerId, player) {
-    //     if (this.id != playerId || !this.scene.isEnding()) return;
-
-    //     this.showChangeMasterAnimation()
-    // }
 
     onGameEnding() {
         super.onGameEnding();
@@ -182,7 +170,7 @@ export default class PlayerXocDia extends PlayerCardBetTurn {
         if (data.playerId != this.id) return;
 
         let { playerId, betsList, isSuccess, err, isReplace } = data;
-        this.betData = betsList;
+        this.betData = [...this.betData, ...betsList];
 
         if (isSuccess) {
             let { myPos, isItMe } = this._getPosBasedOnWorldSpace(playerId);
@@ -217,187 +205,6 @@ export default class PlayerXocDia extends PlayerCardBetTurn {
         }
     }
 
-    // getExcludeCuocBienPlayers() {
-    //     return utils.getAllKeys(this.pendingCuocBiens, this.hucList, this.biHucList);
-    // }
-
-    // _onPlayerChangeBet(betAmount) {
-    //     if (betAmount <= 0 || this.board.scene.gameState != app.const.game.state.STATE_BET || !BaCayUtils.checkBetValue(betAmount, this)) {
-    //         //Show message && play sound invalid
-    //         return;
-    //     }
-
-    //     app.service.send({
-    //         cmd: app.commands.PLAYER_BET,
-    //         data: {
-    //             [app.keywords.PLAYER_BET_AMOUNT]: betAmount
-    //         },
-    //         room: this.board.room
-    //     });
-    // }
-
-    // _onAddBetToMaster(amount, player) {
-
-    //     if (this.isMaster && amount) {
-    //         this.setBetAmount(this.betAmount + amount);
-    //         this.renderer.showAddBetToMasterAnimation(amount, player);
-    //     }
-    // }
-
-    // _handlePlayerBet(playerId, data) {
-    //     if (this.id != playerId) return;
-
-    //     let uBet = utils.getValue(data, app.keywords.PLAYER_BET_AMOUNT);
-    //     let addToMasterBestAmount = uBet - this.betAmount;
-
-    //     this.scene.emit(Events.ADD_BET_TO_MASTER, addToMasterBestAmount, this);
-    //     this.setBetAmount(uBet);
-    // }
-
-    // setBetAmount(betAmount = 0) {
-
-    //     if (!utils.isNumber(betAmount)) {
-    //         betAmount = 0;
-    //     }
-
-    //     this.betAmount = betAmount;
-    //     this.renderer.showBetAmount(this.betAmount);
-    // }
-
-
-
-    // _onPlayerDownCard() {
-    //     if (this.isItMe()) {
-    //         app.service.send({ cmd: app.commands.PLAYER_DOWN_CARD, data: {}, room: this.board.room });
-    //     }
-    // }
-
-    // _onPlayerRevealCard() {
-    //     if (this.isItMe()) {
-    //         this.renderer.revealAllCards();
-    //     }
-    // }
-
-    // createFakeCards(size = 0) {
-    //     super.createFakeCards(0);
-    // }
-
-    // onClickCuocBienBtn() {
-    //     let mePlayer = this.scene.gamePlayers.me;
-
-    //     let { checkResult, msg } = BaCayUtils.checkCuocBienWithPlayer(mePlayer, this);
-    //     if (!checkResult) {
-    //         if (msg.length == 0) msg = app.res.string('game_bacay_khong_the_cuoc_bien');
-    //         app.system.showToast(msg);
-    //         this.renderer.showCuocBienBtn(false);
-    //         return;
-    //     }
-
-    //     let maxCuocBienValue = BaCayUtils.calculateMaxCuocBien(mePlayer, this);
-    //     if (maxCuocBienValue > 0) {
-    //         this.scene.showCuocBienPopup(maxCuocBienValue, (cuocValue) => {
-    //             let { valid, msg } = BaCayUtils.validateCuocBienValue(cuocValue, this.scene.gamePlayers.me, this);
-    //             if (valid) {
-    //                 app.service.send({
-    //                     cmd: app.commands.BACAY_PLAYER_GA_HUC,
-    //                     room: this.board.room,
-    //                     data: {
-    //                         [app.keywords.BACAY_BI_HUC_PLAYER_ID]: [this.id],
-    //                         [app.keywords.BACAY_HUC_VALUE]: [cuocValue]
-    //                     }
-    //                 });
-
-    //                 mePlayer.pendingCuocBiens[this.user.name] = cuocValue;
-    //                 this.renderer.showCuocBienBtn(false);
-    //             } else {
-    //                 //     SoundUtil.playSound(SoundConstant.INVALID_SELECTION);
-    //                 //     return;
-    //             }
-    //         });
-    //     }
-    // }
-
-    // _onPlayerCuocBien(gaHucPlayerId, data) {
-    //     if (!this.isItMe() || this.id == gaHucPlayerId) return;
-
-    //     let gaHucPlayer = this.scene.gamePlayers.findPlayer(gaHucPlayerId);
-    //     if (!gaHucPlayer) return;
-
-    //     let mePlayer = this.scene.gamePlayers.me;
-    //     let requestPlayerName = gaHucPlayer.user.name;
-    //     let requestMoney = utils.getValue(data, app.keywords.BACAY_HUC_VALUE);
-    //     let denyCb = () => delete mePlayer.pendingBiCuocBiens[requestPlayerName];
-    //     let okCallback = () => {
-    //         let { valid, msg } = gaHucPlayer && BaCayUtils.validateAcceptCuocBienValue(requestMoney, this, gaHucPlayer);
-
-    //         if (valid) {
-    //             app.service.send({
-    //                 cmd: app.commands.BACAY_PLAYER_HUC_ACCEPTED,
-    //                 room: this.board.room,
-    //                 data: {
-    //                     [app.keywords.BACAY_BI_HUC_PLAYER_ID]: this.scene.gamePlayers.me.id,
-    //                     [app.keywords.BACAY_GA_HUC_PLAYER_ID]: gaHucPlayerId
-    //                 }
-    //             });
-    //         } else {
-    //             msg.length > 0 && app.system.info(msg);
-    //         }
-    //     };
-
-    //     mePlayer.pendingBiCuocBiens[requestPlayerName] = requestMoney;
-    //     app.system.confirm(
-    //         app.res.string('game_bacay_ask_to_accept_cuoc_bien', { player: requestPlayerName, value: requestMoney }),
-    //         denyCb,
-    //         okCallback
-    //     );
-    // }
-
-    // _updateCuocBienValue(value) {
-    //     if (!utils.isNumber(value)) return;
-
-    //     this.currentCuocBien += value;
-    //     this.renderer.showCuocBienBtn(false);
-    //     if (this.isItMe()) {
-    //         this.renderer.showCuocBienValue(this.currentCuocBien);
-    //     } else {
-    //         this.renderer.showCuocBienValue(value);
-    //     }
-    // }
-
-    // _onPlayerAcceptCuocBien(gaHucPlayerId, biHucPlayerId, data) {
-    //     if (!this.isItMe()) return;
-
-    //     console.log("_onPlayerAcceptCuocBien: ", gaHucPlayerId, biHucPlayerId);
-
-    //     let gaHucPlayer = this.scene.gamePlayers.findPlayer(gaHucPlayerId);
-    //     let biHucPlayer = this.scene.gamePlayers.findPlayer(biHucPlayerId);
-    //     if (!biHucPlayer || !gaHucPlayer) return;
-
-    //     let hucValue;
-    //     let biHucName = biHucPlayer.user.name;
-    //     let gaHucName = gaHucPlayer.user.name;
-
-    //     if (gaHucPlayer.isItMe() && gaHucPlayer.pendingCuocBiens.hasOwnProperty(biHucName)) {
-    //         // Truong hop minh la thang ga huc
-    //         hucValue = gaHucPlayer.pendingCuocBiens[biHucName];
-    //         delete gaHucPlayer.pendingCuocBiens[biHucName];
-    //         gaHucPlayer.hucList[biHucName] = hucValue;
-    //         //TODO notify huc
-    //     }
-
-    //     if (biHucPlayer.isItMe() && biHucPlayer.pendingBiCuocBiens.hasOwnProperty(gaHucName)) {
-    //         hucValue = biHucPlayer.pendingBiCuocBiens[gaHucName];
-    //         biHucPlayer.biHucList[gaHucName] = hucValue;
-    //         delete biHucPlayer.pendingBiCuocBiens[gaHucName];
-    //         //TODO notify bi huc
-    //     }
-
-    //     biHucPlayer._updateCuocBienValue(hucValue);
-    //     gaHucPlayer._updateCuocBienValue(hucValue);
-
-    //     gaHucPlayer.renderer.showCuocBienBtn(false);
-    //     biHucPlayer.renderer.showCuocBienBtn(false);
-    // }
 }
 
 app.createComponent(PlayerXocDia);

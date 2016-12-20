@@ -26,9 +26,9 @@ class BetOptionsGroup extends Component {
         this.node.children.filter((child) => child.name.indexOf('chip') > -1).forEach((child, index) => {
             let amount = multiples[index] * Number(roomBet);
             let betChip = child.getComponent('BetChip');
-            let size = child.getContentSize();
-            betChip.initChip({ amount, size });
             betChip.roomBet = roomBet;
+            let chipInfo = this.getChipInfoByAmount(amount, false);
+            betChip.initChip(chipInfo);
         });
     }
 
@@ -44,8 +44,8 @@ class BetOptionsGroup extends Component {
         return Number(this.userGoldLbl.string);
     }
 
-    getChipInfoByAmount(amount) {
-        return this.getCheckedItem().getComponent('BetChip').getChipInfoByAmount(amount, true);
+    getChipInfoByAmount(amount, isMiniChip = true) {
+        return this.getCheckedItem().getComponent('BetChip').getChipInfoByAmount(amount, isMiniChip);
     }
 }
 

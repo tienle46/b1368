@@ -108,7 +108,7 @@ export default class BoardXocDia extends BoardCardBetTurn {
             }, 700);
         }
 
-        this.scene.emit(Events.XOCDIA_ON_CONTROL_SAVE_PREVIOUS_BETDATA, bets, playerIds);
+        // this.scene.emit(Events.XOCDIA_ON_CONTROL_SAVE_PREVIOUS_BETDATA, bets, playerIds);
     }
 
     _onGameBegin() {

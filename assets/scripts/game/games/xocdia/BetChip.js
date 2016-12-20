@@ -76,11 +76,10 @@ class BetChip extends Component {
     }
 
     getChipInfoByAmount(amount, isMiniChip) {
-        console.debug('getChipInfo', this.roomBet, amount, isMiniChip)
-        let color, size;
+        let a, color, size;
         size = isMiniChip ? cc.size(20, 20) : this.node.getContentSize();
-        this.roomBet && (amount = amount / this.roomBet);
-        let condition = Number(this._convertAmountFromNumberToString(amount).replace('k', '.'));
+        this.roomBet && (a = amount / this.roomBet);
+        let condition = Number(this._convertAmountFromNumberToString(a).replace('k', '.'));
 
         if (condition < 5) {
             color = app.const.COLOR_RED;
