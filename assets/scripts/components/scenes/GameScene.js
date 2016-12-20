@@ -272,7 +272,7 @@ export default class GameScene extends BaseScene {
     }
 
     _onGameStateBegin(data, isJustJoined, isRejoining){
-        if(!isRejoining){
+        if(!isRejoining && this.gameState != app.const.game.state.READY){
             this.emit(Events.ON_GAME_RESET);
         }
         this.emit(Events.ON_GAME_STATE_BEGIN, data, isJustJoined);

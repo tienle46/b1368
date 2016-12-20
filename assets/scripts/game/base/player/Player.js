@@ -20,7 +20,7 @@ export default class Player extends Actor {
         this.inited = false;
         this.isOwner = false;
         this.isMaster = false;
-        this.ready = false;
+        this.ready = undefined;
         this.anchorIndex = -1;
     }
 
@@ -96,7 +96,6 @@ export default class Player extends Actor {
     }
 
     _onPlayerChatMessage(sender, message) {
-        ``
         if (sender.name == this.user.name) {
             this.say(message);
         }
@@ -256,6 +255,8 @@ export default class Player extends Actor {
             this.onGameReset();
         }
 
+        this.renderer.setVisibleReady(this.ready);
+
         let newPlayer = this.user.variables.newPlayer;
         if (!newPlayer) {
             // send ready
@@ -294,8 +295,10 @@ export default class Player extends Actor {
     }
 
     onGameReset() {
-        this.ready = false;
-        this.renderer._reset();
+        if(this.scene.gameState != app.const.game.state.READY){
+            this.ready = false;
+            this.renderer._reset();
+        }
     }
 
     equals(otherPlayer) {
