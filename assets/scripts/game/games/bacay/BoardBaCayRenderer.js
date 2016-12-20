@@ -11,10 +11,32 @@ import BoardCardBetTurnRenderer from 'BoardCardBetTurnRenderer';
 export default class BoardBaCayRenderer extends BoardCardBetTurnRenderer {
     constructor() {
         super();
+
+        this.properties = {
+            ...this.properties,
+            gopGaNode: cc.Node,
+            gopGaButton: cc.Button,
+            gopGaLabel: cc.Label,
+        }
     }
 
     onEnable(){
         super.onEnable();
+    }
+
+    setVisibleGopGaComponent(visible){
+        utils.setVisible(this.gopGaNode, visible);
+        if(!visible){
+            utils.setInteractable(this.gopGaButton, true);
+        }
+    }
+
+    setGopGaLabelValue(value){
+        this.gopGaLabel.string = `${value}`;
+    }
+
+    disableGopGaValue(disable = true){
+        utils.setInteractable(this.gopGaButton, disable);
     }
 }
 

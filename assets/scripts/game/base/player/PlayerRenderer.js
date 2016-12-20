@@ -149,7 +149,7 @@ export default class PlayerRenderer extends ActorRenderer {
      * @abstract
      */
     _reset() {
-        this.setVisibleReady(false);
+        // this.setVisibleReady(false);
         this.stopAllAnimation();
     }
 

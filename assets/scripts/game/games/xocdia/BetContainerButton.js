@@ -96,7 +96,8 @@ class BetContainerButton extends Component {
     getRealBetTypePositionById(id) {
         let type = this.getBetTypeByTypeId(id);
         let position = type.getPosition();
-        let realPosition = type.parent.convertToWorldSpaceAR(position);
+        let node = type.parent || type;
+        let realPosition = node.convertToWorldSpaceAR(position);
         return type.getPosition(realPosition);
     }
 
@@ -104,6 +105,16 @@ class BetContainerButton extends Component {
         this.groupBtns.forEach((btn) => {
             btn.getComponent('BetTypeBtn').setLbls(0);
         });
+    }
+
+    isShakedDotsReturnEvenResult(dots) {
+        // 1: Chẵn, 2: Lẻ, 3: 4 Đỏ, 4: 4 Đen, 5: 3 Đỏ 1 Đen, 6: 3 Đen 1 Đỏ
+        // even : [0, 0, 0, 0] || [1, 1, 1, 1] || [0, 0, 1, 1]
+        let count1 = dots.filter(dot => dot === 1).length;
+        let count0 = dots.filter(dot => dot === 0).length;
+
+        let minus = Math.abs(count1 - count0);
+        return (minus === 4 || minus === 0);
     }
 }
 

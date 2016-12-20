@@ -140,7 +140,7 @@ export default class EntranceScene extends BaseScene {
         app.service.connect((success) => {
             log("success: " + success);
             if (success) {
-                app.service.requestAuthen('anhlavip', "hhmmss24", false, true, null, (error, result) => {
+                app.service.requestAuthen('crush1', "1234nm", false, true, null, (error, result) => {
                     error = JSON.parse(error);
                     this.hideLoading();
                     if (result) {

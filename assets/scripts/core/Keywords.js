@@ -651,7 +651,8 @@ Keywords.XOCDIA_BET = {
     AMOUNT: "b",
     TYPE: "bo",
     REQUEST: {
-        BET_LIST: "bl", // array {b: int, bo: int} 
+        BET_LIST: "bl", // array {b: int, bo: int},
+        IS_REPLACE: "replace", // boolean
         // b: AMOUNT
         // bo: BET_TYPE : 1: Chẵn, 2: Lẻ, 3: 4 Đỏ, 4: 4 Đen, 5: 3 Đỏ 1 Đen, 6: 3 Đen 1 Đỏ
     },
@@ -660,6 +661,7 @@ Keywords.XOCDIA_BET = {
         TYPE: "bo",
         PLAYER: "p", // id user
         IS_SUCCESS: "s",
+        IS_REPLACE: "replace", // boolean
         ERROR_MSG: "errMsg"
     }
 };
@@ -721,3 +723,5 @@ Keywords.USER_VARIABLE_BALANCE = "coin";
 Keywords.APP_VERSION_KEY = "avrsn";
 Keywords.GAME_RULE = "r";
 Keywords.GAME_GUIDE = "g";
+Keywords.SUCCESSFULL = "s";
+Keywords.BA_CAY_GOP_GA_VALUE = "gopGaValue";

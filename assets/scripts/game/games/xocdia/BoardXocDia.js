@@ -98,13 +98,17 @@ export default class BoardXocDia extends BoardCardBetTurn {
         let dots = utils.getValue(data, Keywords.XOCDIA_RESULT_END_PHASE);
         if (dots && dots.length > 0) {
             this.renderer.initDots(dots);
-            setTimeout(() => {
+            let timeout = setTimeout(() => {
                 this.renderer.openBowlAnim();
+
+                timeout = setTimeout(() => {
+                    clearTimeout(timeout);
+                    this.scene.emit(Events.XOCDIA_ON_DISTRIBUTE_CHIP, { playingPlayerIds, bets, playerResults, dots });
+                }, 1500); // emit event after 1.5s
             }, 700);
         }
 
-        this.scene.emit(Events.XOCDIA_ON_CONTROL_SAVE_PREVIOUS_BETDATA, bets, playerIds);
-        this.scene.emit(Events.XOCDIA_ON_PLAYER_GET_CHIP, { playingPlayerIds, bets, playerResults });
+        // this.scene.emit(Events.XOCDIA_ON_CONTROL_SAVE_PREVIOUS_BETDATA, bets, playerIds);
     }
 
     _onGameBegin() {

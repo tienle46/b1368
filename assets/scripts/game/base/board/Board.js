@@ -108,7 +108,7 @@ export default class Board extends Actor {
     }
 
     _onPlayerSetReadyState(playerId, ready, isItMe) {
-        isItMe && (ready ? this.stopTimeLine() : this.startTimeLine(this.readyPhaseDuration * 2));
+        // isItMe && (ready ? this.stopTimeLine() : this.startTimeLine(this.readyPhaseDuration * 2));
     }
 
     /**
@@ -280,13 +280,25 @@ export default class Board extends Actor {
 
         console.warn("on board begin: readyDuration: ", this.readyPhaseDuration, " justJoined: ", isJustJoined, " meReady: ", this.scene.gamePlayers.me.isReady());
 
-        if (this.readyPhaseDuration && !this.scene.gamePlayers.me.isReady()) {
-            if (this.scene.gamePlayers.meIsOwner()) {
-                boardTimeLine *= 2;
+        //Support for new ready flow
+        if (this.readyPhaseDuration && this.scene.enoughPlayerToStartGame()) {
+            if(isJustJoined) {
+                //Delay client - server && board init time
+                boardTimeLine -= 2;
             }
 
-            this.startTimeLine(boardTimeLine, () => { this.scene.emit(Events.ON_ACTION_EXIT_GAME) });
+            // this.startTimeLine(boardTimeLine, () => { this.scene.emit(Events.ON_ACTION_EXIT_GAME) });
+            this.startTimeLine(boardTimeLine);
+            this.scene.emit(Events.SHOW_START_GAME_CONTROL);
         }
+
+        // if (this.readyPhaseDuration && !this.scene.gamePlayers.me.isReady()) {
+        //     if (this.scene.gamePlayers.meIsOwner()) {
+        //         boardTimeLine *= 2;
+        //     }
+        //
+        //     this.startTimeLine(boardTimeLine, () => { this.scene.emit(Events.ON_ACTION_EXIT_GAME) });
+        // }
 
         this.state = app.const.game.state.BEGIN;
     }

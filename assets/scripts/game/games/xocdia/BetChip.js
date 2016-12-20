@@ -23,22 +23,44 @@ class BetChip extends Component {
 
     initChip({ amount, color, size } = { amount: 1, color: app.const.COLOR_BLACK, size: cc.size(20, 20) }) {
         this.amount = amount;
-        this.color = color;
-        this.size = size;
+
+        this.color = color || this.getChipInfoByAmount(amount).color;
+
+
+        size && (this.size = size);
 
         // size
-        this.node.setContentSize(size);
-        this.amountLbl.node.setContentSize(size);
-        this.amountLbl.fontSize = size.width / 2;
-        this.amountLbl.lineHeight = size.height;
+        if (size) {
+            this.node.setContentSize(size);
+            this.amountLbl.node.setContentSize(size);
+            this.amountLbl.fontSize = size.width / 2;
+            this.amountLbl.lineHeight = size.height;
+        }
 
         // color
-        this.amountLbl.node.parent.color = color;
-        this.amountLbl.node.color = color;
+        this.amountLbl.node.parent.color = this.color;
+        this.amountLbl.node.color = this.color;
 
         // string
-        this.amountLbl && (this.amountLbl.string = `${amount}K`);
+        this.amountLbl && (this.amountLbl.string = `${this._convertAmountFromNumberToString(amount)}`);
         // console.debug(amount, color, size);
+    }
+
+    // 1000 -> 1k , 10000 -> 10k
+    _convertAmountFromNumberToString(amount) {
+        if (amount < 1000)
+            return amount.toString();
+
+        let divided = (amount / 1000).toString();
+
+        return divided.match(/\d+(\.)/) ? divided.replace('.', 'K') : `${divided}K`;
+    }
+
+    _convertAmountFromStringToNum(str) {
+        str = str.replace('k', '.');
+        let amount = Number(str);
+
+        return str.match(/\d+(\.)/) ? amount * 1000 : amount;
     }
 
     getChipInfo() {
@@ -47,30 +69,28 @@ class BetChip extends Component {
     }
 
     onChipChecked() {
-        this.node.dispatchEvent(new cc.Event.EventCustom('chip-checked', true));
-        this.amount = this.amountLbl.string.substr(0, this.amountLbl.string.length - 1);
+        this.node.dispatchEvent(new cc.Event('chip-checked', true));
+        this.amount = this._convertAmountFromStringToNum(this.amountLbl.string);
         this.color = this.amountLbl.node.color;
         this.size = cc.size(20, 20);
     }
 
-    getChipInfoByAmount(a) {
-        let amount, color, size;
-        amount = a;
-        size = cc.size(20, 20);
-        switch (amount) {
-            case 1:
-                color = app.const.COLOR_RED;
-                break;
-            case 5:
-                color = app.const.COLOR_GREEN;
-                break;
-            case 10:
-                color = app.const.COLOR_ORANGE;
-                break;
-            case 50:
-                color = app.const.COLOR_BLACK;
-                break;
+    getChipInfoByAmount(amount, isMiniChip) {
+        let a, color, size;
+        size = isMiniChip ? cc.size(20, 20) : this.node.getContentSize();
+        this.roomBet && (a = amount / this.roomBet);
+        let condition = Number(this._convertAmountFromNumberToString(a).replace('k', '.'));
+
+        if (condition < 5) {
+            color = app.const.COLOR_RED;
+        } else if (condition < 10) {
+            color = app.const.COLOR_GREEN;
+        } else if (condition < 50) {
+            color = app.const.COLOR_ORANGE;
+        } else {
+            color = app.const.COLOR_BLACK;
         }
+
         return { amount, color, size };
     }
 }

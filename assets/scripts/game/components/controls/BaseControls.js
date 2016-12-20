@@ -15,8 +15,11 @@ export default class BaseControls extends GameControls {
         this.properties = {
             ...this.properties,
             readyButton: cc.Node,
-            unreadyButton: cc.Node
+            unreadyButton: cc.Node,
+            startButton: cc.Node
         }
+
+        this.showStartButtonOnBegin = false;
     }
 
     onEnable() {
@@ -26,10 +29,10 @@ export default class BaseControls extends GameControls {
         this.node.on('touchstart', (event) => true);
 
         this.scene.on(Events.ON_PLAYER_READY_STATE_CHANGED, this._onPlayerSetReadyState, this);
+        this.scene.on(Events.SHOW_START_GAME_CONTROL, this._showStartGameControl, this);
     }
 
     onClickReadyButton() {
-        debug('onClickReadyButton');
         this.scene.showShortLoading('ready');
         app.service.send({ cmd: app.commands.PLAYER_READY, room: this.scene.room });
     }
@@ -39,36 +42,50 @@ export default class BaseControls extends GameControls {
         app.service.send({ cmd: app.commands.PLAYER_UNREADY, room: this.scene.room });
     }
 
+    onClickStartButton() {
+        this.scene.emit(Events.ON_CLICK_START_GAME_BUTTON);
+        utils.deactive(this.startButton);
+    }
+
     _onPlayerSetReadyState(playerId, ready, isItMe = this.scene.gamePlayers.isItMe(playerId)) {
-
-        console.warn("_onPlayerSetReadyState: playeId: ", playerId, " ready=", ready, "isItMe=", isItMe);
-
         this.scene.hideLoading('ready');
         isItMe && (ready ? this._onPlayerReady() : this._onPlayerUnready());
     }
 
     _onPlayerReady() {
-        utils.active(this.unreadyButton);
+        // utils.active(this.unreadyButton);
         utils.deactive(this.readyButton);
     }
 
     _onPlayerUnready() {
-        utils.deactive(this.unreadyButton);
+        // utils.deactive(this.unreadyButton);
         utils.active(this.readyButton);
     }
 
     _showGameBeginControls() {
-        debug('_showGameBeginControls')
+        console.debug('_showGameBeginControls')
         if (this.scene.gamePlayers.isMeReady()) {
             this._onPlayerReady();
         } else {
             this._onPlayerUnready();
         }
+
+        if(this.showStartButtonOnBegin && this.scene.enoughPlayerToStartGame()){
+            utils.active(this.startButton);
+        }
     }
 
     hideAllControls() {
         utils.deactive(this.readyButton);
-        utils.deactive(this.unreadyButton);
+        // utils.deactive(this.unreadyButton);
+        utils.deactive(this.startButton);
+    }
+
+    _showStartGameControl(){
+        if(this.scene.gamePlayers.owner && this.scene.gamePlayers.owner.isItMe()){
+            this.showStartButtonOnBegin = true;
+            utils.active(this.startButton);
+        }
     }
 }
 

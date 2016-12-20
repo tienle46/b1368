@@ -25,7 +25,7 @@ export default class BoardXocDiaRenderer extends BoardRenderer {
     hideElements() {
         this.bowlDishControl.resetBowlPosition();
 
-        utils.deactive(this.dishContainerNode);
+        // utils.deactive(this.dishContainerNode); // always show dish on a board
         utils.deactive(this.statisticTableNode);
     }
 
