@@ -19,6 +19,7 @@ export default class BoardBaCay extends BoardCardBetTurn {
 
         this.winRank = 0;
         this.handCardSize = PlayerBaCay.DEFAULT_HAND_CARD_COUNT;
+        this.totalGopGaValue = 0;
     }
 
     onLoad() {
@@ -31,6 +32,9 @@ export default class BoardBaCay extends BoardCardBetTurn {
          */
         this.renderer = this.node.getComponent('BoardBaCayRenderer');
         super.onEnable();
+
+        this.scene.on(Events.SHOW_GOP_GA_NODE, this._showGopGa, this);
+        this.scene.on(Events.ON_PLAYER_BACAY_GOP_GA, this._onPlayerGopGa, this);
     }
 
     get gameType() {
@@ -40,6 +44,13 @@ export default class BoardBaCay extends BoardCardBetTurn {
     _reset() {
         super._reset();
         this.winRank = 0;
+        this.setTotalGopGaValue(0);
+        this._showGopGa(false);
+    }
+
+    setTotalGopGaValue(value){
+        this.totalGopGaValue = value;
+        this.renderer.setGopGaLabelValue(value);
     }
 
     handleGameStateChange(boardState, data, isJustJoined) {
@@ -50,22 +61,25 @@ export default class BoardBaCay extends BoardCardBetTurn {
         let message;
         if (boardState == app.const.game.state.STATE_BET) {
             message = app.res.string('game_bet_time');
-
-            console.log("ON_GAME_STATE_STARTING--- ")
             this.scene.emit(Events.ON_GAME_STATE_STARTING);
         } else if (boardState == app.const.game.state.STATE_DOWN) {
             message = app.res.string('game_down_card_time');
             this._handleBaCayDownCardPhrase(data);
-
         }
 
         let duration = utils.getValue(data, app.keywords.BOARD_PHASE_DURATION);
         duration && this.startTimeLine(duration, message ? message.toUpperCase() : '');
     }
 
+    onBoardStarting(...args){
+        super.onBoardStarting(...args);
+
+        this._showGopGa(true);
+    }
+
     _handleBaCayDownCardPhrase(data) {
 
-        console.log("_handleBaCayDownCardPhrase: ", data)
+        this._showGopGa(false);
 
         let playerIds = utils.getValue(data, app.keywords.GAME_LIST_PLAYER);
         let handCardBytes = utils.getValue(data, app.keywords.GAME_LIST_CARD);
@@ -81,10 +95,10 @@ export default class BoardBaCay extends BoardCardBetTurn {
     }
 
     _loadGamePlayData(data) {
-        super._loadGamePlayData({...data, masterIdOwner: true });
+        super._loadGamePlayData({...data, masterIdOwner: true});
 
         let gamePhrase = utils.getValue(data, app.keywords.BOARD_STATE_KEYWORD);
-        if (gamePhrase == app.const.game.state.STATE_DOWN) {
+        if(gamePhrase == app.const.game.state.STATE_DOWN) {
             this._handleBaCayDownCardPhrase(data);
         }
 
@@ -108,9 +122,6 @@ export default class BoardBaCay extends BoardCardBetTurn {
 
                 if (downPlayerIds) {
                     player.isDown = downPlayerIds[i];
-
-                    console.log("player.isDown: ", player.id, player.isDown);
-
                     if (player.isDown) {
                         player.renderer.revealAllCards();
                     }
@@ -131,7 +142,8 @@ export default class BoardBaCay extends BoardCardBetTurn {
     }
 
     onBoardEnding(data) {
-        console.log("onGameEnding Board");
+
+        this._showGopGa(false);
 
         let playerIds = utils.getValue(data, Keywords.GAME_LIST_PLAYER, []);
         let playingPlayerIds = this.scene.gamePlayers.filterPlayingPlayer(playerIds);
@@ -139,7 +151,7 @@ export default class BoardBaCay extends BoardCardBetTurn {
 
         let balanceChangeAmounts = this._getPlayerBalanceChangeAmounts(playerIds, data);
         let playerHandCards = this._getPlayerHandCards(playerIds, data);
-        let { resultTexts, gameResultInfos, resultIconPaths } = this._getGameResultInfos(playerIds, playerHandCards, data);
+        let {resultTexts, gameResultInfos, resultIconPaths} = this._getGameResultInfos(playerIds, playerHandCards, data);
 
         super.onBoardEnding(data);
 
@@ -195,8 +207,63 @@ export default class BoardBaCay extends BoardCardBetTurn {
             resultTexts[id] = resultText;
         })
 
-        return { resultTexts, gameResultInfos, resultIconPaths };
+        return {resultTexts, gameResultInfos, resultIconPaths};
     }
+
+    onClickGopGaButton(){
+
+        console.log("on click gop ga")
+
+        this._shouldToGopGa() && app.service.send({
+            cmd: app.commands.BACAY_PLAYER_GOP_GA,
+            data: {
+                [Keywords.BA_CAY_GOP_GA_VALUE]: this.minBet * 3
+            },
+            room: this.scene.room
+        });
+    }
+
+    _shouldToGopGa(){
+
+        console.log("on click gop ga: ", this.scene.gamePlayers.isMePlaying())
+
+        if(!this.scene.gamePlayers.isMePlaying()){
+            return false;
+        }
+
+        if(this.scene.gamePlayers.me.gopGaValue > 0){
+            return false;
+        }
+
+        return true;
+
+        //TODO verify gop ga
+    }
+
+    _showGopGa(visible){
+        this.renderer.setVisibleGopGaComponent(visible);
+    }
+
+    _addToGopGaValue(player, gopGaValue){
+        player.gopGaValue = gopGaValue;
+        this.setTotalGopGaValue(this.totalGopGaValue += gopGaValue);
+        this.renderer.setGopGaLabelValue(this.totalGopGaValue);
+        player.isItMe() && this.renderer.disableGopGaValue();
+    }
+
+    _onPlayerGopGa(playerId, gopGaValue){
+
+        console.log("_onPlayerGopGa: ", playerId);
+
+        let gopGaPlayer = this.scene.gamePlayers.findPlayer(playerId);
+        if(gopGaPlayer){
+            console.log("gopGaPlayer: ", gopGaPlayer);
+            //TODO player animation
+            this._addToGopGaValue(gopGaPlayer, gopGaValue);
+        }
+    }
+
+
 }
 
 app.createComponent(BoardBaCay);

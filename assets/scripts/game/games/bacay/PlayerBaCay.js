@@ -27,6 +27,7 @@ export default class PlayerBaCay extends PlayerCardBetTurn {
         this.pendingCuocBiens = null;
         this.pendingBiCuocBiens = null;
         this.currentCuocBien = 0;
+        this.gopGaValue = 0;
     }
 
     _addGlobalListener() {
@@ -192,26 +193,26 @@ export default class PlayerBaCay extends PlayerCardBetTurn {
                 }
             }
         }
-
     }
 
-    _onGameState(state, data, isJustJoined) {
-        if (state == app.const.game.state.STATE_BET) { // state bet = 5; while all users are ready
+    _onGameState(state, data, isJustJoined){
+
+        if(state == app.const.game.state.STATE_BET) {
             this._onGameStateBet();
             !this.isItMe() && this.scene.gamePlayers.isMePlaying() && this.renderer.showCuocBienBtn();
-        } else {
+        }else{
             this.renderer.showCuocBienBtn(false);
             this.scene.hideChooseBetSlider();
         }
 
-        if (!this.isItMe() || !this.isPlaying() || !this.scene.gamePlayers.isMePlaying()) return;
+        if(!this.isItMe() || !this.isPlaying() || !this.scene.gamePlayers.isMePlaying()) return;
 
-        if (state == app.const.game.state.STATE_BET) {
-            if (!this.isMaster) {
+        if(state == app.const.game.state.STATE_BET){
+            if(!this.isMaster){
                 this.scene.emit(Events.SHOW_BACAY_BET_CONTROLS);
                 this.scene.showChooseBetSlider(this.betAmount);
             }
-        } else if (state == app.const.game.state.STATE_DOWN) {
+        }else if(state == app.const.game.state.STATE_DOWN) {
             this.scene.emit(Events.SHOW_DOWN_CARD_CONTROLS);
         }
     }
@@ -223,35 +224,36 @@ export default class PlayerBaCay extends PlayerCardBetTurn {
         }
     }
 
-    onGameReset() {
+    onGameReset(){
         super.onGameReset();
         this.hucList = {};
         this.biHucList = {};
         this.pendingCuocBiens = {};
         this.pendingBiCuocBiens = {};
         this.currentCuocBien = 0;
+        this.gopGaValue = 0;
         this.setBetAmount(0);
         this.renderer.hideCuocBienValue();
     }
 
-    _onGameMasterChanged(playerId, player) {
-        if (this.id != playerId || !this.scene.isEnding()) return;
+    _onGameMasterChanged(playerId, player){
+        if(this.id != playerId || !this.scene.isEnding()) return;
 
         this.showChangeMasterAnimation()
     }
 
-    onGameEnding() {
+    onGameEnding(){
         super.onGameEnding();
 
         this.renderer.stopAllAnimation();
     }
 
-    onClickCuocBienBtn() {
+    onClickCuocBienBtn(){
         let mePlayer = this.scene.gamePlayers.me;
 
-        let { checkResult, msg } = BaCayUtils.checkCuocBienWithPlayer(mePlayer, this);
-        if (!checkResult) {
-            if (msg.length == 0) msg = app.res.string('game_bacay_khong_the_cuoc_bien');
+        let {checkResult, msg} = BaCayUtils.checkCuocBienWithPlayer(mePlayer, this);
+        if(!checkResult){
+            if(msg.length == 0) msg = app.res.string('game_bacay_khong_the_cuoc_bien');
             app.system.showToast(msg);
             this.renderer.showCuocBienBtn(false);
             return;
@@ -285,16 +287,16 @@ export default class PlayerBaCay extends PlayerCardBetTurn {
         if (!this.isItMe() || this.id == gaHucPlayerId) return;
 
         let gaHucPlayer = this.scene.gamePlayers.findPlayer(gaHucPlayerId);
-        if (!gaHucPlayer) return;
+        if(!gaHucPlayer) return;
 
         let mePlayer = this.scene.gamePlayers.me;
         let requestPlayerName = gaHucPlayer.user.name;
         let requestMoney = utils.getValue(data, app.keywords.BACAY_HUC_VALUE);
         let denyCb = () => delete mePlayer.pendingBiCuocBiens[requestPlayerName];
         let okCallback = () => {
-            let { valid, msg } = gaHucPlayer && BaCayUtils.validateAcceptCuocBienValue(requestMoney, this, gaHucPlayer);
+            let {valid, msg} = gaHucPlayer && BaCayUtils.validateAcceptCuocBienValue(requestMoney, this, gaHucPlayer);
 
-            if (valid) {
+            if(valid){
                 app.service.send({
                     cmd: app.commands.BACAY_PLAYER_HUC_ACCEPTED,
                     room: this.board.room,
@@ -303,33 +305,33 @@ export default class PlayerBaCay extends PlayerCardBetTurn {
                         [app.keywords.BACAY_GA_HUC_PLAYER_ID]: gaHucPlayerId
                     }
                 });
-            } else {
+            }else{
                 msg.length > 0 && app.system.info(msg);
             }
         };
 
         mePlayer.pendingBiCuocBiens[requestPlayerName] = requestMoney;
         app.system.confirm(
-            app.res.string('game_bacay_ask_to_accept_cuoc_bien', { player: requestPlayerName, value: requestMoney }),
+            app.res.string('game_bacay_ask_to_accept_cuoc_bien', {player: requestPlayerName, value: requestMoney}),
             denyCb,
             okCallback
         );
     }
 
-    _updateCuocBienValue(value) {
-        if (!utils.isNumber(value)) return;
+    _updateCuocBienValue(value){
+        if(!utils.isNumber(value)) return;
 
         this.currentCuocBien += value;
         this.renderer.showCuocBienBtn(false);
-        if (this.isItMe()) {
+        if(this.isItMe()){
             this.renderer.showCuocBienValue(this.currentCuocBien);
-        } else {
+        }else{
             this.renderer.showCuocBienValue(value);
         }
     }
 
-    _onPlayerAcceptCuocBien(gaHucPlayerId, biHucPlayerId, data) {
-        if (!this.isItMe()) return;
+    _onPlayerAcceptCuocBien(gaHucPlayerId, biHucPlayerId, data){
+        if(!this.isItMe()) return;
 
         console.log("_onPlayerAcceptCuocBien: ", gaHucPlayerId, biHucPlayerId);
 

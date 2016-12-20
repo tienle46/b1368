@@ -69,8 +69,7 @@ export default class GameEventHandler {
         app.system.addGameListener(Commands.PLAYER_BET, this._onPlayerBet, this);
         app.system.addGameListener(Commands.BACAY_PLAYER_GA_HUC, this._onPlayerGaHuc, this);
         app.system.addGameListener(Commands.BACAY_PLAYER_HUC_ACCEPTED, this._onPlayerHucAccepted, this);
-
-
+        app.system.addGameListener(Commands.BACAY_PLAYER_GOP_GA, this._onPlayerGopGa, this);
         app.system.addGameListener(Commands.XOCDIA_BET, this._onXocDiaPLayerBet, this);
         app.system.addGameListener(Commands.XOCDIA_CANCEL_BET, this._onXocDiaPLayerCancelBet, this);
     }
@@ -111,10 +110,22 @@ export default class GameEventHandler {
         app.system.removeGameListener(Commands.PLAYER_BET, this._onPlayerBet, this);
         app.system.removeGameListener(Commands.BACAY_PLAYER_GA_HUC, this._onPlayerGaHuc, this);
         app.system.removeGameListener(Commands.BACAY_PLAYER_HUC_ACCEPTED, this._onPlayerHucAccepted, this);
-
+        app.system.removeGameListener(Commands.BACAY_PLAYER_GOP_GA, this._onPlayerGopGa, this);
         app.system.removeGameListener(Commands.XOCDIA_BET, this._onXocDiaPLayerBet, this);
         app.system.removeGameListener(Commands.XOCDIA_CANCEL_BET, this._onXocDiaPLayerCancelBet, this);
 
+    }
+
+    _onPlayerGopGa(data){
+
+        let success = utils.getValue(data, app.keywords.SUCCESSFULL);
+        console.log("_onPlayerGopGa su", success, " ")
+        if(success){
+        console.log("_onPlayerGopGa su", success, " ")
+            let playerId = utils.getValue(data, Keywords.PLAYER_ID);
+            let gopGaValue = utils.getValue(data, Keywords.BA_CAY_GOP_GA_VALUE);
+            playerId && gopGaValue && this.scene.emit(Events.ON_PLAYER_BACAY_GOP_GA, playerId, gopGaValue);
+        }
     }
 
     _onXocDiaPLayerCancelBet(data) {
@@ -207,8 +218,8 @@ export default class GameEventHandler {
     _onRoomVariablesUpdate(event) {
         let changedVars = event.changedVars;
         let room = event.room;
-        changedVars && changedVars.forEach((varName) => {
 
+        changedVars && changedVars.forEach((varName) => {
             if (varName == Keywords.VARIABLE_OWNER) {
                 this.scene.emit(Events.ON_ROOM_CHANGE_OWNER, room);
             }

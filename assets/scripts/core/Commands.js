@@ -111,6 +111,7 @@ Commands.PLAYER_TLMN_CONG = "cg";
 Commands.BACAY_PLAYER_GA_HUC = "huc";
 Commands.BACAY_PLAYER_HUC_ACCEPTED = "ha";
 Commands.BACAY_PLAYER_KE_CUA = "kc";
+Commands.BACAY_PLAYER_GOP_GA = "gopGa";
 //Ranking
 Commands.RANKING_GET_CATEGORY = "top_ca";
 Commands.RANKING_GET_TRAU_VANG = "top_gb";

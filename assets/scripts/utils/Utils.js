@@ -44,6 +44,10 @@ export default class Utils {
         return value === null;
     }
 
+    static setInteractable(control, interactable) {
+        control instanceof cc.Button && (control.interactable = interactable);
+    }
+
     static disable(node) {
         if (!node) return;
 
