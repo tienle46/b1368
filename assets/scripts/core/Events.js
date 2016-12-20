@@ -36,6 +36,7 @@ Events.SHOW_DOWN_CARD_CONTROLS          = "show.downCardControls";
 Events.SHOW_GOP_GA_NODE                 = "show.gopGaNode";
 Events.SHOW_XOCDIA_BET_CONTROLS         = "show.xocdia.betControls";
 Events.SHOW_DOWN_CARD_CONTROLS          = "show.downCardControls";
+Events.SHOW_START_GAME_CONTROL          = "show.startGameControl";
 
 Events.HIDE_ALL_CONTROLS                = "hide.allControls";
 Events.HIDE_GAME_BEGIN_CONTROLS         = "hide.gameBeginControls";
@@ -87,6 +88,7 @@ Events.ON_CLICK_KE_BUTTON               = "on.click.keButton";
 Events.ON_CLICK_REVEAL_BUTTON           = "on.click.revealButton";
 Events.ON_CLICK_DOWN_BUTTON             = "on.click.downButton";
 Events.ON_CLICK_CHOOSE_BET_BUTTON       = "on.click.chooseBetButton";
+Events.ON_CLICK_START_GAME_BUTTON       = "on.click.startGameButton";
 
 Events.ON_GAME_RESET                        = "on.game.reset";
 Events.ON_GAME_STATE_BEGIN                  = "on.game.stateBegin";

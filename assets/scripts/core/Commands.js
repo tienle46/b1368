@@ -245,5 +245,7 @@ Commands.TRANSACTION_HISTORY = 'b_arh';
 Commands.XOCDIA_BET = 'bet';
 Commands.XOCDIA_CANCEL_BET = 'cancelBet';
 Commands.XOCDIA_HISTORY = 'shakeHistory';
+Commands.START_GAME = 'startGame';
+Commands.REGISTER_QUIT_ROOM = 'registerQuitRoom';
 
 module.exports = Commands;

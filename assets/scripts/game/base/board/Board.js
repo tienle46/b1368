@@ -281,12 +281,15 @@ export default class Board extends Actor {
         console.warn("on board begin: readyDuration: ", this.readyPhaseDuration, " justJoined: ", isJustJoined, " meReady: ", this.scene.gamePlayers.me.isReady());
 
         //Support for new ready flow
-        if (this.readyPhaseDuration && this.scene.gamePlayers.players.length > 1) {
+        if (this.readyPhaseDuration && this.scene.enoughPlayerToStartGame()) {
             if(isJustJoined) {
                 //Delay client - server && board init time
                 boardTimeLine -= 2;
             }
-            this.startTimeLine(boardTimeLine, () => { this.scene.emit(Events.ON_ACTION_EXIT_GAME) });
+
+            // this.startTimeLine(boardTimeLine, () => { this.scene.emit(Events.ON_ACTION_EXIT_GAME) });
+            this.startTimeLine(boardTimeLine);
+            this.scene.emit(Events.SHOW_START_GAME_CONTROL);
         }
 
         // if (this.readyPhaseDuration && !this.scene.gamePlayers.me.isReady()) {

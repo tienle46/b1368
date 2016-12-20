@@ -58,6 +58,7 @@ export default class Player extends Actor {
         this.scene.on(Events.ON_PLAYER_SET_BALANCE, this._onPlayerSetBalance, this);
         this.scene.on(Events.ON_PLAYER_CHAT_MESSAGE, this._onPlayerChatMessage, this);
         this.scene.on(Events.ON_ROOM_CHANGE_MIN_BET, this._onRoomMinBetChanged, this);
+        this.scene.on(Events.ON_CLICK_START_GAME_BUTTON, this._onClickStartGameButton, this);
     }
 
     _removeGlobalListener() {
@@ -77,6 +78,16 @@ export default class Player extends Actor {
         this.scene.off(Events.ON_PLAYER_CHAT_MESSAGE, this._onPlayerChatMessage, this);
         this.scene.off(Events.ON_GAME_MASTER_CHANGED, this._onGameMasterChanged, this);
         this.scene.off(Events.ON_ROOM_CHANGE_MIN_BET, this._onRoomMinBetChanged, this);
+        this.scene.off(Events.ON_CLICK_START_GAME_BUTTON, this._onClickStartGameButton, this);
+    }
+
+    _onClickStartGameButton(){
+        if(this.isOwner){
+            app.service.send({
+                cmd: app.commands.START_GAME,
+                room: this.scene.room
+            })
+        }
     }
 
     _onRoomMinBetChanged() {
