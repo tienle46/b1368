@@ -38,6 +38,7 @@ export default class BaCayControls extends GameControls {
 
         this.baseControls = this.baseControlsNode.getComponent('BaseControls');
         this.cardBetTurnControls = this.cardBetTurnControlsNode.getComponent('CardBetTurnControls');
+        this.baseControls.serverAutoStartGame = true;
 
         super.onEnable();
 

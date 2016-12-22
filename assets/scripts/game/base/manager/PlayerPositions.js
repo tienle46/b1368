@@ -129,12 +129,10 @@ export default class PlayerPositions extends Component {
     }
 
     getPlayerAnchorIndex(playerId, isItMe, gameCode) {
-        debug('getPlayerAnchorIndex', app.context.getMe())
 
         if (isItMe) {
             return 0;
         } else {
-            debug('getPlayerAnchorIndex2', app.context.getMe())
             if (app.context.getMe()) {
                 let { seatIndex } = this._getPlayerSeatIndex(playerId, gameCode);
                 return seatIndex;

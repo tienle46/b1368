@@ -20,6 +20,7 @@ export default class BaseControls extends GameControls {
         }
 
         this.showStartButtonOnBegin = false;
+        this.serverAutoStartGame = false;
     }
 
     onEnable() {
@@ -70,7 +71,7 @@ export default class BaseControls extends GameControls {
             this._onPlayerUnready();
         }
 
-        if(this.showStartButtonOnBegin && this.scene.enoughPlayerToStartGame()){
+        if(!this.serverAutoStartGame && this.showStartButtonOnBegin && this.scene.enoughPlayerToStartGame()){
             utils.active(this.startButton);
         }
     }
@@ -82,7 +83,7 @@ export default class BaseControls extends GameControls {
     }
 
     _showStartGameControl(){
-        if(this.scene.gamePlayers.owner && this.scene.gamePlayers.owner.isItMe()){
+        if(!this.serverAutoStartGame && this.scene.gamePlayers.owner && this.scene.gamePlayers.owner.isItMe()){
             this.showStartButtonOnBegin = true;
             utils.active(this.startButton);
         }

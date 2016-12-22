@@ -19,6 +19,7 @@ app.const.game.DECK_CARD_SCALE = 0.6;
  * @type {{}}
  */
 app.const.game.state = {};
+app.const.game.state.WAIT = 0;
 app.const.game.state.READY = 1;
 app.const.game.state.BOARD_STATE_END = 2;
 app.const.game.state.BOARD_STATE_TURN_BASE_TRUE_PLAY = 3;

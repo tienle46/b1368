@@ -91,6 +91,7 @@ Events.ON_CLICK_CHOOSE_BET_BUTTON       = "on.click.chooseBetButton";
 Events.ON_CLICK_START_GAME_BUTTON       = "on.click.startGameButton";
 
 Events.ON_GAME_RESET                        = "on.game.reset";
+Events.ON_GAME_WAIT                         = "on.game.wait";
 Events.ON_GAME_STATE_BEGIN                  = "on.game.stateBegin";
 Events.ON_GAME_STATE_STARTING               = "on.game.stateStarting";
 Events.ON_GAME_STATE_STARTED                = "on.game.stateStarted";

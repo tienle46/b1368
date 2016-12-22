@@ -317,7 +317,7 @@ export default class Player extends Actor {
     }
 
     _sendReadyImmediately() {
-        console.debug('_sendReadyImmediately Player.js')
+        console.debug('_sendReadyImmediately Player.js: ', this.scene.room)
         this.scene.showShortLoading('ready');
         app.service.send({ cmd: app.commands.PLAYER_READY, room: this.scene.room });
     }

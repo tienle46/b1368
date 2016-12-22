@@ -215,10 +215,9 @@ class Service {
 
     sendRequest(request, { cb = null, scope = null, cbName = null } = {}) {
 
-        console.log("sendRequest: ", this.client.isConnected(), this.isConnecting);
+        console.log("sendRequest: ", this.client.isConnected(), request);
 
         if (!this.client.isConnected() && !this.isConnecting) {
-            console.log("_onConnectionLost sendRequest");
             this._onConnectionLost();
             return;
         }

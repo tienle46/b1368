@@ -142,6 +142,17 @@ export default class GameScene extends BaseScene {
         }
     }
 
+    _onGameData(){
+        if (this.room && this.room.isGame) {
+            this.gameData = this.room.getVariable(app.keywords.VARIABLE_GAME_INFO).value;
+        }
+
+        if(this.gameData){
+            this._loadGameData();
+        }
+
+    }
+
     start(){
         super.start();
 
@@ -200,7 +211,7 @@ export default class GameScene extends BaseScene {
 
     _onActionExitGame() {
         // this.showLoading();
-        // app.service.sendRequest(new SFS2X.Requests.System.LeaveRoomRequest(this.room));
+        app.service.sendRequest(new SFS2X.Requests.System.LeaveRoomRequest(this.room));
 
         app.service.send({cmd: app.commands.REGISTER_QUIT_ROOM, room: this.room}, (data) => {
             if(data && data[app.keywords.SUCCESSFULL]){
@@ -286,11 +297,20 @@ export default class GameScene extends BaseScene {
 
     _onGameStateChange(state, data, isJustJoined, rejoining) {
 
+        if(this.gameState == app.const.game.state.WAIT){
+            this._onGameData();
+        }
+
         let localState = GameUtils.convertToLocalGameState(state);
         this.gameState = state;
         this.gameLocalState = localState;
 
         console.log("_onGameState: state=", state, " local State: ", localState, " isJustJoined=", isJustJoined, " data=", data);
+
+        if(this.gameState == app.const.game.state.WAIT){
+            this.emit(Events.ON_GAME_RESET);
+            return;
+        }
 
         switch (localState) {
             case app.const.game.state.BEGIN:

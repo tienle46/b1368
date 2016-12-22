@@ -53,6 +53,11 @@ export default class BoardBaCay extends BoardCardBetTurn {
         this.renderer.setGopGaLabelValue(value);
     }
 
+    // startTimeLine(duration){
+    //     // let message = this.scene.gameState == app.const.game.state.READY && app.res.string('game_start_deal_card');
+    //     super.startTimeLine(duration, message);
+    // }
+
     handleGameStateChange(boardState, data, isJustJoined) {
         super.handleGameStateChange(boardState, data);
 
@@ -128,7 +133,6 @@ export default class BoardBaCay extends BoardCardBetTurn {
                 }
             }
         }
-
     }
 
     _getPlayerHandCards(playerIds) {
