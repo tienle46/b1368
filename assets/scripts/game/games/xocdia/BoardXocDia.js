@@ -90,7 +90,13 @@ export default class BoardXocDia extends BoardCardBetTurn {
         let balanceChangeAmounts = this._getPlayerBalanceChangeAmounts(playerIds, data);
         let playerResults = utils.getValue(data, Keywords.WIN, []);
 
-        debug("onGameEnding BoardXocDia.js > balanceChangeAmounts", balanceChangeAmounts);
+
+        playingPlayerIds.forEach((id, index) => {
+            let playerId = id;
+            console.debug('playerId', playerId);
+            let balance = balanceChangeAmounts[id];
+            this.scene.emit(Events.XOCDIA_ON_PLAYER_RUN_MONEY_BALANCE_CHANGE_ANIM, { balance, playerId });
+        });
 
         super.onBoardEnding(data);
 

@@ -33,9 +33,8 @@ export default class XocDiaScene extends GameScene {
     onEnable() {
         this.board = this.boardNode.getComponent('BoardXocDia');
         this.gameControls = this.gameControlsNode.getComponent('XocDiaControls');
-        this.playerPositions = this.playerPositionAnchorsNode.getComponent('EightPlayerPositions');
+        this.playerPositions = this.playerPositionAnchorsNode.getComponent('NinePlayerPositions');
         // this.gameResultPopup = this.gameResultPopupNode.getComponent('GameResultPopup');
-        // this._betPopup = this.chooseBetSliderNode.getComponent('HorizontalBetPopup');
 
         super.onEnable();
 

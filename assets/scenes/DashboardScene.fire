@@ -3045,27 +3045,22 @@
     },
     "_enabled": true,
     "path": "",
-    "settingButton": {
-      "__id__": 19
-    },
-    "chatButton": {
-      "__id__": 26
-    },
     "highLightNode": {
       "__id__": 33
-    },
-    "friendsButton": {
-      "__id__": 44
     },
     "moreButton": {
       "__id__": 51
     },
+    "eventButton": null,
     "backButton": {
       "__id__": 58
     },
+    "chatBtn": null,
     "soundControl": {
       "__id__": 63
-    }
+    },
+    "titleContainerNode": null,
+    "dropDownOptions": null
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -3114,9 +3109,6 @@
     },
     "item": {
       "__uuid__": "8bc08dd6-c378-4084-ba29-be3b5c62ef0a"
-    },
-    "topBar": {
-      "__uuid__": "4d85d6d3-60fd-403c-b146-c9304957b77c"
     }
   }
 ]

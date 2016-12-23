@@ -34,6 +34,7 @@ export default class PlayerXocDia extends PlayerCardBetTurn {
         this.scene.on(Events.XOCDIA_ON_PLAYER_BET, this._onPlayerBet, this);
         this.scene.on(Events.XOCDIA_ON_PLAYER_CANCELBET, this._onPlayerCancelBet, this);
         this.scene.on(Events.XOCDIA_ON_DISTRIBUTE_CHIP, this._onDistributeChip, this);
+        this.scene.on(Events.XOCDIA_ON_PLAYER_RUN_MONEY_BALANCE_CHANGE_ANIM, this._onPlayerChangeMoneyAnim, this);
     }
 
     _removeGlobalListener() {
@@ -43,6 +44,7 @@ export default class PlayerXocDia extends PlayerCardBetTurn {
         this.scene.off(Events.XOCDIA_ON_PLAYER_BET, this._onPlayerBet, this);
         this.scene.off(Events.XOCDIA_ON_PLAYER_CANCELBET, this._onPlayerCancelBet, this);
         this.scene.off(Events.XOCDIA_ON_DISTRIBUTE_CHIP, this._onDistributeChip, this);
+        this.scene.off(Events.XOCDIA_ON_PLAYER_RUN_MONEY_BALANCE_CHANGE_ANIM, this._onPlayerChangeMoneyAnim, this);
     }
 
     onLoad() {
@@ -81,6 +83,13 @@ export default class PlayerXocDia extends PlayerCardBetTurn {
         return;
     }
 
+    _onPlayerChangeMoneyAnim(data) {
+        let { playerId, balance } = data;
+        if (playerId !== this.id)
+            return;
+
+        this.renderer.startPlusBalanceAnimation(balance);
+    }
 
     _onGameRejoin(data) {
         super._onGameRejoin(data);
@@ -158,9 +167,9 @@ export default class PlayerXocDia extends PlayerCardBetTurn {
     }
 
 
-    onGameEnding() {
-        super.onGameEnding();
-
+    onGameEnding(data) {
+        super.onGameEnding(data);
+        console.debug('onGameEnding > PlayerXocDia > data', data);
         this.renderer.stopAllAnimation();
     }
 

@@ -3,12 +3,12 @@
  */
 
 import app from 'app';
-import {utils, GameUtils} from 'utils';
+import { utils, GameUtils } from 'utils';
 import SFS2X from 'SFS2X';
 import Component from 'components';
-import {gameManager, Player, PlayerRenderer} from 'game';
-import {CreateGameException} from 'exceptions';
-import {Events} from 'events'
+import { gameManager, Player, PlayerRenderer } from 'game';
+import { CreateGameException } from 'exceptions';
+import { Events } from 'events'
 
 export default class GamePlayers extends Component {
     constructor() {
@@ -50,10 +50,9 @@ export default class GamePlayers extends Component {
         this.scene.on(Events.ON_GAME_STATE_ENDING, this._onGameEnding, this);
     }
 
-    onLoad() {
-    }
+    onLoad() {}
 
-    isMeReady(){
+    isMeReady() {
         return this.me && this.me.isReady();
     }
 
@@ -67,16 +66,16 @@ export default class GamePlayers extends Component {
         this.initLayerDoneCb = cb;
     }
 
-    _onGameEnding(data){
+    _onGameEnding(data) {
         let masterPlayerId = utils.getValue(data, app.keywords.MASTER_PLAYER_ID);
-        if(masterPlayerId){
+        if (masterPlayerId) {
             let masterPlayer = this.findPlayer(masterPlayerId);
             this.setMaster(masterPlayer)
             this.scene.emit(Events.ON_GAME_MASTER_CHANGED, masterPlayerId, masterPlayer);
         }
     }
 
-    setMaster(masterPlayer){
+    setMaster(masterPlayer) {
         this.master && this.master.setMaster(false);
         this.master = masterPlayer;
         this.master && this.master.setMaster(true);
@@ -135,9 +134,11 @@ export default class GamePlayers extends Component {
         this.exittedPlayers.forEach(quitPlayerInfo => {
             playingPlayerIds.push(quitPlayerInfo.id)
         });
+        console.debug('playerId exittedPlayer', this.exittedPlayer)
         this.players.forEach(player => {
             player.isReady() && playingPlayerIds.push(player.id)
         });
+        console.debug('playerId players', this.players)
 
         return playingPlayerIds;
     }
@@ -183,7 +184,7 @@ export default class GamePlayers extends Component {
         let masterPlayerId = utils.getValue(boardInfoObj, app.keywords.MASTER_PLAYER_ID);
         if (masterPlayerId) {
             this.setMaster(this.findPlayer(masterPlayerId));
-        }else if(boardInfoObj.masterIdOwner){
+        } else if (boardInfoObj.masterIdOwner) {
             this.setMaster(this.owner);
         }
     }
@@ -424,11 +425,11 @@ export default class GamePlayers extends Component {
             let newPlayer = this._addPlayer(user);
 
             if (newPlayer) {
-                let boardState = this.board.isPlaying() || this.board.isStarting() ? app.const.game.state.PLAYING
-                    : this.board.isBegin() ? app.const.game.state.BEGIN
-                    : this.board.isReady() ? app.const.game.state.READY
-                    : this.board.isEnding() ? app.const.game.state.ENDING
-                    : undefined;
+                let boardState = this.board.isPlaying() || this.board.isStarting() ? app.const.game.state.PLAYING :
+                    this.board.isBegin() ? app.const.game.state.BEGIN :
+                    this.board.isReady() ? app.const.game.state.READY :
+                    this.board.isEnding() ? app.const.game.state.ENDING :
+                    undefined;
 
                 boardState && newPlayer.changeGameState(boardState);
             }
@@ -520,7 +521,7 @@ export default class GamePlayers extends Component {
 
             if (retPlayer != null && lastPlayedId == retPlayer.id) return null;
 
-            if(count++ > 4) break;
+            if (count++ > 4) break;
 
         } while (retPlayer == null || !retPlayer.isPlaying());
 

@@ -56,8 +56,8 @@ class StatisticTable extends Component {
 
     // @param type:  0: even, 1: odd
     addChildToSeparateSide(type) {
-        // 0: red, 1: black
-        let colors = ['game/images/xocdia/ingame-xocdia-red', 'game/images/xocdia/ingame-xocdia-black'];
+        // 0: white, 1: red
+        let colors = ['blueTheme/ingame/xocdia/trang', 'blueTheme/ingame/xocdia/do'];
 
         let cell = cc.instantiate(this.cellNode);
         cell.active = true;

@@ -22,6 +22,7 @@ export default class PlayerRenderer extends ActorRenderer {
             masterIcon: cc.Node,
             plusBalanceNode: cc.Node,
             plusBalanceLabel: cc.Label,
+            minusBalanceLabel: cc.Label,
             playerMessageNode: cc.Node,
             playerTimeLineProgress: cc.ProgressBar,
             avatarNode: cc.Node,
@@ -116,9 +117,17 @@ export default class PlayerRenderer extends ActorRenderer {
 
     startPlusBalanceAnimation(balance) {
         if (!this.loaded || isNaN(balance)) return;
-
-        if (this.plusBalanceLabel && this.plusBalanceNode) {
-            this.plusBalanceLabel.string = GameUtils.toChangedBalanceString(balance);
+        let isWinner = balance > 0;
+        balance = GameUtils.toChangedBalanceString(balance);
+        console.debug('startPlusBalanceAnimation', balance, isWinner)
+        if (this.plusBalanceLabel && this.plusBalanceNode && this.minusBalanceLabel) {
+            if (isWinner) {
+                this.plusBalanceLabel.string = balance;
+                this.minusBalanceLabel.string = "";
+            } else {
+                this.plusBalanceLabel.string = "";
+                this.minusBalanceLabel.string = balance;
+            }
             this.plusBalanceAnim.play();
         }
     }
