@@ -1,24 +1,47 @@
 import app from 'app';
 import Component from 'Component';
-import RubUtils from 'RubUtils';
-import numeral from 'numeral';
 
 class TabSMS extends Component {
     constructor() {
-        super()
-        this.contentNode = {
+        super();
+        this.toggleGroupNode = {
             default: null,
             type: cc.Node
-        }
+        };
+
+        this.itemNode = {
+            default: null,
+            type: cc.Node
+        };
+
+        this.h1Lbl = {
+            default: null,
+            type: cc.Label
+        };
+
+        this.sendToLbl = {
+            default: null,
+            type: cc.Label
+        };
+
+        this.commandLbl = {
+            default: null,
+            type: cc.Label
+        };
+
+        this.moneyGetLbl = {
+            default: null,
+            type: cc.Label
+        };
     }
 
     onLoad() {
         this.node.active = true;
         // get content node
-        let event = new cc.Component.EventHandler();
-        event.target = this.node;
-        event.component = 'TabSMS';
-        event.handler = 'scrollEvent';
+        // let event = new cc.Component.EventHandler();
+        // event.target = this.node;
+        // event.component = 'TabSMS';
+        // event.handler = 'scrollEvent';
 
         // this.node.getComponent(cc.ScrollView).scrollEvents.push(event);
 
@@ -89,8 +112,12 @@ class TabSMS extends Component {
             }
         }
 
-        // this._initSMSList(data);
-        this._requestPaymentList();
+        this._initSMSList(data);
+        // this._requestPaymentList();
+    }
+
+    onItemBtnClick() {
+
     }
 
     _requestPaymentList() {
@@ -104,31 +131,46 @@ class TabSMS extends Component {
         }, app.const.scene.DASHBOARD_SCENE);
     }
 
+    _initItem({ command, sendTo, moneyGot, isChecked }) {
+        let cmdArray = command.split(' ');
+        let h1 = cmdArray.shift();
+        let cmd = cmdArray.join(' ');
+
+        this.h1Lbl.string = h1;
+        this.commandLbl.string = cmd;
+        this.sendToLbl.string = `Gửi ${sendTo}`;
+        this.moneyGetLbl.string = `${moneyGot.toLocaleString()}`;
+
+        let item = cc.instantiate(this.itemNode);
+        item.active = true;
+        let toggle = item.getComponent(cc.Toggle);
+        toggle.isChecked = isChecked;
+
+        this.toggleGroupNode.addChild(item);
+    }
+
     _initSMSList(data) {
-        let smsList = [];
         // app.keywords.CHARGE_SMS_OBJECT
         if (data.hasOwnProperty(app.keywords.CHARGE_SMS_OBJECT)) {
             const obj = data[app.keywords.CHARGE_SMS_OBJECT];
-
             if (obj.hasOwnProperty(app.keywords.CHARGE_SMS_MONEY_GOT) && obj.hasOwnProperty(app.keywords.CHARGE_SMS_MONEY_LOST) &&
                 obj.hasOwnProperty(app.keywords.CHARGE_SMS_SHORT_CODE) &&
                 obj.hasOwnProperty(app.keywords.CHARGE_SMS_COMMAND)
             ) {
-
                 let moneyGotList = obj[app.keywords.CHARGE_SMS_MONEY_GOT];
                 let moneySpendList = obj[app.keywords.CHARGE_SMS_MONEY_LOST];
-                let sendToList = obj[app.keywords.CHARGE_SMS_MONEY_LOST];
+                let sendToList = obj[app.keywords.CHARGE_SMS_SHORT_CODE];
                 let commandList = obj[app.keywords.CHARGE_SMS_COMMAND];
 
                 for (let i = 0; i < moneyGotList.length; i++) {
                     let smsModel = {};
-                    smsModel['xCoinGot'] = moneyGotList[i];
+                    smsModel['moneyGot'] = moneyGotList[i];
                     smsModel['moneyLost'] = moneySpendList[i];
                     smsModel['sendTo'] = sendToList[i];
                     smsModel['command'] = commandList[i];
+                    smsModel['isChecked'] = i === 0;
 
-                    smsList.push(smsModel);
-                    console.debug('sms', smsModel);
+                    this._initItem(smsModel);
                 }
             }
         }
@@ -140,24 +182,23 @@ class TabSMS extends Component {
         }
 
         //render models to screen
-        RubUtils.loadRes('dashboard/dialog/prefabs/topup/smsItem').then((preFab) => {
+        // RubUtils.loadRes('dashboard/dialog/prefabs/topup/smsItem').then((preFab) => {
 
-            smsList.forEach((smsModel) => {
-                const transactionItem = cc.instantiate(preFab);
-                const widget = transactionItem.addComponent(cc.Widget);
-                widget.isAlignLeft = true;
-                widget.isAlignRight = true;
+        //     smsList.forEach((smsModel) => {
+        //         const transactionItem = cc.instantiate(preFab);
+        //         const widget = transactionItem.addComponent(cc.Widget);
+        //         widget.isAlignLeft = true;
+        //         widget.isAlignRight = true;
 
-                widget.left = 0;
-                widget.right = 0;
+        //         widget.left = 0;
+        //         widget.right = 0;
 
-                transactionItem.getChildByName('bg').getChildByName('titleLabel').getComponent(cc.Label).string = smsModel['moneyLost'];
-                transactionItem.getChildByName('bg').getChildByName('valueLabel').getComponent(cc.Label).string = numeral(smsModel['xCoinGot']).format('0,0');
+        //         transactionItem.getChildByName('bg').getChildByName('titleLabel').getComponent(cc.Label).string = smsModel['moneyLost'];
+        //         transactionItem.getChildByName('bg').getChildByName('valueLabel').getComponent(cc.Label).string = numeral(smsModel['xCoinGot']).format('0,0');
 
-                this.contentNode.addChild(transactionItem);
-            })
-
-        })
+        //         
+        //     })
+        // })
     }
 
     _hide() {
