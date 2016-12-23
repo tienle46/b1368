@@ -1,4 +1,3 @@
-import TabRub from 'TabRub';
 import Rub from 'Rub';
 import app from 'app';
 import RubUtils from 'RubUtils';
@@ -9,49 +8,57 @@ export default class DialogRub extends Rub {
      * Creates an instance of DialogRub.
      * 
      * @param {cc.Node} node
-     * @param {object} tabOptions
+     * @param {Array} tabs: array options
      *  {
-     *      tabs: [],   // its props exactly the same with options param in TabRub
-     *      options : {} // its props exactly the same with options param in TabRub
+     *      title: string # label text
+     *      value: {any} # component value
      *  }
-     * 
+     * @param {options} 
+     * {
+     *      title: string
+     * }
      * @memberOf DialogRub
      */
-    constructor(node, tabOptions = null, isAddToNode = true) {
+    constructor(node, tabs = null, options) {
         super(node);
         // this.node = node;
-        this.tabOptions = tabOptions;
+        this.tabs = tabs;
+        this.options = options;
+
         this.init();
-        this.isAddToNode = isAddToNode;
     }
 
     init() {
         let dialog = app.res.prefab.dialog;
         this.prefab = cc.instantiate(dialog);
-        this.prefab.zindex = app.const.dialogZIndex;
         this.addToNode();
 
         this.prefab.x = 0;
         this.prefab.y = 0;
 
         this.dialogNode = this.prefab.getChildByName('dialog');
-        this.bodyNode = this.dialogNode.getChildByName('body');
+        this.dialogComponent = this.dialogNode.getComponent('Dialog');
+        this.bodyNode = this.dialogComponent.bodyNode;
 
         // event registeration
         this._closeBtnEventRegister();
 
-        this.tabOptions && this._initTab(this.tabOptions);
+        this.tabs && this._initTab(this.tabs);
+        this.options.title && this._initTitle(this.options.title);
     }
 
     // add Tab to prefab/pagination node
-    _initTab(tabOptions) {
-        let paginationNode = this.dialogNode.getChildByName('pagination');
-
+    _initTab(tabs) {
+        let Tabs = this.dialogComponent.tabs;
         // add Tab
-        let tabs = tabOptions.tabs;
-        let options = tabOptions.options;
+        tabs.forEach((tab, index) => {
+            tab.isChecked = (index === 0);
+            Tabs.make(tab);
+        });
+    }
 
-        new TabRub(paginationNode, this.bodyNode, tabs, options).fitToParent();
+    _initTitle(string) {
+        this.dialogComponent.setTitle(string);
     }
 
     // close Btn Event
@@ -96,7 +103,7 @@ export default class DialogRub extends Rub {
 
 
     // return tabRub
-    static show(node, tabOptions) {
-        return new this(node, tabOptions);
+    static show(node, tabs, options) {
+        return new this(node, tabs, options);
     }
 }

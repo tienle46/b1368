@@ -180,6 +180,7 @@ Keywords.TASK_DETAIL = "d";
 Keywords.TASK_ITEM_NAME = "ri";
 Keywords.TASK_ITEM_QUANTITY = "riq";
 //Store
+Keywords.GAME_GROUP_ID = "gi";
 Keywords.STORE_TYPE_ID = "i";
 Keywords.STORE_TYPE_ID_LIST = "il";
 Keywords.STORE_TYPE_NAME_LIST = "nl";

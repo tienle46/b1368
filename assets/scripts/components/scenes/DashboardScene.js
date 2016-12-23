@@ -23,11 +23,6 @@ export default class DashboardScene extends BaseScene {
             default: null,
             type: cc.Prefab
         };
-
-        this.topBar = {
-            default: null,
-            type: cc.Prefab
-        };
     }
 
     onLoad() {
@@ -132,15 +127,11 @@ export default class DashboardScene extends BaseScene {
     }
 
     _addTopBar() {
-        // RubUtils.loadRes('dashboard/Topbar').then((prefab) => {
-        //     let topbarNode = cc.instantiate(prefab);
+        RubUtils.loadRes('dashboard/Topbar').then((prefab) => {
+            let topbarNode = cc.instantiate(prefab);
 
-        //     this.node.addChild(topbarNode);
-        // });
-        let topbarNode = cc.instantiate(this.topBar);
-        topbarNode.setPosition(cc.v2(0, 360));
-        this.node.addChild(topbarNode);
-
+            this.node.addChild(topbarNode);
+        });
     }
 }
 

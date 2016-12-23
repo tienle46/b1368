@@ -1,18 +1,13 @@
-
 import app from 'app';
 import Component from 'Component';
-import AlertPopupRub from 'AlertPopupRub';
-import ButtonScaler from 'ButtonScaler';
 import RubUtils from 'RubUtils';
-import ConfirmPopupRub from 'ConfirmPopupRub';
-import ExchangeDialog from 'ExchangeDialog';
 import numeral from 'numeral';
 
 class TabSMS extends Component {
     constructor() {
         super()
         this.contentNode = {
-            default : null,
+            default: null,
             type: cc.Node
         }
     }
@@ -28,18 +23,18 @@ class TabSMS extends Component {
         // this.node.getComponent(cc.ScrollView).scrollEvents.push(event);
 
         let data = {
-            ap : ['com.bamienstudio.baibamien.4000g', 'com.bamienstudio.baibamien.8000g'],
-            bp : {
-                dl : ['4000 Gold (1AU -> 4000Xu)','Test (0AU -> 1Xu)'],
-                il : ['com.milabs.4000', 'android.test.purchased']
+            ap: ['com.bamienstudio.baibamien.4000g', 'com.bamienstudio.baibamien.8000g'],
+            bp: {
+                dl: ['4000 Gold (1AU -> 4000Xu)', 'Test (0AU -> 1Xu)'],
+                il: ['com.milabs.4000', 'android.test.purchased']
             },
             c: {
 
             },
-            il : [],
+            il: [],
             nl: [],
             s: {
-                b : [30000,
+                b: [30000,
                     50000,
                     120000,
                     200000,
@@ -63,7 +58,8 @@ class TabSMS extends Component {
                     9029,
                     9029,
                     9029,
-                    9029],
+                    9029
+                ],
                 c: ["DR 1 bitcoin",
                     "DR 1 bitcoin",
                     "MW 20000 VLA NAP 1/bitcoin",
@@ -75,8 +71,9 @@ class TabSMS extends Component {
                     "MW VLA NAP50 1/bitcoin",
                     "MW VLA NAP20 1/bitcoin",
                     "MW VLA NAP30 1/bitcoin",
-                    "MW VLA NAP50 1/bitcoin"],
-                m : ["10000 VN\U0110",
+                    "MW VLA NAP50 1/bitcoin"
+                ],
+                m: ["10000 VN\U0110",
                     "15000 VN\U0110",
                     "Viettel  20K",
                     "Viettel  30K",
@@ -87,66 +84,65 @@ class TabSMS extends Component {
                     "Mobi  50K",
                     "Vina  20K",
                     "Vina  30K",
-                    "Vina  50K"]
+                    "Vina  50K"
+                ]
             }
         }
 
-        this._initSMSList(data);
-        // this._requestPaymentList();
+        // this._initSMSList(data);
+        this._requestPaymentList();
     }
-    _requestPaymentList(){
+
+    _requestPaymentList() {
         var sendObject = {
             'cmd': app.commands.USER_GET_CHARGE_LIST,
-            'data': {
-
-            }
         };
 
         app.service.send(sendObject, (data) => {
-            // log(data);
-
             this._initSMSList(data);
 
         }, app.const.scene.DASHBOARD_SCENE);
     }
-    _initSMSList(data){
+
+    _initSMSList(data) {
         let smsList = [];
         // app.keywords.CHARGE_SMS_OBJECT
-        if(data.hasOwnProperty(app.keywords.CHARGE_SMS_OBJECT)){
+        if (data.hasOwnProperty(app.keywords.CHARGE_SMS_OBJECT)) {
             const obj = data[app.keywords.CHARGE_SMS_OBJECT];
 
-            if(obj.hasOwnProperty(app.keywords.CHARGE_SMS_MONEY_GOT) && obj.hasOwnProperty(app.keywords.CHARGE_SMS_MONEY_LOST)
-                && obj.hasOwnProperty(app.keywords.CHARGE_SMS_SHORT_CODE)
-                && obj.hasOwnProperty(app.keywords.CHARGE_SMS_COMMAND)
-            ){
+            if (obj.hasOwnProperty(app.keywords.CHARGE_SMS_MONEY_GOT) && obj.hasOwnProperty(app.keywords.CHARGE_SMS_MONEY_LOST) &&
+                obj.hasOwnProperty(app.keywords.CHARGE_SMS_SHORT_CODE) &&
+                obj.hasOwnProperty(app.keywords.CHARGE_SMS_COMMAND)
+            ) {
 
                 let moneyGotList = obj[app.keywords.CHARGE_SMS_MONEY_GOT];
                 let moneySpendList = obj[app.keywords.CHARGE_SMS_MONEY_LOST];
                 let sendToList = obj[app.keywords.CHARGE_SMS_MONEY_LOST];
                 let commandList = obj[app.keywords.CHARGE_SMS_COMMAND];
 
-                for( let i = 0 ; i < moneyGotList.length; i++){
-                    let smsModel = {}
+                for (let i = 0; i < moneyGotList.length; i++) {
+                    let smsModel = {};
                     smsModel['xCoinGot'] = moneyGotList[i];
                     smsModel['moneyLost'] = moneySpendList[i];
                     smsModel['sendTo'] = sendToList[i];
                     smsModel['command'] = commandList[i];
 
                     smsList.push(smsModel);
-
+                    console.debug('sms', smsModel);
                 }
             }
         }
+
         //TODO: what the hell is ac
-        if(data.hasOwnProperty('ac')){
+        if (data.hasOwnProperty('ac')) {
             let smsObj = data['ac'];
 
         }
 
         //render models to screen
-        RubUtils.loadRes('dashboard/dialog/prefabs/topup/smsItem').then((preFab)=>{
+        RubUtils.loadRes('dashboard/dialog/prefabs/topup/smsItem').then((preFab) => {
 
-            smsList.forEach((smsModel)=>{
+            smsList.forEach((smsModel) => {
                 const transactionItem = cc.instantiate(preFab);
                 const widget = transactionItem.addComponent(cc.Widget);
                 widget.isAlignLeft = true;

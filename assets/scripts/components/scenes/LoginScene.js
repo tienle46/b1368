@@ -22,14 +22,9 @@ export default class LoginScene extends BaseScene {
             default: null,
             type: cc.Toggle
         };
-
-        this.isRemember = false;
     }
 
     onLoad() {
-        if (this.isRemember) {
-            this._loginToDashboard();
-        }
         this.userNameEditBox.string = "";
         this.userPasswordEditBox.string = "";
 
@@ -51,20 +46,14 @@ export default class LoginScene extends BaseScene {
             cc.sys.localStorage.setItem(app.const.USER_LOCAL_STORAGE, userInfo);
         }
         this._loginToDashboard(username, password);
-
-        // if (this._isValidUserInputs(username, password)) {
-        // this._loginToDashboard(username, password);
-        // } else {
-        //     if (!this._isValidUsernameInput(username)) {
-        //         this.addPopup(app.getMessageFromServer("LOGIN_ERROR_USERNAME_NOT_VALID"));
-        //     } else if (!this._isValidPasswordInput(password)) {
-        //         this.addPopup(app.getMessageFromServer("LOGIN_ERROR_PASSWORD_NOT_VALID"));
-        //     }
-        // }
     }
 
     back() { // back to EntranceScene
         this.changeScene(app.const.scene.ENTRANCE_SCENE);
+    }
+
+    goToRegisterScene() {
+        this.changeScene(app.const.scene.REGISTER_SCENE);
     }
 
     // check if the user information saved.
@@ -80,7 +69,7 @@ export default class LoginScene extends BaseScene {
         this.showLoading();
         app.service.connect((success) => {
             if (success) {
-                app.service.requestAuthen(username, password, false, false,null, (error, result) => {
+                app.service.requestAuthen(username, password, false, false, null, (error, result) => {
 
                     this.hideLoading();
                     if (error) {

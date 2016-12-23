@@ -43,7 +43,7 @@ export default class TimerRub {
 
         this.remaining = remain > 0 ? remain : 100;
 
-        clearInterval(this.timerId);
+        this.clear(this.timerId);
         this.state = 2;
     }
 
@@ -62,10 +62,14 @@ export default class TimerRub {
         // this.cb();
 
         this.startTime = new Date().getTime();
-        this.timerId && clearInterval(this.timerId);
+        this.timerId && this.clear(this.timerId);
         this.timerId = null;
         (!this.timerId) && (this.timerId = setInterval(this.cb, this.interval));
         this.remaining = 0;
         this.state = 1;
+    }
+
+    clear() {
+        clearInterval(this.timerId);
     }
 }

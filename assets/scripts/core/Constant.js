@@ -13,6 +13,8 @@ app.const.soundControl = 10002;
 app.const.popupZIndex = 10003;
 app.const.LANGUAGE = "vi"; // set the language used in app. Default: "vi"
 
+app.const.DIALOG_DIR_PREFAB = "dashboard/dialog/prefabs";
+
 app.const.USER_LOCAL_STORAGE = "userInfo";
 
 app.const.scene = {};

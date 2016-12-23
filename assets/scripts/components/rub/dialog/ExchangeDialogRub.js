@@ -5,8 +5,8 @@ import AlertPopupRub from 'AlertPopupRub';
 import app from 'app';
 
 export default class ExchangeDialogRub extends DialogRub {
-    constructor(node, tabOptions) {
-        super(node, tabOptions);
+    constructor(node, tabs, options) {
+        super(node, tabs, options);
     }
 
     init() {

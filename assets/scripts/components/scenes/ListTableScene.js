@@ -19,6 +19,16 @@ export default class ListTableScene extends BaseScene {
             type: cc.Prefab
         };
 
+        this.gameTitleLbl = {
+            default: null,
+            type: cc.Label
+        };
+
+        this.filterGroup = {
+            default: null,
+            type: cc.Node
+        };
+
         this.items = [];
 
         this.time = 2500 * 10; // creating new request for updating tables every 25s
@@ -32,6 +42,10 @@ export default class ListTableScene extends BaseScene {
 
         // timeout setTimeout
         this.timeout = null;
+
+        // game group Id
+        this.gameGroupId = null;
+
     }
 
     onDestroy() {
@@ -45,22 +59,6 @@ export default class ListTableScene extends BaseScene {
         this.timeout = null;
     }
 
-
-    // onEnable() {
-    //     super.onEnable();
-
-    //     // this._setInterval();
-    // }
-
-    // // interval for updating tables state by creating new request to server
-    // _setInterval() {
-    //     (!this.interval) && (
-    //         this.interval = setInterval(() => {
-    //             this.node && this.lobby && this._getRoomList(this.lobby);
-    //         }, this.time)
-    //     );
-    // }
-
     onLoad() {
         super.onLoad();
 
@@ -70,7 +68,7 @@ export default class ListTableScene extends BaseScene {
     }
 
     _initComponents() {
-        this._addBottomBar();
+        // this._addBottomBar();
         this._addTopBar();
 
         app.context.getSelectedGame() && (this.gameCode = app.context.getSelectedGame());
@@ -81,7 +79,7 @@ export default class ListTableScene extends BaseScene {
     }
 
     _initFilterBtns() {
-        let btnNodes = this.node.getChildByName('Layout').children;
+        let btnNodes = this.filterGroup.children;
 
         let event = new cc.Component.EventHandler();
         event.target = this.node;
@@ -116,8 +114,7 @@ export default class ListTableScene extends BaseScene {
     }
 
     _initGameLabel(gameCode) {
-        let lbl = this.node.getChildByName('Sprite').getChildByName('gameTitle').getComponent(cc.Label);
-        lbl.string = gameCode.toUpperCase();
+        this.gameTitleLbl.string = gameCode.toUpperCase();
     }
 
     _getFirstGameLobbyFromServer() {
@@ -135,7 +132,7 @@ export default class ListTableScene extends BaseScene {
                 let roomIds = data[app.keywords.GROUP_LIST_GROUP][app.keywords.GROUP_SHORT_NAME];
                 let lobby = null;
                 roomIds && roomIds.length > 0 && (lobby = roomIds[0]);
-                lobby && this._getRoomList(lobby);
+                lobby && this._sendRequestUserJoinLobbyRoom(lobby);
 
                 // assume server will be response minbet for filtering based on its minbet
             } else {
@@ -144,27 +141,22 @@ export default class ListTableScene extends BaseScene {
         });
     }
 
-    _getRoomList(lobbyId) {
+    _sendRequestUserJoinLobbyRoom(lobbyId) {
         if (!lobbyId) {
             console.error('where is our lobby !');
             return;
         }
 
         let data = {};
-        data[app.keywords.GROUP_ID] = `${this.gameCode}${lobbyId}`;
+        this.gameGroupId = `${this.gameCode}${lobbyId}`;
+
+        data[app.keywords.GROUP_ID] = this.gameGroupId;
 
         let reqObject = {
             cmd: app.commands.USER_JOIN_LOBBY_ROOM,
             data
         };
         app.service.send(reqObject); // emit user join event
-
-        this.timeout && clearTimeout(this.timeout);
-        this.timeout = null;
-
-        this.timeout = setTimeout(() => {
-            this._getRoomList(lobbyId);
-        }, this.time);
     }
 
     _addGlobalListener() {
@@ -211,13 +203,7 @@ export default class ListTableScene extends BaseScene {
         let room = event.room;
         if (room) {
             if (room.isGame === false && room.name && room.name.indexOf('lobby') > -1) {
-                let sendObject = {
-                    cmd: app.commands.USER_LIST_ROOM,
-                    room
-                };
-                app.service.send(sendObject, (data) => {
-                    this.node && this._initRoomsListFromData(data);
-                });
+                this._sendRequestUserListRoom(room);
             }
         } else {
             if (event.errorCode) {
@@ -227,12 +213,30 @@ export default class ListTableScene extends BaseScene {
         }
     }
 
+    _sendRequestUserListRoom(room) {
+        let sendObject = {
+            cmd: app.commands.USER_LIST_ROOM,
+            room
+        };
+        app.service.send(sendObject, (data) => {
+            this.node && this._initRoomsListFromData(data);
+        });
+
+        // timer 
+        this.timeout && clearTimeout(this.timeout);
+        this.timeout = null;
+
+        this.timeout = setTimeout(() => {
+            this._sendRequestUserListRoom(room);
+        }, this.time);
+
+    }
+
     _initRoomsListFromData(data) {
         if (!data)
             return;
 
         this.items = [];
-        const itemDimension = this.contentInScroll.width || 300;
         let customIds = data[app.keywords.ID],
             minBets = data[app.keywords.ROOM_MIN_BET],
             passwords = data[app.keywords.ROOM_PASSWORD],
@@ -247,7 +251,7 @@ export default class ListTableScene extends BaseScene {
 
                 const listCell = new cc.instantiate(this.tableListCell);
 
-                listCell.setContentSize(itemDimension - 16, 50);
+                // listCell.setContentSize(itemDimension - 16, 50);
                 listCell.setPosition(cc.p(0, 0));
 
                 const cellComponent = listCell.getComponent('TableListCell');
@@ -312,7 +316,7 @@ export default class ListTableScene extends BaseScene {
             return items;
 
         items.filter((item) => {
-            item.getComponent('TableListCell').minBet >= cond.min && item.getComponent('TableListCell').minBet <= cond.max
+            item.getComponent('TableListCell').minBet >= cond.min && item.getComponent('TableListCell').minBet <= cond.max;
         });
         return items.filter((item) => item.getComponent('TableListCell').minBet >= cond.min && item.getComponent('TableListCell').minBet <= cond.max);
     }

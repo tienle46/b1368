@@ -21,8 +21,8 @@ class RatioItem extends Component {
     }
 
     initItem(number, ratio) {
-        this.titleLbl.string = `${number}K thẻ =`;
-        this.ratioLbl.string = `${number * ratio}K`;
+        this.titleLbl.string = `${number.toLocaleString()} VNĐ`;
+        this.ratioLbl.string = `${(number * ratio).toLocaleString()} Xu`;
     }
 }
 

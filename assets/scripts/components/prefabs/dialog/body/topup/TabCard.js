@@ -1,9 +1,6 @@
 import app from 'app';
 import Component from 'Component';
 import AlertPopupRub from 'AlertPopupRub';
-import ToggleGroup from 'ToggleGroup';
-import CheckBox from 'CheckBox';
-import RubUtils from 'RubUtils';
 import LoaderRub from 'LoaderRub';
 
 class TabCard extends Component {
@@ -12,17 +9,49 @@ class TabCard extends Component {
 
         this.ratioItem = {
             default: null,
-            type: cc.Prefab
+            type: cc.Node
         };
 
         this.ratioContainer = {
             default: null,
             type: cc.Node
         };
+
+        this.dropDownContainer = {
+            default: null,
+            type: cc.Node
+        };
+
+        this.listCardContainer = {
+            default: null,
+            type: cc.Node
+        };
+
+        this.providerNode = {
+            default: null,
+            type: cc.Node
+        };
+
+        this.providerLbl = {
+            default: null,
+            type: cc.Label
+        };
+
+        this.cardSerialEditBox = {
+            default: null,
+            type: cc.EditBox
+        };
+
+        this.serialNumberEditBox = {
+            default: null,
+            type: cc.EditBox
+        };
+
+        this.providerId = null;
     }
 
     onLoad() {
-        this.loader = new LoaderRub(this.node.parent);
+        this.loader = new LoaderRub();
         // wait til every requests is done
         this.node.active = false;
         // show loader
@@ -40,7 +69,8 @@ class TabCard extends Component {
         typesFaker.forEach(type => {
             let ratioItem = cc.instantiate(this.ratioItem);
             let ratioItemComponent = ratioItem.getComponent('RatioItem');
-            ratioItemComponent.initItem(type, rateFaker);
+            ratioItemComponent.initItem(type * 1000, rateFaker);
+            ratioItem.active = true;
             this.ratioContainer.addChild(ratioItem);
         });
     }
@@ -52,30 +82,18 @@ class TabCard extends Component {
 
         app.service.send(sendObject, (data) => {
             if (data) {
-                let layoutComponent = cc.find('left/layout', this.node);
-                this.toggleGroup = layoutComponent.getComponent(ToggleGroup);
                 let cardListIds = data[app.keywords.EXCHANGE_LIST.RESPONSE.ITEM_ID_LIST];
-                cardListIds = [...cardListIds, ...cardListIds];
-                cardListIds.pop();
                 cardListIds.forEach((id, index) => {
-                    RubUtils.loadRes('dashboard/topup/cardItem').then((prefab) => {
-                        let cardName = data['nl'][index] || `mega`;
-                        let cardPrefab = cc.instantiate(prefab);
+                    let item = cc.instantiate(this.providerNode);
+                    let lbl = item.getChildByName('providername').getComponent(cc.Label);
+                    let providerName = data[app.keywords.TASK_NAME_LIST][index];
+                    lbl.string = providerName;
 
-                        let spriteComponent = cardPrefab.children[0].getComponent(cc.Sprite);
-                        RubUtils.loadSpriteFrame(spriteComponent, `dashboard/popup-card-${cardName.toLowerCase()}`);
+                    item.active = true;
+                    item.providerName = providerName;
+                    item.providerId = id;
 
-                        let card = cardPrefab.getComponent(CheckBox);
-                        card.setVal(id);
-                        card.isChecked = index === 0;
-
-                        // get left/layout
-                        layoutComponent.addChild(cardPrefab);
-                        // push card checkbox to toggleGroup
-                        this.toggleGroup.addItem(card);
-                        //reset state
-                        index === 0 && this.toggleGroup.onLoad();
-                    });
+                    this.listCardContainer.addChild(item);
                 });
 
                 this.loader.hide();
@@ -86,27 +104,44 @@ class TabCard extends Component {
         }, app.const.scene.DASHBOARD_SCENE);
     }
 
+    onShowDropDownBtnClick() {
+        this._toggleDropdown();
+    }
+
+    onProviderItemBtnClick(e) {
+        let target = e.currentTarget;
+        this.providerId = target.providerId;
+        this.providerLbl.string = `${target.providerName}`;
+        this._toggleDropdown();
+    }
+
     onHanleChargeBtnClick() {
-        let centerComponent = this.node.getChildByName('center');
-        let cardSerial = centerComponent.getChildByName('cardSerialEditBox').getComponent(cc.EditBox).string.trim();
-        let serialNumber = centerComponent.getChildByName('serialNumberEditBox').getComponent(cc.EditBox).string.trim();
+        let cardSerial = this.cardSerialEditBox.string.trim();
+        let serialNumber = this.serialNumberEditBox.string.trim();
+
+        if (!this.providerId) {
+            AlertPopupRub.show(null, 'Vui lòng chọn loại thẻ.');
+            return;
+        }
 
         if (cardSerial === "" || serialNumber === "" || isNaN(cardSerial) || isNaN(serialNumber)) {
-            AlertPopupRub.show(null, 'Vui lòng nhập đầy đủ thông tin');
+            AlertPopupRub.show(null, 'Vui lòng nhập đầy đủ thông tin.');
         } else {
-            let id = this.toggleGroup.getVal();
-
             let data = {};
-            data[app.keywords.CHARGE_CARD_PROVIDER_ID] = id;
+            data[app.keywords.CHARGE_CARD_PROVIDER_ID] = this.providerId;
             data[app.keywords.CARD_CODE] = cardSerial;
             data[app.keywords.CARD_SERIAL] = serialNumber;
             let sendObject = {
                 'cmd': app.commands.USER_SEND_CARD_CHARGE,
                 data
             };
-            console.log(sendObject);
             app.service.send(sendObject); // send request and get `smsg` (system_message) response from server
         }
+    }
+
+    _toggleDropdown() {
+        let state = this.dropDownContainer.active;
+        this.dropDownContainer.active = !state;
     }
 }
 

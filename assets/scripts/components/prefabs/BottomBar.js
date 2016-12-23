@@ -7,42 +7,10 @@ import PersonalInfoDialogRub from 'PersonalInfoDialogRub';
 import GridViewRub from 'GridViewRub';
 import MessageCenterDialogRub from 'MessageCenterDialogRub';
 import HorizontalDropDownRub from 'HorizontalDropDownRub';
-import PromptPopupRub from 'PromptPopupRub';
 
 class BottomBar extends Component {
     constructor() {
         super();
-
-        this.napxuButton = {
-            default: null,
-            type: cc.Button
-        };
-
-        this.topRankButton = {
-            default: null,
-            type: cc.Button
-        };
-
-        this.eventButton = {
-            default: null,
-            type: cc.Button
-        };
-
-        this.awardTransferButton = {
-            default: null,
-            type: cc.Button
-        };
-
-        this.hotlineButton = {
-            default: null,
-            type: cc.Button
-        };
-
-        this.messageButton = {
-            default: null,
-            type: cc.Button
-        };
-
         this.userInfoButton = {
             default: null,
             type: cc.Button
@@ -55,103 +23,52 @@ class BottomBar extends Component {
         this._fillUserData();
     }
 
-    _fillUserData() {
-        let usernameLbl = this.userInfoButton.node.getChildByName('usernameLbl').getComponent(cc.Label);
-        usernameLbl.string = app.context.getMyInfo().name;
-        let usercoinLbl = this.userInfoButton.node.getChildByName('userCoinLbl').getComponent(cc.Label);
-        usercoinLbl.string = app.context.getMyInfo().coin;
-    }
-
     onClickNapXuAction() {
         let scene = cc.director.getScene();
         TopupDialogRub.show(scene);
     }
 
     onClickTopRankAction() {
+        let url = `${app.const.DIALOG_DIR_PREFAB}/rank`;
         let tabs = [{
             title: 'Top VIP',
-            value: 'tab_top_vip'
+            value: `${url}/tab_top_vip`
         }, {
             title: 'Top Cao thủ',
-            value: 'tab_top_cao_thu'
+            value: `${url}/tab_top_cao_thu`
         }, {
             title: 'Top Đại gia',
-            value: 'tab_top_dai_gia'
+            value: `${url}/tab_top_dai_gia`
         }];
 
-        let options = {
-            tabBodyPrefabType: 'rank'
-        };
-
-        let tabOptions = { tabs, options };
         // bottombar -> dashboard scene node
-        DialogRub.show(this.node.parent, tabOptions);
+        DialogRub.show(cc.director.getScene(), tabs, { title: 'Xếp hạng' });
     }
 
-    onClickEventAction() {
-        let dialog = new DialogRub(this.node.parent);
-        dialog.addBody('dashboard/dialog/prefabs/event/event_dialog');
+    onFriendBtnClick() {
+        console.log('onFriendBtnClick');
     }
 
-    onClickTransferAwardAction(e) {
+    onClickTransferAwardAction() {
+        let url = `${app.const.DIALOG_DIR_PREFAB}/exchange`;
         let tabs = [{
             title: 'Thẻ cào',
-            value: 'tab_exchange_card'
+            value: `${url}/tab_exchange_card`
         }, {
             title: 'Vật phẩm',
-            value: 'tab_exchange_item'
+            value: `${url}/tab_exchange_item`
         }, {
             title: 'Lịch sử',
-            value: 'tab_exchange_history'
+            value: `${url}/tab_exchange_history`
         }];
 
-        let options = {
-            itemWidth: 285,
-            tabBodyPrefabType: 'exchange'
-        };
-
-        let tabOptions = { tabs, options };
         // bottombar -> dashboard scene node
-        ExchangeDialogRub.show(this.node.parent, tabOptions);
-    }
-
-    fanpageClicked(e) {
-        cc.sys.openURL(`https://www.messenger.com/t/${app.config.fbAppId}`);
+        ExchangeDialogRub.show(cc.director.getScene(), tabs, { title: 'Đổi thưởng' });
     }
 
     callSupportClicked(e) {
         cc.sys.openURL(`tel:${app.config.supportHotline}`);
     }
-
-    onFeedbackConfirmed() {
-        //collect user feedback and send to server
-        if (this.prom.getVal() && this.prom.getVal().trim().length > 0) {
-            var sendObject = {
-                'cmd': app.commands.SEND_FEEDBACK,
-                'data': {
-                    [app.keywords.REQUEST_FEEDBACK]: this.prom.getVal()
-                }
-            };
-
-            app.service.send(sendObject, (data) => {
-                log(data);
-
-                if (data && data["s"]) {
-                    app.system.showToast('Cảm ơn bạn, feedback của bạn đã được gửi tới ban quản trị');
-                } else {
-                    app.system.showToast('Gửi góp ý thất bại, xin vui lòng thử lại');
-                }
-
-            }, app.const.scene.DASHBOARD_SCENE);
-        }
-
-    }
-
-    giveFeedbackClicked() {
-        this.prom = new PromptPopupRub(cc.director.getScene(), { confirmBtn: this.onFeedbackConfirmed }, { label: { text: 'Enter text here:' } }, this);
-        this.prom.init();
-    }
-
 
     onClickHotlineAction(e) {
         var event = new cc.Component.EventHandler();
@@ -182,9 +99,10 @@ class BottomBar extends Component {
     }
 
     onClickMessageAction() {
+        let url = `${app.const.DIALOG_DIR_PREFAB}/messagecenter`;
         let tabs = [{
                 title: 'Thông báo hệ thống',
-                value: 'tab_system_messages'
+                value: `${url}/tab_system_messages`
             },
             // {
             //     title: 'Sự kiện',
@@ -192,54 +110,44 @@ class BottomBar extends Component {
             // },
             {
                 title: 'Tin nhắn cá nhân',
-                value: 'tab_personal_messages'
+                value: `${url}/tab_personal_messages`
             }
         ];
 
-        let options = {
-            tabBodyPrefabType: 'messagecenter'
-        };
-        let tabOptions = { tabs, options };
-        MessageCenterDialogRub.show(this.node.parent, tabOptions);
+        MessageCenterDialogRub.show(cc.director.getScene(), tabs, { title: 'Tin nhắn' });
     }
 
     onClickUserInfoAction() {
         // personal tabs
-        this._getPersonalInfoTabOptions((personalInfoTabOptions) => {
-            PersonalInfoDialogRub.show(this.node.parent, personalInfoTabOptions);
-        });
-    }
-
-
-    _getPersonalInfoTabOptions(cb) {
+        let url = `${app.const.DIALOG_DIR_PREFAB}/userinfo`;
         let tabs = [{
                 title: 'Cá nhân',
-                value: 'tab_user_info'
+                value: `${url}/tab_user_info`
+            },
+            {
+                title: 'Gift Code',
+                value: `${url}/tab_gift_code`
             }
             // , {
-            //     title: 'Thành tích',
-            //     value: this._initAchievementsTab()
-            // }
-            , {
-                title: 'Gift Code',
-                value: 'tab_gift_code'
-            }, {
-                title: 'Chuyển chip',
-                value: 'tab_transfer_vc'
-            }, {
-                title: 'Nhận chip',
-                value: 'tab_transfer_transaction'
-            }, {
-                title: 'Lịch sử giao dịch',
-                value: 'tab_transaction_history'
-            },
+            //     title: 'Chuyển chip',
+            //     value: 'tab_transfer_vc'
+            // }, {
+            //     title: 'Nhận chip',
+            //     value: 'tab_transfer_transaction'
+            // }, {
+            //     title: 'Lịch sử giao dịch',
+            //     value: 'tab_transaction_history'
+            // }, 
         ];
 
-        let options = {
-            tabBodyPrefabType: 'userinfo'
-        };
+        PersonalInfoDialogRub.show(cc.director.getScene(), tabs, { title: 'Cá nhân' });
+    }
 
-        cb({ tabs, options });
+    _fillUserData() {
+        let usernameLbl = this.userInfoButton.node.getChildByName('usernameLbl').getComponent(cc.Label);
+        usernameLbl.string = app.context.getMyInfo().name;
+        let usercoinLbl = this.userInfoButton.node.getChildByName('userCoinLbl').getComponent(cc.Label);
+        usercoinLbl.string = app.context.getMyInfo().coin;
     }
 
     _initAchievementsTab() {

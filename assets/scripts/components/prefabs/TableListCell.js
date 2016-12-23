@@ -30,6 +30,11 @@ class TableListCell extends Component {
             type: cc.Label
         };
 
+        this.idLbl = {
+            default: null,
+            type: cc.Label
+        };
+
         this._onClickListener = null;
     }
 
@@ -38,7 +43,7 @@ class TableListCell extends Component {
     }
 
     initCell(id, minBet, userCount = 1, userMax, password) {
-        id && (this.id = id);
+        id && (this.id = id) && (this.idLbl.string = this.id);
         minBet && this._changeMinBet(minBet);
         (userCount || userCount === 0) && userMax && this._changeProgressBar(userCount, userMax);
         password && this._roomPassword(password);

@@ -41,7 +41,7 @@
     "_tag": -1,
     "_opacityModifyRGB": false,
     "_id": "19d77baf-45a8-424b-b934-835d4149344d",
-    "autoReleaseAssets": false
+    "autoReleaseAssets": true
   },
   {
     "__type__": "cc.Node",
@@ -169,7 +169,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "310a0229-5f0c-4305-b746-6d743b573a00"
+      "__uuid__": "a7b225a5-4ed7-4107-93f4-53daf31e6419"
     },
     "_type": 1,
     "_sizeMode": 0,

@@ -1,34 +1,26 @@
 import app from 'app';
 import Component from 'Component';
-import VerticalDropDownRub from 'VerticalDropDownRub';
 import ConfirmPopupRub from 'ConfirmPopupRub';
 import TimerRub from 'TimerRub';
+import PromptPopupRub from 'PromptPopupRub';
+import DialogRub from 'DialogRub';
+
 
 class TopBar extends Component {
     constructor() {
         super();
-
-        this.settingButton = {
-            default: null,
-            type: cc.Button
-        };
-
-        this.chatButton = {
-            default: null,
-            type: cc.Button
-        };
 
         this.highLightNode = {
             default: null,
             type: cc.Node
         };
 
-        this.friendsButton = {
+        this.moreButton = {
             default: null,
             type: cc.Button
         };
 
-        this.moreButton = {
+        this.eventButton = {
             default: null,
             type: cc.Button
         };
@@ -38,27 +30,145 @@ class TopBar extends Component {
             type: cc.Button
         };
 
-        this._showBack = false;
+        this.chatBtn = {
+            default: null,
+            type: cc.Button
+        };
 
         this.soundControl = {
             default: null,
             type: cc.Node
         };
 
-        this.time = 2000; // display high light message after 2s, if any
+        this.titleContainerNode = {
+            default: null,
+            type: cc.Node
+        };
+
+        this.dropDownOptions = {
+            default: null,
+            type: cc.Node
+        };
+
+        this._showBack = false;
+        this.intervalTimer = null;
+        this.interval = 2000; // display high light message after 2s, if any
     }
 
     onLoad() {
         if (this._showBack) {
-            this.settingButton.node.removeFromParent();
+            this.moreButton.node.active = false;
+            this.eventButton.node.active = false;
+            this.titleContainerNode.active = false;
         } else {
-            this.backButton.node.removeFromParent();
+            this.backButton.node.active = false;
+            this.chatBtn.node.active = false;
         }
 
-        this.chatButton.node.runAction(cc.hide());
+        this.dropDownOptions.getChildByName('bg').on(cc.Node.EventType.TOUCH_END, () => {
+            this.dropDownOptions.active = false;
+        });
     }
 
-    _onTest() {
+    giveFeedbackClicked() {
+        this.prom = new PromptPopupRub(cc.director.getScene(), { confirmBtn: this._onFeedbackConfirmed }, { label: { text: 'Enter text here:' } }, this);
+        this.prom.init();
+    }
+
+    onEnable() {
+        this._addGlobalListeners();
+    }
+
+    onDestroy() {
+        super.onDestroy();
+        this._removeGlobalListeners();
+        if (this.intervalTimer) {
+            this.intervalTimer.clear();
+            this.intervalTimer = null;
+        }
+    }
+
+    showBackButton() {
+        this._showBack = true;
+    }
+
+    onClickLogout() {
+        let parentNode = cc.director.getScene();
+
+        ConfirmPopupRub.show(parentNode, `Bạn có chắc chắn muốn thoát ?`, this._onConfirmLogoutClick, null, this);
+    }
+
+    onFanpageClicked() {
+        cc.sys.openURL(`https://www.messenger.com/t/${app.config.fbAppId}`);
+    }
+
+    onSoundBtnClick() {
+        this.soundControl && this.soundControl.getComponent('SoundControl').show();
+    }
+
+    handleSettingAction(e) {
+        // let options = {
+        //     arrow: {
+        //         align: {
+        //             left: 25
+        //         }
+        //     }
+        // };
+
+        // let dropdown = new VerticalDropDownRub(e.currentTarget, [{
+        //     icon: 'bottombar/bottombar_tooltip_fanpage',
+        //     content: 'Fanpage',
+        //     event: this.fanpageClicked.bind(this)
+        // }, {
+        //     icon: 'bottombar/bottombar_tooltip_sound',
+        //     content: 'Âm lượng',
+        //     event: this.onSoundBtnClick.bind(this)
+        // }, {
+        //     icon: 'game/images/ingame_exit_icon',
+        //     content: 'Thoát',
+        //     event: this.onClickLogout.bind(this),
+        // }], options);
+        // this.node.addChild(dropdown.node());
+
+    }
+
+    onClickEventAction() {
+        let dialog = new DialogRub(this.node.parent);
+        dialog.addBody('dashboard/dialog/prefabs/event/event_dialog');
+    }
+
+
+    onChatBtnClick() {
+        console.log('onChatClick');
+    }
+
+    handleMoreAction() {
+        let state = this.dropDownOptions.active;
+        this.dropDownOptions.active = !state;
+    }
+
+    handleBackAction() {
+        // this._listenBackAction && this._listenBackAction();
+        app.system.loadScene(app.const.scene.DASHBOARD_SCENE);
+    }
+
+
+    /**
+     * PRIVATES 
+     */
+
+    _onConfirmLogoutClick() {
+        app.service.manuallyDisconnect();
+    }
+
+    // on high light message listener
+    _onHLMListener() {
+        if (!this.intervalTimer) {
+            this.intervalTimer = new TimerRub(this._onRunningHLM.bind(this), this.interval);
+        }
+    }
+
+    _onRunningHLM() {
         let hlm = app.system.hlm.getMessage();
 
         /**
@@ -96,93 +206,34 @@ class TopBar extends Component {
         }
     }
 
-
-    // on high light message listener
-    _onHLMListener() {
-        if (!this.intervalTimer) {
-            this.intervalTimer = new TimerRub(this._onTest.bind(this), this.time);
-        }
-    }
-
     _addGlobalListeners() {
-        app.system.addListener(app.commands.HIGH_LIGHT_MESSAGE, this._onHLMListener, this);
+        this.titleContainerNode.active && app.system.addListener(app.commands.HIGH_LIGHT_MESSAGE, this._onHLMListener, this);
     }
 
     _removeGlobalListeners() {
-        app.system.removeListener(app.commands.HIGH_LIGHT_MESSAGE, this._onHLMListener, this);
+        this.titleContainerNode.active && app.system.removeListener(app.commands.HIGH_LIGHT_MESSAGE, this._onHLMListener, this);
     }
 
-    onEnable() {
-        this._addGlobalListeners();
-    }
-
-    onDestroy() {
-        this._removeGlobalListeners();
-    }
-
-    showBackButton() {
-        this._showBack = true;
-    }
-
-    onClickLogout() {
-        let parentNode = cc.director.getScene();
-
-        ConfirmPopupRub.show(parentNode, `Bạn có chắc chắn muốn thoát`, this._onConfirmLogoutClick, null, this);
-    }
-
-    _onConfirmLogoutClick() {
-        log(`about to logout`);
-
-        app.service.manuallyDisconnect();
-    }
-
-    onSoundBtnClick() {
-        this.soundControl && this.soundControl.getComponent('SoundControl').show();
-    }
-
-    handleSettingAction(e) {
-        let options = {
-            arrow: {
-                align: {
-                    left: 25
+    _onFeedbackConfirmed() {
+        //collect user feedback and send to server
+        let content = this.prom.getVal();
+        if (content && content.trim().length > 0) {
+            var sendObject = {
+                'cmd': app.commands.SEND_FEEDBACK,
+                'data': {
+                    [app.keywords.REQUEST_FEEDBACK]: content
                 }
-            }
-        };
+            };
 
-        let dropdown = new VerticalDropDownRub(e.currentTarget, [{
-            icon: 'bottombar/bottombar_tooltip_fanpage',
-            content: 'Fanpage',
-            event: this.fanpageClicked.bind(this)
-        }, {
-            icon: 'bottombar/bottombar_tooltip_sound',
-            content: 'Âm lượng',
-            event: this.onSoundBtnClick.bind(this)
-        }, {
-            icon: 'game/images/ingame_exit_icon',
-            content: 'Thoát',
-            event: this.onClickLogout.bind(this),
-        }], options);
-        this.node.addChild(dropdown.node());
+            app.service.send(sendObject, (data) => {
+                if (data && data["s"]) {
+                    app.system.showToast('Cảm ơn bạn, feedback của bạn đã được gửi tới ban quản trị');
+                } else {
+                    app.system.showToast('Gửi góp ý thất bại, xin vui lòng thử lại');
+                }
 
-    }
-    fanpageClicked(e) {
-        cc.sys.openURL(`https://www.messenger.com/t/${app.config.fbAppId}`);
-    }
-    handleChatAction() {
-
-    }
-
-    handleFriendButtonAction() {
-
-    }
-
-    handleMoreAction() {
-
-    }
-
-    handleBackAction() {
-        // this._listenBackAction && this._listenBackAction();
-        app.system.loadScene('DashboardScene');
+            }, app.const.scene.DASHBOARD_SCENE);
+        }
     }
 }
 

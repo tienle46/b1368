@@ -6,15 +6,17 @@ import app from 'app';
 export default class TopUpDialogRub {
 
     constructor(node) {
+        let url = `${app.const.DIALOG_DIR_PREFAB}/topup`;
         let tabs = [{
             title: 'Thẻ cào',
-            value: 'tab_card'
+            value: `${url}/tab_card`
         }, {
             title: 'SMS',
-            value: 'tab_sms'
+            value: `${url}/tab_sms`
+
         }, {
             title: 'IAP',
-            value: 'tab_iap'
+            value: `${url}/tab_iap`
         }, {
             title: 'Đại lí',
             value: this._initAgencyTab()
@@ -32,7 +34,7 @@ export default class TopUpDialogRub {
     }
 
     init() {
-        this.dialog = new DialogRub(this.node, this.options);
+        this.dialog = new DialogRub(this.node, this.options.tabs, { title: 'Nạp Tiền' });
         this.topupDialogComponent = this.dialog.addComponent(TopupDialog);
     }
 
