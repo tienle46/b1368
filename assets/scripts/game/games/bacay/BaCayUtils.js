@@ -16,9 +16,9 @@ export default class BaCayUtils {
 
     static createPlayerHandCardInfo(cards = []){
 
-        if(this.isSameRank(cards)){
-            return app.res.string('game_bacay_sap');
-        }else{
+        // if(this.isSameRank(cards)){
+        //     return app.res.string('game_bacay_sap');
+        // }else{
             let str = '';
             let point = this.toBaCayPoint(GameUtils.getTotalPoint(cards));
             switch (point) {
@@ -43,7 +43,7 @@ export default class BaCayUtils {
             }
 
             return str;
-        }
+        // }
     }
 
     static toBaCayPoint(point){
