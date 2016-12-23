@@ -44,6 +44,7 @@ export default {
     game_bacay_chi_cuoc_bien_mot_lan: 'Chỉ được cược biên với người chơi một lần',
     game_bacay_khong_the_cuoc_bien: 'Bạn không thể cược biên với người chơi này',
     game_registered_quit_room: 'Đăng ký rời bàn thành công',
-    game_start_deal_card: 'Bắt đầu \nchia bài'
+    game_start_deal_card: 'Bắt đầu \nchia bài',
+    game_change_master_to_player: 'Chuyển chương cho người chơi {{playerName}}'
 
 };
