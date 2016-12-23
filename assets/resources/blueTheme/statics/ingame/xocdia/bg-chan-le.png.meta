@@ -1,14 +1,14 @@
 {
   "ver": "1.0.0",
-  "uuid": "c7d9d057-36c2-455a-b589-5f592676179f",
+  "uuid": "5105dc20-2b0f-4d05-90cf-3287de0ec571",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "bilinear",
   "subMetas": {
-    "Progressbar_1": {
+    "bg-chan-le": {
       "ver": "1.0.3",
-      "uuid": "10e80d41-e443-4688-9e4a-d31ac9c0ca8a",
-      "rawTextureUuid": "c7d9d057-36c2-455a-b589-5f592676179f",
+      "uuid": "027a36ef-5fb7-45a3-af37-5a4da1568a1c",
+      "rawTextureUuid": "5105dc20-2b0f-4d05-90cf-3287de0ec571",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": false,
@@ -17,13 +17,13 @@
       "trimX": 0,
       "trimY": 0,
       "width": 100,
-      "height": 21,
+      "height": 100,
       "rawWidth": 100,
-      "rawHeight": 21,
-      "borderTop": 0,
-      "borderBottom": 0,
-      "borderLeft": 0,
-      "borderRight": 0,
+      "rawHeight": 100,
+      "borderTop": 31,
+      "borderBottom": 31,
+      "borderLeft": 31,
+      "borderRight": 31,
       "subMetas": {}
     }
   }

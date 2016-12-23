@@ -1,14 +1,14 @@
 {
   "ver": "1.0.0",
-  "uuid": "d2f789be-4a27-4a18-9afb-9f9ec984fe71",
+  "uuid": "bd89ec71-52b0-47ec-a783-07b37420841b",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "bilinear",
   "subMetas": {
-    "personalCloseIcon": {
+    "ingame-bg": {
       "ver": "1.0.3",
-      "uuid": "47c90bd8-096b-4e2e-9f2a-e3df08a9a8b8",
-      "rawTextureUuid": "d2f789be-4a27-4a18-9afb-9f9ec984fe71",
+      "uuid": "3f09b1ff-93f7-4aa8-a2a2-1df7041a5ef3",
+      "rawTextureUuid": "bd89ec71-52b0-47ec-a783-07b37420841b",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": false,
@@ -16,10 +16,10 @@
       "offsetY": 0,
       "trimX": 0,
       "trimY": 0,
-      "width": 37,
-      "height": 34,
-      "rawWidth": 37,
-      "rawHeight": 34,
+      "width": 1400,
+      "height": 900,
+      "rawWidth": 1400,
+      "rawHeight": 900,
       "borderTop": 0,
       "borderBottom": 0,
       "borderLeft": 0,
