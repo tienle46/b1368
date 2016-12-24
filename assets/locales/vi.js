@@ -15,14 +15,16 @@ export default {
     game_ba_bich: '3 bích',
     game_thoi: 'Thối',
     game_waiting_time: 'Thời gian chờ',
-    game_replay_waiting_time: 'Ván mới sẽ\n bắt đầu sau',
+    game_waiting: 'Chờ',
+    game_start: 'Bắt đầu',
+    game_replay_waiting_time: 'Ván mới',
     label_accept: 'Đồng ý',
     label_deny: 'Hủy',
     label_close: 'Đóng',
     random_invite_player_successfully: 'Lời mời vào bàn chơi đã được gửi đi',
     error_cannot_load_data: 'Không thể tải dữ liệu',
     loading_data: 'Đang tải dữ liệu...',
-    game_table_name: 'P{{roomName}} - B{{tableName}} - {{minBet}}',
+    game_table_name: 'Bàn {{tableName}}',
     game_sam_thang_sam: 'Thắng Sâm',
     game_sam_den_sam: 'Đền Sâm',
     game_sam_den_thoi_heo: 'Đền Thối Heo',
@@ -45,6 +47,8 @@ export default {
     game_bacay_khong_the_cuoc_bien: 'Bạn không thể cược biên với người chơi này',
     game_registered_quit_room: 'Đăng ký rời bàn thành công',
     game_start_deal_card: 'Bắt đầu \nchia bài',
-    game_change_master_to_player: 'Chuyển chương cho người chơi {{playerName}}'
+    game_change_master_to_player: 'Chuyển chương cho người chơi {{playerName}}',
+    game_bet: 'Cược',
+    game_down_card: 'Hạ bài'
 
 };

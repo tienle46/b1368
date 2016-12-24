@@ -16,7 +16,6 @@ export default class PlayerRenderer extends ActorRenderer {
             ...this.properties,
             playerNameLabel: cc.Label,
             balanceLabel: cc.Label,
-            status1: cc.Node,
             status2: cc.Node,
             ownerIcon: cc.Node,
             masterIcon: cc.Node,
@@ -52,9 +51,6 @@ export default class PlayerRenderer extends ActorRenderer {
 
     onEnable() {
         super.onEnable();
-
-        utils.deactive(this.status1);
-        utils.deactive(this.status2);
 
         this.setVisibleOwner(this.data.owner);
         this.setVisibleMaster(this.data.master);
@@ -96,7 +92,7 @@ export default class PlayerRenderer extends ActorRenderer {
 
     update(dt) {
         if (this.isCounting && this.timelineDuration > 0) {
-            this.playerTimeLineProgress.progress = this.counterTimer / this.timelineDuration;
+            this._playerTimeLineProgress.progress = this.counterTimer / this.timelineDuration;
 
             if (this.counterTimer >= this.timelineDuration) {
                 this._stopCountdown();
@@ -105,7 +101,7 @@ export default class PlayerRenderer extends ActorRenderer {
             this.counterTimer += dt;
             if (this.counterTimer >= this.timelineDuration) {
                 this.isCounting = false;
-                this.playerTimeLineProgress.progress = 1;
+                this._playerTimeLineProgress.progress = 1;
             }
         }
     }
@@ -133,7 +129,7 @@ export default class PlayerRenderer extends ActorRenderer {
     }
 
     _startCountdown(duration) {
-        if (this.playerTimeLineProgress) {
+        if (this._playerTimeLineProgress) {
             this.timelineDuration = duration;
             this.isCounting = true;
             this.counterTimer = 0;
@@ -141,11 +137,11 @@ export default class PlayerRenderer extends ActorRenderer {
     }
 
     _stopCountdown() {
-        if (this.playerTimeLineProgress) {
+        if (this._playerTimeLineProgress) {
             this.timelineDuration = 0;
             this.isCounting = false;
             this.counterTimer = 0;
-            this.playerTimeLineProgress.progress = 0;
+            this._playerTimeLineProgress.progress = 0;
         }
     }
 

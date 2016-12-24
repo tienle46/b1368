@@ -73,7 +73,7 @@ export default class Board extends Actor {
             this.state = app.const.game.state.BEGIN;
         }
 
-        this.scene.on(Events.ON_GAME_STATE_CHANGE, this.handleGameStateChange, this, 0);
+        this.scene.on(Events.ON_GAME_STATE_PRE_CHANGE, this.handleGameStateChange, this, 0);
         this.scene.on(Events.ON_GAME_STATE_BEGIN, this.onBoardBegin, this, 0);
         this.scene.on(Events.ON_GAME_STATE_STARTING, this.onBoardStarting, this, 0);
         this.scene.on(Events.ON_GAME_STATE_STARTED, this.onBoardStarted, this, 0);
@@ -209,23 +209,31 @@ export default class Board extends Actor {
         debug('startTimeLine');
         this.stopTimeLine();
 
+        if(utils.isEmpty(message)) {
+            if(this.scene.gameState == app.const.game.state.ENDING) {
+                message = app.res.string('game_replay_waiting_time');
+            } else {
+                message = app.res.string('game_waiting');
+            }
+        }
+
         this.renderer.showTimeLine(timeInSecond, message);
 
-        this.timelineRemain = timeInSecond;
-        this.timelineInterval = setInterval(() => {
-            this.timelineRemain--;
-            if (this.timelineRemain < 0) {
-                this.stopTimeLine();
-                timeoutCb && timeoutCb();
-            } else {
-                this.renderer.setTimeLineRemainTime(this.timelineRemain);
-            }
-        }, 1000);
+        // this.timelineRemain = timeInSecond;
+        // this.timelineInterval = setInterval(() => {
+        //     this.timelineRemain--;
+        //     if (this.timelineRemain < 0) {
+        //         this.stopTimeLine();
+        //         timeoutCb && timeoutCb();
+        //     } else {
+        //         this.renderer.setTimeLineRemainTime(this.timelineRemain);
+        //     }
+        // }, 1000);
 
     }
 
     stopTimeLine() {
-        this.timelineInterval && clearInterval(this.timelineInterval);
+        // this.timelineInterval && clearInterval(this.timelineInterval);
         this.renderer.hideTimeLine();
     }
 

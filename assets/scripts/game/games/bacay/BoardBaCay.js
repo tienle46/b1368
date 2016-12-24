@@ -53,10 +53,22 @@ export default class BoardBaCay extends BoardCardBetTurn {
         this.renderer.setGopGaLabelValue(value);
     }
 
-    // startTimeLine(duration){
-    //     // let message = this.scene.gameState == app.const.game.state.READY && app.res.string('game_start_deal_card');
-    //     super.startTimeLine(duration, message);
-    // }
+    startTimeLine(duration, message){
+        if(utils.isEmpty(message)){
+            switch (this.scene.gameState){
+                case app.const.game.state.READY:
+                    message = app.res.string('game_start');
+                    break;
+                case app.const.game.state.STATE_BET:
+                    message = app.res.string('game_bet');
+                    break;
+                case app.const.game.state.STATE_DOWN:
+                    message = app.res.string('game_down_card');
+                    break;
+            }
+        }
+        super.startTimeLine(duration, message);
+    }
 
     handleGameStateChange(boardState, data, isJustJoined) {
         super.handleGameStateChange(boardState, data);
@@ -160,7 +172,7 @@ export default class BoardBaCay extends BoardCardBetTurn {
         super.onBoardEnding(data);
 
         let models = playerIds.filter(playerId => (playingPlayerIds.indexOf(playerId) >= 0)).map(playerId => {
-            return {
+            let model = {
                 name: playerInfos[playerId].name,
                 balanceChanged: balanceChangeAmounts[playerId],
                 iconPath: resultIconPaths[playerId],
@@ -168,14 +180,18 @@ export default class BoardBaCay extends BoardCardBetTurn {
                 cards: playerHandCards[playerId],
                 text: resultTexts[playerId]
             }
+
+            this.scene.emit(Events.SHOW_GAME_ENDING_INFO, playerId, model);
+
+            return model;
         });
 
-        setTimeout(() => this.scene.showGameResult(models, (shownTime) => {
-            let remainTime = this.timelineRemain - shownTime;
-            if (remainTime > 0 && this.scene.isEnding()) {
-                this._startEndBoardTimeLine(remainTime);
-            }
-        }), 500);
+        // setTimeout(() => this.scene.showGameResult(models, (shownTime) => {
+        //     let remainTime = this.timelineRemain - shownTime;
+        //     if (remainTime > 0 && this.scene.isEnding()) {
+        //         this._startEndBoardTimeLine(remainTime);
+        //     }
+        // }), 500);
     }
 
     _getGameResultInfos(playerIds = [], playerHandCards, data) {
