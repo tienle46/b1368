@@ -33,7 +33,7 @@ export default class BaCayScene extends GameScene {
     onEnable() {
         this.board = this.boardNode.getComponent('BoardBaCay');
         this.gameControls = this.gameControlsNode.getComponent('BaCayControls');
-        this.playerPositions = this.playerPositionAnchorsNode.getComponent('SixPlayerPositions');
+        this.playerPositions = this.playerPositionAnchorsNode.getComponent('BaCayPlayerPositions');
         this.gameResultPopup = this.gameResultPopupNode.getComponent('GameResultPopup');
         this._betPopup = this.chooseBetSliderNode.getComponent('HorizontalBetPopup');
 

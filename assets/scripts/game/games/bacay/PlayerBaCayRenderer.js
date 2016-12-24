@@ -12,6 +12,8 @@ export default class PlayerBaCayRenderer extends PlayerCardBetTurnRenderer {
     constructor() {
         super();
 
+        this.betComponent = cc.Node;
+
         this.betLabel = {
             default: null,
             type: cc.Label
@@ -42,6 +44,8 @@ export default class PlayerBaCayRenderer extends PlayerCardBetTurnRenderer {
             type: cc.Node
         }
 
+        this.cuocBienButton = cc.Button;
+
         /**
          * @type {cc.Animation}
          */
@@ -52,7 +56,19 @@ export default class PlayerBaCayRenderer extends PlayerCardBetTurnRenderer {
     onEnable(...args){
         super.onEnable(...args);
 
+        this._updatePlayerBetValueComponent();
+
         this.actionNodeAnim = this.actionNode.getComponent(cc.Animation);
+    }
+
+    _updatePlayerBetValueComponent(){
+        let isRightAnchor = this.scene.gamePlayers.playerPositions.isPositionOnRight(this.anchorIndex);
+        if(isRightAnchor){
+            this.betComponent.setPositionX(-Math.abs(this.cuocBienNode.getPositionX()));
+            this.cuocBienNode.setPositionX(-Math.abs(this.cuocBienNode.getPositionX()));
+            this.betComponent.getComponent(cc.Layout).horizontalDirection = cc.Layout.HorizontalDirection.RIGHT_TO_LEFT;
+            this.cuocBienNode.getComponent(cc.Layout).horizontalDirection = cc.Layout.HorizontalDirection.RIGHT_TO_LEFT;
+        }
     }
 
     showCuocBienValue(value){
@@ -107,16 +123,16 @@ export default class PlayerBaCayRenderer extends PlayerCardBetTurnRenderer {
             cardList.setSelectable(false);
             cardList.setRevealOnClick(true);
             cardList.setReveal(false);
-            cardList.setAlign(CardList.ALIGN_BOTTOM_LEFT);
         } else {
             cardList.setSpace(50);
             cardList.setMaxDimension(350);
-            cardList.setAlign(this._getHandCardAlign());
         }
+
+        cardList.setAlign(CardList.ALIGN_CENTER);
     }
 
     showCuocBienBtn(show = true){
-        this.showStatus(this.status2, app.res.string('game_bacay_cuoc_bien'), show)
+        utils.setVisible(this.cuocBienButton, show);
     }
 
     showAction(text = ''){
@@ -141,6 +157,15 @@ export default class PlayerBaCayRenderer extends PlayerCardBetTurnRenderer {
 
         utils.deactive(this.actionActor);
         this.actionNodeAnim && this.actionNodeAnim.stop();
+    }
+
+    /**
+     * @override
+     */
+    clearCards(){
+        if(this.scene.gameState != app.const.game.state.ENDING) {
+            super.clearCards();
+        }
     }
 
 }

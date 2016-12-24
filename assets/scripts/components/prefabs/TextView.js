@@ -83,7 +83,7 @@ export default class TextView extends Component {
         }
 
         this._setTextViewSize();
-        this.label.string = text;
+        this.label && (this.label.string = text);
 
         this._adjustSize();
     }
@@ -93,6 +93,8 @@ export default class TextView extends Component {
     }
 
     _adjustSize() {
+
+        if(!this.label) return;
 
         let lines = Math.floor(this.label.node.height / this.lineHeight);
         // debug("label width: ", this.label.node.width, "lines: ", lines);
@@ -122,6 +124,8 @@ export default class TextView extends Component {
     }
 
     _setTextViewSize() {
+        if(!this.label) return;
+
         this.label.node.width = this.minWidth;
         this.label.node.height = this.lineHeight;
         this.label.fontSize = this.fontSize;

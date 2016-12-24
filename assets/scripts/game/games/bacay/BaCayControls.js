@@ -18,8 +18,6 @@ export default class BaCayControls extends GameControls {
             ...this.properties,
             baseControlsNode: cc.Node,
             cardBetTurnControlsNode: cc.Node,
-            hucBtn: cc.Button,
-            keBtn: cc.Button,
             downBtn: cc.Button,
             revealAllBtn: cc.Button
         }
@@ -54,11 +52,9 @@ export default class BaCayControls extends GameControls {
         this.scene.on(Events.SHOW_DOWN_CARD_CONTROLS, this._showDownCardControls, this);
     }
 
-    _showBetControls(showHuc, showKe){
+    _showBetControls(){
         this.hideAllControls();
         this.cardBetTurnControls.showBetControls();
-        showHuc && this.setVisible(this.hucBtn);
-        showKe && this.setVisible(this.keBtn);
     }
 
     _showDownCardControls(show = true){
@@ -97,8 +93,6 @@ export default class BaCayControls extends GameControls {
         this.baseControls.hideAllControls();
         this.cardBetTurnControls.hideAllControls();
 
-        this.setVisible(this.hucBtn, false);
-        this.setVisible(this.keBtn, false);
         this.setVisible(this.downBtn, false);
         this.setVisible(this.revealAllBtn, false);
     }
@@ -114,13 +108,6 @@ export default class BaCayControls extends GameControls {
         this.baseControls.hideAllControls();
     }
 
-    onClickHucBtn(){
-        this.scene.emit(Events.ON_CLICK_HUC_BUTTON);
-    }
-
-    onClickKeBtn(){
-        this.scene.emit(Events.ON_CLICK_KE_BUTTON);
-    }
 
     onClickDownBtn(){
         this.scene.emit(Events.ON_CLICK_DOWN_BUTTON);
@@ -128,6 +115,7 @@ export default class BaCayControls extends GameControls {
 
     onClickRevealBtn(){
         this.scene.emit(Events.ON_CLICK_REVEAL_BUTTON);
+        this.setVisible(this.revealAllBtn, false);
     }
 }
 

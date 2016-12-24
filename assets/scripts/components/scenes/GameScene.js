@@ -22,6 +22,7 @@ export default class GameScene extends BaseScene {
             playerLayer: cc.Node,
             chatComponentNode: cc.Node,
             tableNameLabel: cc.Label,
+            tableMinBetLabel: cc.Label,
             gameResultPopupNode: cc.Node,
             playerPositionAnchorsNode: cc.Node,
             maxPlayers: 4
@@ -102,15 +103,24 @@ export default class GameScene extends BaseScene {
     }
 
     _onRoomMinBetChanged(){
-        this._setTableNameLabel(this.room);
+        this._setGameMinBetInfo();
     }
 
-    _setTableNameLabel(room){
-        let roomName = room.name.substring(3, 5);
-        let tableName = room.name.substring(5, room.name.length);
-        let minBet = utils.getVariable(room, app.keywords.VARIABLE_MIN_BET, "");
+    _setGameInfo(room){
+        this._setTableNameLabel();
+        this._setGameMinBetInfo();
+    }
 
-        this.tableNameLabel.string = app.res.string('game_table_name', {roomName, tableName, minBet});
+    _setGameMinBetInfo(){
+        let minBet = utils.getVariable(this.room, app.keywords.VARIABLE_MIN_BET, "");
+        this.tableMinBetLabel.string = GameUtils.formatBalance(minBet);
+    }
+
+    _setTableNameLabel(){
+        let roomName = this.room.name.substring(3, 5);
+        let tableName = this.room.name.substring(5, this.room.name.length) || "";
+
+        this.tableNameLabel.string = app.res.string('game_table_name', {tableName});
     }
 
     onEnable() {
@@ -132,7 +142,7 @@ export default class GameScene extends BaseScene {
                 throw new CreateGameException(app.res.string('error_fail_to_load_game_data'));
             }
 
-            this._setTableNameLabel(this.room);
+            this._setGameInfo(this.room);
             this._loadGameData();
 
         } catch (e) {
@@ -305,12 +315,12 @@ export default class GameScene extends BaseScene {
         this.gameState = state;
         this.gameLocalState = localState;
 
-        console.log("_onGameState: state=", state, " local State: ", localState, " isJustJoined=", isJustJoined, " data=", data);
-
         if(this.gameState == app.const.game.state.WAIT){
             this.emit(Events.ON_GAME_RESET);
             return;
         }
+
+        this.emit(Events.ON_GAME_STATE_PRE_CHANGE, state, data, isJustJoined);
 
         switch (localState) {
             case app.const.game.state.BEGIN:
@@ -331,6 +341,8 @@ export default class GameScene extends BaseScene {
             default:
                 this.emit(Events.ON_GAME_STATE, this.gameState, data, isJustJoined);
         }
+
+        this.emit(Events.ON_GAME_STATE_CHANGED, state, data, isJustJoined);
     }
 
     showGameResult(models, cb) {

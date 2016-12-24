@@ -37,6 +37,7 @@ Events.SHOW_GOP_GA_NODE = "show.gopGaNode";
 Events.SHOW_XOCDIA_BET_CONTROLS = "show.xocdia.betControls";
 Events.SHOW_DOWN_CARD_CONTROLS = "show.downCardControls";
 Events.SHOW_START_GAME_CONTROL = "show.startGameControl";
+Events.SHOW_GAME_ENDING_INFO = "show.gameEndingInfo";
 
 Events.HIDE_ALL_CONTROLS = "hide.allControls";
 Events.HIDE_GAME_BEGIN_CONTROLS = "hide.gameBeginControls";
@@ -106,6 +107,8 @@ Events.ON_GAME_SET_LAST_MOVE = "on.game.setLastMove";
 Events.ON_GAME_CLEAN_TURN_ROUTINE_DATA = "on.game.cleanTurnRoutineData";
 Events.ON_GAME_LOAD_DATA_AFTER_SCENE_START = "on.game.loadDataAfterSceneStart";
 Events.ON_GAME_MASTER_CHANGED = "on.game.masterChanged";
+Events.ON_GAME_STATE_CHANGED = "on.game.stateChanged"
+Events.ON_GAME_STATE_PRE_CHANGE = "on.game.statePreChange"
 
 Events.ON_ACTION_EXIT_GAME = "on.action.exitGame";
 Events.ON_ACTION_LOAD_GAME_GUIDE = "on.action.loadGameGuide";

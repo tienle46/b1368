@@ -781,7 +781,10 @@
     },
     "_enabled": true,
     "_type": 1,
-    "_segements": 64
+    "_segements": 64,
+    "_N$spriteFrame": null,
+    "_N$alphaThreshold": 1,
+    "_N$inverted": false
   },
   {
     "__type__": "cc.Widget",

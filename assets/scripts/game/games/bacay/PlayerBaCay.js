@@ -33,31 +33,46 @@ export default class PlayerBaCay extends PlayerCardBetTurn {
     _addGlobalListener() {
         super._addGlobalListener();
 
-        this.board.scene.on(Events.ON_CLICK_BET_BUTTON, this._onPlayerBet, this);
-        this.board.scene.on(Events.ON_CLICK_DOWN_BUTTON, this._onPlayerDownCard, this);
-        this.board.scene.on(Events.ON_CLICK_REVEAL_BUTTON, this._onPlayerRevealCard, this);
-        this.board.scene.on(Events.HANDLE_PLAYER_BET, this._handlePlayerBet, this);
-        this.board.scene.on(Events.HANDLE_PLAYER_DOWN_CARD, this._handlePlayerDown, this);
-        this.board.scene.on(Events.ON_GAME_STATE, this._onGameState, this);
-        this.board.scene.on(Events.ADD_BET_TO_MASTER, this._onAddBetToMaster, this);
-        this.board.scene.on(Events.ON_PLAYER_BACAY_CHANGE_BET, this._onPlayerChangeBet, this);
-        this.board.scene.on(Events.HANDLE_PLAYER_CUOC_BIEN, this._onPlayerCuocBien, this);
-        this.board.scene.on(Events.HANDLE_PLAYER_ACCEPT_CUOC_BIEN, this._onPlayerAcceptCuocBien, this);
+        this.scene.on(Events.ON_CLICK_BET_BUTTON, this._onPlayerBet, this);
+        this.scene.on(Events.ON_CLICK_DOWN_BUTTON, this._onPlayerDownCard, this);
+        this.scene.on(Events.ON_CLICK_REVEAL_BUTTON, this._onPlayerRevealCard, this);
+        this.scene.on(Events.HANDLE_PLAYER_BET, this._handlePlayerBet, this);
+        this.scene.on(Events.HANDLE_PLAYER_DOWN_CARD, this._handlePlayerDown, this);
+        this.scene.on(Events.ON_GAME_STATE, this._onGameState, this);
+        this.scene.on(Events.ADD_BET_TO_MASTER, this._onAddBetToMaster, this);
+        this.scene.on(Events.ON_PLAYER_BACAY_CHANGE_BET, this._onPlayerChangeBet, this);
+        this.scene.on(Events.HANDLE_PLAYER_CUOC_BIEN, this._onPlayerCuocBien, this);
+        this.scene.on(Events.HANDLE_PLAYER_ACCEPT_CUOC_BIEN, this._onPlayerAcceptCuocBien, this);
+        this.scene.on(Events.SHOW_GAME_ENDING_INFO, this._onShowGameEndingInfo, this);
     }
 
     _removeGlobalListener() {
         super._removeGlobalListener();
 
-        this.board.scene.off(Events.ON_CLICK_BET_BUTTON, this._onPlayerBet, this);
-        this.board.scene.off(Events.ON_CLICK_DOWN_BUTTON, this._onPlayerDownCard, this);
-        this.board.scene.off(Events.ON_CLICK_REVEAL_BUTTON, this._onPlayerRevealCard, this);
-        this.board.scene.off(Events.HANDLE_PLAYER_BET, this._handlePlayerBet, this);
-        this.board.scene.off(Events.HANDLE_PLAYER_DOWN_CARD, this._handlePlayerDown, this);
-        this.board.scene.off(Events.ON_GAME_STATE, this._onGameState, this);
-        this.board.scene.off(Events.ADD_BET_TO_MASTER, this._onAddBetToMaster, this);
-        this.board.scene.off(Events.ON_PLAYER_BACAY_CHANGE_BET, this._onPlayerChangeBet, this);
-        this.board.scene.off(Events.HANDLE_PLAYER_CUOC_BIEN, this._onPlayerCuocBien, this);
-        this.board.scene.off(Events.HANDLE_PLAYER_ACCEPT_CUOC_BIEN, this._onPlayerAcceptCuocBien, this);
+        this.scene.off(Events.ON_CLICK_BET_BUTTON, this._onPlayerBet, this);
+        this.scene.off(Events.ON_CLICK_DOWN_BUTTON, this._onPlayerDownCard, this);
+        this.scene.off(Events.ON_CLICK_REVEAL_BUTTON, this._onPlayerRevealCard, this);
+        this.scene.off(Events.HANDLE_PLAYER_BET, this._handlePlayerBet, this);
+        this.scene.off(Events.HANDLE_PLAYER_DOWN_CARD, this._handlePlayerDown, this);
+        this.scene.off(Events.ON_GAME_STATE, this._onGameState, this);
+        this.scene.off(Events.ADD_BET_TO_MASTER, this._onAddBetToMaster, this);
+        this.scene.off(Events.ON_PLAYER_BACAY_CHANGE_BET, this._onPlayerChangeBet, this);
+        this.scene.off(Events.HANDLE_PLAYER_CUOC_BIEN, this._onPlayerCuocBien, this);
+        this.scene.off(Events.HANDLE_PLAYER_ACCEPT_CUOC_BIEN, this._onPlayerAcceptCuocBien, this);
+        this.scene.off(Events.SHOW_GAME_ENDING_INFO, this._onShowGameEndingInfo, this);
+    }
+
+    _onShowGameEndingInfo(playerId, { name = "", text = null, iconPath = "", balanceChanged = NaN, info = "", cards = [], isWinner = false } = {}){
+        if(playerId != this.id) return;
+
+
+        if(balanceChanged > 0){
+            isWinner = true;
+        }
+
+        this.renderer.showAction(info);
+        this.renderer.startPlusBalanceAnimation(balanceChanged, isWinner);
+        this.setCards(cards, true);
     }
 
     getExcludeCuocBienPlayers() {

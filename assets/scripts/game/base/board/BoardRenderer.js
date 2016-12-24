@@ -14,20 +14,19 @@ export default class BoardRenderer extends ActorRenderer {
         this.properties = {
             ...this.properties,
             timeline: cc.Node,
-            timelineRemainTime: cc.Label,
-            timelineTextViewNode: cc.Node,
-            playerPositionPrefab: cc.Prefab
+            timelineTextViewNode: cc.Node
         }
 
         this.timelineTextView = null;
+        this.ellipseTimeLine = null;
     }
 
     onEnable() {
         super.onEnable();
 
         this.timelineTextView = this.timelineTextViewNode.getComponent('TextView');
+        this.ellipseTimeLine = this.timeline.getComponent('EllipseTimeLine');
         this.hideTimeLine();
-        // utils.deactive(this.timeline);
     }
 
     _reset() {
@@ -35,6 +34,8 @@ export default class BoardRenderer extends ActorRenderer {
     }
 
     hideTimeLine() {
+        this.ellipseTimeLine.stop();
+        this.setTimeLineMessage("");
         utils.deactive(this.timeline);
     }
 
@@ -44,20 +45,16 @@ export default class BoardRenderer extends ActorRenderer {
         }
 
         if (!utils.isString(message) || utils.isEmpty(message)) {
-            message = app.res.string('game_waiting_time');
+            message = app.res.string('game_waiting');
         }
 
         utils.active(this.timeline);
         this.setTimeLineMessage(message);
-        this.setTimeLineRemainTime(timeInSecond);
+        this.ellipseTimeLine.startTimeline(timeInSecond);
     }
 
     setTimeLineMessage(message) {
         this.timelineTextView.setText(message);
-    }
-
-    setTimeLineRemainTime(second) {
-        this.timelineRemainTime.string = `${second}`;
     }
 }
 
