@@ -90,28 +90,36 @@ export default class BoardXocDia extends BoardCardBetTurn {
         let balanceChangeAmounts = this._getPlayerBalanceChangeAmounts(playerIds, data);
         let playerResults = utils.getValue(data, Keywords.WIN, []);
 
-
-        playingPlayerIds.forEach((id, index) => {
-            let playerId = id;
-            console.debug('playerId', playerId);
-            let balance = balanceChangeAmounts[id];
-            this.scene.emit(Events.XOCDIA_ON_PLAYER_RUN_MONEY_BALANCE_CHANGE_ANIM, { balance, playerId });
-        });
-
         super.onBoardEnding(data);
 
         this.renderer.stopDishShakeAnim();
         let dots = utils.getValue(data, Keywords.XOCDIA_RESULT_END_PHASE);
         if (dots && dots.length > 0) {
             this.renderer.initDots(dots);
-            let timeout = setTimeout(() => {
-                this.renderer.openBowlAnim();
+            setTimeout(() => {
+                this.renderer.openBowlAnim(); // this will end up 1s
 
-                timeout = setTimeout(() => {
-                    clearTimeout(timeout);
+
+                setTimeout(() => {
+                    // show result
+                    this.renderer.displayResultFromDots(dots);
+
+                    setTimeout(() => {
+                        this.renderer.hideResult();
+                    }, 3500); // hide it after 2s
+                    // emit anim
+                    playingPlayerIds.forEach((id, index) => {
+                        let playerId = id;
+                        let balance = balanceChangeAmounts[id];
+                        console.debug('playerId, balance', playerId, balance);
+                        this.scene.emit(Events.XOCDIA_ON_PLAYER_RUN_MONEY_BALANCE_CHANGE_ANIM, { balance, playerId });
+                    });
+                }, 1200); // show result and runing money balance anim after 1.2s
+
+                setTimeout(() => {
                     this.scene.emit(Events.XOCDIA_ON_DISTRIBUTE_CHIP, { playingPlayerIds, bets, playerResults, dots });
                 }, 1500); // emit event after 1.5s
-            }, 700);
+            }, 500);
         }
 
         // this.scene.emit(Events.XOCDIA_ON_CONTROL_SAVE_PREVIOUS_BETDATA, bets, playerIds);

@@ -44,7 +44,7 @@ export default class XocDiaControls extends GameControls {
         this.isInReBetPhase = false;
         this.isInCancelPhase = false;
 
-        this.userGold = 0;
+        this.currentGold = 0;
     }
 
     onEnable() {
@@ -67,7 +67,6 @@ export default class XocDiaControls extends GameControls {
 
         this.scene.on(Events.XOCDIA_ON_PLAYER_TOSSCHIP_ANIMATION, this._onPlayerTossChip, this);
         this.scene.on(Events.XOCDIA_ON_PLAYER_CANCEL_BET_SUCCESS, this._onPlayerCancelBetSuccess, this);
-        // this.scene.on(Events.XOCDIA_ON_CONTROL_SAVE_PREVIOUS_BETDATA, this._onSavePreviousBetData, this);
         this.scene.on(Events.XOCDIA_ON_DISTRIBUTE_CHIP, this._onDistributeChip, this);
         this.scene.on(Events.XOCDIA_ON_PLAYER_RECEIVE_CHIP_ANIMATION, this._onPlayerReceiveChip, this);
     }
@@ -87,7 +86,6 @@ export default class XocDiaControls extends GameControls {
 
         this.scene.off(Events.XOCDIA_ON_PLAYER_TOSSCHIP_ANIMATION, this._onPlayerTossChip, this);
         this.scene.off(Events.XOCDIA_ON_PLAYER_CANCEL_BET_SUCCESS, this._onPlayerCancelBetSuccess, this);
-        // this.scene.off(Events.XOCDIA_ON_CONTROL_SAVE_PREVIOUS_BETDATA, this._onSavePreviousBetData, this);
         this.scene.off(Events.XOCDIA_ON_DISTRIBUTE_CHIP, this._onDistributeChip, this);
         this.scene.off(Events.XOCDIA_ON_PLAYER_RECEIVE_CHIP_ANIMATION, this._onPlayerReceiveChip, this);
     }
@@ -103,29 +101,16 @@ export default class XocDiaControls extends GameControls {
         this.betOptionsGroup.updateUserGoldLbl(amount);
     }
 
-    _onSavePreviousBetData(previousBetData, playerIds) {
-        let playerId = playerIds.find((id) => this.player === id);
-
-        if (playerId && previousBetData && previousBetData.length > 0) {
-            // dataObject : [<betType> : <gold amount>] -> [{1: 3},{2: 31}] 
-            let dataObject = previousBetData[playerId - 1]; // cuz we are only have a limit number playerID in a room
-            let dataArray = [];
-            for (let key in dataObject) {
-                // object : {b: <gold amount>, bo : <betType>}
-                let object = {};
-                object[app.keywords.XOCDIA_BET.AMOUNT] = dataObject[key];
-                object[app.keywords.XOCDIA_BET.TYPE] = key;
-                dataArray.push(object);
-            }
-
-            this.previousBetData = dataArray;
-        }
-    }
-
     onBetBtnClick(event) {
         let chipOptionsNode = this.betOptionsGroup.getCheckedItem();
         let chipInfo = chipOptionsNode.getComponent('BetChip').getChipInfo();
-        let amount = chipInfo.amount
+        let amount = chipInfo.amount;
+
+        if (this._getCurrentUserGold() - amount < 0) {
+            app.system.error('Không đủ tiền để tiếp tục cược !');
+            return;
+        }
+
         let betTypeId = event.currentTarget.id;
         // let startPoint = chipOptionsNode.parent.convertToWorldSpaceAR(chipOptionsNode.getPosition());
 
@@ -140,15 +125,41 @@ export default class XocDiaControls extends GameControls {
     }
 
     onX2BtnClick(event) {
-        console.debug('onX2BtnClick > this.betData', this.betData);
-
-        if (!this.isInX2Phase && this.betData.length > 0) {
-            this.isInCancelPhase = false;
-
-            this.isInX2Phase = true;
-
-            this._sendBetRequest(this.betData);
+        console.debug('onX2BtnClick', this.betData);
+        if (this._getCurrentUserGold() - this._getTotalGoldUserBettedInBoard() < 0) {
+            app.system.error('Không đủ tiền để tiếp tục cược !');
+            return;
         }
+        if (this.betData.length > 0) {
+            this.isInCancelPhase = false;
+            this.betData = this.betData.map((data) => {
+                data.b *= 2;
+                return data;
+            });
+            this._sendBetRequest(this.betData, true);
+        }
+    }
+
+    onReBetBtnClick() {
+        console.debug('onReBetBtnClick > this.previousBetData.', this.previousBetData)
+        if (this._getRealUserGold() - this._getPreviousUserGold() < 0) {
+            app.system.error('Không đủ tiền để tiếp tục cược !');
+            return;
+        }
+
+        if (this.previousBetData.length > 0) {
+            this._sendBetRequest(this.previousBetData, true);
+        }
+    }
+
+    onCancelBetBtnClick() {
+        let [data] = [{}];
+
+        let sendObject = {
+            cmd: app.commands.XOCDIA_CANCEL_BET,
+            room: this.scene.room
+        };
+        app.service.send(sendObject);
     }
 
     _sendBetRequest(bet, isReplace) {
@@ -174,8 +185,9 @@ export default class XocDiaControls extends GameControls {
 
     _onPlayerTossChip(data) {
         let { betsList, myPos, isItMe, isReplace } = data;
-        if (isItMe && !isReplace) {
-            this.betData = [...this.betData, ...betsList];
+        if (isItMe) {
+            console.debug('is It me !! ', betsList);
+            this.betData = isReplace ? betsList : [...this.betData, ...betsList];
         }
 
         let len = betsList.length;
@@ -185,28 +197,6 @@ export default class XocDiaControls extends GameControls {
                 this.isInReBetPhase = true;
             }
         }
-        // if (isReplace && betsList.length > 0) {
-        //     for (let i = 0; i < betsList.length; i++) {
-        //         this._onTossChipAnim(betsList[i], myPos, isItMe);
-
-        //         if (i == betsList.length - 1) {
-        //             this.isInReBetPhase = true;
-        //         }
-        //     }
-        // } else {
-        //     let len = betsList.length;
-
-        //     for (let i = 0; i < len; i++) {
-        //         this._onTossChipAnim(betsList[i], myPos, isItMe);
-        //     }
-
-        //     // if( len === 1){
-        //     //     let lastList = betsList.length && betsList[0];
-        //     //     this._onTossChipAnim(lastList, myPos, isItMe);
-        //     // } else if( len > 1) {
-
-        //     // }
-        // }
     }
 
     _onDistributeChip(data) {
@@ -283,13 +273,12 @@ export default class XocDiaControls extends GameControls {
 
             if (isItMe) {
                 if (isReplace) {
-                    // get total gold user betted in board
-                    this.userGold = this.userGold + this._getTotalGoldUserBettedInBoard() - amount;
+                    this.currentGold = this._getCurrentUserGold() + this._getTotalGoldUserBettedInBoard() - amount;
                     this._resetBetData();
                 } else {
-                    this.userGold -= amount;
+                    this.currentGold -= amount;
                 }
-                this.betOptionsGroup.updateUserGoldLbl(this.userGold);
+                this.updateUserGoldLbl(this.currentGold);
             }
 
             XocDiaAnim.tossChip(fromPos, toNode, chipInfo);
@@ -303,7 +292,21 @@ export default class XocDiaControls extends GameControls {
         return this._getTotalGoldFromBetsData(this.betData);
     }
 
+    _getRealUserGold() {
+        return this.betOptionsGroup.getRealUserGold();
+    }
+
+    _getCurrentUserGold() {
+        return this.betOptionsGroup.getCurrentUserGold();
+    }
+
+    // in previous game
+    _getPreviousUserGold() {
+        return this._getTotalGoldFromBetsData(this.previousBetData);
+    }
+
     _getTotalGoldFromBetsData(betsList) {
+        if (betsList.length == 0) return;
         // return betsList.length > 0 ? betsList.reduce((a, b) => (a.b + b.b)) : 0;
         let sum = 0;
         for (let i = 0; i < betsList.length; i++) {
@@ -336,32 +339,17 @@ export default class XocDiaControls extends GameControls {
         this.isInCancelPhase = true;
         this.isInReBetPhase && (this.isInReBetPhase = false);
 
+        if (isItMe) {
+            this._resetBetData();
+            this.currentGold = this._getRealUserGold();
+            this.updateUserGoldLbl(this.currentGold);
+        }
+
         for (let i = 0; i < betsList.length; i++) {
             let betTypeId = betsList[i][app.keywords.XOCDIA_BET.TYPE];
             let amount = betsList[i][app.keywords.XOCDIA_BET.AMOUNT];
-            if (isItMe) {
-                this._resetBetData();
-                this.userGold += amount;
-                this.betOptionsGroup.updateUserGoldLbl(this.userGold);
-            }
             this._updateGoldAmountOnControl(betTypeId, amount, isItMe, true);
         }
-    }
-
-    onReBetBtnClick() {
-        if (this.previousBetData.length > 0) {
-            this._sendBetRequest(this.previousBetData, true);
-        }
-    }
-
-    onCancelBetBtnClick() {
-        let [data] = [{}];
-
-        let sendObject = {
-            cmd: app.commands.XOCDIA_CANCEL_BET,
-            room: this.scene.room
-        };
-        app.service.send(sendObject);
     }
 
     _showWaitTurnControls() {
@@ -381,7 +369,7 @@ export default class XocDiaControls extends GameControls {
         // update betOptions lbls
         this._setBetOptionsLblsByRoomBet();
         // update usergold to controls
-        this.userGold = this.betOptionsGroup.getCurrentUserGold();
+        this.currentGold = this._getCurrentUserGold();
 
         this._hideGameBeginControls();
     }
@@ -392,9 +380,11 @@ export default class XocDiaControls extends GameControls {
     }
 
     _onGameEnding(data, isJustJoined) {
-        console.debug('_onGameEnding', data, isJustJoined);
+        console.debug('_onGameEnding', data.b, data.w, this.previousBetData, this.betData);
         // save previous data before empty it 
         this.previousBetData = this.betData;
+
+        this.updateUserGoldLbl(this.currentGold);
 
         this.isInReBetPhase = false;
         this.isInCancelPhase = false;
@@ -407,9 +397,13 @@ export default class XocDiaControls extends GameControls {
     hideAllControls() {
         this._hideGameBeginControls();
 
+        this.setVisible(this.betContainerNode, true);
+        this.hideBetControl();
+    }
+
+    hideBetControl() {
         this.setVisible(this.betOptionsGroupNode, false);
         this.setVisible(this.btnGroupNode, false);
-        this.setVisible(this.betContainerNode, true);
     }
 
     _showGameBeginControls() {
@@ -424,6 +418,8 @@ export default class XocDiaControls extends GameControls {
             this._resetBetData();
             // all users are already
             this._showGameControls();
+        } else if (state === app.const.game.state.BOARD_STATE_SHAKE) {
+            this.hideBetControl();
         }
     }
 

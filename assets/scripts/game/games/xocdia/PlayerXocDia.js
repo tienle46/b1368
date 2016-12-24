@@ -87,7 +87,7 @@ export default class PlayerXocDia extends PlayerCardBetTurn {
         let { playerId, balance } = data;
         if (playerId !== this.id)
             return;
-
+        console.debug('_onPlayerChangeMoneyAnim', playerId, balance);
         this.renderer.startPlusBalanceAnimation(balance);
     }
 
@@ -169,7 +169,6 @@ export default class PlayerXocDia extends PlayerCardBetTurn {
 
     onGameEnding(data) {
         super.onGameEnding(data);
-        console.debug('onGameEnding > PlayerXocDia > data', data);
         this.renderer.stopAllAnimation();
     }
 

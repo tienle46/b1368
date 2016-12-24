@@ -11,11 +11,11 @@ const gameState = app.const.game.state;
 
 export default class GameUtils {
 
-    static formatBalance(balance){
+    static formatBalance(balance) {
         return utils.isNumber(balance) ? numeral(balance).format((balance < 1000000 ? '0,0' : '0.00a')) : "";
     }
 
-    static toChangedBalanceString(changeAmount){
+    static toChangedBalanceString(changeAmount) {
         return isNaN(changeAmount) ? '' : changeAmount > 0 ? `+${changeAmount}` : `${changeAmount}`;
     }
 
@@ -86,7 +86,7 @@ export default class GameUtils {
     }
 
     static getRank(card, gameType) {
-        if(gameType){
+        if (gameType) {
             if (gameType == app.const.game.GAME_TYPE_MAU_BINH) {
                 if (card.rank == Card.RANK_AT) {
                     return Card.RANK_ACE;
@@ -109,11 +109,11 @@ export default class GameUtils {
         return card.suit;
     }
 
-    static getUserBalance(user){
+    static getUserBalance(user) {
         return utils.getVariable(user, app.keywords.USER_VARIABLE_BALANCE, 0);
     }
 
-    static getPlayerId(dataObj){
+    static getPlayerId(dataObj) {
         return utils.getValue(app.keywords.PLAYER_ID);
     }
 
@@ -121,7 +121,7 @@ export default class GameUtils {
 
         let heoContained = false;
 
-        selectedCards.some((card)=>{
+        selectedCards.some((card) => {
             if (card.isHeo()) {
                 heoContained = true;
                 return true;
@@ -131,12 +131,12 @@ export default class GameUtils {
         return heoContained;
     }
 
-    static createFakeCard(length){
+    static createFakeCard(length) {
         let cardBytes = new Array(length).fill(0);
         return GameUtils.convertBytesToCards(cardBytes);
     }
 
-    static getTotalPoint(cards = []){
-        return cards.reduce((point, card) =>  point + card.rank, 0);
+    static getTotalPoint(cards = []) {
+        return cards.reduce((point, card) => point + card.rank, 0);
     }
 }

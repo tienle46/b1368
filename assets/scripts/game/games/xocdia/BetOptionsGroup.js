@@ -10,6 +10,8 @@ class BetOptionsGroup extends Component {
             default: null,
             type: cc.Label
         };
+
+        this.userGold = 0;
     }
 
     onLoad() {
@@ -18,7 +20,8 @@ class BetOptionsGroup extends Component {
             this.checkedItem = event.target;
         });
 
-        this.userGoldLbl.string = app.context.getMyInfo().coin || 0;
+        this.userGold = app.context.getMyInfo().coin || 0;
+        this.setUserGoldLbl(this.userGold);
     }
 
     setLblOptions(roomBet) {
@@ -37,11 +40,20 @@ class BetOptionsGroup extends Component {
     }
 
     updateUserGoldLbl(amount) {
-        this.userGoldLbl.string = amount;
+        this.setUserGoldLbl(amount);
+    }
+
+    setUserGoldLbl(number) {
+        this.userGold = Number(number);
+        this.userGoldLbl.string = this.userGold.toLocaleString();
+    }
+
+    getRealUserGold() {
+        return app.context.getMyInfo().coin;
     }
 
     getCurrentUserGold() {
-        return Number(this.userGoldLbl.string);
+        return Number(this.userGoldLbl.string.replace(',', ''));
     }
 
     getChipInfoByAmount(amount, isMiniChip = true) {

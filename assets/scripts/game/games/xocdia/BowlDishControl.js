@@ -25,7 +25,6 @@ class BowlDishControl extends Component {
     onLoad() {
         this.bowlPos = this.bowlNode.getPosition();
         this.wrapPos = this.wrapper.getPosition();
-        this.wrapper.zIndex = 9999;
     }
 
     resetBowlPosition() {
@@ -37,39 +36,42 @@ class BowlDishControl extends Component {
         let startPos = this.wrapper.getPosition();
         this.bowlNode.setPosition(this.bowlPos);
 
-        let goPos = cc.v2(startPos.x, startPos.y - 50);
+        // let goPos = cc.v2(startPos.x, startPos.y - 50);
         let shakers = [startPos, { x: startPos.x, y: startPos.y + 1 }, { x: startPos.x, y: startPos.y - 4 }, { x: startPos.x + 3, y: startPos.y }, { x: startPos.x - 7, y: startPos.y - 4 }, { x: startPos.x + 3, y: startPos.y + 2 }, { x: startPos.x - 6, y: startPos.y + 1 }, { x: startPos.x - 12, y: startPos.y - 1 }, { x: startPos.x - 14, y: startPos.y - 2 }, { x: startPos.x - 7, y: startPos.y - 4 }, { x: startPos.x - 7, y: startPos.y - 9 }, { x: startPos.x, y: startPos.y - 9 }, startPos];
         let actions = shakers.map((s) => cc.moveTo(0.01, cc.v2(s.x, s.y)).clone());
-        let sequence = cc.sequence(cc.fadeOut(0.1).clone(), cc.scaleTo(0.2, 2).clone(), cc.moveTo(0.1, goPos).clone(), cc.fadeIn(0.5).clone(), cc.callFunc(() => {
-            let foreverAction = cc.repeatForever(cc.sequence(actions));
-            this.wrapper.runAction(foreverAction);
-        }));
+        // let sequence = cc.sequence(cc.fadeOut(0.1).clone(), cc.scaleTo(0.2, 2).clone(), cc.moveTo(0.1, goPos).clone(), cc.fadeIn(0.5).clone(), cc.callFunc(() => {
+        //     let foreverAction = cc.repeatForever(cc.sequence(actions));
+        //     this.wrapper.runAction(foreverAction);
+        // }));
+
+        let sequence = cc.repeatForever(cc.sequence(actions));
         this.wrapper.runAction(sequence);
     }
 
     stopDishShaker() {
         let startPos = this.wrapPos;
         this.wrapper.stopAllActions();
-        let actions = [cc.fadeOut(0.1).clone(), cc.moveTo(0.1, startPos).clone(), cc.scaleTo(0.2, 1), cc.fadeIn(0.1).clone()];
-        let sequence = cc.sequence(actions, cc.callFunc(() => {
-            this.wrapper.setPosition(startPos);
-            this.wrapPos = startPos;
-        }));
-        this.wrapper.runAction(sequence);
+        // let actions = [cc.fadeOut(0.1).clone(), cc.moveTo(0.1, startPos).clone(), cc.scaleTo(0.2, 1), cc.fadeIn(0.1).clone()];
+        // let sequence = cc.sequence(actions, cc.callFunc(() => {
+        //     this.wrapper.setPosition(startPos);
+        //     this.wrapPos = startPos;
+        // }));
+        this.wrapper.setPosition(startPos);
+        this.wrapPos = startPos;
+        // this.wrapper.runAction(sequence);
     }
 
     openBowlAnim() {
         let bowlPos = this.bowlPos;
         let action = cc.moveTo(1, cc.v2(this.bowlPos.x - 2 / 3 * this.bowlNode.getContentSize().width + 10, bowlPos.y));
-        this.bowlNode.runAction(cc.sequence(action), cc.callFunc(() => {
+        this.bowlNode.runAction(cc.sequence(action, cc.callFunc(() => {
             this.bowlPos = bowlPos;
-        }));
+        })));
     }
 
     initDotsArray(dots = []) {
-        debug('initDotsArray', dots);
-        // 0: red, 1: black
-        let colors = ['game/images/xocdia/ingame-xocdia-red', 'game/images/xocdia/ingame-xocdia-black'];
+        // 0: white, 1: red
+        let colors = ['blueTheme/ingame/xocdia/trang', 'blueTheme/ingame/xocdia/do'];
 
         /**
          *              ^
