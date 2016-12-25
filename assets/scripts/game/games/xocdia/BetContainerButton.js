@@ -24,7 +24,7 @@ class BetContainerButton extends Component {
             default: null,
             type: cc.Node
         };
-        this.n4Blacks = {
+        this.n4Whites = {
             default: null,
             type: cc.Node
         };
@@ -32,18 +32,18 @@ class BetContainerButton extends Component {
             default: null,
             type: cc.Node
         };
-        this.n3Reds1Black = {
+        this.n3Reds1White = {
             default: null,
             type: cc.Node
         };
-        this.n3Blacks1Red = {
+        this.n3Whites1Red = {
             default: null,
             type: cc.Node
         };
     }
 
     onLoad() {
-        this.groupBtns = [this.nEven, this.nOdd, this.n4Reds, this.n4Blacks, this.n3Reds1Black, this.n3Blacks1Red];
+        this.groupBtns = [this.nEven, this.nOdd, this.n4Whites, this.n4Reds, this.n3Whites1Red, this.n3Reds1White];
         this._typeSetup();
     }
 
@@ -54,36 +54,13 @@ class BetContainerButton extends Component {
         // this.n4Blacks.id = 4;
         // this.n3Reds1Black.id = 5;
         // this.n3Blacks1Red.id = 6;
-        this.groupBtns.forEach((btn, i) => {
-            btn.id = (i + 1);
+        this.groupBtns.forEach((btnNode, i) => {
+            btnNode.id = (i + 1);
         });
     }
 
-    // @type 1: Chẵn, 2: Lẻ, 3: 4 Đỏ, 4: 4 Đen, 5: 3 Đỏ 1 Đen, 6: 3 Đen 1 Đỏ
+    //@typeId 1: Chẵn, 2: Lẻ, 3: 4 Trắng, 4: 4 Đỏ, 5: 3 Trắng 1 Đỏ, 6: 3 Đỏ 1 Trắng
     getBetTypeByTypeId(id) {
-        // let type = null;
-        // switch (id) {
-        //     case 1:
-        //         type = this.nEven;
-        //         break;
-        //     case 2:
-        //         type = this.nOdd;
-        //         break;
-        //     case 3:
-        //         type = this.n4Reds;
-        //         break;
-        //     case 4:
-        //         type = this.n4Blacks;
-        //         break;
-        //     case 5:
-        //         type = this.n3Reds1Black;
-        //         break;
-        //     case 6:
-        //         type = this.n3Blacks1Red;
-        //         break;
-        // }
-
-        // return type;
         return this.groupBtns[id - 1];
     }
 
@@ -107,14 +84,21 @@ class BetContainerButton extends Component {
         });
     }
 
-    isShakedDotsReturnEvenResult(dots) {
-        // 1: Chẵn, 2: Lẻ, 3: 4 Đỏ, 4: 4 Đen, 5: 3 Đỏ 1 Đen, 6: 3 Đen 1 Đỏ
+    doesBetTypeIdWin(id, dots) {
+        // trắng: chẵn, đỏ: lẻ
+        // id -> 1: Chẵn, 2: Lẻ, 3: 4 Trắng, 4: 4 Đỏ, 5: 3 Trắng 1 Đỏ, 6: 3 Đỏ 1 Trắng
         // even : [0, 0, 0, 0] || [1, 1, 1, 1] || [0, 0, 1, 1]
-        let count1 = dots.filter(dot => dot === 1).length;
-        let count0 = dots.filter(dot => dot === 0).length;
+        let odds = dots.filter(dot => dot === 1).length;
+        let evens = dots.filter(dot => dot === 0).length;
 
-        let minus = Math.abs(count1 - count0);
-        return (minus === 4 || minus === 0);
+        let minus = Math.abs(evens - odds);
+
+        let resultIsEven = (minus === 4 || minus === 0);
+
+        let acceptedEven = resultIsEven && (id === 1 || (evens === 4 && id === 3) || (odds === 4 && id === 4));
+        let acceptedOdd = (!resultIsEven) && (id === 2 || (evens === 3 && id === 5) || (odds === 3 && id === 6));
+
+        return acceptedEven || acceptedOdd;
     }
 }
 

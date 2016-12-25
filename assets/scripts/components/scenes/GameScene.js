@@ -1,11 +1,11 @@
 import app from 'app';
 import SFS2X from 'SFS2X';
-import {utils, GameUtils} from 'utils';
-import {Keywords} from 'core';
-import {BaseScene} from 'scenes';
-import {Events, Emitter} from 'events'
-import {CreateGameException} from 'exceptions';
-import {gameManager, GameEventHandler, Board, TLMNDLBoard, TLMNDLPlayer} from 'game';
+import { utils, GameUtils } from 'utils';
+import { Keywords } from 'core';
+import { BaseScene } from 'scenes';
+import { Events, Emitter } from 'events'
+import { CreateGameException } from 'exceptions';
+import { gameManager, GameEventHandler, Board, TLMNDLBoard, TLMNDLPlayer } from 'game';
 import IngameChatComponent from 'IngameChatComponent';
 import GamePlayers from 'GamePlayers';
 
@@ -67,7 +67,7 @@ export default class GameScene extends BaseScene {
         this._penddingEvents = null;
     }
 
-    _addGlobalListener(){
+    _addGlobalListener() {
         super._addGlobalListener();
 
         this.on(Events.ON_GAME_STATE_CHANGE, (...args) => {
@@ -84,11 +84,11 @@ export default class GameScene extends BaseScene {
         this.on(Events.ON_ROOM_CHANGE_MIN_BET, this._onRoomMinBetChanged, this);
     }
 
-    _onVisibleIngameChatComponent(){
+    _onVisibleIngameChatComponent() {
         this.chatComponent.setVisible();
     }
 
-    handleRejoinGame(...args){
+    handleRejoinGame(...args) {
         this.initiated ? this._onGameRejoin(...args) : (this._penddingEvents.push({
             fn: this._onGameRejoin,
             args: args
@@ -99,28 +99,28 @@ export default class GameScene extends BaseScene {
         super.onLoad();
         this._penddingEvents = [];
 
-        this.node.children.forEach(child => { child.opacity = 255})
+        this.node.children.forEach(child => { child.opacity = 255 })
     }
 
-    _onRoomMinBetChanged(){
+    _onRoomMinBetChanged() {
         this._setGameMinBetInfo();
     }
 
-    _setGameInfo(room){
+    _setGameInfo(room) {
         this._setTableNameLabel();
         this._setGameMinBetInfo();
     }
 
-    _setGameMinBetInfo(){
+    _setGameMinBetInfo() {
         let minBet = utils.getVariable(this.room, app.keywords.VARIABLE_MIN_BET, "");
-        this.tableMinBetLabel.string = GameUtils.formatBalance(minBet);
+        this.tableMinBetLabel && (this.tableMinBetLabel.string = GameUtils.formatBalance(minBet));
     }
 
-    _setTableNameLabel(){
+    _setTableNameLabel() {
         let roomName = this.room.name.substring(3, 5);
         let tableName = this.room.name.substring(5, this.room.name.length) || "";
 
-        this.tableNameLabel.string = app.res.string('game_table_name', {tableName});
+        this.tableNameLabel.string = app.res.string('game_table_name', { tableName });
     }
 
     onEnable() {
@@ -152,18 +152,18 @@ export default class GameScene extends BaseScene {
         }
     }
 
-    _onGameData(){
+    _onGameData() {
         if (this.room && this.room.isGame) {
             this.gameData = this.room.getVariable(app.keywords.VARIABLE_GAME_INFO).value;
         }
 
-        if(this.gameData){
+        if (this.gameData) {
             this._loadGameData();
         }
 
     }
 
-    start(){
+    start() {
         super.start();
 
         this._initGameEvents();
@@ -201,7 +201,7 @@ export default class GameScene extends BaseScene {
         return this.board.state === app.const.game.state.ENDING;
     }
 
-    _handlePendingEvents(){
+    _handlePendingEvents() {
         app.system._handlePendingGameEvents();
 
         this._penddingEvents.forEach(event => event.fn(...event.args));
@@ -223,14 +223,14 @@ export default class GameScene extends BaseScene {
         // this.showLoading();
         app.service.sendRequest(new SFS2X.Requests.System.LeaveRoomRequest(this.room));
 
-        app.service.send({cmd: app.commands.REGISTER_QUIT_ROOM, room: this.room}, (data) => {
-            if(data && data[app.keywords.SUCCESSFULL]){
+        app.service.send({ cmd: app.commands.REGISTER_QUIT_ROOM, room: this.room }, (data) => {
+            if (data && data[app.keywords.SUCCESSFULL]) {
                 app.system.showToast(app.res.string("game_registered_quit_room"));
             }
         });
     }
 
-    _onActionLoadGameGuide(){
+    _onActionLoadGameGuide() {
         app.system.info(app.res.string('coming_soon'));
     }
 
@@ -250,7 +250,7 @@ export default class GameScene extends BaseScene {
         this.emit(Events.ON_GAME_LOAD_DATA_AFTER_SCENE_START, this.gameData);
     }
 
-    _loadGameDataAfterSceneStart(data){
+    _loadGameDataAfterSceneStart(data) {
         let currentGameState = utils.getValue(data, Keywords.BOARD_STATE_KEYWORD);
         let isGamePlaying = GameUtils.isPlayingState(currentGameState);
         if (isGamePlaying) {
@@ -298,8 +298,8 @@ export default class GameScene extends BaseScene {
         }
     }
 
-    _onGameStateBegin(data, isJustJoined, isRejoining){
-        if(!isRejoining && this.gameState != app.const.game.state.READY){
+    _onGameStateBegin(data, isJustJoined, isRejoining) {
+        if (!isRejoining && this.gameState != app.const.game.state.READY) {
             this.emit(Events.ON_GAME_RESET);
         }
         this.emit(Events.ON_GAME_STATE_BEGIN, data, isJustJoined);
@@ -307,7 +307,7 @@ export default class GameScene extends BaseScene {
 
     _onGameStateChange(state, data, isJustJoined, rejoining) {
 
-        if(this.gameState == app.const.game.state.WAIT){
+        if (this.gameState == app.const.game.state.WAIT) {
             this._onGameData();
         }
 
@@ -315,7 +315,7 @@ export default class GameScene extends BaseScene {
         this.gameState = state;
         this.gameLocalState = localState;
 
-        if(this.gameState == app.const.game.state.WAIT){
+        if (this.gameState == app.const.game.state.WAIT) {
             this.emit(Events.ON_GAME_RESET);
             return;
         }
@@ -353,7 +353,7 @@ export default class GameScene extends BaseScene {
         this.gameResultPopup && this.gameResultPopup.hide();
     }
 
-    enoughPlayerToStartGame(){
+    enoughPlayerToStartGame() {
         return this.gamePlayers.players.length > 1;
     }
 }

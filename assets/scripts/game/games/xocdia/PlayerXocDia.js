@@ -60,26 +60,41 @@ export default class PlayerXocDia extends PlayerCardBetTurn {
     }
 
     _onDistributeChip(data) {
-        let { playingPlayerIds, bets, playerResults, dots } = data;
-        let winner = playerResults.find(result => result === 1);
+        let { playingPlayerIds, bets, dots } = data;
+        let playerIdIndex = playingPlayerIds.findIndex(id => id == this.id);
+        console.debug('_onDistributeChip bets', bets);
 
-        if (winner) {
-            let playerWinerIndex = playerResults.findIndex(result => result === 1);
-            let playerId = playingPlayerIds[playerWinerIndex];
-            if (!playerId || playerId != this.id)
-                return;
-            // remove it for other user
-            playerResults[playerWinerIndex] = undefined;
-
+        if (playerIdIndex !== undefined) {
+            let playerId = this.id;
             let { myPos } = this._getPosBasedOnWorldSpace(playerId);
             let userPos = myPos;
-            let previousDataTypes = bets[playerWinerIndex];
-
+            let betData = bets[playerIdIndex];
             // user will be get chip after dealer got it
             setTimeout(() => {
-                this.scene.emit(Events.XOCDIA_ON_PLAYER_RECEIVE_CHIP_ANIMATION, { userPos, previousDataTypes, dots });
+                this.scene.emit(Events.XOCDIA_ON_PLAYER_RECEIVE_CHIP_ANIMATION, { userPos, playerId, betData, dots });
             }, 500);
         }
+
+        // let { playingPlayerIds, bets, dots } = data;
+        // let winner = playerResults.find(result => result === 1);
+
+        // if (winner) {
+        //     let playerWinerIndex = playerResults.findIndex(result => result === 1);
+        //     let playerId = playingPlayerIds[playerWinerIndex];
+        //     if (!playerId || playerId != this.id)
+        //         return;
+        //     // remove it for other user
+        //     playerResults[playerWinerIndex] = undefined;
+
+        //     let { myPos } = this._getPosBasedOnWorldSpace(playerId);
+        //     let userPos = myPos;
+        //     let previousDataTypes = bets[playerWinerIndex];
+
+        //     // user will be get chip after dealer got it
+        //     setTimeout(() => {
+        //         this.scene.emit(Events.XOCDIA_ON_PLAYER_RECEIVE_CHIP_ANIMATION, { userPos, previousDataTypes, dots, playerId });
+        //     }, 500);
+        // }
         return;
     }
 

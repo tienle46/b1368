@@ -34,9 +34,12 @@ export default class BoardRenderer extends ActorRenderer {
     }
 
     hideTimeLine() {
-        this.ellipseTimeLine.stop();
+        if (this.ellipseTimeLine) {
+            this.ellipseTimeLine.stop();
+        }
         this.setTimeLineMessage("");
         utils.deactive(this.timeline);
+
     }
 
     showTimeLine(timeInSecond = 0, message) {

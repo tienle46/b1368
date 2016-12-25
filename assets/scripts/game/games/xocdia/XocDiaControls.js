@@ -67,7 +67,6 @@ export default class XocDiaControls extends GameControls {
 
         this.scene.on(Events.XOCDIA_ON_PLAYER_TOSSCHIP_ANIMATION, this._onPlayerTossChip, this);
         this.scene.on(Events.XOCDIA_ON_PLAYER_CANCEL_BET_SUCCESS, this._onPlayerCancelBetSuccess, this);
-        this.scene.on(Events.XOCDIA_ON_DISTRIBUTE_CHIP, this._onDistributeChip, this);
         this.scene.on(Events.XOCDIA_ON_PLAYER_RECEIVE_CHIP_ANIMATION, this._onPlayerReceiveChip, this);
     }
 
@@ -86,7 +85,6 @@ export default class XocDiaControls extends GameControls {
 
         this.scene.off(Events.XOCDIA_ON_PLAYER_TOSSCHIP_ANIMATION, this._onPlayerTossChip, this);
         this.scene.off(Events.XOCDIA_ON_PLAYER_CANCEL_BET_SUCCESS, this._onPlayerCancelBetSuccess, this);
-        this.scene.off(Events.XOCDIA_ON_DISTRIBUTE_CHIP, this._onDistributeChip, this);
         this.scene.off(Events.XOCDIA_ON_PLAYER_RECEIVE_CHIP_ANIMATION, this._onPlayerReceiveChip, this);
     }
 
@@ -112,7 +110,6 @@ export default class XocDiaControls extends GameControls {
         }
 
         let betTypeId = event.currentTarget.id;
-        // let startPoint = chipOptionsNode.parent.convertToWorldSpaceAR(chipOptionsNode.getPosition());
 
         this.isInCancelPhase = false;
 
@@ -132,11 +129,8 @@ export default class XocDiaControls extends GameControls {
         }
         if (this.betData.length > 0) {
             this.isInCancelPhase = false;
-            this.betData = this.betData.map((data) => {
-                data.b *= 2;
-                return data;
-            });
-            this._sendBetRequest(this.betData, true);
+            this.betData = [...this.betData, ...this.betData];
+            this._sendBetRequest(this.betData);
         }
     }
 
@@ -184,7 +178,7 @@ export default class XocDiaControls extends GameControls {
 
 
     _onPlayerTossChip(data) {
-        let { betsList, myPos, isItMe, isReplace } = data;
+        let { betsList, myPos, isItMe, isReplace, playerId } = data;
         if (isItMe) {
             console.debug('is It me !! ', betsList);
             this.betData = isReplace ? betsList : [...this.betData, ...betsList];
@@ -192,74 +186,31 @@ export default class XocDiaControls extends GameControls {
 
         let len = betsList.length;
         for (let i = 0; i < len; i++) {
-            this._onTossChipAnim(betsList[i], myPos, isItMe, isReplace);
-            if (i == betsList.length - 1) {
+            this._onTossChipAnim(betsList[i], myPos, isItMe, playerId, isReplace);
+            if (isItMe && isReplace && i == len - 1) {
                 this.isInReBetPhase = true;
             }
         }
     }
 
-    _onDistributeChip(data) {
-        let { playingPlayerIds, bets, playerResults, dots } = data;
-        playerResults.forEach((result, index) => {
-            if (result === 0) {
-                let dataTypes = bets[index];
-                let destination = this.dealer.parent.convertToWorldSpaceAR(this.dealer.getPosition());
-                this._runDistributeChipsAnim(dataTypes, dots, destination);
-            }
-        });
-    }
-
     /**
      * @param userPos: cc.v2
-     * @param previousDataTypes: {<betid1> : <amount>, <betid2> : <amount>}
+     * @param betData: {<betid1> : <amount>, <betid2> : <amount>}
      */
     _onPlayerReceiveChip(data) {
-        let { userPos, previousDataTypes, dots } = data;
+        let { userPos, playerId, betData, dots } = data;
+        let toPos = userPos;
 
-        this._runDistributeChipsAnim(previousDataTypes, dots, userPos, true);
-    }
-
-    /**
-     * @dataTypes: bets Object  {<betid1> : <amount>, <betid2> : <amount>}
-     * @resultDots: Array result dots
-     * @destination: cc.v2 -> endPoint where chip will be placed, if player lost chip, they will be flied to dealer position
-     */
-    _runDistributeChipsAnim(dataTypes, resultDots, destination, isWinner) {
-        let dataDifferences = this._convertDataType(dataTypes, this.betContainerButton.isShakedDotsReturnEvenResult(resultDots), isWinner);
-        let dealerPosition = this.dealer.parent.convertToWorldSpaceAR(this.dealer.getPosition());
-
-        dataDifferences.forEach((type) => {
-            let { id, amount } = type;
-            let fromNode = this.betContainerButton.getBetTypeByTypeId(id);
-
-            let chipInfo = this.betOptionsGroup.getChipInfoByAmount(Math.abs(amount), true);
-            destination = amount > 0 ? destination : dealerPosition;
-
-            XocDiaAnim.receiveChip(fromNode, destination, chipInfo);
-        });
-    }
-
-    /**
-     * @param typeObj  {<betid1> : <amount>, <betid2> : <amount>} => [{id: <typeId1>, amount: <amount>}]
-     * @param isWinner boolean: if you're winner, need to check exactly bet type you earned and lost
-     * @param isEven boolean : if true, betId == 1||3||4 will be positive, others will be negative
-     */
-    _convertDataType(types, isEven, isWinner = false) {
-        console.debug('isEven', isEven);
-        let rs = [];
-        for (let id in types) {
-            let amount = types[id];
-            if (isWinner && (isEven && (id == 2 || id == 5 || id == 6)) || (!isEven && (id == 1 || id == 3 || id == 4))) {
-                amount *= -1;
+        for (let id in betData) {
+            let isWinner = this.betContainerButton.doesBetTypeIdWin(Number(id), dots);
+            if (!isWinner) {
+                toPos = this.dealer.parent.convertToWorldSpaceAR(this.dealer.getPosition());
             }
-
-            rs.push({ id, amount });
+            XocDiaAnim.receiveChip(toPos, playerId, id);
         }
-        return rs;
     }
 
-    _onTossChipAnim(data = { b: null, bo: null }, fromPos, isItMe, isReplace) {
+    _onTossChipAnim(data = { b: null, bo: null }, fromPos, isItMe, playerId, isReplace) {
         let amount = data[app.keywords.XOCDIA_BET.AMOUNT];
         let typeId = data[app.keywords.XOCDIA_BET.TYPE];
 
@@ -281,7 +232,7 @@ export default class XocDiaControls extends GameControls {
                 this.updateUserGoldLbl(this.currentGold);
             }
 
-            XocDiaAnim.tossChip(fromPos, toNode, chipInfo);
+            XocDiaAnim.tossChip(fromPos, toNode, chipInfo, playerId);
         }
     }
 

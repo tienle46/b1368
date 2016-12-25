@@ -111,7 +111,6 @@ export default class BoardXocDia extends BoardCardBetTurn {
                     playingPlayerIds.forEach((id, index) => {
                         let playerId = id;
                         let balance = balanceChangeAmounts[id];
-                        console.debug('playerId, balance', playerId, balance);
                         this.scene.emit(Events.XOCDIA_ON_PLAYER_RUN_MONEY_BALANCE_CHANGE_ANIM, { balance, playerId });
                     });
                 }, 1200); // show result and runing money balance anim after 1.2s

@@ -42,10 +42,15 @@ export default class Component {
     }
 
     releaseAssets() {
-        for (let i = 0; i < this.loadedAssets.length; i++) {
-            console.debug('release......', this.loadedAssets[i]);
-            cc.loader.releaseAsset(this.loadedAssets[i]);
-        }
+        cc.loader.release(this.loadedAssets);
+        // for (let i = 0; i < this.loadedAssets.length; i++) {
+        //     // Release all dependencies of a loaded prefab
+        //     // var deps = cc.loader.getDependsRecursively(this.loadedAssets[i]);
+        //     // console.debug("deps", deps);
+
+        //     console.debug('release......', this.loadedAssets[i]);
+        //     cc.loader.releaseAsset(this.loadedAssets[i]);
+        // }
         this.loadedAssets = [];
     }
 }

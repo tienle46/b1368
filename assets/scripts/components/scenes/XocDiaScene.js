@@ -12,11 +12,7 @@ export default class XocDiaScene extends GameScene {
         super();
 
         this.properties = {
-            ...this.properties,
-            /**
-             * @type {cc.Node}
-             */
-            chooseBetSliderNode: cc.Node
+            ...this.properties
         }
 
         /**
