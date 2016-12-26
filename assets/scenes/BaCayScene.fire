@@ -1815,7 +1815,7 @@
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
-      "x": 0.5,
+      "x": 0,
       "y": 0.5
     },
     "_contentSize": {
@@ -1830,7 +1830,7 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": 163,
+      "x": 158,
       "y": 30
     },
     "_skewX": 0,
@@ -1870,7 +1870,7 @@
     "_isSystemFontUsed": false,
     "_N$string": "0",
     "_N$horizontalAlign": 0,
-    "_N$verticalAlign": 0,
+    "_N$verticalAlign": 1,
     "_N$overflow": 0
   },
   {
@@ -2025,6 +2025,12 @@
     },
     "gopGaLabel": {
       "__id__": 55
+    },
+    "gopGaCoinNode": {
+      "__id__": 57
+    },
+    "chipPrefab": {
+      "__uuid__": "e74aede9-fe2e-4ea9-87d0-71730289b91b"
     }
   },
   {
@@ -5154,7 +5160,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 73.29,
+      "width": 77.69000000000001,
       "height": 40
     },
     "_children": [],
@@ -5247,7 +5253,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "0da026cb-0614-45ff-b5cf-3838e8f4ef6b"
+      "__uuid__": "b7da0bda-f05c-414a-99ae-65f8e25ed85f"
     },
     "_type": 1,
     "_sizeMode": 0,
@@ -5313,7 +5319,7 @@
       "a": 255
     },
     "_N$normalSprite": {
-      "__uuid__": "0da026cb-0614-45ff-b5cf-3838e8f4ef6b"
+      "__uuid__": "b7da0bda-f05c-414a-99ae-65f8e25ed85f"
     },
     "_N$disabledSprite": null,
     "_N$target": {

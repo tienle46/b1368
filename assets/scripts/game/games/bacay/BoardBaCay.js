@@ -11,6 +11,7 @@ import BoardCardBetTurn from 'BoardCardBetTurn';
 import PlayerBaCay from 'PlayerBaCay';
 import BoardBaCayRenderer from 'BoardBaCayRenderer';
 import BaCayUtils from "./BaCayUtils";
+import GameAnim from "../../components/anim/GameAnim";
 
 export default class BoardBaCay extends BoardCardBetTurn {
 
@@ -278,7 +279,7 @@ export default class BoardBaCay extends BoardCardBetTurn {
         let gopGaPlayer = this.scene.gamePlayers.findPlayer(playerId);
         if(gopGaPlayer){
             console.log("gopGaPlayer: ", gopGaPlayer);
-            //TODO player animation
+            GameAnim.flyTo({fromNode: gopGaPlayer.node, toNode: this.renderer.gopGaCoinNode, amount: 3, prefab: this.renderer.chipPrefab});
             this._addToGopGaValue(gopGaPlayer, gopGaValue);
         }
     }

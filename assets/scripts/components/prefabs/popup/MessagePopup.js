@@ -17,7 +17,6 @@ export default class MessagePopup extends Component {
 
         this.properties = {
             ...this.properties,
-            messageNode: cc.Node,
             acceptButton: cc.Button,
             acceptButtonLabel: cc.Label,
             denyButtonLabel: cc.Label,
@@ -27,11 +26,8 @@ export default class MessagePopup extends Component {
             componentName: 'MessagePopup'
         }
 
-        this.messageTextView = null;
-
+        this.messageLabel = cc.Label;
         this.loading = null;
-        this.messageLines = 2;
-        this.maxPopupWidth = 550;
         this.acceptCb = null;
         this.denyCb = null;
         this.text = '';
@@ -52,8 +48,6 @@ export default class MessagePopup extends Component {
         this.acceptButtonLabel.string = this.getAcceptText();
         this.denyButtonLabel.string = this.getDenyText();
 
-        this.initMessageNode();
-
         if (this.requestData) {
             this._showLoading();
             app.service.send(this.requestData, (data) => {
@@ -71,16 +65,9 @@ export default class MessagePopup extends Component {
         }
     }
 
-    initMessageNode() {
-        this.messageTextView = this.messageNode.getComponent('TextView');
-        this.messageTextView.setMaxWidth(this.maxPopupWidth - 30);
-    }
-
     setMessage(message = "") {
         this._hideLoading();
-        this.messageTextView.setText(message);
-        let width = this.messageTextView.getWidth();
-        this.node.width = width + 30;
+        this.messageLabel.string = message;
     }
 
     _showLoading() {

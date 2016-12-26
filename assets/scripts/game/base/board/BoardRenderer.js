@@ -19,6 +19,7 @@ export default class BoardRenderer extends ActorRenderer {
 
         this.timelineTextView = null;
         this.ellipseTimeLine = null;
+        this.chipPrefab = cc.Prefab;
     }
 
     onEnable() {
@@ -39,7 +40,6 @@ export default class BoardRenderer extends ActorRenderer {
         }
         this.setTimeLineMessage("");
         utils.deactive(this.timeline);
-
     }
 
     showTimeLine(timeInSecond = 0, message, hiddenText = false) {

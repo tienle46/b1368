@@ -108,7 +108,6 @@ export default class BaCayControls extends GameControls {
         this.baseControls.hideAllControls();
     }
 
-
     onClickDownBtn(){
         this.scene.emit(Events.ON_CLICK_DOWN_BUTTON);
     }
@@ -116,6 +115,7 @@ export default class BaCayControls extends GameControls {
     onClickRevealBtn(){
         this.scene.emit(Events.ON_CLICK_REVEAL_BUTTON);
         this.setVisible(this.revealAllBtn, false);
+        this.onClickDownBtn()
     }
 }
 

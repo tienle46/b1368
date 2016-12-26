@@ -49,6 +49,8 @@ export default {
     game_start_deal_card: 'Bắt đầu \nchia bài',
     game_change_master_to_player: 'Chuyển chương cho người chơi {{playerName}}',
     game_bet: 'Cược',
-    game_down_card: 'Hạ bài'
+    game_down_card: 'Hạ bài',
+    game_not_enough_balance_to_cuoc_bien: 'Tài khoản không đủ để Cược Biên',
+    game_not_enough_balance_to_bet: 'Tài khoản không đủ để tiếp tục Cược'
 
 };

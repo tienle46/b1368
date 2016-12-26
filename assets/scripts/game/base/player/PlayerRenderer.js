@@ -114,16 +114,16 @@ export default class PlayerRenderer extends ActorRenderer {
     startPlusBalanceAnimation(balance) {
         if (!this.loaded || isNaN(balance)) return;
         let isWinner = balance > 0;
-        balance = GameUtils.toChangedBalanceString(balance);
-        console.debug('balance', balance);
+        let balanceStr = GameUtils.formatBalance(balance);
+
         if (this.plusBalanceLabel && this.plusBalanceNode && this.minusBalanceLabel) {
             this.minusBalanceLabel.string = "";
             this.plusBalanceLabel.string = "";
 
             if (isWinner) {
-                this.plusBalanceLabel.string = balance;
+                this.plusBalanceLabel.string = `+${balanceStr}`;
             } else {
-                this.minusBalanceLabel.string = balance;
+                this.minusBalanceLabel.string = balanceStr;
             }
             this.plusBalanceAnim.play();
         }

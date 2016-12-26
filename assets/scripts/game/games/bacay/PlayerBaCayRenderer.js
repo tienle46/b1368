@@ -7,12 +7,14 @@ import app from 'app';
 import CardList from 'CardList';
 import PlayerCardBetTurnRenderer from 'PlayerCardBetTurnRenderer';
 import GameUtils from "../../base/utils/GameUtils";
+import GameAnim from "../../components/anim/GameAnim";
 
 export default class PlayerBaCayRenderer extends PlayerCardBetTurnRenderer {
     constructor() {
         super();
 
         this.betComponent = cc.Node;
+        this.betCoinNode = cc.Node;
 
         this.betLabel = {
             default: null,
@@ -50,23 +52,29 @@ export default class PlayerBaCayRenderer extends PlayerCardBetTurnRenderer {
          * @type {cc.Animation}
          */
         this.actionNodeAnim = null;
-
+        this.chipPrefab = cc.Prefab;
     }
 
     onEnable(...args){
         super.onEnable(...args);
+        this.actionNodeAnim = this.actionNode.getComponent(cc.Animation);
+    }
+
+    updatePlayerAnchor(anchorIndex){
+        super.updatePlayerAnchor(anchorIndex);
 
         this._updatePlayerBetValueComponent();
-
-        this.actionNodeAnim = this.actionNode.getComponent(cc.Animation);
     }
 
     _updatePlayerBetValueComponent(){
         let isRightAnchor = this.scene.gamePlayers.playerPositions.isPositionOnRight(this.anchorIndex);
         if(isRightAnchor){
-            this.betComponent.setPositionX(-Math.abs(this.cuocBienNode.getPositionX()));
-            this.cuocBienNode.setPositionX(-Math.abs(this.cuocBienNode.getPositionX()));
+            this.betComponent.setPositionX(-Math.abs(this.betComponent.getPositionX()));
+            this.betComponent.setAnchorPoint(1, this.betComponent.getAnchorPoint().y);
             this.betComponent.getComponent(cc.Layout).horizontalDirection = cc.Layout.HorizontalDirection.RIGHT_TO_LEFT;
+
+            this.cuocBienNode.setAnchorPoint(1, this.cuocBienNode.getAnchorPoint().y);
+            this.cuocBienNode.setPositionX(-Math.abs(this.cuocBienNode.getPositionX()));
             this.cuocBienNode.getComponent(cc.Layout).horizontalDirection = cc.Layout.HorizontalDirection.RIGHT_TO_LEFT;
         }
     }
@@ -136,11 +144,18 @@ export default class PlayerBaCayRenderer extends PlayerCardBetTurnRenderer {
     }
 
     showAction(text = ''){
-        if(!this.actionNodeAnim) return;
 
-        this.actionNodeAnim.stop();
         this.actionLabel.string = text;
-        text.length > 0 && this.actionNodeAnim.play();
+
+        if(!utils.isEmpty(text)){
+            utils.setVisible(this.actionActor, true);
+        }
+
+        // if(!this.actionNodeAnim) return;
+        //
+        // this.actionNodeAnim.stop();
+        // this.actionLabel.string = text;
+        // text.length > 0 && this.actionNodeAnim.play();
     }
 
     showChangeMasterAnimation(){
@@ -154,8 +169,6 @@ export default class PlayerBaCayRenderer extends PlayerCardBetTurnRenderer {
 
     stopAllAnimation(){
         super.stopAllAnimation();
-
-        utils.deactive(this.actionActor);
         this.actionNodeAnim && this.actionNodeAnim.stop();
     }
 
@@ -166,6 +179,18 @@ export default class PlayerBaCayRenderer extends PlayerCardBetTurnRenderer {
         if(this.scene.gameState != app.const.game.state.ENDING) {
             super.clearCards();
         }
+    }
+
+    playBetAnimation(betAmount){
+        let master = this.scene.gamePlayers.master;
+        let coinChipAmount = this.scene.board.minBet > 0 ? Math.floor(betAmount / this.scene.board.minBet) : 1;
+        GameAnim.flyTo({fromNode: this.node, toNode: master.renderer.betCoinNode, amount: coinChipAmount, prefab: this.chipPrefab});
+    }
+
+    _reset(){
+        super._reset();
+
+        utils.setVisible(this.actionActor, false);
     }
 
 }

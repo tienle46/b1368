@@ -67,10 +67,10 @@ export default class BaCayUtils {
         return true;
     }
 
-    static calculateMaxCuocBien(player){
-        let maxValue = player.board.minBet * 5;
-        //TODO
-        return maxValue;
+    static calculateMaxCuocBien(player, player2){
+        let availableBalance1 = (GameUtils.getUserBalance(player.user) - player.betAmount - player.currentCuocBien) / 2;
+        let availableBalance2 = (GameUtils.getUserBalance(player2.user) - player2.betAmount - player2.currentCuocBien) / 2;
+        return Math.min(availableBalance1, availableBalance2);
     }
 
     static checkCuocBienWithPlayer(me, player){
@@ -119,7 +119,7 @@ export default class BaCayUtils {
         let {checkResult, msg} = this.checkCuocBienWithPlayer(me, player);
 
         if(checkResult){
-            //TODO vevify cuoc bien value
+            //Khi chưa cho người chơi tự nhập thì không cần check lại ở đây.
         }else{
             valid = false;
         }
@@ -132,7 +132,7 @@ export default class BaCayUtils {
         let {checkResult, msg} = this.checkAcceptCuocBienWithPlayer(me, player);
 
         if(checkResult){
-            //TODO vevify cuoc bien value
+            //Khi chưa cho người chơi tự nhập thì không cần check lại ở đây.
         }else{
             valid = false;
         }
@@ -146,5 +146,16 @@ export default class BaCayUtils {
 
     static validateBetValue(value, player){
         return {valid: true, msg: ''};
+    }
+
+    static calculateMaxPlayerBet(player, masterPlayer) {
+        if(!player || !masterPlayer) return player.board.minBet;
+
+        let totalPlayBalance = GameUtils.getUserBalance(player.user);
+        let masterBalance = GameUtils.getUserBalance(masterPlayer.user);
+        let maxBet1 = masterBalance / 2 - masterPlayer.betAmount;
+        let maxBet2 = totalPlayBalance - player.betAmount - player.currentCuocBien;
+
+        return Math.min(maxBet1, maxBet2);
     }
 }

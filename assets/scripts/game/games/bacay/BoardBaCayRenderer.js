@@ -17,6 +17,7 @@ export default class BoardBaCayRenderer extends BoardCardBetTurnRenderer {
             gopGaNode: cc.Node,
             gopGaButton: cc.Button,
             gopGaLabel: cc.Label,
+            gopGaCoinNode: cc.Node,
         }
     }
 

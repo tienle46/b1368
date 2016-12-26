@@ -6,6 +6,7 @@ import app from 'app';
 import GameScene from 'GameScene';
 import Events from 'Events';
 import HorizontalBetPopup from 'HorizontalBetPopup';
+import BaCayUtils from "../../game/games/bacay/BaCayUtils";
 
 export default class BaCayScene extends GameScene {
     constructor() {
@@ -43,10 +44,16 @@ export default class BaCayScene extends GameScene {
     }
 
     showCuocBienPopup(maxValue, cb) {
+
+        if(maxValue < this.board.minBet) {
+            app.system.showToast(app.res.string('game_not_enough_balance_to_cuoc_bien'));
+            return;
+        }
+
         this._betPopup && this._betPopup.show({
-            minValue: 0,
+            minValue: this.board.minBet,
             maxValue,
-            currentValue: 0,
+            currentValue: this.board.minBet,
             timeout: 10,
             cb,
             title: app.res.string('game_bacay_cuoc_bien')
@@ -54,8 +61,15 @@ export default class BaCayScene extends GameScene {
     }
 
     showChooseBetSlider(currentValue) {
-        let maxValue = this.board.minBet * 5;
+        // let maxValue = this.board.minBet * 5;
         let minValue = this.board.minBet;
+        let maxValue = BaCayUtils.calculateMaxPlayerBet(this.gamePlayers.me, this.gamePlayers.master);
+
+        if(maxValue < minValue) {
+            app.system.showToast(app.res.string('game_not_enough_balance_to_bet'));
+            return;
+        }
+
         this._betPopup && this._betPopup.show({
             submitOnHide: true,
             minValue,

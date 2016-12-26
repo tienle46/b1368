@@ -11,6 +11,7 @@ import BaCayUtils from 'BaCayUtils';
 import CardList from 'CardList';
 import PlayerCardBetTurn from 'PlayerCardBetTurn';
 import utils from "../../../utils/Utils";
+import GameAnim from "../../components/anim/GameAnim";
 
 export default class PlayerBaCay extends PlayerCardBetTurn {
 
@@ -63,7 +64,7 @@ export default class PlayerBaCay extends PlayerCardBetTurn {
     }
 
     _onShowGameEndingInfo(playerId, { name = "", text = null, iconPath = "", balanceChanged = NaN, info = "", cards = [], isWinner = false } = {}){
-        if(playerId != this.id) return;
+        if(playerId != this.id || !this.isPlaying()) return;
 
 
         if(balanceChanged > 0){
@@ -109,14 +110,13 @@ export default class PlayerBaCay extends PlayerCardBetTurn {
         let addToMasterBestAmount = uBet - this.betAmount;
 
         this.scene.emit(Events.ADD_BET_TO_MASTER, addToMasterBestAmount, this);
+        this.renderer.playBetAnimation(uBet);
         this.setBetAmount(uBet);
     }
 
     setBetAmount(betAmount = 0) {
 
-        if (!utils.isNumber(betAmount)) {
-            betAmount = 0;
-        }
+        if (!utils.isNumber(betAmount)) betAmount = 0;
 
         this.betAmount = betAmount;
         this.renderer.showBetAmount(this.betAmount);
@@ -214,7 +214,7 @@ export default class PlayerBaCay extends PlayerCardBetTurn {
 
         if(state == app.const.game.state.STATE_BET) {
             this._onGameStateBet();
-            !this.isItMe() && this.scene.gamePlayers.isMePlaying() && this.renderer.showCuocBienBtn();
+            !this.isItMe() && this.isPlaying() && this.renderer.showCuocBienBtn();
         }else{
             this.renderer.showCuocBienBtn(false);
             this.scene.hideChooseBetSlider();
@@ -234,6 +234,7 @@ export default class PlayerBaCay extends PlayerCardBetTurn {
 
     _onGameStateBet() {
         if (this.isPlaying() && !this.isMaster) {
+            this.renderer.playBetAnimation(this.board.minBet);
             this.setBetAmount(this.board.minBet);
             this.scene.emit(Events.ADD_BET_TO_MASTER, this.board.minBet, this);
         }
@@ -347,8 +348,6 @@ export default class PlayerBaCay extends PlayerCardBetTurn {
 
     _onPlayerAcceptCuocBien(gaHucPlayerId, biHucPlayerId, data){
         if(!this.isItMe()) return;
-
-        console.log("_onPlayerAcceptCuocBien: ", gaHucPlayerId, biHucPlayerId);
 
         let gaHucPlayer = this.scene.gamePlayers.findPlayer(gaHucPlayerId);
         let biHucPlayer = this.scene.gamePlayers.findPlayer(biHucPlayerId);

@@ -308,8 +308,9 @@ export default class Player extends Actor {
     onGameReset() {
         if(this.scene.gameState != app.const.game.state.READY){
             this.ready = false;
-            this.renderer._reset();
         }
+
+        this.renderer._reset();
     }
 
     equals(otherPlayer) {
@@ -317,7 +318,6 @@ export default class Player extends Actor {
     }
 
     _sendReadyImmediately() {
-        console.debug('_sendReadyImmediately Player.js: ', this.scene.room)
         this.scene.showShortLoading('ready');
         app.service.send({ cmd: app.commands.PLAYER_READY, room: this.scene.room });
     }
