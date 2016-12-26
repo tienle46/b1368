@@ -45,6 +45,7 @@ export default {
         })));
     },
     receiveChip: (toPos, playerId, betId) => {
+        totalChipOnPlayer[playerId] = 0;
         // and node where chip would be tossed to
         cc.director.getScene().children.filter((child) => (child.name == 'miniChip') && (child.playerId == playerId) && (child.betId == betId)).forEach((chip) => {
             let action = cc.moveTo(0.1 + app._.random(0, 0.2), toPos);
