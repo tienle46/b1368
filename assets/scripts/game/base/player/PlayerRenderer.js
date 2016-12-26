@@ -92,7 +92,7 @@ export default class PlayerRenderer extends ActorRenderer {
 
     update(dt) {
         if (this.isCounting && this.timelineDuration > 0) {
-            this._playerTimeLineProgress.progress = this.counterTimer / this.timelineDuration;
+            this.playerTimeLineProgress.progress = this.counterTimer / this.timelineDuration;
 
             if (this.counterTimer >= this.timelineDuration) {
                 this._stopCountdown();
@@ -101,7 +101,7 @@ export default class PlayerRenderer extends ActorRenderer {
             this.counterTimer += dt;
             if (this.counterTimer >= this.timelineDuration) {
                 this.isCounting = false;
-                this._playerTimeLineProgress.progress = 1;
+                this.playerTimeLineProgress.progress = 1;
             }
         }
     }
@@ -115,7 +115,6 @@ export default class PlayerRenderer extends ActorRenderer {
         if (!this.loaded || isNaN(balance)) return;
         let isWinner = balance > 0;
         balance = GameUtils.toChangedBalanceString(balance);
-        console.debug('balance', balance);
         if (this.plusBalanceLabel && this.plusBalanceNode && this.minusBalanceLabel) {
             this.minusBalanceLabel.string = "";
             this.plusBalanceLabel.string = "";
@@ -130,7 +129,7 @@ export default class PlayerRenderer extends ActorRenderer {
     }
 
     _startCountdown(duration) {
-        if (this._playerTimeLineProgress) {
+        if (this.playerTimeLineProgress) {
             this.timelineDuration = duration;
             this.isCounting = true;
             this.counterTimer = 0;
@@ -138,11 +137,11 @@ export default class PlayerRenderer extends ActorRenderer {
     }
 
     _stopCountdown() {
-        if (this._playerTimeLineProgress) {
+        if (this.playerTimeLineProgress) {
             this.timelineDuration = 0;
             this.isCounting = false;
             this.counterTimer = 0;
-            this._playerTimeLineProgress.progress = 0;
+            this.playerTimeLineProgress.progress = 0;
         }
     }
 
