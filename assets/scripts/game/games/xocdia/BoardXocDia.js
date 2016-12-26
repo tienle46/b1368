@@ -10,6 +10,8 @@ import SFS2X from 'SFS2X';
 export default class BoardXocDia extends BoardCardBetTurn {
     constructor() {
         super();
+
+        this.interval = null;
     }
 
     onLoad() {
@@ -41,8 +43,44 @@ export default class BoardXocDia extends BoardCardBetTurn {
     }
 
     _onUpdateBoardResultHistory(histories) {
-        debug('_onUpdateBoardResultHistory histories', histories)
         histories && this.renderer.updateBoardResultHistory(histories);
+    }
+
+    startTimeLine(duration, message) {
+        this.stopTimeLine();
+        let hiddenText = false;
+        if (utils.isEmpty(message)) {
+            switch (this.scene.gameState) {
+                case app.const.game.state.ENDING:
+                    message = app.res.string('game_replay_waiting_time');
+                    break;
+                case app.const.game.state.READY:
+                    message = app.res.string('game_start');
+                    break;
+                case app.const.game.state.STATE_BET:
+                    message = duration;
+                    break;
+                default:
+                    message = app.res.string('game_waiting');
+                    break;
+            }
+        }
+        this.renderer.showTimeLine(duration, message);
+        if (this.scene.gameState == app.const.game.state.BOARD_STATE_SHAKE) {
+            this.renderer.hideTimeLine();
+        }
+        if (this.scene.gameState == app.const.game.state.STATE_BET) {
+            let callInterval = (d) => {
+                if (d == 0) return;
+                this.renderer.setTimeLineMessage(d);
+                setTimeout(() => {
+                    callInterval(d - 1);
+                }, 1000);
+            };
+
+            callInterval.call(this, duration);
+        }
+
     }
 
     handleGameStateChange(boardState, data, isJustJoined) {

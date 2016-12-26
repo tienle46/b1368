@@ -85,11 +85,11 @@ export default class Board extends Actor {
         this.scene.on(Events.ON_ROOM_CHANGE_MIN_BET, this._onRoomMinBetChanged, this);
     }
 
-    _onRoomMinBetChanged(){
+    _onRoomMinBetChanged() {
         this._loadBoardMinBet();
     }
 
-    _loadBoardMinBet(){
+    _loadBoardMinBet() {
         if (this.room.containsVariable(app.keywords.VARIABLE_MIN_BET)) {
             this.minBet = utils.getVariable(this.room, app.keywords.VARIABLE_MIN_BET);
         }
@@ -206,11 +206,10 @@ export default class Board extends Actor {
     }
 
     startTimeLine(timeInSecond, message = "", timeoutCb) {
-        debug('startTimeLine');
         this.stopTimeLine();
 
-        if(utils.isEmpty(message)) {
-            if(this.scene.gameState == app.const.game.state.ENDING) {
+        if (utils.isEmpty(message)) {
+            if (this.scene.gameState == app.const.game.state.ENDING) {
                 message = app.res.string('game_replay_waiting_time');
             } else {
                 message = app.res.string('game_waiting');
@@ -290,7 +289,7 @@ export default class Board extends Actor {
 
         //Support for new ready flow
         if (this.readyPhaseDuration && this.scene.enoughPlayerToStartGame()) {
-            if(isJustJoined) {
+            if (isJustJoined) {
                 //Delay client - server && board init time
                 boardTimeLine -= 2;
             }

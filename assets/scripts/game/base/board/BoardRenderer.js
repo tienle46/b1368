@@ -42,7 +42,7 @@ export default class BoardRenderer extends ActorRenderer {
 
     }
 
-    showTimeLine(timeInSecond = 0, message) {
+    showTimeLine(timeInSecond = 0, message, hiddenText = false) {
         if (timeInSecond <= 0) {
             return;
         }
@@ -50,6 +50,7 @@ export default class BoardRenderer extends ActorRenderer {
         if (!utils.isString(message) || utils.isEmpty(message)) {
             message = app.res.string('game_waiting');
         }
+        hiddenText && (message = '');
 
         utils.active(this.timeline);
         this.setTimeLineMessage(message);
