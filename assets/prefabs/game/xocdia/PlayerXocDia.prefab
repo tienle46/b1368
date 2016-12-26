@@ -643,7 +643,10 @@
     },
     "_enabled": true,
     "_type": 1,
-    "_segements": 38
+    "_segements": 38,
+    "_N$spriteFrame": null,
+    "_N$alphaThreshold": 1,
+    "_N$inverted": false
   },
   {
     "__type__": "cc.Layout",
@@ -3392,9 +3395,6 @@
     },
     "balanceLabel": {
       "__id__": 31
-    },
-    "status1": {
-      "__id__": 80
     },
     "status2": {
       "__id__": 88

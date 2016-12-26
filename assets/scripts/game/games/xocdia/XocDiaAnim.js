@@ -47,11 +47,18 @@ export default {
     receiveChip: (toPos, playerId, betId) => {
         totalChipOnPlayer[playerId] = 0;
         // and node where chip would be tossed to
-        cc.director.getScene().children.filter((child) => (child.name == 'miniChip') && (child.playerId == playerId) && (child.betId == betId)).forEach((chip) => {
+        cc.director.getScene().children.filter((child) => (child.name == 'miniChip') && (child.playerId == playerId) && (child.betId == betId)).map((chip) => {
             let action = cc.moveTo(0.1 + app._.random(0, 0.2), toPos);
             chip.runAction(cc.sequence(action.clone(), cc.delayTime(0.1).clone(), cc.fadeOut(0.1).clone(), cc.callFunc(() => {
                 chip.destroy();
             })));
+        });
+    },
+    clearPlayerChip: (playerId) => {
+        totalChipOnPlayer[playerId] = 0;
+        console.debug(cc.director.getScene().children.filter((child) => (child.name == 'miniChip') && (child.playerId == playerId)));
+        cc.director.getScene().children.filter((child) => (child.name == 'miniChip') && (child.playerId == playerId)).map((chip) => {
+            chip.destroy();
         });
     }
 }

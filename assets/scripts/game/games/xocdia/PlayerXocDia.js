@@ -1,12 +1,6 @@
 import app from 'app';
-import game from 'game';
-import Card from 'Card';
 import Events from 'Events';
-import GameUtils from 'GameUtils';
-import BaCayUtils from 'BaCayUtils';
-import CardList from 'CardList';
 import PlayerCardBetTurn from 'PlayerCardBetTurn';
-import utils from "../../../utils/Utils";
 
 export default class PlayerXocDia extends PlayerCardBetTurn {
 
@@ -62,39 +56,16 @@ export default class PlayerXocDia extends PlayerCardBetTurn {
     _onDistributeChip(data) {
         let { playingPlayerIds, bets, dots } = data;
         let playerIdIndex = playingPlayerIds.findIndex(id => id == this.id);
-        console.debug('_onDistributeChip bets', bets);
 
         if (playerIdIndex !== undefined) {
             let playerId = this.id;
             let { myPos } = this._getPosBasedOnWorldSpace(playerId);
-            let userPos = myPos;
             let betData = bets[playerIdIndex];
             // user will be get chip after dealer got it
             setTimeout(() => {
-                this.scene.emit(Events.XOCDIA_ON_PLAYER_RECEIVE_CHIP_ANIMATION, { userPos, playerId, betData, dots });
+                this.scene.emit(Events.XOCDIA_ON_PLAYER_RECEIVE_CHIP_ANIMATION, { userPos: myPos, playerId, betData, dots });
             }, 500);
         }
-
-        // let { playingPlayerIds, bets, dots } = data;
-        // let winner = playerResults.find(result => result === 1);
-
-        // if (winner) {
-        //     let playerWinerIndex = playerResults.findIndex(result => result === 1);
-        //     let playerId = playingPlayerIds[playerWinerIndex];
-        //     if (!playerId || playerId != this.id)
-        //         return;
-        //     // remove it for other user
-        //     playerResults[playerWinerIndex] = undefined;
-
-        //     let { myPos } = this._getPosBasedOnWorldSpace(playerId);
-        //     let userPos = myPos;
-        //     let previousDataTypes = bets[playerWinerIndex];
-
-        //     // user will be get chip after dealer got it
-        //     setTimeout(() => {
-        //         this.scene.emit(Events.XOCDIA_ON_PLAYER_RECEIVE_CHIP_ANIMATION, { userPos, previousDataTypes, dots, playerId });
-        //     }, 500);
-        // }
         return;
     }
 
@@ -102,73 +73,15 @@ export default class PlayerXocDia extends PlayerCardBetTurn {
         let { playerId, balance } = data;
         if (playerId !== this.id)
             return;
-        console.debug('_onPlayerChangeMoneyAnim', playerId, balance);
         this.renderer.startPlusBalanceAnimation(balance);
     }
 
     _onGameRejoin(data) {
         super._onGameRejoin(data);
-        // if (this.isPlaying() && !this.scene.isEnding() && !this.isItMe()) {
-        //     let cards = Array(PlayerBaCay.DEFAULT_HAND_CARD_COUNT).fill(0).map(value => {return Card.from(value)});
-        //     this.setCards(cards, false);
-        // }
-
-        // if (data && data.hasOwnProperty(app.keywords.BACAY_BI_HUC_PLAYER_ID)) {
-        //     // danh sach bi huc chua nhung thang huc minh
-        //     let biHucPlayerId = utils.getValue(app.keywords.BACAY_BI_HUC_PLAYER_ID);
-        //     let gaHucPlayerId = utils.getValue(app.keywords.BACAY_GA_HUC_PLAYER_LIST);
-        //     let hucAmount = utils.getValue(app.keywords.BACAY_HUC_VALUE);
-
-        //     for (let i = 0; i < biHucPlayerId.length; i++) {
-        //         let biHucPlayer = this.scene.gamePlayers.findPlayer(biHucPlayerId[i]);
-        //         let gaHucPlayer = this.scene.gamePlayers.findPlayer(gaHucPlayerId[i]);
-        //         if (biHucPlayer == null || gaHucPlayer == null) {
-        //             continue;
-        //         }
-
-        //         let hucValue = hucAmount[i];
-
-        //         if (this.equals(gaHucPlayer)) {
-        //             if (hucValue > 0) {
-        //                 // minh di ga huc thang khac
-        //                 this.hucList[biHucPlayer.user.name] = hucValue;
-
-        //                 biHucPlayer._updateCuocBienValue(hucValue);
-        //                 gaHucPlayer._updateCuocBienValue(hucValue);
-        //             } else {
-        //                 this.pendingCuocBiens[biHucPlayer.user.name] = -1 * hucValue;
-        //             }
-        //         } else if (this.equals(biHucPlayer)) {
-        //             // thang khac ga huc minh
-        //             this.biHucList[gaHucPlayer.user.name] = hucValue;
-
-        //             biHucPlayer._updateCuocBienValue(hucValue);
-        //             gaHucPlayer._updateCuocBienValue(hucValue);
-        //         }
-        //     }
-        // }
-
     }
 
     _onGameState(state, data, isJustJoined) {
-        // if (state == app.const.game.state.STATE_BET) {
-        //     this._onGameStateBet();
-        //     !this.isItMe() && this.scene.gamePlayers.isMePlaying() && this.renderer.showCuocBienBtn();
-        // } else {
-        //     this.renderer.showCuocBienBtn(false);
-        //     this.scene.hideChooseBetSlider();
-        // }
 
-        // if (!this.isItMe() || !this.isPlaying() || !this.scene.gamePlayers.isMePlaying()) return;
-
-        // if (state == app.const.game.state.STATE_BET) {
-        //     if (!this.isMaster) {
-        //         this.scene.emit(Events.SHOW_BACAY_BET_CONTROLS);
-        //         this.scene.showChooseBetSlider(this.betAmount);
-        //     }
-        // } else if (state == app.const.game.state.STATE_DOWN) {
-        //     this.scene.emit(Events.SHOW_DOWN_CARD_CONTROLS);
-        // }
     }
 
     _onGameStateBet() {
@@ -178,7 +91,6 @@ export default class PlayerXocDia extends PlayerCardBetTurn {
     onGameReset() {
         super.onGameReset();
         this.betData = [];
-
     }
 
 
@@ -193,11 +105,12 @@ export default class PlayerXocDia extends PlayerCardBetTurn {
         if (data.playerId != this.id) return;
 
         let { playerId, betsList, isSuccess, err, isReplace } = data;
-        this.betData = [...this.betData, ...betsList];
+        let prevList = this.betData;
+        this.betData = isReplace ? betsList : [...this.betData, ...betsList];
 
         if (isSuccess) {
             let { myPos, isItMe } = this._getPosBasedOnWorldSpace(playerId);
-            this.scene.emit(Events.XOCDIA_ON_PLAYER_TOSSCHIP_ANIMATION, { myPos, betsList, isItMe, playerId, isReplace });
+            this.scene.emit(Events.XOCDIA_ON_PLAYER_TOSSCHIP_ANIMATION, { myPos, betsList, isItMe, playerId, isReplace, prevList });
         } else {
             console.error('PlayerXocDia.js > _onPlayerBet', err);
         }
@@ -221,7 +134,7 @@ export default class PlayerXocDia extends PlayerCardBetTurn {
             let myPos = this.scene.gamePlayers.playerPositions.getPlayerAnchorByPlayerId(playerId, isItMe);
             let isItMe = this.scene.gamePlayers.isItMe(playerId);
 
-            this.scene.emit(Events.XOCDIA_ON_PLAYER_CANCEL_BET_SUCCESS, { myPos, isItMe, betsList });
+            this.scene.emit(Events.XOCDIA_ON_PLAYER_CANCEL_BET_SUCCESS, { myPos, isItMe, betsList, playerId });
             this.betData = [];
         } else {
             console.error('PlayerXocDia.js > _onPlayerCancelBet', err);
