@@ -53,7 +53,7 @@ export default class BaCayScene extends GameScene {
         this._betPopup && this._betPopup.show({
             minValue: this.board.minBet,
             maxValue,
-            currentValue: this.board.minBet,
+            currentValue: 0,
             timeout: 10,
             cb,
             title: app.res.string('game_bacay_cuoc_bien')
