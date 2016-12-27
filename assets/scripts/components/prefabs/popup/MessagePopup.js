@@ -45,8 +45,8 @@ export default class MessagePopup extends Component {
     onEnable() {
         super.onEnable();
 
-        this.acceptButtonLabel.string = this.getAcceptText();
-        this.denyButtonLabel.string = this.getDenyText();
+        this.acceptButtonLabel && (this.acceptButtonLabel.string = this.getAcceptText());
+        this.denyButtonLabel && (this.denyButtonLabel.string = this.getDenyText());
 
         if (this.requestData) {
             this._showLoading();

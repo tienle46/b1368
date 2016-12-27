@@ -1,14 +1,14 @@
 {
   "ver": "1.0.0",
-  "uuid": "0e12ef23-fcaa-4ac9-b6af-e1a9b11506d0",
+  "uuid": "001a56f1-7687-4778-84c0-d3aac74f40fe",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "bilinear",
   "subMetas": {
     "bg-dropdown": {
       "ver": "1.0.3",
-      "uuid": "8021de17-0185-4b07-89b7-6e9913d8cca9",
-      "rawTextureUuid": "0e12ef23-fcaa-4ac9-b6af-e1a9b11506d0",
+      "uuid": "727ae9cf-ee0a-4b18-aa3d-5a095454cee6",
+      "rawTextureUuid": "001a56f1-7687-4778-84c0-d3aac74f40fe",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": false,
@@ -20,8 +20,8 @@
       "height": 483,
       "rawWidth": 124,
       "rawHeight": 483,
-      "borderTop": 0,
-      "borderBottom": 0,
+      "borderTop": 118,
+      "borderBottom": 69,
       "borderLeft": 0,
       "borderRight": 0,
       "subMetas": {}

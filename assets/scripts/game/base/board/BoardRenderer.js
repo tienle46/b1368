@@ -54,7 +54,7 @@ export default class BoardRenderer extends ActorRenderer {
 
         utils.active(this.timeline);
         this.setTimeLineMessage(message);
-        this.ellipseTimeLine.startTimeline(timeInSecond);
+        this.ellipseTimeLine.startTimeLine(timeInSecond);
     }
 
     setTimeLineMessage(message) {

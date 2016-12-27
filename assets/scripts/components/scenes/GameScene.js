@@ -221,7 +221,7 @@ export default class GameScene extends BaseScene {
 
     _onActionExitGame() {
         // this.showLoading();
-        app.service.sendRequest(new SFS2X.Requests.System.LeaveRoomRequest(this.room));
+        // app.service.sendRequest(new SFS2X.Requests.System.LeaveRoomRequest(this.room));
 
         app.service.send({ cmd: app.commands.REGISTER_QUIT_ROOM, room: this.room }, (data) => {
             if (data && data[app.keywords.SUCCESSFULL]) {

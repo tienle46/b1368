@@ -34,7 +34,7 @@ export default class EllipseTimeLine extends Component {
 
     }
 
-    startTimeline(duration) {
+    startTimeLine(duration) {
         if(this._enabled){
             if (this._playerTimeLineProgress) {
                 this.timelineDuration = duration;

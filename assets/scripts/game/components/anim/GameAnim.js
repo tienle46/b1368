@@ -14,7 +14,7 @@ export default class GameAnim {
             : toNode.convertToWorldSpaceAR(toNode.getPosition());
 
         // tosschip animation
-        new Array(Math.min(amount, 5)).fill(0).map((_, index) => {
+        new Array(amount).fill(0).map((_, index) => {
 
             let miniChip = cc.instantiate(prefab);
             cc.director.getScene().addChild(miniChip);
