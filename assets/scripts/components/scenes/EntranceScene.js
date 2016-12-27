@@ -121,7 +121,7 @@ export default class EntranceScene extends BaseScene {
                             }
                         });
                     } else {
-                        this.prom = new PromptPopupRub(cc.director.getScene(), { confirmBtn: this.onUserDonePickupName }, { label: { text: 'Chọn tên đăng nhập:' } }, this);
+                        this.prom = new PromptPopupRub(app.system.getCurrentSceneNode(), { confirmBtn: this.onUserDonePickupName }, { label: { text: 'Chọn tên đăng nhập:' } }, this);
                         this.prom.init();
                     }
                 } else {

@@ -153,7 +153,7 @@ class Service {
         if (this._loginData) {
             this.connect((success) => {
                 if (success) {
-                    this.requestAuthen(this._loginData.username, this._loginData.password, false, this._loginData.quickLogin,null, this._loginData.cb);
+                    this.requestAuthen(this._loginData.username, this._loginData.password, false, this._loginData.quickLogin, null, this._loginData.cb);
                     this._loginData = null;
                 }
             });
@@ -176,8 +176,9 @@ class Service {
         if (event.cmd === app.commands.XLAG) {
             this._handleLagPollingResponse(event);
         } else if (event.cmd === app.commands.SYSTEM_MESSAGE) {
-            // AlertPopupRub()
-            // console.debug('ahahahahah', event);
+            let params = event[app.keywords.BASE_EVENT_PARAMS];
+            let messageList = params[app.keywords.MESSAGE_LIST];
+            messageList && messageList.length > 0 && app.system.info(`${messageList[0]}`);
         } else {
             if (this._hasCallback(event.cmd)) {
                 this._callCallbackAsync(event.cmd, event.params);
@@ -210,7 +211,7 @@ class Service {
 
     _onLoginError(event) {
         this._loginData = null;
-        this._callCallback(SFS2X.SFSEvent.LOGIN,null, event.data);
+        this._callCallback(SFS2X.SFSEvent.LOGIN, null, event.data);
     }
 
     sendRequest(request, { cb = null, scope = null, cbName = null } = {}) {
@@ -343,7 +344,7 @@ class Service {
      * @param {function} cb
      */
 
-    requestAuthen(username, password, isRegister = false, isQuickLogin = false,accessToken = null, cb) {
+    requestAuthen(username, password, isRegister = false, isQuickLogin = false, accessToken = null, cb) {
         let data = {};
         data[app.keywords.IS_REGISTER] = isRegister;
         data[app.keywords.RAW_PASSWORD] = password;
@@ -352,7 +353,7 @@ class Service {
         // data[app.keywords.VERSION] = "1.0.0"; //
         data[app.keywords.DEVICE_ID] = app.DEVICE_ID;
         data[app.keywords.QUICK_PLAY] = isQuickLogin; // <-- die here!
-        if(accessToken && accessToken.length > 0){
+        if (accessToken && accessToken.length > 0) {
             data[app.keywords.ACCESS_TOKEN] = accessToken;
         }
         if (isRegister) {

@@ -1762,7 +1762,10 @@
     },
     "_enabled": true,
     "_type": 0,
-    "_segements": 64
+    "_segements": 64,
+    "_N$spriteFrame": null,
+    "_N$alphaThreshold": 1,
+    "_N$inverted": false
   },
   {
     "__type__": "cc.Widget",
@@ -2799,9 +2802,7 @@
   },
   {
     "__type__": "cc.ClickEvent",
-    "target": {
-      "__id__": 2
-    },
+    "target": null,
     "component": "ListTableScene",
     "handler": "onFilterBtnClick",
     "customEventData": ""
@@ -3161,9 +3162,7 @@
   },
   {
     "__type__": "cc.ClickEvent",
-    "target": {
-      "__id__": 2
-    },
+    "target": null,
     "component": "ListTableScene",
     "handler": "onFilterBtnClick",
     "customEventData": ""
@@ -3523,9 +3522,7 @@
   },
   {
     "__type__": "cc.ClickEvent",
-    "target": {
-      "__id__": 2
-    },
+    "target": null,
     "component": "ListTableScene",
     "handler": "onFilterBtnClick",
     "customEventData": ""

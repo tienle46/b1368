@@ -10,6 +10,7 @@ import MessagePopup from 'MessagePopup';
 import ConfirmPopup from 'ConfirmPopup';
 import utils from 'utils';
 import ArrayUtils from "../utils/ArrayUtils";
+import LoaderRub from 'LoaderRub';
 
 class GameSystem {
 
@@ -20,12 +21,21 @@ class GameSystem {
         this.gameEventEmitter = new Emitter;
         this.enablePendingGameEvent = false;
         this.toast = null;
+        this.loader = null;
         // high light message
         (!this.hlm) && (this.hlm = new HighLightMessageRub());
         this.sceneChanging = false;
         this._currentSceneNode = cc.Node;
         this._currentScene = cc.Node;
         this.initEventListener();
+    }
+
+    showLoader() {
+        this.loader && this.loader.show();
+    }
+
+    hideLoader() {
+        this.loader && this.loader.hide();
     }
 
     showToast(message, duration) {
@@ -49,17 +59,18 @@ class GameSystem {
      * @param {function} onLaunch - On launch custom function
      */
     loadScene(sceneName, onLaunch) {
-
-        console.log("sceneName: ", sceneName)
+        console.log("sceneName: ", sceneName);
 
         cc.director.loadScene(sceneName, () => {
-
-
-            console.log("load scene result", sceneName, cc.director.getScene())
+            console.log("load scene result", sceneName, cc.director.getScene());
 
             if (cc.director.getScene().children[0]) {
                 this._currentScene = cc.director.getScene().children[0].getComponent(sceneName);
-                this._currentScene && this._addToastToScene();
+                if (this._currentScene) {
+                    this._addToastToScene();
+                    this._addLoaderToScene();
+                }
+
             }
             onLaunch && onLaunch();
         });
@@ -77,10 +88,119 @@ class GameSystem {
         this.removeListener(app.commands.HIGH_LIGHT_MESSAGE, this._onHighLightMessage, this);
     }
 
+    getCurrentSceneNode() {
+        return this._currentScene.node;
+    }
+
+    get currentScene() {
+        return this._currentScene;
+    }
+
+    /**
+     *
+     * @param {BaseScene} scene - Current scene
+     */
+    setCurrentScene(scene) {
+        this._currentScene = scene;
+        this._addToastToScene();
+    }
+
+    info(title, message) {
+
+        if (arguments.length == 1) {
+            message = title;
+            title = app.res.string('system');
+        }
+
+        MessagePopup.show(this.currentScene.node, message);
+    }
+
+    error(message, closeCb) {
+        MessagePopup.show(this.currentScene.node, message, closeCb);
+    }
+
+    confirm(message, cancelCallback, okCallback) {
+        ConfirmPopup.confirm(this.currentScene.node, message, cancelCallback, okCallback);
+    }
+
+    /**
+     *
+     * @param {string array} messages
+     */
+    showTickerMessage(messages) {
+        alert("Ticker: " + messages);
+    }
+
+    emit(name, ...args) {
+        if (this.sceneChanging) {
+            !this.__pendingEventOnSceneChanging.hasOwnProperty(name) && (this.__pendingEventOnSceneChanging[name] = []);
+            this.__pendingEventOnSceneChanging[name].push(args);
+        } else {
+            this.eventEmitter.emit(name, ...args);
+            this._emitGameEvent(name, ...args);
+        }
+    }
+
+    setSceneChanging(changing) {
+
+        if (!changing) {
+            this.__pendingEventOnSceneChanging && Object.getOwnPropertyNames(this.__pendingEventOnSceneChanging).forEach(name => {
+
+                let argArr = this.__pendingEventOnSceneChanging[name];
+                argArr && argArr.forEach(args => {
+                    this.emit(name, ...args);
+                });
+            });
+
+            ArrayUtils.clear(this.__pendingEventOnSceneChanging);
+        }
+
+        this.sceneChanging = changing;
+    }
+
+    // /**
+    //  *
+    //  * This func is in considering because it's conflict with event of cocos node
+    //  *
+    //  * @deprecated
+    //  */
+    // _emitToScene(){
+    //     this.currentScene && this.currentScene.emit(name, ...args);
+    //
+    // }
+
+    addGameListener(eventName, listener, context, priority) {
+        this.gameEventEmitter.addListener(eventName, listener, context, priority);
+    }
+
+    removeGameListener(eventName, listener, context) {
+        this.gameEventEmitter.removeListener(eventName, listener, context);
+    }
+
+    addListener(eventName, listener, context, priority) {
+        this.eventEmitter.addListener(eventName, listener, context, priority);
+    }
+
+    removeListener(eventName, listener, context) {
+        this.eventEmitter.removeListener(eventName, listener, context);
+    }
+
+    removeAllListener(eventName) {
+        this.eventEmitter.removeListener(eventName);
+    }
+
     _onJoinRoomError(resultEvent) {
         if (resultEvent.errorCode) {
             this.error(event.errorMessage);
         }
+    }
+
+    _addLoaderToScene() {
+        if (this.loader) {
+            this.loader.destroy();
+            this.loader = null;
+        }
+        this.loader = new LoaderRub(this._currentScene);
     }
 
     _onJoinRoomSuccess(resultEvent) {
@@ -126,59 +246,10 @@ class GameSystem {
         resultEvent && this.hlm.pushMessage(resultEvent);
     }
 
-    get currentScene() {
-        return this._currentScene;
-    }
-
-    /**
-     *
-     * @param {BaseScene} scene - Current scene
-     */
-    setCurrentScene(scene) {
-        this._currentScene = scene;
-        this._addToastToScene();
-    }
-
     _addToastToScene() {
         let toastNode = cc.instantiate(app.res.prefab.toast);
         this.toast = toastNode.getComponent('Toast');
         this._currentScene && this._currentScene.node.addChild(toastNode, app.const.toastZIndex);
-    }
-
-    info(title, message) {
-
-        if (arguments.length == 1) {
-            message = title;
-            title = app.res.string('system');
-        }
-
-        MessagePopup.show(this.currentScene.node, message);
-    }
-
-    error(message, closeCb) {
-        MessagePopup.show(this.currentScene.node, message, closeCb);
-    }
-
-    confirm(message, cancelCallback, okCallback) {
-        ConfirmPopup.confirm(this.currentScene.node, message, cancelCallback, okCallback);
-    }
-
-    /**
-     *
-     * @param {string array} messages
-     */
-    showTickerMessage(messages) {
-        alert("Ticker: " + messages);
-    }
-
-    emit(name, ...args) {
-        if (this.sceneChanging) {
-            !this.__pendingEventOnSceneChanging.hasOwnProperty(name) && (this.__pendingEventOnSceneChanging[name] = []);
-            this.__pendingEventOnSceneChanging[name].push(args);
-        } else {
-            this.eventEmitter.emit(name, ...args);
-            this._emitGameEvent(name, ...args);
-        }
     }
 
     _emitGameEvent(name, ...args) {
@@ -194,56 +265,6 @@ class GameSystem {
             this.pendingGameEvents.forEach(event => this.gameEventEmitter.emit(event.name, ...event.args));
             this.pendingGameEvents = [];
         }
-    }
-
-    setSceneChanging(changing) {
-
-        if (!changing) {
-            this.__pendingEventOnSceneChanging && Object.getOwnPropertyNames(this.__pendingEventOnSceneChanging).forEach(name => {
-
-                let argArr = this.__pendingEventOnSceneChanging[name];
-                argArr && argArr.forEach(args => {
-                    this.emit(name, ...args);
-                });
-            });
-
-            ArrayUtils.clear(this.__pendingEventOnSceneChanging);
-        }
-
-        this.sceneChanging = changing;
-    }
-
-
-
-    // /**
-    //  *
-    //  * This func is in considering because it's conflict with event of cocos node
-    //  *
-    //  * @deprecated
-    //  */
-    // _emitToScene(){
-    //     this.currentScene && this.currentScene.emit(name, ...args);
-    //
-    // }
-
-    addGameListener(eventName, listener, context, priority) {
-        this.gameEventEmitter.addListener(eventName, listener, context, priority);
-    }
-
-    removeGameListener(eventName, listener, context) {
-        this.gameEventEmitter.removeListener(eventName, listener, context);
-    }
-
-    addListener(eventName, listener, context, priority) {
-        this.eventEmitter.addListener(eventName, listener, context, priority);
-    }
-
-    removeListener(eventName, listener, context) {
-        this.eventEmitter.removeListener(eventName, listener, context);
-    }
-
-    removeAllListener(eventName) {
-        this.eventEmitter.removeListener(eventName);
     }
 }
 

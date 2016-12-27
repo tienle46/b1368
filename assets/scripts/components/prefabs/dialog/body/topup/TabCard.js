@@ -1,7 +1,6 @@
 import app from 'app';
 import Component from 'Component';
-import AlertPopupRub from 'AlertPopupRub';
-import LoaderRub from 'LoaderRub';
+import { isEmpty } from 'Utils';
 
 class TabCard extends Component {
     constructor() {
@@ -51,11 +50,10 @@ class TabCard extends Component {
     }
 
     onLoad() {
-        this.loader = new LoaderRub();
         // wait til every requests is done
         this.node.active = false;
         // show loader
-        this.loader.show();
+        app.system.showLoader();
 
         this._initCardsGroup();
 
@@ -96,7 +94,8 @@ class TabCard extends Component {
                     this.listCardContainer.addChild(item);
                 });
 
-                this.loader.hide();
+                app.system.hideLoader();
+
                 // active node
                 this.node.active = true;
 
@@ -120,14 +119,19 @@ class TabCard extends Component {
         let serialNumber = this.serialNumberEditBox.string.trim();
 
         if (!this.providerId) {
-            AlertPopupRub.show(null, 'Vui lòng chọn loại thẻ.');
+            app.system.error(
+                app.res.string('error_topup_dialog_need_to_choice_item')
+            );
             return;
         }
 
-        if (cardSerial === "" || serialNumber === "" || isNaN(cardSerial) || isNaN(serialNumber)) {
-            AlertPopupRub.show(null, 'Vui lòng nhập đầy đủ thông tin.');
+        if (isEmpty(cardSerial) || isEmpty(serialNumber) || isNaN(cardSerial) || isNaN(serialNumber)) {
+            app.system.error(
+                app.res.string('error_user_enter_empty_input')
+            );
         } else {
             let data = {};
+            // app.system.showLoader();
             data[app.keywords.CHARGE_CARD_PROVIDER_ID] = this.providerId;
             data[app.keywords.CARD_CODE] = cardSerial;
             data[app.keywords.CARD_SERIAL] = serialNumber;

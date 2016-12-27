@@ -7,6 +7,7 @@ class ExchangeDialog extends Dialog {
     }
 
     onLoad() {
+        super.onLoad();
         // this._initComponents();
         this.node.on('touchstart', function() {
             return;

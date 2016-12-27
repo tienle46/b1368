@@ -59,11 +59,11 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 51
+        "__id__": 52
       }
     ],
     "_prefab": {
-      "__id__": 52
+      "__id__": 53
     },
     "groupIndex": 0
   },
@@ -245,9 +245,6 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 46
-      },
-      {
         "__id__": 47
       },
       {
@@ -255,10 +252,13 @@
       },
       {
         "__id__": 49
+      },
+      {
+        "__id__": 50
       }
     ],
     "_prefab": {
-      "__id__": 50
+      "__id__": 51
     },
     "groupIndex": 0
   },
@@ -286,7 +286,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 121.57,
-      "height": 60
+      "height": 75
     },
     "_children": [],
     "_rotationX": 0,
@@ -296,7 +296,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": 229
+      "y": 222
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -333,7 +333,7 @@
     "_useOriginalSize": false,
     "_actualFontSize": 45,
     "_fontSize": 45,
-    "_lineHeight": 60,
+    "_lineHeight": 75,
     "_enableWrapText": true,
     "_N$file": {
       "__uuid__": "b2c0f634-158a-49ee-84f8-a41c8e7ebb56"
@@ -1285,17 +1285,17 @@
         "__id__": 41
       },
       {
-        "__id__": 42
-      },
-      {
         "__id__": 43
       },
       {
         "__id__": 44
+      },
+      {
+        "__id__": 45
       }
     ],
     "_prefab": {
-      "__id__": 45
+      "__id__": 46
     },
     "groupIndex": 0
   },
@@ -1328,7 +1328,11 @@
       "__uuid__": "7e3843cb-6bf5-49be-9a0d-990f210345a0"
     },
     "hoverSprite": null,
-    "clickEvents": [],
+    "clickEvents": [
+      {
+        "__id__": 42
+      }
+    ],
     "_N$interactable": true,
     "_N$enableAutoGrayEffect": false,
     "_N$normalColor": {
@@ -1354,6 +1358,15 @@
     }
   },
   {
+    "__type__": "cc.ClickEvent",
+    "target": {
+      "__id__": 6
+    },
+    "component": "Dialog",
+    "handler": "onCloseBtnClick",
+    "customEventData": ""
+  },
+  {
     "__type__": "d2d23CyXOhMxYG3ydeJ57ya",
     "_name": "",
     "_objFlags": 0,
@@ -1372,7 +1385,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "7e3843cb-6bf5-49be-9a0d-990f210345a0"
+      "__uuid__": "f719dbe4-2413-4ec8-8150-b020d145f155"
     },
     "_type": 1,
     "_sizeMode": 0,

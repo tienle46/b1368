@@ -1,5 +1,6 @@
 import ConfirmPopupRub from 'ConfirmPopupRub';
 import NodeRub from 'NodeRub';
+import app from 'app';
 
 export default class PromptPopupRub extends ConfirmPopupRub {
     /**
@@ -110,7 +111,7 @@ export default class PromptPopupRub extends ConfirmPopupRub {
 
     //override
     static show(node, events = {}, options, context = null) {
-        (!node) && (node = cc.director.getScene());
+        (!node) && (node = app.system.getCurrentSceneNode());
         return new PromptPopupRub(node, events, options, context).init();
     }
 }

@@ -26,6 +26,7 @@ export default class DashboardScene extends BaseScene {
     }
 
     onLoad() {
+        super.onLoad();
         var sendObject = {
             'cmd': 'gv',
             'data': {
@@ -53,7 +54,7 @@ export default class DashboardScene extends BaseScene {
                 gc == app.const.gameCode.XAM ||
                 gc == app.const.gameCode.BA_CAY ||
                 gc == app.const.gameCode.XOC_DIA
-        })
+        });
     }
 
     _initItemListGame() {

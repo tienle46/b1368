@@ -71,7 +71,7 @@ class TopBar extends Component {
     }
 
     giveFeedbackClicked() {
-        this.prom = new PromptPopupRub(cc.director.getScene(), { confirmBtn: this._onFeedbackConfirmed }, { label: { text: 'Enter text here:' } }, this);
+        this.prom = new PromptPopupRub(app.system.getCurrentSceneNode(), { confirmBtn: this._onFeedbackConfirmed }, { label: { text: 'Enter text here:' } }, this);
         this.prom.init();
     }
 
@@ -93,9 +93,11 @@ class TopBar extends Component {
     }
 
     onClickLogout() {
-        let parentNode = cc.director.getScene();
-
-        ConfirmPopupRub.show(parentNode, `Bạn có chắc chắn muốn thoát ?`, this._onConfirmLogoutClick, null, this);
+        app.system.confirm(
+            app.res.string('really_wanna_quit'),
+            null,
+            this._onConfirmLogoutClick.bind(this)
+        );
     }
 
     onFanpageClicked() {

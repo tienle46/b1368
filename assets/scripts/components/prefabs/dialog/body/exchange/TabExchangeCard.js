@@ -1,31 +1,41 @@
 import app from 'app';
 import Component from 'Component';
-import AlertPopupRub from 'AlertPopupRub';
-import ButtonScaler from 'ButtonScaler';
 import RubUtils from 'RubUtils';
-import ConfirmPopupRub from 'ConfirmPopupRub';
 import ExchangeDialog from 'ExchangeDialog';
-import numeral from 'numeral';
-import LoaderRub from 'LoaderRub';
+import NodeRub from 'NodeRub';
 
 class TabExchangeCard extends Component {
     constructor() {
         super();
+        this.properties = {
+            ...this.properties,
+            listAmountCardContentNode: cc.Node,
+            cardAmountItem: cc.Node,
+            providerLbl: cc.Label,
+            providerContainerNode: cc.Node,
+            providerDropDownNode: cc.Node,
+            providerDropDownItem: cc.Node,
+            amountNumberLbl: cc.Label,
+            amountNumberDropDownListNode: cc.Node,
+            amountNumberDropDownItem: cc.Node,
+            hint: cc.RichText
+        };
+
+        this.selectedItem = { id: null, gold: null, name: null };
     }
 
     onLoad() {
-        this.loader = new LoaderRub(this.node);
-
         // wait til every requests is done
-        this.node.active = false;
+        // this.node.active = false;
         // show loader
-        this.loader.show();
-        // get content node
-        this.contentNode = this.node.getChildByName('view').getChildByName('content');
-        this._getExchangeDialogComponent().hideUpdatePhone();
+        // app.system.showLoader();
+        // this._getExchangeDialogComponent().hideUpdatePhone();
+        this.hint.string = "";
         this._initCardsList();
     }
+
     _initCardsList() {
+        app.system.showLoader();
         var sendObject = {
             'cmd': app.commands.EXCHANGE_LIST,
             'data': {}
@@ -33,98 +43,103 @@ class TabExchangeCard extends Component {
 
         app.service.send(sendObject, (data) => {
             if (data[app.keywords.EXCHANGE_LIST.RESPONSE.TYPES]) {
+                let cardValues = [];
 
                 const exchangeTypes = data[app.keywords.EXCHANGE_LIST.RESPONSE.TYPES];
-                exchangeTypes.forEach((type) => {
-                    if (type[app.keywords.EXCHANGE_LIST.RESPONSE.ITEM_TYPE] === '1') {
+                exchangeTypes.map((type) => {
+                    if (type[app.keywords.EXCHANGE_LIST.RESPONSE.ITEM_TYPE] == app.const.EXCHANGE_LIST_CARD_TYPE_ID) {
                         const idList = type[app.keywords.EXCHANGE_LIST.RESPONSE.ITEM_ID_LIST];
                         const nameList = type[app.keywords.EXCHANGE_LIST.RESPONSE.ITEM_NAME_LIST];
                         const goldList = type[app.keywords.EXCHANGE_LIST.RESPONSE.ITEM_GOLD_LIST];
                         const iconList = type[app.keywords.EXCHANGE_LIST.RESPONSE.ITEM_ICON_LIST];
 
-                        const cnt = idList.length;
-
-                        let rowNode;
-
-                        for (let i = 0; i < cnt; i++) {
+                        for (let i = 0; i < idList.length; i++) {
                             let itemId = idList[i];
-                            let itemIcon = iconList[i].replace('thumb.', '');
+                            // let itemIcon = iconList[i].replace('thumb.', '');
                             let itemGold = goldList[i];
                             let itemName = nameList[i];
+                            let amount = itemName.match(/([0-9]{2,})+(K)/g);
+                            amount && (amount = amount[0]);
+                            amount && (amount = Number(amount.replace('K', '')) * 1000);
 
-                            if (i % 3 === 0) {
-                                rowNode = null;
-                                rowNode = this._initRowNode();
-                                this.contentNode.addChild(rowNode);
+
+                            if (!app._.includes(cardValues, amount)) {
+                                cardValues.push(amount);
+
+                                // setup card item
+                                let ratioNode = cc.instantiate(this.cardAmountItem);
+                                let ratioItem = ratioNode.getComponent('RatioItem');
+                                ratioItem.initItemWithoutRatio(amount, itemGold);
+                                ratioNode.active = true;
+
+                                // add to container
+                                this.listAmountCardContentNode.addChild(ratioNode);
                             }
 
-                            if (rowNode) {
-                                let itemNode = new cc.Node();
-                                let itemNodeWidth = 234;
-                                let itemNodeHeight = 262;
 
-                                itemNode.itemId = itemId;
-                                itemNode.itemGold = itemGold;
-                                itemNode.itemName = itemName;
+                            // init providerDropDown list
+                            let providerItem = cc.instantiate(this.providerDropDownItem);
+                            let lbl = providerItem.getChildByName('providername').getComponent(cc.Label);
+                            lbl && (lbl.string = itemName);
 
-                                rowNode.addChild(itemNode);
+                            providerItem.providerName = itemName;
+                            providerItem.providerPrice = itemGold;
+                            providerItem.providerId = itemId;
+                            providerItem.active = true;
 
-                                let itemSprite = itemNode.addComponent(cc.Sprite);
-                                RubUtils.loadSpriteFrame(itemSprite, 'dashboard/dialog/imgs/bg-napthe', cc.size(itemNodeWidth, itemNodeHeight), false, (sprite) => {
-                                    sprite.node.x = -260 + (i % 3) * (itemNodeWidth + 21);
-                                    sprite.node.y = 0;
-                                });
-
-                                // image background node
-                                this._initBackgroundNode(itemNode, itemIcon);
-
-                                // lblContainerNode
-                                this._initLabelNode(itemNode, itemName, itemGold);
-
-                                // add Button
-                                let btn = itemNode.addComponent(cc.Button);
-
-                                let event = new cc.Component.EventHandler();
-                                event.target = this.node;
-                                event.component = 'TabExchangeCard';
-                                event.handler = 'onHandleExchangeBtnClick';
-                                btn.clickEvents = [event];
-
-                                // add ButtonScaler component
-                                itemNode.addComponent(ButtonScaler);
-                            }
+                            this.providerDropDownNode.addChild(providerItem);
                         }
-
                     }
                 });
 
                 // hide loader
-                this.loader.hide();
+                app.system.hideLoader();
                 this.node.active = true;
             }
 
         }, app.const.scene.EXCHANGE_CHIP);
     }
 
-
-    _fakeData() {
-        let data = {
-            su: true,
-            il: [18, 16, 14, 17, 15, 13, 8, 4, 12, 11, 7, 3],
-            t: 1,
-            gl: [600000, 600000, 600000, 240000, 240000, 240000, 120000, 120000, 120000, 60000, 60000, 60000],
-            iml: ['http://123.30.238.174:3769/public/uploads/vina5001461671071815.png', 'http://123.30.238.174:3769/public/uploads/mobi5001461671048640.png', 'http://123.30.238.174:3769/public/uploads/viettel5001461671022520.png', 'http://123.30.238.174:3769/public/uploads/vina2001461671061418.png', 'http://123.30.238.174:3769/public/uploads/mobi2001461671036588.png', 'http://123.30.238.174:3769/public/uploads/viettel2001461671010559.png', 'http://123.30.238.174:3769/public/uploads/mobi1001461670935009.png', 'http://123.30.238.174:3769/public/uploads/viettel1001461670843386.png', 'http://123.30.238.174:3769/public/uploads/vina1001461670992647.png', 'http://123.30.238.174:3769/public/uploads/vina501461670980281.png', 'http://123.30.238.174:3769/public/uploads/mobi501461670923672.png', 'http://123.30.238.174:3769/public/uploads/viettel501461670832320.png'],
-            nl: ['Vina 500K', 'Mobi 500K', 'Viettel 500K', 'Vina 200K', 'Mobi 200K', 'Viettel 200K', 'Mobi 100K', 'Viettel 100K', 'Vina 100K', 'Vina 50K', 'Mobi 50K', 'Viettel 50K']
-        };
+    onShowProviderDropDownBtnClick() {
+        this._toggleDropdown();
     }
 
-    onHandleExchangeBtnClick(event) {
-        let itemGold = event.currentTarget.itemGold;
-        let itemName = event.currentTarget.itemName;
+    onProviderItemBtnClick(e) {
+        let target = e.currentTarget;
+        this.providerLbl.string = `${target.providerName}`;
 
-        let parentNode = this.node.parent.parent;
+        this.hint.string = `<color=#FAE407>${target.providerName}</color> cần <color=#FAE407>${target.providerPrice}</color> Xu để đổi.`;
 
-        ConfirmPopupRub.show(parentNode, `Bạn có muốn đổi ${numeral(itemGold).format('0,0')} chip để nhận ${itemName} ?`, this._onConfirmDialogBtnClick.bind(this, event));
+        this.selectedItem = {
+            id: target.providerId,
+            gold: target.providerPrice,
+            name: target.providerName
+        };
+
+        this._toggleDropdown();
+    }
+
+    _toggleDropdown() {
+        let state = this.providerContainerNode.active;
+        this.providerContainerNode.active = !state;
+    }
+
+    onExchangeBtnClick(event) {
+        let denyCb = () => true;
+        let okCallback = this._onConfirmDialogBtnClick.bind(this);
+
+        if (this.selectedItem.id) {
+            let { id, gold, name } = this.selectedItem;
+            app.system.confirm(
+                app.res.string('exchange_dialog_confirmation', { gold: gold.toLocaleString(), name }),
+                denyCb,
+                okCallback
+            );
+        } else {
+            app.system.error(
+                app.res.string('error_exchange_dialog_need_to_choice_item')
+            );
+        }
     }
 
     /**
@@ -135,8 +150,6 @@ class TabExchangeCard extends Component {
      * @memberOf TabExchangeCard
      */
     _onConfirmDialogBtnClick(event) {
-        let itemGold = event.currentTarget.itemGold;
-        let itemName = event.currentTarget.itemName;
 
         let parentNode = this.node.parent.parent;
 
@@ -146,15 +159,15 @@ class TabExchangeCard extends Component {
             // show update_phone_number
             this._getExchangeDialogComponent().showUpdatePhone();
         } else {
-            // TODO
-            // if user gold less than itemGold -> show AlertPopupRub
+            let { id, gold, } = this.selectedItem;
             let myCoin = app.context.getMyInfo().coin;
-            if (Number(myCoin) < Number(itemGold)) {
-                AlertPopupRub.show(parentNode, `Số tiền hiện tại ${numeral(myCoin).format('0,0')} không đủ để đổi vật phẩm ${itemName}`);
+
+            if (Number(myCoin) < Number(gold)) {
+                app.system.error(
+                    app.res.string('error_exchange_dialog_not_enough_money', { ownerCoin: myCoin.toLocaleString(), name })
+                );
                 return;
             }
-            // else send request
-            let id = event.currentTarget.itemId;
 
             let data = {};
             data[app.keywords.EXCHANGE.REQUEST.ID] = id;
@@ -164,84 +177,17 @@ class TabExchangeCard extends Component {
             };
 
             // show loader
-            this.loader.show();
+            app.system.showLoader();
+
             app.service.send(sendObject, (data) => {
-                console.log(data);
-                this.loader.hide();
+                app.system.hideLoader();
                 if (data[app.keywords.RESPONSE_RESULT] === false) {
-                    AlertPopupRub.show(parentNode, `${data[app.keywords.RESPONSE_MESSAGE]}`);
-                    // app.system.info(`${data[app.keywords.RESPONSE_MESSAGE]}`);
+                    app.system.info(`${data[app.keywords.RESPONSE_MESSAGE]}`);
                 } else { // true
                     console.error('chua xu ly cho nay :\'(');
                 }
             });
         }
-    }
-
-    _initLabelNode(itemNode, itemName, itemGold) {
-        let lblContainerNode = new cc.Node();
-        lblContainerNode.name = 'lblContainerNode';
-        lblContainerNode.setContentSize(cc.size(220, 73));
-        lblContainerNode.setPositionY(-76);
-        itemNode.addChild(lblContainerNode);
-        // add layout
-        let layout = lblContainerNode.addComponent(cc.Layout);
-        layout.type = cc.Layout.Type.VERTICAL;
-        layout.padding = 10;
-        layout.spacingY = 10;
-
-        let lblNode = new cc.Node();
-        let lblNodeWidth = 215;
-        let lblNodeHeight = 20;
-        lblNode.setContentSize(cc.size(lblNodeWidth, lblNodeHeight));
-        lblContainerNode.addChild(lblNode);
-
-        let lblComponent = lblNode.addComponent(cc.Label);
-        lblComponent.string = `${numeral(itemGold).format('0,0')} Chips`;
-        lblComponent.horizontalAlign = cc.Label.HorizontalAlign.CENTER;
-        lblComponent.verticalAlign = cc.Label.VerticalAlign.CENTER;
-        lblComponent.fontSize = 16;
-        lblComponent.lineHeight = 20;
-        lblComponent.overflow = cc.Label.Overflow.RESIZE_HEIGHT;
-        lblComponent.node.color = new cc.Color(246, 255, 41);
-
-        // let lblNode2 = cc.instantiate(lblNode);
-        // lblContainerNode.addChild(lblNode2);
-        //
-        // let lblComponent2 = lblNode2.getComponent(cc.Label);
-        // lblComponent2.string = numeral(itemGold).format('0,0');
-        // lblComponent2.node.color = new cc.Color(246, 255, 41);
-    }
-
-    _initBackgroundNode(itemNode, itemIcon) {
-        // create item/img-bg Node
-        let imgBgNode = new cc.Node();
-        // let imgBgNodeWidth = 214;
-        // let imgBgNodeHeight = 159;
-        imgBgNode.y = 41;
-        itemNode.addChild(imgBgNode);
-
-        // let imgBgSprite = imgBgNode.addComponent(cc.Sprite);
-        // RubUtils.loadSpriteFrame(imgBgSprite, 'dashboard/dialog/imgs/bg-napthe-1', cc.size(imgBgNodeWidth, imgBgNodeHeight));
-
-        let imgBgWidget = imgBgNode.addComponent(cc.Widget);
-        imgBgWidget.top = 10.5;
-        imgBgWidget.right = 10;
-        imgBgWidget.left = 10;
-
-        let imgNode = new cc.Node();
-        imgBgNode.addChild(imgNode);
-
-        let imgSprite = imgNode.addComponent(cc.Sprite);
-        RubUtils.loadSpriteFrame(imgSprite, itemIcon, cc.size(205, 134), true);
-    }
-
-    _initRowNode() {
-        let rowNode = new cc.Node();
-        rowNode.width = 780;
-        rowNode.height = 280;
-        rowNode.name = 'container';
-        return rowNode;
     }
 
     _getExchangeDialogComponent() {

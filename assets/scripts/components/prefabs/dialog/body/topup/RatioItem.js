@@ -24,6 +24,11 @@ class RatioItem extends Component {
         this.titleLbl.string = `${number.toLocaleString()} VNĐ`;
         this.ratioLbl.string = `${(number * ratio).toLocaleString()} Xu`;
     }
+
+    initItemWithoutRatio(number, got) {
+        this.titleLbl.string = `${number.toLocaleString()} VNĐ`;
+        this.ratioLbl.string = `${(got).toLocaleString()} Xu`;
+    }
 }
 
 app.createComponent(RatioItem);

@@ -29,6 +29,7 @@ export default class RegisterScene extends BaseScene {
     }
 
     onLoad() {
+        super.onLoad();
         this.captchaLabel = this.resetCaptcha.getChildByName('label').getComponent(cc.Label);
         this.generateRandomString();
         this.userNameEditBox.string = `a${this._generateRandomString(9)}${1}`;
@@ -43,7 +44,7 @@ export default class RegisterScene extends BaseScene {
         if (this._isValidUserInputs(username, password)) {
             app.service.connect((success) => {
                 if (success) {
-                    app.service.requestAuthen(username, password, true, false,null, (error, result) => {
+                    app.service.requestAuthen(username, password, true, false, null, (error, result) => {
 
                         this.hideLoading();
 

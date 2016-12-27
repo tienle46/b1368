@@ -1,4 +1,5 @@
 import AlertPopupRub from 'AlertPopupRub';
+import app from 'app';
 
 export default class ConfirmPopupRub extends AlertPopupRub {
     /**
@@ -35,7 +36,7 @@ export default class ConfirmPopupRub extends AlertPopupRub {
 
     //override
     static show(node, string = "", confirmBtnEvent = null, cancelBtnEvent = null, context = null) {
-        (!node) && (node = cc.director.getScene());
+        (!node) && (node = app.system.getCurrentSceneNode());
         return new ConfirmPopupRub(node, string, confirmBtnEvent, cancelBtnEvent, context).init();
     }
 }

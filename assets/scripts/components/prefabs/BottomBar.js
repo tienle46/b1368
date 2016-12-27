@@ -24,7 +24,7 @@ class BottomBar extends Component {
     }
 
     onClickNapXuAction() {
-        let scene = cc.director.getScene();
+        let scene = app.system.getCurrentSceneNode();
         TopupDialogRub.show(scene);
     }
 
@@ -42,7 +42,7 @@ class BottomBar extends Component {
         }];
 
         // bottombar -> dashboard scene node
-        DialogRub.show(cc.director.getScene(), tabs, { title: 'Xếp hạng' });
+        DialogRub.show(app.system.getCurrentSceneNode(), tabs, { title: 'Xếp hạng' });
     }
 
     onFriendBtnClick() {
@@ -63,7 +63,7 @@ class BottomBar extends Component {
         }];
 
         // bottombar -> dashboard scene node
-        ExchangeDialogRub.show(cc.director.getScene(), tabs, { title: 'Đổi thưởng' });
+        ExchangeDialogRub.show(app.system.getCurrentSceneNode(), tabs, { title: 'Đổi thưởng' });
     }
 
     callSupportClicked(e) {
@@ -114,7 +114,7 @@ class BottomBar extends Component {
             }
         ];
 
-        MessageCenterDialogRub.show(cc.director.getScene(), tabs, { title: 'Tin nhắn' });
+        MessageCenterDialogRub.show(app.system.getCurrentSceneNode(), tabs, { title: 'Tin nhắn' });
     }
 
     onClickUserInfoAction() {
@@ -140,7 +140,7 @@ class BottomBar extends Component {
             // }, 
         ];
 
-        PersonalInfoDialogRub.show(cc.director.getScene(), tabs, { title: 'Cá nhân' });
+        PersonalInfoDialogRub.show(app.system.getCurrentSceneNode(), tabs, { title: 'Cá nhân' });
     }
 
     _fillUserData() {

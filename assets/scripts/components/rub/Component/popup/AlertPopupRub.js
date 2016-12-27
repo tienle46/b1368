@@ -38,7 +38,7 @@ export default class AlertPopupRub extends BasePopupRub {
 
     //override
     static show(node, string, confirmBtnEvent = null, context = null) {
-        (!node) && (node = cc.director.getScene());
+        (!node) && (node = app.system.getCurrentSceneNode());
 
         return new AlertPopupRub(node, string, confirmBtnEvent, context).init();
     }

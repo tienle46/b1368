@@ -149,4 +149,7 @@ export default class Utils {
         return args.map(arg => this.isObject(arg) ? Object.keys(arg) : []).reduce((keys, keyArr) => { return [...keys, ...keyArr] }, []);
     }
 
+    static isDuplicate(array, value) {
+
+    }
 }

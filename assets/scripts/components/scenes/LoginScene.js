@@ -1,6 +1,7 @@
 import BaseScene from 'BaseScene';
 import app from 'app';
 import Base64 from 'Base64';
+import { isEmpty } from 'Utils';
 
 const MINIMUM_PASSWORD = 6;
 
@@ -25,6 +26,7 @@ export default class LoginScene extends BaseScene {
     }
 
     onLoad() {
+        super.onLoad();
         this.userNameEditBox.string = "";
         this.userPasswordEditBox.string = "";
 
@@ -45,7 +47,15 @@ export default class LoginScene extends BaseScene {
 
             cc.sys.localStorage.setItem(app.const.USER_LOCAL_STORAGE, userInfo);
         }
-        this._loginToDashboard(username, password);
+
+        if (isEmpty(username) || isEmpty(password)) {
+            app.system.error(
+                app.res.string('error_user_enter_empty_input')
+            );
+        } else {
+            this._loginToDashboard(username, password);
+
+        }
     }
 
     back() { // back to EntranceScene

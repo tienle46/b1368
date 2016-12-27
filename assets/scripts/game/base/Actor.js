@@ -73,7 +73,7 @@ export default class Actor extends Component {
 
     /**
      * Use this func to remove listener from game system. System events will be remove from system by default
-     * NOTE: Make sure that sub class implementation ```onDestroy``` method must be call ```super.onDestroy()```
+     * NOTE: Make sure that sub class implementation ```onDestroy``` method must call ```super.onDestroy()```
      * Example:
      *      [instanceof actor]._removeGlobalListener('adminMessage', () => {
      *          //Show admin message

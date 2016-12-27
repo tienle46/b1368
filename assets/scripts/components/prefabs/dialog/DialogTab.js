@@ -62,10 +62,11 @@ class DialogTab extends Component {
 
     // e: cc.Toggle
     onCheckedEvent(e) {
+        let id = e.__instanceId;
         let value = e.value;
 
         if (value) {
-            this.dialogComponent.addToBody(value);
+            this.dialogComponent.addToBody(id, value);
         } else {
             this.dialogComponent.clearBody();
         }

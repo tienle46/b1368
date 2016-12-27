@@ -50,7 +50,6 @@ class GameContext {
         return null;
     }
 
-
     isJoinedGame() {
         return this.currentRoom && this.currentRoom.isGame;
     }

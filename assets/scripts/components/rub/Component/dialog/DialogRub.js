@@ -40,9 +40,6 @@ export default class DialogRub extends Rub {
         this.dialogComponent = this.dialogNode.getComponent('Dialog');
         this.bodyNode = this.dialogComponent.bodyNode;
 
-        // event registeration
-        this._closeBtnEventRegister();
-
         this.tabs && this._initTab(this.tabs);
         this.options.title && this._initTitle(this.options.title);
     }
@@ -59,15 +56,6 @@ export default class DialogRub extends Rub {
 
     _initTitle(string) {
         this.dialogComponent.setTitle(string);
-    }
-
-    // close Btn Event
-    _closeBtnEventRegister() {
-        this.closeBtnNode = this.dialogNode.getChildByName('close_btn');
-
-        this.closeBtnNode.on(cc.Node.EventType.TOUCH_END, (() => {
-            this.prefab.removeFromParent(false);
-        }).bind(this));
     }
 
     /**

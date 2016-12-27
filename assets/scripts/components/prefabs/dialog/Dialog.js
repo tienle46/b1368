@@ -22,36 +22,62 @@ export default class Dialog extends Component {
             default: null,
             type: cc.Label
         };
+
+        this.addedPrefabs = [];
+        this.addedNodes = {};
     }
 
     onLoad() {
         this.node.zIndex = app.const.dialogZIndex;
     }
 
-    onCloseBtnClick() {
-        this.node.removeFromParent(true);
-        this.releaseAssets();
+    onEnable() {
+        this.addedPrefabs = [];
     }
 
-    addToBody(url) {
-        if (this._isNode(url)) {
-            this._addContentNodeToBody(url);
+    onDestroy() {
+        super.onDestroy();
+        RubUtils.releaseAssets(this.addedPrefabs);
+        this.addedPrefabs = [];
+        this.addedNodes = {};
+    }
+
+    onCloseBtnClick() {
+        this.releaseAssets();
+        this.node.parent.destroy();
+    }
+
+    addToBody(id, url) {
+        if (!this.addedNodes[id]) {
+            if (this._isNode(url)) {
+                this._addContentNodeToBody(id, url);
+            } else {
+                this._addContentPrefabToBody(id, url);
+            }
         } else {
-            this._addContentPrefabToBody(url);
+            this._showBody(id);
         }
     }
+
 
     setTitle(string) {
         this.titleLbl.string = string.toUpperCase();
     }
 
-    _addContentPrefabToBody(prefabURL) {
-        this.clearBody();
+    _showBody(id) {
+        if (this.bodyNode.children) {
+            this.bodyNode.children.map(node => {
+                node.active = (node.__uid == id);
+            });
+        }
+    }
+
+    _addContentPrefabToBody(id, prefabURL) {
         return RubUtils.loadRes(prefabURL).then((prefab) => {
+            this.addedPrefabs.push(prefab);
             let p = cc.instantiate(prefab);
-            p.setPosition(cc.v2(0, 0));
-            // add to node
-            this._addChildToBody(p);
+            p.__uid = id;
+            this._addChildToBody(id, p);
             return p;
         }).catch((e) => {
             error('err', e);
@@ -59,29 +85,22 @@ export default class Dialog extends Component {
     }
 
     // add content node to body node
-    _addContentNodeToBody(content) {
-        this.clearBody();
-
+    _addContentNodeToBody(id, content) {
         if (content instanceof cc.Node) {
             let node = app._.cloneDeep(content);
+            node.__uid = id;
 
-            this._addChildToBody(node);
+            this._addChildToBody(id, node);
         } else if (content instanceof Promise) {
             content.then((node) => {
                 // wait until resources are loaded.
                 setTimeout(() => {
                     let n = app._.cloneDeep(node);
+                    n.__uid = id;
 
-                    this._addChildToBody(n);
+                    this._addChildToBody(id, n);
                 });
             });
-        }
-    }
-
-    clearBody() {
-        if (this.bodyNode.children) {
-            this.bodyNode.removeAllChildren(true);
-            this.releaseAssets();
         }
     }
 
@@ -89,7 +108,7 @@ export default class Dialog extends Component {
         return value instanceof cc.Node || value instanceof Promise;
     }
 
-    _addChildToBody(node) {
+    _addChildToBody(id, node) {
         let widget = {
             left: 0,
             top: 0,
@@ -98,9 +117,15 @@ export default class Dialog extends Component {
         };
         NodeRub.addWidgetComponentToNode(node, widget);
         node.setPosition(cc.v2(0, 0));
+        node.active = false;
+
+        this.addedNodes[id] = node;
+
         this.bodyNode.addChild(node);
 
-        this.addAssets(node);
+        this.addAssets(node); // <- removed assets
+
+        this._showBody(id);
     }
 }
 

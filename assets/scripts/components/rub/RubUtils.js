@@ -56,7 +56,6 @@ let RubUtils = {
             return RubUtils.loadRes(resURL, true).then((spriteFrame) => {
                 spriteFrame && (spriteComponent.spriteFrame = spriteFrame);
                 spriteFrameDefaultConfig(spriteComponent);
-
             });
         }
     },
@@ -96,6 +95,23 @@ let RubUtils = {
         return widths.map((e) => {
             let number = ((e === null && Number(e) === 0 && equallyDivided) || e) - spaceX;
             return number > 0 ? number : 0;
+        });
+    },
+    // usefull when assets is prefab
+    releaseAssets: (assets) => {
+        let ins = assets;
+
+        if (!(assets instanceof Array))
+            ins = [assets];
+        if (assets instanceof Object) {
+            for (let key in assets) {
+                ins.push(assets[key]);
+            }
+        }
+
+        ins.map(asset => {
+            let deps = cc.loader.getDependsRecursively(asset);
+            cc.loader.release(deps);
         });
     }
 };

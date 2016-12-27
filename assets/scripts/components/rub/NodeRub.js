@@ -279,7 +279,10 @@ let NodeRub = {
 
         options.size && node.setContentSize(options.size);
         options.color && (node.color = options.color);
-        options.position && node.setPosition(options.position);
+        if (options.position) {
+            options.position.x && node.setPositionX(options.position.x);
+            options.position.y && node.setPositionY(options.position.y);
+        }
         options.anchor && node.setAnchorPoint(options.anchor);
         options.scale && node.setScale(options.scale);
 

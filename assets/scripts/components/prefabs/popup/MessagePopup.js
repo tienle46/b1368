@@ -35,7 +35,7 @@ export default class MessagePopup extends Component {
         this.loadingHeight = 100;
     }
 
-    onLoad(){
+    onLoad() {
         super.onLoad();
         this.node.on('touchstart', () => false);
         this.loadingHeight = this.loadingComponent.height;
@@ -118,7 +118,7 @@ export default class MessagePopup extends Component {
             this.requestData = textOrRequestData;
         }
 
-        parentNode.addChild(this.node, 10000);
+        parentNode && parentNode.addChild(this.node, 10000);
     }
 
     static show(parentNode, textOrRequestData, denyCb, acceptCb, componentName = 'MessagePopup') {

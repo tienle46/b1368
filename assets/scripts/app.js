@@ -9,8 +9,6 @@ var MESSAGES = require('GameErrorMessage');
 var Fingerprint2 = require('fingerprinter');
 var Promise = require('Promise-polyfill');
 var _ = require('lodash');
-var LoaderRub = require('LoaderRub');
-
 
 app.LANG = "vi";
 app.async = require("async");
@@ -184,7 +182,7 @@ if (cc.sys.isBrowser) {
     //     app.DEVICE_ID = 'a19c8e4ae2e82ef1c7846f32628d4ead3';
     // }
 }
-if(cc.sys.isMobile) {
+if (cc.sys.isMobile) {
     sdkbox.PluginFacebook.init();
     sdkbox.PluginGoogleAnalytics.init();
 }

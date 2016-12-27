@@ -1,9 +1,7 @@
 import app from 'app';
 import BaseScene from 'BaseScene';
 import SFS2X from 'SFS2X';
-import RubUtils from 'RubUtils';
-import AlertPopupRub from 'AlertPopupRub';
-import ConfirmPopupRub from 'ConfirmPopupRub';
+import { loadRes } from 'RubUtils';
 
 export default class ListTableScene extends BaseScene {
     constructor() {
@@ -181,14 +179,16 @@ export default class ListTableScene extends BaseScene {
             };
             this.invitationShowed = true;
 
-            this.invitationShowed && ConfirmPopupRub.show(null, `${event.u} muốn mời bạn vào phòng chơi bet ${event.b}.`, this._onConfirmInvitationBtnClick.bind(this, room), this._onCancelInvitationBtnClick.bind(this));
+            this.invitationShowed && app.system.confirm(
+                app.res.string('user_got_invitation_to_join_room', { invoker: event.u, minBet: event.b }),
+                this._onCancelInvitationBtnClick.bind(this),
+                this._onConfirmInvitationBtnClick.bind(this, room)
+            );
         }
     }
 
     _onConfirmInvitationBtnClick(room) {
         this.invitationShowed = false;
-
-        // console.debug('this.invitationShowed comfirmed', this.invitationShowed);
 
         this._requestJoinRoom(room);
     }
@@ -336,7 +336,9 @@ export default class ListTableScene extends BaseScene {
 
     onUserRequestJoinRoom(cell) {
         if (cell.minBet > cell.balance) {
-            AlertPopupRub.show(null, "rằng thì là mà .... minbet > balance");
+            app.system.error(
+                app.res.string('error_user_not_enough_gold_to_join_room', { minBet: cell.minBet })
+            );
         } else {
             if (cell.password) {
                 console.warn('password wth ?');
@@ -359,6 +361,7 @@ export default class ListTableScene extends BaseScene {
         data[app.keywords.ROOM_BET] = room.minBet;
         room.password && (data[app.keywords.ROOM_PASSWORD] = room.password);
 
+        app.system.showLoader();
         let sendObject = {
             cmd: app.commands.USER_JOIN_ROOM,
             data,
@@ -388,7 +391,7 @@ export default class ListTableScene extends BaseScene {
 
     // Listen Bottom Bar Event (Click button In Bottom Bar)
     _addBottomBar() {
-        RubUtils.loadRes('bottombar/bottombar').then((prefab) => {
+        loadRes('bottombar/bottombar').then((prefab) => {
             let bottomBarNode = cc.instantiate(prefab);
 
             this.node.addChild(bottomBarNode);
@@ -396,7 +399,7 @@ export default class ListTableScene extends BaseScene {
     }
 
     _addTopBar() {
-        RubUtils.loadRes('dashboard/Topbar').then((prefab) => {
+        loadRes('dashboard/Topbar').then((prefab) => {
             let topbarNode = cc.instantiate(prefab);
 
             let topBarScript = topbarNode.getComponent('TopBar');

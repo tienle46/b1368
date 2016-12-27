@@ -36,20 +36,20 @@ export default class FullSceneProgress extends Component {
         this.timeoutCb = null;
     }
 
-    onLoad(){
+    onLoad() {
         super.onLoad();
     }
 
-    onEnable(){
+    onEnable() {
         super.onEnable();
 
-        this.node.on('touchstart', () => {});
+        this.node.on(cc.Node.EventType.TOUCH_START, () => true);
 
         this.node.active = this.active;
         console.log("on Enable: ", this.active, this.node.active);
 
         this.progress = this.progressNode.getComponent('Progress');
-        if(this.active){
+        if (this.active) {
             this.label.string = this.text || "";
             this.progress.show(this.duration, () => {
                 this.hide();
@@ -58,12 +58,12 @@ export default class FullSceneProgress extends Component {
         }
     }
 
-    onDisable(){
+    onDisable() {
         super.onDisable();
         this.progress.hide();
     }
 
-    show(text = "", duration = this.duration, timeoutCb){
+    show(text = "", duration = this.duration, timeoutCb) {
         this.hide();
 
         this.text = text;
@@ -72,7 +72,7 @@ export default class FullSceneProgress extends Component {
         this.node.active = true;
     }
 
-    hide(){
+    hide() {
         this.progress && this.progress.hide();
         this.node.active = false;
     }

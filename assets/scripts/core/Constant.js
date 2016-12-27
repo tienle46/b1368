@@ -14,6 +14,8 @@ app.const.popupZIndex = 10003;
 app.const.LANGUAGE = "vi"; // set the language used in app. Default: "vi"
 
 app.const.DIALOG_DIR_PREFAB = "dashboard/dialog/prefabs";
+app.const.EXCHANGE_LIST_CARD_TYPE_ID = 1;
+app.const.EXCHANGE_LIST_ITEM_TYPE_ID = 2;
 
 app.const.USER_LOCAL_STORAGE = "userInfo";
 

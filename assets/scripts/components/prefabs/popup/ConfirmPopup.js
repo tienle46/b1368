@@ -11,8 +11,9 @@ export default class ConfirmPopup extends MessagePopup {
         super();
     }
 
-    onEnable(){
+    onEnable() {
         super.onEnable();
+        this.node.zIndex = app.const.popupZIndex;
         utils.active(this.acceptButton);
     }
 
