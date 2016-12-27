@@ -184,7 +184,9 @@ class TabExchangeCard extends Component {
                 if (data[app.keywords.RESPONSE_RESULT] === false) {
                     app.system.info(`${data[app.keywords.RESPONSE_MESSAGE]}`);
                 } else { // true
-                    console.error('chua xu ly cho nay :\'(');
+                    app.system.error(
+                        app.res.string('error_system')
+                    );
                 }
             });
         }
