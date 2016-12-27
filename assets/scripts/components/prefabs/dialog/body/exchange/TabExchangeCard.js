@@ -108,7 +108,7 @@ class TabExchangeCard extends Component {
         let target = e.currentTarget;
         this.providerLbl.string = `${target.providerName}`;
 
-        this.hint.string = `<color=#FAE407>${target.providerName}</color> cần <color=#FAE407>${target.providerPrice}</color> Xu để đổi.`;
+        this.hint.string = `<color=#FAE407>${target.providerName}</color> cần <color=#FAE407>${target.providerPrice.toLocaleString()}</color> Xu để đổi.`;
 
         this.selectedItem = {
             id: target.providerId,
