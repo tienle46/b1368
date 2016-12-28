@@ -15,7 +15,12 @@ let RubUtils = {
             }
         });
     },
-
+    loadFont: (component, url, cb) => {
+        cc.loader.loadRes(url, cc.Font, (err, font) => {
+            component.font = font;
+            cb && cb(font);
+        });
+    },
     /**
      * @param spriteComponent: (cc.Component) sprite we need to add spriteFrame to
      * @param resURL: (string) resource url || image url we need to load before adding

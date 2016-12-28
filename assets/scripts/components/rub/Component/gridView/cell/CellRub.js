@@ -218,11 +218,14 @@ export default class CellRub {
                 fontSize: this.options.fontSize,
                 lineHeight: this.options.fontLineHeight,
                 horizontalAlign: cc.RichText.HorizontalAlign.CENTER,
-                text: this.cell instanceof Object ? this.cell.text : this.cell
+                text: this.cell instanceof Object ? this.cell.text : this.cell,
+                font: this.options.font,
+                outline: {
+                    color: app.const.COLOR_BLACK,
+                    width: 1.5
+                }
             }
         };
-
-        this.options.font && (nodeOptions.richtext.font = this.options.font);
 
         let lblNode = NodeRub.createNodeByOptions(nodeOptions);
 

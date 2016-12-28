@@ -81,13 +81,20 @@ class TabExchangeHistory extends Component {
     _initBody(d) {
         let head = {
             data: ['Thời gian', 'Loại vật phẩm', 'Thông tin', ''],
-            options: { fontColor: app.const.COLOR_YELLOW }
+            options: {
+                font: 'fonts/newFonts/ICIELPANTON-BLACK',
+                fontColor: app.const.COLOR_YELLOW,
+                fontSize: 25
+            }
         };
         let node = new GridViewRub(head, d, {
             width: 870,
             height: 425,
             spacingX: 0,
-            spacingY: 0
+            spacingY: 0,
+            cell: {
+                font: 'fonts/newFonts/ICIELPANTON-BLACK',
+            }
         }).getNode();
         this.bodyNode.addChild(node);
     }

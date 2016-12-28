@@ -59,15 +59,23 @@ let NodeRub = {
      *  verticalAlign: # default cc.Label.VerticalAlign.CENTER
      *  overflow: # default.cc.Label.Overflow.CLAMP,
      *  enableWrapText : boolean
+     *  outline: {
+     *      color: new cc.Color
+     *      width: number
+     *  }
      * }
      */
     addLabelComponentToNode: (node, options = {}) => {
         let label = node.getComponent(cc.Label) || node.addComponent(cc.Label);
         label.string = options.text || '';
+        options.font && RubUtils.loadFont(label, options.font);
+        delete options.font;
         delete options.text;
-        for (var key in options) {
+        for (let key in options) {
             label[key] = options[key];
         }
+
+        options.outline && (NodeRub.addOutlineComponentToNode(node, options.outline));
     },
     /**
      * @param options
@@ -79,16 +87,36 @@ let NodeRub = {
      * horizontalAlign: # default cc.Label.HorizontalAlign.CENTER,
      * maxWidth: number
      * overflow: # default.cc.Label.Overflow.CLAMP
+     * outline: {
+     *      color: new cc.Color
+     *      width: number
+     *  }
      * }
      */
     addRichTextComponentToNode: (node, options = {}) => {
         let rich = node.getComponent(cc.RichText) || node.addComponent(cc.RichText);
         rich.string = options.text || '';
+        options.font && RubUtils.loadFont(rich, options.font);
+
         delete options.text;
-        for (var key in options) {
+        delete options.font;
+        for (let key in options) {
             rich[key] = options[key];
         }
+
+        options.outline && (NodeRub.addOutlineComponentToNode(node, options.outline));
         node.getLineCount = () => rich._lineCount;
+    },
+    /**
+     * @param options
+     * color: cc.color
+     * width: number
+     */
+    addOutlineComponentToNode: (node, options = {}) => {
+        let outline = node.getComponent(cc.LabelOutline) || node.addComponent(cc.LabelOutline);
+        for (let key in options) {
+            outline[key] = options[key];
+        }
     },
     /**
      * @param options
@@ -327,7 +355,8 @@ let NodeRub = {
      *          horizontalAlign: # default cc.Label.HorizontalAlign.CENTER,
      *          verticalAlign: # default cc.Label.VerticalAlign.CENTER
      *          overflow: # default.cc.Label.Overflow.CLAMP,
-     *          enableWrapText: boolean # default: true
+     *          enableWrapText: boolean # default: true,
+     *          hasOutline: boolean
      *      },
      *      richtext: {
      *          fontSize: number,
@@ -336,7 +365,10 @@ let NodeRub = {
      *          text: string,
      *          horizontalAlign: # default cc.Label.HorizontalAlign.CENTER,
      *          maxWidth: number
-     *          overFlow: # default.cc.Label.Overflow.CLAMP
+     *          overFlow: # default.cc.Label.Overflow.CLAMP,
+     *          outline: {
+     *              color, width
+     *          }
      *      },
      *      layout: {
      *          type: cc.Layout.Type.VERTICAL,

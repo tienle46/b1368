@@ -34,9 +34,9 @@ export default class TabUserInfo extends Component {
         this.loader = new LoaderRub(this.node.parent.parent);
         this.loader.show();
 
-        this._initUserData((userData) => {
-            this._fillData(userData);
-        });
+        // this._initUserData((userData) => {
+        //     this._fillData(userData);
+        // });
     }
 
     _initUserData(cb) {
