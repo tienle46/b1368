@@ -9,6 +9,7 @@ import GameControls from 'GameControls';
 import BaseControls from 'BaseControls';
 import Keywords from 'Keywords'
 import CardBetTurnControls from 'CardBetTurnControls';
+import GameUtils from "../../base/utils/GameUtils";
 
 export default class BaCayControls extends GameControls {
     constructor() {
@@ -36,7 +37,6 @@ export default class BaCayControls extends GameControls {
 
         this.baseControls = this.baseControlsNode.getComponent('BaseControls');
         this.cardBetTurnControls = this.cardBetTurnControlsNode.getComponent('CardBetTurnControls');
-        this.baseControls.serverAutoStartGame = true;
 
         super.onEnable();
 
@@ -50,6 +50,8 @@ export default class BaCayControls extends GameControls {
 
         this.scene.on(Events.SHOW_BACAY_BET_CONTROLS, this._showBetControls, this);
         this.scene.on(Events.SHOW_DOWN_CARD_CONTROLS, this._showDownCardControls, this);
+
+        this.baseControls.serverAutoStartGame = false;//!(this.scene.gamePlayers.owner && GameUtils.isTester(this.scene.gamePlayers.owner.user));
     }
 
     _showBetControls(){

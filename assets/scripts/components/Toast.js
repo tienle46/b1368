@@ -48,5 +48,6 @@ export default class Toast extends Component {
 
 Toast.LONG_TIME = 10000;
 Toast.SHORT_TIME = 10000;
+Toast.FOREVER = 10000000;
 
 app.createComponent(Toast);

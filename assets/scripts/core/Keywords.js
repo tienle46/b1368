@@ -718,6 +718,7 @@ Keywords.ADMIN_MESSAGE_LIST = "ml";
 Keywords.ROOM_BET = "b";
 Keywords.ROOM_CAPACITY = "mu";
 Keywords.USER_VARIABLE_BALANCE = "coin";
+Keywords.USER_VARIABLE_IS_TESTER = "$IS_TESTER";
 
 
 //

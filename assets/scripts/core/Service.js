@@ -92,6 +92,7 @@ class Service {
         this.addEventListener(SFS2X.SFSEvent.USER_VARIABLES_UPDATE, this._onUserVariableUpdate);
         this.addEventListener(SFS2X.SFSEvent.ROOM_VARIABLES_UPDATE, this._onRoomVariableUpdate);
         this.addEventListener(SFS2X.SFSEvent.PUBLIC_MESSAGE, this._onPublicMessage);
+        this.addEventListener(SFS2X.SFSEvent.ADMIN_MESSAGE, this._onAdminMessage);
     }
 
     _removeSmartFoxEvent() {
@@ -110,6 +111,13 @@ class Service {
         this.removeEventListener(SFS2X.SFSEvent.USER_VARIABLES_UPDATE, this._onUserVariableUpdate);
         this.removeEventListener(SFS2X.SFSEvent.ROOM_VARIABLES_UPDATE, this._onRoomVariableUpdate);
         this.removeEventListener(SFS2X.SFSEvent.PUBLIC_MESSAGE, this._onPublicMessage);
+        this.removeEventListener(SFS2X.SFSEvent.ADMIN_MESSAGE, this._onAdminMessage);
+    }
+
+    _onAdminMessage(event) {
+        let message = event.message || "";
+        let data = event.data;
+        app.system.emit(SFS2X.SFSEvent.ADMIN_MESSAGE, message, data);
     }
 
     _onPublicMessage(event) {

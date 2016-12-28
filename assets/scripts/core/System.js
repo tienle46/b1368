@@ -10,7 +10,7 @@ import MessagePopup from 'MessagePopup';
 import ConfirmPopup from 'ConfirmPopup';
 import utils from 'utils';
 import ArrayUtils from "../utils/ArrayUtils";
-import LoaderRub from 'LoaderRub';
+import Toast from 'Toast';
 
 class GameSystem {
 
@@ -59,10 +59,13 @@ class GameSystem {
      * @param {function} onLaunch - On launch custom function
      */
     loadScene(sceneName, onLaunch) {
-        console.log("sceneName: ", sceneName);
+
+        console.log("sceneName: ", sceneName)
 
         cc.director.loadScene(sceneName, () => {
-            console.log("load scene result", sceneName, cc.director.getScene());
+
+
+            console.log("load scene result", sceneName, cc.director.getScene())
 
             if (cc.director.getScene().children[0]) {
                 this._currentScene = cc.director.getScene().children[0].getComponent(sceneName);
@@ -80,16 +83,72 @@ class GameSystem {
         this.addListener(SFS2X.SFSEvent.ROOM_JOIN, this._onJoinRoomSuccess, this);
         this.addListener(SFS2X.SFSEvent.ROOM_JOIN_ERROR, this._onJoinRoomError, this);
         this.addListener(app.commands.HIGH_LIGHT_MESSAGE, this._onHighLightMessage, this);
+        this.addListener(SFS2X.SFSEvent.ADMIN_MESSAGE, this._onAdminMessage, this);
     }
 
     removeEventListener() {
         this.removeListener(SFS2X.SFSEvent.ROOM_JOIN, this._onJoinRoomSuccess, this);
         this.removeListener(SFS2X.SFSEvent.ROOM_JOIN_ERROR, this._onJoinRoomError, this);
         this.removeListener(app.commands.HIGH_LIGHT_MESSAGE, this._onHighLightMessage, this);
+        this.removeListener(SFS2X.SFSEvent.ADMIN_MESSAGE, this._onAdminMessage, this);
     }
 
     getCurrentSceneNode() {
         return this._currentScene.node;
+    }
+
+    _onAdminMessage(message, data){
+        let duration = data && data.t == app.const.adminMessage.MANUAL_DISMISS ? Toast.FOREVER : undefined;
+        this.showToast(message, duration);
+    }
+
+    _onJoinRoomError(resultEvent) {
+        if (resultEvent.errorCode) {
+            this.error(event.errorMessage);
+        }
+    }
+
+    _onJoinRoomSuccess(resultEvent) {
+        debug(resultEvent);
+
+        if (!resultEvent.room) return;
+
+        app.context.lastJoinedRoom = resultEvent.room;
+        if (resultEvent.room && resultEvent.room.isJoined && resultEvent.room.isGame) {
+
+            app.context.currentRoom = resultEvent.room;
+            this._currentScene && this._currentScene.hideLoading();
+
+            let gameSceneName = null;
+            let gameCode = utils.getGameCode(resultEvent.room);
+
+            // check whether app.context.selectedGame is exists. if not re-set it
+            (!app.context.getSelectedGame()) && app.context.setSelectedGame(gameCode);
+
+            switch (gameCode) {
+                case app.const.gameCode.TLMNDL:
+                    gameSceneName = 'TLMNDLScene';
+                    break;
+                case app.const.gameCode.PHOM:
+                    gameSceneName = 'PhomScene';
+                    break;
+                case app.const.gameCode.XAM:
+                    gameSceneName = 'SamScene';
+                    break;
+                case app.const.gameCode.BA_CAY:
+                    gameSceneName = 'BaCayScene';
+                    break;
+                case app.const.gameCode.XOC_DIA:
+                    gameSceneName = 'XocDiaScene';
+                    break;
+            }
+
+            gameSceneName && this.loadScene(gameSceneName);
+        }
+    }
+
+    _onHighLightMessage(resultEvent) {
+        resultEvent && this.hlm.pushMessage(resultEvent);
     }
 
     get currentScene() {
@@ -103,6 +162,12 @@ class GameSystem {
     setCurrentScene(scene) {
         this._currentScene = scene;
         this._addToastToScene();
+    }
+
+    _addToastToScene() {
+        let toastNode = cc.instantiate(app.res.prefab.toast);
+        this.toast = toastNode.getComponent('Toast');
+        this._currentScene && this._currentScene.node.addChild(toastNode, app.const.toastZIndex);
     }
 
     info(title, message) {
@@ -138,6 +203,21 @@ class GameSystem {
         } else {
             this.eventEmitter.emit(name, ...args);
             this._emitGameEvent(name, ...args);
+        }
+    }
+
+    _emitGameEvent(name, ...args) {
+        if (this.enablePendingGameEvent) {
+            this.pendingGameEvents.push({ name, args: args });
+        } else {
+            this.gameEventEmitter.emit(name, ...args);
+        }
+    }
+
+    _handlePendingGameEvents() {
+        if (this.pendingGameEvents.length > 0) {
+            this.pendingGameEvents.forEach(event => this.gameEventEmitter.emit(event.name, ...event.args));
+            this.pendingGameEvents = [];
         }
     }
 

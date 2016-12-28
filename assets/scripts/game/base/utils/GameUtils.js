@@ -131,6 +131,10 @@ export default class GameUtils {
         return heoContained;
     }
 
+    static isTester(user) {
+        return utils.getVariable(user, app.keywords.USER_VARIABLE_IS_TESTER, false)
+    }
+
     static createFakeCard(length) {
         let cardBytes = new Array(length).fill(0);
         return GameUtils.convertBytesToCards(cardBytes);
