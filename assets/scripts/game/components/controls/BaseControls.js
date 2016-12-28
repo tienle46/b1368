@@ -65,7 +65,7 @@ export default class BaseControls extends GameControls {
 
     _showGameBeginControls() {
         console.debug('_showGameBeginControls')
-        if (this.scene.gamePlayers.isMeReady()) {
+        if (app.system.currentScene.gamePlayers.isMeReady()) {
             this._onPlayerReady();
         } else {
             this._onPlayerUnready();

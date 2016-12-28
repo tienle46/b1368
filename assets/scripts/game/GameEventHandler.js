@@ -278,6 +278,7 @@ export default class GameEventHandler {
     }
 
     _onRoomRemove(event) {
+        console.log('room remove: ', event);
         this.scene.goBack();
     }
 

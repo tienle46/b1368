@@ -11,6 +11,8 @@ import ConfirmPopup from 'ConfirmPopup';
 import utils from 'utils';
 import ArrayUtils from "../utils/ArrayUtils";
 import LoaderRub from 'LoaderRub';
+import Toast from 'Toast';
+
 
 class GameSystem {
 
@@ -79,12 +81,14 @@ class GameSystem {
         this.addListener(SFS2X.SFSEvent.ROOM_JOIN, this._onJoinRoomSuccess, this);
         this.addListener(SFS2X.SFSEvent.ROOM_JOIN_ERROR, this._onJoinRoomError, this);
         this.addListener(app.commands.HIGH_LIGHT_MESSAGE, this._onHighLightMessage, this);
+        this.addListener(SFS2X.SFSEvent.ADMIN_MESSAGE, this._onAdminMessage, this);
     }
 
     removeEventListener() {
         this.removeListener(SFS2X.SFSEvent.ROOM_JOIN, this._onJoinRoomSuccess, this);
         this.removeListener(SFS2X.SFSEvent.ROOM_JOIN_ERROR, this._onJoinRoomError, this);
         this.removeListener(app.commands.HIGH_LIGHT_MESSAGE, this._onHighLightMessage, this);
+        this.removeListener(SFS2X.SFSEvent.ADMIN_MESSAGE, this._onAdminMessage, this);
     }
 
     getCurrentSceneNode() {
@@ -201,6 +205,12 @@ class GameSystem {
         }
         this.loader = new LoaderRub(this._currentScene);
     }
+
+    _onAdminMessage(message, data) {
+        let duration = data && data.t == app.const.adminMessage.MANUAL_DISMISS ? Toast.FOREVER : undefined;
+        this.showToast(message, duration);
+    }
+
 
     _onJoinRoomSuccess(resultEvent) {
         debug(resultEvent);
