@@ -7,6 +7,10 @@ class TabExchangeHistory extends Component {
     constructor() {
         super();
         this.flag = null;
+        this.bodyNode = {
+            default: null,
+            type: cc.Node
+        };
     }
 
     onLoad() {
@@ -75,13 +79,17 @@ class TabExchangeHistory extends Component {
     }
 
     _initBody(d) {
-        let bodyNode = this.node.getChildByName('body');
         let head = {
             data: ['Thời gian', 'Loại vật phẩm', 'Thông tin', ''],
             options: { fontColor: app.const.COLOR_YELLOW }
         };
-        let node = new GridViewRub(head, d, { width: 780 }).getNode();
-        bodyNode.addChild(node);
+        let node = new GridViewRub(head, d, {
+            width: 870,
+            height: 425,
+            spacingX: 0,
+            spacingY: 0
+        }).getNode();
+        this.bodyNode.addChild(node);
     }
 
     _getExchangeDialogComponent() {

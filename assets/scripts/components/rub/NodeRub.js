@@ -53,6 +53,7 @@ let NodeRub = {
      * {
      *  fontSize: number,
      *  lineHeight: number,
+     *  font: cc.Font
      *  text: string,
      *  horizontalAlign: # default cc.Label.HorizontalAlign.CENTER,
      *  verticalAlign: # default cc.Label.VerticalAlign.CENTER
@@ -73,6 +74,7 @@ let NodeRub = {
      * {
      * fontSize: number,
      * lineHeight: number,
+     * font: cc.Font
      * text: string,
      * horizontalAlign: # default cc.Label.HorizontalAlign.CENTER,
      * maxWidth: number
@@ -319,6 +321,7 @@ let NodeRub = {
      *      },
      *      label: {
      *          fontSize: number,
+     *          font: cc.Font
      *          lineHeight: number,
      *          text: string,
      *          horizontalAlign: # default cc.Label.HorizontalAlign.CENTER,
@@ -328,6 +331,7 @@ let NodeRub = {
      *      },
      *      richtext: {
      *          fontSize: number,
+     *          font: cc.Font
      *          lineHeight: number,
      *          text: string,
      *          horizontalAlign: # default cc.Label.HorizontalAlign.CENTER,

@@ -68,6 +68,7 @@ export default class GridViewRub extends ScrollViewRub {
      *      bgColor: new cc.Color
      *      width: number
      *      height: number
+     *      font: cc.Font
      *      fontColor: new cc.Color
      *      fontSize: number
      *      fontLineHeight: number,

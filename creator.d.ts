@@ -1881,134 +1881,6 @@ declare module cc {
 		WARN_FOR_WEB_PAGE = 0,
 		ERROR_FOR_WEB_PAGE = 0,	
 	}		
-		/** !#en Base class cc.Action for action classes.
-		!#zh Action 类是所有动作类型的基类。 */
-		export class Action {		
-		/** !#en
-		to copy object with deep copy.
-		returns a clone of action.
-		!#zh 返回一个克隆的动作。 
-		*/
-		clone() : Action;		
-		/** !#en
-		return true if the action has finished.
-		!#zh 如果动作已完成就返回 true。 
-		*/
-		isDone() : boolean;		
-		/** !#en get the target.
-		!#zh 获取当前目标节点。 
-		*/
-		getTarget() : Node;		
-		/** !#en The action will modify the target properties.
-		!#zh 设置目标节点。 
-		*/
-		setTarget(target : Node) : void;		
-		/** !#en get the original target.
-		!#zh 获取原始目标节点。 
-		*/
-		getOriginalTarget() : Node;		
-		/** !#en get tag number.
-		!#zh 获取用于识别动作的标签。 
-		*/
-		getTag() : number;		
-		/** !#en set tag number.
-		!#zh 设置标签，用于识别动作。 
-		*/
-		setTag(tag : number) : void;		
-		/** !#en Default Action tag.
-		!#zh 默认动作标签。 */
-		TAG_INVALID : number;	
-	}		
-		/** !#en
-		Base class actions that do have a finite time duration. <br/>
-		Possible actions: <br/>
-		- An action with a duration of 0 seconds. <br/>
-		- An action with a duration of 35.5 seconds.
-		
-		Infinite time actions are valid
-		!#zh 有限时间动作，这种动作拥有时长 duration 属性。 */
-		export class FiniteTimeAction extends Action {		
-		/** !#en get duration of the action. (seconds).
-		!#zh 获取动作以秒为单位的持续时间。 
-		*/
-		getDuration() : number;		
-		/** !#en set duration of the action. (seconds).
-		!#zh 设置动作以秒为单位的持续时间。 
-		*/
-		setDuration(duration : number) : void;		
-		/** !#en
-		Returns a reversed action. <br />
-		For example: <br />
-		- The action will be x coordinates of 0 move to 100. <br />
-		- The reversed action will be x of 100 move to 0.
-		- Will be rewritten
-		!#zh 返回一个新的动作，执行与原动作完全相反的动作。 
-		*/
-		reverse() : void;		
-		/** !#en
-		to copy object with deep copy.
-		returns a clone of action.
-		!#zh 返回一个克隆的动作。 
-		*/
-		clone() : FiniteTimeAction;	
-	}		
-		/** !#en Base class for Easing actions.
-		!#zh 所有缓动动作基类，用于修饰 ActionInterval。 */
-		export class ActionEase extends ActionInterval {	
-	}		
-		/** !#en Base class for Easing actions with rate parameters
-		!#zh 拥有速率属性的缓动动作基类。 */
-		export class EaseRateAction extends ActionEase {	
-	}		
-		/** !#en Ease Elastic abstract class.
-		!#zh 弹性缓动动作基类。 */
-		export class EaseElastic extends ActionEase {	
-	}		
-		/** !#en cc.EaseBounce abstract class.
-		!#zh 反弹缓动动作基类。 */
-		export class EaseBounce extends ActionEase {	
-	}		
-		/** !#en Instant actions are immediate actions. They don't have a duration like the ActionInterval actions.
-		!#zh 即时动作，这种动作立即就会执行，继承自 FiniteTimeAction。 */
-		export class ActionInstant extends FiniteTimeAction {	
-	}		
-		/** !#en
-		<p> An interval action is an action that takes place within a certain period of time. <br/>
-		It has an start time, and a finish time. The finish time is the parameter<br/>
-		duration plus the start time.</p>
-		
-		<p>These CCActionInterval actions have some interesting properties, like:<br/>
-		- They can run normally (default)  <br/>
-		- They can run reversed with the reverse method   <br/>
-		- They can run with the time altered with the Accelerate, AccelDeccel and Speed actions. </p>
-		
-		<p>For example, you can simulate a Ping Pong effect running the action normally and<br/>
-		then running it again in Reverse mode. </p>
-		!#zh 时间间隔动作，这种动作在已定时间内完成，继承 FiniteTimeAction。 */
-		export class ActionInterval extends FiniteTimeAction {		
-		/** !#en Implementation of ease motion.
-		!#zh 缓动运动。
-		
-		@example 
-		
-		action.easeing(cc.easeIn(3.0));,```js
-		action.easeing(cc.easeIn(3.0));
-		``` 
-		*/
-		easing(easeObj : any) : ActionInterval;		
-		/** !#en
-		Repeats an action a number of times.
-		To repeat an action forever use the CCRepeatForever action.
-		!#zh 重复动作可以按一定次数重复一个动作，使用 RepeatForever 动作来永远重复一个动作。 
-		*/
-		repeat(times : void) : ActionInterval;		
-		/** !#en
-		Repeats an action for ever.  <br/>
-		To repeat the an action for a limited number of times use the Repeat action. <br/>
-		!#zh 永远地重复一个动作，有限次数内重复一个动作请使用 Repeat 动作。 
-		*/
-		repeatForever() : ActionInterval;	
-	}		
 		/** !#en Class for animation data handling.
 		!#zh 动画剪辑，用于存储动画数据。 */
 		export class AnimationClip extends Asset {		
@@ -2137,6 +2009,176 @@ declare module cc {
 		/** !#en The current time of this animation in seconds.
 		!#zh 动画当前的时间，秒。 */
 		time : number;	
+	}		
+		/** !#en
+		cc.MotionStreak manages a Ribbon based on it's motion in absolute space.                 <br/>
+		You construct it with a fadeTime, minimum segment size, texture path, texture            <br/>
+		length and color. The fadeTime controls how long it takes each vertex in                 <br/>
+		the streak to fade out, the minimum segment size it how many pixels the                  <br/>
+		streak will move before adding a new ribbon segment, and the texture                     <br/>
+		length is the how many pixels the texture is stretched across. The texture               <br/>
+		is vertically aligned along the streak segment.
+		!#zh 运动轨迹，用于游戏对象的运动轨迹上实现拖尾渐隐效果。 */
+		export class MotionStreak extends Component {		
+		/** !#en
+		!#zh 在编辑器模式下预览拖尾效果。 */
+		preview : boolean;		
+		/** !#en The fade time to fade.
+		!#zh 拖尾的渐隐时间，以秒为单位。 */
+		fadeTime : number;		
+		/** !#en The minimum segment size.
+		!#zh 拖尾之间最小距离。 */
+		minSeg : number;		
+		/** !#en The stroke's width.
+		!#zh 拖尾的宽度。 */
+		stroke : number;		
+		/** !#en The texture of the MotionStreak.
+		!#zh 拖尾的贴图。 */
+		texture : Texture2D;		
+		/** !#en The color of the MotionStreak.
+		!#zh 拖尾的颜色 */
+		color : Color;		
+		/** !#en The fast Mode.
+		!#zh 是否启用了快速模式。当启用快速模式，新的点会被更快地添加，但精度较低。 */
+		fastMode : boolean;		
+		/** !#en Remove all living segments of the ribbon.
+		!#zh 删除当前所有的拖尾片段。
+		
+		@example 
+		```js
+		// stop particle system.
+		myParticleSystem.stopSystem();
+		``` 
+		*/
+		reset() : void;	
+	}		
+		/** !#en Base class cc.Action for action classes.
+		!#zh Action 类是所有动作类型的基类。 */
+		export class Action {		
+		/** !#en
+		to copy object with deep copy.
+		returns a clone of action.
+		!#zh 返回一个克隆的动作。 
+		*/
+		clone() : Action;		
+		/** !#en
+		return true if the action has finished.
+		!#zh 如果动作已完成就返回 true。 
+		*/
+		isDone() : boolean;		
+		/** !#en get the target.
+		!#zh 获取当前目标节点。 
+		*/
+		getTarget() : Node;		
+		/** !#en The action will modify the target properties.
+		!#zh 设置目标节点。 
+		*/
+		setTarget(target : Node) : void;		
+		/** !#en get the original target.
+		!#zh 获取原始目标节点。 
+		*/
+		getOriginalTarget() : Node;		
+		/** !#en get tag number.
+		!#zh 获取用于识别动作的标签。 
+		*/
+		getTag() : number;		
+		/** !#en set tag number.
+		!#zh 设置标签，用于识别动作。 
+		*/
+		setTag(tag : number) : void;		
+		/** !#en Default Action tag.
+		!#zh 默认动作标签。 */
+		TAG_INVALID : number;	
+	}		
+		/** !#en
+		Base class actions that do have a finite time duration. <br/>
+		Possible actions: <br/>
+		- An action with a duration of 0 seconds. <br/>
+		- An action with a duration of 35.5 seconds.
+		
+		Infinite time actions are valid
+		!#zh 有限时间动作，这种动作拥有时长 duration 属性。 */
+		export class FiniteTimeAction extends Action {		
+		/** !#en get duration of the action. (seconds).
+		!#zh 获取动作以秒为单位的持续时间。 
+		*/
+		getDuration() : number;		
+		/** !#en set duration of the action. (seconds).
+		!#zh 设置动作以秒为单位的持续时间。 
+		*/
+		setDuration(duration : number) : void;		
+		/** !#en
+		Returns a reversed action. <br />
+		For example: <br />
+		- The action will be x coordinates of 0 move to 100. <br />
+		- The reversed action will be x of 100 move to 0.
+		- Will be rewritten
+		!#zh 返回一个新的动作，执行与原动作完全相反的动作。 
+		*/
+		reverse() : void;		
+		/** !#en
+		to copy object with deep copy.
+		returns a clone of action.
+		!#zh 返回一个克隆的动作。 
+		*/
+		clone() : FiniteTimeAction;	
+	}		
+		/** !#en Base class for Easing actions.
+		!#zh 所有缓动动作基类，用于修饰 ActionInterval。 */
+		export class ActionEase extends ActionInterval {	
+	}		
+		/** !#en Base class for Easing actions with rate parameters
+		!#zh 拥有速率属性的缓动动作基类。 */
+		export class EaseRateAction extends ActionEase {	
+	}		
+		/** !#en Ease Elastic abstract class.
+		!#zh 弹性缓动动作基类。 */
+		export class EaseElastic extends ActionEase {	
+	}		
+		/** !#en cc.EaseBounce abstract class.
+		!#zh 反弹缓动动作基类。 */
+		export class EaseBounce extends ActionEase {	
+	}		
+		/** !#en Instant actions are immediate actions. They don't have a duration like the ActionInterval actions.
+		!#zh 即时动作，这种动作立即就会执行，继承自 FiniteTimeAction。 */
+		export class ActionInstant extends FiniteTimeAction {	
+	}		
+		/** !#en
+		<p> An interval action is an action that takes place within a certain period of time. <br/>
+		It has an start time, and a finish time. The finish time is the parameter<br/>
+		duration plus the start time.</p>
+		
+		<p>These CCActionInterval actions have some interesting properties, like:<br/>
+		- They can run normally (default)  <br/>
+		- They can run reversed with the reverse method   <br/>
+		- They can run with the time altered with the Accelerate, AccelDeccel and Speed actions. </p>
+		
+		<p>For example, you can simulate a Ping Pong effect running the action normally and<br/>
+		then running it again in Reverse mode. </p>
+		!#zh 时间间隔动作，这种动作在已定时间内完成，继承 FiniteTimeAction。 */
+		export class ActionInterval extends FiniteTimeAction {		
+		/** !#en Implementation of ease motion.
+		!#zh 缓动运动。
+		
+		@example 
+		
+		action.easing(cc.easeIn(3.0));,```js
+		action.easing(cc.easeIn(3.0));
+		``` 
+		*/
+		easing(easeObj : any) : ActionInterval;		
+		/** !#en
+		Repeats an action a number of times.
+		To repeat an action forever use the CCRepeatForever action.
+		!#zh 重复动作可以按一定次数重复一个动作，使用 RepeatForever 动作来永远重复一个动作。 
+		*/
+		repeat(times : void) : ActionInterval;		
+		/** !#en
+		Repeats an action for ever.  <br/>
+		To repeat the an action for a limited number of times use the Repeat action. <br/>
+		!#zh 永远地重复一个动作，有限次数内重复一个动作请使用 Repeat 动作。 
+		*/
+		repeatForever() : ActionInterval;	
 	}		
 		/** !#en cc.audioEngine is the singleton object, it provide simple audio APIs.
 		!#zh
@@ -2387,6 +2429,766 @@ declare module cc {
 		``` 
 		*/
 		setMaxWebAudioSize(kb : void) : void;	
+	}		
+		/** Particle System base class. <br/>
+		Attributes of a Particle System:<br/>
+		 - emmision rate of the particles<br/>
+		 - Gravity Mode (Mode A): <br/>
+		 - gravity <br/>
+		 - direction <br/>
+		 - speed +-  variance <br/>
+		 - tangential acceleration +- variance<br/>
+		 - radial acceleration +- variance<br/>
+		 - Radius Mode (Mode B):      <br/>
+		 - startRadius +- variance    <br/>
+		 - endRadius +- variance      <br/>
+		 - rotate +- variance         <br/>
+		 - Properties common to all modes: <br/>
+		 - life +- life variance      <br/>
+		 - start spin +- variance     <br/>
+		 - end spin +- variance       <br/>
+		 - start size +- variance     <br/>
+		 - end size +- variance       <br/>
+		 - start color +- variance    <br/>
+		 - end color +- variance      <br/>
+		 - life +- variance           <br/>
+		 - blending function          <br/>
+		 - texture                    <br/>
+		<br/>
+		cocos2d also supports particles generated by Particle Designer (http://particledesigner.71squared.com/).<br/>
+		'Radius Mode' in Particle Designer uses a fixed emit rate of 30 hz. Since that can't be guarateed in cocos2d,  <br/>
+		cocos2d uses a another approach, but the results are almost identical.<br/>
+		cocos2d supports all the variables used by Particle Designer plus a bit more:  <br/>
+		 - spinning particles (supported when using ParticleSystem)       <br/>
+		 - tangential acceleration (Gravity mode)                               <br/>
+		 - radial acceleration (Gravity mode)                                   <br/>
+		 - radius direction (Radius mode) (Particle Designer supports outwards to inwards direction only) <br/>
+		It is possible to customize any of the above mentioned properties in runtime. Example:   <br/> */
+		export class ParticleSystem extends _RendererUnderSG {		
+		/** !#en Play particle in edit mode.
+		!#zh 在编辑器模式下预览粒子，启用后选中粒子时，粒子将自动播放。 */
+		preview : boolean;		
+		/** !#en
+		If set custom to true, then use custom properties insteadof read particle file.
+		!#zh 是否自定义粒子属性。 */
+		custom : boolean;		
+		/** !#en The plist file.
+		!#zh plist 格式的粒子配置文件。 */
+		file : string;		
+		/** . */
+		texture : Texture2D;		
+		/** !#en Current quantity of particles that are being simulated.
+		!#zh 当前播放的粒子数量。 */
+		particleCount : number;		
+		/** !#en Specify the source Blend Factor.
+		!#zh 指定原图混合模式。 */
+		srcBlendFactor : BlendFactor;		
+		/** !#en Specify the destination Blend Factor.
+		!#zh 指定目标的混合模式。 */
+		dstBlendFactor : BlendFactor;		
+		/** !#en If set to true, the particle system will automatically start playing on onLoad.
+		!#zh 如果设置为 true 运行时会自动发射粒子。 */
+		playOnLoad : boolean;		
+		/** !#en Indicate whether the owner node will be auto-removed when it has no particles left.
+		!#zh 粒子播放完毕后自动销毁所在的节点。 */
+		autoRemoveOnFinish : boolean;		
+		/** !#en Indicate whether the particle system is activated.
+		!#zh 是否激活粒子。 */
+		active : boolean;		
+		/** !#en Maximum particles of the system.
+		!#zh 粒子最大数量。 */
+		totalParticles : number;		
+		/** !#en How many seconds the emitter wil run. -1 means 'forever'.
+		!#zh 发射器生存时间，单位秒，-1表示持续发射。 */
+		duration : number;		
+		/** !#en Emission rate of the particles.
+		!#zh 每秒发射的粒子数目。 */
+		emissionRate : number;		
+		/** !#en Life of each particle setter.
+		!#zh 粒子的运行时间。 */
+		life : number;		
+		/** !#en Variation of life.
+		!#zh 粒子的运行时间变化范围。 */
+		lifeVar : number;		
+		/** !#en Start color of each particle.
+		!#zh 粒子初始颜色。 */
+		startColor : Color;		
+		/** !#en Variation of the start color.
+		!#zh 粒子初始颜色变化范围。 */
+		startColorVar : Color;		
+		/** !#en Ending color of each particle.
+		!#zh 粒子结束颜色。 */
+		endColor : Color;		
+		/** !#en Variation of the end color.
+		!#zh 粒子结束颜色变化范围。 */
+		endColorVar : Color;		
+		/** !#en Angle of each particle setter.
+		!#zh 粒子角度。 */
+		angle : number;		
+		/** !#en Variation of angle of each particle setter.
+		!#zh 粒子角度变化范围。 */
+		angleVar : number;		
+		/** !#en Start size in pixels of each particle.
+		!#zh 粒子的初始大小。 */
+		startSize : number;		
+		/** !#en Variation of start size in pixels.
+		!#zh 粒子初始大小的变化范围。 */
+		startSizeVar : number;		
+		/** !#en End size in pixels of each particle.
+		!#zh 粒子结束时的大小。 */
+		endSize : number;		
+		/** !#en Variation of end size in pixels.
+		!#zh 粒子结束大小的变化范围。 */
+		endSizeVar : number;		
+		/** !#en Start angle of each particle.
+		!#zh 粒子开始自旋角度。 */
+		startSpin : number;		
+		/** !#en Variation of start angle.
+		!#zh 粒子开始自旋角度变化范围。 */
+		startSpinVar : number;		
+		/** !#en End angle of each particle.
+		!#zh 粒子结束自旋角度。 */
+		endSpin : number;		
+		/** !#en Variation of end angle.
+		!#zh 粒子结束自旋角度变化范围。 */
+		endSpinVar : number;		
+		/** !#en Source position of the emitter.
+		!#zh 发射器位置。 */
+		sourcePos : Vec2;		
+		/** !#en Variation of source position.
+		!#zh 发射器位置的变化范围。（横向和纵向） */
+		posVar : Vec2;		
+		/** !#en Particles movement type.
+		!#zh 粒子位置类型。 */
+		positionType : ParticleSystem.PositionType;		
+		/** !#en Particles emitter modes.
+		!#zh 发射器类型。 */
+		emitterMode : ParticleSystem.EmitterMode;		
+		/** !#en Gravity of the emitter.
+		!#zh 重力。 */
+		gravity : Vec2;		
+		/** !#en Speed of the emitter.
+		!#zh 速度。 */
+		speed : number;		
+		/** !#en Variation of the speed.
+		!#zh 速度变化范围。 */
+		speedVar : number;		
+		/** !#en Tangential acceleration of each particle. Only available in 'Gravity' mode.
+		!#zh 每个粒子的切向加速度，即垂直于重力方向的加速度，只有在重力模式下可用。 */
+		tangentialAccel : number;		
+		/** !#en Variation of the tangential acceleration.
+		!#zh 每个粒子的切向加速度变化范围。 */
+		tangentialAccelVar : number;		
+		/** !#en Acceleration of each particle. Only available in 'Gravity' mode.
+		!#zh 粒子径向加速度，即平行于重力方向的加速度，只有在重力模式下可用。 */
+		radialAccel : number;		
+		/** !#en Variation of the radial acceleration.
+		!#zh 粒子径向加速度变化范围。 */
+		radialAccelVar : number;		
+		/** !#en Indicate whether the rotation of each particle equals to its direction. Only available in 'Gravity' mode.
+		!#zh 每个粒子的旋转是否等于其方向，只有在重力模式下可用。 */
+		rotationIsDir : boolean;		
+		/** !#en Starting radius of the particles. Only available in 'Radius' mode.
+		!#zh 初始半径，表示粒子出生时相对发射器的距离，只有在半径模式下可用。 */
+		startRadius : number;		
+		/** !#en Variation of the starting radius.
+		!#zh 初始半径变化范围。 */
+		startRadiusVar : number;		
+		/** !#en Ending radius of the particles. Only available in 'Radius' mode.
+		!#zh 结束半径，只有在半径模式下可用。 */
+		endRadius : number;		
+		/** !#en Variation of the ending radius.
+		!#zh 结束半径变化范围。 */
+		endRadiusVar : number;		
+		/** !#en Number of degress to rotate a particle around the source pos per second. Only available in 'Radius' mode.
+		!#zh 粒子每秒围绕起始点的旋转角度，只有在半径模式下可用。 */
+		rotatePerS : number;		
+		/** !#en Variation of the degress to rotate a particle around the source pos per second.
+		!#zh 粒子每秒围绕起始点的旋转角度变化范围。 */
+		rotatePerSVar : number;		
+		/** !#en The Particle emitter lives forever.
+		!#zh 表示发射器永久存在 */
+		DURATION_INFINITY : number;		
+		/** !#en The starting size of the particle is equal to the ending size.
+		!#zh 表示粒子的起始大小等于结束大小。 */
+		START_SIZE_EQUAL_TO_END_SIZE : number;		
+		/** !#en The starting radius of the particle is equal to the ending radius.
+		!#zh 表示粒子的起始半径等于结束半径。 */
+		START_RADIUS_EQUAL_TO_END_RADIUS : number;		
+		/** !#en Add a particle to the emitter.
+		!#zh 添加一个粒子到发射器中。 
+		*/
+		addParticle() : boolean;		
+		/** !#en Stop emitting particles. Running particles will continue to run until they die.
+		!#zh 停止发射器发射粒子，发射出去的粒子将继续运行，直至粒子生命结束。
+		
+		@example 
+		```js
+		// stop particle system.
+		myParticleSystem.stopSystem();
+		``` 
+		*/
+		stopSystem() : void;		
+		/** !#en Kill all living particles.
+		!#zh 杀死所有存在的粒子，然后重新启动粒子发射器。
+		
+		@example 
+		```js
+		// play particle system.
+		myParticleSystem.resetSystem();
+		``` 
+		*/
+		resetSystem() : void;		
+		/** !#en Whether or not the system is full.
+		!#zh 发射器中粒子是否大于等于设置的总粒子数量。 
+		*/
+		isFull() : boolean;		
+		/** !#en
+		<p> Sets a new CCSpriteFrame as particle.</br>
+		WARNING: this method is experimental. Use setTextureWithRect instead.
+		</p>
+		!#zh
+		<p> 设置一个新的精灵帧为粒子。</br>
+		警告：这个函数只是试验，请使用 setTextureWithRect 实现。
+		</p> 
+		*/
+		setDisplayFrame(spriteFrame : SpriteFrame) : void;		
+		/** !#en Sets a new texture with a rect. The rect is in texture position and size.
+		!#zh 设置一张新贴图和关联的矩形。 
+		*/
+		setTextureWithRect(texture : Texture2D, rect : Rect) : void;	
+	}		
+		/** !#en Renders the TMX object.
+		!#zh 渲染 tmx object。 */
+		export class TMXObject {		
+		/** !#en Get the name of object
+		!#zh 获取对象的名称 
+		*/
+		getObjectName() : string;		
+		/** !#en Get the property of object
+		!#zh 获取对象的属性 
+		*/
+		getProperty() : any;		
+		/** !#en Get the properties of object
+		!#zh 获取对象的属性 
+		*/
+		getProperties() : any;		
+		/** !#en Set the object name
+		!#zh 设置对象名称 
+		*/
+		setObjectName(name : string) : void;		
+		/** !#en Set the properties of the object
+		!#zh 设置对象的属性 
+		*/
+		setProperties(props : any) : void;	
+	}		
+		/** !#en Render the TMX layer.
+		!#zh 渲染 TMX layer。 */
+		export class TiledLayer extends _SGComponent {		
+		/** !#en Gets the layer name.
+		!#zh 获取层的名称。
+		
+		@example 
+		```js
+		var layerName = tiledLayer.getLayerName();
+		cc.log(layerName);
+		``` 
+		*/
+		getLayerName() : string;		
+		/** !#en Set the layer name.
+		!#zh 设置层的名称
+		
+		@example 
+		```js
+		tiledLayer.setLayerName("New Layer");
+		``` 
+		*/
+		SetLayerName(layerName : string) : void;		
+		/** !#en Return the value for the specific property name.
+		!#zh 获取指定属性名的值。
+		
+		@example 
+		```js
+		var property = tiledLayer.getProperty("info");
+		cc.log(property);
+		``` 
+		*/
+		getProperty(propertyName : string) : any;		
+		/** !#en Returns the position in pixels of a given tile coordinate.
+		!#zh 获取指定 tile 的像素坐标。
+		@param pos position or x
+		
+		@example 
+		```js
+		var pos = tiledLayer.getPositionAt(cc.v2(0, 0));
+		cc.log("Pos: " + pos);
+		var pos = tiledLayer.getPositionAt(0, 0);
+		cc.log("Pos: " + pos);
+		``` 
+		*/
+		getPositionAt(pos : Vec2|number, y? : number) : Vec2;		
+		/** !#en Removes a tile at given tile coordinate.
+		!#zh 删除指定坐标上的 tile。
+		@param pos position or x
+		
+		@example 
+		```js
+		tiledLayer.removeTileAt(cc.v2(0, 0));
+		tiledLayer.removeTileAt(0, 0);
+		``` 
+		*/
+		removeTileAt(pos : Vec2|number, y? : number) : void;		
+		/** !#en
+		Sets the tile gid (gid = tile global id) at a given tile coordinate.<br />
+		The Tile GID can be obtained by using the method "tileGIDAt" or by using the TMX editor . Tileset Mgr +1.<br />
+		If a tile is already placed at that position, then it will be removed.
+		!#zh
+		设置给定坐标的 tile 的 gid (gid = tile 全局 id)，
+		tile 的 GID 可以使用方法 “tileGIDAt” 来获得。<br />
+		如果一个 tile 已经放在那个位置，那么它将被删除。
+		@param posOrX position or x
+		@param flagsOrY flags or y
+		
+		@example 
+		```js
+		tiledLayer.setTileGID(1001, 10, 10, 1)
+		``` 
+		*/
+		setTileGID(gid : number, posOrX : Vec2|number, flagsOrY : number, flags? : number) : void;		
+		/** !#en
+		Returns the tile gid at a given tile coordinate. <br />
+		if it returns 0, it means that the tile is empty. <br />
+		This method requires the the tile map has not been previously released (eg. don't call layer.releaseMap())<br />
+		!#zh
+		通过给定的 tile 坐标、flags（可选）返回 tile 的 GID. <br />
+		如果它返回 0，则表示该 tile 为空。<br />
+		该方法要求 tile 地图之前没有被释放过(如：没有调用过layer.releaseMap()).
+		@param pos or x
+		
+		@example 
+		```js
+		var tileGid = tiledLayer.getTileGIDAt(0, 0);
+		``` 
+		*/
+		getTileGIDAt(pos : Vec2|number, y? : number) : number;		
+		/** !#en
+		Returns the tile (_ccsg.Sprite) at a given a tile coordinate. <br/>
+		The returned _ccsg.Sprite will be already added to the _ccsg.TMXLayer. Don't add it again.<br/>
+		The _ccsg.Sprite can be treated like any other _ccsg.Sprite: rotated, scaled, translated, opacity, color, etc. <br/>
+		You can remove either by calling: <br/>
+		- layer.removeChild(sprite, cleanup); <br/>
+		- or layer.removeTileAt(ccp(x,y));
+		!#zh
+		通过指定的 tile 坐标获取对应的 tile(Sprite)。 返回的 tile(Sprite) 应是已经添加到 TMXLayer，请不要重复添加。<br/>
+		这个 tile(Sprite) 如同其他的 Sprite 一样，可以旋转、缩放、翻转、透明化、设置颜色等。<br/>
+		你可以通过调用以下方法来对它进行删除:<br/>
+		1. layer.removeChild(sprite, cleanup);<br/>
+		2. 或 layer.removeTileAt(cc.v2(x,y));
+		@param pos or x
+		
+		@example 
+		```js
+		var title = tiledLayer.getTileAt(100, 100);
+		cc.log(title);
+		``` 
+		*/
+		getTileAt(pos : Vec2|number, y? : number) : _ccsg.Sprite;		
+		/** !#en
+		Dealloc the map that contains the tile position from memory. <br />
+		Unless you want to know at runtime the tiles positions, you can safely call this method. <br />
+		If you are going to call layer.getTileGIDAt() then, don't release the map.
+		!#zh
+		从内存中释放包含 tile 位置信息的地图。<br />
+		除了在运行时想要知道 tiles 的位置信息外，你都可安全的调用此方法。<br />
+		如果你之后还要调用 layer.tileGIDAt(), 请不要释放地图.
+		
+		@example 
+		```js
+		tiledLayer.releaseMap();
+		``` 
+		*/
+		releaseMap() : void;		
+		/** !#en Sets the untransformed size of the _ccsg.TMXLayer.
+		!#zh 设置未转换的 layer 大小。
+		@param size The untransformed size of the _ccsg.TMXLayer or The untransformed size's width of the TMXLayer.
+		@param height The untransformed size's height of the _ccsg.TMXLayer.
+		
+		@example 
+		```js
+		tiledLayer.setContentSize(100, 100);
+		``` 
+		*/
+		setContentSize(size : Size|number, height? : number) : void;		
+		/** !#en Return texture of cc.SpriteBatchNode.
+		!#zh 获取纹理。
+		
+		@example 
+		```js
+		var texture = tiledLayer.getTexture();
+		cc.log("Texture: " + texture);
+		``` 
+		*/
+		getTexture() : Texture2D;		
+		/** !#en Set the texture of cc.SpriteBatchNode.
+		!#zh 设置纹理。
+		
+		@example 
+		```js
+		tiledLayer.setTexture(texture);
+		``` 
+		*/
+		setTexture(texture : Texture2D) : void;		
+		/** !#en Set the opacity of all tiles
+		!#zh 设置所有 Tile 的透明度
+		
+		@example 
+		```js
+		tiledLayer.setTileOpacity(128);
+		``` 
+		*/
+		setTileOpacity(opacity : number) : void;		
+		/** !#en Gets layer size.
+		!#zh 获得层大小。
+		
+		@example 
+		```js
+		var size = tiledLayer.getLayerSize();
+		cc.log("layer size: " + size);
+		``` 
+		*/
+		getLayerSize() : Size;		
+		/** !#en Set layer size.
+		!#zh 设置层大小。
+		
+		@example 
+		```js
+		tiledLayer.setLayerSize(new cc.size(5, 5));
+		``` 
+		*/
+		setLayerSize(layerSize : Size) : void;		
+		/** !#en Size of the map's tile (could be different from the tile's size).
+		!#zh 获取 tile 的大小( tile 的大小可能会有所不同)。
+		
+		@example 
+		```js
+		var mapTileSize = tiledLayer.getMapTileSize();
+		cc.log("MapTile size: " + mapTileSize);
+		``` 
+		*/
+		getMapTileSize() : Size;		
+		/** !#en Set the map tile size.
+		!#zh 设置 tile 的大小。
+		
+		@example 
+		```js
+		tiledLayer.setMapTileSize(new cc.size(10, 10));
+		``` 
+		*/
+		setMapTileSize(tileSize : Size) : void;		
+		/** !#en Pointer to the map of tiles.
+		!#zh 获取地图 tiles。
+		
+		@example 
+		```js
+		var tiles = tiledLayer.getTiles();
+		``` 
+		*/
+		getTiles() : any[];		
+		/** !#en Pointer to the map of tiles.
+		!#zh 设置地图 tiles
+		
+		@example 
+		```js
+		tiledLayer.setTiles(tiles);
+		``` 
+		*/
+		setTiles(tiles : any[]) : void;		
+		/** !#en Tile set information for the layer.
+		!#zh 获取 layer 的 Tileset 信息。
+		
+		@example 
+		```js
+		var tileset = tiledLayer.getTileSet();
+		``` 
+		*/
+		getTileSet() : TMXTilesetInfo;		
+		/** !#en Tile set information for the layer.
+		!#zh 设置 layer 的 Tileset 信息。
+		
+		@example 
+		```js
+		tiledLayer.setTileSet(tileset);
+		``` 
+		*/
+		setTileSet(tileset : TMXTilesetInfo) : void;		
+		/** !#en Layer orientation, which is the same as the map orientation.
+		!#zh 获取 Layer 方向(同地图方向)。
+		
+		@example 
+		```js
+		var orientation = tiledLayer.getLayerOrientation();
+		cc.log("Layer Orientation: " + orientation);
+		``` 
+		*/
+		getLayerOrientation() : number;		
+		/** !#en Layer orientation, which is the same as the map orientation.
+		!#zh 设置 Layer 方向(同地图方向)。
+		
+		@example 
+		```js
+		tiledLayer.setLayerOrientation(TiledMap.Orientation.ORTHO);
+		``` 
+		*/
+		setLayerOrientation(orientation : TiledMap.Orientation) : void;		
+		/** !#en properties from the layer. They can be added using Tiled.
+		!#zh 获取 layer 的属性，可以使用 Tiled 编辑器添加属性。
+		
+		@example 
+		```js
+		var properties = tiledLayer.getProperties();
+		cc.log("Properties: " + properties);
+		``` 
+		*/
+		getProperties() : any[];		
+		/** !#en properties from the layer. They can be added using Tiled.
+		!#zh 设置层属性。
+		
+		@example 
+		```js
+		tiledLayer.setLayerOrientation(properties);
+		``` 
+		*/
+		setProperties(properties : any[]) : void;	
+	}		
+		/** !#en Renders a TMX Tile Map in the scene.
+		!#zh 在场景中渲染一个 tmx 格式的 Tile Map。 */
+		export class TiledMap extends Component {		
+		/** !#en The TiledMap Asset.
+		!#zh TiledMap 资源。 */
+		tmxAsset : TiledMapAsset;		
+		/** !#en Gets the map size.
+		!#zh 获取地图大小。
+		
+		@example 
+		```js
+		var mapSize = tiledMap.getMapSize();
+		cc.log("Map Size: " + mapSize);
+		``` 
+		*/
+		getMapSize() : Size;		
+		/** !#en Set the map size.
+		!#zh 设置地图大小。
+		
+		@example 
+		```js
+		tiledMap.setMapSize(new cc.size(960, 640));
+		``` 
+		*/
+		setMapSize(mapSize : Size) : void;		
+		/** !#en Gets the tile size.
+		!#zh 获取地图背景中 tile 元素的大小。
+		
+		@example 
+		```js
+		var tileSize = tiledMap.getTileSize();
+		cc.log("Tile Size: " + tileSize);
+		``` 
+		*/
+		getTileSize() : Size;		
+		/** !#en Set the tile size.
+		!#zh 设置地图背景中 tile 元素的大小。
+		
+		@example 
+		```js
+		tiledMap.setTileSize(new cc.size(10, 10));
+		``` 
+		*/
+		setTileSize(tileSize : Size) : void;		
+		/** !#en map orientation.
+		!#zh 获取地图方向。
+		
+		@example 
+		```js
+		var mapOrientation = tiledMap.getMapOrientation();
+		cc.log("Map Orientation: " + mapOrientation);
+		``` 
+		*/
+		getMapOrientation() : number;		
+		/** !#en map orientation.
+		!#zh 设置地图方向。
+		
+		@example 
+		```js
+		tiledMap.setMapOrientation(TiledMap.Orientation.ORTHO);
+		``` 
+		*/
+		setMapOrientation(orientation : TiledMap.Orientation) : void;		
+		/** !#en object groups.
+		!#zh 获取所有的对象层。
+		
+		@example 
+		```js
+		var objGroups = titledMap.getObjectGroups();
+		for (var i = 0; i < objGroups.length; ++i) {
+		    cc.log("obj: " + objGroups[i]);
+		}
+		``` 
+		*/
+		getObjectGroups() : TiledObjectGroup[];		
+		/** !#en Gets the map properties.
+		!#zh 获取地图的属性。
+		
+		@example 
+		```js
+		var properties = titledMap.getProperties();
+		for (var i = 0; i < properties.length; ++i) {
+		    cc.log("Properties: " + properties[i]);
+		}
+		``` 
+		*/
+		getProperties() : any[];		
+		/** !#en Set the map properties.
+		!#zh 设置地图的属性。
+		
+		@example 
+		```js
+		titledMap.setProperties(properties);
+		``` 
+		*/
+		setProperties(properties : any[]) : void;		
+		/** !#en Return All layers array.
+		!#zh 返回包含所有 layer 的数组。
+		
+		@example 
+		```js
+		var layers = titledMap.allLayers();
+		for (var i = 0; i < layers.length; ++i) {
+		    cc.log("Layers: " + layers[i]);
+		}
+		``` 
+		*/
+		allLayers() : TiledLayer[];		
+		/** !#en return the cc.TiledLayer for the specific layer.
+		!#zh 获取指定名称的 layer。
+		
+		@example 
+		```js
+		var layer = titledMap.getLayer("Player");
+		cc.log(layer);
+		``` 
+		*/
+		getLayer(layerName : string) : TiledLayer;		
+		/** !#en Return the TMXObjectGroup for the specific group.
+		!#zh 获取指定的 TMXObjectGroup。
+		
+		@example 
+		```js
+		var group = titledMap.getObjectGroup("Players");
+		cc.log("ObjectGroup: " + group);
+		``` 
+		*/
+		getObjectGroup(groupName : string) : TiledObjectGroup;		
+		/** !#en Return the value for the specific property name.
+		!#zh 通过属性名称，获取指定的属性。
+		
+		@example 
+		```js
+		var property = titledMap.getProperty("info");
+		cc.log("Property: " + property);
+		``` 
+		*/
+		getProperty(propertyName : string) : string;		
+		/** !#en Return properties dictionary for tile GID.
+		!#zh 通过 GID ，获取指定的属性。
+		
+		@example 
+		```js
+		var properties = titledMap.getPropertiesForGID(GID);
+		cc.log("Properties: " + properties);
+		``` 
+		*/
+		getPropertiesForGID(GID : number) : any;	
+	}		
+		/** Class for tiled map asset handling. */
+		export class TiledMapAsset extends Asset {	
+	}		
+		/** !#en Renders the TMX object group.
+		!#zh 渲染 tmx object group。 */
+		export class TiledObjectGroup extends _SGComponent {		
+		/** !#en Offset position of child objects.
+		!#zh 获取子对象的偏移位置。
+		
+		@example 
+		```js
+		var offset = tMXObjectGroup.getPositionOffset();
+		``` 
+		*/
+		getPositionOffset() : Vec2;		
+		/** !#en Offset position of child objects.
+		!#zh 设置子对象的偏移位置。
+		
+		@example 
+		```js
+		tMXObjectGroup.setPositionOffset(cc.v2(5, 5));
+		``` 
+		*/
+		setPositionOffset(offset : Vec2) : void;		
+		/** !#en List of properties stored in a dictionary.
+		!#zh 以映射的形式获取属性列表。
+		
+		@example 
+		```js
+		var offset = tMXObjectGroup.getProperties();
+		``` 
+		*/
+		getProperties() : any;		
+		/** !#en Set the properties of the object group.
+		!#zh 设置属性列表。
+		
+		@example 
+		```js
+		tMXObjectGroup.setProperties(obj);
+		``` 
+		*/
+		setProperties(Var : any) : void;		
+		/** !#en Gets the Group name.
+		!#zh 获取组名称。
+		
+		@example 
+		```js
+		var groupName = tMXObjectGroup.getGroupName;
+		``` 
+		*/
+		getGroupName() : string;		
+		/** !#en Set the Group name.
+		!#zh 设置组名称。
+		
+		@example 
+		```js
+		tMXObjectGroup.setGroupName("New Group");
+		``` 
+		*/
+		setGroupName(groupName : string) : void;		
+		/** !#en
+		Return the object for the specific object name. <br />
+		It will return the 1st object found on the array for the given name.
+		!#zh 获取指定的对象。
+		
+		@example 
+		```js
+		var object = tMXObjectGroup.getObject("Group");
+		``` 
+		*/
+		getObject(objectName : string) : any;		
+		/** !#en Gets the objects.
+		!#zh 获取对象数组。
+		
+		@example 
+		```js
+		var objects = tMXObjectGroup.getObjects();
+		``` 
+		*/
+		getObjects() : any[];	
 	}		
 		/** !#en
 		cc.ActionManager is a class that can manage actions.<br/>
@@ -3399,808 +4201,6 @@ declare module cc {
 		PRIORITY_NON_SYSTEM : number;	
 	}		
 		/** !#en
-		cc.MotionStreak manages a Ribbon based on it's motion in absolute space.                 <br/>
-		You construct it with a fadeTime, minimum segment size, texture path, texture            <br/>
-		length and color. The fadeTime controls how long it takes each vertex in                 <br/>
-		the streak to fade out, the minimum segment size it how many pixels the                  <br/>
-		streak will move before adding a new ribbon segment, and the texture                     <br/>
-		length is the how many pixels the texture is stretched across. The texture               <br/>
-		is vertically aligned along the streak segment.
-		!#zh 运动轨迹，用于游戏对象的运动轨迹上实现拖尾渐隐效果。 */
-		export class MotionStreak extends Component {		
-		/** !#en
-		!#zh 在编辑器模式下预览拖尾效果。 */
-		preview : boolean;		
-		/** !#en The fade time to fade.
-		!#zh 拖尾的渐隐时间，以秒为单位。 */
-		fadeTime : number;		
-		/** !#en The minimum segment size.
-		!#zh 拖尾之间最小距离。 */
-		minSeg : number;		
-		/** !#en The stroke's width.
-		!#zh 拖尾的宽度。 */
-		stroke : number;		
-		/** !#en The texture of the MotionStreak.
-		!#zh 拖尾的贴图。 */
-		texture : Texture2D;		
-		/** !#en The color of the MotionStreak.
-		!#zh 拖尾的颜色 */
-		color : Color;		
-		/** !#en The fast Mode.
-		!#zh 是否启用了快速模式。当启用快速模式，新的点会被更快地添加，但精度较低。 */
-		fastMode : boolean;		
-		/** !#en Remove all living segments of the ribbon.
-		!#zh 删除当前所有的拖尾片段。
-		
-		@example 
-		```js
-		// stop particle system.
-		myParticleSystem.stopSystem();
-		``` 
-		*/
-		reset() : void;	
-	}		
-		/** Particle System base class. <br/>
-		Attributes of a Particle System:<br/>
-		 - emmision rate of the particles<br/>
-		 - Gravity Mode (Mode A): <br/>
-		 - gravity <br/>
-		 - direction <br/>
-		 - speed +-  variance <br/>
-		 - tangential acceleration +- variance<br/>
-		 - radial acceleration +- variance<br/>
-		 - Radius Mode (Mode B):      <br/>
-		 - startRadius +- variance    <br/>
-		 - endRadius +- variance      <br/>
-		 - rotate +- variance         <br/>
-		 - Properties common to all modes: <br/>
-		 - life +- life variance      <br/>
-		 - start spin +- variance     <br/>
-		 - end spin +- variance       <br/>
-		 - start size +- variance     <br/>
-		 - end size +- variance       <br/>
-		 - start color +- variance    <br/>
-		 - end color +- variance      <br/>
-		 - life +- variance           <br/>
-		 - blending function          <br/>
-		 - texture                    <br/>
-		<br/>
-		cocos2d also supports particles generated by Particle Designer (http://particledesigner.71squared.com/).<br/>
-		'Radius Mode' in Particle Designer uses a fixed emit rate of 30 hz. Since that can't be guarateed in cocos2d,  <br/>
-		cocos2d uses a another approach, but the results are almost identical.<br/>
-		cocos2d supports all the variables used by Particle Designer plus a bit more:  <br/>
-		 - spinning particles (supported when using ParticleSystem)       <br/>
-		 - tangential acceleration (Gravity mode)                               <br/>
-		 - radial acceleration (Gravity mode)                                   <br/>
-		 - radius direction (Radius mode) (Particle Designer supports outwards to inwards direction only) <br/>
-		It is possible to customize any of the above mentioned properties in runtime. Example:   <br/> */
-		export class ParticleSystem extends _RendererUnderSG {		
-		/** !#en Play particle in edit mode.
-		!#zh 在编辑器模式下预览粒子，启用后选中粒子时，粒子将自动播放。 */
-		preview : boolean;		
-		/** !#en
-		If set custom to true, then use custom properties insteadof read particle file.
-		!#zh 是否自定义粒子属性。 */
-		custom : boolean;		
-		/** !#en The plist file.
-		!#zh plist 格式的粒子配置文件。 */
-		file : string;		
-		/** . */
-		texture : Texture2D;		
-		/** !#en Current quantity of particles that are being simulated.
-		!#zh 当前播放的粒子数量。 */
-		particleCount : number;		
-		/** !#en Specify the source Blend Factor.
-		!#zh 指定原图混合模式。 */
-		srcBlendFactor : BlendFactor;		
-		/** !#en Specify the destination Blend Factor.
-		!#zh 指定目标的混合模式。 */
-		dstBlendFactor : BlendFactor;		
-		/** !#en If set to true, the particle system will automatically start playing on onLoad.
-		!#zh 如果设置为 true 运行时会自动发射粒子。 */
-		playOnLoad : boolean;		
-		/** !#en Indicate whether the owner node will be auto-removed when it has no particles left.
-		!#zh 粒子播放完毕后自动销毁所在的节点。 */
-		autoRemoveOnFinish : boolean;		
-		/** !#en Indicate whether the particle system is activated.
-		!#zh 是否激活粒子。 */
-		active : boolean;		
-		/** !#en Maximum particles of the system.
-		!#zh 粒子最大数量。 */
-		totalParticles : number;		
-		/** !#en How many seconds the emitter wil run. -1 means 'forever'.
-		!#zh 发射器生存时间，单位秒，-1表示持续发射。 */
-		duration : number;		
-		/** !#en Emission rate of the particles.
-		!#zh 每秒发射的粒子数目。 */
-		emissionRate : number;		
-		/** !#en Life of each particle setter.
-		!#zh 粒子的运行时间。 */
-		life : number;		
-		/** !#en Variation of life.
-		!#zh 粒子的运行时间变化范围。 */
-		lifeVar : number;		
-		/** !#en Start color of each particle.
-		!#zh 粒子初始颜色。 */
-		startColor : Color;		
-		/** !#en Variation of the start color.
-		!#zh 粒子初始颜色变化范围。 */
-		startColorVar : Color;		
-		/** !#en Ending color of each particle.
-		!#zh 粒子结束颜色。 */
-		endColor : Color;		
-		/** !#en Variation of the end color.
-		!#zh 粒子结束颜色变化范围。 */
-		endColorVar : Color;		
-		/** !#en Angle of each particle setter.
-		!#zh 粒子角度。 */
-		angle : number;		
-		/** !#en Variation of angle of each particle setter.
-		!#zh 粒子角度变化范围。 */
-		angleVar : number;		
-		/** !#en Start size in pixels of each particle.
-		!#zh 粒子的初始大小。 */
-		startSize : number;		
-		/** !#en Variation of start size in pixels.
-		!#zh 粒子初始大小的变化范围。 */
-		startSizeVar : number;		
-		/** !#en End size in pixels of each particle.
-		!#zh 粒子结束时的大小。 */
-		endSize : number;		
-		/** !#en Variation of end size in pixels.
-		!#zh 粒子结束大小的变化范围。 */
-		endSizeVar : number;		
-		/** !#en Start angle of each particle.
-		!#zh 粒子开始自旋角度。 */
-		startSpin : number;		
-		/** !#en Variation of start angle.
-		!#zh 粒子开始自旋角度变化范围。 */
-		startSpinVar : number;		
-		/** !#en End angle of each particle.
-		!#zh 粒子结束自旋角度。 */
-		endSpin : number;		
-		/** !#en Variation of end angle.
-		!#zh 粒子结束自旋角度变化范围。 */
-		endSpinVar : number;		
-		/** !#en Source position of the emitter.
-		!#zh 发射器位置。 */
-		sourcePos : Vec2;		
-		/** !#en Variation of source position.
-		!#zh 发射器位置的变化范围。（横向和纵向） */
-		posVar : Vec2;		
-		/** !#en Particles movement type.
-		!#zh 粒子位置类型。 */
-		positionType : ParticleSystem.PositionType;		
-		/** !#en Particles emitter modes.
-		!#zh 发射器类型。 */
-		emitterMode : ParticleSystem.EmitterMode;		
-		/** !#en Gravity of the emitter.
-		!#zh 重力。 */
-		gravity : Vec2;		
-		/** !#en Speed of the emitter.
-		!#zh 速度。 */
-		speed : number;		
-		/** !#en Variation of the speed.
-		!#zh 速度变化范围。 */
-		speedVar : number;		
-		/** !#en Tangential acceleration of each particle. Only available in 'Gravity' mode.
-		!#zh 每个粒子的切向加速度，即垂直于重力方向的加速度，只有在重力模式下可用。 */
-		tangentialAccel : number;		
-		/** !#en Variation of the tangential acceleration.
-		!#zh 每个粒子的切向加速度变化范围。 */
-		tangentialAccelVar : number;		
-		/** !#en Acceleration of each particle. Only available in 'Gravity' mode.
-		!#zh 粒子径向加速度，即平行于重力方向的加速度，只有在重力模式下可用。 */
-		radialAccel : number;		
-		/** !#en Variation of the radial acceleration.
-		!#zh 粒子径向加速度变化范围。 */
-		radialAccelVar : number;		
-		/** !#en Indicate whether the rotation of each particle equals to its direction. Only available in 'Gravity' mode.
-		!#zh 每个粒子的旋转是否等于其方向，只有在重力模式下可用。 */
-		rotationIsDir : boolean;		
-		/** !#en Starting radius of the particles. Only available in 'Radius' mode.
-		!#zh 初始半径，表示粒子出生时相对发射器的距离，只有在半径模式下可用。 */
-		startRadius : number;		
-		/** !#en Variation of the starting radius.
-		!#zh 初始半径变化范围。 */
-		startRadiusVar : number;		
-		/** !#en Ending radius of the particles. Only available in 'Radius' mode.
-		!#zh 结束半径，只有在半径模式下可用。 */
-		endRadius : number;		
-		/** !#en Variation of the ending radius.
-		!#zh 结束半径变化范围。 */
-		endRadiusVar : number;		
-		/** !#en Number of degress to rotate a particle around the source pos per second. Only available in 'Radius' mode.
-		!#zh 粒子每秒围绕起始点的旋转角度，只有在半径模式下可用。 */
-		rotatePerS : number;		
-		/** !#en Variation of the degress to rotate a particle around the source pos per second.
-		!#zh 粒子每秒围绕起始点的旋转角度变化范围。 */
-		rotatePerSVar : number;		
-		/** !#en The Particle emitter lives forever.
-		!#zh 表示发射器永久存在 */
-		DURATION_INFINITY : number;		
-		/** !#en The starting size of the particle is equal to the ending size.
-		!#zh 表示粒子的起始大小等于结束大小。 */
-		START_SIZE_EQUAL_TO_END_SIZE : number;		
-		/** !#en The starting radius of the particle is equal to the ending radius.
-		!#zh 表示粒子的起始半径等于结束半径。 */
-		START_RADIUS_EQUAL_TO_END_RADIUS : number;		
-		/** !#en Add a particle to the emitter.
-		!#zh 添加一个粒子到发射器中。 
-		*/
-		addParticle() : boolean;		
-		/** !#en Stop emitting particles. Running particles will continue to run until they die.
-		!#zh 停止发射器发射粒子，发射出去的粒子将继续运行，直至粒子生命结束。
-		
-		@example 
-		```js
-		// stop particle system.
-		myParticleSystem.stopSystem();
-		``` 
-		*/
-		stopSystem() : void;		
-		/** !#en Kill all living particles.
-		!#zh 杀死所有存在的粒子，然后重新启动粒子发射器。
-		
-		@example 
-		```js
-		// play particle system.
-		myParticleSystem.resetSystem();
-		``` 
-		*/
-		resetSystem() : void;		
-		/** !#en Whether or not the system is full.
-		!#zh 发射器中粒子是否大于等于设置的总粒子数量。 
-		*/
-		isFull() : boolean;		
-		/** !#en
-		<p> Sets a new CCSpriteFrame as particle.</br>
-		WARNING: this method is experimental. Use setTextureWithRect instead.
-		</p>
-		!#zh
-		<p> 设置一个新的精灵帧为粒子。</br>
-		警告：这个函数只是试验，请使用 setTextureWithRect 实现。
-		</p> 
-		*/
-		setDisplayFrame(spriteFrame : SpriteFrame) : void;		
-		/** !#en Sets a new texture with a rect. The rect is in texture position and size.
-		!#zh 设置一张新贴图和关联的矩形。 
-		*/
-		setTextureWithRect(texture : Texture2D, rect : Rect) : void;	
-	}		
-		/** !#en Renders the TMX object.
-		!#zh 渲染 tmx object。 */
-		export class TMXObject {		
-		/** !#en Get the name of object
-		!#zh 获取对象的名称 
-		*/
-		getObjectName() : string;		
-		/** !#en Get the property of object
-		!#zh 获取对象的属性 
-		*/
-		getProperty() : any;		
-		/** !#en Get the properties of object
-		!#zh 获取对象的属性 
-		*/
-		getProperties() : any;		
-		/** !#en Set the object name
-		!#zh 设置对象名称 
-		*/
-		setObjectName(name : string) : void;		
-		/** !#en Set the properties of the object
-		!#zh 设置对象的属性 
-		*/
-		setProperties(props : any) : void;	
-	}		
-		/** !#en Render the TMX layer.
-		!#zh 渲染 TMX layer。 */
-		export class TiledLayer extends _SGComponent {		
-		/** !#en Gets the layer name.
-		!#zh 获取层的名称。
-		
-		@example 
-		```js
-		var layerName = tiledLayer.getLayerName();
-		cc.log(layerName);
-		``` 
-		*/
-		getLayerName() : string;		
-		/** !#en Set the layer name.
-		!#zh 设置层的名称
-		
-		@example 
-		```js
-		tiledLayer.setLayerName("New Layer");
-		``` 
-		*/
-		SetLayerName(layerName : string) : void;		
-		/** !#en Return the value for the specific property name.
-		!#zh 获取指定属性名的值。
-		
-		@example 
-		```js
-		var property = tiledLayer.getProperty("info");
-		cc.log(property);
-		``` 
-		*/
-		getProperty(propertyName : string) : any;		
-		/** !#en Returns the position in pixels of a given tile coordinate.
-		!#zh 获取指定 tile 的像素坐标。
-		@param pos position or x
-		
-		@example 
-		```js
-		var pos = tiledLayer.getPositionAt(cc.v2(0, 0));
-		cc.log("Pos: " + pos);
-		var pos = tiledLayer.getPositionAt(0, 0);
-		cc.log("Pos: " + pos);
-		``` 
-		*/
-		getPositionAt(pos : Vec2|number, y? : number) : Vec2;		
-		/** !#en Removes a tile at given tile coordinate.
-		!#zh 删除指定坐标上的 tile。
-		@param pos position or x
-		
-		@example 
-		```js
-		tiledLayer.removeTileAt(cc.v2(0, 0));
-		tiledLayer.removeTileAt(0, 0);
-		``` 
-		*/
-		removeTileAt(pos : Vec2|number, y? : number) : void;		
-		/** !#en
-		Sets the tile gid (gid = tile global id) at a given tile coordinate.<br />
-		The Tile GID can be obtained by using the method "tileGIDAt" or by using the TMX editor . Tileset Mgr +1.<br />
-		If a tile is already placed at that position, then it will be removed.
-		!#zh
-		设置给定坐标的 tile 的 gid (gid = tile 全局 id)，
-		tile 的 GID 可以使用方法 “tileGIDAt” 来获得。<br />
-		如果一个 tile 已经放在那个位置，那么它将被删除。
-		@param posOrX position or x
-		@param flagsOrY flags or y
-		
-		@example 
-		```js
-		tiledLayer.setTileGID(1001, 10, 10, 1)
-		``` 
-		*/
-		setTileGID(gid : number, posOrX : Vec2|number, flagsOrY : number, flags? : number) : void;		
-		/** !#en
-		Returns the tile gid at a given tile coordinate. <br />
-		if it returns 0, it means that the tile is empty. <br />
-		This method requires the the tile map has not been previously released (eg. don't call layer.releaseMap())<br />
-		!#zh
-		通过给定的 tile 坐标、flags（可选）返回 tile 的 GID. <br />
-		如果它返回 0，则表示该 tile 为空。<br />
-		该方法要求 tile 地图之前没有被释放过(如：没有调用过layer.releaseMap()).
-		@param pos or x
-		
-		@example 
-		```js
-		var tileGid = tiledLayer.getTileGIDAt(0, 0);
-		``` 
-		*/
-		getTileGIDAt(pos : Vec2|number, y? : number) : number;		
-		/** !#en
-		Returns the tile (_ccsg.Sprite) at a given a tile coordinate. <br/>
-		The returned _ccsg.Sprite will be already added to the _ccsg.TMXLayer. Don't add it again.<br/>
-		The _ccsg.Sprite can be treated like any other _ccsg.Sprite: rotated, scaled, translated, opacity, color, etc. <br/>
-		You can remove either by calling: <br/>
-		- layer.removeChild(sprite, cleanup); <br/>
-		- or layer.removeTileAt(ccp(x,y));
-		!#zh
-		通过指定的 tile 坐标获取对应的 tile(Sprite)。 返回的 tile(Sprite) 应是已经添加到 TMXLayer，请不要重复添加。<br/>
-		这个 tile(Sprite) 如同其他的 Sprite 一样，可以旋转、缩放、翻转、透明化、设置颜色等。<br/>
-		你可以通过调用以下方法来对它进行删除:<br/>
-		1. layer.removeChild(sprite, cleanup);<br/>
-		2. 或 layer.removeTileAt(cc.v2(x,y));
-		@param pos or x
-		
-		@example 
-		```js
-		var title = tiledLayer.getTileAt(100, 100);
-		cc.log(title);
-		``` 
-		*/
-		getTileAt(pos : Vec2|number, y? : number) : _ccsg.Sprite;		
-		/** !#en
-		Dealloc the map that contains the tile position from memory. <br />
-		Unless you want to know at runtime the tiles positions, you can safely call this method. <br />
-		If you are going to call layer.getTileGIDAt() then, don't release the map.
-		!#zh
-		从内存中释放包含 tile 位置信息的地图。<br />
-		除了在运行时想要知道 tiles 的位置信息外，你都可安全的调用此方法。<br />
-		如果你之后还要调用 layer.tileGIDAt(), 请不要释放地图.
-		
-		@example 
-		```js
-		tiledLayer.releaseMap();
-		``` 
-		*/
-		releaseMap() : void;		
-		/** !#en Sets the untransformed size of the _ccsg.TMXLayer.
-		!#zh 设置未转换的 layer 大小。
-		@param size The untransformed size of the _ccsg.TMXLayer or The untransformed size's width of the TMXLayer.
-		@param height The untransformed size's height of the _ccsg.TMXLayer.
-		
-		@example 
-		```js
-		tiledLayer.setContentSize(100, 100);
-		``` 
-		*/
-		setContentSize(size : Size|number, height? : number) : void;		
-		/** !#en Return texture of cc.SpriteBatchNode.
-		!#zh 获取纹理。
-		
-		@example 
-		```js
-		var texture = tiledLayer.getTexture();
-		cc.log("Texture: " + texture);
-		``` 
-		*/
-		getTexture() : Texture2D;		
-		/** !#en Set the texture of cc.SpriteBatchNode.
-		!#zh 设置纹理。
-		
-		@example 
-		```js
-		tiledLayer.setTexture(texture);
-		``` 
-		*/
-		setTexture(texture : Texture2D) : void;		
-		/** !#en Set the opacity of all tiles
-		!#zh 设置所有 Tile 的透明度
-		
-		@example 
-		```js
-		tiledLayer.setTileOpacity(128);
-		``` 
-		*/
-		setTileOpacity(opacity : number) : void;		
-		/** !#en Gets layer size.
-		!#zh 获得层大小。
-		
-		@example 
-		```js
-		var size = tiledLayer.getLayerSize();
-		cc.log("layer size: " + size);
-		``` 
-		*/
-		getLayerSize() : Size;		
-		/** !#en Set layer size.
-		!#zh 设置层大小。
-		
-		@example 
-		```js
-		tiledLayer.setLayerSize(new cc.size(5, 5));
-		``` 
-		*/
-		setLayerSize(layerSize : Size) : void;		
-		/** !#en Size of the map's tile (could be different from the tile's size).
-		!#zh 获取 tile 的大小( tile 的大小可能会有所不同)。
-		
-		@example 
-		```js
-		var mapTileSize = tiledLayer.getMapTileSize();
-		cc.log("MapTile size: " + mapTileSize);
-		``` 
-		*/
-		getMapTileSize() : Size;		
-		/** !#en Set the map tile size.
-		!#zh 设置 tile 的大小。
-		
-		@example 
-		```js
-		tiledLayer.setMapTileSize(new cc.size(10, 10));
-		``` 
-		*/
-		setMapTileSize(tileSize : Size) : void;		
-		/** !#en Pointer to the map of tiles.
-		!#zh 获取地图 tiles。
-		
-		@example 
-		```js
-		var tiles = tiledLayer.getTiles();
-		``` 
-		*/
-		getTiles() : any[];		
-		/** !#en Pointer to the map of tiles.
-		!#zh 设置地图 tiles
-		
-		@example 
-		```js
-		tiledLayer.setTiles(tiles);
-		``` 
-		*/
-		setTiles(tiles : any[]) : void;		
-		/** !#en Tile set information for the layer.
-		!#zh 获取 layer 的 Tileset 信息。
-		
-		@example 
-		```js
-		var tileset = tiledLayer.getTileSet();
-		``` 
-		*/
-		getTileSet() : TMXTilesetInfo;		
-		/** !#en Tile set information for the layer.
-		!#zh 设置 layer 的 Tileset 信息。
-		
-		@example 
-		```js
-		tiledLayer.setTileSet(tileset);
-		``` 
-		*/
-		setTileSet(tileset : TMXTilesetInfo) : void;		
-		/** !#en Layer orientation, which is the same as the map orientation.
-		!#zh 获取 Layer 方向(同地图方向)。
-		
-		@example 
-		```js
-		var orientation = tiledLayer.getLayerOrientation();
-		cc.log("Layer Orientation: " + orientation);
-		``` 
-		*/
-		getLayerOrientation() : number;		
-		/** !#en Layer orientation, which is the same as the map orientation.
-		!#zh 设置 Layer 方向(同地图方向)。
-		
-		@example 
-		```js
-		tiledLayer.setLayerOrientation(TiledMap.Orientation.ORTHO);
-		``` 
-		*/
-		setLayerOrientation(orientation : TiledMap.Orientation) : void;		
-		/** !#en properties from the layer. They can be added using Tiled.
-		!#zh 获取 layer 的属性，可以使用 Tiled 编辑器添加属性。
-		
-		@example 
-		```js
-		var properties = tiledLayer.getProperties();
-		cc.log("Properties: " + properties);
-		``` 
-		*/
-		getProperties() : any[];		
-		/** !#en properties from the layer. They can be added using Tiled.
-		!#zh 设置层属性。
-		
-		@example 
-		```js
-		tiledLayer.setLayerOrientation(properties);
-		``` 
-		*/
-		setProperties(properties : any[]) : void;	
-	}		
-		/** !#en Renders a TMX Tile Map in the scene.
-		!#zh 在场景中渲染一个 tmx 格式的 Tile Map。 */
-		export class TiledMap extends Component {		
-		/** !#en The TiledMap Asset.
-		!#zh TiledMap 资源。 */
-		tmxAsset : TiledMapAsset;		
-		/** !#en Gets the map size.
-		!#zh 获取地图大小。
-		
-		@example 
-		```js
-		var mapSize = tiledMap.getMapSize();
-		cc.log("Map Size: " + mapSize);
-		``` 
-		*/
-		getMapSize() : Size;		
-		/** !#en Set the map size.
-		!#zh 设置地图大小。
-		
-		@example 
-		```js
-		tiledMap.setMapSize(new cc.size(960, 640));
-		``` 
-		*/
-		setMapSize(mapSize : Size) : void;		
-		/** !#en Gets the tile size.
-		!#zh 获取地图背景中 tile 元素的大小。
-		
-		@example 
-		```js
-		var tileSize = tiledMap.getTileSize();
-		cc.log("Tile Size: " + tileSize);
-		``` 
-		*/
-		getTileSize() : Size;		
-		/** !#en Set the tile size.
-		!#zh 设置地图背景中 tile 元素的大小。
-		
-		@example 
-		```js
-		tiledMap.setTileSize(new cc.size(10, 10));
-		``` 
-		*/
-		setTileSize(tileSize : Size) : void;		
-		/** !#en map orientation.
-		!#zh 获取地图方向。
-		
-		@example 
-		```js
-		var mapOrientation = tiledMap.getMapOrientation();
-		cc.log("Map Orientation: " + mapOrientation);
-		``` 
-		*/
-		getMapOrientation() : number;		
-		/** !#en map orientation.
-		!#zh 设置地图方向。
-		
-		@example 
-		```js
-		tiledMap.setMapOrientation(TiledMap.Orientation.ORTHO);
-		``` 
-		*/
-		setMapOrientation(orientation : TiledMap.Orientation) : void;		
-		/** !#en object groups.
-		!#zh 获取所有的对象层。
-		
-		@example 
-		```js
-		var objGroups = titledMap.getObjectGroups();
-		for (var i = 0; i < objGroups.length; ++i) {
-		    cc.log("obj: " + objGroups[i]);
-		}
-		``` 
-		*/
-		getObjectGroups() : TiledObjectGroup[];		
-		/** !#en Gets the map properties.
-		!#zh 获取地图的属性。
-		
-		@example 
-		```js
-		var properties = titledMap.getProperties();
-		for (var i = 0; i < properties.length; ++i) {
-		    cc.log("Properties: " + properties[i]);
-		}
-		``` 
-		*/
-		getProperties() : any[];		
-		/** !#en Set the map properties.
-		!#zh 设置地图的属性。
-		
-		@example 
-		```js
-		titledMap.setProperties(properties);
-		``` 
-		*/
-		setProperties(properties : any[]) : void;		
-		/** !#en Return All layers array.
-		!#zh 返回包含所有 layer 的数组。
-		
-		@example 
-		```js
-		var layers = titledMap.allLayers();
-		for (var i = 0; i < layers.length; ++i) {
-		    cc.log("Layers: " + layers[i]);
-		}
-		``` 
-		*/
-		allLayers() : TiledLayer[];		
-		/** !#en return the cc.TiledLayer for the specific layer.
-		!#zh 获取指定名称的 layer。
-		
-		@example 
-		```js
-		var layer = titledMap.getLayer("Player");
-		cc.log(layer);
-		``` 
-		*/
-		getLayer(layerName : string) : TiledLayer;		
-		/** !#en Return the TMXObjectGroup for the specific group.
-		!#zh 获取指定的 TMXObjectGroup。
-		
-		@example 
-		```js
-		var group = titledMap.getObjectGroup("Players");
-		cc.log("ObjectGroup: " + group);
-		``` 
-		*/
-		getObjectGroup(groupName : string) : TiledObjectGroup;		
-		/** !#en Return the value for the specific property name.
-		!#zh 通过属性名称，获取指定的属性。
-		
-		@example 
-		```js
-		var property = titledMap.getProperty("info");
-		cc.log("Property: " + property);
-		``` 
-		*/
-		getProperty(propertyName : string) : string;		
-		/** !#en Return properties dictionary for tile GID.
-		!#zh 通过 GID ，获取指定的属性。
-		
-		@example 
-		```js
-		var properties = titledMap.getPropertiesForGID(GID);
-		cc.log("Properties: " + properties);
-		``` 
-		*/
-		getPropertiesForGID(GID : number) : any;	
-	}		
-		/** Class for tiled map asset handling. */
-		export class TiledMapAsset extends Asset {	
-	}		
-		/** !#en Renders the TMX object group.
-		!#zh 渲染 tmx object group。 */
-		export class TiledObjectGroup extends _SGComponent {		
-		/** !#en Offset position of child objects.
-		!#zh 获取子对象的偏移位置。
-		
-		@example 
-		```js
-		var offset = tMXObjectGroup.getPositionOffset();
-		``` 
-		*/
-		getPositionOffset() : Vec2;		
-		/** !#en Offset position of child objects.
-		!#zh 设置子对象的偏移位置。
-		
-		@example 
-		```js
-		tMXObjectGroup.setPositionOffset(cc.v2(5, 5));
-		``` 
-		*/
-		setPositionOffset(offset : Vec2) : void;		
-		/** !#en List of properties stored in a dictionary.
-		!#zh 以映射的形式获取属性列表。
-		
-		@example 
-		```js
-		var offset = tMXObjectGroup.getProperties();
-		``` 
-		*/
-		getProperties() : any;		
-		/** !#en Set the properties of the object group.
-		!#zh 设置属性列表。
-		
-		@example 
-		```js
-		tMXObjectGroup.setProperties(obj);
-		``` 
-		*/
-		setProperties(Var : any) : void;		
-		/** !#en Gets the Group name.
-		!#zh 获取组名称。
-		
-		@example 
-		```js
-		var groupName = tMXObjectGroup.getGroupName;
-		``` 
-		*/
-		getGroupName() : string;		
-		/** !#en Set the Group name.
-		!#zh 设置组名称。
-		
-		@example 
-		```js
-		tMXObjectGroup.setGroupName("New Group");
-		``` 
-		*/
-		setGroupName(groupName : string) : void;		
-		/** !#en
-		Return the object for the specific object name. <br />
-		It will return the 1st object found on the array for the given name.
-		!#zh 获取指定的对象。
-		
-		@example 
-		```js
-		var object = tMXObjectGroup.getObject("Group");
-		``` 
-		*/
-		getObject(objectName : string) : any;		
-		/** !#en Gets the objects.
-		!#zh 获取对象数组。
-		
-		@example 
-		```js
-		var objects = tMXObjectGroup.getObjects();
-		``` 
-		*/
-		getObjects() : any[];	
-	}		
-		/** !#en
 		 cc.NodePool is the cache pool designed for node type.<br/>
 		 It can helps you to improve your game performance for objects which need frequent release and recreate operations<br/>
 		
@@ -4429,132 +4429,6 @@ declare module cc {
 		*/
 		armature() : any;	
 	}		
-		/** !#en Box Collider.
-		!#zh 包围盒碰撞组件 */
-		export class BoxCollider extends Component {		
-		/** !#en Position offset
-		!#zh 位置偏移量 */
-		offset : Vec2;		
-		/** !#en Box size
-		!#zh 包围盒大小 */
-		size : Size;	
-	}		
-		/** !#en Circle Collider.
-		!#zh 圆形碰撞组件 */
-		export class CircleCollider extends Component {		
-		/** !#en Position offset
-		!#zh 位置偏移量 */
-		offset : Vec2;		
-		/** !#en Circle radius
-		!#zh 圆形半径 */
-		radius : number;	
-	}		
-		/** !#en Collider component base class.
-		!#zh 碰撞组件基类 */
-		export class Collider extends Component {		
-		/** !#en Tag. If a node has several collider components, you can judge which type of collider is collided according to the tag.
-		!#zh 标签。当一个节点上有多个碰撞组件时，在发生碰撞后，可以使用此标签来判断是节点上的哪个碰撞组件被碰撞了。 */
-		tag : Integer;	
-	}		
-		/** !#en
-		A simple collision manager class.
-		It will calculate whether the collider collides other colliders, if collides then call the callbacks.
-		!#zh
-		一个简单的碰撞组件管理类，用于处理节点之间的碰撞组件是否产生了碰撞，并调用相应回调函数。 */
-		export class CollisionManager {		
-		/** !#en
-		!#zh
-		是否开启碰撞管理，默认为不开启 */
-		enabled : boolean;		
-		/** !#en
-		!#zh
-		是否绘制碰撞组件的包围盒，默认为不绘制 */
-		enabledDrawBoundingBox : boolean;		
-		/** !#en
-		!#zh
-		是否绘制碰撞组件的形状，默认为不绘制 */
-		enabledDebugDraw : boolean;	
-	}		
-		/** !#en Intersection helper class
-		!#zh 辅助类，用于测试形状与形状是否相交 */
-		export class Intersection {		
-		/** !#en Test line and line
-		!#zh 测试线段与线段是否相交
-		@param a1 The start point of the first line
-		@param a2 The end point of the first line
-		@param b1 The start point of the second line
-		@param b2 The end point of the second line 
-		*/
-		lineLine(a1 : Vec2, a2 : Vec2, b1 : Vec2, b2 : Vec2) : boolean;		
-		/** !#en Test line and rect
-		!#zh 测试线段与矩形是否相交
-		@param a1 The start point of the line
-		@param a2 The end point of the line
-		@param b The rect 
-		*/
-		lineRect(a1 : Vec2, a2 : Vec2, b : Rect) : boolean;		
-		/** !#en Test line and polygon
-		!#zh 测试线段与多边形是否相交
-		@param a1 The start point of the line
-		@param a2 The end point of the line
-		@param b The polygon, a set of points 
-		*/
-		linePolygon(a1 : Vec2, a2 : Vec2, b : [Vec2]) : boolean;		
-		/** !#en Test rect and rect
-		!#zh 测试矩形与矩形是否相交
-		@param a The first rect
-		@param b The second rect 
-		*/
-		rectRect(a : Rect, b : Rect) : boolean;		
-		/** !#en Test rect and polygon
-		!#zh 测试矩形与多边形是否相交
-		@param a The rect
-		@param b The polygon, a set of points 
-		*/
-		rectPolygon(a : Rect, b : [Vec2]) : boolean;		
-		/** !#en Test polygon and polygon
-		!#zh 测试多边形与多边形是否相交
-		@param a The first polygon, a set of points
-		@param b The second polygon, a set of points 
-		*/
-		polygonPolygon(a : [Vec2], b : [Vec2]) : boolean;		
-		/** !#en Test circle and circle
-		!#zh 测试圆形与圆形是否相交
-		@param a Object contains position and radius
-		@param b Object contains position and radius 
-		*/
-		circleCircle(a : any, b : any) : boolean;		
-		/** !#en Test polygon and circle
-		!#zh 测试矩形与圆形是否相交
-		@param polygon The Polygon, a set of points
-		@param circle Object contains position and radius 
-		*/
-		polygonCircle(polygon : [Vec2], circle : any) : boolean;		
-		/** !#en Test whether the point is in the polygon
-		!#zh 测试一个点是否在一个多边形中
-		@param point The point
-		@param polygon The polygon, a set of points 
-		*/
-		pointInPolygon(point : Vec2, polygon : [Vec2]) : boolean;		
-		/** !#en Calculate the distance of point to line.
-		!#zh 计算点到直线的距离。如果这是一条线段并且垂足不在线段内，则会计算点到线段端点的距离。
-		@param point The point
-		@param start The start point of line
-		@param end The end point of line
-		@param isSegment whether this line is a segment 
-		*/
-		pointLineDistance(point : Vec2, start : Vec2, end : Vec2, isSegment : boolean) : boolean;	
-	}		
-		/** !#en Polygon Collider.
-		!#zh 多边形碰撞组件 */
-		export class PolygonCollider extends Component {		
-		/** !#en Position offset
-		!#zh 位置偏移量 */
-		offset : Vec2;		
-		/** !#en Polygon points
-		!#zh 多边形顶点数组 */
-		points : [Vec2];	
-	}		
 		/** !#en
 		Base class for handling assets used in Fireball. This class can be instantiate.
 		
@@ -4587,8 +4461,8 @@ declare module cc {
 		Create a new node using this asset in the scene.<br/>
 		If this type of asset dont have its corresponding node type, this method should be null.
 		!#zh
-		使用该资产在场景中创建一个新节点。<br/>
-		如果这类资产没有相应的节点类型，该方法应该是空的。 
+		使用该资源在场景中创建一个新节点。<br/>
+		如果这类资源没有相应的节点类型，该方法应该是空的。 
 		*/
 		createNode(callback: (error: string, node: any) => void) : void;	
 	}		
@@ -4671,14 +4545,14 @@ declare module cc {
 		/** !#en The animation component is used to play back animations.
 		
 		Animation provide several events to register：
-		 - play : Emit when egine playing animation
+		 - play : Emit when begin playing animation
 		 - stop : Emit when stop playing animation
 		 - pause : Emit when pause animation
 		 - resume : Emit when resume animation
-		 - lastframe : If animation repeat coutn is larger than 1, emit when animation play to the last frame
+		 - lastframe : If animation repeat count is larger than 1, emit when animation play to the last frame
 		 - finished : Emit when finish playing animation
 		
-		!#zh Animation 组件用于播放动画。你能指定动画剪辑到动画组件并从脚本控制播放。
+		!#zh Animation 组件用于播放动画。
 		
 		Animation 提供了一系列可注册的事件：
 		 - play : 开始播放时
@@ -4702,7 +4576,7 @@ declare module cc {
 		*/
 		getClips() : AnimationClip[];		
 		/** !#en Plays an animation and stop other animations.
-		!#zh 播放当前或者指定的动画，并且停止当前正在播放动画。
+		!#zh 播放指定的动画，并且停止当前正在播放动画。如果没有指定动画，则播放默认动画。
 		@param name The name of animation to play. If no name is supplied then the default animation will be played.
 		@param startTime play an animation from startTime
 		
@@ -4716,7 +4590,7 @@ declare module cc {
 		/** !#en
 		Plays an additive animation, it will not stop other animations.
 		If there are other animations playing, then will play several animations at the same time.
-		!#zh 播放当前或者指定的动画（将不会停止当前播放的动画）。
+		!#zh 播放指定的动画（将不会停止当前播放的动画）。如果没有指定动画，则播放默认动画。
 		@param name The name of animation to play. If no name is supplied then the default animation will be played.
 		@param startTime play an animation from startTime
 		
@@ -4731,7 +4605,7 @@ declare module cc {
 		playAdditive(name? : string, startTime? : number) : AnimationState;		
 		/** !#en Stops an animation named name. If no name is supplied then stops all playing animations that were started with this Animation. <br/>
 		Stopping an animation also Rewinds it to the Start.
-		!#zh 停止当前或者指定的动画。如果没有指定名字，则停止所有动画。
+		!#zh 停止指定的动画。如果没有指定名字，则停止当前正在播放的动画。
 		@param name The animation to stop, if not supplied then stops all playing animations. 
 		*/
 		stop(name? : string) : void;		
@@ -4746,7 +4620,7 @@ declare module cc {
 		*/
 		resume(name? : string) : void;		
 		/** !#en Make an animation named name go to the specified time. If no name is supplied then make all animations go to the specified time.
-		!#zh 设置指定动画的播放时间。如果没有指定名字，则设置所有动画的播放时间。
+		!#zh 设置指定动画的播放时间。如果没有指定名字，则设置当前播放动画的播放时间。
 		@param time The time to go to
 		@param name Specified animation name, if not supplied then make all animations go to the time. 
 		*/
@@ -4774,12 +4648,12 @@ declare module cc {
 		/** !#en
 		Samples animations at the current state.<br/>
 		This is useful when you explicitly want to set up some animation state, and sample it once.
-		!#zh 对当前动画进行采样。你可以手动将动画设置到某一个状态，然后采样一次。 
+		!#zh 对指定或当前动画进行采样。你可以手动将动画设置到某一个状态，然后采样一次。 
 		*/
-		sample() : void;		
+		sample(name : string) : void;		
 		/** !#en
 		Register animation event callback.
-		The event argumetns will provide the AnimationState which emit the event.
+		The event arguments will provide the AnimationState which emit the event.
 		When play an animation, will auto register the event callback to the AnimationState, and unregister the event callback from the AnimationState when animation stopped.
 		!#zh
 		注册动画事件回调。
@@ -5362,9 +5236,18 @@ declare module cc {
 		and then break line on demand. Choose vertical if you want to layout vertically at first .
 		!#zh 起始轴方向类型，可进行水平和垂直布局排列，只有布局类型为 GRID 的时候才有效。 */
 		startAxis : Layout.AxisDirection;		
-		/** !#en The padding of layout, it only effect the layout in one direction.
-		!#zh 容器内边距，只会在布局方向上生效。 */
-		padding : number;		
+		/** !#en The left padding of layout, it only effect the layout in one direction.
+		!#zh 容器内左边距，只会在一个布局方向上生效。 */
+		paddingLeft : number;		
+		/** !#en The right padding of layout, it only effect the layout in one direction.
+		!#zh 容器内右边距，只会在一个布局方向上生效。 */
+		paddingRight : number;		
+		/** !#en The top padding of layout, it only effect the layout in one direction.
+		!#zh 容器内上边距，只会在一个布局方向上生效。 */
+		paddingTop : number;		
+		/** !#en The bottom padding of layout, it only effect the layout in one direction.
+		!#zh 容器内下边距，只会在一个布局方向上生效。 */
+		paddingBottom : number;		
 		/** !#en The distance in x-axis between each element in layout.
 		!#zh 子节点之间的水平间距。 */
 		spacingX : number;		
@@ -5380,14 +5263,43 @@ declare module cc {
 		Only take effect in Horizontal layout mode.
 		This option changes the start element's positioning.
 		!#zh 水平排列子节点的方向。 */
-		horizontalDirection : Layout.HorizontalDirection;	
+		horizontalDirection : Layout.HorizontalDirection;		
+		/** !#en The padding of layout, it effects the layout in four direction.
+		!#zh 容器内边距，该属性会在四个布局方向上生效。 */
+		padding : number;	
 	}		
-		/** undefined */
-		export class Mask extends _RendererInSG {	
+		/** !#en The Mask Component
+		!#zh 遮罩组件 */
+		export class Mask extends _RendererInSG {		
+		/** !#en The mask type.
+		!#zh 遮罩类型 */
+		type : Mask.Type;		
+		/** !#en The mask image
+		!#zh 遮罩所需要的贴图 */
+		spriteFrame : SpriteFrame;		
+		/** !#en
+		The alpha threshold.(Not supported Canvas Mode) <br/>
+		The content is drawn only where the stencil have pixel with alpha greater than the alphaThreshold. <br/>
+		Should be a float between 0 and 1. <br/>
+		This default to 1 (so alpha test is disabled).
+		!#zh
+		Alpha 阈值（不支持 Canvas 模式）<br/>
+		只有当模板的像素的 alpha 大于 alphaThreshold 时，才会绘制内容。<br/>
+		该数值 0 ~ 1 之间的浮点数，默认值为 1（因此禁用 alpha） */
+		alphaThreshold : number;		
+		/** !#en Reverse mask (Not supported Canvas Mode)
+		!#zh 反向遮罩（不支持 Canvas 模式） */
+		inverted : boolean;		
+		/** !#en The segements for ellipse mask.
+		!#zh 椭圆遮罩的曲线细分数 */
+		segements : number;	
 	}		
 		/** !#en The PageView control
 		!#zh 页面视图组件 */
 		export class PageView extends ScrollView {		
+		/** !#en Specify the size type of each page in PageView.
+		!#zh 页面视图中每个页面大小类型 */
+		sizeMode : PageView.SizeMode;		
 		/** !#en The page view direction
 		!#zh 页面视图滚动类型 */
 		direction : PageView.Direction;		
@@ -5396,6 +5308,15 @@ declare module cc {
 		release the next page will automatically scroll, less than the restore
 		!#zh 滚动临界值，默认单位百分比，当拖拽超出该数值时，松开会自动滚动下一页，小于时则还原。 */
 		scrollThreshold : number;		
+		/** !#en
+		Auto page turning velocity threshold. When users swipe the PageView quickly,
+		it will calculate a velocity based on the scroll distance and time,
+		if the calculated velocity is larger than the threshold, then it will trigger page turning.
+		!#zh
+		快速滑动翻页临界值。
+		当用户快速滑动时，会根据滑动开始和结束的距离与时间计算出一个速度值，
+		该值与此临界值相比较，如果大于临界值，则进行自动翻页。 */
+		autoPageTurningThreshold : number;		
 		/** !#en Change the PageTurning event timing of PageView.
 		!#zh 设置 PageView PageTurning 事件的发送时机。 */
 		pageTurningEventTiming : number;		
@@ -5505,6 +5426,9 @@ declare module cc {
 		/** !#en Font size of RichText.
 		!#zh 富文本字体大小。 */
 		fontSize : number;		
+		/** !#en Custom TTF font of RichText
+		!#zh  富文本定制字体 */
+		font : cc.TTFFont;		
 		/** !#en The maximize width of the RichText
 		!#zh 富文本的最大宽度 */
 		maxWidth : number;		
@@ -5999,6 +5923,19 @@ declare module cc {
 		*/
 		stop() : void;	
 	}		
+		/** !#en
+		Handling touch events in a ViewGroup takes special care,
+		because it's common for a ViewGroup to have children that are targets for different touch events than the ViewGroup itself.
+		To make sure that each view correctly receives the touch events intended for it,
+		ViewGroup should register capture phase event and handle the event propagation properly.
+		Please refer to Scrollview for more  information.
+		
+		!#zh
+		ViewGroup的事件处理比较特殊，因为 ViewGroup 里面的子节点关心的事件跟 ViewGroup 本身可能不一样。
+		为了让子节点能够正确地处理事件，ViewGroup 需要注册 capture 阶段的事件，并且合理地处理 ViewGroup 之间的事件传递。
+		请参考 ScrollView 的实现来获取更多信息。 */
+		export class ViewGroup extends Component {	
+	}		
 		/** !#en cc.WebView is a component for display web pages in the game
 		!#zh WebView 组件，用于在游戏中显示网页 */
 		export class WebView extends _RendererUnderSG {		
@@ -6117,6 +6054,362 @@ declare module cc {
 		这样便于脚本或动画继续控制当前节点。
 		注意：onEnable 时所在的那一帧仍然会进行对齐。 */
 		isAlignOnce : boolean;	
+	}		
+		/** !#en Box Collider.
+		!#zh 包围盒碰撞组件 */
+		export class BoxCollider extends Component {		
+		/** !#en Position offset
+		!#zh 位置偏移量 */
+		offset : Vec2;		
+		/** !#en Box size
+		!#zh 包围盒大小 */
+		size : Size;	
+	}		
+		/** !#en Circle Collider.
+		!#zh 圆形碰撞组件 */
+		export class CircleCollider extends Component {		
+		/** !#en Position offset
+		!#zh 位置偏移量 */
+		offset : Vec2;		
+		/** !#en Circle radius
+		!#zh 圆形半径 */
+		radius : number;	
+	}		
+		/** !#en Collider component base class.
+		!#zh 碰撞组件基类 */
+		export class Collider extends Component {		
+		/** !#en Tag. If a node has several collider components, you can judge which type of collider is collided according to the tag.
+		!#zh 标签。当一个节点上有多个碰撞组件时，在发生碰撞后，可以使用此标签来判断是节点上的哪个碰撞组件被碰撞了。 */
+		tag : Integer;	
+	}		
+		/** !#en
+		A simple collision manager class.
+		It will calculate whether the collider collides other colliders, if collides then call the callbacks.
+		!#zh
+		一个简单的碰撞组件管理类，用于处理节点之间的碰撞组件是否产生了碰撞，并调用相应回调函数。 */
+		export class CollisionManager {		
+		/** !#en
+		!#zh
+		是否开启碰撞管理，默认为不开启 */
+		enabled : boolean;		
+		/** !#en
+		!#zh
+		是否绘制碰撞组件的包围盒，默认为不绘制 */
+		enabledDrawBoundingBox : boolean;		
+		/** !#en
+		!#zh
+		是否绘制碰撞组件的形状，默认为不绘制 */
+		enabledDebugDraw : boolean;	
+	}		
+		/** !#en Intersection helper class
+		!#zh 辅助类，用于测试形状与形状是否相交 */
+		export class Intersection {		
+		/** !#en Test line and line
+		!#zh 测试线段与线段是否相交
+		@param a1 The start point of the first line
+		@param a2 The end point of the first line
+		@param b1 The start point of the second line
+		@param b2 The end point of the second line 
+		*/
+		lineLine(a1 : Vec2, a2 : Vec2, b1 : Vec2, b2 : Vec2) : boolean;		
+		/** !#en Test line and rect
+		!#zh 测试线段与矩形是否相交
+		@param a1 The start point of the line
+		@param a2 The end point of the line
+		@param b The rect 
+		*/
+		lineRect(a1 : Vec2, a2 : Vec2, b : Rect) : boolean;		
+		/** !#en Test line and polygon
+		!#zh 测试线段与多边形是否相交
+		@param a1 The start point of the line
+		@param a2 The end point of the line
+		@param b The polygon, a set of points 
+		*/
+		linePolygon(a1 : Vec2, a2 : Vec2, b : [Vec2]) : boolean;		
+		/** !#en Test rect and rect
+		!#zh 测试矩形与矩形是否相交
+		@param a The first rect
+		@param b The second rect 
+		*/
+		rectRect(a : Rect, b : Rect) : boolean;		
+		/** !#en Test rect and polygon
+		!#zh 测试矩形与多边形是否相交
+		@param a The rect
+		@param b The polygon, a set of points 
+		*/
+		rectPolygon(a : Rect, b : [Vec2]) : boolean;		
+		/** !#en Test polygon and polygon
+		!#zh 测试多边形与多边形是否相交
+		@param a The first polygon, a set of points
+		@param b The second polygon, a set of points 
+		*/
+		polygonPolygon(a : [Vec2], b : [Vec2]) : boolean;		
+		/** !#en Test circle and circle
+		!#zh 测试圆形与圆形是否相交
+		@param a Object contains position and radius
+		@param b Object contains position and radius 
+		*/
+		circleCircle(a : any, b : any) : boolean;		
+		/** !#en Test polygon and circle
+		!#zh 测试矩形与圆形是否相交
+		@param polygon The Polygon, a set of points
+		@param circle Object contains position and radius 
+		*/
+		polygonCircle(polygon : [Vec2], circle : any) : boolean;		
+		/** !#en Test whether the point is in the polygon
+		!#zh 测试一个点是否在一个多边形中
+		@param point The point
+		@param polygon The polygon, a set of points 
+		*/
+		pointInPolygon(point : Vec2, polygon : [Vec2]) : boolean;		
+		/** !#en Calculate the distance of point to line.
+		!#zh 计算点到直线的距离。如果这是一条线段并且垂足不在线段内，则会计算点到线段端点的距离。
+		@param point The point
+		@param start The start point of line
+		@param end The end point of line
+		@param isSegment whether this line is a segment 
+		*/
+		pointLineDistance(point : Vec2, start : Vec2, end : Vec2, isSegment : boolean) : boolean;	
+	}		
+		/** !#en Polygon Collider.
+		!#zh 多边形碰撞组件 */
+		export class PolygonCollider extends Component {		
+		/** !#en Position offset
+		!#zh 位置偏移量 */
+		offset : Vec2;		
+		/** !#en Polygon points
+		!#zh 多边形顶点数组 */
+		points : [Vec2];	
+	}		
+		/** !#en
+		<p>
+		    The base class of event listener.                                                                        <br/>
+		    If you need custom listener which with different callback, you need to inherit this class.               <br/>
+		    For instance, you could refer to EventListenerAcceleration, EventListenerKeyboard,                       <br/>
+		     EventListenerTouchOneByOne, EventListenerCustom.
+		</p>
+		
+		!#zh
+		封装用户的事件处理逻辑。
+		注意：这是一个抽象类，开发者不应该直接实例化这个类，请参考 {{#crossLink "EventListener/create:method"}}cc.EventListener.create{{/crossLink}}。 */
+		export class EventListener {		
+		/** Constructor 
+		*/
+		EventListener(type : number, listenerID : number, callback : number) : EventListener;		
+		/** !#en Checks whether the listener is available.
+		!#zh 检测监听器是否有效 
+		*/
+		checkAvailable() : boolean;		
+		/** !#en Clones the listener, its subclasses have to override this method.
+		!#zh 克隆监听器,它的子类必须重写此方法。 
+		*/
+		clone() : EventListener;		
+		/** !#en Enables or disables the listener
+		!#zh 启用或禁用监听器。 
+		*/
+		setEnabled(enabled : boolean) : void;		
+		/** !#en Checks whether the listener is enabled
+		!#zh 检查监听器是否可用。 
+		*/
+		isEnabled() : boolean;		
+		/** !#en The type code of unknown event listener.
+		!#zh 未知的事件监听器类型 */
+		UNKNOWN : number;		
+		/** !#en The type code of keyboard event listener.
+		!#zh 键盘事件监听器类型 */
+		KEYBOARD : number;		
+		/** !#en The type code of focus event listener.
+		!#zh 加速器事件监听器类型 */
+		ACCELERATION : number;		
+		/** !#en
+		Create a EventListener object with configuration including the event type, handlers and other parameters.
+		In handlers, this refer to the event listener object itself.
+		You can also pass custom parameters in the configuration object,
+		all custom parameters will be polyfilled into the event listener object and can be accessed in handlers.
+		!#zh 通过指定不同的 Event 对象来设置想要创建的事件监听器。
+		@param argObj a json object
+		
+		@example 
+		```js
+		// Create KEYBOARD EventListener.
+		cc.EventListener.create({
+		    event: cc.EventListener.KEYBOARD,
+		    onKeyPressed: function (keyCode, event) {
+		        cc.log('pressed key: ' + keyCode);
+		    },
+		    onKeyReleased: function (keyCode, event) {
+		        cc.log('released key: ' + keyCode);
+		    }
+		});
+		
+		// Create ACCELERATION EventListener.
+		cc.EventListener.create({
+		    event: cc.EventListener.ACCELERATION,
+		    callback: function (acc, event) {
+		        cc.log('acc: ' + keyCode);
+		    }
+		});
+		``` 
+		*/
+		create(argObj : any) : EventListener;	
+	}		
+		/** !#en
+		<p>
+		 cc.eventManager is a singleton object which manages event listener subscriptions and event dispatching. <br/>
+		                                                                                                             <br/>
+		 The EventListener list is managed in such way so that event listeners can be added and removed          <br/>
+		 while events are being dispatched.
+		</p>
+		!#zh
+		事件管理器，它主要管理事件监听器注册和派发系统事件。
+		原始设计中，它支持鼠标，触摸，键盘，陀螺仪和自定义事件。
+		在 Creator 的设计中，鼠标，触摸和自定义事件的监听和派发请参考 http://cocos.com/docs/creator/scripting/events.html。 */
+		export class eventManager {		
+		/** !#en Pauses all listeners which are associated the specified target.
+		!#zh 暂停传入的 node 相关的所有监听器的事件响应。 
+		*/
+		pauseTarget(node : Node, recursive : boolean) : void;		
+		/** !#en Resumes all listeners which are associated the specified target.
+		!#zh 恢复传入的 node 相关的所有监听器的事件响应。 
+		*/
+		resumeTarget(node : Node, recursive : boolean) : void;		
+		/** !#en Query whether the specified event listener id has been added.
+		!#zh 查询指定的事件 ID 是否存在
+		@param listenerID The listener id. 
+		*/
+		hasEventListener(listenerID : string|number) : boolean;		
+		/** !#en
+		<p>
+		Adds a event listener for a specified event.<br/>
+		if the parameter "nodeOrPriority" is a node,
+		it means to add a event listener for a specified event with the priority of scene graph.<br/>
+		if the parameter "nodeOrPriority" is a Number,
+		it means to add a event listener for a specified event with the fixed priority.<br/>
+		</p>
+		!#zh
+		将事件监听器添加到事件管理器中。<br/>
+		如果参数 “nodeOrPriority” 是节点，优先级由 node 的渲染顺序决定，显示在上层的节点将优先收到事件。<br/>
+		如果参数 “nodeOrPriority” 是数字，优先级则固定为该参数的数值，数字越小，优先级越高。<br/>
+		@param listener The listener of a specified event or a object of some event parameters.
+		@param nodeOrPriority The priority of the listener is based on the draw order of this node or fixedPriority The fixed priority of the listener. 
+		*/
+		addListener(listener : EventListener|any, nodeOrPriority : Node|number) : EventListener;		
+		/** !#en Remove a listener.
+		!#zh 移除一个已添加的监听器。
+		@param listener an event listener or a registered node target
+		
+		@example 
+		```js
+		
+		// 1. remove eventManager add Listener;
+		var mouseListener1 = cc.eventManager.addListener({
+		    event: cc.EventListener.MOUSE,
+		    onMouseDown:  function(keyCode, event){ },
+		    onMouseUp: function(keyCode, event){ },
+		    onMouseMove: function () { },
+		    onMouseScroll: function () { }
+		}, node);
+		
+		cc.eventManager.removeListener(mouseListener1);
+		
+		// 2. remove eventListener create Listener;
+		var mouseListener2 = cc.EventListener.create({
+		    event: cc.EventListener.MOUSE,
+		    onMouseDown:  function(keyCode, event){ },
+		    onMouseUp: function(keyCode, event){ },
+		    onMouseMove: function () { },
+		    onMouseScroll: function () { }
+		});
+		
+		cc.eventManager.removeListener(mouseListener2);
+		
+		``` 
+		*/
+		removeListener(listener: (type: number, listenerID: number, callback: number) => void) : void;		
+		/** !#en Removes all listeners with the same event listener type or removes all listeners of a node.
+		!#zh
+		移除注册到 eventManager 中指定类型的所有事件监听器。<br/>
+		1. 如果传入的第一个参数类型是 Node，那么事件管理器将移除与该对象相关的所有事件监听器。
+		（如果第二参数 recursive 是 true 的话，就会连同该对象的子控件上所有的事件监听器也一并移除）<br/>
+		2. 如果传入的第一个参数类型是 Number（该类型 EventListener 中定义的事件类型），
+		那么事件管理器将移除该类型的所有事件监听器。<br/>
+		
+		下列是目前存在监听器类型：       <br/>
+		cc.EventListener.UNKNOWN       <br/>
+		cc.EventListener.KEYBOARD      <br/>
+		cc.EventListener.ACCELERATION，<br/>
+		@param listenerType listenerType or a node 
+		*/
+		removeListeners(listenerType : number|Node, recursive : boolean) : void;		
+		/** !#en Removes all listeners
+		!#zh 移除所有事件监听器。 
+		*/
+		removeAllListeners() : void;		
+		/** !#en Sets listener's priority with fixed value.
+		!#zh 设置 FixedPriority 类型监听器的优先级。
+		@param listener Constructor 
+		*/
+		setPriority(listener: (type: number, listenerID: number, callback: number) => void, fixedPriority : number) : void;		
+		/** !#en Whether to enable dispatching events
+		!#zh 启用或禁用事件管理器，禁用后不会分发任何事件。 
+		*/
+		setEnabled(enabled : boolean) : void;		
+		/** !#en Checks whether dispatching events is enabled
+		!#zh 检测事件管理器是否启用。 
+		*/
+		isEnabled() : boolean;	
+	}		
+		/** !#en The System event, it currently supports the key events and accelerometer events
+		!#zh 系统事件，它目前支持按键事件和重力感应事件 */
+		export class SystemEvent extends EventTarget {	
+	}		
+		/** !#en The touch event class
+		!#zh 封装了触摸相关的信息。 */
+		export class Touch {		
+		/** !#en Returns the current touch location in OpenGL coordinates.、
+		!#zh 获取当前触点位置。 
+		*/
+		getLocation() : Vec2;		
+		/** !#en Returns X axis location value.
+		!#zh 获取当前触点 X 轴位置。 
+		*/
+		getLocationX() : number;		
+		/** !#en Returns Y axis location value.
+		!#zh 获取当前触点 Y 轴位置。 
+		*/
+		getLocationY() : number;		
+		/** !#en Returns the previous touch location in OpenGL coordinates.
+		!#zh 获取触点在上一次事件时的位置对象，对象包含 x 和 y 属性。 
+		*/
+		getPreviousLocation() : Vec2;		
+		/** !#en Returns the start touch location in OpenGL coordinates.
+		!#zh 获获取触点落下时的位置对象，对象包含 x 和 y 属性。 
+		*/
+		getStartLocation() : Vec2;		
+		/** !#en Returns the delta distance from the previous touche to the current one in screen coordinates.
+		!#zh 获取触点距离上一次事件移动的距离对象，对象包含 x 和 y 属性。 
+		*/
+		getDelta() : Vec2;		
+		/** !#en Returns the current touch location in screen coordinates.
+		!#zh 获取当前事件在游戏窗口内的坐标位置对象，对象包含 x 和 y 属性。 
+		*/
+		getLocationInView() : Vec2;		
+		/** !#en Returns the previous touch location in screen coordinates.
+		!#zh 获取触点在上一次事件时在游戏窗口中的位置对象，对象包含 x 和 y 属性。 
+		*/
+		getPreviousLocationInView() : Vec2;		
+		/** !#en Returns the start touch location in screen coordinates.
+		!#zh 获取触点落下时在游戏窗口中的位置对象，对象包含 x 和 y 属性。 
+		*/
+		getStartLocationInView() : Vec2;		
+		/** !#en Returns the id of cc.Touch.
+		!#zh 触点的标识 ID，可以用来在多点触摸中跟踪触点。 
+		*/
+		getID() : number;		
+		/** !#en Sets information to touch.
+		!#zh 设置触摸相关的信息。用于监控触摸事件。 
+		*/
+		setTouchInfo(id : number, x : number, y : number) : void;	
 	}		
 		/** !#en
 		EventTarget is an object to which an event is dispatched when something has occurred.
@@ -6317,231 +6610,6 @@ declare module cc {
 		see http://www.w3.org/TR/DOM-Level-3-Events/#event-flow
 		!#zh 冒泡阶段， 包括回程遇到到层次根节点的任何后续节点。 */
 		BUBBLING_PHASE : number;	
-	}		
-		/** !#en
-		<p>
-		    The base class of event listener.                                                                        <br/>
-		    If you need custom listener which with different callback, you need to inherit this class.               <br/>
-		    For instance, you could refer to EventListenerAcceleration, EventListenerKeyboard,                       <br/>
-		     EventListenerTouchOneByOne, EventListenerCustom.
-		</p>
-		
-		!#zh
-		封装用户的事件处理逻辑。
-		注意：这是一个抽象类，开发者不应该直接实例化这个类，请参考 {{#crossLink "EventListener/create:method"}}cc.EventListener.create{{/crossLink}}。 */
-		export class EventListener {		
-		/** Constructor 
-		*/
-		EventListener(type : number, listenerID : number, callback : number) : EventListener;		
-		/** !#en Checks whether the listener is available.
-		!#zh 检测监听器是否有效 
-		*/
-		checkAvailable() : boolean;		
-		/** !#en Clones the listener, its subclasses have to override this method.
-		!#zh 克隆监听器,它的子类必须重写此方法。 
-		*/
-		clone() : EventListener;		
-		/** !#en Enables or disables the listener
-		!#zh 启用或禁用监听器。 
-		*/
-		setEnabled(enabled : boolean) : void;		
-		/** !#en Checks whether the listener is enabled
-		!#zh 检查监听器是否可用。 
-		*/
-		isEnabled() : boolean;		
-		/** !#en The type code of unknown event listener.
-		!#zh 未知的事件监听器类型 */
-		UNKNOWN : number;		
-		/** !#en The type code of keyboard event listener.
-		!#zh 键盘事件监听器类型 */
-		KEYBOARD : number;		
-		/** !#en The type code of focus event listener.
-		!#zh 加速器事件监听器类型 */
-		ACCELERATION : number;		
-		/** !#en
-		Create a EventListener object with configuration including the event type, handlers and other parameters.
-		In handlers, this refer to the event listener object itself.
-		You can also pass custom parameters in the configuration object,
-		all custom parameters will be polyfilled into the event listener object and can be accessed in handlers.
-		!#zh 通过指定不同的 Event 对象来设置想要创建的事件监听器。
-		@param argObj a json object
-		
-		@example 
-		```js
-		// Create KEYBOARD EventListener.
-		cc.EventListener.create({
-		    event: cc.EventListener.KEYBOARD,
-		    onKeyPressed: function (keyCode, event) {
-		        cc.log('pressed key: ' + keyCode);
-		    },
-		    onKeyReleased: function (keyCode, event) {
-		        cc.log('released key: ' + keyCode);
-		    }
-		});
-		
-		// Create ACCELERATION EventListener.
-		cc.EventListener.create({
-		    event: cc.EventListener.ACCELERATION,
-		    callback: function (acc, event) {
-		        cc.log('acc: ' + keyCode);
-		    }
-		});
-		``` 
-		*/
-		create(argObj : any) : EventListener;	
-	}		
-		/** !#en
-		<p>
-		 cc.eventManager is a singleton object which manages event listener subscriptions and event dispatching. <br/>
-		                                                                                                             <br/>
-		 The EventListener list is managed in such way so that event listeners can be added and removed          <br/>
-		 while events are being dispatched.
-		</p>
-		!#zh
-		事件管理器，它主要管理事件监听器注册和派发系统事件。
-		原始设计中，它支持鼠标，触摸，键盘，陀螺仪和自定义事件。
-		在 Creator 的设计中，鼠标，触摸和自定义事件的监听和派发请参考 http://cocos.com/docs/creator/scripting/events.html。 */
-		export class eventManager {		
-		/** !#en Pauses all listeners which are associated the specified target.
-		!#zh 暂停传入的 node 相关的所有监听器的事件响应。 
-		*/
-		pauseTarget(node : Node, recursive : boolean) : void;		
-		/** !#en Resumes all listeners which are associated the specified target.
-		!#zh 恢复传入的 node 相关的所有监听器的事件响应。 
-		*/
-		resumeTarget(node : Node, recursive : boolean) : void;		
-		/** !#en
-		<p>
-		Adds a event listener for a specified event.<br/>
-		if the parameter "nodeOrPriority" is a node,
-		it means to add a event listener for a specified event with the priority of scene graph.<br/>
-		if the parameter "nodeOrPriority" is a Number,
-		it means to add a event listener for a specified event with the fixed priority.<br/>
-		</p>
-		!#zh
-		将事件监听器添加到事件管理器中。<br/>
-		如果参数 “nodeOrPriority” 是节点，优先级由 node 的渲染顺序决定，显示在上层的节点将优先收到事件。<br/>
-		如果参数 “nodeOrPriority” 是数字，优先级则固定为该参数的数值，数字越小，优先级越高。<br/>
-		@param listener The listener of a specified event or a object of some event parameters.
-		@param nodeOrPriority The priority of the listener is based on the draw order of this node or fixedPriority The fixed priority of the listener. 
-		*/
-		addListener(listener : EventListener|any, nodeOrPriority : Node|number) : EventListener;		
-		/** !#en Remove a listener.
-		!#zh 移除一个已添加的监听器。
-		@param listener an event listener or a registered node target
-		
-		@example 
-		```js
-		
-		// 1. remove eventManager add Listener;
-		var mouseListener1 = cc.eventManager.addListener({
-		    event: cc.EventListener.MOUSE,
-		    onMouseDown:  function(keyCode, event){ },
-		    onMouseUp: function(keyCode, event){ },
-		    onMouseMove: function () { },
-		    onMouseScroll: function () { }
-		}, node);
-		
-		cc.eventManager.removeListener(mouseListener1);
-		
-		// 2. remove eventListener create Listener;
-		var mouseListener2 = cc.EventListener.create({
-		    event: cc.EventListener.MOUSE,
-		    onMouseDown:  function(keyCode, event){ },
-		    onMouseUp: function(keyCode, event){ },
-		    onMouseMove: function () { },
-		    onMouseScroll: function () { }
-		});
-		
-		cc.eventManager.removeListener(mouseListener2);
-		
-		``` 
-		*/
-		removeListener(listener: (type: number, listenerID: number, callback: number) => void) : void;		
-		/** !#en Removes all listeners with the same event listener type or removes all listeners of a node.
-		!#zh
-		移除注册到 eventManager 中指定类型的所有事件监听器。<br/>
-		1. 如果传入的第一个参数类型是 Node，那么事件管理器将移除与该对象相关的所有事件监听器。
-		（如果第二参数 recursive 是 true 的话，就会连同该对象的子控件上所有的事件监听器也一并移除）<br/>
-		2. 如果传入的第一个参数类型是 Number（该类型 EventListener 中定义的事件类型），
-		那么事件管理器将移除该类型的所有事件监听器。<br/>
-		
-		下列是目前存在监听器类型：       <br/>
-		cc.EventListener.UNKNOWN       <br/>
-		cc.EventListener.KEYBOARD      <br/>
-		cc.EventListener.ACCELERATION，<br/>
-		@param listenerType listenerType or a node 
-		*/
-		removeListeners(listenerType : number|Node, recursive : boolean) : void;		
-		/** !#en Removes all listeners
-		!#zh 移除所有事件监听器。 
-		*/
-		removeAllListeners() : void;		
-		/** !#en Sets listener's priority with fixed value.
-		!#zh 设置 FixedPriority 类型监听器的优先级。
-		@param listener Constructor 
-		*/
-		setPriority(listener: (type: number, listenerID: number, callback: number) => void, fixedPriority : number) : void;		
-		/** !#en Whether to enable dispatching events
-		!#zh 启用或禁用事件管理器，禁用后不会分发任何事件。 
-		*/
-		setEnabled(enabled : boolean) : void;		
-		/** !#en Checks whether dispatching events is enabled
-		!#zh 检测事件管理器是否启用。 
-		*/
-		isEnabled() : boolean;	
-	}		
-		/** !#en The System event, it currently supports the key events and accelerometer events
-		!#zh 系统事件，它目前支持按键事件和重力感应事件 */
-		export class SystemEvent extends EventTarget {	
-	}		
-		/** !#en The touch event class
-		!#zh 封装了触摸相关的信息。 */
-		export class Touch {		
-		/** !#en Returns the current touch location in OpenGL coordinates.、
-		!#zh 获取当前触点位置。 
-		*/
-		getLocation() : Vec2;		
-		/** !#en Returns X axis location value.
-		!#zh 获取当前触点 X 轴位置。 
-		*/
-		getLocationX() : number;		
-		/** !#en Returns Y axis location value.
-		!#zh 获取当前触点 Y 轴位置。 
-		*/
-		getLocationY() : number;		
-		/** !#en Returns the previous touch location in OpenGL coordinates.
-		!#zh 获取触点在上一次事件时的位置对象，对象包含 x 和 y 属性。 
-		*/
-		getPreviousLocation() : Vec2;		
-		/** !#en Returns the start touch location in OpenGL coordinates.
-		!#zh 获获取触点落下时的位置对象，对象包含 x 和 y 属性。 
-		*/
-		getStartLocation() : Vec2;		
-		/** !#en Returns the delta distance from the previous touche to the current one in screen coordinates.
-		!#zh 获取触点距离上一次事件移动的距离对象，对象包含 x 和 y 属性。 
-		*/
-		getDelta() : Vec2;		
-		/** !#en Returns the current touch location in screen coordinates.
-		!#zh 获取当前事件在游戏窗口内的坐标位置对象，对象包含 x 和 y 属性。 
-		*/
-		getLocationInView() : Vec2;		
-		/** !#en Returns the previous touch location in screen coordinates.
-		!#zh 获取触点在上一次事件时在游戏窗口中的位置对象，对象包含 x 和 y 属性。 
-		*/
-		getPreviousLocationInView() : Vec2;		
-		/** !#en Returns the start touch location in screen coordinates.
-		!#zh 获取触点落下时在游戏窗口中的位置对象，对象包含 x 和 y 属性。 
-		*/
-		getStartLocationInView() : Vec2;		
-		/** !#en Returns the id of cc.Touch.
-		!#zh 触点的标识 ID，可以用来在多点触摸中跟踪触点。 
-		*/
-		getID() : number;		
-		/** !#en Sets information to touch.
-		!#zh 设置触摸相关的信息。用于监控触摸事件。 
-		*/
-		setTouchInfo(id : number, x : number, y : number) : void;	
 	}		
 		/** undefined */
 		export class Graphics extends _RendererUnderSG {		
@@ -7626,6 +7694,14 @@ declare module cc {
 		LANGUAGE_NORWEGIAN : string;		
 		/** Polish language code */
 		LANGUAGE_POLISH : string;		
+		/** Turkish language code */
+		LANGUAGE_TURKISH : string;		
+		/** Ukrainian language code */
+		LANGUAGE_UKRAINIAN : string;		
+		/** Romanian language code */
+		LANGUAGE_ROMANIAN : string;		
+		/** Bulgarian language code */
+		LANGUAGE_BULGARIAN : string;		
 		/** Unknown language code */
 		LANGUAGE_UNKNOWN : string;		
 		OS_IOS : string;		
@@ -7698,9 +7774,9 @@ declare module cc {
 		/** Indicate the running browser type */
 		browserType : string;		
 		/** Indicate the running browser version */
-		browserVersion : number;		
+		browserVersion : string;		
 		/** Indicate the real pixel resolution of the whole game window */
-		windowPixelResolution : number;		
+		windowPixelResolution : Size;		
 		/** cc.sys.localStorage is a local storage component. */
 		localStorage : any;		
 		/** The capabilities of the current platform */
@@ -8126,108 +8202,6 @@ declare module cc {
 		*/
 		builtinRaw(url : string) : string;	
 	}		
-		/** !#en
-		A cc.SpriteFrame has:<br/>
-		 - texture: A cc.Texture2D that will be used by the _ccsg.Sprite<br/>
-		 - rectangle: A rectangle of the texture
-		
-		!#zh
-		一个 SpriteFrame 包含：<br/>
-		 - 纹理：会被 Sprite 使用的 Texture2D 对象。<br/>
-		 - 矩形：在纹理中的矩形区域。 */
-		export class SpriteFrame extends Asset {		
-		/** !#en
-		Constructor of SpriteFrame class.
-		!#zh
-		SpriteFrame 类的构造函数。
-		@param rotated Whether the frame is rotated in the texture
-		@param offset The offset of the frame in the texture
-		@param originalSize The size of the frame in the texture 
-		*/
-		SpriteFrame(filename? : string|Texture2D, rect? : Rect, rotated? : boolean, offset? : Vec2, originalSize? : Size) : void;		
-		/** !#en Top border of the sprite
-		!#zh sprite 的顶部边框 */
-		insetTop : number;		
-		/** !#en Bottom border of the sprite
-		!#zh sprite 的底部边框 */
-		insetBottom : number;		
-		/** !#en Left border of the sprite
-		!#zh sprite 的左边边框 */
-		insetLeft : number;		
-		/** !#en Right border of the sprite
-		!#zh sprite 的左边边框 */
-		insetRight : number;		
-		/** !#en Returns whether the texture have been loaded
-		!#zh 返回是否已加载纹理 
-		*/
-		textureLoaded() : boolean;		
-		/** Add a event listener for texture loaded event. 
-		*/
-		addLoadedEventListener(callback : Function, target : any) : void;		
-		/** !#en Returns whether the sprite frame is rotated in the texture.
-		!#zh 获取 SpriteFrame 是否旋转 
-		*/
-		isRotated() : boolean;		
-		/** !#en Set whether the sprite frame is rotated in the texture.
-		!#zh 设置 SpriteFrame 是否旋转 
-		*/
-		setRotated(bRotated : boolean) : void;		
-		/** !#en Returns the rect of the sprite frame in the texture.
-		!#zh 获取 SpriteFrame 的纹理矩形区域 
-		*/
-		getRect() : Rect;		
-		/** !#en Sets the rect of the sprite frame in the texture.
-		!#zh 设置 SpriteFrame 的纹理矩形区域 
-		*/
-		setRect(rect : Rect) : void;		
-		/** !#en Returns the original size of the trimmed image.
-		!#zh 获取修剪前的原始大小 
-		*/
-		getOriginalSize() : Size;		
-		/** !#en Sets the original size of the trimmed image.
-		!#zh 设置修剪前的原始大小 
-		*/
-		setOriginalSize(size : Size) : void;		
-		/** !#en Returns the texture of the frame.
-		!#zh 获取使用的纹理实例 
-		*/
-		getTexture() : Texture2D;		
-		/** !#en Returns the offset of the frame in the texture.
-		!#zh 获取偏移量 
-		*/
-		getOffset() : Vec2;		
-		/** !#en Sets the offset of the frame in the texture.
-		!#zh 设置偏移量 
-		*/
-		setOffset(offsets : Vec2) : void;		
-		/** !#en Clone the sprite frame.
-		!#zh 克隆 SpriteFrame 
-		*/
-		clone() : SpriteFrame;		
-		/** #en Set SpriteFrame with Texture, rect, rotated, offset and originalSize.<br/>
-		#zh 通过 Texture，rect，rotated，offset 和 originalSize 设置 SpriteFrame 
-		*/
-		setTexture(textureOrTextureFile : string|Texture2D, rect? : Rect, rotated? : boolean, offset? : Vec2, originalSize? : Size) : boolean;		
-		/** !#en If a loading scene is marked as `asyncLoadAssets`, all the textures of the SpriteFrame which
-		associated by user's custom Components in the scene, will not preload automatically.
-		These textures will be load when Sprite component is going to render the SpriteFrames.
-		You can call this method if you want to load the texture early.
-		!#zh 当加载中的场景被标记为 `asyncLoadAssets` 时，用户在场景中由自定义组件关联到的所有 SpriteFrame 的贴图都不会被提前加载。
-		只有当 Sprite 组件要渲染这些 SpriteFrame 时，才会检查贴图是否加载。如果你希望加载过程提前，你可以手工调用这个方法。
-		
-		@example 
-		```js
-		if (spriteFrame.textureLoaded()) {
-		    this._onSpriteFrameLoaded();
-		}
-		else {
-		    spriteFrame.once('load', this._onSpriteFrameLoaded, this);
-		    spriteFrame.ensureLoadTexture();
-		}
-		``` 
-		*/
-		ensureLoadTexture() : void;	
-	}		
 		/** <p>
 		This class allows to easily create OpenGL or Canvas 2D textures from images, text or raw data.                                    <br/>
 		The created cc.Texture2D object will always have power-of-two dimensions.                                                <br/>
@@ -8548,6 +8522,108 @@ declare module cc {
 		If "key" is null, then a new texture will be created each time.</p> 
 		*/
 		addUIImage(image : HTMLImageElement|HTMLCanvasElement, key : string) : Texture2D;	
+	}		
+		/** !#en
+		A cc.SpriteFrame has:<br/>
+		 - texture: A cc.Texture2D that will be used by the _ccsg.Sprite<br/>
+		 - rectangle: A rectangle of the texture
+		
+		!#zh
+		一个 SpriteFrame 包含：<br/>
+		 - 纹理：会被 Sprite 使用的 Texture2D 对象。<br/>
+		 - 矩形：在纹理中的矩形区域。 */
+		export class SpriteFrame extends Asset {		
+		/** !#en
+		Constructor of SpriteFrame class.
+		!#zh
+		SpriteFrame 类的构造函数。
+		@param rotated Whether the frame is rotated in the texture
+		@param offset The offset of the frame in the texture
+		@param originalSize The size of the frame in the texture 
+		*/
+		SpriteFrame(filename? : string|Texture2D, rect? : Rect, rotated? : boolean, offset? : Vec2, originalSize? : Size) : void;		
+		/** !#en Top border of the sprite
+		!#zh sprite 的顶部边框 */
+		insetTop : number;		
+		/** !#en Bottom border of the sprite
+		!#zh sprite 的底部边框 */
+		insetBottom : number;		
+		/** !#en Left border of the sprite
+		!#zh sprite 的左边边框 */
+		insetLeft : number;		
+		/** !#en Right border of the sprite
+		!#zh sprite 的左边边框 */
+		insetRight : number;		
+		/** !#en Returns whether the texture have been loaded
+		!#zh 返回是否已加载纹理 
+		*/
+		textureLoaded() : boolean;		
+		/** Add a event listener for texture loaded event. 
+		*/
+		addLoadedEventListener(callback : Function, target : any) : void;		
+		/** !#en Returns whether the sprite frame is rotated in the texture.
+		!#zh 获取 SpriteFrame 是否旋转 
+		*/
+		isRotated() : boolean;		
+		/** !#en Set whether the sprite frame is rotated in the texture.
+		!#zh 设置 SpriteFrame 是否旋转 
+		*/
+		setRotated(bRotated : boolean) : void;		
+		/** !#en Returns the rect of the sprite frame in the texture.
+		!#zh 获取 SpriteFrame 的纹理矩形区域 
+		*/
+		getRect() : Rect;		
+		/** !#en Sets the rect of the sprite frame in the texture.
+		!#zh 设置 SpriteFrame 的纹理矩形区域 
+		*/
+		setRect(rect : Rect) : void;		
+		/** !#en Returns the original size of the trimmed image.
+		!#zh 获取修剪前的原始大小 
+		*/
+		getOriginalSize() : Size;		
+		/** !#en Sets the original size of the trimmed image.
+		!#zh 设置修剪前的原始大小 
+		*/
+		setOriginalSize(size : Size) : void;		
+		/** !#en Returns the texture of the frame.
+		!#zh 获取使用的纹理实例 
+		*/
+		getTexture() : Texture2D;		
+		/** !#en Returns the offset of the frame in the texture.
+		!#zh 获取偏移量 
+		*/
+		getOffset() : Vec2;		
+		/** !#en Sets the offset of the frame in the texture.
+		!#zh 设置偏移量 
+		*/
+		setOffset(offsets : Vec2) : void;		
+		/** !#en Clone the sprite frame.
+		!#zh 克隆 SpriteFrame 
+		*/
+		clone() : SpriteFrame;		
+		/** #en Set SpriteFrame with Texture, rect, rotated, offset and originalSize.<br/>
+		#zh 通过 Texture，rect，rotated，offset 和 originalSize 设置 SpriteFrame 
+		*/
+		setTexture(textureOrTextureFile : string|Texture2D, rect? : Rect, rotated? : boolean, offset? : Vec2, originalSize? : Size) : boolean;		
+		/** !#en If a loading scene is marked as `asyncLoadAssets`, all the textures of the SpriteFrame which
+		associated by user's custom Components in the scene, will not preload automatically.
+		These textures will be load when Sprite component is going to render the SpriteFrames.
+		You can call this method if you want to load the texture early.
+		!#zh 当加载中的场景被标记为 `asyncLoadAssets` 时，用户在场景中由自定义组件关联到的所有 SpriteFrame 的贴图都不会被提前加载。
+		只有当 Sprite 组件要渲染这些 SpriteFrame 时，才会检查贴图是否加载。如果你希望加载过程提前，你可以手工调用这个方法。
+		
+		@example 
+		```js
+		if (spriteFrame.textureLoaded()) {
+		    this._onSpriteFrameLoaded();
+		}
+		else {
+		    spriteFrame.once('load', this._onSpriteFrameLoaded, this);
+		    spriteFrame.ensureLoadTexture();
+		}
+		``` 
+		*/
+		ensureLoadTexture() : void;	
 	}		
 		/** A base node for CCNode and CCEScene, it will:
 		- provide the same api with origin cocos2d rendering node (SGNode)
@@ -10328,27 +10404,6 @@ declare module cc {
 	}	
 	
 	/****************************************************
-	* Node
-	*****************************************************/
-	
-	export module Node {		
-		/** !#en The event type supported by Node
-		!#zh Node 支持的事件类型 */
-		export enum EventType {			
-			TOUCH_START = 0,
-			TOUCH_MOVE = 0,
-			TOUCH_END = 0,
-			TOUCH_CANCEL = 0,
-			MOUSE_DOWN = 0,
-			MOUSE_MOVE = 0,
-			MOUSE_ENTER = 0,
-			MOUSE_LEAVE = 0,
-			MOUSE_UP = 0,
-			MOUSE_WHEEL = 0,		
-		}	
-	}	
-	
-	/****************************************************
 	* ParticleSystem
 	*****************************************************/
 	
@@ -10401,6 +10456,27 @@ declare module cc {
 			STAGGERAXIS_Y = 0,
 			STAGGERINDEX_ODD = 0,
 			STAGGERINDEX_EVEN = 0,		
+		}	
+	}	
+	
+	/****************************************************
+	* Node
+	*****************************************************/
+	
+	export module Node {		
+		/** !#en The event type supported by Node
+		!#zh Node 支持的事件类型 */
+		export enum EventType {			
+			TOUCH_START = 0,
+			TOUCH_MOVE = 0,
+			TOUCH_END = 0,
+			TOUCH_CANCEL = 0,
+			MOUSE_DOWN = 0,
+			MOUSE_MOVE = 0,
+			MOUSE_ENTER = 0,
+			MOUSE_LEAVE = 0,
+			MOUSE_UP = 0,
+			MOUSE_WHEEL = 0,		
 		}	
 	}	
 	
@@ -10607,6 +10683,7 @@ declare module cc {
 	
 	export module Layout {		
 		/** !#en Enum for Grid Layout start axis direction.
+		The items in grid layout will be arranged in each axis at first.;
 		!#zh 布局轴向，只用于 GRID 布局。 */
 		export enum AxisDirection {			
 			HORIZONTAL = 0,
@@ -10620,6 +10697,7 @@ declare module cc {
 	
 	export module Layout {		
 		/** !#en Enum for vertical layout direction.
+		 Used in Grid Layout together with AxisDirection is VERTICAL
 		!#zh 垂直方向布局方式 */
 		export enum VerticalDirection {			
 			BOTTOM_TO_TOP = 0,
@@ -10633,6 +10711,7 @@ declare module cc {
 	
 	export module Layout {		
 		/** !#en Enum for horizontal layout direction.
+		 Used in Grid Layout together with AxisDirection is HORIZONTAL
 		!#zh 水平方向布局方式 */
 		export enum HorizontalDirection {			
 			LEFT_TO_RIGHT = 0,
@@ -10646,12 +10725,24 @@ declare module cc {
 	
 	export module Mask {		
 		/** !#en the type for mask.
-		!#zh 遮罩组件的类型 */
+		!#zh 遮罩组件类型 */
 		export enum Type {			
 			RECT = 0,
 			ELLIPSE = 0,
-			type = 0,
-			segements = 0,		
+			IMAGE_STENCIL = 0,		
+		}	
+	}	
+	
+	/****************************************************
+	* PageView
+	*****************************************************/
+	
+	export module PageView {		
+		/** !#en The Page View Size Mode
+		!#zh 页面视图每个页面统一的大小类型 */
+		export enum SizeMode {			
+			Unified = 0,
+			Free = 0,		
 		}	
 	}	
 	
@@ -10844,37 +10935,6 @@ declare module cc {
 	*****************************************************/
 	
 	export module Event {			
-			/** !#en The Custom event
-			!#zh 自定义事件 */
-			export class EventCustom extends Event {			
-			/** 
-			@param type The name of the event (case-sensitive), e.g. "click", "fire", or "submit"
-			@param bubbles A boolean indicating whether the event bubbles up through the tree or not 
-			*/
-			EventCustom(type : string, bubbles : boolean) : EventCustom;			
-			/** !#en A reference to the detailed data of the event
-			!#zh 事件的详细数据 */
-			detail : any;			
-			/** !#en Sets user data
-			!#zh 设置用户数据 
-			*/
-			setUserData(data : any) : void;			
-			/** !#en Gets user data
-			!#zh 获取用户数据 
-			*/
-			getUserData() : any;			
-			/** !#en Gets event name
-			!#zh 获取事件名称 
-			*/
-			getEventName() : string;		
-		}	
-	}	
-	
-	/****************************************************
-	* Event
-	*****************************************************/
-	
-	export module Event {			
 			/** !#en The mouse event
 			!#zh 鼠标事件类型 */
 			export class EventMouse extends Event {			
@@ -11033,6 +11093,37 @@ declare module cc {
 			KEY_DOWN = 0,
 			KEY_UP = 0,
 			DEVICEMOTION = 0,		
+		}	
+	}	
+	
+	/****************************************************
+	* Event
+	*****************************************************/
+	
+	export module Event {			
+			/** !#en The Custom event
+			!#zh 自定义事件 */
+			export class EventCustom extends Event {			
+			/** 
+			@param type The name of the event (case-sensitive), e.g. "click", "fire", or "submit"
+			@param bubbles A boolean indicating whether the event bubbles up through the tree or not 
+			*/
+			EventCustom(type : string, bubbles : boolean) : EventCustom;			
+			/** !#en A reference to the detailed data of the event
+			!#zh 事件的详细数据 */
+			detail : any;			
+			/** !#en Sets user data
+			!#zh 设置用户数据 
+			*/
+			setUserData(data : any) : void;			
+			/** !#en Gets user data
+			!#zh 获取用户数据 
+			*/
+			getUserData() : any;			
+			/** !#en Gets event name
+			!#zh 获取事件名称 
+			*/
+			getEventName() : string;		
 		}	
 	}	
 	

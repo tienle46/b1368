@@ -26,17 +26,13 @@ export default class CellRub {
      *  width: number
      *  height: number
      *  fontColor: new cc.Color
+     *  font: cc.Font
      *  fontSize: number
      *  fontLineHeight: number
      *  horizontalSeparate: {
      *      pattern: string || cc.Color,
      *      size: cc.size(),
      *      align: string # 'left' | 'full' | 'right' | 'none' # default 'full'
-     *  }
-     *  verticalSeparate: {
-     *      pattern: string || cc.Color,
-     *      size: cc.size(),
-     *      align: string # 'top' | 'full' | 'bottom' | 'none' # default 'full'
      *  }
      *  // TODO 
      *  button & clickEvent handler when cell contains button. button with/without label
@@ -53,8 +49,7 @@ export default class CellRub {
             fontColor: app.const.COLOR_YELLOW, // # yellow
             fontSize: 16,
             fontLineHeight: 20,
-            horizontalSeparate: null,
-            verticalSeparate: null
+            horizontalSeparate: null
         };
 
         this.options = Object.assign({}, defaultOptions, opts);
@@ -130,10 +125,6 @@ export default class CellRub {
         if (this.options.horizontalSeparate && this.options.horizontalSeparate.align !== 'none') {
             this._initHorizontalSeparate(this.cellNode);
         }
-        // if hasVerticalSeparate
-        if (this.options.verticalSeparate && this.options.verticalSeparate.align !== 'none') {
-            this._initVerticalSeparate(this.cellNode);
-        }
     }
 
     _initHorizontalSeparate(parentNode) {
@@ -173,10 +164,6 @@ export default class CellRub {
 
 
         parentNode.addChild(this.horizontalSeparateNode);
-    }
-
-    _initVerticalSeparate(parentNode) {
-
     }
 
     _initButton(parentNode) {
@@ -235,24 +222,9 @@ export default class CellRub {
             }
         };
 
+        this.options.font && (nodeOptions.richtext.font = this.options.font);
+
         let lblNode = NodeRub.createNodeByOptions(nodeOptions);
-
-        // let lbl = lblNode.addComponent(cc.Label);
-        // lbl.string = this.cell instanceof Object ? this.cell.text : this.cell;
-        // lbl.node.color = this.options.fontColor;
-        // lbl.horizontalAlign = cc.Label.HorizontalAlign.CENTER;
-        // lbl.verticalAlign = cc.Label.VerticalAlign.CENTER;
-        // lbl.fontSize = this.options.fontSize;
-        // lbl.lineHeight = this.options.fontLineHeight;
-        // lbl.overflow = cc.Label.Overflow.RESIZE_HEIGHT;
-
-        // let rich = lblNode.addComponent(cc.RichText);
-        // rich.node.color = this.options.fontColor;
-        // rich.maxWidth = (parentNode.getContentSize().width - 10);
-        // rich.fontSize = this.options.fontSize;
-        // rich.lineHeight = this.options.fontLineHeight;
-        // rich.horizontalAlign = cc.RichText.HorizontalAlign.CENTER;
-        // rich.string = this.cell instanceof Object ? this.cell.text : this.cell;
 
         parentNode.addChild(lblNode);
     }

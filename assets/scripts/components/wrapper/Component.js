@@ -18,7 +18,9 @@ export default class Component {
         this.loadedAssets.push(asset);
     }
 
-    onLoad() {}
+    onLoad() {
+        console.debug('textureCache', cc.textureCache.getAllTextures().length);
+    }
 
     start() {
 

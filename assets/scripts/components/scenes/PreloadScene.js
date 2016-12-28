@@ -46,7 +46,7 @@ class PreloadScene extends Component {
 
         app.async.parallel(resources.map((res) => {
             return (callback) => {
-                cc.loader.loadRes(res.dir, (err, prefab) => {
+                cc.loader.loadRes(res.dir, res.type || cc.Prefab, (err, prefab) => {
                     app.res.prefab[res.name] = prefab;
                     prefab ? callback(null, true) : callback();
                 });

@@ -1,7 +1,6 @@
 import DialogRub from 'DialogRub';
 import ExchangeDialog from 'ExchangeDialog';
 import RubUtils from 'RubUtils';
-import AlertPopupRub from 'AlertPopupRub';
 import app from 'app';
 
 export default class ExchangeDialogRub extends DialogRub {
@@ -74,7 +73,9 @@ export default class ExchangeDialogRub extends DialogRub {
 
         // invalid phone number
         if (!phoneNumber || isNaN(Number(phoneNumber)) || phoneNumber.length < 8) {
-            AlertPopupRub.show(this.node, 'Số điện thoại không hợp lệ');
+            app.system.error(
+                app.res.string('error_phone_number_is_invalid')
+            );
         } else {
             let data = {};
             data[app.keywords.PHONE_NUMBER] = phoneNumber;
@@ -85,11 +86,14 @@ export default class ExchangeDialogRub extends DialogRub {
 
             app.service.send(sendObject, (data) => {
                 if (data[app.keywords.RESPONSE_RESULT]) {
-                    AlertPopupRub.show(this.node, 'Xác nhận số điện thoại thành công.', function() {
-                        this._toggleBody();
-                    }.bind(this));
+                    app.system.info(
+                        app.res.string('phone_number_confirmation')
+                    );
+                    // this._toggleBody();
                 } else {
-                    AlertPopupRub.show(this.node, 'Có lỗi xảy ra !');
+                    app.system.error(
+                        app.res.string('error_system')
+                    );
                 }
             });
         }
