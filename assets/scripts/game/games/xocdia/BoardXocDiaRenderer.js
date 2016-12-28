@@ -30,7 +30,7 @@ export default class BoardXocDiaRenderer extends BoardRenderer {
     }
 
     displayResultFromDots(dots) {
-        console.debug('getResultTextFromDots', dots);
+        debug('getResultTextFromDots', dots);
         //0: even, 1: odd
         let evenCount = 0;
         for (let i = 0; i < dots.length; i++) {

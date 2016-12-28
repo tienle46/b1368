@@ -124,7 +124,7 @@ export default class XocDiaControls extends GameControls {
     }
 
     onX2BtnClick(event) {
-        console.debug('onX2BtnClick', this.betData);
+        debug('onX2BtnClick', this.betData);
         if (this._getCurrentUserGold() - this._getTotalGoldUserBettedInBoard() < 0) {
             app.system.error('Không đủ tiền để tiếp tục cược !');
             return;
@@ -143,7 +143,7 @@ export default class XocDiaControls extends GameControls {
     }
 
     onReBetBtnClick() {
-        console.debug('onReBetBtnClick > this.previousBetData.', this.previousBetData)
+        debug('onReBetBtnClick > this.previousBetData.', this.previousBetData)
         if (this._getRealUserGold() - this._getPreviousUserGold() < 0) {
             app.system.error('Không đủ tiền để tiếp tục cược !');
             return;
@@ -332,7 +332,7 @@ export default class XocDiaControls extends GameControls {
     }
 
     _onGameStarting(data, isJustJoined) {
-        console.debug('_onGameStarting', data, isJustJoined);
+        debug('_onGameStarting', data, isJustJoined);
         // update betOptions lbls
         this._setBetOptionsLblsByRoomBet();
         // update usergold to controls
@@ -343,12 +343,12 @@ export default class XocDiaControls extends GameControls {
     }
 
     _onGamePlaying(data, isJustJoined) {
-        console.debug('_onGamePlaying', data, isJustJoined);
+        debug('_onGamePlaying', data, isJustJoined);
         this._hideGameBeginControls();
     }
 
     _onGameEnding(data, isJustJoined) {
-        console.debug('_onGameEnding data.b', data.b, this.previousBetData, this.betData);
+        debug('_onGameEnding data.b', data.b, this.previousBetData, this.betData);
         // save previous data before empty it 
         this.previousBetData = this.betData;
 
@@ -392,7 +392,7 @@ export default class XocDiaControls extends GameControls {
     }
 
     _setBetOptionsLblsByRoomBet() {
-        console.debug('_setBetOptionsLblsByRoomBet');
+        debug('_setBetOptionsLblsByRoomBet');
         this.betOptionsGroup.setLblOptions(this.scene.room.variables[app.keywords.ROOM_BET].value);
     }
 

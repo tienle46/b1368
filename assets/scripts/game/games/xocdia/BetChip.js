@@ -22,7 +22,7 @@ class BetChip extends Component {
     }
 
     onDestroy() {
-        console.debug('child-destroyed');
+        debug('child-destroyed');
     }
 
     initChip({ amount, color, size } = { amount: 1, color: app.const.COLOR_BLACK, size: cc.size(20, 20) }) {

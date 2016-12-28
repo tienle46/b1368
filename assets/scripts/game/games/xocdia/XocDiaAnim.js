@@ -56,7 +56,7 @@ export default {
     },
     clearPlayerChip: (playerId) => {
         totalChipOnPlayer[playerId] = 0;
-        console.debug(cc.director.getScene().children.filter((child) => (child.name == 'miniChip') && (child.playerId == playerId)));
+        debug(cc.director.getScene().children.filter((child) => (child.name == 'miniChip') && (child.playerId == playerId)));
         cc.director.getScene().children.filter((child) => (child.name == 'miniChip') && (child.playerId == playerId)).map((chip) => {
             chip.destroy();
         });
