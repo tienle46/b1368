@@ -53,7 +53,6 @@ let RubUtils = {
 
         if (isCORS) {
             textureCache = cc.textureCache.addImage(resURL);
-            console.debug('textureCache', cc.textureCache.description());
             let spriteFrame = new cc.SpriteFrame(textureCache);
             spriteComponent.spriteFrame = spriteFrame;
             spriteFrameDefaultConfig(spriteComponent);
@@ -65,7 +64,7 @@ let RubUtils = {
             });
         }
     },
-    calcWidthByGroup: (parentWidth, widths = [], spaceX = 0, padding = 0) => {
+    calcWidthByGroup: (parentWidth, widths = [], spaceX = 0) => {
         // parentWidth -= 2 * padding;
         // ['', '10%', 30, '']
         widths = widths.map((width) => {

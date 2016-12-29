@@ -59,10 +59,10 @@ export default class ScrollViewRub {
     constructor(data, opts = {}) {
         let defaultOptions = {
             position: cc.v2(0, 0),
-            width: 585,
-            height: 200,
-            spacingX: 1,
-            spacingY: 1,
+            width: 850,
+            height: 425,
+            spacingX: 0,
+            spacingY: 0,
             padding: 0,
             isHorizontal: false,
             isVertical: true,

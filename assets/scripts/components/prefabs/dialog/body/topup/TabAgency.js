@@ -13,16 +13,10 @@ class TabAgency extends Component {
 
     onLoad() {
         super.onLoad();
-        this._initAgencyTab();
+        this._getAgencyDataFromServer();
     }
 
-    _initAgencyTab() {
-        let event = new cc.Component.EventHandler();
-        event.target = this.node;
-        event.component = 'BottomBar';
-        event.handler = 'testClick';
-
-
+    _getAgencyDataFromServer() {
         let agencyTab = new GridViewRub({
             data: ['TGLV', 'Đại lý', 'Số DT', 'Địa chỉ', 'facebook'],
             options: {
@@ -41,17 +35,10 @@ class TabAgency extends Component {
             }
         });
 
-        this._getAgencyDataFromServer(agencyTab);
-
-        this.bodyNode.addChild(agencyTab.getNode());
-    }
-
-    _getAgencyDataFromServer(agencyTab) {
         let sendObj = {
             cmd: app.commands.AGENCY
         };
 
-        console.log(sendObj);
         let faker = {
             "agents": [{
                     "work_shift": "1.24/24h",
@@ -117,24 +104,10 @@ class TabAgency extends Component {
             agencyTab.resetData(data, true);
         }
 
+        this.bodyNode.addChild(agencyTab.getNode());
+
         app.service.send(sendObj, (res) => {
             console.debug(res)
-                // if (res) {
-                //     let gameListCol = res[app.keywords.GAME_NAME_LIST] || [];
-                //     let levelCol = res[app.keywords.LEVEL_LIST].map((e) => `Cấp độ ${e}`) || [];
-                //     // let levelCol = res[app.keywords.LEVEL_TITLE_LIST]|| []; 
-                //     let winLostCol = res[app.keywords.WIN_LIST].map((e, i) => `${e}/${res[app.keywords.LOST_LIST][i]}`) || [];
-
-            //     let data = [
-            //         gameListCol,
-            //         levelCol,
-            //         winLostCol,
-            //     ];
-
-            //     if (agencyTab)
-            //         agencyTab.resetData(data);
-            // }
-
         });
     }
 }

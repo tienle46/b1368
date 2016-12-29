@@ -123,6 +123,7 @@ app.const.COLOR_RED = new cc.Color(255, 0, 0);
 app.const.COLOR_ORANGE = new cc.Color(255, 155, 0);
 app.const.COLOR_GREEN = new cc.Color(100, 173, 45);
 app.const.COLOR_BLACK = new cc.Color(0, 0, 0);
+app.const.COLOR_GRAY = new cc.Color(174, 174, 174);
 
 app.const.adminMessage = {}
 app.const.adminMessage.MANUAL_DISMISS = 4;
