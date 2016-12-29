@@ -141,6 +141,7 @@ class Service {
     }
 
     _onRoomRemove(event) {
+        console.log("remove remove: ", event)
         app.system.emit(SFS2X.SFSEvent.ROOM_REMOVE, event);
     }
 

@@ -30,7 +30,7 @@ export default class BaseControls extends GameControls {
         this.node.on('touchstart', (event) => true);
 
         this.scene.on(Events.ON_PLAYER_READY_STATE_CHANGED, this._onPlayerSetReadyState, this);
-        this.scene.on(Events.SHOW_START_GAME_CONTROL, this._showStartGamconseControl, this);
+        this.scene.on(Events.SHOW_START_GAME_CONTROL, this._showStartGameControl, this);
     }
 
     onClickReadyButton() {
