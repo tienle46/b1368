@@ -284,7 +284,7 @@ export default class GameEventHandler {
 
     _handleGameStateChange(data) {
         let state = utils.getValue(data, app.keywords.BOARD_STATE_KEYWORD);
-        state && this.scene.emit(Events.ON_GAME_STATE_CHANGE, state, data);
+        utils.isNumber(state) && this.scene.emit(Events.ON_GAME_STATE_CHANGE, state, data);
     }
 
     _handleSystemMessage(data) {

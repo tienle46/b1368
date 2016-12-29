@@ -73,6 +73,7 @@ export default class Board extends Actor {
             this.state = app.const.game.state.BEGIN;
         }
 
+        this.scene.on(Events.ON_GAME_RESET, this.onGameReset, this);
         this.scene.on(Events.ON_GAME_STATE_PRE_CHANGE, this.handleGameStateChange, this, 0);
         this.scene.on(Events.ON_GAME_STATE_BEGIN, this.onBoardBegin, this, 0);
         this.scene.on(Events.ON_GAME_STATE_STARTING, this.onBoardStarting, this, 0);
@@ -274,6 +275,10 @@ export default class Board extends Actor {
     _reset() {
         this.scene.hideGameResult();
         this.renderer && this.renderer._reset();
+    }
+
+    onGameReset(){
+        this._reset();
     }
 
     onBoardBegin(data = {}, isJustJoined) {

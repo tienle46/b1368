@@ -47,6 +47,7 @@ export default class PlayerPositions extends Component {
 
 
         this.scene = app.system.currentScene;
+        this.scene.on(Events.ON_GAME_RESET, this._onGameReset, this);
         this.scene.on(Events.ON_GAME_STATE_BEGIN, this._onGameBegin, this);
         this.scene.on(Events.ON_GAME_STATE_STARTING, this._onGameStarting, this);
         this.scene.on(Events.ON_GAME_STATE_STARTED, this._onGameStarted, this);
@@ -70,9 +71,17 @@ export default class PlayerPositions extends Component {
         app.system.showToast(app.res.string('random_invite_player_successfully'));
     }
 
-    _onGameBegin(data, isJustJoined) {
+    _onGameReset(){
+        this._showInviteButtonOnBegin();
+    }
+
+    _showInviteButtonOnBegin(){
         let hidingAnchorIndexes = this.scene.gamePlayers.players.map(player => player.anchorIndex);
         this.showAllInviteButtons(hidingAnchorIndexes);
+    }
+
+    _onGameBegin(data, isJustJoined) {
+        this._showInviteButtonOnBegin();
     }
 
     _onGameStarting(data, isJustJoined) {

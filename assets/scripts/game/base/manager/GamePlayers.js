@@ -42,7 +42,7 @@ export default class GamePlayers extends Component {
         this.board = this.scene.board;
         this.gameCode = (this.board && this.board.gameCode) || (app.config.test ? "tnd" : "");
         this.playerPositions = this.scene.playerPositions;
-        this._reset();
+        this._initGamePlayerProperties();
         this.initPlayers();
 
         this.scene.on(Events.ON_USER_EXIT_ROOM, this._onUserExitGame, this);
@@ -148,7 +148,7 @@ export default class GamePlayers extends Component {
         return playingPlayerIds;
     }
 
-    _reset() {
+    _initGamePlayerProperties() {
         this.me = null;
         this.players = [];
         this.exittedPlayers = [];
