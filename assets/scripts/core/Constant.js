@@ -114,7 +114,7 @@ app.const.DYNAMIC_NODE_TYPE_DETAIL = 2;
 app.const.DYNAMIC_NODE_TYPE_USER = 3;
 
 // ============================ COLORS ============================
-app.const.COLOR_YELLOW = new cc.Color(246, 255, 41);
+app.const.COLOR_YELLOW = new cc.Color(246, 213, 51);
 app.const.HX_COLOR_YELLOW = cc.colorToHex(app.const.COLOR_YELLOW); //'#F6FF29';
 app.const.COLOR_VIOLET = new cc.Color(68, 25, 97);
 app.const.COLOR_WHITE = new cc.Color(255, 255, 255);

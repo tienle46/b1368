@@ -69,13 +69,16 @@ let NodeRub = {
         let label = node.getComponent(cc.Label) || node.addComponent(cc.Label);
         label.string = options.text || '';
         options.font && RubUtils.loadFont(label, options.font);
+
+        options.outline && (NodeRub.addOutlineComponentToNode(node, options.outline));
+
+        delete options.outline;
         delete options.font;
         delete options.text;
         for (let key in options) {
             label[key] = options[key];
         }
-
-        options.outline && (NodeRub.addOutlineComponentToNode(node, options.outline));
+        node.getLineCount = () => label._lineCount;
     },
     /**
      * @param options
@@ -98,25 +101,27 @@ let NodeRub = {
         rich.string = options.text || '';
         options.font && RubUtils.loadFont(rich, options.font);
 
+        options.outline && NodeRub.addOutlineComponentToNode(node, options.outline);
+
+        delete options.outline;
         delete options.text;
         delete options.font;
+
         for (let key in options) {
             rich[key] = options[key];
         }
 
-        options.outline && (NodeRub.addOutlineComponentToNode(node, options.outline));
         node.getLineCount = () => rich._lineCount;
     },
     /**
      * @param options
-     * color: cc.color
+     * color: new cc.color
      * width: number
      */
     addOutlineComponentToNode: (node, options = {}) => {
         let outline = node.getComponent(cc.LabelOutline) || node.addComponent(cc.LabelOutline);
-        for (let key in options) {
-            outline[key] = options[key];
-        }
+        outline.color = options.color;
+        outline.width = options.width;
     },
     /**
      * @param options
@@ -356,7 +361,7 @@ let NodeRub = {
      *          verticalAlign: # default cc.Label.VerticalAlign.CENTER
      *          overflow: # default.cc.Label.Overflow.CLAMP,
      *          enableWrapText: boolean # default: true,
-     *          hasOutline: boolean
+     *          outline: {color, width}
      *      },
      *      richtext: {
      *          fontSize: number,

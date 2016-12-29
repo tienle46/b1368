@@ -62,12 +62,15 @@ class TabExchangeHistory extends Component {
                     }
                 }),
                 res[app.keywords.EXCHANGE_HISTORY.RESPONSE.STATUS_LIST].map((status) => {
+                    let width = 150;
+                    let height = 70;
+
                     switch (status) {
                         case 1:
                         case 2:
-                            return { text: 'NHẬN LẠI CHIP', button: { eventHandler: null, width: 150, height: 45 } };
+                            return { text: 'NHẬN LẠI CHIP', button: { eventHandler: null, width, height } };
                         case 3:
-                            return { text: 'NẠP VÀO GAME', button: { eventHandler: null, width: 150, height: 45 } };
+                            return { text: 'NẠP VÀO GAME', button: { eventHandler: null, width, height } };
                         default:
                             return '';
                     }
@@ -82,18 +85,18 @@ class TabExchangeHistory extends Component {
         let head = {
             data: ['Thời gian', 'Loại vật phẩm', 'Thông tin', ''],
             options: {
-                font: 'fonts/newFonts/ICIELPANTON-BLACK',
                 fontColor: app.const.COLOR_YELLOW,
                 fontSize: 25
             }
         };
         let node = new GridViewRub(head, d, {
-            width: 870,
+            width: 850,
             height: 425,
             spacingX: 0,
             spacingY: 0,
             cell: {
-                font: 'fonts/newFonts/ICIELPANTON-BLACK',
+                height: 80,
+                fontLineHeight: 80,
             }
         }).getNode();
         this.bodyNode.addChild(node);

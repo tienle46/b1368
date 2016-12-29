@@ -45,10 +45,8 @@ export default class GridViewRub extends ScrollViewRub {
      *  @required position: cc.v2() # default : cc.v2(0, 0);
      *  @required width: number # grid width 
      *  @required height: number # grid height
-     *  isHorizontal: boolean # default false
-     *  isVertical: boolean # default true
      *  @required spacingX: number # default 2px
-     *  @required spacingY: boolean # default 2px
+     *  @required spacingY: number # default 2px
      *  dataValidated: boolean # sometimes we dont need to validate our getted data # default: false
      *  group: {
      *      widths: array[number || null] # array of width per cell ['', 500, 20]
@@ -72,16 +70,6 @@ export default class GridViewRub extends ScrollViewRub {
      *      fontColor: new cc.Color
      *      fontSize: number
      *      fontLineHeight: number,
-     *      horizontalSeparate: {
-     *          pattern: string || cc.Color,
-     *          size: cc.size()
-     *          align: string
-     *      }
-     *      verticalSeparate: {
-     *          pattern: string || cc.Color,
-     *          size: cc.size(),
-     *          align: string
-     *      }
      *  }
      * }
      * 
@@ -91,14 +79,12 @@ export default class GridViewRub extends ScrollViewRub {
         super(data, opts);
         // CellRub default options
         let cell = Object.assign({}, {
-            bgColor: app.const.COLOR_VIOLET, // # violet
             width: 100,
-            height: 50,
-            fontColor: app.const.COLOR_WHITE, // # yellow
-            fontSize: 16,
-            fontLineHeight: 40,
-            horizontalSeparate: null,
-            verticalSeparate: null
+            height: 60,
+            fontColor: app.const.COLOR_WHITE,
+            fontSize: 18,
+            fontLineHeight: 60,
+            font: 'fonts/newFonts/ICIELPANTON-BLACK'
         }, opts.cell || {});
 
         let defaultOptions = {
@@ -200,10 +186,11 @@ export default class GridViewRub extends ScrollViewRub {
         for (let i = 0; i < data.length; i++) {
             let rowHeight = this.options.cell.height;
             let cellsInRow = [];
+            let isEven = i % 2 === 0;
 
             for (let j = 0; j < data[i].length; j++) {
-                let jMax = data[i].length - 1;
                 let cellOpts = Object.assign({}, this.options.cell);
+                isEven && (cellOpts.spriteFrame = 'blueTheme/general/dialog/cell-bg');
                 cellOpts.width = width[j];
                 let cell = data[i][j];
                 let isNode = cell instanceof cc.Node;
@@ -227,21 +214,6 @@ export default class GridViewRub extends ScrollViewRub {
                                 }
                             }
                         }
-                    }
-
-                    // add separate if any.   
-                    if (cellOpts.horizontalSeparate) {
-                        let separateWidth = (j === 0 || j === jMax ? 80 : 100) * cellOpts.width / 100;
-                        cellOpts.horizontalSeparate.size = cc.size(separateWidth, cellOpts.horizontalSeparate.size ? cellOpts.horizontalSeparate.size.height : 2);
-                        if (j === 0)
-                            cellOpts.horizontalSeparate.align = 'right';
-                        else if (j === jMax)
-                            cellOpts.horizontalSeparate.align = 'left';
-                        else
-                            cellOpts.horizontalSeparate.align = 'full';
-
-                        if (i === data.length - 1)
-                            cellOpts.horizontalSeparate.align = 'none';
                     }
                 }
 
@@ -270,22 +242,6 @@ export default class GridViewRub extends ScrollViewRub {
         let spacingX = this.options.spacingX;
         let parentWidth = this.getContentNodeWidth();
         return RubUtils.calcWidthByGroup(parentWidth, groupWidth, spacingX, padding);
-
-        // if (this.options.group.widths) {
-        // let groupWidth = this.options.group.widths;
-        //     // total width inside array
-        //     let totalWidth = groupWidth.reduce((p, n) => !isNaN(p) && (Number(p) + Number(n)));
-        //     // length of remaining array which cotains null -> ["", ""]
-        //     let remains = groupWidth.filter((e) => !isNaN(e) && Number(e) === 0).length;
-        //     // remaining width for null array, it will be equally divided.
-        //     let n = this.getContentNodeWidth() > totalWidth ? this.getContentNodeWidth() - totalWidth : 0;
-
-        //     return groupWidth.map((e) => (!isNaN(e) && Number(e) === 0 && n / remains - this.options.spacingX - this.CONTENT_NODE_HORIZONTAL_PADDING / groupWidth.length) || e - this.options.spacingX - this.CONTENT_NODE_HORIZONTAL_PADDING / groupWidth.length);
-
-        // } else {
-        // let numberOfColumns = this.data[0] ? this.data[0].length : 0; // converted this.data 
-        //     return new Array(numberOfColumns).fill(0).map(() => this.getContentNodeWidth() / numberOfColumns - this.options.spacingX);
-        // }
     }
 
     /**

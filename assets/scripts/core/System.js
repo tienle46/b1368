@@ -200,7 +200,7 @@ class GameSystem {
 
     _addLoaderToScene() {
         if (this.loader) {
-            this.loader.destroy();
+            this.loader.isValid() && this.loader.destroy();
             this.loader = null;
         }
         this.loader = new LoaderRub(this._currentScene);

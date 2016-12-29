@@ -22,18 +22,12 @@ export default class CellRub {
      * @param {any} [options={}]
      * {
      *  spriteFrame: string
-     *  bgColor: new cc.Color
      *  width: number
      *  height: number
      *  fontColor: new cc.Color
      *  font: cc.Font
      *  fontSize: number
      *  fontLineHeight: number
-     *  horizontalSeparate: {
-     *      pattern: string || cc.Color,
-     *      size: cc.size(),
-     *      align: string # 'left' | 'full' | 'right' | 'none' # default 'full'
-     *  }
      *  // TODO 
      *  button & clickEvent handler when cell contains button. button with/without label
      * }
@@ -43,13 +37,12 @@ export default class CellRub {
      */
     constructor(cell, opts = {}) {
         let defaultOptions = {
-            bgColor: app.const.COLOR_VIOLET, // # violet
             width: 100,
-            height: 50,
+            height: 60,
             fontColor: app.const.COLOR_YELLOW, // # yellow
-            fontSize: 16,
-            fontLineHeight: 20,
-            horizontalSeparate: null
+            fontSize: 18,
+            fontLineHeight: 60,
+            font: 'fonts/newFonts/helveticaneue2'
         };
 
         this.options = Object.assign({}, defaultOptions, opts);
@@ -83,13 +76,13 @@ export default class CellRub {
             size.height = height;
             // resize
             let cellSprite = this.cellNode.getComponent(cc.Sprite);
-            RubUtils.loadSpriteFrame(cellSprite, this.options.spriteFrame || 'textures/50x50', size);
+            if (cellSprite) {
+                RubUtils.loadSpriteFrame(cellSprite, this.options.spriteFrame, size);
+            } else {
+                this.cellNode.setContentSize(size);
+            }
         }
     }
-
-    // resettingHorizontalSeparate(width) {
-
-    // }
 
     _addNodeToCell(node) {
         this.cellNode && this.cellNode.addChild(cc.instantiate(node));
@@ -108,62 +101,16 @@ export default class CellRub {
 
         let lblChildNode = this.cellNode.getChildByName('label');
         if (lblChildNode) {
-            if (lblChildNode.getLineCount() > 1)
+            if (lblChildNode.getLineCount() > 1) {
                 this.cellNode.height *= lblChildNode.getLineCount() * 3 / 2;
+            }
         }
 
         size.height = this.cellNode.height;
-        let cellSprite = this.cellNode.addComponent(cc.Sprite);
-        RubUtils.loadSpriteFrame(cellSprite, this.options.spriteFrame || 'textures/50x50', size);
-
-        if (!this.options.spriteFrame) {
-            // fill color to sprite
-            cellSprite.node.color = this.options.bgColor;
+        if (this.options.spriteFrame) {
+            let cellSprite = this.cellNode.addComponent(cc.Sprite);
+            RubUtils.loadSpriteFrame(cellSprite, this.options.spriteFrame, size);
         }
-
-        // if hasHorizontalSeparate
-        if (this.options.horizontalSeparate && this.options.horizontalSeparate.align !== 'none') {
-            this._initHorizontalSeparate(this.cellNode);
-        }
-    }
-
-    _initHorizontalSeparate(parentNode) {
-        this.horizontalSeparateNode = new cc.Node();
-        this.horizontalSeparateNode.setPosition(cc.v2(0, 0));
-
-        let nodeSize = this.options.horizontalSeparate.size || cc.size(parentNode.getContentSize().width, 2); // width: cellWidth, height: 2px
-        this.horizontalSeparateNode.setContentSize(nodeSize);
-
-        let nodeSprite = this.horizontalSeparateNode.addComponent(cc.Sprite);
-        RubUtils.loadSpriteFrame(nodeSprite, typeof this.options.horizontalSeparate.pattern === 'string' ? this.options.horizontalSeparate.pattern : 'textures/50x50', nodeSize, false, (sprite) => {
-            if (this.options.horizontalSeparate.pattern instanceof cc.Color) {
-                sprite.node.color = this.options.horizontalSeparate.pattern;
-            }
-        });
-
-        let nodeWidget = this.horizontalSeparateNode.addComponent(cc.Widget);
-        nodeWidget.isAlignOnce = false;
-        nodeWidget.isAlignBottom = true;
-        nodeWidget.bottom = 0;
-        switch (this.options.horizontalSeparate.align) {
-            case 'left':
-                nodeWidget.isAlignLeft = true;
-                nodeWidget.left = 0;
-                break;
-            case 'right':
-                nodeWidget.isAlignRight = true;
-                nodeWidget.right = 0;
-                break;
-            default:
-                nodeWidget.isAlignLeft = true;
-                nodeWidget.isAlignRight = true;
-                nodeWidget.left = 0;
-                nodeWidget.right = 0;
-                break;
-        }
-
-
-        parentNode.addChild(this.horizontalSeparateNode);
     }
 
     _initButton(parentNode) {
@@ -176,8 +123,9 @@ export default class CellRub {
             size = cc.size(this.cell.button.width, this.cell.button.height);
         } else {
             // = 1/2 cell's width, = 3/4 cell's height
-            size = cc.size(parentNode.getContentSize().width / 2, 3 * parentNode.getContentSize().height / 4);
+            size = cc.size(this.cell.button.width || parentNode.getContentSize().width / 2, this.cell.button.height || 3 * parentNode.getContentSize().height / 4);
         }
+
         btnNode.setContentSize(size);
 
         let btnBtn = btnNode.addComponent(cc.Button);
@@ -187,7 +135,7 @@ export default class CellRub {
 
         // sprite
         let btnSprite = btnNode.addComponent(cc.Sprite);
-        let defaultBtnSpriteFrameURL = 'game/images/ingame_green_btn';
+        let defaultBtnSpriteFrameURL = 'blueTheme/general/buttons/ninePaths/btn-xanhla';
         RubUtils.loadSpriteFrame(btnSprite, this.cell.button.spriteFrame || defaultBtnSpriteFrameURL, btnNode.getContentSize());
 
         // event
@@ -203,12 +151,12 @@ export default class CellRub {
 
         // label
         if (this.cell.text) {
-            this._initLabel(btnNode);
+            this._initLabel(btnNode, true);
         }
 
     }
 
-    _initLabel(parentNode) {
+    _initLabel(parentNode, isInsideBtn = false) {
         let nodeOptions = {
             name: 'label',
             color: this.options.fontColor,
@@ -219,7 +167,7 @@ export default class CellRub {
                 lineHeight: this.options.fontLineHeight,
                 horizontalAlign: cc.RichText.HorizontalAlign.CENTER,
                 text: this.cell instanceof Object ? this.cell.text : this.cell,
-                font: this.options.font,
+                font: isInsideBtn ? 'fonts/newFonts/ICIELPANTON-BLACK' : this.options.font,
                 outline: {
                     color: app.const.COLOR_BLACK,
                     width: 1.5

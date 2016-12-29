@@ -166,7 +166,7 @@ export default class ListItemBasicRub {
                 if (options.size && options.size.height && options.size.height > this.itemNode.getContentSize().height) {
                     let newSize = cc.size(this.itemNode.getContentSize().width, options.size.height + ((options.align && (options.align.top || 10) + (options.align.bottom || 10)) || 20));
                     // resize parent height.
-                    this._resizeHeight(this.itemNode.getComponent(cc.Sprite), newSize);
+                    this._resizeHeight(this.itemNode, newSize);
                 }
             } else {
                 let defaultElement = {
@@ -183,7 +183,7 @@ export default class ListItemBasicRub {
                 if (element.size && element.size.height && element.size.height > this.itemNode.getContentSize().height) {
                     let newSize = cc.size(this.itemNode.getContentSize().width, element.size.height + (element.align.top || 10) + (element.align.top || 10));
                     // resize parent height.
-                    this._resizeHeight(this.itemNode.getComponent(cc.Sprite), newSize);
+                    this._resizeHeight(this.itemNode, newSize);
                 }
 
                 node = this._createElement(element);
@@ -259,7 +259,7 @@ export default class ListItemBasicRub {
             size: cc.size(this.options.contentWidth, this.options.height),
             color: this.options.color || null,
             sprite: {
-                spriteFrame: this.options.spriteFrame || 'textures/50x50'
+                spriteFrame: this.options.spriteFrame
             },
             widget: {
                 left: this.options.padding || 0,
@@ -375,7 +375,7 @@ export default class ListItemBasicRub {
                 let sprite = parent.getComponent(cc.Sprite);
                 if (sprite) {
                     parentSize.height += lineCount * opts.fontLineHeight - (opts.align.top || 15) - (opts.align.bottom || 15);
-                    this._resizeHeight(sprite, parentSize);
+                    this._resizeHeight(sprite.node, parentSize);
                 }
             }
         }
@@ -394,13 +394,21 @@ export default class ListItemBasicRub {
      * 
      * @memberOf ListItemBasicRub
      */
-    _resizeHeight(spriteComponent, size, isToggle = false) {
+    _resizeHeight(node, size, isToggle = false) {
+        let spriteComponent = node.getComponent(cc.Sprite);
+
         // need to reload spriteFrame to display correctly.
-        RubUtils.loadSpriteFrame(spriteComponent, this.options.spriteFrame || 'textures/50x50', null, false, (s) => {
-            if (s.node.getContentSize().height < size.height || isToggle) {
-                s.node.setContentSize(size);
+        if (spriteComponent) {
+            RubUtils.loadSpriteFrame(spriteComponent, this.options.spriteFrame, null, false, (s) => {
+                if (s.node.getContentSize().height < size.height || isToggle) {
+                    s.node.setContentSize(size);
+                }
+            });
+        } else {
+            if (node.getContentSize().height < size.height || isToggle) {
+                node.setContentSize(size);
             }
-        });
+        }
     }
 
     _addWidgetComponentToNode(node, defaultValue, opts, isAlignOnce) {

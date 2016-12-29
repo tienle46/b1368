@@ -41,7 +41,10 @@ class PreloadScene extends Component {
             { dir: 'popup/BasePopup', name: 'basePopup' },
             { dir: 'popup/FriendProfilePopup', name: 'friendProfilePopup' },
             { dir: 'dashboard/dialog/prefabs/dialog', name: 'dialog' },
-            { dir: 'game/xocdia/minichip', name: 'miniChip' }
+            { dir: 'game/xocdia/minichip', name: 'miniChip' },
+            { dir: 'fonts/newFonts/ICIELPANTON-BLACK', name: 'fontICIEL', type: cc.Font },
+            { dir: 'fonts/newFonts/UTM Aurora', name: 'fontUTM', type: cc.Font },
+            { dir: 'fonts/newFonts/helveticaneue2', name: 'fontHelvetica', type: cc.Font },
         ];
 
         app.async.parallel(resources.map((res) => {

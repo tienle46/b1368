@@ -115,6 +115,10 @@ export default class LoaderRub {
         this.spinLoaderNode.destroy();
     }
 
+    isValid() {
+        return cc.isValid(this.spinLoaderNode);
+    }
+
     _setTimer(time) {
         this.timer = setTimeout((() => {
             this.spinLoaderNode.active && this.hide();

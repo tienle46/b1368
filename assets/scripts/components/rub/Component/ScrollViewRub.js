@@ -1,4 +1,3 @@
-import RubUtils from 'RubUtils';
 import app from 'app';
 import NodeRub from 'NodeRub';
 
@@ -33,7 +32,6 @@ export default class ScrollViewRub {
      * 
      * @param {any} opts
      * {
-     *  bg: new cc.Color() || string: resource URL # `content` node background
      *  @required position: cc.v2() # default : cc.v2(0, 0);
      *  @required width: number # grid width 
      *  @required height: number # grid height
@@ -157,24 +155,6 @@ export default class ScrollViewRub {
         // let contentLayout = this.contentNode.getComponent(cc.Layout);
         // contentLayout.spacingX = this.options.spacingX;
         // contentLayout.spacingY = this.options.spacingY;
-
-        // setup content background
-        this.options.bg && this._setupContent(this.contentNode);
-    }
-
-
-    _setupContent(contentNode) {
-        // create spriteFrame
-        let contentSprite = contentNode.getComponent(cc.Sprite);
-
-        let size = contentNode.getContentSize();
-        let defaultSpriteFrame = 'textures/50x50.png';
-        RubUtils.loadSpriteFrame(contentSprite, typeof this.options.bg === 'string' ? this.options.bg : defaultSpriteFrame, size, false, () => {
-            if (typeof this.options.bg !== 'string') {
-                // set color to node
-                contentNode.color = this.options.bg;
-            }
-        });
     }
 
     // resize content node by parent ( dont know why widget does not work )
