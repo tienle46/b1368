@@ -32,7 +32,7 @@ class TabGiftCode extends Component {
         //trungnt: customize font is not available yet
 
         this.messageLabel.isSystemFontUsed = false;
-        RubUtils.loadRes('fonts/MYRIADPRO-COND').then((font) => {
+        RubUtils.loadRes('fonts/newFonts/ICIELPANTON-BLACK').then((font) => {
             this.messageLabel.font = font;
             this.messageLabel.fontSize = 28;
         })
