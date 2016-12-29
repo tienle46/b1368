@@ -8,6 +8,8 @@ export default class LoaderRub {
         };
         this.options = Object.assign({}, defaultOptions, opts);
         this.hideBg = hideBg;
+        this.isShowing = true;
+
         this.node = node.node || node;
 
         node && this._node();
@@ -102,13 +104,19 @@ export default class LoaderRub {
     }
 
     show() {
-        this.spinLoaderNode.active = true;
-        this._setTimer(this.time);
+        if (!this.isShowing) {
+            this.spinLoaderNode.active = true;
+            this._setTimer(this.time);
+            this.isShowing = true;
+        }
     }
 
     hide() {
-        this.spinLoaderNode.active = false;
-        clearTimeout(this.timer);
+        if (this.isShowing) {
+            this.spinLoaderNode.active = false;
+            clearTimeout(this.timer);
+            this.isShowing = false;
+        }
     }
 
     destroy() {

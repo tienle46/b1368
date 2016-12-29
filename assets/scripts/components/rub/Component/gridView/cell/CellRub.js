@@ -77,8 +77,7 @@ export default class CellRub {
         if (this.cellNode) {
             let size = this.cellNode.getContentSize();
             size.height = height;
-            console.debug(size)
-                // resize
+            // resize
             let cellSprite = this.cellNode.getComponent(cc.Sprite);
             if (cellSprite) {
                 RubUtils.loadSpriteFrame(cellSprite, this.options.spriteFrame, size);
@@ -98,23 +97,19 @@ export default class CellRub {
         let size = cc.size(this.options.width, this.options.height);
         this.cellNode.setContentSize(size);
 
-        // let layout = this.cellNode.addComponent(cc.Layout);
-        // layout.type = cc.Layout.Type.VERTICAL;
-        // layout.resizeMode = cc.Layout.ResizeMode.CONTAINER;
-
         if (this.cell instanceof Object && this.cell.button)
             this._initButton(this.cellNode);
         else
             this._initLabel(this.cellNode); // init label
 
-        // let lblChildNode = this.cellNode.getChildByName('label');
-        // if (lblChildNode) {
-        //     if (lblChildNode.getLineCount() > 1) {
-        //         this.cellNode.height *= lblChildNode.getLineCount() * 3 / 2;
-        //     }
-        // }
+        let lblChildNode = this.cellNode.getChildByName('label');
+        if (lblChildNode) {
+            if (lblChildNode.getLineCount() > 1) {
+                this.cellNode.height *= lblChildNode.getLineCount() * 3 / 2;
+            }
+        }
 
-        // size.height = this.cellNode.height;
+        size.height = this.cellNode.height;
         if (this.options.spriteFrame) {
             let cellSprite = this.cellNode.addComponent(cc.Sprite);
             RubUtils.loadSpriteFrame(cellSprite, this.options.spriteFrame, size);
@@ -169,7 +164,10 @@ export default class CellRub {
             name: 'label',
             color: this.options.fontColor,
             size: parentNode.getContentSize(),
-            label: {
+        };
+
+        if (isInsideBtn) {
+            nodeOptions.label = {
                 fontSize: this.options.fontSize,
                 lineHeight: this.options.fontLineHeight,
                 horizontalAlign: cc.Label.HorizontalAlign.CENTER,
@@ -181,45 +179,24 @@ export default class CellRub {
                     color: app.const.COLOR_BLACK,
                     width: 1.5
                 }
+            };
+        } else {
+            nodeOptions.richtext = {
+                maxWidth: (parentNode.getContentSize().width - 10),
+                fontSize: this.options.fontSize,
+                lineHeight: this.options.fontLineHeight,
+                horizontalAlign: cc.RichText.HorizontalAlign.CENTER,
+                text: this.cell instanceof Object ? this.cell.text : this.cell,
+                font: this.options.font || 'fonts/newFonts/ICIELPANTON-BLACK',
+                outline: {
+                    color: app.const.COLOR_BLACK,
+                    width: 1.5
+                }
             }
-        };
-
-        // if (isInsideBtn) {
-        //     nodeOptions.label = {
-        //         fontSize: this.options.fontSize,
-        //         lineHeight: this.options.fontLineHeight,
-        //         horizontalAlign: cc.Label.HorizontalAlign.CENTER,
-        //         verticalAlign: cc.Label.VerticalAlign.CENTER,
-        //         overflow: cc.Label.Overflow.RESIZE_HEIGHT,
-        //         text: this.cell instanceof Object ? this.cell.text : this.cell,
-        //         font: 'fonts/newFonts/ICIELPANTON-BLACK',
-        //         outline: {
-        //             color: app.const.COLOR_BLACK,
-        //             width: 1.5
-        //         }
-        //     };
-        // } else {
-        //     nodeOptions.richtext = {
-        //         maxWidth: (parentNode.getContentSize().width - 10),
-        //         fontSize: this.options.fontSize,
-        //         lineHeight: this.options.fontLineHeight,
-        //         horizontalAlign: cc.RichText.HorizontalAlign.CENTER,
-        //         text: this.cell instanceof Object ? this.cell.text : this.cell,
-        //         font: this.options.font || 'fonts/newFonts/ICIELPANTON-BLACK',
-        //         outline: {
-        //             color: app.const.COLOR_BLACK,
-        //             width: 1.5
-        //         }
-        //     };
-        // }
+        }
 
         let lblNode = NodeRub.createNodeByOptions(nodeOptions);
 
         parentNode.addChild(lblNode);
-
-        if (this.cellNode.getContentSize().height < lblNode.getContentSize().height) {
-            console.debug('?')
-            this.cellNode.setContentSize(this.cellNode.getContentSize().width, lblNode.getContentSize().height);
-        }
     }
 }

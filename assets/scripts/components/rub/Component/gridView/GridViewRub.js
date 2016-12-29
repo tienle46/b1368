@@ -219,25 +219,19 @@ export default class GridViewRub extends ScrollViewRub {
 
                 // body
                 let cellRub = new CellRub(cell, cellOpts);
-
                 if (!isNode) {
-
-                    setTimeout(() => {
-                        rowHeight = rowHeight > cellRub.getHeight() ? rowHeight : cellRub.getHeight();
-                        cellsInRow.push(cellRub);
-                    })
-
+                    rowHeight = rowHeight > cellRub.getHeight() ? rowHeight : cellRub.getHeight();
+                    cellsInRow.push(cellRub);
                 }
 
                 this.contentNode && this.contentNode.addChild(cellRub.node());
             }
-            setTimeout(() => {
-                if (rowHeight !== this.options.cell.height && cellsInRow.length > 0) {
-                    for (let x = 0; x < cellsInRow.length; x++) {
-                        cellsInRow[x].resizeHeight(rowHeight);
-                    }
+
+            if (rowHeight !== this.options.cell.height && cellsInRow.length > 0) {
+                for (let x = 0; x < cellsInRow.length; x++) {
+                    cellsInRow[x].resizeHeight(rowHeight);
                 }
-            });
+            }
         }
     }
 
