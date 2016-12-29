@@ -153,6 +153,9 @@ export default class GameScene extends BaseScene {
     }
 
     _onGameData() {
+
+        console.log('_onGameData: ', this.gameData);
+
         if (this.room && this.room.isGame) {
             this.gameData = this.room.getVariable(app.keywords.VARIABLE_GAME_INFO).value;
         }
@@ -221,13 +224,13 @@ export default class GameScene extends BaseScene {
 
     _onActionExitGame() {
         // this.showLoading();
-        // app.service.sendRequest(new SFS2X.Requests.System.LeaveRoomRequest(this.room));
+        app.service.sendRequest(new SFS2X.Requests.System.LeaveRoomRequest(this.room));
 
-        app.service.send({ cmd: app.commands.REGISTER_QUIT_ROOM, room: this.room }, (data) => {
-            if (data && data[app.keywords.SUCCESSFULL]) {
-                app.system.showToast(app.res.string("game_registered_quit_room"));
-            }
-        });
+        // app.service.send({ cmd: app.commands.REGISTER_QUIT_ROOM, room: this.room }, (data) => {
+        //     if (data && data[app.keywords.SUCCESSFULL]) {
+        //         app.system.showToast(app.res.string("game_registered_quit_room"));
+        //     }
+        // });
     }
 
     _onActionLoadGameGuide() {
@@ -236,26 +239,29 @@ export default class GameScene extends BaseScene {
 
     _loadGameData() {
         let currentGameState = utils.getValue(this.gameData, Keywords.BOARD_STATE_KEYWORD);
-        let isGamePlaying = GameUtils.isPlayingState(currentGameState);
+        let isStateAfterReady = GameUtils.isStateAfterReady(currentGameState);
 
         /**
          * Current is call board._initPlayingData && board._loadGamePlayData directly. But when player or other component need to get data,
          * below line code will be switch to using emit via scene emitter
          */
-        if (isGamePlaying) {
+        if (isStateAfterReady) {
             this.board._initPlayingData(this.gameData);
         }
 
-        this.emit(Events.ON_GAME_LOAD_PLAY_DATA, this.gameData);
-        this.emit(Events.ON_GAME_LOAD_DATA_AFTER_SCENE_START, this.gameData);
+        if(currentGameState != app.const.game.state.WAIT){
+            this.emit(Events.ON_GAME_LOAD_PLAY_DATA, this.gameData);
+            this.emit(Events.ON_GAME_LOAD_DATA_AFTER_SCENE_START, this.gameData);
+        }
     }
 
     _loadGameDataAfterSceneStart(data) {
         let currentGameState = utils.getValue(data, Keywords.BOARD_STATE_KEYWORD);
-        let isGamePlaying = GameUtils.isPlayingState(currentGameState);
-        if (isGamePlaying) {
+        let isStateAfterReady = GameUtils.isStateAfterReady(currentGameState);
+
+        if (isStateAfterReady) {
             this._loadPlayerReadyState();
-            !app.context.rejoiningGame && this._onGameStateChange(currentGameState, data, true);
+            !app.context.rejoiningGame && this._onGameStateChange(currentGameState, data, true, true);
         } else {
             this._onGameStateBegin(data, app.context.rejoiningGame)
             this._loadPlayerReadyState();
@@ -308,6 +314,7 @@ export default class GameScene extends BaseScene {
     _onGameStateChange(state, data, isJustJoined, rejoining) {
 
         if (this.gameState == app.const.game.state.WAIT) {
+            this.gameState == app.const.game.state.READY;
             this._onGameData();
         }
 

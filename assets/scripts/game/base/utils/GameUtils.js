@@ -19,8 +19,8 @@ export default class GameUtils {
         return isNaN(changeAmount) ? '' : changeAmount > 0 ? `+${changeAmount}` : `${changeAmount}`;
     }
 
-    static isPlayingState(checkState) {
-        return checkState && checkState != gameState.INITED && checkState != gameState.READY && checkState != gameState.BEGIN;
+    static isStateAfterReady(checkState) {
+        return checkState && checkState != gameState.INITED && checkState != gameState.READY && checkState != gameState.BEGIN && checkState != gameState.WAIT;
     }
 
     static convertToLocalGameState(state) {
