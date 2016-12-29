@@ -82,8 +82,8 @@ export default class GridViewRub extends ScrollViewRub {
             width: 100,
             height: 80,
             fontColor: app.const.COLOR_WHITE,
-            fontSize: 18,
-            fontLineHeight: 80,
+            fontSize: 20,
+            fontLineHeight: 25,
             font: 'fonts/newFonts/ICIELPANTON-BLACK'
         }, opts.cell || {});
 
@@ -219,19 +219,25 @@ export default class GridViewRub extends ScrollViewRub {
 
                 // body
                 let cellRub = new CellRub(cell, cellOpts);
+
                 if (!isNode) {
-                    rowHeight = rowHeight > cellRub.getHeight() ? rowHeight : cellRub.getHeight();
-                    cellsInRow.push(cellRub);
+
+                    setTimeout(() => {
+                        rowHeight = rowHeight > cellRub.getHeight() ? rowHeight : cellRub.getHeight();
+                        cellsInRow.push(cellRub);
+                    })
+
                 }
 
                 this.contentNode && this.contentNode.addChild(cellRub.node());
             }
-
-            if (rowHeight !== this.options.cell.height && cellsInRow.length > 0) {
-                for (let x = 0; x < cellsInRow.length; x++) {
-                    cellsInRow[x].resizeHeight(rowHeight);
+            setTimeout(() => {
+                if (rowHeight !== this.options.cell.height && cellsInRow.length > 0) {
+                    for (let x = 0; x < cellsInRow.length; x++) {
+                        cellsInRow[x].resizeHeight(rowHeight);
+                    }
                 }
-            }
+            });
         }
     }
 
