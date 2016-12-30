@@ -41,6 +41,8 @@ export default class BaCayScene extends GameScene {
         super.onEnable();
 
         this.on(Events.ON_CLICK_CHOOSE_BET_BUTTON, this._onClickChooseBetButton, this);
+
+        this.gamePlayers.notifyWhenMasterChanged = true;
     }
 
     showCuocBienPopup(maxValue, cb) {

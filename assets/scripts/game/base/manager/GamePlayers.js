@@ -33,6 +33,7 @@ export default class GamePlayers extends Component {
         this.initLayerDoneCb = null;
         this.exittedPlayers = null;
         this.playerPositions = null;
+        this.notifyWhenMasterChanged = false;
     }
 
     onEnable() {
@@ -71,7 +72,8 @@ export default class GamePlayers extends Component {
         let masterPlayerId = utils.getValue(data, app.keywords.MASTER_PLAYER_ID);
         if(masterPlayerId){
             let masterPlayer = this.findPlayer(masterPlayerId);
-            this.setMaster(masterPlayer)
+            this.setMaster(masterPlayer);
+            this.scene.gameData[app.keywords.MASTER_PLAYER_ID] = masterPlayerId;
             this.scene.emit(Events.ON_GAME_MASTER_CHANGED, masterPlayerId, masterPlayer);
         }
     }
@@ -79,7 +81,7 @@ export default class GamePlayers extends Component {
     setMaster(masterPlayer){
         if(!masterPlayer || (this.master && this.master.id == masterPlayer.id)) return;
 
-        app.system.showToast(app.res.string('game_change_master_to_player', {playerName: masterPlayer.user.name}))
+        this.notifyWhenMasterChanged && app.system.showToast(app.res.string('game_change_master_to_player', {playerName: masterPlayer.user.name}))
 
         this.master && this.master.setMaster(false);
         this.master = masterPlayer;
