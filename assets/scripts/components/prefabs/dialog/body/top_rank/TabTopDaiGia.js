@@ -7,14 +7,16 @@ class TabTopDaiGia extends Component {
     constructor() {
         super();
 
+        this.properties = {
+            ...this.properties,
+            contentNode: cc.Node,
+            crownsNode: cc.Node,
+            userMoneyLbl: cc.Label,
+        }
+
         this.flag = null;
         this.topNodeId = 8;
         this.currentPage = 1;
-
-        this.contentNode = {
-            default: null,
-            type: cc.Node
-        };
     }
 
     onLoad() {
@@ -34,14 +36,18 @@ class TabTopDaiGia extends Component {
         };
 
         app.service.send(sendObject, (res) => {
-
             const data = [
                 res['unl'].map((status, index) => {
-                    return `${index + 1}. `;
+                    if (this.crownsNode.children[index])
+                        return cc.instantiate(this.crownsNode.children[index]);
+                    else
+                        return `${index + 1}.`;
                 }),
                 res['unl'],
                 res['ui1l'].map((amount) => {
-                    return `${numeral(amount).format('0,0')}`;
+                    this.userMoneyLbl.string = `${numeral(amount).format('0,0')}`;
+                    let usermoneyLbl = cc.instantiate(this.userMoneyLbl.node);
+                    return usermoneyLbl;
                 }),
 
             ];

@@ -1,8 +1,6 @@
 import app from 'app';
 import Component from 'Component';
-import ListItemBasicRub from 'ListItemBasicRub';
-import RubUtils from 'RubUtils';
-import LoaderRub from 'LoaderRub';
+import GridViewRub from 'GridViewRub';
 
 class TabTopVip extends Component {
     constructor() {
@@ -11,34 +9,31 @@ class TabTopVip extends Component {
         this.flag = null;
         this.topNodeId = 14;
         this.currentPage = 1;
-        
+
         this.contentNode = {
             default: null,
             type: cc.Node
         };
-        this.top1Sprite = {
+
+        this.crowns = {
             default: null,
-            type: cc.Sprite
+            type: cc.Node
         };
 
-        this.top1Name = {
+        this.vips = {
             default: null,
-            type: cc.Label
+            type: cc.Node
         };
     }
 
     onLoad() {
-        this.loader = new LoaderRub(this.node);
-        // show loader
-        this.loader.show();
-
         this._initData((data) => {
             this._initBody(data);
         });
-        // this._initTabs();
     }
 
     _initData(cb) {
+        app.system.showLoader();
         let sendObject = {
             'cmd': app.commands.RANK_GROUP,
             'data': {
@@ -57,56 +52,31 @@ class TabTopVip extends Component {
     _initBody(d) {
         const ul = d['unl'];
 
-        if (ul.length > 0) {
-            const topVipName = ul[0];
+        const data = [
+            ul.map((status, index) => {
+                if (this.crowns.children[index])
+                    return cc.instantiate(this.crowns.children[index]);
+                else
+                    return `${index + 1}.`;
+            }),
+            ul,
+            ul.map((status, index) => {
+                let len = this.vips.children.length;
+                return cc.instantiate(this.vips.children[index] ? this.vips.children[index] : this.vips.children[len - 1]);
+            }),
+        ];
 
-            this.top1Name.string = topVipName;
-
-            // const top1Icon = `http://${app.config.host}:3767/img/xgameupload/images/avatar/${topVipName}`;
-            // const top1Icon = 'https://upload.wikimedia.org/wikipedia/commons/f/f7/Tamia_striatus_eating.jpg';
-            // RubUtils.loadSpriteFrame(this.top1Sprite, top1Icon, cc.size(128, 128), true);
-        }
-
-        for (let i = 0; i < ul.length; i++) {
-            let transactionItem = new ListItemBasicRub(`${i + 1}.`, { contentWidth: 60 });
-            transactionItem.initChild();
-
-            let label = {
-                type: 'label',
-                text: ul[i],
-                size: {
-                    width: 150,
-                },
-                fontColor: app.const.COLOR_WHITE,
-                horizontalAlign: cc.Label.HorizontalAlign.LEFT,
-                align: {
-                    left: 20
-                }
-            };
-
-            transactionItem.pushEl(label);
-
-            const medalContainer = new cc.Node();
-            const layoutComponent = medalContainer.addComponent(cc.Layout);
-            layoutComponent.type = cc.Layout.Type.HORIZONTAL;
-            layoutComponent.spacingX = 5;
-
-            for (let j = 0; j < 5 - i; j++) {
-
-                const medal = new cc.Node();
-                const sprite = medal.addComponent(cc.Sprite);
-
-                medalContainer.addChild(medal);
-
-                RubUtils.loadSpriteFrame(sprite, `textures/medal_${j+1}`, cc.size(32, 34));
+        GridViewRub.show(this.contentNode, {
+            data: ['STT', 'Tài khoản', ''],
+            options: {
+                fontColor: app.const.COLOR_YELLOW
             }
-            medalContainer.size = cc.Size(180, 60);
-            medalContainer.position = cc.v2(190, 0);
-            transactionItem.pushEl(medalContainer);
-
-            this.contentNode.addChild(transactionItem.node());
-        }
-        this.loader.hide();
+        }, data, {
+            paging: {},
+            position: cc.v2(0, 10),
+            height: 390,
+        });
+        app.system.hideLoader();
     }
 }
 

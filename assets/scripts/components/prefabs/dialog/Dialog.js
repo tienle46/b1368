@@ -23,12 +23,20 @@ export default class Dialog extends Component {
             type: cc.Label
         };
 
+        this.bgTransparent = {
+            default: null,
+            type: cc.Node
+        };
+
         this.addedPrefabs = [];
         this.addedNodes = {};
     }
 
     onLoad() {
+        super.onLoad();
+        this.node.parent.zIndex = app.const.dialogZIndex;
         this.node.zIndex = app.const.dialogZIndex;
+        this.bgTransparent.on(cc.Node.EventType.TOUCH_START, () => true);
     }
 
     onEnable() {

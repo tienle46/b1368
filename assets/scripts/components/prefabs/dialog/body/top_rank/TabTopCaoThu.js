@@ -20,6 +20,10 @@ class TabTopCaoThu extends Component {
             type: cc.Node
         };
 
+        this.crownsNode = {
+            default: null,
+            type: cc.Node
+        };
     }
 
     onLoad() {
@@ -101,11 +105,13 @@ class TabTopCaoThu extends Component {
         app.service.send(sendObject, (res) => {
             const data = [
                 res['unl'].map((status, index) => {
-                    return `${index + 1}. `;
+                    if (this.crownsNode.children[index])
+                        return cc.instantiate(this.crownsNode.children[index]);
+                    else
+                        return `${index + 1}.`;
                 }),
                 res['unl'],
                 res['ui1l'],
-                res['ui2l'],
             ];
 
             cb(data);
@@ -120,7 +126,7 @@ class TabTopCaoThu extends Component {
         app.system.hideLoader();
 
         GridViewRub.show(body, {
-            data: ['STT', 'Tài khoản', 'Thắng', 'Thua'],
+            data: ['STT', 'Tài khoản', 'Thắng'],
             options: {
                 fontColor: app.const.COLOR_YELLOW
             }
@@ -131,7 +137,8 @@ class TabTopCaoThu extends Component {
             height: 390,
             event,
             group: {
-                widths: [80, 350, '', '']
+                widths: [80, 350, ''],
+                colors: ['', '', new cc.Color(255, 214, 0)]
             }
         });
     }

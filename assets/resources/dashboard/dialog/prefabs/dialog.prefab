@@ -1524,6 +1524,9 @@
     },
     "titleLbl": {
       "__id__": 8
+    },
+    "bgTransparent": {
+      "__id__": 2
     }
   },
   {

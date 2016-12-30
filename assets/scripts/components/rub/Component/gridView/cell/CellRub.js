@@ -49,7 +49,9 @@ export default class CellRub {
 
         this.cell = cell;
 
-        if (this.cell instanceof cc.Node) {
+        this._initCell();
+
+        if (this.cell instanceof cc.Node && !this.cell.isAppend) {
             this._addNodeToCell(this.cell);
         } else {
             if (this.cell instanceof Object) {
@@ -61,7 +63,7 @@ export default class CellRub {
                 this.cell && (this.cell = (typeof this.cell == 'string') ? this.cell : this.cell.toString());
             }
 
-            this._initCell();
+            this._addBasicComponentToCell();
         }
     }
 
@@ -88,14 +90,30 @@ export default class CellRub {
     }
 
     _addNodeToCell(node) {
-        this.cellNode && this.cellNode.addChild(cc.instantiate(node));
+        let child = node;
+        let lbl = child.getComponent(cc.Label);
+        if (lbl) {
+            RubUtils.loadFont(lbl, 'fonts/newFonts/ICIELPANTON-BLACK');
+        }
+        child.active = true;
+        this.cellNode.addChild(child);
     }
 
     _initCell() {
-        this.cellNode = new cc.Node();
-        this.cellNode.name = 'cell';
         let size = cc.size(this.options.width, this.options.height);
-        this.cellNode.setContentSize(size);
+        this.cellNode = NodeRub.createNodeByOptions({
+            name: 'cell',
+            size: size
+        });
+
+        if (this.options.spriteFrame) {
+            let cellSprite = this.cellNode.addComponent(cc.Sprite);
+            RubUtils.loadSpriteFrame(cellSprite, this.options.spriteFrame, size);
+        }
+    }
+
+    _addBasicComponentToCell() {
+        let size = cc.size(this.options.width, this.options.height);
 
         if (this.cell instanceof Object && this.cell.button)
             this._initButton(this.cellNode);
@@ -110,10 +128,8 @@ export default class CellRub {
         }
 
         size.height = this.cellNode.height;
-        if (this.options.spriteFrame) {
-            let cellSprite = this.cellNode.addComponent(cc.Sprite);
-            RubUtils.loadSpriteFrame(cellSprite, this.options.spriteFrame, size);
-        }
+        let cellSprite = this.cellNode.getComponent(cc.Sprite);
+        cellSprite && RubUtils.loadSpriteFrame(cellSprite, this.options.spriteFrame, size);
     }
 
     _initButton(parentNode) {
@@ -172,7 +188,7 @@ export default class CellRub {
                 lineHeight: this.options.fontLineHeight,
                 horizontalAlign: cc.Label.HorizontalAlign.CENTER,
                 verticalAlign: cc.Label.VerticalAlign.CENTER,
-                overflow: cc.Label.Overflow.RESIZE_HEIGHT,
+                overflow: cc.Label.Overflow.CLAMP,
                 text: this.cell instanceof Object ? this.cell.text : this.cell,
                 font: 'fonts/newFonts/ICIELPANTON-BLACK',
                 outline: {
