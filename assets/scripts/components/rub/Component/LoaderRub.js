@@ -10,7 +10,7 @@ export default class LoaderRub {
         this.hideBg = hideBg;
         this.isShowing = true;
 
-        this.node = node.node || node;
+        this.node = node && (node.node || node);
 
         node && this._node();
         this.time = 3000 * 10;

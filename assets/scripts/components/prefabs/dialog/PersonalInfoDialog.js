@@ -1,12 +1,13 @@
 import app from 'app';
-import Dialog from 'Dialog';
+import Component from 'Component';
 
-class PersonalInfoDialog extends Dialog {
+class PersonalInfoDialog extends Component {
     constructor() {
         super();
     }
 
     onLoad() {
+        super.onLoad();
         // this._initComponents();
         this.node.on('touchstart', function() {
             return;

@@ -34,13 +34,12 @@ export default class Dialog extends Component {
 
     onLoad() {
         super.onLoad();
-        this.node.parent.zIndex = app.const.dialogZIndex;
         this.node.zIndex = app.const.dialogZIndex;
-        this.bgTransparent.on(cc.Node.EventType.TOUCH_START, () => true);
     }
 
     onEnable() {
         this.addedPrefabs = [];
+        this.bgTransparent.on(cc.Node.EventType.TOUCH_START, () => true);
     }
 
     onDestroy() {

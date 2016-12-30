@@ -37,7 +37,6 @@ export default class BoardXocDia extends BoardCardBetTurn {
 
     _reset() {
         super._reset();
-        // 
         debug('_reset BoardXocDia.js');
         this.renderer.hideElements();
     }
@@ -78,7 +77,7 @@ export default class BoardXocDia extends BoardCardBetTurn {
                 }, 1000);
             };
 
-            callInterval.call(this, duration);
+            this.renderer && callInterval.call(this, duration);
         }
 
     }
@@ -163,6 +162,7 @@ export default class BoardXocDia extends BoardCardBetTurn {
     }
 
     _onGameBegin() {
+        this.renderer.stopDishShakeAnim();
         // hiding all bets and table on game board
         this.renderer.hideElements();
         // check if room has history, preload data

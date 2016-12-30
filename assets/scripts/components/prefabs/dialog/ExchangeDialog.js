@@ -1,7 +1,7 @@
 import app from 'app';
-import Dialog from 'Dialog';
+import Component from 'Component';
 
-class ExchangeDialog extends Dialog {
+class ExchangeDialog extends Component {
     constructor() {
         super();
     }
