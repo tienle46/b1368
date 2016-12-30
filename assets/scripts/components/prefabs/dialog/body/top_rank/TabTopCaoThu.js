@@ -2,7 +2,6 @@ import app from 'app';
 import Component from 'Component';
 import GridViewRub from 'GridViewRub';
 import RubUtils from 'RubUtils';
-import LoaderRub from 'LoaderRub';
 
 class TabTopCaoThu extends Component {
     constructor() {
@@ -15,15 +14,6 @@ class TabTopCaoThu extends Component {
             default: null,
             type: cc.Node
         };
-        this.top1Sprite = {
-            default: null,
-            type: cc.Sprite
-        };
-
-        this.top1Name = {
-            default: null,
-            type: cc.Label
-        };
 
         this.gamePicker = {
             default: null,
@@ -33,9 +23,6 @@ class TabTopCaoThu extends Component {
     }
 
     onLoad() {
-        this.loader = new LoaderRub(this.node);
-        // show loader
-        this.loader.show();
 
         this._initGameList();
 
@@ -51,6 +38,7 @@ class TabTopCaoThu extends Component {
                 [app.keywords.RANK_NODE_ID]: 9,
             }
         };
+        app.system.showLoader();
         app.service.send(sendObject, (res) => {
             if (res['itl'] && res['itl'].length > 0) {
                 this.gameList = res;
@@ -93,8 +81,6 @@ class TabTopCaoThu extends Component {
 
     onGameItemClicked(event) {
         let dNodeId = event.currentTarget.dNodeId;
-        // show loader
-        this.loader.show();
 
         this._showTopPlayers(dNodeId, (data) => {
             this._initBody(data);
@@ -102,6 +88,7 @@ class TabTopCaoThu extends Component {
     }
 
     _showTopPlayers(dNodeId, cb) {
+        app.system.showLoader();
         let sendObject = {
             'cmd': app.commands.RANK_GROUP,
             'data': {
@@ -112,19 +99,6 @@ class TabTopCaoThu extends Component {
             }
         };
         app.service.send(sendObject, (res) => {
-
-            if (res['unl'].length > 0) {
-                const topVipName = res['unl'][0];
-
-                this.top1Name.string = topVipName;
-
-                // const top1Icon = `http://${app.config.host}:3767/img/xgameupload/images/avatar/${topVipName}`;
-                const top1Icon = 'https://upload.wikimedia.org/wikipedia/commons/f/f7/Tamia_striatus_eating.jpg';
-                log(top1Icon);
-                RubUtils.loadSpriteFrame(this.top1Sprite, top1Icon, cc.size(128, 128), true, (spriteFrame) => {
-
-                });
-            }
             const data = [
                 res['unl'].map((status, index) => {
                     return `${index + 1}. `;
@@ -143,15 +117,23 @@ class TabTopCaoThu extends Component {
         let body = this.contentNode;
         body.removeAllChildren();
 
+        app.system.hideLoader();
+
         GridViewRub.show(body, {
             data: ['STT', 'Tài khoản', 'Thắng', 'Thua'],
             options: {
                 fontColor: app.const.COLOR_YELLOW
             }
-        }, d, { paging: {}, width: 480, height: 356, event, group: { widths: [80, 200, 100, 100] } });
-
-        // show loader
-        this.loader.hide();
+        }, d, {
+            paging: {},
+            position: cc.v2(0, 10),
+            width: 670,
+            height: 390,
+            event,
+            group: {
+                widths: [80, 350, '', '']
+            }
+        });
     }
 }
 

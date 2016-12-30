@@ -4,7 +4,6 @@ import DialogRub from 'DialogRub';
 import TopupDialogRub from 'TopupDialogRub';
 import ExchangeDialogRub from 'ExchangeDialogRub';
 import PersonalInfoDialogRub from 'PersonalInfoDialogRub';
-import GridViewRub from 'GridViewRub';
 import MessageCenterDialogRub from 'MessageCenterDialogRub';
 import HorizontalDropDownRub from 'HorizontalDropDownRub';
 
@@ -125,9 +124,13 @@ class BottomBar extends Component {
                 value: `${url}/tab_user_info`
             },
             {
-                title: 'Gift Code',
-                value: `${url}/tab_gift_code`
+                title: 'Thành tích',
+                value: `${url}/tab_user_achievements`
             }
+            // , {
+            //     title: 'Gift Code',
+            //     value: `${url}/tab_gift_code`
+            // }
             // , {
             //     title: 'Chuyển chip',
             //     value: 'tab_transfer_vc'
@@ -148,55 +151,6 @@ class BottomBar extends Component {
         usernameLbl.string = app.context.getMyInfo().name;
         let usercoinLbl = this.userInfoButton.node.getChildByName('userCoinLbl').getComponent(cc.Label);
         usercoinLbl.string = app.context.getMyInfo().coin;
-    }
-
-    _initAchievementsTab() {
-        let achievementsTab = new GridViewRub(null, [
-            ['x', 'x1', 'x2'],
-            ['z', 'z1', 'z2'],
-            ['y', 'y1', 'y2']
-        ], {
-            position: cc.v2(2, 140),
-            width: 800,
-            spacingX: 0,
-            spacingY: 0,
-            cell: {
-                horizontalSeparate: {
-                    pattern: new cc.Color(102, 45, 145)
-                }
-            },
-            group: {
-                colors: [null, app.const.COLOR_YELLOW, null]
-            }
-        });
-
-        this._getAchievementsDataFromServer((data) => {
-            achievementsTab.resetData(data);
-        });
-        return achievementsTab.getNode();
-    }
-
-    _getAchievementsDataFromServer(cb) {
-        let sendObj = {
-            cmd: app.commands.USER_ACHIEVEMENT
-        };
-        app.service.send(sendObj, (res) => {
-            if (res) {
-                let gameListCol = res[app.keywords.GAME_NAME_LIST] || [];
-                let levelCol = res[app.keywords.LEVEL_LIST].map((e) => `Cấp độ ${e}`) || [];
-                // let levelCol = res[app.keywords.LEVEL_TITLE_LIST]|| []; 
-                let winLostCol = res[app.keywords.WIN_LIST].map((e, i) => `${e}/${res[app.keywords.LOST_LIST][i]}`) || [];
-
-                let data = [
-                    gameListCol,
-                    levelCol,
-                    winLostCol,
-                ];
-
-                cb(app._.cloneDeep(data));
-            }
-
-        });
     }
 }
 

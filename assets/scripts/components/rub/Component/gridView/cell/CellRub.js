@@ -57,7 +57,10 @@ export default class CellRub {
                     text: ''
                 };
                 this.cell = Object.assign({}, defaultCellObject, this.cell);
+            } else {
+                this.cell && (this.cell = (typeof this.cell == 'string') ? this.cell : this.cell.toString());
             }
+
             this._initCell();
         }
     }
@@ -161,19 +164,36 @@ export default class CellRub {
             name: 'label',
             color: this.options.fontColor,
             size: parentNode.getContentSize(),
-            richtext: {
+        };
+
+        if (isInsideBtn) {
+            nodeOptions.label = {
+                fontSize: this.options.fontSize,
+                lineHeight: this.options.fontLineHeight,
+                horizontalAlign: cc.Label.HorizontalAlign.CENTER,
+                verticalAlign: cc.Label.VerticalAlign.CENTER,
+                overflow: cc.Label.Overflow.RESIZE_HEIGHT,
+                text: this.cell instanceof Object ? this.cell.text : this.cell,
+                font: 'fonts/newFonts/ICIELPANTON-BLACK',
+                outline: {
+                    color: app.const.COLOR_BLACK,
+                    width: 1.5
+                }
+            };
+        } else {
+            nodeOptions.richtext = {
                 maxWidth: (parentNode.getContentSize().width - 10),
                 fontSize: this.options.fontSize,
                 lineHeight: this.options.fontLineHeight,
                 horizontalAlign: cc.RichText.HorizontalAlign.CENTER,
                 text: this.cell instanceof Object ? this.cell.text : this.cell,
-                font: isInsideBtn ? 'fonts/newFonts/ICIELPANTON-BLACK' : this.options.font,
+                font: this.options.font || 'fonts/newFonts/ICIELPANTON-BLACK',
                 outline: {
                     color: app.const.COLOR_BLACK,
                     width: 1.5
                 }
             }
-        };
+        }
 
         let lblNode = NodeRub.createNodeByOptions(nodeOptions);
 

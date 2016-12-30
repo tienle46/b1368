@@ -75,6 +75,7 @@ let NodeRub = {
         delete options.outline;
         delete options.font;
         delete options.text;
+
         for (let key in options) {
             label[key] = options[key];
         }
@@ -90,10 +91,6 @@ let NodeRub = {
      * horizontalAlign: # default cc.Label.HorizontalAlign.CENTER,
      * maxWidth: number
      * overflow: # default.cc.Label.Overflow.CLAMP
-     * outline: {
-     *      color: new cc.Color
-     *      width: number
-     *  }
      * }
      */
     addRichTextComponentToNode: (node, options = {}) => {
@@ -101,9 +98,6 @@ let NodeRub = {
         rich.string = options.text || '';
         options.font && RubUtils.loadFont(rich, options.font);
 
-        options.outline && NodeRub.addOutlineComponentToNode(node, options.outline);
-
-        delete options.outline;
         delete options.text;
         delete options.font;
 
@@ -371,9 +365,6 @@ let NodeRub = {
      *          horizontalAlign: # default cc.Label.HorizontalAlign.CENTER,
      *          maxWidth: number
      *          overFlow: # default.cc.Label.Overflow.CLAMP,
-     *          outline: {
-     *              color, width
-     *          }
      *      },
      *      layout: {
      *          type: cc.Layout.Type.VERTICAL,

@@ -1,6 +1,5 @@
 import DialogRub from 'DialogRub';
 import TopupDialog from 'TopupDialog';
-import GridViewRub from 'GridViewRub';
 import app from 'app';
 
 export default class TopUpDialogRub {
