@@ -152,7 +152,7 @@ export default class GameScene extends BaseScene {
         }
     }
 
-    _onGameData() {
+    _onGameData(isJustJoined = true) {
 
         console.log('_onGameData: ', this.gameData);
 
@@ -161,7 +161,7 @@ export default class GameScene extends BaseScene {
         }
 
         if (this.gameData) {
-            this._loadGameData();
+            this._loadGameData(isJustJoined);
         }
 
     }
@@ -237,7 +237,7 @@ export default class GameScene extends BaseScene {
         app.system.info(app.res.string('coming_soon'));
     }
 
-    _loadGameData() {
+    _loadGameData(isJustJoined) {
         let currentGameState = utils.getValue(this.gameData, Keywords.BOARD_STATE_KEYWORD);
         let isStateAfterReady = GameUtils.isStateAfterReady(currentGameState);
 
@@ -249,19 +249,17 @@ export default class GameScene extends BaseScene {
             this.board._initPlayingData(this.gameData);
         }
 
-        if(currentGameState != app.const.game.state.WAIT){
-            this.emit(Events.ON_GAME_LOAD_PLAY_DATA, this.gameData);
-            this.emit(Events.ON_GAME_LOAD_DATA_AFTER_SCENE_START, this.gameData);
-        }
+        this.emit(Events.ON_GAME_LOAD_PLAY_DATA, this.gameData);
+        this.emit(Events.ON_GAME_LOAD_DATA_AFTER_SCENE_START, this.gameData, isJustJoined);
     }
 
-    _loadGameDataAfterSceneStart(data) {
+    _loadGameDataAfterSceneStart(data, isJustJoined) {
         let currentGameState = utils.getValue(data, Keywords.BOARD_STATE_KEYWORD);
         let isStateAfterReady = GameUtils.isStateAfterReady(currentGameState);
 
         if (isStateAfterReady) {
             this._loadPlayerReadyState();
-            !app.context.rejoiningGame && this._onGameStateChange(currentGameState, data, true, true);
+            !app.context.rejoiningGame && this._onGameStateChange(currentGameState, data, isJustJoined, true);
         } else {
             this._onGameStateBegin(data, app.context.rejoiningGame)
             this._loadPlayerReadyState();
@@ -314,7 +312,7 @@ export default class GameScene extends BaseScene {
     _onGameStateChange(state, data, isJustJoined, rejoining) {
 
         if (this.gameState == app.const.game.state.WAIT) {
-            this.gameState == app.const.game.state.READY;
+            this.gameState = app.const.game.state.READY;
             this._onGameData();
         }
 

@@ -63,6 +63,12 @@ export default class PlayerCard extends Player {
         this.setCards(GameUtils.convertBytesToCards(cardBytes), false);
     }
 
+    onGameReset(){
+        super.onGameReset();
+
+        this.renderer.cardList.clear();
+    }
+
     onGameBegin(data, isJustJoined){
         super.onGameBegin(data, isJustJoined)
 

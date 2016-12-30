@@ -77,15 +77,13 @@ export default class GamePlayers extends Component {
     }
 
     setMaster(masterPlayer){
-        if(!masterPlayer) return;
+        if(!masterPlayer || (this.master && this.master.id == masterPlayer.id)) return;
 
-        if(this.master){
-            app.system.showToast(app.res.string('game_change_master_to_player', {playerName: masterPlayer.user.name}))
-        }
+        app.system.showToast(app.res.string('game_change_master_to_player', {playerName: masterPlayer.user.name}))
 
         this.master && this.master.setMaster(false);
         this.master = masterPlayer;
-        this.master && this.master.setMaster(true);
+        this.master.setMaster(true);
     }
 
     _onPlayerReEnterGame(playerId, userId) {

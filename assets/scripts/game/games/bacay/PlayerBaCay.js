@@ -223,12 +223,14 @@ export default class PlayerBaCay extends PlayerCardBetTurn {
         if(!this.isItMe() || !this.isPlaying() || !this.scene.gamePlayers.isMePlaying()) return;
 
         if(state == app.const.game.state.STATE_BET){
-            if(!this.isMaster){
+            if(!this.isMaster && this.isPlaying()){
                 this.scene.emit(Events.SHOW_BACAY_BET_CONTROLS);
                 this.scene.showChooseBetSlider(this.betAmount);
             }
         }else if(state == app.const.game.state.STATE_DOWN) {
-            this.scene.emit(Events.SHOW_DOWN_CARD_CONTROLS);
+            if(this.isPlaying()) {
+                this.scene.emit(Events.SHOW_DOWN_CARD_CONTROLS);
+            }
         }
     }
 

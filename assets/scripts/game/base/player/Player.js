@@ -85,7 +85,7 @@ export default class Player extends Actor {
 
     _onUserUpdateNewPlayer(user) {
         if (user.id == this.user.id) {
-            if(this.scene.gameState == game.const.game.state.WAIT){
+            if(this.scene.gameState == app.const.game.state.WAIT || this.scene.gameState == app.const.game.state.READY){
                 this._sendReadyImmediately();
             }
 
@@ -284,21 +284,22 @@ export default class Player extends Actor {
             this.onGameReset();
         }
 
-        if(!this.ready){
-            this._sendReadyImmediately();
-        }
+        // if(!this.ready){
+        this._sendReadyImmediately();
+        // }
 
         this.renderer.setVisibleReady(this.ready);
     }
 
     onGameStarting(data, isJustJoined) {
         if (isJustJoined) {
-
+            this.setReady(false);
+        }else{
+            this.setReady(true);
         }
 
         console.log("onGameStarting: ", data);
 
-        this.setReady(true);
     }
 
     onGameStarted(data, isJustJoined) {
@@ -334,7 +335,7 @@ export default class Player extends Actor {
     }
 
     _sendReadyImmediately() {
-        let newPlayer = this.user.variables.newPlayer;
+        let newPlayer = utils.getVariable(this.user, "newPlayer");
         if (!newPlayer) {
             this.scene.showShortLoading('ready');
             app.service.send({ cmd: app.commands.PLAYER_READY, room: this.scene.room });
