@@ -62,8 +62,9 @@ Events.ON_PLAYER_BACAY_GOP_GA = "on.player.bacayGopGa";
 
 Events.ON_USER_UPDATE_BALANCE = "on.user.updateBalance";
 Events.ON_USER_UPDATE_LEVEL = "on.user.updateLevel";
-Events.ON_USER_UPDATE_EXP_POINT = "on.user.updateExpPoint";
+Events.ON_USER_UPDATE_NEW_PLAYER = "on.user.updateNewPlayer";
 Events.ON_USER_EXIT_ROOM = "on.user.exitRoom";
+Events.ON_USER_UPDATE_EXP_POINT = "on.user.updateExpPoint";
 
 Events.ON_ROOM_CHANGE_OWNER = "on.room.changeOwner";
 Events.ON_ROOM_CHANGE_MASTER = "on.room.changeMaster";

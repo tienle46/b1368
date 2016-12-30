@@ -55,6 +55,7 @@ export default class Player extends Actor {
         this.scene.on(Events.ON_PLAYER_READY_STATE_CHANGED, this._onSetReadyState, this);
         this.scene.on(Events.ON_PLAYER_CHANGE_BALANCE, this._onPlayerChangeBalance, this);
         this.scene.on(Events.ON_USER_UPDATE_BALANCE, this._onUserUpdateBalance, this);
+        this.scene.on(Events.ON_USER_UPDATE_NEW_PLAYER, this._onUserUpdateNewPlayer, this);
         this.scene.on(Events.ON_PLAYER_SET_BALANCE, this._onPlayerSetBalance, this);
         this.scene.on(Events.ON_PLAYER_CHAT_MESSAGE, this._onPlayerChatMessage, this);
         this.scene.on(Events.ON_ROOM_CHANGE_MIN_BET, this._onRoomMinBetChanged, this);
@@ -79,6 +80,17 @@ export default class Player extends Actor {
         this.scene.off(Events.ON_GAME_MASTER_CHANGED, this._onGameMasterChanged, this);
         this.scene.off(Events.ON_ROOM_CHANGE_MIN_BET, this._onRoomMinBetChanged, this);
         this.scene.off(Events.ON_CLICK_START_GAME_BUTTON, this._onClickStartGameButton, this);
+        this.scene.off(Events.ON_USER_UPDATE_NEW_PLAYER, this._onUserUpdateNewPlayer, this);
+    }
+
+    _onUserUpdateNewPlayer(user) {
+        if (user.id == this.user.id) {
+            if(this.scene.gameState == game.const.game.state.WAIT){
+                this._sendReadyImmediately();
+            }
+
+            //TODO show new player state
+        }
     }
 
     _onClickStartGameButton(){
@@ -261,18 +273,22 @@ export default class Player extends Actor {
 
     }
 
+    start(){
+        super.start();
+
+        this._sendReadyImmediately();
+    }
+
     onGameBegin(data, isJustJoined) {
         if (!isJustJoined) {
             this.onGameReset();
         }
 
-        this.renderer.setVisibleReady(this.ready);
-
-        let newPlayer = this.user.variables.newPlayer;
-        if (!newPlayer) {
-            // send ready
+        if(!this.ready){
             this._sendReadyImmediately();
         }
+
+        this.renderer.setVisibleReady(this.ready);
     }
 
     onGameStarting(data, isJustJoined) {
@@ -318,8 +334,11 @@ export default class Player extends Actor {
     }
 
     _sendReadyImmediately() {
-        this.scene.showShortLoading('ready');
-        app.service.send({ cmd: app.commands.PLAYER_READY, room: this.scene.room });
+        let newPlayer = this.user.variables.newPlayer;
+        if (!newPlayer) {
+            this.scene.showShortLoading('ready');
+            app.service.send({ cmd: app.commands.PLAYER_READY, room: this.scene.room });
+        }
     }
 }
 

@@ -211,6 +211,8 @@ export default class GameEventHandler {
                 this.scene.emit(Events.ON_USER_UPDATE_LEVEL, user);
             } else if (Keywords.USER_VARIABLE_EXP_POINT == varName) {
                 this.scene.emit(Events.ON_USER_UPDATE_EXP_POINT, user);
+            } else if ("newPlayer" == varName) {
+                this.scene.emit(Events.ON_USER_UPDATE_NEW_PLAYER, user);
             }
         });
     }
