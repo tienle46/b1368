@@ -13,8 +13,11 @@ export default class BoardRenderer extends ActorRenderer {
 
         this.properties = {
             ...this.properties,
-            timeline: cc.Node,
             timelineTextViewNode: cc.Node
+        }
+        this.timeline ={
+            default : null,
+            type : cc.Node,
         }
 
         this.timelineTextView = null;

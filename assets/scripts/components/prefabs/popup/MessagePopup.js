@@ -26,7 +26,10 @@ export default class MessagePopup extends Component {
             componentName: 'MessagePopup'
         }
 
-        this.messageLabel = cc.Label;
+        this.messageLabel = {
+            default : null,
+            type : cc.Label,
+        };
         this.loading = null;
         this.acceptCb = null;
         this.denyCb = null;

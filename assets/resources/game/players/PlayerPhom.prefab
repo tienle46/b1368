@@ -301,7 +301,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "159a71fe-4662-46e2-a61e-967023d97200"
+      "__uuid__": "bdf4e8eb-f18a-426d-a4dc-fc312ec3bca4"
     },
     "_type": 3,
     "_sizeMode": 0,
@@ -312,7 +312,7 @@
       "y": 0.5
     },
     "_fillStart": 0.25,
-    "_fillRange": 1,
+    "_fillRange": 0,
     "_isTrimmedMode": true,
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
@@ -330,8 +330,8 @@
       "__id__": 5
     },
     "_N$mode": 2,
-    "_N$totalLength": 1,
-    "_N$progress": 1,
+    "_N$totalLength": 0,
+    "_N$progress": 0,
     "_N$reverse": false
   },
   {
@@ -690,7 +690,10 @@
     },
     "_enabled": true,
     "_type": 1,
-    "_segements": 64
+    "_segements": 64,
+    "_N$spriteFrame": null,
+    "_N$alphaThreshold": 1,
+    "_N$inverted": false
   },
   {
     "__type__": "cc.Layout",
@@ -707,13 +710,17 @@
     },
     "_resize": 1,
     "_N$layoutType": 0,
+    "_N$padding": 0,
     "_N$cellSize": {
       "__type__": "cc.Size",
       "width": 40,
       "height": 40
     },
     "_N$startAxis": 0,
-    "_N$padding": 0,
+    "_N$paddingLeft": 0,
+    "_N$paddingRight": 0,
+    "_N$paddingTop": 0,
+    "_N$paddingBottom": 0,
     "_N$spacingX": 0,
     "_N$spacingY": 0,
     "_N$verticalDirection": 1,
@@ -808,7 +815,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 36,
-      "height": 36
+      "height": 37
     },
     "_children": [],
     "_rotationX": 0,
@@ -3004,13 +3011,17 @@
     },
     "_resize": 1,
     "_N$layoutType": 2,
+    "_N$padding": 0,
     "_N$cellSize": {
       "__type__": "cc.Size",
       "width": 40,
       "height": 40
     },
     "_N$startAxis": 0,
-    "_N$padding": 7,
+    "_N$paddingLeft": 7,
+    "_N$paddingRight": 7,
+    "_N$paddingTop": 7,
+    "_N$paddingBottom": 7,
     "_N$spacingX": 0,
     "_N$spacingY": 0,
     "_N$verticalDirection": 1,
@@ -3721,13 +3732,17 @@
     },
     "_resize": 1,
     "_N$layoutType": 2,
+    "_N$padding": 0,
     "_N$cellSize": {
       "__type__": "cc.Size",
       "width": 40,
       "height": 40
     },
     "_N$startAxis": 0,
-    "_N$padding": 0,
+    "_N$paddingLeft": 0,
+    "_N$paddingRight": 0,
+    "_N$paddingTop": 0,
+    "_N$paddingBottom": 0,
     "_N$spacingX": 0,
     "_N$spacingY": -42,
     "_N$verticalDirection": 1,
@@ -4173,13 +4188,17 @@
     },
     "_resize": 1,
     "_N$layoutType": 2,
+    "_N$padding": 0,
     "_N$cellSize": {
       "__type__": "cc.Size",
       "width": 40,
       "height": 40
     },
     "_N$startAxis": 0,
-    "_N$padding": 0,
+    "_N$paddingLeft": 0,
+    "_N$paddingRight": 0,
+    "_N$paddingTop": 0,
+    "_N$paddingBottom": 0,
     "_N$spacingX": 0,
     "_N$spacingY": -42,
     "_N$verticalDirection": 1,
@@ -4625,13 +4644,17 @@
     },
     "_resize": 1,
     "_N$layoutType": 2,
+    "_N$padding": 0,
     "_N$cellSize": {
       "__type__": "cc.Size",
       "width": 40,
       "height": 40
     },
     "_N$startAxis": 0,
-    "_N$padding": 0,
+    "_N$paddingLeft": 0,
+    "_N$paddingRight": 0,
+    "_N$paddingTop": 0,
+    "_N$paddingBottom": 0,
     "_N$spacingX": 0,
     "_N$spacingY": -42,
     "_N$verticalDirection": 1,
@@ -5077,13 +5100,17 @@
     },
     "_resize": 1,
     "_N$layoutType": 2,
+    "_N$padding": 0,
     "_N$cellSize": {
       "__type__": "cc.Size",
       "width": 40,
       "height": 40
     },
     "_N$startAxis": 0,
-    "_N$padding": 0,
+    "_N$paddingLeft": 0,
+    "_N$paddingRight": 0,
+    "_N$paddingTop": 0,
+    "_N$paddingBottom": 0,
     "_N$spacingX": 0,
     "_N$spacingY": -42,
     "_N$verticalDirection": 1,
@@ -5529,13 +5556,17 @@
     },
     "_resize": 1,
     "_N$layoutType": 2,
+    "_N$padding": 0,
     "_N$cellSize": {
       "__type__": "cc.Size",
       "width": 40,
       "height": 40
     },
     "_N$startAxis": 0,
-    "_N$padding": 0,
+    "_N$paddingLeft": 0,
+    "_N$paddingRight": 0,
+    "_N$paddingTop": 0,
+    "_N$paddingBottom": 0,
     "_N$spacingX": 0,
     "_N$spacingY": -42,
     "_N$verticalDirection": 1,
@@ -7160,9 +7191,6 @@
     "balanceLabel": {
       "__id__": 31
     },
-    "status1": {
-      "__id__": 61
-    },
     "status2": {
       "__id__": 69
     },
@@ -7176,12 +7204,14 @@
     "plusBalanceLabel": {
       "__id__": 97
     },
+    "minusBalanceLabel": null,
     "playerMessageNode": {
       "__id__": 83
     },
     "playerTimeLineProgress": {
       "__id__": 6
     },
+    "avatarNode": null,
     "cardListPrefab": {
       "__uuid__": "651b1f49-8953-4b6f-9e06-0d829c049b4a"
     },

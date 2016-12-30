@@ -46,13 +46,19 @@ export default class PlayerBaCayRenderer extends PlayerCardBetTurnRenderer {
             type: cc.Node
         }
 
-        this.cuocBienButton = cc.Button;
+        this.cuocBienButton = {
+            default : null,
+            type: cc.Button,
+        };
 
         /**
          * @type {cc.Animation}
          */
         this.actionNodeAnim = null;
-        this.chipPrefab = cc.Prefab;
+        this.chipPrefab = {
+            default : null,
+            type : cc.Prefab
+        };
     }
 
     onEnable(...args){
