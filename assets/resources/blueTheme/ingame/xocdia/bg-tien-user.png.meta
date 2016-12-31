@@ -1,0 +1,30 @@
+{
+  "ver": "1.0.0",
+  "uuid": "58b66c4b-d9ad-4eb3-9313-c394943a2fd5",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "subMetas": {
+    "bg-tien-user": {
+      "ver": "1.0.3",
+      "uuid": "075ae633-6966-4798-b9cc-94ac5c5116eb",
+      "rawTextureUuid": "58b66c4b-d9ad-4eb3-9313-c394943a2fd5",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 0,
+      "trimY": 0,
+      "width": 216,
+      "height": 61,
+      "rawWidth": 216,
+      "rawHeight": 61,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 69,
+      "borderRight": 18,
+      "subMetas": {}
+    }
+  }
+}

@@ -72,9 +72,7 @@ class TabTopVip extends Component {
                 fontColor: app.const.COLOR_YELLOW
             }
         }, data, {
-            paging: {},
-            position: cc.v2(0, 10),
-            height: 390,
+            height: 425,
         });
         app.system.hideLoader();
     }

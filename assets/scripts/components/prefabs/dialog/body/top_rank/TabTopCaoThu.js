@@ -9,6 +9,7 @@ class TabTopCaoThu extends Component {
 
         this.flag = null;
         this.topNodeId = 9;
+        this.game1stId = null;
         this.currentPage = 1;
         this.contentNode = {
             default: null,
@@ -27,64 +28,69 @@ class TabTopCaoThu extends Component {
     }
 
     onLoad() {
-
-        this._initGameList();
-
+        this._initGameList(this.currentPage);
     }
 
-    _initGameList() {
+    _initGameList(page) {
         let sendObject = {
             'cmd': app.commands.RANK_GROUP,
             'data': {
                 [app.keywords.RANK_GROUP_TYPE]: app.const.DYNAMIC_GROUP_LEADER_BOARD,
                 [app.keywords.RANK_ACTION_TYPE]: app.const.DYNAMIC_ACTION_BROWSE,
-                [app.keywords.PAGE]: this.currentPage,
-                [app.keywords.RANK_NODE_ID]: 9,
+                [app.keywords.PAGE]: page,
+                [app.keywords.RANK_NODE_ID]: this.topNodeId,
             }
         };
         app.system.showLoader();
-        app.service.send(sendObject, (res) => {
-            if (res['itl'] && res['itl'].length > 0) {
-                this.gameList = res;
+        if (this.game1stId) {
+            this._showTopPlayers(this.game1stId, (data) => {
+                this._initBody(data);
+            });
+        } else {
+            app.service.send(sendObject, (res) => {
+                if (res['itl'] && res['itl'].length > 0) {
+                    this.gameList = res;
 
-                let dNodeIds = this.gameList['itl'];
-                let gameImages = this.gameList['iml'];
+                    let dNodeIds = this.gameList['itl'];
+                    let gameImages = this.gameList['iml'];
 
-                gameImages.forEach((imgName, index) => {
-                    const node = new cc.Node();
+                    gameImages.forEach((imgName, index) => {
+                        const node = new cc.Node();
 
-                    node.dNodeId = dNodeIds[index];
+                        node.dNodeId = dNodeIds[index];
 
-                    const button = node.addComponent(cc.Button);
-                    const nodeSprite = node.addComponent(cc.Sprite);
-                    debug(imgName, app.res.gameTopCapThuIcon[imgName]);
-                    RubUtils.loadSpriteFrame(nodeSprite,
-                        app.res.gameTopCapThuIcon[imgName], cc.size(100, 100), false, (spriteFrame) => {
-                            log(`image loaded`);
-                        });
+                        const button = node.addComponent(cc.Button);
+                        const nodeSprite = node.addComponent(cc.Sprite);
+                        debug(imgName, app.res.gameTopCapThuIcon[imgName]);
+                        RubUtils.loadSpriteFrame(nodeSprite,
+                            app.res.gameTopCapThuIcon[imgName], cc.size(100, 100), false, (spriteFrame) => {
+                                log(`image loaded`);
+                            });
 
-                    let event = new cc.Component.EventHandler();
-                    event.target = this.node;
-                    event.component = 'TabTopCaoThu';
-                    event.handler = 'onGameItemClicked';
-                    button.clickEvents = [event];
+                        let event = new cc.Component.EventHandler();
+                        event.target = this.node;
+                        event.component = 'TabTopCaoThu';
+                        event.handler = 'onGameItemClicked';
+                        button.clickEvents = [event];
 
-                    this.gamePicker.addChild(node);
-                });
-
-                // last call
-                setTimeout(() => {
-                    this._showTopPlayers(dNodeIds[0], (data) => {
-                        this._initBody(data);
+                        this.gamePicker.addChild(node);
                     });
-                });
-            }
 
-        });
+                    // last call
+                    setTimeout(() => {
+                        this.game1stId = dNodeIds[0];
+                        this._showTopPlayers(dNodeIds[0], (data) => {
+                            this._initBody(data);
+                        });
+                    });
+                }
+            });
+        }
     }
 
     onGameItemClicked(event) {
         let dNodeId = event.currentTarget.dNodeId;
+        this.game1stId = dNodeId;
 
         this._showTopPlayers(dNodeId, (data) => {
             this._initBody(data);
@@ -125,13 +131,16 @@ class TabTopCaoThu extends Component {
 
         app.system.hideLoader();
 
+        let next = this.onNextBtnClick.bind(this);
+        let prev = this.onPreviousBtnClick.bind(this);
+
         GridViewRub.show(body, {
             data: ['STT', 'Tài khoản', 'Thắng'],
             options: {
                 fontColor: app.const.COLOR_YELLOW
             }
         }, d, {
-            paging: {},
+            paging: { next, prev },
             position: cc.v2(0, 10),
             width: 670,
             height: 390,
@@ -141,6 +150,20 @@ class TabTopCaoThu extends Component {
                 colors: ['', '', new cc.Color(255, 214, 0)]
             }
         });
+    }
+
+    onPreviousBtnClick() {
+        this.currentPage -= 1;
+        if (this.currentPage < 1) {
+            this.currentPage = 1;
+            return null;
+        }
+        this._initGameList(this.currentPage);
+    }
+
+    onNextBtnClick() {
+        this.currentPage += 1;
+        this._initGameList(this.currentPage);
     }
 }
 

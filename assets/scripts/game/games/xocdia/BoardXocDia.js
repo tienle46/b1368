@@ -5,7 +5,7 @@ import { Keywords } from 'core';
 import { Events } from 'events';
 import BoardCardBetTurn from 'BoardCardBetTurn';
 import XocDiaAnim from 'XocDiaAnim';
-import SFS2X from 'SFS2X';
+import { requestTimeout, clearRequestTimeout, requestInterval, clearRequestInterval } from 'TimeHacker';
 
 export default class BoardXocDia extends BoardCardBetTurn {
     constructor() {
@@ -69,17 +69,18 @@ export default class BoardXocDia extends BoardCardBetTurn {
             this.renderer.hideTimeLine();
         }
         if (this.scene.gameState == app.const.game.state.STATE_BET) {
-            let callInterval = (d) => {
-                if (d == 0) return;
-                this.renderer.setTimeLineMessage(d);
-                setTimeout(() => {
-                    callInterval(d - 1);
+            if (this.renderer) {
+                var i = requestInterval(() => {
+                    if (duration == 0) {
+                        clearRequestInterval(i);
+                        return;
+                    }
+                    console.debug(duration);
+                    this.renderer.setTimeLineMessage(duration);
+                    duration--;
                 }, 1000);
-            };
-
-            this.renderer && callInterval.call(this, duration);
+            }
         }
-
     }
 
     handleGameStateChange(boardState, data, isJustJoined) {
@@ -133,15 +134,17 @@ export default class BoardXocDia extends BoardCardBetTurn {
         let dots = utils.getValue(data, Keywords.XOCDIA_RESULT_END_PHASE);
         if (dots && dots.length > 0) {
             this.renderer.initDots(dots);
-            setTimeout(() => {
+            var t1 = requestTimeout(() => {
                 this.renderer.openBowlAnim(); // this will end up 1s
-
-
-                setTimeout(() => {
+                clearRequestTimeout(t1);
+                var t2 = requestTimeout(() => {
+                    clearRequestTimeout(t2);
                     // show result
                     this.renderer.displayResultFromDots(dots);
 
-                    setTimeout(() => {
+                    var t3 = requestTimeout(() => {
+                        clearRequestTimeout(t3);
+
                         this.renderer.hideResult();
                     }, 3500); // hide it after 2s
                     // emit anim
@@ -152,7 +155,9 @@ export default class BoardXocDia extends BoardCardBetTurn {
                     });
                 }, 1200); // show result and runing money balance anim after 1.2s
 
-                setTimeout(() => {
+                var t4 = requestTimeout(() => {
+                    clearRequestTimeout(t4);
+
                     this.scene.emit(Events.XOCDIA_ON_DISTRIBUTE_CHIP, { playingPlayerIds, bets, playerResults, dots });
                 }, 1500); // emit event after 1.5s
             }, 500);

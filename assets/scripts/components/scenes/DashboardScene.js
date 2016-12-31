@@ -40,9 +40,6 @@ export default class DashboardScene extends BaseScene {
             this._initItemListGame();
         }, app.const.scene.DASHBOARD_SCENE);
 
-
-        //    handle bottom Bar event
-
         this._addBottomBar();
         this._addTopBar();
     }

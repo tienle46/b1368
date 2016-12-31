@@ -34,8 +34,11 @@ class TabTopDaiGia extends Component {
                 [app.keywords.RANK_NODE_ID]: this.topNodeId,
             }
         };
+        let body = this.contentNode;
 
         app.service.send(sendObject, (res) => {
+            body.removeAllChildren();
+
             const data = [
                 res['unl'].map((status, index) => {
                     if (this.crownsNode.children[index])
@@ -70,7 +73,6 @@ class TabTopDaiGia extends Component {
             };
 
             let gridViewRub = new GridViewRub(head, data, rubOptions);
-            let body = this.contentNode;
 
             let node = gridViewRub.getNode();
 

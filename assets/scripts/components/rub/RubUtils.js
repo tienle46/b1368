@@ -116,7 +116,9 @@ let RubUtils = {
 
         ins.map(asset => {
             let deps = cc.loader.getDependsRecursively(asset);
-            cc.loader.release(deps);
+            console.debug(deps);
+            cc.loader.releaseAsset(deps);
+            console.debug(cc.textureCache.getAllTextures().length);
         });
     }
 };

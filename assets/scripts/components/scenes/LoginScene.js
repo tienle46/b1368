@@ -1,6 +1,5 @@
 import BaseScene from 'BaseScene';
 import app from 'app';
-import Base64 from 'Base64';
 import { isEmpty } from 'Utils';
 
 const MINIMUM_PASSWORD = 6;
@@ -76,7 +75,7 @@ export default class LoginScene extends BaseScene {
     }
 
     _loginToDashboard(username, password) {
-        this.showLoading();
+        app.system.showLoader();
         app.service.connect((success) => {
             if (success) {
                 app.service.requestAuthen(username, password, false, false, null, (error, result) => {
