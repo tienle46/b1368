@@ -348,7 +348,12 @@ export default class GamePlayers extends Component {
 
     onBoardMinBetChanged() {
         this.players.forEach(player => {
-            !player.isOwner() && player.resetReadyState();
+            if(player.isOwner()){
+                player.setReady(true);
+            }else{
+                player.resetReadyState();
+                player._sendReadyImmediately();
+            }
         });
     }
 

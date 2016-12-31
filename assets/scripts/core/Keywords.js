@@ -719,7 +719,7 @@ Keywords.ROOM_BET = "b";
 Keywords.ROOM_CAPACITY = "mu";
 Keywords.USER_VARIABLE_BALANCE = "coin";
 Keywords.USER_VARIABLE_IS_TESTER = "$IS_TESTER";
-
+Keywords.ROOM_READY_PLAYERS = "readyPlayers";
 
 //
 Keywords.APP_VERSION_KEY = "avrsn";

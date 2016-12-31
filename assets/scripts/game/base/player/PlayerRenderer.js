@@ -54,7 +54,7 @@ export default class PlayerRenderer extends ActorRenderer {
 
         this.setVisibleOwner(this.data.owner);
         this.setVisibleMaster(this.data.master);
-        this.setVisibleReady(this.data.ready);
+        // this.setVisibleReady(this.data.ready);
 
         this.plusBalanceAnim = this.plusBalanceNode.getComponent('PlusBalanceAnimation');
         this.plusBalanceAnim.setup({ player: this, endCallback: this._onDonePlusBalanceAnimation.bind(this) });

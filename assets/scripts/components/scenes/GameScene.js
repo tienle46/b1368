@@ -268,13 +268,17 @@ export default class GameScene extends BaseScene {
 
     _loadPlayerReadyState() {
 
-        let readyPlayerIds = this.gameData[Keywords.GAME_LIST_PLAYER];
-        console.warn("_loadPlayerReadyState", readyPlayerIds, );
+        let readyPlayerIds = utils.getValue(this.gameData, app.keywords.GAME_LIST_PLAYER, []);
+        this.gameData[app.keywords.ROOM_READY_PLAYERS] = readyPlayerIds;
 
-        readyPlayerIds && readyPlayerIds.forEach(id => {
-            this.emit(Events.ON_PLAYER_READY_STATE_CHANGED, id, true, this.gamePlayers.isItMe(id));
-            console.warn("_loadPlayerReadyState single: ", id, this.gamePlayers.isItMe(id));
-        });
+        this._updatePlayerReadyState(this.gameData)
+
+        // console.warn("_loadPlayerReadyState", readyPlayerIds, );
+        //
+        // readyPlayerIds && readyPlayerIds.forEach(id => {
+        //     this.emit(Events.ON_PLAYER_READY_STATE_CHANGED, id, true, this.gamePlayers.isItMe(id));
+        //     console.warn("_loadPlayerReadyState single: ", id, this.gamePlayers.isItMe(id));
+        // });
     }
 
     _onLoadSceneFail() {
@@ -327,6 +331,7 @@ export default class GameScene extends BaseScene {
 
         this.emit(Events.ON_GAME_STATE_PRE_CHANGE, state, data, isJustJoined);
 
+
         switch (localState) {
             case app.const.game.state.BEGIN:
                 this._onGameStateBegin(data, isJustJoined, rejoining);
@@ -347,7 +352,37 @@ export default class GameScene extends BaseScene {
                 this.emit(Events.ON_GAME_STATE, this.gameState, data, isJustJoined);
         }
 
+        this._updatePlayerReadyState(data, true);
+
         this.emit(Events.ON_GAME_STATE_CHANGED, state, data, isJustJoined);
+    }
+
+    updatePlayerReadyFromGameData(){
+        this._updatePlayerReadyState(this.gameData);
+    }
+
+    _updatePlayerReadyState(data, persistToGameData = false){
+        if(data.hasOwnProperty(app.keywords.ROOM_READY_PLAYERS)){
+
+            let readyPlayerIds = utils.getValue(data, app.keywords.ROOM_READY_PLAYERS, []);
+            if(readyPlayerIds.length > 0){
+                readyPlayerIds.forEach(playerId => {
+                    let player = this.gamePlayers.findPlayer(playerId);
+                    this.emit(Events.ON_PLAYER_READY_STATE_CHANGED, player.id, true, player.isItMe());
+                })
+
+            }
+
+            persistToGameData && (this.gameData[app.keywords.ROOM_READY_PLAYERS] = readyPlayerIds);
+        }
+    }
+
+    checkReadyPlayer(player){
+        if(this.gameData.hasOwnProperty(app.keywords.ROOM_READY_PLAYERS)){
+
+            let readyPlayerIds = utils.getValue(this.gameData, app.keywords.ROOM_READY_PLAYERS, []);
+            return readyPlayerIds.indexOf(player.id) >= 0;
+        }
     }
 
     showGameResult(models, cb) {

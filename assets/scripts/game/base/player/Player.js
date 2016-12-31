@@ -186,6 +186,10 @@ export default class Player extends Actor {
         this.renderer.setBalance(this.balance);
 
         this._updatePlayerAnchor();
+
+        // if(this.scene.checkReadyPlayer(this)){
+            this.setReady(this.scene.checkReadyPlayer(this));
+        // }
     }
 
     avatarCLicked() {
@@ -292,15 +296,16 @@ export default class Player extends Actor {
     }
 
     onGameStarting(data, isJustJoined) {
-        if (isJustJoined) {
-            this.setReady(false);
-        }else{
-            this.setReady(true);
-        }
 
         console.log("onGameStarting: ", data);
 
     }
+
+    // changeReadyState(ready){
+    //     // this.setReady(ready);
+    //
+    //     this.emit(Events.ON_PLAYER_READY_STATE_CHANGED, this.id, ready, this.isItMe());
+    // }
 
     onGameStarted(data, isJustJoined) {
         if (isJustJoined) {

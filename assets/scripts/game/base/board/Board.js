@@ -324,6 +324,7 @@ export default class Board extends Actor {
         this.state = app.const.game.state.STARTING;
         // this.scene.gameControls.hideAllControlsBeforeGameStart();
         this.stopTimeLine();
+        this.scene.updatePlayerReadyFromGameData();
     }
 
     onBoardStarted(data = {}, isJustJoined) {
