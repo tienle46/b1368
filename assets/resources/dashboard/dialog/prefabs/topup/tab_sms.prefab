@@ -414,7 +414,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": -30,
+      "width": 337,
       "height": 230
     },
     "_children": [
@@ -525,7 +525,10 @@
     },
     "_enabled": true,
     "_type": 0,
-    "_segements": 64
+    "_segements": 64,
+    "_N$spriteFrame": null,
+    "_N$alphaThreshold": 1,
+    "_N$inverted": false
   },
   {
     "__type__": "cc.Widget",
@@ -610,7 +613,7 @@
     "_tag": -1,
     "_opacityModifyRGB": false,
     "_id": "",
-    "_active": false,
+    "_active": true,
     "_components": [
       {
         "__id__": 49
@@ -745,7 +748,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "4f622ffa-b6c9-411c-be3a-0bec02117ec4"
+      "__uuid__": "c1ae09df-4b64-4de8-8f55-20f5f99be8f1"
     },
     "_type": 1,
     "_sizeMode": 0,
@@ -760,7 +763,9 @@
     "_isTrimmedMode": false,
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
-    "_atlas": null
+    "_atlas": {
+      "__uuid__": "173610bc-3e4d-4565-b591-397f337ea3be"
+    }
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -957,7 +962,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "bde3b65a-5065-4617-8947-77f938d6ca48"
+      "__uuid__": "aec725c5-de17-4bb1-9b20-b109583dea28"
     },
     "_type": 1,
     "_sizeMode": 0,
@@ -972,7 +977,9 @@
     "_isTrimmedMode": true,
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
-    "_atlas": null
+    "_atlas": {
+      "__uuid__": "173610bc-3e4d-4565-b591-397f337ea3be"
+    }
   },
   {
     "__type__": "cc.Widget",
@@ -1617,7 +1624,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "9dc5b16e-1a37-4825-a726-07120f5c4ef3"
+      "__uuid__": "dc8b2540-da22-41c3-b647-7eefd9dccd85"
     },
     "_type": 1,
     "_sizeMode": 0,
@@ -1632,7 +1639,9 @@
     "_isTrimmedMode": true,
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
-    "_atlas": null
+    "_atlas": {
+      "__uuid__": "173610bc-3e4d-4565-b591-397f337ea3be"
+    }
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -1748,7 +1757,7 @@
     "isAlignOnce": true,
     "_alignFlags": 45,
     "_left": 42.5,
-    "_right": 776.5,
+    "_right": 409.5,
     "_top": 0,
     "_bottom": 0,
     "_verticalCenter": 0,
@@ -1772,7 +1781,7 @@
     "_enabled": true,
     "_layoutSize": {
       "__type__": "cc.Size",
-      "width": -30,
+      "width": 337,
       "height": 230
     },
     "_resize": 1,

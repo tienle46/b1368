@@ -2,6 +2,7 @@ import app from 'app';
 import BaseScene from 'BaseScene';
 import SFS2X from 'SFS2X';
 import { loadRes } from 'RubUtils';
+import { requestTimeout, clearRequestTimeout } from 'TimeHacker';
 
 export default class ListTableScene extends BaseScene {
     constructor() {
@@ -53,7 +54,7 @@ export default class ListTableScene extends BaseScene {
 
     // clear interval
     _clearInterval() {
-        this.timeout && clearTimeout(this.timeout);
+        this.timeout && clearRequestTimeout(this.timeout);
         this.timeout = null;
     }
 
@@ -222,12 +223,9 @@ export default class ListTableScene extends BaseScene {
             this.node && this._initRoomsListFromData(data);
         });
 
-        // timer 
-        this.timeout && clearTimeout(this.timeout);
-        this.timeout = null;
-
-        this.timeout = setTimeout(() => {
+        this.timeout = requestTimeout(() => {
             this._sendRequestUserListRoom(room);
+            clearRequestTimeout(this.timeout);
         }, this.time);
 
     }
@@ -292,7 +290,12 @@ export default class ListTableScene extends BaseScene {
 
         if (items.length > 0 && this.contentInScroll) {
             // clear content
-            this.contentInScroll.children.length > 0 && this.contentInScroll.removeAllChildren(true);
+            let children = this.contentInScroll.children;
+            if (children && children.length > 0) {
+                for (let i = 0; i < children.length; i++) {
+                    this.contentInScroll.children[i].destroy();
+                }
+            }
 
             // re-adding content
             items.map((item) => {

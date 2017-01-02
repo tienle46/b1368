@@ -71,12 +71,12 @@
     "__type__": "cc.Node",
     "_name": "bg_transparent",
     "_objFlags": 0,
-    "_opacity": 255,
+    "_opacity": 190,
     "_color": {
       "__type__": "cc.Color",
-      "r": 255,
-      "g": 255,
-      "b": 255,
+      "r": 0,
+      "g": 0,
+      "b": 0,
       "a": 255
     },
     "_cascadeOpacityEnabled": true,
@@ -133,7 +133,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "dd0aa1b2-b1e6-4c11-b997-b9a933359ed3"
+      "__uuid__": "4e0fb6c6-1e6a-4802-be83-44e8c36c1883"
     },
     "_type": 1,
     "_sizeMode": 0,
@@ -148,7 +148,9 @@
     "_isTrimmedMode": true,
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
-    "_atlas": null
+    "_atlas": {
+      "__uuid__": "173610bc-3e4d-4565-b591-397f337ea3be"
+    }
   },
   {
     "__type__": "cc.Widget",
@@ -797,7 +799,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "ea052c80-2b90-4ece-af11-48a54a893261"
+      "__uuid__": "c7277ae1-1553-42ab-8261-b60cf64f453d"
     },
     "_type": 1,
     "_sizeMode": 0,
@@ -812,7 +814,9 @@
     "_isTrimmedMode": false,
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
-    "_atlas": null
+    "_atlas": {
+      "__uuid__": "501939bb-ccd9-48a6-bb0e-b6e12cb33d6e"
+    }
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -834,7 +838,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "90851d16-cdeb-4e70-82fc-793a6155d551"
+      "__uuid__": "1e492224-6271-41b6-b98c-34e6ec64a48e"
     },
     "_type": 1,
     "_sizeMode": 0,
@@ -849,7 +853,9 @@
     "_isTrimmedMode": true,
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
-    "_atlas": null
+    "_atlas": {
+      "__uuid__": "173610bc-3e4d-4565-b591-397f337ea3be"
+    }
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -1385,7 +1391,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "f719dbe4-2413-4ec8-8150-b020d145f155"
+      "__uuid__": "f8ecd947-2398-4c14-a4ac-cdb508a7e890"
     },
     "_type": 1,
     "_sizeMode": 0,
@@ -1447,7 +1453,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "c035e8a0-5eaf-45b2-bcb5-25fac57e33b0"
+      "__uuid__": "2cb03d61-8505-4400-9bc2-b9abd2f3c2d1"
     },
     "_type": 1,
     "_sizeMode": 0,

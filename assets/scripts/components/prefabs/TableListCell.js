@@ -64,6 +64,9 @@ class TableListCell extends Component {
         this.password = password;
     }
 
+    onDestroy() {
+        super.onDestroy();
+    }
 
     setOnClickListener(clickListener) {
         this._onClickListener = clickListener instanceof Function && clickListener;

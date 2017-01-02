@@ -1,6 +1,5 @@
 import app from 'app';
 import Component from 'Component';
-import ConfirmPopupRub from 'ConfirmPopupRub';
 import TimerRub from 'TimerRub';
 import PromptPopupRub from 'PromptPopupRub';
 import DialogRub from 'DialogRub';
@@ -135,7 +134,7 @@ class TopBar extends Component {
     }
 
     onClickEventAction() {
-        let dialog = new DialogRub(this.node.parent);
+        let dialog = new DialogRub(this.node.parent, null, { title: 'Sự kiện' });
         dialog.addBody('dashboard/dialog/prefabs/event/event_dialog');
     }
 

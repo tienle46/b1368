@@ -175,7 +175,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "a7b225a5-4ed7-4107-93f4-53daf31e6419"
+      "__uuid__": "a79875cf-de35-46f6-89d0-b017c03b21fd"
     },
     "_type": 0,
     "_sizeMode": 0,
@@ -190,7 +190,9 @@
     "_isTrimmedMode": true,
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
-    "_atlas": null
+    "_atlas": {
+      "__uuid__": "501939bb-ccd9-48a6-bb0e-b6e12cb33d6e"
+    }
   },
   {
     "__type__": "cc.Widget",
@@ -278,7 +280,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "390369f9-9e22-41bf-b610-68b6bae34e3d"
+      "__uuid__": "9c966794-7260-4603-b66e-138c4534518f"
     },
     "_type": 0,
     "_sizeMode": 0,
@@ -293,7 +295,9 @@
     "_isTrimmedMode": true,
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
-    "_atlas": null
+    "_atlas": {
+      "__uuid__": "173610bc-3e4d-4565-b591-397f337ea3be"
+    }
   },
   {
     "__type__": "cc.Node",
@@ -362,7 +366,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "be4ee192-4f6b-4899-ac7e-238887ca5e9a"
+      "__uuid__": "a724b03e-5bea-4087-be77-c9a9dd3abfb8"
     },
     "_type": 0,
     "_sizeMode": 0,
@@ -377,7 +381,9 @@
     "_isTrimmedMode": true,
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
-    "_atlas": null
+    "_atlas": {
+      "__uuid__": "173610bc-3e4d-4565-b591-397f337ea3be"
+    }
   },
   {
     "__type__": "cc.Button",
@@ -782,7 +788,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "12260cdb-6ece-4ded-a583-958d7090f9e8"
+      "__uuid__": "8418f39b-1a05-4665-abda-48b1a0b7572c"
     },
     "_type": 1,
     "_sizeMode": 0,
@@ -797,7 +803,9 @@
     "_isTrimmedMode": true,
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
-    "_atlas": null
+    "_atlas": {
+      "__uuid__": "173610bc-3e4d-4565-b591-397f337ea3be"
+    }
   },
   {
     "__type__": "cc.Node",
@@ -984,7 +992,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "12260cdb-6ece-4ded-a583-958d7090f9e8"
+      "__uuid__": "8418f39b-1a05-4665-abda-48b1a0b7572c"
     },
     "_type": 1,
     "_sizeMode": 0,
@@ -999,7 +1007,9 @@
     "_isTrimmedMode": true,
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
-    "_atlas": null
+    "_atlas": {
+      "__uuid__": "173610bc-3e4d-4565-b591-397f337ea3be"
+    }
   },
   {
     "__type__": "cc.Node",
@@ -1355,7 +1365,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 109.9,
+      "width": 154.7,
       "height": 40
     },
     "_children": [],
@@ -1588,8 +1598,8 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": -1,
-      "y": 2.6
+      "x": 1,
+      "y": 0
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -1658,7 +1668,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "b7da0bda-f05c-414a-99ae-65f8e25ed85f"
+      "__uuid__": "89a3c339-1139-422c-bab9-816fc1c1277c"
     },
     "_type": 1,
     "_sizeMode": 0,
@@ -1673,7 +1683,9 @@
     "_isTrimmedMode": true,
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
-    "_atlas": null
+    "_atlas": {
+      "__uuid__": "173610bc-3e4d-4565-b591-397f337ea3be"
+    }
   },
   {
     "__type__": "cc.Button",
@@ -1724,7 +1736,7 @@
       "a": 255
     },
     "_N$normalSprite": {
-      "__uuid__": "b7da0bda-f05c-414a-99ae-65f8e25ed85f"
+      "__uuid__": "89a3c339-1139-422c-bab9-816fc1c1277c"
     },
     "_N$disabledSprite": null,
     "_N$target": {
@@ -1871,7 +1883,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 1,
-      "y": 2.6
+      "y": 1
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -1940,7 +1952,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "0da026cb-0614-45ff-b5cf-3838e8f4ef6b"
+      "__uuid__": "0ff92953-f37b-4f98-ae2c-98164cda0bdb"
     },
     "_type": 1,
     "_sizeMode": 0,
@@ -1955,7 +1967,9 @@
     "_isTrimmedMode": false,
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
-    "_atlas": null
+    "_atlas": {
+      "__uuid__": "173610bc-3e4d-4565-b591-397f337ea3be"
+    }
   },
   {
     "__type__": "cc.Button",

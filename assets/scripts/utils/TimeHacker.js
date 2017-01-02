@@ -3,17 +3,6 @@
  * that will be throtting by browser while browser is inactivation
  */
 
-function csRequestAnimationFrame() {
-    return window.requestAnimationFrame ||
-        window.webkitRequestAnimationFrame ||
-        window.mozRequestAnimationFrame ||
-        window.oRequestAnimationFrame ||
-        window.msRequestAnimationFrame ||
-        function(callback, element) {
-            window.setTimeout(callback, 1000 / 60);
-        };
-}
-
 /**
  * Request Interval
  * Behaves the same as setInterval except uses requestAnimationFrame() where possible for better performance
