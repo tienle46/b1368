@@ -51,7 +51,7 @@ export default class Dialog extends Component {
 
     onCloseBtnClick() {
         this.releaseAssets();
-        this.node.parent.destroy();
+        this.node.parent.removeFromParent();
     }
 
     addToBody(id, url) {
