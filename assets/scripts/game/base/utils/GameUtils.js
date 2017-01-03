@@ -20,7 +20,7 @@ export default class GameUtils {
     }
 
     static isStateAfterReady(checkState) {
-        return checkState && checkState != gameState.INITED && checkState != gameState.READY && checkState != gameState.BEGIN && checkState != gameState.WAIT;
+        return utils.isNumber(checkState) && checkState != gameState.INITED && checkState != gameState.READY && checkState != gameState.BEGIN && checkState != gameState.WAIT;
     }
 
     static convertToLocalGameState(state) {
