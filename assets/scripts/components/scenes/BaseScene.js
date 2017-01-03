@@ -49,8 +49,8 @@ export default class BaseScene extends Actor {
 
     onLoad() {
         super.onLoad();
-        console.table(cc.textureCache.getAllTextures().map(e => ({ loaded: e._textureLoaded, url: e.url })));
-        console.table(cc.textureCache.getAllTextures().length);
+        // console.table(cc.textureCache.getAllTextures().map(e => ({ loaded: e._textureLoaded, url: e.url })));
+        // console.table(cc.textureCache.getAllTextures().length);
         let progressNode = cc.instantiate(app.res.prefab.fullSceneLoading);
         if (progressNode) {
             this.node.parent.addChild(progressNode, app.const.loadingZIndex);

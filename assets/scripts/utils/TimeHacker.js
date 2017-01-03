@@ -53,7 +53,7 @@ export function requestTimeout(fn, delay) {
             return window.requestAnimationFrame || function(callback, element) {
                 window.setTimeout(function() {
                     callback();
-                    console.log("set timeout with setTimeout");
+                    // console.log("set timeout with setTimeout");
                 }, 1000 / 60);
             };
         })(),
