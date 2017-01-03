@@ -107,7 +107,7 @@ class TabAgency extends Component {
         this.bodyNode.addChild(agencyTab.getNode());
 
         app.service.send(sendObj, (res) => {
-            console.debug(res)
+            debug(res)
         });
     }
 }

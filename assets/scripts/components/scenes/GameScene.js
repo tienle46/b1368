@@ -82,6 +82,19 @@ export default class GameScene extends BaseScene {
         this.on(Events.VISIBLE_INGAME_CHAT_COMPONENT, this._onVisibleIngameChatComponent, this);
         this.on(Events.ON_GAME_LOAD_DATA_AFTER_SCENE_START, this._loadGameDataAfterSceneStart, this);
         this.on(Events.ON_ROOM_CHANGE_MIN_BET, this._onRoomMinBetChanged, this);
+        this.on(Events.ON_PLAYER_READY_STATE_CHANGED, (playerId, ready) => {
+
+            let readyPlayerIds = utils.getValue(this.gameData, app.keywords.ROOM_READY_PLAYERS, []);
+            if(ready){
+                readyPlayerIds.push(playerId);
+            }else{
+                let index = readyPlayerIds.indexOf(playerId);
+                index >= 0 && readyPlayerIds.splice(index, 1);
+            }
+
+            this.gameData[app.keywords.ROOM_READY_PLAYERS] = readyPlayerIds;
+
+        }, this);
     }
 
     _onVisibleIngameChatComponent() {
@@ -153,8 +166,6 @@ export default class GameScene extends BaseScene {
     }
 
     _onGameData(isJustJoined = true) {
-
-        console.log('_onGameData: ', this.gameData);
 
         if (this.room && this.room.isGame) {
             this.gameData = this.room.getVariable(app.keywords.VARIABLE_GAME_INFO).value;
@@ -238,6 +249,7 @@ export default class GameScene extends BaseScene {
     }
 
     _loadGameData(isJustJoined) {
+
         let currentGameState = utils.getValue(this.gameData, Keywords.BOARD_STATE_KEYWORD);
         let isStateAfterReady = GameUtils.isStateAfterReady(currentGameState);
 
@@ -269,7 +281,7 @@ export default class GameScene extends BaseScene {
     _loadPlayerReadyState() {
 
         let readyPlayerIds = utils.getValue(this.gameData, app.keywords.GAME_LIST_PLAYER, []);
-        this.gameData[app.keywords.ROOM_READY_PLAYERS] = readyPlayerIds;
+        this.gameData[app.keywords.ROOM_READY_PLAYERS] = [...readyPlayerIds];
 
         this._updatePlayerReadyState(this.gameData)
 
@@ -378,9 +390,12 @@ export default class GameScene extends BaseScene {
     }
 
     checkReadyPlayer(player){
+
+
         if(this.gameData.hasOwnProperty(app.keywords.ROOM_READY_PLAYERS)){
 
             let readyPlayerIds = utils.getValue(this.gameData, app.keywords.ROOM_READY_PLAYERS, []);
+
             return readyPlayerIds.indexOf(player.id) >= 0;
         }
     }

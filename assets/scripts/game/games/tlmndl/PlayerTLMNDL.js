@@ -112,7 +112,7 @@ export default class PlayerTLMNDL extends PlayerCardTurnBase {
     _onGameRejoin(data) {
         super._onGameRejoin(data);
         if (this.isPlaying() && !this.scene.isEnding() && !this.isItMe()) {
-            let cards = Array(PlayerTLMNDL.DEFAULT_HAND_CARD_COUNT).fill(5).map(value => {return Card.from(value)});
+            let cards = Array(PlayerTLMNDL.DEFAULT_HAND_CARD_COUNT).fill(0).map(value => {return Card.from(value)});
             this.setCards(cards, false);
         }
     }

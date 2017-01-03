@@ -39,7 +39,6 @@ export default class Player extends Actor {
             throw new CreateGameException("Dữ liệu khởi tạo bàn chơi không đúng");
         }
 
-        console.log("init player: ", board, user);
     }
 
     _addGlobalListener() {
@@ -132,12 +131,9 @@ export default class Player extends Actor {
 
             this._setBalance(newBalance);
         }
-        console.log("_onPlayerSetBalance: ", id, newBalance);
     }
 
     _onPlayerChangeBalance(id, newBalance) {
-
-        console.log("_onPlayerChangeBalance: ", id, newBalance);
 
         if (this.id == id) {
             let balanceVariable = this.user.variables[Keywords.USER_VARIABLE_BALANCE];
@@ -161,8 +157,6 @@ export default class Player extends Actor {
     }
 
     _onSetReadyState(playerId, ready = true) {
-
-        console.log("_onSetReadyState: playerId=", playerId, " ready=", ready, " this.id: ", this.id);
 
         if (playerId == this.id) {
             this.setReady(ready);
@@ -226,7 +220,7 @@ export default class Player extends Actor {
 
     setReady(ready) {
         this.ready = ready;
-        this.renderer.setVisibleReady(this.ready);
+        this.renderer.setVisibleReady(this.ready, this.id);
     }
 
     resetReadyState() {
@@ -288,16 +282,12 @@ export default class Player extends Actor {
             this.onGameReset();
         }
 
-        // if(!this.ready){
         this._sendReadyImmediately();
-        // }
 
-        this.renderer.setVisibleReady(this.ready);
+        // this.renderer.setVisibleReady(this.ready, this.id);
     }
 
     onGameStarting(data, isJustJoined) {
-
-        console.log("onGameStarting: ", data);
 
     }
 
@@ -328,9 +318,9 @@ export default class Player extends Actor {
     }
 
     onGameReset() {
-        if(this.scene.gameState != app.const.game.state.READY){
-            this.ready = false;
-        }
+        // if(this.scene.gameState != app.const.game.state.READY){
+        //     this.ready = false;
+        // }
 
         this.renderer._reset();
     }
@@ -340,6 +330,8 @@ export default class Player extends Actor {
     }
 
     _sendReadyImmediately() {
+        if(!this.isItMe()) return;
+
         let newPlayer = utils.getVariable(this.user, "newPlayer");
         if (!newPlayer) {
             this.scene.showShortLoading('ready');

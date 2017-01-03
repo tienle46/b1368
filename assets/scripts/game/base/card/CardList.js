@@ -572,7 +572,6 @@ export default class CardList extends Component {
     }
 
     start() {
-        console.log("cards: ", this.cards)
         this.__reveal != undefined && this.setReveal(this.__reveal);
     }
 
