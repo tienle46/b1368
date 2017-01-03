@@ -44,11 +44,11 @@ export default class PlayerCardRenderer extends PlayerRenderer {
 
     _initHandCardList(cardList, isItMe){
         if (isItMe) {
-            cardList.setMaxDimension(800);
+            cardList.setMaxDimension(900);
             cardList.setDraggable(true);
             cardList.setSelectable(true);
-            cardList.setAlign(CardList.ALIGN_BOTTOM_CENTER);
-            cardList.setAnchorPoint(0, 0);
+            cardList.setAlign(CardList.ALIGN_BOTTOM_RIGHT);
+            cardList.setAnchorPoint(1, 0);
             cardList.setReveal(true);
         } else {
             cardList.setMaxDimension(0);
