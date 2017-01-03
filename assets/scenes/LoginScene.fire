@@ -1159,8 +1159,8 @@
     ],
     "_rotationX": 0,
     "_rotationY": 0,
-    "_scaleX": 1,
-    "_scaleY": 1,
+    "_scaleX": null,
+    "_scaleY": null,
     "_position": {
       "__type__": "cc.Vec2",
       "x": 0,
@@ -1695,7 +1695,7 @@
       "__id__": 37
     },
     "_enabled": true,
-    "transition": 2,
+    "transition": 0,
     "pressedColor": {
       "__type__": "cc.Color",
       "r": 255,

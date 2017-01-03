@@ -367,8 +367,8 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": 338,
-      "y": -103
+      "x": 0,
+      "y": -331
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -401,7 +401,7 @@
     "_anchorPoint": {
       "__type__": "cc.Vec2",
       "x": 0.5,
-      "y": 0.5
+      "y": 0
     },
     "_contentSize": {
       "__type__": "cc.Size",
@@ -415,8 +415,8 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": -338,
-      "y": -109
+      "x": 0,
+      "y": 0
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -478,7 +478,7 @@
     "_left": 0,
     "_right": 0,
     "_top": 0,
-    "_bottom": -199.5,
+    "_bottom": 0,
     "_verticalCenter": 0,
     "_horizontalCenter": 0,
     "_isAbsLeft": true,
@@ -509,7 +509,7 @@
     "_anchorPoint": {
       "__type__": "cc.Vec2",
       "x": 0.5,
-      "y": 0.5
+      "y": 0
     },
     "_contentSize": {
       "__type__": "cc.Size",
@@ -533,8 +533,8 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": -337,
-      "y": -109
+      "x": 0,
+      "y": 0
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -586,7 +586,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": -365.5,
-      "y": 0.5
+      "y": 91
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -649,7 +649,7 @@
       "__id__": 14
     },
     "_enabled": true,
-    "transition": 2,
+    "transition": 0,
     "pressedColor": {
       "__type__": "cc.Color",
       "r": 127,
@@ -777,7 +777,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": -3.5,
-      "y": 0.5
+      "y": 91
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -840,7 +840,7 @@
       "__id__": 20
     },
     "_enabled": true,
-    "transition": 2,
+    "transition": 0,
     "pressedColor": {
       "__type__": "cc.Color",
       "r": 127,
@@ -968,7 +968,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 358.5,
-      "y": 0.5
+      "y": 91
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -1031,7 +1031,7 @@
       "__id__": 26
     },
     "_enabled": true,
-    "transition": 2,
+    "transition": 0,
     "pressedColor": {
       "__type__": "cc.Color",
       "r": 127,

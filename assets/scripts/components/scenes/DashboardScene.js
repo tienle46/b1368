@@ -39,9 +39,6 @@ export default class DashboardScene extends BaseScene {
             this.gameList = this._filterClientSupportedGames(data["cl"]);
             this._initItemListGame();
         }, app.const.scene.DASHBOARD_SCENE);
-
-        this._addBottomBar();
-        this._addTopBar();
     }
 
     _filterClientSupportedGames(gameCodes) {
@@ -111,24 +108,6 @@ export default class DashboardScene extends BaseScene {
                 count++;
                 cb(); // next ->
             });
-        });
-    }
-
-
-    // Listen Bottom Bar Event (Click button In Bottom Bar)
-    _addBottomBar() {
-        RubUtils.loadRes('bottombar/bottombar').then((prefab) => {
-            let bottomBarNode = cc.instantiate(prefab);
-
-            this.node.addChild(bottomBarNode);
-        });
-    }
-
-    _addTopBar() {
-        RubUtils.loadRes('dashboard/Topbar').then((prefab) => {
-            let topbarNode = cc.instantiate(prefab);
-
-            this.node.addChild(topbarNode);
         });
     }
 }

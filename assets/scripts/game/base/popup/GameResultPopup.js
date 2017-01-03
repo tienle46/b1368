@@ -5,7 +5,7 @@
 import app from 'app';
 import Actor from 'Actor';
 import GameResultItem from 'GameResultItem';
-import {GameUtils} from 'utils';
+import { GameUtils } from 'utils';
 import * as Commands from "../../../core/Commands";
 import ArrayUtils from "../../../utils/ArrayUtils";
 
@@ -38,41 +38,41 @@ export default class GameResultPopup extends Actor {
         }
     }
 
-    onLoad(){
+    onLoad() {
         this.loaded = false;
         this.animation = this.node.getComponent(cc.Animation);
     }
 
-    onEnable(){
+    onEnable() {
         super.onEnable();
         this.loaded = true;
         this._showResultData(this.__models__);
     }
 
-    start(){
+    start() {
         super.start();
         this.node.active = false;
     }
 
-    onClickCloseButton(){
+    onClickCloseButton() {
         this.hide();
     }
 
-    _addItem(model){
+    _addItem(model) {
         let space = 20;
         let gameResultItem = cc.instantiate(this.itemPrefab).getComponent('GameResultItem');
         gameResultItem.setModel(model);
-        gameResultItem.node.setPosition(0, - (this.content.childrenCount * (gameResultItem.node.height + space)));
+        // gameResultItem.node.setPosition(0, - (this.content.childrenCount * (gameResultItem.node.height + space)));
         this.content.addChild(gameResultItem.node);
     }
 
-    clear(){
+    clear() {
         this.__models__ = null;
         this.content.removeAllChildren();
     }
 
-    _showResultData(models){
-        if(ArrayUtils.isEmpty(models) || !this.loaded) return;
+    _showResultData(models) {
+        if (ArrayUtils.isEmpty(models) || !this.loaded) return;
 
         this.clear();
         this.__models__ = models || [];
@@ -85,40 +85,37 @@ export default class GameResultPopup extends Actor {
 
     }
 
-    show(models, closeCb){
+    show(models, closeCb) {
 
         this._closeCb = closeCb;
 
-        if(this.loaded){
+        if (this.loaded) {
             this._showResultData(models);
-        }else{
+        } else {
             this.__models__ = models;
         }
 
         this.active = true;
     }
 
-    onShown(){
-    }
+    onShown() {}
 
-    onHidden(){
+    onHidden() {
         this.node.active = false;
         this.clear();
         this._closeCb && this._closeCb(Math.ceil((Date.now() - this._shownTime) / 1000));
         this.node.off('touchstart');
 
         let currentScene = app.system.currentScene;
-        currentScene && currentScene.room && app.service.send({cmd: Commands.PLAYER_CONTINUE, data: {}, room: currentScene.room});
+        currentScene && currentScene.room && app.service.send({ cmd: Commands.PLAYER_CONTINUE, data: {}, room: currentScene.room });
     }
 
-    _callCloseCallback(){
-    }
+    _callCloseCallback() {}
 
-    hide(){
+    hide() {
         this.animation && this.animation.play(this.hideAnimName);
         this.node.off('touchstart');
     }
 }
 
 app.createComponent(GameResultPopup);
-

@@ -28,6 +28,11 @@ export default class ListTableScene extends BaseScene {
             type: cc.Node
         };
 
+        this.topbarNode = {
+            default: null,
+            type: cc.Node
+        };
+
         this.items = [];
 
         this.time = 2500 * 10; // creating new request for updating tables every 25s
@@ -67,8 +72,8 @@ export default class ListTableScene extends BaseScene {
     }
 
     _initComponents() {
-        // this._addBottomBar();
-        this._addTopBar();
+        let topBarScript = this.topbarNode.getComponent('TopBar');
+        topBarScript.showBackButton();
 
         app.context.getSelectedGame() && (this.gameCode = app.context.getSelectedGame());
 
@@ -293,7 +298,8 @@ export default class ListTableScene extends BaseScene {
             let children = this.contentInScroll.children;
             if (children && children.length > 0) {
                 for (let i = 0; i < children.length; i++) {
-                    this.contentInScroll.children[i].destroy();
+                    this.contentInScroll.children[i].removeFromParent();
+                    cc.loader.releaseAsset(this.contentInScroll.children[i]);
                 }
             }
 
@@ -398,17 +404,6 @@ export default class ListTableScene extends BaseScene {
             let bottomBarNode = cc.instantiate(prefab);
 
             this.node.addChild(bottomBarNode);
-        });
-    }
-
-    _addTopBar() {
-        loadRes('dashboard/Topbar').then((prefab) => {
-            let topbarNode = cc.instantiate(prefab);
-
-            let topBarScript = topbarNode.getComponent('TopBar');
-            topBarScript.showBackButton();
-
-            this.node.addChild(topbarNode);
         });
     }
 }

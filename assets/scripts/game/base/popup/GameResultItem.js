@@ -5,21 +5,12 @@
 import app from 'app';
 import utils from 'utils';
 import { Actor } from 'components';
-import { CardList } from 'game-components';
-import TextView from 'TextView';
+import GameUtils from 'GameUtils';
 
 export default class GameResultItem extends Actor {
     constructor() {
         super();
 
-        this.resultIconNode = {
-            default: null,
-            type: cc.Node
-        };
-        this.resultIcon = {
-            default: null,
-            type: cc.Sprite
-        };
         this.playerName = {
             default: null,
             type: cc.Label
@@ -34,7 +25,12 @@ export default class GameResultItem extends Actor {
             type: cc.Label
         };
 
-        this.resultText = {
+        this.resultWinnerText = {
+            default: null,
+            type: cc.Label
+        };
+
+        this.resultLoserText = {
             default: null,
             type: cc.Label
         };
@@ -74,16 +70,15 @@ export default class GameResultItem extends Actor {
 
     onEnable() {
         super.onEnable();
-        this.resultIcon = this.resultIconNode.getComponent(cc.Sprite);
         this.infoTextView = this.infoTextViewNode.getComponent('TextView');
         this.model && this._renderData(this.model);
     }
 
-    _setResultIcon(url) {
-        cc.loader.loadRes(url, cc.SpriteFrame, (err, spriteFrame) => {
-            this.resultIcon.spriteFrame = spriteFrame;
-        });
-    }
+    // _setResultIcon(url) {
+    //     cc.loader.loadRes(url, cc.SpriteFrame, (err, spriteFrame) => {
+    //         this.resultIcon.spriteFrame = spriteFrame;
+    //     });
+    // }
 
     setModel(model) {
         this.model = model;
@@ -96,17 +91,29 @@ export default class GameResultItem extends Actor {
         this.infoTextView && this.infoTextView.setText(info);
 
         this.playerName.string = name;
-        this.balanceLabel.string = Number.isNaN(balanceChanged) ? "" : balanceChanged > 0 ? `+${balanceChanged}` : `${balanceChanged}`;
+        this.balanceLabel.string = GameUtils.toChangedBalanceString(balanceChanged);
 
-        if (utils.isEmpty(iconPath)) {
-            text && this.resultText && (this.resultText.string = text);
-            utils.active(this.resultText);
-            utils.deactive(this.resultIcon);
+        text = "THẮNG";
+
+        if (isWinner) {
+            this.balanceLabel.node.color = app.const.COLOR_YELLOW;
+            text && this.resultWinnerText && (this.resultWinnerText.string = text);
+            utils.active(this.resultWinnerText);
+            utils.deactive(this.resultLoserText);
         } else {
-            utils.active(this.resultIcon);
-            utils.deactive(this.resultText);
-            this._setResultIcon(iconPath);
+            this.balanceLabel.node.color = app.const.COLOR_GRAY;
+            text && this.resultLoserText && (this.resultLoserText.string = text);
+            utils.active(this.resultLoserText);
+            utils.deactive(this.resultWinnerText);
         }
+
+        // if (utils.isEmpty(iconPath)) {
+        //     text && this.resultText && (this.resultText.string = text);
+        //     utils.active(this.resultText);
+        // } else {
+        //     utils.deactive(this.resultText);
+        //     // this._setResultIcon(iconPath);
+        // }
 
         // let cardListNode = cc.instantiate(this.cardListPrefab);
         // this.dataContainer.addChild(cardListNode);

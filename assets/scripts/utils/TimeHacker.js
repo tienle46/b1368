@@ -12,7 +12,7 @@
 export function requestInterval(fn, delay) {
     let requestAnimFrame = (function() {
             return window.requestAnimationFrame || function(callback, element) {
-                window.setTimeout(callback, 1000 / 60);
+                setTimeout(callback, 1000 / 60);
             };
         })(),
         start = new Date().getTime(),
@@ -37,9 +37,9 @@ export function requestInterval(fn, delay) {
  */
 export function clearRequestInterval(handle) {
     if (window.cancelAnimationFrame) {
-        window.cancelAnimationFrame(handle.value);
+        cancelAnimationFrame(handle.value);
     } else {
-        window.clearInterval(handle);
+        clearInterval(handle);
     }
 }
 
@@ -51,7 +51,7 @@ export function clearRequestInterval(handle) {
 export function requestTimeout(fn, delay) {
     let requestAnimFrame = (function() {
             return window.requestAnimationFrame || function(callback, element) {
-                window.setTimeout(function() {
+                setTimeout(function() {
                     callback();
                     // console.log("set timeout with setTimeout");
                 }, 1000 / 60);
@@ -81,8 +81,8 @@ export function requestTimeout(fn, delay) {
  */
 export function clearRequestTimeout(handle) {
     if (window.cancelAnimationFrame) {
-        window.cancelAnimationFrame(handle.value);
+        cancelAnimationFrame(handle.value);
     } else {
-        window.clearTimeout(handle);
+        clearTimeout(handle);
     }
 }
