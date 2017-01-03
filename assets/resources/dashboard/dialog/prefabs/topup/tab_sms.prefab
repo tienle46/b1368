@@ -414,7 +414,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 337,
+      "width": -30,
       "height": 230
     },
     "_children": [
@@ -613,7 +613,7 @@
     "_tag": -1,
     "_opacityModifyRGB": false,
     "_id": "",
-    "_active": true,
+    "_active": false,
     "_components": [
       {
         "__id__": 49
@@ -748,7 +748,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "c1ae09df-4b64-4de8-8f55-20f5f99be8f1"
+      "__uuid__": "8a377a32-fee4-4656-bd68-8426f4cf0ff5"
     },
     "_type": 1,
     "_sizeMode": 0,
@@ -764,7 +764,7 @@
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_atlas": {
-      "__uuid__": "173610bc-3e4d-4565-b591-397f337ea3be"
+      "__uuid__": "4bb00c8a-c321-4d5c-b859-a722596f04ed"
     }
   },
   {
@@ -962,7 +962,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "aec725c5-de17-4bb1-9b20-b109583dea28"
+      "__uuid__": "2b73be43-7218-419d-9ba7-ed4b3738582c"
     },
     "_type": 1,
     "_sizeMode": 0,
@@ -978,7 +978,7 @@
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_atlas": {
-      "__uuid__": "173610bc-3e4d-4565-b591-397f337ea3be"
+      "__uuid__": "91ca6178-1c0f-4ca0-bdf3-9011ec0e806b"
     }
   },
   {
@@ -1624,7 +1624,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "dc8b2540-da22-41c3-b647-7eefd9dccd85"
+      "__uuid__": "a5b690a2-ba3a-4651-a0a6-be31963858af"
     },
     "_type": 1,
     "_sizeMode": 0,
@@ -1640,7 +1640,7 @@
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_atlas": {
-      "__uuid__": "173610bc-3e4d-4565-b591-397f337ea3be"
+      "__uuid__": "4bb00c8a-c321-4d5c-b859-a722596f04ed"
     }
   },
   {
@@ -1757,7 +1757,7 @@
     "isAlignOnce": true,
     "_alignFlags": 45,
     "_left": 42.5,
-    "_right": 409.5,
+    "_right": 776.5,
     "_top": 0,
     "_bottom": 0,
     "_verticalCenter": 0,
@@ -1781,7 +1781,7 @@
     "_enabled": true,
     "_layoutSize": {
       "__type__": "cc.Size",
-      "width": 337,
+      "width": -30,
       "height": 230
     },
     "_resize": 1,

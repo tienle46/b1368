@@ -764,7 +764,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "789c44bc-ee75-437f-9333-4ce304bdffa2"
+      "__uuid__": "b168bb98-2ebd-403d-8f94-eaa8a7695714"
     },
     "_type": 1,
     "_sizeMode": 0,
@@ -780,7 +780,7 @@
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_atlas": {
-      "__uuid__": "173610bc-3e4d-4565-b591-397f337ea3be"
+      "__uuid__": "91ca6178-1c0f-4ca0-bdf3-9011ec0e806b"
     }
   },
   {
@@ -809,7 +809,7 @@
     "duration": 0.1,
     "zoomScale": 1.2,
     "pressedSprite": {
-      "__uuid__": "f1682b1f-01fb-4995-aa37-87a48ed3566b"
+      "__uuid__": "2dbb7bd4-a9cd-4e67-8919-45d1aa1742bb"
     },
     "hoverSprite": null,
     "clickEvents": [
@@ -834,7 +834,7 @@
       "a": 255
     },
     "_N$normalSprite": {
-      "__uuid__": "789c44bc-ee75-437f-9333-4ce304bdffa2"
+      "__uuid__": "b168bb98-2ebd-403d-8f94-eaa8a7695714"
     },
     "_N$disabledSprite": null,
     "_N$target": {

@@ -1,5 +1,4 @@
 var app = require('app');
-import AlertPopupRub from 'AlertPopupRub';
 import BaseScene from 'BaseScene';
 import PromptPopupRub from 'PromptPopupRub';
 
@@ -41,21 +40,15 @@ export default class EntranceScene extends BaseScene {
                         this.accessToken = sdkbox.PluginFacebook.getAccessToken();
                         log(`fbId ${fbId} and token ${this.accessToken}`);
                         this.getUserByFbId(fbId, this.accessToken);
-                    }
-                    else {
+                    } else {
 
                     }
                 },
-                onAPI: function (tag, data) {
-                },
-                onSharedSuccess: function (data) {
-                },
-                onSharedFailed: function (data) {
-                },
-                onSharedCancel: function () {
-                },
-                onPermission: function (isLogin, msg) {
-                }
+                onAPI: function(tag, data) {},
+                onSharedSuccess: function(data) {},
+                onSharedFailed: function(data) {},
+                onSharedCancel: function() {},
+                onPermission: function(isLogin, msg) {}
             });
 
         }
@@ -213,9 +206,6 @@ export default class EntranceScene extends BaseScene {
     }
 
     handleFacebookLoginAction() {
-        // AlertPopupRub.show(this.node, "Chức năng đang cập nhật!");
-        // this.prom = new PromptPopupRub(this.node, { confirmBtn: this.test }, { label: { text: 'dafuq ?' } }, this);
-        // this.prom.init();
         debug(`login by facebook btn clicked`);
         if (cc.sys.isMobile) {
 

@@ -37,14 +37,10 @@ class PreloadScene extends Component {
         let resources = [
             { dir: 'toast/Toast', name: 'toast' },
             { dir: 'dashboard/dialog/prefabs/scrollview', name: 'scrollview' },
-            { dir: 'dashboard/dialog/prefabs/segmentControl', name: 'segmentControl' },
             { dir: 'popup/BasePopup', name: 'basePopup' },
             { dir: 'popup/FriendProfilePopup', name: 'friendProfilePopup' },
             { dir: 'dashboard/dialog/prefabs/dialog', name: 'dialog' },
-            { dir: 'game/xocdia/minichip', name: 'miniChip' },
-            { dir: 'fonts/newFonts/ICIELPANTON-BLACK', name: 'fontICIEL', type: cc.Font },
-            { dir: 'fonts/newFonts/UTM Aurora', name: 'fontUTM', type: cc.Font },
-            { dir: 'fonts/newFonts/helveticaneue2', name: 'fontHelvetica', type: cc.Font },
+            { dir: 'game/xocdia/minichip', name: 'miniChip' }
         ];
 
         app.async.parallel(resources.map((res) => {
