@@ -521,14 +521,10 @@ export default class CardList extends Component {
 
     onLoad() {
 
-        console.log("on load")
-
         this.cards = [];
         this.loaded = true;
         this.node.on('child-added', (event) => {
-            
-            console.log("child-added");
-            
+
             let newChild = event.detail;
             newChild.setAnchorPoint(this.node.getAnchorPoint());
 

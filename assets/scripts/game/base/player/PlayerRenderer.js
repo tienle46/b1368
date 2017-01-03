@@ -16,7 +16,6 @@ export default class PlayerRenderer extends ActorRenderer {
             ...this.properties,
             playerNameLabel: cc.Label,
             balanceLabel: cc.Label,
-            status2: cc.Node,
             ownerIcon: cc.Node,
             masterIcon: cc.Node,
             plusBalanceNode: cc.Node,
