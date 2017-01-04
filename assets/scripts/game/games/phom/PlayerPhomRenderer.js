@@ -170,6 +170,16 @@ export default class PlayerPhomRenderer extends PlayerCardTurnBaseRenderer {
         let eatenCardNode = this.anchorIndex == 1 || this.anchorIndex == 4 ? this.eatenCardListNode2 : this.eatenCardListNode;
         return eatenCardNode.getComponent('CardList');
     }
+
+    _initHandCardList(cardList, isItMe){
+
+        super._initHandCardList(cardList, isItMe);
+
+        if (isItMe) {
+            cardList.setAlign(CardList.ALIGN_BOTTOM_RIGHT);
+            cardList.setAnchorPoint(1, 0);
+        }
+    }
 }
 
 app.createComponent(PlayerPhomRenderer);

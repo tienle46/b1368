@@ -47,8 +47,8 @@ export default class PlayerCardRenderer extends PlayerRenderer {
             cardList.setMaxDimension(900);
             cardList.setDraggable(true);
             cardList.setSelectable(true);
-            cardList.setAlign(CardList.ALIGN_BOTTOM_RIGHT);
-            cardList.setAnchorPoint(1, 0);
+            cardList.setAlign(CardList.ALIGN_BOTTOM_LEFT);
+            cardList.setAnchorPoint(1, 1);
             cardList.setReveal(true);
         } else {
             cardList.setMaxDimension(0);

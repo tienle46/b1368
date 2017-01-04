@@ -156,8 +156,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 92,
-      "height": 92
+      "width": 106,
+      "height": 106
     },
     "_children": [],
     "_rotationX": 0,
@@ -202,7 +202,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "2be3c77b-8f3d-4cdc-8cbe-cd69d80f1ad7"
+      "__uuid__": "12e424aa-01e9-4d1b-8e3e-19dff021def3"
     },
     "_type": 0,
     "_sizeMode": 1,
@@ -217,7 +217,9 @@
     "_isTrimmedMode": true,
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
-    "_atlas": null
+    "_atlas": {
+      "__uuid__": "10ca67ea-2a3c-4512-b8a8-cfd37f9d8bbe"
+    }
   },
   {
     "__type__": "1c0c91FVspFPZAB7lifOTk3",
@@ -228,8 +230,8 @@
     },
     "_enabled": true,
     "buttonType": 0,
-    "pressedScale": 0.8,
-    "transDuration": 0.1,
+    "pressedScale": 1.12,
+    "transDuration": 0.08,
     "isTouching": false,
     "path": "aaaa"
   },
@@ -395,8 +397,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 92,
-      "height": 92
+      "width": 106,
+      "height": 106
     },
     "_children": [],
     "_rotationX": 0,
@@ -441,7 +443,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "2be3c77b-8f3d-4cdc-8cbe-cd69d80f1ad7"
+      "__uuid__": "12e424aa-01e9-4d1b-8e3e-19dff021def3"
     },
     "_type": 0,
     "_sizeMode": 1,
@@ -456,7 +458,9 @@
     "_isTrimmedMode": true,
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
-    "_atlas": null
+    "_atlas": {
+      "__uuid__": "10ca67ea-2a3c-4512-b8a8-cfd37f9d8bbe"
+    }
   },
   {
     "__type__": "1c0c91FVspFPZAB7lifOTk3",
@@ -467,8 +471,8 @@
     },
     "_enabled": true,
     "buttonType": 0,
-    "pressedScale": 0.8,
-    "transDuration": 0.1,
+    "pressedScale": 1.12,
+    "transDuration": 0.08,
     "isTouching": false,
     "path": "aaaa"
   },
@@ -634,8 +638,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 92,
-      "height": 92
+      "width": 106,
+      "height": 106
     },
     "_children": [],
     "_rotationX": 0,
@@ -680,7 +684,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "2be3c77b-8f3d-4cdc-8cbe-cd69d80f1ad7"
+      "__uuid__": "12e424aa-01e9-4d1b-8e3e-19dff021def3"
     },
     "_type": 0,
     "_sizeMode": 1,
@@ -695,7 +699,9 @@
     "_isTrimmedMode": true,
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
-    "_atlas": null
+    "_atlas": {
+      "__uuid__": "10ca67ea-2a3c-4512-b8a8-cfd37f9d8bbe"
+    }
   },
   {
     "__type__": "1c0c91FVspFPZAB7lifOTk3",
@@ -706,8 +712,8 @@
     },
     "_enabled": true,
     "buttonType": 0,
-    "pressedScale": 0.8,
-    "transDuration": 0.1,
+    "pressedScale": 1.12,
+    "transDuration": 0.08,
     "isTouching": false,
     "path": "aaaa"
   },
@@ -873,8 +879,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 92,
-      "height": 92
+      "width": 106,
+      "height": 106
     },
     "_children": [],
     "_rotationX": 0,
@@ -945,8 +951,8 @@
     },
     "_enabled": true,
     "buttonType": 0,
-    "pressedScale": 0.8,
-    "transDuration": 0.1,
+    "pressedScale": 1.12,
+    "transDuration": 0.08,
     "isTouching": false,
     "path": "aaaa"
   },
@@ -1130,6 +1136,7 @@
     },
     "_enabled": true,
     "path": "",
+    "inviteButtonName": "inviteButton",
     "anchor1": {
       "__id__": 26
     },

@@ -7676,7 +7676,9 @@
     "tableNameLabel": {
       "__id__": 8
     },
-    "tableMinBetLabel": null,
+    "tableMinBetLabel": {
+      "__id__": 11
+    },
     "gameResultPopupNode": {
       "__id__": 253
     },
