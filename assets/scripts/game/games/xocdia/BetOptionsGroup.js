@@ -12,6 +12,7 @@ class BetOptionsGroup extends Component {
         };
 
         this.userGold = 0;
+        this.chips = [];
     }
 
     onLoad() {
@@ -25,13 +26,13 @@ class BetOptionsGroup extends Component {
     }
 
     setLblOptions(roomBet) {
+        this.chips = [];
         let multiples = [1, 5, 10, 50];
         this.node.children.filter((child) => child.name.indexOf('chip') > -1).forEach((child, index) => {
             let amount = multiples[index] * Number(roomBet);
             let betChip = child.getComponent('BetChip');
-            betChip.roomBet = roomBet;
-            let chipInfo = this.getChipInfoByAmount(amount, false);
-            betChip.initChip(chipInfo);
+            betChip && betChip.setChipAmountLbl(amount);
+            this.chips.push(betChip);
         });
     }
 
@@ -56,8 +57,14 @@ class BetOptionsGroup extends Component {
         return Number(this.userGoldLbl.string.replace(',', ''));
     }
 
-    getChipInfoByAmount(amount, isMiniChip = true) {
-        return this.getCheckedItem().getComponent('BetChip').getChipInfoByAmount(amount, isMiniChip);
+    getChip() {
+        return this.getCheckedItem().getComponent('BetChip').getChipIcon(cc.size(25, 25));
+    }
+
+    getChipByAmount(amount) {
+        let chipComponent = this.chips.find((chip) => amount == chip.amount);
+        let chip = chipComponent && chipComponent.getChipIcon(cc.size(25, 25));
+        return chip || this.getChip();
     }
 }
 

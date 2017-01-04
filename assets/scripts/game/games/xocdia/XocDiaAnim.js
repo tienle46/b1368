@@ -3,7 +3,7 @@ import app from 'app';
 let totalChipOnPlayer = {};
 
 export default {
-    tossChip: (startPos, toNode, chipInfo, playerId) => {
+    tossChip: (startPos, toNode, chip, playerId) => {
         // and node where chip would be tossed to
         let toNodeSize = toNode.getContentSize();
         let toNodePos = toNode.getPosition();
@@ -13,22 +13,12 @@ export default {
         // position based on world space
         let realEndPoint = toNode.parent ? toNode.parent.convertToWorldSpaceAR(endPoint) : toNode.convertToWorldSpaceAR(endPoint);
 
-        let miniChipNode = app.res.prefab.miniChip;
-        if (!miniChipNode) {
-            console.error('miniChipNode is not loaded', miniChipNode);
-            return;
-        }
+        chip.name = "miniChip";
+        chip.playerId = playerId;
+        chip.betId = toNode.id;
+        chip.setPosition(startPos);
 
-        let miniChip = cc.instantiate(miniChipNode);
-        miniChip.name = "miniChip";
-        miniChip.playerId = playerId;
-        miniChip.betId = toNode.id;
-        miniChip.setPosition(startPos);
-
-        let chipComponent = miniChip.getComponent('BetChip');
-        chipComponent && chipComponent.initChip(chipInfo, true);
-
-        cc.director.getScene().addChild(miniChip);
+        cc.director.getScene().addChild(chip);
 
         if (!totalChipOnPlayer.hasOwnProperty(playerId)) {
             totalChipOnPlayer[playerId] = 1;
@@ -38,9 +28,9 @@ export default {
 
         let action = cc.moveTo(0.1 + app._.random(0, 0.2), realEndPoint);
 
-        miniChip.runAction(cc.sequence(action, cc.callFunc(() => {
+        chip.runAction(cc.sequence(action, cc.callFunc(() => {
             if (totalChipOnPlayer[playerId] > 20) {
-                miniChip.destroy();
+                chip.destroy();
             }
         })));
     },
@@ -56,7 +46,6 @@ export default {
     },
     clearPlayerChip: (playerId) => {
         totalChipOnPlayer[playerId] = 0;
-        debug(cc.director.getScene().children.filter((child) => (child.name == 'miniChip') && (child.playerId == playerId)));
         cc.director.getScene().children.filter((child) => (child.name == 'miniChip') && (child.playerId == playerId)).map((chip) => {
             chip.destroy();
         });

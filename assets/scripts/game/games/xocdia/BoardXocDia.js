@@ -33,6 +33,8 @@ export default class BoardXocDia extends BoardCardBetTurn {
         this.scene.off(Events.ON_GAME_STATE_BEGIN, this._onGameBegin, this);
         this.scene.off(Events.ON_GAME_STATE, this._onGameState, this);
         this.scene.off(Events.XOCDIA_ON_BOARD_UPDATE_PREVIOUS_RESULT_HISTORY, this._onUpdateBoardResultHistory, this);
+
+        this.timeLineInterval && clearRequestInterval(this.timeLineInterval);
     }
 
     _reset() {
@@ -70,12 +72,11 @@ export default class BoardXocDia extends BoardCardBetTurn {
         }
         if (this.scene.gameState == app.const.game.state.STATE_BET) {
             if (this.renderer) {
-                var i = requestInterval(() => {
+                this.timeLineInterval = requestInterval(() => {
                     if (duration == 0) {
-                        clearRequestInterval(i);
+                        clearRequestInterval(this.timeLineInterval);
                         return;
                     }
-                    debug(duration);
                     this.renderer.setTimeLineMessage(duration);
                     duration--;
                 }, 1000);

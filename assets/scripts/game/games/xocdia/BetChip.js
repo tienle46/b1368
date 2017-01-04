@@ -10,9 +10,11 @@ class BetChip extends Component {
             type: cc.Label
         };
 
-        this.amount = null;
-        this.color = null;
-        this.size = null;
+        this.chipIconNode = {
+            default: null,
+            type: cc.Node
+        };
+        this.amount = 0;
     }
 
     onLoad() {
@@ -21,33 +23,18 @@ class BetChip extends Component {
         }
     }
 
-    onDestroy() {
-        debug('child-destroyed');
-    }
+    setChipAmountLbl(amount) {
+        this.amount = Number(amount) || 0;
+        let str = isNaN(amount) ? amount : this._convertAmountFromNumberToString(amount);
+        this.amountLbl.string = str;
 
-    initChip({ amount, color, size } = { amount: 1, color: app.const.COLOR_BLACK, size: cc.size(20, 20) }) {
-        this.amount = amount;
-
-        this.color = color || this.getChipInfoByAmount(amount).color;
-
-
-        size && (this.size = size);
-
-        // size
-        if (size) {
+        if (str.length >= 4) {
+            let size = {
+                width: 150,
+                height: this.node.getContentSize().height
+            };
             this.node.setContentSize(size);
-            this.amountLbl.node.setContentSize(size);
-            this.amountLbl.fontSize = size.width / 2;
-            this.amountLbl.lineHeight = size.height;
         }
-
-        // color
-        this.amountLbl.node.parent.color = this.color;
-        this.amountLbl.node.color = this.color;
-
-        // string
-        this.amountLbl && (this.amountLbl.string = `${this._convertAmountFromNumberToString(amount)}`);
-        // console.debug(amount, color, size);
     }
 
     // 1000 -> 1k , 10000 -> 10k
@@ -67,35 +54,19 @@ class BetChip extends Component {
         return str.match(/\d+(\.)/) ? amount * 1000 : amount;
     }
 
-    getChipInfo() {
-        let { amount, color, size } = { amount: this.amount, color: this.color, size: this.size };
-        return { amount, color, size };
+    getChipIcon(size) {
+        let chipIcon = cc.instantiate(this.chipIconNode);
+        size && chipIcon.setContentSize(size);
+        return chipIcon;
+    }
+
+    getChipAmount() {
+        return this.amount;
     }
 
     onChipChecked() {
         this.node.dispatchEvent(new cc.Event('chip-checked', true));
         this.amount = this._convertAmountFromStringToNum(this.amountLbl.string);
-        this.color = this.amountLbl.node.color;
-        this.size = cc.size(20, 20);
-    }
-
-    getChipInfoByAmount(amount, isMiniChip) {
-        let a, color, size;
-        size = isMiniChip ? cc.size(20, 20) : this.node.getContentSize();
-        this.roomBet && (a = amount / this.roomBet);
-        let condition = Number(this._convertAmountFromNumberToString(a).replace('k', '.'));
-
-        if (condition < 5) {
-            color = app.const.COLOR_RED;
-        } else if (condition < 10) {
-            color = app.const.COLOR_GREEN;
-        } else if (condition < 50) {
-            color = app.const.COLOR_ORANGE;
-        } else {
-            color = app.const.COLOR_BLACK;
-        }
-
-        return { amount, color, size };
     }
 }
 

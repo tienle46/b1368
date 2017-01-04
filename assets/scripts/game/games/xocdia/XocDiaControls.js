@@ -102,8 +102,7 @@ export default class XocDiaControls extends GameControls {
 
     onBetBtnClick(event) {
         let chipOptionsNode = this.betOptionsGroup.getCheckedItem();
-        let chipInfo = chipOptionsNode.getComponent('BetChip').getChipInfo();
-        let amount = chipInfo.amount;
+        let amount = chipOptionsNode.getComponent('BetChip').getChipAmount();
 
         if (this._getCurrentUserGold() - amount < 0) {
             app.system.error('Không đủ tiền để tiếp tục cược !');
@@ -117,7 +116,7 @@ export default class XocDiaControls extends GameControls {
 
         // sent bet request
         let bet = {};
-        bet[app.keywords.XOCDIA_BET.AMOUNT] = Number(chipInfo.amount);
+        bet[app.keywords.XOCDIA_BET.AMOUNT] = Number(amount);
         bet[app.keywords.XOCDIA_BET.TYPE] = betTypeId;
 
         this._sendBetRequest(bet);
@@ -232,7 +231,7 @@ export default class XocDiaControls extends GameControls {
 
         if (data && utils.isNumber(amount) && utils.isNumber(typeId)) {
             let toNode = this.betContainerButton.getBetTypeByTypeId(typeId);
-            let chipInfo = this.betOptionsGroup.getChipInfoByAmount(amount, true);
+            let chip = this.betOptionsGroup.getChipByAmount(amount);
             // update gold
             this._updateGoldAmountOnControl(typeId, amount, isItMe, false, isReplace);
 
@@ -241,7 +240,7 @@ export default class XocDiaControls extends GameControls {
                 this.updateUserGoldLbl(this.currentGold);
             }
 
-            XocDiaAnim.tossChip(fromPos, toNode, chipInfo, playerId);
+            XocDiaAnim.tossChip(fromPos, toNode, chip, playerId);
         }
     }
 
@@ -392,7 +391,6 @@ export default class XocDiaControls extends GameControls {
     }
 
     _setBetOptionsLblsByRoomBet() {
-        debug('_setBetOptionsLblsByRoomBet');
         this.betOptionsGroup.setLblOptions(this.scene.room.variables[app.keywords.ROOM_BET].value);
     }
 
