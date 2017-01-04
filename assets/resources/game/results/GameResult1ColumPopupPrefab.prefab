@@ -56,17 +56,17 @@
     "_tag": -1,
     "_opacityModifyRGB": false,
     "_id": "",
-    "_active": true,
+    "_active": false,
     "_components": [
       {
-        "__id__": 37
+        "__id__": 38
       },
       {
-        "__id__": 38
+        "__id__": 39
       }
     ],
     "_prefab": {
-      "__id__": 39
+      "__id__": 40
     },
     "groupIndex": 0
   },
@@ -196,7 +196,7 @@
         "__id__": 27
       },
       {
-        "__id__": 32
+        "__id__": 33
       }
     ],
     "_rotationX": 0,
@@ -218,7 +218,7 @@
     "_active": true,
     "_components": [],
     "_prefab": {
-      "__id__": 36
+      "__id__": 37
     },
     "groupIndex": 0
   },
@@ -906,11 +906,11 @@
         "__id__": 29
       },
       {
-        "__id__": 30
+        "__id__": 31
       }
     ],
     "_prefab": {
-      "__id__": 31
+      "__id__": 32
     },
     "groupIndex": 0
   },
@@ -970,7 +970,9 @@
     "pressedSprite": null,
     "hoverSprite": null,
     "clickEvents": [
-      null
+      {
+        "__id__": 30
+      }
     ],
     "_N$interactable": true,
     "_N$enableAutoGrayEffect": false,
@@ -995,6 +997,15 @@
     "_N$target": {
       "__id__": 27
     }
+  },
+  {
+    "__type__": "cc.ClickEvent",
+    "target": {
+      "__id__": 1
+    },
+    "component": "GameResultPopup",
+    "handler": "hide",
+    "customEventData": ""
   },
   {
     "__type__": "d2d23CyXOhMxYG3ydeJ57ya",
@@ -1063,14 +1074,14 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 33
+        "__id__": 34
       },
       {
-        "__id__": 34
+        "__id__": 35
       }
     ],
     "_prefab": {
-      "__id__": 35
+      "__id__": 36
     },
     "groupIndex": 0
   },
@@ -1079,7 +1090,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 32
+      "__id__": 33
     },
     "_enabled": true,
     "_useOriginalSize": false,
@@ -1101,7 +1112,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 32
+      "__id__": 33
     },
     "_enabled": true,
     "_color": {
@@ -1147,7 +1158,7 @@
     "showAnimName": "showGameResult",
     "hideAnimName": "hideGameResult",
     "title": {
-      "__id__": 33
+      "__id__": 34
     },
     "content": {
       "__id__": 16

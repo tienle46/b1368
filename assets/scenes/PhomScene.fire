@@ -7608,7 +7608,7 @@
       "__id__": 254
     },
     "_name": "GameResult1ColumPopupPrefab",
-    "_active": true,
+    "_active": false,
     "_position": {
       "__type__": "cc.Vec2",
       "x": 0,
