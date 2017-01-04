@@ -23,11 +23,6 @@ export default class ListTableScene extends BaseScene {
             type: cc.Label
         };
 
-        this.filterGroup = {
-            default: null,
-            type: cc.Node
-        };
-
         this.topbarNode = {
             default: null,
             type: cc.Node
@@ -72,44 +67,23 @@ export default class ListTableScene extends BaseScene {
     }
 
     _initComponents() {
-        let topBarScript = this.topbarNode.getComponent('TopBar');
-        topBarScript.showBackButton();
-
         app.context.getSelectedGame() && (this.gameCode = app.context.getSelectedGame());
 
         this.gameCode && this._initGameLabel(this.gameCode);
-
-        this._initFilterBtns();
-    }
-
-    _initFilterBtns() {
-        let btnNodes = this.filterGroup.children;
-
-        let event = new cc.Component.EventHandler();
-        event.target = this.node;
-        event.component = 'ListTableScene';
-        event.handler = 'onFilterBtnClick';
-
-        btnNodes && btnNodes.forEach((btn) => {
-            btn.getComponent(cc.Button).clickEvents = [event];
-        });
     }
 
     onFilterBtnClick(e) {
         let [min, max] = [0, 0];
 
-        switch (e.currentTarget.name) {
-            case 'danthuongBtn':
+        switch (e.node.name) {
+            case 'nongdanRadio':
                 [min, max] = [1, 3];
                 break;
-            case 'danchoiBtn':
+            case 'quytocRadio':
                 [min, max] = [3, 5];
                 break;
-            case 'daigiaBtn':
+            case 'hoanggiaRadio':
                 [min, max] = [5, 7];
-                break;
-            case 'typhuBtn':
-                [min, max] = [7, 10];
                 break;
         }
 
@@ -292,17 +266,18 @@ export default class ListTableScene extends BaseScene {
      * @memberOf ListTableScene
      */
     _renderList(items, cond = null) {
-        items = this._filter(items, cond);
-
-        if (items.length > 0 && this.contentInScroll) {
+        if (this.contentInScroll) {
             // clear content
             let children = this.contentInScroll.children;
             children && children.length > 0 && this.contentInScroll.removeAllChildren();
 
-            // re-adding content
-            items.map((item) => {
-                this.contentInScroll.addChild(item);
-            });
+            items = this._filter(items, cond);
+            if (items.length > 0) {
+                // re-adding content
+                items.map((item) => {
+                    this.contentInScroll.addChild(item);
+                });
+            }
         }
     }
 
@@ -320,9 +295,6 @@ export default class ListTableScene extends BaseScene {
         if (!cond)
             return items;
 
-        items.filter((item) => {
-            item.getComponent('TableListCell').minBet >= cond.min && item.getComponent('TableListCell').minBet <= cond.max;
-        });
         return items.filter((item) => item.getComponent('TableListCell').minBet >= cond.min && item.getComponent('TableListCell').minBet <= cond.max);
     }
 
@@ -332,7 +304,6 @@ export default class ListTableScene extends BaseScene {
         data[app.keywords.IS_SPECTATOR] = false;
         data[app.keywords.QUICK_JOIN_BET] = 1;
 
-        log("join room request");
         console.log(app.system.gameEventEmitter)
         console.log(app.system.eventEmitter)
 
