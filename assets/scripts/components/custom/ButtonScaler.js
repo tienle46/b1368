@@ -4,8 +4,15 @@ var app = require('app');
 class ButtonScaler extends Component {
     constructor() {
         super();
-        this.pressedScale = 1.1;
-        this.transDuration = 0.1;
+        this.pressedScale = {
+            default: 1.12,
+            type: cc.Float
+        };
+
+        this.transDuration = {
+            default: 0.08,
+            type: cc.Float
+        };
     }
 
     onLoad() {

@@ -59,14 +59,14 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 38
+        "__id__": 37
       },
       {
-        "__id__": 39
+        "__id__": 38
       }
     ],
     "_prefab": {
-      "__id__": 40
+      "__id__": 39
     },
     "groupIndex": 0
   },
@@ -161,7 +161,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "contentComponent",
+    "_name": "content",
     "_objFlags": 0,
     "_opacity": 255,
     "_color": {
@@ -196,7 +196,7 @@
         "__id__": 27
       },
       {
-        "__id__": 33
+        "__id__": 32
       }
     ],
     "_rotationX": 0,
@@ -206,7 +206,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": 0
+      "y": -960
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -218,7 +218,7 @@
     "_active": true,
     "_components": [],
     "_prefab": {
-      "__id__": 37
+      "__id__": 36
     },
     "groupIndex": 0
   },
@@ -906,11 +906,11 @@
         "__id__": 29
       },
       {
-        "__id__": 31
+        "__id__": 30
       }
     ],
     "_prefab": {
-      "__id__": 32
+      "__id__": 31
     },
     "groupIndex": 0
   },
@@ -970,9 +970,7 @@
     "pressedSprite": null,
     "hoverSprite": null,
     "clickEvents": [
-      {
-        "__id__": 30
-      }
+      null
     ],
     "_N$interactable": true,
     "_N$enableAutoGrayEffect": false,
@@ -999,15 +997,6 @@
     }
   },
   {
-    "__type__": "cc.ClickEvent",
-    "target": {
-      "__id__": 1
-    },
-    "component": "GameResultPopup",
-    "handler": "hide",
-    "customEventData": ""
-  },
-  {
     "__type__": "d2d23CyXOhMxYG3ydeJ57ya",
     "_name": "",
     "_objFlags": 0,
@@ -1015,7 +1004,9 @@
       "__id__": 27
     },
     "_enabled": true,
-    "path": ""
+    "path": "",
+    "pressedScale": 1.12,
+    "transDuration": 0.08
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -1074,14 +1065,14 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 34
+        "__id__": 33
       },
       {
-        "__id__": 35
+        "__id__": 34
       }
     ],
     "_prefab": {
-      "__id__": 36
+      "__id__": 35
     },
     "groupIndex": 0
   },
@@ -1090,7 +1081,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 33
+      "__id__": 32
     },
     "_enabled": true,
     "_useOriginalSize": false,
@@ -1112,7 +1103,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 33
+      "__id__": 32
     },
     "_enabled": true,
     "_color": {
@@ -1158,7 +1149,7 @@
     "showAnimName": "showGameResult",
     "hideAnimName": "hideGameResult",
     "title": {
-      "__id__": 34
+      "__id__": 33
     },
     "content": {
       "__id__": 16

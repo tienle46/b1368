@@ -3121,7 +3121,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 131,
-      "y": -30
+      "y": -50
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -3488,9 +3488,6 @@
     },
     "balanceLabel": {
       "__id__": 32
-    },
-    "status2": {
-      "__id__": 89
     },
     "ownerIcon": {
       "__id__": 21

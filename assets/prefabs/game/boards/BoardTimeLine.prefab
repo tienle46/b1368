@@ -193,7 +193,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "159a71fe-4662-46e2-a61e-967023d97200"
+      "__uuid__": "7259382a-003c-4379-beca-6c89ce836050"
     },
     "_type": 3,
     "_sizeMode": 0,
@@ -208,7 +208,9 @@
     "_isTrimmedMode": true,
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
-    "_atlas": null
+    "_atlas": {
+      "__uuid__": "10ca67ea-2a3c-4512-b8a8-cfd37f9d8bbe"
+    }
   },
   {
     "__type__": "cc.Widget",
@@ -243,7 +245,7 @@
     "asset": {
       "__id__": 0
     },
-    "fileId": "3112eqevnVOgLN/zM/5BZTB",
+    "fileId": "74c17MeuIxCuKvHl3p1mmRx",
     "sync": false
   },
   {
@@ -312,7 +314,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "91f52611-75a0-42d2-8c90-1c3759aa4ec3"
+      "__uuid__": "4e9993b7-948b-40c3-a1a8-0303a9193907"
     },
     "_type": 0,
     "_sizeMode": 0,
@@ -327,7 +329,9 @@
     "_isTrimmedMode": true,
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
-    "_atlas": null
+    "_atlas": {
+      "__uuid__": "10ca67ea-2a3c-4512-b8a8-cfd37f9d8bbe"
+    }
   },
   {
     "__type__": "cc.Widget",
@@ -362,7 +366,7 @@
     "asset": {
       "__id__": 0
     },
-    "fileId": "ef9c2Iaz5xCppZWsjsBBXat",
+    "fileId": "57a59ah6pVCCa1z1IdH2ktM",
     "sync": false
   },
   {
@@ -373,7 +377,7 @@
     "asset": {
       "__id__": 0
     },
-    "fileId": "1ccb1qTN4pD5KkCA4I5ninJ",
+    "fileId": "bfa25pxnttPxKmLRN0MQROL",
     "sync": false
   },
   {
@@ -592,7 +596,7 @@
     "asset": {
       "__id__": 0
     },
-    "fileId": "99410HhoK9DSZugofTujTr3",
+    "fileId": "0327ejJokJHMJ1Cj/hUJaS6",
     "sync": false
   },
   {
@@ -622,7 +626,7 @@
     "asset": {
       "__id__": 0
     },
-    "fileId": "1f5f92PXOVDW7CAXTWZ5VoR",
+    "fileId": "4c3613fcQ5N0qubSvk28qWH",
     "sync": false
   },
   {
@@ -633,7 +637,7 @@
     "asset": {
       "__id__": 0
     },
-    "fileId": "65a48rLxOhPK6mMy89DogXh",
+    "fileId": "427711c32lDQa64xSNgQVZ3",
     "sync": false
   },
   {
@@ -670,7 +674,7 @@
     "asset": {
       "__id__": 0
     },
-    "fileId": "8ded6v/paxLS6ob46lw/Osu",
+    "fileId": "56362vzlqFINYwJCwm+IGCK",
     "sync": false
   }
 ]

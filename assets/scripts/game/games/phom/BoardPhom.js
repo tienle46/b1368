@@ -297,7 +297,7 @@ export default class BoardPhom extends BoardCardTurnBase {
             if(this.scene.gamePlayers.findPlayer(id)){
                 let handCards = playerHandCards[id];
                 let point = handCards.reduce((value, card) => value += card.rank, 0);
-                gameResultInfos[id] = isMom && winType != app.const.game.GENERAL_WIN_TYPE_NORMAL ? "" : `${point} điểm`;
+                gameResultInfos[id] = isMom && winType != app.const.game.GENERAL_WIN_TYPE_NORMAL ? "" : app.res.string('game_point', {point});
             } else{
                 resultText = "";
             }

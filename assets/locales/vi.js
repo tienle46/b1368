@@ -74,50 +74,10 @@ export default {
     game_ba: 'ba',
     game_bet: 'bét',
     game_point: '{{point}} điểm',
+    game_tlmn_card_count: '{{count}} lá',
+    game_tlmn_an_trang: 'Ăn trắng',
+    game_tlmn_dut_ba_bich: 'Đút 3 bích',
+    game_tlmn_lung: 'Lũng',
+    game_tlmn_thoi_ba_bich: 'Thối 3 bích',
+    game_tlmn_cong: 'Cóng',
 };
-//
-// if (playersWinRank == app.const.game.rank.GAME_RANK_FIRST) {
-//     switch (winType) {
-//         case app.const.game.PHOM_WIN_TYPE_U_THUONG:
-//             resultIconPaths[id] = 'game/images/ingame_phom_u';
-//             break;
-//         case app.const.game.PHOM_WIN_TYPE_U_DEN:
-//             resultIconPaths[id] = 'game/images/ingame_phom_u_den';
-//             break;
-//         case app.const.game.PHOM_WIN_TYPE_U_KHAN:
-//             resultIconPaths[id] = 'game/images/ingame_phom_u_khan';
-//             break;
-//         case app.const.game.PHOM_WIN_TYPE_U_TRON:
-//             resultIconPaths[id] = 'game/images/ingame_phom_u_tron';
-//             break;
-//         case app.const.game.PHOM_WIN_TYPE_U_PHOM_KIN:
-//             resultIconPaths[id] = 'game/images/ingame_phom_u_phom_kin';
-//             break;
-//         default:
-//             resultIconPaths[id] = 'game/images/ingame_thang';
-//     }
-// } else {
-//     if(isMom){
-//         resultIconPaths[id] = 'game/images/ingame_phom_mom';
-//     }else{
-//         switch (playersWinRank) {
-//             case app.const.game.GAME_RANK_SECOND:
-//                 resultIconPaths[id] = 'game/images/ingame_nhi';
-//                 break;
-//             case app.const.game.GAME_RANK_THIRD:
-//                 resultIconPaths[id] = 'game/images/ingame_ba';
-//                 break;
-//             case app.const.game.GAME_RANK_FOURTH:
-//                 resultIconPaths[id] = 'game/images/ingame_bet';
-//                 break;
-//             default:
-//                 resultIconPaths[id] = 'game/images/ingame_thua';
-//         }
-//     }
-// }
-//
-// let player = this.scene.gamePlayers.findPlayer(id);
-// if(player){
-//     let handCards = playerHandCards[id];
-//     let point = handCards.reduce((value, card) => value += card.rank, 0);
-//     gameResultInfos[id] = isMom && winType != app.const.game.GENERAL_WIN_TYPE_NORMAL ? "" : `${point} điểm`;

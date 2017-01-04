@@ -294,7 +294,9 @@
       "__id__": 4
     },
     "_enabled": true,
-    "_spriteFrame": null,
+    "_spriteFrame": {
+      "__uuid__": "25baddcf-2a1e-4acb-954e-2e71bbd19d43"
+    },
     "_type": 3,
     "_sizeMode": 0,
     "_fillType": 2,
@@ -308,7 +310,9 @@
     "_isTrimmedMode": true,
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
-    "_atlas": null
+    "_atlas": {
+      "__uuid__": "10ca67ea-2a3c-4512-b8a8-cfd37f9d8bbe"
+    }
   },
   {
     "__type__": "cc.ProgressBar",
