@@ -139,9 +139,13 @@ export default class GameScene extends BaseScene {
     onEnable() {
         super.onEnable();
 
+        // utils.deactive(this.chatComponentNode);
+        // utils.deactive(this.gameResultPopupNode);
+
         app.system.setCurrentScene(this);
         this.chatComponent = this.chatComponentNode.getComponent('IngameChatComponent');
         this.gamePlayers = this.playerLayer.getComponent('GamePlayers');
+
 
         try {
             this.room = app.context.currentRoom;
@@ -329,6 +333,7 @@ export default class GameScene extends BaseScene {
 
         if (this.gameState == app.const.game.state.WAIT) {
             this.gameState = app.const.game.state.READY;
+            this.gameData[Keywords.BOARD_STATE_KEYWORD] = app.const.game.state.READY;
             this._onGameData();
         }
 

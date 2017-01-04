@@ -80,4 +80,5 @@ export default {
     game_tlmn_lung: 'Lũng',
     game_tlmn_thoi_ba_bich: 'Thối 3 bích',
     game_tlmn_cong: 'Cóng',
+    game_sam_bao_sam: 'Báo Sâm',
 };

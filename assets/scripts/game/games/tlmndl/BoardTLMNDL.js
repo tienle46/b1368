@@ -41,8 +41,8 @@ export default class BoardTLMNDL extends BoardCardTurnBase {
         this.winRank = 0;
     }
 
-    handleGameStateChange(boardState, data) {
-        super.handleGameStateChange(boardState, data);
+    onGameStatePreChange(boardState, data) {
+        super.onGameStatePreChange(boardState, data);
     }
 
     _loadGamePlayData(data) {

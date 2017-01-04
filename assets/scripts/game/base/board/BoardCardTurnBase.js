@@ -65,8 +65,8 @@ export default class BoardCardTurnBase extends BoardCard {
         this.turnAdapter.timelineDuration;
     }
 
-    handleGameStateChange(state, data){
-        super.handleGameStateChange(state, data);
+    onGameStatePreChange(state, data){
+        super.onGameStatePreChange(state, data);
 
         if (state == app.const.game.state.BOARD_STATE_TURN_BASE_TRUE_PLAY) {
             this._handleBoardTurnBaseTruePlay(data);
@@ -76,7 +76,6 @@ export default class BoardCardTurnBase extends BoardCard {
     _handleBoardTurnBaseTruePlay(data){
 
         console.log(this.scene._eventEmitter);
-        log("_handleBoardTurnBaseTruePlay", data);
 
         let turnDuration = utils.getValue(data, Keywords.TURN_BASE_PLAYER_TURN_DURATION)
         if (turnDuration) {

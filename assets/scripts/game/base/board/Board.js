@@ -46,7 +46,7 @@ export default class Board extends Actor {
     //         this.state = app.const.game.state.BEGIN;
     //     }
     //
-    //     this.scene.on(Events.ON_GAME_STATE_CHANGE, this.handleGameStateChange, this);
+    //     this.scene.on(Events.ON_GAME_STATE_CHANGE, this.onGameStatePreChange, this);
     //     this.scene.on(Events.ON_GAME_STATE_BEGIN, this.onBoardBegin, this);
     //     this.scene.on(Events.ON_GAME_STATE_STARTING, this.onBoardStarting, this);
     //     this.scene.on(Events.ON_GAME_STATE_STARTED, this.onBoardStarted, this);
@@ -74,7 +74,7 @@ export default class Board extends Actor {
         }
 
         this.scene.on(Events.ON_GAME_RESET, this.onGameReset, this);
-        this.scene.on(Events.ON_GAME_STATE_PRE_CHANGE, this.handleGameStateChange, this, 0);
+        this.scene.on(Events.ON_GAME_STATE_PRE_CHANGE, this.onGameStatePreChange, this, 0);
         this.scene.on(Events.ON_GAME_STATE_BEGIN, this.onBoardBegin, this, 0);
         this.scene.on(Events.ON_GAME_STATE_STARTING, this.onBoardStarting, this, 0);
         this.scene.on(Events.ON_GAME_STATE_STARTED, this.onBoardStarted, this, 0);
@@ -264,10 +264,10 @@ export default class Board extends Actor {
         return localState;
     }
 
-    handleGameStateChange(boardState, data) {
+    onGameStatePreChange(boardState, data) {
         this.serverState = boardState;
 
-        console.log("handleGameStateChange...", data);
+        console.log("onGameStatePreChange...", data);
 
         //TODO Process board state changed here
     }

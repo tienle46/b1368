@@ -39,8 +39,19 @@ export default class BoardSam extends BoardCardTurnBase {
         this.winRank = 0;
     }
 
-    handleGameStateChange(boardState, data) {
-        super.handleGameStateChange(boardState, data);
+    onGameStatePreChange(boardState, data) {
+        super.onGameStatePreChange(boardState, data);
+
+        if (boardState == app.const.game.state.STATE_BAO_XAM) {
+            let duration = utils.getValue(data, app.keywords.BOARD_PHASE_DURATION);
+            duration && this.startTimeLine(duration, app.res.string('game_sam_bao_sam'));
+        }
+    }
+
+    _handleBoardTurnBaseTruePlay(...args){
+        super._handleBoardTurnBaseTruePlay(...args);
+
+        this.stopTimeLine();
     }
 
     _loadGamePlayData(data) {

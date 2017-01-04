@@ -84,9 +84,9 @@ export default class BoardXocDia extends BoardCardBetTurn {
         }
     }
 
-    handleGameStateChange(boardState, data, isJustJoined) {
-        super.handleGameStateChange(boardState, data);
-        debug('handleGameStateChange', boardState, data, isJustJoined);
+    onGameStatePreChange(boardState, data, isJustJoined) {
+        super.onGameStatePreChange(boardState, data);
+        debug('onGameStatePreChange', boardState, data, isJustJoined);
 
         if (boardState === app.const.game.state.STATE_BET) {
             this.scene.emit(Events.ON_GAME_STATE_STARTING);

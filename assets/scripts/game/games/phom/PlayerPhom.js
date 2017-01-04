@@ -299,24 +299,24 @@ export default class PlayerPhom extends PlayerCardTurnBase {
 
         switch (state) {
             case PlayerPhom.STATE_PHOM_PLAY:
-                this.scene.emit(Events.SHOW_PLAY_CONTROL_ONLY);
+                this.scene && this.scene.emit(Events.SHOW_PLAY_CONTROL_ONLY);
                 this._checkInteractableOnStateChanged();
                 break;
             case PlayerPhom.STATE_PHOM_JOIN:
-                this.scene.emit(Events.SHOW_JOIN_PHOM_CONTROLS);
+                this.scene && this.scene.emit(Events.SHOW_JOIN_PHOM_CONTROLS);
                 break;
             case PlayerPhom.STATE_PHOM_EAT_TAKE:
-                this.scene.emit(Events.SHOW_EAT_AND_TAKE_CONTROLS);
+                this.scene && this.scene.emit(Events.SHOW_EAT_AND_TAKE_CONTROLS);
                 this._checkInteractableOnStateChanged();
                 break;
             case PlayerPhom.STATE_PHOM_DOWN:
-                this.scene.emit(Events.SHOW_DOWN_PHOM_CONTROLS);
+                this.scene && this.scene.emit(Events.SHOW_DOWN_PHOM_CONTROLS);
                 break;
             case PlayerPhom.STATE_PHOM_PLAY_HO_U:
-                this.scene.emit(Events.SHOW_U_PHOM_CONTROLS);
+                this.scene && this.scene.emit(Events.SHOW_U_PHOM_CONTROLS);
                 break;
             default:
-                this.scene.emit(Events.SHOW_WAIT_TURN_CONTROLS);
+                this.scene && this.scene.emit(Events.SHOW_WAIT_TURN_CONTROLS);
         }
     }
 

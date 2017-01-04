@@ -86,7 +86,6 @@ export default class GameResultItem extends Actor {
 
     _renderData({ name = "", text = null, iconPath = "", balanceChanged = NaN, info = "", cards = [], isWinner = false } = {}) {
 
-        isWinner && this.showWinnerBox();
 
         this.infoTextView && this.infoTextView.setText(info);
 
@@ -94,6 +93,7 @@ export default class GameResultItem extends Actor {
         this.balanceLabel.string = GameUtils.toChangedBalanceString(balanceChanged);
 
         if (isWinner) {
+            cards.length == 0 && this.showWinnerBox();
             this.balanceLabel.node.color = app.const.COLOR_YELLOW;
             text && this.resultWinnerText && (this.resultWinnerText.string = text.toUpperCase());
             utils.active(this.resultWinnerText);

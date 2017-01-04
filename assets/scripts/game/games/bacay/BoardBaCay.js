@@ -71,8 +71,8 @@ export default class BoardBaCay extends BoardCardBetTurn {
         super.startTimeLine(duration, message);
     }
 
-    handleGameStateChange(boardState, data, isJustJoined) {
-        super.handleGameStateChange(boardState, data);
+    onGameStatePreChange(boardState, data, isJustJoined) {
+        super.onGameStatePreChange(boardState, data);
 
         this.stopTimeLine();
 
