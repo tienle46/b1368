@@ -150,7 +150,12 @@ class BottomBar extends Component {
         let usernameLbl = this.userInfoButton.node.getChildByName('usernameLbl').getComponent(cc.Label);
         usernameLbl.string = app.context.getMyInfo().name;
         let usercoinLbl = this.userInfoButton.node.getChildByName('userCoinLbl').getComponent(cc.Label);
-        usercoinLbl.string = app.context.getMyInfo().coin;
+        if (!app.service.client.me.variables.coin) {
+            setTimeout(() => {
+                usercoinLbl.string = app.context.getMyInfo().coin.toLocaleString();
+            });
+        } else
+            usercoinLbl.string = app.context.getMyInfo().coin.toLocaleString();
     }
 }
 

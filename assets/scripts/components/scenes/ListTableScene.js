@@ -206,6 +206,7 @@ export default class ListTableScene extends BaseScene {
     }
 
     _handleRoomJoinEvent(event) {
+        app.system.hideLoader();
         let room = event.room;
         if (room) {
             if (room.isGame === false && room.name && room.name.indexOf('lobby') > -1) {
@@ -239,7 +240,6 @@ export default class ListTableScene extends BaseScene {
         if (!data)
             return;
 
-        this.items = [];
         let customIds = data[app.keywords.ID],
             minBets = data[app.keywords.ROOM_MIN_BET],
             passwords = data[app.keywords.ROOM_PASSWORD],
@@ -250,6 +250,7 @@ export default class ListTableScene extends BaseScene {
         if (customIds) {
             // room faker
             customIds = [...customIds, ...new Array(4).fill(0)];
+            this.items = [];
             for (let i = 0; i < customIds.length; i++) {
 
                 const listCell = new cc.instantiate(this.tableListCell);
@@ -296,12 +297,7 @@ export default class ListTableScene extends BaseScene {
         if (items.length > 0 && this.contentInScroll) {
             // clear content
             let children = this.contentInScroll.children;
-            if (children && children.length > 0) {
-                for (let i = 0; i < children.length; i++) {
-                    this.contentInScroll.children[i].removeFromParent();
-                    cc.loader.releaseAsset(this.contentInScroll.children[i]);
-                }
-            }
+            children && children.length > 0 && this.contentInScroll.removeAllChildren();
 
             // re-adding content
             items.map((item) => {
