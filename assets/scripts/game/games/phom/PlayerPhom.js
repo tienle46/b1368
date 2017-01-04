@@ -386,13 +386,13 @@ export default class PlayerPhom extends PlayerCardTurnBase {
         }
 
         let card = this.isItMe() ? Card.from(utils.getValue(data, Keywords.GAME_LIST_CARD)) : Card.from(5);
-        this.renderer.cardList.transferFrom(this.board.getDeckCards(), [card], () => {
+        this.renderer.cardList.transferFrom(this.board.getDeckCards(), [card], {reverse: true, cb: () => {
             if (this.isItMe()) {
                 this._processAfterEatOrTake();
             } else {
                 this.renderer.cardList.clear();
             }
-        });
+        }});
     }
 
     _handlePlayerEatCard(playerId, data) {
@@ -410,14 +410,14 @@ export default class PlayerPhom extends PlayerCardTurnBase {
 
         let playedCardLength = this.renderer.playedCardList.cards.length;
         let eatenCardList = this.isItMe() ? this.renderer.cardList : this.renderer.eatenCardList;
-        eatenCardList.transferFrom(lastPlayedTurnPlayer.renderer.playedCardList, [eatenCard], (cards) => {
+        eatenCardList.transferFrom(lastPlayedTurnPlayer.renderer.playedCardList, [eatenCard], {reverse: true, cb: (cards) => {
             cards && cards.forEach(card => PhomUtils.setEaten(card));
             this.board.swapPlayedCards();
 
             if (this.isItMe()) {
                 this._processAfterEatOrTake();
             }
-        });
+        }});
 
 
         if (playedCardLength == 3) {
@@ -749,7 +749,7 @@ export default class PlayerPhom extends PlayerCardTurnBase {
             }
 
             this._updateSortCardSolutionIndex();
-            this.renderer.cardList.onCardsChanged();
+            this.renderer.cardList.onCardsChanged(true);
         }
     }
 

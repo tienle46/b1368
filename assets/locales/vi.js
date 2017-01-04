@@ -62,6 +62,62 @@ export default {
     game_bet: 'Cược',
     game_down_card: 'Hạ bài',
     game_not_enough_balance_to_cuoc_bien: 'Tài khoản không đủ để Cược Biên',
-    game_not_enough_balance_to_bet: 'Tài khoản không đủ để tiếp tục Cược'
-
+    game_not_enough_balance_to_bet: 'Tài khoản không đủ để tiếp tục Cược',
+    game_phom_u: 'Ù',
+    game_phom_u_den: 'ù đền',
+    game_phom_u_khan: 'ù khan',
+    game_phom_u_phom_kin: 'u phỏm kín',
+    game_phom_u_tron: 'ù tròn',
+    game_phom_mom: 'móm',
+    game_nhat: 'nhất',
+    game_nhi: 'nhì',
+    game_ba: 'ba',
+    game_bet: 'bét',
+    game_point: '{{point}} điểm',
 };
+//
+// if (playersWinRank == app.const.game.rank.GAME_RANK_FIRST) {
+//     switch (winType) {
+//         case app.const.game.PHOM_WIN_TYPE_U_THUONG:
+//             resultIconPaths[id] = 'game/images/ingame_phom_u';
+//             break;
+//         case app.const.game.PHOM_WIN_TYPE_U_DEN:
+//             resultIconPaths[id] = 'game/images/ingame_phom_u_den';
+//             break;
+//         case app.const.game.PHOM_WIN_TYPE_U_KHAN:
+//             resultIconPaths[id] = 'game/images/ingame_phom_u_khan';
+//             break;
+//         case app.const.game.PHOM_WIN_TYPE_U_TRON:
+//             resultIconPaths[id] = 'game/images/ingame_phom_u_tron';
+//             break;
+//         case app.const.game.PHOM_WIN_TYPE_U_PHOM_KIN:
+//             resultIconPaths[id] = 'game/images/ingame_phom_u_phom_kin';
+//             break;
+//         default:
+//             resultIconPaths[id] = 'game/images/ingame_thang';
+//     }
+// } else {
+//     if(isMom){
+//         resultIconPaths[id] = 'game/images/ingame_phom_mom';
+//     }else{
+//         switch (playersWinRank) {
+//             case app.const.game.GAME_RANK_SECOND:
+//                 resultIconPaths[id] = 'game/images/ingame_nhi';
+//                 break;
+//             case app.const.game.GAME_RANK_THIRD:
+//                 resultIconPaths[id] = 'game/images/ingame_ba';
+//                 break;
+//             case app.const.game.GAME_RANK_FOURTH:
+//                 resultIconPaths[id] = 'game/images/ingame_bet';
+//                 break;
+//             default:
+//                 resultIconPaths[id] = 'game/images/ingame_thua';
+//         }
+//     }
+// }
+//
+// let player = this.scene.gamePlayers.findPlayer(id);
+// if(player){
+//     let handCards = playerHandCards[id];
+//     let point = handCards.reduce((value, card) => value += card.rank, 0);
+//     gameResultInfos[id] = isMom && winType != app.const.game.GENERAL_WIN_TYPE_NORMAL ? "" : `${point} điểm`;

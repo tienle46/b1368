@@ -211,7 +211,7 @@ export default class BoardPhom extends BoardCardTurnBase {
         let balanceChangeAmounts = this._getPlayerBalanceChangeAmounts(playerIds, data);
 
         let playerHandCards = this._getPlayerHandCards(playerIds, data);
-        let {gameResultInfos, resultIconPaths} = this._getGameResultInfos(playerIds, playerHandCards, data);
+        let {gameResultInfos, resultTexts, winnerFlags} = this._getGameResultInfos(playerIds, playerHandCards, data);
 
         super.onBoardEnding(data);
 
@@ -219,9 +219,10 @@ export default class BoardPhom extends BoardCardTurnBase {
             return {
                 name: playerInfos[playerId].name,
                 balanceChanged: balanceChangeAmounts[playerId],
-                iconPath: resultIconPaths[playerId],
+                text: resultTexts[playerId],
                 info: gameResultInfos[playerId],
-                cards: playerHandCards[playerId]
+                cards: playerHandCards[playerId],
+                isWinner: winnerFlags[playerId]
             }
         });
 
@@ -229,82 +230,83 @@ export default class BoardPhom extends BoardCardTurnBase {
             let remainTime = this.timelineRemain - shownTime;
             if (remainTime > 0 && this.scene.isEnding()) {
                 this.renderer.cleanDeckCards();
-                // this._startEndBoardTimeLine(remainTime);
+                this._startEndBoardTimeLine(remainTime);
             }
         }), CardList.TRANSFER_CARD_DURATION * 1000);
     }
 
     _getGameResultInfos(playerIds = [], playerHandCards, data) {
-        /**
-         * Get game result icon
-         * @type {Array}
-         */
-        let resultIconPaths = {};
-        /**
-         * Get game result detail info
-         * @type {Array}
-         */
+
+        let resultTexts = {};
         let gameResultInfos = {};
+        let winnerFlags = {};
 
         let winType = utils.getValue(data, Keywords.WIN_TYPE);
         let playersWinRanks = utils.getValue(data, Keywords.GAME_LIST_WIN);
         let rank = utils.getValue(data, Keywords.GAME_RANK_WIN);
         playerIds.forEach((id, i) => {
             let isMom = playerHandCards[id].length == 9;
-            var playersWinRank = playersWinRanks[i];
+            let playersWinRank = playersWinRanks[i];
+            let resultText = '';
 
             if (playersWinRank == app.const.game.rank.GAME_RANK_FIRST) {
                 switch (winType) {
                     case app.const.game.PHOM_WIN_TYPE_U_THUONG:
-                        resultIconPaths[id] = 'game/images/ingame_phom_u';
+                        resultText = app.res.string('game_phom_u');
                         break;
                     case app.const.game.PHOM_WIN_TYPE_U_DEN:
-                        resultIconPaths[id] = 'game/images/ingame_phom_u_den';
+                        resultText = app.res.string('game_phom_u_den');
                         break;
                     case app.const.game.PHOM_WIN_TYPE_U_KHAN:
-                        resultIconPaths[id] = 'game/images/ingame_phom_u_khan';
+                        resultText = app.res.string('game_phom_u_khan');
                         break;
                     case app.const.game.PHOM_WIN_TYPE_U_TRON:
-                        resultIconPaths[id] = 'game/images/ingame_phom_u_tron';
+                        resultText = app.res.string('game_phom_u_tron');
                         break;
                     case app.const.game.PHOM_WIN_TYPE_U_PHOM_KIN:
-                        resultIconPaths[id] = 'game/images/ingame_phom_u_phom_kin';
+                        resultText = app.res.string('game_phom_u_phom_kin');
                         break;
                     default:
-                        resultIconPaths[id] = 'game/images/ingame_thang';
+                        resultText = app.res.string('game_thang');
                 }
+
+                winnerFlags[id] = true;
+
             } else {
                 if(isMom){
-                    resultIconPaths[id] = 'game/images/ingame_phom_mom';
+                    resultText = app.res.string('game_phom_mom');
                 }else{
                     switch (playersWinRank) {
                         case app.const.game.GAME_RANK_SECOND:
-                            resultIconPaths[id] = 'game/images/ingame_nhi';
+                            resultText = app.res.string('game_nhi');
                             break;
                         case app.const.game.GAME_RANK_THIRD:
-                            resultIconPaths[id] = 'game/images/ingame_ba';
+                            resultText = app.res.string('game_ba');
                             break;
                         case app.const.game.GAME_RANK_FOURTH:
-                            resultIconPaths[id] = 'game/images/ingame_bet';
+                            resultText = app.res.string('game_bet');
                             break;
                         default:
-                            resultIconPaths[id] = 'game/images/ingame_thua';
+                            resultText = app.res.string('game_thua');
                     }
                 }
+
+                winnerFlags[id] = false;
             }
 
-            let player = this.scene.gamePlayers.findPlayer(id);
-            if(player){
+            if(this.scene.gamePlayers.findPlayer(id)){
                 let handCards = playerHandCards[id];
                 let point = handCards.reduce((value, card) => value += card.rank, 0);
                 gameResultInfos[id] = isMom && winType != app.const.game.GENERAL_WIN_TYPE_NORMAL ? "" : `${point} điểm`;
             } else{
-                gameResultInfos[id] = "";
+                resultText = "";
             }
+
+            resultTexts[id] = resultText;
 
         });
 
-        return {gameResultInfos, resultIconPaths};
+        return {gameResultInfos, resultTexts, winnerFlags};
     }
 
     _cleanTurnRoutineData(playerId){

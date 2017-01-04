@@ -134,9 +134,9 @@ export default class IngameChatComponent extends Component {
 
         if(!this.messages){
             this.loading.show(120);
+            utils.setActive(this.messageListContent, false);
             app.service.send({cmd: app.commands.INGAME_CHAT_MESSAGE_LIST, data: {[app.keywords.GAME_CODE]: this.scene.gameCode}}, (data) => {
-
-                debug(data);
+                utils.setActive(this.messageListContent, true);
 
                 let gameCode = utils.getValue(data, app.keywords.GAME_CODE);
                 if(gameCode == this.scene.gameCode){

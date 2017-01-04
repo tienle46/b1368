@@ -93,16 +93,14 @@ export default class GameResultItem extends Actor {
         this.playerName.string = name;
         this.balanceLabel.string = GameUtils.toChangedBalanceString(balanceChanged);
 
-        text = "THẮNG";
-
         if (isWinner) {
             this.balanceLabel.node.color = app.const.COLOR_YELLOW;
-            text && this.resultWinnerText && (this.resultWinnerText.string = text);
+            text && this.resultWinnerText && (this.resultWinnerText.string = text.toUpperCase());
             utils.active(this.resultWinnerText);
             utils.deactive(this.resultLoserText);
         } else {
             this.balanceLabel.node.color = app.const.COLOR_GRAY;
-            text && this.resultLoserText && (this.resultLoserText.string = text);
+            text && this.resultLoserText && (this.resultLoserText.string = text.toUpperCase());
             utils.active(this.resultLoserText);
             utils.deactive(this.resultWinnerText);
         }

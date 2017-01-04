@@ -652,7 +652,10 @@
     },
     "_enabled": true,
     "_type": 1,
-    "_segements": 38
+    "_segements": 38,
+    "_N$spriteFrame": null,
+    "_N$alphaThreshold": 1,
+    "_N$inverted": false
   },
   {
     "__type__": "cc.Layout",
@@ -5154,7 +5157,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 1100,
-      "y": -50
+      "y": -65
     },
     "_skewX": 0,
     "_skewY": 0,

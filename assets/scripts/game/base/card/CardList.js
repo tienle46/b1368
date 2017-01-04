@@ -374,7 +374,8 @@ export default class CardList extends Component {
         this.cards.forEach(card => card.updateFinalPosition());
     }
 
-    onCardsChanged() {
+    onCardsChanged(reverse = false) {
+        reverse && this.cards.reverse();
         this._adjustCardsPosition();
     }
 
@@ -395,17 +396,17 @@ export default class CardList extends Component {
     setCards(cards, active, reveal) {
         if (this.initiated) {
             this.clear();
-            this._fillCards(cards, active, reveal, true, 0);
+            this._fillCards({cards, active, reveal, autoAdjust: true, adjustDuration: 0});
         }else{
             this.__initCards = [...cards];
         }
     }
 
     addCards(cards, active, reveal) {
-        return this._fillCards(cards, active, reveal);
+        return this._fillCards({cards, active, reveal});
     }
 
-    _fillCards(cards, active = true, reveal = this.reveal, autoAdjust, adjustDuration) {
+    _fillCards({cards = [], active = true, reveal = this.reveal, autoAdjust = undefined, adjustDuration = undefined, reverse = false} = {}) {
 
         this.cleanSelectedCard();
 
@@ -414,7 +415,7 @@ export default class CardList extends Component {
             const newCard = this._createNewCard(card.byteValue, reveal);
             newCard.node.active = active;
 
-            this.cards.push(newCard);
+            reverse ? this.cards.splice(0, 0, newCard) : this.cards.push(newCard);
             this.node.addChild(newCard.node);
             addedCards.push(newCard);
 
@@ -604,16 +605,22 @@ export default class CardList extends Component {
 
         if (!src || utils.isEmptyArray(cards)) return;
 
-        let cb = utils.isFunction(cbOrOption) ? cbOrOption : cbOrOption && cbOrOption.cb;
+        let cb, reverse;
+        if(utils.isObject(cbOrOption)){
+            cb = cbOrOption.cb;
+            reverse = cbOrOption.reverse;
+        }else{
+            utils.isFunction(cbOrOption) && (cb = cbOrOption);
+        }
 
         this.cleanSelectedCard();
 
         if (src.reveal) {
-            src.transferTo(this, cards, cb);
+            src.transferTo(this, cards, cb, this.reveal, reverse);
         } else {
             let reveal = cbOrOption && cbOrOption.hasOwnProperty('reveal') ? cbOrOption.reveal : this.reveal;
             let addedCards = src.addCards(cards, true, reveal);
-            src.transferTo(this, addedCards, cb);
+            src.transferTo(this, addedCards, cb, this.reveal, reverse);
         }
     }
 
@@ -622,7 +629,7 @@ export default class CardList extends Component {
      * @param cards
      * @param dest
      */
-    transferTo(dest = null, cards = [], cb = null, reveal = dest && dest.reveal) {
+    transferTo(dest = null, cards = [], cb = null, reveal = dest && dest.reveal, reverse = false) {
 
         this.cleanSelectedCard();
 
@@ -642,7 +649,7 @@ export default class CardList extends Component {
         const actions = [];
         const removedCards = this._removeCardModelOnly(cards);
         const currentDestLength = destCardList.cards.length;
-        const addedCards = destCardList._fillCards(removedCards, true, reveal, false);
+        const addedCards = destCardList._fillCards({cards: removedCards, active: true, reveal, autoAdjust: false, reverse});
         destCardList.__endActionCb = () => cb && cb(addedCards);
 
         removedCards.forEach((card, index) => {
@@ -650,7 +657,7 @@ export default class CardList extends Component {
             const originalScale = card.node.getScale();
             const worldPoint = card.node.parent.convertToWorldSpaceAR(card.node.getPosition());
 
-            const animatingCard = destCardList.cards[currentDestLength + index];
+            const animatingCard = destCardList.cards[reverse ? index: currentDestLength + index];
             const localDestinationPoint = destCardList.node.convertToNodeSpaceAR(worldPoint);
             const scaleTo = animatingCard.node.getScale();
             const moveToPosition = animatingCard.__originalInfo.position || animatingCard.node.getPosition();
