@@ -70,6 +70,9 @@ export default class ListTableScene extends BaseScene {
         app.context.getSelectedGame() && (this.gameCode = app.context.getSelectedGame());
 
         this.gameCode && this._initGameLabel(this.gameCode);
+
+        let topBarScript = this.topbarNode.getComponent('TopBar');
+        topBarScript.showBackButton();
     }
 
     onFilterBtnClick(e) {
@@ -362,15 +365,6 @@ export default class ListTableScene extends BaseScene {
             if (error.errorCode) {
                 app.system.error(error.errorMessage);
             }
-        });
-    }
-
-    // Listen Bottom Bar Event (Click button In Bottom Bar)
-    _addBottomBar() {
-        loadRes('bottombar/bottombar').then((prefab) => {
-            let bottomBarNode = cc.instantiate(prefab);
-
-            this.node.addChild(bottomBarNode);
         });
     }
 }

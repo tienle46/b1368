@@ -100,7 +100,7 @@ class BottomBar extends Component {
     onClickMessageAction() {
         let url = `${app.const.DIALOG_DIR_PREFAB}/messagecenter`;
         let tabs = [{
-                title: 'Thông báo hệ thống',
+                title: 'Hệ thống',
                 value: `${url}/tab_system_messages`
             },
             // {
@@ -108,7 +108,7 @@ class BottomBar extends Component {
             //     value: 'tab_events'
             // },
             {
-                title: 'Tin nhắn cá nhân',
+                title: 'Cá nhân',
                 value: `${url}/tab_personal_messages`
             }
         ];
