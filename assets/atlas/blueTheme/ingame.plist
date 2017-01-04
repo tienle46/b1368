@@ -1285,7 +1285,7 @@
             <key>format</key>
             <integer>3</integer>
             <key>pixelFormat</key>
-            <string>RGBA4444</string>
+            <string>RGBA8888</string>
             <key>premultiplyAlpha</key>
             <false/>
             <key>realTextureFileName</key>
@@ -1293,7 +1293,7 @@
             <key>size</key>
             <string>{1887,1963}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:7ead0160ac8702b6d99f4277e2c820eb:f6d579c4c5a3edb41e65c21b63e9ef7d:de3c7a7fc0cae1649732adc36eb84a12$</string>
+            <string>$TexturePacker:SmartUpdate:fcc813be09449b177867aa7b8b290d52:f6d579c4c5a3edb41e65c21b63e9ef7d:de3c7a7fc0cae1649732adc36eb84a12$</string>
             <key>textureFileName</key>
             <string>ingame.png</string>
         </dict>
