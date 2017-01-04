@@ -660,8 +660,8 @@
     ],
     "_rotationX": 0,
     "_rotationY": 0,
-    "_scaleX": 1,
-    "_scaleY": 1,
+    "_scaleX": null,
+    "_scaleY": null,
     "_position": {
       "__type__": "cc.Vec2",
       "x": 0,
