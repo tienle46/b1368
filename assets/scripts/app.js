@@ -211,4 +211,4 @@ if (cc.sys.isMobile) {
     window.app = app;
     window.game = app.game;
 })();
-cc.game.setFrameRate(30);
+// cc.game.setFrameRate(30);
