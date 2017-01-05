@@ -5,7 +5,6 @@ import TopupDialogRub from 'TopupDialogRub';
 import ExchangeDialogRub from 'ExchangeDialogRub';
 import PersonalInfoDialogRub from 'PersonalInfoDialogRub';
 import MessageCenterDialogRub from 'MessageCenterDialogRub';
-import HorizontalDropDownRub from 'HorizontalDropDownRub';
 
 class BottomBar extends Component {
     constructor() {
@@ -70,31 +69,31 @@ class BottomBar extends Component {
     }
 
     onClickHotlineAction(e) {
-        var event = new cc.Component.EventHandler();
-        event.target = this.node;
-        event.component = 'BottomBar';
-        event.handler = 'testClick';
+        // var event = new cc.Component.EventHandler();
+        // event.target = this.node;
+        // event.component = 'BottomBar';
+        // event.handler = 'testClick';
 
-        let dropdown = new HorizontalDropDownRub(e.currentTarget, [{
-                icon: 'bottombar/bottombar_tooltip_facebook',
-                content: 'Fanpage',
-                event: this.fanpageClicked.bind(this)
-            }, {
-                icon: 'bottombar/bottombar_tooltip_hotline',
-                content: 'Hotline',
-                event: this.callSupportClicked.bind(this)
-            },
-            {
-                icon: 'bottombar/bottombar_tooltip_gopy',
-                content: 'Góp ý',
-                event: this.giveFeedbackClicked.bind(this)
-            },
-            {
-                icon: 'bottombar/bottombar_tooltip_huongdan',
-                content: 'Hướng dẫn'
-            }
-        ]);
-        this.node.addChild(dropdown.node());
+        // let dropdown = new HorizontalDropDownRub(e.currentTarget, [{
+        //         icon: 'bottombar/bottombar_tooltip_facebook',
+        //         content: 'Fanpage',
+        //         event: this.fanpageClicked.bind(this)
+        //     }, {
+        //         icon: 'bottombar/bottombar_tooltip_hotline',
+        //         content: 'Hotline',
+        //         event: this.callSupportClicked.bind(this)
+        //     },
+        //     {
+        //         icon: 'bottombar/bottombar_tooltip_gopy',
+        //         content: 'Góp ý',
+        //         event: this.giveFeedbackClicked.bind(this)
+        //     },
+        //     {
+        //         icon: 'bottombar/bottombar_tooltip_huongdan',
+        //         content: 'Hướng dẫn'
+        //     }
+        // ]);
+        // this.node.addChild(dropdown.node());
     }
 
     onClickMessageAction() {

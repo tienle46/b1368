@@ -35,7 +35,6 @@ export default class DashboardScene extends BaseScene {
         };
 
         app.service.send(sendObject, (data) => {
-            log(data);
             this.gameList = this._filterClientSupportedGames(data["cl"]);
             this._initItemListGame();
         }, app.const.scene.DASHBOARD_SCENE);
@@ -58,16 +57,16 @@ export default class DashboardScene extends BaseScene {
 
         let pageNodeOptions = {
             name: 'pageNode',
-            size: cc.size(998, 515),
+            size: cc.size(998, 455),
             // position: cc.v2(500, 0),
             layout: {
                 type: cc.Layout.Type.GRID,
                 resizeMode: cc.Layout.ResizeMode.CHILDREN,
-                startAxis: cc.Layout.AxisDirection.VERTICAL,
-                cellSize: cc.size(240, 240),
+                startAxis: cc.Layout.AxisDirection.HORIZONTAL,
+                cellSize: cc.size(180, 180),
                 padding: 0,
-                spacingX: 125,
-                spacingY: 20,
+                spacingX: 85,
+                spacingY: 55,
                 verticalDirection: cc.Layout.VerticalDirection.TOP_TO_BOTTOM,
                 horizontalDirection: cc.Layout.HorizontalDirection.LEFT_TO_RIGHT
             }
@@ -75,37 +74,40 @@ export default class DashboardScene extends BaseScene {
 
         var node = null;
         let count = 0;
+        this.gameList = [...this.gameList, ...this.gameList];
+
         app.async.mapSeries(this.gameList, (gc, cb) => {
-            let gameIconPath = app.res.gameIcon[gc];
-            if (count > 6 && !indicator) {
+            if (count > 8 && !indicator) {
                 var indicator = this.pageView.indicator.node;
                 indicator && indicator.opacity < 255 && (indicator.opacity = 255);
             }
-            if (count % 6 === 0) {
+            if (count % 8 === 0) {
                 node = NodeRub.createNodeByOptions(pageNodeOptions);
                 // this.viewContainer.addChild(node);
                 this.pageView.addPage(node);
             }
-            gameIconPath && RubUtils.loadRes(gameIconPath, true).then((spriteFrame) => {
-                const nodeItem = new cc.instantiate(this.item);
-                nodeItem.getComponent(cc.Sprite).spriteFrame = spriteFrame;
-                nodeItem.setContentSize(itemDimension, itemDimension);
+            let gameIconPath = app.res.gameIcon[gc];
+            gameIconPath && RubUtils.getSpriteFrameFromAtlas('blueTheme/atlas/game_icons/game_icons', gameIconPath, (sprite) => {
+                if (sprite) {
+                    const nodeItem = new cc.instantiate(this.item);
+                    nodeItem.getComponent(cc.Sprite).spriteFrame = sprite;
+                    nodeItem.setContentSize(itemDimension, itemDimension);
+                    let itemComponent = nodeItem.getComponent('item');
 
-                let itemComponent = nodeItem.getComponent('item');
+                    itemComponent.gameCode = gc;
+                    itemComponent.listenOnClickListener((gameCode) => {
+                        log(`click Item ${gameCode}`);
 
-                itemComponent.gameCode = gc;
-                itemComponent.listenOnClickListener((gameCode) => {
-                    log(`click Item ${gameCode}`);
+                        // set game context
+                        app.context.setSelectedGame(gc);
 
-                    // set game context
-                    app.context.setSelectedGame(gc);
+                        this.changeScene(app.const.scene.LIST_TABLE_SCENE);
+                    });
 
-                    this.changeScene(app.const.scene.LIST_TABLE_SCENE);
-                });
+                    node && node.addChild(nodeItem);
 
-                node && node.addChild(nodeItem);
-
-                count++;
+                    count++;
+                }
                 cb(); // next ->
             });
         });

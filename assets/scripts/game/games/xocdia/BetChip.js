@@ -14,7 +14,7 @@ class BetChip extends Component {
             default: null,
             type: cc.Node
         };
-        this.amount = 0;
+        this.amount = null;
     }
 
     onLoad() {
@@ -66,7 +66,12 @@ class BetChip extends Component {
 
     onChipChecked() {
         this.node.dispatchEvent(new cc.Event('chip-checked', true));
-        this.amount = this._convertAmountFromStringToNum(this.amountLbl.string);
+        (!this.amount) && (this.amount = this._convertAmountFromStringToNum(this.amountLbl.string));
+        this.setLblColor(app.const.COLOR_YELLOW);
+    }
+
+    setLblColor(color) {
+        this.amountLbl.node.color = color;
     }
 }
 

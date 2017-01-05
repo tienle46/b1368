@@ -180,25 +180,6 @@ class TabSMS extends Component {
             let smsObj = data['ac'];
 
         }
-
-        //render models to screen
-        // RubUtils.loadRes('dashboard/dialog/prefabs/topup/smsItem').then((preFab) => {
-
-        //     smsList.forEach((smsModel) => {
-        //         const transactionItem = cc.instantiate(preFab);
-        //         const widget = transactionItem.addComponent(cc.Widget);
-        //         widget.isAlignLeft = true;
-        //         widget.isAlignRight = true;
-
-        //         widget.left = 0;
-        //         widget.right = 0;
-
-        //         transactionItem.getChildByName('bg').getChildByName('titleLabel').getComponent(cc.Label).string = smsModel['moneyLost'];
-        //         transactionItem.getChildByName('bg').getChildByName('valueLabel').getComponent(cc.Label).string = numeral(smsModel['xCoinGot']).format('0,0');
-
-        //         
-        //     })
-        // })
     }
 
     _hide() {

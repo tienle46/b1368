@@ -36,7 +36,6 @@ class PreloadScene extends Component {
         let resources = [
             { dir: 'toast/Toast', name: 'toast' },
             { dir: 'dashboard/dialog/prefabs/scrollview', name: 'scrollview' },
-            { dir: 'dashboard/dialog/prefabs/segmentControl', name: 'segmentControl' },
             { dir: 'popup/BasePopup', name: 'basePopup' },
             { dir: 'popup/FriendProfilePopup', name: 'friendProfilePopup' },
             { dir: 'dashboard/dialog/prefabs/dialog', name: 'dialog' },

@@ -66,18 +66,18 @@ app.res.playerAnchorName = {
  * @type {{tnd: string, xam: string, bcy: string, lie: string, pom: string, xit: string, mbh: string}}
  */
 app.res.gameIcon = {
-    "tnd": "blueTheme/atlas/game_icons/tlmn_ico",
+    "tnd": "tlmn_ico",
     // "tds": "blueTheme/atlas/game_icons/tlmn_solo_ico",
-    "tds": "blueTheme/atlas/game_icons/tlmn_ico",
-    "xam": "blueTheme/atlas/game_icons/sam_ico",
+    "tds": "tlmn_ico",
+    "xam": "sam_ico",
     // "xms": "blueTheme/atlas/game_icons/sam_solo_ico",
-    "xms": "blueTheme/atlas/game_icons/sam_ico",
-    "bcy": "blueTheme/atlas/game_icons/bacay_ico",
-    "lie": "blueTheme/atlas/game_icons/lieng_ico",
-    "pom": "blueTheme/atlas/game_icons/phom_ico",
-    "xit": "blueTheme/atlas/game_icons/xito_ico",
-    "mbh": "blueTheme/atlas/game_icons/maubinh_ico",
-    "xod": "blueTheme/atlas/game_icons/xocdia_ico"
+    "xms": "sam_ico",
+    "bcy": "bacay_ico",
+    "lie": "lieng_ico",
+    "pom": "phom_ico",
+    "xit": "xito_ico",
+    "mbh": "maubinh_ico",
+    "xod": "xocdia_ico"
 };
 app.res.gameTopCapThuIcon = {
     // bai 3 mien

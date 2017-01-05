@@ -18,6 +18,10 @@ class BetOptionsGroup extends Component {
     onLoad() {
         this.node.on('chip-checked', (event) => {
             event.stopPropagation();
+            if (this.checkedItem) {
+                let chip = this.checkedItem.getComponent('BetChip');
+                chip && chip.setLblColor(app.const.COLOR_WHITE);
+            }
             this.checkedItem = event.target;
         });
 

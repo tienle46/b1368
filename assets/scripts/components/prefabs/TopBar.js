@@ -4,7 +4,6 @@ import TimerRub from 'TimerRub';
 import PromptPopupRub from 'PromptPopupRub';
 import DialogRub from 'DialogRub';
 
-
 class TopBar extends Component {
     constructor() {
         super();
@@ -108,28 +107,6 @@ class TopBar extends Component {
     }
 
     handleSettingAction(e) {
-        // let options = {
-        //     arrow: {
-        //         align: {
-        //             left: 25
-        //         }
-        //     }
-        // };
-
-        // let dropdown = new VerticalDropDownRub(e.currentTarget, [{
-        //     icon: 'bottombar/bottombar_tooltip_fanpage',
-        //     content: 'Fanpage',
-        //     event: this.fanpageClicked.bind(this)
-        // }, {
-        //     icon: 'bottombar/bottombar_tooltip_sound',
-        //     content: 'Âm lượng',
-        //     event: this.onSoundBtnClick.bind(this)
-        // }, {
-        //     icon: 'game/images/ingame_exit_icon',
-        //     content: 'Thoát',
-        //     event: this.onClickLogout.bind(this),
-        // }], options);
-        // this.node.addChild(dropdown.node());
 
     }
 

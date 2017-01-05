@@ -15,6 +15,19 @@ let RubUtils = {
             }
         });
     },
+    getSpriteFrameFromAtlas: (resURL, key, cb) => {
+        // load SpriteAtlas (Atlas), and get one of them SpriteFrame
+        // Note Atlas resource file (plist) usually of the same name and a picture file (PNG) placed in a directory,
+        // So should need to in the second parameter specifies the resource type.
+        cc.loader.loadRes(resURL, cc.SpriteAtlas, function(err, atlas) {
+            if (err)
+                console.error(err);
+
+            let frame = atlas.getSpriteFrame(key);
+            cb(frame);
+            // sprite.spriteFrame = frame;
+        });
+    },
     loadFont: (component, url, cb) => {
         cc.loader.loadRes(url, cc.Font, (err, font) => {
             component.font = font;

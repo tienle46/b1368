@@ -78,7 +78,7 @@
     },
     "_enabled": true,
     "_spriteFrame": null,
-    "_type": 0,
+    "_type": 1,
     "_sizeMode": 0,
     "_fillType": 0,
     "_fillCenter": {
@@ -176,7 +176,9 @@
       "__id__": 1
     },
     "_enabled": true,
-    "path": ""
+    "path": "",
+    "pressedScale": 1.12,
+    "transDuration": 0.08
   },
   {
     "__type__": "cc.PrefabInfo",

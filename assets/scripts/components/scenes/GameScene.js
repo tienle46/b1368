@@ -85,9 +85,9 @@ export default class GameScene extends BaseScene {
         this.on(Events.ON_PLAYER_READY_STATE_CHANGED, (playerId, ready) => {
 
             let readyPlayerIds = utils.getValue(this.gameData, app.keywords.ROOM_READY_PLAYERS, []);
-            if(ready){
+            if (ready) {
                 readyPlayerIds.push(playerId);
-            }else{
+            } else {
                 let index = readyPlayerIds.indexOf(playerId);
                 index >= 0 && readyPlayerIds.splice(index, 1);
             }
@@ -374,18 +374,18 @@ export default class GameScene extends BaseScene {
         this.emit(Events.ON_GAME_STATE_CHANGED, state, data, isJustJoined);
     }
 
-    updatePlayerReadyFromGameData(){
+    updatePlayerReadyFromGameData() {
         this._updatePlayerReadyState(this.gameData);
     }
 
-    _updatePlayerReadyState(data, persistToGameData = false){
-        if(data.hasOwnProperty(app.keywords.ROOM_READY_PLAYERS)){
+    _updatePlayerReadyState(data, persistToGameData = false) {
+        if (data.hasOwnProperty(app.keywords.ROOM_READY_PLAYERS)) {
 
             let readyPlayerIds = utils.getValue(data, app.keywords.ROOM_READY_PLAYERS, []);
-            if(readyPlayerIds.length > 0){
+            if (readyPlayerIds.length > 0) {
                 readyPlayerIds.forEach(playerId => {
                     let player = this.gamePlayers.findPlayer(playerId);
-                    this.emit(Events.ON_PLAYER_READY_STATE_CHANGED, player.id, true, player.isItMe());
+                    player && this.emit(Events.ON_PLAYER_READY_STATE_CHANGED, player.id, true, player.isItMe());
                 })
 
             }
@@ -394,10 +394,10 @@ export default class GameScene extends BaseScene {
         }
     }
 
-    checkReadyPlayer(player){
+    checkReadyPlayer(player) {
 
 
-        if(this.gameData.hasOwnProperty(app.keywords.ROOM_READY_PLAYERS)){
+        if (this.gameData.hasOwnProperty(app.keywords.ROOM_READY_PLAYERS)) {
 
             let readyPlayerIds = utils.getValue(this.gameData, app.keywords.ROOM_READY_PLAYERS, []);
 
