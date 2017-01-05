@@ -56,7 +56,7 @@
     "_tag": -1,
     "_opacityModifyRGB": false,
     "_id": "",
-    "_active": false,
+    "_active": true,
     "_components": [
       {
         "__id__": 21
@@ -193,7 +193,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "7259382a-003c-4379-beca-6c89ce836050"
+      "__uuid__": "af160ccf-ea9a-4f12-bf73-f2a528dc8e06"
     },
     "_type": 3,
     "_sizeMode": 0,
@@ -204,7 +204,7 @@
       "y": 0.5
     },
     "_fillStart": 0.25,
-    "_fillRange": 1,
+    "_fillRange": -1,
     "_isTrimmedMode": true,
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
@@ -221,6 +221,7 @@
     },
     "_enabled": true,
     "isAlignOnce": true,
+    "_target": null,
     "_alignFlags": 45,
     "_left": 0,
     "_right": 0,
@@ -243,7 +244,7 @@
       "__id__": 1
     },
     "asset": {
-      "__id__": 0
+      "__uuid__": "6fee103a-4494-41da-b528-774d2f756446"
     },
     "fileId": "74c17MeuIxCuKvHl3p1mmRx",
     "sync": false
@@ -342,6 +343,7 @@
     },
     "_enabled": true,
     "isAlignOnce": true,
+    "_target": null,
     "_alignFlags": 45,
     "_left": 0,
     "_right": 0,
@@ -364,7 +366,7 @@
       "__id__": 1
     },
     "asset": {
-      "__id__": 0
+      "__uuid__": "6fee103a-4494-41da-b528-774d2f756446"
     },
     "fileId": "57a59ah6pVCCa1z1IdH2ktM",
     "sync": false
@@ -375,7 +377,7 @@
       "__id__": 1
     },
     "asset": {
-      "__id__": 0
+      "__uuid__": "6fee103a-4494-41da-b528-774d2f756446"
     },
     "fileId": "bfa25pxnttPxKmLRN0MQROL",
     "sync": false
@@ -515,7 +517,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 99.22,
+      "width": 40.47,
       "height": 36
     },
     "_children": [],
@@ -561,12 +563,12 @@
     "_actualFontSize": 32,
     "_fontSize": 32,
     "_lineHeight": 36,
-    "_enableWrapText": false,
+    "_enableWrapText": true,
     "_N$file": {
       "__uuid__": "f7d3295b-8e12-456d-9621-9b8acc29ca1f"
     },
     "_isSystemFontUsed": false,
-    "_N$string": "Đặt Cược",
+    "_N$string": "Đợi",
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
     "_N$overflow": 0
@@ -594,7 +596,7 @@
       "__id__": 1
     },
     "asset": {
-      "__id__": 0
+      "__uuid__": "6fee103a-4494-41da-b528-774d2f756446"
     },
     "fileId": "0327ejJokJHMJ1Cj/hUJaS6",
     "sync": false
@@ -624,7 +626,7 @@
       "__id__": 1
     },
     "asset": {
-      "__id__": 0
+      "__uuid__": "6fee103a-4494-41da-b528-774d2f756446"
     },
     "fileId": "4c3613fcQ5N0qubSvk28qWH",
     "sync": false
@@ -635,7 +637,7 @@
       "__id__": 1
     },
     "asset": {
-      "__id__": 0
+      "__uuid__": "6fee103a-4494-41da-b528-774d2f756446"
     },
     "fileId": "427711c32lDQa64xSNgQVZ3",
     "sync": false
@@ -647,7 +649,7 @@
     "node": {
       "__id__": 1
     },
-    "_enabled": true,
+    "_enabled": false,
     "path": ""
   },
   {
@@ -662,7 +664,7 @@
       "__id__": 4
     },
     "_N$mode": 2,
-    "_N$totalLength": 1,
+    "_N$totalLength": -1,
     "_N$progress": 1,
     "_N$reverse": false
   },
@@ -672,7 +674,7 @@
       "__id__": 1
     },
     "asset": {
-      "__id__": 0
+      "__uuid__": "6fee103a-4494-41da-b528-774d2f756446"
     },
     "fileId": "56362vzlqFINYwJCwm+IGCK",
     "sync": false

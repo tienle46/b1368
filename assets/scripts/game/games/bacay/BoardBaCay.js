@@ -36,6 +36,7 @@ export default class BoardBaCay extends BoardCardBetTurn {
 
         this.scene.on(Events.SHOW_GOP_GA_NODE, this._showGopGa, this);
         this.scene.on(Events.ON_PLAYER_BACAY_GOP_GA, this._onPlayerGopGa, this);
+        this.scene.on(Events.ON_GAME_MASTER_CHANGED, this._onGameMasterChanged, this);
     }
 
     get gameType() {
@@ -281,7 +282,15 @@ export default class BoardBaCay extends BoardCardBetTurn {
             console.log("gopGaPlayer: ", gopGaPlayer);
             GameAnim.flyTo({fromNode: gopGaPlayer.node, toNode: this.renderer.gopGaCoinNode, amount: 3, prefab: this.renderer.chipPrefab});
             this._addToGopGaValue(gopGaPlayer, gopGaValue);
+
+            if(gopGaPlayer.isItMe()){
+                this.renderer.disableGopGaButton();
+            }
         }
+    }
+
+    _onGameMasterChanged(oldMaster, newMaster){
+        oldMaster && app.system.showToast(app.res.string('game_change_master_to_player', {playerName: newMaster.user.name}))
     }
 
 

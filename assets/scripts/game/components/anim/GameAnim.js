@@ -4,7 +4,10 @@
 
 export default class GameAnim {
 
-    static flyTo({fromNode = null, toNode = null, duration = 0.2, prefab = null, delayPerItem = 0.05, amount = 1, autoRemove = true, cb = null} = {}) {
+    static flyTo({fromNode, toNode, duration = 0.2, prefab = null, delayPerItem = 0.05, amount = 1, autoRemove = true, cb = null} = {}) {
+
+        console.log("fromNode: ", fromNode, " toNode", toNode)
+
         if(!fromNode || !toNode || !prefab) return;
 
         let startPos = fromNode.parent ? fromNode.parent.convertToWorldSpaceAR(fromNode.getPosition())

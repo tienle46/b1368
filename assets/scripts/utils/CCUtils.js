@@ -2,8 +2,6 @@
  * Created by Thanh on 10/19/2016.
  */
 
-import app from 'app';
-
 export default class CCUtils {
     constructor() {
     }

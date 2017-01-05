@@ -76,7 +76,6 @@ export default class Player extends Actor {
         this.scene.off(Events.ON_USER_UPDATE_BALANCE, this._onUserUpdateBalance, this);
         this.scene.off(Events.ON_PLAYER_SET_BALANCE, this._onPlayerSetBalance, this);
         this.scene.off(Events.ON_PLAYER_CHAT_MESSAGE, this._onPlayerChatMessage, this);
-        this.scene.off(Events.ON_GAME_MASTER_CHANGED, this._onGameMasterChanged, this);
         this.scene.off(Events.ON_ROOM_CHANGE_MIN_BET, this._onRoomMinBetChanged, this);
         this.scene.off(Events.ON_CLICK_START_GAME_BUTTON, this._onClickStartGameButton, this);
         this.scene.off(Events.ON_USER_UPDATE_NEW_PLAYER, this._onUserUpdateNewPlayer, this);
@@ -105,16 +104,6 @@ export default class Player extends Actor {
         if (!this.isOwner) {
             this.scene.emit(Events.ON_PLAYER_READY_STATE_CHANGED, this.id, false);
         }
-    }
-
-    _onGameMasterChanged(playerId, player) {
-        if (this.id == playerId) {
-            this.isMaster = true;
-        } else {
-            this.isMaster = false;
-        }
-
-        this.renderer.setVisibleMaster(this.isMaster);
     }
 
     _onPlayerChatMessage(sender, message) {

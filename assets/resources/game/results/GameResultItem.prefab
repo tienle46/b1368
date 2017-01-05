@@ -415,7 +415,7 @@
     "_useOriginalSize": false,
     "_actualFontSize": 30,
     "_fontSize": 30,
-    "_lineHeight": 40,
+    "_lineHeight": 80,
     "_enableWrapText": true,
     "_N$file": {
       "__uuid__": "089d2932-1827-4e03-b71e-a45549485514"
@@ -851,6 +851,7 @@
     },
     "_enabled": true,
     "isAlignOnce": false,
+    "_target": null,
     "_alignFlags": 16,
     "_left": 0,
     "_right": 0,
@@ -901,7 +902,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 65,
+      "width": 320,
       "height": 50
     },
     "_children": [],
@@ -911,7 +912,7 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": 153,
+      "x": 160,
       "y": -40
     },
     "_skewX": 0,
@@ -1119,6 +1120,7 @@
     },
     "_enabled": true,
     "isAlignOnce": true,
+    "_target": null,
     "_alignFlags": 44,
     "_left": 0,
     "_right": 0,
@@ -1237,6 +1239,7 @@
     },
     "_enabled": true,
     "isAlignOnce": true,
+    "_target": null,
     "_alignFlags": 45,
     "_left": 0,
     "_right": 0,
@@ -1309,6 +1312,7 @@
     },
     "_enabled": true,
     "isAlignOnce": true,
+    "_target": null,
     "_alignFlags": 40,
     "_left": 0,
     "_right": 0,

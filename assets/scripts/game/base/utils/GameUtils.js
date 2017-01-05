@@ -6,7 +6,6 @@ import app from 'app';
 import utils from 'utils';
 import Card from 'Card'
 import numeral from 'numeral';
-const gameState = app.const.game.state;
 
 export default class GameUtils {
 
@@ -19,35 +18,35 @@ export default class GameUtils {
     }
 
     static isStateAfterReady(checkState) {
-        return utils.isNumber(checkState) && checkState != gameState.INITED && checkState != gameState.READY && checkState != gameState.BEGIN && checkState != gameState.WAIT;
+        return utils.isNumber(checkState) && checkState != app.const.game.state.INITED && checkState != app.const.game.state.READY && checkState != app.const.game.state.BEGIN && checkState != app.const.game.state.WAIT;
     }
 
     static convertToLocalGameState(state) {
 
         // if (data && data.hasOwnProperty(app.keywords.DEAL_CARD_LIST_KEYWORD)) {
-        //     state = gameState.DEAL_CARD;
+        //     state = app.const.game.state.DEAL_CARD;
         // }
 
         switch (state) {
-            case gameState.INITED:
-                return gameState.INITED;
+            case app.const.game.state.INITED:
+                return app.const.game.state.INITED;
 
-            case gameState.READY:
-                return gameState.BEGIN;
+            case app.const.game.state.READY:
+                return app.const.game.state.BEGIN;
 
-            case gameState.DEAL_CARD:
-            case gameState.BOARD_STATE_ARRANGE_CARD:
-                return gameState.STARTING;
+            case app.const.game.state.DEAL_CARD:
+            case app.const.game.state.BOARD_STATE_ARRANGE_CARD:
+                return app.const.game.state.STARTING;
 
-            case gameState.STARTED:
-                return gameState.STARTED;
+            case app.const.game.state.STARTED:
+                return app.const.game.state.STARTED;
 
-            case gameState.PLAYING:
-            case gameState.TURN_BASE_TRUE_PLAY:
-                return gameState.PLAYING;
+            case app.const.game.state.PLAYING:
+            case app.const.game.state.TURN_BASE_TRUE_PLAY:
+                return app.const.game.state.PLAYING;
 
-            case gameState.BOARD_STATE_END:
-                return gameState.ENDING;
+            case app.const.game.state.BOARD_STATE_END:
+                return app.const.game.state.ENDING;
 
         }
     }

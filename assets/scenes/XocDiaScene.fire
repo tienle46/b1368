@@ -1183,6 +1183,7 @@
     },
     "_enabled": true,
     "isAlignOnce": true,
+    "_target": null,
     "_alignFlags": 45,
     "_left": 0,
     "_right": 0,
@@ -1892,6 +1893,7 @@
     },
     "_enabled": true,
     "isAlignOnce": true,
+    "_target": null,
     "_alignFlags": 45,
     "_left": 0,
     "_right": 0,
@@ -4214,7 +4216,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 36,
-      "height": 116
+      "height": 101
     },
     "_children": [
       {
@@ -4289,7 +4291,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 1,
-      "y": 40.99999999999999
+      "y": 33.49999999999999
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -4369,7 +4371,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 1,
-      "y": 12.999999999999993
+      "y": 10.499999999999993
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -4449,7 +4451,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 1,
-      "y": -15
+      "y": -12.500000000000007
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -4529,7 +4531,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 1,
-      "y": -43
+      "y": -35.5
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -4585,8 +4587,8 @@
     "_enabled": true,
     "_layoutSize": {
       "__type__": "cc.Size",
-      "width": 36,
-      "height": 116
+      "width": 300,
+      "height": 200
     },
     "_resize": 2,
     "_N$layoutType": 3,
@@ -4602,7 +4604,7 @@
     "_N$paddingTop": 8.000000000000007,
     "_N$paddingBottom": 10,
     "_N$spacingX": 0,
-    "_N$spacingY": 10,
+    "_N$spacingY": 5,
     "_N$verticalDirection": 1,
     "_N$horizontalDirection": 0
   },
@@ -5226,7 +5228,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 36,
-      "height": 116
+      "height": 101
     },
     "_children": [
       {
@@ -5301,7 +5303,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 1,
-      "y": 40.99999999999999
+      "y": 33.49999999999999
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -5381,7 +5383,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 1,
-      "y": 12.999999999999993
+      "y": 10.499999999999993
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -5461,7 +5463,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 1,
-      "y": -15
+      "y": -12.500000000000007
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -5541,7 +5543,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 1,
-      "y": -43
+      "y": -35.5
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -5597,8 +5599,8 @@
     "_enabled": true,
     "_layoutSize": {
       "__type__": "cc.Size",
-      "width": 36,
-      "height": 116
+      "width": 300,
+      "height": 200
     },
     "_resize": 2,
     "_N$layoutType": 3,
@@ -5614,7 +5616,7 @@
     "_N$paddingTop": 8.000000000000007,
     "_N$paddingBottom": 10,
     "_N$spacingX": 0,
-    "_N$spacingY": 10,
+    "_N$spacingY": 5,
     "_N$verticalDirection": 1,
     "_N$horizontalDirection": 0
   },
@@ -6493,6 +6495,7 @@
     },
     "_enabled": true,
     "isAlignOnce": true,
+    "_target": null,
     "_alignFlags": 45,
     "_left": 0,
     "_right": 0,
@@ -6678,6 +6681,7 @@
     },
     "_enabled": true,
     "isAlignOnce": true,
+    "_target": null,
     "_alignFlags": 45,
     "_left": 50.3,
     "_right": 19.449999999999996,
@@ -6748,6 +6752,7 @@
     },
     "_enabled": true,
     "isAlignOnce": true,
+    "_target": null,
     "_alignFlags": 45,
     "_left": 0,
     "_right": 0,
@@ -7077,6 +7082,7 @@
     },
     "_enabled": true,
     "isAlignOnce": true,
+    "_target": null,
     "_alignFlags": 45,
     "_left": 0,
     "_right": 0,
@@ -7130,6 +7136,7 @@
     },
     "_enabled": true,
     "isAlignOnce": true,
+    "_target": null,
     "_alignFlags": 45,
     "_left": 0,
     "_right": 0,
@@ -7315,6 +7322,7 @@
     },
     "_enabled": true,
     "isAlignOnce": true,
+    "_target": null,
     "_alignFlags": 45,
     "_left": 50.29999999999998,
     "_right": 19.45000000000001,
@@ -7651,6 +7659,7 @@
     },
     "_enabled": true,
     "isAlignOnce": true,
+    "_target": null,
     "_alignFlags": 45,
     "_left": 0,
     "_right": 0,
@@ -7704,6 +7713,7 @@
     },
     "_enabled": true,
     "isAlignOnce": true,
+    "_target": null,
     "_alignFlags": 45,
     "_left": 0,
     "_right": 0,
@@ -7889,6 +7899,7 @@
     },
     "_enabled": true,
     "isAlignOnce": true,
+    "_target": null,
     "_alignFlags": 45,
     "_left": 50.29999999999998,
     "_right": 19.45000000000001,
@@ -8225,6 +8236,7 @@
     },
     "_enabled": true,
     "isAlignOnce": true,
+    "_target": null,
     "_alignFlags": 45,
     "_left": 0,
     "_right": 0,
@@ -8278,6 +8290,7 @@
     },
     "_enabled": true,
     "isAlignOnce": true,
+    "_target": null,
     "_alignFlags": 45,
     "_left": 0,
     "_right": 0,
@@ -8463,6 +8476,7 @@
     },
     "_enabled": true,
     "isAlignOnce": true,
+    "_target": null,
     "_alignFlags": 45,
     "_left": 50.29999999999998,
     "_right": 19.45000000000001,
@@ -10367,6 +10381,7 @@
     },
     "_enabled": true,
     "isAlignOnce": true,
+    "_target": null,
     "_alignFlags": 36,
     "_left": 0,
     "_right": -1250,
@@ -11674,6 +11689,7 @@
     },
     "_enabled": true,
     "isAlignOnce": true,
+    "_target": null,
     "_alignFlags": 45,
     "_left": 0,
     "_right": 0,
@@ -11793,6 +11809,7 @@
     },
     "_enabled": true,
     "isAlignOnce": true,
+    "_target": null,
     "_alignFlags": 45,
     "_left": 0,
     "_right": 0,
@@ -12156,6 +12173,7 @@
     },
     "_enabled": true,
     "isAlignOnce": true,
+    "_target": null,
     "_alignFlags": 45,
     "_left": 0,
     "_right": 0,
@@ -13707,6 +13725,9 @@
     "timelineTextViewNode": {
       "__id__": 334
     },
+    "timeline": {
+      "__id__": 322
+    },
     "dishContainerNode": {
       "__id__": 314
     },
@@ -13718,9 +13739,6 @@
     },
     "resultText": {
       "__id__": 394
-    },
-    "timeline": {
-      "__id__": 322
     },
     "chipPrefab": null
   },
@@ -17087,6 +17105,7 @@
     },
     "_enabled": true,
     "isAlignOnce": true,
+    "_target": null,
     "_alignFlags": 45,
     "_left": 0,
     "_right": 0,
@@ -18085,7 +18104,7 @@
     "_tag": -1,
     "_opacityModifyRGB": false,
     "_id": "e7b19x0wMdGhpsrCioVnSMZ",
-    "_active": false,
+    "_active": true,
     "_components": [],
     "_prefab": null,
     "groupIndex": 0
@@ -18101,7 +18120,7 @@
       "__id__": 539
     },
     "_name": "IngameChatComponent",
-    "_active": false,
+    "_active": true,
     "_position": {
       "__type__": "cc.Vec2",
       "x": 0,

@@ -64,6 +64,7 @@ export default class PlayerMessage extends Component {
     show(message){
         if(!this.loaded){
             this.message = message;
+            this.node.active = true;
             return;
         }
 

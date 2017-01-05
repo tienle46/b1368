@@ -8,13 +8,18 @@ import CardList from 'CardList';
 import PlayerCardBetTurnRenderer from 'PlayerCardBetTurnRenderer';
 import GameUtils from "../../base/utils/GameUtils";
 import GameAnim from "../../components/anim/GameAnim";
+import * as Events from "../../../core/Events";
 
 export default class PlayerBaCayRenderer extends PlayerCardBetTurnRenderer {
     constructor() {
         super();
 
         this.betComponent = cc.Node;
-        this.betCoinNode = cc.Node;
+
+        this.betCoinNode = {
+            default: null,
+            type: cc.Node
+        }
 
         this.betLabel = {
             default: null,
@@ -60,6 +65,18 @@ export default class PlayerBaCayRenderer extends PlayerCardBetTurnRenderer {
             type : cc.Prefab
         };
     }
+
+    _addGlobalListener() {
+        super._addGlobalListener();
+
+        this.scene.on(Events.ON_GAME_MASTER_CHANGED, this._onGameMasterChanged, this);
+    }
+
+    _removeGlobalListener() {
+        super._removeGlobalListener();
+        this.scene.off(Events.ON_GAME_MASTER_CHANGED, this._onGameMasterChanged, this);
+    }
+
 
     onEnable(...args){
         super.onEnable(...args);

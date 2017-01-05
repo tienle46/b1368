@@ -1,7 +1,7 @@
 import app from 'app';
 import Component from 'components';
 import utils from 'utils';
-import GameUtils from 'GameUtils';
+import GameUtils from 'GameUtils'; 
 
 export default class Card extends Component {
 
@@ -40,7 +40,7 @@ export default class Card extends Component {
             },
         }
 
-        !utils.isNull(byteValue) && this.initFromByte(byteValue);
+        byteValue != null && byteValue != undefined && this.initFromByte(byteValue);
         this.selected = false;
         this.highlight = false;
         this.clickListener = null;

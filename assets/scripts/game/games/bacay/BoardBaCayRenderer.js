@@ -14,10 +14,18 @@ export default class BoardBaCayRenderer extends BoardCardBetTurnRenderer {
 
         this.properties = {
             ...this.properties,
-            gopGaNode: cc.Node,
             gopGaButton: cc.Button,
             gopGaLabel: cc.Label,
-            gopGaCoinNode: cc.Node,
+        }
+
+        this.gopGaCoinNode = {
+            default: null,
+            type: cc.Node
+        }
+
+        this.gopGaNode = {
+            default: null,
+            type: cc.Node
         }
     }
 
@@ -27,7 +35,7 @@ export default class BoardBaCayRenderer extends BoardCardBetTurnRenderer {
 
     setVisibleGopGaComponent(visible){
         utils.setVisible(this.gopGaNode, visible);
-        if(!visible){
+        if(visible){
             utils.setInteractable(this.gopGaButton, true);
         }
     }
@@ -38,6 +46,10 @@ export default class BoardBaCayRenderer extends BoardCardBetTurnRenderer {
 
     disableGopGaValue(disable = true){
         utils.setInteractable(this.gopGaButton, disable);
+    }
+
+    disableGopGaButton(){
+        utils.setInteractable(this.gopGaButton, false);
     }
 }
 

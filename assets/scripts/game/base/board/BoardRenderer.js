@@ -13,16 +13,20 @@ export default class BoardRenderer extends ActorRenderer {
 
         this.properties = {
             ...this.properties,
-            timelineTextViewNode: cc.Node
+            timelineTextViewNode: cc.Node,
+            timeline: {
+                default : null,
+                type : cc.Node
+            }
         }
-        this.timeline ={
-            default : null,
-            type : cc.Node,
-        }
+
+        this.chipPrefab = {
+            default: null,
+            type: cc.Prefab
+        };
 
         this.timelineTextView = null;
         this.ellipseTimeLine = null;
-        this.chipPrefab = cc.Prefab;
     }
 
     onEnable() {
@@ -31,6 +35,8 @@ export default class BoardRenderer extends ActorRenderer {
         this.timelineTextView = this.timelineTextViewNode.getComponent('TextView');
         this.ellipseTimeLine = this.timeline.getComponent('EllipseTimeLine');
         this.hideTimeLine();
+
+        console.warn('Board timeline: ', this.timeline);
     }
 
     _reset() {
@@ -42,7 +48,6 @@ export default class BoardRenderer extends ActorRenderer {
             this.ellipseTimeLine.stop();
         }
         this.setTimeLineMessage("");
-        utils.deactive(this.timeline);
     }
 
     showTimeLine(timeInSecond = 0, message, hiddenText = false) {
@@ -55,7 +60,6 @@ export default class BoardRenderer extends ActorRenderer {
         }
         hiddenText && (message = '');
 
-        utils.active(this.timeline);
         this.setTimeLineMessage(message);
         this.ellipseTimeLine.startTimeLine(timeInSecond);
     }

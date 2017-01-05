@@ -895,6 +895,7 @@
     },
     "_enabled": true,
     "isAlignOnce": true,
+    "_target": null,
     "_alignFlags": 45,
     "_left": 0,
     "_right": 0,
@@ -1016,6 +1017,7 @@
     },
     "_enabled": true,
     "isAlignOnce": true,
+    "_target": null,
     "_alignFlags": 45,
     "_left": 0,
     "_right": 0,
@@ -1626,6 +1628,9 @@
     "timelineTextViewNode": {
       "__id__": 30
     },
+    "timeline": {
+      "__id__": 18
+    },
     "dealCardAnchor": {
       "__id__": 45
     },
@@ -1639,9 +1644,6 @@
       "__uuid__": "e46ea9f5-2341-4501-90ba-6894cdd06b0e"
     },
     "deckCardName": "DeckCardRenderer",
-    "timeline": {
-      "__id__": 18
-    },
     "chipPrefab": {
       "__uuid__": "e74aede9-fe2e-4ea9-87d0-71730289b91b"
     }
@@ -3940,7 +3942,7 @@
     "_tag": -1,
     "_opacityModifyRGB": false,
     "_id": "c41aevnOf5IZYpDi6DTV0J9",
-    "_active": false,
+    "_active": true,
     "_components": [],
     "_prefab": null,
     "groupIndex": 0

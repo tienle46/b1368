@@ -1400,7 +1400,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 80,
-      "height": 34
+      "height": 38
     },
     "_children": [
       {
@@ -1464,7 +1464,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 80,
-      "height": 20
+      "height": 24
     },
     "_children": [],
     "_rotationX": 0,
@@ -1474,7 +1474,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": 10
+      "y": 12
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -1581,7 +1581,7 @@
     "_layoutSize": {
       "__type__": "cc.Size",
       "width": 80,
-      "height": 34
+      "height": 38
     },
     "_resize": 1,
     "_N$layoutType": 2,
@@ -2175,6 +2175,7 @@
     },
     "_enabled": true,
     "isAlignOnce": true,
+    "_target": null,
     "_alignFlags": 45,
     "_left": 13.954999999999998,
     "_right": 13.954999999999998,
@@ -2449,6 +2450,7 @@
     },
     "_enabled": true,
     "isAlignOnce": true,
+    "_target": null,
     "_alignFlags": 45,
     "_left": -20,
     "_right": -20,
@@ -4417,9 +4419,6 @@
     },
     "balanceLabel": {
       "__id__": 31
-    },
-    "status2": {
-      "__id__": 72
     },
     "ownerIcon": {
       "__id__": 20
