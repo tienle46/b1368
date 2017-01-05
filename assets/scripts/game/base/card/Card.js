@@ -1,6 +1,7 @@
 import app from 'app';
 import Component from 'components';
-import {utils, GameUtils} from 'utils';
+import utils from 'utils';
+import GameUtils from 'GameUtils';
 
 export default class Card extends Component {
 
