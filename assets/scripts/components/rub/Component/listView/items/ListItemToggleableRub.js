@@ -3,6 +3,7 @@ import ListItemBasicRub from 'ListItemBasicRub';
 import RubUtils from 'RubUtils';
 import ButtonScaler from 'ButtonScaler';
 import NodeRub from 'NodeRub';
+import RubResources from 'RubResources';
 
 export default class ListItemToggleableRub extends ListItemBasicRub {
     /**
@@ -169,7 +170,7 @@ export default class ListItemToggleableRub extends ListItemBasicRub {
             node = image;
         } else {
             let defaultOptions = {
-                spriteFrame: 'dashboard/dialog/imgs/hopqua',
+                spriteFrame: RubResources.GIFT_BOX,
                 align: {
                     left: 10,
                     top: 10,
@@ -339,11 +340,6 @@ export default class ListItemToggleableRub extends ListItemBasicRub {
                 // parentSize.height *= (lineCount * 2 / 3);
                 parentSize.height += lineCount * opts.fontLineHeight - (opts.align.top || opts.defaultValue) - (opts.align.bottom || opts.defaultValue);
                 parent.setContentSize(parentSize);
-                // let sprite = parent.getComponent(cc.Sprite);
-                // if (sprite) {
-                //      parentSize.height += lineCount * opts.fontLineHeight - (opts.align.top || opts.defaultValue) - (opts.align.bottom || opts.defaultValue);
-                //      this._resizeHeight(sprite, parentSize);
-                // }
             }
         }
 
@@ -368,8 +364,8 @@ export default class ListItemToggleableRub extends ListItemBasicRub {
 
 
         let options = {
-            downSpriteFrame: 'dashboard/dialog/imgs/xuong',
-            upSpriteFrame: 'dashboard/dialog/imgs/len',
+            downSpriteFrame: RubResources.DOWN_ARROW,
+            upSpriteFrame: RubResources.UP_ARROW,
             align: {
                 right: 20,
                 bottom: 20,

@@ -74,8 +74,6 @@ export default class DashboardScene extends BaseScene {
 
         var node = null;
         let count = 0;
-        this.gameList = [...this.gameList, ...this.gameList];
-
         app.async.mapSeries(this.gameList, (gc, cb) => {
             if (count > 8 && !indicator) {
                 var indicator = this.pageView.indicator.node;

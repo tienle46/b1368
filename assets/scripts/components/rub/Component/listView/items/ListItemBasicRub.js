@@ -2,6 +2,7 @@ import RubUtils from 'RubUtils';
 import app from 'app';
 import ButtonScaler from 'ButtonScaler';
 import NodeRub from 'NodeRub';
+import RubResources from 'RubResources';
 
 export default class ListItemBasicRub {
     /**
@@ -48,8 +49,7 @@ export default class ListItemBasicRub {
         let defaultOptions = {
             contentWidth: 520,
             height: 60,
-            // spriteFrame: 'textures/50x50',
-            spriteFrame: 'blueTheme/general/dialog/row-bg',
+            spriteFrame: RubResources.LIST_ITEM_ROW_BG,
             // color: app.const.COLOR_VIOLET,
             color: app.const.COLOR_WHITE,
             fontSize: 16,
@@ -293,7 +293,7 @@ export default class ListItemBasicRub {
         parent.addChild(btnGroupNode);
 
         let btnGroupNodeSprite = btnGroupNode.addComponent(cc.Sprite);
-        RubUtils.loadSpriteFrame(btnGroupNodeSprite, this.options.button.spriteFrame || 'textures/login_btn_bg', btnSize);
+        RubUtils.loadSpriteFrame(btnGroupNodeSprite, this.options.button.spriteFrame || RubResources.YELLOW_BTN, btnSize);
 
         let btnGroupNodeWidget = btnGroupNode.addComponent(cc.Widget);
         btnGroupNodeWidget.isAlignOnce = false;

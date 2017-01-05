@@ -67,7 +67,7 @@ class TabTopVip extends Component {
         ];
 
         GridViewRub.show(this.contentNode, {
-            data: ['STT', 'Tài khoản', ''],
+            data: ['STT', 'Tài khoản', 'Loại'],
             options: {
                 fontColor: app.const.COLOR_YELLOW
             }

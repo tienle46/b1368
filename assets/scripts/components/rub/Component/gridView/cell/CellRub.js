@@ -2,6 +2,7 @@ import RubUtils from 'RubUtils';
 import app from 'app';
 import ButtonScaler from 'ButtonScaler';
 import NodeRub from 'NodeRub';
+import RubResources from 'RubResources';
 
 export default class CellRub {
     /**
@@ -154,7 +155,7 @@ export default class CellRub {
 
         // sprite
         let btnSprite = btnNode.addComponent(cc.Sprite);
-        let defaultBtnSpriteFrameURL = 'blueTheme/general/buttons/ninePaths/btn-xanhla';
+        let defaultBtnSpriteFrameURL = RubResources.GREEN_BTN;
         RubUtils.loadSpriteFrame(btnSprite, this.cell.button.spriteFrame || defaultBtnSpriteFrameURL, btnNode.getContentSize());
 
         // event
