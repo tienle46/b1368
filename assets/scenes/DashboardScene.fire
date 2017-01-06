@@ -360,7 +360,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 306,
+      "width": 0,
       "height": 500
     },
     "_children": [],
@@ -402,7 +402,7 @@
     "_enabled": true,
     "_layoutSize": {
       "__type__": "cc.Size",
-      "width": 306,
+      "width": 0,
       "height": 500
     },
     "_resize": 1,

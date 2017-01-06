@@ -484,15 +484,15 @@
     },
     "_enabled": true,
     "path": "",
+    "label": {
+      "__id__": 10
+    },
     "lines": 2,
     "minWidth": 250,
     "maxWidth": 250,
     "resizeWidth": false,
     "increaseWidth": 15,
-    "margin": 0,
-    "label": {
-      "__id__": 10
-    }
+    "margin": 0
   },
   {
     "__type__": "cc.Sprite",
@@ -503,7 +503,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "4af45b1f-b345-4a7c-85e2-13488ac5dfe2"
+      "__uuid__": "de19ca54-b634-4c9b-b99e-09f912dc3937"
     },
     "_type": 0,
     "_sizeMode": 0,
@@ -518,7 +518,9 @@
     "_isTrimmedMode": true,
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
-    "_atlas": null
+    "_atlas": {
+      "__uuid__": "10ca67ea-2a3c-4512-b8a8-cfd37f9d8bbe"
+    }
   },
   {
     "__type__": "cc.Widget",
@@ -647,8 +649,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 126,
-      "height": 126
+      "width": 150,
+      "height": 150
     },
     "_children": [],
     "_rotationX": 0,
@@ -687,7 +689,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "91f52611-75a0-42d2-8c90-1c3759aa4ec3"
+      "__uuid__": "4e9993b7-948b-40c3-a1a8-0303a9193907"
     },
     "_type": 0,
     "_sizeMode": 1,
@@ -702,7 +704,9 @@
     "_isTrimmedMode": true,
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
-    "_atlas": null
+    "_atlas": {
+      "__uuid__": "10ca67ea-2a3c-4512-b8a8-cfd37f9d8bbe"
+    }
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -859,16 +863,13 @@
     },
     "_enabled": true,
     "path": "",
-    "timeline": {
-      "__id__": 6
-    },
-    "timelineRemainTime": {
-      "__id__": 22
-    },
     "timelineTextViewNode": {
       "__id__": 8
     },
-    "playerPositionPrefab": null
+    "timeline": {
+      "__id__": 6
+    },
+    "chipPrefab": null
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -949,11 +950,11 @@
     "selectable": false,
     "space": 0,
     "maxDimension": 0,
-    "orientation": 1,
-    "align": 7,
     "cardPrefab": {
       "__uuid__": "1be1ace3-b9b3-4bf4-9c45-5c1d9eccac08"
-    }
+    },
+    "orientation": 1,
+    "align": 7
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -1034,11 +1035,11 @@
     "selectable": false,
     "space": 100,
     "maxDimension": 800,
-    "orientation": 1,
-    "align": 7,
     "cardPrefab": {
       "__uuid__": "1be1ace3-b9b3-4bf4-9c45-5c1d9eccac08"
-    }
+    },
+    "orientation": 1,
+    "align": 7
   },
   {
     "__type__": "cc.PrefabInfo",
