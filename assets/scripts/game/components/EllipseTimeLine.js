@@ -15,7 +15,7 @@ export default class EllipseTimeLine extends Component {
         this._playerTimeLineProgress = null;
         this.isCounting = false;
         this.counterTimer = 0;
-        this._enabled = false;
+        this._enabledTimeLine = false;
     }
 
     onLoad(){
@@ -25,14 +25,12 @@ export default class EllipseTimeLine extends Component {
 
     onEnable(){
 
-        console.log('startTimeLine: onEnable: ', this.timelineDuration);
-
         super.onEnable();
-        this._enabled = true;
+
+        this._enabledTimeLine = true;
 
         if(this.__timeSettedBeforLoaded > 0) {
             this._startCountDown(this.__timeSettedBeforLoaded);
-            // this.timelineDuration = this.__timeSettedBeforLoaded;
             this.__timeSettedBeforLoaded = 0;
         }
 
@@ -48,9 +46,7 @@ export default class EllipseTimeLine extends Component {
 
     startTimeLine(duration) {
 
-        console.log('startTimeLine: ', duration);
-
-        if(this._enabled){
+        if(this._enabledTimeLine){
             if (this._playerTimeLineProgress) {
                 this.timelineDuration = duration;
                 this.isCounting = true;
@@ -67,7 +63,6 @@ export default class EllipseTimeLine extends Component {
 
         changeActive && utils.setActive(this.node, false);
 
-        console.log('startTimeLine: stop: ');
         if (this._playerTimeLineProgress) {
             this.timelineDuration = 0;
             this.isCounting = false;
@@ -81,8 +76,6 @@ export default class EllipseTimeLine extends Component {
         if (this.isCounting && this.timelineDuration > 0) {
 
             this._playerTimeLineProgress.progress = this.counterTimer / this.timelineDuration;
-
-            // console.log('counterTimer: ', this.counterTimer, this._playerTimeLineProgress.progress);
 
             if (this.counterTimer >= this.timelineDuration) {
                 this.stop();

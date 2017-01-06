@@ -35,6 +35,7 @@ export default class DashboardScene extends BaseScene {
         };
 
         app.service.send(sendObject, (data) => {
+            log(data);
             this.gameList = this._filterClientSupportedGames(data["cl"]);
             this._initItemListGame();
         }, app.const.scene.DASHBOARD_SCENE);
@@ -57,16 +58,16 @@ export default class DashboardScene extends BaseScene {
 
         let pageNodeOptions = {
             name: 'pageNode',
-            size: cc.size(998, 455),
+            size: cc.size(998, 515),
             // position: cc.v2(500, 0),
             layout: {
                 type: cc.Layout.Type.GRID,
                 resizeMode: cc.Layout.ResizeMode.CHILDREN,
-                startAxis: cc.Layout.AxisDirection.HORIZONTAL,
-                cellSize: cc.size(180, 180),
+                startAxis: cc.Layout.AxisDirection.VERTICAL,
+                cellSize: cc.size(240, 240),
                 padding: 0,
-                spacingX: 85,
-                spacingY: 55,
+                spacingX: 125,
+                spacingY: 20,
                 verticalDirection: cc.Layout.VerticalDirection.TOP_TO_BOTTOM,
                 horizontalDirection: cc.Layout.HorizontalDirection.LEFT_TO_RIGHT
             }
@@ -75,37 +76,36 @@ export default class DashboardScene extends BaseScene {
         var node = null;
         let count = 0;
         app.async.mapSeries(this.gameList, (gc, cb) => {
-            if (count > 8 && !indicator) {
+            let gameIconPath = app.res.gameIcon[gc];
+            if (count > 6 && !indicator) {
                 var indicator = this.pageView.indicator.node;
                 indicator && indicator.opacity < 255 && (indicator.opacity = 255);
             }
-            if (count % 8 === 0) {
+            if (count % 6 === 0) {
                 node = NodeRub.createNodeByOptions(pageNodeOptions);
                 // this.viewContainer.addChild(node);
                 this.pageView.addPage(node);
             }
-            let gameIconPath = app.res.gameIcon[gc];
-            gameIconPath && RubUtils.getSpriteFrameFromAtlas('blueTheme/atlas/game_icons/game_icons', gameIconPath, (sprite) => {
-                if (sprite) {
-                    const nodeItem = new cc.instantiate(this.item);
-                    nodeItem.getComponent(cc.Sprite).spriteFrame = sprite;
-                    nodeItem.setContentSize(itemDimension, itemDimension);
-                    let itemComponent = nodeItem.getComponent('item');
+            gameIconPath && RubUtils.loadRes(gameIconPath, true).then((spriteFrame) => {
+                const nodeItem = new cc.instantiate(this.item);
+                nodeItem.getComponent(cc.Sprite).spriteFrame = spriteFrame;
+                nodeItem.setContentSize(itemDimension, itemDimension);
 
-                    itemComponent.gameCode = gc;
-                    itemComponent.listenOnClickListener((gameCode) => {
-                        log(`click Item ${gameCode}`);
+                let itemComponent = nodeItem.getComponent('item');
 
-                        // set game context
-                        app.context.setSelectedGame(gc);
+                itemComponent.gameCode = gc;
+                itemComponent.listenOnClickListener((gameCode) => {
+                    log(`click Item ${gameCode}`);
 
-                        this.changeScene(app.const.scene.LIST_TABLE_SCENE);
-                    });
+                    // set game context
+                    app.context.setSelectedGame(gc);
 
-                    node && node.addChild(nodeItem);
+                    this.changeScene(app.const.scene.LIST_TABLE_SCENE);
+                });
 
-                    count++;
-                }
+                node && node.addChild(nodeItem);
+
+                count++;
                 cb(); // next ->
             });
         });

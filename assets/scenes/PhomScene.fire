@@ -622,7 +622,7 @@
     "_tag": -1,
     "_opacityModifyRGB": false,
     "_id": "4ac5aljulJDW50Al8+YUyy4",
-    "_active": true,
+    "_active": false,
     "_components": [
       {
         "__id__": 36
@@ -759,7 +759,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "7259382a-003c-4379-beca-6c89ce836050"
+      "__uuid__": "af160ccf-ea9a-4f12-bf73-f2a528dc8e06"
     },
     "_type": 3,
     "_sizeMode": 0,
@@ -770,7 +770,7 @@
       "y": 0.5
     },
     "_fillStart": 0.25,
-    "_fillRange": 1,
+    "_fillRange": -0.8,
     "_isTrimmedMode": true,
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
@@ -787,6 +787,7 @@
     },
     "_enabled": true,
     "isAlignOnce": true,
+    "_target": null,
     "_alignFlags": 45,
     "_left": 0,
     "_right": 0,
@@ -908,6 +909,7 @@
     },
     "_enabled": true,
     "isAlignOnce": true,
+    "_target": null,
     "_alignFlags": 45,
     "_left": 0,
     "_right": 0,
@@ -1207,16 +1209,6 @@
     "sync": false
   },
   {
-    "__type__": "ccb72L82CxOwZ1w59OlgJ7l",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 16
-    },
-    "_enabled": true,
-    "path": ""
-  },
-  {
     "__type__": "cc.ProgressBar",
     "_name": "",
     "_objFlags": 0,
@@ -1228,9 +1220,19 @@
       "__id__": 19
     },
     "_N$mode": 2,
-    "_N$totalLength": 1,
-    "_N$progress": 1,
+    "_N$totalLength": -1,
+    "_N$progress": 0.8,
     "_N$reverse": false
+  },
+  {
+    "__type__": "ba67dSsayJHYrJy+4Nfmpn1",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 16
+    },
+    "_enabled": true,
+    "path": ""
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -1777,6 +1779,9 @@
     "timelineTextViewNode": {
       "__id__": 28
     },
+    "timeline": {
+      "__id__": 16
+    },
     "dealCardAnchor": {
       "__id__": 49
     },
@@ -1788,9 +1793,6 @@
     },
     "deckCardPrefab": null,
     "deckCardName": "CardList",
-    "timeline": {
-      "__id__": 16
-    },
     "chipPrefab": {
       "__uuid__": "e74aede9-fe2e-4ea9-87d0-71730289b91b"
     }
@@ -2697,6 +2699,7 @@
     },
     "_enabled": true,
     "isAlignOnce": true,
+    "_target": null,
     "_alignFlags": 36,
     "_left": 0,
     "_right": -1257.5,
@@ -6170,6 +6173,7 @@
     },
     "_enabled": true,
     "isAlignOnce": true,
+    "_target": null,
     "_alignFlags": 36,
     "_left": 0,
     "_right": -1097.5,
@@ -6881,6 +6885,7 @@
     },
     "_enabled": true,
     "isAlignOnce": true,
+    "_target": null,
     "_alignFlags": 36,
     "_left": 0,
     "_right": -1102.5,

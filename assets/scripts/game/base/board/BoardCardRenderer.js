@@ -16,12 +16,19 @@ export default class BoardCardRenderer extends BoardRenderer {
             meDealCardListNode: cc.Node
         }
 
+        /**
+         * @type {CardList}
+         */
         this.meDealCardList = null;
     }
 
     onEnable(){
         super.onEnable();
         this.meDealCardList = this.meDealCardListNode && this.meDealCardListNode.getComponent('CardList');
+    }
+
+    clearMeDealCards(){
+        this.meDealCardList.clear();
     }
 }
 

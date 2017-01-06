@@ -64,5 +64,7 @@ export default class BoardCard extends Board {
 
     onBoardEnding(data = {}, isJustJoined) {
         super.onBoardEnding(data, isJustJoined);
+
+        this.renderer.clearMeDealCards && this.renderer.clearMeDealCards();
     }
 }
