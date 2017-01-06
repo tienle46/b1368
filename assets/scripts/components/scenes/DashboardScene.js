@@ -27,7 +27,8 @@ export default class DashboardScene extends BaseScene {
 
     onLoad() {
         super.onLoad();
-        var sendObject = {
+
+        let sendObject = {
             'cmd': 'gv',
             'data': {
                 'pid': 1

@@ -194,7 +194,6 @@ class Service {
             }
             app.system.emit(event.cmd, event.params, event);
         }
-
     }
 
     _onLogin(event) {
@@ -394,7 +393,6 @@ class Service {
      *
      */
     send(options, cb, scope) {
-
         if (!options) return;
 
         if (!this.client.isConnected()) {
@@ -408,7 +406,6 @@ class Service {
         } else {
             const cmd = options.cmd;
             const cbKey = options.cbKey || options.cmd;
-
             if (cmd) {
                 this._addCallback(cbKey, cb, scope, options.data);
                 this.sendRequest(new SFS2X.Requests.System.ExtensionRequest(cmd, options.data || {}, options.room));

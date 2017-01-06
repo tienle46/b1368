@@ -79,9 +79,8 @@ export default class LoginScene extends BaseScene {
         app.service.connect((success) => {
             if (success) {
                 app.service.requestAuthen(username, password, false, false, null, (error, result) => {
-
-                    this.hideLoading();
                     if (error) {
+                        this.hideLoading();
                         log('Login error:');
                         error = JSON.parse(error);
                         this.addPopup(app.getMessageFromServer(error.p.ec));
@@ -89,6 +88,7 @@ export default class LoginScene extends BaseScene {
                     if (result) {
                         log(result);
                         log(`Logged in as ${app.context.getMe().name}`);
+                        //load recently games
                         this.changeScene(app.const.scene.DASHBOARD_SCENE);
                     }
                 });

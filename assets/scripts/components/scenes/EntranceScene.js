@@ -135,45 +135,7 @@ export default class EntranceScene extends BaseScene {
 
     handleLoginAction() {
         this.changeScene(app.const.scene.LOGIN_SCENE);
-        // this.showLoading();
-        // app.service.connect((success) => {
-        //     log("success: " + success);
-        //     if (success) {
-        //         app.service.requestAuthen('crush1', "1234nm", false, true, null, (error, result) => {
-        //             error = JSON.parse(error);
-        //             this.hideLoading();
-        //             if (result) {
-        //                 log(app.context.getMe());
-        //                 this.changeScene(app.const.scene.DASHBOARD_SCENE);
-        //             }
-        //             if (error) {
-        //                 this.addPopup(app.getMessageFromServer(error.p.ec));
-        //             }
-        //         });
-        //     }
-        // });
     }
-
-    // _loginToDashboard(username, password) {
-    //     this.showLoading();
-    //     app.service.connect((success) => {
-    //         if (success) {
-    //             app.service.requestAuthen(username, password, false, true,null, (error, result) => {
-    //                 error = JSON.parse(error);
-    //                 this.hideLoading();
-    //                 if (error) {
-    //                     log('Login error:');
-    //                     this.addPopup(app.getMessageFromServer(error.p.ec));
-    //                 }
-    //                 if (result) {
-    //                     log(result);
-    //                     log(`Logged in as ${app.context.getMe().name}`);
-    //                     this.changeScene(app.const.scene.DASHBOARD_SCENE);
-    //                 }
-    //             });
-    //         }
-    //     });
-    // }
 
     handleRegisterButton() {
         this.showLoading();
