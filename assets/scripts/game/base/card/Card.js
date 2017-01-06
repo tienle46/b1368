@@ -14,7 +14,7 @@ export default class Card extends Component {
             suitNode: cc.Sprite,
             mainPic: cc.Sprite,
             cardBG: cc.Sprite,
-            redTextColor: new cc.Color().fromHEX('#9A0000'),
+            redTextColor: new cc.Color().fromHEX('#C70003'),
             blackTextColor: new cc.Color().fromHEX('#242424'),
             texFrontBG: cc.SpriteFrame,
             texBackBG: cc.SpriteFrame,

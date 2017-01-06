@@ -72,7 +72,7 @@ export default {
     game_nhat: 'nhất',
     game_nhi: 'nhì',
     game_ba: 'ba',
-    game_bet: 'bét',
+    // game_bet: 'bét',
     game_point: '{{point}} điểm',
     game_tlmn_card_count: '{{count}} lá',
     game_tlmn_an_trang: 'Ăn trắng',

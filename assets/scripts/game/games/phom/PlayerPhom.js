@@ -775,7 +775,7 @@ export default class PlayerPhom extends PlayerCardTurnBase {
         super.onEnable(this.node.getComponent('PlayerPhomRenderer'));
 
         if (this.isItMe()) {
-            this.renderer.setSelectCardChangeListener(this._onSelectedCardsChanged);
+            this.renderer.setSelectCardChangeListener(this._onSelectedCardsChanged.bind(this));
         }
     }
 

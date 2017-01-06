@@ -176,6 +176,7 @@
     },
     "_enabled": true,
     "isAlignOnce": true,
+    "_target": null,
     "_alignFlags": 18,
     "_left": 0,
     "_right": 0,
@@ -295,6 +296,7 @@
     },
     "_enabled": true,
     "isAlignOnce": true,
+    "_target": null,
     "_alignFlags": 18,
     "_left": 0,
     "_right": 0,
@@ -416,6 +418,7 @@
     },
     "_enabled": true,
     "isAlignOnce": true,
+    "_target": null,
     "_alignFlags": 18,
     "_left": 0,
     "_right": 0,
@@ -537,6 +540,7 @@
     },
     "_enabled": true,
     "isAlignOnce": true,
+    "_target": null,
     "_alignFlags": 36,
     "_left": 0,
     "_right": 7,
@@ -597,7 +601,7 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": -30,
+      "x": -28,
       "y": 20
     },
     "_skewX": 0,
@@ -658,8 +662,9 @@
     },
     "_enabled": true,
     "isAlignOnce": true,
+    "_target": null,
     "_alignFlags": 9,
-    "_left": 10,
+    "_left": 12,
     "_right": 0,
     "_top": 36,
     "_bottom": 0,
@@ -692,9 +697,9 @@
     "_opacity": 255,
     "_color": {
       "__type__": "cc.Color",
-      "r": 154,
+      "r": 199,
       "g": 0,
-      "b": 0,
+      "b": 3,
       "a": 255
     },
     "_cascadeOpacityEnabled": true,
@@ -708,7 +713,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 20.71,
+      "width": 15.31,
       "height": 30
     },
     "_children": [],
@@ -718,7 +723,7 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": -30.000000000000004,
+      "x": -28.035000000000004,
       "y": 46
     },
     "_skewX": 0,
@@ -756,7 +761,7 @@
     "_lineHeight": 30,
     "_enableWrapText": true,
     "_N$file": {
-      "__uuid__": "02b1fc23-9c1a-4842-af1f-448608eb2615"
+      "__uuid__": "e3c4e6bc-4253-4660-b308-20232cdbdb47"
     },
     "_isSystemFontUsed": false,
     "_N$string": "A",
@@ -773,8 +778,9 @@
     },
     "_enabled": true,
     "isAlignOnce": true,
+    "_target": null,
     "_alignFlags": 9,
-    "_left": 9.645,
+    "_left": 14.309999999999995,
     "_right": 0,
     "_top": 5,
     "_bottom": 0,

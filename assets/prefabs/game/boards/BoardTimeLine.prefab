@@ -643,16 +643,6 @@
     "sync": false
   },
   {
-    "__type__": "ccb72L82CxOwZ1w59OlgJ7l",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 1
-    },
-    "_enabled": false,
-    "path": ""
-  },
-  {
     "__type__": "cc.ProgressBar",
     "_name": "",
     "_objFlags": 0,
@@ -667,6 +657,16 @@
     "_N$totalLength": -1,
     "_N$progress": 1,
     "_N$reverse": false
+  },
+  {
+    "__type__": "ba67dSsayJHYrJy+4Nfmpn1",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 1
+    },
+    "_enabled": true,
+    "path": ""
   },
   {
     "__type__": "cc.PrefabInfo",

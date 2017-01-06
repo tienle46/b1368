@@ -11,7 +11,10 @@ export default class ScrollMessagePopup extends MessagePopup {
     constructor() {
         super();
 
-        this.messageLabel = cc.Label;
+        this.messageLabel = {
+            default : null,
+            type: cc.Label
+        };
     }
 
     initMessageNode() {}

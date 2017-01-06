@@ -64,7 +64,14 @@
       false
     ]
   ],
-  "excluded-modules": [],
+  "excluded-modules": [
+    "ParticleSystem",
+    "TiledMap",
+    "Spine Skeleton",
+    "Collider",
+    "MotionStreak",
+    "DragonBones"
+  ],
   "group-list": [
     "cardPrefab",
     "core",

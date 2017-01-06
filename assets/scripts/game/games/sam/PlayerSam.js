@@ -143,7 +143,7 @@ export default class PlayerSam extends PlayerCardTurnBase {
         super.onEnable(this.getComponent('PlayerSamRenderer'));
 
         if (this.isItMe()) {
-            this.renderer.setSelectCardChangeListener(this._onSelectedCardsChanged);
+            this.renderer.setSelectCardChangeListener(this._onSelectedCardsChanged.bind(this));
         }
     }
 

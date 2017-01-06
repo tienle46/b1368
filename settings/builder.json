@@ -10,8 +10,15 @@
     "portrait": false,
     "upsideDown": false
   },
-  "packageName": "com.game.b1368",
+  "packageName": "com.bamien.b1368",
   "startScene": "19d77baf-45a8-424b-b934-835d4149344d",
   "title": "B1368",
-  "webOrientation": "auto"
+  "webOrientation": "auto",
+  "oauthLoginServer": "",
+  "appKey": "",
+  "appSecret": "",
+  "privateKey": "",
+  "renderMode": "0",
+  "inlineSpriteFrames": true,
+  "mergeStartScene": false
 }

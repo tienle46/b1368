@@ -185,6 +185,8 @@ if (cc.sys.isBrowser) {
 if (cc.sys.isMobile) {
     sdkbox.PluginFacebook.init();
     sdkbox.PluginGoogleAnalytics.init();
+    sdkbox.PluginOneSignal.init();
+    // sdkboxPluginOneSignalidsAvailable();
 }
 
 (function() {
