@@ -62,6 +62,7 @@ class GameSystem {
      */
     loadScene(sceneName, onLaunch) {
         console.log("sceneName: ", sceneName);
+        this.showLoader();
         cc.director.loadScene(sceneName, () => {
             console.log("load scene result", sceneName, cc.director.getScene());
 
@@ -245,7 +246,6 @@ class GameSystem {
                     gameSceneName = 'XocDiaScene';
                     break;
             }
-
             gameSceneName && this.loadScene(gameSceneName);
         }
     }

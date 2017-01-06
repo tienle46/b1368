@@ -35,6 +35,7 @@ export default class DashboardScene extends BaseScene {
             }
         };
 
+        app.system.showLoader();
         app.service.send(sendObject, (data) => {
             this.gameList = this._filterClientSupportedGames(data["cl"]);
             this._initItemListGame();
@@ -107,6 +108,9 @@ export default class DashboardScene extends BaseScene {
 
                     count++;
                 }
+                if (count == this.gameList.length)
+                    app.system.hideLoader();
+
                 cb(); // next ->
             });
         });

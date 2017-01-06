@@ -932,7 +932,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 51,
+      "width": 68,
       "height": 20
     },
     "_children": [],
@@ -1192,7 +1192,7 @@
     },
     "_N$mode": 0,
     "_N$totalLength": 170,
-    "_N$progress": 0.3,
+    "_N$progress": 0.4,
     "_N$reverse": false
   },
   {
