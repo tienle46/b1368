@@ -239,7 +239,7 @@ export default class GameScene extends BaseScene {
 
     _onActionExitGame() {
         // this.showLoading();
-        // app.service.sendRequest(new SFS2X.Requests.System.LeaveRoomRequest(this.room));
+        app.service.sendRequest(new SFS2X.Requests.System.LeaveRoomRequest(this.room));
 
         app.service.send({ cmd: app.commands.REGISTER_QUIT_ROOM, room: this.room }, (data) => {
             if (data && data[app.keywords.SUCCESSFULL]) {
@@ -406,7 +406,7 @@ export default class GameScene extends BaseScene {
     }
 
     showGameResult(models, cb) {
-        !utils.isEmptyArray(models) && this.gameResultPopup.show(models, cb);
+        !utils.isEmptyArray(models) && this.gameResultPopup && this.gameResultPopup.show(models, cb);
     }
 
     hideGameResult() {
