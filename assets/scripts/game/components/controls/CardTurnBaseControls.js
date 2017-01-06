@@ -26,6 +26,7 @@ export default class CardTurnBaseControls extends GameControls {
         this.node.on('touchstart', event => true);
 
         this.scene.on(Events.SET_INTERACTABLE_PLAY_CONTROL, this._setInteractablePlayControl, this);
+        this.scene.on(Events.SHOW_PLAY_CONTROL, this._setVisiblePlayControl, this, 0);
     }
 
     hideAllControls(){
@@ -46,6 +47,10 @@ export default class CardTurnBaseControls extends GameControls {
         utils.active(this.sortButton);
         this.setInteractable(this.playButton, false);
         showPlayControlOnly ? utils.deactive(this.skipTurnButton) : utils.active(this.skipTurnButton);
+    }
+
+    _setVisiblePlayControl(visible){
+        utils.setActive(visible);
     }
 
     _setInteractablePlayControl(interactable){

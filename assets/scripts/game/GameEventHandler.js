@@ -72,6 +72,7 @@ export default class GameEventHandler {
         app.system.addGameListener(Commands.BACAY_PLAYER_GOP_GA, this._onPlayerGopGa, this);
         app.system.addGameListener(Commands.XOCDIA_BET, this._onXocDiaPLayerBet, this);
         app.system.addGameListener(Commands.XOCDIA_CANCEL_BET, this._onXocDiaPLayerCancelBet, this);
+        app.system.addGameListener(Commands.INVALID_PLAY_TURN, this._invalidPlayTurn, this);
     }
 
     removeGameEventListener() {
@@ -113,6 +114,7 @@ export default class GameEventHandler {
         app.system.removeGameListener(Commands.BACAY_PLAYER_GOP_GA, this._onPlayerGopGa, this);
         app.system.removeGameListener(Commands.XOCDIA_BET, this._onXocDiaPLayerBet, this);
         app.system.removeGameListener(Commands.XOCDIA_CANCEL_BET, this._onXocDiaPLayerCancelBet, this);
+        app.system.removeGameListener(Commands.INVALID_PLAY_TURN, this._invalidPlayTurn, this);
 
     }
 
@@ -350,5 +352,11 @@ export default class GameEventHandler {
         });
 
         // this.playerManager.changePlayerBalance(playerIds, playersBalances);
+    }
+
+    _invalidPlayTurn(data){
+        if(this.scene.gameState == app.const.game.state.TURN_BASE_TRUE_PLAY){
+            this.scene.emit(Events.SHOW_PLAY_CONTROL, true);
+        }
     }
 }

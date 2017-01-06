@@ -775,41 +775,42 @@ export default class PlayerPhom extends PlayerCardTurnBase {
         super.onEnable(this.node.getComponent('PlayerPhomRenderer'));
 
         if (this.isItMe()) {
-            this.renderer.setSelectCardChangeListener((selectedCards) => {
+            this.renderer.setSelectCardChangeListener(this._onSelectedCardsChanged);
+        }
+    }
 
-                switch (this.state) {
-                    case PlayerPhom.STATE_PHOM_PLAY:
-                        let playable = PhomUtils.checkPlayCard([...selectedCards], this.handCards);
-                        this.scene.emit(Events.SET_INTERACTABLE_PLAY_CONTROL, playable);
-                        break;
-                    case PlayerPhom.STATE_PHOM_DOWN:
-                        let downable = PhomUtils.checkDownPhom([...selectedCards], this);
-                        this.scene.emit(Events.SET_INTERACTABLE_HA_PHOM_CONTROL, downable);
-                        if (downable) {
-                            this.renderer.cardList.setHighlight(selectedCards);
-                        } else {
-                            this.renderer.cardList.cleanHighlight();
-                        }
-                        break;
-                    case PlayerPhom.STATE_PHOM_EAT_TAKE:
-                        let eatable = PhomUtils.checkEatPhom([...selectedCards], this.board.lastPlayedCard, this);
-                        this.scene.emit(Events.SET_INTERACTABLE_EAT_CONTROL, eatable);
-
-                        if (eatable) {
-                            this.renderer.cardList.setHighlight(selectedCards);
-                        } else {
-                            this.renderer.cardList.cleanHighlight();
-                        }
-                        break;
-                    case PlayerPhom.STATE_PHOM_PLAY_HO_U:
-                        if (this.tempHoUPhoms) {
-                            let phomCards = this.tempHoUPhoms.getCards();
-                            this.renderer.cardList.setSelecteds(phomCards);
-                            this.renderer.cardList.setHighlight(phomCards);
-                        }
-                        break;
+    _onSelectedCardsChanged(selectedCards){
+        switch (this.state) {
+            case PlayerPhom.STATE_PHOM_PLAY:
+                let playable = PhomUtils.checkPlayCard([...selectedCards], this.handCards);
+                this.scene.emit(Events.SET_INTERACTABLE_PLAY_CONTROL, playable);
+                break;
+            case PlayerPhom.STATE_PHOM_DOWN:
+                let downable = PhomUtils.checkDownPhom([...selectedCards], this);
+                this.scene.emit(Events.SET_INTERACTABLE_HA_PHOM_CONTROL, downable);
+                if (downable) {
+                    this.renderer.cardList.setHighlight(selectedCards);
+                } else {
+                    this.renderer.cardList.cleanHighlight();
                 }
-            });
+                break;
+            case PlayerPhom.STATE_PHOM_EAT_TAKE:
+                let eatable = PhomUtils.checkEatPhom([...selectedCards], this.board.lastPlayedCard, this);
+                this.scene.emit(Events.SET_INTERACTABLE_EAT_CONTROL, eatable);
+
+                if (eatable) {
+                    this.renderer.cardList.setHighlight(selectedCards);
+                } else {
+                    this.renderer.cardList.cleanHighlight();
+                }
+                break;
+            case PlayerPhom.STATE_PHOM_PLAY_HO_U:
+                if (this.tempHoUPhoms) {
+                    let phomCards = this.tempHoUPhoms.getCards();
+                    this.renderer.cardList.setSelecteds(phomCards);
+                    this.renderer.cardList.setHighlight(phomCards);
+                }
+                break;
         }
     }
 

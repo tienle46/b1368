@@ -38,6 +38,7 @@ Events.SHOW_XOCDIA_BET_CONTROLS = "show.xocdia.betControls";
 Events.SHOW_DOWN_CARD_CONTROLS = "show.downCardControls";
 Events.SHOW_START_GAME_CONTROL = "show.startGameControl";
 Events.SHOW_GAME_ENDING_INFO = "show.gameEndingInfo";
+Events.SHOW_PLAY_CONTROL = "show.playControl";
 
 Events.HIDE_ALL_CONTROLS = "hide.allControls";
 Events.HIDE_GAME_BEGIN_CONTROLS = "hide.gameBeginControls";

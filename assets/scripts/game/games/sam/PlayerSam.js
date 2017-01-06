@@ -143,11 +143,13 @@ export default class PlayerSam extends PlayerCardTurnBase {
         super.onEnable(this.getComponent('PlayerSamRenderer'));
 
         if (this.isItMe()) {
-            this.renderer.setSelectCardChangeListener((selectedCards) => {
-                let interactable = SamUtils.checkPlayCard(selectedCards, this.getPrePlayedCards(), app.const.game.GAME_TYPE_TIENLEN);
-                this.scene.emit(Events.SET_INTERACTABLE_PLAY_CONTROL, interactable);
-            });
+            this.renderer.setSelectCardChangeListener(this._onSelectedCardsChanged);
         }
+    }
+
+    _onSelectedCardsChanged(selectedCards) {
+        let interactable = SamUtils.checkPlayCard(selectedCards, this.getPrePlayedCards(), app.const.game.GAME_TYPE_TIENLEN);
+        this.scene.emit(Events.SET_INTERACTABLE_PLAY_CONTROL, interactable);
     }
 
     _onGameRejoin(data) {
