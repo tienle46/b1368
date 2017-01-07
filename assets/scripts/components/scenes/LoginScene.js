@@ -75,7 +75,7 @@ export default class LoginScene extends BaseScene {
     }
 
     _loginToDashboard(username, password) {
-        app.system.showLoader();
+        this.showLoading();
         app.service.connect((success) => {
             if (success) {
                 app.service.requestAuthen(username, password, false, false, null, (error, result) => {

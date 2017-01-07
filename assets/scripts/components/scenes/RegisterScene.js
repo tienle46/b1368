@@ -51,7 +51,7 @@ export default class RegisterScene extends BaseScene {
                         if (error) {
                             log('Login error:');
                             error = JSON.parse(error);
-                            this.addPopup(app.getMessageFromServer(error.p.ec));
+                            app.system.error(app.getMessageFromServer(error.p.ec));
                         }
                         if (result) {
                             log(result);
@@ -65,11 +65,11 @@ export default class RegisterScene extends BaseScene {
             this.hideLoading();
 
             if (!this._isValidUsernameInput(username)) {
-                this.addPopup(app.getMessageFromServer("LOGIN_ERROR_USERNAME_NOT_VALID"));
+                app.system.error(app.getMessageFromServer("LOGIN_ERROR_USERNAME_NOT_VALID"));
             } else if (!this._isValidPasswordInput(password)) {
-                this.addPopup(app.getMessageFromServer("LOGIN_ERROR_PASSWORD_NOT_VALID"));
+                app.system.error(app.getMessageFromServer("LOGIN_ERROR_PASSWORD_NOT_VALID"));
             } else if (!this._isValidCaptcha()) {
-                this.addPopup(app.getMessageFromServer("LOGIN_ERROR_CAPTCHA_NOT_VALID"));
+                app.system.error(app.getMessageFromServer("LOGIN_ERROR_CAPTCHA_NOT_VALID"));
             }
         }
     }
