@@ -3,6 +3,7 @@ import Component from 'Component';
 import RubUtils from 'RubUtils';
 import numeral from 'numeral';
 import ExchangeDialog from 'ExchangeDialog';
+import LoaderRub from 'LoaderRub';
 
 class TabExchangeItem extends Component {
     constructor() {
@@ -35,7 +36,6 @@ class TabExchangeItem extends Component {
         };
 
         app.service.send(sendObject, (data) => {
-            log(data);
             if (data[app.keywords.EXCHANGE_LIST.RESPONSE.TYPES]) {
                 const exchangeTypes = data[app.keywords.EXCHANGE_LIST.RESPONSE.TYPES];
                 exchangeTypes.map((type) => {
@@ -47,20 +47,25 @@ class TabExchangeItem extends Component {
 
                         for (let i = 0; i < idList.length; i++) {
                             let itemId = idList[i];
-                            let itemIcon = iconList[i].replace('thumb.', '');
+                            let itemIcon = `https://crossorigin.me/${iconList[i].replace('thumb.', '')}`;
                             let itemGold = goldList[i];
                             let itemName = nameList[i];
 
+                            let item = cc.instantiate(this.exchangeItem);
+                            item.active = true;
+
+                            let a = new LoaderRub(item, true);
+                            a.show();
                             // add sprite to img 
                             RubUtils.loadSpriteFrame(this.exchangeItemImage, itemIcon, this.exchangeItemImage.node.getContentSize(), true, (sprite) => {
                                 this.addAssets(sprite);
+                                a.destroy();
                             });
 
                             // add price
                             this.exchangeItemPrice.string = `${itemGold.toLocaleString()} XU`;
 
-                            let item = cc.instantiate(this.exchangeItem);
-                            item.active = true;
+
                             let itemBtn = item.getChildByName('btn').getComponent(cc.Button);
                             itemBtn.itemId = itemId;
                             itemBtn.itemName = itemName;

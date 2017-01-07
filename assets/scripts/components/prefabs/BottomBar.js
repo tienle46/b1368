@@ -9,11 +9,15 @@ import MessageCenterDialogRub from 'MessageCenterDialogRub';
 class BottomBar extends Component {
     constructor() {
         super();
-        this.userInfoButton = {
+        this.userInfoCoinLbl = {
             default: null,
-            type: cc.Button
+            type: cc.Label
         };
 
+        this.userNameLbl = {
+            default: null,
+            type: cc.Label
+        };
         // data essential
     }
 
@@ -68,34 +72,6 @@ class BottomBar extends Component {
         cc.sys.openURL(`tel:${app.config.supportHotline}`);
     }
 
-    onClickHotlineAction(e) {
-        // var event = new cc.Component.EventHandler();
-        // event.target = this.node;
-        // event.component = 'BottomBar';
-        // event.handler = 'testClick';
-
-        // let dropdown = new HorizontalDropDownRub(e.currentTarget, [{
-        //         icon: 'bottombar/bottombar_tooltip_facebook',
-        //         content: 'Fanpage',
-        //         event: this.fanpageClicked.bind(this)
-        //     }, {
-        //         icon: 'bottombar/bottombar_tooltip_hotline',
-        //         content: 'Hotline',
-        //         event: this.callSupportClicked.bind(this)
-        //     },
-        //     {
-        //         icon: 'bottombar/bottombar_tooltip_gopy',
-        //         content: 'Góp ý',
-        //         event: this.giveFeedbackClicked.bind(this)
-        //     },
-        //     {
-        //         icon: 'bottombar/bottombar_tooltip_huongdan',
-        //         content: 'Hướng dẫn'
-        //     }
-        // ]);
-        // this.node.addChild(dropdown.node());
-    }
-
     onClickMessageAction() {
         let url = `${app.const.DIALOG_DIR_PREFAB}/messagecenter`;
         let tabs = [{
@@ -146,15 +122,13 @@ class BottomBar extends Component {
     }
 
     _fillUserData() {
-        let usernameLbl = this.userInfoButton.node.getChildByName('usernameLbl').getComponent(cc.Label);
-        usernameLbl.string = app.context.getMyInfo().name;
-        let usercoinLbl = this.userInfoButton.node.getChildByName('userCoinLbl').getComponent(cc.Label);
-        if (!app.service.client.me.variables.coin) {
+        this.userNameLbl.string = app.context.getMyInfo().name;
+        if (!app.context.getMyInfo().coin) {
             setTimeout(() => {
-                usercoinLbl.string = app.context.getMyInfo().coin.toLocaleString();
+                this.userInfoCoinLbl.string = app.context.getMyInfo().coin.toLocaleString();
             });
         } else
-            usercoinLbl.string = app.context.getMyInfo().coin.toLocaleString();
+            this.userInfoCoinLbl.string = app.context.getMyInfo().coin.toLocaleString();
     }
 }
 

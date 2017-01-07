@@ -19,13 +19,13 @@ export default class LoaderRub {
     }
 
     _node() {
-        let winsize = cc.director.getWinSize();
+        let size = this.node.getContentSize();
 
         this.spinLoaderNode = new cc.Node();
         this.spinLoaderNode.zIndex = app.const.loadingZIndex;
         this.spinLoaderNode.name = 'spin_loader';
         this.spinLoaderNode.setPosition(cc.v2(0, 0));
-        this.spinLoaderNode.setContentSize(winsize.width, winsize.height + 500);
+        this.spinLoaderNode.setContentSize(size.width, size.height);
         this.spinLoaderNode.on(cc.Node.EventType.TOUCH_START, () => true);
 
         // widget
@@ -117,6 +117,10 @@ export default class LoaderRub {
             clearTimeout(this.timer);
             this.isShowing = false;
         }
+    }
+
+    destroy() {
+        this.spinLoaderNode.removeFromParent();
     }
 
     _setTimer(time) {

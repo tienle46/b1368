@@ -14,8 +14,7 @@ class EventDialog extends Component {
     }
 
     onLoad() {
-        this.loader = new LoaderRub();
-        this.loader.show();
+        app.system.showLoader();
 
         this.node.on('touch-start', () => {
             return null;
@@ -72,7 +71,7 @@ class EventDialog extends Component {
                     name: 'item',
                     size: size,
                     sprite: {
-                        spriteFrame: 'http://photoservice.gamesao.vn/Resources/Upload/Images/Game/4cf35d11-19cc-43da-a3db-e089c7b787c7.jpg',
+                        spriteFrame: 'https://crossorigin.me/http://photoservice.gamesao.vn/Resources/Upload/Images/Game/4cf35d11-19cc-43da-a3db-e089c7b787c7.jpg',
                         isCORS: true
                     },
                     toggle: {
@@ -92,7 +91,7 @@ class EventDialog extends Component {
                     this.node.emit('event-clicked', { id: node.nodeId, url: node.urlContent });
                 }
             }
-            this.loader.hide();
+            app.system.hideLoader();
         }
     }
 
