@@ -65,7 +65,7 @@ class BetChip extends Component {
     }
 
     onChipChecked() {
-        this.node.dispatchEvent(new cc.Event('chip-checked', true));
+        this.node.dispatchEvent(new cc.Event.EventCustom('chip-checked', true));
         (!this.amount) && (this.amount = this._convertAmountFromStringToNum(this.amountLbl.string));
         this.setLblColor(app.const.COLOR_YELLOW);
     }
