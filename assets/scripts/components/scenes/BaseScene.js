@@ -67,7 +67,6 @@ export default class BaseScene extends Actor {
     onEnable() {
         super.onEnable();
 
-
         if (this.onShown && this.onShown instanceof Function) {
             this.onShown();
         }

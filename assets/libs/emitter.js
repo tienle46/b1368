@@ -5,7 +5,12 @@
 export default class Emitter {
     constructor() {
         this._callbacks = {};
-        this._callbacksByContext = {};
+    }
+
+    __logEmitter(){
+        let count = Object.keys(this._callbacks).reduce((total, cbArr) => total + cbArr.length, 0);
+        
+        console.warn('Emitter callback counts: ', count, this._callbacks);
     }
 
     /**

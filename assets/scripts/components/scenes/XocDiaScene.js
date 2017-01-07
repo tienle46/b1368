@@ -70,6 +70,10 @@ export default class XocDiaScene extends GameScene {
         let amount = value || this._betPopup.getAmountNumber();
         this.emit(Events.ON_PLAYER_BACAY_CHANGE_BET, amount);
     }
+
+    enoughPlayerToStartGame() {
+        return this.gamePlayers.players.length > 0;
+    }
 }
 
 app.createComponent(XocDiaScene);

@@ -69,6 +69,7 @@ export default class XocDiaControls extends GameControls {
         this.scene.on(Events.XOCDIA_ON_PLAYER_TOSSCHIP_ANIMATION, this._onPlayerTossChip, this);
         this.scene.on(Events.XOCDIA_ON_PLAYER_CANCEL_BET_SUCCESS, this._onPlayerCancelBetSuccess, this);
         this.scene.on(Events.XOCDIA_ON_PLAYER_RECEIVE_CHIP_ANIMATION, this._onPlayerReceiveChip, this);
+        this.scene.on(Events.XOCDIA_ON_PLAYER_CHIP_CHANGED, this._onPlayerChipChanged, this);
     }
 
     onDestroy() {
@@ -78,15 +79,13 @@ export default class XocDiaControls extends GameControls {
         this.scene.off(Events.ON_GAME_STATE_STARTING, this._onGameStarting, this);
         this.scene.off(Events.ON_GAME_STATE_PLAYING, this._onGamePlaying, this);
         this.scene.off(Events.ON_GAME_STATE, this._onGameState, this);
-
         this.scene.off(Events.ON_GAME_STATE_ENDING, this._onGameEnding, this);
-
         this.scene.off(Events.SHOW_GAME_BEGIN_CONTROLS, this._showGameBeginControls, this);
         this.scene.off(Events.HIDE_ALL_CONTROLS, this.hideAllControls, this);
-
         this.scene.off(Events.XOCDIA_ON_PLAYER_TOSSCHIP_ANIMATION, this._onPlayerTossChip, this);
         this.scene.off(Events.XOCDIA_ON_PLAYER_CANCEL_BET_SUCCESS, this._onPlayerCancelBetSuccess, this);
         this.scene.off(Events.XOCDIA_ON_PLAYER_RECEIVE_CHIP_ANIMATION, this._onPlayerReceiveChip, this);
+        this.scene.off(Events.XOCDIA_ON_PLAYER_CHIP_CHANGED, this._onPlayerChipChanged, this);
     }
 
     _showGameControls() {
@@ -242,6 +241,13 @@ export default class XocDiaControls extends GameControls {
 
             XocDiaAnim.tossChip(fromPos, toNode, chip, playerId);
         }
+    }
+
+    _onPlayerChipChanged(currentChip){
+        if(!utils.isNumber(currentChip)) return;
+
+        this.currentGold = currentChip;
+        this.updateUserGoldLbl(this.currentGold);
     }
 
     /**

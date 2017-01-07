@@ -75,8 +75,6 @@ class Service {
 
         this._removeSmartFoxEvent();
 
-        console.log("_registerSmartFoxEvent: ");
-
         this.addEventListener(SFS2X.SFSEvent.LOGIN, this._onLogin);
         this.addEventListener(SFS2X.SFSEvent.LOGIN_ERROR, this._onLoginError);
         this.addEventListener(SFS2X.SFSEvent.CONNECTION, this._onConnection);
@@ -141,7 +139,6 @@ class Service {
     }
 
     _onRoomRemove(event) {
-        console.log("remove remove: ", event)
         app.system.emit(SFS2X.SFSEvent.ROOM_REMOVE, event);
     }
 
@@ -167,9 +164,13 @@ class Service {
                 }
             });
         } else {
-            app.system.loadScene(app.const.scene.ENTRANCE_SCENE, () => {
-                app.system.info("Kết nối tới máy chủ bị gián đoạn. Vui lòng đăng nhập lại!");
-            });
+            if(event && event.reason === "manual"){
+                app.system.loadScene(app.const.scene.ENTRANCE_SCENE);
+            }else{
+                app.system.loadScene(app.const.scene.ENTRANCE_SCENE, () => {
+                    app.system.info("Kết nối tới máy chủ bị gián đoạn. Vui lòng đăng nhập lại!");
+                });
+            }
         }
 
     }
@@ -308,8 +309,6 @@ class Service {
      */
     connect(cb) {
 
-        console.log("connect: ", cb)
-
         this.isConnecting = true;
 
         if (this.client.isConnected()) {
@@ -330,9 +329,6 @@ class Service {
     disconnect() {
 
         this.isConnecting = false;
-
-        console.log("call disconnect: ")
-
         if (this.client.isConnected()) {
             this.client.disconnect();
         }

@@ -42,7 +42,7 @@ class GameContext {
                 "id": me.id,
                 "isItMe": me.isItMe,
                 "name": me.name,
-                "coin": me.variables.coin && (me.variables.coin.value || 0),
+                "coin": (me.variables.coin && me.variables.coin.value) || 0,
                 "level": me.variables.lv
             };
             return user;
