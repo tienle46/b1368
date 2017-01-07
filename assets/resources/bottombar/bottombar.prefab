@@ -43,8 +43,8 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": 0,
-      "y": -360
+      "x": 640,
+      "y": 0
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -893,7 +893,9 @@
       "__id__": 3
     },
     "_enabled": true,
-    "path": ""
+    "path": "",
+    "pressedScale": 1.12,
+    "transDuration": 0.08
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -1307,7 +1309,9 @@
       "__id__": 29
     },
     "_enabled": true,
-    "path": ""
+    "path": "",
+    "pressedScale": 1.12,
+    "transDuration": 0.08
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -1507,7 +1511,9 @@
       "__id__": 43
     },
     "_enabled": true,
-    "path": ""
+    "path": "",
+    "pressedScale": 1.12,
+    "transDuration": 0.08
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -1707,7 +1713,9 @@
       "__id__": 50
     },
     "_enabled": true,
-    "path": ""
+    "path": "",
+    "pressedScale": 1.12,
+    "transDuration": 0.08
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -1913,7 +1921,9 @@
       "__id__": 57
     },
     "_enabled": true,
-    "path": ""
+    "path": "",
+    "pressedScale": 1.12,
+    "transDuration": 0.08
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -2117,7 +2127,9 @@
       "__id__": 64
     },
     "_enabled": true,
-    "path": ""
+    "path": "",
+    "pressedScale": 1.12,
+    "transDuration": 0.08
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -2234,8 +2246,11 @@
     },
     "_enabled": true,
     "path": "",
-    "userInfoButton": {
-      "__id__": 24
+    "userInfoCoinLbl": {
+      "__id__": 20
+    },
+    "userNameLbl": {
+      "__id__": 16
     }
   },
   {
