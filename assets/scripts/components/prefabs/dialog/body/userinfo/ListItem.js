@@ -64,15 +64,8 @@ export default class ToggleableListItem extends Component {
 
         this.toggleButton.node.active = this._expandable;
 
-        cc.loader.loadRes('dashboard/dialog/imgs/len', cc.SpriteFrame, (err, spriteFrame) => {
-            if (!err)
-                this.lenSprite = spriteFrame;
-        });
-
-        cc.loader.loadRes('dashboard/dialog/imgs/xuong', cc.SpriteFrame, (err, spriteFrame) => {
-            if (!err)
-                this.xuongSprite = spriteFrame;
-        });
+        RubUtils.loadSpriteFrame(this.lenSprite, 'dashboard/dialog/imgs/len');
+        RubUtils.loadSpriteFrame(this.xuongSprite, 'dashboard/dialog/imgs/xuong');
 
         // hide node
         this.descriptionLabel.node.runAction(cc.hide());

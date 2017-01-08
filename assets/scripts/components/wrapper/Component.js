@@ -37,7 +37,6 @@ export default class Component {
     }
 
     onDestroy() {
-        this.node && this.loadedAssets.push(this.node);
         this.releaseAssets();
     }
 

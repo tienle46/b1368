@@ -16,9 +16,7 @@ class RatioItem extends Component {
         };
     }
 
-    onLoad() {
-
-    }
+    onLoad() {}
 
     initItem(number, ratio) {
         this.titleLbl.string = `${number.toLocaleString()} VNĐ`;

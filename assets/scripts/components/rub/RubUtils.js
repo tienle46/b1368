@@ -1,11 +1,12 @@
 let RubUtils = {
     loadRes: (resURL, isSpriteFrame = false) => {
         return new Promise((resolve, reject) => {
-            function handler(err, prefab) {
+            function handler(err, asset) {
                 if (err)
                     reject(err);
 
-                resolve(prefab);
+                resolve(asset);
+                RubUtils.releaseAssets(asset);
             }
 
             if (isSpriteFrame) {
@@ -121,16 +122,10 @@ let RubUtils = {
 
         if (!(assets instanceof Array))
             ins = [assets];
-        if (assets instanceof Object) {
-            for (let key in assets) {
-                ins.push(assets[key]);
-            }
-        }
 
         ins.map(asset => {
-            // let deps = cc.loader.getDependsRecursively(asset);
-            cc.loader.releaseAsset(asset);
-            debug(cc.textureCache.getAllTextures().length);
+            let deps = asset && cc.loader.getDependsRecursively(asset);
+            deps && deps.length > 0 && cc.loader.release(asset);
         });
     }
 };
