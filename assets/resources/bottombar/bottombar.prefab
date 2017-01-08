@@ -869,6 +869,7 @@
     },
     "_enabled": true,
     "isAlignOnce": true,
+    "_target": null,
     "_alignFlags": 37,
     "_left": 0,
     "_right": 955,
@@ -1158,6 +1159,7 @@
     },
     "_enabled": true,
     "isAlignOnce": true,
+    "_target": null,
     "_alignFlags": 33,
     "_left": 0,
     "_right": -0.5,
@@ -1222,6 +1224,7 @@
     },
     "_enabled": true,
     "isAlignOnce": true,
+    "_target": null,
     "_alignFlags": 2,
     "_left": 0,
     "_right": 0,
@@ -1424,6 +1427,7 @@
     },
     "_enabled": true,
     "isAlignOnce": true,
+    "_target": null,
     "_alignFlags": 2,
     "_left": 0,
     "_right": 0,
@@ -1626,6 +1630,7 @@
     },
     "_enabled": true,
     "isAlignOnce": true,
+    "_target": null,
     "_alignFlags": 2,
     "_left": 0,
     "_right": 0,
@@ -1897,6 +1902,7 @@
     },
     "_enabled": true,
     "isAlignOnce": true,
+    "_target": null,
     "_alignFlags": 20,
     "_left": 0,
     "_right": 0,
@@ -2078,9 +2084,7 @@
     "_N$normalSprite": {
       "__uuid__": "1b186159-282f-44f2-ac9e-5397a74c9723"
     },
-    "_N$disabledSprite": {
-      "__uuid__": "95e90db0-5ecb-4e8f-88cd-879738957b6e"
-    },
+    "_N$disabledSprite": null,
     "_N$target": {
       "__id__": 64
     }
@@ -2103,6 +2107,7 @@
     },
     "_enabled": true,
     "isAlignOnce": true,
+    "_target": null,
     "_alignFlags": 2,
     "_left": 0,
     "_right": 43,
@@ -2221,6 +2226,7 @@
     },
     "_enabled": true,
     "isAlignOnce": true,
+    "_target": null,
     "_alignFlags": 44,
     "_left": 0,
     "_right": 0,

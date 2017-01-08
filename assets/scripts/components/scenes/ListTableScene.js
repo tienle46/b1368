@@ -230,7 +230,7 @@ export default class ListTableScene extends BaseScene {
             this.items = [];
             for (let i = 0; i < customIds.length; i++) {
 
-                const listCell = new cc.instantiate(this.tableListCell);
+                const listCell = cc.instantiate(this.tableListCell);
 
                 // listCell.setContentSize(itemDimension - 16, 50);
                 listCell.setPosition(cc.p(0, 0));
