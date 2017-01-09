@@ -120,6 +120,7 @@ export default class LoaderRub {
     }
 
     destroy() {
+        this.spinLoaderNode.destroy();
         this.spinLoaderNode.removeFromParent(true);
     }
 

@@ -271,7 +271,11 @@ export default class ListTableScene extends BaseScene {
         if (this.contentInScroll) {
             // clear content
             let children = this.contentInScroll.children;
-            children && children.length > 0 && this.contentInScroll.removeAllChildren();
+
+            if(children && children.length > 0){
+                this.contentInScroll.children.forEach(child => child.destroy());
+                this.contentInScroll.removeAllChildren();
+            }
 
             items = this._filter(items, cond);
             if (items.length > 0) {

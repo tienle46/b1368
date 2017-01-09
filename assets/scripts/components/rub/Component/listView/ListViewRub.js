@@ -53,7 +53,10 @@ export default class ListViewRub extends ScrollViewRub {
     resetData(data) {
         this.data = data;
         // reset body
-        this.contentNode && this.contentNode.removeAllChildren(true);
+        if(this.contentNode){
+            this.contentNode.children.forEach(child => child.destroy());
+            this.contentNode.removeAllChildren(true);
+        }
         // reinsert
         this._addRows();
     }

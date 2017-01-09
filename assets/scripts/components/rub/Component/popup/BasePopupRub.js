@@ -78,11 +78,13 @@ export default class BasePopUpRub {
 
     removeScrollView() {
         let scrollview = this.bodyNode.getChildByName('scrollview');
+        scrollview.destroy();
         this.bodyNode.removeChild(scrollview);
     }
 
     _setTimer(time) {
         this.timer = setTimeout((() => {
+            this.prefab.destroy();
             this.prefab.removeFromParent(true);
         }).bind(this), time);
     }

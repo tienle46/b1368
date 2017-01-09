@@ -69,6 +69,7 @@ export default class Props extends Component {
                     animation.play('run');
 
                     animation.on('finished', ()=>{
+                        animatingNode.destroy();
                         animatingNode.removeFromParent(true);
                         finishCallback && finishCallback();
                     });

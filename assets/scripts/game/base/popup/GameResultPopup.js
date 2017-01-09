@@ -68,6 +68,7 @@ export default class GameResultPopup extends Actor {
 
     clear() {
         this.__models__ = null;
+        this.content.children.forEach(child => child.destroy());
         this.content.removeAllChildren();
     }
 

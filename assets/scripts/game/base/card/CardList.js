@@ -103,7 +103,10 @@ export default class CardList extends Component {
         } else {
             this.cards = [];
         }
-        this.node && this.node.removeAllChildren(true);
+        if(this.node){
+            this.node.children.forEach(child => child.destroy());
+            this.node.removeAllChildren(true);
+        }
     }
 
     _updateNodeSize() {
@@ -485,7 +488,12 @@ export default class CardList extends Component {
 
     removeCards(cards) {
         let removedCards = this._removeCardModelOnly(cards);
-        removedCards.forEach((card, index) => card.node && card.node.removeFromParent(true));
+        removedCards.forEach((card, index) => {
+            if(card.node){
+                card.node.destroy();
+                card.node.removeFromParent(true)
+            }
+        });
         return removedCards;
     }
 
@@ -666,6 +674,7 @@ export default class CardList extends Component {
             animatingCard.node.setScale(originalScale);
             animatingCard.setOriginalInfo({position: moveToPosition, scale: scaleTo})
 
+            card.node.destroy();
             card.node.removeFromParent(true);
         });
 

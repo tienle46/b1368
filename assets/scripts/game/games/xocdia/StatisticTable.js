@@ -38,6 +38,7 @@ class StatisticTable extends Component {
             histories = histories.slice(0, numberCellsInTable + 1);
 
         //clear table
+        this.separateSideNode.children.forEach(child => child.destroy());
         this.separateSideNode.removeAllChildren();
 
         histories.forEach((data) => {

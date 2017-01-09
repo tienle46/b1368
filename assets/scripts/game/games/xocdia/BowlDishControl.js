@@ -29,6 +29,8 @@ class BowlDishControl extends Component {
 
     resetBowlPosition() {
         this.bowlNode.setPosition(this.bowlPos);
+
+        this.circleGroup.children.forEach(child => child.destroy());
         this.circleGroup.removeAllChildren();
     }
 

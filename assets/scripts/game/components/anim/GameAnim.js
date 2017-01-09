@@ -35,7 +35,7 @@ export default class GameAnim {
                 cc.moveTo(duration, endPoint),
                 cc.delayTime(0.05).clone(),
                 cc.callFunc(() => {
-                    autoRemove && miniChip.removeFromParent(true);
+                    autoRemove && miniChip.destroy() && miniChip.removeFromParent(true);
                     cb && cb();
                 })
             ));

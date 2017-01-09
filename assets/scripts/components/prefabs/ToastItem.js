@@ -40,6 +40,7 @@ export default class ToastItem extends Component {
     }
 
     hide(){
+        this.node.destroy();
         this.node.removeFromParent(true);
     }
 

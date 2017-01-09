@@ -26,8 +26,8 @@ export default class MessagePopup extends Component {
         }
 
         this.messageLabel = {
-            default: null,
-            type: cc.Label,
+            default : null,
+            type : cc.Label,
         };
         this.loading = null;
         this.acceptCb = null;
@@ -96,6 +96,7 @@ export default class MessagePopup extends Component {
 
     hide() {
         this.node.active = false;
+        this.node.destroy();
         this.node.removeFromParent(true);
         currentPopup = null;
     }

@@ -123,6 +123,8 @@ class TabTopCaoThu extends Component {
     _initBody(d) {
         let event = null;
         let body = this.contentNode;
+
+        body.children.forEach(child => child.destroy());
         body.removeAllChildren();
 
         app.system.hideLoader();
