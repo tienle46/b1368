@@ -115,6 +115,7 @@ export default class FriendProfilePopup extends Component {
         this.node.opacity = 0;
 
         Props.playPropName(prosName, 'props', 8, startNode, destinationNode, () => {
+            this.node.destroy();
             this.node.removeFromParent(true);
         });
     }
@@ -210,6 +211,7 @@ export default class FriendProfilePopup extends Component {
     }
 
     close() {
+        this.node.destroy();
         this.node.removeFromParent(true);
     }
 }

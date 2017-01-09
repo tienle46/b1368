@@ -26,6 +26,7 @@ class BasePopup extends Component {
     handleClosePopupAction() {
         // this.closeButton.getComponent(cc.Animation).play();
         // log(this.node.parent);
+        this.node.destroy();
         this.node.removeFromParent(true);
     }
 

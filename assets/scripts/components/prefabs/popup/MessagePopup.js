@@ -96,6 +96,7 @@ export default class MessagePopup extends Component {
 
     hide() {
         this.node.active = false;
+        this.node.destroy();
         this.node.removeFromParent(true);
         currentPopup = null;
     }

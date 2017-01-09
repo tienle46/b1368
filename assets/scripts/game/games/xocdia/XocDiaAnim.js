@@ -41,13 +41,15 @@ export default {
             let action = cc.moveTo(0.1 + app._.random(0, 0.2), toPos);
             chip.runAction(cc.sequence(action.clone(), cc.delayTime(0.1).clone(), cc.fadeOut(0.1).clone(), cc.callFunc(() => {
                 chip.destroy();
+                chip.removeFromParent(true);
             })));
         });
     },
     clearPlayerChip: (playerId) => {
-        totalChipOnPlayer[playerId] = 0;
+        delete totalChipOnPlayer[playerId];
         cc.director.getScene().children.filter((child) => (child.name == 'miniChip') && (child.playerId == playerId)).map((chip) => {
             chip.destroy();
+            chip.removeFromParent(true);
         });
     }
 }
