@@ -5,14 +5,14 @@
 import app from 'app';
 import Component from 'Component';
 import TextView from 'TextView';
-import { CCUtils, utils } from 'utils';
+import {CCUtils, utils} from 'utils';
 
 export default class ToastItem extends Component {
     constructor() {
         super();
         this.properties = {
             ...this.properties,
-            textViewNode: cc.Node,
+            textViewNode : cc.Node,
         }
         this.message = null;
         this.timeoutId = null;
@@ -20,7 +20,7 @@ export default class ToastItem extends Component {
         this.type = ToastItem.TYPE_MESSAGE;
     }
 
-    onLoad() {
+    onLoad(){
 
         debug("onload toast: ", this.message)
 
@@ -33,18 +33,18 @@ export default class ToastItem extends Component {
         this.timeoutId = setTimeout(() => this.hide(), this.duration);
     }
 
-    _init({ message = "", type = ToastItem.TYPE_MESSAGE, duration = 5000 } = {}) {
+    _init({message = "", type = ToastItem.TYPE_MESSAGE, duration = 5000} = {}){
         this.message = message;
         this.type = type;
         this.duration = duration;
     }
 
-    hide() {
+    hide(){
         this.node.destroy();
         this.node.removeFromParent(true);
     }
 
-    onDestroy() {
+    onDestroy(){
         this.timeoutId && clearTimeout(this.timeoutId);
     }
 

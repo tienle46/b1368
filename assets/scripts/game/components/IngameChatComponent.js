@@ -65,6 +65,7 @@ export default class IngameChatComponent extends Component {
     }
 
     initMessages(){
+        this.messageListContent.children.forEach(child => child.destroy());
         this.messageListContent.removeAllChildren(true);
         this.messages.forEach(message => {
             let chatItemNode = cc.instantiate(this.gameChatItemPrefab);
@@ -87,6 +88,7 @@ export default class IngameChatComponent extends Component {
     }
     initEmotions(){
 
+        this.emotionsPanel.children.forEach(child => child.destroy());
         this.emotionsPanel.removeAllChildren();
 
         cc.loader.loadResAll('emotions/thumbs', cc.SpriteFrame, (err, assets) => {

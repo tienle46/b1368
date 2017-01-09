@@ -37,6 +37,8 @@ class TabTopDaiGia extends Component {
         let body = this.contentNode;
 
         app.service.send(sendObject, (res) => {
+
+            body.children.forEach(child => child.destroy());
             body.removeAllChildren();
 
             let data = [

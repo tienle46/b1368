@@ -123,6 +123,7 @@ export default class GridViewRub extends ScrollViewRub {
     resetData(data, isValidated = false) {
         this.data = isValidated ? data : this._validateData(data);
         // reset body
+        this.contentNode.forEach(child => child.destroy());
         this.contentNode && this.contentNode.removeAllChildren(true);
         // reinsert
         this._initCell();

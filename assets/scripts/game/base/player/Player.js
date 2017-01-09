@@ -155,7 +155,7 @@ export default class Player extends Actor {
     }
 
     _onUserExitRoom(user, room) {
-        if (user.id == this.user.id) {
+        if (user && this.user && user.id == this.user.id) {
             this.stopTimeLine();
         }
     }

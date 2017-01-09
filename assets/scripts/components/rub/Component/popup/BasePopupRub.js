@@ -78,6 +78,7 @@ export default class BasePopUpRub {
 
     removeScrollView() {
         let scrollview = this.bodyNode.getChildByName('scrollview');
+        scrollview.destroy();
         this.bodyNode.removeChild(scrollview);
     }
 
