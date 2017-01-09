@@ -115,19 +115,30 @@ export default class PhomUtils {
         return this.isPhomByRank(cardsCopy, true) || this.isPhomBySuit(cardsCopy, true);
     }
 
+    static getEatenCards(cards){
+        return cards == null ? [] : cards.filter(card => PhomUtils.isEaten(card));
+    }
+
     static checkEatPhom(cards, eatingCard, player) {
-        let eatable = cards.length == 2 && this.isPhom([...cards, eatingCard])
+        let eatable = cards && cards.length == 2 && this.isPhom([...cards, eatingCard])
             && (player.eatenCards.length == 0 || !ArrayUtils.containsSome(cards, player.eatenCards));
 
         if(eatable){
             let checkPhomCards = [...player.handCards];
             ArrayUtils.removeAll(checkPhomCards, cards);
             let allGeneratedPhomList = PhomGenerator.generate(checkPhomCards);
+
+            eatable = false;
+
             allGeneratedPhomList.some(phomList => {
-                if(ArrayUtils.containsAll(phomList.getCards(), player.eatenCards)){
+                if(player.eatenCards.length == PhomUtils.getEatenCards(phomList.getCards()).length){
                     eatable = true;
                     return true;
                 }
+                // if(ArrayUtils.containsAll(phomList.getCards(), player.eatenCards)){
+                    // eatable = true;
+                    // return true;
+                // }
             });
         }
 

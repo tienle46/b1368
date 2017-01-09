@@ -71,6 +71,7 @@ export default {
     game_phom_mom: 'móm',
     game_phom_invalid_down_phom: 'Chọn phỏm hạ không đúng',
     game_phom_must_contain_all_eaten_card: 'Phỏm hạ phải chứa tất cả bài đã ăn',
+    game_phom_cannot_eat: 'Không thể ăn, vui lòng chọn lại!',
     game_nhat: 'nhất',
     game_nhi: 'nhì',
     game_ba: 'ba',

@@ -721,14 +721,20 @@ export default class PlayerPhom extends PlayerCardTurnBase {
         this.renderer.eatenCardList.setCards(cards);
     }
 
-    _onEatCard(cards) {
+    _onEatCard() {
         /**
          * TODO
          * - Valid eat phom
          * - play sound if invalid
          */
-        this.isItMe() && app.service.send({cmd: Commands.PLAYER_EAT_CARD, data: {}, room: this.scene.room});
-        this.setState(PlayerPhom.STATE_ACTION_WAIT);
+        let eatable = PhomUtils.checkEatPhom(this.getSelectedCards(), this.board.lastPlayedCard, this);
+
+        if(eatable){
+            this.isItMe() && app.service.send({cmd: Commands.PLAYER_EAT_CARD, data: {}, room: this.scene.room});
+            this.setState(PlayerPhom.STATE_ACTION_WAIT);
+        }else{
+            app.system.showToast(app.res.string('game_phom_cannot_eat'));
+        }
     }
 
     _onTakeCard() {
