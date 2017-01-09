@@ -83,7 +83,7 @@ export default class BasePopUpRub {
 
     _setTimer(time) {
         this.timer = setTimeout((() => {
-            this.prefab.removeFromParent();
+            this.prefab.removeFromParent(true);
         }).bind(this), time);
     }
 

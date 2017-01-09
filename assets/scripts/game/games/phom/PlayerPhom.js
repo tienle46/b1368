@@ -59,7 +59,6 @@ export default class PlayerPhom extends PlayerCardTurnBase {
     start() {
         super.start();
         this.handCards = this.renderer.cardList.cards;
-        this.eatenCards = this.renderer.eatenCardList.cards;
         this.playedCards = this.renderer.playedCardList.cards;
     }
 
@@ -106,7 +105,10 @@ export default class PlayerPhom extends PlayerCardTurnBase {
         this.scene.off(Events.ON_CLICK_SKIP_DOWN_PHOM_BUTTON, this._onSkipDownPhom, this);
         this.scene.off(Events.ON_CLICK_JOIN_PHOM_BUTTON, this._onJoinPhom, this);
         this.scene.off(Events.ON_CLICK_SKIP_JOIN_PHOM_BUTTON, this._onSkipJoinPhom, this);
+        this.scene.off(Events.ON_CLICK_SKIP_JOIN_PHOM_BUTTON, this._onSkipJoinPhom, this);
         this.scene.off(Events.ON_CLICK_CHANGE_PHOM_BUTTON, this._onChangePhom, this);
+        this.scene.off(Events.ON_CLICK_U_BUTTON, this._onUPhom, this);
+        this.scene.off(Events.ON_CLICK_DOI_U_TRON_BUTTON, this._onDoiUTron, this);
 
         this.scene.off(Events.ON_PLAYER_REMAIN_CARD_COUNT, this._setRemainCardCount, this);
 
@@ -132,7 +134,7 @@ export default class PlayerPhom extends PlayerCardTurnBase {
         this.sendUCommand(this.tempHoUPhoms);
     }
 
-    _onDoiUtron(){
+    _onDoiUTron(){
         this.renderer.cardList.cleanHighlight();
         this.setState(PlayerPhom.STATE_PHOM_PLAY);
     }
@@ -140,9 +142,10 @@ export default class PlayerPhom extends PlayerCardTurnBase {
     _onDownPhom() {
         if (!this.isItMe()) return;
 
-        let {valid, downPhomList} = PhomUtils.validateDownPhom(this.getSelectedCards(), this);
+        let {valid, downPhomList, message} = PhomUtils.validateDownPhom(this.getSelectedCards(), this);
         if (!valid) {
             //TODO Play invalid
+            message && app.system.showToast(message);
             return;
         }
 
@@ -419,6 +422,7 @@ export default class PlayerPhom extends PlayerCardTurnBase {
             }
         }});
 
+        this.eatenCards.push(eatenCard);
 
         if (playedCardLength == 3) {
             this.renderer.showAnChot();

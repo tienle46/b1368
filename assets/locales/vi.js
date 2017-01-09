@@ -69,6 +69,8 @@ export default {
     game_phom_u_phom_kin: 'u phỏm kín',
     game_phom_u_tron: 'ù tròn',
     game_phom_mom: 'móm',
+    game_phom_invalid_down_phom: 'Chọn phỏm hạ không đúng',
+    game_phom_must_contain_all_eaten_card: 'Phỏm hạ phải chứa tất cả bài đã ăn',
     game_nhat: 'nhất',
     game_nhi: 'nhì',
     game_ba: 'ba',

@@ -135,12 +135,21 @@ export default class PhomUtils {
     }
 
     static validateDownPhom(cards, player) {
-        let downPhomList = null;
+        let message, downPhomList;
 
         let selectedCards = player.getSelectedCards();
         let valid = player.currentHaPhomSolutions.length > 0 && player.currentHaPhomSolutions[player.haPhomSolutionId].getCards().length == selectedCards.length;
 
-        console.log("selectedCards: ", valid, selectedCards, player.currentHaPhomSolutions);
+        if(valid){
+            let selectedEatenCardCount = selectedCards.filter(card => PhomUtils.isEaten(card)).length;
+            if(selectedEatenCardCount != player.eatenCards.length){
+                valid = false;
+                message = app.res.string('game_phom_must_contain_all_eaten_card');
+            }
+        }else{
+            message = app.res.string('game_phom_invalid_down_phom');
+        }
+
 
         valid && player.eatenCards.some(eatenCard => {
             if (ArrayUtils.findIndex(selectedCards, eatenCard) == -1) {
@@ -151,7 +160,7 @@ export default class PhomUtils {
 
         valid && (downPhomList = player.currentHaPhomSolutions[player.haPhomSolutionId]);
 
-        return {valid, downPhomList}
+        return {valid, downPhomList, message}
     }
 
     static isEaten(card){
