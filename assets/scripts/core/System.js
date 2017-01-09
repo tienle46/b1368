@@ -62,7 +62,6 @@ class GameSystem {
      */
     loadScene(sceneName, onLaunch) {
         console.log("sceneName: ", sceneName);
-        this.showLoader();
         cc.director.loadScene(sceneName, () => {
             console.log("load scene result", sceneName, cc.director.getScene());
 
@@ -116,15 +115,15 @@ class GameSystem {
             title = app.res.string('system');
         }
 
-        MessagePopup.show(this.currentScene.node, message);
+        MessagePopup.show(this.getCurrentSceneNode(), message);
     }
 
     error(message, closeCb) {
-        MessagePopup.show(this.currentScene.node, message, closeCb);
+        MessagePopup.show(this.getCurrentSceneNode(), message, closeCb);
     }
 
     confirm(message, cancelCallback, okCallback) {
-        ConfirmPopup.confirm(this.currentScene.node, message, cancelCallback, okCallback);
+        ConfirmPopup.confirm(this.getCurrentSceneNode(), message, cancelCallback, okCallback);
     }
 
     /**

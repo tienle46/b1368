@@ -126,6 +126,7 @@ export default class BaseScene extends Actor {
     }
 
     changeScene(name, onLaunched) {
+        this.showLoading();
         app.system.loadScene(name, onLaunched);
     }
 }

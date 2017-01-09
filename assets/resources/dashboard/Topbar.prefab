@@ -61,8 +61,8 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": 0,
-      "y": 360
+      "x": 640,
+      "y": 720
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -403,13 +403,13 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "New Label",
+    "_name": "phonenumber",
     "_objFlags": 0,
     "_opacity": 255,
     "_color": {
       "__type__": "cc.Color",
       "r": 255,
-      "g": 224,
+      "g": 214,
       "b": 0,
       "a": 255
     },
@@ -806,7 +806,9 @@
       "__id__": 20
     },
     "_enabled": true,
-    "path": ""
+    "path": "",
+    "pressedScale": 1.12,
+    "transDuration": 0.08
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -978,7 +980,9 @@
       "__id__": 27
     },
     "_enabled": true,
-    "path": ""
+    "path": "",
+    "pressedScale": 1.12,
+    "transDuration": 0.08
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -1150,7 +1154,9 @@
       "__id__": 33
     },
     "_enabled": true,
-    "path": ""
+    "path": "",
+    "pressedScale": 1.12,
+    "transDuration": 0.08
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -1322,7 +1328,9 @@
       "__id__": 39
     },
     "_enabled": true,
-    "path": ""
+    "path": "",
+    "pressedScale": 1.12,
+    "transDuration": 0.08
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -1871,7 +1879,9 @@
       "__id__": 49
     },
     "_enabled": true,
-    "path": ""
+    "path": "",
+    "pressedScale": 1.12,
+    "transDuration": 0.08
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -2233,7 +2243,9 @@
       "__id__": 61
     },
     "_enabled": true,
-    "path": ""
+    "path": "",
+    "pressedScale": 1.12,
+    "transDuration": 0.08
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -2595,7 +2607,9 @@
       "__id__": 73
     },
     "_enabled": true,
-    "path": ""
+    "path": "",
+    "pressedScale": 1.12,
+    "transDuration": 0.08
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -2957,7 +2971,9 @@
       "__id__": 85
     },
     "_enabled": true,
-    "path": ""
+    "path": "",
+    "pressedScale": 1.12,
+    "transDuration": 0.08
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -4112,6 +4128,15 @@
     },
     "dropDownOptions": {
       "__id__": 45
+    },
+    "supportPhoneNumberLbl": {
+      "__id__": 12
+    },
+    "dropDownBgNode": {
+      "__id__": 46
+    },
+    "promptPrefab": {
+      "__uuid__": "a8f2ac52-6f07-4ebc-9285-b34a82167f57"
     }
   },
   {

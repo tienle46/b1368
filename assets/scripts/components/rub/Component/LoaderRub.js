@@ -48,8 +48,8 @@ export default class LoaderRub {
         bgNode.name = 'bg';
         bgNode.setPosition(0, 0);
         bgNode.setContentSize(this.spinLoaderNode.getContentSize());
-        bgNode.color = new cc.Color(0, 0, 0);
-        bgNode.opacity = 190;
+        bgNode.color = new cc.Color(40, 1, 58);
+        bgNode.opacity = 140;
         bgNode.active = !this.hideBg;
         this.spinLoaderNode.addChild(bgNode);
 

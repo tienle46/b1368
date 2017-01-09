@@ -6,8 +6,8 @@ class BasePopup extends Component {
     constructor() {
         super();
         this.bodyContentNode = {
-            default : null,
-            type : cc.Node
+            default: null,
+            type: cc.Node
         };
     }
 

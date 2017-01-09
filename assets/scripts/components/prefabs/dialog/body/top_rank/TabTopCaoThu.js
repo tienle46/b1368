@@ -55,17 +55,13 @@ class TabTopCaoThu extends Component {
                     let gameImages = this.gameList['iml'];
 
                     gameImages.forEach((imgName, index) => {
-                        const node = new cc.Node();
+                        let node = new cc.Node();
 
                         node.dNodeId = dNodeIds[index];
 
-                        const button = node.addComponent(cc.Button);
-                        const nodeSprite = node.addComponent(cc.Sprite);
-                        debug(imgName, app.res.gameTopCapThuIcon[imgName]);
-                        RubUtils.loadSpriteFrame(nodeSprite,
-                            app.res.gameTopCapThuIcon[imgName], cc.size(100, 100), false, (spriteFrame) => {
-                                log(`image loaded`);
-                            });
+                        let button = node.addComponent(cc.Button);
+                        let nodeSprite = node.addComponent(cc.Sprite);
+                        RubUtils.loadSpriteFrame(nodeSprite, app.res.gameTopCapThuIcon[imgName], cc.size(100, 100));
 
                         let event = new cc.Component.EventHandler();
                         event.target = this.node;
@@ -109,7 +105,7 @@ class TabTopCaoThu extends Component {
             }
         };
         app.service.send(sendObject, (res) => {
-            const data = [
+            let data = [
                 res['unl'].map((status, index) => {
                     if (this.crownsNode.children[index])
                         return cc.instantiate(this.crownsNode.children[index]);
@@ -150,6 +146,7 @@ class TabTopCaoThu extends Component {
                 colors: ['', '', new cc.Color(255, 214, 0)]
             }
         });
+        d = null;
     }
 
     onPreviousBtnClick() {

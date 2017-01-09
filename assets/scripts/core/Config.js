@@ -19,5 +19,9 @@ app.config.pingPongPollQueueSize = 3;
 app.config.pingPongInterval = 60000;
 app.config.buildForMobile = true; // if ( sys.platform !== 'browser')
 
-app.config.fbAppId = 1527031434265234;
-app.config.supportHotline = +84983369898;
+app.config.fbAppId = 226720277782952;
+app.config.fbxfbml = true;
+app.config.fbVersion = 'v2.8';
+app.config.fbScope = 'public_profile,email';
+
+app.config.supportHotline = '0983.369.898';

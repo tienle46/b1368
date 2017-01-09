@@ -2,7 +2,7 @@ import app from 'app';
 import BaseScene from 'BaseScene';
 import RubUtils from 'RubUtils';
 import NodeRub from 'NodeRub';
-import ArrayUtils from "../../utils/ArrayUtils";
+import ArrayUtils from 'ArrayUtils';
 
 export default class DashboardScene extends BaseScene {
     constructor() {
@@ -35,7 +35,7 @@ export default class DashboardScene extends BaseScene {
             }
         };
 
-        app.system.showLoader();
+        this.showLoading();
         app.service.send(sendObject, (data) => {
             this.gameList = this._filterClientSupportedGames(data["cl"]);
             this._initItemListGame();
@@ -109,7 +109,7 @@ export default class DashboardScene extends BaseScene {
                     count++;
                 }
                 if (count == this.gameList.length)
-                    app.system.hideLoader();
+                    this.hideLoading();
 
                 cb(); // next ->
             });

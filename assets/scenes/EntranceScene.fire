@@ -41,7 +41,7 @@
     "_tag": -1,
     "_opacityModifyRGB": false,
     "_id": "f3d683ed-d62b-45b7-b459-3ff0820b7e41",
-    "autoReleaseAssets": false
+    "autoReleaseAssets": true
   },
   {
     "__type__": "cc.Node",
@@ -1062,8 +1062,8 @@
         "__id__": 29
       }
     ],
-    "_N$interactable": true,
-    "_N$enableAutoGrayEffect": false,
+    "_N$interactable": false,
+    "_N$enableAutoGrayEffect": true,
     "_N$normalColor": {
       "__type__": "cc.Color",
       "r": 255,
@@ -1712,15 +1712,11 @@
     "popUp": {
       "__uuid__": "b304b073-0867-4e3e-a771-770ac6349d22"
     },
-    "loginButton": {
-      "__id__": 16
-    },
-    "registerButton": null,
-    "playNowButton": {
-      "__id__": 22
-    },
     "facebookButton": {
       "__id__": 28
+    },
+    "promptPrefab": {
+      "__uuid__": "a8f2ac52-6f07-4ebc-9285-b34a82167f57"
     }
   }
 ]

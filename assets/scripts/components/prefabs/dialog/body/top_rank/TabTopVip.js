@@ -50,9 +50,9 @@ class TabTopVip extends Component {
     }
 
     _initBody(d) {
-        const ul = d['unl'];
+        let ul = d['unl'];
 
-        const data = [
+        let data = [
             ul.map((status, index) => {
                 if (this.crowns.children[index])
                     return cc.instantiate(this.crowns.children[index]);
@@ -65,6 +65,7 @@ class TabTopVip extends Component {
                 return cc.instantiate(this.vips.children[index] ? this.vips.children[index] : this.vips.children[len - 1]);
             }),
         ];
+        ul = null;
 
         GridViewRub.show(this.contentNode, {
             data: ['STT', 'Tài khoản', 'Loại'],
@@ -74,6 +75,8 @@ class TabTopVip extends Component {
         }, data, {
             height: 425,
         });
+        data = null;
+        this.vips = null;
         app.system.hideLoader();
     }
 }

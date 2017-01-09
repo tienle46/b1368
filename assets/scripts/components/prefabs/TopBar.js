@@ -1,52 +1,26 @@
 import app from 'app';
 import Component from 'Component';
 import TimerRub from 'TimerRub';
-import PromptPopupRub from 'PromptPopupRub';
 import DialogRub from 'DialogRub';
 
 class TopBar extends Component {
     constructor() {
         super();
 
-        this.highLightNode = {
-            default: null,
-            type: cc.Node
-        };
-
-        this.moreButton = {
-            default: null,
-            type: cc.Button
-        };
-
-        this.eventButton = {
-            default: null,
-            type: cc.Button
-        };
-
-        this.backButton = {
-            default: null,
-            type: cc.Button
-        };
-
-        this.chatBtn = {
-            default: null,
-            type: cc.Button
-        };
-
-        this.soundControl = {
-            default: null,
-            type: cc.Node
-        };
-
-        this.titleContainerNode = {
-            default: null,
-            type: cc.Node
-        };
-
-        this.dropDownOptions = {
-            default: null,
-            type: cc.Node
-        };
+        this.properties = {
+            ...this.properties,
+            highLightNode: cc.Node,
+            moreButton: cc.Button,
+            eventButton: cc.Button,
+            backButton: cc.Button,
+            chatBtn: cc.Button,
+            soundControl: cc.Node,
+            titleContainerNode: cc.Node,
+            dropDownOptions: cc.Node,
+            supportPhoneNumberLbl: cc.Label,
+            dropDownBgNode: cc.Node,
+            promptPrefab: cc.Prefab
+        }
 
         this._showBack = false;
         this.intervalTimer = null;
@@ -63,14 +37,25 @@ class TopBar extends Component {
             this.chatBtn.node.active = false;
         }
 
-        this.dropDownOptions.getChildByName('bg').on(cc.Node.EventType.TOUCH_END, () => {
+        this.dropDownBgNode.on(cc.Node.EventType.TOUCH_END, () => {
             this.dropDownOptions.active = false;
         });
+
+        this.supportPhoneNumberLbl.string = `Hỗ trợ: ${app.config.supportHotline}`;
     }
 
     giveFeedbackClicked() {
-        this.prom = new PromptPopupRub(app.system.getCurrentSceneNode(), { confirmBtn: this._onFeedbackConfirmed }, { label: { text: 'Enter text here:' } }, this);
-        this.prom.init();
+        let prompt = cc.instantiate(this.promptPrefab);
+        let option = {
+            handler: this._onFeedbackConfirmed.bind(this),
+            title: 'Góp ý',
+            description: 'Nhập ý kiến :',
+            editBox: {
+                height: 150,
+                inputMode: cc.EditBox.InputMode.ANY
+            }
+        };
+        prompt.getComponent('PromptPopup').init(null, option);
     }
 
     onEnable() {
@@ -192,9 +177,8 @@ class TopBar extends Component {
         this.titleContainerNode.active && app.system.removeListener(app.commands.HIGH_LIGHT_MESSAGE, this._onHLMListener, this);
     }
 
-    _onFeedbackConfirmed() {
+    _onFeedbackConfirmed(content) {
         //collect user feedback and send to server
-        let content = this.prom.getVal();
         if (content && content.trim().length > 0) {
             var sendObject = {
                 'cmd': app.commands.SEND_FEEDBACK,
@@ -205,9 +189,9 @@ class TopBar extends Component {
 
             app.service.send(sendObject, (data) => {
                 if (data && data["s"]) {
-                    app.system.showToast('Cảm ơn bạn, feedback của bạn đã được gửi tới ban quản trị');
+                    app.system.showToast(app.res.string('feedback_sent_successfully'));
                 } else {
-                    app.system.showToast('Gửi góp ý thất bại, xin vui lòng thử lại');
+                    app.system.showToast(app.res.string('error_while_sending_feedback'));
                 }
 
             }, app.const.scene.DASHBOARD_SCENE);

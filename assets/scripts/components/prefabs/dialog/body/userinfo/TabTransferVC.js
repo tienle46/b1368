@@ -1,9 +1,7 @@
 import app from 'app';
 import Component from 'Component';
-import AlertPopupRub from 'AlertPopupRub';
 import ButtonScaler from 'ButtonScaler';
 import RubUtils from 'RubUtils';
-import ConfirmPopupRub from 'ConfirmPopupRub';
 import ExchangeDialog from 'ExchangeDialog';
 import numeral from 'numeral';
 
@@ -12,11 +10,11 @@ class TabTransferVC extends Component {
         super()
         this.receiverLabel = {
             default: null,
-            type:cc.Label
+            type: cc.Label
         }
         this.receiverInput = {
             default: null,
-            type:cc.EditBox
+            type: cc.EditBox
         }
     }
 

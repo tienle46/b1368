@@ -26,8 +26,8 @@ export default class MessagePopup extends Component {
         }
 
         this.messageLabel = {
-            default : null,
-            type : cc.Label,
+            default: null,
+            type: cc.Label,
         };
         this.loading = null;
         this.acceptCb = null;
@@ -46,7 +46,7 @@ export default class MessagePopup extends Component {
 
     onEnable() {
         super.onEnable();
-
+        this.node.zIndex = app.const.popupZIndex;
         this.acceptButtonLabel && (this.acceptButtonLabel.string = this.getAcceptText());
         this.denyButtonLabel && (this.denyButtonLabel.string = this.getDenyText());
 

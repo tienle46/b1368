@@ -1,7 +1,6 @@
 import app from 'app';
 import BaseScene from 'BaseScene';
 import SFS2X from 'SFS2X';
-import { loadRes } from 'RubUtils';
 import { requestTimeout, clearRequestTimeout } from 'TimeHacker';
 
 export default class ListTableScene extends BaseScene {
@@ -183,7 +182,7 @@ export default class ListTableScene extends BaseScene {
     }
 
     _handleRoomJoinEvent(event) {
-        app.system.hideLoader();
+        this.hideLoading();
         let room = event.room;
         if (room) {
             if (room.isGame === false && room.name && room.name.indexOf('lobby') > -1) {
@@ -340,7 +339,7 @@ export default class ListTableScene extends BaseScene {
         data[app.keywords.ROOM_BET] = room.minBet;
         room.password && (data[app.keywords.ROOM_PASSWORD] = room.password);
 
-        app.system.showLoader();
+        this.showLoading();
         let sendObject = {
             cmd: app.commands.USER_JOIN_ROOM,
             data,

@@ -257,12 +257,11 @@ let NodeRub = {
             returnType: cc.EditBox.KeyboardReturnType.DEFAULT,
             inputFlag: cc.EditBox.InputFlag.SENSITIVE,
             inputMode: cc.EditBox.InputMode.SINGLE_LINE,
-            stayOnTop: false,
-            maxLength: 1000,
-            backgroundImage: 'textures/50x50'
+            stayOnTop: false
         };
+        console.debug(options);
         options = Object.assign({}, o, options);
-
+        console.debug(options);
         let editbox = node.getComponent(cc.EditBox) || node.addComponent(cc.EditBox);
 
         let size = node.getContentSize();
