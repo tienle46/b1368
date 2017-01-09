@@ -101,8 +101,8 @@ export default class FriendProfilePopup extends Component {
         };
 
         app.service.send(sendObject, (user) => {
-            this.rtUserName.string = `<color=${app.const.HX_COLOR_YELLOW}>Tên:</color> ${user["u"]}`;
-            this.rtBalance.string = `<color=${app.const.HX_COLOR_YELLOW}>Số xu:</color> ${user["coin"]}`;
+            this.rtUserName.string = `${user["u"]}`;
+            this.rtBalance.string = `${user["coin"].toLocaleString() || 0}`;
         }, app.const.scene.GAME_SCENE);
     }
 

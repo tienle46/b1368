@@ -695,9 +695,7 @@
     "_N$normalSprite": {
       "__uuid__": "28dede62-ed4d-49fe-9326-d472e30fc284"
     },
-    "_N$disabledSprite": {
-      "__uuid__": "bb6b46ca-22ea-447a-9be6-8e7eee884521"
-    },
+    "_N$disabledSprite": null,
     "_N$target": {
       "__id__": 14
     }
@@ -888,9 +886,7 @@
     "_N$normalSprite": {
       "__uuid__": "ed417f99-61fe-4965-8b4f-a7eecb0d8d1e"
     },
-    "_N$disabledSprite": {
-      "__uuid__": "58a98c05-d9f6-4277-9cae-6e80fd41d4dc"
-    },
+    "_N$disabledSprite": null,
     "_N$target": {
       "__id__": 20
     }
@@ -1081,9 +1077,7 @@
     "_N$normalSprite": {
       "__uuid__": "598ed08d-dcab-4102-9989-275a87f4d15f"
     },
-    "_N$disabledSprite": {
-      "__uuid__": "f5961113-d66c-411e-9355-003848b2401f"
-    },
+    "_N$disabledSprite": null,
     "_N$target": {
       "__id__": 26
     }

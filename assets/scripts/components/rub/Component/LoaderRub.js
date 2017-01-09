@@ -91,8 +91,8 @@ export default class LoaderRub {
         // loader -> spade Node
         let spadeNode = new cc.Node();
         spadeNode.name = 'spade';
-        spadeNode.setPosition(0, 0);
-        spadeNode.setContentSize(66, 66);
+        spadeNode.setPosition(-0.3, 0);
+        spadeNode.setContentSize(72, 70);
 
         loaderNode.addChild(spadeNode);
 

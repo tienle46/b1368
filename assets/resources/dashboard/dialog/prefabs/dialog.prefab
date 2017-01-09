@@ -161,7 +161,6 @@
     },
     "_enabled": true,
     "isAlignOnce": false,
-    "_target": null,
     "_alignFlags": 45,
     "_left": 0,
     "_right": 0,
@@ -356,7 +355,6 @@
     },
     "_enabled": true,
     "isAlignOnce": true,
-    "_target": null,
     "_alignFlags": 16,
     "_left": 0,
     "_right": 0,
@@ -464,7 +462,6 @@
     },
     "_enabled": true,
     "isAlignOnce": false,
-    "_target": null,
     "_alignFlags": 44,
     "_left": 36.5,
     "_right": 36.5,
@@ -962,7 +959,6 @@
     },
     "_enabled": true,
     "isAlignOnce": true,
-    "_target": null,
     "_alignFlags": 45,
     "_left": 0,
     "_right": 0,
@@ -1097,7 +1093,6 @@
     },
     "_enabled": true,
     "isAlignOnce": true,
-    "_target": null,
     "_alignFlags": 40,
     "_left": 2,
     "_right": -2,
@@ -1134,7 +1129,6 @@
     },
     "_enabled": true,
     "isAlignOnce": false,
-    "_target": null,
     "_alignFlags": 45,
     "_left": 0,
     "_right": 0,
@@ -1221,7 +1215,6 @@
     },
     "_enabled": true,
     "isAlignOnce": false,
-    "_target": null,
     "_alignFlags": 2,
     "_left": -457.5,
     "_right": 618.5,
@@ -1298,7 +1291,7 @@
         "__id__": 41
       },
       {
-        "__id__": 43
+        "__id__": 42
       },
       {
         "__id__": 44
@@ -1311,85 +1304,6 @@
       "__id__": 46
     },
     "groupIndex": 0
-  },
-  {
-    "__type__": "cc.Button",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 40
-    },
-    "_enabled": true,
-    "transition": 0,
-    "pressedColor": {
-      "__type__": "cc.Color",
-      "r": 211,
-      "g": 211,
-      "b": 211,
-      "a": 255
-    },
-    "hoverColor": {
-      "__type__": "cc.Color",
-      "r": 255,
-      "g": 255,
-      "b": 255,
-      "a": 255
-    },
-    "duration": 0.1,
-    "zoomScale": 1.2,
-    "pressedSprite": {
-      "__uuid__": "7e3843cb-6bf5-49be-9a0d-990f210345a0"
-    },
-    "hoverSprite": null,
-    "clickEvents": [
-      {
-        "__id__": 42
-      }
-    ],
-    "_N$interactable": true,
-    "_N$enableAutoGrayEffect": false,
-    "_N$normalColor": {
-      "__type__": "cc.Color",
-      "r": 214,
-      "g": 214,
-      "b": 214,
-      "a": 255
-    },
-    "_N$disabledColor": {
-      "__type__": "cc.Color",
-      "r": 124,
-      "g": 124,
-      "b": 124,
-      "a": 255
-    },
-    "_N$normalSprite": {
-      "__uuid__": "7e3843cb-6bf5-49be-9a0d-990f210345a0"
-    },
-    "_N$disabledSprite": null,
-    "_N$target": {
-      "__id__": 40
-    }
-  },
-  {
-    "__type__": "cc.ClickEvent",
-    "target": {
-      "__id__": 6
-    },
-    "component": "Dialog",
-    "handler": "onCloseBtnClick",
-    "customEventData": ""
-  },
-  {
-    "__type__": "d2d23CyXOhMxYG3ydeJ57ya",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 40
-    },
-    "_enabled": true,
-    "path": "",
-    "pressedScale": 1.12,
-    "transDuration": 0.08
   },
   {
     "__type__": "cc.Sprite",
@@ -1420,6 +1334,81 @@
     }
   },
   {
+    "__type__": "cc.Button",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 40
+    },
+    "_enabled": true,
+    "transition": 0,
+    "pressedColor": {
+      "__type__": "cc.Color",
+      "r": 211,
+      "g": 211,
+      "b": 211,
+      "a": 255
+    },
+    "hoverColor": {
+      "__type__": "cc.Color",
+      "r": 255,
+      "g": 255,
+      "b": 255,
+      "a": 255
+    },
+    "duration": 0.1,
+    "zoomScale": 1.2,
+    "pressedSprite": null,
+    "hoverSprite": null,
+    "clickEvents": [
+      {
+        "__id__": 43
+      }
+    ],
+    "_N$interactable": true,
+    "_N$enableAutoGrayEffect": false,
+    "_N$normalColor": {
+      "__type__": "cc.Color",
+      "r": 214,
+      "g": 214,
+      "b": 214,
+      "a": 255
+    },
+    "_N$disabledColor": {
+      "__type__": "cc.Color",
+      "r": 124,
+      "g": 124,
+      "b": 124,
+      "a": 255
+    },
+    "_N$normalSprite": null,
+    "_N$disabledSprite": null,
+    "_N$target": {
+      "__id__": 40
+    }
+  },
+  {
+    "__type__": "cc.ClickEvent",
+    "target": {
+      "__id__": 6
+    },
+    "component": "Dialog",
+    "handler": "onCloseBtnClick",
+    "customEventData": ""
+  },
+  {
+    "__type__": "d2d23CyXOhMxYG3ydeJ57ya",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 40
+    },
+    "_enabled": true,
+    "path": "",
+    "pressedScale": 1.12,
+    "transDuration": 0.08
+  },
+  {
     "__type__": "cc.Widget",
     "_name": "",
     "_objFlags": 0,
@@ -1428,7 +1417,6 @@
     },
     "_enabled": true,
     "isAlignOnce": false,
-    "_target": null,
     "_alignFlags": 33,
     "_left": 0,
     "_right": -23.5,
@@ -1493,7 +1481,6 @@
     },
     "_enabled": true,
     "isAlignOnce": true,
-    "_target": null,
     "_alignFlags": 45,
     "_left": 240,
     "_right": 114,
@@ -1570,7 +1557,6 @@
     },
     "_enabled": true,
     "isAlignOnce": false,
-    "_target": null,
     "_alignFlags": 45,
     "_left": 0,
     "_right": 0,
