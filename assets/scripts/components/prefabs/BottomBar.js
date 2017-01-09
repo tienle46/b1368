@@ -21,7 +21,7 @@ class BottomBar extends Component {
         // data essential
     }
 
-    onLoad() {
+    onEnable() {
         this._fillUserData();
     }
 
