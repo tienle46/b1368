@@ -112,7 +112,7 @@ export default class BoardSam extends BoardCardTurnBase {
 
         let balanceChangeAmounts = this._getPlayerBalanceChangeAmounts(playerIds, data);
         let playerHandCards = this._getPlayerHandCards(playerIds, data);
-        let {resultTexts, gameResultInfos, resultIconPaths} = this._getGameResultInfos(playerIds, playerHandCards, data);
+        let {resultTexts, gameResultInfos, winnerFlags} = this._getGameResultInfos(playerIds, playerHandCards, data);
 
         super.onBoardEnding(data);
 
@@ -120,7 +120,7 @@ export default class BoardSam extends BoardCardTurnBase {
             return {
                 name: playerInfos[playerId].name,
                 balanceChanged: balanceChangeAmounts[playerId],
-                iconPath: resultIconPaths[playerId],
+                isWinner: winnerFlags[playerId],
                 info: gameResultInfos[playerId],
                 cards: playerHandCards[playerId],
                 text: resultTexts[playerId]
@@ -148,7 +148,7 @@ export default class BoardSam extends BoardCardTurnBase {
          * @type {Array}
          */
         let resultTexts = {};
-        let resultIconPaths = {};
+        let winnerFlags = {};
         let gameResultInfos = {};
         playerIds.forEach((id, i) => {
             let resultText;
@@ -156,22 +156,26 @@ export default class BoardSam extends BoardCardTurnBase {
                 switch (winType) {
                     case app.const.game.XAM_WIN_TYPE_THANG_XAM:
                         resultText = app.res.string('game_sam_thang_sam');
+                        winnerFlags[id] = true;
                         break;
                     case app.const.game.XAM_WIN_TYPE_DEN_XAM:
                         resultText = app.res.string('game_sam_den_sam');
+                        winnerFlags[id] = false;
                         break;
                     case app.const.game.XAM_WIN_TYPE_DEN_THOI_HEO:
                         resultText = app.res.string('game_sam_den_thoi_heo');
+                        winnerFlags[id] = false;
                         break;
+                    default:
+                        winnerFlags[id] = false;
                 }
             } else {
                 if (playersWinRanks[i] == app.const.game.rank.GAME_RANK_FIRST) {
                     resultText = app.res.string('game_thang');
+                    winnerFlags[id] = true;
                 } else {
                     if (winType == app.const.game.GENERAL_WIN_TYPE_NORMAL) {
                         let cardCount = playersCardCounts && playersCardCounts[i];
-
-                        console.log("cardCount: ", cardCount)
 
                         if (cardCount == PlayerSam.DEFAULT_HAND_CARD_COUNT) {
                             resultText = app.res.string('game_sam_treo');
@@ -179,6 +183,7 @@ export default class BoardSam extends BoardCardTurnBase {
                     }
 
                     if (!resultText) resultText = app.res.string('game_thua');
+                    winnerFlags[id] = false;
                 }
 
                 /**
@@ -195,7 +200,7 @@ export default class BoardSam extends BoardCardTurnBase {
             resultTexts[id] = resultText;
         });
 
-        return {resultTexts, gameResultInfos, resultIconPaths};
+        return {resultTexts, gameResultInfos, winnerFlags};
     }
 }
 

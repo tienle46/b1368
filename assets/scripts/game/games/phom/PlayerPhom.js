@@ -131,10 +131,14 @@ export default class PlayerPhom extends PlayerCardTurnBase {
     }
 
     _onUPhom(){
+        if(!this.isItMe()) return;
+
         this.sendUCommand(this.tempHoUPhoms);
     }
 
     _onDoiUTron(){
+        if(!this.isItMe()) return;
+
         this.renderer.cardList.cleanHighlight();
         this.setState(PlayerPhom.STATE_PHOM_PLAY);
     }
@@ -727,10 +731,11 @@ export default class PlayerPhom extends PlayerCardTurnBase {
          * - Valid eat phom
          * - play sound if invalid
          */
-        let eatable = PhomUtils.checkEatPhom(this.getSelectedCards(), this.board.lastPlayedCard, this);
+        if(!this.isItMe()) return;
 
+        let eatable = PhomUtils.checkEatPhom(this.getSelectedCards(), this.board.lastPlayedCard, this);
         if(eatable){
-            this.isItMe() && app.service.send({cmd: Commands.PLAYER_EAT_CARD, data: {}, room: this.scene.room});
+            app.service.send({cmd: Commands.PLAYER_EAT_CARD, data: {}, room: this.scene.room});
             this.setState(PlayerPhom.STATE_ACTION_WAIT);
         }else{
             app.system.showToast(app.res.string('game_phom_cannot_eat'));
@@ -738,7 +743,9 @@ export default class PlayerPhom extends PlayerCardTurnBase {
     }
 
     _onTakeCard() {
-        this.isItMe() && app.service.send({cmd: Commands.PLAYER_TAKE_CARD, data: {}, room: this.scene.room});
+        if(!this.isItMe()) return;
+
+        app.service.send({cmd: Commands.PLAYER_TAKE_CARD, data: {}, room: this.scene.room});
         this.setState(PlayerPhom.STATE_ACTION_WAIT);
     }
 

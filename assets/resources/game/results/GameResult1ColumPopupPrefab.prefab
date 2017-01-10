@@ -766,6 +766,7 @@
     },
     "_enabled": true,
     "isAlignOnce": true,
+    "_target": null,
     "_alignFlags": 37,
     "_left": 350.07654921020657,
     "_right": 10,
@@ -878,7 +879,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 55,
-      "height": 55
+      "height": 58
     },
     "_children": [],
     "_rotationX": 0,

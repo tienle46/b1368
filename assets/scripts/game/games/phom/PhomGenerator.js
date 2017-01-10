@@ -11,11 +11,7 @@ export default class PhomGenerator {
 
     static generate(cards) {
 
-        console.log("cards: ", cards.map(card => card.byteValue));
-
         let allPhoms = this.generateAllPhom(cards);
-
-        console.log("allPhoms: ", allPhoms);
 
         let generatedPhomLists = [...allPhoms.map(phom => new PhomList([phom]))];
         
@@ -47,9 +43,6 @@ export default class PhomGenerator {
         cards = PhomUtils.sortAsc([...cards]);
         let phomByRanks = this._findPhomByRank([...cards]);
         let phomBySuits = this._findPhomBySuit([...cards]);
-
-        console.log("phomByRanks: ", phomByRanks);
-        console.log("phomBySuits: ", phomBySuits);
 
         return [...phomByRanks, ...phomBySuits];
     }

@@ -123,21 +123,20 @@ export default class PhomUtils {
         let eatable = cards && cards.length == 2 && this.isPhom([...cards, eatingCard])
             && (player.eatenCards.length == 0 || !ArrayUtils.containsSome(cards, player.eatenCards));
 
-        if(eatable){
+        if(eatable && player.eatenCards.length > 0){
             let checkPhomCards = [...player.handCards];
             ArrayUtils.removeAll(checkPhomCards, cards);
             let allGeneratedPhomList = PhomGenerator.generate(checkPhomCards);
 
             eatable = false;
-
-            allGeneratedPhomList.some(phomList => {
-                if(player.eatenCards.length == PhomUtils.getEatenCards(phomList.getCards()).length){
+            allGeneratedPhomList.length > 0 && allGeneratedPhomList.some(phomList => {
+                if (player.eatenCards.length == PhomUtils.getEatenCards(phomList.getCards()).length) {
                     eatable = true;
                     return true;
                 }
                 // if(ArrayUtils.containsAll(phomList.getCards(), player.eatenCards)){
-                    // eatable = true;
-                    // return true;
+                // eatable = true;
+                // return true;
                 // }
             });
         }

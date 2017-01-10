@@ -674,12 +674,11 @@ export default class CardList extends Component {
             animatingCard.node.setScale(originalScale);
             animatingCard.setOriginalInfo({position: moveToPosition, scale: scaleTo})
 
-            card.node.destroy();
             card.node.removeFromParent(true);
         });
 
         destCardList.runCardActions();
-        destCardList.node.runAction(
+        destCardList.node && destCardList.node.runAction(
             cc.sequence(
                 cc.delayTime(CardList.TRANSFER_CARD_DURATION + 0.01),
                 cc.callFunc(() => {
@@ -697,7 +696,7 @@ export default class CardList extends Component {
 
         this.cards.forEach(card => {
             let action = card.createActionFromOriginalInfo(duration);
-            action && card.node.runAction(action);
+            action && card.node && card.node.runAction(action);
         });
     }
 
@@ -782,12 +781,12 @@ export default class CardList extends Component {
                     );
                 }
 
-                actions.push(cc.callFunc(() => card.node.runAction(animation)));
+                actions.push(cc.callFunc(() => card.node && card.node.runAction(animation)));
                 actions.push(delay.clone());
             }
         }
 
-        dealCardAnchor.parent.runAction(cc.sequence(actions));
+        dealCardAnchor.parent && dealCardAnchor.parent.runAction(cc.sequence(actions));
     }
 
     equals(cardList) {
