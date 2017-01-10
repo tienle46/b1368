@@ -51,7 +51,7 @@ export default class RegisterScene extends BaseScene {
                         if (error) {
                             log('Login error:');
                             error = JSON.parse(error);
-                            app.system.error(app.getMessageFromServer(error.p.ec));
+                            app.system.error(app.getMessageFromServer(error));
                         }
                         if (result) {
                             log(result);

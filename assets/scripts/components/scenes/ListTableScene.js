@@ -74,22 +74,18 @@ export default class ListTableScene extends BaseScene {
         topBarScript.showBackButton();
     }
 
-    onFilterBtnClick(e) {
-        let [min, max] = [0, 0];
+    onNongDanBtnClick() {
+        this.filterCond = { min: 1, max: 3 };
+        this._renderList(this.items, this.filterCond);
+    }
 
-        switch (e.node.name) {
-            case 'nongdanRadio':
-                [min, max] = [1, 3];
-                break;
-            case 'quytocRadio':
-                [min, max] = [3, 5];
-                break;
-            case 'hoanggiaRadio':
-                [min, max] = [5, 7];
-                break;
-        }
+    onQuyTocBtnClick() {
+        this.filterCond = { min: 3, max: 5 };
+        this._renderList(this.items, this.filterCond);
+    }
 
-        this.filterCond = { max, min };
+    onHoangGiaBtnClick() {
+        this.filterCond = { min: 5, max: 7 };
         this._renderList(this.items, this.filterCond);
     }
 
@@ -268,19 +264,21 @@ export default class ListTableScene extends BaseScene {
      * @memberOf ListTableScene
      */
     _renderList(items, cond = null) {
+
         if (this.contentInScroll) {
             // clear content
             let children = this.contentInScroll.children;
 
-            if(children && children.length > 0){
-                this.contentInScroll.children.forEach(child => child.destroy());
+            if (children && children.length > 0) {
+                (!cond) && children.forEach(child => child.destroy());
                 this.contentInScroll.removeAllChildren();
             }
 
-            items = this._filter(items, cond);
-            if (items.length > 0) {
+            let filteredItems = this._filter(items, cond);
+
+            if (filteredItems.length > 0) {
                 // re-adding content
-                items.map((item) => {
+                filteredItems.map((item) => {
                     this.contentInScroll.addChild(item);
                 });
             }
@@ -300,8 +298,10 @@ export default class ListTableScene extends BaseScene {
         items = items || [];
         if (!cond)
             return items;
+        let filteredItems = [];
 
-        return items.filter((item) => item.getComponent('TableListCell').minBet >= cond.min && item.getComponent('TableListCell').minBet <= cond.max);
+        filteredItems = items.filter((item) => item.getComponent('TableListCell') && item.getComponent('TableListCell').minBet >= cond.min && item.getComponent('TableListCell').minBet <= cond.max);
+        return filteredItems;
     }
 
     onHandleQuickJoinBtn() {
@@ -309,9 +309,6 @@ export default class ListTableScene extends BaseScene {
         data[app.keywords.GAME_CODE] = this.gameCode;
         data[app.keywords.IS_SPECTATOR] = false;
         data[app.keywords.QUICK_JOIN_BET] = 1;
-
-        console.log(app.system.gameEventEmitter)
-        console.log(app.system.eventEmitter)
 
         app.service.send({ cmd: app.commands.USER_QUICK_JOIN_ROOM, data });
     }

@@ -88,8 +88,7 @@ export default class EntranceScene extends BaseScene {
                     }
 
                     if (error) {
-                        error = JSON.parse(error);
-                        this.addPopup(app.getMessageFromServer(error.p.ec));
+                        this.addPopup(app.getMessageFromServer(error));
                     }
                 });
             }
@@ -191,8 +190,7 @@ export default class EntranceScene extends BaseScene {
                     this.hideLoading();
 
                     if (error) {
-                        error = JSON.parse(error);
-                        app.system.error(app.getMessageFromServer(error.p.ec));
+                        app.system.error(app.getMessageFromServer(error));
                     }
                     if (result) {
                         this.changeScene(app.const.scene.DASHBOARD_SCENE);

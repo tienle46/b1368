@@ -146,7 +146,8 @@ app.createComponent = (classNameOrInstance, extendClass = undefined, ...args) =>
     return cc.Class(instance);
 };
 
-app.getMessageFromServer = (errorCode, errorMessage = 0) => {
+app.getMessageFromServer = (error) => {
+    let { errorCode, errorMessage } = error;
     let M = MESSAGES[app.LANG];
     return (typeof M[errorCode] === 'object') ? M[errorCode][errorMessage] : M[errorCode];
 };

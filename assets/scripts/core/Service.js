@@ -164,9 +164,9 @@ class Service {
                 }
             });
         } else {
-            if(event && event.reason === "manual"){
+            if (event && event.reason === "manual") {
                 app.system.loadScene(app.const.scene.ENTRANCE_SCENE);
-            }else{
+            } else {
                 app.system.loadScene(app.const.scene.ENTRANCE_SCENE, () => {
                     app.system.info("Kết nối tới máy chủ bị gián đoạn. Vui lòng đăng nhập lại!");
                 });
@@ -220,7 +220,7 @@ class Service {
 
     _onLoginError(event) {
         this._loginData = null;
-        this._callCallback(SFS2X.SFSEvent.LOGIN, null, event.data);
+        this._callCallback(SFS2X.SFSEvent.LOGIN, event, null);
     }
 
     sendRequest(request, { cb = null, scope = null, cbName = null } = {}) {
