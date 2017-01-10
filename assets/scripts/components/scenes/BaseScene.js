@@ -116,6 +116,7 @@ export default class BaseScene extends Actor {
         }
 
         if (this.popUp) {
+            this.hideLoading();
             var popupBase = new cc.instantiate(this.popUp);
             popupBase.position = cc.p(0, 0);
             popupBase.getComponent(BasePopup).setContent(string);

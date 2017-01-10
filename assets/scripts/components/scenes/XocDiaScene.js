@@ -13,7 +13,7 @@ export default class XocDiaScene extends GameScene {
 
         this.properties = {
             ...this.properties
-        }
+        };
 
         /**
          * @type {HorizontalBetPopup}

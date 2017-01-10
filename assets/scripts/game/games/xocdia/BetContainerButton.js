@@ -1,20 +1,9 @@
 import app from 'app';
 import Component from 'Component';
-import BetOptionsGroup from 'BetOptionsGroup';
 
 class BetContainerButton extends Component {
     constructor() {
         super();
-
-        this.betOptionsGroup = {
-            default: null,
-            type: BetOptionsGroup
-        };
-
-        this.miniChip = {
-            default: null,
-            type: cc.Prefab
-        };
 
         this.nEven = {
             default: null,

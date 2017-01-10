@@ -38,10 +38,10 @@ class StatisticTable extends Component {
             histories = histories.slice(0, numberCellsInTable + 1);
 
         //clear table
-        this.separateSideNode.children.forEach(child => child.destroy());
+        this.separateSideNode.children.map((child, i) => i > 0 && child.destroy());
         this.separateSideNode.removeAllChildren();
 
-        histories.forEach((data) => {
+        histories.map((data) => {
             let cell = this.addChildToSeparateSide(data);
 
             this.separateSideNode.addChild(cell);
