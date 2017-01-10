@@ -57,12 +57,15 @@ let RubUtils = {
         options = Object.assign({}, o, options);
 
         function spriteFrameDefaultConfig(spriteComponent) {
-            for (let key in options) {
-                spriteComponent[key] = options[key];
+            if (spriteComponent) {
+                for (let key in options) {
+                    spriteComponent[key] = options[key];
+                }
+
+                ccSize && spriteComponent.node.setContentSize(ccSize);
+                cb && cb(spriteComponent);
             }
 
-            ccSize && spriteComponent.node.setContentSize(ccSize);
-            cb && cb(spriteComponent);
         }
 
         if (isCORS) {
