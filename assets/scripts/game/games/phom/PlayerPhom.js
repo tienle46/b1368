@@ -398,7 +398,7 @@ export default class PlayerPhom extends PlayerCardTurnBase {
             if (this.isItMe()) {
                 this._processAfterEatOrTake();
             } else {
-                this.renderer.cardList.clear();
+                this.renderer.cardList.removeCards([card]);
             }
         }});
     }

@@ -321,7 +321,7 @@ export default class Player extends Actor {
     }
 
     _sendReadyImmediately() {
-        if(!this.isItMe()) return;
+        if(app.system.isInactive || !this.isItMe()) return;
 
         let newPlayer = utils.getVariable(this.user, "newPlayer");
         if (!newPlayer) {

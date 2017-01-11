@@ -29,6 +29,7 @@ class GameSystem {
         this.sceneChanging = false;
         this._currentSceneNode = cc.Node;
         this._currentScene = cc.Node;
+        this.isInactive = false;
         this.initEventListener();
     }
 
