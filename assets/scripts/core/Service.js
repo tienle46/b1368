@@ -403,6 +403,9 @@ class Service {
             const cmd = options.cmd;
             const cbKey = options.cbKey || options.cmd;
             if (cmd) {
+                if ((!scope) && cb) {
+                    scope = app.system.currentScene;
+                }
                 this._addCallback(cbKey, cb, scope, options.data);
                 this.sendRequest(new SFS2X.Requests.System.ExtensionRequest(cmd, options.data || {}, options.room));
             }
@@ -507,11 +510,13 @@ class Service {
             this._poorNetwork = averageLatency > app.config.poorNetworkThreshold;
         }
     }
+
     _goOffline() {
         if (this.client.buddyManager.getMyOnlineState()) {
             this.sendRequest(new SFS2X.Requests.System.GoOnlineRequest(false));
         }
     }
+
     manuallyDisconnect() {
         this._goOffline();
 

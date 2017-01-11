@@ -49,12 +49,12 @@ export default class ListTableScene extends BaseScene {
     onDestroy() {
         super.onDestroy();
         this._clearInterval();
+        this.items = [];
     }
 
     // clear interval
     _clearInterval() {
         this.timeout && clearRequestTimeout(this.timeout);
-        this.timeout = null;
     }
 
     onLoad() {
@@ -112,9 +112,9 @@ export default class ListTableScene extends BaseScene {
 
                 // assume server will be response minbet for filtering based on its minbet
             } else {
-                error('game code & result are not matched');
+                error('game code & result are not matched', data[app.keywords.GAME_LIST_RESULT], this.gameCode);
             }
-        });
+        }, app.const.scene.LIST_TABLE_SCENE);
     }
 
     _sendRequestUserJoinLobbyRoom(lobbyId) {
@@ -199,13 +199,12 @@ export default class ListTableScene extends BaseScene {
         };
         app.service.send(sendObject, (data) => {
             this.node && this._initRoomsListFromData(data);
-        });
+        }, app.const.scene.LIST_TABLE_SCENE);
 
         this.timeout = requestTimeout(() => {
-            this._sendRequestUserListRoom(room);
+            this.timeout && this._sendRequestUserListRoom(room);
             clearRequestTimeout(this.timeout);
         }, this.time);
-
     }
 
     _initRoomsListFromData(data) {
@@ -225,12 +224,12 @@ export default class ListTableScene extends BaseScene {
             this.items = [];
             for (let i = 0; i < customIds.length; i++) {
 
-                const listCell = cc.instantiate(this.tableListCell);
+                let listCell = cc.instantiate(this.tableListCell);
 
                 // listCell.setContentSize(itemDimension - 16, 50);
                 listCell.setPosition(cc.p(0, 0));
 
-                const cellComponent = listCell.getComponent('TableListCell');
+                let cellComponent = listCell.getComponent('TableListCell');
 
                 if (!minBets[i]) {
                     minBets[i] = 5;
@@ -250,7 +249,6 @@ export default class ListTableScene extends BaseScene {
                 cellComponent && cellComponent.initCell(customIds[i], minBets[i], userCounts[i], userMaxs[i], passwords[i]);
 
                 this.items.push(listCell);
-                // this.contentInScroll.addChild(listCell);
             }
 
             this._renderList(this.items, this.filterCond);
@@ -281,6 +279,7 @@ export default class ListTableScene extends BaseScene {
                 filteredItems.map((item) => {
                     this.contentInScroll.addChild(item);
                 });
+                filteredItems = [];
             }
         }
     }
@@ -365,7 +364,7 @@ export default class ListTableScene extends BaseScene {
             if (error.errorCode) {
                 app.system.error(error.errorMessage);
             }
-        });
+        }, app.const.scene.LIST_TABLE_SCENE);
     }
 }
 

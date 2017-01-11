@@ -39,7 +39,8 @@ export function clearRequestInterval(handle) {
     if (handle) {
         if (window.cancelAnimationFrame) {
             cancelAnimationFrame(handle.value);
-            handle.value = null;
+            handle.value && (handle.value = null);
+            handle = null;
         } else {
             clearInterval(handle);
             handle = null;
@@ -87,6 +88,8 @@ export function clearRequestTimeout(handle) {
     if (handle) {
         if (window.cancelAnimationFrame) {
             cancelAnimationFrame(handle.value);
+            handle.value && (handle.value = null);
+            handle = null;
         } else {
             clearTimeout(handle);
             handle = null;

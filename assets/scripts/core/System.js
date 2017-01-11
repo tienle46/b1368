@@ -67,6 +67,8 @@ class GameSystem {
             console.log("load scene result", sceneName, cc.director.getScene());
 
             if (cc.director.getScene().children[0]) {
+                app.service.removeAllCallback(this.getCurrentSceneName());
+
                 this._currentScene = cc.director.getScene().children[0].getComponent(sceneName);
                 if (this._currentScene) {
                     this._addToastToScene();
@@ -94,6 +96,10 @@ class GameSystem {
 
     getCurrentSceneNode() {
         return this._currentScene.node;
+    }
+
+    getCurrentSceneName() {
+        return this._currentScene ? this._currentScene.constructor.name : 'anonymousScene';
     }
 
     get currentScene() {
