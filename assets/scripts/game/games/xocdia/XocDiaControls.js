@@ -194,7 +194,6 @@ export default class XocDiaControls extends GameControls {
         if (isItMe) {
             if (isReplace) {
                 this.currentGold = this._getCurrentUserGold() + this._getTotalGoldUserBettedInBoard();
-                // this._clearUserGoldAmountOnControl(isItMe, this.betData, playerId);
                 this.betData = betsList;
             } else {
                 this.betData = [...this.betData, ...betsList];

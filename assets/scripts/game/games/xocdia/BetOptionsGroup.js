@@ -58,7 +58,7 @@ class BetOptionsGroup extends Component {
     }
 
     getCurrentUserGold() {
-        return Number(this.userGoldLbl.string.replace(',', ''));
+        return Number(this.userGoldLbl.string.replace(/,/g, ''));
     }
 
     getChip() {

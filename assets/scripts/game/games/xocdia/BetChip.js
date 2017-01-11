@@ -28,7 +28,7 @@ class BetChip extends Component {
         let str = isNaN(amount) ? amount : this._convertAmountFromNumberToString(amount);
         this.amountLbl.string = str;
 
-        if (str.length >= 4) {
+        if (str.length >= 3) {
             let size = {
                 width: 150,
                 height: this.node.getContentSize().height
@@ -37,21 +37,35 @@ class BetChip extends Component {
         }
     }
 
-    // 1000 -> 1k , 10000 -> 10k
+    // 1000 -> 1k , 10000 -> 10k, 15000 -> 15k
+    // 1.000.000 -> 1M , 1.500.000 -> 1.5M
     _convertAmountFromNumberToString(amount) {
         if (amount < 1000)
             return amount.toString();
 
-        let divided = (amount / 1000).toString();
+        if (amount < 1000 * 1000) {
+            let divided = (amount / 1000).toString();
 
-        return divided.match(/\d+(\.)/) ? divided.replace('.', 'K') : `${divided}K`;
+            return divided.match(/\d+(\.)/) ? divided.replace('.', 'K') : `${divided}K`;
+        } else {
+            let divided = (amount / (1000 * 1000)).toString();
+            return `${divided}M`;
+        }
     }
 
+    // 1k -> 1000, 10k -> 10.000, 15k -> 15000
+    // 1M -> 1.000.000, 1.5M -> 1.500.000
     _convertAmountFromStringToNum(str) {
-        str = str.replace('k', '.');
-        let amount = Number(str);
-
-        return str.match(/\d+(\.)/) ? amount * 1000 : amount;
+        let amount = 0;
+        if (str.indexOf('K') > -1) {
+            str = str.replace('K', '.');
+            amount = Number(str);
+            return str.match(/\d+(\.)/) ? amount * 1000 : amount;
+        } else if (str.indexOf('M') > -1) {
+            str = str.replace('M', '.');
+            amount = Number(str);
+            return str.match(/\d+(\.)/) ? amount * 1000 * 1000 : amount;
+        }
     }
 
     getChipIcon(size) {
