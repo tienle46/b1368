@@ -121,7 +121,7 @@ export default class LoaderRub {
 
     destroy() {
         this.spinLoaderNode.destroy();
-        this.spinLoaderNode.removeFromParent(true);
+        this.spinLoaderNode.removeFromParent();
     }
 
     _setTimer(time) {

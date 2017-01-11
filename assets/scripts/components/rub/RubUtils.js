@@ -50,11 +50,6 @@ let RubUtils = {
      */
     loadSpriteFrame: (spriteComponent, resURL, ccSize = null, isCORS = false, cb, options = {}) => {
         let textureCache;
-        let o = {
-            type: cc.Sprite.Type.SLICED,
-            sizeMode: cc.Sprite.SizeMode.CUSTOM
-        };
-        options = Object.assign({}, o, options);
 
         function spriteFrameDefaultConfig(spriteComponent) {
             if (spriteComponent) {
@@ -62,7 +57,7 @@ let RubUtils = {
                     spriteComponent[key] = options[key];
                 }
 
-                ccSize && spriteComponent.node.setContentSize(ccSize);
+                ccSize && spriteComponent.node && spriteComponent.node.setContentSize(ccSize);
                 cb && cb(spriteComponent);
             }
 
@@ -76,8 +71,10 @@ let RubUtils = {
 
         } else {
             return RubUtils.loadRes(resURL, true).then((spriteFrame) => {
-                spriteFrame && (spriteComponent.spriteFrame = spriteFrame);
-                spriteFrameDefaultConfig(spriteComponent);
+                if (spriteFrame) {
+                    spriteComponent.spriteFrame = spriteFrame;
+                    spriteFrameDefaultConfig(spriteComponent);
+                }
             });
         }
     },

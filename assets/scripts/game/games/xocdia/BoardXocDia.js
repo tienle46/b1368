@@ -77,7 +77,7 @@ export default class BoardXocDia extends BoardCardBetTurn {
                         clearRequestInterval(this.timeLineInterval);
                         return;
                     }
-                    this.renderer.setTimeLineMessage(duration);
+                    this.timeLineInterval && this.renderer.setTimeLineMessage(duration);
                     duration--;
                 }, 1000);
             }

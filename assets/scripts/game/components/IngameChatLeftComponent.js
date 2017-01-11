@@ -5,28 +5,30 @@
 import app from 'app';
 import utils from 'utils';
 import Component from 'Component';
-import Progress from 'Progress';
 import CCUtils from 'CCUtils';
 import SFS2X from 'SFS2X';
-import GameChatItem from 'GameChatItem';
 import NodeRub from 'NodeRub';
 import Props from 'Props';
+import LoaderRub from 'LoaderRub';
 
 export default class IngameChatLeftComponent extends Component {
     constructor() {
         super();
         this.properties = {
             ...this.properties,
-            loadingComponent: cc.Node,
-            quickChatLists: cc.Node,
+            quickChatsList: cc.Node,
+            emotionsList: cc.Node,
             showAnimName: "ingameShowChatLeft",
             hideAnimName: "ingameHideChatLeft",
             quickChatItemPrefab: cc.Prefab,
-            // emotionsPanel: cc.Node,
+            emotionChatItemPrefab: cc.Prefab,
+            // panels
+            emotionsPanel: cc.Node,
+            quickChatPanel: cc.Node,
+            logChatPanel: cc.Node,
         }
 
-        this.loading = null;
-        this.messages = null;
+        this.quickChats = null;
         this.animation = null;
         this.showing = false;
         this.inited = false;
@@ -37,8 +39,7 @@ export default class IngameChatLeftComponent extends Component {
         super.onEnable();
         this.scene = app.system.currentScene;
         this.animation = this.node.getComponent(cc.Animation);
-        this._initQuickChatItemsFromServer();
-        // this.initEmotions();
+        this.onQuickChatTabChecked();
     }
 
     start() {
@@ -53,8 +54,9 @@ export default class IngameChatLeftComponent extends Component {
     show() {
         this.node.active = true;
         this.animation && this.animation.play(this.showAnimName);
-        if (!this.inited && this.messages) {
-            this.initMessages();
+        if (!this.inited) {
+            !this.quickChats && this._initQuickChatItemsFromServer();
+            this.initEmotions();
         }
     }
 
@@ -64,31 +66,37 @@ export default class IngameChatLeftComponent extends Component {
     }
 
     onQuickChatTabChecked() {
-        console.debug('onQuickChatTabChecked')
+        this.quickChatPanel.active = true;
+        this.logChatPanel.active = false;
+        this.emotionsPanel.active = false;
     }
 
     onLogChatTabChecked() {
-        console.debug('onLogChatTabChecked')
+        this.quickChatPanel.active = false;
+        this.logChatPanel.active = true;
+        this.emotionsPanel.active = false;
     }
 
     onEmotionsTabChecked() {
-        console.debug('onEmotionsTabChecked')
+        this.quickChatPanel.active = false;
+        this.logChatPanel.active = false;
+        this.emotionsPanel.active = true;
     }
 
     initMessages() {
-        this.quickChatLists.children.map(child => child.destroy() && child.removeFromParent());
-        this.messages.forEach(message => {
+        this.quickChatsList.children.map(child => child.destroy() && child.removeFromParent());
+        this.quickChats.forEach(message => {
             let chatItemNode = cc.instantiate(this.quickChatItemPrefab);
             let gameQuickChatItem = chatItemNode.getComponent('GameQuickChatItem');
 
             if (gameQuickChatItem) {
                 gameQuickChatItem.setLabel(message);
                 chatItemNode.textMessage = gameQuickChatItem.getLabelText();
-                this.quickChatLists.addChild(chatItemNode);
+                this.quickChatsList.addChild(chatItemNode);
                 CCUtils.addClickEvent(chatItemNode, this.node, IngameChatLeftComponent, this.onQuickChatItemClick);
             }
         });
-
+        this.loader && this.loader.destroy();
         this.inited = true;
     }
 
@@ -106,10 +114,8 @@ export default class IngameChatLeftComponent extends Component {
     }
 
     initEmotions() {
-        this.emotionsPanel.children.forEach(child => child.destroy());
-        this.emotionsPanel.removeAllChildren();
-
-        cc.loader.loadResAll('emotions/thumbs', cc.SpriteFrame, (err, assets) => {
+        this.emotionsList.children.map(child => child.destroy() && child.removeFromParent());
+        cc.loader.loadResDir('emotions/thumbs', cc.SpriteFrame, (err, assets) => {
             if (err) {
                 cc.error(err);
                 return;
@@ -122,25 +128,15 @@ export default class IngameChatLeftComponent extends Component {
                 clickEvent.component = 'IngameChatLeftComponent';
                 clickEvent.handler = 'emotionClicked';
 
-                let o = {
-                    name: asset.name,
-                    size: cc.size(75, 75),
-                    sprite: {
-                        spriteFrame: asset,
-                        trim: true,
-                        type: cc.Sprite.Type.SIMPLE,
-                        sizeMode: cc.Sprite.SizeMode.CUSTOM
-                    },
-                    button: {
-                        event: clickEvent
-                    }
-                };
-                const node = NodeRub.createNodeByOptions(o);
+                let item = cc.instantiate(this.emotionChatItemPrefab);
+                item.getComponent(cc.Sprite).spriteFrame = asset;
+                item.name = asset.name;
+                item.getComponent(cc.Button).clickEvents = [clickEvent];
 
-                this.emotionsPanel.addChild(node);
+                this.emotionsList.addChild(item);
             });
-
         });
+        this.inited = true;
     }
 
     /**
@@ -151,7 +147,7 @@ export default class IngameChatLeftComponent extends Component {
     }
 
     _initQuickChatItemsFromServer() {
-        if (!this.messages) {
+        if (!this.quickChats) {
             utils.setActive(this.messageListContent, false);
             let sendObject = {
                 cmd: app.commands.INGAME_CHAT_MESSAGE_LIST,
@@ -159,43 +155,17 @@ export default class IngameChatLeftComponent extends Component {
                     [app.keywords.GAME_CODE]: this.scene.gameCode
                 }
             };
-
+            this.loader = new LoaderRub(this.quickChatsPanel);
             app.service.send(sendObject, (data) => {
-                // utils.setActive(this.messageListContent, true);
-
-                let gameCode = utils.getValue(data, app.keywords.GAME_CODE);
-                if (gameCode == this.scene.gameCode) {
-                    this.messages = utils.getValue(data, app.keywords.MESSAGE_LIST);
-                    this.initMessages();
-                }
-
-                // this.loading.hide();
-            });
-        }
-    }
-
-    onShown() {
-
-        if (!this.messages) {
-            utils.setActive(this.messageListContent, false);
-            app.service.send({
-                cmd: app.commands.INGAME_CHAT_MESSAGE_LIST,
-                data: {
-                    [app.keywords.GAME_CODE]: this.scene.gameCode
-                }
-            }, (data) => {
                 utils.setActive(this.messageListContent, true);
 
                 let gameCode = utils.getValue(data, app.keywords.GAME_CODE);
                 if (gameCode == this.scene.gameCode) {
-                    this.messages = utils.getValue(data, app.keywords.MESSAGE_LIST);
+                    this.quickChats = utils.getValue(data, app.keywords.MESSAGE_LIST);
                     this.initMessages();
                 }
-
-                // this.loading.hide();
             });
         }
-
     }
 
     onClickCloseButton(...args) {

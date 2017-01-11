@@ -188,15 +188,15 @@ let NodeRub = {
             type: cc.Sprite.Type.SLICED,
             sizeMode: cc.Sprite.SizeMode.CUSTOM
         };
+        o = Object.assign({}, o, options);
+        if (typeof spriteFrame === 'string') {
+            delete o.spriteFrame;
 
-        options.hasOwnProperty('type') && (o.type = options.type);
-        options.hasOwnProperty('sizeMode') && (o.sizeMode = options.sizeMode);
-        options.hasOwnProperty('trim') && (o.trim = options.trim);
-
-        if (typeof spriteFrame === 'string')
             RubUtils.loadSpriteFrame(sprite, spriteFrame, node.getContentSize(), options.isCORS || false, options.cb, o);
-        else if (spriteFrame instanceof cc.SpriteFrame) {
+        } else if (spriteFrame instanceof cc.SpriteFrame) {
             sprite.spriteFrame = spriteFrame;
+            delete o.spriteFrame;
+
             for (let key in o) {
                 sprite[key] = o[key];
             }
@@ -259,9 +259,7 @@ let NodeRub = {
             inputMode: cc.EditBox.InputMode.SINGLE_LINE,
             stayOnTop: false
         };
-        console.debug(options);
         options = Object.assign({}, o, options);
-        console.debug(options);
         let editbox = node.getComponent(cc.EditBox) || node.addComponent(cc.EditBox);
 
         let size = node.getContentSize();

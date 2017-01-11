@@ -36,10 +36,14 @@ export function requestInterval(fn, delay) {
  * @param {int|object} fn The callback function
  */
 export function clearRequestInterval(handle) {
-    if (window.cancelAnimationFrame) {
-        cancelAnimationFrame(handle.value);
-    } else {
-        clearInterval(handle);
+    if (handle) {
+        if (window.cancelAnimationFrame) {
+            cancelAnimationFrame(handle.value);
+            handle.value = null;
+        } else {
+            clearInterval(handle);
+            handle = null;
+        }
     }
 }
 
@@ -80,9 +84,12 @@ export function requestTimeout(fn, delay) {
  * @param {int|object} fn The callback function
  */
 export function clearRequestTimeout(handle) {
-    if (window.cancelAnimationFrame) {
-        cancelAnimationFrame(handle.value);
-    } else {
-        clearTimeout(handle);
+    if (handle) {
+        if (window.cancelAnimationFrame) {
+            cancelAnimationFrame(handle.value);
+        } else {
+            clearTimeout(handle);
+            handle = null;
+        }
     }
 }
