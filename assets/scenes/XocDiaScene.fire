@@ -410,6 +410,9 @@
         "__id__": 11
       },
       {
+        "__id__": 12
+      },
+      {
         "__id__": 13
       },
       {
@@ -452,7 +455,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "ingame-xocdia-dealer",
+    "_name": "dealerpos",
     "_objFlags": 0,
     "_opacity": 255,
     "_color": {
@@ -473,22 +476,18 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 128,
-      "height": 170
+      "width": 0,
+      "height": 0
     },
-    "_children": [
-      {
-        "__id__": 12
-      }
-    ],
+    "_children": [],
     "_rotationX": 0,
     "_rotationY": 0,
     "_scaleX": 1,
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": 646,
-      "y": 745
+      "x": 625,
+      "y": 750
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -496,7 +495,7 @@
     "_globalZOrder": 0,
     "_tag": -1,
     "_opacityModifyRGB": false,
-    "_id": "48485sZWjhDW4H/UcnBak4h",
+    "_id": "fd44cRYtZ5BJLK3FZV5fUoV",
     "_active": true,
     "_components": [],
     "_prefab": null,
@@ -504,7 +503,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "dealerpos",
+    "_name": "receiveChip",
     "_objFlags": 0,
     "_opacity": 255,
     "_color": {
@@ -516,7 +515,7 @@
     },
     "_cascadeOpacityEnabled": true,
     "_parent": {
-      "__id__": 11
+      "__id__": 10
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -535,8 +534,8 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": -21,
-      "y": 5
+      "x": 1092,
+      "y": 131
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -544,7 +543,7 @@
     "_globalZOrder": 0,
     "_tag": -1,
     "_opacityModifyRGB": false,
-    "_id": "fd44cRYtZ5BJLK3FZV5fUoV",
+    "_id": "069f7p/+e5DfbwfdSfeNNM9",
     "_active": true,
     "_components": [],
     "_prefab": null,
@@ -10787,8 +10786,10 @@
     "betContainerNode": {
       "__id__": 13
     },
-    "miniChip": null,
     "dealer": {
+      "__id__": 11
+    },
+    "receiveChipDestinationNode": {
       "__id__": 12
     },
     "reBetBtn": {

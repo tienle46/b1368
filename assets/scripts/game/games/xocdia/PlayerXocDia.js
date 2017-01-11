@@ -53,41 +53,6 @@ export default class PlayerXocDia extends PlayerCardBetTurn {
         super.onEnable(this.getComponent('PlayerXocDiaRenderer'));
     }
 
-    _onDistributeChip(data) {
-        let { playingPlayerIds, bets, dots } = data;
-        let playerIdIndex = playingPlayerIds.findIndex(id => id == this.id);
-
-        if (playerIdIndex !== undefined) {
-            let playerId = this.id;
-            let { myPos } = this._getPosBasedOnWorldSpace(playerId);
-            let betData = bets[playerIdIndex];
-            // user will be get chip after dealer got it
-            setTimeout(() => {
-                this.scene.emit(Events.XOCDIA_ON_PLAYER_RECEIVE_CHIP_ANIMATION, { userPos: myPos, playerId, betData, dots });
-            }, 500);
-        }
-        return;
-    }
-
-    _onPlayerChangeMoneyAnim(data) {
-        let { playerId, balance } = data;
-        if (playerId !== this.id)
-            return;
-        this.renderer.startPlusBalanceAnimation(balance);
-    }
-
-    _onGameRejoin(data) {
-        super._onGameRejoin(data);
-    }
-
-    _onGameState(state, data, isJustJoined) {
-
-    }
-
-    _onGameStateBet() {
-        debug('_onGameStateBet PlayerXocDia')
-    }
-
     onGameReset() {
         super.onGameReset();
         this.betData = [];
@@ -141,6 +106,41 @@ export default class PlayerXocDia extends PlayerCardBetTurn {
         }
     }
 
+    _onDistributeChip(data) {
+        let { playingPlayerIds, bets, dots } = data;
+        let playerIdIndex = playingPlayerIds.findIndex(id => id == this.id);
+
+        if (playerIdIndex !== undefined) {
+            let playerId = this.id;
+            let isItMe = this.scene.gamePlayers.isItMe(playerId);
+            let { myPos } = this._getPosBasedOnWorldSpace(playerId);
+            let betData = bets[playerIdIndex];
+            // user will be get chip after dealer got it
+            setTimeout(() => {
+                this.scene.emit(Events.XOCDIA_ON_PLAYER_RECEIVE_CHIP_ANIMATION, { userPos: myPos, playerId, betData, dots, isItMe });
+            }, 500);
+        }
+        return;
+    }
+
+    _onPlayerChangeMoneyAnim(data) {
+        let { playerId, balance } = data;
+        if (playerId !== this.id)
+            return;
+        this.renderer.startPlusBalanceAnimation(balance);
+    }
+
+    _onGameRejoin(data) {
+        super._onGameRejoin(data);
+    }
+
+    _onGameState(state, data, isJustJoined) {
+
+    }
+
+    _onGameStateBet() {
+        debug('_onGameStateBet PlayerXocDia')
+    }
 }
 
 app.createComponent(PlayerXocDia);

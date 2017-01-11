@@ -21,8 +21,8 @@ export default class XocDiaControls extends GameControls {
             betOptionsGroupNode: cc.Node,
             btnGroupNode: cc.Node,
             betContainerNode: cc.Node,
-            miniChip: cc.Prefab,
             dealer: cc.Node,
+            receiveChipDestinationNode: cc.Node,
             reBetBtn: cc.Button
         }
 
@@ -212,8 +212,8 @@ export default class XocDiaControls extends GameControls {
      * @param betData: {<betid1> : <amount>, <betid2> : <amount>}
      */
     _onPlayerReceiveChip(data) {
-        let { userPos, playerId, betData, dots } = data;
-        let toPos = userPos;
+        let { userPos, playerId, betData, dots, isItMe } = data;
+        let toPos = isItMe ? this.receiveChipDestinationNode.parent.convertToWorldSpaceAR(this.receiveChipDestinationNode.getPosition()) : userPos;
 
         for (let id in betData) {
             let isWinner = this.betContainerButton.doesBetTypeIdWin(Number(id), dots);
@@ -243,8 +243,8 @@ export default class XocDiaControls extends GameControls {
         }
     }
 
-    _onPlayerChipChanged(currentChip){
-        if(!utils.isNumber(currentChip)) return;
+    _onPlayerChipChanged(currentChip) {
+        if (!utils.isNumber(currentChip)) return;
 
         this.currentGold = currentChip;
         this.updateUserGoldLbl(this.currentGold);
