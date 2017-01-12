@@ -1,8 +1,7 @@
 import app from 'app';
-import Component from 'Component';
-import GridViewRub from 'GridViewRub';
+import Actor from 'Actor';
 
-export default class TabUserInfo extends Component {
+export default class TabUserInfo extends Actor {
     constructor() {
         super();
 
@@ -25,8 +24,19 @@ export default class TabUserInfo extends Component {
         };
     }
 
-    onLoad() {
+    start() {
+        super.start();
         this._initUserData();
+    }
+
+    _addGlobalListener() {
+        super._addGlobalListener();
+        app.system.addListener(app.commands.USER_PROFILE, this._onUserProfile, this);
+    }
+
+    _removeGlobalListener() {
+        super._removeGlobalListener();
+        app.system.removeListener(app.commands.USER_PROFILE, this._onUserProfile, this);
     }
 
     _initUserData() {
@@ -39,17 +49,10 @@ export default class TabUserInfo extends Component {
         };
 
         app.system.showLoader();
-
-        app.service.send(sendObj, (data) => {
-            if (data) {
-                this._fillData(data);
-                app.system.hideLoader();
-            }
-        });
+        app.service.send(sendObj);
     }
 
-    _fillData(userData) {
-        // console.log(userData);
+    _onUserProfile(data) {
         let { name, coin } = app.context.getMyInfo();
 
         this.userName.string = name;
@@ -61,8 +64,9 @@ export default class TabUserInfo extends Component {
         if (app.context.needUpdatePhoneNumber()) {
             this.phoneNumber.string = `Chưa cập nhật`;
         } else {
-            this.phoneNumber.string = userData[app.keywords.PHONE_INVITE_PHONE];
+            this.phoneNumber.string = data[app.keywords.PHONE_INVITE_PHONE];
         }
+        app.system.hideLoader();
     }
 }
 

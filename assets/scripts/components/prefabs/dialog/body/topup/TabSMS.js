@@ -1,49 +1,22 @@
 import app from 'app';
-import Component from 'Component';
+import Actor from 'Actor';
 
-class TabSMS extends Component {
+class TabSMS extends Actor {
     constructor() {
         super();
-        this.toggleGroupNode = {
-            default: null,
-            type: cc.Node
-        };
-
-        this.itemNode = {
-            default: null,
-            type: cc.Node
-        };
-
-        this.h1Lbl = {
-            default: null,
-            type: cc.Label
-        };
-
-        this.sendToLbl = {
-            default: null,
-            type: cc.Label
-        };
-
-        this.commandLbl = {
-            default: null,
-            type: cc.Label
-        };
-
-        this.moneyGetLbl = {
-            default: null,
-            type: cc.Label
+        this.properties = {
+            ...this.properties,
+            toggleGroupNode: cc.Node,
+            itemNode: cc.Node,
+            h1Lbl: cc.Label,
+            sendToLbl: cc.Label,
+            commandLbl: cc.Label,
+            moneyGetLbl: cc.Label,
         };
     }
 
     onLoad() {
         this.node.active = true;
-        // get content node
-        // let event = new cc.Component.EventHandler();
-        // event.target = this.node;
-        // event.component = 'TabSMS';
-        // event.handler = 'scrollEvent';
-
-        // this.node.getComponent(cc.ScrollView).scrollEvents.push(event);
 
         let data = {
             ap: ['com.bamienstudio.baibamien.4000g', 'com.bamienstudio.baibamien.8000g'],
@@ -112,7 +85,11 @@ class TabSMS extends Component {
             }
         }
 
-        this._initSMSList(data);
+        this._onUserGetChargeList(data);
+    }
+
+    start() {
+        super.start();
         // this._requestPaymentList();
     }
 
@@ -120,36 +97,25 @@ class TabSMS extends Component {
 
     }
 
+    _addGlobalListener() {
+        super._addGlobalListener();
+        app.system.addListener(app.commands.USER_GET_CHARGE_LIST, this._onUserGetChargeList, this);
+    }
+
+    _removeGlobalListener() {
+        super._removeGlobalListener();
+        app.system.removeListener(app.commands.USER_GET_CHARGE_LIST, this._onUserGetChargeList, this);
+    }
+
     _requestPaymentList() {
         var sendObject = {
             'cmd': app.commands.USER_GET_CHARGE_LIST,
         };
 
-        app.service.send(sendObject, (data) => {
-            this._initSMSList(data);
-
-        }, app.const.scene.DASHBOARD_SCENE);
+        app.service.send(sendObject);
     }
 
-    _initItem({ command, sendTo, moneyGot, isChecked }) {
-        let cmdArray = command.split(' ');
-        let h1 = cmdArray.shift();
-        let cmd = cmdArray.join(' ');
-
-        this.h1Lbl.string = h1;
-        this.commandLbl.string = cmd;
-        this.sendToLbl.string = `Gửi ${sendTo}`;
-        this.moneyGetLbl.string = `${moneyGot.toLocaleString()}`;
-
-        let item = cc.instantiate(this.itemNode);
-        item.active = true;
-        let toggle = item.getComponent(cc.Toggle);
-        toggle.isChecked = isChecked;
-
-        this.toggleGroupNode.addChild(item);
-    }
-
-    _initSMSList(data) {
+    _onUserGetChargeList(data) {
         // app.keywords.CHARGE_SMS_OBJECT
         if (data.hasOwnProperty(app.keywords.CHARGE_SMS_OBJECT)) {
             const obj = data[app.keywords.CHARGE_SMS_OBJECT];
@@ -182,43 +148,22 @@ class TabSMS extends Component {
         }
     }
 
-    _hide() {
-        this.node.active = false;
-    }
+    _initItem({ command, sendTo, moneyGot, isChecked }) {
+        let cmdArray = command.split(' ');
+        let h1 = cmdArray.shift();
+        let cmd = cmdArray.join(' ');
 
-    scrollEvent(sender, event) {
-        switch (event) {
-            case 0:
-                console.log('Scroll to Top');
-                break;
-            case 1:
-                console.log('Scroll to Bottom');
-                break;
-            case 2:
-                console.log('Scroll to left');
-                break;
-            case 3:
-                console.log('Scroll to right');
-                break;
-            case 4:
-                console.log('Scrolling');
-                break;
-            case 5:
-                console.log('Bounce Top');
-                break;
-            case 6:
-                console.log('Bounce bottom');
-                break;
-            case 7:
-                console.log('Bounce left');
-                break;
-            case 8:
-                console.log('Bounce right');
-                break;
-            case 9:
-                console.log('Auto scroll ended');
-                break;
-        }
+        this.h1Lbl.string = h1;
+        this.commandLbl.string = cmd;
+        this.sendToLbl.string = `Gửi ${sendTo}`;
+        this.moneyGetLbl.string = `${moneyGot.toLocaleString()}`;
+
+        let item = cc.instantiate(this.itemNode);
+        item.active = true;
+        let toggle = item.getComponent(cc.Toggle);
+        toggle.isChecked = isChecked;
+
+        this.toggleGroupNode.addChild(item);
     }
 }
 

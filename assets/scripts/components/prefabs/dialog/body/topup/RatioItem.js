@@ -1,7 +1,7 @@
 import app from 'app';
-import Component from 'Component';
+import Actor from 'Actor';
 
-class RatioItem extends Component {
+class RatioItem extends Actor {
     constructor() {
         super();
 
@@ -16,7 +16,9 @@ class RatioItem extends Component {
         };
     }
 
-    onLoad() {}
+    onLoad() {
+        super.onLoad();
+    }
 
     initItem(number, ratio) {
         this.titleLbl.string = `${number.toLocaleString()} VNĐ`;

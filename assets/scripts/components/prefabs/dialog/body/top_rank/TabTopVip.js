@@ -1,56 +1,56 @@
 import app from 'app';
-import Component from 'Component';
-import GridViewRub from 'GridViewRub';
+import Actor from 'Actor';
 
-class TabTopVip extends Component {
+class TabTopVip extends Actor {
     constructor() {
         super();
 
-        this.flag = null;
-        this.topNodeId = 14;
-        this.currentPage = 1;
-
-        this.contentNode = {
-            default: null,
-            type: cc.Node
-        };
-
-        this.crowns = {
-            default: null,
-            type: cc.Node
-        };
-
-        this.vips = {
-            default: null,
-            type: cc.Node
+        this.properties = {
+            ...this.properties,
+            contentNode: cc.Node,
+            crowns: cc.Node,
+            vips: cc.Node,
         };
     }
 
     onLoad() {
-        this._initData((data) => {
-            this._initBody(data);
-        });
+        super.onLoad();
     }
 
-    _initData(cb) {
-        app.system.showLoader();
+    start() {
+        super.start();
+        this._getRankGroup()
+    }
+
+    _addGlobalListener() {
+        super._addGlobalListener();
+        app.system.addListener(app.commands.RANK_GROUP, this._showBody, this);
+    }
+
+    _removeGlobalListener() {
+        super._removeGlobalListener();
+        app.system.removeListener(app.commands.RANK_GROUP, this._showBody, this);
+    }
+
+    _getRankGroup() {
+        let topNodeId = 14,
+            currentPage = 1;
+
         let sendObject = {
             'cmd': app.commands.RANK_GROUP,
             'data': {
                 [app.keywords.RANK_GROUP_TYPE]: app.const.DYNAMIC_GROUP_LEADER_BOARD,
                 [app.keywords.RANK_ACTION_TYPE]: app.const.DYNAMIC_ACTION_BROWSE,
-                [app.keywords.PAGE]: this.currentPage,
-                [app.keywords.RANK_NODE_ID]: this.topNodeId,
+                [app.keywords.PAGE]: currentPage,
+                [app.keywords.RANK_NODE_ID]: topNodeId,
             }
         };
-
-        app.service.send(sendObject, (res) => {
-            cb(res);
-        });
+        app.system.showLoader();
+        app.service.send(sendObject);
     }
 
-    _initBody(d) {
-        let ul = d['unl'];
+    _showBody(d) {
+        let ul = d[app.keywords.USERNAME_LIST];
 
         let data = [
             ul.map((status, index) => {
@@ -67,7 +67,7 @@ class TabTopVip extends Component {
         ];
         ul = null;
 
-        GridViewRub.show(this.contentNode, {
+        this.initGridView({
             data: ['STT', 'Tài khoản', 'Loại'],
             options: {
                 fontColor: app.const.COLOR_YELLOW
@@ -75,8 +75,9 @@ class TabTopVip extends Component {
         }, data, {
             height: 425,
         });
-        data = null;
-        this.vips = null;
+
+        this.contentNode.addChild(this.getGridViewNode());
+
         app.system.hideLoader();
     }
 }

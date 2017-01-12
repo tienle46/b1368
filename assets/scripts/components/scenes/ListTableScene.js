@@ -248,7 +248,7 @@ export default class ListTableScene extends BaseScene {
 
         if (customIds) {
             // room faker
-            customIds = [...customIds, ...new Array(4).fill(0)];
+            customIds = [...customIds, ...[0, 0, 0, 0]];
             this.items = [];
             for (let i = 0; i < customIds.length; i++) {
 

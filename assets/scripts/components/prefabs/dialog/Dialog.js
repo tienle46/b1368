@@ -28,7 +28,6 @@ export default class Dialog extends Component {
             type: cc.Node
         };
 
-        this.addedPrefabs = [];
         this.addedNodes = {};
     }
 
@@ -38,21 +37,18 @@ export default class Dialog extends Component {
     }
 
     onEnable() {
-        this.addedPrefabs = [];
         this.bgTransparent.on(cc.Node.EventType.TOUCH_START, () => true);
     }
 
     onDestroy() {
         super.onDestroy();
-        RubUtils.releaseAssets(this.addedPrefabs);
-        this.addedPrefabs = [];
         this.addedNodes = {};
     }
 
     onCloseBtnClick() {
         // this.releaseAssets();
         this.node.parent.destroy();
-        this.node.parent.removeFromParent(true);
+        this.node.parent.removeFromParent();
     }
 
     addToBody(id, url) {
@@ -82,7 +78,7 @@ export default class Dialog extends Component {
 
     _addContentPrefabToBody(id, prefabURL) {
         return RubUtils.loadRes(prefabURL).then((prefab) => {
-            this.addedPrefabs.push(prefab);
+            this.addAsset(prefab);
             let p = cc.instantiate(prefab);
             p.__uid = id;
             this._addChildToBody(id, p);
@@ -131,7 +127,7 @@ export default class Dialog extends Component {
 
         this.bodyNode.addChild(node);
 
-        this.addAssets(node); // <- removed assets
+        this.addNode(node); // <- removed assets
 
         this._showBody(id);
     }

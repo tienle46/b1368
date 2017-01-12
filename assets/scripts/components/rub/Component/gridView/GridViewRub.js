@@ -123,10 +123,14 @@ export default class GridViewRub extends ScrollViewRub {
     resetData(data, isValidated = false) {
         this.data = isValidated ? data : this._validateData(data);
         // reset body
-        this.contentNode.forEach(child => child.destroy());
-        this.contentNode && this.contentNode.removeAllChildren(true);
+        this.contentNode.children && this.contentNode.children.forEach(child => cc.isValid(child) && child.destroy() && child.removeFromParent());
         // reinsert
         this._initCell();
+    }
+
+    destroy() {
+        super.destroy();
+        this.head = null;
     }
 
     _setupComponentsByOptions(body) {
@@ -182,7 +186,6 @@ export default class GridViewRub extends ScrollViewRub {
 
     _insertCellBody(data) {
         let width = this._setCellSize(data);
-
 
         for (let i = 0; i < data.length; i++) {
             let rowHeight = this.options.cell.height;
@@ -265,6 +268,9 @@ export default class GridViewRub extends ScrollViewRub {
      * @memberOf GridViewRub
      */
     _validateData(input) {
+        if (input instanceof Array && input.length < 1)
+            return [];
+
         input = app._.cloneDeep(input);
         let tmp = [];
         let out = [];

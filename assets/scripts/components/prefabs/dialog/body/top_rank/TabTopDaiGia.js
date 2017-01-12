@@ -1,9 +1,8 @@
 import app from 'app';
-import Component from 'Component';
-import GridViewRub from 'GridViewRub';
+import Actor from 'Actor';
 import numeral from 'numeral';
 
-class TabTopDaiGia extends Component {
+class TabTopDaiGia extends Actor {
     constructor() {
         super();
 
@@ -20,11 +19,25 @@ class TabTopDaiGia extends Component {
     }
 
     onLoad() {
-        this._getDataFromServer(this.currentPage);
+        super.onLoad();
+    }
+
+    start() {
+        super.start();
+        this._getDataFromServer(this.currentPage)
+    }
+
+    _addGlobalListener() {
+        super._addGlobalListener();
+        app.system.addListener(app.commands.RANK_GROUP, this._onGetRankGroup, this);
+    }
+
+    _removeGlobalListener() {
+        super._removeGlobalListener();
+        app.system.removeListener(app.commands.RANK_GROUP, this._onGetRankGroup, this);
     }
 
     _getDataFromServer(page) {
-        app.system.showLoader();
         let sendObject = {
             'cmd': app.commands.RANK_GROUP,
             'data': {
@@ -34,54 +47,56 @@ class TabTopDaiGia extends Component {
                 [app.keywords.RANK_NODE_ID]: this.topNodeId,
             }
         };
+        app.system.showLoader();
+        app.service.send(sendObject);
+    }
+
+    _onGetRankGroup(res) {
         let body = this.contentNode;
+        body.children.forEach(child => cc.isValid(child) && child.destroy() && child.removeFromParent());
 
-        app.service.send(sendObject, (res) => {
+        let data = [
+            res[app.keywords.USERNAME_LIST].map((status, index) => {
+                if (this.crownsNode.children[index])
+                    return cc.instantiate(this.crownsNode.children[index]);
+                else
+                    return `${index + 1}.`;
+            }),
+            res[app.keywords.USERNAME_LIST],
+            res['ui1l'].map((amount) => {
+                this.userMoneyLbl.string = `${numeral(amount).format('0,0')}`;
+                let usermoneyLbl = cc.instantiate(this.userMoneyLbl.node);
+                return usermoneyLbl;
+            }),
+        ];
+        let head = {
+            data: ['STT', 'Tài khoản', 'Chips'],
+            options: {
+                fontColor: app.const.COLOR_YELLOW,
+                fontSize: 25
+            }
+        };
 
-            body.children.forEach(child => child.destroy());
-            body.removeAllChildren();
+        let next = this.onNextBtnClick.bind(this);
+        let prev = this.onPreviousBtnClick.bind(this);
 
-            let data = [
-                res['unl'].map((status, index) => {
-                    if (this.crownsNode.children[index])
-                        return cc.instantiate(this.crownsNode.children[index]);
-                    else
-                        return `${index + 1}.`;
-                }),
-                res['unl'],
-                res['ui1l'].map((amount) => {
-                    this.userMoneyLbl.string = `${numeral(amount).format('0,0')}`;
-                    let usermoneyLbl = cc.instantiate(this.userMoneyLbl.node);
-                    return usermoneyLbl;
-                }),
+        let rubOptions = {
+            paging: { prev, next },
+            position: cc.v2(0, 10),
+            height: 390,
+            group: { widths: ['', '', 380] }
+        };
 
-            ];
-            let head = {
-                data: ['STT', 'Tài khoản', 'Chips'],
-                options: {
-                    fontColor: app.const.COLOR_YELLOW,
-                    fontSize: 25
-                }
-            };
+        this.initGridView(head, data, rubOptions);
 
-            let next = this.onNextBtnClick.bind(this);
-            let prev = this.onPreviousBtnClick.bind(this);
+        data = null; // collect item
+        body = null;
 
-            let rubOptions = {
-                paging: { prev, next },
-                position: cc.v2(0, 10),
-                height: 390,
-                group: { widths: ['', '', 380] }
-            };
+        let node = this.getGridViewNode();
 
-            let gridViewRub = new GridViewRub(head, data, rubOptions);
-            data = null;
-            let node = gridViewRub.getNode();
+        app.system.hideLoader();
 
-            app.system.hideLoader();
-
-            (!node.parent) && body.addChild(node);
-        });
+        (!node.parent) && body.addChild(node);
     }
 
     onPreviousBtnClick() {

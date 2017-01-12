@@ -1,9 +1,9 @@
 import app from 'app';
-import Component from 'Component';
+import Actor from 'Actor';
 import GridViewRub from 'GridViewRub';
 import RubUtils from 'RubUtils';
 
-class TabTopCaoThu extends Component {
+class TabTopCaoThu extends Actor {
     constructor() {
         super();
 
@@ -27,8 +27,19 @@ class TabTopCaoThu extends Component {
         };
     }
 
-    onLoad() {
+    start() {
+        super.start();
         this._initGameList(this.currentPage);
+    }
+
+    _addGlobalListener() {
+        super._addGlobalListener();
+        app.system.addListener(app.commands.RANK_GROUP, this._showBody, this);
+    }
+
+    _removeGlobalListener() {
+        super._removeGlobalListener();
+        app.system.removeListener(app.commands.RANK_GROUP, this._showBody, this);
     }
 
     _initGameList(page) {

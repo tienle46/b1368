@@ -141,6 +141,7 @@ Keywords.BUDDY_MESSAGE_SENDER = "bs";
 Keywords.BUDDY_MESSAGE_SENDER_LIST = "sl";
 Keywords.BUDDY_MESSAGE_SEND_TIME_LIST = "stl";
 Keywords.BUDDY_MESSAGE_SEND_TIME = "st";
+Keywords.USERNAME_LIST = "unl";
 
 //Keywords.BUDDY_VARIABLES_ROOM = "$gr";
 Keywords.BUDDY_VARIABLES_ROOM = "gr";

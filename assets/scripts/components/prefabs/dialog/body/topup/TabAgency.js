@@ -1,8 +1,7 @@
 import app from 'app';
-import Component from 'Component';
-import GridViewRub from 'GridViewRub';
+import Actor from 'Actor';
 
-class TabAgency extends Component {
+class TabAgency extends Actor {
     constructor() {
         super();
         this.bodyNode = {
@@ -17,7 +16,7 @@ class TabAgency extends Component {
     }
 
     _getAgencyDataFromServer() {
-        let agencyTab = new GridViewRub({
+        this.initGridView({
             data: ['TGLV', 'Đại lý', 'Số DT', 'Địa chỉ', 'facebook'],
             options: {
                 fontColor: app.const.COLOR_YELLOW,
@@ -101,13 +100,13 @@ class TabAgency extends Component {
                 d.push(a.fblink);
                 data.push(d);
             });
-            agencyTab.resetData(data, true);
+            this.getGridView().resetData(data, true);
         }
 
-        this.bodyNode.addChild(agencyTab.getNode());
+        this.bodyNode.addChild(this.getGridViewNode());
 
         app.service.send(sendObj, (res) => {
-            debug(res)
+            debug(res);
         });
     }
 }

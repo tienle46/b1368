@@ -26,6 +26,7 @@ let RubUtils = {
 
             let frame = atlas.getSpriteFrame(key);
             cb(frame);
+            RubUtils.releaseAssets(frame);
             // sprite.spriteFrame = frame;
         });
     },
@@ -33,6 +34,7 @@ let RubUtils = {
         cc.loader.loadRes(url, cc.Font, (err, font) => {
             component.font = font;
             cb && cb(font);
+            RubUtils.releaseAssets(font)
         });
     },
     /**
@@ -68,7 +70,6 @@ let RubUtils = {
             let spriteFrame = new cc.SpriteFrame(textureCache);
             spriteComponent.spriteFrame = spriteFrame;
             spriteFrameDefaultConfig(spriteComponent);
-
         } else {
             return RubUtils.loadRes(resURL, true).then((spriteFrame) => {
                 if (spriteFrame) {
@@ -127,6 +128,7 @@ let RubUtils = {
             let deps = asset && cc.loader.getDependsRecursively(asset);
             deps && deps.length > 0 && cc.loader.release(asset);
         });
+        assets = null;
     }
 };
 export default RubUtils;

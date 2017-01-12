@@ -32,6 +32,7 @@ class DialogTab extends Component {
         this.dialogComponent = this.dialogNode.getComponent('Dialog');
     }
 
+
     make({ title, value, isChecked }) {
         this.tabLbl.string = title;
 
@@ -44,6 +45,8 @@ class DialogTab extends Component {
         tab.active = true;
 
         this.tabNode.parent.addChild(tab);
+
+        this.addNode(tab);
 
         if (isChecked)
             this.onCheckedEvent(toggle);

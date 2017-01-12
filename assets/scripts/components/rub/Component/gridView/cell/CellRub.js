@@ -166,6 +166,10 @@ export default class CellRub {
             }
         }
 
+        if (this.cell.button.value) {
+            btnBtn.node.getValue = () => this.cell.button.value;
+        }
+
         // button scaler
         btnNode.addComponent(ButtonScaler);
 

@@ -4,7 +4,8 @@
 
 import app from 'app';
 import Component from 'Component';
-import Emitter from 'emitter'
+import Emitter from 'emitter';
+import GridViewRub from 'GridViewRub';
 
 export default class Actor extends Component {
     constructor() {
@@ -19,18 +20,22 @@ export default class Actor extends Component {
         this.initiated = false;
         this._eventEmitter = null;
         this.__pendingEmitEvents = null;
+
+        this._gridView = null;
     }
 
     /**
      * Sub class must be call super.onLoad() to init Renderer of actor
      */
     onLoad() {
+        super.onLoad();
         this.renderData = {};
         this.__pendingEmitEvents = {};
         this._assertEmitter();
     }
 
     onEnable(renderer = this.renderer, renderData = this.renderData) {
+        super.onEnable();
         this.renderer = renderer;
         this.renderData = {...renderData, actor: this };
         this.renderer && this.renderer._init(this.renderData);
@@ -44,14 +49,58 @@ export default class Actor extends Component {
     }
 
     onDisable() {
+        super.onDisable();
         this._removeGlobalListener();
         this.removeAllListener();
+    }
+
+    onDestroy() {
+        super.onDestroy();
+        this._gridView && this._gridView.destroy() && (this._gridView = null);
+    }
+
+    emit(name, ...args) {
+        if (this.initiated) {
+            this._eventEmitter.emit(name, ...args);
+        } else {
+            this._assertPendingEmitEvents();
+            !this.__pendingEmitEvents.hasOwnProperty(name) && (this.__pendingEmitEvents[name] = []);
+            this.__pendingEmitEvents[name].push(args);
+        }
+    }
+
+    on(name, listener, context, priority) {
+        this._assertEmitter();
+        this._eventEmitter.addListener(name, listener, context, priority);
+    }
+
+    off(eventName, listener, context) {
+        this._eventEmitter && this._eventEmitter.removeListener(eventName, listener, context);
+    }
+
+    removeAllListener() {
+        this.off();
     }
 
     _assertEmitter() {
         !this._eventEmitter && (this._eventEmitter = new Emitter());
     }
 
+    _assertPendingEmitEvents() {
+        !this.__pendingEmitEvents && (this.__pendingEmitEvents = {});
+    }
+
+    initGridView(head, data, options) {
+        this._gridView = new GridViewRub(head, data, options);
+    }
+
+    getGridView() {
+        return this._gridView;
+    }
+
+    getGridViewNode() {
+        return this._gridView && this.getGridView().getNode();
+    }
 
     /**
      * This func to add listener to handler data from server or a custom action into game system
@@ -84,33 +133,6 @@ export default class Actor extends Component {
      */
     _removeGlobalListener() {
         this._assertEmitter();
-    }
-
-    emit(name, ...args) {
-        if (this.initiated) {
-            this._eventEmitter.emit(name, ...args);
-        } else {
-            this._assertPendingEmitEvents();
-            !this.__pendingEmitEvents.hasOwnProperty(name) && (this.__pendingEmitEvents[name] = []);
-            this.__pendingEmitEvents[name].push(args);
-        }
-    }
-
-    _assertPendingEmitEvents() {
-        !this.__pendingEmitEvents && (this.__pendingEmitEvents = {});
-    }
-
-    on(name, listener, context, priority) {
-        this._assertEmitter();
-        this._eventEmitter.addListener(name, listener, context, priority);
-    }
-
-    off(eventName, listener, context) {
-        this._eventEmitter && this._eventEmitter.removeListener(eventName, listener, context);
-    }
-
-    removeAllListener() {
-        this.off();
     }
 
     _emitPendingEvent() {

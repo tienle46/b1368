@@ -1,6 +1,7 @@
 /**
  * Created by Thanh on 9/1/2016.
  */
+import RubUtils from 'RubUtils';
 
 export default class Component {
     constructor() {
@@ -10,38 +11,41 @@ export default class Component {
             path: ""
         };
 
-        this.loadedAssets = [];
-        this.addAssets(this);
+        this.loadedAssets = []; // assets (cc.Font, cc.SpriteFrame, cc.SpriteAtlas ...) will be release when destroy
+        this.loadedNodes = []; // nodes will be destroy & removeFromParent when component onDestroy
     }
 
-    addAssets(asset) {
+    addAsset(asset) {
         this.loadedAssets.push(asset);
+    }
+
+    addNode(node) {
+        this.loadedNodes.push(node);
     }
 
     onLoad() {}
 
-    start() {
+    start() {}
 
-    }
+    update(dt) {}
 
-    update(dt) {
+    onEnable() {}
 
-    }
-
-    onEnable() {
-
-    }
-
-    onDisable() {
-
-    }
+    onDisable() {}
 
     onDestroy() {
         this.releaseAssets();
+        this.removeNodes();
     }
 
     releaseAssets() {
-        cc.loader.release(this.loadedAssets);
-        this.loadedAssets = [];
+        RubUtils.releaseAssets(this.loadedAssets);
+    }
+
+    removeNodes() {
+        let nodes = this.loadedNodes;
+
+        nodes.map(node => cc.isValid(node) && node.destroy() && node.removeFromParent());
+        this.loadedNodes = [];
     }
 }

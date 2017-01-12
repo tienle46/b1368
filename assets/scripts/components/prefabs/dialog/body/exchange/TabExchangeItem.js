@@ -1,11 +1,11 @@
 import app from 'app';
-import Component from 'Component';
+import Actor from 'Actor';
 import RubUtils from 'RubUtils';
 import numeral from 'numeral';
 import ExchangeDialog from 'ExchangeDialog';
 import LoaderRub from 'LoaderRub';
 
-class TabExchangeItem extends Component {
+class TabExchangeItem extends Actor {
     constructor() {
         super();
 
@@ -21,12 +21,27 @@ class TabExchangeItem extends Component {
     onLoad() {
         super.onLoad();
         // wait til every requests is done
-        app.system.showLoader();
-        this.node.active = false;
+        // this.node.active = false;
 
         // get content node
-        this._getExchangeDialogComponent().hideUpdatePhone();
+        // this._getExchangeDialogComponent().hideUpdatePhone();
+    }
+
+    start() {
+        super.start();
         this._initItemsList();
+    }
+
+    _addGlobalListener() {
+        super._addGlobalListener();
+        app.system.addListener(app.commands.EXCHANGE_LIST, this._onGetExchangeList, this);
+        app.system.addListener(app.commands.EXCHANGE, this._onExchange, this);
+    }
+
+    _removeGlobalListener() {
+        super._removeGlobalListener();
+        app.system.removeListener(app.commands.EXCHANGE, this._onExchange, this);
+        app.system.removeListener(app.commands.EXCHANGE_LIST, this._onGetExchangeList, this);
     }
 
     _initItemsList() {
@@ -34,53 +49,55 @@ class TabExchangeItem extends Component {
             'cmd': app.commands.EXCHANGE_LIST,
             'data': {}
         };
+        app.system.showLoader();
+        app.service.send(sendObject);
+    }
 
-        app.service.send(sendObject, (data) => {
-            if (data[app.keywords.EXCHANGE_LIST.RESPONSE.TYPES]) {
-                const exchangeTypes = data[app.keywords.EXCHANGE_LIST.RESPONSE.TYPES];
-                exchangeTypes.map((type) => {
-                    if (type[app.keywords.EXCHANGE_LIST.RESPONSE.ITEM_TYPE] == app.const.EXCHANGE_LIST_ITEM_TYPE_ID) {
-                        const idList = type[app.keywords.EXCHANGE_LIST.RESPONSE.ITEM_ID_LIST];
-                        const nameList = type[app.keywords.EXCHANGE_LIST.RESPONSE.ITEM_NAME_LIST];
-                        const goldList = type[app.keywords.EXCHANGE_LIST.RESPONSE.ITEM_GOLD_LIST];
-                        const iconList = type[app.keywords.EXCHANGE_LIST.RESPONSE.ITEM_ICON_LIST];
+    _onGetExchangeList(data) {
+        if (data[app.keywords.EXCHANGE_LIST.RESPONSE.TYPES]) {
+            let exchangeTypes = data[app.keywords.EXCHANGE_LIST.RESPONSE.TYPES];
+            exchangeTypes.map((type) => {
+                if (type[app.keywords.EXCHANGE_LIST.RESPONSE.ITEM_TYPE] == app.const.EXCHANGE_LIST_ITEM_TYPE_ID) {
+                    const idList = type[app.keywords.EXCHANGE_LIST.RESPONSE.ITEM_ID_LIST];
+                    const nameList = type[app.keywords.EXCHANGE_LIST.RESPONSE.ITEM_NAME_LIST];
+                    const goldList = type[app.keywords.EXCHANGE_LIST.RESPONSE.ITEM_GOLD_LIST];
+                    const iconList = type[app.keywords.EXCHANGE_LIST.RESPONSE.ITEM_ICON_LIST];
 
-                        for (let i = 0; i < idList.length; i++) {
-                            let itemId = idList[i];
-                            let itemIcon = `https://crossorigin.me/${iconList[i].replace('thumb.', '')}`;
-                            let itemGold = goldList[i];
-                            let itemName = nameList[i];
+                    for (let i = 0; i < idList.length; i++) {
+                        let itemId = idList[i];
+                        let itemIcon = `https://crossorigin.me/${iconList[i].replace('thumb.', '')}`;
+                        let itemGold = goldList[i];
+                        let itemName = nameList[i];
 
-                            let item = cc.instantiate(this.exchangeItem);
-                            item.active = true;
+                        let item = cc.instantiate(this.exchangeItem);
+                        item.active = true;
 
-                            let a = new LoaderRub(item, true);
-                            a.show();
-                            // add sprite to img 
-                            RubUtils.loadSpriteFrame(this.exchangeItemImage, itemIcon, this.exchangeItemImage.node.getContentSize(), true, (sprite) => {
-                                this.addAssets(sprite);
-                                a.destroy();
-                            });
+                        let a = new LoaderRub(item, true);
+                        a.show();
+                        // add sprite to img 
+                        RubUtils.loadSpriteFrame(this.exchangeItemImage, itemIcon, this.exchangeItemImage.node.getContentSize(), true, (sprite) => {
+                            this.addAsset(sprite);
+                            a.destroy();
+                        });
 
-                            // add price
-                            this.exchangeItemPrice.string = `${itemGold.toLocaleString()} XU`;
+                        // add price
+                        this.exchangeItemPrice.string = `${itemGold.toLocaleString()} XU`;
 
 
-                            let itemBtn = item.getChildByName('btn').getComponent(cc.Button);
-                            itemBtn.itemId = itemId;
-                            itemBtn.itemName = itemName;
-                            itemBtn.itemGold = itemGold;
+                        let itemBtn = item.getChildByName('btn').getComponent(cc.Button);
+                        itemBtn.itemId = itemId;
+                        itemBtn.itemName = itemName;
+                        itemBtn.itemGold = itemGold;
 
-                            this.contentNode.addChild(item);
-                        }
+                        this.contentNode.addChild(item);
                     }
-                });
-                // hide loader
-                app.system.hideLoader();
-                this.node.active = true;
-            }
-
-        }, app.const.scene.EXCHANGE_CHIP);
+                }
+            });
+            exchangeTypes = null;
+            // hide loader
+            app.system.hideLoader();
+            this.node.active = true;
+        }
     }
 
     onItemBtnClick(event) {
@@ -123,16 +140,18 @@ class TabExchangeItem extends Component {
             };
             // show loader
             app.system.showLoader();
-            app.service.send(sendObject, (data) => {
-                app.system.hideLoader();
-                if (data[app.keywords.RESPONSE_RESULT] === false) {
-                    app.system.info(`${data[app.keywords.RESPONSE_MESSAGE]}`);
-                } else { // true
-                    app.system.error(
-                        app.res.string('error_system')
-                    );
-                }
-            });
+            app.service.send(sendObject);
+        }
+    }
+
+    _onExchange(data) {
+        app.system.hideLoader();
+        if (data[app.keywords.RESPONSE_RESULT] === false) {
+            app.system.info(`${data[app.keywords.RESPONSE_MESSAGE]}`);
+        } else { // true
+            app.system.error(
+                app.res.string('error_system')
+            );
         }
     }
 
@@ -144,10 +163,6 @@ class TabExchangeItem extends Component {
 
     _getUpdatePhoneNode() {
         return this._getExchangeDialogComponent().updatePhoneNode();
-    }
-
-    _hide() {
-        this.node.active = false;
     }
 }
 

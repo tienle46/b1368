@@ -1,63 +1,46 @@
 import app from 'app';
-import Component from 'Component';
-import { isEmpty } from 'Utils';
+import Actor from 'Actor';
+import { isEmpty, setVisibility } from 'Utils';
 
-class TabCard extends Component {
+class TabCard extends Actor {
     constructor() {
         super();
 
-        this.ratioItem = {
-            default: null,
-            type: cc.Node
-        };
-
-        this.ratioContainer = {
-            default: null,
-            type: cc.Node
-        };
-
-        this.dropDownContainer = {
-            default: null,
-            type: cc.Node
-        };
-
-        this.listCardContainer = {
-            default: null,
-            type: cc.Node
-        };
-
-        this.providerNode = {
-            default: null,
-            type: cc.Node
-        };
-
-        this.providerLbl = {
-            default: null,
-            type: cc.Label
-        };
-
-        this.cardSerialEditBox = {
-            default: null,
-            type: cc.EditBox
-        };
-
-        this.serialNumberEditBox = {
-            default: null,
-            type: cc.EditBox
+        this.properties = {
+            ...this.properties,
+            ratioItem: cc.Node,
+            ratioContainer: cc.Node,
+            dropDownContainer: cc.Node,
+            listCardContainer: cc.Node,
+            providerNode: cc.Node,
+            providerLbl: cc.Label,
+            cardSerialEditBox: cc.EditBox,
+            serialNumberEditBox: cc.EditBox
         };
 
         this.providerId = null;
     }
 
     onLoad() {
+        super.onLoad();
         // wait til every requests is done
-        this.node.active = false;
-        // show loader
-        app.system.showLoader();
-
-        this._initCardsGroup();
-
         this._initRatioGroup();
+    }
+
+    start() {
+        super.start();
+        this.node.active = false;
+        this._initCardsGroup();
+    }
+
+    _addGlobalListener() {
+        super._addGlobalListener();
+        app.system.addListener(app.commands.USER_GET_CHARGE_LIST, this._onUserGetChargeList, this);
+    }
+
+    _removeGlobalListener() {
+        super._removeGlobalListener();
+        app.system.removeListener(app.commands.USER_GET_CHARGE_LIST, this._onUserGetChargeList, this);
     }
 
     _initRatioGroup() {
@@ -78,29 +61,34 @@ class TabCard extends Component {
             'cmd': app.commands.USER_GET_CHARGE_LIST
         };
 
-        app.service.send(sendObject, (data) => {
-            if (data) {
-                let cardListIds = data[app.keywords.EXCHANGE_LIST.RESPONSE.ITEM_ID_LIST];
-                cardListIds.forEach((id, index) => {
-                    let item = cc.instantiate(this.providerNode);
-                    let lbl = item.getChildByName('providername').getComponent(cc.Label);
-                    let providerName = data[app.keywords.TASK_NAME_LIST][index];
-                    lbl.string = providerName;
+        setVisibility(this.node, false);
 
-                    item.active = true;
-                    item.providerName = providerName;
-                    item.providerId = id;
+        // show loader
+        app.system.showLoader();
 
-                    this.listCardContainer.addChild(item);
-                });
+        app.service.send(sendObject);
+    }
 
-                app.system.hideLoader();
+    _onUserGetChargeList(data) {
+        let cardListIds = data[app.keywords.EXCHANGE_LIST.RESPONSE.ITEM_ID_LIST];
+        cardListIds.forEach((id, index) => {
+            let item = cc.instantiate(this.providerNode);
+            let lbl = item.getChildByName('providername').getComponent(cc.Label);
+            let providerName = data[app.keywords.TASK_NAME_LIST][index];
+            lbl.string = providerName;
 
-                // active node
-                this.node.active = true;
+            item.active = true;
+            item.providerName = providerName;
+            item.providerId = id;
 
-            }
-        }, app.const.scene.DASHBOARD_SCENE);
+            this.listCardContainer.addChild(item);
+        });
+
+        app.system.hideLoader();
+
+        // active node
+        setVisibility(this.node, true);
+        this.node.active = true;
     }
 
     onShowDropDownBtnClick() {

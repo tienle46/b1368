@@ -3,7 +3,6 @@ import Component from 'Component';
 import MessageEvent from 'MessageEvent';
 import ListItemToggleableRub from 'ListItemToggleableRub';
 import ListViewRub from 'ListViewRub';
-import LoaderRub from 'LoaderRub';
 
 export default class TabEvents extends Component {
     constructor() {
@@ -17,9 +16,9 @@ export default class TabEvents extends Component {
     }
 
     onLoad() {
-        this.loader = new LoaderRub(this.node.parent.parent);
+        super.onLoad();
 
-        this.loader.show();
+        app.system.showLoader();
         let next = this.onNextBtnClick.bind(this);
         let prev = this.onPreviousBtnClick.bind(this);
 
@@ -28,13 +27,18 @@ export default class TabEvents extends Component {
         this._requestEventList(this.currentPage);
     }
 
+    onDestroy() {
+        super.onDestroy();
+        this.viewRub.destroy();
+    }
+
     onPreviousBtnClick() {
         this.currentPage -= 1;
         if (this.currentPage < 1) {
             this.currentPage = 1;
             return null;
         }
-        this.loader.show();
+        app.system.showLoader();
         this._requestEventList(this.currentPage);
     }
 
@@ -42,7 +46,7 @@ export default class TabEvents extends Component {
         if (this.endPage) {
             return null;
         }
-        this.loader.show();
+        app.system.showLoader();
         this.currentPage += 1;
         this._requestEventList(this.currentPage);
     }
@@ -60,7 +64,6 @@ export default class TabEvents extends Component {
         };
 
         app.service.send(sendObject, (data) => {
-            debug(data);
             if (data) {
                 //convert raw data to list models
                 // this.currentPage = data[app.keywords.SYSTEM_MESSAGE.RESPONSE.CURRENT_PAGE];
@@ -82,7 +85,7 @@ export default class TabEvents extends Component {
                 }
             }
         }, app.const.scene.BOTTOM_BAR);
-        this.loader.hide();
+        app.system.hideLoader();
     }
 
     // _requestEventDetail(nodeId) {
@@ -151,7 +154,7 @@ export default class TabEvents extends Component {
 
         (!node.parent) && this.node.addChild(node);
 
-        this.loader.hide();
+        app.system.hideLoader();
     }
 }
 

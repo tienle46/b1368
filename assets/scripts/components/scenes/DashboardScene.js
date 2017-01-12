@@ -29,13 +29,19 @@ export default class DashboardScene extends BaseScene {
         super.onLoad();
     }
 
-    onEnable() {
-        super.onEnable();
-    }
-
     start() {
         super.start();
         this._getGamesListFromServer();
+    }
+
+    _addGlobalListener() {
+        super._addGlobalListener();
+        app.system.addListener(app.commands.USER_LIST_GAME_CODE, this._onUserListGame, this);
+    }
+
+    _removeGlobalListener() {
+        super._removeGlobalListener();
+        app.system.removeListener(app.commands.USER_LIST_GAME_CODE, this._onUserListGame, this);
     }
 
     _getGamesListFromServer() {
@@ -48,16 +54,6 @@ export default class DashboardScene extends BaseScene {
 
         this.showLoading();
         app.service.send(sendObject);
-    }
-
-    _addGlobalListener() {
-        super._addGlobalListener();
-        app.system.addListener(app.commands.USER_LIST_GAME_CODE, this._onUserListGame, this);
-    }
-
-    _removeGlobalListener() {
-        super._removeGlobalListener();
-        app.system.removeListener(app.commands.USER_LIST_GAME_CODE, this._onUserListGame, this);
     }
 
     _onUserListGame(data) {

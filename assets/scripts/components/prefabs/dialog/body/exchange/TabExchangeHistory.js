@@ -1,9 +1,9 @@
 import app from 'app';
-import Component from 'Component';
-import GridViewRub from 'GridViewRub';
+import Actor from 'Actor';
 import ExchangeDialog from 'ExchangeDialog';
+import RubResources from 'RubResources';
 
-class TabExchangeHistory extends Component {
+class TabExchangeHistory extends Actor {
     constructor() {
         super();
         this.flag = null;
@@ -13,72 +13,76 @@ class TabExchangeHistory extends Component {
         };
     }
 
-    onLoad() {
-        // wait til every requests is done
-        // this.node.active = false;
-
-        // get content node
-        // this.contentNode = this.node.getChildByName('view').getChildByName('content');
-        // this._initItemsList();
-        // init tabRub
-        this._getExchangeDialogComponent().hideUpdatePhone();
-        this._initData((data) => {
-            this._initBody(data);
-        });
-        // this._initTabs();
+    start() {
+        super.start();
+        this._getHistoriesFromServer();
     }
 
-    _initData(cb) {
+    _addGlobalListener() {
+        super._addGlobalListener();
+        app.system.addListener(app.commands.EXCHANGE_HISTORY, this._onGetExchangeHistory, this);
+    }
+
+    _removeGlobalListener() {
+        super._removeGlobalListener();
+        app.system.removeListener(app.commands.EXCHANGE_HISTORY, this._onGetExchangeHistory, this);
+    }
+
+    _getHistoriesFromServer() {
         let sendObject = {
             'cmd': app.commands.EXCHANGE_HISTORY,
             'data': {
                 [app.keywords.PAGE]: 1,
             }
         };
-        app.service.send(sendObject, (res) => {
-            let pattern = /Mã thẻ[^]*,/;
+        app.service.send(sendObject);
+    }
 
-            let d = (res[app.keywords.EXCHANGE_HISTORY.RESPONSE.ITEM_ID_HISTORY] && res[app.keywords.EXCHANGE_HISTORY.RESPONSE.ITEM_ID_HISTORY].length > 0 && [
-                res[app.keywords.EXCHANGE_HISTORY.RESPONSE.TIME_LIST],
-                res[app.keywords.EXCHANGE_HISTORY.RESPONSE.NAME_LIST],
-                res[app.keywords.EXCHANGE_HISTORY.RESPONSE.STATUS_LIST].map((status, index) => {
-                    switch (status) {
-                        case 1:
-                        case 10:
-                            return 'Không đủ điều kiện';
-                        case 2:
-                        case 11:
-                            return 'Đang chờ duyệt thẻ';
-                        case 3:
-                        case 12:
-                            if (pattern.exec(res['dtl'][index]).length > 0) {
-                                return pattern.exec(res['dtl'][index])[0];
-                            }
-                            return '';
+    _onGetExchangeHistory(res) {
+        let pattern = /Mã thẻ[^]*,/;
 
-                        case 100:
-                            return 'Giao dịch bị huỷ bỏ';
+        let d = (res[app.keywords.EXCHANGE_HISTORY.RESPONSE.ITEM_ID_HISTORY] && res[app.keywords.EXCHANGE_HISTORY.RESPONSE.ITEM_ID_HISTORY].length > 0 && [
+            res[app.keywords.EXCHANGE_HISTORY.RESPONSE.TIME_LIST],
+            res[app.keywords.EXCHANGE_HISTORY.RESPONSE.NAME_LIST],
+            res[app.keywords.EXCHANGE_HISTORY.RESPONSE.STATUS_LIST].map((status, index) => {
+                switch (status) {
+                    case 1:
+                    case 10:
+                        return app.res.string('is_ineligible');
+                    case 2:
+                    case 11:
+                        return app.res.string('is_waiting_card');
+                    case 3:
+                    case 12:
+                        if (pattern.exec(res['dtl'][index]).length > 0) {
+                            return pattern.exec(res['dtl'][index])[0];
+                        }
+                        return '';
+                    case 100:
+                        return app.res.string('trading_is_denied');
+                }
+            }),
+            res[app.keywords.EXCHANGE_HISTORY.RESPONSE.STATUS_LIST].map((status, index) => {
+                let width = 150;
+                let height = 70;
+                console.debug('dev', pattern.exec(res['dtl'][index]) && pattern.exec(res['dtl'][index]).length > 0 && pattern.exec(res['dtl'][index])[0]);
+                switch (status) {
+                    case 1:
+                    case 2:
+                        return { text: 'NHẬN CHIP', button: { eventHandler: null, width, height, spriteFrame: RubResources.YELLOW_BTN } };
+                    case 3:
+                        return { text: 'NẠP GAME', button: { eventHandler: null, width, height } };
+                    default:
+                        return '';
+                }
+            }),
+        ]) || [];
 
-                    }
-                }),
-                res[app.keywords.EXCHANGE_HISTORY.RESPONSE.STATUS_LIST].map((status) => {
-                    let width = 150;
-                    let height = 70;
+        this._initBody(d);
+    }
 
-                    switch (status) {
-                        case 1:
-                        case 2:
-                            return { text: 'NHẬN LẠI CHIP', button: { eventHandler: null, width, height } };
-                        case 3:
-                            return { text: 'NẠP VÀO GAME', button: { eventHandler: null, width, height } };
-                        default:
-                            return '';
-                    }
-                }),
-            ]) || [];
+    _onChargeToGame(e) {
 
-            cb(d);
-        });
     }
 
     _initBody(d) {
@@ -89,7 +93,7 @@ class TabExchangeHistory extends Component {
                 fontSize: 25
             }
         };
-        let node = new GridViewRub(head, d, {
+        this.initGridView(head, d, {
             width: 850,
             height: 425,
             spacingX: 0,
@@ -98,8 +102,11 @@ class TabExchangeHistory extends Component {
                 height: 80,
                 fontLineHeight: 80,
             }
-        }).getNode();
-        this.bodyNode.addChild(node);
+        });
+
+        this.bodyNode.addChild(this.getGridViewNode());
+
+        d = null;
     }
 
     _getExchangeDialogComponent() {

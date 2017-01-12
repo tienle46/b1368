@@ -96,9 +96,13 @@ export default class ScrollViewRub {
     }
 
     getNode() {
+        this.data = [];
         return this.prefab;
     }
 
+    destroy() {
+        this.contentNode.children && this.contentNode.children.forEach(child => cc.isValid(child) && child.destroy() && child.removeFromParent());
+    }
 
     addEventPagingBtn(prevEvent, nextEvent) {
         if (prevEvent) {

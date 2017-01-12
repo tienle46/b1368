@@ -1,10 +1,10 @@
 import app from 'app';
-import Component from 'Component';
+import Actor from 'Actor';
 import RubUtils from 'RubUtils';
 import ExchangeDialog from 'ExchangeDialog';
 import NodeRub from 'NodeRub';
 
-class TabExchangeCard extends Component {
+class TabExchangeCard extends Actor {
     constructor() {
         super();
         this.properties = {
@@ -25,13 +25,30 @@ class TabExchangeCard extends Component {
     }
 
     onLoad() {
+        super.onLoad();
         // wait til every requests is done
         // this.node.active = false;
         // show loader
         // app.system.showLoader();
         // this._getExchangeDialogComponent().hideUpdatePhone();
         this.hint.string = "";
+    }
+
+    start() {
+        super.start();
         this._initCardsList();
+    }
+
+    _addGlobalListener() {
+        super._addGlobalListener();
+        app.system.addListener(app.commands.EXCHANGE_LIST, this._onGetExchangeList, this);
+        app.system.addListener(app.commands.EXCHANGE, this._onExchange, this);
+    }
+
+    _removeGlobalListener() {
+        super._removeGlobalListener();
+        app.system.removeListener(app.commands.EXCHANGE, this._onExchange, this);
+        app.system.removeListener(app.commands.EXCHANGE_LIST, this._onGetExchangeList, this);
     }
 
     _initCardsList() {
@@ -41,63 +58,64 @@ class TabExchangeCard extends Component {
             'data': {}
         };
 
-        app.service.send(sendObject, (data) => {
-            if (data[app.keywords.EXCHANGE_LIST.RESPONSE.TYPES]) {
-                let cardValues = [];
+        app.service.send(sendObject);
+    }
 
-                const exchangeTypes = data[app.keywords.EXCHANGE_LIST.RESPONSE.TYPES];
-                exchangeTypes.map((type) => {
-                    if (type[app.keywords.EXCHANGE_LIST.RESPONSE.ITEM_TYPE] == app.const.EXCHANGE_LIST_CARD_TYPE_ID) {
-                        const idList = type[app.keywords.EXCHANGE_LIST.RESPONSE.ITEM_ID_LIST];
-                        const nameList = type[app.keywords.EXCHANGE_LIST.RESPONSE.ITEM_NAME_LIST];
-                        const goldList = type[app.keywords.EXCHANGE_LIST.RESPONSE.ITEM_GOLD_LIST];
-                        const iconList = type[app.keywords.EXCHANGE_LIST.RESPONSE.ITEM_ICON_LIST];
+    _onGetExchangeList(data) {
+        if (data[app.keywords.EXCHANGE_LIST.RESPONSE.TYPES]) {
+            let cardValues = [];
 
-                        for (let i = 0; i < idList.length; i++) {
-                            let itemId = idList[i];
-                            // let itemIcon = iconList[i].replace('thumb.', '');
-                            let itemGold = goldList[i];
-                            let itemName = nameList[i];
-                            let amount = itemName.match(/([0-9]{2,})+(K)/g);
-                            amount && (amount = amount[0]);
-                            amount && (amount = Number(amount.replace('K', '')) * 1000);
+            let exchangeTypes = data[app.keywords.EXCHANGE_LIST.RESPONSE.TYPES];
+            exchangeTypes.map((type) => {
+                if (type[app.keywords.EXCHANGE_LIST.RESPONSE.ITEM_TYPE] == app.const.EXCHANGE_LIST_CARD_TYPE_ID) {
+                    const idList = type[app.keywords.EXCHANGE_LIST.RESPONSE.ITEM_ID_LIST];
+                    const nameList = type[app.keywords.EXCHANGE_LIST.RESPONSE.ITEM_NAME_LIST];
+                    const goldList = type[app.keywords.EXCHANGE_LIST.RESPONSE.ITEM_GOLD_LIST];
+                    const iconList = type[app.keywords.EXCHANGE_LIST.RESPONSE.ITEM_ICON_LIST];
 
-
-                            if (!app._.includes(cardValues, amount)) {
-                                cardValues.push(amount);
-
-                                // setup card item
-                                let ratioNode = cc.instantiate(this.cardAmountItem);
-                                let ratioItem = ratioNode.getComponent('RatioItem');
-                                ratioItem.initItemWithoutRatio(amount, itemGold);
-                                ratioNode.active = true;
-
-                                // add to container
-                                this.listAmountCardContentNode.addChild(ratioNode);
-                            }
+                    for (let i = 0; i < idList.length; i++) {
+                        let itemId = idList[i];
+                        // let itemIcon = iconList[i].replace('thumb.', '');
+                        let itemGold = goldList[i];
+                        let itemName = nameList[i];
+                        let amount = itemName.match(/([0-9]{2,})+(K)/g);
+                        amount && (amount = amount[0]);
+                        amount && (amount = Number(amount.replace('K', '')) * 1000);
 
 
-                            // init providerDropDown list
-                            let providerItem = cc.instantiate(this.providerDropDownItem);
-                            let lbl = providerItem.getChildByName('providername').getComponent(cc.Label);
-                            lbl && (lbl.string = itemName);
+                        if (!app._.includes(cardValues, amount)) {
+                            cardValues.push(amount);
 
-                            providerItem.providerName = itemName;
-                            providerItem.providerPrice = itemGold;
-                            providerItem.providerId = itemId;
-                            providerItem.active = true;
+                            // setup card item
+                            let ratioNode = cc.instantiate(this.cardAmountItem);
+                            let ratioItem = ratioNode.getComponent('RatioItem');
+                            ratioItem.initItemWithoutRatio(amount, itemGold);
+                            ratioNode.active = true;
 
-                            this.providerDropDownNode.addChild(providerItem);
+                            // add to container
+                            this.listAmountCardContentNode.addChild(ratioNode);
                         }
+
+
+                        // init providerDropDown list
+                        let providerItem = cc.instantiate(this.providerDropDownItem);
+                        let lbl = providerItem.getChildByName('providername').getComponent(cc.Label);
+                        lbl && (lbl.string = itemName);
+
+                        providerItem.providerName = itemName;
+                        providerItem.providerPrice = itemGold;
+                        providerItem.providerId = itemId;
+                        providerItem.active = true;
+
+                        this.providerDropDownNode.addChild(providerItem);
                     }
-                });
+                }
+            });
+            exchangeTypes = null;
 
-                // hide loader
-                app.system.hideLoader();
-                this.node.active = true;
-            }
-
-        }, app.const.scene.EXCHANGE_CHIP);
+            // hide loader
+            app.system.hideLoader();
+        }
     }
 
     onShowProviderDropDownBtnClick() {
@@ -178,17 +196,18 @@ class TabExchangeCard extends Component {
 
             // show loader
             app.system.showLoader();
+            app.service.send(sendObject);
+        }
+    }
 
-            app.service.send(sendObject, (data) => {
-                app.system.hideLoader();
-                if (data[app.keywords.RESPONSE_RESULT] === false) {
-                    app.system.info(`${data[app.keywords.RESPONSE_MESSAGE]}`);
-                } else { // true
-                    app.system.error(
-                        app.res.string('error_system')
-                    );
-                }
-            });
+    _onExchange(data) {
+        app.system.hideLoader();
+        if (data[app.keywords.RESPONSE_RESULT] === false) {
+            app.system.info(`${data[app.keywords.RESPONSE_MESSAGE]}`);
+        } else { // true
+            app.system.error(
+                app.res.string('error_system')
+            );
         }
     }
 

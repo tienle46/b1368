@@ -97,6 +97,24 @@ export default class Utils {
         this.setActive(node, visible);
     }
 
+    /**
+     * @param opacity {int}
+     */
+    static setOpacity(node, opacity) {
+        node = node instanceof cc.Node ? node : (node.node || null);
+        if (!node)
+            return;
+        node.opacity = opacity ? opacity : 0;
+    }
+
+    /**
+     * @param opacity {boolean}
+     */
+    static setVisibility(node, visiblity) {
+        let opacity = visiblity ? 255 : 0;
+        this.setOpacity(node, opacity);
+    }
+
     static hide(node, action = cc.hide()) {
         node = node && (node.node || node);
         node && node.runAction && node.runAction(action);

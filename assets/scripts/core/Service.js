@@ -180,7 +180,6 @@ class Service {
     }
 
     _onExtensionEvent(event) {
-        debug(event);
         if (event.cmd === app.commands.XLAG) {
             this._handleLagPollingResponse(event);
         } else if (event.cmd === app.commands.SYSTEM_MESSAGE) {
