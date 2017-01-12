@@ -27,19 +27,42 @@ export default class DashboardScene extends BaseScene {
 
     onLoad() {
         super.onLoad();
+    }
 
+    onEnable() {
+        super.onEnable();
+    }
+
+    start() {
+        super.start();
+        this._getGamesListFromServer();
+    }
+
+    _getGamesListFromServer() {
+        let data = {};
+        data[app.keywords.PARTNER_ID] = 1;
         let sendObject = {
-            'cmd': 'gv',
-            'data': {
-                'pid': 1
-            }
+            'cmd': app.commands.USER_LIST_GAME_CODE,
+            data
         };
 
         this.showLoading();
-        app.service.send(sendObject, (data) => {
-            this.gameList = this._filterClientSupportedGames(data["cl"]);
-            this._initItemListGame();
-        }, app.const.scene.DASHBOARD_SCENE);
+        app.service.send(sendObject);
+    }
+
+    _addGlobalListener() {
+        super._addGlobalListener();
+        app.system.addListener(app.commands.USER_LIST_GAME_CODE, this._onUserListGame, this);
+    }
+
+    _removeGlobalListener() {
+        super._removeGlobalListener();
+        app.system.removeListener(app.commands.USER_LIST_GAME_CODE, this._onUserListGame, this);
+    }
+
+    _onUserListGame(data) {
+        this.gameList = this._filterClientSupportedGames(data[app.keywords.SERVICE_CHILD_CODE_ARRAY]);
+        this._initItemListGame();
     }
 
     _filterClientSupportedGames(gameCodes) {
@@ -53,7 +76,6 @@ export default class DashboardScene extends BaseScene {
     }
 
     _initItemListGame() {
-
         const height = this.viewContainer.height || 200;
         const itemDimension = Math.floor(height / 2.0 - 37);
 
@@ -83,7 +105,6 @@ export default class DashboardScene extends BaseScene {
             }
             if (count % 8 === 0) {
                 node = NodeRub.createNodeByOptions(pageNodeOptions);
-                // this.viewContainer.addChild(node);
                 this.pageView.addPage(node);
             }
             let gameIconPath = app.res.gameIcon[gc];

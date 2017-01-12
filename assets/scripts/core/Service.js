@@ -180,9 +180,7 @@ class Service {
     }
 
     _onExtensionEvent(event) {
-
         debug(event);
-
         if (event.cmd === app.commands.XLAG) {
             this._handleLagPollingResponse(event);
         } else if (event.cmd === app.commands.SYSTEM_MESSAGE) {
@@ -193,6 +191,7 @@ class Service {
             if (this._hasCallback(event.cmd)) {
                 this._callCallbackAsync(event.cmd, event.params);
             }
+
             app.system.emit(event.cmd, event.params, event);
         }
     }

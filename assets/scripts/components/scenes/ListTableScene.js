@@ -40,10 +40,6 @@ export default class ListTableScene extends BaseScene {
 
         // timeout setTimeout
         this.timeout = null;
-
-        // game group Id
-        this.gameGroupId = null;
-
     }
 
     onDestroy() {
@@ -52,26 +48,57 @@ export default class ListTableScene extends BaseScene {
         this.items = [];
     }
 
-    // clear interval
-    _clearInterval() {
-        this.timeout && clearRequestTimeout(this.timeout);
-    }
-
     onLoad() {
         super.onLoad();
 
         this._initComponents();
+    }
+
+    start() {
+        super.start();
 
         this._getFirstGameLobbyFromServer();
     }
 
-    _initComponents() {
-        app.context.getSelectedGame() && (this.gameCode = app.context.getSelectedGame());
+    onHandleQuickJoinBtn() {
+        let data = {};
+        data[app.keywords.GAME_CODE] = this.gameCode;
+        data[app.keywords.IS_SPECTATOR] = false;
+        data[app.keywords.QUICK_JOIN_BET] = 1;
 
-        this.gameCode && this._initGameLabel(this.gameCode);
+        app.service.send({ cmd: app.commands.USER_QUICK_JOIN_ROOM, data });
+    }
 
-        let topBarScript = this.topbarNode.getComponent('TopBar');
-        topBarScript.showBackButton();
+    onUserRequestJoinRoom(cell) {
+        if (cell.minBet > cell.balance) {
+            app.system.error(
+                app.res.string('error_user_not_enough_gold_to_join_room', { minBet: cell.minBet })
+            );
+        } else {
+            if (cell.password) {
+                console.warn('password wth ?');
+            } else {
+                this._requestJoinRoom(cell);
+            }
+        }
+    }
+
+    _addGlobalListener() {
+        super._addGlobalListener();
+        app.system.addListener(app.commands.USER_LIST_GROUP, this._onUserListGroup, this);
+        app.system.addListener(app.commands.USER_LIST_ROOM, this._onUserListRoom, this);
+        app.system.addListener(app.commands.USER_CREATE_ROOM, this._onUserCreateRoom, this);
+        app.system.addListener(SFS2X.SFSEvent.ROOM_JOIN, this._handleRoomJoinEvent, this);
+        app.system.addListener(app.commands.PLAYER_INVITE, this._onPlayerInviteEvent, this);
+    }
+
+    _removeGlobalListener() {
+        super._removeGlobalListener();
+        app.system.removeListener(app.commands.USER_LIST_GROUP, this._onUserListGroup, this);
+        app.system.removeListener(app.commands.USER_LIST_ROOM, this._onUserListRoom, this);
+        app.system.removeListener(app.commands.USER_CREATE_ROOM, this._onUserCreateRoom, this);
+        app.system.removeListener(SFS2X.SFSEvent.ROOM_JOIN, this._handleRoomJoinEvent, this);
+        app.system.removeListener(app.commands.PLAYER_INVITE, this._onPlayerInviteEvent, this);
     }
 
     onNongDanBtnClick() {
@@ -89,6 +116,21 @@ export default class ListTableScene extends BaseScene {
         this._renderList(this.items, this.filterCond);
     }
 
+
+    // clear interval
+    _clearInterval() {
+        this.timeout && clearRequestTimeout(this.timeout);
+    }
+
+    _initComponents() {
+        app.context.getSelectedGame() && (this.gameCode = app.context.getSelectedGame());
+
+        this.gameCode && this._initGameLabel(this.gameCode);
+
+        let topBarScript = this.topbarNode.getComponent('TopBar');
+        topBarScript.showBackButton();
+    }
+
     _initGameLabel(gameCode) {
         this.gameTitleLbl.string = gameCode.toUpperCase();
     }
@@ -103,18 +145,20 @@ export default class ListTableScene extends BaseScene {
             data
         };
 
-        app.service.send(reqObject, (data) => {
-            if (data && data[app.keywords.GAME_LIST_RESULT] && data[app.keywords.GAME_LIST_RESULT] === this.gameCode) {
-                let roomIds = data[app.keywords.GROUP_LIST_GROUP][app.keywords.GROUP_SHORT_NAME];
-                let lobby = null;
-                roomIds && roomIds.length > 0 && (lobby = roomIds[0]);
-                lobby && this._sendRequestUserJoinLobbyRoom(lobby);
+        app.service.send(reqObject);
+    }
 
-                // assume server will be response minbet for filtering based on its minbet
-            } else {
-                error('game code & result are not matched', data[app.keywords.GAME_LIST_RESULT], this.gameCode);
-            }
-        }, app.const.scene.LIST_TABLE_SCENE);
+    _onUserListGroup(data) {
+        if (data && data[app.keywords.GAME_LIST_RESULT] && data[app.keywords.GAME_LIST_RESULT] === this.gameCode) {
+            let roomIds = data[app.keywords.GROUP_LIST_GROUP][app.keywords.GROUP_SHORT_NAME];
+            let lobbyId = null;
+            roomIds && roomIds.length > 0 && (lobbyId = roomIds[0]);
+            lobbyId && this._sendRequestUserJoinLobbyRoom(lobbyId);
+
+            // TODO: assume server will be response minbet for filtering based on its minbet
+        } else {
+            error('game code & result are not matched', data[app.keywords.GAME_LIST_RESULT], this.gameCode);
+        }
     }
 
     _sendRequestUserJoinLobbyRoom(lobbyId) {
@@ -124,9 +168,7 @@ export default class ListTableScene extends BaseScene {
         }
 
         let data = {};
-        this.gameGroupId = `${this.gameCode}${lobbyId}`;
-
-        data[app.keywords.GROUP_ID] = this.gameGroupId;
+        data[app.keywords.GROUP_ID] = `${this.gameCode}${lobbyId}`;
 
         let reqObject = {
             cmd: app.commands.USER_JOIN_LOBBY_ROOM,
@@ -135,20 +177,7 @@ export default class ListTableScene extends BaseScene {
         app.service.send(reqObject); // emit user join event
     }
 
-    _addGlobalListener() {
-        super._addGlobalListener();
-        app.system.addListener(SFS2X.SFSEvent.ROOM_JOIN, this._handleRoomJoinEvent, this);
-        app.system.addListener(app.commands.PLAYER_INVITE, this._onPlayerInviteEvent, this);
-    }
-
-    _removeGlobalListener() {
-        super._removeGlobalListener();
-        app.system.removeListener(SFS2X.SFSEvent.ROOM_JOIN, this._handleRoomJoinEvent, this);
-        app.system.removeListener(app.commands.PLAYER_INVITE, this._onPlayerInviteEvent, this);
-    }
-
     _onPlayerInviteEvent(event) {
-        // console.debug('this.invitationShowed', this.invitationShowed);
         if (this.invitationShowed == false) {
             let room = {
                 id: event[app.keywords.INVITATION_ROOM_SFSID],
@@ -173,8 +202,6 @@ export default class ListTableScene extends BaseScene {
 
     _onCancelInvitationBtnClick() {
         this.invitationShowed = false;
-
-        // console.debug('this.invitationShowed canceled', this.invitationShowed);
     }
 
     _handleRoomJoinEvent(event) {
@@ -186,7 +213,6 @@ export default class ListTableScene extends BaseScene {
             }
         } else {
             if (event.errorCode) {
-                // console.debug('_handleRoomJoinEvent');
                 app.system.error(event.errorMessage);
             }
         }
@@ -197,14 +223,16 @@ export default class ListTableScene extends BaseScene {
             cmd: app.commands.USER_LIST_ROOM,
             room
         };
-        app.service.send(sendObject, (data) => {
-            this.node && this._initRoomsListFromData(data);
-        }, app.const.scene.LIST_TABLE_SCENE);
+        app.service.send(sendObject);
 
         this.timeout = requestTimeout(() => {
             this.timeout && this._sendRequestUserListRoom(room);
             clearRequestTimeout(this.timeout);
         }, this.time);
+    }
+
+    _onUserListRoom(data) {
+        this.node && this._initRoomsListFromData(data);
     }
 
     _initRoomsListFromData(data) {
@@ -303,29 +331,6 @@ export default class ListTableScene extends BaseScene {
         return filteredItems;
     }
 
-    onHandleQuickJoinBtn() {
-        let data = {};
-        data[app.keywords.GAME_CODE] = this.gameCode;
-        data[app.keywords.IS_SPECTATOR] = false;
-        data[app.keywords.QUICK_JOIN_BET] = 1;
-
-        app.service.send({ cmd: app.commands.USER_QUICK_JOIN_ROOM, data });
-    }
-
-    onUserRequestJoinRoom(cell) {
-        if (cell.minBet > cell.balance) {
-            app.system.error(
-                app.res.string('error_user_not_enough_gold_to_join_room', { minBet: cell.minBet })
-            );
-        } else {
-            if (cell.password) {
-                console.warn('password wth ?');
-            } else {
-                this._requestJoinRoom(cell);
-            }
-        }
-    }
-
     /**
      * 
      * @param {any} cell {id, isSpectator, minBet, password}
@@ -350,21 +355,27 @@ export default class ListTableScene extends BaseScene {
 
 
     _createRoom(gameCode = null, minBet = 0, roomCapacity = 2, password = undefined) {
-
-        const requestParam = {};
-        requestParam[app.keywords.ROOM_BET] = minBet;
-        requestParam[app.keywords.GAME_CODE] = gameCode;
-        requestParam[app.keywords.ROOM_PASSWORD] = password;
-        requestParam[app.keywords.ROOM_CAPACITY] = roomCapacity;
+        let data = {};
+        data[app.keywords.ROOM_BET] = minBet;
+        data[app.keywords.GAME_CODE] = gameCode;
+        data[app.keywords.ROOM_PASSWORD] = password;
+        data[app.keywords.ROOM_CAPACITY] = roomCapacity;
+        let sendObject = {
+            cmd: app.commands.USER_CREATE_ROOM,
+            data,
+            room: null
+        };
 
         /**
          * If create room successfully, response going handle by join room success follow
          */
-        app.service.send({ cmd: app.commands.USER_CREATE_ROOM, data: requestParam, room: null }, (error) => {
-            if (error.errorCode) {
-                app.system.error(error.errorMessage);
-            }
-        }, app.const.scene.LIST_TABLE_SCENE);
+        app.service.send(sendObject);
+    }
+
+    _onUserCreateRoom(data) {
+        if (data.errorCode) {
+            app.system.error(data.errorMessage);
+        }
     }
 }
 
