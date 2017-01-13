@@ -80,21 +80,35 @@ app.res.gameIcon = {
     "xod": "xocdia_ico"
 };
 app.res.gameTopCapThuIcon = {
+    // // bai 3 mien
+    // "dnode/list324.png": "dashboard/thumbs/phom_ico_s",
+    // "dnode/list327.png": "dashboard/thumbs/phom_ico_s",
+    // "dnode/list328.png": "dashboard/thumbs/tlmn_ico_s",
+    // "dnode/list329.png": "dashboard/thumbs/tlmn_ico_s",
+    // "dnode/list330.png": "dashboard/thumbs/sam_ico_s",
+    // "dnode/list331.png": "dashboard/thumbs/lieng_ico_s",
+    // "dnode/list332.png": "dashboard/thumbs/xito_ico_s",
+    // "dnode/list333.png": "dashboard/thumbs/bacay_ico_s",
+    // // tlmn moi
+    // "dnode/list368.png": "dashboard/thumbs/tlmn_ico_s",
+    // "dnode/list374.png": "dashboard/thumbs/tlmn_ico_s",
+    // "dnode/tds": "dashboard/tlmn_solo_ico_s",
+    // "dnode/xms": "dashboard/sam_solo_ico_s",
     // bai 3 mien
-    "dnode/list324.png": "dashboard/thumbs/phom_ico_s",
-    "dnode/list327.png": "dashboard/thumbs/phom_ico_s",
-    "dnode/list328.png": "dashboard/thumbs/tlmn_ico_s",
-    "dnode/list329.png": "dashboard/thumbs/tlmn_ico_s",
-    "dnode/list330.png": "dashboard/thumbs/sam_ico_s",
-    "dnode/list331.png": "dashboard/thumbs/lieng_ico_s",
-    "dnode/list332.png": "dashboard/thumbs/xito_ico_s",
-    "dnode/list333.png": "dashboard/thumbs/bacay_ico_s",
+    "dnode/list324.png": "phom_ico",
+    "dnode/list327.png": "phom_ico",
+    "dnode/list328.png": "tlmn_ico",
+    "dnode/list329.png": "tlmn_ico",
+    "dnode/list330.png": "sam_ico",
+    "dnode/list331.png": "lieng_ico",
+    "dnode/list332.png": "xito_ico",
+    "dnode/list333.png": "bacay_ico",
     // tlmn moi
-    "dnode/list368.png": "dashboard/thumbs/tlmn_ico_s",
-    "dnode/list374.png": "dashboard/thumbs/tlmn_ico_s",
-    "dnode/tds": "dashboard/tlmn_solo_ico_s",
-    "dnode/xms": "dashboard/sam_solo_ico_s",
-
+    "dnode/list368.png": "tlmn_ico",
+    "dnode/list374.png": "tlmn_ico",
+    // tlmn solo
+    "dnode/tds": "tlmn_ico",
+    "dnode/xms": "tlmn_ico",
 };
 
 /**

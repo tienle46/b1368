@@ -76,7 +76,6 @@ export default class BaseScene extends Actor {
     start() {
         super.start();
         app.system.setSceneChanging(false);
-        debug("start: ")
     }
 
     onDestroy() {
