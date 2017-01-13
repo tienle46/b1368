@@ -178,7 +178,7 @@ if (cc.sys.isBrowser) {
     // app.DEVICE_ID = 'a19c8e4ae2e82ef1c7846f32628d4ead3';
     if (cc.sys.platform == cc.sys.IPHONE || cc.sys.platform == cc.sys.IPAD) {
         app.DEVICE_ID = jsb.reflection.callStaticMethod("FCUUID", "uuidForDevice");
-        log(`ios udid ${app.DEVICE_ID}`);
+            log(`ios udid ${app.DEVICE_ID}`);
     } else {
         app.DEVICE_ID = 'a19c8e4ae2e82ef1c7846f32628d4ead3';
     }

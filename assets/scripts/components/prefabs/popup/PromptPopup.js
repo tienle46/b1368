@@ -54,7 +54,7 @@ export default class PromptPopup extends Component {
     }
 
     init(parent, { handler, title, description, editBox }) {
-        console.debug({ handler, title, description, editBox });
+        debug({ handler, title, description, editBox });
         let currentSize = this.inputEditBox.node.getContentSize();
         if (editBox.height) {
             this.inputEditBox.node.setContentSize(currentSize.width, editBox.height);

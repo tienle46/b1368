@@ -65,7 +65,7 @@ class TabExchangeHistory extends Actor {
             res[app.keywords.EXCHANGE_HISTORY.RESPONSE.STATUS_LIST].map((status, index) => {
                 let width = 150;
                 let height = 70;
-                console.debug('dev', pattern.exec(res['dtl'][index]) && pattern.exec(res['dtl'][index]).length > 0 && pattern.exec(res['dtl'][index])[0]);
+               debug('dev', pattern.exec(res['dtl'][index]) && pattern.exec(res['dtl'][index]).length > 0 && pattern.exec(res['dtl'][index])[0]);
                 switch (status) {
                     case 1:
                     case 2:
