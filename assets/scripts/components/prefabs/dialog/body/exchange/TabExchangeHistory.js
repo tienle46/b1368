@@ -40,7 +40,6 @@ class TabExchangeHistory extends Actor {
 
     _onGetExchangeHistory(res) {
         let pattern = /Mã thẻ[^]*,/;
-        console.debug(res);
         let d = (res[app.keywords.EXCHANGE_HISTORY.RESPONSE.ITEM_ID_HISTORY] && res[app.keywords.EXCHANGE_HISTORY.RESPONSE.ITEM_ID_HISTORY].length > 0 && [
             res[app.keywords.EXCHANGE_HISTORY.RESPONSE.TIME_LIST],
             res[app.keywords.EXCHANGE_HISTORY.RESPONSE.NAME_LIST],

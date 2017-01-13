@@ -136,6 +136,7 @@
     },
     "_enabled": true,
     "isAlignOnce": true,
+    "_target": null,
     "_alignFlags": 45,
     "_left": 0,
     "_right": 0,
@@ -163,7 +164,7 @@
     "_spriteFrame": {
       "__uuid__": "f22591b6-c113-43d9-a555-89adfc76d3b7"
     },
-    "_type": 0,
+    "_type": 1,
     "_sizeMode": 0,
     "_fillType": 0,
     "_fillCenter": {
@@ -593,6 +594,7 @@
     },
     "_enabled": true,
     "isAlignOnce": true,
+    "_target": null,
     "_alignFlags": 45,
     "_left": 0,
     "_right": 0,
@@ -629,6 +631,7 @@
     },
     "_enabled": true,
     "isAlignOnce": true,
+    "_target": null,
     "_alignFlags": 10,
     "_left": 37,
     "_right": 0,
@@ -739,6 +742,7 @@
     },
     "_enabled": true,
     "isAlignOnce": true,
+    "_target": null,
     "_alignFlags": 9,
     "_left": 150,
     "_right": 0,
@@ -971,6 +975,7 @@
     },
     "_enabled": true,
     "isAlignOnce": true,
+    "_target": null,
     "_alignFlags": 9,
     "_left": 186,
     "_right": 0,
@@ -1600,6 +1605,7 @@
     },
     "_enabled": true,
     "isAlignOnce": true,
+    "_target": null,
     "_alignFlags": 33,
     "_left": 0,
     "_right": 38,
@@ -1648,6 +1654,7 @@
     },
     "_enabled": true,
     "isAlignOnce": true,
+    "_target": null,
     "_alignFlags": 41,
     "_left": 37,
     "_right": 37,
@@ -1903,7 +1910,7 @@
       "width": 80,
       "height": 80
     },
-    "_N$startAxis": 1,
+    "_N$startAxis": 0,
     "_N$paddingLeft": 12,
     "_N$paddingRight": 0,
     "_N$paddingTop": 12,
@@ -1922,6 +1929,7 @@
     },
     "_enabled": true,
     "isAlignOnce": true,
+    "_target": null,
     "_alignFlags": 16,
     "_left": 161.5,
     "_right": 484.5,
@@ -2399,6 +2407,7 @@
     },
     "_enabled": true,
     "isAlignOnce": true,
+    "_target": null,
     "_alignFlags": 45,
     "_left": 26,
     "_right": 26,
@@ -2666,6 +2675,7 @@
     },
     "_enabled": true,
     "isAlignOnce": true,
+    "_target": null,
     "_alignFlags": 45,
     "_left": 0,
     "_right": 0,
@@ -2694,8 +2704,12 @@
     "propsGridView": {
       "__id__": 60
     },
-    "rtUserName": null,
-    "rtBalance": null,
+    "rtUserName": {
+      "__id__": 22
+    },
+    "rtBalance": {
+      "__id__": 30
+    },
     "bgNode": {
       "__id__": 2
     },
@@ -2704,6 +2718,12 @@
     },
     "rightBtn": {
       "__id__": 75
+    },
+    "kickBtn": {
+      "__id__": 49
+    },
+    "addFriendBtn": {
+      "__id__": 39
     }
   },
   {

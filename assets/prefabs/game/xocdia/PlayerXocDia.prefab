@@ -768,7 +768,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 36,
-      "height": 36
+      "height": 37
     },
     "_children": [],
     "_rotationX": 0,
@@ -2631,6 +2631,7 @@
     },
     "_enabled": true,
     "isAlignOnce": true,
+    "_target": null,
     "_alignFlags": 45,
     "_left": 13.954999999999998,
     "_right": 13.954999999999998,
@@ -2905,6 +2906,7 @@
     },
     "_enabled": true,
     "isAlignOnce": true,
+    "_target": null,
     "_alignFlags": 45,
     "_left": -20,
     "_right": -20,
@@ -3396,9 +3398,6 @@
     "balanceLabel": {
       "__id__": 31
     },
-    "status2": {
-      "__id__": 88
-    },
     "ownerIcon": {
       "__id__": 21
     },
@@ -3418,6 +3417,9 @@
     "playerTimeLineProgress": null,
     "avatarNode": {
       "__id__": 13
+    },
+    "friendProfilePopup": {
+      "__uuid__": "1bf9733a-77b6-469a-a40a-85f31f24fa38"
     },
     "cardListPrefab": {
       "__uuid__": "651b1f49-8953-4b6f-9e06-0d829c049b4a"

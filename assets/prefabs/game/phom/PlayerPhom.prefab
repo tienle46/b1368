@@ -5881,6 +5881,9 @@
     "avatarNode": {
       "__id__": 9
     },
+    "friendProfilePopup": {
+      "__uuid__": "1bf9733a-77b6-469a-a40a-85f31f24fa38"
+    },
     "cardListPrefab": {
       "__uuid__": "651b1f49-8953-4b6f-9e06-0d829c049b4a"
     },

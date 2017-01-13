@@ -3,7 +3,7 @@
   "_name": "PresentPopup",
   "_objFlags": 0,
   "_rawFiles": null,
-  "_duration": 0.4166666666666667,
+  "_duration": 0.25,
   "sample": 60,
   "speed": 1,
   "wrapMode": 1,
@@ -16,11 +16,7 @@
         },
         {
           "frame": 0.25,
-          "value": 0.6
-        },
-        {
-          "frame": 0.4166666666666667,
-          "value": 0.56
+          "value": 1
         }
       ],
       "scaleY": [
@@ -30,11 +26,7 @@
         },
         {
           "frame": 0.25,
-          "value": 0.6
-        },
-        {
-          "frame": 0.4166666666666667,
-          "value": 0.56
+          "value": 1
         }
       ]
     }

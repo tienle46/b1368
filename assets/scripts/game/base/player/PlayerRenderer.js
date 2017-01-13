@@ -24,6 +24,7 @@ export default class PlayerRenderer extends ActorRenderer {
             playerMessageNode: cc.Node,
             playerTimeLineProgress: cc.ProgressBar,
             avatarNode: cc.Node,
+            friendProfilePopup: cc.Prefab
         }
 
         this.playerMessage = null;
@@ -126,6 +127,14 @@ export default class PlayerRenderer extends ActorRenderer {
             }
             this.plusBalanceAnim.play();
         }
+    }
+
+    showUserProfilePopup(node, userName, userId, isOwner, startAnimNode, endAnimNode) {
+        let popup = cc.instantiate(this.friendProfilePopup);
+        let component = popup.getComponent('FriendProfilePopup');
+        component.displayUserDetail(userName, userId, isOwner);
+        component.setCallbackOptions(startAnimNode, endAnimNode);
+        node.addChild(popup);
     }
 
     _startCountdown(duration) {

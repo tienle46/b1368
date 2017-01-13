@@ -83,7 +83,7 @@ export default class Player extends Actor {
 
     _onUserUpdateNewPlayer(user) {
         if (user.id == this.user.id) {
-            if(this.scene.gameState == app.const.game.state.WAIT || this.scene.gameState == app.const.game.state.READY){
+            if (this.scene.gameState == app.const.game.state.WAIT || this.scene.gameState == app.const.game.state.READY) {
                 this._sendReadyImmediately();
             }
 
@@ -91,8 +91,8 @@ export default class Player extends Actor {
         }
     }
 
-    _onClickStartGameButton(){
-        if(this.isOwner){
+    _onClickStartGameButton() {
+        if (this.isOwner) {
             app.service.send({
                 cmd: app.commands.START_GAME,
                 room: this.scene.room
@@ -173,14 +173,13 @@ export default class Player extends Actor {
         this._updatePlayerAnchor();
 
         // if(this.scene.checkReadyPlayer(this)){
-            this.setReady(this.scene.checkReadyPlayer(this));
+        this.setReady(this.scene.checkReadyPlayer(this));
         // }
     }
 
-    avatarCLicked() {
-        // console.log(`Avatar clicked`);
-        const startNode = this.scene.gamePlayers.playerPositions.getPlayerAnchorByPlayerId(this.scene.gamePlayers.me.id, this.isItMe());
-        FriendProfilePopupRub.show(this.scene.node, this.user.userName, startNode, this.node);
+    avatarClicked() {
+        let startNode = this.scene.gamePlayers.playerPositions.getPlayerAnchorByPlayerId(this.scene.gamePlayers.me.id, this.isItMe());
+        this.renderer.showUserProfilePopup(this.scene.node, this.user.userName, this.user.id, this.scene.gamePlayers.isOwner(this.scene.gamePlayers.me.id), startNode, this.node);
     }
 
     _updatePlayerAnchor() {
@@ -262,7 +261,7 @@ export default class Player extends Actor {
 
     }
 
-    start(){
+    start() {
         super.start();
 
         this._sendReadyImmediately();
@@ -321,7 +320,7 @@ export default class Player extends Actor {
     }
 
     _sendReadyImmediately() {
-        if(app.system.isInactive || !this.isItMe()) return;
+        if (app.system.isInactive || !this.isItMe()) return;
 
         let newPlayer = utils.getVariable(this.user, "newPlayer");
         if (!newPlayer) {
