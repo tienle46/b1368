@@ -13,8 +13,6 @@ class TabTopDaiGia extends Actor {
             userMoneyLbl: cc.Label,
         }
 
-        this.flag = null;
-        this.topNodeId = 8;
         this.currentPage = 1;
     }
 
@@ -38,29 +36,32 @@ class TabTopDaiGia extends Actor {
     }
 
     _getDataFromServer(page) {
+        let topNodeId = 8;
         let sendObject = {
             'cmd': app.commands.RANK_GROUP,
             'data': {
                 [app.keywords.RANK_GROUP_TYPE]: app.const.DYNAMIC_GROUP_LEADER_BOARD,
                 [app.keywords.RANK_ACTION_TYPE]: app.const.DYNAMIC_ACTION_BROWSE,
                 [app.keywords.PAGE]: page,
-                [app.keywords.RANK_NODE_ID]: this.topNodeId,
+                [app.keywords.RANK_NODE_ID]: topNodeId,
             }
         };
+
         app.system.showLoader();
         app.service.send(sendObject);
     }
 
     _onGetRankGroup(res) {
-        let body = this.contentNode;
-        body.children.forEach(child => cc.isValid(child) && child.destroy() && child.removeFromParent());
+        this.contentNode.children && this.contentNode.children.map(child => cc.isValid(child) && child.destroy() && child.removeFromParent());
 
         let data = [
             res[app.keywords.USERNAME_LIST].map((status, index) => {
-                if (this.crownsNode.children[index])
+                let p = res['p'] || 1;
+                let order = (index + 1) + (p - 1) * 20;
+                if (this.crownsNode.children[index] && order <= 3)
                     return cc.instantiate(this.crownsNode.children[index]);
                 else
-                    return `${index + 1}.`;
+                    return `${order}.`;
             }),
             res[app.keywords.USERNAME_LIST],
             res['ui1l'].map((amount) => {
@@ -90,13 +91,12 @@ class TabTopDaiGia extends Actor {
         this.initGridView(head, data, rubOptions);
 
         data = null; // collect item
-        body = null;
 
         let node = this.getGridViewNode();
 
         app.system.hideLoader();
 
-        (!node.parent) && body.addChild(node);
+        (!node.parent) && this.contentNode.addChild(node);
     }
 
     onPreviousBtnClick() {

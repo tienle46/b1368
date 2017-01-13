@@ -40,7 +40,7 @@ class TabExchangeHistory extends Actor {
 
     _onGetExchangeHistory(res) {
         let pattern = /Mã thẻ[^]*,/;
-
+        console.debug(res);
         let d = (res[app.keywords.EXCHANGE_HISTORY.RESPONSE.ITEM_ID_HISTORY] && res[app.keywords.EXCHANGE_HISTORY.RESPONSE.ITEM_ID_HISTORY].length > 0 && [
             res[app.keywords.EXCHANGE_HISTORY.RESPONSE.TIME_LIST],
             res[app.keywords.EXCHANGE_HISTORY.RESPONSE.NAME_LIST],
@@ -65,13 +65,27 @@ class TabExchangeHistory extends Actor {
             res[app.keywords.EXCHANGE_HISTORY.RESPONSE.STATUS_LIST].map((status, index) => {
                 let width = 150;
                 let height = 70;
-                console.debug('dev', pattern.exec(res['dtl'][index]) && pattern.exec(res['dtl'][index]).length > 0 && pattern.exec(res['dtl'][index])[0]);
                 switch (status) {
                     case 1:
                     case 2:
                         return { text: 'NHẬN CHIP', button: { eventHandler: null, width, height, spriteFrame: RubResources.YELLOW_BTN } };
                     case 3:
-                        return { text: 'NẠP GAME', button: { eventHandler: null, width, height } };
+                        var cardSerial, serialNumber;
+                        if (pattern.exec(res['dtl'][index]) && pattern.exec(res['dtl'][index]).length > 0) {
+                            let str = pattern.exec(res['dtl'][index])[0];
+                            let info = str.match(/\d+/g);
+                            if (info.length >= 2) {
+                                cardSerial = info[0];
+                                serialNumber = info[1];
+                                info = null;
+                            }
+                        }
+                        var event = new cc.Component.EventHandler();
+                        event.target = this.node;
+                        event.component = 'TabExchangeHistory';
+                        event.handler = '_onChargeToGame';
+
+                        return { text: 'NẠP GAME', button: { eventHandler: event, width, height, value: { cardSerial, serialNumber } } };
                     default:
                         return '';
                 }
@@ -82,7 +96,7 @@ class TabExchangeHistory extends Actor {
     }
 
     _onChargeToGame(e) {
-
+        let { cardSerial, serialNumber } = e.currentTarget.getValue();
     }
 
     _initBody(d) {
@@ -95,7 +109,7 @@ class TabExchangeHistory extends Actor {
         };
         this.initGridView(head, d, {
             width: 850,
-            height: 425,
+            height: 415,
             spacingX: 0,
             spacingY: 0,
             cell: {
