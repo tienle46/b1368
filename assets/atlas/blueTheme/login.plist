@@ -34,6 +34,36 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
+            <key>checkbox-active.png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{0,0}</string>
+                <key>spriteSize</key>
+                <string>{42,42}</string>
+                <key>spriteSourceSize</key>
+                <string>{42,42}</string>
+                <key>textureRect</key>
+                <string>{{701,775},{42,42}}</string>
+                <key>textureRotated</key>
+                <false/>
+            </dict>
+            <key>checkbox.png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{0,0}</string>
+                <key>spriteSize</key>
+                <string>{42,42}</string>
+                <key>spriteSourceSize</key>
+                <string>{42,42}</string>
+                <key>textureRect</key>
+                <string>{{701,819},{42,42}}</string>
+                <key>textureRotated</key>
+                <false/>
+            </dict>
             <key>choi-ngay.png</key>
             <dict>
                 <key>aliases</key>
@@ -168,7 +198,7 @@
             <key>size</key>
             <string>{1020,874}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:ea6218058e6d09d1b6c982e3a1085446:2f2fc2ef70d8e3ecd28e5723d51a6343:70c8faf287b801f42cfa7c57415c1cdf$</string>
+            <string>$TexturePacker:SmartUpdate:5cbf6ff39bbe5b3af470b43cf2bb34fa:a329d264e022ae7ace7798f8ce9272b0:70c8faf287b801f42cfa7c57415c1cdf$</string>
             <key>textureFileName</key>
             <string>login.png</string>
         </dict>
