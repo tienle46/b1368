@@ -385,8 +385,8 @@ export default class GameScene extends BaseScene {
             if (readyPlayerIds.length > 0) {
                 readyPlayerIds.forEach(playerId => {
                     let player = this.gamePlayers.findPlayer(playerId);
-                    this.emit(Events.ON_PLAYER_READY_STATE_CHANGED, player.id, true, player.isItMe());
-                })
+                    player && this.emit(Events.ON_PLAYER_READY_STATE_CHANGED, player.id, true, player.isItMe());
+                });
 
             }
 
