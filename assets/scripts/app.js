@@ -184,10 +184,17 @@ if (cc.sys.isBrowser) {
     }
 }
 if (cc.sys.isMobile) {
+    //facebook
     sdkbox.PluginFacebook.init();
+
+    //google analytics
     sdkbox.PluginGoogleAnalytics.init();
+
+    //onesignal
     sdkbox.PluginOneSignal.init();
-    // sdkboxPluginOneSignalidsAvailable();
+    sdkbox.PluginOneSignal.setSubscription(true);
+    sdkbox.PluginOneSignal.enableInAppAlertNotification(true);
+    sdkbox.PluginOneSignal.registerForPushNotifications();
 }
 
 (function() {
