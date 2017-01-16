@@ -73,7 +73,7 @@ class TabTopVip extends Actor {
                 fontColor: app.const.COLOR_YELLOW
             }
         }, data, {
-            height: 425,
+            height: 415,
         });
 
         this.contentNode.addChild(this.getGridViewNode());

@@ -60,7 +60,7 @@ export default class ScrollViewRub {
         let defaultOptions = {
             position: cc.v2(0, 0),
             width: 850,
-            height: 425,
+            height: 415,
             spacingX: 0,
             spacingY: 0,
             padding: 0,

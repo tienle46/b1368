@@ -87,6 +87,9 @@ class BottomBar extends Actor {
         }, {
             title: 'Lịch sử',
             value: `${url}/tab_exchange_history`
+        }, {
+            title: 'Đại lí',
+            value: `${url}/tab_agency`
         }];
 
         // bottombar -> dashboard scene node
@@ -100,18 +103,12 @@ class BottomBar extends Actor {
     onClickMessageAction() {
         let url = `${app.const.DIALOG_DIR_PREFAB}/messagecenter`;
         let tabs = [{
-                title: 'Hệ thống',
-                value: `${url}/tab_system_messages`
-            },
-            // {
-            //     title: 'Sự kiện',
-            //     value: 'tab_events'
-            // },
-            {
-                title: 'Cá nhân',
-                value: `${url}/tab_personal_messages`
-            }
-        ];
+            title: 'Hệ thống',
+            value: `${url}/tab_system_messages`
+        }, {
+            title: 'Cá nhân',
+            value: `${url}/tab_personal_messages`
+        }];
 
         MessageCenterDialogRub.show(app.system.getCurrentSceneNode(), tabs, { title: 'Tin nhắn' });
     }
