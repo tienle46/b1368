@@ -1,5 +1,6 @@
 import app from 'app';
 import Actor from 'Actor';
+import numeral from 'numeral';
 
 class TabSMS extends Actor {
     constructor() {
@@ -156,7 +157,7 @@ class TabSMS extends Actor {
         this.h1Lbl.string = h1;
         this.commandLbl.string = cmd;
         this.sendToLbl.string = `Gửi ${sendTo}`;
-        this.moneyGetLbl.string = `${moneyGot.toLocaleString()}`;
+        this.moneyGetLbl.string = `${numeral(moneyGot).format('0,0')}`;
 
         let item = cc.instantiate(this.itemNode);
         item.active = true;

@@ -1,5 +1,6 @@
 import app from 'app';
 import Actor from 'Actor';
+import numeral from 'numeral';
 
 class RatioItem extends Actor {
     constructor() {
@@ -21,13 +22,13 @@ class RatioItem extends Actor {
     }
 
     initItem(number, ratio) {
-        this.titleLbl.string = `${number.toLocaleString()} VNĐ`;
-        this.ratioLbl.string = `${(number * ratio).toLocaleString()} Xu`;
+        this.titleLbl.string = `${numeral(number).format('0,0')} VNĐ`;
+        this.ratioLbl.string = `${numeral(number * ratio).format('0,0')} Xu`;
     }
 
     initItemWithoutRatio(number, got) {
-        this.titleLbl.string = `${number.toLocaleString()} VNĐ`;
-        this.ratioLbl.string = `${(got).toLocaleString()} Xu`;
+        this.titleLbl.string = `${numeral(number).format('0,0')} VNĐ`;
+        this.ratioLbl.string = `${numeral(got).format('0,0')} Xu`;
     }
 }
 

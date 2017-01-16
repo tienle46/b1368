@@ -1,5 +1,6 @@
 import app from 'app';
 import Actor from 'Actor';
+import numeral from 'numeral';
 
 export default class TabUserInfo extends Actor {
     constructor() {
@@ -56,7 +57,7 @@ export default class TabUserInfo extends Actor {
         let { name, coin } = app.context.getMyInfo();
 
         this.userName.string = name;
-        this.chipAmout.string = coin.toLocaleString();
+        this.chipAmout.string = numeral(coin).format('0,0');
 
 
         this.vipLevel.string = `Tỉ phú`;

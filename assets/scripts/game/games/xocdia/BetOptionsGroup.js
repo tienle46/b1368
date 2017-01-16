@@ -1,5 +1,6 @@
 import app from 'app';
 import Component from 'Component';
+import numeral from 'numeral';
 
 class BetOptionsGroup extends Component {
     constructor() {
@@ -50,7 +51,7 @@ class BetOptionsGroup extends Component {
 
     setUserGoldLbl(number) {
         this.userGold = Number(number);
-        this.userGoldLbl.string = this.userGold.toLocaleString();
+        this.userGoldLbl.string = numeral(this.userGold).format('0,0');
     }
 
     getRealUserGold() {

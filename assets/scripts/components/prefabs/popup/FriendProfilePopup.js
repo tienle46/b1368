@@ -2,6 +2,7 @@ import app from 'app';
 import Actor from 'Actor';
 import NodeRub from 'NodeRub';
 import Props from 'Props';
+import numeral from 'numeral';
 
 export default class FriendProfilePopup extends Actor {
     constructor() {
@@ -234,7 +235,7 @@ export default class FriendProfilePopup extends Actor {
 
     _onSelectUserProfile(user) {
         this.rtUserName.string = `${user["u"]}`;
-        this.rtBalance.string = `${user["coin"].toLocaleString() || 0}`;
+        this.rtBalance.string = `${numeral(user["coin"]).format('0,0') || 0}`;
     }
 
     _runPropsGridViewAction(isLeft = true) {

@@ -5,6 +5,7 @@ import TopupDialogRub from 'TopupDialogRub';
 import ExchangeDialogRub from 'ExchangeDialogRub';
 import PersonalInfoDialogRub from 'PersonalInfoDialogRub';
 import MessageCenterDialogRub from 'MessageCenterDialogRub';
+import numeral from 'numeral';
 
 class BottomBar extends Component {
     constructor() {
@@ -125,10 +126,10 @@ class BottomBar extends Component {
         this.userNameLbl.string = app.context.getMyInfo().name;
         if (!app.context.getMyInfo().coin) {
             setTimeout(() => {
-                this.userInfoCoinLbl.string = app.context.getMyInfo().coin.toLocaleString();
+                this.userInfoCoinLbl.string = `${numeral(app.context.getMyInfo().coin).format('0,0')}`;
             });
         } else
-            this.userInfoCoinLbl.string = app.context.getMyInfo().coin.toLocaleString();
+            this.userInfoCoinLbl.string = `${numeral(app.context.getMyInfo().coin).format('0,0')}`;
     }
 }
 
