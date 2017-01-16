@@ -152,7 +152,6 @@ export default class PlayerPositions extends Component {
         }
     }
 
-
     _getPlayerSeatIndex(playerId, gameCode) {
         let seatIndexs = this._getPlayerSeatIndexs(gameCode);
         let meId = app.context.getMe().getPlayerId(app.system.currentScene.board.room);

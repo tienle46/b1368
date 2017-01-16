@@ -21,6 +21,8 @@ class NinePlayerPositions extends PlayerPositions {
     constructor() {
         super();
 
+        this.ceilAnchor = 4;
+
         this.anchor1 = {
             default: null,
             type: cc.Node

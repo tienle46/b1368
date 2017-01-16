@@ -16,6 +16,7 @@ export default class ActorRenderer extends Component {
 
     _init(data){
         this.data = data;
+        this.actor = data.actor;
     }
 
     assign(prefab, componentName) {

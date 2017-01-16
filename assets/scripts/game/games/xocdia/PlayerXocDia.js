@@ -17,6 +17,7 @@ export default class PlayerXocDia extends PlayerCardBetTurn {
         this.pendingCuocBiens = null;
         this.pendingBiCuocBiens = null;
         this.currentCuocBien = 0;
+        this.balanceAvailable = 0;
 
         this.betData = []; // used to save currently in-phase-betted data of this user, because client's connection will be occured while betting, it is more neccessary when save betData on its event emitter `XOCDIA_ON_PLAYER_BET`;
     }
@@ -51,6 +52,14 @@ export default class PlayerXocDia extends PlayerCardBetTurn {
 
     onEnable() {
         super.onEnable(this.getComponent('PlayerXocDiaRenderer'));
+
+        this.balanceAvailable = this.balance;
+    }
+
+    _setBalance(balance){
+        this.balanceAvailable = balance;
+
+        super._setBalance(balance);
     }
 
     onGameReset() {
@@ -101,8 +110,6 @@ export default class PlayerXocDia extends PlayerCardBetTurn {
 
             this.scene.emit(Events.XOCDIA_ON_PLAYER_CANCEL_BET_SUCCESS, { myPos, isItMe, betsList, playerId });
             this.betData = [];
-        } else {
-            console.error('PlayerXocDia.js > _onPlayerCancelBet', err);
         }
     }
 
@@ -135,11 +142,30 @@ export default class PlayerXocDia extends PlayerCardBetTurn {
     }
 
     _onGameState(state, data, isJustJoined) {
+        if(state == app.const.game.state.STATE_BET){
+            this.isItMe() && this.renderer.hidePlayerComponentOnBetting();
+        }
 
+        if(state == app.const.game.state.BOARD_STATE_SHAKE){
+            this.isItMe() && this.renderer.showPlayerComponentOnShake();
+        }
     }
 
     _onGameStateBet() {
-        debug('_onGameStateBet PlayerXocDia')
+    }
+
+    changePlayerBalance(amount) {
+        this.setPlayerBalance(this.balanceAvailable + Number(amount));
+    }
+
+    setPlayerBalance(amount) {
+        this.balanceAvailable = Number(amount);
+        this.renderer.setBalance(this.balanceAvailable);
+    }
+
+    loadPlayerBalance() {
+        this.balanceAvailable = app.context.getMeBalance();
+        this.renderer.setBalance(this.balanceAvailable);
     }
 }
 

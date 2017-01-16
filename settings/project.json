@@ -81,9 +81,5 @@
     "game_components",
     "scenes"
   ],
-  "start-scene": "19d77baf-45a8-424b-b934-835d4149344d",
-  "design-resolution-width": 960,
-  "design-resolution-height": 640,
-  "fit-width": false,
-  "fit-height": true
+  "start-scene": "19d77baf-45a8-424b-b934-835d4149344d"
 }

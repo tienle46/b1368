@@ -75,6 +75,7 @@ export default class Board extends Actor {
 
         this.scene.on(Events.ON_GAME_RESET, this.onGameReset, this);
         this.scene.on(Events.ON_GAME_STATE_PRE_CHANGE, this.onGameStatePreChange, this, 0);
+        this.scene.on(Events.ON_GAME_STATE_CHANGED, this.onGameStateChanged, this, 0);
         this.scene.on(Events.ON_GAME_STATE_BEGIN, this.onBoardBegin, this, 0);
         this.scene.on(Events.ON_GAME_STATE_STARTING, this.onBoardStarting, this, 0);
         this.scene.on(Events.ON_GAME_STATE_STARTED, this.onBoardStarted, this, 0);
@@ -262,6 +263,10 @@ export default class Board extends Actor {
         }
 
         return localState;
+    }
+
+    onGameStateChanged(boardState, data, isJustJoined) {
+
     }
 
     onGameStatePreChange(boardState, data) {

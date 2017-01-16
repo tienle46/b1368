@@ -65,6 +65,18 @@ export default class PlayerRenderer extends ActorRenderer {
         this._stopCountdown();
 
         this.loaded = true;
+
+        this.isItMe && this.injectComponent();
+    }
+
+    getMessageAnchorIndex(anchorIndex) {
+        return anchorIndex;
+    }
+
+    /**
+     * @abstract
+     */
+    injectComponent() {
     }
 
     setName(name) {
@@ -73,7 +85,7 @@ export default class PlayerRenderer extends ActorRenderer {
     }
 
     setBalance(balance = 0) {
-        this.balanceLabel.string = GameUtils.formatBalance(balance);
+        this.balanceLabel && (this.balanceLabel.string = GameUtils.formatBalance(balance));
     }
 
     setVisibleOwner(visible) {

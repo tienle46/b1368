@@ -14,6 +14,7 @@ export default class GameEventHandler {
         this._pendingEvents = [];
         this.scene = scene;
         this._handleEventImediate = true;
+        this._listenerMap = {};
     }
 
     setHandleEventImmediate(imediate) {

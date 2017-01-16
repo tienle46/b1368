@@ -50,6 +50,11 @@ class GameContext {
         return null;
     }
 
+    getMeBalance() {
+        let me = this.getMe();
+        return me && me.variables.coin && (me.variables.coin.value || 0);
+    }
+
     isJoinedGame() {
         return this.currentRoom && this.currentRoom.isGame;
     }

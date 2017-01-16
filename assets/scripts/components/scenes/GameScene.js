@@ -315,6 +315,9 @@ export default class GameScene extends BaseScene {
     }
 
     goBack() {
+
+        app.system.setSceneChanging(true);
+
         if (app.service.client.isConnected()) {
             app.system.loadScene(app.const.scene.LIST_TABLE_SCENE);
         } else {
@@ -415,6 +418,10 @@ export default class GameScene extends BaseScene {
 
     enoughPlayerToStartGame() {
         return this.gamePlayers.players.length > 1;
+    }
+
+    emit(name, ...args){
+        !this.sceneChanging && super.emit(name, ...args);
     }
 }
 

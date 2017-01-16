@@ -28,7 +28,7 @@ export default class PlayerMessage extends Component {
 
     setup(player){
         this.playerRenderer = player;
-        this.anchorIndex = this.playerRenderer.anchorIndex;
+        this.anchorIndex = this.playerRenderer.getMessageAnchorIndex();
     }
 
     onLoad(){
@@ -45,7 +45,7 @@ export default class PlayerMessage extends Component {
     updateAnchor(anchorIndex){
         if(!this.loaded) return;
 
-        this.anchorIndex = anchorIndex;
+        this.anchorIndex = this.playerRenderer.getMessageAnchorIndex(anchorIndex);
         if(this.anchorIndex >= 0){
 
             let isTopAnchor = this.playerRenderer.scene.gamePlayers.playerPositions.isPositionOnTop(anchorIndex);
@@ -57,7 +57,9 @@ export default class PlayerMessage extends Component {
                 this.textViewNode.setAnchorPoint(0.5, 0);
                 this.node.setPosition(this.anchorTop.getPosition());
             }
-
+        }else{
+            this.textViewNode.setAnchorPoint(0.5, 0);
+            this.node.setPosition(0, 0);
         }
     }
 

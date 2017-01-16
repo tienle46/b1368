@@ -26,7 +26,7 @@ export default class BoardXocDiaRenderer extends BoardRenderer {
         this.bowlDishControl.resetBowlPosition();
         utils.deactive(this.resultNode);
         // utils.deactive(this.dishContainerNode); // always show dish on a board
-        utils.deactive(this.statisticTableNode);
+        // utils.deactive(this.statisticTableNode);
     }
 
     displayResultFromDots(dots) {
@@ -67,7 +67,7 @@ export default class BoardXocDiaRenderer extends BoardRenderer {
         this.bowlDishControl.resetBowlPosition();
 
         utils.active(this.dishContainerNode);
-        utils.active(this.statisticTableNode);
+        // utils.active(this.statisticTableNode);
     }
 
     runDishShakeAnim() {

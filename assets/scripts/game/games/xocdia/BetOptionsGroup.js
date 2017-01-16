@@ -1,19 +1,14 @@
 import app from 'app';
 import Component from 'Component';
-import numeral from 'numeral';
 
 class BetOptionsGroup extends Component {
     constructor() {
         super();
 
         this.checkedItem = null;
-        this.userGoldLbl = {
-            default: null,
-            type: cc.Label
-        };
 
-        this.userGold = 0;
         this.chips = [];
+        this.multiples = [1, 5, 10, 50];
     }
 
     onLoad() {
@@ -26,15 +21,12 @@ class BetOptionsGroup extends Component {
             this.checkedItem = event.target;
         });
 
-        this.userGold = app.context.getMyInfo().coin || 0;
-        this.setUserGoldLbl(this.userGold);
     }
 
     setLblOptions(roomBet) {
         this.chips = [];
-        let multiples = [1, 5, 10, 50];
         this.node.children.filter((child) => child.name.indexOf('chip') > -1).forEach((child, index) => {
-            let amount = multiples[index] * Number(roomBet);
+            let amount = this.multiples[index] * Number(roomBet);
             let betChip = child.getComponent('BetChip');
             betChip && betChip.setChipAmountLbl(amount);
             this.chips.push(betChip);
@@ -45,23 +37,6 @@ class BetOptionsGroup extends Component {
         return this.checkedItem;
     }
 
-    updateUserGoldLbl(amount) {
-        this.setUserGoldLbl(amount);
-    }
-
-    setUserGoldLbl(number) {
-        this.userGold = Number(number);
-        this.userGoldLbl.string = numeral(this.userGold).format('0,0');
-    }
-
-    getRealUserGold() {
-        return app.context.getMyInfo().coin;
-    }
-
-    getCurrentUserGold() {
-        return Number(this.userGoldLbl.string.replace(/,/g, ''));
-    }
-
     getChip() {
         return this.getCheckedItem().getComponent('BetChip').getChipIcon(cc.size(25, 25));
     }
@@ -70,6 +45,10 @@ class BetOptionsGroup extends Component {
         let chipComponent = this.chips.find((chip) => amount == chip.amount);
         let chip = chipComponent && chipComponent.getChipIcon(cc.size(25, 25));
         return chip || this.getChip();
+    }
+
+    getChipIndexByAmount(amount, minBet) {
+        return minBet > 0 ? this.multiples.indexOf(amount / minBet) : -1;
     }
 }
 

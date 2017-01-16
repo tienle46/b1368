@@ -12,14 +12,19 @@ export default class XocDiaScene extends GameScene {
         super();
 
         this.properties = {
-            ...this.properties
+            ...this.properties,
+            chipLayer: {
+                default: null,
+                type: cc.Node
+            },
+
+            meBalanceLabel: {
+                default: null,
+                type: cc.Label
+            }
         };
 
-        /**
-         * @type {HorizontalBetPopup}
-         * @private
-         */
-        this._betPopup = null;
+        this.userGold = 0;
     }
 
     onLoad() {
@@ -33,46 +38,22 @@ export default class XocDiaScene extends GameScene {
         // this.gameResultPopup = this.gameResultPopupNode.getComponent('GameResultPopup');
 
         super.onEnable();
-
-        this.on(Events.ON_CLICK_CHOOSE_BET_BUTTON, this._onClickChooseBetButton, this);
-    }
-
-    showCuocBienPopup(maxValue, cb) {
-        this._betPopup && this._betPopup.show({
-            minValue: 0,
-            maxValue,
-            currentValue: 0,
-            timeout: 10,
-            cb,
-            title: app.res.string('game_bacay_cuoc_bien')
-        });
-    }
-
-    showChooseBetSlider(currentValue) {
-        let maxValue = this.board.minBet * 5;
-        let minValue = this.board.minBet;
-        this._betPopup && this._betPopup.show({
-            submitOnHide: true,
-            minValue,
-            maxValue,
-            currentValue,
-            cb: (betValue) => {
-                this._onClickChooseBetButton(betValue);
-            }
-        });
-    }
-
-    hideChooseBetSlider() {
-        this._betPopup && this._betPopup.hide();
-    }
-
-    _onClickChooseBetButton(value) {
-        let amount = value || this._betPopup.getAmountNumber();
-        this.emit(Events.ON_PLAYER_BACAY_CHANGE_BET, amount);
     }
 
     enoughPlayerToStartGame() {
         return this.gamePlayers.players.length > 0;
+    }
+
+    changePlayerBalance(amount) {
+        this.gamePlayers.me && this.gamePlayers.me.changePlayerBalance(amount);
+    }
+
+    setPlayerBalance(amount) {
+        this.gamePlayers.me && this.gamePlayers.me.setPlayerBalance(amount);
+    }
+
+    loadPlayerBalance() {
+        this.gamePlayers.me && this.gamePlayers.me.loadPlayerBalance();
     }
 }
 

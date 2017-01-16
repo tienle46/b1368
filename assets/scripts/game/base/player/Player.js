@@ -119,8 +119,6 @@ export default class Player extends Actor {
             this.user._setVariable(newBalanceVariable);
 
             this._setBalance(newBalance);
-
-            this.isItMe() && this.scene.emit(Events.XOCDIA_ON_PLAYER_CHIP_CHANGED, newBalance);
         }
     }
 

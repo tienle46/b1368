@@ -98,6 +98,11 @@ export default class BoardXocDia extends BoardCardBetTurn {
         duration && this.startTimeLine(duration);
     }
 
+    onGameStateChanged(boardState, data, isJustJoined) {
+
+    }
+
+
     // //@override
     // onBoardStarting(data = {}, isJustJoined) {
 

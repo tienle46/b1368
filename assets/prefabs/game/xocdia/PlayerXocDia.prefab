@@ -3444,18 +3444,6 @@
     },
     "defaultCardAnchor2": {
       "__id__": 76
-    },
-    "betLabel": null,
-    "cuocBienNode": null,
-    "cuocBienLabel": null,
-    "actionNode": {
-      "__id__": 100
-    },
-    "actionLabel": {
-      "__id__": 103
-    },
-    "actionActor": {
-      "__id__": 101
     }
   },
   {
