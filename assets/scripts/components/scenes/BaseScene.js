@@ -130,6 +130,33 @@ export default class BaseScene extends Actor {
         this.showLoading();
         app.system.loadScene(name, onLaunched);
     }
+
+    loginToDashboard(username, password, isRegister = false, isQuickLogin = false, accessToken = null) {
+        this.showLoading();
+        if (app.service.client.isConnected()) {
+            this._requestAuthen(username, password, isRegister, isQuickLogin, accessToken);
+        } else {
+            app.service.connect((success) => {
+                if (success) {
+                    this._requestAuthen(username, password, isRegister, isQuickLogin, accessToken);
+                }
+            });
+        }
+    }
+
+    _requestAuthen(username, password, isRegister, isQuickLogin, accessToken) {
+        app.service.requestAuthen(username, password, isRegister, isQuickLogin, accessToken, (error, result) => {
+            if (error) {
+                this.hideLoading();
+                app.system.error(app.getMessageFromServer(error));
+            }
+            if (result) {
+                log(`Logged in as ${app.context.getMe().name}`);
+                //load recently games
+                this.changeScene(app.const.scene.DASHBOARD_SCENE);
+            }
+        });
+    }
 }
 
 //asign

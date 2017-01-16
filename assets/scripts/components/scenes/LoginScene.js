@@ -1,8 +1,7 @@
 import BaseScene from 'BaseScene';
 import app from 'app';
 import { isEmpty } from 'Utils';
-
-const MINIMUM_PASSWORD = 6;
+import Base64 from 'Base64';
 
 export default class LoginScene extends BaseScene {
     constructor() {
@@ -22,6 +21,8 @@ export default class LoginScene extends BaseScene {
             default: null,
             type: cc.Toggle
         };
+
+        this.b64 = new Base64();
     }
 
     onLoad() {
@@ -40,21 +41,19 @@ export default class LoginScene extends BaseScene {
         let username = this.userNameEditBox.string.trim();
         let password = this.userPasswordEditBox.string.trim();
 
-        if (this._isChecked()) {
-            // set storage
-            let userInfo = `${username}:${password}`;
-
-            cc.sys.localStorage.setItem(app.const.USER_LOCAL_STORAGE, userInfo);
-        }
-
         if (isEmpty(username) || isEmpty(password)) {
             app.system.error(
                 app.res.string('error_user_enter_empty_input')
             );
-        } else {
-            this._loginToDashboard(username, password);
-
+            return;
         }
+
+        if (this._isChecked()) {
+            // set storage
+            let userInfo = this.b64.encodeSafe(`${username}:${password}`);
+            cc.sys.localStorage.setItem(app.const.USER_LOCAL_STORAGE, userInfo);
+        }
+        this._loginToDashboard(username, password);
     }
 
     back() { // back to EntranceScene
@@ -67,7 +66,8 @@ export default class LoginScene extends BaseScene {
 
     // check if the user information saved.
     _isSaved() {
-        return cc.sys.localStorage.getItem(app.const.USER_LOCAL_STORAGE);
+        let userInfo = cc.sys.localStorage.getItem(app.const.USER_LOCAL_STORAGE);
+        return (userInfo && this.b64.decodeSafe(userInfo)) || null;
     }
 
     _isChecked() {
@@ -75,41 +75,7 @@ export default class LoginScene extends BaseScene {
     }
 
     _loginToDashboard(username, password) {
-        this.showLoading();
-        app.service.connect((success) => {
-            if (success) {
-                app.service.requestAuthen(username, password, false, false, null, (error, result) => {
-                    if (error) {
-                        this.hideLoading();
-                        this.addPopup(app.getMessageFromServer(error));
-                    }
-                    if (result) {
-                        log(result);
-                        log(`Logged in as ${app.context.getMe().name}`);
-                        //load recently games
-                        this.changeScene(app.const.scene.DASHBOARD_SCENE);
-                    }
-                });
-            }
-        });
-    }
-
-    _isValidUserInputs(username, password) {
-        return this._isValidUsernameInput(username) && this._isValidPasswordInput(password);
-    }
-
-    _isValidPasswordInput(str) {
-        // minimum: 6, must have atleast a-z|A-Z|0-9, without space
-        // /\s/.test(str) => true if str contains space
-
-        return /[a-z]/.test(str) && /[A-Z]/.test(str) && /[0-9]/.test(str) && !/\s/.test(str) && str.length >= MINIMUM_PASSWORD;
-    }
-
-    _isValidUsernameInput(str) {
-        // minimum: 6, a-zA-Z0-9, without space
-        // /\s/.test(str) => true if str contains space
-
-        return /[a-zA-Z0-9]{6,}/.test(str) && !/\s/.test(str);
+        this.loginToDashboard(username, password);
     }
 }
 

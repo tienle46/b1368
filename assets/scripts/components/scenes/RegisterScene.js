@@ -42,24 +42,7 @@ export default class RegisterScene extends BaseScene {
         let password = this.userPasswordEditBox.string.trim();
 
         if (this._isValidUserInputs(username, password)) {
-            app.service.connect((success) => {
-                if (success) {
-                    app.service.requestAuthen(username, password, true, false, null, (error, result) => {
-
-                        this.hideLoading();
-
-                        if (error) {
-                            log('Login error:');
-                            app.system.error(app.getMessageFromServer(error));
-                        }
-                        if (result) {
-                            log(result);
-                            log(`Logged in as ${app.context.getMe().name}`);
-                            this.changeScene(app.const.scene.DASHBOARD_SCENE);
-                        }
-                    });
-                }
-            });
+            this.loginToDashboard(username, password, true);
         } else {
             this.hideLoading();
 
