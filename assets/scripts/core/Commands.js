@@ -28,6 +28,7 @@ Commands.USER_SEND_CARD_CHARGE = "p_cc";
 Commands.USER_CHECK_UPDATE_VERSION = "up_ver";
 Commands.GET_GIAI_TRI_LIST = "o_gs";
 Commands.SYSTEM_MESSAGE = "smsg";
+Commands.NOTIFICATION_COUNT = "nc";
 Commands.SELECT_PROFILE = "u_si";
 Commands.UPDATE_PROFILE = "u_ui";
 Commands.UPDATE_PHONE_NUMBER = "upn";

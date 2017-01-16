@@ -58,7 +58,7 @@ export default class BaseScene extends Actor {
         }
 
         this._pendingAddPopup && this._pendingAddPopup.forEach(msg => {
-            this.addPopup(msg);
+            app.service.info(msg);
         });
 
         this.isLoaded = true;

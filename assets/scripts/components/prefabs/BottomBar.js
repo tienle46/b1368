@@ -1,5 +1,5 @@
 import app from 'app';
-import Component from 'Component';
+import Actor from 'Actor';
 import DialogRub from 'DialogRub';
 import TopupDialogRub from 'TopupDialogRub';
 import ExchangeDialogRub from 'ExchangeDialogRub';
@@ -7,7 +7,7 @@ import PersonalInfoDialogRub from 'PersonalInfoDialogRub';
 import MessageCenterDialogRub from 'MessageCenterDialogRub';
 import numeral from 'numeral';
 
-class BottomBar extends Component {
+class BottomBar extends Actor {
     constructor() {
         super();
         this.userInfoCoinLbl = {
@@ -19,11 +19,35 @@ class BottomBar extends Component {
             default: null,
             type: cc.Label
         };
-        // data essential
+
+        this.notifyBgNode = {
+            default: null,
+            type: cc.Node
+        };
+
+        this.notifyCounterLbl = {
+            default: null,
+            type: cc.Label
+        };
     }
 
     onEnable() {
+        super.onEnable();
         this._fillUserData();
+    }
+
+    start() {
+        super.start();
+    }
+
+    _addGlobalListener() {
+        super._addGlobalListener();
+        app.system.addListener(app.commands.NOTIFICATION_COUNT, this._onNotifyCount, this);
+    }
+
+    _removeGlobalListener() {
+        super._removeGlobalListener();
+        app.system.removeListener(app.commands.NOTIFICATION_COUNT, this._onNotifyCount, this);
     }
 
     onClickNapXuAction() {
@@ -130,6 +154,13 @@ class BottomBar extends Component {
             });
         } else
             this.userInfoCoinLbl.string = `${numeral(app.context.getMyInfo().coin).format('0,0')}`;
+    }
+
+    _onNotifyCount(data) {
+        let countList = data[app.keywords.COUNT_LIST];
+        let len = countList.length || 0;
+        this.notifyBgNode.active = len > 0;
+        this.notifyCounterLbl.string = len;
     }
 }
 
