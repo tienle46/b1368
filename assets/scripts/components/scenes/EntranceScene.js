@@ -76,23 +76,9 @@ export default class EntranceScene extends BaseScene {
     }
 
     handlePlayNowButton() {
-        this.showLoading();
-        app.service.connect((success) => {
-            log("success: " + success);
-            if (success) {
-                app.service.requestAuthen(this._generateUserName("ysad12", app.DEVICE_ID, 0, 5), this._generateUserName("yz212", app.DEVICE_ID, 0, 6), false, true, null, (error, result) => {
-
-                    if (result) {
-                        this.hideLoading();
-                        this.changeScene(app.const.scene.DASHBOARD_SCENE);
-                    }
-
-                    if (error) {
-                        this.addPopup(app.getMessageFromServer(error));
-                    }
-                });
-            }
-        });
+        let username = this._generateUserName("ysad12", app.DEVICE_ID, 0, 5);
+        let password = this._generateUserName("yz212", app.DEVICE_ID, 0, 6);
+        this.loginToDashboard(username, password, false, true);
     }
 
     handleFacebookLoginAction() {
@@ -183,21 +169,7 @@ export default class EntranceScene extends BaseScene {
     }
 
     _onLoginWithAccessToken(username, accessToken) {
-        this.showLoading();
-        app.service.connect((success) => {
-            if (success) {
-                app.service.requestAuthen(username, "", false, false, accessToken, (error, result) => {
-                    this.hideLoading();
-
-                    if (error) {
-                        app.system.error(app.getMessageFromServer(error));
-                    }
-                    if (result) {
-                        this.changeScene(app.const.scene.DASHBOARD_SCENE);
-                    }
-                });
-            }
-        });
+        this.loginToDashboard(username, "", false, false, accessToken);
     }
 
     _generateUserName(key, deviceId, count, maxCall) {

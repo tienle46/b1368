@@ -3,6 +3,7 @@ import Actor from 'Actor';
 import RubUtils from 'RubUtils';
 import ExchangeDialog from 'ExchangeDialog';
 import NodeRub from 'NodeRub';
+import numeral from 'numeral';
 
 class TabExchangeCard extends Actor {
     constructor() {
@@ -126,7 +127,7 @@ class TabExchangeCard extends Actor {
         let target = e.currentTarget;
         this.providerLbl.string = `${target.providerName}`;
 
-        this.hint.string = `<color=#FAE407>${target.providerName}</color> cần <color=#FAE407>${target.providerPrice.toLocaleString()}</color> Xu để đổi.`;
+        this.hint.string = `<color=#FAE407>${target.providerName}</color> cần <color=#FAE407>${numeral(target.providerPrice).format('0,0')}</color> Xu để đổi.`;
 
         this.selectedItem = {
             id: target.providerId,
@@ -149,7 +150,7 @@ class TabExchangeCard extends Actor {
         if (this.selectedItem.id) {
             let { id, gold, name } = this.selectedItem;
             app.system.confirm(
-                app.res.string('exchange_dialog_confirmation', { gold: gold.toLocaleString(), name }),
+                app.res.string('exchange_dialog_confirmation', { gold: numeral(gold).format('0,0'), name }),
                 denyCb,
                 okCallback
             );
@@ -182,7 +183,7 @@ class TabExchangeCard extends Actor {
 
             if (Number(myCoin) < Number(gold)) {
                 app.system.error(
-                    app.res.string('error_exchange_dialog_not_enough_money', { ownerCoin: myCoin.toLocaleString(), name })
+                    app.res.string('error_exchange_dialog_not_enough_money', { ownerCoin: numeral(myCoin).format('0,0'), name })
                 );
                 return;
             }

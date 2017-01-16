@@ -180,6 +180,7 @@ class Service {
     }
 
     _onExtensionEvent(event) {
+        debug(event);
         if (event.cmd === app.commands.XLAG) {
             this._handleLagPollingResponse(event);
         } else if (event.cmd === app.commands.SYSTEM_MESSAGE) {
@@ -350,16 +351,16 @@ class Service {
         let data = {};
         data[app.keywords.IS_REGISTER] = isRegister;
         data[app.keywords.RAW_PASSWORD] = password;
-        data[app.keywords.APP_SECRET_KEY] = "63d9ccc8-9ce1-4165-80c8-b15eb84a780a"; //
+        data[app.keywords.APP_SECRET_KEY] = app.config.app_secret_key;
         // data[app.keywords.APP_VERSION_KEY] = "1.0.1"; //
         // data[app.keywords.VERSION] = "1.0.0"; //
         data[app.keywords.DEVICE_ID] = app.DEVICE_ID;
-        data[app.keywords.QUICK_PLAY] = isQuickLogin; // <-- die here!
+        data[app.keywords.QUICK_PLAY] = isQuickLogin;
         if (accessToken && accessToken.length > 0) {
             data[app.keywords.ACCESS_TOKEN] = accessToken;
         }
         if (isRegister) {
-            data[app.keywords.PARTNER_ID] = 1; // <-- or here
+            data[app.keywords.PARTNER_ID] = 1;
             this._loginData = null;
         }
 

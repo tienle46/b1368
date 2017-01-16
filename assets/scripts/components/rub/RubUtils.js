@@ -53,6 +53,12 @@ let RubUtils = {
     loadSpriteFrame: (spriteComponent, resURL, ccSize = null, isCORS = false, cb, options = {}) => {
         let textureCache;
 
+        let o = {
+            type: cc.Sprite.Type.SLICED,
+            sizeMode: cc.Sprite.SizeMode.CUSTOM
+        };
+        options = Object.assign({}, o, options);
+
         function spriteFrameDefaultConfig(spriteComponent) {
             if (spriteComponent) {
                 for (let key in options) {

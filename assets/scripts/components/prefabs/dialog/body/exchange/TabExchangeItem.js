@@ -81,7 +81,7 @@ class TabExchangeItem extends Actor {
                         });
 
                         // add price
-                        this.exchangeItemPrice.string = `${itemGold.toLocaleString()} XU`;
+                        this.exchangeItemPrice.string = `${numeral(itemGold).format('0,0')} XU`;
 
 
                         let itemBtn = item.getChildByName('btn').getComponent(cc.Button);
@@ -127,7 +127,7 @@ class TabExchangeItem extends Actor {
 
             if (Number(myCoin) < Number(gold)) {
                 app.system.error(
-                    app.res.string('error_exchange_dialog_not_enough_money', { ownerCoin: myCoin.toLocaleString(), name })
+                    app.res.string('error_exchange_dialog_not_enough_money', { ownerCoin: numeral(myCoin).format('0,0'), name })
                 );
                 return;
             }

@@ -65,7 +65,7 @@ class TabTopCaoThu extends Actor {
                 app.async.mapSeries(gameImages, (imgName, cb) => {
                     // RubUtils.loadSpriteFrame(nodeSprite, app.res.gameTopCapThuIcon[imgName], cc.size(100, 100));
                     let gameIconPath = app.res.gameTopCapThuIcon[imgName];
-                    gameIconPath && RubUtils.getSpriteFrameFromAtlas('blueTheme/atlas/game_icons/game_icons', gameIconPath, (sprite) => {
+                    gameIconPath && RubUtils.getSpriteFrameFromAtlas('blueTheme/atlas/game_icons', gameIconPath, (sprite) => {
                         this.backGroundSprite.spriteFrame = sprite;
                         let node = cc.instantiate(this.gameItem);
                         let toggle = node.getComponent(cc.Toggle);

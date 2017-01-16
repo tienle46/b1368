@@ -29,7 +29,6 @@ class TabCard extends Actor {
 
     start() {
         super.start();
-        this.node.active = false;
         this._initCardsGroup();
     }
 

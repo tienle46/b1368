@@ -17,20 +17,20 @@ class TabAgency extends Actor {
 
     _getAgencyDataFromServer() {
         this.initGridView({
-            data: ['TGLV', 'Đại lý', 'Số DT', 'Địa chỉ', 'facebook'],
+            data: ['Đại lý', 'Số DT', 'facebook'],
             options: {
                 fontColor: app.const.COLOR_YELLOW,
                 fontSize: 25
             }
         }, [], {
             width: 840,
-            height: 425,
+            height: 415,
             spacingX: 0,
             spacingY: 0,
             group: {
                 colors: [null, null, new cc.Color(65, 94, 160), null, null],
                 events: [event],
-                widths: ['', '', 130, 130, 350]
+                widths: ['', '', 450]
             }
         });
 
@@ -40,63 +40,38 @@ class TabAgency extends Actor {
 
         let faker = {
             "agents": [{
-                    "work_shift": "1.24/24h",
-                    "agent_name": "Mr Tân Tân Tân Tân Tân Tân Tân",
-                    "call_number": "0962555513",
-                    "address": "Toàn quốc",
-                    "fblink": "https://www.facebook.com/bai3mien"
-
-                }, {
-                    "work_shift": "2.24/24h",
-                    "agent_name": "Mr Tân",
-                    "call_number": "0962555513",
-                    "address": "Toàn quốc",
-                    "fblink": "https://www.facebook.com/bai3mien"
-
-                },
-                {
-                    "work_shift": "3.24/24h",
-                    "agent_name": "Mr Tân",
-                    "call_number": "0962555513",
-                    "address": "Toàn quốc",
-                    "fblink": "https://www.facebook.com/bai3mien"
-
-                },
-                {
-                    "work_shift": "4.24/24h",
-                    "agent_name": "Mr Tân",
-                    "call_number": "0962555513",
-                    "address": "Toàn quốc",
-                    "fblink": "https://www.facebook.com/bai3mien"
-
-                },
-                {
-                    "work_shift": "5.24/24h",
-                    "agent_name": "Mr Tân",
-                    "call_number": "0962555513",
-                    "address": "Toàn quốc",
-                    "fblink": "https://www.facebook.com/bai3mien"
-
-                },
-                {
-                    "work_shift": "6.24/24h",
-                    "agent_name": "Mr Tân",
-                    "call_number": "0962555513",
-                    "address": "Toàn quốc",
-                    "fblink": "https://www.facebook.com/bai3mien"
-
-                }
-            ]
+                "agent_name": "Mr Tân",
+                "call_number": "0962555513",
+                "fblink": "https://www.facebook.com/bai3mien"
+            }, {
+                "agent_name": "Mr Tân",
+                "call_number": "0962555513",
+                "fblink": "https://www.facebook.com/bai3mien"
+            }, {
+                "agent_name": "Mr Tân",
+                "call_number": "0962555513",
+                "fblink": "https://www.facebook.com/bai3mien"
+            }, {
+                "agent_name": "Mr Tân",
+                "call_number": "0962555513",
+                "fblink": "https://www.facebook.com/bai3mien"
+            }, {
+                "agent_name": "Mr Tân",
+                "call_number": "0962555513",
+                "fblink": "https://www.facebook.com/bai3mien"
+            }, {
+                "agent_name": "Mr Tân",
+                "call_number": "0962555513",
+                "fblink": "https://www.facebook.com/bai3mien"
+            }]
         };
 
         if (faker.agents) {
             let data = [];
             faker.agents.forEach((a) => {
                 let d = [];
-                d.push(a.work_shift);
                 d.push(a.agent_name);
                 d.push(a.call_number);
-                d.push(a.address);
                 d.push(a.fblink);
                 data.push(d);
             });

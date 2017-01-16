@@ -66,9 +66,8 @@ app.res.playerAnchorName = {
  * @type {{tnd: string, xam: string, bcy: string, lie: string, pom: string, xit: string, mbh: string}}
  */
 app.res.gameIcon = {
-    "tnd": "tlmn_ico",
-    // "tds": "blueTheme/atlas/game_icons/tlmn_solo_ico",
-    "tds": "tlmn_ico",
+    "tnd": "tlmn_dl_ico",
+    "tds": "tlmn_dl_solo_ico",
     "xam": "sam_ico",
     // "xms": "blueTheme/atlas/game_icons/sam_solo_ico",
     "xms": "sam_ico",
@@ -97,8 +96,8 @@ app.res.gameTopCapThuIcon = {
     // bai 3 mien
     "dnode/list324.png": "phom_ico",
     "dnode/list327.png": "phom_ico",
-    "dnode/list328.png": "tlmn_ico",
-    "dnode/list329.png": "tlmn_ico",
+    "dnode/list328.png": "tlmn_dl_ico",
+    "dnode/list329.png": "tlmn_dl_ico",
     "dnode/list330.png": "sam_ico",
     "dnode/list331.png": "lieng_ico",
     "dnode/list332.png": "xito_ico",
@@ -107,8 +106,8 @@ app.res.gameTopCapThuIcon = {
     "dnode/list368.png": "tlmn_ico",
     "dnode/list374.png": "tlmn_ico",
     // tlmn solo
-    "dnode/tds": "tlmn_ico",
-    "dnode/xms": "tlmn_ico",
+    "dnode/tds": "tlmn_dl_solo_ico",
+    "dnode/xms": "sam_ico",
 };
 
 /**

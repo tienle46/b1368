@@ -6,8 +6,6 @@ export default class GameAnim {
 
     static flyTo({ fromNode, toNode, duration = 0.2, prefab = null, delayPerItem = 0.05, amount = 1, autoRemove = true, cb = null } = {}) {
 
-        console.log("fromNode: ", fromNode, " toNode", toNode)
-
         if (!fromNode || !toNode || !prefab) return;
 
         let startPos = fromNode.parent ? fromNode.parent.convertToWorldSpaceAR(fromNode.getPosition()) :
@@ -34,7 +32,7 @@ export default class GameAnim {
                 cc.moveTo(duration, endPoint),
                 cc.delayTime(0.05).clone(),
                 cc.callFunc(() => {
-                    if(autoRemove) {
+                    if (autoRemove) {
                         miniChip.destroy();
                         miniChip.removeFromParent(true);
                     }

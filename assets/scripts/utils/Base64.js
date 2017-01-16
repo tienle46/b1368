@@ -169,7 +169,9 @@ export default class Base64 {
      * @return {string} encoded string (web safe)
      */
     encodeSafe(string) {
-        return this.encode(string).replace(/\+/g, '-').replace(/\//g, '_').replace(/\=/g, '.');
+        if (string) {
+            return this.encode(string).replace(/\+/g, '-').replace(/\//g, '_').replace(/\=/g, '.');
+        }
     }
 
     /**
@@ -179,7 +181,9 @@ export default class Base64 {
      * @return {string} decoded string (web safe)
      */
     decodeSafe(string) {
-        string = string.replace(/-/g, '+').replace(/_/g, '/').replace(/\./g, '=');
-        return this.decode(string);
+        if (string) {
+            string = string.replace(/-/g, '+').replace(/_/g, '/').replace(/\./g, '=');
+            return this.decode(string);
+        }
     }
 }

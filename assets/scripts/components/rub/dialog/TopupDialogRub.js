@@ -16,9 +16,6 @@ export default class TopUpDialogRub {
         }, {
             title: 'IAP',
             value: `${url}/tab_iap`
-        }, {
-            title: 'Đại lí',
-            value: `${url}/tab_agency`
         }];
 
         let options = {

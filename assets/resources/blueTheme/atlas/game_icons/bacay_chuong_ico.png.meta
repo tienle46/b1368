@@ -1,0 +1,30 @@
+{
+  "ver": "1.0.0",
+  "uuid": "629102b6-7d2b-4f0b-861e-fa91a0064330",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "subMetas": {
+    "bacay_chuong_ico": {
+      "ver": "1.0.3",
+      "uuid": "34d67fea-5eac-41f8-9f1e-2a269157fedf",
+      "rawTextureUuid": "629102b6-7d2b-4f0b-861e-fa91a0064330",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0.5,
+      "trimX": 13,
+      "trimY": 6,
+      "width": 304,
+      "height": 317,
+      "rawWidth": 330,
+      "rawHeight": 330,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}

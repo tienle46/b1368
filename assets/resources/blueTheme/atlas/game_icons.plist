@@ -4,6 +4,21 @@
     <dict>
         <key>frames</key>
         <dict>
+            <key>bacay_chuong_ico.png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{0,1}</string>
+                <key>spriteSize</key>
+                <string>{306,320}</string>
+                <key>spriteSourceSize</key>
+                <string>{330,330}</string>
+                <key>textureRect</key>
+                <string>{{1,325},{306,320}}</string>
+                <key>textureRotated</key>
+                <false/>
+            </dict>
             <key>bacay_ico.png</key>
             <dict>
                 <key>aliases</key>
@@ -15,9 +30,24 @@
                 <key>spriteSourceSize</key>
                 <string>{330,330}</string>
                 <key>textureRect</key>
-                <string>{{1,1},{306,320}}</string>
+                <string>{{1,647},{306,320}}</string>
                 <key>textureRotated</key>
                 <true/>
+            </dict>
+            <key>baucua_ico.png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{0,0}</string>
+                <key>spriteSize</key>
+                <string>{306,306}</string>
+                <key>spriteSourceSize</key>
+                <string>{330,330}</string>
+                <key>textureRect</key>
+                <string>{{631,617},{306,306}}</string>
+                <key>textureRotated</key>
+                <false/>
             </dict>
             <key>lieng_ico.png</key>
             <dict>
@@ -30,9 +60,9 @@
                 <key>spriteSourceSize</key>
                 <string>{330,330}</string>
                 <key>textureRect</key>
-                <string>{{323,1},{306,314}}</string>
+                <string>{{323,631},{306,314}}</string>
                 <key>textureRotated</key>
-                <true/>
+                <false/>
             </dict>
             <key>maubinh_ico.png</key>
             <dict>
@@ -45,7 +75,7 @@
                 <key>spriteSourceSize</key>
                 <string>{330,330}</string>
                 <key>textureRect</key>
-                <string>{{639,1},{306,306}}</string>
+                <string>{{1,955},{306,306}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -60,9 +90,24 @@
                 <key>spriteSourceSize</key>
                 <string>{330,330}</string>
                 <key>textureRect</key>
-                <string>{{1,309},{306,318}}</string>
+                <string>{{309,323},{306,318}}</string>
                 <key>textureRotated</key>
                 <true/>
+            </dict>
+            <key>poker_ico.png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{0,1}</string>
+                <key>spriteSize</key>
+                <string>{306,320}</string>
+                <key>spriteSourceSize</key>
+                <string>{330,330}</string>
+                <key>textureRect</key>
+                <string>{{309,1},{306,320}}</string>
+                <key>textureRotated</key>
+                <false/>
             </dict>
             <key>sam_ico.png</key>
             <dict>
@@ -75,9 +120,39 @@
                 <key>spriteSourceSize</key>
                 <string>{330,330}</string>
                 <key>textureRect</key>
-                <string>{{321,309},{306,306}}</string>
+                <string>{{637,925},{306,306}}</string>
                 <key>textureRotated</key>
                 <false/>
+            </dict>
+            <key>tlmn_dl_ico.png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{0,0}</string>
+                <key>spriteSize</key>
+                <string>{306,312}</string>
+                <key>spriteSourceSize</key>
+                <string>{330,330}</string>
+                <key>textureRect</key>
+                <string>{{629,309},{306,312}}</string>
+                <key>textureRotated</key>
+                <true/>
+            </dict>
+            <key>tlmn_dl_solo_ico.png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{0,0}</string>
+                <key>spriteSize</key>
+                <string>{306,312}</string>
+                <key>spriteSourceSize</key>
+                <string>{330,330}</string>
+                <key>textureRect</key>
+                <string>{{323,947},{306,312}}</string>
+                <key>textureRotated</key>
+                <true/>
             </dict>
             <key>tlmn_ico.png</key>
             <dict>
@@ -90,7 +165,7 @@
                 <key>spriteSourceSize</key>
                 <string>{330,330}</string>
                 <key>textureRect</key>
-                <string>{{1,617},{306,318}}</string>
+                <string>{{617,1},{306,318}}</string>
                 <key>textureRotated</key>
                 <true/>
             </dict>
@@ -105,9 +180,9 @@
                 <key>spriteSourceSize</key>
                 <string>{330,330}</string>
                 <key>textureRect</key>
-                <string>{{321,617},{306,322}}</string>
+                <string>{{1,1},{306,322}}</string>
                 <key>textureRotated</key>
-                <true/>
+                <false/>
             </dict>
             <key>xocdia_ico.png</key>
             <dict>
@@ -120,7 +195,7 @@
                 <key>spriteSourceSize</key>
                 <string>{330,330}</string>
                 <key>textureRect</key>
-                <string>{{629,309},{306,306}}</string>
+                <string>{{637,1233},{306,306}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -136,9 +211,9 @@
             <key>realTextureFileName</key>
             <string>game_icons.png</string>
             <key>size</key>
-            <string>{946,924}</string>
+            <string>{944,1540}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:fc161d3b58ad6647d66cd890e8fd9035:8152f507d702f8d2f7f9ffc6f8feebd6:0b0b727a51cfcb9681e5e514ee1d2ffd$</string>
+            <string>$TexturePacker:SmartUpdate:3b8994b27356102d501699b35605565a:4f64eb9a786f1f199705f2c30618037c:0b0b727a51cfcb9681e5e514ee1d2ffd$</string>
             <key>textureFileName</key>
             <string>game_icons.png</string>
         </dict>
