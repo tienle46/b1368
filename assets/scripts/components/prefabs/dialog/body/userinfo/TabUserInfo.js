@@ -1,28 +1,29 @@
 import app from 'app';
 import Actor from 'Actor';
 import numeral from 'numeral';
+import { isEmpty } from 'Utils';
 
 export default class TabUserInfo extends Actor {
     constructor() {
         super();
 
-        this.userName = {
-            default: null,
-            type: cc.Label,
+        this.properties = {
+            ...this.properties,
+            userName: cc.Label,
+            vipLevel: cc.Label,
+            chipAmout: cc.Label,
+            phoneNumber: cc.Label,
+            currPassword: cc.EditBox,
+            newPassword: cc.EditBox,
+            passwordConfirmation: cc.EditBox,
+            userInfoPanel: cc.Node,
+            changePasswordPanel: cc.Node,
         };
-        this.vipLevel = {
-            default: null,
-            type: cc.Label,
-        };
-        this.chipAmout = {
-            default: null,
-            type: cc.Label,
-        };
+    }
 
-        this.phoneNumber = {
-            default: null,
-            type: cc.Label,
-        };
+    onLoad() {
+        super.onLoad();
+        this._showUserInfoPanel();
     }
 
     start() {
@@ -30,14 +31,56 @@ export default class TabUserInfo extends Actor {
         this._initUserData();
     }
 
+    onShowChangePasswordPanel() {
+        this._showChangePasswordPanel();
+    }
+
+    onBackBtnClick() {
+        this._showUserInfoPanel();
+    }
+
+    onConfirmationBtnClick() {
+        let currentPwd = this.currPassword.string.trim() || "";
+        let newPwd = this.newPassword.string.trim() || "";
+        let pwdConfirmation = this.passwordConfirmation.string.trim() || "";
+
+        if (isEmpty(currentPwd) || isEmpty(newPwd) || isEmpty(pwdConfirmation)) {
+            app.system.error(app.res.string('error_user_enter_empty_input'));
+        } else if (!this._isValidPasswordInput(newPwd)) {
+            app.system.error(app.res.string('error_changed_password_is_invalid'));
+        } else if (newPwd != pwdConfirmation) {
+            app.system.error(app.res.string('error_password_confirmation_is_not_the_same'));
+        } else {
+            let data = {};
+            data[app.keywords.PROFILE_OLD_PASS] = currentPwd;
+            data[app.keywords.PROFILE_NEW_PASS] = newPwd;
+
+            let sendObject = {
+                cmd: app.commands.USER_UPDATE_PASSWORD,
+                data
+            };
+
+            app.system.showLoader();
+            app.service.send(sendObject);
+        }
+    }
+
     _addGlobalListener() {
         super._addGlobalListener();
         app.system.addListener(app.commands.USER_PROFILE, this._onUserProfile, this);
+        app.system.addListener(app.commands.USER_UPDATE_PASSWORD, this._onUserUpdatePassword, this);
     }
 
     _removeGlobalListener() {
         super._removeGlobalListener();
         app.system.removeListener(app.commands.USER_PROFILE, this._onUserProfile, this);
+        app.system.removeListener(app.commands.USER_UPDATE_PASSWORD, this._onUserUpdatePassword, this);
+    }
+
+    _isValidPasswordInput(str) {
+        // minimum: 6, must have atleast a-z|A-Z|0-9, without space
+        // /\s/.test(str) => true if str contains space
+        return /[a-z]/.test(str) || /[A-Z]/.test(str) && /[0-9]/.test(str) && !/\s/.test(str) && str.length >= 6;
     }
 
     _initUserData() {
@@ -68,6 +111,27 @@ export default class TabUserInfo extends Actor {
             this.phoneNumber.string = data[app.keywords.PHONE_INVITE_PHONE];
         }
         app.system.hideLoader();
+    }
+
+    _onUserUpdatePassword(data) {
+        //update password
+        app.system.hideLoader();
+        if (data.hasOwnProperty(app.keywords.UPDATE_PROFILE_RESULT) && data[app.keywords.UPDATE_PROFILE_RESULT] == true) {
+            app.system.info(app.res.string('password_changed_successfully'));
+            this._showUserInfoPanel();
+        } else {
+            app.system.error(app.res.string('error_password_changed_unsuccessfully'));
+        }
+    }
+
+    _showUserInfoPanel() {
+        this.userInfoPanel.active = true;
+        this.changePasswordPanel.active = false;
+    }
+
+    _showChangePasswordPanel() {
+        this.changePasswordPanel.active = true;
+        this.userInfoPanel.active = false;
     }
 }
 

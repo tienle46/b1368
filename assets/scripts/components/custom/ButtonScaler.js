@@ -5,7 +5,7 @@ class ButtonScaler extends Component {
     constructor() {
         super();
         this.pressedScale = {
-            default: 1.12,
+            default: 1.05,
             type: cc.Float
         };
 

@@ -40,10 +40,6 @@ export default class Utils {
         return typeof value === 'object';
     }
 
-    static isNull(value) {
-        return value === null;
-    }
-
     static setInteractable(control, interactable) {
         control instanceof cc.Button && (control.interactable = interactable);
     }
