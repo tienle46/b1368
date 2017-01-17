@@ -226,6 +226,7 @@
     },
     "_enabled": true,
     "isAlignOnce": true,
+    "_target": null,
     "_alignFlags": 40,
     "_left": 20,
     "_right": 40,
@@ -250,7 +251,10 @@
       "__id__": 1
     },
     "_enabled": true,
-    "path": ""
+    "path": "",
+    "p404": {
+      "__uuid__": "5506cff6-05a2-4783-8488-2c5459eaed0b"
+    }
   },
   {
     "__type__": "cc.PrefabInfo",

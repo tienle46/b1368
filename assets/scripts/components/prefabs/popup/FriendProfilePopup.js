@@ -1,10 +1,10 @@
 import app from 'app';
-import Actor from 'Actor';
+import DialogActor from 'DialogActor';
 import NodeRub from 'NodeRub';
 import Props from 'Props';
 import numeral from 'numeral';
 
-export default class FriendProfilePopup extends Actor {
+export default class FriendProfilePopup extends DialogActor {
     constructor() {
         super();
 

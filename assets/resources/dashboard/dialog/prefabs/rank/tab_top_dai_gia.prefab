@@ -133,6 +133,7 @@
     },
     "_enabled": true,
     "isAlignOnce": true,
+    "_target": null,
     "_alignFlags": 37,
     "_left": 238,
     "_right": 0,
@@ -665,6 +666,7 @@
     },
     "_enabled": true,
     "isAlignOnce": true,
+    "_target": null,
     "_alignFlags": 32,
     "_left": 10,
     "_right": -40,
@@ -757,6 +759,9 @@
     },
     "userMoneyLbl": {
       "__id__": 21
+    },
+    "p404": {
+      "__uuid__": "5506cff6-05a2-4783-8488-2c5459eaed0b"
     }
   },
   {

@@ -1,7 +1,7 @@
 import app from 'app';
-import Actor from 'Actor';
+import DialogActor from 'DialogActor';
 
-class TabTopVip extends Actor {
+class TabTopVip extends DialogActor {
     constructor() {
         super();
 
@@ -50,8 +50,11 @@ class TabTopVip extends Actor {
     }
 
     _showBody(d) {
-        let ul = d[app.keywords.USERNAME_LIST];
-
+        let ul = d[app.keywords.USERNAME_LIST] || [];
+        if (ul.length < 0) {
+            this.pageIsEmpty(this.contentNode);
+            return;
+        }
         let data = [
             ul.map((status, index) => {
                 if (this.crowns.children[index])

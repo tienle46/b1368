@@ -1,10 +1,10 @@
 import app from 'app';
-import Component from 'Component';
+import DialogActor from 'DialogActor';
 import MessageEvent from 'MessageEvent';
 import ListItemToggleableRub from 'ListItemToggleableRub';
 import ListViewRub from 'ListViewRub';
 
-export default class TabEvents extends Component {
+export default class TabEvents extends DialogActor {
     constructor() {
         super();
 
@@ -23,14 +23,28 @@ export default class TabEvents extends Component {
         let prev = this.onPreviousBtnClick.bind(this);
 
         this.viewRub = new ListViewRub([], { paging: { next, prev } });
-
-        this._requestEventList(this.currentPage);
     }
 
     onDestroy() {
         super.onDestroy();
         this.viewRub.destroy();
     }
+
+    start() {
+        super.start();
+        this._requestEventList(this.currentPage);
+    }
+
+    _addGlobalListener() {
+        super._addGlobalListener();
+        app.system.addListener(app.commands.LIST_SYSTEM_MESSAGE, this._onListSystemMessage, this);
+    }
+
+    _removeGlobalListener() {
+        super._removeGlobalListener();
+        app.system.removeListener(app.commands.LIST_SYSTEM_MESSAGE, this._onListSystemMessage, this);
+    }
+
 
     onPreviousBtnClick() {
         this.currentPage -= 1;
@@ -63,50 +77,34 @@ export default class TabEvents extends Component {
             }
         };
 
-        app.service.send(sendObject, (data) => {
-            if (data) {
-                //convert raw data to list models
-                // this.currentPage = data[app.keywords.SYSTEM_MESSAGE.RESPONSE.CURRENT_PAGE];
-
-                const listHeader = data[app.keywords.SYSTEM_MESSAGE.RESPONSE.TITLE_LIST];
-                const listSub = data[app.keywords.SYSTEM_MESSAGE.RESPONSE.TIME_LIST];
-                const listIds = data[app.keywords.SYSTEM_MESSAGE.RESPONSE.ID_ITEM_LIST];
-
-                const events = [];
-                for (let i = 0; i < listHeader.length; i++) {
-                    const event = new MessageEvent({ title: listHeader[i], sub: listSub[i], nodeId: listIds[i] });
-                    events.push(event);
-                }
-
-                if (events.length < 1) {
-                    this.endPage = true;
-                } else {
-                    this._displayEvents(events);
-                }
-            }
-        }, app.const.scene.BOTTOM_BAR);
-        app.system.hideLoader();
+        app.service.send(sendObject);
     }
 
-    // _requestEventDetail(nodeId) {
-    //     var sendObject = {
-    //         'cmd': app.commands.LIST_SYSTEM_MESSAGE,
-    //         'cbKey': 'dcn',
-    //         'data': {
-    //             [app.keywords.SYSTEM_MESSAGE.REQUEST.ACTION_TYPE]: app.const.DYNAMIC_ACTION_BROWSE,
-    //             [app.keywords.SYSTEM_MESSAGE.REQUEST.GROUP_TYPE]: this.groupType,
-    //             [app.keywords.SYSTEM_MESSAGE.REQUEST.NODE_ID]: nodeId,
-    //         }
-    //     };
+    _onListSystemMessage(data) {
+        app.system.hideLoader();
+        if (data) {
+            //convert raw data to list models
+            // this.currentPage = data[app.keywords.SYSTEM_MESSAGE.RESPONSE.CURRENT_PAGE];
 
-    //     app.service.send(sendObject, (data) => {
-    //         log(data);
-    //         if (data) {
+            let listHeader = data[app.keywords.SYSTEM_MESSAGE.RESPONSE.TITLE_LIST];
+            let listSub = data[app.keywords.SYSTEM_MESSAGE.RESPONSE.TIME_LIST];
+            let listIds = data[app.keywords.SYSTEM_MESSAGE.RESPONSE.ID_ITEM_LIST];
 
-    //         }
+            let events = [];
+            for (let i = 0; i < listHeader.length; i++) {
+                let event = new MessageEvent({ title: listHeader[i], sub: listSub[i], nodeId: listIds[i] });
+                events.push(event);
+            }
 
-    //     }, app.const.scene.BOTTOM_BAR);
-    // }
+            if (events.length < 1) {
+                this.endPage = true;
+                this.pageIsEmpty(this.node);
+            } else {
+                this._displayEvents(events);
+                events = null;
+            }
+        }
+    }
 
     _displayEvents(events) {
         let data = [];
@@ -150,6 +148,8 @@ export default class TabEvents extends Component {
             // this.contentNode.addChild(item.node());
         }
         this.viewRub.resetData(data);
+        data = null;
+
         let node = this.viewRub.getNode();
 
         (!node.parent) && this.node.addChild(node);

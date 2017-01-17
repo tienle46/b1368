@@ -1,8 +1,8 @@
 import app from 'app';
-import Actor from 'Actor';
+import DialogActor from 'DialogActor';
 import RubUtils from 'RubUtils';
 
-class TabTopCaoThu extends Actor {
+class TabTopCaoThu extends DialogActor {
     constructor() {
         super();
 
@@ -54,55 +54,68 @@ class TabTopCaoThu extends Actor {
     }
 
     _onReceivedData(res) {
+        let pageIsEmpty = false;
         if (!this.itemLoaded) {
             if (res[app.keywords.RANK_TYPE_ID] && res[app.keywords.RANK_TYPE_ID].length > 0) {
                 this.gameList = res;
 
-                let dNodeIds = this.gameList[app.keywords.RANK_TYPE_ID];
-                let gameImages = this.gameList[app.keywords.RANK_TYPE_ICON];
+                let dNodeIds = this.gameList[app.keywords.RANK_TYPE_ID] || [];
+                let gameImages = this.gameList[app.keywords.RANK_TYPE_ICON] || [];
 
-                let count = 0;
-                app.async.mapSeries(gameImages, (imgName, cb) => {
-                    // RubUtils.loadSpriteFrame(nodeSprite, app.res.gameTopCapThuIcon[imgName], cc.size(100, 100));
-                    let gameIconPath = app.res.gameTopCapThuIcon[imgName];
-                    gameIconPath && RubUtils.getSpriteFrameFromAtlas('blueTheme/atlas/game_icons', gameIconPath, (sprite) => {
-                        this.backGroundSprite.spriteFrame = sprite;
-                        let node = cc.instantiate(this.gameItem);
-                        let toggle = node.getComponent(cc.Toggle);
-                        toggle.isChecked = count === 0;
-                        node.dNodeId = dNodeIds[count];
+                if (gameImages.length > 0) {
+                    let count = 0;
+                    app.async.mapSeries(gameImages, (imgName, cb) => {
+                        // RubUtils.loadSpriteFrame(nodeSprite, app.res.gameTopCapThuIcon[imgName], cc.size(100, 100));
+                        let gameIconPath = app.res.gameTopCapThuIcon[imgName];
+                        gameIconPath && RubUtils.getSpriteFrameFromAtlas('blueTheme/atlas/game_icons', gameIconPath, (sprite) => {
+                            this.backGroundSprite.spriteFrame = sprite;
+                            let node = cc.instantiate(this.gameItem);
+                            let toggle = node.getComponent(cc.Toggle);
+                            toggle.isChecked = count === 0;
+                            node.dNodeId = dNodeIds[count];
 
-                        if (toggle.isChecked) {
-                            this.itemLoaded = true;
-                            this._requestDataFromServer(node.dNodeId, 1);
-                        }
-                        node.active = true;
+                            if (toggle.isChecked) {
+                                this.itemLoaded = true;
+                                this._requestDataFromServer(node.dNodeId, 1);
+                            }
+                            node.active = true;
 
-                        this.gamePicker.addChild(node);
+                            this.gamePicker.addChild(node);
 
-                        count++;
+                            count++;
 
-                        cb();
+                            cb();
+                        });
                     });
-                });
+                } else {
+                    pageIsEmpty = true;
+                }
             }
         } else {
-            let data = [
-                res[app.keywords.USERNAME_LIST].map((status, index) => {
-                    let p = res['p'] || 1;
-                    let order = (index + 1) + (p - 1) * 20;
-                    if (this.crownsNode.children[index] && order <= 3)
-                        return cc.instantiate(this.crownsNode.children[index]);
-                    else
-                        return `${order}.`;
-                }),
-                res[app.keywords.USERNAME_LIST],
-                res['ui1l'],
-            ];
+            res[app.keywords.USERNAME_LIST] = res[app.keywords.USERNAME_LIST] || [];
+            if (res[app.keywords.USERNAME_LIST].length > 0) {
+                let data = [
+                    res[app.keywords.USERNAME_LIST].map((status, index) => {
+                        let p = res['p'] || 1;
+                        let order = (index + 1) + (p - 1) * 20;
+                        if (this.crownsNode.children[index] && order <= 3)
+                            return cc.instantiate(this.crownsNode.children[index]);
+                        else
+                            return `${order}.`;
+                    }),
+                    res[app.keywords.USERNAME_LIST],
+                    res['ui1l'],
+                ];
 
-            this._initBody(data);
-            data = null;
+                this._initBody(data);
+                data = null;
+            } else {
+                pageIsEmpty = true;
+            }
         }
+
+        pageIsEmpty && this.pageIsEmpty(this.node);
+
         res = null;
     }
 

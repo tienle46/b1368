@@ -1,9 +1,9 @@
 import app from 'app';
-import Actor from 'Actor';
+import DialogActor from 'DialogActor';
 import numeral from 'numeral';
 import { isEmpty } from 'Utils';
 
-export default class TabUserInfo extends Actor {
+export default class TabUserInfo extends DialogActor {
     constructor() {
         super();
 

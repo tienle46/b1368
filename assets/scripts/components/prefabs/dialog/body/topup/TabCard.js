@@ -1,8 +1,8 @@
 import app from 'app';
-import Actor from 'Actor';
+import DialogActor from 'DialogActor';
 import { isEmpty, setVisibility } from 'Utils';
 
-class TabCard extends Actor {
+class TabCard extends DialogActor {
     constructor() {
         super();
 
@@ -64,30 +64,33 @@ class TabCard extends Actor {
 
         // show loader
         app.system.showLoader();
-
         app.service.send(sendObject);
     }
 
     _onUserGetChargeList(data) {
-        let cardListIds = data[app.keywords.EXCHANGE_LIST.RESPONSE.ITEM_ID_LIST];
-        cardListIds.forEach((id, index) => {
-            let item = cc.instantiate(this.providerNode);
-            let lbl = item.getChildByName('providername').getComponent(cc.Label);
-            let providerName = data[app.keywords.TASK_NAME_LIST][index];
-            lbl.string = providerName;
+        let cardListIds = data[app.keywords.EXCHANGE_LIST.RESPONSE.ITEM_ID_LIST] || [];
+        if (cardListIds.length > 0) {
+            cardListIds.forEach((id, index) => {
+                let item = cc.instantiate(this.providerNode);
+                let lbl = item.getChildByName('providername').getComponent(cc.Label);
+                let providerName = data[app.keywords.TASK_NAME_LIST][index];
+                lbl.string = providerName;
 
-            item.active = true;
-            item.providerName = providerName;
-            item.providerId = id;
+                item.active = true;
+                item.providerName = providerName;
+                item.providerId = id;
 
-            this.listCardContainer.addChild(item);
-        });
+                this.listCardContainer.addChild(item);
+            });
 
-        app.system.hideLoader();
+            app.system.hideLoader();
 
-        // active node
-        setVisibility(this.node, true);
-        this.node.active = true;
+            // active node
+            setVisibility(this.node, true);
+        } else {
+            this.pageIsEmpty(this.node);
+        }
+
     }
 
     onShowDropDownBtnClick() {

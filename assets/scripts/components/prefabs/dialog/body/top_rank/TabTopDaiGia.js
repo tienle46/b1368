@@ -1,8 +1,8 @@
 import app from 'app';
-import Actor from 'Actor';
+import DialogActor from 'DialogActor';
 import numeral from 'numeral';
 
-class TabTopDaiGia extends Actor {
+class TabTopDaiGia extends DialogActor {
     constructor() {
         super();
 
@@ -53,7 +53,11 @@ class TabTopDaiGia extends Actor {
 
     _onGetRankGroup(res) {
         this.contentNode.children && this.contentNode.children.map(child => cc.isValid(child) && child.destroy() && child.removeFromParent());
-
+        res[app.keywords.USERNAME_LIST] = res[app.keywords.USERNAME_LIST] || [];
+        if (res[app.keywords.USERNAME_LIST].length < 0) {
+            this.pageIsEmpty(this.contentNode);
+            return;
+        }
         let data = [
             res[app.keywords.USERNAME_LIST].map((status, index) => {
                 let p = res['p'] || 1;

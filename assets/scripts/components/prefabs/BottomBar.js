@@ -1,5 +1,5 @@
 import app from 'app';
-import Actor from 'Actor';
+import DialogActor from 'DialogActor';
 import DialogRub from 'DialogRub';
 import TopupDialogRub from 'TopupDialogRub';
 import ExchangeDialogRub from 'ExchangeDialogRub';
@@ -7,7 +7,7 @@ import PersonalInfoDialogRub from 'PersonalInfoDialogRub';
 import MessageCenterDialogRub from 'MessageCenterDialogRub';
 import numeral from 'numeral';
 
-class BottomBar extends Actor {
+class BottomBar extends DialogActor {
     constructor() {
         super();
         this.userInfoCoinLbl = {

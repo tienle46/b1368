@@ -2,7 +2,6 @@
  * Created by Thanh on 9/15/2016.
  */
 
-import app from 'app';
 import Component from 'Component';
 import Emitter from 'emitter';
 import GridViewRub from 'GridViewRub';
@@ -82,14 +81,7 @@ export default class Actor extends Component {
         this.off();
     }
 
-    _assertEmitter() {
-        !this._eventEmitter && (this._eventEmitter = new Emitter());
-    }
-
-    _assertPendingEmitEvents() {
-        !this.__pendingEmitEvents && (this.__pendingEmitEvents = {});
-    }
-
+    // <-- dialogs
     initGridView(head, data, options) {
         this._gridView = new GridViewRub(head, data, options);
     }
@@ -100,6 +92,18 @@ export default class Actor extends Component {
 
     getGridViewNode() {
         return this._gridView && this.getGridView().getNode();
+    }
+
+    pageIsEmpty(node, str) {}
+
+    // end dialog functionalities -->
+
+    _assertEmitter() {
+        !this._eventEmitter && (this._eventEmitter = new Emitter());
+    }
+
+    _assertPendingEmitEvents() {
+        !this.__pendingEmitEvents && (this.__pendingEmitEvents = {});
     }
 
     /**
