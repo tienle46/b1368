@@ -1,8 +1,8 @@
 import app from 'app';
-import Actor from 'Actor';
+import DialogActor from 'DialogActor';
 import numeral from 'numeral';
 
-class RatioItem extends Actor {
+class RatioItem extends DialogActor {
     constructor() {
         super();
 

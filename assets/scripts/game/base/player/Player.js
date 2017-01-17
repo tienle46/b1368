@@ -5,7 +5,6 @@ import CreateGameException from 'CreateGameException';
 import Actor from 'Actor';
 import Events from 'Events'
 import { Keywords } from 'core';
-import FriendProfilePopupRub from 'FriendProfilePopupRub';
 
 export default class Player extends Actor {
 
@@ -176,8 +175,10 @@ export default class Player extends Actor {
     }
 
     avatarClicked() {
-        let startNode = this.scene.gamePlayers.playerPositions.getPlayerAnchorByPlayerId(this.scene.gamePlayers.me.id, this.isItMe());
-        this.renderer.showUserProfilePopup(this.scene.node, this.user.userName, this.user.id, this.scene.gamePlayers.isOwner(this.scene.gamePlayers.me.id), startNode, this.node);
+        if (!this.isItMe()) {
+            let startNode = this.scene.gamePlayers.playerPositions.getPlayerAnchorByPlayerId(this.scene.gamePlayers.me.id, this.isItMe());
+            this.renderer.showUserProfilePopup(this.scene.node, this.user.userName, this.user.id, this.scene.gamePlayers.isOwner(this.scene.gamePlayers.me.id), startNode, this.node);
+        }
     }
 
     _updatePlayerAnchor() {

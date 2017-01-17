@@ -1,9 +1,9 @@
 import app from 'app';
-import Actor from 'Actor';
+import DialogActor from 'DialogActor';
 import ExchangeDialog from 'ExchangeDialog';
 import RubResources from 'RubResources';
 
-class TabExchangeHistory extends Actor {
+class TabExchangeHistory extends DialogActor {
     constructor() {
         super();
         this.flag = null;

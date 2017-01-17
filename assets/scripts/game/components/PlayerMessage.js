@@ -5,7 +5,7 @@
 import app from 'app';
 import Component from 'Component';
 import TextView from 'TextView';
-import {CCUtils, utils} from 'utils';
+import { CCUtils, utils } from 'utils';
 
 export default class PlayerMessage extends Component {
     constructor() {
@@ -13,9 +13,9 @@ export default class PlayerMessage extends Component {
 
         this.properties = {
             ...this.properties,
-            textViewNode : cc.Node,
-            anchorTop : cc.Node,
-            anchorBottom : cc.Node
+            textViewNode: cc.Node,
+            anchorTop: cc.Node,
+            anchorBottom: cc.Node
         }
 
         this.message = null;
@@ -26,12 +26,15 @@ export default class PlayerMessage extends Component {
         this.playerRenderer = null;
     }
 
-    setup(player){
+    setup(player) {
+        console.debug('setup', this.playerRenderer, this.anchorIndex);
         this.playerRenderer = player;
+        console.debug('setup2', this.playerRenderer, this.anchorIndex);
+
         this.anchorIndex = this.playerRenderer.getMessageAnchorIndex();
     }
 
-    onLoad(){
+    onLoad() {
         this.textView = this.textViewNode.getComponent('TextView');
         this.textView.setMaxWidth(220);
         this.textView.setLines(1);
@@ -40,31 +43,33 @@ export default class PlayerMessage extends Component {
 
         this.updateAnchor(this.anchorIndex);
         this._setMessage(this.message);
+        console.debug('onLoad', this.playerRenderer, this.anchorIndex);
     }
 
-    updateAnchor(anchorIndex){
-        if(!this.loaded) return;
+    updateAnchor(anchorIndex) {
+        if (!this.loaded) return;
 
-        this.anchorIndex = this.playerRenderer.getMessageAnchorIndex(anchorIndex);
-        if(this.anchorIndex >= 0){
+
+        this.anchorIndex = (this.playerRenderer && this.playerRenderer.getMessageAnchorIndex(anchorIndex)) || -1;
+        if (this.anchorIndex >= 0) {
 
             let isTopAnchor = this.playerRenderer.scene.gamePlayers.playerPositions.isPositionOnTop(anchorIndex);
 
-            if(isTopAnchor){
+            if (isTopAnchor) {
                 this.textViewNode.setAnchorPoint(0.5, 1);
                 this.node.setPosition(this.anchorBottom.getPosition());
-            }else{
+            } else {
                 this.textViewNode.setAnchorPoint(0.5, 0);
                 this.node.setPosition(this.anchorTop.getPosition());
             }
-        }else{
+        } else {
             this.textViewNode.setAnchorPoint(0.5, 0);
             this.node.setPosition(0, 0);
         }
     }
 
-    show(message){
-        if(!this.loaded){
+    show(message) {
+        if (!this.loaded) {
             this.message = message;
             this.node.active = true;
             return;
@@ -73,8 +78,8 @@ export default class PlayerMessage extends Component {
         this._setMessage(message);
     }
 
-    hide(){
-        if(!this.loaded){
+    hide() {
+        if (!this.loaded) {
             return;
         }
 
@@ -86,10 +91,10 @@ export default class PlayerMessage extends Component {
         this.textView.setText("");
     }
 
-    _setMessage(message){
+    _setMessage(message) {
         this.hide();
 
-        if(!utils.isEmpty(message)){
+        if (!utils.isEmpty(message)) {
             this.node.active = true;
             this.message = message;
             this.textView.setText(message);

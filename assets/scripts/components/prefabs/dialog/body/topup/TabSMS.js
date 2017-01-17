@@ -1,8 +1,8 @@
 import app from 'app';
-import Actor from 'Actor';
+import DialogActor from 'DialogActor';
 import numeral from 'numeral';
 
-class TabSMS extends Actor {
+class TabSMS extends DialogActor {
     constructor() {
         super();
         this.properties = {
@@ -17,8 +17,6 @@ class TabSMS extends Actor {
     }
 
     onLoad() {
-        this.node.active = true;
-
         let data = {
             ap: ['com.bamienstudio.baibamien.4000g', 'com.bamienstudio.baibamien.8000g'],
             bp: {

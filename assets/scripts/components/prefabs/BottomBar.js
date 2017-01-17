@@ -1,5 +1,5 @@
 import app from 'app';
-import Actor from 'Actor';
+import DialogActor from 'DialogActor';
 import DialogRub from 'DialogRub';
 import TopupDialogRub from 'TopupDialogRub';
 import ExchangeDialogRub from 'ExchangeDialogRub';
@@ -7,7 +7,7 @@ import PersonalInfoDialogRub from 'PersonalInfoDialogRub';
 import MessageCenterDialogRub from 'MessageCenterDialogRub';
 import numeral from 'numeral';
 
-class BottomBar extends Actor {
+class BottomBar extends DialogActor {
     constructor() {
         super();
         this.userInfoCoinLbl = {
@@ -73,7 +73,18 @@ class BottomBar extends Actor {
     }
 
     onFriendBtnClick() {
-        console.log('onFriendBtnClick');
+        let url = `${app.const.DIALOG_DIR_PREFAB}/buddies`;
+        let tabs = [{
+                title: 'Danh sách',
+                value: `${url}/tab_buddy_list`
+            },
+            {
+                title: 'Chuyển xu',
+                value: `${url}/tab_buddy_detail`
+            }
+        ];
+
+        PersonalInfoDialogRub.show(app.system.getCurrentSceneNode(), tabs, { title: 'Bạn bè' });
     }
 
     onClickTransferAwardAction() {

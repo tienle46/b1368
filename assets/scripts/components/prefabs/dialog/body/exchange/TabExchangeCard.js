@@ -1,11 +1,11 @@
 import app from 'app';
-import Actor from 'Actor';
+import DialogActor from 'DialogActor';
 import RubUtils from 'RubUtils';
 import ExchangeDialog from 'ExchangeDialog';
 import NodeRub from 'NodeRub';
 import numeral from 'numeral';
 
-class TabExchangeCard extends Actor {
+class TabExchangeCard extends DialogActor {
     constructor() {
         super();
         this.properties = {

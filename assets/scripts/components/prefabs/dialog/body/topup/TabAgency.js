@@ -1,7 +1,7 @@
 import app from 'app';
-import Actor from 'Actor';
+import DialogActor from 'DialogActor';
 
-class TabAgency extends Actor {
+class TabAgency extends DialogActor {
     constructor() {
         super();
         this.bodyNode = {

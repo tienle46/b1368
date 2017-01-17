@@ -17,7 +17,7 @@
                 <key>textureRect</key>
                 <string>{{1,1},{88,118}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
             </dict>
             <key>poker-background.png</key>
             <dict>
@@ -30,22 +30,22 @@
                 <key>spriteSourceSize</key>
                 <string>{88,118}</string>
                 <key>textureRect</key>
-                <string>{{91,1},{88,118}}</string>
+                <string>{{1,91},{88,118}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
             </dict>
             <key>poker-big-club.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
                 <key>spriteOffset</key>
-                <string>{0,0}</string>
+                <string>{-1,1}</string>
                 <key>spriteSize</key>
-                <string>{60,60}</string>
+                <string>{52,54}</string>
                 <key>spriteSourceSize</key>
                 <string>{60,60}</string>
                 <key>textureRect</key>
-                <string>{{549,1},{60,60}}</string>
+                <string>{{55,538},{52,54}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -54,43 +54,43 @@
                 <key>aliases</key>
                 <array/>
                 <key>spriteOffset</key>
-                <string>{0,0}</string>
+                <string>{-1,1}</string>
                 <key>spriteSize</key>
-                <string>{60,60}</string>
+                <string>{48,58}</string>
                 <key>spriteSourceSize</key>
                 <string>{60,60}</string>
                 <key>textureRect</key>
-                <string>{{549,63},{60,60}}</string>
+                <string>{{1,596},{48,58}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
             </dict>
             <key>poker-big-heart.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
                 <key>spriteOffset</key>
-                <string>{0,0}</string>
+                <string>{0,1}</string>
                 <key>spriteSize</key>
-                <string>{60,60}</string>
+                <string>{52,54}</string>
                 <key>spriteSourceSize</key>
                 <string>{60,60}</string>
                 <key>textureRect</key>
-                <string>{{611,1},{60,60}}</string>
+                <string>{{61,594},{52,54}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
             </dict>
             <key>poker-big-spade.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
                 <key>spriteOffset</key>
-                <string>{0,0}</string>
+                <string>{0,1}</string>
                 <key>spriteSize</key>
-                <string>{60,60}</string>
+                <string>{52,56}</string>
                 <key>spriteSourceSize</key>
                 <string>{60,60}</string>
                 <key>textureRect</key>
-                <string>{{611,63},{60,60}}</string>
+                <string>{{1,538},{52,56}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -105,9 +105,9 @@
                 <key>spriteSourceSize</key>
                 <string>{88,118}</string>
                 <key>textureRect</key>
-                <string>{{181,1},{84,112}}</string>
+                <string>{{1,181},{84,112}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
             </dict>
             <key>poker-hight-light.png</key>
             <dict>
@@ -120,9 +120,9 @@
                 <key>spriteSourceSize</key>
                 <string>{88,118}</string>
                 <key>textureRect</key>
-                <string>{{267,1},{82,110}}</string>
+                <string>{{1,267},{82,110}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
             </dict>
             <key>poker-jack.png</key>
             <dict>
@@ -131,13 +131,13 @@
                 <key>spriteOffset</key>
                 <string>{0,0}</string>
                 <key>spriteSize</key>
-                <string>{64,80}</string>
+                <string>{63,74}</string>
                 <key>spriteSourceSize</key>
-                <string>{64,80}</string>
+                <string>{63,74}</string>
                 <key>textureRect</key>
-                <string>{{351,1},{64,80}}</string>
+                <string>{{1,351},{63,74}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
             </dict>
             <key>poker-king.png</key>
             <dict>
@@ -146,13 +146,13 @@
                 <key>spriteOffset</key>
                 <string>{0,0}</string>
                 <key>spriteSize</key>
-                <string>{64,80}</string>
+                <string>{62,73}</string>
                 <key>spriteSourceSize</key>
-                <string>{64,80}</string>
+                <string>{62,73}</string>
                 <key>textureRect</key>
-                <string>{{417,1},{64,80}}</string>
+                <string>{{1,416},{62,73}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
             </dict>
             <key>poker-queen.png</key>
             <dict>
@@ -161,13 +161,13 @@
                 <key>spriteOffset</key>
                 <string>{0,0}</string>
                 <key>spriteSize</key>
-                <string>{64,80}</string>
+                <string>{56,73}</string>
                 <key>spriteSourceSize</key>
-                <string>{64,80}</string>
+                <string>{56,73}</string>
                 <key>textureRect</key>
-                <string>{{483,1},{64,80}}</string>
+                <string>{{1,480},{56,73}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
             </dict>
             <key>poker-small-club.png</key>
             <dict>
@@ -180,7 +180,7 @@
                 <key>spriteSourceSize</key>
                 <string>{24,24}</string>
                 <key>textureRect</key>
-                <string>{{351,83},{24,24}}</string>
+                <string>{{77,351},{24,24}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -195,7 +195,7 @@
                 <key>spriteSourceSize</key>
                 <string>{24,24}</string>
                 <key>textureRect</key>
-                <string>{{377,83},{24,24}}</string>
+                <string>{{77,377},{24,24}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -210,7 +210,7 @@
                 <key>spriteSourceSize</key>
                 <string>{24,24}</string>
                 <key>textureRect</key>
-                <string>{{403,83},{24,24}}</string>
+                <string>{{77,403},{24,24}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -225,7 +225,7 @@
                 <key>spriteSourceSize</key>
                 <string>{24,24}</string>
                 <key>textureRect</key>
-                <string>{{429,83},{24,24}}</string>
+                <string>{{76,429},{24,24}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -241,9 +241,9 @@
             <key>realTextureFileName</key>
             <string>card_new.png</string>
             <key>size</key>
-            <string>{672,124}</string>
+            <string>{120,647}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:83bab289342b42ea934d94b1a1d145e1:372c5325ab60892592644d4c3a961476:4c9867c5589f53c299e3639dbc619dc7$</string>
+            <string>$TexturePacker:SmartUpdate:fe9d3f5eed5936d43990e58b20dca65b:d512a10a5113a409c292960dd82ba336:4c9867c5589f53c299e3639dbc619dc7$</string>
             <key>textureFileName</key>
             <string>card_new.png</string>
         </dict>

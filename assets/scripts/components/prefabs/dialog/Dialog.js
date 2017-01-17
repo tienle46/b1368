@@ -8,24 +8,11 @@ export default class Dialog extends Component {
     constructor() {
         super();
 
-        this.tabs = {
-            default: null,
-            type: DialogTab
-        };
-
-        this.bodyNode = {
-            default: null,
-            type: cc.Node
-        };
-
-        this.titleLbl = {
-            default: null,
-            type: cc.Label
-        };
-
-        this.bgTransparent = {
-            default: null,
-            type: cc.Node
+        this.properties = {
+            tabs: DialogTab,
+            bodyNode: cc.Node,
+            titleLbl: cc.Label,
+            bgTransparent: cc.Node
         };
 
         this.addedNodes = {};
@@ -127,9 +114,9 @@ export default class Dialog extends Component {
 
         this.bodyNode.addChild(node);
 
-        this.addNode(node); // <- removed assets
-
         this._showBody(id);
+
+        this.addNode(node); // <- assets will be removed
     }
 }
 

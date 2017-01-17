@@ -1,11 +1,11 @@
 import app from 'app';
-import Actor from 'Actor';
+import DialogActor from 'DialogActor';
 import RubUtils from 'RubUtils';
 import numeral from 'numeral';
 import ExchangeDialog from 'ExchangeDialog';
 import LoaderRub from 'LoaderRub';
 
-class TabExchangeItem extends Actor {
+class TabExchangeItem extends DialogActor {
     constructor() {
         super();
 
