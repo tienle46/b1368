@@ -73,7 +73,18 @@ class BottomBar extends DialogActor {
     }
 
     onFriendBtnClick() {
-        console.log('onFriendBtnClick');
+        let url = `${app.const.DIALOG_DIR_PREFAB}/buddies`;
+        let tabs = [{
+                title: 'Danh sách',
+                value: `${url}/tab_buddy_list`
+            },
+            {
+                title: 'Chuyển xu',
+                value: `${url}/tab_buddy_detail`
+            }
+        ];
+
+        PersonalInfoDialogRub.show(app.system.getCurrentSceneNode(), tabs, { title: 'Bạn bè' });
     }
 
     onClickTransferAwardAction() {
