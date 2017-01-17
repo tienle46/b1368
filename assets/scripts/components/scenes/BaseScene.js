@@ -152,6 +152,9 @@ export default class BaseScene extends Actor {
             }
             if (result) {
                 log(`Logged in as ${app.context.getMe().name}`);
+                if (cc.sys.isMobile && sdkbox) {
+                    sdkbox.PluginGoogleAnalytics.setUser(app.context.getMe().name);
+                }
                 //load recently games
                 this.changeScene(app.const.scene.DASHBOARD_SCENE);
             }

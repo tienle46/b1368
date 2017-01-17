@@ -184,18 +184,31 @@ if (cc.sys.isBrowser) {
         app.DEVICE_ID = 'a19c8e4ae2e82ef1c7846f32628d4ead3';
     }
 }
-if (cc.sys.isMobile) {
+if (cc.sys.isMobile && sdkbox) {
     //facebook
     sdkbox.PluginFacebook.init();
 
     //google analytics
     sdkbox.PluginGoogleAnalytics.init();
+    sdkbox.PluginGoogleAnalytics.startSession();
 
     //onesignal
     sdkbox.PluginOneSignal.init();
-    sdkbox.PluginOneSignal.setSubscription(true);
-    sdkbox.PluginOneSignal.enableInAppAlertNotification(true);
     sdkbox.PluginOneSignal.registerForPushNotifications();
+    // sdkbox.PluginOneSignal.setSubscription(true);
+    sdkbox.PluginOneSignal.enableInAppAlertNotification(true);
+
+    sdkbox.PluginOneSignal.setListener({
+        onSendTag :(success, key, message) => { },
+        onGetTags :(jsonString) => { },
+        onIdsAvailable : (userId,  pushToken) =>{ },
+        onPostNotification :(success,  message) =>{ },
+        onNotification :(isActive,  message, additionalData) =>{
+
+        }
+    });
+
+
 }
 
 (function() {

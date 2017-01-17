@@ -1,24 +1,24 @@
 {
+  "appKey": "",
+  "appSecret": "",
   "excludeScenes": [],
   "includeAnySDK": false,
   "includeSdk": [
     "anysdk"
   ],
+  "inlineSpriteFrames": true,
+  "mergeStartScene": false,
+  "oauthLoginServer": "",
   "orientation": {
     "landscapeLeft": true,
     "landscapeRight": true,
     "portrait": false,
     "upsideDown": false
   },
-  "packageName": "com.bamien.b1368",
-  "startScene": "19d77baf-45a8-424b-b934-835d4149344d",
-  "title": "B1368",
-  "webOrientation": "auto",
-  "oauthLoginServer": "",
-  "appKey": "",
-  "appSecret": "",
+  "packageName": "com.b1368.playingcards",
   "privateKey": "",
   "renderMode": "0",
-  "inlineSpriteFrames": true,
-  "mergeStartScene": false
+  "startScene": "19d77baf-45a8-424b-b934-835d4149344d",
+  "title": "B1368",
+  "webOrientation": "auto"
 }
