@@ -2,8 +2,7 @@ export default (app) => {
     let reduce = Function.bind.call(Function.call, Array.prototype.reduce);
     let isEnumerable = Function.bind.call(Function.call, Object.prototype.propertyIsEnumerable);
     let concat = Function.bind.call(Function.call, Array.prototype.concat);
-    let keys = Reflect.ownKeys;
-
+    let keys = Object.getOwnPropertyNames || Reflect.ownKeys;
     // Object.values
     if (!Object.values) {
         Object.values = function values(O) {
