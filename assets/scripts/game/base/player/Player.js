@@ -5,6 +5,7 @@ import CreateGameException from 'CreateGameException';
 import Actor from 'Actor';
 import Events from 'Events'
 import { Keywords } from 'core';
+import Props from 'Props';
 
 export default class Player extends Actor {
 
@@ -58,6 +59,7 @@ export default class Player extends Actor {
         this.scene.on(Events.ON_PLAYER_CHAT_MESSAGE, this._onPlayerChatMessage, this);
         this.scene.on(Events.ON_ROOM_CHANGE_MIN_BET, this._onRoomMinBetChanged, this);
         this.scene.on(Events.ON_CLICK_START_GAME_BUTTON, this._onClickStartGameButton, this);
+        this.scene.on(Events.ON_USER_USES_ASSET, this._onUserUsesAsset, this);
     }
 
     _removeGlobalListener() {
@@ -78,6 +80,7 @@ export default class Player extends Actor {
         this.scene.off(Events.ON_ROOM_CHANGE_MIN_BET, this._onRoomMinBetChanged, this);
         this.scene.off(Events.ON_CLICK_START_GAME_BUTTON, this._onClickStartGameButton, this);
         this.scene.off(Events.ON_USER_UPDATE_NEW_PLAYER, this._onUserUpdateNewPlayer, this);
+        this.scene.off(Events.ON_USER_USES_ASSET, this._onUserUsesAsset, this);
     }
 
     _onUserUpdateNewPlayer(user) {
@@ -157,6 +160,15 @@ export default class Player extends Actor {
         }
     }
 
+    _getPosBasedOnWorldSpace(playerId) {
+        let isItMe = this.scene.gamePlayers.isItMe(playerId);
+        let myPos = this.scene.gamePlayers.playerPositions.getPlayerAnchorByPlayerId(playerId, isItMe);
+        let node = this.node.parent ? this.node.parent : this.node;
+        myPos = node.convertToWorldSpaceAR(myPos);
+
+        return { myPos, isItMe };
+    }
+
     onEnable(renderer, renderData = {}) {
         super.onEnable(renderer, {...renderData, isItMe: this.user.isItMe, scene: this.scene, owner: this.isOwner });
 
@@ -177,8 +189,21 @@ export default class Player extends Actor {
     avatarClicked() {
         if (!this.isItMe()) {
             let startNode = this.scene.gamePlayers.playerPositions.getPlayerAnchorByPlayerId(this.scene.gamePlayers.me.id, this.isItMe());
-            this.renderer.showUserProfilePopup(this.scene.node, this.user.userName, this.user.id, this.scene.gamePlayers.isOwner(this.scene.gamePlayers.me.id), startNode, this.node);
+            this.renderer.showUserProfilePopup(this.scene.node, this.user.name, this.user.id, this.scene.gamePlayers.isOwner(this.scene.gamePlayers.me.id), startNode, this.node);
         }
+    }
+
+    _onUserUsesAsset(sender, receiver, assetId) {
+        let playerIdSender = this.scene.gamePlayers.findPlayer(sender).id;
+        if (playerIdSender != this.id)
+            return;
+
+        let playerIdReceiver = this.scene.gamePlayers.findPlayer(receiver).id,
+            senderPos = this._getPosBasedOnWorldSpace(playerIdSender).myPos,
+            receiverPos = this._getPosBasedOnWorldSpace(playerIdReceiver).myPos,
+            prosName = Object.values(app.res.asset_tools).find(asset => asset.id == assetId).name;
+
+        Props.playPropName(prosName, 'props', 8, senderPos, receiverPos);
     }
 
     _updatePlayerAnchor() {

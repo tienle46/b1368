@@ -56,7 +56,7 @@ export default class PlayerXocDia extends PlayerCardBetTurn {
         this.balanceAvailable = this.balance;
     }
 
-    _setBalance(balance){
+    _setBalance(balance) {
         this.balanceAvailable = balance;
 
         super._setBalance(balance);
@@ -91,22 +91,13 @@ export default class PlayerXocDia extends PlayerCardBetTurn {
 
     }
 
-    _getPosBasedOnWorldSpace(playerId) {
-        let isItMe = this.scene.gamePlayers.isItMe(playerId);
-        let myPos = this.scene.gamePlayers.playerPositions.getPlayerAnchorByPlayerId(playerId, isItMe);
-        let node = this.node.parent ? this.node.parent : this.node;
-        myPos = node.convertToWorldSpaceAR(myPos);
-
-        return { myPos, isItMe };
-    }
-
     _onPlayerCancelBet(data) {
         if (data.playerId != this.id) return;
         let betsList = this.betData;
         let { playerId, isSuccess, err } = data;
         if (isSuccess) {
-            let myPos = this.scene.gamePlayers.playerPositions.getPlayerAnchorByPlayerId(playerId, isItMe);
             let isItMe = this.scene.gamePlayers.isItMe(playerId);
+            let myPos = this.scene.gamePlayers.playerPositions.getPlayerAnchorByPlayerId(playerId, isItMe);
 
             this.scene.emit(Events.XOCDIA_ON_PLAYER_CANCEL_BET_SUCCESS, { myPos, isItMe, betsList, playerId });
             this.betData = [];
@@ -142,17 +133,16 @@ export default class PlayerXocDia extends PlayerCardBetTurn {
     }
 
     _onGameState(state, data, isJustJoined) {
-        if(state == app.const.game.state.STATE_BET){
+        if (state == app.const.game.state.STATE_BET) {
             this.isItMe() && this.renderer.hidePlayerComponentOnBetting();
         }
 
-        if(state == app.const.game.state.BOARD_STATE_SHAKE){
+        if (state == app.const.game.state.BOARD_STATE_SHAKE) {
             this.isItMe() && this.renderer.showPlayerComponentOnShake();
         }
     }
 
-    _onGameStateBet() {
-    }
+    _onGameStateBet() {}
 
     changePlayerBalance(amount) {
         this.setPlayerBalance(this.balanceAvailable + Number(amount));

@@ -80,7 +80,7 @@ export default class TabUserInfo extends DialogActor {
     _isValidPasswordInput(str) {
         // minimum: 6, must have atleast a-z|A-Z|0-9, without space
         // /\s/.test(str) => true if str contains space
-        return /[a-z]/.test(str) || /[A-Z]/.test(str) && /[0-9]/.test(str) && !/\s/.test(str) && str.length >= 6;
+        return /[a-zA-Z]/.test(str) && /[0-9]/.test(str) && !/\s/.test(str) && str.length >= 6;
     }
 
     _initUserData() {

@@ -9,7 +9,7 @@ export default {
     error_fail_to_create_game: "Không thể khởi tạo bàn chơi",
     error_fail_to_load_game_data: "Không thể tải dữ liệu bàn chơi",
     error_user_enter_empty_input: "Vui lòng nhập đầy đủ thông tin",
-    error_changed_password_is_invalid: "Mật khẩu mới phải từ 6 ký tự trong đó có ít nhất 1 ký tự Hoa, 1 số, 1 ký tự thường, không có ký tự đặc biệt và dấu cách.",
+    error_changed_password_is_invalid: "Mật khẩu mới phải từ 6 ký tự trong đó có ít nhất 1 số, 1 ký tự thường, không có ký tự đặc biệt và dấu cách.",
     error_password_confirmation_is_not_the_same: "Nhập lại mật khẩu mới không chính xác",
     error_user_not_enough_gold_to_join_room: "Phòng chơi có mức cược {{minBet}}, bạn hiện tại không đủ điều kiện để tham gia",
     error_topup_dialog_need_to_choice_item: "Vui lòng chọn loại thẻ",

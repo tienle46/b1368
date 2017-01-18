@@ -110,6 +110,8 @@ app.res.gameTopCapThuIcon = {
     "dnode/xms": "sam_ico",
 };
 
+app.res.asset_tools = {};
+
 /**
  * Path of resource should be declare here to maintain easier
  * @type {{}}

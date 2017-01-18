@@ -79,9 +79,9 @@ export default class RegisterScene extends BaseScene {
     }
 
     _isValidPasswordInput(str) {
-        // minimum: 6, must have atleast a-z|A-Z|0-9, without space
+        // minimum: 6, must have atleast a-z||A-Z|0-9, without space
         // /\s/.test(str) => true if str contains space
-        return /[a-z]/.test(str) && /[A-Z]/.test(str) && /[0-9]/.test(str) && !/\s/.test(str) && str.length >= MINIMUM_PASSWORD;
+        return /[a-zA-Z]/.test(str) && /[0-9]/.test(str) && !/\s/.test(str) && str.length >= MINIMUM_PASSWORD;
     }
 
     _isValidUsernameInput(str) {

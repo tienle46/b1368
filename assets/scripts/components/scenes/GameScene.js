@@ -112,7 +112,27 @@ export default class GameScene extends BaseScene {
         super.onLoad();
         this._penddingEvents = [];
 
-        this.node.children.forEach(child => { child.opacity = 255 })
+        this.node.children.forEach(child => { child.opacity = 255 });
+
+        Object.values(app.res.asset_tools).length < 1 && this._loadAssetTools();
+    }
+
+    _loadAssetTools() {
+        cc.loader.loadResDir('props/thumbs', cc.SpriteFrame, (err, assets) => {
+            if (err) {
+                cc.error(err);
+                return;
+            }
+
+            assets.forEach((asset, index) => {
+                app.res.asset_tools[asset.name] = {
+                    id: index,
+                    name: asset.name,
+                    spriteFrame: asset
+                };
+            });
+
+        });
     }
 
     _onRoomMinBetChanged() {
@@ -420,7 +440,7 @@ export default class GameScene extends BaseScene {
         return this.gamePlayers.players.length > 1;
     }
 
-    emit(name, ...args){
+    emit(name, ...args) {
         !this.sceneChanging && super.emit(name, ...args);
     }
 }

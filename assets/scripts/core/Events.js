@@ -130,3 +130,5 @@ Events.XOCDIA_ON_PLAYER_CANCEL_BET_SUCCESS = "xocdia.on.player.cancel.bet.succes
 Events.XOCDIA_ON_PLAYER_GET_CHIP_SUCCESS = "xocdia.on.player.get.chip.success";
 Events.XOCDIA_ON_PLAYER_RECEIVE_CHIP_ANIMATION = "xocdia.on.player.receive.chip.anim";
 Events.XOCDIA_ON_PLAYER_RUN_MONEY_BALANCE_CHANGE_ANIM = "xocdia.on.player.run.money.balance.change.anim";
+
+Events.ON_USER_USES_ASSET = "on.user.uses.asset";

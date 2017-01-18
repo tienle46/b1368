@@ -25,17 +25,17 @@ export default class Props extends Component {
 
     }
 
-    static playPropName(prosName, resPath,sample, startNode, endNode, finishCallback){
+    static playPropName(prosName, resPath, sample, startPos, endPos, finishCallback) {
         cc.loader.loadRes(`${resPath}/${prosName}`, cc.SpriteAtlas, (err, atlas) => {
 
-            if(err){
+            if (err) {
                 debug(err);
                 return;
             }
 
             cc.loader.loadRes(`${resPath}/thumbs/${prosName}`, cc.SpriteFrame, (err, spriteFrame) => {
 
-                if(err){
+                if (err) {
                     debug(err);
                     return;
                 }
@@ -46,17 +46,17 @@ export default class Props extends Component {
                 sprite.trim = false;
                 sprite.spriteFrame = spriteFrame;
 
-                animatingNode.position = startNode.parent.convertToWorldSpaceAR(startNode.getPosition());
+                animatingNode.position = startPos;
 
                 cc.director.getScene().addChild(animatingNode);
 
-                let moveToAction = cc.callFunc(()=> null);
+                let moveToAction = cc.callFunc(() => null);
 
-                if(endNode){
-                    moveToAction = cc.moveTo(0.6, endNode.parent.convertToWorldSpaceAR(endNode.getPosition()));
+                if (endPos) {
+                    moveToAction = cc.moveTo(0.6, endPos);
                 }
 
-                const seq = cc.sequence(moveToAction, cc.callFunc(()=>{
+                const seq = cc.sequence(moveToAction, cc.callFunc(() => {
 
 
                     var spriteFrames = atlas.getSpriteFrames();
@@ -68,7 +68,7 @@ export default class Props extends Component {
                     animation.addClip(clip);
                     animation.play('run');
 
-                    animation.on('finished', ()=>{
+                    animation.on('finished', () => {
                         animatingNode.destroy();
                         animatingNode.removeFromParent(true);
                         finishCallback && finishCallback();
@@ -80,10 +80,10 @@ export default class Props extends Component {
 
         });
     }
-    static playPropAtIndex(propIndex, startNode,endNode){
+    static playPropAtIndex(propIndex, startNode, endNode) {
         const propName = props[propIndex];
 
-        Props.playPropName(propName,'props/',10, startNode, endNode);
+        Props.playPropName(propName, 'props/', 10, startNode, endNode);
     }
 }
 

@@ -66,11 +66,6 @@ export default class FriendProfilePopup extends DialogActor {
         app.service.send(sendObject);
     }
 
-    propsItemClicked(e) {
-        const prosName = e.target.name;
-        this.performAnimation(prosName, this.startAnimNode, this.endAnimNode);
-    }
-
     performAnimation(prosName, startNode, destinationNode) {
         this.node.opacity = 0;
 
@@ -86,41 +81,53 @@ export default class FriendProfilePopup extends DialogActor {
     }
 
     loadPropsAssets() {
-        cc.loader.loadResDir('props/thumbs', cc.SpriteFrame, function(err, assets) {
-            if (err) {
-                cc.error(err);
-                return;
-            }
+        let assets = Object.values(app.res.asset_tools);
+        this.totalItems = assets.length;
+        this.totalPage = Math.ceil(this.totalItems / this.itemsPerPage);
+        assets.map(asset => {
+            // console.debug(`${index} `, asset);
+            const clickEvent = new cc.Component.EventHandler();
+            clickEvent.target = this.node;
+            clickEvent.component = 'FriendProfilePopup';
+            clickEvent.handler = 'propsItemClicked';
 
-            this.totalItems = assets.length;
-            this.totalPage = Math.ceil(this.totalItems / this.itemsPerPage);
+            let o = {
+                name: asset.name,
+                sprite: {
+                    spriteFrame: asset.spriteFrame,
+                    trim: false,
+                    type: cc.Sprite.Type.SIMPLE,
+                    sizeMode: cc.Sprite.SizeMode.SIMPLE
+                },
+                button: {
+                    event: clickEvent
+                }
+            };
 
-            assets.forEach((asset) => {
-                // console.debug(`${index} `, asset);
-                const clickEvent = new cc.Component.EventHandler();
-                clickEvent.target = this.node;
-                clickEvent.component = 'FriendProfilePopup';
-                clickEvent.handler = 'propsItemClicked';
+            const node = NodeRub.createNodeByOptions(o);
 
-                let o = {
-                    name: asset.name,
-                    sprite: {
-                        spriteFrame: asset,
-                        trim: false,
-                        type: cc.Sprite.Type.SIMPLE,
-                        sizeMode: cc.Sprite.SizeMode.SIMPLE
-                    },
-                    button: {
-                        event: clickEvent
-                    }
-                };
-                const node = NodeRub.createNodeByOptions(o);
+            this.propsGridView && this.propsGridView.node.addChild(node);
+        })
+    }
 
-                this.propsGridView.node.addChild(node);
-            });
+    propsItemClicked(e) {
+        const prosName = e.target.name;
+        let itemId = app.res.asset_tools[prosName].id,
+            ev = new cc.Event.EventCustom('on.asset.picked', true);
 
-            this.node.emit('change-paging-state');
-        }.bind(this));
+        let data = {};
+        data[app.keywords.ASSETS_DAOCU_ITEM_USED_ID] = itemId;
+        data[app.keywords.STORE_TYPE] = 3;
+        data[app.keywords.ASSETS_ITEM_USED_RECEIVER] = this.friendName;
+
+        let sendObject = {
+            cmd: app.commands.ASSETS_USE_ITEM,
+            data
+        };
+
+        app.service.send(sendObject);
+
+        cc.isValid(this.node) && this.node.destroy() && this.node.removeFromParent();
     }
 
     onLeftBtnClick(e) {

@@ -74,6 +74,8 @@ export default class GameEventHandler {
         app.system.addGameListener(Commands.XOCDIA_BET, this._onXocDiaPLayerBet, this);
         app.system.addGameListener(Commands.XOCDIA_CANCEL_BET, this._onXocDiaPLayerCancelBet, this);
         app.system.addGameListener(Commands.INVALID_PLAY_TURN, this._invalidPlayTurn, this);
+
+        app.system.addGameListener(Commands.ASSETS_USE_ITEM, this._assetsUseItem, this);
     }
 
     removeGameEventListener() {
@@ -117,17 +119,30 @@ export default class GameEventHandler {
         app.system.removeGameListener(Commands.XOCDIA_CANCEL_BET, this._onXocDiaPLayerCancelBet, this);
         app.system.removeGameListener(Commands.INVALID_PLAY_TURN, this._invalidPlayTurn, this);
 
+        app.system.removeGameListener(Commands.ASSETS_USE_ITEM, this._assetsUseItem, this);
+
     }
 
-    _onPlayerGopGa(data){
+    _onPlayerGopGa(data) {
 
         let success = utils.getValue(data, app.keywords.SUCCESSFULL);
         console.log("_onPlayerGopGa su", success, " ")
-        if(success){
-        console.log("_onPlayerGopGa su", success, " ")
+        if (success) {
+            console.log("_onPlayerGopGa su", success, " ")
             let playerId = utils.getValue(data, Keywords.PLAYER_ID);
             let gopGaValue = utils.getValue(data, Keywords.BA_CAY_GOP_GA_VALUE);
             playerId && gopGaValue && this.scene.emit(Events.ON_PLAYER_BACAY_GOP_GA, playerId, gopGaValue);
+        }
+    }
+
+    _assetsUseItem(data) {
+        let success = utils.getValue(data, app.keywords.SUCCESSFULL);
+        if (success) {
+            //{r: "123456", su: true, s: "p1642017854", t: 3, pi: 0}
+            let sender = utils.getValue(data, app.keywords.ASSETS_ITEM_USED_SENDER);
+            let receiver = utils.getValue(data, app.keywords.ASSETS_ITEM_USED_RECEIVER);
+            let assetId = utils.getValue(data, app.keywords.ASSETS_DAOCU_ITEM_USED_ID);
+            this.scene.emit(Events.ON_USER_USES_ASSET, sender, receiver, assetId);
         }
     }
 
@@ -355,8 +370,8 @@ export default class GameEventHandler {
         // this.playerManager.changePlayerBalance(playerIds, playersBalances);
     }
 
-    _invalidPlayTurn(data){
-        if(this.scene.gameState == app.const.game.state.TURN_BASE_TRUE_PLAY){
+    _invalidPlayTurn(data) {
+        if (this.scene.gameState == app.const.game.state.TURN_BASE_TRUE_PLAY) {
             this.scene.emit(Events.SHOW_PLAY_CONTROL, true);
         }
     }

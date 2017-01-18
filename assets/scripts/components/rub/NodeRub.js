@@ -286,6 +286,8 @@ let NodeRub = {
      * @param {any} options
      * {
      *      name: <string>,
+     *      id: <int>,
+     *      values: {}, <-- node's customization value
      *      position: <cc.v2>,
      *      size: <cc.size>,
      *      color: <new cc.Color>,
@@ -301,6 +303,21 @@ let NodeRub = {
     createNodeByOptions(options) {
         let node = new cc.Node();
         options.name && (node.name = options.name);
+
+        let __prefix = '_n_';
+        node._setValue = (key, value) => {
+            node[`${__prefix}${key}`] = value;
+        };
+
+        node._getValue = (key) => {
+            return node[`${__prefix}${key}`];
+        };
+        if (options.values) {
+            for (let v in options.values) {
+                node._setValue(v, options.values[v]);
+                // node[`${__prefix}${v}`] = options.values[v];
+            }
+        }
         options.opacity && (node.opacity = options.opacity);
 
         options.size && node.setContentSize(options.size);
