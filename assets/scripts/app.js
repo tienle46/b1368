@@ -199,11 +199,11 @@ if (cc.sys.isMobile && sdkbox) {
     sdkbox.PluginOneSignal.enableInAppAlertNotification(true);
 
     sdkbox.PluginOneSignal.setListener({
-        onSendTag :(success, key, message) => { },
-        onGetTags :(jsonString) => { },
-        onIdsAvailable : (userId,  pushToken) =>{ },
-        onPostNotification :(success,  message) =>{ },
-        onNotification :(isActive,  message, additionalData) =>{
+        onSendTag: (success, key, message) => {},
+        onGetTags: (jsonString) => {},
+        onIdsAvailable: (userId, pushToken) => {},
+        onPostNotification: (success, message) => {},
+        onNotification: (isActive, message, additionalData) => {
 
         }
     });
@@ -214,7 +214,7 @@ if (cc.sys.isMobile && sdkbox) {
 (function() {
     window.log = function log(...args) {
         console.log(...args);
-    }
+    };
 
     window.debug = function debug(...args) {
         if (app.config.buildForMobile) {
@@ -222,17 +222,34 @@ if (cc.sys.isMobile && sdkbox) {
         } else {
             console.debug(...args);
         }
-    }
+    };
 
     window.error = function error(...args) {
         console.error(...args);
-    }
+    };
 
     window.warn = function warn(...args) {
         console.warn(...args);
-    }
+    };
 
     window.app = app;
+
+    let reduce = Function.bind.call(Function.call, Array.prototype.reduce);
+    let isEnumerable = Function.bind.call(Function.call, Object.prototype.propertyIsEnumerable);
+    let concat = Function.bind.call(Function.call, Array.prototype.concat);
+    let keys = Reflect.ownKeys;
+
+    if (!Object.values) {
+        Object.values = function values(O) {
+            return reduce(keys(O), (v, k) => concat(v, typeof k === 'string' && isEnumerable(O, k) ? [O[k]] : []), []);
+        };
+    }
+    if (!Object.values) {
+        Object.values = function values(O) {
+            return reduce(keys(O), (v, k) => concat(v, typeof k === 'string' && isEnumerable(O, k) ? [O[k]] : []), []);
+        };
+    }
+
     window.game = app.game;
 })();
 // cc.game.setFrameRate(30);

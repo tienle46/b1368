@@ -69,7 +69,9 @@
     },
     "_enabled": true,
     "path": "",
-    "contentNode": null
+    "p404": {
+      "__uuid__": "5506cff6-05a2-4783-8488-2c5459eaed0b"
+    }
   },
   {
     "__type__": "cc.PrefabInfo",
