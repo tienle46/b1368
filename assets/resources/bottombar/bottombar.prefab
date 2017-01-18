@@ -1353,8 +1353,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 88,
-      "height": 83
+      "width": 89,
+      "height": 81
     },
     "_children": [],
     "_rotationX": 0,
@@ -1363,8 +1363,8 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": -198,
-      "y": 57
+      "x": -197.5,
+      "y": 58
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -1436,7 +1436,7 @@
     "_right": 0,
     "_top": 0,
     "_bottom": 0,
-    "_verticalCenter": 0,
+    "_verticalCenter": 1,
     "_horizontalCenter": 0,
     "_isAbsLeft": true,
     "_isAbsRight": true,
@@ -1566,7 +1566,7 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": -29,
+      "x": -28,
       "y": 57
     },
     "_skewX": 0,
@@ -1769,7 +1769,7 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": 141,
+      "x": 142,
       "y": 57
     },
     "_skewX": 0,
@@ -1972,7 +1972,7 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": 318,
+      "x": 319,
       "y": 61
     },
     "_skewX": 0,
@@ -2115,7 +2115,7 @@
     "_top": 0,
     "_bottom": 20.5,
     "_verticalCenter": 0,
-    "_horizontalCenter": 318,
+    "_horizontalCenter": 319,
     "_isAbsLeft": true,
     "_isAbsRight": true,
     "_isAbsTop": true,
@@ -2185,7 +2185,7 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": 508.5,
+      "x": 509.5,
       "y": 57
     },
     "_skewX": 0,
@@ -2695,6 +2695,7 @@
     },
     "_enabled": true,
     "path": "",
+    "p404": null,
     "userInfoCoinLbl": {
       "__id__": 20
     },
