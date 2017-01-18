@@ -54,7 +54,6 @@ class TabTopCaoThu extends DialogActor {
     }
 
     _onReceivedData(res) {
-        let pageIsEmpty = false;
         if (!this.itemLoaded) {
             if (res[app.keywords.RANK_TYPE_ID] && res[app.keywords.RANK_TYPE_ID].length > 0) {
                 this.gameList = res;
@@ -88,7 +87,7 @@ class TabTopCaoThu extends DialogActor {
                         });
                     });
                 } else {
-                    pageIsEmpty = true;
+                    this.pageIsEmpty(this.node)
                 }
             }
         } else {
@@ -110,11 +109,10 @@ class TabTopCaoThu extends DialogActor {
                 this._initBody(data);
                 data = null;
             } else {
-                pageIsEmpty = true;
+                this.pageIsEmpty(this.contentNode)
             }
         }
 
-        pageIsEmpty && this.pageIsEmpty(this.node);
 
         res = null;
     }

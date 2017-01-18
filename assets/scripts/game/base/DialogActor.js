@@ -1,4 +1,5 @@
 import Actor from 'Actor';
+import app from 'app';
 import GridViewRub from 'GridViewRub';
 
 export default class DialogActor extends Actor {
@@ -31,6 +32,7 @@ export default class DialogActor extends Actor {
     }
 
     pageIsEmpty(node, str) {
+        app.system.hideLoader();
         let p404 = cc.instantiate(this.p404);
         node.children.map(child => cc.isValid(child) && child.destroy() && child.removeFromParent());
         node.addChild(p404);
