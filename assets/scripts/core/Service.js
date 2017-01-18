@@ -452,7 +452,7 @@ class Service {
     }
 
     _onJoinRoomSuccess(event) {
-        console.log("_onJoinRoomSuccess: ", event)
+        console.log("_onJoinRoomSuccess: ", event);
         app.system.emit(SFS2X.SFSEvent.ROOM_JOIN, event);
     }
 

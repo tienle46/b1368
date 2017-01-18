@@ -730,3 +730,6 @@ Keywords.GAME_RULE = "r";
 Keywords.GAME_GUIDE = "g";
 Keywords.SUCCESSFULL = "s";
 Keywords.BA_CAY_GOP_GA_VALUE = "gopGaValue";
+
+//
+Keywords.AGENT = "agent";

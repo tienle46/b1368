@@ -12,77 +12,71 @@ class TabAgency extends DialogActor {
 
     onLoad() {
         super.onLoad();
+    }
+
+    start() {
+        super.start();
         this._getAgencyDataFromServer();
     }
 
-    _getAgencyDataFromServer() {
-        this.initGridView({
-            data: ['Đại lý', 'Số DT', 'facebook'],
-            options: {
-                fontColor: app.const.COLOR_YELLOW,
-                fontSize: 25
-            }
-        }, [], {
-            width: 840,
-            height: 415,
-            spacingX: 0,
-            spacingY: 0,
-            group: {
-                colors: [null, null, new cc.Color(65, 94, 160), null, null],
-                events: [event],
-                widths: ['', '', 450]
-            }
-        });
+    _addGlobalListener() {
+        super._addGlobalListener();
+        app.system.addListener(app.commands.AGENCY, this._onListAgency, this);
+    }
 
+    _removeGlobalListener() {
+        super._removeGlobalListener();
+        app.system.removeListener(app.commands.AGENCY, this._onListAgency, this);
+    }
+
+    _getAgencyDataFromServer() {
         let sendObj = {
             cmd: app.commands.AGENCY
         };
 
-        let faker = {
-            "agents": [{
-                "agent_name": "Mr Tân",
-                "call_number": "0962555513",
-                "fblink": "https://www.facebook.com/bai3mien"
-            }, {
-                "agent_name": "Mr Tân",
-                "call_number": "0962555513",
-                "fblink": "https://www.facebook.com/bai3mien"
-            }, {
-                "agent_name": "Mr Tân",
-                "call_number": "0962555513",
-                "fblink": "https://www.facebook.com/bai3mien"
-            }, {
-                "agent_name": "Mr Tân",
-                "call_number": "0962555513",
-                "fblink": "https://www.facebook.com/bai3mien"
-            }, {
-                "agent_name": "Mr Tân",
-                "call_number": "0962555513",
-                "fblink": "https://www.facebook.com/bai3mien"
-            }, {
-                "agent_name": "Mr Tân",
-                "call_number": "0962555513",
-                "fblink": "https://www.facebook.com/bai3mien"
-            }]
-        };
+        app.system.showLoader();
+        app.service.send(sendObj);
+    }
 
-        if (faker.agents) {
-            let data = [];
-            faker.agents.forEach((a) => {
-                let d = [];
-                d.push(a.agent_name);
-                d.push(a.call_number);
-                d.push(a.fblink);
-                data.push(d);
-            });
-            this.getGridView().resetData(data, true);
+    _onListAgency(res) {
+        app.system.hideLoader();
+
+        try {
+            let d = JSON.parse(res[app.keywords.AGENT]).agents;
+            let data = [
+                [],
+                [],
+                []
+            ];
+            for (let i = 0; i < d.length; i++) {
+                data[0].push(d[i].agent_name);
+                data[1].push(d[i].call_number);
+                data[2].push(d[i].fblink);
+
+                if (i == d.length - 1) {
+                    this.initGridView({
+                        data: ['Đại lý', 'Số DT', 'facebook'],
+                        options: {
+                            fontColor: app.const.COLOR_YELLOW,
+                            fontSize: 25
+                        }
+                    }, data, {
+                        width: 840,
+                        height: 415,
+                        spacingX: 0,
+                        spacingY: 0,
+                        group: {
+                            colors: [null, null, new cc.Color(65, 94, 160), null, null],
+                            events: [event],
+                            widths: ['', '', 450]
+                        }
+                    });
+                    this.bodyNode.addChild(this.getGridView().getNode());
+                }
+            }
+        } catch (e) {
+            app.system.error(e.message);
         }
-
-        this.bodyNode.addChild(this.getGridViewNode());
-
-        app.service.send(sendObj, (res) => {
-            debug(res);
-        });
     }
 }
 
