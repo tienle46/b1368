@@ -27,9 +27,7 @@ export default class PlayerMessage extends Component {
     }
 
     setup(player) {
-        console.debug('setup', this.playerRenderer, this.anchorIndex);
         this.playerRenderer = player;
-        console.debug('setup2', this.playerRenderer, this.anchorIndex);
 
         this.anchorIndex = this.playerRenderer.getMessageAnchorIndex();
     }
@@ -43,7 +41,6 @@ export default class PlayerMessage extends Component {
 
         this.updateAnchor(this.anchorIndex);
         this._setMessage(this.message);
-        console.debug('onLoad', this.playerRenderer, this.anchorIndex);
     }
 
     updateAnchor(anchorIndex) {

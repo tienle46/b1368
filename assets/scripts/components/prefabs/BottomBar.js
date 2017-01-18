@@ -6,6 +6,7 @@ import ExchangeDialogRub from 'ExchangeDialogRub';
 import PersonalInfoDialogRub from 'PersonalInfoDialogRub';
 import MessageCenterDialogRub from 'MessageCenterDialogRub';
 import numeral from 'numeral';
+import SFS2X from 'SFS2X';
 
 class BottomBar extends DialogActor {
     constructor() {
@@ -44,18 +45,27 @@ class BottomBar extends DialogActor {
     _addGlobalListener() {
         super._addGlobalListener();
         app.system.addListener(app.commands.NEW_NOTIFICATION_COUNT, this._onNotifyCount, this);
+        app.system.addListener(SFS2X.SFSEvent.USER_VARIABLES_UPDATE, this._onUserVariablesUpdate, this);
     }
 
     _removeGlobalListener() {
         super._removeGlobalListener();
         app.system.removeListener(app.commands.NEW_NOTIFICATION_COUNT, this._onNotifyCount, this);
+        app.system.removeListener(SFS2X.SFSEvent.USER_VARIABLES_UPDATE, this._onUserVariablesUpdate, this);
     }
 
-    _requestMessageNotification() {
-        let sendObject = {
-            cmd: app.commands.NEW_NOTIFICATION_COUNT
-        };
-        app.service.send(sendObject);
+    _onUserVariablesUpdate(ev) {
+        let changedVars = ev[app.keywords.BASE_EVENT_CHANGED_VARS]
+        changedVars.map(v => {
+            if (v == 'coin') {
+                this.userInfoCoinLbl.string = `${numeral(app.context.getMyInfo().coin || 0).format('0,0')}`;
+            }
+        });
+
+    }
+
+    updateUserCoin() {
+        this.userInfoCoinLbl.string = `${numeral(app.context.getMyInfo().coin || 0).format('0,0')}`;
     }
 
     onClickNapXuAction() {
@@ -162,18 +172,21 @@ class BottomBar extends DialogActor {
 
     _fillUserData() {
         this.userNameLbl.string = app.context.getMyInfo().name;
-        if (!app.context.getMyInfo().coin) {
-            setTimeout(() => {
-                this.userInfoCoinLbl.string = `${numeral(app.context.getMyInfo().coin).format('0,0')}`;
-            });
-        } else
-            this.userInfoCoinLbl.string = `${numeral(app.context.getMyInfo().coin).format('0,0')}`;
+
+        this.userInfoCoinLbl.string = `${numeral(app.context.getMyInfo().coin || 0).format('0,0')}`;
     }
 
     _onNotifyCount(data) {
         let count = data[app.keywords.NEWS_CONTENT];
         this.notifyBgNode.active = count > 0;
         this.notifyCounterLbl.string = count;
+    }
+
+    _requestMessageNotification() {
+        let sendObject = {
+            cmd: app.commands.NEW_NOTIFICATION_COUNT
+        };
+        app.service.send(sendObject);
     }
 }
 
