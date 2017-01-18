@@ -267,13 +267,15 @@ export default class GridViewRub extends ScrollViewRub {
      * 
      * @memberOf GridViewRub
      */
-    _validateData(input) {
-        if (input instanceof Array && input.length < 1)
+    _validateData(inPut) {
+        if (inPut instanceof Array && inPut.length < 1)
             return [];
 
-        input = app._.cloneDeep(input);
+        let input = app._.cloneDeep(inPut);
+
         let tmp = [];
         let out = [];
+
         if (input[0])
             while (input[0].length > 0) {
                 for (let i = 0; i < input.length; i++) {

@@ -16,6 +16,9 @@ export default class TopUpDialogRub {
         }, {
             title: 'IAP',
             value: `${url}/tab_iap`
+        }, {
+            title: 'Lịch sử',
+            value: `${url}/tab_history`
         }];
 
         let options = {

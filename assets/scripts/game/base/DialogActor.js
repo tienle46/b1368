@@ -20,6 +20,7 @@ export default class DialogActor extends Actor {
     }
 
     initGridView(head, data, options) {
+        console.debug(head, data);
         this._gridView = new GridViewRub(head, data, options);
     }
 
