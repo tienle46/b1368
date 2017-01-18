@@ -38,16 +38,24 @@ class BottomBar extends DialogActor {
 
     start() {
         super.start();
+        this._requestMessageNotification();
     }
 
     _addGlobalListener() {
         super._addGlobalListener();
-        app.system.addListener(app.commands.NOTIFICATION_COUNT, this._onNotifyCount, this);
+        app.system.addListener(app.commands.NEW_NOTIFICATION_COUNT, this._onNotifyCount, this);
     }
 
     _removeGlobalListener() {
         super._removeGlobalListener();
-        app.system.removeListener(app.commands.NOTIFICATION_COUNT, this._onNotifyCount, this);
+        app.system.removeListener(app.commands.NEW_NOTIFICATION_COUNT, this._onNotifyCount, this);
+    }
+
+    _requestMessageNotification() {
+        let sendObject = {
+            cmd: app.commands.NEW_NOTIFICATION_COUNT
+        };
+        app.service.send(sendObject);
     }
 
     onClickNapXuAction() {
@@ -165,10 +173,9 @@ class BottomBar extends DialogActor {
     }
 
     _onNotifyCount(data) {
-        let countList = data[app.keywords.COUNT_LIST];
-        let len = countList.length || 0;
-        this.notifyBgNode.active = len > 0;
-        this.notifyCounterLbl.string = len;
+        let count = data[app.keywords.NEWS_CONTENT];
+        this.notifyBgNode.active = count > 0;
+        this.notifyCounterLbl.string = count;
     }
 }
 

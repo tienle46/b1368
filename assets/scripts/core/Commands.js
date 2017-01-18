@@ -18,6 +18,7 @@ Commands.USER_LIST_GROUP = "lg";
 //Commands.USER_UPDATE_GROUP = "rlg1"; /* change to rlg*/
 Commands.USER_UPDATE_GROUP = "rlg";
 //Commands.USER_LIST_ROOM_1 = "fr1";/* change to fr*/
+Commands.NEW_NOTIFICATION_COUNT = "nnc";
 Commands.USER_LIST_ROOM = "fr";
 Commands.USER_JOIN_ROOM = "jr";
 Commands.USER_QUICK_JOIN_ROOM = "qj";
