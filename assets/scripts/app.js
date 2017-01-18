@@ -167,8 +167,6 @@ function _setupGame() {
     app.event = require("Events");
 }
 // if browser
-// deep merge for Object.assign 
-Object.assign = app._.merge;
 
 if (cc.sys.isBrowser) {
     new Fingerprint2().get((printer) => {
@@ -232,24 +230,9 @@ if (cc.sys.isMobile && sdkbox) {
         console.warn(...args);
     };
 
+    require('Pollyfill')(app);
+
     window.app = app;
-
-    let reduce = Function.bind.call(Function.call, Array.prototype.reduce);
-    let isEnumerable = Function.bind.call(Function.call, Object.prototype.propertyIsEnumerable);
-    let concat = Function.bind.call(Function.call, Array.prototype.concat);
-    let keys = Reflect.ownKeys;
-
-    if (!Object.values) {
-        Object.values = function values(O) {
-            return reduce(keys(O), (v, k) => concat(v, typeof k === 'string' && isEnumerable(O, k) ? [O[k]] : []), []);
-        };
-    }
-    if (!Object.values) {
-        Object.values = function values(O) {
-            return reduce(keys(O), (v, k) => concat(v, typeof k === 'string' && isEnumerable(O, k) ? [O[k]] : []), []);
-        };
-    }
-
     window.game = app.game;
 })();
 // cc.game.setFrameRate(30);
