@@ -374,7 +374,7 @@ export default class ListTableScene extends BaseScene {
 
     _onUserCreateRoom(data) {
         if (data.errorCode) {
-            app.system.error(data.errorMessage);
+            app.system.error(app.getMessageFromServer(data));
         }
     }
 }

@@ -82,7 +82,7 @@ class Service {
         this.addEventListener(SFS2X.SFSEvent.CONNECTION_RESUME, this._onConnectionResume);
         this.addEventListener(SFS2X.SFSEvent.EXTENSION_RESPONSE, this._onExtensionEvent);
         this.addEventListener(SFS2X.SFSEvent.ROOM_JOIN, this._onJoinRoomSuccess);
-        this.addEventListener(SFS2X.SFSEvent.ROOM_JOIN_ERROR, this._onJoinRoomSuccess);
+        this.addEventListener(SFS2X.SFSEvent.ROOM_JOIN_ERROR, this._onJoinRoomError);
         this.addEventListener(SFS2X.SFSEvent.ROOM_CREATION_ERROR, this._onCreateRoomError);
         this.addEventListener(SFS2X.SFSEvent.USER_EXIT_ROOM, this._onUserExitRoom);
         this.addEventListener(SFS2X.SFSEvent.USER_ENTER_ROOM, this._onUserEnterRoom);
@@ -447,6 +447,7 @@ class Service {
         console.log("_onJoinRoomError: ", event);
         if (event.errorCode) {
             this._hasCallback(SFS2X.SFSEvent.ROOM_JOIN_ERROR) && this._callCallbackAsync(SFS2X.SFSEvent.ROOM_JOIN_ERROR, event);
+            app.system.error(app.getMessageFromServer(event) || event.errorMessage);
         }
     }
 
@@ -460,6 +461,7 @@ class Service {
         if (event.errorCode) {
             this._callCallbackAsync(app.commands.USER_CREATE_ROOM, event);
             this._deleteCallbackObject(app.commands.USER_CREATE_ROOM);
+            app.system.error(app.getMessageFromServer(event) || event.errorMessage);
         }
     }
 
