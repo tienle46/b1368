@@ -13,6 +13,7 @@ export default class TabUserInfo extends DialogActor {
             vipLevel: cc.Label,
             chipAmout: cc.Label,
             phoneNumber: cc.Label,
+            emailAddress: cc.Label,
             currPassword: cc.EditBox,
             newPassword: cc.EditBox,
             passwordConfirmation: cc.EditBox,
@@ -24,6 +25,7 @@ export default class TabUserInfo extends DialogActor {
     onLoad() {
         super.onLoad();
         this._showUserInfoPanel();
+        this.emailAddress.string = `Chưa cập nhật`;
     }
 
     start() {

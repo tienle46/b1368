@@ -363,9 +363,9 @@ class Service {
             data[app.keywords.PARTNER_ID] = 1;
             this._loginData = null;
 
-            data['utm_source'] = cc.sys.localStorage.getItem('utm_source') || "";
-            data['utm_utm_medium'] = cc.sys.localStorage.getItem('utm_utm_medium') || "";
-            data['utm_campaign'] = cc.sys.localStorage.getItem('utm_campaign') || "";
+            data[app.keywords.UTM_SOURCE] = cc.sys.localStorage.getItem('utm_source') || "";
+            data[app.keywords.UTM_UTM_MEDIUM] = cc.sys.localStorage.getItem('utm_utm_medium') || "";
+            data[app.keywords.UTM_CAMPAIGN] = cc.sys.localStorage.getItem('utm_campaign') || "";
         }
 
         // else {
