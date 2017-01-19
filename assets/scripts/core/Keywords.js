@@ -128,6 +128,9 @@ Keywords.SERVICE_NAME_ARRAY = "n";
 Keywords.SERVICE_CHILD_CODE_ARRAY = "cl";
 Keywords.SERVICE_DESCR_CHILD_ARRAY = "dl";
 Keywords.SERVICE_ICON_PATCH_ARRAY = "il";
+Keywords.UTM_SOURCE = "utm_source";
+Keywords.UTM_UTM_MEDIUM = "utm_utm_medium";
+Keywords.UTM_CAMPAIGN = "utm_campaign";
 
 Keywords.BUDDY_MESSAGE_COUNT = "mc";
 Keywords.BUDDY_MESSAGE_COUNT_LIST = "mcl";

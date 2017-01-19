@@ -362,6 +362,10 @@ class Service {
         if (isRegister) {
             data[app.keywords.PARTNER_ID] = 1;
             this._loginData = null;
+
+            data['utm_source'] = cc.sys.localStorage.getItem('utm_source') || "";
+            data['utm_utm_medium'] = cc.sys.localStorage.getItem('utm_utm_medium') || "";
+            data['utm_campaign'] = cc.sys.localStorage.getItem('utm_campaign') || "";
         }
 
         // else {
