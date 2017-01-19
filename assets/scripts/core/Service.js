@@ -518,7 +518,7 @@ class Service {
 
     _goOffline() {
         if (this.client.buddyManager.getMyOnlineState()) {
-            this.sendRequest(new SFS2X.Requests.System.GoOnlineRequest(false));
+            this.sendRequest(new SFS2X.Requests.BuddyList.GoOnlineRequest(false));
         }
     }
 
