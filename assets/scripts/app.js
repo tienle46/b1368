@@ -229,7 +229,9 @@ if (cc.sys.isMobile && sdkbox) {
     window.warn = function warn(...args) {
         console.warn(...args);
     };
-
+    window.onNativePostAction = function(jsonString){
+        log("---> onNativePostAction", jsonString);
+    }
     require('Pollyfill')(app);
 
     window.app = app;

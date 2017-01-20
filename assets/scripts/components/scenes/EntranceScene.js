@@ -156,7 +156,7 @@ export default class EntranceScene extends BaseScene {
                 }
             }
         };
-        xhr.open("GET", `http://${app.config.host}:8767/user/fb/${fbId}`, true);
+        xhr.open("GET", `http://${app.config.host}:8922/user/fb/${fbId}`, true);
         xhr.send();
     }
 

@@ -38,7 +38,7 @@ export default class TabBuddiesList extends DialogActor {
     }
 
     _onInitBuddy(data) {
-        console.debug(data);
+        debug(data);
     }
 }
 
