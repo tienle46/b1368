@@ -62,7 +62,7 @@ let RubUtils = {
         function spriteFrameDefaultConfig(spriteComponent) {
             if (spriteComponent) {
                 for (let key in options) {
-                    spriteComponent[key] = options[key];
+                    spriteComponent.hasOwnProperty(key) && options[key] && (spriteComponent[key] = options[key]);
                 }
 
                 ccSize && spriteComponent.node && spriteComponent.node.setContentSize(ccSize);
