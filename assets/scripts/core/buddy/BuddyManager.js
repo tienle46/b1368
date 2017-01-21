@@ -24,7 +24,7 @@ const PLAYING_GAME = "playingGame";
  * Events.ON_BUDDY_CHANGE_PLAYING_GAME => (gameCode: String, gameName: String) // gameCode = null => Player không chơi ở game nào
  */
 
-export default class BuddyManager {
+class BuddyManager {
 
     constructor() {
         this.buddies = [];
@@ -34,29 +34,28 @@ export default class BuddyManager {
         this.initEventListener();
     }
 
-
     initEventListener() {
         this.removeEventListener();
 
-        app.system.addEventListener(SFS2X.SFSBuddyEvent.BUDDY_ADD, this._onBuddyAdd, this);
-        app.system.addEventListener(SFS2X.SFSBuddyEvent.BUDDY_REMOVE, this._onBuddyRemove, this);
-        app.system.addEventListener(SFS2X.SFSBuddyEvent.BUDDY_BLOCK, this._onBuddyBlock, this);
-        app.system.addEventListener(SFS2X.SFSBuddyEvent.BUDDY_ERROR, this._onBuddyError, this);
-        app.system.addEventListener(SFS2X.SFSBuddyEvent.BUDDY_MESSAGE, this._onBuddyMessage, this);
-        app.system.addEventListener(SFS2X.SFSBuddyEvent.BUDDY_LIST_INIT, this._onBuddyListInit, this);
-        app.system.addEventListener(SFS2X.SFSBuddyEvent.BUDDY_ONLINE_STATE_CHANGE, this._onBuddyOnlineStateChange, this);
-        app.system.addEventListener(SFS2X.SFSBuddyEvent.BUDDY_VARIABLES_UPDATE, this._onBuddyVariablesUpdate, this);
+        app.system.addListener(SFS2X.SFSBuddyEvent.BUDDY_ADD, this._onBuddyAdd, this);
+        app.system.addListener(SFS2X.SFSBuddyEvent.BUDDY_REMOVE, this._onBuddyRemove, this);
+        app.system.addListener(SFS2X.SFSBuddyEvent.BUDDY_BLOCK, this._onBuddyBlock, this);
+        app.system.addListener(SFS2X.SFSBuddyEvent.BUDDY_ERROR, this._onBuddyError, this);
+        app.system.addListener(SFS2X.SFSBuddyEvent.BUDDY_MESSAGE, this._onBuddyMessage, this);
+        app.system.addListener(SFS2X.SFSBuddyEvent.BUDDY_LIST_INIT, this._onBuddyListInit, this);
+        app.system.addListener(SFS2X.SFSBuddyEvent.BUDDY_ONLINE_STATE_CHANGE, this._onBuddyOnlineStateChange, this);
+        app.system.addListener(SFS2X.SFSBuddyEvent.BUDDY_VARIABLES_UPDATE, this._onBuddyVariablesUpdate, this);
     }
 
     removeEventListener() {
-        app.system.removeEventListener(SFS2X.SFSBuddyEvent.BUDDY_ADD, this._onBuddyAdd, this);
-        app.system.removeEventListener(SFS2X.SFSBuddyEvent.BUDDY_REMOVE, this._onBuddyRemove, this);
-        app.system.removeEventListener(SFS2X.SFSBuddyEvent.BUDDY_BLOCK, this._onBuddyBlock, this);
-        app.system.removeEventListener(SFS2X.SFSBuddyEvent.BUDDY_ERROR, this._onBuddyError, this);
-        app.system.removeEventListener(SFS2X.SFSBuddyEvent.BUDDY_MESSAGE, this._onBuddyMessage, this);
-        app.system.removeEventListener(SFS2X.SFSBuddyEvent.BUDDY_LIST_INIT, this._onBuddyListInit, this);
-        app.system.removeEventListener(SFS2X.SFSBuddyEvent.BUDDY_ONLINE_STATE_CHANGE, this._onBuddyOnlineStateChange, this);
-        app.system.removeEventListener(SFS2X.SFSBuddyEvent.BUDDY_VARIABLES_UPDATE, this._onBuddyVariablesUpdate, this);
+        app.system.removeListener(SFS2X.SFSBuddyEvent.BUDDY_ADD, this._onBuddyAdd, this);
+        app.system.removeListener(SFS2X.SFSBuddyEvent.BUDDY_REMOVE, this._onBuddyRemove, this);
+        app.system.removeListener(SFS2X.SFSBuddyEvent.BUDDY_BLOCK, this._onBuddyBlock, this);
+        app.system.removeListener(SFS2X.SFSBuddyEvent.BUDDY_ERROR, this._onBuddyError, this);
+        app.system.removeListener(SFS2X.SFSBuddyEvent.BUDDY_MESSAGE, this._onBuddyMessage, this);
+        app.system.removeListener(SFS2X.SFSBuddyEvent.BUDDY_LIST_INIT, this._onBuddyListInit, this);
+        app.system.removeListener(SFS2X.SFSBuddyEvent.BUDDY_ONLINE_STATE_CHANGE, this._onBuddyOnlineStateChange, this);
+        app.system.removeListener(SFS2X.SFSBuddyEvent.BUDDY_VARIABLES_UPDATE, this._onBuddyVariablesUpdate, this);
     }
 
     addBuddy(buddyName){
@@ -215,3 +214,9 @@ export default class BuddyManager {
         })
     }
 }
+
+const createBuddyManager = () => {
+    return new BuddyManager();
+};
+
+export default createBuddyManager;

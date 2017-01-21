@@ -31,7 +31,7 @@ export default class BoardPhom extends BoardCardTurnBase {
     }
 
     onEnable() {
-        this.renderer = this.node.getComponent('BoardPhomRenderer');
+        // this.renderer = this.node.getComponent('BoardPhomRenderer');
         super.onEnable();
     }
 

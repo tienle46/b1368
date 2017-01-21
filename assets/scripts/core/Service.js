@@ -518,7 +518,7 @@ class Service {
 
     manuallyDisconnect() {
 
-        app.system.getBuddyManager() && app.system.getBuddyManager().goOffline();
+        app.buddyManager.goOffline();
 
         if (this.client._socketEngine.reconnectionSeconds == 0) {
             this.sendRequest(new SFS2X.Requests.System.ManualDisconnectionRequest());

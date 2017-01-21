@@ -20,6 +20,8 @@ require("Constant");
 require("Config");
 require("Resource");
 
+import createBuddyManager from 'BuddyManager';
+
 app.createComponent = (classNameOrInstance, extendClass = undefined, ...args) => {
 
     if (!classNameOrInstance) {
@@ -165,6 +167,7 @@ function _setupGame() {
      */
     app.context = require("Context");
     app.event = require("Events");
+    app.buddyManager = createBuddyManager();
 }
 // if browser
 

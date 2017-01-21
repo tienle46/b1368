@@ -12,7 +12,6 @@ import utils from 'utils';
 import ArrayUtils from "../utils/ArrayUtils";
 import LoaderRub from 'LoaderRub';
 import Toast from 'Toast';
-import BuddyManager from 'BuddyManager';
 
 
 class GameSystem {
@@ -32,11 +31,6 @@ class GameSystem {
         this._currentScene = cc.Node;
         this.isInactive = false;
         this.initEventListener();
-        this.buddyManager = new BuddyManager();
-    }
-
-    getBuddyManager(){
-        return this.buddyManager;
     }
 
     showLoader() {

@@ -55,6 +55,8 @@ export default class Actor extends Component {
 
     onDestroy() {
         super.onDestroy();
+        this._removeGlobalListener();
+        this.removeAllListener();
         this._gridView && this._gridView.destroy() && (this._gridView = null);
     }
 
