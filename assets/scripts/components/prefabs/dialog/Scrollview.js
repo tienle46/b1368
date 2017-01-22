@@ -41,6 +41,8 @@ export default class Scrollview extends Component {
             body = this._validatedInput(body);
             this.prevLen = body.length;
 
+            this._detectViewState(body);
+
             this._gridviewComp.init(head, body, options);
 
             if (!this.options.paging) {
@@ -74,12 +76,7 @@ export default class Scrollview extends Component {
         this._setupInNewBody();
         data = this._validatedInput(data);
 
-        this.isEndedPage = data.length < this.prevLen;
-        if (data.length == 0) {
-            this._pageIsEmpty();
-            this._updatePagingState();
-            return;
-        }
+        this._detectViewState(data);
 
         this.prevLen = data.length;
 
@@ -92,6 +89,16 @@ export default class Scrollview extends Component {
         this._gridviewComp.updateView(head, data, options);
 
         RubUtils.releaseArray(data);
+    }
+
+    _detectViewState(data) {
+        this.isEndedPage = data.length < this.prevLen;
+
+        if (data.length == 0) {
+            this._pageIsEmpty();
+            this._updatePagingState();
+            return;
+        }
     }
 
     _updatePagingState() {

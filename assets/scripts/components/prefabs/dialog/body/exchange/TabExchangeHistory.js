@@ -15,7 +15,7 @@ class TabExchangeHistory extends DialogActor {
 
     start() {
         super.start();
-        this._getHistoriesFromServer();
+        this._getHistoriesFromServer(1);
     }
 
     _addGlobalListener() {
@@ -28,11 +28,11 @@ class TabExchangeHistory extends DialogActor {
         app.system.removeListener(app.commands.EXCHANGE_HISTORY, this._onGetExchangeHistory, this);
     }
 
-    _getHistoriesFromServer() {
+    _getHistoriesFromServer(page) {
         let sendObject = {
             'cmd': app.commands.EXCHANGE_HISTORY,
             'data': {
-                [app.keywords.PAGE]: 1,
+                [app.keywords.PAGE]: page,
             }
         };
         app.service.send(sendObject);
@@ -99,6 +99,9 @@ class TabExchangeHistory extends DialogActor {
     }
 
     _initBody(d) {
+        let next = this.onNextBtnClick;
+        let prev = this.onPreviousBtnClick;
+
         let head = {
             data: ['Thời gian', 'Loại vật phẩm', 'Thông tin', ''],
             options: {
@@ -107,19 +110,11 @@ class TabExchangeHistory extends DialogActor {
             }
         };
         this.initGridView(head, d, {
-            width: 850,
-            height: 415,
-            spacingX: 0,
-            spacingY: 0,
-            cell: {
-                height: 80,
-                fontLineHeight: 80,
-            }
+            paging: { next, prev, context: this },
+            size: this.bodyNode.getContentSize(),
         });
 
         this.bodyNode.addChild(this.getGridViewNode());
-
-        d = null;
     }
 
     _getExchangeDialogComponent() {
@@ -128,6 +123,13 @@ class TabExchangeHistory extends DialogActor {
         return dialogNode.getComponent(ExchangeDialog);
     }
 
+    onNextBtnClick(p) {
+        this.onNextBtnClick(p);
+    }
+
+    onPreviousBtnClick(p) {
+        this._getHistoriesFromServer(p);
+    }
 }
 
 app.createComponent(TabExchangeHistory);

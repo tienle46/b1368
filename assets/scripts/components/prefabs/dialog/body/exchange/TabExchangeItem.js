@@ -97,6 +97,8 @@ class TabExchangeItem extends DialogActor {
             // hide loader
             app.system.hideLoader();
             this.node.active = true;
+        } else {
+            this.pageIsEmpty(this.node);
         }
     }
 
