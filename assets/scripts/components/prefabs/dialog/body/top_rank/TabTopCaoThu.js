@@ -115,6 +115,7 @@ class TabTopCaoThu extends DialogActor {
                 res['ui1l'],
             ];
             let isNew = res[app.keywords.RANK_NODE_ID] != this.previousNodeId;
+            this.previousNodeId = res[app.keywords.RANK_NODE_ID];
             this._initBody(data, isNew);
         }
     }

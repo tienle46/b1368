@@ -72,16 +72,16 @@ export default class Scrollview extends Component {
 
     updateView(head, data, options) {
         this._setupInNewBody();
-
         data = this._validatedInput(data);
 
         this.isEndedPage = data.length < this.prevLen;
-
         if (data.length == 0) {
             this._pageIsEmpty();
             this._updatePagingState();
             return;
         }
+
+        this.prevLen = data.length;
 
         this._p404 && (this._p404.active = false);
 
@@ -159,6 +159,7 @@ export default class Scrollview extends Component {
                         return;
                     }
                     this.currentPage--;
+
                     this._showBtn(this.prevBtn);
 
                     prevEvent.call(context, this.currentPage);
@@ -175,6 +176,7 @@ export default class Scrollview extends Component {
                     }
                     this._showBtn(this.nextBtn);
                     this.currentPage++;
+
                     nextEvent.call(context, this.currentPage);
                 });
             }
