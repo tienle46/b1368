@@ -516,14 +516,9 @@ class Service {
         }
     }
 
-    _goOffline() {
-        if (this.client.buddyManager.getMyOnlineState()) {
-            this.sendRequest(new SFS2X.Requests.System.GoOnlineRequest(false));
-        }
-    }
-
     manuallyDisconnect() {
-        this._goOffline();
+
+        app.buddyManager.goOffline();
 
         if (this.client._socketEngine.reconnectionSeconds == 0) {
             this.sendRequest(new SFS2X.Requests.System.ManualDisconnectionRequest());

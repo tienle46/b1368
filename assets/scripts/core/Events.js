@@ -132,3 +132,12 @@ Events.XOCDIA_ON_PLAYER_RECEIVE_CHIP_ANIMATION = "xocdia.on.player.receive.chip.
 Events.XOCDIA_ON_PLAYER_RUN_MONEY_BALANCE_CHANGE_ANIM = "xocdia.on.player.run.money.balance.change.anim";
 
 Events.ON_USER_USES_ASSET = "on.user.uses.asset";
+
+Events.ON_BUDDY_LIST_INITED = "on.buddy.listChanged";
+Events.ON_BUDDY_MESSAGE = "on.buddy.message";
+Events.ON_BUDDY_ADDED = "on.buddy.added";
+Events.ON_BUDDY_REMOVED = "on.buddy.removed";
+Events.ON_BUDDY_BLOCKED = "on.buddy.blocked";
+Events.ON_BUDDY_ONLINE_STATE_CHANGED = "on.buddy.onlineStateChanged";
+Events.ON_BUDDY_MOOD_CHANGED = "on.buddy.moodChanged";
+Events.ON_BUDDY_CHANGE_PLAYING_GAME = "on.buddy.changePlayingGame";

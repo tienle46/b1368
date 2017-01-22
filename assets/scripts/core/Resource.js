@@ -119,3 +119,15 @@ app.res.asset_tools = {};
 app.res.path = {
 
 };
+
+app.res.gameName = {
+    "tnd": app.res.string('game_name_tlmn'),
+    "tds": app.res.string('game_name_tlmn_solo'),
+    "xam": app.res.string('game_name_sam'),
+    "xms": app.res.string('game_name_sam_solo'),
+    "bcy": app.res.string('game_name_ba_cay'),
+    "lie": app.res.string('game_name_lieng'),
+    "pom": app.res.string('game_name_phom'),
+    "xit": app.res.string('game_name_xi_to'),
+    "xod": app.res.string('game_name_xoc_dia'),
+}

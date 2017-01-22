@@ -52,6 +52,8 @@ export default class Actor extends Component {
 
     onDestroy() {
         super.onDestroy();
+        this._removeGlobalListener();
+        this.removeAllListener();
     }
 
     emit(name, ...args) {
