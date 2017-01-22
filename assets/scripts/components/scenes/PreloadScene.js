@@ -34,27 +34,27 @@ class PreloadScene extends Component {
         this._setupEnvironment();
     }
 
-    _setupEnvironment(){
-        if(cc.sys.isBrowser){
+    _setupEnvironment() {
+        if (cc.sys.isBrowser) {
             cc.game.pause = () => {};
             cc.game.setFrameRate(48);
         }
 
-        cc.game.on(cc.game.EVENT_HIDE, function () {
+        cc.game.on(cc.game.EVENT_HIDE, function() {
             app.system.isInactive = true;
         });
 
-        cc.game.on(cc.game.EVENT_SHOW, function () {
+        cc.game.on(cc.game.EVENT_SHOW, function() {
             app.system.isInactive = false;
         });
     }
 
     onEnable() {
         let resources = [
-            {dir: 'toast/Toast', name: 'toast'},
-            {dir: 'dashboard/dialog/prefabs/scrollview', name: 'scrollview'},
-            {dir: 'popup/FriendProfilePopup', name: 'friendProfilePopup'},
-            {dir: 'dashboard/dialog/prefabs/dialog', name: 'dialog'},
+            { dir: 'toast/Toast', name: 'toast' },
+            { dir: 'dashboard/grid/scrollview', name: 'scrollview' },
+            { dir: 'popup/FriendProfilePopup', name: 'friendProfilePopup' },
+            { dir: 'dashboard/dialog/prefabs/dialog', name: 'dialog' },
         ];
 
         app.async.parallel(resources.map((res) => {

@@ -8,6 +8,10 @@ export default class Utils {
         return val == undefined || val == null;
     }
 
+    static isNode(val) {
+        return val && val instanceof cc.Node;
+    }
+
     static isEmpty(str) {
         return !str || (Utils.isString(str) && str.trim().length == 0);
     }

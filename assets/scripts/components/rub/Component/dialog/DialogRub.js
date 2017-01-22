@@ -38,6 +38,7 @@ export default class DialogRub extends Rub {
 
         this.dialogNode = this.prefab.getChildByName('dialog');
         this.dialogComponent = this.dialogNode.getComponent('Dialog');
+        this.dialogComponent.addNode(this.prefab);
         this.bodyNode = this.dialogComponent.bodyNode;
 
         this.tabs && this._initTab(this.tabs);
@@ -56,33 +57,6 @@ export default class DialogRub extends Rub {
 
     _initTitle(string) {
         this.dialogComponent.setTitle(string);
-    }
-
-    /**
-     * add body to dialog
-     * 
-     * @param {cc.Node || string} node || prefab directory
-     * 
-     * @memberOf DialogRub
-     */
-    addBody(node) {
-        let widget = {
-            top: 140,
-            left: 90,
-            right: 90,
-            bottom: 50
-        };
-
-        NodeRub.addWidgetComponentToNode(this.bodyNode, widget);
-
-        if (node instanceof cc.Node) {
-            this.bodyNode.addChild(node);
-        } else {
-            RubUtils.loadRes(node).then((prefab) => {
-                let n = cc.instantiate(prefab);
-                this.bodyNode.addChild(n);
-            });
-        }
     }
 
     addComponent(component) {

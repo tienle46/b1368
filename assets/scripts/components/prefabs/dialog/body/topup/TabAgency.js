@@ -4,9 +4,9 @@ import DialogActor from 'DialogActor';
 class TabAgency extends DialogActor {
     constructor() {
         super();
-        this.bodyNode = {
-            default: null,
-            type: cc.Node
+        this.properties = {
+            ...this.properties,
+            bodyNode: cc.Node
         };
     }
 
@@ -43,37 +43,22 @@ class TabAgency extends DialogActor {
 
         try {
             let d = JSON.parse(res[app.keywords.AGENT]).agents;
-            let data = [
-                [],
-                [],
-                []
-            ];
+            let data = [];
             for (let i = 0; i < d.length; i++) {
-                data[0].push(d[i].agent_name);
-                data[1].push(d[i].call_number);
-                data[2].push(d[i].fblink);
-
-                if (i == d.length - 1) {
-                    this.initGridView({
-                        data: ['Đại lý', 'Số DT', 'facebook'],
-                        options: {
-                            fontColor: app.const.COLOR_YELLOW,
-                            fontSize: 25
-                        }
-                    }, data, {
-                        width: 840,
-                        height: 415,
-                        spacingX: 0,
-                        spacingY: 0,
-                        group: {
-                            colors: [null, null, new cc.Color(65, 94, 160), null, null],
-                            events: [event],
-                            widths: ['', '', 450]
-                        }
-                    });
-                    this.bodyNode.addChild(this.getGridView().getNode());
-                }
+                data.push([d[i].agent_name, d[i].call_number, d[i].fblink]);
             }
+
+            this.initGridView({
+                data: ['Đại lý', 'Số DT', 'facebook'],
+                options: {
+                    fontColor: app.const.COLOR_YELLOW
+                }
+            }, data, {
+                size: this.node.getContentSize(),
+                isValidated: true
+            });
+
+            this.bodyNode.addChild(this.getGridViewNode());
         } catch (e) {
             app.system.error(e.message);
         }

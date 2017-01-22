@@ -12,8 +12,6 @@ class TabTopDaiGia extends DialogActor {
             crownsNode: cc.Node,
             userMoneyLbl: cc.Label,
         }
-
-        this.currentPage = 1;
     }
 
     onLoad() {
@@ -52,7 +50,6 @@ class TabTopDaiGia extends DialogActor {
     }
 
     _onGetRankGroup(res) {
-        this.contentNode.children && this.contentNode.children.map(child => cc.isValid(child) && child.destroy() && child.removeFromParent());
         res[app.keywords.USERNAME_LIST] = res[app.keywords.USERNAME_LIST] || [];
         if (res[app.keywords.USERNAME_LIST].length < 0) {
             this.pageIsEmpty(this.contentNode);
@@ -70,8 +67,7 @@ class TabTopDaiGia extends DialogActor {
             res[app.keywords.USERNAME_LIST],
             res['ui1l'].map((amount) => {
                 this.userMoneyLbl.string = `${numeral(amount).format('0,0')}`;
-                let usermoneyLbl = cc.instantiate(this.userMoneyLbl.node);
-                return usermoneyLbl;
+                return cc.instantiate(this.userMoneyLbl.node);
             }),
         ];
         let head = {
@@ -82,39 +78,27 @@ class TabTopDaiGia extends DialogActor {
             }
         };
 
-        let next = this.onNextBtnClick.bind(this);
-        let prev = this.onPreviousBtnClick.bind(this);
+        let next = this.onNextBtnClick;
+        let prev = this.onPreviousBtnClick;
 
         let rubOptions = {
-            paging: { prev, next },
-            position: cc.v2(0, 10),
-            height: 390,
+            paging: { prev, next, context: this },
+            size: this.contentNode.getContentSize(),
             group: { widths: ['', '', 380] }
         };
 
         this.initGridView(head, data, rubOptions);
 
-        data = null; // collect item
-
-        let node = this.getGridViewNode();
-
+        this.contentNode.addChild(this.getGridViewNode());
         app.system.hideLoader();
-
-        (!node.parent) && this.contentNode.addChild(node);
     }
 
-    onPreviousBtnClick() {
-        this.currentPage -= 1;
-        if (this.currentPage < 1) {
-            this.currentPage = 1;
-            return null;
-        }
-        this._getDataFromServer(this.currentPage);
+    onPreviousBtnClick(page) {
+        this._getDataFromServer(page);
     }
 
-    onNextBtnClick() {
-        this.currentPage += 1;
-        this._getDataFromServer(this.currentPage);
+    onNextBtnClick(page) {
+        this._getDataFromServer(page);
     }
 }
 

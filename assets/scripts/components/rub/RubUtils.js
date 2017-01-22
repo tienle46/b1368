@@ -130,11 +130,24 @@ let RubUtils = {
         if (!(assets instanceof Array))
             ins = [assets];
 
+        if (ins.length < 0)
+            return;
         ins.map(asset => {
             let deps = asset && cc.loader.getDependsRecursively(asset);
             deps && deps.length > 0 && cc.loader.release(asset);
         });
         assets = null;
+    },
+    releaseArray: (array, isRecursive = false) => {
+        if (!app._.isArray(array))
+            return;
+
+        if (isRecursive) {
+            array.map(a => {
+                app._.isArray(a) && RubUtils.releaseArray(a, isRecursive);
+            });
+        }
+        array.length = 0;
     }
 };
 export default RubUtils;

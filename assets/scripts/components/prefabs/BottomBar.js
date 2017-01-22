@@ -11,24 +11,13 @@ import SFS2X from 'SFS2X';
 class BottomBar extends DialogActor {
     constructor() {
         super();
-        this.userInfoCoinLbl = {
-            default: null,
-            type: cc.Label
-        };
 
-        this.userNameLbl = {
-            default: null,
-            type: cc.Label
-        };
-
-        this.notifyBgNode = {
-            default: null,
-            type: cc.Node
-        };
-
-        this.notifyCounterLbl = {
-            default: null,
-            type: cc.Label
+        this.properties = {
+            ...this.properties,
+            userInfoCoinLbl: cc.Label,
+            userNameLbl: cc.Label,
+            notifyBgNode: cc.Node,
+            notifyCounterLbl: cc.Label
         };
     }
 
@@ -86,8 +75,8 @@ class BottomBar extends DialogActor {
             value: `${url}/tab_top_dai_gia`
         }];
 
-        // bottombar -> dashboard scene node
-        DialogRub.show(app.system.getCurrentSceneNode(), tabs, { title: 'Xếp hạng' });
+        let dialog = new DialogRub(app.system.getCurrentSceneNode(), tabs, { title: 'Xếp hạng' });
+        dialog = null;
     }
 
     onFriendBtnClick() {

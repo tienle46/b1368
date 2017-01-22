@@ -1,35 +1,41 @@
 import Actor from 'Actor';
 import app from 'app';
-import GridViewRub from 'GridViewRub';
+import NodeRub from 'NodeRub';
 
 export default class DialogActor extends Actor {
     constructor() {
         super();
 
-        this._gridView = null;
-
-        this.p404 = {
-            default: null,
-            type: cc.Prefab
+        this.properties = {
+            ...this.properties,
+            p404: cc.Prefab,
+            scrollview: cc.Prefab
         };
+
+        this._gridView = null;
     }
 
     onDestroy() {
         super.onDestroy();
-        this._gridView && this._gridView.destroy() && (this._gridView = null);
+        if (this._gridView && cc.isValid(this._gridView)) {
+            this._gridView.destroy();
+            this._gridView = null;
+        }
     }
 
     initGridView(head, data, options) {
-        console.debug(head, data);
-        this._gridView = new GridViewRub(head, data, options);
-    }
-
-    getGridView() {
-        return this._gridView;
+        if (!this._gridView) {
+            this._gridView = cc.instantiate(this.scrollview);
+            NodeRub.addWidgetComponentToNode(this._gridView, { top: 0, left: 0, right: 0, bottom: 0 })
+            this._gridView.getComponent('Scrollview').initGrid(head, data, options);
+        } else {
+            this._gridView.getComponent('Scrollview').updateOptions(options);
+            this._gridView.getComponent('Scrollview').updateView(head, data);
+        }
     }
 
     getGridViewNode() {
-        return this._gridView && this.getGridView().getNode();
+        return this._gridView;
     }
 
     pageIsEmpty(node, str) {

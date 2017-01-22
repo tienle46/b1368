@@ -4,7 +4,6 @@
 
 import Component from 'Component';
 import Emitter from 'emitter';
-import GridViewRub from 'GridViewRub';
 
 export default class Actor extends Component {
     constructor() {
@@ -19,8 +18,6 @@ export default class Actor extends Component {
         this.initiated = false;
         this._eventEmitter = null;
         this.__pendingEmitEvents = null;
-
-        this._gridView = null;
     }
 
     /**
@@ -55,7 +52,6 @@ export default class Actor extends Component {
 
     onDestroy() {
         super.onDestroy();
-        this._gridView && this._gridView.destroy() && (this._gridView = null);
     }
 
     emit(name, ...args) {
@@ -80,23 +76,6 @@ export default class Actor extends Component {
     removeAllListener() {
         this.off();
     }
-
-    // <-- dialogs
-    initGridView(head, data, options) {
-        this._gridView = new GridViewRub(head, data, options);
-    }
-
-    getGridView() {
-        return this._gridView;
-    }
-
-    getGridViewNode() {
-        return this._gridView && this.getGridView().getNode();
-    }
-
-    pageIsEmpty(node, str) {}
-
-    // end dialog functionalities -->
 
     _assertEmitter() {
         !this._eventEmitter && (this._eventEmitter = new Emitter());

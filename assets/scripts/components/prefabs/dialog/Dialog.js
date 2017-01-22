@@ -29,11 +29,12 @@ export default class Dialog extends Component {
 
     onDestroy() {
         super.onDestroy();
-        this.addedNodes = {};
+        this.addedNodes = null;
     }
 
     onCloseBtnClick() {
         // this.releaseAssets();
+
         this.node.parent.destroy();
         this.node.parent.removeFromParent();
     }

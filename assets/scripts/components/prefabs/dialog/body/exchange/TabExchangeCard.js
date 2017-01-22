@@ -53,12 +53,12 @@ class TabExchangeCard extends DialogActor {
     }
 
     _initCardsList() {
-        app.system.showLoader();
         var sendObject = {
             'cmd': app.commands.EXCHANGE_LIST,
             'data': {}
         };
 
+        app.system.showLoader();
         app.service.send(sendObject);
     }
 
@@ -116,6 +116,8 @@ class TabExchangeCard extends DialogActor {
 
             // hide loader
             app.system.hideLoader();
+        } else {
+            this.pageIsEmpty(this.node);
         }
     }
 

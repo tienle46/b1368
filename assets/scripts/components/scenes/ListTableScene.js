@@ -45,7 +45,7 @@ export default class ListTableScene extends BaseScene {
     onDestroy() {
         super.onDestroy();
         this._clearInterval();
-        this.items = [];
+        this.items.length = 0;
     }
 
     onLoad() {
@@ -87,18 +87,18 @@ export default class ListTableScene extends BaseScene {
         super._addGlobalListener();
         app.system.addListener(app.commands.USER_LIST_GROUP, this._onUserListGroup, this);
         app.system.addListener(app.commands.USER_LIST_ROOM, this._onUserListRoom, this);
-        app.system.addListener(app.commands.USER_CREATE_ROOM, this._onUserCreateRoom, this);
+        // app.system.addListener(app.commands.USER_CREATE_ROOM, this._onUserCreateRoom, this);
         app.system.addListener(SFS2X.SFSEvent.ROOM_JOIN, this._handleRoomJoinEvent, this);
-        app.system.addListener(app.commands.PLAYER_INVITE, this._onPlayerInviteEvent, this);
+        // app.system.addListener(app.commands.PLAYER_INVITE, this._onPlayerInviteEvent, this);
     }
 
     _removeGlobalListener() {
         super._removeGlobalListener();
         app.system.removeListener(app.commands.USER_LIST_GROUP, this._onUserListGroup, this);
         app.system.removeListener(app.commands.USER_LIST_ROOM, this._onUserListRoom, this);
-        app.system.removeListener(app.commands.USER_CREATE_ROOM, this._onUserCreateRoom, this);
+        // app.system.removeListener(app.commands.USER_CREATE_ROOM, this._onUserCreateRoom, this);
         app.system.removeListener(SFS2X.SFSEvent.ROOM_JOIN, this._handleRoomJoinEvent, this);
-        app.system.removeListener(app.commands.PLAYER_INVITE, this._onPlayerInviteEvent, this);
+        // app.system.removeListener(app.commands.PLAYER_INVITE, this._onPlayerInviteEvent, this);
     }
 
     onNongDanBtnClick() {
@@ -213,7 +213,7 @@ export default class ListTableScene extends BaseScene {
             }
         } else {
             if (event.errorCode) {
-                app.system.error(event.errorMessage);
+                app.system.error(app.getMessageFromServer(event));
             }
         }
     }
@@ -225,10 +225,10 @@ export default class ListTableScene extends BaseScene {
         };
         app.service.send(sendObject);
 
-        this.timeout = requestTimeout(() => {
-            this.timeout && this._sendRequestUserListRoom(room);
-            clearRequestTimeout(this.timeout);
-        }, this.time);
+        // this.timeout = requestTimeout(() => {
+        //     this.timeout && this._sendRequestUserListRoom(room);
+        //     clearRequestTimeout(this.timeout);
+        // }, this.time);
     }
 
     _onUserListRoom(data) {
@@ -249,7 +249,7 @@ export default class ListTableScene extends BaseScene {
         if (customIds) {
             // room faker
             customIds = [...customIds, ...[0, 0, 0, 0]];
-            this.items = [];
+            this.items.length = 0;
             for (let i = 0; i < customIds.length; i++) {
 
                 let listCell = cc.instantiate(this.tableListCell);
@@ -307,7 +307,7 @@ export default class ListTableScene extends BaseScene {
                 filteredItems.map((item) => {
                     this.contentInScroll.addChild(item);
                 });
-                filteredItems = [];
+                filteredItems.length = 0;
             }
         }
     }

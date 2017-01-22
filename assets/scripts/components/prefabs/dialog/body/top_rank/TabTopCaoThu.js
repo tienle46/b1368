@@ -17,13 +17,12 @@ class TabTopCaoThu extends DialogActor {
 
         this.currentNodeId = null;
         this.itemLoaded = null;
-        this.currentPage = 1;
     }
 
     start() {
         super.start();
         let topNodeId = 9; // use for requesting game icons list
-        this._requestDataFromServer(topNodeId, this.currentPage);
+        this._requestDataFromServer(topNodeId, 1);
     }
 
     _addGlobalListener() {
@@ -53,6 +52,13 @@ class TabTopCaoThu extends DialogActor {
         app.service.send(sendObject);
     }
 
+    onGameItemClicked(event) {
+        this.previousNodeId = this.currentNodeId;
+        let dNodeId = event.node.dNodeId;
+        this.currentNodeId = dNodeId;
+        this._requestDataFromServer(this.currentNodeId, 1);
+    }
+
     _onReceivedData(res) {
         if (!this.itemLoaded) {
             if (res[app.keywords.RANK_TYPE_ID] && res[app.keywords.RANK_TYPE_ID].length > 0) {
@@ -75,6 +81,8 @@ class TabTopCaoThu extends DialogActor {
 
                             if (toggle.isChecked) {
                                 this.itemLoaded = true;
+                                this.previousNodeId = node.dNodeId;
+
                                 this._requestDataFromServer(node.dNodeId, 1);
                             }
                             node.active = true;
@@ -86,48 +94,34 @@ class TabTopCaoThu extends DialogActor {
                             cb();
                         });
                     });
+
                 } else {
                     this.pageIsEmpty(this.node)
                 }
             }
+
         } else {
             res[app.keywords.USERNAME_LIST] = res[app.keywords.USERNAME_LIST] || [];
-            if (res[app.keywords.USERNAME_LIST].length > 0) {
-                let data = [
-                    res[app.keywords.USERNAME_LIST].map((status, index) => {
-                        let p = res['p'] || 1;
-                        let order = (index + 1) + (p - 1) * 20;
-                        if (this.crownsNode.children[index] && order <= 3)
-                            return cc.instantiate(this.crownsNode.children[index]);
-                        else
-                            return `${order}.`;
-                    }),
-                    res[app.keywords.USERNAME_LIST],
-                    res['ui1l'],
-                ];
-
-                this._initBody(data);
-                data = null;
-            } else {
-                this.pageIsEmpty(this.contentNode)
-            }
+            let data = [
+                res[app.keywords.USERNAME_LIST].map((status, index) => {
+                    let p = res['p'] || 1;
+                    let order = (index + 1) + (p - 1) * 20;
+                    if (this.crownsNode.children[index] && order <= 3)
+                        return cc.instantiate(this.crownsNode.children[index]);
+                    else
+                        return `${order}.`;
+                }),
+                res[app.keywords.USERNAME_LIST],
+                res['ui1l'],
+            ];
+            let isNew = res[app.keywords.RANK_NODE_ID] != this.previousNodeId;
+            this._initBody(data, isNew);
         }
-
-
-        res = null;
     }
 
-    onGameItemClicked(event) {
-        let dNodeId = event.node.dNodeId;
-        this.currentNodeId = dNodeId;
-        this._requestDataFromServer(this.currentNodeId, 1);
-    }
-
-    _initBody(d) {
-        this.contentNode.children && this.contentNode.children.map(child => cc.isValid(child) && child.destroy() && child.removeFromParent());
-
-        let next = this.onNextBtnClick.bind(this);
-        let prev = this.onPreviousBtnClick.bind(this);
+    _initBody(d, isNew) {
+        let next = this.onNextBtnClick;
+        let prev = this.onPreviousBtnClick;
 
         this.initGridView({
             data: ['STT', 'Tài khoản', 'Thắng'],
@@ -135,33 +129,24 @@ class TabTopCaoThu extends DialogActor {
                 fontColor: app.const.COLOR_YELLOW
             }
         }, d, {
-            paging: { next, prev },
-            position: cc.v2(0, 10),
-            width: 670,
-            height: 390,
-            event,
+            paging: { next, prev, context: this },
+            size: this.contentNode.getContentSize(),
+            isNew,
             group: {
-                widths: [80, 350, ''],
+                widths: ['', 350, ''],
                 colors: ['', '', new cc.Color(255, 214, 0)]
             }
         });
         this.contentNode.addChild(this.getGridViewNode());
-        d = null;
         app.system.hideLoader();
     }
 
-    onPreviousBtnClick() {
-        this.currentPage -= 1;
-        if (this.currentPage < 1) {
-            this.currentPage = 1;
-            return null;
-        }
-        this._requestDataFromServer(this.currentNodeId, this.currentPage);
+    onPreviousBtnClick(page) {
+        this._requestDataFromServer(this.currentNodeId, page);
     }
 
-    onNextBtnClick() {
-        this.currentPage += 1;
-        this._requestDataFromServer(this.currentNodeId, this.currentPage);
+    onNextBtnClick(page) {
+        this._requestDataFromServer(this.currentNodeId, page);
     }
 }
 

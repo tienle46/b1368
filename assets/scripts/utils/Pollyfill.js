@@ -20,5 +20,5 @@ export default (app) => {
     }
 
     // deep merge for Object.assign 
-    Object.assign = app._.merge;
+    // Object.assign = app._.merge;
 };

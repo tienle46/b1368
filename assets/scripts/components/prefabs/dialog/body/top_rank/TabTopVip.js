@@ -68,7 +68,6 @@ class TabTopVip extends DialogActor {
                 return cc.instantiate(this.vips.children[index] ? this.vips.children[index] : this.vips.children[len - 1]);
             }),
         ];
-        ul = null;
 
         this.initGridView({
             data: ['STT', 'Tài khoản', 'Loại'],
@@ -76,11 +75,10 @@ class TabTopVip extends DialogActor {
                 fontColor: app.const.COLOR_YELLOW
             }
         }, data, {
-            height: 415,
+            size: this.node.getContentSize(),
         });
 
         this.contentNode.addChild(this.getGridViewNode());
-
         app.system.hideLoader();
     }
 }

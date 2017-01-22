@@ -40,12 +40,13 @@ export default class Component {
 
     releaseAssets() {
         RubUtils.releaseAssets(this.loadedAssets);
+        RubUtils.releaseArray(this.loadedNodes);
     }
 
     removeNodes() {
         let nodes = this.loadedNodes;
 
         nodes.map(node => cc.isValid(node) && node.destroy() && node.removeFromParent());
-        this.loadedNodes = [];
+        RubUtils.releaseArray(this.loadedNodes);
     }
 }
