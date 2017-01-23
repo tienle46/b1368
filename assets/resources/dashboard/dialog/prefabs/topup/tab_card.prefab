@@ -963,6 +963,7 @@
     "_enabled": true,
     "path": "",
     "p404": null,
+    "scrollview": null,
     "titleLbl": {
       "__id__": 18
     },
@@ -2030,7 +2031,7 @@
     "_tag": -1,
     "_opacityModifyRGB": false,
     "_id": "",
-    "_active": false,
+    "_active": true,
     "_components": [
       {
         "__id__": 86
@@ -2126,7 +2127,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 376,
-      "height": 222
+      "height": -2
     },
     "_children": [
       {
@@ -2485,7 +2486,7 @@
     "_left": 0,
     "_right": 0,
     "_top": 7,
-    "_bottom": 17,
+    "_bottom": 241,
     "_verticalCenter": 0,
     "_horizontalCenter": 0,
     "_isAbsLeft": true,
@@ -2508,9 +2509,9 @@
     "_layoutSize": {
       "__type__": "cc.Size",
       "width": 376,
-      "height": 222
+      "height": -2
     },
-    "_resize": 0,
+    "_resize": 1,
     "_N$layoutType": 2,
     "_N$padding": 0,
     "_N$cellSize": {
@@ -3322,6 +3323,10 @@
     },
     "_enabled": true,
     "path": "",
+    "p404": {
+      "__uuid__": "5506cff6-05a2-4783-8488-2c5459eaed0b"
+    },
+    "scrollview": null,
     "ratioItem": {
       "__id__": 16
     },
@@ -3345,9 +3350,6 @@
     },
     "serialNumberEditBox": {
       "__id__": 46
-    },
-    "p404": {
-      "__uuid__": "5506cff6-05a2-4783-8488-2c5459eaed0b"
     }
   },
   {

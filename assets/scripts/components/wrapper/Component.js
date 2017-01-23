@@ -40,7 +40,6 @@ export default class Component {
 
     releaseAssets() {
         RubUtils.releaseAssets(this.loadedAssets);
-        RubUtils.releaseArray(this.loadedNodes);
     }
 
     removeNodes() {

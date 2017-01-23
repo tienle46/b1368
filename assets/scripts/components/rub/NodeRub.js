@@ -65,7 +65,7 @@ let NodeRub = {
      *  }
      * }
      */
-    addLabelComponentToNode: (node, options = {}) => {
+    addLabelComponentToNode: (node, options) => {
         let label = node.getComponent(cc.Label) || node.addComponent(cc.Label);
         label.string = options.text || '';
         options.font && RubUtils.loadFont(label, options.font);
@@ -93,7 +93,7 @@ let NodeRub = {
      * overflow: # default.cc.Label.Overflow.CLAMP
      * }
      */
-    addRichTextComponentToNode: (node, options = {}) => {
+    addRichTextComponentToNode: (node, options) => {
         let rich = node.getComponent(cc.RichText) || node.addComponent(cc.RichText);
         rich.string = options.text || '';
         options.font && RubUtils.loadFont(rich, options.font);
@@ -112,7 +112,7 @@ let NodeRub = {
      * color: new cc.color
      * width: number
      */
-    addOutlineComponentToNode: (node, options = {}) => {
+    addOutlineComponentToNode: (node, options) => {
         let outline = node.getComponent(cc.LabelOutline) || node.addComponent(cc.LabelOutline);
         outline.color = options.color;
         outline.width = options.width;
@@ -131,7 +131,7 @@ let NodeRub = {
      * horizontalDirection: cc.Layout.HorizontalDirection.LEFT_TO_RIGHT
      * }
      */
-    addLayoutComponentToNode: (node, options = {}) => {
+    addLayoutComponentToNode: (node, options) => {
         let layout = node.getComponent(cc.Layout) || node.addComponent(cc.Layout);
         for (var key in options) {
             layout[key] = options[key];
@@ -146,7 +146,7 @@ let NodeRub = {
      *  label: {addLabel's options}    
      * }
      */
-    addButtonComponentToNode: (node, options = {}) => {
+    addButtonComponentToNode: (node, options) => {
         let button = node.getComponent(cc.Button) || node.addComponent(cc.Button);
         if (options.event) {
             if (options.event instanceof cc.Component.EventHandler)
@@ -181,14 +181,14 @@ let NodeRub = {
      *  trim: boolean,
      * }
      */
-    addSpriteComponentToNode: (node, options = {}) => {
+    addSpriteComponentToNode: (node, options) => {
         let sprite = node.addComponent(cc.Sprite);
         let spriteFrame = options.spriteFrame;
         let o = {
             type: cc.Sprite.Type.SLICED,
             sizeMode: cc.Sprite.SizeMode.CUSTOM
         };
-        o = Object.assign({}, o, options);
+        o = Object.assign(o, options);
         if (typeof spriteFrame === 'string') {
             delete o.spriteFrame;
 
@@ -208,7 +208,7 @@ let NodeRub = {
      * url: String
      * }
      */
-    addWebViewComponentToNode: (node, options = {}) => {
+    addWebViewComponentToNode: (node, options) => {
         let webView = node.getComponent(cc.WebView) || node.addComponent(cc.WebView);
         webView.url = options.url;
     },
@@ -222,7 +222,7 @@ let NodeRub = {
      * }
      * @returns
      */
-    addToggleComponentToNode: (node, options = {}) => {
+    addToggleComponentToNode: (node, options) => {
         let toggle = node.addComponent(cc.Toggle);
         options.hasOwnProperty('toggleGroup') && (toggle.toggleGroup = options.toggleGroup);
         options.hasOwnProperty('event') && (toggle.checkEvents = [options.event]);
@@ -251,7 +251,7 @@ let NodeRub = {
      * editingReturn : cc.Component.EventHandler,
      * }
      */
-    addEditBoxComponentToNode: (node, options = {}) => {
+    addEditBoxComponentToNode: (node, options) => {
         let o = {
             string: '',
             returnType: cc.EditBox.KeyboardReturnType.DEFAULT,
@@ -259,7 +259,7 @@ let NodeRub = {
             inputMode: cc.EditBox.InputMode.SINGLE_LINE,
             stayOnTop: false
         };
-        options = Object.assign({}, o, options);
+        options = Object.assign(o, options);
         let editbox = node.getComponent(cc.EditBox) || node.addComponent(cc.EditBox);
 
         let size = node.getContentSize();

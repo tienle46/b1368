@@ -63,56 +63,61 @@ class BottomBar extends DialogActor {
     }
 
     onClickTopRankAction() {
-        let url = `${app.const.DIALOG_DIR_PREFAB}/rank`;
-        let tabs = [{
-            title: 'Top VIP',
-            value: `${url}/tab_top_vip`
-        }, {
-            title: 'Top Cao thủ',
-            value: `${url}/tab_top_cao_thu`
-        }, {
-            title: 'Top Đại gia',
-            value: `${url}/tab_top_dai_gia`
-        }];
+        (() => {
+            let url = `${app.const.DIALOG_DIR_PREFAB}/rank`;
+            let tabs = [{
+                title: 'Top VIP',
+                value: `${url}/tab_top_vip`
+            }, {
+                title: 'Top Cao thủ',
+                value: `${url}/tab_top_cao_thu`
+            }, {
+                title: 'Top Đại gia',
+                value: `${url}/tab_top_dai_gia`
+            }];
 
-        let dialog = new DialogRub(app.system.getCurrentSceneNode(), tabs, { title: 'Xếp hạng' });
-        dialog = null;
+            DialogRub.show(app.system.getCurrentSceneNode(), tabs, { title: 'Xếp hạng' });
+        })();
     }
 
     onFriendBtnClick() {
-        let url = `${app.const.DIALOG_DIR_PREFAB}/buddies`;
-        let tabs = [{
-            title: 'Danh sách',
-            value: `${url}/tab_buddy_list`
-        }, {
-            title: 'Chuyển xu',
-            value: `${url}/tab_buddy_detail`
-        }, {
-            title: 'Lịch sử',
-            value: `${url}/tab_transaction_history`
-        }];
+        (() => {
+            let url = `${app.const.DIALOG_DIR_PREFAB}/buddies`;
+            let tabs = [{
+                title: 'Danh sách',
+                value: `${url}/tab_buddy_list`
+            }, {
+                title: 'Chuyển xu',
+                value: `${url}/tab_buddy_detail`
+            }, {
+                title: 'Lịch sử',
+                value: `${url}/tab_transaction_history`
+            }];
 
-        PersonalInfoDialogRub.show(app.system.getCurrentSceneNode(), tabs, { title: 'Bạn bè' });
+            PersonalInfoDialogRub.show(app.system.getCurrentSceneNode(), tabs, { title: 'Bạn bè' });
+        })();
     }
 
     onClickTransferAwardAction() {
-        let url = `${app.const.DIALOG_DIR_PREFAB}/exchange`;
-        let tabs = [{
-            title: 'Thẻ cào',
-            value: `${url}/tab_exchange_card`
-        }, {
-            title: 'Vật phẩm',
-            value: `${url}/tab_exchange_item`
-        }, {
-            title: 'Lịch sử',
-            value: `${url}/tab_exchange_history`
-        }, {
-            title: 'Đại lí',
-            value: `${url}/tab_agency`
-        }];
+        (() => {
+            let url = `${app.const.DIALOG_DIR_PREFAB}/exchange`;
+            let tabs = [{
+                title: 'Thẻ cào',
+                value: `${url}/tab_exchange_card`
+            }, {
+                title: 'Vật phẩm',
+                value: `${url}/tab_exchange_item`
+            }, {
+                title: 'Lịch sử',
+                value: `${url}/tab_exchange_history`
+            }, {
+                title: 'Đại lí',
+                value: `${url}/tab_agency`
+            }];
 
-        // bottombar -> dashboard scene node
-        ExchangeDialogRub.show(app.system.getCurrentSceneNode(), tabs, { title: 'Đổi thưởng' });
+            // bottombar -> dashboard scene node
+            ExchangeDialogRub.show(app.system.getCurrentSceneNode(), tabs, { title: 'Đổi thưởng' });
+        })();
     }
 
     callSupportClicked(e) {
@@ -120,43 +125,47 @@ class BottomBar extends DialogActor {
     }
 
     onClickMessageAction() {
-        let url = `${app.const.DIALOG_DIR_PREFAB}/messagecenter`;
-        let tabs = [{
-            title: 'Hệ thống',
-            value: `${url}/tab_system_messages`
-        }, {
-            title: 'Cá nhân',
-            value: `${url}/tab_personal_messages`
-        }];
+        (() => {
+            let url = `${app.const.DIALOG_DIR_PREFAB}/messagecenter`;
+            let tabs = [{
+                title: 'Hệ thống',
+                value: `${url}/tab_system_messages`
+            }, {
+                title: 'Cá nhân',
+                value: `${url}/tab_personal_messages`
+            }];
 
-        MessageCenterDialogRub.show(app.system.getCurrentSceneNode(), tabs, { title: 'Tin nhắn' });
+            MessageCenterDialogRub.show(app.system.getCurrentSceneNode(), tabs, { title: 'Tin nhắn' });
+        })();
     }
 
     onClickUserInfoAction() {
-        // personal tabs
-        let url = `${app.const.DIALOG_DIR_PREFAB}/userinfo`;
-        let tabs = [{
-                title: 'Cá nhân',
-                value: `${url}/tab_user_info`
-            },
-            {
-                title: 'Thành tích',
-                value: `${url}/tab_user_achievements`
-            }
-            // , {
-            //     title: 'Gift Code',
-            //     value: `${url}/tab_gift_code`
-            // }
-            // , {
-            //     title: 'Chuyển chip',
-            //     value: 'tab_transfer_vc'
-            // }, {
-            //     title: 'Nhận chip',
-            //     value: 'tab_transfer_transaction'
-            // }, 
-        ];
+        (() => {
+            // personal tabs
+            let url = `${app.const.DIALOG_DIR_PREFAB}/userinfo`;
+            let tabs = [{
+                    title: 'Cá nhân',
+                    value: `${url}/tab_user_info`
+                },
+                {
+                    title: 'Thành tích',
+                    value: `${url}/tab_user_achievements`
+                }
+                // , {
+                //     title: 'Gift Code',
+                //     value: `${url}/tab_gift_code`
+                // }
+                // , {
+                //     title: 'Chuyển chip',
+                //     value: 'tab_transfer_vc'
+                // }, {
+                //     title: 'Nhận chip',
+                //     value: 'tab_transfer_transaction'
+                // }, 
+            ];
 
-        PersonalInfoDialogRub.show(app.system.getCurrentSceneNode(), tabs, { title: 'Cá nhân' });
+            PersonalInfoDialogRub.show(app.system.getCurrentSceneNode(), tabs, { title: 'Cá nhân' });
+        })();
     }
 
     _fillUserData() {

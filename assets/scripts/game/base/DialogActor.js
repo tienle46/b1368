@@ -26,7 +26,9 @@ export default class DialogActor extends Actor {
     initGridView(head, data, options) {
         if (!this._gridView) {
             this._gridView = cc.instantiate(this.scrollview);
-            NodeRub.addWidgetComponentToNode(this._gridView, { top: 0, left: 0, right: 0, bottom: 0 })
+            let o = { top: 0, left: 0, right: 0, bottom: 0 };
+            NodeRub.addWidgetComponentToNode(this._gridView, o);
+            o = null;
             this._gridView.getComponent('Scrollview').initGrid(head, data, options);
         } else {
             this._gridView.getComponent('Scrollview').updateOptions(options);

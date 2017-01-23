@@ -40,21 +40,21 @@ export class GridView extends Component {
     _initHead(head) {
         let data = app._.isArray(head) ? head : (head.data || []);
         if (!app._.isEmpty(data)) {
-            this._initRow(data, head.options);
+            this._initRow(data, false, head.options);
         }
         head.length = 0;
     }
 
     _initBody(data) {
         if (!app._.isEmpty(data)) {
-            data.map(D => {
-                this._initRow(D);
+            data.map((D, i) => {
+                this._initRow(D, i % 2 == 0);
             });
         }
         data.length = 0;
     }
 
-    _initRow(data, options = {}) {
+    _initRow(data, showBg, options = {}) {
         let widths = this._setCellSize(data);
         let row = cc.instantiate(this.rowPrefab);
         row.getComponent('Row').init(data.map((d, i) => {
@@ -65,7 +65,7 @@ export class GridView extends Component {
                 cellComponent.setWidth(widths[i]);
             }
             return cell;
-        }));
+        }), showBg);
         this.node.addChild(row);
     }
 

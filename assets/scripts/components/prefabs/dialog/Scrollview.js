@@ -34,6 +34,7 @@ export default class Scrollview extends Component {
         // this.options = options;
 
         this._gridview = cc.instantiate(this.gridview);
+        this.addNode(this._gridview);
 
         this._gridviewComp = this._gridview.getComponent('Gridview');
 
@@ -44,16 +45,20 @@ export default class Scrollview extends Component {
             this._detectViewState(body);
 
             this._gridviewComp.init(head, body, options);
-
+            let wo;
             if (!this.options.paging) {
                 this._hidePaging();
                 this.bodyNode.setContentSize(this.node.getContentSize().width, 426);
-                NodeRub.addWidgetComponentToNode(this.viewNode, { bottom: 0 });
+                this.viewNode.setContentSize(this.node.getContentSize().width, 426);
+                wo = { bottom: -60 };
+                NodeRub.addWidgetComponentToNode(this.viewNode, wo);
             } else {
                 this._showPaging();
 
                 this.bodyNode.setContentSize(this.node.getContentSize().width, 366);
-                NodeRub.addWidgetComponentToNode(this.viewNode, { bottom: 60 });
+                this.viewNode.setContentSize(this.node.getContentSize().width, 366);
+                wo = { bottom: 60 };
+                // NodeRub.addWidgetComponentToNode(this.viewNode, wo);
 
                 // settup click events
                 let prevEvent = this.options.paging.prev;
@@ -62,6 +67,7 @@ export default class Scrollview extends Component {
 
                 this._updatePagingState();
             }
+            wo = null;
 
             this._addToNode(this.contentNode);
         }
@@ -88,7 +94,7 @@ export default class Scrollview extends Component {
 
         this._gridviewComp.updateView(head, data, options);
 
-        RubUtils.releaseArray(data);
+        RubUtils.releaseArray([head, data], true);
     }
 
     _detectViewState(data) {

@@ -136,7 +136,7 @@ let RubUtils = {
             let deps = asset && cc.loader.getDependsRecursively(asset);
             deps && deps.length > 0 && cc.loader.release(asset);
         });
-        assets = null;
+        RubUtils.releaseArray(ins, true);
     },
     releaseArray: (array, isRecursive = false) => {
         if (!app._.isArray(array))
@@ -148,6 +148,7 @@ let RubUtils = {
             });
         }
         array.length = 0;
+        array = [];
     }
 };
 export default RubUtils;

@@ -26,6 +26,8 @@ export default class DialogRub extends Rub {
         this.options = options;
 
         this.init();
+        options = null;
+        tabs = null;
     }
 
     init() {
@@ -43,6 +45,7 @@ export default class DialogRub extends Rub {
 
         this.tabs && this._initTab(this.tabs);
         this.options.title && this._initTitle(this.options.title);
+        this.options = null;
     }
 
     // add Tab to prefab/pagination node
@@ -53,6 +56,7 @@ export default class DialogRub extends Rub {
             tab.isChecked = (index === 0);
             Tabs.make(tab);
         });
+        tabs = null;
     }
 
     _initTitle(string) {

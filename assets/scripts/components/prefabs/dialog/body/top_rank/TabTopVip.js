@@ -68,7 +68,6 @@ class TabTopVip extends DialogActor {
                 return cc.instantiate(this.vips.children[index] ? this.vips.children[index] : this.vips.children[len - 1]);
             }),
         ];
-
         this.initGridView({
             data: ['STT', 'Tài khoản', 'Loại'],
             options: {
