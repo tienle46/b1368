@@ -87,9 +87,9 @@ class TabTopDaiGia extends DialogActor {
             group: { widths: ['', 380, ''] }
         };
 
-        this.initGridView(head, data, rubOptions);
+        this.initView(head, data, rubOptions);
 
-        this.contentNode.addChild(this.getGridViewNode());
+        this.contentNode.addChild(this.getScrollViewNode());
         app.system.hideLoader();
     }
 

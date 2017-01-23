@@ -11,16 +11,24 @@ export class Row extends Component {
         super.onDestroy();
     }
 
-    init(cells, showSprite) {
+    init(cells, showBg) {
         if (!app._.isEmpty(cells)) {
             cells.map(cell => {
-                if (!showSprite) {
+                if (!showBg) {
                     let sprite = this.node.getComponent(cc.Sprite);
                     sprite.enabled = false;
                 }
                 this.node.addChild(cell);
             });
         }
+    }
+
+    initWithNode(node, showBg) {
+        if (!showBg) {
+            let sprite = this.node.getComponent(cc.Sprite);
+            sprite.enabled = false;
+        }
+        this.node.addChild(node);
     }
 }
 

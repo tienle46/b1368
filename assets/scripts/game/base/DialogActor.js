@@ -12,32 +12,32 @@ export default class DialogActor extends Actor {
             scrollview: cc.Prefab
         };
 
-        this._gridView = null;
+        this._scrollView = null;
     }
 
     onDestroy() {
         super.onDestroy();
-        if (this._gridView && cc.isValid(this._gridView)) {
-            this._gridView.destroy();
-            this._gridView = null;
+        if (this._scrollView && cc.isValid(this._scrollView)) {
+            this._scrollView.destroy();
+            this._scrollView = null;
         }
     }
 
-    initGridView(head, data, options) {
-        if (!this._gridView) {
-            this._gridView = cc.instantiate(this.scrollview);
+    initView(head, data, options) {
+        if (!this._scrollView) {
+            this._scrollView = cc.instantiate(this.scrollview);
             let o = { top: 0, left: 0, right: 0, bottom: 0 };
-            NodeRub.addWidgetComponentToNode(this._gridView, o);
+            this._scrollView.getComponent('Scrollview').initView(head, data, options);
+            NodeRub.addWidgetComponentToNode(this._scrollView, o);
             o = null;
-            this._gridView.getComponent('Scrollview').initGrid(head, data, options);
         } else {
-            this._gridView.getComponent('Scrollview').updateOptions(options);
-            this._gridView.getComponent('Scrollview').updateView(head, data);
+            this._scrollView.getComponent('Scrollview').updateOptions(options);
+            this._scrollView.getComponent('Scrollview').updateView(head, data);
         }
     }
 
-    getGridViewNode() {
-        return this._gridView;
+    getScrollViewNode() {
+        return this._scrollView;
     }
 
     pageIsEmpty(node, str) {

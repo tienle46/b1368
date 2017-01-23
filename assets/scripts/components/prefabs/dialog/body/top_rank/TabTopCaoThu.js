@@ -124,7 +124,7 @@ class TabTopCaoThu extends DialogActor {
         let next = this.onNextBtnClick;
         let prev = this.onPreviousBtnClick;
 
-        this.initGridView({
+        this.initView({
             data: ['STT', 'Tài khoản', 'Thắng'],
             options: {
                 fontColor: app.const.COLOR_YELLOW
@@ -138,7 +138,7 @@ class TabTopCaoThu extends DialogActor {
                 colors: ['', '', new cc.Color(255, 214, 0)]
             }
         });
-        this.contentNode.addChild(this.getGridViewNode());
+        this.contentNode.addChild(this.getScrollViewNode());
         app.system.hideLoader();
     }
 

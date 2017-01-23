@@ -8,6 +8,11 @@ export default class TabEvents extends DialogActor {
     constructor() {
         super();
 
+        this.properties = {
+            ...this.properties,
+            itemPrefab: cc.Prefab,
+        };
+
         this.endPage = false;
         this.itemPerPage = 0;
         this.currentPage = 1;
@@ -21,18 +26,12 @@ export default class TabEvents extends DialogActor {
         app.system.showLoader();
         let next = this.onNextBtnClick.bind(this);
         let prev = this.onPreviousBtnClick.bind(this);
-
-        this.viewRub = new ListViewRub([], { paging: { next, prev } });
     }
 
-    onDestroy() {
-        super.onDestroy();
-        this.viewRub.destroy();
-    }
 
     start() {
         super.start();
-        this._requestEventList(this.currentPage);
+        this._requestEventList(1);
     }
 
     _addGlobalListener() {
@@ -47,21 +46,10 @@ export default class TabEvents extends DialogActor {
 
 
     onPreviousBtnClick() {
-        this.currentPage -= 1;
-        if (this.currentPage < 1) {
-            this.currentPage = 1;
-            return null;
-        }
-        app.system.showLoader();
         this._requestEventList(this.currentPage);
     }
 
     onNextBtnClick() {
-        if (this.endPage) {
-            return null;
-        }
-        app.system.showLoader();
-        this.currentPage += 1;
         this._requestEventList(this.currentPage);
     }
 
@@ -77,83 +65,43 @@ export default class TabEvents extends DialogActor {
             }
         };
 
+        app.system.showLoader();
         app.service.send(sendObject);
     }
 
     _onListSystemMessage(data) {
-        app.system.hideLoader();
-        if (data) {
-            //convert raw data to list models
-            // this.currentPage = data[app.keywords.SYSTEM_MESSAGE.RESPONSE.CURRENT_PAGE];
+        //convert raw data to list models
+        // this.currentPage = data[app.keywords.SYSTEM_MESSAGE.RESPONSE.CURRENT_PAGE];
 
-            let listHeader = data[app.keywords.SYSTEM_MESSAGE.RESPONSE.TITLE_LIST];
-            let listSub = data[app.keywords.SYSTEM_MESSAGE.RESPONSE.TIME_LIST];
-            let listIds = data[app.keywords.SYSTEM_MESSAGE.RESPONSE.ID_ITEM_LIST];
+        let listHeader = data[app.keywords.SYSTEM_MESSAGE.RESPONSE.TITLE_LIST] || [];
+        let listSub = data[app.keywords.SYSTEM_MESSAGE.RESPONSE.TIME_LIST] || [];
+        let listIds = data[app.keywords.SYSTEM_MESSAGE.RESPONSE.ID_ITEM_LIST] || [];
 
-            let events = [];
+        if (listHeader.length > 0) {
+            let messages = [];
             for (let i = 0; i < listHeader.length; i++) {
-                let event = new MessageEvent({ title: listHeader[i], sub: listSub[i], nodeId: listIds[i] });
-                events.push(event);
+                // let event = new MessageEvent({ title: listHeader[i], sub: listSub[i], nodeId: listIds[i] });
+                // events.push(event);
+                let message = cc.instantiate(this.itemPrefab);
+                let itemEventComponent = message.getComponent('ItemMessage');
+                itemEventComponent.init(listHeader[i], listSub[i]);
+                messages.push(message);
             }
-
-            if (events.length < 1) {
-                this.endPage = true;
-                this.pageIsEmpty(this.node);
-            } else {
-                this._displayEvents(events);
-                events = null;
-            }
+            this._displayEvents(messages);
+        } else {
+            this.pageIsEmpty(this.node);
         }
     }
 
     _displayEvents(events) {
-        let data = [];
-        for (let i = 0; i < events.length; i++) {
-            let event = events[i];
-            let body = {
-                title: {
-                    content: `${event.title}`
-                },
-                subTitle: {
-                    content: `${event.sub}`
-                },
-                detail: {
-                    content: `${event.title}`
-                },
-                options: {
-                    align: {
-                        left: 100
-                    }
-                }
-            };
+        let next, prev;
 
-            let options = {
-                group: {
-                    widths: [80, '80%', 54]
-                }
-            };
-
-            let image = {
-                spriteFrame: ''
-            };
-
-            if (this.groupType == app.const.DYNAMIC_GROUP_SYSTEM_MESSAGE) {
-                image.spriteFrame = 'dashboard/dialog/imgs/thongbao-ico';
-            } else if (this.groupType == app.const.DYNAMIC_GROUP_NOTIFY) {
-                image.spriteFrame = 'dashboard/dialog/imgs/hopqua';
-            }
-
-            let item = ListItemToggleableRub.create(body, image, options);
-            data.push(item.node());
-            // this.contentNode.addChild(item.node());
-        }
-        this.viewRub.resetData(data);
-        data = null;
-
-        let node = this.viewRub.getNode();
-
-        (!node.parent) && this.node.addChild(node);
-
+        this.initView(null, events, {
+            paging: { next, prev, context: this },
+            size: this.node.getContentSize(),
+            isListView: true
+        });
+        this.node.addChild(this.getScrollViewNode());
         app.system.hideLoader();
     }
 }

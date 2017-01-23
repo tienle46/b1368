@@ -35,6 +35,7 @@ class TabTopVip extends DialogActor {
     _getRankGroup() {
         let topNodeId = 14,
             currentPage = 1;
+        console.debug('this.contentNode3', this.contentNode.getContentSize());
 
         let sendObject = {
             'cmd': app.commands.RANK_GROUP,
@@ -68,16 +69,15 @@ class TabTopVip extends DialogActor {
                 return cc.instantiate(this.vips.children[index] ? this.vips.children[index] : this.vips.children[len - 1]);
             }),
         ];
-        this.initGridView({
+        this.initView({
             data: ['STT', 'Tài khoản', 'Loại'],
             options: {
                 fontColor: app.const.COLOR_YELLOW
             }
         }, data, {
-            size: this.node.getContentSize(),
+            size: this.contentNode.getContentSize(),
         });
-
-        this.contentNode.addChild(this.getGridViewNode());
+        this.contentNode.addChild(this.getScrollViewNode());
         app.system.hideLoader();
     }
 }

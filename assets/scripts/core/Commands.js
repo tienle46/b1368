@@ -155,6 +155,7 @@ Commands.CHAT_SEND_INVITE = "si";
 Commands.CHAT_GET_INVITABLE_LIST = "gil";
 
 Commands.COUNT_NEW_MESSAGE_FRIEND_REQUEST = "ni";
+Commands.GET_CHARGE_RATE_LIST = "gcrl";
 
 //Buddy
 Commands.BUDDY_INIT_LIST = "bil";

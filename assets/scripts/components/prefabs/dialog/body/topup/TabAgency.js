@@ -48,7 +48,7 @@ class TabAgency extends DialogActor {
                 data.push([d[i].agent_name, d[i].call_number, d[i].fblink]);
             }
 
-            this.initGridView({
+            this.initView({
                 data: ['Đại lý', 'Số DT', 'facebook'],
                 options: {
                     fontColor: app.const.COLOR_YELLOW
@@ -58,7 +58,7 @@ class TabAgency extends DialogActor {
                 isValidated: true
             });
 
-            this.bodyNode.addChild(this.getGridViewNode());
+            this.bodyNode.addChild(this.getScrollViewNode());
         } catch (e) {
             app.system.error(e.message);
         }

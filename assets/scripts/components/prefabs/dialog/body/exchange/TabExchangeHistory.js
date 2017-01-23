@@ -109,12 +109,12 @@ class TabExchangeHistory extends DialogActor {
                 fontSize: 25
             }
         };
-        this.initGridView(head, d, {
+        this.initView(head, d, {
             paging: { next, prev, context: this },
             size: this.bodyNode.getContentSize(),
         });
 
-        this.bodyNode.addChild(this.getGridViewNode());
+        this.bodyNode.addChild(this.getScrollViewNode());
     }
 
     _getExchangeDialogComponent() {

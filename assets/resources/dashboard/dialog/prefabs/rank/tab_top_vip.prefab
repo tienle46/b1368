@@ -30,7 +30,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 850,
-      "height": 440
+      "height": 426
     },
     "_children": [
       {
@@ -94,7 +94,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 850,
-      "height": 440
+      "height": 426
     },
     "_children": [],
     "_rotationX": 0,
@@ -132,7 +132,7 @@
       "__id__": 2
     },
     "_enabled": true,
-    "isAlignOnce": true,
+    "isAlignOnce": false,
     "_target": null,
     "_alignFlags": 45,
     "_left": 0,

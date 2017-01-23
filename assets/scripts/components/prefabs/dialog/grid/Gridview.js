@@ -23,8 +23,30 @@ export class GridView extends Component {
             this.node.setContentSize(size);
         }
 
-        this._initHead(head);
-        this._initBody(body);
+        head && this._initHead(head);
+        body && this._initBody(body);
+    }
+
+    initList(data, options) {
+        this.options = options;
+        if (this.options.size) {
+            let size = this.options.size;
+            this.node.setContentSize(size);
+        }
+
+        data.map((D, i) => {
+            this._initListRow(D, i % 2 == 0);
+        });
+    }
+
+    updateList(data, options) {
+        if (this.node.children) {
+            this.node.children.map(child => child.destroy() && child.removeFromParent());
+        }
+
+        data.map((D, i) => {
+            this._initListRow(D, i % 2 == 0);
+        });
     }
 
     updateView(head, data) {
@@ -32,8 +54,14 @@ export class GridView extends Component {
             this.node.children.map(child => child.destroy() && child.removeFromParent());
         }
 
-        this._initHead(head);
-        this._initBody(data);
+        head && this._initHead(head);
+        data && this._initBody(data);
+    }
+
+    _initListRow(data, hideBg) {
+        let row = cc.instantiate(this.rowPrefab);
+        row.getComponent('Row').initWithNode(data, hideBg);
+        this.node.addChild(row);
     }
 
     // {data: [], options: {}}
@@ -42,7 +70,6 @@ export class GridView extends Component {
         if (!app._.isEmpty(data)) {
             this._initRow(data, false, head.options);
         }
-        head.length = 0;
     }
 
     _initBody(data) {
@@ -51,7 +78,6 @@ export class GridView extends Component {
                 this._initRow(D, i % 2 == 0);
             });
         }
-        data.length = 0;
     }
 
     _initRow(data, showBg, options = {}) {
@@ -66,6 +92,7 @@ export class GridView extends Component {
             }
             return cell;
         }), showBg);
+
         this.node.addChild(row);
     }
 

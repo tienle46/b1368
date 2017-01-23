@@ -29,7 +29,7 @@ export default class Scrollview extends Component {
         this.prevLen = 1;
     }
 
-    initGrid(head, body, options) {
+    initView(head, body, options) {
         this.options = Object.assign({}, this.options, options);
         // this.options = options;
 
@@ -39,26 +39,34 @@ export default class Scrollview extends Component {
         this._gridviewComp = this._gridview.getComponent('Gridview');
 
         if (this._gridviewComp) {
-            body = this._validatedInput(body);
             this.prevLen = body.length;
 
-            this._detectViewState(body);
+            if (this.options.isListView) {
+                this._gridviewComp.initList(body, options);
+            } else {
+                body = this._validatedInput(body);
+                this._gridviewComp.init(head, body, options);
+            }
 
-            this._gridviewComp.init(head, body, options);
-            let wo;
+            this.isEndedPage = body.length < this.prevLen;
+
+            if (body.length == 0) {
+                this._pageIsEmpty();
+                this._updatePagingState();
+                return;
+            }
+
             if (!this.options.paging) {
                 this._hidePaging();
                 this.bodyNode.setContentSize(this.node.getContentSize().width, 426);
                 this.viewNode.setContentSize(this.node.getContentSize().width, 426);
-                wo = { bottom: -60 };
+                let wo = { bottom: -60 };
                 NodeRub.addWidgetComponentToNode(this.viewNode, wo);
             } else {
                 this._showPaging();
 
                 this.bodyNode.setContentSize(this.node.getContentSize().width, 366);
                 this.viewNode.setContentSize(this.node.getContentSize().width, 366);
-                wo = { bottom: 60 };
-                // NodeRub.addWidgetComponentToNode(this.viewNode, wo);
 
                 // settup click events
                 let prevEvent = this.options.paging.prev;
@@ -67,7 +75,6 @@ export default class Scrollview extends Component {
 
                 this._updatePagingState();
             }
-            wo = null;
 
             this._addToNode(this.contentNode);
         }
@@ -82,7 +89,14 @@ export default class Scrollview extends Component {
         this._setupInNewBody();
         data = this._validatedInput(data);
 
-        this._detectViewState(data);
+        // this._detectViewState(data);
+        this.isEndedPage = data.length < this.prevLen;
+
+        if (data.length == 0) {
+            this._pageIsEmpty();
+            this._updatePagingState();
+            return;
+        }
 
         this.prevLen = data.length;
 
@@ -92,19 +106,14 @@ export default class Scrollview extends Component {
 
         this.viewNode.active = true;
 
-        this._gridviewComp.updateView(head, data, options);
+        if (this.options.isListView) {
+            this._gridviewComp.updateList(data, options);
+        } else {
+            this._gridviewComp.updateView(head, data, options);
+        }
+
 
         RubUtils.releaseArray([head, data], true);
-    }
-
-    _detectViewState(data) {
-        this.isEndedPage = data.length < this.prevLen;
-
-        if (data.length == 0) {
-            this._pageIsEmpty();
-            this._updatePagingState();
-            return;
-        }
     }
 
     _updatePagingState() {
@@ -115,7 +124,6 @@ export default class Scrollview extends Component {
             return;
         }
         this._showPaging();
-
     }
 
     _hidePaging() {
@@ -141,8 +149,8 @@ export default class Scrollview extends Component {
             this.bodyNode.addChild(this._p404);
         }
         this.viewNode.active = false;
+        console.debug('this._p404', this._p404, this._p404.active);
         this._p404.active = true;
-
         // if (str) {
         //     let p404Component = p404.getComponent('P404');
         //     p404Component && p404Component.setText(str);

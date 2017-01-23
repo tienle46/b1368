@@ -35,23 +35,35 @@ class TabCard extends DialogActor {
     _addGlobalListener() {
         super._addGlobalListener();
         app.system.addListener(app.commands.USER_GET_CHARGE_LIST, this._onUserGetChargeList, this);
+        app.system.addListener(app.commands.GET_CHARGE_RATE_LIST, this._onUserGetRateList, this);
     }
 
     _removeGlobalListener() {
         super._removeGlobalListener();
         app.system.removeListener(app.commands.USER_GET_CHARGE_LIST, this._onUserGetChargeList, this);
+        app.system.removeListener(app.commands.GET_CHARGE_RATE_LIST, this._onUserGetRateList, this);
     }
 
     _initRatioGroup() {
-        let rateFaker = 0.8;
-        let typesFaker = [10, 20, 50, 100, 200, 500];
+        let sendObject = {
+            cmd: app.commands.GET_CHARGE_RATE_LIST
+        };
 
-        typesFaker.forEach(type => {
-            let ratioItem = cc.instantiate(this.ratioItem);
-            let ratioItemComponent = ratioItem.getComponent('RatioItem');
-            ratioItemComponent.initItem(type * 1000, rateFaker);
-            ratioItem.active = true;
-            this.ratioContainer.addChild(ratioItem);
+        app.service.send(sendObject);
+    }
+
+    _onUserGetRateList(data) {
+        let lists = data[app.keywords.ITEM_LIST] || [];
+        lists.map((str) => {
+            let regEx = /[\d{3,},]+/g;
+            let matches = str.match(regEx);
+            if (matches.length > 2) {
+                let ratioItem = cc.instantiate(this.ratioItem);
+                let ratioItemComponent = ratioItem.getComponent('RatioItem');
+                ratioItemComponent.initItemWithoutRatio(matches[0], matches[1]);
+                ratioItem.active = true;
+                this.ratioContainer.addChild(ratioItem);
+            }
         });
     }
 

@@ -226,6 +226,7 @@ Keywords.USER_ASSETS_VATPHAM = "de";
 
 Keywords.ACHIEVEMENT_SPECIAL_NAME_LIST = "nl";
 Keywords.ACHIEVEMENT_SPECIAL_VALUE_LIST = "vl";
+Keywords.ITEM_LIST = "il";
 /**
  * lay Player ID chu ban
  */
