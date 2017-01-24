@@ -32,6 +32,36 @@ class BuddyManager {
         this.sfsBuddyManager = app.service.client.buddyManager;
 
         this.initEventListener();
+        this._initTestData();
+    }
+
+    _initTestData(){
+        // SFS2X.Entities.SFSBuddy = function (a, b, c, d) {
+        //     this.id = a;
+        //     this.name = b;
+        //     this.blocked = null != c ? c : !1;
+        //     this.temp = null != d ? d : !1;
+        //     this.variables = {};
+        // };
+
+        let buddy = new SFS2X.Entities.SFSBuddy(1, "test1", false, false);
+        let buddy2 = new SFS2X.Entities.SFSBuddy(1, "test2", false, false);
+        buddy2.variables[SFS2X.Entities.Variables.ReservedBuddyVariables.BV_ONLINE] = true;
+
+        this.buddies.push(buddy);
+        this.buddies.push(buddy2);
+        this.buddies.push(buddy);
+        this.buddies.push(buddy2);
+        this.buddies.push(buddy);
+        this.buddies.push(buddy2);
+        this.buddies.push(buddy);
+        this.buddies.push(buddy2);
+        this.buddies.push(buddy);
+        this.buddies.push(buddy2);
+        this.buddies.push(buddy);
+        this.buddies.push(buddy2);
+        this.buddies.push(buddy);
+        this.buddies.push(buddy2);
     }
 
     initEventListener() {
@@ -64,25 +94,19 @@ class BuddyManager {
 
     /**
      * This event using both case remove buddy from buddy list && temp buddy list
-     * @param buddyName
+     * @param buddy
      */
-    removeBuddy(buddyName){
-        buddyName && buddyName.length > 0 && app.service.sendRequest(new SFS2X.Requests.BuddyList.RemoveBuddyRequest(buddyName, true));
+    removeBuddy(buddy){
+        buddy && app.service.sendRequest(new SFS2X.Requests.BuddyList.RemoveBuddyRequest(buddy.name, true));
     }
 
-    blockBuddy(buddyName, block = true){
-
-        if(!buddyName || buddyName.length == 0) return;
-
-        let buddy = this.getBuddyByName.getBuddyByName(buddyName);
+    blockBuddy(buddy){
         if(buddy){
             if(buddy.isOnline()){
-                app.service.sendRequest(new SFS2X.Requests.BuddyList.BlockBuddyRequest(buddyName, block));
+                app.service.sendRequest(new SFS2X.Requests.BuddyList.BlockBuddyRequest(buddy.name, !buddy.isBlocked()));
             }else{
                 app.system.showToast(app.res.string('buddy_cannot_block_offline_buddy'));
             }
-        }else{
-            app.system.showToast(app.res.string('buddy_not_in_your_buddy_list', {buddyName}))
         }
     }
 
@@ -95,6 +119,10 @@ class BuddyManager {
         } else {
             app.system.showToast(app.res.string('buddy_not_found_receiver_buddy'));
         }
+    }
+
+    filterBuddies(str){
+        return !str ? this.buddies : this.buddies.filter(buddy => buddy.name.startsWith(str));
     }
 
     setMood(moodStr){

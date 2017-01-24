@@ -13,6 +13,11 @@ export default class DialogActor extends Actor {
         };
 
         this._scrollView = null;
+        this.dialog = null;
+    }
+
+    setDialog(dialog){
+        this.dialog = dialog;
     }
 
     onDestroy() {

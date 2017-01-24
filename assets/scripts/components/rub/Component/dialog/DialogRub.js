@@ -48,6 +48,10 @@ export default class DialogRub extends Rub {
         this.options = null;
     }
 
+    changeTab(tabIndex, data){
+
+    }
+
     // add Tab to prefab/pagination node
     _initTab(tabs) {
         let Tabs = this.dialogComponent.tabs;

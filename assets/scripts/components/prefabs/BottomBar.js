@@ -85,7 +85,8 @@ class BottomBar extends DialogActor {
             let url = `${app.const.DIALOG_DIR_PREFAB}/buddies`;
             let tabs = [{
                 title: 'Danh sách',
-                value: `${url}/tab_buddy_list`
+                // value: `${url}/tab_buddy_list`
+                value: `${url}/BuddyList`
             }, {
                 title: 'Chuyển xu',
                 value: `${url}/tab_buddy_detail`

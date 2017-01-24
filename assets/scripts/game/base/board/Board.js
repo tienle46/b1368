@@ -235,7 +235,7 @@ export default class Board extends Actor {
 
     stopTimeLine() {
         // this.timelineInterval && clearInterval(this.timelineInterval);
-        this.renderer.hideTimeLine();
+        this.renderer && this.renderer.hideTimeLine();
     }
 
     /**
