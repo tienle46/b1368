@@ -26,7 +26,7 @@ export default class Scrollview extends Component {
         this._gridviewComp = null;
         this._p404 = null;
 
-        this.prevLen = 1;
+        this.itemsPerPage = 10;
     }
 
     initView(head, body, options) {
@@ -39,16 +39,19 @@ export default class Scrollview extends Component {
         this._gridviewComp = this._gridview.getComponent('Gridview');
 
         if (this._gridviewComp) {
-            this.prevLen = body.length;
 
             if (this.options.isListView) {
+                // this.itemsPerPage = body.length;
                 this._gridviewComp.initList(body, options);
             } else {
                 body = this._validatedInput(body);
                 this._gridviewComp.init(head, body, options);
             }
+            let bLen = body.length;
 
-            this.isEndedPage = body.length < this.prevLen;
+            this.isEndedPage = bLen < this.itemsPerPage;
+
+            this._updateItemsPerPage(body);
 
             if (body.length == 0) {
                 this._pageIsEmpty();
@@ -90,7 +93,7 @@ export default class Scrollview extends Component {
         data = this._validatedInput(data);
 
         // this._detectViewState(data);
-        this.isEndedPage = data.length < this.prevLen;
+        this.isEndedPage = data.length < this.itemsPerPage;
 
         if (data.length == 0) {
             this._pageIsEmpty();
@@ -98,7 +101,7 @@ export default class Scrollview extends Component {
             return;
         }
 
-        this.prevLen = data.length;
+        this._updateItemsPerPage(data);
 
         this._p404 && (this._p404.active = false);
 
@@ -116,9 +119,16 @@ export default class Scrollview extends Component {
         RubUtils.releaseArray([head, data], true);
     }
 
+    _updateItemsPerPage(items) {
+        let len = items.length;
+        if (len > this.itemsPerPage)
+            this.itemsPerPage = items.length;
+    }
+
     _updatePagingState() {
         // currentPage = 1
         //  -> end
+        console.debug('this.isEndedPage', this.isEndedPage, this.currentPage);
         if (this.isEndedPage && this.currentPage == 1) {
             this._hidePaging();
             return;
@@ -149,7 +159,6 @@ export default class Scrollview extends Component {
             this.bodyNode.addChild(this._p404);
         }
         this.viewNode.active = false;
-        console.debug('this._p404', this._p404, this._p404.active);
         this._p404.active = true;
         // if (str) {
         //     let p404Component = p404.getComponent('P404');
@@ -161,7 +170,6 @@ export default class Scrollview extends Component {
         if (this.options.isNew) {
             this.currentPage = 1;
             this.isEndedPage = false;
-            this.prevLen = 1;
         }
     }
 

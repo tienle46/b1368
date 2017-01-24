@@ -58,8 +58,8 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": 0,
-      "y": 360
+      "x": 640,
+      "y": 720
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -1391,7 +1391,7 @@
     "_tag": -1,
     "_opacityModifyRGB": false,
     "_id": "",
-    "_active": true,
+    "_active": false,
     "_components": [],
     "_prefab": {
       "__id__": 100
