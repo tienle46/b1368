@@ -90,8 +90,8 @@ export default class IngameChatLeftComponent extends Component {
 
     onChatEnterBtnClicked() {
         let text = this.textEditbox.string;
-
         this._sendChatMessage(text);
+        this.textEditbox.string = "";
     }
 
     initMessages() {
