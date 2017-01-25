@@ -18,6 +18,7 @@ export default class IngameChatLeftComponent extends Component {
             ...this.properties,
             quickChatsList: cc.Node,
             emotionsList: cc.Node,
+            textEditbox: cc.EditBox,
             showAnimName: "ingameShowChatLeft",
             hideAnimName: "ingameHideChatLeft",
             quickChatItemPrefab: cc.Prefab,
@@ -83,6 +84,16 @@ export default class IngameChatLeftComponent extends Component {
         this.emotionsPanel.active = true;
     }
 
+    onEditingEnded(e) {
+        console.debug('e', e);
+    }
+
+    onChatEnterBtnClicked() {
+        let text = this.textEditbox.string;
+
+        this._sendChatMessage(text);
+    }
+
     initMessages() {
         this.quickChatsList.children.map(child => child.destroy() && child.removeFromParent());
         this.quickChats.forEach(message => {
@@ -101,9 +112,8 @@ export default class IngameChatLeftComponent extends Component {
     }
 
     onQuickChatItemClick(event) {
-        this.hide();
         let text = event.target.getComponent('GameQuickChatItem').getLabelText();
-        app.service.sendRequest(new SFS2X.Requests.System.PublicMessageRequest(text));
+        this._sendChatMessage(text);
     }
 
     emotionClicked(e) {
@@ -144,6 +154,16 @@ export default class IngameChatLeftComponent extends Component {
      */
     onHidden() {
         this.node.active = false;
+    }
+
+    _sendChatMessage(message) {
+        if (app._.isEmpty(message))
+            return
+
+        this.hide();
+
+        app.service.sendRequest(new SFS2X.Requests.System.PublicMessageRequest(message));
+        message = "";
     }
 
     _initQuickChatItemsFromServer() {
