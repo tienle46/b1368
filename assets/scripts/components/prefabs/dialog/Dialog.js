@@ -39,15 +39,15 @@ export default class Dialog extends Component {
         this.node.parent.removeFromParent();
     }
 
-    addToBody(id, url) {
+    addToBody(id, url, componentName, tabGroup, data) {
         if (!this.addedNodes[id]) {
             if (this._isNode(url)) {
-                this._addContentNodeToBody(id, url);
+                this._addContentNodeToBody(id, url, data);
             } else {
-                this._addContentPrefabToBody(id, url);
+                this._addContentPrefabToBody(id, url, componentName, tabGroup, data);
             }
         } else {
-            this._showBody(id);
+            this._showBody(id, data);
         }
     }
 
@@ -56,20 +56,37 @@ export default class Dialog extends Component {
         this.titleLbl.string = string.toUpperCase();
     }
 
-    _showBody(id) {
+    _showBody(id, data) {
         if (this.bodyNode.children) {
             this.bodyNode.children.map(node => {
+
+                let component = node.getComponent(node._$tabComponentName);
+                component && component.setData(data);
+
                 node.active = (node.__uid == id);
             });
         }
     }
 
-    _addContentPrefabToBody(id, prefabURL) {
+    _addContentPrefabToBody(id, prefabURL, componentName, tabGroup, data) {
         return RubUtils.loadRes(prefabURL).then((prefab) => {
             this.addAsset(prefab);
             let p = cc.instantiate(prefab);
             p.__uid = id;
+            p._$tabComponentName = componentName;
             this._addChildToBody(id, p);
+
+            if(componentName){
+                /**
+                 * @type {DialogActor}
+                 */
+                let tabComponent = p.getComponent(componentName);
+                if(tabComponent){
+                    tabComponent.setTabGroup(tabGroup);
+                    tabComponent.setData(data);
+                }
+            }
+
             return p;
         }).catch((e) => {
             error('err', e);
@@ -77,12 +94,12 @@ export default class Dialog extends Component {
     }
 
     // add content node to body node
-    _addContentNodeToBody(id, content) {
+    _addContentNodeToBody(id, content, data) {
         if (content instanceof cc.Node) {
             let node = app._.cloneDeep(content);
             node.__uid = id;
 
-            this._addChildToBody(id, node);
+            this._addChildToBody(id, node, data);
         } else if (content instanceof Promise) {
             content.then((node) => {
                 // wait until resources are loaded.
@@ -90,7 +107,7 @@ export default class Dialog extends Component {
                     let n = app._.cloneDeep(node);
                     n.__uid = id;
 
-                    this._addChildToBody(id, n);
+                    this._addChildToBody(id, n, data);
                 });
             });
         }
@@ -100,7 +117,7 @@ export default class Dialog extends Component {
         return value instanceof cc.Node || value instanceof Promise;
     }
 
-    _addChildToBody(id, node) {
+    _addChildToBody(id, node, data) {
         let widget = {
             left: 0,
             top: 0,
@@ -115,7 +132,7 @@ export default class Dialog extends Component {
 
         this.bodyNode.addChild(node);
 
-        this._showBody(id);
+        this._showBody(id, data);
 
         this.addNode(node); // <- assets will be removed
     }

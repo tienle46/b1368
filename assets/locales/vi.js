@@ -110,4 +110,7 @@ export default {
     game_name_phom: "Phỏm",
     game_name_xi_to: "Xì tố",
     game_name_xoc_dia: "Xóc đĩa",
+    game_playing_game: "Đang chơi: {{gameName}}",
+    confirm_remove_buddy: "Bạn có chắc chắn muốn hủy bết bạn với {{buddyName}}",
+    confirm_block_buddy: "Bạn có chắc chắn muốn block {{buddyName}}"
 };

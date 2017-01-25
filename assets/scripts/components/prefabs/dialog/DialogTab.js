@@ -22,6 +22,8 @@ class DialogTab extends Component {
             default: null,
             type: cc.Node
         };
+
+        this.toggle = null;
     }
 
     onLoad() {
@@ -33,14 +35,17 @@ class DialogTab extends Component {
     }
 
 
-    make({ title, value, isChecked }) {
+    make({ title, value, isChecked, componentName }) {
         this.tabLbl.string = title;
 
         let tab = cc.instantiate(this.tabNode);
 
         let toggle = tab.getComponent(cc.Toggle);
-        toggle && (toggle.isChecked = isChecked);
-        toggle && (toggle.value = value);
+        if(toggle){
+            toggle.isChecked = isChecked;
+            toggle.value = value;
+            toggle.componentName = componentName;
+        }
 
         tab.active = true;
 
@@ -50,6 +55,15 @@ class DialogTab extends Component {
 
         if (isChecked)
             this.onCheckedEvent(toggle);
+    }
+
+    changeTab(tabIndex, data){
+        let tab = this.node.children[tabIndex];
+        if(tab){
+            let toggle = tab.getComponent(cc.Toggle);
+            toggle.check();
+            this.onCheckedEvent(toggle, data);
+        }
     }
 
     getCheckedItem() {
@@ -64,12 +78,13 @@ class DialogTab extends Component {
     }
 
     // e: cc.Toggle
-    onCheckedEvent(e) {
+    onCheckedEvent(e, data) {
         let id = e.__instanceId;
         let value = e.value;
+        let componentName = e.componentName;
 
         if (value) {
-            this.dialogComponent.addToBody(id, value);
+            this.dialogComponent.addToBody(id, value, componentName, this, data);
         } else {
             this.dialogComponent.clearBody();
         }

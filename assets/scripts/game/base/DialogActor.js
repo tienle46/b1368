@@ -13,6 +13,38 @@ export default class DialogActor extends Actor {
         };
 
         this._scrollView = null;
+        this.tabGroup = null;
+        this.data = null;
+        this.isLoaded = false;
+    }
+
+    setData(data){
+        this.data = data;
+
+        if(this.isLoaded){
+            this._onDataChanged();
+        }
+    }
+
+    onEnable(...args){
+        super.onEnable(...args);
+
+        this.isLoaded = true;
+        this._onDataChanged();
+    }
+
+    onDisable(){
+        super.onDisable();
+
+        this.isLoaded = false;
+    }
+
+    _onDataChanged(){
+
+    }
+
+    setTabGroup(tabGroup){
+        this.tabGroup = tabGroup;
     }
 
     onDestroy() {

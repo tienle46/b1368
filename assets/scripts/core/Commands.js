@@ -251,5 +251,6 @@ Commands.XOCDIA_HISTORY = 'shakeHistory';
 Commands.START_GAME = 'startGame';
 Commands.REGISTER_QUIT_ROOM = 'registerQuitRoom';
 Commands.INVALID_PLAY_TURN = "invalidPlayTurn";
+Commands.GET_BUDDY_DETAIL_INFO = "buddyDetailInfo";
 
 module.exports = Commands;
