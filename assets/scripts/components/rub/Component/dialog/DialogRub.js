@@ -22,6 +22,10 @@ export default class DialogRub extends Rub {
     constructor(node, tabs = null, options) {
         super(node);
         // this.node = node;
+        /**
+         *
+         * @type {DialogTab}
+         */
         this.tabs = tabs;
         this.options = options;
 
@@ -49,7 +53,7 @@ export default class DialogRub extends Rub {
     }
 
     changeTab(tabIndex, data){
-
+        this.tabs.changeTab(tabIndex, data);
     }
 
     // add Tab to prefab/pagination node
@@ -58,7 +62,7 @@ export default class DialogRub extends Rub {
         // add Tab
         tabs.forEach((tab, index) => {
             tab.isChecked = (index === 0);
-            Tabs.make(tab);
+            Tabs.make(tab, this);
         });
         tabs = null;
     }

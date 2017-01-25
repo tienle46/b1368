@@ -76,26 +76,36 @@ class BottomBar extends DialogActor {
                 value: `${url}/tab_top_dai_gia`
             }];
 
-            DialogRub.show(app.system.getCurrentSceneNode(), tabs, { title: 'Xếp hạng' });
+            DialogRub.show(app.system.getCurrentSceneNode(), tabs, {title: 'Xếp hạng'});
         })();
     }
 
     onFriendBtnClick() {
         (() => {
             let url = `${app.const.DIALOG_DIR_PREFAB}/buddies`;
-            let tabs = [{
-                title: 'Danh sách',
-                // value: `${url}/tab_buddy_list`
-                value: `${url}/BuddyList`
-            }, {
-                title: 'Chuyển xu',
-                value: `${url}/tab_buddy_detail`
-            }, {
-                title: 'Lịch sử',
-                value: `${url}/tab_transaction_history`
-            }];
+            let tabs = [
+                {
+                    title: 'Danh sách',
+                    // value: `${url}/tab_buddy_list`
+                    value: `${url}/BuddyList`,
+                    componentName: 'TabBuddiesList'
+                },
+                /*{
+                    title: 'Chat',
+                    value: `${url}/tab_buddy_chat`
+                },*/
+                {
+                    title: 'Chuyển xu',
+                    value: `${url}/tab_buddy_detail`,
+                    componentName: 'TabBuddyTransfer'
+                },
+                {
+                    title: 'Lịch sử',
+                    value: `${url}/tab_transaction_history`,
+                }
+            ];
 
-            PersonalInfoDialogRub.show(app.system.getCurrentSceneNode(), tabs, { title: 'Bạn bè' });
+            PersonalInfoDialogRub.show(app.system.getCurrentSceneNode(), tabs, {title: 'Bạn bè'});
         })();
     }
 
@@ -117,7 +127,7 @@ class BottomBar extends DialogActor {
             }];
 
             // bottombar -> dashboard scene node
-            ExchangeDialogRub.show(app.system.getCurrentSceneNode(), tabs, { title: 'Đổi thưởng' });
+            ExchangeDialogRub.show(app.system.getCurrentSceneNode(), tabs, {title: 'Đổi thưởng'});
         })();
     }
 
@@ -136,7 +146,7 @@ class BottomBar extends DialogActor {
                 value: `${url}/tab_personal_messages`
             }];
 
-            MessageCenterDialogRub.show(app.system.getCurrentSceneNode(), tabs, { title: 'Tin nhắn' });
+            MessageCenterDialogRub.show(app.system.getCurrentSceneNode(), tabs, {title: 'Tin nhắn'});
         })();
     }
 
@@ -145,9 +155,9 @@ class BottomBar extends DialogActor {
             // personal tabs
             let url = `${app.const.DIALOG_DIR_PREFAB}/userinfo`;
             let tabs = [{
-                    title: 'Cá nhân',
-                    value: `${url}/tab_user_info`
-                },
+                title: 'Cá nhân',
+                value: `${url}/tab_user_info`
+            },
                 {
                     title: 'Thành tích',
                     value: `${url}/tab_user_achievements`
@@ -165,7 +175,7 @@ class BottomBar extends DialogActor {
                 // }, 
             ];
 
-            PersonalInfoDialogRub.show(app.system.getCurrentSceneNode(), tabs, { title: 'Cá nhân' });
+            PersonalInfoDialogRub.show(app.system.getCurrentSceneNode(), tabs, {title: 'Cá nhân'});
         })();
     }
 

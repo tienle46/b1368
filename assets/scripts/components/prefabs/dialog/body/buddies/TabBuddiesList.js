@@ -69,6 +69,7 @@ export default class TabBuddiesList extends DialogActor {
         this.filteredBuddies = [];
         this.loadingDetailInfo = false;
         this.currentPage = 1;
+        this.data = null;
         this.toggleGroup = null;
     }
 
@@ -113,7 +114,10 @@ export default class TabBuddiesList extends DialogActor {
     }
 
     onClickTransferButton() {
-        this.dialog && this.dialog.changeTab(PersonalInfoDialogRub.TAB_TRANSFER_INDEX, {username: this.selectedBuddy && this.selectedBuddy.name || ""});
+
+        console.log('this.tabGroup: ', this.tabGroup);
+
+        this.tabGroup && this.tabGroup.changeTab(PersonalInfoDialogRub.TAB_TRANSFER_INDEX, {buddy: this.selectedBuddy});
     }
 
     onClickBlockBuddyButton() {
@@ -136,7 +140,7 @@ export default class TabBuddiesList extends DialogActor {
     }
 
     onClickSendMessageButton() {
-        this.dialog && this.dialog.changeTab(PersonalInfoDialogRub.TAB_CHAT_INDEX, {username: this.selectedBuddy && this.selectedBuddy.name || ""});
+        this.tabGroup && this.tabGroup.changeTab(PersonalInfoDialogRub.TAB_CHAT_INDEX, {buddy: this.selectedBuddy});
     }
 
     onFilterChanged() {
