@@ -79,14 +79,9 @@ class GameSystem {
                         cc.game.addPersistRootNode(this.getCurrentSceneNode());
 
                         container.setPositionX(1280);
-                        let sequence = cc.spawn(cc.moveTo(.12, cc.p(0, 0)),
+                        this.getCurrentSceneNode().runAction(cc.spawn(
                             cc.callFunc(() => {
                                 cc.game.removePersistRootNode(this.getCurrentSceneNode());
-                            })
-                        );
-
-                        this.getCurrentSceneNode().runAction(cc.spawn(sequence,
-                            cc.callFunc(() => {
                                 let action2 = cc.moveTo(.12, cc.p(0, 0));
                                 container.runAction(action2);
                             })
