@@ -2,6 +2,7 @@ import app from 'app';
 import Component from 'Component';
 import RubUtils from 'RubUtils';
 import NodeRub from 'NodeRub';
+import { isFunction } from 'Utils';
 
 export default class Scrollview extends Component {
     constructor() {
@@ -128,7 +129,6 @@ export default class Scrollview extends Component {
     _updatePagingState() {
         // currentPage = 1
         //  -> end
-        console.debug('this.isEndedPage', this.isEndedPage, this.currentPage);
         if (this.isEndedPage && this.currentPage == 1) {
             this._hidePaging();
             return;
@@ -181,7 +181,7 @@ export default class Scrollview extends Component {
 
     _addEventPagingBtn(prevEvent, nextEvent, context) {
         if (prevEvent) {
-            if (prevEvent instanceof Function) {
+            if (isFunction(prevEvent)) {
                 this.prevBtn.node.on(cc.Node.EventType.TOUCH_END, () => {
                     if (this.currentPage == 1) {
                         this._hideBtn(this.prevBtn);
@@ -197,7 +197,7 @@ export default class Scrollview extends Component {
         }
 
         if (nextEvent) {
-            if (nextEvent instanceof Function) {
+            if (isFunction(nextEvent)) {
                 this.nextBtn.node.on(cc.Node.EventType.TOUCH_END, () => {
                     if (this.isEndedPage) {
                         this._hideBtn(this.nextBtn);

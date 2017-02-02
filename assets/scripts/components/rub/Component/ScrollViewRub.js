@@ -1,5 +1,6 @@
 import app from 'app';
 import NodeRub from 'NodeRub';
+import { isFunction } from 'Utils';
 
 export default class ScrollViewRub {
     /**
@@ -109,14 +110,14 @@ export default class ScrollViewRub {
             let backBtn = this.pagingNode.getChildByName('previous').getComponent(cc.Button);
 
             prevEvent instanceof cc.Component.EventHandler && (backBtn.clickEvents = [prevEvent]);
-            prevEvent instanceof Function && (backBtn.node.on(cc.Node.EventType.TOUCH_END, prevEvent));
+            isFunction(prevEvent) && (backBtn.node.on(cc.Node.EventType.TOUCH_END, prevEvent));
         }
 
         if (nextEvent) {
             let nextBtn = this.pagingNode.getChildByName('next').getComponent(cc.Button);
 
             nextEvent instanceof cc.Component.EventHandler && (nextBtn.clickEvents = [nextEvent]);
-            nextEvent instanceof Function && (nextBtn.node.on(cc.Node.EventType.TOUCH_END, nextEvent));
+            isFunction(nextEvent) && (nextBtn.node.on(cc.Node.EventType.TOUCH_END, nextEvent));
         }
 
     }

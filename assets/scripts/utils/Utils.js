@@ -29,7 +29,7 @@ export default class Utils {
     }
 
     static isFunction(value) {
-        return typeof value === 'function';
+        return typeof value === 'function' || value instanceof Function;
     }
 
     static isBoolean(value) {

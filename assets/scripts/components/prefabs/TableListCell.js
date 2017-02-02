@@ -1,5 +1,6 @@
 import app from 'app';
 import Component from 'Component';
+import { isFunction } from 'Utils';
 
 class TableListCell extends Component {
     constructor() {
@@ -69,7 +70,7 @@ class TableListCell extends Component {
     }
 
     setOnClickListener(clickListener) {
-        this._onClickListener = clickListener instanceof Function && clickListener;
+        this._onClickListener = isFunction(clickListener) && clickListener;
     }
 
     onClickEvent() {

@@ -1,5 +1,6 @@
 import app from 'app';
 import Component from 'Component';
+import { isFunction } from 'Utils';
 
 /**
  * @class ButtonGroup
@@ -10,12 +11,12 @@ class ButtonGroup extends Component {
     constructor() {
         super();
         this.greenBtn = {
-            default : null,
-            type : cc.Button,
+            default: null,
+            type: cc.Button,
         };
         this.violetBtn = {
-            default : null,
-            type : cc.Button,
+            default: null,
+            type: cc.Button,
         };
     }
 
@@ -39,7 +40,7 @@ class ButtonGroup extends Component {
     setBtnEvent(btn, eventHandler, context) {
         if (eventHandler instanceof cc.Component.EventHandler) {
             btn.clickEvents = [eventHandler];
-        } else if (eventHandler instanceof Function) {
+        } else if (isFunction(eventHandler)) {
             let event;
             if (context)
                 event = eventHandler.bind(context);

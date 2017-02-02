@@ -1,5 +1,6 @@
 import ButtonScaler from 'ButtonScaler';
 import RubUtils from 'RubUtils';
+import { isFunction } from 'Utils';
 
 let NodeRub = {
     /**
@@ -151,7 +152,7 @@ let NodeRub = {
         if (options.event) {
             if (options.event instanceof cc.Component.EventHandler)
                 button.clickEvents = [options.event];
-            else if (options.event instanceof Function) {
+            else if (isFunction(options.event)) {
                 node.on(cc.Node.EventType.TOUCH_END, options.event);
             }
         }

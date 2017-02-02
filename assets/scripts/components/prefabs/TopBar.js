@@ -1,9 +1,9 @@
 import app from 'app';
-import Component from 'Component';
+import Actor from 'Actor';
 import TimerRub from 'TimerRub';
 import DialogRub from 'DialogRub';
 
-class TopBar extends Component {
+class TopBar extends Actor {
     constructor() {
         super();
 
@@ -28,6 +28,7 @@ class TopBar extends Component {
     }
 
     onLoad() {
+        super.onLoad();
         if (this._showBack) {
             this.moreButton.node.active = false;
             this.eventButton.node.active = false;
@@ -58,13 +59,8 @@ class TopBar extends Component {
         prompt.getComponent('PromptPopup').init(null, option);
     }
 
-    onEnable() {
-        this._addGlobalListeners();
-    }
-
     onDestroy() {
         super.onDestroy();
-        this._removeGlobalListeners();
         if (this.intervalTimer) {
             this.intervalTimer.clear();
             this.intervalTimer = null;
@@ -84,7 +80,7 @@ class TopBar extends Component {
     }
 
     onFanpageClicked() {
-        cc.sys.openURL(`https://www.messenger.com/t/${app.config.fbAppId}`);
+        cc.sys.openURL(`${app.config.fanpage}`);
     }
 
     onSoundBtnClick() {
@@ -169,11 +165,13 @@ class TopBar extends Component {
         }
     }
 
-    _addGlobalListeners() {
+    _addGlobalListener() {
+        super._addGlobalListener();
         this.titleContainerNode.active && app.system.addListener(app.commands.HIGH_LIGHT_MESSAGE, this._onHLMListener, this);
     }
 
-    _removeGlobalListeners() {
+    _removeGlobalListener() {
+        super._removeGlobalListener();
         this.titleContainerNode.active && app.system.removeListener(app.commands.HIGH_LIGHT_MESSAGE, this._onHLMListener, this);
     }
 

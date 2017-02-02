@@ -104,6 +104,7 @@ export default class DashboardScene extends BaseScene {
                 this.pageView.addPage(node);
             }
             let gameIconPath = app.res.gameIcon[gc];
+
             gameIconPath && RubUtils.getSpriteFrameFromAtlas('blueTheme/atlas/game_icons', gameIconPath, (sprite) => {
                 if (sprite) {
                     const nodeItem = new cc.instantiate(this.item);
