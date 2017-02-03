@@ -29,7 +29,8 @@ export default class ListTableScene extends BaseScene {
     }
 
     onEnabled() {
-        super();
+        super.onEnabled();
+
         this.items = [];
 
         this.time = 2500 * 10; // creating new request for updating tables every 25s
@@ -96,18 +97,18 @@ export default class ListTableScene extends BaseScene {
         super._addGlobalListener();
         app.system.addListener(app.commands.USER_LIST_GROUP, this._onUserListGroup, this);
         app.system.addListener(app.commands.USER_LIST_ROOM, this._onUserListRoom, this);
-        // app.system.addListener(app.commands.USER_CREATE_ROOM, this._onUserCreateRoom, this);
+        app.system.addListener(app.commands.USER_CREATE_ROOM, this._onUserCreateRoom, this);
         app.system.addListener(SFS2X.SFSEvent.ROOM_JOIN, this._handleRoomJoinEvent, this);
-        // app.system.addListener(app.commands.PLAYER_INVITE, this._onPlayerInviteEvent, this);
+        app.system.addListener(app.commands.PLAYER_INVITE, this._onPlayerInviteEvent, this);
     }
 
     _removeGlobalListener() {
         super._removeGlobalListener();
         app.system.removeListener(app.commands.USER_LIST_GROUP, this._onUserListGroup, this);
         app.system.removeListener(app.commands.USER_LIST_ROOM, this._onUserListRoom, this);
-        // app.system.removeListener(app.commands.USER_CREATE_ROOM, this._onUserCreateRoom, this);
+        app.system.removeListener(app.commands.USER_CREATE_ROOM, this._onUserCreateRoom, this);
         app.system.removeListener(SFS2X.SFSEvent.ROOM_JOIN, this._handleRoomJoinEvent, this);
-        // app.system.removeListener(app.commands.PLAYER_INVITE, this._onPlayerInviteEvent, this);
+        app.system.removeListener(app.commands.PLAYER_INVITE, this._onPlayerInviteEvent, this);
     }
 
     onNongDanBtnClick() {

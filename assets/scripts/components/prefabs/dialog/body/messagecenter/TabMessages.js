@@ -4,7 +4,7 @@ import MessageEvent from 'MessageEvent';
 import ListItemToggleableRub from 'ListItemToggleableRub';
 import ListViewRub from 'ListViewRub';
 
-export default class TabEvents extends DialogActor {
+export default class TabMessages extends DialogActor {
     constructor() {
         super();
 
@@ -31,7 +31,7 @@ export default class TabEvents extends DialogActor {
 
     start() {
         super.start();
-        this._requestEventList(1);
+        this._requestMessagesList(1);
     }
 
     _addGlobalListener() {
@@ -46,21 +46,21 @@ export default class TabEvents extends DialogActor {
 
 
     onPreviousBtnClick() {
-        this._requestEventList(this.currentPage);
+        this._requestMessagesList(this.currentPage);
     }
 
     onNextBtnClick() {
-        this._requestEventList(this.currentPage);
+        this._requestMessagesList(this.currentPage);
     }
 
-    _requestEventList(page) {
+    _requestMessagesList(page, nodeId = 0) {
         var sendObject = {
             'cmd': app.commands.LIST_SYSTEM_MESSAGE,
-            'cbKey': 'dcn',
+            'cbKey': app.commands.LIST_SYSTEM_MESSAGE,
             'data': {
                 [app.keywords.SYSTEM_MESSAGE.REQUEST.ACTION_TYPE]: app.const.DYNAMIC_ACTION_BROWSE,
                 [app.keywords.SYSTEM_MESSAGE.REQUEST.GROUP_TYPE]: this.groupType,
-                [app.keywords.SYSTEM_MESSAGE.REQUEST.NODE_ID]: 0,
+                [app.keywords.SYSTEM_MESSAGE.REQUEST.NODE_ID]: nodeId,
                 [app.keywords.SYSTEM_MESSAGE.REQUEST.PAGE_NUMBER]: page
             }
         };
@@ -77,6 +77,12 @@ export default class TabEvents extends DialogActor {
         let listSub = data[app.keywords.SYSTEM_MESSAGE.RESPONSE.TIME_LIST] || [];
         let listIds = data[app.keywords.SYSTEM_MESSAGE.RESPONSE.ID_ITEM_LIST] || [];
 
+        let content = data[app.keywords.SYSTEM_MESSAGE_DETAIL.RESPONSE.CONTENT];
+        if (content) {
+            app.system.info(content);
+            return;
+        }
+
         if (listHeader.length > 0) {
             let messages = [];
             for (let i = 0; i < listHeader.length; i++) {
@@ -84,7 +90,7 @@ export default class TabEvents extends DialogActor {
                 // events.push(event);
                 let message = cc.instantiate(this.itemPrefab);
                 let itemEventComponent = message.getComponent('ItemMessage');
-                itemEventComponent.init(listHeader[i], listSub[i]);
+                itemEventComponent.init(listIds[i], listHeader[i], listSub[i], this.groupType);
                 messages.push(message);
             }
             this._displayEvents(messages);
@@ -106,4 +112,4 @@ export default class TabEvents extends DialogActor {
     }
 }
 
-app.createComponent(TabEvents);
+app.createComponent(TabMessages);

@@ -1,7 +1,6 @@
 import app from 'app';
 import Component from 'Component';
 import NodeRub from 'NodeRub';
-import LoaderRub from 'LoaderRub';
 
 class EventDialog extends Component {
     constructor() {
@@ -124,7 +123,7 @@ class EventDialog extends Component {
     _getEventsFromServer() {
         var sendObject = {
             'cmd': app.commands.LIST_SYSTEM_MESSAGE,
-            'cbKey': 'dcn',
+            'cbKey': app.commands.LIST_SYSTEM_MESSAGE,
             'data': {
                 [app.keywords.SYSTEM_MESSAGE.REQUEST.ACTION_TYPE]: app.const.DYNAMIC_ACTION_BROWSE,
                 [app.keywords.SYSTEM_MESSAGE.REQUEST.GROUP_TYPE]: this.groupType,

@@ -2,13 +2,13 @@
  * Created by trungnt on 10/14/16.
  */
 import app from 'app';
-import TabEvents from 'TabEvents';
+import TabMessages from 'TabMessages';
 
-class TabSystemMessage extends TabEvents{
-    constructor(){
+class TabSystemMessage extends TabMessages {
+    constructor() {
         super();
     }
-    onLoad(){
+    onLoad() {
         this.groupType = app.const.DYNAMIC_GROUP_NOTIFY;
         super.onLoad();
     }

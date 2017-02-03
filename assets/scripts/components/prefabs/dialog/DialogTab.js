@@ -83,7 +83,6 @@ class DialogTab extends Component {
         let componentName = e.componentName;
 
         if (value) {
-            console.debug('id', id);
             this.dialogComponent.addToBody(id, value, componentName, this, data);
         } else {
             this.dialogComponent.clearBody();
