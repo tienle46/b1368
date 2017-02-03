@@ -52,7 +52,7 @@ export default class DialogRub extends Rub {
         this.options = null;
     }
 
-    changeTab(tabIndex, data){
+    changeTab(tabIndex, data) {
         this.tabs.changeTab(tabIndex, data);
     }
 
@@ -69,6 +69,17 @@ export default class DialogRub extends Rub {
 
     _initTitle(string) {
         this.dialogComponent.setTitle(string);
+    }
+
+    /**
+     * add body to dialog
+     * 
+     * @param {cc.Node || string} node || prefab directory
+     * 
+     * @memberOf DialogRub
+     */
+    addBody(asset) {
+        this.dialogComponent.addToBody('eventFakerId', asset);
     }
 
     addComponent(component) {

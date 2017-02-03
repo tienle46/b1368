@@ -1,6 +1,6 @@
 import app from 'app';
 import DialogActor from 'DialogActor';
-import GridViewRub from 'GridViewRub';
+import { isNull } from 'Utils';
 
 export default class TabUserAchievements extends DialogActor {
     constructor() {
@@ -45,8 +45,8 @@ export default class TabUserAchievements extends DialogActor {
             let data = [
                 gameListCol,
                 levelCol,
-                winCol,
-                loseCol
+                winCol.map(e => isNull(e) ? '0' : e.toString()),
+                loseCol.map(e => isNull(e) ? '0' : e.toString())
             ];
 
             let head = {
@@ -57,13 +57,14 @@ export default class TabUserAchievements extends DialogActor {
                 }
             };
 
-            let achievementsTab = new GridViewRub(head, data, {
+            this.initView(head, data, {
+                size: this.bodyNode.getContentSize(),
                 group: {
                     colors: [new cc.Color(244, 228, 154), null, app.const.COLOR_YELLOW, app.const.COLOR_GRAY]
                 }
             });
 
-            this.bodyNode.addChild(achievementsTab.getNode());
+            this.bodyNode.addChild(this.getScrollViewNode());
         } else {
             this.pageIsEmpty(this.bodyNode);
         }

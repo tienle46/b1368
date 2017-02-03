@@ -1,7 +1,7 @@
 import app from 'app';
 import Component from 'Component';
 import NodeRub from 'NodeRub';
-import { isNode } from 'Utils';
+import { isNode, isNull } from 'Utils';
 
 export class Cell extends Component {
     constructor() {
@@ -39,7 +39,7 @@ export class Cell extends Component {
             // richtext
             options.richtext && NodeRub.addRichTextComponentToNode(this.node, options.richtext);
         } else {
-            let text = data ? data.toString() : "";
+            let text = isNull(data) ? "" : data.toString();
             NodeRub.addLabelComponentToNode(this.node, {
                 text
             });

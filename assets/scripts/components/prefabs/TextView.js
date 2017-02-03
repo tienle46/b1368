@@ -32,7 +32,7 @@ export default class TextView extends Component {
         this.currentWidth = this.node.width;
 
     }
-    getLabelLineHeight(){
+    getLabelLineHeight() {
         if (cc.sys.isBrowser) {
             return this.label.lineHeight;
         }
@@ -41,21 +41,21 @@ export default class TextView extends Component {
 
     }
 
-    onEnable(){
+    onEnable() {
         super.onEnable();
         this.fontSize = this.label.fontSize;
-        if(!utils.isEmpty(this.text)){
+        if (!utils.isEmpty(this.text)) {
             let text = this.text;
             this.text = null;
             this.setText(text);
         }
     }
 
-    setMargin(margin){
+    setMargin(margin) {
         this.margin = margin;
     }
 
-    setIncreaseWidth(amount = 40){
+    setIncreaseWidth(amount = 40) {
         this.increaseWidth = amount;
     }
 
@@ -77,7 +77,7 @@ export default class TextView extends Component {
     }
 
     setText(text) {
-        if(!this.isLoaded){
+        if (!this.isLoaded) {
             this.text = text;
             return;
         }
@@ -88,31 +88,31 @@ export default class TextView extends Component {
         this._adjustSize();
     }
 
-    _setNodeWidth(width){
+    _setNodeWidth(width) {
         this.node.width = Math.max(this.currentWidth, width);
     }
 
     _adjustSize() {
 
-        if(!this.label) return;
+        if (!this.label) return;
 
         let lines = Math.floor(this.label.node.height / this.lineHeight);
         // debug("label width: ", this.label.node.width, "lines: ", lines);
 
         if (lines > this.lines) {
-            if(this.resizeWidth){
+            if (this.resizeWidth) {
                 if (this.label.node.width <= this.maxWidth - this.increaseWidth) {
                     this.label.node.width += this.increaseWidth;
                     this._setNodeWidth(this.label.node.width + this.margin * 2);
                     // this.node.width = this.label.node.width + this.margin * 2;
                     this._adjustSize();
-                }else{
+                } else {
                     this.label.node.width = this.maxWidth;
                     this._setNodeWidth(this.maxWidth + this.margin * 2);
                     // this.node.width = this.maxWidth + this.margin * 2;
                 }
-            }else{
-                if(this.fontSize > 8){
+            } else {
+                if (this.fontSize > 8) {
                     this.setFontSize(this.label.fontSize - 1);
                     this._adjustSize();
                 }
@@ -124,14 +124,14 @@ export default class TextView extends Component {
     }
 
     _setTextViewSize() {
-        if(!this.label) return;
+        if (!this.label) return;
 
         this.label.node.width = this.minWidth;
         this.label.node.height = this.lineHeight;
         this.label.fontSize = this.fontSize;
     }
 
-    getWidth(){
+    getWidth() {
         return this.label.node.width;
     }
 }

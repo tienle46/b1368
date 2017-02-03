@@ -15,7 +15,6 @@ export default class Dialog extends Component {
             bgTransparent: cc.Node
         };
 
-        this.addedNodes = {};
     }
 
     onLoad() {
@@ -24,17 +23,18 @@ export default class Dialog extends Component {
     }
 
     onEnable() {
+        super.onEnable();
         this.bgTransparent.on(cc.Node.EventType.TOUCH_START, () => true);
+        this.addedNodes = {};
     }
 
     onDestroy() {
         super.onDestroy();
-        this.addedNodes = null;
+        this.addedNodes = {};
     }
 
     onCloseBtnClick() {
         // this.releaseAssets();
-
         this.node.parent.destroy();
         this.node.parent.removeFromParent();
     }
@@ -59,11 +59,11 @@ export default class Dialog extends Component {
     _showBody(id, data) {
         if (this.bodyNode.children) {
             this.bodyNode.children.map(node => {
-
-                let component = node.getComponent(node._$tabComponentName);
-                component && component.setData(data);
-
-                node.active = (node.__uid == id);
+                if (node._$tabComponentName) {
+                    let component = node.getComponent(node._$tabComponentName);
+                    component && component.setData(data);
+                }
+                node.active = (node._$uid == id);
             });
         }
     }
@@ -72,16 +72,16 @@ export default class Dialog extends Component {
         return RubUtils.loadRes(prefabURL).then((prefab) => {
             this.addAsset(prefab);
             let p = cc.instantiate(prefab);
-            p.__uid = id;
+            p._$uid = id;
             p._$tabComponentName = componentName;
             this._addChildToBody(id, p);
 
-            if(componentName){
+            if (componentName) {
                 /**
                  * @type {DialogActor}
                  */
                 let tabComponent = p.getComponent(componentName);
-                if(tabComponent){
+                if (tabComponent) {
                     tabComponent.setTabGroup(tabGroup);
                     tabComponent.setData(data);
                 }
@@ -97,7 +97,7 @@ export default class Dialog extends Component {
     _addContentNodeToBody(id, content, data) {
         if (content instanceof cc.Node) {
             let node = app._.cloneDeep(content);
-            node.__uid = id;
+            node._$uid = id;
 
             this._addChildToBody(id, node, data);
         } else if (content instanceof Promise) {
@@ -105,7 +105,7 @@ export default class Dialog extends Component {
                 // wait until resources are loaded.
                 setTimeout(() => {
                     let n = app._.cloneDeep(node);
-                    n.__uid = id;
+                    n._$uid = id;
 
                     this._addChildToBody(id, n, data);
                 });

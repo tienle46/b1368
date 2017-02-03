@@ -30,7 +30,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 1280,
-      "height": 121
+      "height": 159.81
     },
     "_children": [
       {
@@ -96,7 +96,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 1280,
+      "width": 1270,
       "height": 50
     },
     "_children": [],
@@ -106,8 +106,8 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": 0,
-      "y": 35.5
+      "x": 5,
+      "y": 44.905
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -166,9 +166,9 @@
     "isAlignOnce": true,
     "_target": null,
     "_alignFlags": 41,
-    "_left": 0,
+    "_left": 10,
     "_right": 0,
-    "_top": 0,
+    "_top": 10,
     "_bottom": 0,
     "_verticalCenter": 0,
     "_horizontalCenter": 0,
@@ -228,12 +228,12 @@
     "_anchorPoint": {
       "__type__": "cc.Vec2",
       "x": 0.5,
-      "y": 0.29
+      "y": 0.44
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 842,
-      "height": 71
+      "width": 862,
+      "height": 89.81
     },
     "_children": [
       {
@@ -250,7 +250,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": -39.91
+      "y": -30.388600000000004
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -391,7 +391,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 344,
-      "y": 50.71
+      "y": 41.188599999999994
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -660,8 +660,8 @@
     "_enabled": true,
     "_layoutSize": {
       "__type__": "cc.Size",
-      "width": 842,
-      "height": 71
+      "width": 862,
+      "height": 89.81
     },
     "_resize": 1,
     "_N$layoutType": 0,
@@ -672,10 +672,10 @@
       "height": 40
     },
     "_N$startAxis": 0,
-    "_N$paddingLeft": 0,
-    "_N$paddingRight": 0,
+    "_N$paddingLeft": 10,
+    "_N$paddingRight": 10,
     "_N$paddingTop": 0,
-    "_N$paddingBottom": 0,
+    "_N$paddingBottom": 10,
     "_N$spacingX": 0,
     "_N$spacingY": 0,
     "_N$verticalDirection": 1,
@@ -729,7 +729,7 @@
     "_layoutSize": {
       "__type__": "cc.Size",
       "width": 1280,
-      "height": 121
+      "height": 159.81
     },
     "_resize": 1,
     "_N$layoutType": 2,
@@ -742,8 +742,8 @@
     "_N$startAxis": 0,
     "_N$paddingLeft": 0,
     "_N$paddingRight": 0,
-    "_N$paddingTop": 0,
-    "_N$paddingBottom": 0,
+    "_N$paddingTop": 10,
+    "_N$paddingBottom": 10,
     "_N$spacingX": 0,
     "_N$spacingY": 0,
     "_N$verticalDirection": 1,

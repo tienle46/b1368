@@ -26,11 +26,13 @@ export default class ListTableScene extends BaseScene {
             default: null,
             type: cc.Node
         };
+    }
 
+    onEnabled() {
+        super();
         this.items = [];
 
         this.time = 2500 * 10; // creating new request for updating tables every 25s
-        this.interval = null;
 
         // filter button conditional 
         this.filterCond = null;
@@ -42,16 +44,23 @@ export default class ListTableScene extends BaseScene {
         this.timeout = null;
     }
 
-    onDestroy() {
-        super.onDestroy();
-        this._clearInterval();
-        this.items.length = 0;
-    }
-
     onLoad() {
         super.onLoad();
 
-        this._initComponents();
+        this._initCompts();
+    }
+
+    onDestroy() {
+        super.onDestroy();
+        this._clearInterval();
+
+        this.items.length = 0;
+
+        // filter button conditional 
+        this.filterCond = null;
+
+        // invitation popup showed
+        this.invitationShowed = false;
     }
 
     start() {

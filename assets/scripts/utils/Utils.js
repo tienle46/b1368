@@ -112,7 +112,7 @@ export default class Utils {
      */
     static setVisibility(node, visiblity) {
         let opacity = visiblity ? 255 : 0;
-        this.setOpacity(node, opacity);
+        Utils.setOpacity(node, opacity);
     }
 
     static hide(node, action = cc.hide()) {
@@ -128,7 +128,7 @@ export default class Utils {
     static loadComponent(componentPath, parent) {
         cc.loader.loadRes(componentPath, (error, prefab) => {
             let prefabObj = cc.instantiate(prefab);
-            prefabObj.parent = this.playerLayer;
+            prefabObj.parent = this && this.playerLayer;
         });
     }
 

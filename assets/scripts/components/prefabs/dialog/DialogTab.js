@@ -39,9 +39,8 @@ class DialogTab extends Component {
         this.tabLbl.string = title;
 
         let tab = cc.instantiate(this.tabNode);
-
         let toggle = tab.getComponent(cc.Toggle);
-        if(toggle){
+        if (toggle) {
             toggle.isChecked = isChecked;
             toggle.value = value;
             toggle.componentName = componentName;
@@ -57,9 +56,9 @@ class DialogTab extends Component {
             this.onCheckedEvent(toggle);
     }
 
-    changeTab(tabIndex, data){
+    changeTab(tabIndex, data) {
         let tab = this.node.children[tabIndex];
-        if(tab){
+        if (tab) {
             let toggle = tab.getComponent(cc.Toggle);
             toggle.check();
             this.onCheckedEvent(toggle, data);
@@ -84,6 +83,7 @@ class DialogTab extends Component {
         let componentName = e.componentName;
 
         if (value) {
+            console.debug('id', id);
             this.dialogComponent.addToBody(id, value, componentName, this, data);
         } else {
             this.dialogComponent.clearBody();

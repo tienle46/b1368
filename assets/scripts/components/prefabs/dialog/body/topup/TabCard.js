@@ -71,6 +71,7 @@ class TabCard extends DialogActor {
         let sendObject = {
             'cmd': app.commands.USER_GET_CHARGE_LIST
         };
+        console.debug(this.node);
 
         setVisibility(this.node, false);
 

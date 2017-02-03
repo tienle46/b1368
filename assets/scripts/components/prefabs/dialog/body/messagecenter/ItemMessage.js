@@ -20,7 +20,7 @@ export default class ItemMessage extends Component {
 
     init(title, content, btnText) {
         this.titleLbl.string = title;
-        this.contentLbl.string = title;
+        this.contentLbl.string = content;
         if (btnText) {
             this.btnLbl.string = btnText;
             this.btn.node.active = true;
