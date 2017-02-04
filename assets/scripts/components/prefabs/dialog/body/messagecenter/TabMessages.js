@@ -1,8 +1,6 @@
 import app from 'app';
 import DialogActor from 'DialogActor';
 import MessageEvent from 'MessageEvent';
-import ListItemToggleableRub from 'ListItemToggleableRub';
-import ListViewRub from 'ListViewRub';
 
 export default class TabMessages extends DialogActor {
     constructor() {

@@ -23,6 +23,7 @@ export default {
     really_wanna_quit: 'Bạn có chắc chắn muốn thoát ?',
     phone_number_confirmation: 'Xác nhận số điện thoại thành công.',
     user_got_invitation_to_join_room: '{{invoker}}  muốn mời bạn vào phòng chơi {{minBet}} xu.',
+    user_transaction_money: '{{sender}} đã chuyển {{amount}} coin cho bạn',
     feedback_sent_successfully: 'Cảm ơn bạn, feedback của bạn đã được gửi tới ban quản trị',
     confirm_kick_user: 'Bạn có muốn kick người chơi này ra khỏi phòng !',
     password_changed_successfully: 'Đổi mật khẩu thành công',
