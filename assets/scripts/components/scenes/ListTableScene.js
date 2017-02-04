@@ -26,10 +26,6 @@ export default class ListTableScene extends BaseScene {
             default: null,
             type: cc.Node
         };
-    }
-
-    onEnabled() {
-        super.onEnabled();
 
         this.items = [];
 
@@ -43,6 +39,10 @@ export default class ListTableScene extends BaseScene {
 
         // timeout setTimeout
         this.timeout = null;
+    }
+
+    onEnabled() {
+        super.onEnabled();
     }
 
     onLoad() {
