@@ -48,7 +48,7 @@ export default class ListTableScene extends BaseScene {
     onLoad() {
         super.onLoad();
 
-        this._initCompts();
+        this._initComponents();
     }
 
     onDestroy() {
