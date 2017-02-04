@@ -4,12 +4,11 @@
 
 import app from 'app';
 import game from 'game';
-import {utils, GameUtils} from 'utils';
-import {Keywords} from 'core';
-import {Events} from 'events';
+import { utils, GameUtils } from 'utils';
+import { Keywords } from 'core';
+import { Events } from 'events';
 import BoardCardTurnBase from 'BoardCardTurnBase';
 import PlayerPhom from 'PlayerPhom';
-import BoardPhomRenderer from 'BoardPhomRenderer';
 import Phom from 'Phom';
 import CardList from 'CardList';
 import ArrayUtils from "../../../utils/ArrayUtils";
@@ -27,11 +26,11 @@ export default class BoardPhom extends BoardCardTurnBase {
 
     onLoad() {
         super.onLoad();
-        this.allPhomList = [];//new PhomList();
+        this.allPhomList = []; //new PhomList();
     }
 
     onEnable() {
-        // this.renderer = this.node.getComponent('BoardPhomRenderer');
+        this.renderer = this.node.getComponent('BoardPhomRenderer');
         super.onEnable();
     }
 
@@ -44,7 +43,7 @@ export default class BoardPhom extends BoardCardTurnBase {
         this.winRank = 0;
 
         console.log("cllear on reset board phom")
-        this.allPhomList = [];//.clear();
+        this.allPhomList = []; //.clear();
     }
 
     _onPlayerPlayedCards(playedCards, srcCardList, isItMe) {
@@ -111,7 +110,7 @@ export default class BoardPhom extends BoardCardTurnBase {
                         let phom = currentAllPhoms[j + phomPlayerCount];
                         let processingPhom = player.renderer.downPhomList[j];
 
-                        if(!phom || !processingPhom) continue;
+                        if (!phom || !processingPhom) continue;
 
                         processingPhom.setCards(phom.cards);
                         processingPhom.setOwner(player.id);
@@ -145,7 +144,7 @@ export default class BoardPhom extends BoardCardTurnBase {
 
             let playedPlayer = this.scene.gamePlayers.findPlayer(lastPlayedTurn);
 
-            if(playedPlayer && playedPlayer.playedCards.length > 0){
+            if (playedPlayer && playedPlayer.playedCards.length > 0) {
                 this.lastPlayedCard = playedPlayer.playedCards[playedPlayer.playedCards.length - 1];
             }
         }
@@ -169,7 +168,7 @@ export default class BoardPhom extends BoardCardTurnBase {
         }
     }
 
-    deHighLightPhomList(){
+    deHighLightPhomList() {
         this.allPhomList.forEach(phom => phom.cleanHighlight());
     }
 
@@ -185,15 +184,15 @@ export default class BoardPhom extends BoardCardTurnBase {
         let totalPlayedCard = this.scene.gamePlayers.players.reduce((total, player) => {
             return total += player.renderer.playedCardList.cards.length;
         }, 0);
-        
+
         return totalPlayedCard;
     }
 
-    onBoardPlaying(data, isJustJoined){
+    onBoardPlaying(data, isJustJoined) {
 
         super.onBoardPlaying(data, isJustJoined);
 
-        if(isJustJoined){
+        if (isJustJoined) {
             this._setDeckFakeCard();
         }
     }
@@ -211,7 +210,7 @@ export default class BoardPhom extends BoardCardTurnBase {
         let balanceChangeAmounts = this._getPlayerBalanceChangeAmounts(playerIds, data);
 
         let playerHandCards = this._getPlayerHandCards(playerIds, data);
-        let {gameResultInfos, resultTexts, winnerFlags} = this._getGameResultInfos(playerIds, playerHandCards, data);
+        let { gameResultInfos, resultTexts, winnerFlags } = this._getGameResultInfos(playerIds, playerHandCards, data);
 
         super.onBoardEnding(data);
 
@@ -273,9 +272,9 @@ export default class BoardPhom extends BoardCardTurnBase {
                 winnerFlags[id] = true;
 
             } else {
-                if(isMom){
+                if (isMom) {
                     resultText = app.res.string('game_phom_mom');
-                }else{
+                } else {
                     switch (playersWinRank) {
                         case app.const.game.GAME_RANK_SECOND:
                             resultText = app.res.string('game_nhi');
@@ -294,11 +293,11 @@ export default class BoardPhom extends BoardCardTurnBase {
                 winnerFlags[id] = false;
             }
 
-            if(this.scene.gamePlayers.findPlayer(id)){
+            if (this.scene.gamePlayers.findPlayer(id)) {
                 let handCards = playerHandCards[id];
                 let point = handCards.reduce((value, card) => value += card.rank, 0);
-                gameResultInfos[id] = isMom && winType != app.const.game.GENERAL_WIN_TYPE_NORMAL ? "" : app.res.string('game_point', {point});
-            } else{
+                gameResultInfos[id] = isMom && winType != app.const.game.GENERAL_WIN_TYPE_NORMAL ? "" : app.res.string('game_point', { point });
+            } else {
                 resultText = "";
             }
 
@@ -306,10 +305,10 @@ export default class BoardPhom extends BoardCardTurnBase {
 
         });
 
-        return {gameResultInfos, resultTexts, winnerFlags};
+        return { gameResultInfos, resultTexts, winnerFlags };
     }
 
-    _cleanTurnRoutineData(playerId){
+    _cleanTurnRoutineData(playerId) {
         super._cleanTurnRoutineData(playerId, false);
     }
 
