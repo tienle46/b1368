@@ -34,12 +34,12 @@ class TabAgency extends DialogActor {
             cmd: app.commands.AGENCY
         };
 
-        app.system.showLoader();
+        this.showLoader();
         app.service.send(sendObj);
     }
 
     _onListAgency(res) {
-        app.system.hideLoader();
+        this.hideLoader();
 
         try {
             let d = JSON.parse(res[app.keywords.AGENT]).agents;

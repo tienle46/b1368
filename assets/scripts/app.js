@@ -37,7 +37,7 @@ app.createComponent = (classNameOrInstance, extendClass = undefined, ...args) =>
             extendClass = null;
         }
 
-        instance = new classNameOrInstance(...args);
+        instance = new classNameOrInstance();
     }
 
     instance.properties = instance.properties || {};
@@ -232,7 +232,7 @@ if (cc.sys.isMobile && sdkbox) {
     window.warn = function warn(...args) {
         console.warn(...args);
     };
-    window.onNativePostAction = function(jsonString){
+    window.onNativePostAction = function(jsonString) {
         log("---> onNativePostAction", jsonString);
     }
     require('Pollyfill')(app);

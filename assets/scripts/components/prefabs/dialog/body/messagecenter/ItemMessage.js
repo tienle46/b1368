@@ -54,8 +54,6 @@ export default class ItemMessage extends DialogActor {
         let target = e.currentTarget;
 
         if (target) {
-            console.debug(target);
-
             let id = target.id;
             let groupType = target.groupType;
 

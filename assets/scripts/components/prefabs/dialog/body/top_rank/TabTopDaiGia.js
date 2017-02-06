@@ -45,7 +45,7 @@ class TabTopDaiGia extends DialogActor {
             }
         };
 
-        app.system.showLoader();
+        this.showLoader(this.contentNode);
         app.service.send(sendObject);
     }
 
@@ -90,7 +90,7 @@ class TabTopDaiGia extends DialogActor {
         this.initView(head, data, rubOptions);
 
         this.contentNode.addChild(this.getScrollViewNode());
-        app.system.hideLoader();
+        this.hideLoader(this.contentNode);
     }
 
     onPreviousBtnClick(page) {

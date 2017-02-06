@@ -49,7 +49,7 @@ class TabExchangeItem extends DialogActor {
             'cmd': app.commands.EXCHANGE_LIST,
             'data': {}
         };
-        app.system.showLoader();
+        this.showLoader();
         app.service.send(sendObject);
     }
 
@@ -95,8 +95,7 @@ class TabExchangeItem extends DialogActor {
             });
             exchangeTypes = null;
             // hide loader
-            app.system.hideLoader();
-            this.node.active = true;
+            this.hideLoader();
         } else {
             this.pageIsEmpty(this.node);
         }
@@ -141,13 +140,13 @@ class TabExchangeItem extends DialogActor {
                 data
             };
             // show loader
-            app.system.showLoader();
+            this.showLoader();
             app.service.send(sendObject);
         }
     }
 
     _onExchange(data) {
-        app.system.hideLoader();
+        this.hideLoader();
         if (data[app.keywords.RESPONSE_RESULT] === false) {
             app.system.info(`${data[app.keywords.RESPONSE_MESSAGE]}`);
         } else { // true

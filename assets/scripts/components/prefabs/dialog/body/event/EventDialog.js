@@ -13,7 +13,7 @@ class EventDialog extends Component {
     }
 
     onLoad() {
-        app.system.showLoader();
+        this.showLoader();
 
         this.node.on('touch-start', () => {
             return null;
@@ -90,7 +90,7 @@ class EventDialog extends Component {
                     this.node.emit('event-clicked', { id: node.nodeId, url: node.urlContent });
                 }
             }
-            app.system.hideLoader();
+            this.hideLoader();
         }
     }
 

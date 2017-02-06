@@ -34,8 +34,8 @@ class GameSystem {
         this.initEventListener();
     }
 
-    showLoader(parent) {
-        this.loader && this.loader.show(parent);
+    showLoader() {
+        this.loader && this.loader.show();
     }
 
     hideLoader() {

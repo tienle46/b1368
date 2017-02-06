@@ -24,23 +24,23 @@ export default class EntranceScene extends BaseScene {
     // use this for initialization
     onLoad() {
         if (cc.sys.isMobile) {
-            // sdkbox.PluginFacebook.setListener({
-            //     onLogin: (isLogin, msg) => {
-            //         if (isLogin) {
-            //             const fbId = sdkbox.PluginFacebook.getUserID();
-            //             this.accessToken = sdkbox.PluginFacebook.getAccessToken();
-            //             log(`fbId ${fbId} and token ${this.accessToken}`);
-            //             this.getUserByFbId(fbId, this.accessToken);
-            //         }
-            //     },
-            //     onAPI: function(tag, data) {},
-            //     onSharedSuccess: function(data) {},
-            //     onSharedFailed: function(data) {},
-            //     onSharedCancel: function() {},
-            //     onPermission: function(isLogin, msg) {}
-            // });
-            // this._activeFacebookBtn();
-        } else {
+            sdkbox.PluginFacebook.setListener({
+                onLogin: (isLogin, msg) => {
+                    if (isLogin) {
+                        const fbId = sdkbox.PluginFacebook.getUserID();
+                        this.accessToken = sdkbox.PluginFacebook.getAccessToken();
+                        log(`fbId ${fbId} and token ${this.accessToken}`);
+                        this.getUserByFbId(fbId, this.accessToken);
+                    }
+                },
+                onAPI: function(tag, data) {},
+                onSharedSuccess: function(data) {},
+                onSharedFailed: function(data) {},
+                onSharedCancel: function() {},
+                onPermission: function(isLogin, msg) {}
+            });
+            this._activeFacebookBtn();
+        } else if (cc.sys.isBrowser) {
             if (window.FB) {
                 this._activeFacebookBtn();
             } else {

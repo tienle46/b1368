@@ -21,7 +21,7 @@ export default class TabMessages extends DialogActor {
     onLoad() {
         super.onLoad();
 
-        app.system.showLoader();
+        this.showLoader();
         let next = this.onNextBtnClick.bind(this);
         let prev = this.onPreviousBtnClick.bind(this);
     }
@@ -63,7 +63,7 @@ export default class TabMessages extends DialogActor {
             }
         };
 
-        app.system.showLoader();
+        this.showLoader();
         app.service.send(sendObject);
     }
 
@@ -106,7 +106,7 @@ export default class TabMessages extends DialogActor {
             isListView: true
         });
         this.node.addChild(this.getScrollViewNode());
-        app.system.hideLoader();
+        this.hideLoader();
     }
 }
 

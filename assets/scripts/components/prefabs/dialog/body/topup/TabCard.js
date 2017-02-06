@@ -1,6 +1,6 @@
 import app from 'app';
 import DialogActor from 'DialogActor';
-import { isEmpty, setVisibility } from 'Utils';
+import { isEmpty } from 'Utils';
 
 class TabCard extends DialogActor {
     constructor() {
@@ -71,12 +71,9 @@ class TabCard extends DialogActor {
         let sendObject = {
             'cmd': app.commands.USER_GET_CHARGE_LIST
         };
-        console.debug(this.node);
-
-        setVisibility(this.node, false);
 
         // show loader
-        app.system.showLoader();
+        this.showLoader()
         app.service.send(sendObject);
     }
 
@@ -96,10 +93,7 @@ class TabCard extends DialogActor {
                 this.listCardContainer.addChild(item);
             });
 
-            app.system.hideLoader();
-
-            // active node
-            setVisibility(this.node, true);
+            this.hideLoader();
         } else {
             this.pageIsEmpty(this.node);
         }
@@ -134,7 +128,6 @@ class TabCard extends DialogActor {
             );
         } else {
             let data = {};
-            // app.system.showLoader();
             data[app.keywords.CHARGE_CARD_PROVIDER_ID] = this.providerId;
             data[app.keywords.CARD_CODE] = cardSerial;
             data[app.keywords.CARD_SERIAL] = serialNumber;
@@ -142,6 +135,7 @@ class TabCard extends DialogActor {
                 'cmd': app.commands.USER_SEND_CARD_CHARGE,
                 data
             };
+
             app.service.send(sendObject); // send request and get `smsg` (system_message) response from server
         }
     }

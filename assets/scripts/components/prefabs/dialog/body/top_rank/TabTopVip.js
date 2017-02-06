@@ -35,7 +35,6 @@ class TabTopVip extends DialogActor {
     _getRankGroup() {
         let topNodeId = 14,
             currentPage = 1;
-        console.debug('this.contentNode3', this.contentNode.getContentSize());
 
         let sendObject = {
             'cmd': app.commands.RANK_GROUP,
@@ -46,7 +45,7 @@ class TabTopVip extends DialogActor {
                 [app.keywords.RANK_NODE_ID]: topNodeId,
             }
         };
-        app.system.showLoader();
+        this.showLoader(this.contentNode);
         app.service.send(sendObject);
     }
 
@@ -78,7 +77,7 @@ class TabTopVip extends DialogActor {
             size: this.contentNode.getContentSize(),
         });
         this.contentNode.addChild(this.getScrollViewNode());
-        app.system.hideLoader();
+        this.hideLoader(this.contentNode);
     }
 }
 

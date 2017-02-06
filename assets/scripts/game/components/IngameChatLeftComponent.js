@@ -85,7 +85,7 @@ export default class IngameChatLeftComponent extends Component {
     }
 
     onEditingEnded(e) {
-        console.debug('e', e);
+        // console.debug('e', e);
     }
 
     onChatEnterBtnClicked() {

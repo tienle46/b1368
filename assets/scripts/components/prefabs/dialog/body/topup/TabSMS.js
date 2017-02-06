@@ -17,79 +17,80 @@ class TabSMS extends DialogActor {
     }
 
     onLoad() {
-        let data = {
-            ap: ['com.bamienstudio.baibamien.4000g', 'com.bamienstudio.baibamien.8000g'],
-            bp: {
-                dl: ['4000 Gold (1AU -> 4000Xu)', 'Test (0AU -> 1Xu)'],
-                il: ['com.milabs.4000', 'android.test.purchased']
-            },
-            c: {
+        super.onLoad();
+        // let data = {
+        //     ap: ['com.bamienstudio.baibamien.4000g', 'com.bamienstudio.baibamien.8000g'],
+        //     bp: {
+        //         dl: ['4000 Gold (1AU -> 4000Xu)', 'Test (0AU -> 1Xu)'],
+        //         il: ['com.milabs.4000', 'android.test.purchased']
+        //     },
+        //     c: {
 
-            },
-            il: [],
-            nl: [],
-            s: {
-                b: [30000,
-                    50000,
-                    120000,
-                    200000,
-                    350000,
-                    750000,
-                    120000,
-                    200000,
-                    350000,
-                    120000,
-                    200000,
-                    350000
-                ],
-                s: [8698,
-                    8798,
-                    9029,
-                    9029,
-                    9029,
-                    9029,
-                    9029,
-                    9029,
-                    9029,
-                    9029,
-                    9029,
-                    9029
-                ],
-                c: ["DR 1 bitcoin",
-                    "DR 1 bitcoin",
-                    "MW 20000 VLA NAP 1/bitcoin",
-                    "MW 30000 VLA NAP 1/bitcoin",
-                    "MW 50000 VLA NAP 1/bitcoin",
-                    "MW 100000 VLA NAP 1/bitcoin",
-                    "MW VLA NAP20 1/bitcoin",
-                    "MW VLA NAP30 1/bitcoin",
-                    "MW VLA NAP50 1/bitcoin",
-                    "MW VLA NAP20 1/bitcoin",
-                    "MW VLA NAP30 1/bitcoin",
-                    "MW VLA NAP50 1/bitcoin"
-                ],
-                m: ["10000 VN\U0110",
-                    "15000 VN\U0110",
-                    "Viettel  20K",
-                    "Viettel  30K",
-                    "Viettel  50K",
-                    "Viettel  100K",
-                    "Mobi  20K",
-                    "Mobi  30K",
-                    "Mobi  50K",
-                    "Vina  20K",
-                    "Vina  30K",
-                    "Vina  50K"
-                ]
-            }
-        }
+        //     },
+        //     il: [],
+        //     nl: [],
+        //     s: {
+        //         b: [30000,
+        //             50000,
+        //             120000,
+        //             200000,
+        //             350000,
+        //             750000,
+        //             120000,
+        //             200000,
+        //             350000,
+        //             120000,
+        //             200000,
+        //             350000
+        //         ],
+        //         s: [8698,
+        //             8798,
+        //             9029,
+        //             9029,
+        //             9029,
+        //             9029,
+        //             9029,
+        //             9029,
+        //             9029,
+        //             9029,
+        //             9029,
+        //             9029
+        //         ],
+        //         c: ["DR 1 bitcoin",
+        //             "DR 1 bitcoin",
+        //             "MW 20000 VLA NAP 1/bitcoin",
+        //             "MW 30000 VLA NAP 1/bitcoin",
+        //             "MW 50000 VLA NAP 1/bitcoin",
+        //             "MW 100000 VLA NAP 1/bitcoin",
+        //             "MW VLA NAP20 1/bitcoin",
+        //             "MW VLA NAP30 1/bitcoin",
+        //             "MW VLA NAP50 1/bitcoin",
+        //             "MW VLA NAP20 1/bitcoin",
+        //             "MW VLA NAP30 1/bitcoin",
+        //             "MW VLA NAP50 1/bitcoin"
+        //         ],
+        //         m: ["10000 VN\U0110",
+        //             "15000 VN\U0110",
+        //             "Viettel  20K",
+        //             "Viettel  30K",
+        //             "Viettel  50K",
+        //             "Viettel  100K",
+        //             "Mobi  20K",
+        //             "Mobi  30K",
+        //             "Mobi  50K",
+        //             "Vina  20K",
+        //             "Vina  30K",
+        //             "Vina  50K"
+        //         ]
+        //     }
+        // }
 
-        this._onUserGetChargeList(data);
+        // // this._onUserGetChargeList(data);
     }
 
     start() {
         super.start();
-        // this._requestPaymentList();
+        this._requestPaymentList();
     }
 
     onItemBtnClick() {
@@ -111,6 +112,7 @@ class TabSMS extends DialogActor {
             'cmd': app.commands.USER_GET_CHARGE_LIST,
         };
 
+        this.showLoader();
         app.service.send(sendObject);
     }
 
@@ -135,7 +137,8 @@ class TabSMS extends DialogActor {
                     smsModel['command'] = commandList[i];
                     smsModel['isChecked'] = i === 0;
 
-                    this._initItem(smsModel);
+                    let { command, sendTo, moneyGot, isChecked } = smsModel;
+                    this._initItem(command, sendTo, moneyGot, isChecked);
                 }
             }
         }
@@ -143,11 +146,10 @@ class TabSMS extends DialogActor {
         //TODO: what the hell is ac
         if (data.hasOwnProperty('ac')) {
             let smsObj = data['ac'];
-
         }
     }
 
-    _initItem({ command, sendTo, moneyGot, isChecked }) {
+    _initItem(command, sendTo, moneyGot, isChecked) {
         let cmdArray = command.split(' ');
         let h1 = cmdArray.shift();
         let cmd = cmdArray.join(' ');

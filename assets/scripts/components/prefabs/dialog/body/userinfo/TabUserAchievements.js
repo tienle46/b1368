@@ -31,6 +31,7 @@ export default class TabUserAchievements extends DialogActor {
             cmd: app.commands.USER_ACHIEVEMENT
         };
 
+        this.showLoader(this.bodyNode);
         app.service.send(sendObj);
     }
 
@@ -65,6 +66,7 @@ export default class TabUserAchievements extends DialogActor {
             });
 
             this.bodyNode.addChild(this.getScrollViewNode());
+            this.hideLoader(this.bodyNode);
         } else {
             this.pageIsEmpty(this.bodyNode);
         }

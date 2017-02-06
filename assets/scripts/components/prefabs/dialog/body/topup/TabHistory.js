@@ -56,7 +56,7 @@ class TabHistory extends DialogActor {
             this.initView(head, d, rubOptions);
 
             this.bodyNode.addChild(this.getScrollViewNode());
-            app.system.hideLoader();
+            this.hideLoader(this.bodyNode);
         } else {
             this.pageIsEmpty(this.bodyNode);
         }
@@ -70,6 +70,7 @@ class TabHistory extends DialogActor {
             }
         };
 
+        this.showLoader(this.bodyNode);
         app.service.send(sendObject);
     }
 }

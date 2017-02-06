@@ -31,7 +31,7 @@ class TabTransactionHistory extends DialogActor {
             data
         };
 
-        app.system.showLoader();
+        this.showLoader();
 
         app.service.send(sendObj);
     }
@@ -66,7 +66,7 @@ class TabTransactionHistory extends DialogActor {
                 }
             });
 
-            app.system.hideLoader();
+            this.hideLoader();
             this.node.addChild(this.getScrollViewNode());
 
         } else {

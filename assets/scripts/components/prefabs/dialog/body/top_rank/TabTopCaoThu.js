@@ -48,7 +48,7 @@ class TabTopCaoThu extends DialogActor {
             }
         };
 
-        app.system.showLoader();
+        this.showLoader();
         app.service.send(sendObject);
     }
 
@@ -139,7 +139,7 @@ class TabTopCaoThu extends DialogActor {
             }
         });
         this.contentNode.addChild(this.getScrollViewNode());
-        app.system.hideLoader();
+        this.hideLoader();
     }
 
     onPreviousBtnClick(page) {

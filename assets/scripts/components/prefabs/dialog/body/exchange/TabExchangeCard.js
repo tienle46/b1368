@@ -29,8 +29,7 @@ class TabExchangeCard extends DialogActor {
         super.onLoad();
         // wait til every requests is done
         // this.node.active = false;
-        // show loader
-        // app.system.showLoader();
+
         // this._getExchangeDialogComponent().hideUpdatePhone();
         this.hint.string = "";
     }
@@ -58,7 +57,7 @@ class TabExchangeCard extends DialogActor {
             'data': {}
         };
 
-        app.system.showLoader();
+        this.showLoader();
         app.service.send(sendObject);
     }
 
@@ -115,7 +114,7 @@ class TabExchangeCard extends DialogActor {
             exchangeTypes = null;
 
             // hide loader
-            app.system.hideLoader();
+            this.hideLoader();
         } else {
             this.pageIsEmpty(this.node);
         }
@@ -198,13 +197,13 @@ class TabExchangeCard extends DialogActor {
             };
 
             // show loader
-            app.system.showLoader();
+            this.showLoader();
             app.service.send(sendObject);
         }
     }
 
     _onExchange(data) {
-        app.system.hideLoader();
+        this.hideLoader();
         if (data[app.keywords.RESPONSE_RESULT] === false) {
             app.system.info(`${data[app.keywords.RESPONSE_MESSAGE]}`);
         } else { // true

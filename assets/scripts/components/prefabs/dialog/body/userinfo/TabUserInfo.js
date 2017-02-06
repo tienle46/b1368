@@ -62,7 +62,7 @@ export default class TabUserInfo extends DialogActor {
                 data
             };
 
-            app.system.showLoader();
+            this.showLoader();
             app.service.send(sendObject);
         }
     }
@@ -94,7 +94,7 @@ export default class TabUserInfo extends DialogActor {
             data
         };
 
-        app.system.showLoader();
+        this.showLoader();
         app.service.send(sendObj);
     }
 
@@ -112,12 +112,12 @@ export default class TabUserInfo extends DialogActor {
         } else {
             this.phoneNumber.string = data[app.keywords.PHONE_INVITE_PHONE];
         }
-        app.system.hideLoader();
+        this.hideLoader();
     }
 
     _onUserUpdatePassword(data) {
         //update password
-        app.system.hideLoader();
+        this.hideLoader();
         if (data.hasOwnProperty(app.keywords.UPDATE_PROFILE_RESULT) && data[app.keywords.UPDATE_PROFILE_RESULT] == true) {
             app.system.info(app.res.string('password_changed_successfully'));
             this._showUserInfoPanel();

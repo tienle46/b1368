@@ -1,6 +1,7 @@
 import Actor from 'Actor';
 import app from 'app';
 import NodeRub from 'NodeRub';
+import LoaderRub from 'LoaderRub';
 
 export default class DialogActor extends Actor {
     constructor() {
@@ -16,34 +17,35 @@ export default class DialogActor extends Actor {
         this.tabGroup = null;
         this.data = null;
         this.isLoaded = false;
+        this.loaders = {};
     }
 
-    setData(data){
+    setData(data) {
         this.data = data;
 
-        if(this.isLoaded){
+        if (this.isLoaded) {
             this._onDataChanged();
         }
     }
 
-    onEnable(...args){
+    onEnable(...args) {
         super.onEnable(...args);
 
         this.isLoaded = true;
         this._onDataChanged();
     }
 
-    onDisable(){
+    onDisable() {
         super.onDisable();
 
         this.isLoaded = false;
     }
 
-    _onDataChanged(){
+    _onDataChanged() {
 
     }
 
-    setTabGroup(tabGroup){
+    setTabGroup(tabGroup) {
         this.tabGroup = tabGroup;
     }
 
@@ -73,7 +75,8 @@ export default class DialogActor extends Actor {
     }
 
     pageIsEmpty(node, str) {
-        app.system.hideLoader();
+        this.hideLoader(node);
+
         let p404 = cc.instantiate(this.p404);
         node.children.map(child => cc.isValid(child) && child.destroy() && child.removeFromParent());
         node.addChild(p404);
@@ -81,6 +84,28 @@ export default class DialogActor extends Actor {
         if (str) {
             let p404Component = p404.getComponent('P404');
             p404Component && p404Component.setText(str);
+        }
+    }
+
+    showLoader(node) {
+        node = node || this.node;
+        if (node) {
+            let nodeKey = node.__instanceId;
+            if (!this.loaders[nodeKey])
+                this.loaders[nodeKey] = new LoaderRub(node);
+
+            this.loaders[nodeKey].show();
+        }
+    }
+
+    hideLoader(node) {
+        node = node || this.node;
+        if (node) {
+            let nodeKey = node.__instanceId;
+            if (!this.loaders[nodeKey])
+                return;
+
+            this.loaders[nodeKey].hide();
         }
     }
 }
