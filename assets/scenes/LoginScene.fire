@@ -1034,7 +1034,7 @@
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
-      "x": 0.5,
+      "x": 0,
       "y": 0.5
     },
     "_contentSize": {
@@ -1056,7 +1056,7 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": -198,
+      "x": -237,
       "y": -113
     },
     "_skewX": 0,
@@ -1456,7 +1456,7 @@
     "isAlignOnce": true,
     "_target": null,
     "_alignFlags": 8,
-    "_left": 62,
+    "_left": 44,
     "_right": 0,
     "_top": 0,
     "_bottom": 0,

@@ -27,11 +27,20 @@ export default class LoginScene extends BaseScene {
 
     onLoad() {
         super.onLoad();
-        this.userNameEditBox.string = "";
-        this.userPasswordEditBox.string = "";
+    }
+
+    onEnable() {
+        super.onEnable();
 
         if (this._isSaved()) {
             let [username, password] = this._isSaved().split(':');
+
+            // fix text dose not displayed when editbox.string is setted, in cc v1.4-rc
+            this.userNameEditBox.stayOnTop = true;
+            this.userNameEditBox.setFocus();
+            this.userPasswordEditBox.stayOnTop = true;
+            this.userPasswordEditBox.setFocus();
+
             this.userNameEditBox.string = username;
             this.userPasswordEditBox.string = password;
         }

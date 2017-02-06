@@ -9,7 +9,7 @@ export default class RegisterScene extends BaseScene {
 
         this.properties = {
             resetCaptcha: cc.Node,
-        }
+        };
 
         this.userNameEditBox = {
             default: null,
@@ -32,8 +32,10 @@ export default class RegisterScene extends BaseScene {
         super.onLoad();
         this.captchaLabel = this.resetCaptcha.getChildByName('label').getComponent(cc.Label);
         this.generateRandomString();
-        this.userNameEditBox.string = `a${this._generateRandomString(9)}${1}`;
-        this.userPasswordEditBox.string = `aA${this._generateRandomString(9)}${1}`;
+    }
+
+    onEnable() {
+        super.onEnable();
     }
 
     handleRegistryAction() {
@@ -81,14 +83,13 @@ export default class RegisterScene extends BaseScene {
     _isValidPasswordInput(str) {
         // minimum: 6, must have atleast a-z||A-Z|0-9, without space
         // /\s/.test(str) => true if str contains space
-        return /[a-zA-Z]/.test(str) && /[0-9]/.test(str) && !/\s/.test(str) && str.length >= MINIMUM_PASSWORD;
+        return str.length <= 16 && /[a-zA-Z0-9]{5,}/.test(str) && /[a-zA-Z]/.test(str) && /[0-9]/.test(str) && !/\s/.test(str) && str.length >= MINIMUM_PASSWORD;
     }
 
     _isValidUsernameInput(str) {
-        // minimum: 6, a-zA-Z0-9, without space
+        // minimum: 5, a-zA-Z0-9, without space
         // /\s/.test(str) => true if str contains space
-
-        return /[a-zA-Z0-9]{6,}/.test(str) && !/\s/.test(str);
+        return str.length <= 21 && /[a-zA-Z0-9]{5,}/.test(str) && !/\s/.test(str);
     }
 
     _isValidCaptcha() {

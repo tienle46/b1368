@@ -412,6 +412,7 @@
     },
     "_enabled": true,
     "isAlignOnce": true,
+    "_target": null,
     "_alignFlags": 2,
     "_left": 0.25666666666666665,
     "_right": 0,
@@ -733,6 +734,7 @@
     },
     "_enabled": true,
     "isAlignOnce": true,
+    "_target": null,
     "_alignFlags": 34,
     "_left": 0,
     "_right": 0.1987500000000001,
@@ -1003,6 +1005,7 @@
     },
     "_enabled": true,
     "isAlignOnce": true,
+    "_target": null,
     "_alignFlags": 13,
     "_left": 0,
     "_right": 0,
@@ -1124,6 +1127,7 @@
     },
     "_enabled": true,
     "isAlignOnce": true,
+    "_target": null,
     "_alignFlags": 34,
     "_left": 0,
     "_right": -0.3088235294117647,
@@ -1204,6 +1208,7 @@
     },
     "_enabled": true,
     "isAlignOnce": true,
+    "_target": null,
     "_alignFlags": 16,
     "_left": 0,
     "_right": 0,
@@ -1306,23 +1311,23 @@
       "__id__": 1
     },
     "_enabled": true,
-    "transition": 1,
+    "transition": 3,
     "pressedColor": {
       "__type__": "cc.Color",
       "r": 209,
       "g": 202,
       "b": 202,
-      "a": 107.10000000000001
+      "a": 107
     },
     "hoverColor": {
       "__type__": "cc.Color",
       "r": 209,
       "g": 202,
       "b": 202,
-      "a": 127.5
+      "a": 127
     },
     "duration": 0.1,
-    "zoomScale": 1.2,
+    "zoomScale": 1.05,
     "pressedSprite": null,
     "hoverSprite": null,
     "clickEvents": [
@@ -1370,6 +1375,7 @@
     },
     "_enabled": true,
     "isAlignOnce": true,
+    "_target": null,
     "_alignFlags": 40,
     "_left": 0,
     "_right": 0,

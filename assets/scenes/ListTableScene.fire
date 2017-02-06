@@ -2407,8 +2407,8 @@
     "_color": {
       "__type__": "cc.Color",
       "r": 255,
-      "g": 255,
-      "b": 255,
+      "g": 214,
+      "b": 0,
       "a": 255
     },
     "_cascadeOpacityEnabled": true,
@@ -2422,8 +2422,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 240.68,
-      "height": 50
+      "width": 172,
+      "height": 60
     },
     "_children": [],
     "_rotationX": 0,
@@ -2466,18 +2466,18 @@
     },
     "_enabled": true,
     "_useOriginalSize": false,
-    "_actualFontSize": 38,
+    "_actualFontSize": 40,
     "_fontSize": 40,
-    "_lineHeight": 50.00000000000013,
-    "_enableWrapText": true,
+    "_lineHeight": 60,
+    "_enableWrapText": false,
     "_N$file": {
       "__uuid__": "b2c0f634-158a-49ee-84f8-a41c8e7ebb56"
     },
     "_isSystemFontUsed": false,
-    "_N$string": "POM123",
+    "_N$string": "TIẾN LÊN",
     "_N$horizontalAlign": 0,
-    "_N$verticalAlign": 1,
-    "_N$overflow": 2
+    "_N$verticalAlign": 2,
+    "_N$overflow": 0
   },
   {
     "__type__": "cc.Widget",
@@ -2489,11 +2489,11 @@
     "_enabled": true,
     "isAlignOnce": true,
     "_target": null,
-    "_alignFlags": 9,
+    "_alignFlags": 12,
     "_left": 2,
     "_right": 1086,
     "_top": 541,
-    "_bottom": 0,
+    "_bottom": -66,
     "_verticalCenter": 0,
     "_horizontalCenter": 0,
     "_isAbsLeft": true,
@@ -2503,7 +2503,7 @@
     "_isAbsHorizontalCenter": true,
     "_isAbsVerticalCenter": true,
     "_originalWidth": 0,
-    "_originalHeight": 0
+    "_originalHeight": 50
   },
   {
     "__type__": "cc.LabelOutline",
@@ -2520,7 +2520,7 @@
       "b": 0,
       "a": 255
     },
-    "_width": 1.5
+    "_width": 2
   },
   {
     "__type__": "cc.Widget",
