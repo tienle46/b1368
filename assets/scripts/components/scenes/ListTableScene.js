@@ -146,7 +146,7 @@ export default class ListTableScene extends BaseScene {
     }
 
     _initGameLabel(gameCode) {
-        this.gameTitleLbl.string = gameCode.toUpperCase();
+        this.gameTitleLbl.string = app.const.gameLabels[gameCode].toUpperCase();
     }
 
     _getFirstGameLobbyFromServer() {
