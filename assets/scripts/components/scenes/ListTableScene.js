@@ -39,6 +39,7 @@ export default class ListTableScene extends BaseScene {
 
         // timeout setTimeout
         this.timeout = null;
+        this.__isCreatingRoom = false;
     }
 
     onEnabled() {
@@ -76,6 +77,7 @@ export default class ListTableScene extends BaseScene {
         data[app.keywords.IS_SPECTATOR] = false;
         data[app.keywords.QUICK_JOIN_BET] = 1;
 
+        app.system.showLoader();
         app.service.send({ cmd: app.commands.USER_QUICK_JOIN_ROOM, data });
     }
 
@@ -100,6 +102,7 @@ export default class ListTableScene extends BaseScene {
         app.system.addListener(app.commands.USER_CREATE_ROOM, this._onUserCreateRoom, this);
         app.system.addListener(SFS2X.SFSEvent.ROOM_JOIN, this._handleRoomJoinEvent, this);
         app.system.addListener(app.commands.PLAYER_INVITE, this._onPlayerInviteEvent, this);
+        app.system.addListener(SFS2X.SFSEvent.ROOM_JOIN_ERROR, this._onJoinRoomError, this);
     }
 
     _removeGlobalListener() {
@@ -109,6 +112,7 @@ export default class ListTableScene extends BaseScene {
         app.system.removeListener(app.commands.USER_CREATE_ROOM, this._onUserCreateRoom, this);
         app.system.removeListener(SFS2X.SFSEvent.ROOM_JOIN, this._handleRoomJoinEvent, this);
         app.system.removeListener(app.commands.PLAYER_INVITE, this._onPlayerInviteEvent, this);
+        app.system.removeListener(SFS2X.SFSEvent.ROOM_JOIN_ERROR, this._onJoinRoomError, this);
     }
 
     onNongDanBtnClick() {
@@ -188,7 +192,7 @@ export default class ListTableScene extends BaseScene {
     }
 
     _onPlayerInviteEvent(event) {
-        if (this.invitationShowed == false) {
+        if (!this.invitationShowed && !this.__isCreatingRoom) {
             let room = {
                 id: event[app.keywords.INVITATION_ROOM_SFSID],
                 isSpectator: false,
@@ -235,10 +239,12 @@ export default class ListTableScene extends BaseScene {
         };
         app.service.send(sendObject);
 
-        // this.timeout = requestTimeout(() => {
-        //     this.timeout && this._sendRequestUserListRoom(room);
-        //     clearRequestTimeout(this.timeout);
-        // }, this.time);
+        if (!this.timeout) {
+            this.timeout = requestTimeout(() => {
+                this.timeout && this._sendRequestUserListRoom(room);
+                clearRequestTimeout(this.timeout);
+            }, this.time);
+        }
     }
 
     _onUserListRoom(data) {
@@ -263,7 +269,6 @@ export default class ListTableScene extends BaseScene {
             for (let i = 0; i < customIds.length; i++) {
 
                 let listCell = cc.instantiate(this.tableListCell);
-
                 // listCell.setContentSize(itemDimension - 16, 50);
                 listCell.setPosition(cc.p(0, 0));
 
@@ -278,6 +283,8 @@ export default class ListTableScene extends BaseScene {
                     cellComponent.setOnClickListener(() => {
                         this._createRoom(this.gameCode, minBets[i], userMaxs[i]);
                     });
+
+                    listCell.__$filterException = true;
                 } else {
                     cellComponent.setOnClickListener(() => {
                         this.onUserRequestJoinRoom(cellComponent);
@@ -311,13 +318,12 @@ export default class ListTableScene extends BaseScene {
             }
 
             let filteredItems = this._filter(items, cond);
-
             if (filteredItems.length > 0) {
                 // re-adding content
                 filteredItems.map((item) => {
                     this.contentInScroll.addChild(item);
                 });
-                filteredItems.length = 0;
+                filteredItems = [];
             }
         }
     }
@@ -336,8 +342,7 @@ export default class ListTableScene extends BaseScene {
         if (!cond)
             return items;
         let filteredItems = [];
-
-        filteredItems = items.filter((item) => item.getComponent('TableListCell') && item.getComponent('TableListCell').minBet >= cond.min && item.getComponent('TableListCell').minBet <= cond.max);
+        filteredItems = items.filter((item) => item.__$filterException || (item.getComponent('TableListCell') && item.getComponent('TableListCell').minBet >= cond.min && item.getComponent('TableListCell').minBet <= cond.max));
         return filteredItems;
     }
 
@@ -375,6 +380,8 @@ export default class ListTableScene extends BaseScene {
             room: null
         };
 
+        this.__isCreatingRoom = true;
+
         /**
          * If create room successfully, response going handle by join room success follow
          */
@@ -386,6 +393,12 @@ export default class ListTableScene extends BaseScene {
         if (data.errorCode) {
             app.system.error(app.getMessageFromServer(data));
         }
+    }
+
+    _onJoinRoomError() {
+        this.__isCreatingRoom = false;
+        this._clearInterval();
+        this._sendRequestUserListRoom();
     }
 }
 
