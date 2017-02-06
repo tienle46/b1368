@@ -354,7 +354,6 @@ export default class ListTableScene extends BaseScene {
         data[app.keywords.ROOM_BET] = room.minBet;
         room.password && (data[app.keywords.ROOM_PASSWORD] = room.password);
 
-        this.showLoading();
         let sendObject = {
             cmd: app.commands.USER_JOIN_ROOM,
             data,
@@ -379,6 +378,7 @@ export default class ListTableScene extends BaseScene {
         /**
          * If create room successfully, response going handle by join room success follow
          */
+        app.system.showLoader();
         app.service.send(sendObject);
     }
 

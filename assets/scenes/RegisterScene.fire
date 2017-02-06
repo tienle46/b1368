@@ -740,7 +740,7 @@
       "b": 255,
       "a": 255
     },
-    "_N$placeholder": "Tên đăng nhập (6 - 20 ký tự)",
+    "_N$placeholder": "Tên đăng nhập (5 - 15 ký tự)",
     "_N$placeholderFontSize": 30,
     "_N$placeholderFontColor": {
       "__type__": "cc.Color",
