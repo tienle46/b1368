@@ -9,7 +9,7 @@ export default class RegisterScene extends BaseScene {
 
         this.properties = {
             resetCaptcha: cc.Node,
-        }
+        };
 
         this.userNameEditBox = {
             default: null,
@@ -32,6 +32,17 @@ export default class RegisterScene extends BaseScene {
         super.onLoad();
         this.captchaLabel = this.resetCaptcha.getChildByName('label').getComponent(cc.Label);
         this.generateRandomString();
+    }
+
+    onEnable() {
+        super.onEnable();
+
+        // fix text dose not displayed when editbox.string is setted, in cc v1.4-rc
+        this.userNameEditBox.stayOnTop = true;
+        this.userNameEditBox.setFocus();
+        this.userPasswordEditBox.stayOnTop = true;
+        this.userPasswordEditBox.setFocus();
+
         this.userNameEditBox.string = `a${this._generateRandomString(9)}${1}`;
         this.userPasswordEditBox.string = `aA${this._generateRandomString(9)}${1}`;
     }
