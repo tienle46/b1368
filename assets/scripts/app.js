@@ -37,7 +37,7 @@ app.createComponent = (classNameOrInstance, extendClass = undefined, ...args) =>
             extendClass = null;
         }
 
-        instance = new classNameOrInstance(...args);
+        instance = new classNameOrInstance();
     }
 
     instance.properties = instance.properties || {};
