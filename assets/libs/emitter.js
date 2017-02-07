@@ -3,6 +3,7 @@
  */
 
 export default class Emitter {
+
     constructor() {
         this._callbacks = {};
     }
@@ -11,6 +12,13 @@ export default class Emitter {
         let count = Object.keys(this._callbacks).reduce((total, cbArr) => total + cbArr.length, 0);
         
         console.warn('Emitter callback counts: ', count, this._callbacks);
+    }
+
+    __logEmitterByEvent(event){
+
+        let callbacks = this._callbacks[`$${event}`];
+
+        console.warn('Emitter ', event, " :",  callbacks.length, callbacks);
     }
 
     /**
@@ -24,10 +32,18 @@ export default class Emitter {
     addListener(event, fn, context, priority) {
 
         if(fn) {
+            let fnName = fn.name;
+            if(fnName.startsWith('bound ')){
+                let strs = fnName.split(' ');
+                strs.length > 1 && (fnName = strs[1]);
+            }
+
             if(context){
                 fn = fn.bind(context);
                 fn.__context = context;
             }
+
+            fn.__fnName = fnName;
 
             if(typeof priority == 'number' && priority >= 0){
                 (this._callbacks[`$${event}`] = this._callbacks['$' + event] || []).splice(priority, 0, fn);
@@ -44,8 +60,11 @@ export default class Emitter {
         return cb && (!context || (cb.__context === context || (cb.fn && cb.fn.__context === context )));
     }
 
-    _isSameInstance(fn1, fn2){
-        return typeof fn1 == 'function' && typeof fn2 == 'function' && fn1.name.split(' ').pop() === fn2.name.split(' ').pop();
+    _isSameInstance(cb, fn2){
+        if(cb.__fnName){
+            return typeof fn2 == 'function' && cb.__fnName === fn2.name.split(' ').pop();
+        }
+        return typeof cb == 'function' && typeof fn2 == 'function' && cb.name.split(' ').pop() === fn2.name.split(' ').pop();
     }
 
     /**
