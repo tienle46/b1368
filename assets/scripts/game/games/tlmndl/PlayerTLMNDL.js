@@ -26,19 +26,19 @@ export default class PlayerTLMNDL extends PlayerCardTurnBase {
     _addGlobalListener() {
         super._addGlobalListener();
 
-        this.board.scene.on(Events.ON_CLICK_PLAY_BUTTON, this._onPlayTurn, this);
-        this.board.scene.on(Events.ON_CLICK_SKIP_TURN_BUTTON, this._onSkipTurn, this);
-        this.board.scene.on(Events.ON_CLICK_SORT_BUTTON, this._onSortCards, this);
-        this.board.scene.on(Events.ON_PLAYER_REMAIN_CARD_COUNT, this._setRemainCardCount, this);
+        this.scene.on(Events.ON_CLICK_PLAY_BUTTON, this._onPlayTurn, this);
+        this.scene.on(Events.ON_CLICK_SKIP_TURN_BUTTON, this._onSkipTurn, this);
+        this.scene.on(Events.ON_CLICK_SORT_BUTTON, this._onSortCards, this);
+        this.scene.on(Events.ON_PLAYER_REMAIN_CARD_COUNT, this._setRemainCardCount, this);
     }
 
     _removeGlobalListener() {
         super._removeGlobalListener();
 
-        this.board.scene.off(Events.ON_CLICK_PLAY_BUTTON, this._onPlayTurn);
-        this.board.scene.off(Events.ON_CLICK_SKIP_TURN_BUTTON, this._onSkipTurn);
-        this.board.scene.off(Events.ON_CLICK_SORT_BUTTON, this._onSortCards);
-        this.board.scene.off(Events.ON_PLAYER_REMAIN_CARD_COUNT, this._setRemainCardCount);
+        this.scene.off(Events.ON_CLICK_PLAY_BUTTON, this._onPlayTurn);
+        this.scene.off(Events.ON_CLICK_SKIP_TURN_BUTTON, this._onSkipTurn);
+        this.scene.off(Events.ON_CLICK_SORT_BUTTON, this._onSortCards);
+        this.scene.off(Events.ON_PLAYER_REMAIN_CARD_COUNT, this._setRemainCardCount);
     }
 
     _setRemainCardCount(id, remain = 0) {
@@ -96,9 +96,9 @@ export default class PlayerTLMNDL extends PlayerCardTurnBase {
     }
 
     onEnable() {
-        
+
         console.log("Renderer: ", this.node.getComponent('PlayerTLMNDLRenderer'));
-        
+
         super.onEnable(this.node.getComponent('PlayerTLMNDLRenderer'));
 
         if (this.isItMe()) {
@@ -114,7 +114,7 @@ export default class PlayerTLMNDL extends PlayerCardTurnBase {
     _onGameRejoin(data) {
         super._onGameRejoin(data);
         if (this.isPlaying() && !this.scene.isEnding() && !this.isItMe()) {
-            let cards = Array(PlayerTLMNDL.DEFAULT_HAND_CARD_COUNT).fill(0).map(value => {return Card.from(value)});
+            let cards = Array(PlayerTLMNDL.DEFAULT_HAND_CARD_COUNT).fill(0).map(value => { return Card.from(value) });
             this.setCards(cards, false);
         }
     }
