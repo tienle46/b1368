@@ -68,6 +68,7 @@ class TabTopVip extends DialogActor {
                 return cc.instantiate(this.vips.children[index] ? this.vips.children[index] : this.vips.children[len - 1]);
             }),
         ];
+        this.contentNode.setContentSize(850, this.contentNode.getContentSize().height);
         this.initView({
             data: ['STT', 'Tài khoản', 'Loại'],
             options: {

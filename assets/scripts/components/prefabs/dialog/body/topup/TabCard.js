@@ -53,6 +53,7 @@ class TabCard extends DialogActor {
     }
 
     _onUserGetRateList(data) {
+        this.hideLoader();
         let lists = data[app.keywords.ITEM_LIST] || [];
         lists.map((str) => {
             let regEx = /[\d{3,},]+/g;

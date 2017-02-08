@@ -289,7 +289,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 121.57,
-      "height": 75
+      "height": 60
     },
     "_children": [],
     "_rotationX": 0,
@@ -336,7 +336,7 @@
     "_useOriginalSize": false,
     "_actualFontSize": 45,
     "_fontSize": 45,
-    "_lineHeight": 75,
+    "_lineHeight": 60,
     "_enableWrapText": true,
     "_N$file": {
       "__uuid__": "b2c0f634-158a-49ee-84f8-a41c8e7ebb56"
@@ -355,12 +355,12 @@
       "__id__": 7
     },
     "_enabled": true,
-    "isAlignOnce": true,
+    "isAlignOnce": false,
     "_target": null,
-    "_alignFlags": 16,
+    "_alignFlags": 17,
     "_left": 0,
     "_right": 0,
-    "_top": 0,
+    "_top": 21.5,
     "_bottom": 0,
     "_verticalCenter": 0,
     "_horizontalCenter": 0,
