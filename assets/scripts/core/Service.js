@@ -465,6 +465,7 @@ class Service {
         if (event.errorCode) {
             this._callCallbackAsync(app.commands.USER_CREATE_ROOM, event);
             this._deleteCallbackObject(app.commands.USER_CREATE_ROOM);
+            app.system.hideLoader();
             app.system.error(app.getMessageFromServer(event) || event.errorMessage);
         }
     }
