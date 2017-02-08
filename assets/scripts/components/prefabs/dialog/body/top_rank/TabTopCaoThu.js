@@ -138,8 +138,9 @@ class TabTopCaoThu extends DialogActor {
                 colors: ['', '', new cc.Color(255, 214, 0)]
             }
         });
-        this.contentNode.addChild(this.getScrollViewNode());
         this.hideLoader();
+
+        this.contentNode.addChild(this.getScrollViewNode());
     }
 
     onPreviousBtnClick(page) {
