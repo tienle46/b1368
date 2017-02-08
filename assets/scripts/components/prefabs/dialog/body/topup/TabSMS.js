@@ -14,6 +14,7 @@ class TabSMS extends DialogActor {
             commandLbl: cc.Label,
             moneyGetLbl: cc.Label,
         };
+        this._sending = false;
     }
 
     onLoad() {
@@ -45,16 +46,19 @@ class TabSMS extends DialogActor {
         };
 
         this.showLoader();
+        this._sending = true;
         app.service.send(sendObject);
     }
 
     _onUserGetChargeList(data) {
         // app.keywords.CHARGE_SMS_OBJECT
-        if (data.hasOwnProperty(app.keywords.CHARGE_SMS_OBJECT_IAC)) {
+        if (data.hasOwnProperty(app.keywords.CHARGE_SMS_OBJECT_IAC) && this._sending) {
             const smses = data[app.keywords.CHARGE_SMS_OBJECT_IAC];
+            this._sending = false;
 
             if (smses.length > 0) {
                 this.hideLoader();
+
                 let smsInformations = [];
                 smses.forEach((sms, index) => {
                     let infos = sms[app.keywords.CHARGE_SMS_OBJECT_INFORS];
@@ -72,6 +76,7 @@ class TabSMS extends DialogActor {
 
                     this._initItem(code, command, sendTo, moneyGot, isChecked);
                 });
+
                 smsInformations.length = 0;
             } else {
                 this.pageIsEmpty(this.node);
