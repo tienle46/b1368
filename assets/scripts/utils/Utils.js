@@ -76,7 +76,7 @@ export default class Utils {
     }
 
     static deactive(node, opacity) {
-        this.setActive(node, false);
+        Utils.setActive(node, false);
 
         if (opacity) {
             //TODO

@@ -47,14 +47,14 @@ class BottomBar extends DialogActor {
         let changedVars = ev[app.keywords.BASE_EVENT_CHANGED_VARS]
         changedVars.map(v => {
             if (v == 'coin') {
-                this.userInfoCoinLbl.string = `${numeral(app.context.getMyInfo().coin || 0).format('0,0')}`;
+                this.userInfoCoinLbl.string = `${numeral(app.context.getMeBalance() || 0).format('0,0')}`;
             }
         });
 
     }
 
     updateUserCoin() {
-        this.userInfoCoinLbl.string = `${numeral(app.context.getMyInfo().coin || 0).format('0,0')}`;
+        this.userInfoCoinLbl.string = `${numeral(app.context.getMeBalance() || 0).format('0,0')}`;
     }
 
     onClickNapXuAction() {
@@ -76,15 +76,14 @@ class BottomBar extends DialogActor {
                 value: `${url}/tab_top_dai_gia`
             }];
 
-            DialogRub.show(app.system.getCurrentSceneNode(), tabs, {title: 'Xếp hạng'});
+            DialogRub.show(app.system.getCurrentSceneNode(), tabs, { title: 'Xếp hạng' });
         })();
     }
 
     onFriendBtnClick() {
         (() => {
             let url = `${app.const.DIALOG_DIR_PREFAB}/buddies`;
-            let tabs = [
-                {
+            let tabs = [{
                     title: 'Danh sách',
                     // value: `${url}/tab_buddy_list`
                     value: `${url}/BuddyList`,
@@ -105,7 +104,7 @@ class BottomBar extends DialogActor {
                 }
             ];
 
-            PersonalInfoDialogRub.show(app.system.getCurrentSceneNode(), tabs, {title: 'Bạn bè'});
+            PersonalInfoDialogRub.show(app.system.getCurrentSceneNode(), tabs, { title: 'Bạn bè' });
         })();
     }
 
@@ -127,7 +126,7 @@ class BottomBar extends DialogActor {
             }];
 
             // bottombar -> dashboard scene node
-            ExchangeDialogRub.show(app.system.getCurrentSceneNode(), tabs, {title: 'Đổi thưởng'});
+            ExchangeDialogRub.show(app.system.getCurrentSceneNode(), tabs, { title: 'Đổi thưởng' });
         })();
     }
 
@@ -146,7 +145,7 @@ class BottomBar extends DialogActor {
                 value: `${url}/tab_personal_messages`
             }];
 
-            MessageCenterDialogRub.show(app.system.getCurrentSceneNode(), tabs, {title: 'Tin nhắn'});
+            MessageCenterDialogRub.show(app.system.getCurrentSceneNode(), tabs, { title: 'Tin nhắn' });
         })();
     }
 
@@ -155,9 +154,9 @@ class BottomBar extends DialogActor {
             // personal tabs
             let url = `${app.const.DIALOG_DIR_PREFAB}/userinfo`;
             let tabs = [{
-                title: 'Cá nhân',
-                value: `${url}/tab_user_info`
-            },
+                    title: 'Cá nhân',
+                    value: `${url}/tab_user_info`
+                },
                 {
                     title: 'Thành tích',
                     value: `${url}/tab_user_achievements`
@@ -175,14 +174,14 @@ class BottomBar extends DialogActor {
                 // }, 
             ];
 
-            PersonalInfoDialogRub.show(app.system.getCurrentSceneNode(), tabs, {title: 'Cá nhân'});
+            PersonalInfoDialogRub.show(app.system.getCurrentSceneNode(), tabs, { title: 'Cá nhân' });
         })();
     }
 
     _fillUserData() {
         this.userNameLbl.string = app.context.getMyInfo().name;
 
-        this.userInfoCoinLbl.string = `${numeral(app.context.getMyInfo().coin || 0).format('0,0')}`;
+        this.userInfoCoinLbl.string = `${numeral(app.context.getMeBalance() || 0).format('0,0')}`;
     }
 
     _onNotifyCount(data) {

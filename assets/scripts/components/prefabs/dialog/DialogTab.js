@@ -60,7 +60,7 @@ class DialogTab extends Component {
         let tab = this.node.children[tabIndex];
         if (tab) {
             let toggle = tab.getComponent(cc.Toggle);
-            toggle.check();
+            toggle.isChecked = true;
             this.onCheckedEvent(toggle, data);
         }
     }

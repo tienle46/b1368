@@ -180,7 +180,7 @@ class TabExchangeCard extends DialogActor {
             this._getExchangeDialogComponent().showUpdatePhone();
         } else {
             let { id, gold, } = this.selectedItem;
-            let myCoin = app.context.getMyInfo().coin;
+            let myCoin = app.context.getMeBalance();
 
             if (Number(myCoin) < Number(gold)) {
                 app.system.error(

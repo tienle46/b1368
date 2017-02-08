@@ -124,7 +124,7 @@ class TabExchangeItem extends DialogActor {
             // show update_phone_number
             this._getExchangeDialogComponent().showUpdatePhone();
         } else {
-            let myCoin = app.context.getMyInfo().coin;
+            let myCoin = app.context.getMeBalance();
 
             if (Number(myCoin) < Number(gold)) {
                 app.system.error(

@@ -40,7 +40,7 @@ class TableListCell extends Component {
     }
 
     onLoad() {
-        this.balance = app.context.getMyInfo().coin;
+        this.balance = app.context.getMeBalance();
     }
 
     initCell(id, minBet, userCount = 1, userMax, password) {

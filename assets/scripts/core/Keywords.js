@@ -145,6 +145,8 @@ Keywords.BUDDY_MESSAGE_SENDER_LIST = "sl";
 Keywords.BUDDY_MESSAGE_SEND_TIME_LIST = "stl";
 Keywords.BUDDY_MESSAGE_SEND_TIME = "st";
 Keywords.USERNAME_LIST = "unl";
+Keywords.USERNAME = "unl";
+
 // COUNT LIST
 Keywords.COUNT_LIST = "cl";
 
@@ -737,3 +739,10 @@ Keywords.BA_CAY_GOP_GA_VALUE = "gopGaValue";
 
 //
 Keywords.AGENT = "agent";
+
+Keywords.MONEY_FEE = "f";
+Keywords.MIN_TRANSFER_AMOUNT = "mit";
+Keywords.MAX_TRANSFER_AMOUNT = "mxt";
+Keywords.GOLD = "gold";
+Keywords.TRANSFER_REASON = "tr";
+Keywords.TRANSFER_USER_ID = "n";

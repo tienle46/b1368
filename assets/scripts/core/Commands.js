@@ -250,4 +250,8 @@ Commands.REGISTER_QUIT_ROOM = 'registerQuitRoom';
 Commands.INVALID_PLAY_TURN = "invalidPlayTurn";
 Commands.GET_BUDDY_DETAIL_INFO = "buddyDetailInfo";
 
+// CHUYEN TIEN
+Commands.USER_TRANSFER_CONFIG = 'b_ati';
+Commands.USER_TRANSFER_TO_USER = "b_at";
+
 module.exports = Commands;
