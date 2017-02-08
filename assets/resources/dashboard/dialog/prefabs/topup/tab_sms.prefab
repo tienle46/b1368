@@ -29,8 +29,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 875,
-      "height": 450
+      "width": 850,
+      "height": 420
     },
     "_children": [
       {
@@ -87,7 +87,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 789,
+      "width": 764,
       "height": 230
     },
     "_children": [
@@ -102,7 +102,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 43,
-      "y": 104
+      "y": 95
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -148,7 +148,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 789,
+      "width": 764,
       "height": 230
     },
     "_children": [
@@ -415,7 +415,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": -30,
-      "height": 230
+      "height": 241
     },
     "_children": [
       {
@@ -428,7 +428,7 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": -352,
+      "x": -339.5,
       "y": 0
     },
     "_skewX": 0,
@@ -478,8 +478,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 789,
-      "height": 230
+      "width": 764,
+      "height": 241
     },
     "_children": [
       {
@@ -493,7 +493,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": 0
+      "y": -5.5
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -544,7 +544,7 @@
     "_left": 0,
     "_right": 0,
     "_top": 0,
-    "_bottom": 0,
+    "_bottom": -11,
     "_verticalCenter": 0,
     "_horizontalCenter": 0,
     "_isAbsLeft": true,
@@ -605,7 +605,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 168.5,
-      "y": 3
+      "y": 5.684341886080802e-14
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -1760,7 +1760,7 @@
     "_target": null,
     "_alignFlags": 45,
     "_left": 42.5,
-    "_right": 776.5,
+    "_right": 751.5,
     "_top": 0,
     "_bottom": 0,
     "_verticalCenter": 0,
@@ -1785,7 +1785,7 @@
     "_layoutSize": {
       "__type__": "cc.Size",
       "width": -30,
-      "height": 230
+      "height": 241
     },
     "_resize": 1,
     "_N$layoutType": 1,
@@ -1950,7 +1950,7 @@
     "_enabled": true,
     "_layoutSize": {
       "__type__": "cc.Size",
-      "width": 789,
+      "width": 764,
       "height": 230
     },
     "_resize": 0,
@@ -2017,6 +2017,8 @@
     },
     "_enabled": true,
     "path": "",
+    "p404": null,
+    "scrollview": null,
     "toggleGroupNode": {
       "__id__": 10
     },

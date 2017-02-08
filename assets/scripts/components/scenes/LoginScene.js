@@ -47,6 +47,8 @@ export default class LoginScene extends BaseScene {
     }
 
     handleLoginAction() {
+        this.userNameEditBox.stayOnTop = false;
+        this.userPasswordEditBox.stayOnTop = false;
         let username = this.userNameEditBox.string.trim();
         let password = this.userPasswordEditBox.string.trim();
 

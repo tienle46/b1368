@@ -18,74 +18,6 @@ class TabSMS extends DialogActor {
 
     onLoad() {
         super.onLoad();
-        // let data = {
-        //     ap: ['com.bamienstudio.baibamien.4000g', 'com.bamienstudio.baibamien.8000g'],
-        //     bp: {
-        //         dl: ['4000 Gold (1AU -> 4000Xu)', 'Test (0AU -> 1Xu)'],
-        //         il: ['com.milabs.4000', 'android.test.purchased']
-        //     },
-        //     c: {
-
-        //     },
-        //     il: [],
-        //     nl: [],
-        //     s: {
-        //         b: [30000,
-        //             50000,
-        //             120000,
-        //             200000,
-        //             350000,
-        //             750000,
-        //             120000,
-        //             200000,
-        //             350000,
-        //             120000,
-        //             200000,
-        //             350000
-        //         ],
-        //         s: [8698,
-        //             8798,
-        //             9029,
-        //             9029,
-        //             9029,
-        //             9029,
-        //             9029,
-        //             9029,
-        //             9029,
-        //             9029,
-        //             9029,
-        //             9029
-        //         ],
-        //         c: ["DR 1 bitcoin",
-        //             "DR 1 bitcoin",
-        //             "MW 20000 VLA NAP 1/bitcoin",
-        //             "MW 30000 VLA NAP 1/bitcoin",
-        //             "MW 50000 VLA NAP 1/bitcoin",
-        //             "MW 100000 VLA NAP 1/bitcoin",
-        //             "MW VLA NAP20 1/bitcoin",
-        //             "MW VLA NAP30 1/bitcoin",
-        //             "MW VLA NAP50 1/bitcoin",
-        //             "MW VLA NAP20 1/bitcoin",
-        //             "MW VLA NAP30 1/bitcoin",
-        //             "MW VLA NAP50 1/bitcoin"
-        //         ],
-        //         m: ["10000 VN\U0110",
-        //             "15000 VN\U0110",
-        //             "Viettel  20K",
-        //             "Viettel  30K",
-        //             "Viettel  50K",
-        //             "Viettel  100K",
-        //             "Mobi  20K",
-        //             "Mobi  30K",
-        //             "Mobi  50K",
-        //             "Vina  20K",
-        //             "Vina  30K",
-        //             "Vina  50K"
-        //         ]
-        //     }
-        // }
-
-        // // this._onUserGetChargeList(data);
     }
 
     start() {
@@ -93,7 +25,7 @@ class TabSMS extends DialogActor {
         this._requestPaymentList();
     }
 
-    onItemBtnClick() {
+    onSMSBtnClick() {
 
     }
 
@@ -118,44 +50,38 @@ class TabSMS extends DialogActor {
 
     _onUserGetChargeList(data) {
         // app.keywords.CHARGE_SMS_OBJECT
-        if (data.hasOwnProperty(app.keywords.CHARGE_SMS_OBJECT)) {
-            const obj = data[app.keywords.CHARGE_SMS_OBJECT];
-            if (obj.hasOwnProperty(app.keywords.CHARGE_SMS_MONEY_GOT) && obj.hasOwnProperty(app.keywords.CHARGE_SMS_MONEY_LOST) &&
-                obj.hasOwnProperty(app.keywords.CHARGE_SMS_SHORT_CODE) &&
-                obj.hasOwnProperty(app.keywords.CHARGE_SMS_COMMAND)
-            ) {
-                let moneyGotList = obj[app.keywords.CHARGE_SMS_MONEY_GOT];
-                let moneySpendList = obj[app.keywords.CHARGE_SMS_MONEY_LOST];
-                let sendToList = obj[app.keywords.CHARGE_SMS_SHORT_CODE];
-                let commandList = obj[app.keywords.CHARGE_SMS_COMMAND];
+        if (data.hasOwnProperty(app.keywords.CHARGE_SMS_OBJECT_IAC)) {
+            const smses = data[app.keywords.CHARGE_SMS_OBJECT_IAC];
 
-                for (let i = 0; i < moneyGotList.length; i++) {
-                    let smsModel = {};
-                    smsModel['moneyGot'] = moneyGotList[i];
-                    smsModel['moneyLost'] = moneySpendList[i];
-                    smsModel['sendTo'] = sendToList[i];
-                    smsModel['command'] = commandList[i];
-                    smsModel['isChecked'] = i === 0;
+            if (smses.length > 0) {
+                this.hideLoader();
+                let smsInformations = [];
+                smses.forEach((sms, index) => {
+                    let infos = sms[app.keywords.CHARGE_SMS_OBJECT_INFORS];
+                    infos.forEach((info, i) => {
+                        smsInformations.push(info);
+                    });
+                });
 
-                    let { command, sendTo, moneyGot, isChecked } = smsModel;
-                    this._initItem(command, sendTo, moneyGot, isChecked);
-                }
+                smsInformations.forEach((smsInfo, i) => {
+                    let moneyGot = smsInfo.balance,
+                        code = smsInfo.code,
+                        sendTo = smsInfo.shortCode,
+                        command = smsInfo.syntax,
+                        isChecked = i === 0;
+
+                    this._initItem(code, command, sendTo, moneyGot, isChecked);
+                });
+                smsInformations.length = 0;
+            } else {
+                this.pageIsEmpty(this.node);
             }
-        }
-
-        //TODO: what the hell is ac
-        if (data.hasOwnProperty('ac')) {
-            let smsObj = data['ac'];
         }
     }
 
-    _initItem(command, sendTo, moneyGot, isChecked) {
-        let cmdArray = command.split(' ');
-        let h1 = cmdArray.shift();
-        let cmd = cmdArray.join(' ');
-
-        this.h1Lbl.string = h1;
-        this.commandLbl.string = cmd;
+    _initItem(code, syntax, sendTo, moneyGot, isChecked) {
+        this.h1Lbl.string = code;
+        this.commandLbl.string = syntax;
         this.sendToLbl.string = `Gửi ${sendTo}`;
         this.moneyGetLbl.string = `${numeral(moneyGot).format('0,0')}`;
 
