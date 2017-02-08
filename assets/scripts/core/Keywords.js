@@ -748,3 +748,4 @@ Keywords.TRANSFER_REASON = "tr";
 Keywords.TRANSFER_USER_ID = "n";
 
 Keywords.CHARGE_SMS_OBJECT_IAC = "iac";
+Keywords.CHARGE_SMS_OBJECT_INFORS = "iacInfos";
