@@ -99,7 +99,6 @@ export default class IngameChatComponent extends Component {
             }
 
             assets.forEach((asset, index) => {
-                // console.debug(`${index} `, asset);
                 const clickEvent = new cc.Component.EventHandler();
                 clickEvent.target = this.node;
                 clickEvent.component = 'IngameChatComponent';
@@ -138,8 +137,12 @@ export default class IngameChatComponent extends Component {
         if (!this.messages) {
             this.loading.show(120);
             utils.setActive(this.messageListContent, false);
-            app.service.send({ cmd: app.commands.INGAME_CHAT_MESSAGE_LIST, data: {
-                    [app.keywords.GAME_CODE]: this.scene.gameCode } }, (data) => {
+            app.service.send({
+                cmd: app.commands.INGAME_CHAT_MESSAGE_LIST,
+                data: {
+                    [app.keywords.GAME_CODE]: this.scene.gameCode
+                }
+            }, (data) => {
                 utils.setActive(this.messageListContent, true);
 
                 let gameCode = utils.getValue(data, app.keywords.GAME_CODE);

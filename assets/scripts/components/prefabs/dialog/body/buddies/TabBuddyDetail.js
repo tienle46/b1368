@@ -14,7 +14,6 @@ export default class TabBuddyDetail extends DialogActor {
 
     onLoad() {
         super.onLoad();
-        console.debug('x');
     }
 }
 

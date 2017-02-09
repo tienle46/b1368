@@ -84,9 +84,7 @@ export default class TabBuddiesTransfer extends DialogActor {
             data
         };
 
-        app.service.send(reqObj, (data) => {
-            console.debug('ts data', data);
-        });
+        app.service.send(reqObj);
     }
 
     _addGlobalListener() {

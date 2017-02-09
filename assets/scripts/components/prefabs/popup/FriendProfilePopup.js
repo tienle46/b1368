@@ -85,7 +85,6 @@ export default class FriendProfilePopup extends DialogActor {
         this.totalItems = assets.length;
         this.totalPage = Math.ceil(this.totalItems / this.itemsPerPage);
         assets.map(asset => {
-            // console.debug(`${index} `, asset);
             const clickEvent = new cc.Component.EventHandler();
             clickEvent.target = this.node;
             clickEvent.component = 'FriendProfilePopup';

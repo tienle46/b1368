@@ -254,7 +254,6 @@ export default class Scrollview extends Component {
         //         }
         //         return d;
         //     });
-        //     console.debug('input', input);
 
         //     return input;
         // }

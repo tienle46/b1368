@@ -132,7 +132,6 @@ export default class IngameChatLeftComponent extends Component {
             }
 
             assets.forEach((asset, index) => {
-                // console.debug(`${index} `, asset);
                 const clickEvent = new cc.Component.EventHandler();
                 clickEvent.target = this.node;
                 clickEvent.component = 'IngameChatLeftComponent';

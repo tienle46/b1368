@@ -35,7 +35,6 @@ class TabSMS extends DialogActor {
 
     onSMSBtnClick(e) {
         let { code, command, sendTo } = e;
-        console.debug('code, command, sendTo', code, command, sendTo);
         this.codeLbl.string = code
         this.shortCodeLbl.string = command
         this.numberLbl.string = sendTo;
