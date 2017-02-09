@@ -1,6 +1,7 @@
 import app from 'app';
 import DialogActor from 'DialogActor';
 import numeral from 'numeral';
+import { deactive, active } from 'Utils';
 
 class TabSMS extends DialogActor {
     constructor() {
@@ -13,12 +14,18 @@ class TabSMS extends DialogActor {
             sendToLbl: cc.Label,
             commandLbl: cc.Label,
             moneyGetLbl: cc.Label,
+            codeLbl: cc.Label,
+            shortCodeLbl: cc.Label,
+            numberLbl: cc.Label,
+            textContainer: cc.Node,
         };
+
         this._sending = false;
     }
 
     onLoad() {
         super.onLoad();
+        deactive(this.textContainer);
     }
 
     start() {
@@ -26,8 +33,12 @@ class TabSMS extends DialogActor {
         this._requestPaymentList();
     }
 
-    onSMSBtnClick() {
-
+    onSMSBtnClick(e) {
+        let { code, command, sendTo } = e;
+        console.debug('code, command, sendTo', code, command, sendTo);
+        this.codeLbl.string = code
+        this.shortCodeLbl.string = command
+        this.numberLbl.string = sendTo;
     }
 
     _addGlobalListener() {
@@ -93,8 +104,14 @@ class TabSMS extends DialogActor {
         let item = cc.instantiate(this.itemNode);
         item.active = true;
         let toggle = item.getComponent(cc.Toggle);
-        toggle.isChecked = isChecked;
-
+        toggle.code = code;
+        toggle.command = syntax;
+        toggle.sendTo = sendTo;
+        if (isChecked) {
+            toggle.check();
+            active(this.textContainer);
+            this.onSMSBtnClick(toggle);
+        }
         this.toggleGroupNode.addChild(item);
     }
 }

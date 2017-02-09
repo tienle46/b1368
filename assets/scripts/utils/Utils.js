@@ -69,7 +69,7 @@ export default class Utils {
     }
 
     static active(node, opacity) {
-        this.setActive(node, true);
+        Utils.setActive(node, true);
         if (opacity) {
             //TODO
         }
