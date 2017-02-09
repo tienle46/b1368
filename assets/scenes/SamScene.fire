@@ -41,7 +41,7 @@
     "_tag": -1,
     "_opacityModifyRGB": false,
     "_id": "edf58820-120c-4615-90ed-8cace992a06c",
-    "autoReleaseAssets": false
+    "autoReleaseAssets": true
   },
   {
     "__type__": "cc.Node",
@@ -3718,7 +3718,7 @@
       "width": 1280,
       "height": 720
     },
-    "_fitWidth": false,
+    "_fitWidth": true,
     "_fitHeight": true
   },
   {

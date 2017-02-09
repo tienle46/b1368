@@ -148,7 +148,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": 0
+      "y": 2.2737367544323206e-13
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -205,12 +205,13 @@
       "__id__": 3
     },
     "_enabled": true,
-    "isAlignOnce": true,
+    "isAlignOnce": false,
+    "_target": null,
     "_alignFlags": 45,
     "_left": 0,
     "_right": 0,
-    "_top": 0,
-    "_bottom": 0,
+    "_top": -2.2737367544323206e-13,
+    "_bottom": 2.2737367544323206e-13,
     "_verticalCenter": 0,
     "_horizontalCenter": 0,
     "_isAbsLeft": true,
@@ -314,6 +315,7 @@
     },
     "_enabled": true,
     "isAlignOnce": true,
+    "_target": null,
     "_alignFlags": 20,
     "_left": 253,
     "_right": 533,
@@ -477,6 +479,7 @@
     },
     "_enabled": true,
     "isAlignOnce": true,
+    "_target": null,
     "_alignFlags": 4,
     "_left": 0,
     "_right": 0,
@@ -658,14 +661,14 @@
       "r": 127,
       "g": 127,
       "b": 127,
-      "a": 127.5
+      "a": 127
     },
     "hoverColor": {
       "__type__": "cc.Color",
       "r": 127,
       "g": 127,
       "b": 127,
-      "a": 127.5
+      "a": 127
     },
     "duration": 0.1,
     "zoomScale": 1.2,
@@ -690,7 +693,7 @@
       "r": 127,
       "g": 127,
       "b": 127,
-      "a": 127.5
+      "a": 127
     },
     "_N$normalSprite": {
       "__uuid__": "28dede62-ed4d-49fe-9326-d472e30fc284"
@@ -718,6 +721,7 @@
     },
     "_enabled": true,
     "isAlignOnce": true,
+    "_target": null,
     "_alignFlags": 1,
     "_left": 0,
     "_right": 841,
@@ -849,14 +853,14 @@
       "r": 127,
       "g": 127,
       "b": 127,
-      "a": 127.5
+      "a": 127
     },
     "hoverColor": {
       "__type__": "cc.Color",
       "r": 127,
       "g": 127,
       "b": 127,
-      "a": 127.5
+      "a": 127
     },
     "duration": 0.1,
     "zoomScale": 1.2,
@@ -881,7 +885,7 @@
       "r": 127,
       "g": 127,
       "b": 127,
-      "a": 127.5
+      "a": 127
     },
     "_N$normalSprite": {
       "__uuid__": "ed417f99-61fe-4965-8b4f-a7eecb0d8d1e"
@@ -909,6 +913,7 @@
     },
     "_enabled": true,
     "isAlignOnce": true,
+    "_target": null,
     "_alignFlags": 33,
     "_left": 0,
     "_right": 479,
@@ -1040,14 +1045,14 @@
       "r": 127,
       "g": 127,
       "b": 127,
-      "a": 127.5
+      "a": 127
     },
     "hoverColor": {
       "__type__": "cc.Color",
       "r": 127,
       "g": 127,
       "b": 127,
-      "a": 127.5
+      "a": 127
     },
     "duration": 0.1,
     "zoomScale": 1.2,
@@ -1072,7 +1077,7 @@
       "r": 127,
       "g": 127,
       "b": 127,
-      "a": 127.5
+      "a": 127
     },
     "_N$normalSprite": {
       "__uuid__": "598ed08d-dcab-4102-9989-275a87f4d15f"
@@ -1100,6 +1105,7 @@
     },
     "_enabled": true,
     "isAlignOnce": true,
+    "_target": null,
     "_alignFlags": 33,
     "_left": 0,
     "_right": 117,
@@ -1245,6 +1251,7 @@
     },
     "_enabled": true,
     "isAlignOnce": true,
+    "_target": null,
     "_alignFlags": 36,
     "_left": 0,
     "_right": 37.81999999999999,
