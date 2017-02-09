@@ -77,21 +77,25 @@ class GameSystem {
                     let container = this.getCurrentSceneNode().getChildByName('Container');
                     if (container) {
                         cc.game.addPersistRootNode(this.getCurrentSceneNode());
+                        container.setPositionX(1280);
 
-                        container.setPosition(cc.p(1280, 0));
-                        let sequence = cc.spawn(cc.moveTo(.12, cc.p(0, 0)),
-                            cc.callFunc(() => {
-                                cc.game.removePersistRootNode(this.getCurrentSceneNode());
-                            })
-                        );
-
-                        this.getCurrentSceneNode().runAction(cc.spawn(sequence,
-                            cc.callFunc(() => {
-                                let action2 = cc.moveTo(.12, cc.p(0, 0));
-                                container.runAction(action2);
-                            })
-                        ));
-
+                        // let sequence = cc.spawn(cc.moveTo(.12, cc.p(0, 0)),
+                        //     cc.callFunc(() => {
+                        //         cc.game.removePersistRootNode(this.getCurrentSceneNode());
+                        //     })
+                        // );
+                        let action2 = cc.moveTo(.12, cc.v2(0, 0));
+                        container.runAction(cc.spawn(cc.callFunc(() => {
+                            cc.game.removePersistRootNode(this.getCurrentSceneNode());
+                        }), action2));
+                        // this.getCurrentSceneNode().runAction(cc.spawn(
+                        //     cc.callFunc(() => {
+                        //         cc.game.removePersistRootNode(this.getCurrentSceneNode());
+                        //     }),
+                        //     cc.callFunc(() => {
+                        //         cc.log('?', container.getPosition());
+                        //     })
+                        // ));
                     }
                 }
             }
