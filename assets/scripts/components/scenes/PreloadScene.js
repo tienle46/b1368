@@ -1,7 +1,5 @@
 import app from 'app';
 import Component from 'Component';
-import EntranceScene from 'EntranceScene';
-import FullSceneProgress from 'FullSceneProgress';
 
 class PreloadScene extends Component {
     constructor() {
@@ -84,7 +82,11 @@ class PreloadScene extends Component {
     }
 
     onLoadResourceDone() {
-        app.system.loadScene('EntranceScene');
+        let frameSize = cc.view.getFrameSize(); // 1280x720
+        cc.view.setDesignResolutionSize(frameSize.width, frameSize.height, cc.ResolutionPolicy.EXACT_FIT);
+        cc.log('getFrameSize', cc.view.getFrameSize().width);
+
+        app.system.loadScene(app.const.scene.ENTRANCE_SCENE);
     }
 }
 

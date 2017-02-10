@@ -156,23 +156,45 @@ class Service {
         this._pendingRequests = [];
         this.stopLagPolling();
 
-        if (this._loginData) {
-            this.connect((success) => {
-                if (success) {
-                    this.requestAuthen(this._loginData.username, this._loginData.password, false, this._loginData.quickLogin, null, this._loginData.cb);
-                    this._loginData = null;
-                }
-            });
+        let scene = app.system.currentScene.constructor;
+        if (event && event.reason === "manual") {
+            this._loginData = null;
+            app.system.loadScene(app.const.scene.ENTRANCE_SCENE);
         } else {
-            if (event && event.reason === "manual") {
-                app.system.loadScene(app.const.scene.ENTRANCE_SCENE);
+            if (scene) {
+                let sceneName = scene.name;
+                // exception Scene: sences which are still presit when lost connection occurred. otherwise will be back to ENTRANCE_SCENE
+                let isInExceptionScene = app._.includes([
+                    app.const.scene.ENTRANCE_SCENE,
+                    app.const.scene.LOGIN_SCENE,
+                    app.const.scene.REGISTER_SCENE
+                ], sceneName);
+                if (isInExceptionScene) {
+                    // this._loginData && this._reConnectWithLoginData(this._loginData);
+                    return;
+                }
+
+                app.system.loadScene(app.const.scene.ENTRANCE_SCENE, () => {
+                    let okBtn = this._loginData && (this._reConnectWithLoginData.bind(this, this._loginData) || (() => {}));
+
+                    app.system.confirm(app.res.string('lost_connection'), null, okBtn);
+                });
             } else {
                 app.system.loadScene(app.const.scene.ENTRANCE_SCENE, () => {
-                    app.system.info("Kết nối tới máy chủ bị gián đoạn. Vui lòng đăng nhập lại!");
+                    app.system.info(app.string.res('lost_connection'));
                 });
             }
         }
 
+    }
+
+    _reConnectWithLoginData(loginData) {
+        this.connect((success) => {
+            if (success) {
+                let { username, password, isQuickLogin, cb } = loginData;
+                this.requestAuthen(username, password, false, isQuickLogin, null, cb);
+            }
+        });
     }
 
     _onConnectionResume(event) {
@@ -208,7 +230,7 @@ class Service {
             app.context.rejoiningGame = true;
             app.system.enablePendingGameEvent = true;
         } else {
-            this._loginData = null;
+            // this._loginData = null;
 
             this._callCallback(SFS2X.SFSEvent.LOGIN, null, event.data);
 
@@ -219,6 +241,7 @@ class Service {
 
     _onLoginError(event) {
         this._loginData = null;
+        app.system.hideLoader();
         this._callCallback(SFS2X.SFSEvent.LOGIN, event, null);
     }
 
@@ -361,18 +384,17 @@ class Service {
         }
         if (isRegister) {
             data[app.keywords.PARTNER_ID] = 1;
-            this._loginData = null;
 
             data[app.keywords.UTM_SOURCE] = cc.sys.localStorage.getItem('utm_source') || "";
             data[app.keywords.UTM_UTM_MEDIUM] = cc.sys.localStorage.getItem('utm_utm_medium') || "";
             data[app.keywords.UTM_CAMPAIGN] = cc.sys.localStorage.getItem('utm_campaign') || "";
         }
 
-        // else {
-        //     this._loginData = { username: username, password: password, quickLogin: isQuickLogin, cb: cb };
-        // }
+        this._loginData = { username, password, isQuickLogin, cb };
+
         this._addCallback(SFS2X.SFSEvent.LOGIN, cb);
 
+        app.system.showLoader();
         this.sendRequest(new SFS2X.Requests.System.LoginRequest(username, password, data, app.config.zone));
     }
 

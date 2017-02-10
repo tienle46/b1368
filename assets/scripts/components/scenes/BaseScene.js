@@ -117,6 +117,7 @@ export default class BaseScene extends Actor {
 
         if (this.popUp) {
             this.hideLoading();
+            app.system.hideLoader();
             var popupBase = new cc.instantiate(this.popUp);
             popupBase.position = cc.p(0, 0);
             popupBase.getComponent(BasePopup).setContent(string);
@@ -127,12 +128,12 @@ export default class BaseScene extends Actor {
     }
 
     changeScene(name, onLaunched) {
-        this.showLoading();
+        // this.showLoading();
         app.system.loadScene(name, onLaunched);
     }
 
     loginToDashboard(username, password, isRegister = false, isQuickLogin = false, accessToken = null) {
-        this.showLoading();
+        // this.showLoading();
         if (app.service.client.isConnected()) {
             this._requestAuthen(username, password, isRegister, isQuickLogin, accessToken);
         } else {
@@ -148,7 +149,7 @@ export default class BaseScene extends Actor {
         app.service.requestAuthen(username, password, isRegister, isQuickLogin, accessToken, (error, result) => {
             if (error) {
                 this.hideLoading();
-                app.system.error(app.getMessageFromServer(error));
+                app.system.showErrorToast(app.getMessageFromServer(error));
             }
             if (result) {
                 log(`Logged in as ${app.context.getMe().name}`);

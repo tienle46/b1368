@@ -45,6 +45,8 @@ export default class TabBuddiesTransfer extends DialogActor {
         this.receiverEditBoxNode.stayOnTop = false;
 
         let receiver = this.receiverEditBoxNode.string;
+        console.debug('receiver', receiver);
+
         if (!receiver) {
             app.system.error(app.res.string('error_user_enter_empty_input'));
             return;
@@ -57,17 +59,17 @@ export default class TabBuddiesTransfer extends DialogActor {
         }
 
         if (money < this._min) {
-            app.system.error(app.res.string('error_transfer_input_is_too_small', { min: this._min }));
+            app.system.error(app.res.string('error_transfer_input_is_too_small', { min: numeral(this._min).format('0,0') }));
             return;
         }
 
-        if (money < (this._min + this._fee)) {
-            app.system.error(app.res.string('error_transfer_input_is_not_enough', { amount: (this._min + this._fee) }));
+        if (app.context.getMeBalance() < (this._min + this._fee)) {
+            app.system.error(app.res.string('error_transfer_input_is_not_enough', { amount: numeral(this._min + this._fee).format('0,0') }));
             return;
         }
 
         if (money > this._max) {
-            app.system.error(app.res.string('error_transfer_input_is_over_max', { max }));
+            app.system.error(app.res.string('error_transfer_input_is_over_max', { max: numeral(max).format('0,0') }));
             return;
         }
 
@@ -75,7 +77,6 @@ export default class TabBuddiesTransfer extends DialogActor {
 
         let data = {};
         data[app.keywords.USERNAME] = receiver;
-        data[app.keywords.TRANSFER_USER_ID] = this._userId || 0;
         data[app.keywords.GOLD] = money;
         data[app.keywords.TRANSFER_REASON] = reason;
 
@@ -143,8 +144,11 @@ export default class TabBuddiesTransfer extends DialogActor {
     _onUserTransferResponse(data) {
         let su = data[app.keywords.RESPONSE_RESULT];
         if (su) {
-            let username = data[app.keywords.USERNAME];
-            let amount = data[app.keywords.GOLD];
+
+
+            let username = this.receiverEditBoxNode.string;
+            let amount = numeral(this.transferAmountEditBoxNode.string).format('0,0');
+
             app.system.info(app.res.string('transfer_successfully', { amount, username }));
         } else {
             let msg = data[app.keywords.RESPONSE_MESSAGE];

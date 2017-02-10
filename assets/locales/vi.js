@@ -1,6 +1,7 @@
 export default {
     system: "Hệ Thống",
     game_title: "B1368",
+    lost_connection: "Kết nối tới máy chủ bị gián đoạn. Vui lòng đăng nhập lại!",
     change_language_fail: "Đổi ngôn ngữ thất bại",
     invalid_play_card: "Bài không hợp lệ",
     coming_soon: "Chức năng đang hoàn thiện!",
@@ -24,9 +25,9 @@ export default {
     error_transfer_input_is_invalid: '{{input}} không hợp lệ.',
     error_transfer_input_is_over_max: 'Số tiền gửi không được vượt quá {{max}}.',
     error_transfer_input_is_too_small: 'Số tiền gửi tối thiểu là {{min}}.',
-    error_transfer_input_is_not_enough: 'Bạn cần tối thiểu {{amount}} để thực hiện thao tác này.',
+    error_transfer_input_is_not_enough: 'Bạn cần tối thiểu {{amount}} chip để thực hiện thao tác này.',
 
-    transfer_successfully: 'Chuyển thành công {{amount}} Chip tới {{username}}.',
+    transfer_successfully: 'Chuyển thành công {{amount}} chip tới {{username}}.',
     exchange_dialog_confirmation: 'Bạn có muốn đổi {{gold}} chip để nhận {{name}} ?',
     really_wanna_quit: 'Bạn có chắc chắn muốn thoát ?',
     phone_number_confirmation: 'Xác nhận số điện thoại thành công.',

@@ -53,7 +53,7 @@ export default class LoginScene extends BaseScene {
         let password = this.userPasswordEditBox.string.trim();
 
         if (isEmpty(username) || isEmpty(password)) {
-            app.system.error(
+            app.system.showErrorToast(
                 app.res.string('error_user_enter_empty_input')
             );
             return;

@@ -49,11 +49,11 @@ export default class RegisterScene extends BaseScene {
             this.hideLoading();
 
             if (!this._isValidUsernameInput(username)) {
-                app.system.error(app.getMessageFromServer("LOGIN_ERROR_USERNAME_NOT_VALID"));
+                app.system.showErrorToast(app.getMessageFromServer("LOGIN_ERROR_USERNAME_NOT_VALID"));
             } else if (!this._isValidPasswordInput(password)) {
-                app.system.error(app.getMessageFromServer("LOGIN_ERROR_PASSWORD_NOT_VALID"));
+                app.system.showErrorToast(app.getMessageFromServer("LOGIN_ERROR_PASSWORD_NOT_VALID"));
             } else if (!this._isValidCaptcha()) {
-                app.system.error(app.getMessageFromServer("LOGIN_ERROR_CAPTCHA_NOT_VALID"));
+                app.system.showErrorToast(app.getMessageFromServer("LOGIN_ERROR_CAPTCHA_NOT_VALID"));
             }
         }
     }
