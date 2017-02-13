@@ -1,7 +1,7 @@
 import app from 'app';
 import Component from 'components';
 import utils from 'utils';
-import GameUtils from 'GameUtils'; 
+import GameUtils from 'GameUtils';
 
 export default class Card extends Component {
 
@@ -51,54 +51,54 @@ export default class Card extends Component {
         this.__originalInfo = {};
     }
 
-    setOriginalInfo(info = {}){
-        this.__originalInfo = {...this.__originalInfo, ...info};
+    setOriginalInfo(info = {}) {
+        this.__originalInfo = {...this.__originalInfo, ...info };
     }
 
-    updateFinalPosition(){
+    updateFinalPosition() {
         let position = this.__originalInfo.position;
         position && this.node.setPosition(position);
     }
 
-    getFinalScale(){
+    getFinalScale() {
         return this.__originalInfo.scale || this.node.scale;
     }
 
-    getFinalPosition(){
+    getFinalPosition() {
         return this.__originalInfo.position || this.node.position;
     }
 
-    finishCardAction(){
+    finishCardAction() {
         this.node.stopAllActions();
 
-        let {position, rotation, scale} = this.__originalInfo;
+        let { position, rotation, scale } = this.__originalInfo;
 
         position && this.node.setPosition(position);
         rotation && (this.node.rotation = rotation);
         scale && this.node.setScale(scale);
     }
 
-    createActionFromOriginalInfo(duration){
+    createActionFromOriginalInfo(duration) {
         let actions = [];
-        let {position, rotation, scale} = this.__originalInfo;
+        let { position, rotation, scale } = this.__originalInfo;
 
-        if(position && (position != this.node.position)){
+        if (position && (position != this.node.position)) {
             actions.push(cc.moveTo(duration, position));
         }
 
-        if(rotation && (rotation != this.node.rotation)){
-        actions.push(cc.rotateTo(duration, rotation));
+        if (rotation && (rotation != this.node.rotation)) {
+            actions.push(cc.rotateTo(duration, rotation));
         }
 
-        if(scale && (scale != this.node.scale)){
+        if (scale && (scale != this.node.scale)) {
             actions.push(cc.scaleTo(duration, scale));
         }
 
-        return actions.length > 0 ? cc.spawn(actions) : null;
+        return actions.length > 0 ? cc.sequence(cc.spawn(actions), cc.callFunc(this.finishCardAction, this)) : null;
     }
 
-    setLocked(locked){
-        if(!this.loaded){
+    setLocked(locked) {
+        if (!this.loaded) {
             this.__locked = locked;
             return;
         }
@@ -106,22 +106,22 @@ export default class Card extends Component {
         utils.setVisible(this.lockedNode, locked);
     }
 
-    setGroup(group){
+    setGroup(group) {
         this.group = group;
-        if(group > 0){
+        if (group > 0) {
             this.groupNumberLabel && (this.groupNumberLabel.string = group);
             utils.active(this.groupNode, 255);
-        }else{
+        } else {
             utils.deactive(this.groupNode, 0);
         }
     }
 
-    isEmpty(){
+    isEmpty() {
         return this.byteValue < 5;
     }
 
     setHighlight(highlight) {
-        if(!this.loaded){
+        if (!this.loaded) {
             this.__highlight = highlight;
             return;
         }
@@ -162,7 +162,7 @@ export default class Card extends Component {
 
     }
 
-    onEnable(){
+    onEnable() {
         super.onEnable();
 
         utils.setVisible(this.lockedNode, this.locked);
@@ -170,18 +170,18 @@ export default class Card extends Component {
 
         this.loaded = true;
 
-        if(this.__locked){
+        if (this.__locked) {
             this.setLocked(this.__locked);
         }
 
-        if(this.__highlight){
+        if (this.__highlight) {
             this.setLocked(this.__highlight);
         }
 
         this.setReveal(this.reveal);
     }
 
-    onActive(){
+    onActive() {
         super.onActive();
     }
 
@@ -201,14 +201,15 @@ export default class Card extends Component {
         }
     }
 
-    setSelected(selected, runAction = true){
-        if(this.selected == selected) return;
+    setSelected(selected, runAction = true) {
+        if (this.selected == selected) return;
 
         this.selected = selected;
 
-        if(runAction){
+        if (runAction) {
+            this.node.stopAllActions();
             this.node.runAction(cc.moveTo(0.2, this.node.x, selected ? this._selectedMargin : 0));
-        }else {
+        } else {
             this.node.setPositionY(selected ? this._selectedMargin : 0);
         }
     }
@@ -259,8 +260,7 @@ export default class Card extends Component {
 
             if (compareType) {
                 return thisRank == compareRank ? (thisSuit - compareSuit) : (thisRank - compareRank);
-            }
-            else {
+            } else {
                 return thisSuit == compareSuit ? (thisRank - compareRank) : (thisSuit - compareSuit);
             }
         }
@@ -294,15 +294,15 @@ export default class Card extends Component {
         return card;
     }
 
-    value(){
+    value() {
         return this.byteValue;
     }
 
-    static compareRank(card1, card2){
+    static compareRank(card1, card2) {
         return card1.rank - card2.rank;
     }
 
-    static compareSuit(card1, card2){
+    static compareSuit(card1, card2) {
         return card1.suit - card2.suit;
     }
 }

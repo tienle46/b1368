@@ -77,11 +77,13 @@ export default class PhomControls extends GameControls {
         this.hideAllControls();
         utils.active(this.uButton);
         utils.active(this.doiUTronButton);
+        this.setInteractable(this.uButton, true);
     }
 
     _showDownPhomControls(hideSkip, hideChange){
         this.hideAllControls();
         utils.active(this.downPhomButton);
+        this.setInteractable(this.downPhomButton, true);
 
         if(hideSkip){
             utils.deactive(this.skipDownButton);
