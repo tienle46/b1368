@@ -481,6 +481,7 @@ Keywords.BOARD_STATE_KEYWORD = "gp";
 Keywords.DEAL_CARD_LIST_KEYWORD = "sc";
 //Phone invite
 Keywords.PHONE_INVITE_PHONE = "p";
+Keywords.PHONE_INVITE_PHONE_NEW = "phone";
 Keywords.PHONE_INVITE_STATUS = "s";
 Keywords.PHONE_IS_ACTIVE = "a";
 Keywords.PHONE_IS_VALID = "v";

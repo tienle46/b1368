@@ -11,8 +11,10 @@ export default class TabUserInfo extends DialogActor {
             ...this.properties,
             userName: cc.Label,
             vipLevel: cc.Label,
+            nextLevel: cc.Label,
             chipAmout: cc.Label,
             phoneNumber: cc.Label,
+            benefitLbl: cc.RichText,
             userId: cc.RichText,
             currPassword: cc.EditBox,
             newPassword: cc.EditBox,
@@ -22,6 +24,8 @@ export default class TabUserInfo extends DialogActor {
             changePasswordPanel: cc.Node,
             updatePhoneNumberPanel: cc.Node,
         };
+
+        this.nextLvlBenefit = "";
     }
 
     onLoad() {
@@ -72,6 +76,15 @@ export default class TabUserInfo extends DialogActor {
         }
     }
 
+    onHintNextLvlBtnClick() {
+        let string = this.nextLvlBenefit || "Đang cập nhật cấp độ kế.";
+        app.system.info(string);
+    }
+
+    onChangeAvatarBtnClick() {
+        app.system.info(app.res.string('coming_soon'));
+    }
+
     onUpdateBtnClick() {
         let newPhoneNumber = this.newPhoneNumberEditbox.string.trim() || "";
         if (isEmpty(newPhoneNumber)) {
@@ -92,14 +105,14 @@ export default class TabUserInfo extends DialogActor {
 
     _addGlobalListener() {
         super._addGlobalListener();
-        app.system.addListener(app.commands.USER_PROFILE, this._onUserProfile, this);
+        app.system.addListener(app.commands.USER_PROFILE_NEW, this._onUserProfile, this);
         app.system.addListener(app.commands.USER_UPDATE_PASSWORD, this._onUserUpdatePassword, this);
         app.system.addListener(app.commands.UPDATE_PHONE_NUMBER, this._onUserUpdatePhoneNumber, this);
     }
 
     _removeGlobalListener() {
         super._removeGlobalListener();
-        app.system.removeListener(app.commands.USER_PROFILE, this._onUserProfile, this);
+        app.system.removeListener(app.commands.USER_PROFILE_NEW, this._onUserProfile, this);
         app.system.removeListener(app.commands.USER_UPDATE_PASSWORD, this._onUserUpdatePassword, this);
         app.system.removeListener(app.commands.UPDATE_PHONE_NUMBER, this._onUserUpdatePhoneNumber, this);
     }
@@ -111,12 +124,8 @@ export default class TabUserInfo extends DialogActor {
     }
 
     _initUserData() {
-        let data = {};
-        data[app.keywords.USER_NAME] = app.context.getMyInfo().name;
-
         let sendObj = {
-            cmd: app.commands.USER_PROFILE,
-            data
+            cmd: app.commands.USER_PROFILE_NEW,
         };
 
         this.showLoader();
@@ -124,23 +133,38 @@ export default class TabUserInfo extends DialogActor {
     }
 
     _onUserProfile(data) {
-        let { name, coin } = app.context.getMyInfo();
+        console.debug(data);
+        this.hideLoader();
+
+        let { name } = app.context.getMyInfo();
+
+        let { balance, benefit, id, levelName, nextLevelName, nextBenefit } = data;
 
         this.userName.string = name;
-        this.chipAmout.string = numeral(coin).format('0,0');
+        this.chipAmout.string = numeral(balance).format('0,0');
 
-        this.userId.string = `<color=#ffffff>ID:</c> <color=#FFE000>${app.context.getMyInfo().id}</color>`;
-        this.vipLevel.string = `Tỉ phú`;
+        this.userId.string = `<color=#ffffff>ID:</c> <color=#FFE000>${id}</color>`;
+        this.vipLevel.string = levelName;
+        this.nextLevel.string = nextLevelName;
 
         if (app.context.needUpdatePhoneNumber()) {
             this.phoneNumber.string = `Chưa cập nhật`;
         } else {
-            if (data[app.keywords.PHONE_INVITE_PHONE])
-                this.phoneNumber.string = data[app.keywords.PHONE_INVITE_PHONE];
+            if (data[app.keywords.PHONE_INVITE_PHONE_NEW])
+                this.phoneNumber.string = data[app.keywords.PHONE_INVITE_PHONE_NEW];
             else
                 this.phoneNumber.string = `Chưa cập nhật`;
         }
-        this.hideLoader();
+
+        if (benefit) {
+            this.benefitLbl.string = `<color=#F6D533> Quyền lợi:</c> ${benefit}`;
+            let size = this.benefitLbl.node.getContentSize();
+            let height = size.height * this.benefitLbl._lineCount;
+            this.benefitLbl.node.setContentSize(size.width, height);
+        }
+        if (nextBenefit) {
+            this.nextLvlBenefit = nextBenefit;
+        }
     }
 
     _onUserUpdatePassword(data) {
@@ -163,6 +187,7 @@ export default class TabUserInfo extends DialogActor {
         this.hideLoader();
         if (data.hasOwnProperty(app.keywords.RESPONSE_RESULT) && data[app.keywords.RESPONSE_RESULT]) {
             app.system.showLongToast(app.res.string('phonenumber_changed_successfully'));
+            this.phoneNumber.string = this.newPhoneNumberEditbox.string;
             this.newPhoneNumberEditbox.string = "";
 
             this._showUserInfoPanel();
