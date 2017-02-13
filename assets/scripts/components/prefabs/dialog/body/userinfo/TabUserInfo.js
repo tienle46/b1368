@@ -13,7 +13,7 @@ export default class TabUserInfo extends DialogActor {
             vipLevel: cc.Label,
             chipAmout: cc.Label,
             phoneNumber: cc.Label,
-            emailAddress: cc.Label,
+            userId: cc.RichText,
             currPassword: cc.EditBox,
             newPassword: cc.EditBox,
             passwordConfirmation: cc.EditBox,
@@ -25,7 +25,6 @@ export default class TabUserInfo extends DialogActor {
     onLoad() {
         super.onLoad();
         this._showUserInfoPanel();
-        this.emailAddress.string = `Chưa cập nhật`;
     }
 
     start() {
@@ -104,13 +103,16 @@ export default class TabUserInfo extends DialogActor {
         this.userName.string = name;
         this.chipAmout.string = numeral(coin).format('0,0');
 
-
+        this.userId.string = `<color=#ffffff>ID:</c> <color=#FFE000>${app.context.getMyInfo().id}</color>`;
         this.vipLevel.string = `Tỉ phú`;
 
         if (app.context.needUpdatePhoneNumber()) {
             this.phoneNumber.string = `Chưa cập nhật`;
         } else {
-            this.phoneNumber.string = data[app.keywords.PHONE_INVITE_PHONE];
+            if (data[app.keywords.PHONE_INVITE_PHONE])
+                this.phoneNumber.string = data[app.keywords.PHONE_INVITE_PHONE];
+            else
+                this.phoneNumber.string = `Chưa cập nhật`;
         }
         this.hideLoader();
     }

@@ -93,7 +93,6 @@ export default class DialogActor extends Actor {
             let nodeKey = node.__instanceId;
             if (!this.loaders[nodeKey]) {
                 this.loaders[nodeKey] = new LoaderRub(node);
-                cc.log('loader', 12345);
             }
 
             this.loaders[nodeKey].show();
