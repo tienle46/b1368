@@ -44,8 +44,7 @@ Keywords.ABOUT = "a";
 Keywords.INVITED_CODE = "rc";
 Keywords.INVITE_CODE = "ic";
 Keywords.CALL_NUMBER = "p";
-Keywords.UPDATE_PHONE_NUMBER = "upn";
-Keywords.PHONE_NUMBER = "pn";
+Keywords.PHONE_NUMBER = "phoneNumber";
 Keywords.EXP_POINT = "ep";
 Keywords.BALANCE = "ba";
 Keywords.SINGLE_OR_MARRIED = "rs";
@@ -482,6 +481,7 @@ Keywords.BOARD_STATE_KEYWORD = "gp";
 Keywords.DEAL_CARD_LIST_KEYWORD = "sc";
 //Phone invite
 Keywords.PHONE_INVITE_PHONE = "p";
+Keywords.PHONE_INVITE_PHONE_NEW = "phone";
 Keywords.PHONE_INVITE_STATUS = "s";
 Keywords.PHONE_IS_ACTIVE = "a";
 Keywords.PHONE_IS_VALID = "v";
