@@ -378,6 +378,8 @@ export default class CardList extends Component {
     }
 
     onCardsChanged(reverse = false) {
+        this.stopAllCardActions();
+        this.updateFinalPosition();
         reverse && this.cards.reverse();
         this._adjustCardsPosition();
     }
@@ -585,17 +587,12 @@ export default class CardList extends Component {
     }
 
     _onSelectCard(card) {
-
         if(this._revealOnClick){
             this._revealSingleCard(card);
-            return;
+        }else if (this.selectable){
+            card.setSelected(!card.selected);
+            this.onSelectedCardChanged();
         }
-
-        if (!this.selectable)  return;
-
-        card.setSelected(!card.selected);
-
-        this.onSelectedCardChanged();
     }
 
     _revealSingleCard(card){
@@ -692,12 +689,15 @@ export default class CardList extends Component {
 
     runCardActions(duration = CardList.TRANSFER_CARD_DURATION){
 
-        duration == 0 && this.updateFinalPosition();
+        if(duration == 0){
+            this.updateFinalPosition();
+        }else{
+            this.cards.forEach(card => {
+                let action = card.createActionFromOriginalInfo(duration);
+                action && card.node && card.node.runAction(action);
+            });
+        }
 
-        this.cards.forEach(card => {
-            let action = card.createActionFromOriginalInfo(duration);
-            action && card.node && card.node.runAction(action);
-        });
     }
 
     stopAllCardActions(cardList = this, ...args) {
