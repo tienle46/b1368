@@ -83,7 +83,7 @@ export default class Card extends Component {
         let { position, rotation, scale } = this.__originalInfo;
 
         if (position && (position != this.node.position)) {
-            actions.push(cc.moveTo(duration, position));
+            actions.push(cc.moveTo(duration, position.x, position.y));
         }
 
         if (rotation && (rotation != this.node.rotation)) {
@@ -94,7 +94,7 @@ export default class Card extends Component {
             actions.push(cc.scaleTo(duration, scale));
         }
 
-        return actions.length > 0 ? cc.sequence(cc.spawn(actions), cc.callFunc(this.finishCardAction, this)) : null;
+        return actions.length > 0 ? cc.sequence(cc.spawn(actions), cc.callFunc(this.updateFinalPosition, this)) : null;
     }
 
     setLocked(locked) {
@@ -205,9 +205,9 @@ export default class Card extends Component {
         if (this.selected == selected) return;
 
         this.selected = selected;
+        this.node.stopAllActions();
 
         if (runAction) {
-            this.node.stopAllActions();
             this.node.runAction(cc.moveTo(0.2, this.node.x, selected ? this._selectedMargin : 0));
         } else {
             this.node.setPositionY(selected ? this._selectedMargin : 0);
