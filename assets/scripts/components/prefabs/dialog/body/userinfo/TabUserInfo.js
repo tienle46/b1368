@@ -133,7 +133,6 @@ export default class TabUserInfo extends DialogActor {
     }
 
     _onUserProfile(data) {
-        console.debug(data);
         this.hideLoader();
 
         let { name } = app.context.getMyInfo();

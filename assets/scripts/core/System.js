@@ -238,6 +238,13 @@ class GameSystem {
 
     _onAdminMessage(message, data) {
         let duration = data && data.t == app.const.adminMessage.MANUAL_DISMISS ? Toast.FOREVER : undefined;
+        let sceneNode = this.getCurrentSceneNode();
+        let sceneName = this.getCurrentSceneName();
+        if (sceneNode && sceneName == 'DashboardScene' && message.match(/(\"Đăng nhập hằng ngày\")/).length > 0) {
+            let sceneComponent = sceneNode.getComponent(sceneName);
+            sceneComponent.showDailyLoginPopup(message);
+            return;
+        }
         this.showToast(message, duration);
     }
 

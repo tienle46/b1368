@@ -9,19 +9,13 @@ export default class DashboardScene extends BaseScene {
         super();
         this.gameList = [];
 
-        this.pageView = {
-            default: null,
-            type: cc.PageView
-        };
-
-        this.viewContainer = {
-            default: null,
-            type: cc.Node
-        };
-
-        this.item = {
-            default: null,
-            type: cc.Prefab
+        this.properties = {
+            ...this.properties,
+            pageView: cc.PageView,
+            viewContainer: cc.Node,
+            item: cc.Prefab,
+            dailyDialog: cc.Node,
+            dailyDialogContent: cc.Label
         };
     }
 
@@ -32,6 +26,29 @@ export default class DashboardScene extends BaseScene {
     start() {
         super.start();
         this._getGamesListFromServer();
+    }
+
+    showDailyLoginPopup(message) {
+        this.dailyDialogContent.string = message;
+
+        let action = cc.sequence(cc.fadeIn(0.2), cc.delayTime(20), cc.fadeOut(0.5));
+        this.dailyDialog.runAction(action);
+    }
+
+    onCloseDailyLoginPopup() {
+        this.dailyDialog.runAction(cc.fadeOut(0.2));
+    }
+
+    onShareBtnClick() {
+        window.FB.ui({
+            method: 'share_open_graph',
+            action_type: 'og.likes',
+            action_properties: JSON.stringify({
+                object: '....',
+            })
+        }, function(response) {
+            console.log('response', response);
+        });
     }
 
     _addGlobalListener() {

@@ -39,7 +39,7 @@ export default class RegisterScene extends BaseScene {
     }
 
     handleRegistryAction() {
-        this.showLoading();
+        // this.showLoading();
         let username = this.userNameEditBox.string.trim();
         let password = this.userPasswordEditBox.string.trim();
 
