@@ -131,7 +131,9 @@ export default class BoardSam extends BoardCardTurnBase {
             let remainTime = this.timelineRemain - shownTime;
             if (remainTime > 0 && this.scene.isEnding()) {
                 this.renderer.cleanDeckCards();
-                this._startEndBoardTimeLine(remainTime);
+                if(this.scene.gamePlayers.players.length > 1){
+                    this._startEndBoardTimeLine(remainTime);
+                }
             }
         }), 500);
     }

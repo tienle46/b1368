@@ -229,7 +229,9 @@ export default class BoardPhom extends BoardCardTurnBase {
             let remainTime = this.timelineRemain - shownTime;
             if (remainTime > 0 && this.scene.isEnding()) {
                 this.renderer.cleanDeckCards();
-                this._startEndBoardTimeLine(remainTime);
+                if(this.scene.gamePlayers.players.length > 1){
+                    this._startEndBoardTimeLine(remainTime);
+                }
             }
         }), CardList.TRANSFER_CARD_DURATION * 1000);
     }
