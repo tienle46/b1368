@@ -10,6 +10,8 @@ export default class GameChatItem {
         this.text = null;
     }
 
+    setSender
+
     onLoad(){
         this.label.string = this.text || "";
     }

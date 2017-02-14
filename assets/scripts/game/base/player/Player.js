@@ -6,6 +6,7 @@ import Actor from 'Actor';
 import Events from 'Events'
 import { Keywords } from 'core';
 import Props from 'Props';
+import {getEmotionName} from 'IngameChatLeftComponent';
 
 export default class Player extends Actor {
 
@@ -110,7 +111,12 @@ export default class Player extends Actor {
 
     _onPlayerChatMessage(sender, message) {
         if (sender.name == this.user.name) {
-            this.say(message);
+            let emotionName = getEmotionName(message);
+            if(emotionName && emotionName.length >= 0){
+                Props.playEmotion(emotionName, this.node);
+            }else{
+                this.say(message);
+            }
         }
     }
 

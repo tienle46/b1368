@@ -65,6 +65,7 @@ export default class GameScene extends BaseScene {
         this.gameState = null;
         this.gameData = null;
         this._penddingEvents = null;
+        this.gameContext = {};
     }
 
     _addGlobalListener() {
@@ -78,6 +79,7 @@ export default class GameScene extends BaseScene {
         }, this, 1);
 
         this.on(Events.ON_ACTION_EXIT_GAME, this._onActionExitGame, this);
+        this.on(Events.ON_PLAYER_CHAT_MESSAGE, this._onPlayerChatMessage, this, 0);
         this.on(Events.ON_ACTION_LOAD_GAME_GUIDE, this._onActionLoadGameGuide, this);
         this.on(Events.VISIBLE_INGAME_CHAT_COMPONENT, this._onVisibleIngameChatComponent, this);
         this.on(Events.ON_GAME_LOAD_DATA_AFTER_SCENE_START, this._loadGameDataAfterSceneStart, this);
@@ -95,6 +97,16 @@ export default class GameScene extends BaseScene {
             this.gameData[app.keywords.ROOM_READY_PLAYERS] = readyPlayerIds;
 
         }, this);
+    }
+
+    _onPlayerChatMessage(sender, message) {
+        if(!this.gameContext.messages){
+            this.gameContext.messages = [];
+        }
+        this.gameContext.messages.push({sender, message});
+        if(this.gameContext.messages.length > app.const.NUMBER_MESSAGES_KEEP_INGAME){
+            this.gameContext.messages.shift();
+        }
     }
 
     _onVisibleIngameChatComponent() {

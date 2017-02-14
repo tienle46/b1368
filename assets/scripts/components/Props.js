@@ -25,7 +25,13 @@ export default class Props extends Component {
 
     }
 
+    static playEmotion(name, node) {
+        let global = node.parent && node.parent.convertToWorldSpaceAR(node.getPosition());
+        global && Props.playPropName(name, 'emotions', 6, global);
+    }
+
     static playPropName(prosName, resPath, sample, startPos, endPos, finishCallback) {
+
         cc.loader.loadRes(`${resPath}/${prosName}`, cc.SpriteAtlas, (err, atlas) => {
 
             if (err) {

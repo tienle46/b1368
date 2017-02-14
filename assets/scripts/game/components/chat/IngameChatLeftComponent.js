@@ -4,14 +4,23 @@
 
 import app from 'app';
 import utils from 'utils';
-import Component from 'Component';
+import Actor from 'Actor';
 import CCUtils from 'CCUtils';
 import SFS2X from 'SFS2X';
 import NodeRub from 'NodeRub';
 import Props from 'Props';
 import LoaderRub from 'LoaderRub';
+import Events from "Events";
 
-export default class IngameChatLeftComponent extends Component {
+export const emotionTexts = [];
+export const emotionNames = [];
+
+export function getEmotionName(text){
+    let index = emotionTexts.indexOf(text);
+    if(index >= 0) return emotionNames[index];
+}
+
+export default class IngameChatLeftComponent extends Actor {
     constructor() {
         super();
         this.properties = {
@@ -23,23 +32,65 @@ export default class IngameChatLeftComponent extends Component {
             hideAnimName: "ingameHideChatLeft",
             quickChatItemPrefab: cc.Prefab,
             emotionChatItemPrefab: cc.Prefab,
+            logChatItemPrefab: cc.Prefab,
             // panels
             emotionsPanel: cc.Node,
             quickChatPanel: cc.Node,
-            logChatPanel: cc.Node,
+            chatHistoryPanel: cc.Node,
+            tabChatHistoryToggle: cc.Toggle,
         }
 
         this.quickChats = null;
         this.animation = null;
         this.showing = false;
         this.inited = false;
-
+        this.emotions = [];
     }
+
+    onLoad(){
+        super.onLoad();
+
+        this.scene = app.system.currentScene;
+    }
+
+    _addGlobalListener(){
+        super._addGlobalListener();
+        this.scene.on(Events.ON_PLAYER_CHAT_MESSAGE, this._onPlayerChatMessage, this);
+    }
+
+    _removeGlobalListener(){
+        super._removeGlobalListener();
+        this.scene.off(Events.ON_PLAYER_CHAT_MESSAGE, this._onPlayerChatMessage, this);
+    }
+
+    _onPlayerChatMessage(sender, message){
+
+        if(!sender) return;
+
+        this._addNewChatHistoryItem(sender.name, message);
+
+        if(this.chatHistoryPanel.children.length > app.const.NUMBER_MESSAGES_KEEP_INGAME){
+            this.chatHistoryPanel.children[0].destroy();
+            this.chatHistoryPanel.removeChild(this.chatHistoryPanel.children[0]);
+        }
+    }
+
+    _addNewChatHistoryItem(sender, message){
+        let chatItem = cc.instantiate(this.logChatItemPrefab);
+        let historyItem = chatItem.getComponent('GameChatHistoryItem');
+        if(historyItem){
+            historyItem.setMessage(sender, message);
+        }
+
+        this.chatHistoryPanel.addChild(chatItem);
+    }
+
 
     onEnable() {
         super.onEnable();
-        this.scene = app.system.currentScene;
         this.animation = this.node.getComponent(cc.Animation);
+
+        this.tabChatHistoryToggle.check();
         this.onQuickChatTabChecked();
     }
 
@@ -68,19 +119,19 @@ export default class IngameChatLeftComponent extends Component {
 
     onQuickChatTabChecked() {
         this.quickChatPanel.active = true;
-        this.logChatPanel.active = false;
+        this.chatHistoryPanel.active = false;
         this.emotionsPanel.active = false;
     }
 
     onLogChatTabChecked() {
         this.quickChatPanel.active = false;
-        this.logChatPanel.active = true;
+        this.chatHistoryPanel.active = true;
         this.emotionsPanel.active = false;
     }
 
     onEmotionsTabChecked() {
         this.quickChatPanel.active = false;
-        this.logChatPanel.active = false;
+        this.chatHistoryPanel.active = false;
         this.emotionsPanel.active = true;
     }
 
@@ -92,10 +143,16 @@ export default class IngameChatLeftComponent extends Component {
         let text = this.textEditbox.string;
         this._sendChatMessage(text);
         this.textEditbox.string = "";
+        this.textEditbox.setFocus();
+    }
+
+    _initChatHistory(){
+        this.chatHistoryPanel.children.map(child => child.destroy() && child.removeFromParent(true));
+        this.scene.gameContext.messages && this.scene.gameContext.messages.forEach(msgObj => this._addNewChatHistoryItem(msgObj.sender, msgObj.message));
     }
 
     initMessages() {
-        this.quickChatsList.children.map(child => child.destroy() && child.removeFromParent());
+        this.quickChatsList.children.map(child => child.destroy() && child.removeFromParent(true));
         this.quickChats.forEach(message => {
             let chatItemNode = cc.instantiate(this.quickChatItemPrefab);
             let gameQuickChatItem = chatItemNode.getComponent('GameQuickChatItem');
@@ -114,16 +171,32 @@ export default class IngameChatLeftComponent extends Component {
     onQuickChatItemClick(event) {
         let text = event.target.getComponent('GameQuickChatItem').getLabelText();
         this._sendChatMessage(text);
+
+        this.tabChatHistoryToggle.check();
+        this.onLogChatTabChecked();
     }
 
-    emotionClicked(e) {
-        this.hide();
+    emotionClicked(e, indexStr) {
         if (this.scene.gamePlayers.me) {
-            Props.playPropName(e.target.name, 'emotions', 4, this.scene.gamePlayers.me.node);
+            let index = Number(indexStr);
+
+            if(!isNaN(index)){
+                let text = emotionTexts[index];
+
+                if(text && text.length > 0){
+                    app.service.sendRequest(new SFS2X.Requests.System.PublicMessageRequest(text));
+                }
+            }
+
+            //Props.playPropName(e.target.name, 'emotions', 4, this.scene.gamePlayers.me.node);
         }
+
+        this.tabChatHistoryToggle.check();
+        this.onLogChatTabChecked();
     }
 
     initEmotions() {
+        this.emotions = [];
         this.emotionsList.children.map(child => child.destroy() && child.removeFromParent());
         cc.loader.loadResDir('emotions/thumbs', cc.SpriteFrame, (err, assets) => {
             if (err) {
@@ -136,6 +209,7 @@ export default class IngameChatLeftComponent extends Component {
                 clickEvent.target = this.node;
                 clickEvent.component = 'IngameChatLeftComponent';
                 clickEvent.handler = 'emotionClicked';
+                clickEvent.customEventData = `${index}`;
 
                 let item = cc.instantiate(this.emotionChatItemPrefab);
                 item.getComponent(cc.Sprite).spriteFrame = asset;
@@ -143,6 +217,8 @@ export default class IngameChatLeftComponent extends Component {
                 item.getComponent(cc.Button).clickEvents = [clickEvent];
 
                 this.emotionsList.addChild(item);
+                emotionTexts.push(`[:e${index}]`);
+                emotionNames.push(asset.name);
             });
         });
         this.inited = true;
@@ -156,10 +232,7 @@ export default class IngameChatLeftComponent extends Component {
     }
 
     _sendChatMessage(message) {
-        if (app._.isEmpty(message))
-            return
-
-        this.hide();
+        if (app._.isEmpty(message)) return;
 
         app.service.sendRequest(new SFS2X.Requests.System.PublicMessageRequest(message));
         message = "";
