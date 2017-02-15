@@ -45,4 +45,7 @@ export default (app) => {
             return to;
         };
     }
+
+    var Promise = require('Promise-polyfill');
+    window.Promise = Promise;
 };

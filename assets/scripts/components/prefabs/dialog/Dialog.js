@@ -14,7 +14,6 @@ export default class Dialog extends Component {
             titleLbl: cc.Label,
             bgTransparent: cc.Node
         };
-
     }
 
     onLoad() {
@@ -26,17 +25,30 @@ export default class Dialog extends Component {
         super.onEnable();
         this.bgTransparent.on(cc.Node.EventType.TOUCH_START, () => true);
         this.addedNodes = {};
+        this.sharedData = {};
     }
 
     onDestroy() {
         super.onDestroy();
-        this.addedNodes = {};
+        this.addedNodes = null;
+        this.sharedData = null;
     }
 
     onCloseBtnClick() {
         // this.releaseAssets();
         this.node.parent.destroy();
         this.node.parent.removeFromParent();
+    }
+
+    addSharedData(key, data) {
+        console.debug(key)
+        this.sharedData[key] = data;
+    }
+
+    getSharedData(key) {
+        console.debug('getSharedData', key)
+
+        return this.sharedData[key];
     }
 
     addToBody(id, url, componentName, tabGroup, data) {

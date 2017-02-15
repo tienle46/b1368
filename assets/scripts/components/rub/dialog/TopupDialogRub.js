@@ -5,17 +5,28 @@ import app from 'app';
 export default class TopUpDialogRub {
 
     constructor(node) {
+
+        this._initOptions();
+
+        this.node = node;
+        this.dialog = null;
+        this.init();
+    }
+
+    _initOptions() {
         let url = `${app.const.DIALOG_DIR_PREFAB}/topup`;
+
         let tabs = [{
             title: 'Thẻ cào',
-            value: `${url}/tab_card`
+            value: `${url}/tab_card`,
         }, {
             title: 'SMS',
-            value: `${url}/tab_sms`
-
+            value: `${url}/tab_sms`,
+            hidden: !app.env.isBrowserTest()
         }, {
             title: 'IAP',
-            value: `${url}/tab_iap`
+            value: `${url}/tab_iap`,
+            hidden: !app.env.isBrowserTest()
         }, {
             title: 'Lịch sử',
             value: `${url}/tab_history`
@@ -26,9 +37,6 @@ export default class TopUpDialogRub {
         };
 
         this.options = { tabs, options };
-        this.node = node;
-        this.dialog = null;
-        this.init();
     }
 
     init() {

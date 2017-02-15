@@ -19,8 +19,7 @@ class TabSMS extends DialogActor {
             numberLbl: cc.Label,
             textContainer: cc.Node,
         };
-
-        this._sending = false;
+        this.__rendered = false;
     }
 
     onLoad() {
@@ -30,7 +29,10 @@ class TabSMS extends DialogActor {
 
     start() {
         super.start();
-        this._requestPaymentList();
+
+        this.showLoader();
+        let data = this.getSharedData(this.getDialog(this.node), 'sms');
+        data && this._onUserGetChargeList(data);
     }
 
     onSMSBtnClick(e) {
@@ -42,55 +44,49 @@ class TabSMS extends DialogActor {
 
     _addGlobalListener() {
         super._addGlobalListener();
-        app.system.addListener(app.commands.USER_GET_CHARGE_LIST, this._onUserGetChargeList, this);
+        app.system.addListener(app.commands.USER_GET_CHARGE_LIST, this._onUserGetChargeListFromServer, this);
     }
 
     _removeGlobalListener() {
         super._removeGlobalListener();
-        app.system.removeListener(app.commands.USER_GET_CHARGE_LIST, this._onUserGetChargeList, this);
+        app.system.removeListener(app.commands.USER_GET_CHARGE_LIST, this._onUserGetChargeListFromServer, this);
     }
 
-    _requestPaymentList() {
-        var sendObject = {
-            'cmd': app.commands.USER_GET_CHARGE_LIST,
-        };
-
-        this.showLoader();
-        this._sending = true;
-        app.service.send(sendObject);
+    _onUserGetChargeListFromServer(data) {
+        (!this.__rendered) && this._onUserGetChargeList(data[app.keywords.CHARGE_SMS_OBJECT_IAC]);
     }
 
     _onUserGetChargeList(data) {
-        // app.keywords.CHARGE_SMS_OBJECT
-        if (data.hasOwnProperty(app.keywords.CHARGE_SMS_OBJECT_IAC) && this._sending) {
-            const smses = data[app.keywords.CHARGE_SMS_OBJECT_IAC];
-            this._sending = false;
+        this.hideLoader();
 
-            if (smses.length > 0) {
-                this.hideLoader();
+        this.__rendered = true;
 
-                let smsInformations = [];
-                smses.forEach((sms, index) => {
-                    let infos = sms[app.keywords.CHARGE_SMS_OBJECT_INFORS];
-                    infos.forEach((info, i) => {
-                        smsInformations.push(info);
-                    });
+        const smses = data;
+
+        if (smses.length > 0) {
+            this.hideLoader();
+
+            let smsInformations = [];
+            smses.forEach((sms, index) => {
+                let infos = sms[app.keywords.CHARGE_SMS_OBJECT_INFORS];
+                infos.forEach((info, i) => {
+                    smsInformations.push(info);
                 });
+            });
 
-                smsInformations.forEach((smsInfo, i) => {
-                    let moneyGot = smsInfo.balance,
-                        code = smsInfo.code,
-                        sendTo = smsInfo.shortCode,
-                        command = smsInfo.syntax,
-                        isChecked = i === 0;
+            smsInformations.forEach((smsInfo, i) => {
+                let moneyGot = smsInfo.balance,
+                    code = smsInfo.code,
+                    sendTo = smsInfo.shortCode,
+                    command = smsInfo.syntax,
+                    isChecked = i === 0;
 
-                    this._initItem(code, command, sendTo, moneyGot, isChecked);
-                });
+                this._initItem(code, command, sendTo, moneyGot, isChecked);
+            });
 
-                smsInformations.length = 0;
-            } else {
-                this.pageIsEmpty(this.node);
-            }
+            smsInformations.length = 0;
+        } else {
+            this.pageIsEmpty(this.node);
         }
     }
 

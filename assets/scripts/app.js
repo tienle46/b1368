@@ -1,13 +1,11 @@
+/* eslint-disable no-console, no-unused-vars */
 /**
  * Created by Thanh on 8/23/2016.
  */
-
 'use strict';
 
 var app = module.exports;
 var MESSAGES = require('GameErrorMessage');
-var Fingerprint2 = require('fingerprinter');
-var Promise = require('Promise-polyfill');
 var _ = require('lodash');
 
 app.LANG = "vi";
@@ -61,7 +59,7 @@ app.createComponent = (classNameOrInstance, extendClass = undefined, ...args) =>
         }
 
         return isCocosComponent(element) || isCocosProperty(element) ? element : undefined;
-    }
+    };
 
     // // Check if element is instance of cc[xxx]
     // function isComponentOfCC(el) {
@@ -156,9 +154,7 @@ app.getMessageFromServer = (error) => {
 };
 
 /* INIT GAME */
-_setupGame();
-
-function _setupGame() {
+(function _setupGame() {
     require('PreLoader');
     app.service = require("Service");
     app.system = require("System");
@@ -168,51 +164,12 @@ function _setupGame() {
     app.context = require("Context");
     app.event = require("Events");
     app.buddyManager = createBuddyManager();
-}
-// if browser
 
-if (cc.sys.isBrowser) {
-    new Fingerprint2().get((printer) => {
-        app.DEVICE_ID = printer;
-    });
-} else {
-    window.Promise = Promise;
-    // app.DEVICE_ID = 'a19c8e4ae2e82ef1c7846f32628d4ead3';
-    if (cc.sys.platform == cc.sys.IPHONE || cc.sys.platform == cc.sys.IPAD) {
-        app.DEVICE_ID = jsb.reflection.callStaticMethod("FCUUID", "uuidForDevice");
-        log(`ios udid ${app.DEVICE_ID}`);
-    } else {
-        app.DEVICE_ID = 'a19c8e4ae2e82ef1c7846f32628d4ead3';
-    }
-}
-if (cc.sys.isMobile && sdkbox) {
-    //facebook
-    sdkbox.PluginFacebook.init();
-
-    //google analytics
-    sdkbox.PluginGoogleAnalytics.init();
-    sdkbox.PluginGoogleAnalytics.startSession();
-
-    //onesignal
-    sdkbox.PluginOneSignal.init();
-    sdkbox.PluginOneSignal.registerForPushNotifications();
-    // sdkbox.PluginOneSignal.setSubscription(true);
-    sdkbox.PluginOneSignal.enableInAppAlertNotification(true);
-
-    sdkbox.PluginOneSignal.setListener({
-        onSendTag: (success, key, message) => {},
-        onGetTags: (jsonString) => {},
-        onIdsAvailable: (userId, pushToken) => {},
-        onPostNotification: (success, message) => {},
-        onNotification: (isActive, message, additionalData) => {
-
-        }
-    });
-
-
-}
+    require('Env')(app);
+})();
 
 (function() {
+
     window.log = function log(...args) {
         console.log(...args);
     };
@@ -232,10 +189,10 @@ if (cc.sys.isMobile && sdkbox) {
     window.warn = function warn(...args) {
         console.warn(...args);
     };
+
     window.onNativePostAction = function(jsonString) {
-        log("---> onNativePostAction", jsonString);
-    }
-    require('Pollyfill')(app);
+        window.log("---> onNativePostAction", jsonString);
+    };
 
     window.app = app;
     window.game = app.game;

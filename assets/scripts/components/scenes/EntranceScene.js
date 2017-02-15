@@ -76,8 +76,8 @@ export default class EntranceScene extends BaseScene {
     }
 
     handlePlayNowButton() {
-        let username = this._generateUserName("ysad12", app.DEVICE_ID, 0, 5);
-        let password = this._generateUserName("yz212", app.DEVICE_ID, 0, 6);
+        let username = this._generateUserName("ysad12", app.config.DEVICE_ID, 0, 5);
+        let password = this._generateUserName("yz212", app.config.DEVICE_ID, 0, 6);
         this.loginToDashboard(username, password, false, true);
     }
 

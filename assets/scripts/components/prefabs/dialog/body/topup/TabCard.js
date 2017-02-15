@@ -29,7 +29,7 @@ class TabCard extends DialogActor {
 
     start() {
         super.start();
-        this._initCardsGroup();
+        // this._initCardsGroup();
     }
 
     _addGlobalListener() {
@@ -70,11 +70,14 @@ class TabCard extends DialogActor {
 
     _initCardsGroup() {
         let sendObject = {
-            'cmd': app.commands.USER_GET_CHARGE_LIST
+            'cmd': app.commands.USER_GET_CHARGE_LIST,
+            data: {
+                carrierNames: []
+            }
         };
 
         // show loader
-        this.showLoader()
+        this.showLoader();
         app.service.send(sendObject);
     }
 

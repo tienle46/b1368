@@ -28,6 +28,10 @@ export default class DialogActor extends Actor {
         }
     }
 
+    onLoad() {
+        super.onLoad();
+    }
+
     onEnable(...args) {
         super.onEnable(...args);
 
@@ -39,10 +43,6 @@ export default class DialogActor extends Actor {
         super.onDisable();
 
         this.isLoaded = false;
-    }
-
-    _onDataChanged() {
-
     }
 
     setTabGroup(tabGroup) {
@@ -108,5 +108,18 @@ export default class DialogActor extends Actor {
 
             this.loaders[nodeKey].hide();
         }
+    }
+
+    getDialog(node, isDialog = false) {
+        let dialogNode = node && isDialog ? node : node.parent.parent;
+        return (dialogNode && dialogNode.getComponent('Dialog'));
+    }
+
+    getSharedData(dialog, key) {
+        return dialog && dialog.getSharedData(key);
+    }
+
+    _onDataChanged() {
+
     }
 }

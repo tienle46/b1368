@@ -1,7 +1,5 @@
 import Rub from 'Rub';
 import app from 'app';
-import RubUtils from 'RubUtils';
-import NodeRub from 'NodeRub';
 
 export default class DialogRub extends Rub {
     /**
@@ -60,9 +58,9 @@ export default class DialogRub extends Rub {
     _initTab(tabs) {
         let Tabs = this.dialogComponent.tabs;
         // add Tab
-        tabs.forEach((tab, index) => {
+        tabs.filter(tab => !tab.hidden).forEach((tab, index) => {
             tab.isChecked = (index === 0);
-            Tabs.make(tab, this);
+            Tabs.make(tab);
         });
         tabs = null;
     }
@@ -83,7 +81,7 @@ export default class DialogRub extends Rub {
     }
 
     addComponent(component) {
-        return (!this.prefab.getComponent(component)) && this.prefab.addComponent(component);
+        return (!this.dialogNode.getComponent(component)) && this.dialogNode.addComponent(component);
     }
 
 

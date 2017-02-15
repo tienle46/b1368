@@ -377,7 +377,7 @@ class Service {
         data[app.keywords.APP_SECRET_KEY] = app.config.app_secret_key;
         // data[app.keywords.APP_VERSION_KEY] = "1.0.1"; //
         // data[app.keywords.VERSION] = "1.0.0"; //
-        data[app.keywords.DEVICE_ID] = app.DEVICE_ID;
+        data[app.keywords.DEVICE_ID] = app.config.DEVICE_ID;
         data[app.keywords.QUICK_PLAY] = isQuickLogin;
         if (accessToken && accessToken.length > 0) {
             data[app.keywords.ACCESS_TOKEN] = accessToken;

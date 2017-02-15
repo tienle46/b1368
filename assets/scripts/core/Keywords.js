@@ -749,3 +749,6 @@ Keywords.TRANSFER_USER_ID = "n";
 
 Keywords.CHARGE_SMS_OBJECT_IAC = "iac";
 Keywords.CHARGE_SMS_OBJECT_INFORS = "iacInfos";
+Keywords.IN_APP_PURCHASE = "ap";
+Keywords.IN_BILLING_PURCHASE = "bp";
+Keywords.CHARGE_SMS_OBJECT_INFORS = "iacInfos";
