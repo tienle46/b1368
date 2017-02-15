@@ -3,6 +3,7 @@ import DialogActor from 'DialogActor';
 import NodeRub from 'NodeRub';
 import Props from 'Props';
 import numeral from 'numeral';
+import CCUtils from 'CCUtils';
 
 export default class FriendProfilePopup extends DialogActor {
     constructor() {
@@ -69,7 +70,7 @@ export default class FriendProfilePopup extends DialogActor {
     performAnimation(prosName, startNode, destinationNode) {
         this.node.opacity = 0;
 
-        Props.playPropName(prosName, 'props', 8, startNode, destinationNode, () => {
+        Props.playProp(prosName, {startPos: CCUtils.getWorldPosition(startNode), endPos: CCUtils.getWorldPosition(destinationNode)}, () => {
             this.node && this.node.destroy();
             this.node && this.node.removeFromParent();
         });
@@ -157,27 +158,25 @@ export default class FriendProfilePopup extends DialogActor {
             app.system.showToast(app.res.string('error_function_does_not_support'));
         } else {
             if (this.friendId) {
-                app.system.confirm(
-                    app.res.string('confirm_kick_user'),
-                    null,
-                    this._onKickUser.bind(this, this.friendId)
-                );
+                this._onKickUser(this.friendId);
             }
         }
     }
 
     inviteFriend() {
 
-        //invite user to be friend
-        let sendObject = {
-            'cmd': app.commands.BUDDY_INVITE_FRIEND,
-            'data': {
-                [app.keywords.BUDDY_NAME]: this.friendName
-            },
-            room: app.context.getLastJoinedRoom()
-        };
+        app.system.info(app.res.string('coming_soon'));
 
-        app.service.send(sendObject);
+        // //invite user to be friend
+        // let sendObject = {
+        //     'cmd': app.commands.BUDDY_INVITE_FRIEND,
+        //     'data': {
+        //         [app.keywords.BUDDY_NAME]: this.friendName
+        //     },
+        //     room: app.context.getLastJoinedRoom()
+        // };
+        //
+        // app.service.send(sendObject);
     }
 
     close() {

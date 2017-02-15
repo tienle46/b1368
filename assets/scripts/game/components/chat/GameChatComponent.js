@@ -7,26 +7,26 @@ import utils from 'utils';
 import Actor from 'Actor';
 import CCUtils from 'CCUtils';
 import SFS2X from 'SFS2X';
-import NodeRub from 'NodeRub';
-import Props from 'Props';
 import LoaderRub from 'LoaderRub';
 import Events from "Events";
 
 export const emotionTexts = [];
 export const emotionNames = [];
+export const emotions = [];
 
-export function getEmotionName(text){
+export function getEmotionName(text) {
     let index = emotionTexts.indexOf(text);
-    if(index >= 0) return emotionNames[index];
+    if (index >= 0) return emotionNames[index];
 }
 
-export default class IngameChatLeftComponent extends Actor {
+export default class GameChatComponent extends Actor {
     constructor() {
         super();
         this.properties = {
             ...this.properties,
             quickChatsList: cc.Node,
             emotionsList: cc.Node,
+            chatHistoryNode: cc.Node,
             textEditbox: cc.EditBox,
             showAnimName: "ingameShowChatLeft",
             hideAnimName: "ingameHideChatLeft",
@@ -37,60 +37,86 @@ export default class IngameChatLeftComponent extends Actor {
             emotionsPanel: cc.Node,
             quickChatPanel: cc.Node,
             chatHistoryPanel: cc.Node,
+            chatHistoryScroll: cc.ScrollView,
+            /**
+             * @type {cc.Toggle}
+             */
             tabChatHistoryToggle: cc.Toggle,
+            /**
+             * @type {cc.Toggle}
+             */
+            tabQuickChatToggle: cc.Toggle,
         }
 
         this.quickChats = null;
         this.animation = null;
         this.showing = false;
         this.inited = false;
-        this.emotions = [];
     }
 
-    onLoad(){
-        super.onLoad();
+    static loadEmotions() {
+        this.emotions = [];
+        cc.loader.loadResDir('emotions/thumbs', cc.SpriteFrame, (err, assets) => {
+            if (err) {
+                cc.error(err);
+                return;
+            }
 
+            emotions.push(...assets);
+            emotions.forEach((asset, index) => {
+                emotionTexts.push(`[:e${index}]`);
+                emotionNames.push(asset.name);
+            });
+        });
+    }
+
+    onLoad() {
+        super.onLoad();
         this.scene = app.system.currentScene;
     }
 
-    _addGlobalListener(){
+    _addGlobalListener() {
         super._addGlobalListener();
         this.scene.on(Events.ON_PLAYER_CHAT_MESSAGE, this._onPlayerChatMessage, this);
     }
 
-    _removeGlobalListener(){
+    _removeGlobalListener() {
         super._removeGlobalListener();
         this.scene.off(Events.ON_PLAYER_CHAT_MESSAGE, this._onPlayerChatMessage, this);
     }
 
-    _onPlayerChatMessage(sender, message){
+    _onPlayerChatMessage(sender, message) {
 
-        if(!sender) return;
+        if (!sender) return;
 
         this._addNewChatHistoryItem(sender.name, message);
 
-        if(this.chatHistoryPanel.children.length > app.const.NUMBER_MESSAGES_KEEP_INGAME){
+        if (this.chatHistoryPanel.children.length > app.const.NUMBER_MESSAGES_KEEP_INGAME) {
             this.chatHistoryPanel.children[0].destroy();
             this.chatHistoryPanel.removeChild(this.chatHistoryPanel.children[0]);
         }
+
+        this.chatHistoryScroll.scrollToBottom();
     }
 
-    _addNewChatHistoryItem(sender, message){
+    _addNewChatHistoryItem(sender, message) {
         let chatItem = cc.instantiate(this.logChatItemPrefab);
         let historyItem = chatItem.getComponent('GameChatHistoryItem');
-        if(historyItem){
+        if (historyItem) {
             historyItem.setMessage(sender, message);
         }
 
         this.chatHistoryPanel.addChild(chatItem);
     }
 
-
     onEnable() {
         super.onEnable();
         this.animation = this.node.getComponent(cc.Animation);
+        this.checkTabQuickChat();
+    }
 
-        this.tabChatHistoryToggle.check();
+    checkTabQuickChat(){
+        this.tabQuickChatToggle.check();
         this.onQuickChatTabChecked();
     }
 
@@ -106,10 +132,27 @@ export default class IngameChatLeftComponent extends Actor {
     show() {
         this.node.active = true;
         this.animation && this.animation.play(this.showAnimName);
-        if (!this.inited) {
+        if(!this.inited){
             !this.quickChats && this._initQuickChatItemsFromServer();
-            this.initEmotions();
+            this._initEmotions();
+            this._initMessageHistory();
+        }else{
+            this.checkTabQuickChat();
         }
+
+        this.inited = true;
+    }
+
+    _initMessageHistory(){
+
+        console.log('this.scene.gameContext.messages: ', this.scene.gameContext.messages);
+
+        this.chatHistoryPanel.children.forEach(child => child.destroy() && child.removeFromParent(true));
+
+        this.scene.gameContext.messages && this.scene.gameContext.messages.forEach(messageObj => {
+            this._addNewChatHistoryItem(messageObj.sender, messageObj.message)
+        });
+        this.chatHistoryScroll.scrollToBottom();
     }
 
     hide() {
@@ -119,19 +162,19 @@ export default class IngameChatLeftComponent extends Actor {
 
     onQuickChatTabChecked() {
         this.quickChatPanel.active = true;
-        this.chatHistoryPanel.active = false;
+        this.chatHistoryNode.active = false;
         this.emotionsPanel.active = false;
     }
 
     onLogChatTabChecked() {
         this.quickChatPanel.active = false;
-        this.chatHistoryPanel.active = true;
+        this.chatHistoryNode.active = true;
         this.emotionsPanel.active = false;
     }
 
     onEmotionsTabChecked() {
         this.quickChatPanel.active = false;
-        this.chatHistoryPanel.active = false;
+        this.chatHistoryNode.active = false;
         this.emotionsPanel.active = true;
     }
 
@@ -146,8 +189,11 @@ export default class IngameChatLeftComponent extends Actor {
         this.textEditbox.setFocus();
     }
 
-    _initChatHistory(){
-        this.chatHistoryPanel.children.map(child => child.destroy() && child.removeFromParent(true));
+    _initChatHistory() {
+
+        console.log('this.scene.gameContext.messages: ', this.scene.gameContext.messages);
+
+        this.chatHistoryPanel.children.forEach(child => child.destroy() && child.removeFromParent(true));
         this.scene.gameContext.messages && this.scene.gameContext.messages.forEach(msgObj => this._addNewChatHistoryItem(msgObj.sender, msgObj.message));
     }
 
@@ -161,11 +207,10 @@ export default class IngameChatLeftComponent extends Actor {
                 gameQuickChatItem.setLabel(message);
                 chatItemNode.textMessage = gameQuickChatItem.getLabelText();
                 this.quickChatsList.addChild(chatItemNode);
-                CCUtils.addClickEvent(chatItemNode, this.node, IngameChatLeftComponent, this.onQuickChatItemClick);
+                CCUtils.addClickEvent(chatItemNode, this.node, GameChatComponent, this.onQuickChatItemClick);
             }
         });
         this.loader && this.loader.destroy();
-        this.inited = true;
     }
 
     onQuickChatItemClick(event) {
@@ -180,10 +225,10 @@ export default class IngameChatLeftComponent extends Actor {
         if (this.scene.gamePlayers.me) {
             let index = Number(indexStr);
 
-            if(!isNaN(index)){
+            if (!isNaN(index)) {
                 let text = emotionTexts[index];
 
-                if(text && text.length > 0){
+                if (text && text.length > 0) {
                     app.service.sendRequest(new SFS2X.Requests.System.PublicMessageRequest(text));
                 }
             }
@@ -195,33 +240,33 @@ export default class IngameChatLeftComponent extends Actor {
         this.onLogChatTabChecked();
     }
 
-    initEmotions() {
-        this.emotions = [];
+    onDestroy() {
+        super.onDestroy();
+        emotions.splice(0, emotions.length);
+        console.log('GameChatComponent: ');
+    }
+
+    _initEmotions() {
+
+        if (this.emotionInited) return;
+
         this.emotionsList.children.map(child => child.destroy() && child.removeFromParent());
-        cc.loader.loadResDir('emotions/thumbs', cc.SpriteFrame, (err, assets) => {
-            if (err) {
-                cc.error(err);
-                return;
-            }
+        emotions.forEach((asset, index) => {
+            const clickEvent = new cc.Component.EventHandler();
+            clickEvent.target = this.node;
+            clickEvent.component = 'GameChatComponent';
+            clickEvent.handler = 'emotionClicked';
+            clickEvent.customEventData = `${index}`;
 
-            assets.forEach((asset, index) => {
-                const clickEvent = new cc.Component.EventHandler();
-                clickEvent.target = this.node;
-                clickEvent.component = 'IngameChatLeftComponent';
-                clickEvent.handler = 'emotionClicked';
-                clickEvent.customEventData = `${index}`;
+            let item = cc.instantiate(this.emotionChatItemPrefab);
+            item.getComponentInChildren(cc.Sprite).spriteFrame = asset;
+            item.name = asset.name;
+            item.getComponent(cc.Button).clickEvents = [clickEvent];
 
-                let item = cc.instantiate(this.emotionChatItemPrefab);
-                item.getComponent(cc.Sprite).spriteFrame = asset;
-                item.name = asset.name;
-                item.getComponent(cc.Button).clickEvents = [clickEvent];
-
-                this.emotionsList.addChild(item);
-                emotionTexts.push(`[:e${index}]`);
-                emotionNames.push(asset.name);
-            });
+            this.emotionsList.addChild(item);
         });
-        this.inited = true;
+
+        this.emotionInited = true;
     }
 
     /**
@@ -265,4 +310,4 @@ export default class IngameChatLeftComponent extends Actor {
     }
 }
 
-app.createComponent(IngameChatLeftComponent);
+app.createComponent(GameChatComponent);
