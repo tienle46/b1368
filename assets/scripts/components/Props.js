@@ -70,7 +70,7 @@ export default class Props extends Component {
             sprite.spriteFrame = atlas.getSpriteFrames()[0];
 
             node.addChild(animatingNode);
-            let clip = cc.AnimationClip.createWithSpriteFrames(atlas.getSpriteFrames(), 4);
+            let clip = cc.AnimationClip.createWithSpriteFrames(atlas.getSpriteFrames(), 5);
             clip.name = 'run';
             clip.wrapMode = cc.WrapMode.Default;
             animation.addClip(clip);
@@ -106,7 +106,7 @@ export default class Props extends Component {
         target: null,
         startPos: null,
         endPos: null,
-        sample: PROP_SAMPLE_LOW
+        sample: PROP_SAMPLE
     }, finishCallback) {
 
         if (!atlas || !config.startPos) return;
@@ -128,7 +128,7 @@ export default class Props extends Component {
 
         let mainAction = cc.callFunc(() => {
             let spriteFrames = atlas.getSpriteFrames();
-            let clip = cc.AnimationClip.createWithSpriteFrames(spriteFrames, config.sample || PROP_SAMPLE_LOW);
+            let clip = cc.AnimationClip.createWithSpriteFrames(spriteFrames, config.sample || PROP_SAMPLE);
             clip.name = 'run';
             clip.wrapMode = cc.WrapMode.Default;
 
@@ -148,13 +148,13 @@ export default class Props extends Component {
         target: null,
         startPos: null,
         endPos: null,
-        sample: PROP_SAMPLE_LOW
+        sample: PROP_SAMPLE
     }, finishCallback) {
         if (propAssets.length > 0) {
             let atlas = propAssets[prosName];
             this._playLoadedProp(atlas, config, finishCallback);
         } else {
-            this.playPropName(prosName, 'props', config.sample || PROP_SAMPLE_LOW, config.startPos, config.endPos, finishCallback)
+            this.playPropName(prosName, 'props', config.sample || PROP_SAMPLE, config.startPos, config.endPos, finishCallback)
         }
     }
 

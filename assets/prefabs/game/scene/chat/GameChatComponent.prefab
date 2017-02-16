@@ -3226,7 +3226,7 @@
     "target": {
       "__id__": 1
     },
-    "component": "IngameChatLeftComponent",
+    "component": "GameChatComponent",
     "handler": "onChatEnterBtnClicked",
     "customEventData": ""
   },
@@ -3454,7 +3454,7 @@
     "target": {
       "__id__": 1
     },
-    "component": "IngameChatLeftComponent",
+    "component": "GameChatComponent",
     "handler": "onChatEnterBtnClicked",
     "customEventData": ""
   },
