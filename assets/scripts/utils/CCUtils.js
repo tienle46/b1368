@@ -6,6 +6,14 @@ export default class CCUtils {
     constructor() {
     }
 
+    static getWorldPosition(node){
+        if(node){
+            return node.parent ? node.parent.convertToWorldSpaceAR(node) : cc.v2(node.getPosition().x, node.getPosition().y);
+        }else{
+            return cc.v2(0, 0);
+        }
+    }
+
     static addClickEvent(node, targetNode, componentClass, handlerFn){
         let button = node && node.getComponent(cc.Button);
         button.clickEvents && button.clickEvents.push(CCUtils.createEventHandler(targetNode, componentClass, handlerFn));

@@ -6,8 +6,9 @@ import { BaseScene } from 'scenes';
 import { Events, Emitter } from 'events'
 import { CreateGameException } from 'exceptions';
 import { gameManager, GameEventHandler, Board, TLMNDLBoard, TLMNDLPlayer } from 'game';
-import IngameChatComponent from 'IngameChatComponent';
 import GamePlayers from 'GamePlayers';
+import GameChatComponent from "GameChatComponent";
+import Props from "../Props";
 
 export default class GameScene extends BaseScene {
 
@@ -65,6 +66,7 @@ export default class GameScene extends BaseScene {
         this.gameState = null;
         this.gameData = null;
         this._penddingEvents = null;
+        this.gameContext = null;
     }
 
     _addGlobalListener() {
@@ -78,6 +80,7 @@ export default class GameScene extends BaseScene {
         }, this, 1);
 
         this.on(Events.ON_ACTION_EXIT_GAME, this._onActionExitGame, this);
+        this.on(Events.ON_PLAYER_CHAT_MESSAGE, this._onPlayerChatMessage, this, 0);
         this.on(Events.ON_ACTION_LOAD_GAME_GUIDE, this._onActionLoadGameGuide, this);
         this.on(Events.VISIBLE_INGAME_CHAT_COMPONENT, this._onVisibleIngameChatComponent, this);
         this.on(Events.ON_GAME_LOAD_DATA_AFTER_SCENE_START, this._loadGameDataAfterSceneStart, this);
@@ -97,6 +100,16 @@ export default class GameScene extends BaseScene {
         }, this);
     }
 
+    _onPlayerChatMessage(sender, message) {
+        if(!this.gameContext.messages){
+            this.gameContext.messages = [];
+        }
+        this.gameContext.messages.push({sender: sender.name, message});
+        if(this.gameContext.messages.length > app.const.NUMBER_MESSAGES_KEEP_INGAME){
+            this.gameContext.messages.shift();
+        }
+    }
+
     _onVisibleIngameChatComponent() {
         this.chatComponent.setVisible();
     }
@@ -110,6 +123,7 @@ export default class GameScene extends BaseScene {
 
     onLoad() {
         super.onLoad();
+        this.gameContext = {};
         this._penddingEvents = [];
 
         this.node.children.forEach(child => { child.opacity = 255 });
@@ -163,7 +177,7 @@ export default class GameScene extends BaseScene {
         // utils.deactive(this.gameResultPopupNode);
 
         app.system.setCurrentScene(this);
-        this.chatComponent = this.chatComponentNode.getComponent('IngameChatLeftComponent');
+        this.chatComponent = this.chatComponentNode.getComponent('GameChatComponent');
         this.gamePlayers = this.playerLayer.getComponent('GamePlayers');
 
 
@@ -207,12 +221,17 @@ export default class GameScene extends BaseScene {
         this._initGameEvents();
         app.system.enablePendingGameEvent = false;
         this._handlePendingEvents();
+
+        GameChatComponent.loadEmotions();
+        Props.loadAllPropAsset();
     }
 
     onDestroy() {
         super.onDestroy();
         this.removeAllListener();
         this.gameEventHandler && this.gameEventHandler.removeGameEventListener();
+        this.gameContext = {};
+        Props.releaseAllPropAsset();
     }
 
     isPlaying() {

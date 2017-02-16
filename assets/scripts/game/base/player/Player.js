@@ -1,11 +1,12 @@
 import app from 'app';
-import { utils, GameUtils } from 'utils';
+import {utils, GameUtils} from 'utils';
 import SFS2X from 'SFS2X';
 import CreateGameException from 'CreateGameException';
 import Actor from 'Actor';
 import Events from 'Events'
-import { Keywords } from 'core';
+import {Keywords} from 'core';
 import Props from 'Props';
+import {getEmotionName} from 'GameChatComponent';
 
 export default class Player extends Actor {
 
@@ -110,7 +111,12 @@ export default class Player extends Actor {
 
     _onPlayerChatMessage(sender, message) {
         if (sender.name == this.user.name) {
-            this.say(message);
+            let emotionName = getEmotionName(message);
+            if (emotionName && emotionName.length >= 0) {
+                Props.playEmotion(emotionName, this.node);
+            } else {
+                this.say(message);
+            }
         }
     }
 
@@ -166,11 +172,11 @@ export default class Player extends Actor {
         let node = this.node.parent ? this.node.parent : this.node;
         myPos = node.convertToWorldSpaceAR(myPos);
 
-        return { myPos, isItMe };
+        return {myPos, isItMe};
     }
 
     onEnable(renderer, renderData = {}) {
-        super.onEnable(renderer, {...renderData, isItMe: this.user.isItMe, scene: this.scene, owner: this.isOwner });
+        super.onEnable(renderer, {...renderData, isItMe: this.user.isItMe, scene: this.scene, owner: this.isOwner});
 
         this.username = this.user.name;
         this.id = this.user.getPlayerId(this.board.room);
@@ -203,7 +209,7 @@ export default class Player extends Actor {
             receiverPos = this._getPosBasedOnWorldSpace(playerIdReceiver).myPos,
             prosName = Object.values(app.res.asset_tools).find(asset => asset.id == assetId).name;
 
-        Props.playPropName(prosName, 'props', 8, senderPos, receiverPos);
+        Props.playProp(prosName, {target: this.scene.gameMenuNode, startPos: senderPos, endPos: receiverPos});
     }
 
     _updatePlayerAnchor() {
@@ -349,7 +355,7 @@ export default class Player extends Actor {
         let newPlayer = utils.getVariable(this.user, "newPlayer");
         if (!newPlayer) {
             this.scene.showShortLoading('ready');
-            app.service.send({ cmd: app.commands.PLAYER_READY, room: this.scene.room });
+            app.service.send({cmd: app.commands.PLAYER_READY, room: this.scene.room});
         }
     }
 }

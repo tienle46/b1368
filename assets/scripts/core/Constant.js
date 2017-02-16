@@ -141,3 +141,5 @@ app.const.COLOR_GRAY = new cc.Color(174, 174, 174);
 
 app.const.adminMessage = {}
 app.const.adminMessage.MANUAL_DISMISS = 4;
+
+app.const.NUMBER_MESSAGES_KEEP_INGAME = 30;
