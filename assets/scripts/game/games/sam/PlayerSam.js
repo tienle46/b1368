@@ -31,32 +31,32 @@ export default class PlayerSam extends PlayerCardTurnBase {
     _addGlobalListener() {
         super._addGlobalListener();
 
-        this.board.scene.on(Events.ON_CLICK_PLAY_BUTTON, this._onPlayTurn, this);
-        this.board.scene.on(Events.ON_CLICK_SKIP_TURN_BUTTON, this._onSkipTurn, this);
-        this.board.scene.on(Events.ON_CLICK_SORT_BUTTON, this._onSortCards, this);
-        this.board.scene.on(Events.ON_CLICK_BAO_XAM_BUTTON, this._onBaoXam, this);
-        this.board.scene.on(Events.ON_CLICK_BO_BAO_XAM_BUTTON, this._onBoBaoXam, this);
-        this.board.scene.on(Events.ON_PLAYER_REMAIN_CARD_COUNT, this._setRemainCardCount, this);
-        this.board.scene.on(Events.HANDLE_PLAY_TURN, this._onPlayerPlayedTurn, this);
-        this.board.scene.on(Events.ON_GAME_STATE, this._onGameState, this);
-        this.board.scene.on(Events.ON_GAME_STATE_TRUE_PLAY, this._onGameTruePlay, this);
-        this.board.scene.on(Events.ON_PLAYER_BAO_XAM, this._onPlayerBaoXam, this);
-        this.board.scene.on(Events.ON_PLAYER_BAO_1, this._onPlayerBao1, this);
+        this.scene.on(Events.ON_CLICK_PLAY_BUTTON, this._onPlayTurn, this);
+        this.scene.on(Events.ON_CLICK_SKIP_TURN_BUTTON, this._onSkipTurn, this);
+        this.scene.on(Events.ON_CLICK_SORT_BUTTON, this._onSortCards, this);
+        this.scene.on(Events.ON_CLICK_BAO_XAM_BUTTON, this._onBaoXam, this);
+        this.scene.on(Events.ON_CLICK_BO_BAO_XAM_BUTTON, this._onBoBaoXam, this);
+        this.scene.on(Events.ON_PLAYER_REMAIN_CARD_COUNT, this._setRemainCardCount, this);
+        this.scene.on(Events.HANDLE_PLAY_TURN, this._onPlayerPlayedTurn, this);
+        this.scene.on(Events.ON_GAME_STATE, this._onGameState, this);
+        this.scene.on(Events.ON_GAME_STATE_TRUE_PLAY, this._onGameTruePlay, this);
+        this.scene.on(Events.ON_PLAYER_BAO_XAM, this._onPlayerBaoXam, this);
+        this.scene.on(Events.ON_PLAYER_BAO_1, this._onPlayerBao1, this);
     }
 
     _removeGlobalListener() {
         super._removeGlobalListener();
 
-        this.board.scene.off(Events.ON_CLICK_PLAY_BUTTON, this._onPlayTurn);
-        this.board.scene.off(Events.ON_CLICK_SKIP_TURN_BUTTON, this._onSkipTurn);
-        this.board.scene.off(Events.ON_CLICK_SORT_BUTTON, this._onSortCards);
-        this.board.scene.off(Events.ON_PLAYER_REMAIN_CARD_COUNT, this._setRemainCardCount);
-        this.board.scene.off(Events.ON_CLICK_BAO_XAM_BUTTON, this._onBaoXam, this);
-        this.board.scene.off(Events.ON_CLICK_BO_BAO_XAM_BUTTON, this._onBoBaoXam, this);
-        this.board.scene.off(Events.HANDLE_PLAY_TURN, this._onPlayerPlayedTurn, this);
-        this.board.scene.off(Events.ON_GAME_STATE, this._onGameState, this);
-        this.board.scene.off(Events.ON_PLAYER_BAO_XAM, this._onPlayerBaoXam, this);
-        this.board.scene.off(Events.ON_PLAYER_BAO_1, this._onPlayerBao1, this);
+        this.scene.off(Events.ON_CLICK_PLAY_BUTTON, this._onPlayTurn);
+        this.scene.off(Events.ON_CLICK_SKIP_TURN_BUTTON, this._onSkipTurn);
+        this.scene.off(Events.ON_CLICK_SORT_BUTTON, this._onSortCards);
+        this.scene.off(Events.ON_PLAYER_REMAIN_CARD_COUNT, this._setRemainCardCount);
+        this.scene.off(Events.ON_CLICK_BAO_XAM_BUTTON, this._onBaoXam, this);
+        this.scene.off(Events.ON_CLICK_BO_BAO_XAM_BUTTON, this._onBoBaoXam, this);
+        this.scene.off(Events.HANDLE_PLAY_TURN, this._onPlayerPlayedTurn, this);
+        this.scene.off(Events.ON_GAME_STATE, this._onGameState, this);
+        this.scene.off(Events.ON_PLAYER_BAO_XAM, this._onPlayerBaoXam, this);
+        this.scene.off(Events.ON_PLAYER_BAO_1, this._onPlayerBao1, this);
     }
 
     _onPlayerBao1(playerId){
@@ -84,17 +84,17 @@ export default class PlayerSam extends PlayerCardTurnBase {
     }
 
     _onBaoXam(){
-        app.service.send({cmd: app.commands.PLAYER_BAO_XAM, data: {[app.keywords.IS_BAO_XAM]: true}, room: this.board.scene.room}, (data) => {
+        app.service.send({cmd: app.commands.PLAYER_BAO_XAM, data: {[app.keywords.IS_BAO_XAM]: true}, room: this.scene.room}, (data) => {
             this._handlePlayerBaoXam(data);
         });
-        this.board.scene.emit(Events.SHOW_WAIT_TURN_CONTROLS);
+        this.scene.emit(Events.SHOW_WAIT_TURN_CONTROLS);
     }
 
     _onBoBaoXam(){
-        app.service.send({cmd: app.commands.PLAYER_BAO_XAM, data: {[app.keywords.IS_BAO_XAM]: false}, room: this.board.scene.room}, (data) => {
+        app.service.send({cmd: app.commands.PLAYER_BAO_XAM, data: {[app.keywords.IS_BAO_XAM]: false}, room: this.scene.room}, (data) => {
             this._handlePlayerBaoXam(data);
         });
-        this.board.scene.emit(Events.SHOW_WAIT_TURN_CONTROLS);
+        this.scene.emit(Events.SHOW_WAIT_TURN_CONTROLS);
     }
 
     _onPlayerPlayedTurn(data){
@@ -162,7 +162,7 @@ export default class PlayerSam extends PlayerCardTurnBase {
 
     _onGameState(state, data, isJustJoined){
         if(state == app.const.game.state.BOARD_STATE_BAO_XAM){
-            this.board.scene.emit(Events.SHOW_BAO_XAM_CONTROLS);
+            this.scene.emit(Events.SHOW_BAO_XAM_CONTROLS);
         }
     }
 
@@ -174,7 +174,7 @@ export default class PlayerSam extends PlayerCardTurnBase {
         }else{
             this.sentBaoXamValue = -1;
             this.renderer.showBaoXam(false);
-            this.board.scene.emit(Events.SHOW_WAIT_TURN_CONTROLS);
+            this.scene.emit(Events.SHOW_WAIT_TURN_CONTROLS);
         }
     }
 

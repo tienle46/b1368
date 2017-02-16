@@ -45,14 +45,15 @@ app.const.gameCode.XOC_DIA = 'xod';
 
 app.const.gameLabels = {
     [app.const.gameCode.PHOM]: 'Phỏm',
-    [app.const.gameCode.TLMNDL]: 'Tiến Lên Miền Nam Đếm Lá',
+    [app.const.gameCode.TLMNDL]: 'Tiến Lên Miền Nam',
     [app.const.gameCode.TLMN]: 'Tiến Lên Miền Nam',
     [app.const.gameCode.TLMNM]: 'Tiến Lên Miền Nam Mới',
     [app.const.gameCode.XITO]: 'Xì Tố',
+    [app.const.gameCode.XAM]: 'SÂM',
     [app.const.gameCode.BA_CAY]: 'Ba Cây',
     [app.const.gameCode.LIENG]: 'Liêng',
     [app.const.gameCode.BAU_CUA]: 'Bầu Cua',
-    [app.const.gameCode.ALL]: 'XGA',
+    [app.const.gameCode.ALL]: 'B1368',
     [app.const.gameCode.XOC_DIA]: 'Xóc Đĩa'
 };
 

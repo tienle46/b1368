@@ -66,13 +66,10 @@
       },
       {
         "__id__": 112
-      },
-      {
-        "__id__": 114
       }
     ],
     "_prefab": {
-      "__id__": 115
+      "__id__": 114
     },
     "groupIndex": 0
   },
@@ -3462,7 +3459,7 @@
       "__id__": 1
     },
     "_enabled": true,
-    "transition": 0,
+    "transition": 3,
     "pressedColor": {
       "__type__": "cc.Color",
       "r": 211,
@@ -3477,8 +3474,8 @@
       "b": 255,
       "a": 255
     },
-    "duration": 0.1,
-    "zoomScale": 1.2,
+    "duration": 0.08,
+    "zoomScale": 1.12,
     "pressedSprite": null,
     "hoverSprite": null,
     "clickEvents": [
@@ -3505,7 +3502,7 @@
     "_N$normalSprite": null,
     "_N$disabledSprite": null,
     "_N$target": {
-      "__id__": 1
+      "__id__": 3
     }
   },
   {
@@ -3516,18 +3513,6 @@
     "component": "PlayerXocDia",
     "handler": "avatarClicked",
     "customEventData": ""
-  },
-  {
-    "__type__": "d2d23CyXOhMxYG3ydeJ57ya",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 1
-    },
-    "_enabled": true,
-    "path": "",
-    "pressedScale": 1.05,
-    "transDuration": 0.08
   },
   {
     "__type__": "cc.PrefabInfo",
