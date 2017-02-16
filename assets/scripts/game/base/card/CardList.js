@@ -704,8 +704,10 @@ export default class CardList extends Component {
         cardList.node && this.node.stopAllActions();
         cardList.cards.forEach(card => card.node.stopAllActions());
         if (this.__endActionCb) {
-            this.__endActionCb(...args);
+            let endAction = this.__endActionCb;
             this.__endActionCb = null;
+
+            endAction(...args);
         }
     }
 
@@ -713,8 +715,10 @@ export default class CardList extends Component {
         cardList.node && this.node.stopAllActions();
         cardList.cards.forEach(card => card.finishCardAction());
         if (this.__endActionCb) {
-            this.__endActionCb(...args);
+            let endAction = this.__endActionCb;
             this.__endActionCb = null;
+
+            endAction(...args);
         }
     }
 
