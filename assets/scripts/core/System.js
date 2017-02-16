@@ -32,6 +32,7 @@ class GameSystem {
         this._currentScene = cc.Node;
         this.isInactive = false;
         this.initEventListener();
+        this._sceneName = null;
     }
 
     showLoader() {
@@ -71,31 +72,22 @@ class GameSystem {
                 app.service.removeAllCallback(this.getCurrentSceneName());
 
                 this._currentScene = cc.director.getScene().children[0].getComponent(sceneName);
+
                 if (this._currentScene) {
+                    this._sceneName = sceneName;
+
                     this._addToastToScene();
                     this._addLoaderToScene();
+
                     let container = this.getCurrentSceneNode().getChildByName('Container');
                     if (container) {
                         cc.game.addPersistRootNode(this.getCurrentSceneNode());
                         container.setPositionX(1280);
 
-                        // let sequence = cc.spawn(cc.moveTo(.12, cc.p(0, 0)),
-                        //     cc.callFunc(() => {
-                        //         cc.game.removePersistRootNode(this.getCurrentSceneNode());
-                        //     })
-                        // );
                         let action2 = cc.moveTo(.12, cc.v2(0, 0));
                         container.runAction(cc.spawn(cc.callFunc(() => {
                             cc.game.removePersistRootNode(this.getCurrentSceneNode());
                         }), action2));
-                        // this.getCurrentSceneNode().runAction(cc.spawn(
-                        //     cc.callFunc(() => {
-                        //         cc.game.removePersistRootNode(this.getCurrentSceneNode());
-                        //     }),
-                        //     cc.callFunc(() => {
-                        //         cc.log('?', container.getPosition());
-                        //     })
-                        // ));
                     }
                 }
             }
@@ -123,7 +115,7 @@ class GameSystem {
     }
 
     getCurrentSceneName() {
-        return this._currentScene ? this._currentScene.constructor.name : 'anonymousScene';
+        return this._currentScene ? this._sceneName : 'anonymousScene';
     }
 
     get currentScene() {
