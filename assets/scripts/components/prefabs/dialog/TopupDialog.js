@@ -12,6 +12,10 @@ class TopupDialog extends DialogActor {
         this.node.on('touchstart', function() {
             return;
         });
+
+        if (app.env.isMobile() && window.sdkbox.IAP) {
+
+        }
     }
 
     onDestroy() {

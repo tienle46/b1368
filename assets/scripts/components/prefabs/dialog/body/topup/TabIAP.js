@@ -8,17 +8,23 @@ class TabIAP extends DialogActor {
         super();
         this.properties = {
             ...this.properties,
-            toggleGroupNode: cc.Node,
+            contentNode: cc.Node,
             itemNode: cc.Node,
             money: cc.Label,
             balance: cc.Label,
         };
 
-        this.__rendered = false;
+        this.__sending = false;
+        this.__items = [];
     }
 
     onLoad() {
         super.onLoad();
+    }
+
+    onDestroy() {
+        super.onDestroy();
+        this.__items.length = 0;
     }
 
     start() {
@@ -26,61 +32,161 @@ class TabIAP extends DialogActor {
 
         this.showLoader();
 
-        let data = this.getSharedData(this.getDialog(this.node), 'iap');
-        data && this._onUserGetIAPList(data);
+        this._requestPaymentList();
+        this._initIAP();
+
+        // let data = this.getSharedData(this.getDialog(this.node), 'iap');
+        // data && this._onUserGetIAPList(data);
+    }
+
+    _requestPaymentList() {
+        var sendObject = {
+            'cmd': app.commands.USER_GET_CHARGE_LIST,
+        };
+
+        this.showLoader();
+        this.__sending = true;
+        app.service.send(sendObject);
     }
 
     _addGlobalListener() {
         super._addGlobalListener();
-        app.system.addListener(app.commands.USER_GET_CHARGE_LIST, this._onGetListDataFromServer, this);
+        app.system.addListener(app.commands.USER_GET_CHARGE_LIST, this._onUserGetIAPList, this);
     }
 
     _removeGlobalListener() {
         super._removeGlobalListener();
-        app.system.removeListener(app.commands.USER_GET_CHARGE_LIST, this._onGetListDataFromServer, this);
-    }
-
-    _onGetListDataFromServer(data) {
-        (!this.__rendered) && this._onUserGetIAPList(app.env.isAndroid() ? data[app.keywords.IN_BILLING_PURCHASE] : data[app.keywords.IN_APP_PURCHASE]);
+        app.system.removeListener(app.commands.USER_GET_CHARGE_LIST, this._onUserGetIAPList, this);
     }
 
     onIapItemClick(e) {
         // click
+        let target = e.currentTarget;
+        cc.log(target.productId);
+
+        if (app.env.isMobile() && window.sdkbox.IAP) {
+            let name = target.productId;
+
+            app.system.showLoader('Đang thực hiện giao dịch apple .....', 60);
+            window.sdkbox.IAP.purchase(name);
+        }
+    }
+
+    _initIAP() {
+        if (app.env.isMobile()) {
+            window.sdkbox.IAP.setListener({
+                onInitialized: (success) => {
+                    cc.log('IAP: success', JSON.stringify(success));
+                },
+                onSuccess: (product) => {
+                    //Purchase success
+                    /**
+                     * {
+                     * "name":"com.3mien.68.45K",
+                     * "id":"com.3mien.68.45K",
+                     * "title":"45K Chips",
+                     * "description":"Purchase 45K Chips",
+                     * "price":"₫45,000",
+                     * "currencyCode":"VND",
+                     * "receipt":"",
+                     * "receiptCipheredPayload":"MIITxwYJKoZIhvcNAQcCoIITuDCCE7QCAQExCzAJBgUrDgMCGgUAMIIDaAYJ"
+                     * }
+                     */
+                    cc.log('\nIAP: onSuccess', JSON.stringify(product));
+
+                    let sendObj = {
+                        cmd: 'submitPurchase',
+                        data: {
+                            purchases: [product.receiptCipheredPayload]
+                        }
+                    };
+
+                    cc.sys.localStorage.getItem(app.const.IAP_LOCAL_STORAGE).push({ id: product.id, receipt: product.receiptCipheredPayload })
+
+                    app.system.showLoader('Item đã đc mua, đợi xác nhận từ server .....', 60);
+                    cc.log('\nIAP sendObject:', JSON.stringify(sendObj))
+                    app.service.send(sendObj);
+                },
+                onFailure: (product, msg) => {
+                    //Purchase failed
+                    //msg is the error message
+                    app.system.hideLoader();
+                    app.system.error(msg);
+                    cc.log('\nIAP: onFailure', JSON.stringify(product), JSON.stringify(msg))
+
+                },
+                onCanceled: (product) => {
+                    //Purchase was canceled by user
+                    cc.log('\nIAP: onCanceled', JSON.stringify(product))
+                    app.system.hideLoader();
+                    app.system.error(msg);
+                },
+                onRestored: (product) => {
+                    //Purchase restored
+                    cc.log('onRestored', JSON.stringify(product))
+
+                },
+                onProductRequestSuccess: (products) => {
+                    //Returns you the data for all the iap products
+                    //You can get each item using following method
+                    cc.log('\nIAP: onProductRequestSuccess', JSON.stringify(products));
+
+                    for (let i = 0; i < products.length; i++) {
+                        // loop
+                        // (() => {
+                        //     let name = products[i].name;
+                        //     this.__items.forEach(item => {
+                        //         if (item.productId == name) {
+                        //             this.contentNode.addChild(item);
+                        //         };
+                        //     })
+                        // })();
+                    }
+                },
+                onProductRequestFailure: (msg) => {
+                    //When product refresh request fails.
+                    cc.log('\nIAP: onProductRequestFailure', JSON.stringify(msg))
+                }
+            });
+        }
     }
 
     _onUserGetIAPList(data) {
         this.hideLoader();
+        if (this.__sending) {
+            this.__sending = false;
 
-        this.__rendered = true;
-        let { balances, currencies, prices, productIds } = data;
+            let iapData = app.env.isAndroid() ? data[app.keywords.IN_BILLING_PURCHASE] : data[app.keywords.IN_APP_PURCHASE];
+            let { balances, currencies, prices, productIds } = iapData;
 
-        // app.keywords.CHARGE_SMS_OBJECT
-        if (balances.length > 0) {
-            this.hideLoader();
+            // app.keywords.CHARGE_SMS_OBJECT
+            if (balances && balances.length > 0) {
+                this.hideLoader();
 
-            for (let i = 0; i < balances.length; i++) {
-                let balance = balances[i];
-                let currency = currencies[i];
-                let price = prices[i];
-                let productId = productIds[i];
-                this._initItem(balance, currency ? currency : "$", price, productId, i === 0);
+                for (let i = 0; i < balances.length; i++) {
+                    let balance = balances[i];
+                    let currency = currencies[i];
+                    let price = prices[i];
+                    let productId = productIds[i];
+
+                    this._initItem(balance, currency ? currency : "$", price, productId);
+                }
+            } else {
+                this.pageIsEmpty(this.node);
             }
-        } else {
-            this.pageIsEmpty(this.node);
         }
     }
 
-    _initItem(balance, currency, price, productId, isChecked) {
+    _initItem(balance, currency, price, productId) {
         this.money.string = `${numeral(price).format('0,0')}${currency}`;
         this.balance.string = numeral(balance).format('0,0');
 
         let item = cc.instantiate(this.itemNode);
         item.active = true;
-        let toggle = item.getComponent(cc.Toggle);
-        if (isChecked) {
-            toggle.check();
-        }
-        this.toggleGroupNode.addChild(item);
+        item.productId = productId;
+        this.__items.push(item);
+
+        this.contentNode.addChild(item);
     }
 }
 

@@ -12,6 +12,12 @@ class ExchangeDialog extends Component {
         this.node.on('touchstart', function() {
             return;
         });
+        cc.log('EXCHANGE: setListener');
+    }
+
+    start() {
+        super.start();
+        cc.log('EXCHANGE 2: setListener');
     }
 
     updatePhoneNode() {

@@ -18,6 +18,7 @@ app.const.EXCHANGE_LIST_CARD_TYPE_ID = 1;
 app.const.EXCHANGE_LIST_ITEM_TYPE_ID = 2;
 
 app.const.USER_LOCAL_STORAGE = "userInfo";
+app.const.IAP_LOCAL_STORAGE = "iapItems";
 
 app.const.scene = {};
 app.const.scene.ENTRANCE_SCENE = "EntranceScene";

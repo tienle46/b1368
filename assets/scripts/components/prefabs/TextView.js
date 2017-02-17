@@ -32,8 +32,9 @@ export default class TextView extends Component {
         this.currentWidth = this.node.width;
 
     }
+
     getLabelLineHeight() {
-        if (cc.sys.isBrowser) {
+        if (app.env.isBrowser()) {
             return this.label.lineHeight;
         }
 

@@ -23,7 +23,7 @@ export default class EntranceScene extends BaseScene {
 
     // use this for initialization
     onLoad() {
-        if (cc.sys.isMobile) {
+        if (app.env.isMobile() && sdkbox.PluginFacebook) {
             sdkbox.PluginFacebook.setListener({
                 onLogin: (isLogin, msg) => {
                     if (isLogin) {
@@ -40,7 +40,7 @@ export default class EntranceScene extends BaseScene {
                 onPermission: function(isLogin, msg) {}
             });
             this._activeFacebookBtn();
-        } else if (cc.sys.isBrowser) {
+        } else if (app.env.isBrowser()) {
             if (window.FB) {
                 this._activeFacebookBtn();
             } else {
@@ -85,15 +85,15 @@ export default class EntranceScene extends BaseScene {
         this.accessToken = null;
         this.showLoading();
 
-        if (cc.sys.isMobile) {
-            // if (!sdkbox.PluginFacebook.isLoggedIn()) {
-            //     sdkbox.PluginFacebook.login();
-            // } else {
-            //     const fbId = sdkbox.PluginFacebook.getUserID();
-            //     this.accessToken = sdkbox.PluginFacebook.getAccessToken();
-            //     log(`fbId ${fbId} and token ${this.accessToken}`);
-            //     this.getUserByFbId(fbId, this.accessToken);
-            // }
+        if (app.env.isMobile()) {
+            if (!window.sdkbox.PluginFacebook.isLoggedIn()) {
+                window.sdkbox.PluginFacebook.login();
+            } else {
+                const fbId = window.sdkbox.PluginFacebook.getUserID();
+                this.accessToken = window.sdkbox.PluginFacebook.getAccessToken();
+                log(`fbId ${fbId} and token ${this.accessToken}`);
+                this.getUserByFbId(fbId, this.accessToken);
+            }
         } else {
             window.FB && window.FB.getLoginStatus((response) => {
                 if (response.status === 'connected') {

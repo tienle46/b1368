@@ -36,7 +36,7 @@ export default (function(app) {
     };
 
     app.env.isGooglePlatform = function() {
-        return cc.sys.platform == cc.sys.IPHONE || cc.sys.platform == cc.sys.IPAD;
+        return cc.sys.platform == cc.sys.ANDROID;
     };
 
     app.env.isAndroid = function() {
@@ -95,18 +95,25 @@ export default (function(app) {
                 log(`ios udid ${app.DEVICE_ID}`);
             }
 
-            _setupSDK();
+            _setupSDKBox();
         }
 
-        function _setupSDK() {
-            if (cc.sys.isMobile && window.sdkbox) {
+        function _setupSDKBox() {
+            /* eslint-disable no-console, no-unused-vars */
+            let releaseArray = require('RubUtils').releaseArray;
+
+            let _initPluginFacebook = () => {
                 //facebook
                 window.sdkbox.PluginFacebook.init();
+            };
 
+            let _initPluginGoogleAnalytics = () => {
                 //google analytics
                 window.sdkbox.PluginGoogleAnalytics.init();
                 window.sdkbox.PluginGoogleAnalytics.startSession();
+            };
 
+            let _initPluginOneSignal = () => {
                 //onesignal
                 window.sdkbox.PluginOneSignal.init();
                 window.sdkbox.PluginOneSignal.registerForPushNotifications();
@@ -120,7 +127,94 @@ export default (function(app) {
                     onPostNotification: (success, message) => {},
                     onNotification: (isActive, message, additionalData) => {}
                 });
+            };
+
+            let _initPluginIAP = () => {
+                function _getIAPItemsFromStorage() {
+                    return cc.sys.localStorage.getItem(app.const.IAP_LOCAL_STORAGE) || null;
+                }
+
+                window.sdkbox.IAP.init();
+                window.sdkbox.IAP.setDebug(true);
+
+                // save failed items to localStorage
+                if (!_getIAPItemsFromStorage())
+                    cc.sys.localStorage.setItem(app.const.IAP_LOCAL_STORAGE, []);
+
+                // setup listener
+                window.sdkbox.IAP.setListener({
+                    onInitialized: (success) => {
+                        cc.log('IAP: success', JSON.stringify(success));
+                    },
+                    onSuccess: (product) => {
+                        //Purchase success
+                        /**
+                         * @product
+                         * {
+                         * "name":"com.3mien.68.45K",
+                         * "id":"com.3mien.68.45K",
+                         * "title":"45K Chips",
+                         * "description":"Purchase 45K Chips",
+                         * "price":"₫45,000",
+                         * "currencyCode":"VND",
+                         * "receipt":"",
+                         * "receiptCipheredPayload":"MIITxwYJKoZIhvcNAQcCoIITuDCCE7QCAQExCzAJBgUrDgMCGgUAMIIDaAYJ"
+                         * }
+                         */
+                    },
+                    onFailure: (product, msg) => {}, //Purchase failed
+                    onCanceled: (product) => {}, //Purchase was canceled by user
+                    onRestored: (product) => {}, //Purchase restored
+                    onProductRequestSuccess: (products) => {
+                        //Returns you the data for all the iap products
+                        //You can get each item using following method
+                        cc.log('\nIAP: onProductRequestSuccess', JSON.stringify(products));
+
+                        if (_getIAPItemsFromStorage()) {
+                            let productIds = [];
+                            for (let i = 0; i < products.length; i++) {
+                                // loop
+                                productIds.push(products[i].id);
+                            }
+
+                            let purchases = [];
+                            _getIAPItemsFromStorage().forEach((item) => {
+                                if (app._.includes(productIds, item.id)) {
+                                    init.push(item.receipt);
+                                }
+                            });
+                            let sendObj = {
+                                cmd: 'submitPurchase',
+                                data: {
+                                    purchases
+                                }
+                            };
+
+                            app.system.showLoader('Thực hiện lại giao dịch lỗi .....', 60);
+                            app.service.send(sendObj);
+                        }
+                    },
+                    onProductRequestFailure: (msg) => {
+                        //When product refresh request fails.
+                        cc.log('\nIAP: onProductRequestFailure', JSON.stringify(msg))
+
+                    }
+                });
+            };
+
+            if (cc.sys.isMobile && window.sdkbox) {
+                let plugins = [
+                    _initPluginFacebook,
+                    _initPluginGoogleAnalytics,
+                    _initPluginOneSignal,
+                    _initPluginIAP
+                ].map(p => {
+                    p();
+                });
+
+                releaseArray(plugins);
             }
         }
+
     })(app);
 });

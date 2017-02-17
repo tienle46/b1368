@@ -10,7 +10,6 @@ import MessagePopup from 'MessagePopup';
 import ConfirmPopup from 'ConfirmPopup';
 import utils from 'utils';
 import ArrayUtils from "../utils/ArrayUtils";
-import LoaderRub from 'LoaderRub';
 import Toast from 'Toast';
 import { isFunction } from 'Utils';
 
@@ -24,7 +23,6 @@ class GameSystem {
         this.gameEventEmitter = new Emitter;
         this.enablePendingGameEvent = false;
         this.toast = null;
-        this.loader = null;
         // high light message
         (!this.hlm) && (this.hlm = new HighLightMessageRub());
         this.sceneChanging = false;
@@ -35,12 +33,12 @@ class GameSystem {
         this._sceneName = null;
     }
 
-    showLoader() {
-        this.loader && this.loader.show();
+    showLoader(message = "", duration) {
+        this._currentScene.showLoading(message, duration);
     }
 
     hideLoader() {
-        this.loader && this.loader.hide();
+        this._currentScene.hideLoading();
     }
 
     showToast(message, duration) {
@@ -77,7 +75,6 @@ class GameSystem {
                     this._sceneName = sceneName;
 
                     this._addToastToScene();
-                    this._addLoaderToScene();
 
                     let container = this.getCurrentSceneNode().getChildByName('Container');
                     if (container) {
@@ -101,6 +98,7 @@ class GameSystem {
         this.addListener(SFS2X.SFSEvent.ROOM_JOIN_ERROR, this._onJoinRoomError, this);
         this.addListener(app.commands.HIGH_LIGHT_MESSAGE, this._onHighLightMessage, this);
         this.addListener(SFS2X.SFSEvent.ADMIN_MESSAGE, this._onAdminMessage, this);
+        this.addListener("submitPurchase", this._onSubmitPurchase, this);
     }
 
     removeEventListener() {
@@ -108,6 +106,7 @@ class GameSystem {
         this.removeListener(SFS2X.SFSEvent.ROOM_JOIN_ERROR, this._onJoinRoomError, this);
         this.removeListener(app.commands.HIGH_LIGHT_MESSAGE, this._onHighLightMessage, this);
         this.removeListener(SFS2X.SFSEvent.ADMIN_MESSAGE, this._onAdminMessage, this);
+        this.removeListener("submitPurchase", this._onSubmitPurchase, this);
     }
 
     getCurrentSceneNode() {
@@ -215,26 +214,39 @@ class GameSystem {
         this.eventEmitter.removeListener(eventName);
     }
 
+    _onSubmitPurchase(data) {
+        if (data[app.keywords.RESPONSE_RESULT]) {
+            let messages = data['messages'] || [];
+            let receipts = data['purchasedProducts'] || [];
+
+            messages.forEach((message, i) => {
+                let index = app._.findIndex(cc.sys.localStorage.getItem(app.const.IAP_LOCAL_STORAGE), ['receipt', receipts[i]]);
+                if (index) {
+                    cc.sys.localStorage.getItem(app.const.IAP_LOCAL_STORAGE).slice(index, 1);
+                }
+
+                app.system.showToast(message);
+
+                if (i === (messages.length - 1))
+                    this.hideLoader();
+            });
+        } else {
+            this.hideLoader();
+            app.system.error(data['messages'][0] || '+ tien that bai');
+        }
+    }
+
     _onJoinRoomError(resultEvent) {
         if (resultEvent.errorCode) {
             this.error(event.errorMessage);
         }
     }
 
-    _addLoaderToScene() {
-        if (this.loader) {
-            this.loader = null;
-        }
-        this.loader = new LoaderRub(this._currentScene);
-    }
-
     _onAdminMessage(message, data) {
         let duration = data && data.t == app.const.adminMessage.MANUAL_DISMISS ? Toast.FOREVER : undefined;
-        let sceneNode = this.getCurrentSceneNode();
         let sceneName = this.getCurrentSceneName();
-        if (sceneNode && sceneName == 'DashboardScene' && message.match(/(\"Đăng nhập hằng ngày\")/).length > 0) {
-            let sceneComponent = sceneNode.getComponent(sceneName);
-            sceneComponent.showDailyLoginPopup(message);
+        if (this.currentScene && sceneName == 'DashboardScene' && message.match(/(\"Đăng nhập hằng ngày\")/).length > 0) {
+            this.currentScene.showDailyLoginPopup(message);
             return;
         }
         this.showToast(message, duration);
