@@ -22,11 +22,11 @@ export default class TopUpDialogRub {
         }, {
             title: 'SMS',
             value: `${url}/tab_sms`,
-            hidden: !app.env.isBrowserTest()
+            hidden: app.env.isBrowser() ? !app.env.isBrowserTest() : !app.env.isMobile()
         }, {
             title: 'IAP',
             value: `${url}/tab_iap`,
-            hidden: !app.env.isBrowserTest()
+            hidden: app.env.isBrowser() ? !app.env.isBrowserTest() : !app.env.isMobile()
         }, {
             title: 'Lịch sử',
             value: `${url}/tab_history`

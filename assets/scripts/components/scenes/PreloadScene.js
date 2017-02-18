@@ -33,7 +33,7 @@ class PreloadScene extends Component {
     }
 
     _setupEnvironment() {
-        if (cc.sys.isBrowser) {
+        if (app.env.isBrowser()) {
             cc.game.pause = () => {};
             cc.game.setFrameRate(48);
         }
