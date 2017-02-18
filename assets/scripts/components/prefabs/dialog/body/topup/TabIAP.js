@@ -74,24 +74,8 @@ class TabIAP extends DialogActor {
 
     _initIAP() {
         if (app.env.isMobile()) {
-            window.sdkbox.IAP.setListener({
-                onInitialized: (success) => {
-                    cc.log('IAP: success', JSON.stringify(success));
-                },
+            app.env.sdkIAPSetListener({
                 onSuccess: (product) => {
-                    //Purchase success
-                    /**
-                     * {
-                     * "name":"com.3mien.68.45K",
-                     * "id":"com.3mien.68.45K",
-                     * "title":"45K Chips",
-                     * "description":"Purchase 45K Chips",
-                     * "price":"₫45,000",
-                     * "currencyCode":"VND",
-                     * "receipt":"",
-                     * "receiptCipheredPayload":"MIITxwYJKoZIhvcNAQcCoIITuDCCE7QCAQExCzAJBgUrDgMCGgUAMIIDaAYJ"
-                     * }
-                     */
                     cc.log('\nIAP: onSuccess', JSON.stringify(product));
 
                     let sendObj = {
@@ -101,7 +85,8 @@ class TabIAP extends DialogActor {
                         }
                     };
 
-                    cc.sys.localStorage.getItem(app.const.IAP_LOCAL_STORAGE).push({ id: product.id, receipt: product.receiptCipheredPayload })
+                    // cc.sys.localStorage.setItem(app.const.IAP_LOCAL_STORAGE, `${cc.sys.localStorage.getItem(app.const.IAP_LOCAL_STORAGE)}${JSON.stringify({ id: product.id, receipt: product.receiptCipheredPayload })};`)
+                    app.context.setPurchases(app.context.getPurchases().push({ id: product.id, receipt: product.receiptCipheredPayload }));
 
                     app.system.showLoader('Item đã đc mua, đợi xác nhận từ server .....', 60);
                     cc.log('\nIAP sendObject:', JSON.stringify(sendObj))
@@ -113,7 +98,6 @@ class TabIAP extends DialogActor {
                     app.system.hideLoader();
                     app.system.error(msg);
                     cc.log('\nIAP: onFailure', JSON.stringify(product), JSON.stringify(msg))
-
                 },
                 onCanceled: (product) => {
                     //Purchase was canceled by user
@@ -121,32 +105,6 @@ class TabIAP extends DialogActor {
                     app.system.hideLoader();
                     app.system.error(msg);
                 },
-                onRestored: (product) => {
-                    //Purchase restored
-                    cc.log('onRestored', JSON.stringify(product))
-
-                },
-                onProductRequestSuccess: (products) => {
-                    //Returns you the data for all the iap products
-                    //You can get each item using following method
-                    cc.log('\nIAP: onProductRequestSuccess', JSON.stringify(products));
-
-                    for (let i = 0; i < products.length; i++) {
-                        // loop
-                        // (() => {
-                        //     let name = products[i].name;
-                        //     this.__items.forEach(item => {
-                        //         if (item.productId == name) {
-                        //             this.contentNode.addChild(item);
-                        //         };
-                        //     })
-                        // })();
-                    }
-                },
-                onProductRequestFailure: (msg) => {
-                    //When product refresh request fails.
-                    cc.log('\nIAP: onProductRequestFailure', JSON.stringify(msg))
-                }
             });
         }
     }

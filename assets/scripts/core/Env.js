@@ -77,7 +77,11 @@ export default (function(app) {
     app.env.log();
 
 
-    /**ENV SETUP */
+
+
+    /**************************************************************************************************************
+     **************************************************ENV SETUP **************************************************
+     **************************************************************************************************************/
     (function setupEnv(app) {
         // update pollyfill
         require('Pollyfill')(app);
@@ -100,7 +104,10 @@ export default (function(app) {
 
         function _setupSDKBox() {
             /* eslint-disable no-console, no-unused-vars */
-            let releaseArray = require('RubUtils').releaseArray;
+
+            function releaseArray(array) {
+                array.length = 0;
+            }
 
             let _initPluginFacebook = () => {
                 //facebook
@@ -130,47 +137,113 @@ export default (function(app) {
             };
 
             let _initPluginIAP = () => {
+                /**
+                 * ENV setup IAP listener
+                 * @param processes {Object}
+                 * @prop
+                 *  onInitialized,
+                    onSuccess,
+                    onFailure,
+                    onCanceled,
+                    onRestored,
+                    onProductRequestSuccess,
+                    onProductRequestFailure
+                 * @returns null
+                 */
+                app.env.sdkIAPSetListener = (processes) => {
+                    let objectListener = {
+                        onInitialized: (success) => {
+                            cc.log('IAP: success', JSON.stringify(success));
+                        },
+                        onSuccess: (product) => {
+                            //Purchase success
+                            /**
+                             * @product
+                             * {
+                             * "name":"com.3mien.68.45K",
+                             * "id":"com.3mien.68.45K",
+                             * "title":"45K Chips",
+                             * "description":"Purchase 45K Chips",
+                             * "price":"₫45,000",
+                             * "currencyCode":"VND",
+                             * "receipt":"",
+                             * "receiptCipheredPayload":"MIITxwYJKoZIhvcNAQcCoIITuDCCE7QCAQExCzAJBgUrDgMCGgUAMIIDaAYJ"
+                             * }
+                             */
+                        },
+                        onFailure: (product, msg) => {
+                            cc.log('IAP: onFailure', JSON.stringify(product), JSON.stringify(msg));
+                        }, //Purchase failed
+                        onCanceled: (product) => {
+                            cc.log('IAP: onCanceled', JSON.stringify(product));
+                        }, //Purchase was canceled by user
+                        onRestored: (product) => {
+                            cc.log('IAP: success', JSON.stringify(product));
+                        }, //Purchase restored
+                        onProductRequestSuccess: (products) => {
+                            //Returns you the data for all the iap products
+                            //You can get each item using following method
+                            cc.log('\nIAP: onProductRequestSuccess', JSON.stringify(products));
+                        },
+                        onProductRequestFailure: (msg) => {
+                            //When product refresh request fails.
+                            cc.log('\nIAP: onProductRequestFailure', JSON.stringify(msg))
+                        }
+                    };
+
+                    objectListener = Object.assign({}, objectListener, processes);
+                    window.sdkbox.IAP.setListener(objectListener);
+                };
+
                 function _getIAPItemsFromStorage() {
-                    return cc.sys.localStorage.getItem(app.const.IAP_LOCAL_STORAGE) || null;
+                    return cc.sys.localStorage.getItem(app.const.IAP_LOCAL_STORAGE) || "";
                 }
 
                 window.sdkbox.IAP.init();
                 window.sdkbox.IAP.setDebug(true);
 
                 // save failed items to localStorage
-                if (!_getIAPItemsFromStorage())
-                    cc.sys.localStorage.setItem(app.const.IAP_LOCAL_STORAGE, []);
+                if (!_getIAPItemsFromStorage()) {
+                    cc.sys.localStorage.setItem(app.const.IAP_LOCAL_STORAGE, "");
+                    app.context.setPurchases([]);
+                    cc.log('IAP: cc.sys.localStorage.getItem(app.const.IAP_LOCAL_STORAGE) > init new > length', cc.sys.localStorage.getItem(app.const.IAP_LOCAL_STORAGE));
+                } else {
+                    // stringifyJSON array : [{id, receipt}]
+                    let receiptStringItems = _getIAPItemsFromStorage();
+                    if (receiptStringItems && receiptStringItems.length > 0 && receiptStringItems.indexOf(';') > -1) {
+                        (function() {
+                            let array = receiptStringItems.map(stringifiedItem => {
+                                let o = stringifiedItem;
+
+                                try {
+                                    o = JSON.parse(stringifiedItem);
+                                } catch (e) {
+                                    cc.log('ERROR: -->stringifiedItem', e);
+                                }
+                                return o;
+                            });
+                            app.context.setPurchases(array);
+                            cc.log('IAP: IF');
+
+                        }());
+                    } else {
+                        cc.sys.localStorage.setItem(app.const.IAP_LOCAL_STORAGE, "");
+                        app.context.setPurchases([]);
+                        cc.log('IAP: ELSE');
+                    }
+                }
+
+                cc.log('IAP: app.context.purchases > init :', JSON.stringify(app.context.getPurchases()));
 
                 // setup listener
-                window.sdkbox.IAP.setListener({
-                    onInitialized: (success) => {
-                        cc.log('IAP: success', JSON.stringify(success));
-                    },
-                    onSuccess: (product) => {
-                        //Purchase success
-                        /**
-                         * @product
-                         * {
-                         * "name":"com.3mien.68.45K",
-                         * "id":"com.3mien.68.45K",
-                         * "title":"45K Chips",
-                         * "description":"Purchase 45K Chips",
-                         * "price":"₫45,000",
-                         * "currencyCode":"VND",
-                         * "receipt":"",
-                         * "receiptCipheredPayload":"MIITxwYJKoZIhvcNAQcCoIITuDCCE7QCAQExCzAJBgUrDgMCGgUAMIIDaAYJ"
-                         * }
-                         */
-                    },
-                    onFailure: (product, msg) => {}, //Purchase failed
-                    onCanceled: (product) => {}, //Purchase was canceled by user
-                    onRestored: (product) => {}, //Purchase restored
+                app.env.sdkIAPSetListener({
                     onProductRequestSuccess: (products) => {
                         //Returns you the data for all the iap products
                         //You can get each item using following method
                         cc.log('\nIAP: onProductRequestSuccess', JSON.stringify(products));
 
-                        if (_getIAPItemsFromStorage()) {
+                        let receiptObjects = app.context.getPurchases();
+                        if (receiptObjects.length > 0) {
                             let productIds = [];
                             for (let i = 0; i < products.length; i++) {
                                 // loop
@@ -178,9 +251,11 @@ export default (function(app) {
                             }
 
                             let purchases = [];
-                            _getIAPItemsFromStorage().forEach((item) => {
+
+                            receiptObjects.forEach((stringifiedItem) => {
+                                let item = JSON.parse(stringifiedItem);
                                 if (app._.includes(productIds, item.id)) {
-                                    init.push(item.receipt);
+                                    purchases.push(item.receipt);
                                 }
                             });
                             let sendObj = {
@@ -192,12 +267,8 @@ export default (function(app) {
 
                             app.system.showLoader('Thực hiện lại giao dịch lỗi .....', 60);
                             app.service.send(sendObj);
+                            releaseArray(productIds);
                         }
-                    },
-                    onProductRequestFailure: (msg) => {
-                        //When product refresh request fails.
-                        cc.log('\nIAP: onProductRequestFailure', JSON.stringify(msg))
-
                     }
                 });
             };

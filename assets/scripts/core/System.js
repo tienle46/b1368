@@ -215,24 +215,39 @@ class GameSystem {
     }
 
     _onSubmitPurchase(data) {
-        if (data[app.keywords.RESPONSE_RESULT]) {
-            let messages = data['messages'] || [];
-            let receipts = data['purchasedProducts'] || [];
+        let messages = data['messages'] || [];
+        let receipts = data['purchasedProducts'] || [];
+        let savedItems = app.context.getPurchases();
 
-            messages.forEach((message, i) => {
-                let index = app._.findIndex(cc.sys.localStorage.getItem(app.const.IAP_LOCAL_STORAGE), ['receipt', receipts[i]]);
-                if (index) {
-                    cc.sys.localStorage.getItem(app.const.IAP_LOCAL_STORAGE).slice(index, 1);
-                }
+        receipts.forEach(receipt => {
+            let index = app._.findIndex(savedItems, ['receipt', receipt]);
+            cc.log('iap: _onSubmitPurchase receipts >', index);
+            if (index > -1) {
+                savedItems.splice(index, 1); // also affected to app.context.purchasesItem
+                cc.log('IAP: getPurchases > length:', app.context.getPurchases().length);
+            }
+        });
 
-                app.system.showToast(message);
-
-                if (i === (messages.length - 1))
-                    this.hideLoader();
+        if (savedItems.length > 0) {
+            cc.log('IAP: savedItems > 0', savedItems.length);
+            let string = cc.sys.localStorage.getItem(app.const.IAP_LOCAL_STORAGE);
+            savedItems.forEach(item => {
+                string += `${JSON.stringify(item)};`;
             });
+            cc.sys.localStorage.setItem(app.const.IAP_LOCAL_STORAGE, string);
         } else {
-            this.hideLoader();
-            app.system.error(data['messages'][0] || '+ tien that bai');
+            app.context.setPurchases([]);
+            cc.sys.localStorage.setItem(app.const.IAP_LOCAL_STORAGE, "");
+        }
+
+        this.hideLoader();
+        for (let i = 0; i < messages.length; i++) {
+            if (data[app.keywords.RESPONSE_RESULT]) {
+                app.system.showToast(messages[i]);
+            } else {
+                app.system.error(messages[i] || '+ tien that bai');
+                break;
+            }
         }
     }
 
