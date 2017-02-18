@@ -41,13 +41,10 @@ export default class Dialog extends Component {
     }
 
     addSharedData(key, data) {
-        console.debug(key)
         this.sharedData[key] = data;
     }
 
     getSharedData(key) {
-        console.debug('getSharedData', key)
-
         return this.sharedData[key];
     }
 

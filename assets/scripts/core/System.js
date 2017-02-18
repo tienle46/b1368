@@ -10,7 +10,6 @@ import MessagePopup from 'MessagePopup';
 import ConfirmPopup from 'ConfirmPopup';
 import utils from 'utils';
 import ArrayUtils from "../utils/ArrayUtils";
-import LoaderRub from 'LoaderRub';
 import Toast from 'Toast';
 import { isFunction } from 'Utils';
 
@@ -24,7 +23,6 @@ class GameSystem {
         this.gameEventEmitter = new Emitter;
         this.enablePendingGameEvent = false;
         this.toast = null;
-        this.loader = null;
         // high light message
         (!this.hlm) && (this.hlm = new HighLightMessageRub());
         this.sceneChanging = false;
@@ -32,14 +30,15 @@ class GameSystem {
         this._currentScene = cc.Node;
         this.isInactive = false;
         this.initEventListener();
+        this._sceneName = null;
     }
 
-    showLoader() {
-        this.loader && this.loader.show();
+    showLoader(message = "", duration) {
+        this._currentScene.showLoading(message, duration);
     }
 
     hideLoader() {
-        this.loader && this.loader.hide();
+        this._currentScene.hideLoading();
     }
 
     showToast(message, duration) {
@@ -71,31 +70,21 @@ class GameSystem {
                 app.service.removeAllCallback(this.getCurrentSceneName());
 
                 this._currentScene = cc.director.getScene().children[0].getComponent(sceneName);
+
                 if (this._currentScene) {
+                    this._sceneName = sceneName;
+
                     this._addToastToScene();
-                    this._addLoaderToScene();
+
                     let container = this.getCurrentSceneNode().getChildByName('Container');
                     if (container) {
                         cc.game.addPersistRootNode(this.getCurrentSceneNode());
                         container.setPositionX(1280);
 
-                        // let sequence = cc.spawn(cc.moveTo(.12, cc.p(0, 0)),
-                        //     cc.callFunc(() => {
-                        //         cc.game.removePersistRootNode(this.getCurrentSceneNode());
-                        //     })
-                        // );
                         let action2 = cc.moveTo(.12, cc.v2(0, 0));
                         container.runAction(cc.spawn(cc.callFunc(() => {
                             cc.game.removePersistRootNode(this.getCurrentSceneNode());
                         }), action2));
-                        // this.getCurrentSceneNode().runAction(cc.spawn(
-                        //     cc.callFunc(() => {
-                        //         cc.game.removePersistRootNode(this.getCurrentSceneNode());
-                        //     }),
-                        //     cc.callFunc(() => {
-                        //         cc.log('?', container.getPosition());
-                        //     })
-                        // ));
                     }
                 }
             }
@@ -109,6 +98,7 @@ class GameSystem {
         this.addListener(SFS2X.SFSEvent.ROOM_JOIN_ERROR, this._onJoinRoomError, this);
         this.addListener(app.commands.HIGH_LIGHT_MESSAGE, this._onHighLightMessage, this);
         this.addListener(SFS2X.SFSEvent.ADMIN_MESSAGE, this._onAdminMessage, this);
+        this.addListener("submitPurchase", this._onSubmitPurchase, this);
     }
 
     removeEventListener() {
@@ -116,6 +106,7 @@ class GameSystem {
         this.removeListener(SFS2X.SFSEvent.ROOM_JOIN_ERROR, this._onJoinRoomError, this);
         this.removeListener(app.commands.HIGH_LIGHT_MESSAGE, this._onHighLightMessage, this);
         this.removeListener(SFS2X.SFSEvent.ADMIN_MESSAGE, this._onAdminMessage, this);
+        this.removeListener("submitPurchase", this._onSubmitPurchase, this);
     }
 
     getCurrentSceneNode() {
@@ -123,7 +114,7 @@ class GameSystem {
     }
 
     getCurrentSceneName() {
-        return this._currentScene ? this._currentScene.constructor.name : 'anonymousScene';
+        return this._currentScene ? this._sceneName : 'anonymousScene';
     }
 
     get currentScene() {
@@ -223,26 +214,54 @@ class GameSystem {
         this.eventEmitter.removeListener(eventName);
     }
 
+    _onSubmitPurchase(data) {
+        let messages = data['messages'] || [];
+        let receipts = data['purchasedProducts'] || [];
+        let savedItems = app.context.getPurchases();
+
+        receipts.forEach(receipt => {
+            let index = app._.findIndex(savedItems, ['receipt', receipt]);
+            cc.log('iap: _onSubmitPurchase receipts >', index);
+            if (index > -1) {
+                savedItems.splice(index, 1); // also affected to app.context.purchasesItem
+                cc.log('IAP: getPurchases > length:', app.context.getPurchases().length);
+            }
+        });
+
+        if (savedItems.length > 0) {
+            cc.log('IAP: savedItems > 0', savedItems.length);
+            let string = cc.sys.localStorage.getItem(app.const.IAP_LOCAL_STORAGE);
+            savedItems.forEach(item => {
+                string += `${JSON.stringify(item)};`;
+            });
+            cc.sys.localStorage.setItem(app.const.IAP_LOCAL_STORAGE, string);
+        } else {
+            app.context.setPurchases([]);
+            cc.sys.localStorage.setItem(app.const.IAP_LOCAL_STORAGE, "");
+        }
+
+        this.hideLoader();
+        for (let i = 0; i < messages.length; i++) {
+            if (data[app.keywords.RESPONSE_RESULT]) {
+                app.system.showToast(messages[i]);
+            } else {
+                app.system.error(messages[i] || '+ tien that bai');
+                break;
+            }
+        }
+    }
+
     _onJoinRoomError(resultEvent) {
         if (resultEvent.errorCode) {
             this.error(event.errorMessage);
         }
     }
 
-    _addLoaderToScene() {
-        if (this.loader) {
-            this.loader = null;
-        }
-        this.loader = new LoaderRub(this._currentScene);
-    }
-
     _onAdminMessage(message, data) {
         let duration = data && data.t == app.const.adminMessage.MANUAL_DISMISS ? Toast.FOREVER : undefined;
-        let sceneNode = this.getCurrentSceneNode();
         let sceneName = this.getCurrentSceneName();
-        if (sceneNode && sceneName == 'DashboardScene' && message.match(/(\"Đăng nhập hằng ngày\")/).length > 0) {
-            let sceneComponent = sceneNode.getComponent(sceneName);
-            sceneComponent.showDailyLoginPopup(message);
+        if (this.currentScene && sceneName == 'DashboardScene' && message.match(/(\"Đăng nhập hằng ngày\")/).length > 0) {
+            this.currentScene.showDailyLoginPopup(message);
             return;
         }
         this.showToast(message, duration);

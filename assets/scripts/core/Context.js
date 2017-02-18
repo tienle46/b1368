@@ -13,6 +13,21 @@ class GameContext {
         this.lastJoinedRoom = null;
         this.rejoiningGame = false;
         this.selectedGame = null; // selected game code
+
+        this.purchaseItems = []; // stringifyJSON array : [{id, receipt}]
+    }
+
+    getPurchases() {
+        return this.purchaseItems;
+    }
+
+    /**
+     * @param {Array} purchases
+     * 
+     * @memberOf GameContext
+     */
+    setPurchases(purchases) {
+        this.purchaseItems = purchases;
     }
 
     setSelectedGame(selectedGame) {

@@ -45,7 +45,6 @@ export default class TabBuddiesTransfer extends DialogActor {
         this.receiverEditBoxNode.stayOnTop = false;
 
         let receiver = this.receiverEditBoxNode.string;
-        console.debug('receiver', receiver);
 
         if (!receiver) {
             app.system.error(app.res.string('error_user_enter_empty_input'));

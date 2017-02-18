@@ -58,7 +58,7 @@ export default class DialogRub extends Rub {
     _initTab(tabs) {
         let Tabs = this.dialogComponent.tabs;
         // add Tab
-        tabs.filter(tab => !tab.hidden).forEach((tab, index) => {
+        tabs.filter(tab => !tab.hasOwnProperty('hidden') || (tab.hidden !== true)).forEach((tab, index) => {
             tab.isChecked = (index === 0);
             Tabs.make(tab);
         });

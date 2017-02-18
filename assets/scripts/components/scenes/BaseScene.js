@@ -50,12 +50,7 @@ export default class BaseScene extends Actor {
     onLoad() {
         super.onLoad();
 
-        debug('cached items', cc.textureCache.getAllTextures().length);
-        let progressNode = cc.instantiate(app.res.prefab.fullSceneLoading);
-        if (progressNode) {
-            this.node.parent.addChild(progressNode, app.const.loadingZIndex);
-            this.progress = progressNode.getComponent('FullSceneProgress');
-        }
+        this._initProgress();
 
         this._pendingAddPopup && this._pendingAddPopup.forEach(msg => {
             app.service.info(msg);
@@ -145,6 +140,14 @@ export default class BaseScene extends Actor {
         }
     }
 
+    _initProgress() {
+        let progressNode = cc.instantiate(app.res.prefab.fullSceneLoading);
+        if (progressNode) {
+            this.node.parent.addChild(progressNode, app.const.loadingZIndex);
+            this.progress = progressNode.getComponent('FullSceneProgress');
+        }
+    }
+
     _requestAuthen(username, password, isRegister, isQuickLogin, accessToken) {
         app.service.requestAuthen(username, password, isRegister, isQuickLogin, accessToken, (error, result) => {
             if (error) {
@@ -153,8 +156,8 @@ export default class BaseScene extends Actor {
             }
             if (result) {
                 log(`Logged in as ${app.context.getMe().name}`);
-                if (cc.sys.isMobile && sdkbox) {
-                    sdkbox.PluginGoogleAnalytics.setUser(app.context.getMe().name);
+                if (app.env.isMobile() && window.sdkbox) {
+                    window.sdkbox.PluginGoogleAnalytics.setUser(app.context.getMe().name);
                 }
                 //load recently games
                 this.changeScene(app.const.scene.DASHBOARD_SCENE);
