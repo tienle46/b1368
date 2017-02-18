@@ -86,14 +86,14 @@ export default class EntranceScene extends BaseScene {
         this.showLoading();
 
         if (cc.sys.isMobile) {
-            // if (!sdkbox.PluginFacebook.isLoggedIn()) {
-            //     sdkbox.PluginFacebook.login();
-            // } else {
-            //     const fbId = sdkbox.PluginFacebook.getUserID();
-            //     this.accessToken = sdkbox.PluginFacebook.getAccessToken();
-            //     log(`fbId ${fbId} and token ${this.accessToken}`);
-            //     this.getUserByFbId(fbId, this.accessToken);
-            // }
+            if (!sdkbox.PluginFacebook.isLoggedIn()) {
+                sdkbox.PluginFacebook.login();
+            } else {
+                const fbId = sdkbox.PluginFacebook.getUserID();
+                this.accessToken = sdkbox.PluginFacebook.getAccessToken();
+                log(`fbId ${fbId} and token ${this.accessToken}`);
+                this.getUserByFbId(fbId, this.accessToken);
+            }
         } else {
             window.FB && window.FB.getLoginStatus((response) => {
                 if (response.status === 'connected') {

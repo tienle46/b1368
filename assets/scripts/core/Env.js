@@ -36,7 +36,7 @@ export default (function(app) {
     };
 
     app.env.isGooglePlatform = function() {
-        return cc.sys.platform == cc.sys.IPHONE || cc.sys.platform == cc.sys.IPAD;
+        return cc.sys.platform == cc.sys.ANDROID;
     };
 
     app.env.isAndroid = function() {
@@ -92,7 +92,14 @@ export default (function(app) {
 
             if (app.env.isIOS()) {
                 app.config.DEVICE_ID = window.jsb.reflection.callStaticMethod("FCUUID", "uuidForDevice");
-                log(`ios udid ${app.DEVICE_ID}`);
+                app.config.CARRIER_NAME = window.jsb.reflection.callStaticMethod("JSBUtils", "carrierName");
+                log(`ios udid ${app.config.DEVICE_ID}`);
+                log(`ios carrier name ${app.config.CARRIER_NAME}`);
+            }
+            if (app.env.isAndroid()) {
+                app.config.DEVICE_ID = window.jsb.reflection.callStaticMethod("org/cocos2dx/javascript/JSBUtils", "uuidForDevice", "()Ljava/lang/String;");
+                app.config.CARRIER_NAME = window.jsb.reflection.callStaticMethod("org/cocos2dx/javascript/JSBUtils", "carrierName", "()Ljava/lang/String;");
+                log(`android udid ${app.config.DEVICE_ID}`);
             }
 
             _setupSDK();
