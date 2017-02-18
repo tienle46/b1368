@@ -61,10 +61,11 @@ class GameSystem {
      * @param {string} sceneName - Scene Name want to load. The name of scene have been configured in {source} app.const.scene.*
      * @param {function} onLaunch - On launch custom function
      */
-    loadScene(sceneName, onLaunch) {
+    loadScene(sceneName, onLaunch, highPriority) {
         console.log("sceneName: ", sceneName);
         cc.director.loadScene(sceneName, () => {
             console.log("load scene result", sceneName, cc.director.getScene());
+            highPriority && isFunction(onLaunch) && onLaunch();
 
             if (cc.director.getScene().children[0]) {
                 app.service.removeAllCallback(this.getCurrentSceneName());
@@ -89,7 +90,7 @@ class GameSystem {
                 }
             }
 
-            isFunction(onLaunch) && onLaunch();
+            !highPriority && isFunction(onLaunch) && onLaunch();
         });
     }
 
@@ -98,7 +99,7 @@ class GameSystem {
         this.addListener(SFS2X.SFSEvent.ROOM_JOIN_ERROR, this._onJoinRoomError, this);
         this.addListener(app.commands.HIGH_LIGHT_MESSAGE, this._onHighLightMessage, this);
         this.addListener(SFS2X.SFSEvent.ADMIN_MESSAGE, this._onAdminMessage, this);
-        this.addListener("submitPurchase", this._onSubmitPurchase, this);
+        this.addListener(app.commands.IOS_IN_APP_PURCHASE, this._onSubmitPurchase, this);
     }
 
     removeEventListener() {
@@ -106,7 +107,7 @@ class GameSystem {
         this.removeListener(SFS2X.SFSEvent.ROOM_JOIN_ERROR, this._onJoinRoomError, this);
         this.removeListener(app.commands.HIGH_LIGHT_MESSAGE, this._onHighLightMessage, this);
         this.removeListener(SFS2X.SFSEvent.ADMIN_MESSAGE, this._onAdminMessage, this);
-        this.removeListener("submitPurchase", this._onSubmitPurchase, this);
+        this.removeListener(app.commands.IOS_IN_APP_PURCHASE, this._onSubmitPurchase, this);
     }
 
     getCurrentSceneNode() {
@@ -245,7 +246,7 @@ class GameSystem {
             if (data[app.keywords.RESPONSE_RESULT]) {
                 app.system.showToast(messages[i]);
             } else {
-                app.system.error(messages[i] || '+ tien that bai');
+                app.system.error(messages[i] || app.res.string('trading_is_denied'));
                 break;
             }
         }

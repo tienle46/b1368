@@ -259,13 +259,13 @@ export default (function(app) {
                                 }
                             });
                             let sendObj = {
-                                cmd: 'submitPurchase',
+                                cmd: app.commands.IOS_IN_APP_PURCHASE,
                                 data: {
                                     purchases
                                 }
                             };
 
-                            app.system.showLoader('Thực hiện lại giao dịch lỗi .....', 60);
+                            app.system.showLoader(app.res.string('re_sending_item_iap'), 60);
                             app.service.send(sendObj);
                             releaseArray(productIds);
                         }

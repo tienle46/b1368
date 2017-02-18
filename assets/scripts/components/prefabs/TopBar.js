@@ -2,6 +2,7 @@ import app from 'app';
 import Actor from 'Actor';
 import TimerRub from 'TimerRub';
 import DialogRub from 'DialogRub';
+import { isNode } from 'Utils';
 
 class TopBar extends Actor {
     constructor() {
@@ -22,21 +23,14 @@ class TopBar extends Actor {
             promptPrefab: cc.Prefab
         }
 
-        this._showBack = false;
         this.intervalTimer = null;
         this.interval = 2000; // display high light message after 2s, if any
     }
 
     onLoad() {
         super.onLoad();
-        if (this._showBack) {
-            this.moreButton.node.active = false;
-            this.eventButton.node.active = false;
-            this.titleContainerNode.active = false;
-        } else {
-            this.backButton.node.active = false;
-            this.chatBtn.node.active = false;
-        }
+        // hide back btn
+        this.hideBackButton();
 
         this.dropDownBgNode.on(cc.Node.EventType.TOUCH_END, () => {
             this.dropDownOptions.active = false;
@@ -68,7 +62,20 @@ class TopBar extends Actor {
     }
 
     showBackButton() {
-        this._showBack = true;
+        this._setElementState([this.backButton, this.chatBtn], true);
+        this._setElementState([this.moreButton, this.eventButton, this.titleContainerNode], false);
+    }
+
+    hideBackButton() {
+        this._setElementState([this.backButton, this.chatBtn], false);
+        this._setElementState([this.moreButton, this.eventButton, this.titleContainerNode], true);
+
+        // this.backButton.node.active = false;
+        // this.chatBtn.node.active = false;
+
+        // this.moreButton.node.active = true;
+        // this.eventButton.node.active = true;
+        // this.titleContainerNode.active = true;
     }
 
     onClickLogout() {
@@ -95,7 +102,6 @@ class TopBar extends Actor {
         let dialog = new DialogRub(this.node.parent, null, { title: 'Sự kiện' });
         dialog.addBody('dashboard/dialog/prefabs/event/event_dialog');
     }
-
 
     onChatBtnClick() {
         console.log('onChatClick');
@@ -194,6 +200,12 @@ class TopBar extends Actor {
 
             }, app.const.scene.DASHBOARD_SCENE);
         }
+    }
+
+    _setElementState(elements, state) {
+        elements.forEach(element => {
+            (isNode(element) ? element : element.node).active = state;
+        });
     }
 }
 

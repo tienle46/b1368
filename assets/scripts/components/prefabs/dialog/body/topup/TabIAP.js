@@ -67,7 +67,7 @@ class TabIAP extends DialogActor {
         if (app.env.isMobile() && window.sdkbox.IAP) {
             let name = target.productId;
 
-            app.system.showLoader('Đang thực hiện giao dịch apple .....', 60);
+            app.system.showLoader(app.res.string('sending_item_apple_iap'), 60);
             window.sdkbox.IAP.purchase(name);
         }
     }
@@ -79,7 +79,7 @@ class TabIAP extends DialogActor {
                     cc.log('\nIAP: onSuccess', JSON.stringify(product));
 
                     let sendObj = {
-                        cmd: 'submitPurchase',
+                        cmd: app.commands.IOS_IN_APP_PURCHASE,
                         data: {
                             purchases: [product.receiptCipheredPayload]
                         }
@@ -88,7 +88,7 @@ class TabIAP extends DialogActor {
                     // cc.sys.localStorage.setItem(app.const.IAP_LOCAL_STORAGE, `${cc.sys.localStorage.getItem(app.const.IAP_LOCAL_STORAGE)}${JSON.stringify({ id: product.id, receipt: product.receiptCipheredPayload })};`)
                     app.context.setPurchases(app.context.getPurchases().push({ id: product.id, receipt: product.receiptCipheredPayload }));
 
-                    app.system.showLoader('Item đã đc mua, đợi xác nhận từ server .....', 60);
+                    app.system.showLoader(app.res.string('iap_buying_successfully_wait_server_response'), 60);
                     cc.log('\nIAP sendObject:', JSON.stringify(sendObj))
                     app.service.send(sendObj);
                 },

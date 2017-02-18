@@ -48,8 +48,6 @@ export default class ListTableScene extends BaseScene {
 
     onLoad() {
         super.onLoad();
-
-        this._initComponents();
     }
 
     onDestroy() {
@@ -67,6 +65,8 @@ export default class ListTableScene extends BaseScene {
 
     start() {
         super.start();
+
+        this._initComponents();
 
         this._getFirstGameLobbyFromServer();
     }
@@ -146,6 +146,7 @@ export default class ListTableScene extends BaseScene {
     }
 
     _initGameLabel(gameCode) {
+        cc.log('gameCode', gameCode);
         this.gameTitleLbl.string = app.const.gameLabels[gameCode].toUpperCase();
     }
 
@@ -159,6 +160,7 @@ export default class ListTableScene extends BaseScene {
             data
         };
 
+        this.showLoading(app.res.string('loading_data'));
         app.service.send(reqObject);
     }
 
@@ -171,7 +173,7 @@ export default class ListTableScene extends BaseScene {
 
             // TODO: assume server will be response minbet for filtering based on its minbet
         } else {
-            error('game code & result are not matched', data[app.keywords.GAME_LIST_RESULT], this.gameCode);
+            error('game code & result are not matched', JSON.stringify(data[app.keywords.GAME_LIST_RESULT]), this.gameCode);
         }
     }
 
@@ -219,7 +221,6 @@ export default class ListTableScene extends BaseScene {
     }
 
     _handleRoomJoinEvent(event) {
-        this.hideLoading();
         let room = event.room;
         if (room) {
             if (room.isGame === false && room.name && room.name.indexOf('lobby') > -1) {
@@ -326,6 +327,7 @@ export default class ListTableScene extends BaseScene {
                 filteredItems = [];
             }
         }
+        this.hideLoading();
     }
 
     /**
