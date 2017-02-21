@@ -645,7 +645,7 @@
     },
     "_enabled": true,
     "_useOriginalSize": false,
-    "_actualFontSize": 38,
+    "_actualFontSize": 37,
     "_fontSize": 40,
     "_lineHeight": 60,
     "_enableWrapText": true,
@@ -673,7 +673,7 @@
       "b": 0,
       "a": 255
     },
-    "_width": 1.5
+    "_width": 2
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -1131,7 +1131,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 56.47,
+      "width": 68.47,
       "height": 40
     },
     "_children": [],
@@ -1170,7 +1170,7 @@
       "__id__": 32
     },
     "_enabled": true,
-    "_N$string": "<color=#ffffff>ID:</c> <color=#FFE000>...</color>",
+    "_N$string": "<outline color=#000 width=2><color=#ffffff>ID:</c> <color=#FFE000>...</color></outline>",
     "_N$horizontalAlign": 0,
     "_N$fontSize": 24,
     "_N$font": {
@@ -1413,7 +1413,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 164.71,
+      "width": 165.71,
       "height": 40
     },
     "_children": [],
@@ -1484,7 +1484,7 @@
       "b": 0,
       "a": 255
     },
-    "_width": 1.5
+    "_width": 2
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -2004,7 +2004,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 168,
+      "width": 169,
       "height": 40
     },
     "_children": [],
@@ -2075,7 +2075,7 @@
       "b": 0,
       "a": 255
     },
-    "_width": 1.5
+    "_width": 2
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -2584,7 +2584,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 85.36,
+      "width": 86.36,
       "height": 40
     },
     "_children": [
@@ -2795,7 +2795,7 @@
       "b": 0,
       "a": 255
     },
-    "_width": 1.5
+    "_width": 2
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -2873,7 +2873,7 @@
       "__id__": 91
     },
     "_enabled": true,
-    "_N$string": "<color=#F6D533> Quyền lợi:</c> Chưa có thông tin",
+    "_N$string": "<outline color=#000 width=2><color=#F6D533> Quyền lợi:</c> Chưa có thông tin</outline>",
     "_N$horizontalAlign": 0,
     "_N$fontSize": 24,
     "_N$font": {
@@ -2943,7 +2943,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 190.32,
+      "width": 191.32,
       "height": 40
     },
     "_children": [
@@ -3004,7 +3004,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 110.16,
+      "width": 111.16,
       "height": 40
     },
     "_children": [
@@ -3078,7 +3078,7 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": 117.21000000000001,
+      "x": 118.21000000000001,
       "y": 0
     },
     "_skewX": 0,
@@ -3268,7 +3268,7 @@
       "b": 0,
       "a": 255
     },
-    "_width": 1.5
+    "_width": 2
   },
   {
     "__type__": "cc.Widget",
@@ -3344,7 +3344,7 @@
       "b": 0,
       "a": 255
     },
-    "_width": 1.5
+    "_width": 2
   },
   {
     "__type__": "cc.PrefabInfo",

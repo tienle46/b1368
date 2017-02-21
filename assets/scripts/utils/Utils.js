@@ -1,6 +1,7 @@
 /**
  * Created by Thanh on 8/27/2016.
  */
+import numeral from 'numeral';
 
 export default class Utils {
 
@@ -25,7 +26,8 @@ export default class Utils {
     }
 
     static isNumber(value) {
-        return typeof value === 'number';
+        value = Number(value);
+        return !isNaN(value) && typeof value === 'number';
     }
 
     static isFunction(value) {
@@ -169,5 +171,9 @@ export default class Utils {
 
     static isDuplicate(array, value) {
 
+    }
+
+    static numberFormat(value, format = '0,0') {
+        return numeral(value).format(format);
     }
 }

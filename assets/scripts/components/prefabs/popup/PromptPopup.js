@@ -5,6 +5,7 @@
 import app from 'app';
 import NodeRub from 'NodeRub';
 import Component from 'Component';
+import { isNode } from 'Utils';
 
 export default class PromptPopup extends Component {
     constructor() {
@@ -16,6 +17,8 @@ export default class PromptPopup extends Component {
             inputEditBox: cc.EditBox,
             descriptionLbl: cc.Label,
             acceptBtnNode: cc.Node,
+            mainNode: cc.Node,
+            bodyNode: cc.Node,
             popupBkg: cc.Node
         };
     }
@@ -53,23 +56,37 @@ export default class PromptPopup extends Component {
         });
     }
 
-    init(parent, { handler, title, description, editBox }) {
-        debug({ handler, title, description, editBox });
-        let currentSize = this.inputEditBox.node.getContentSize();
-        if (editBox.height) {
-            this.inputEditBox.node.setContentSize(currentSize.width, editBox.height);
-            this.popupBkg.setContentSize(this.popupBkg.getContentSize().width, this.popupBkg.getContentSize().height + Math.abs(currentSize.height - editBox.height) + 30);
-            delete editBox.height;
+    init(parent, initObject, title, edBox, hl) {
+        if (isNode(initObject)) {
+            this.mainNode.removeAllChildren();
+            initObject.setPosition(cc.v2(0, 0));
+            this.mainNode.addChild(initObject);
+
+            let children = initObject.children;
+
+            edBox && (this.inputEditBox = edBox);
+
+            hl && this.addAcceptBtnHandler(hl);
+
+        } else {
+            let { handler, title, description, editBox } = initObject;
+            debug(handler, title, description, editBox);
+            let currentSize = this.inputEditBox.node.getContentSize();
+            if (editBox.height) {
+                this.inputEditBox.node.setContentSize(currentSize.width, editBox.height);
+                this.popupBkg.setContentSize(this.popupBkg.getContentSize().width, this.popupBkg.getContentSize().height + Math.abs(currentSize.height - editBox.height) + 30);
+                delete editBox.height;
+            }
+            handler && this.addAcceptBtnHandler(handler);
+            this.descriptionLbl.string = description || "Xin hãy nhập :";
+            editBox && NodeRub.addEditBoxComponentToNode(this.inputEditBox.node, editBox);
         }
-        handler && this.addAcceptBtnHandler(handler);
+
         title && (this.titleLbl.string = title);
-        this.descriptionLbl.string = description || "Xin hãy nhập :";
-        editBox && NodeRub.addEditBoxComponentToNode(this.inputEditBox.node, editBox);
 
         if (!parent) {
             parent = app.system.getCurrentSceneNode();
         }
-
         parent.addChild(this.node);
     }
 }

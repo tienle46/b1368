@@ -10,8 +10,8 @@ export default class Progress extends Component {
         super();
 
         this.spinNode = {
-            default : null,
-            type : cc.Node
+            default: null,
+            type: cc.Node
         };
 
         this.duration = 2;
@@ -20,7 +20,7 @@ export default class Progress extends Component {
         this.active = true;
     }
 
-    onEnable(){
+    onEnable() {
         this.spinNode.runAction(cc.repeatForever(cc.rotateBy(1.0, 360)));
 
         if (this.duration) {
@@ -37,15 +37,17 @@ export default class Progress extends Component {
     }
 
     show(duration = 60, timeoutCb) {
-        this.hide();
+        if (this.node) {
+            this.hide();
 
-        this.duration = duration;
-        this.timeoutCb = timeoutCb;
-        this.node.active = true;
+            this.duration = duration;
+            this.timeoutCb = timeoutCb;
+            this.node.active = true;
+        }
     }
 
     hide() {
-        this.node.active = false;
+        this.node && (this.node.active = false);
     }
 }
 

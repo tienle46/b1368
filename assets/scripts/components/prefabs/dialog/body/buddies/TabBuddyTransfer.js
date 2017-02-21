@@ -4,8 +4,7 @@
 import app from 'app';
 import utils from 'utils';
 import DialogActor from 'DialogActor';
-import numeral from 'numeral';
-import { isNumber } from 'Utils';
+import { isNumber, active, deactive, numberFormat } from 'Utils';
 
 export default class TabBuddiesTransfer extends DialogActor {
 
@@ -17,7 +16,6 @@ export default class TabBuddiesTransfer extends DialogActor {
             buddyNameLabel: cc.Label,
             balanceLabel: cc.Label,
             playingGameLabel: cc.Label,
-            buddyInfoComponent: cc.Node,
             formTransferNode: cc.Node,
             receiverEditBoxNode: cc.EditBox,
             transferAmountEditBoxNode: cc.EditBox,
@@ -53,22 +51,22 @@ export default class TabBuddiesTransfer extends DialogActor {
 
         let money = Number(this.transferAmountEditBoxNode.string);
         if (!isNumber(money)) {
-            app.system.error(app.res.string('error_transfer_input_is_invalid', { input: 'Số tiền gửi' }));
+            app.system.error(app.res.string('error_transfer_input_is_invalid', { type: 'chuyển' }));
             return;
         }
 
         if (money < this._min) {
-            app.system.error(app.res.string('error_transfer_input_is_too_small', { min: numeral(this._min).format('0,0') }));
+            app.system.error(app.res.string('error_transfer_input_is_too_small', { min: numberFormat(this._min) }));
             return;
         }
 
         if (app.context.getMeBalance() < (this._min + this._fee)) {
-            app.system.error(app.res.string('error_transfer_input_is_not_enough', { amount: numeral(this._min + this._fee).format('0,0') }));
+            app.system.error(app.res.string('error_transfer_input_is_not_enough', { amount: numberFormat(this._min + this._fee) }));
             return;
         }
 
         if (money > this._max) {
-            app.system.error(app.res.string('error_transfer_input_is_over_max', { max: numeral(max).format('0,0') }));
+            app.system.error(app.res.string('error_transfer_input_is_over_max', { type: 'chuyển', max: numberFormat(this._max) }));
             return;
         }
 
@@ -116,26 +114,26 @@ export default class TabBuddiesTransfer extends DialogActor {
 
             let currentMoney = app.context.getMeBalance();
 
-            this.feeAmountLbl.string = numeral(this._fee).format('0,0');
-            this.minAmountLbl.string = numeral(this._min).format('0,0');
+            this.feeAmountLbl.string = numberFormat(this._fee);
+            this.minAmountLbl.string = numberFormat(this._min);
 
             if (this._max) {
-                utils.active(this.maxLblNode);
+                active(this.maxLblNode);
 
-                let maxAmount = numeral(this._max).format('0,0');
+                let maxAmount = numberFormat(this._max);
 
                 this.maxAmountLbl.string = maxAmount;
             } else {
-                utils.deactive(this.maxLblNode);
+                deactive(this.maxLblNode);
             }
 
             if (currentMoney < (this._fee + this._min)) {
-                utils.active(this.warningLbl);
+                active(this.warningLbl);
                 this.warningLbl.string = app.res.string('error_long_is_ineligible');
-                utils.deactive(this.formTransferNode);
+                deactive(this.formTransferNode);
             }
         } else {
-            utils.active(this.warningLbl);
+            active(this.warningLbl);
             this.warningLbl.string = app.res.string('error_long_is_ineligible');
         }
     }
@@ -143,10 +141,8 @@ export default class TabBuddiesTransfer extends DialogActor {
     _onUserTransferResponse(data) {
         let su = data[app.keywords.RESPONSE_RESULT];
         if (su) {
-
-
             let username = this.receiverEditBoxNode.string;
-            let amount = numeral(this.transferAmountEditBoxNode.string).format('0,0');
+            let amount = numberFormat(this.transferAmountEditBoxNode.string);
 
             app.system.info(app.res.string('transfer_successfully', { amount, username }));
         } else {
@@ -158,29 +154,6 @@ export default class TabBuddiesTransfer extends DialogActor {
             }
         }
     }
-
-    _onDataChanged() {
-        if (this.data && this.data.buddy) {
-            this._userId = this.data.buddy.id;
-            utils.active(this.buddyInfoComponent);
-
-            this.buddyNameLabel.string = this.data.buddy.name;
-            this.receiverEditBoxNode.string = this.data.buddy.name;
-            this.receiverEditBoxNode.stayOnTop = true;
-            this.balanceLabel.string = `${this.data.buddy.balance || 0}`;
-
-            let gameCode = utils.getVariable(this.data.buddy, 'playingGame');
-            let gameName = app.res.gameName[gameCode];
-            this.playingGameLabel.string = app.res.string('game_playing_game', { gameName: gameName || "" });
-        }
-        // else {
-        //     this.buddyNameLabel.string = "";
-        //     this.balanceLabel.string = '0';
-        //     this.playingGameLabel.string = app.res.string('game_playing_game', "");
-        //     this.receiverEditBoxNode.string = "";
-        // }
-    }
-
 }
 
 app.createComponent(TabBuddiesTransfer);

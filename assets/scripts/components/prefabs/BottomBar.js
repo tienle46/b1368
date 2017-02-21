@@ -160,6 +160,9 @@ class BottomBar extends DialogActor {
                 {
                     title: 'Thành tích',
                     value: `${url}/tab_user_achievements`
+                }, {
+                    title: 'Ngân hàng',
+                    value: `${url}/tab_user_bank`
                 }
                 // , {
                 //     title: 'Gift Code',

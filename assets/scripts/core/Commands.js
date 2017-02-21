@@ -254,6 +254,8 @@ Commands.GET_BUDDY_DETAIL_INFO = "buddyDetailInfo";
 // CHUYEN TIEN
 Commands.USER_TRANSFER_CONFIG = 'b_ati';
 Commands.USER_TRANSFER_TO_USER = "b_at";
+Commands.USER_GET_MONEY_FROM_BANK = "b_aw";
 
+Commands.BANK_IN_HISTORY = "bankInHistory";
 Commands.IOS_IN_APP_PURCHASE = "submitPurchase";
 module.exports = Commands;
