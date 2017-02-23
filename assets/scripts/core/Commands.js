@@ -258,4 +258,5 @@ Commands.USER_GET_MONEY_FROM_BANK = "b_aw";
 
 Commands.BANK_IN_HISTORY = "bankInHistory";
 Commands.IOS_IN_APP_PURCHASE = "submitPurchase";
+Commands.ANDROID_IN_APP_PURCHASE = "submitBilling";
 module.exports = Commands;

@@ -99,7 +99,8 @@ class GameSystem {
         this.addListener(SFS2X.SFSEvent.ROOM_JOIN_ERROR, this._onJoinRoomError, this);
         this.addListener(app.commands.HIGH_LIGHT_MESSAGE, this._onHighLightMessage, this);
         this.addListener(SFS2X.SFSEvent.ADMIN_MESSAGE, this._onAdminMessage, this);
-        this.addListener(app.commands.IOS_IN_APP_PURCHASE, this._onSubmitPurchase, this);
+        app.env.isIOS() && this.addListener(app.commands.IOS_IN_APP_PURCHASE, this._onSubmitPurchaseIOS, this);
+        app.env.isAndroid() && this.addListener(app.commands.ANDROID_IN_APP_PURCHASE, this._onSubmitPurchaseAndroid, this);
     }
 
     removeEventListener() {
@@ -107,7 +108,8 @@ class GameSystem {
         this.removeListener(SFS2X.SFSEvent.ROOM_JOIN_ERROR, this._onJoinRoomError, this);
         this.removeListener(app.commands.HIGH_LIGHT_MESSAGE, this._onHighLightMessage, this);
         this.removeListener(SFS2X.SFSEvent.ADMIN_MESSAGE, this._onAdminMessage, this);
-        this.removeListener(app.commands.IOS_IN_APP_PURCHASE, this._onSubmitPurchase, this);
+        app.env.isIOS() && this.removeListener(app.commands.IOS_IN_APP_PURCHASE, this._onSubmitPurchaseIOS, this);
+        app.env.isAndroid() && this.removeListener(app.commands.ANDROID_IN_APP_PURCHASE, this._onSubmitPurchaseAndroid, this);
     }
 
     getCurrentSceneNode() {
@@ -215,19 +217,77 @@ class GameSystem {
         this.eventEmitter.removeListener(eventName);
     }
 
-    _onSubmitPurchase(data) {
+    _onSubmitPurchaseIOS(data) {
         let messages = data['messages'] || [];
         let receipts = data['purchasedProducts'] || [];
-        let savedItems = app.context.getPurchases();
 
         receipts.forEach(receipt => {
-            let index = app._.findIndex(savedItems, ['receipt', receipt]);
-            cc.log('iap: _onSubmitPurchase receipts >', index);
-            if (index > -1) {
-                savedItems.splice(index, 1); // also affected to app.context.purchasesItem
-                cc.log('IAP: getPurchases > length:', app.context.getPurchases().length);
-            }
+            this.__removeSuccessItemInIAPLocalStorage(receipt);
         });
+
+        this.hideLoader();
+        for (let i = 0; i < messages.length; i++) {
+            if (data[app.keywords.RESPONSE_RESULT]) {
+                app.system.showToast(messages[i]);
+            } else {
+                app.system.error(messages[i] || app.res.string('trading_is_denied'));
+                break;
+            }
+        }
+
+        this.__modifyLocalStorage();
+    }
+
+    _onSubmitPurchaseAndroid(data) {
+        cc.log('IAP: adata', JSON.stringify(data));
+
+        if (!data[app.keywords.RESPONSE_RESULT]) {
+            app.system.error(data.message || "");
+            this.hideLoader();
+            return;
+        }
+        let receipts = data['purchasedProducts'] || [];
+        let unverifiedPurchases = data['unverifiedPurchases'] || [];
+        let consumedProducts = data['consumedProducts'] || [];
+
+        for (let i = 0; i < receipts.length; i++) {
+            let receipt = receipts[i];
+            if (receipt.success) {
+                this.__removeSuccessItemInIAPLocalStorage(receipt.token);
+                app.system.showToast(receipt.message);
+            } else {
+                app.system.error(receipt.message);
+            }
+        }
+
+        unverifiedPurchases.forEach(purchase => {
+            this.__removeSuccessItemInIAPLocalStorage(purchase.token);
+        });
+
+        consumedProducts.forEach(purchase => {
+            this.__removeSuccessItemInIAPLocalStorage(purchase.token);
+        });
+
+        this.hideLoader();
+        this.__modifyLocalStorage();
+    }
+
+    __removeSuccessItemInIAPLocalStorage(token) {
+        let savedItems = app.context.getPurchases();
+
+        let index = app._.findIndex(savedItems, ['receipt', token]);
+        cc.log('IAP: savedItems1 > length:', savedItems.length);
+
+        cc.log('iap: _onSubmitPurchase receipts >', index);
+        if (index > -1) {
+            savedItems.splice(index, 1); // also affected to app.context.purchasesItem
+            cc.log('IAP: getPurchases > length:', app.context.getPurchases().length);
+            cc.log('IAP: savedItems > length:', savedItems.length);
+        }
+    }
+
+    __modifyLocalStorage() {
+        let savedItems = app.context.getPurchases();
 
         if (savedItems.length > 0) {
             cc.log('IAP: savedItems > 0', savedItems.length);
@@ -240,16 +300,8 @@ class GameSystem {
             app.context.setPurchases([]);
             cc.sys.localStorage.setItem(app.const.IAP_LOCAL_STORAGE, "");
         }
+        cc.log('IAP localStorage2 ITEM :', cc.sys.localStorage.getItem(app.const.IAP_LOCAL_STORAGE).split(';').length);
 
-        this.hideLoader();
-        for (let i = 0; i < messages.length; i++) {
-            if (data[app.keywords.RESPONSE_RESULT]) {
-                app.system.showToast(messages[i]);
-            } else {
-                app.system.error(messages[i] || app.res.string('trading_is_denied'));
-                break;
-            }
-        }
     }
 
     _onJoinRoomError(resultEvent) {
@@ -303,6 +355,7 @@ class GameSystem {
                     gameSceneName = 'XocDiaScene';
                     break;
             }
+            this.hideLoader();
             gameSceneName && this.loadScene(gameSceneName);
         }
     }

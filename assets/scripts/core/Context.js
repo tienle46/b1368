@@ -18,7 +18,7 @@ class GameContext {
     }
 
     getPurchases() {
-        return this.purchaseItems;
+        return this.purchaseItems || [];
     }
 
     /**

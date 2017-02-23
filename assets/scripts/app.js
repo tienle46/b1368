@@ -157,6 +157,7 @@ app.getMessageFromServer = (error) => {
 (function _setupGame() {
     require('PreLoader');
     app.service = require("Service");
+    require('Env')(app);
     app.system = require("System");
     /**
      * @type {Context}
@@ -165,7 +166,8 @@ app.getMessageFromServer = (error) => {
     app.event = require("Events");
     app.buddyManager = createBuddyManager();
 
-    require('Env')(app);
+    // setup game environment by platform
+    app.env.__setupEnvironment();
 })();
 
 (function() {

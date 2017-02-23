@@ -33,6 +33,7 @@ class TabIAP extends DialogActor {
         this.showLoader();
 
         this._requestPaymentList();
+
         this._initIAP();
 
         // let data = this.getSharedData(this.getDialog(this.node), 'iap');
@@ -67,7 +68,7 @@ class TabIAP extends DialogActor {
         if (app.env.isMobile() && window.sdkbox.IAP) {
             let name = target.productId;
 
-            app.system.showLoader(app.res.string('sending_item_apple_iap'), 60);
+            // app.system.showLoader(app.res.string('sending_item_store_iap', { provider: app.env.isIOS() ? 'Apple Store' : 'Google Play' }), 60);
             window.sdkbox.IAP.purchase(name);
         }
     }
@@ -78,19 +79,62 @@ class TabIAP extends DialogActor {
                 onSuccess: (product) => {
                     cc.log('\nIAP: onSuccess', JSON.stringify(product));
 
-                    let sendObj = {
-                        cmd: app.commands.IOS_IN_APP_PURCHASE,
-                        data: {
-                            purchases: [product.receiptCipheredPayload]
+                    let purchases = [];
+                    let contextItem = null;
+
+
+                    if (app.env.isIOS()) {
+                        purchases = [product.receiptCipheredPayload];
+
+                        contextItem = { id: product.id, receipt: product.receiptCipheredPayload };
+                    } else if (app.env.isAndroid()) {
+                        try {
+                            cc.log('IAP -> ccc -> receipt', product.receipt);
+                            product.receipt = (typeof product.receipt == 'string') ? product.receipt : `${product.receipt}`;
+
+                            let productReceipt = JSON.parse(product.receipt);
+                            if (!(productReceipt && productReceipt.hasOwnProperty('purchaseToken'))) {
+                                cc.log('IAP: --> purchaseToken not found!');
+                                return;
+                            }
+
+                            let token = productReceipt.purchaseToken;
+                            purchases = [{
+                                productId: product.id,
+                                token
+                            }];
+                            cc.log('IAP purchase2', JSON.stringify(app.context.getPurchases()));
+                            contextItem = { id: product.id, receipt: token };
+
+                        } catch (e) {
+                            cc.log('IAP : -> catch -> product.receipt is not in json format ', e)
+                            return;
                         }
-                    };
+                    }
+                    cc.log('IAP contextItem', JSON.stringify(contextItem));
+                    (app.context.getPurchases() || []).push(contextItem);
 
-                    // cc.sys.localStorage.setItem(app.const.IAP_LOCAL_STORAGE, `${cc.sys.localStorage.getItem(app.const.IAP_LOCAL_STORAGE)}${JSON.stringify({ id: product.id, receipt: product.receiptCipheredPayload })};`)
-                    app.context.setPurchases(app.context.getPurchases().push({ id: product.id, receipt: product.receiptCipheredPayload }));
+                    if (contextItem) {
+                        app.context.setPurchases(app.context.getPurchases());
 
-                    app.system.showLoader(app.res.string('iap_buying_successfully_wait_server_response'), 60);
-                    cc.log('\nIAP sendObject:', JSON.stringify(sendObj))
-                    app.service.send(sendObj);
+                        let string = cc.sys.localStorage.getItem(app.const.IAP_LOCAL_STORAGE);
+                        string += `${JSON.stringify(contextItem)};`;
+                        cc.sys.localStorage.setItem(app.const.IAP_LOCAL_STORAGE, string);
+                        cc.log('IAP localStorage ITEM :', cc.sys.localStorage.getItem(app.const.IAP_LOCAL_STORAGE).split(';').length);
+
+                        let sendObj = {
+                            cmd: app.env.isIOS() ? app.commands.IOS_IN_APP_PURCHASE : app.commands.ANDROID_IN_APP_PURCHASE,
+                            data: {
+                                purchases
+                            }
+                        };
+
+                        // app.system.showLoader(app.res.string('iap_buying_successfully_wait_server_response'), 60);
+                        cc.log('\nIAP sendObject:', JSON.stringify(sendObj))
+                        app.service.send(sendObj);
+                    } else {
+                        app.system.hideLoader();
+                    }
                 },
                 onFailure: (product, msg) => {
                     //Purchase failed

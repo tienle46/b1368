@@ -77,12 +77,10 @@ export default (function(app) {
     app.env.log();
 
 
-
-
     /**************************************************************************************************************
      **************************************************ENV SETUP **************************************************
      **************************************************************************************************************/
-    (function setupEnv(app) {
+    app.env.__setupEnvironment = function() {
         // update pollyfill
         require('Pollyfill')(app);
 
@@ -165,7 +163,19 @@ export default (function(app) {
                         onSuccess: (product) => {
                             //Purchase success
                             /**
-                             * @product
+                             * @ IOS product
+                             * {
+                             * "name":"com.3mien.68.45K",
+                             * "id":"com.3mien.68.45K",
+                             * "title":"45K Chips",
+                             * "description":"Purchase 45K Chips",
+                             * "price":"₫45,000",
+                             * "currencyCode":"VND",
+                             * "receipt":"",
+                             * "receiptCipheredPayload":"MIITxwYJKoZIhvcNAQcCoIITuDCCE7QCAQExCzAJBgUrDgMCGgUAMIIDaAYJ"
+                             * }
+                             * 
+                             * @ Android product
                              * {
                              * "name":"com.3mien.68.45K",
                              * "id":"com.3mien.68.45K",
@@ -219,13 +229,16 @@ export default (function(app) {
                     let receiptStringItems = _getIAPItemsFromStorage();
                     if (receiptStringItems && receiptStringItems.length > 0 && receiptStringItems.indexOf(';') > -1) {
                         (function() {
-                            let array = receiptStringItems.map(stringifiedItem => {
+                            let array = receiptStringItems.split(';');
+                            // remove last [""] element
+                            array.pop();
+                            array.map(stringifiedItem => {
                                 let o = stringifiedItem;
 
                                 try {
                                     o = JSON.parse(stringifiedItem);
                                 } catch (e) {
-                                    cc.log('ERROR: -->stringifiedItem', e);
+                                    cc.log('IAP -> ERROR: -->stringifiedItem', e);
                                 }
                                 return o;
                             });
@@ -247,9 +260,11 @@ export default (function(app) {
                     onProductRequestSuccess: (products) => {
                         //Returns you the data for all the iap products
                         //You can get each item using following method
-                        cc.log('\nIAP: onProductRequestSuccess', JSON.stringify(products));
 
                         let receiptObjects = app.context.getPurchases();
+                        cc.log('\nIAP: receiptObjects', JSON.stringify(receiptObjects));
+                        cc.log('\nIAP: receiptObjects > length', JSON.stringify(receiptObjects.length));
+
                         if (receiptObjects.length > 0) {
                             let productIds = [];
                             for (let i = 0; i < products.length; i++) {
@@ -258,19 +273,27 @@ export default (function(app) {
                             }
 
                             let purchases = [];
-
                             receiptObjects.forEach((stringifiedItem) => {
                                 let item = JSON.parse(stringifiedItem);
                                 if (app._.includes(productIds, item.id)) {
-                                    purchases.push(item.receipt);
+                                    if (app.env.isIOS()) {
+                                        purchases.push(item.receipt);
+                                    } else if (app.env.isAndroid()) {
+                                        purchases.push({ productId: item.id, token: item.receipt });
+                                    }
                                 }
                             });
+                            cc.log('\nIAP: purchases', JSON.stringify(purchases));
+
                             let sendObj = {
-                                cmd: app.commands.IOS_IN_APP_PURCHASE,
+                                cmd: app.env.isIOS() ? app.commands.IOS_IN_APP_PURCHASE : app.commands.ANDROID_IN_APP_PURCHASE,
                                 data: {
                                     purchases
                                 }
                             };
+                            cc.log('\nIAP: sendObj', JSON.stringify(sendObj));
+
+                            app.env.isAndroid() && (sendObj.data.resubmit = true);
 
                             app.system.showLoader(app.res.string('re_sending_item_iap'), 60);
                             app.service.send(sendObj);
@@ -293,6 +316,6 @@ export default (function(app) {
                 releaseArray(plugins);
             }
         }
+    }; // end Func
 
-    })(app);
 });

@@ -62,7 +62,7 @@ export default {
     error_cannot_load_data: 'Không thể tải dữ liệu',
     loading_data: 'Đang tải dữ liệu...',
     re_sending_item_iap: 'Đang thực hiện lại giao dịch ...',
-    sending_item_apple_iap: 'Đang thực hiện giao dịch tới apple...',
+    sending_item_store_iap: 'Đang thực hiện giao dịch tới {{provider}}...',
     iap_buying_successfully_wait_server_response: 'Vật phẩm đã đc mua, đợi xác nhận từ server .....',
     game_table_name: 'Bàn {{tableName}}',
     game_sam_thang_sam: 'Thắng Sâm',

@@ -14,7 +14,7 @@ class TopupDialog extends DialogActor {
         });
 
         if (app.env.isMobile() && window.sdkbox.IAP) {
-
+            cc.log('IAP: ----> Topup:', cc.sys.localStorage(app.const.IAP_LOCAL_STORAGE));
         }
     }
 
@@ -25,41 +25,25 @@ class TopupDialog extends DialogActor {
 
     start() {
         super.start();
-        this._sendTopUpList();
     }
 
     _addGlobalListener() {
         super._addGlobalListener();
-        app.system.addListener(app.commands.USER_GET_CHARGE_LIST, this._onGetTopUpData, this);
     }
 
     _removeGlobalListener() {
         super._removeGlobalListener();
-        app.system.removeListener(app.commands.USER_GET_CHARGE_LIST, this._onGetTopUpData, this);
     }
 
-    _sendTopUpList() {
-        let sendObject = {
-            'cmd': app.commands.USER_GET_CHARGE_LIST,
-            data: {
-                carrierNames: [
-                    // carrier name is here.
-                ]
-            }
-        };
+    // _onGetTopUpData(data) {
+    //     let dialogComponent = this.getDialog(this.node, true);
 
-        app.service.send(sendObject);
-    }
-
-    _onGetTopUpData(data) {
-        let dialogComponent = this.getDialog(this.node, true);
-
-        if (dialogComponent) {
-            dialogComponent.addSharedData('sms', data[app.keywords.CHARGE_SMS_OBJECT_IAC] || {});
-            // if platform is IOS -> 'ap' || android -> 'bp'
-            dialogComponent.addSharedData('iap', app.env.isAndroid() ? data[app.keywords.IN_BILLING_PURCHASE] : data[app.keywords.IN_APP_PURCHASE]);
-        }
-    }
+    //     if (dialogComponent) {
+    //         dialogComponent.addSharedData('sms', data[app.keywords.CHARGE_SMS_OBJECT_IAC] || {});
+    //         // if platform is IOS -> 'ap' || android -> 'bp'
+    //         dialogComponent.addSharedData('iap', app.env.isAndroid() ? data[app.keywords.IN_BILLING_PURCHASE] : data[app.keywords.IN_APP_PURCHASE]);
+    //     }
+    // }
 }
 
 app.createComponent(TopupDialog);
