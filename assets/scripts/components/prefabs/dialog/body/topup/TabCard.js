@@ -29,7 +29,7 @@ class TabCard extends DialogActor {
 
     start() {
         super.start();
-        // this._initCardsGroup();
+        this._initCardsGroup();
     }
 
     _addGlobalListener() {
@@ -71,9 +71,6 @@ class TabCard extends DialogActor {
     _initCardsGroup() {
         let sendObject = {
             'cmd': app.commands.USER_GET_CHARGE_LIST,
-            data: {
-                carrierNames: []
-            }
         };
 
         // show loader
@@ -83,13 +80,13 @@ class TabCard extends DialogActor {
 
     _onUserGetChargeList(data) {
         let cardListIds = data[app.keywords.EXCHANGE_LIST.RESPONSE.ITEM_ID_LIST] || [];
+
         if (cardListIds.length > 0) {
             cardListIds.forEach((id, index) => {
                 let item = cc.instantiate(this.providerNode);
                 let lbl = item.getChildByName('providername').getComponent(cc.Label);
                 let providerName = data[app.keywords.TASK_NAME_LIST][index];
                 lbl.string = providerName;
-
                 item.active = true;
                 item.providerName = providerName;
                 item.providerId = id;
