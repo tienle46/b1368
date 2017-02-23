@@ -1273,7 +1273,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 63,
-      "height": 65
+      "height": 69
     },
     "_children": [],
     "_rotationX": 0,
@@ -1428,7 +1428,7 @@
     "_alignFlags": 33,
     "_left": 0,
     "_right": -23.5,
-    "_top": -19,
+    "_top": -21,
     "_bottom": 0,
     "_verticalCenter": 0,
     "_horizontalCenter": 0,
