@@ -276,27 +276,17 @@ export default (function(app) {
                             receiptObjects.forEach((stringifiedItem) => {
                                 let item = JSON.parse(stringifiedItem);
                                 if (app._.includes(productIds, item.id)) {
-                                    if (app.env.isIOS()) {
-                                        purchases.push(item.receipt);
-                                    } else if (app.env.isAndroid()) {
-                                        purchases.push({ productId: item.id, token: item.receipt });
-                                    }
+                                    purchases.push(item);
+                                    // if (app.env.isIOS()) {
+                                    //     purchases.push(item.receipt);
+                                    // } else if (app.env.isAndroid()) {
+                                    //     purchases.push({ productId: item.id, token: item.receipt });
+                                    // }
                                 }
                             });
-                            cc.log('\nIAP: purchases', JSON.stringify(purchases));
 
-                            let sendObj = {
-                                cmd: app.env.isIOS() ? app.commands.IOS_IN_APP_PURCHASE : app.commands.ANDROID_IN_APP_PURCHASE,
-                                data: {
-                                    purchases
-                                }
-                            };
-                            cc.log('\nIAP: sendObj', JSON.stringify(sendObj));
+                            app.context.setPurchases(purchases);
 
-                            app.env.isAndroid() && (sendObj.data.resubmit = true);
-
-                            app.system.showLoader(app.res.string('re_sending_item_iap'), 60);
-                            app.service.send(sendObj);
                             releaseArray(productIds);
                         }
                     }

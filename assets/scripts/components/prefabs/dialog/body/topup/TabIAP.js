@@ -104,7 +104,7 @@ class TabIAP extends DialogActor {
                                 token
                             }];
                             cc.log('IAP purchase2', JSON.stringify(app.context.getPurchases()));
-                            contextItem = { id: product.id, receipt: token };
+                            contextItem = { id: product.id, receipt: token, username: app.context.getMyInfo().name || "" };
 
                         } catch (e) {
                             cc.log('IAP : -> catch -> product.receipt is not in json format ', e)
@@ -120,7 +120,6 @@ class TabIAP extends DialogActor {
                         let string = cc.sys.localStorage.getItem(app.const.IAP_LOCAL_STORAGE);
                         string += `${JSON.stringify(contextItem)};`;
                         cc.sys.localStorage.setItem(app.const.IAP_LOCAL_STORAGE, string);
-                        cc.log('IAP localStorage ITEM :', cc.sys.localStorage.getItem(app.const.IAP_LOCAL_STORAGE).split(';').length);
 
                         let sendObj = {
                             cmd: app.env.isIOS() ? app.commands.IOS_IN_APP_PURCHASE : app.commands.ANDROID_IN_APP_PURCHASE,

@@ -160,9 +160,46 @@ export default class BaseScene extends Actor {
                     window.sdkbox.PluginGoogleAnalytics.setUser(app.context.getMe().name);
                 }
                 //load recently games
-                this.changeScene(app.const.scene.DASHBOARD_SCENE);
+                this.changeScene(app.const.scene.DASHBOARD_SCENE, this._resendIAPSavedItem);
             }
         });
+    }
+
+    _resendIAPSavedItem() {
+        if (!app.env.isMobile())
+            return;
+
+        let receipts = app.context.getPurchases();
+        if (!receipts || receipts.length == 0)
+            return;
+
+        let purchases = [];
+        cc.log('\nIAP: receipts', JSON.stringify(receipts));
+
+        receipts.forEach(receipt => {
+            let item;
+            if (app.env.isIOS()) {
+                item = receipt.receipt;
+            } else if (app.env.isAndroid()) {
+                item = { productId: receipt.id, token: receipt.receipt };
+            }
+            purchases.push(item);
+        });
+        cc.log('\nIAP: purchases', JSON.stringify(receipts));
+
+        let sendObj = {
+            cmd: app.env.isIOS() ? app.commands.IOS_IN_APP_PURCHASE : app.commands.ANDROID_IN_APP_PURCHASE,
+            data: {
+                purchases
+            }
+        };
+
+        cc.log('\nIAP: sendObj', JSON.stringify(sendObj));
+
+        app.env.isAndroid() && (sendObj.data.resubmit = true);
+
+        app.system.showLoader(app.res.string('re_sending_item_iap'), 60);
+        app.service.send(sendObj);
     }
 }
 

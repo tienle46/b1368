@@ -234,8 +234,6 @@ class GameSystem {
                 break;
             }
         }
-
-        this.__modifyLocalStorage();
     }
 
     _onSubmitPurchaseAndroid(data) {
@@ -252,11 +250,11 @@ class GameSystem {
 
         for (let i = 0; i < receipts.length; i++) {
             let receipt = receipts[i];
-            if (receipt.success) {
+            if (receipt.su) {
                 this.__removeSuccessItemInIAPLocalStorage(receipt.token);
-                app.system.showToast(receipt.message);
+                app.system.showToast(receipt.msg);
             } else {
-                app.system.error(receipt.message);
+                app.system.error(receipt.msg);
             }
         }
 
@@ -269,38 +267,36 @@ class GameSystem {
         });
 
         this.hideLoader();
-        this.__modifyLocalStorage();
     }
 
     __removeSuccessItemInIAPLocalStorage(token) {
         let savedItems = app.context.getPurchases();
+        cc.log('IAP: savedItems > 0', savedItems.length);
+
+        if (savedItems.length == 0) {
+            cc.log('IAP: savedItems1 === 0', savedItems.length);
+            return;
+        }
 
         let index = app._.findIndex(savedItems, ['receipt', token]);
         cc.log('IAP: savedItems1 > length:', savedItems.length);
 
         cc.log('iap: _onSubmitPurchase receipts >', index);
         if (index > -1) {
-            savedItems.splice(index, 1); // also affected to app.context.purchasesItem
-            cc.log('IAP: getPurchases > length:', app.context.getPurchases().length);
-            cc.log('IAP: savedItems > length:', savedItems.length);
-        }
-    }
-
-    __modifyLocalStorage() {
-        let savedItems = app.context.getPurchases();
-
-        if (savedItems.length > 0) {
-            cc.log('IAP: savedItems > 0', savedItems.length);
             let string = cc.sys.localStorage.getItem(app.const.IAP_LOCAL_STORAGE);
-            savedItems.forEach(item => {
-                string += `${JSON.stringify(item)};`;
-            });
-            cc.sys.localStorage.setItem(app.const.IAP_LOCAL_STORAGE, string);
-        } else {
+            let item = savedItems[index];
+            cc.sys.localStorage.setItem(app.const.IAP_LOCAL_STORAGE, string.replace(`${JSON.stringify(item)};`, ""));
+
+            savedItems.splice(index, 1); // also affected to app.context.purchasesItem
+        }
+
+        if (savedItems.length == 0) {
+            cc.log('IAP: savedItems2 reset purchase === 0', savedItems.length);
+
             app.context.setPurchases([]);
             cc.sys.localStorage.setItem(app.const.IAP_LOCAL_STORAGE, "");
         }
-        cc.log('IAP localStorage2 ITEM :', cc.sys.localStorage.getItem(app.const.IAP_LOCAL_STORAGE).split(';').length);
+        cc.log('IAP localStorage2 ITEM :', cc.sys.localStorage.getItem(app.const.IAP_LOCAL_STORAGE).split(';').length - 1);
 
     }
 

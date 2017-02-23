@@ -14,10 +14,13 @@ class GameContext {
         this.rejoiningGame = false;
         this.selectedGame = null; // selected game code
 
-        this.purchaseItems = []; // stringifyJSON array : [{id, receipt}]
+        this.purchaseItems = []; // stringifyJSON array : [{id, receipt, username}]
     }
 
     getPurchases() {
+        let username = this.getMyInfo() ? this.getMyInfo().name : null;
+        if (username)
+            return this.purchaseItems.filter(item => item.username = username) || [];
         return this.purchaseItems || [];
     }
 
