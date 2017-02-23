@@ -1,6 +1,7 @@
 import app from 'app';
 import DialogActor from 'DialogActor';
 import RubUtils from 'RubUtils';
+import { setOpacity } from 'Utils';
 
 class TabTopCaoThu extends DialogActor {
     constructor() {
@@ -17,6 +18,7 @@ class TabTopCaoThu extends DialogActor {
 
         this.currentNodeId = null;
         this.itemLoaded = null;
+        this.activateToggle = null;
     }
 
     start() {
@@ -52,9 +54,13 @@ class TabTopCaoThu extends DialogActor {
         app.service.send(sendObject);
     }
 
-    onGameItemClicked(event) {
+    onGameItemClicked(toggle) {
+        setOpacity(this.activateToggleNode, 100);
+        this.activateToggleNode = toggle.node;
+        setOpacity(this.activateToggleNode, 255);
+
         this.previousNodeId = this.currentNodeId;
-        let dNodeId = event.node.dNodeId;
+        let dNodeId = toggle.node.dNodeId;
         this.currentNodeId = dNodeId;
         this._requestDataFromServer(this.currentNodeId, 1);
     }
@@ -77,15 +83,20 @@ class TabTopCaoThu extends DialogActor {
                             let node = cc.instantiate(this.gameItem);
                             let toggle = node.getComponent(cc.Toggle);
                             toggle.isChecked = count === 0;
+
                             node.dNodeId = dNodeIds[count];
+                            node.active = true;
 
                             if (toggle.isChecked) {
+                                this.activateToggleNode = node;
                                 this.itemLoaded = true;
+
+                                setOpacity(this.activateToggleNode, 255);
+
                                 this.previousNodeId = node.dNodeId;
 
                                 this._requestDataFromServer(node.dNodeId, 1);
                             }
-                            node.active = true;
 
                             this.gamePicker.addChild(node);
 

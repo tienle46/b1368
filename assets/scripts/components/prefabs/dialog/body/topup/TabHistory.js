@@ -1,6 +1,5 @@
 import app from 'app';
 import DialogActor from 'DialogActor';
-import numeral from 'numeral';
 
 class TabHistory extends DialogActor {
     constructor() {
@@ -32,24 +31,24 @@ class TabHistory extends DialogActor {
     }
 
     _onUserChargeHistory(data) {
+        console.debug(data);
         let histories = data.histories || [];
         if (histories.length > 0) {
             let d = [];
             histories.map((history, index) => {
-                d.push([`${index + 1}`, history.time, history.money, history.balance]);
+                d.push([history.time.split(' ')[0], history.money, history.balance]);
             });
 
             let head = {
-                data: ['STT', 'Thời gian', 'Nội dung', 'Trạng thái'],
+                data: ['Thời gian', 'Nội dung', 'Trạng thái'],
                 options: {
-                    fontColor: app.const.COLOR_YELLOW,
-                    fontSize: 25
+                    fontColor: app.const.COLOR_YELLOW
                 }
             };
 
             let rubOptions = {
                 size: this.bodyNode.getContentSize(),
-                group: { widths: [100, '', '', ''] },
+                group: { widths: [250, '', 150] },
                 isValidated: true
             };
 

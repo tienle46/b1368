@@ -105,13 +105,12 @@ class TabExchangeHistory extends DialogActor {
         let head = {
             data: ['Thời gian', 'Loại vật phẩm', 'Thông tin', ''],
             options: {
-                fontColor: app.const.COLOR_YELLOW,
-                fontSize: 25
+                fontColor: app.const.COLOR_YELLOW
             }
         };
         this.initView(head, d, {
             paging: { next, prev, context: this },
-            size: this.bodyNode.getContentSize(),
+            size: this.bodyNode.getContentSize()
         });
 
         this.bodyNode.addChild(this.getScrollViewNode());

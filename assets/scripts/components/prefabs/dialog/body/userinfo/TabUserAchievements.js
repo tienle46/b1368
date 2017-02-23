@@ -53,8 +53,7 @@ export default class TabUserAchievements extends DialogActor {
             let head = {
                 data: ['Tên Game', 'Cấp độ', 'Thắng', 'Thua'],
                 options: {
-                    fontColor: app.const.COLOR_YELLOW,
-                    fontSize: 25
+                    fontColor: app.const.COLOR_YELLOW
                 }
             };
 

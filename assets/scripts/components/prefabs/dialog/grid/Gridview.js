@@ -24,7 +24,7 @@ export class GridView extends Component {
         }
 
         head && this._initHead(head);
-        body && this._initBody(body);
+        body && this._initBody(body, this.options);
     }
 
     initList(data, options) {
@@ -55,7 +55,7 @@ export class GridView extends Component {
         }
 
         head && this._initHead(head);
-        data && this._initBody(data);
+        data && this._initBody(data, this.options);
     }
 
     _initListRow(data, hideBg) {
@@ -72,10 +72,10 @@ export class GridView extends Component {
         }
     }
 
-    _initBody(data) {
+    _initBody(data, options) {
         if (!app._.isEmpty(data)) {
             data.map((D, i) => {
-                this._initRow(D, i % 2 == 0);
+                this._initRow(D, i % 2 == 0, options);
             });
         }
     }
@@ -83,12 +83,22 @@ export class GridView extends Component {
     _initRow(data, showBg, options = {}) {
         let widths = this._setCellSize(data);
         let row = cc.instantiate(this.rowPrefab);
+
         row.getComponent('Row').init(data.map((d, i) => {
             let cell = cc.instantiate(this.cellPrefab);
             let cellComponent = cell.getComponent('Cell');
             if (cellComponent) {
-                cellComponent.init(d, options);
+                let o = {};
+                options.fontColor && (o.fontColor = options.fontColor);
+                options.fontSize && (o.fontColor = options.fontSize);
+
+                if (options.group && options.group.colors) {
+                    cellComponent.setColor(options.group.colors[i]);
+                }
+
+                cellComponent.init(d, o);
                 cellComponent.setWidth(widths[i]);
+
             }
             return cell;
         }), showBg);

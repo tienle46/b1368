@@ -121,7 +121,7 @@ class BottomBar extends DialogActor {
                 title: 'Lịch sử',
                 value: `${url}/tab_exchange_history`
             }, {
-                title: 'Đại lí',
+                title: 'Đại lý',
                 value: `${url}/tab_agency`
             }];
 

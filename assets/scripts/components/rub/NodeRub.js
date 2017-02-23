@@ -64,6 +64,7 @@ let NodeRub = {
      *      color: new cc.Color
      *      width: number
      *  }
+     *  (optional) fontColor:
      * }
      */
     addLabelComponentToNode: (node, options) => {
@@ -76,11 +77,15 @@ let NodeRub = {
         delete options.outline;
         delete options.font;
         delete options.text;
-
+        if (options.fontColor) {
+            node.color = options.fontColor;
+            delete options.fontColor;
+        }
         for (let key in options) {
             label[key] = options[key];
         }
         node.getLineCount = () => label._lineCount;
+        options = null;
     },
     /**
      * @param options
@@ -92,6 +97,7 @@ let NodeRub = {
      * horizontalAlign: # default cc.Label.HorizontalAlign.CENTER,
      * maxWidth: number
      * overflow: # default.cc.Label.Overflow.CLAMP
+     *  (optional) fontColor:
      * }
      */
     addRichTextComponentToNode: (node, options) => {
@@ -101,12 +107,17 @@ let NodeRub = {
 
         delete options.text;
         delete options.font;
+        if (options.fontColor) {
+            node.color = options.fontColor;
+            delete options.fontColor;
+        }
 
         for (let key in options) {
             rich[key] = options[key];
         }
 
         node.getLineCount = () => rich._lineCount;
+        options = null;
     },
     /**
      * @param options

@@ -16,9 +16,6 @@ class TabExchangeCard extends DialogActor {
             providerContainerNode: cc.Node,
             providerDropDownNode: cc.Node,
             providerDropDownItem: cc.Node,
-            amountNumberLbl: cc.Label,
-            amountNumberDropDownListNode: cc.Node,
-            amountNumberDropDownItem: cc.Node,
             hint: cc.RichText
         };
 
@@ -128,7 +125,7 @@ class TabExchangeCard extends DialogActor {
         let target = e.currentTarget;
         this.providerLbl.string = `${target.providerName}`;
 
-        this.hint.string = `<color=#FAE407>${target.providerName}</color> cần <color=#FAE407>${numeral(target.providerPrice).format('0,0')}</color> Xu để đổi.`;
+        this.hint.string = `<color=#FAE407>${target.providerName}</color> cần <color=#FAE407>${numeral(target.providerPrice).format('0,0')}</color> Chip để đổi.`;
 
         this.selectedItem = {
             id: target.providerId,
