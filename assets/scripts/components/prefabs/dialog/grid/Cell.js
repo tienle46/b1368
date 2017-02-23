@@ -16,7 +16,7 @@ export class Cell extends Component {
      *  button: {}
      * }
      */
-    init(data) {
+    init(data, options) {
         if (data instanceof Object) {
             if (isNode(data)) {
                 if (this.node.getComponent(cc.Label)) {
@@ -39,15 +39,19 @@ export class Cell extends Component {
             // richtext
             options.richtext && NodeRub.addRichTextComponentToNode(this.node, options.richtext);
         } else {
-            let text = isNull(data) ? "" : data.toString();
-            NodeRub.addLabelComponentToNode(this.node, {
-                text
-            });
+            let o = Object.assign({}, options);
+            o.text = isNull(data) ? "" : data.toString();
+            NodeRub.addLabelComponentToNode(this.node, o);
         }
     }
 
     setWidth(width) {
         this.node.setContentSize(width, this.node.getContentSize().height);
+    }
+
+    setColor(color) {
+        if (color instanceof cc.Color)
+            this.node.color = color;
     }
 }
 
