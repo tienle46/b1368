@@ -78,7 +78,8 @@ class BottomBar extends DialogActor {
                 value: `${url}/tab_top_dai_gia`
             }];
 
-            DialogRub.show(app.system.getCurrentSceneNode(), tabs, { title: 'Xếp hạng' });
+            let D = DialogRub.show(app.system.getCurrentSceneNode(), tabs, { title: 'Xếp hạng' });
+            D = null;
         }());
     }
 
@@ -106,7 +107,8 @@ class BottomBar extends DialogActor {
                 }
             ];
 
-            PersonalInfoDialogRub.show(app.system.getCurrentSceneNode(), tabs, { title: 'Bạn bè' });
+            let D = PersonalInfoDialogRub.show(app.system.getCurrentSceneNode(), tabs, { title: 'Bạn bè' });
+            D = null;
         }());
     }
 
@@ -128,8 +130,8 @@ class BottomBar extends DialogActor {
             }];
 
             // bottombar -> dashboard scene node
-            let E = ExchangeDialogRub.show(app.system.getCurrentSceneNode(), tabs, { title: 'Đổi thưởng' });
-            E.release();
+            let D = ExchangeDialogRub.show(app.system.getCurrentSceneNode(), tabs, { title: 'Đổi thưởng' });
+            D = null;
         }());
     }
 
@@ -148,8 +150,8 @@ class BottomBar extends DialogActor {
                 value: `${url}/tab_personal_messages`
             }];
 
-            let E = MessageCenterDialogRub.show(app.system.getCurrentSceneNode(), tabs, { title: 'Tin nhắn' });
-            E.release();
+            let D = MessageCenterDialogRub.show(app.system.getCurrentSceneNode(), tabs, { title: 'Tin nhắn' });
+            D = null;
         }());
     }
 
@@ -181,8 +183,8 @@ class BottomBar extends DialogActor {
                 // }, 
             ];
 
-            let p = PersonalInfoDialogRub.show(app.system.getCurrentSceneNode(), tabs, { title: 'Cá nhân' });
-            p = null;
+            let D = PersonalInfoDialogRub.show(app.system.getCurrentSceneNode(), tabs, { title: 'Cá nhân' });
+            D = null;
         }());
     }
 

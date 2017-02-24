@@ -69,7 +69,7 @@ export default class DashboardScene extends BaseScene {
             data
         };
 
-        this.showLoading();
+        this.showLoading('Đang tải dữ liệu ....');
         app.service.send(sendObject);
     }
 
