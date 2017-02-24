@@ -415,7 +415,6 @@ export default class PlayerPhom extends PlayerCardTurnBase {
             return;
         }
 
-
         let playedCardLength = this.renderer.playedCardList.cards.length;
         let eatenCardList = this.isItMe() ? this.renderer.cardList : this.renderer.eatenCardList;
         eatenCardList.transferFrom(lastPlayedTurnPlayer.renderer.playedCardList, [eatenCard], {reverse: true, cb: (cards) => {
@@ -567,8 +566,6 @@ export default class PlayerPhom extends PlayerCardTurnBase {
             return;
         }
 
-        console.warn("down phom render on change gui: ", this.renderer._downPhomListComponent);
-
         this.board.deHighLightPhomList();
         this.isItMe() && this.renderer.cardList.clean();
 
@@ -580,8 +577,6 @@ export default class PlayerPhom extends PlayerCardTurnBase {
             // this.scene.emit(Events.SHOW_PHOM_HIGHLIGHT,  this.board.allPhomList[node.phomId]);
             // this.board.allPhomList[node.phomId].setHighlightAll(true);
         });
-
-        console.warn("after phom render on change gui: ", this.renderer._downPhomListComponent);
     }
 
     _handlePlayerDownCard(playerId, data) {
@@ -602,11 +597,8 @@ export default class PlayerPhom extends PlayerCardTurnBase {
             playerPhomList.add(phom);
         });
 
-
-        console.log("cllear on eatenCardList")
-
+        this.eatenCards.splice(0, this.eatenCards.length);
         this.renderer.eatenCardList.clear();
-
         this.renderer.downPhom(playerPhomList, this);
         this.board.allPhomList.push(...playerPhomList);
 

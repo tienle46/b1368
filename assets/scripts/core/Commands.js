@@ -255,8 +255,12 @@ Commands.GET_BUDDY_DETAIL_INFO = "buddyDetailInfo";
 Commands.USER_TRANSFER_CONFIG = 'b_ati';
 Commands.USER_TRANSFER_TO_USER = "b_at";
 Commands.USER_GET_MONEY_FROM_BANK = "b_aw";
+Commands.GET_BUDDY_INFO = "getBuddyInfo";
+Commands.REQUEST_BUDDY = "requestBuddy";
+Commands.CONFIRM_ADD_BUDDY = "confirmAddBuddy";
 
 Commands.BANK_IN_HISTORY = "bankInHistory";
 Commands.IOS_IN_APP_PURCHASE = "submitPurchase";
 Commands.ANDROID_IN_APP_PURCHASE = "submitBilling";
+
 module.exports = Commands;

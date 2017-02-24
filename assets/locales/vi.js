@@ -1,5 +1,6 @@
 export default {
     system: "Hệ Thống",
+    currency_name: "chip",
     game_title: "B1368",
     game_currency_unit: "Chip",
     lost_connection: "Kết nối tới máy chủ bị gián đoạn. Vui lòng đăng nhập lại!",
@@ -117,7 +118,7 @@ export default {
     buddy_not_in_your_buddy_list: 'Tài khoản {{buddyName}} không thuộc danh sách bạn bè của bạn',
     buddy_not_found_receiver_buddy: 'Không tìm thấy người chơi cần gửi tin nhắn đến',
     buddy_undefined_error: '{{errorCode}} Lỗi liên quan đến chức năng bạn bè chưa xác định. Vui lòng gọi hỗ trợ!',
-    buddy_cannot_block_offline_buddy: 'Không thể khóa người chơi đang offline',
+    buddy_cannot_block_offline_buddy: 'Không thể khóa (mở khóa) người chơi đang offline',
     buddy_buddy_list_is_full: 'Danh sách bạn bè vượt quá giới hạn không thể thêm bạn',
     error_code: 'Mã lỗi ({{errorCode}}). ',
     game_name_tlmn: "TLMN",
@@ -129,7 +130,14 @@ export default {
     game_name_phom: "Phỏm",
     game_name_xi_to: "Xì tố",
     game_name_xoc_dia: "Xóc đĩa",
-    game_playing_game: "Đang chơi: {{gameName}}",
+    game_playing_game: "Đang chơi:",
     confirm_remove_buddy: "Bạn có chắc chắn muốn hủy bết bạn với {{buddyName}}",
-    confirm_block_buddy: "Bạn có chắc chắn muốn block {{buddyName}}"
+    confirm_block_buddy: "Bạn có chắc chắn muốn block {{buddyName}}",
+    confirm_add_to_buddy_list: "{{sender}} muốn kết bạn với bạn. Bạn có đồng ý kết bạn?",
+    buddy_chat_with_online_buddy_only: "Chỉ có thể chat với bạn đang online!",
+    input_content: "Nhập nội dung",
+    buddy_removed_buddy: "Đã hủy kết bạn với {{buddyName}}!",
+    buddy_added_buddy: "{{buddyName}} đã được thêm vào danh sách bạn bè!",
+    buddy_already_in_buddy_list: "{{buddyName}} đã tồn tại trong danh sách bạn bè!",
+    buddy_select_buddy_to_chat: "Chọn bạn để chat!",
 };

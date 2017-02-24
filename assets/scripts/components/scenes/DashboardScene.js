@@ -76,6 +76,7 @@ export default class DashboardScene extends BaseScene {
     _onUserListGame(data) {
         this.gameList = this._filterClientSupportedGames(data[app.keywords.SERVICE_CHILD_CODE_ARRAY]);
         this._initItemListGame();
+        app.buddyManager.sendInitBuddy()
     }
 
     _filterClientSupportedGames(gameCodes) {

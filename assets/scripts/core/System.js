@@ -68,7 +68,7 @@ class GameSystem {
             highPriority && isFunction(onLaunch) && onLaunch();
 
             if (cc.director.getScene().children[0]) {
-                app.service.removeAllCallback(this.getCurrentSceneName());
+                app.service && app.service.removeAllCallback(this.getCurrentSceneName());
 
                 this._currentScene = cc.director.getScene().children[0].getComponent(sceneName);
 

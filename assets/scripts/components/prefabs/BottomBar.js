@@ -1,4 +1,5 @@
 import app from 'app';
+import utils from 'utils';
 import DialogActor from 'DialogActor';
 import DialogRub from 'DialogRub';
 import TopupDialogRub from 'TopupDialogRub';
@@ -7,6 +8,8 @@ import PersonalInfoDialogRub from 'PersonalInfoDialogRub';
 import MessageCenterDialogRub from 'MessageCenterDialogRub';
 import numeral from 'numeral';
 import SFS2X from 'SFS2X';
+import Events from 'Events';
+import BuddyPopup from 'BuddyPopup';
 
 class BottomBar extends DialogActor {
     constructor() {
@@ -17,30 +20,45 @@ class BottomBar extends DialogActor {
             userInfoCoinLbl: cc.Label,
             userNameLbl: cc.Label,
             notifyBgNode: cc.Node,
-            notifyCounterLbl: cc.Label
+            notifyCounterLbl: cc.Label,
+            buddyNotifyLbl: cc.Label,
+            buddyNotifyNode: cc.Node,
         };
     }
 
     onEnable() {
         super.onEnable();
         this._fillUserData();
+        this._onBuddyNotifyCountChanged();
     }
 
     start() {
         super.start();
-        this._requestMessageNotification();
+        this._requestMessageNotification(app.context.unreadMessageBuddies.length);
     }
 
     _addGlobalListener() {
         super._addGlobalListener();
         app.system.addListener(app.commands.NEW_NOTIFICATION_COUNT, this._onNotifyCount, this);
         app.system.addListener(SFS2X.SFSEvent.USER_VARIABLES_UPDATE, this._onUserVariablesUpdate, this);
+        app.system.addListener(Events.ON_BUDDY_UNREAD_MESSAGE_COUNT_CHANGED, this._onBuddyNotifyCountChanged, this);
     }
 
     _removeGlobalListener() {
         super._removeGlobalListener();
         app.system.removeListener(app.commands.NEW_NOTIFICATION_COUNT, this._onNotifyCount, this);
         app.system.removeListener(SFS2X.SFSEvent.USER_VARIABLES_UPDATE, this._onUserVariablesUpdate, this);
+        app.system.removeListener(Events.ON_BUDDY_UNREAD_MESSAGE_COUNT_CHANGED, this._onBuddyNotifyCountChanged, this);
+    }
+
+    _onBuddyNotifyCountChanged(count){
+        if(count > 0){
+            this.buddyNotifyLbl.string = `${count}`
+            utils.setVisible(this.buddyNotifyNode, true);
+        }else{
+            this.buddyNotifyLbl.string = '';
+            utils.setVisible(this.buddyNotifyNode, false);
+        }
     }
 
     _onUserVariablesUpdate(ev) {
@@ -83,31 +101,32 @@ class BottomBar extends DialogActor {
     }
 
     onFriendBtnClick() {
-        (function() {
-            let url = `${app.const.DIALOG_DIR_PREFAB}/buddies`;
-            let tabs = [{
-                    title: 'Danh sách',
-                    // value: `${url}/tab_buddy_list`
-                    value: `${url}/BuddyList`,
-                    componentName: 'TabBuddiesList'
-                },
-                /*{
-                    title: 'Chat',
-                    value: `${url}/tab_buddy_chat`
-                },*/
-                {
-                    title: 'Chuyển xu',
-                    value: `${url}/tab_buddy_detail`,
-                    componentName: 'TabBuddyTransfer'
-                },
-                {
-                    title: 'Lịch sử',
-                    value: `${url}/tab_transaction_history`,
-                }
-            ];
-
-            PersonalInfoDialogRub.show(app.system.getCurrentSceneNode(), tabs, { title: 'Bạn bè' });
-        }());
+        new BuddyPopup().show(this.node.parent);
+        // (function() {
+        //     let url = `${app.const.DIALOG_DIR_PREFAB}/buddies`;
+        //     let tabs = [{
+        //             title: 'Danh sách',
+        //             // value: `${url}/tab_buddy_list`
+        //             value: `${url}/BuddyList`,
+        //             componentName: 'TabBuddiesList'
+        //         },
+        //         /*{
+        //             title: 'Chat',
+        //             value: `${url}/tab_buddy_chat`
+        //         },*/
+        //         {
+        //             title: 'Chuyển xu',
+        //             value: `${url}/tab_buddy_detail`,
+        //             componentName: 'TabBuddyTransfer'
+        //         },
+        //         {
+        //             title: 'Lịch sử',
+        //             value: `${url}/tab_transaction_history`,
+        //         }
+        //     ];
+        //
+        //     PersonalInfoDialogRub.show(app.system.getCurrentSceneNode(), tabs, { title: 'Bạn bè' });
+        // }());
     }
 
     onClickTransferAwardAction() {

@@ -3,6 +3,7 @@
  */
 
 import app from 'app';
+import Events from 'Events';
 
 class GameContext {
 
@@ -13,8 +14,14 @@ class GameContext {
         this.lastJoinedRoom = null;
         this.rejoiningGame = false;
         this.selectedGame = null; // selected game code
-
         this.purchaseItems = []; // stringifyJSON array : [{id, receipt, username}]
+        this.unreadMessageBuddies= []; // selected game code
+        this.chattingBuddies= []; // selected game code
+    }
+
+    reset(){
+        this.chattingBuddies = [];
+        this.unreadMessageBuddies = [];
     }
 
     getPurchases() {
@@ -31,6 +38,30 @@ class GameContext {
      */
     setPurchases(purchases) {
         this.purchaseItems = purchases;
+    }
+
+    addToChattingBuddies(buddy){
+        if(!app.buddyManager.findBuddyInList(this.chattingBuddies, buddy)){
+            this.chattingBuddies.push(buddy);
+        }
+    }
+
+    addToUnreadMessageBuddies(buddyName){
+        if(!buddyName) return;
+
+        let index = this.unreadMessageBuddies.indexOf(buddyName);
+        if(index < 0){
+            this.unreadMessageBuddies.push(buddyName);
+            app.system.emit(Events.ON_BUDDY_UNREAD_MESSAGE_COUNT_CHANGED, this.unreadMessageBuddies.length);
+        }
+    }
+
+    removeUnreadMessageBuddies(buddyName){
+        let index = this.unreadMessageBuddies.indexOf(buddyName);
+        if(index >= 0){
+            this.unreadMessageBuddies.splice(index, 1);
+            app.system.emit(Events.ON_BUDDY_UNREAD_MESSAGE_COUNT_CHANGED, this.unreadMessageBuddies.length);
+        }
     }
 
     setSelectedGame(selectedGame) {
