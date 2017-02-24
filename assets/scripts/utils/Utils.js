@@ -133,9 +133,21 @@ export default class Utils {
             prefabObj.parent = this && this.playerLayer;
         });
     }
+    //
+    // static getVariable(obj, key, defaultValue) {
+    //     return (obj && obj.containsVariable && obj.containsVariable(key) && obj.getVariable && obj.getVariable(key).value) || defaultValue;
+    // }
 
     static getVariable(obj, key, defaultValue) {
-        return (obj && obj.containsVariable && obj.containsVariable(key) && obj.getVariable && obj.getVariable(key).value) || defaultValue;
+       if(obj && obj.variables && obj.variables.hasOwnProperty(key)){
+            let value = obj.variables[key].value;
+
+            if(value != null && value != undefined){
+                return value;
+            }
+        }
+
+        return defaultValue;
     }
 
     static getValue(mapObj, key, defaultValue) {

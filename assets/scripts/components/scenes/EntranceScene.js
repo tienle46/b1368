@@ -1,6 +1,8 @@
 /* eslint-disable no-undef, no-unused-vars */
 var app = require('app');
 import BaseScene from 'BaseScene';
+import BuddyManager from 'BuddyManager';
+import Service from 'Service';
 
 class EntranceScene extends BaseScene {
 
@@ -64,6 +66,17 @@ class EntranceScene extends BaseScene {
             }
         }
         super.onLoad();
+    }
+
+    start(){
+        if(app.buddyManager){
+            app.buddyManager.reset();
+        } else{
+            app.buddyManager = new BuddyManager();
+        }
+
+        app.service.client._reset(true);
+        app.context.reset()
     }
 
     handleLoginAction() {

@@ -1123,7 +1123,7 @@ SFS2X.Controllers.SystemController.prototype._fnSetBuddyVariables = function (a)
             f.push(k.name);
         }
         if (e) this._sfs.buddyManager._setMyVariables(g);
-        else if (null != d) d._setVariables(g), i = sfs.buddyManager.getMyOnlineState();
+        else if (null != d) d._setVariables(g), i = this._sfs.buddyManager.getMyOnlineState();
         else {
             this._log.warn("Unexpected:  buddy '" + c + "' not found in local Buddy List when trying to set his Buddy Variables");
             return;

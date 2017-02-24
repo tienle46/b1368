@@ -18,8 +18,6 @@ require("Constant");
 require("Config");
 require("Resource");
 
-import createBuddyManager from 'BuddyManager';
-
 app.createComponent = (classNameOrInstance, extendClass = undefined, ...args) => {
 
     if (!classNameOrInstance) {
@@ -164,7 +162,6 @@ app.getMessageFromServer = (error) => {
      */
     app.context = require("Context");
     app.event = require("Events");
-    app.buddyManager = createBuddyManager();
 
     // setup game environment by platform
     app.env.__setupEnvironment();
