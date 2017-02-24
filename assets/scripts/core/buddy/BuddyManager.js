@@ -5,7 +5,7 @@
 import app from 'app';
 import utils from 'utils';
 import SFS2X from 'SFS2X';
-import * as Events from "../Events";
+import Events from "Events";
 
 /**
  * Buddy => SFS2X.Entities.SFSBuddy => { id, name, blocked, temp, variables};
@@ -176,19 +176,16 @@ export default class BuddyManager {
         if (!message || message.length == 0 || !toBuddyName || toBuddyName.length == 0) return;
 
         let buddy = this.getBuddyByName(toBuddyName);
-        if(!buddy){
-            app.buddyManager.addBuddy(toBuddyName);
-        }
-
-        let msgObj = {toBuddy: toBuddyName, message}
-        app.service.sendRequest(new SFS2X.Requests.BuddyList.BuddyMessageRequest(JSON.stringify(msgObj), buddy));
-
-        // console.log('Message: ', message, " ------ to buddy: ", buddy);
-        // if (buddy) {
-        //     app.service.sendRequest(new SFS2X.Requests.BuddyList.BuddyMessageRequest(message, buddy));
-        // } else {
-        //     app.system.showToast(app.res.string('buddy_not_found_receiver_buddy'));
+        // if(!buddy){
+        //     app.buddyManager.addBuddy(toBuddyName);
         // }
+        if (buddy) {
+            let msgObj = {toBuddy: toBuddyName, message}
+            app.service.sendRequest(new SFS2X.Requests.BuddyList.BuddyMessageRequest(JSON.stringify(msgObj), buddy));
+            //app.service.sendRequest(new SFS2X.Requests.BuddyList.BuddyMessageRequest(message, buddy));
+        } else {
+            app.system.showToast(app.res.string('buddy_not_found_receiver_buddy'));
+        }
     }
 
     onBuddyListUpdate() {

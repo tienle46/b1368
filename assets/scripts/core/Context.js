@@ -3,6 +3,7 @@
  */
 
 import app from 'app';
+import Events from 'Events';
 
 class GameContext {
 

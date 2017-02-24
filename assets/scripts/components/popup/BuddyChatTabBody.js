@@ -189,6 +189,8 @@ class BuddyChatTabBody extends PopupTabBody {
     }
 
     _initMessageList(){
+        this.chatMessageList.children.forEach(child => child.destroy() && child.removeFromParent(true));
+
         if(!this.chatContent.active){
             this.chatErrorNode && (this.chatErrorNode.active = false);
             this.chatContent.active = true;
@@ -202,7 +204,6 @@ class BuddyChatTabBody extends PopupTabBody {
     }
 
     onMessageListChanged(messages = []){
-        this.chatMessageList.children.forEach(child => child.destroy() && child.removeFromParent(true));
         messages.forEach(messageObj => this._addSingleMessage(messageObj.sender, messageObj.message));
         this.chatScroll.scrollToBottom();
     }

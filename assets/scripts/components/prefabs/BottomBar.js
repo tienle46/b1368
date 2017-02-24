@@ -9,6 +9,7 @@ import MessageCenterDialogRub from 'MessageCenterDialogRub';
 import numeral from 'numeral';
 import SFS2X from 'SFS2X';
 import Events from 'Events';
+import BuddyPopup from 'BuddyPopup';
 
 class BottomBar extends DialogActor {
     constructor() {
@@ -100,31 +101,32 @@ class BottomBar extends DialogActor {
     }
 
     onFriendBtnClick() {
-        (function() {
-            let url = `${app.const.DIALOG_DIR_PREFAB}/buddies`;
-            let tabs = [{
-                    title: 'Danh sách',
-                    // value: `${url}/tab_buddy_list`
-                    value: `${url}/BuddyList`,
-                    componentName: 'TabBuddiesList'
-                },
-                /*{
-                    title: 'Chat',
-                    value: `${url}/tab_buddy_chat`
-                },*/
-                {
-                    title: 'Chuyển xu',
-                    value: `${url}/tab_buddy_detail`,
-                    componentName: 'TabBuddyTransfer'
-                },
-                {
-                    title: 'Lịch sử',
-                    value: `${url}/tab_transaction_history`,
-                }
-            ];
-
-            PersonalInfoDialogRub.show(app.system.getCurrentSceneNode(), tabs, { title: 'Bạn bè' });
-        }());
+        new BuddyPopup().show(this.node.parent);
+        // (function() {
+        //     let url = `${app.const.DIALOG_DIR_PREFAB}/buddies`;
+        //     let tabs = [{
+        //             title: 'Danh sách',
+        //             // value: `${url}/tab_buddy_list`
+        //             value: `${url}/BuddyList`,
+        //             componentName: 'TabBuddiesList'
+        //         },
+        //         /*{
+        //             title: 'Chat',
+        //             value: `${url}/tab_buddy_chat`
+        //         },*/
+        //         {
+        //             title: 'Chuyển xu',
+        //             value: `${url}/tab_buddy_detail`,
+        //             componentName: 'TabBuddyTransfer'
+        //         },
+        //         {
+        //             title: 'Lịch sử',
+        //             value: `${url}/tab_transaction_history`,
+        //         }
+        //     ];
+        //
+        //     PersonalInfoDialogRub.show(app.system.getCurrentSceneNode(), tabs, { title: 'Bạn bè' });
+        // }());
     }
 
     onClickTransferAwardAction() {
