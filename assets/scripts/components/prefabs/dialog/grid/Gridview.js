@@ -14,6 +14,11 @@ export class GridView extends Component {
         this.options = {};
     }
 
+    onDestroy() {
+        this.options = null;
+        super.onDestroy();
+    }
+
     // [[]|[]|[]]
     // [{}, {}, {}]
     init(head, body, options) {
@@ -61,6 +66,7 @@ export class GridView extends Component {
     _initListRow(data, hideBg) {
         let row = cc.instantiate(this.rowPrefab);
         row.getComponent('Row').initWithNode(data, hideBg);
+        this.addNode(row);
         this.node.addChild(row);
     }
 
@@ -83,6 +89,7 @@ export class GridView extends Component {
     _initRow(data, showBg, options = {}) {
         let widths = this._setCellSize(data);
         let row = cc.instantiate(this.rowPrefab);
+        this.addNode(row);
 
         row.getComponent('Row').init(data.map((d, i) => {
             let cell = cc.instantiate(this.cellPrefab);
@@ -100,6 +107,8 @@ export class GridView extends Component {
                 cellComponent.setWidth(widths[i]);
 
             }
+            this.addNode(cell);
+
             return cell;
         }), showBg);
 

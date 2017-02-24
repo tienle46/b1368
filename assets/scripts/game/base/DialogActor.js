@@ -55,6 +55,7 @@ export default class DialogActor extends Actor {
             this._scrollView.destroy();
             this._scrollView = null;
         }
+        this.loaders = null;
     }
 
     initView(head, data, options) {

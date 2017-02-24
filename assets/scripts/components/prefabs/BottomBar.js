@@ -58,12 +58,14 @@ class BottomBar extends DialogActor {
     }
 
     onClickNapXuAction() {
-        let scene = app.system.getCurrentSceneNode();
-        TopupDialogRub.show(scene);
+        (function() {
+            let scene = app.system.getCurrentSceneNode();
+            TopupDialogRub.show(scene);
+        }())
     }
 
     onClickTopRankAction() {
-        (() => {
+        (function() {
             let url = `${app.const.DIALOG_DIR_PREFAB}/rank`;
             let tabs = [{
                 title: 'Top VIP',
@@ -77,11 +79,11 @@ class BottomBar extends DialogActor {
             }];
 
             DialogRub.show(app.system.getCurrentSceneNode(), tabs, { title: 'Xếp hạng' });
-        })();
+        }());
     }
 
     onFriendBtnClick() {
-        (() => {
+        (function() {
             let url = `${app.const.DIALOG_DIR_PREFAB}/buddies`;
             let tabs = [{
                     title: 'Danh sách',
@@ -105,11 +107,11 @@ class BottomBar extends DialogActor {
             ];
 
             PersonalInfoDialogRub.show(app.system.getCurrentSceneNode(), tabs, { title: 'Bạn bè' });
-        })();
+        }());
     }
 
     onClickTransferAwardAction() {
-        (() => {
+        (function() {
             let url = `${app.const.DIALOG_DIR_PREFAB}/exchange`;
             let tabs = [{
                 title: 'Thẻ cào',
@@ -126,8 +128,9 @@ class BottomBar extends DialogActor {
             }];
 
             // bottombar -> dashboard scene node
-            ExchangeDialogRub.show(app.system.getCurrentSceneNode(), tabs, { title: 'Đổi thưởng' });
-        })();
+            let E = ExchangeDialogRub.show(app.system.getCurrentSceneNode(), tabs, { title: 'Đổi thưởng' });
+            E.release();
+        }());
     }
 
     callSupportClicked(e) {
@@ -135,7 +138,7 @@ class BottomBar extends DialogActor {
     }
 
     onClickMessageAction() {
-        (() => {
+        (function() {
             let url = `${app.const.DIALOG_DIR_PREFAB}/messagecenter`;
             let tabs = [{
                 title: 'Hệ thống',
@@ -145,12 +148,13 @@ class BottomBar extends DialogActor {
                 value: `${url}/tab_personal_messages`
             }];
 
-            MessageCenterDialogRub.show(app.system.getCurrentSceneNode(), tabs, { title: 'Tin nhắn' });
-        })();
+            let E = MessageCenterDialogRub.show(app.system.getCurrentSceneNode(), tabs, { title: 'Tin nhắn' });
+            E.release();
+        }());
     }
 
     onClickUserInfoAction() {
-        (() => {
+        (function() {
             // personal tabs
             let url = `${app.const.DIALOG_DIR_PREFAB}/userinfo`;
             let tabs = [{
@@ -177,8 +181,9 @@ class BottomBar extends DialogActor {
                 // }, 
             ];
 
-            PersonalInfoDialogRub.show(app.system.getCurrentSceneNode(), tabs, { title: 'Cá nhân' });
-        })();
+            let p = PersonalInfoDialogRub.show(app.system.getCurrentSceneNode(), tabs, { title: 'Cá nhân' });
+            p = null;
+        }());
     }
 
     _fillUserData() {

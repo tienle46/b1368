@@ -30,6 +30,13 @@ export default class Scrollview extends Component {
         this.itemsPerPage = 10;
     }
 
+    onDestroy() {
+        this.options = null;
+        this.addNode(this._gridview);
+        this.addNode(this._p404);
+        super.onDestroy();
+    }
+
     initView(head, body, options) {
         this.options = Object.assign({}, this.options, options);
         // this.options = options;

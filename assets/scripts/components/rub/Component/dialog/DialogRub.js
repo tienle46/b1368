@@ -47,7 +47,8 @@ export default class DialogRub extends Rub {
 
         this.tabs && this._initTab(this.tabs);
         this.options.title && this._initTitle(this.options.title);
-        this.options = null;
+
+        return this;
     }
 
     changeTab(tabIndex, data) {
@@ -67,6 +68,12 @@ export default class DialogRub extends Rub {
 
     _initTitle(string) {
         this.dialogComponent.setTitle(string);
+    }
+
+    release() {
+        this.options = null;
+        this.prefab.destroy();
+        this.tabs.length = 0;
     }
 
     /**

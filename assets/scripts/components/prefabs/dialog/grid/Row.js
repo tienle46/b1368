@@ -7,7 +7,7 @@ export class Row extends Component {
     }
 
     onDestroy() {
-        this.addAsset(this.node.getComponent(cc.Sprite).spriteFrame)
+        this.addAsset(this.node.getComponent(cc.Sprite).spriteFrame);
         super.onDestroy();
     }
 

@@ -2,7 +2,7 @@
 var app = require('app');
 import BaseScene from 'BaseScene';
 
-export default class EntranceScene extends BaseScene {
+class EntranceScene extends BaseScene {
 
     constructor() {
 

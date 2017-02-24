@@ -128,7 +128,7 @@ export default class BaseScene extends Actor {
     }
 
     loginToDashboard(username, password, isRegister = false, isQuickLogin = false, accessToken = null) {
-        // this.showLoading();
+        app.system.showLoader('Đang kết nối đến server ...');
         if (app.service.client.isConnected()) {
             this._requestAuthen(username, password, isRegister, isQuickLogin, accessToken);
         } else {
@@ -151,7 +151,7 @@ export default class BaseScene extends Actor {
     _requestAuthen(username, password, isRegister, isQuickLogin, accessToken) {
         app.service.requestAuthen(username, password, isRegister, isQuickLogin, accessToken, (error, result) => {
             if (error) {
-                this.hideLoading();
+                app.system.hideLoader();
                 app.system.showErrorToast(app.getMessageFromServer(error));
             }
             if (result) {
@@ -159,6 +159,7 @@ export default class BaseScene extends Actor {
                 if (app.env.isMobile() && window.sdkbox) {
                     window.sdkbox.PluginGoogleAnalytics.setUser(app.context.getMe().name);
                 }
+                app.system.showLoader('Đăng nhập thành công ...');
                 //load recently games
                 this.changeScene(app.const.scene.DASHBOARD_SCENE, this._resendIAPSavedItem);
             }

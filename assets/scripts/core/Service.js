@@ -265,6 +265,7 @@ class Service {
         }
 
         this.client.send(request);
+        request = null;
     }
 
     _callCallback(key, verifyFunc, ...args) {
@@ -394,7 +395,7 @@ class Service {
 
         this._addCallback(SFS2X.SFSEvent.LOGIN, cb);
 
-        app.system.showLoader();
+        app.system.showLoader('Đang gửi thông tin đăng nhập ...');
         this.sendRequest(new SFS2X.Requests.System.LoginRequest(username, password, data, app.config.zone));
     }
 
