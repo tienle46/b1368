@@ -93,12 +93,15 @@ export default class PopupTabBody extends Actor {
         if(!this._isTabEnable){
             this._data = {...this._data, ...data};
         }
+
+        return this._isTabEnable;
     }
 
-    setLoadedData(data){
+    setLoadedData(data, renderImmediately = true){
         this._hideLoading();
         this.dataLoaded = true;
-        this._renderData(data);
+        this._data = {...this._data, ...data};
+        renderImmediately && this._renderData(this._data);
     }
 
     _renderData(data){

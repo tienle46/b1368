@@ -22,14 +22,22 @@ import * as Events from "../Events";
  * Events.ON_BUDDY_CHANGE_PLAYING_GAME => (gameCode: String, gameName: String) // gameCode = null => Player không chơi ở game nào
  */
 
-class BuddyManager {
+export default class BuddyManager {
 
     constructor() {
         this.buddies = [];
         this.tmpBuddies = [];
         this.blackBuddyNames = [];
         this.initEventListener();
-        this._initTestData();
+        //this._initTestData();
+    }
+
+    reset(){
+        this.removeEventListener();
+        this.buddies = [];
+        this.tmpBuddies = [];
+        this.blackBuddyNames = [];
+        this.initEventListener();
     }
 
     _initTestData() {
@@ -167,12 +175,13 @@ class BuddyManager {
     sendMessage(message, toBuddyName) {
         if (!message || message.length == 0 || !toBuddyName || toBuddyName.length == 0) return;
 
-
         let buddy = this.getBuddyByName(toBuddyName);
         if(!buddy){
             app.buddyManager.addBuddy(toBuddyName);
         }
-        app.service.sendRequest(new SFS2X.Requests.BuddyList.BuddyMessageRequest(message, buddy));
+
+        let msgObj = {toBuddy: toBuddyName, message}
+        app.service.sendRequest(new SFS2X.Requests.BuddyList.BuddyMessageRequest(JSON.stringify(msgObj), buddy));
 
         // console.log('Message: ', message, " ------ to buddy: ", buddy);
         // if (buddy) {
@@ -278,27 +287,47 @@ class BuddyManager {
     }
 
     _onBuddyMessage(evtParams) {
-        let isItMe = evtParams.isItMe;
-        let sender = isItMe ? app.context.getMe().name : evtParams.buddy && evtParams.buddy.name;
-        let message = evtParams.message;
 
-        console.log('_onBuddyMessage: ', isItMe, sender, message);
-
-        if (isItMe) {
-            app.system.emit(Events.ON_BUDDY_MESSAGE, sender, message, isItMe);
+        let msgObj;
+        try{
+            msgObj = JSON.parse(evtParams.message);
+        }catch (e){
             return;
         }
 
-        let buddy = this.getBuddyByName(sender);
+        let isItMe = evtParams.isItMe;
+        let sender = isItMe ? app.context.getMe().name : evtParams.buddy && evtParams.buddy.name;
+        let message = msgObj.message;
+        let toBuddy = msgObj.toBuddy;
+
+        // if (isItMe) {
+        //     app.system.emit(Events.ON_BUDDY_MESSAGE, sender, toBuddy, message, isItMe);
+        //     return;
+        // }
+
+        let buddy = this.getBuddyByName(isItMe ? toBuddy : sender);
         if (buddy && !buddy.isTemp()) {
+
             if (!buddy.messages) (buddy.messages = []);
+
             buddy.messages.push({sender, message});
             if (buddy.messages.length > app.const.NUMBER_MESSAGES_KEEP_PER_BUDDY) {
                 buddy.messages.shift();
             }
 
-            app.context.addToUnreadMessageBuddies(sender);
-            app.system.emit(Events.ON_BUDDY_MESSAGE, sender, message, isItMe);
+            if(buddy.hasOwnProperty('newMessageCount')){
+                buddy.newMessageCount = buddy.newMessageCount + 1;
+            }else{
+                buddy.newMessageCount = 1;
+            }
+
+            if(!this.findBuddyInList(app.context.chattingBuddies, buddy)){
+                app.context.chattingBuddies.push(buddy);
+            }
+
+            !isItMe && app.context.addToUnreadMessageBuddies(sender);
+            app.system.emit(Events.ON_BUDDY_MESSAGE, sender, toBuddy, message, isItMe);
+
         } else {
             if (!sender && message.startsWith('sender=')) {
                 let senderName = message.substr('sender='.length, message.length);
@@ -311,6 +340,20 @@ class BuddyManager {
             }
         }
 
+    }
+
+    findBuddyInList(buddies, findingBuddy){
+        if(!buddies || !(buddies instanceof Array) || !findingBuddy) return;
+
+        let findBuddy
+        buddies.some(buddy => {
+            if(buddy.name == findingBuddy.name){
+                findBuddy = buddy;
+                return true;
+            }
+        })
+
+        return findBuddy
     }
 
     _onBuddyListInit(evtParams) {
@@ -347,5 +390,3 @@ class BuddyManager {
 
 BuddyManager.MOOD_VARIABLE_NAME = SFS2X.Entities.Variables.SFSBuddyVariable.OFFLINE_PREFIX + "mood";
 BuddyManager.PLAYING_GAME_ROOM = "gr";
-
-export default new BuddyManager();

@@ -139,4 +139,5 @@ export default {
     buddy_removed_buddy: "Đã hủy kết bạn với {{buddyName}}!",
     buddy_added_buddy: "{{buddyName}} đã được thêm vào danh sách bạn bè!",
     buddy_already_in_buddy_list: "{{buddyName}} đã tồn tại trong danh sách bạn bè!",
+    buddy_select_buddy_to_chat: "Chọn bạn để chat!",
 };

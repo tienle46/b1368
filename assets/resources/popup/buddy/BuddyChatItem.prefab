@@ -29,7 +29,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 825,
+      "width": 550,
       "height": 35
     },
     "_children": [
@@ -90,7 +90,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 825,
+      "width": 550,
       "height": 35
     },
     "_children": [],
@@ -131,11 +131,11 @@
     "_enabled": true,
     "_N$string": "<color=#F6D533>{sender}:</c> {message}",
     "_N$horizontalAlign": 0,
-    "_N$fontSize": 24,
+    "_N$fontSize": 22,
     "_N$font": {
       "__uuid__": "8538fe1b-c3b4-48ca-849f-55e33a2c7a57"
     },
-    "_N$maxWidth": 825,
+    "_N$maxWidth": 550,
     "_N$lineHeight": 35,
     "_N$imageAtlas": null
   },
@@ -176,8 +176,8 @@
     "_enabled": true,
     "_layoutSize": {
       "__type__": "cc.Size",
-      "width": 300,
-      "height": 200
+      "width": 550,
+      "height": 35
     },
     "_resize": 1,
     "_N$layoutType": 2,

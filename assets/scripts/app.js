@@ -162,7 +162,6 @@ app.getMessageFromServer = (error) => {
      */
     app.context = require("Context");
     app.event = require("Events");
-    app.buddyManager = require("BuddyManager");
 
     // setup game environment by platform
     app.env.__setupEnvironment();

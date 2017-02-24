@@ -60,13 +60,7 @@ class BuddyItem extends PopupTabBody {
             this.setBlocked(this.buddy.isBlocked())
             this.setOnlineState(this.buddy.isOnline());
             this.setBalance(this.buddy.balance);
-
-
-            console.log('this.buddy: ', this.buddy, app.keywords.VARIABLE_PLAYING_GAME);
-
             let gameRoomName = utils.getVariable(this.buddy, app.keywords.VARIABLE_PLAYING_GAME);
-
-            console.log('gamRoomGame: ', gameRoomName);
             this.setPlayingGame(gameRoomName);
         }
     }
@@ -109,8 +103,6 @@ class BuddyItem extends PopupTabBody {
         let gameCode = gameRoomName && gameRoomName.length >= 3 ? gameRoomName.substr(0, 3) : undefined;
         let gameName = gameCode && app.res.gameName[gameCode];
         this.gameLabel.string = gameName || "";
-
-        console.log('setPlayingGame: ', gameCode, gameName);
 
         if(gameName){
             this.playingGameNode.active = true;

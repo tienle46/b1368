@@ -1,5 +1,7 @@
 import app from 'app';
 import Component from 'Component';
+import BuddyManager from 'BuddyManager';
+import Service from 'Service';
 
 class PreloadScene extends Component {
     constructor() {
@@ -73,8 +75,6 @@ class PreloadScene extends Component {
                     return true;
                 }
             });
-
-            console.log("results: ", results);
 
             if (loadedRes) {
                 this.onLoadResourceDone();

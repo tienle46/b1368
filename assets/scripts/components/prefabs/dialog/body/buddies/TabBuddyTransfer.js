@@ -97,6 +97,18 @@ export default class TabBuddiesTransfer extends DialogActor {
         app.system.removeListener(app.commands.USER_TRANSFER_TO_USER, this._onUserTransferResponse, this);
     }
 
+    setReceiverBuddyName(name){
+        this.receiverBuddyName = name;
+    }
+
+    setOnBackListener(listener){
+        this.onBackListener = listener;
+    }
+
+    onClickBackButton(){
+        this.onBackListener &&  this.onBackListener();
+    }
+
     _sendRequest() {
         let reqObj = {
             cmd: app.commands.USER_TRANSFER_CONFIG

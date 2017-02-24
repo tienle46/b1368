@@ -34,11 +34,15 @@ export default class BuddyChatItem extends Component {
     _initMessage(){
         if(!this.messageRichText) return;
 
-        let htmlMsg = this.messageTemplate;
-        htmlMsg = htmlMsg.replace(this.senderRegex, this._sender || "");
-        htmlMsg = htmlMsg.replace(this.messageRegex, this._message || "");
+        if(this._sender){
+            let htmlMsg = this.messageTemplate;
+            htmlMsg = htmlMsg.replace(this.senderRegex, this._sender || "");
+            htmlMsg = htmlMsg.replace(this.messageRegex, this._message || "");
+            this.messageRichText.string = htmlMsg;
+        }else{
+            this.messageRichText.string = this._message || '';
+        }
 
-        this.messageRichText.string = htmlMsg;
     }
 }
 

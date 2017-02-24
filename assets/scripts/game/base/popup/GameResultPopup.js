@@ -6,8 +6,8 @@ import app from 'app';
 import Actor from 'Actor';
 import GameResultItem from 'GameResultItem';
 import { GameUtils } from 'utils';
-import * as Commands from "../../../core/Commands";
-import ArrayUtils from "../../../utils/ArrayUtils";
+import Commands from "Commands";
+import ArrayUtils from "ArrayUtils";
 
 export default class GameResultPopup extends Actor {
     constructor() {

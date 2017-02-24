@@ -23,6 +23,8 @@ class BuddyListTabBody extends PopupTabBody {
             preButton: cc.Button,
             nextButton: cc.Button,
             buddyMenuNode: cc.Node,
+            transferMoneyNode: cc.Node,
+            filterOnlineToggle: cc.Toggle,
             itemPerList: {
                 default: 3,
                 type: cc.Integer
@@ -36,6 +38,10 @@ class BuddyListTabBody extends PopupTabBody {
         this.data = null;
         this.buddyMenu = null;
         this.currentBuddyItems = [];
+        /**
+         * @type {TabBuddyTransfer}
+         */
+        this.transferMoneyComponent = null;
     }
 
     addNewBuddy(){
@@ -48,6 +54,7 @@ class BuddyListTabBody extends PopupTabBody {
     }
 
     onDataChanged({balances = [], buddyNames = []} = {}) {
+
         if(buddyNames.length == 0) return;
 
         buddyNames.forEach((buddyName, index) => {
@@ -65,6 +72,8 @@ class BuddyListTabBody extends PopupTabBody {
         this.filterEditBox = this.filterEditBoxNode.getComponent(cc.EditBox);
         this.filterEditBox.editingDidEnded = this.onFilterChanged.bind(this);
         this.buddyMenu = this.buddyMenuNode.getComponent('BuddyMenu');
+        this.transferMoneyComponent = this.transferMoneyNode.getComponent('TabBuddyTransfer');
+        this.transferMoneyComponent.setOnBackListener(() => this._hideTransferMoneyComponent());
     }
 
     onEnable() {
@@ -72,6 +81,7 @@ class BuddyListTabBody extends PopupTabBody {
 
         this.setBuddyList([...app.buddyManager.buddies], true);
         this.setLoadingData();
+        this._hideTransferMoneyComponent();
     }
 
     onDisable(){
@@ -100,7 +110,7 @@ class BuddyListTabBody extends PopupTabBody {
     _onBuddyOnlineStateChange(isOnline, isItMe, buddy){
         if(!isItMe){
             let buddyItem = this._findCurrentBuddyItem(buddy);
-            buddyItem.onBuddyChanged();
+            buddyItem && buddyItem.onBuddyChanged();
         }else{
 
         }
@@ -109,7 +119,7 @@ class BuddyListTabBody extends PopupTabBody {
 
     _onBuddyBlockStateChange(buddy){
         let buddyItem = this._findCurrentBuddyItem(buddy);
-        buddyItem.onBuddyChanged();
+        buddyItem && buddyItem.onBuddyChanged();
         // buddyItem && buddyItem.setBlocked(buddy.isBlocked());
     }
 
@@ -149,11 +159,6 @@ class BuddyListTabBody extends PopupTabBody {
         this.setLoadedData({balances, buddyNames})
     }
 
-    onClickTransferButton() {
-        //TODO
-        // this.tabGroup && this.tabGroup.changeTab(PersonalInfoDialogRub.TAB_TRANSFER_INDEX, {buddy: this.selectedBuddy});
-    }
-
     onFilterChanged() {
         let filterStr = this.filterEditBoxNode.string;
 
@@ -166,13 +171,21 @@ class BuddyListTabBody extends PopupTabBody {
         }
     }
 
-    setBuddyList(buddyList = [], renderImmediately = false) {
-        this.filteredBuddies = buddyList;
+    setBuddyList(buddies = [], renderImmediately = false) {
+        if(this.filterOnlineToggle.isChecked){
+            this.filteredBuddies = buddies.filter(buddy => buddy.isOnline());
+        }else{
+            this.filteredBuddies = buddies;
+        }
+
         let buddyItemPerPage = this.itemPerList * 2;
-        this.totalPage = parseInt(buddyList.length % buddyItemPerPage == 0 ? buddyList.length / buddyItemPerPage : buddyList.length / buddyItemPerPage + 1);
+        this.totalPage = parseInt(this.filteredBuddies.length % buddyItemPerPage == 0
+            ? this.filteredBuddies.length / buddyItemPerPage : this.filteredBuddies.length / buddyItemPerPage + 1);
+
         if(this.currentPage > this.totalPage){
             this.currentPage = this.totalPage;
         }
+
         this._updatePagingButton();
 
         renderImmediately && this.renderBuddies(this.currentPage);
@@ -279,15 +292,29 @@ class BuddyListTabBody extends PopupTabBody {
         buddyItem.setPopup(this);
         buddyItem.setBuddyMenu(this.buddyMenu);
         buddyItem.setClickChatListener((buddy) => {
-            if(buddy.isOnline()){
-                this.popup && this.popup.changeToChatTab({buddy})
-            }else{
-                app.system.showToast(app.res.string("buddy_chat_with_online_buddy_only"));
+            this.popup && this.popup.changeToChatTab({buddy})
+            // if(buddy.isOnline()){
+            //     this.popup && this.popup.changeToChatTab({buddy})
+            // }else{
+            //     app.system.showToast(app.res.string("buddy_chat_with_online_buddy_only"));
+            // }
+        });
+        buddyItem.setClickTransferListener((buddy) => {
+            if(this.transferMoneyComponent){
+                this.transferMoneyComponent.setReceiverBuddyName(buddy.name)
+                utils.setVisible(this.transferMoneyNode, true);
+                utils.setVisible(this.bodyNode, false);
             }
         });
-        buddyItem.setClickTransferListener((buddy) => {console.log("clicked transfer")});
 
         return buddyItem;
+    }
+
+    _hideTransferMoneyComponent(){
+        if(this.transferMoneyComponent){
+            utils.setVisible(this.transferMoneyNode, false);
+            utils.setVisible(this.bodyNode, true);
+        }
     }
 
 }

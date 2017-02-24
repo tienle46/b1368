@@ -23,47 +23,164 @@ class BuddyChatTabBody extends PopupTabBody {
             chatContent: cc.Node,
             chatMessageList: cc.Node,
             chatErrorNode: cc.Node,
-            chatScroll: cc.ScrollView
+            chatErrorLabel: cc.Label,
+            /**
+             * @type{cc.Node}
+             */
+            chattingBuddyList: cc.Node,
+            chatScroll: cc.ScrollView,
+            chattingBuddyPrefab: cc.Prefab,
+            toggleGroup: cc.ToggleGroup
         }
 
         this.buddy = null;
+        this.chattingBuddyItems = null;
     }
 
     _addGlobalListener(){
         super._addGlobalListener();
         app.system.addListener(Events.ON_BUDDY_MESSAGE, this._onBuddyMessage, this);
+        app.system.addListener(Events.ON_BUDDY_ONLINE_STATE_CHANGED, this._onBuddyOnlineStateChange, this);
     }
 
     _removeGlobalListener(){
         super._removeGlobalListener();
         app.system.removeListener(Events.ON_BUDDY_MESSAGE, this._onBuddyMessage, this);
+        app.system.removeListener(Events.ON_BUDDY_ONLINE_STATE_CHANGED, this._onBuddyOnlineStateChange, this);
     }
 
-    _onBuddyMessage(sender, message, isItMe){
-        this._addSingleMessage(sender, message);
+    _onBuddyOnlineStateChange(isOnline, isItMe, buddy){
+        if(!isItMe){
+            let buddyItem = this._findChattingBuddy(buddy);
+            buddyItem && buddyItem.onBuddyChanged();
+        }
+    }
+
+    _onBuddyMessage(senderName, toBuddyName, message, isItMe){
+
+        console.log('sender, toBuddy, message, isItMe: ', senderName, toBuddyName, message, isItMe);
+
+        if(!this.buddy) return;
+
+        if(isItMe){
+            if(toBuddyName != this.buddy.name) return;
+        }else{
+            if(senderName != this.buddy.name) {
+                let senderBuddy = this._findChattingBuddy(senderName);
+                senderBuddy && senderBuddy.onBuddyChanged();
+                return;
+            }
+        }
+
+        this._addSingleMessage(senderName, message);
+        !isItMe && app.context.removeUnreadMessageBuddies(senderName);
+
+        if(!isItMe){
+            let buddy = app.buddyManager.getBuddyByName(senderName);
+            buddy && (buddy.newMessageCount = 0);
+        }
+
         this.chatScroll.scrollToBottom();
     }
 
-    loadData() {
-        super.loadData();
+    _findChattingBuddy(findingBuddy){
+        let buddyName = findingBuddy.name || findingBuddy;
+
+        let findBuddyItem = null;
+        this.chattingBuddyItems.some(buddyItem => {
+            if(buddyItem.buddy.name == buddyName){
+                findBuddyItem = buddyItem;
+                return true;
+            }
+        });
+
+        return findBuddyItem;
     }
 
     onDataChanged(data) {
+        if (!super.onDataChanged(data)) return;
 
-        console.log('onDataChanged chat tab: ', data);
-
-        super.onDataChanged(data);
-
-        if(data && data.buddy){
+        if(data){
+            data.chattingBuddies && this._initChattingBuddyList(data.chattingBuddies)
             this.buddy = data.buddy;
-            this.popup.setTitle(this.buddy.name);
         }
 
-        if(this.buddy){
-            this._initMessageList();
+        let buddyItem;
+        if(!this.buddy){
+            buddyItem = this.chattingBuddyItems.length > 0 ? this.chattingBuddyItems[0] : undefined
+            this.buddy = buddyItem && buddyItem.buddy;
         }else{
+            buddyItem = this._findChattingBuddy(this.buddy);
+        }
+
+
+        if(this.buddy){
+            if (buddyItem) {
+                if (buddyItem.isSelected()) {
+                    this._onChangeSelectedBuddy(buddyItem);
+                } else {
+                    buddyItem.select();
+                }
+            } else {
+                this._addChattingBuddy(this.buddy, true)
+            }
+
+            this.chatErrorNode.active && utils.setVisible(this.chatErrorNode, false);
+
+        }else{
+            this._onError(app.res.string('buddy_select_buddy_to_chat'));
+        }
+
+    }
+
+    _addChattingBuddy(buddy, autoSelect = false){
+        if(!buddy) return;
+
+        /**
+         * @type {cc.Node}
+         */
+        let chattingBuddyNode = cc.instantiate(this.chattingBuddyPrefab);
+        let chattingBuddy = chattingBuddyNode.getComponent('ChattingBuddyItem');
+
+        if(chattingBuddy){
+            chattingBuddy.setBuddy(buddy);
+            chattingBuddy.setToggleGroup(this.toggleGroup);
+            chattingBuddy.setOnCheckedListener((buddyItem) => {
+                this._onChangeSelectedBuddy(buddyItem);
+            });
+
+            this.chattingBuddyList.addChild(chattingBuddyNode);
+            this.chattingBuddyItems.push(chattingBuddy);
+            app.context.addToChattingBuddies(buddy);
+            app.context.removeUnreadMessageBuddies(buddy.name);
+
+            if(autoSelect){
+                chattingBuddy.select()
+            }
+        }
+    }
+
+    _onChangeSelectedBuddy(buddyItem){
+
+        if(buddyItem){
+            this.buddy = buddyItem.buddy;
+            this.buddy.newMessageCount = 0;
+            this.popup.setTitle(this.buddy.name);
+            this._initMessageList();
+            buddyItem.onReadMessage();
+        }else{
+            this._onError();
+        }
+    }
+
+    _onError(message){
+        this.chatContent.active = false;
+
+        if(message){
             this.chatErrorNode && (this.chatErrorNode.active = true);
-            this.chatContent.active = false;
+            this.chatErrorLabel && (this.chatErrorLabel.string = message);
+        }else {
+            this.chatErrorNode && (this.chatErrorNode.active = false);
         }
     }
 
@@ -85,6 +202,7 @@ class BuddyChatTabBody extends PopupTabBody {
     }
 
     onMessageListChanged(messages = []){
+        this.chatMessageList.children.forEach(child => child.destroy() && child.removeFromParent(true));
         messages.forEach(messageObj => this._addSingleMessage(messageObj.sender, messageObj.message));
         this.chatScroll.scrollToBottom();
     }
@@ -104,38 +222,42 @@ class BuddyChatTabBody extends PopupTabBody {
 
     sendInputMessage(){
         if(this.buddy){
-            let message = this.chatEditBox.string;
-            if(message.trim().length > 0){
-                this.chatEditBox.string = "";
-                app.buddyManager.sendMessage(message, this.buddy.name);
+            if(this.buddy.isOnline()){
+                let message = this.chatEditBox.string;
+                if(message.trim().length > 0){
+                    app.buddyManager.sendMessage(message, this.buddy.name);
+                }
+            }else{
+                this.notifyOnlyChatWithOnlineUser();
             }
+
+            this.chatEditBox.string = "";
         }
 
         this.chatEditBox.setFocus();
     }
 
-    onLoad() {
-        super.onLoad();
-
-        this.setLoadingData(false);
+    notifyOnlyChatWithOnlineUser(){
+        this._addSingleMessage(null, app.res.string('buddy_chat_with_online_buddy_only'));
     }
 
-    onEnable() {
+    onLoad() {
+        super.onLoad();
+        this.chattingBuddyItems = [];
+    }
+
+    loadData(){
+        this.setLoadedData({chattingBuddies: app.context.chattingBuddies}, false);
+    }
+
+    onEnable(){
         super.onEnable();
+    }
 
-        if(this.buddy){
-
-            if(this.buddy.isOnline()){
-                this.chatEditBox.placeholder = app.res.string("input_content");
-                utils.maxLength = 80;
-            }else{
-                this.chatEditBox.placeholder = app.res.string("buddy_chat_with_online_buddy_only")
-                utils.maxLength = 0;
-            }
-        }else {
-            this.chatEditBox.placeholder = app.res.string("input_content");
-            utils.maxLength = 0;
-        }
+    _initChattingBuddyList(chattingBuddies){
+        this.chattingBuddyList.removeAllChildren(true);
+        this.chattingBuddyItems.splice(0, this.chattingBuddyItems.length)
+        chattingBuddies.forEach(buddy => this._addChattingBuddy(buddy))
     }
 
 }
