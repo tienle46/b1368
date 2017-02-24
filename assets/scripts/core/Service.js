@@ -91,6 +91,15 @@ class Service {
         this.addEventListener(SFS2X.SFSEvent.ROOM_VARIABLES_UPDATE, this._onRoomVariableUpdate);
         this.addEventListener(SFS2X.SFSEvent.PUBLIC_MESSAGE, this._onPublicMessage);
         this.addEventListener(SFS2X.SFSEvent.ADMIN_MESSAGE, this._onAdminMessage);
+
+        this.addEventListener(SFS2X.SFSBuddyEvent.BUDDY_ADD, this._onBuddyAdd);
+        this.addEventListener(SFS2X.SFSBuddyEvent.BUDDY_REMOVE, this._onBuddyRemove);
+        this.addEventListener(SFS2X.SFSBuddyEvent.BUDDY_BLOCK, this._onBuddyBlock);
+        this.addEventListener(SFS2X.SFSBuddyEvent.BUDDY_ERROR, this._onBuddyError);
+        this.addEventListener(SFS2X.SFSBuddyEvent.BUDDY_MESSAGE, this._onBuddyMessage);
+        this.addEventListener(SFS2X.SFSBuddyEvent.BUDDY_LIST_INIT, this._onBuddyListInit);
+        this.addEventListener(SFS2X.SFSBuddyEvent.BUDDY_ONLINE_STATE_CHANGE, this._onBuddyOnlineStateChange);
+        this.addEventListener(SFS2X.SFSBuddyEvent.BUDDY_VARIABLES_UPDATE, this._onBuddyVariablesUpdate);
     }
 
     _removeSmartFoxEvent() {
@@ -110,6 +119,48 @@ class Service {
         this.removeEventListener(SFS2X.SFSEvent.ROOM_VARIABLES_UPDATE, this._onRoomVariableUpdate);
         this.removeEventListener(SFS2X.SFSEvent.PUBLIC_MESSAGE, this._onPublicMessage);
         this.removeEventListener(SFS2X.SFSEvent.ADMIN_MESSAGE, this._onAdminMessage);
+
+        this.removeEventListener(SFS2X.SFSBuddyEvent.BUDDY_ADD, this._onBuddyAdd);
+        this.removeEventListener(SFS2X.SFSBuddyEvent.BUDDY_REMOVE, this._onBuddyRemove);
+        this.removeEventListener(SFS2X.SFSBuddyEvent.BUDDY_BLOCK, this._onBuddyBlock);
+        this.removeEventListener(SFS2X.SFSBuddyEvent.BUDDY_ERROR, this._onBuddyError);
+        this.removeEventListener(SFS2X.SFSBuddyEvent.BUDDY_MESSAGE, this._onBuddyMessage);
+        this.removeEventListener(SFS2X.SFSBuddyEvent.BUDDY_LIST_INIT, this._onBuddyListInit);
+        this.removeEventListener(SFS2X.SFSBuddyEvent.BUDDY_ONLINE_STATE_CHANGE, this._onBuddyOnlineStateChange);
+        this.removeEventListener(SFS2X.SFSBuddyEvent.BUDDY_VARIABLES_UPDATE, this._onBuddyVariablesUpdate);
+    }
+
+    _onBuddyAdd(event) {
+        app.system.emit(SFS2X.SFSBuddyEvent.BUDDY_ADD, event);
+    }
+
+    _onBuddyRemove(event) {
+        app.system.emit(SFS2X.SFSBuddyEvent.BUDDY_REMOVE, event);
+    }
+
+    _onBuddyBlock(event) {
+        app.system.emit(SFS2X.SFSBuddyEvent.BUDDY_BLOCK, event);
+    }
+
+    _onBuddyError(event) {
+        app.system.emit(SFS2X.SFSBuddyEvent.BUDDY_ERROR, event);
+    }
+
+    _onBuddyMessage(event) {
+        app.system.emit(SFS2X.SFSBuddyEvent.BUDDY_MESSAGE, event);
+    }
+
+    _onBuddyListInit(event) {
+        app.system.emit(SFS2X.SFSBuddyEvent.BUDDY_LIST_INIT, event);
+    }
+
+    _onBuddyOnlineStateChange(event) {
+        app.system.emit(SFS2X.SFSBuddyEvent.BUDDY_ONLINE_STATE_CHANGE, event);
+    }
+
+    _onBuddyVariablesUpdate(event) {
+        console.log('_onBuddyVariablesUpdate: ', event);
+        app.system.emit(SFS2X.SFSBuddyEvent.BUDDY_VARIABLES_UPDATE, event);
     }
 
     _onAdminMessage(event) {
@@ -152,6 +203,7 @@ class Service {
 
     _onConnectionLost(event) {
 
+        this.client.buddyManager._inited = false;
         this.isConnecting = false;
         this._pendingRequests = [];
         this.stopLagPolling();
@@ -541,9 +593,6 @@ class Service {
     }
 
     manuallyDisconnect() {
-
-        app.buddyManager.goOffline();
-
         if (this.client._socketEngine.reconnectionSeconds == 0) {
             this.sendRequest(new SFS2X.Requests.System.ManualDisconnectionRequest());
         }

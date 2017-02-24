@@ -55,6 +55,7 @@ class PreloadScene extends Component {
             { dir: 'dashboard/grid/scrollview', name: 'scrollview' },
             { dir: 'popup/FriendProfilePopup', name: 'friendProfilePopup' },
             { dir: 'dashboard/dialog/prefabs/dialog', name: 'dialog' },
+            { dir: 'popup/MultiTabPopup', name: 'multiTabPopup' },
         ];
 
         app.async.parallel(resources.map((res) => {

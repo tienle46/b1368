@@ -1,4 +1,5 @@
 import app from 'app';
+import utils from 'utils';
 import DialogActor from 'DialogActor';
 import NodeRub from 'NodeRub';
 import Props from 'Props';
@@ -31,19 +32,23 @@ export default class FriendProfilePopup extends DialogActor {
         this.friendId = null;
         this.isOwner = null;
         this.kickable = null;
+        this.friendName = null;
     }
 
     onLoad() {
         super.onLoad();
-
-        // tam an di cai da
-        this.addFriendBtn.active = false;
 
         this._initTouchEvent();
 
         this._initNodeEvents();
 
         this.loadPropsAssets();
+    }
+
+    onEnable(){
+        super.onEnable();
+
+        utils.setInteractable(this.addFriendBtn, !(this.friendName && app.buddyManager.containsBuddy(this.friendName)));
     }
 
     start() {
@@ -164,19 +169,7 @@ export default class FriendProfilePopup extends DialogActor {
     }
 
     inviteFriend() {
-
-        app.system.info(app.res.string('coming_soon'));
-
-        // //invite user to be friend
-        // let sendObject = {
-        //     'cmd': app.commands.BUDDY_INVITE_FRIEND,
-        //     'data': {
-        //         [app.keywords.BUDDY_NAME]: this.friendName
-        //     },
-        //     room: app.context.getLastJoinedRoom()
-        // };
-        //
-        // app.service.send(sendObject);
+        app.buddyManager.requestAddBuddy(this.friendName);
     }
 
     close() {

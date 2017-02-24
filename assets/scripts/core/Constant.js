@@ -5,6 +5,12 @@
 var app = require('app');
 
 app.const = {};
+
+app.const.LOADING_SHORT_DURATION = 15;
+app.const.LOADING_MEDIUM_DURATION = 30;
+app.const.LOADING_LONG_DURATION = 60;
+
+
 app.const.dialogZIndex = 9999;
 app.const.topupZIndex = 10000;
 app.const.loadingZIndex = 10000;
@@ -145,3 +151,4 @@ app.const.adminMessage = {}
 app.const.adminMessage.MANUAL_DISMISS = 4;
 
 app.const.NUMBER_MESSAGES_KEEP_INGAME = 30;
+app.const.NUMBER_MESSAGES_KEEP_PER_BUDDY = 30;
