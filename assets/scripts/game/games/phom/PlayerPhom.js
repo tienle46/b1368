@@ -43,7 +43,6 @@ export default class PlayerPhom extends PlayerCardTurnBase {
 
         this.eatenCards = null;
         this.handCards = null;
-        this.playedCards = null;
     }
 
     onLoad() {
@@ -51,7 +50,6 @@ export default class PlayerPhom extends PlayerCardTurnBase {
 
         this.eatenCards = [];
         this.handCards = [];
-        this.playedCards = [];
         this.currentHaPhomSolutions = [];
         this.currentGuiPhomSolutions = [];
     }
@@ -59,7 +57,10 @@ export default class PlayerPhom extends PlayerCardTurnBase {
     start() {
         super.start();
         this.handCards = this.renderer.cardList.cards;
-        this.playedCards = this.renderer.playedCardList.cards;
+    }
+
+    getPlayedCards(){
+        return this.renderer.playedCardList.cards;
     }
 
     _addGlobalListener() {
@@ -90,8 +91,6 @@ export default class PlayerPhom extends PlayerCardTurnBase {
         this.scene.on(Events.SHOW_PHOM_HIGHLIGHT, this._setPhomHighlight, this);
 
         // this.scene.on(Events.ON_PLAYER_PLAYED_CARDS, this._onPlayerPlayedCards, this);
-
-        console.log("add game phom listener: ");
     }
 
     _removeGlobalListener() {

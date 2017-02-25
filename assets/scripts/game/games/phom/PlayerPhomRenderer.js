@@ -55,8 +55,6 @@ export default class PlayerPhomRenderer extends PlayerCardTurnBaseRenderer {
     _reset(){
         super._reset();
 
-        console.log("clean reset Phom renderer")
-        
         this.playedCardList.clear();
         this.eatenCardList.clear();
         this.cardList.clear();
@@ -76,8 +74,6 @@ export default class PlayerPhomRenderer extends PlayerCardTurnBaseRenderer {
     }
 
     _reloadComponentOnIndexChanged(){
-
-        console.log("this.anchorIndex: ", this.anchorIndex);
 
         this.playedCardListNodes.forEach((node, index) => {
             if(index == this.anchorIndex){

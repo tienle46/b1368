@@ -80,9 +80,9 @@
     "_opacity": 120,
     "_color": {
       "__type__": "cc.Color",
-      "r": 40,
-      "g": 1,
-      "b": 42,
+      "r": 7,
+      "g": 3,
+      "b": 7,
       "a": 255
     },
     "_cascadeOpacityEnabled": true,
@@ -139,7 +139,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "d7c1d3a8-53f5-4eb6-99ac-86271cc898a1"
+      "__uuid__": "f22591b6-c113-43d9-a555-89adfc76d3b7"
     },
     "_type": 0,
     "_sizeMode": 0,
@@ -154,7 +154,9 @@
     "_isTrimmedMode": true,
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
-    "_atlas": null
+    "_atlas": {
+      "__uuid__": "4bb00c8a-c321-4d5c-b859-a722596f04ed"
+    }
   },
   {
     "__type__": "cc.Widget",
@@ -165,6 +167,7 @@
     },
     "_enabled": true,
     "isAlignOnce": true,
+    "_target": null,
     "_alignFlags": 45,
     "_left": 0,
     "_right": 0,
@@ -406,6 +409,7 @@
     },
     "_enabled": true,
     "isAlignOnce": true,
+    "_target": null,
     "_alignFlags": 18,
     "_left": 0,
     "_right": 0,
@@ -533,6 +537,7 @@
     },
     "_enabled": true,
     "isAlignOnce": true,
+    "_target": null,
     "_alignFlags": 18,
     "_left": 0,
     "_right": 0,
@@ -652,6 +657,7 @@
     },
     "_enabled": true,
     "isAlignOnce": true,
+    "_target": null,
     "_alignFlags": 18,
     "_left": 0,
     "_right": 0,
@@ -797,6 +803,7 @@
     },
     "_enabled": true,
     "isAlignOnce": true,
+    "_target": null,
     "_alignFlags": 18,
     "_left": 0,
     "_right": 0,
@@ -822,7 +829,6 @@
     },
     "_enabled": true,
     "path": "",
-    "active": true,
     "progressNode": {
       "__id__": 6
     },

@@ -4,6 +4,7 @@
 
 import Component from 'Component';
 import Emitter from 'emitter';
+import Events from 'Events';
 
 export default class Actor extends Component {
     constructor() {
@@ -63,6 +64,10 @@ export default class Actor extends Component {
             this._assertPendingEmitEvents();
             !this.__pendingEmitEvents.hasOwnProperty(name) && (this.__pendingEmitEvents[name] = []);
             this.__pendingEmitEvents[name].push(args);
+
+            if(name == Events.ON_GAME_LOAD_DATA_AFTER_SCENE_START){
+                console.warn('add args: ', args);
+            }
         }
     }
 
@@ -125,6 +130,9 @@ export default class Actor extends Component {
 
             let argArr = this.__pendingEmitEvents[name];
             argArr && argArr.forEach(args => {
+                if(name == Events.ON_GAME_LOAD_DATA_AFTER_SCENE_START){
+                    console.warn('emit args: ', args);
+                }
                 this._eventEmitter.emit(name, ...args);
             });
         });

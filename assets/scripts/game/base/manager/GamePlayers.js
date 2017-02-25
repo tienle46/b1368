@@ -531,7 +531,8 @@ export default class GamePlayers extends Component {
 
             if (retPlayer != null && lastPlayedId == retPlayer.id) return null;
 
-            if(count++ > 4) break;
+            //Make sure that while loop break on error
+            if(count++ > 10) break;
 
         } while (retPlayer == null || !retPlayer.isPlaying());
 

@@ -224,6 +224,8 @@ export default class GameScene extends BaseScene {
 
         GameChatComponent.loadEmotions();
         Props.loadAllPropAsset();
+
+        console.log('this.progress active: ', this.progress.node.active);
     }
 
     onDestroy() {
@@ -291,7 +293,7 @@ export default class GameScene extends BaseScene {
         app.system.info(app.res.string('coming_soon'));
     }
 
-    _loadGameData(isJustJoined) {
+    _loadGameData(isJustJoined = true) {
 
         let currentGameState = utils.getValue(this.gameData, Keywords.BOARD_STATE_KEYWORD);
         let isStateAfterReady = GameUtils.isStateAfterReady(currentGameState);
@@ -309,6 +311,7 @@ export default class GameScene extends BaseScene {
     }
 
     _loadGameDataAfterSceneStart(data, isJustJoined) {
+
         let currentGameState = utils.getValue(data, Keywords.BOARD_STATE_KEYWORD);
         let isStateAfterReady = GameUtils.isStateAfterReady(currentGameState);
 
@@ -390,7 +393,6 @@ export default class GameScene extends BaseScene {
 
         this.emit(Events.ON_GAME_STATE_PRE_CHANGE, state, data, isJustJoined);
 
-
         switch (localState) {
             case app.const.game.state.BEGIN:
                 this._onGameStateBegin(data, isJustJoined, rejoining);
@@ -437,8 +439,6 @@ export default class GameScene extends BaseScene {
     }
 
     checkReadyPlayer(player) {
-
-
         if (this.gameData.hasOwnProperty(app.keywords.ROOM_READY_PLAYERS)) {
 
             let readyPlayerIds = utils.getValue(this.gameData, app.keywords.ROOM_READY_PLAYERS, []);

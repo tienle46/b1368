@@ -56,7 +56,7 @@ export default class BaCayControls extends GameControls {
 
     _showBetControls(){
         this.hideAllControls();
-        this.cardBetTurnControls.showBetControls();
+        this.scene.gamePlayers.isMeReady() && this.cardBetTurnControls.showBetControls();
     }
 
     _showDownCardControls(show = true){

@@ -43,7 +43,6 @@ export default class PlayerRenderer extends ActorRenderer {
     }
 
     _init(data) {
-        console.log("init player renderer")
         super._init(data);
         this.scene = app.system.currentScene;
         this.isItMe = data.isItMe;

@@ -39,6 +39,7 @@ export default class PhomListComponent extends Component {
     }
 
     clear() {
+        this.node && this.node.children && this.node.children.length > 0 && this.node.removeAllChildren(true);
         this.phomList.clear();
     }
 

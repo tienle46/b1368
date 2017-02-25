@@ -7,14 +7,6 @@ class PreloadScene extends Component {
     constructor() {
         super();
 
-        this.fullSceneLoadingPrefab = {
-            default: null,
-            type: cc.Prefab
-        };
-        this.loadingPrefab = {
-            default: null,
-            type: cc.Prefab
-        };
         this.loading = {
             default: null,
             type: cc.Node
@@ -22,7 +14,6 @@ class PreloadScene extends Component {
     }
 
     onLoad() {
-        app.res.prefab.loading = this.loadingPrefab;
         app.res.prefab.fullSceneLoading = this.fullSceneLoadingPrefab;
         if (this.loading) {
             debug(this.loading);
@@ -58,6 +49,7 @@ class PreloadScene extends Component {
             { dir: 'popup/FriendProfilePopup', name: 'friendProfilePopup' },
             { dir: 'dashboard/dialog/prefabs/dialog', name: 'dialog' },
             { dir: 'popup/MultiTabPopup', name: 'multiTabPopup' },
+            { dir: 'common/FullSceneProgress', name: 'fullSceneLoading' },
         ];
 
         app.async.parallel(resources.map((res) => {

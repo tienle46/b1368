@@ -263,7 +263,7 @@ export default class BoardBaCay extends BoardCardBetTurn {
     }
 
     _showGopGa(visible){
-        this.renderer.setVisibleGopGaComponent(visible);
+         this.renderer.setVisibleGopGaComponent(visible && this.scene.gamePlayers.isMePlaying());
     }
 
     _addToGopGaValue(player, gopGaValue){

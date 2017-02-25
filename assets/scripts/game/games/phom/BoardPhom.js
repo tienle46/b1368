@@ -143,24 +143,53 @@ export default class BoardPhom extends BoardCardTurnBase {
         if (lastPlayedTurn) {
 
             let playedPlayer = this.scene.gamePlayers.findPlayer(lastPlayedTurn);
+            let playerPlayedCards = playedPlayer.getPlayedCards();
 
-            if (playedPlayer && playedPlayer.playedCards.length > 0) {
-                this.lastPlayedCard = playedPlayer.playedCards[playedPlayer.playedCards.length - 1];
+            if (playedPlayer && playerPlayedCards.length > 0) {
+                this.lastPlayedCard = playerPlayedCards[playerPlayedCards.length - 1];
             }
         }
     }
 
     swapPlayedCards() {
+        // let lastMovePlayer = this.getLastMovePlayer();
+        //
+        // console.log('check phom swapPlayedCards...', lastMovePlayer && lastMovePlayer.id);
+        //
+        // if (lastMovePlayer) {
+        //     let i = 4;
+        //     while (i-- >= 0) {
+        //         let nextPlayer = this.scene.gamePlayers.getNextNeighbour(lastMovePlayer.id);
+        //         if (nextPlayer == null || nextPlayer.equals(lastMovePlayer)) break;
+        //
+        //         console.log('check phom  nextPlayer: ', nextPlayer.id);
+        //
+        //         let playerPlayedCards = nextPlayer.getPlayedCards();
+        //         if (playerPlayedCards.length > lastMovePlayer.getPlayedCards().length) {
+        //             let changeCard = playerPlayedCards[playerPlayedCards.length - 1];
+        //
+        //             console.log('check phom  changeCard: ', changeCard.byteValue);
+        //
+        //             nextPlayer.renderer.playedCardList.transferTo(lastMovePlayer.renderer.playedCardList, [changeCard]);
+        //             break;
+        //         }
+        //     }
+        // }
+
         let lastMovePlayer = this.getLastMovePlayer();
-
+        let nextPlayer = lastMovePlayer;
         if (lastMovePlayer) {
-            let i = 4;
+            let i = 5;
             while (i-- >= 0) {
-                let nextPlayer = this.scene.gamePlayers.getNextNeighbour(lastMovePlayer.id);
-                if (nextPlayer == null || nextPlayer.equals(lastMovePlayer)) break;
+                nextPlayer = this.scene.gamePlayers.getNextNeighbour(nextPlayer.id);
+                if (nextPlayer == null || nextPlayer.id == lastMovePlayer.id) {
+                    break;
+                }
 
-                if (nextPlayer.playedCards.length > lastMovePlayer.playedCards.length) {
-                    let changeCard = nextPlayer.playedCards[nextPlayer.playedCards.length - 1];
+                let playerPlayedCards = nextPlayer.getPlayedCards();
+                if (playerPlayedCards.length > lastMovePlayer.getPlayedCards().length) {
+                    let changeCard = playerPlayedCards[playerPlayedCards.length - 1];
+                    console.log('check phom changeCard: ', changeCard.byteValue);
                     nextPlayer.renderer.playedCardList.transferTo(lastMovePlayer.renderer.playedCardList, [changeCard]);
                     break;
                 }
@@ -192,6 +221,8 @@ export default class BoardPhom extends BoardCardTurnBase {
 
         super.onBoardPlaying(data, isJustJoined);
 
+        console.warn('onBoardPlaying phom', isJustJoined);
+
         if (isJustJoined) {
             this._setDeckFakeCard();
         }
@@ -199,7 +230,8 @@ export default class BoardPhom extends BoardCardTurnBase {
 
     onBoardStarting(data, isJustJoined) {
         super.onBoardStarting();
-        this._setDeckFakeCard(16);
+        console.warn('onBoardStarting phom',);
+        this._setDeckFakeCard();
     }
 
     onBoardEnding(data) {

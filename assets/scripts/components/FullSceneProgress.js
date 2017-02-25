@@ -13,7 +13,6 @@ export default class FullSceneProgress extends Component {
 
         this.properties = {
             ...this.properties,
-            active: false,
         }
 
         this.progressNode = {
@@ -44,18 +43,13 @@ export default class FullSceneProgress extends Component {
         super.onEnable();
 
         this.node.on(cc.Node.EventType.TOUCH_START, () => true);
-
-        this.node.active = this.active;
-        console.log("on Enable: ", this.active, this.node.active);
-
         this.progress = this.progressNode.getComponent('Progress');
-        if (this.active) {
-            this.label.string = this.text || "";
-            this.progress.show(this.duration, () => {
-                this.hide();
-                this.timeoutCb && this.timeoutCb();
-            });
-        }
+
+        this.label.string = this.text || "";
+        this.progress.show(this.duration, () => {
+            this.hide();
+            this.timeoutCb && this.timeoutCb();
+        });
     }
 
     onDisable() {

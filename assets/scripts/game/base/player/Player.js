@@ -354,7 +354,6 @@ export default class Player extends Actor {
 
         let newPlayer = utils.getVariable(this.user, "newPlayer");
         if (!newPlayer) {
-            this.scene.showShortLoading('ready');
             app.service.send({cmd: app.commands.PLAYER_READY, room: this.scene.room});
         }
     }
