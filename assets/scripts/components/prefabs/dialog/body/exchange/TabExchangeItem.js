@@ -76,7 +76,6 @@ class TabExchangeItem extends DialogActor {
                         a.show();
                         // add sprite to img 
                         RubUtils.loadSpriteFrame(this.exchangeItemImage, itemIcon, this.exchangeItemImage.node.getContentSize(), true, (sprite) => {
-                            this.addAsset(sprite);
                             a.destroy();
                         });
 

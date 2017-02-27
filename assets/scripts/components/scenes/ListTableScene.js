@@ -383,6 +383,8 @@ export default class ListTableScene extends BaseScene {
             data,
             // room: app.context.getLastJoinedRoom()
         };
+
+        this.showLoading('Đang tải thông tin bàn chơi ....');
         app.service.send(sendObject);
     }
 
