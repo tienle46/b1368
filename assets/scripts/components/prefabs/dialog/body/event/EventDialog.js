@@ -13,8 +13,6 @@ class EventDialog extends Component {
     }
 
     onLoad() {
-        this.showLoader();
-
         this.node.on('touch-start', () => {
             return null;
         });
@@ -31,6 +29,11 @@ class EventDialog extends Component {
             this.selectedId = e.detail.id;
             this.selectedUrl = e.detail.url;
         }).bind(this));
+    }
+
+    onEnable(){
+        super.onEnable()
+        app.system.showLoader()
     }
 
     _init() {

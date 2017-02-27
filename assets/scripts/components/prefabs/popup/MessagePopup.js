@@ -67,6 +67,14 @@ export default class MessagePopup extends Component {
         }
     }
 
+    /**
+     * @abstract
+     */
+    static getPrefab(){
+        return app.res.prefab.messagePopup;
+    }
+
+
     setMessage(message = "") {
         this._hideLoading();
         this.messageLabel.string = message;
@@ -131,19 +139,38 @@ export default class MessagePopup extends Component {
         currentPopup && currentPopup.hide();
 
         let args = [parentNode, textOrRequestData, denyCb, acceptCb];
+        if(parentNode && textOrRequestData){
+            let prefab = this.getPrefab();
 
-        parentNode && textOrRequestData && RubUtils.loadRes(`popup/${componentName}`).then((prefab) => {
+            if(prefab) {
+                this._createAndShow(prefab, componentName, ...args);
+            }else{
+                RubUtils.loadRes(`popup/${componentName}`).then((prefab) => this._createAndShow(prefab, componentName, ...args));
+            }
+        }
+        
+        // /**
+        //  * Preload this prefab, don't need to load dynamic it anymore
+        //  */
+        // parentNode && textOrRequestData && RubUtils.loadRes(`popup/${componentName}`).then((prefab) => {
+        //
+        //     let messagePopupNode = cc.instantiate(prefab);
+        //     let messagePopup = messagePopupNode.getComponent(`${componentName}`);
+        //     messagePopup.onShow(...args);
+        //
+        //     currentPopup = messagePopup;
+        //
+        // }).catch((error) => {
+        //     console.error('error: ', error)
+        // });
 
-            let messagePopupNode = cc.instantiate(prefab);
-            let messagePopup = messagePopupNode.getComponent(`${componentName}`);
-            messagePopup.onShow(...args);
+    }
 
-            currentPopup = messagePopup;
-
-        }).catch((error) => {
-            console.error('error: ', error)
-        });
-
+    static _createAndShow(prefab, componentName, ...args){
+        let messagePopupNode = cc.instantiate(prefab);
+        let messagePopup = messagePopupNode.getComponent(`${componentName}`);
+        messagePopup.onShow(...args);
+        currentPopup = messagePopup;
     }
 }
 

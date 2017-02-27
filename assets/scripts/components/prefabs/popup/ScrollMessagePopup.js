@@ -29,6 +29,9 @@ export default class ScrollMessagePopup extends MessagePopup {
         currentPopup = null;
     }
 
+    static getPrefab(){
+    }
+
     static show(parentNode, textOrRequestData, denyCb, acceptCb) {
 
         currentPopup && currentPopup.hide();

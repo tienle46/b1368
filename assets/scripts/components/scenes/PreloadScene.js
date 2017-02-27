@@ -14,9 +14,7 @@ class PreloadScene extends Component {
     }
 
     onLoad() {
-        app.res.prefab.fullSceneLoading = this.fullSceneLoadingPrefab;
         if (this.loading) {
-            debug(this.loading);
             this.loading.getComponent('FullSceneProgress').show(app.res.string('loading_data'));
         } else {
             debug(`what the heck?`);
@@ -50,6 +48,8 @@ class PreloadScene extends Component {
             { dir: 'dashboard/dialog/prefabs/dialog', name: 'dialog' },
             { dir: 'popup/MultiTabPopup', name: 'multiTabPopup' },
             { dir: 'common/FullSceneProgress', name: 'fullSceneLoading' },
+            { dir: 'popup/MessagePopup', name: 'messagePopup' },
+                { dir: 'popup/ConfirmPopup', name: 'confirmPopup' },
         ];
 
         app.async.parallel(resources.map((res) => {
