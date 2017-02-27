@@ -2,6 +2,7 @@ import app from 'app';
 import BaseScene from 'BaseScene';
 import SFS2X from 'SFS2X';
 import { requestTimeout, clearRequestTimeout } from 'TimeHacker';
+import ScrollMessagePopup from 'ScrollMessagePopup';
 
 export default class ListTableScene extends BaseScene {
     constructor() {
@@ -130,6 +131,22 @@ export default class ListTableScene extends BaseScene {
         this._renderList(this.items, this.filterCond);
     }
 
+    onGuideBtnClick() {
+        let data = {
+            [app.keywords.SERVICE_ID]: this.gameCode,
+            [app.keywords.CLIENT_VERSION]: 1,
+            [app.keywords.ACTION]: 1,
+            "testMode": false
+        };
+
+        ScrollMessagePopup.show(this.node, {
+            cmd: app.commands.RULE_OF_GAME,
+            data: data,
+            parser: (data) => {
+                return data[app.keywords.GAME_RULE] ? data[app.keywords.GAME_RULE] : data[app.keywords.GAME_GUIDE];
+            }
+        });
+    }
 
     // clear interval
     _clearInterval() {

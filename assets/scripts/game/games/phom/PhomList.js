@@ -13,7 +13,7 @@ export default class PhomList extends Array {
         this.renderComponent = null;
         this.cards = [];
 
-        if(!ArrayUtils.isEmpty(phoms)){
+        if (!ArrayUtils.isEmpty(phoms)) {
             this.push(...phoms);
         }
     }
@@ -28,7 +28,7 @@ export default class PhomList extends Array {
 
     push(...phoms) {
         super.push(...phoms);
-        phoms.forEach(phom => this.cards.push(...phom.cards));
+        phoms.forEach(phom => phom && this.cards.push(...phom.cards));
     }
 
     /**
