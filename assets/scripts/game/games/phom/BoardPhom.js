@@ -237,14 +237,14 @@ export default class BoardPhom extends BoardCardTurnBase {
         });
 
         setTimeout(() => this.scene.showGameResult(models, (shownTime) => {
+            this.renderer.cleanDeckCards();
             let remainTime = this.timelineRemain - shownTime;
             if (remainTime > 0 && this.scene.isEnding()) {
-                this.renderer.cleanDeckCards();
                 if(this.scene.gamePlayers.players.length > 1){
                     this._startEndBoardTimeLine(remainTime);
                 }
             }
-        }), CardList.TRANSFER_CARD_DURATION * 1000);
+        }), CardList.TRANSFER_CARD_DURATION * 1000 + 200);
     }
 
     _getGameResultInfos(playerIds = [], playerHandCards, data) {
@@ -286,20 +286,20 @@ export default class BoardPhom extends BoardCardTurnBase {
 
             } else {
                 if (isMom) {
-                    resultText = app.res.string('game_phom_mom');
+                    resultText = winType > 0 ? app.res.string('game_thua') : app.res.string('game_phom_mom')
                 } else {
                     switch (playersWinRank) {
                         case app.const.game.GAME_RANK_SECOND:
-                            resultText = app.res.string('game_nhi');
+                            resultText = app.res.string('game_nhi')
                             break;
                         case app.const.game.GAME_RANK_THIRD:
-                            resultText = app.res.string('game_ba');
+                            resultText = app.res.string('game_ba')
                             break;
                         case app.const.game.GAME_RANK_FOURTH:
-                            resultText = app.res.string('game_bet');
+                            resultText = app.res.string('game_bet')
                             break;
                         default:
-                            resultText = app.res.string('game_thua');
+                            resultText = app.res.string('game_thua')
                     }
                 }
 

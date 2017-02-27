@@ -295,8 +295,6 @@ export default class Board extends Actor {
         let boardTimeLine = utils.getValue(data, Keywords.BOARD_PHASE_DURATION);
         boardTimeLine && (this.readyPhaseDuration = boardTimeLine);
 
-        console.warn("on board begin: readyDuration: ", this.readyPhaseDuration, " justJoined: ", isJustJoined, " meReady: ", this.scene.gamePlayers.me.isReady());
-
         //Support for new ready flow
         if (this.readyPhaseDuration && this.scene.enoughPlayerToStartGame()) {
             if (isJustJoined) {
@@ -308,14 +306,6 @@ export default class Board extends Actor {
             this.startTimeLine(boardTimeLine);
             this.scene.emit(Events.SHOW_START_GAME_CONTROL);
         }
-
-        // if (this.readyPhaseDuration && !this.scene.gamePlayers.me.isReady()) {
-        //     if (this.scene.gamePlayers.meIsOwner()) {
-        //         boardTimeLine *= 2;
-        //     }
-        //
-        //     this.startTimeLine(boardTimeLine, () => { this.scene.emit(Events.ON_ACTION_EXIT_GAME) });
-        // }
 
         this.state = app.const.game.state.BEGIN;
     }

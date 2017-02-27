@@ -36,10 +36,15 @@ export default class CardTurnBaseControls extends GameControls {
     }
 
     _showWaitTurnControls(){
-        // utils.deactive(this.playButton);
-        utils.setInteractable(this.playButton, false);
-        utils.active(this.sortButton);
-        utils.deactive(this.skipTurnButton);
+        if(this.scene.gamePlayers.isMePlaying()){
+            utils.setInteractable(this.playButton, false);
+            utils.active(this.sortButton);
+            utils.deactive(this.skipTurnButton);
+        }else{
+            utils.setVisible(this.playButton, false);
+            utils.setVisible(this.sortButton, false);
+            utils.setVisible(this.skipTurnButton, false);
+        }
     }
 
     _showOnTurnControls(showPlayControlOnly){

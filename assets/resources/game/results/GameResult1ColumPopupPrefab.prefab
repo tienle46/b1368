@@ -879,7 +879,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 55,
-      "height": 58
+      "height": 59
     },
     "_children": [],
     "_rotationX": 0,
@@ -1065,7 +1065,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": 213
+      "y": 237
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -1107,7 +1107,7 @@
     "_isSystemFontUsed": false,
     "_N$string": "KẾT QUẢ",
     "_N$horizontalAlign": 1,
-    "_N$verticalAlign": 1,
+    "_N$verticalAlign": 2,
     "_N$overflow": 0
   },
   {

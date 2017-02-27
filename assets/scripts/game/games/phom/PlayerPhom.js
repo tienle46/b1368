@@ -237,6 +237,8 @@ export default class PlayerPhom extends PlayerCardTurnBase {
         this.joinPhaseState = -1;
         this.sortCardSolutionIndex = 2;
         this.eatenCards = [];
+
+        this.renderer.playedCardList.clear();
     }
 
     _setDownPhraseState(state) {
@@ -574,13 +576,12 @@ export default class PlayerPhom extends PlayerCardTurnBase {
         this.board.deHighLightPhomList();
         this.isItMe() && this.renderer.cardList.clean();
 
+        this.renderer.cardList.finishAllCardActions();
         let currentGuiSolution = this.currentGuiPhomSolutions[this.guiPhomSolutionId];
         currentGuiSolution.forEach((node, k) => {
             let nodeCard = node.card;
             nodeCard.setHighlight(true);
             nodeCard.setSelected(true);
-            // this.scene.emit(Events.SHOW_PHOM_HIGHLIGHT,  this.board.allPhomList[node.phomId]);
-            // this.board.allPhomList[node.phomId].setHighlightAll(true);
         });
     }
 
@@ -864,7 +865,6 @@ export default class PlayerPhom extends PlayerCardTurnBase {
 
     onGameEnding(data) {
         super.onGameEnding(data);
-        this.renderer.playedCardList.clear();
     }
 }
 

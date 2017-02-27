@@ -149,6 +149,9 @@ export default class PlayerRenderer extends ActorRenderer {
     }
 
     _startCountdown(duration) {
+
+        console.warn('_startCountdown: ', duration);
+
         if (this.playerTimeLineProgress) {
             this.timelineDuration = duration;
             this.isCounting = true;

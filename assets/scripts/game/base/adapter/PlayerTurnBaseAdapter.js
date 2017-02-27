@@ -192,13 +192,17 @@ export default class PlayerTurnBaseAdapter extends GameAdapter {
         this.lastPlayedTurn = utils.getValue(data, Keywords.LAST_MOVE_PLAYER_ID, 0);
 
         /**
-         * Start on turn player time line.
+         * Start on turn player time line if current game state is not in WAIT OR READY state
          */
-        let turnOwnerId = utils.getValue(data, Keywords.TURN_PLAYER_ID);
-        if(turnOwnerId == this.player.id){
-            let turnDuration = utils.getValue(data, Keywords.BOARD_PHASE_DURATION);
-            if (turnDuration) {
-                this.player.startTimeLine(turnDuration);
+
+        if(this.scene.gameState != app.const.game.state.WAIT && this.scene.gameState != app.const.game.state.READY){
+
+            let turnOwnerId = utils.getValue(data, Keywords.TURN_PLAYER_ID);
+            if(turnOwnerId == this.player.id){
+                let turnDuration = utils.getValue(data, Keywords.BOARD_PHASE_DURATION);
+                if (turnDuration) {
+                    this.player.startTimeLine(turnDuration);
+                }
             }
         }
 
