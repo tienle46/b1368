@@ -31,13 +31,13 @@ export default class MultiTabPopup extends Component {
         this.firstTabIndex = 0;
         this._tabModels = [];
         this._tabs = [];
-        this._tabBodys = [];
+        this._tabBodies = [];
     }
 
     onLoad() {
         super.onLoad();
         this.progress = this.loadingNode.getComponent('Progress');
-        this._tabBodys = [];
+        this._tabBodies = [];
     }
 
     onEnable() {
@@ -51,7 +51,7 @@ export default class MultiTabPopup extends Component {
 
         this._tabs = null;
         this._tabModels = null;
-        this._tabBodys = null;
+        this._tabBodies = null;
     }
 
     start() {
@@ -85,7 +85,7 @@ export default class MultiTabPopup extends Component {
 
     _changeBody(tabIndex, data) {
         let model = this._tabModels[tabIndex];
-        let tabBody = this._tabBodys[tabIndex];
+        let tabBody = this._tabBodies[tabIndex];
 
         if (model && (tabBody || model.prefabPath)) {
             this.setTitle(model.title);
@@ -113,9 +113,9 @@ export default class MultiTabPopup extends Component {
                             this._visibleBodyNode();
 
                             bodyComponent.setPopup(this);
-                            bodyComponent.init({data: {...model.data, ...data}, emptyNode: this.emptyNode, loadingProgress: this.progress});
+                            bodyComponent.init({ data: {...model.data, ...data }, emptyNode: this.emptyNode, loadingProgress: this.progress });
                             this.bodyNode.addChild(bodyTabNode);
-                            this._tabBodys[tabIndex] = bodyComponent;
+                            this._tabBodies[tabIndex] = bodyComponent;
                         } else {
                             this._showEmptyBody();
                         }
@@ -128,7 +128,7 @@ export default class MultiTabPopup extends Component {
         }
     }
 
-    _hideAllBodyChildren(){
+    _hideAllBodyChildren() {
         this.bodyNode.children.forEach(child => child.active = false);
     }
 
@@ -170,7 +170,7 @@ export default class MultiTabPopup extends Component {
      *      data: Object
      * }
      */
-    show({parentNode = cc.director.getScene(), firstTabIndex = 0, title = null, tabModels = []} = {}) {
+    show({ parentNode = cc.director.getScene(), firstTabIndex = 0, title = null, tabModels = [] } = {}) {
 
         this._hidePopupInstance();
         this.title = title;

@@ -79,7 +79,6 @@ class PreloadScene extends Component {
     onLoadResourceDone() {
         let frameSize = cc.view.getFrameSize(); // 1280x720
         cc.view.setDesignResolutionSize(frameSize.width, frameSize.height, cc.ResolutionPolicy.EXACT_FIT);
-
         app.system.loadScene(app.const.scene.ENTRANCE_SCENE);
     }
 }
