@@ -31,7 +31,6 @@ class TabHistory extends DialogActor {
     }
 
     _onUserChargeHistory(data) {
-        console.debug(data);
         let histories = data.histories || [];
         if (histories.length > 0) {
             let d = [];
