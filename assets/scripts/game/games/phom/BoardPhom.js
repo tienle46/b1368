@@ -10,7 +10,9 @@ import { Events } from 'events';
 import BoardCardTurnBase from 'BoardCardTurnBase';
 import PlayerPhom from 'PlayerPhom';
 import Phom from 'Phom';
+import PhomList from 'PhomList';
 import CardList from 'CardList';
+import Card from 'Card';
 import ArrayUtils from "../../../utils/ArrayUtils";
 
 export default class BoardPhom extends BoardCardTurnBase {
@@ -93,7 +95,7 @@ export default class BoardPhom extends BoardCardTurnBase {
 
             currentBoardPhomsSize && currentBoardPhomsSize.forEach((phomSize, i) => {
                 let phomCardBytes = currentBoardPhomsCards.slice(phomListCardIndex, phomListCardIndex + phomSize);
-                let phom = new Phom(GameUtils.convertToBytes(phomCardBytes));
+                let phom = new Phom(GameUtils.convertBytesToCards(phomCardBytes));
                 currentAllPhoms.push(phom);
                 phomListCardIndex += phomSize;
             });
@@ -104,21 +106,22 @@ export default class BoardPhom extends BoardCardTurnBase {
                 let player = this.scene.gamePlayers.findPlayer(playerId);
                 if (player) {
 
+                    let playerPhomList = new PhomList();
                     let phomCount = currentNumberOfPhomByPlayerId[i];
                     for (let j = 0; j < phomCount; j++) {
 
                         let phom = currentAllPhoms[j + phomPlayerCount];
-                        let processingPhom = player.renderer.downPhomList[j];
-
-                        if (!phom || !processingPhom) continue;
-
-                        processingPhom.setCards(phom.cards);
-                        processingPhom.setOwner(player.id);
-
-                        this.allPhomList.push(processingPhom.clone());
+                        phom.setOwner(player.id);
+                        playerPhomList.add(phom.clone());
+                        this.allPhomList.push(phom.clone());
                     }
 
                     phomPlayerCount += phomCount;
+
+                    /**
+                     * _loadGamePlayData call after all renderer is call onEnable
+                     */
+                    player.renderer.setCurrentPhom(playerPhomList);
                 }
             });
         }
@@ -149,33 +152,10 @@ export default class BoardPhom extends BoardCardTurnBase {
                 this.lastPlayedCard = playerPlayedCards[playerPlayedCards.length - 1];
             }
         }
+
     }
 
     swapPlayedCards() {
-        // let lastMovePlayer = this.getLastMovePlayer();
-        //
-        // console.log('check phom swapPlayedCards...', lastMovePlayer && lastMovePlayer.id);
-        //
-        // if (lastMovePlayer) {
-        //     let i = 4;
-        //     while (i-- >= 0) {
-        //         let nextPlayer = this.scene.gamePlayers.getNextNeighbour(lastMovePlayer.id);
-        //         if (nextPlayer == null || nextPlayer.equals(lastMovePlayer)) break;
-        //
-        //         console.log('check phom  nextPlayer: ', nextPlayer.id);
-        //
-        //         let playerPlayedCards = nextPlayer.getPlayedCards();
-        //         if (playerPlayedCards.length > lastMovePlayer.getPlayedCards().length) {
-        //             let changeCard = playerPlayedCards[playerPlayedCards.length - 1];
-        //
-        //             console.log('check phom  changeCard: ', changeCard.byteValue);
-        //
-        //             nextPlayer.renderer.playedCardList.transferTo(lastMovePlayer.renderer.playedCardList, [changeCard]);
-        //             break;
-        //         }
-        //     }
-        // }
-
         let lastMovePlayer = this.getLastMovePlayer();
         let nextPlayer = lastMovePlayer;
         if (lastMovePlayer) {
@@ -189,7 +169,6 @@ export default class BoardPhom extends BoardCardTurnBase {
                 let playerPlayedCards = nextPlayer.getPlayedCards();
                 if (playerPlayedCards.length > lastMovePlayer.getPlayedCards().length) {
                     let changeCard = playerPlayedCards[playerPlayedCards.length - 1];
-                    console.log('check phom changeCard: ', changeCard.byteValue);
                     nextPlayer.renderer.playedCardList.transferTo(lastMovePlayer.renderer.playedCardList, [changeCard]);
                     break;
                 }

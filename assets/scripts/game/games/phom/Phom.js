@@ -17,15 +17,13 @@ export default class Phom extends CardList {
     }
 
     clone(){
-        let clonedPhom = new Phom(this.cards);
+        let clonedPhom = new Phom(PhomUtils.sortAsc(this.cards, PhomUtils.SORT_BY_RANK));
         clonedPhom.owner = this.owner;
-        return clonedPhom.sortAsc();
+        return clonedPhom;
     }
 
     clear(){
         super.clear();
-
-        warn("clear phom: ", this.cards.length);
     }
 
     setCards(cards){

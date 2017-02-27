@@ -84,10 +84,16 @@ class TopBar extends Actor {
             null,
             this._onConfirmLogoutClick.bind(this)
         );
+        this._hideDropDownMenu()
     }
 
     onFanpageClicked() {
         cc.sys.openURL(`${app.config.fanpage}`);
+        this._hideDropDownMenu()
+    }
+
+    _hideDropDownMenu(){
+        this.dropDownOptions.active = false;
     }
 
     onSoundBtnClick() {
@@ -200,6 +206,8 @@ class TopBar extends Actor {
 
             }, app.const.scene.DASHBOARD_SCENE);
         }
+
+        this._hideDropDownMenu()
     }
 
     _setElementState(elements, state) {

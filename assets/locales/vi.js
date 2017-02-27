@@ -66,6 +66,7 @@ export default {
     re_sending_item_iap: 'Đang thực hiện lại giao dịch ...',
     sending_item_store_iap: 'Đang thực hiện giao dịch tới {{provider}}...',
     iap_buying_successfully_wait_server_response: 'Vật phẩm đã đc mua, đợi xác nhận từ server .....',
+
     game_table_name: 'Bàn {{tableName}}',
     game_sam_thang_sam: 'Thắng Sâm',
     game_sam_den_sam: 'Đền Sâm',
@@ -115,6 +116,7 @@ export default {
     game_tlmn_thoi_ba_bich: 'Thối 3 bích',
     game_tlmn_cong: 'Cóng',
     game_sam_bao_sam: 'Báo Sâm',
+    game_cannot_skip_down_if_eaten: 'Không thể bỏ hạ khi bạn đã ăn!',
     buddy_not_in_your_buddy_list: 'Tài khoản {{buddyName}} không thuộc danh sách bạn bè của bạn',
     buddy_not_found_receiver_buddy: 'Không tìm thấy người chơi cần gửi tin nhắn đến',
     buddy_undefined_error: '{{errorCode}} Lỗi liên quan đến chức năng bạn bè chưa xác định. Vui lòng gọi hỗ trợ!',

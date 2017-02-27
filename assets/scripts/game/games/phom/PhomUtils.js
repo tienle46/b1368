@@ -256,6 +256,10 @@ export default class PhomUtils {
         return valid;
     }
 
+    static isContainEatenCards(cards) {
+        return cards && cards.filter(card => PhomUtils.isEaten(card)).length > 0;
+    }
+
     static isContainPhomWithEatenCards(cards, eatenCards) {
 
         let valid = true;

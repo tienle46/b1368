@@ -57,42 +57,34 @@ export default class PhomListComponent extends Component {
         this.phomList.push(...this.phoms);
     }
 
-    setPhomListTest(newPhomList, cardList) {
+    setPhomList(newPhomList, player) {
 
-        // this.clear();
+        if(!player){
+            this._setPhomListWithoutPlayer(newPhomList);
+        }else{
+            newPhomList.forEach((newPhom, i) => {
+                if (i < PhomList.MAX_PHOM_COUNT) {
 
-        newPhomList.forEach((newPhom, i) => {
-            if (i < PhomList.MAX_PHOM_COUNT) {
+                    let phom = this.phoms[i];
+                    if (player.isItMe()) {
+                        player.renderer.cardList.transferTo(phom, newPhom.cards);
+                    } else {
+                        phom.transferFrom(player.renderer.cardList, newPhom.cards);
+                    }
 
-                let phom = this.phoms[i];
-                cardList.transferTo(phom, newPhom.cards);
-                newPhom.renderComponent = phom;
-            }
-        });
+                    newPhom.renderComponent = phom;
+                }
+            });
+        }
 
         return newPhomList;
     }
 
-    setPhomList(newPhomList, player) {
-
-        // this.clear();
-
-        newPhomList.forEach((newPhom, i) => {
-            if (i < PhomList.MAX_PHOM_COUNT) {
-
-                let phom = this.phoms[i];
-
-                if (player.isItMe()) {
-                    player.renderer.cardList.transferTo(phom, newPhom.cards);
-                } else {
-                    phom.transferFrom(player.renderer.cardList, newPhom.cards);
-                }
-
-                newPhom.renderComponent = phom;
-            }
-        });
-
-        return newPhomList;
+    _setPhomListWithoutPlayer(phomList){
+        phomList && phomList.forEach((phomModel, index) => {
+            let phom = this.phoms[index];
+            phom && phom.setCards(phomModel.cards);
+        })
     }
 
     setAlign(align) {

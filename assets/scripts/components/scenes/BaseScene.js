@@ -62,6 +62,8 @@ export default class BaseScene extends Actor {
     onEnable() {
         super.onEnable();
 
+        this.progress && this.progress.hide();
+
         if (this.onShown && this.onShown instanceof Function) {
             this.onShown();
         }
@@ -70,7 +72,6 @@ export default class BaseScene extends Actor {
     start() {
         super.start();
         app.system.setSceneChanging(false);
-        this.progress && this.progress.hide();
     }
 
     onDestroy() {

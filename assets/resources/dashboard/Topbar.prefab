@@ -715,14 +715,14 @@
       "r": 127,
       "g": 127,
       "b": 127,
-      "a": 127.5
+      "a": 127
     },
     "hoverColor": {
       "__type__": "cc.Color",
       "r": 127,
       "g": 127,
       "b": 127,
-      "a": 127.5
+      "a": 127
     },
     "duration": 0.1,
     "zoomScale": 1.2,
@@ -751,7 +751,7 @@
       "r": 127,
       "g": 127,
       "b": 127,
-      "a": 127.5
+      "a": 127
     },
     "_N$normalSprite": null,
     "_N$disabledSprite": {

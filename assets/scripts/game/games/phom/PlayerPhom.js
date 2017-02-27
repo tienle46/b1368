@@ -74,7 +74,6 @@ export default class PlayerPhom extends PlayerCardTurnBase {
         this.scene.on(Events.ON_CLICK_SKIP_DOWN_PHOM_BUTTON, this._onSkipDownPhom, this);
         this.scene.on(Events.ON_CLICK_JOIN_PHOM_BUTTON, this._onJoinPhom, this);
         this.scene.on(Events.ON_CLICK_SKIP_JOIN_PHOM_BUTTON, this._onSkipJoinPhom, this);
-        this.scene.on(Events.ON_CLICK_SKIP_JOIN_PHOM_BUTTON, this._onSkipJoinPhom, this);
         this.scene.on(Events.ON_CLICK_CHANGE_PHOM_BUTTON, this._onChangePhom, this);
         this.scene.on(Events.ON_CLICK_U_BUTTON, this._onUPhom, this);
         this.scene.on(Events.ON_CLICK_DOI_U_TRON_BUTTON, this._onDoiUTron, this);
@@ -139,6 +138,7 @@ export default class PlayerPhom extends PlayerCardTurnBase {
         if(!this.isItMe()) return;
 
         this.renderer.cardList.cleanHighlight();
+        this.renderer.cardList.cleanSelectedCard();
         this.setState(PlayerPhom.STATE_PHOM_PLAY);
     }
 
@@ -164,10 +164,15 @@ export default class PlayerPhom extends PlayerCardTurnBase {
     _onSkipDownPhom() {
         if (!this.isItMe()) return;
 
-        this.setState(PlayerPhom.STATE_PHOM_PLAY);
+        if(PhomUtils.isContainEatenCards(this.renderer.cardList.cards)){
+            app.system.showToast(app.res.string('game_cannot_skip_down_if_eaten'))
+        }else{
+            this.setState(PlayerPhom.STATE_PHOM_PLAY);
 
-        this.renderer.cardList.cleanSelectedCard();
-        this.board.deHighLightPhomList();
+            this.renderer.cardList.cleanSelectedCard();
+            this.renderer.cardList.cleanHighlight();
+            this.board.deHighLightPhomList();
+        }
     }
 
     _onJoinPhom() {
@@ -213,6 +218,7 @@ export default class PlayerPhom extends PlayerCardTurnBase {
 
         this.setState(PlayerPhom.STATE_PHOM_PLAY);
         this.renderer.cardList.cleanSelectedCard();
+        this.renderer.cardList.cleanHighlight();
         this.board.deHighLightPhomList();
     }
 
@@ -240,7 +246,7 @@ export default class PlayerPhom extends PlayerCardTurnBase {
                 this.scene.emit(Events.SHOW_DOWN_PHOM_CONTROLS, false, true);
                 break;
             case PlayerPhom.STATE_DOWN_JOIN_PHASE_SELECT_SOLUTION:
-                this.scene.emit(Events.SHOW_DOWN_PHOM_CONTROLS);
+                this.scene.emit(Events.SHOW_DOWN_PHOM_CONTROLS, PhomUtils.isContainEatenCards(this.renderer.cardList.cards));
                 break;
             case PlayerPhom.STATE_DOWN_JOIN_PHASE_UNKNOW:
                 this.scene.emit(Events.SHOW_DOWN_PHOM_CONTROLS, true, false);
@@ -714,6 +720,7 @@ export default class PlayerPhom extends PlayerCardTurnBase {
 
     setEatenCards(cards) {
         this.renderer.eatenCardList.setCards(cards);
+        this.renderer.eatenCardList.cards.forEach(card => PhomUtils.setEaten(card))
     }
 
     _onEatCard() {

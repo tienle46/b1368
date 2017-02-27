@@ -69,6 +69,10 @@ export default class PlayerPhomRenderer extends PlayerCardTurnBaseRenderer {
         return this._downPhomListComponent.setPhomList(playerPhomList, player);
     }
 
+    setCurrentPhom(currentPhomList){
+        return this._downPhomListComponent.setPhomList(currentPhomList);
+    }
+
     cleanHighlightDownPhom(){
         this._downPhomListComponent.cleanHighlight();
     }
