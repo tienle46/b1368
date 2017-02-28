@@ -28,7 +28,7 @@ export default class MultiTabPopup extends Component {
          */
         this.progress = null;
         this.activeTabIndex = -1;
-        this.firstTabIndex = 0;
+        this.focusTabIndex = 0;
         this._tabModels = [];
         this._tabs = [];
         this._tabBodies = [];
@@ -56,7 +56,7 @@ export default class MultiTabPopup extends Component {
 
     start() {
         super.start();
-        this.changeTab(this.firstTabIndex);
+        this.changeTab(this.focusTabIndex);
     }
 
     _initTab() {
@@ -170,12 +170,12 @@ export default class MultiTabPopup extends Component {
      *      data: Object
      * }
      */
-    show({ parentNode = cc.director.getScene(), firstTabIndex = 0, title = null, tabModels = [] } = {}) {
+    show({ parentNode = cc.director.getScene(), focusTabIndex = 0, title = null, tabModels = [] } = {}) {
 
         this._hidePopupInstance();
         this.title = title;
         this._tabModels = tabModels;
-        this.firstTabIndex = firstTabIndex;
+        this.focusTabIndex = focusTabIndex;
         parentNode.addChild(this.node);
     }
 

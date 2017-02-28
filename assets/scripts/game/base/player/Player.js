@@ -294,13 +294,15 @@ export default class Player extends Actor {
     start() {
         super.start();
 
-        this._sendReadyImmediately();
+        //this._sendReadyImmediately();
     }
 
     onGameBegin(data, isJustJoined) {
         if (!isJustJoined) {
             this.onGameReset();
         }
+
+        console.log('onGameBegin: ', isJustJoined);
 
         this._sendReadyImmediately();
 

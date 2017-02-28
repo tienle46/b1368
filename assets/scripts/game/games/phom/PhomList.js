@@ -28,7 +28,7 @@ export default class PhomList extends Array {
 
     push(...phoms) {
         super.push(...phoms);
-        phoms.forEach(phom => phom && this.cards.push(...phom.cards));
+        phoms.forEach(phom => phom.cards && this.cards.push(...phom.cards));
     }
 
     /**
@@ -45,7 +45,7 @@ export default class PhomList extends Array {
     }
 
     clear() {
-        this.cards.splice(0, this.cards.length);
+        this.cards.length = 0;
         this.forEach(phom => phom.clear());
     }
 

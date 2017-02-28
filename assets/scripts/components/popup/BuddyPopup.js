@@ -26,8 +26,8 @@ export default class BuddyPopup {
         this.multiTabPopup && this.multiTabPopup.changeTab(BuddyPopup.TAB_CHAT_INDEX, data)
     }
 
-    show(parentNode = cc.director.getScene()){
-        this.multiTabPopup.show({parentNode, tabModels});
+    show(parentNode = cc.director.getScene(), options){
+        this.multiTabPopup.show({parentNode, tabModels, focusTabIndex: BuddyPopup.TAB_CHAT_INDEX});
     }
 }
 

@@ -5,9 +5,8 @@
 import app from 'app';
 import utils from 'utils';
 import Actor from 'Actor';
-import BasePopup from 'BasePopup';
-import Emitter from 'emitter'
 import FullSceneProgress from 'FullSceneProgress';
+import CCUtils from 'CCUtils';
 
 export default class BaseScene extends Actor {
     constructor() {
@@ -15,7 +14,8 @@ export default class BaseScene extends Actor {
 
         this.properties = {
             ...this.properties,
-            popUp: cc.Prefab
+            emptyNode: cc.Node,
+            bodyNode: cc.Node,
         }
 
         this.loading = true;
@@ -79,6 +79,11 @@ export default class BaseScene extends Actor {
         app.system.setSceneChanging(true);
     }
 
+    setVisibleEmptyNode(visible = true){
+        CCUtils.setVisible(this.emptyNode, visible);
+        CCUtils.setVisible(this.bodyNode, !visible);
+    }
+
     showShortLoading(message = '', payload = '') {
         this.showLoading(payload, message, 5);
     }
@@ -105,23 +110,23 @@ export default class BaseScene extends Actor {
         this.progress && this.progress.hide();
     }
 
-    // show popup
-    addPopup(string = null) {
-        if (utils.isEmpty(string)) {
-            return;
-        }
-
-        if (this.popUp) {
-            this.hideLoading();
-            app.system.hideLoader();
-            var popupBase = new cc.instantiate(this.popUp);
-            popupBase.position = cc.p(0, 0);
-            popupBase.getComponent(BasePopup).setContent(string);
-            this.node.addChild(popupBase);
-        } else {
-            this._addToPendingAddPopup(string);
-        }
-    }
+    // // show popup
+    // addPopup(string = null) {
+    //     if (utils.isEmpty(string)) {
+    //         return;
+    //     }
+    //
+    //     if (this.popUp) {
+    //         this.hideLoading();
+    //         app.system.hideLoader();
+    //         var popupBase = new cc.instantiate(this.popUp);
+    //         popupBase.position = cc.p(0, 0);
+    //         popupBase.getComponent(BasePopup).setContent(string);
+    //         this.node.addChild(popupBase);
+    //     } else {
+    //         this._addToPendingAddPopup(string);
+    //     }
+    // }
 
     changeScene(name, onLaunched) {
         // this.showLoading();

@@ -3,6 +3,8 @@ import Actor from 'Actor';
 import TimerRub from 'TimerRub';
 import DialogRub from 'DialogRub';
 import { isNode } from 'Utils';
+import CCUtils from 'CCUtils';
+import BuddyPopup from 'BuddyPopup';
 
 class TopBar extends Actor {
     constructor() {
@@ -13,8 +15,6 @@ class TopBar extends Actor {
             highLightNode: cc.Node,
             moreButton: cc.Button,
             eventButton: cc.Button,
-            backButton: cc.Button,
-            chatBtn: cc.Button,
             soundControl: cc.Node,
             titleContainerNode: cc.Node,
             dropDownOptions: cc.Node,
@@ -29,14 +29,12 @@ class TopBar extends Actor {
 
     onLoad() {
         super.onLoad();
-        // hide back btn
-        this.hideBackButton();
+        this.dropDownBgNode.on(cc.Node.EventType.TOUCH_END, () => this.dropDownOptions.active = false);
+    }
 
-        this.dropDownBgNode.on(cc.Node.EventType.TOUCH_END, () => {
-            this.dropDownOptions.active = false;
-        });
-
-        this.supportPhoneNumberLbl.string = `Hỗ trợ: ${app.config.supportHotline}`;
+    onEnable(){
+        super.onEnable();
+        this.supportPhoneNumberLbl.string = app.res.string('hotline', {hotline: app.config.supportHotline})
     }
 
     giveFeedbackClicked() {
@@ -61,23 +59,6 @@ class TopBar extends Actor {
         }
     }
 
-    showBackButton() {
-        this._setElementState([this.backButton, this.chatBtn], true);
-        this._setElementState([this.moreButton, this.eventButton, this.titleContainerNode], false);
-    }
-
-    hideBackButton() {
-        this._setElementState([this.backButton, this.chatBtn], false);
-        this._setElementState([this.moreButton, this.eventButton, this.titleContainerNode], true);
-
-        // this.backButton.node.active = false;
-        // this.chatBtn.node.active = false;
-
-        // this.moreButton.node.active = true;
-        // this.eventButton.node.active = true;
-        // this.titleContainerNode.active = true;
-    }
-
     onClickLogout() {
         app.system.confirm(
             app.res.string('really_wanna_quit'),
@@ -93,7 +74,7 @@ class TopBar extends Actor {
     }
 
     _hideDropDownMenu(){
-        this.dropDownOptions.active = false;
+        CCUtils.setVisible(this.dropDownOptions, false)
     }
 
     onSoundBtnClick() {
@@ -101,7 +82,7 @@ class TopBar extends Actor {
     }
 
     handleSettingAction(e) {
-
+        //TODO
     }
 
     onClickEventAction() {
@@ -109,20 +90,10 @@ class TopBar extends Actor {
         dialog.addBody('dashboard/dialog/prefabs/event/event_dialog');
     }
 
-    onChatBtnClick() {
-        console.log('onChatClick');
-    }
-
     handleMoreAction() {
         let state = this.dropDownOptions.active;
         this.dropDownOptions.active = !state;
     }
-
-    handleBackAction() {
-        // this._listenBackAction && this._listenBackAction();
-        app.system.loadScene(app.const.scene.DASHBOARD_SCENE);
-    }
-
 
     /**
      * PRIVATES 
@@ -179,12 +150,12 @@ class TopBar extends Actor {
 
     _addGlobalListener() {
         super._addGlobalListener();
-        this.titleContainerNode.active && app.system.addListener(app.commands.HIGH_LIGHT_MESSAGE, this._onHLMListener, this);
+        app.system.addListener(app.commands.HIGH_LIGHT_MESSAGE, this._onHLMListener, this);
     }
 
     _removeGlobalListener() {
         super._removeGlobalListener();
-        this.titleContainerNode.active && app.system.removeListener(app.commands.HIGH_LIGHT_MESSAGE, this._onHLMListener, this);
+        app.system.removeListener(app.commands.HIGH_LIGHT_MESSAGE, this._onHLMListener, this);
     }
 
     _onFeedbackConfirmed(content) {
@@ -208,12 +179,6 @@ class TopBar extends Actor {
         }
 
         this._hideDropDownMenu()
-    }
-
-    _setElementState(elements, state) {
-        elements.forEach(element => {
-            (isNode(element) ? element : element.node).active = state;
-        });
     }
 }
 

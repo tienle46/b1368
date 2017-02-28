@@ -1,6 +1,7 @@
 import app from 'app';
 import Component from 'Component';
 import { isFunction } from 'Utils';
+import CCUtils from 'CCUtils';
 
 class TableListCell extends Component {
     constructor() {
@@ -39,20 +40,17 @@ class TableListCell extends Component {
         this._onClickListener = null;
     }
 
-    onLoad() {
-        this.balance = app.context.getMeBalance();
+    initCell({id = 0, displayId = 0, minBet = 0, userCount = 0, userMax = 0, password} = {}) {
+        this.setComponentData({id, displayId, minBet, userCount, userMax, password})
     }
 
-    initCell(id, minBet, userCount = 1, userMax, password) {
-        id && (this.id = id) && (this.idLbl.string = this.id);
-        minBet && this._changeMinBet(minBet);
-        (userCount || userCount === 0) && userMax && this._changeProgressBar(userCount, userMax);
-        password && this._roomPassword(password);
-    }
+    renderComponentData(data){
+        this.id = data.id;
+        this.idLbl.string = data.displayId > 0 ? `${data.displayId}` : "#";
+        this.numberCoinLabel.string = data.minBet;
+        CCUtils.setVisible(this.lockIcon, data.password)
 
-    _changeMinBet(minBet) {
-        this.minBet = minBet;
-        this.numberCoinLabel.string = this.minBet;
+        this._changeProgressBar(data.userCount, data.userMax);
     }
 
     _changeProgressBar(current, max) {
@@ -60,13 +58,9 @@ class TableListCell extends Component {
         this.roomProgress.progress = current / max;
     }
 
-    _roomPassword(password) {
-        this.lockIcon.active = true;
-        this.password = password;
-    }
-
     onDestroy() {
         super.onDestroy();
+        this._onClickListener = null
     }
 
     setOnClickListener(clickListener) {
@@ -74,7 +68,7 @@ class TableListCell extends Component {
     }
 
     onClickEvent() {
-        this._onClickListener && this._onClickListener();
+        this._onClickListener && this._onClickListener(this.getComponentData());
     }
 }
 app.createComponent(TableListCell);

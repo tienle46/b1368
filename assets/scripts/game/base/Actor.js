@@ -64,10 +64,6 @@ export default class Actor extends Component {
             this._assertPendingEmitEvents();
             !this.__pendingEmitEvents.hasOwnProperty(name) && (this.__pendingEmitEvents[name] = []);
             this.__pendingEmitEvents[name].push(args);
-
-            if(name == Events.ON_GAME_LOAD_DATA_AFTER_SCENE_START){
-                console.warn('add args: ', args);
-            }
         }
     }
 

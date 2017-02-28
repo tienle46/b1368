@@ -204,6 +204,15 @@ app.const.game.gameCodes = [
     "xga"
 ];
 
+app.const.game.maxPlayers = {
+    "pom": 4,
+    "bcy": 9,
+    "tnd": 4,
+    "xam": 5,
+    "xod": 9,
+    "default": 2,
+};
+
 app.const.game.gameTableSeatType = [
     4, 5, 6, 6,
     4, 4, 4, 5,

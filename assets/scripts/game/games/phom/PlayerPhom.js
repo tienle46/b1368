@@ -237,8 +237,6 @@ export default class PlayerPhom extends PlayerCardTurnBase {
         this.joinPhaseState = -1;
         this.sortCardSolutionIndex = 2;
         this.eatenCards = [];
-
-        this.renderer.playedCardList.clear();
     }
 
     _setDownPhraseState(state) {

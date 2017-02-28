@@ -302,6 +302,7 @@ class GameSystem {
 
     _onJoinRoomError(resultEvent) {
         if (resultEvent.errorCode) {
+            this.hideLoader();
             this.error(event.errorMessage);
         }
     }
@@ -326,8 +327,6 @@ class GameSystem {
         if (resultEvent.room && resultEvent.room.isJoined && resultEvent.room.isGame) {
 
             app.context.currentRoom = resultEvent.room;
-            this._currentScene && this._currentScene.hideLoading();
-
             let gameSceneName = null;
             let gameCode = utils.getGameCode(resultEvent.room);
 
@@ -351,8 +350,11 @@ class GameSystem {
                     gameSceneName = 'XocDiaScene';
                     break;
             }
-            this.hideLoader();
-            gameSceneName && this.loadScene(gameSceneName);
+            if(gameSceneName){
+                this.loadScene(gameSceneName);
+            }else{
+                this.hideLoader();
+            }
         }
     }
 

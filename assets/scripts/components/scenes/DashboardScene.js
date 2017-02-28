@@ -132,16 +132,11 @@ export default class DashboardScene extends BaseScene {
 
                     itemComponent.gameCode = gc;
                     itemComponent.listenOnClickListener((gameCode) => {
-                        log(`click Item ${gameCode}`);
-
-                        this.changeScene(app.const.scene.LIST_TABLE_SCENE, () => {
-                            // set game context
-                            app.context.setSelectedGame(gc);
-                        }, true);
+                        app.context.setSelectedGame(gameCode);
+                        this.changeScene(app.const.scene.LIST_TABLE_SCENE);
                     });
 
                     node && node.addChild(nodeItem);
-
                     count++;
                 }
                 if (count == this.gameList.length)

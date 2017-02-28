@@ -480,8 +480,8 @@ export default class GamePlayers extends Component {
 
     getPlayerHandCardLists() {
         let cardLists = [];
-        this.players.forEach(player => {
-            !player.isItMe() && cardLists.splice(player.anchorIndex, 0, player.renderer.cardList);
+        this.players.filter(player => player.isPlaying() && !player.isItMe()).forEach(player => {
+            cardLists.splice(player.anchorIndex, 0, player.renderer.cardList);
         });
 
         return cardLists;

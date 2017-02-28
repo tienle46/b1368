@@ -382,9 +382,8 @@ export default class GameScene extends BaseScene {
             this._onGameData();
         }
 
-        let localState = GameUtils.convertToLocalGameState(state);
         this.gameState = state;
-        this.gameLocalState = localState;
+        this.gameLocalState = GameUtils.convertToLocalGameState(state);
 
         if (this.gameState == app.const.game.state.WAIT) {
             this.emit(Events.ON_GAME_RESET);
@@ -393,7 +392,7 @@ export default class GameScene extends BaseScene {
 
         this.emit(Events.ON_GAME_STATE_PRE_CHANGE, state, data, isJustJoined);
 
-        switch (localState) {
+        switch ( this.gameLocalState) {
             case app.const.game.state.BEGIN:
                 this._onGameStateBegin(data, isJustJoined, rejoining);
                 break;

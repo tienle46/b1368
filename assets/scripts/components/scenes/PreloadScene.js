@@ -16,15 +16,12 @@ class PreloadScene extends Component {
     onLoad() {
         if (this.loading) {
             this.loading.getComponent('FullSceneProgress').show(app.res.string('loading_data'));
-        } else {
-            debug(`what the heck?`);
         }
 
         this._setupEnvironment();
     }
 
     _setupEnvironment() {
-        cc.log('_setupEnvironment');
 
         if (app.env.isBrowser()) {
             cc.game.pause = () => {};
@@ -33,10 +30,12 @@ class PreloadScene extends Component {
 
         cc.game.on(cc.game.EVENT_HIDE, function() {
             app.system.isInactive = true;
+            console.warn('cc.game.EVENT_HIDE', new Date().toISOString());
         });
 
         cc.game.on(cc.game.EVENT_SHOW, function() {
             app.system.isInactive = false;
+            console.warn('cc.game.EVENT_SHOW', new Date().toISOString());
         });
     }
 
@@ -49,7 +48,7 @@ class PreloadScene extends Component {
             { dir: 'popup/MultiTabPopup', name: 'multiTabPopup' },
             { dir: 'common/FullSceneProgress', name: 'fullSceneLoading' },
             { dir: 'popup/MessagePopup', name: 'messagePopup' },
-                { dir: 'popup/ConfirmPopup', name: 'confirmPopup' },
+            { dir: 'popup/ConfirmPopup', name: 'confirmPopup' },
         ];
 
         app.async.parallel(resources.map((res) => {

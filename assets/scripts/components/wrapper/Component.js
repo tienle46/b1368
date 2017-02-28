@@ -29,8 +29,12 @@ export default class Component {
         return this.__isComponentEnabled;
     }
 
+    getComponentData(){
+        return this.__componentData || {};
+    }
+
     setComponentData(data){
-        this.__componentData = {...this.__componentData, ...data}
+        this.__componentData = {...data}
     }
 
     /**

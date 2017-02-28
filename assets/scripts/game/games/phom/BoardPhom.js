@@ -43,9 +43,7 @@ export default class BoardPhom extends BoardCardTurnBase {
     _reset() {
         super._reset();
         this.winRank = 0;
-
-        console.log("cllear on reset board phom")
-        this.allPhomList = []; //.clear();
+        this.allPhomList = [];
     }
 
     _onPlayerPlayedCards(playedCards, srcCardList, isItMe) {
@@ -144,12 +142,12 @@ export default class BoardPhom extends BoardCardTurnBase {
 
         let lastPlayedTurn = utils.getValue(data, Keywords.LAST_MOVE_PLAYER_ID);
         if (lastPlayedTurn) {
-
             let playedPlayer = this.scene.gamePlayers.findPlayer(lastPlayedTurn);
-            let playerPlayedCards = playedPlayer.getPlayedCards();
-
-            if (playedPlayer && playerPlayedCards.length > 0) {
-                this.lastPlayedCard = playerPlayedCards[playerPlayedCards.length - 1];
+            if(playedPlayer){
+                let playerPlayedCards = playedPlayer.getPlayedCards();
+                if (playerPlayedCards.length > 0) {
+                    this.lastPlayedCard = playerPlayedCards[playerPlayedCards.length - 1];
+                }
             }
         }
 
@@ -197,10 +195,7 @@ export default class BoardPhom extends BoardCardTurnBase {
     }
 
     onBoardPlaying(data, isJustJoined) {
-
         super.onBoardPlaying(data, isJustJoined);
-
-        console.warn('onBoardPlaying phom', isJustJoined);
 
         if (isJustJoined) {
             this._setDeckFakeCard();
@@ -209,7 +204,6 @@ export default class BoardPhom extends BoardCardTurnBase {
 
     onBoardStarting(data, isJustJoined) {
         super.onBoardStarting();
-        console.warn('onBoardStarting phom',);
         this._setDeckFakeCard();
     }
 
@@ -237,7 +231,6 @@ export default class BoardPhom extends BoardCardTurnBase {
         });
 
         setTimeout(() => this.scene.showGameResult(models, (shownTime) => {
-            this.renderer.cleanDeckCards();
             let remainTime = this.timelineRemain - shownTime;
             if (remainTime > 0 && this.scene.isEnding()) {
                 if(this.scene.gamePlayers.players.length > 1){

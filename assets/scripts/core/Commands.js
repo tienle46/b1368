@@ -262,5 +262,6 @@ Commands.CONFIRM_ADD_BUDDY = "confirmAddBuddy";
 Commands.BANK_IN_HISTORY = "bankInHistory";
 Commands.IOS_IN_APP_PURCHASE = "submitPurchase";
 Commands.ANDROID_IN_APP_PURCHASE = "submitBilling";
+Commands.GET_LIST_GAME_MINBET = "gmbl";
 
 module.exports = Commands;

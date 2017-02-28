@@ -6,10 +6,11 @@ var app = require('app');
 
 app.const = {};
 
+app.const.MAX_INT = 2147483647
+
 app.const.LOADING_SHORT_DURATION = 15;
 app.const.LOADING_MEDIUM_DURATION = 30;
 app.const.LOADING_LONG_DURATION = 60;
-
 
 app.const.dialogZIndex = 9999;
 app.const.topupZIndex = 10000;

@@ -3,7 +3,84 @@
  */
 
 export default class CCUtils {
-    constructor() {
+
+    static disable(node) {
+        if (!node) return;
+
+        if (node instanceof cc.Node) {
+            node.enabled = false;
+        } else {
+            node.node && (node.node.enabled = false);
+        }
+    }
+
+    static enable(node) {
+        if (!node) return;
+
+        if (node instanceof cc.Node) {
+            node.enabled = true;
+        } else {
+            node.node && (node.node.enabled = true);
+        }
+    }
+
+    static active(node, opacity) {
+        Utils.setActive(node, true);
+        if (opacity) {
+            //TODO
+        }
+    }
+
+    static deactive(node, opacity) {
+        Utils.setActive(node, false);
+
+        if (opacity) {
+            //TODO
+        }
+    }
+
+    static setActive(node, active, opacity) {
+        if (!node) return;
+
+        active = active ? true : false;
+
+        if (node instanceof cc.Node) {
+            node.active = active;
+        } else {
+            node.node && (node.node.active = active);
+        }
+    }
+
+    static setVisible(node, visible, opacity) {
+        this.setActive(node, visible, opacity);
+    }
+
+    /**
+     * @param opacity {int}
+     */
+    static setOpacity(node, opacity) {
+        node = node instanceof cc.Node ? node : (node.node || null);
+        if (!node)
+            return;
+        node.opacity = opacity ? opacity : 0;
+    }
+
+    /**
+     * @param opacity {boolean}
+     */
+    static setVisibility(node, visiblity) {
+        let opacity = visiblity ? 255 : 0;
+        Utils.setOpacity(node, opacity);
+    }
+
+    static hide(node, action = cc.hide()) {
+        node = node && (node.node || node);
+        node && node.runAction && node.runAction(action);
+    }
+
+    static show(node) {
+        node = node.node || node;
+        node && node.runAction && node.runAction(cc.show());
     }
 
     static getWorldPosition(node){

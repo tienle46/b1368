@@ -526,6 +526,7 @@ class Service {
         console.log("_onJoinRoomError: ", event);
         if (event.errorCode) {
             this._hasCallback(SFS2X.SFSEvent.ROOM_JOIN_ERROR) && this._callCallbackAsync(SFS2X.SFSEvent.ROOM_JOIN_ERROR, event);
+            app.system.hideLoader()
             app.system.error(app.getMessageFromServer(event) || event.errorMessage);
         }
     }

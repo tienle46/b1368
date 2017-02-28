@@ -1,6 +1,6 @@
 export default {
     system: "Hệ Thống",
-    currency_name: "chip",
+    currency_name: "Chip",
     game_title: "B1368",
     game_currency_unit: "Chip",
     lost_connection: "Kết nối tới máy chủ bị gián đoạn. Vui lòng đăng nhập lại!",
@@ -15,7 +15,7 @@ export default {
     error_user_enter_empty_input: "Vui lòng nhập đầy đủ thông tin",
     error_changed_password_is_invalid: "Mật khẩu mới phải từ 6 ký tự trong đó có ít nhất 1 số, 1 ký tự thường, không có ký tự đặc biệt và dấu cách.",
     error_password_confirmation_is_not_the_same: "Nhập lại mật khẩu mới không chính xác",
-    error_user_not_enough_gold_to_join_room: "Phòng chơi có mức cược {{minBet}}, bạn hiện tại không đủ điều kiện để tham gia",
+    error_user_not_enough_gold_to_join_room: "Bạn cần {{minBalance}}-{{currencyName}} để có thể tham ra bàn chơi",
     error_topup_dialog_need_to_choice_item: "Vui lòng chọn loại thẻ",
     error_exchange_dialog_need_to_choice_item: "Chưa chọn loại phần thưởng",
     error_exchange_dialog_not_enough_money: "Số tiền hiện tại {{ownerCoin}} không đủ để đổi vật phẩm {{name}}",
@@ -31,6 +31,8 @@ export default {
     error_transfer_input_is_too_small: 'Số tiền {{type}} tối thiểu là {{min}}.',
     error_transfer_input_is_not_enough: 'Bạn cần tối thiểu {{amount}} chip để thực hiện thao tác này.',
     error_balance_is_not_enough: 'Số dư trong tài khoản không đủ, cần tối thiểu {{amount}} trong ngân hàng.',
+    error_system_not_support_join_room_have_password: 'Hệ thống chưa hỗ trợ vào bàn chơi có mật khẩu',
+    error_undefined_please_try_again: 'Lỗi chưa xác định, vui lòng thử lại!',
 
     get_transfer_success: 'Bạn đã rút thành công {{amount}} chip, chúc bạn chơi game vui vẻ.',
     transfer_successfully: 'Chuyển thành công {{amount}} chip tới {{username}}.',
@@ -142,4 +144,6 @@ export default {
     buddy_added_buddy: "{{buddyName}} đã được thêm vào danh sách bạn bè!",
     buddy_already_in_buddy_list: "{{buddyName}} đã tồn tại trong danh sách bạn bè!",
     buddy_select_buddy_to_chat: "Chọn bạn để chat!",
+
+    hotline: "Hỗ trợ: {{hotline}}",
 };

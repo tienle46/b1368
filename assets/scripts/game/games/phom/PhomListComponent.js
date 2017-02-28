@@ -28,18 +28,17 @@ export default class PhomListComponent extends Component {
             space: 60,
         }
 
-        this.phomList = new PhomList();
-        this.phoms = [];
+        this.phomList = null;
+        this.phoms = null;
     }
 
     onLoad() {
         super.onLoad();
         this.phoms = [];
-        this.phomList.clear();
+        this.phomList = new PhomList();
     }
 
     clear() {
-        this.node && this.node.children && this.node.children.length > 0 && this.node.removeAllChildren(true);
         this.phomList.clear();
     }
 
@@ -111,7 +110,6 @@ export default class PhomListComponent extends Component {
         this.phoms.forEach(phom => {
             if (phom.cards.length == 0) {
                 phom.setCards(phomModel.cards);
-                this.cards.push(...phom.cards);
             }
         })
     }
