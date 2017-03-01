@@ -10,7 +10,7 @@ class PreloadScene extends Component {
         this.loading = {
             default: null,
             type: cc.Node
-        };
+        }
     }
 
     onLoad() {
@@ -40,6 +40,7 @@ class PreloadScene extends Component {
     }
 
     onEnable() {
+
         let resources = [
             { dir: 'toast/Toast', name: 'toast' },
             { dir: 'dashboard/grid/scrollview', name: 'scrollview' },
@@ -73,6 +74,17 @@ class PreloadScene extends Component {
                 app.system.error(app.res.string('error_cannot_load_data'));
             }
         });
+
+        // app.async.parallel([
+        //     () => (callback) => {
+        //         cc.loader.loadRes("", (err, prefab) => {
+        //             app.res.spriteFrame[res.name] = prefab;
+        //             prefab ? callback(null, true) : callback();
+        //         });
+        //     }
+        // ], (error, results) => {
+        //
+        // })
     }
 
     onLoadResourceDone() {

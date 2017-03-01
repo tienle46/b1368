@@ -92,7 +92,7 @@ export default class ListTableScene extends BaseScene {
     }
 
     onClickChatBtn() {
-        new BuddyPopup().show(this.node.parent);
+        new BuddyPopup().show(this.node.parent, {focusTabIndex: BuddyPopup.TAB_CHAT_INDEX});
     }
 
     onClickBackBtn() {
@@ -275,6 +275,10 @@ export default class ListTableScene extends BaseScene {
 
     _onUserListRoom(data) {
         this._initRoomsListFromData(data);
+        /*Need to check exactly equal true or undefined*/
+        if(app.context.requestRandomInvite === true || app.context.requestRandomInvite === undefined){
+            setTimeout(() => this.node && app.service.send({cmd: "randomInviteGame", data: {[app.keywords.GAME_CODE] : this.gameCode}}), 800);
+        }
     }
 
     _initRoomsListFromData(data = {}, addMore = false) {

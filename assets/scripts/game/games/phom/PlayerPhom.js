@@ -398,7 +398,7 @@ export default class PlayerPhom extends PlayerCardTurnBase {
             this.board.renderer.cleanDeckCards();
         }
 
-        let card = this.isItMe() ? Card.from(utils.getValue(data, Keywords.GAME_LIST_CARD)) : Card.from(5);
+        let card = this.isItMe() ? Card.from(utils.getValue(data, Keywords.GAME_LIST_CARD)) : Card.from(0);
         this.renderer.cardList.transferFrom(this.board.getDeckCards(), [card], {reverse: true, cb: () => {
             if (this.isItMe()) {
                 this._processAfterEatOrTake();

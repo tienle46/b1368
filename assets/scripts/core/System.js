@@ -382,6 +382,10 @@ class GameSystem {
             this.pendingGameEvents = [];
         }
     }
+
+    onParseClientConfigError(){
+
+    }
 }
 
 const gameSystem = new GameSystem();

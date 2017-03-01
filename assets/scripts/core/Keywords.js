@@ -755,3 +755,4 @@ Keywords.CHARGE_SMS_OBJECT_INFORS = "iacInfos";
 Keywords.VARIABLE_PLAYING_GAME = "gr";
 Keywords.GAME_MINBET_LIST = "mbl";
 Keywords.GAME_ENABLE_MINBET_LIST = "embl";
+Keywords.CONFIG_DATA = "configData";

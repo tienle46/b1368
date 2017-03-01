@@ -21,6 +21,8 @@ Events.HANDLE_PLAYER_DOWN_CARD = "handle.playerDownCard";
 Events.HANDLE_PLAYER_CUOC_BIEN = "handle.playerGaHuc";
 Events.HANDLE_PLAYER_ACCEPT_CUOC_BIEN = "handle.playerAcceptHuc";
 
+Events.CLIENT_CONFIG_CHANGED = "clientConfigChanged";
+
 Events.SHOW_GAME_BEGIN_CONTROLS = "show.gameBeginControls";
 Events.SHOW_WAIT_TURN_CONTROLS = "show.waitTurnControls";
 Events.SHOW_ON_TURN_CONTROLS = "show.onTurnControls";

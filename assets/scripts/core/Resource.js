@@ -13,6 +13,7 @@ app.res.prefab.scrollview = cc.Prefab;
 app.res.prefab.loading = cc.Prefab;
 app.res.prefab.fullSceneLoading = cc.Prefab;
 
+app.res.spriteFrame = {};
 
 app.res.getString = app.res.string = (key, params) => {
     return i18next.t(key, params);

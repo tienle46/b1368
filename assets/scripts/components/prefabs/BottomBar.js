@@ -10,6 +10,7 @@ import numeral from 'numeral';
 import SFS2X from 'SFS2X';
 import Events from 'Events';
 import BuddyPopup from 'BuddyPopup';
+import HttpImageLoader from 'HttpImageLoader';
 
 class BottomBar extends DialogActor {
     constructor() {
@@ -20,6 +21,7 @@ class BottomBar extends DialogActor {
             userInfoCoinLbl: cc.Label,
             userNameLbl: cc.Label,
             notifyBgNode: cc.Node,
+            avatarSpriteNode: cc.Node,
             notifyCounterLbl: cc.Label,
             buddyNotifyLbl: cc.Label,
             buddyNotifyNode: cc.Node,
@@ -35,6 +37,7 @@ class BottomBar extends DialogActor {
     start() {
         super.start();
         this._requestMessageNotification(app.context.unreadMessageBuddies.length);
+        HttpImageLoader.loadDefaultAvatar(this.avatarSpriteNode.getComponent(cc.Sprite));
     }
 
     _addGlobalListener() {
@@ -42,6 +45,7 @@ class BottomBar extends DialogActor {
         app.system.addListener(app.commands.NEW_NOTIFICATION_COUNT, this._onNotifyCount, this);
         app.system.addListener(SFS2X.SFSEvent.USER_VARIABLES_UPDATE, this._onUserVariablesUpdate, this);
         app.system.addListener(Events.ON_BUDDY_UNREAD_MESSAGE_COUNT_CHANGED, this._onBuddyNotifyCountChanged, this);
+        app.system.addListener(Events.CLIENT_CONFIG_CHANGED, this._onConfigChanged, this);
     }
 
     _removeGlobalListener() {
@@ -49,6 +53,11 @@ class BottomBar extends DialogActor {
         app.system.removeListener(app.commands.NEW_NOTIFICATION_COUNT, this._onNotifyCount, this);
         app.system.removeListener(SFS2X.SFSEvent.USER_VARIABLES_UPDATE, this._onUserVariablesUpdate, this);
         app.system.removeListener(Events.ON_BUDDY_UNREAD_MESSAGE_COUNT_CHANGED, this._onBuddyNotifyCountChanged, this);
+        app.system.removeListener(Events.CLIENT_CONFIG_CHANGED, this._onConfigChanged, this);
+    }
+
+    _onConfigChanged(){
+        HttpImageLoader.loadDefaultAvatar(this.avatarSpriteNode.getComponent(cc.Sprite));
     }
 
     _onBuddyNotifyCountChanged(count) {

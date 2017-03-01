@@ -5,6 +5,7 @@
 import app from 'app';
 import utils from 'utils';
 import Component from 'Component';
+import HttpImageLoader from 'HttpImageLoader';
 
 class ChattingBuddyItem extends Component {
     
@@ -17,6 +18,7 @@ class ChattingBuddyItem extends Component {
             onlineNode: cc.Node,
             offlineNode: cc.Node,
             avatarNode: cc.Node,
+            avatarSpriteNode: cc.Node,
             newMessageCountNode: cc.Node,
             newMessageCountLabel: cc.Label,
             toggle: cc.Toggle
@@ -39,6 +41,11 @@ class ChattingBuddyItem extends Component {
         super.onEnable();
         this.isLoaded = true;
         this.onBuddyChanged();
+    }
+
+    start(){
+        super.start()
+        HttpImageLoader.loadDefaultAvatar(this.avatarSpriteNode.getComponent(cc.Sprite));
     }
 
     select(){

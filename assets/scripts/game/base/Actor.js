@@ -5,6 +5,7 @@
 import Component from 'Component';
 import Emitter from 'emitter';
 import Events from 'Events';
+import HttpImageLoader from 'HttpImageLoader';
 
 export default class Actor extends Component {
     constructor() {
@@ -19,6 +20,7 @@ export default class Actor extends Component {
         this.initiated = false;
         this._eventEmitter = null;
         this.__pendingEmitEvents = null;
+        this.autoReleaseHttpImage = true;
     }
 
     /**
@@ -55,6 +57,7 @@ export default class Actor extends Component {
         super.onDestroy();
         this._removeGlobalListener();
         this.removeAllListener();
+        this.autoReleaseHttpImage && HttpImageLoader.clearImage(this.constructor.name);
     }
 
     emit(name, ...args) {
@@ -134,5 +137,9 @@ export default class Actor extends Component {
         });
 
         this.__pendingEmitEvents = {};
+    }
+
+    loadImage(url, cb){
+        return HttpImageLoader.loadImage(url, this.constructor.name, cb);
     }
 }

@@ -4,10 +4,9 @@
 
 import app from 'app';
 import utils from 'utils';
-import Component from 'Component';
 import PopupTabBody from 'PopupTabBody';
-import BuddyManager from 'BuddyManager';
 import CCUtils from 'CCUtils';
+import HttpImageLoader from 'HttpImageLoader';
 
 class BuddyItem extends PopupTabBody {
     
@@ -26,6 +25,7 @@ class BuddyItem extends PopupTabBody {
             offlineNode: cc.Node,
             lockedNode: cc.Node,
             avatarNode: cc.Node,
+            avatarSpriteNode: cc.Node,
         }
 
         this.online = false;
@@ -52,6 +52,11 @@ class BuddyItem extends PopupTabBody {
         if(this.buddy){
             this.onBuddyChanged();
         }
+    }
+
+    start(){
+        super.start()
+        HttpImageLoader.loadDefaultAvatar(this.avatarSpriteNode.getComponent(cc.Sprite));
     }
 
     onBuddyChanged(){
