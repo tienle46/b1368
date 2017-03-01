@@ -261,6 +261,8 @@ class Service {
             let params = event[app.keywords.BASE_EVENT_PARAMS];
             let messageList = params[app.keywords.MESSAGE_LIST];
             messageList && messageList.length > 0 && app.system.info(`${messageList[0]}`);
+        } else if(event.cmd === app.commands.CLIENT_CONFIG){
+            this._dispatchClientConfig(event.params);
         } else {
             if (this._hasCallback(event.cmd)) {
                 this._callCallbackAsync(event.cmd, event.params);
@@ -599,6 +601,19 @@ class Service {
         }
 
         this.client.disconnect();
+    }
+
+    _dispatchClientConfig(data){
+
+        let configDataStr = data && data[app.keywords.CONFIG_DATA]
+        if(configDataStr){
+            try{
+                let configData = JSON.parse(configDataStr);
+                app.config.parseConfigData(configData);
+            }catch(e){
+                app.system.onParseClientConfigError();
+            }
+        }
     }
 
 }

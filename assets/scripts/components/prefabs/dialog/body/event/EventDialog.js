@@ -93,7 +93,7 @@ class EventDialog extends Component {
                     this.node.emit('event-clicked', { id: node.nodeId, url: node.urlContent });
                 }
             }
-            this.hideLoader();
+            app.system.hideLoader();
         }
     }
 

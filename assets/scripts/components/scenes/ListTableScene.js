@@ -92,7 +92,7 @@ export default class ListTableScene extends BaseScene {
     }
 
     onClickChatBtn() {
-        new BuddyPopup().show(this.node.parent);
+        new BuddyPopup().show(this.node.parent, {focusTabIndex: BuddyPopup.TAB_CHAT_INDEX});
     }
 
     onClickBackBtn() {
@@ -118,7 +118,10 @@ export default class ListTableScene extends BaseScene {
         return minBet * (this.minBalanceMultiple > 0 ? this.minBalanceMultiple : app.config.defaultMinBalanceJoinGameRoomMultiple);
     }
 
-    onUserRequestJoinRoom({id, minBet, password, isSpectator} = {}) {
+    onUserRequestJoinRoom({id, minBet, password, isSpectator, roomCapacity} = {}) {
+
+        console.log('id: ', id, " minbet:", minBet, "Capacity: ", roomCapacity);
+
         let minBalance = this._calculateMinBalanceToJoinGame(minBet);
 
         if (minBalance > app.context.getMeBalance()) {
@@ -129,7 +132,11 @@ export default class ListTableScene extends BaseScene {
             if (password) {
                 app.system.info(app.res.string('error_system_not_support_join_room_have_password'));
             } else {
-                this._requestJoinRoom({id, minBet, password, isSpectator});
+                if(id > 0){
+                    this._requestJoinRoom({id, minBet, password, isSpectator});
+                }else{
+                    this._createRoom({minBet, roomCapacity})
+                }
             }
         }
     }
@@ -275,6 +282,10 @@ export default class ListTableScene extends BaseScene {
 
     _onUserListRoom(data) {
         this._initRoomsListFromData(data);
+        /*Need to check exactly equal true or undefined*/
+        if(app.context.requestRandomInvite === true || app.context.requestRandomInvite === undefined){
+            setTimeout(() => this.node && app.service.send({cmd: "randomInviteGame", data: {[app.keywords.GAME_CODE] : this.gameCode}}), 800);
+        }
     }
 
     _initRoomsListFromData(data = {}, addMore = false) {
@@ -284,15 +295,16 @@ export default class ListTableScene extends BaseScene {
         let minBets = data[app.keywords.ROOM_MIN_BET] || []
         let passwords = data[app.keywords.ROOM_PASSWORD] || []
         let userCounts = data[app.keywords.ROOM_USER_COUNT] || []
-        let userMaxs = data[app.keywords.ROOM_USER_MAX] || []
+        let roomCapacitys = data[app.keywords.ROOM_USER_MAX] || []
 
         // room faker
         this.enableMinbets.forEach(minBet => {
+            ids.push(0);
             displayIds.push(0);
             minBets.push(minBet);
             passwords.push(null);
             userCounts.push(0);
-            userMaxs.push(app.const.game.maxPlayers[this.gameCode || 'default']);
+            roomCapacitys.push(app.const.game.maxPlayers[this.gameCode || 'default']);
         })
 
         if(!addMore){
@@ -309,7 +321,7 @@ export default class ListTableScene extends BaseScene {
                 displayId: displayIds[i],
                 minBet: minBets[i],
                 userCount: userCounts[i],
-                userMax: userMaxs[i],
+                roomCapacity: roomCapacitys[i],
                 password: passwords[i]
             });
 
@@ -377,28 +389,29 @@ export default class ListTableScene extends BaseScene {
     }
 
 
-    _createRoom(gameCode = null, minBet = 0, roomCapacity = 2, password = undefined) {
-        let data = {};
-        data[app.keywords.ROOM_BET] = minBet;
-        data[app.keywords.GAME_CODE] = gameCode;
-        data[app.keywords.ROOM_PASSWORD] = password;
-        data[app.keywords.ROOM_CAPACITY] = roomCapacity;
-        let sendObject = {
-            cmd: app.commands.USER_CREATE_ROOM,
-            data,
-            room: null
-        };
+    _createRoom({minBet = 0, roomCapacity = 2} = {}) {
 
         this.__isCreatingRoom = true;
 
         /**
          * If create room successfully, response going handle by join room success follow
          */
-        app.system.showLoader();
-        app.service.send(sendObject);
+        this.showLoading('Đang vào bàn chơi....');
+        app.service.send({
+            cmd: app.commands.USER_CREATE_ROOM,
+            data: {
+                [app.keywords.ROOM_BET]: minBet,
+                [app.keywords.GAME_CODE]: this.gameCode,
+                [app.keywords.ROOM_CAPACITY]: roomCapacity,
+                [app.keywords.IS_SPECTATOR]: false
+            }
+        });
+
+        console.log('data: ', data);
     }
 
     _onUserCreateRoom(data) {
+        this.__isCreatingRoom = false;
         if (data.errorCode) {
             this.hideLoading()
             app.system.error(app.getMessageFromServer(data));

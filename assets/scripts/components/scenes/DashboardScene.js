@@ -7,7 +7,6 @@ import ArrayUtils from 'ArrayUtils';
 export default class DashboardScene extends BaseScene {
     constructor() {
         super();
-        this.gameList = [];
 
         this.properties = {
             ...this.properties,
@@ -23,9 +22,20 @@ export default class DashboardScene extends BaseScene {
         super.onLoad();
     }
 
+    onEnable(){
+        super.onEnable()
+
+        app.context.gameList.length > 0 && this._initItemListGame();
+    }
+
     start() {
         super.start();
         this._getGamesListFromServer();
+
+        /**
+         * set requestRandomInvite = true to make sure player only receive random invite on first time join game group
+         */
+        app.context.requestRandomInvite = true;
     }
 
     showDailyLoginPopup(message) {
@@ -62,31 +72,31 @@ export default class DashboardScene extends BaseScene {
     }
 
     _getGamesListFromServer() {
-        let data = {};
-        data[app.keywords.PARTNER_ID] = 1;
-        let sendObject = {
+        if(app.context.gameList.length == 0){
+            this.showLoading('Đang tải dữ liệu ....');
+        }
+        app.service.send({
             'cmd': app.commands.USER_LIST_GAME_CODE,
-            data
-        };
-
-        this.showLoading('Đang tải dữ liệu ....');
-        app.service.send(sendObject);
+            data: {
+                [app.keywords.PARTNER_ID]: 1
+            }
+        });
     }
 
     _onUserListGame(data) {
-        this.gameList = this._filterClientSupportedGames(data[app.keywords.SERVICE_CHILD_CODE_ARRAY]);
-        this._initItemListGame();
+        let gameList = this._filterClientSupportedGames(data[app.keywords.SERVICE_CHILD_CODE_ARRAY]);
+        let removedGames = app.context.gameList.length == 0 ? [] : ArrayUtils.removeAll([...gameList], app.context.gameList);
+
+        if(removedGames.length < gameList.length){
+            app.context.gameList = gameList;
+            this._initItemListGame();
+        }
+
         app.buddyManager.sendInitBuddy()
     }
 
     _filterClientSupportedGames(gameCodes) {
-        return ArrayUtils.isEmpty(gameCodes) ? [] : gameCodes.filter(gc => {
-            return gc == app.const.gameCode.PHOM ||
-                gc == app.const.gameCode.TLMNDL ||
-                gc == app.const.gameCode.XAM ||
-                gc == app.const.gameCode.BA_CAY ||
-                gc == app.const.gameCode.XOC_DIA
-        });
+        return ArrayUtils.isEmpty(gameCodes) ? [] : gameCodes.filter(gc => app.config.supportedGames.indexOf(gc) >= 0);
     }
 
     _initItemListGame() {
@@ -112,7 +122,7 @@ export default class DashboardScene extends BaseScene {
 
         var node = null;
         let count = 0;
-        app.async.mapSeries(this.gameList, (gc, cb) => {
+        app.async.mapSeries(app.context.gameList, (gc, cb) => {
             if (count > 8 && !indicator) {
                 var indicator = this.pageView.indicator.node;
                 indicator && indicator.opacity < 255 && (indicator.opacity = 255);
@@ -139,7 +149,7 @@ export default class DashboardScene extends BaseScene {
                     node && node.addChild(nodeItem);
                     count++;
                 }
-                if (count == this.gameList.length)
+                if (count == app.context.gameList.length)
                     this.hideLoading();
 
                 cb(); // next ->

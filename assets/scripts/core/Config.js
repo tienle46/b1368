@@ -30,10 +30,40 @@ app.config.fbScope = 'public_profile,email';
 
 app.config.fanpage = `https://www.messenger.com/t/${app.config.fbAppId}`;
 app.config.supportHotline = '0983.369.898';
-
 app.config.defaultMinBalanceJoinGameRoomMultiple = 10
+app.config.defaultAvatarUrl = ""
+
+app.config.supportedGames = [
+    app.const.gameCode.PHOM,
+    app.const.gameCode.TLMNDL,
+    app.const.gameCode.XAM,
+    app.const.gameCode.BA_CAY,
+    app.const.gameCode.XOC_DIA,
+]
+
 app.config.listTableGroupFilters = [
     {min: 0, max: 1000},
     {min: 0, max: 10000},
     {min: 0, max: 2000000000},
 ]
+
+app.config.gameGroups = {
+    [app.const.gameCode.PHOM]: `${app.const.gameCode.PHOM}01`,
+    [app.const.gameCode.TLMNDL]: `${app.const.gameCode.TLMNDL}01`,
+    [app.const.gameCode.XAM]: `${app.const.gameCode.XAM}01`,
+    [app.const.gameCode.BA_CAY]: `${app.const.gameCode.BA_CAY}01`,
+    [app.const.gameCode.XOC_DIA]: `${app.const.gameCode.XOC_DIA}01`,
+}
+
+
+app.config.parseConfigData = function(configData = {}) {
+    app.config.fanpage = configData.fanpage || app.config.fanpage
+    app.config.supportHotline = configData.supportHotline || app.config.supportHotline
+    app.config.listTableGroupFilters = configData.listTableGroupFilters || app.config.listTableGroupFilters
+    app.config.fbAppId = configData.fbAppId || app.config.fbAppId
+    app.config.defaultAvatarUrl = configData.defaultAvatarUrl || app.config.defaultAvatarUrl
+    app.config.gameGroups = configData.gameGroups || app.config.gameGroups
+
+    const Events = require('Events');
+    app.system.emit(Events.CLIENT_CONFIG_CHANGED)
+}

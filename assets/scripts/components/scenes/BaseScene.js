@@ -110,26 +110,8 @@ export default class BaseScene extends Actor {
         this.progress && this.progress.hide();
     }
 
-    // // show popup
-    // addPopup(string = null) {
-    //     if (utils.isEmpty(string)) {
-    //         return;
-    //     }
-    //
-    //     if (this.popUp) {
-    //         this.hideLoading();
-    //         app.system.hideLoader();
-    //         var popupBase = new cc.instantiate(this.popUp);
-    //         popupBase.position = cc.p(0, 0);
-    //         popupBase.getComponent(BasePopup).setContent(string);
-    //         this.node.addChild(popupBase);
-    //     } else {
-    //         this._addToPendingAddPopup(string);
-    //     }
-    // }
-
     changeScene(name, onLaunched) {
-        // this.showLoading();
+        this.showLoading()
         app.system.loadScene(name, onLaunched);
     }
 
@@ -181,7 +163,6 @@ export default class BaseScene extends Actor {
             return;
 
         let purchases = [];
-        cc.log('\nIAP: receipts', JSON.stringify(receipts));
 
         receipts.forEach(receipt => {
             let item;
@@ -192,7 +173,6 @@ export default class BaseScene extends Actor {
             }
             purchases.push(item);
         });
-        cc.log('\nIAP: purchases', JSON.stringify(receipts));
 
         let sendObj = {
             cmd: app.env.isIOS() ? app.commands.IOS_IN_APP_PURCHASE : app.commands.ANDROID_IN_APP_PURCHASE,
@@ -201,13 +181,9 @@ export default class BaseScene extends Actor {
             }
         };
 
-        cc.log('\nIAP: sendObj', JSON.stringify(sendObj));
-
         app.env.isAndroid() && (sendObj.data.resubmit = true);
 
         app.system.showLoader(app.res.string('re_sending_item_iap'), 60);
         app.service.send(sendObj);
     }
 }
-
-//asign
