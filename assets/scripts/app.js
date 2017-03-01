@@ -5,7 +5,8 @@
 'use strict';
 
 var app = module.exports;
-var MESSAGES = require('GameErrorMessage');
+var SFSErrorMessages = require('SFSErrorMessages');
+var RoomErrorMessages = require('RoomErrorMessages');
 var _ = require('lodash');
 
 app.LANG = "vi";
@@ -144,11 +145,42 @@ app.createComponent = (classNameOrInstance, extendClass = undefined, ...args) =>
     return cc.Class(instance);
 };
 
-app.getMessageFromServer = (error) => {
-    let { errorCode, errorMessage } = error;
+app.getRoomErrorMessage = (error) => {
 
-    let M = MESSAGES[app.LANG];
-    return (typeof error === 'object') ? (typeof M[errorCode] === 'object') ? M[errorCode][errorMessage] : M[errorCode] : M[error];
+    console.warn('getRoomErrorMessage: ', error);
+
+    let message, errorCode = "", errorMessage = "";
+    let messages = SFSErrorMessages[app.LANG];
+
+    if(typeof error == 'string'){
+        errorCode = error;
+        message = messages[error];
+    }else{
+        errorCode = error.errorCode
+        errorMessage = error.errorMessage
+        message = messages[errorCode];
+    }
+}
+
+app.getMessageFromServer = (error) => {
+
+    let message, errorCode = "", errorMessage = "";
+    let messages = SFSErrorMessages[app.LANG];
+
+    if(typeof error == 'string'){
+        errorCode = error;
+        message = messages[error];
+    }else{
+        errorCode = error.errorCode
+        errorMessage = error.errorMessage
+        if(typeof messages[errorCode] === 'object'){
+            message = messages[errorCode][errorMessage];
+        }else{
+            message = messages[errorCode];
+        }
+    }
+
+    return message || app.res.string('error_undefined', {error: `${errorCode}:${errorMessage}`})
 };
 
 /* INIT GAME */

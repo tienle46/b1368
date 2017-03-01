@@ -33,6 +33,7 @@ export default {
     error_balance_is_not_enough: 'Số dư trong tài khoản không đủ, cần tối thiểu {{amount}} trong ngân hàng.',
     error_system_not_support_join_room_have_password: 'Hệ thống chưa hỗ trợ vào bàn chơi có mật khẩu',
     error_undefined_please_try_again: 'Lỗi chưa xác định, vui lòng thử lại!',
+    error_undefined: 'Lỗi {{error}} chưa được xác định. Vui lòng gọi hỗ trợ!',
 
     get_transfer_success: 'Bạn đã rút thành công {{amount}} chip, chúc bạn chơi game vui vẻ.',
     transfer_successfully: 'Chuyển thành công {{amount}} chip tới {{username}}.',

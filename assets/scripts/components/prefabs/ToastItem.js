@@ -22,7 +22,7 @@ export default class ToastItem extends Component {
 
     onLoad() {
 
-        debug("onload toast: ", this.message)
+        console.warn("onload toast: ", this.message)
 
         let textView = this.textViewNode.getComponent('TextView');
         textView.setText(this.message || "");

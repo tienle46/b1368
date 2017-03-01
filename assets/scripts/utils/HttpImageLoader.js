@@ -15,11 +15,8 @@ class HttpImageLoader {
 
     loadDefaultAvatar(avatarSprite){
         if(!avatarSprite) return;
-
         let spriteFrame = Utils.isEmpty(app.config.defaultAvatarUrl) ? this._loadDefaultAvatarLocal() : this.loadImage(app.config.defaultAvatarUrl)
         spriteFrame && (avatarSprite.spriteFrame = spriteFrame)
-
-        console.log('avatarSpriteL: ', avatarSprite);
     }
 
     _loadDefaultAvatarLocal(){

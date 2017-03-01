@@ -529,7 +529,7 @@ class Service {
         if (event.errorCode) {
             this._hasCallback(SFS2X.SFSEvent.ROOM_JOIN_ERROR) && this._callCallbackAsync(SFS2X.SFSEvent.ROOM_JOIN_ERROR, event);
             app.system.hideLoader()
-            app.system.error(app.getMessageFromServer(event) || event.errorMessage);
+            app.system.error(app.getRoomErrorMessage(event) || event.errorMessage);
         }
     }
 
@@ -544,7 +544,7 @@ class Service {
             this._callCallbackAsync(app.commands.USER_CREATE_ROOM, event);
             this._deleteCallbackObject(app.commands.USER_CREATE_ROOM);
             app.system.hideLoader();
-            app.system.error(app.getMessageFromServer(event) || event.errorMessage);
+            app.system.error(app.getRoomErrorMessage(event) || event.errorMessage);
         }
     }
 

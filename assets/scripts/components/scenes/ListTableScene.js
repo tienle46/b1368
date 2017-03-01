@@ -261,7 +261,7 @@ export default class ListTableScene extends BaseScene {
         } else {
             if (event.errorCode) {
                 this.hideLoading()
-                app.system.error(app.getMessageFromServer(event));
+                app.system.error(app.getRoomErrorMessage(event));
             }
         }
     }
@@ -406,15 +406,13 @@ export default class ListTableScene extends BaseScene {
                 [app.keywords.IS_SPECTATOR]: false
             }
         });
-
-        console.log('data: ', data);
     }
 
     _onUserCreateRoom(data) {
         this.__isCreatingRoom = false;
         if (data.errorCode) {
             this.hideLoading()
-            app.system.error(app.getMessageFromServer(data));
+            app.system.error(app.getRoomErrorMessage(data));
         }
     }
 

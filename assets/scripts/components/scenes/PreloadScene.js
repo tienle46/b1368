@@ -30,12 +30,10 @@ class PreloadScene extends Component {
 
         cc.game.on(cc.game.EVENT_HIDE, function() {
             app.system.isInactive = true;
-            console.warn('cc.game.EVENT_HIDE', new Date().toISOString());
         });
 
         cc.game.on(cc.game.EVENT_SHOW, function() {
             app.system.isInactive = false;
-            console.warn('cc.game.EVENT_SHOW', new Date().toISOString());
         });
     }
 

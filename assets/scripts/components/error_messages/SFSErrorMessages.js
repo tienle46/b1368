@@ -1,5 +1,5 @@
-const LOGIN_ERROR_MESSAGES = {};
-LOGIN_ERROR_MESSAGES["vi"] = {
+
+const LOGIN_ERROR_MESSAGES_VI = {
     "0": "Phiên bản hiện tại của bạn đã quá cũ",
     "1": "Hệ thống đang bảo trì, mời bạn quay lại sau",
     "2": "Sai tên đăng nhập hoặc mật khẩu",
@@ -14,9 +14,10 @@ LOGIN_ERROR_MESSAGES["vi"] = {
     "11": "Bạn đang bị treo nick, mời bạn quay lại sau",
     "28": {
         "0": "Ứng dụng chưa được đăng ký với nhà phát hành game",
+        "2": "Tài khoản đã bị BAN khỏi hệ thống",
         "100": "Lỗi kết nối với hệ thống",
         "101": "Không thể đặng nhập vào hệ thống",
-        "102": "Không thể đăng ký tài khoảng với hệ thống",
+        "102": "Không thể đăng ký tài khoản với hệ thống",
         "103": "Không thể tìm thấy thông tin tài khoản trong hệ thống",
         "104": "Lỗi hệ thống"
     },
@@ -26,4 +27,8 @@ LOGIN_ERROR_MESSAGES["vi"] = {
     "LOGIN_ERROR_CAPTCHA_NOT_VALID": "Mã xác nhận không đúng, vui lòng nhập lại."
 };
 
-module.exports = LOGIN_ERROR_MESSAGES;
+const SFSErrorMessages = {
+    vi: LOGIN_ERROR_MESSAGES_VI
+}
+
+export default SFSErrorMessages;

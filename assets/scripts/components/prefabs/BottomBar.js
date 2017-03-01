@@ -37,7 +37,7 @@ class BottomBar extends DialogActor {
     start() {
         super.start();
         this._requestMessageNotification(app.context.unreadMessageBuddies.length);
-        HttpImageLoader.loadDefaultAvatar(this.avatarSpriteNode.getComponent(cc.Sprite));
+        this.avatarSpriteNode && HttpImageLoader.loadDefaultAvatar(this.avatarSpriteNode.getComponent(cc.Sprite));
     }
 
     _addGlobalListener() {

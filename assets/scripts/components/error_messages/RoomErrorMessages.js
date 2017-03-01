@@ -7,7 +7,7 @@ ROOM_ERROR_MESSAGE["vi"] = {
     "16": "Phòng đã đầy, không thể tạo thêm bàn chơi",
     "17": "Bạn đã tạo quá số phòng cho phép",
     "18": "Tạo phòng thất bại",
-    "28": "Số tiền của bạn không đủ",
+    "28": "Lỗi không xác định",
 };
 
 module.exports = ROOM_ERROR_MESSAGE;
