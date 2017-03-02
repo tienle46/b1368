@@ -12,7 +12,7 @@ export default class ScrollMessagePopup extends MessagePopup {
         super();
 
         this.messageLabel = {
-            default : null,
+            default: null,
             type: cc.Label
         };
     }
@@ -29,8 +29,7 @@ export default class ScrollMessagePopup extends MessagePopup {
         currentPopup = null;
     }
 
-    static getPrefab(){
-    }
+    static getPrefab() {}
 
     static show(parentNode, textOrRequestData, denyCb, acceptCb) {
 
@@ -44,7 +43,7 @@ export default class ScrollMessagePopup extends MessagePopup {
             messagePopup.onShow(...args);
 
             currentPopup = messagePopup;
-
+            args = [];
         }).catch((error) => { console.error('error: ', error) });
 
     }

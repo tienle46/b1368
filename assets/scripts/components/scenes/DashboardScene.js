@@ -30,7 +30,6 @@ export default class DashboardScene extends BaseScene {
 
     onDestroy() {
         super.onDestroy();
-        this.gameList.length = 0;
     }
 
     start() {

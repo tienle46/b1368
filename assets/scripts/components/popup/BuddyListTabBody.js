@@ -17,8 +17,8 @@ class BuddyListTabBody extends PopupTabBody {
 
             leftBuddyListComponent: cc.Node,
             rightBuddyListComponent: cc.Node,
-            filterEditBoxNode:  cc.EditBox,
-            addBuddyEditBox:  cc.EditBox,
+            filterEditBoxNode: cc.EditBox,
+            addBuddyEditBox: cc.EditBox,
             buddyItemPrefab: cc.Prefab,
             preButton: cc.Button,
             nextButton: cc.Button,
@@ -44,8 +44,8 @@ class BuddyListTabBody extends PopupTabBody {
         this.transferMoneyComponent = null;
     }
 
-    addNewBuddy(){
-        app.service.send({cmd: app.commands.REQUEST_BUDDY, data: {buddyName: this.addBuddyEditBox.string}});
+    addNewBuddy() {
+        app.service.send({ cmd: app.commands.REQUEST_BUDDY, data: { buddyName: this.addBuddyEditBox.string } });
     }
 
     loadData() {
@@ -53,9 +53,9 @@ class BuddyListTabBody extends PopupTabBody {
         return false;
     }
 
-    onDataChanged({balances = [], buddyNames = []} = {}) {
+    onDataChanged({ balances = [], buddyNames = [] } = {}) {
 
-        if(buddyNames.length == 0) return;
+        if (buddyNames.length == 0) return;
 
         buddyNames.forEach((buddyName, index) => {
             let buddy = app.buddyManager.getBuddyByName(buddyName);
@@ -84,9 +84,14 @@ class BuddyListTabBody extends PopupTabBody {
         this._hideTransferMoneyComponent();
     }
 
-    onDisable(){
+    onDisable() {
         super.onDisable();
         this.hideMenu();
+    }
+
+    onDestroy() {
+        super.onDestroy();
+        window.release(this.currentBuddyItems);
     }
 
     _addGlobalListener() {
@@ -107,40 +112,40 @@ class BuddyListTabBody extends PopupTabBody {
         app.system.removeListener(Events.ON_BUDDY_ONLINE_STATE_CHANGED, this._onBuddyOnlineStateChange, this);
     }
 
-    _onBuddyOnlineStateChange(isOnline, isItMe, buddy){
-        if(!isItMe){
+    _onBuddyOnlineStateChange(isOnline, isItMe, buddy) {
+        if (!isItMe) {
             let buddyItem = this._findCurrentBuddyItem(buddy);
             buddyItem && buddyItem.onBuddyChanged();
-        }else{
+        } else {
 
         }
 
     }
 
-    _onBuddyBlockStateChange(buddy){
+    _onBuddyBlockStateChange(buddy) {
         let buddyItem = this._findCurrentBuddyItem(buddy);
         buddyItem && buddyItem.onBuddyChanged();
         // buddyItem && buddyItem.setBlocked(buddy.isBlocked());
     }
 
-    _onBuddyListUpdate(){
+    _onBuddyListUpdate() {
         this.onFilterChanged();
     }
 
-    _onBuddyChangePlayingGame(isItMe, buddy){
+    _onBuddyChangePlayingGame(isItMe, buddy) {
 
-        if(!isItMe){
+        if (!isItMe) {
             let buddyItem = this._findCurrentBuddyItem(buddy);
             buddyItem && buddyItem.onBuddyChanged();
         }
     }
 
-    _findCurrentBuddyItem(buddy){
+    _findCurrentBuddyItem(buddy) {
         let findBuddyItem;
 
-        if(buddy){
+        if (buddy) {
             this.currentBuddyItems.some(buddyItem => {
-                if(buddyItem.buddy.name == buddy.name){
+                if (buddyItem.buddy.name == buddy.name) {
                     findBuddyItem = buddyItem;
                     return true;
                 }
@@ -152,11 +157,11 @@ class BuddyListTabBody extends PopupTabBody {
 
     loadBuddyInfo(buddyName) {
         let buddyNames = app.buddyManager.getAllBuddy().map(buddy => buddy.name);
-        app.service.send({cmd: app.commands.GET_BUDDY_INFO, data: {buddyNames}});
+        app.service.send({ cmd: app.commands.GET_BUDDY_INFO, data: { buddyNames } });
     }
 
-    _onBuddyDetailInfoResponse({balances = [], buddyNames= []} = {}) {
-        this.setLoadedData({balances, buddyNames})
+    _onBuddyDetailInfoResponse({ balances = [], buddyNames = [] } = {}) {
+        this.setLoadedData({ balances, buddyNames })
     }
 
     onFilterChanged() {
@@ -166,23 +171,23 @@ class BuddyListTabBody extends PopupTabBody {
             this.currentPage = 1;
             let filteredBuddyList = app.buddyManager.filterBuddies(filterStr);
             this.setBuddyList(filteredBuddyList, true);
-        }else{
+        } else {
             this.setBuddyList(app.buddyManager.buddies, true);
         }
     }
 
     setBuddyList(buddies = [], renderImmediately = false) {
-        if(this.filterOnlineToggle.isChecked){
+        if (this.filterOnlineToggle.isChecked) {
             this.filteredBuddies = buddies.filter(buddy => buddy.isOnline());
-        }else{
+        } else {
             this.filteredBuddies = buddies;
         }
 
         let buddyItemPerPage = this.itemPerList * 2;
-        this.totalPage = parseInt(this.filteredBuddies.length % buddyItemPerPage == 0
-            ? this.filteredBuddies.length / buddyItemPerPage : this.filteredBuddies.length / buddyItemPerPage + 1);
+        this.totalPage = parseInt(this.filteredBuddies.length % buddyItemPerPage == 0 ?
+            this.filteredBuddies.length / buddyItemPerPage : this.filteredBuddies.length / buddyItemPerPage + 1);
 
-        if(this.currentPage > this.totalPage){
+        if (this.currentPage > this.totalPage) {
             this.currentPage = this.totalPage;
         }
 
@@ -191,7 +196,7 @@ class BuddyListTabBody extends PopupTabBody {
         renderImmediately && this.renderBuddies(this.currentPage);
     }
 
-    _updatePagingButton(){
+    _updatePagingButton() {
         let nextPage = this.currentPage + 1;
 
         if (nextPage > 1) {
@@ -238,7 +243,7 @@ class BuddyListTabBody extends PopupTabBody {
                     }
                     this.currentBuddyItems.push(buddyItem);
                 });
-        }else{
+        } else {
             this.leftBuddyListComponent.removeAllChildren(true);
         }
     }
@@ -280,7 +285,7 @@ class BuddyListTabBody extends PopupTabBody {
         this.leftBuddyListComponent.removeAllChildren(true);
     }
 
-    hideMenu(){
+    hideMenu() {
         utils.setVisible(this.buddyMenu, false);
     }
 
@@ -292,15 +297,15 @@ class BuddyListTabBody extends PopupTabBody {
         buddyItem.setPopup(this);
         buddyItem.setBuddyMenu(this.buddyMenu);
         buddyItem.setClickChatListener((buddy) => {
-            this.popup && this.popup.changeToChatTab({buddy})
-            // if(buddy.isOnline()){
-            //     this.popup && this.popup.changeToChatTab({buddy})
-            // }else{
-            //     app.system.showToast(app.res.string("buddy_chat_with_online_buddy_only"));
-            // }
+            this.popup && this.popup.changeToChatTab({ buddy })
+                // if(buddy.isOnline()){
+                //     this.popup && this.popup.changeToChatTab({buddy})
+                // }else{
+                //     app.system.showToast(app.res.string("buddy_chat_with_online_buddy_only"));
+                // }
         });
         buddyItem.setClickTransferListener((buddy) => {
-            if(this.transferMoneyComponent){
+            if (this.transferMoneyComponent) {
                 this.transferMoneyComponent.setReceiverBuddyName(buddy.name)
                 utils.setVisible(this.transferMoneyNode, true);
                 utils.setVisible(this.bodyNode, false);
@@ -310,8 +315,8 @@ class BuddyListTabBody extends PopupTabBody {
         return buddyItem;
     }
 
-    _hideTransferMoneyComponent(){
-        if(this.transferMoneyComponent){
+    _hideTransferMoneyComponent() {
+        if (this.transferMoneyComponent) {
             utils.setVisible(this.transferMoneyNode, false);
             utils.setVisible(this.bodyNode, true);
         }

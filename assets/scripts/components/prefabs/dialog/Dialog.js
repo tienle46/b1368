@@ -31,8 +31,7 @@ export default class Dialog extends Component {
 
     onDestroy() {
         super.onDestroy();
-        this.addedNodes = null;
-        this.sharedData = null;
+        window.free(this.addedNodes, this.sharedData)
     }
 
     onCloseBtnClick() {

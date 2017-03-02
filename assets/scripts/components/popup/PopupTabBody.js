@@ -22,50 +22,56 @@ export default class PopupTabBody extends Actor {
         /**
          * @type {cc.Node}
          */
-        this.emptyNode= null,
-        this._doneCb = null;
+        this.emptyNode = null,
+            this._doneCb = null;
         this._data = null;
         this.dataLoaded = false;
         this.popup = null;
         this._isTabEnable = false;
     }
 
-    onEnable(){
+    onEnable() {
         super.onEnable();
 
         this._isTabEnable = true;
 
-        if(!this.loadData()){
+        if (!this.loadData()) {
             this.dataLoaded = true;
         }
 
-        if(this.dataLoaded){
+        if (this.dataLoaded) {
             this._renderData(this._data);
         }
     }
 
-    onDisable(){
+    onDisable() {
         super.onDisable();
 
         this._isTabEnable = false;
     }
 
-    getPopup(){
+    onDestroy() {
+        super.onDestroy();
+
+        window.free(this._doneCb, this._data);
+    }
+
+    getPopup() {
         return this.popup;
     }
 
-    setPopup(popup){
+    setPopup(popup) {
         this.popup = popup;
     }
 
-    init({data= null, loadingProgress= null, emptyNode= null, didLoadDataCb = null} = {}){
+    init({ data = null, loadingProgress = null, emptyNode = null, didLoadDataCb = null } = {}) {
         this._data = data;
         this.progress = loadingProgress;
         this.emptyNode = emptyNode;
         this._doneCb = didLoadDataCb;
     }
 
-    setLoadingData(loadingData = true){
+    setLoadingData(loadingData = true) {
         this.dataLoaded = !loadingData;
     }
 
@@ -74,11 +80,11 @@ export default class PopupTabBody extends Actor {
      * @abstract
      * @return true if data is loading, false if otherwise
      */
-    loadData(){
+    loadData() {
         return false;
     }
 
-    showLoadingProgress(){
+    showLoadingProgress() {
         this.progress.show(app.const.LOADING_SHORT_DURATION, () => {
             this.progress && this.progress.hide();
             this._showEmptyData();
@@ -89,28 +95,28 @@ export default class PopupTabBody extends Actor {
      * Update UI data
      * @abstract
      */
-    onDataChanged(data){
-        if(!this._isTabEnable){
-            this._data = {...this._data, ...data};
+    onDataChanged(data) {
+        if (!this._isTabEnable) {
+            this._data = {...this._data, ...data };
         }
 
         return this._isTabEnable;
     }
 
-    setLoadedData(data, renderImmediately = true){
+    setLoadedData(data, renderImmediately = true) {
         this._hideLoading();
         this.dataLoaded = true;
-        this._data = {...this._data, ...data};
+        this._data = {...this._data, ...data };
         renderImmediately && this._renderData(this._data);
     }
 
-    _renderData(data){
+    _renderData(data) {
         this.onDataChanged(data);
         this._showTabBody();
         this._doneCb && this._doneCb();
     }
 
-    _showEmptyData(){
+    _showEmptyData() {
         this.emptyNode && (this.emptyNode.active = true);
         this._doneCb && this._doneCb();
     }
@@ -121,7 +127,7 @@ export default class PopupTabBody extends Actor {
         this._doneCb && this._doneCb();
     }
 
-    _hideLoading(){
+    _hideLoading() {
         this.progress && this.progress.hide();
     }
 }

@@ -9,7 +9,7 @@ import CCUtils from 'CCUtils';
 import HttpImageLoader from 'HttpImageLoader';
 
 class BuddyItem extends PopupTabBody {
-    
+
     constructor() {
         super();
 
@@ -33,34 +33,34 @@ class BuddyItem extends PopupTabBody {
         this.name = "";
         this.isLoaded = false;
         this.buddy = null,
-        this.buddyMenu = null,
-        this.onClickChatListener = null;
+            this.buddyMenu = null,
+            this.onClickChatListener = null;
         this.onClickTransferListener = null;
         this.locked = false;
     }
 
-    onLoad(){
+    onLoad() {
         super.onLoad();
     }
 
-    onEnable(){
+    onEnable() {
         super.onEnable();
         this.isLoaded = true;
         this.playingGameLabel.string = app.res.string('game_playing_game');
         this.currencyNameLabel.string = app.res.string('currency_name');
 
-        if(this.buddy){
+        if (this.buddy) {
             this.onBuddyChanged();
         }
     }
 
-    start(){
+    start() {
         super.start()
         HttpImageLoader.loadDefaultAvatar(this.avatarSpriteNode.getComponent(cc.Sprite));
     }
 
-    onBuddyChanged(){
-        if(this.buddy) {
+    onBuddyChanged() {
+        if (this.buddy) {
             this.nameLabel.string = this.buddy.name;
             this.setBlocked(this.buddy.isBlocked())
             this.setOnlineState(this.buddy.isOnline());
@@ -70,76 +70,80 @@ class BuddyItem extends PopupTabBody {
         }
     }
 
-    setBuddyMenu(buddyMenu){
+    onDestroy() {
+        window.free(this.buddy, this.buddyMenu, this.onClickChatListener, this.onClickTransferListener);
+    }
+
+    setBuddyMenu(buddyMenu) {
         this.buddyMenu = buddyMenu;
     }
 
-    setPopup(popup){
+    setPopup(popup) {
         this.popup = popup;
     }
 
-    setOnlineState(online = false){
+    setOnlineState(online = false) {
         this.online = online;
-        if(!this.locked){
+        if (!this.locked) {
             utils.setVisible(this.onlineNode, online);
             utils.setVisible(this.offlineNode, !online);
         }
     }
 
-    setBlocked(locked){
+    setBlocked(locked) {
         this.locked = locked;
         utils.setVisible(this.lockedNode, locked);
-        if(locked){
+        if (locked) {
             utils.setVisible(this.onlineNode, false);
             utils.setVisible(this.offlineNode, false);
-        }else{
+        } else {
             this.setOnlineState(this.online);
         }
     }
 
-    setBuddy(buddy){
+    setBuddy(buddy) {
         this.buddy = buddy;
-        if(this.isLoaded){
+        if (this.isLoaded) {
             this.onBuddyChanged();
         }
     }
 
-    setPlayingGame(gameRoomName){
+    setPlayingGame(gameRoomName) {
         let gameCode = gameRoomName && gameRoomName.length >= 3 ? gameRoomName.substr(0, 3) : undefined;
         let gameName = gameCode && app.res.gameName[gameCode];
         this.gameLabel.string = gameName || "";
 
-        if(gameName){
+        if (gameName) {
             this.playingGameNode.active = true;
-        }else{
+        } else {
             this.playingGameNode.active = false;
         }
     }
 
-    setBalance(balance = 0){
-        this.balanceLabel.string = `${balance}`
+    setBalance(balance = 0) {
+        this.balanceLabel.string = `${balance}`;
     }
 
-    onItemClicked(){
+    onItemClicked() {
         this._hideMenu();
     }
 
-    _hideMenu(){
+    _hideMenu() {
         this.buddyMenu && this.buddyMenu.hide();
     }
 
-    onClickChatButton(){
+    onClickChatButton() {
         this._hideMenu();
         this.onClickChatListener && this.onClickChatListener(this.buddy);
     }
 
-    onClickTransferButton(){
+    onClickTransferButton() {
         this._hideMenu();
         this.onClickTransferListener && this.onClickTransferListener(this.buddy);
     }
 
-    onClickEditButton(){
-        if(!this.popup) return;
+    onClickEditButton() {
+        if (!this.popup) return;
 
         let position = this.popup.node.convertToNodeSpaceAR(CCUtils.getWorldPosition(this.avatarNode));
         this.buddyMenu && this.buddyMenu.show(position, this.buddy, this.buddy.name);
@@ -147,11 +151,11 @@ class BuddyItem extends PopupTabBody {
         // app.system.info(app.res.string('coming_soon'));
     }
 
-    setClickChatListener(listener){
+    setClickChatListener(listener) {
         this.onClickChatListener = listener;
     }
 
-    setClickTransferListener(listener){
+    setClickTransferListener(listener) {
         this.onClickTransferListener = listener;
     }
 }

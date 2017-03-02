@@ -255,6 +255,10 @@ class BuddyChatTabBody extends PopupTabBody {
         super.onEnable();
     }
 
+    onDestroy() {
+        window.releaseEvents(chattingBuddyItems);
+    }
+
     _initChattingBuddyList(chattingBuddies) {
         this.chattingBuddyList.removeAllChildren(true);
         this.chattingBuddyItems.splice(0, this.chattingBuddyItems.length)

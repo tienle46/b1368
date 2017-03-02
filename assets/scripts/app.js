@@ -148,48 +148,46 @@ app.createComponent = (classNameOrInstance, extendClass = undefined, ...args) =>
 };
 
 app.getRoomErrorMessage = (error) => {
-
     console.warn('getRoomErrorMessage: ', error);
 
-    let message, errorCode = "", errorMessage = "";
-    let messages = SFSErrorMessages[app.LANG];
+    let message, errorCode = "",
+        errorMessage = "",
+        messages = SFSErrorMessages[app.LANG];
 
-    if(typeof error == 'string'){
+    if (typeof error == 'string') {
         errorCode = error;
         message = messages[error];
-    }else{
-        errorCode = error.errorCode
-        errorMessage = error.errorMessage
+    } else {
+        errorCode = error.errorCode;
+        errorMessage = error.errorMessage;
         message = messages[errorCode];
     }
-}
+};
 
 app.getMessageFromServer = (error) => {
+    let message, errorCode = "",
+        errorMessage = "",
+        messages = SFSErrorMessages[app.LANG];
 
-    let message, errorCode = "", errorMessage = "";
-    let messages = SFSErrorMessages[app.LANG];
-
-    if(typeof error == 'string'){
+    if (typeof error == 'string') {
         errorCode = error;
         message = messages[error];
-    }else{
-        errorCode = error.errorCode
-        errorMessage = error.errorMessage
-        if(typeof messages[errorCode] === 'object'){
+    } else {
+        errorCode = error.errorCode;
+        errorMessage = error.errorMessage;
+        if (typeof messages[errorCode] === 'object') {
             message = messages[errorCode][errorMessage];
-        }else{
+        } else {
             message = messages[errorCode];
         }
     }
 
-    return message || app.res.string('error_undefined', {error: `${errorCode}:${errorMessage}`})
+    return message || app.res.string('error_undefined', { error: `${errorCode}:${errorMessage}` });
 };
 
-/* INIT GAME */
-(function _setupGame() {
+(function() {
     window.free = function free(...args) {
         [...args].forEach(arg => {
-            console.debug('args', arg);
             if (arg instanceof Array) {
                 arg = [];
                 return;
@@ -199,25 +197,19 @@ app.getMessageFromServer = (error) => {
         });
     };
 
-    require('PreLoader');
-    app.service = require("Service");
-    require('Env')(app);
-    app.system = require("System");
-    /**
-     * @type {Context}
-     */
-    app.context = require("Context");
-    app.event = require("Events");
+    // release array
+    window.release = function release(array, isRecursive = false) {
+        if (!app._.isArray(array))
+            return;
 
-    // setup game environment by platform
-    app.env.__setupEnvironment();
-})();
+        if (isRecursive) {
+            array.map(a => {
+                app._.isArray(a) && window.release(a, isRecursive);
+            });
+        }
+        array.length = 0;
+    };
 
-function test() {
-    console.debug('test', 'test');
-}
-
-(function() {
     window.log = function log(...args) {
         console.log(...args);
     };
@@ -241,6 +233,22 @@ function test() {
     window.onNativePostAction = function(jsonString) {
         window.log("---> onNativePostAction", jsonString);
     };
+
+    /* INIT GAME */
+    (function _setupGame() {
+        require('PreLoader');
+        app.service = require("Service");
+        require('Env')(app);
+        app.system = require("System");
+        /**
+         * @type {Context}
+         */
+        app.context = require("Context");
+        app.event = require("Events");
+
+        // setup game environment by platform
+        app.env.__setupEnvironment();
+    })();
 
     window.app = app;
     window.game = app.game;

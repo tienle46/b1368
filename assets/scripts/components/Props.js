@@ -6,43 +6,48 @@ import app from 'app';
 import Component from 'Component';
 import CCUtils from 'CCUtils';
 
+let propAssets = {};
+let emotionAssets = {};
+
+let propAssetNames = [];
+let emotionAssetNames = [];
+
 const PROP_SAMPLE = 10;
 
 export default class Props extends Component {
 
     constructor() {
         super();
-
-        this.propAssets = {};
-        this.emotionAssets = {};
-
-        this.propAssetNames = [];
-        this.emotionAssetNames = [];
     }
 
     static loadAllPropAsset() {
         cc.loader.loadResDir('props/', cc.SpriteFrame, (err, assets) => {
             assets.forEach(asset => {
-                this.propAssetNames.push(asset.name);
-                this.propAssets[asset.name] = asset;
+                if (!cc.loader.isAutoRelease(asset))
+                    cc.loader.setAutoRelease(asset, true);
+
+                propAssetNames.push(asset.name);
+                propAssets[asset.name] = asset;
             });
         });
 
         cc.loader.loadResDir('emotions/', cc.SpriteFrame, (err, assets) => {
             assets.forEach(asset => {
-                this.emotionAssetNames.push(asset.name);
-                this.emotionAssets[asset.name] = asset;
+                if (!cc.loader.isAutoRelease(asset))
+                    cc.loader.setAutoRelease(asset, true);
+
+                emotionAssetNames.push(asset.name);
+                emotionAssets[asset.name] = asset;
             });
         });
     }
 
     static releaseAllPropAsset() {
+        Object.values(propAssets).forEach(asset => cc.loader.release(asset));
+        Object.values(emotionAssets).forEach(asset => cc.loader.release(asset));
 
-        Object.values(this.propAssets).forEach(asset => cc.loader.release(asset));
-        Object.values(this.emotionAssets).forEach(asset => cc.loader.release(asset));
-
-        this.propAssets = {};
-        this.emotionAssets = {};
+        window.free(propAssets, emotionAssets);
+        window.release([propAssetNames, emotionAssetNames], true);
     }
 
     static _playLoadedEmotion(atlas, node) {
@@ -64,7 +69,8 @@ export default class Props extends Component {
             animation.on('finished', () => {
                 animation.play('run');
                 animation.on('finished', () => {
-                    CCUtils.destroy(animatingNode);
+                    animatingNode.destroy();
+                    animatingNode.removeFromParent(true);
                 });
             });
 
@@ -73,8 +79,8 @@ export default class Props extends Component {
     }
 
     static playEmotion(name, node) {
-        if (this.emotionAssets.length > 0) {
-            let atlas = this.emotionAssets[name];
+        if (emotionAssets.length > 0) {
+            let atlas = emotionAssets[name];
             this._playLoadedEmotion(atlas, node);
         } else {
             cc.loader.loadRes(`emotions/${name}`, cc.SpriteAtlas, (err, atlas) => {
@@ -120,14 +126,14 @@ export default class Props extends Component {
             animation.addClip(clip);
             animation.play('run');
             animation.on('finished', () => {
-                CCUtils.destroy(animatingNode);
+                animatingNode.destroy();
+                animatingNode.removeFromParent(true);
                 finishCallback && finishCallback();
             });
+            window.free(config, finishCallback);
         });
 
         animatingNode.runAction(config.endPos ? cc.sequence(cc.moveTo(0.6, config.endPos), mainAction) : mainAction);
-        config = null;
-        finishCallback = null;
     }
 
     static playProp(prosName, config = {
@@ -136,14 +142,12 @@ export default class Props extends Component {
         endPos: null,
         sample: PROP_SAMPLE
     }, finishCallback) {
-        if (this.propAssets.length > 0) {
-            let atlas = this.propAssets[prosName];
+        if (propAssets.length > 0) {
+            let atlas = propAssets[prosName];
             this._playLoadedProp(atlas, config, finishCallback);
         } else {
-            this.playPropName(prosName, 'props', config.sample || PROP_SAMPLE, config.startPos, config.endPos, finishCallback);
+            this.playPropName(prosName, 'props', config.sample || PROP_SAMPLE, config.startPos, config.endPos, finishCallback)
         }
-        config = null;
-        finishCallback = null;
     }
 
     static playPropName(prosName, resPath, sample, startPos, endPos, finishCallback) {
@@ -160,7 +164,7 @@ export default class Props extends Component {
     }
 
     static playPropAtIndex(propIndex, startNode, endNode) {
-        let propName = this.propAssetNames[propIndex];
+        let propName = propAssetNames[propIndex];
         propName && this.playProp(propName, {
             startPos: CCUtils.getWorldPosition(startNode),
             endPos: CCUtils.getWorldPosition(endNode)

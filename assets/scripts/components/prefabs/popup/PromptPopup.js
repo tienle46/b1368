@@ -53,7 +53,7 @@ export default class PromptPopup extends Component {
                 this.onDenyBtnClick();
             }
         });
-        fn = null;
+        window.free(fn);
     }
 
     init(parent, initObject, title, edBox, hl) {

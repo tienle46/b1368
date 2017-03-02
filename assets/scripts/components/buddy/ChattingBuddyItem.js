@@ -8,7 +8,7 @@ import Component from 'Component';
 import HttpImageLoader from 'HttpImageLoader';
 
 class ChattingBuddyItem extends Component {
-    
+
     constructor() {
         super();
 
@@ -24,77 +24,81 @@ class ChattingBuddyItem extends Component {
             toggle: cc.Toggle
         }
 
-        this.selected = false;;
-        this.buddy = null,
+        this.selected = false;
+        this.buddy = null;
         this.onCheckedListener = null;
     }
 
-    onLoad(){
+    onLoad() {
         super.onLoad();
     }
 
-    setToggleGroup(toggleGroup){
+    setToggleGroup(toggleGroup) {
         this.toggle.toggleGroup = toggleGroup;
     }
 
-    onEnable(){
+    onEnable() {
         super.onEnable();
         this.isLoaded = true;
         this.onBuddyChanged();
     }
 
-    start(){
+    start() {
         super.start()
         HttpImageLoader.loadDefaultAvatar(this.avatarSpriteNode.getComponent(cc.Sprite));
     }
 
-    select(){
+    onDestroy() {
+        super.onDestroy();
+        window.free(this.buddy, this.onCheckedListener);
+    }
+
+    select() {
         this.toggle.check();
     }
 
-    onReadMessage(){
+    onReadMessage() {
         utils.setVisible(this.newMessageCountNode, false);
-        this.newMessageCountLabel.string = ''
+        this.newMessageCountLabel.string = '';
         this.buddy && app.context.removeUnreadMessageBuddies(this.buddy.name);
     }
 
-    isSelected(){
+    isSelected() {
         return this.toggle.isChecked;
     }
 
-    onSelected(){
+    onSelected() {
         this.onCheckedListener && this.onCheckedListener(this);
     }
 
-    onBuddyChanged(){
-
+    onBuddyChanged() {
         console.log('onBuddyChanged buddy: ', this.buddy);
 
-        if(this.buddy){
+        if (this.buddy) {
             this.nameLabel.string = this.buddy.name;
 
-            if(this.buddy.isOnline()){
+            if (this.buddy.isOnline()) {
                 utils.setVisible(this.onlineNode, true)
                 utils.setVisible(this.offlineNode, false)
-            }else{
+            } else {
                 utils.setVisible(this.onlineNode, false)
                 utils.setVisible(this.offlineNode, true)
             }
 
-            if(this.buddy.newMessageCount > 0){
+            if (this.buddy.newMessageCount > 0) {
                 utils.setVisible(this.newMessageCountNode, true);
-                this.newMessageCountLabel.string = `${this.buddy.newMessageCount}`
-            }else{
+                this.newMessageCountLabel.string = `${this.buddy.newMessageCount}`;
+            } else {
                 this.onReadMessage();
             }
         }
     }
 
-    setOnCheckedListener(listener){
+    setOnCheckedListener(listener) {
         this.onCheckedListener = listener;
     }
 
-    setBuddy(buddy){
+    setBuddy(buddy) {
         this.buddy = buddy;
     }
 }

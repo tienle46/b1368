@@ -53,7 +53,6 @@ export default class TimerRub {
         this.state = 3;
         timeout && clearTimeout(timeout);
         var timeout = null;
-        timeout = null;
         timeout = setTimeout(this.timeoutCallback.bind(this), this.remaining);
     }
 

@@ -77,8 +77,7 @@ export default class MessagePopup extends Component {
 
     onDestroy() {
         super.onDestroy();
-        this.denyCb = null;
-        this.acceptCb = null;
+        window.free(this.denyCb, this.acceptCb);
     }
 
     setMessage(message = "") {
@@ -153,7 +152,6 @@ export default class MessagePopup extends Component {
                 RubUtils.loadRes(`popup/${componentName}`).then((prefab) => this._createAndShow(prefab, componentName, ...args));
             }
         }
-        args.length = 0;
         // /**
         //  * Preload this prefab, don't need to load dynamic it anymore
         //  */
@@ -175,6 +173,7 @@ export default class MessagePopup extends Component {
         let messagePopupNode = cc.instantiate(prefab);
         let messagePopup = messagePopupNode.getComponent(`${componentName}`);
         messagePopup.onShow(...args);
+        window.free(...args);
         currentPopup = messagePopup;
     }
 }

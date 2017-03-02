@@ -101,11 +101,11 @@ export default class GameScene extends BaseScene {
     }
 
     _onPlayerChatMessage(sender, message) {
-        if(!this.gameContext.messages){
+        if (!this.gameContext.messages) {
             this.gameContext.messages = [];
         }
-        this.gameContext.messages.push({sender: sender.name, message});
-        if(this.gameContext.messages.length > app.const.NUMBER_MESSAGES_KEEP_INGAME){
+        this.gameContext.messages.push({ sender: sender.name, message });
+        if (this.gameContext.messages.length > app.const.NUMBER_MESSAGES_KEEP_INGAME) {
             this.gameContext.messages.shift();
         }
     }
@@ -395,7 +395,7 @@ export default class GameScene extends BaseScene {
 
         this.emit(Events.ON_GAME_STATE_PRE_CHANGE, state, data, isJustJoined);
 
-        switch ( this.gameLocalState) {
+        switch (this.gameLocalState) {
             case app.const.game.state.BEGIN:
                 this._onGameStateBegin(data, isJustJoined, rejoining);
                 break;

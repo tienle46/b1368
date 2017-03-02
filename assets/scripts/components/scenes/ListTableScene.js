@@ -62,12 +62,8 @@ export default class ListTableScene extends BaseScene {
     onDestroy() {
         super.onDestroy();
         this._clearInterval();
-
-        this.items.length = 0;
-        // filter button conditional
-        this.filterCond = null;
-        // invitation popup showed
-        this.invitationShowed = false;
+        window.release(this.items);
+        window.free(this.filterCond);
     }
 
     _addGlobalListener() {
@@ -107,7 +103,7 @@ export default class ListTableScene extends BaseScene {
             data: {
                 [app.keywords.GAME_CODE]: gameCode
             }
-        })
+        });
     }
 
     onClickQuickJoinBtn() {
@@ -293,18 +289,22 @@ export default class ListTableScene extends BaseScene {
         this._initRoomsListFromData(data);
         /*Need to check exactly equal true or undefined*/
         if (app.context.requestRandomInvite === true || app.context.requestRandomInvite === undefined) {
-            setTimeout(() => this.node && app.service.send({ cmd: "randomInviteGame", data: {
-                    [app.keywords.GAME_CODE]: this.gameCode } }), 800);
+            setTimeout(() => this.node && app.service.send({
+                cmd: "randomInviteGame",
+                data: {
+                    [app.keywords.GAME_CODE]: this.gameCode
+                }
+            }), 500);
         }
     }
 
     _initRoomsListFromData(data = {}, addMore = false) {
-        let ids = data[app.keywords.ID] || []
-        let displayIds = data[app.keywords.ROOM_CUSTOM_ID] || []
-        let minBets = data[app.keywords.ROOM_MIN_BET] || []
-        let passwords = data[app.keywords.ROOM_PASSWORD] || []
-        let userCounts = data[app.keywords.ROOM_USER_COUNT] || []
-        let roomCapacitys = data[app.keywords.ROOM_USER_MAX] || []
+        let ids = data[app.keywords.ID] || [];
+        let displayIds = data[app.keywords.ROOM_CUSTOM_ID] || [];
+        let minBets = data[app.keywords.ROOM_MIN_BET] || [];
+        let passwords = data[app.keywords.ROOM_PASSWORD] || [];
+        let userCounts = data[app.keywords.ROOM_USER_COUNT] || [];
+        let roomCapacitys = data[app.keywords.ROOM_USER_MAX] || [];
 
         // room faker
         this.enableMinbets.forEach(minBet => {
@@ -314,11 +314,11 @@ export default class ListTableScene extends BaseScene {
             passwords.push(null);
             userCounts.push(0);
             roomCapacitys.push(app.const.game.maxPlayers[this.gameCode || 'default']);
-        })
+        });
 
         if (!addMore) {
             this.items.forEach(item => item.node && destroy(item.node));
-            this.items.length = 0;
+            window.release(this.items);
         }
 
         for (let i = 0; i < displayIds.length; i++) {
@@ -402,17 +402,6 @@ export default class ListTableScene extends BaseScene {
     }
 
     _createRoom(gameCode = null, minBet = 0, roomCapacity = 2, password = undefined) {
-        let sendObject = {
-            cmd: app.commands.USER_CREATE_ROOM,
-            data: {
-                [app.keywords.ROOM_BET]: minBet,
-                [app.keywords.GAME_CODE]: gameCode,
-                [app.keywords.ROOM_PASSWORD]: password,
-                [app.keywords.ROOM_CAPACITY]: roomCapacity
-            },
-            room: null
-        };
-
         this.__isCreatingRoom = true;
 
         /**
@@ -433,7 +422,7 @@ export default class ListTableScene extends BaseScene {
     _onUserCreateRoom(data) {
         this.__isCreatingRoom = false;
         if (data.errorCode) {
-            this.hideLoading()
+            this.hideLoading();
             app.system.error(app.getRoomErrorMessage(data));
         }
     }

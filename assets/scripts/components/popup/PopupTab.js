@@ -25,38 +25,44 @@ export default class PopupTab extends Component {
         this.onClickListener = null;
     }
 
-    onEnable(){
+    onEnable() {
         super.onEnable();
 
         this.toggle.toggleGroup = this.toggleGroup;
         this.titleLabel.string = this.title;
     }
 
-    setToggleGroup(toggleGroup){
+    onDestroy() {
+        super.onDestroy();
+
+        window.free(this.onClickListener);
+    }
+
+    setToggleGroup(toggleGroup) {
         this.toggleGroup = toggleGroup;
         return this;
     }
 
-    setTitle(title = app.res.string('system')){
+    setTitle(title = app.res.string('system')) {
         this.title = title;
         return this;
     }
 
-    onClick(){
+    onClick() {
         this.onClickListener && this.onClickListener();
     }
 
-    setOnClickListener(listener){
+    setOnClickListener(listener) {
         this.onClickListener = listener;
     }
 
-    activeTab(){
+    activeTab() {
         this.inactiveNode.active = false;
         this.activeNode.active = true;
         this.toggle.check();
     }
 
-    inactiveTab(){
+    inactiveTab() {
         this.inactiveNode.active = true;
         this.activeNode.active = false;
     }

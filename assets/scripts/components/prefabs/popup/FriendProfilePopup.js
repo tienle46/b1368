@@ -119,11 +119,6 @@ export default class FriendProfilePopup extends DialogActor {
         let itemId = app.res.asset_tools[prosName].id,
             ev = new cc.Event.EventCustom('on.asset.picked', true);
 
-        let data = {};
-        data = itemId;
-        data = 3;
-        data = this.friendName;
-
         let sendObject = {
             cmd: app.commands.ASSETS_USE_ITEM,
             data: {
@@ -193,12 +188,11 @@ export default class FriendProfilePopup extends DialogActor {
 
     _onKickUser(id) {
         //kick user khoi ban choi
-        let data = {};
-        data[app.keywords.USER_ID] = id;
-
         var sendObject = {
             'cmd': app.commands.PLAYER_KICK,
-            data,
+            data: {
+                [app.keywords.USER_ID]: id
+            },
             room: app.context.getLastJoinedRoom()
         };
 

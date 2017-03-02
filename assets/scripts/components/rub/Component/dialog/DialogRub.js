@@ -64,7 +64,7 @@ export default class DialogRub extends Rub {
             tab.isChecked = (index === 0);
             Tabs.make(tab);
         });
-        tabs = null;
+        window.free(tabs);
     }
 
     _initTitle(string) {

@@ -14,14 +14,15 @@ export default class PlusBalanceAnimation extends Component {
     }
 
     onDestroy() {
-        this.startCallback = null;
-        this.endCallback = null;
+        window.free(this.startCallback, this.endCallback);
     }
 
     setup({ player = null, startCallback = null, endCallback = null } = {}) {
         this.player = player;
         this.startCallback = startCallback;
         this.endCallback = endCallback;
+
+        window.free(player, startCallback, endCallback);
     }
 
     play() {

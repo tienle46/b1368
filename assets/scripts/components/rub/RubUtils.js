@@ -6,6 +6,9 @@ let RubUtils = {
                     reject(err);
 
                 resolve(asset);
+                if (!cc.loader.isAutoRelease(asset)) {
+                    cc.loader.setAutoRelease(asset, true);
+                }
                 RubUtils.releaseAssets(asset);
             }
 
@@ -134,21 +137,12 @@ let RubUtils = {
             return;
         ins.map(asset => {
             let deps = asset && cc.loader.getDependsRecursively(asset);
-            deps && deps.length > 0 && cc.loader.release(asset);
+            if (deps && deps.length > 0) {
+                cc.loader.release(asset);
+            }
         });
         RubUtils.releaseArray(ins, true);
     },
-    releaseArray: (array, isRecursive = false) => {
-        if (!app._.isArray(array))
-            return;
-
-        if (isRecursive) {
-            array.map(a => {
-                app._.isArray(a) && RubUtils.releaseArray(a, isRecursive);
-            });
-        }
-        array.length = 0;
-        array = [];
-    }
+    releaseArray: window.release
 };
 export default RubUtils;

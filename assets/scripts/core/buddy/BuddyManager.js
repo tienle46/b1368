@@ -130,9 +130,7 @@ export default class BuddyManager {
 
     destroy() {
         this.removeEventListener();
-        this.buddies = [];
-        this.tmpBuddies = [];
-        this.blackBuddyNames = [];
+        window.release([this.buddies, this.tmpBuddies, this.blackBuddyNames], true);
     }
 
     isBuddy(name) {

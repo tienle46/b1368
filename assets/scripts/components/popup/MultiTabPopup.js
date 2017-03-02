@@ -50,9 +50,7 @@ export default class MultiTabPopup extends Component {
     onDisable() {
         super.onDisable();
 
-        this._tabs = null;
-        this._tabModels = null;
-        this._tabBodies = null;
+        window.release([this._tabs, this._tabModels, this._tabBodies]);
     }
 
     start() {
@@ -62,7 +60,6 @@ export default class MultiTabPopup extends Component {
 
     _initTab() {
         this._tabs = this._tabModels.map((model, index) => {
-
             let tabNode = cc.instantiate(this.tabPrefab);
             let tab = tabNode.getComponent('PopupTab');
             if (tab) {
