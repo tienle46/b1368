@@ -32,10 +32,7 @@ export default class CCUtils {
     }
 
     static destroy(target) {
-        if (!target)
-            return;
-
-        CCUtils.isValid(target) && target.destroy();
+        return target && cc.isValid(target) && target.destroy();
     }
 
     static active(node, opacity) {
