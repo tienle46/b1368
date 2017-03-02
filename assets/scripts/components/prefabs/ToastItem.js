@@ -41,8 +41,7 @@ export default class ToastItem extends Component {
 
     hide() {
         let action = cc.sequence(cc.fadeOut(0.3), cc.callFunc(() => {
-            this.node.destroy();
-            this.node.removeFromParent();
+            CCUtils.destroy(this.node);
         }));
         this.node.runAction(action);
     }

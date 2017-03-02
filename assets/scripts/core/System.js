@@ -350,9 +350,9 @@ class GameSystem {
                     gameSceneName = 'XocDiaScene';
                     break;
             }
-            if(gameSceneName){
+            if (gameSceneName) {
                 this.loadScene(gameSceneName);
-            }else{
+            } else {
                 this.hideLoader();
             }
         }
@@ -388,5 +388,4 @@ class GameSystem {
     }
 }
 
-const gameSystem = new GameSystem();
-module.exports = gameSystem;
+module.exports = new GameSystem();

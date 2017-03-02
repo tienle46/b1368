@@ -4,6 +4,7 @@
 
 import app from 'app';
 import Component from 'Component';
+import { destroy } from 'CCUtils';
 
 let currentPopup = null;
 
@@ -182,8 +183,7 @@ export default class MultiTabPopup extends Component {
     hide() {
         if (this.node) {
             this.node.active = false;
-            this.node.destroy();
-            this.node.removeFromParent(true);
+            destroy(this.node);
         }
     }
 

@@ -13,22 +13,27 @@ export default class PlusBalanceAnimation extends Component {
         this.endCallback = null;
     }
 
-    setup({player = null, startCallback = null, endCallback = null} = {}){
+    onDestroy() {
+        this.startCallback = null;
+        this.endCallback = null;
+    }
+
+    setup({ player = null, startCallback = null, endCallback = null } = {}) {
         this.player = player;
         this.startCallback = startCallback;
         this.endCallback = endCallback;
     }
 
-    play(){
+    play() {
         this.node.getComponent(cc.Animation).play();
     }
 
-    onAnimationStart(){
+    onAnimationStart() {
         this.node.active = true;
         this.startCallback && this.startCallback();
     }
 
-    onAnimationEnd(){
+    onAnimationEnd() {
         this.node.active = false;
         this.endCallback && this.endCallback();
     }

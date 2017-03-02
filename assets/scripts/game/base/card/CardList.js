@@ -574,6 +574,11 @@ export default class CardList extends Component {
 
     }
 
+    onDestroy() {
+        super.onDestroy();
+        this.selectCardChangeListener = null;
+    }
+
     start() {
         this.__reveal != undefined && this.setReveal(this.__reveal);
     }

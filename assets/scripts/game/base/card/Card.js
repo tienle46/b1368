@@ -181,6 +181,11 @@ export default class Card extends Component {
         this.setReveal(this.reveal);
     }
 
+    onDestroy() {
+        super.onDestroy();
+        this._clickListener = null;
+    }
+
     onActive() {
         super.onActive();
     }

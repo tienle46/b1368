@@ -22,8 +22,6 @@ export default class TabMessages extends DialogActor {
         super.onLoad();
 
         this.showLoader();
-        let next = this.onNextBtnClick.bind(this);
-        let prev = this.onPreviousBtnClick.bind(this);
     }
 
 

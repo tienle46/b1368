@@ -3,6 +3,7 @@ import Component from 'Component';
 import DialogTab from 'DialogTab';
 import RubUtils from 'RubUtils';
 import NodeRub from 'NodeRub';
+import { destroy } from 'CCUtils';
 
 export default class Dialog extends Component {
     constructor() {
@@ -35,9 +36,7 @@ export default class Dialog extends Component {
     }
 
     onCloseBtnClick() {
-        // this.releaseAssets();
-        this.node.parent.destroy();
-        this.node.parent.removeFromParent();
+        destroy(this.node.parent);
     }
 
     addSharedData(key, data) {

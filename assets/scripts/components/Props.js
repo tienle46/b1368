@@ -6,57 +6,43 @@ import app from 'app';
 import Component from 'Component';
 import CCUtils from 'CCUtils';
 
-const props = [
-    "hddj-1",
-    "hddj-2",
-    "hddj-3",
-    "hddj-5",
-    "hddj-6",
-    "hddj-7",
-    "hddj-8",
-    "hddj-9",
-    "hddj-11",
-    "hddj-12",
-]
-
-let propAssets = {};
-let emotionAssets = {};
-
-const propAssetNames = [];
-const emotionAssetNames = [];
-
-const PROP_SAMPLE_LOW = 5;
 const PROP_SAMPLE = 10;
 
 export default class Props extends Component {
 
     constructor() {
         super();
+
+        this.propAssets = {};
+        this.emotionAssets = {};
+
+        this.propAssetNames = [];
+        this.emotionAssetNames = [];
     }
 
     static loadAllPropAsset() {
         cc.loader.loadResDir('props/', cc.SpriteFrame, (err, assets) => {
             assets.forEach(asset => {
-                propAssetNames.push(asset.name);
-                propAssets[asset.name] = asset;
+                this.propAssetNames.push(asset.name);
+                this.propAssets[asset.name] = asset;
             });
         });
 
         cc.loader.loadResDir('emotions/', cc.SpriteFrame, (err, assets) => {
             assets.forEach(asset => {
-                emotionAssetNames.push(asset.name);
-                emotionAssets[asset.name] = asset;
+                this.emotionAssetNames.push(asset.name);
+                this.emotionAssets[asset.name] = asset;
             });
         });
     }
 
     static releaseAllPropAsset() {
 
-        Object.values(propAssets).forEach(asset => cc.loader.release(asset));
-        Object.values(emotionAssets).forEach(asset => cc.loader.release(asset));
+        Object.values(this.propAssets).forEach(asset => cc.loader.release(asset));
+        Object.values(this.emotionAssets).forEach(asset => cc.loader.release(asset));
 
-        propAssets = {};
-        emotionAssets = {};
+        this.propAssets = {};
+        this.emotionAssets = {};
     }
 
     static _playLoadedEmotion(atlas, node) {
@@ -75,21 +61,20 @@ export default class Props extends Component {
             clip.wrapMode = cc.WrapMode.Default;
             animation.addClip(clip);
 
+            animation.on('finished', () => {
+                animation.play('run');
                 animation.on('finished', () => {
-                    animation.play('run');
-                    animation.on('finished', () => {
-                        animatingNode.destroy();
-                        animatingNode.removeFromParent(true);
-                    })
+                    CCUtils.destroy(animatingNode);
                 });
+            });
 
             animation.play('run');
         }
     }
 
     static playEmotion(name, node) {
-        if (emotionAssets.length > 0) {
-            let atlas = emotionAssets[name];
+        if (this.emotionAssets.length > 0) {
+            let atlas = this.emotionAssets[name];
             this._playLoadedEmotion(atlas, node);
         } else {
             cc.loader.loadRes(`emotions/${name}`, cc.SpriteAtlas, (err, atlas) => {
@@ -135,13 +120,14 @@ export default class Props extends Component {
             animation.addClip(clip);
             animation.play('run');
             animation.on('finished', () => {
-                animatingNode.destroy();
-                animatingNode.removeFromParent(true);
+                CCUtils.destroy(animatingNode);
                 finishCallback && finishCallback();
             });
         });
 
         animatingNode.runAction(config.endPos ? cc.sequence(cc.moveTo(0.6, config.endPos), mainAction) : mainAction);
+        config = null;
+        finishCallback = null;
     }
 
     static playProp(prosName, config = {
@@ -150,12 +136,14 @@ export default class Props extends Component {
         endPos: null,
         sample: PROP_SAMPLE
     }, finishCallback) {
-        if (propAssets.length > 0) {
-            let atlas = propAssets[prosName];
+        if (this.propAssets.length > 0) {
+            let atlas = this.propAssets[prosName];
             this._playLoadedProp(atlas, config, finishCallback);
         } else {
-            this.playPropName(prosName, 'props', config.sample || PROP_SAMPLE, config.startPos, config.endPos, finishCallback)
+            this.playPropName(prosName, 'props', config.sample || PROP_SAMPLE, config.startPos, config.endPos, finishCallback);
         }
+        config = null;
+        finishCallback = null;
     }
 
     static playPropName(prosName, resPath, sample, startPos, endPos, finishCallback) {
@@ -167,12 +155,12 @@ export default class Props extends Component {
                 return;
             }
 
-            this._playLoadedProp(atlas, {startPos, endPos}, finishCallback);
+            this._playLoadedProp(atlas, { startPos, endPos }, finishCallback);
         });
     }
 
     static playPropAtIndex(propIndex, startNode, endNode) {
-        let propName = propAssetNames[propIndex];
+        let propName = this.propAssetNames[propIndex];
         propName && this.playProp(propName, {
             startPos: CCUtils.getWorldPosition(startNode),
             endPos: CCUtils.getWorldPosition(endNode)

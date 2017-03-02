@@ -3,6 +3,13 @@
  */
 
 export default class CCUtils {
+    static isNode(node) {
+        return !node && node instanceof cc.Node;
+    }
+
+    static isValid(target) {
+        return cc.isValid(target);
+    }
 
     static disable(node) {
         if (!node) return;
@@ -24,15 +31,22 @@ export default class CCUtils {
         }
     }
 
+    static destroy(target) {
+        if (!target)
+            return;
+
+        CCUtils.isValid(target) && target.destroy();
+    }
+
     static active(node, opacity) {
-        Utils.setActive(node, true);
+        CCUtils.setActive(node, true);
         if (opacity) {
             //TODO
         }
     }
 
     static deactive(node, opacity) {
-        Utils.setActive(node, false);
+        CCUtils.setActive(node, false);
 
         if (opacity) {
             //TODO
@@ -70,7 +84,7 @@ export default class CCUtils {
      */
     static setVisibility(node, visiblity) {
         let opacity = visiblity ? 255 : 0;
-        Utils.setOpacity(node, opacity);
+        CCUtils.setOpacity(node, opacity);
     }
 
     static hide(node, action = cc.hide()) {
@@ -83,20 +97,20 @@ export default class CCUtils {
         node && node.runAction && node.runAction(cc.show());
     }
 
-    static getWorldPosition(node){
-        if(node){
+    static getWorldPosition(node) {
+        if (node) {
             return node.parent ? node.parent.convertToWorldSpaceAR(node) : cc.v2(node.getPosition().x, node.getPosition().y);
-        }else{
+        } else {
             return cc.v2(0, 0);
         }
     }
 
-    static addClickEvent(node, targetNode, componentClass, handlerFn){
+    static addClickEvent(node, targetNode, componentClass, handlerFn) {
         let button = node && node.getComponent(cc.Button);
         button.clickEvents && button.clickEvents.push(CCUtils.createEventHandler(targetNode, componentClass, handlerFn));
     }
 
-    static createEventHandler(targetNode, componentClass, handlerFn){
+    static createEventHandler(targetNode, componentClass, handlerFn) {
         const eventHandler = new cc.Component.EventHandler();
         eventHandler.target = targetNode;
         eventHandler.component = componentClass.name;
@@ -104,14 +118,14 @@ export default class CCUtils {
         return eventHandler;
     }
 
-    static setAnchorPoint(node, x, y){
-        if(!node) return;
+    static setAnchorPoint(node, x, y) {
+        if (!node) return;
 
         node.setAnchorPoint(x, y);
         node.childrenCount > 0 && this.children.forEach(child => CCUtils.setAnchorPoint(child, x, y));
     }
 
-    convertToCenterAnchor(node){
+    convertToCenterAnchor(node) {
         let anchor = node.getAnchorPoint();
     }
 
@@ -120,7 +134,7 @@ export default class CCUtils {
      * @param type type want to find
      * @returns {Array|Array.<T>|*}
      */
-    findChildByType(node, type){
+    findChildByType(node, type) {
         return node && type ? node.children.filter(child => child instanceof type) : [];
     }
 

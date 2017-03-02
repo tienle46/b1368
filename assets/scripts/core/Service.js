@@ -199,6 +199,7 @@ class Service {
 
         this._pendingRequests.forEach(requestArgs => this.sendRequest(...requestArgs));
         this._pendingRequests = [];
+        event = null;
     }
 
     _onConnectionLost(event) {
@@ -237,7 +238,7 @@ class Service {
                 });
             }
         }
-
+        window.free(event);
     }
 
     _reConnectWithLoginData(loginData) {
@@ -270,6 +271,7 @@ class Service {
 
             app.system.emit(event.cmd, event.params, event);
         }
+        window.free(event);
     }
 
     _onLogin(event) {
@@ -319,7 +321,7 @@ class Service {
         }
 
         this.client.send(request);
-        request = null;
+        window.free(request, cb, scope, cbName);
     }
 
     _callCallback(key, verifyFunc, ...args) {
@@ -369,6 +371,7 @@ class Service {
 
     removeEventListener(eventType, handleFunc, scope = this) {
         this.client.removeEventListener(eventType, handleFunc, scope);
+        window.free(eventType, handleFunc, scope);
     }
 
     /**

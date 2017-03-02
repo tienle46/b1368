@@ -6,6 +6,7 @@ import app from 'app';
 import utils from 'utils';
 import PopupTabBody from 'PopupTabBody';
 import Events from 'Events';
+import { destroy } from 'CCUtils';
 
 class BuddyChatTabBody extends PopupTabBody {
 
@@ -37,35 +38,35 @@ class BuddyChatTabBody extends PopupTabBody {
         this.chattingBuddyItems = null;
     }
 
-    _addGlobalListener(){
+    _addGlobalListener() {
         super._addGlobalListener();
         app.system.addListener(Events.ON_BUDDY_MESSAGE, this._onBuddyMessage, this);
         app.system.addListener(Events.ON_BUDDY_ONLINE_STATE_CHANGED, this._onBuddyOnlineStateChange, this);
     }
 
-    _removeGlobalListener(){
+    _removeGlobalListener() {
         super._removeGlobalListener();
         app.system.removeListener(Events.ON_BUDDY_MESSAGE, this._onBuddyMessage, this);
         app.system.removeListener(Events.ON_BUDDY_ONLINE_STATE_CHANGED, this._onBuddyOnlineStateChange, this);
     }
 
-    _onBuddyOnlineStateChange(isOnline, isItMe, buddy){
-        if(!isItMe){
+    _onBuddyOnlineStateChange(isOnline, isItMe, buddy) {
+        if (!isItMe) {
             let buddyItem = this._findChattingBuddy(buddy);
             buddyItem && buddyItem.onBuddyChanged();
         }
     }
 
-    _onBuddyMessage(senderName, toBuddyName, message, isItMe){
+    _onBuddyMessage(senderName, toBuddyName, message, isItMe) {
 
         console.log('sender, toBuddy, message, isItMe: ', senderName, toBuddyName, message, isItMe);
 
-        if(!this.buddy) return;
+        if (!this.buddy) return;
 
-        if(isItMe){
-            if(toBuddyName != this.buddy.name) return;
-        }else{
-            if(senderName != this.buddy.name) {
+        if (isItMe) {
+            if (toBuddyName != this.buddy.name) return;
+        } else {
+            if (senderName != this.buddy.name) {
                 let senderBuddy = this._findChattingBuddy(senderName);
                 senderBuddy && senderBuddy.onBuddyChanged();
                 return;
@@ -75,7 +76,7 @@ class BuddyChatTabBody extends PopupTabBody {
         this._addSingleMessage(senderName, message);
         !isItMe && app.context.removeUnreadMessageBuddies(senderName);
 
-        if(!isItMe){
+        if (!isItMe) {
             let buddy = app.buddyManager.getBuddyByName(senderName);
             buddy && (buddy.newMessageCount = 0);
         }
@@ -83,12 +84,12 @@ class BuddyChatTabBody extends PopupTabBody {
         this.chatScroll.scrollToBottom();
     }
 
-    _findChattingBuddy(findingBuddy){
+    _findChattingBuddy(findingBuddy) {
         let buddyName = findingBuddy.name || findingBuddy;
 
         let findBuddyItem = null;
         this.chattingBuddyItems.some(buddyItem => {
-            if(buddyItem.buddy.name == buddyName){
+            if (buddyItem.buddy.name == buddyName) {
                 findBuddyItem = buddyItem;
                 return true;
             }
@@ -100,21 +101,21 @@ class BuddyChatTabBody extends PopupTabBody {
     onDataChanged(data) {
         if (!super.onDataChanged(data)) return;
 
-        if(data){
+        if (data) {
             data.chattingBuddies && this._initChattingBuddyList(data.chattingBuddies)
             this.buddy = data.buddy;
         }
 
         let buddyItem;
-        if(!this.buddy){
+        if (!this.buddy) {
             buddyItem = this.chattingBuddyItems.length > 0 ? this.chattingBuddyItems[0] : undefined
             this.buddy = buddyItem && buddyItem.buddy;
-        }else{
+        } else {
             buddyItem = this._findChattingBuddy(this.buddy);
         }
 
 
-        if(this.buddy){
+        if (this.buddy) {
             if (buddyItem) {
                 if (buddyItem.isSelected()) {
                     this._onChangeSelectedBuddy(buddyItem);
@@ -127,14 +128,14 @@ class BuddyChatTabBody extends PopupTabBody {
 
             this.chatErrorNode.active && utils.setVisible(this.chatErrorNode, false);
 
-        }else{
+        } else {
             this._onError(app.res.string('buddy_select_buddy_to_chat'));
         }
 
     }
 
-    _addChattingBuddy(buddy, autoSelect = false){
-        if(!buddy) return;
+    _addChattingBuddy(buddy, autoSelect = false) {
+        if (!buddy) return;
 
         /**
          * @type {cc.Node}
@@ -142,7 +143,7 @@ class BuddyChatTabBody extends PopupTabBody {
         let chattingBuddyNode = cc.instantiate(this.chattingBuddyPrefab);
         let chattingBuddy = chattingBuddyNode.getComponent('ChattingBuddyItem');
 
-        if(chattingBuddy){
+        if (chattingBuddy) {
             chattingBuddy.setBuddy(buddy);
             chattingBuddy.setToggleGroup(this.toggleGroup);
             chattingBuddy.setOnCheckedListener((buddyItem) => {
@@ -154,81 +155,80 @@ class BuddyChatTabBody extends PopupTabBody {
             app.context.addToChattingBuddies(buddy);
             app.context.removeUnreadMessageBuddies(buddy.name);
 
-            if(autoSelect){
+            if (autoSelect) {
                 chattingBuddy.select()
             }
         }
     }
 
-    _onChangeSelectedBuddy(buddyItem){
+    _onChangeSelectedBuddy(buddyItem) {
 
-        if(buddyItem){
+        if (buddyItem) {
             this.buddy = buddyItem.buddy;
             this.buddy.newMessageCount = 0;
             this.popup.setTitle(this.buddy.name);
             this._initMessageList();
             buddyItem.onReadMessage();
-        }else{
+        } else {
             this._onError();
         }
     }
 
-    _onError(message){
+    _onError(message) {
         this.chatContent.active = false;
 
-        if(message){
+        if (message) {
             this.chatErrorNode && (this.chatErrorNode.active = true);
             this.chatErrorLabel && (this.chatErrorLabel.string = message);
-        }else {
+        } else {
             this.chatErrorNode && (this.chatErrorNode.active = false);
         }
     }
 
-    _loadMessages(){
+    _loadMessages() {
         //TODO
     }
 
-    _initMessageList(){
+    _initMessageList() {
         this.chatMessageList.children.forEach(child => child.destroy() && child.removeFromParent(true));
 
-        if(!this.chatContent.active){
+        if (!this.chatContent.active) {
             this.chatErrorNode && (this.chatErrorNode.active = false);
             this.chatContent.active = true;
         }
 
-        if(this.buddy.messages){
+        if (this.buddy.messages) {
             this.onMessageListChanged(this.buddy.messages);
-        }else{
+        } else {
             this._loadMessages();
         }
     }
 
-    onMessageListChanged(messages = []){
+    onMessageListChanged(messages = []) {
         messages.forEach(messageObj => this._addSingleMessage(messageObj.sender, messageObj.message));
         this.chatScroll.scrollToBottom();
     }
 
-    _addSingleMessage(sender, message){
+    _addSingleMessage(sender, message) {
         let chatItemNode = cc.instantiate(this.chatItemPrefab);
         let chatItem = chatItemNode.getComponent('BuddyChatItem');
         chatItem && chatItem.setMessage(sender, message);
         this.chatMessageList.addChild(chatItemNode);
 
-        if(this.chatMessageList.children.length > app.const.NUMBER_MESSAGES_KEEP_PER_BUDDY){
+        if (this.chatMessageList.children.length > app.const.NUMBER_MESSAGES_KEEP_PER_BUDDY) {
             let removeNode = this.chatMessageList.children[0];
-            removeNode.destroy();
-            removeNode.removeFromParent(true);
+            destroy(removeNode);
         }
     }
 
-    sendInputMessage(){
-        if(this.buddy){
-            if(this.buddy.isOnline()){
+    sendInputMessage() {
+        if (this.buddy) {
+            if (this.buddy.isOnline()) {
                 let message = this.chatEditBox.string;
-                if(message.trim().length > 0){
+                if (message.trim().length > 0) {
                     app.buddyManager.sendMessage(message, this.buddy.name);
                 }
-            }else{
+            } else {
                 this.notifyOnlyChatWithOnlineUser();
             }
 
@@ -238,7 +238,7 @@ class BuddyChatTabBody extends PopupTabBody {
         this.chatEditBox.setFocus();
     }
 
-    notifyOnlyChatWithOnlineUser(){
+    notifyOnlyChatWithOnlineUser() {
         this._addSingleMessage(null, app.res.string('buddy_chat_with_online_buddy_only'));
     }
 
@@ -247,15 +247,15 @@ class BuddyChatTabBody extends PopupTabBody {
         this.chattingBuddyItems = [];
     }
 
-    loadData(){
-        this.setLoadedData({chattingBuddies: app.context.chattingBuddies}, false);
+    loadData() {
+        this.setLoadedData({ chattingBuddies: app.context.chattingBuddies }, false);
     }
 
-    onEnable(){
+    onEnable() {
         super.onEnable();
     }
 
-    _initChattingBuddyList(chattingBuddies){
+    _initChattingBuddyList(chattingBuddies) {
         this.chattingBuddyList.removeAllChildren(true);
         this.chattingBuddyItems.splice(0, this.chattingBuddyItems.length)
         chattingBuddies.forEach(buddy => this._addChattingBuddy(buddy))

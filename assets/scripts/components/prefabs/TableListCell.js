@@ -40,17 +40,17 @@ class TableListCell extends Component {
         this._onClickListener = null;
     }
 
-    initCell({id = 0, displayId = 0, minBet = 0, userCount = 0, roomCapacity = 0, password} = {}) {
-        this.setComponentData({id, displayId, minBet, userCount, roomCapacity, password})
+    initCell({ id = 0, displayId = 0, minBet = 0, userCount = 0, userMax = 0, password } = {}) {
+        this.setComponentData({ id, displayId, minBet, userCount, userMax, password });
     }
 
-    renderComponentData(data){
+    renderComponentData(data) {
         this.id = data.id;
         this.idLbl.string = data.displayId > 0 ? `${data.displayId}` : "#";
         this.numberCoinLabel.string = data.minBet;
-        CCUtils.setVisible(this.lockIcon, data.password)
+        CCUtils.setVisible(this.lockIcon, data.password);
 
-        this._changeProgressBar(data.userCount, data.roomCapacity);
+        this._changeProgressBar(data.userCount, data.userMax);
     }
 
     _changeProgressBar(current, max) {
@@ -60,7 +60,7 @@ class TableListCell extends Component {
 
     onDestroy() {
         super.onDestroy();
-        this._onClickListener = null
+        this._onClickListener = null;
     }
 
     setOnClickListener(clickListener) {

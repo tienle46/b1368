@@ -45,7 +45,7 @@ export default class FriendProfilePopup extends DialogActor {
         this.loadPropsAssets();
     }
 
-    onEnable(){
+    onEnable() {
         super.onEnable();
 
         utils.setInteractable(this.addFriendBtn, !(this.friendName && app.buddyManager.containsBuddy(this.friendName)));
@@ -75,9 +75,8 @@ export default class FriendProfilePopup extends DialogActor {
     performAnimation(prosName, startNode, destinationNode) {
         this.node.opacity = 0;
 
-        Props.playProp(prosName, {startPos: CCUtils.getWorldPosition(startNode), endPos: CCUtils.getWorldPosition(destinationNode)}, () => {
-            this.node && this.node.destroy();
-            this.node && this.node.removeFromParent();
+        Props.playProp(prosName, { startPos: CCUtils.getWorldPosition(startNode), endPos: CCUtils.getWorldPosition(destinationNode) }, () => {
+            CCUtils.destroy(this.node);
         });
     }
 
@@ -121,18 +120,22 @@ export default class FriendProfilePopup extends DialogActor {
             ev = new cc.Event.EventCustom('on.asset.picked', true);
 
         let data = {};
-        data[app.keywords.ASSETS_DAOCU_ITEM_USED_ID] = itemId;
-        data[app.keywords.STORE_TYPE] = 3;
-        data[app.keywords.ASSETS_ITEM_USED_RECEIVER] = this.friendName;
+        data = itemId;
+        data = 3;
+        data = this.friendName;
 
         let sendObject = {
             cmd: app.commands.ASSETS_USE_ITEM,
-            data
+            data: {
+                [app.keywords.ASSETS_DAOCU_ITEM_USED_ID]: itemId,
+                [app.keywords.STORE_TYPE]: 3,
+                [app.keywords.ASSETS_ITEM_USED_RECEIVER]: this.friendName
+            }
         };
 
         app.service.send(sendObject);
 
-        cc.isValid(this.node) && this.node.destroy() && this.node.removeFromParent();
+        CCUtils.destroy(this.node);
     }
 
     onLeftBtnClick(e) {
@@ -173,8 +176,7 @@ export default class FriendProfilePopup extends DialogActor {
     }
 
     close() {
-        this.node.destroy();
-        this.node.removeFromParent();
+        CCUtils.destroy(this.node);
     }
 
     _addGlobalListener() {

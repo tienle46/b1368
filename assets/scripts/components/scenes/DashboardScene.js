@@ -22,10 +22,15 @@ export default class DashboardScene extends BaseScene {
         super.onLoad();
     }
 
-    onEnable(){
+    onEnable() {
         super.onEnable()
 
         app.context.gameList.length > 0 && this._initItemListGame();
+    }
+
+    onDestroy() {
+        super.onDestroy();
+        this.gameList.length = 0;
     }
 
     start() {
@@ -72,7 +77,7 @@ export default class DashboardScene extends BaseScene {
     }
 
     _getGamesListFromServer() {
-        if(app.context.gameList.length == 0){
+        if (app.context.gameList.length == 0) {
             this.showLoading('Đang tải dữ liệu ....');
         }
         app.service.send({
@@ -87,7 +92,7 @@ export default class DashboardScene extends BaseScene {
         let gameList = this._filterClientSupportedGames(data[app.keywords.SERVICE_CHILD_CODE_ARRAY]);
         let removedGames = app.context.gameList.length == 0 ? [] : ArrayUtils.removeAll([...gameList], app.context.gameList);
 
-        if(removedGames.length < gameList.length){
+        if (removedGames.length < gameList.length) {
             app.context.gameList = gameList;
             this._initItemListGame();
         }
@@ -103,23 +108,6 @@ export default class DashboardScene extends BaseScene {
         const height = this.viewContainer.height || 200;
         const itemDimension = Math.floor(height / 2.0 - 37);
 
-        let pageNodeOptions = {
-            name: 'pageNode',
-            size: cc.size(998, 455),
-            // position: cc.v2(500, 0),
-            layout: {
-                type: cc.Layout.Type.GRID,
-                resizeMode: cc.Layout.ResizeMode.CHILDREN,
-                startAxis: cc.Layout.AxisDirection.HORIZONTAL,
-                cellSize: cc.size(180, 180),
-                padding: 0,
-                spacingX: 85,
-                spacingY: 55,
-                verticalDirection: cc.Layout.VerticalDirection.TOP_TO_BOTTOM,
-                horizontalDirection: cc.Layout.HorizontalDirection.LEFT_TO_RIGHT
-            }
-        };
-
         var node = null;
         let count = 0;
         app.async.mapSeries(app.context.gameList, (gc, cb) => {
@@ -128,6 +116,22 @@ export default class DashboardScene extends BaseScene {
                 indicator && indicator.opacity < 255 && (indicator.opacity = 255);
             }
             if (count % 8 === 0) {
+                let pageNodeOptions = {
+                    name: 'pageNode',
+                    size: cc.size(998, 455),
+                    // position: cc.v2(500, 0),
+                    layout: {
+                        type: cc.Layout.Type.GRID,
+                        resizeMode: cc.Layout.ResizeMode.CHILDREN,
+                        startAxis: cc.Layout.AxisDirection.HORIZONTAL,
+                        cellSize: cc.size(180, 180),
+                        padding: 0,
+                        spacingX: 85,
+                        spacingY: 55,
+                        verticalDirection: cc.Layout.VerticalDirection.TOP_TO_BOTTOM,
+                        horizontalDirection: cc.Layout.HorizontalDirection.LEFT_TO_RIGHT
+                    }
+                };
                 node = NodeRub.createNodeByOptions(pageNodeOptions);
                 this.pageView.addPage(node);
             }

@@ -6,6 +6,12 @@ import { isNode, isNull } from 'Utils';
 export class Cell extends Component {
     constructor() {
         super();
+
+        this.properties = {
+            ...this.properties,
+            label: cc.Label,
+            labelNode: cc.Node
+        };
     }
 
     /**
@@ -19,29 +25,29 @@ export class Cell extends Component {
     init(data, options) {
         if (data instanceof Object) {
             if (isNode(data)) {
-                if (this.node.getComponent(cc.Label)) {
-                    this.node.removeComponent(cc.Label);
+                if (this.label) {
+                    this.labelNode.removeComponent(this.label);
                 }
                 NodeRub.addWidgetComponentToNode(data, { hortizontalCenter: true });
                 data.active = true;
-                this.node.addChild(data);
+                this.labelNode.addChild(data);
                 return;
             }
 
             let options = data;
 
             // button
-            options.button && NodeRub.addButtonComponentToNode(this.node, options.button);
+            options.button && NodeRub.addButtonComponentToNode(this.labelNode, options.button);
 
             // label
-            options.label && NodeRub.addLabelComponentToNode(this.node, options.label);
+            options.label && NodeRub.addLabelComponentToNode(this.labelNode, options.label);
 
             // richtext
-            options.richtext && NodeRub.addRichTextComponentToNode(this.node, options.richtext);
+            options.richtext && NodeRub.addRichTextComponentToNode(this.labelNode, options.richtext);
         } else {
             let o = Object.assign({}, options);
             o.text = isNull(data) ? "" : data.toString();
-            NodeRub.addLabelComponentToNode(this.node, o);
+            NodeRub.addLabelComponentToNode(this.labelNode, o);
         }
     }
 

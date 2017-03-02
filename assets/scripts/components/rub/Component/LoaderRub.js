@@ -1,5 +1,6 @@
 import RubUtils from 'RubUtils';
 import app from 'app';
+import { destroy } from 'CCUtils';
 
 export default class LoaderRub {
     constructor(node = cc.director.getScene(), hideBg = false, opts = {}) {
@@ -114,19 +115,24 @@ export default class LoaderRub {
     hide() {
         if (this.isShowing) {
             this.spinLoaderNode.active = false;
-            clearTimeout(this.timer);
+            this.clearTimeout();
             this.isShowing = false;
         }
     }
 
     destroy() {
-        this.spinLoaderNode.destroy();
-        this.spinLoaderNode.removeFromParent();
+        this.clearTimeout();
+        destroy(this.spinLoaderNode);
     }
 
     _setTimer(time) {
-        this.timer = setTimeout((() => {
+        this.timer = setTimeout(() => {
             this.spinLoaderNode.active && this.hide();
-        }).bind(this), time);
+        }, time);
+    }
+
+    clearTimeout() {
+        clearTimeout(this.timer);
+        this.timer = null;
     }
 }

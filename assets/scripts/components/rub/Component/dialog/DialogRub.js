@@ -1,5 +1,6 @@
 import Rub from 'Rub';
 import app from 'app';
+import { destroy } from 'CCUtils';
 
 export default class DialogRub extends Rub {
     /**
@@ -72,7 +73,7 @@ export default class DialogRub extends Rub {
 
     release() {
         this.options = null;
-        this.prefab.destroy();
+        destroy(this.prefab);
         this.tabs.length = 0;
     }
 

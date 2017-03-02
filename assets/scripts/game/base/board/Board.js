@@ -4,9 +4,9 @@
 
 import utils from 'utils';
 import app from 'app';
-import game from 'game'
+import game from 'game';
 import { Actor } from 'components';
-import Events from 'events'
+import Events from 'events';
 import { Keywords } from 'core';
 
 export default class Board extends Actor {
@@ -282,7 +282,7 @@ export default class Board extends Actor {
         this.renderer && this.renderer._reset();
     }
 
-    onGameReset(){
+    onGameReset() {
         this._reset();
     }
 

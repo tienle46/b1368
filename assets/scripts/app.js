@@ -41,7 +41,7 @@ app.createComponent = (classNameOrInstance, extendClass = undefined, ...args) =>
     instance.extends = extendClass || instance.extends || cc.Component;
 
 
-    const objPropsMap = {}; // contains keys which belong to "Object" type ( {a:1, b:2} ) and aren't empty object ( {} )
+    let objPropsMap = {}; // contains keys which belong to "Object" type ( {a:1, b:2} ) and aren't empty object ( {} )
 
     let isCocosComponent = (element) => {
         return typeof element === 'function' && element === cc[element.name.substr(3)];
@@ -137,12 +137,14 @@ app.createComponent = (classNameOrInstance, extendClass = undefined, ...args) =>
     if (Object.keys(objPropsMap).length > 0) {
         instance.ctor = function ctor() {
             Object.getOwnPropertyNames(objPropsMap).forEach(key => {
-                this[key] = objPropsMap[key];
+                let a = objPropsMap[key];
+                this[key] = a;
             });
         };
     }
 
-    return cc.Class(instance);
+    cc.Class(instance);
+    instance = null;
 };
 
 app.getRoomErrorMessage = (error) => {
@@ -185,6 +187,18 @@ app.getMessageFromServer = (error) => {
 
 /* INIT GAME */
 (function _setupGame() {
+    window.free = function free(...args) {
+        [...args].forEach(arg => {
+            console.debug('args', arg);
+            if (arg instanceof Array) {
+                arg = [];
+                return;
+            }
+
+            arg = null;
+        });
+    };
+
     require('PreLoader');
     app.service = require("Service");
     require('Env')(app);
@@ -199,8 +213,11 @@ app.getMessageFromServer = (error) => {
     app.env.__setupEnvironment();
 })();
 
-(function() {
+function test() {
+    console.debug('test', 'test');
+}
 
+(function() {
     window.log = function log(...args) {
         console.log(...args);
     };

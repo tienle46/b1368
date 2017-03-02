@@ -1,6 +1,7 @@
 import app from 'app';
 import Component from 'Component';
 import RubUtils from 'RubUtils';
+import { destroy } from 'CCUtils';
 
 class BasePopup extends Component {
     constructor() {
@@ -24,10 +25,7 @@ class BasePopup extends Component {
     }
 
     handleClosePopupAction() {
-        // this.closeButton.getComponent(cc.Animation).play();
-        // log(this.node.parent);
-        this.node.destroy();
-        this.node.removeFromParent(true);
+        destroy(this.node);
     }
 
     setContent(string) {

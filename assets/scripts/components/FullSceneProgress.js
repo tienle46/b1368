@@ -63,12 +63,12 @@ export default class FullSceneProgress extends Component {
         this.text = text;
         this.duration = duration;
         this.timeoutCb = timeoutCb;
-        this.node.active = true;
+        this.node && (this.node.active = true);
     }
 
     hide() {
         this.progress && this.progress.hide();
-        this.node.active = false;
+        this.node && (this.node.active = false);
     }
 }
 

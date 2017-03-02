@@ -1,7 +1,6 @@
 import app from 'app';
-import Component from 'Component';
-import {betTypeIdToNameMap} from 'BetContainerButton';
-
+import { betTypeIdToNameMap } from 'BetContainerButton';
+import { destroy } from 'CCUtils';
 
 export default class XocDiaAnim {
 
@@ -77,8 +76,7 @@ export default class XocDiaAnim {
         this.chipLayer.children.filter(child => (child.playerId == playerId) && (child.betId == betId)).map((chip) => {
             let action = cc.moveTo(0.1 + app._.random(0, 0.2), toPos);
             chip.runAction(cc.sequence(action.clone(), cc.delayTime(0.1).clone(), cc.fadeOut(0.1).clone(), cc.callFunc(() => {
-                chip.destroy();
-                chip.removeFromParent();
+                destroy(chip);
             })));
         });
     }
@@ -86,8 +84,7 @@ export default class XocDiaAnim {
     clearPlayerChip(playerId) {
         delete this.totalChipOnPlayer[playerId];
         this.chipLayer.children.filter(child => (child.playerId == playerId)).map((chip) => {
-            chip.destroy();
-            chip.removeFromParent(true);
+            destroy(chip);
         });
     }
 
@@ -96,8 +93,7 @@ export default class XocDiaAnim {
         if (removableChipArr.length > 0) {
             let chip = removableChipArr[0];
 
-            chip.destroy();
-            chip.removeFromParent(true);
+            destroy(chip);
 
             removableChipArr.splice(0, 1);
             this._totalChipCount--;

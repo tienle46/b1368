@@ -53,9 +53,14 @@ export default class DialogActor extends Actor {
         super.onDestroy();
         if (this._scrollView && cc.isValid(this._scrollView)) {
             this._scrollView.destroy();
-            this._scrollView = null;
+            free(this._scrollView);
         }
-        this.loaders = null;
+
+        for (let key in this.loaders) {
+            this.loaders[key].destroy();
+            delete this.loaders[key];
+        }
+        free(this.loaders);
     }
 
     initView(head, data, options) {
@@ -64,7 +69,7 @@ export default class DialogActor extends Actor {
             let o = { top: 0, left: 0, right: 0, bottom: 0 };
             this._scrollView.getComponent('Scrollview').initView(head, data, options);
             NodeRub.addWidgetComponentToNode(this._scrollView, o);
-            o = null;
+            free(o);
         } else {
             this._scrollView.getComponent('Scrollview').updateOptions(options);
             this._scrollView.getComponent('Scrollview').updateView(head, data);

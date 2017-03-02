@@ -7,6 +7,7 @@ import utils from 'utils';
 import RubUtils from 'RubUtils';
 import Component from 'Component';
 import Progress from 'Progress';
+import { destroy } from 'CCUtils';
 
 let currentPopup
 
@@ -70,10 +71,15 @@ export default class MessagePopup extends Component {
     /**
      * @abstract
      */
-    static getPrefab(){
+    static getPrefab() {
         return app.res.prefab.messagePopup;
     }
 
+    onDestroy() {
+        super.onDestroy();
+        this.denyCb = null;
+        this.acceptCb = null;
+    }
 
     setMessage(message = "") {
         this._hideLoading();
@@ -105,8 +111,7 @@ export default class MessagePopup extends Component {
     hide() {
         if (this.node) {
             this.node.active = false;
-            this.node.destroy();
-            this.node.removeFromParent(true);
+            destroy(this.node);
         }
         currentPopup = null;
     }
@@ -139,16 +144,16 @@ export default class MessagePopup extends Component {
         currentPopup && currentPopup.hide();
 
         let args = [parentNode, textOrRequestData, denyCb, acceptCb];
-        if(parentNode && textOrRequestData){
+        if (parentNode && textOrRequestData) {
             let prefab = this.getPrefab();
 
-            if(prefab) {
+            if (prefab) {
                 this._createAndShow(prefab, componentName, ...args);
-            }else{
+            } else {
                 RubUtils.loadRes(`popup/${componentName}`).then((prefab) => this._createAndShow(prefab, componentName, ...args));
             }
         }
-        
+        args.length = 0;
         // /**
         //  * Preload this prefab, don't need to load dynamic it anymore
         //  */
@@ -166,7 +171,7 @@ export default class MessagePopup extends Component {
 
     }
 
-    static _createAndShow(prefab, componentName, ...args){
+    static _createAndShow(prefab, componentName, ...args) {
         let messagePopupNode = cc.instantiate(prefab);
         let messagePopup = messagePopupNode.getComponent(`${componentName}`);
         messagePopup.onShow(...args);

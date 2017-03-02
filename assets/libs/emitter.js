@@ -50,9 +50,7 @@ export default class Emitter {
             } else {
                 (this._callbacks[`$${event}`] = this._callbacks['$' + event] || []).push(fn);
             }
-            event = null;
-            fn = null;
-            context = null;
+            window.free(event, fn, context);
         }
 
         return this;
@@ -111,9 +109,7 @@ export default class Emitter {
                 callbacks.splice(i--, 1);
             }
         }
-        event = null;
-        fn = null;
-        context = null;
+        window.free(event, fn, context, callbacks);
         return this;
     }
 

@@ -5,7 +5,7 @@
 import app from 'app';
 import NodeRub from 'NodeRub';
 import Component from 'Component';
-import { isNode } from 'Utils';
+import { isNode, destroy } from 'CCUtils';
 
 export default class PromptPopup extends Component {
     constructor() {
@@ -40,8 +40,7 @@ export default class PromptPopup extends Component {
     }
 
     onDenyBtnClick() {
-        this.node.destroy();
-        this.node.removeFromParent();
+        destroy(this.node);
     }
 
     addAcceptBtnHandler(fn) {
@@ -54,6 +53,7 @@ export default class PromptPopup extends Component {
                 this.onDenyBtnClick();
             }
         });
+        fn = null;
     }
 
     init(parent, initObject, title, edBox, hl) {

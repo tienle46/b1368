@@ -2,6 +2,7 @@
  * Created by Thanh on 9/1/2016.
  */
 import RubUtils from 'RubUtils';
+import { destroy } from 'CCUtils';
 
 export default class Component {
     constructor() {
@@ -25,23 +26,23 @@ export default class Component {
         this.loadedNodes.push(node);
     }
 
-    isComponentEnabled(){
+    isComponentEnabled() {
         return this.__isComponentEnabled;
     }
 
-    getComponentData(){
+    getComponentData() {
         return this.__componentData || {};
     }
 
-    setComponentData(data){
-        this.__componentData = {...data}
+    setComponentData(data) {
+        this.__componentData = {...data };
     }
 
     /**
      * @param {object} data
      * @abstract
      */
-    renderComponentData(data = {}){
+    renderComponentData(data = {}) {
 
     }
 
@@ -52,12 +53,12 @@ export default class Component {
     update(dt) {}
 
     onEnable() {
-        this.__isComponentEnabled = true
-        this.renderComponentData(this.__componentData)
+        this.__isComponentEnabled = true;
+        this.renderComponentData(this.__componentData);
     }
 
     onDisable() {
-        this.__isComponentEnabled = false
+        this.__isComponentEnabled = false;
     }
 
     onDestroy() {
@@ -72,7 +73,7 @@ export default class Component {
     removeNodes() {
         let nodes = this.loadedNodes;
 
-        nodes.map(node => cc.isValid(node) && node.destroy() && node.removeFromParent());
+        nodes && nodes.map(node => destroy(node));
         RubUtils.releaseArray(this.loadedNodes);
     }
 }

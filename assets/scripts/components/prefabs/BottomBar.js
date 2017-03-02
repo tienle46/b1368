@@ -62,7 +62,7 @@ class BottomBar extends DialogActor {
 
     _onBuddyNotifyCountChanged(count) {
         if (count > 0) {
-            this.buddyNotifyLbl.string = `${count}`
+            this.buddyNotifyLbl.string = `${count}`;
             utils.setVisible(this.buddyNotifyNode, true);
         } else {
             this.buddyNotifyLbl.string = '';
@@ -111,32 +111,8 @@ class BottomBar extends DialogActor {
     }
 
     onFriendBtnClick() {
-        new BuddyPopup().show(this.node.parent);
-        // (function() {
-        //     let url = `${app.const.DIALOG_DIR_PREFAB}/buddies`;
-        //     let tabs = [{
-        //             title: 'Danh sách',
-        //             // value: `${url}/tab_buddy_list`
-        //             value: `${url}/BuddyList`,
-        //             componentName: 'TabBuddiesList'
-        //         },
-        //         /*{
-        //             title: 'Chat',
-        //             value: `${url}/tab_buddy_chat`
-        //         },*/
-        //         {
-        //             title: 'Chuyển xu',
-        //             value: `${url}/tab_buddy_detail`,
-        //             componentName: 'TabBuddyTransfer'
-        //         },
-        //         {
-        //             title: 'Lịch sử',
-        //             value: `${url}/tab_transaction_history`,
-        //         }
-        //     ];
-        //
-        //     PersonalInfoDialogRub.show(app.system.getCurrentSceneNode(), tabs, { title: 'Bạn bè' });
-        // }());
+        let buddy = new BuddyPopup().show(this.node.parent);
+        buddy = null;
     }
 
     onClickTransferAwardAction() {

@@ -32,7 +32,7 @@ export default class BuddyManager {
         //this._initTestData();
     }
 
-    reset(){
+    reset() {
         this.removeEventListener();
         this.buddies = [];
         this.tmpBuddies = [];
@@ -97,25 +97,25 @@ export default class BuddyManager {
         app.system.removeListener(app.commands.REQUEST_BUDDY, this._requestBuddyResponse, this);
     }
 
-    _requestBuddyResponse(data){
+    _requestBuddyResponse(data) {
         let message = data && data[app.keywords.RESPONSE_MESSAGE];
         message && app.system.showToast(message);
     }
 
-    requestAddBuddy(buddyName){
-        if(!buddyName) return;
+    requestAddBuddy(buddyName) {
+        if (!buddyName) return;
 
-        if(this.getBuddyByName(buddyName)){
-            app.system.showToast(app.res.string('buddy_already_in_buddy_list', {buddyName}));
-        }else{
-            app.service.send({cmd: app.commands.REQUEST_BUDDY, data: {buddyName}});
+        if (this.getBuddyByName(buddyName)) {
+            app.system.showToast(app.res.string('buddy_already_in_buddy_list', { buddyName }));
+        } else {
+            app.service.send({ cmd: app.commands.REQUEST_BUDDY, data: { buddyName } });
         }
     }
 
-    _confirmAddBuddy(data){
-        if(data && data.sender){
-            app.system.confirm(app.res.string('confirm_add_to_buddy_list', {sender: data.sender}), null, () => {
-                app.service.send({cmd: app.commands.CONFIRM_ADD_BUDDY, data: {sender: data.sender}})
+    _confirmAddBuddy(data) {
+        if (data && data.sender) {
+            app.system.confirm(app.res.string('confirm_add_to_buddy_list', { sender: data.sender }), null, () => {
+                app.service.send({ cmd: app.commands.CONFIRM_ADD_BUDDY, data: { sender: data.sender } });
             });
         }
     }
@@ -124,12 +124,15 @@ export default class BuddyManager {
         return app.service.client.buddyManager.getBuddyList();
     }
 
-    containsBuddy(buddyName){
+    containsBuddy(buddyName) {
         return app.service.client.buddyManager.containsBuddy(buddyName);
     }
 
     destroy() {
         this.removeEventListener();
+        this.buddies = [];
+        this.tmpBuddies = [];
+        this.blackBuddyNames = [];
     }
 
     isBuddy(name) {
@@ -137,7 +140,7 @@ export default class BuddyManager {
     }
 
     sendInitBuddy() {
-        !app.service.client.buddyManager.isInited() && app.service.send({cmd: app.commands.BUDDY_INIT_LIST, data: {}});
+        !app.service.client.buddyManager.isInited() && app.service.send({ cmd: app.commands.BUDDY_INIT_LIST, data: {} });
     }
 
     addBuddy(buddyName) {
@@ -180,7 +183,7 @@ export default class BuddyManager {
         //     app.buddyManager.addBuddy(toBuddyName);
         // }
         if (buddy) {
-            let msgObj = {toBuddy: toBuddyName, message}
+            let msgObj = { toBuddy: toBuddyName, message }
             app.service.sendRequest(new SFS2X.Requests.BuddyList.BuddyMessageRequest(JSON.stringify(msgObj), buddy));
             //app.service.sendRequest(new SFS2X.Requests.BuddyList.BuddyMessageRequest(message, buddy));
         } else {
@@ -217,9 +220,9 @@ export default class BuddyManager {
 
     _onBuddyAdd(evtParams) {
         console.log('_onBuddyAdd: ', evtParams);
-        if(evtParams.buddy){
+        if (evtParams.buddy) {
             this.onBuddyListUpdate();
-            app.system.showToast(app.res.string("buddy_added_buddy", {buddyName: evtParams.buddy.name}))
+            app.system.showToast(app.res.string("buddy_added_buddy", { buddyName: evtParams.buddy.name }))
         }
 
         // if(!evtParams.buddy.isTemp()){
@@ -240,9 +243,9 @@ export default class BuddyManager {
 
     _onBuddyRemove(evtParams) {
         console.log('_onBuddyRemove: ', evtParams);
-        if(evtParams.buddy){
+        if (evtParams.buddy) {
             this.onBuddyListUpdate();
-            app.system.showToast(app.res.string("buddy_removed_buddy", {buddyName: evtParams.buddy.name}))
+            app.system.showToast(app.res.string("buddy_removed_buddy", { buddyName: evtParams.buddy.name }))
         }
 
         // let index = this.buddies.indexOf(evtParams.buddy);
@@ -269,26 +272,26 @@ export default class BuddyManager {
 
     _getErrorMessageByCode(errorCode) {
         let errorCodeStr = `${errorCode}`;
-        let errorCodeMsg = errorCodeStr.length == 0 ? "" : app.res.string('error_code', {errorCode})
+        let errorCodeMsg = errorCodeStr.length == 0 ? "" : app.res.string('error_code', { errorCode })
         switch (errorCodeStr) {
             case '36':
             case '39':
-                return app.res.string('buddy_undefined_error', {errorCode: errorCodeMsg});
+                return app.res.string('buddy_undefined_error', { errorCode: errorCodeMsg });
             case '37':
                 return app.res.string('buddy_buddy_list_is_full');
             case '38':
                 return app.res.string('buddy_cannot_block_offline_buddy');
             default:
-                return app.res.string('buddy_undefined_error', {errorCode: errorCodeMsg});
+                return app.res.string('buddy_undefined_error', { errorCode: errorCodeMsg });
         }
     }
 
     _onBuddyMessage(evtParams) {
 
         let msgObj;
-        try{
+        try {
             msgObj = JSON.parse(evtParams.message);
-        }catch (e){
+        } catch (e) {
             return;
         }
 
@@ -305,20 +308,20 @@ export default class BuddyManager {
         let buddy = this.getBuddyByName(isItMe ? toBuddy : sender);
         if (buddy && !buddy.isTemp()) {
 
-            if (!buddy.messages) (buddy.messages = []);
+            if (!buddy.messages)(buddy.messages = []);
 
-            buddy.messages.push({sender, message});
+            buddy.messages.push({ sender, message });
             if (buddy.messages.length > app.const.NUMBER_MESSAGES_KEEP_PER_BUDDY) {
                 buddy.messages.shift();
             }
 
-            if(buddy.hasOwnProperty('newMessageCount')){
+            if (buddy.hasOwnProperty('newMessageCount')) {
                 buddy.newMessageCount = buddy.newMessageCount + 1;
-            }else{
+            } else {
                 buddy.newMessageCount = 1;
             }
 
-            if(!this.findBuddyInList(app.context.chattingBuddies, buddy)){
+            if (!this.findBuddyInList(app.context.chattingBuddies, buddy)) {
                 app.context.chattingBuddies.push(buddy);
             }
 
@@ -329,7 +332,7 @@ export default class BuddyManager {
             if (!sender && message.startsWith('sender=')) {
                 let senderName = message.substr('sender='.length, message.length);
                 if (this.blackBuddyNames.indexOf(senderName) < 0) {
-                    app.system.confirm(app.res.string('confirm_add_to_buddy_list', {sender: senderName}), null, () => {
+                    app.system.confirm(app.res.string('confirm_add_to_buddy_list', { sender: senderName }), null, () => {
                         this.addBuddy(senderName);
                     });
                     this.blackBuddyNames.push(senderName);
@@ -339,18 +342,18 @@ export default class BuddyManager {
 
     }
 
-    findBuddyInList(buddies, findingBuddy){
-        if(!buddies || !(buddies instanceof Array) || !findingBuddy) return;
+    findBuddyInList(buddies, findingBuddy) {
+        if (!buddies || !(buddies instanceof Array) || !findingBuddy) return;
 
-        let findBuddy
+        let findBuddy;
         buddies.some(buddy => {
-            if(buddy.name == findingBuddy.name){
+            if (buddy.name == findingBuddy.name) {
                 findBuddy = buddy;
                 return true;
             }
-        })
+        });
 
-        return findBuddy
+        return findBuddy;
     }
 
     _onBuddyListInit(evtParams) {
@@ -371,8 +374,8 @@ export default class BuddyManager {
         let isItMe = evtParams.isItMe;
 
         evtParams.changedVars.forEach((varName, i) => {
-            let value = isItMe ? app.service.client.buddyManager.getMyVariable(varName).value
-                : utils.getVariable(app.service.client.buddyManager.getBuddyByName(evtParams.buddy.name), varName);
+            let value = isItMe ? app.service.client.buddyManager.getMyVariable(varName).value :
+                utils.getVariable(app.service.client.buddyManager.getBuddyByName(evtParams.buddy.name), varName);
 
             if (varName == BuddyManager.MOOD_VARIABLE_NAME) {
                 app.system.emit(Events.ON_BUDDY_MOOD_CHANGED, value || "", isItMe, evtParams.buddy);
@@ -381,7 +384,7 @@ export default class BuddyManager {
             } else {
                 //TODO
             }
-        })
+        });
     }
 }
 

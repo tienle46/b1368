@@ -128,6 +128,7 @@ let NodeRub = {
         let outline = node.getComponent(cc.LabelOutline) || node.addComponent(cc.LabelOutline);
         outline.color = options.color;
         outline.width = options.width;
+        options = null;
     },
     /**
      * @param options
@@ -148,6 +149,7 @@ let NodeRub = {
         for (var key in options) {
             layout[key] = options[key];
         }
+        options = null;
     },
     /**
      * @param options
@@ -181,6 +183,7 @@ let NodeRub = {
             let lblNode = NodeRub.createNodeByOptions(o);
             node.addChild(lblNode);
         }
+        options = null;
     },
     /**
      * @param options
@@ -213,6 +216,7 @@ let NodeRub = {
                 sprite[key] = o[key];
             }
         }
+        options = null;
     },
     /**
      * @param options
@@ -223,6 +227,7 @@ let NodeRub = {
     addWebViewComponentToNode: (node, options) => {
         let webView = node.getComponent(cc.WebView) || node.addComponent(cc.WebView);
         webView.url = options.url;
+        options = null;
     },
     /**
      * 
@@ -239,6 +244,7 @@ let NodeRub = {
         options.hasOwnProperty('toggleGroup') && (toggle.toggleGroup = options.toggleGroup);
         options.hasOwnProperty('event') && (toggle.checkEvents = [options.event]);
         options.hasOwnProperty('isChecked') && (toggle.isChecked = options.isChecked);
+        options = null;
     },
     /**
      * @param options
@@ -292,7 +298,7 @@ let NodeRub = {
         } else {
             handleOptions();
         }
-
+        options = null;
     },
     /**
      * @param {any} options
@@ -349,6 +355,8 @@ let NodeRub = {
                 node.addChild(n);
             });
         }
+
+        options = null;
 
         return node;
     },
