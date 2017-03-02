@@ -1,29 +1,23 @@
 /* eslint-disable no-undef, no-unused-vars */
-var app = require('app');
-import BaseScene from 'BaseScene';
-import BuddyManager from 'BuddyManager';
-import Service from 'Service';
+import app from 'app'
+import BaseScene from 'BaseScene'
+import BuddyManager from 'BuddyManager'
+import PromptPopup from 'PromptPopup'
 
 class EntranceScene extends BaseScene {
 
     constructor() {
-
         super();
 
-        this.facebookButton = {
-            default: null,
-            type: cc.Button
-        };
-
-        this.promptPrefab = {
-            default: null,
-            type: cc.Prefab
-        };
+        this.properties = {
+            ...this.properties,
+            facebookButton: cc.Button,
+            promptPrefab: cc.Prefab
+        }
 
         this.accessToken = null;
     }
 
-    // use this for initialization
     onLoad() {
         if (app.env.isMobile() && sdkbox.PluginFacebook) {
             sdkbox.PluginFacebook.setListener({
@@ -86,20 +80,23 @@ class EntranceScene extends BaseScene {
     }
 
     handleRegisterButton() {
-        this.showLoading();
         this.changeScene(app.const.scene.REGISTER_SCENE);
     }
 
     handlePlayNowButton() {
-        let username = this._generateUserName("ysad12", app.config.DEVICE_ID, 0, 5);
-        let password = this._generateUserName("yz212", app.config.DEVICE_ID, 0, 6);
-        this.loginToDashboard(username, password, false, true);
+        if(app.env.isMobile() || app.env.isBrowserTest()){
+            let username = this._generateUserName("ysad12", app.config.DEVICE_ID, 0, 5);
+            let password = this._generateUserName("yz212", app.config.DEVICE_ID, 0, 6);
+            this.loginToDashboard(username, password, false, true);
+        }else{
+            app.system.info(app.res.string('play_now_not_support_on_mobile'))
+        }
     }
 
     handleFacebookLoginAction() {
-        this.accessToken = null;
-        this.showLoading();
 
+        this.accessToken = null;
+        this.showLoading(app.res.string('logging_in_via_facebook'));
         if (app.env.isMobile()) {
             if (!window.sdkbox.PluginFacebook.isLoggedIn()) {
                 window.sdkbox.PluginFacebook.login();
@@ -110,36 +107,41 @@ class EntranceScene extends BaseScene {
                 this.getUserByFbId(fbId, this.accessToken);
             }
         } else {
-            window.FB && window.FB.getLoginStatus((response) => {
-                if (response.status === 'connected') {
-                    // the user is logged in and has authenticated, and response.authResponse supplies the user's ID, a valid access token, 
-                    // a signed request, and the time the access token and signed request each expire
-                    let uid = response.authResponse.userID;
-                    this.accessToken = response.authResponse.accessToken;
+            if(window.FB) {
+                window.FB.getLoginStatus((response) => {
+                    if (response.status === 'connected') {
+                        // the user is logged in and has authenticated, and response.authResponse supplies the user's ID, a valid access token,
+                        // a signed request, and the time the access token and signed request each expire
+                        let uid = response.authResponse.userID;
+                        this.accessToken = response.authResponse.accessToken;
 
-                    this.getUserByFbId(uid, this.accessToken);
-                } else if (response.status === 'not_authorized') {
-                    // the user is logged in to Facebook, but has not authenticated your app
-                    window.FB.login((response) => {
-                        if (response.authResponse) {
-                            this.accessToken = response.authResponse.accessToken; //get access token
-                            let user_id = response.authResponse.userID; //get FB UID
-                            let pointer = this;
-                            window.FB.api('/me', (res) => {
-                                // let user_email = res.email; //get user email
-                                // you can store this data into your database
-                                pointer.getUserByFbId(user_id, this.accessToken);
-                            });
-                        } else {
-                            //user hit cancel button
-                            // console.log('User cancelled login or did not fully authorize.');
-                            this.accessToken = null;
-                        }
-                    }, {
-                        scope: `${app.config.fbScope}`
-                    });
-                }
-            });
+                        this.getUserByFbId(uid, this.accessToken);
+                    } else {
+                        // the user is logged in to Facebook, but has not authenticated your app
+                        window.FB.login((response) => {
+                            if (response.authResponse) {
+                                this.accessToken = response.authResponse.accessToken; //get access token
+                                let user_id = response.authResponse.userID; //get FB UID
+                                let pointer = this;
+                                window.FB.api('/me', (res) => {
+                                    // let user_email = res.email; //get user email
+                                    // you can store this data into your database
+                                    //console.warn('window.FB.api: ', res);
+                                    pointer.getUserByFbId(user_id, this.accessToken);
+                                });
+                            } else {
+                                //user hit cancel button
+                                //console.warn('User cancelled login or did not fully authorize.');
+                                this.accessToken = null;
+                            }
+                        }, {
+                            scope: `${app.config.fbScope}`
+                        });
+                    }
+                });
+            }else{
+                app.system.error(app.res.string('error_cannot_init_facebook'))
+            }
         }
     }
 
@@ -155,16 +157,7 @@ class EntranceScene extends BaseScene {
                     if (username && typeof username == 'string' && username.trim().length > 0) {
                         this._onLoginWithAccessToken(username, accessToken);
                     } else {
-                        let prompt = cc.instantiate(this.promptPrefab);
-                        let option = {
-                            handler: this._onUserDonePickupName.bind(this),
-                            title: 'Chọn tên đăng nhập',
-                            description: 'Chọn tên đăng nhập :',
-                            editBox: {
-                                inputMode: cc.EditBox.InputMode.SINGLE_LINE
-                            }
-                        };
-                        prompt.getComponent('PromptPopup').init(null, option);
+                        this._showInputUsernamePopup();
                     }
                 } else {
                     app.system.error(app.res.string('error_system'));
@@ -173,6 +166,18 @@ class EntranceScene extends BaseScene {
         };
         xhr.open("GET", `http://${app.config.host}:8922/user/fb/${fbId}`, true);
         xhr.send();
+    }
+
+    _showInputUsernamePopup(){
+        PromptPopup.show(this.node, this.promptPrefab, {
+            handler: this._onUserDonePickupName.bind(this),
+            title: app.res.string('input_username_title'),
+            description: app.res.string('username_rule'),
+            acceptLabelText: app.res.string('label_enter_game'),
+            inputRegex: app.config.USER_NAME_REGEX,
+            inputErrorMessage: app.res.string('error_username_not_match'),
+            maxLength: app.config.MAX_USERNAME_LENGTH
+        })
     }
 
     _onUserDonePickupName(username) {
@@ -184,15 +189,21 @@ class EntranceScene extends BaseScene {
     }
 
     _onLoginWithAccessToken(username, accessToken) {
-        this.loginToDashboard(username, "", false, false, accessToken);
+        if(username.length > 0) {
+            this.loginToDashboard(username, "", false, false, accessToken);
+        }
     }
 
     _generateUserName(key, deviceId, count, maxCall) {
-        if (count < maxCall) {
-            let code2 = `${this._javaHashcode(deviceId)}${key}xintaocho`;
-            return this._generateUserName(key, code2, count + 1, maxCall);
+        try{
+            if (count < maxCall) {
+                let code2 = `${this._javaHashcode(deviceId)}${key}xintaocho`;
+                return this._generateUserName(key, code2, count + 1, maxCall);
+            }
+            return `p${Math.abs(this._javaHashcode(deviceId))}`;
+        }catch(e){
+            app.system.info(app.res.string('play_now_not_available_right_now'))
         }
-        return `p${Math.abs(this._javaHashcode(deviceId))}`;
     }
 
     _javaHashcode(str) {

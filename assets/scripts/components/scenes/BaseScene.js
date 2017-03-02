@@ -51,11 +51,7 @@ export default class BaseScene extends Actor {
         super.onLoad();
 
         this._initProgress();
-
-        this._pendingAddPopup && this._pendingAddPopup.forEach(msg => {
-            app.service.info(msg);
-        });
-
+        this._pendingAddPopup && this._pendingAddPopup.forEach(msg => app.service.info(msg));
         this.isLoaded = true;
     }
 
@@ -63,7 +59,6 @@ export default class BaseScene extends Actor {
         super.onEnable();
 
         this.progress && this.progress.hide();
-
         if (this.onShown && this.onShown instanceof Function) {
             this.onShown();
         }
@@ -85,11 +80,11 @@ export default class BaseScene extends Actor {
     }
 
     showShortLoading(message = '', payload = '') {
-        this.showLoading(payload, message, 5);
+        this.showLoading(message, 5, payload);
     }
 
     showLongLoading(message = '', payload = '') {
-        this.showLoading(payload, message, 20);
+        this.showLoading(message, 20, payload);
     }
 
     showLoading(message = '', timeoutInSeconds = 10, payload = '') {
@@ -100,14 +95,13 @@ export default class BaseScene extends Actor {
             message = "";
         }
 
-        this.progress && this.progress.show(message, timeoutInSeconds);
-
         this.loading = true;
+        this.progress && this.progress.show(message, timeoutInSeconds);
     }
 
     hideLoading(payload) {
-        this.loading = false;
         this.progress && this.progress.hide();
+        this.loading = false;
     }
 
     changeScene(name, onLaunched) {
@@ -116,7 +110,9 @@ export default class BaseScene extends Actor {
     }
 
     loginToDashboard(username, password, isRegister = false, isQuickLogin = false, accessToken = null) {
+
         app.system.showLoader('Đang kết nối đến server ...');
+
         if (app.service.client.isConnected()) {
             this._requestAuthen(username, password, isRegister, isQuickLogin, accessToken);
         } else {
@@ -143,13 +139,18 @@ export default class BaseScene extends Actor {
                 app.system.showErrorToast(app.getMessageFromServer(error));
             }
             if (result) {
+
                 log(`Logged in as ${app.context.getMe().name}`);
+
                 if (app.env.isMobile() && window.sdkbox) {
                     window.sdkbox.PluginGoogleAnalytics.setUser(app.context.getMe().name);
                 }
                 app.system.showLoader('Đăng nhập thành công ...');
-                //load recently games
-                this.changeScene(app.const.scene.DASHBOARD_SCENE, this._resendIAPSavedItem);
+
+                /**
+                 * after login try to resend iap saved on local storage
+                 */
+                this.changeScene(app.const.scene.DASHBOARD_SCENE, () => {setTimeout(() => this._resendIAPSavedItem(), 2000)});
             }
         });
     }
@@ -182,7 +183,6 @@ export default class BaseScene extends Actor {
         };
 
         app.env.isAndroid() && (sendObj.data.resubmit = true);
-
         app.system.showLoader(app.res.string('re_sending_item_iap'), 60);
         app.service.send(sendObj);
     }

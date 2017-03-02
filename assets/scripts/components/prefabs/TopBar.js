@@ -4,7 +4,7 @@ import TimerRub from 'TimerRub';
 import DialogRub from 'DialogRub';
 import { isNode } from 'Utils';
 import CCUtils from 'CCUtils';
-import BuddyPopup from 'BuddyPopup';
+import PromptPopup from 'PromptPopup';
 
 class TopBar extends Actor {
     constructor() {
@@ -38,17 +38,12 @@ class TopBar extends Actor {
     }
 
     giveFeedbackClicked() {
-        let prompt = cc.instantiate(this.promptPrefab);
-        let option = {
+        PromptPopup.show(app.system.getCurrentSceneNode(), this.promptPrefab, {
             handler: this._onFeedbackConfirmed.bind(this),
             title: 'Góp ý',
-            description: 'Nhập ý kiến :',
-            editBox: {
-                height: 150,
-                inputMode: cc.EditBox.InputMode.ANY
-            }
-        };
-        prompt.getComponent('PromptPopup').init(null, option);
+            description: 'Nhập ý kiến',
+            acceptLabelText: "Gửi"
+        })
     }
 
     onDestroy() {

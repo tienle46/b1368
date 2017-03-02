@@ -24,15 +24,16 @@ export default class Progress extends Component {
         this.spinNode.runAction(cc.repeatForever(cc.rotateBy(1.0, 360)));
 
         if (this.duration) {
-            this.interval = setInterval(() => {
-                this.interval && clearInterval(this.interval);
-                this.timeoutCb ? this.timeoutCb() : this.hide();
+            this.interval = setTimeout(() => {
+                this.interval && clearTimeout(this.interval);
+                this.hide();
+                this.timeoutCb && this.timeoutCb();
             }, this.duration * 1000);
         }
     }
 
     onDisable() {
-        this.interval && clearInterval(this.interval);
+        this.interval && clearTimeout(this.interval);
         this.spinNode && this.spinNode.stopAllActions() && (this.spinNode.active = false);
     }
 

@@ -1,7 +1,6 @@
-var BaseScene = require('BaseScene');
-var app = require('app');
 
-const MINIMUM_PASSWORD = 6;
+import app from 'app';
+import BaseScene from 'BaseScene';
 
 export default class RegisterScene extends BaseScene {
     constructor() {
@@ -9,23 +8,10 @@ export default class RegisterScene extends BaseScene {
 
         this.properties = {
             resetCaptcha: cc.Node,
+            userNameEditBox: cc.EditBox,
+            userPasswordEditBox: cc.EditBox,
+            userCaptchaEditBox: cc.EditBox,
         };
-
-        this.userNameEditBox = {
-            default: null,
-            type: cc.EditBox
-        };
-
-        this.userPasswordEditBox = {
-            default: null,
-            type: cc.EditBox
-        };
-
-        this.userCaptchaEditBox = {
-            default: null,
-            type: cc.EditBox
-        };
-
     }
 
     onLoad() {
@@ -34,12 +20,7 @@ export default class RegisterScene extends BaseScene {
         this.generateRandomString();
     }
 
-    onEnable() {
-        super.onEnable();
-    }
-
     handleRegistryAction() {
-        // this.showLoading();
         let username = this.userNameEditBox.string.trim();
         let password = this.userPasswordEditBox.string.trim();
 
@@ -47,7 +28,6 @@ export default class RegisterScene extends BaseScene {
             this.loginToDashboard(username, password, true);
         } else {
             this.hideLoading();
-
             if (!this._isValidUsernameInput(username)) {
                 app.system.showErrorToast(app.getMessageFromServer("LOGIN_ERROR_USERNAME_NOT_VALID"));
             } else if (!this._isValidPasswordInput(password)) {
@@ -59,14 +39,12 @@ export default class RegisterScene extends BaseScene {
     }
 
     generateRandomString() {
-        this.captchaLabel.string = this._generateRandomString(MINIMUM_PASSWORD); // genarate from [2, 6] to avoid "0.xxx" in string
+        this.captchaLabel.string = this._generateRandomString(app.config.MINIMUM_PASSWORD); // genarate from [2, 6] to avoid "0.xxx" in string
     }
 
-    back() { // back to EntranceScene
-        this.showLoading();
+    back() {
         this.changeScene(app.const.scene.ENTRANCE_SCENE);
     }
-
 
     /**
      *  PRIVATE METHODS
@@ -83,13 +61,13 @@ export default class RegisterScene extends BaseScene {
     _isValidPasswordInput(str) {
         // minimum: 6, must have atleast a-z||A-Z|0-9, without space
         // /\s/.test(str) => true if str contains space
-        return str.length <= 16 && /[a-zA-Z0-9]{5,}/.test(str) && /[a-zA-Z]/.test(str) && /[0-9]/.test(str) && !/\s/.test(str) && str.length >= MINIMUM_PASSWORD;
+        return str.length <= 16 && /[a-zA-Z0-9]{5,}/.test(str) && /[a-zA-Z]/.test(str) && /[0-9]/.test(str) && !/\s/.test(str) && str.length >= app.config.MINIMUM_PASSWORD;
     }
 
     _isValidUsernameInput(str) {
         // minimum: 5, a-zA-Z0-9, without space
         // /\s/.test(str) => true if str contains space
-        return str.length <= 21 && /[a-zA-Z0-9]{5,}/.test(str) && !/\s/.test(str);
+        return str.length <= 21 && /[a-zA-Z0-9]{6,}/.test(str) && !/\s/.test(str);
     }
 
     _isValidCaptcha() {

@@ -64,6 +64,7 @@ export default class Component {
     onDestroy() {
         this.releaseAssets();
         this.removeNodes();
+        this.__componentData = null;
     }
 
     releaseAssets() {

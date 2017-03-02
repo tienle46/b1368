@@ -26,8 +26,9 @@ export default class Utils {
     }
 
     static isNumber(value) {
-        value = Number(value);
-        return !isNaN(value) && typeof value === 'number';
+        return typeof value === 'number'
+        // value = Number(value);
+        // return !isNaN(value) && typeof value === 'number';
     }
 
     static isFunction(value) {

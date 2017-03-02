@@ -7,20 +7,12 @@ export default class LoginScene extends BaseScene {
     constructor() {
         super();
 
-        this.userNameEditBox = {
-            default: null,
-            type: cc.EditBox
-        };
-
-        this.userPasswordEditBox = {
-            default: null,
-            type: cc.EditBox
-        };
-
-        this.checkBox = {
-            default: null,
-            type: cc.Toggle
-        };
+        this.properties = {
+            ...this.properties,
+            userNameEditBox: cc.EditBox,
+            userPasswordEditBox: cc.EditBox,
+            checkBox: cc.Toggle,
+        }
 
         this.b64 = new Base64();
     }
@@ -34,7 +26,6 @@ export default class LoginScene extends BaseScene {
 
         if (this._isSaved()) {
             let [username, password] = this._isSaved().split(':');
-
             this.userNameEditBox.string = username;
             this.userPasswordEditBox.string = password;
         }
@@ -45,9 +36,7 @@ export default class LoginScene extends BaseScene {
         let password = this.userPasswordEditBox.string.trim();
 
         if (isEmpty(username) || isEmpty(password)) {
-            app.system.showErrorToast(
-                app.res.string('error_user_enter_empty_input')
-            );
+            app.system.showErrorToast(app.res.string('error_user_enter_empty_input'));
             return;
         }
 

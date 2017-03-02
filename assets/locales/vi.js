@@ -34,6 +34,8 @@ export default {
     error_system_not_support_join_room_have_password: 'Hệ thống chưa hỗ trợ vào bàn chơi có mật khẩu',
     error_undefined_please_try_again: 'Lỗi chưa xác định, vui lòng thử lại!',
     error_undefined: 'Lỗi {{error}} chưa được xác định. Vui lòng gọi hỗ trợ!',
+    error_cannot_init_facebook: 'Không thể khởi tạo chức năng đăng nhập Facebook. Vui lòng gọi hỗ trợ!',
+    error_username_not_match: 'Tên đăng nhập từ 6 - 15 kí tự bao gồm chữ và số',
 
     get_transfer_success: 'Bạn đã rút thành công {{amount}} chip, chúc bạn chơi game vui vẻ.',
     transfer_successfully: 'Chuyển thành công {{amount}} chip tới {{username}}.',
@@ -63,6 +65,7 @@ export default {
     label_accept: 'Đồng ý',
     label_deny: 'Hủy',
     label_close: 'Đóng',
+    label_enter_game: 'Vào game',
     random_invite_player_successfully: 'Lời mời vào bàn chơi đã được gửi đi',
     error_cannot_load_data: 'Không thể tải dữ liệu',
     loading_data: 'Đang tải dữ liệu...',
@@ -147,4 +150,9 @@ export default {
     buddy_select_buddy_to_chat: "Chọn bạn để chat!",
 
     hotline: "Hỗ trợ: {{hotline}}",
+    logging_in_via_facebook: "Đang đăng nhập bằng facebook",
+    play_now_not_support_on_mobile: "Chức năng chơi ngay không được hỗ trợ trên bản Web. Vui lòng dùng chức năng này trên Điện thoại",
+    play_now_not_available_right_now: "Chức năng chơi ngay không thực hiện được vào lúc này. Vui lòng thử lại sau!",
+    username_rule: "Tên đăng nhập (6 - 15 kí tự)",
+    input_username_title: "Nhập tên đăng nhập",
 };
