@@ -401,7 +401,7 @@ export default class ListTableScene extends BaseScene {
         app.service.send(sendObject);
     }
 
-    _createRoom(gameCode = null, minBet = 0, roomCapacity = 2, password = undefined) {
+    _createRoom({minBet = 0, roomCapacity = 2} = {}) {
         this.__isCreatingRoom = true;
 
         /**

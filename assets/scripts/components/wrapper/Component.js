@@ -65,6 +65,9 @@ export default class Component {
         this.releaseAssets();
         this.removeNodes();
         this.__componentData = null;
+        Object.getOwnPropertyNames(this).forEach(key => {
+            this[key] = null;
+        });
     }
 
     releaseAssets() {
