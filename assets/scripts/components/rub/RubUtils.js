@@ -17,6 +17,8 @@ let RubUtils = {
             } else {
                 cc.loader.loadRes(resURL, handler);
             }
+            cc.loader.setAutoReleaseRecursively(resURL, true);
+
         });
     },
     getSpriteFrameFromAtlas: (resURL, key, cb) => {
@@ -32,6 +34,8 @@ let RubUtils = {
             RubUtils.releaseAssets(frame);
             // sprite.spriteFrame = frame;
         });
+        cc.loader.setAutoReleaseRecursively(resURL, true);
+
     },
     loadFont: (component, url, cb) => {
         cc.loader.loadRes(url, cc.Font, (err, font) => {
@@ -39,6 +43,8 @@ let RubUtils = {
             cb && cb(font);
             RubUtils.releaseAssets(font)
         });
+        cc.loader.setAutoReleaseRecursively(url, true);
+
     },
     /**
      * @param spriteComponent: (cc.Component) sprite we need to add spriteFrame to
