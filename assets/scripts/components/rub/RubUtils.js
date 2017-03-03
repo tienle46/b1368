@@ -34,7 +34,7 @@ let RubUtils = {
             RubUtils.releaseAssets(frame);
             // sprite.spriteFrame = frame;
         });
-        cc.loader.setAutoReleaseRecursively(resURL, true);
+        // cc.loader.setAutoReleaseRecursively(resURL, true);
 
     },
     loadFont: (component, url, cb) => {
