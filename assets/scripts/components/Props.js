@@ -30,6 +30,7 @@ export default class Props extends Component {
                 propAssets[asset.name] = asset;
             });
         });
+        cc.loader.setAutoReleaseRecursively('props/', true);
 
         cc.loader.loadResDir('emotions/', cc.SpriteFrame, (err, assets) => {
             assets.forEach(asset => {
@@ -40,6 +41,7 @@ export default class Props extends Component {
                 emotionAssets[asset.name] = asset;
             });
         });
+        cc.loader.setAutoReleaseRecursively('emotions/', true);
     }
 
     static releaseAllPropAsset() {
@@ -90,6 +92,7 @@ export default class Props extends Component {
                     this._playLoadedEmotion(atlas, node);
                 }
             });
+            cc.loader.setAutoReleaseRecursively(`emotions/${name}`, true);
         }
     }
 

@@ -93,6 +93,8 @@ export default class GameManager {
                         callback();
                     }
                 });
+                cc.loader.setAutoReleaseRecursively(boardPath, true);
+
             },
             (callback) => {
                 let playerPath = playerPrefabPathMap[gameCode];
@@ -104,6 +106,7 @@ export default class GameManager {
                         callback();
                     }
                 });
+                cc.loader.setAutoReleaseRecursively(playerPath, true);
             },
             (callback) => {
                 let playerPath = gameControlsPrefabPathMap[gameCode];
@@ -115,6 +118,7 @@ export default class GameManager {
                         callback();
                     }
                 });
+                cc.loader.setAutoReleaseRecursively(playerPath, true);
             }
         ], function (err, results) {
 

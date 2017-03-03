@@ -133,6 +133,7 @@ export default class Utils {
             let prefabObj = cc.instantiate(prefab);
             prefabObj.parent = this && this.playerLayer;
         });
+
     }
     //
     // static getVariable(obj, key, defaultValue) {
