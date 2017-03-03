@@ -2,6 +2,7 @@ import app from 'app';
 import utils from 'utils';
 import DialogActor from 'DialogActor';
 import PersonalInfoDialogRub from 'PersonalInfoDialogRub';
+import CCUtils from 'CCUtils';
 
 export default class TabBuddiesList extends DialogActor {
 
@@ -236,10 +237,8 @@ export default class TabBuddiesList extends DialogActor {
     }
 
     _clearAllBuddyItemComponent() {
-        this.rightBuddyListComponent.children.forEach(component => component.destroy());
-        this.leftBuddyListComponent.children.forEach(component => component.destroy());
-        this.rightBuddyListComponent.removeAllChildren(true);
-        this.leftBuddyListComponent.removeAllChildren(true);
+        CCUtils.clearAllChildren(rightBuddyListComponent);
+        CCUtils.clearAllChildren(leftBuddyListComponent);
     }
 
     _createBuddyItem(buddy) {

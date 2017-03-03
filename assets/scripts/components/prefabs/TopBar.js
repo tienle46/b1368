@@ -82,7 +82,7 @@ class TopBar extends Actor {
 
     onClickEventAction() {
         let dialog = new DialogRub(this.node.parent, null, { title: 'Sự kiện' });
-        dialog.addBody('dashboard/dialog/prefabs/event/event_dialog');
+        dialog.addBody('dashboard/dialog/prefabs/event/event_dialog', 'EventDialog');
     }
 
     handleMoreAction() {

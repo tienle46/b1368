@@ -7,6 +7,7 @@ import Actor from 'Actor';
 import GameResultItem from 'GameResultItem';
 import { GameUtils } from 'utils';
 import Commands from "Commands";
+import CCUtils from "CCUtils";
 import ArrayUtils from "ArrayUtils";
 
 export default class GameResultPopup extends Actor {
@@ -68,8 +69,7 @@ export default class GameResultPopup extends Actor {
 
     clear() {
         this.__models__ = null;
-        this.content.children.forEach(child => child.destroy());
-        this.content.removeAllChildren();
+        CCUtils.clearAllChildren(this.content);
     }
 
     _showResultData(models) {
