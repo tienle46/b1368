@@ -78,7 +78,7 @@ app.createComponent = (classNameOrInstance, extendClass = undefined, ...args) =>
     // }
 
     Object.getOwnPropertyNames(instance).forEach(key => {
-        if (key !== 'extends' && key !== 'properties' /*&& !key.startsWith('__')*/ ) {
+        if (key !== 'extends' && key !== 'properties' /*&& !key.startsWith('__')*/) {
             // check if property is Object && except instance of cc.Componet
             // such as {default: xxx, type: cc.XXX } => assign to `properties` for displaying value on cocoCcreator
             // if `instance[key]` is intance of `cc`
@@ -148,11 +148,9 @@ app.createComponent = (classNameOrInstance, extendClass = undefined, ...args) =>
 };
 
 app.getRoomErrorMessage = (error) => {
-    console.warn('getRoomErrorMessage: ', error);
-
     let message, errorCode = "",
         errorMessage = "",
-        messages = SFSErrorMessages[app.LANG];
+        messages = RoomErrorMessages[app.LANG];
 
     if (typeof error == 'string') {
         errorCode = error;
@@ -160,8 +158,14 @@ app.getRoomErrorMessage = (error) => {
     } else {
         errorCode = error.errorCode;
         errorMessage = error.errorMessage;
-        message = messages[errorCode];
+        if (typeof messages[errorCode] === 'object') {
+            message = messages[errorCode][errorMessage];
+        } else {
+            message = messages[errorCode];
+        }
     }
+
+    return message || app.res.string('error_undefined', {error: `${errorCode}:${errorMessage}`});
 };
 
 app.getMessageFromServer = (error) => {
@@ -182,10 +186,10 @@ app.getMessageFromServer = (error) => {
         }
     }
 
-    return message || app.res.string('error_undefined', { error: `${errorCode}:${errorMessage}` });
+    return message || app.res.string('error_undefined', {error: `${errorCode}:${errorMessage}`});
 };
 
-(function() {
+(function () {
     window.free = function free(...args) {
         [...args].forEach(arg => {
             if (arg instanceof Array) {
@@ -230,7 +234,7 @@ app.getMessageFromServer = (error) => {
         console.warn(...args);
     };
 
-    window.onNativePostAction = function(jsonString) {
+    window.onNativePostAction = function (jsonString) {
         window.log("---> onNativePostAction", jsonString);
     };
 
