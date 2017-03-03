@@ -84,8 +84,8 @@ export default class DialogRub extends Rub {
      * 
      * @memberOf DialogRub
      */
-    addBody(asset) {
-        this.dialogComponent.addToBody('eventFakerId', asset);
+    addBody(asset, componentName) {
+        this.dialogComponent.addToBody('eventFakerId', asset, componentName);
     }
 
     addComponent(component) {

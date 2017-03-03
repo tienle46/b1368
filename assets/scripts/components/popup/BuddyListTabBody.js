@@ -6,6 +6,7 @@ import app from 'app';
 import utils from 'utils';
 import PopupTabBody from 'PopupTabBody';
 import Events from 'Events';
+import CCUtils from 'CCUtils';
 
 class BuddyListTabBody extends PopupTabBody {
 
@@ -244,7 +245,7 @@ class BuddyListTabBody extends PopupTabBody {
                     this.currentBuddyItems.push(buddyItem);
                 });
         } else {
-            this.leftBuddyListComponent.removeAllChildren(true);
+            CCUtils.clearAllChildren(this.leftBuddyListComponent);
         }
     }
 
@@ -279,10 +280,9 @@ class BuddyListTabBody extends PopupTabBody {
 
     _clearAllBuddyItemComponent() {
         this.currentBuddyItems.splice(0, this.currentBuddyItems.length);
-        this.rightBuddyListComponent.children.forEach(component => component.destroy());
-        this.leftBuddyListComponent.children.forEach(component => component.destroy());
-        this.rightBuddyListComponent.removeAllChildren(true);
-        this.leftBuddyListComponent.removeAllChildren(true);
+
+        CCUtils.clearAllChildren(this.rightBuddyListComponent);
+        CCUtils.clearAllChildren(this.leftBuddyListComponent);
     }
 
     hideMenu() {

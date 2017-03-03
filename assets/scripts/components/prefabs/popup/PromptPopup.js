@@ -5,7 +5,7 @@
 import app from 'app';
 import NodeRub from 'NodeRub';
 import Component from 'Component';
-import { isNode, destroy } from 'CCUtils';
+import CCUtils, { isNode, destroy } from 'CCUtils';
 
 export default class PromptPopup extends Component {
     constructor() {
@@ -58,7 +58,9 @@ export default class PromptPopup extends Component {
 
     init(parent, initObject, title, edBox, hl) {
         if (isNode(initObject)) {
-            this.mainNode.removeAllChildren();
+
+            CCUtils.clearAllChildren(this.mainNode);
+
             initObject.setPosition(cc.v2(0, 0));
             this.mainNode.addChild(initObject);
 

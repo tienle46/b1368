@@ -234,8 +234,23 @@ app.getMessageFromServer = (error) => {
         console.warn(...args);
     };
 
+    /**
+     *
+     * @param jsonString = {
+     *      “action”:”action namne”,
+     *      ”action_extras”: {}}
+     * }
+     */
     window.onNativePostAction = function (jsonString) {
-        window.log("---> onNativePostAction", jsonString);
+        let Linking = require('Linking');
+        try{
+            let jsonParam = JSON.parse(jsonString)
+            let actionParamStr = jsonParam['action_extras']
+            let actionParam = actionParamStr == null || !actionParamStr.length ? {} : JSON.parse(jsonParam['action_extras']);
+            Linking.goTo(jsonParam.action, actionParam);
+        }catch(e){
+            //DO nothing
+        }
     };
 
     /* INIT GAME */

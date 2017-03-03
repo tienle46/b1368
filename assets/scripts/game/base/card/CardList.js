@@ -2,7 +2,7 @@
 import Component from 'Component';
 import Card from 'Card';
 import utils from 'utils';
-// import PhomUtils from "PhomUtils";
+import CCUtils from "CCUtils";
 import ArrayUtils from "ArrayUtils";
 
 export default class CardList extends Component {
@@ -104,8 +104,7 @@ export default class CardList extends Component {
             this.cards = [];
         }
         if (this.node) {
-            this.node.children.forEach(child => child.destroy());
-            this.node.removeAllChildren(true);
+            CCUtils.clearAllChildren(this.node);
         }
     }
 

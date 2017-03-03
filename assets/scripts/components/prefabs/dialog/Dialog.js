@@ -34,6 +34,10 @@ export default class Dialog extends Component {
         window.free(this.addedNodes, this.sharedData)
     }
 
+    hide(){
+        this.onCloseBtnClick();
+    }
+
     onCloseBtnClick() {
         destroy(this.node.parent);
     }
@@ -68,7 +72,7 @@ export default class Dialog extends Component {
             this.bodyNode.children.map(node => {
                 if (node._$tabComponentName) {
                     let component = node.getComponent(node._$tabComponentName);
-                    component && component.setData(data);
+                    component && component.setData && component.setData(data);
                 }
                 node.active = (node._$uid == id);
             });
@@ -89,8 +93,9 @@ export default class Dialog extends Component {
                  */
                 let tabComponent = p.getComponent(componentName);
                 if (tabComponent) {
-                    tabComponent.setTabGroup(tabGroup);
-                    tabComponent.setData(data);
+                    //tabComponent && tabComponent.setDialog && tabComponent.setDialog(this);
+                    tabComponent.setTabGroup && tabComponent.setTabGroup(tabGroup);
+                    tabComponent.setData && tabComponent.setData(data);
                 }
             }
 

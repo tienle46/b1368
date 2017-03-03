@@ -300,6 +300,7 @@ export default class GamePlayers extends Component {
                 delete this._idToPlayerMap[player.id];
                 delete this._idToPlayerMap[player.user.name];
 
+                player.node.destroy();
                 this.scene.playerLayer.removeChild(player.node);
                 this.playerPositions.showInviteButtonByPlayerId(player.id);
                 this._onPlayerDataChanged();

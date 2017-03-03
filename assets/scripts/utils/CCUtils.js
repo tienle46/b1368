@@ -35,6 +35,24 @@ export default class CCUtils {
         return target && cc.isValid(target) && target.destroy();
     }
 
+    static destroyAllChildren(node) {
+        node && node.children && node.children.forEach(child => CCUtils.destroy(child));
+    }
+
+    static clearAllChildren(node) {
+        if(node){
+            node.children && node.children.forEach(child => CCUtils.destroy(child));
+            node.removeAllChildren && node.removeAllChildren(true);
+        }
+    }
+
+    static clearFromParent(node) {
+        if(node){
+            CCUtils.destroy(node);
+            node.removeFromParent(true);
+        }
+    }
+
     static active(node, opacity) {
         CCUtils.setActive(node, true);
         if (opacity) {

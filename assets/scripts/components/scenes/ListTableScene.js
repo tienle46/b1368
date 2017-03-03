@@ -4,7 +4,7 @@ import SFS2X from 'SFS2X';
 import { requestTimeout, clearRequestTimeout } from 'TimeHacker';
 import ScrollMessagePopup from 'ScrollMessagePopup';
 import BuddyPopup from 'BuddyPopup';
-import { destroy } from 'CCUtils';
+import CCUtils, { destroy } from 'CCUtils';
 
 export default class ListTableScene extends BaseScene {
     constructor() {
@@ -349,9 +349,7 @@ export default class ListTableScene extends BaseScene {
      */
     _renderList() {
 
-        if (this.contentInScroll) {
-            this.contentInScroll.removeAllChildren();
-        }
+        CCUtils.clearAllChildren(this.contentInScroll)
 
         let filterItems = this._filterItems();
         if (filterItems.length > 0) {

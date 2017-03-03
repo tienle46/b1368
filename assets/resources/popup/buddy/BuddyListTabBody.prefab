@@ -5972,7 +5972,7 @@
     "filterOnlineToggle": {
       "__id__": 56
     },
-    "itemPerList": 4
+    "itemPerList": 3
   },
   {
     "__type__": "cc.Button",
