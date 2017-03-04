@@ -264,5 +264,7 @@ Commands.IOS_IN_APP_PURCHASE = "submitPurchase";
 Commands.ANDROID_IN_APP_PURCHASE = "submitBilling";
 Commands.GET_LIST_GAME_MINBET = "gmbl";
 Commands.CLIENT_CONFIG = "clientConfig";
+Commands.BANK_ACCOUNT_WITHDRAW_INFO = "b_awi";
+Commands.GET_WITHDRAW_INFO = "getWithdrawInfo";
 
 module.exports = Commands;

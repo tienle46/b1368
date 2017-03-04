@@ -1,5 +1,6 @@
 import app from 'app';
 import DialogActor from 'DialogActor';
+import PromptPopup from 'PromptPopup';
 import { isEmpty, isNumber, active, deactive, numberFormat } from 'Utils';
 
 export default class TabUserInfo extends DialogActor {
@@ -13,6 +14,7 @@ export default class TabUserInfo extends DialogActor {
 
             mainBodyNode: cc.Node,
             chuyenTienBodyNode: cc.Node,
+            withdrawNode: cc.Node,
 
             promptPrefab: cc.Prefab,
             promtpMainNode: cc.Node,
@@ -25,12 +27,13 @@ export default class TabUserInfo extends DialogActor {
         this._maxTransfer = 0;
         this._remainTransfer = 0;
         this._previousValue = 0;
+        this._withdrawComponent = null;
     }
 
     onLoad() {
         super.onLoad();
-        this.balanceLbl.string = numberFormat(this.balance);
         this._showMainBody();
+        this._withdrawComponent = this.withdrawNode.getComponent('WithdrawMoneyComponent')
     }
 
     start() {
@@ -39,13 +42,16 @@ export default class TabUserInfo extends DialogActor {
     }
 
     onRutTienBtnClick() {
-        let prompt = cc.instantiate(this.promptPrefab);
-        let mainNode = cc.instantiate(this.promtpMainNode);
-        mainNode.active = true;
-        let editBox = mainNode.getChildByName('sprite').getChildByName('editbox');
-        let edBoxComponent = editBox && editBox.getComponent(cc.EditBox);
+        this._withdrawComponent && this._withdrawComponent.setComponentData({balance: this._balance, minBalance: 0, remainBalance: 0})
+        deactive(this.mainBodyNode);
+        active(this.withdrawNode);
 
-        prompt.getComponent('PromptPopup').init(null, mainNode, 'RÚT TIỀN', edBoxComponent, this.onConfirmRutTienBtnClick.bind(this));
+        // PromptPopup.showSingleLine(app.system.getCurrentSceneNode(), {
+        //     handler: this.onConfirmRutTienBtnClick.bind(this),
+        //     description: app.res.string('label_input_withdrawal_amount'),
+        //     acceptLabelText: app.res.string('label_withdrawal'),
+        //     inputMode: cc.EditBox.InputMode.NUMERIC
+        // })
     }
 
     onChuyenTienBtnClick() {
@@ -92,18 +98,20 @@ export default class TabUserInfo extends DialogActor {
         };
 
         app.service.send(sendObject);
+
+        return true;
     }
 
     _addGlobalListener() {
         super._addGlobalListener();
         app.system.addListener(app.commands.BANK_IN_HISTORY, this._fillContent, this);
-        app.system.addListener(app.commands.USER_GET_MONEY_FROM_BANK, this._onUserGetMoney, this);
+        // app.system.addListener(app.commands.USER_GET_MONEY_FROM_BANK, this._onUserGetMoney, this);
     }
 
     _removeGlobalListener() {
         super._removeGlobalListener();
         app.system.removeListener(app.commands.BANK_IN_HISTORY, this._fillContent, this);
-        app.system.removeListener(app.commands.USER_GET_MONEY_FROM_BANK, this._onUserGetMoney, this);
+        // app.system.removeListener(app.commands.USER_GET_MONEY_FROM_BANK, this._onUserGetMoney, this);
     }
 
     _onUserTransferResponse(data) {
@@ -164,7 +172,7 @@ export default class TabUserInfo extends DialogActor {
 
             this._remainTransfer = data.remainBalance;
 
-            this.hintRichText.string = `<outline width=2 color=#000>Số tiền rút tối thiểu: <color=#FF0000>${numberFormat(this._minTransfer)}</c>. Tối thiểu cần có <color=#FF0000> ${numberFormat(this._remainTransfer)} </c> trong tài khoản.</o>`;
+            //this.hintRichText.string = `<outline width=2 color=#000>Số tiền rút tối thiểu: <color=#FF0000>${numberFormat(this._minTransfer)}</c>. Tối thiểu cần có <color=#FF0000> ${numberFormat(this._remainTransfer)} </c> trong tài khoản.</o>`;
         }
 
         this.initView({

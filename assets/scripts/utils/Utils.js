@@ -187,7 +187,7 @@ export default class Utils {
 
     }
 
-    static numberFormat(value, format = '0,0') {
+    static numberFormat(value = 0, format = '0,0') {
         return numeral(value).format(format);
     }
 }
