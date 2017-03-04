@@ -39,6 +39,10 @@ export default class Dialog extends Component {
         this.onCloseBtnClick();
     }
 
+    hide(){
+        this.onCloseBtnClick();
+    }
+
     onCloseBtnClick() {
         destroy(this.node.parent);
     }
