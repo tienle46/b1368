@@ -87,9 +87,9 @@ export default class MultiTabPopup extends Component {
 
         if (model && (tabBody || model.prefabPath)) {
             this.setTitle(model.title);
+            this._hideAllBodyChildren();
 
             if (tabBody) {
-                this._hideAllBodyChildren();
                 this._visibleBodyNode()
                 tabBody.onDataChanged(data);
                 tabBody.node.active = true;

@@ -36,6 +36,9 @@ export default {
     error_undefined: 'Lỗi {{error}} chưa được xác định. Vui lòng gọi hỗ trợ!',
     error_cannot_init_facebook: 'Không thể khởi tạo chức năng đăng nhập Facebook. Vui lòng gọi hỗ trợ!',
     error_username_not_match: 'Tên đăng nhập từ 6 - 15 kí tự bao gồm chữ và số',
+    error_please_input_withdraw_amount: 'Vui lòng nhập số tiền cần rút',
+    error_withdraw_amount_must_greater_than: 'Số tiền cần rút phải LỚN hơn {{amount}}',
+    error_withdraw_amount_unable_to_greater_than: 'Số tiền cần rút không được lớn hơn {{amount}}',
 
     get_transfer_success: 'Bạn đã rút thành công {{amount}} chip, chúc bạn chơi game vui vẻ.',
     transfer_successfully: 'Chuyển thành công {{amount}} chip tới {{username}}.',
@@ -65,6 +68,7 @@ export default {
     label_accept: 'Đồng ý',
     label_deny: 'Hủy',
     label_close: 'Đóng',
+    label_withdrawal: 'Rút tiền',
     label_enter_game: 'Vào game',
     random_invite_player_successfully: 'Lời mời vào bàn chơi đã được gửi đi',
     error_cannot_load_data: 'Không thể tải dữ liệu',
@@ -72,6 +76,7 @@ export default {
     re_sending_item_iap: 'Đang thực hiện lại giao dịch ...',
     sending_item_store_iap: 'Đang thực hiện giao dịch tới {{provider}}...',
     iap_buying_successfully_wait_server_response: 'Vật phẩm đã đc mua, đợi xác nhận từ server .....',
+    label_input_withdrawal_amount: 'Nhập số tiền cần rút',
 
     game_table_name: 'Bàn {{tableName}}',
     game_sam_thang_sam: 'Thắng Sâm',

@@ -48,6 +48,8 @@ class PreloadScene extends Component {
             { dir: 'common/FullSceneProgress', name: 'fullSceneLoading' },
             { dir: 'popup/MessagePopup', name: 'messagePopup' },
             { dir: 'popup/ConfirmPopup', name: 'confirmPopup' },
+            { dir: 'popup/PromptPopup', name: 'promptPopup' },
+            { dir: 'popup/SingleLinePromptPopup', name: 'singleLinePromptPopup' },
         ];
 
         app.async.parallel(resources.map((res) => {

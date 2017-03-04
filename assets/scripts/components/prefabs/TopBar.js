@@ -38,12 +38,13 @@ class TopBar extends Actor {
     }
 
     giveFeedbackClicked() {
-        PromptPopup.show(app.system.getCurrentSceneNode(), this.promptPrefab, {
+        PromptPopup.show(app.system.getCurrentSceneNode(), {
             handler: this._onFeedbackConfirmed.bind(this),
             title: 'Góp ý',
             description: 'Nhập ý kiến',
             acceptLabelText: "Gửi"
         })
+        this._hideDropDownMenu()
     }
 
     onDestroy() {
@@ -82,7 +83,7 @@ class TopBar extends Actor {
 
     onClickEventAction() {
         let dialog = new DialogRub(this.node.parent, null, { title: 'Sự kiện' });
-        dialog.addBody('dashboard/dialog/prefabs/event/event_dialog', 'EventDialog');
+        dialog.addBody('dashboard/dialog/prefabs/event/EventDialog', 'EventDialog');
     }
 
     handleMoreAction() {
@@ -172,8 +173,7 @@ class TopBar extends Actor {
 
             }, app.const.scene.DASHBOARD_SCENE);
         }
-
-        this._hideDropDownMenu()
+        return true;
     }
 }
 

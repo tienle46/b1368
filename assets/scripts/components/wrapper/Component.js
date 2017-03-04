@@ -35,6 +35,7 @@ export default class Component {
     }
 
     setComponentData(data) {
+        console.log('setComponentData: ', data);
         this.__componentData = {...data };
     }
 
@@ -54,7 +55,7 @@ export default class Component {
 
     onEnable() {
         this.__isComponentEnabled = true;
-        this.renderComponentData(this.__componentData);
+        this.renderComponentData(this.getComponentData());
     }
 
     onDisable() {
