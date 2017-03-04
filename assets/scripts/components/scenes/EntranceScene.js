@@ -89,7 +89,6 @@ class EntranceScene extends BaseScene {
             let password = this._generateUserName("yz212", app.config.DEVICE_ID, 0, 6);
             this.loginToDashboard(username, password, false, true);
         } else {
-
             app.system.info(app.res.string('play_now_not_support_on_mobile'))
         }
     }
@@ -141,7 +140,6 @@ class EntranceScene extends BaseScene {
                     }
                 });
             } else {
-
                 app.system.error(app.res.string('error_cannot_init_facebook'))
             }
         }

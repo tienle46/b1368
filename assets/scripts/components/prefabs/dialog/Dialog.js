@@ -35,15 +35,7 @@ export default class Dialog extends Component {
         this.sharedData = null;
     }
 
-    hide(){
-        this.onCloseBtnClick();
-    }
-
-    hide(){
-        this.onCloseBtnClick();
-    }
-
-    hide(){
+    hide() {
         this.onCloseBtnClick();
     }
 

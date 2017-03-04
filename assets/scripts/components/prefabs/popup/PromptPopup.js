@@ -58,9 +58,7 @@ export default class PromptPopup extends Component {
 
     init(parent, initObject, title, edBox, hl) {
         if (isNode(initObject)) {
-
             CCUtils.clearAllChildren(this.mainNode);
-
             initObject.setPosition(cc.v2(0, 0));
             this.mainNode.addChild(initObject);
 
