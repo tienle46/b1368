@@ -57,7 +57,7 @@ class WithdrawMoneyComponent extends Actor {
     _onWithdrawInfoResponse(data = {}){
         this.loadedData = true;
         this.hideLoading();
-        this.setComponentData({balance: data.balance || 0, minAmount: data.minAmount || 0})
+        this.setComponentData({balance: data.balance || 0})
         this.renderComponentData()
     }
 
@@ -81,9 +81,9 @@ class WithdrawMoneyComponent extends Actor {
         super.setComponentData(data);
     }
 
-    renderComponentData({balance = 0, minAmount = 0, availableBalance = 0} = {}) {
+    renderComponentData({balance = 0, minBalance = 0, availableBalance = 0} = {}) {
         this.availableBalanceLabel.string = Utils.numberFormat(availableBalance)
-        this.minLabel.string = Utils.numberFormat(minAmount)
+        this.minLabel.string = Utils.numberFormat(this.minBalance)
         this.inputEditBox.string = `${availableBalance}`;
     }
 
@@ -97,16 +97,14 @@ class WithdrawMoneyComponent extends Actor {
 
     onClickWithdrawButton(){
         let valueStr = this.inputEditBox.string;
-        let data = this.getComponentData();
-        if(!data.availableBalance){
-            app.system.showToast(app.res.string('error_account_out_of_money'));
-        }else if (Utils.isEmpty(valueStr)) {
+
+        if (Utils.isEmpty(valueStr)) {
             app.system.showToast(app.res.string('error_please_input_withdraw_amount'));
-        }else{
+         }else{
             let amount = Number(valueStr);
             if(amount > 0){
-                if(amount > data.availableBalance){
-                    app.system.showToast(app.res.string('error_withdraw_amount_unable_to_greater_than', {amount: Utils.numberFormat(data.availableBalance)}));
+                if(amount > this.availableBalance){
+                    app.system.showToast(app.res.string('error_withdraw_amount_unable_to_greater_than', {amount: Utils.numberFormat(this.availableBalance)}));
                 }else{
 
                     this.showLoading()
@@ -118,7 +116,7 @@ class WithdrawMoneyComponent extends Actor {
                     });
                 }
             }else{
-                app.system.showToast(app.res.string('error_withdraw_amount_must_greater_than', {amount: 0}));
+                app.system.showToast(app.res.string('error_withdraw_amount_must_greater_than'), {amount: 0});
             }
         }
     }

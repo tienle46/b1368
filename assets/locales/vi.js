@@ -37,9 +37,8 @@ export default {
     error_cannot_init_facebook: 'Không thể khởi tạo chức năng đăng nhập Facebook. Vui lòng gọi hỗ trợ!',
     error_username_not_match: 'Tên đăng nhập từ 6 - 15 kí tự bao gồm chữ và số',
     error_please_input_withdraw_amount: 'Vui lòng nhập số tiền cần rút',
-    error_withdraw_amount_must_greater_than: 'Số tiền cần rút phải lớn hơn {{amount}}',
+    error_withdraw_amount_must_greater_than: 'Số tiền cần rút phải LỚN hơn {{amount}}',
     error_withdraw_amount_unable_to_greater_than: 'Số tiền cần rút không được lớn hơn {{amount}}',
-    error_account_out_of_money: 'Tài khoản của bạn đã hết tiền',
 
     get_transfer_success: 'Bạn đã rút thành công {{amount}} chip, chúc bạn chơi game vui vẻ.',
     transfer_successfully: 'Chuyển thành công {{amount}} chip tới {{username}}.',
