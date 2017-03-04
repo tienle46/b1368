@@ -45,13 +45,13 @@ export default class PhomList extends Array {
     }
 
     clear() {
-        this.cards.length = 0;
+        window.release(this.cards);
         this.forEach(phom => phom.clear());
     }
 
     toBytes() {
         return this.cards.map(card => {
-            return card.byteValue
+            return card.byteValue;
         });
     }
 

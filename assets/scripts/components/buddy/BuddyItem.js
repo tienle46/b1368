@@ -71,7 +71,10 @@ class BuddyItem extends PopupTabBody {
     }
 
     onDestroy() {
-        window.free(this.buddy, this.buddyMenu, this.onClickChatListener, this.onClickTransferListener);
+        this.buddy = null;
+        this.buddyMenu = null;
+        this.onClickChatListener = null;
+        this.onClickTransferListener = null;
     }
 
     setBuddyMenu(buddyMenu) {

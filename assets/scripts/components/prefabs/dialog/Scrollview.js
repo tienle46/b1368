@@ -1,6 +1,5 @@
 import app from 'app';
 import Component from 'Component';
-import RubUtils from 'RubUtils';
 import NodeRub from 'NodeRub';
 import { isFunction } from 'Utils';
 
@@ -89,7 +88,7 @@ export default class Scrollview extends Component {
 
             this._addToNode(this.contentNode);
         }
-        RubUtils.releaseArray([head, body], true);
+        window.release(head, body, true);
     }
 
     updateOptions(options) {
@@ -123,8 +122,7 @@ export default class Scrollview extends Component {
             this._gridviewComp.updateView(head, data, options);
         }
 
-
-        RubUtils.releaseArray([head, data], true);
+        window.release(head, data, true);
     }
 
     _updateItemsPerPage(items) {

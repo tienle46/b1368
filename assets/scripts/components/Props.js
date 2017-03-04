@@ -48,7 +48,8 @@ export default class Props extends Component {
         Object.values(propAssets).forEach(asset => cc.loader.release(asset));
         Object.values(emotionAssets).forEach(asset => cc.loader.release(asset));
 
-        window.free(propAssets, emotionAssets);
+        propAssets = null;
+        emotionAssets = null;
         window.release([propAssetNames, emotionAssetNames], true);
     }
 
@@ -133,7 +134,8 @@ export default class Props extends Component {
                 animatingNode.removeFromParent(true);
                 finishCallback && finishCallback();
             });
-            window.free(config, finishCallback);
+            config = null;
+            finishCallback = null;
         });
 
         animatingNode.runAction(config.endPos ? cc.sequence(cc.moveTo(0.6, config.endPos), mainAction) : mainAction);

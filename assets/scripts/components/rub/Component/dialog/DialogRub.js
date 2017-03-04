@@ -64,7 +64,7 @@ export default class DialogRub extends Rub {
             tab.isChecked = (index === 0);
             Tabs.make(tab);
         });
-        window.free(tabs);
+        window.release(tabs);
     }
 
     _initTitle(string) {
@@ -74,7 +74,7 @@ export default class DialogRub extends Rub {
     release() {
         this.options = null;
         destroy(this.prefab);
-        this.tabs.length = 0;
+        window.release(this.tabs);
     }
 
     /**

@@ -6,7 +6,7 @@ import app from 'app';
 import utils from 'utils';
 import PopupTabBody from 'PopupTabBody';
 import Events from 'Events';
-import CCUtils from 'CCUtils';
+import { destroy } from 'CCUtils';
 
 class BuddyChatTabBody extends PopupTabBody {
 
@@ -217,7 +217,7 @@ class BuddyChatTabBody extends PopupTabBody {
 
         if (this.chatMessageList.children.length > app.const.NUMBER_MESSAGES_KEEP_PER_BUDDY) {
             let removeNode = this.chatMessageList.children[0];
-            CCUtils.destroy(removeNode);
+            destroy(removeNode);
         }
     }
 
@@ -256,11 +256,11 @@ class BuddyChatTabBody extends PopupTabBody {
     }
 
     onDestroy() {
-        window.releaseEvents(this.chattingBuddyItems);
+        window.release(this.chattingBuddyItems);
     }
 
     _initChattingBuddyList(chattingBuddies) {
-        CCUtils.clearAllChildren(this.chattingBuddyList);
+        this.chattingBuddyList.removeAllChildren(true);
         this.chattingBuddyItems.splice(0, this.chattingBuddyItems.length)
         chattingBuddies.forEach(buddy => this._addChattingBuddy(buddy))
     }

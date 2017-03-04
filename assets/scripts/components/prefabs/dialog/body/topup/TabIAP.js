@@ -24,7 +24,7 @@ class TabIAP extends DialogActor {
 
     onDestroy() {
         super.onDestroy();
-        this.__items.length = 0;
+        window.release(this.__items);
     }
 
     start() {

@@ -60,7 +60,7 @@ class TableListCell extends Component {
 
     onDestroy() {
         super.onDestroy();
-        window.free(this._onClickListener);
+        this._onClickListener = null;
     }
 
     setOnClickListener(clickListener) {

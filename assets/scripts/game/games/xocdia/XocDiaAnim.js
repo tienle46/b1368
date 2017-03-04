@@ -28,7 +28,7 @@ export default class XocDiaAnim {
     _resetChipManager() {
         this._totalChipCount = 0;
         this.totalChipOnPlayer = {};
-        this._allChipList.forEach(arr => arr.length = 0);
+        this._allChipList.forEach(arr => window.release(arr));
     }
 
     reset() {

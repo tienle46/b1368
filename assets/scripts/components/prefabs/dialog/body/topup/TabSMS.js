@@ -91,8 +91,7 @@ class TabSMS extends DialogActor {
 
                     this._initItem(code, command, sendTo, moneyGot, isChecked);
                 });
-
-                smsInformations.length = 0;
+                window.release(smsInformations);
             } else {
                 this.pageIsEmpty(this.node);
             }

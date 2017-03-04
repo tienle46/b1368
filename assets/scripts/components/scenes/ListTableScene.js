@@ -25,7 +25,7 @@ export default class ListTableScene extends BaseScene {
             type: cc.Label
         };
 
-        this.items = [];
+        this.items = null;
         this.time = 2500 * 10; // creating new request for updating tables every 25s
         // filter button conditional 
         this.filterCond = null;
@@ -44,6 +44,7 @@ export default class ListTableScene extends BaseScene {
     onLoad() {
         super.onLoad();
         this.filterCond = app.config.listTableGroupFilters[0];
+        this.items = [];
         this.enableMinbets = [];
     }
 
@@ -62,8 +63,8 @@ export default class ListTableScene extends BaseScene {
     onDestroy() {
         super.onDestroy();
         this._clearInterval();
-        window.release(this.items);
-        window.free(this.filterCond);
+        window.release(this.items, this.enableMinbets);
+        this.filterCond = null;
     }
 
     _addGlobalListener() {
@@ -251,6 +252,7 @@ export default class ListTableScene extends BaseScene {
         this.invitationShowed = false;
 
         this._requestJoinRoom(joinRoomRequestData);
+        joinRoomRequestData = null;
     }
 
     _onCancelInvitationBtnClick() {
@@ -399,7 +401,7 @@ export default class ListTableScene extends BaseScene {
         app.service.send(sendObject);
     }
 
-    _createRoom({minBet = 0, roomCapacity = 2} = {}) {
+    _createRoom({ minBet = 0, roomCapacity = 2 } = {}) {
         this.__isCreatingRoom = true;
 
         /**

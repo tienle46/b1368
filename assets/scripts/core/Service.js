@@ -199,7 +199,7 @@ class Service {
 
         this._pendingRequests.forEach(requestArgs => this.sendRequest(...requestArgs));
         this._pendingRequests = [];
-        window.free(event);
+        event = null;
     }
 
     _onConnectionLost(event) {
@@ -238,7 +238,7 @@ class Service {
                 });
             }
         }
-        window.free(event);
+        event = null;
     }
 
     _reConnectWithLoginData(loginData) {
@@ -271,7 +271,7 @@ class Service {
 
             app.system.emit(event.cmd, event.params, event);
         }
-        window.free(event);
+        event = null;
     }
 
     _onLogin(event) {
@@ -321,7 +321,10 @@ class Service {
         }
 
         this.client.send(request);
-        window.free(request, cb, scope, cbName);
+        request = null;
+        cb = null;
+        scope = null;
+        cbName = null;
     }
 
     _callCallback(key, verifyFunc, ...args) {
@@ -371,7 +374,9 @@ class Service {
 
     removeEventListener(eventType, handleFunc, scope = this) {
         this.client.removeEventListener(eventType, handleFunc, scope);
-        window.free(eventType, handleFunc, scope);
+        eventType = null;
+        handleFunc = null;
+        scope = null;
     }
 
     /**
@@ -493,6 +498,9 @@ class Service {
                 this.sendRequest(new SFS2X.Requests.System.ExtensionRequest(cmd, options.data || {}, options.room));
             }
         }
+        options = null;
+        cb = null;
+        scope = null;
     }
 
     _addCommandToScope(key, scope) {

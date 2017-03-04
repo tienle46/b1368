@@ -50,7 +50,8 @@ class ChattingBuddyItem extends Component {
 
     onDestroy() {
         super.onDestroy();
-        window.free(this.buddy, this.onCheckedListener);
+        this.buddy = null;
+        this.onCheckedListener = null;
     }
 
     select() {

@@ -105,12 +105,12 @@ class BottomBar extends DialogActor {
         }];
 
         let dialogRub = DialogRub.show(app.system.getCurrentSceneNode(), tabs, { title: 'Xếp hạng' });
-        window.free(dialogRub);
+        dialogRub = null;
     }
 
     onFriendBtnClick() {
         let buddy = new BuddyPopup().show(this.node.parent);
-        window.free(buddy);
+        buddy = null;
     }
 
     onClickTransferAwardAction() {
@@ -131,7 +131,7 @@ class BottomBar extends DialogActor {
 
         // bottombar -> dashboard scene node
         let exchangeDialogRub = ExchangeDialogRub.show(app.system.getCurrentSceneNode(), tabs, { title: 'Đổi thưởng' });
-        window.free(exchangeDialogRub);
+        exchangeDialogRub = null;
     }
 
     callSupportClicked(e) {
@@ -149,7 +149,7 @@ class BottomBar extends DialogActor {
         }];
 
         let messageCenterDialogRub = MessageCenterDialogRub.show(app.system.getCurrentSceneNode(), tabs, { title: 'Tin nhắn' });
-        window.free(messageCenterDialogRub);
+        messageCenterDialogRub = null;
     }
 
     onClickUserInfoAction() {
@@ -180,7 +180,7 @@ class BottomBar extends DialogActor {
         ];
 
         let personalInfoDialogRub = PersonalInfoDialogRub.show(app.system.getCurrentSceneNode(), tabs, { title: 'Cá nhân' });
-        window.free(personalInfoDialogRub);
+        personalInfoDialogRub = null;
     }
 
     _fillUserData() {

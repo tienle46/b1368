@@ -1,7 +1,6 @@
 /**
  * Created by Thanh on 9/1/2016.
  */
-import RubUtils from 'RubUtils';
 import { destroy } from 'CCUtils';
 
 export default class Component {
@@ -35,7 +34,6 @@ export default class Component {
     }
 
     setComponentData(data) {
-        console.log('setComponentData: ', data);
         this.__componentData = {...data };
     }
 
@@ -55,7 +53,7 @@ export default class Component {
 
     onEnable() {
         this.__isComponentEnabled = true;
-        this.renderComponentData(this.getComponentData());
+        this.renderComponentData(this.__componentData);
     }
 
     onDisable() {
@@ -66,16 +64,19 @@ export default class Component {
         this.releaseAssets();
         this.removeNodes();
         this.__componentData = null;
+        // Object.getOwnPropertyNames(this).forEach(key => {
+        //     this[key] = null;
+        // });
     }
 
     releaseAssets() {
-        RubUtils.releaseAssets(this.loadedAssets);
+        window.release(this.loadedAssets);
     }
 
     removeNodes() {
         let nodes = this.loadedNodes;
 
         nodes && nodes.map(node => destroy(node));
-        RubUtils.releaseArray(this.loadedNodes);
+        window.release(this.loadedNodes);
     }
 }

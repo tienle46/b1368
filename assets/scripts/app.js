@@ -78,7 +78,7 @@ app.createComponent = (classNameOrInstance, extendClass = undefined, ...args) =>
     // }
 
     Object.getOwnPropertyNames(instance).forEach(key => {
-        if (key !== 'extends' && key !== 'properties' /*&& !key.startsWith('__')*/) {
+        if (key !== 'extends' && key !== 'properties' /*&& !key.startsWith('__')*/ ) {
             // check if property is Object && except instance of cc.Componet
             // such as {default: xxx, type: cc.XXX } => assign to `properties` for displaying value on cocoCcreator
             // if `instance[key]` is intance of `cc`
@@ -165,7 +165,7 @@ app.getRoomErrorMessage = (error) => {
         }
     }
 
-    return message || app.res.string('error_undefined', {error: `${errorCode}:${errorMessage}`});
+    return message || app.res.string('error_undefined', { error: `${errorCode}:${errorMessage}` });
 };
 
 app.getMessageFromServer = (error) => {
@@ -186,32 +186,24 @@ app.getMessageFromServer = (error) => {
         }
     }
 
-    return message || app.res.string('error_undefined', {error: `${errorCode}:${errorMessage}`});
+    return message || app.res.string('error_undefined', { error: `${errorCode}:${errorMessage}` });
 };
 
-(function () {
-    window.free = function free(...args) {
-        [...args].forEach(arg => {
-            if (arg instanceof Array) {
-                arg = [];
-                return;
-            }
-
-            arg = null;
-        });
-    };
-
+(function() {
     // release array
-    window.release = function release(array, isRecursive = false) {
-        if (!app._.isArray(array))
-            return;
+    window.release = function release(...args) {
+        let isRecursive = arguments[arguments.length - 1] === true;
+        [...args].forEach(array => {
+            if (!app._.isArray(array))
+                return;
 
-        if (isRecursive) {
-            array.map(a => {
-                app._.isArray(a) && window.release(a, isRecursive);
-            });
-        }
-        array.length = 0;
+            if (isRecursive) {
+                array.map(a => {
+                    app._.isArray(a) && window.release(a, isRecursive);
+                });
+            }
+            array.length = 0;
+        });
     };
 
     window.log = function log(...args) {
@@ -234,23 +226,8 @@ app.getMessageFromServer = (error) => {
         console.warn(...args);
     };
 
-    /**
-     *
-     * @param jsonString = {
-     *      “action”:”action namne”,
-     *      ”action_extras”: {}}
-     * }
-     */
-    window.onNativePostAction = function (jsonString) {
-        let Linking = require('Linking');
-        try{
-            let jsonParam = JSON.parse(jsonString)
-            let actionParamStr = jsonParam['action_extras']
-            let actionParam = actionParamStr == null || !actionParamStr.length ? {} : JSON.parse(jsonParam['action_extras']);
-            Linking.goTo(jsonParam.action, actionParam);
-        }catch(e){
-            //DO nothing
-        }
+    window.onNativePostAction = function(jsonString) {
+        window.log("---> onNativePostAction", jsonString);
     };
 
     /* INIT GAME */

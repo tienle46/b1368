@@ -52,8 +52,8 @@ export default class PopupTabBody extends Actor {
 
     onDestroy() {
         super.onDestroy();
-
-        window.free(this._doneCb, this._data);
+        this._doneCb = null;
+        this._data = null;
     }
 
     getPopup() {

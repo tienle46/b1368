@@ -17,7 +17,7 @@ class Item extends Component {
 
     onDestroy() {
         super.onDestroy();
-        window.free(this._clickListener);
+        this._clickListener = null;
     }
 
     listenOnClickListener(cb) {

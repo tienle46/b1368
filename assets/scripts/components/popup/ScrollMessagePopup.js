@@ -43,9 +43,8 @@ export default class ScrollMessagePopup extends MessagePopup {
             messagePopup.onShow(...args);
 
             currentPopup = messagePopup;
-            args = [];
+            window.release(args);
         }).catch((error) => { console.error('error: ', error) });
-
     }
 }
 

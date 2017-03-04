@@ -96,7 +96,7 @@ export default class DashboardScene extends BaseScene {
             this._initItemListGame();
         }
 
-        app.buddyManager.sendInitBuddy()
+        app.buddyManager.sendInitBuddy();
     }
 
     _filterClientSupportedGames(gameCodes) {

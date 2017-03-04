@@ -62,12 +62,12 @@ class EntranceScene extends BaseScene {
         super.onLoad();
     }
 
-    start(){
+    start() {
         super.start();
 
-        if(app.buddyManager){
+        if (app.buddyManager) {
             app.buddyManager.reset();
-        } else{
+        } else {
             app.buddyManager = new BuddyManager();
         }
 
@@ -84,11 +84,11 @@ class EntranceScene extends BaseScene {
     }
 
     handlePlayNowButton() {
-        if(app.env.isMobile() || app.env.isBrowserTest()){
+        if (app.env.isMobile() || app.env.isBrowserTest()) {
             let username = this._generateUserName("ysad12", app.config.DEVICE_ID, 0, 5);
             let password = this._generateUserName("yz212", app.config.DEVICE_ID, 0, 6);
             this.loginToDashboard(username, password, false, true);
-        }else{
+        } else {
             app.system.info(app.res.string('play_now_not_support_on_mobile'))
         }
     }
@@ -107,7 +107,7 @@ class EntranceScene extends BaseScene {
                 this.getUserByFbId(fbId, this.accessToken);
             }
         } else {
-            if(window.FB) {
+            if (window.FB) {
                 window.FB.getLoginStatus((response) => {
                     if (response.status === 'connected') {
                         // the user is logged in and has authenticated, and response.authResponse supplies the user's ID, a valid access token,
@@ -139,7 +139,7 @@ class EntranceScene extends BaseScene {
                         });
                     }
                 });
-            }else{
+            } else {
                 app.system.error(app.res.string('error_cannot_init_facebook'))
             }
         }
@@ -168,7 +168,7 @@ class EntranceScene extends BaseScene {
         xhr.send();
     }
 
-    _showInputUsernamePopup(){
+    _showInputUsernamePopup() {
         PromptPopup.show(this.node, this.promptPrefab, {
             handler: this._onUserDonePickupName.bind(this),
             title: app.res.string('input_username_title'),
@@ -189,19 +189,19 @@ class EntranceScene extends BaseScene {
     }
 
     _onLoginWithAccessToken(username, accessToken) {
-        if(username.length > 0) {
+        if (username.length > 0) {
             this.loginToDashboard(username, "", false, false, accessToken);
         }
     }
 
     _generateUserName(key, deviceId, count, maxCall) {
-        try{
+        try {
             if (count < maxCall) {
                 let code2 = `${this._javaHashcode(deviceId)}${key}xintaocho`;
                 return this._generateUserName(key, code2, count + 1, maxCall);
             }
             return `p${Math.abs(this._javaHashcode(deviceId))}`;
-        }catch(e){
+        } catch (e) {
             app.system.info(app.res.string('play_now_not_available_right_now'))
         }
     }

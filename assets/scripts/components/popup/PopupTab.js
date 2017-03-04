@@ -34,8 +34,7 @@ export default class PopupTab extends Component {
 
     onDestroy() {
         super.onDestroy();
-
-        window.free(this.onClickListener);
+        this.onClickListener = null;
     }
 
     setToggleGroup(toggleGroup) {

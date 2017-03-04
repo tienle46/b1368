@@ -147,8 +147,7 @@ let RubUtils = {
                 cc.loader.release(asset);
             }
         });
-        RubUtils.releaseArray(ins, true);
-    },
-    releaseArray: window.release
+        window.release(ins, true);
+    }
 };
 export default RubUtils;

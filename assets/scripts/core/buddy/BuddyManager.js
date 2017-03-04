@@ -355,8 +355,7 @@ export default class BuddyManager {
     }
 
     _onBuddyListInit(evtParams) {
-        this.buddies.length = 0;
-        this.tmpBuddies.length = 0;
+        window.release(this.buddies, this.tmpBuddies);
 
         evtParams.buddyList.forEach(buddy => this._addBuddyToList(buddy));
         app.system.emit(Events.ON_BUDDY_LIST_INITED, this.buddies, this.tmpBuddies);

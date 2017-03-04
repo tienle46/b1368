@@ -47,7 +47,7 @@ class ButtonGroup extends Component {
             else
                 event = eventHandler;
             btn.node.on(cc.Node.EventType.TOUCH_END, event);
-            window.free(event);
+            event = null;
         }
     }
 

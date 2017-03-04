@@ -109,11 +109,6 @@ export default (function(app) {
 
         function _setupSDKBox() {
             /* eslint-disable no-console, no-unused-vars */
-
-            function releaseArray(array) {
-                array.length = 0;
-            }
-
             let _initPluginFacebook = () => {
                 //facebook
                 window.sdkbox.PluginFacebook.init();
@@ -287,7 +282,7 @@ export default (function(app) {
 
                             app.context.setPurchases(purchases);
 
-                            releaseArray(productIds);
+                            window.release(productIds);
                         }
                     }
                 });
@@ -303,7 +298,7 @@ export default (function(app) {
                     p();
                 });
 
-                releaseArray(plugins);
+                window.release(plugins);
             }
         }
     }; // end Func

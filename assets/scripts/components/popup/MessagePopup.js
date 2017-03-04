@@ -77,7 +77,8 @@ export default class MessagePopup extends Component {
 
     onDestroy() {
         super.onDestroy();
-        window.free(this.denyCb, this.acceptCb);
+        this.denyCb = null;
+        this.acceptCb = null;
     }
 
     setMessage(message = "") {
@@ -134,7 +135,8 @@ export default class MessagePopup extends Component {
             this.text = null;
             this.requestData = textOrRequestData;
         }
-
+        denyCb = null;
+        acceptCb = null;
         parentNode && parentNode.addChild(this.node, 10000);
     }
 
@@ -152,28 +154,14 @@ export default class MessagePopup extends Component {
                 RubUtils.loadRes(`popup/${componentName}`).then((prefab) => this._createAndShow(prefab, componentName, ...args));
             }
         }
-        // /**
-        //  * Preload this prefab, don't need to load dynamic it anymore
-        //  */
-        // parentNode && textOrRequestData && RubUtils.loadRes(`popup/${componentName}`).then((prefab) => {
-        //
-        //     let messagePopupNode = cc.instantiate(prefab);
-        //     let messagePopup = messagePopupNode.getComponent(`${componentName}`);
-        //     messagePopup.onShow(...args);
-        //
-        //     currentPopup = messagePopup;
-        //
-        // }).catch((error) => {
-        //     console.error('error: ', error)
-        // });
-
+        window.release(args);
     }
 
     static _createAndShow(prefab, componentName, ...args) {
         let messagePopupNode = cc.instantiate(prefab);
         let messagePopup = messagePopupNode.getComponent(`${componentName}`);
         messagePopup.onShow(...args);
-        window.free(...args);
+        [...args].map(a => a = null);
         currentPopup = messagePopup;
     }
 }

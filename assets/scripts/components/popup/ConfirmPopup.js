@@ -30,4 +30,4 @@ export default class ConfirmPopup extends MessagePopup {
     }
 }
 
-app.createComponent(ConfirmPopup)
+app.createComponent(ConfirmPopup);
