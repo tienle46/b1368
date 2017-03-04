@@ -48,8 +48,8 @@ export default class Props extends Component {
         Object.values(propAssets).forEach(asset => cc.loader.release(asset));
         Object.values(emotionAssets).forEach(asset => cc.loader.release(asset));
 
-        propAssets = null;
-        emotionAssets = null;
+        propAssets = {};
+        emotionAssets = {};
         window.release([propAssetNames, emotionAssetNames], true);
     }
 
