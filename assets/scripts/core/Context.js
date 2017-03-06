@@ -100,7 +100,7 @@ class GameContext {
 
     getMeBalance() {
         let me = this.getMe();
-        return me && me.variables.coin && (me.variables.coin.value || 0);
+        return (me && me.variables.coin && me.variables.coin.value) || 0;
     }
 
     isJoinedGame() {

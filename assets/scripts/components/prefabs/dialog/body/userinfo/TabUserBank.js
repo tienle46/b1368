@@ -28,12 +28,16 @@ export default class TabUserInfo extends DialogActor {
         this._remainTransfer = 0;
         this._previousValue = 0;
         this._withdrawComponent = null;
+        this._transferMoneyComponent = null;
     }
 
     onLoad() {
         super.onLoad();
         this._showMainBody();
         this._withdrawComponent = this.withdrawNode.getComponent('WithdrawMoneyComponent')
+        this._withdrawComponent.setOnClickBackButtonListener(() => this.onBackBtnClick())
+        this._transferMoneyComponent = this.chuyenTienBodyNode.getComponent('TabBuddyTransfer')
+        this._transferMoneyComponent.setOnClickBackButtonListener(() => this.onBackBtnClick());
     }
 
     start() {
@@ -198,6 +202,7 @@ export default class TabUserInfo extends DialogActor {
     _showMainBody() {
         active(this.mainBodyNode);
         deactive(this.chuyenTienBodyNode);
+        deactive(this.withdrawNode);
     }
 
     _showChuyenTienBody() {
