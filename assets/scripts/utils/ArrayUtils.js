@@ -17,7 +17,7 @@ export default class ArrayUtils {
     }
 
     static findFirst(arr, findItem, equalsFn) {
-        let index = this.findIndex(arr, removing, equalsFn);
+        let index = this.findIndex(arr, findItem, equalsFn);
         return index >= 0 && arr[index];
     }
 

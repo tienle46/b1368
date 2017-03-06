@@ -13,6 +13,7 @@ export default class BoardCardRenderer extends BoardRenderer {
         this.properties = {
             ...this.properties,
             dealCardAnchor: cc.Node,
+            dealCardActionComponentNode: cc.Node,
             meDealCardListNode: cc.Node
         }
 
@@ -20,6 +21,13 @@ export default class BoardCardRenderer extends BoardRenderer {
          * @type {CardList}
          */
         this.meDealCardList = null;
+        this.dealCardActionComponent = null;
+    }
+
+    onLoad(){
+        super.onLoad()
+
+        this.dealCardActionComponent = this.dealCardActionComponentNode && this.dealCardActionComponentNode.getComponent('ActionComponent')
     }
 
     onEnable(){

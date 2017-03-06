@@ -53,7 +53,6 @@ export default class PlayerPhomRenderer extends PlayerCardTurnBaseRenderer {
         this._enabledPlayerPhomRenderer = true;
         this._reloadComponentOnIndexChanged();
 
-        utils.active(this.anChotNode);
     }
 
     _reset(){

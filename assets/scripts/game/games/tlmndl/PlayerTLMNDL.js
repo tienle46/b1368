@@ -72,6 +72,9 @@ export default class PlayerTLMNDL extends PlayerCardTurnBase {
     }
 
     _onSortCards() {
+
+        console.warn('_onSortCards: ', this.isItMe(), this.user);
+
         if (this.isItMe()) {
             let sortedCard = GameUtils.sortCardAsc(this.renderer.cardList.cards, game.const.GAME_TYPE_TIENLEN);
             // this.renderer.cardList.setCards(sortedCard);

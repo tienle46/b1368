@@ -87,12 +87,13 @@ export default class PlayerCard extends Player {
     }
 
     onGameStarted(data, isJustJoined){
-
         super.onGameStarted(data, isJustJoined);
+        this.setMeDealCards();
+    }
 
-        if(data instanceof Array){
-            this.isItMe() ? this.setCards(data) : this.isReady() && this.createFakeCards();
-        }
+    setMeDealCards(){
+        let dealCards = this.scene.board.meDealCards || [];
+        this.isItMe() ? this.setCards(dealCards) : this.isReady() && this.createFakeCards();
     }
 
     getSelectedCards() {
@@ -104,9 +105,6 @@ export default class PlayerCard extends Player {
     }
 
     onGameEnding(data = {}, isJustJoined){
-
-        console.log("onGameEnding player")
-
         super.onGameEnding(data, isJustJoined);
         this.renderer.clearCards();
     }

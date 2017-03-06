@@ -269,6 +269,12 @@ export default class PlayerPhom extends PlayerCardTurnBase {
     _onGameRejoin(data) {
         super._onGameRejoin(data);
 
+
+        this.eatenCards.forEach(card => {
+            let cardInHand = ArrayUtils.findFirst(this.renderer.cardList.cards, card);
+            cardInHand && PhomUtils.setEaten(cardInHand, true);
+        });
+
         this.renderer.cardList.cards.forEach(card => {
             this.renderer.eatenCardList.cards.forEach(eatCard => {
                 card.equals(eatCard) && PhomUtils.setEaten(card, true);
@@ -717,9 +723,13 @@ export default class PlayerPhom extends PlayerCardTurnBase {
         this.renderer.playedCardList.setCards(cards);
     }
 
-    setEatenCards(cards) {
-        this.renderer.eatenCardList.setCards(cards);
-        this.renderer.eatenCardList.cards.forEach(card => PhomUtils.setEaten(card))
+    setEatenCards(cards = []) {
+        if(!this.isItMe()){
+            this.renderer.eatenCardList.setCards(cards);
+            this.renderer.eatenCardList.cards.forEach(card => PhomUtils.setEaten(card))
+        }
+
+        this.eatenCards.push(...cards)
     }
 
     _onEatCard() {
@@ -849,6 +859,11 @@ export default class PlayerPhom extends PlayerCardTurnBase {
 
     onGamePlaying(data, isJustJoined) {
         super.onGamePlaying(data, isJustJoined);
+
+        if(!ArrayUtils.isEmpty(this.scene.board.meDealCards)){
+            this.setMeDealCards();
+            this.scene.board.onDoneDealCards()
+        }
 
         !this.isItMe() && this.renderer.cardList.clear();
 

@@ -34,7 +34,6 @@ export default class Component {
     }
 
     setComponentData(data) {
-        console.log('setComponentData: ', data);
         this.__componentData = {...data };
     }
 
