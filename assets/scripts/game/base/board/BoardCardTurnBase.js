@@ -86,8 +86,6 @@ export default class BoardCardTurnBase extends BoardCard {
         if (nextTurnPlayerId) {
             this.scene.emit(Events.HANDLE_CHANGE_TURN, nextTurnPlayerId);
         }
-
-        log("nextTurnPlayerId: ", nextTurnPlayerId)
     }
 
     onBoardPlaying(data, isJustJoined){

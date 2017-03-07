@@ -18,14 +18,6 @@ import ArrayUtils from "ArrayUtils";
 
 export default class PlayerPhom extends PlayerCardTurnBase {
 
-    static get DEFAULT_HAND_CARD_COUNT() {
-        return 9
-    };
-
-    static get DEFAULT_SORT_CARD_SOLUTION() {
-        return
-    };
-
     constructor() {
         super();
 
@@ -36,7 +28,7 @@ export default class PlayerPhom extends PlayerCardTurnBase {
         this.haPhomSolutionId = 0;
         this.guiPhomSolutionId = 0;
         this.remainCardCount = PlayerPhom.DEFAULT_HAND_CARD_COUNT;
-        this.sortCardSolutionIndex = PlayerPhom.DEFAULT_SORT_CARD_SOLUTION;
+        this.sortCardSolutionIndex = PlayerPhom.SORT_CARD_BY_PHOM_FIRST;
         this.currentHaPhomSolutions = [];
         this.currentGuiPhomSolutions = [];
         this.tempHoUPhoms = null;
@@ -316,6 +308,8 @@ export default class PlayerPhom extends PlayerCardTurnBase {
     setState(state) {
         this.state = state;
 
+        console.warn('set player state: ', state);
+
         switch (state) {
             case PlayerPhom.STATE_PHOM_PLAY:
                 this.scene && this.scene.emit(Events.SHOW_PLAY_CONTROL_ONLY);
@@ -359,19 +353,19 @@ export default class PlayerPhom extends PlayerCardTurnBase {
     }
 
     _onPlayerPlayedCards(playedCards, srcCardList, isItMe) {
-
-        //Check player Id
-
         if (utils.isEmptyArray(playedCards)) return;
 
         this.board.lastPlayedCard = playedCards[0];
+        if (isItMe) {
 
-        if (this.isItMe()) {
-            // this.renderer.cardList.cleanSelectedCard();
-            if (this.renderer.playedCardList.length == 3) {
-                this.renderer.cleanHighlightDownPhom();
-            }
+            // if (this.renderer.playedCardList.length == 3) {
+            //     this.renderer.cleanHighlightDownPhom();
+            // }
+
+            this.renderer.cardList.clean();
+            this.scene.emit(Events.SHOW_WAIT_TURN_CONTROLS);
         }
+
 
         this.renderer.addPlayedCard(playedCards, srcCardList, isItMe);
     }
@@ -447,6 +441,10 @@ export default class PlayerPhom extends PlayerCardTurnBase {
     }
 
     _processAfterEatOrTake() {
+        console.warn('_processAfterEatOrTake: ');
+
+        this.renderer.cardList.cleanHighlight()
+
         this.tempHoUPhoms = null;
         let currentPhomList = PhomUtils.bestPhomList(this.renderer.cardList.cards);
 
@@ -484,7 +482,7 @@ export default class PlayerPhom extends PlayerCardTurnBase {
         let processCards = allCard ? [...this.renderer.cardList.cards] : [...this.renderer.cardList.getSelectedCards()];
 
         this.renderer.cardList.cleanCardGroup();
-        this.currentHaPhomSolutions = PhomGenerator.generate(processCards);
+        this.currentHaPhomSolutions = PhomGenerator.generatePhomContainEatenCards(processCards, this.eatenCards);
 
         if (this.currentHaPhomSolutions.length == 0) {
             if (allCard) {
@@ -767,6 +765,7 @@ export default class PlayerPhom extends PlayerCardTurnBase {
     _onSortCards() {
 
         if (this.isItMe()) {
+
             if(this.sortCardSolutionIndex == PlayerPhom.SORT_CARD_BY_PHOM_SOLUTION){
                 PhomUtils.sortAsc(this.renderer.cardList.cards, PhomUtils.SORT_BY_PHOM_SOLUTION);
             }else{
@@ -878,6 +877,7 @@ export default class PlayerPhom extends PlayerCardTurnBase {
 
     onGameEnding(data) {
         super.onGameEnding(data);
+        // /this.renderer.cleanPlayerCards()
     }
 }
 
@@ -905,6 +905,8 @@ PlayerPhom.STATE_DOWN_JOIN_PHASE_SKIP = 2000;
 PlayerPhom.STATE_DOWN_JOIN_PHASE_UNKNOW = -1;
 PlayerPhom.STATE_DOWN_JOIN_PHASE_SELECT_SOLUTION = 1;
 PlayerPhom.STATE_DOWN_JOIN_PHASE_SKIP = 2;
+
+PlayerPhom.DEFAULT_HAND_CARD_COUNT = 9
 
 
 app.createComponent(PlayerPhom);

@@ -8,9 +8,6 @@ import {Card, CardList} from 'game-components';
 import GameUtils from 'GameUtils';
 
 export default class DeckCardRenderer extends Component {
-    static get DEFAULT_SCALE() {
-        return 0.8
-    };
 
     constructor() {
         super();
@@ -86,5 +83,7 @@ export default class DeckCardRenderer extends Component {
         this.cardList2.clear();
     }
 }
+
+DeckCardRenderer.DEFAULT_SCALE = 0.8
 
 app.createComponent(DeckCardRenderer);

@@ -35,8 +35,6 @@ export default class BoardRenderer extends ActorRenderer {
         this.timelineTextView = this.timelineTextViewNode.getComponent('TextView');
         this.ellipseTimeLine = this.timeline.getComponent('EllipseTimeLine');
         this.hideTimeLine();
-
-        console.warn('Board timeline: ', this.timeline);
     }
 
     _reset() {

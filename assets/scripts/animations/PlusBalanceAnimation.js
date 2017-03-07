@@ -14,6 +14,7 @@ export default class PlusBalanceAnimation extends Component {
     }
 
     onDestroy() {
+        super.onDestroy()
         this.startCallback = null;
         this.endCallback = null;
     }

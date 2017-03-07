@@ -197,7 +197,7 @@ export default class GameScene extends BaseScene {
             this._loadGameData();
 
         } catch (e) {
-            error(e);
+            console.warn(e);
             app.system.enablePendingGameEvent = false;
             e instanceof CreateGameException && this._onLoadSceneFail();
         }

@@ -10,10 +10,6 @@ import ArrayUtils from "../../../utils/ArrayUtils";
 
 export default class SamUtils {
 
-    static get GAME_TYPE() {
-        return app.const.game.GAME_TYPE_XAM;
-    };
-
     static checkPlayCard(playCards, playedCards) {
         return playCards && playCards.length > 0 && !ArrayUtils.isEmpty(this.getValidSelectedCards(playCards, playedCards));
     }
@@ -289,3 +285,5 @@ SamUtils.GROUP_CARD_TYPE_SAU_DOI = 1;
 SamUtils.GROUP_CARD_TYPE_DOI_HEO = 1;
 SamUtils.GROUP_CARD_TYPE_TU_QUY_HEO = 1;
 SamUtils.GROUP_CARD_TYPE_TU_QUY_BA = 1;
+
+SamUtils.GAME_TYPE = app.const.game.GAME_TYPE_XAM

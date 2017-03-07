@@ -35,7 +35,6 @@ export default class BoardCardTurnBaseRenderer extends BoardCardRenderer {
     }
 
     cleanDeckCards(){
-        console.warn('cleanDeckCards... ');
         this.deckCardRenderer && this.deckCardRenderer.clear();
     }
 

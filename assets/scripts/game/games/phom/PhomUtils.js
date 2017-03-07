@@ -15,10 +15,6 @@ export default class PhomUtils {
 
     constructor(){}
 
-    static get GAME_TYPE() {
-        return app.const.game.GAME_TYPE_TIENLEN;
-    };
-
     static isPhomByRank(cards, sorted = false) {
         let sortedCards = sorted ? cards : PhomUtils.sortAsc([...cards], PhomUtils.SORT_BY_RANK);
         return sortedCards[0].rank == sortedCards[sortedCards.length - 1].rank;
@@ -298,7 +294,9 @@ export default class PhomUtils {
                 return cards;
                 break;
             case PhomUtils.SORT_BY_PHOM_SOLUTION:
-                let phomListSolutions = PhomGenerator.generate(cards);
+                let phomListSolutions = PhomGenerator.generatePhomContainEatenCards(cards);
+
+                console.log('phomListSolutions: ', phomListSolutions.length);
 
                 if (phomListSolutions.length > 0) {
                     let phomCards = phomListSolutions[0].getCards();
@@ -308,8 +306,6 @@ export default class PhomUtils {
                 } else {
                     cards.sort(PhomUtils._compareByRank);
                 }
-
-                return cards;
 
                 break;
             default:
@@ -352,12 +348,11 @@ export default class PhomUtils {
 
 }
 
-
-
 PhomUtils.SORT_BY_RANK = 1;
 PhomUtils.SORT_BY_SUIT = 2;
 PhomUtils.SORT_BY_PHOM_FIRST = 3;
 PhomUtils.SORT_BY_PHOM_SOLUTION = 4;
-
 PhomUtils.COMPARE_RANK = 1;
 PhomUtils.COMPARE_SUIT = 2;
+
+PhomUtils.GAME_TYPE = app.const.game.GAME_TYPE_TIENLEN

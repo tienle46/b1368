@@ -10,22 +10,6 @@ import Events from 'Events'
 
 export default class PlayerPositions extends Component {
 
-    static get ALIGN_TOP() {
-        return 'TOP';
-    }
-
-    static get ALIGN_BOTTOM() {
-        return 'BOTTOM';
-    }
-
-    static get ALIGN_LEFT() {
-        return 'LEFT';
-    }
-
-    static get ALIGN_RIGHT() {
-        return 'RIGHT';
-    }
-
     constructor() {
         super();
 
@@ -244,3 +228,8 @@ export default class PlayerPositions extends Component {
         return nextPlayerId;
     }
 }
+
+PlayerPositions.ALIGN_TOP = 'TOP'
+PlayerPositions.ALIGN_BOTTOM = 'BOTTOM'
+PlayerPositions.ALIGN_LEFT = 'LEFT'
+PlayerPositions.ALIGN_RIGHT = 'RIGHT'

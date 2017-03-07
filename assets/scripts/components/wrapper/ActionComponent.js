@@ -25,9 +25,6 @@ class ActionComponent extends Component {
         delay > 0 && actions.push(cc.delayTime(delay))
         cb && actions.push(cc.callFunc(() => this.onActionFinish()))
 
-
-        console.warn('runActionWithCallback: ', this.node, actions.length);
-
         this.node && actions.length > 0 ? this.node.runAction(cc.sequence(actions)) : this.onActionFinish()
     }
 

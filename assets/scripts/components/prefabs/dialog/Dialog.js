@@ -106,7 +106,7 @@ export default class Dialog extends Component {
 
             return p;
         }).catch((e) => {
-            error('err', e);
+            console.warn('err', e);
         });
     }
 

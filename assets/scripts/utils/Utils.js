@@ -166,8 +166,6 @@ export default class Utils {
     static cloneProperties(dest, src) {
 
         Object.getOwnPropertyNames(src).forEach(key => {
-
-            log("Check: ", dest[key], src[key], !dest[key] && src[key]);
             if (!dest[key] && src[key]) {
                 dest[key] = src[key];
             }

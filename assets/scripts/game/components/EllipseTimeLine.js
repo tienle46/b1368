@@ -90,6 +90,7 @@ export default class EllipseTimeLine extends Component {
     }
 
     onDestroy() {
+        super.onDestroy()
         this.stop(false);
     }
 }
