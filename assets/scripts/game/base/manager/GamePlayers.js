@@ -9,6 +9,7 @@ import Component from 'components';
 import {gameManager, Player, PlayerRenderer} from 'game';
 import {CreateGameException} from 'exceptions';
 import {Events} from 'events'
+import CCUtils from 'CCUtils'
 
 export default class GamePlayers extends Component {
     constructor() {
@@ -300,8 +301,7 @@ export default class GamePlayers extends Component {
                 delete this._idToPlayerMap[player.id];
                 delete this._idToPlayerMap[player.user.name];
 
-                player.node.destroy();
-                this.scene.playerLayer.removeChild(player.node);
+                CCUtils.clearFromParent(player.node)
                 this.playerPositions.showInviteButtonByPlayerId(player.id);
                 this._onPlayerDataChanged();
 

@@ -17,7 +17,7 @@ export default class ArrayUtils {
     }
 
     static findFirst(arr, findItem, equalsFn) {
-        let index = this.findIndex(arr, removing, equalsFn);
+        let index = this.findIndex(arr, findItem, equalsFn);
         return index >= 0 && arr[index];
     }
 
@@ -35,7 +35,6 @@ export default class ArrayUtils {
         if (equalsFn || findItem.equals) {
             equalsFn = equalsFn || ((obj1, obj2) => obj1.equals(obj2));
             arr.some((val, i) => {
-
                 if (equalsFn(val, findItem)) {
                     index = i;
                     return true;
@@ -44,7 +43,7 @@ export default class ArrayUtils {
         } else {
             index = arr.indexOf(findItem);
         }
-
+        
         return index;
     }
 
@@ -106,10 +105,10 @@ export default class ArrayUtils {
      */
     static containsAll(arr, checkArr, equalsFn) {
 
-        if (!arr || !checkArr || arr.length != checkArr.length) return false;
+        if (!arr || !checkArr || arr.length < checkArr.length) return false;
 
         let containObjs = arr.filter(obj => this.findIndex(checkArr, obj, equalsFn) >= 0);
-        return containObjs.length == arr.length;
+        return containObjs.length == checkArr.length;
     }
 
     /**

@@ -13,10 +13,6 @@ import utils from "../../../utils/Utils";
 
 export default class PlayerSam extends PlayerCardTurnBase {
 
-    static get DEFAULT_HAND_CARD_COUNT() {
-        return 10
-    };
-
     constructor(board, user) {
         super(board, user);
 
@@ -47,13 +43,14 @@ export default class PlayerSam extends PlayerCardTurnBase {
     _removeGlobalListener() {
         super._removeGlobalListener();
 
-        this.scene.off(Events.ON_CLICK_PLAY_BUTTON, this._onPlayTurn);
-        this.scene.off(Events.ON_CLICK_SKIP_TURN_BUTTON, this._onSkipTurn);
-        this.scene.off(Events.ON_CLICK_SORT_BUTTON, this._onSortCards);
-        this.scene.off(Events.ON_PLAYER_REMAIN_CARD_COUNT, this._setRemainCardCount);
+        this.scene.off(Events.ON_CLICK_PLAY_BUTTON, this._onPlayTurn, this);
+        this.scene.off(Events.ON_CLICK_SKIP_TURN_BUTTON, this._onSkipTurn, this);
+        this.scene.off(Events.ON_CLICK_SORT_BUTTON, this._onSortCards, this);
+        this.scene.off(Events.ON_PLAYER_REMAIN_CARD_COUNT, this._setRemainCardCount, this);
         this.scene.off(Events.ON_CLICK_BAO_XAM_BUTTON, this._onBaoXam, this);
         this.scene.off(Events.ON_CLICK_BO_BAO_XAM_BUTTON, this._onBoBaoXam, this);
         this.scene.off(Events.HANDLE_PLAY_TURN, this._onPlayerPlayedTurn, this);
+        this.scene.off(Events.ON_GAME_STATE_TRUE_PLAY, this._onGameTruePlay, this);
         this.scene.off(Events.ON_GAME_STATE, this._onGameState, this);
         this.scene.off(Events.ON_PLAYER_BAO_XAM, this._onPlayerBaoXam, this);
         this.scene.off(Events.ON_PLAYER_BAO_1, this._onPlayerBao1, this);
@@ -191,5 +188,7 @@ export default class PlayerSam extends PlayerCardTurnBase {
 
     }
 }
+
+PlayerSam.DEFAULT_HAND_CARD_COUNT = 10
 
 app.createComponent(PlayerSam);

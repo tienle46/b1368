@@ -95,13 +95,10 @@ export default (function(app) {
             if (app.env.isIOS()) {
                 app.config.DEVICE_ID = window.jsb.reflection.callStaticMethod("FCUUID", "uuidForDevice");
                 app.config.CARRIER_NAME = window.jsb.reflection.callStaticMethod("JSBUtils", "carrierName");
-                log(`ios udid ${app.config.DEVICE_ID}`);
-                log(`ios carrier name ${app.config.CARRIER_NAME}`);
             }
             if (app.env.isAndroid()) {
                 app.config.DEVICE_ID = window.jsb.reflection.callStaticMethod("org/cocos2dx/javascript/JSBUtils", "uuidForDevice", "()Ljava/lang/String;");
                 app.config.CARRIER_NAME = window.jsb.reflection.callStaticMethod("org/cocos2dx/javascript/JSBUtils", "carrierName", "()Ljava/lang/String;");
-                log(`android udid ${app.config.DEVICE_ID}`);
             }
 
             _setupSDKBox();
@@ -247,8 +244,6 @@ export default (function(app) {
                         cc.log('IAP: ELSE');
                     }
                 }
-
-                cc.log('IAP: app.context.purchases > init :', JSON.stringify(app.context.getPurchases()));
 
                 // setup listener
                 app.env.sdkIAPSetListener({

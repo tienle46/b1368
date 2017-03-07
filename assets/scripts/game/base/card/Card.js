@@ -102,6 +102,7 @@ export default class Card extends Component {
             this.__locked = locked;
             return;
         }
+
         this.locked = locked;
         utils.setVisible(this.lockedNode, locked);
     }

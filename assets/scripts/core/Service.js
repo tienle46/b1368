@@ -400,9 +400,6 @@ class Service {
             this._onConnection({ success: true });
         } else {
             this._addCallback(SFS2X.SFSEvent.CONNECTION, cb);
-
-            log(`Connecting to: ${app.config.host}:${app.config.port}`);
-
             this.client.connect(app.config.host, app.config.port);
         }
 
@@ -550,7 +547,6 @@ class Service {
     }
 
     _onCreateRoomError(event) {
-        log("_onCreateRoomError: ", event);
         if (event.errorCode) {
             this._callCallbackAsync(app.commands.USER_CREATE_ROOM, event);
             this._deleteCallbackObject(app.commands.USER_CREATE_ROOM);

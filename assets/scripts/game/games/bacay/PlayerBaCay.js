@@ -15,10 +15,6 @@ import GameAnim from "../../components/anim/GameAnim";
 
 export default class PlayerBaCay extends PlayerCardBetTurn {
 
-    static get DEFAULT_HAND_CARD_COUNT() {
-        return 3
-    };
-
     constructor(board, user) {
         super(board, user);
 
@@ -381,5 +377,7 @@ export default class PlayerBaCay extends PlayerCardBetTurn {
         biHucPlayer.renderer.showCuocBienBtn(false);
     }
 }
+
+PlayerBaCay.DEFAULT_HAND_CARD_COUNT = 3
 
 app.createComponent(PlayerBaCay);

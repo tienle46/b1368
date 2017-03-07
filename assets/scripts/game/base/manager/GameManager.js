@@ -131,9 +131,6 @@ export default class GameManager {
                 }
             });
 
-            log("results: ", results);
-            log("err: ", err);
-
             if (loadedRes) {
                 cb && cb();
             } else {

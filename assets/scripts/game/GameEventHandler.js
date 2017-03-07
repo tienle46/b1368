@@ -213,6 +213,9 @@ export default class GameEventHandler {
     }
 
     _handlePlayerReEnterGame(data) {
+        
+        console.log('',);
+        
         let playerId = utils.getValue(data, Keywords.PLAYER_ID, 0);
         let userId = utils.getValue(data, Keywords.USER_ID, 0);
         this.scene.emit(Events.ON_PLAYER_REENTER_GAME, playerId, userId);
@@ -360,9 +363,6 @@ export default class GameEventHandler {
     _handleChangePlayerBalance(data) {
         let playerIds = utils.getValue(data, Keywords.GAME_LIST_PLAYER);
         let playersBalances = utils.getValue(data, Keywords.USER_BALANCE);
-
-        log("_handleChangePlayerBalance: ", playersBalances);
-
         playerIds && playersBalances && playerIds.forEach((id, index) => {
             this.scene.emit(Events.ON_PLAYER_CHANGE_BALANCE, id, playersBalances[index]);
         });

@@ -28,6 +28,18 @@ export default class PhomGenerator {
         return this._sortPhomLists(generatedPhomLists);
     }
 
+    static generatePhomContainEatenCards(cards, eatenCards = []) {
+
+        let phomLists = this.generate(cards);
+
+        if(eatenCards.length > 0){
+            phomLists = phomLists.filter(phomList => ArrayUtils.containsAll(phomList.cards, eatenCards))
+        }
+
+        return phomLists;
+
+    }
+
     static generatePhomByEatenCard(cards, eatenCards){
         let allPhoms = this.generateAllPhom(cards);
         let phomMap = {};
