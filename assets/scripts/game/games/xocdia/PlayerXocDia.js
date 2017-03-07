@@ -4,10 +4,6 @@ import PlayerCardBetTurn from 'PlayerCardBetTurn';
 
 export default class PlayerXocDia extends PlayerCardBetTurn {
 
-    static get DEFAULT_HAND_CARD_COUNT() {
-        return 3;
-    }
-
     constructor(board, user) {
         super(board, user);
 

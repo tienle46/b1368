@@ -501,7 +501,12 @@ export default class CardList extends Component {
         if (utils.isNumber(cardsOrRemoveAmount)) {
             return this.cards.splice(0, cardsOrRemoveAmount);
         } else {
-            return ArrayUtils.removeAll(this.cards, cardsOrRemoveAmount, null, true);
+            let removingCards = cardsOrRemoveAmount;
+            if(removingCards.filter(card => !card.isEmpty()).length == 0){
+                return this.cards.splice(0, removingCards.length);
+            }else{
+                return ArrayUtils.removeAll(this.cards, cardsOrRemoveAmount, null, true);
+            }
         }
         // let removingCards = utils.isNumber(cardsOrRemoveAmount) ? this._getSubCards(cardsOrRemoveAmount) : this.findCardComponents(cardsOrRemoveAmount);
         // _.pullAll(this.cards, removingCards);
@@ -701,22 +706,22 @@ export default class CardList extends Component {
     }
 
     stopAllCardActions(cardList = this, ...args) {
-        cardList.node && this.node.stopAllActions();
+        cardList.node && cardList.node.stopAllActions();
         cardList.cards.forEach(card => card.node.stopAllActions());
-        if (this.__endActionCb) {
-            let endAction = this.__endActionCb;
-            this.__endActionCb = null;
+        if (cardList.__endActionCb) {
+            let endAction = cardList.__endActionCb;
+            cardList.__endActionCb = null;
 
             endAction(...args);
         }
     }
 
     finishAllCardActions(cardList = this, ...args) {
-        cardList.node && this.node.stopAllActions();
+        cardList.node && cardList.node.stopAllActions();
         cardList.cards.forEach(card => card.finishCardAction());
-        if (this.__endActionCb) {
-            let endAction = this.__endActionCb;
-            this.__endActionCb = null;
+        if (cardList.__endActionCb) {
+            let endAction = cardList.__endActionCb;
+            cardList.__endActionCb = null;
 
             endAction(...args);
         }
@@ -730,13 +735,17 @@ export default class CardList extends Component {
      * @param cb
      * @returns {ActionInterval}
      */
-    static dealCards(dealCardAnchor, playersCardLists, cardLengths, cb) {
+    static dealCards(actionComponent, anchorNode, playersCardLists, cardLengths, cb) {
 
         let maxLength = 0;
         const delayTime = 0.07 + (4 - playersCardLists.length) * 0.02;
         const delay = cc.delayTime(delayTime);
         const actions = [delay.clone()];
-        const centerPoint = dealCardAnchor.parent.convertToWorldSpaceAR(dealCardAnchor.getPosition());
+
+        let parentNode = (actionComponent && actionComponent.node) || (anchorNode && anchorNode.parent);
+        if(!parentNode) return;
+
+        const centerPoint = parentNode.convertToWorldSpaceAR(anchorNode.getPosition());
 
         if (utils.isNumber(cardLengths)) {
 
@@ -774,23 +783,20 @@ export default class CardList extends Component {
                     cc.moveTo(CardList.DRAW_CARD_DURATION, cardPosition.x, cardPosition.y),
                     cc.rotateBy(CardList.DRAW_CARD_DURATION, 720),
                 );
-
-                if (i == (maxLength - 1) && j == (playersCardLists.length - 1)) {
-                    animation = cc.sequence(
-                        animation,
-                        cc.delayTime(CardList.DRAW_CARD_DURATION + 0.1),
-                        cc.callFunc(() => {
-                            cb && cb();
-                        })
-                    );
-                }
-
                 actions.push(cc.callFunc(() => card.node && card.node.runAction(animation)));
                 actions.push(delay.clone());
             }
         }
 
-        dealCardAnchor.parent && dealCardAnchor.parent.runAction(cc.sequence(actions));
+        if(actionComponent){
+            actionComponent.runActionWithCallback(actions, cb, CardList.DRAW_CARD_DURATION + 0.1)
+        }else{
+            parentNode.runAction(cc.sequence(
+                    [...actions, cc.delayTime(CardList.DRAW_CARD_DURATION + 0.1), cc.callFunc(() => cb && cb())]
+                )
+            )
+        }
+
     }
 
     equals(cardList) {

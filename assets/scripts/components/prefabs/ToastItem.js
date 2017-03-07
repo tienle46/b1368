@@ -22,8 +22,6 @@ export default class ToastItem extends Component {
 
     onLoad() {
 
-        console.warn("onload toast: ", this.message)
-
         let textView = this.textViewNode.getComponent('TextView');
         textView.setText(this.message || "");
 
@@ -47,6 +45,7 @@ export default class ToastItem extends Component {
     }
 
     onDestroy() {
+        super.onDestroy()
         this.timeoutId && clearTimeout(this.timeoutId);
     }
 

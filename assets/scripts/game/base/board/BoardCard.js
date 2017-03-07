@@ -16,6 +16,7 @@ export default class BoardCard extends Board {
         super();
 
         this.handCardSize = 0;
+        this.meDealCards = null;
     }
 
     onGameStatePreChange(boardState, data) {
@@ -35,12 +36,19 @@ export default class BoardCard extends Board {
     }
 
     onDealCard(playerHandCardLists, dealCards, data) {
-        CardList.dealCards(this.renderer.dealCardAnchor, playerHandCardLists, dealCards.length, () => {
-            this.renderer.meDealCardList.clear();
-            this.scene.emit(Events.ON_GAME_STATE_STARTED, dealCards);
+        this.meDealCards = [...dealCards]
+
+        CardList.dealCards(this.renderer.dealCardActionComponent, this.renderer.dealCardAnchor, playerHandCardLists, dealCards.length, () => {
+            this.scene.emit(Events.ON_GAME_STATE_STARTED);
+            this.onDoneDealCards()
         });
 
         this.scene.emit(Events.ON_GAME_STATE_STARTING, data);
+    }
+
+    onDoneDealCards(){
+        this.renderer.meDealCardList.clear();
+        this.meDealCards = [];
     }
 
     _getPlayerHandCards(playerIds, data) {

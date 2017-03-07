@@ -73,12 +73,12 @@ export default class MultiTabPopup extends Component {
         });
     }
 
-    _showLoading() {
-        this.progress.show();
+    showLoading() {
+        this.progress && this.progress.show();
     }
 
-    _hideLoading() {
-        this.progress.hide();
+    hideLoading() {
+        this.progress && this.progress.hide();
     }
 
     _changeBody(tabIndex, data) {
@@ -95,11 +95,10 @@ export default class MultiTabPopup extends Component {
                 tabBody.node.active = true;
             } else if (model.prefabPath) {
 
-                this.progress.show();
+                this.showLoading()
 
                 cc.loader.loadRes(model.prefabPath, cc.Prefab, (error, prefab) => {
-
-                    this.progress.hide();
+                    this.hideLoading()
 
                     if (error || !prefab) {
                         this._showEmptyBody();

@@ -179,8 +179,9 @@ export default class BoardPhom extends BoardCardTurnBase {
     }
 
     _setDeckFakeCard(fakeCount = 16) {
+
         if (fakeCount > 0 || this.getTotalPlayedCardsSize() < 16) {
-            this.renderer.fillDeckFakeCards();
+            this.renderer.fillDeckFakeCards(fakeCount);
         } else {
             this.renderer.cleanDeckCards();
         }
@@ -196,6 +197,8 @@ export default class BoardPhom extends BoardCardTurnBase {
 
     onBoardPlaying(data, isJustJoined) {
         super.onBoardPlaying(data, isJustJoined);
+
+        this.meDealCards = []
 
         if (isJustJoined) {
             this._setDeckFakeCard();
@@ -230,6 +233,7 @@ export default class BoardPhom extends BoardCardTurnBase {
             }
         });
 
+        this.renderer.cleanDeckCards()
         setTimeout(() => this.scene.showGameResult(models, (shownTime) => {
             let remainTime = this.timelineRemain - shownTime;
             if (remainTime > 0 && this.scene.isEnding()) {

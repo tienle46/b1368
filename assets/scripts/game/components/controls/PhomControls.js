@@ -172,6 +172,8 @@ export default class PhomControls extends GameControls {
         let nextTurnPlayerId = utils.getValue(data, Keywords.TURN_PLAYER_ID);
         if (!nextTurnPlayerId) {
             this._showWaitTurnControls();
+        }else{
+            isJustJoined && app.context.getMe().id != nextTurnPlayerId && this._showWaitTurnControls();
         }
     }
 

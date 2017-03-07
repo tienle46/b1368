@@ -15,12 +15,18 @@ class TabGiftCode extends Component {
     }
 
     onLoad() {
+        super.onLoad();
+
         // wait til every requests is done
         this.node.active = true;
-
         this.messageLabel.horizontalAlign = cc.Label.HorizontalAlign.CENTER;
         this.messageLabel.overflow = cc.Label.Overflow.RESIZE_HEIGHT;
-        this.messageLabel.enableWrapText = true;
+        this.messageLabel.enableWrapText = true
+    }
+
+    onEnable(){
+        super.onEnable();
+
         let userName = app.context.getMyInfo().name;
         this.messageLabel.string = `Bạn đang sử dụng tài khoản "${userName}" để nhận thưởng`;
 

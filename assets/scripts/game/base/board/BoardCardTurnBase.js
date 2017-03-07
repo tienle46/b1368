@@ -75,8 +75,6 @@ export default class BoardCardTurnBase extends BoardCard {
 
     _handleBoardTurnBaseTruePlay(data){
 
-        console.log(this.scene._eventEmitter);
-
         let turnDuration = utils.getValue(data, Keywords.TURN_BASE_PLAYER_TURN_DURATION)
         if (turnDuration) {
             this.scene.emit(Events.HANDLE_TURN_DURATION, turnDuration);
@@ -88,8 +86,6 @@ export default class BoardCardTurnBase extends BoardCard {
         if (nextTurnPlayerId) {
             this.scene.emit(Events.HANDLE_CHANGE_TURN, nextTurnPlayerId);
         }
-
-        log("nextTurnPlayerId: ", nextTurnPlayerId)
     }
 
     onBoardPlaying(data, isJustJoined){

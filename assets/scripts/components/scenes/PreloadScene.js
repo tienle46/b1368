@@ -1,7 +1,8 @@
 import app from 'app';
 import Component from 'Component';
 import BuddyManager from 'BuddyManager';
-import Service from 'Service';
+import PhomGenerator from 'PhomGenerator';
+import Card from 'Card';
 
 class PreloadScene extends Component {
     constructor() {
@@ -11,6 +12,7 @@ class PreloadScene extends Component {
             default: null,
             type: cc.Node
         }
+        this.asss = "asdadas";
     }
 
     onLoad() {
@@ -19,6 +21,23 @@ class PreloadScene extends Component {
         }
 
         this._setupEnvironment();
+
+        let cards = [
+            Card.from(Card.RANK_AT, Card.SUIT_ZO),
+            Card.from(Card.RANK_HAI, Card.SUIT_ZO),
+            Card.from(Card.RANK_BA, Card.SUIT_ZO),
+            Card.from(Card.RANK_BON, Card.SUIT_BICH),
+            Card.from(Card.RANK_NAM, Card.SUIT_ZO),
+            Card.from(Card.RANK_SAU, Card.SUIT_TEP),
+            Card.from(Card.RANK_BAY, Card.SUIT_ZO),
+            Card.from(Card.RANK_TAM, Card.SUIT_BICH),
+            Card.from(Card.RANK_CHIN, Card.SUIT_ZO),
+            Card.from(Card.RANK_Q, Card.SUIT_ZO)
+        ]
+
+        cards[0].setLocked(true);
+
+        PhomGenerator.generatePhomContainEatenCards(cards, [Card.from(Card.RANK_AT, Card.SUIT_ZO)])
     }
 
     _setupEnvironment() {
