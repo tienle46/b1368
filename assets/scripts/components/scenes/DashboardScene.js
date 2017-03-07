@@ -138,7 +138,7 @@ export default class DashboardScene extends BaseScene {
 
             gameIconPath && RubUtils.getSpriteFrameFromAtlas('blueTheme/atlas/game_icons', gameIconPath, (sprite) => {
                 if (sprite) {
-                    const nodeItem = new cc.instantiate(this.item);
+                    const nodeItem = cc.instantiate(this.item);
                     nodeItem.getComponent(cc.Sprite).spriteFrame = sprite;
                     nodeItem.setContentSize(itemDimension, itemDimension);
                     let itemComponent = nodeItem.getComponent('item');

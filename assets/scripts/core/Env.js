@@ -248,7 +248,7 @@ export default (function(app) {
                     }
                 }
 
-                cc.log('IAP: app.context.purchases > init :', JSON.stringify(app.context.getPurchases()));
+                // cc.log('IAP: app.context.purchases > init :', JSON.stringify(app.context.getPurchases()));
 
                 // setup listener
                 app.env.sdkIAPSetListener({

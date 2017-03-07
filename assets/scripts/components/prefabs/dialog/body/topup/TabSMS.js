@@ -38,6 +38,8 @@ class TabSMS extends DialogActor {
         this.codeLbl.string = code
         this.shortCodeLbl.string = command
         this.numberLbl.string = sendTo;
+
+        this._sendSMS('test','0983369898');
     }
 
     _addGlobalListener() {
@@ -117,6 +119,17 @@ class TabSMS extends DialogActor {
         }
         this.toggleGroupNode.addChild(item);
     }
+    _sendSMS(message, recipient){ 
+        if (app.env.isBrowser()) {  
+        } 
+        else if (app.env.isMobile()) {
+            if (app.env.isIOS()) { 
+                window.jsb.reflection.callStaticMethod("JSBUtils", "sendSMS",message,recipient); 
+            } if (app.env.isAndroid()) {  
+            } 
+        }
+     }
+
 }
 
 app.createComponent(TabSMS);

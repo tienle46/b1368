@@ -58,7 +58,6 @@ class PreloadScene extends Component {
                     app.res.prefab[res.name] = prefab;
                     prefab ? callback(null, true) : callback();
                 });
-                cc.loader.setAutoReleaseRecursively(res.dir, true);
 
             };
         }), (err, results) => {
