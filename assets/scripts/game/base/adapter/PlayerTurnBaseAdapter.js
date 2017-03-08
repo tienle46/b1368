@@ -134,10 +134,13 @@ export default class PlayerTurnBaseAdapter extends GameAdapter {
     }
 
     _showWaitTurnControls(){
-        this.player.isItMe() && this.scene.emit(Events.SHOW_WAIT_TURN_CONTROLS);
+        this.scene.emit(Events.SHOW_WAIT_TURN_CONTROLS);
     }
 
     _handleLoseTurn(playerId){
+
+        console.log('_handleLoseTurn: ', playerId);
+
         if(typeof playerId == 'object') playerId == utils.getValue(data, Keywords.PLAYER_ID);
 
         this.player.id === playerId && this.onLoseTurn();
@@ -177,6 +180,9 @@ export default class PlayerTurnBaseAdapter extends GameAdapter {
     }
 
     onLoseTurn(){
+
+        console.log('onLoseTurn: -------', );
+
         this.player.skippedTurn = true;
         this.player.stopTimeLine();
         this._showWaitTurnControls();

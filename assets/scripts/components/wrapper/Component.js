@@ -17,6 +17,18 @@ export default class Component {
         this.loadedNodes = []; // nodes will be destroy & removeFromParent when component onDestroy
     }
 
+    getUniqueName(){
+        return cc.js.getClassName(this);
+    }
+
+    getClass(){
+        return this.constructor;
+    }
+
+    getClassName(){
+        return cc.js.getClassName(this);
+    }
+
     addAsset(asset) {
         this.loadedAssets.push(asset);
     }

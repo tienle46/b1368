@@ -25,7 +25,6 @@ class EntranceScene extends BaseScene {
                     if (isLogin) {
                         const fbId = sdkbox.PluginFacebook.getUserID();
                         this.accessToken = sdkbox.PluginFacebook.getAccessToken();
-                        log(`fbId ${fbId} and token ${this.accessToken}`);
                         this.getUserByFbId(fbId, this.accessToken);
                     }
                 },
@@ -103,7 +102,6 @@ class EntranceScene extends BaseScene {
             } else {
                 const fbId = window.sdkbox.PluginFacebook.getUserID();
                 this.accessToken = window.sdkbox.PluginFacebook.getAccessToken();
-                log(`fbId ${fbId} and token ${this.accessToken}`);
                 this.getUserByFbId(fbId, this.accessToken);
             }
         } else {

@@ -256,6 +256,7 @@ class BuddyChatTabBody extends PopupTabBody {
     }
 
     onDestroy() {
+        super.onDestroy()
         window.release(this.chattingBuddyItems);
     }
 

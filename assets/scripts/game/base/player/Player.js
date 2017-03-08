@@ -42,6 +42,10 @@ export default class Player extends Actor {
 
     }
 
+    getUniqueName(){
+        return `${super.getUniqueName()}_${this.user && this.user.name}`
+    }
+
     _addGlobalListener() {
         super._addGlobalListener();
 
@@ -61,6 +65,7 @@ export default class Player extends Actor {
         this.scene.on(Events.ON_ROOM_CHANGE_MIN_BET, this._onRoomMinBetChanged, this);
         this.scene.on(Events.ON_CLICK_START_GAME_BUTTON, this._onClickStartGameButton, this);
         this.scene.on(Events.ON_USER_USES_ASSET, this._onUserUsesAsset, this);
+        this.scene.on(Events.ON_PLAYER_REENTER_GAME, this._onUserReenterGame, this);
     }
 
     _removeGlobalListener() {
@@ -82,6 +87,28 @@ export default class Player extends Actor {
         this.scene.off(Events.ON_CLICK_START_GAME_BUTTON, this._onClickStartGameButton, this);
         this.scene.off(Events.ON_USER_UPDATE_NEW_PLAYER, this._onUserUpdateNewPlayer, this);
         this.scene.off(Events.ON_USER_USES_ASSET, this._onUserUsesAsset, this);
+        this.scene.off(Events.ON_PLAYER_REENTER_GAME, this._onUserReenterGame, this);
+    }
+
+    _onUserReenterGame(playerId, userId){
+        if(this.id != playerId) return;
+
+        let userObj = [];
+        userObj.push(userId);
+        userObj.push(this.user.name);
+        userObj.push(this.user.privilegeId);
+        userObj.push(this.id);
+        userObj.push([...this.user.getVariables()]);
+
+        let newUser = SFS2X.Entities.SFSUser.fromArray(userObj, this.board.room);
+        newUser._setUserManager(app.service.client.userManager);
+
+        this.board.room._removeUser(this.user);
+        app.service.client.userManager._removeUser(this.user);
+        app.service.client.userManager._addUser(newUser);
+        this.board.room._addUser(newUser);
+
+        this.user = newUser;
     }
 
     _onUserUpdateNewPlayer(user) {
@@ -239,6 +266,7 @@ export default class Player extends Actor {
     }
 
     setReady(ready) {
+
         this.ready = ready;
         this.renderer.setVisibleReady(this.ready, this.id);
     }

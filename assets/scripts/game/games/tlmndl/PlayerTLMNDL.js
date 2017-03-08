@@ -13,10 +13,6 @@ import TLMNDLPlayerRenderer from 'PlayerTLMNDLRenderer';
 
 export default class PlayerTLMNDL extends PlayerCardTurnBase {
 
-    static get DEFAULT_HAND_CARD_COUNT() {
-        return 13
-    };
-
     constructor(board, user) {
         super(board, user);
 
@@ -35,10 +31,10 @@ export default class PlayerTLMNDL extends PlayerCardTurnBase {
     _removeGlobalListener() {
         super._removeGlobalListener();
 
-        this.scene.off(Events.ON_CLICK_PLAY_BUTTON, this._onPlayTurn);
-        this.scene.off(Events.ON_CLICK_SKIP_TURN_BUTTON, this._onSkipTurn);
-        this.scene.off(Events.ON_CLICK_SORT_BUTTON, this._onSortCards);
-        this.scene.off(Events.ON_PLAYER_REMAIN_CARD_COUNT, this._setRemainCardCount);
+        this.scene.off(Events.ON_CLICK_PLAY_BUTTON, this._onPlayTurn, this);
+        this.scene.off(Events.ON_CLICK_SKIP_TURN_BUTTON, this._onSkipTurn, this);
+        this.scene.off(Events.ON_CLICK_SORT_BUTTON, this._onSortCards, this);
+        this.scene.off(Events.ON_PLAYER_REMAIN_CARD_COUNT, this._setRemainCardCount, this);
     }
 
     _setRemainCardCount(id, remain = 0) {
@@ -72,6 +68,7 @@ export default class PlayerTLMNDL extends PlayerCardTurnBase {
     }
 
     _onSortCards() {
+
         if (this.isItMe()) {
             let sortedCard = GameUtils.sortCardAsc(this.renderer.cardList.cards, game.const.GAME_TYPE_TIENLEN);
             // this.renderer.cardList.setCards(sortedCard);
@@ -96,9 +93,6 @@ export default class PlayerTLMNDL extends PlayerCardTurnBase {
     }
 
     onEnable() {
-
-        console.log("Renderer: ", this.node.getComponent('PlayerTLMNDLRenderer'));
-
         super.onEnable(this.node.getComponent('PlayerTLMNDLRenderer'));
 
         if (this.isItMe()) {
@@ -119,5 +113,7 @@ export default class PlayerTLMNDL extends PlayerCardTurnBase {
         }
     }
 }
+
+PlayerTLMNDL.DEFAULT_HAND_CARD_COUNT = 13
 
 app.createComponent(PlayerTLMNDL);

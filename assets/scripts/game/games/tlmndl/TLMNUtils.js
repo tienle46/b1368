@@ -8,10 +8,6 @@ import {GameUtils, utils} from 'utils'
 
 export default class TLMNUtils {
 
-    static get GAME_TYPE() {
-        return app.const.game.GAME_TYPE_TIENLEN;
-    };
-
     constructor() {
     }
 
@@ -346,3 +342,5 @@ TLMNUtils.GROUP_CARD_TYPE_SAU_DOI = 12;
 TLMNUtils.GROUP_CARD_TYPE_DOI_HEO = 13;
 TLMNUtils.GROUP_CARD_TYPE_TU_QUY_HEO = 14;
 TLMNUtils.GROUP_CARD_TYPE_TU_QUY_BA = 15;
+
+TLMNUtils.GAME_TYPE = app.const.game.GAME_TYPE_TIENLEN

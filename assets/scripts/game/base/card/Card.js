@@ -102,6 +102,7 @@ export default class Card extends Component {
             this.__locked = locked;
             return;
         }
+
         this.locked = locked;
         utils.setVisible(this.lockedNode, locked);
     }
@@ -117,7 +118,7 @@ export default class Card extends Component {
     }
 
     isEmpty() {
-        return this.byteValue < 5;
+        return this.byteValue < 4;
     }
 
     setHighlight(highlight) {
@@ -135,8 +136,8 @@ export default class Card extends Component {
 
         if (args.length == 1) {
             byteValue = args[0];
-            rank = byteValue >> 2;
-            suit = byteValue & 0x03;
+            rank = (byteValue >> 2)
+            suit = (byteValue & 0x03)
         } else if (args.length == 2) {
             rank = args[0];
             suit = args[1];
@@ -244,7 +245,7 @@ export default class Card extends Component {
     }
 
     static toByte(rank, suit) {
-        return rank << 2 | suit & 0x03;
+        return (rank << 2) | (suit & 0x03);
     }
 
     /**

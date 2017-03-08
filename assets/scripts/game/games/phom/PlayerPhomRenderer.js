@@ -52,8 +52,12 @@ export default class PlayerPhomRenderer extends PlayerCardTurnBaseRenderer {
         this.animation = this.getComponent(cc.Animation);
         this._enabledPlayerPhomRenderer = true;
         this._reloadComponentOnIndexChanged();
+    }
 
-        utils.active(this.anChotNode);
+    cleanPlayerCards(){
+        this.downPhomList && this.downPhomList.clear();
+        this.eatenCardList && this.eatenCardList.clear();
+        this.playedCardList && this.playedCardList.clear();
     }
 
     _reset(){

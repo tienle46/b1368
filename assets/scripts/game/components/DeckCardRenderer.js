@@ -8,9 +8,6 @@ import {Card, CardList} from 'game-components';
 import GameUtils from 'GameUtils';
 
 export default class DeckCardRenderer extends Component {
-    static get DEFAULT_SCALE() {
-        return 0.8
-    };
 
     constructor() {
         super();
@@ -61,7 +58,6 @@ export default class DeckCardRenderer extends Component {
 
 
         if (srcCardList) {
-        console.log("srcCardList before: ", srcCardList.cards.length);
             if (isItMe) {
                 srcCardList.transferTo(this.cardList1, cards);
             } else {
@@ -69,7 +65,6 @@ export default class DeckCardRenderer extends Component {
                 let addedCards = srcCardList.addCards(cards, true, true);
                 srcCardList.transferTo(this.cardList1, addedCards);
             }
-        console.log("srcCardList after: ", srcCardList.cards.length);
         } else {
             this.cardList1.setCards(cards);
         }
@@ -88,5 +83,7 @@ export default class DeckCardRenderer extends Component {
         this.cardList2.clear();
     }
 }
+
+DeckCardRenderer.DEFAULT_SCALE = 0.8
 
 app.createComponent(DeckCardRenderer);
