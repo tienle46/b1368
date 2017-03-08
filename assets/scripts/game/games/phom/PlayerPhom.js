@@ -638,7 +638,8 @@ export default class PlayerPhom extends PlayerCardTurnBase {
         let ji = utils.getValue(data, Keywords.GAME_LIST_JOIN_CARD_TO_PHOM_ID);
         let pl = utils.getValue(data, Keywords.GAME_LIST_PLAYER);
         //
-        let joinedPhomList = new PhomList();
+        let joinedPhomIndexs = [];
+        let phomIndexToJoinCardMap = {}
         let dataIndex = 0;
 
         for (let i = 0; i < phomDataSize.length; i++) {
@@ -648,36 +649,38 @@ export default class PlayerPhom extends PlayerCardTurnBase {
             dataIndex += phomLength;
 
             let index = ArrayUtils.findIndex(this.board.allPhomList, phom);
-
-            joinedPhomList.push(index >= 0 ? this.board.allPhomList[index].renderComponent : null);
+            joinedPhomIndexs.push(index);
+            index >= 0 && (phomIndexToJoinCardMap[index] = [])
         }
 
         let joiningCards = GameUtils.convertBytesToCards(jc);
-        for (let i = 0; i < joiningCards.length; i++) {
-            let card = joiningCards[i];
-            let joinPhom = joinedPhomList[i];
+        joiningCards.forEach((card, i) => {
+            let phomIndex = ji[i];
+            let phomJoinCards = phomIndexToJoinCardMap[phomIndex];
+            phomJoinCards && phomJoinCards.push(card)
+        })
 
-            if (this.isItMe()) {
-                if (joinPhom) {
-                    this.renderer.cardList.transferTo(joinPhom, [card], () => {
-                        this._sortCardList(joinPhom);
-                    });
+        Object.keys(phomIndexToJoinCardMap).forEach(phomIndex => {
+            let phomJoinCards = phomIndexToJoinCardMap[phomIndex]
+            let joinPhom = this.board.allPhomList[phomIndex].renderComponent;
+            if(joinPhom && phomJoinCards.length > 0){
+                if (this.isItMe()) {
+                    if (joinPhom) {
+                        this.renderer.cardList.transferTo(joinPhom, phomJoinCards, () => this._sortCardList(joinPhom))
+                    } else {
+                        this.renderer.cardList.removeCards(phomJoinCards)
+                    }
                 } else {
-                    this.renderer.cardList.removeCards([card]);
-                }
-            } else {
-                if (joinPhom) {
-                    joinPhom.transferFrom(this.renderer.cardList, [card], () => {
-                        this._sortCardList(joinPhom);
-                    });
+                    if (joinPhom) {
+                        joinPhom.transferFrom(this.renderer.cardList, phomJoinCards, () => this._sortCardList(joinPhom))
+                    }
                 }
             }
-        }
+        })
 
         if (this.isItMe()) {
             this.setState(PlayerPhom.STATE_PHOM_PLAY);
         }
-
         // // TODO sound join phom
     }
 

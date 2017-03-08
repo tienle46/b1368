@@ -120,4 +120,5 @@ class GameContext {
     }
 }
 
-module.exports = new GameContext();
+const context = new GameContext()
+module.exports = context;

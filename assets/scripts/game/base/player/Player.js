@@ -266,6 +266,7 @@ export default class Player extends Actor {
     }
 
     setReady(ready) {
+
         this.ready = ready;
         this.renderer.setVisibleReady(this.ready, this.id);
     }
