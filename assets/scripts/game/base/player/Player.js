@@ -330,22 +330,12 @@ export default class Player extends Actor {
             this.onGameReset();
         }
 
-        console.log('onGameBegin: ', isJustJoined);
-
         this._sendReadyImmediately();
-
-        // this.renderer.setVisibleReady(this.ready, this.id);
     }
 
     onGameStarting(data, isJustJoined) {
 
     }
-
-    // changeReadyState(ready){
-    //     // this.setReady(ready);
-    //
-    //     this.emit(Events.ON_PLAYER_READY_STATE_CHANGED, this.id, ready, this.isItMe());
-    // }
 
     onGameStarted(data, isJustJoined) {
         if (isJustJoined) {
