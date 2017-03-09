@@ -68,7 +68,6 @@ export default class GameChatComponent extends Actor {
                 emotionNames.push(asset.name);
             });
         });
-        cc.loader.setAutoReleaseRecursively('emotions/thumbs', true);
     }
 
     onLoad() {

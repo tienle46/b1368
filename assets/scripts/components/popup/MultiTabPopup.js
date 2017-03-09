@@ -119,7 +119,6 @@ export default class MultiTabPopup extends Component {
                     }
 
                 });
-                cc.loader.setAutoReleaseRecursively(model.prefabPath, true);
 
             }
         } else {
