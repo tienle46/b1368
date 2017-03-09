@@ -35,6 +35,7 @@ export default class PhomListComponent extends Component {
     onLoad() {
         super.onLoad();
         this.phoms = [];
+        this.down = [];
         this.phomList = new PhomList();
     }
 
@@ -56,22 +57,46 @@ export default class PhomListComponent extends Component {
         this.phomList.push(...this.phoms);
     }
 
-    setPhomList(newPhomList, player) {
+    _findFirstEmptyPhomComponentIndex(){
+        if(this.phoms[0].cards.length == 0){
+            return 0;
+        }
+
+        if(this.phoms[1].cards.length == 0){
+            return 1;
+        }
+
+        if(this.phoms[2].cards.length == 0){
+            return 2;
+        }
+
+        return 3;
+    }
+
+    addPhomList(newPhomList, player) {
+
+        console.warn('addPhomList: ', newPhomList, player && player.id, player & player.isItMe());
+        let firstEmptyPhomComponentIndex = this._findFirstEmptyPhomComponentIndex();
 
         if(!player){
-            this._setPhomListWithoutPlayer(newPhomList);
+            this._setPhomListWithoutPlayer(newPhomList, firstEmptyPhomComponentIndex);
         }else{
             newPhomList.forEach((newPhom, i) => {
+
+                console.warn('i = ', i, " firstEmptyPhomComponentIndex: ", firstEmptyPhomComponentIndex);
+
                 if (i < PhomList.MAX_PHOM_COUNT) {
 
-                    let phom = this.phoms[i];
-                    if (player.isItMe()) {
-                        player.renderer.cardList.transferTo(phom, newPhom.cards);
-                    } else {
-                        phom.transferFrom(player.renderer.cardList, newPhom.cards);
-                    }
+                    let phom = this.phoms[i + firstEmptyPhomComponentIndex];
+                    if(phom){
+                        if (player.isItMe()) {
+                            player.renderer.cardList.transferTo(phom, newPhom.cards);
+                        } else {
+                            phom.transferFrom(player.renderer.cardList, newPhom.cards);
+                        }
 
-                    newPhom.renderComponent = phom;
+                        newPhom.renderComponent = phom;
+                    }
                 }
             });
         }
@@ -79,10 +104,12 @@ export default class PhomListComponent extends Component {
         return newPhomList;
     }
 
-    _setPhomListWithoutPlayer(phomList){
+    _setPhomListWithoutPlayer(phomList, firstEmptyPhomComponentIndex){
         phomList && phomList.forEach((phomModel, index) => {
-            let phom = this.phoms[index];
-            phom && phom.setCards(phomModel.cards);
+            let phom = this.phoms[index + firstEmptyPhomComponentIndex];
+            if(phom){
+                phom && phom.setCards(phomModel.cards);
+            }
         })
     }
 

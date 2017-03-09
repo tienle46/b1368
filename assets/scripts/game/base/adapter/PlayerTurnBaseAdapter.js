@@ -180,9 +180,6 @@ export default class PlayerTurnBaseAdapter extends GameAdapter {
     }
 
     onLoseTurn(){
-
-        console.log('onLoseTurn: -------', );
-
         this.player.skippedTurn = true;
         this.player.stopTimeLine();
         this._showWaitTurnControls();

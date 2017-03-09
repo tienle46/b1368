@@ -34,12 +34,12 @@ export default class BaseControls extends GameControls {
     }
 
     onClickReadyButton() {
-        this.scene.showShortLoading('ready');
+        this.scene.showShortLoading();
         app.service.send({ cmd: app.commands.PLAYER_READY, room: this.scene.room });
     }
 
     onClickUnreadyButton() {
-        this.scene.showShortLoading('unready');
+        this.scene.showShortLoading();
         app.service.send({ cmd: app.commands.PLAYER_UNREADY, room: this.scene.room });
     }
 
@@ -49,7 +49,7 @@ export default class BaseControls extends GameControls {
     }
 
     _onPlayerSetReadyState(playerId, ready, isItMe = this.scene.gamePlayers.isItMe(playerId)) {
-        this.scene.hideLoading('ready');
+        this.scene.hideLoading();
         isItMe && (ready ? this._onPlayerReady() : this._onPlayerUnready());
     }
 

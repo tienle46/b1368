@@ -177,26 +177,30 @@ export default class PlayerPhom extends PlayerCardTurnBase {
             return;
         }
 
-        let phomList = guiSolution.getPhomList(this.board.allPhomList);
-
-        let jc = [];
-        let ji = [];
-        let pl = phomList.map(phom => phom.owner);
+        let uniquePhomList = guiSolution.getPhomList(this.board.allPhomList);
+        let joinPhomMap = uniquePhomList.reduce((map, value) => {
+            map[value] = {
+                ownerId: 0,
+                joinCards: [],
+                phomCards: []
+            };
+            return map;
+        }, {});
 
         guiSolution.forEach((node, i) => {
             let phom = this.board.allPhomList[node.phomId];
-            jc[i] = node.card.byteValue;
-            ji[i] = ArrayUtils.findIndex(phomList, phom);
+            let joinSolution = joinPhomMap[phom];
+            if(joinSolution){
+                joinSolution.joinCards.push(node.card.byteValue)
+                joinSolution.ownerId = phom.owner
+                joinSolution.phomCards = phom.cards.map(card => card.byteValue);
+            }
         });
 
         app.service.send({
             cmd: Commands.PLAYER_HELP_CARD,
             data: {
-                [Keywords.GAME_LIST_PLAYER_CARDS_SIZE]: phomList.getPhomLengths(),
-                [Keywords.GAME_LIST_CARD]: phomList.toBytes(),
-                [Keywords.GAME_LIST_JOIN_CARD]: jc,
-                [Keywords.GAME_LIST_JOIN_CARD_TO_PHOM_ID]: ji,
-                [Keywords.GAME_LIST_PLAYER]: pl
+                joinPhoms: Object.values(joinPhomMap).filter(joinSolution => joinSolution.ownerId > 0)
             },
             room: this.scene.room
         })
@@ -307,8 +311,6 @@ export default class PlayerPhom extends PlayerCardTurnBase {
 
     setState(state) {
         this.state = state;
-
-        console.warn('set player state: ', state);
 
         switch (state) {
             case PlayerPhom.STATE_PHOM_PLAY:
@@ -441,8 +443,6 @@ export default class PlayerPhom extends PlayerCardTurnBase {
     }
 
     _processAfterEatOrTake() {
-        console.warn('_processAfterEatOrTake: ');
-
         this.renderer.cardList.cleanHighlight()
 
         this.tempHoUPhoms = null;
@@ -632,37 +632,27 @@ export default class PlayerPhom extends PlayerCardTurnBase {
 
         if (playerId != this.id) return;
 
-        let phomDataSize = utils.getValue(data, Keywords.GAME_LIST_PLAYER_CARDS_SIZE);
-        let phomData = utils.getValue(data, Keywords.GAME_LIST_CARD);
-        let jc = utils.getValue(data, Keywords.GAME_LIST_JOIN_CARD);
-        let ji = utils.getValue(data, Keywords.GAME_LIST_JOIN_CARD_TO_PHOM_ID);
-        let pl = utils.getValue(data, Keywords.GAME_LIST_PLAYER);
-        //
-        let joinedPhomIndexs = [];
         let phomIndexToJoinCardMap = {}
-        let dataIndex = 0;
+        let joinPhomDataArr = utils.getValue(data, "joinPhoms");
 
-        for (let i = 0; i < phomDataSize.length; i++) {
-            let phomLength = phomDataSize[i];
+        joinPhomDataArr && joinPhomDataArr.forEach(joinPhomData => {
+            let phomCardBytes = joinPhomData.phomCards;
+            let joinCardBytes = joinPhomData.joinCards;
+            let phomOwnerId = joinPhomData.ownerId;
 
-            let phom = new Phom(GameUtils.convertBytesToCards(phomData.slice(dataIndex, dataIndex + phomLength))).sortAsc();
-            dataIndex += phomLength;
-
+            let phom = new Phom(GameUtils.convertBytesToCards(phomCardBytes)).sortAsc();
             let index = ArrayUtils.findIndex(this.board.allPhomList, phom);
-            joinedPhomIndexs.push(index);
-            index >= 0 && (phomIndexToJoinCardMap[index] = [])
-        }
 
-        let joiningCards = GameUtils.convertBytesToCards(jc);
-        joiningCards.forEach((card, i) => {
-            let phomIndex = ji[i];
-            let phomJoinCards = phomIndexToJoinCardMap[phomIndex];
-            phomJoinCards && phomJoinCards.push(card)
+            if(index >= 0){
+                !phomIndexToJoinCardMap[index] && (phomIndexToJoinCardMap[index] = []);
+                joinCardBytes && phomIndexToJoinCardMap[index].push(...GameUtils.convertBytesToCards(joinCardBytes));
+            }
         })
 
         Object.keys(phomIndexToJoinCardMap).forEach(phomIndex => {
             let phomJoinCards = phomIndexToJoinCardMap[phomIndex]
             let joinPhom = this.board.allPhomList[phomIndex].renderComponent;
+
             if(joinPhom && phomJoinCards.length > 0){
                 if (this.isItMe()) {
                     if (joinPhom) {
@@ -681,7 +671,7 @@ export default class PlayerPhom extends PlayerCardTurnBase {
         if (this.isItMe()) {
             this.setState(PlayerPhom.STATE_PHOM_PLAY);
         }
-        // // TODO sound join phom
+        // TODO sound join phom
     }
 
     _handlePlayerLeaveBoard() {
