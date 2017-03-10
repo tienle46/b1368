@@ -185,7 +185,6 @@ export default class XocDiaControls extends GameControls {
 
     _onPlayerTossChip(data) {
         let { betsList, myPos, isItMe, isReplace, playerId, prevList } = data;
-        // console.debug('_onPlayerTossChip isReplace ', prevList, this.betData, betsList);
         if (isReplace) {
             this._clearUserGoldAmountOnControl(isItMe, prevList, playerId);
         }

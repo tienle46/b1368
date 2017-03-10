@@ -145,20 +145,17 @@ export default class PhomGenerator {
     }
 
     static _findPhomBySuit(cards) {
-        const phoms = [];
-        // cards.forEach(card => console.log("rank: ", card.rank, " suit: ", card.suit));
+        const phoms = [];;
 
         for (let suit = 0; suit < 4; suit++) {
 
             let sameSuitCards = cards.filter(card => card.suit == suit);
             let sortedCards = PhomUtils.sortAsc(sameSuitCards);
-            // sortedCards.forEach(card => console.log("rank: ", card.rank, " suit: ", card.suit));
 
             for (let i = 3; i <= sortedCards.length && i < 6; i++) {
                 for (let j = 0; j <= sortedCards.length - i; j++) {
 
                     let checkCards = sortedCards.slice(j, j + i);
-                    // checkCards.forEach(card => console.log("rank: ", card.rank, " suit: ", card.suit));
 
                     if (PhomGenerator._isSuitPhom(checkCards)) {
                         phoms.push(new Phom(checkCards));

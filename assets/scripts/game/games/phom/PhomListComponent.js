@@ -74,16 +74,12 @@ export default class PhomListComponent extends Component {
     }
 
     addPhomList(newPhomList, player) {
-
-        // console.warn('addPhomList: ', newPhomList, player && player.id, player & player.isItMe());
         let firstEmptyPhomComponentIndex = this._findFirstEmptyPhomComponentIndex();
 
         if (!player) {
             this._setPhomListWithoutPlayer(newPhomList, firstEmptyPhomComponentIndex);
         } else {
             newPhomList.forEach((newPhom, i) => {
-
-                console.warn('i = ', i, " firstEmptyPhomComponentIndex: ", firstEmptyPhomComponentIndex);
 
                 if (i < PhomList.MAX_PHOM_COUNT) {
 

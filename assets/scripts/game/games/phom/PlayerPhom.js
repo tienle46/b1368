@@ -175,9 +175,6 @@ export default class PlayerPhom extends PlayerCardTurnBase {
         }
 
         let uniquePhomList = guiSolution.getPhomList(this.board.allPhomList);
-        console.warn('uniquePhomList: ', uniquePhomList);
-        console.warn('guiSolution: ', guiSolution);
-
         let joinPhomMap = {};
         uniquePhomList.forEach((value) => {
             joinPhomMap[value] = {
@@ -203,8 +200,6 @@ export default class PlayerPhom extends PlayerCardTurnBase {
 
             joinSolution.joinCards.push(node.card.byteValue);
         });
-
-        console.log('joinPhomMap: ', joinPhomMap);
 
         app.service.send({
             cmd: Commands.PLAYER_HELP_CARD,
@@ -575,9 +570,6 @@ export default class PlayerPhom extends PlayerCardTurnBase {
 
     _changeGuiPhomSolution(guiPhomSolutionId = 0) {
         this.guiPhomSolutionId = guiPhomSolutionId;
-
-        console.warn('guiPhomSolutionId: ', guiPhomSolutionId, this.currentGuiPhomSolutions);
-
         if (this.guiPhomSolutionId >= this.currentGuiPhomSolutions.length) {
             this.guiPhomSolutionId = 0;
         }
@@ -642,9 +634,6 @@ export default class PlayerPhom extends PlayerCardTurnBase {
     _handlePlayerHelpCard(playerId, data) {
 
         if (playerId != this.id) return;
-
-        console.log('_handlePlayerHelpCard: ', playerId, data);
-
         let phomIndexToJoinCardMap = {}
         let joinPhomDataArr = utils.getValue(data, "joinPhoms");
 
@@ -656,9 +645,6 @@ export default class PlayerPhom extends PlayerCardTurnBase {
             let phom = new Phom(GameUtils.convertBytesToCards(phomCardBytes)).sortAsc();
             let index = ArrayUtils.findIndex(this.board.allPhomList.map(phomList => phomList.renderComponent || phomList), phom);
 
-            console.warn('this.board.allPhomList: ', this.board.allPhomList, phom);
-            console.warn('index joinPhomDataArr: ', index);
-
             if(index >= 0){
                 !phomIndexToJoinCardMap[index] && (phomIndexToJoinCardMap[index] = []);
                 joinCardBytes && phomIndexToJoinCardMap[index].push(...GameUtils.convertBytesToCards(joinCardBytes));
@@ -668,8 +654,6 @@ export default class PlayerPhom extends PlayerCardTurnBase {
         Object.keys(phomIndexToJoinCardMap).forEach(phomIndex => {
             let phomJoinCards = phomIndexToJoinCardMap[phomIndex]
             let joinPhom = this.board.allPhomList[phomIndex].renderComponent;
-
-            console.log('joinPhom: ', joinPhom, phomJoinCards);
 
             if(joinPhom && phomJoinCards.length > 0){
                 let addedCards;

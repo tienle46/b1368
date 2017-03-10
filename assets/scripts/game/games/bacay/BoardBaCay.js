@@ -234,8 +234,6 @@ export default class BoardBaCay extends BoardCardBetTurn {
 
     onClickGopGaButton(){
 
-        console.log("on click gop ga")
-
         this._shouldToGopGa() && app.service.send({
             cmd: app.commands.BACAY_PLAYER_GOP_GA,
             data: {
@@ -246,8 +244,6 @@ export default class BoardBaCay extends BoardCardBetTurn {
     }
 
     _shouldToGopGa(){
-
-        console.log("on click gop ga: ", this.scene.gamePlayers.isMePlaying())
 
         if(!this.scene.gamePlayers.isMePlaying()){
             return false;
@@ -274,12 +270,8 @@ export default class BoardBaCay extends BoardCardBetTurn {
     }
 
     _onPlayerGopGa(playerId, gopGaValue){
-
-        console.log("_onPlayerGopGa: ", playerId);
-
         let gopGaPlayer = this.scene.gamePlayers.findPlayer(playerId);
         if(gopGaPlayer){
-            console.log("gopGaPlayer: ", gopGaPlayer);
             GameAnim.flyTo({fromNode: gopGaPlayer.node, toNode: this.renderer.gopGaCoinNode, amount: 3, prefab: this.renderer.chipPrefab});
             this._addToGopGaValue(gopGaPlayer, gopGaValue);
 

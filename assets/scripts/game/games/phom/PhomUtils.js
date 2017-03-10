@@ -27,11 +27,6 @@ export default class PhomUtils {
     }
 
     static getAllCards(phoms){
-        
-        console.log("getAllCards: ", phoms.reduce((cards, phom) => {
-            return [...cards, ...phom.cards];
-        }, []));
-        
         return !ArrayUtils.isEmpty(phoms) && phoms.reduce((cards, phom) => {
             return [...cards, ...phom.cards];
         }, []) || [];
@@ -66,9 +61,6 @@ export default class PhomUtils {
 
     static findBestJoinPhomSolution(allPhomList, cards){
         let joinPhomSolutions = PhomUtils.getJoinPhomSolutions(allPhomList, cards)
-        
-        console.log('joinPhomSolutions: ', joinPhomSolutions);
-        
         return joinPhomSolutions.length > 0 ? joinPhomSolutions[0] : null;
     }
 
@@ -76,9 +68,6 @@ export default class PhomUtils {
 
         let selectedCards = player.getSelectedCards();
         let bestJoinPhomSolution = this.findBestJoinPhomSolution(allPhomList, selectedCards);
-
-        console.log('bestJoinPhomSolution: ', bestJoinPhomSolution);
-
         if(bestJoinPhomSolution && bestJoinPhomSolution.length == selectedCards.length) {
             return true
         }
@@ -315,9 +304,6 @@ export default class PhomUtils {
                 break;
             case PhomUtils.SORT_BY_PHOM_SOLUTION:
                 let phomListSolutions = PhomGenerator.generatePhomContainEatenCards(cards);
-
-                console.log('phomListSolutions: ', phomListSolutions.length);
-
                 if (phomListSolutions.length > 0) {
                     let phomCards = phomListSolutions[0].getCards();
                     ArrayUtils.removeAll(cards, phomCards);
