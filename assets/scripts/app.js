@@ -140,10 +140,8 @@ app.createComponent = (classNameOrInstance, extendClass = undefined, ...args) =>
      */
     if (Object.keys(objPropsMap).length > 0) {
         instance.ctor = function ctor() {
-            let tmp = {...objPropsMap };
-            objPropsMap = null;
-            Object.getOwnPropertyNames(tmp).forEach(key => {
-                this[key] = tmp[key];
+            Object.getOwnPropertyNames(objPropsMap).forEach(key => {
+                this[key] = objPropsMap[key];
             });
         };
     }
