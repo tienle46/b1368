@@ -295,12 +295,20 @@ export default class ListTableScene extends BaseScene {
         this._initRoomsListFromData(data);
         /*Need to check exactly equal true or undefined*/
         if (app.context.requestRandomInvite === true || app.context.requestRandomInvite === undefined) {
-            setTimeout(() => this.node && app.service.send({
+
+            app.service.send({
                 cmd: "randomInviteGame",
                 data: {
                     [app.keywords.GAME_CODE]: this.gameCode
                 }
-            }), 500);
+            })
+
+            // setTimeout(() => this.node && app.service.send({
+            //     cmd: "randomInviteGame",
+            //     data: {
+            //         [app.keywords.GAME_CODE]: this.gameCode
+            //     }
+            // }), 500);
         }
     }
 

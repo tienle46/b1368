@@ -54,6 +54,7 @@ export default class CardList extends Component {
 
     setHighlight(cards = [], highlight = true) {
         this.cards.forEach(card => {
+            card.setHighlight(false)
             cards.some(highlightCard => {
                 if (card.equals(highlightCard)) {
                     card.setHighlight(highlight);
@@ -626,11 +627,11 @@ export default class CardList extends Component {
         this.cleanSelectedCard();
 
         if (src.reveal) {
-            src.transferTo(this, cards, cb, this.reveal, reverse);
+            return src.transferTo(this, cards, cb, this.reveal, reverse);
         } else {
             let reveal = cbOrOption && cbOrOption.hasOwnProperty('reveal') ? cbOrOption.reveal : this.reveal;
             let addedCards = src.addCards(cards, true, reveal);
-            src.transferTo(this, addedCards, cb, this.reveal, reverse);
+            return src.transferTo(this, addedCards, cb, this.reveal, reverse);
         }
     }
 
@@ -690,6 +691,7 @@ export default class CardList extends Component {
         );
 
         this._adjustCardsPosition();
+        return removedCards;
     }
 
     runCardActions(duration = CardList.TRANSFER_CARD_DURATION) {
@@ -707,7 +709,7 @@ export default class CardList extends Component {
 
     stopAllCardActions(cardList = this, ...args) {
         cardList.node && cardList.node.stopAllActions();
-        cardList.cards.forEach(card => card.node.stopAllActions());
+        cardList.cards.forEach(card => card.node && card.node.stopAllActions());
         if (cardList.__endActionCb) {
             let endAction = cardList.__endActionCb;
             cardList.__endActionCb = null;
@@ -792,7 +794,7 @@ export default class CardList extends Component {
             actionComponent.runActionWithCallback(actions, cb, CardList.DRAW_CARD_DURATION + 0.1)
         }else{
             parentNode.runAction(cc.sequence(
-                    [...actions, cc.delayTime(CardList.DRAW_CARD_DURATION + 0.1), cc.callFunc(() => cb && cb())]
+                    [...actions, cc.delayTime(CardList.DRAW_CARD_DURATION + 0.05), cc.callFunc(() => cb && cb())]
                 )
             )
         }

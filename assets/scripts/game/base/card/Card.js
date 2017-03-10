@@ -69,13 +69,15 @@ export default class Card extends Component {
     }
 
     finishCardAction() {
-        this.node.stopAllActions();
+        if(this.node){
+            this.node.stopAllActions();
 
-        let { position, rotation, scale } = this.__originalInfo;
+            let { position, rotation, scale } = this.__originalInfo;
 
-        position && this.node.setPosition(position);
-        rotation && (this.node.rotation = rotation);
-        scale && this.node.setScale(scale);
+            position && this.node.setPosition(position);
+            rotation && (this.node.rotation = rotation);
+            scale && this.node.setScale(scale);
+        }
     }
 
     createActionFromOriginalInfo(duration) {

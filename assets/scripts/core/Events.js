@@ -83,6 +83,7 @@ Events.ON_CLICK_SKIP_JOIN_PHOM_BUTTON = "on.click.skipJoinButton";
 Events.ON_CLICK_DOWN_PHOM_BUTTON = "on.click.downPhomButton";
 Events.ON_CLICK_SKIP_DOWN_PHOM_BUTTON = "on.click.skipDownButton";
 Events.ON_CLICK_CHANGE_PHOM_BUTTON = "on.click.changePhomButton";
+Events.ON_CLICK_CHANGE_JOIN_PHOM_BUTTON = "on.click.changeJoinButton";
 Events.ON_CLICK_U_BUTTON = "on.click.uButton";
 Events.ON_CLICK_DOI_U_TRON_BUTTON = "on.click.doiUTronButton";
 Events.ON_CLICK_BAO_XAM_BUTTON = "on.click.baoXamButton";
@@ -120,6 +121,7 @@ Events.ON_ACTION_LOAD_GAME_GUIDE = "on.action.loadGameGuide";
 Events.SET_INTERACTABLE_PLAY_CONTROL = "set.interactablePlayControl";
 Events.SET_INTERACTABLE_HA_PHOM_CONTROL = "set.interactableHaPhomControl";
 Events.SET_INTERACTABLE_EAT_CONTROL = "set.interactableEatControl";
+Events.SET_INTERACTABLE_JOIN_PHOM_CONTROL = "set.interactableJoinPhomControl";
 
 Events.ADD_BET_TO_MASTER = "add.betToMaster";
 

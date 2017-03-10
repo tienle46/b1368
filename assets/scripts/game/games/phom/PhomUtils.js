@@ -64,21 +64,38 @@ export default class PhomUtils {
         return false;
     }
 
-    static validateGuiPhom(cards, player) {
+    static findBestJoinPhomSolution(allPhomList, cards){
+        let joinPhomSolutions = PhomUtils.getJoinPhomSolutions(allPhomList, cards)
+        
+        console.log('joinPhomSolutions: ', joinPhomSolutions);
+        
+        return joinPhomSolutions.length > 0 ? joinPhomSolutions[0] : null;
+    }
+
+    static checkGuiPhom(allPhomList, player){
+
+        let selectedCards = player.getSelectedCards();
+        let bestJoinPhomSolution = this.findBestJoinPhomSolution(allPhomList, selectedCards);
+
+        console.log('bestJoinPhomSolution: ', bestJoinPhomSolution);
+
+        if(bestJoinPhomSolution && bestJoinPhomSolution.length == selectedCards.length) {
+            return true
+        }
+
+        return false
+    }
+
+    static validateGuiPhom(allPhomList, player) {
 
         let valid = false;
         let guiSolution = null;
         let selectedCards = player.getSelectedCards();
+        let bestJoinPhomSolution = this.findBestJoinPhomSolution(allPhomList, selectedCards);
 
-        if(player.currentGuiPhomSolutions.length > 0 && selectedCards.length > 0){
-            player.currentGuiPhomSolutions.some(solution => {
-                let joinCards = solution.map(joinNode => joinNode.card);
-                if(ArrayUtils.containsAll(cards, joinCards)){
-                    guiSolution = solution;
-                    valid= true;
-                    return true;
-                }
-            });
+        if(bestJoinPhomSolution && bestJoinPhomSolution.length == selectedCards.length) {
+            valid = true
+            guiSolution = bestJoinPhomSolution
         }
 
         return {valid, guiSolution}
@@ -87,19 +104,26 @@ export default class PhomUtils {
     static checkDownPhom(cards, player) {
 
         let solutionIndex = -1;
-        let haphomList = PhomUtils.bestPhomList(cards);
-
-        if(haphomList.getCards().length == cards.length){
-            let haphomValue = haphomList.value();
-            player.currentHaPhomSolutions.some((phomList, i) => {
-                if(phomList.value() == haphomValue){
-                    solutionIndex = i;
-                    return true;
-                }
-            });
+        if(this.containAllEatenCards(cards, player.eatenCards)){
+            let haphomList = PhomUtils.findBestPhomListContainEatenCards(cards);
+            if(haphomList.getCards().length == cards.length){
+                return true;
+            }
         }
 
-        return solutionIndex >= 0;
+        return false;
+
+        // if(haphomList.getCards().length == cards.length){
+        //     let haphomValue = haphomList.value();
+        //     player.currentHaPhomSolutions.some((phomList, i) => {
+        //         if(phomList.value() == haphomValue){
+        //             solutionIndex = i;
+        //             return true;
+        //         }
+        //     });
+        // }
+        //
+        // return solutionIndex >= 0;
     }
 
     static isPhom(cards){
@@ -137,31 +161,25 @@ export default class PhomUtils {
         return eatable;
     }
 
-    static validateDownPhom(cards, player) {
-        let message, downPhomList;
+    static containAllEatenCards(cards, eatenCards){
+        let selectedEatenCardCount = cards.filter(card => PhomUtils.isEaten(card)).length;
+        return selectedEatenCardCount == eatenCards.length;
+    }
 
-        let selectedCards = player.getSelectedCards();
-        let valid = player.currentHaPhomSolutions.length > 0 && player.currentHaPhomSolutions[player.haPhomSolutionId].getCards().length == selectedCards.length;
+    static validateDownPhom(selectedCards, player) {
+        let valid = false, message, downPhomList;
 
-        if(valid){
-            let selectedEatenCardCount = selectedCards.filter(card => PhomUtils.isEaten(card)).length;
-            if(selectedEatenCardCount != player.eatenCards.length){
-                valid = false;
-                message = app.res.string('game_phom_must_contain_all_eaten_card');
-            }
+        if(!this.containAllEatenCards(selectedCards, player.eatenCards)){
+            message = app.res.string('game_phom_must_contain_all_eaten_card');
         }else{
-            message = app.res.string('game_phom_invalid_down_phom');
-        }
-
-
-        valid && player.eatenCards.some(eatenCard => {
-            if (ArrayUtils.findIndex(selectedCards, eatenCard) == -1) {
-                valid = false;
-                return true;
+            let haphomList = PhomUtils.findBestPhomListContainEatenCards(selectedCards);
+            if(haphomList.getCards().length == selectedCards.length){
+                valid = true;
+                downPhomList = haphomList
+            }else{
+                message = app.res.string('game_phom_invalid_down_phom');
             }
-        });
-
-        valid && (downPhomList = player.currentHaPhomSolutions[player.haPhomSolutionId]);
+        }
 
         return {valid, downPhomList, message}
     }
@@ -174,8 +192,13 @@ export default class PhomUtils {
         card.setLocked(eaten);
     }
 
-    static bestPhomList(cards) {
+    static findBestPhomList(cards) {
         let phomLists = PhomGenerator.generate(cards);
+        return phomLists.length > 0 ? phomLists[0] : new PhomList();
+    }
+
+    static findBestPhomListContainEatenCards(cards, eatenCards) {
+        let phomLists = PhomGenerator.generatePhomContainEatenCards(cards, eatenCards);
         return phomLists.length > 0 ? phomLists[0] : new PhomList();
     }
 

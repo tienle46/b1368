@@ -67,11 +67,10 @@ export default class PlayerPhom extends PlayerCardTurnBase {
         this.scene.on(Events.ON_CLICK_JOIN_PHOM_BUTTON, this._onJoinPhom, this);
         this.scene.on(Events.ON_CLICK_SKIP_JOIN_PHOM_BUTTON, this._onSkipJoinPhom, this);
         this.scene.on(Events.ON_CLICK_CHANGE_PHOM_BUTTON, this._onChangePhom, this);
+        this.scene.on(Events.ON_CLICK_CHANGE_JOIN_PHOM_BUTTON, this._changeGuiPhomSolution, this);
         this.scene.on(Events.ON_CLICK_U_BUTTON, this._onUPhom, this);
         this.scene.on(Events.ON_CLICK_DOI_U_TRON_BUTTON, this._onDoiUTron, this);
-
         this.scene.on(Events.ON_PLAYER_REMAIN_CARD_COUNT, this._setRemainCardCount, this);
-
         this.scene.on(Events.HANDLE_PLAYER_TAKE_CARD, this._handlePlayerTakeCard, this);
         this.scene.on(Events.HANDLE_PLAYER_EAT_CARD, this._handlePlayerEatCard, this);
         this.scene.on(Events.HANDLE_PLAYER_DOWN_CARD, this._handlePlayerDownCard, this);
@@ -95,13 +94,11 @@ export default class PlayerPhom extends PlayerCardTurnBase {
         this.scene.off(Events.ON_CLICK_SKIP_DOWN_PHOM_BUTTON, this._onSkipDownPhom, this);
         this.scene.off(Events.ON_CLICK_JOIN_PHOM_BUTTON, this._onJoinPhom, this);
         this.scene.off(Events.ON_CLICK_SKIP_JOIN_PHOM_BUTTON, this._onSkipJoinPhom, this);
-        this.scene.off(Events.ON_CLICK_SKIP_JOIN_PHOM_BUTTON, this._onSkipJoinPhom, this);
         this.scene.off(Events.ON_CLICK_CHANGE_PHOM_BUTTON, this._onChangePhom, this);
+        this.scene.off(Events.ON_CLICK_CHANGE_JOIN_PHOM_BUTTON , this._changeGuiPhomSolution, this);
         this.scene.off(Events.ON_CLICK_U_BUTTON, this._onUPhom, this);
         this.scene.off(Events.ON_CLICK_DOI_U_TRON_BUTTON, this._onDoiUTron, this);
-
         this.scene.off(Events.ON_PLAYER_REMAIN_CARD_COUNT, this._setRemainCardCount, this);
-
         this.scene.off(Events.HANDLE_PLAYER_TAKE_CARD, this._handlePlayerTakeCard, this);
         this.scene.off(Events.HANDLE_PLAYER_EAT_CARD, this._handlePlayerEatCard, this);
         this.scene.off(Events.HANDLE_PLAYER_DOWN_CARD, this._handlePlayerDownCard, this);
@@ -170,7 +167,7 @@ export default class PlayerPhom extends PlayerCardTurnBase {
     _onJoinPhom() {
         if (!this.isItMe()) return;
 
-        let {valid, guiSolution} = PhomUtils.validateGuiPhom(this.getSelectedCards(), this);
+        let {valid, guiSolution} = PhomUtils.validateGuiPhom(this.board.allPhomList, this);
 
         if (!valid) {
             //TODO play show invalid
@@ -178,24 +175,36 @@ export default class PlayerPhom extends PlayerCardTurnBase {
         }
 
         let uniquePhomList = guiSolution.getPhomList(this.board.allPhomList);
-        let joinPhomMap = uniquePhomList.reduce((map, value) => {
-            map[value] = {
+        console.warn('uniquePhomList: ', uniquePhomList);
+        console.warn('guiSolution: ', guiSolution);
+
+        let joinPhomMap = {};
+        uniquePhomList.forEach((value) => {
+            joinPhomMap[value] = {
                 ownerId: 0,
                 joinCards: [],
                 phomCards: []
             };
-            return map;
-        }, {});
+        });
 
         guiSolution.forEach((node, i) => {
-            let phom = this.board.allPhomList[node.phomId];
-            let joinSolution = joinPhomMap[phom];
-            if(joinSolution){
-                joinSolution.joinCards.push(node.card.byteValue)
-                joinSolution.ownerId = phom.owner
-                joinSolution.phomCards = phom.cards.map(card => card.byteValue);
+            
+            let phom = this.board.allPhomList[node.phomId]
+            let renderPhom = phom.renderComponent
+            let joinSolution = joinPhomMap[node.phomId];
+            if(!joinSolution){
+                joinSolution = {
+                    ownerId: phom.owner,
+                    joinCards: [],
+                    phomCards: (renderPhom || phom).cards.map(card => card.byteValue)
+                };
+                joinPhomMap[node.phomId] = joinSolution;
             }
+
+            joinSolution.joinCards.push(node.card.byteValue);
         });
+
+        console.log('joinPhomMap: ', joinPhomMap);
 
         app.service.send({
             cmd: Commands.PLAYER_HELP_CARD,
@@ -342,7 +351,7 @@ export default class PlayerPhom extends PlayerCardTurnBase {
         if (this.isItMe()) {
             if (this.renderer.cardList.cards.length > PlayerPhom.DEFAULT_HAND_CARD_COUNT) {
                 // chia phat u luon
-                let startPhomList = PhomUtils.bestPhomList(this.renderer.cardList.cards);
+                let startPhomList = PhomUtils.findBestPhomList(this.renderer.cardList.cards);
                 if (startPhomList && PhomUtils.isUTron(startPhomList, this)) {
                     this.sendUCommand(startPhomList);
                     return;
@@ -446,7 +455,7 @@ export default class PlayerPhom extends PlayerCardTurnBase {
         this.renderer.cardList.cleanHighlight()
 
         this.tempHoUPhoms = null;
-        let currentPhomList = PhomUtils.bestPhomList(this.renderer.cardList.cards);
+        let currentPhomList = PhomUtils.findBestPhomList(this.renderer.cardList.cards);
 
         if (PhomUtils.isUTron(currentPhomList, this)) {
             this.sendUCommand(currentPhomList);
@@ -564,8 +573,10 @@ export default class PlayerPhom extends PlayerCardTurnBase {
         }
     }
 
-    _changeGuiPhomSolution(guiPhomSolutionId) {
+    _changeGuiPhomSolution(guiPhomSolutionId = 0) {
         this.guiPhomSolutionId = guiPhomSolutionId;
+
+        console.warn('guiPhomSolutionId: ', guiPhomSolutionId, this.currentGuiPhomSolutions);
 
         if (this.guiPhomSolutionId >= this.currentGuiPhomSolutions.length) {
             this.guiPhomSolutionId = 0;
@@ -632,6 +643,8 @@ export default class PlayerPhom extends PlayerCardTurnBase {
 
         if (playerId != this.id) return;
 
+        console.log('_handlePlayerHelpCard: ', playerId, data);
+
         let phomIndexToJoinCardMap = {}
         let joinPhomDataArr = utils.getValue(data, "joinPhoms");
 
@@ -641,7 +654,10 @@ export default class PlayerPhom extends PlayerCardTurnBase {
             let phomOwnerId = joinPhomData.ownerId;
 
             let phom = new Phom(GameUtils.convertBytesToCards(phomCardBytes)).sortAsc();
-            let index = ArrayUtils.findIndex(this.board.allPhomList, phom);
+            let index = ArrayUtils.findIndex(this.board.allPhomList.map(phomList => phomList.renderComponent || phomList), phom);
+
+            console.warn('this.board.allPhomList: ', this.board.allPhomList, phom);
+            console.warn('index joinPhomDataArr: ', index);
 
             if(index >= 0){
                 !phomIndexToJoinCardMap[index] && (phomIndexToJoinCardMap[index] = []);
@@ -653,16 +669,19 @@ export default class PlayerPhom extends PlayerCardTurnBase {
             let phomJoinCards = phomIndexToJoinCardMap[phomIndex]
             let joinPhom = this.board.allPhomList[phomIndex].renderComponent;
 
+            console.log('joinPhom: ', joinPhom, phomJoinCards);
+
             if(joinPhom && phomJoinCards.length > 0){
+                let addedCards;
                 if (this.isItMe()) {
                     if (joinPhom) {
-                        this.renderer.cardList.transferTo(joinPhom, phomJoinCards, () => this._sortCardList(joinPhom))
+                        addedCards = this.renderer.cardList.transferTo(joinPhom, phomJoinCards, () => this._sortCardList(joinPhom))
                     } else {
-                        this.renderer.cardList.removeCards(phomJoinCards)
+                        addedCards = this.renderer.cardList.removeCards(phomJoinCards)
                     }
                 } else {
                     if (joinPhom) {
-                        joinPhom.transferFrom(this.renderer.cardList, phomJoinCards, () => this._sortCardList(joinPhom))
+                        addedCards = joinPhom.transferFrom(this.renderer.cardList, phomJoinCards, () => this._sortCardList(joinPhom))
                     }
                 }
             }
@@ -826,6 +845,15 @@ export default class PlayerPhom extends PlayerCardTurnBase {
                     let phomCards = this.tempHoUPhoms.getCards();
                     this.renderer.cardList.setSelecteds(phomCards);
                     this.renderer.cardList.setHighlight(phomCards);
+                }
+                break;
+            case PlayerPhom.STATE_PHOM_JOIN:
+                let joinable = PhomUtils.checkGuiPhom([...this.board.allPhomList], this);
+                this.scene.emit(Events.SET_INTERACTABLE_JOIN_PHOM_CONTROL, joinable);
+                if (joinable) {
+                    this.renderer.cardList.setHighlight(this.getSelectedCards());
+                } else {
+                    this.renderer.cardList.cleanHighlight();
                 }
                 break;
         }

@@ -63,6 +63,7 @@ export default class PhomControls extends GameControls {
         this.scene.on(Events.SHOW_JOIN_PHOM_CONTROLS, this._showJoinPhomControls, this);
         this.scene.on(Events.SET_INTERACTABLE_HA_PHOM_CONTROL, this._setInteractableHaPhomControl, this);
         this.scene.on(Events.SET_INTERACTABLE_EAT_CONTROL, this._setInteractableEatControl, this);
+        this.scene.on(Events.SET_INTERACTABLE_JOIN_PHOM_CONTROL, this._setInteractableJoinPhomControl, this);
     }
 
     _setInteractableHaPhomControl(interactable){
@@ -71,6 +72,10 @@ export default class PhomControls extends GameControls {
 
     _setInteractableEatControl(interactable){
         this.setInteractable(this.eatButton, interactable);
+    }
+
+    _setInteractableJoinPhomControl(interactable){
+        this.setInteractable(this.joinPhomButton, interactable);
     }
 
     _showUPhomControls(){
@@ -218,6 +223,10 @@ export default class PhomControls extends GameControls {
 
     onClickChangePhomButton(event){
         this.scene.emit(Events.ON_CLICK_CHANGE_PHOM_BUTTON);
+    }
+
+    onClickChangeJoinPhomButton(event){
+        this.scene.emit(Events.ON_CLICK_CHANGE_JOIN_PHOM_BUTTON);
     }
 
     onClickUButton(event){

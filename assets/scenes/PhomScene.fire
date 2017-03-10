@@ -6046,7 +6046,7 @@
       "__id__": 67
     },
     "component": "PhomControls",
-    "handler": "onClickChangePhomButton",
+    "handler": "onClickChangeJoinPhomButton",
     "customEventData": ""
   },
   {
@@ -6063,7 +6063,7 @@
     "_left": 0,
     "_right": -1097.5,
     "_top": 0,
-    "_bottom": 12.5,
+    "_bottom": 2.5,
     "_verticalCenter": 0,
     "_horizontalCenter": 0,
     "_isAbsLeft": true,
