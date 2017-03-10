@@ -30,9 +30,9 @@ export default class Scrollview extends Component {
     }
 
     onDestroy() {
-        this.options = null;
-        this.addNode(this._gridview);
-        this.addNode(this._p404);
+        this.prevBtn.node && this.prevBtn.node.off(cc.Node.EventType.TOUCH_END, this._registerPrevEventBtnClick);
+        this.prevBtn.node && this.nextBtn.node.off(cc.Node.EventType.TOUCH_END, this._registerNextEventBtnClick);
+        window.free(this.options);
         super.onDestroy();
     }
 
@@ -79,15 +79,14 @@ export default class Scrollview extends Component {
                 this.viewNode.setContentSize(this.node.getContentSize().width, 366);
 
                 // settup click events
-                let prevEvent = this.options.paging.prev;
-                let nextEvent = this.options.paging.next;
-                this._addEventPagingBtn(prevEvent, nextEvent, this.options.paging.context);
+                this._addEventPagingBtn(this.options.paging);
 
                 this._updatePagingState();
             }
 
             this._addToNode(this.contentNode);
         }
+        window.free(head);
         window.release(head, body, true);
     }
 
@@ -161,6 +160,7 @@ export default class Scrollview extends Component {
         app.system.hideLoader();
         if (!this._p404) {
             this._p404 = cc.instantiate(this.p404);
+            this.addNode(this._p404);
             this.bodyNode.addChild(this._p404);
         }
         this.viewNode.active = false;
@@ -184,37 +184,41 @@ export default class Scrollview extends Component {
         }
     }
 
-    _addEventPagingBtn(prevEvent, nextEvent, context) {
-        if (prevEvent) {
-            if (isFunction(prevEvent)) {
-                this.prevBtn.node.on(cc.Node.EventType.TOUCH_END, () => {
-                    if (this.currentPage == 1) {
-                        this._hideBtn(this.prevBtn);
-                        return;
-                    }
-                    this.currentPage--;
-
-                    this._showBtn(this.prevBtn);
-
-                    prevEvent.call(context, this.currentPage);
-                });
-            }
+    _addEventPagingBtn(pagingOptions) {
+        if (pagingOptions.prev && isFunction(pagingOptions.prev)) {
+            this.prevBtn.node.on(cc.Node.EventType.TOUCH_END, this._registerPrevEventBtnClick, this);
         }
 
-        if (nextEvent) {
-            if (isFunction(nextEvent)) {
-                this.nextBtn.node.on(cc.Node.EventType.TOUCH_END, () => {
-                    if (this.isEndedPage) {
-                        this._hideBtn(this.nextBtn);
-                        return;
-                    }
-                    this._showBtn(this.nextBtn);
-                    this.currentPage++;
-
-                    nextEvent.call(context, this.currentPage);
-                });
-            }
+        if (pagingOptions.next && isFunction(pagingOptions.next)) {
+            this.nextBtn.node.on(cc.Node.EventType.TOUCH_END, this._registerNextEventBtnClick, this);
         }
+    }
+
+    _registerPrevEventBtnClick() {
+        let prevEvent = this.options.paging.prev;
+
+        if (this.currentPage == 1) {
+            this._hideBtn(this.prevBtn);
+            return;
+        }
+        this.currentPage--;
+
+        this._showBtn(this.prevBtn);
+
+        prevEvent.call(this.options.paging.context, this.currentPage);
+    }
+
+    _registerNextEventBtnClick() {
+        let nextEvent = this.options.paging.next;
+
+        if (this.isEndedPage) {
+            this._hideBtn(this.nextBtn);
+            return;
+        }
+        this._showBtn(this.nextBtn);
+        this.currentPage++;
+
+        nextEvent.call(this.options.paging.context, this.currentPage);
     }
 
     _showBtn(btn) {

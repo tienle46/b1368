@@ -57,16 +57,16 @@ export default class PhomListComponent extends Component {
         this.phomList.push(...this.phoms);
     }
 
-    _findFirstEmptyPhomComponentIndex(){
-        if(this.phoms[0].cards.length == 0){
+    _findFirstEmptyPhomComponentIndex() {
+        if (this.phoms[0].cards.length == 0) {
             return 0;
         }
 
-        if(this.phoms[1].cards.length == 0){
+        if (this.phoms[1].cards.length == 0) {
             return 1;
         }
 
-        if(this.phoms[2].cards.length == 0){
+        if (this.phoms[2].cards.length == 0) {
             return 2;
         }
 
@@ -75,12 +75,12 @@ export default class PhomListComponent extends Component {
 
     addPhomList(newPhomList, player) {
 
-        console.warn('addPhomList: ', newPhomList, player && player.id, player & player.isItMe());
+        // console.warn('addPhomList: ', newPhomList, player && player.id, player & player.isItMe());
         let firstEmptyPhomComponentIndex = this._findFirstEmptyPhomComponentIndex();
 
-        if(!player){
+        if (!player) {
             this._setPhomListWithoutPlayer(newPhomList, firstEmptyPhomComponentIndex);
-        }else{
+        } else {
             newPhomList.forEach((newPhom, i) => {
 
                 console.warn('i = ', i, " firstEmptyPhomComponentIndex: ", firstEmptyPhomComponentIndex);
@@ -88,7 +88,7 @@ export default class PhomListComponent extends Component {
                 if (i < PhomList.MAX_PHOM_COUNT) {
 
                     let phom = this.phoms[i + firstEmptyPhomComponentIndex];
-                    if(phom){
+                    if (phom) {
                         if (player.isItMe()) {
                             player.renderer.cardList.transferTo(phom, newPhom.cards);
                         } else {
@@ -104,10 +104,10 @@ export default class PhomListComponent extends Component {
         return newPhomList;
     }
 
-    _setPhomListWithoutPlayer(phomList, firstEmptyPhomComponentIndex){
+    _setPhomListWithoutPlayer(phomList, firstEmptyPhomComponentIndex) {
         phomList && phomList.forEach((phomModel, index) => {
             let phom = this.phoms[index + firstEmptyPhomComponentIndex];
-            if(phom){
+            if (phom) {
                 phom && phom.setCards(phomModel.cards);
             }
         })

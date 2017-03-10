@@ -29,8 +29,6 @@ export default class DialogRub extends Rub {
         this.options = options;
 
         this.init();
-        options = null;
-        tabs = null;
     }
 
     init() {

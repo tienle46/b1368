@@ -314,6 +314,15 @@ app.getMessageFromServer = (error) => {
 };
 
 (function() {
+    window.free = function(object) {
+        if (!app._.isObject(object) || object instanceof cc.Component)
+            return;
+
+        for (let key in object) {
+            object[key] = null;
+        }
+    };
+
     // release array
     window.release = function(...args) {
         let isRecursive = arguments[arguments.length - 1] === true;

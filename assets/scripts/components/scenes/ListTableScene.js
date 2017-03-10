@@ -64,7 +64,6 @@ export default class ListTableScene extends BaseScene {
         super.onDestroy();
         this._clearInterval();
         window.release(this.items, this.enableMinbets);
-        this.filterCond = null;
     }
 
     _addGlobalListener() {
@@ -284,12 +283,12 @@ export default class ListTableScene extends BaseScene {
             room
         });
 
-        if (!this.timeout) {
-            this.timeout = requestTimeout(() => {
-                this._clearInterval();
-                this._sendRequestUserListRoom(room);
-            }, this.time);
-        }
+        // if (!this.timeout) {
+        //     this.timeout = requestTimeout(() => {
+        //         this._clearInterval();
+        //         this._sendRequestUserListRoom(room);
+        //     }, this.time);
+        // }
     }
 
     _onUserListRoom(data) {
@@ -340,7 +339,7 @@ export default class ListTableScene extends BaseScene {
                 roomCapacity: roomCapacitys[i],
                 password: passwords[i]
             });
-
+            this.addNode(listCell);
             this.items.push(cellComponent);
         }
 

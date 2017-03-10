@@ -7,7 +7,7 @@ let RubUtils = {
 
                 resolve(asset);
                 if (!cc.loader.isAutoRelease(asset)) {
-                    cc.loader.setAutoRelease(asset, true);
+                    cc.loader.setAutoReleaseRecursively(asset, true);
                 }
                 RubUtils.releaseAssets(asset);
             }

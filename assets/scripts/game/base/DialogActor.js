@@ -53,12 +53,13 @@ export default class DialogActor extends Actor {
         super.onDestroy();
         if (this._scrollView && cc.isValid(this._scrollView)) {
             this._scrollView.destroy();
-            this._scrollView = null;
+            window.free(this._scrollView);
+            // this._scrollView = null;
         }
 
         for (let key in this.loaders) {
-            this.loaders[key].destroy();
-            delete this.loaders[key];
+            this.loaders[key] && this.loaders[key].destroy();
+            this.loaders[key] = null;
         }
         this.loaders = null;
     }
@@ -66,10 +67,10 @@ export default class DialogActor extends Actor {
     initView(head, data, options) {
         if (!this._scrollView) {
             this._scrollView = cc.instantiate(this.scrollview);
-            let o = { top: 0, left: 0, right: 0, bottom: 0 };
+            console.debug(cc.loader.isAutoRelease(this.scrollview));
             this._scrollView.getComponent('Scrollview').initView(head, data, options);
-            NodeRub.addWidgetComponentToNode(this._scrollView, o);
-            o = null;
+            NodeRub.addWidgetComponentToNode(this._scrollView, { top: 0, left: 0, right: 0, bottom: 0 });
+            this.addNode(this._scrollView)
         } else {
             this._scrollView.getComponent('Scrollview').updateOptions(options);
             this._scrollView.getComponent('Scrollview').updateView(head, data);

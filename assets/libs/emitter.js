@@ -50,9 +50,6 @@ export default class Emitter {
             } else {
                 (this._callbacks[`$${event}`] = this._callbacks['$' + event] || []).push(fn);
             }
-            event = null;
-            fn = null;
-            context = null;
         }
 
         return this;
@@ -84,7 +81,9 @@ export default class Emitter {
 
         // all
         if (!event && !fn) {
-            this._callbacks = {};
+            for (let key in this._callbacks) {
+                this._callbacks[key] = null;
+            }
             return this;
         }
 
@@ -114,11 +113,6 @@ export default class Emitter {
                 }
             }
         }
-
-        event = null;
-        fn = null;
-        context = null;
-        callbacks = null;
 
         return this;
     }
