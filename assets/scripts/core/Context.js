@@ -8,7 +8,6 @@ import Events from 'Events';
 class GameContext {
 
     constructor() {
-        this.currentRoom = null;
         this.groupId = null;
         this.currentRoom = null;
         this.lastJoinedRoom = null;

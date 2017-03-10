@@ -2,13 +2,14 @@
  * Created by Thanh on 9/1/2016.
  */
 import { destroy } from 'CCUtils';
+import Utils from 'Utils';
 
 export default class Component {
     constructor() {
         this.extends = cc.Component;
 
         this.properties = {
-            path: ""
+            path: "",
         };
 
         this.__componentData = null
@@ -17,15 +18,15 @@ export default class Component {
         this.loadedNodes = []; // nodes will be destroy & removeFromParent when component onDestroy
     }
 
-    getUniqueName(){
+    getUniqueName() {
         return cc.js.getClassName(this);
     }
 
-    getClass(){
+    getClass() {
         return this.constructor;
     }
 
-    getClassName(){
+    getClassName() {
         return cc.js.getClassName(this);
     }
 
@@ -76,6 +77,16 @@ export default class Component {
         this.releaseAssets();
         this.removeNodes();
         this.__componentData = null;
+        // this._$componentPropertyNames && this._$componentPropertyNames.forEach(propertyName => {
+        //     let value = this[propertyName];
+        //     if (Utils.isObject(value)) {
+        //         if (Utils.isArray(value)) {
+        //             value.length = 0;
+        //         } else {
+        //             this.free(value);
+        //         }
+        //     }
+        // });
         // Object.getOwnPropertyNames(this).forEach(key => {
         //     this[key] = null;
         // });
@@ -83,6 +94,21 @@ export default class Component {
 
     releaseAssets() {
         window.release(this.loadedAssets);
+    }
+
+    free(object) {
+        if (!Utils.isObject(object) || (object instanceof cc.Component))
+            return;
+
+        for (let key in object) {
+            object[key] = null;
+        }
+    }
+
+    freeChunk(...args) {
+        [...args].forEach(value => {
+            this.free(value);
+        });
     }
 
     removeNodes() {

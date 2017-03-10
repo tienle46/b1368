@@ -33,8 +33,8 @@ export default class MessagePopup extends Component {
         this.loading = null;
         this.acceptCb = null;
         this.denyCb = null;
-        this.text = '';
         this.requestData = null;
+        this.text = '';
         this.loadingHeight = 100;
     }
 
@@ -77,8 +77,10 @@ export default class MessagePopup extends Component {
 
     onDestroy() {
         super.onDestroy();
-        this.denyCb = null;
+        this.freeChunk(this.denyCb, this.acceptCb, this.requestData);
         this.acceptCb = null;
+        this.denyCb = null;
+        this.requestData = null;
     }
 
     setMessage(message = "") {
@@ -135,8 +137,6 @@ export default class MessagePopup extends Component {
             this.text = null;
             this.requestData = textOrRequestData;
         }
-        denyCb = null;
-        acceptCb = null;
         parentNode && parentNode.addChild(this.node, 10000);
     }
 

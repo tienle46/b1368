@@ -27,8 +27,8 @@ export default class Utils {
 
     static isNumber(value) {
         return typeof value === 'number'
-        // value = Number(value);
-        // return !isNaN(value) && typeof value === 'number';
+            // value = Number(value);
+            // return !isNaN(value) && typeof value === 'number';
     }
 
     static isFunction(value) {
@@ -130,20 +130,26 @@ export default class Utils {
 
     static loadComponent(componentPath, parent) {
         cc.loader.loadRes(componentPath, (error, prefab) => {
+            if (!cc.loader.isAutoRelease(prefab)) {
+                cc.loader.setAutoRelease(prefab, true);
+            }
+
             let prefabObj = cc.instantiate(prefab);
             prefabObj.parent = this && this.playerLayer;
+
         });
     }
+
     //
     // static getVariable(obj, key, defaultValue) {
     //     return (obj && obj.containsVariable && obj.containsVariable(key) && obj.getVariable && obj.getVariable(key).value) || defaultValue;
     // }
 
     static getVariable(obj, key, defaultValue) {
-       if(obj && obj.variables && obj.variables.hasOwnProperty(key)){
+        if (obj && obj.variables && obj.variables.hasOwnProperty(key)) {
             let value = obj.variables[key].value;
 
-            if(value != null && value != undefined){
+            if (value != null && value != undefined) {
                 return value;
             }
         }

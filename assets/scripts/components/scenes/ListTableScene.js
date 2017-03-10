@@ -4,7 +4,7 @@ import SFS2X from 'SFS2X';
 import { requestTimeout, clearRequestTimeout } from 'TimeHacker';
 import ScrollMessagePopup from 'ScrollMessagePopup';
 import BuddyPopup from 'BuddyPopup';
-import CCUtils, { destroy } from 'CCUtils';
+import CCUtils from 'CCUtils';
 
 export default class ListTableScene extends BaseScene {
     constructor() {
@@ -141,7 +141,7 @@ export default class ListTableScene extends BaseScene {
                 if (id > 0) {
                     this._requestJoinRoom({ id, minBet, password, isSpectator });
                 } else {
-                    this._createRoom({ minBet, roomCapacity })
+                    this._createRoom({ minBet, roomCapacity });
                 }
             }
         }
@@ -191,6 +191,7 @@ export default class ListTableScene extends BaseScene {
     // clear interval
     _clearInterval() {
         this.timeout && clearRequestTimeout(this.timeout);
+        this.timeout = null;
     }
 
     _getFirstGameLobbyFromServer() {
@@ -245,6 +246,7 @@ export default class ListTableScene extends BaseScene {
                 this._onCancelInvitationBtnClick.bind(this),
                 this._onConfirmInvitationBtnClick.bind(this, joinRoomRequestData)
             );
+            joinRoomRequestData = null;
         }
     }
 
@@ -252,7 +254,6 @@ export default class ListTableScene extends BaseScene {
         this.invitationShowed = false;
 
         this._requestJoinRoom(joinRoomRequestData);
-        joinRoomRequestData = null;
     }
 
     _onCancelInvitationBtnClick() {
@@ -267,13 +268,17 @@ export default class ListTableScene extends BaseScene {
             }
         } else {
             if (event.errorCode) {
-                this.hideLoading()
+                this.hideLoading();
                 app.system.error(app.getRoomErrorMessage(event));
             }
         }
     }
 
     _sendRequestUserListRoom(room) {
+        if (this.timeout) {
+            return;
+        }
+
         app.service.send({
             cmd: app.commands.USER_LIST_ROOM,
             room
@@ -281,8 +286,8 @@ export default class ListTableScene extends BaseScene {
 
         if (!this.timeout) {
             this.timeout = requestTimeout(() => {
-                this.timeout && this._sendRequestUserListRoom(room);
-                clearRequestTimeout(this.timeout);
+                this._clearInterval();
+                this._sendRequestUserListRoom(room);
             }, this.time);
         }
     }
@@ -319,7 +324,7 @@ export default class ListTableScene extends BaseScene {
         });
 
         if (!addMore) {
-            this.items.forEach(item => item.node && destroy(item.node));
+            this.items.forEach(item => item.node && CCUtils.destroy(item.node));
             window.release(this.items);
         }
 
@@ -343,20 +348,14 @@ export default class ListTableScene extends BaseScene {
         this._isInitedRoomList = true;
     }
 
-    /**
-     * 
-     * @param {function} cond: _filter condition
-     * 
-     * @memberOf ListTableScene
-     */
     _renderList() {
 
-        CCUtils.clearAllChildren(this.contentInScroll)
+        CCUtils.clearAllChildren(this.contentInScroll);
 
         let filterItems = this._filterItems();
         if (filterItems.length > 0) {
             this.setVisibleEmptyNode(false);
-            filterItems.map(item => this.contentInScroll.addChild(item.node))
+            this.contentInScroll && filterItems.map(item => this.contentInScroll.addChild(item.node));
         } else {
             this.setVisibleEmptyNode(true);
         }
@@ -364,19 +363,10 @@ export default class ListTableScene extends BaseScene {
         this.hideLoading();
     }
 
-    /**
-     * 
-     * @param {any} cond
-     * {
-     *      max: number,
-     *      min: number
-     * }
-     * @memberOf ListTableScene
-     */
     _filterItems() {
         return this.items.filter(item => {
             let minbet = item.getComponentData().minBet;
-            return minbet >= this.filterCond.min && minbet <= this.filterCond.max
+            return minbet >= this.filterCond.min && minbet <= this.filterCond.max;
         });
     }
 

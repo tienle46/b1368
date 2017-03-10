@@ -9,7 +9,6 @@ import HighLightMessageRub from 'HighLightMessageRub';
 import MessagePopup from 'MessagePopup';
 import ConfirmPopup from 'ConfirmPopup';
 import utils from 'utils';
-import ArrayUtils from "../utils/ArrayUtils";
 import Toast from 'Toast';
 import { isFunction } from 'Utils';
 
@@ -19,15 +18,14 @@ class GameSystem {
     constructor() {
         this.eventEmitter = new Emitter;
         this.pendingGameEvents = [];
-        this.__pendingEventOnSceneChanging = [];
+        this.__pendingEventOnSceneChanging = {};
         this.gameEventEmitter = new Emitter;
         this.enablePendingGameEvent = false;
         this.toast = null;
         // high light message
         (!this.hlm) && (this.hlm = new HighLightMessageRub());
         this.sceneChanging = false;
-        this._currentSceneNode = cc.Node;
-        this._currentScene = cc.Node;
+        this._currentScene = null;
         this.isInactive = false;
         this.initEventListener();
         this._sceneName = null;
@@ -161,8 +159,10 @@ class GameSystem {
 
     emit(name, ...args) {
         if (this.sceneChanging) {
-            !this.__pendingEventOnSceneChanging.hasOwnProperty(name) && (this.__pendingEventOnSceneChanging[name] = []);
-            this.__pendingEventOnSceneChanging[name].push(args);
+            (!this.__pendingEventOnSceneChanging.hasOwnProperty(name) || !this.__pendingEventOnSceneChanging[name]) && (this.__pendingEventOnSceneChanging[name] = []);
+            if (!app._.includes(this.__pendingEventOnSceneChanging[name], args)) {
+                this.__pendingEventOnSceneChanging[name].push(args);
+            }
         } else {
             this.eventEmitter.emit(name, ...args);
             this._emitGameEvent(name, ...args);
@@ -170,17 +170,18 @@ class GameSystem {
     }
 
     setSceneChanging(changing) {
-
         if (!changing) {
             this.__pendingEventOnSceneChanging && Object.getOwnPropertyNames(this.__pendingEventOnSceneChanging).forEach(name => {
 
                 let argArr = this.__pendingEventOnSceneChanging[name];
-                argArr && argArr.forEach(args => {
-                    this.emit(name, ...args);
-                });
+                if (argArr) {
+                    argArr.forEach(args => {
+                        this.emit(name, ...args);
+                    });
+                    window.release(this.__pendingEventOnSceneChanging[name], true);
+                    this.__pendingEventOnSceneChanging[name] = null;
+                }
             });
-
-            ArrayUtils.clear(this.__pendingEventOnSceneChanging);
         }
 
         this.sceneChanging = changing;
@@ -383,7 +384,7 @@ class GameSystem {
         }
     }
 
-    onParseClientConfigError(){
+    onParseClientConfigError() {
 
     }
 }

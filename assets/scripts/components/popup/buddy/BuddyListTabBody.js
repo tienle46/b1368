@@ -75,6 +75,9 @@ class BuddyListTabBody extends PopupTabBody {
         this.buddyMenu = this.buddyMenuNode.getComponent('BuddyMenu');
         this.transferMoneyComponent = this.transferMoneyNode.getComponent('TabBuddyTransfer');
         this.transferMoneyComponent.setOnBackListener(() => this._hideTransferMoneyComponent());
+        this.filteredBuddies = [];
+        this.data = null;
+        this.currentBuddyItems = [];
     }
 
     onEnable() {
@@ -92,7 +95,8 @@ class BuddyListTabBody extends PopupTabBody {
 
     onDestroy() {
         super.onDestroy();
-        window.release(this.currentBuddyItems);
+        this.free(this.data);
+        window.release(this.currentBuddyItems, this.filteredBuddies);
     }
 
     _addGlobalListener() {

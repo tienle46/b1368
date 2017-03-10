@@ -1,6 +1,8 @@
 import app from 'app';
 import Component from 'Component';
 
+const MULTIPLES = [1, 5, 10, 50];
+
 class BetOptionsGroup extends Component {
     constructor() {
         super();
@@ -8,7 +10,7 @@ class BetOptionsGroup extends Component {
         this.checkedItem = null;
 
         this.chips = [];
-        this.multiples = [1, 5, 10, 50];
+
     }
 
     onLoad() {
@@ -26,7 +28,7 @@ class BetOptionsGroup extends Component {
     setLblOptions(roomBet) {
         this.chips = [];
         this.node.children.filter((child) => child.name.indexOf('chip') > -1).forEach((child, index) => {
-            let amount = this.multiples[index] * Number(roomBet);
+            let amount = MULTIPLES[index] * Number(roomBet);
             let betChip = child.getComponent('BetChip');
             betChip && betChip.setChipAmountLbl(amount);
             this.chips.push(betChip);
@@ -48,7 +50,7 @@ class BetOptionsGroup extends Component {
     }
 
     getChipIndexByAmount(amount, minBet) {
-        return minBet > 0 ? this.multiples.indexOf(amount / minBet) : -1;
+        return minBet > 0 ? MULTIPLES.indexOf(amount / minBet) : -1;
     }
 }
 

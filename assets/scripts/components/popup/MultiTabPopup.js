@@ -49,7 +49,10 @@ export default class MultiTabPopup extends Component {
 
     onDisable() {
         super.onDisable();
+    }
 
+    onDestroy() {
+        super.onDestroy();
         window.release([this._tabs, this._tabModels, this._tabBodies]);
     }
 
