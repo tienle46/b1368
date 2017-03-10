@@ -43,7 +43,7 @@ export default class BoardPhom extends BoardCardTurnBase {
     _reset() {
         super._reset();
         this.winRank = 0;
-        this.allPhomList = [];
+        this.allPhomList.length = 0;
     }
 
     _onPlayerPlayedCards(playedCards, srcCardList, isItMe) {

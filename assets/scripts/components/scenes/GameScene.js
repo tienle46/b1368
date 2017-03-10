@@ -9,6 +9,7 @@ import { gameManager, GameEventHandler, Board, TLMNDLBoard, TLMNDLPlayer } from 
 import GamePlayers from 'GamePlayers';
 import GameChatComponent from "GameChatComponent";
 import Props from "../Props";
+import ArrayUtils from 'ArrayUtils';
 
 export default class GameScene extends BaseScene {
 
@@ -74,9 +75,9 @@ export default class GameScene extends BaseScene {
 
         this.on(Events.ON_GAME_STATE_CHANGE, (...args) => {
             this.initiated ? this._onGameStateChange(...args) : (this._penddingEvents.push({
-                fn: this._onGameStateChange,
-                args: args
-            }))
+                    fn: this._onGameStateChange,
+                    args: args
+                }))
         }, this, 1);
 
         this.on(Events.ON_ACTION_EXIT_GAME, this._onActionExitGame, this);
@@ -85,19 +86,25 @@ export default class GameScene extends BaseScene {
         this.on(Events.VISIBLE_INGAME_CHAT_COMPONENT, this._onVisibleIngameChatComponent, this);
         this.on(Events.ON_GAME_LOAD_DATA_AFTER_SCENE_START, this._loadGameDataAfterSceneStart, this);
         this.on(Events.ON_ROOM_CHANGE_MIN_BET, this._onRoomMinBetChanged, this);
-        this.on(Events.ON_PLAYER_READY_STATE_CHANGED, (playerId, ready) => {
+        this.on(Events.ON_ROOM_CHANGE_MIN_BET, this._onRoomMinBetChanged, this);
+        this.on(Events.ON_PLAYER_READY_STATE_CHANGED, this._onPlayerReadyStateChanged, this);
+    }
 
-            let readyPlayerIds = utils.getValue(this.gameData, app.keywords.ROOM_READY_PLAYERS, []);
-            if (ready) {
-                readyPlayerIds.push(playerId);
-            } else {
-                let index = readyPlayerIds.indexOf(playerId);
-                index >= 0 && readyPlayerIds.splice(index, 1);
-            }
+    _onPlayerReadyStateChanged(playerId, ready) {
+        let readyPlayerIds = utils.getValue(this.gameData, app.keywords.ROOM_READY_PLAYERS, []);
 
-            this.gameData[app.keywords.ROOM_READY_PLAYERS] = readyPlayerIds;
+        if (ready) {
+            readyPlayerIds.push(playerId);
+        } else {
+            ArrayUtils.remove(readyPlayerIds, playerId);
+        }
 
-        }, this);
+        this.gameData[app.keywords.ROOM_READY_PLAYERS] = readyPlayerIds;
+    }
+
+    _onUserExitRoom(user, room, playerId){
+        let readyPlayerIds = utils.getValue(this.gameData, app.keywords.ROOM_READY_PLAYERS)
+        readyPlayerIds && ArrayUtils.remove(readyPlayerIds, playerId)
     }
 
     _onPlayerChatMessage(sender, message) {
@@ -283,6 +290,7 @@ export default class GameScene extends BaseScene {
 
     _onActionExitGame() {
         // this.showLoading();
+        console.warn('send LeaveRoomRequest: ');
         app.service.sendRequest(new SFS2X.Requests.System.LeaveRoomRequest(this.room));
 
         app.service.send({ cmd: app.commands.REGISTER_QUIT_ROOM, room: this.room }, (data) => {
@@ -333,13 +341,6 @@ export default class GameScene extends BaseScene {
         this.gameData[app.keywords.ROOM_READY_PLAYERS] = [...readyPlayerIds];
 
         this._updatePlayerReadyState(this.gameData)
-
-        // console.warn("_loadPlayerReadyState", readyPlayerIds, );
-        //
-        // readyPlayerIds && readyPlayerIds.forEach(id => {
-        //     this.emit(Events.ON_PLAYER_READY_STATE_CHANGED, id, true, this.gamePlayers.isItMe(id));
-        //     console.warn("_loadPlayerReadyState single: ", id, this.gamePlayers.isItMe(id));
-        // });
     }
 
     _onLoadSceneFail() {
@@ -416,7 +417,6 @@ export default class GameScene extends BaseScene {
         }
 
         this._updatePlayerReadyState(data, true);
-
         this.emit(Events.ON_GAME_STATE_CHANGED, state, data, isJustJoined);
     }
 

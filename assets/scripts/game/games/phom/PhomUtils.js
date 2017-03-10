@@ -92,9 +92,6 @@ export default class PhomUtils {
         if(haphomList.getCards().length == cards.length){
             let haphomValue = haphomList.value();
             player.currentHaPhomSolutions.some((phomList, i) => {
-
-                console.log("haphomValue: ", haphomValue, " ", phomList.value())
-
                 if(phomList.value() == haphomValue){
                     solutionIndex = i;
                     return true;

@@ -278,13 +278,11 @@ export default class GameEventHandler {
     }
 
     _onUserExitRoom(event) {
-        console.log(event)
-
         if (!event.user || !event.room || !this.scene.room || event.room.id != this.scene.room.id) {
             return;
         }
 
-        this.scene.emit(Events.ON_USER_EXIT_ROOM, event.user, event.room);
+        this.scene.emit(Events.ON_USER_EXIT_ROOM, event.user, event.room, event.user.getPlayerId(event.room));
 
         if (event.user && event.user.isItMe) {
             this.scene.goBack();
@@ -350,7 +348,6 @@ export default class GameEventHandler {
     }
 
     _onPlayerReady(data) {
-        console.log("on player ready: ", data)
         let playerId = utils.getValue(data, app.keywords.PLAYER_ID);
         playerId && this.scene.emit(Events.ON_PLAYER_READY_STATE_CHANGED, playerId, true, this.scene.gamePlayers.isItMe(playerId));
     }
