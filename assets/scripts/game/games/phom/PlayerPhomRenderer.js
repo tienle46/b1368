@@ -47,20 +47,20 @@ export default class PlayerPhomRenderer extends PlayerCardTurnBaseRenderer {
         this._enabledPlayerPhomRenderer = false
     }
 
-    onEnable(){
+    onEnable() {
         super.onEnable();
         this.animation = this.getComponent(cc.Animation);
         this._enabledPlayerPhomRenderer = true;
         this._reloadComponentOnIndexChanged();
     }
 
-    cleanPlayerCards(){
+    cleanPlayerCards() {
         this.downPhomList && this.downPhomList.clear();
         this.eatenCardList && this.eatenCardList.clear();
         this.playedCardList && this.playedCardList.clear();
     }
 
-    _reset(){
+    _reset() {
         super._reset();
 
         this.cardList.clear();
@@ -69,24 +69,24 @@ export default class PlayerPhomRenderer extends PlayerCardTurnBaseRenderer {
         this.playedCardList && this.playedCardList.clear();
     }
 
-    setHighlightPhom(phom, highlight){
+    setHighlightPhom(phom, highlight) {
         this._downPhomListComponent.setHighlight(phom, highlight);
     }
 
-    downPhom(playerPhomList, player){
+    downPhom(playerPhomList, player) {
         return this._downPhomListComponent.addPhomList(playerPhomList, player);
     }
 
-    setCurrentPhom(currentPhomList){
+    setCurrentPhom(currentPhomList) {
         this._downPhomListComponent && this._downPhomListComponent.clear();
-        return this._downPhomListComponent.setPhomList(currentPhomList);
+        return this._downPhomListComponent.addPhomList(currentPhomList);
     }
 
-    cleanHighlightDownPhom(){
+    cleanHighlightDownPhom() {
         this._downPhomListComponent.cleanHighlight();
     }
 
-    _reloadComponentOnIndexChanged(){
+    _reloadComponentOnIndexChanged() {
 
         this.eatenCardList && this.eatenCardList.clear();
         this.playedCardList && this.playedCardList.clear();
@@ -94,18 +94,18 @@ export default class PlayerPhomRenderer extends PlayerCardTurnBaseRenderer {
         this._downPhomListComponent && this._downPhomListComponent.clear();
 
         this.playedCardListNodes.forEach((node, index) => {
-            if(index == this.anchorIndex){
+            if (index == this.anchorIndex) {
                 this.playedCardList = node.getComponent('CardList');
-            }else{
+            } else {
                 CCUtils.setVisible(node, false);
             }
         });
 
         this.downPhomListNodes.forEach((node, index) => {
-            if(index == this.anchorIndex){
+            if (index == this.anchorIndex) {
                 this._downPhomListComponent = node.getComponent('PhomListComponent');
                 this.downPhomList = this._downPhomListComponent.phomList;
-            }else{
+            } else {
                 CCUtils.setVisible(false);
             }
         });
@@ -113,7 +113,7 @@ export default class PlayerPhomRenderer extends PlayerCardTurnBaseRenderer {
         this.eatenCardList = this._getEatenCardComponent();
     }
 
-    start(){
+    start() {
         super.start();
         /**
          * In first time load player, method _reloadComponentOnIndexChanged call before this._downPhomListComponent.phomList assigned
@@ -129,46 +129,46 @@ export default class PlayerPhomRenderer extends PlayerCardTurnBaseRenderer {
      *
      * @param anchorIndex
      */
-    updatePlayerAnchor(anchorIndex){
+    updatePlayerAnchor(anchorIndex) {
         super.updatePlayerAnchor(anchorIndex);
 
-        if(this._enabledPlayerPhomRenderer){
+        if (this._enabledPlayerPhomRenderer) {
             this._reloadComponentOnIndexChanged();
         }
     }
 
-    showAnChot(){
+    showAnChot() {
         this.animation && this.animation.play(this.anChotAnimName);
     }
 
-    addHelpCard(cards, srcCardList, phomIndex){
+    addHelpCard(cards, srcCardList, phomIndex) {
         let helpPhom = phomIndex && this.downPhomList[phomIndex];
-        if(helpPhom){
-            if(srcCardList){
+        if (helpPhom) {
+            if (srcCardList) {
                 helpPhom.transferFrom(srcCardList, cards);
-            }else {
+            } else {
                 helpPhom.addCards(cards);
             }
         }
     }
 
-    addPlayedCard(cards, srcCardList, isItMe){
-        if(srcCardList){
+    addPlayedCard(cards, srcCardList, isItMe) {
+        if (srcCardList) {
             this.playedCardList.transferFrom(srcCardList, cards);
-        }else {
+        } else {
             this.playedCardList.addCards(cards);
         }
     }
 
-    addEatenCard(card, srcCardList, isItMe){
-        if(srcCardList){
+    addEatenCard(card, srcCardList, isItMe) {
+        if (srcCardList) {
             this.eatenCardList.transferFrom(srcCardList, [card]);
-        }else {
+        } else {
             this.eatenCardList.addCards([card]);
         }
     }
 
-    clearEatenCards(){
+    clearEatenCards() {
         this.eatenCardList.clear();
     }
 
@@ -181,13 +181,13 @@ export default class PlayerPhomRenderer extends PlayerCardTurnBaseRenderer {
      * @returns {CardList}
      * @private
      */
-    _getEatenCardComponent(){
+    _getEatenCardComponent() {
         let player = this.data.actor;
         let eatenCardNode = this.anchorIndex == 1 || this.anchorIndex == 4 ? this.eatenCardListNode2 : this.eatenCardListNode;
         return eatenCardNode.getComponent('CardList');
     }
 
-    _initHandCardList(cardList, isItMe){
+    _initHandCardList(cardList, isItMe) {
 
         super._initHandCardList(cardList, isItMe);
 

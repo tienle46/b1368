@@ -75,9 +75,9 @@ export default class GameScene extends BaseScene {
 
         this.on(Events.ON_GAME_STATE_CHANGE, (...args) => {
             this.initiated ? this._onGameStateChange(...args) : (this._penddingEvents.push({
-                    fn: this._onGameStateChange,
-                    args: args
-                }))
+                fn: this._onGameStateChange,
+                args: args
+            }))
         }, this, 1);
 
         this.on(Events.ON_ACTION_EXIT_GAME, this._onActionExitGame, this);
@@ -102,7 +102,7 @@ export default class GameScene extends BaseScene {
         this.gameData[app.keywords.ROOM_READY_PLAYERS] = readyPlayerIds;
     }
 
-    _onUserExitRoom(user, room, playerId){
+    _onUserExitRoom(user, room, playerId) {
         let readyPlayerIds = utils.getValue(this.gameData, app.keywords.ROOM_READY_PLAYERS)
         readyPlayerIds && ArrayUtils.remove(readyPlayerIds, playerId)
     }
@@ -131,6 +131,7 @@ export default class GameScene extends BaseScene {
     onLoad() {
         super.onLoad();
         this.gameContext = {};
+        this.gameData = {};
         this._penddingEvents = [];
 
         this.node.children.forEach(child => { child.opacity = 255 });
@@ -243,6 +244,8 @@ export default class GameScene extends BaseScene {
         this.removeAllListener();
         this.gameEventHandler && this.gameEventHandler.removeGameEventListener();
         this.gameContext = {};
+        this.gameData = {};
+        window.release(this._penddingEvents);
         Props.releaseAllPropAsset();
     }
 

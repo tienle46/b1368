@@ -301,32 +301,6 @@ class Service {
         this._callCallback(SFS2X.SFSEvent.LOGIN, event, null);
     }
 
-    sendRequest(request, { cb = null, scope = null, cbName = null } = {}) {
-
-        console.log("sendRequest: ", this.client.isConnected(), request);
-
-        if (!this.client.isConnected() && !this.isConnecting) {
-            this._onConnectionLost();
-            return;
-        }
-
-        if (this.isConnecting) {
-            this._pendingRequests.push(arguments);
-            return;
-        }
-
-        if (cb) {
-            let cbKey = cbName || requestCallbackNames[request._id];
-            cbKey && this._addCallback(cbKey, cb, scope);
-        }
-
-        this.client.send(request);
-        request = null;
-        cb = null;
-        scope = null;
-        cbName = null;
-    }
-
     _callCallback(key, verifyFunc, ...args) {
         let cbObj = this._getCallbackObject(key);
 
@@ -360,12 +334,7 @@ class Service {
     }
 
     _deleteCallbackObject(key) {
-        delete this._eventCallbacks[key];
-    }
-
-    _addCallback(key, cb, scope, data) {
-        this._eventCallbacks[key] = cb instanceof Function ? { cb: cb, data: data } : undefined;
-        this._addCommandToScope(key, scope);
+        this._eventCallbacks[key] = null;
     }
 
     addEventListener(eventType, handleFunc, scope = this) {
@@ -374,9 +343,6 @@ class Service {
 
     removeEventListener(eventType, handleFunc, scope = this) {
         this.client.removeEventListener(eventType, handleFunc, scope);
-        eventType = null;
-        handleFunc = null;
-        scope = null;
     }
 
     /**
@@ -489,15 +455,17 @@ class Service {
             const cbKey = options.cbKey || options.cmd;
             if (cmd) {
                 if ((!scope) && cb) {
-                    scope = app.system.currentScene;
+                    scope = app.system.getCurrentSceneName();
                 }
                 this._addCallback(cbKey, cb, scope, options.data);
                 this.sendRequest(new SFS2X.Requests.System.ExtensionRequest(cmd, options.data || {}, options.room));
             }
         }
-        options = null;
-        cb = null;
-        scope = null;
+    }
+
+    _addCallback(key, cb, scope, data) {
+        this._eventCallbacks[key] = cb instanceof Function ? { cb: cb, data: data } : undefined;
+        this._addCommandToScope(key, scope);
     }
 
     _addCommandToScope(key, scope) {
@@ -508,12 +476,34 @@ class Service {
         }
     }
 
+    sendRequest(request, { cb = null, scope = null, cbName = null } = {}) {
+
+        console.log("sendRequest: ", this.client.isConnected(), request);
+
+        if (!this.client.isConnected() && !this.isConnecting) {
+            this._onConnectionLost();
+            return;
+        }
+
+        if (this.isConnecting) {
+            this._pendingRequests.push(arguments);
+            return;
+        }
+
+        if (cb) {
+            let cbKey = cbName || requestCallbackNames[request._id];
+            cbKey && this._addCallback(cbKey, cb, scope);
+        }
+
+        this.client.send(request);
+    }
+
     /**
      * Remove all callback mapped with key
      * @param {string} key
      */
     removeCallback(key) {
-        key && delete this._eventCallbacks[key];
+        key && (this._eventCallbacks[key] = null);
     }
 
     /**
@@ -525,11 +515,11 @@ class Service {
         if (eventCmdObj) {
             let keys = Object.keys(eventCmdObj);
             keys.forEach(key => {
-                delete this._eventCallbacks[key];
+                this._eventCallbacks[key] = null;
             });
         }
 
-        scope && delete this._eventScopes[scope];
+        scope && (this._eventScopes[scope] = null);
     }
 
     _onJoinRoomError(event) {

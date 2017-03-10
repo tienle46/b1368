@@ -129,6 +129,9 @@ export default class Actor extends Component {
 
             let argArr = this.__pendingEmitEvents[name];
             argArr && argArr.forEach(args => {
+                if (name == Events.ON_GAME_LOAD_DATA_AFTER_SCENE_START) {
+                    console.warn('emit args: ', args);
+                }
                 this._eventEmitter.emit(name, ...args);
             });
         });
@@ -136,7 +139,7 @@ export default class Actor extends Component {
         this.__pendingEmitEvents = {};
     }
 
-    loadImage(url, cb){
+    loadImage(url, cb) {
         return HttpImageLoader.loadImage(url, this.constructor.name, cb);
     }
 }

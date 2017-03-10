@@ -1,6 +1,5 @@
 import app from 'app';
 import Component from 'Component';
-import BuddyManager from 'BuddyManager';
 import PhomGenerator from 'PhomGenerator';
 import Card from 'Card';
 

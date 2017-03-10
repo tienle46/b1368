@@ -95,7 +95,7 @@ export default class DashboardScene extends BaseScene {
             app.context.gameList = gameList;
             this._initItemListGame();
         }
-
+        removedGames = [];
         app.buddyManager.sendInitBuddy();
     }
 

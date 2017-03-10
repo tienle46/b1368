@@ -95,7 +95,7 @@ export default class Emitter {
         // remove all handlers
         if (event && !fn) {
             if (!context) {
-                delete this._callbacks[`$${event}`];
+                this._callbacks[`$${event}`] = null;
             } else {
                 for (let i = 0; i < callbacks.length; i++) {
                     this._checkContext(callbacks[i], context) && callbacks.splice(i--, 1);
@@ -109,8 +109,12 @@ export default class Emitter {
             let cb = callbacks[i];
             if (this._checkContext(cb, context) && this._isSameInstance(cb, fn)) {
                 callbacks.splice(i--, 1);
+                if (callbacks.length < 1) {
+                    this._callbacks[`$${event}`] = null;
+                }
             }
         }
+
         event = null;
         fn = null;
         context = null;
