@@ -332,7 +332,7 @@ export default class PhomUtils {
             }
         }
 
-        cards.push(...singleCards);
+        cards.push(...this.sortAsc(singleCards));
     }
 
     static compareCard(card1, card2, type){

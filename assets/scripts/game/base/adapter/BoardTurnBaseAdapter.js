@@ -7,6 +7,7 @@ import utils from 'utils'
 import Events from 'Events'
 import GameAdapter from 'GameAdapter';
 import {Keywords} from 'core'
+import GameUtils from 'GameUtils';
 
 export default class BoardTurnBaseAdapter extends GameAdapter {
     constructor(board) {
@@ -62,6 +63,11 @@ export default class BoardTurnBaseAdapter extends GameAdapter {
 
     _handlePlayTurn(data){
         this.lastPlayedTurn = utils.getValue(data, Keywords.PLAYER_ID);
+        let turnOwner = this.scene.gamePlayers.findPlayer(this.lastPlayedTurn);
+        if(!turnOwner){
+            let cards = GameUtils.convertBytesToCards(utils.getValue(data, Keywords.GAME_LIST_CARD, []));
+            cards.length > 0 && this.scene.emit(Events.ON_PLAYER_PLAYED_CARDS, cards);
+        }
     }
 
     _onPlayerTurn(turnPlayerId){

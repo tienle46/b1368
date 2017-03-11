@@ -36,6 +36,7 @@ export default class CardList extends Component {
         this._draggable = false;
         this._overlapSpace = 0;
         this.selectCardChangeListener = null;
+        this.onCardClickListener = null;
         this.highlight = false;
         this._revealOnClick = false;
         this.__initCards = null;
@@ -183,7 +184,7 @@ export default class CardList extends Component {
         }
     }
 
-    setProperties({ scale = 1, x = 0, y = 0, orientation = CardList.HORIZONTAL, alignment = CardList.ALIGN_CENTER_LEFT, maxDimension = undefined } = {}) {
+    setProperties({scale = 1, x = 0, y = 0, orientation = CardList.HORIZONTAL, alignment = CardList.ALIGN_CENTER_LEFT, maxDimension = undefined} = {}) {
         this.setScale(scale);
         this.setPosition(x, y);
         this.setOrientation(orientation);
@@ -321,7 +322,7 @@ export default class CardList extends Component {
                     //     this.setPosition(position);
                     // }
 
-                    card.setOriginalInfo({ position });
+                    card.setOriginalInfo({position});
                 });
             } else {
                 this.cards.forEach((card, index) => {
@@ -334,7 +335,7 @@ export default class CardList extends Component {
                     //     this.setPosition(position);
                     // }
 
-                    card.setOriginalInfo({ position });
+                    card.setOriginalInfo({position});
                 });
             }
         } else {
@@ -349,7 +350,7 @@ export default class CardList extends Component {
                     //     this.setPosition(position);
                     // }
 
-                    card.setOriginalInfo({ position });
+                    card.setOriginalInfo({position});
                 });
             } else {
                 this.cards.forEach((card, index) => {
@@ -362,7 +363,7 @@ export default class CardList extends Component {
                     //     this.setPosition(position);
                     // }
 
-                    card.setOriginalInfo({ position });
+                    card.setOriginalInfo({position});
                 });
             }
         }
@@ -398,17 +399,17 @@ export default class CardList extends Component {
     setCards(cards, active, reveal) {
         if (this.initiated) {
             this.clear();
-            this._fillCards({ cards, active, reveal, autoAdjust: true, adjustDuration: 0 });
+            this._fillCards({cards, active, reveal, autoAdjust: true, adjustDuration: 0});
         } else {
             this.__initCards = [...cards];
         }
     }
 
     addCards(cards, active, reveal) {
-        return this._fillCards({ cards, active, reveal });
+        return this._fillCards({cards, active, reveal});
     }
 
-    _fillCards({ cards = [], active = true, reveal = this.reveal, autoAdjust = undefined, adjustDuration = undefined, reverse = false } = {}) {
+    _fillCards({cards = [], active = true, reveal = this.reveal, autoAdjust = undefined, adjustDuration = undefined, reverse = false} = {}) {
 
         this.cleanSelectedCard();
 
@@ -503,9 +504,9 @@ export default class CardList extends Component {
             return this.cards.splice(0, cardsOrRemoveAmount);
         } else {
             let removingCards = cardsOrRemoveAmount;
-            if(removingCards.filter(card => !card.isEmpty()).length == 0){
+            if (removingCards.filter(card => !card.isEmpty()).length == 0) {
                 return this.cards.splice(0, removingCards.length);
-            }else{
+            } else {
                 return ArrayUtils.removeAll(this.cards, cardsOrRemoveAmount, null, true);
             }
         }
@@ -593,11 +594,14 @@ export default class CardList extends Component {
     }
 
     _onSelectCard(card) {
+
         if (this._revealOnClick) {
             this._revealSingleCard(card);
         } else if (this.selectable) {
+            this.onCardClickListener && this.onCardClickListener(card);
             card.setSelected(!card.selected);
             this.onSelectedCardChanged();
+
         }
     }
 
@@ -607,6 +611,10 @@ export default class CardList extends Component {
 
     onSelectedCardChanged() {
         this.selectCardChangeListener && this.selectCardChangeListener(this.getSelectedCards());
+    }
+
+    setOnCardClickListener(listener){
+        this.onCardClickListener = listener;
     }
 
     transferFrom(src, cards = [], cbOrOption) {
@@ -660,7 +668,13 @@ export default class CardList extends Component {
         const actions = [];
         const removedCards = this._removeCardModelOnly(cards);
         const currentDestLength = destCardList.cards.length;
-        const addedCards = destCardList._fillCards({ cards: removedCards, active: true, reveal, autoAdjust: false, reverse });
+        const addedCards = destCardList._fillCards({
+            cards: removedCards,
+            active: true,
+            reveal,
+            autoAdjust: false,
+            reverse
+        });
         destCardList.__endActionCb = () => cb && cb(addedCards);
 
         removedCards.forEach((card, index) => {
@@ -675,7 +689,7 @@ export default class CardList extends Component {
 
             animatingCard.node.setPosition(localDestinationPoint);
             animatingCard.node.setScale(originalScale);
-            animatingCard.setOriginalInfo({ position: moveToPosition, scale: scaleTo })
+            animatingCard.setOriginalInfo({position: moveToPosition, scale: scaleTo})
 
             card.node.removeFromParent(true);
         });
@@ -745,7 +759,7 @@ export default class CardList extends Component {
         const actions = [delay.clone()];
 
         let parentNode = (actionComponent && actionComponent.node) || (anchorNode && anchorNode.parent);
-        if(!parentNode) return;
+        if (!parentNode) return;
 
         const centerPoint = parentNode.convertToWorldSpaceAR(anchorNode.getPosition());
 
@@ -790,11 +804,11 @@ export default class CardList extends Component {
             }
         }
 
-        if(actionComponent){
+        if (actionComponent) {
             actionComponent.runActionWithCallback(actions, cb, CardList.DRAW_CARD_DURATION + 0.1)
-        }else{
+        } else {
             parentNode.runAction(cc.sequence(
-                    [...actions, cc.delayTime(CardList.DRAW_CARD_DURATION + 0.05), cc.callFunc(() => cb && cb())]
+                [...actions, cc.delayTime(CardList.DRAW_CARD_DURATION + 0.05), cc.callFunc(() => cb && cb())]
                 )
             )
         }

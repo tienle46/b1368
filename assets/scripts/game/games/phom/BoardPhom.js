@@ -233,15 +233,18 @@ export default class BoardPhom extends BoardCardTurnBase {
             }
         });
 
-        this.renderer.cleanDeckCards()
         setTimeout(() => this.scene.showGameResult(models, (shownTime) => {
+            this.renderer.cleanDeckCards()
+            this.scene.emit(Events.CLEAN_GAME_AFTER_SHOW_RESULT);
+
             let remainTime = this.timelineRemain - shownTime;
             if (remainTime > 0 && this.scene.isEnding()) {
                 if(this.scene.gamePlayers.players.length > 1){
                     this._startEndBoardTimeLine(remainTime);
                 }
             }
-        }), CardList.TRANSFER_CARD_DURATION * 1000 + 200);
+
+        }), CardList.TRANSFER_CARD_DURATION * 1000);
     }
 
     _getGameResultInfos(playerIds = [], playerHandCards, data) {

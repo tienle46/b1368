@@ -77,6 +77,7 @@ export default class PlayerPhom extends PlayerCardTurnBase {
         this.scene.on(Events.HANDLE_PLAYER_HELP_CARD, this._handlePlayerHelpCard, this);
         this.scene.on(Events.HANDLE_PLAYER_LEAVE_BOARD, this._handlePlayerLeaveBoard, this);
         this.scene.on(Events.ON_PLAYER_TURN, this._onPlayerTurn, this);
+        this.scene.on(Events.CLEAN_GAME_AFTER_SHOW_RESULT, this._cleanGameAfterShowResult, this);
 
         this.scene.on(Events.SHOW_PHOM_HIGHLIGHT, this._setPhomHighlight, this);
 
@@ -105,10 +106,15 @@ export default class PlayerPhom extends PlayerCardTurnBase {
         this.scene.off(Events.HANDLE_PLAYER_HELP_CARD, this._handlePlayerHelpCard, this);
         this.scene.off(Events.HANDLE_PLAYER_LEAVE_BOARD, this._handlePlayerLeaveBoard, this);
         this.scene.off(Events.ON_PLAYER_TURN, this._onPlayerTurn, this);
+        this.scene.off(Events.CLEAN_GAME_AFTER_SHOW_RESULT, this._cleanGameAfterShowResult, this);
 
         this.scene.off(Events.SHOW_PHOM_HIGHLIGHT, this._setPhomHighlight, this);
 
         // this.scene.off(Events.ON_PLAYER_PLAYED_CARDS, this._onPlayerPlayedCards, this);
+    }
+
+    _cleanGameAfterShowResult(){
+        this.renderer.cleanPlayerCards();
     }
 
     _setPhomHighlight(phom, highlight) {
@@ -318,6 +324,7 @@ export default class PlayerPhom extends PlayerCardTurnBase {
 
         switch (state) {
             case PlayerPhom.STATE_PHOM_PLAY:
+                this.renderer.cardList.cleanSelectedCard();
                 this.scene && this.scene.emit(Events.SHOW_PLAY_CONTROL_ONLY);
                 this._checkInteractableOnStateChanged();
                 break;
@@ -797,6 +804,10 @@ export default class PlayerPhom extends PlayerCardTurnBase {
         if (this.isItMe()) {
             this.renderer.setSelectCardChangeListener(this._onSelectedCardsChanged.bind(this));
         }
+    }
+
+    isSelectSingleCard(){
+        return this.state == PlayerPhom.STATE_PHOM_PLAY;
     }
 
     _onSelectedCardsChanged(selectedCards){

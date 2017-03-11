@@ -91,10 +91,10 @@ export default class PlayerPositions extends Component {
     }
 
     hideAllInviteButtons() {
-        this.playerAnchors.forEach((anchor, index) => {
-            let inviteButton = anchor.getChildByName(this.inviteButtonName);
-            utils.deactive(inviteButton);
-        });
+        // this.playerAnchors.forEach((anchor, index) => {
+        //     let inviteButton = anchor.getChildByName(this.inviteButtonName);
+        //     utils.deactive(inviteButton);
+        // });
     }
 
     showAllInviteButtons(excludeAnchorIndexes = []) {
@@ -181,8 +181,8 @@ export default class PlayerPositions extends Component {
     }
 
     hideAnchor(index) {
-        let anchor = index >= 0 && this.getPlayerAnchor(index);
-        if (anchor) anchor.active = false;
+        // let anchor = index >= 0 && this.getPlayerAnchor(index);
+        // if (anchor) anchor.active = false;
     }
 
     showAnchor(index) {

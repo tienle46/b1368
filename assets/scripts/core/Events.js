@@ -148,3 +148,5 @@ Events.ON_BUDDY_ONLINE_STATE_CHANGED = "on.buddy.onlineStateChanged";
 Events.ON_BUDDY_MOOD_CHANGED = "on.buddy.moodChanged";
 Events.ON_BUDDY_CHANGE_PLAYING_GAME = "on.buddy.changePlayingGame";
 Events.ON_BUDDY_UNREAD_MESSAGE_COUNT_CHANGED = "on.buddy.unreadMessageCountChanged";
+
+Events.CLEAN_GAME_AFTER_SHOW_RESULT = "clean.gameAfterShowResult";

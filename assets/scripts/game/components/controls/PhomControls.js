@@ -96,11 +96,11 @@ export default class PhomControls extends GameControls {
             utils.active(this.skipDownButton);
         }
 
-        if(hideChange){
-            utils.deactive(this.changePhomButton);
-        }else{
-            utils.active(this.changePhomButton);
-        }
+        // if(hideChange){
+        //     utils.deactive(this.changePhomButton);
+        // }else{
+        //     utils.active(this.changePhomButton);
+        // }
 
     }
 
@@ -108,7 +108,7 @@ export default class PhomControls extends GameControls {
         this.hideAllControls();
         utils.active(this.joinPhomButton);
         utils.active(this.skipJoinButton);
-        utils.active(this.doiGuiButton);
+        // utils.active(this.doiGuiButton);
     }
 
     _showOnTurnControls(){

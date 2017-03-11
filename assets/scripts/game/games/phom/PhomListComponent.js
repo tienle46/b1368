@@ -86,7 +86,7 @@ export default class PhomListComponent extends Component {
                     let phom = this.phoms[i + firstEmptyPhomComponentIndex];
                     if (phom) {
                         if (player.isItMe()) {
-                            player.renderer.cardList.transferTo(phom, newPhom.cards);
+                            player.renderer.cardList.transferTo(phom, newPhom.cards, () => this._sortCardList(phom));
                         } else {
                             phom.transferFrom(player.renderer.cardList, newPhom.cards);
                         }
@@ -98,6 +98,13 @@ export default class PhomListComponent extends Component {
         }
 
         return newPhomList;
+    }
+
+    _sortCardList(cardList){
+        if(cardList){
+            PhomUtils.sortAsc(cardList.cards);
+            cardList.onCardsChanged();
+        }
     }
 
     _setPhomListWithoutPlayer(phomList, firstEmptyPhomComponentIndex) {
