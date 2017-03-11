@@ -93,6 +93,7 @@ export default class DialogRub extends Rub {
 
     // return tabRub
     static show(node, tabs, options) {
-        return new this(node, tabs, options);
+        let rub = new this(node, tabs, options);
+        window.free(rub);
     }
 }

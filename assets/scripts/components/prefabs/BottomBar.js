@@ -104,8 +104,7 @@ class BottomBar extends DialogActor {
             value: `${url}/tab_top_dai_gia`
         }];
 
-        let dialogRub = DialogRub.show(app.system.getCurrentSceneNode(), tabs, { title: 'Xếp hạng' });
-        dialogRub = null;
+        DialogRub.show(app.system.getCurrentSceneNode(), tabs, { title: 'Xếp hạng' });
     }
 
     onFriendBtnClick() {
@@ -130,8 +129,7 @@ class BottomBar extends DialogActor {
         }];
 
         // bottombar -> dashboard scene node
-        let exchangeDialogRub = ExchangeDialogRub.show(app.system.getCurrentSceneNode(), tabs, { title: 'Đổi thưởng' });
-        exchangeDialogRub = null;
+        ExchangeDialogRub.show(app.system.getCurrentSceneNode(), tabs, { title: 'Đổi thưởng' });
     }
 
     callSupportClicked(e) {
@@ -148,8 +146,7 @@ class BottomBar extends DialogActor {
             value: `${url}/tab_personal_messages`
         }];
 
-        let messageCenterDialogRub = MessageCenterDialogRub.show(app.system.getCurrentSceneNode(), tabs, { title: 'Tin nhắn' });
-        messageCenterDialogRub = null;
+        MessageCenterDialogRub.show(app.system.getCurrentSceneNode(), tabs, { title: 'Tin nhắn' });
     }
 
     onClickUserInfoAction() {
@@ -179,8 +176,7 @@ class BottomBar extends DialogActor {
             // }, 
         ];
 
-        let personalInfoDialogRub = PersonalInfoDialogRub.show(app.system.getCurrentSceneNode(), tabs, { title: 'Cá nhân' });
-        personalInfoDialogRub = null;
+        PersonalInfoDialogRub.show(app.system.getCurrentSceneNode(), tabs, { title: 'Cá nhân' });
     }
 
     _fillUserData() {
