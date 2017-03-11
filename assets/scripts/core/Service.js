@@ -209,7 +209,7 @@ class Service {
         this._pendingRequests = [];
         this.stopLagPolling();
 
-        let scene = app.system.currentScene.constructor;
+        let scene = app.system.getCurrentSceneName();
         if (event && event.reason === "manual") {
             this._loginData = null;
             app.system.loadScene(app.const.scene.ENTRANCE_SCENE);
