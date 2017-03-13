@@ -3,7 +3,7 @@ const LOGIN_ERROR_MESSAGES_VI = {
     "0": "Phiên bản hiện tại của bạn đã quá cũ",
     "1": "Hệ thống đang bảo trì, mời bạn quay lại sau",
     "2": "Tên đăng nhập không đúng định dạng hoặc đã được đăng ký",
-    "3": "Sai tên đăng nhập hoặc mật khẩu",
+    "3": "Bạn đã nhập sai tên tài khoản hoặc mật khẩu. Vui lòng kiểm tra lại",
     "4": "Bạn đang bị treo nick, mời bạn quay lại sau",
     "5": "Hệ thống đang quá tải, mời bạn quay lại sau",
     "6": "Bạn đã đang đăng nhập vào hệ thống từ một thiết bị khác",
@@ -64,8 +64,8 @@ const LOGIN_ERROR_MESSAGES_VI = {
         "119": "Tài khoản đã được đăng ký"
     },
     // CUSTOM ERROR FOR CLIENTS
-    "LOGIN_ERROR_USERNAME_NOT_VALID": "Tên đăng nhập phải lớn hơn 5 ký tự, không có ký tự đặc biệt.",
-    "LOGIN_ERROR_PASSWORD_NOT_VALID": "Mật khẩu mới phải từ 6 ký tự trong đó có ít nhất 1 số, 1 ký tự thường, không có ký tự đặc biệt.",
+    "LOGIN_ERROR_USERNAME_NOT_VALID": "Tên đăng nhập phải lớn hơn 5 ký tự, chỉ bao gồm số hoặc chữ, không chứa các ký tự đặc biệt.",
+    "LOGIN_ERROR_PASSWORD_NOT_VALID": "Mật khẩu phải có nhiều hơn 6 ký tự, bao gồm chữ thường và số, không chứa ký tự đặc biệt.",
     "LOGIN_ERROR_CAPTCHA_NOT_VALID": "Mã xác nhận không đúng, vui lòng nhập lại."
 };
 

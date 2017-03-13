@@ -18,7 +18,6 @@ class PreloadScene extends Component {
         if (this.loading) {
             this.loading.getComponent('FullSceneProgress').show(app.res.string('loading_data'));
         }
-
         this._setupEnvironment();
 
         let cards = [

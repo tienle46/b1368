@@ -125,6 +125,7 @@ export default class BaseScene extends Actor {
     }
 
     _initProgress() {
+        cc.loader.setAutoReleaseRecursively('common/FullSceneProgress', false);
         let progressNode = cc.instantiate(app.res.prefab.fullSceneLoading);
         if (progressNode) {
             this.node.parent.addChild(progressNode, app.const.loadingZIndex);

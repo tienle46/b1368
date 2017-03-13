@@ -67,7 +67,7 @@ export default class DialogActor extends Actor {
     initView(head, data, options) {
         if (!this._scrollView) {
             this._scrollView = cc.instantiate(this.scrollview);
-            console.debug(cc.loader.isAutoRelease(this.scrollview));
+            // console.debug(cc.loader.isAutoRelease(this.scrollview));
             this._scrollView.getComponent('Scrollview').initView(head, data, options);
             NodeRub.addWidgetComponentToNode(this._scrollView, { top: 0, left: 0, right: 0, bottom: 0 });
             this.addNode(this._scrollView)
