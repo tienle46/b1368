@@ -76,6 +76,7 @@ export default class Component {
     onDestroy() {
         this.releaseAssets();
         this.removeNodes();
+        this.free(this.__componentData);
         this.__componentData = null;
         // this._$componentPropertyNames && this._$componentPropertyNames.forEach(propertyName => {
         //     let value = this[propertyName];

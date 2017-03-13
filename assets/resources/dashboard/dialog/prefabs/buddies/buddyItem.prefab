@@ -606,7 +606,7 @@
     "_tag": -1,
     "_opacityModifyRGB": false,
     "_id": "",
-    "_active": true,
+    "_active": false,
     "_components": [],
     "_prefab": {
       "__id__": 21
@@ -676,7 +676,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "0f0af1b1-4704-4603-929a-af7cbf8ce416"
+      "__uuid__": "74360e90-048d-4bbe-90d5-98a605eb9246"
     },
     "_type": 1,
     "_sizeMode": 0,
@@ -834,7 +834,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "3518e03e-d937-4596-b64b-edc2e33710ed"
+      "__uuid__": "d9098c36-e297-41a5-abeb-ee7a951ad654"
     },
     "_type": 1,
     "_sizeMode": 0,
@@ -884,7 +884,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "b3f0afb6-3ac7-44d9-b747-9f2eb0308b9d"
+      "__uuid__": "16b6cd12-2e55-4d68-886c-1e22787cbd7f"
     },
     "_type": 1,
     "_sizeMode": 0,
@@ -923,16 +923,24 @@
     },
     "_enabled": true,
     "path": "",
+    "bodyNode": null,
     "nameLabel": {
       "__id__": 7
     },
+    "balanceLabel": null,
+    "gameLabel": null,
+    "currencyNameLabel": null,
+    "playingGameLabel": null,
+    "playingGameNode": null,
     "onlineNode": {
       "__id__": 22
     },
     "offlineNode": {
       "__id__": 17
     },
-    "toggleGroup": null
+    "lockedNode": null,
+    "avatarNode": null,
+    "avatarSpriteNode": null
   },
   {
     "__type__": "cc.Toggle",
