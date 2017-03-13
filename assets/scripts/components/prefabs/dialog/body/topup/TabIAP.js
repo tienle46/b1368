@@ -1,7 +1,6 @@
 import app from 'app';
 import DialogActor from 'DialogActor';
-import numeral from 'numeral';
-import { deactive, active } from 'Utils';
+import { deactive, active, numberFormat } from 'Utils';
 
 class TabIAP extends DialogActor {
     constructor() {
@@ -179,8 +178,8 @@ class TabIAP extends DialogActor {
     }
 
     _initItem(balance, currency, price, productId) {
-        this.money.string = `${numeral(price).format('0,0')}${currency}`;
-        this.balance.string = numeral(balance).format('0,0');
+        this.money.string = `${numberFormat(price)}${currency}`;
+        this.balance.string = numberFormat(balance);
 
         let item = cc.instantiate(this.itemNode);
         item.active = true;

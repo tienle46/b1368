@@ -1,6 +1,6 @@
 import app from 'app';
 import DialogActor from 'DialogActor';
-import numeral from 'numeral';
+import { numberFormat } from 'Utils';
 import moment from 'moment';
 
 class TabTransactionHistory extends DialogActor {
@@ -44,7 +44,7 @@ class TabTransactionHistory extends DialogActor {
         if (items && items.length > 0) {
             let titles = [];
             for (let i = 0; i < items.length; i++) {
-                titles.push(app.res.string('user_transaction_money', { sender: senders[i], amount: numeral(golds[i]).format('0,0') }));
+                titles.push(app.res.string('user_transaction_money', { sender: senders[i], amount: numberFormat(golds[i]) }));
             }
 
             let next = this.onNextBtnClick;

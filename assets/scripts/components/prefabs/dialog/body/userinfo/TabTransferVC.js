@@ -1,21 +1,17 @@
 import app from 'app';
 import Component from 'Component';
-import ButtonScaler from 'ButtonScaler';
-import RubUtils from 'RubUtils';
-import ExchangeDialog from 'ExchangeDialog';
-import numeral from 'numeral';
 
 class TabTransferVC extends Component {
     constructor() {
-        super()
+        super();
         this.receiverLabel = {
             default: null,
             type: cc.Label
-        }
+        };
         this.receiverInput = {
             default: null,
             type: cc.EditBox
-        }
+        };
     }
 
     onLoad() {

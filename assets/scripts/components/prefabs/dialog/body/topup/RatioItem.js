@@ -1,6 +1,6 @@
 import app from 'app';
 import DialogActor from 'DialogActor';
-import numeral from 'numeral';
+import Utils from 'Utils';
 
 class RatioItem extends DialogActor {
     constructor() {
@@ -22,13 +22,13 @@ class RatioItem extends DialogActor {
     }
 
     initItem(number, ratio) {
-        this.titleLbl.string = `${numeral(number).format('0,0')} VNĐ`;
-        this.ratioLbl.string = `${numeral(number * ratio).format('0,0')} ${app.res.string('game_currency_unit')}`;
+        this.titleLbl.string = `${Utils.numberFormat(number)} VNĐ`;
+        this.ratioLbl.string = `${Utils.numberFormat(number * ratio)} ${app.res.string('game_currency_unit')}`;
     }
 
     initItemWithoutRatio(number, got) {
-        this.titleLbl.string = `${app._.isNumber(number) ? numeral(number).format('0,0') : number} VNĐ`;
-        this.ratioLbl.string = `${app._.isNumber(got) ? numeral(got).format('0,0') : got} ${app.res.string('game_currency_unit')}`;
+        this.titleLbl.string = `${app._.isNumber(number) ? Utils.numberFormat(number) : number} VNĐ`;
+        this.ratioLbl.string = `${app._.isNumber(got) ? Utils.numberFormat(got) : got} ${app.res.string('game_currency_unit')}`;
     }
 }
 

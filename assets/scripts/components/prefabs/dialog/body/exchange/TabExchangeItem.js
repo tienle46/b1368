@@ -1,7 +1,7 @@
 import app from 'app';
 import DialogActor from 'DialogActor';
 import RubUtils from 'RubUtils';
-import numeral from 'numeral';
+import Utils from 'Utils';
 import ExchangeDialog from 'ExchangeDialog';
 import LoaderRub from 'LoaderRub';
 
@@ -80,7 +80,7 @@ class TabExchangeItem extends DialogActor {
                         });
 
                         // add price
-                        this.exchangeItemPrice.string = `${numeral(itemGold).format('0,0')} XU`;
+                        this.exchangeItemPrice.string = `${Utils.numberFormat(itemGold)} XU`;
 
 
                         let itemBtn = item.getChildByName('btn').getComponent(cc.Button);
@@ -127,7 +127,7 @@ class TabExchangeItem extends DialogActor {
 
             if (Number(myCoin) < Number(gold)) {
                 app.system.error(
-                    app.res.string('error_exchange_dialog_not_enough_money', { ownerCoin: numeral(myCoin).format('0,0'), name })
+                    app.res.string('error_exchange_dialog_not_enough_money', { ownerCoin: Utils.numberFormat(myCoin), name })
                 );
                 return;
             }

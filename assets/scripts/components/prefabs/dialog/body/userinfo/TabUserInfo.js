@@ -1,7 +1,6 @@
 import app from 'app';
 import DialogActor from 'DialogActor';
-import numeral from 'numeral';
-import { isEmpty, active, deactive } from 'Utils';
+import { isEmpty, active, deactive, numberFormat } from 'Utils';
 
 export default class TabUserInfo extends DialogActor {
     constructor() {
@@ -140,7 +139,7 @@ export default class TabUserInfo extends DialogActor {
         let { balance, benefit, id, levelName, nextLevelName, nextBenefit } = data;
 
         this.userName.string = name;
-        this.chipAmout.string = numeral(balance).format('0,0');
+        this.chipAmout.string = numberFormat(balance);
 
         this.userId.string = `<color=#ffffff>ID:</c> <color=#FFE000>${id}</color>`;
         this.vipLevel.string = levelName;

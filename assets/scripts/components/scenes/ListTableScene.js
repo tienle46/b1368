@@ -5,24 +5,19 @@ import { requestTimeout, clearRequestTimeout } from 'TimeHacker';
 import ScrollMessagePopup from 'ScrollMessagePopup';
 import BuddyPopup from 'BuddyPopup';
 import CCUtils from 'CCUtils';
+import Utils from 'Utils';
+import TopupDialogRub from 'TopupDialogRub';
 
 export default class ListTableScene extends BaseScene {
     constructor() {
         super();
 
-        this.contentInScroll = {
-            default: null,
-            type: cc.Node
-        };
-
-        this.tableListCell = {
-            default: null,
-            type: cc.Prefab
-        };
-
-        this.gameTitleLbl = {
-            default: null,
-            type: cc.Label
+        this.properties = {
+            ...this.properties,
+            contentInScroll: cc.Node,
+            tableListCell: cc.Prefab,
+            gameTitleLbl: cc.Label,
+            userMoneyLbl: cc.Label
         };
 
         this.items = null;
@@ -46,6 +41,7 @@ export default class ListTableScene extends BaseScene {
         this.filterCond = app.config.listTableGroupFilters[0];
         this.items = [];
         this.enableMinbets = [];
+        this.userMoneyLbl.string = `${Utils.numberFormat(app.context.getMeBalance() || 0)}`;
     }
 
     onEnable() {
@@ -86,6 +82,11 @@ export default class ListTableScene extends BaseScene {
         app.system.removeListener(SFS2X.SFSEvent.ROOM_JOIN, this._handleRoomJoinEvent, this);
         app.system.removeListener(app.commands.PLAYER_INVITE, this._onPlayerInviteEvent, this);
         app.system.removeListener(SFS2X.SFSEvent.ROOM_JOIN_ERROR, this._onJoinRoomError, this);
+    }
+
+    onClickNapXuAction() {
+        let scene = app.system.getCurrentSceneNode();
+        TopupDialogRub.show(scene);
     }
 
     onClickChatBtn() {
