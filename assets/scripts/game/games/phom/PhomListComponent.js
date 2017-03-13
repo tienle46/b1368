@@ -7,6 +7,7 @@ import CardList from 'CardList';
 import Phom from 'Phom';
 import PhomList from 'PhomList';
 import Component from 'Component';
+import PhomUtils from 'PhomUtils';
 
 export default class PhomListComponent extends Component {
     constructor() {
