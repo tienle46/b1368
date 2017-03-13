@@ -6,7 +6,6 @@ import TopupDialogRub from 'TopupDialogRub';
 import ExchangeDialogRub from 'ExchangeDialogRub';
 import PersonalInfoDialogRub from 'PersonalInfoDialogRub';
 import MessageCenterDialogRub from 'MessageCenterDialogRub';
-import numeral from 'numeral';
 import SFS2X from 'SFS2X';
 import Events from 'Events';
 import BuddyPopup from 'BuddyPopup';
@@ -114,14 +113,12 @@ class TopBar extends DialogActor {
     }
 
     updateUserCoin() {
-        this.userInfoCoinLbl.string = `${numeral(app.context.getMeBalance() || 0).format('0,0')}`;
+        this.userInfoCoinLbl.string = `${utils.numberFormat(app.context.getMeBalance() || 0)}`;
     }
 
     onClickNapXuAction() {
-        (function() {
-            let scene = app.system.getCurrentSceneNode();
-            TopupDialogRub.show(scene);
-        }())
+        let scene = app.system.getCurrentSceneNode();
+        TopupDialogRub.show(scene);
     }
 
     onFriendBtnClick() {
@@ -204,7 +201,7 @@ class TopBar extends DialogActor {
     _fillUserData() {
         this.userNameLbl.string = app.context.getMyInfo().name;
 
-        this.userInfoCoinLbl.string = `${numeral(app.context.getMeBalance() || 0).format('0,0')}`;
+        this.userInfoCoinLbl.string = `${utils.numberFormat(app.context.getMeBalance() || 0)}`;
     }
 
     _onFeedbackConfirmed(content) {
@@ -268,7 +265,7 @@ class TopBar extends DialogActor {
         let changedVars = ev[app.keywords.BASE_EVENT_CHANGED_VARS]
         changedVars.map(v => {
             if (v == 'coin') {
-                this.userInfoCoinLbl.string = `${numeral(app.context.getMeBalance() || 0).format('0,0')}`;
+                this.userInfoCoinLbl.string = `${utils.numberFormat(app.context.getMeBalance() || 0)}`;
             }
         });
 

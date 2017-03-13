@@ -1,6 +1,6 @@
 import app from 'app';
 import DialogActor from 'DialogActor';
-import numeral from 'numeral';
+import Utils from 'Utils';
 
 class TabTopDaiGia extends DialogActor {
     constructor() {
@@ -66,7 +66,7 @@ class TabTopDaiGia extends DialogActor {
             }),
             res[app.keywords.USERNAME_LIST],
             res['ui1l'].map((amount) => {
-                this.userMoneyLbl.string = `${numeral(amount).format('0,0')}`;
+                this.userMoneyLbl.string = `${Utils.numberFormat(amount)}`;
                 return cc.instantiate(this.userMoneyLbl.node);
             }),
         ];

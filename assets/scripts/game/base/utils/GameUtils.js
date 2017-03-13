@@ -4,7 +4,7 @@
 
 import app from 'app';
 import utils from 'utils';
-import Card from 'Card'
+import Card from 'Card';
 import numeral from 'numeral';
 
 export default class GameUtils {

@@ -3,7 +3,7 @@ import DialogActor from 'DialogActor';
 import RubUtils from 'RubUtils';
 import ExchangeDialog from 'ExchangeDialog';
 import NodeRub from 'NodeRub';
-import numeral from 'numeral';
+import Utils from 'Utils';
 
 class TabExchangeCard extends DialogActor {
     constructor() {
@@ -125,7 +125,7 @@ class TabExchangeCard extends DialogActor {
         let target = e.currentTarget;
         this.providerLbl.string = `${target.providerName}`;
 
-        this.hint.string = `<color=#FAE407>${target.providerName}</color> cần <color=#FAE407>${numeral(target.providerPrice).format('0,0')}</color> Chip để đổi.`;
+        this.hint.string = `<color=#FAE407>${target.providerName}</color> cần <color=#FAE407>${Utils.numberFormat(target.providerPrice)}</color> Chip để đổi.`;
 
         this.selectedItem = {
             id: target.providerId,
@@ -148,7 +148,7 @@ class TabExchangeCard extends DialogActor {
         if (this.selectedItem.id) {
             let { id, gold, name } = this.selectedItem;
             app.system.confirm(
-                app.res.string('exchange_dialog_confirmation', { gold: numeral(gold).format('0,0'), name }),
+                app.res.string('exchange_dialog_confirmation', { gold: Utils.numberFormat(gold), name }),
                 denyCb,
                 okCallback
             );
@@ -181,7 +181,7 @@ class TabExchangeCard extends DialogActor {
 
             if (Number(myCoin) < Number(gold)) {
                 app.system.error(
-                    app.res.string('error_exchange_dialog_not_enough_money', { ownerCoin: numeral(myCoin).format('0,0'), name })
+                    app.res.string('error_exchange_dialog_not_enough_money', { ownerCoin: Utils.numberFormat(myCoin), name })
                 );
                 return;
             }

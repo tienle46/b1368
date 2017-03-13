@@ -1,7 +1,6 @@
 import app from 'app';
 import DialogActor from 'DialogActor';
-import numeral from 'numeral';
-import { deactive, active } from 'Utils';
+import { deactive, active, numberFormat } from 'Utils';
 
 class TabSMS extends DialogActor {
     constructor() {
@@ -39,7 +38,7 @@ class TabSMS extends DialogActor {
         this.shortCodeLbl.string = command
         this.numberLbl.string = sendTo;
 
-        this._sendSMS('test','0983369898');
+        this._sendSMS('test', '0983369898');
     }
 
     _addGlobalListener() {
@@ -104,7 +103,7 @@ class TabSMS extends DialogActor {
         this.h1Lbl.string = code;
         this.commandLbl.string = syntax;
         this.sendToLbl.string = `Gửi ${sendTo}`;
-        this.moneyGetLbl.string = `${numeral(moneyGot).format('0,0')}`;
+        this.moneyGetLbl.string = `${numberFormat(moneyGot)}`;
 
         let item = cc.instantiate(this.itemNode);
         item.active = true;
@@ -119,16 +118,15 @@ class TabSMS extends DialogActor {
         }
         this.toggleGroupNode.addChild(item);
     }
-    _sendSMS(message, recipient){ 
-        if (app.env.isBrowser()) {  
-        } 
+    _sendSMS(message, recipient) { 
+        if (app.env.isBrowser()) {  } 
         else if (app.env.isMobile()) {
             if (app.env.isIOS()) { 
-                window.jsb.reflection.callStaticMethod("JSBUtils", "sendSMS",message,recipient); 
-            } if (app.env.isAndroid()) {  
+                window.jsb.reflection.callStaticMethod("JSBUtils", "sendSMS", message, recipient); 
             } 
-        }
-     }
+            if (app.env.isAndroid()) {  } 
+        } 
+    }
 
 }
 

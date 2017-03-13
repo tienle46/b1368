@@ -1,6 +1,6 @@
 import app from 'app';
 import Component from 'Component';
-import numeral from 'numeral';
+import { numberFormat } from 'Utils';
 import moment from 'moment';
 
 class TabTransferTransaction extends Component {
@@ -65,7 +65,7 @@ class TabTransferTransaction extends Component {
                 }
 
                 for (let i = 0; i < items.length; i++) {
-                    // let transactionItem = new ListItemBasicRub(`<color=eeaa22>${senders[i]}</color> đã chuyển <color=eeaa22>${numeral(golds[i]).format('0,0')}</color> coin cho bạn`, { contentWidth: 470 });
+                    // let transactionItem = new ListItemBasicRub(`<color=eeaa22>${senders[i]}</color> đã chuyển <color=eeaa22>${numberFormat(golds[i])}</color> coin cho bạn`, { contentWidth: 470 });
                     // transactionItem.initChild();
 
                     let label = {
