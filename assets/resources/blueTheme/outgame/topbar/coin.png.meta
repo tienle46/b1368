@@ -1,14 +1,14 @@
 {
   "ver": "1.0.0",
-  "uuid": "dc2d77de-1402-450a-8909-604e356e14e8",
+  "uuid": "e58ca0dc-d03e-4dda-999d-46ec04ce641b",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "bilinear",
   "subMetas": {
-    "btn-su-kien": {
+    "coin": {
       "ver": "1.0.3",
-      "uuid": "2361a140-e0dd-466d-b981-5d5098a2148e",
-      "rawTextureUuid": "dc2d77de-1402-450a-8909-604e356e14e8",
+      "uuid": "30cc6b5b-38e7-48db-944c-7fa69f530bd6",
+      "rawTextureUuid": "e58ca0dc-d03e-4dda-999d-46ec04ce641b",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": false,
@@ -16,10 +16,10 @@
       "offsetY": 0,
       "trimX": 0,
       "trimY": 0,
-      "width": 84,
-      "height": 86,
-      "rawWidth": 84,
-      "rawHeight": 86,
+      "width": 104,
+      "height": 95,
+      "rawWidth": 104,
+      "rawHeight": 95,
       "borderTop": 0,
       "borderBottom": 0,
       "borderLeft": 0,
