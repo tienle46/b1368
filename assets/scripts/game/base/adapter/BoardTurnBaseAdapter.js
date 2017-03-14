@@ -59,6 +59,9 @@ export default class BoardTurnBaseAdapter extends GameAdapter {
     _handleChangeTurn(turnPlayerId){
         this.preTurnPlayerId = this.currentTurnPlayerId;
         this.currentTurnPlayerId = turnPlayerId;
+
+        let preTurnPlayer = this.scene.gamePlayers.findPlayer(this.preTurnPlayerId);
+        preTurnPlayer && preTurnPlayer.turnAdapter.onLoseTurn();
     }
 
     _handlePlayTurn(data){

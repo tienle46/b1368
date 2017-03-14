@@ -35,6 +35,10 @@ export default class PlayerCardTurnBase extends PlayerCard {
         this.turnAdapter.skipTurn();
     }
 
+    isTurnOwner(){
+        this.id == this.board.turnAdapter.currentTurnPlayerId;
+    }
+
     getPrePlayedCards() {
         return this.board.playedCards;
     }

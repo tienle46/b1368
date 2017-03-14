@@ -196,7 +196,9 @@ export default class PlayerPhomRenderer extends PlayerCardTurnBaseRenderer {
             cardList.setAnchorPoint(1, 0);
 
             let player = this.data.actor;
-            cardList.setOnCardClickListener((card) => player && player.isSelectSingleCard() && cardList.cleanSelectedCard())
+            cardList.setOnCardClickListener((card) => {
+                player && player.isSelectSingleCard() && !card.selected && cardList.cleanSelectedCard()
+            })
         }
     }
 }
