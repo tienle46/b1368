@@ -10,11 +10,9 @@ export default class TabUserInfo extends DialogActor {
             ...this.properties,
             userName: cc.Label,
             vipLevel: cc.Label,
-            nextLevel: cc.Label,
             chipAmout: cc.Label,
             phoneNumber: cc.Label,
-            benefitLbl: cc.RichText,
-            userId: cc.RichText,
+            userId: cc.Label,
             currPassword: cc.EditBox,
             newPassword: cc.EditBox,
             passwordConfirmation: cc.EditBox,
@@ -25,6 +23,7 @@ export default class TabUserInfo extends DialogActor {
         };
 
         this.nextLvlBenefit = "";
+        this.levelInfo = "";
     }
 
     onLoad() {
@@ -77,6 +76,11 @@ export default class TabUserInfo extends DialogActor {
 
     onHintNextLvlBtnClick() {
         let string = this.nextLvlBenefit || "Đang cập nhật cấp độ kế.";
+        app.system.info(string);
+    }
+
+    onLevelInfoBtnClick() {
+        let string = this.levelInfo || "Đang cập nhật.";
         app.system.info(string);
     }
 
@@ -141,9 +145,9 @@ export default class TabUserInfo extends DialogActor {
         this.userName.string = name;
         this.chipAmout.string = numberFormat(balance);
 
-        this.userId.string = `<color=#ffffff>ID:</c> <color=#FFE000>${id}</color>`;
+        this.userId.string = id;
         this.vipLevel.string = levelName;
-        this.nextLevel.string = nextLevelName;
+        // this.nextLevel.string = nextLevelName;
 
         if (app.context.needUpdatePhoneNumber()) {
             this.phoneNumber.string = `Chưa cập nhật`;
@@ -154,12 +158,16 @@ export default class TabUserInfo extends DialogActor {
                 this.phoneNumber.string = `Chưa cập nhật`;
         }
 
+        this.levelInfo = `Cấp độ: ${levelName}\n`;
+
         if (benefit) {
-            this.benefitLbl.string = `<color=#F6D533> Quyền lợi:</c> ${benefit}`;
-            let size = this.benefitLbl.node.getContentSize();
-            let height = size.height * this.benefitLbl._lineCount;
-            this.benefitLbl.node.setContentSize(size.width, height);
+            this.levelInfo += `Quyền lợi: ${benefit}`;
+            // this.benefitLbl.string = `<color=#F6D533> Quyền lợi:</c> ${benefit}`;
+            // let size = this.benefitLbl.node.getContentSize();
+            // let height = size.height * this.benefitLbl._lineCount;
+            // this.benefitLbl.node.setContentSize(size.width, height);
         }
+
         if (nextBenefit) {
             this.nextLvlBenefit = nextBenefit;
         }
