@@ -20,7 +20,6 @@ class BottomBar extends Actor {
 
     onLoad() {
         super.onLoad();
-        console.debug('asdasdasdasdasd');
     }
 
     onEnable() {

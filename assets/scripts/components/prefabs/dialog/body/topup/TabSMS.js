@@ -9,14 +9,7 @@ class TabSMS extends DialogActor {
             ...this.properties,
             toggleGroupNode: cc.Node,
             itemNode: cc.Node,
-            h1Lbl: cc.Label,
-            sendToLbl: cc.Label,
-            commandLbl: cc.Label,
-            moneyGetLbl: cc.Label,
-            codeLbl: cc.Label,
-            shortCodeLbl: cc.Label,
-            numberLbl: cc.Label,
-            textContainer: cc.Node,
+            moneyGetLbl: cc.Label
         };
 
         this._sending = false;
@@ -33,10 +26,11 @@ class TabSMS extends DialogActor {
     }
 
     onSMSBtnClick(e) {
-        let { code, command, sendTo } = e;
-        this.codeLbl.string = code
-        this.shortCodeLbl.string = command
-        this.numberLbl.string = sendTo;
+        console.debug('e.currentTarget', e.currentTarget);
+        let { code, command, sendTo } = e.currentTarget;
+        // this.codeLbl.string = code
+        // this.shortCodeLbl.string = command
+        // this.numberLbl.string = sendTo;
 
         this._sendSMS('test', '0983369898');
     }
@@ -82,7 +76,6 @@ class TabSMS extends DialogActor {
                         smsInformations.push(info);
                     });
                 });
-
                 smsInformations.forEach((smsInfo, i) => {
                     let moneyGot = smsInfo.balance,
                         code = smsInfo.code,
@@ -100,34 +93,39 @@ class TabSMS extends DialogActor {
     }
 
     _initItem(code, syntax, sendTo, moneyGot, isChecked) {
-        this.h1Lbl.string = code;
-        this.commandLbl.string = syntax;
-        this.sendToLbl.string = `Gửi ${sendTo}`;
+        // this.h1Lbl.string = code;
+        // this.commandLbl.string = syntax;
+        // this.sendToLbl.string = `Gửi ${sendTo}`;
         this.moneyGetLbl.string = `${numberFormat(moneyGot)}`;
 
         let item = cc.instantiate(this.itemNode);
         item.active = true;
-        let toggle = item.getComponent(cc.Toggle);
-        toggle.code = code;
-        toggle.command = syntax;
-        toggle.sendTo = sendTo;
-        if (isChecked) {
-            toggle.check();
-            active(this.textContainer);
-            this.onSMSBtnClick(toggle);
-        }
+        // let toggle = item.getComponent(cc.Toggle);
+        item.code = code;
+        item.command = syntax;
+        item.sendTo = sendTo;
+        // if (isChecked) {
+        //     toggle.check();
+        //     active(this.textContainer);
+        //     this.onSMSBtnClick(toggle);
+        // }
         this.toggleGroupNode.addChild(item);
     }
-    _sendSMS(message, recipient) { 
-        if (app.env.isBrowser()) {  } 
-        else if (app.env.isMobile()) {
-            if (app.env.isIOS()) { 
-                window.jsb.reflection.callStaticMethod("JSBUtils", "sendSMS", message, recipient); 
-            } 
-            if (app.env.isAndroid()) {  } 
-        } 
-    }
 
+    _sendSMS(message, recipient) {
+        console.debug('message', message);
+
+        if (app.env.isBrowser()) {
+            // TODO
+        } else if (app.env.isMobile()) {
+            if (app.env.isIOS()) {
+                window.jsb.reflection.callStaticMethod("JSBUtils", "sendSMS", message, recipient);
+            }
+            if (app.env.isAndroid()) {
+                // TODO
+            }
+        }
+    }
 }
 
 app.createComponent(TabSMS);

@@ -3775,7 +3775,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "c9846a3a-bd2a-4c77-b8a4-a659c9428a83"
+      "__uuid__": "6c3f395d-4d2c-4bc9-bcf1-08f60c7873c6"
     },
     "_type": 1,
     "_sizeMode": 0,
@@ -3790,9 +3790,7 @@
     "_isTrimmedMode": true,
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
-    "_atlas": {
-      "__uuid__": "91ca6178-1c0f-4ca0-bdf3-9011ec0e806b"
-    }
+    "_atlas": null
   },
   {
     "__type__": "cc.Widget",
@@ -7033,14 +7031,12 @@
     "vipLevel": {
       "__id__": 73
     },
-    "nextLevel": null,
     "chipAmout": {
       "__id__": 21
     },
     "phoneNumber": {
       "__id__": 92
     },
-    "benefitLbl": null,
     "userId": {
       "__id__": 45
     },
