@@ -73,8 +73,7 @@ class TabTopDaiGia extends DialogActor {
         let head = {
             data: ['STT', 'Tài khoản', 'Chips'],
             options: {
-                fontColor: app.const.COLOR_YELLOW,
-                fontSize: 25
+                fontColor: app.const.COLOR_YELLOW
             }
         };
 

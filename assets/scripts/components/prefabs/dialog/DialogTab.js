@@ -22,8 +22,6 @@ class DialogTab extends Component {
             default: null,
             type: cc.Node
         };
-
-        this.toggle = null;
     }
 
     onLoad() {

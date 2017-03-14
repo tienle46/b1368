@@ -1,14 +1,14 @@
 {
   "ver": "1.0.0",
-  "uuid": "bee53c10-91bf-43ba-aa8d-8f19f4aff1dc",
+  "uuid": "5c0ac643-8338-4d17-a90f-6044d51724cf",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "bilinear",
   "subMetas": {
-    "ico-key": {
+    "price_tab": {
       "ver": "1.0.3",
-      "uuid": "76f86838-f99b-4b22-af9d-b54741d0fe33",
-      "rawTextureUuid": "bee53c10-91bf-43ba-aa8d-8f19f4aff1dc",
+      "uuid": "268dd32a-fec2-48b6-9187-c4a5bb812112",
+      "rawTextureUuid": "5c0ac643-8338-4d17-a90f-6044d51724cf",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": false,
@@ -16,10 +16,10 @@
       "offsetY": 0,
       "trimX": 0,
       "trimY": 0,
-      "width": 55,
-      "height": 55,
-      "rawWidth": 55,
-      "rawHeight": 55,
+      "width": 129,
+      "height": 64,
+      "rawWidth": 129,
+      "rawHeight": 64,
       "borderTop": 0,
       "borderBottom": 0,
       "borderLeft": 0,
