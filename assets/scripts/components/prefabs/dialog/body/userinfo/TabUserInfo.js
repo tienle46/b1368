@@ -1,6 +1,7 @@
 import app from 'app';
 import DialogActor from 'DialogActor';
 import { isEmpty, active, deactive, numberFormat } from 'Utils';
+import TopupDialogRub from 'TopupDialogRub';
 
 export default class TabUserInfo extends DialogActor {
     constructor() {
@@ -77,6 +78,12 @@ export default class TabUserInfo extends DialogActor {
     onHintNextLvlBtnClick() {
         let string = this.nextLvlBenefit || "Đang cập nhật cấp độ kế.";
         app.system.info(string);
+    }
+
+    onClickTopUpDialog() {
+        this.destroy();
+        let scene = app.system.getCurrentSceneNode();
+        TopupDialogRub.show(scene);
     }
 
     onLevelInfoBtnClick() {

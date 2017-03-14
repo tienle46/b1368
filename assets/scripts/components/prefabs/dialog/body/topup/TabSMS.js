@@ -1,5 +1,6 @@
 import app from 'app';
 import DialogActor from 'DialogActor';
+import RubUtils from 'RubUtils';
 import { deactive, active, numberFormat } from 'Utils';
 
 class TabSMS extends DialogActor {
@@ -9,7 +10,8 @@ class TabSMS extends DialogActor {
             ...this.properties,
             toggleGroupNode: cc.Node,
             itemNode: cc.Node,
-            moneyGetLbl: cc.Label
+            moneyGetLbl: cc.Label,
+            iconSprite: cc.Sprite
         };
 
         this._sending = false;
@@ -26,7 +28,6 @@ class TabSMS extends DialogActor {
     }
 
     onSMSBtnClick(e) {
-        console.debug('e.currentTarget', e.currentTarget);
         let { code, command, sendTo } = e.currentTarget;
         // this.codeLbl.string = code
         // this.shortCodeLbl.string = command
@@ -93,28 +94,27 @@ class TabSMS extends DialogActor {
     }
 
     _initItem(code, syntax, sendTo, moneyGot, isChecked) {
-        // this.h1Lbl.string = code;
-        // this.commandLbl.string = syntax;
-        // this.sendToLbl.string = `Gửi ${sendTo}`;
         this.moneyGetLbl.string = `${numberFormat(moneyGot)}`;
+        let iconNumber = Math.round(moneyGot / 10000) + 1;
+        RubUtils.getSpriteFrameFromAtlas('blueTheme/atlas/chips', `scoreIcon_${iconNumber >= 5 ? 5 : iconNumber}`, (sprite) => {
+            this.iconSprite.spriteFrame = sprite;
 
-        let item = cc.instantiate(this.itemNode);
-        item.active = true;
-        // let toggle = item.getComponent(cc.Toggle);
-        item.code = code;
-        item.command = syntax;
-        item.sendTo = sendTo;
-        // if (isChecked) {
-        //     toggle.check();
-        //     active(this.textContainer);
-        //     this.onSMSBtnClick(toggle);
-        // }
-        this.toggleGroupNode.addChild(item);
+            let item = cc.instantiate(this.itemNode);
+            item.active = true;
+            // let toggle = item.getComponent(cc.Toggle);
+            item.code = code;
+            item.command = syntax;
+            item.sendTo = sendTo;
+            // if (isChecked) {
+            //     toggle.check();
+            //     active(this.textContainer);
+            //     this.onSMSBtnClick(toggle);
+            // }
+            this.toggleGroupNode.addChild(item);
+        });
     }
 
     _sendSMS(message, recipient) {
-        console.debug('message', message);
-
         if (app.env.isBrowser()) {
             // TODO
         } else if (app.env.isMobile()) {
