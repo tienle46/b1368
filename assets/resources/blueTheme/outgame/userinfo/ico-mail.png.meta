@@ -1,14 +1,14 @@
 {
   "ver": "1.0.0",
-  "uuid": "bee53c10-91bf-43ba-aa8d-8f19f4aff1dc",
+  "uuid": "f066ca19-faaa-4b98-aa18-9ffd0b7a2140",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "bilinear",
   "subMetas": {
-    "ico-key": {
+    "ico-mail": {
       "ver": "1.0.3",
-      "uuid": "76f86838-f99b-4b22-af9d-b54741d0fe33",
-      "rawTextureUuid": "bee53c10-91bf-43ba-aa8d-8f19f4aff1dc",
+      "uuid": "9d2a24a6-5f4f-4cf8-bdb3-f92d5b68b496",
+      "rawTextureUuid": "f066ca19-faaa-4b98-aa18-9ffd0b7a2140",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": false,
@@ -16,10 +16,10 @@
       "offsetY": 0,
       "trimX": 0,
       "trimY": 0,
-      "width": 55,
-      "height": 55,
-      "rawWidth": 55,
-      "rawHeight": 55,
+      "width": 26,
+      "height": 28,
+      "rawWidth": 26,
+      "rawHeight": 28,
       "borderTop": 0,
       "borderBottom": 0,
       "borderLeft": 0,
