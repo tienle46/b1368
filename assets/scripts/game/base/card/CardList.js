@@ -1,11 +1,11 @@
 ﻿import app from 'app';
-import Component from 'Component';
+import ActionComponent from 'ActionComponent';
 import Card from 'Card';
 import utils from 'utils';
 import CCUtils from "CCUtils";
 import ArrayUtils from "ArrayUtils";
 
-export default class CardList extends Component {
+export default class CardList extends ActionComponent {
 
     constructor() {
         super();
@@ -368,7 +368,12 @@ export default class CardList extends Component {
             }
         }
 
-        autoUpdate && this.runCardActions(duration);
+        if(this.isHidden){
+            this.updateFinalPosition();
+        }else{
+            autoUpdate && this.runCardActions(duration);
+        }
+
     }
 
     updateFinalPosition() {
@@ -665,9 +670,8 @@ export default class CardList extends Component {
         this.stopAllCardActions();
         destCardList.stopAllCardActions();
 
-        const actions = [];
-        const removedCards = this._removeCardModelOnly(cards);
         const currentDestLength = destCardList.cards.length;
+        const removedCards = this._removeCardModelOnly(cards);
         const addedCards = destCardList._fillCards({
             cards: removedCards,
             active: true,
@@ -675,34 +679,54 @@ export default class CardList extends Component {
             autoAdjust: false,
             reverse
         });
-        destCardList.__endActionCb = () => cb && cb(addedCards);
 
-        removedCards.forEach((card, index) => {
+        if(this.isHidden){
 
-            const originalScale = card.node.getScale();
-            const worldPoint = card.node.parent.convertToWorldSpaceAR(card.node.getPosition());
+            removedCards.forEach((card, index) => {
+                const animatingCard = destCardList.cards[reverse ? index : currentDestLength + index];
+                const scaleTo = animatingCard.node.getScale();
+                const moveToPosition = animatingCard.__originalInfo.position || animatingCard.node.getPosition();
 
-            const animatingCard = destCardList.cards[reverse ? index : currentDestLength + index];
-            const localDestinationPoint = destCardList.node.convertToNodeSpaceAR(worldPoint);
-            const scaleTo = animatingCard.node.getScale();
-            const moveToPosition = animatingCard.__originalInfo.position || animatingCard.node.getPosition();
+                animatingCard.node.setPosition(moveToPosition);
+                animatingCard.node.setScale(scaleTo);
+                animatingCard.setOriginalInfo({position: moveToPosition, scale: scaleTo})
 
-            animatingCard.node.setPosition(localDestinationPoint);
-            animatingCard.node.setScale(originalScale);
-            animatingCard.setOriginalInfo({position: moveToPosition, scale: scaleTo})
+                card.node.removeFromParent(true);
+            })
 
-            card.node.removeFromParent(true);
-        });
+            cb && cb(addedCards);
 
-        destCardList.runCardActions();
-        destCardList.node && destCardList.node.runAction(
-            cc.sequence(
-                cc.delayTime(CardList.TRANSFER_CARD_DURATION + 0.01),
-                cc.callFunc(() => {
-                    destCardList.finishAllCardActions(destCardList, addedCards);
-                })
-            )
-        );
+        }else {
+            const actions = [];
+            destCardList.__endActionCb = () => cb && cb(addedCards);
+
+            removedCards.forEach((card, index) => {
+
+                const originalScale = card.node.getScale();
+                const worldPoint = card.node.parent.convertToWorldSpaceAR(card.node.getPosition());
+
+                const animatingCard = destCardList.cards[reverse ? index : currentDestLength + index];
+                const localDestinationPoint = destCardList.node.convertToNodeSpaceAR(worldPoint);
+                const scaleTo = animatingCard.node.getScale();
+                const moveToPosition = animatingCard.__originalInfo.position || animatingCard.node.getPosition();
+
+                animatingCard.node.setPosition(localDestinationPoint);
+                animatingCard.node.setScale(originalScale);
+                animatingCard.setOriginalInfo({position: moveToPosition, scale: scaleTo})
+
+                card.node.removeFromParent(true);
+            });
+
+            destCardList.runCardActions();
+            destCardList.node && destCardList.node.runAction(
+                cc.sequence(
+                    cc.delayTime(CardList.TRANSFER_CARD_DURATION + 0.01),
+                    cc.callFunc(() => {
+                        destCardList.finishAllCardActions(destCardList, addedCards);
+                    })
+                )
+            );
+        }
 
         this._adjustCardsPosition();
         return removedCards;
@@ -823,6 +847,16 @@ export default class CardList extends Component {
         let compareCardBytes = this.cards.map(card => card.byteValue);
 
         return ArrayUtils.containsAll(thisCardBytes, compareCardBytes);
+    }
+
+    _pausedCallback(){
+        console.log('EVENT HIDE cardlist');
+        super._pausedCallback();
+    }
+
+    _restoreCallback(){
+        console.log('EVENT SHOW cardlist');
+        super._restoreCallback();
     }
 }
 

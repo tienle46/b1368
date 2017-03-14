@@ -1,9 +1,9 @@
 import app from 'app';
-import Component from 'components';
+import ActionComponent from 'ActionComponent';
 import utils from 'utils';
 import GameUtils from 'GameUtils';
 
-export default class Card extends Component {
+export default class Card extends ActionComponent {
 
     constructor(byteValue) {
         super();
@@ -187,10 +187,6 @@ export default class Card extends Component {
     onDestroy() {
         super.onDestroy();
         this._clickListener = null;
-    }
-
-    onActive() {
-        super.onActive();
     }
 
     _getRankName() {

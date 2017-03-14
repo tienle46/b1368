@@ -35,6 +35,7 @@ export default class PlayerPhom extends PlayerCardTurnBase {
 
         this.eatenCards = null;
         this.handCards = null;
+        this._isPlayImmediateAfterTakeCard = false;
     }
 
     onLoad() {
@@ -243,6 +244,7 @@ export default class PlayerPhom extends PlayerCardTurnBase {
         this.joinPhaseState = -1;
         this.sortCardSolutionIndex = 2;
         this.eatenCards = [];
+        this._isPlayImmediateAfterTakeCard = false;
     }
 
     _setDownPhraseState(state) {
@@ -325,8 +327,13 @@ export default class PlayerPhom extends PlayerCardTurnBase {
         switch (state) {
             case PlayerPhom.STATE_PHOM_PLAY:
                 this.renderer.cardList.cleanSelectedCard();
-                this.scene && this.scene.emit(Events.SHOW_PLAY_CONTROL_ONLY);
-                this._checkInteractableOnStateChanged();
+                if(this._isPlayImmediateAfterTakeCard){
+                    this.scene && this.scene.emit(Events.SHOW_WAIT_TURN_CONTROLS);
+                    this._isPlayImmediateAfterTakeCard = false
+                }else {
+                    this._checkInteractableOnStateChanged();
+                    this.scene && this.scene.emit(Events.SHOW_PLAY_CONTROL_ONLY);
+                }
                 break;
             case PlayerPhom.STATE_PHOM_JOIN:
                 this.scene && this.scene.emit(Events.SHOW_JOIN_PHOM_CONTROLS);
@@ -340,6 +347,10 @@ export default class PlayerPhom extends PlayerCardTurnBase {
                 break;
             case PlayerPhom.STATE_PHOM_PLAY_HO_U:
                 this.scene && this.scene.emit(Events.SHOW_U_PHOM_CONTROLS);
+                break;
+            case PlayerPhom.STATE_ACTION_WAIT:
+                this.scene && this.scene.emit(Events.SHOW_WAIT_TURN_CONTROLS);
+                this._isPlayImmediateAfterTakeCard = false;
                 break;
             default:
                 this.scene && this.scene.emit(Events.SHOW_WAIT_TURN_CONTROLS);
@@ -368,6 +379,9 @@ export default class PlayerPhom extends PlayerCardTurnBase {
     _onPlayerPlayedCards(playedCards, srcCardList, isItMe) {
         if (utils.isEmptyArray(playedCards)) return;
 
+        console.log('_onPlayerPlayedCards', isItMe);
+
+
         this.board.lastPlayedCard = playedCards[0];
         if (isItMe) {
 
@@ -377,6 +391,8 @@ export default class PlayerPhom extends PlayerCardTurnBase {
 
             this.renderer.cardList.clean();
             this.scene.emit(Events.SHOW_WAIT_TURN_CONTROLS);
+
+            this._isPlayImmediateAfterTakeCard = true;
         }
 
 
@@ -454,6 +470,7 @@ export default class PlayerPhom extends PlayerCardTurnBase {
     }
 
     _processAfterEatOrTake() {
+        console.log('_processAfterEatOrTake',);
         this.renderer.cardList.cleanHighlight()
 
         this.tempHoUPhoms = null;
@@ -483,6 +500,8 @@ export default class PlayerPhom extends PlayerCardTurnBase {
             // this.sortCardSolutionIndex = PlayerPhom.DEFAULT_SORT_CARD_SOLUTION;
             // this._onSortCards();
         }
+
+        this._isPlayImmediateAfterTakeCard = false
     }
 
     _isEmptyEatenCards() {
@@ -641,6 +660,7 @@ export default class PlayerPhom extends PlayerCardTurnBase {
     _handlePlayerHelpCard(playerId, data) {
 
         if (playerId != this.id) return;
+
         let phomIndexToJoinCardMap = {}
         let joinPhomDataArr = utils.getValue(data, "joinPhoms");
 
@@ -875,10 +895,10 @@ export default class PlayerPhom extends PlayerCardTurnBase {
     onGamePlaying(data, isJustJoined) {
         super.onGamePlaying(data, isJustJoined);
 
-        if(!ArrayUtils.isEmpty(this.scene.board.meDealCards)){
-            this.setMeDealCards();
-            this.scene.board.onDoneDealCards()
-        }
+        // if(!ArrayUtils.isEmpty(this.scene.board.meDealCards)){
+        //     this.setMeDealCards();
+        //     this.scene.board.onDoneDealCards()
+        // }
 
         !this.isItMe() && this.renderer.cardList.clear();
 

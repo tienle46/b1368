@@ -150,9 +150,10 @@ export default class Player extends Actor {
     _onPlayerSetBalance(id, newBalance) {
         if (this.id == id) {
             let balanceVariable = this.user.variables[Keywords.USER_VARIABLE_BALANCE];
-            var newBalanceVariable = new SFS2X.Entities.Variables.SFSUserVariable(balanceVariable.name, newBalance, balanceVariable.type);
-            this.user._setVariable(newBalanceVariable);
+            let newBalanceVariable = balanceVariable ? new SFS2X.Entities.Variables.SFSUserVariable(balanceVariable.name, newBalance, balanceVariable.type)
+                : new SFS2X.Entities.Variables.SFSUserVariable(Keywords.USER_VARIABLE_BALANCE, newBalance)
 
+            this.user._setVariable(newBalanceVariable);
             this._setBalance(newBalance);
         }
     }

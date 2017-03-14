@@ -109,8 +109,8 @@ export default class PlayerTurnBaseAdapter extends GameAdapter {
         this.currentTurnPlayerId = turnPlayerId;
 
         if(this.player.id === turnPlayerId) {
-            let preTurnPlayer = this.scene.gamePlayers.findPlayer(this.preTurnPlayerId);
-            preTurnPlayer && preTurnPlayer.turnAdapter.onLoseTurn();
+            // let preTurnPlayer = this.scene.gamePlayers.findPlayer(this.preTurnPlayerId);
+            // preTurnPlayer && preTurnPlayer.turnAdapter.onLoseTurn();
             this.onTurn();
         }
     }
