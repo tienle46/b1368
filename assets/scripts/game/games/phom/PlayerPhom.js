@@ -453,13 +453,13 @@ export default class PlayerPhom extends PlayerCardTurnBase {
         let eatenCardList = this.isItMe() ? this.renderer.cardList : this.renderer.eatenCardList;
         eatenCardList.transferFrom(lastPlayedTurnPlayer.renderer.playedCardList, [eatenCard], {reverse: true, cb: (cards) => {
             cards && cards.forEach(card => PhomUtils.setEaten(card));
-            this.board.swapPlayedCards();
 
             if (this.isItMe()) {
                 this._processAfterEatOrTake();
             }
         }});
 
+        this.board.swapPlayedCards();
         this.eatenCards.push(eatenCard);
 
         if (playedCardLength == 3) {
