@@ -67,28 +67,28 @@ export default class PhomControls extends GameControls {
     }
 
     _setInteractableHaPhomControl(interactable){
-        this.setInteractable(this.downPhomButton, interactable);
+        //this.setInteractable(this.downPhomButton, interactable);
     }
 
     _setInteractableEatControl(interactable){
-        this.setInteractable(this.eatButton, interactable);
+        //this.setInteractable(this.eatButton, interactable);
     }
 
     _setInteractableJoinPhomControl(interactable){
-        this.setInteractable(this.joinPhomButton, interactable);
+        //this.setInteractable(this.joinPhomButton, interactable);
     }
 
     _showUPhomControls(){
         this.hideAllControls();
         utils.active(this.uButton);
         utils.active(this.doiUTronButton);
-        this.setInteractable(this.uButton, true);
+        //this.setInteractable(this.uButton, true);
     }
 
     _showDownPhomControls(hideSkip, hideChange){
         this.hideAllControls();
         utils.active(this.downPhomButton);
-        this.setInteractable(this.downPhomButton, true);
+        //this.setInteractable(this.downPhomButton, true);
 
         if(hideSkip){
             utils.deactive(this.skipDownButton);
@@ -119,7 +119,7 @@ export default class PhomControls extends GameControls {
 
     _showPlayControl(){
         this.hideAllControls();
-        this.cardTurnBaseControls._showOnTurnControls(true);
+        this.cardTurnBaseControls._showOnTurnControls(true, true);
     }
 
     _onGameBegin(data, isJustJoined) {
@@ -158,17 +158,17 @@ export default class PhomControls extends GameControls {
 
     _showWaitTurnControls(){
         this.hideAllControls();
-        this.cardTurnBaseControls._showWaitTurnControls();
+        this.cardTurnBaseControls._showWaitTurnControls(true);
     }
 
     _showEatAndTakeControls(){
         this.hideAllControls();
 
-        this.cardTurnBaseControls._showWaitTurnControls();
+        this.cardTurnBaseControls._showWaitTurnControls(true);
         utils.active(this.eatButton);
         utils.active(this.takeButton);
 
-        this.setInteractable(this.eatButton, false);
+        //this.setInteractable(this.eatButton, false);
     }
 
     _onGamePlaying(data, isJustJoined) {

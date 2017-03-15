@@ -205,16 +205,16 @@ export default class Card extends ActionComponent {
         }
     }
 
-    setSelected(selected, runAction = true) {
-        if (this.selected == selected) return;
+    setSelected(selected, runAction = true, forceUpdate = false) {
+        if (this.selected == selected && !forceUpdate) return;
 
         this.selected = selected;
-        this.node.stopAllActions();
+        this.node && this.node.stopAllActions();
 
         if (runAction) {
-            this.node.runAction(cc.moveTo(0.2, this.node.x, selected ? this._selectedMargin : 0));
+            this.node && this.node.runAction(cc.moveTo(0.2, this.node.x, selected ? this._selectedMargin : 0));
         } else {
-            this.node.setPositionY(selected ? this._selectedMargin : 0);
+            this.node && this.node.setPositionY(selected ? this._selectedMargin : 0);
         }
     }
 

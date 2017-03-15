@@ -80,6 +80,8 @@ export default {
     iap_buying_successfully_wait_server_response: 'Vật phẩm đã đc mua, đợi xác nhận từ server .....',
     label_input_withdrawal_amount: 'Nhập số tiền cần rút',
 
+    game_error_phom_select_one_card_to_play: "Hãy chọn một quân bài để đánh",
+    game_error_phom_cannot_play_card_in_eaten_phom: "Không thể đánh bài trong phỏm đã ăn",
     game_table_name: 'Bàn {{tableName}}',
     game_sam_thang_sam: 'Thắng Sâm',
     game_sam_den_sam: 'Đền Sâm',
@@ -117,6 +119,7 @@ export default {
     game_phom_invalid_down_phom: 'Chọn phỏm hạ không đúng',
     game_phom_must_contain_all_eaten_card: 'Phỏm hạ phải chứa tất cả bài đã ăn',
     game_phom_cannot_eat: 'Không thể ăn, vui lòng chọn lại!',
+    game_phom_not_found_eat_card: 'Không tìm thấy phỏm có thể ăn!',
     game_nhat: 'nhất',
     game_nhi: 'nhì',
     game_ba: 'ba',

@@ -109,6 +109,8 @@ export default class PlayerTurnBaseAdapter extends GameAdapter {
         this.currentTurnPlayerId = turnPlayerId;
 
         if(this.player.id === turnPlayerId) {
+
+
             // let preTurnPlayer = this.scene.gamePlayers.findPlayer(this.preTurnPlayerId);
             // preTurnPlayer && preTurnPlayer.turnAdapter.onLoseTurn();
             this.onTurn();
@@ -120,7 +122,7 @@ export default class PlayerTurnBaseAdapter extends GameAdapter {
         let playerId = utils.getValue(data, Keywords.PLAYER_ID);
         this.lastPlayedTurn = playerId;
 
-        this.player.id === playerId;
+        if(this.player.id === playerId)
         {
             this.handlePlayTurn(data);
             this.player.stopTimeLine();
@@ -162,6 +164,9 @@ export default class PlayerTurnBaseAdapter extends GameAdapter {
     }
 
     onTurn(){
+
+        console.warn('onTurn ------ ', this.player.id);
+
         this.scene.emit(Events.ON_PLAYER_TURN, this.player.id);
         this.player.startTimeLine(this.timelineDuration);
 

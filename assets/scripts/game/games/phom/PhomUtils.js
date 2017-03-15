@@ -126,7 +126,7 @@ export default class PhomUtils {
     }
 
     static checkEatPhom(cards, eatingCard, player) {
-        let eatable = cards && cards.length == 2 && this.isPhom([...cards, eatingCard])
+        let eatable = cards && cards.length >= 2 && this.isPhom([...cards, eatingCard])
             && (player.eatenCards.length == 0 || !ArrayUtils.containsSome(cards, player.eatenCards));
 
         if(eatable && player.eatenCards.length > 0){
@@ -179,6 +179,34 @@ export default class PhomUtils {
 
     static setEaten(card, eaten = true){
         card.setLocked(eaten);
+    }
+
+    static findBestEatableCards(cards, eatenCards = [], eatingCard) {
+        let bestEatableCards = []
+
+        if(eatingCard) {
+            let allPhoms = PhomGenerator.generateAllPhom([...cards, eatingCard]).filter(phom => ArrayUtils.contains(phom.cards, eatingCard));
+            if(allPhoms.length > 0){
+                allPhoms.sort((phom1, phom2) => phom2.value() - phom1.value())
+
+                if(eatenCards.length == 0){
+                    bestEatableCards = allPhoms[0].cards
+                }else{
+                    allPhoms.some(phom => {
+                        let checkCards = [...cards];
+                        ArrayUtils.removeAll(checkCards, phom.cards)
+                        if(this.isContainPhomWithEatenCards(checkCards, eatenCards)){
+                            bestEatableCards = phom.cards
+                            return true
+                        }
+                    })
+                }
+
+                ArrayUtils.remove(bestEatableCards, eatingCard)
+            }
+        }
+
+        return bestEatableCards;
     }
 
     static findBestPhomList(cards) {
@@ -246,7 +274,10 @@ export default class PhomUtils {
 
     static checkPlayCard(playCards = [], cards = []) {
 
-        if (playCards.length != 1) return false;
+        if(playCards.length != 1) {
+            app.system.showToast(app.res.string('game_error_phom_select_one_card_to_play'));
+            return;
+        }
 
         let playingCard = playCards[0];
         let eatenCards = cards.filter(card => PhomUtils.isEaten(card));
@@ -256,6 +287,9 @@ export default class PhomUtils {
             let checkingCards = [...cards];
             ArrayUtils.remove(checkingCards, playingCard);
             valid = this.isContainPhomWithEatenCards(checkingCards, eatenCards);
+            if(!valid){
+                app.system.showToast(app.res.string('game_error_phom_cannot_play_card_in_eaten_phom'));
+            }
         }
 
         return valid;
@@ -297,11 +331,6 @@ export default class PhomUtils {
             case PhomUtils.SORT_BY_SUIT:
                 return cards.sort(PhomUtils._compareBySuit);
                 break;
-            case PhomUtils.SORT_BY_PHOM_FIRST:
-                cards.sort(PhomUtils._compareByRank);
-                this._sortSingleCards(cards);
-                return cards;
-                break;
             case PhomUtils.SORT_BY_PHOM_SOLUTION:
                 let phomListSolutions = PhomGenerator.generatePhomContainEatenCards(cards);
                 if (phomListSolutions.length > 0) {
@@ -310,16 +339,17 @@ export default class PhomUtils {
                     this._sortSingleCards(cards);
                     cards.splice(0, 0, ...phomCards);
                 } else {
-                    cards.sort(PhomUtils._compareByRank);
+                    this._sortSingleCards(cards)
                 }
-
                 break;
             default:
-                return cards.sort(PhomUtils._compareByRank);
+                return cards.sort(PhomUtils._compareByRank)
         }
     }
 
     static _sortSingleCards(cards) {
+        cards.sort(PhomUtils._compareByRank)
+
         let index = 0;
         let singleCards = [];
         while (index < cards.length) {
@@ -332,7 +362,7 @@ export default class PhomUtils {
             }
         }
 
-        cards.push(...this.sortAsc(singleCards));
+        cards.push(...singleCards);
     }
 
     static compareCard(card1, card2, type){
@@ -354,10 +384,9 @@ export default class PhomUtils {
 
 }
 
-PhomUtils.SORT_BY_RANK = 1;
-PhomUtils.SORT_BY_SUIT = 2;
-PhomUtils.SORT_BY_PHOM_FIRST = 3;
-PhomUtils.SORT_BY_PHOM_SOLUTION = 4;
+PhomUtils.SORT_BY_PHOM_SOLUTION = 1;
+PhomUtils.SORT_BY_RANK = 2;
+PhomUtils.SORT_BY_SUIT = 3;
 PhomUtils.COMPARE_RANK = 1;
 PhomUtils.COMPARE_SUIT = 2;
 

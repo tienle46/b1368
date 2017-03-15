@@ -28,7 +28,7 @@ export default class PlayerPhom extends PlayerCardTurnBase {
         this.haPhomSolutionId = 0;
         this.guiPhomSolutionId = 0;
         this.remainCardCount = PlayerPhom.DEFAULT_HAND_CARD_COUNT;
-        this.sortCardSolutionIndex = PlayerPhom.SORT_CARD_BY_PHOM_FIRST;
+        this.sortCardSolutionIndex = PhomUtils.SORT_BY_PHOM_SOLUTION;
         this.currentHaPhomSolutions = [];
         this.currentGuiPhomSolutions = [];
         this.tempHoUPhoms = null;
@@ -242,7 +242,7 @@ export default class PlayerPhom extends PlayerCardTurnBase {
         this.state = -1;
         this.downPhaseState = -1;
         this.joinPhaseState = -1;
-        this.sortCardSolutionIndex = 2;
+        this.sortCardSolutionIndex = 1;
         this.eatenCards = [];
         this._isPlayImmediateAfterTakeCard = false;
     }
@@ -294,7 +294,7 @@ export default class PlayerPhom extends PlayerCardTurnBase {
         let doneActionsInTurn = utils.getValue(data, Keywords.GAME_LIST_DONE_ACTION_WHEN_REJOIN);
         if (doneActionsInTurn) {
 
-            let isGui, isHa, isAnOrBoc;
+            let isGui, isHa, isAn, isBoc;
 
             doneActionsInTurn && doneActionsInTurn.forEach((action, i) => {
                 switch (action) {
@@ -305,8 +305,10 @@ export default class PlayerPhom extends PlayerCardTurnBase {
                         isHa = true;
                         break;
                     case PlayerPhom.SERVER_STATE_AN:
+                        isAn = true;
+                        break;
                     case PlayerPhom.SERVER_STATE_BOC:
-                        isAnOrBoc = true;
+                        isBoc = true;
                         break;
                 }
             });
@@ -315,8 +317,8 @@ export default class PlayerPhom extends PlayerCardTurnBase {
                 this.setState(PlayerPhom.STATE_PHOM_PLAY);
             } else if (isHa) {
                 this._processJoinPhomPhase(true);
-            } else if (isAnOrBoc) {
-                this._processAfterEatOrTake();
+            } else if (isAn || isBoc) {
+                this._processAfterEatOrTake(isAn);
             }
         }
     }
@@ -333,14 +335,20 @@ export default class PlayerPhom extends PlayerCardTurnBase {
                 }else {
                     this._checkInteractableOnStateChanged();
                     this.scene && this.scene.emit(Events.SHOW_PLAY_CONTROL_ONLY);
+                    if(this.renderer.cardList.cards.length == 1){
+                        this.turnAdapter.playTurn(this.renderer.cardList.cards);
+                    }
                 }
                 break;
             case PlayerPhom.STATE_PHOM_JOIN:
                 this.scene && this.scene.emit(Events.SHOW_JOIN_PHOM_CONTROLS);
                 break;
             case PlayerPhom.STATE_PHOM_EAT_TAKE:
+
+                console.log('PlayerPhom.STATE_PHOM_EAT_TAKE: ', this.id);
+
                 this.scene && this.scene.emit(Events.SHOW_EAT_AND_TAKE_CONTROLS);
-                this._checkInteractableOnStateChanged();
+                this._suggestEatPhom();
                 break;
             case PlayerPhom.STATE_PHOM_DOWN:
                 this.scene && this.scene.emit(Events.SHOW_DOWN_PHOM_CONTROLS);
@@ -357,9 +365,24 @@ export default class PlayerPhom extends PlayerCardTurnBase {
         }
     }
 
+    _suggestEatPhom() {
+        if(this.isItMe()){
+            let eatableCards = PhomUtils.findBestEatableCards(this.renderer.cardList.cards, this.eatenCards, this.board.lastPlayedCard);
+            console.log('findBestEatableCards: ', eatableCards);
+            if (eatableCards.length > 0) {
+                this.renderer.cardList.setSelecteds(eatableCards)
+                this.renderer.cardList.setHighlight(eatableCards);
+            }else{
+                this.renderer.cardList.clean();
+            }
+        }
+    }
+
     _onPlayerTurn(playerId) {
 
         if (this.id != playerId) return;
+
+        console.log('_onPlayerTurn: ', playerId);
 
         if (this.isItMe()) {
             if (this.renderer.cardList.cards.length > PlayerPhom.DEFAULT_HAND_CARD_COUNT) {
@@ -379,10 +402,6 @@ export default class PlayerPhom extends PlayerCardTurnBase {
     _onPlayerPlayedCards(playedCards, srcCardList, isItMe) {
         if (utils.isEmptyArray(playedCards)) return;
 
-        console.log('_onPlayerPlayedCards', isItMe);
-
-
-        this.board.lastPlayedCard = playedCards[0];
         if (isItMe) {
 
             // if (this.renderer.playedCardList.length == 3) {
@@ -455,7 +474,7 @@ export default class PlayerPhom extends PlayerCardTurnBase {
             cards && cards.forEach(card => PhomUtils.setEaten(card));
 
             if (this.isItMe()) {
-                this._processAfterEatOrTake();
+                this._processAfterEatOrTake(true);
             }
         }});
 
@@ -469,9 +488,10 @@ export default class PlayerPhom extends PlayerCardTurnBase {
         // TODO play sound eat
     }
 
-    _processAfterEatOrTake() {
-        console.log('_processAfterEatOrTake',);
+    _processAfterEatOrTake(eatCard = false) {
         this.renderer.cardList.cleanHighlight()
+
+        eatCard && this.setSortCardSolution(PhomUtils.SORT_BY_PHOM_SOLUTION)
 
         this.tempHoUPhoms = null;
         let currentPhomList = PhomUtils.findBestPhomList(this.renderer.cardList.cards);
@@ -496,9 +516,6 @@ export default class PlayerPhom extends PlayerCardTurnBase {
             else {
                 this.setState(PlayerPhom.STATE_PHOM_PLAY);
             }
-
-            // this.sortCardSolutionIndex = PlayerPhom.DEFAULT_SORT_CARD_SOLUTION;
-            // this._onSortCards();
         }
 
         this._isPlayImmediateAfterTakeCard = false
@@ -727,12 +744,8 @@ export default class PlayerPhom extends PlayerCardTurnBase {
         }
 
         let cards = this.getSelectedCards();
-        let preCards = this.getPrePlayedCards();
-
         if (PhomUtils.checkPlayCard(cards, this.handCards)) {
             this.turnAdapter.playTurn(cards);
-        } else {
-            this.notify(app.res.string("invalid_play_card"));
         }
     }
 
@@ -761,12 +774,28 @@ export default class PlayerPhom extends PlayerCardTurnBase {
          */
         if(!this.isItMe()) return;
 
-        let eatable = PhomUtils.checkEatPhom(this.getSelectedCards(), this.board.lastPlayedCard, this);
+        let eatable;
+        let selectedCards = this.getSelectedCards();
+        if(selectedCards.length == 0){
+            let eatableCards = PhomUtils.findBestEatableCards(this.renderer.cardList.cards, this.eatenCards, this.board.lastPlayedCard);
+
+            console.log('findBestEatableCards _onEatCard: ', eatableCards);
+
+            if(eatableCards.length > 0){
+                eatable = true;
+            }else{
+                app.system.showToast(app.res.string('game_phom_not_found_eat_card'));
+            }
+        }else{
+            eatable = PhomUtils.checkEatPhom(this.getSelectedCards(), this.board.lastPlayedCard, this);
+            if(!eatable){
+                app.system.showToast(app.res.string('game_phom_cannot_eat'));
+            }
+        }
+
         if(eatable){
             app.service.send({cmd: Commands.PLAYER_EAT_CARD, data: {}, room: this.scene.room});
             this.setState(PlayerPhom.STATE_ACTION_WAIT);
-        }else{
-            app.system.showToast(app.res.string('game_phom_cannot_eat'));
         }
     }
 
@@ -780,24 +809,31 @@ export default class PlayerPhom extends PlayerCardTurnBase {
     _sortCardList(cardList){
         if(cardList){
             PhomUtils.sortAsc(cardList.cards);
+            cardList.cleanHighlight();
             cardList.onCardsChanged();
         }
     }
 
-    //TODO
     _onSortCards() {
 
         if (this.isItMe()) {
 
-            if(this.sortCardSolutionIndex == PlayerPhom.SORT_CARD_BY_PHOM_SOLUTION){
+            if(this.sortCardSolutionIndex == PhomUtils.SORT_BY_RANK){
+                PhomUtils.sortAsc(this.renderer.cardList.cards, PhomUtils.SORT_BY_RANK);
+            }else if(this.sortCardSolutionIndex == PhomUtils.SORT_BY_SUIT){
+                PhomUtils.sortAsc(this.renderer.cardList.cards, PhomUtils.SORT_BY_SUIT);
+            } else{
                 PhomUtils.sortAsc(this.renderer.cardList.cards, PhomUtils.SORT_BY_PHOM_SOLUTION);
-            }else{
-                PhomUtils.sortAsc(this.renderer.cardList.cards, PhomUtils.SORT_BY_PHOM_FIRST);
             }
 
             this._updateSortCardSolutionIndex();
             this.renderer.cardList.onCardsChanged(true);
         }
+    }
+
+    setSortCardSolution(sortSolution = 1){
+        this.sortCardSolutionIndex = sortSolution;
+        this._onSortCards()
     }
 
     _updateSortCardSolutionIndex() {
@@ -833,12 +869,13 @@ export default class PlayerPhom extends PlayerCardTurnBase {
     _onSelectedCardsChanged(selectedCards){
         switch (this.state) {
             case PlayerPhom.STATE_PHOM_PLAY:
-                let playable = PhomUtils.checkPlayCard([...selectedCards], this.handCards);
-                this.scene.emit(Events.SET_INTERACTABLE_PLAY_CONTROL, playable);
+                //let playable = PhomUtils.checkPlayCard([...selectedCards], this.handCards);
+                //this.scene.emit(Events.SET_INTERACTABLE_PLAY_CONTROL, playable);
                 break;
             case PlayerPhom.STATE_PHOM_DOWN:
                 let downable = PhomUtils.checkDownPhom([...selectedCards], this);
-                this.scene.emit(Events.SET_INTERACTABLE_HA_PHOM_CONTROL, downable);
+                //this.scene.emit(Events.SET_INTERACTABLE_HA_PHOM_CONTROL, downable);
+
                 if (downable) {
                     this.renderer.cardList.setHighlight(selectedCards);
                 } else {
@@ -847,7 +884,7 @@ export default class PlayerPhom extends PlayerCardTurnBase {
                 break;
             case PlayerPhom.STATE_PHOM_EAT_TAKE:
                 let eatable = PhomUtils.checkEatPhom([...selectedCards], this.board.lastPlayedCard, this);
-                this.scene.emit(Events.SET_INTERACTABLE_EAT_CONTROL, eatable);
+                //this.scene.emit(Events.SET_INTERACTABLE_EAT_CONTROL, eatable);
 
                 if (eatable) {
                     this.renderer.cardList.setHighlight(selectedCards);
@@ -864,7 +901,7 @@ export default class PlayerPhom extends PlayerCardTurnBase {
                 break;
             case PlayerPhom.STATE_PHOM_JOIN:
                 let joinable = PhomUtils.checkGuiPhom([...this.board.allPhomList], this);
-                this.scene.emit(Events.SET_INTERACTABLE_JOIN_PHOM_CONTROL, joinable);
+                //this.scene.emit(Events.SET_INTERACTABLE_JOIN_PHOM_CONTROL, joinable);
                 if (joinable) {
                     this.renderer.cardList.setHighlight(this.getSelectedCards());
                 } else {
@@ -875,21 +912,21 @@ export default class PlayerPhom extends PlayerCardTurnBase {
     }
 
     _checkInteractableOnStateChanged(){
-        let selectedCards = this.getSelectedCards();
-        switch (this.state) {
-            case PlayerPhom.STATE_PHOM_PLAY:
-                let playable = PhomUtils.checkPlayCard([...selectedCards], this.handCards);
-                this.scene.emit(Events.SET_INTERACTABLE_PLAY_CONTROL, playable);
-                break;
-            case PlayerPhom.STATE_PHOM_DOWN:
-                let downable = PhomUtils.checkDownPhom([...selectedCards], this);
-                this.scene.emit(Events.SET_INTERACTABLE_HA_PHOM_CONTROL, downable);
-                break;
-            case PlayerPhom.STATE_PHOM_EAT_TAKE:
-                let eatable = PhomUtils.checkEatPhom([...selectedCards], this.board.lastPlayedCard, this);
-                this.scene.emit(Events.SET_INTERACTABLE_EAT_CONTROL, eatable);
-                break;
-        }
+        // let selectedCards = this.getSelectedCards();
+        // switch (this.state) {
+        //     case PlayerPhom.STATE_PHOM_PLAY:
+        //         let playable = PhomUtils.checkPlayCard([...selectedCards], this.handCards);
+        //         this.scene.emit(Events.SET_INTERACTABLE_PLAY_CONTROL, playable);
+        //         break;
+        //     case PlayerPhom.STATE_PHOM_DOWN:
+        //         let downable = PhomUtils.checkDownPhom([...selectedCards], this);
+        //         this.scene.emit(Events.SET_INTERACTABLE_HA_PHOM_CONTROL, downable);
+        //         break;
+        //     case PlayerPhom.STATE_PHOM_EAT_TAKE:
+        //         let eatable = PhomUtils.checkEatPhom([...selectedCards], this.board.lastPlayedCard, this);
+        //         this.scene.emit(Events.SET_INTERACTABLE_EAT_CONTROL, eatable);
+        //         break;
+        // }
     }
 
     onGamePlaying(data, isJustJoined) {
@@ -919,10 +956,7 @@ export default class PlayerPhom extends PlayerCardTurnBase {
 
 PlayerPhom.TURN_PHRASE_TAKE_OR_EAT_CARD = 1;
 PlayerPhom.TURN_PHRASE_PLAY_CARD = 2;
-PlayerPhom.SORT_CARD_SOLUTION_MAX = 2;
-PlayerPhom.SORT_CARD_BY_PHOM_FIRST = 2;
-PlayerPhom.SORT_CARD_BY_PHOM_SOLUTION = 1;
-PlayerPhom.SORT_CARD_SOLUTION_3 = 0;
+PlayerPhom.SORT_CARD_SOLUTION_MAX = 3;
 PlayerPhom.SERVER_STATE_DANH = 0;
 PlayerPhom.SERVER_STATE_AN = 1;
 PlayerPhom.SERVER_STATE_GUI = 2;

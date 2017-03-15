@@ -55,11 +55,13 @@ export default class ArrayUtils {
      * @returns {Array} remove item has removed
      */
     static remove(arr, removing, equalsFn) {
-        let index = this.findIndex(arr, removing, equalsFn);
-        if (index >= 0) {
-            let removedObj = arr[index];
-            arr.splice(index, 1);
-            return removedObj;
+        if(arr && arr.length > 0){
+            let index = this.findIndex(arr, removing, equalsFn);
+            if (index >= 0) {
+                let removedObj = arr[index];
+                arr.splice(index, 1);
+                return removedObj;
+            }
         }
     }
 

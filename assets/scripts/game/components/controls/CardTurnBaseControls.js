@@ -35,9 +35,9 @@ export default class CardTurnBaseControls extends GameControls {
         utils.deactive(this.skipTurnButton);
     }
 
-    _showWaitTurnControls(){
+    _showWaitTurnControls(playControlInteractable = false){
         if(this.scene.gamePlayers.isMePlaying()){
-            utils.setInteractable(this.playButton, false);
+            utils.setInteractable(this.playButton, playControlInteractable);
             utils.active(this.sortButton);
             utils.deactive(this.skipTurnButton);
         }else{
@@ -47,10 +47,10 @@ export default class CardTurnBaseControls extends GameControls {
         }
     }
 
-    _showOnTurnControls(showPlayControlOnly){
+    _showOnTurnControls(showPlayControlOnly, playControlInteractable = false){
         utils.active(this.playButton);
         utils.active(this.sortButton);
-        this.setInteractable(this.playButton, false);
+        this.setInteractable(this.playButton, playControlInteractable);
         showPlayControlOnly ? utils.deactive(this.skipTurnButton) : utils.active(this.skipTurnButton);
     }
 

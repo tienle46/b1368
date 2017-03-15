@@ -46,8 +46,9 @@ export default class BoardPhom extends BoardCardTurnBase {
         this.allPhomList.length = 0;
     }
 
-    _onPlayerPlayedCards(playedCards, srcCardList, isItMe) {
-        //DO nothing, thic event will be handle on player instead
+    _onPlayerPlayedCards(playedCards, srcCardList, isItMe){
+        playedCards && playedCards.length > 0 && (this.lastPlayedCard = playedCards[0])
+        //This don't call super, this event will be handle on player instead
     }
 
     _getPlayerHandCardLists() {
