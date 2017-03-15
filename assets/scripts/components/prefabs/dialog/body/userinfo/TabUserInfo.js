@@ -2,6 +2,7 @@ import app from 'app';
 import DialogActor from 'DialogActor';
 import { isEmpty, active, deactive, numberFormat } from 'Utils';
 import TopupDialogRub from 'TopupDialogRub';
+import CCUtils from 'CCUtils';
 
 export default class TabUserInfo extends DialogActor {
     constructor() {
@@ -80,10 +81,9 @@ export default class TabUserInfo extends DialogActor {
         app.system.info(string);
     }
 
-    onClickTopUpDialog() {
-        this.destroy();
-        let scene = app.system.getCurrentSceneNode();
-        TopupDialogRub.show(scene);
+    onShowTopUpDialog() {
+        this._hide();
+        TopupDialogRub.show(app.system.getCurrentSceneNode());
     }
 
     onLevelInfoBtnClick() {
@@ -225,6 +225,13 @@ export default class TabUserInfo extends DialogActor {
         deactive(this.userInfoPanel);
         deactive(this.changePasswordPanel);
         active(this.updatePhoneNumberPanel);
+    }
+
+    _hide() {
+        let parent = this.node.parent;
+
+        CCUtils.clearFromParent(this.node);
+        CCUtils.clearFromParent(parent);
     }
 }
 
