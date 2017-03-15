@@ -606,7 +606,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 140.32,
+      "width": 142.32,
       "height": 50
     },
     "_children": [
@@ -620,7 +620,7 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": 55.16,
+      "x": 56.16,
       "y": -66.67000000000002
     },
     "_skewX": 0,
@@ -803,7 +803,7 @@
       "b": 141,
       "a": 255
     },
-    "_width": 1
+    "_width": 2
   },
   {
     "__type__": "cc.PrefabInfo",
