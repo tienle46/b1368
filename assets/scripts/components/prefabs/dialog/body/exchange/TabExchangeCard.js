@@ -4,22 +4,27 @@ import RubUtils from 'RubUtils';
 import ExchangeDialog from 'ExchangeDialog';
 import NodeRub from 'NodeRub';
 import Utils from 'Utils';
+import CCUtils from 'CCUtils';
 
 class TabExchangeCard extends DialogActor {
     constructor() {
         super();
         this.properties = {
             ...this.properties,
-            listAmountCardContentNode: cc.Node,
-            cardAmountItem: cc.Node,
-            providerLbl: cc.Label,
+            providerItemNode: cc.Node,
+            cardItemNode: cc.Node,
             providerContainerNode: cc.Node,
-            providerDropDownNode: cc.Node,
-            providerDropDownItem: cc.Node,
-            hint: cc.RichText
+            cardItemsContainerNode: cc.Node,
+            activeStateSprite: cc.Sprite,
+            inActiveStateSprite: cc.Sprite,
+            providerLbl: cc.Label,
+            balanceLbl: cc.Label,
+            goldLbl: cc.Label,
+            itemLogoSprite: cc.Sprite
         };
 
         this.selectedItem = { id: null, gold: null, name: null };
+        this._tabData = {};
     }
 
     onLoad() {
@@ -28,12 +33,15 @@ class TabExchangeCard extends DialogActor {
         // this.node.active = false;
 
         // this._getExchangeDialogComponent().hideUpdatePhone();
-        this.hint.string = "";
     }
 
     start() {
         super.start();
         this._initCardsList();
+    }
+
+    onDestroy() {
+        window.free(this._tabData);
     }
 
     _addGlobalListener() {
@@ -62,8 +70,7 @@ class TabExchangeCard extends DialogActor {
         if (data[app.keywords.EXCHANGE_LIST.RESPONSE.TYPES]) {
             let cardValues = [];
 
-            let exchangeTypes = data[app.keywords.EXCHANGE_LIST.RESPONSE.TYPES];
-            exchangeTypes.map((type) => {
+            (data[app.keywords.EXCHANGE_LIST.RESPONSE.TYPES] || []).map((type) => {
                 if (type[app.keywords.EXCHANGE_LIST.RESPONSE.ITEM_TYPE] == app.const.EXCHANGE_LIST_CARD_TYPE_ID) {
                     const idList = type[app.keywords.EXCHANGE_LIST.RESPONSE.ITEM_ID_LIST];
                     const nameList = type[app.keywords.EXCHANGE_LIST.RESPONSE.ITEM_NAME_LIST];
@@ -73,42 +80,25 @@ class TabExchangeCard extends DialogActor {
                     for (let i = 0; i < idList.length; i++) {
                         let itemId = idList[i];
                         // let itemIcon = iconList[i].replace('thumb.', '');
-                        let itemGold = goldList[i];
+                        let neededGold = goldList[i];
                         let itemName = nameList[i];
+                        let providerName = itemName.trim().match(/([a-zA-Z]{3,})/g);
+                        providerName && (providerName = providerName[0]);
+
                         let amount = itemName.match(/([0-9]{2,})+(K)/g);
-                        amount && (amount = amount[0]);
-                        amount && (amount = Number(amount.replace('K', '')) * 1000);
+                        amount && (amount = Number(amount[0].replace('K', '')) * 1000);
 
-
-                        if (!app._.includes(cardValues, amount)) {
-                            cardValues.push(amount);
-
-                            // setup card item
-                            let ratioNode = cc.instantiate(this.cardAmountItem);
-                            let ratioItem = ratioNode.getComponent('RatioItem');
-                            ratioItem.initItemWithoutRatio(amount, itemGold);
-                            ratioNode.active = true;
-
-                            // add to container
-                            this.listAmountCardContentNode.addChild(ratioNode);
+                        if (providerName && !Utils.isEmpty(providerName)) {
+                            if (!this._tabData.hasOwnProperty(providerName)) {
+                                this._tabData[providerName] = [];
+                            }
+                            this._tabData[providerName].push({ id: itemId, gold: amount, needed: neededGold, name: itemName });
                         }
-
-
-                        // init providerDropDown list
-                        let providerItem = cc.instantiate(this.providerDropDownItem);
-                        let lbl = providerItem.getChildByName('providername').getComponent(cc.Label);
-                        lbl && (lbl.string = itemName);
-
-                        providerItem.providerName = itemName;
-                        providerItem.providerPrice = itemGold;
-                        providerItem.providerId = itemId;
-                        providerItem.active = true;
-
-                        this.providerDropDownNode.addChild(providerItem);
                     }
+                    this._initProviders();
+                    // console.debug(this._tabData)
                 }
             });
-            exchangeTypes = null;
 
             // hide loader
             this.hideLoader();
@@ -117,31 +107,57 @@ class TabExchangeCard extends DialogActor {
         }
     }
 
-    onShowProviderDropDownBtnClick() {
-        this._toggleDropdown();
+    _initProviders() {
+        let count = 0;
+        for (let key in this._tabData) {
+            let activeState = `${key.toLowerCase()}-active`;
+            let inactiveState = `${key.toLowerCase()}-inactive`;
+            RubUtils.getSpriteFramesFromAtlas('blueTheme/atlas/providers', [activeState, inactiveState], (sprites) => {
+                this.activeStateSprite.spriteFrame = sprites[activeState];
+                this.inActiveStateSprite.spriteFrame = sprites[inactiveState];
+
+                let provider = cc.instantiate(this.providerItemNode);
+                provider.active = true;
+                provider.name = key;
+
+                let toggle = provider.getComponent(cc.Toggle);
+                toggle.isChecked = count == 0;
+                this.providerContainerNode.addChild(provider);
+
+                if (toggle.isChecked) {
+                    // toggle.check();
+                    this.onProviderBtnClick(toggle);
+                }
+
+                count++;
+            });
+        }
     }
 
-    onProviderItemBtnClick(e) {
-        let target = e.currentTarget;
-        this.providerLbl.string = `${target.providerName}`;
+    onProviderBtnClick(toggle) {
+        let name = toggle.node.name;
+        RubUtils.getSpriteFrameFromAtlas('blueTheme/atlas/providers', name.toLowerCase(), (sprite) => {
+            CCUtils.destroyAllChildren(this.cardItemsContainerNode, 0);
 
-        this.hint.string = `<color=#FAE407>${target.providerName}</color> cần <color=#FAE407>${Utils.numberFormat(target.providerPrice)}</color> Chip để đổi.`;
+            this._tabData[name].forEach(item => {
+                this.providerLbl.string = name.toUpperCase();
+                this.balanceLbl.string = Utils.numberFormat(item.needed);
+                this.goldLbl.string = `${Utils.numberFormat(item.gold)} VNĐ`;
 
-        this.selectedItem = {
-            id: target.providerId,
-            gold: target.providerPrice,
-            name: target.providerName
-        };
+                this.itemLogoSprite.spriteFrame = sprite;
 
-        this._toggleDropdown();
-    }
+                let cardItem = cc.instantiate(this.cardItemNode);
+                cardItem.active = true;
+                cardItem.itemSelected = { id: item.id, gold: item.needed, name: item.name };
 
-    _toggleDropdown() {
-        let state = this.providerContainerNode.active;
-        this.providerContainerNode.active = !state;
+                this.cardItemsContainerNode.addChild(cardItem);
+            });
+        });
     }
 
     onExchangeBtnClick(event) {
+        this.selectedItem = event.currentTarget.parent.itemSelected;
+
         let denyCb = () => true;
         let okCallback = this._onConfirmDialogBtnClick.bind(this);
 

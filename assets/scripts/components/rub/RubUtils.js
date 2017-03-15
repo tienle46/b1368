@@ -33,6 +33,33 @@ let RubUtils = {
             // sprite.spriteFrame = frame;
         });
     },
+    /**
+     * @return callback(sprites)
+     */
+    getSpriteFramesFromAtlas: (resURL, keys, callback) => {
+        var async = require('async');
+
+        if (!(keys instanceof Array) || keys.length < 1)
+            return;
+
+        let sprites = {};
+        let count = 0;
+
+        async.mapSeries(keys, (key, cb) => {
+            RubUtils.getSpriteFrameFromAtlas(resURL, key, (sprite) => {
+                if (sprite) {
+                    count++;
+                    sprites[key] = sprite;
+                }
+                if (count == keys.length) {
+                    callback(sprites);
+                    window.free(sprites);
+                }
+
+                cb(); // next ->
+            });
+        });
+    },
     loadFont: (component, url, cb) => {
         cc.loader.loadRes(url, cc.Font, (err, font) => {
             component.font = font;

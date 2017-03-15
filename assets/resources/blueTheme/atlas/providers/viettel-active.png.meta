@@ -1,14 +1,14 @@
 {
   "ver": "1.0.0",
-  "uuid": "d713b7e6-bb67-4468-964f-3cd182c5090d",
+  "uuid": "ff248c5f-1263-4f8f-8986-e52f6a8aefa1",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "bilinear",
   "subMetas": {
-    "fpt-1": {
+    "viettel-active": {
       "ver": "1.0.3",
-      "uuid": "6cd32321-e71e-478f-b088-4082633cb5a8",
-      "rawTextureUuid": "d713b7e6-bb67-4468-964f-3cd182c5090d",
+      "uuid": "ef95cdf9-2f58-450f-92c0-73c189a8ca90",
+      "rawTextureUuid": "ff248c5f-1263-4f8f-8986-e52f6a8aefa1",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": false,
@@ -17,9 +17,9 @@
       "trimX": 1,
       "trimY": 0,
       "width": 186,
-      "height": 103,
+      "height": 108,
       "rawWidth": 188,
-      "rawHeight": 103,
+      "rawHeight": 108,
       "borderTop": 0,
       "borderBottom": 0,
       "borderLeft": 0,

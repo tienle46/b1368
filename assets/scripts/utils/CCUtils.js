@@ -35,19 +35,19 @@ export default class CCUtils {
         return target && cc.isValid(target) && target.destroy();
     }
 
-    static destroyAllChildren(node) {
-        node && node.children && node.children.forEach(child => CCUtils.destroy(child));
+    static destroyAllChildren(node, fromIndex = -1) {
+        node && node.children && node.children.forEach((child, index) => index > fromIndex && CCUtils.destroy(child));
     }
 
     static clearAllChildren(node) {
-        if(node){
+        if (node) {
             node.children && node.children.forEach(child => CCUtils.destroy(child));
             node.removeAllChildren && node.removeAllChildren(true);
         }
     }
 
     static clearFromParent(node) {
-        if(node){
+        if (node) {
             CCUtils.destroy(node);
             node.removeFromParent(true);
         }

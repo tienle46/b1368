@@ -1,14 +1,14 @@
 {
   "ver": "1.0.0",
-  "uuid": "31794641-2c5a-4287-acc0-c136770eb740",
+  "uuid": "1a459630-cfbf-4c61-8953-7c2aac9f2a30",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "bilinear",
   "subMetas": {
-    "viettel-1": {
+    "mobi-active": {
       "ver": "1.0.3",
-      "uuid": "31578d96-6010-4212-9a92-1ada2a1bf99d",
-      "rawTextureUuid": "31794641-2c5a-4287-acc0-c136770eb740",
+      "uuid": "7c09820c-f7fa-4b35-b2a5-364e39f70f11",
+      "rawTextureUuid": "1a459630-cfbf-4c61-8953-7c2aac9f2a30",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": false,
@@ -17,9 +17,9 @@
       "trimX": 1,
       "trimY": 0,
       "width": 186,
-      "height": 108,
+      "height": 103,
       "rawWidth": 188,
-      "rawHeight": 108,
+      "rawHeight": 103,
       "borderTop": 0,
       "borderBottom": 0,
       "borderLeft": 0,
