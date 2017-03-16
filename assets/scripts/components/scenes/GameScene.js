@@ -91,18 +91,22 @@ export default class GameScene extends BaseScene {
     }
 
     _onPlayerReadyStateChanged(playerId, ready) {
-        let readyPlayerIds = utils.getValue(this.gameData, app.keywords.ROOM_READY_PLAYERS, []);
+
+        /**
+         * Make sure that ROOM_READY_PLAYERS is inited by call this method
+         */
+        this._assertReadyPlayersInited()
+        let readyPlayerIds = utils.getValue(this.gameData, app.keywords.ROOM_READY_PLAYERS);
 
         if (ready) {
             readyPlayerIds.push(playerId);
         } else {
             ArrayUtils.remove(readyPlayerIds, playerId);
         }
-
-        this.gameData[app.keywords.ROOM_READY_PLAYERS] = readyPlayerIds;
     }
 
     _onUserExitRoom(user, room, playerId) {
+        this._assertReadyPlayersInited();
         let readyPlayerIds = utils.getValue(this.gameData, app.keywords.ROOM_READY_PLAYERS)
         readyPlayerIds && ArrayUtils.remove(readyPlayerIds, playerId)
     }
@@ -339,10 +343,7 @@ export default class GameScene extends BaseScene {
     }
 
     _loadPlayerReadyState() {
-
-        let readyPlayerIds = utils.getValue(this.gameData, app.keywords.GAME_LIST_PLAYER, []);
-        this.gameData[app.keywords.ROOM_READY_PLAYERS] = [...readyPlayerIds];
-
+        this._assertReadyPlayersInited();
         this._updatePlayerReadyState(this.gameData)
     }
 
@@ -439,17 +440,31 @@ export default class GameScene extends BaseScene {
 
             }
 
-            persistToGameData && (this.gameData[app.keywords.ROOM_READY_PLAYERS] = readyPlayerIds);
+            persistToGameData && this._addToReadyPlayers(...readyPlayerIds);
         }
     }
 
-    checkReadyPlayer(player) {
-        if (this.gameData.hasOwnProperty(app.keywords.ROOM_READY_PLAYERS)) {
+    clearReadyPlayer(){
+        this._assertReadyPlayersInited();
+        this.gameData[app.keywords.ROOM_READY_PLAYERS].length = 0
+    }
 
-            let readyPlayerIds = utils.getValue(this.gameData, app.keywords.ROOM_READY_PLAYERS, []);
-
-            return readyPlayerIds.indexOf(player.id) >= 0;
+    _assertReadyPlayersInited(){
+        if(!this.gameData[app.keywords.ROOM_READY_PLAYERS]){
+            this.gameData[app.keywords.ROOM_READY_PLAYERS] = []
         }
+    }
+
+    _addToReadyPlayers(...playerIds){
+        this._assertReadyPlayersInited();
+        //this.gameData[app.keywords.ROOM_READY_PLAYERS] = playerIds
+        playerIds.length > 0 && this.gameData[app.keywords.ROOM_READY_PLAYERS].push(...playerIds)
+    }
+
+    checkReadyPlayer(player) {
+        this._assertReadyPlayersInited()
+        let readyPlayerIds = utils.getValue(this.gameData, app.keywords.ROOM_READY_PLAYERS);
+        return readyPlayerIds.indexOf(player.id) >= 0;
     }
 
     showGameResult(models, cb) {

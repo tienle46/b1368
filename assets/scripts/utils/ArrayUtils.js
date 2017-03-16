@@ -87,6 +87,14 @@ export default class ArrayUtils {
         return removedCards;
     }
 
+    static swap(arr, index1, index2){
+        if(!arr || index1 < 0 || index1 >= arr.length || index2 < 0 || index2 >= arr.length) return;
+
+        let tmp = arr[index1]
+        arr[index1] = arr[index2]
+        index2 = tmp
+    }
+
     /**
      *
      * @param {Array} arr

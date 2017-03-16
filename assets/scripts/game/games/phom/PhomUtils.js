@@ -67,7 +67,7 @@ export default class PhomUtils {
     static checkGuiPhom(allPhomList, player){
 
         let selectedCards = player.getSelectedCards();
-        let bestJoinPhomSolution = this.findBestJoinPhomSolution(allPhomList, selectedCards);
+        let bestJoinPhomSolution = this.findBestJoinPhomSolution(allPhomList.filter(phom => phom.owner != this.id), selectedCards);
         if(bestJoinPhomSolution && bestJoinPhomSolution.length == selectedCards.length) {
             return true
         }
@@ -80,7 +80,7 @@ export default class PhomUtils {
         let valid = false;
         let guiSolution = null;
         let selectedCards = player.getSelectedCards();
-        let bestJoinPhomSolution = this.findBestJoinPhomSolution(allPhomList, selectedCards);
+        let bestJoinPhomSolution = this.findBestJoinPhomSolution(allPhomList.filter(phom => phom.owner != player.id), selectedCards);
 
         if(bestJoinPhomSolution && bestJoinPhomSolution.length == selectedCards.length) {
             valid = true

@@ -174,14 +174,14 @@ export default class PlayerPhom extends PlayerCardTurnBase {
     _onJoinPhom() {
         if (!this.isItMe()) return;
 
-        let {valid, guiSolution} = PhomUtils.validateGuiPhom(this.board.allPhomList, this);
+        let {valid, guiSolution} = PhomUtils.validateGuiPhom(this.board.getAllBoardPhomList(), this);
 
         if (!valid) {
             //TODO play show invalid
             return;
         }
 
-        let uniquePhomList = guiSolution.getPhomList(this.board.allPhomList);
+        let uniquePhomList = guiSolution.getPhomList(this.board.getAllBoardPhomList());
         let joinPhomMap = {};
         uniquePhomList.forEach((value) => {
             joinPhomMap[value] = {
@@ -567,6 +567,7 @@ export default class PlayerPhom extends PlayerCardTurnBase {
             return;
         }
 
+        this.renderer.cardList.finishAllCardActions()
         let currentPhomList = this.currentHaPhomSolutions[this.haPhomSolutionId];
         currentPhomList.forEach((phom, i) => {
             phom.cards.forEach(card => {
@@ -585,7 +586,7 @@ export default class PlayerPhom extends PlayerCardTurnBase {
 
         // this.board.deHighLightPhomList();
 
-        this.currentGuiPhomSolutions = PhomUtils.getJoinPhomSolutions([...this.board.allPhomList], processCards);
+        this.currentGuiPhomSolutions = PhomUtils.getJoinPhomSolutions(this.board.getAllBoardPhomList().filter(phom => phom.owner != this.id), processCards);
 
         if (this.currentGuiPhomSolutions.length == 0) {
             if (isAllCard) {
@@ -687,7 +688,7 @@ export default class PlayerPhom extends PlayerCardTurnBase {
             let phomOwnerId = joinPhomData.ownerId;
 
             let phom = new Phom(GameUtils.convertBytesToCards(phomCardBytes)).sortAsc();
-            let index = ArrayUtils.findIndex(this.board.allPhomList.map(phomList => phomList.renderComponent || phomList), phom);
+            let index = ArrayUtils.findIndex(this.board.getAllBoardPhomList(), phom);
 
             if(index >= 0){
                 !phomIndexToJoinCardMap[index] && (phomIndexToJoinCardMap[index] = []);
@@ -697,19 +698,19 @@ export default class PlayerPhom extends PlayerCardTurnBase {
 
         Object.keys(phomIndexToJoinCardMap).forEach(phomIndex => {
             let phomJoinCards = phomIndexToJoinCardMap[phomIndex]
-            let joinPhom = this.board.allPhomList[phomIndex].renderComponent;
+            let joinPhomComponent = this.board.allPhomList[phomIndex].renderComponent;
 
-            if(joinPhom && phomJoinCards.length > 0){
+            if(joinPhomComponent && phomJoinCards.length > 0){
                 let addedCards;
                 if (this.isItMe()) {
-                    if (joinPhom) {
-                        addedCards = this.renderer.cardList.transferTo(joinPhom, phomJoinCards, () => this._sortCardList(joinPhom))
+                    if (joinPhomComponent) {
+                        addedCards = this.renderer.cardList.transferTo(joinPhomComponent, phomJoinCards, () => this._sortCardList(joinPhomComponent))
                     } else {
                         addedCards = this.renderer.cardList.removeCards(phomJoinCards)
                     }
                 } else {
-                    if (joinPhom) {
-                        addedCards = joinPhom.transferFrom(this.renderer.cardList, phomJoinCards, () => this._sortCardList(joinPhom))
+                    if (joinPhomComponent) {
+                        addedCards = joinPhomComponent.transferFrom(this.renderer.cardList, phomJoinCards, () => this._sortCardList(joinPhomComponent))
                     }
                 }
             }
@@ -826,6 +827,7 @@ export default class PlayerPhom extends PlayerCardTurnBase {
                 PhomUtils.sortAsc(this.renderer.cardList.cards, PhomUtils.SORT_BY_PHOM_SOLUTION);
             }
 
+            this.renderer.cardList.cleanHighlight();
             this._updateSortCardSolutionIndex();
             this.renderer.cardList.onCardsChanged(true);
         }
@@ -900,7 +902,7 @@ export default class PlayerPhom extends PlayerCardTurnBase {
                 }
                 break;
             case PlayerPhom.STATE_PHOM_JOIN:
-                let joinable = PhomUtils.checkGuiPhom([...this.board.allPhomList], this);
+                let joinable = PhomUtils.checkGuiPhom([...this.board.getAllBoardPhomList()], this);
                 //this.scene.emit(Events.SET_INTERACTABLE_JOIN_PHOM_CONTROL, joinable);
                 if (joinable) {
                     this.renderer.cardList.setHighlight(this.getSelectedCards());

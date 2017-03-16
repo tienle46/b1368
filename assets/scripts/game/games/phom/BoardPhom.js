@@ -40,6 +40,10 @@ export default class BoardPhom extends BoardCardTurnBase {
         return app.const.game.GAME_TYPE_PHOM;
     }
 
+    getAllBoardPhomList(){
+        return this.allPhomList.map(phom => phom.renderComponent || phom);
+    }
+
     _reset() {
         super._reset();
         this.winRank = 0;
@@ -219,7 +223,7 @@ export default class BoardPhom extends BoardCardTurnBase {
         let balanceChangeAmounts = this._getPlayerBalanceChangeAmounts(playerIds, data);
 
         let playerHandCards = this._getPlayerHandCards(playerIds, data);
-        let { gameResultInfos, resultTexts, winnerFlags } = this._getGameResultInfos(playerIds, playerHandCards, data);
+        let { gameResultInfos, resultTexts, winnerFlags, points } = this._getGameResultInfos(playerIds, playerHandCards, data);
 
         super.onBoardEnding(data);
 
@@ -230,9 +234,19 @@ export default class BoardPhom extends BoardCardTurnBase {
                 text: resultTexts[playerId],
                 info: gameResultInfos[playerId],
                 cards: playerHandCards[playerId],
-                isWinner: winnerFlags[playerId]
+                isWinner: winnerFlags[playerId],
+                point: points[playerId]
             }
         });
+
+        models.sort((model1, model2) => model1.point - model2.point)
+        for (let i = 1; i < models.length; i++) {
+            let model = models[i];
+            if(model.isWinner){
+                ArrayUtils.swap(models, i, 0)
+                break
+            }
+        }
 
         setTimeout(() => this.scene.showGameResult(models, (shownTime) => {
             this.renderer.cleanDeckCards()
@@ -253,6 +267,7 @@ export default class BoardPhom extends BoardCardTurnBase {
         let resultTexts = {};
         let gameResultInfos = {};
         let winnerFlags = {};
+        let points = {};
 
         let winType = utils.getValue(data, Keywords.WIN_TYPE);
         let playersWinRanks = utils.getValue(data, Keywords.GAME_LIST_WIN);
@@ -310,16 +325,22 @@ export default class BoardPhom extends BoardCardTurnBase {
             if (this.scene.gamePlayers.findPlayer(id)) {
                 let handCards = playerHandCards[id];
                 let point = handCards.reduce((value, card) => value += card.rank, 0);
-                gameResultInfos[id] = isMom && winType != app.const.game.GENERAL_WIN_TYPE_NORMAL ? "" : app.res.string('game_point', { point });
+                if(isMom && winType != app.const.game.GENERAL_WIN_TYPE_NORMAL){
+                    gameResultInfos[id] = ""
+                }else{
+                    points[id] = point
+                    gameResultInfos[id] = app.res.string('game_point', { point });
+                }
             } else {
                 resultText = "";
             }
 
             resultTexts[id] = resultText;
+            points[id] === undefined && (points[id] = 1000)
 
         });
 
-        return { gameResultInfos, resultTexts, winnerFlags };
+        return { gameResultInfos, resultTexts, winnerFlags, points};
     }
 
     _cleanTurnRoutineData(playerId) {
