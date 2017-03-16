@@ -461,7 +461,7 @@ class Service {
                 this.sendRequest(new SFS2X.Requests.System.ExtensionRequest(cmd, options.data || {}, options.room));
             }
         }
-        window.free(options);
+        // window.free(options);
     }
 
     _addCallback(key, cb, scope, data) {

@@ -41,6 +41,7 @@ class TabExchangeCard extends DialogActor {
     }
 
     onDestroy() {
+        super.onDestroy();
         window.free(this._tabData);
     }
 
@@ -117,6 +118,7 @@ class TabExchangeCard extends DialogActor {
                 this.inActiveStateSprite.spriteFrame = sprites[inactiveState];
 
                 let provider = cc.instantiate(this.providerItemNode);
+                this.addNode(provider);
                 provider.active = true;
                 provider.name = key;
 
@@ -147,6 +149,8 @@ class TabExchangeCard extends DialogActor {
                 this.itemLogoSprite.spriteFrame = sprite;
 
                 let cardItem = cc.instantiate(this.cardItemNode);
+                this.addNode(cardItem);
+
                 cardItem.active = true;
                 cardItem.itemSelected = { id: item.id, gold: item.needed, name: item.name };
 

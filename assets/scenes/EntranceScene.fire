@@ -1161,7 +1161,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 566.72,
-      "height": 40
+      "height": 61
     },
     "_children": [
       {
@@ -1503,7 +1503,7 @@
     "_useOriginalSize": false,
     "_actualFontSize": 40,
     "_fontSize": 40,
-    "_lineHeight": 40,
+    "_lineHeight": 61,
     "_enableWrapText": true,
     "_N$file": {
       "__uuid__": "b2c0f634-158a-49ee-84f8-a41c8e7ebb56"
