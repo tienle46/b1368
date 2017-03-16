@@ -247,7 +247,6 @@ export default class Board extends Actor {
     }
 
     _reset() {
-        this.scene.clearReadyPlayer();
         this.scene.hideGameResult();
         this.renderer && this.renderer._reset();
     }
@@ -313,6 +312,7 @@ export default class Board extends Actor {
 
     onBoardEnding(data = {}, isJustJoined) {
         this.timelineRemain = utils.getValue(data, Keywords.BOARD_PHASE_DURATION);
+        this.scene.clearReadyPlayer();
 
         if (isJustJoined) {
             this._startEndBoardTimeLine(this.timelineRemain);

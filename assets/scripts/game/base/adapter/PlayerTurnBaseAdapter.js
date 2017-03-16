@@ -17,14 +17,12 @@ export default class PlayerTurnBaseAdapter extends GameAdapter {
         this.timelineDuration = 20;
         this.preTurnPlayerId = 0;
         this.currentTurnPlayerId = 0;
-        this.lastPlayedTurn = 0;
     }
 
     _reset(){
         this.preTurnPlayerId = 0;
         this.currentTurnPlayerId = 0;
         this.player.skippedTurn = false;
-        this.lastPlayedTurn = 0;
     }
 
     onEnable(){
@@ -107,7 +105,6 @@ export default class PlayerTurnBaseAdapter extends GameAdapter {
     _handleChangeTurn(turnPlayerId){
         this.preTurnPlayerId = this.currentTurnPlayerId;
         this.currentTurnPlayerId = turnPlayerId;
-
         if(this.player.id === turnPlayerId) {
 
 
@@ -120,8 +117,6 @@ export default class PlayerTurnBaseAdapter extends GameAdapter {
     _handlePlayTurn(data){
 
         let playerId = utils.getValue(data, Keywords.PLAYER_ID);
-        this.lastPlayedTurn = playerId;
-
         if(this.player.id === playerId)
         {
             this.handlePlayTurn(data);
@@ -165,14 +160,12 @@ export default class PlayerTurnBaseAdapter extends GameAdapter {
 
     onTurn(){
 
-        console.warn('onTurn ------ ', this.player.id);
-
         this.scene.emit(Events.ON_PLAYER_TURN, this.player.id);
         this.player.startTimeLine(this.timelineDuration);
 
         //TODO play sound
 
-        let showPlayControlOnly = this.preTurnPlayerId == 0 && this.lastPlayedTurn == 0;
+        let showPlayControlOnly = this.preTurnPlayerId == 0 && this.scene.board.getLastPlayedTurnPlayerId() == 0;
 
         if(this.player.isItMe()) {
             this.scene.emit(Events.SHOW_ON_TURN_CONTROLS, showPlayControlOnly);
@@ -192,8 +185,6 @@ export default class PlayerTurnBaseAdapter extends GameAdapter {
     }
 
     _loadGamePlayData(data){
-        this.lastPlayedTurn = utils.getValue(data, Keywords.LAST_MOVE_PLAYER_ID, 0);
-
         /**
          * Start on turn player time line if current game state is not in WAIT OR READY state
          */
