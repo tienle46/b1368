@@ -92,7 +92,7 @@ export default class ArrayUtils {
 
         let tmp = arr[index1]
         arr[index1] = arr[index2]
-        index2 = tmp
+        arr[index2] = tmp
     }
 
     /**
