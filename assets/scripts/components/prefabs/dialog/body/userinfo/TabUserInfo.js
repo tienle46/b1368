@@ -139,12 +139,10 @@ export default class TabUserInfo extends DialogActor {
         };
 
         this.showLoader();
-        console.debug('sendObj', sendObj);
         app.service.send(sendObj);
     }
 
     _onUserProfile(data) {
-        console.debug('!');
         this.hideLoader();
 
         let { name } = app.context.getMyInfo();
