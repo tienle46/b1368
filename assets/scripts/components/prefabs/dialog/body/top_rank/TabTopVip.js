@@ -19,7 +19,7 @@ class TabTopVip extends DialogActor {
 
     start() {
         super.start();
-        this._getRankGroup()
+        this._getRankGroup();
     }
 
     _addGlobalListener() {

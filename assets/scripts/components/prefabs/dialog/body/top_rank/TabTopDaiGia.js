@@ -81,7 +81,7 @@ class TabTopDaiGia extends DialogActor {
         let prev = this.onPreviousBtnClick;
 
         let rubOptions = {
-            paging: { prev, next, context: this },
+            // paging: { prev, next, context: this },
             size: this.contentNode.getContentSize(),
             group: { widths: ['', 380, ''] }
         };

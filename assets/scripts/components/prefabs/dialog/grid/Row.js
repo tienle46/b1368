@@ -30,6 +30,25 @@ export class Row extends Component {
         }
         this.node.addChild(node);
     }
+
+    verticalAlignCenterText() {
+        let height = this.node.getContentSize().height;
+        setTimeout(() => {
+            let max = Math.max(...this.node.children.map(o => {
+                return o.getContentSize().height;
+            }));
+
+            if (max > height) {
+                this.node.children.map(child => {
+                    let label = child.getComponent(cc.Label);
+                    label.overflow = cc.Label.Overflow.CLAMP;
+
+                    child.setContentSize(child.getContentSize().width, max);
+                });
+            }
+        });
+
+    }
 }
 
 app.createComponent(Row);

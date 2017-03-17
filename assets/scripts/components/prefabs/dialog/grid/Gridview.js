@@ -90,8 +90,8 @@ export class GridView extends Component {
         let widths = this._setCellSize(data);
         let row = cc.instantiate(this.rowPrefab);
         this.addNode(row);
-
-        row.getComponent('Row').init(data.map((d, i) => {
+        let rowComponent = row.getComponent('Row');
+        rowComponent.init(data.map((d, i) => {
             let cell = cc.instantiate(this.cellPrefab);
             let cellComponent = cell.getComponent('Cell');
             if (cellComponent) {
@@ -111,6 +111,8 @@ export class GridView extends Component {
 
             return cell;
         }), showBg);
+
+        rowComponent.verticalAlignCenterText();
 
         this.node.addChild(row);
     }
