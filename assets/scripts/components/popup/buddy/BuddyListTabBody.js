@@ -74,7 +74,7 @@ class BuddyListTabBody extends PopupTabBody {
         this.filterEditBox.editingDidEnded = this.onFilterChanged.bind(this);
         this.buddyMenu = this.buddyMenuNode.getComponent('BuddyMenu');
         this.transferMoneyComponent = this.transferMoneyNode.getComponent('TabBuddyTransfer');
-        this.transferMoneyComponent.setOnBackListener(() => this._hideTransferMoneyComponent());
+        this.transferMoneyComponent.setOnClickBackButtonListener(() => this._hideTransferMoneyComponent());
         this.filteredBuddies = [];
         this.data = null;
         this.currentBuddyItems = [];

@@ -1,7 +1,8 @@
 import app from 'app';
 import DialogActor from 'DialogActor';
-import numeral from 'numeral';
-import { isEmpty, active, deactive } from 'Utils';
+import { isEmpty, active, deactive, numberFormat } from 'Utils';
+import TopupDialogRub from 'TopupDialogRub';
+import CCUtils from 'CCUtils';
 
 export default class TabUserInfo extends DialogActor {
     constructor() {
@@ -11,11 +12,9 @@ export default class TabUserInfo extends DialogActor {
             ...this.properties,
             userName: cc.Label,
             vipLevel: cc.Label,
-            nextLevel: cc.Label,
             chipAmout: cc.Label,
             phoneNumber: cc.Label,
-            benefitLbl: cc.RichText,
-            userId: cc.RichText,
+            userId: cc.Label,
             currPassword: cc.EditBox,
             newPassword: cc.EditBox,
             passwordConfirmation: cc.EditBox,
@@ -26,6 +25,7 @@ export default class TabUserInfo extends DialogActor {
         };
 
         this.nextLvlBenefit = "";
+        this.levelInfo = "";
     }
 
     onLoad() {
@@ -81,6 +81,16 @@ export default class TabUserInfo extends DialogActor {
         app.system.info(string);
     }
 
+    onShowTopUpDialog() {
+        this._hide();
+        TopupDialogRub.show(app.system.getCurrentSceneNode());
+    }
+
+    onLevelInfoBtnClick() {
+        let string = this.levelInfo || "Đang cập nhật.";
+        app.system.info(string);
+    }
+
     onChangeAvatarBtnClick() {
         app.system.info(app.res.string('coming_soon'));
     }
@@ -129,10 +139,12 @@ export default class TabUserInfo extends DialogActor {
         };
 
         this.showLoader();
+        console.debug('sendObj', sendObj);
         app.service.send(sendObj);
     }
 
     _onUserProfile(data) {
+        console.debug('!');
         this.hideLoader();
 
         let { name } = app.context.getMyInfo();
@@ -140,11 +152,11 @@ export default class TabUserInfo extends DialogActor {
         let { balance, benefit, id, levelName, nextLevelName, nextBenefit } = data;
 
         this.userName.string = name;
-        this.chipAmout.string = numeral(balance).format('0,0');
+        this.chipAmout.string = numberFormat(balance);
 
-        this.userId.string = `<color=#ffffff>ID:</c> <color=#FFE000>${id}</color>`;
+        this.userId.string = id;
         this.vipLevel.string = levelName;
-        this.nextLevel.string = nextLevelName;
+        // this.nextLevel.string = nextLevelName;
 
         if (app.context.needUpdatePhoneNumber()) {
             this.phoneNumber.string = `Chưa cập nhật`;
@@ -155,12 +167,16 @@ export default class TabUserInfo extends DialogActor {
                 this.phoneNumber.string = `Chưa cập nhật`;
         }
 
+        this.levelInfo = `Cấp độ: ${levelName}\n`;
+
         if (benefit) {
-            this.benefitLbl.string = `<color=#F6D533> Quyền lợi:</c> ${benefit}`;
-            let size = this.benefitLbl.node.getContentSize();
-            let height = size.height * this.benefitLbl._lineCount;
-            this.benefitLbl.node.setContentSize(size.width, height);
+            this.levelInfo += `Quyền lợi: ${benefit}`;
+            // this.benefitLbl.string = `<color=#F6D533> Quyền lợi:</c> ${benefit}`;
+            // let size = this.benefitLbl.node.getContentSize();
+            // let height = size.height * this.benefitLbl._lineCount;
+            // this.benefitLbl.node.setContentSize(size.width, height);
         }
+
         if (nextBenefit) {
             this.nextLvlBenefit = nextBenefit;
         }
@@ -211,6 +227,13 @@ export default class TabUserInfo extends DialogActor {
         deactive(this.userInfoPanel);
         deactive(this.changePasswordPanel);
         active(this.updatePhoneNumberPanel);
+    }
+
+    _hide() {
+        let parent = this.node.parent;
+
+        CCUtils.clearFromParent(this.node);
+        CCUtils.clearFromParent(parent);
     }
 }
 

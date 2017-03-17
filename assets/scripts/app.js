@@ -396,5 +396,15 @@ app.getMessageFromServer = (error) => {
 
     window.app = app;
     window.game = app.game;
+
+    // window.addEventListener("beforeunload", function(event) {
+    //     console.debug('unloaded! ')
+    //     app.service.send({
+    //         cmd: 'rep_p_exitGame',
+    //         data: {
+    //             data: true
+    //         }
+    //     }, true);
+    // });
 })();
 // cc.game.setFrameRate(30);

@@ -9,9 +9,12 @@ export class Cell extends Component {
 
         this.properties = {
             ...this.properties,
-            label: cc.Label,
-            labelNode: cc.Node
+            label: cc.Label
         };
+    }
+
+    onEnable() {
+        cc.log('------>', this.label.verticalAlign, cc.Label.VerticalAlign);
     }
 
     /**
@@ -26,28 +29,28 @@ export class Cell extends Component {
         if (data instanceof Object) {
             if (isNode(data)) {
                 if (this.label) {
-                    this.labelNode.removeComponent(this.label);
+                    this.node.removeComponent(this.label);
                 }
                 NodeRub.addWidgetComponentToNode(data, { hortizontalCenter: true });
                 data.active = true;
-                this.labelNode.addChild(data);
+                this.node.addChild(data);
                 return;
             }
 
             let options = data;
 
             // button
-            options.button && NodeRub.addButtonComponentToNode(this.labelNode, options.button);
+            options.button && NodeRub.addButtonComponentToNode(this.node, options.button);
 
             // label
-            options.label && NodeRub.addLabelComponentToNode(this.labelNode, options.label);
+            options.label && NodeRub.addLabelComponentToNode(this.node, options.label);
 
             // richtext
-            options.richtext && NodeRub.addRichTextComponentToNode(this.labelNode, options.richtext);
+            options.richtext && NodeRub.addRichTextComponentToNode(this.node, options.richtext);
         } else {
             let o = Object.assign({}, options);
             o.text = isNull(data) ? "" : data.toString();
-            NodeRub.addLabelComponentToNode(this.labelNode, o);
+            NodeRub.addLabelComponentToNode(this.node, o);
         }
     }
 

@@ -1,95 +1,45 @@
 import app from 'app';
-import utils from 'utils';
-import DialogActor from 'DialogActor';
+import Actor from 'Actor';
+import TimerRub from 'TimerRub';
 import DialogRub from 'DialogRub';
-import TopupDialogRub from 'TopupDialogRub';
-import ExchangeDialogRub from 'ExchangeDialogRub';
-import PersonalInfoDialogRub from 'PersonalInfoDialogRub';
-import MessageCenterDialogRub from 'MessageCenterDialogRub';
-import numeral from 'numeral';
-import SFS2X from 'SFS2X';
-import Events from 'Events';
-import BuddyPopup from 'BuddyPopup';
-import HttpImageLoader from 'HttpImageLoader';
 
-class BottomBar extends DialogActor {
+class BottomBar extends Actor {
     constructor() {
         super();
 
         this.properties = {
             ...this.properties,
-            userInfoCoinLbl: cc.Label,
-            userNameLbl: cc.Label,
-            notifyBgNode: cc.Node,
-            avatarSpriteNode: cc.Node,
-            notifyCounterLbl: cc.Label,
-            buddyNotifyLbl: cc.Label,
-            buddyNotifyNode: cc.Node,
-        };
+            highLightNode: cc.Node,
+            titleContainerNode: cc.Node,
+            supportPhoneNumberLbl: cc.Label
+        }
+
+        this.intervalTimer = null;
+        this.interval = 2000; // display high light message after 2s, if any
+    }
+
+    onLoad() {
+        super.onLoad();
     }
 
     onEnable() {
         super.onEnable();
-        this._fillUserData();
-        this._onBuddyNotifyCountChanged();
+        this.supportPhoneNumberLbl.string = app.res.string('hotline', { hotline: app.config.supportHotline })
     }
 
-    start() {
-        super.start();
-        this._requestMessageNotification(app.context.unreadMessageBuddies.length);
-        this.avatarSpriteNode && HttpImageLoader.loadDefaultAvatar(this.avatarSpriteNode.getComponent(cc.Sprite));
-    }
-
-    _addGlobalListener() {
-        super._addGlobalListener();
-        app.system.addListener(app.commands.NEW_NOTIFICATION_COUNT, this._onNotifyCount, this);
-        app.system.addListener(SFS2X.SFSEvent.USER_VARIABLES_UPDATE, this._onUserVariablesUpdate, this);
-        app.system.addListener(Events.ON_BUDDY_UNREAD_MESSAGE_COUNT_CHANGED, this._onBuddyNotifyCountChanged, this);
-        app.system.addListener(Events.CLIENT_CONFIG_CHANGED, this._onConfigChanged, this);
-    }
-
-    _removeGlobalListener() {
-        super._removeGlobalListener();
-        app.system.removeListener(app.commands.NEW_NOTIFICATION_COUNT, this._onNotifyCount, this);
-        app.system.removeListener(SFS2X.SFSEvent.USER_VARIABLES_UPDATE, this._onUserVariablesUpdate, this);
-        app.system.removeListener(Events.ON_BUDDY_UNREAD_MESSAGE_COUNT_CHANGED, this._onBuddyNotifyCountChanged, this);
-        app.system.removeListener(Events.CLIENT_CONFIG_CHANGED, this._onConfigChanged, this);
-    }
-
-    _onConfigChanged() {
-        HttpImageLoader.loadDefaultAvatar(this.avatarSpriteNode.getComponent(cc.Sprite));
-    }
-
-    _onBuddyNotifyCountChanged(count) {
-        if (count > 0) {
-            this.buddyNotifyLbl.string = `${count}`;
-            utils.setVisible(this.buddyNotifyNode, true);
-        } else {
-            this.buddyNotifyLbl.string = '';
-            utils.setVisible(this.buddyNotifyNode, false);
+    onDestroy() {
+        super.onDestroy();
+        if (this.intervalTimer) {
+            this.intervalTimer.clear();
+            this.intervalTimer = null;
         }
     }
 
-    _onUserVariablesUpdate(ev) {
-        let changedVars = ev[app.keywords.BASE_EVENT_CHANGED_VARS]
-        changedVars.map(v => {
-            if (v == 'coin') {
-                this.userInfoCoinLbl.string = `${numeral(app.context.getMeBalance() || 0).format('0,0')}`;
-            }
-        });
-
+    onClickEventAction() {
+        let dialog = new DialogRub(this.node.parent, null, { title: 'Sự kiện' });
+        dialog.addBody('dashboard/dialog/prefabs/event/EventDialog', 'EventDialog');
     }
 
-    updateUserCoin() {
-        this.userInfoCoinLbl.string = `${numeral(app.context.getMeBalance() || 0).format('0,0')}`;
-    }
-
-    onClickNapXuAction() {
-        (function() {
-            let scene = app.system.getCurrentSceneNode();
-            TopupDialogRub.show(scene);
-        }())
-    }
 
     onClickTopRankAction() {
         let url = `${app.const.DIALOG_DIR_PREFAB}/rank`;
@@ -107,95 +57,59 @@ class BottomBar extends DialogActor {
         DialogRub.show(app.system.getCurrentSceneNode(), tabs, { title: 'Xếp hạng' });
     }
 
-    onFriendBtnClick() {
-        let buddy = new BuddyPopup().show(this.node.parent);
-        buddy = null;
+    // on high light message listener
+    _onHLMListener() {
+        if (!this.intervalTimer) {
+            this.intervalTimer = new TimerRub(this._onRunningHLM.bind(this), this.interval);
+        }
     }
 
-    onClickTransferAwardAction() {
-        let url = `${app.const.DIALOG_DIR_PREFAB}/exchange`;
-        let tabs = [{
-            title: 'Thẻ cào',
-            value: `${url}/tab_exchange_card`
-        }, {
-            title: 'Vật phẩm',
-            value: `${url}/tab_exchange_item`
-        }, {
-            title: 'Lịch sử',
-            value: `${url}/tab_exchange_history`
-        }, {
-            title: 'Đại lý',
-            value: `${url}/tab_agency`
-        }];
+    _onRunningHLM() {
+        let hlm = app.system.hlm.getMessage();
 
-        // bottombar -> dashboard scene node
-        ExchangeDialogRub.show(app.system.getCurrentSceneNode(), tabs, { title: 'Đổi thưởng' });
+        /**
+         * hlm -> pause interval -> display message -> resume -> hlm
+         */
+        if (hlm && this.highLightNode && this.intervalTimer) {
+            // pause timer
+            this.intervalTimer.pause();
+
+            // show hight light
+            let txt = this.highLightNode.getComponent(cc.RichText) || this.highLightNode.getComponent(cc.label);
+            // update text
+            txt.string = hlm.msg;
+
+            let txtWidth = this.highLightNode.getContentSize().width;
+            let montorWidth = cc.director.getWinSize().width;
+            let nodePositionY = this.highLightNode.getPosition().y;
+
+            let movingTime = (txtWidth + montorWidth / 2) / 85;
+            let startPosition = cc.v2(this.highLightNode.getPosition());
+            let endPosition = cc.v2(0 - txtWidth - montorWidth / 2, nodePositionY);
+
+
+            let action = cc.moveTo(movingTime, endPosition);
+            let repeatCount = hlm.rc;
+
+            let rp = cc.repeat(cc.sequence(action, cc.callFunc(() => {
+                this.highLightNode.setPosition(startPosition);
+                repeatCount--;
+                // if complete counting, resume timer interval
+                repeatCount === 0 && this.intervalTimer.resume();
+            })), Number(hlm.rc));
+
+            this.highLightNode.runAction(rp);
+        }
     }
 
-    callSupportClicked(e) {
-        cc.sys.openURL(`tel:${app.config.supportHotline}`);
+    _addGlobalListener() {
+        super._addGlobalListener();
+        app.system.addListener(app.commands.HIGH_LIGHT_MESSAGE, this._onHLMListener, this);
     }
 
-    onClickMessageAction() {
-        let url = `${app.const.DIALOG_DIR_PREFAB}/messagecenter`;
-        let tabs = [{
-            title: 'Hệ thống',
-            value: `${url}/tab_system_messages`
-        }, {
-            title: 'Cá nhân',
-            value: `${url}/tab_personal_messages`
-        }];
-
-        MessageCenterDialogRub.show(app.system.getCurrentSceneNode(), tabs, { title: 'Tin nhắn' });
-    }
-
-    onClickUserInfoAction() {
-        // personal tabs
-        let url = `${app.const.DIALOG_DIR_PREFAB}/userinfo`;
-        let tabs = [{
-                title: 'Cá nhân',
-                value: `${url}/tab_user_info`
-            },
-            {
-                title: 'Thành tích',
-                value: `${url}/tab_user_achievements`
-            }, {
-                title: 'Ngân hàng',
-                value: `${url}/tab_user_bank`
-            }
-            // , {
-            //     title: 'Gift Code',
-            //     value: `${url}/tab_gift_code`
-            // }
-            // , {
-            //     title: 'Chuyển chip',
-            //     value: 'tab_transfer_vc'
-            // }, {
-            //     title: 'Nhận chip',
-            //     value: 'tab_transfer_transaction'
-            // }, 
-        ];
-
-        PersonalInfoDialogRub.show(app.system.getCurrentSceneNode(), tabs, { title: 'Cá nhân' });
-    }
-
-    _fillUserData() {
-        this.userNameLbl.string = app.context.getMyInfo().name;
-
-        this.userInfoCoinLbl.string = `${numeral(app.context.getMeBalance() || 0).format('0,0')}`;
-    }
-
-    _onNotifyCount(data) {
-        let count = data[app.keywords.NEWS_CONTENT];
-        this.notifyBgNode.active = count > 0;
-        this.notifyCounterLbl.string = count;
-    }
-
-    _requestMessageNotification() {
-        let sendObject = {
-            cmd: app.commands.NEW_NOTIFICATION_COUNT
-        };
-        app.service.send(sendObject);
+    _removeGlobalListener() {
+        super._removeGlobalListener();
+        app.system.removeListener(app.commands.HIGH_LIGHT_MESSAGE, this._onHLMListener, this);
     }
 }
 

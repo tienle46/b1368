@@ -77,11 +77,11 @@ export default class ExchangeDialogRub extends DialogRub {
                 app.res.string('error_phone_number_is_invalid')
             );
         } else {
-            let data = {};
-            data[app.keywords.PHONE_NUMBER] = phoneNumber;
             let sendObject = {
                 cmd: app.commands.UPDATE_PHONE_NUMBER,
-                data
+                data: {
+                    [app.keywords.PHONE_NUMBER]: phoneNumber
+                }
             };
 
             app.service.send(sendObject, (data) => {

@@ -1,6 +1,6 @@
 import app from 'app';
 import DialogActor from 'DialogActor';
-import numeral from 'numeral';
+import Utils from 'Utils';
 
 class TabTopDaiGia extends DialogActor {
     constructor() {
@@ -66,15 +66,14 @@ class TabTopDaiGia extends DialogActor {
             }),
             res[app.keywords.USERNAME_LIST],
             res['ui1l'].map((amount) => {
-                this.userMoneyLbl.string = `${numeral(amount).format('0,0')}`;
+                this.userMoneyLbl.string = `${Utils.numberFormat(amount)}`;
                 return cc.instantiate(this.userMoneyLbl.node);
             }),
         ];
         let head = {
             data: ['STT', 'Tài khoản', 'Chips'],
             options: {
-                fontColor: app.const.COLOR_YELLOW,
-                fontSize: 25
+                fontColor: app.const.COLOR_YELLOW
             }
         };
 
@@ -82,7 +81,7 @@ class TabTopDaiGia extends DialogActor {
         let prev = this.onPreviousBtnClick;
 
         let rubOptions = {
-            paging: { prev, next, context: this },
+            // paging: { prev, next, context: this },
             size: this.contentNode.getContentSize(),
             group: { widths: ['', 380, ''] }
         };

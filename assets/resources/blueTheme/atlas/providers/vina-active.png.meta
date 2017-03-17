@@ -1,0 +1,30 @@
+{
+  "ver": "1.0.0",
+  "uuid": "6c2d82a0-63bd-4c94-94b1-5342c5255ef6",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "subMetas": {
+    "vina-active": {
+      "ver": "1.0.3",
+      "uuid": "dd3669e1-013f-46f2-b2be-cb082d512f7e",
+      "rawTextureUuid": "6c2d82a0-63bd-4c94-94b1-5342c5255ef6",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 1,
+      "trimY": 0,
+      "width": 186,
+      "height": 103,
+      "rawWidth": 188,
+      "rawHeight": 103,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}

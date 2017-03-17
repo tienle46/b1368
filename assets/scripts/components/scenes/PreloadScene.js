@@ -31,11 +31,11 @@ class PreloadScene extends Component {
             Card.from(Card.RANK_TAM, Card.SUIT_BICH),
             Card.from(Card.RANK_CHIN, Card.SUIT_ZO),
             Card.from(Card.RANK_Q, Card.SUIT_ZO)
-        ]
+        ];
 
         cards[0].setLocked(true);
 
-        PhomGenerator.generatePhomContainEatenCards(cards, [Card.from(Card.RANK_AT, Card.SUIT_ZO)])
+        PhomGenerator.generatePhomContainEatenCards(cards, [Card.from(Card.RANK_AT, Card.SUIT_ZO)]);
     }
 
     _setupEnvironment() {

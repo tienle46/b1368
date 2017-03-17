@@ -7,7 +7,7 @@
   "subMetas": {
     "btn-upload-image": {
       "ver": "1.0.3",
-      "uuid": "a1185994-f885-4a70-a177-76965905fa80",
+      "uuid": "99c0e230-7b45-4e68-8ae1-ad937f11d619",
       "rawTextureUuid": "fc668e89-767a-4f82-afd9-6f37e55e0b0f",
       "trimType": "auto",
       "trimThreshold": 1,
@@ -16,10 +16,10 @@
       "offsetY": 0,
       "trimX": 0,
       "trimY": 0,
-      "width": 40,
-      "height": 40,
-      "rawWidth": 40,
-      "rawHeight": 40,
+      "width": 55,
+      "height": 55,
+      "rawWidth": 55,
+      "rawHeight": 55,
       "borderTop": 0,
       "borderBottom": 0,
       "borderLeft": 0,

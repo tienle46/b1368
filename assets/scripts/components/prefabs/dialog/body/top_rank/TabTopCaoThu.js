@@ -141,7 +141,7 @@ class TabTopCaoThu extends DialogActor {
                 fontColor: app.const.COLOR_YELLOW
             }
         }, d, {
-            paging: { next, prev, context: this },
+            // paging: { next, prev, context: this },
             size: this.contentNode.getContentSize(),
             isNew,
             group: {

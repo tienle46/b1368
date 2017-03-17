@@ -70,6 +70,7 @@ let NodeRub = {
      */
     addLabelComponentToNode: (node, options) => {
         let label = node.getComponent(cc.Label) || node.addComponent(cc.Label);
+        cc.log('label ---->', label.verticalAlign);
         label.string = options.text || '';
         options.font && RubUtils.loadFont(label, options.font);
 

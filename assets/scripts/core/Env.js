@@ -293,7 +293,7 @@ export default (function(app) {
                     p();
                 });
 
-                window.release(plugins);
+                // window.release(plugins);
             }
         }
     }; // end Func
