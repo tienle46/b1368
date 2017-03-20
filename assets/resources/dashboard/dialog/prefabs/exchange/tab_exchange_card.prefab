@@ -1262,7 +1262,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 182,
-      "height": 46.67
+      "height": 43.67
     },
     "_children": [],
     "_rotationX": 0,
@@ -1304,12 +1304,12 @@
     },
     "_enabled": true,
     "_useOriginalSize": false,
-    "_actualFontSize": 28,
-    "_fontSize": 28,
+    "_actualFontSize": 51.00000000000005,
+    "_fontSize": 51.00000000000005,
     "_lineHeight": 40,
     "_enableWrapText": true,
     "_N$file": {
-      "__uuid__": "ac9e5657-cd57-4481-9c19-802c1e0c3640"
+      "__uuid__": "46726702-d6e0-4562-a557-21c9f09cdcb4"
     },
     "_isSystemFontUsed": false,
     "_N$string": "VIETTEL",
@@ -1330,7 +1330,7 @@
     "_alignFlags": 17,
     "_left": 0,
     "_right": 0,
-    "_top": -20,
+    "_top": -18.5,
     "_bottom": 0,
     "_verticalCenter": 0,
     "_horizontalCenter": 0,
@@ -2321,9 +2321,6 @@
     },
     "goldLbl": {
       "__id__": 51
-    },
-    "exchangeBtn": {
-      "__id__": 55
     },
     "itemLogoSprite": {
       "__id__": 39

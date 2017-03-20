@@ -11,7 +11,8 @@ class TabSMS extends DialogActor {
             toggleGroupNode: cc.Node,
             itemNode: cc.Node,
             moneyGetLbl: cc.Label,
-            iconSprite: cc.Sprite
+            iconSprite: cc.Sprite,
+            moneySend: cc.Label
         };
 
         this._sending = false;
@@ -94,10 +95,12 @@ class TabSMS extends DialogActor {
     }
 
     _initItem(code, syntax, sendTo, moneyGot, isChecked) {
-        this.moneyGetLbl.string = `${numberFormat(moneyGot)}`;
         let iconNumber = Math.round(moneyGot / 10000) + 1;
         RubUtils.getSpriteFrameFromAtlas('blueTheme/atlas/chips', `scoreIcon_${iconNumber >= 5 ? 5 : iconNumber}`, (sprite) => {
             this.iconSprite.spriteFrame = sprite;
+
+            this.moneyGetLbl.string = `${numberFormat(moneyGot)}`;
+            this.moneySend.string = `${numberFormat(moneyGot)} VNĐ`;
 
             let item = cc.instantiate(this.itemNode);
             item.active = true;

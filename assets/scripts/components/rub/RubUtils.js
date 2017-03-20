@@ -7,7 +7,10 @@ let RubUtils = {
 
                 resolve(asset);
                 if (!cc.loader.isAutoRelease(asset)) {
-                    cc.loader.setAutoReleaseRecursively(asset, true);
+                    if(asset._name && (asset._name == "loading_rotate_img" || asset._name == "loading_fixed_img"))
+                        cc.loader.setAutoRelease(asset, true);
+                    else
+                        cc.loader.setAutoReleaseRecursively(asset, true);
                 }
                 RubUtils.releaseAssets(asset);
             }
