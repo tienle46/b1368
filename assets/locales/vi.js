@@ -16,7 +16,6 @@ export default {
     error_changed_password_is_invalid: "Mật khẩu mới phải từ 6 ký tự trong đó có ít nhất 1 số, 1 ký tự thường, không có ký tự đặc biệt và dấu cách.",
     error_password_confirmation_is_not_the_same: "Nhập lại mật khẩu mới không chính xác",
     error_user_not_enough_gold_to_join_room: "Bạn cần {{minBalance}}-{{currencyName}} để có thể tham ra bàn chơi",
-    error_topup_dialog_need_to_choice_item: "Vui lòng chọn loại thẻ",
     error_exchange_dialog_need_to_choice_item: "Chưa chọn loại phần thưởng",
     error_exchange_dialog_not_enough_money: "Số tiền hiện tại {{ownerCoin}} không đủ để đổi vật phẩm {{name}}",
     error_phone_number_is_invalid: 'Số điện thoại không hợp lệ',

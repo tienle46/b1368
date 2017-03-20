@@ -13,10 +13,6 @@ export class Cell extends Component {
         };
     }
 
-    onEnable() {
-        cc.log('------>', this.label.verticalAlign, cc.Label.VerticalAlign);
-    }
-
     /**
      * @param data : {} || ""
      * {

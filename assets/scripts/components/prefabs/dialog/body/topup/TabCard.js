@@ -1,6 +1,9 @@
 import app from 'app';
 import DialogActor from 'DialogActor';
-import { isEmpty } from 'Utils';
+import {
+    isEmpty
+} from 'Utils';
+import RubUtils from 'RubUtils';
 
 class TabCard extends DialogActor {
     constructor() {
@@ -8,12 +11,12 @@ class TabCard extends DialogActor {
 
         this.properties = {
             ...this.properties,
-            ratioItem: cc.Node,
-            ratioContainer: cc.Node,
-            dropDownContainer: cc.Node,
-            listCardContainer: cc.Node,
-            providerNode: cc.Node,
-            providerLbl: cc.Label,
+            activeStateSprite: cc.Sprite,
+            inActiveStateSprite: cc.Sprite,
+            providerItemNode: cc.Node,
+            providerContainerNode: cc.Node,
+            providerTitleLbl: cc.Label,
+            cardLayout: cc.Node,
             cardSerialEditBox: cc.EditBox,
             serialNumberEditBox: cc.EditBox
         };
@@ -23,8 +26,9 @@ class TabCard extends DialogActor {
 
     onLoad() {
         super.onLoad();
+        this.cardLayout.active = false;
         // wait til every requests is done
-        this._initRatioGroup();
+        // this._initRatioGroup();
     }
 
     start() {
@@ -35,37 +39,13 @@ class TabCard extends DialogActor {
     _addGlobalListener() {
         super._addGlobalListener();
         app.system.addListener(app.commands.USER_GET_CHARGE_LIST, this._onUserGetChargeList, this);
-        app.system.addListener(app.commands.GET_CHARGE_RATE_LIST, this._onUserGetRateList, this);
+        // app.system.addListener(app.commands.GET_CHARGE_RATE_LIST, this._onUserGetRateList, this);
     }
 
     _removeGlobalListener() {
         super._removeGlobalListener();
         app.system.removeListener(app.commands.USER_GET_CHARGE_LIST, this._onUserGetChargeList, this);
-        app.system.removeListener(app.commands.GET_CHARGE_RATE_LIST, this._onUserGetRateList, this);
-    }
-
-    _initRatioGroup() {
-        let sendObject = {
-            cmd: app.commands.GET_CHARGE_RATE_LIST
-        };
-
-        app.service.send(sendObject);
-    }
-
-    _onUserGetRateList(data) {
-        this.hideLoader();
-        let lists = data[app.keywords.ITEM_LIST] || [];
-        lists.map((str) => {
-            let regEx = /[\d{3,},]+/g;
-            let matches = str.match(regEx);
-            if (matches.length > 2) {
-                let ratioItem = cc.instantiate(this.ratioItem);
-                let ratioItemComponent = ratioItem.getComponent('RatioItem');
-                ratioItemComponent.initItemWithoutRatio(matches[0], matches[1]);
-                ratioItem.active = true;
-                this.ratioContainer.addChild(ratioItem);
-            }
-        });
+        // app.system.removeListener(app.commands.GET_CHARGE_RATE_LIST, this._onUserGetRateList, this);
     }
 
     _initCardsGroup() {
@@ -80,48 +60,52 @@ class TabCard extends DialogActor {
 
     _onUserGetChargeList(data) {
         let cardListIds = data[app.keywords.EXCHANGE_LIST.RESPONSE.ITEM_ID_LIST] || [];
-
         if (cardListIds.length > 0) {
             cardListIds.forEach((id, index) => {
-                let item = cc.instantiate(this.providerNode);
-                let lbl = item.getChildByName('providername').getComponent(cc.Label);
                 let providerName = data[app.keywords.TASK_NAME_LIST][index];
-                lbl.string = providerName;
-                item.active = true;
-                item.providerName = providerName;
-                item.providerId = id;
+                let activeState = `${providerName.toLowerCase()}-active`;
+                let inactiveState = `${providerName.toLowerCase()}-inactive`;
+                
+                RubUtils.getSpriteFramesFromAtlas('blueTheme/atlas/providers', [activeState, inactiveState], (sprites) => {
+                    this.activeStateSprite.spriteFrame = sprites[activeState];
+                    this.inActiveStateSprite.spriteFrame = sprites[inactiveState];
 
-                this.listCardContainer.addChild(item);
+                    let provider = cc.instantiate(this.providerItemNode);
+                    this.addNode(provider);
+                    provider.active = true;
+
+                    let toggle = provider.getComponent(cc.Toggle);
+                    toggle.isChecked = index == 0;
+                    toggle.providerName = providerName;
+                    toggle.providerId = id;
+
+                    this.providerContainerNode.addChild(provider);
+
+                    if (toggle.isChecked) {
+                        // toggle.check();
+                        this.onProviderBtnClick(toggle);
+                    }
+
+                    if(index === cardListIds.length - 1) {
+                        this.cardLayout.active = true;
+                    }
+                });
             });
-
+            
             this.hideLoader();
         } else {
             this.pageIsEmpty(this.node);
         }
-
     }
-
-    onShowDropDownBtnClick() {
-        this._toggleDropdown();
+    
+    onProviderBtnClick(toggle) {
+        this.providerTitleLbl.string = toggle.providerName;
+        this.providerId = toggle.providerId;
     }
-
-    onProviderItemBtnClick(e) {
-        let target = e.currentTarget;
-        this.providerId = target.providerId;
-        this.providerLbl.string = `${target.providerName}`;
-        this._toggleDropdown();
-    }
-
+    
     onHanleChargeBtnClick() {
         let cardSerial = this.cardSerialEditBox.string.trim();
         let serialNumber = this.serialNumberEditBox.string.trim();
-
-        if (!this.providerId) {
-            app.system.error(
-                app.res.string('error_topup_dialog_need_to_choice_item')
-            );
-            return;
-        }
 
         if (isEmpty(cardSerial) || isEmpty(serialNumber) || isNaN(cardSerial) || isNaN(serialNumber)) {
             app.system.error(
@@ -139,11 +123,6 @@ class TabCard extends DialogActor {
 
             app.service.send(sendObject); // send request and get `smsg` (system_message) response from server
         }
-    }
-
-    _toggleDropdown() {
-        let state = this.dropDownContainer.active;
-        this.dropDownContainer.active = !state;
     }
 }
 

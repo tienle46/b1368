@@ -22,5 +22,6 @@
         "**/*.anim": true
     },
     "files.autoSave": "onFocusChange",
-    "extensions.autoUpdate": true
+    "extensions.autoUpdate": true,
+    "editor.trimAutoWhitespace": false
 }
