@@ -246,41 +246,41 @@ export default (function(app) {
                 }
 
                 // setup listener
-                app.env.sdkIAPSetListener({
-                    onProductRequestSuccess: (products) => {
-                        //Returns you the data for all the iap products
-                        //You can get each item using following method
+                // app.env.sdkIAPSetListener({
+                //     onProductRequestSuccess: (products) => {
+                //         //Returns you the data for all the iap products
+                //         //You can get each item using following method
 
-                        let receiptObjects = app.context.getPurchases();
-                        cc.log('\nIAP: receiptObjects', JSON.stringify(receiptObjects));
-                        cc.log('\nIAP: receiptObjects > length', JSON.stringify(receiptObjects.length));
+                //         let receiptObjects = app.context.getPurchases();
+                //         cc.log('\nIAP: receiptObjects', JSON.stringify(receiptObjects));
+                //         cc.log('\nIAP: receiptObjects > length', JSON.stringify(receiptObjects.length));
 
-                        if (receiptObjects.length > 0) {
-                            let productIds = [];
-                            for (let i = 0; i < products.length; i++) {
-                                // loop
-                                productIds.push(products[i].id);
-                            }
+                //         if (receiptObjects.length > 0) {
+                //             let productIds = [];
+                //             for (let i = 0; i < products.length; i++) {
+                //                 // loop
+                //                 productIds.push(products[i].id);
+                //             }
 
-                            let purchases = [];
-                            receiptObjects.forEach((stringifiedItem) => {
-                                let item = JSON.parse(stringifiedItem);
-                                if (app._.includes(productIds, item.id)) {
-                                    purchases.push(item);
-                                    // if (app.env.isIOS()) {
-                                    //     purchases.push(item.receipt);
-                                    // } else if (app.env.isAndroid()) {
-                                    //     purchases.push({ productId: item.id, token: item.receipt });
-                                    // }
-                                }
-                            });
+                //             let purchases = [];
+                //             receiptObjects.forEach((stringifiedItem) => {
+                //                 let item = JSON.parse(stringifiedItem);
+                //                 if (app._.includes(productIds, item.id)) {
+                //                     purchases.push(item);
+                //                     // if (app.env.isIOS()) {
+                //                     //     purchases.push(item.receipt);
+                //                     // } else if (app.env.isAndroid()) {
+                //                     //     purchases.push({ productId: item.id, token: item.receipt });
+                //                     // }
+                //                 }
+                //             });
 
-                            app.context.setPurchases(purchases);
+                //             app.context.setPurchases(purchases);
 
-                            window.release(productIds);
-                        }
-                    }
-                });
+                //             window.release(productIds);
+                //         }
+                //     }
+                // });
             };
 
             if (cc.sys.isMobile && window.sdkbox) {
