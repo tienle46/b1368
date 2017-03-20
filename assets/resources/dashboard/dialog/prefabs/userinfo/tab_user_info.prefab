@@ -7062,6 +7062,9 @@
     },
     "updatePhoneNumberPanel": {
       "__id__": 189
+    },
+    "vipInfoDialog": {
+      "__uuid__": "8547f7dd-fe88-455d-96e5-3a7391c0f40d"
     }
   },
   {

@@ -2395,7 +2395,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 0,
+      "width": 3,
       "height": 40
     },
     "_children": [],
@@ -5592,7 +5592,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 514.87,
+      "width": 518.87,
       "height": 50
     },
     "_children": [],
@@ -5795,7 +5795,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 186.02,
+      "width": 190.02,
       "height": 40
     },
     "_children": [],
@@ -6908,7 +6908,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 222.26,
+      "width": 225.26,
       "height": 40
     },
     "_children": [],

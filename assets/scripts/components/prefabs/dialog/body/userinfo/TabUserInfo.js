@@ -22,6 +22,7 @@ export default class TabUserInfo extends DialogActor {
             userInfoPanel: cc.Node,
             changePasswordPanel: cc.Node,
             updatePhoneNumberPanel: cc.Node,
+            vipInfoDialog: cc.Prefab
         };
 
         this.nextLvlBenefit = "";
@@ -87,8 +88,10 @@ export default class TabUserInfo extends DialogActor {
     }
 
     onLevelInfoBtnClick() {
-        let string = this.levelInfo || "Đang cập nhật.";
-        app.system.info(string);
+        // let string = this.levelInfo || "Đang cập nhật.";
+        // app.system.info(string);
+        let vipInfoDialog = cc.instantiate(this.vipInfoDialog);
+        app.system.getCurrentSceneNode().addChild(vipInfoDialog);
     }
 
     onChangeAvatarBtnClick() {
