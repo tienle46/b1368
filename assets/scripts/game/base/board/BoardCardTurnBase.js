@@ -41,7 +41,7 @@ export default class BoardCardTurnBase extends BoardCard {
         this.turnAdapter.onDisable();
     }
 
-    _onPlayerPlayedCards(playedCards, srcCardList, isItMe){
+    _onPlayerPlayedCards(playerId, playedCards, srcCardList, isItMe){
         this.playedCards = playedCards;
         this.renderer.addToDeck(playedCards, srcCardList, isItMe);
     }

@@ -111,7 +111,7 @@ class GameSystem {
     }
 
     getCurrentSceneNode() {
-        return this._currentScene.node;
+        return this._currentScene && this._currentScene.node;
     }
 
     getCurrentSceneName() {

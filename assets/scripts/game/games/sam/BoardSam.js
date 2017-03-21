@@ -22,12 +22,23 @@ export default class BoardSam extends BoardCardTurnBase {
         this.handCardSize = PlayerSam.DEFAULT_HAND_CARD_COUNT;
     }
 
+    _onGameStateChanged(state, data, isJustJoined){
+
+        console.log("_onGameStateChanged: ", isJustJoined)
+
+        if(state == app.const.game.state.BOARD_STATE_BAO_XAM){
+            this._loadRemainCardCount(data)
+        }
+    }
+
     onEnable() {
         /**
          * @type {BoardSamRenderer}
          */
         this.renderer = this.node.getComponent('BoardSamRenderer');
         super.onEnable();
+
+        this.scene.on(Events.ON_GAME_STATE_CHANGED, this._onGameStateChanged, this);
     }
 
     get gameType() {
@@ -102,6 +113,30 @@ export default class BoardSam extends BoardCardTurnBase {
          */
         let currentBaoUPlayerIds = utils.getValue(data, Keywords.XAM_BAO_1_PLAYER_ID);
         currentBaoUPlayerIds && currentBaoUPlayerIds.forEach(playerId => this.scene.emit(Events.ON_PLAYER_BAO_1, playerId))
+    }
+
+    onBoardStarting(data, isJustJoined){
+        super.onBoardStarting(data, isJustJoined)
+
+        isJustJoined && this._loadRemainCardCount(data)
+    }
+
+    onBoardPlaying(data, isJustJoined){
+        super.onBoardPlaying(data, isJustJoined)
+
+        if(isJustJoined && this.isPlaying()) {
+            this._loadRemainCardCount(data)
+        }
+    }
+
+    _loadRemainCardCount(data){
+        let playerIds = utils.getValue(data, Keywords.GAME_LIST_PLAYER)
+        let playerRemainCardSizes = utils.getValue(data, Keywords.GAME_LIST_PLAYER_CARDS_SIZE, []);
+        if(playerIds && playerRemainCardSizes && playerIds.length == playerRemainCardSizes.length){
+            playerIds.forEach((id, index) => {
+                this.scene.emit(Events.ON_PLAYER_REMAIN_CARD_COUNT, id, playerRemainCardSizes[index]);
+            });
+        }
     }
 
     onBoardEnding(data) {

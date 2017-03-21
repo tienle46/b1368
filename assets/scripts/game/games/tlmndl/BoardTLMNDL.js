@@ -45,6 +45,32 @@ export default class BoardTLMNDL extends BoardCardTurnBase {
         super.onGameStatePreChange(boardState, data);
     }
 
+
+    onBoardStarting(data, isJustJoined){
+        super.onBoardStarting(data, isJustJoined)
+
+        //TODO need to check why isJustJoined is false (undefined)
+        this._loadRemainCardCount(data)
+    }
+
+    onBoardPlaying(data, isJustJoined){
+        super.onBoardPlaying(data, isJustJoined)
+
+        if(isJustJoined && this.isPlaying()) {
+            this._loadRemainCardCount(data)
+        }
+    }
+
+    _loadRemainCardCount(data){
+        let playerIds = utils.getValue(data, Keywords.GAME_LIST_PLAYER)
+        let playerRemainCardSizes = utils.getValue(data, Keywords.GAME_LIST_PLAYER_CARDS_SIZE, []);
+        if(playerIds && playerRemainCardSizes && playerIds.length == playerRemainCardSizes.length){
+            playerIds.forEach((id, index) => {
+                this.scene.emit(Events.ON_PLAYER_REMAIN_CARD_COUNT, id, playerRemainCardSizes[index]);
+            });
+        }
+    }
+
     _loadGamePlayData(data) {
         super._loadGamePlayData(data);
 
@@ -56,19 +82,6 @@ export default class BoardTLMNDL extends BoardCardTurnBase {
             let cards = GameUtils.convertBytesToCards(deckCardsBytes);
             cards = GameUtils.sortCardAsc(cards, this.gameType);
             this.renderer.addToDeck(cards);
-        }
-
-        /**
-         * Get remain player card size
-         */
-        if (this.isPlaying()) {
-            let playerIds = utils.getValue(data, Keywords.GAME_LIST_PLAYER);
-            let playerRemainCardSizes = utils.getValue(data, Keywords.GAME_LIST_PLAYER_CARDS_SIZE,
-                playerIds && new Array(playerIds.length).fill(PlayerTLMNDL.DEFAULT_HAND_CARD_COUNT));
-
-            playerIds && playerRemainCardSizes && playerIds.forEach((id, index) => {
-                this.scene.emit(Events.ON_PLAYER_REMAIN_CARD_COUNT, id, playerRemainCardSizes[index]);
-            });
         }
 
         /**

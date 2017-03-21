@@ -56,6 +56,12 @@ export default class PlayerSam extends PlayerCardTurnBase {
         this.scene.off(Events.ON_PLAYER_BAO_1, this._onPlayerBao1, this);
     }
 
+    _onPlayerPlayedCards(cards, cardList, isItMe){
+        if(!isItMe){
+            this.setRemainCardCount(cards ? this.remainCardCount - cards.length : this.remainCardCount)
+        }
+    }
+
     _onPlayerBao1(playerId){
         if(this.id == playerId && !this.isItMe()){
             this.renderer.showBao1();
@@ -72,12 +78,13 @@ export default class PlayerSam extends PlayerCardTurnBase {
     _setRemainCardCount(id, remain = 0) {
         if (id == this.id) {
             this.setRemainCardCount(remain);
+            this.createFakeCards(remain);
         }
     }
 
     setRemainCardCount(remain) {
         this.remainCardCount = remain;
-        this.createFakeCards(remain);
+        this._updateRemainCardCount(this.remainCardCount, true)
     }
 
     _onBaoXam(){
@@ -175,17 +182,31 @@ export default class PlayerSam extends PlayerCardTurnBase {
         }
     }
 
-    onGameEnding(...args){
-        super.onGameEnding(...args);
+    onGamePlaying(data, isJustJoined){
+        super.onGamePlaying(data, isJustJoined)
+        this._updateRemainCardCount(this.remainCardCount, true)
+    }
+
+    onGameEnding(data, isJustJoined){
+        super.onGameEnding(data, isJustJoined)
+
         this.renderer.showBao1(false);
         this.renderer.showBaoXam(false);
+
+        this.setRemainCardCount(0)
+    }
+
+    setMeDealCards(){
+        super.setMeDealCards()
+
+        this.setRemainCardCount(this.renderer.cardList.cards.length)
     }
 
     onGameReset(...args){
         super.onGameReset(...args);
         this.renderer.showBao1(false);
         this.renderer.showBaoXam(false);
-
+        this.remainCardCount = 0;
     }
 }
 

@@ -22,7 +22,7 @@ export default class PlayerCardTurnBaseAdapter extends PlayerTurnBaseAdapter {
 
         if(this.player.id === playerId && cards.length > 0){
             this.player.isItMe() && (cards = this.player.findCards(cards));
-            this.scene.emit(Events.ON_PLAYER_PLAYED_CARDS, cards, this.player.renderer.cardList, this.player.isItMe());
+            this.scene.emit(Events.ON_PLAYER_PLAYED_CARDS, playerId, cards, this.player.renderer.cardList, this.player.isItMe());
             this.player._onPlayerPlayedCards && this.player._onPlayerPlayedCards(cards, this.player.renderer.cardList, this.player.isItMe());
         }
     }

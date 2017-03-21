@@ -37,15 +37,23 @@ export default class PlayerTLMNDL extends PlayerCardTurnBase {
         this.scene.off(Events.ON_PLAYER_REMAIN_CARD_COUNT, this._setRemainCardCount, this);
     }
 
+    _onPlayerPlayedCards(cards, cardList, isItMe){
+        if(!isItMe){
+            this.setRemainCardCount(cards ? this.remainCardCount - cards.length : this.remainCardCount)
+        }
+    }
+
     _setRemainCardCount(id, remain = 0) {
         if (id == this.id) {
             this.setRemainCardCount(remain);
+            this.createFakeCards(remain);
         }
     }
 
     setRemainCardCount(remain) {
+
         this.remainCardCount = remain;
-        this.createFakeCards(remain);
+        this._updateRemainCardCount(this.remainCardCount, true)
     }
 
     _onPlayTurn() {
@@ -90,6 +98,8 @@ export default class PlayerTLMNDL extends PlayerCardTurnBase {
 
     createFakeCards(size = PlayerTLMNDL.DEFAULT_HAND_CARD_COUNT) {
         super.createFakeCards(size);
+        
+        console.log("create fake card: ", size)
     }
 
     onEnable() {
@@ -103,6 +113,27 @@ export default class PlayerTLMNDL extends PlayerCardTurnBase {
     _onSelectedCardsChanged(selectedCards) {
         let interactable = TLMNUtils.checkPlayCard(selectedCards, this.getPrePlayedCards(), app.const.game.GAME_TYPE_TIENLEN);
         this.scene.emit(Events.SET_INTERACTABLE_PLAY_CONTROL, interactable);
+    }
+
+    onGamePlaying(data, isJustJoined){
+        super.onGamePlaying(data, isJustJoined)
+        this._updateRemainCardCount(this.remainCardCount, true)
+    }
+
+    onGameEnding(data, isJustJoined){
+        super.onGameEnding(data, isJustJoined)
+        this.setRemainCardCount(0)
+    }
+
+    onGameReset(){
+        super.onGameReset()
+        this.remainCardCount = 0;
+    }
+
+    setMeDealCards(){
+        super.setMeDealCards()
+
+        this.setRemainCardCount(this.renderer.cardList.cards.length)
     }
 
     _onGameRejoin(data) {

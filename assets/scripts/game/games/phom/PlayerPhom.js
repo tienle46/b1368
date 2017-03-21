@@ -79,10 +79,7 @@ export default class PlayerPhom extends PlayerCardTurnBase {
         this.scene.on(Events.HANDLE_PLAYER_LEAVE_BOARD, this._handlePlayerLeaveBoard, this);
         this.scene.on(Events.ON_PLAYER_TURN, this._onPlayerTurn, this);
         this.scene.on(Events.CLEAN_GAME_AFTER_SHOW_RESULT, this._cleanGameAfterShowResult, this);
-
         this.scene.on(Events.SHOW_PHOM_HIGHLIGHT, this._setPhomHighlight, this);
-
-        // this.scene.on(Events.ON_PLAYER_PLAYED_CARDS, this._onPlayerPlayedCards, this);
     }
 
     _removeGlobalListener() {
@@ -108,10 +105,7 @@ export default class PlayerPhom extends PlayerCardTurnBase {
         this.scene.off(Events.HANDLE_PLAYER_LEAVE_BOARD, this._handlePlayerLeaveBoard, this);
         this.scene.off(Events.ON_PLAYER_TURN, this._onPlayerTurn, this);
         this.scene.off(Events.CLEAN_GAME_AFTER_SHOW_RESULT, this._cleanGameAfterShowResult, this);
-
         this.scene.off(Events.SHOW_PHOM_HIGHLIGHT, this._setPhomHighlight, this);
-
-        // this.scene.off(Events.ON_PLAYER_PLAYED_CARDS, this._onPlayerPlayedCards, this);
     }
 
     _cleanGameAfterShowResult(){

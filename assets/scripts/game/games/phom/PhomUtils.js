@@ -220,7 +220,7 @@ export default class PhomUtils {
     }
 
     static isUTron(phomList, player) {
-        if (player.handCards.length != 10 || player.eatenCards.length > 2 || phomList.getCards().length != player.handCards.length) {
+        if (player.handCards.length != 10 || phomList.getCards().length != player.handCards.length) {
             return false;
         }
         return true;
