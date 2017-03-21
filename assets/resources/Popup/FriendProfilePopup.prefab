@@ -1174,7 +1174,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": 0
+      "y": 2.2
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -1447,7 +1447,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": -2
+      "y": 2.2
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -1529,7 +1529,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "654cea23-c19f-42f3-aaa3-c5de28f79437"
+      "__uuid__": "9c8a9f54-d1c0-4ad0-9da1-7bb2c9f8fda9"
     },
     "_type": 1,
     "_sizeMode": 0,
