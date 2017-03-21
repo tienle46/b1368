@@ -16,8 +16,8 @@ export default class FriendProfilePopup extends DialogActor {
             rtUserName: cc.Label,
             rtBalance: cc.Label,
             bgNode: cc.Node,
-            leftBtn: cc.Button,
-            rightBtn: cc.Button,
+            assetItemNode: cc.Node,
+            assetItemSprite: cc.Sprite,
             kickBtn: cc.Button,
             addFriendBtn: cc.Button
         };
@@ -90,27 +90,12 @@ export default class FriendProfilePopup extends DialogActor {
         this.totalItems = assets.length;
         this.totalPage = Math.ceil(this.totalItems / this.itemsPerPage);
         assets.map(asset => {
-            const clickEvent = new cc.Component.EventHandler();
-            clickEvent.target = this.node;
-            clickEvent.component = 'FriendProfilePopup';
-            clickEvent.handler = 'propsItemClicked';
+            this.assetItemSprite.spriteFrame = asset.spriteFrame;
+            let assetNode = cc.instantiate(this.assetItemNode);
+            assetNode.name = asset.name;
+            assetNode.active = true;
 
-            let o = {
-                name: asset.name,
-                sprite: {
-                    spriteFrame: asset.spriteFrame,
-                    trim: false,
-                    type: cc.Sprite.Type.SIMPLE,
-                    sizeMode: cc.Sprite.SizeMode.SIMPLE
-                },
-                button: {
-                    event: clickEvent
-                }
-            };
-
-            const node = NodeRub.createNodeByOptions(o);
-
-            this.propsGridView && this.propsGridView.node.addChild(node);
+            this.propsGridView && this.propsGridView.node.addChild(assetNode);
         })
     }
 
@@ -132,29 +117,6 @@ export default class FriendProfilePopup extends DialogActor {
 
         CCUtils.destroy(this.node);
     }
-
-    onLeftBtnClick(e) {
-        e.stopPropagation();
-        let cp = this.currentPage;
-        if (--cp < 1) {
-            this.currentPage = 1;
-            return;
-        }
-        this.currentPage = cp;
-        this._runPropsGridViewAction(true);
-    }
-
-    onRightBtnClick(e) {
-        e.stopPropagation();
-        let cp = this.currentPage;
-        if (++cp > this.totalPage) {
-            this.currentPage = this.totalPage;
-            return;
-        }
-        this.currentPage = cp;
-        this._runPropsGridViewAction(false);
-    }
-
 
     kickUser() {
         if (!this.kickable) {

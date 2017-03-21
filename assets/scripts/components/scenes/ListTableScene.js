@@ -47,7 +47,7 @@ export default class ListTableScene extends BaseScene {
     onEnable() {
         super.onEnable();
         this.gameCode = app.context.getSelectedGame();
-        this.gameTitleLbl.string = this.gameCode ? app.const.gameLabels[this.gameCode].toUpperCase() : "";
+        this.gameTitleLbl.string = this.gameCode ? app.const.gameLabels[this.gameCode] : "";
     }
 
     start() {
@@ -96,7 +96,13 @@ export default class ListTableScene extends BaseScene {
     onClickBackBtn() {
         app.system.loadScene(app.const.scene.DASHBOARD_SCENE);
     }
-
+    
+    onRefreshBtnClick() {
+        this.__isCreatingRoom = false;
+        this._clearInterval();
+        this._sendRequestUserListRoom();
+    }
+    
     _getListGameMinBet() {
         let gameCode = app.context.getSelectedGame();
         this.gameCode && app.service.send({

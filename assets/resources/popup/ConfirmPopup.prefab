@@ -1906,7 +1906,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": 0
+      "y": 2.2
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -1988,7 +1988,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "93931f48-ea36-4fce-b8ae-05bc9900aa6b"
+      "__uuid__": "eafbd3ce-0478-4ae9-9b52-5e49a23c78ed"
     },
     "_type": 1,
     "_sizeMode": 0,
@@ -2193,7 +2193,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": 0
+      "y": 2.2
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -2275,7 +2275,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "85804928-2cbe-469a-9cfb-70c9a83fd8a8"
+      "__uuid__": "654cea23-c19f-42f3-aaa3-c5de28f79437"
     },
     "_type": 1,
     "_sizeMode": 0,
@@ -2342,9 +2342,7 @@
       "b": 255,
       "a": 255
     },
-    "_N$normalSprite": {
-      "__uuid__": "22928bf6-c997-4a4d-8b01-786effc3c953"
-    },
+    "_N$normalSprite": null,
     "_N$disabledSprite": null,
     "_N$target": {
       "__id__": 65
