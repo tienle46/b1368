@@ -1377,7 +1377,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": 0
+      "y": 2.9
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -1459,7 +1459,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "93931f48-ea36-4fce-b8ae-05bc9900aa6b"
+      "__uuid__": "0da026cb-0614-45ff-b5cf-3838e8f4ef6b"
     },
     "_type": 1,
     "_sizeMode": 0,
@@ -1474,9 +1474,7 @@
     "_isTrimmedMode": true,
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
-    "_atlas": {
-      "__uuid__": "4bb00c8a-c321-4d5c-b859-a722596f04ed"
-    }
+    "_atlas": null
   },
   {
     "__type__": "cc.Button",
@@ -1664,7 +1662,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": 0
+      "y": 2.9
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -1746,7 +1744,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "85804928-2cbe-469a-9cfb-70c9a83fd8a8"
+      "__uuid__": "569f793f-5761-480b-bee3-396545129448"
     },
     "_type": 1,
     "_sizeMode": 0,
@@ -1761,9 +1759,7 @@
     "_isTrimmedMode": true,
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
-    "_atlas": {
-      "__uuid__": "4bb00c8a-c321-4d5c-b859-a722596f04ed"
-    }
+    "_atlas": null
   },
   {
     "__type__": "cc.Button",
@@ -1813,9 +1809,7 @@
       "b": 255,
       "a": 255
     },
-    "_N$normalSprite": {
-      "__uuid__": "85804928-2cbe-469a-9cfb-70c9a83fd8a8"
-    },
+    "_N$normalSprite": null,
     "_N$disabledSprite": null,
     "_N$target": {
       "__id__": 49

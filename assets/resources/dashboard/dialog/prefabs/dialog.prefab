@@ -288,7 +288,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 118.57,
+      "width": 198.22,
       "height": 71
     },
     "_children": [],
@@ -299,7 +299,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": 226
+      "y": 240
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -339,7 +339,7 @@
       "__uuid__": "b2c0f634-158a-49ee-84f8-a41c8e7ebb56"
     },
     "_isSystemFontUsed": false,
-    "_N$string": "TITLE",
+    "_N$string": "NẠP TIỀN",
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 2,
     "_N$overflow": 0
@@ -357,7 +357,7 @@
     "_alignFlags": 17,
     "_left": 0,
     "_right": 0,
-    "_top": 16,
+    "_top": 2,
     "_bottom": 0,
     "_verticalCenter": 0,
     "_horizontalCenter": 0,
@@ -885,7 +885,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": 4
+      "y": -0.10000000000000142
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -946,8 +946,8 @@
     "_alignFlags": 45,
     "_left": 3.5,
     "_right": 3.5,
-    "_top": -4,
-    "_bottom": 4,
+    "_top": 0.1,
+    "_bottom": -0.1,
     "_verticalCenter": 0,
     "_horizontalCenter": 0,
     "_isAbsLeft": true,
