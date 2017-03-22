@@ -11,7 +11,6 @@ export default class ExchangeDialogRub extends DialogRub {
     init() {
         super.init();
         this.exchangeDialogComponent = this.prefab.addComponent(ExchangeDialog);
-        this._addPhoneUpdateBody();
     }
 
     _addPhoneUpdateBody() {

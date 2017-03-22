@@ -43,11 +43,12 @@ export default class DashboardScene extends BaseScene {
     }
 
     showDailyLoginPopup(message) {
-        this.dailyDialogContent.string = message;
         this.dailyDialogContent.active = true;
+        this.dailyDialogContent.string = message;
         
         let action = cc.sequence(cc.fadeIn(0.2), cc.delayTime(20), cc.fadeOut(0.5), cc.callFunc(()=> {
             this.dailyDialogContent.active = false;
+            console.debug('xxx');
         }));
         this.dailyDialog.runAction(action);
     }
@@ -55,6 +56,7 @@ export default class DashboardScene extends BaseScene {
     onCloseDailyLoginPopup() {
         this.dailyDialog.runAction(cc.fadeOut(0.2), cc.callFunc(()=> {
             this.dailyDialogContent.active = false;
+            console.debug('yyy');
         }));
     }
 

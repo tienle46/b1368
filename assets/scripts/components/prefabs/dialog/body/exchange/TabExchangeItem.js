@@ -14,36 +14,72 @@ class TabExchangeItem extends DialogActor {
             contentNode: cc.Node,
             exchangeItem: cc.Node,
             exchangeItemImage: cc.Sprite,
-            exchangeItemPrice: cc.Label
+            exchangeItemPrice: cc.Label,
+            layoutsNode: cc.Node,
+            updatePhoneNumberNode: cc.Node,
+            phoneNumberEditbox: cc.EditBox
         };
     }
 
     onLoad() {
         super.onLoad();
-        // wait til every requests is done
-        // this.node.active = false;
-
-        // get content node
-        // this._getExchangeDialogComponent().hideUpdatePhone();
+       this._hideUpdatePhoneNumber();
     }
 
     start() {
         super.start();
         this._initItemsList();
     }
+    
+    onClickBackBtn() {
+        this._hideUpdatePhoneNumber();
+    }
+    
+    onClickUpdateBtn() {
+        let phoneNumber = this.phoneNumberEditbox.string; 
+        
+        // invalid phone number
+        if (!phoneNumber || isNaN(Number(phoneNumber)) || phoneNumber.length < 8) {
+            app.system.error(
+                app.res.string('error_phone_number_is_invalid')
+            );
+        } else {
+            let sendObject = {
+                cmd: app.commands.UPDATE_PHONE_NUMBER,
+                data: {
+                    [app.keywords.PHONE_NUMBER]: phoneNumber
+                }
+            };
 
+            app.service.send(sendObject);
+        } 
+    }
+    
     _addGlobalListener() {
         super._addGlobalListener();
         app.system.addListener(app.commands.EXCHANGE_LIST, this._onGetExchangeList, this);
         app.system.addListener(app.commands.EXCHANGE, this._onExchange, this);
+        app.system.addListener(app.commands.UPDATE_PHONE_NUMBER, this._onUpdatePhoneNumber, this);
     }
 
     _removeGlobalListener() {
         super._removeGlobalListener();
         app.system.removeListener(app.commands.EXCHANGE, this._onExchange, this);
         app.system.removeListener(app.commands.EXCHANGE_LIST, this._onGetExchangeList, this);
+        app.system.removeListener(app.commands.PHONE_NUMBER, this._onUpdatePhoneNumber, this);
     }
-
+    
+    _onUpdatePhoneNumber(data) {
+        if (data[app.keywords.RESPONSE_RESULT]) {
+            app.system.showToast(app.res.string('phone_number_confirmation'));
+            this._hideUpdatePhoneNumber();
+        } else {
+            app.system.error(
+                app.res.string('error_system')
+            );
+        }
+    }
+    
     _initItemsList() {
         var sendObject = {
             'cmd': app.commands.EXCHANGE_LIST,
@@ -118,10 +154,7 @@ class TabExchangeItem extends DialogActor {
     _onConfirmDialogBtnClick(data) {
         let { gold, name, id } = data;
         if (app.context.needUpdatePhoneNumber()) {
-            // hide this node
-            this._hide();
-            // show update_phone_number
-            this._getExchangeDialogComponent().showUpdatePhone();
+           this._showUpdatePhoneNumber();
         } else {
             let myCoin = app.context.getMeBalance();
 
@@ -146,8 +179,8 @@ class TabExchangeItem extends DialogActor {
 
     _onExchange(data) {
         this.hideLoader();
-        if (data[app.keywords.RESPONSE_RESULT] === false) {
-            app.system.info(`${data[app.keywords.RESPONSE_MESSAGE]}`);
+        if (data[app.keywords.RESPONSE_RESULT] === true) {
+            app.system.showToast(`${data[app.keywords.RESPONSE_MESSAGE]}`);
         } else { // true
             app.system.error(
                 app.res.string('error_system')
@@ -155,14 +188,14 @@ class TabExchangeItem extends DialogActor {
         }
     }
 
-    _getExchangeDialogComponent() {
-        // this node -> body -> dialog -> dialog (parent)
-        let dialogNode = this.node.parent.parent.parent;
-        return dialogNode.getComponent(ExchangeDialog);
+    _hideUpdatePhoneNumber() {
+        CCUtils.deactive(this.updatePhoneNumberNode);
+        CCUtils.active(this.layoutsNode);
     }
-
-    _getUpdatePhoneNode() {
-        return this._getExchangeDialogComponent().updatePhoneNode();
+    
+    _showUpdatePhoneNumber() {
+        CCUtils.active(this.updatePhoneNumberNode);
+        CCUtils.deactive(this.layoutsNode);
     }
 }
 

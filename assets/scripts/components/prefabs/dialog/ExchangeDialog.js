@@ -18,16 +18,12 @@ class ExchangeDialog extends Component {
         super.start();
     }
 
-    updatePhoneNode() {
-        return this.node.getChildByName('dialog').getChildByName('update_phone_number');
+    showNode(updatePhoneNode) {
+       updatePhoneNode.active = true;
     }
 
-    showUpdatePhone() {
-        if (this.updatePhoneNode()) this.updatePhoneNode().active = true;
-    }
-
-    hideUpdatePhone() {
-        if (this.updatePhoneNode()) this.updatePhoneNode().active = false;
+    hideNode(updatePhoneNode) {
+       updatePhoneNode.active = false;
     }
 }
 

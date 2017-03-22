@@ -276,7 +276,7 @@ class Service {
 
     _onLogin(event) {
         if (event.data[app.keywords.UPDATE_PHONE_NUMBER]) {
-            app.context.getMe().upn = event.data[app.keywords.UPDATE_PHONE_NUMBER] || true;
+            app.context.getMe()[app.keywords.UPDATE_PHONE_NUMBER] = event.data[app.keywords.UPDATE_PHONE_NUMBER] || true;
         }
 
         let rejoinGroup = event.data[app.keywords.LOGIN_REJOIN_ROOM_GROUP];

@@ -29,6 +29,7 @@ Keywords.KEY_SEARCH = "k";
 Keywords.QUANTITY = "q";
 Keywords.UPDATE_RESULT = "su";
 Keywords.UPDATE_PROFILE_RESULT = "s";
+Keywords.UPDATE_PHONE_NUMBER = "updatePhone";
 Keywords.REQUEST_ERROR_CODE = "e";
 //
 //

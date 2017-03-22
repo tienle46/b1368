@@ -115,6 +115,7 @@ class GameContext {
     }
 
     needUpdatePhoneNumber() {
+        console.debug('this.getMe()', this.getMe());
         return this.getMe()[app.keywords.UPDATE_PHONE_NUMBER];
     }
 }
