@@ -78,7 +78,7 @@ export default class Component {
                         outline.color = color[sprite.spriteFrame._name];
                         let lbl = outline.node.getComponent(cc.Label);
                         // only uppercase first letter
-                        lbl.string.trim().split(" ").map(s => s.charAt(0).toUpperCase() + s.slice(1)).join(" ");
+                        lbl.string = lbl.string.trim().toLowerCase().split(" ").map(s => s.charAt(0).toUpperCase() + s.slice(1)).join(" ");
                     });
                 }
             });
