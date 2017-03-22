@@ -80,7 +80,7 @@ class DialogTab extends Component {
         let value = toggle.value;
         let componentName = toggle.componentName;
         
-        this._changeLblColorOutline(toggle);
+        this._changeLblOutlineColor(toggle);
         
         if (value) {
             this.dialogComponent.addToBody(id, value, componentName, this, data);
@@ -89,7 +89,7 @@ class DialogTab extends Component {
         }
     }
     
-    _changeLblColorOutline(toggle) {
+    _changeLblOutlineColor(toggle) {
         this.node.children.forEach(tabNode => {
             if(tabNode.active) {
                 // change label outline's color by tab state
