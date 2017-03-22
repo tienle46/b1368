@@ -4,6 +4,7 @@ import RubUtils from 'RubUtils';
 import Utils from 'Utils';
 import ExchangeDialog from 'ExchangeDialog';
 import LoaderRub from 'LoaderRub';
+import CCUtils from 'CCUtils';
 
 class TabExchangeItem extends DialogActor {
     constructor() {

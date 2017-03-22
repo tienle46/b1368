@@ -59,7 +59,35 @@ export default class Component {
 
     }
 
-    onLoad() {}
+    onLoad() {
+        if(this.node) {
+            let btns = this.node.getComponentsInChildren(cc.Button);
+            btns && btns.forEach(btn => {
+                let sprite = btn.node.getComponent(cc.Sprite);
+                let color = {
+                    "buttons-ninePaths-btn-do": new cc.Color(151,15,0),
+                    "buttons-ninePaths-btn-blue": new cc.Color(0,99,175),
+                    "buttons-ninePaths-btn-vang": new cc.Color(142,84,0),
+                    "buttons-ninePaths-btn-xanhla": new cc.Color(27,88,3),
+                    "buttons-ninePaths-btn-tim": new cc.Color(72,72,72)
+                };
+                
+                if(sprite && sprite.spriteFrame._name.indexOf('-ninePaths-') > -1) {
+                    let outlines = sprite.node.getComponentsInChildren(cc.LabelOutline);
+                    color[sprite.spriteFrame._name] && outlines && outlines.forEach(outline => {
+                        outline.color = color[sprite.spriteFrame._name];
+                    });
+                }
+            });
+            // let btnNode = (btn && btn.node) || null;
+            // if(btnNode) {
+            //     let firstNode = btnNode.children[0];
+            //     if(firstChildren) {
+            //         let lblOutLine = firstChildrenNode
+            //     }
+            // }
+        }
+    }
 
     start() {}
 
