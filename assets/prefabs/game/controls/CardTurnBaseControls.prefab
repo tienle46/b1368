@@ -236,7 +236,7 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "21b0bffc-f6e9-418a-b748-a8e397dd7d1a"
+      "__id__": 0
     },
     "fileId": "6ca24r3PJ1PBJl0pcR+xlDe",
     "sync": false
@@ -250,7 +250,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "85804928-2cbe-469a-9cfb-70c9a83fd8a8"
+      "__uuid__": "654cea23-c19f-42f3-aaa3-c5de28f79437"
     },
     "_type": 1,
     "_sizeMode": 0,
@@ -352,7 +352,7 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "21b0bffc-f6e9-418a-b748-a8e397dd7d1a"
+      "__id__": 0
     },
     "fileId": "90cbeJmaz5M/aB8GWaN8wSe",
     "sync": false
@@ -523,7 +523,7 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "21b0bffc-f6e9-418a-b748-a8e397dd7d1a"
+      "__id__": 0
     },
     "fileId": "da20dipDr9GqqYcgVFbdDzX",
     "sync": false
@@ -537,7 +537,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "eafbd3ce-0478-4ae9-9b52-5e49a23c78ed"
+      "__uuid__": "93931f48-ea36-4fce-b8ae-05bc9900aa6b"
     },
     "_type": 1,
     "_sizeMode": 0,
@@ -639,7 +639,7 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "21b0bffc-f6e9-418a-b748-a8e397dd7d1a"
+      "__id__": 0
     },
     "fileId": "ad881kBXl5AbYewCi4eFTES",
     "sync": false
@@ -810,7 +810,7 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "21b0bffc-f6e9-418a-b748-a8e397dd7d1a"
+      "__id__": 0
     },
     "fileId": "c28afypf8NOLJC3L5UOKfel",
     "sync": false
@@ -824,7 +824,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "93931f48-ea36-4fce-b8ae-05bc9900aa6b"
+      "__uuid__": "9c8a9f54-d1c0-4ad0-9da1-7bb2c9f8fda9"
     },
     "_type": 1,
     "_sizeMode": 0,
@@ -926,7 +926,7 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "21b0bffc-f6e9-418a-b748-a8e397dd7d1a"
+      "__id__": 0
     },
     "fileId": "e0aaahbu0tBtaDi0w/76ZTI",
     "sync": false
@@ -956,7 +956,7 @@
       "__id__": 1
     },
     "asset": {
-      "__uuid__": "21b0bffc-f6e9-418a-b748-a8e397dd7d1a"
+      "__id__": 0
     },
     "fileId": "e787epAqCBJlpQ+4bCMj8ql",
     "sync": false

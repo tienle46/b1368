@@ -76,16 +76,12 @@ export default class Component {
                     let outlines = sprite.node.getComponentsInChildren(cc.LabelOutline);
                     color[sprite.spriteFrame._name] && outlines && outlines.forEach(outline => {
                         outline.color = color[sprite.spriteFrame._name];
+                        let lbl = outline.node.getComponent(cc.Label);
+                        // only uppercase first letter
+                        lbl.string.trim().split(" ").map(s => s.charAt(0).toUpperCase() + s.slice(1)).join(" ");
                     });
                 }
             });
-            // let btnNode = (btn && btn.node) || null;
-            // if(btnNode) {
-            //     let firstNode = btnNode.children[0];
-            //     if(firstChildren) {
-            //         let lblOutLine = firstChildrenNode
-            //     }
-            // }
         }
     }
 
