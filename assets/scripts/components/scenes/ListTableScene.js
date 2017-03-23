@@ -289,7 +289,7 @@ export default class ListTableScene extends BaseScene {
             cmd: app.commands.USER_LIST_ROOM,
             room
         });
-
+        
         // if (!this.timeout) {
         //     this.timeout = requestTimeout(() => {
         //         this._clearInterval();
@@ -363,8 +363,8 @@ export default class ListTableScene extends BaseScene {
     }
 
     _renderList() {
-
-        CCUtils.clearAllChildren(this.contentInScroll);
+        this.contentInScroll.removeAllChildren();
+        // CCUtils.clearAllChildren(this.contentInScroll);
 
         let filterItems = this._filterItems();
         if (filterItems.length > 0) {

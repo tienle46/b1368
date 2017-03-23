@@ -1,6 +1,5 @@
 import app from 'app';
 import Component from 'Component';
-import RubUtils from 'RubUtils';
 
 export class GridView extends Component {
     constructor() {
@@ -62,7 +61,48 @@ export class GridView extends Component {
         head && this._initHead(head);
         data && this._initBody(data, this.options);
     }
+    
+    
+    calcWidthByGroup (parentWidth, widths = [], spaceX = 0) {
+        // parentWidth -= 2 * padding;
+        // ['', '10%', 30, '']
+        widths = widths.map((width) => {
+            let w;
 
+            if (width) {
+                if (!isNaN(Number(width))) {
+                    w = Number(width);
+                } else {
+                    if (width.indexOf('%') > 0) {
+                        w = Number(width.replace('%', '')) * parentWidth / 100;
+                    } else
+                        w = null;
+                }
+                if (w && w < 0)
+                    w = null;
+            } else
+                w = null;
+
+            return w;
+        }); // => [null, 10*parentWidth/100, 30, null]
+
+        // total width inside array
+        let totalWidth = widths.reduce((p, n) => !isNaN(p) && (Number(p) + Number(n)), 0);
+
+        // remaing array which cotains null -> ["", null...]
+        let remains = widths.filter((e) => !isNaN(e) && Number(e) === 0).length;
+
+        // remaining width for null array, it will be equally divided.
+        let n = parentWidth > totalWidth ? parentWidth - totalWidth : 0;
+        let equallyDivided = n / remains;
+
+        return widths.map((e) => {
+            let number = ((e === null && Number(e) === 0 && equallyDivided) || e) - spaceX;
+            return number > 0 ? number : 0;
+        });
+    }
+    
+    
     _initListRow(data, hideBg) {
         let row = cc.instantiate(this.rowPrefab);
         row.getComponent('Row').initWithNode(data, hideBg);
@@ -123,7 +163,7 @@ export class GridView extends Component {
         let padding = 0;
         let spacingX = 0;
         let parentWidth = this.node.getContentSize().width;
-        return RubUtils.calcWidthByGroup(parentWidth, groupWidth, spacingX, padding);
+        return this.calcWidthByGroup(parentWidth, groupWidth, spacingX, padding);
     }
 }
 

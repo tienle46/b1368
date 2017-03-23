@@ -5,6 +5,7 @@
 import app from 'app';
 import Component from 'Component';
 import CCUtils from 'CCUtils';
+import RubUtils from 'RubUtils';
 
 let propAssets = {};
 let emotionAssets = {};
@@ -94,12 +95,8 @@ export default class Props extends Component {
             let atlas = emotionAssets[name];
             this._playLoadedEmotion(atlas, node);
         } else {
-            cc.loader.loadRes(`emotions/${name}`, cc.SpriteAtlas, (err, atlas) => {
-                if (err) {
-                    console.warn(err);
-                } else {
-                    this._playLoadedEmotion(atlas, node);
-                }
+            RubUtils.getAtlasFromUrl(`emotions/${name}`, (atlas) => {
+                this._playLoadedEmotion(atlas, node);
             });
         }
     }
@@ -163,14 +160,7 @@ export default class Props extends Component {
     }
 
     static playPropName(prosName, resPath, sample, startPos, endPos, finishCallback) {
-
-        cc.loader.loadRes(`${resPath}/${prosName}`, cc.SpriteAtlas, (err, atlas) => {
-
-            if (err || atlas.getSpriteFrames().length == 0) {
-                err && debug(err);
-                return;
-            }
-
+        RubUtils.getAtlasFromUrl(`${resPath}/${prosName}`, (atlas) => {
             this._playLoadedProp(atlas, { startPos, endPos }, finishCallback);
         });
     }
