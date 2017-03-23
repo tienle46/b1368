@@ -18,6 +18,10 @@ export default class PhomList extends Array {
         }
     }
 
+    isEmpty(){
+        return this.cards.length == 0;
+    }
+
     getPhomLengths() {
         return this.map(phom => phom.cards.length);
     }

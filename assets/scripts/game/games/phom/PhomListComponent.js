@@ -8,6 +8,7 @@ import Phom from 'Phom';
 import PhomList from 'PhomList';
 import Component from 'Component';
 import PhomUtils from 'PhomUtils';
+import ArrayUtils from 'ArrayUtils'
 
 export default class PhomListComponent extends Component {
     constructor() {
@@ -74,11 +75,11 @@ export default class PhomListComponent extends Component {
         return 3;
     }
 
-    addPhomList(newPhomList, player) {
+    addPhomList(player, newPhomList, eatenCards = []) {
         let firstEmptyPhomComponentIndex = this._findFirstEmptyPhomComponentIndex();
 
         if (!player) {
-            this._setPhomListWithoutPlayer(newPhomList, firstEmptyPhomComponentIndex);
+            this._setPhomListWithoutPlayer(newPhomList, firstEmptyPhomComponentIndex, eatenCards);
         } else {
             newPhomList.forEach((newPhom, i) => {
 
@@ -89,6 +90,7 @@ export default class PhomListComponent extends Component {
                         if (player.isItMe()) {
                             player.renderer.cardList.transferTo(phom, newPhom.cards, () => this._sortCardList(phom));
                         } else {
+                            newPhom.cards.forEach(card => card.locked = ArrayUtils.contains(eatenCards, card))
                             phom.transferFrom(player.renderer.cardList, newPhom.cards);
                         }
 
@@ -108,11 +110,15 @@ export default class PhomListComponent extends Component {
         }
     }
 
-    _setPhomListWithoutPlayer(phomList, firstEmptyPhomComponentIndex) {
+    _setPhomListWithoutPlayer(phomList, firstEmptyPhomComponentIndex, eatenCards = []) {
         phomList && phomList.forEach((phomModel, index) => {
             let phom = this.phoms[index + firstEmptyPhomComponentIndex];
             if (phom) {
+                phomModel.cards.forEach(card => {
+                    card.locked = ArrayUtils.contains(eatenCards, card)
+                })
                 phom && phom.setCards(phomModel.cards);
+
             }
         })
     }

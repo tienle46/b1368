@@ -135,7 +135,6 @@ export default class PlayerTurnBaseAdapter extends GameAdapter {
     }
 
     _handleLoseTurn(playerId){
-        if(typeof playerId == 'object') playerId == utils.getValue(data, Keywords.PLAYER_ID);
         this.player.id === playerId && this.onLoseTurn();
     }
 

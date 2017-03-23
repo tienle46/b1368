@@ -423,6 +423,7 @@ export default class CardList extends ActionComponent {
             if (card) {
                 const newCard = this._createNewCard(card.byteValue, reveal);
                 newCard.node.active = active;
+                newCard.setLocked(card.locked)
 
                 reverse ? this.cards.splice(0, 0, newCard) : this.cards.push(newCard);
                 this.node.addChild(newCard.node);

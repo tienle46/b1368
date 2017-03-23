@@ -8,6 +8,8 @@ import CardList from 'CardList';
 import PhomListComponent from 'PhomListComponent';
 import PlayerCardTurnBaseRenderer from 'PlayerCardTurnBaseRenderer';
 import CCUtils from 'CCUtils';
+import ArrayUtils from 'ArrayUtils'
+import PhomUtils from 'PhomUtils'
 
 export default class PlayerPhomRenderer extends PlayerCardTurnBaseRenderer {
     constructor() {
@@ -74,12 +76,12 @@ export default class PlayerPhomRenderer extends PlayerCardTurnBaseRenderer {
     }
 
     downPhom(playerPhomList, player) {
-        return this._downPhomListComponent.addPhomList(playerPhomList, player);
+        return this._downPhomListComponent.addPhomList(player, playerPhomList, player.eatenCards);
     }
 
-    setCurrentPhom(currentPhomList) {
+    setCurrentPhom(currentPhomList, eatenCards = []) {
         this._downPhomListComponent && this._downPhomListComponent.clear();
-        return this._downPhomListComponent.addPhomList(currentPhomList);
+        this._downPhomListComponent.addPhomList(null, currentPhomList, eatenCards);
     }
 
     cleanHighlightDownPhom() {

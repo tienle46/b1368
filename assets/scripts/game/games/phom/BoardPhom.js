@@ -74,6 +74,7 @@ export default class BoardPhom extends BoardCardTurnBase {
         let currentBoardEatenCards = utils.getValue(data, Keywords.GAME_PHOM_EATEN_CARDS);
         let currentBoardEatenCardSize = utils.getValue(data, Keywords.GAME_PHOM_EATEN_CARD_SIZE);
         let currentBoardEatenPlayers = utils.getValue(data, Keywords.GAME_PHOM_EATEN_PLAYERS);
+        let allEatenCards = utils.getValue(data, "eatenCards");
 
         if (!ArrayUtils.isEmpty(currentBoardPlayedCardSize)) {
             let generalPlayedCardIndex = 0;
@@ -89,6 +90,22 @@ export default class BoardPhom extends BoardCardTurnBase {
                 }
 
                 generalPlayedCardIndex += playedCardLength;
+            });
+        }
+
+        if (!ArrayUtils.isEmpty(currentBoardEatenPlayers)) {
+            let eatenCardsIndex = 0;
+            currentBoardEatenPlayers.forEach((eatenId, i) => {
+
+                let player = this.scene.gamePlayers.findPlayer(eatenId);
+                let eatenCardLength = currentBoardEatenCardSize[i];
+
+                if (player != null) {
+                    let eatenCardBytes = currentBoardEatenCards.slice(eatenCardsIndex, eatenCardsIndex + eatenCardLength);
+                    player.setEatenCards(GameUtils.convertBytesToCards(eatenCardBytes));
+                }
+
+                eatenCardsIndex += eatenCardLength;
             });
         }
 
@@ -121,27 +138,12 @@ export default class BoardPhom extends BoardCardTurnBase {
 
                     phomPlayerCount += phomCount;
 
+                    let eatenCards = GameUtils.convertBytesToCards(utils.getValue(allEatenCards, `${playerId}`, []));
                     /**
                      * _loadGamePlayData call after all renderer is call onEnable
                      */
-                    player.renderer.setCurrentPhom(playerPhomList);
+                    player.renderer.setCurrentPhom(playerPhomList, eatenCards);
                 }
-            });
-        }
-
-        if (!ArrayUtils.isEmpty(currentBoardEatenPlayers)) {
-            let eatenCardsIndex = 0;
-            currentBoardEatenPlayers.forEach((eatenId, i) => {
-
-                let player = this.scene.gamePlayers.findPlayer(eatenId);
-                let eatenCardLength = currentBoardEatenCardSize[i];
-
-                if (player != null) {
-                    let eatenCardBytes = currentBoardEatenCards.slice(eatenCardsIndex, eatenCardsIndex + eatenCardLength);
-                    player.setEatenCards(GameUtils.convertBytesToCards(eatenCardBytes));
-                }
-
-                eatenCardsIndex += eatenCardLength;
             });
         }
 

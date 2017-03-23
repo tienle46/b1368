@@ -178,7 +178,7 @@ export default class Card extends ActionComponent {
         }
 
         if (this.__highlight) {
-            this.setLocked(this.__highlight);
+            this.setHighlight(this.__highlight);
         }
 
         this.setReveal(this.reveal);
