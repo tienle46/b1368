@@ -92,7 +92,7 @@ export default class XocDiaControls extends GameControls {
         this.hideAllControls();
         this.setVisible(this.betContainerNode);
 
-        if(this.scene.gamePlayers.isMePlaying()){
+        if (this.scene.gamePlayers.isMePlaying()) {
             this.setVisible(this.betOptionsGroupNode);
             this.setVisible(this.btnGroupNode);
         }
@@ -100,24 +100,26 @@ export default class XocDiaControls extends GameControls {
 
     onBetBtnClick(event) {
         let chipOptionsNode = this.betOptionsGroup.getCheckedItem();
-        let amount = chipOptionsNode.getComponent('BetChip').getChipAmount();
+        if (chipOptionsNode) {
+            let amount = chipOptionsNode.getComponent('BetChip').getChipAmount();
 
-        if (app.context.getMeBalance() - amount < 0) {
-            app.system.error('Không đủ tiền để tiếp tục cược !');
-            return;
+            if (app.context.getMeBalance() - amount < 0) {
+                app.system.error('Không đủ tiền để tiếp tục cược !');
+                return;
+            }
+            this._setRebetBtnState(true);
+
+            let betTypeId = event.currentTarget.id;
+
+            this.isInCancelPhase = false;
+
+            // sent bet request
+            let bet = {};
+            bet[app.keywords.XOCDIA_BET.AMOUNT] = Number(amount);
+            bet[app.keywords.XOCDIA_BET.TYPE] = betTypeId;
+
+            this._sendBetRequest(bet);
         }
-        this._setRebetBtnState(true);
-
-        let betTypeId = event.currentTarget.id;
-
-        this.isInCancelPhase = false;
-
-        // sent bet request
-        let bet = {};
-        bet[app.keywords.XOCDIA_BET.AMOUNT] = Number(amount);
-        bet[app.keywords.XOCDIA_BET.TYPE] = betTypeId;
-
-        this._sendBetRequest(bet);
     }
 
     onX2BtnClick(event) {
@@ -184,7 +186,14 @@ export default class XocDiaControls extends GameControls {
     }
 
     _onPlayerTossChip(data) {
-        let { betsList, myPos, isItMe, isReplace, playerId, prevList } = data;
+        let {
+            betsList,
+            myPos,
+            isItMe,
+            isReplace,
+            playerId,
+            prevList
+        } = data;
         if (isReplace) {
             this._clearUserGoldAmountOnControl(isItMe, prevList, playerId);
         }
@@ -208,7 +217,13 @@ export default class XocDiaControls extends GameControls {
      * @param betData: {<betid1> : <amount>, <betid2> : <amount>}
      */
     _onPlayerReceiveChip(data) {
-        let { userPos, playerId, betData, dots, isItMe } = data;
+        let {
+            userPos,
+            playerId,
+            betData,
+            dots,
+            isItMe
+        } = data;
         let toPos = isItMe ? this.receiveChipDestinationNode.parent.convertToWorldSpaceAR(this.receiveChipDestinationNode.getPosition()) : userPos;
 
         for (let id in betData) {
@@ -220,7 +235,10 @@ export default class XocDiaControls extends GameControls {
         }
     }
 
-    _onTossChipAnim(data = { b: null, bo: null }, fromPos, isItMe, playerId, isReplace) {
+    _onTossChipAnim(data = {
+        b: null,
+        bo: null
+    }, fromPos, isItMe, playerId, isReplace) {
         let amount = data[app.keywords.XOCDIA_BET.AMOUNT];
         let typeId = data[app.keywords.XOCDIA_BET.TYPE];
 
@@ -283,7 +301,12 @@ export default class XocDiaControls extends GameControls {
     }
 
     _onPlayerCancelBetSuccess(data) {
-        let { myPos, isItMe, betsList, playerId } = data;
+        let {
+            myPos,
+            isItMe,
+            betsList,
+            playerId
+        } = data;
         this.isInCancelPhase = true;
 
         if (isItMe) {
