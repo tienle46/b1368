@@ -2051,7 +2051,7 @@
       "x": -10,
       "y": 15
     },
-    "_positionType": 0,
+    "_positionType": 1,
     "_emitterMode": 1,
     "_gravity": {
       "__type__": "cc.Vec2",
@@ -2210,7 +2210,7 @@
       "x": -10,
       "y": 15
     },
-    "_positionType": 0,
+    "_positionType": 1,
     "_emitterMode": 1,
     "_gravity": {
       "__type__": "cc.Vec2",
@@ -2665,7 +2665,7 @@
       "x": 0,
       "y": 0
     },
-    "_positionType": 0,
+    "_positionType": 1,
     "_emitterMode": 0,
     "_gravity": {
       "__type__": "cc.Vec2",
@@ -7304,7 +7304,7 @@
       "x": 0,
       "y": 0
     },
-    "_positionType": 0,
+    "_positionType": 1,
     "_emitterMode": 0,
     "_gravity": {
       "__type__": "cc.Vec2",
@@ -8281,7 +8281,7 @@
       "x": 0,
       "y": 0
     },
-    "_positionType": 0,
+    "_positionType": 1,
     "_emitterMode": 0,
     "_gravity": {
       "__type__": "cc.Vec2",
