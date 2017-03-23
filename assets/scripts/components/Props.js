@@ -58,16 +58,26 @@ export default class Props extends Component {
             const animation = animatingNode.addComponent(cc.Animation);
 
             const sprite = animatingNode.addComponent(cc.Sprite);
+            let spriteFrames = atlas.getSpriteFrames();
             sprite.trim = false;
-            sprite.spriteFrame = atlas.getSpriteFrames()[0];
-
+            sprite.spriteFrame = spriteFrames[0];            
             node.addChild(animatingNode);
-            let clip = cc.AnimationClip.createWithSpriteFrames(atlas.getSpriteFrames(), 5);
+            
+            let clip = cc.AnimationClip.createWithSpriteFrames(spriteFrames, 5);
             clip.name = 'run';
-            clip.wrapMode = cc.WrapMode.Default;
+            clip.wrapMode = cc.WrapMode.Normal;
             animation.addClip(clip);
 
             animation.on('finished', () => {
+                if(spriteFrames.length > 3) { // remove 1st spriteFrame when it contains 4 frames
+                    spriteFrames.shift();
+                    animation.removeClip(clip,true);
+                    clip = cc.AnimationClip.createWithSpriteFrames(spriteFrames, 5);
+                    clip.name = 'run';
+                    clip.wrapMode = cc.WrapMode.Normal;
+                    animation.addClip(clip);
+                }
+                
                 animation.play('run');
                 animation.on('finished', () => {
                     animatingNode.destroy();

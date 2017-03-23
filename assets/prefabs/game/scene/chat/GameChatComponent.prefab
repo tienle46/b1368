@@ -3372,7 +3372,7 @@
     "_tag": -1,
     "_opacityModifyRGB": false,
     "_id": "",
-    "_active": true,
+    "_active": false,
     "_components": [
       {
         "__id__": 111
@@ -3467,8 +3467,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 605,
-      "height": 265
+      "width": 622,
+      "height": 615
     },
     "_children": [],
     "_rotationX": 0,
@@ -3508,8 +3508,8 @@
     "_enabled": true,
     "_layoutSize": {
       "__type__": "cc.Size",
-      "width": 605,
-      "height": 265
+      "width": 622,
+      "height": 615
     },
     "_resize": 1,
     "_N$layoutType": 3,
@@ -3520,12 +3520,12 @@
       "height": 75
     },
     "_N$startAxis": 0,
-    "_N$paddingLeft": 25,
+    "_N$paddingLeft": 0,
     "_N$paddingRight": 0,
     "_N$paddingTop": 15,
     "_N$paddingBottom": 0,
-    "_N$spacingX": 44,
-    "_N$spacingY": 40,
+    "_N$spacingX": 40,
+    "_N$spacingY": 30,
     "_N$verticalDirection": 1,
     "_N$horizontalDirection": 0
   },
@@ -3766,7 +3766,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 605,
+      "width": 622,
       "height": 60
     },
     "_children": [],

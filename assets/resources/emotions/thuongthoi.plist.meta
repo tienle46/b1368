@@ -1,0 +1,56 @@
+{
+  "ver": "1.2.4",
+  "uuid": "69a09b59-8077-4d66-b284-12ee3854dcc2",
+  "rawTextureUuid": "14bfcda2-341d-4646-b3c8-45610ed55d2c",
+  "size": {
+    "width": 282,
+    "height": 170
+  },
+  "type": "Texture Packer",
+  "subMetas": {
+    "thuongthoi1.png": {
+      "ver": "1.0.3",
+      "uuid": "be5436f0-e17b-486e-8e40-58f99dde8e65",
+      "rawTextureUuid": "14bfcda2-341d-4646-b3c8-45610ed55d2c",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": -5,
+      "offsetY": 0,
+      "trimX": 143,
+      "trimY": 1,
+      "width": 138,
+      "height": 168,
+      "rawWidth": 170,
+      "rawHeight": 170,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "spriteType": "normal",
+      "subMetas": {}
+    },
+    "thuongthoi2.png": {
+      "ver": "1.0.3",
+      "uuid": "807ca625-419c-48a3-9e25-65c3c241b27e",
+      "rawTextureUuid": "14bfcda2-341d-4646-b3c8-45610ed55d2c",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": -3,
+      "offsetY": 0,
+      "trimX": 1,
+      "trimY": 1,
+      "width": 140,
+      "height": 168,
+      "rawWidth": 170,
+      "rawHeight": 170,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "spriteType": "normal",
+      "subMetas": {}
+    }
+  }
+}

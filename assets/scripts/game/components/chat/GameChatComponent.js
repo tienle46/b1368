@@ -161,21 +161,21 @@ export default class GameChatComponent extends Actor {
     }
 
     onQuickChatTabChecked() {
-        this.quickChatPanel.active = true;
-        this.chatHistoryNode.active = false;
-        this.emotionsPanel.active = false;
+        CCUtils.active(this.quickChatPanel);
+        CCUtils.deactive(this.chatHistoryNode );
+        CCUtils.deactive(this.emotionsPanel );
     }
 
     onLogChatTabChecked() {
-        this.quickChatPanel.active = false;
-        this.chatHistoryNode.active = true;
-        this.emotionsPanel.active = false;
+        CCUtils.deactive(this.quickChatPanel );
+        CCUtils.active(this.chatHistoryNode);
+        CCUtils.deactive(this.emotionsPanel );
     }
 
     onEmotionsTabChecked() {
-        this.quickChatPanel.active = false;
-        this.chatHistoryNode.active = false;
-        this.emotionsPanel.active = true;
+        CCUtils.deactive(this.quickChatPanel );
+        CCUtils.deactive(this.chatHistoryNode );
+        CCUtils.active(this.emotionsPanel);
     }
 
     onEditingEnded(e) {
@@ -236,8 +236,8 @@ export default class GameChatComponent extends Actor {
             //Props.playPropName(e.target.name, 'emotions', 4, this.scene.gamePlayers.me.node);
         }
 
-        this.tabChatHistoryToggle.check();
-        this.onLogChatTabChecked();
+        // this.tabChatHistoryToggle.check();
+        // this.onLogChatTabChecked();
     }
 
     onDestroy() {
