@@ -102,7 +102,9 @@ class TabExchangeItem extends DialogActor {
 
                     for (let i = 0; i < idList.length; i++) {
                         let itemId = idList[i];
-                        let itemIcon = `https://crossorigin.me/${iconList[i].replace('thumb.', '')}`;
+                        // let itemIcon = `https://crossorigin.me/${iconList[i].replace('thumb.', '')}`;
+                        let itemIcon = `https://cdn1.iconfinder.com/data/icons/flat-business-icons/128/user-128.png`;
+                        
                         let itemGold = goldList[i];
                         let itemName = nameList[i];
 

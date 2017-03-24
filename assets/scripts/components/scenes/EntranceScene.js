@@ -183,7 +183,7 @@ class EntranceScene extends BaseScene {
     }
 
     _activeFacebookBtn() {
-        this.facebookButton.interactable = true;
+        this.facebookButton && (this.facebookButton.interactable = true);
     }
 
     _onLoginWithAccessToken(username, accessToken) {

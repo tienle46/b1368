@@ -127,7 +127,7 @@ class TabExchangeCard extends DialogActor {
                         amount && (amount = Number(amount[0].replace('K', '')) * 1000);
 
                         if (providerName && !Utils.isEmpty(providerName)) {
-                            if (!this._tabData.hasOwnProperty(providerName)) {
+                            if (!this._tabData.hasOwnProperty(providerName) || !this._tabData[providerName]) {
                                 this._tabData[providerName] = [];
                             }
                             this._tabData[providerName].push({ id: itemId, gold: amount, needed: neededGold, name: itemName });

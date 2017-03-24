@@ -47,7 +47,10 @@ class TopBar extends DialogActor {
     start() {
         super.start();
         this._requestMessageNotification(app.context.unreadMessageBuddies.length);
-        this.avatarSpriteNode && HttpImageLoader.loadDefaultAvatar(this.avatarSpriteNode.getComponent(cc.Sprite));
+        if(this.avatarSpriteNode){
+            let sprite = this.avatarSpriteNode.getComponent(cc.Sprite);
+            app.context.getMyInfo().avatarUrl ? HttpImageLoader.loadImageToSprite(sprite, app.context.getMyInfo().avatarUrl) : HttpImageLoader.loadDefaultAvatar(sprite);
+        }
     }
 
     _addGlobalListener() {
@@ -262,10 +265,16 @@ class TopBar extends DialogActor {
     }
 
     _onUserVariablesUpdate(ev) {
+        console.debug('_onUserVariablesUpdate', ev);
         let changedVars = ev[app.keywords.BASE_EVENT_CHANGED_VARS]
         changedVars.map(v => {
             if (v == 'coin') {
                 this.userInfoCoinLbl.string = `${utils.numberFormat(app.context.getMeBalance() || 0)}`;
+            }
+            
+            if(v == app.keywords.CHANGE_AVATAR_URL) {
+                let sprite = this.avatarSpriteNode.getComponent(cc.Sprite);
+                sprite && (HttpImageLoader.loadImageToSprite(sprite, app.context.getMyInfo().avatarUrl))
             }
         });
 

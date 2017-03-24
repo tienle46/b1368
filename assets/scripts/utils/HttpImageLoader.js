@@ -2,7 +2,7 @@
  * Created by Thanh on 3/1/2017.
  */
 
-import app from 'app'
+import app from 'app';
 import Utils from 'Utils';
 
 class HttpImageLoader {
@@ -50,19 +50,23 @@ class HttpImageLoader {
      * @return {cc.SpriteFrame}
      */
     loadImage(url, payload = 'default', cb = () => {}){
+        // let sprite = cc.textureCache.getTextureForKey(url);
+        // if(!sprite) {
+            let texture = cc.textureCache.addImage(url, cb);
+            if(texture){
+                let urls = this.loadedImageUrl[payload];
 
-        let texture = cc.textureCache.addImage(url, cb);
-        if(texture){
-            let urls = this.loadedImageUrl[payload];
+                if(!urls){
+                    urls = [];
+                    this.loadedImageUrl[payload] = urls;
+                }
+                urls.push(url);
 
-            if(!urls){
-                urls = [];
-                this.loadedImageUrl[payload] = urls;
+                return new cc.SpriteFrame(texture);
             }
-            urls.push(url);
-
-            return new cc.SpriteFrame(texture);
-        }
+        // }
+        
+        // return sprite;
     }
 
     loadImageToSprite(sprite, url, playload = 'default'){

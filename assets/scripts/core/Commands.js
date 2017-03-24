@@ -267,4 +267,8 @@ Commands.CLIENT_CONFIG = "clientConfig";
 Commands.BANK_ACCOUNT_WITHDRAW_INFO = "b_awi";
 Commands.GET_WITHDRAW_INFO = "getWithdrawInfo";
 
+// AVATAR
+Commands.USER_AVATARS = "avatarUrls";
+Commands.CHANGE_AVATAR = "changeAvatar";
+
 module.exports = Commands;

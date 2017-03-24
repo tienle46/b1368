@@ -87,13 +87,13 @@ class GameContext {
 
     getMyInfo() {
         let me = this.getMe();
-
         return me ? {
             "id": me.id,
             "isItMe": me.isItMe,
             "name": me.name,
             "coin": (me.variables.coin && me.variables.coin.value) || 0,
-            "level": me.variables.lv
+            "level": me.variables.lv,
+            "avatarUrl": (me.variables.avatarUrl && me.variables.avatarUrl.value) || null
         } : null;
     }
 
