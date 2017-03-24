@@ -299,7 +299,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": 244.60000000000002
+      "y": 235
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -341,7 +341,7 @@
     "_isSystemFontUsed": false,
     "_N$string": "NẠP TIỀN",
     "_N$horizontalAlign": 1,
-    "_N$verticalAlign": 2,
+    "_N$verticalAlign": 1,
     "_N$overflow": 0
   },
   {
@@ -357,7 +357,7 @@
     "_alignFlags": 17,
     "_left": 0,
     "_right": 0,
-    "_top": -2.5999999999999943,
+    "_top": 7,
     "_bottom": 0,
     "_verticalCenter": 0,
     "_horizontalCenter": 0,

@@ -22,11 +22,9 @@ export default class TabUserInfo extends DialogActor {
             userInfoPanel: cc.Node,
             changePasswordPanel: cc.Node,
             updatePhoneNumberPanel: cc.Node,
-            vipInfoDialog: cc.Prefab
+            vipInfoPanel: cc.Node,
+            changeAvatarDialog: cc.Prefab
         };
-
-        this.nextLvlBenefit = "";
-        this.levelInfo = "";
     }
 
     onLoad() {
@@ -77,10 +75,6 @@ export default class TabUserInfo extends DialogActor {
         }
     }
 
-    onHintNextLvlBtnClick() {
-        let string = this.nextLvlBenefit || "Đang cập nhật cấp độ kế.";
-        app.system.info(string);
-    }
 
     onShowTopUpDialog() {
         this._hide();
@@ -90,12 +84,12 @@ export default class TabUserInfo extends DialogActor {
     onLevelInfoBtnClick() {
         // let string = this.levelInfo || "Đang cập nhật.";
         // app.system.info(string);
-        let vipInfoDialog = cc.instantiate(this.vipInfoDialog);
-        app.system.getCurrentSceneNode().addChild(vipInfoDialog);
+        this._showVipInfoPanel();
     }
 
     onChangeAvatarBtnClick() {
-        app.system.info(app.res.string('coming_soon'));
+        let changeAvatarDialog = cc.instantiate(this.changeAvatarDialog);
+        app.system.getCurrentSceneNode().addChild(changeAvatarDialog);
     }
 
     onUpdateBtnClick() {
@@ -216,20 +210,30 @@ export default class TabUserInfo extends DialogActor {
         active(this.userInfoPanel);
         deactive(this.changePasswordPanel);
         deactive(this.updatePhoneNumberPanel);
+        deactive(this.vipInfoPanel);        
     }
 
     _showChangePasswordPanel() {
         deactive(this.userInfoPanel);
         active(this.changePasswordPanel);
         deactive(this.updatePhoneNumberPanel);
+        deactive(this.vipInfoPanel);        
     }
 
     _showUpdatePhoneNumberPanel() {
         deactive(this.userInfoPanel);
         deactive(this.changePasswordPanel);
         active(this.updatePhoneNumberPanel);
+        deactive(this.vipInfoPanel);        
     }
-
+    
+    _showVipInfoPanel() {
+        deactive(this.userInfoPanel);
+        deactive(this.changePasswordPanel);
+        deactive(this.updatePhoneNumberPanel);
+        active(this.vipInfoPanel);
+    }
+    
     _hide() {
         let parent = this.node.parent;
 

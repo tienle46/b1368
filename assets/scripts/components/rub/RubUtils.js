@@ -23,22 +23,22 @@ let RubUtils = {
     },
     getAtlasFromUrl: (url, cb) => {
         RubUtils.loadRes(url, cc.SpriteAtlas).then((atlas)=>{
-            cb(atlas);
+            cb && cb(atlas);
         }).catch(err => console.error(err));
     },
-    getSpriteFrameFromAtlas: (resURL, key, cb) => {
+    getSpriteFrameFromAtlas: (atlasURL, key, cb) => {
         // load SpriteAtlas (Atlas), and get one of them SpriteFrame
         // Note Atlas resource file (plist) usually of the same name and a picture file (PNG) placed in a directory,
         // So should need to in the second parameter specifies the resource type.
-        RubUtils.getAtlasFromUrl(resURL, (atlas) => {
+        RubUtils.getAtlasFromUrl(atlasURL, (atlas) => {
             let frame = atlas.getSpriteFrame(key);
-            cb(frame);
+            cb && cb(frame);
         });
     },
     /**
      * @return callback(sprites)
      */
-    getSpriteFramesFromAtlas: (resURL, keys, callback) => {
+    getSpriteFramesFromAtlas: (atlasURL, keys, callback) => {
         var async = require('async');
 
         if (!(keys instanceof Array) || keys.length < 1)
@@ -48,7 +48,7 @@ let RubUtils = {
         let count = 0;
 
         async.mapSeries(keys, (key, cb) => {
-            RubUtils.getSpriteFrameFromAtlas(resURL, key, (sprite) => {
+            RubUtils.getSpriteFrameFromAtlas(atlasURL, key, (sprite) => {
                 if (sprite) {
                     count++;
                     sprites[key] = sprite;
@@ -58,7 +58,7 @@ let RubUtils = {
                     window.free(sprites);
                 }
 
-                cb(); // next ->
+                cb && cb(); // next ->
             });
         });
     },
