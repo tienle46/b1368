@@ -72,7 +72,7 @@ export default class Component {
                     "buttons-ninePaths-btn-tim": new cc.Color(72,72,72)
                 };
                 
-                if(sprite && sprite.spriteFrame._name.indexOf('-ninePaths-') > -1) {
+                if(sprite && sprite.spriteFrame && sprite.spriteFrame._name.indexOf('-ninePaths-') > -1) {
                     let outlines = sprite.node.getComponentsInChildren(cc.LabelOutline);
                     color[sprite.spriteFrame._name] && outlines && outlines.forEach(outline => {
                         outline.color = color[sprite.spriteFrame._name];

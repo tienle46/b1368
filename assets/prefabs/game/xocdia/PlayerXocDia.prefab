@@ -772,8 +772,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 36,
-      "height": 37
+      "width": 47,
+      "height": 47
     },
     "_children": [],
     "_rotationX": 0,
@@ -1735,7 +1735,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 0,
-      "height": 33.33
+      "height": 27.78
     },
     "_children": [],
     "_rotationX": 0,
@@ -1822,7 +1822,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 0,
-      "height": 26.67
+      "height": 22.22
     },
     "_children": [],
     "_rotationX": 0,
@@ -2571,7 +2571,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 62.09,
+      "width": 59.19,
       "height": 15
     },
     "_children": [],
@@ -2618,9 +2618,7 @@
     "_fontSize": 15,
     "_lineHeight": 15,
     "_enableWrapText": true,
-    "_N$file": {
-      "__uuid__": "fc08811f-de1c-4fe9-91dc-c4d6bac9e438"
-    },
+    "_N$file": null,
     "_isSystemFontUsed": false,
     "_N$string": "Báo xâm",
     "_N$horizontalAlign": 1,
@@ -2688,7 +2686,9 @@
     "_isTrimmedMode": true,
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
-    "_atlas": null
+    "_atlas": {
+      "__uuid__": "10ca67ea-2a3c-4512-b8a8-cfd37f9d8bbe"
+    }
   },
   {
     "__type__": "cc.Button",
@@ -2893,9 +2893,7 @@
     "_fontSize": 18,
     "_lineHeight": 20,
     "_enableWrapText": false,
-    "_N$file": {
-      "__uuid__": "fc08811f-de1c-4fe9-91dc-c4d6bac9e438"
-    },
+    "_N$file": null,
     "_isSystemFontUsed": false,
     "_N$string": "Cược biên",
     "_N$horizontalAlign": 1,
@@ -2948,7 +2946,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "50e39688-8ef9-494b-a605-de78eac820ce"
+      "__uuid__": "d698e868-604f-48a7-88c5-96fff946dac2"
     },
     "_type": 1,
     "_sizeMode": 0,
@@ -2963,7 +2961,9 @@
     "_isTrimmedMode": true,
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
-    "_atlas": null
+    "_atlas": {
+      "__uuid__": "10ca67ea-2a3c-4512-b8a8-cfd37f9d8bbe"
+    }
   },
   {
     "__type__": "cc.Button",

@@ -77,7 +77,7 @@ class BowlDishControl extends Component {
         let acceptedArea = this.circleGroup.getContentSize();
         let random = app._.random;
         let size = cc.size(18, 18);
-
+        
         dots.forEach((dot, i) => {
             let posX = random(random(0, 1 / 2), randomPosInRange[i].x * (acceptedArea.width - size.width) / 2);
             let posY = random(random(0, 1 / 2), randomPosInRange[i].y * (acceptedArea.height - size.height) / 2);

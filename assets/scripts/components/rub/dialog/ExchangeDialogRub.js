@@ -15,7 +15,7 @@ export default class ExchangeDialogRub extends DialogRub {
 
     _addPhoneUpdateBody() {
         let prefabUrl = 'dashboard/dialog/prefabs/exchange/update_phone_number';
-        RubUtils.loadRes(prefabUrl).then((prefab) => {
+        RubUtils.loadRes(prefabUrl, cc.Prefab).then((prefab) => {
             this.upn = cc.instantiate(prefab);
             // this.upn.y = this.upn.getPositionY() - 50;
 

@@ -151,7 +151,7 @@ export default class MessagePopup extends Component {
             if (prefab) {
                 this._createAndShow(prefab, componentName, ...args);
             } else {
-                RubUtils.loadRes(`popup/${componentName}`).then((prefab) => this._createAndShow(prefab, componentName, ...args));
+                RubUtils.loadRes(`popup/${componentName}`, cc.Prefab).then((prefab) => this._createAndShow(prefab, componentName, ...args));
             }
         }
         window.release(args);

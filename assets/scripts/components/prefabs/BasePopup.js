@@ -42,9 +42,9 @@ class BasePopup extends Component {
         if (element instanceof cc.Node)
             this.bodyNode.addChild(element);
         else if (element instanceof cc.Prefab)
-            this.bodyNode.addChild(cc.instantiate(element))
+            this.bodyNode.addChild(cc.instantiate(element));
         else if (element instanceof String) {
-            RubUtils.loadRes(element).then((prefab) => {
+            RubUtils.loadRes(element. cc.Prefab).then((prefab) => {
                 this.bodyNode.addChild(cc.instantiate(prefab));
             });
         }

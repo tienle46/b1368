@@ -81,7 +81,7 @@ export default class Dialog extends Component {
     }
 
     _addContentPrefabToBody(id, prefabURL, componentName, tabGroup, data) {
-        return RubUtils.loadRes(prefabURL).then((prefab) => {
+        return RubUtils.loadRes(prefabURL, cc.Prefab).then((prefab) => {
             this.addAsset(prefab);
             let p = cc.instantiate(prefab);
             p._$uid = id;

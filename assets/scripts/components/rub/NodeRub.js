@@ -294,7 +294,7 @@ let NodeRub = {
         };
 
         if (typeof options.backgroundImage === 'string') {
-            RubUtils.loadRes(options.backgroundImage, true).then(handleOptions);
+            RubUtils.loadRes(options.backgroundImage, cc.SpriteFrame).then(handleOptions);
         } else {
             handleOptions();
         }

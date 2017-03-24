@@ -15,7 +15,7 @@ let RubUtils = {
             }
 
             if (assetType) {
-                cc.loader.loadRes(resURL, assetType ? assetType : cc.SpriteFrame , handler);
+                cc.loader.loadRes(resURL, assetType, handler);
             } else {
                 cc.loader.loadRes(resURL, handler);
             }
@@ -24,7 +24,7 @@ let RubUtils = {
     getAtlasFromUrl: (url, cb) => {
         RubUtils.loadRes(url, cc.SpriteAtlas).then((atlas)=>{
             cb(atlas);
-        });
+        }).catch(err => console.error(err));
     },
     getSpriteFrameFromAtlas: (resURL, key, cb) => {
         // load SpriteAtlas (Atlas), and get one of them SpriteFrame
@@ -66,7 +66,7 @@ let RubUtils = {
        RubUtils.loadRes(url, cc.Font).then((font) => {
             component.font = font;
             cb && cb(font);
-        });
+        }).catch(err => console.error(err));
     },
     /**
      * @param spriteComponent: (cc.Component) sprite we need to add spriteFrame to
@@ -99,7 +99,6 @@ let RubUtils = {
                 ccSize && spriteComponent.node && spriteComponent.node.setContentSize(ccSize);
                 cb && cb(spriteComponent);
             }
-
         }
 
         if (isCORS) {
@@ -108,12 +107,12 @@ let RubUtils = {
             spriteComponent.spriteFrame = spriteFrame;
             spriteFrameDefaultConfig(spriteComponent);
         } else {
-            return RubUtils.loadRes(resURL, true).then((spriteFrame) => {
+            return RubUtils.loadRes(resURL, cc.SpriteFrame).then((spriteFrame) => {
                 if (spriteFrame) {
                     spriteComponent.spriteFrame = spriteFrame;
                     spriteFrameDefaultConfig(spriteComponent);
                 }
-            });
+            }).catch(err => console.error(err));
         }
     },
     // usefull when assets is prefab
