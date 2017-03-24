@@ -65,12 +65,20 @@ export default class BoardTurnBaseAdapter extends GameAdapter {
     }
 
     _handlePlayTurn(data){
+
         this.lastPlayedTurn = utils.getValue(data, Keywords.PLAYER_ID);
-        let turnOwner = this.scene.gamePlayers.findPlayer(this.lastPlayedTurn);
-        if(!turnOwner){
+        let preTurnOwner = this.scene.gamePlayers.findPlayer(this.lastPlayedTurn);
+
+        if(preTurnOwner){
+            this.scene.emit(Events.HANDLE_PLAYER_PLAY_TURN, this.lastPlayedTurn, data)
+        }else{
             let cards = GameUtils.convertBytesToCards(utils.getValue(data, Keywords.GAME_LIST_CARD, []));
             cards.length > 0 && this.scene.emit(Events.ON_PLAYER_PLAYED_CARDS, this.lastPlayedTurn, cards);
+            this.lastPlayedTurn = 0;
         }
+
+        let nextTurnPlayerId = utils.getValue(data, Keywords.TURN_PLAYER_ID);
+        nextTurnPlayerId && this.scene.emit(Events.HANDLE_CHANGE_TURN, nextTurnPlayerId);
     }
 
     _onPlayerTurn(turnPlayerId){

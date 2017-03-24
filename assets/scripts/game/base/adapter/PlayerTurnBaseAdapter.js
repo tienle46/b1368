@@ -40,7 +40,7 @@ export default class PlayerTurnBaseAdapter extends GameAdapter {
 
         this.scene.on(Events.HANDLE_TURN_DURATION, this._handleTurnDuration, this);
         this.scene.on(Events.HANDLE_CHANGE_TURN, this._handleChangeTurn, this);
-        this.scene.on(Events.HANDLE_PLAY_TURN, this._handlePlayTurn, this);
+        this.scene.on(Events.HANDLE_PLAYER_PLAY_TURN, this._handlePlayTurn, this);
         this.scene.on(Events.HANDLE_LOSE_TURN, this._handleLoseTurn, this);
         this.scene.on(Events.HANDLE_SKIP_TURN, this._handleSkipTurn, this);
         this.scene.on(Events.ON_GAME_STATE_ENDING, this._onGameEnding, this);
@@ -52,7 +52,7 @@ export default class PlayerTurnBaseAdapter extends GameAdapter {
     _removeListener(){
         this.scene.off(Events.HANDLE_TURN_DURATION, this._handleTurnDuration, this);
         this.scene.off(Events.HANDLE_CHANGE_TURN, this._handleChangeTurn, this);
-        this.scene.off(Events.HANDLE_PLAY_TURN, this._handlePlayTurn, this);
+        this.scene.off(Events.HANDLE_PLAYER_PLAY_TURN, this._handlePlayTurn, this);
         this.scene.off(Events.HANDLE_LOSE_TURN, this._handleLoseTurn, this);
         this.scene.off(Events.HANDLE_SKIP_TURN, this._handleSkipTurn, this);
         this.scene.off(Events.ON_GAME_STATE_ENDING, this._onGameEnding, this);
@@ -114,19 +114,11 @@ export default class PlayerTurnBaseAdapter extends GameAdapter {
         }
     }
 
-    _handlePlayTurn(data){
-
-        let playerId = utils.getValue(data, Keywords.PLAYER_ID);
+    _handlePlayTurn(playerId, data){
         if(this.player.id === playerId)
         {
             this.handlePlayTurn(data);
             this.player.stopTimeLine();
-
-            let nextTurnPlayerId = utils.getValue(data, Keywords.TURN_PLAYER_ID);
-            nextTurnPlayerId && this.scene.emit(Events.HANDLE_CHANGE_TURN, nextTurnPlayerId);
-
-            // debug("how wait turn on _handlePlayTurn")
-            // this._showWaitTurnControls();
         }
     }
 
@@ -164,7 +156,8 @@ export default class PlayerTurnBaseAdapter extends GameAdapter {
 
         //TODO play sound
 
-        let showPlayControlOnly = this.preTurnPlayerId == 0 && this.scene.board.getLastPlayedTurnPlayerId() == 0;
+        console.warn("this.preTurnPlayerId: ", this.preTurnPlayerId, "getLastPlayedTurnPlayerId: ", this.scene.board.getLastPlayedTurnPlayerId())
+        let showPlayControlOnly = !this.preTurnPlayerId && !this.scene.board.getLastPlayedTurnPlayerId();
 
         if(this.player.isItMe()) {
             this.scene.emit(Events.SHOW_ON_TURN_CONTROLS, showPlayControlOnly);

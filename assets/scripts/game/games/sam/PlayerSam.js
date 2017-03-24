@@ -33,7 +33,7 @@ export default class PlayerSam extends PlayerCardTurnBase {
         this.scene.on(Events.ON_CLICK_BAO_XAM_BUTTON, this._onBaoXam, this);
         this.scene.on(Events.ON_CLICK_BO_BAO_XAM_BUTTON, this._onBoBaoXam, this);
         this.scene.on(Events.ON_PLAYER_REMAIN_CARD_COUNT, this._setRemainCardCount, this);
-        this.scene.on(Events.HANDLE_PLAY_TURN, this._onPlayerPlayedTurn, this);
+        this.scene.on(Events.HANDLE_PLAYER_PLAY_TURN, this._onPlayerPlayedTurn, this);
         this.scene.on(Events.ON_GAME_STATE, this._onGameState, this);
         this.scene.on(Events.ON_GAME_STATE_TRUE_PLAY, this._onGameTruePlay, this);
         this.scene.on(Events.ON_PLAYER_BAO_XAM, this._onPlayerBaoXam, this);
@@ -49,7 +49,7 @@ export default class PlayerSam extends PlayerCardTurnBase {
         this.scene.off(Events.ON_PLAYER_REMAIN_CARD_COUNT, this._setRemainCardCount, this);
         this.scene.off(Events.ON_CLICK_BAO_XAM_BUTTON, this._onBaoXam, this);
         this.scene.off(Events.ON_CLICK_BO_BAO_XAM_BUTTON, this._onBoBaoXam, this);
-        this.scene.off(Events.HANDLE_PLAY_TURN, this._onPlayerPlayedTurn, this);
+        this.scene.off(Events.HANDLE_PLAYER_PLAY_TURN, this._onPlayerPlayedTurn, this);
         this.scene.off(Events.ON_GAME_STATE_TRUE_PLAY, this._onGameTruePlay, this);
         this.scene.off(Events.ON_GAME_STATE, this._onGameState, this);
         this.scene.off(Events.ON_PLAYER_BAO_XAM, this._onPlayerBaoXam, this);
@@ -101,8 +101,7 @@ export default class PlayerSam extends PlayerCardTurnBase {
         this.scene.emit(Events.SHOW_WAIT_TURN_CONTROLS);
     }
 
-    _onPlayerPlayedTurn(data){
-        let playerId = utils.getValue(data, app.keywords.PLAYER_ID);
+    _onPlayerPlayedTurn(playerId, data){
         if(playerId == this.id && !this.isItMe()) {
             let isBao1 = utils.getValue(data, app.keywords.XAM_BAO_1_PLAYER_ID);
             isBao1 && this.renderer.showBao1();

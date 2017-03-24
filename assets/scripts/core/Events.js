@@ -7,6 +7,7 @@ var Events = module.exports;
 Events.HANDLE_TURN_DURATION = "handle.turnDuration";
 Events.HANDLE_CHANGE_TURN = "handle.changeTurn";
 Events.HANDLE_PLAY_TURN = "handle.playTurn";
+Events.HANDLE_PLAYER_PLAY_TURN = "handle.playerPlayTurn";
 Events.HANDLE_LOSE_TURN = "handle.loseTurn";
 Events.HANDLE_SKIP_TURN = "handle.skipTurn";
 Events.HANDLE_GET_TURN = "handle.getTurn";
