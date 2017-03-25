@@ -63,7 +63,6 @@ app.config.gameGroups = {
 
 
 app.config.parseConfigData = function(configData = {}) {
-    console.debug('config', configData);
     app.config.fanpage = configData.fanpage || app.config.fanpage
     app.config.supportHotline = configData.supportHotline || app.config.supportHotline
     app.config.listTableGroupFilters = configData.listTableGroupFilters || app.config.listTableGroupFilters

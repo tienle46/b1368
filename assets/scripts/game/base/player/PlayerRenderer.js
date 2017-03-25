@@ -60,7 +60,9 @@ export default class PlayerRenderer extends ActorRenderer {
 
         this.playerMessage = this.playerMessageNode.getComponent('PlayerMessage');
         this.playerMessage.setup(this);
-
+        
+        this._initUserAvatar();
+        
         this._stopCountdown();
 
         this.loaded = true;
@@ -192,6 +194,13 @@ export default class PlayerRenderer extends ActorRenderer {
 
     _findStatusLabel(statusNode) {
         return statusNode ? statusNode.children.filter(child => child instanceof cc.Label).pop() : null;
+    }
+    
+    _initUserAvatar() {
+        if(this.avatarNode) {
+            let sprite = this.avatarNode.getComponentInChildren(cc.Sprite);
+            sprite && app.context.getUserAvatar(sprite);
+        }
     }
 }
 

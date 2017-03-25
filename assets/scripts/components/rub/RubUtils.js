@@ -1,3 +1,5 @@
+import app from 'app';
+
 let RubUtils = {
     /**
      * @resURL {string}
@@ -8,9 +10,9 @@ let RubUtils = {
             function handler(err, asset) {
                 if (err)
                     reject(err);
-                
+
                 resolve(asset);
-                
+
                 RubUtils.releaseAssets(asset);
             }
 
@@ -22,7 +24,7 @@ let RubUtils = {
         });
     },
     getAtlasFromUrl: (url, cb) => {
-        RubUtils.loadRes(url, cc.SpriteAtlas).then((atlas)=>{
+        RubUtils.loadRes(url, cc.SpriteAtlas).then((atlas) => {
             cb && cb(atlas);
         }).catch(err => console.error(err));
     },
@@ -63,7 +65,7 @@ let RubUtils = {
         });
     },
     loadFont: (component, url, cb) => {
-       RubUtils.loadRes(url, cc.Font).then((font) => {
+        RubUtils.loadRes(url, cc.Font).then((font) => {
             component.font = font;
             cb && cb(font);
         }).catch(err => console.error(err));
@@ -90,8 +92,10 @@ let RubUtils = {
         };
         options = Object.assign({}, o, options);
 
-        function spriteFrameDefaultConfig(spriteComponent) {
+        function spriteFrameDefaultConfig(spriteComponent, texture2D) {
             if (spriteComponent) {
+                spriteComponent.spriteFrame = new cc.SpriteFrame(texture2D);
+                
                 for (let key in options) {
                     spriteComponent.hasOwnProperty(key) && options[key] && (spriteComponent[key] = options[key]);
                 }
@@ -102,10 +106,19 @@ let RubUtils = {
         }
 
         if (isCORS) {
-            textureCache = cc.textureCache.addImage(resURL);
-            let spriteFrame = new cc.SpriteFrame(textureCache);
-            spriteComponent.spriteFrame = spriteFrame;
-            spriteFrameDefaultConfig(spriteComponent);
+            if (app.env.isBrowser()) {
+                textureCache = cc.textureCache.addImage(resURL);
+                
+                spriteFrameDefaultConfig(spriteComponent, textureCache);
+            } else {
+                cc.loader.load(resURL, (err, tex) => {
+                    if(err) console.error(err);
+                    
+                    if (tex && tex instanceof cc.Texture2D) {
+                        spriteFrameDefaultConfig(spriteComponent, tex);
+                    }
+                });
+            }
         } else {
             return RubUtils.loadRes(resURL, cc.SpriteFrame).then((spriteFrame) => {
                 if (spriteFrame) {

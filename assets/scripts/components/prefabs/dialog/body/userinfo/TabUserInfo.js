@@ -1,8 +1,16 @@
 import app from 'app';
 import DialogActor from 'DialogActor';
-import { isEmpty, active, deactive, numberFormat } from 'Utils';
+import {
+    isEmpty,
+    active,
+    deactive,
+    numberFormat
+} from 'Utils';
 import TopupDialogRub from 'TopupDialogRub';
 import CCUtils from 'CCUtils';
+import {
+    SFSEvent
+} from 'SFS2X';
 
 export default class TabUserInfo extends DialogActor {
     constructor() {
@@ -11,6 +19,7 @@ export default class TabUserInfo extends DialogActor {
         this.properties = {
             ...this.properties,
             userName: cc.Label,
+            avatar: cc.Sprite,
             vipLevel: cc.Label,
             chipAmout: cc.Label,
             phoneNumber: cc.Label,
@@ -30,6 +39,7 @@ export default class TabUserInfo extends DialogActor {
     onLoad() {
         super.onLoad();
         this._showUserInfoPanel();
+        app.context.getUserAvatar(this.avatar);
     }
 
     start() {
@@ -115,6 +125,8 @@ export default class TabUserInfo extends DialogActor {
         app.system.addListener(app.commands.USER_PROFILE_NEW, this._onUserProfile, this);
         app.system.addListener(app.commands.USER_UPDATE_PASSWORD, this._onUserUpdatePassword, this);
         app.system.addListener(app.commands.UPDATE_PHONE_NUMBER, this._onUserUpdatePhoneNumber, this);
+        app.system.addListener(SFSEvent.USER_VARIABLES_UPDATE, this._onUserVariablesUpdate, this);
+
     }
 
     _removeGlobalListener() {
@@ -122,6 +134,7 @@ export default class TabUserInfo extends DialogActor {
         app.system.removeListener(app.commands.USER_PROFILE_NEW, this._onUserProfile, this);
         app.system.removeListener(app.commands.USER_UPDATE_PASSWORD, this._onUserUpdatePassword, this);
         app.system.removeListener(app.commands.UPDATE_PHONE_NUMBER, this._onUserUpdatePhoneNumber, this);
+        app.system.removeListener(SFSEvent.USER_VARIABLES_UPDATE, this._onUserVariablesUpdate, this);
     }
 
     _isValidPasswordInput(str) {
@@ -142,9 +155,18 @@ export default class TabUserInfo extends DialogActor {
     _onUserProfile(data) {
         this.hideLoader();
 
-        let { name } = app.context.getMyInfo();
+        let {
+            name
+        } = app.context.getMyInfo();
 
-        let { balance, benefit, id, levelName, nextLevelName, nextBenefit } = data;
+        let {
+            balance,
+            benefit,
+            id,
+            levelName,
+            nextLevelName,
+            nextBenefit
+        } = data;
 
         this.userName.string = name;
         this.chipAmout.string = numberFormat(balance);
@@ -210,35 +232,44 @@ export default class TabUserInfo extends DialogActor {
         active(this.userInfoPanel);
         deactive(this.changePasswordPanel);
         deactive(this.updatePhoneNumberPanel);
-        deactive(this.vipInfoPanel);        
+        deactive(this.vipInfoPanel);
     }
 
     _showChangePasswordPanel() {
         deactive(this.userInfoPanel);
         active(this.changePasswordPanel);
         deactive(this.updatePhoneNumberPanel);
-        deactive(this.vipInfoPanel);        
+        deactive(this.vipInfoPanel);
     }
 
     _showUpdatePhoneNumberPanel() {
         deactive(this.userInfoPanel);
         deactive(this.changePasswordPanel);
         active(this.updatePhoneNumberPanel);
-        deactive(this.vipInfoPanel);        
+        deactive(this.vipInfoPanel);
     }
-    
+
     _showVipInfoPanel() {
         deactive(this.userInfoPanel);
         deactive(this.changePasswordPanel);
         deactive(this.updatePhoneNumberPanel);
         active(this.vipInfoPanel);
     }
-    
+
     _hide() {
         let parent = this.node.parent;
 
         CCUtils.clearFromParent(this.node);
         CCUtils.clearFromParent(parent);
+    }
+
+    _onUserVariablesUpdate(ev) {
+        let changedVars = ev[app.keywords.BASE_EVENT_CHANGED_VARS] || [];
+        changedVars.map(v => {
+            if (v == app.keywords.CHANGE_AVATAR_URL) {
+                this.avatar && app.context.getUserAvatar(this.avatar);
+            }
+        });
     }
 }
 

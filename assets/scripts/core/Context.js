@@ -4,6 +4,7 @@
 
 import app from 'app';
 import Events from 'Events';
+import RubUtils from 'RubUtils';
 
 class GameContext {
 
@@ -96,7 +97,11 @@ class GameContext {
             "avatarUrl": (me.variables.avatarUrl && me.variables.avatarUrl.value) || null
         } : null;
     }
-
+    
+    getUserAvatar(spriteComponent) {
+        RubUtils.loadSpriteFrame(spriteComponent, app.context.getMyInfo().avatarUrl ? app.context.getMyInfo().avatarUrl : app.config.defaultAvatarUrl , null, true);
+    }
+    
     getMeBalance() {
         let me = this.getMe();
         return (me && me.variables.coin && me.variables.coin.value) || 0;

@@ -49,7 +49,8 @@ class TopBar extends DialogActor {
         this._requestMessageNotification(app.context.unreadMessageBuddies.length);
         if(this.avatarSpriteNode){
             let sprite = this.avatarSpriteNode.getComponent(cc.Sprite);
-            app.context.getMyInfo().avatarUrl ? HttpImageLoader.loadImageToSprite(sprite, app.context.getMyInfo().avatarUrl) : HttpImageLoader.loadDefaultAvatar(sprite);
+            // app.context.getMyInfo().avatarUrl ? HttpImageLoader.loadImageToSprite(sprite, app.context.getMyInfo().avatarUrl) : HttpImageLoader.loadDefaultAvatar(sprite);
+            app.context.getUserAvatar(sprite);
         }
     }
 
@@ -265,8 +266,7 @@ class TopBar extends DialogActor {
     }
 
     _onUserVariablesUpdate(ev) {
-        console.debug('_onUserVariablesUpdate', ev);
-        let changedVars = ev[app.keywords.BASE_EVENT_CHANGED_VARS]
+        let changedVars = ev[app.keywords.BASE_EVENT_CHANGED_VARS] || [];
         changedVars.map(v => {
             if (v == 'coin') {
                 this.userInfoCoinLbl.string = `${utils.numberFormat(app.context.getMeBalance() || 0)}`;
@@ -274,7 +274,8 @@ class TopBar extends DialogActor {
             
             if(v == app.keywords.CHANGE_AVATAR_URL) {
                 let sprite = this.avatarSpriteNode.getComponent(cc.Sprite);
-                sprite && (HttpImageLoader.loadImageToSprite(sprite, app.context.getMyInfo().avatarUrl))
+                // sprite && (RubUtils.loadImageToSprite(sprite, app.context.getMyInfo().avatarUrl))
+                sprite && app.context.getUserAvatar(sprite);
             }
         });
 
