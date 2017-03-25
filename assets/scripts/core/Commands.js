@@ -271,4 +271,8 @@ Commands.GET_WITHDRAW_INFO = "getWithdrawInfo";
 Commands.USER_AVATARS = "avatarUrls";
 Commands.CHANGE_AVATAR = "changeAvatar";
 
+Commands.GET_TOP_PLAYERS = "getTopPlayers";
+Commands.GET_TOP_VIP_PLAYERS = "getTopVipPlayers";
+Commands.GET_TOP_BALANCE_PLAYERS = "getTopBalancePlayers";
+
 module.exports = Commands;

@@ -66,23 +66,23 @@ export default class Scrollview extends Component {
                 return;
             }
 
-            if (!this.options.paging) {
-                this._hidePaging();
-                this.bodyNode.setContentSize(this.node.getContentSize().width, 426);
-                this.viewNode.setContentSize(this.node.getContentSize().width, 426);
-                let wo = { bottom: -60 };
-                NodeRub.addWidgetComponentToNode(this.viewNode, wo);
-            } else {
-                this._showPaging();
+            // if (!this.options.paging) {
+            //     this._hidePaging();
+            //     this.bodyNode.setContentSize(this.node.getContentSize().width, 426); //366
+            //     this.viewNode.setContentSize(this.node.getContentSize().width, 426);
+            //     let wo = { bottom: -60 };
+            //     NodeRub.addWidgetComponentToNode(this.viewNode, wo);
+            // } else {
+            //     this._showPaging();
 
-                this.bodyNode.setContentSize(this.node.getContentSize().width, 366);
-                this.viewNode.setContentSize(this.node.getContentSize().width, 366);
+            //     this.bodyNode.setContentSize(this.node.getContentSize().width, 366);
+            //     this.viewNode.setContentSize(this.node.getContentSize().width, 366);
 
-                // settup click events
-                this._addEventPagingBtn(this.options.paging);
+            //     // settup click events
+            //     this._addEventPagingBtn(this.options.paging);
 
-                this._updatePagingState();
-            }
+            //     this._updatePagingState();
+            // }
 
             this._addToNode(this.contentNode);
         }
@@ -133,11 +133,11 @@ export default class Scrollview extends Component {
     _updatePagingState() {
         // currentPage = 1
         //  -> end
-        if (this.isEndedPage && this.currentPage == 1) {
-            this._hidePaging();
-            return;
-        }
-        this._showPaging();
+        // if (this.isEndedPage && this.currentPage == 1) {
+        //     this._hidePaging();
+        //     return;
+        // }
+        // this._showPaging();
     }
 
     _hidePaging() {

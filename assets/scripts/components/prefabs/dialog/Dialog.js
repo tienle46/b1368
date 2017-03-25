@@ -65,7 +65,12 @@ export default class Dialog extends Component {
 
 
     setTitle(string) {
-        this.titleLbl.string = string.toUpperCase();
+        if(this.titleLbl) {
+            this.titleLbl.string = string.toUpperCase();
+            if(!app.env.isBrowser()) {
+                // this.titleLbl.node.setPositionY(this.titleLbl.node.getPositionY() - 40); 
+            }
+        }
     }
 
     _showBody(id, data) {
@@ -101,9 +106,7 @@ export default class Dialog extends Component {
             }
 
             return p;
-        }).catch((e) => {
-            console.warn('err', e);
-        });
+        }).catch((e) => console.warn('err', e));
     }
 
     // add content node to body node

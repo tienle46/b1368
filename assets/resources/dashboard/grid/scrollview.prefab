@@ -91,7 +91,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 850,
-      "height": 366
+      "height": 426
     },
     "_children": [
       {
@@ -152,7 +152,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 850,
-      "height": 366
+      "height": 426
     },
     "_children": [
       {
@@ -401,7 +401,7 @@
     "_left": 0,
     "_right": 0,
     "_top": 0,
-    "_bottom": 60,
+    "_bottom": 0,
     "_verticalCenter": 0,
     "_horizontalCenter": 0,
     "_isAbsLeft": true,
@@ -474,7 +474,7 @@
     "_tag": -1,
     "_opacityModifyRGB": false,
     "_id": "",
-    "_active": true,
+    "_active": false,
     "_components": [
       {
         "__id__": 35

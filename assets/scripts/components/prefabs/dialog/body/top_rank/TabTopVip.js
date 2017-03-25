@@ -24,50 +24,41 @@ class TabTopVip extends DialogActor {
 
     _addGlobalListener() {
         super._addGlobalListener();
-        app.system.addListener(app.commands.RANK_GROUP, this._showBody, this);
+        app.system.addListener(app.commands.GET_TOP_VIP_PLAYERS, this._onGetTopVipPlayers, this);
     }
 
     _removeGlobalListener() {
         super._removeGlobalListener();
-        app.system.removeListener(app.commands.RANK_GROUP, this._showBody, this);
+        app.system.removeListener(app.commands.GET_TOP_VIP_PLAYERS, this._onGetTopVipPlayers, this);
     }
 
     _getRankGroup() {
-        let topNodeId = 14,
-            currentPage = 1;
-
-        let sendObject = {
-            'cmd': app.commands.RANK_GROUP,
-            'data': {
-                [app.keywords.RANK_GROUP_TYPE]: app.const.DYNAMIC_GROUP_LEADER_BOARD,
-                [app.keywords.RANK_ACTION_TYPE]: app.const.DYNAMIC_ACTION_BROWSE,
-                [app.keywords.PAGE]: currentPage,
-                [app.keywords.RANK_NODE_ID]: topNodeId,
-            }
-        };
         this.showLoader(this.contentNode);
-        app.service.send(sendObject);
+        app.service.send({
+            'cmd': app.commands.GET_TOP_VIP_PLAYERS,
+        });
     }
 
-    _showBody(d) {
-        let ul = d[app.keywords.USERNAME_LIST] || [];
-        if (ul.length < 0) {
+    _onGetTopVipPlayers(d) {
+        let {usernames} = d;
+        if (usernames.length < 0) {
             this.pageIsEmpty(this.contentNode);
             return;
         }
         let data = [
-            ul.map((status, index) => {
+            usernames.map((status, index) => {
                 if (this.crowns.children[index])
                     return cc.instantiate(this.crowns.children[index]);
                 else
                     return `${index + 1}.`;
             }),
-            ul,
-            ul.map((status, index) => {
+            usernames,
+            usernames.map((status, index) => {
                 let len = this.vips.children.length;
                 return cc.instantiate(this.vips.children[index] ? this.vips.children[index] : this.vips.children[len - 1]);
             }),
         ];
+        
         this.contentNode.setContentSize(850, this.contentNode.getContentSize().height);
         this.initView({
             data: ['STT', 'Tài khoản', 'Loại'],

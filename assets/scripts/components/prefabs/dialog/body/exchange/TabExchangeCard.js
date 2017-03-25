@@ -17,7 +17,7 @@ class TabExchangeCard extends DialogActor {
             cardItemsContainerNode: cc.Node,
             activeStateSprite: cc.Sprite,
             inActiveStateSprite: cc.Sprite,
-            providerLbl: cc.Label,
+            // providerLbl: cc.Label,
             balanceLbl: cc.Label,
             goldLbl: cc.Label,
             itemLogoSprite: cc.Sprite,
@@ -179,7 +179,7 @@ class TabExchangeCard extends DialogActor {
             CCUtils.destroyAllChildren(this.cardItemsContainerNode, 0);
 
             this._tabData[name].forEach(item => {
-                this.providerLbl.string = name.toUpperCase();
+                // this.providerLbl.string = name.toUpperCase();
                 this.balanceLbl.string = Utils.numberFormat(item.needed);
                 this.goldLbl.string = `${Utils.numberFormat(item.gold)} VNĐ`;
 

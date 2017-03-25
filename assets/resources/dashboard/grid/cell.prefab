@@ -30,7 +30,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 400,
-      "height": 60
+      "height": 74
     },
     "_children": [],
     "_rotationX": 0,
@@ -85,9 +85,9 @@
     },
     "_enabled": true,
     "_useOriginalSize": false,
-    "_actualFontSize": 40,
-    "_fontSize": 40,
-    "_lineHeight": 60,
+    "_actualFontSize": 30,
+    "_fontSize": 30,
+    "_lineHeight": 74,
     "_enableWrapText": true,
     "_N$file": {
       "__uuid__": "b2c0f634-158a-49ee-84f8-a41c8e7ebb56"

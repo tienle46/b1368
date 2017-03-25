@@ -16,37 +16,68 @@ class TabTopCaoThu extends DialogActor {
             backGroundSprite: cc.Sprite
         }
 
-        this.currentNodeId = null;
+        this.currentGameCode = null;
         this.itemLoaded = null;
         this.activateToggle = null;
     }
 
     start() {
         super.start();
-        let topNodeId = 9; // use for requesting game icons list
-        this._requestDataFromServer(topNodeId, 1);
+        
+        this._initGamesToggle();
     }
 
     _addGlobalListener() {
         super._addGlobalListener();
-        app.system.addListener(app.commands.RANK_GROUP, this._onReceivedData, this);
+        app.system.addListener(app.commands.GET_TOP_PLAYERS, this._onGetTopPlayers, this);
     }
 
     _removeGlobalListener() {
         super._removeGlobalListener();
-        app.system.removeListener(app.commands.RANK_GROUP, this._onReceivedData, this);
+        app.system.removeListener(app.commands.GET_TOP_PLAYERS, this._onGetTopPlayers, this);
     }
+    
+    _initGamesToggle() {
+        let count = 0;
+        app.config.supportedGames.length > 0 && app.async.mapSeries(app.config.supportedGames, (gameCode, cb) => {
+            let gameIconPath = app.res.gameIcon[gameCode];
 
-    _requestDataFromServer(nodeId, page) {
-        this.currentNodeId = nodeId;
+            gameIconPath && RubUtils.getSpriteFrameFromAtlas('blueTheme/atlas/game_icons', gameIconPath, (sprite) => {
+                this.backGroundSprite.spriteFrame = sprite;
+                let node = cc.instantiate(this.gameItem);
+                let toggle = node.getComponent(cc.Toggle);
+                toggle.isChecked = count === 0;
+
+                node._gameCode = gameCode;
+                node.active = true;
+
+                if (toggle.isChecked) {
+                    this.activateToggleNode = node;
+                    this.itemLoaded = true;
+
+                    setOpacity(this.activateToggleNode, 255);
+
+                    this.previousGameCode = gameCode;
+
+                    this._requestDataFromServer(gameCode, 1);
+                }
+
+                this.gamePicker.addChild(node);
+
+                count++;
+
+                cb();
+            });
+        });
+    }
+    
+    _requestDataFromServer(gameCode, page) {
+        this.currentGameCode = gameCode;
 
         let sendObject = {
-            'cmd': app.commands.RANK_GROUP,
+            'cmd': app.commands.GET_TOP_PLAYERS,
             'data': {
-                [app.keywords.RANK_GROUP_TYPE]: app.const.DYNAMIC_GROUP_LEADER_BOARD,
-                [app.keywords.RANK_ACTION_TYPE]: app.const.DYNAMIC_ACTION_BROWSE,
-                [app.keywords.PAGE]: page,
-                [app.keywords.RANK_NODE_ID]: nodeId,
+                [app.keywords.GAME_CODE]: gameCode
             }
         };
 
@@ -59,76 +90,31 @@ class TabTopCaoThu extends DialogActor {
         this.activateToggleNode = toggle.node;
         setOpacity(this.activateToggleNode, 255);
 
-        this.previousNodeId = this.currentNodeId;
-        let dNodeId = toggle.node.dNodeId;
-        this.currentNodeId = dNodeId;
-        this._requestDataFromServer(this.currentNodeId, 1);
+        this.previousGameCode = this.currentGameCode;
+        let _gameCode = toggle.node._gameCode;
+        this.currentGameCode = _gameCode;
+        this._requestDataFromServer(this.currentGameCode, 1);
     }
 
-    _onReceivedData(res) {
-        if (!this.itemLoaded) {
-            if (res[app.keywords.RANK_TYPE_ID] && res[app.keywords.RANK_TYPE_ID].length > 0) {
-                this.gameList = res;
-
-                let dNodeIds = this.gameList[app.keywords.RANK_TYPE_ID] || [];
-                let gameImages = this.gameList[app.keywords.RANK_TYPE_ICON] || [];
-                
-                if (gameImages.length > 0) {
-                    let count = 0;
-                    app.async.mapSeries(gameImages, (imgName, cb) => {
-                        // RubUtils.loadSpriteFrame(nodeSprite, app.res.gameTopCapThuIcon[imgName], cc.size(100, 100));
-                        let gameIconPath = app.res.gameTopCapThuIcon[imgName];
-                        gameIconPath && RubUtils.getSpriteFrameFromAtlas('blueTheme/atlas/game_icons', gameIconPath, (sprite) => {
-                            this.backGroundSprite.spriteFrame = sprite;
-                            let node = cc.instantiate(this.gameItem);
-                            let toggle = node.getComponent(cc.Toggle);
-                            toggle.isChecked = count === 0;
-
-                            node.dNodeId = dNodeIds[count];
-                            node.active = true;
-
-                            if (toggle.isChecked) {
-                                this.activateToggleNode = node;
-                                this.itemLoaded = true;
-
-                                setOpacity(this.activateToggleNode, 255);
-
-                                this.previousNodeId = node.dNodeId;
-
-                                this._requestDataFromServer(node.dNodeId, 1);
-                            }
-
-                            this.gamePicker.addChild(node);
-
-                            count++;
-
-                            cb();
-                        });
-                    });
-
-                } else {
-                    this.pageIsEmpty(this.node)
-                }
-            }
-
-        } else {
-            res[app.keywords.USERNAME_LIST] = res[app.keywords.USERNAME_LIST] || [];
-            let data = [
-                res[app.keywords.USERNAME_LIST].map((status, index) => {
-                    let p = res['p'] || 1;
-                    let order = (index + 1) + (p - 1) * 20;
-                    if (this.crownsNode.children[index] && order <= 3)
-                        return cc.instantiate(this.crownsNode.children[index]);
-                    else
-                        return `${order}.`;
-                }),
-                res[app.keywords.USERNAME_LIST],
-                res['ui1l'],
-            ];
-            let isNew = res[app.keywords.RANK_NODE_ID] != this.previousNodeId;
-            this.previousNodeId = res[app.keywords.RANK_NODE_ID];
-            this._initBody(data, isNew);
-        }
+    _onGetTopPlayers(data) {
+        let {usernames, wons, gc} = data;
+        let count = 0;
+        
+        let d = [
+            (usernames || []).map((status, index) => {
+                let p = data['p'] || 1;
+                let order = (index + 1) + (p - 1) * 20;
+                if (this.crownsNode.children[index] && order <= 3)
+                    return cc.instantiate(this.crownsNode.children[index]);
+                else
+                    return `${order}.`;
+            }),
+            (usernames || []),
+            wons,
+        ];
+        let isNew = gc != this.previousGameCode;
+        this.previousGameCode = gc;
+        this._initBody(d, isNew);
     }
 
     _initBody(d, isNew) {
@@ -143,7 +129,7 @@ class TabTopCaoThu extends DialogActor {
         }, d, {
             // paging: { next, prev, context: this },
             size: this.contentNode.getContentSize(),
-            isNew,
+            // isNew,
             group: {
                 widths: ['', 350, ''],
                 colors: ['', '', new cc.Color(255, 214, 0)]
@@ -155,11 +141,11 @@ class TabTopCaoThu extends DialogActor {
     }
 
     onPreviousBtnClick(page) {
-        this._requestDataFromServer(this.currentNodeId, page);
+        this._requestDataFromServer(this.currentGameCode, page);
     }
 
     onNextBtnClick(page) {
-        this._requestDataFromServer(this.currentNodeId, page);
+        this._requestDataFromServer(this.currentGameCode, page);
     }
 }
 
