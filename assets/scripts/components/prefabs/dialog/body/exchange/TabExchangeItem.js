@@ -121,7 +121,6 @@ class TabExchangeItem extends DialogActor {
                         // add price
                         this.exchangeItemPrice.string = `${Utils.numberFormat(itemGold)} XU`;
 
-
                         let itemBtn = item.getChildByName('btn').getComponent(cc.Button);
                         itemBtn.itemId = itemId;
                         itemBtn.itemName = itemName;

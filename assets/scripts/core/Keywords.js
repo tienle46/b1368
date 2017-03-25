@@ -749,10 +749,10 @@ Keywords.TRANSFER_REASON = "tr";
 Keywords.TRANSFER_USER_ID = "n";
 
 Keywords.CHARGE_SMS_OBJECT_IAC = "iac";
-Keywords.CHARGE_SMS_OBJECT_INFORS = "iacInfos";
+// Keywords.CHARGE_SMS_OBJECT_INFORS = "iacInfos";
 Keywords.IN_APP_PURCHASE = "ap";
 Keywords.IN_BILLING_PURCHASE = "bp";
-Keywords.CHARGE_SMS_OBJECT_INFORS = "iacInfos";
+Keywords.CHARGE_SMS_OBJECT_INFORS = "infos";
 Keywords.VARIABLE_PLAYING_GAME = "gr";
 Keywords.GAME_MINBET_LIST = "mbl";
 Keywords.GAME_ENABLE_MINBET_LIST = "embl";

@@ -1,7 +1,11 @@
 import app from 'app';
 import DialogActor from 'DialogActor';
 import RubUtils from 'RubUtils';
-import { deactive, active, numberFormat } from 'Utils';
+import {
+    deactive,
+    active,
+    numberFormat
+} from 'Utils';
 
 class TabSMS extends DialogActor {
     constructor() {
@@ -12,7 +16,9 @@ class TabSMS extends DialogActor {
             itemNode: cc.Node,
             moneyGetLbl: cc.Label,
             iconSprite: cc.Sprite,
-            moneySend: cc.Label
+            moneySend: cc.Label,
+            promotionNode: cc.Node,
+            promoteDescLbl: cc.Label
         };
 
         this._sending = false;
@@ -29,7 +35,11 @@ class TabSMS extends DialogActor {
     }
 
     onSMSBtnClick(e) {
-        let { code, command, sendTo } = e.currentTarget;
+        let {
+            code,
+            command,
+            sendTo
+        } = e.currentTarget;
         // this.codeLbl.string = code
         // this.shortCodeLbl.string = command
         // this.numberLbl.string = sendTo;
@@ -65,43 +75,68 @@ class TabSMS extends DialogActor {
     _onUserGetChargeList(data) {
         // app.keywords.CHARGE_SMS_OBJECT
         if (data.hasOwnProperty(app.keywords.CHARGE_SMS_OBJECT_IAC) && this._sending) {
-            const smses = data[app.keywords.CHARGE_SMS_OBJECT_IAC];
+            const smses = data[app.keywords.CHARGE_SMS_OBJECT_IAC]; // => {1000: {}, 2000: {}}
             this._sending = false;
 
-            if (smses.length > 0) {
+            if (Object.keys(smses).length > 0) {
                 this.hideLoader();
+                Object.keys(smses).forEach(key => {
+                    let moneySend = key,
+                        infos = smses[key][app.keywords.CHARGE_SMS_OBJECT_INFORS] || [],
+                        moneyGot = smses[key]['balance'],
+                        promoteDesc = smses[key]['promoteDesc'];
 
-                let smsInformations = [];
-                smses.forEach((sms, index) => {
-                    let infos = sms[app.keywords.CHARGE_SMS_OBJECT_INFORS];
-                    infos.forEach((info, i) => {
-                        smsInformations.push(info);
+                    infos.forEach((smsInfo, i) => {
+                        let code = smsInfo.code,
+                            sendTo = smsInfo.shortCode,
+                            command = smsInfo.syntax,
+                            isChecked = i === 0;
+                        console.debug('moneyGot > moneySend', moneyGot > moneySend);
+                        this._initItem(code, command, sendTo, moneySend, moneyGot, isChecked, moneyGot > moneySend, promoteDesc);
                     });
                 });
-                smsInformations.forEach((smsInfo, i) => {
-                    let moneyGot = smsInfo.balance,
-                        code = smsInfo.code,
-                        sendTo = smsInfo.shortCode,
-                        command = smsInfo.syntax,
-                        isChecked = i === 0;
-
-                    this._initItem(code, command, sendTo, moneyGot, isChecked);
-                });
-                window.release(smsInformations);
             } else {
                 this.pageIsEmpty(this.node);
             }
+          
+            // if (smses.length > 0) {
+            //     this.hideLoader();
+
+            //     let smsInformations = [];
+            //     smses.forEach((sms, index) => {
+            //         let infos = sms[app.keywords.CHARGE_SMS_OBJECT_INFORS];
+            //         infos.forEach((info, i) => {
+            //             smsInformations.push(info);
+            //         });
+            //     });
+            //     smsInformations.forEach((smsInfo, i) => {
+            //         let moneyGot = smsInfo.balance,
+            //             code = smsInfo.code,
+            //             sendTo = smsInfo.shortCode,
+            //             command = smsInfo.syntax,
+            //             isChecked = i === 0;
+
+            //         this._initItem(code, command, sendTo, moneyGot, isChecked);
+            //     });
+            //     window.release(smsInformations);
+            // } else {
+            //     this.pageIsEmpty(this.node);
+            // }
         }
     }
 
-    _initItem(code, syntax, sendTo, moneyGot, isChecked) {
+    _initItem(code, syntax, sendTo, moneySend, moneyGot, isChecked, hasPromotion, promoteDesc) {
         let iconNumber = Math.round(moneyGot / 10000) + 1;
         RubUtils.getSpriteFrameFromAtlas('blueTheme/atlas/chips', `scoreIcon_${iconNumber >= 5 ? 5 : iconNumber}`, (sprite) => {
             this.iconSprite.spriteFrame = sprite;
 
             this.moneyGetLbl.string = `${numberFormat(moneyGot)}`;
-            this.moneySend.string = `${numberFormat(moneyGot)} VNĐ`;
-
+            this.moneySend.string = `${numberFormat(moneySend)} VNĐ`;
+            
+            this.promotionNode.active = hasPromotion;
+            this.promoteDescLbl.string = promoteDesc || "";
+            
+            
             let item = cc.instantiate(this.itemNode);
             item.active = true;
             // let toggle = item.getComponent(cc.Toggle);
