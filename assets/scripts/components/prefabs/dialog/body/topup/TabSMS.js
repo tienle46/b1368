@@ -91,37 +91,13 @@ class TabSMS extends DialogActor {
                             sendTo = smsInfo.shortCode,
                             command = smsInfo.syntax,
                             isChecked = i === 0;
-                        console.debug('moneyGot > moneySend', moneyGot > moneySend);
+
                         this._initItem(code, command, sendTo, moneySend, moneyGot, isChecked, moneyGot > moneySend, promoteDesc);
                     });
                 });
             } else {
                 this.pageIsEmpty(this.node);
             }
-          
-            // if (smses.length > 0) {
-            //     this.hideLoader();
-
-            //     let smsInformations = [];
-            //     smses.forEach((sms, index) => {
-            //         let infos = sms[app.keywords.CHARGE_SMS_OBJECT_INFORS];
-            //         infos.forEach((info, i) => {
-            //             smsInformations.push(info);
-            //         });
-            //     });
-            //     smsInformations.forEach((smsInfo, i) => {
-            //         let moneyGot = smsInfo.balance,
-            //             code = smsInfo.code,
-            //             sendTo = smsInfo.shortCode,
-            //             command = smsInfo.syntax,
-            //             isChecked = i === 0;
-
-            //         this._initItem(code, command, sendTo, moneyGot, isChecked);
-            //     });
-            //     window.release(smsInformations);
-            // } else {
-            //     this.pageIsEmpty(this.node);
-            // }
         }
     }
 

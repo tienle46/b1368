@@ -72,7 +72,7 @@ class TabTopCaoThu extends DialogActor {
 
                 let dNodeIds = this.gameList[app.keywords.RANK_TYPE_ID] || [];
                 let gameImages = this.gameList[app.keywords.RANK_TYPE_ICON] || [];
-
+                
                 if (gameImages.length > 0) {
                     let count = 0;
                     app.async.mapSeries(gameImages, (imgName, cb) => {

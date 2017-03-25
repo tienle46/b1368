@@ -1,9 +1,11 @@
 import app from 'app';
 import DialogActor from 'DialogActor';
 import {
-    isEmpty
+    isEmpty,
+    numberFormat
 } from 'Utils';
 import RubUtils from 'RubUtils';
+import CCUtils from 'CCUtils';
 
 class TabCard extends DialogActor {
     constructor() {
@@ -16,7 +18,12 @@ class TabCard extends DialogActor {
             providerItemNode: cc.Node,
             providerContainerNode: cc.Node,
             providerTitleLbl: cc.Label,
-            cardLayout: cc.Node,
+            cardLayoutPanel: cc.Node,
+            ratioPanel: cc.Node,
+            ratioItemContainer: cc.Node,
+            ratioItem: cc.Node,
+            ratioItemTitleLbl: cc.Label,
+            ratioItemXuLbl: cc.Label,
             cardSerialEditBox: cc.EditBox,
             serialNumberEditBox: cc.EditBox
         };
@@ -26,7 +33,7 @@ class TabCard extends DialogActor {
 
     onLoad() {
         super.onLoad();
-        this.cardLayout.active = false;
+        CCUtils.deactive(this.cardLayoutPanel);
         // wait til every requests is done
         // this._initRatioGroup();
     }
@@ -87,7 +94,7 @@ class TabCard extends DialogActor {
                     }
 
                     if(index === cardListIds.length - 1) {
-                        this.cardLayout.active = true;
+                        this._showFormPanel();
                     }
                 });
             });
@@ -96,6 +103,20 @@ class TabCard extends DialogActor {
         } else {
             this.pageIsEmpty(this.node);
         }
+        
+        // ratio
+        let cardRatios = data['cards'] ? data['cards']['rates'] : [];
+        
+        cardRatios.forEach(card => {
+            let {amount, balance, rate} = card;
+            
+            this.ratioItemTitleLbl.string = `${numberFormat(amount)} VNĐ`;
+            this.ratioItemXuLbl.string = `${numberFormat(balance)} ${app.res.string('currency_name')}`;
+            let itemNode = cc.instantiate(this.ratioItem);
+            itemNode.active = true;
+            
+            this.ratioItemContainer.addChild(itemNode);
+        });
     }
     
     onProviderBtnClick(toggle) {
@@ -112,17 +133,35 @@ class TabCard extends DialogActor {
                 app.res.string('error_user_enter_empty_input')
             );
         } else {
-            let data = {};
-            data[app.keywords.CHARGE_CARD_PROVIDER_ID] = this.providerId;
-            data[app.keywords.CARD_CODE] = cardSerial;
-            data[app.keywords.CARD_SERIAL] = serialNumber;
             let sendObject = {
                 'cmd': app.commands.USER_SEND_CARD_CHARGE,
-                data
+                data: {
+                    [app.keywords.CHARGE_CARD_PROVIDER_ID]:this.providerId,
+                    [app.keywords.CARD_CODE]:cardSerial,
+                    [app.keywords.CARD_SERIAL]:serialNumber
+                }
             };
 
             app.service.send(sendObject); // send request and get `smsg` (system_message) response from server
         }
+    }
+    
+    onRatioBtnClick() {
+        this._showRatioBtn();
+    }
+    
+    onBackBtnClick() {
+        this._showFormPanel();
+    }
+    
+    _showRatioBtn() {
+        CCUtils.deactive(this.cardLayoutPanel);
+        CCUtils.active(this.ratioPanel);
+    }
+    
+    _showFormPanel() {
+        CCUtils.active(this.cardLayoutPanel);
+        CCUtils.deactive(this.ratioPanel);
     }
 }
 
