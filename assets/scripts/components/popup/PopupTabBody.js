@@ -4,6 +4,7 @@
 
 import app from 'app';
 import Actor from 'Actor';
+import NodeRub from 'NodeRub';
 
 export default class PopupTabBody extends Actor {
 
@@ -13,6 +14,7 @@ export default class PopupTabBody extends Actor {
         this.properties = {
             ...this.properties,
             bodyNode: cc.Node,
+            scrollview: cc.Prefab
         }
 
         /**
@@ -109,7 +111,24 @@ export default class PopupTabBody extends Actor {
         this._data = {...this._data, ...data };
         renderImmediately && this._renderData(this._data);
     }
+    
+    initView(head, data, options) {
+        if (!this._scrollView) {
+            this._scrollView = cc.instantiate(this.scrollview);
+            // console.debug(cc.loader.isAutoRelease(this.scrollview));
+            this._scrollView.getComponent('Scrollview').initView(head, data, options);
+            NodeRub.addWidgetComponentToNode(this._scrollView, { top: 0, left: 0, right: 0, bottom: 0 });
+            this.addNode(this._scrollView)
+        } else {
+            this._scrollView.getComponent('Scrollview').updateOptions(options);
+            this._scrollView.getComponent('Scrollview').updateView(head, data);
+        }
+    }
 
+    getScrollViewNode() {
+        return this._scrollView;
+    }
+    
     _renderData(data) {
         this.onDataChanged(data);
         this._showTabBody();

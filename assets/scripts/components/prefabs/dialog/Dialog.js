@@ -68,7 +68,7 @@ export default class Dialog extends Component {
         if(this.titleLbl) {
             this.titleLbl.string = string.toUpperCase();
             if(!app.env.isBrowser()) {
-                // this.titleLbl.node.setPositionY(this.titleLbl.node.getPositionY() - 40); 
+                this.titleLbl.node.setPositionY(this.titleLbl.node.getPositionY() - 15); 
             }
         }
     }

@@ -20,6 +20,8 @@ export default class BuddyPopup {
         this.multiTabPopup = node.getComponent("MultiTabPopup");
 
         this.multiTabPopup.changeToChatTab = this.changeToChatTab.bind(this);
+        
+        this.multiTabPopup.setTitle('Tin Nhắn');
     }
 
     changeToChatTab(data) {

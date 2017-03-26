@@ -59,11 +59,18 @@ export default class PopupTab extends Component {
         this.inactiveNode.active = false;
         this.activeNode.active = true;
         this.toggle.check();
+        this._updateOutlineColor(true);
     }
 
     inactiveTab() {
         this.inactiveNode.active = true;
         this.activeNode.active = false;
+        this._updateOutlineColor(false);
+    }
+    
+    _updateOutlineColor(state) {
+        let outlineComponent = this.titleLabel.node.getComponent(cc.LabelOutline);
+        outlineComponent && (outlineComponent.color = state ? new cc.Color(147, 110, 0) : new cc.Color(1, 106, 181))
     }
 }
 

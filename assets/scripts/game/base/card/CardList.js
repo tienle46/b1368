@@ -824,6 +824,7 @@ export default class CardList extends ActionComponent {
                 let animation = cc.spawn(
                     cc.moveTo(CardList.DRAW_CARD_DURATION, cardPosition.x, cardPosition.y),
                     cc.rotateBy(CardList.DRAW_CARD_DURATION, 720),
+                    // cc.scaleTo(CardList.DRAW_CARD_DURATION, -1 , 1),
                 );
                 actions.push(cc.callFunc(() => card.node && card.node.runAction(animation)));
                 actions.push(delay.clone());

@@ -53,7 +53,7 @@ export default class MultiTabPopup extends Component {
 
     onDestroy() {
         super.onDestroy();
-        window.release(this._tabs, this._tabModels, this._tabBodies);
+        // window.release(this._tabs, this._tabModels, this._tabBodies);
     }
 
     start() {
@@ -145,6 +145,9 @@ export default class MultiTabPopup extends Component {
 
     setTitle(title = app.res.string('system')) {
         this.titleLabel && (this.titleLabel.string = title);
+        if(!app.env.isBrowser()) {
+            this.titleLabel.node.setPositionY(this.titleLabel.node.getPositionY() - 5); 
+        }
     }
 
     changeTab(tabIndex, data) {

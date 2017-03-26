@@ -1165,7 +1165,7 @@
     "node": {
       "__id__": 31
     },
-    "_enabled": true,
+    "_enabled": false,
     "_spriteFrame": {
       "__uuid__": "24b2ee7e-cd86-48da-a18f-e7e9408096cb"
     },
@@ -1656,7 +1656,7 @@
         "__id__": 49
       }
     ],
-    "_N$isChecked": true
+    "_N$isChecked": false
   },
   {
     "__type__": "cc.ClickEvent",
@@ -1864,7 +1864,7 @@
     "node": {
       "__id__": 53
     },
-    "_enabled": false,
+    "_enabled": true,
     "_spriteFrame": {
       "__uuid__": "24b2ee7e-cd86-48da-a18f-e7e9408096cb"
     },
@@ -2169,7 +2169,7 @@
         "__id__": 65
       }
     ],
-    "_N$isChecked": false
+    "_N$isChecked": true
   },
   {
     "__type__": "cc.ClickEvent",
@@ -4023,8 +4023,8 @@
     "tabChatHistoryToggle": {
       "__id__": 25
     },
-    "tabQuickChatToggle": {
-      "__id__": 48
+    "tabEmoChatToggle": {
+      "__id__": 64
     }
   },
   {

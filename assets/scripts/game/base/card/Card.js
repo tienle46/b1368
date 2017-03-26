@@ -8,36 +8,23 @@ export default class Card extends ActionComponent {
     constructor(byteValue) {
         super();
 
+         this.properties = {
+            cardsAtlas: {
+                default : null,
+                type : cc.SpriteAtlas
+            },
+        };
+
         this.properties = {
             ...this.properties,
-            rankNode: cc.Label,
-            suitNode: cc.Sprite,
-            mainPic: cc.Sprite,
             cardBG: cc.Sprite,
-            redTextColor: new cc.Color().fromHEX('#C70003'),
-            blackTextColor: new cc.Color().fromHEX('#242424'),
-            texFrontBG: cc.SpriteFrame,
-            texBackBG: cc.SpriteFrame,
             highlightNode: cc.Node,
             lockedNode: cc.Node,
             groupNode: cc.Node,
             groupNumberLabel: cc.Label,
             emptySprite: cc.SpriteFrame,
-
-            texFaces: {
-                default: [],
-                type: cc.SpriteFrame
-            },
-
-            texSuitBig: {
-                default: [],
-                type: cc.SpriteFrame
-            },
-
-            texSuitSmall: {
-                default: [],
-                type: cc.SpriteFrame
-            },
+            // cardSpriteFrame : cc.SpriteFrame,
+            texBackBG: cc.SpriteFrame,
         }
 
         byteValue != null && byteValue != undefined && this.initFromByte(byteValue);
@@ -154,15 +141,15 @@ export default class Card extends ActionComponent {
         this.suit = suit;
         this.byteValue = byteValue;
     }
+    
+    
 
     onLoad() {
-
-        this.rankNode.string = this._getRankName();
-        this.suitNode.spriteFrame = this.texSuitSmall[this.suit] || this.emptyNode;
-        this.rankNode.node.color = this.isRedSuit() ? this.redTextColor : this.blackTextColor;
-        //this.rank > 10 => isFaceCard
-        this.mainPic.spriteFrame = this.rank > 10 ? this.texFaces[this.rank - 10 - 1] : this.texSuitBig[this.suit] || this.emptySprite;
-
+        const cardSpriteName = `card_${this._getRankName()}_${this._getSuitName()}`;
+        console.debug(`cardSpriteName ${cardSpriteName}`);
+        console.debug(`cardsAtlas ${this.cardsAtlas}`);
+        this.cardSpriteFrame = this.cardsAtlas.getSpriteFrame(cardSpriteName);
+        this.cardBG.spriteFrame = this.cardSpriteFrame;
     }
 
     onEnable() {
@@ -192,16 +179,30 @@ export default class Card extends ActionComponent {
     _getRankName() {
         switch (this.rank) {
             case Card.RANK_J:
-                return 'J';
+                return 'j';
             case Card.RANK_Q:
-                return 'Q';
+                return 'q';
             case Card.RANK_K:
-                return 'K';
+                return 'k';
             case Card.RANK_AT:
             case Card.RANK_ACE:
-                return 'A';
+                return 'a';
             default:
                 return '' + this.rank;
+        }
+    }
+    _getSuitName() {
+        switch (this.suit) {
+            case Card.SUIT_BICH:
+                return 'bich';
+            case Card.SUIT_TEP:
+                return 'tep';
+            case Card.SUIT_ZO:
+                return 'ro';
+            case Card.SUIT_CO:
+                return 'co';
+            default:
+                return 'bich';
         }
     }
 
@@ -224,10 +225,7 @@ export default class Card extends ActionComponent {
 
     setReveal(isFaceUp) {
         this.reveal = isFaceUp;
-        this.rankNode.node.active = isFaceUp;
-        this.suitNode.node.active = isFaceUp;
-        this.mainPic.node.active = isFaceUp;
-        this.cardBG.spriteFrame = isFaceUp ? this.texFrontBG : this.texBackBG;
+        this.cardBG.spriteFrame = isFaceUp ? this.cardSpriteFrame : this.texBackBG;
     }
 
     setOnClickListener(cb) {

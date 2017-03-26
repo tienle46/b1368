@@ -4,6 +4,9 @@ import Component from 'Component';
 export class Row extends Component {
     constructor() {
         super();
+        this.properties = {
+            layout: cc.Layout
+        };
     }
 
     onDestroy() {
@@ -21,6 +24,10 @@ export class Row extends Component {
                 this.node.addChild(cell);
             });
         }
+
+        if(!app.env.isBrowser()) {
+            this.layout.paddingTop = 40;
+        }
     }
 
     initWithNode(node, showBg) {
@@ -28,6 +35,7 @@ export class Row extends Component {
             let sprite = this.node.getComponent(cc.Sprite);
             sprite.enabled = false;
         }
+
         this.node.addChild(node);
     }
 
@@ -41,13 +49,13 @@ export class Row extends Component {
             if (max > height) {
                 this.node.children.map(child => {
                     let label = child.getComponent(cc.Label);
-                    label.overflow = cc.Label.Overflow.CLAMP;
-
-                    child.setContentSize(child.getContentSize().width, max);
+                    if(label) {
+                        label.overflow = cc.Label.Overflow.CLAMP;
+                        child.setContentSize(child.getContentSize().width, max);
+                    }  
                 });
             }
         });
-
     }
 }
 

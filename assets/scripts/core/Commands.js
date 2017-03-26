@@ -275,4 +275,7 @@ Commands.GET_TOP_PLAYERS = "getTopPlayers";
 Commands.GET_TOP_VIP_PLAYERS = "getTopVipPlayers";
 Commands.GET_TOP_BALANCE_PLAYERS = "getTopBalancePlayers";
 
+Commands.GET_PERSONAL_MESSAGES = "getPersonalMessages";
+Commands.GET_SYSTEM_MESSAGES = "getSystemMessages";
+
 module.exports = Commands;

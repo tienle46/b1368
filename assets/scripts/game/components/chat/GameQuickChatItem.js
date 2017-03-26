@@ -12,7 +12,6 @@ export default class GameQuickChatItem extends Component {
             ...this.properties,
             label: cc.Label,
         }
-        this.label = cc.Label;
     }
 
     setLabel(text) {

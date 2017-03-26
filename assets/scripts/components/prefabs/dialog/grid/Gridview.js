@@ -26,9 +26,10 @@ export class GridView extends Component {
             let size = this.options.size;
             this.node.setContentSize(size);
         }
-
-        head && this._initHead(head);
-        body && this._initBody(body, this.options);
+        let hasHeader = false;
+        
+        head && (hasHeader = true) && this._initHead(head);
+        body && this._initBody(body, this.options, hasHeader);
     }
 
     initList(data, options) {
@@ -39,7 +40,7 @@ export class GridView extends Component {
         }
 
         data.map((D, i) => {
-            this._initListRow(D, i % 2 == 0);
+            this._initListRow(D, i % 2 !== 0);
         });
     }
 
@@ -49,7 +50,7 @@ export class GridView extends Component {
         }
 
         data.map((D, i) => {
-            this._initListRow(D, i % 2 == 0);
+            this._initListRow(D, i % 2 !== 0);
         });
     }
 
@@ -103,9 +104,9 @@ export class GridView extends Component {
     }
     
     
-    _initListRow(data, hideBg) {
+    _initListRow(data, showBg) {
         let row = cc.instantiate(this.rowPrefab);
-        row.getComponent('Row').initWithNode(data, hideBg);
+        row.getComponent('Row').initWithNode(data, showBg);
         this.addNode(row);
         this.node.addChild(row);
     }
@@ -118,10 +119,10 @@ export class GridView extends Component {
         }
     }
 
-    _initBody(data, options) {
+    _initBody(data, options, hasHeader) {
         if (!app._.isEmpty(data)) {
             data.map((D, i) => {
-                this._initRow(D, i % 2 == 0, options);
+                this._initRow(D, hasHeader ? i % 2 == 0 : i % 2 != 0, options);
             });
         }
     }

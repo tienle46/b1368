@@ -128,8 +128,9 @@ export default class CCUtils {
     static createEventHandler(targetNode, componentClass, handlerFn) {
         const eventHandler = new cc.Component.EventHandler();
         eventHandler.target = targetNode;
-        eventHandler.component = componentClass.name;
-        eventHandler.handler = handlerFn.name;
+        eventHandler.component = componentClass;
+        eventHandler.handler = handlerFn;
+        // log(`handlerFn ${handlerFn.name}`);
         return eventHandler;
     }
 

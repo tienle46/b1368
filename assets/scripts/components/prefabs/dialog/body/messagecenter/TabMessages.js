@@ -1,8 +1,8 @@
 import app from 'app';
-import DialogActor from 'DialogActor';
+import PopupTabBody from 'PopupTabBody';
 import MessageEvent from 'MessageEvent';
 
-export default class TabMessages extends DialogActor {
+export default class TabMessages extends PopupTabBody {
     constructor() {
         super();
 
@@ -20,14 +20,12 @@ export default class TabMessages extends DialogActor {
 
     onLoad() {
         super.onLoad();
-
-        this.showLoader();
     }
 
 
     start() {
         super.start();
-        this._requestMessagesList(1);
+        // this._requestMessagesList(1);
     }
 
     _addGlobalListener() {
@@ -61,50 +59,57 @@ export default class TabMessages extends DialogActor {
             }
         };
 
-        this.showLoader();
+        // this.showLoader();
         app.service.send(sendObject);
+        
     }
 
-    _onListSystemMessage(data) {
-        //convert raw data to list models
-        // this.currentPage = data[app.keywords.SYSTEM_MESSAGE.RESPONSE.CURRENT_PAGE];
+    // _onListSystemMessage(data) {
+    //     //convert raw data to list models
+    //     this.currentPage = data[app.keywords.SYSTEM_MESSAGE.RESPONSE.CURRENT_PAGE];
 
-        let listHeader = data[app.keywords.SYSTEM_MESSAGE.RESPONSE.TITLE_LIST] || [];
-        let listSub = data[app.keywords.SYSTEM_MESSAGE.RESPONSE.TIME_LIST] || [];
-        let listIds = data[app.keywords.SYSTEM_MESSAGE.RESPONSE.ID_ITEM_LIST] || [];
+    //     let listHeader = data[app.keywords.SYSTEM_MESSAGE.RESPONSE.TITLE_LIST] || [];
+    //     let listSub = data[app.keywords.SYSTEM_MESSAGE.RESPONSE.TIME_LIST] || [];
+    //     let listIds = data[app.keywords.SYSTEM_MESSAGE.RESPONSE.ID_ITEM_LIST] || [];
 
-        let content = data[app.keywords.SYSTEM_MESSAGE_DETAIL.RESPONSE.CONTENT];
-        if (content) {
-            app.system.info(content);
-            return;
-        }
+    //     let content = data[app.keywords.SYSTEM_MESSAGE_DETAIL.RESPONSE.CONTENT];
+    //     if (content) {
+    //         app.system.info(content);
+    //         return;
+    //     }
 
-        if (listHeader.length > 0) {
-            let messages = [];
-            for (let i = 0; i < listHeader.length; i++) {
-                // let event = new MessageEvent({ title: listHeader[i], sub: listSub[i], nodeId: listIds[i] });
-                // events.push(event);
-                let message = cc.instantiate(this.itemPrefab);
-                let itemEventComponent = message.getComponent('ItemMessage');
-                itemEventComponent.init(listIds[i], listHeader[i], listSub[i], this.groupType);
-                messages.push(message);
-            }
-            this._displayEvents(messages);
-        } else {
-            this.pageIsEmpty(this.node);
-        }
-    }
-
-    _displayEvents(events) {
+    //     if (listHeader.length > 0) {
+    //         let messages = [];
+    //         for (let i = 0; i < listHeader.length; i++) {
+    //             // let event = new MessageEvent({ title: listHeader[i], sub: listSub[i], nodeId: listIds[i] });
+    //             // events.push(event);
+    //             let message = cc.instantiate(this.itemPrefab);
+    //             let itemEventComponent = message.getComponent('ItemMessage');
+    //             itemEventComponent.init(listIds[i], listHeader[i], listSub[i], this.groupType);
+    //             messages.push(message);
+    //         }
+    //         this._displayEvents(messages);
+    //     } else {
+    //         this.pageIsEmpty(this.node);
+    //     }
+    // }
+    
+    /**
+     * 
+     * 
+     * @param {Array} data 
+     * 
+     * @memberOf TabMessages
+     */
+    displayMessages(data) {
         let next, prev;
-
-        this.initView(null, events, {
+        
+        this.initView(null, data, {
             paging: { next, prev, context: this },
             size: this.node.getContentSize(),
             isListView: true
         });
         this.node.addChild(this.getScrollViewNode());
-        this.hideLoader();
     }
 }
 
