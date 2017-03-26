@@ -207,7 +207,7 @@ export default class GameChatComponent extends Actor {
                 gameQuickChatItem.setLabel(message);
                 chatItemNode.textMessage = gameQuickChatItem.getLabelText();
                 this.quickChatsList.addChild(chatItemNode);
-                CCUtils.addClickEvent(chatItemNode, this.node, GameChatComponent, this.onQuickChatItemClick);
+                CCUtils.addClickEvent(chatItemNode, this.node, 'GameChatComponent', 'onQuickChatItemClick');
             }
         });
         this.loader && this.loader.destroy();
@@ -215,6 +215,7 @@ export default class GameChatComponent extends Actor {
 
     onQuickChatItemClick(event) {
         let text = event.target.getComponent('GameQuickChatItem').getLabelText();
+        log(`selected quick chat item ${text}`);
         this._sendChatMessage(text);
 
         this.tabChatHistoryToggle.check();
