@@ -4023,8 +4023,8 @@
     "tabChatHistoryToggle": {
       "__id__": 25
     },
-    "tabQuickChatToggle": {
-      "__id__": 48
+    "tabEmoChatToggle": {
+      "__id__": 64
     }
   },
   {

@@ -45,7 +45,7 @@ export default class GameChatComponent extends Actor {
             /**
              * @type {cc.Toggle}
              */
-            tabQuickChatToggle: cc.Toggle,
+            tabEmoChatToggle: cc.Toggle,
         }
 
         this.quickChats = null;
@@ -112,12 +112,12 @@ export default class GameChatComponent extends Actor {
     onEnable() {
         super.onEnable();
         this.animation = this.node.getComponent(cc.Animation);
-        this.checkTabQuickChat();
+        this.checkTabEmotionChat();
     }
 
-    checkTabQuickChat(){
-        this.tabQuickChatToggle.check();
-        this.onQuickChatTabChecked();
+    checkTabEmotionChat(){
+        this.tabEmoChatToggle.check();
+        this.onEmotionsTabChecked();
     }
 
     start() {
@@ -137,7 +137,7 @@ export default class GameChatComponent extends Actor {
             this._initEmotions();
             this._initMessageHistory();
         }else{
-            this.checkTabQuickChat();
+            this.checkTabEmotionChat();
         }
 
         this.inited = true;
@@ -216,9 +216,9 @@ export default class GameChatComponent extends Actor {
     onQuickChatItemClick(event) {
         let text = event.target.getComponent('GameQuickChatItem').getLabelText();
         this._sendChatMessage(text);
-
-        this.tabChatHistoryToggle.check();
-        this.onLogChatTabChecked();
+        
+        // this.tabChatHistoryToggle.check();
+        // this.onLogChatTabChecked();
     }
 
     emotionClicked(e, indexStr) {
@@ -229,7 +229,9 @@ export default class GameChatComponent extends Actor {
                 let text = emotionTexts[index];
 
                 if (text && text.length > 0) {
-                    app.service.sendRequest(new SFS2X.Requests.System.PublicMessageRequest(text));
+                    this._sendChatMessage(text);
+                    // app.service.sendRequest(new SFS2X.Requests.System.PublicMessageRequest(text));
+                    this.onClickCloseButton();
                 }
             }
 
@@ -281,6 +283,7 @@ export default class GameChatComponent extends Actor {
 
         app.service.sendRequest(new SFS2X.Requests.System.PublicMessageRequest(message));
         message = "";
+        this.onClickCloseButton();
     }
 
     _initQuickChatItemsFromServer() {
