@@ -28,7 +28,7 @@ export class GridView extends Component {
         }
         let hasHeader = false;
         
-        head && this._initHead(head) && (hasHeader = true);
+        head && (hasHeader = true) && this._initHead(head);
         body && this._initBody(body, this.options, hasHeader);
     }
 
@@ -119,10 +119,10 @@ export class GridView extends Component {
         }
     }
 
-    _initBody(data, options, hasHead) {
+    _initBody(data, options, hasHeader) {
         if (!app._.isEmpty(data)) {
             data.map((D, i) => {
-                this._initRow(D, hasHead ? i % 2 == 0 : i % 2 != 0, options);
+                this._initRow(D, hasHeader ? i % 2 == 0 : i % 2 != 0, options);
             });
         }
     }

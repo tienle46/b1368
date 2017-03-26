@@ -20,7 +20,11 @@ class TabTopCaoThu extends DialogActor {
         this.itemLoaded = null;
         this.activateToggle = null;
     }
-
+    
+    onLoad() {
+        super.onLoad();
+    }
+    
     start() {
         super.start();
         
