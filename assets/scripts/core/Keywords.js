@@ -23,6 +23,7 @@ Keywords.RESPONSE_RESULT = "su";
 Keywords.RESPONSE_MESSAGE = "msg";
 //
 Keywords.PAGE = "p";
+Keywords.PAGE_NEW = "page";
 Keywords.PAGE_COUNT = "pc";
 Keywords.ID = "i";
 Keywords.KEY_SEARCH = "k";

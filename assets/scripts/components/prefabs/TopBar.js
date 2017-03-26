@@ -122,7 +122,7 @@ class TopBar extends DialogActor {
 
     onClickNapXuAction() {
         let scene = app.system.getCurrentSceneNode();
-        TopupDialogRub.show(scene);
+        new TopupDialogRub(scene);
     }
 
     onFriendBtnClick() {
@@ -155,16 +155,7 @@ class TopBar extends DialogActor {
     }
 
     onClickMessageAction() {
-        let url = `${app.const.DIALOG_DIR_PREFAB}/messagecenter`;
-        let tabs = [{
-            title: 'Hệ thống',
-            value: `${url}/tab_system_messages`
-        }, {
-            title: 'Cá nhân',
-            value: `${url}/tab_personal_messages`
-        }];
-
-        MessageCenterDialogRub.show(app.system.getCurrentSceneNode(), tabs, { title: 'Tin nhắn' });
+        new MessageCenterDialogRub().show(this.node.parent, { focusTabIndex: MessageCenterDialogRub.TAB_SYSTEM_MESSAGE_INDEX });
     }
 
     onClickUserInfoAction() {
