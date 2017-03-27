@@ -38,7 +38,7 @@ export class GridView extends Component {
             let size = this.options.size;
             this.node.setContentSize(size);
         }
-
+        
         data.map((D, i) => {
             this._initListRow(D, i % 2 !== 0);
         });

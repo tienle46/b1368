@@ -3,28 +3,20 @@
  */
 import app from 'app';
 import TabMessages from 'TabMessages';
+import Linking from 'Linking';
 
 class TabPersonalMessages extends TabMessages {
     constructor() {
         super();
     }
-    
-    onLoad() {
-        this.groupType = app.const.DYNAMIC_GROUP_SYSTEM_MESSAGE;
-        super.onLoad();
-    }
-    
-    start() {
-        super.start();
-        let messages = [
-            {
-                title: 'Nhận được 5000.000 Chips từ người chơi',
-                msg: 'Bạn nhận được <color=#a6b7c7>5000.000</color> từ người chơi abcdef. Ấn <color=#a6b7c7>5000.000</color> để nhận xu nhé. Bạn nhận được <color=#a6b7c7>5000.000</color> từ người chơi abcdef. Ấn xyz để nhận xu nhé. Bạn nhận được <color=#a6b7c7>5000.000</color> từ người chơi abcdef. Ấn xyz để nhận xu nhé.',
-                readed: true,
-                action: "TOPUP",
-                actionData: "jsonData{a:123, b:xyz}"
-            },
-        ];
+
+    //@override
+    onDataChanged({messages = [], page} = {}) {
+        messages && messages.length > 0 && this.displayMessages(messages.map(message => {
+            let {id, title, msg, time, action, actionData, isReaded} = message;
+
+            return this.createItemMessage(id, title, msg, time, action, actionData, isReaded);
+        }));
     }
     
     _addGlobalListener() {
@@ -37,24 +29,33 @@ class TabPersonalMessages extends TabMessages {
         app.system.removeListener(app.commands.GET_PERSONAL_MESSAGES, this._onGetPersonalMessages, this);
     }
     
+    //@override
     _requestMessagesList(page = 1) {
-        app.service.send({
-            cmd: app.commands.GET_PERSONAL_MESSAGES,
-            data: {
-                [app.keywords.PAGE_NEW]: page
-            }
-        });
+        this._initRequest(app.commands.GET_PERSONAL_MESSAGES, page);
     }
     
     _onGetPersonalMessages(data) {
-        // console.debug('_onGetPersonalMessages', data);
+        this.setLoadedData(data);        
     }
     
-    createItemMessage(id, title, description, time, isNew) {
+    _onActionBtnClick(id, action, data) {
+        this.popup.hide();
+        Linking.goTo(action, data);
+        
+        app.service.send({
+            cmd: app.commands.CHANGE_PERSONAL_MESSAGE_STATE,
+            data: {
+                id,
+                action: true
+            }
+        })
+    }
+    
+    createItemMessage(id, title, description, time, action, actionData, isReaded) {
         if(this.itemPrefab) {
             let message = cc.instantiate(this.itemPrefab);
             let itemEventComponent = message.getComponent('ItemMessage');
-            itemEventComponent && itemEventComponent.createItem(id, title, description, time, isNew);
+            itemEventComponent && itemEventComponent.createItemWithButton(title, description, time, action, this._onActionBtnClick.bind(this, id, action, actionData), isReaded);
             return message;
         }
     }

@@ -155,7 +155,7 @@ class TopBar extends DialogActor {
     }
 
     onClickMessageAction() {
-        new MessageCenterDialogRub().show(this.node.parent, { focusTabIndex: MessageCenterDialogRub.TAB_SYSTEM_MESSAGE_INDEX });
+        new MessageCenterDialogRub().show(this.node.parent);
     }
 
     onClickUserInfoAction() {

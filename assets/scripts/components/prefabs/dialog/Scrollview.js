@@ -2,6 +2,7 @@ import app from 'app';
 import Component from 'Component';
 import NodeRub from 'NodeRub';
 import { isFunction } from 'Utils';
+import { active, deactive } from 'CCUtils';
 
 export default class Scrollview extends Component {
     constructor() {
@@ -66,23 +67,28 @@ export default class Scrollview extends Component {
                 return;
             }
 
-            // if (!this.options.paging) {
-            //     this._hidePaging();
-            //     this.bodyNode.setContentSize(this.node.getContentSize().width, 426); //366
-            //     this.viewNode.setContentSize(this.node.getContentSize().width, 426);
-            //     let wo = { bottom: -60 };
-            //     NodeRub.addWidgetComponentToNode(this.viewNode, wo);
-            // } else {
-            //     this._showPaging();
+            if (!this.options.paging) {
+                this._hidePaging();
+                // this.bodyNode.setContentSize(this.node.getContentSize().width, 426);
+                // this.node.setContentSize(this.node.getContentSize().width, 426);
+                // this.viewNode.setContentSize(this.node.getContentSize().width, 426);
+                // let wo = { bottom: -60 };
+                // NodeRub.addWidgetComponentToNode(this.viewNode, wo);
+            } else {
+                this._showPaging();
 
-            //     this.bodyNode.setContentSize(this.node.getContentSize().width, 366);
-            //     this.viewNode.setContentSize(this.node.getContentSize().width, 366);
+                this.bodyNode.setContentSize(this.node.getContentSize().width, 366);
+                this.node.setContentSize(this.node.getContentSize().width, 366);
+                this.viewNode.setContentSize(this.node.getContentSize().width, 366);
+                
+                let wo = { bottom: 60 };
+                NodeRub.addWidgetComponentToNode(this.bodyNode, wo);
+                
+                // settup click events
+                this._addEventPagingBtn(this.options.paging);
 
-            //     // settup click events
-            //     this._addEventPagingBtn(this.options.paging);
-
-            //     this._updatePagingState();
-            // }
+                this._updatePagingState();
+            }
 
             this._addToNode(this.contentNode);
         }
@@ -98,9 +104,8 @@ export default class Scrollview extends Component {
         this._setupInNewBody();
         data = this._validatedInput(data);
 
-        // this._detectViewState(data);
         this.isEndedPage = data.length < this.itemsPerPage;
-
+        
         if (data.length == 0) {
             this._pageIsEmpty();
             this._updatePagingState();
@@ -109,11 +114,11 @@ export default class Scrollview extends Component {
 
         this._updateItemsPerPage(data);
 
-        this._p404 && (this._p404.active = false);
+        this._p404 && deactive(this._p404);
 
         this._updatePagingState();
 
-        this.viewNode.active = true;
+        active(this.viewNode);
 
         if (this.options.isListView) {
             this._gridviewComp.updateList(data, options);
@@ -137,15 +142,16 @@ export default class Scrollview extends Component {
         //     this._hidePaging();
         //     return;
         // }
-        // this._showPaging();
+        if(this.options.paging)
+            this._showPaging();
     }
 
     _hidePaging() {
-        this.pagingNode.active = false;
+        deactive(this.pagingNode);
     }
 
     _showPaging() {
-        this.pagingNode.active = true;
+        active(this.pagingNode);
 
         // setup Button state
         (this.isEndedPage || (this._p404 && this._p404.active)) ? this._hideBtn(this.nextBtn): this._showBtn(this.nextBtn);
@@ -163,8 +169,8 @@ export default class Scrollview extends Component {
             this.addNode(this._p404);
             this.bodyNode.addChild(this._p404);
         }
-        this.viewNode.active = false;
-        this._p404.active = true;
+        deactive(this.viewNode);
+        active(this._p404);
         // if (str) {
         //     let p404Component = p404.getComponent('P404');
         //     p404Component && p404Component.setText(str);
@@ -223,12 +229,10 @@ export default class Scrollview extends Component {
 
     _showBtn(btn) {
         btn.interactable = true;
-        btn.node.opacity = 255;
     }
 
     _hideBtn(btn) {
         btn.interactable = false;
-        btn.node.opacity = 0;
     }
 
     /**
@@ -251,6 +255,9 @@ export default class Scrollview extends Component {
      * @memberOf GridViewRub
      */
     _validateData(input) {
+        if(this.options.isListView)
+            return input;
+            
         if (input instanceof Array && input.length < 1)
             return [];
 

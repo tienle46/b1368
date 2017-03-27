@@ -83,7 +83,7 @@ export default class PlayerMessage extends Component {
         this.timeoutId && clearTimeout(this.timeoutId);
         this.timeoutId = null;
         this.message = null;
-
+ 
         CCUtils.deactive(this.node);
         this.textView && this.textView.setText("");
     }

@@ -24,8 +24,8 @@ export default class PopupTabBody extends Actor {
         /**
          * @type {cc.Node}
          */
-        this.emptyNode = null,
-            this._doneCb = null;
+        this.emptyNode = null;
+        this._doneCb = null;
         this._data = null;
         this.dataLoaded = false;
         this.popup = null;

@@ -165,14 +165,15 @@ export default class TabUserInfo extends DialogActor {
             id,
             levelName,
             nextLevelName,
-            nextBenefit
+            nextBenefit,
+            accountTypeName
         } = data;
 
         this.userName.string = name;
         this.chipAmout.string = numberFormat(balance);
 
         this.userId.string = id;
-        this.vipLevel.string = levelName;
+        this.vipLevel.string = accountTypeName;
         // this.nextLevel.string = nextLevelName;
 
         if (app.context.needUpdatePhoneNumber()) {

@@ -277,5 +277,5 @@ Commands.GET_TOP_BALANCE_PLAYERS = "getTopBalancePlayers";
 
 Commands.GET_PERSONAL_MESSAGES = "getPersonalMessages";
 Commands.GET_SYSTEM_MESSAGES = "getSystemMessages";
-
+Commands.CHANGE_PERSONAL_MESSAGE_STATE = "changePersonalMessageState";
 module.exports = Commands;

@@ -23,6 +23,8 @@ class TabCard extends DialogActor {
             ratioItemContainer: cc.Node,
             ratioItem: cc.Node,
             ratioItemTitleLbl: cc.Label,
+            ratioPromote: cc.Node,
+            ratioPromoteLbl: cc.Label,
             ratioItemXuLbl: cc.Label,
             cardSerialEditBox: cc.EditBox,
             serialNumberEditBox: cc.EditBox
@@ -108,10 +110,20 @@ class TabCard extends DialogActor {
         let cardRatios = data['cards'] ? data['cards']['rates'] : [];
         
         cardRatios.forEach(card => {
-            let {amount, balance, rate} = card;
+            let {amount, balance, rate, promoteDesc} = card;
             
             this.ratioItemTitleLbl.string = `${numberFormat(amount)} VNĐ`;
             this.ratioItemXuLbl.string = `${numberFormat(balance)} ${app.res.string('currency_name')}`;
+            
+            if(rate > 1) {
+                CCUtils.active(this.ratioPromote) 
+                this.ratioPromoteLbl = promoteDesc;
+                this.ratioItemXuLbl.node.color = new cc.Color(255, 204, 0);
+            } else {
+                CCUtils.deactive(this.ratioPromote);
+                this.ratioItemXuLbl.node.color = app.const.COLOR_WHITE;
+            }
+            
             let itemNode = cc.instantiate(this.ratioItem);
             itemNode.active = true;
             

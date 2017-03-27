@@ -117,7 +117,6 @@ app.createComponent = (classNameOrInstance, extendClass = undefined, ...args) =>
                 if (method instanceof Function) {
                     instance[name] = method;
                 }
-
             }
         });
 
@@ -150,126 +149,6 @@ app.createComponent = (classNameOrInstance, extendClass = undefined, ...args) =>
     instance = null;
 };
 
-
-
-
-// app.createComponent = (classNameOrInstance, extendClass = undefined, ...args) => {
-
-//     if (!classNameOrInstance) {
-//         return;
-//     }
-
-//     let instance;
-//     let keys = []; // contains keys which will be released while component destroying
-//     let objPropsMap = {}; // contains keys which belong to "Object" type ( {a:1, b:2} ) and aren't empty object ( {} )
-
-//     if (typeof classNameOrInstance === 'object') {
-//         instance = classNameOrInstance;
-//     } else {
-//         if (!(extendClass instanceof Function)) {
-//             args = [extendClass, ...args];
-//             extendClass = null;
-//         }
-
-//         instance = new classNameOrInstance();
-//     }
-
-//     instance.properties = instance.properties || {};
-//     instance.extends = extendClass || instance.extends || cc.Component;
-
-//     let isCocosComponent = (element) => {
-//         return typeof element === 'function' && element === cc[element.name.substr(3)];
-//     };
-
-//     // in case: var a = {type: cc.Component, default: null}
-//     let isCocosProperty = (element) => {
-//         return typeof element === 'object' && ((element.hasOwnProperty('type') && isCocosComponent(element['type'])) || element.hasOwnProperty('default'));
-//     };
-
-//     let getCocosValue = (element, key) => {
-//         if (!element) {
-//             return element;
-//         }
-
-//         return isCocosComponent(element) || isCocosProperty(element) ? element : undefined;
-//     };
-
-//     Object.getOwnPropertyNames(instance).forEach(key => {
-//         if (key !== 'extends' && key !== 'properties' /*&& !key.startsWith('__')*/ ) {
-//             // check if property is Object && except instance of cc.Componet
-//             // such as {default: xxx, type: cc.XXX } => assign to `properties` for displaying value on cocoCcreator
-//             // if `instance[key]` is intance of `cc`
-
-//             let value = getCocosValue(instance[key], key);
-
-//             /**
-//              * if value ->  instance.properties[key] = value
-//              * else:
-//              *  -> push it to "properties" property - to using "this" keyword on cc.Class()
-//              *  ->  objPropsMap[key] = instance[key]; // {default: xx, xx: asd} <---
-//              */
-//             value ? (instance.properties[key] = value) : (objPropsMap[key] = instance[key]);
-
-//             delete instance[key]; // remove properties because cc.Scene can not detect properties that's outside this.properties = {}
-//         } else if (key === 'properties') {
-//             let properties = instance.properties;
-
-//             Object.getOwnPropertyNames(properties).forEach(key => {
-
-//                 let value = getCocosValue(properties[key], key);
-
-//                 (!value) && keys.push(key);
-//             });
-//         }
-//     });
-
-//     const isContainClassPrototype = (obj) => {
-//         return obj && Object.getPrototypeOf(obj) && Object.getPrototypeOf(obj).constructor.name && Object.getPrototypeOf(obj).constructor.name !== 'Object';
-//     };
-
-//     let prototypeObj = instance;
-
-//     // Loop over prototypes of className except 'constructor'.
-//     // if className has parent, copy all methods didn't override to `instance`
-//     while (isContainClassPrototype(prototypeObj)) {
-//         Object.getOwnPropertyNames(Object.getPrototypeOf(prototypeObj)).forEach(name => {
-//             if (name !== 'constructor') {
-//                 let method = instance[name];
-
-//                 // ignore if it isn't Function or it's a constructor
-//                 if (method instanceof Function) {
-//                     instance[name] = method;
-//                 }
-
-//             }
-//         });
-
-//         prototypeObj = Object.getPrototypeOf(prototypeObj);
-//     }
-
-//     /**
-//      * This function used to assign an object type property.
-//      * Because cc.Class doesn't allow declare non empty object outside onLoad() and ctor() (while we are using `constructor`)
-//      * Ex:
-//      *
-//      * constructor(){
-//      *  this.a = {} --> Works
-//      *  this.a = {a: 1, b:2 } -> Error
-//      * }
-//      *
-//      * ctor: () => {
-//      *  this.a = {a: 1, b: 2}
-//      * } ---> Works
-//      */
-//     instance.ctor = function ctor() {
-//         let ownPropertyNames = Object.getOwnPropertyNames(objPropsMap);
-//         this._$componentPropertyNames = [...keys, ...ownPropertyNames];
-//         ownPropertyNames.forEach(key => this[key] = objPropsMap[key]);
-//     };
-
-//     cc.Class(instance);
-//     instance = null;
-// };
 
 app.getRoomErrorMessage = (error) => {
     let message, errorCode = "",
