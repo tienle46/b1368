@@ -1417,7 +1417,7 @@
       "__uuid__": "b2c0f634-158a-49ee-84f8-a41c8e7ebb56"
     },
     "_isSystemFontUsed": false,
-    "_N$string": "button",
+    "_N$string": "Đồng Ý",
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
     "_N$overflow": 1
@@ -1459,7 +1459,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "0da026cb-0614-45ff-b5cf-3838e8f4ef6b"
+      "__uuid__": "eafbd3ce-0478-4ae9-9b52-5e49a23c78ed"
     },
     "_type": 1,
     "_sizeMode": 0,
@@ -1474,7 +1474,9 @@
     "_isTrimmedMode": true,
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
-    "_atlas": null
+    "_atlas": {
+      "__uuid__": "4bb00c8a-c321-4d5c-b859-a722596f04ed"
+    }
   },
   {
     "__type__": "cc.Button",
@@ -1744,7 +1746,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "569f793f-5761-480b-bee3-396545129448"
+      "__uuid__": "654cea23-c19f-42f3-aaa3-c5de28f79437"
     },
     "_type": 1,
     "_sizeMode": 0,
@@ -1759,7 +1761,9 @@
     "_isTrimmedMode": true,
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
-    "_atlas": null
+    "_atlas": {
+      "__uuid__": "4bb00c8a-c321-4d5c-b859-a722596f04ed"
+    }
   },
   {
     "__type__": "cc.Button",

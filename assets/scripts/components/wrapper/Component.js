@@ -65,17 +65,23 @@ export default class Component {
             btns && btns.forEach(btn => {
                 let sprite = btn.node.getComponent(cc.Sprite);
                 let color = {
-                    "buttons-ninePaths-btn-do": new cc.Color(151,15,0),
-                    "buttons-ninePaths-btn-blue": new cc.Color(0,99,175),
-                    "buttons-ninePaths-btn-vang": new cc.Color(142,84,0),
-                    "buttons-ninePaths-btn-xanhla": new cc.Color(27,88,3),
-                    "buttons-ninePaths-btn-tim": new cc.Color(72,72,72)
+                    // "buttons-ninePaths-btn-do": new cc.Color(151,15,0),
+                    // "buttons-ninePaths-btn-blue": new cc.Color(0,99,175),
+                    // "buttons-ninePaths-btn-vang": new cc.Color(142,84,0),
+                    // "buttons-ninePaths-btn-xanhla": new cc.Color(27,88,3),
+                    // "buttons-ninePaths-btn-tim": new cc.Color(72,72,72)
+                     "buttons-ninePaths-btn-do": new cc.Color(25,25,25),
+                    "buttons-ninePaths-btn-blue": new cc.Color(25,25,25),
+                    "buttons-ninePaths-btn-vang": new cc.Color(25,25,25),
+                    "buttons-ninePaths-btn-xanhla": new cc.Color(25,25,25),
+                    "buttons-ninePaths-btn-tim": new cc.Color(25,25,25)
                 };
                 
                 if(sprite && sprite.spriteFrame && sprite.spriteFrame._name.indexOf('-ninePaths-') > -1) {
                     let outlines = sprite.node.getComponentsInChildren(cc.LabelOutline);
                     color[sprite.spriteFrame._name] && outlines && outlines.forEach(outline => {
                         outline.color = color[sprite.spriteFrame._name];
+                        outline.width = 2;
                         let lbl = outline.node.getComponent(cc.Label);
                         // only uppercase first letter
                         lbl.string = lbl.string.trim().toLowerCase().split(" ").map(s => s.charAt(0).toUpperCase() + s.slice(1)).join(" ");

@@ -61,8 +61,36 @@ app.config.gameGroups = {
     [app.const.gameCode.XOC_DIA]: `${app.const.gameCode.XOC_DIA}01`,
 };
 
-app.config.actionAliases = {
-    
+app.config.actionLabels = {
+    'CASH': 'Rút tiền',
+    'TRANSFER': 'Chuyển tiền',
+    'TOPUP': 'Nạp tiền',
+    'TOPUP_CARD': 'Nạp thẻ',
+    'TOPUP_SMS': 'Nạp SMS',
+    'TOPUP_IAP': 'Nạp IAP',
+    'EVENT': 'Sự kiện',
+    'BUDDY': 'Bạn bè',
+    'BANK': 'Ngân hàng',
+    'GIFT_CODE': 'Mã thưởng',
+    'SYSTEM_MESSAGE': 'Tin nhắn hệ thống',
+    'PERSONAL_MESSAGE': 'Tin nhắn cá nhân',
+    'EXCHANGE': 'Đổi thưởng',
+    'EXCHANGE_CARD': 'Đổi thẻ',
+    'EXCHANGE_ITEM': 'Đổi vp',
+    'EXCHANGE_HISTORY': 'Lịch sử',
+    'BUDDY_CHAT': 'Chat',
+    'FEEDBACK': 'Góp ý',
+    'FANPAGE': 'Fanpage',
+    'WEBSITE': 'Website',
+    'TOP_VIP': 'Top Vip',
+    'TOP_CAO_THU': 'Top Cao Thu',
+    'TOP_DAI_GIA': 'Top đại gia',
+    'AGENT': 'Đại lý',
+    'TOPUP_HISTORY': 'Lịch sử',
+    'PERSONAL_INFO': 'Xem',
+    'PLAYER_INFO': 'Xem',
+    'PERSONAL_STATISTIC': 'Thành tích',
+    'PLAY_GAME': 'Vào game'
 };
 
 
@@ -73,7 +101,7 @@ app.config.parseConfigData = function(configData = {}) {
     app.config.fbAppId = configData.fbAppId || app.config.fbAppId;
     app.config.defaultAvatarUrl = configData.defaultAvatarUrl || app.config.defaultAvatarUrl;
     app.config.gameGroups = configData.gameGroups || app.config.gameGroups;
-    app.config.actionAliases = configData.actionAliases || app.config.actionAliases;
+    app.config.actionLabels = Object.assign({}, app.config.actionLabels, configData.actionLabels || {});
 
     const Events = require('Events');
     app.system.emit(Events.CLIENT_CONFIG_CHANGED)

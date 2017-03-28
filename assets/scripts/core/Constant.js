@@ -148,8 +148,17 @@ app.const.COLOR_GREEN = new cc.Color(100, 173, 45);
 app.const.COLOR_BLACK = new cc.Color(0, 0, 0);
 app.const.COLOR_GRAY = new cc.Color(174, 174, 174);
 
-app.const.adminMessage = {}
+app.const.adminMessage = {};
 app.const.adminMessage.MANUAL_DISMISS = 4;
 
 app.const.NUMBER_MESSAGES_KEEP_INGAME = 30;
 app.const.NUMBER_MESSAGES_KEEP_PER_BUDDY = 30;
+
+
+/**
+ * =============================================== 
+ *  ACTION CODES
+ * =============================================== 
+ */
+app.const.ACTION_CODES = ['CASH', 'TRANSFER', 'TOPUP', 'TOPUP_CARD', 'TOPUP_SMS', 'TOPUP_IAP', 'EVENT', 'BUDDY', 'BANK', 'GIFT_CODE', 'SYSTEM_MESSAGE', 'PERSONAL_MESSAGE', 'EXCHANGE', 'EXCHANGE_CARD', 'EXCHANGE_ITEM', 'EXCHANGE_HISTORY', 'BUDDY_CHAT', 'FEEDBACK', 'FANPAGE', 'WEBSITE', 'TOP_VIP', 'TOP_CAO_THU', 'TOP_DAI_GIA', 'AGENT', 'TOPUP_HISTORY', 'PERSONAL_INFO', 'PLAYER_INFO', 'PERSONAL_STATISTIC', 'PLAY_GAME'];
+
