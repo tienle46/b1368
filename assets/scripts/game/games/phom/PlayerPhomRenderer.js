@@ -17,12 +17,21 @@ export default class PlayerPhomRenderer extends PlayerCardTurnBaseRenderer {
 
         this.properties = {
             ...this.properties,
-            eatenCardListNode: cc.Node,
             eatenCardListNode2: cc.Node,
+            eatenCardListNode3: cc.Node,
+            eatenCardListNode4: cc.Node,
+            downCardListNode: cc.Node,
             anChotNode: cc.Node,
+            winInfoLabel: cc.Label,
+            loseInfoLabel: cc.Label,
             anChotAnimName: "showAnChot",
 
             playedCardListNodes: {
+                default: [],
+                type: [cc.Node]
+            },
+
+            downCardListNodes: {
                 default: [],
                 type: [cc.Node]
             },
@@ -39,6 +48,7 @@ export default class PlayerPhomRenderer extends PlayerCardTurnBaseRenderer {
         this.playedCardList = null;
         this.eatenCardList = null;
         this.downPhomList = null;
+        this.downCardList = null;
 
         /**
          * @type {PhomListComponent}
@@ -60,15 +70,17 @@ export default class PlayerPhomRenderer extends PlayerCardTurnBaseRenderer {
         this.downPhomList && this.downPhomList.clear();
         this.eatenCardList && this.eatenCardList.clear();
         this.playedCardList && this.playedCardList.clear();
+        this.downCardList && this.downCardList.clear();
     }
 
     _reset() {
         super._reset();
 
         this.cardList.clear();
-        this.downPhomList && this.downPhomList.clear();
-        this.eatenCardList && this.eatenCardList.clear();
-        this.playedCardList && this.playedCardList.clear();
+
+        this.cleanPlayerCards();
+        this.winInfoLabel.string = "";
+        this.loseInfoLabel.string = "";
     }
 
     setHighlightPhom(phom, highlight) {
@@ -90,14 +102,21 @@ export default class PlayerPhomRenderer extends PlayerCardTurnBaseRenderer {
 
     _reloadComponentOnIndexChanged() {
 
-        this.eatenCardList && this.eatenCardList.clear();
-        this.playedCardList && this.playedCardList.clear();
-        this.downPhomList && this.downPhomList.clear();
+        this.cleanPlayerCards()
+
         this._downPhomListComponent && this._downPhomListComponent.clear();
 
         this.playedCardListNodes.forEach((node, index) => {
             if (index == this.anchorIndex) {
                 this.playedCardList = node.getComponent('CardList');
+            } else {
+                CCUtils.setVisible(node, false);
+            }
+        });
+
+        this.downCardListNodes.forEach((node, index) => {
+            if (index == this.anchorIndex) {
+                this.downCardList = node.getComponent('CardList');
             } else {
                 CCUtils.setVisible(node, false);
             }
@@ -185,22 +204,37 @@ export default class PlayerPhomRenderer extends PlayerCardTurnBaseRenderer {
      */
     _getEatenCardComponent() {
         let player = this.data.actor;
-        let eatenCardNode = this.anchorIndex == 1 || this.anchorIndex == 4 ? this.eatenCardListNode2 : this.eatenCardListNode;
+        let eatenCardNode = this.anchorIndex == 1 || this.anchorIndex == 4 ? this.eatenCardListNode4 : this.anchorIndex = 2 ? this.eatenCardListNode2 : this.eatenCardListNode3;
         return eatenCardNode.getComponent('CardList');
     }
 
-    _initHandCardList(cardList, isItMe) {
+    _initHandCardList(cardList, isItMe, skipSettingForMe = false) {
 
-        super._initHandCardList(cardList, isItMe);
+        super._initHandCardList(cardList, isItMe, true);
 
         if (isItMe) {
-            cardList.setAlign(CardList.ALIGN_BOTTOM_RIGHT);
-            cardList.setAnchorPoint(1, 0);
+            // cardList.setAlign(CardList.ALIGN_BOTTOM_RIGHT);
+            // cardList.setAnchorPoint(1, 0);
 
             let player = this.data.actor;
             cardList.setOnCardClickListener((card) => {
                 player && player.isSelectSingleCard() && !card.selected && cardList.cleanSelectedCard()
             })
+        }
+    }
+
+    setDownCards(cards = []) {
+        this.downCardList && this.downCardList.transferFrom(this.cardList, cards);
+    }
+
+    showPlayerWinLoseInfo(text = "", isWinner = false) {
+        CCUtils.setVisible(this.winInfoLabel, isWinner)
+        CCUtils.setVisible(this.loseInfoLabel, !isWinner)
+
+        if (isWinner) {
+            this.winInfoLabel.string = text;
+        } else {
+            this.loseInfoLabel.string = text;
         }
     }
 }

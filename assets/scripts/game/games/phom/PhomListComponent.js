@@ -9,6 +9,7 @@ import PhomList from 'PhomList';
 import Component from 'Component';
 import PhomUtils from 'PhomUtils';
 import ArrayUtils from 'ArrayUtils'
+import CCUtils from 'CCUtils'
 
 export default class PhomListComponent extends Component {
     constructor() {
@@ -26,7 +27,7 @@ export default class PhomListComponent extends Component {
                 default: [],
                 type: [cc.Node]
             },
-            cardScale: 0.7,
+            cardScale: 0.6,
             space: 60,
         }
 
@@ -75,6 +76,12 @@ export default class PhomListComponent extends Component {
         return 3;
     }
 
+    _onPhomListDataChanged(){
+        this.phoms.forEach(phom => {
+            CCUtils.setVisible(phom.node, phom.cards.length > 0)
+        })
+    }
+
     addPhomList(player, newPhomList, eatenCards = []) {
         let firstEmptyPhomComponentIndex = this._findFirstEmptyPhomComponentIndex();
 
@@ -99,6 +106,8 @@ export default class PhomListComponent extends Component {
                 }
             });
         }
+
+        this._onPhomListDataChanged()
 
         return newPhomList;
     }
@@ -149,6 +158,8 @@ export default class PhomListComponent extends Component {
                 phom.setCards(phomModel.cards);
             }
         })
+
+        this._onPhomListDataChanged()
     }
 }
 
