@@ -49,45 +49,49 @@ export default class Player extends Actor {
     _addGlobalListener() {
         super._addGlobalListener();
 
-        this.scene.on(Events.ON_GAME_RESET, this.onGameReset, this);
-        this.scene.on(Events.ON_GAME_STATE_BEGIN, this.onGameBegin, this);
-        this.scene.on(Events.ON_GAME_STATE_STARTING, this.onGameStarting, this);
-        this.scene.on(Events.ON_GAME_STATE_STARTED, this.onGameStarted, this);
-        this.scene.on(Events.ON_GAME_STATE_PLAYING, this.onGamePlaying, this);
-        this.scene.on(Events.ON_GAME_STATE_ENDING, this.onGameEnding, this);
-        this.scene.on(Events.ON_USER_EXIT_ROOM, this._onUserExitRoom, this);
-        this.scene.on(Events.ON_PLAYER_READY_STATE_CHANGED, this._onSetReadyState, this);
-        this.scene.on(Events.ON_PLAYER_CHANGE_BALANCE, this._onPlayerChangeBalance, this);
-        this.scene.on(Events.ON_USER_UPDATE_BALANCE, this._onUserUpdateBalance, this);
-        this.scene.on(Events.ON_USER_UPDATE_NEW_PLAYER, this._onUserUpdateNewPlayer, this);
-        this.scene.on(Events.ON_PLAYER_SET_BALANCE, this._onPlayerSetBalance, this);
-        this.scene.on(Events.ON_PLAYER_CHAT_MESSAGE, this._onPlayerChatMessage, this);
-        this.scene.on(Events.ON_ROOM_CHANGE_MIN_BET, this._onRoomMinBetChanged, this);
-        this.scene.on(Events.ON_CLICK_START_GAME_BUTTON, this._onClickStartGameButton, this);
-        this.scene.on(Events.ON_USER_USES_ASSET, this._onUserUsesAsset, this);
-        this.scene.on(Events.ON_PLAYER_REENTER_GAME, this._onUserReenterGame, this);
+        if(this.scene){
+            this.scene.on(Events.ON_GAME_RESET, this.onGameReset, this);
+            this.scene.on(Events.ON_GAME_STATE_BEGIN, this.onGameBegin, this);
+            this.scene.on(Events.ON_GAME_STATE_STARTING, this.onGameStarting, this);
+            this.scene.on(Events.ON_GAME_STATE_STARTED, this.onGameStarted, this);
+            this.scene.on(Events.ON_GAME_STATE_PLAYING, this.onGamePlaying, this);
+            this.scene.on(Events.ON_GAME_STATE_ENDING, this.onGameEnding, this);
+            this.scene.on(Events.ON_USER_EXIT_ROOM, this._onUserExitRoom, this);
+            this.scene.on(Events.ON_PLAYER_READY_STATE_CHANGED, this._onSetReadyState, this);
+            this.scene.on(Events.ON_PLAYER_CHANGE_BALANCE, this._onPlayerChangeBalance, this);
+            this.scene.on(Events.ON_USER_UPDATE_BALANCE, this._onUserUpdateBalance, this);
+            this.scene.on(Events.ON_USER_UPDATE_NEW_PLAYER, this._onUserUpdateNewPlayer, this);
+            this.scene.on(Events.ON_PLAYER_SET_BALANCE, this._onPlayerSetBalance, this);
+            this.scene.on(Events.ON_PLAYER_CHAT_MESSAGE, this._onPlayerChatMessage, this);
+            this.scene.on(Events.ON_ROOM_CHANGE_MIN_BET, this._onRoomMinBetChanged, this);
+            this.scene.on(Events.ON_CLICK_START_GAME_BUTTON, this._onClickStartGameButton, this);
+            this.scene.on(Events.ON_USER_USES_ASSET, this._onUserUsesAsset, this);
+            this.scene.on(Events.ON_PLAYER_REENTER_GAME, this._onUserReenterGame, this);
+        }
     }
 
     _removeGlobalListener() {
         super._removeGlobalListener();
 
-        this.scene.off(Events.ON_GAME_RESET, this.onGameReset, this);
-        this.scene.off(Events.ON_GAME_STATE_BEGIN, this.onGameBegin, this);
-        this.scene.off(Events.ON_GAME_STATE_STARTING, this.onGameStarting, this);
-        this.scene.off(Events.ON_GAME_STATE_STARTED, this.onGameStarted, this);
-        this.scene.off(Events.ON_GAME_STATE_PLAYING, this.onGamePlaying, this);
-        this.scene.off(Events.ON_GAME_STATE_ENDING, this.onGameEnding, this);
-        this.scene.off(Events.ON_USER_EXIT_ROOM, this._onUserExitRoom, this);
-        this.scene.off(Events.ON_PLAYER_READY_STATE_CHANGED, this._onSetReadyState, this);
-        this.scene.off(Events.ON_PLAYER_CHANGE_BALANCE, this._onPlayerChangeBalance, this);
-        this.scene.off(Events.ON_USER_UPDATE_BALANCE, this._onUserUpdateBalance, this);
-        this.scene.off(Events.ON_PLAYER_SET_BALANCE, this._onPlayerSetBalance, this);
-        this.scene.off(Events.ON_PLAYER_CHAT_MESSAGE, this._onPlayerChatMessage, this);
-        this.scene.off(Events.ON_ROOM_CHANGE_MIN_BET, this._onRoomMinBetChanged, this);
-        this.scene.off(Events.ON_CLICK_START_GAME_BUTTON, this._onClickStartGameButton, this);
-        this.scene.off(Events.ON_USER_UPDATE_NEW_PLAYER, this._onUserUpdateNewPlayer, this);
-        this.scene.off(Events.ON_USER_USES_ASSET, this._onUserUsesAsset, this);
-        this.scene.off(Events.ON_PLAYER_REENTER_GAME, this._onUserReenterGame, this);
+        if(this.scene){
+            this.scene.off(Events.ON_GAME_RESET, this.onGameReset, this);
+            this.scene.off(Events.ON_GAME_STATE_BEGIN, this.onGameBegin, this);
+            this.scene.off(Events.ON_GAME_STATE_STARTING, this.onGameStarting, this);
+            this.scene.off(Events.ON_GAME_STATE_STARTED, this.onGameStarted, this);
+            this.scene.off(Events.ON_GAME_STATE_PLAYING, this.onGamePlaying, this);
+            this.scene.off(Events.ON_GAME_STATE_ENDING, this.onGameEnding, this);
+            this.scene.off(Events.ON_USER_EXIT_ROOM, this._onUserExitRoom, this);
+            this.scene.off(Events.ON_PLAYER_READY_STATE_CHANGED, this._onSetReadyState, this);
+            this.scene.off(Events.ON_PLAYER_CHANGE_BALANCE, this._onPlayerChangeBalance, this);
+            this.scene.off(Events.ON_USER_UPDATE_BALANCE, this._onUserUpdateBalance, this);
+            this.scene.off(Events.ON_PLAYER_SET_BALANCE, this._onPlayerSetBalance, this);
+            this.scene.off(Events.ON_PLAYER_CHAT_MESSAGE, this._onPlayerChatMessage, this);
+            this.scene.off(Events.ON_ROOM_CHANGE_MIN_BET, this._onRoomMinBetChanged, this);
+            this.scene.off(Events.ON_CLICK_START_GAME_BUTTON, this._onClickStartGameButton, this);
+            this.scene.off(Events.ON_USER_UPDATE_NEW_PLAYER, this._onUserUpdateNewPlayer, this);
+            this.scene.off(Events.ON_USER_USES_ASSET, this._onUserUsesAsset, this);
+            this.scene.off(Events.ON_PLAYER_REENTER_GAME, this._onUserReenterGame, this);
+        }
     }
 
     _onUserReenterGame(playerId, userId){
@@ -204,7 +208,7 @@ export default class Player extends Actor {
     }
 
     onEnable(renderer, renderData = {}) {
-        super.onEnable(renderer, {...renderData, isItMe: this.user.isItMe, scene: this.scene, owner: this.isOwner});
+        super.onEnable(renderer, {...renderData, isItMe: this.user && this.user.isItMe, scene: this.scene, owner: this.isOwner});
 
         this.username = this.user.name;
         this.id = this.user.getPlayerId(this.board.room);

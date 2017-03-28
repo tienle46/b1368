@@ -25,6 +25,7 @@ export default class CardList extends ActionComponent {
             scale: 1.0,
             reveal: true,
             selectable: false,
+            draggable: false,
             space: CardList.CARD_WIDTH,
             maxDimension: CardList.DEFAULT_MAX_WIDTH,
             cardPrefab: cc.Prefab
@@ -33,7 +34,7 @@ export default class CardList extends ActionComponent {
         this.cardWidth = CardList.CARD_WIDTH;
         this.cardHeight = CardList.CARD_HEIGHT;
         this.cards = null;
-        this._draggable = false;
+        this.draggable = false;
         this._overlapSpace = 0;
         this.selectCardChangeListener = null;
         this.onCardClickListener = null;
@@ -75,6 +76,14 @@ export default class CardList extends ActionComponent {
 
     cleanSelectedCard() {
         this.cards.forEach(card => card.setSelected(false, false));
+    }
+
+    disableAllCard(){
+        this.cards.forEach(card => card.setDisableCard(true));
+    }
+
+    cleanDisableAllCard(){
+        this.cards.forEach(card => card.setDisableCard(false));
     }
 
     cleanHighlight() {
@@ -431,13 +440,13 @@ export default class CardList extends ActionComponent {
             }
 
             // newCard.node.on(cc.Node.EventType.TOUCH_START, (event) => {
-            //     if (!this._draggable) return;
+            //     if (!this.draggable) return;
             //
             // }, this);
             //
             // newCard.node.on(cc.Node.EventType.TOUCH_MOVE, (event) => {
             //
-            //     if (!this._draggable) return;
+            //     if (!this.draggable) return;
             //
             //     const dragCard = event.target.getComponent('Card');
             //     dragCard.node.x += event.getDelta().x;
@@ -461,7 +470,7 @@ export default class CardList extends ActionComponent {
             // }, this);
             //
             // newCard.node.on(cc.Node.EventType.TOUCH_END, (event) => {
-            //     if (!this._draggable) return;
+            //     if (!this.draggable) return;
             //
             //     const dragCard = event.target.getComponent('Card');
             //     //NOTE : drag chỉ áp dụng duy nhất cho myself, quân bài dàn từ trái qua phải, khi sự kiện touch kết thúc chỉ cần xử lí cho trường hơp này
@@ -538,7 +547,7 @@ export default class CardList extends ActionComponent {
     }
 
     setDraggable(draggable) {
-        this._draggable = draggable;
+        this.draggable = draggable;
     }
 
     onLoad() {
