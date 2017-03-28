@@ -77,9 +77,9 @@
     "_opacity": 140,
     "_color": {
       "__type__": "cc.Color",
-      "r": 40,
-      "g": 1,
-      "b": 58,
+      "r": 0,
+      "g": 0,
+      "b": 0,
       "a": 255
     },
     "_cascadeOpacityEnabled": true,
@@ -1748,7 +1748,7 @@
       "a": 255
     },
     "duration": 0.1,
-    "zoomScale": 1.2,
+    "zoomScale": 1.05,
     "pressedSprite": null,
     "hoverSprite": null,
     "clickEvents": [

@@ -31,10 +31,10 @@ export class Row extends Component {
     }
 
     initWithNode(node, showBg) {
-        if (!showBg) {
-            let sprite = this.node.getComponent(cc.Sprite);
-            sprite.enabled = false;
-        }
+        // if (!showBg) {
+        //     let sprite = this.node.getComponent(cc.Sprite);
+        //     sprite.enabled = false;
+        // }
 
         this.node.addChild(node);
     }

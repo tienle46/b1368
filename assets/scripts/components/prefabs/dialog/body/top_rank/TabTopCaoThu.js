@@ -1,9 +1,9 @@
 import app from 'app';
-import DialogActor from 'DialogActor';
+import PopupTabBody from 'PopupTabBody';
 import RubUtils from 'RubUtils';
 import { setOpacity } from 'Utils';
 
-class TabTopCaoThu extends DialogActor {
+class TabTopCaoThu extends PopupTabBody {
     constructor() {
         super();
 
@@ -25,10 +25,17 @@ class TabTopCaoThu extends DialogActor {
         super.onLoad();
     }
     
-    start() {
-        super.start();
+    loadData() {
+        if(Object.keys(this._data).length > 0)
+            return false;
+        super.loadData();
         
         this._initGamesToggle();
+        return false;
+    }
+    
+    onDataChanged({usernames = [], wons, gc} = {}) {
+        usernames && usernames.length > 0 && this._renderGridFromUsernames(usernames, wons, gc);
     }
 
     _addGlobalListener() {
@@ -61,7 +68,7 @@ class TabTopCaoThu extends DialogActor {
 
                     setOpacity(this.activateToggleNode, 255);
 
-                    this.previousGameCode = gameCode;
+                    // this.previousGameCode = gameCode;
 
                     this._requestDataFromServer(gameCode, 1);
                 }
@@ -85,7 +92,6 @@ class TabTopCaoThu extends DialogActor {
             }
         };
 
-        this.showLoader();
         app.service.send(sendObject);
     }
 
@@ -94,36 +100,39 @@ class TabTopCaoThu extends DialogActor {
         this.activateToggleNode = toggle.node;
         setOpacity(this.activateToggleNode, 255);
 
-        this.previousGameCode = this.currentGameCode;
+        // this.previousGameCode = this.currentGameCode;
         let _gameCode = toggle.node._gameCode;
         this.currentGameCode = _gameCode;
         this._requestDataFromServer(this.currentGameCode, 1);
     }
 
     _onGetTopPlayers(data) {
-        let {usernames, wons, gc} = data;
+        this.setLoadedData(data);
+    }
+    
+    _renderGridFromUsernames(usernames, wons, gc) {
         let count = 0;
         
         let d = [
             (usernames || []).map((status, index) => {
-                let p = data['p'] || 1;
-                let order = (index + 1) + (p - 1) * 20;
+                let order = index + 1;
                 if (this.crownsNode.children[index] && order <= 3)
                     return cc.instantiate(this.crownsNode.children[index]);
                 else
-                    return `${order}.`;
+                    return `${order}`;
             }),
             (usernames || []),
             wons,
         ];
-        let isNew = gc != this.previousGameCode;
-        this.previousGameCode = gc;
-        this._initBody(d, isNew);
+        
+        // let isNew = gc != this.previousGameCode;
+        // this.previousGameCode = gc;
+        this._initBody(d);
     }
-
-    _initBody(d, isNew) {
-        let next = this.onNextBtnClick;
-        let prev = this.onPreviousBtnClick;
+    
+    _initBody(d) {
+        // let next = this.onNextBtnClick;
+        // let prev = this.onPreviousBtnClick;
 
         this.initView({
             data: ['STT', 'Tài khoản', 'Thắng'],
@@ -139,8 +148,6 @@ class TabTopCaoThu extends DialogActor {
                 colors: ['', '', new cc.Color(255, 214, 0)]
             }
         });
-        this.hideLoader();
-
         this.contentNode.addChild(this.getScrollViewNode());
     }
 

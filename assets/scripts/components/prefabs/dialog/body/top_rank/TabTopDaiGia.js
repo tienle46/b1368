@@ -1,8 +1,8 @@
 import app from 'app';
-import DialogActor from 'DialogActor';
+import PopupTabBody from 'PopupTabBody';
 import Utils from 'Utils';
 
-class TabTopDaiGia extends DialogActor {
+class TabTopDaiGia extends PopupTabBody {
     constructor() {
         super();
 
@@ -18,10 +18,19 @@ class TabTopDaiGia extends DialogActor {
         super.onLoad();
     }
 
-    start() {
-        super.start();
-        this._getDataFromServer()
+    loadData() {
+        if(Object.keys(this._data).length > 0)
+            return false;
+        super.loadData();
+        
+        this._getDataFromServer();
+        return false;
     }
+    
+    onDataChanged({usernames = [], balances = [], gc} = {}) {
+        usernames && usernames.length > 0 && this._renderGridFromUsernames(usernames, balances);
+    }
+
 
     _addGlobalListener() {
         super._addGlobalListener();
@@ -34,28 +43,27 @@ class TabTopDaiGia extends DialogActor {
     }
 
     _getDataFromServer(page) {
-        this.showLoader(this.contentNode);
         app.service.send({
             'cmd': app.commands.GET_TOP_BALANCE_PLAYERS,
         });
     }
 
     _onGetTopBalancePlayers(res) {
-        let {usernames, balances} = res;
-        
-       
+        this.setLoadedData(res);
+    }
+    
+    _renderGridFromUsernames(usernames, balances) {
         if (usernames.length < 0) {
             this.pageIsEmpty(this.contentNode);
             return;
         }
         let data = [
             usernames.map((status, index) => {
-                let p = res['p'] || 1;
-                let order = (index + 1) + (p - 1) * 20;
+                let order = index + 1;
                 if (this.crownsNode.children[index] && order <= 3)
                     return cc.instantiate(this.crownsNode.children[index]);
                 else
-                    return `${order}.`;
+                    return `${order}`;
             }),
             usernames,
             balances.map((amount) => {
@@ -76,21 +84,12 @@ class TabTopDaiGia extends DialogActor {
         let rubOptions = {
             // paging: { prev, next, context: this },
             size: this.contentNode.getContentSize(),
-            group: { widths: ['', 380, ''] }
+            group: { widths: [180, 380, ''] }
         };
 
         this.initView(head, data, rubOptions);
 
         this.contentNode.addChild(this.getScrollViewNode());
-        this.hideLoader(this.contentNode);
-    }
-
-    onPreviousBtnClick(page) {
-        this._getDataFromServer(page);
-    }
-
-    onNextBtnClick(page) {
-        this._getDataFromServer(page);
     }
 }
 

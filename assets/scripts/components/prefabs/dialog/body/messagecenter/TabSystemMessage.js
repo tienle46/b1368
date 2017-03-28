@@ -51,10 +51,6 @@ class TabSystemMessage extends TabMessages {
         this.setLoadedData(data);        
     }
     
-    _renderData(data) {
-        super._renderData(data);
-    }
-    
     createItemMessage(id, title, description, time, isNew) {
         if(this.itemPrefab) {
             let message = cc.instantiate(this.itemPrefab);

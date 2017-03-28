@@ -56,11 +56,11 @@
                 <key>spriteOffset</key>
                 <string>{0,0}</string>
                 <key>spriteSize</key>
-                <string>{42,42}</string>
+                <string>{60,53}</string>
                 <key>spriteSourceSize</key>
-                <string>{42,42}</string>
+                <string>{60,55}</string>
                 <key>textureRect</key>
-                <string>{{1344,543},{42,42}}</string>
+                <string>{{1276,679},{60,53}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -69,13 +69,13 @@
                 <key>aliases</key>
                 <array/>
                 <key>spriteOffset</key>
-                <string>{0,0}</string>
+                <string>{-1,0}</string>
                 <key>spriteSize</key>
-                <string>{42,42}</string>
+                <string>{53,53}</string>
                 <key>spriteSourceSize</key>
-                <string>{42,42}</string>
+                <string>{55,55}</string>
                 <key>textureRect</key>
-                <string>{{1276,611},{42,42}}</string>
+                <string>{{1316,105},{53,53}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -165,7 +165,7 @@
                 <key>spriteSourceSize</key>
                 <string>{66,66}</string>
                 <key>textureRect</key>
-                <string>{{1316,105},{46,44}}</string>
+                <string>{{1344,543},{46,44}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -213,7 +213,7 @@
             <key>size</key>
             <string>{1574,733}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:f6189e0940accbaa9b455e31648f2277:8089fcc8c67d183ff0b019729d73cf9f:70c8faf287b801f42cfa7c57415c1cdf$</string>
+            <string>$TexturePacker:SmartUpdate:5161189edfea5714d773c80442ecadb8:83b828ded5d362dc95c7c30e359038ea:70c8faf287b801f42cfa7c57415c1cdf$</string>
             <key>textureFileName</key>
             <string>login.png</string>
         </dict>

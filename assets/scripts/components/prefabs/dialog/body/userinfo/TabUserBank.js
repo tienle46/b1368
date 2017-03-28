@@ -1,9 +1,9 @@
 import app from 'app';
-import DialogActor from 'DialogActor';
+import PopupTabBody from 'PopupTabBody';
 import PromptPopup from 'PromptPopup';
 import { isEmpty, isNumber, active, deactive, numberFormat } from 'Utils';
 
-export default class TabUserInfo extends DialogActor {
+export default class TabUserBank extends PopupTabBody {
     constructor() {
         super();
 
@@ -40,11 +40,19 @@ export default class TabUserInfo extends DialogActor {
         this._transferMoneyComponent.setOnClickBackButtonListener(() => this.onBackBtnClick());
     }
 
-    start() {
-        super.start();
+    loadData() {
+        if(Object.keys(this._data).length > 0)
+            return false;
+        super.loadData();
+        
         this._initUserData();
+        return false;
     }
-
+    
+    onDataChanged(data = {}) {
+        data && this._renderUserData(data);
+    }
+    
     onRutTienBtnClick() {
         this._withdrawComponent && this._withdrawComponent.setComponentData({balance: this._balance, minBalance: 0, remainBalance: 0})
         deactive(this.mainBodyNode);
@@ -165,6 +173,21 @@ export default class TabUserInfo extends DialogActor {
     }
 
     _fillContent(data) {
+        this.setLoadedData(data);
+    }
+
+    _showMainBody() {
+        active(this.mainBodyNode);
+        deactive(this.chuyenTienBodyNode);
+        deactive(this.withdrawNode);
+    }
+
+    _showChuyenTienBody() {
+        deactive(this.mainBodyNode);
+        active(this.chuyenTienBodyNode);
+    }
+    
+    _renderUserData(data) {
         // let next = this.onNextBtnClick;
         // let prev = this.onPreviousBtnClick;
         if (data.balance) {
@@ -194,22 +217,9 @@ export default class TabUserInfo extends DialogActor {
                 widths: [270, '']
             }
         });
-        this.hideLoader();
 
         this.gridNode.addChild(this.getScrollViewNode());
     }
-
-    _showMainBody() {
-        active(this.mainBodyNode);
-        deactive(this.chuyenTienBodyNode);
-        deactive(this.withdrawNode);
-    }
-
-    _showChuyenTienBody() {
-        deactive(this.mainBodyNode);
-        active(this.chuyenTienBodyNode);
-    }
-
 }
 
-app.createComponent(TabUserInfo);
+app.createComponent(TabUserBank);

@@ -1,5 +1,5 @@
 import app from 'app';
-import DialogActor from 'DialogActor';
+import PopupTabBody from 'PopupTabBody';
 import RubUtils from 'RubUtils';
 import {
     deactive,
@@ -7,7 +7,7 @@ import {
     numberFormat
 } from 'Utils';
 
-class TabSMS extends DialogActor {
+class TabSMS extends PopupTabBody {
     constructor() {
         super();
         this.properties = {
@@ -28,12 +28,21 @@ class TabSMS extends DialogActor {
         super.onLoad();
         deactive(this.textContainer);
     }
-
-    start() {
-        super.start();
+    
+    loadData() {
+        if(Object.keys(this._data).length > 0)
+            return false;
+        super.loadData();
+        
         this._requestPaymentList();
+        return false;
     }
-
+    
+    onDataChanged(data) {
+        console.debug(data);
+        data && Object.keys(data).length > 0 && this._renderSMS(data);
+    }
+    
     onSMSBtnClick(e) {
         let {
             code,
@@ -67,38 +76,12 @@ class TabSMS extends DialogActor {
             }
         };
 
-        this.showLoader();
         this._sending = true;
         app.service.send(sendObject);
     }
 
     _onUserGetChargeList(data) {
-        // app.keywords.CHARGE_SMS_OBJECT
-        if (data.hasOwnProperty(app.keywords.CHARGE_SMS_OBJECT_IAC) && this._sending) {
-            const smses = data[app.keywords.CHARGE_SMS_OBJECT_IAC]; // => {1000: {}, 2000: {}}
-            this._sending = false;
-
-            if (Object.keys(smses).length > 0) {
-                this.hideLoader();
-                Object.keys(smses).forEach(key => {
-                    let moneySend = key,
-                        infos = smses[key][app.keywords.CHARGE_SMS_OBJECT_INFORS] || [],
-                        moneyGot = smses[key]['balance'],
-                        promoteDesc = smses[key]['promoteDesc'];
-
-                    infos.forEach((smsInfo, i) => {
-                        let code = smsInfo.code,
-                            sendTo = smsInfo.shortCode,
-                            command = smsInfo.syntax,
-                            isChecked = i === 0;
-
-                        this._initItem(code, command, sendTo, moneySend, moneyGot, isChecked, moneyGot > moneySend, promoteDesc);
-                    });
-                });
-            } else {
-                this.pageIsEmpty(this.node);
-            }
-        }
+        this.setLoadedData(data);
     }
 
     _initItem(code, syntax, sendTo, moneySend, moneyGot, isChecked, hasPromotion, promoteDesc) {
@@ -137,6 +120,32 @@ class TabSMS extends DialogActor {
             }
             if (app.env.isAndroid()) {
                 // TODO
+            }
+        }
+    }
+    
+    _renderSMS(data) {
+        // app.keywords.CHARGE_SMS_OBJECT
+        if (this._sending) {
+            const smses = data[app.keywords.CHARGE_SMS_OBJECT_IAC] || {}; // => {1000: {}, 2000: {}}
+            this._sending = false;
+
+            if (Object.keys(smses).length > 0) {
+                Object.keys(smses).forEach(key => {
+                    let moneySend = key,
+                        infos = smses[key][app.keywords.CHARGE_SMS_OBJECT_INFORS] || [],
+                        moneyGot = smses[key]['balance'],
+                        promoteDesc = smses[key]['promoteDesc'];
+
+                    infos.forEach((smsInfo, i) => {
+                        let code = smsInfo.code,
+                            sendTo = smsInfo.shortCode,
+                            command = smsInfo.syntax,
+                            isChecked = i === 0;
+
+                        this._initItem(code, command, sendTo, moneySend, moneyGot, isChecked, moneyGot > moneySend, promoteDesc);
+                    });
+                });
             }
         }
     }

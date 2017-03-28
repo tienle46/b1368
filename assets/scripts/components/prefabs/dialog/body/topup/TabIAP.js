@@ -1,8 +1,8 @@
 import app from 'app';
-import DialogActor from 'DialogActor';
+import PopupTabBody from 'PopupTabBody';
 import { deactive, active, numberFormat } from 'Utils';
 
-class TabIAP extends DialogActor {
+class TabIAP extends PopupTabBody {
     constructor() {
         super();
         this.properties = {
@@ -26,17 +26,20 @@ class TabIAP extends DialogActor {
         window.release(this.__items);
     }
 
-    start() {
-        super.start();
-
-        this.showLoader();
-
+    loadData() {
+        if(Object.keys(this._data).length > 0)
+            return false;
+        super.loadData();
+        
         this._requestPaymentList();
 
         this._initIAP();
 
-        // let data = this.getSharedData(this.getDialog(this.node), 'iap');
-        // data && this._onUserGetIAPList(data);
+        return false;
+    }
+    
+    onDataChanged(data) {
+        data && Object.keys(data).length > 0 && this._renderIAP(data);
     }
 
     _requestPaymentList() {
@@ -44,7 +47,6 @@ class TabIAP extends DialogActor {
             'cmd': app.commands.USER_GET_CHARGE_LIST,
         };
 
-        this.showLoader();
         this.__sending = true;
         app.service.send(sendObject);
     }
@@ -67,7 +69,7 @@ class TabIAP extends DialogActor {
         if (app.env.isMobile() && window.sdkbox.IAP) {
             let name = target.productId;
 
-            // app.system.showLoader(app.res.string('sending_item_store_iap', { provider: app.env.isIOS() ? 'Apple Store' : 'Google Play' }), 60);
+            app.system.showLoader(app.res.string('sending_item_store_iap', { provider: app.env.isIOS() ? 'Apple Store' : 'Google Play' }), 60);
             window.sdkbox.IAP.purchase(name);
         }
     }
@@ -127,7 +129,7 @@ class TabIAP extends DialogActor {
                             }
                         };
 
-                        // app.system.showLoader(app.res.string('iap_buying_successfully_wait_server_response'), 60);
+                        app.system.showLoader(app.res.string('iap_buying_successfully_wait_server_response'), 60);
                         cc.log('\nIAP sendObject:', JSON.stringify(sendObj))
                         app.service.send(sendObj);
                     } else {
@@ -144,15 +146,14 @@ class TabIAP extends DialogActor {
                 onCanceled: (product) => {
                     //Purchase was canceled by user
                     cc.log('\nIAP: onCanceled', JSON.stringify(product))
-                    app.system.hideLoader();
                     app.system.error(msg);
+                    app.system.hideLoader();
                 },
             });
         }
     }
-
-    _onUserGetIAPList(data) {
-        this.hideLoader();
+    
+    _renderIAP(data) {
         if (this.__sending) {
             this.__sending = false;
 
@@ -161,7 +162,6 @@ class TabIAP extends DialogActor {
 
             // app.keywords.CHARGE_SMS_OBJECT
             if (balances && balances.length > 0) {
-                this.hideLoader();
 
                 for (let i = 0; i < balances.length; i++) {
                     let balance = balances[i];
@@ -171,10 +171,12 @@ class TabIAP extends DialogActor {
 
                     this._initItem(balance, currency ? currency : "$", price, productId);
                 }
-            } else {
-                this.pageIsEmpty(this.node);
             }
         }
+    }
+    
+    _onUserGetIAPList(data) {
+        this.setLoadedData(data);
     }
 
     _initItem(balance, currency, price, productId) {

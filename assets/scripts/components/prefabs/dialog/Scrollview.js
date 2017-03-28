@@ -77,9 +77,9 @@ export default class Scrollview extends Component {
             } else {
                 this._showPaging();
 
-                this.bodyNode.setContentSize(this.node.getContentSize().width, 366);
-                this.node.setContentSize(this.node.getContentSize().width, 366);
-                this.viewNode.setContentSize(this.node.getContentSize().width, 366);
+                this.bodyNode.setContentSize(this.node.getContentSize().width, 374);
+                this.node.setContentSize(this.node.getContentSize().width, 374);
+                this.viewNode.setContentSize(this.node.getContentSize().width, 374);
                 
                 let wo = { bottom: 60 };
                 NodeRub.addWidgetComponentToNode(this.bodyNode, wo);

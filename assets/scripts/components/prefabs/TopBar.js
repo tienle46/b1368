@@ -121,13 +121,11 @@ class TopBar extends DialogActor {
     }
 
     onClickNapXuAction() {
-        let scene = app.system.getCurrentSceneNode();
-        new TopupDialogRub(scene);
+        new TopupDialogRub().show(app.system.getCurrentSceneNode());
     }
 
     onFriendBtnClick() {
-        let buddy = new BuddyPopup().show(this.node.parent);
-        buddy = null;
+        new BuddyPopup().show(this.node.parent);
     }
 
     onClickTransferAwardAction() {
@@ -155,39 +153,12 @@ class TopBar extends DialogActor {
     }
 
     onClickMessageAction() {
-        new MessageCenterDialogRub().show(this.node.parent);
+        new MessageCenterDialogRub().show(app.system.getCurrentSceneNode());
     }
 
     onClickUserInfoAction() {
-        // personal tabs
-        let url = `${app.const.DIALOG_DIR_PREFAB}/userinfo`;
-        let tabs = [{
-                title: 'Cá nhân',
-                value: `${url}/tab_user_info`
-            },
-            {
-                title: 'Thành tích',
-                value: `${url}/tab_user_achievements`
-            }, {
-                title: 'Ngân hàng',
-                value: `${url}/tab_user_bank`
-            }
-            // , {
-            //     title: 'Gift Code',
-            //     value: `${url}/tab_gift_code`
-            // }
-            // , {
-            //     title: 'Chuyển chip',
-            //     value: 'tab_transfer_vc'
-            // }, {
-            //     title: 'Nhận chip',
-            //     value: 'tab_transfer_transaction'
-            // }, 
-        ];
-
-        PersonalInfoDialogRub.show(app.system.getCurrentSceneNode(), tabs, { title: 'Cá nhân' });
+        new PersonalInfoDialogRub().show(app.system.getCurrentSceneNode(), { title: 'Cá nhân' });
     }
-
 
     /**
      * PRIVATES 

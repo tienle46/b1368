@@ -1,50 +1,36 @@
-import DialogRub from 'DialogRub';
-import TopupDialog from 'TopupDialog';
 import app from 'app';
+
+const url = `${app.const.DIALOG_DIR_PREFAB}/topup`;
+
+const tabModels = [
+    { title: 'Thẻ cào',prefabPath: `${url}/tab_card`, componentName: 'TabCard'},
+    { title: 'SMS',prefabPath: `${url}/tab_sms`, componentName: 'TabSMS', hidden: app.env.isBrowser() ? !app.env.isBrowserTest() : !app.env.isMobile()},
+    { title: 'IAP',prefabPath: `${url}/tab_iap`, componentName: 'TabIAP',  hidden: app.env.isBrowser() ? !app.env.isBrowserTest() : !app.env.isMobile()},
+    { title: 'Lịch sử',prefabPath: `${url}/tab_history`, componentName: 'TabHistory'}
+];
 
 export default class TopUpDialogRub {
 
-    constructor(node) {
+   constructor() {
+        let node = cc.instantiate(app.res.prefab.multiTabPopup);
+        /**
+         * @type {MultiTabPopup}
+         */
+        this.multiTabPopup = node.getComponent("MultiTabPopup");
 
-        this._initOptions();
-
-        this.node = node;
-        this.dialog = null;
-        this.init();
+        this.multiTabPopup.changeToChatTab = this.changeToChatTab.bind(this);
     }
 
-    _initOptions() {
-        let url = `${app.const.DIALOG_DIR_PREFAB}/topup`;
-
-        let tabs = [{
-            title: 'Thẻ cào',
-            value: `${url}/tab_card`,
-        }, {
-            title: 'SMS',
-            value: `${url}/tab_sms`,
-            hidden: app.env.isBrowser() ? !app.env.isBrowserTest() : !app.env.isMobile()
-        }, {
-            title: 'IAP',
-            value: `${url}/tab_iap`,
-            hidden: app.env.isBrowser() ? !app.env.isBrowserTest() : !app.env.isMobile()
-        }, {
-            title: 'Lịch sử',
-            value: `${url}/tab_history`
-        }];
-
-        let options = {
-            // itemHeight: 26.5
-        };
-
-        this.options = { tabs, options };
+    changeToChatTab(data) {
+        this.multiTabPopup && this.multiTabPopup.changeTab(TopUpDialogRub.TAB_CARD, data);
     }
 
-    init() {
-        this.dialog = new DialogRub(this.node, this.options.tabs, { title: 'Nạp Tiền' });
-        this.topupDialogComponent = this.dialog.addComponent(TopupDialog);
-    }
-
-    static show(parentNode) {
-        return new this(parentNode);
+    show(parentNode = cc.director.getScene(), options = {}){
+        this.multiTabPopup.show({parentNode, tabModels, ...options});
     }
 }
+
+TopUpDialogRub.TAB_CARD = 0;
+TopUpDialogRub.TAB_SMS = 1;
+TopUpDialogRub.TAB_IAP = 2;
+TopUpDialogRub.TAB_HISTORY = 3;

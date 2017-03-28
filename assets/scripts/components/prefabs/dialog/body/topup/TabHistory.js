@@ -1,12 +1,13 @@
 import app from 'app';
-import DialogActor from 'DialogActor';
+import PopupTabBody from 'PopupTabBody';
 
-class TabHistory extends DialogActor {
+class TabHistory extends PopupTabBody {
     constructor() {
         super();
         this.properties = {
             ...this.properties,
-            bodyNode: cc.Node
+            bodyNode: cc.Node,
+            p404: cc.Prefab
         };
     }
 
@@ -14,11 +15,18 @@ class TabHistory extends DialogActor {
         super.onLoad();
     }
 
-    start() {
-        super.start();
+    loadData() {
+        if(Object.keys(this._data).length > 0)
+            return false;
+        super.loadData();
+        
         this._requestHistories();
+        return false;
     }
-
+    
+    onDataChanged(histories) {
+        histories && histories.length > 0 && this._renderHistory(histories);
+    }
 
     _addGlobalListener() {
         super._addGlobalListener();
@@ -31,7 +39,21 @@ class TabHistory extends DialogActor {
     }
 
     _onUserChargeHistory(data) {
-        let histories = data.histories || [];
+        this.setLoadedData(data.histories || []);
+    }
+
+    _requestHistories() {
+        var sendObject = {
+            'cmd': 'userChargeHistory',
+            data: {
+                p: 1
+            }
+        };
+
+        app.service.send(sendObject);
+    }
+    
+    _renderHistory(histories) {
         if (histories.length > 0) {
             let d = [];
             histories.map((history, index) => {
@@ -59,17 +81,10 @@ class TabHistory extends DialogActor {
             this.pageIsEmpty(this.bodyNode);
         }
     }
-
-    _requestHistories() {
-        var sendObject = {
-            'cmd': 'userChargeHistory',
-            data: {
-                p: 1
-            }
-        };
-
-        this.showLoader(this.bodyNode);
-        app.service.send(sendObject);
+    
+    pageIsEmpty(node) {
+        let p404 = cc.instantiate(this.p404);
+        node.addChild(p404);  
     }
 }
 

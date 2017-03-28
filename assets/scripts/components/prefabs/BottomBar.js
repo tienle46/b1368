@@ -1,7 +1,7 @@
 import app from 'app';
 import Actor from 'Actor';
 import TimerRub from 'TimerRub';
-import DialogRub from 'DialogRub';
+import TopRankDialogRub from 'TopRankDialogRub';
 
 class BottomBar extends Actor {
     constructor() {
@@ -42,19 +42,7 @@ class BottomBar extends Actor {
 
 
     onClickTopRankAction() {
-        let url = `${app.const.DIALOG_DIR_PREFAB}/rank`;
-        let tabs = [{
-            title: 'Top VIP',
-            value: `${url}/tab_top_vip`
-        }, {
-            title: 'Top Cao thủ',
-            value: `${url}/tab_top_cao_thu`
-        }, {
-            title: 'Top Đại gia',
-            value: `${url}/tab_top_dai_gia`
-        }];
-
-        DialogRub.show(app.system.getCurrentSceneNode(), tabs, { title: 'Xếp hạng' });
+        new TopRankDialogRub().show(app.system.getCurrentSceneNode());
     }
 
     // on high light message listener

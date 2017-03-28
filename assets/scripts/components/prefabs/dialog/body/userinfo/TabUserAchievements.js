@@ -1,21 +1,29 @@
 import app from 'app';
-import DialogActor from 'DialogActor';
+import PopupTabBody from 'PopupTabBody';
 import { isNull } from 'Utils';
 
-export default class TabUserAchievements extends DialogActor {
+export default class TabUserAchievements extends PopupTabBody {
     constructor() {
         super();
-        this.bodyNode = {
+        this.p404 = {
             default: null,
-            type: cc.Node
+            type: cc.Prefab
         };
     }
 
-    start() {
-        super.start();
+    loadData() {
+        if(Object.keys(this._data).length > 0)
+            return false;
+        super.loadData();
+        
         this._getAchievementsDataFromServer();
+        return false;
     }
-
+    
+    onDataChanged(data) {
+        data && Object.keys(data).length > 0 && this._renderUserAchievements(data);
+    }
+    
     _addGlobalListener() {
         super._addGlobalListener();
         app.system.addListener(app.commands.USER_ACHIEVEMENT, this._onUserAchievement, this);
@@ -31,11 +39,14 @@ export default class TabUserAchievements extends DialogActor {
             cmd: app.commands.USER_ACHIEVEMENT
         };
 
-        this.showLoader(this.bodyNode);
         app.service.send(sendObj);
     }
 
     _onUserAchievement(res) {
+        this.setLoadedData(res);
+    }
+    
+    _renderUserAchievements(res){
         let gameListCol = res[app.keywords.GAME_NAME_LIST] || [];
         if (gameListCol.length > 0) {
             let levelCol = res[app.keywords.LEVEL_LIST].map((e) => `Cấp độ ${e}`) || [];
@@ -64,10 +75,14 @@ export default class TabUserAchievements extends DialogActor {
             });
 
             this.bodyNode.addChild(this.getScrollViewNode());
-            this.hideLoader(this.bodyNode);
         } else {
             this.pageIsEmpty(this.bodyNode);
         }
+    }
+    
+    pageIsEmpty(node) {
+        let p404 = cc.instantiate(this.p404);
+        node.addChild(p404);
     }
 }
 

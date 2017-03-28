@@ -2,11 +2,11 @@
  * Created by Thanh on 1/25/2017.
  */
 import app from 'app';
-import DialogActor from 'DialogActor';
+import PopupTabBody from 'PopupTabBody';
 import {isNumber, active, deactive, numberFormat} from 'Utils';
 import CCUtils from 'CCUtils';
 
-export default class TabBuddiesTransfer extends DialogActor {
+export default class TabBuddiesTransfer extends PopupTabBody {
 
     constructor() {
         super();
@@ -34,8 +34,12 @@ export default class TabBuddiesTransfer extends DialogActor {
 
         this._sendRequest();
     }
-
-    renderComponentData({minTransfer = 0, maxTransfer = 0, feeTransfer = 0} = {}) {
+    
+    renderComponentData(data) {
+        if(!data)
+            return;
+        let {minTransfer, maxTransfer, feeTransfer} = data;
+        
         this.receiverEditBoxNode.string = this.receiverBuddyName || '';
         this.feeAmountLbl.string = `${numberFormat(feeTransfer)}%`;
         this.minAmountLbl.string = numberFormat(minTransfer);
@@ -43,9 +47,8 @@ export default class TabBuddiesTransfer extends DialogActor {
     }
 
     onTransferMoneyBtnClick() {
-        this.receiverEditBoxNode.stayOnTop = false;
-
         let data = this.getComponentData();
+
         let receiver = this.receiverEditBoxNode.string;
 
         if (!receiver) {

@@ -1,5 +1,5 @@
 import app from 'app';
-import DialogActor from 'DialogActor';
+import PopupTabBody from 'PopupTabBody';
 import {
     isEmpty,
     active,
@@ -12,7 +12,7 @@ import {
     SFSEvent
 } from 'SFS2X';
 
-export default class TabUserInfo extends DialogActor {
+export default class TabUserInfo extends PopupTabBody {
     constructor() {
         super();
 
@@ -42,11 +42,19 @@ export default class TabUserInfo extends DialogActor {
         app.context.getUserAvatar(this.avatar);
     }
 
-    start() {
-        super.start();
+    loadData() {
+        if(Object.keys(this._data).length > 0)
+            return false;
+        super.loadData();
+        
         this._initUserData();
+        return false;
     }
-
+    
+    onDataChanged(data = {}) {
+        data && this._renderUserInfo(data);
+    }
+    
     onShowChangePasswordPanel() {
         this._showChangePasswordPanel();
     }
@@ -80,11 +88,9 @@ export default class TabUserInfo extends DialogActor {
                 data
             };
 
-            this.showLoader();
             app.service.send(sendObject);
         }
     }
-
 
     onShowTopUpDialog() {
         this._hide();
@@ -115,7 +121,6 @@ export default class TabUserInfo extends DialogActor {
                 data
             };
 
-            this.showLoader();
             app.service.send(sendObject);
         }
     }
@@ -148,61 +153,15 @@ export default class TabUserInfo extends DialogActor {
             cmd: app.commands.USER_PROFILE_NEW,
         };
 
-        this.showLoader();
         app.service.send(sendObj);
     }
 
     _onUserProfile(data) {
-        this.hideLoader();
-
-        let {
-            name
-        } = app.context.getMyInfo();
-
-        let {
-            balance,
-            benefit,
-            id,
-            levelName,
-            nextLevelName,
-            nextBenefit,
-            accountTypeName
-        } = data;
-
-        this.userName.string = name;
-        this.chipAmout.string = numberFormat(balance);
-
-        this.userId.string = id;
-        this.vipLevel.string = accountTypeName;
-        // this.nextLevel.string = nextLevelName;
-
-        if (app.context.needUpdatePhoneNumber()) {
-            this.phoneNumber.string = `Chưa cập nhật`;
-        } else {
-            if (data[app.keywords.PHONE_INVITE_PHONE_NEW])
-                this.phoneNumber.string = data[app.keywords.PHONE_INVITE_PHONE_NEW];
-            else
-                this.phoneNumber.string = `Chưa cập nhật`;
-        }
-
-        this.levelInfo = `Cấp độ: ${levelName}\n`;
-
-        if (benefit) {
-            this.levelInfo += `Quyền lợi: ${benefit}`;
-            // this.benefitLbl.string = `<color=#F6D533> Quyền lợi:</c> ${benefit}`;
-            // let size = this.benefitLbl.node.getContentSize();
-            // let height = size.height * this.benefitLbl._lineCount;
-            // this.benefitLbl.node.setContentSize(size.width, height);
-        }
-
-        if (nextBenefit) {
-            this.nextLvlBenefit = nextBenefit;
-        }
+        this.setLoadedData(data);
     }
 
     _onUserUpdatePassword(data) {
         //update password
-        this.hideLoader();
         if (data.hasOwnProperty(app.keywords.UPDATE_PROFILE_RESULT) && data[app.keywords.UPDATE_PROFILE_RESULT] == true) {
             app.system.showLongToast(app.res.string('password_changed_successfully'));
             this.currPassword.string = "";
@@ -217,7 +176,6 @@ export default class TabUserInfo extends DialogActor {
 
     _onUserUpdatePhoneNumber(data) {
         //update phonenumber
-        this.hideLoader();
         if (data.hasOwnProperty(app.keywords.RESPONSE_RESULT) && data[app.keywords.RESPONSE_RESULT]) {
             app.system.showLongToast(app.res.string('phonenumber_changed_successfully'));
             this.phoneNumber.string = this.newPhoneNumberEditbox.string;
@@ -271,6 +229,52 @@ export default class TabUserInfo extends DialogActor {
                 this.avatar && app.context.getUserAvatar(this.avatar);
             }
         });
+    }
+    
+    _renderUserInfo(data) {
+        let {
+            name
+        } = app.context.getMyInfo();
+
+        let {
+            balance,
+            benefit,
+            id,
+            levelName,
+            nextLevelName,
+            nextBenefit,
+            accountTypeName
+        } = data;
+
+        this.userName.string = name;
+        this.chipAmout.string = numberFormat(balance);
+
+        this.userId.string = id;
+        this.vipLevel.string = accountTypeName;
+        // this.nextLevel.string = nextLevelName;
+
+        if (app.context.needUpdatePhoneNumber()) {
+            this.phoneNumber.string = `Chưa cập nhật`;
+        } else {
+            if (data[app.keywords.PHONE_INVITE_PHONE_NEW])
+                this.phoneNumber.string = data[app.keywords.PHONE_INVITE_PHONE_NEW];
+            else
+                this.phoneNumber.string = `Chưa cập nhật`;
+        }
+
+        this.levelInfo = `Cấp độ: ${levelName}\n`;
+
+        if (benefit) {
+            this.levelInfo += `Quyền lợi: ${benefit}`;
+            // this.benefitLbl.string = `<color=#F6D533> Quyền lợi:</c> ${benefit}`;
+            // let size = this.benefitLbl.node.getContentSize();
+            // let height = size.height * this.benefitLbl._lineCount;
+            // this.benefitLbl.node.setContentSize(size.width, height);
+        }
+
+        if (nextBenefit) {
+            this.nextLvlBenefit = nextBenefit;
+        }
     }
 }
 

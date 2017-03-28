@@ -1,7 +1,7 @@
 import app from 'app';
-import DialogActor from 'DialogActor';
+import PopupTabBody from 'PopupTabBody';
 
-class TabTopVip extends DialogActor {
+class TabTopVip extends PopupTabBody {
     constructor() {
         super();
 
@@ -16,12 +16,20 @@ class TabTopVip extends DialogActor {
     onLoad() {
         super.onLoad();
     }
-
-    start() {
-        super.start();
+    
+    loadData() {
+        if(Object.keys(this._data).length > 0)
+            return false;
+        super.loadData();
+        
         this._getRankGroup();
+        return false;
     }
-
+    
+    onDataChanged({usernames = []} = {}) {
+        usernames && usernames.length > 0 && this._renderGridFromUsernames(usernames);
+    }
+    
     _addGlobalListener() {
         super._addGlobalListener();
         app.system.addListener(app.commands.GET_TOP_VIP_PLAYERS, this._onGetTopVipPlayers, this);
@@ -33,14 +41,16 @@ class TabTopVip extends DialogActor {
     }
 
     _getRankGroup() {
-        this.showLoader(this.contentNode);
         app.service.send({
             'cmd': app.commands.GET_TOP_VIP_PLAYERS,
         });
     }
 
-    _onGetTopVipPlayers(d) {
-        let {usernames} = d;
+    _onGetTopVipPlayers(data) {
+        this.setLoadedData(data); 
+    }
+    
+    _renderGridFromUsernames(usernames) {
         if (usernames.length < 0) {
             this.pageIsEmpty(this.contentNode);
             return;
@@ -50,7 +60,7 @@ class TabTopVip extends DialogActor {
                 if (this.crowns.children[index])
                     return cc.instantiate(this.crowns.children[index]);
                 else
-                    return `${index + 1}.`;
+                    return `${index + 1}`;
             }),
             usernames,
             usernames.map((status, index) => {
@@ -69,7 +79,6 @@ class TabTopVip extends DialogActor {
             size: this.contentNode.getContentSize(),
         });
         this.contentNode.addChild(this.getScrollViewNode());
-        this.hideLoader(this.contentNode);
     }
 }
 
