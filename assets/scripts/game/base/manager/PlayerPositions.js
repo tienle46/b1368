@@ -29,14 +29,16 @@ export default class PlayerPositions extends Component {
         super.onEnable();
         this._initPlayerAnchors();
 
-
         this.scene = app.system.currentScene;
-        this.scene.on(Events.ON_GAME_RESET, this._onGameReset, this);
-        this.scene.on(Events.ON_GAME_STATE_BEGIN, this._onGameBegin, this);
-        this.scene.on(Events.ON_GAME_STATE_STARTING, this._onGameStarting, this);
-        this.scene.on(Events.ON_GAME_STATE_STARTED, this._onGameStarted, this);
-        this.scene.on(Events.ON_GAME_STATE_PLAYING, this._onGamePlaying, this);
-        this.scene.on(Events.ON_GAME_STATE_ENDING, this._onGameEnding, this);
+
+        if(this.scene){
+            this.scene.on(Events.ON_GAME_RESET, this._onGameReset, this);
+            this.scene.on(Events.ON_GAME_STATE_BEGIN, this._onGameBegin, this);
+            this.scene.on(Events.ON_GAME_STATE_STARTING, this._onGameStarting, this);
+            this.scene.on(Events.ON_GAME_STATE_STARTED, this._onGameStarted, this);
+            this.scene.on(Events.ON_GAME_STATE_PLAYING, this._onGamePlaying, this);
+            this.scene.on(Events.ON_GAME_STATE_ENDING, this._onGameEnding, this);
+        }
     }
 
     _initPlayerAnchors() {

@@ -229,8 +229,11 @@ export default class BoardPhom extends BoardCardTurnBase {
 
         super.onBoardEnding(data);
 
-        let models = playerIds.filter(playerId => (playingPlayerIds.indexOf(playerId) >= 0)).map(playerId => {
-            return {
+
+
+        playingPlayerIds.forEach(playerId => {
+            let player = this.scene.gamePlayers.findPlayer(playerId);
+            player && player.showEndGameInfo({
                 name: playerInfos[playerId].name,
                 balanceChanged: balanceChangeAmounts[playerId],
                 text: resultTexts[playerId],
@@ -238,30 +241,42 @@ export default class BoardPhom extends BoardCardTurnBase {
                 cards: playerHandCards[playerId],
                 isWinner: winnerFlags[playerId],
                 point: points[playerId]
-            }
-        });
+            })
+        })
 
-        models.sort((model1, model2) => model1.point - model2.point)
-        for (let i = 1; i < models.length; i++) {
-            let model = models[i];
-            if(model.isWinner){
-                ArrayUtils.swap(models, i, 0)
-                break
-            }
-        }
-
-        setTimeout(() => this.scene.showGameResult(models, (shownTime) => {
-            this.renderer.cleanDeckCards()
-            this.scene.emit(Events.CLEAN_GAME_AFTER_SHOW_RESULT);
-
-            let remainTime = this.timelineRemain - shownTime;
-            if (remainTime > 0 && this.scene.isEnding()) {
-                if(this.scene.gamePlayers.players.length > 1){
-                    this._startEndBoardTimeLine(remainTime);
-                }
-            }
-
-        }), CardList.TRANSFER_CARD_DURATION * 1000);
+        // let models = playerIds.filter(playerId => (playingPlayerIds.indexOf(playerId) >= 0)).map(playerId => {
+        //     return {
+        //         name: playerInfos[playerId].name,
+        //         balanceChanged: balanceChangeAmounts[playerId],
+        //         text: resultTexts[playerId],
+        //         info: gameResultInfos[playerId],
+        //         cards: playerHandCards[playerId],
+        //         isWinner: winnerFlags[playerId],
+        //         point: points[playerId]
+        //     }
+        // });
+        //
+        // models.sort((model1, model2) => model1.point - model2.point)
+        // for (let i = 1; i < models.length; i++) {
+        //     let model = models[i];
+        //     if(model.isWinner){
+        //         ArrayUtils.swap(models, i, 0)
+        //         break
+        //     }
+        // }
+        //
+        // setTimeout(() => this.scene.showGameResult(models, (shownTime) => {
+        //     this.renderer.cleanDeckCards()
+        //     this.scene.emit(Events.CLEAN_GAME_AFTER_SHOW_RESULT);
+        //
+        //     let remainTime = this.timelineRemain - shownTime;
+        //     if (remainTime > 0 && this.scene.isEnding()) {
+        //         if(this.scene.gamePlayers.players.length > 1){
+        //             this._startEndBoardTimeLine(remainTime);
+        //         }
+        //     }
+        //
+        // }), CardList.TRANSFER_CARD_DURATION * 1000);
     }
 
     _getGameResultInfos(playerIds = [], playerHandCards, data) {
