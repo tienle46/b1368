@@ -1,12 +1,11 @@
 import app from 'app';
-import DialogActor from 'DialogActor';
+import PopupTabBody from 'PopupTabBody';
 import RubUtils from 'RubUtils';
 import Utils from 'Utils';
-import ExchangeDialog from 'ExchangeDialog';
 import LoaderRub from 'LoaderRub';
 import CCUtils from 'CCUtils';
 
-class TabExchangeItem extends DialogActor {
+class TabExchangeItem extends PopupTabBody {
     constructor() {
         super();
 
@@ -24,12 +23,21 @@ class TabExchangeItem extends DialogActor {
 
     onLoad() {
         super.onLoad();
-       this._hideUpdatePhoneNumber();
+        this._hideUpdatePhoneNumber();
     }
-
-    start() {
-        super.start();
+    
+    loadData() {
+        if(Object.keys(this._data).length > 0)
+            return false;
+        super.loadData();
+        
         this._initItemsList();
+        return false;
+    }
+    
+    onDataChanged(data = {}) {
+        let types = data[app.keywords.EXCHANGE_LIST.RESPONSE.TYPES];
+        types && types.length > 0 && this._renderItems(types);
     }
     
     onClickBackBtn() {
@@ -67,17 +75,12 @@ class TabExchangeItem extends DialogActor {
         super._removeGlobalListener();
         app.system.removeListener(app.commands.EXCHANGE, this._onExchange, this);
         app.system.removeListener(app.commands.EXCHANGE_LIST, this._onGetExchangeList, this);
-        app.system.removeListener(app.commands.PHONE_NUMBER, this._onUpdatePhoneNumber, this);
+        app.system.removeListener(app.commands.UPDATE_PHONE_NUMBER, this._onUpdatePhoneNumber, this);
     }
     
     _onUpdatePhoneNumber(data) {
         if (data[app.keywords.RESPONSE_RESULT]) {
-            app.system.showToast(app.res.string('phone_number_confirmation'));
             this._hideUpdatePhoneNumber();
-        } else {
-            app.system.error(
-                app.res.string('error_system')
-            );
         }
     }
     
@@ -86,58 +89,56 @@ class TabExchangeItem extends DialogActor {
             'cmd': app.commands.EXCHANGE_LIST,
             'data': {}
         };
-        this.showLoader();
+        
         app.service.send(sendObject);
     }
 
     _onGetExchangeList(data) {
-        if (data[app.keywords.EXCHANGE_LIST.RESPONSE.TYPES]) {
-            let exchangeTypes = data[app.keywords.EXCHANGE_LIST.RESPONSE.TYPES];
-            exchangeTypes.map((type) => {
-                if (type[app.keywords.EXCHANGE_LIST.RESPONSE.ITEM_TYPE] == app.const.EXCHANGE_LIST_ITEM_TYPE_ID) {
-                    const idList = type[app.keywords.EXCHANGE_LIST.RESPONSE.ITEM_ID_LIST];
-                    const nameList = type[app.keywords.EXCHANGE_LIST.RESPONSE.ITEM_NAME_LIST];
-                    const goldList = type[app.keywords.EXCHANGE_LIST.RESPONSE.ITEM_GOLD_LIST];
-                    const iconList = type[app.keywords.EXCHANGE_LIST.RESPONSE.ITEM_ICON_LIST];
-
-                    for (let i = 0; i < idList.length; i++) {
-                        let itemId = idList[i];
-                        // let itemIcon = `https://crossorigin.me/${iconList[i].replace('thumb.', '')}`;
-                        let itemIcon = `https://cdn1.iconfinder.com/data/icons/flat-business-icons/128/user-128.png`;
-                        
-                        let itemGold = goldList[i];
-                        let itemName = nameList[i];
-
-                        let item = cc.instantiate(this.exchangeItem);
-                        item.active = true;
-
-                        let a = new LoaderRub(item, true);
-                        a.show();
-                        // add sprite to img 
-                        RubUtils.loadSpriteFrame(this.exchangeItemImage, itemIcon, this.exchangeItemImage.node.getContentSize(), true, (sprite) => {
-                            a.destroy();
-                        });
-
-                        // add price
-                        this.exchangeItemPrice.string = `${Utils.numberFormat(itemGold)} XU`;
-
-                        let itemBtn = item.getChildByName('btn').getComponent(cc.Button);
-                        itemBtn.itemId = itemId;
-                        itemBtn.itemName = itemName;
-                        itemBtn.itemGold = itemGold;
-
-                        this.contentNode.addChild(item);
-                    }
-                }
-            });
-            exchangeTypes = null;
-            // hide loader
-            this.hideLoader();
-        } else {
-            this.pageIsEmpty(this.node);
-        }
+        this.setLoadedData({
+            [app.keywords.EXCHANGE_LIST.RESPONSE.TYPES]: data[app.keywords.EXCHANGE_LIST.RESPONSE.TYPES] || []
+        });
     }
+    
+    _renderItems(exchangeTypes) {
+        exchangeTypes.map((type) => {
+            if (type[app.keywords.EXCHANGE_LIST.RESPONSE.ITEM_TYPE] == app.const.EXCHANGE_LIST_ITEM_TYPE_ID) {
+                const idList = type[app.keywords.EXCHANGE_LIST.RESPONSE.ITEM_ID_LIST];
+                const nameList = type[app.keywords.EXCHANGE_LIST.RESPONSE.ITEM_NAME_LIST];
+                const goldList = type[app.keywords.EXCHANGE_LIST.RESPONSE.ITEM_GOLD_LIST];
+                const iconList = type[app.keywords.EXCHANGE_LIST.RESPONSE.ITEM_ICON_LIST];
 
+                for (let i = 0; i < idList.length; i++) {
+                    let itemId = idList[i];
+                    // let itemIcon = `https://crossorigin.me/${iconList[i].replace('thumb.', '')}`;
+                    let itemIcon = `https://cdn1.iconfinder.com/data/icons/flat-business-icons/128/user-128.png`;
+                    
+                    let itemGold = goldList[i];
+                    let itemName = nameList[i];
+
+                    let item = cc.instantiate(this.exchangeItem);
+                    item.active = true;
+
+                    let a = new LoaderRub(item, true);
+                    a.show();
+                    // add sprite to img 
+                    RubUtils.loadSpriteFrame(this.exchangeItemImage, itemIcon, this.exchangeItemImage.node.getContentSize(), true, (sprite) => {
+                        a.destroy();
+                    });
+
+                    // add price
+                    this.exchangeItemPrice.string = `${Utils.numberFormat(itemGold)} XU`;
+
+                    let itemBtn = item.getChildByName('btn').getComponent(cc.Button);
+                    itemBtn.itemId = itemId;
+                    itemBtn.itemName = itemName;
+                    itemBtn.itemGold = itemGold;
+
+                    this.contentNode.addChild(item);
+                }
+            }
+        });
+    }
+    
     onItemBtnClick(event) {
         let gold = event.currentTarget.itemGold;
         let name = event.currentTarget.itemName;
@@ -174,13 +175,13 @@ class TabExchangeItem extends DialogActor {
                 data
             };
             // show loader
-            this.showLoader();
+            app.system.showLoader(app.res.string('waiting_server_response'));
             app.service.send(sendObject);
         }
     }
 
     _onExchange(data) {
-        this.hideLoader();
+        app.system.hideLoader();
         if (data[app.keywords.RESPONSE_RESULT] === true) {
             app.system.showToast(`${data[app.keywords.RESPONSE_MESSAGE]}`);
         } else { // true

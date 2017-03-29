@@ -101,7 +101,7 @@ export default class PopupTabBody extends Actor {
         if (!this._isTabEnable) {
             this._data = {...this._data, ...data };
         }
-
+        
         return this._isTabEnable;
     }
 

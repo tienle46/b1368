@@ -1,12 +1,11 @@
 import app from 'app';
-import DialogActor from 'DialogActor';
+import PopupTabBody from 'PopupTabBody';
 import RubUtils from 'RubUtils';
-import ExchangeDialog from 'ExchangeDialog';
 import NodeRub from 'NodeRub';
 import Utils from 'Utils';
 import CCUtils from 'CCUtils';
 
-class TabExchangeCard extends DialogActor {
+class TabExchangeCard extends PopupTabBody {
     constructor() {
         super();
         this.properties = {
@@ -35,14 +34,18 @@ class TabExchangeCard extends DialogActor {
         this._hideUpdatePhoneNumber();
     }
     
-    start() {
-        super.start();
+    loadData() {
+        if(Object.keys(this._data).length > 0)
+            return false;
+        super.loadData();
+        
         this._initCardsList();
+        return false;
     }
-
-    onDestroy() {
-        super.onDestroy();
-        window.free(this._tabData);
+    
+    onDataChanged(data = {}) {
+        let types = data[app.keywords.EXCHANGE_LIST.RESPONSE.TYPES];
+        types && types.length > 0 && this._renderCards(types);
     }
     
     onClickBackBtn() {
@@ -80,17 +83,12 @@ class TabExchangeCard extends DialogActor {
         super._removeGlobalListener();
         app.system.removeListener(app.commands.EXCHANGE, this._onExchange, this);
         app.system.removeListener(app.commands.EXCHANGE_LIST, this._onGetExchangeList, this);
-        app.system.removeListener(app.commands.PHONE_NUMBER, this._onUpdatePhoneNumber, this);
+        app.system.removeListener(app.commands.UPDATE_PHONE_NUMBER, this._onUpdatePhoneNumber, this);
     }
     
     _onUpdatePhoneNumber(data) {
         if (data[app.keywords.RESPONSE_RESULT]) {
-            app.system.showToast(app.res.string('phone_number_confirmation'));
             this._hideUpdatePhoneNumber();
-        } else {
-            app.system.error(
-                app.res.string('error_system')
-            );
         }
     }
     
@@ -100,51 +98,48 @@ class TabExchangeCard extends DialogActor {
             'data': {}
         };
 
-        this.showLoader();
         app.service.send(sendObject);
     }
 
     _onGetExchangeList(data) {
-        if (data[app.keywords.EXCHANGE_LIST.RESPONSE.TYPES]) {
-            let cardValues = [];
-
-            (data[app.keywords.EXCHANGE_LIST.RESPONSE.TYPES] || []).map((type) => {
-                if (type[app.keywords.EXCHANGE_LIST.RESPONSE.ITEM_TYPE] == app.const.EXCHANGE_LIST_CARD_TYPE_ID) {
-                    const idList = type[app.keywords.EXCHANGE_LIST.RESPONSE.ITEM_ID_LIST];
-                    const nameList = type[app.keywords.EXCHANGE_LIST.RESPONSE.ITEM_NAME_LIST];
-                    const goldList = type[app.keywords.EXCHANGE_LIST.RESPONSE.ITEM_GOLD_LIST];
-                    const iconList = type[app.keywords.EXCHANGE_LIST.RESPONSE.ITEM_ICON_LIST];
-
-                    for (let i = 0; i < idList.length; i++) {
-                        let itemId = idList[i];
-                        // let itemIcon = iconList[i].replace('thumb.', '');
-                        let neededGold = goldList[i];
-                        let itemName = nameList[i];
-                        let providerName = itemName.trim().match(/([a-zA-Z]{3,})/g);
-                        providerName && (providerName = providerName[0]);
-
-                        let amount = itemName.match(/([0-9]{2,})+(K)/g);
-                        amount && (amount = Number(amount[0].replace('K', '')) * 1000);
-
-                        if (providerName && !Utils.isEmpty(providerName)) {
-                            if (!this._tabData.hasOwnProperty(providerName) || !this._tabData[providerName]) {
-                                this._tabData[providerName] = [];
-                            }
-                            this._tabData[providerName].push({ id: itemId, gold: amount, needed: neededGold, name: itemName });
-                        }
-                    }
-                    this._initProviders();
-                    // console.debug(this._tabData)
-                }
-            });
-
-            // hide loader
-            this.hideLoader();
-        } else {
-            this.pageIsEmpty(this.node);
-        }
+        this.setLoadedData({
+            [app.keywords.EXCHANGE_LIST.RESPONSE.TYPES]: data[app.keywords.EXCHANGE_LIST.RESPONSE.TYPES] || []
+        });
     }
+    
+    _renderCards(types) {
+        let cardValues = [];
+        types.map((type) => {
+            if (type[app.keywords.EXCHANGE_LIST.RESPONSE.ITEM_TYPE] == app.const.EXCHANGE_LIST_CARD_TYPE_ID) {
+                const idList = type[app.keywords.EXCHANGE_LIST.RESPONSE.ITEM_ID_LIST];
+                const nameList = type[app.keywords.EXCHANGE_LIST.RESPONSE.ITEM_NAME_LIST];
+                const goldList = type[app.keywords.EXCHANGE_LIST.RESPONSE.ITEM_GOLD_LIST];
+                const iconList = type[app.keywords.EXCHANGE_LIST.RESPONSE.ITEM_ICON_LIST];
 
+                for (let i = 0; i < idList.length; i++) {
+                    let itemId = idList[i];
+                    // let itemIcon = iconList[i].replace('thumb.', '');
+                    let neededGold = goldList[i];
+                    let itemName = nameList[i];
+                    let providerName = itemName.trim().match(/([a-zA-Z]{3,})/g);
+                    providerName && (providerName = providerName[0]);
+
+                    let amount = itemName.match(/([0-9]{2,})+(K)/g);
+                    amount && (amount = Number(amount[0].replace('K', '')) * 1000);
+
+                    if (providerName && !Utils.isEmpty(providerName)) {
+                        if (!this._tabData.hasOwnProperty(providerName) || !this._tabData[providerName]) {
+                            this._tabData[providerName] = [];
+                        }
+                        this._tabData[providerName].push({ id: itemId, gold: amount, needed: neededGold, name: itemName });
+                    }
+                }
+                this._initProviders();
+                // console.debug(this._tabData)
+            }
+        });
+    }
+    
     _initProviders() {
         let count = 0;
         for (let key in this._tabData) {
@@ -249,13 +244,13 @@ class TabExchangeCard extends DialogActor {
             };
 
             // show loader
-            this.showLoader();
+            app.system.showLoader(app.res.string('waiting_server_response'));
             app.service.send(sendObject);
         }
     }
 
     _onExchange(data) {
-        this.hideLoader();
+        app.system.hideLoader();
         if (data[app.keywords.RESPONSE_RESULT] === true) {
             app.system.showToast(`${data[app.keywords.RESPONSE_MESSAGE]}`);
         } else { // true

@@ -153,11 +153,10 @@ class TabIAP extends PopupTabBody {
         }
     }
     
-    _renderIAP(data) {
+    _renderIAP(iapData) {
         if (this.__sending) {
             this.__sending = false;
 
-            let iapData = app.env.isAndroid() ? data[app.keywords.IN_BILLING_PURCHASE] : data[app.keywords.IN_APP_PURCHASE];
             let { balances, currencies, prices, productIds } = iapData;
 
             // app.keywords.CHARGE_SMS_OBJECT
@@ -176,7 +175,7 @@ class TabIAP extends PopupTabBody {
     }
     
     _onUserGetIAPList(data) {
-        this.setLoadedData(data);
+        this.setLoadedData(app.env.isAndroid() ? data[app.keywords.IN_BILLING_PURCHASE] : data[app.keywords.IN_APP_PURCHASE]);
     }
 
     _initItem(balance, currency, price, productId) {

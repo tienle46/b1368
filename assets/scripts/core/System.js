@@ -96,6 +96,7 @@ class GameSystem {
         this.addListener(SFS2X.SFSEvent.ROOM_JOIN, this._onJoinRoomSuccess, this);
         this.addListener(SFS2X.SFSEvent.ROOM_JOIN_ERROR, this._onJoinRoomError, this);
         this.addListener(app.commands.HIGH_LIGHT_MESSAGE, this._onHighLightMessage, this);
+        this.addListener(app.commands.UPDATE_PHONE_NUMBER, this._onUpdatePhoneNumber, this);
         this.addListener(SFS2X.SFSEvent.ADMIN_MESSAGE, this._onAdminMessage, this);
         app.env.isIOS() && this.addListener(app.commands.IOS_IN_APP_PURCHASE, this._onSubmitPurchaseIOS, this);
         app.env.isAndroid() && this.addListener(app.commands.ANDROID_IN_APP_PURCHASE, this._onSubmitPurchaseAndroid, this);
@@ -105,6 +106,7 @@ class GameSystem {
         this.removeListener(SFS2X.SFSEvent.ROOM_JOIN, this._onJoinRoomSuccess, this);
         this.removeListener(SFS2X.SFSEvent.ROOM_JOIN_ERROR, this._onJoinRoomError, this);
         this.removeListener(app.commands.HIGH_LIGHT_MESSAGE, this._onHighLightMessage, this);
+        this.removeListener(app.commands.UPDATE_PHONE_NUMBER, this._onUpdatePhoneNumber, this);
         this.removeListener(SFS2X.SFSEvent.ADMIN_MESSAGE, this._onAdminMessage, this);
         app.env.isIOS() && this.removeListener(app.commands.IOS_IN_APP_PURCHASE, this._onSubmitPurchaseIOS, this);
         app.env.isAndroid() && this.removeListener(app.commands.ANDROID_IN_APP_PURCHASE, this._onSubmitPurchaseAndroid, this);
@@ -362,7 +364,20 @@ class GameSystem {
     _onHighLightMessage(resultEvent) {
         resultEvent && this.hlm.pushMessage(resultEvent);
     }
-
+    
+    _onUpdatePhoneNumber(data) {
+        if (data[app.keywords.RESPONSE_RESULT]) {
+            //update needUpdatePhone -> false
+            app.context.getMe()[app.keywords.UPDATE_PHONE_NUMBER] = false;
+            
+            app.system.showToast(app.res.string('phone_number_confirmation'));
+        } else {
+            app.system.error(
+                app.res.string('error_system')
+            );
+        }
+    }
+    
     _addToastToScene() {
         let toastNode = cc.instantiate(app.res.prefab.toast);
         this.toast = toastNode.getComponent('Toast');

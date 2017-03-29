@@ -17,7 +17,12 @@ class ExchangeDialog extends Component {
     start() {
         super.start();
     }
-
+    
+    onDestroy() {
+        super.onDestroy();
+        console.debug('xxxxxx222') 
+    }
+    
     showNode(updatePhoneNode) {
        updatePhoneNode.active = true;
     }

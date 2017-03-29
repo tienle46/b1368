@@ -1,17 +1,12 @@
 import app from 'app';
 import utils from 'utils';
 import DialogActor from 'DialogActor';
-import DialogRub from 'DialogRub';
-import TopupDialogRub from 'TopupDialogRub';
-import ExchangeDialogRub from 'ExchangeDialogRub';
-import PersonalInfoDialogRub from 'PersonalInfoDialogRub';
-import MessageCenterDialogRub from 'MessageCenterDialogRub';
 import SFS2X from 'SFS2X';
 import Events from 'Events';
-import BuddyPopup from 'BuddyPopup';
 import HttpImageLoader from 'HttpImageLoader';
 import PromptPopup from 'PromptPopup';
 import CCUtils from 'CCUtils';
+import Linking from 'Linking';
 
 class TopBar extends DialogActor {
     constructor() {
@@ -121,31 +116,15 @@ class TopBar extends DialogActor {
     }
 
     onClickNapXuAction() {
-        new TopupDialogRub().show(app.system.getCurrentSceneNode());
+        Linking.goTo(Linking.ACTION_TOPUP);
     }
 
     onFriendBtnClick() {
-        new BuddyPopup().show(this.node.parent);
+        Linking.goTo(Linking.ACTION_BUDDY);
     }
 
     onClickTransferAwardAction() {
-        let url = `${app.const.DIALOG_DIR_PREFAB}/exchange`;
-        let tabs = [{
-            title: 'Thẻ cào',
-            value: `${url}/tab_exchange_card`
-        }, {
-            title: 'Vật phẩm',
-            value: `${url}/tab_exchange_item`
-        }, {
-            title: 'Lịch sử',
-            value: `${url}/tab_exchange_history`
-        }, {
-            title: 'Đại lý',
-            value: `${url}/tab_agency`
-        }];
-
-        // bottombar -> dashboard scene node
-        ExchangeDialogRub.show(app.system.getCurrentSceneNode(), tabs, { title: 'Đổi thưởng' });
+        Linking.goTo(Linking.ACTION_EXCHANGE);
     }
 
     callSupportClicked(e) {
@@ -153,11 +132,11 @@ class TopBar extends DialogActor {
     }
 
     onClickMessageAction() {
-        new MessageCenterDialogRub().show(app.system.getCurrentSceneNode());
+        Linking.goTo(Linking.ACTION_SYSTEM_MESSAGE);
     }
 
     onClickUserInfoAction() {
-        new PersonalInfoDialogRub().show(app.system.getCurrentSceneNode(), { title: 'Cá nhân' });
+        Linking.goTo(Linking.ACTION_PERSONAL_INFO);
     }
 
     /**

@@ -30,7 +30,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 860,
-      "height": 440
+      "height": 426
     },
     "_children": [
       {
@@ -88,7 +88,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 860,
-      "height": 440
+      "height": 426
     },
     "_children": [],
     "_rotationX": 0,
@@ -134,14 +134,11 @@
     },
     "_enabled": true,
     "path": "",
-    "p404": {
-      "__uuid__": "5506cff6-05a2-4783-8488-2c5459eaed0b"
+    "bodyNode": {
+      "__id__": 2
     },
     "scrollview": {
       "__uuid__": "f67e6444-2225-4c96-99ce-30908dbad119"
-    },
-    "bodyNode": {
-      "__id__": 2
     }
   },
   {

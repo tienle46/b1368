@@ -22,14 +22,14 @@ export default class TopRankDialogRub {
     }
 
     changeToChatTab(data) {
-        this.multiTabPopup && this.multiTabPopup.changeTab(TopRankDialogRub.TAB_TOP_VIP, data);
-    }
-
+        this.multiTabPopup && this.multiTabPopup.changeTab(TopRankDialogRub.TAB_TOP_VIP_INDEX, data);
+    } 
+    
     show(parentNode = cc.director.getScene(), options = {}){
         this.multiTabPopup.show({parentNode, tabModels, ...options});
     }
 }
 
-TopRankDialogRub.TAB_TOP_VIP = 0;
-TopRankDialogRub.TAB_TOP_CAO_THU = 1;
-TopRankDialogRub.TAB_TOP_DAI_GIA = 2;
+TopRankDialogRub.TAB_TOP_VIP_INDEX = 0;
+TopRankDialogRub.TAB_TOP_CAO_THU_INDEX = 1;
+TopRankDialogRub.TAB_TOP_DAI_GIA_INDEX = 2;

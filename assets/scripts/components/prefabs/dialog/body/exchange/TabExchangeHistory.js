@@ -1,9 +1,8 @@
 import app from 'app';
-import DialogActor from 'DialogActor';
-import ExchangeDialog from 'ExchangeDialog';
+import PopupTabBody from 'PopupTabBody';
 import RubResources from 'RubResources';
 
-class TabExchangeHistory extends DialogActor {
+class TabExchangeHistory extends PopupTabBody {
     constructor() {
         super();
         this.flag = null;
@@ -15,9 +14,21 @@ class TabExchangeHistory extends DialogActor {
 
     start() {
         super.start();
-        this._getHistoriesFromServer(1);
     }
-
+    
+    loadData() {
+        if(Object.keys(this._data).length > 0)
+            return false;
+        super.loadData();
+        
+        this._getHistoriesFromServer();
+        return false;
+    }
+    
+    onDataChanged(data) {
+        data && Object.keys(data).length > 0 && this._renderHistory(data);
+    }
+    
     _addGlobalListener() {
         super._addGlobalListener();
         app.system.addListener(app.commands.EXCHANGE_HISTORY, this._onGetExchangeHistory, this);
@@ -28,7 +39,7 @@ class TabExchangeHistory extends DialogActor {
         app.system.removeListener(app.commands.EXCHANGE_HISTORY, this._onGetExchangeHistory, this);
     }
 
-    _getHistoriesFromServer(page) {
+    _getHistoriesFromServer(page = 1) {
         let sendObject = {
             'cmd': app.commands.EXCHANGE_HISTORY,
             'data': {
@@ -38,7 +49,11 @@ class TabExchangeHistory extends DialogActor {
         app.service.send(sendObject);
     }
 
-    _onGetExchangeHistory(res) {
+    _onGetExchangeHistory(data) {
+        this.setLoadedData(data);
+    }
+    
+    _renderHistory(res) {
         let pattern = /Mã thẻ[^]*,/;
         let d = (res[app.keywords.EXCHANGE_HISTORY.RESPONSE.ITEM_ID_HISTORY] && res[app.keywords.EXCHANGE_HISTORY.RESPONSE.ITEM_ID_HISTORY].length > 0 && [
             res[app.keywords.EXCHANGE_HISTORY.RESPONSE.TIME_LIST],
@@ -93,7 +108,7 @@ class TabExchangeHistory extends DialogActor {
 
         this._initBody(d);
     }
-
+    
     _onChargeToGame(e) {
         let { cardSerial, serialNumber } = e.currentTarget.getValue();
     }
@@ -114,12 +129,6 @@ class TabExchangeHistory extends DialogActor {
         });
 
         this.bodyNode.addChild(this.getScrollViewNode());
-    }
-
-    _getExchangeDialogComponent() {
-        // this node -> body -> dialog -> dialog (parent)
-        let dialogNode = this.node.parent.parent.parent;
-        return dialogNode.getComponent(ExchangeDialog);
     }
 
     onNextBtnClick(p) {

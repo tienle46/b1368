@@ -72,7 +72,11 @@ class TabCard extends PopupTabBody {
     }
 
     _onUserGetChargeList(data) {
-        this.setLoadedData(data);
+        this.setLoadedData({
+            [app.keywords.EXCHANGE_LIST.RESPONSE.ITEM_ID_LIST]: data[app.keywords.EXCHANGE_LIST.RESPONSE.ITEM_ID_LIST] || [],
+            [app.keywords.TASK_NAME_LIST]: data[app.keywords.TASK_NAME_LIST] || [],
+            [app.keywords.CARDS]: data[app.keywords.CARDS] || {}
+        });
     }
     
     onProviderBtnClick(toggle) {

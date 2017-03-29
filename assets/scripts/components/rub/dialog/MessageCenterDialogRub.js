@@ -19,11 +19,11 @@ export default class MessageCenterDialogRub {
         this.multiTabPopup.changeToChatTab = this.changeToChatTab.bind(this);
         this.multiTabPopup.setTitle('Tin nhắn');
     }
-
+    
     changeToChatTab(data) {
-        this.multiTabPopup && this.multiTabPopup.changeTab(BuddyPopup.TAB_CHAT_INDEX, data)
+        this.multiTabPopup && this.multiTabPopup.changeTab(MessageCenterDialogRub.TAB_SYSTEM_MESSAGE_INDEX, data);
     }
-
+    
     show(parentNode = cc.director.getScene(), options = {}){
         this.multiTabPopup.show({parentNode, tabModels, ...options});
     }
@@ -31,3 +31,4 @@ export default class MessageCenterDialogRub {
 
 MessageCenterDialogRub.TAB_SYSTEM_MESSAGE_INDEX = 0;
 MessageCenterDialogRub.TAB_PERSONAL_MESSAGE_INDEX = 1;
+MessageCenterDialogRub.TAB_FEEDBACK_INDEX = 2;

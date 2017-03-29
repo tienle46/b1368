@@ -9,7 +9,7 @@ const tabModels = [
     { title: 'Lịch sử',prefabPath: `${url}/tab_history`, componentName: 'TabHistory'}
 ];
 
-export default class TopUpDialogRub {
+export default class TopupDialogRub {
 
    constructor() {
         let node = cc.instantiate(app.res.prefab.multiTabPopup);
@@ -20,17 +20,17 @@ export default class TopUpDialogRub {
 
         this.multiTabPopup.changeToChatTab = this.changeToChatTab.bind(this);
     }
-
+    
     changeToChatTab(data) {
-        this.multiTabPopup && this.multiTabPopup.changeTab(TopUpDialogRub.TAB_CARD, data);
-    }
-
+        this.multiTabPopup && this.multiTabPopup.changeTab(TopupDialogRub.TAB_CARD_INDEX, data);
+    }   
+     
     show(parentNode = cc.director.getScene(), options = {}){
         this.multiTabPopup.show({parentNode, tabModels, ...options});
     }
 }
 
-TopUpDialogRub.TAB_CARD = 0;
-TopUpDialogRub.TAB_SMS = 1;
-TopUpDialogRub.TAB_IAP = 2;
-TopUpDialogRub.TAB_HISTORY = 3;
+TopupDialogRub.TAB_CARD_INDEX = 0;
+TopupDialogRub.TAB_SMS_INDEX = 1;
+TopupDialogRub.TAB_IAP_INDEX = 2;
+TopupDialogRub.TAB_HISTORY_INDEX = 3;

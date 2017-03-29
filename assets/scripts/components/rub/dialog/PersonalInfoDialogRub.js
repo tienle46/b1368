@@ -30,16 +30,16 @@ export default class PersonalInfoDialogRub {
 
         this.multiTabPopup.changeToChatTab = this.changeToChatTab.bind(this);
     }
-
+    
     changeToChatTab(data) {
-        this.multiTabPopup && this.multiTabPopup.changeTab(TopRankDialogRub.TAB_USER_INFO, data);
+        this.multiTabPopup && this.multiTabPopup.changeTab(PersonalInfoDialogRub.TAB_USER_INFO_INDEX, data);
     }
-
+    
     show(parentNode = cc.director.getScene(), options = {}){
         this.multiTabPopup.show({parentNode, tabModels, ...options});
     }
 }
 
-PersonalInfoDialogRub.TAB_USER_INFO = 0;
-PersonalInfoDialogRub.TAB_USER_ACHIEVEMENTS = 1;
-PersonalInfoDialogRub.TAB_USER_BANK = 2;
+PersonalInfoDialogRub.TAB_USER_INFO_INDEX = 0;
+PersonalInfoDialogRub.TAB_USER_ACHIEVEMENTS_INDEX = 1;
+PersonalInfoDialogRub.TAB_USER_BANK_INDEX = 2;

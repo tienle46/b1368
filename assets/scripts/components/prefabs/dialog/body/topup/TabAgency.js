@@ -1,7 +1,7 @@
 import app from 'app';
-import DialogActor from 'DialogActor';
+import PopupTabBody from 'PopupTabBody';
 
-class TabAgency extends DialogActor {
+class TabAgency extends PopupTabBody {
     constructor() {
         super();
         this.properties = {
@@ -10,15 +10,20 @@ class TabAgency extends DialogActor {
         };
     }
 
-    onLoad() {
-        super.onLoad();
-    }
-
-    start() {
-        super.start();
+    loadData() {
+        if(Object.keys(this._data).length > 0)
+            return false;
+        super.loadData();
+        
         this._getAgencyDataFromServer();
+        return false;
     }
-
+    
+    onDataChanged(data = {}) {
+        let {agents} = data;
+        agents && agents.length > 0 && this._renderAgency(agents);
+    }
+    
     _addGlobalListener() {
         super._addGlobalListener();
         app.system.addListener(app.commands.AGENCY, this._onListAgency, this);
@@ -34,34 +39,36 @@ class TabAgency extends DialogActor {
             cmd: app.commands.AGENCY
         };
 
-        this.showLoader();
         app.service.send(sendObj);
     }
 
     _onListAgency(res) {
-        this.hideLoader();
-
         try {
             let d = JSON.parse(res[app.keywords.AGENT]).agents;
-            let data = [];
-            for (let i = 0; i < d.length; i++) {
-                data.push([d[i].agent_name, d[i].call_number, d[i].fblink]);
-            }
-
-            this.initView({
-                data: ['Đại lý', 'Số DT', 'facebook'],
-                options: {
-                    fontColor: app.const.COLOR_YELLOW
-                }
-            }, data, {
-                size: this.node.getContentSize(),
-                isValidated: true
-            });
-
-            this.bodyNode.addChild(this.getScrollViewNode());
+            this.setLoadedData({agents: d});
         } catch (e) {
             app.system.error(e.message);
         }
+    }
+    
+    _renderAgency(agents) {
+        let data = [];
+        
+        for (let i = 0; i < agents.length; i++) {
+            data.push([agents[i].agent_name, agents[i].call_number, agents[i].fblink]);
+        }
+
+        this.initView({
+            data: ['Đại lý', 'Số ĐT', 'facebook'],
+            options: {
+                fontColor: app.const.COLOR_YELLOW
+            }
+        }, data, {
+            size: this.node.getContentSize(),
+            isValidated: true
+        });
+
+        this.bodyNode.addChild(this.getScrollViewNode());
     }
 }
 

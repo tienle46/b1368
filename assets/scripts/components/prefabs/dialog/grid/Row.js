@@ -17,10 +17,10 @@ export class Row extends Component {
     init(cells, showBg) {
         if (!app._.isEmpty(cells)) {
             cells.map(cell => {
-                if (!showBg) {
-                    let sprite = this.node.getComponent(cc.Sprite);
-                    sprite.enabled = false;
-                }
+                // if (!showBg) {
+                //     let sprite = this.node.getComponent(cc.Sprite);
+                //     sprite.enabled = false;
+                // }
                 this.node.addChild(cell);
             });
         }

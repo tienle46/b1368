@@ -1,7 +1,7 @@
 import app from 'app';
 import Actor from 'Actor';
 import TimerRub from 'TimerRub';
-import TopRankDialogRub from 'TopRankDialogRub';
+import Linking from 'Linking';
 
 class BottomBar extends Actor {
     constructor() {
@@ -36,13 +36,12 @@ class BottomBar extends Actor {
     }
 
     onClickEventAction() {
-        let dialog = new DialogRub(this.node.parent, null, { title: 'Sự kiện' });
-        dialog.addBody('dashboard/dialog/prefabs/event/EventDialog', 'EventDialog');
+        Linking.goTo(Linking.ACTION_EVENT);
     }
 
 
     onClickTopRankAction() {
-        new TopRankDialogRub().show(app.system.getCurrentSceneNode());
+        Linking.goTo(Linking.ACTION_TOP_VIP);
     }
 
     // on high light message listener

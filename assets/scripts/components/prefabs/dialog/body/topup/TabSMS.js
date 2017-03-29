@@ -39,7 +39,7 @@ class TabSMS extends PopupTabBody {
     }
     
     onDataChanged(data) {
-        console.debug(data);
+        console.debug('onDataChanged', data);
         data && Object.keys(data).length > 0 && this._renderSMS(data);
     }
     
@@ -81,7 +81,7 @@ class TabSMS extends PopupTabBody {
     }
 
     _onUserGetChargeList(data) {
-        this.setLoadedData(data);
+        this.setLoadedData(data[app.keywords.CHARGE_SMS_OBJECT_IAC] || {});
     }
 
     _initItem(code, syntax, sendTo, moneySend, moneyGot, isChecked, hasPromotion, promoteDesc) {
@@ -124,10 +124,9 @@ class TabSMS extends PopupTabBody {
         }
     }
     
-    _renderSMS(data) {
+    _renderSMS(smses) {
         // app.keywords.CHARGE_SMS_OBJECT
         if (this._sending) {
-            const smses = data[app.keywords.CHARGE_SMS_OBJECT_IAC] || {}; // => {1000: {}, 2000: {}}
             this._sending = false;
 
             if (Object.keys(smses).length > 0) {
