@@ -229,8 +229,6 @@ export default class BoardPhom extends BoardCardTurnBase {
 
         super.onBoardEnding(data);
 
-
-
         playingPlayerIds.forEach(playerId => {
             let player = this.scene.gamePlayers.findPlayer(playerId);
             player && player.showEndGameInfo({
@@ -297,42 +295,42 @@ export default class BoardPhom extends BoardCardTurnBase {
             if (playersWinRank == app.const.game.rank.GAME_RANK_FIRST) {
                 switch (winType) {
                     case app.const.game.PHOM_WIN_TYPE_U_THUONG:
-                        resultText = app.res.string('game_phom_u');
+                        resultText = 'blueTheme/ingame/text/phom/u';
                         break;
                     case app.const.game.PHOM_WIN_TYPE_U_DEN:
-                        resultText = app.res.string('game_phom_u_den');
+                        resultText = 'blueTheme/ingame/text/phom/u-den'
                         break;
                     case app.const.game.PHOM_WIN_TYPE_U_KHAN:
-                        resultText = app.res.string('game_phom_u_khan');
+                        resultText = 'blueTheme/ingame/text/phom/u-khan'
                         break;
                     case app.const.game.PHOM_WIN_TYPE_U_TRON:
-                        resultText = app.res.string('game_phom_u_tron');
+                        resultText = 'blueTheme/ingame/text/phom/u-tron'
                         break;
                     case app.const.game.PHOM_WIN_TYPE_U_PHOM_KIN:
-                        resultText = app.res.string('game_phom_u_phom_kin');
+                        resultText = 'blueTheme/ingame/text/phom/u'
                         break;
                     default:
-                        resultText = app.res.string('game_thang');
+                        resultText = 'blueTheme/ingame/text/thang'
                 }
 
                 winnerFlags[id] = true;
 
             } else {
                 if (isMom) {
-                    resultText = winType > 0 ? app.res.string('game_thua') : app.res.string('game_phom_mom')
+                    resultText = winType > 0 ? 'blueTheme/ingame/text/thua' : 'blueTheme/ingame/text/phom/mom'
                 } else {
                     switch (playersWinRank) {
                         case app.const.game.GAME_RANK_SECOND:
-                            resultText = app.res.string('game_nhi')
+                            resultText = 'blueTheme/ingame/text/nhi'
                             break;
                         case app.const.game.GAME_RANK_THIRD:
-                            resultText = app.res.string('game_ba')
+                            resultText = 'blueTheme/ingame/text/ba'
                             break;
                         case app.const.game.GAME_RANK_FOURTH:
-                            resultText = app.res.string('game_bet')
+                            resultText = 'blueTheme/ingame/text/bet'
                             break;
                         default:
-                            resultText = app.res.string('game_thua')
+                            resultText = 'blueTheme/ingame/text/thua'
                     }
                 }
 

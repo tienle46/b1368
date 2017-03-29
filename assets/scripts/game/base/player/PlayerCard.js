@@ -111,7 +111,7 @@ export default class PlayerCard extends Player {
 
     onGameEnding(data = {}, isJustJoined){
         super.onGameEnding(data, isJustJoined);
-        this.renderer.clearCards();
+        this.renderer.clearCards(true);
     }
 
     _onSelectedCardsChanged(selectedCards){

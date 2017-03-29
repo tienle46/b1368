@@ -28,7 +28,7 @@ export default class PhomGenerator {
         return this._sortPhomLists(generatedPhomLists);
     }
 
-    static generatePhomContainEatenCards(cards, eatenCards = []) {
+    static generatePhomContainEatenCards(cards = [], eatenCards = []) {
 
         let phomLists = this.generate(cards);
 
@@ -40,18 +40,20 @@ export default class PhomGenerator {
 
     }
 
-    static generatePhomByEatenCard(cards, eatenCards){
-        let allPhoms = this.generateAllPhom(cards);
+    static generatePhomByEatenCard(cards = [], eatenCards = []){
         let phomMap = {};
 
-        eatenCards.forEach((eatenCard) => {
-            phomMap[eatenCard] = allPhoms.filter(phom => ArrayUtils.contains(phom.cards, eatenCard));
-        });
+        if(cards.length > 0){
+            let allPhoms = this.generateAllPhom(cards);
+            eatenCards.forEach((eatenCard) => {
+                phomMap[eatenCard] = allPhoms.filter(phom => ArrayUtils.contains(phom.cards, eatenCard));
+            });
+        }
 
         return phomMap;
     }
 
-    static generateAllPhom(cards){
+    static generateAllPhom(cards = []){
         cards = PhomUtils.sortAsc([...cards]);
         let phomByRanks = this._findPhomByRank([...cards]);
         let phomBySuits = this._findPhomBySuit([...cards]);
@@ -145,7 +147,7 @@ export default class PhomGenerator {
     }
 
     static _findPhomBySuit(cards) {
-        const phoms = [];;
+        const phoms = [];
 
         for (let suit = 0; suit < 4; suit++) {
 

@@ -132,7 +132,7 @@ export default class PhomUtils {
         if(eatable && player.eatenCards.length > 0){
             let checkPhomCards = [...player.handCards];
             ArrayUtils.removeAll(checkPhomCards, cards);
-            let allGeneratedPhomList = PhomGenerator.generate(checkPhomCards);
+            let allGeneratedPhomList = PhomGenerator.generateAllPhom(checkPhomCards);
 
             eatable = false;
             allGeneratedPhomList.length > 0 && allGeneratedPhomList.some(phomList => {
@@ -209,7 +209,7 @@ export default class PhomUtils {
         return bestEatableCards;
     }
 
-    static findBestPhomList(cards) {
+    static findBestPhomList(cards = []) {
         let phomLists = PhomGenerator.generate(cards);
         return phomLists.length > 0 ? phomLists[0] : new PhomList();
     }
@@ -299,7 +299,7 @@ export default class PhomUtils {
         return cards && cards.filter(card => PhomUtils.isEaten(card)).length > 0;
     }
 
-    static isContainPhomWithEatenCards(cards, eatenCards) {
+    static isContainPhomWithEatenCards(cards = [], eatenCards = []) {
 
         let valid = true;
         let eatenPhoms = PhomGenerator.generatePhomByEatenCard(cards, eatenCards);
@@ -322,8 +322,9 @@ export default class PhomUtils {
      * @param type {Number} - PhomUtils.SORT_BY_RANK || PhomUtils.SORT_BY_SUIT;
      */
     static sortAsc(cards, type = PhomUtils.SORT_BY_RANK) {
-        if(!cards) return;
+        if(!cards || cards.length == 0) return cards;
 
+        let phomListSolutions;
         switch (type){
             case PhomUtils.SORT_BY_RANK:
                 return cards.sort(PhomUtils._compareByRank);
@@ -331,8 +332,34 @@ export default class PhomUtils {
             case PhomUtils.SORT_BY_SUIT:
                 return cards.sort(PhomUtils._compareBySuit);
                 break;
-            case PhomUtils.SORT_BY_PHOM_SOLUTION:
-                let phomListSolutions = PhomGenerator.generatePhomContainEatenCards(cards);
+            case PhomUtils.SORT_HAND_CARD_BY_RANK:
+                phomListSolutions = PhomGenerator.generatePhomContainEatenCards(cards);
+                if (phomListSolutions.length > 0) {
+                    let phomCards = phomListSolutions[0].getCards();
+                    ArrayUtils.removeAll(cards, phomCards);
+                    cards.sort(PhomUtils._compareByRank);
+                    cards.splice(0, 0, ...phomCards);
+                } else {
+                    cards.sort(PhomUtils._compareByRank);
+                }
+                return cards;
+                break;
+            case PhomUtils.SORT_HAND_CARD_BY_SUIT:
+                phomListSolutions = PhomGenerator.generatePhomContainEatenCards(cards);
+                if (phomListSolutions.length > 0) {
+                    let phomCards = phomListSolutions[0].getCards();
+                    ArrayUtils.removeAll(cards, phomCards);
+                    cards.sort(PhomUtils._compareByRank);
+                    cards.sort(PhomUtils._compareBySuit);
+                    cards.splice(0, 0, ...phomCards);
+                } else {
+                    cards.sort(PhomUtils._compareByRank);
+                    cards.sort(PhomUtils._compareBySuit);
+                }
+                return cards;
+                break;
+            case PhomUtils.SORT_HAND_CARD_BY_PHOM_SOLUTION:
+                phomListSolutions = PhomGenerator.generatePhomContainEatenCards(cards);
                 if (phomListSolutions.length > 0) {
                     let phomCards = phomListSolutions[0].getCards();
                     ArrayUtils.removeAll(cards, phomCards);
@@ -341,6 +368,7 @@ export default class PhomUtils {
                 } else {
                     this._sortSingleCards(cards)
                 }
+                return cards;
                 break;
             default:
                 return cards.sort(PhomUtils._compareByRank)
@@ -384,10 +412,12 @@ export default class PhomUtils {
 
 }
 
-PhomUtils.SORT_BY_PHOM_SOLUTION = 1;
 PhomUtils.SORT_BY_RANK = 2;
 PhomUtils.SORT_BY_SUIT = 3;
 PhomUtils.COMPARE_RANK = 1;
 PhomUtils.COMPARE_SUIT = 2;
+PhomUtils.SORT_HAND_CARD_BY_PHOM_SOLUTION = 4;
+PhomUtils.SORT_HAND_CARD_BY_RANK = 5;
+PhomUtils.SORT_HAND_CARD_BY_SUIT = 6;
 
 PhomUtils.GAME_TYPE = app.const.game.GAME_TYPE_TIENLEN

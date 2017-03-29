@@ -446,7 +446,7 @@
     "__type__": "cc.Node",
     "_name": "disable",
     "_objFlags": 0,
-    "_opacity": 130,
+    "_opacity": 255,
     "_color": {
       "__type__": "cc.Color",
       "r": 0,
@@ -508,7 +508,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "f22591b6-c113-43d9-a555-89adfc76d3b7"
+      "__uuid__": "8266c2e0-5455-4fe9-97ab-95aa41337f3f"
     },
     "_type": 0,
     "_sizeMode": 0,
@@ -523,9 +523,7 @@
     "_isTrimmedMode": true,
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
-    "_atlas": {
-      "__uuid__": "4bb00c8a-c321-4d5c-b859-a722596f04ed"
-    }
+    "_atlas": null
   },
   {
     "__type__": "cc.Widget",

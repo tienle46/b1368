@@ -81,7 +81,7 @@ export default class PlayerCardRenderer extends PlayerRenderer {
         return anchorPoint;
     }
 
-    clearCards() {
+    clearCards(isEnding) {
         this.cardList.clear();
     }
 
