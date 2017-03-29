@@ -20,11 +20,10 @@ export default class PlayerPhomRenderer extends PlayerCardTurnBaseRenderer {
             eatenCardListNode2: cc.Node,
             eatenCardListNode3: cc.Node,
             eatenCardListNode4: cc.Node,
-            downCardListNode: cc.Node,
             anChotNode: cc.Node,
-            winInfoLabel: cc.Label,
-            loseInfoLabel: cc.Label,
+            specialInfoImageNode: cc.Node,
             anChotAnimName: "showAnChot",
+            downCardInfoNode: cc.Node,
 
             playedCardListNodes: {
                 default: [],
@@ -49,6 +48,7 @@ export default class PlayerPhomRenderer extends PlayerCardTurnBaseRenderer {
         this.eatenCardList = null;
         this.downPhomList = null;
         this.downCardList = null;
+        this.downCardInfoLabel = null
 
         /**
          * @type {PhomListComponent}
@@ -79,8 +79,9 @@ export default class PlayerPhomRenderer extends PlayerCardTurnBaseRenderer {
         this.cardList.clear();
 
         this.cleanPlayerCards();
-        this.winInfoLabel.string = "";
-        this.loseInfoLabel.string = "";
+        this.downCardInfoLabel.string = "";
+        CCUtils.setVisible(this.downCardInfoNode, false);
+        CCUtils.setVisible(this.specialInfoImageNode, false)
     }
 
     setHighlightPhom(phom, highlight) {
@@ -114,9 +115,14 @@ export default class PlayerPhomRenderer extends PlayerCardTurnBaseRenderer {
             }
         });
 
+        this.downCardInfoLabel = this.downCardInfoNode.getComponentInChildren(cc.Label);
+        this.downCardInfoNode.removeFromParent();
+
         this.downCardListNodes.forEach((node, index) => {
             if (index == this.anchorIndex) {
                 this.downCardList = node.getComponent('CardList');
+                node.parent && node.parent.addChild(this.downCardInfoNode);
+                this.downCardInfoNode.setPosition(0, 0);
             } else {
                 CCUtils.setVisible(node, false);
             }
@@ -223,19 +229,35 @@ export default class PlayerPhomRenderer extends PlayerCardTurnBaseRenderer {
         }
     }
 
-    setDownCards(cards = []) {
-        this.downCardList && this.downCardList.transferFrom(this.cardList, cards);
+    setDownCards(cards = [], info = "") {
+        if(this.downCardList){
+            this.downCardList.transferFrom(this.cardList, cards);
+
+            if(this.downCardInfoLabel && info.length > 0){
+                let centerPosition = this.downCardList.getCenterHorizontalPosition();
+                this.downCardInfoNode.setPosition(centerPosition);
+                this.downCardInfoLabel.string = info
+                CCUtils.setVisible(this.downCardInfoNode);
+            }
+        }
     }
 
-    showPlayerWinLoseInfo(text = "", isWinner = false) {
-        CCUtils.setVisible(this.winInfoLabel, isWinner)
-        CCUtils.setVisible(this.loseInfoLabel, !isWinner)
+    showPlayerWinLoseInfo(iconPath, isWinner = false) {
+        if(iconPath){
+            CCUtils.setVisible(this.specialInfoImageNode)
+            //TODO change to load from atlas
+            iconPath && cc.loader.loadRes(iconPath, cc.SpriteFrame, (err, sprite) => {
 
-        if (isWinner) {
-            this.winInfoLabel.string = text;
-        } else {
-            this.loseInfoLabel.string = text;
+                if(sprite){
+                    this.specialInfoImageNode.getComponent(cc.Sprite).spriteFrame = sprite
+                }
+
+            });
         }
+    }
+
+    clearCards(isEnding){
+        !isEnding && super.clearCards(isEnding);
     }
 }
 
