@@ -31,7 +31,7 @@ class TabTopCaoThu extends PopupTabBody {
         super.loadData();
         
         this._initGamesToggle();
-        return false;
+        return true;
     }
     
     onDataChanged({usernames = [], wons, gc} = {}) {
@@ -91,7 +91,8 @@ class TabTopCaoThu extends PopupTabBody {
                 [app.keywords.GAME_CODE]: gameCode
             }
         };
-
+        
+        this.showLoadingProgress();
         app.service.send(sendObject);
     }
 

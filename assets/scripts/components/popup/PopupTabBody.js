@@ -85,7 +85,11 @@ export default class PopupTabBody extends Actor {
     loadData() {
         return false;
     }
-
+    
+    /**
+     * Need to call immediately before requesting to server
+     * @memberOf PopupTabBody
+     */
     showLoadingProgress() {
         this.progress.show(app.const.LOADING_SHORT_DURATION, () => {
             this.progress && this.progress.hide();

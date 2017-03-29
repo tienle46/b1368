@@ -23,7 +23,7 @@ class TabTopVip extends PopupTabBody {
         super.loadData();
         
         this._getRankGroup();
-        return false;
+        return true;
     }
     
     onDataChanged({usernames = []} = {}) {
@@ -44,6 +44,7 @@ class TabTopVip extends PopupTabBody {
         app.service.send({
             'cmd': app.commands.GET_TOP_VIP_PLAYERS,
         });
+        this.showLoadingProgress();
     }
 
     _onGetTopVipPlayers(data) {

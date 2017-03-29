@@ -22,7 +22,7 @@ class TabExchangeHistory extends PopupTabBody {
         super.loadData();
         
         this._getHistoriesFromServer();
-        return false;
+        return true;
     }
     
     onDataChanged(data) {
@@ -46,6 +46,8 @@ class TabExchangeHistory extends PopupTabBody {
                 [app.keywords.PAGE]: page,
             }
         };
+        
+        this.showLoadingProgress();
         app.service.send(sendObject);
     }
 

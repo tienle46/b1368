@@ -63,10 +63,13 @@
       },
       {
         "__id__": 29
+      },
+      {
+        "__id__": 30
       }
     ],
     "_prefab": {
-      "__id__": 30
+      "__id__": 32
     },
     "groupIndex": 0
   },
@@ -94,7 +97,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 702,
-      "height": 52
+      "height": 55
     },
     "_children": [
       {
@@ -165,7 +168,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": 26
+      "y": 27.5
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -271,7 +274,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 670,
-      "height": 22
+      "height": 25
     },
     "_children": [],
     "_rotationX": 0,
@@ -281,7 +284,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": -4
+      "y": -2.5
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -316,7 +319,7 @@
       "__uuid__": "8538fe1b-c3b4-48ca-849f-55e33a2c7a57"
     },
     "_N$maxWidth": 670,
-    "_N$lineHeight": 22,
+    "_N$lineHeight": 25,
     "_N$imageAtlas": null
   },
   {
@@ -341,7 +344,7 @@
     "_layoutSize": {
       "__type__": "cc.Size",
       "width": 702,
-      "height": 52
+      "height": 55
     },
     "_resize": 1,
     "_N$layoutType": 2,
@@ -476,7 +479,7 @@
     "_tag": -1,
     "_opacityModifyRGB": false,
     "_id": "",
-    "_active": true,
+    "_active": false,
     "_components": [
       {
         "__id__": 14
@@ -914,7 +917,72 @@
     "btn": {
       "__id__": 21
     },
-    "newIcon": null
+    "newIcon": {
+      "__id__": 13
+    }
+  },
+  {
+    "__type__": "cc.Button",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 1
+    },
+    "_enabled": true,
+    "transition": 3,
+    "pressedColor": {
+      "__type__": "cc.Color",
+      "r": 211,
+      "g": 211,
+      "b": 211,
+      "a": 255
+    },
+    "hoverColor": {
+      "__type__": "cc.Color",
+      "r": 255,
+      "g": 255,
+      "b": 255,
+      "a": 255
+    },
+    "duration": 0.1,
+    "zoomScale": 1.01,
+    "pressedSprite": null,
+    "hoverSprite": null,
+    "clickEvents": [
+      {
+        "__id__": 31
+      }
+    ],
+    "_N$interactable": true,
+    "_N$enableAutoGrayEffect": false,
+    "_N$normalColor": {
+      "__type__": "cc.Color",
+      "r": 214,
+      "g": 214,
+      "b": 214,
+      "a": 255
+    },
+    "_N$disabledColor": {
+      "__type__": "cc.Color",
+      "r": 124,
+      "g": 124,
+      "b": 124,
+      "a": 255
+    },
+    "_N$normalSprite": null,
+    "_N$disabledSprite": null,
+    "_N$target": {
+      "__id__": 1
+    }
+  },
+  {
+    "__type__": "cc.ClickEvent",
+    "target": {
+      "__id__": 1
+    },
+    "component": "ItemMessage",
+    "handler": "onMessageClick",
+    "customEventData": ""
   },
   {
     "__type__": "cc.PrefabInfo",

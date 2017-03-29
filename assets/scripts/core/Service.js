@@ -57,7 +57,7 @@ class Service {
 
         this._initSmartFoxClient();
     }
-
+    
     _initSmartFoxClient() {
 
         var config = {};

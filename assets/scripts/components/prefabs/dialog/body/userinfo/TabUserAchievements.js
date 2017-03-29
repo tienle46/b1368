@@ -17,7 +17,7 @@ export default class TabUserAchievements extends PopupTabBody {
         super.loadData();
         
         this._getAchievementsDataFromServer();
-        return false;
+        return true;
     }
     
     onDataChanged(data) {
@@ -38,7 +38,8 @@ export default class TabUserAchievements extends PopupTabBody {
         let sendObj = {
             cmd: app.commands.USER_ACHIEVEMENT
         };
-
+        
+        this.showLoadingProgress();
         app.service.send(sendObj);
     }
 

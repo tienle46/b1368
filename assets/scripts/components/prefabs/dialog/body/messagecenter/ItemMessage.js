@@ -1,6 +1,7 @@
 import app from 'app';
 import Component from 'Component';
 import {active, deactive} from 'CCUtils';
+import ScrollMessagePopup from 'ScrollMessagePopup';
 
 export default class ItemMessage extends Component {
     constructor() {
@@ -12,7 +13,9 @@ export default class ItemMessage extends Component {
             btnLbl: cc.Label,
             btn: cc.Button,
             newIcon: cc.Node
-        }
+        };
+        
+        this._id = null; // only personal message has
     }
 
     onLoad() {
@@ -45,8 +48,9 @@ export default class ItemMessage extends Component {
         this._fillData(title, description, time);
     }
     
-    createItemWithButton(title, description, time, action, handler, isReaded) {
-        !isReaded ? active(this.newIcon) : deactive(this.newIcon);
+    createItemWithButton(id, title, description, time, action, handler, isReaded) {
+        isReaded ? deactive(this.newIcon): active(this.newIcon);
+        this._id = {id, description};
         
         if (action) {
             this.btnLbl.string = action;
@@ -68,30 +72,50 @@ export default class ItemMessage extends Component {
         }
         
         this.titleLbl.string = title;
+        if(description.length > 130) {
+            description = `${description.slice(0, 130)}...`;
+        }
         this.contentLbl.string = description;
     }
     
-    // requestMessagesList(e) {
-    //     let target = e.currentTarget;
-
-    //     if (target) {
-    //         let id = target.id;
-    //         let groupType = target.groupType;
-
-    //         var sendObject = {
-    //             'cmd': app.commands.LIST_SYSTEM_MESSAGE,
-    //             'cbKey': app.commands.LIST_SYSTEM_MESSAGE,
-    //             'data': {
-    //                 [app.keywords.SYSTEM_MESSAGE_DETAIL.REQUEST.ACTION_TYPE]: app.const.DYNAMIC_ACTION_BROWSE,
-    //                 [app.keywords.SYSTEM_MESSAGE_DETAIL.REQUEST.GROUP_TYPE]: groupType,
-    //                 [app.keywords.SYSTEM_MESSAGE_DETAIL.REQUEST.NODE_ID]: id,
-    //                 // [app.keywords.SYSTEM_MESSAGE.REQUEST.PAGE_NUMBER]: page
-    //             }
-    //         };
-
-    //         app.service.send(sendObject);
-    //     }
-    // }
+    onMessageClick(e) {
+        app.service.send({
+                cmd: app.commands.CHANGE_PERSONAL_MESSAGE_STATE,
+                data: {
+                    id
+                }
+            }, (data) => {
+                console.debug('data', data);
+                app.system.info('xxxxxx');
+                if(data[app.keywords.RESPONSE_RESULT]) {
+                    
+                }
+            });
+        if(this._id) {
+            let {id, description} = this._id;
+            
+            // ScrollMessagePopup.show(app.system.getCurrentSceneNode(), {
+            //     cmd: app.commands.CHANGE_PERSONAL_MESSAGE_STATE,
+            //     data: {
+            //         id
+            //     },
+            //     parser: (data) => {
+            //          return description;
+            //     }
+            // })
+            app.service.send({
+                cmd: app.commands.CHANGE_PERSONAL_MESSAGE_STATE,
+                data: {
+                    id
+                }
+            }, (data) => {
+                
+                if(data[app.keywords.RESPONSE_RESULT]) {
+                    
+                }
+            });
+        }
+    }
 }
 
 app.createComponent(ItemMessage);

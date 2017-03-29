@@ -16,7 +16,7 @@ class TabAgency extends PopupTabBody {
         super.loadData();
         
         this._getAgencyDataFromServer();
-        return false;
+        return true;
     }
     
     onDataChanged(data = {}) {
@@ -38,7 +38,8 @@ class TabAgency extends PopupTabBody {
         let sendObj = {
             cmd: app.commands.AGENCY
         };
-
+        
+        this.showLoadingProgress();
         app.service.send(sendObj);
     }
 

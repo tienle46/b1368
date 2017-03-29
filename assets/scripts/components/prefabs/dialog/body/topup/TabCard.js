@@ -44,9 +44,9 @@ class TabCard extends PopupTabBody {
         if(Object.keys(this._data).length > 0)
             return false;
         super.loadData();
-        
+                
         this._initCardsGroup();
-        return false;
+        return true;
     }
     
     onDataChanged(data) {
@@ -67,7 +67,8 @@ class TabCard extends PopupTabBody {
         let sendObject = {
             'cmd': app.commands.USER_GET_CHARGE_LIST,
         };
-
+        
+        this.showLoadingProgress();
         app.service.send(sendObject);
     }
 

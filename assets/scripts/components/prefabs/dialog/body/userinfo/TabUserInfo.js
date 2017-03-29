@@ -149,11 +149,10 @@ export default class TabUserInfo extends PopupTabBody {
     }
 
     _initUserData() {
-        let sendObj = {
+        app.service.send( {
             cmd: app.commands.USER_PROFILE_NEW,
-        };
-
-        app.service.send(sendObj);
+        });
+        this.showLoadingProgress();
     }
 
     _onUserProfile(data) {

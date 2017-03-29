@@ -49,7 +49,8 @@ class TabHistory extends PopupTabBody {
                 p: 1
             }
         };
-
+        
+        this.showLoadingProgress();
         app.service.send(sendObject);
     }
     

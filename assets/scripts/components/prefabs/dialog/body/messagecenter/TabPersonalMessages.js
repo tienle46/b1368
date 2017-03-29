@@ -13,9 +13,9 @@ class TabPersonalMessages extends TabMessages {
     //@override
     onDataChanged({messages = [], page} = {}) {
         messages && messages.length > 0 && this.displayMessages(messages.map(message => {
-            let {id, title, msg, time, action, actionData, isReaded} = message;
+            let {id, title, msg, time, action, actionData, readed} = message;
 
-            return this.createItemMessage(id, title, msg, time, action, actionData, isReaded);
+            return this.createItemMessage(id, title, msg, time, action, actionData, readed);
         }));
     }
     
@@ -48,14 +48,14 @@ class TabPersonalMessages extends TabMessages {
                 id,
                 action: true
             }
-        })
+        });
     }
     
     createItemMessage(id, title, description, time, action, actionData, isReaded) {
         if(this.itemPrefab) {
             let message = cc.instantiate(this.itemPrefab);
             let itemEventComponent = message.getComponent('ItemMessage');
-            itemEventComponent && itemEventComponent.createItemWithButton(title, description, time, action, this._onActionBtnClick.bind(this, id, action, actionData), isReaded);
+            itemEventComponent && itemEventComponent.createItemWithButton(id, title, description, time, action, this._onActionBtnClick.bind(this, id, action, actionData, itemEventComponent), isReaded);
             return message;
         }
     }

@@ -39,12 +39,8 @@ class TabSystemMessage extends TabMessages {
     }
     
     _requestMessagesList(page = 1) {
-        app.service.send({
-            cmd: app.commands.GET_SYSTEM_MESSAGES,
-            data: {
-                [app.keywords.PAGE_NEW]: page
-            }
-        });
+        this._initRequest(app.commands.GET_SYSTEM_MESSAGES, page);
+        this.showLoadingProgress();
     }
     
     _onGetSystemMessages(data) {

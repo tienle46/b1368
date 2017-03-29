@@ -35,11 +35,10 @@ class TabSMS extends PopupTabBody {
         super.loadData();
         
         this._requestPaymentList();
-        return false;
+        return true;
     }
     
     onDataChanged(data) {
-        console.debug('onDataChanged', data);
         data && Object.keys(data).length > 0 && this._renderSMS(data);
     }
     
@@ -75,7 +74,9 @@ class TabSMS extends PopupTabBody {
                 ]
             }
         };
-
+        
+        this.showLoadingProgress();
+        
         this._sending = true;
         app.service.send(sendObject);
     }

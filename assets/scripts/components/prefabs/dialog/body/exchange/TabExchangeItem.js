@@ -32,7 +32,7 @@ class TabExchangeItem extends PopupTabBody {
         super.loadData();
         
         this._initItemsList();
-        return false;
+        return true;
     }
     
     onDataChanged(data = {}) {
@@ -90,6 +90,7 @@ class TabExchangeItem extends PopupTabBody {
             'data': {}
         };
         
+        this.showLoadingProgress();
         app.service.send(sendObject);
     }
 

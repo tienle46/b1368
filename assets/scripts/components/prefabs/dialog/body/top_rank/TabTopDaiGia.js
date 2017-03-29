@@ -24,7 +24,7 @@ class TabTopDaiGia extends PopupTabBody {
         super.loadData();
         
         this._getDataFromServer();
-        return false;
+        return true;
     }
     
     onDataChanged({usernames = [], balances = [], gc} = {}) {
@@ -46,6 +46,7 @@ class TabTopDaiGia extends PopupTabBody {
         app.service.send({
             'cmd': app.commands.GET_TOP_BALANCE_PLAYERS,
         });
+        this.showLoadingProgress();
     }
 
     _onGetTopBalancePlayers(res) {

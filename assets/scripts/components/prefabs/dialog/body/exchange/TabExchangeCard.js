@@ -40,7 +40,7 @@ class TabExchangeCard extends PopupTabBody {
         super.loadData();
         
         this._initCardsList();
-        return false;
+        return true;
     }
     
     onDataChanged(data = {}) {
@@ -97,7 +97,8 @@ class TabExchangeCard extends PopupTabBody {
             'cmd': app.commands.EXCHANGE_LIST,
             'data': {}
         };
-
+        
+        this.showLoadingProgress();
         app.service.send(sendObject);
     }
 

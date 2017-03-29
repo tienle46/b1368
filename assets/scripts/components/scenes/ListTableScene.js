@@ -246,7 +246,7 @@ export default class ListTableScene extends BaseScene {
                 minBet: event[app.keywords.QUICK_JOIN_BET]
             };
             this.invitationShowed = true;
-
+            
             this.invitationShowed && app.system.confirm(
                 app.res.string('user_got_invitation_to_join_room', { invoker: event.u, minBet: event.b }),
                 this._onCancelInvitationBtnClick.bind(this),

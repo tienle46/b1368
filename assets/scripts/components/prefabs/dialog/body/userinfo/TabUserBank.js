@@ -168,7 +168,8 @@ export default class TabUserBank extends PopupTabBody {
                 page: 1
             }
         };
-
+        
+        this.showLoadingProgress();
         app.service.send(sendObject);
     }
 

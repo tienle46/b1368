@@ -40,7 +40,14 @@ export default class TabMessages extends PopupTabBody {
     _removeGlobalListener() {
         super._removeGlobalListener();
     }
-
+    
+    /**
+     * @abstract
+     * 
+     * @param {number} [page=1] 
+     * 
+     * @memberOf TabMessages
+     */
     _requestMessagesList(page = 1) {}
     
     _initRequest(cmd, page = 1) {
@@ -50,10 +57,10 @@ export default class TabMessages extends PopupTabBody {
                 [app.keywords.PAGE_NEW]: page
             }
         });
+        this.showLoadingProgress();
     }
     
     /**
-     * 
      * 
      * @param {Array} data 
      * 
