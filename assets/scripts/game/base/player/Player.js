@@ -212,7 +212,9 @@ export default class Player extends Actor {
 
         this.renderer.setName(this.username);
         this.renderer.setBalance(this.balance);
-
+        
+        this._initPlayerAvatar();
+        
         this._updatePlayerAnchor();
 
         // if(this.scene.checkReadyPlayer(this)){
@@ -251,7 +253,12 @@ export default class Player extends Actor {
         this.balance = balance;
         this.renderer.setBalance(balance);
     }
-
+    
+    _initPlayerAvatar() {
+        let avatarURL = (this.user.variables && this.user.variables.avatarUrl && this.user.variables.avatarUrl.value) || app.config.defaultAvatarUrl;
+        avatarURL && this.renderer.initPlayerAvatar(avatarURL);
+    }
+    
     setOwner(isOwner) {
         this.isOwner = isOwner;
         this.renderer.setVisibleOwner(isOwner);

@@ -124,7 +124,7 @@ class Linking {
             }
         }
         
-        new TopupDialogRub().show(app.system.getCurrentSceneNode(), {focusTabIndex: defaultTab});   
+        new MessageCenterDialogRub().show(app.system.getCurrentSceneNode(), {focusTabIndex: defaultTab});   
     }
     
     static _handleOpenTopUpDialogAction(actionCode) {

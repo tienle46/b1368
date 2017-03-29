@@ -6,7 +6,7 @@ import {
     deactive,
     numberFormat
 } from 'Utils';
-import TopupDialogRub from 'TopupDialogRub';
+import Linking from 'Linking';
 import CCUtils from 'CCUtils';
 import {
     SFSEvent
@@ -94,7 +94,7 @@ export default class TabUserInfo extends PopupTabBody {
 
     onShowTopUpDialog() {
         this._hide();
-        TopupDialogRub.show(app.system.getCurrentSceneNode());
+        Linking.goTo(Linking.ACTION_TOPUP);
     }
 
     onLevelInfoBtnClick() {

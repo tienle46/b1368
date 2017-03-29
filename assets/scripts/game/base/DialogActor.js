@@ -1,3 +1,6 @@
+/**
+ * Actor inside dialog
+ */
 import Actor from 'Actor';
 import app from 'app';
 import NodeRub from 'NodeRub';

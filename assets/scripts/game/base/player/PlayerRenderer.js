@@ -7,6 +7,7 @@ import { utils, GameUtils } from 'utils';
 import ActorRenderer from 'ActorRenderer';
 import PlusBalanceAnimation from 'PlusBalanceAnimation';
 import PlayerMessage from 'PlayerMessage';
+import RubUtils from 'RubUtils';
 
 export default class PlayerRenderer extends ActorRenderer {
     constructor() {
@@ -60,8 +61,6 @@ export default class PlayerRenderer extends ActorRenderer {
 
         this.playerMessage = this.playerMessageNode.getComponent('PlayerMessage');
         this.playerMessage.setup(this);
-        
-        this._initUserAvatar();
         
         this._stopCountdown();
 
@@ -196,10 +195,10 @@ export default class PlayerRenderer extends ActorRenderer {
         return statusNode ? statusNode.children.filter(child => child instanceof cc.Label).pop() : null;
     }
     
-    _initUserAvatar() {
+    initPlayerAvatar(url) {
         if(this.avatarNode) {
             let sprite = this.avatarNode.getComponentInChildren(cc.Sprite);
-            sprite && app.context.getUserAvatar(sprite);
+            sprite && RubUtils.loadSpriteFrame(sprite, url, null, true);
         }
     }
 }
