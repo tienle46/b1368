@@ -272,9 +272,9 @@
     "_opacity": 255,
     "_color": {
       "__type__": "cc.Color",
-      "r": 245,
+      "r": 255,
       "g": 255,
-      "b": 0,
+      "b": 255,
       "a": 255
     },
     "_cascadeOpacityEnabled": true,
@@ -283,7 +283,7 @@
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
-      "x": 1,
+      "x": 0,
       "y": 0.5
     },
     "_contentSize": {
@@ -298,8 +298,8 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": 622,
-      "y": 247
+      "x": -533,
+      "y": 325
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -356,12 +356,12 @@
     "__type__": "cc.Node",
     "_name": "minBetLabel",
     "_objFlags": 0,
-    "_opacity": 248.11499999999998,
+    "_opacity": 248,
     "_color": {
       "__type__": "cc.Color",
-      "r": 252,
-      "g": 242,
-      "b": 0,
+      "r": 255,
+      "g": 255,
+      "b": 255,
       "a": 255
     },
     "_cascadeOpacityEnabled": true,
@@ -370,7 +370,7 @@
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
-      "x": 1,
+      "x": 0,
       "y": 0.5
     },
     "_contentSize": {
@@ -385,8 +385,8 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": 621,
-      "y": 215
+      "x": -530,
+      "y": 291
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -1557,6 +1557,7 @@
     "scale": 0.6,
     "reveal": true,
     "selectable": false,
+    "draggable": false,
     "space": 100,
     "maxDimension": 800,
     "cardPrefab": {
@@ -1610,7 +1611,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": 15
+      "y": 5
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -1642,6 +1643,7 @@
     "scale": 0.6,
     "reveal": false,
     "selectable": false,
+    "draggable": false,
     "space": 0,
     "maxDimension": 0,
     "cardPrefab": {
@@ -1785,6 +1787,7 @@
     "scale": 0.6,
     "reveal": true,
     "selectable": false,
+    "draggable": false,
     "space": 0,
     "maxDimension": 800,
     "cardPrefab": {
@@ -1961,7 +1964,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": 0
+      "y": 5.684341886080802e-14
     },
     "_rotationX": 0,
     "_rotationY": 0,

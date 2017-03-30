@@ -86,7 +86,7 @@ export default class Utils {
         }
     }
 
-    static setActive(node, active) {
+    static setActive(node, active = true) {
         if (!node) return;
 
         if (node instanceof cc.Node) {
@@ -96,7 +96,7 @@ export default class Utils {
         }
     }
 
-    static setVisible(node, visible) {
+    static setVisible(node, visible = true) {
         this.setActive(node, visible);
     }
 

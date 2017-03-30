@@ -25,21 +25,60 @@ export default class CardList extends ActionComponent {
             scale: 1.0,
             reveal: true,
             selectable: false,
-            space: CardList.CARD_WIDTH,
+            draggable: false,
+            space: Card.CARD_WIDTH,
             maxDimension: CardList.DEFAULT_MAX_WIDTH,
             cardPrefab: cc.Prefab
         }
 
-        this.cardWidth = CardList.CARD_WIDTH;
-        this.cardHeight = CardList.CARD_HEIGHT;
+        this.cardWidth = Card.CARD_WIDTH;
+        this.cardHeight = Card.CARD_HEIGHT;
         this.cards = null;
-        this._draggable = false;
+        this.draggable = false;
         this._overlapSpace = 0;
         this.selectCardChangeListener = null;
         this.onCardClickListener = null;
+        this.onAfterLayoutChangedListener = null;
         this.highlight = false;
         this._revealOnClick = false;
         this.__initCards = null;
+    }
+
+    getCenterHorizontalPosition(){
+
+        let cardHeight = Card.CARD_HEIGHT * this.scale;
+
+        if(this.align == CardList.ALIGN_TOP_CENTER){
+            return cc.v2(0, -cardHeight);
+        }else if(this.align == CardList.ALIGN_CENTER){
+            return cc.v2(0, -cardHeight / 2);
+        }else{
+            let tmpXPosition = ((this.cards.length - 1) * this._overlapSpace + Card.CARD_WIDTH * this.scale)  / 2;
+            switch (this.align){
+                case CardList.ALIGN_BOTTOM_LEFT:
+                    return cc.v2(tmpXPosition, 0)
+                case CardList.ALIGN_BOTTOM_RIGHT:
+                    return cc.v2(-tmpXPosition, 0)
+                case CardList.ALIGN_CENTER_LEFT:
+                    return cc.v2(tmpXPosition, -cardHeight / 2)
+                case CardList.ALIGN_CENTER_RIGHT:
+                    return cc.v2(-tmpXPosition, -cardHeight / 2)
+                case CardList.ALIGN_TOP_LEFT:
+                    return cc.v2(tmpXPosition, -cardHeight)
+                case CardList.ALIGN_TOP_RIGHT:
+                    return cc.v2(-tmpXPosition, -cardHeight)
+            }
+        }
+
+        return cc.v2(0, 0);
+    }
+
+    setOnAfterLayoutChangedListener(listener){
+        this.onAfterLayoutChangedListener = listener;
+    }
+
+    onAfterLayoutChanged(){
+        this.onAfterLayoutChangedListener && this.onAfterLayoutChangedListener();
     }
 
     cleanCardGroup() {
@@ -75,6 +114,14 @@ export default class CardList extends ActionComponent {
 
     cleanSelectedCard() {
         this.cards.forEach(card => card.setSelected(false, false));
+    }
+
+    disableAllCard(){
+        this.cards.forEach(card => card.setDisableCard(true));
+    }
+
+    cleanDisableAllCard(){
+        this.cards.forEach(card => card.setDisableCard(false));
     }
 
     cleanHighlight() {
@@ -113,16 +160,16 @@ export default class CardList extends ActionComponent {
     _updateNodeSize() {
         if (this._isHorizontal()) {
             this.node.width = this.maxDimension;
-            this.node.height = this.scale * CardList.CARD_HEIGHT;
-            this.space = this.maxDimension == 0 ? 0 : this.scale * (this.space || CardList.CARD_WIDTH);
+            this.node.height = this.scale * Card.CARD_HEIGHT;
+            this.space = this.maxDimension == 0 ? 0 : this.scale * (this.space || Card.CARD_WIDTH);
         } else {
-            this.node.width = this.scale * CardList.CARD_WIDTH;
+            this.node.width = this.scale * Card.CARD_WIDTH;
             this.node.height = this.maxDimension;
-            this.space = this.maxDimension == 0 ? 0 : this.scale * (this.space || CardList.CARD_WIDTH);
+            this.space = this.maxDimension == 0 ? 0 : this.scale * (this.space || Card.CARD_WIDTH);
         }
 
-        this.cardWidth = CardList.CARD_WIDTH * this.scale;
-        this.cardHeight = CardList.CARD_HEIGHT * this.scale;
+        this.cardWidth = Card.CARD_WIDTH * this.scale;
+        this.cardHeight = Card.CARD_HEIGHT * this.scale;
         this._overlapSpace = this.space;
     }
 
@@ -431,13 +478,13 @@ export default class CardList extends ActionComponent {
             }
 
             // newCard.node.on(cc.Node.EventType.TOUCH_START, (event) => {
-            //     if (!this._draggable) return;
+            //     if (!this.draggable) return;
             //
             // }, this);
             //
             // newCard.node.on(cc.Node.EventType.TOUCH_MOVE, (event) => {
             //
-            //     if (!this._draggable) return;
+            //     if (!this.draggable) return;
             //
             //     const dragCard = event.target.getComponent('Card');
             //     dragCard.node.x += event.getDelta().x;
@@ -461,7 +508,7 @@ export default class CardList extends ActionComponent {
             // }, this);
             //
             // newCard.node.on(cc.Node.EventType.TOUCH_END, (event) => {
-            //     if (!this._draggable) return;
+            //     if (!this.draggable) return;
             //
             //     const dragCard = event.target.getComponent('Card');
             //     //NOTE : drag chỉ áp dụng duy nhất cho myself, quân bài dàn từ trái qua phải, khi sự kiện touch kết thúc chỉ cần xử lí cho trường hơp này
@@ -538,7 +585,7 @@ export default class CardList extends ActionComponent {
     }
 
     setDraggable(draggable) {
-        this._draggable = draggable;
+        this.draggable = draggable;
     }
 
     onLoad() {
@@ -874,8 +921,6 @@ CardList.ALIGN_CENTER_RIGHT = 8;
 CardList.ALIGN_CENTER = 9;
 CardList.HORIZONTAL = 1;
 CardList.VERTICAL = 2;
-CardList.CARD_WIDTH = 96;
-CardList.CARD_HEIGHT = 130;
 CardList.DEFAULT_MAX_WIDTH = 600;
 CardList.DEFAULT_MAX_HEIGHT = 300;
 CardList.TRANSFER_CARD_DURATION = 0.3;

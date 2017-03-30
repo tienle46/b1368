@@ -28,7 +28,7 @@ export default class PlayerPhom extends PlayerCardTurnBase {
         this.haPhomSolutionId = 0;
         this.guiPhomSolutionId = 0;
         this.remainCardCount = PlayerPhom.DEFAULT_HAND_CARD_COUNT;
-        this.sortCardSolutionIndex = PhomUtils.SORT_BY_PHOM_SOLUTION;
+        this.sortCardSolutionIndex = PhomUtils.SORT_HAND_CARD_BY_PHOM_SOLUTION;
         this.currentHaPhomSolutions = [];
         this.currentGuiPhomSolutions = [];
         this.tempHoUPhoms = null;
@@ -59,53 +59,57 @@ export default class PlayerPhom extends PlayerCardTurnBase {
     _addGlobalListener() {
         super._addGlobalListener();
 
-        this.scene.on(Events.ON_CLICK_PLAY_BUTTON, this._onPlayTurn, this);
-        this.scene.on(Events.ON_CLICK_EAT_CARD_BUTTON, this._onEatCard, this);
-        this.scene.on(Events.ON_CLICK_TAKE_CARD_BUTTON, this._onTakeCard, this);
-        this.scene.on(Events.ON_CLICK_SORT_BUTTON, this._onSortCards, this);
-        this.scene.on(Events.ON_CLICK_DOWN_PHOM_BUTTON, this._onDownPhom, this);
-        this.scene.on(Events.ON_CLICK_SKIP_DOWN_PHOM_BUTTON, this._onSkipDownPhom, this);
-        this.scene.on(Events.ON_CLICK_JOIN_PHOM_BUTTON, this._onJoinPhom, this);
-        this.scene.on(Events.ON_CLICK_SKIP_JOIN_PHOM_BUTTON, this._onSkipJoinPhom, this);
-        this.scene.on(Events.ON_CLICK_CHANGE_PHOM_BUTTON, this._onChangePhom, this);
-        this.scene.on(Events.ON_CLICK_CHANGE_JOIN_PHOM_BUTTON, this._changeGuiPhomSolution, this);
-        this.scene.on(Events.ON_CLICK_U_BUTTON, this._onUPhom, this);
-        this.scene.on(Events.ON_CLICK_DOI_U_TRON_BUTTON, this._onDoiUTron, this);
-        this.scene.on(Events.ON_PLAYER_REMAIN_CARD_COUNT, this._setRemainCardCount, this);
-        this.scene.on(Events.HANDLE_PLAYER_TAKE_CARD, this._handlePlayerTakeCard, this);
-        this.scene.on(Events.HANDLE_PLAYER_EAT_CARD, this._handlePlayerEatCard, this);
-        this.scene.on(Events.HANDLE_PLAYER_DOWN_CARD, this._handlePlayerDownCard, this);
-        this.scene.on(Events.HANDLE_PLAYER_HELP_CARD, this._handlePlayerHelpCard, this);
-        this.scene.on(Events.HANDLE_PLAYER_LEAVE_BOARD, this._handlePlayerLeaveBoard, this);
-        this.scene.on(Events.ON_PLAYER_TURN, this._onPlayerTurn, this);
-        this.scene.on(Events.CLEAN_GAME_AFTER_SHOW_RESULT, this._cleanGameAfterShowResult, this);
-        this.scene.on(Events.SHOW_PHOM_HIGHLIGHT, this._setPhomHighlight, this);
+        if(this.scene){
+            this.scene.on(Events.ON_CLICK_PLAY_BUTTON, this._onPlayTurn, this);
+            this.scene.on(Events.ON_CLICK_EAT_CARD_BUTTON, this._onEatCard, this);
+            this.scene.on(Events.ON_CLICK_TAKE_CARD_BUTTON, this._onTakeCard, this);
+            this.scene.on(Events.ON_CLICK_SORT_BUTTON, this._onSortCards, this);
+            this.scene.on(Events.ON_CLICK_DOWN_PHOM_BUTTON, this._onDownPhom, this);
+            this.scene.on(Events.ON_CLICK_SKIP_DOWN_PHOM_BUTTON, this._onSkipDownPhom, this);
+            this.scene.on(Events.ON_CLICK_JOIN_PHOM_BUTTON, this._onJoinPhom, this);
+            this.scene.on(Events.ON_CLICK_SKIP_JOIN_PHOM_BUTTON, this._onSkipJoinPhom, this);
+            this.scene.on(Events.ON_CLICK_CHANGE_PHOM_BUTTON, this._onChangePhom, this);
+            this.scene.on(Events.ON_CLICK_CHANGE_JOIN_PHOM_BUTTON, this._changeGuiPhomSolution, this);
+            this.scene.on(Events.ON_CLICK_U_BUTTON, this._onUPhom, this);
+            this.scene.on(Events.ON_CLICK_DOI_U_TRON_BUTTON, this._onDoiUTron, this);
+            this.scene.on(Events.ON_PLAYER_REMAIN_CARD_COUNT, this._setRemainCardCount, this);
+            this.scene.on(Events.HANDLE_PLAYER_TAKE_CARD, this._handlePlayerTakeCard, this);
+            this.scene.on(Events.HANDLE_PLAYER_EAT_CARD, this._handlePlayerEatCard, this);
+            this.scene.on(Events.HANDLE_PLAYER_DOWN_CARD, this._handlePlayerDownCard, this);
+            this.scene.on(Events.HANDLE_PLAYER_HELP_CARD, this._handlePlayerHelpCard, this);
+            this.scene.on(Events.HANDLE_PLAYER_LEAVE_BOARD, this._handlePlayerLeaveBoard, this);
+            this.scene.on(Events.ON_PLAYER_TURN, this._onPlayerTurn, this);
+            this.scene.on(Events.CLEAN_GAME_AFTER_SHOW_RESULT, this._cleanGameAfterShowResult, this);
+            this.scene.on(Events.SHOW_PHOM_HIGHLIGHT, this._setPhomHighlight, this);
+        }
     }
 
     _removeGlobalListener() {
         super._removeGlobalListener();
 
-        this.scene.off(Events.ON_CLICK_PLAY_BUTTON, this._onPlayTurn, this);
-        this.scene.off(Events.ON_CLICK_EAT_CARD_BUTTON, this._onEatCard, this);
-        this.scene.off(Events.ON_CLICK_TAKE_CARD_BUTTON, this._onTakeCard, this);
-        this.scene.off(Events.ON_CLICK_SORT_BUTTON, this._onSortCards, this);
-        this.scene.off(Events.ON_CLICK_DOWN_PHOM_BUTTON, this._onDownPhom, this);
-        this.scene.off(Events.ON_CLICK_SKIP_DOWN_PHOM_BUTTON, this._onSkipDownPhom, this);
-        this.scene.off(Events.ON_CLICK_JOIN_PHOM_BUTTON, this._onJoinPhom, this);
-        this.scene.off(Events.ON_CLICK_SKIP_JOIN_PHOM_BUTTON, this._onSkipJoinPhom, this);
-        this.scene.off(Events.ON_CLICK_CHANGE_PHOM_BUTTON, this._onChangePhom, this);
-        this.scene.off(Events.ON_CLICK_CHANGE_JOIN_PHOM_BUTTON , this._changeGuiPhomSolution, this);
-        this.scene.off(Events.ON_CLICK_U_BUTTON, this._onUPhom, this);
-        this.scene.off(Events.ON_CLICK_DOI_U_TRON_BUTTON, this._onDoiUTron, this);
-        this.scene.off(Events.ON_PLAYER_REMAIN_CARD_COUNT, this._setRemainCardCount, this);
-        this.scene.off(Events.HANDLE_PLAYER_TAKE_CARD, this._handlePlayerTakeCard, this);
-        this.scene.off(Events.HANDLE_PLAYER_EAT_CARD, this._handlePlayerEatCard, this);
-        this.scene.off(Events.HANDLE_PLAYER_DOWN_CARD, this._handlePlayerDownCard, this);
-        this.scene.off(Events.HANDLE_PLAYER_HELP_CARD, this._handlePlayerHelpCard, this);
-        this.scene.off(Events.HANDLE_PLAYER_LEAVE_BOARD, this._handlePlayerLeaveBoard, this);
-        this.scene.off(Events.ON_PLAYER_TURN, this._onPlayerTurn, this);
-        this.scene.off(Events.CLEAN_GAME_AFTER_SHOW_RESULT, this._cleanGameAfterShowResult, this);
-        this.scene.off(Events.SHOW_PHOM_HIGHLIGHT, this._setPhomHighlight, this);
+        if(this.scene) {
+            this.scene.off(Events.ON_CLICK_PLAY_BUTTON, this._onPlayTurn, this);
+            this.scene.off(Events.ON_CLICK_EAT_CARD_BUTTON, this._onEatCard, this);
+            this.scene.off(Events.ON_CLICK_TAKE_CARD_BUTTON, this._onTakeCard, this);
+            this.scene.off(Events.ON_CLICK_SORT_BUTTON, this._onSortCards, this);
+            this.scene.off(Events.ON_CLICK_DOWN_PHOM_BUTTON, this._onDownPhom, this);
+            this.scene.off(Events.ON_CLICK_SKIP_DOWN_PHOM_BUTTON, this._onSkipDownPhom, this);
+            this.scene.off(Events.ON_CLICK_JOIN_PHOM_BUTTON, this._onJoinPhom, this);
+            this.scene.off(Events.ON_CLICK_SKIP_JOIN_PHOM_BUTTON, this._onSkipJoinPhom, this);
+            this.scene.off(Events.ON_CLICK_CHANGE_PHOM_BUTTON, this._onChangePhom, this);
+            this.scene.off(Events.ON_CLICK_CHANGE_JOIN_PHOM_BUTTON, this._changeGuiPhomSolution, this);
+            this.scene.off(Events.ON_CLICK_U_BUTTON, this._onUPhom, this);
+            this.scene.off(Events.ON_CLICK_DOI_U_TRON_BUTTON, this._onDoiUTron, this);
+            this.scene.off(Events.ON_PLAYER_REMAIN_CARD_COUNT, this._setRemainCardCount, this);
+            this.scene.off(Events.HANDLE_PLAYER_TAKE_CARD, this._handlePlayerTakeCard, this);
+            this.scene.off(Events.HANDLE_PLAYER_EAT_CARD, this._handlePlayerEatCard, this);
+            this.scene.off(Events.HANDLE_PLAYER_DOWN_CARD, this._handlePlayerDownCard, this);
+            this.scene.off(Events.HANDLE_PLAYER_HELP_CARD, this._handlePlayerHelpCard, this);
+            this.scene.off(Events.HANDLE_PLAYER_LEAVE_BOARD, this._handlePlayerLeaveBoard, this);
+            this.scene.off(Events.ON_PLAYER_TURN, this._onPlayerTurn, this);
+            this.scene.off(Events.CLEAN_GAME_AFTER_SHOW_RESULT, this._cleanGameAfterShowResult, this);
+            this.scene.off(Events.SHOW_PHOM_HIGHLIGHT, this._setPhomHighlight, this);
+        }
     }
 
     _cleanGameAfterShowResult(){
@@ -236,7 +240,7 @@ export default class PlayerPhom extends PlayerCardTurnBase {
         this.state = -1;
         this.downPhaseState = -1;
         this.joinPhaseState = -1;
-        this.sortCardSolutionIndex = 1;
+        this.sortCardSolutionIndex = PhomUtils.SORT_HAND_CARD_BY_PHOM_SOLUTION;
         this.eatenCards = [];
         this._isPlayImmediateAfterTakeCard = false;
     }
@@ -327,7 +331,6 @@ export default class PlayerPhom extends PlayerCardTurnBase {
                     this.scene && this.scene.emit(Events.SHOW_WAIT_TURN_CONTROLS);
                     this._isPlayImmediateAfterTakeCard = false
                 }else {
-                    this._checkInteractableOnStateChanged();
                     this.scene && this.scene.emit(Events.SHOW_PLAY_CONTROL_ONLY);
                     if(this.renderer.cardList.cards.length == 1){
                         this.turnAdapter.playTurn(this.renderer.cardList.cards);
@@ -479,7 +482,7 @@ export default class PlayerPhom extends PlayerCardTurnBase {
     _processAfterEatOrTake(eatCard = false) {
         this.renderer.cardList.cleanHighlight()
 
-        eatCard && this.setSortCardSolution(PhomUtils.SORT_BY_PHOM_SOLUTION)
+        eatCard && this.setSortCardSolution(PhomUtils.SORT_HAND_CARD_BY_PHOM_SOLUTION)
 
         this.tempHoUPhoms = null;
         let currentPhomList = PhomUtils.findBestPhomList(this.renderer.cardList.cards);
@@ -803,12 +806,12 @@ export default class PlayerPhom extends PlayerCardTurnBase {
 
         if (this.isItMe()) {
 
-            if(this.sortCardSolutionIndex == PhomUtils.SORT_BY_RANK){
-                PhomUtils.sortAsc(this.renderer.cardList.cards, PhomUtils.SORT_BY_RANK);
-            }else if(this.sortCardSolutionIndex == PhomUtils.SORT_BY_SUIT){
-                PhomUtils.sortAsc(this.renderer.cardList.cards, PhomUtils.SORT_BY_SUIT);
+            if(this.sortCardSolutionIndex == PhomUtils.SORT_HAND_CARD_BY_PHOM_SOLUTION){
+                PhomUtils.sortAsc(this.renderer.cardList.cards, PhomUtils.SORT_HAND_CARD_BY_PHOM_SOLUTION);
+            }else if(this.sortCardSolutionIndex == PhomUtils.SORT_HAND_CARD_BY_RANK){
+                PhomUtils.sortAsc(this.renderer.cardList.cards, PhomUtils.SORT_HAND_CARD_BY_RANK);
             } else{
-                PhomUtils.sortAsc(this.renderer.cardList.cards, PhomUtils.SORT_BY_PHOM_SOLUTION);
+                PhomUtils.sortAsc(this.renderer.cardList.cards, PhomUtils.SORT_HAND_CARD_BY_SUIT);
             }
 
             this.renderer.cardList.cleanHighlight();
@@ -823,8 +826,8 @@ export default class PlayerPhom extends PlayerCardTurnBase {
     }
 
     _updateSortCardSolutionIndex() {
-        if (++this.sortCardSolutionIndex > PlayerPhom.SORT_CARD_SOLUTION_MAX) {
-            this.sortCardSolutionIndex = 1;
+        if (++this.sortCardSolutionIndex > PhomUtils.SORT_HAND_CARD_BY_SUIT) {
+            this.sortCardSolutionIndex = PhomUtils.SORT_HAND_CARD_BY_PHOM_SOLUTION;
         }
     }
 
@@ -897,24 +900,6 @@ export default class PlayerPhom extends PlayerCardTurnBase {
         }
     }
 
-    _checkInteractableOnStateChanged(){
-        // let selectedCards = this.getSelectedCards();
-        // switch (this.state) {
-        //     case PlayerPhom.STATE_PHOM_PLAY:
-        //         let playable = PhomUtils.checkPlayCard([...selectedCards], this.handCards);
-        //         this.scene.emit(Events.SET_INTERACTABLE_PLAY_CONTROL, playable);
-        //         break;
-        //     case PlayerPhom.STATE_PHOM_DOWN:
-        //         let downable = PhomUtils.checkDownPhom([...selectedCards], this);
-        //         this.scene.emit(Events.SET_INTERACTABLE_HA_PHOM_CONTROL, downable);
-        //         break;
-        //     case PlayerPhom.STATE_PHOM_EAT_TAKE:
-        //         let eatable = PhomUtils.checkEatPhom([...selectedCards], this.board.lastPlayedCard, this);
-        //         this.scene.emit(Events.SET_INTERACTABLE_EAT_CONTROL, eatable);
-        //         break;
-        // }
-    }
-
     onGamePlaying(data, isJustJoined) {
         super.onGamePlaying(data, isJustJoined);
 
@@ -938,11 +923,21 @@ export default class PlayerPhom extends PlayerCardTurnBase {
         super.onGameEnding(data);
         // /this.renderer.cleanPlayerCards()
     }
+
+    showEndGameInfo({text = null, balanceChanged = NaN, info = "", cards = [], isWinner = false, point = 0} = {}){
+        if(!this.isItMe()){
+            this.renderer.setDownCards(cards, info);
+        }
+        this.renderer.showPlayerWinLoseInfo(text, isWinner)
+        this.renderer.playedCardList.disableAllCard();
+
+        //TODO show point in playedCardlist
+    }
 }
 
 PlayerPhom.TURN_PHRASE_TAKE_OR_EAT_CARD = 1;
 PlayerPhom.TURN_PHRASE_PLAY_CARD = 2;
-PlayerPhom.SORT_CARD_SOLUTION_MAX = 3;
+PlayerPhom.SORT_CARD_SOLUTION_MAX = 6;
 PlayerPhom.SERVER_STATE_DANH = 0;
 PlayerPhom.SERVER_STATE_AN = 1;
 PlayerPhom.SERVER_STATE_GUI = 2;

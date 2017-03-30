@@ -156,7 +156,6 @@ export default class PlayerTurnBaseAdapter extends GameAdapter {
 
         //TODO play sound
 
-        console.warn("this.preTurnPlayerId: ", this.preTurnPlayerId, "getLastPlayedTurnPlayerId: ", this.scene.board.getLastPlayedTurnPlayerId())
         let showPlayControlOnly = !this.preTurnPlayerId && !this.scene.board.getLastPlayedTurnPlayerId();
 
         if(this.player.isItMe()) {

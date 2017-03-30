@@ -13,18 +13,16 @@ export default class Card extends ActionComponent {
                 default : null,
                 type : cc.SpriteAtlas
             },
-        };
-
-        this.properties = {
-            ...this.properties,
             cardBG: cc.Sprite,
             highlightNode: cc.Node,
+            disableNode: cc.Node,
             lockedNode: cc.Node,
             groupNode: cc.Node,
             groupNumberLabel: cc.Label,
             emptySprite: cc.SpriteFrame,
             // cardSpriteFrame : cc.SpriteFrame,
             texBackBG: cc.SpriteFrame,
+            disableCard: false
         }
 
         byteValue != null && byteValue != undefined && this.initFromByte(byteValue);
@@ -36,6 +34,16 @@ export default class Card extends ActionComponent {
         this.group = -1;
         this.locked = false;
         this.__originalInfo = {};
+    }
+
+    setDisableCard(disable){
+        if (!this.loaded) {
+            this.__disable = disable;
+            return;
+        }
+
+        this.disableCard = disable;
+        utils.setVisible(this.disableNode, disable);
     }
 
     setOriginalInfo(info = {}) {
@@ -146,8 +154,8 @@ export default class Card extends ActionComponent {
 
     onLoad() {
         const cardSpriteName = `card_${this._getRankName()}_${this._getSuitName()}`;
-        console.debug(`cardSpriteName ${cardSpriteName}`);
-        console.debug(`cardsAtlas ${this.cardsAtlas}`);
+        // console.debug(`cardSpriteName ${cardSpriteName}`);
+        // console.debug(`cardsAtlas ${this.cardsAtlas}`);
         this.cardSpriteFrame = this.cardsAtlas.getSpriteFrame(cardSpriteName);
         this.cardBG.spriteFrame = this.cardSpriteFrame;
     }
@@ -166,6 +174,10 @@ export default class Card extends ActionComponent {
 
         if (this.__highlight) {
             this.setHighlight(this.__highlight);
+        }
+
+        if (this.__disable) {
+            this.setDisableCard(this.__disable);
         }
 
         this.setReveal(this.reveal);
@@ -345,8 +357,8 @@ Card.SECOND_CARD_GROUP = 1;
 Card.THIRD_CARD_GROUP = 2;
 Card.VERTICAL_SPACE_TO_SECOND_POSITION_Y = 24;
 /**/
-Card.CARD_WIDTH = 96;
-Card.CARD_HEIGHT = 140;
+Card.CARD_WIDTH = 124;
+Card.CARD_HEIGHT = 156;
 Card.CARD_SHADOW_LEFT_WIDTH = 2;
 Card.CARD_SHADOW_RIGHT_WIDTH = 1;
 Card.CARD_KNOW_LEFT = 13;

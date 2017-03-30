@@ -68,7 +68,7 @@ export default class CCUtils {
         }
     }
 
-    static setActive(node, active, opacity) {
+    static setActive(node, active = true, opacity) {
         if (!node) return;
 
         active = active ? true : false;
@@ -80,7 +80,7 @@ export default class CCUtils {
         }
     }
 
-    static setVisible(node, visible, opacity) {
+    static setVisible(node, visible = true, opacity) {
         this.setActive(node, visible, opacity);
     }
 

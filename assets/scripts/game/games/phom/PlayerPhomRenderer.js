@@ -17,12 +17,20 @@ export default class PlayerPhomRenderer extends PlayerCardTurnBaseRenderer {
 
         this.properties = {
             ...this.properties,
-            eatenCardListNode: cc.Node,
             eatenCardListNode2: cc.Node,
+            eatenCardListNode3: cc.Node,
+            eatenCardListNode4: cc.Node,
             anChotNode: cc.Node,
+            specialInfoImageNode: cc.Node,
             anChotAnimName: "showAnChot",
+            downCardInfoNode: cc.Node,
 
             playedCardListNodes: {
+                default: [],
+                type: [cc.Node]
+            },
+
+            downCardListNodes: {
                 default: [],
                 type: [cc.Node]
             },
@@ -39,6 +47,8 @@ export default class PlayerPhomRenderer extends PlayerCardTurnBaseRenderer {
         this.playedCardList = null;
         this.eatenCardList = null;
         this.downPhomList = null;
+        this.downCardList = null;
+        this.downCardInfoLabel = null
 
         /**
          * @type {PhomListComponent}
@@ -60,15 +70,18 @@ export default class PlayerPhomRenderer extends PlayerCardTurnBaseRenderer {
         this.downPhomList && this.downPhomList.clear();
         this.eatenCardList && this.eatenCardList.clear();
         this.playedCardList && this.playedCardList.clear();
+        this.downCardList && this.downCardList.clear();
     }
 
     _reset() {
         super._reset();
 
         this.cardList.clear();
-        this.downPhomList && this.downPhomList.clear();
-        this.eatenCardList && this.eatenCardList.clear();
-        this.playedCardList && this.playedCardList.clear();
+
+        this.cleanPlayerCards();
+        this.downCardInfoLabel.string = "";
+        CCUtils.setVisible(this.downCardInfoNode, false);
+        CCUtils.setVisible(this.specialInfoImageNode, false)
     }
 
     setHighlightPhom(phom, highlight) {
@@ -90,14 +103,26 @@ export default class PlayerPhomRenderer extends PlayerCardTurnBaseRenderer {
 
     _reloadComponentOnIndexChanged() {
 
-        this.eatenCardList && this.eatenCardList.clear();
-        this.playedCardList && this.playedCardList.clear();
-        this.downPhomList && this.downPhomList.clear();
+        this.cleanPlayerCards()
+
         this._downPhomListComponent && this._downPhomListComponent.clear();
 
         this.playedCardListNodes.forEach((node, index) => {
             if (index == this.anchorIndex) {
                 this.playedCardList = node.getComponent('CardList');
+            } else {
+                CCUtils.setVisible(node, false);
+            }
+        });
+
+        this.downCardInfoLabel = this.downCardInfoNode.getComponentInChildren(cc.Label);
+        this.downCardInfoNode.removeFromParent();
+
+        this.downCardListNodes.forEach((node, index) => {
+            if (index == this.anchorIndex) {
+                this.downCardList = node.getComponent('CardList');
+                node.parent && node.parent.addChild(this.downCardInfoNode);
+                this.downCardInfoNode.setPosition(0, 0);
             } else {
                 CCUtils.setVisible(node, false);
             }
@@ -185,23 +210,54 @@ export default class PlayerPhomRenderer extends PlayerCardTurnBaseRenderer {
      */
     _getEatenCardComponent() {
         let player = this.data.actor;
-        let eatenCardNode = this.anchorIndex == 1 || this.anchorIndex == 4 ? this.eatenCardListNode2 : this.eatenCardListNode;
+        let eatenCardNode = this.anchorIndex == 1 || this.anchorIndex == 4 ? this.eatenCardListNode4 : this.anchorIndex == 2 ? this.eatenCardListNode2 : this.eatenCardListNode3;
         return eatenCardNode.getComponent('CardList');
     }
 
-    _initHandCardList(cardList, isItMe) {
+    _initHandCardList(cardList, isItMe, skipSettingForMe = false) {
 
-        super._initHandCardList(cardList, isItMe);
+        super._initHandCardList(cardList, isItMe, true);
 
         if (isItMe) {
-            cardList.setAlign(CardList.ALIGN_BOTTOM_RIGHT);
-            cardList.setAnchorPoint(1, 0);
+            // cardList.setAlign(CardList.ALIGN_BOTTOM_RIGHT);
+            // cardList.setAnchorPoint(1, 0);
 
             let player = this.data.actor;
             cardList.setOnCardClickListener((card) => {
                 player && player.isSelectSingleCard() && !card.selected && cardList.cleanSelectedCard()
             })
         }
+    }
+
+    setDownCards(cards = [], info = "") {
+        if(this.downCardList){
+            this.downCardList.transferFrom(this.cardList, cards);
+
+            if(this.downCardInfoLabel && info.length > 0){
+                let centerPosition = this.downCardList.getCenterHorizontalPosition();
+                this.downCardInfoNode.setPosition(centerPosition);
+                this.downCardInfoLabel.string = info
+                CCUtils.setVisible(this.downCardInfoNode);
+            }
+        }
+    }
+
+    showPlayerWinLoseInfo(iconPath, isWinner = false) {
+        if(iconPath){
+            CCUtils.setVisible(this.specialInfoImageNode)
+            //TODO change to load from atlas
+            iconPath && cc.loader.loadRes(iconPath, cc.SpriteFrame, (err, sprite) => {
+
+                if(sprite){
+                    this.specialInfoImageNode.getComponent(cc.Sprite).spriteFrame = sprite
+                }
+
+            });
+        }
+    }
+
+    clearCards(isEnding){
+        !isEnding && super.clearCards(isEnding);
     }
 }
 
