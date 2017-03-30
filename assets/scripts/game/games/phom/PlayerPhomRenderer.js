@@ -215,9 +215,9 @@ export default class PlayerPhomRenderer extends PlayerCardTurnBaseRenderer {
         return eatenCardNode.getComponent('CardList');
     }
 
-    _initHandCardList(cardList, isItMe, skipSettingForMe = false) {
+    _initHandCardList(cardList, isItMe, setMeCardDefaultConfig = true) {
 
-        super._initHandCardList(cardList, isItMe, true);
+        super._initHandCardList(cardList, isItMe, false);
 
         if (isItMe) {
             // cardList.setAlign(CardList.ALIGN_BOTTOM_RIGHT);

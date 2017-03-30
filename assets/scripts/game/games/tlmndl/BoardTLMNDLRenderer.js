@@ -17,6 +17,11 @@ export default class BoardTLMNDLRenderer extends BoardCardTurnBaseRenderer {
         super.onEnable();
         this._initCenterDeckCard();
     }
+
+    onBoardEnding(...args){
+        super.onBoardEnding(...args)
+        this.deckCardRenderer.clear();
+    }
 }
 
 app.createComponent(BoardTLMNDLRenderer);

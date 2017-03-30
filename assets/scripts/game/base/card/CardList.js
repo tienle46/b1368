@@ -87,13 +87,13 @@ export default class CardList extends ActionComponent {
 
     setHighlightAll(highlight) {
         this.highlight = highlight;
-        this.cards.forEach(card => {
+        this.cards && this.cards.forEach(card => {
             card.setHighlight(highlight);
         })
     }
 
     setHighlight(cards = [], highlight = true) {
-        this.cards.forEach(card => {
+        this.cards && this.cards.forEach(card => {
             card.setHighlight(false)
             cards.some(highlightCard => {
                 if (card.equals(highlightCard)) {
@@ -105,7 +105,7 @@ export default class CardList extends ActionComponent {
     }
 
     clean() {
-        this.cards.forEach(card => {
+        this.cards && this.cards.forEach(card => {
             card.setSelected(false, false);
             card.setHighlight(false);
             card.setGroup();
@@ -113,19 +113,19 @@ export default class CardList extends ActionComponent {
     }
 
     cleanSelectedCard() {
-        this.cards.forEach(card => card.setSelected(false, false));
+        this.cards && this.cards.forEach(card => card.setSelected(false, false));
     }
 
     disableAllCard(){
-        this.cards.forEach(card => card.setDisableCard(true));
+        this.cards && this.cards.forEach(card => card.setDisableCard(true));
     }
 
     cleanDisableAllCard(){
-        this.cards.forEach(card => card.setDisableCard(false));
+        this.cards && this.cards.forEach(card => card.setDisableCard(false));
     }
 
     cleanHighlight() {
-        this.cards.forEach(card => card.setHighlight(false));
+        this.cards && this.cards.forEach(card => card.setHighlight(false));
     }
 
     setSelectCardChangeListener(listener) {

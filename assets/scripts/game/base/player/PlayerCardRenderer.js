@@ -45,9 +45,9 @@ export default class PlayerCardRenderer extends PlayerRenderer {
         this.cardList.setSelectCardChangeListener(this.selectCardChangeListener);
     }
 
-    _initHandCardList(cardList, isItMe, skipSettingForMe = false){
+    _initHandCardList(cardList, isItMe, setMeCardDefaultConfig = true){
         if (isItMe) {
-            if(!skipSettingForMe){
+            if(setMeCardDefaultConfig){
                 cardList.setMaxDimension(900);
                 cardList.setDraggable(true);
                 cardList.setSelectable(true);
@@ -81,7 +81,7 @@ export default class PlayerCardRenderer extends PlayerRenderer {
         return anchorPoint;
     }
 
-    clearCards(isEnding) {
+    clearCards() {
         this.cardList.clear();
     }
 

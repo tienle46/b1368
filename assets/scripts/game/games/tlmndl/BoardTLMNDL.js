@@ -101,26 +101,38 @@ export default class BoardTLMNDL extends BoardCardTurnBase {
 
         super.onBoardEnding(data);
 
-        let models = playerIds.filter(playerId => (playingPlayerIds.indexOf(playerId) >= 0)).map(playerId => {
-            return {
+        playingPlayerIds.forEach(playerId => {
+            let player = this.scene.gamePlayers.findPlayer(playerId);
+            player && player.showEndGameInfo({
                 name: playerInfos[playerId].name,
                 balanceChanged: balanceChangeAmounts[playerId],
                 text: resultTexts[playerId],
                 info: gameResultInfos[playerId],
                 cards: playerHandCards[playerId],
                 isWinner: winnerFlags[playerId]
-            };
-        });
+            })
+        })
 
-        setTimeout(() => this.scene.showGameResult(models, (shownTime) => {
-            let remainTime = this.timelineRemain - shownTime;
-            if (remainTime > 0 && this.scene.isEnding()) {
-                this.renderer.cleanDeckCards();
-                if(this.scene.gamePlayers.players.length > 1){
-                    this._startEndBoardTimeLine(remainTime);
-                }
-            }
-        }), 500);
+        // let models = playerIds.filter(playerId => (playingPlayerIds.indexOf(playerId) >= 0)).map(playerId => {
+        //     return {
+        //         name: playerInfos[playerId].name,
+        //         balanceChanged: balanceChangeAmounts[playerId],
+        //         text: resultTexts[playerId],
+        //         info: gameResultInfos[playerId],
+        //         cards: playerHandCards[playerId],
+        //         isWinner: winnerFlags[playerId]
+        //     };
+        // });
+        //
+        // setTimeout(() => this.scene.showGameResult(models, (shownTime) => {
+        //     let remainTime = this.timelineRemain - shownTime;
+        //     if (remainTime > 0 && this.scene.isEnding()) {
+        //         this.renderer.cleanDeckCards();
+        //         if(this.scene.gamePlayers.players.length > 1){
+        //             this._startEndBoardTimeLine(remainTime);
+        //         }
+        //     }
+        // }), 500);
     }
 
     _getGameResultInfos(playerIds = [], playerHandCards, data) {
@@ -131,7 +143,6 @@ export default class BoardTLMNDL extends BoardCardTurnBase {
          * Get game result icon
          * @type {Array}
          */
-        let resultIconPaths = {};
         let resultTexts = {};
         let winnerFlags = {};
 
