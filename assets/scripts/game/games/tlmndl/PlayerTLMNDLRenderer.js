@@ -3,6 +3,7 @@
  */
 
 import CCUtils from 'CCUtils';
+import RubUtils from 'RubUtils';
 import app from 'app';
 import PlayerCardTurnBaseRenderer from 'PlayerCardTurnBaseRenderer';
 
@@ -38,8 +39,11 @@ export default class PlayerTLMNDLRenderer extends PlayerCardTurnBaseRenderer {
     // }
 
     _changeRemainCardPosition(anchorIndex){
-        let handCardAnchor = this.isPositionOnRight(this.data.actor);
-        handCardAnchor && this.remainCardCountLabel.node.parent && this.remainCardCountLabel.node.parent.setPosition(handCardAnchor.getPosition())
+        let handCardAnchor = this._getCardAnchorPoint(this.data.actor);
+        if(handCardAnchor){
+            this.remainCardCount.removeFromParent()
+            handCardAnchor.addChild(this.remainCardCount)
+        }
     }
 
     _getCardAnchorPoint(player) {
@@ -106,9 +110,6 @@ export default class PlayerTLMNDLRenderer extends PlayerCardTurnBaseRenderer {
 
         if(info.length > 0 && this.showInfoCardList){
             let centerPosition = this.showInfoCardList.getCenterHorizontalPosition();
-            
-            console.log("centerPosition ----- ", centerPosition)
-            
             this.downCardInfoNode.setPosition(centerPosition)
             this.downCardInfoLabel.string = info
             CCUtils.setVisible(this.downCardInfoNode);
@@ -118,13 +119,10 @@ export default class PlayerTLMNDLRenderer extends PlayerCardTurnBaseRenderer {
     showPlayerWinLoseInfo(iconPath, isWinner = false) {
         if(iconPath){
             CCUtils.setVisible(this.specialInfoImageNode)
-            //TODO change to load from atlas
-            iconPath && cc.loader.loadRes(iconPath, cc.SpriteFrame, (err, sprite) => {
-
+            RubUtils.getSpriteFrameFromAtlas('blueTheme/atlas/text-ingame', iconPath, (sprite) => {
                 if(sprite){
                     this.specialInfoImageNode.getComponent(cc.Sprite).spriteFrame = sprite
                 }
-
             });
         }
     }

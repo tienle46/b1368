@@ -153,16 +153,16 @@ export default class BoardTLMNDL extends BoardCardTurnBase {
             if (playersWinRanks[i] == app.const.game.rank.GAME_RANK_FIRST) {
                 switch (winType) {
                     case app.const.game.TLMN_WIN_TYPE_AN_TRANG:
-                        resultText = app.res.string('game_tlmn_an_trang');
+                        resultText = 'tlmn-an-trang'
                         break;
                     case app.const.game.TLMN_WIN_TYPE_DUT_BA_BICH:
-                        resultText = app.res.string('game_tlmn_dut_ba_bich');
+                        resultText = 'tlmn-dut-ba-bich'
                         break;
                     case app.const.game.TLMN_WIN_TYPE_LUNG:
-                        resultText = app.res.string('game_tlmn_lung');
+                        resultText = 'tlmn-lung'
                         break;
                     default:
-                        resultText = app.res.string('game_thang');
+                        resultText = 'thang'
                 }
                 winnerFlags[id] = true;
             } else {
@@ -170,10 +170,10 @@ export default class BoardTLMNDL extends BoardCardTurnBase {
                     case app.const.game.TLMN_WIN_TYPE_THOI_BA_BICH:
                         // if (GameUtils.containsCard(playerHandCards[id], Card.from(Card.RANK_BA, Card.SUIT_BICH)))
                         if (ArrayUtils.contains(playerHandCards[id], Card.from(Card.RANK_BA, Card.SUIT_BICH)))
-                            resultText = app.res.string('game_tlmn_thoi_ba_bich');
+                            resultText = 'tlmn-thoi-ba-bich'
                         break;
                     default:
-                        resultText = app.res.string('game_thua');
+                        resultText = 'thua'
                 }
                 winnerFlags[id] = false;
             }
@@ -181,7 +181,7 @@ export default class BoardTLMNDL extends BoardCardTurnBase {
             resultTexts[id] = resultText;
         });
 
-        congPlayerIds && congPlayerIds.forEach(id => resultTexts[id] = app.res.string('game_tlmn_cong'));
+        congPlayerIds && congPlayerIds.forEach(id => resultTexts[id] = 'tlmn-cong')
 
         /**
          * Get game result detail info

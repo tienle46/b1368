@@ -246,8 +246,6 @@ export default class PlayerPhomRenderer extends PlayerCardTurnBaseRenderer {
     showPlayerWinLoseInfo(key, isWinner = false) {
         if(key){
             CCUtils.setVisible(this.specialInfoImageNode)
-            //TODO change to load from atlas
-            
             RubUtils.getSpriteFrameFromAtlas('blueTheme/atlas/text-ingame', key, (sprite) => {
                 if(sprite){
                     this.specialInfoImageNode.getComponent(cc.Sprite).spriteFrame = sprite
