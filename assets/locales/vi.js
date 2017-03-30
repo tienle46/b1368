@@ -82,7 +82,7 @@ export default {
 
     game_error_phom_select_one_card_to_play: "Hãy chọn một quân bài để đánh",
     game_error_phom_cannot_play_card_in_eaten_phom: "Không thể đánh bài trong phỏm đã ăn",
-    game_table_name: 'Bàn {{tableName}}',
+    game_table_name: 'Bàn {{tableName}} - {{gameName}}',
     game_sam_thang_sam: 'Thắng Sâm',
     game_sam_den_sam: 'Đền Sâm',
     game_sam_den_thoi_heo: 'Đền Thối Heo',

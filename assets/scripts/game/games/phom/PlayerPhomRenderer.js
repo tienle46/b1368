@@ -210,7 +210,7 @@ export default class PlayerPhomRenderer extends PlayerCardTurnBaseRenderer {
      */
     _getEatenCardComponent() {
         let player = this.data.actor;
-        let eatenCardNode = this.anchorIndex == 1 || this.anchorIndex == 4 ? this.eatenCardListNode4 : this.anchorIndex = 2 ? this.eatenCardListNode2 : this.eatenCardListNode3;
+        let eatenCardNode = this.anchorIndex == 1 || this.anchorIndex == 4 ? this.eatenCardListNode4 : this.anchorIndex == 2 ? this.eatenCardListNode2 : this.eatenCardListNode3;
         return eatenCardNode.getComponent('CardList');
     }
 

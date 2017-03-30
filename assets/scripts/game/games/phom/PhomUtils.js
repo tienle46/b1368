@@ -132,7 +132,7 @@ export default class PhomUtils {
         if(eatable && player.eatenCards.length > 0){
             let checkPhomCards = [...player.handCards];
             ArrayUtils.removeAll(checkPhomCards, cards);
-            let allGeneratedPhomList = PhomGenerator.generateAllPhom(checkPhomCards);
+            let allGeneratedPhomList = PhomGenerator.generate(checkPhomCards);
 
             eatable = false;
             allGeneratedPhomList.length > 0 && allGeneratedPhomList.some(phomList => {

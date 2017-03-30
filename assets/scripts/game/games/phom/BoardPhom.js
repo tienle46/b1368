@@ -344,7 +344,7 @@ export default class BoardPhom extends BoardCardTurnBase {
                     gameResultInfos[id] = ""
                 }else{
                     points[id] = point
-                    gameResultInfos[id] = app.res.string('game_point', { point });
+                    gameResultInfos[id] = point == 0 ? "" : app.res.string('game_point', { point });
                 }
             } else {
                 resultText = "";

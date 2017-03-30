@@ -188,10 +188,11 @@ export default class GameScene extends BaseScene {
     }
 
     _setTableNameLabel() {
+        let gameName = app.const.gameLabels[this.gameCode] || "";
         let roomName = this.room.name.substring(3, 5);
         let tableName = this.room.name.substring(5, this.room.name.length) || "";
 
-        this.tableNameLabel.string = app.res.string('game_table_name', { tableName });
+        this.tableNameLabel.string = app.res.string('game_table_name', { tableName, gameName });
     }
 
     onEnable() {

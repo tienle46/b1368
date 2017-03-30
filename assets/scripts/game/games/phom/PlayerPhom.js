@@ -826,8 +826,8 @@ export default class PlayerPhom extends PlayerCardTurnBase {
     }
 
     _updateSortCardSolutionIndex() {
-        if (++this.sortCardSolutionIndex > PlayerPhom.SORT_HAND_CARD_BY_SUIT) {
-            this.sortCardSolutionIndex = PlayerPhom.SORT_HAND_CARD_BY_PHOM_SOLUTION;
+        if (++this.sortCardSolutionIndex > PhomUtils.SORT_HAND_CARD_BY_SUIT) {
+            this.sortCardSolutionIndex = PhomUtils.SORT_HAND_CARD_BY_PHOM_SOLUTION;
         }
     }
 
