@@ -84,6 +84,9 @@ let RubUtils = {
      * }
      */
     loadSpriteFrame: (spriteComponent, resURL, ccSize = null, isCORS = false, cb, options = {}) => {
+        if(!resURL)
+            return ;
+        
         let textureCache;
 
         let o = {

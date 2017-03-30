@@ -5382,6 +5382,9 @@
     "tableListCell": {
       "__uuid__": "413162d9-498f-4bd3-9f36-88e705092562"
     },
+    "invitePopupPrefab": {
+      "__uuid__": "e85bde16-b688-4036-b178-0b41d4452ac9"
+    },
     "gameTitleLbl": {
       "__id__": 59
     },

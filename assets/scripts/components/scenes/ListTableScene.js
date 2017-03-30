@@ -16,6 +16,7 @@ export default class ListTableScene extends BaseScene {
             ...this.properties,
             contentInScroll: cc.Node,
             tableListCell: cc.Prefab,
+            invitePopupPrefab: cc.Prefab,
             gameTitleLbl: cc.Label,
             userMoneyLbl: cc.Label
         };
@@ -247,11 +248,24 @@ export default class ListTableScene extends BaseScene {
             };
             this.invitationShowed = true;
             
-            this.invitationShowed && app.system.confirm(
-                app.res.string('user_got_invitation_to_join_room', { invoker: event.u, minBet: event.b }),
+            // this.invitationShowed && app.system.confirm(
+            //     app.res.string('user_got_invitation_to_join_room', { invoker: event.u, minBet: event.b }),
+            //     this._onCancelInvitationBtnClick.bind(this),
+            //     this._onConfirmInvitationBtnClick.bind(this, joinRoomRequestData)
+            // );
+            
+            let invitePopup = cc.instantiate(this.invitePopupPrefab);
+            let invitePopupComponent = invitePopup.getComponent('PlayerInvitePopup');
+            invitePopupComponent && invitePopupComponent.init(app.system.getCurrentSceneNode(), {
+                    username: event.u,
+                    bet: event.b,
+                    avatarUrl: event.avatarUrl || app.config.defaultAvatarUrl,
+                    userCoin: event.balance
+                },
                 this._onCancelInvitationBtnClick.bind(this),
                 this._onConfirmInvitationBtnClick.bind(this, joinRoomRequestData)
             );
+            
             joinRoomRequestData = null;
         }
     }

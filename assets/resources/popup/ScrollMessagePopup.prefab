@@ -74,9 +74,9 @@
     "_opacity": 120,
     "_color": {
       "__type__": "cc.Color",
-      "r": 40,
-      "g": 1,
-      "b": 58,
+      "r": 0,
+      "g": 0,
+      "b": 0,
       "a": 255
     },
     "_cascadeOpacityEnabled": true,
@@ -544,8 +544,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 44,
-      "height": 48
+      "width": 60,
+      "height": 60
     },
     "_children": [],
     "_rotationX": 0,
