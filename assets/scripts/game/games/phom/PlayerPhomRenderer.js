@@ -10,6 +10,7 @@ import PlayerCardTurnBaseRenderer from 'PlayerCardTurnBaseRenderer';
 import CCUtils from 'CCUtils';
 import ArrayUtils from 'ArrayUtils'
 import PhomUtils from 'PhomUtils'
+import RubUtils from 'RubUtils'
 
 export default class PlayerPhomRenderer extends PlayerCardTurnBaseRenderer {
     constructor() {
@@ -242,16 +243,15 @@ export default class PlayerPhomRenderer extends PlayerCardTurnBaseRenderer {
         }
     }
 
-    showPlayerWinLoseInfo(iconPath, isWinner = false) {
-        if(iconPath){
+    showPlayerWinLoseInfo(key, isWinner = false) {
+        if(key){
             CCUtils.setVisible(this.specialInfoImageNode)
             //TODO change to load from atlas
-            iconPath && cc.loader.loadRes(iconPath, cc.SpriteFrame, (err, sprite) => {
-
+            
+            RubUtils.getSpriteFrameFromAtlas('blueTheme/atlas/text-ingame', key, (sprite) => {
                 if(sprite){
                     this.specialInfoImageNode.getComponent(cc.Sprite).spriteFrame = sprite
                 }
-
             });
         }
     }

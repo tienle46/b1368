@@ -109,6 +109,9 @@ let RubUtils = {
         }
 
         if (isCORS) {
+            if(!resURL.match(/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/))
+                return;
+                 
             if (app.env.isBrowser()) {
                 textureCache = cc.textureCache.addImage(resURL);
                 

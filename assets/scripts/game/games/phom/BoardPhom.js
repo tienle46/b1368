@@ -295,42 +295,42 @@ export default class BoardPhom extends BoardCardTurnBase {
             if (playersWinRank == app.const.game.rank.GAME_RANK_FIRST) {
                 switch (winType) {
                     case app.const.game.PHOM_WIN_TYPE_U_THUONG:
-                        resultText = 'blueTheme/ingame/text/phom/u';
+                        resultText = 'phom-u';
                         break;
                     case app.const.game.PHOM_WIN_TYPE_U_DEN:
-                        resultText = 'blueTheme/ingame/text/phom/u-den'
+                        resultText = 'phom-u-den';
                         break;
                     case app.const.game.PHOM_WIN_TYPE_U_KHAN:
-                        resultText = 'blueTheme/ingame/text/phom/u-khan'
+                        resultText = 'phom-u-khan';
                         break;
                     case app.const.game.PHOM_WIN_TYPE_U_TRON:
-                        resultText = 'blueTheme/ingame/text/phom/u-tron'
+                        resultText = 'phom-u-tron';
                         break;
                     case app.const.game.PHOM_WIN_TYPE_U_PHOM_KIN:
-                        resultText = 'blueTheme/ingame/text/phom/u'
+                        resultText = 'phom-u';
                         break;
                     default:
-                        resultText = 'blueTheme/ingame/text/thang'
+                        resultText = 'thang';
                 }
 
                 winnerFlags[id] = true;
 
             } else {
                 if (isMom) {
-                    resultText = winType > 0 ? 'blueTheme/ingame/text/thua' : 'blueTheme/ingame/text/phom/mom'
+                    resultText = winType > 0 ? 'thua' : 'phom-mom';
                 } else {
                     switch (playersWinRank) {
                         case app.const.game.GAME_RANK_SECOND:
-                            resultText = 'blueTheme/ingame/text/nhi'
+                            resultText = 'nhi';
                             break;
                         case app.const.game.GAME_RANK_THIRD:
-                            resultText = 'blueTheme/ingame/text/ba'
+                            resultText = 'ba';
                             break;
                         case app.const.game.GAME_RANK_FOURTH:
-                            resultText = 'blueTheme/ingame/text/bet'
+                            resultText = 'bet';
                             break;
                         default:
-                            resultText = 'blueTheme/ingame/text/thua'
+                            resultText = 'thua';
                     }
                 }
 
@@ -341,9 +341,9 @@ export default class BoardPhom extends BoardCardTurnBase {
                 let handCards = playerHandCards[id];
                 let point = handCards.reduce((value, card) => value += card.rank, 0);
                 if(isMom && winType != app.const.game.GENERAL_WIN_TYPE_NORMAL){
-                    gameResultInfos[id] = ""
+                    gameResultInfos[id] = "";
                 }else{
-                    points[id] = point
+                    points[id] = point;
                     gameResultInfos[id] = point == 0 ? "" : app.res.string('game_point', { point });
                 }
             } else {
@@ -351,7 +351,7 @@ export default class BoardPhom extends BoardCardTurnBase {
             }
 
             resultTexts[id] = resultText;
-            points[id] === undefined && (points[id] = 1000)
+            points[id] === undefined && (points[id] = 1000);
 
         });
 
