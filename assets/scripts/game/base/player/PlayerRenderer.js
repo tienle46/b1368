@@ -201,6 +201,14 @@ export default class PlayerRenderer extends ActorRenderer {
             sprite && RubUtils.loadSpriteFrame(sprite, url, null, true);
         }
     }
+
+    isPositionOnTop(anchorIndex = this.anchorIndex){
+        return this.scene.gamePlayers.playerPositions.isPositionOnTop(anchorIndex)
+    }
+
+    isPositionOnRight(anchorIndex = this.anchorIndex){
+        return this.scene.gamePlayers.playerPositions.isPositionOnRight(anchorIndex)
+    }
 }
 
 app.createComponent(PlayerRenderer);

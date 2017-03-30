@@ -16,6 +16,7 @@ export default class PlayerTLMNDL extends PlayerCardTurnBase {
     constructor(board, user) {
         super(board, user);
 
+        this.sortSolution = TLMNUtils.SORT_BY_RANK;
         this.remainCardCount = PlayerTLMNDL.DEFAULT_HAND_CARD_COUNT;
     }
 
@@ -78,9 +79,10 @@ export default class PlayerTLMNDL extends PlayerCardTurnBase {
     _onSortCards() {
 
         if (this.isItMe()) {
-            let sortedCard = GameUtils.sortCardAsc(this.renderer.cardList.cards, game.const.GAME_TYPE_TIENLEN);
-            // this.renderer.cardList.setCards(sortedCard);
+            let sortedCard = TLMNUtils.sortAsc(this.renderer.cardList.cards, this.sortSolution);
             this.renderer.cardList.onCardsChanged();
+
+            this.sortSolution = this.sortSolution == TLMNUtils.SORT_BY_RANK ? TLMNUtils.SORT_BY_SUIT : TLMNUtils.SORT_BY_RANK;
         }
     }
 
@@ -142,6 +144,13 @@ export default class PlayerTLMNDL extends PlayerCardTurnBase {
             let cards = Array(PlayerTLMNDL.DEFAULT_HAND_CARD_COUNT).fill(0).map(value => { return Card.from(value) });
             this.setCards(cards, false);
         }
+    }
+
+    showEndGameInfo({text = null, balanceChanged = NaN, info = "", cards = [], isWinner = false, point = 0} = {}){
+        if(!this.isItMe()){
+            this.renderer.showDownCards(cards, info);
+        }
+        this.renderer.showPlayerWinLoseInfo(text, isWinner)
     }
 }
 

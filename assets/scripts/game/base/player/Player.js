@@ -389,6 +389,10 @@ export default class Player extends Actor {
             app.service.send({cmd: app.commands.PLAYER_READY, room: this.scene.room});
         }
     }
+
+    getPlayerPositions(){
+        return this.scene.gamePlayer.playerPositions;
+    }
 }
 
 app.createComponent(Player);

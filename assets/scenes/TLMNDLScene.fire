@@ -248,8 +248,8 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": 0,
-      "y": 0
+      "x": -536,
+      "y": 306
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -272,9 +272,9 @@
     "_opacity": 255,
     "_color": {
       "__type__": "cc.Color",
-      "r": 245,
+      "r": 255,
       "g": 255,
-      "b": 0,
+      "b": 255,
       "a": 255
     },
     "_cascadeOpacityEnabled": true,
@@ -283,7 +283,7 @@
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
-      "x": 1,
+      "x": 0,
       "y": 0.5
     },
     "_contentSize": {
@@ -298,8 +298,8 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": 622,
-      "y": 247
+      "x": 0,
+      "y": 20
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -356,12 +356,12 @@
     "__type__": "cc.Node",
     "_name": "minBetLabel",
     "_objFlags": 0,
-    "_opacity": 248.11499999999998,
+    "_opacity": 248,
     "_color": {
       "__type__": "cc.Color",
-      "r": 252,
-      "g": 242,
-      "b": 0,
+      "r": 250,
+      "g": 250,
+      "b": 250,
       "a": 255
     },
     "_cascadeOpacityEnabled": true,
@@ -370,7 +370,7 @@
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
-      "x": 1,
+      "x": 0,
       "y": 0.5
     },
     "_contentSize": {
@@ -385,8 +385,8 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": 621,
-      "y": 215
+      "x": 0,
+      "y": -12
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -1430,6 +1430,7 @@
     "scale": 0.6,
     "reveal": true,
     "selectable": false,
+    "draggable": false,
     "space": 100,
     "maxDimension": 800,
     "cardPrefab": {
@@ -1634,6 +1635,7 @@
     "scale": 0.6,
     "reveal": true,
     "selectable": false,
+    "draggable": false,
     "space": 0,
     "maxDimension": 800,
     "cardPrefab": {
@@ -1812,7 +1814,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": 0
+      "y": 5.684341886080802e-14
     },
     "_rotationX": 0,
     "_rotationY": 0,
@@ -2555,9 +2557,7 @@
       "b": 255,
       "a": 255
     },
-    "_N$normalSprite": {
-      "__uuid__": "a1028add-f47f-4ebf-ab1e-08e838e7ea1f"
-    },
+    "_N$normalSprite": null,
     "_N$disabledSprite": null,
     "_N$target": {
       "__id__": 74
@@ -2845,9 +2845,7 @@
     "_N$normalSprite": {
       "__uuid__": "eee75e82-8daf-4a9c-87be-8c13a7195d7e"
     },
-    "_N$disabledSprite": {
-      "__uuid__": "1fd64a73-51fb-4db1-aad3-b166780d4fab"
-    },
+    "_N$disabledSprite": null,
     "_N$target": {
       "__id__": 84
     }
@@ -3799,9 +3797,7 @@
       "b": 255,
       "a": 255
     },
-    "_N$normalSprite": {
-      "__uuid__": "40b81dd2-3b71-4236-b397-401417b837ab"
-    },
+    "_N$normalSprite": null,
     "_N$disabledSprite": null,
     "_N$target": {
       "__id__": 117

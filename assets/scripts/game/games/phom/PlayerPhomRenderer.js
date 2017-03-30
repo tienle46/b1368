@@ -215,9 +215,9 @@ export default class PlayerPhomRenderer extends PlayerCardTurnBaseRenderer {
         return eatenCardNode.getComponent('CardList');
     }
 
-    _initHandCardList(cardList, isItMe, skipSettingForMe = false) {
+    _initHandCardList(cardList, isItMe, setMeCardDefaultConfig = true) {
 
-        super._initHandCardList(cardList, isItMe, true);
+        super._initHandCardList(cardList, isItMe, false);
 
         if (isItMe) {
             // cardList.setAlign(CardList.ALIGN_BOTTOM_RIGHT);
@@ -246,8 +246,6 @@ export default class PlayerPhomRenderer extends PlayerCardTurnBaseRenderer {
     showPlayerWinLoseInfo(key, isWinner = false) {
         if(key){
             CCUtils.setVisible(this.specialInfoImageNode)
-            //TODO change to load from atlas
-            
             RubUtils.getSpriteFrameFromAtlas('blueTheme/atlas/text-ingame', key, (sprite) => {
                 if(sprite){
                     this.specialInfoImageNode.getComponent(cc.Sprite).spriteFrame = sprite
