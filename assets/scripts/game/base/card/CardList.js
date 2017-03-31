@@ -42,6 +42,7 @@ export default class CardList extends ActionComponent {
         this.highlight = false;
         this._revealOnClick = false;
         this.__initCards = null;
+        this.__initProperties = null;
     }
 
     getCenterHorizontalPosition(){
@@ -231,13 +232,36 @@ export default class CardList extends ActionComponent {
         }
     }
 
-    setProperties({scale = 1, x = 0, y = 0, orientation = CardList.HORIZONTAL, alignment = CardList.ALIGN_CENTER_LEFT, maxDimension = undefined} = {}) {
-        this.setScale(scale);
-        this.setPosition(x, y);
-        this.setOrientation(orientation);
-        maxDimension = maxDimension || (orientation == CardList.VERTICAL ? CardList.DEFAULT_MAX_HEIGHT : CardList.DEFAULT_MAX_WIDTH);
-        this.setMaxDimension(maxDimension);
-        this.setAlign(alignment);
+    setProperties(properties) {
+        this.__initProperties = properties;
+
+        this._initSettedProperties();
+    }
+
+    _initSettedProperties(){
+
+        if(!this.__isComponentEnabled) return;
+
+        if(this.__initProperties){
+            if(this.__initProperties.space){
+                this.space = this.__initProperties.space
+            }
+
+            if(this.__initProperties.scale){
+                this.scale = this.__initProperties.scale
+            }
+
+            if(this.__initProperties.orientation){
+                this.orientation = this.__initProperties.orientation
+            }
+
+            this.maxDimension = this.__initProperties.maxDimension || (this.__initProperties.orientation == CardList.VERTICAL ? CardList.DEFAULT_MAX_HEIGHT : CardList.DEFAULT_MAX_WIDTH);
+
+            this.setPosition(this.__initProperties.x || 0, this.__initProperties.y || 0);
+            this.setAlign(this.__initProperties.alignment || CardList.ALIGN_CENTER_LEFT);
+        }
+
+        this.__initProperties = null;
     }
 
     setScale(scale) {
@@ -354,7 +378,6 @@ export default class CardList extends ActionComponent {
     }
 
     _adjustCardsPosition(autoUpdate = true, duration = CardList.TRANSFER_CARD_DURATION) {
-
         this._updateCardSpacing();
         let startPosition = this._getStartPosition();
 
@@ -622,10 +645,12 @@ export default class CardList extends ActionComponent {
     onEnable() {
         super.onEnable();
 
+        this._initSettedProperties();
+
         this.setAlign(this._settedAlign || this.align);
         this._updateNodeSize();
         this.initiated = true;
-
+        
         if (this.__initCards) {
             this.setCards(this.__initCards);
             this.__initCards = null;

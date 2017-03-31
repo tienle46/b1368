@@ -26,29 +26,34 @@ class TestScene extends Component {
         this.player2Node = cc.instantiate(this.playerNode);
         this.player3Node = cc.instantiate(this.playerNode);
         this.player4Node = cc.instantiate(this.playerNode);
+        this.player5Node = cc.instantiate(this.playerNode);
 
         this.player1Node.setPosition(0, 0)
         this.player2Node.setPosition(0, 0)
         this.player3Node.setPosition(0, 0)
         this.player4Node.setPosition(0, 0)
+        this.player5Node.setPosition(0, 0)
 
         this.playerAnchorNode.getChildByName('myAnchorPoint').addChild(this.player1Node)
         this.playerAnchorNode.getChildByName('anchorPoint2').getChildByName('inviteButton').addChild(this.player2Node)
         this.playerAnchorNode.getChildByName('anchorPoint3').getChildByName('inviteButton').addChild(this.player3Node)
         this.playerAnchorNode.getChildByName('anchorPoint4').getChildByName('inviteButton').addChild(this.player4Node)
+        this.playerAnchorNode.getChildByName('anchorPoint5').getChildByName('inviteButton').addChild(this.player5Node)
 
-        this.player1 = this.player1Node.getComponent('PlayerTLMN')
-        this.player2 = this.player2Node.getComponent('PlayerTLMN')
-        this.player3 = this.player3Node.getComponent('PlayerTLMN')
-        this.player4 = this.player4Node.getComponent('PlayerTLMN')
+        this.player1 = this.player1Node.getComponent('PlayerSam')
+        this.player2 = this.player2Node.getComponent('PlayerSam')
+        this.player3 = this.player3Node.getComponent('PlayerSam')
+        this.player4 = this.player4Node.getComponent('PlayerSam')
+        this.player5 = this.player4Node.getComponent('PlayerSam')
     }
 
     onEnable(){
         super.onEnable()
 
         this.setCardForPlayer2(this.player2Node, 2)
-        this.setCardForPlayer2(this.player4Node, 4)
+        this.setCardForPlayer2(this.player5Node, 5)
         this.setCardForPlayer3(this.player3Node, 3)
+        this.setCardForPlayer3(this.player4Node, 4)
 
     }
 
@@ -69,7 +74,10 @@ class TestScene extends Component {
             Card.from(Card.RANK_ACE, Card.SUIT_CO),
             Card.from(Card.RANK_ACE, Card.SUIT_CO),
             Card.from(Card.RANK_ACE, Card.SUIT_CO),
-            Card.from(Card.RANK_ACE, Card.SUIT_CO)
+            Card.from(Card.RANK_ACE, Card.SUIT_CO),
+            Card.from(Card.RANK_ACE, Card.SUIT_CO),
+            Card.from(Card.RANK_ACE, Card.SUIT_CO),
+            Card.from(Card.RANK_ACE, Card.SUIT_CO),
         ]))
     }
 
@@ -91,9 +99,6 @@ class TestScene extends Component {
             Card.from(Card.RANK_ACE, Card.SUIT_TEP),
             Card.from(Card.RANK_ACE, Card.SUIT_CO),
             Card.from(Card.RANK_ACE, Card.SUIT_TEP),
-            Card.from(Card.RANK_ACE, Card.SUIT_CO),
-            Card.from(Card.RANK_ACE, Card.SUIT_TEP),
-            Card.from(Card.RANK_ACE, Card.SUIT_CO),
         ])
     }
 
@@ -109,9 +114,6 @@ class TestScene extends Component {
             Card.from(Card.RANK_AT, Card.SUIT_BICH),
             Card.from(Card.RANK_HAI, Card.SUIT_BICH),
             Card.from(Card.RANK_BA, Card.SUIT_BICH),
-            Card.from(Card.RANK_BON, Card.SUIT_BICH),
-            Card.from(Card.RANK_BON, Card.SUIT_BICH),
-            Card.from(Card.RANK_BON, Card.SUIT_BICH),
             Card.from(Card.RANK_BON, Card.SUIT_BICH),
             Card.from(Card.RANK_BON, Card.SUIT_BICH),
             Card.from(Card.RANK_BON, Card.SUIT_BICH),

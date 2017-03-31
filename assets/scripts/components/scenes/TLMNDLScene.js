@@ -22,8 +22,6 @@ export default class TLMNDLScene extends GameScene {
         this.board = this.boardNode.getComponent('BoardTLMNDL');
         this.gameControls = this.gameControlsNode.getComponent('TLMNDLControls');
         this.playerPositions = this.playerPositionAnchorsNode.getComponent('FourPlayerPositions');
-        this.gameResultPopup = this.gameResultPopupNode.getComponent('GameResultPopup');
-
         super.onEnable();
     }
 

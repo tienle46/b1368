@@ -90,9 +90,6 @@
       },
       {
         "__id__": 134
-      },
-      {
-        "__id__": 137
       }
     ],
     "_rotationX": 0,
@@ -114,10 +111,10 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 140
+        "__id__": 137
       },
       {
-        "__id__": 141
+        "__id__": 138
       }
     ],
     "_prefab": null,
@@ -4063,91 +4060,6 @@
     "sync": true
   },
   {
-    "__type__": "cc.Node",
-    "_name": "gameResult",
-    "_objFlags": 0,
-    "_opacity": 255,
-    "_color": {
-      "__type__": "cc.Color",
-      "r": 255,
-      "g": 255,
-      "b": 255,
-      "a": 255
-    },
-    "_cascadeOpacityEnabled": true,
-    "_parent": {
-      "__id__": 2
-    },
-    "_anchorPoint": {
-      "__type__": "cc.Vec2",
-      "x": 0.5,
-      "y": 0.5
-    },
-    "_contentSize": {
-      "__type__": "cc.Size",
-      "width": 0,
-      "height": 0
-    },
-    "_children": [
-      {
-        "__id__": 138
-      }
-    ],
-    "_rotationX": 0,
-    "_rotationY": 0,
-    "_scaleX": 1,
-    "_scaleY": 1,
-    "_position": {
-      "__type__": "cc.Vec2",
-      "x": 0,
-      "y": 0
-    },
-    "_skewX": 0,
-    "_skewY": 0,
-    "_localZOrder": 0,
-    "_globalZOrder": 0,
-    "_tag": -1,
-    "_opacityModifyRGB": false,
-    "_id": "fd6ec36QDhD94SKeeSYRIUY",
-    "_active": true,
-    "_components": [],
-    "_prefab": null,
-    "groupIndex": 0
-  },
-  {
-    "__type__": "cc.Node",
-    "_objFlags": 0,
-    "_parent": {
-      "__id__": 137
-    },
-    "_id": "cc004yp7PBA/I8urt/Covio",
-    "_prefab": {
-      "__id__": 139
-    },
-    "_name": "GameResult1ColumPopupPrefab",
-    "_active": true,
-    "_position": {
-      "__type__": "cc.Vec2",
-      "x": 0,
-      "y": 0
-    },
-    "_rotationX": 0,
-    "_rotationY": 0,
-    "_localZOrder": 0,
-    "_globalZOrder": 0
-  },
-  {
-    "__type__": "cc.PrefabInfo",
-    "root": {
-      "__id__": 138
-    },
-    "asset": {
-      "__uuid__": "13af3e19-4431-492e-bc6d-c0412c0ab05a"
-    },
-    "fileId": "1cb7cR4MAFDSoDPzgYZ1gAZ",
-    "sync": true
-  },
-  {
     "__type__": "cc.Canvas",
     "_name": "",
     "_objFlags": 0,
@@ -4195,9 +4107,7 @@
     "tableMinBetLabel": {
       "__id__": 11
     },
-    "gameResultPopupNode": {
-      "__id__": 138
-    },
+    "gameResultPopupNode": null,
     "playerPositionAnchorsNode": {
       "__id__": 58
     },

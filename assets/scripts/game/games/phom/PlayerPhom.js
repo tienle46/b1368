@@ -926,12 +926,15 @@ export default class PlayerPhom extends PlayerCardTurnBase {
 
     showEndGameInfo({text = null, balanceChanged = NaN, info = "", cards = [], isWinner = false, point = 0} = {}){
         if(!this.isItMe()){
-            this.renderer.setDownCards(cards, info);
+            this.renderer.showDownCards(cards, info);
         }
+
         this.renderer.showPlayerWinLoseInfo(text, isWinner)
         this.renderer.playedCardList.disableAllCard();
 
-        //TODO show point in playedCardlist
+        if(balanceChanged != NaN && balanceChanged != 0){
+            this.renderer.startPlusBalanceAnimation(balanceChanged);
+        }
     }
 }
 

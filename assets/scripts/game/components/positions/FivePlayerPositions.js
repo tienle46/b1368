@@ -54,6 +54,10 @@ class FivePlayerPositions extends PlayerPositions {
         return anchorIndex == 3 || anchorIndex == 4;
     }
 
+    isPositionOnRight(anchorIndex) {
+        return anchorIndex == 5;
+    }
+
     getPlayerAnchor(id){
         switch (id){
             case 1:
