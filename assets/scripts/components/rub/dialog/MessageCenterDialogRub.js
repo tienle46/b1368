@@ -3,8 +3,9 @@ import app from 'app';
 const url = `${app.const.DIALOG_DIR_PREFAB}/messagecenter`;
 
 const tabModels = [
-    { title: 'Hệ thống',prefabPath: `${url}/tab_system_messages`, componentName: 'TabSystemMessage'},
-    { title: 'Cá nhân',prefabPath: `${url}/tab_personal_messages`, componentName: 'TabPersonalMessages'}
+    { title: 'Hệ thống', prefabPath: `${url}/tab_system_messages`, componentName: 'TabSystemMessage'},
+    { title: 'Cá nhân', prefabPath: `${url}/tab_personal_messages`, componentName: 'TabPersonalMessages'},
+    { title: 'Góp ý', prefabPath: `${url}/tab_feed_back`, componentName: 'TabFeedBack'}
 ];
 
 export default class MessageCenterDialogRub {
@@ -25,7 +26,7 @@ export default class MessageCenterDialogRub {
     }
     
     show(parentNode = cc.director.getScene(), options = {}){
-        this.multiTabPopup.show({parentNode, tabModels, ...options});
+        this.multiTabPopup.show({parentNode, tabModels, options});
     }
 }
 

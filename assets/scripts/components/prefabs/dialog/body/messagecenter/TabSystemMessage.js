@@ -51,7 +51,7 @@ class TabSystemMessage extends TabMessages {
         if(this.itemPrefab) {
             let message = cc.instantiate(this.itemPrefab);
             let itemEventComponent = message.getComponent('ItemMessage');
-            itemEventComponent && itemEventComponent.createItem(title, description, time, isNew);
+            itemEventComponent && itemEventComponent.createItem(id, title, description, time, isNew);
             return message;
         }
     }

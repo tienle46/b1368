@@ -34,7 +34,7 @@ export default class ItemMessage extends Component {
         super.onDestroy();
     }
 
-    createItem(title, description, time, isNew) {
+    createItem(id, title, description, time, isNew) {
         deactive(this.btn.node);
         if(isNew) {
             active(this.newIcon);
@@ -45,12 +45,11 @@ export default class ItemMessage extends Component {
             deactive(this.newIcon);
         }
        
-        this._fillData(title, description, time);
+        this._fillData(id, title, description, time);
     }
     
     createItemWithButton(id, title, description, time, action, handler, isReaded) {
         isReaded ? deactive(this.newIcon): active(this.newIcon);
-        this._id = {id, description};
         
         if (action) {
             this.btnLbl.string = action;
@@ -60,16 +59,18 @@ export default class ItemMessage extends Component {
         } else {
             deactive(this.btn.node);
         }
-        this._fillData(title, description, time, action);
+        this._fillData(id, title, description, time, action);
     }
     
-    _fillData(title, description, time, action) {
+    _fillData(id, title, description, time, action) {
         if (action) {
             this.btnLbl.string = action;
             active(this.btn.node);
         } else {
             deactive(this.btn.node);
         }
+        
+        this._id = {id, description};
         
         this.titleLbl.string = title;
         if(description.length > 130) {
@@ -79,37 +80,16 @@ export default class ItemMessage extends Component {
     }
     
     onMessageClick(e) {
-        app.service.send({
-                cmd: app.commands.CHANGE_PERSONAL_MESSAGE_STATE,
-                data: {
-                    id
-                }
-            }, (data) => {
-                console.debug('data', data);
-                app.system.info('xxxxxx');
-                if(data[app.keywords.RESPONSE_RESULT]) {
-                    
-                }
-            });
         if(this._id) {
             let {id, description} = this._id;
-            
-            // ScrollMessagePopup.show(app.system.getCurrentSceneNode(), {
-            //     cmd: app.commands.CHANGE_PERSONAL_MESSAGE_STATE,
-            //     data: {
-            //         id
-            //     },
-            //     parser: (data) => {
-            //          return description;
-            //     }
-            // })
             app.service.send({
                 cmd: app.commands.CHANGE_PERSONAL_MESSAGE_STATE,
                 data: {
                     id
                 }
             }, (data) => {
-                
+                console.debug('data', data);
+                app.system.info(description);
                 if(data[app.keywords.RESPONSE_RESULT]) {
                     
                 }
