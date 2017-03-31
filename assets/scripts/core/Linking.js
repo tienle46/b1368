@@ -11,82 +11,100 @@ import MessageCenterDialogRub from 'MessageCenterDialogRub';
 import DialogRub from 'DialogRub';
 import BuddyPopup from 'BuddyPopup';
 
+const pendingActions = [];
+
 class Linking {
+    
     static goTo(action, data){
-        try {
-            data && (data = JSON.parse(data));
-            switch(action) {
-                case Linking.ACTION_PLAY_GAME:{
-                    const {gameCode} = data;
-                    app.context.setSelectedGame(gameCode);
-                    app.system.loadScene(app.const.scene.LIST_TABLE_SCENE);
-                    break;
-                }
-                
-                case Linking.ACTION_TOPUP:
-                case Linking.ACTION_TOPUP_CARD:
-                case Linking.ACTION_TOPUP_SMS:
-                case Linking.ACTION_TOPUP_IAP:
-                case Linking.ACTION_TOPUP_HISTORY: {
-                    this._handleOpenTopUpDialogAction(action, data);
-                    break;
-                }
-                
-                case Linking.ACTION_BANK:
-                case Linking.ACTION_CASH:
-                case Linking.ACTION_TRANSFER:
-                case Linking.ACTION_GIFT_CODE:
-                case Linking.ACTION_PERSONAL_INFO:
-                case Linking.ACTION_PERSONAL_STATISTIC: {
-                    this._handleOpenPersonalInfoDialogAction(action, data);
-                    break;
-                }
-                
-                case Linking.ACTION_EXCHANGE:
-                case Linking.ACTION_EXCHANGE_CARD:
-                case Linking.ACTION_EXCHANGE_ITEM:
-                case Linking.ACTION_EXCHANGE_HISTORY:
-                case Linking.ACTION_AGENT: {
-                    this._handleOpenExchangeDialogAction(action, data);
-                    break;
-                }
-                
-                case Linking.ACTION_TOP_VIP:
-                case Linking.ACTION_TOP_CAO_THU:
-                case Linking.ACTION_TOP_DAI_GIA: {
-                    this._handleOpenTopRankDialogAction(action, data);
-                    break;   
-                }
-                
-                case Linking.ACTION_SYSTEM_MESSAGE:
-                case Linking.ACTION_PERSONAL_MESSAGE:
-                case Linking.ACTION_FEEDBACK: {
-                    this._handleOpenMessageCenterDialogAction(action, data);
-                    break;
-                }
-                
-                case Linking.ACTION_EVENT: {
-                    let dialog = new DialogRub(this.node.parent, null, { title: 'Sự kiện' });
-                    dialog.addBody('dashboard/dialog/prefabs/event/EventDialog', 'EventDialog');
-                    break;
-                }
-                
-                case Linking.ACTION_BUDDY:
-                case Linking.ACTION_BUDDY_CHAT: {
-                    this._handleOpenBuddyPopupAction(action, data);
-                    break;
-                }
-                
-                
-                // TODO
-                case Linking.ACTION_FANPAGE: break;
-                case Linking.ACTION_WEBSITE: break;
-                case Linking.ACTION_PLAYER_INFO: break;
-            }
-        } catch(e) {
-            console.error(e);
-            //TODO: need handle action when parse error occured !
+        
+        if(!app.context.getMe()){
+            pendingActions.push({action, data});
         }
+        try {
+                data && (data = JSON.parse(data));
+                switch(action) {
+                    case Linking.ACTION_PLAY_GAME:{
+                        const {gameCode} = data;
+                        app.context.setSelectedGame(gameCode);
+                        app.system.loadScene(app.const.scene.LIST_TABLE_SCENE);
+                        break;
+                    }
+                    
+                    case Linking.ACTION_TOPUP:
+                    case Linking.ACTION_TOPUP_CARD:
+                    case Linking.ACTION_TOPUP_SMS:
+                    case Linking.ACTION_TOPUP_IAP:
+                    case Linking.ACTION_TOPUP_HISTORY: {
+                        this._handleOpenTopUpDialogAction(action, data);
+                        break;
+                    }
+                    
+                    case Linking.ACTION_BANK:
+                    case Linking.ACTION_CASH:
+                    case Linking.ACTION_TRANSFER:
+                    case Linking.ACTION_GIFT_CODE:
+                    case Linking.ACTION_PERSONAL_INFO:
+                    case Linking.ACTION_PERSONAL_STATISTIC: {
+                        this._handleOpenPersonalInfoDialogAction(action, data);
+                        break;
+                    }
+                    
+                    case Linking.ACTION_EXCHANGE:
+                    case Linking.ACTION_EXCHANGE_CARD:
+                    case Linking.ACTION_EXCHANGE_ITEM:
+                    case Linking.ACTION_EXCHANGE_HISTORY:
+                    case Linking.ACTION_AGENT: {
+                        this._handleOpenExchangeDialogAction(action, data);
+                        break;
+                    }
+                    
+                    case Linking.ACTION_TOP_VIP:
+                    case Linking.ACTION_TOP_CAO_THU:
+                    case Linking.ACTION_TOP_DAI_GIA: {
+                        this._handleOpenTopRankDialogAction(action, data);
+                        break;   
+                    }
+                    
+                    case Linking.ACTION_SYSTEM_MESSAGE:
+                    case Linking.ACTION_PERSONAL_MESSAGE:
+                    case Linking.ACTION_FEEDBACK: {
+                        this._handleOpenMessageCenterDialogAction(action, data);
+                        break;
+                    }
+                    
+                    case Linking.ACTION_EVENT: {
+                        let dialog = new DialogRub(app.system.getCurrentSceneNode(), null, { title: 'Sự kiện' });
+                        dialog.addBody('dashboard/dialog/prefabs/event/EventDialog', 'EventDialog');
+                        break;
+                    }
+                    
+                    case Linking.ACTION_BUDDY:
+                    case Linking.ACTION_BUDDY_CHAT: {
+                        this._handleOpenBuddyPopupAction(action, data);
+                        break;
+                    }
+                    
+                    
+                    // TODO
+                    case Linking.ACTION_FANPAGE: break;
+                    case Linking.ACTION_WEBSITE: break;
+                    case Linking.ACTION_PLAYER_INFO: break;
+                }
+            } catch(e) {
+                console.error(e);
+                //TODO: need handle action when parse error occured !
+            }
+       
+        
+    }
+    static handlePendingActions(){
+        log(`handling pending actions`);
+        if(pendingActions.length == 0) return;
+        
+        pendingActions.forEach(a => {
+            Linking.goTo(a.action, a.data);
+        });
+        pendingActions.length = 0;
     }
     
     static _handleOpenBuddyPopupAction(actionCode) {

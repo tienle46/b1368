@@ -24,8 +24,6 @@ export default class DashboardScene extends BaseScene {
 
     onEnable() {
         super.onEnable()
-
-        app.context.gameList.length > 0 && this._initItemListGame();
     }
 
     onDestroy() {
@@ -40,6 +38,12 @@ export default class DashboardScene extends BaseScene {
          * set requestRandomInvite = true to make sure player only receive random invite on first time join game group
          */
         app.context.requestRandomInvite = true;
+        
+        setTimeout(()=>{
+            app.context.gameList.length > 0 && this._initItemListGame();
+            let Linking = require('Linking');
+            Linking.handlePendingActions();
+        }, 1000);
     }
 
     showDailyLoginPopup(message) {
