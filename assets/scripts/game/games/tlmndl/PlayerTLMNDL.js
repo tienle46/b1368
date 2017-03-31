@@ -150,7 +150,12 @@ export default class PlayerTLMNDL extends PlayerCardTurnBase {
         if(!this.isItMe()){
             this.renderer.showDownCards(cards, info);
         }
+
         this.renderer.showPlayerWinLoseInfo(text, isWinner)
+
+        if(balanceChanged != NaN && balanceChanged != 0){
+            this.renderer.startPlusBalanceAnimation(balanceChanged);
+        }
     }
 }
 

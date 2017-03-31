@@ -151,26 +151,38 @@ export default class BoardSam extends BoardCardTurnBase {
 
         super.onBoardEnding(data);
 
-        let models = playerIds.filter(playerId => (playingPlayerIds.indexOf(playerId) >= 0)).map(playerId => {
-            return {
+        playingPlayerIds.forEach(playerId => {
+            let player = this.scene.gamePlayers.findPlayer(playerId);
+            player && player.showEndGameInfo({
                 name: playerInfos[playerId].name,
                 balanceChanged: balanceChangeAmounts[playerId],
-                isWinner: winnerFlags[playerId],
+                text: resultTexts[playerId],
                 info: gameResultInfos[playerId],
                 cards: playerHandCards[playerId],
-                text: resultTexts[playerId]
-            }
-        });
+                isWinner: winnerFlags[playerId]
+            })
+        })
 
-        setTimeout(() => this.scene.showGameResult(models, (shownTime) => {
-            let remainTime = this.timelineRemain - shownTime;
-            if (remainTime > 0 && this.scene.isEnding()) {
-                this.renderer.cleanDeckCards();
-                if(this.scene.gamePlayers.players.length > 1){
-                    this._startEndBoardTimeLine(remainTime);
-                }
-            }
-        }), 500);
+        // let models = playerIds.filter(playerId => (playingPlayerIds.indexOf(playerId) >= 0)).map(playerId => {
+        //     return {
+        //         name: playerInfos[playerId].name,
+        //         balanceChanged: balanceChangeAmounts[playerId],
+        //         isWinner: winnerFlags[playerId],
+        //         info: gameResultInfos[playerId],
+        //         cards: playerHandCards[playerId],
+        //         text: resultTexts[playerId]
+        //     }
+        // });
+        //
+        // setTimeout(() => this.scene.showGameResult(models, (shownTime) => {
+        //     let remainTime = this.timelineRemain - shownTime;
+        //     if (remainTime > 0 && this.scene.isEnding()) {
+        //         this.renderer.cleanDeckCards();
+        //         if(this.scene.gamePlayers.players.length > 1){
+        //             this._startEndBoardTimeLine(remainTime);
+        //         }
+        //     }
+        // }), 500);
     }
 
     _getGameResultInfos(playerIds = [], playerHandCards, data) {
@@ -192,15 +204,15 @@ export default class BoardSam extends BoardCardTurnBase {
             if (id == denOrThangXamPlayerId) {
                 switch (winType) {
                     case app.const.game.XAM_WIN_TYPE_THANG_XAM:
-                        resultText = app.res.string('game_sam_thang_sam');
+                        resultText = 'sam-thang-sam'
                         winnerFlags[id] = true;
                         break;
                     case app.const.game.XAM_WIN_TYPE_DEN_XAM:
-                        resultText = app.res.string('game_sam_den_sam');
+                        resultText = 'sam-den-sam'
                         winnerFlags[id] = false;
                         break;
                     case app.const.game.XAM_WIN_TYPE_DEN_THOI_HEO:
-                        resultText = app.res.string('game_sam_den_thoi_heo');
+                        resultText = 'sam-den-thoi-heo'
                         winnerFlags[id] = false;
                         break;
                     default:
@@ -208,18 +220,18 @@ export default class BoardSam extends BoardCardTurnBase {
                 }
             } else {
                 if (playersWinRanks[i] == app.const.game.rank.GAME_RANK_FIRST) {
-                    resultText = app.res.string('game_thang');
+                    resultText = 'thang'
                     winnerFlags[id] = true;
                 } else {
                     if (winType == app.const.game.GENERAL_WIN_TYPE_NORMAL) {
                         let cardCount = playersCardCounts && playersCardCounts[i];
 
                         if (cardCount == PlayerSam.DEFAULT_HAND_CARD_COUNT) {
-                            resultText = app.res.string('game_sam_treo');
+                            resultText = 'sam-treo'
                         }
                     }
 
-                    if (!resultText) resultText = app.res.string('game_thua');
+                    if (!resultText) resultText = 'thua'
                     winnerFlags[id] = false;
                 }
 

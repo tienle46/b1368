@@ -11,6 +11,7 @@ export default class ActionComponent extends Component {
     constructor(props) {
         super(props);
 
+        this.__isComponentEnabled = false;
         this.__endActionCb = null;
         this.isHidden = false
     }
@@ -48,6 +49,8 @@ export default class ActionComponent extends Component {
 
     onEnable(){
         super.onEnable()
+
+        this.__isComponentEnabled = true;
 
         cc.game.on(cc.game.EVENT_HIDE, this._pausedCallback, this);
         cc.game.on(cc.game.EVENT_SHOW, this._restoreCallback, this);

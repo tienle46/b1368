@@ -22,7 +22,6 @@ export default class SamScene extends GameScene {
         this.board = this.boardNode.getComponent('BoardSam');
         this.gameControls = this.gameControlsNode.getComponent('SamControls');
         this.playerPositions = this.playerPositionAnchorsNode.getComponent('FivePlayerPositions');
-        this.gameResultPopup = this.gameResultPopupNode.getComponent('GameResultPopup');
 
         super.onEnable();
     }

@@ -16,7 +16,7 @@ export default class PlayerTLMNDLRenderer extends PlayerCardTurnBaseRenderer {
             specialInfoImageNode: cc.Node,
             downCardInfoLabel: cc.Label,
             downCardInfoNode: cc.Node,
-            downCardListNodes: {
+            downCardAnchorNodes: {
                 default: [],
                 type: [cc.Node]
             }
@@ -67,7 +67,7 @@ export default class PlayerTLMNDLRenderer extends PlayerCardTurnBaseRenderer {
         this.downCardInfoLabel = this.downCardInfoNode.getComponentInChildren(cc.Label);
         this.downCardInfoNode.removeFromParent();
 
-        this.downCardListNodes.forEach((node, index) => {
+        this.downCardAnchorNodes.forEach((node, index) => {
             if (index == this.anchorIndex) {
                 this.downCardLists = (node && node.getComponentsInChildren('CardList')) || [];
 

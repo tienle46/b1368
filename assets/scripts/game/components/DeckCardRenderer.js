@@ -73,7 +73,7 @@ export default class DeckCardRenderer extends Component {
     _createCardList() {
         let cardListNode = cc.instantiate(this.cardListPrefab);
         let cardList = cardListNode.getComponent('CardList');
-        cardList.setProperties({scale: DeckCardRenderer.DEFAULT_SCALE, x: 0, y: 0, maxDimension: 500})
+        cardList.setProperties({space: 90, scale: 0.7, x: 0, y: 0, maxDimension: 600})
         cardList.setAnchorPoint(0.5, 0.5);
         return cardList;
     }
@@ -83,7 +83,5 @@ export default class DeckCardRenderer extends Component {
         this.cardList2.clear();
     }
 }
-
-DeckCardRenderer.DEFAULT_SCALE = 0.8
 
 app.createComponent(DeckCardRenderer);

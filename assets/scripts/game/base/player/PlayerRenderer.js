@@ -124,7 +124,7 @@ export default class PlayerRenderer extends ActorRenderer {
     }
 
     startPlusBalanceAnimation(balance) {
-        if (!this.loaded || isNaN(balance)) return;
+        if (!this.loaded || isNaN(balance) || balance == 0) return;
         let isWinner = balance > 0;
         let balanceStr = GameUtils.formatBalance(balance);
 

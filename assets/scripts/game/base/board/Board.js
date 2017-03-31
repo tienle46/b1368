@@ -247,7 +247,6 @@ export default class Board extends Actor {
     }
 
     _reset() {
-        this.scene.hideGameResult();
         this.renderer && this.renderer._reset();
     }
 

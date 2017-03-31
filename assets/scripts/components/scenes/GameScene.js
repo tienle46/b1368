@@ -25,7 +25,6 @@ export default class GameScene extends BaseScene {
             chatComponentNode: cc.Node,
             tableNameLabel: cc.Label,
             tableMinBetLabel: cc.Label,
-            gameResultPopupNode: cc.Node,
             playerPositionAnchorsNode: cc.Node,
             maxPlayers: 4
         }
@@ -58,11 +57,6 @@ export default class GameScene extends BaseScene {
          * @type {GameEventHandler}
          */
         this.gameEventHandler = null;
-        /**
-         * @type {GameResultPopup}
-         */
-        this.gameResultPopup = null;
-
         this.gameCode = null;
         this.gameState = null;
         this.gameData = null;
@@ -197,9 +191,6 @@ export default class GameScene extends BaseScene {
 
     onEnable() {
         super.onEnable();
-
-        // utils.deactive(this.chatComponentNode);
-        // utils.deactive(this.gameResultPopupNode);
 
         app.system.setCurrentScene(this);
         this.chatComponent = this.chatComponentNode.getComponent('GameChatComponent');
@@ -474,14 +465,6 @@ export default class GameScene extends BaseScene {
         this._assertReadyPlayersInited()
         let readyPlayerIds = utils.getValue(this.gameData, app.keywords.ROOM_READY_PLAYERS);
         return readyPlayerIds.indexOf(player.id) >= 0;
-    }
-
-    showGameResult(models, cb) {
-        !utils.isEmptyArray(models) && this.gameResultPopup && this.gameResultPopup.show(models, cb);
-    }
-
-    hideGameResult() {
-        this.gameResultPopup && this.gameResultPopup.hide();
     }
 
     enoughPlayerToStartGame() {

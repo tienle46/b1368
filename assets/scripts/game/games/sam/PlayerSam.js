@@ -21,6 +21,7 @@ export default class PlayerSam extends PlayerCardTurnBase {
         this.isThangXam = false;
         this.isDenThoiHeo = false;
 
+        this.sortSolution = SamUtils.SORT_BY_RANK;
         this.remainCardCount = PlayerSam.DEFAULT_HAND_CARD_COUNT;
     }
 
@@ -132,9 +133,18 @@ export default class PlayerSam extends PlayerCardTurnBase {
     }
 
     _onSortCards() {
+
         if (this.isItMe()) {
-            SamUtils.sortAsc(this.renderer.cardList.cards);
+            let sortedCard = SamUtils.sortAsc(this.renderer.cardList.cards, this.sortSolution);
             this.renderer.cardList.onCardsChanged();
+
+            if(this.sortSolution == SamUtils.SORT_BY_RANK){
+                this.sortSolution = SamUtils.SORT_BY_RANK_SPECIAL
+            }else if(this.sortSolution == SamUtils.SORT_BY_RANK_SPECIAL){
+                this.sortSolution = SamUtils.SORT_BY_SUIT
+            }else{
+                this.sortSolution = SamUtils.SORT_BY_RANK
+            }
         }
     }
 
@@ -206,6 +216,18 @@ export default class PlayerSam extends PlayerCardTurnBase {
         this.renderer.showBao1(false);
         this.renderer.showBaoXam(false);
         this.remainCardCount = 0;
+    }
+
+    showEndGameInfo({text = null, balanceChanged = NaN, info = "", cards = [], isWinner = false, point = 0} = {}){
+        if(!this.isItMe()){
+            this.renderer.showDownCards(cards, info);
+        }
+
+        this.renderer.showPlayerWinLoseInfo(text, isWinner)
+
+        if(balanceChanged != NaN && balanceChanged != 0){
+            this.renderer.startPlusBalanceAnimation(balanceChanged);
+        }
     }
 }
 
