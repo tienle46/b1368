@@ -130,7 +130,7 @@ export default class MultiTabPopup extends Component {
     }
 
     _hideAllBodyChildren() {
-        this.bodyNode.children.forEach(child => child.active = false);
+        this.bodyNode.children && this.bodyNode.children.forEach(child => child.active = false);
     }
 
     _visibleBodyNode(visible = true) {

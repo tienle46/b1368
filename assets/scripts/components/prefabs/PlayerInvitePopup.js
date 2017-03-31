@@ -33,7 +33,7 @@ class PlayerInvitePopup extends Component {
         this.userNameLbl.string = name;
         this.userGoldLbl.string = numberFormat(coin);
         
-        this.gameCodeLbl.string = app.context.getSelectedGame() ? app.const.gameLabels[this.gameCode] : "";
+        this.gameCodeLbl.string = app.context.getSelectedGame() ? app.const.gameLabels[app.context.getSelectedGame()] : "";
     }
     
     /**
