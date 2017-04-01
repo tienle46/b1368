@@ -119,7 +119,7 @@ export default class PlayerPhomRenderer extends PlayerCardTurnBaseRenderer {
         this.downCardInfoLabel = this.downCardInfoNode.getComponentInChildren(cc.Label);
         this.downCardInfoNode.removeFromParent();
 
-        this.downCardAnchorNodes.forEach((node, index) => {
+        this.downCardListNodes.forEach((node, index) => {
             if (index == this.anchorIndex) {
                 this.downCardList = node.getComponent('CardList');
                 node.parent && node.parent.addChild(this.downCardInfoNode);

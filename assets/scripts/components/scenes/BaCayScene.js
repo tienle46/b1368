@@ -17,7 +17,8 @@ export default class BaCayScene extends GameScene {
             /**
              * @type {cc.Node}
              */
-            chooseBetSliderNode: cc.Node
+            chooseBetSliderNode: cc.Node,
+            testPlayerNode: cc.Node
         }
 
         /**

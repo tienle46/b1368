@@ -4,6 +4,7 @@
 
 import utils from 'utils';
 import app from 'app';
+import CCUtils from 'CCUtils';
 import CardList from 'CardList';
 import PlayerCardBetTurnRenderer from 'PlayerCardBetTurnRenderer';
 import GameUtils from "../../base/utils/GameUtils";
@@ -14,56 +15,32 @@ export default class PlayerBaCayRenderer extends PlayerCardBetTurnRenderer {
     constructor() {
         super();
 
-        this.betComponent = cc.Node;
-
-        this.betCoinNode = {
-            default: null,
-            type: cc.Node
+        this.properties = {
+            ...this.properties,
+            betComponent: cc.Node,
+            defaultGopGaIconNode: cc.Node,
+            inlineGopGaIconNode: cc.Node,
+            betCoinNode: cc.Node,
+            cuocBienNode: cc.Node,
+            actionNode: cc.Node,
+            actionLabel: cc.Label,
+            actionActor: cc.Node,
+            cuocBienButton: cc.Button,
+            chipPrefab: cc.Prefab,
+            topBetPositionAnchor: cc.Node,
+            bottomBetPositionAnchor: cc.Node,
+            centerRightBetPositionAnchor: cc.Node,
+            centerLeftBetPositionAnchor: cc.Node,
+            bottomRightBetPositionAnchor: cc.Node,
         }
-
-        this.betLabel = {
-            default: null,
-            type: cc.Label
-        }
-
-        this.cuocBienNode = {
-            default: null,
-            type: cc.Node
-        }
-
-        this.cuocBienLabel = {
-            default: null,
-            type: cc.Label
-        }
-
-        this.actionNode = {
-            default: null,
-            type: cc.Node
-        }
-
-        this.actionLabel = {
-            default: null,
-            type: cc.Label
-        }
-
-        this.actionActor = {
-            default: null,
-            type: cc.Node
-        }
-
-        this.cuocBienButton = {
-            default : null,
-            type: cc.Button,
-        };
 
         /**
          * @type {cc.Animation}
          */
-        this.actionNodeAnim = null;
-        this.chipPrefab = {
-            default : null,
-            type : cc.Prefab
-        };
+        this.actionNodeAnim = null
+        this.betLabel = null
+        this.cuocBienLabel = null
+        this.gopGaIcon = null
     }
 
     _addGlobalListener() {
@@ -77,6 +54,12 @@ export default class PlayerBaCayRenderer extends PlayerCardBetTurnRenderer {
         this.scene.off(Events.ON_GAME_MASTER_CHANGED, this._onGameMasterChanged, this);
     }
 
+    onLoad(){
+        super.onLoad()
+
+        this.betLabel = this.betCoinNode.getComponentInChildren(cc.Label);
+        this.cuocBienLabel = this.cuocBienNode.getComponentInChildren(cc.Label);
+    }
 
     onEnable(...args){
         super.onEnable(...args);
@@ -89,22 +72,76 @@ export default class PlayerBaCayRenderer extends PlayerCardBetTurnRenderer {
         this._updatePlayerBetValueComponent();
     }
 
-    _updatePlayerBetValueComponent(){
-        let isRightAnchor = this.scene.gamePlayers.playerPositions.isPositionOnRight(this.anchorIndex);
-        if(isRightAnchor){
-            this.betComponent.setPositionX(-Math.abs(this.betComponent.getPositionX()));
-            this.betComponent.setAnchorPoint(1, this.betComponent.getAnchorPoint().y);
-            this.betComponent.getComponent(cc.Layout).horizontalDirection = cc.Layout.HorizontalDirection.RIGHT_TO_LEFT;
+    _updatePlayerBetValueComponent(anchorIndex){
 
-            this.cuocBienNode.setAnchorPoint(1, this.cuocBienNode.getAnchorPoint().y);
-            this.cuocBienNode.setPositionX(-Math.abs(this.cuocBienNode.getPositionX()));
-            this.cuocBienNode.getComponent(cc.Layout).horizontalDirection = cc.Layout.HorizontalDirection.RIGHT_TO_LEFT;
+        let player = this.data.actor
+
+        if(player.isItMe() || this.anchorIndex == 1 || this.anchorIndex == 2 || this.anchorIndex == 9){
+            this.betComponent.setPosition(this.topBetPositionAnchor.getPosition())
+        }else if(this.anchorIndex == 3 || this.anchorIndex == 4){
+            this.betComponent.setPosition(this.centerRightBetPositionAnchor.getPosition())
+        }else if(this.anchorIndex == 5){
+            this.betComponent.setPosition(this.bottomBetPositionAnchor.getPosition())
+            this.setLayoutVerticalDirection(this.betComponent, cc.Layout.VerticalDirection.TOP_TO_BOTTOM)
+
+            this.betComponent.setAnchorPoint(0.5, 1)
+        }else if(this.anchorIndex == 6){
+            this.betComponent.setPosition(this.bottomRightBetPositionAnchor.getPosition())
+            this.setLayoutVerticalDirection(this.betComponent, cc.Layout.VerticalDirection.TOP_TO_BOTTOM)
+
+            this.betComponent.setAnchorPoint(0.5, 1)
+            this.betCoinNode.setAnchorPoint(1, 0.5)
+            this.cuocBienNode.setAnchorPoint(1, 0.5)
+            this._reverseHorizontalLayoutDirection(this.betCoinNode);
+
+        } else if(this.anchorIndex == 7 || this.anchorIndex == 8){
+            this.betComponent.setPosition(this.centerLeftBetPositionAnchor.getPosition())
+            this.betCoinNode.setAnchorPoint(1, 0.5)
+            this.cuocBienNode.setAnchorPoint(1, 0.5)
+            this.defaultGopGaIconNode.setAnchorPoint(1, 0.5)
+
+            this._reverseHorizontalLayoutDirection(this.betCoinNode);
         }
+
+        this._assignGopGaIcon(this.anchorIndex);
+
+        // let isRightAnchor = this.scene.gamePlayers.playerPositions.isPositionOnRight(this.anchorIndex);
+        // if(isRightAnchor){
+        //     this.betComponent.setPositionX(-Math.abs(this.betComponent.getPositionX()));
+        //     this.betComponent.setAnchorPoint(1, this.betComponent.getAnchorPoint().y);
+        //     this.betComponent.getComponent(cc.Layout).horizontalDirection = cc.Layout.HorizontalDirection.RIGHT_TO_LEFT;
+        //
+        //     this.cuocBienNode.setAnchorPoint(1, this.cuocBienNode.getAnchorPoint().y);
+        //     this.cuocBienNode.setPositionX(-Math.abs(this.cuocBienNode.getPositionX()));
+        //     this.cuocBienNode.getComponent(cc.Layout).horizontalDirection = cc.Layout.HorizontalDirection.RIGHT_TO_LEFT;
+        // }
+    }
+
+    _assignGopGaIcon(anchorIndex){
+        if(anchorIndex == 5 || anchorIndex == 6){
+            this.gopGaIcon = this.inlineGopGaIconNode;
+            CCUtils.setVisible(this.defaultGopGaIconNode, false)
+        }else{
+            this.gopGaIcon = this.defaultGopGaIconNode;
+            CCUtils.setVisible(this.inlineGopGaIconNode, false)
+        }
+
+        // CCUtils.setVisible(this.gopGaIcon) //only for test
+    }
+
+    setLayoutVerticalDirection(node, direction = cc.Layout.VerticalDirection.BOTTOM_TO_TOP){
+        let layout = node && node.getComponent(cc.Layout)
+        layout && (layout.verticalDirection = direction)
+    }
+
+    _reverseHorizontalLayoutDirection(node){
+        let layout = node && node.getComponent(cc.Layout)
+        layout && (layout.horizontalDirection = cc.Layout.HorizontalDirection.RIGHT_TO_LEFT)
     }
 
     showCuocBienValue(value){
         utils.active(this.cuocBienNode);
-        this.cuocBienLabel.string = `${value}`;
+        this.cuocBienLabel.string = `${utils.formatNumberType1(value)}`;
     }
 
     hideCuocBienValue(){
@@ -113,7 +150,7 @@ export default class PlayerBaCayRenderer extends PlayerCardBetTurnRenderer {
     }
 
     showBetAmount(amount){
-        let formatted = GameUtils.formatBalance(amount);
+        let formatted = utils.formatNumberType1(amount);
         this.betLabel.string = `${formatted}`;
     }
 
@@ -136,7 +173,7 @@ export default class PlayerBaCayRenderer extends PlayerCardBetTurnRenderer {
      * @override
      */
     _getCardAnchorPoint(player) {
-        let positionOnRight = this.scene.gamePlayers.playerPositions.isPositionOnRight(player.anchorIndex);
+        let positionOnRight = player && this.isPositionOnRight(player.anchorIndex);
         return positionOnRight ? this.defaultCardAnchor2 : this.defaultCardAnchor;
     }
 
@@ -213,10 +250,15 @@ export default class PlayerBaCayRenderer extends PlayerCardBetTurnRenderer {
         }
     }
 
+    visibleGopGaIcon(visible = true){
+        utils.setVisible(this.gopGaIcon, visible);
+    }
+
     _reset(){
         super._reset();
 
         utils.setVisible(this.actionActor, false);
+        this.visibleGopGaIcon(false);
     }
 
 }
