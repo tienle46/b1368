@@ -10,6 +10,7 @@ class PlayerInvitePopup extends Component {
 
         this.properties = {
             ...this.properties,
+            bgTransparent: cc.Node,
             gameCodeLbl: cc.Label,
             userSprite: cc.Sprite,
             userNameLbl: cc.Label,
@@ -26,6 +27,8 @@ class PlayerInvitePopup extends Component {
     
     onLoad() {
         super.onLoad();
+        this.bgTransparent.on(cc.Node.EventType.TOUCH_START, () => true);
+
         app.context.getUserAvatar(this.userSprite);
         
         let {name, coin} = app.context.getMyInfo();

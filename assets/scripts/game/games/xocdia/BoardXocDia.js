@@ -50,23 +50,27 @@ export default class BoardXocDia extends BoardCardBetTurn {
     startTimeLine(duration, message) {
         this.stopTimeLine();
         let hiddenText = false;
-        // if (utils.isEmpty(message)) {
-        //     switch (this.scene.gameState) {
-        //         case app.const.game.state.ENDING:
-        //             message = app.res.string('game_replay_waiting_time');
-        //             break;
-        //         case app.const.game.state.READY:
-        //             message = app.res.string('game_start');
-        //             break;
-        //         case app.const.game.state.STATE_BET:
-        //             message = duration;
-        //             break;
-        //         default:
-        //             message = app.res.string('game_waiting');
-        //             break;
-        //     }
-        // }
-        this.renderer.showTimeLine(duration, message, true);
+        if (utils.isEmpty(message)) {
+            switch (this.scene.gameState) {
+                case app.const.game.state.ENDING:
+                    message = app.res.string('game_replay_waiting_time');
+                    hiddenText = true;
+                    break;
+                case app.const.game.state.READY:
+                    message = app.res.string('game_start');
+                    hiddenText = true;
+                    break;
+                case app.const.game.state.STATE_BET:
+                    message = 'Đặt cược';
+                    break;
+                default:
+                    message = app.res.string('game_waiting');
+                    break;
+            }
+        }
+        
+        this.renderer.showTimeLine(duration, message, hiddenText);
+        
         if (this.scene.gameState == app.const.game.state.BOARD_STATE_SHAKE) {
             this.renderer.hideTimeLine();
         }

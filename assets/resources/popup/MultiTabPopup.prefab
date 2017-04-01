@@ -411,8 +411,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 136.44,
-      "height": 70
+      "width": 121.28,
+      "height": 48
     },
     "_children": [],
     "_rotationX": 0,
@@ -422,7 +422,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": 12
+      "y": 6
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -451,9 +451,9 @@
     },
     "_enabled": true,
     "_useOriginalSize": false,
-    "_actualFontSize": 45,
-    "_fontSize": 45,
-    "_lineHeight": 70,
+    "_actualFontSize": 40,
+    "_fontSize": 40,
+    "_lineHeight": 48,
     "_enableWrapText": true,
     "_N$file": {
       "__uuid__": "b2c0f634-158a-49ee-84f8-a41c8e7ebb56"
@@ -461,7 +461,7 @@
     "_isSystemFontUsed": false,
     "_N$string": "B1368",
     "_N$horizontalAlign": 1,
-    "_N$verticalAlign": 2,
+    "_N$verticalAlign": 0,
     "_N$overflow": 0
   },
   {

@@ -11,13 +11,11 @@ export default class VipDialog extends DialogActor {
             ...this.properties,
             iconContainerNode: cc.Node,
             iconSprite: cc.Sprite,
-                
+            iconSpriteNode: cc.Node,
             benefitContainerNode: cc.Node,
             benefitRowItem: cc.Node,
             benefitNameLbl: cc.Label,
-            silverVipLbl: cc.Label,
-            goldVipLbl: cc.Label,
-            diamondVipLbl: cc.Label,
+            contentVipLbl: cc.Label,
         };
     }
 
@@ -44,18 +42,20 @@ export default class VipDialog extends DialogActor {
     
     _onGetVipBenefit(data) {
         let {ids, urls, names, benefits} = data;
+
         (ids || []).forEach((id, index) => {
             let url = urls[index];
-            url && RubUtils.loadSpriteFrame(this.iconSprite, url, null, true);
             
-            let iconSpriteNode = cc.instantiate(this.iconSprite.node);
+            RubUtils.loadSpriteFrame(this.iconSprite, url, null, true);
+            
+            let iconSpriteNode = cc.instantiate(this.iconSpriteNode);
             active(iconSpriteNode);
             
             this.iconContainerNode.addChild(iconSpriteNode);
         });
         
         this._appendRowContent("Loại VIP", names);
-
+        
         benefits.forEach(benefit => {
             this._appendRowContent(benefit.name, Object.values(benefit.benefit));
         });
@@ -65,9 +65,9 @@ export default class VipDialog extends DialogActor {
         this.benefitNameLbl.string = title;
         
         contents.forEach((content, index) => {
-            this.silverVipLbl.string = "";
-            this.silverVipLbl.string = content;
-            let node = cc.instantiate(this.silverVipLbl.node);
+            this.contentVipLbl.string = "";
+            this.contentVipLbl.string = content;
+            let node = cc.instantiate(this.contentVipLbl.node);
             node.active = true;
             let color = index == 0 ? new cc.Color(188, 255, 253) : index == 1 ? new cc.Color(255, 236, 8) : new cc.Color(210, 62, 244);
             node.color = color;

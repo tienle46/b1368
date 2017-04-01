@@ -279,7 +279,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 92.8,
-      "height": 100
+      "height": 38
     },
     "_children": [],
     "_rotationX": 0,
@@ -289,7 +289,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": -175,
-      "y": 0
+      "y": -31.6
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -323,7 +323,7 @@
     "_useOriginalSize": false,
     "_actualFontSize": 30,
     "_fontSize": 30,
-    "_lineHeight": 100,
+    "_lineHeight": 38,
     "_enableWrapText": true,
     "_N$file": {
       "__uuid__": "41027b0e-d005-491c-a7b3-43a40c812c37"
@@ -331,7 +331,7 @@
     "_isSystemFontUsed": false,
     "_N$string": "Số dư :",
     "_N$horizontalAlign": 1,
-    "_N$verticalAlign": 1,
+    "_N$verticalAlign": 0,
     "_N$overflow": 0
   },
   {
@@ -395,7 +395,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 22.73,
-      "height": 60
+      "height": 48
     },
     "_children": [
       {
@@ -409,7 +409,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": -77.2,
-      "y": -49.60000000000001
+      "y": -48.099999999999994
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -565,7 +565,7 @@
     "_useOriginalSize": false,
     "_actualFontSize": 40,
     "_fontSize": 40,
-    "_lineHeight": 60,
+    "_lineHeight": 48,
     "_enableWrapText": true,
     "_N$file": {
       "__uuid__": "41027b0e-d005-491c-a7b3-43a40c812c37"
@@ -573,7 +573,7 @@
     "_isSystemFontUsed": false,
     "_N$string": "0",
     "_N$horizontalAlign": 0,
-    "_N$verticalAlign": 1,
+    "_N$verticalAlign": 0,
     "_N$overflow": 0
   },
   {
@@ -589,8 +589,8 @@
     "_alignFlags": 5,
     "_left": 99.33,
     "_right": -45.80000000000002,
-    "_top": 19.60000000000001,
-    "_bottom": 20.39999999999999,
+    "_top": 24.099999999999994,
+    "_bottom": 27.900000000000006,
     "_verticalCenter": 0,
     "_horizontalCenter": 0,
     "_isAbsLeft": true,
