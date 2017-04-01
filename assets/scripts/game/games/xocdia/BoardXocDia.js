@@ -50,38 +50,39 @@ export default class BoardXocDia extends BoardCardBetTurn {
     startTimeLine(duration, message) {
         this.stopTimeLine();
         let hiddenText = false;
-        if (utils.isEmpty(message)) {
-            switch (this.scene.gameState) {
-                case app.const.game.state.ENDING:
-                    message = app.res.string('game_replay_waiting_time');
-                    break;
-                case app.const.game.state.READY:
-                    message = app.res.string('game_start');
-                    break;
-                case app.const.game.state.STATE_BET:
-                    message = duration;
-                    break;
-                default:
-                    message = app.res.string('game_waiting');
-                    break;
-            }
-        }
-        this.renderer.showTimeLine(duration, message);
+        // if (utils.isEmpty(message)) {
+        //     switch (this.scene.gameState) {
+        //         case app.const.game.state.ENDING:
+        //             message = app.res.string('game_replay_waiting_time');
+        //             break;
+        //         case app.const.game.state.READY:
+        //             message = app.res.string('game_start');
+        //             break;
+        //         case app.const.game.state.STATE_BET:
+        //             message = duration;
+        //             break;
+        //         default:
+        //             message = app.res.string('game_waiting');
+        //             break;
+        //     }
+        // }
+        this.renderer.showTimeLine(duration, message, true);
         if (this.scene.gameState == app.const.game.state.BOARD_STATE_SHAKE) {
             this.renderer.hideTimeLine();
         }
-        if (this.scene.gameState == app.const.game.state.STATE_BET) {
-            if (this.renderer) {
-                this.timeLineInterval = requestInterval(() => {
-                    if (duration == 0) {
-                        clearRequestInterval(this.timeLineInterval);
-                        return;
-                    }
-                    this.timeLineInterval && this.renderer.setTimeLineMessage(duration);
-                    duration--;
-                }, 1000);
-            }
-        }
+        
+        // if (this.scene.gameState == app.const.game.state.STATE_BET) {
+        //     if (this.renderer) {
+        //         this.timeLineInterval = requestInterval(() => {
+        //             if (duration == 0) {
+        //                 clearRequestInterval(this.timeLineInterval);
+        //                 return;
+        //             }
+        //             this.timeLineInterval && this.renderer.setTimeLineMessage(duration);
+        //             duration--;
+        //         }, 1000);
+        //     }
+        // }
     }
 
     onGameStatePreChange(boardState, data, isJustJoined) {
@@ -139,22 +140,22 @@ export default class BoardXocDia extends BoardCardBetTurn {
         this.renderer.stopDishShakeAnim();
         let dots = utils.getValue(data, Keywords.XOCDIA_RESULT_END_PHASE);
         if (dots && dots.length > 0) {
-            this.renderer.initDots(dots);
+            this.renderer && this.renderer.initDots(dots);
             var t1 = requestTimeout(() => {
-                this.renderer.openBowlAnim(); // this will end up 1s
+                this.renderer && this.renderer.openBowlAnim(); // this will end up 1s
                 clearRequestTimeout(t1);
                 var t2 = requestTimeout(() => {
                     clearRequestTimeout(t2);
                     // show result
-                    this.renderer.displayResultFromDots(dots);
+                    this.renderer && this.renderer.displayResultFromDots(dots);
 
                     var t3 = requestTimeout(() => {
                         clearRequestTimeout(t3);
 
-                        this.renderer.hideResult();
+                        this.renderer && this.renderer.hideResult();
                     }, 3500); // hide it after 2s
                     // emit anim
-                    playingPlayerIds.forEach((id, index) => {
+                    playingPlayerIds && playingPlayerIds.forEach((id, index) => {
                         let playerId = id;
                         let balance = balanceChangeAmounts[id];
                         this.scene.emit(Events.XOCDIA_ON_PLAYER_RUN_MONEY_BALANCE_CHANGE_ANIM, { balance, playerId });
@@ -164,7 +165,7 @@ export default class BoardXocDia extends BoardCardBetTurn {
                 var t4 = requestTimeout(() => {
                     clearRequestTimeout(t4);
 
-                    this.scene.emit(Events.XOCDIA_ON_DISTRIBUTE_CHIP, { playingPlayerIds, bets, playerResults, dots });
+                    this.scene && this.scene.emit(Events.XOCDIA_ON_DISTRIBUTE_CHIP, { playingPlayerIds, bets, playerResults, dots });
                 }, 1500); // emit event after 1.5s
             }, 500);
         }

@@ -382,7 +382,7 @@ export default class XocDiaControls extends GameControls {
     _showGameBeginControls() {
         this.hideAllControls();
         if (this.scene.board.isBegin()) {
-            this.baseControls._showGameBeginControls();
+            // this.baseControls._showGameBeginControls();
         }
     }
 

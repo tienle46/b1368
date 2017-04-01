@@ -42,10 +42,8 @@ export default class TimeHacker {
             if (window.cancelAnimationFrame) {
                 cancelAnimationFrame(handle.value);
                 handle.value && (handle.value = null);
-                handle = null;
             } else {
                 clearInterval(handle);
-                handle = null;
             }
         }
     }
@@ -91,10 +89,8 @@ export default class TimeHacker {
             if (window.cancelAnimationFrame) {
                 cancelAnimationFrame(handle.value);
                 handle.value && (handle.value = null);
-                handle = null;
             } else {
                 clearTimeout(handle);
-                handle = null;
             }
         }
     }

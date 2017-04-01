@@ -88,7 +88,6 @@ export default class ItemMessage extends Component {
                     id
                 }
             }, (data) => {
-                console.debug('data', data);
                 app.system.info(description);
                 if(data[app.keywords.RESPONSE_RESULT]) {
                     

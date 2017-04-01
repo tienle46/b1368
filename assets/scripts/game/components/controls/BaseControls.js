@@ -79,9 +79,13 @@ export default class BaseControls extends GameControls {
     hideAllControls() {
         utils.deactive(this.readyButton);
         // utils.deactive(this.unreadyButton);
+        this.hideStartButton();
+    }
+    
+    hideStartButton() {
         utils.deactive(this.startButton);
     }
-
+    
     _showStartGameControl(){
         if(!this.serverAutoStartGame && this.scene.gamePlayers.owner && this.scene.gamePlayers.owner.isItMe()){
             this.showStartButtonOnBegin = true;

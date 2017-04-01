@@ -1,14 +1,14 @@
 {
   "ver": "1.0.0",
-  "uuid": "00b4ba4c-3c73-4899-98b4-9fee564c9317",
+  "uuid": "326ca7d9-5ae7-4b96-ba43-e5e0dd214a9a",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "bilinear",
   "subMetas": {
-    "ingame": {
+    "coin2": {
       "ver": "1.0.3",
-      "uuid": "25f54499-2ddb-4b6d-ac74-6f6c15c25729",
-      "rawTextureUuid": "00b4ba4c-3c73-4899-98b4-9fee564c9317",
+      "uuid": "832e6e05-d709-4d7f-a00e-a787c1f93304",
+      "rawTextureUuid": "326ca7d9-5ae7-4b96-ba43-e5e0dd214a9a",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": false,
@@ -16,10 +16,10 @@
       "offsetY": 0,
       "trimX": 0,
       "trimY": 0,
-      "width": 1630,
-      "height": 1338,
-      "rawWidth": 1630,
-      "rawHeight": 1338,
+      "width": 54,
+      "height": 55,
+      "rawWidth": 54,
+      "rawHeight": 55,
       "borderTop": 0,
       "borderBottom": 0,
       "borderLeft": 0,

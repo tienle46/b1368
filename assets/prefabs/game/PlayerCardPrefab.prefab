@@ -593,6 +593,7 @@
     },
     "_enabled": true,
     "isAlignOnce": true,
+    "_target": null,
     "_alignFlags": 45,
     "_left": -42,
     "_right": -42,
@@ -742,8 +743,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 36,
-      "height": 36
+      "width": 47,
+      "height": 47
     },
     "_children": [],
     "_rotationX": 0,
@@ -844,7 +845,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 98.98,
+      "width": 86.82,
       "height": 20
     },
     "_children": [],
@@ -988,7 +989,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 44.73,
+      "width": 44.48,
       "height": 24
     },
     "_children": [],
@@ -1144,6 +1145,7 @@
     },
     "_enabled": true,
     "isAlignOnce": true,
+    "_target": null,
     "_alignFlags": 8,
     "_left": -48,
     "_right": 0,
@@ -2021,7 +2023,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 41.47,
+      "width": 40.69,
       "height": 15
     },
     "_children": [],
@@ -2068,9 +2070,7 @@
     "_fontSize": 12,
     "_lineHeight": 15,
     "_enableWrapText": true,
-    "_N$file": {
-      "__uuid__": "fc08811f-de1c-4fe9-91dc-c4d6bac9e438"
-    },
+    "_N$file": null,
     "_isSystemFontUsed": false,
     "_N$string": "Status1",
     "_N$horizontalAlign": 1,
@@ -2086,6 +2086,7 @@
     },
     "_enabled": true,
     "isAlignOnce": true,
+    "_target": null,
     "_alignFlags": 45,
     "_left": 24.265,
     "_right": 24.265,
@@ -2121,9 +2122,7 @@
       "__id__": 60
     },
     "_enabled": true,
-    "_spriteFrame": {
-      "__uuid__": "50e39688-8ef9-494b-a605-de78eac820ce"
-    },
+    "_spriteFrame": null,
     "_type": 1,
     "_sizeMode": 0,
     "_fillType": 0,
@@ -2147,7 +2146,7 @@
       "__id__": 60
     },
     "_enabled": true,
-    "transition": 2,
+    "transition": 3,
     "pressedColor": {
       "__type__": "cc.Color",
       "r": 255,
@@ -2163,13 +2162,9 @@
       "a": 255
     },
     "duration": 0.1,
-    "zoomScale": 1.2,
-    "pressedSprite": {
-      "__uuid__": "e9ec654c-97a2-4787-9325-e6a10375219a"
-    },
-    "hoverSprite": {
-      "__uuid__": "e9ec654c-97a2-4787-9325-e6a10375219a"
-    },
+    "zoomScale": 1.05,
+    "pressedSprite": null,
+    "hoverSprite": null,
     "clickEvents": [],
     "_N$interactable": true,
     "_N$enableAutoGrayEffect": false,
@@ -2187,12 +2182,8 @@
       "b": 255,
       "a": 255
     },
-    "_N$normalSprite": {
-      "__uuid__": "50e39688-8ef9-494b-a605-de78eac820ce"
-    },
-    "_N$disabledSprite": {
-      "__uuid__": "29158224-f8dd-4661-a796-1ffab537140e"
-    },
+    "_N$normalSprite": null,
+    "_N$disabledSprite": null,
     "_N$target": {
       "__id__": 60
     }
@@ -2339,9 +2330,7 @@
     "_fontSize": 12,
     "_lineHeight": 15,
     "_enableWrapText": false,
-    "_N$file": {
-      "__uuid__": "fc08811f-de1c-4fe9-91dc-c4d6bac9e438"
-    },
+    "_N$file": null,
     "_isSystemFontUsed": false,
     "_N$string": "Status 2",
     "_N$horizontalAlign": 1,
@@ -2357,6 +2346,7 @@
     },
     "_enabled": true,
     "isAlignOnce": true,
+    "_target": null,
     "_alignFlags": 45,
     "_left": -20,
     "_right": -20,
@@ -2392,9 +2382,7 @@
       "__id__": 68
     },
     "_enabled": true,
-    "_spriteFrame": {
-      "__uuid__": "50e39688-8ef9-494b-a605-de78eac820ce"
-    },
+    "_spriteFrame": null,
     "_type": 1,
     "_sizeMode": 0,
     "_fillType": 0,
@@ -2418,7 +2406,7 @@
       "__id__": 68
     },
     "_enabled": true,
-    "transition": 2,
+    "transition": 3,
     "pressedColor": {
       "__type__": "cc.Color",
       "r": 255,
@@ -2434,13 +2422,9 @@
       "a": 255
     },
     "duration": 0.1,
-    "zoomScale": 1.2,
-    "pressedSprite": {
-      "__uuid__": "e9ec654c-97a2-4787-9325-e6a10375219a"
-    },
-    "hoverSprite": {
-      "__uuid__": "e9ec654c-97a2-4787-9325-e6a10375219a"
-    },
+    "zoomScale": 1.05,
+    "pressedSprite": null,
+    "hoverSprite": null,
     "clickEvents": [],
     "_N$interactable": true,
     "_N$enableAutoGrayEffect": false,
@@ -2458,12 +2442,8 @@
       "b": 255,
       "a": 255
     },
-    "_N$normalSprite": {
-      "__uuid__": "50e39688-8ef9-494b-a605-de78eac820ce"
-    },
-    "_N$disabledSprite": {
-      "__uuid__": "29158224-f8dd-4661-a796-1ffab537140e"
-    },
+    "_N$normalSprite": null,
+    "_N$disabledSprite": null,
     "_N$target": {
       "__id__": 68
     }
@@ -3207,9 +3187,6 @@
     "balanceLabel": {
       "__id__": 30
     },
-    "status2": {
-      "__id__": 68
-    },
     "ownerIcon": {
       "__id__": 20
     },
@@ -3227,7 +3204,8 @@
     "playerTimeLineProgress": {
       "__id__": 5
     },
-    "avatarNode": null
+    "avatarNode": null,
+    "friendProfilePopup": null
   },
   {
     "__type__": "cc.PrefabInfo",
