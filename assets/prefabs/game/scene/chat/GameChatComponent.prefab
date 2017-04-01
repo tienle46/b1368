@@ -2976,7 +2976,7 @@
       "a": 255
     },
     "_N$maxLength": 80,
-    "_N$stayOnTop": true
+    "_N$stayOnTop": false
   },
   {
     "__type__": "cc.ClickEvent",

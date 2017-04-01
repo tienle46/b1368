@@ -53,7 +53,7 @@ app.const.gameCode.XOC_DIA = 'xod';
 
 app.const.gameLabels = {
     [app.const.gameCode.PHOM]: 'Phỏm',
-    [app.const.gameCode.TLMNDL]: 'TLMN Đếm Lá',
+    [app.const.gameCode.TLMNDL]: 'TLMN',
     [app.const.gameCode.TLMN]: 'TLMN',
     [app.const.gameCode.TLMNM]: 'TLMN Mới',
     [app.const.gameCode.XITO]: 'Xì Tố',

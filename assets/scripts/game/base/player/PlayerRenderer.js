@@ -52,8 +52,10 @@ export default class PlayerRenderer extends ActorRenderer {
     onEnable() {
         super.onEnable();
 
-        this.setVisibleOwner(this.data.owner);
-        this.setVisibleMaster(this.data.master);
+        if(this.data){
+            this.setVisibleOwner(this.data.owner);
+            this.setVisibleMaster(this.data.master);
+        }
         // this.setVisibleReady(this.data.ready);
 
         this.plusBalanceAnim = this.plusBalanceNode.getComponent('PlusBalanceAnimation');
@@ -125,8 +127,9 @@ export default class PlayerRenderer extends ActorRenderer {
 
     startPlusBalanceAnimation(balance) {
         if (!this.loaded || isNaN(balance) || balance == 0) return;
+
         let isWinner = balance > 0;
-        let balanceStr = GameUtils.formatBalance(balance);
+        let balanceStr = utils.formatNumberType2(balance);
 
         if (this.plusBalanceLabel && this.plusBalanceNode && this.minusBalanceLabel) {
             this.minusBalanceLabel.string = "";
@@ -203,11 +206,11 @@ export default class PlayerRenderer extends ActorRenderer {
     }
 
     isPositionOnTop(anchorIndex = this.anchorIndex){
-        return this.scene.gamePlayers.playerPositions.isPositionOnTop(anchorIndex)
+        return this.scene.gamePlayers && this.scene.gamePlayers.playerPositions.isPositionOnTop(anchorIndex)
     }
 
     isPositionOnRight(anchorIndex = this.anchorIndex){
-        return this.scene.gamePlayers.playerPositions.isPositionOnRight(anchorIndex)
+        return this.scene.gamePlayers && this.scene.gamePlayers.playerPositions.isPositionOnRight(anchorIndex)
     }
 }
 

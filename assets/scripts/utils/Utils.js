@@ -193,4 +193,12 @@ export default class Utils {
     static numberFormat(value = 0, format = '0,0') {
         return numeral(value).format(format);
     }
+
+    static formatNumberType1(value = 0) {
+        return value <= 9999 ? value : numeral(value).format('00.0a');
+    }
+
+    static formatNumberType2(value = 0) {
+        return value <= 99999 ? value : numeral(value).format('00.00a');
+    }
 }

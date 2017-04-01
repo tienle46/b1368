@@ -41,7 +41,7 @@ export default class BoardBaCayRenderer extends BoardCardBetTurnRenderer {
     }
 
     setGopGaLabelValue(value){
-        this.gopGaLabel.string = `${value}`;
+        this.gopGaLabel.string = `${utils.formatNumberType1(value)}`;
     }
 
     disableGopGaValue(disable = true){

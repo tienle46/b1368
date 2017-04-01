@@ -379,9 +379,14 @@ class GameSystem {
     }
     
     _addToastToScene() {
-        let toastNode = cc.instantiate(app.res.prefab.toast);
-        this.toast = toastNode.getComponent('Toast');
-        this._currentScene && this._currentScene.node.addChild(toastNode, app.const.toastZIndex);
+        if(app.res.prefab.toast){
+            let toastNode = cc.instantiate(app.res.prefab.toast);
+            if(toastNode) {
+
+                this.toast = toastNode.getComponent('Toast');
+                this._currentScene && this._currentScene.node.addChild(toastNode, app.const.toastZIndex);
+            }
+        }
     }
 
     _emitGameEvent(name, ...args) {

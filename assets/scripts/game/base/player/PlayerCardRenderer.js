@@ -31,14 +31,14 @@ export default class PlayerCardRenderer extends PlayerRenderer {
     onEnable(){
         super.onEnable();
 
-        if(this.data.isItMe && this.mePlayCardListNode){
+        if(this.data && this.data.isItMe && this.mePlayCardListNode){
             this.cardList = this.mePlayCardListNode.getComponent('CardList')
-            this._initHandCardList(this.cardList, this.data.isItMe, true);
+            this._initHandCardList(this.cardList, this.data && this.data.isItMe, true);
         }else{
             let cardListNode = cc.instantiate(this.cardListPrefab);
-            this._getCardAnchorPoint(this.data.actor).addChild(cardListNode);
+            this._getCardAnchorPoint(this.data && this.data.actor).addChild(cardListNode);
             this.cardList = cardListNode.getComponent('CardList');
-            this._initHandCardList(this.cardList, this.data.isItMe);
+            this._initHandCardList(this.cardList, this.data && this.data.isItMe);
         }
 
         this.cardList.setPosition(0, 0);

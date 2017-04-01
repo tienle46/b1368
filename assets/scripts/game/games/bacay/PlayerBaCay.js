@@ -41,6 +41,7 @@ export default class PlayerBaCay extends PlayerCardBetTurn {
         this.scene.on(Events.HANDLE_PLAYER_CUOC_BIEN, this._onPlayerCuocBien, this);
         this.scene.on(Events.HANDLE_PLAYER_ACCEPT_CUOC_BIEN, this._onPlayerAcceptCuocBien, this);
         this.scene.on(Events.SHOW_GAME_ENDING_INFO, this._onShowGameEndingInfo, this);
+        this.scene.on(Events.ON_PLAYER_BACAY_GOP_GA, this._onPlayerGopGa, this);
     }
 
     _removeGlobalListener() {
@@ -57,6 +58,13 @@ export default class PlayerBaCay extends PlayerCardBetTurn {
         this.scene.off(Events.HANDLE_PLAYER_CUOC_BIEN, this._onPlayerCuocBien, this);
         this.scene.off(Events.HANDLE_PLAYER_ACCEPT_CUOC_BIEN, this._onPlayerAcceptCuocBien, this);
         this.scene.off(Events.SHOW_GAME_ENDING_INFO, this._onShowGameEndingInfo, this);
+        this.scene.off(Events.ON_PLAYER_BACAY_GOP_GA, this._onPlayerGopGa, this);
+    }
+
+    _onPlayerGopGa(playerId, gopGaValue){
+        if(playerId != this.id || gopGaValue <= 0) return;
+
+        this.renderer.visibleGopGaIcon()
     }
 
     _onShowGameEndingInfo(playerId, { name = "", text = null, iconPath = "", balanceChanged = NaN, info = "", cards = [], isWinner = false } = {}){

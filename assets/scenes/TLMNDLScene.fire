@@ -248,8 +248,8 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": 0,
-      "y": 0
+      "x": -535,
+      "y": 315
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -272,9 +272,9 @@
     "_opacity": 255,
     "_color": {
       "__type__": "cc.Color",
-      "r": 245,
+      "r": 255,
       "g": 255,
-      "b": 0,
+      "b": 255,
       "a": 255
     },
     "_cascadeOpacityEnabled": true,
@@ -283,7 +283,7 @@
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
-      "x": 1,
+      "x": 0,
       "y": 0.5
     },
     "_contentSize": {
@@ -298,8 +298,8 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": 622,
-      "y": 247
+      "x": 0,
+      "y": 10
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -356,12 +356,12 @@
     "__type__": "cc.Node",
     "_name": "minBetLabel",
     "_objFlags": 0,
-    "_opacity": 248.11499999999998,
+    "_opacity": 248,
     "_color": {
       "__type__": "cc.Color",
-      "r": 252,
-      "g": 242,
-      "b": 0,
+      "r": 255,
+      "g": 255,
+      "b": 255,
       "a": 255
     },
     "_cascadeOpacityEnabled": true,
@@ -370,7 +370,7 @@
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
-      "x": 1,
+      "x": 0,
       "y": 0.5
     },
     "_contentSize": {
@@ -385,8 +385,8 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": 621,
-      "y": 215
+      "x": 0,
+      "y": -20
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -4096,9 +4096,6 @@
     },
     "tableMinBetLabel": {
       "__id__": 11
-    },
-    "gameResultPopupNode": {
-      "__id__": 132
     },
     "playerPositionAnchorsNode": {
       "__id__": 58

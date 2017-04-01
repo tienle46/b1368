@@ -256,21 +256,31 @@ export default class SamUtils {
         return GameUtils.getRank(card1, app.const.game.GAME_TYPE_XAM) - GameUtils.getRank(card2, app.const.game.GAME_TYPE_XAM);
     }
 
-    static sortAsc(cards, type = SamUtils.SORT_BY_RANK){
+    // static sortAsc(cards, type = SamUtils.SORT_BY_RANK){
 
+    //     if(!cards || cards.length == 0) return cards;
+
+    //     if(type == SamUtils.SORT_BY_RANK) {
+    //         return cards.sort((card1, card2) => {
+    //             let card1Rank = card1.rank == Card.RANK_AT ? Card.RANK_ACE : card1.rank == Card.RANK_HAI ? Card.RANK_DEUCE : card1.rank;
+    //             let card2Rank = card2.rank == Card.RANK_AT ? Card.RANK_ACE : card2.rank == Card.RANK_HAI ? Card.RANK_DEUCE : card2.rank;
+    //             return card1Rank - card2Rank;
+    //         });
+    //     }else if(type == SamUtils.SORT_BY_RANK_SPECIAL){
+    //         return cards.sort(Card.compareRank);
+    //     }else{
+    //         return cards.sort((card1, card2) => card1.suit - card2.suit);
+    //     }
+    // }
+    
+    static sortAsc(cards){
         if(!cards || cards.length == 0) return cards;
 
-        if(type == SamUtils.SORT_BY_RANK) {
-            return cards.sort((card1, card2) => {
-                let card1Rank = card1.rank == Card.RANK_AT ? Card.RANK_ACE : card1.rank == Card.RANK_HAI ? Card.RANK_DEUCE : card1.rank;
-                let card2Rank = card2.rank == Card.RANK_AT ? Card.RANK_ACE : card2.rank == Card.RANK_HAI ? Card.RANK_DEUCE : card2.rank;
-                return card1Rank - card2Rank;
-            });
-        }else if(type == SamUtils.SORT_BY_RANK_SPECIAL){
-            return cards.sort(Card.compareRank);
-        }else{
-            return cards.sort((card1, card2) => card1.suit - card2.suit);
-        }
+        return cards.sort((card1, card2) => {
+            let card1Rank = card1.rank == Card.RANK_AT ? Card.RANK_ACE : card1.rank == Card.RANK_HAI ? Card.RANK_DEUCE : card1.rank;
+            let card2Rank = card2.rank == Card.RANK_AT ? Card.RANK_ACE : card2.rank == Card.RANK_HAI ? Card.RANK_DEUCE : card2.rank;
+            return (card1Rank * 10 + card1.suit) - (card2Rank * 10 + card2.suit);
+        });
     }
 
 }

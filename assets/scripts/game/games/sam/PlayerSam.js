@@ -223,11 +223,9 @@ export default class PlayerSam extends PlayerCardTurnBase {
             this.renderer.showDownCards(cards, info);
         }
 
+        this.renderer.showEndGameCardInfo(info)
         this.renderer.showPlayerWinLoseInfo(text, isWinner)
-
-        if(balanceChanged != NaN && balanceChanged != 0){
-            this.renderer.startPlusBalanceAnimation(balanceChanged);
-        }
+        this.renderer.startPlusBalanceAnimation(balanceChanged)
     }
 }
 
