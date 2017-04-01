@@ -5,21 +5,14 @@ import NodeRub from 'NodeRub';
 class BowlDishControl extends Component {
     constructor() {
         super();
-
-        this.wrapper = {
-            default: null,
-            type: cc.Node
-        };
-
-        this.bowlNode = {
-            default: null,
-            type: cc.Node
-        };
-
-        this.circleGroup = {
-            default: null,
-            type: cc.Node
-        };
+        
+        this.properties = {
+            ...this.properties,
+            wrapper: cc.Node,
+            bowlNode: cc.Node,
+            circleGroup: cc.Node,
+            timeLineNode: cc.Node
+        }
     }
 
     onLoad() {
@@ -29,7 +22,10 @@ class BowlDishControl extends Component {
 
     resetBowlPosition() {
         this.bowlNode.setPosition(this.bowlPos);
-
+        
+        this.bowlNode.zIndex = 1;
+        this.timeLineNode.zIndex = 2;
+        
         this.circleGroup.children.forEach(child => child.destroy());
         this.circleGroup.removeAllChildren();
     }
@@ -54,9 +50,11 @@ class BowlDishControl extends Component {
 
     openBowlAnim() {
         let bowlPos = this.bowlPos;
+        
         let action = cc.moveTo(1, cc.v2(-67, bowlPos.y));
         this.bowlNode.runAction(cc.sequence(action, cc.callFunc(() => {
             this.bowlPos = bowlPos;
+            this.bowlNode.zIndex = 3;
         })));
     }
 

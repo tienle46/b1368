@@ -39,8 +39,9 @@ export default class DashboardScene extends BaseScene {
          */
         app.context.requestRandomInvite = true;
         
+        app.context.gameList.length > 0 && this._initItemListGame();
+        
         setTimeout(()=>{
-            app.context.gameList.length > 0 && this._initItemListGame();
             let Linking = require('Linking');
             Linking.handlePendingActions();
         }, 1000);

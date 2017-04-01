@@ -120,7 +120,7 @@ let RubUtils = {
                 cc.loader.load(resURL, (err, tex) => {
                     if(err) console.error(err);
                     
-                    if (tex && tex instanceof cc.Texture2D) {
+                    if (tex && tex instanceof cc.Texture2D) {                        
                         spriteFrameDefaultConfig(spriteComponent, tex);
                     }
                 });
