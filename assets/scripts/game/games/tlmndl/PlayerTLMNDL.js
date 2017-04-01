@@ -82,7 +82,7 @@ export default class PlayerTLMNDL extends PlayerCardTurnBase {
             let sortedCard = TLMNUtils.sortAsc(this.renderer.cardList.cards, this.sortSolution);
             this.renderer.cardList.onCardsChanged();
 
-            this.sortSolution = this.sortSolution == TLMNUtils.SORT_BY_RANK ? TLMNUtils.SORT_BY_SUIT : TLMNUtils.SORT_BY_RANK;
+            // this.sortSolution = this.sortSolution == TLMNUtils.SORT_BY_RANK ? TLMNUtils.SORT_BY_SUIT : TLMNUtils.SORT_BY_RANK;
         }
     }
 
@@ -133,8 +133,9 @@ export default class PlayerTLMNDL extends PlayerCardTurnBase {
     }
 
     setMeDealCards(){
+        
         super.setMeDealCards()
-
+        this._onSortCards();
         this.setRemainCardCount(this.renderer.cardList.cards.length)
     }
 
