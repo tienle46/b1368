@@ -1752,7 +1752,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": 15
+      "y": 5
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -7348,7 +7348,6 @@
     "tableMinBetLabel": {
       "__id__": 11
     },
-    "gameResultPopupNode": null,
     "playerPositionAnchorsNode": {
       "__id__": 63
     },

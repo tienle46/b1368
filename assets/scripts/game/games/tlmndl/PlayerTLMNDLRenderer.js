@@ -67,22 +67,28 @@ export default class PlayerTLMNDLRenderer extends PlayerCardTurnBaseRenderer {
         this.downCardInfoLabel = this.downCardInfoNode.getComponentInChildren(cc.Label);
         this.downCardInfoNode.removeFromParent();
 
-        this.downCardAnchorNodes.forEach((node, index) => {
-            if (index == this.anchorIndex) {
-                this.downCardLists = (node && node.getComponentsInChildren('CardList')) || [];
+        if(this.data.isItMe){
+            this.showInfoCardList = this.cardList
+        }else{
+            this.downCardAnchorNodes.forEach((node, index) => {
+                if (index == this.anchorIndex) {
+                    this.downCardLists = (node && node.getComponentsInChildren('CardList')) || [];
 
-                if(this.downCardLists.length == 1){
-                    this.showInfoCardList = this.downCardLists[0]
-                }else if(this.downCardLists.length == 2){
-                    this.showInfoCardList = this.downCardLists[1]
+                    if(this.downCardLists.length == 1){
+                        this.showInfoCardList = this.downCardLists[0]
+                    }else if(this.downCardLists.length == 2){
+                        this.showInfoCardList = this.downCardLists[1]
+                    }
+                } else {
+                    CCUtils.setVisible(node, false);
                 }
+            })
+        }
 
-                this.showInfoCardList && this.showInfoCardList.node.parent && this.showInfoCardList.node.parent.addChild(this.downCardInfoNode);
-                this.downCardInfoNode.setPosition(0, 0);
-            } else {
-                CCUtils.setVisible(node, false);
-            }
-        })
+        if(this.showInfoCardList){
+            this.showInfoCardList.node.parent && this.showInfoCardList.node.parent.addChild(this.downCardInfoNode);
+            this.downCardInfoNode.setPosition(0, 0);
+        }
 
         this._changeRemainCardPosition(this.anchorIndex)
     }
@@ -91,7 +97,7 @@ export default class PlayerTLMNDLRenderer extends PlayerCardTurnBaseRenderer {
         super._initHandCardList(cardList, isItMe, false);
     }
 
-    showDownCards(cards = [], info = "") {
+    showDownCards(cards = []) {
         this.cardList.clear();
 
         if(this.downCardLists.length == 0) return;
@@ -107,7 +113,10 @@ export default class PlayerTLMNDLRenderer extends PlayerCardTurnBaseRenderer {
         this.downCardLists.forEach((downCardList, index) => {
             downCardList && CCUtils.setVisible(downCardList, downCardList.cards.length > 0);
         })
+    }
 
+
+    showEndGameCardInfo(info = ""){
         if(info.length > 0 && this.showInfoCardList){
             let centerPosition = this.showInfoCardList.getCenterHorizontalPosition();
             this.downCardInfoNode.setPosition(centerPosition)

@@ -47,7 +47,8 @@ export default class CardList extends ActionComponent {
 
     getCenterHorizontalPosition(){
 
-        let cardHeight = Card.CARD_HEIGHT * this.scale;
+        //6 is height of transparent of card in bottom
+        let cardHeight = (Card.CARD_HEIGHT + 6) * this.scale;
 
         if(this.align == CardList.ALIGN_TOP_CENTER){
             return cc.v2(0, -cardHeight);

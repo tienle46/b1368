@@ -80,7 +80,7 @@ export default class PlayerPhomRenderer extends PlayerCardTurnBaseRenderer {
         this.cardList.clear();
 
         this.cleanPlayerCards();
-        this.downCardInfoLabel.string = "";
+        this.downCardInfoLabel && (this.downCardInfoLabel.string = "")
         CCUtils.setVisible(this.downCardInfoNode, false);
         CCUtils.setVisible(this.specialInfoImageNode, false)
     }
@@ -119,15 +119,20 @@ export default class PlayerPhomRenderer extends PlayerCardTurnBaseRenderer {
         this.downCardInfoLabel = this.downCardInfoNode.getComponentInChildren(cc.Label);
         this.downCardInfoNode.removeFromParent();
 
-        this.downCardListNodes.forEach((node, index) => {
-            if (index == this.anchorIndex) {
-                this.downCardList = node.getComponent('CardList');
-                node.parent && node.parent.addChild(this.downCardInfoNode);
-                this.downCardInfoNode.setPosition(0, 0);
-            } else {
-                CCUtils.setVisible(node, false);
-            }
-        });
+        if(this.data.isItMe){
+            this.cardList.node.parent && this.cardList.node.parent.addChild(this.downCardInfoNode);
+            this.downCardInfoNode.setPosition(0, 0);
+        }else{
+            this.downCardListNodes.forEach((node, index) => {
+                if (index == this.anchorIndex) {
+                    this.downCardList = node.getComponent('CardList');
+                    node.parent && node.parent.addChild(this.downCardInfoNode);
+                    this.downCardInfoNode.setPosition(0, 0);
+                } else {
+                    CCUtils.setVisible(node, false);
+                }
+            });
+        }
 
         this.downPhomListNodes.forEach((node, index) => {
             if (index == this.anchorIndex) {
@@ -230,12 +235,16 @@ export default class PlayerPhomRenderer extends PlayerCardTurnBaseRenderer {
         }
     }
 
-    showDownCards(cards = [], info = "") {
+    showDownCards(cards = []) {
         if(this.downCardList){
             this.downCardList.transferFrom(this.cardList, cards);
+        }
+    }
 
-            if(this.downCardInfoLabel && info.length > 0){
-                let centerPosition = this.downCardList.getCenterHorizontalPosition();
+    showEndGameCardInfo(info = "") {
+        if (this.downCardInfoLabel && info.length > 0) {
+            let centerPosition = this.data.isItMe ? this.cardList.getCenterHorizontalPosition() : this.downCardList && this.downCardList.getCenterHorizontalPosition()
+            if(centerPosition){
                 this.downCardInfoNode.setPosition(centerPosition);
                 this.downCardInfoLabel.string = info
                 CCUtils.setVisible(this.downCardInfoNode);

@@ -100,8 +100,6 @@ export default class PlayerTLMNDL extends PlayerCardTurnBase {
 
     createFakeCards(size = PlayerTLMNDL.DEFAULT_HAND_CARD_COUNT) {
         super.createFakeCards(size);
-        
-        console.log("create fake card: ", size)
     }
 
     onEnable() {
@@ -146,16 +144,14 @@ export default class PlayerTLMNDL extends PlayerCardTurnBase {
         }
     }
 
-    showEndGameInfo({text = null, balanceChanged = NaN, info = "", cards = [], isWinner = false, point = 0} = {}){
+    showEndGameInfo({text = null, balanceChanged = NaN, info = "", cards = [], isWinner = false} = {}){
         if(!this.isItMe()){
-            this.renderer.showDownCards(cards, info);
+            this.renderer.showDownCards(cards);
         }
 
+        this.renderer.showEndGameCardInfo(info)
         this.renderer.showPlayerWinLoseInfo(text, isWinner)
-
-        if(balanceChanged != NaN && balanceChanged != 0){
-            this.renderer.startPlusBalanceAnimation(balanceChanged);
-        }
+        this.renderer.startPlusBalanceAnimation(balanceChanged)
     }
 }
 
