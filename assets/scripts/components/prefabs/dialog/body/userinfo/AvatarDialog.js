@@ -88,7 +88,7 @@ export default class AvatarDialog extends DialogActor {
     
     _onUserChangeAvatar(data) {
          if (data[app.keywords.RESPONSE_RESULT]) {
-            app.system.showToast('success !');
+            app.system.showToast('Bạn đã đổi hình đại diện thành công !');
             this.onCloseBtnClick();
             // app.system.showToast(app.res.string('phone_number_confirmation'));
         } else {

@@ -68,7 +68,8 @@ export default class GameMenuPrefab extends Component {
     }
 
     onClickMenuButton(event) {
-        this.isMenuPopupShown ? this.hide() : this.show();
+        // this.isMenuPopupShown ? this.hide() : this.show();
+        this.onClickExitButton();
     }
 
     onClickOutsideMenuPopup() {
