@@ -3981,9 +3981,7 @@
     },
     "_enabled": true,
     "path": "",
-    "p404": {
-      "__uuid__": "5506cff6-05a2-4783-8488-2c5459eaed0b"
-    },
+    "bodyNode": null,
     "scrollview": null,
     "activeStateSprite": {
       "__id__": 10

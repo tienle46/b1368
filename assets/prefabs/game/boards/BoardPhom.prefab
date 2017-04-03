@@ -760,9 +760,7 @@
       "__id__": 15
     },
     "_enabled": true,
-    "_spriteFrame": {
-      "__uuid__": "4af45b1f-b345-4a7c-85e2-13488ac5dfe2"
-    },
+    "_spriteFrame": null,
     "_type": 0,
     "_sizeMode": 0,
     "_fillType": 0,
@@ -946,7 +944,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "91f52611-75a0-42d2-8c90-1c3759aa4ec3"
+      "__uuid__": "4e9993b7-948b-40c3-a1a8-0303a9193907"
     },
     "_type": 0,
     "_sizeMode": 1,
@@ -961,7 +959,9 @@
     "_isTrimmedMode": true,
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
-    "_atlas": null
+    "_atlas": {
+      "__uuid__": "10ca67ea-2a3c-4512-b8a8-cfd37f9d8bbe"
+    }
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -1187,6 +1187,7 @@
     "scale": 0.6,
     "reveal": true,
     "selectable": false,
+    "draggable": false,
     "space": 100,
     "maxDimension": 800,
     "cardPrefab": {
@@ -1272,6 +1273,7 @@
     "scale": 0.6,
     "reveal": true,
     "selectable": false,
+    "draggable": false,
     "space": 0,
     "maxDimension": 800,
     "cardPrefab": {
@@ -1357,6 +1359,7 @@
     "scale": 0.6,
     "reveal": false,
     "selectable": false,
+    "draggable": false,
     "space": 0,
     "maxDimension": 0,
     "cardPrefab": {
@@ -1415,6 +1418,7 @@
     "dealCardAnchor": {
       "__id__": 38
     },
+    "dealCardActionComponentNode": null,
     "meDealCardListNode": {
       "__id__": 35
     },

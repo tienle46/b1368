@@ -81,7 +81,7 @@ class TabCard extends PopupTabBody {
     }
     
     onProviderBtnClick(toggle) {
-        this.providerTitleLbl.string = toggle.providerName;
+        this.providerTitleLbl.string = toggle.providerName.toUpperCase();
         this.providerId = toggle.providerId;
     }
     

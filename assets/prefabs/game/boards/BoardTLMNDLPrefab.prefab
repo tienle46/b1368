@@ -471,9 +471,7 @@
       "__id__": 6
     },
     "_enabled": true,
-    "_spriteFrame": {
-      "__uuid__": "4af45b1f-b345-4a7c-85e2-13488ac5dfe2"
-    },
+    "_spriteFrame": null,
     "_type": 0,
     "_sizeMode": 0,
     "_fillType": 0,
@@ -498,6 +496,7 @@
     },
     "_enabled": true,
     "isAlignOnce": true,
+    "_target": null,
     "_alignFlags": 32,
     "_left": 0,
     "_right": -68.93120000000005,
@@ -616,8 +615,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 126,
-      "height": 126
+      "width": 150,
+      "height": 150
     },
     "_children": [],
     "_rotationX": 0,
@@ -656,7 +655,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "91f52611-75a0-42d2-8c90-1c3759aa4ec3"
+      "__uuid__": "4e9993b7-948b-40c3-a1a8-0303a9193907"
     },
     "_type": 0,
     "_sizeMode": 1,
@@ -671,7 +670,9 @@
     "_isTrimmedMode": true,
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
-    "_atlas": null
+    "_atlas": {
+      "__uuid__": "10ca67ea-2a3c-4512-b8a8-cfd37f9d8bbe"
+    }
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -770,6 +771,7 @@
     },
     "_enabled": true,
     "isAlignOnce": true,
+    "_target": null,
     "_alignFlags": 18,
     "_left": -20.04,
     "_right": 0,
@@ -896,13 +898,14 @@
     "scale": 0.5,
     "reveal": true,
     "selectable": false,
+    "draggable": false,
     "space": 100,
     "maxDimension": 800,
-    "orientation": 1,
-    "align": 9,
     "cardPrefab": {
       "__uuid__": "1be1ace3-b9b3-4bf4-9c45-5c1d9eccac08"
-    }
+    },
+    "orientation": 1,
+    "align": 9
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -981,13 +984,14 @@
     "scale": 0.5,
     "reveal": true,
     "selectable": false,
+    "draggable": false,
     "space": 0,
     "maxDimension": 800,
-    "orientation": 1,
-    "align": 7,
     "cardPrefab": {
       "__uuid__": "1be1ace3-b9b3-4bf4-9c45-5c1d9eccac08"
-    }
+    },
+    "orientation": 1,
+    "align": 7
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -1091,21 +1095,16 @@
     },
     "_enabled": true,
     "path": "",
-    "timeline": {
-      "__id__": 4
-    },
-    "timelineRemainTime": {
-      "__id__": 20
-    },
     "timelineTextViewNode": {
       "__id__": 6
     },
-    "playerPositionPrefab": {
-      "__uuid__": "e196cc5e-9dfe-4a2b-b80d-c51895c3295d"
+    "timeline": {
+      "__id__": 4
     },
     "dealCardAnchor": {
       "__id__": 29
     },
+    "dealCardActionComponentNode": null,
     "meDealCardListNode": {
       "__id__": 26
     },
@@ -1115,7 +1114,8 @@
     "deckCardPrefab": {
       "__uuid__": "e46ea9f5-2341-4501-90ba-6894cdd06b0e"
     },
-    "deckCardName": "DeckCardRenderer"
+    "deckCardName": "DeckCardRenderer",
+    "chipPrefab": null
   },
   {
     "__type__": "cc.PrefabInfo",
