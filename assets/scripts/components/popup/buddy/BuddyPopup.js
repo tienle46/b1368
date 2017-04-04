@@ -22,6 +22,10 @@ export default class BuddyPopup {
         this.multiTabPopup.changeToChatTab = this.changeToChatTab.bind(this);
     }
 
+    changeToChatTab(data) {
+        this.multiTabPopup && this.multiTabPopup.changeTab(BuddyPopup.TAB_CHAT_INDEX, data);
+    }
+
     show(parentNode = cc.director.getScene(), options = {}){
         this.multiTabPopup.show({parentNode, tabModels, ...options});
     }
