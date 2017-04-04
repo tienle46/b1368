@@ -40,14 +40,6 @@ export default class PhomListComponent extends Component {
         this.phoms = [];
         this.down = [];
         this.phomList = new PhomList();
-    }
-
-    clear() {
-        this.phomList.clear();
-    }
-
-    onEnable() {
-        super.onEnable();
 
         this.phomNodes.forEach((phomNode, i) => {
             let phom = phomNode.getComponent('Phom');
@@ -58,6 +50,10 @@ export default class PhomListComponent extends Component {
         });
 
         this.phomList.push(...this.phoms);
+    }
+
+    clear() {
+        this.phomList.clear();
     }
 
     _findFirstEmptyPhomComponentIndex() {
