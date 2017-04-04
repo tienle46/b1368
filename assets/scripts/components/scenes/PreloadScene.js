@@ -11,14 +11,16 @@ class PreloadScene extends Component {
             default: null,
             type: cc.Node
         }
-        this.asss = "asdadas";
     }
 
     onLoad() {
+        super.onLoad()
+
         if (this.loading) {
             this.loading.getComponent('FullSceneProgress').show(app.res.string('loading_data'));
         }
-        this._setupEnvironment();
+
+        app.system.initOnFirstSceneLoaded()
 
         // let cards = [
         //     Card.from(Card.RANK_AT, Card.SUIT_ZO),
@@ -36,22 +38,6 @@ class PreloadScene extends Component {
         // cards[0].setLocked(true);
         //
         // PhomGenerator.generatePhomContainEatenCards(cards, [Card.from(Card.RANK_AT, Card.SUIT_ZO)]);
-    }
-
-    _setupEnvironment() {
-
-        if (app.env.isBrowser()) {
-            cc.game.pause = () => {};
-            cc.game.setFrameRate(48);
-        }
-
-        cc.game.on(cc.game.EVENT_HIDE, function() {
-            app.system.isInactive = true;
-        });
-
-        cc.game.on(cc.game.EVENT_SHOW, function() {
-            app.system.isInactive = false;
-        });
     }
 
     onEnable() {

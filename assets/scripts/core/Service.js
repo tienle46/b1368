@@ -67,6 +67,7 @@ class Service {
 
         this.client = new SFS2X.SmartFox(config);
         this.client.setClientDetails("MOZILLA", "1.0.0");
+        //this.client.setReconnectionSeconds(120);
 
         this._registerSmartFoxEvent();
     }
@@ -361,6 +362,18 @@ class Service {
     connect(cb) {
 
         this.isConnecting = true;
+
+        window.addEventListener("beforeunload", function (e) {
+            window.confirm("lkdsflksjdklfjskdf")
+            app.service.client._socketEngine._socket.onclose = function () {}; // disable onclose handler first
+            app.service.client._socketEngine._socket.close()
+            return null;
+        });
+
+        // window.onbeforeunload = function() {
+        //     app.service.client._socketEngine._socket.onclose = function () {}; // disable onclose handler first
+        //     app.service.client._socketEngine._socket.close()
+        // };
 
         if (this.client.isConnected()) {
             this._onConnection({ success: true });
