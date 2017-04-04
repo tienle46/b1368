@@ -14,6 +14,7 @@ export default class ActionComponent extends Component {
         this.__isComponentEnabled = false;
         this.__endActionCb = null;
         this.isHidden = false
+        this.timeoutId = 0;
     }
 
     runActionWithCallback(actions = [], cb = null, delay = 0){
@@ -52,27 +53,52 @@ export default class ActionComponent extends Component {
 
         this.__isComponentEnabled = true;
 
-        cc.game.on(cc.game.EVENT_HIDE, this._pausedCallback, this);
-        cc.game.on(cc.game.EVENT_SHOW, this._restoreCallback, this);
+        app.system.addAppStateListener(this.getUniqueName(), this._onAppStateChange.bind(this))
+
+        // cc.game.on(cc.game.EVENT_HIDE, this._pausedCallback, this);
+        // cc.game.on(cc.game.EVENT_SHOW, this._restoreCallback, this);
 
     }
 
+    _onAppStateChange(state){
+        if(state == 'inactive'){
+            this._restoreCallback()
+        }else {
+            this._pausedCallback()
+        }
+    }
+
     _pausedCallback(){
-        this.finishAllActions();
+        this.finishAllActions()
+        // this._clearDelayUpdateHideState()
         this.isHidden = true;
+    }
+
+    _clearDelayUpdateHideState(){
+        if(this.timeoutId > 0){
+            clearTimeout(this.timeoutId)
+            this.timeoutId = 0;
+        }
     }
 
     _restoreCallback(){
         this.isHidden = false;
+
+        // this.timeoutId = setTimeout(() => {
+        //     this.isHidden = false;
+        // }, 3000)
     }
 
     onDisable(){
         super.onDisable()
 
-        cc.game.off(cc.game.EVENT_HIDE, this._pausedCallback, this);
-        cc.game.off(cc.game.EVENT_SHOW, this._restoreCallback, this);
+        app.system.removeAppStateListener(this.getUniqueName(), this._onAppStateChange.bind(this))
+
+        // cc.game.off(cc.game.EVENT_HIDE, this._pausedCallback, this);
+        // cc.game.off(cc.game.EVENT_SHOW, this._restoreCallback, this);
 
         this.finishAllActions()
+        // this._clearDelayUpdateHideState()
     }
 
     onDestroy(){

@@ -15,6 +15,16 @@ export default class GameEventHandler {
         this.scene = scene;
         this._handleEventImediate = true;
         this._listenerMap = {};
+        this._restoringGame = false
+    }
+
+    setRestoringGame(restoring = true){
+        this._restoringGame = restoring;
+        !restoring && this._handlePendingEvents();
+    }
+
+    isRestoringGame(){
+        return this._restoringGame;
     }
 
     setHandleEventImmediate(imediate) {

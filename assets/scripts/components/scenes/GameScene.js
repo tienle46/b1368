@@ -82,6 +82,27 @@ export default class GameScene extends BaseScene {
         this.on(Events.ON_GAME_LOAD_DATA_AFTER_SCENE_START, this._loadGameDataAfterSceneStart, this);
         this.on(Events.ON_ROOM_CHANGE_MIN_BET, this._onRoomMinBetChanged, this);
         this.on(Events.ON_PLAYER_READY_STATE_CHANGED, this._onPlayerReadyStateChanged, this);
+
+        app.system.addAppStateListener('game', this.onAppStateChange.bind(this))
+        app.system.addListener('getGameState', this._onCurrentGameDataResponse, this)
+    }
+
+    _removeGlobalListener(){
+        super._removeGlobalListener()
+
+        app.system.removeAppStateListener('game', this.onAppStateChange.bind(this))
+        app.system.removeListener('getGameState', this._onCurrentGameDataResponse, this)
+    }
+
+    _onCurrentGameDataResponse(data){
+        this.gameData = utils.getValue(data, 'gameData', {})
+        this.emit(Events.ON_GAME_RESET);
+        this._setGameInfo(room)
+        this._loadGameData(true)
+
+        //TODO handle data
+
+        app.service.setRestoringGame(false)
     }
 
     clearReadyPlayer(){
@@ -216,6 +237,16 @@ export default class GameScene extends BaseScene {
             console.warn(e);
             app.system.enablePendingGameEvent = false;
             e instanceof CreateGameException && this._onLoadSceneFail();
+        }
+    }
+
+    onAppStateChange(state){
+        if(!app.system.isInactive){
+            this.gameEventHandler.restoringGame = true
+            app.service.send({
+                cmd: 'getGameData',
+                room: this.room
+            })
         }
     }
 
