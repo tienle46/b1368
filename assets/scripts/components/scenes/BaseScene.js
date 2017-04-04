@@ -151,6 +151,9 @@ export default class BaseScene extends Actor {
                 /**
                  * after login try to resend iap saved on local storage
                  */
+                
+                // app.system.marker.initCaches();
+                
                 this.changeScene(app.const.scene.DASHBOARD_SCENE, () => {setTimeout(() => this._resendIAPSavedItem(), 2000)});
             }
         });

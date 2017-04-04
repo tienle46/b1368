@@ -24,6 +24,7 @@ class TopBar extends DialogActor {
             dropDownOptions: cc.Node,
             dropDownBgNode: cc.Node,
             promptPrefab: cc.Prefab,
+            settingDialog: cc.Prefab,
             soundControl: cc.Node,
         };
     }
@@ -103,7 +104,8 @@ class TopBar extends DialogActor {
     }
 
     handleSettingAction(e) {
-        //TODO
+        let dialog = cc.instantiate(this.settingDialog);
+        app.system.getCurrentSceneNode().addChild(dialog);
     }
 
     handleMoreAction() {

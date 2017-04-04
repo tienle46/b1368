@@ -70,7 +70,7 @@ export default class ListTableScene extends BaseScene {
         app.system.addListener(app.commands.USER_LIST_ROOM, this._onUserListRoom, this);
         app.system.addListener(app.commands.USER_CREATE_ROOM, this._onUserCreateRoom, this);
         app.system.addListener(SFS2X.SFSEvent.ROOM_JOIN, this._handleRoomJoinEvent, this);
-        app.system.addListener(app.commands.PLAYER_INVITE, this._onPlayerInviteEvent, this);
+        app.system.marker.getItemData(app.system.marker.SHOW_INVITATION_POPUP_OPTION) && app.system.addListener(app.commands.PLAYER_INVITE, this._onPlayerInviteEvent, this);
         app.system.addListener(SFS2X.SFSEvent.ROOM_JOIN_ERROR, this._onJoinRoomError, this);
     }
 
@@ -81,7 +81,7 @@ export default class ListTableScene extends BaseScene {
         app.system.removeListener(app.commands.USER_LIST_ROOM, this._onUserListRoom, this);
         app.system.removeListener(app.commands.USER_CREATE_ROOM, this._onUserCreateRoom, this);
         app.system.removeListener(SFS2X.SFSEvent.ROOM_JOIN, this._handleRoomJoinEvent, this);
-        app.system.removeListener(app.commands.PLAYER_INVITE, this._onPlayerInviteEvent, this);
+        app.system.marker.getItemData(app.system.marker.SHOW_INVITATION_POPUP_OPTION) && app.system.removeListener(app.commands.PLAYER_INVITE, this._onPlayerInviteEvent, this);
         app.system.removeListener(SFS2X.SFSEvent.ROOM_JOIN_ERROR, this._onJoinRoomError, this);
     }
 

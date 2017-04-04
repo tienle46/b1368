@@ -11,7 +11,7 @@ import ConfirmPopup from 'ConfirmPopup';
 import utils from 'utils';
 import Toast from 'Toast';
 import { isFunction } from 'Utils';
-
+import Marker from 'Marker';
 
 class GameSystem {
 
@@ -20,6 +20,8 @@ class GameSystem {
         this.pendingGameEvents = [];
         this.__pendingEventOnSceneChanging = {};
         this.gameEventEmitter = new Emitter;
+        this.marker = new Marker();
+        this.audioManager = null;
         this.enablePendingGameEvent = false;
         this.toast = null;
         // high light message

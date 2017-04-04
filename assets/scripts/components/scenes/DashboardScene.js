@@ -23,7 +23,7 @@ export default class DashboardScene extends BaseScene {
     }
 
     onEnable() {
-        super.onEnable()
+        super.onEnable();
     }
 
     onDestroy() {

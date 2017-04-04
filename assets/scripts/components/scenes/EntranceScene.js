@@ -1,8 +1,8 @@
 /* eslint-disable no-undef, no-unused-vars */
-import app from 'app'
-import BaseScene from 'BaseScene'
-import BuddyManager from 'BuddyManager'
-import PromptPopup from 'PromptPopup'
+import app from 'app';
+import BaseScene from 'BaseScene';
+import BuddyManager from 'BuddyManager';
+import PromptPopup from 'PromptPopup';
 
 class EntranceScene extends BaseScene {
 
@@ -18,7 +18,7 @@ class EntranceScene extends BaseScene {
         this.accessToken = null;
     }
 
-    onLoad() {
+    onLoad() {        
         if (app.env.isMobile() && sdkbox.PluginFacebook) {
             sdkbox.PluginFacebook.setListener({
                 onLogin: (isLogin, msg) => {
@@ -37,16 +37,16 @@ class EntranceScene extends BaseScene {
             this._activeFacebookBtn();
         } else if (app.env.isBrowser()) {
             if (window.FB) {
-                this._activeFacebookBtn();
+                this && this._activeFacebookBtn();
             } else {
                 window.fbAsyncInit = () => {
                     window.FB.init({
-                        appId: `${app.config.fbAppId }`,
-                        xfbml: `${app.config.fbxfbml }`,
-                        version: `${app.config.fbVersion }`
+                        appId: `${ app.config.fbAppId }`,
+                        xfbml: `${ app.config.fbxfbml }`,
+                        version: `${ app.config.fbVersion }`
                     });
                     window.FB.AppEvents.logPageView();
-                    this._activeFacebookBtn();
+                    this && this._activeFacebookBtn();
                 };
                 (function(d, s, id) {
                     var js, fjs = d.getElementsByTagName(s)[0];

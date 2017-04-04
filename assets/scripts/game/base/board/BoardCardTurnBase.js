@@ -44,6 +44,8 @@ export default class BoardCardTurnBase extends BoardCard {
     _onPlayerPlayedCards(playerId, playedCards, srcCardList, isItMe){
         this.playedCards = playedCards;
         this.renderer.addToDeck(playedCards, srcCardList, isItMe);
+      
+        app.system.audioManager.play(app.system.audioManager.DANH_BAI);
     }
 
     getLastPlayedTurnPlayerId(){

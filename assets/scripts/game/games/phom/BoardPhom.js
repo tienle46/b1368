@@ -51,6 +51,7 @@ export default class BoardPhom extends BoardCardTurnBase {
     }
 
     _onPlayerPlayedCards(playerId, playedCards, srcCardList, isItMe){
+        app.system.audioManager.play(app.system.audioManager.DANH_BAI);
         playedCards && playedCards.length > 0 && (this.lastPlayedCard = playedCards[0])
         //This don't call super, this event will be handle on player instead
     }

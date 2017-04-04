@@ -201,4 +201,8 @@ export default class Utils {
     static formatNumberType2(value = 0) {
         return value <= 99999 ? value : numeral(value).format('00.00a');
     }
+    
+    static upperCaseFirstLetter(string) {
+        return string.trim().toLowerCase().split(" ").map(s => s.charAt(0).toUpperCase() + s.slice(1)).join(" ");
+    }
 }

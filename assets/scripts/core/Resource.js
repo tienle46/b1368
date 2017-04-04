@@ -131,4 +131,10 @@ app.res.gameName = {
     "pom": app.res.string('game_name_phom'),
     "xit": app.res.string('game_name_xi_to'),
     "xod": app.res.string('game_name_xoc_dia'),
-}
+};
+
+
+app.res.ATLAS_URLS = {
+    PROVIDERS: 'blueTheme/atlas/providers',
+    CHIPS: 'blueTheme/atlas/chips'
+};

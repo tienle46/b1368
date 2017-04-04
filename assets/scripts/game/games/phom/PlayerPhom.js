@@ -389,6 +389,7 @@ export default class PlayerPhom extends PlayerCardTurnBase {
             }
         }
     }
+    
 
     _onPlayerPlayedCards(playedCards, srcCardList, isItMe) {
         if (utils.isEmptyArray(playedCards)) return;
@@ -404,8 +405,8 @@ export default class PlayerPhom extends PlayerCardTurnBase {
 
             this._isPlayImmediateAfterTakeCard = true;
         }
-
-
+        
+        
         this.renderer.addPlayedCard(playedCards, srcCardList, isItMe);
     }
 
@@ -425,7 +426,6 @@ export default class PlayerPhom extends PlayerCardTurnBase {
     }
 
     /**
-     * TODO: Play sound on take card
      *
      * @param data
      * @private
@@ -444,6 +444,8 @@ export default class PlayerPhom extends PlayerCardTurnBase {
             } else {
                 this.renderer.cardList.removeCards([card]);
             }
+            // play sound
+            app.system.audioManager.play(app.system.audioManager.PHOM_BOC_BAI);
         }});
     }
 
@@ -477,6 +479,7 @@ export default class PlayerPhom extends PlayerCardTurnBase {
         }
 
         // TODO play sound eat
+        app.system.audioManager.play(app.system.audioManager.PHOM_AN_QUAN);
     }
 
     _processAfterEatOrTake(eatCard = false) {
@@ -654,6 +657,7 @@ export default class PlayerPhom extends PlayerCardTurnBase {
         }
 
         //TODO play sound
+        
     }
 
     /**

@@ -183,7 +183,7 @@ class TabSMS extends PopupTabBody {
     
     _initItem(code, syntax, sendTo, moneySend, moneyGot, isChecked, hasPromotion, promoteDesc, telcoId) {
         let iconNumber = Math.round(moneyGot / 10000) + 1;
-        RubUtils.getSpriteFrameFromAtlas(app.const.ATLAS_URLS.CHIPS, `scoreIcon_${iconNumber >= 5 ? 5 : iconNumber}`, (sprite) => {
+        RubUtils.getSpriteFrameFromAtlas(app.res.ATLAS_URLS.CHIPS, `scoreIcon_${iconNumber >= 5 ? 5 : iconNumber}`, (sprite) => {
             this.iconSprite.spriteFrame = sprite;
 
             this.moneyGetLbl.string = `${numberFormat(moneyGot)}`;
@@ -209,7 +209,7 @@ class TabSMS extends PopupTabBody {
                 let activeState = `${providerName.toLowerCase()}-active`;
                 let inactiveState = `${providerName.toLowerCase()}-inactive`;
 
-                RubUtils.getSpriteFramesFromAtlas(app.const.ATLAS_URLS.PROVIDERS, [activeState, inactiveState], (sprites) => {
+                RubUtils.getSpriteFramesFromAtlas(app.res.ATLAS_URLS.PROVIDERS, [activeState, inactiveState], (sprites) => {
                     this.activeStateSprite.spriteFrame = sprites[activeState];
                     this.inActiveStateSprite.spriteFrame = sprites[inactiveState];
 

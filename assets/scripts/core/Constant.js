@@ -161,9 +161,3 @@ app.const.NUMBER_MESSAGES_KEEP_PER_BUDDY = 30;
  * =============================================== 
  */
 app.const.ACTION_CODES = ['CASH', 'TRANSFER', 'TOPUP', 'TOPUP_CARD', 'TOPUP_SMS', 'TOPUP_IAP', 'EVENT', 'BUDDY', 'BANK', 'GIFT_CODE', 'SYSTEM_MESSAGE', 'PERSONAL_MESSAGE', 'EXCHANGE', 'EXCHANGE_CARD', 'EXCHANGE_ITEM', 'EXCHANGE_HISTORY', 'BUDDY_CHAT', 'FEEDBACK', 'FANPAGE', 'WEBSITE', 'TOP_VIP', 'TOP_CAO_THU', 'TOP_DAI_GIA', 'AGENT', 'TOPUP_HISTORY', 'PERSONAL_INFO', 'PLAYER_INFO', 'PERSONAL_STATISTIC', 'PLAY_GAME'];
-
-
-app.const.ATLAS_URLS = {
-    PROVIDERS: 'blueTheme/atlas/providers',
-    CHIPS: 'blueTheme/atlas/chips'
-};

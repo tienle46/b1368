@@ -84,7 +84,7 @@ export default class Component {
                         outline.width = 2;
                         let lbl = outline.node.getComponent(cc.Label);
                         // only uppercase first letter
-                        lbl.string = lbl.string.trim().toLowerCase().split(" ").map(s => s.charAt(0).toUpperCase() + s.slice(1)).join(" ");
+                        lbl.string = Utils.upperCaseFirstLetter(lbl.string);
                     });
                 }
             });

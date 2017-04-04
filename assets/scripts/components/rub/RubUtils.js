@@ -23,6 +23,21 @@ let RubUtils = {
             }
         });
     },
+    loadResDir: (dirUrl, assetType = null, callback) => {
+        cc.loader.loadResDir(dirUrl, assetType, (error, assets) => {
+            if(error) {
+                console.error(error);
+                return;
+            }
+            
+            callback && callback(assets);
+            
+            RubUtils.releaseAssets(assets);
+        });
+    },
+    getAudioClipsFromResDir: (dirUrl, callback) => {
+        RubUtils.loadResDir(dirUrl, cc.AudioClip, callback);
+    },
     getAtlasFromUrl: (url, cb) => {
         RubUtils.loadRes(url, cc.SpriteAtlas).then((atlas) => {
             cb && cb(atlas);

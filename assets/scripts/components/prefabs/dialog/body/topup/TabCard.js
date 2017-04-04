@@ -133,7 +133,7 @@ class TabCard extends PopupTabBody {
                 let activeState = `${providerName.toLowerCase()}-active`;
                 let inactiveState = `${providerName.toLowerCase()}-inactive`;
                 
-                RubUtils.getSpriteFramesFromAtlas(app.const.ATLAS_URLS.PROVIDERS, [activeState, inactiveState], (sprites) => {
+                RubUtils.getSpriteFramesFromAtlas(app.res.ATLAS_URLS.PROVIDERS, [activeState, inactiveState], (sprites) => {
                     this.activeStateSprite.spriteFrame = sprites[activeState];
                     this.inActiveStateSprite.spriteFrame = sprites[inactiveState];
 

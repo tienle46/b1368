@@ -80,6 +80,8 @@ export default class PlayerXocDia extends PlayerCardBetTurn {
 
         if (isSuccess) {
             let { myPos, isItMe } = this._getPosBasedOnWorldSpace(playerId);
+            
+            app.system.audioManager.play(app.system.audioManager.XOCDIA_MOVING_CHIPS);
             this.scene.emit(Events.XOCDIA_ON_PLAYER_TOSSCHIP_ANIMATION, { myPos, betsList, isItMe, playerId, isReplace, prevList });
         } else {
             //TODO

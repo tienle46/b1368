@@ -4727,6 +4727,9 @@
     "promptPrefab": {
       "__uuid__": "a8f2ac52-6f07-4ebc-9285-b34a82167f57"
     },
+    "settingDialog": {
+      "__uuid__": "641d32fc-e076-4981-a37e-e54a7ee42ec1"
+    },
     "soundControl": null
   },
   {

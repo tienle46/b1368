@@ -1,7 +1,6 @@
 import app from 'app';
 import Component from 'Component';
-import PhomGenerator from 'PhomGenerator';
-import Card from 'Card';
+import AudioManager from 'AudioManager';
 
 class PreloadScene extends Component {
     constructor() {
@@ -10,8 +9,7 @@ class PreloadScene extends Component {
         this.loading = {
             default: null,
             type: cc.Node
-        }
-        this.asss = "asdadas";
+        };
     }
 
     onLoad() {
@@ -19,7 +17,14 @@ class PreloadScene extends Component {
             this.loading.getComponent('FullSceneProgress').show(app.res.string('loading_data'));
         }
         this._setupEnvironment();
-
+        
+        if(!app.system.marker.getItemData(app.system.marker.SOUND_OPTION)) {
+            app.system.marker.setItem(app.system.marker.SOUND_OPTION, true);
+        }
+        if(!app.system.marker.getItemData(app.system.marker.SHOW_INVITATION_POPUP_OPTION)) {
+            app.system.marker.setItem(app.system.marker.SHOW_INVITATION_POPUP_OPTION, true);
+        }
+        
         // let cards = [
         //     Card.from(Card.RANK_AT, Card.SUIT_ZO),
         //     Card.from(Card.RANK_HAI, Card.SUIT_ZO),
@@ -91,6 +96,8 @@ class PreloadScene extends Component {
                 app.system.error(app.res.string('error_cannot_load_data'));
             }
         });
+        
+        app.system.audioManager = new AudioManager();
 
         // app.async.parallel([
         //     () => (callback) => {

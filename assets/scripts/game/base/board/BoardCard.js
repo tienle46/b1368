@@ -37,7 +37,10 @@ export default class BoardCard extends Board {
 
     onDealCard(playerHandCardLists, dealCards, data) {
         this.meDealCards = [...dealCards]
-
+        
+        // play sound
+        app.system.audioManager.play(app.system.audioManager.CHIA_BAI, true);
+        
         CardList.dealCards(this.renderer.dealCardActionComponent, this.renderer.dealCardAnchor, playerHandCardLists, dealCards.length, () => {
             this.scene.emit(Events.ON_GAME_STATE_STARTED);
             this.onDoneDealCards()
@@ -49,6 +52,8 @@ export default class BoardCard extends Board {
     onDoneDealCards(){
         this.renderer.meDealCardList.clear();
         this.meDealCards = [];
+        // stop sound
+        app.system.audioManager.stop(app.system.audioManager.CHIA_BAI);
     }
 
     _getPlayerHandCards(playerIds, data) {
