@@ -77,7 +77,7 @@ export default class TabUserAchievements extends PopupTabBody {
 
             this.bodyNode.addChild(this.getScrollViewNode());
         } else {
-            this.pageIsEmpty(this.bodyNode);
+            // this.pageIsEmpty(this.bodyNode);
         }
     }
     
