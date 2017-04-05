@@ -18,7 +18,7 @@ class PreloadScene extends Component {
         if (this.loading) {
             this.loading.getComponent('FullSceneProgress').show(app.res.string('loading_data'));
         }
-        
+
         if(!app.system.marker.getItemData(app.system.marker.SOUND_OPTION)) {
             app.system.marker.setItem(app.system.marker.SOUND_OPTION, true);
         }
