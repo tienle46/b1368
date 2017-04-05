@@ -61,6 +61,17 @@ export class Cell extends Component {
         if (color instanceof cc.Color)
             this.node.color = color;
     }
+    
+    resizeHeight(numberOfLines) {
+        if(this.label.overflow == cc.Label.Overflow.CLAMP) {
+            this.label.lineHeight = this.label.fontSize + 10;
+            let height = numberOfLines * this.label.lineHeight + 35;
+            
+            this.label.verticalAlign = cc.Label.VerticalAlign.CENTER;
+            
+            this.node.setContentSize(this.node.getContentSize().width, height);
+        }
+    }
 }
 
 app.createComponent(Cell);

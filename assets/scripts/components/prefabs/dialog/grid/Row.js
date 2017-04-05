@@ -13,7 +13,12 @@ export class Row extends Component {
         this.addAsset(this.node.getComponent(cc.Sprite).spriteFrame);
         super.onDestroy();
     }
-
+    
+    onEnable() {
+        super.onEnable();
+        this.verticalAlignCenterText();
+    }
+    
     init(cells, showBg) {
         if (!app._.isEmpty(cells)) {
             cells.map(cell => {
@@ -28,6 +33,8 @@ export class Row extends Component {
         if(!app.env.isBrowser()) {
             this.layout.paddingTop = 40;
         }
+        
+        this.node.active = true;
     }
 
     initWithNode(node, showBg) {
@@ -40,22 +47,23 @@ export class Row extends Component {
     }
 
     verticalAlignCenterText() {
-        let height = this.node.getContentSize().height;
-        setTimeout(() => {
+        if(this.node) {
+            let height = this.node.getContentSize().height;
+            
             let max = Math.max(...this.node.children.map(o => {
                 return o.getContentSize().height;
             }));
 
             if (max > height) {
                 this.node.children.map(child => {
-                    let label = child.getComponent(cc.Label);
-                    if(label) {
-                        label.overflow = cc.Label.Overflow.CLAMP;
-                        child.setContentSize(child.getContentSize().width, max);
+                    let cell = child.getComponent('Cell');
+                    if(cell) {
+                        cell.label.overflow = cc.Label.Overflow.CLAMP;
+                        cell.resizeHeight(max/cell.label.lineHeight);
                     }  
                 });
             }
-        });
+        }
     }
 }
 

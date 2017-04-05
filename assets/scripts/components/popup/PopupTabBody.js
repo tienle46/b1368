@@ -128,7 +128,20 @@ export default class PopupTabBody extends Actor {
             this._scrollView.getComponent('Scrollview').updateView(head, data);
         }
     }
+    
+    pageIsEmpty(node, str) {
+        this.hideLoader(node);
 
+        let p404 = cc.instantiate(this.p404);
+        node.children.map(child => cc.isValid(child) && child.destroy() && child.removeFromParent());
+        node.addChild(p404);
+
+        if (str) {
+            let p404Component = p404.getComponent('P404');
+            p404Component && p404Component.setText(str);
+        }
+    }
+    
     getScrollViewNode() {
         return this._scrollView;
     }

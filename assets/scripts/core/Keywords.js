@@ -63,6 +63,7 @@ Keywords.LOST = "lo";
 Keywords.LOST_LIST = "ll";
 Keywords.LOST_COUNT = "ls";
 Keywords.DRAW = "d";
+Keywords.DETAIL_LIST = "dtl";
 Keywords.DRAW_LIST = "dl";
 Keywords.DRAW_COUNT = "dr";
 Keywords.PLAYED_TIME = "pt";

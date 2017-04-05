@@ -1,14 +1,21 @@
 import app from 'app';
 import PopupTabBody from 'PopupTabBody';
 import RubResources from 'RubResources';
+import {
+    isEmpty,
+    numberFormat
+} from 'Utils';
 
 class TabExchangeHistory extends PopupTabBody {
     constructor() {
         super();
         this.flag = null;
-        this.bodyNode = {
-            default: null,
-            type: cc.Node
+        
+        this.properties = {
+            ...this.properties,
+            bodyNode: cc.Node,
+            chargeBtnNode: cc.Node,
+            getChipBtnNode: cc.Node,
         };
     }
 
@@ -29,14 +36,59 @@ class TabExchangeHistory extends PopupTabBody {
         data && Object.keys(data).length > 0 && this._renderHistory(data);
     }
     
+    
+    onChargeBtnClick(e) {
+        let { cardSerial, serialNumber , telcoId} = e.currentTarget.value;
+        // console.debug(cardSerial, serialNumber, telcoId);
+
+        if (isEmpty(cardSerial) || isEmpty(serialNumber) || isNaN(cardSerial) || isNaN(serialNumber)) {
+            app.system.error(
+                app.res.string('error_user_enter_empty_input')
+            );
+        } else {
+            let sendObject = {
+                'cmd': app.commands.USER_SEND_CARD_CHARGE,
+                data: {
+                    [app.keywords.CHARGE_CARD_PROVIDER_ID]: telcoId,
+                    [app.keywords.CARD_CODE]: cardSerial,
+                    [app.keywords.CARD_SERIAL]: serialNumber
+                }
+            };
+
+            app.service.send(sendObject); // send request and get `smsg` (system_message) response from server
+        }
+    }
+    
+    onGetChipBtnClick(e) {
+        let { transferId } = e.currentTarget.value;
+        console.debug(transferId);
+        let sendObject = {
+            'cmd': app.commands.GET_BACK_CHIPS,
+            data: {
+                [app.keywords.ID]: transferId,
+            }
+        };
+        app.service.send(sendObject);
+    }
+    
+    onNextBtnClick(page) {
+        this._getHistoriesFromServer(page);
+    }
+    
+    onPreviousBtnClick(page) {
+        this._getHistoriesFromServer(page);
+    }
+    
     _addGlobalListener() {
         super._addGlobalListener();
         app.system.addListener(app.commands.EXCHANGE_HISTORY, this._onGetExchangeHistory, this);
+        app.system.addListener(app.commands.GET_BACK_CHIPS, this._onGetChipBack, this);
     }
 
     _removeGlobalListener() {
         super._removeGlobalListener();
         app.system.removeListener(app.commands.EXCHANGE_HISTORY, this._onGetExchangeHistory, this);
+        app.system.removeListener(app.commands.GET_BACK_CHIPS, this._onGetChipBack, this);
     }
 
     _getHistoriesFromServer(page = 1) {
@@ -57,7 +109,8 @@ class TabExchangeHistory extends PopupTabBody {
     
     _renderHistory(res) {
         let pattern = /Mã thẻ[^]*,/;
-        let d = (res[app.keywords.EXCHANGE_HISTORY.RESPONSE.ITEM_ID_HISTORY] && res[app.keywords.EXCHANGE_HISTORY.RESPONSE.ITEM_ID_HISTORY].length > 0 && [
+        if(res[app.keywords.EXCHANGE_HISTORY.RESPONSE.ITEM_ID_HISTORY] && res[app.keywords.EXCHANGE_HISTORY.RESPONSE.ITEM_ID_HISTORY].length > 0) {
+            let data = [
             res[app.keywords.EXCHANGE_HISTORY.RESPONSE.TIME_LIST],
             res[app.keywords.EXCHANGE_HISTORY.RESPONSE.NAME_LIST],
             res[app.keywords.EXCHANGE_HISTORY.RESPONSE.STATUS_LIST].map((status, index) => {
@@ -70,75 +123,86 @@ class TabExchangeHistory extends PopupTabBody {
                         return app.res.string('is_waiting_card');
                     case 3:
                     case 12:
-                        if (pattern.exec(res['dtl'][index]).length > 0) {
-                            return pattern.exec(res['dtl'][index])[0];
+                        var exec = pattern.exec(res[app.keywords.DETAIL_LIST][index]);
+                        if (exec && exec.length > 0) {
+                            return exec[0];
                         }
-                        return '';
+                        return app.res.string('sent');
                     case 100:
                         return app.res.string('trading_is_denied');
+                    case 101:
+                        return app.res.string('got_money');
+                    case 102:
+                        return app.res.string('request_is_denied');
+                    default:
+                        return app.res.string('error_system');
                 }
             }),
             res[app.keywords.EXCHANGE_HISTORY.RESPONSE.STATUS_LIST].map((status, index) => {
-                let width = 150;
-                let height = 70;
                 switch (status) {
                     case 1:
                     case 2:
-                        return { text: 'NHẬN CHIP', button: { eventHandler: null, width, height, spriteFrame: RubResources.YELLOW_BTN } };
+                        let transferId = res[app.keywords.EXCHANGE_HISTORY.RESPONSE.ITEM_ID_HISTORY][index];
+                        
+                        let btnNode = cc.instantiate(this.getChipBtnNode);
+                            btnNode.value = { transferId };
+                            return btnNode;
                     case 3:
                         var cardSerial, serialNumber;
-                        if (pattern.exec(res['dtl'][index]) && pattern.exec(res['dtl'][index]).length > 0) {
-                            let str = pattern.exec(res['dtl'][index])[0];
+                        var exec = pattern.exec(res[app.keywords.DETAIL_LIST][index]);
+                        if (exec && exec.length > 0) {
+                            let str = exec[0];
                             let info = str.match(/\d+/g);
-                            if (info.length >= 2) {
+                            let telcoId = res['telcoArr'][index];
+                            if (info && info.length >= 2) {
                                 cardSerial = info[0];
                                 serialNumber = info[1];
                                 info = null;
                             }
+                            
+                            let btnNode = cc.instantiate(this.chargeBtnNode);
+                            btnNode.value = { cardSerial, serialNumber, telcoId };
+                            return btnNode;
                         }
-                        var event = new cc.Component.EventHandler();
-                        event.target = this.node;
-                        event.component = 'TabExchangeHistory';
-                        event.handler = '_onChargeToGame';
-
-                        return { text: 'NẠP GAME', button: { eventHandler: event, width, height, value: { cardSerial, serialNumber } } };
+                        return '';
                     default:
                         return '';
                 }
             }),
-        ]) || [];
+        ];
+        this._initBody(data);
+        } else {
+            this.pageIsEmpty(this.bodyNode);
+        }
 
-        this._initBody(d);
     }
     
-    _onChargeToGame(e) {
-        let { cardSerial, serialNumber } = e.currentTarget.getValue();
+    _onGetChipBack(data) {
+        if(data[app.keywords.RESPONSE_RESULT]) {
+            app.system.showToast(data[app.keywords.RESPONSE_MESSAGE]);
+        } else {
+            app.system.error(app.res.string(data[app.keywords.RESPONSE_MESSAGE]));
+        }
     }
-
-    _initBody(d) {
+    
+    
+    _initBody(data) {
         let next = this.onNextBtnClick;
         let prev = this.onPreviousBtnClick;
 
         let head = {
-            data: ['Thời gian', 'Loại vật phẩm', 'Thông tin', ''],
+            data: ['Thời gian', 'Loại vật phẩm', 'Thông tin', 'x'],
             options: {
                 fontColor: app.const.COLOR_YELLOW
             }
         };
-        this.initView(head, d, {
+        this.initView(head, data, {
+            fontSize: 22,
             paging: { next, prev, context: this },
             size: this.bodyNode.getContentSize()
         });
 
         this.bodyNode.addChild(this.getScrollViewNode());
-    }
-
-    onNextBtnClick(p) {
-        this.onNextBtnClick(p);
-    }
-
-    onPreviousBtnClick(p) {
-        this._getHistoriesFromServer(p);
     }
 }
 

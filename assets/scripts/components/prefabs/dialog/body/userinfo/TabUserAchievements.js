@@ -48,12 +48,13 @@ export default class TabUserAchievements extends PopupTabBody {
     }
     
     _renderUserAchievements(res){
-        let gameListCol = res[app.keywords.GAME_NAME_LIST] || [];
-        if (gameListCol.length > 0) {
+        let gameCodeList = res[app.keywords.GAME_CODE_LIST] || [];
+        if (gameCodeList.length > 0) {
             let levelCol = res[app.keywords.LEVEL_LIST].map((e) => `Cấp độ ${e}`) || [];
             // let levelCol = res[app.keywords.LEVEL_TITLE_LIST]|| [];
             let winCol = res[app.keywords.WIN_LIST] || [];
             let loseCol = res[app.keywords.LOST_LIST] || [];
+            let gameListCol = res[app.keywords.GAME_NAME_LIST] || [];
 
             let data = [
                 gameListCol,
@@ -77,14 +78,10 @@ export default class TabUserAchievements extends PopupTabBody {
 
             this.bodyNode.addChild(this.getScrollViewNode());
         } else {
-            // this.pageIsEmpty(this.bodyNode);
+            this.pageIsEmpty(this.bodyNode);
         }
     }
     
-    pageIsEmpty(node) {
-        let p404 = cc.instantiate(this.p404);
-        node.addChild(p404);
-    }
 }
 
 app.createComponent(TabUserAchievements);

@@ -4,123 +4,108 @@
     <dict>
         <key>frames</key>
         <dict>
-            <key>1.png</key>
+            <key>bomb_01.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
                 <key>spriteOffset</key>
                 <string>{0,0}</string>
                 <key>spriteSize</key>
-                <string>{179,150}</string>
+                <string>{88,56}</string>
                 <key>spriteSourceSize</key>
-                <string>{179,150}</string>
+                <string>{88,56}</string>
                 <key>textureRect</key>
-                <string>{{1,1},{179,150}}</string>
+                <string>{{1,263},{88,56}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>2.png</key>
+            <key>bomb_02.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
                 <key>spriteOffset</key>
                 <string>{0,0}</string>
                 <key>spriteSize</key>
-                <string>{99,106}</string>
+                <string>{52,54}</string>
                 <key>spriteSourceSize</key>
-                <string>{99,106}</string>
+                <string>{52,54}</string>
                 <key>textureRect</key>
-                <string>{{167,264},{99,106}}</string>
+                <string>{{91,263},{52,54}}</string>
+                <key>textureRotated</key>
+                <false/>
+            </dict>
+            <key>bomb_03.png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{0,0}</string>
+                <key>spriteSize</key>
+                <string>{75,77}</string>
+                <key>spriteSourceSize</key>
+                <string>{75,77}</string>
+                <key>textureRect</key>
+                <string>{{145,255},{75,77}}</string>
                 <key>textureRotated</key>
                 <true/>
             </dict>
-            <key>3.png</key>
+            <key>bomb_04.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
                 <key>spriteOffset</key>
                 <string>{0,0}</string>
                 <key>spriteSize</key>
-                <string>{152,122}</string>
+                <string>{111,110}</string>
                 <key>spriteSourceSize</key>
-                <string>{152,122}</string>
+                <string>{111,110}</string>
                 <key>textureRect</key>
-                <string>{{353,256},{152,122}}</string>
+                <string>{{128,142},{111,110}}</string>
+                <key>textureRotated</key>
+                <true/>
+            </dict>
+            <key>bomb_05.png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{0,0}</string>
+                <key>spriteSize</key>
+                <string>{125,119}</string>
+                <key>spriteSourceSize</key>
+                <string>{125,119}</string>
+                <key>textureRect</key>
+                <string>{{1,142},{125,119}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>4.png</key>
+            <key>bomb_06.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
                 <key>spriteOffset</key>
                 <string>{0,0}</string>
                 <key>spriteSize</key>
-                <string>{169,126}</string>
+                <string>{143,139}</string>
                 <key>spriteSourceSize</key>
-                <string>{169,126}</string>
+                <string>{143,139}</string>
                 <key>textureRect</key>
-                <string>{{182,136},{169,126}}</string>
+                <string>{{1,1},{143,139}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>5.png</key>
+            <key>bomb_07.png</key>
             <dict>
                 <key>aliases</key>
                 <array/>
                 <key>spriteOffset</key>
                 <string>{0,0}</string>
                 <key>spriteSize</key>
-                <string>{152,129}</string>
+                <string>{105,119}</string>
                 <key>spriteSourceSize</key>
-                <string>{152,129}</string>
+                <string>{105,119}</string>
                 <key>textureRect</key>
-                <string>{{353,125},{152,129}}</string>
-                <key>textureRotated</key>
-                <false/>
-            </dict>
-            <key>6.png</key>
-            <dict>
-                <key>aliases</key>
-                <array/>
-                <key>spriteOffset</key>
-                <string>{0,0}</string>
-                <key>spriteSize</key>
-                <string>{164,122}</string>
-                <key>spriteSourceSize</key>
-                <string>{164,122}</string>
-                <key>textureRect</key>
-                <string>{{347,1},{164,122}}</string>
-                <key>textureRotated</key>
-                <false/>
-            </dict>
-            <key>7.png</key>
-            <dict>
-                <key>aliases</key>
-                <array/>
-                <key>spriteOffset</key>
-                <string>{0,0}</string>
-                <key>spriteSize</key>
-                <string>{163,133}</string>
-                <key>spriteSourceSize</key>
-                <string>{163,133}</string>
-                <key>textureRect</key>
-                <string>{{182,1},{163,133}}</string>
-                <key>textureRotated</key>
-                <false/>
-            </dict>
-            <key>8.png</key>
-            <dict>
-                <key>aliases</key>
-                <array/>
-                <key>spriteOffset</key>
-                <string>{0,0}</string>
-                <key>spriteSize</key>
-                <string>{164,134}</string>
-                <key>spriteSourceSize</key>
-                <string>{164,134}</string>
-                <key>textureRect</key>
-                <string>{{1,153},{164,134}}</string>
+                <string>{{146,1},{105,119}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -134,13 +119,13 @@
             <key>premultiplyAlpha</key>
             <false/>
             <key>realTextureFileName</key>
-            <string>concho.png</string>
+            <string>nembom.png</string>
             <key>size</key>
-            <string>{512,379}</string>
+            <string>{252,331}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:50f01c3001b31baee5209f6489c4cfa5:d88abd42511ba8639bf28c148eaaaf93:0e0299e9e4dd792098100cc2c3719fea$</string>
+            <string>$TexturePacker:SmartUpdate:b6ac306bb81472a2a25fbd5ae35700fe:c21fec9f9f092ba8431bef8432bb119a:a9d9d8bc855663780ba01205f755c955$</string>
             <key>textureFileName</key>
-            <string>concho.png</string>
+            <string>nembom.png</string>
         </dict>
     </dict>
 </plist>

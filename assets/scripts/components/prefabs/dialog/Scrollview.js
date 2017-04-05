@@ -40,7 +40,6 @@ export default class Scrollview extends Component {
     initView(head, body, options) {
         this.options = Object.assign({}, this.options, options);
         // this.options = options;
-
         this._gridview = cc.instantiate(this.gridview);
         this.addNode(this._gridview);
 
@@ -273,20 +272,20 @@ export default class Scrollview extends Component {
 
         //     return input;
         // }
-
+        
         let tmp = [];
         let out = [];
-
-        if (input[0])
-            while (input[0].length > 0) {
-                let l = input.length;
-                for (let i = 0; i < l; i++) {
-                    tmp.push(input[i].shift() || null);
-                }
+        let clone = app._.cloneDeep(input);
+        
+        if (clone[0])
+            while (clone[0].length > 0) {
+                let l = clone.length;
+                for (let i = 0; i < l; i++)
+                    tmp.push(clone[i].shift() || null);
+                    
                 out.push(tmp);
                 tmp = [];
             }
-
         return out;
     }
 }

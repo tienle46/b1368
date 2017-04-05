@@ -130,7 +130,10 @@ export class GridView extends Component {
     _initRow(data, showBg, options = {}) {
         let widths = this._setCellSize(data);
         let row = cc.instantiate(this.rowPrefab);
+        row.active = false;
         this.addNode(row);
+        this.node.addChild(row);
+        
         let rowComponent = row.getComponent('Row');
         rowComponent.init(data.map((d, i) => {
             let cell = cc.instantiate(this.cellPrefab);
@@ -138,7 +141,7 @@ export class GridView extends Component {
             if (cellComponent) {
                 let o = {};
                 options.fontColor && (o.fontColor = options.fontColor);
-                options.fontSize && (o.fontColor = options.fontSize);
+                options.fontSize && (o.fontSize = options.fontSize);
 
                 if (options.group && options.group.colors) {
                     cellComponent.setColor(options.group.colors[i]);
@@ -146,16 +149,11 @@ export class GridView extends Component {
 
                 cellComponent.init(d, o);
                 cellComponent.setWidth(widths[i]);
-
             }
             this.addNode(cell);
 
             return cell;
         }), showBg);
-
-        rowComponent.verticalAlignCenterText();
-
-        this.node.addChild(row);
     }
 
     _setCellSize(data) {

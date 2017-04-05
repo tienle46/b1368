@@ -50,7 +50,7 @@ export default class TabUserBank extends PopupTabBody {
     }
     
     onDataChanged(data = {}) {
-        data && this._renderUserData(data);
+        data.messages && data.messages.length > 0 && this._renderUserData(data);
     }
     
     onRutTienBtnClick() {
@@ -191,7 +191,7 @@ export default class TabUserBank extends PopupTabBody {
     _renderUserData(data) {
         // let next = this.onNextBtnClick;
         // let prev = this.onPreviousBtnClick;
-        if (data.balance) {
+        if (data.hasOwnProperty('balance')) {
             this._balance = data.balance;
             this.balanceLbl.string = numberFormat(this._balance);
 
@@ -202,24 +202,29 @@ export default class TabUserBank extends PopupTabBody {
 
             //this.hintRichText.string = `<outline width=2 color=#000>Số tiền rút tối thiểu: <color=#FF0000>${numberFormat(this._minTransfer)}</c>. Tối thiểu cần có <color=#FF0000> ${numberFormat(this._remainTransfer)} </c> trong tài khoản.</o>`;
         }
+        
+        if (data.times.length > 0) {
+            this.initView({
+                data: ['Thời gian', 'Nội dung'],
+                options: {
+                    fontColor: app.const.COLOR_YELLOW
+                }
+            }, [
+                data.times,
+                data.messages
+            ], {
+                // paging: { next, prev, context: this },
+                size: this.gridNode.getContentSize(),
+                fontSize: 22,
+                group: {
+                    widths: [270, '']
+                }
+            });
 
-        this.initView({
-            data: ['Thời gian', 'Nội dung'],
-            options: {
-                fontColor: app.const.COLOR_YELLOW
-            }
-        }, [
-            data.times,
-            data.messages
-        ], {
-            // paging: { next, prev, context: this },
-            size: this.gridNode.getContentSize(),
-            group: {
-                widths: [270, '']
-            }
-        });
-
-        this.gridNode.addChild(this.getScrollViewNode());
+            this.gridNode.addChild(this.getScrollViewNode());
+        } else {
+            this.pageIsEmpty(this.gridNode);
+        }
     }
 }
 

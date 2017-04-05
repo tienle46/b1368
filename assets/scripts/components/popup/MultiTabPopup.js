@@ -16,6 +16,7 @@ export default class MultiTabPopup extends Component {
         this.properties = {
             ...this.properties,
             titleLabel: cc.Label,
+            bgTransparent: cc.Node,
             bodyNode: cc.Node,
             loadingNode: cc.Node,
             tabContainer: cc.Node,
@@ -38,6 +39,8 @@ export default class MultiTabPopup extends Component {
     onLoad() {
         super.onLoad();
         this.progress = this.loadingNode.getComponent('Progress');
+        this.bgTransparent.on(cc.Node.EventType.TOUCH_START, () => true);
+        
         this._tabBodies = [];
     }
 
