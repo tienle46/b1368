@@ -33,7 +33,7 @@ class GameSystem {
         this._sceneName = null;
         this._delayChangeAppStateTimeoutId = 0;
 
-        this.appStateChangeListeners = {}
+        this._actionComponents = []
     }
 
     showLoader(message = "", duration) {
@@ -211,13 +211,8 @@ class GameSystem {
             cc.game.setFrameRate(48);
         }
 
-        cc.game.on(cc.game.EVENT_HIDE, () => {
-            app.system.changeAppState('inactive')
-        })
-
-        cc.game.on(cc.game.EVENT_SHOW, () => {
-            app.system.changeAppState('active')
-        });
+        cc.game.on(cc.game.EVENT_SHOW, () => app.system.changeAppState('active'))
+        cc.game.on(cc.game.EVENT_HIDE, () => app.system.changeAppState('inactive'))
     }
 
     _clearDelayUpdateHideState(){
@@ -228,40 +223,35 @@ class GameSystem {
     }
 
     changeAppState(state= 'active'){
+
         if(app.env.isBrowser()){
             this.isInactive = state == 'inactive'
-            Object.values(this.appStateChangeListeners).forEach(handler => handler && handler(state));
+            this._actionComponents.forEach(cmp => cmp.onAppStateChange(state))
         }else{
             this._clearDelayUpdateHideState()
 
             if(state == 'inactive'){
                 this.isInactive = true
-                Object.values(this.appStateChangeListeners).forEach(handler => handler && handler(state));
+                this._actionComponents.forEach(cmp => cmp.onAppStateChange(state))
             }else{
                 this._delayChangeAppStateTimeoutId = setTimeout(() => {
                     this.isInactive = false
-                    Object.values(this.appStateChangeListeners).forEach(handler => handler && handler(state));
+                    this._actionComponents.forEach(cmp => cmp.onAppStateChange(state))
                 }, 3000)
             }
         }
     }
 
-    /**
-     *
-     * @param state : one of ['active', 'inactive']
-     */
-    addAppStateListener(name, handler){
-        name && (this.appStateChangeListeners[name] = handler)
+    addAppStateListener(component){
+        if(component && component.onAppStateChange && this._actionComponents.indexOf(component) < 0){
+            this._actionComponents.push(component)
+        }
     }
 
-    /**
-     *
-     * @param state : one of ['active', 'inactive']
-     */
-    removeAppStateListener(name) {
-        name && (this.appStateChangeListeners[name] = undefined)
+    removeAppStateListener(component) {
+        let index = component &&  this._actionComponents.indexOf(component)
+        index >= 0 &&  this._actionComponents.splice(index, 1)
     }
-
 
     addGameListener(eventName, listener, context, priority) {
         this.gameEventEmitter.addListener(eventName, listener, context, priority);

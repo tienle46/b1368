@@ -363,18 +363,6 @@ class Service {
 
         this.isConnecting = true;
 
-        window.addEventListener("beforeunload", function (e) {
-            window.confirm("lkdsflksjdklfjskdf")
-            app.service.client._socketEngine._socket.onclose = function () {}; // disable onclose handler first
-            app.service.client._socketEngine._socket.close()
-            return null;
-        });
-
-        // window.onbeforeunload = function() {
-        //     app.service.client._socketEngine._socket.onclose = function () {}; // disable onclose handler first
-        //     app.service.client._socketEngine._socket.close()
-        // };
-
         if (this.client.isConnected()) {
             this._onConnection({ success: true });
         } else {
@@ -414,6 +402,7 @@ class Service {
         data[app.keywords.IS_REGISTER] = isRegister;
         data[app.keywords.RAW_PASSWORD] = password;
         data[app.keywords.APP_SECRET_KEY] = app.config.app_secret_key;
+        data['isMobile'] = app.env.isMobile()
         // data[app.keywords.APP_VERSION_KEY] = "1.0.1"; //
         // data[app.keywords.VERSION] = "1.0.0"; //
         data[app.keywords.DEVICE_ID] = app.config.DEVICE_ID;
