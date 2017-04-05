@@ -13,8 +13,14 @@ export default class PhomGenerator {
 
         let allPhoms = this.generateAllPhom(cards);
 
+        let generatedPhomLists = this.splitToPhomList(allPhoms)
+
+        return this._sortPhomLists(generatedPhomLists);
+    }
+
+    static splitToPhomList(allPhoms){
         let generatedPhomLists = [...allPhoms.map(phom => new PhomList([phom]))];
-        
+
         this._generateSubsetAlgorithm(allPhoms.map((phom, i) => i), 2, (indexArr) => {
             let phoms = allPhoms.filter((value, i) => indexArr.indexOf(i) >= 0);
             !this._isDuplicateCardInPhom(phoms) && generatedPhomLists.push(new PhomList(phoms));
@@ -25,7 +31,7 @@ export default class PhomGenerator {
             !this._isDuplicateCardInPhom(phoms) && generatedPhomLists.push(new PhomList(phoms));
         });
 
-        return this._sortPhomLists(generatedPhomLists);
+        return generatedPhomLists;
     }
 
     static generatePhomContainEatenCards(cards = [], eatenCards = []) {
@@ -101,7 +107,7 @@ export default class PhomGenerator {
     static _isSuitPhom(cards) {
 
         let preCard;
-        let isSuitPhom = this._isValidPhomLength(cards);
+        let isSuitPhom = this._isValidPhomEatenCard(cards) && this._isValidPhomLength(cards);
         cards.some(card => {
             if (preCard) {
                 if (card.rank - preCard.rank != 1) {

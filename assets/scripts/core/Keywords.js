@@ -571,6 +571,7 @@ Keywords.RANK_NODE_ID = "ni";
 Keywords.RANK_TYPE_NAME = "hl";
 Keywords.RANK_TYPE_ID = "itl";
 Keywords.RANK_TYPE_ICON = "iml";
+Keywords.MESSAGE = "msg";
 
 //DOI THUONG
 Keywords.EXCHANGE_LIST = {

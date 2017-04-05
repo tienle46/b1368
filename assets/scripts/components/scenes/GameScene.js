@@ -303,7 +303,7 @@ export default class GameScene extends BaseScene {
 
         app.service.send({ cmd: app.commands.REGISTER_QUIT_ROOM, room: this.room }, (data) => {
             if (data && data[app.keywords.SUCCESSFULL]) {
-                app.system.showToast(app.res.string("game_registered_quit_room"));
+                app.system.showToast(data[app.keywords.MESSAGE] || app.res.string("game_registered_quit_room"));
             }
         });
     }
