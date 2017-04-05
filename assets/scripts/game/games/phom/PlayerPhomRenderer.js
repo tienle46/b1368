@@ -237,6 +237,7 @@ export default class PlayerPhomRenderer extends PlayerCardTurnBaseRenderer {
 
     showDownCards(cards = []) {
         if(this.downCardList){
+            this.downCardList.clear()
             this.downCardList.transferFrom(this.cardList, cards);
         }
     }

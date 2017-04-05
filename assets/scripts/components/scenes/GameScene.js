@@ -145,7 +145,6 @@ export default class GameScene extends BaseScene {
         this._penddingEvents = [];
 
         this.node.children.forEach(child => { child.opacity = 255 });
-
         Object.values(app.res.asset_tools).length < 1 && this._loadAssetTools();
     }
 
@@ -228,7 +227,6 @@ export default class GameScene extends BaseScene {
         if (this.gameData) {
             this._loadGameData(isJustJoined);
         }
-
     }
 
     start() {

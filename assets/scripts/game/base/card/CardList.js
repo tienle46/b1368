@@ -26,9 +26,9 @@ export default class CardList extends ActionComponent {
             reveal: true,
             selectable: false,
             draggable: false,
-            space: Card.CARD_WIDTH,
             maxDimension: CardList.DEFAULT_MAX_WIDTH,
-            cardPrefab: cc.Prefab
+            cardPrefab: cc.Prefab,
+            space: Card.CARD_WIDTH
         }
 
         this.cardWidth = Card.CARD_WIDTH;
@@ -48,7 +48,7 @@ export default class CardList extends ActionComponent {
     getCenterHorizontalPosition(){
 
         //6 is height of transparent of card in bottom
-        let cardHeight = (Card.CARD_HEIGHT + 6) * this.scale;
+        let cardHeight = (Card.CARD_HEIGHT + 4) * this.scale;
 
         if(this.align == CardList.ALIGN_TOP_CENTER){
             return cc.v2(0, -cardHeight);
@@ -163,16 +163,16 @@ export default class CardList extends ActionComponent {
         if (this._isHorizontal()) {
             this.node.width = this.maxDimension;
             this.node.height = this.scale * Card.CARD_HEIGHT;
-            this.space = this.maxDimension == 0 ? 0 : this.scale * (this.space || Card.CARD_WIDTH);
+            this._realSpace = this.maxDimension == 0 ? 0 : this.scale * (this.space || Card.CARD_WIDTH);
         } else {
             this.node.width = this.scale * Card.CARD_WIDTH;
             this.node.height = this.maxDimension;
-            this.space = this.maxDimension == 0 ? 0 : this.scale * (this.space || Card.CARD_WIDTH);
+            this._realSpace = this.maxDimension == 0 ? 0 : this.scale * (this.space || Card.CARD_WIDTH);
         }
 
         this.cardWidth = Card.CARD_WIDTH * this.scale;
         this.cardHeight = Card.CARD_HEIGHT * this.scale;
-        this._overlapSpace = this.space;
+        this._overlapSpace = this._realSpace;
     }
 
     setReveal(reveal) {
@@ -262,16 +262,18 @@ export default class CardList extends ActionComponent {
             this.setAlign(this.__initProperties.alignment || CardList.ALIGN_CENTER_LEFT);
         }
 
+        this._updateNodeSize();
         this.__initProperties = null;
     }
 
     setScale(scale) {
-        this.scale = scale;
+        this.scale = scale
         this._updateNodeSize();
     }
 
-    setSpace(space) {
+    setSpace(space){
         this.space = space;
+        this._updateNodeSize();
     }
 
     setPosition(x, y) {
@@ -367,11 +369,11 @@ export default class CardList extends ActionComponent {
     }
 
     _updateCardSpacing() {
-        if (this.space == 0 || this.maxDimension == 0) return 0;
+        if (this._realSpace == 0 || this.maxDimension == 0) return 0;
 
         let cardSize = this._isHorizontal() ? this.cardWidth : this.cardHeight;
         let cardDistance = (this.maxDimension - cardSize) / (this.cards.length - 1);
-        this._overlapSpace = cardDistance < this.space ? cardDistance : this.space;
+        this._overlapSpace = cardDistance < this._realSpace ? cardDistance : this._realSpace;
     }
 
     _isSamePosition(pos1, pos2) {
@@ -649,7 +651,6 @@ export default class CardList extends ActionComponent {
         this._initSettedProperties();
 
         this.setAlign(this._settedAlign || this.align);
-        this._updateNodeSize();
         this.initiated = true;
         
         if (this.__initCards) {
@@ -923,16 +924,6 @@ export default class CardList extends ActionComponent {
         let compareCardBytes = this.cards.map(card => card.byteValue);
 
         return ArrayUtils.containsAll(thisCardBytes, compareCardBytes);
-    }
-
-    _pausedCallback(){
-        console.log('EVENT HIDE cardlist');
-        super._pausedCallback();
-    }
-
-    _restoreCallback(){
-        console.log('EVENT SHOW cardlist');
-        super._restoreCallback();
     }
 }
 

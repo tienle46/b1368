@@ -28,7 +28,7 @@ export default class PhomListComponent extends Component {
                 type: [cc.Node]
             },
             cardScale: 0.6,
-            space: 60,
+            space: 80,
         }
 
         this.phomList = null;
@@ -40,24 +40,26 @@ export default class PhomListComponent extends Component {
         this.phoms = [];
         this.down = [];
         this.phomList = new PhomList();
-    }
-
-    clear() {
-        this.phomList.clear();
-    }
-
-    onEnable() {
-        super.onEnable();
 
         this.phomNodes.forEach((phomNode, i) => {
             let phom = phomNode.getComponent('Phom');
-            phom.setAlign(this.align);
-            phom.setSpace(this.space);
-            phom.setScale(this.cardScale);
+            //phom.setProperties({space: this.space, scale: this.cardScale, alignment: this.align})
+            // phom.setAlign(this.align);
+            // phom.setSpace(this.space);
+            // phom.setScale(this.cardScale);
             this.phoms[i] = phom;
         });
 
         this.phomList.push(...this.phoms);
+    }
+
+    onEnable(){
+        super.onEnable()
+        this.phomList.forEach(phom => phom.setProperties({space: this.space, scale: this.cardScale, alignment: this.align}))
+    }
+
+    clear() {
+        this.phomList.clear();
     }
 
     _findFirstEmptyPhomComponentIndex() {

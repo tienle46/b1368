@@ -31,6 +31,9 @@ class GameSystem {
         this.isInactive = false;
         this.initEventListener();
         this._sceneName = null;
+        this._delayChangeAppStateTimeoutId = 0;
+
+        this._actionComponents = []
     }
 
     showLoader(message = "", duration) {
@@ -201,6 +204,54 @@ class GameSystem {
     //     this.currentScene && this.currentScene.emit(name, ...args);
     //
     // }
+
+    initOnFirstSceneLoaded(){
+        if (app.env.isBrowser()) {
+            cc.game.pause = () => {};
+            cc.game.setFrameRate(48);
+        }
+
+        cc.game.on(cc.game.EVENT_SHOW, () => app.system.changeAppState('active'))
+        cc.game.on(cc.game.EVENT_HIDE, () => app.system.changeAppState('inactive'))
+    }
+
+    _clearDelayUpdateHideState(){
+        if(this._delayChangeAppStateTimeoutId > 0){
+            clearTimeout(this._delayChangeAppStateTimeoutId)
+            this._delayChangeAppStateTimeoutId = 0;
+        }
+    }
+
+    changeAppState(state= 'active'){
+
+        if(app.env.isBrowser()){
+            this.isInactive = state == 'inactive'
+            this._actionComponents.forEach(cmp => cmp.onAppStateChange(state))
+        }else{
+            this._clearDelayUpdateHideState()
+
+            if(state == 'inactive'){
+                this.isInactive = true
+                this._actionComponents.forEach(cmp => cmp.onAppStateChange(state))
+            }else{
+                this._delayChangeAppStateTimeoutId = setTimeout(() => {
+                    this.isInactive = false
+                    this._actionComponents.forEach(cmp => cmp.onAppStateChange(state))
+                }, 3000)
+            }
+        }
+    }
+
+    addAppStateListener(component){
+        if(component && component.onAppStateChange && this._actionComponents.indexOf(component) < 0){
+            this._actionComponents.push(component)
+        }
+    }
+
+    removeAppStateListener(component) {
+        let index = component &&  this._actionComponents.indexOf(component)
+        index >= 0 &&  this._actionComponents.splice(index, 1)
+    }
 
     addGameListener(eventName, listener, context, priority) {
         this.gameEventEmitter.addListener(eventName, listener, context, priority);

@@ -67,6 +67,7 @@ class Service {
 
         this.client = new SFS2X.SmartFox(config);
         this.client.setClientDetails("MOZILLA", "1.0.0");
+        //this.client.setReconnectionSeconds(120);
 
         this._registerSmartFoxEvent();
     }
@@ -401,6 +402,7 @@ class Service {
         data[app.keywords.IS_REGISTER] = isRegister;
         data[app.keywords.RAW_PASSWORD] = password;
         data[app.keywords.APP_SECRET_KEY] = app.config.app_secret_key;
+        data['isMobile'] = app.env.isMobile()
         // data[app.keywords.APP_VERSION_KEY] = "1.0.1"; //
         // data[app.keywords.VERSION] = "1.0.0"; //
         data[app.keywords.DEVICE_ID] = app.config.DEVICE_ID;

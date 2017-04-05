@@ -2150,11 +2150,11 @@
     "reveal": true,
     "selectable": false,
     "draggable": false,
-    "space": 80,
     "maxDimension": 230,
     "cardPrefab": {
       "__uuid__": "1be1ace3-b9b3-4bf4-9c45-5c1d9eccac08"
     },
+    "space": 80,
     "orientation": 1,
     "align": 9
   },
@@ -2301,11 +2301,11 @@
     "reveal": true,
     "selectable": false,
     "draggable": false,
-    "space": 80,
     "maxDimension": 230,
     "cardPrefab": {
       "__uuid__": "1be1ace3-b9b3-4bf4-9c45-5c1d9eccac08"
     },
+    "space": 80,
     "orientation": 1,
     "align": 7
   },
@@ -2452,11 +2452,11 @@
     "reveal": true,
     "selectable": false,
     "draggable": false,
-    "space": 80,
     "maxDimension": 230,
     "cardPrefab": {
       "__uuid__": "1be1ace3-b9b3-4bf4-9c45-5c1d9eccac08"
     },
+    "space": 80,
     "orientation": 1,
     "align": 9
   },
@@ -2603,11 +2603,11 @@
     "reveal": true,
     "selectable": false,
     "draggable": false,
-    "space": 80,
     "maxDimension": 230,
     "cardPrefab": {
       "__uuid__": "1be1ace3-b9b3-4bf4-9c45-5c1d9eccac08"
     },
+    "space": 80,
     "orientation": 1,
     "align": 8
   },
@@ -2754,11 +2754,11 @@
     "reveal": true,
     "selectable": false,
     "draggable": false,
-    "space": 80,
     "maxDimension": 350,
     "cardPrefab": {
       "__uuid__": "1be1ace3-b9b3-4bf4-9c45-5c1d9eccac08"
     },
+    "space": 80,
     "orientation": 1,
     "align": 9
   },
@@ -3204,11 +3204,11 @@
     "reveal": true,
     "selectable": false,
     "draggable": false,
-    "space": 80,
     "maxDimension": 430,
     "cardPrefab": {
       "__uuid__": "1be1ace3-b9b3-4bf4-9c45-5c1d9eccac08"
     },
+    "space": 80,
     "orientation": 1,
     "align": 9
   },
@@ -3386,11 +3386,11 @@
     "reveal": true,
     "selectable": false,
     "draggable": false,
-    "space": 80,
     "maxDimension": 410,
     "cardPrefab": {
       "__uuid__": "1be1ace3-b9b3-4bf4-9c45-5c1d9eccac08"
     },
+    "space": 80,
     "orientation": 1,
     "align": 7
   },
@@ -3537,11 +3537,11 @@
     "reveal": true,
     "selectable": false,
     "draggable": false,
-    "space": 80,
     "maxDimension": 410,
     "cardPrefab": {
       "__uuid__": "1be1ace3-b9b3-4bf4-9c45-5c1d9eccac08"
     },
+    "space": 80,
     "orientation": 1,
     "align": 9
   },
@@ -3688,11 +3688,11 @@
     "reveal": true,
     "selectable": false,
     "draggable": false,
-    "space": 80,
     "maxDimension": 410,
     "cardPrefab": {
       "__uuid__": "1be1ace3-b9b3-4bf4-9c45-5c1d9eccac08"
     },
+    "space": 80,
     "orientation": 1,
     "align": 8
   },
@@ -4073,11 +4073,11 @@
     "reveal": true,
     "selectable": true,
     "draggable": false,
-    "space": 105,
     "maxDimension": 890,
     "cardPrefab": {
       "__uuid__": "1be1ace3-b9b3-4bf4-9c45-5c1d9eccac08"
     },
+    "space": 105,
     "orientation": 1,
     "align": 8
   },
@@ -4201,11 +4201,11 @@
     "reveal": true,
     "selectable": false,
     "draggable": false,
-    "space": 80,
     "maxDimension": 230,
     "cardPrefab": {
       "__uuid__": "1be1ace3-b9b3-4bf4-9c45-5c1d9eccac08"
     },
+    "space": 80,
     "orientation": 1,
     "align": 1
   },
@@ -4287,11 +4287,11 @@
     "reveal": true,
     "selectable": false,
     "draggable": false,
-    "space": 80,
     "maxDimension": 230,
     "cardPrefab": {
       "__uuid__": "1be1ace3-b9b3-4bf4-9c45-5c1d9eccac08"
     },
+    "space": 80,
     "orientation": 1,
     "align": 7
   },
@@ -4373,11 +4373,11 @@
     "reveal": true,
     "selectable": false,
     "draggable": false,
-    "space": 80,
     "maxDimension": 230,
     "cardPrefab": {
       "__uuid__": "1be1ace3-b9b3-4bf4-9c45-5c1d9eccac08"
     },
+    "space": 80,
     "orientation": 1,
     "align": 3
   },
@@ -4646,11 +4646,11 @@
     "reveal": true,
     "selectable": false,
     "draggable": false,
-    "space": 30,
     "maxDimension": 300,
     "cardPrefab": {
       "__uuid__": "1be1ace3-b9b3-4bf4-9c45-5c1d9eccac08"
     },
+    "space": 30,
     "orientation": 1,
     "align": 8
   },
@@ -4732,11 +4732,11 @@
     "reveal": true,
     "selectable": false,
     "draggable": false,
-    "space": 30,
     "maxDimension": 300,
     "cardPrefab": {
       "__uuid__": "1be1ace3-b9b3-4bf4-9c45-5c1d9eccac08"
     },
+    "space": 30,
     "orientation": 1,
     "align": 8
   },
@@ -4818,11 +4818,11 @@
     "reveal": true,
     "selectable": false,
     "draggable": false,
-    "space": 30,
     "maxDimension": 300,
     "cardPrefab": {
       "__uuid__": "1be1ace3-b9b3-4bf4-9c45-5c1d9eccac08"
     },
+    "space": 30,
     "orientation": 1,
     "align": 8
   },
@@ -4892,7 +4892,7 @@
       }
     ],
     "cardScale": 0.6,
-    "space": 130,
+    "space": 80,
     "align": 7
   },
   {
@@ -5105,11 +5105,11 @@
     "reveal": true,
     "selectable": false,
     "draggable": false,
-    "space": 30,
     "maxDimension": 300,
     "cardPrefab": {
       "__uuid__": "1be1ace3-b9b3-4bf4-9c45-5c1d9eccac08"
     },
+    "space": 30,
     "orientation": 1,
     "align": 1
   },
@@ -5191,11 +5191,11 @@
     "reveal": true,
     "selectable": false,
     "draggable": false,
-    "space": 30,
     "maxDimension": 300,
     "cardPrefab": {
       "__uuid__": "1be1ace3-b9b3-4bf4-9c45-5c1d9eccac08"
     },
+    "space": 30,
     "orientation": 1,
     "align": 1
   },
@@ -5277,11 +5277,11 @@
     "reveal": true,
     "selectable": false,
     "draggable": false,
-    "space": 30,
     "maxDimension": 300,
     "cardPrefab": {
       "__uuid__": "1be1ace3-b9b3-4bf4-9c45-5c1d9eccac08"
     },
+    "space": 30,
     "orientation": 1,
     "align": 1
   },
@@ -5351,7 +5351,7 @@
       }
     ],
     "cardScale": 0.6,
-    "space": 130,
+    "space": 80,
     "align": 7
   },
   {
@@ -5564,11 +5564,11 @@
     "reveal": true,
     "selectable": false,
     "draggable": false,
-    "space": 30,
     "maxDimension": 300,
     "cardPrefab": {
       "__uuid__": "1be1ace3-b9b3-4bf4-9c45-5c1d9eccac08"
     },
+    "space": 30,
     "orientation": 1,
     "align": 7
   },
@@ -5650,11 +5650,11 @@
     "reveal": true,
     "selectable": false,
     "draggable": false,
-    "space": 30,
     "maxDimension": 300,
     "cardPrefab": {
       "__uuid__": "1be1ace3-b9b3-4bf4-9c45-5c1d9eccac08"
     },
+    "space": 30,
     "orientation": 1,
     "align": 7
   },
@@ -5736,11 +5736,11 @@
     "reveal": true,
     "selectable": false,
     "draggable": false,
-    "space": 30,
     "maxDimension": 300,
     "cardPrefab": {
       "__uuid__": "1be1ace3-b9b3-4bf4-9c45-5c1d9eccac08"
     },
+    "space": 30,
     "orientation": 1,
     "align": 7
   },
@@ -5810,7 +5810,7 @@
       }
     ],
     "cardScale": 0.6,
-    "space": 130,
+    "space": 80,
     "align": 4
   },
   {
@@ -6023,11 +6023,11 @@
     "reveal": true,
     "selectable": false,
     "draggable": false,
-    "space": 30,
     "maxDimension": 300,
     "cardPrefab": {
       "__uuid__": "1be1ace3-b9b3-4bf4-9c45-5c1d9eccac08"
     },
+    "space": 30,
     "orientation": 1,
     "align": 9
   },
@@ -6109,11 +6109,11 @@
     "reveal": true,
     "selectable": false,
     "draggable": false,
-    "space": 30,
     "maxDimension": 300,
     "cardPrefab": {
       "__uuid__": "1be1ace3-b9b3-4bf4-9c45-5c1d9eccac08"
     },
+    "space": 30,
     "orientation": 1,
     "align": 9
   },
@@ -6195,11 +6195,11 @@
     "reveal": true,
     "selectable": false,
     "draggable": false,
-    "space": 30,
     "maxDimension": 300,
     "cardPrefab": {
       "__uuid__": "1be1ace3-b9b3-4bf4-9c45-5c1d9eccac08"
     },
+    "space": 30,
     "orientation": 1,
     "align": 9
   },
@@ -6269,7 +6269,7 @@
       }
     ],
     "cardScale": 0.6,
-    "space": 130,
+    "space": 80,
     "align": 8
   },
   {
@@ -6482,11 +6482,11 @@
     "reveal": true,
     "selectable": false,
     "draggable": false,
-    "space": 30,
     "maxDimension": 300,
     "cardPrefab": {
       "__uuid__": "1be1ace3-b9b3-4bf4-9c45-5c1d9eccac08"
     },
+    "space": 30,
     "orientation": 1,
     "align": 1
   },
@@ -6568,11 +6568,11 @@
     "reveal": true,
     "selectable": false,
     "draggable": false,
-    "space": 30,
     "maxDimension": 300,
     "cardPrefab": {
       "__uuid__": "1be1ace3-b9b3-4bf4-9c45-5c1d9eccac08"
     },
+    "space": 30,
     "orientation": 1,
     "align": 1
   },
@@ -6654,11 +6654,11 @@
     "reveal": true,
     "selectable": false,
     "draggable": false,
-    "space": 30,
     "maxDimension": 300,
     "cardPrefab": {
       "__uuid__": "1be1ace3-b9b3-4bf4-9c45-5c1d9eccac08"
     },
+    "space": 30,
     "orientation": 1,
     "align": 1
   },
@@ -6728,7 +6728,7 @@
       }
     ],
     "cardScale": 0.6,
-    "space": 130,
+    "space": 80,
     "align": 1
   },
   {

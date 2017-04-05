@@ -9,22 +9,25 @@ class PreloadScene extends Component {
         this.loading = {
             default: null,
             type: cc.Node
-        };
+        }
     }
 
     onLoad() {
+        super.onLoad()
+
         if (this.loading) {
             this.loading.getComponent('FullSceneProgress').show(app.res.string('loading_data'));
         }
-        this._setupEnvironment();
-        
+
         if(!app.system.marker.getItemData(app.system.marker.SOUND_OPTION)) {
             app.system.marker.setItem(app.system.marker.SOUND_OPTION, true);
         }
         if(!app.system.marker.getItemData(app.system.marker.SHOW_INVITATION_POPUP_OPTION)) {
             app.system.marker.setItem(app.system.marker.SHOW_INVITATION_POPUP_OPTION, true);
         }
-        
+
+        app.system.initOnFirstSceneLoaded()
+
         // let cards = [
         //     Card.from(Card.RANK_AT, Card.SUIT_ZO),
         //     Card.from(Card.RANK_HAI, Card.SUIT_ZO),
@@ -41,22 +44,6 @@ class PreloadScene extends Component {
         // cards[0].setLocked(true);
         //
         // PhomGenerator.generatePhomContainEatenCards(cards, [Card.from(Card.RANK_AT, Card.SUIT_ZO)]);
-    }
-
-    _setupEnvironment() {
-
-        if (app.env.isBrowser()) {
-            cc.game.pause = () => {};
-            cc.game.setFrameRate(48);
-        }
-
-        cc.game.on(cc.game.EVENT_HIDE, function() {
-            app.system.isInactive = true;
-        });
-
-        cc.game.on(cc.game.EVENT_SHOW, function() {
-            app.system.isInactive = false;
-        });
     }
 
     onEnable() {
