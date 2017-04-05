@@ -38,7 +38,7 @@ export default class BoardSam extends BoardCardTurnBase {
         this.renderer = this.node.getComponent('BoardSamRenderer');
         super.onEnable();
 
-        this.scene.on(Events.ON_GAME_STATE_CHANGED, this._onGameStateChanged, this);
+        //this.scene.on(Events.ON_GAME_STATE_CHANGED, this._onGameStateChanged, this);
     }
 
     get gameType() {
