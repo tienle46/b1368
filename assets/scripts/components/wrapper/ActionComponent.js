@@ -50,21 +50,15 @@ export default class ActionComponent extends Component {
 
     onEnable(){
         super.onEnable()
-
         this.__isComponentEnabled = true;
-
-        app.system.addAppStateListener(this.getUniqueName(), this._onAppStateChange.bind(this))
-
-        // cc.game.on(cc.game.EVENT_HIDE, this._pausedCallback, this);
-        // cc.game.on(cc.game.EVENT_SHOW, this._restoreCallback, this);
-
+        app.system.addAppStateListener(this)
     }
 
-    _onAppStateChange(state){
+    onAppStateChange(state){
         if(state == 'inactive'){
-            this._restoreCallback()
-        }else {
             this._pausedCallback()
+        }else {
+            this._restoreCallback()
         }
     }
 
@@ -92,11 +86,7 @@ export default class ActionComponent extends Component {
     onDisable(){
         super.onDisable()
 
-        app.system.removeAppStateListener(this.getUniqueName(), this._onAppStateChange.bind(this))
-
-        // cc.game.off(cc.game.EVENT_HIDE, this._pausedCallback, this);
-        // cc.game.off(cc.game.EVENT_SHOW, this._restoreCallback, this);
-
+        app.system.removeAppStateListener(this)
         this.finishAllActions()
         // this._clearDelayUpdateHideState()
     }

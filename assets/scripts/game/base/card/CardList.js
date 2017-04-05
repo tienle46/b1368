@@ -924,16 +924,6 @@ export default class CardList extends ActionComponent {
 
         return ArrayUtils.containsAll(thisCardBytes, compareCardBytes);
     }
-
-    _pausedCallback(){
-        console.log('EVENT HIDE cardlist');
-        super._pausedCallback();
-    }
-
-    _restoreCallback(){
-        console.log('EVENT SHOW cardlist');
-        super._restoreCallback();
-    }
 }
 
 CardList.ALIGN_BOTTOM_LEFT = 1;
