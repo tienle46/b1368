@@ -853,7 +853,7 @@ export default class CardList extends ActionComponent {
     static dealCards(actionComponent, anchorNode, playersCardLists, cardLengths, cb) {
 
         let maxLength = 0;
-        const delayTime = 0.07 + (4 - playersCardLists.length) * 0.02;
+        const delayTime = 0.008 + (4 - playersCardLists.length) * 0.008;
         const delay = cc.delayTime(delayTime);
         const actions = [delay.clone()];
 

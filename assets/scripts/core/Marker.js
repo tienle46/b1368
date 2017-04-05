@@ -6,7 +6,7 @@ import app from 'app';
 
 export default class Marker {
     constructor() {
-        this._localStorage = window.localStorage;
+        this._localStorage = cc.sys.localStorage;
         
         this.caches = {};
         

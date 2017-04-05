@@ -10843,9 +10843,9 @@
     "_opacity": 255,
     "_color": {
       "__type__": "cc.Color",
-      "r": 245,
+      "r": 255,
       "g": 255,
-      "b": 0,
+      "b": 255,
       "a": 255
     },
     "_cascadeOpacityEnabled": true,
@@ -10854,12 +10854,12 @@
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
-      "x": 1,
+      "x": 0,
       "y": 0.5
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 46.26,
+      "width": 49.78,
       "height": 40
     },
     "_children": [],
@@ -10869,7 +10869,7 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": 540,
+      "x": -543,
       "y": 328
     },
     "_skewX": 0,
@@ -10899,12 +10899,14 @@
     },
     "_enabled": true,
     "_useOriginalSize": false,
-    "_actualFontSize": 26,
-    "_fontSize": 26,
+    "_actualFontSize": 28,
+    "_fontSize": 28,
     "_lineHeight": 40,
     "_enableWrapText": true,
-    "_N$file": null,
-    "_isSystemFontUsed": true,
+    "_N$file": {
+      "__uuid__": "8538fe1b-c3b4-48ca-849f-55e33a2c7a57"
+    },
+    "_isSystemFontUsed": false,
     "_N$string": "Bàn",
     "_N$horizontalAlign": 2,
     "_N$verticalAlign": 1,
@@ -10923,12 +10925,12 @@
     "__type__": "cc.Node",
     "_name": "minBetLabel",
     "_objFlags": 0,
-    "_opacity": 248.11499999999998,
+    "_opacity": 248,
     "_color": {
       "__type__": "cc.Color",
-      "r": 253,
-      "g": 144,
-      "b": 25,
+      "r": 255,
+      "g": 255,
+      "b": 255,
       "a": 255
     },
     "_cascadeOpacityEnabled": true,
@@ -10937,12 +10939,12 @@
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
-      "x": 1,
+      "x": 0,
       "y": 0.5
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 12.24,
+      "width": 14.46,
       "height": 32
     },
     "_children": [],
@@ -10952,8 +10954,8 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": 540,
-      "y": 289
+      "x": -543,
+      "y": 293
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -10982,12 +10984,14 @@
     },
     "_enabled": true,
     "_useOriginalSize": false,
-    "_actualFontSize": 22,
-    "_fontSize": 22,
+    "_actualFontSize": 26,
+    "_fontSize": 26,
     "_lineHeight": 32,
     "_enableWrapText": true,
-    "_N$file": null,
-    "_isSystemFontUsed": true,
+    "_N$file": {
+      "__uuid__": "8538fe1b-c3b4-48ca-849f-55e33a2c7a57"
+    },
+    "_isSystemFontUsed": false,
     "_N$string": "0",
     "_N$horizontalAlign": 2,
     "_N$verticalAlign": 1,

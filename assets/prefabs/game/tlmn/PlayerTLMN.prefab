@@ -2194,7 +2194,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 80,
-      "height": 34
+      "height": 44
     },
     "_children": [
       {
@@ -2238,7 +2238,7 @@
     "__type__": "cc.Node",
     "_name": "label",
     "_objFlags": 0,
-    "_opacity": 255,
+    "_opacity": 150,
     "_color": {
       "__type__": "cc.Color",
       "r": 255,
@@ -2258,7 +2258,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 80,
-      "height": 20
+      "height": 30
     },
     "_children": [],
     "_rotationX": 0,
@@ -2268,7 +2268,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": 10
+      "y": 15
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -2297,9 +2297,9 @@
     },
     "_enabled": true,
     "_useOriginalSize": false,
-    "_actualFontSize": 15,
-    "_fontSize": 15,
-    "_lineHeight": 20,
+    "_actualFontSize": 25,
+    "_fontSize": 25,
+    "_lineHeight": 30,
     "_enableWrapText": true,
     "_N$file": null,
     "_isSystemFontUsed": true,
@@ -2377,7 +2377,7 @@
     "_layoutSize": {
       "__type__": "cc.Size",
       "width": 80,
-      "height": 34
+      "height": 44
     },
     "_resize": 1,
     "_N$layoutType": 2,
