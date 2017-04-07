@@ -2052,11 +2052,11 @@
     "reveal": true,
     "selectable": true,
     "draggable": false,
-    "space": 124,
     "maxDimension": 980,
     "cardPrefab": {
       "__uuid__": "1be1ace3-b9b3-4bf4-9c45-5c1d9eccac08"
     },
+    "space": 124,
     "orientation": 1,
     "align": 7
   },
@@ -2741,11 +2741,11 @@
     "reveal": true,
     "selectable": false,
     "draggable": false,
-    "space": 80,
     "maxDimension": 520,
     "cardPrefab": {
       "__uuid__": "1be1ace3-b9b3-4bf4-9c45-5c1d9eccac08"
     },
+    "space": 80,
     "orientation": 1,
     "align": 5
   },
@@ -2827,11 +2827,11 @@
     "reveal": true,
     "selectable": false,
     "draggable": false,
-    "space": 80,
     "maxDimension": 520,
     "cardPrefab": {
       "__uuid__": "1be1ace3-b9b3-4bf4-9c45-5c1d9eccac08"
     },
+    "space": 80,
     "orientation": 1,
     "align": 5
   },
@@ -3013,11 +3013,11 @@
     "reveal": true,
     "selectable": false,
     "draggable": false,
-    "space": 80,
     "maxDimension": 460,
     "cardPrefab": {
       "__uuid__": "1be1ace3-b9b3-4bf4-9c45-5c1d9eccac08"
     },
+    "space": 80,
     "orientation": 1,
     "align": 4
   },
@@ -3199,11 +3199,11 @@
     "reveal": true,
     "selectable": false,
     "draggable": false,
-    "space": 80,
     "maxDimension": 460,
     "cardPrefab": {
       "__uuid__": "1be1ace3-b9b3-4bf4-9c45-5c1d9eccac08"
     },
+    "space": 80,
     "orientation": 1,
     "align": 5
   },
@@ -3385,11 +3385,11 @@
     "reveal": true,
     "selectable": false,
     "draggable": false,
-    "space": 80,
     "maxDimension": 460,
     "cardPrefab": {
       "__uuid__": "1be1ace3-b9b3-4bf4-9c45-5c1d9eccac08"
     },
+    "space": 80,
     "orientation": 1,
     "align": 5
   },
@@ -3571,11 +3571,11 @@
     "reveal": true,
     "selectable": false,
     "draggable": false,
-    "space": 80,
     "maxDimension": 460,
     "cardPrefab": {
       "__uuid__": "1be1ace3-b9b3-4bf4-9c45-5c1d9eccac08"
     },
+    "space": 80,
     "orientation": 1,
     "align": 6
   },
@@ -3807,7 +3807,7 @@
     "_tag": -1,
     "_opacityModifyRGB": false,
     "_id": "",
-    "_active": true,
+    "_active": false,
     "_components": [],
     "_prefab": {
       "__id__": 127

@@ -118,7 +118,11 @@ export default class PlayerSam extends PlayerCardTurnBase {
     }
 
     _onPlayTurn() {
-        if (!this.isItMe()) {
+        if (!this.isItMe())  {
+            return;
+        }
+
+        if(!this.turnAdapter.isTurn()){
             return;
         }
 
@@ -128,7 +132,7 @@ export default class PlayerSam extends PlayerCardTurnBase {
         if (SamUtils.checkPlayCard(cards, preCards)) {
             this.turnAdapter.playTurn(cards);
         } else {
-            this.notify(app.res.string("invalid_play_card"));
+            app.system.showToast(app.res.string("invalid_play_card"));
         }
     }
 
@@ -155,15 +159,15 @@ export default class PlayerSam extends PlayerCardTurnBase {
     onEnable() {
         super.onEnable(this.getComponent('PlayerSamRenderer'));
 
-        if (this.isItMe()) {
-            this.renderer.setSelectCardChangeListener(this._onSelectedCardsChanged.bind(this));
-        }
+        // if (this.isItMe()) {
+        //     this.renderer.setSelectCardChangeListener(this._onSelectedCardsChanged.bind(this));
+        // }
     }
 
-    _onSelectedCardsChanged(selectedCards) {
-        let interactable = SamUtils.checkPlayCard(selectedCards, this.getPrePlayedCards(), app.const.game.GAME_TYPE_TIENLEN);
-        this.scene.emit(Events.SET_INTERACTABLE_PLAY_CONTROL, interactable);
-    }
+    // _onSelectedCardsChanged(selectedCards) {
+    //     let interactable = SamUtils.checkPlayCard(selectedCards, this.getPrePlayedCards(), app.const.game.GAME_TYPE_TIENLEN);
+    //     this.scene.emit(Events.SET_INTERACTABLE_PLAY_CONTROL, interactable);
+    // }
 
     _onGameRejoin(data) {
         super._onGameRejoin(data);

@@ -108,6 +108,7 @@ export default class PhomGenerator {
 
         let preCard;
         let isSuitPhom = this._isValidPhomEatenCard(cards) && this._isValidPhomLength(cards);
+        // isSuitPhom &&
         cards.some(card => {
             if (preCard) {
                 if (card.rank - preCard.rank != 1) {

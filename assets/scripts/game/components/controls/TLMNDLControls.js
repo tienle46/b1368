@@ -44,12 +44,13 @@ export default class TLMNDLControls extends GameControls {
 
     _showOnTurnControls(showPlayControlOnly) {
         this.hideAllControls();
-        this.cardTurnBaseControls._showOnTurnControls(showPlayControlOnly);
+        this.cardTurnBaseControls._showOnTurnControls(showPlayControlOnly, true);
     }
 
     _showWaitTurnControls() {
         this.hideAllControls();
         this.cardTurnBaseControls._showWaitTurnControls();
+        this.cardTurnBaseControls._showOnTurnControls(true, true);
     }
 
     _onGameBegin(data, isJustJoined) {

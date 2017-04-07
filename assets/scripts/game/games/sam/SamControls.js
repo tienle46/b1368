@@ -30,6 +30,7 @@ export default class SamControls extends GameControls {
          * @type {CardTurnBaseControls}
          */
         this.cardTurnBaseControls = null;
+        this.isBaoSam = false;
     }
 
     onEnable() {
@@ -53,7 +54,7 @@ export default class SamControls extends GameControls {
 
     _showOnTurnControls(showPlayControlOnly) {
         this.hideAllControls();
-        this.scene.gamePlayers.isMePlaying() && this.cardTurnBaseControls._showOnTurnControls(showPlayControlOnly);
+        this.scene.gamePlayers.isMePlaying() && this.cardTurnBaseControls._showOnTurnControls(showPlayControlOnly, true);
     }
 
     _showBaoSamControls() {
@@ -63,11 +64,14 @@ export default class SamControls extends GameControls {
             utils.active(this.baoXamBtn);
             utils.active(this.boBaoXamBtn);
         }
+
+        this.isBaoSam = true;
     }
 
     _showWaitTurnControls() {
         this.hideAllControls();
         this.cardTurnBaseControls._showWaitTurnControls();
+        this.isBaoSam && this.cardTurnBaseControls._showOnTurnControls(true, true)
     }
 
     _onGameBegin(data, isJustJoined) {
@@ -93,6 +97,8 @@ export default class SamControls extends GameControls {
 
         this._hideGameBeginControls();
 
+        this.isBaoSam = true;
+
         let nextTurnPlayerId = utils.getValue(data, Keywords.TURN_PLAYER_ID);
         if (!nextTurnPlayerId) {
             this.scene.gamePlayers.isMePlaying() && this._showWaitTurnControls();
@@ -104,6 +110,7 @@ export default class SamControls extends GameControls {
 
     _onGameEnding(data, isJustJoined) {
         this.hideAllControls();
+        this.isBaoSam = false;
     }
 
     hideAllControls() {

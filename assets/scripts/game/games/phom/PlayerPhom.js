@@ -290,6 +290,7 @@ export default class PlayerPhom extends PlayerCardTurnBase {
         if (!this.turnAdapter.isTurn()) return;
 
         let doneActionsInTurn = utils.getValue(data, Keywords.GAME_LIST_DONE_ACTION_WHEN_REJOIN);
+
         if (doneActionsInTurn) {
 
             let isGui, isHa, isAn, isBoc;
@@ -318,6 +319,8 @@ export default class PlayerPhom extends PlayerCardTurnBase {
             } else if (isAn || isBoc) {
                 this._processAfterEatOrTake(isAn);
             }
+        }else{
+            this.setState(PlayerPhom.STATE_PHOM_EAT_TAKE)
         }
     }
 

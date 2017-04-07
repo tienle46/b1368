@@ -58,9 +58,8 @@ export default class PlayerTLMNDL extends PlayerCardTurnBase {
     }
 
     _onPlayTurn() {
-        if (!this.isItMe()) {
-            return;
-        }
+        if (!this.isItMe()) return;
+        if(!this.turnAdapter.isTurn()) return;
 
         let cards = this.getSelectedCards();
         let preCards = this.getPrePlayedCards();
@@ -68,7 +67,7 @@ export default class PlayerTLMNDL extends PlayerCardTurnBase {
         if (TLMNUtils.checkPlayCard(cards, preCards)) {
             this.turnAdapter.playTurn(cards);
         } else {
-            this.notify(app.res.string("invalid_play_card"));
+            app.system.showToast(app.res.string("invalid_play_card"));
         }
     }
 
@@ -82,7 +81,7 @@ export default class PlayerTLMNDL extends PlayerCardTurnBase {
             let sortedCard = TLMNUtils.sortAsc(this.renderer.cardList.cards, this.sortSolution);
             this.renderer.cardList.onCardsChanged();
 
-            // this.sortSolution = this.sortSolution == TLMNUtils.SORT_BY_RANK ? TLMNUtils.SORT_BY_SUIT : TLMNUtils.SORT_BY_RANK;
+            //this.sortSolution = this.sortSolution == TLMNUtils.SORT_BY_RANK ? TLMNUtils.SORT_BY_SUIT : TLMNUtils.SORT_BY_RANK;
         }
     }
 
@@ -105,15 +104,15 @@ export default class PlayerTLMNDL extends PlayerCardTurnBase {
     onEnable() {
         super.onEnable(this.node.getComponent('PlayerTLMNDLRenderer'));
 
-        if (this.isItMe()) {
-            this.renderer.setSelectCardChangeListener(this._onSelectedCardsChanged.bind(this));
-        }
+        // if (this.isItMe()) {
+        //     this.renderer.setSelectCardChangeListener(this._onSelectedCardsChanged.bind(this));
+        // }
     }
 
-    _onSelectedCardsChanged(selectedCards) {
-        let interactable = TLMNUtils.checkPlayCard(selectedCards, this.getPrePlayedCards(), app.const.game.GAME_TYPE_TIENLEN);
-        this.scene.emit(Events.SET_INTERACTABLE_PLAY_CONTROL, interactable);
-    }
+    // _onSelectedCardsChanged(selectedCards) {
+    //     let interactable = TLMNUtils.checkPlayCard(selectedCards, this.getPrePlayedCards(), app.const.game.GAME_TYPE_TIENLEN);
+    //     this.scene.emit(Events.SET_INTERACTABLE_PLAY_CONTROL, interactable);
+    // }
 
     onGamePlaying(data, isJustJoined){
         super.onGamePlaying(data, isJustJoined)

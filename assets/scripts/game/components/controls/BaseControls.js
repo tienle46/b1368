@@ -34,12 +34,12 @@ export default class BaseControls extends GameControls {
     }
 
     onClickReadyButton() {
-        this.scene.showShortLoading();
+        //this.scene.showShortLoading();
         app.service.send({ cmd: app.commands.PLAYER_READY, room: this.scene.room });
     }
 
     onClickUnreadyButton() {
-        this.scene.showShortLoading();
+        //this.scene.showShortLoading();
         app.service.send({ cmd: app.commands.PLAYER_UNREADY, room: this.scene.room });
     }
 

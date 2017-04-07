@@ -23,6 +23,8 @@ export default class PlayerTurnBaseAdapter extends GameAdapter {
         this.preTurnPlayerId = 0;
         this.currentTurnPlayerId = 0;
         this.player.skippedTurn = false;
+
+        console.warn("reser player turn: ")
     }
 
     onEnable(){
@@ -71,6 +73,9 @@ export default class PlayerTurnBaseAdapter extends GameAdapter {
     }
 
     isTurn() {
+        
+        console.log("isTurn check this.currentTurnPlayerId: ", this.currentTurnPlayerId)
+        
         return this.player.id == this.currentTurnPlayerId;
     }
 
@@ -103,15 +108,16 @@ export default class PlayerTurnBaseAdapter extends GameAdapter {
     }
 
     _handleChangeTurn(turnPlayerId){
+
+        console.log("_handleChangeTurn: ", turnPlayerId)
+
         this.preTurnPlayerId = this.currentTurnPlayerId;
-        this.currentTurnPlayerId = turnPlayerId;
         if(this.player.id === turnPlayerId) {
-
-
             // let preTurnPlayer = this.scene.gamePlayers.findPlayer(this.preTurnPlayerId);
             // preTurnPlayer && preTurnPlayer.turnAdapter.onLoseTurn();
             this.onTurn();
         }
+        this.currentTurnPlayerId = turnPlayerId;
     }
 
     _handlePlayTurn(playerId, data){

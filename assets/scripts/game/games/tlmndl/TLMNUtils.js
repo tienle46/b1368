@@ -331,6 +331,7 @@ export default class TLMNUtils {
     //         return cards.sort((card1, card2) => card1.suit - card2.suit);
     //     }
     // }
+
     static sortAsc(cards, type = TLMNUtils.SORT_BY_RANK){
         if(!cards || cards.length == 0) return cards;
 

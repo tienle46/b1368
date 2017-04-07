@@ -294,7 +294,7 @@
       "__id__": 1
     },
     "asset": {
-      "__id__": 0
+      "__uuid__": "7fdd56e9-1d38-4b87-9823-a75da7f42293"
     },
     "fileId": "8bfe3DotHNCvY7nH3G9Ja6I",
     "sync": false
@@ -396,7 +396,7 @@
       "__id__": 1
     },
     "asset": {
-      "__id__": 0
+      "__uuid__": "7fdd56e9-1d38-4b87-9823-a75da7f42293"
     },
     "fileId": "ba395cfcTxAtpFL1GqMES6u",
     "sync": false
@@ -564,7 +564,7 @@
       "__id__": 1
     },
     "asset": {
-      "__id__": 0
+      "__uuid__": "7fdd56e9-1d38-4b87-9823-a75da7f42293"
     },
     "fileId": "aa9aakQ4jVHB4ofFOjAAz9B",
     "sync": false
@@ -621,7 +621,7 @@
       "a": 255
     },
     "duration": 0.1,
-    "zoomScale": 1.05,
+    "zoomScale": 1.15,
     "pressedSprite": null,
     "hoverSprite": null,
     "clickEvents": [
@@ -666,7 +666,7 @@
       "__id__": 1
     },
     "asset": {
-      "__id__": 0
+      "__uuid__": "7fdd56e9-1d38-4b87-9823-a75da7f42293"
     },
     "fileId": "f1444n7BhtCEYze91/91Rso",
     "sync": false
@@ -834,7 +834,7 @@
       "__id__": 1
     },
     "asset": {
-      "__id__": 0
+      "__uuid__": "7fdd56e9-1d38-4b87-9823-a75da7f42293"
     },
     "fileId": "fcb986iwIxDj5UyZA2a/yPr",
     "sync": false
@@ -936,7 +936,7 @@
       "__id__": 1
     },
     "asset": {
-      "__id__": 0
+      "__uuid__": "7fdd56e9-1d38-4b87-9823-a75da7f42293"
     },
     "fileId": "0d1aeniU/BO26RfHR0bQNzc",
     "sync": false
@@ -966,7 +966,7 @@
       "__id__": 1
     },
     "asset": {
-      "__id__": 0
+      "__uuid__": "7fdd56e9-1d38-4b87-9823-a75da7f42293"
     },
     "fileId": "dc8753w5DNHXpQ8CJaG0ckl",
     "sync": false
@@ -1204,7 +1204,7 @@
       "__id__": 1
     },
     "asset": {
-      "__id__": 0
+      "__uuid__": "7fdd56e9-1d38-4b87-9823-a75da7f42293"
     },
     "fileId": "3fc61LhDUVH0q6FIG3eIALL",
     "sync": false
@@ -1306,7 +1306,7 @@
       "__id__": 1
     },
     "asset": {
-      "__id__": 0
+      "__uuid__": "7fdd56e9-1d38-4b87-9823-a75da7f42293"
     },
     "fileId": "20166VKFcJANre+B9KD3NS7",
     "sync": false
@@ -1474,7 +1474,7 @@
       "__id__": 1
     },
     "asset": {
-      "__id__": 0
+      "__uuid__": "7fdd56e9-1d38-4b87-9823-a75da7f42293"
     },
     "fileId": "b7839MU/ypO6rsFzHhAEOlQ",
     "sync": false
@@ -1576,7 +1576,7 @@
       "__id__": 1
     },
     "asset": {
-      "__id__": 0
+      "__uuid__": "7fdd56e9-1d38-4b87-9823-a75da7f42293"
     },
     "fileId": "b1975kKphtMb4IY/PD9VpcY",
     "sync": false
@@ -1744,7 +1744,7 @@
       "__id__": 1
     },
     "asset": {
-      "__id__": 0
+      "__uuid__": "7fdd56e9-1d38-4b87-9823-a75da7f42293"
     },
     "fileId": "a9297Rvye9HOJEdBz/8whXM",
     "sync": false
@@ -1846,7 +1846,7 @@
       "__id__": 1
     },
     "asset": {
-      "__id__": 0
+      "__uuid__": "7fdd56e9-1d38-4b87-9823-a75da7f42293"
     },
     "fileId": "71d8cw/gNJGpI63MCEAZkeU",
     "sync": false
@@ -2014,7 +2014,7 @@
       "__id__": 1
     },
     "asset": {
-      "__id__": 0
+      "__uuid__": "7fdd56e9-1d38-4b87-9823-a75da7f42293"
     },
     "fileId": "03cf9vE3pxG74hONqqTT6dA",
     "sync": false
@@ -2116,7 +2116,7 @@
       "__id__": 1
     },
     "asset": {
-      "__id__": 0
+      "__uuid__": "7fdd56e9-1d38-4b87-9823-a75da7f42293"
     },
     "fileId": "a9da5by0rlPxa7CBAjGH2qY",
     "sync": false
@@ -2284,7 +2284,7 @@
       "__id__": 1
     },
     "asset": {
-      "__id__": 0
+      "__uuid__": "7fdd56e9-1d38-4b87-9823-a75da7f42293"
     },
     "fileId": "ef047aBZZhAg5awoFzWg9u2",
     "sync": false
@@ -2386,7 +2386,7 @@
       "__id__": 1
     },
     "asset": {
-      "__id__": 0
+      "__uuid__": "7fdd56e9-1d38-4b87-9823-a75da7f42293"
     },
     "fileId": "06517KQdfxN96/sa3lK+exp",
     "sync": false
@@ -2416,7 +2416,7 @@
       "__id__": 1
     },
     "asset": {
-      "__id__": 0
+      "__uuid__": "7fdd56e9-1d38-4b87-9823-a75da7f42293"
     },
     "fileId": "762c44yKhBHJ57D82HkJTEt",
     "sync": false
@@ -2449,7 +2449,7 @@
       "__id__": 1
     },
     "asset": {
-      "__id__": 0
+      "__uuid__": "7fdd56e9-1d38-4b87-9823-a75da7f42293"
     },
     "fileId": "e3a50/G+GRKOLR1ZKDOclCK",
     "sync": false

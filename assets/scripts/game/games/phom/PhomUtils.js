@@ -184,8 +184,11 @@ export default class PhomUtils {
     static findBestEatableCards(cards, eatenCards = [], eatingCard) {
         let bestEatableCards = []
 
-        if(eatingCard) {
-            let allPhoms = PhomGenerator.generateAllPhom([...cards, eatingCard]).filter(phom => ArrayUtils.contains(phom.cards, eatingCard));
+        let checkEatingCard = eatingCard;
+        // let checkEatingCard = Card.from(eatingCard.byteValue);
+        // PhomUtils.setEaten(checkEatingCard)
+        // if(checkEatingCard) {
+            let allPhoms = PhomGenerator.generateAllPhom([...cards, checkEatingCard]).filter(phom => ArrayUtils.contains(phom.cards, checkEatingCard));
             if(allPhoms.length > 0){
                 allPhoms.sort((phom1, phom2) => phom2.value() - phom1.value())
 
@@ -202,9 +205,9 @@ export default class PhomUtils {
                     })
                 }
 
-                ArrayUtils.remove(bestEatableCards, eatingCard)
+                ArrayUtils.remove(bestEatableCards, checkEatingCard)
             }
-        }
+        // }
 
         return bestEatableCards;
     }

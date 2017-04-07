@@ -35,9 +35,9 @@ export default class CardTurnBaseControls extends GameControls {
         utils.deactive(this.skipTurnButton);
     }
 
-    _showWaitTurnControls(playControlInteractable = false){
+    _showWaitTurnControls(playControlInteractable = true){
         if(this.scene.gamePlayers.isMePlaying()){
-            utils.setInteractable(this.playButton, playControlInteractable);
+            //utils.setInteractable(this.playButton, playControlInteractable);
             utils.active(this.sortButton);
             utils.deactive(this.skipTurnButton);
         }else{
@@ -47,11 +47,18 @@ export default class CardTurnBaseControls extends GameControls {
         }
     }
 
-    _showOnTurnControls(showPlayControlOnly, playControlInteractable = false){
-        utils.active(this.playButton);
-        utils.active(this.sortButton);
-        this.setInteractable(this.playButton, playControlInteractable);
-        showPlayControlOnly ? utils.deactive(this.skipTurnButton) : utils.active(this.skipTurnButton);
+    _showOnTurnControls(showPlayControlOnly, playControlInteractable = true){
+        if(this.scene.gamePlayers.isMePlaying()){
+            utils.active(this.playButton);
+            utils.active(this.sortButton);
+            //this.setInteractable(this.playButton, playControlInteractable);
+            showPlayControlOnly ? utils.deactive(this.skipTurnButton) : utils.active(this.skipTurnButton);
+        }else{
+            utils.setVisible(this.playButton, false);
+            utils.setVisible(this.sortButton, false);
+            utils.setVisible(this.skipTurnButton, false);
+        }
+
     }
 
     _setVisiblePlayControl(visible){
@@ -59,7 +66,7 @@ export default class CardTurnBaseControls extends GameControls {
     }
 
     _setInteractablePlayControl(interactable){
-        this.setInteractable(this.playButton, interactable);
+        //this.setInteractable(this.playButton, interactable);
     }
 
     onClickPlayButton(event){
