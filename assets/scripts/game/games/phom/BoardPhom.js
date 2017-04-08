@@ -311,7 +311,8 @@ export default class BoardPhom extends BoardCardTurnBase {
                         resultText = 'phom-u';
                         break;
                     default:
-                        resultText = 'thang';
+                        resultText = winType > 0 ? 'thang' : 'nhat';
+                        //resultText = 'thang';
                 }
 
                 winnerFlags[id] = true;
@@ -321,13 +322,13 @@ export default class BoardPhom extends BoardCardTurnBase {
                     resultText = winType > 0 ? 'thua' : 'phom-mom';
                 } else {
                     switch (playersWinRank) {
-                        case app.const.game.GAME_RANK_SECOND:
+                        case app.const.game.rank.GAME_RANK_SECOND:
                             resultText = 'nhi';
                             break;
-                        case app.const.game.GAME_RANK_THIRD:
+                        case app.const.game.rank.GAME_RANK_THIRD:
                             resultText = 'ba';
                             break;
-                        case app.const.game.GAME_RANK_FOURTH:
+                        case app.const.game.rank.GAME_RANK_FOURTH:
                             resultText = 'bet';
                             break;
                         default:

@@ -202,8 +202,9 @@ export default class BoardTLMNDL extends BoardCardTurnBase {
                 types.forEach((type, i) => {
                     let typeName = TLMNUtils.getTLMNThoiString(type);
                     let subfix = i < types.length - 1 ? ', ' : '';
+                    let count = counts[i]
 
-                    str += `${counts[i]} ${typeName}${subfix}`;
+                    str += count > 0 ? `${counts[i]} ${typeName}${subfix}` : `${typeName}${subfix}`;
                 });
 
                 gameResultInfos[id] = str + (!utils.isEmpty(gameResultInfos[id]) ? `, ${gameResultInfos[id]}` : '');
