@@ -366,7 +366,7 @@ export default class PlayerPhom extends PlayerCardTurnBase {
         if(this.isItMe()){
             let eatableCards = PhomUtils.findBestEatableCards(this.renderer.cardList.cards, this.eatenCards, this.board.lastPlayedCard);
             if (eatableCards.length > 0) {
-                this.renderer.cardList.setSelecteds(eatableCards)
+                this.renderer.cardList.setSelecteds(eatableCards, true)
                 this.renderer.cardList.setHighlight(eatableCards);
             }else{
                 this.renderer.cardList.clean();
@@ -506,7 +506,7 @@ export default class PlayerPhom extends PlayerCardTurnBase {
             if (currentPhomList.length > 0 && currentPhomCards.length >= 9) {
                 // co the u duoc
                 this.tempHoUPhoms = currentPhomList;
-                this.renderer.cardList.setSelecteds(currentPhomCards);
+                this.renderer.cardList.setSelecteds(currentPhomCards, true);
                 this.renderer.cardList.setHighlight(currentPhomCards);
                 this.setState(PlayerPhom.STATE_PHOM_PLAY_HO_U);
             }
@@ -569,7 +569,7 @@ export default class PlayerPhom extends PlayerCardTurnBase {
         currentPhomList.forEach((phom, i) => {
             phom.cards.forEach(card => {
                 card.setGroup(i);
-                card.setSelected(true);
+                card.setSelected(true, true, true);
                 card.setHighlight(true);
             });
         });
@@ -627,7 +627,7 @@ export default class PlayerPhom extends PlayerCardTurnBase {
         currentGuiSolution.forEach((node, k) => {
             let nodeCard = node.card;
             nodeCard.setHighlight(true);
-            nodeCard.setSelected(true);
+            nodeCard.setSelected(true, true, true);
         });
     }
 
@@ -891,7 +891,7 @@ export default class PlayerPhom extends PlayerCardTurnBase {
             case PlayerPhom.STATE_PHOM_PLAY_HO_U:
                 if (this.tempHoUPhoms) {
                     let phomCards = this.tempHoUPhoms.getCards();
-                    //this.renderer.cardList.setSelecteds(phomCards);
+                    this.renderer.cardList.setSelecteds(phomCards, true);
                     this.renderer.cardList.setHighlight(phomCards);
                 }
                 break;

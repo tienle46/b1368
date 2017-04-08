@@ -108,9 +108,6 @@ export default class PlayerTurnBaseAdapter extends GameAdapter {
     }
 
     _handleChangeTurn(turnPlayerId){
-
-        console.log("_handleChangeTurn: ", turnPlayerId)
-
         this.preTurnPlayerId = this.currentTurnPlayerId;
         if(this.player.id === turnPlayerId) {
             // let preTurnPlayer = this.scene.gamePlayers.findPlayer(this.preTurnPlayerId);
@@ -157,6 +154,7 @@ export default class PlayerTurnBaseAdapter extends GameAdapter {
 
     onTurn(){
 
+        this.player._assetIsReady()
         this.scene.emit(Events.ON_PLAYER_TURN, this.player.id);
         this.player.startTimeLine(this.timelineDuration);
 

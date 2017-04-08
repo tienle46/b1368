@@ -221,8 +221,14 @@ export default class Card extends ActionComponent {
     setSelected(selected, runAction = true, forceUpdate = false) {
         if (this.selected == selected && !forceUpdate) return;
 
+
+        if(forceUpdate && this.selected == selected){
+            this.finishCardAction()
+        }else{
+            this.node && this.node.stopAllActions();
+        }
+
         this.selected = selected;
-        this.node && this.node.stopAllActions();
 
         if (runAction) {
             this.node && this.node.runAction(cc.moveTo(0.2, this.node.x, selected ? this._selectedMargin : 0));

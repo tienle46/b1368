@@ -3,7 +3,7 @@
   "_name": "plusBalance",
   "_objFlags": 0,
   "_rawFiles": null,
-  "_duration": 1.9833333333333334,
+  "_duration": 4.5,
   "sample": 60,
   "speed": 1,
   "wrapMode": 1,
@@ -12,7 +12,7 @@
       "scaleX": [
         {
           "frame": 0,
-          "value": 0.6,
+          "value": 0.8,
           "curve": [
             -3.79,
             4.65,
@@ -21,14 +21,18 @@
           ]
         },
         {
-          "frame": 1.9833333333333334,
-          "value": 0.8
+          "frame": 3,
+          "value": 1
+        },
+        {
+          "frame": 4.5,
+          "value": 1.2
         }
       ],
       "scaleY": [
         {
           "frame": 0,
-          "value": 0.6,
+          "value": 0.8,
           "curve": [
             -3.69,
             3.91,
@@ -37,8 +41,12 @@
           ]
         },
         {
-          "frame": 1.9833333333333334,
-          "value": 0.8
+          "frame": 3,
+          "value": 1
+        },
+        {
+          "frame": 4.5,
+          "value": 1.2
         }
       ],
       "position": [
@@ -51,10 +59,10 @@
           "curve": "quintOut"
         },
         {
-          "frame": 1.9833333333333334,
+          "frame": 3,
           "value": [
             0,
-            -65
+            -60
           ]
         }
       ]
@@ -67,7 +75,7 @@
       "params": []
     },
     {
-      "frame": 1.9833333333333334,
+      "frame": 2.9833333333333334,
       "func": "onAnimationEnd",
       "params": []
     }

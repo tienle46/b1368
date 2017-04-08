@@ -3386,7 +3386,7 @@
     "reveal": true,
     "selectable": false,
     "draggable": false,
-    "maxDimension": 410,
+    "maxDimension": 390,
     "cardPrefab": {
       "__uuid__": "1be1ace3-b9b3-4bf4-9c45-5c1d9eccac08"
     },
@@ -3688,7 +3688,7 @@
     "reveal": true,
     "selectable": false,
     "draggable": false,
-    "maxDimension": 410,
+    "maxDimension": 390,
     "cardPrefab": {
       "__uuid__": "1be1ace3-b9b3-4bf4-9c45-5c1d9eccac08"
     },

@@ -201,7 +201,7 @@ export default class GameScene extends BaseScene {
 
             if (this.room && this.room.isGame) {
                 this.gameCode = utils.getGameCode(this.room);
-                this.gameData = this.room.getVariable(app.keywords.VARIABLE_GAME_INFO).value;
+                this._mergeGameData(this.room.getVariable(app.keywords.VARIABLE_GAME_INFO).value)
             }
 
             if (!this.gameData) {
@@ -221,7 +221,7 @@ export default class GameScene extends BaseScene {
     _onGameData(isJustJoined = true) {
 
         if (this.room && this.room.isGame) {
-            this.gameData = this.room.getVariable(app.keywords.VARIABLE_GAME_INFO).value;
+            this._mergeGameData(this.room.getVariable(app.keywords.VARIABLE_GAME_INFO).value)
         }
 
         if (this.gameData) {
@@ -291,9 +291,17 @@ export default class GameScene extends BaseScene {
         this.gameEventHandler.addGameEventListener();
     }
 
+    _mergeGameData(newGameData){
+        let readyPlayerIds = this.gameData[app.keywords.ROOM_READY_PLAYERS];
+
+        this.gameData = {...this.gameData, ...newGameData}
+
+        readyPlayerIds && this._addToReadyPlayers(...readyPlayerIds)
+    }
+
     _onGameRejoin(data) {
 
-        this.gameData = {...this.gameData, ...data}
+        this._mergeGameData(data)
         let state = utils.getValue(this.gameData, app.keywords.BOARD_STATE_KEYWORD);
         state && this.emit(Events.ON_GAME_STATE_CHANGE, state, this.gameData, true, true);
         this.emit(Events.ON_GAME_REJOIN, data);

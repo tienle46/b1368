@@ -393,6 +393,17 @@ export default class Player extends Actor {
     getPlayerPositions(){
         return this.scene.gamePlayer.playerPositions;
     }
+
+    /**
+     * @private
+     */
+
+    _assetIsReady(){
+        if(!this.isReady()){
+            this.setReady(true)
+            this.scene.emit(Events.ON_PLAYER_READY_STATE_CHANGED, this.id, true)
+        }
+    }
 }
 
 app.createComponent(Player);

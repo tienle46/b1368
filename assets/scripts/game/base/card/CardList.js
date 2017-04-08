@@ -671,7 +671,7 @@ export default class CardList extends ActionComponent {
 
     setSelecteds(cards, selected = true) {
         this.finishAllCardActions()
-        cards.forEach(card => card.setSelected(selected));
+        cards.forEach(card => card.setSelected(selected, true, true));
     }
 
     _onSelectCard(card) {
@@ -680,7 +680,7 @@ export default class CardList extends ActionComponent {
             this._revealSingleCard(card);
         } else if (this.selectable) {
             this.onCardClickListener && this.onCardClickListener(card);
-            card.setSelected(!card.selected);
+            card.setSelected(!card.selected, true, true);
             this.onSelectedCardChanged();
 
         }

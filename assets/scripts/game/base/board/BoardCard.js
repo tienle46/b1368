@@ -63,6 +63,16 @@ export default class BoardCard extends Board {
         let handCardSizes = utils.getValue(data, Keywords.GAME_LIST_PLAYER_CARDS_SIZE, []);
         let handCards = utils.getValue(data, Keywords.GAME_LIST_CARD, []);
 
+        // for (let i = 0; i < playerIds.length; i++) {
+        //     let id = playerIds[i];
+        //
+        //     let playerCardCount = handCardSizes[i];
+        //     let playerCardBytes = handCards.slice(handCardIndex, handCardIndex + playerCardCount);
+        //     playerHandCards[id] = GameUtils.convertBytesToCards(playerCardBytes);
+        //
+        //     handCardIndex += playerCardCount;
+        // }
+
         playerIds.forEach((id, i) => {
             let playerCardCount = handCardSizes[i];
 
