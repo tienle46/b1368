@@ -762,7 +762,9 @@
     },
     "_enabled": true,
     "path": "",
-    "bodyNode": null,
+    "bodyNode": {
+      "__id__": 2
+    },
     "scrollview": {
       "__uuid__": "f67e6444-2225-4c96-99ce-30908dbad119"
     },

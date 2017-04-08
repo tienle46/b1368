@@ -7,6 +7,7 @@ import BuddyPopup from 'BuddyPopup';
 import CCUtils from 'CCUtils';
 import Utils from 'Utils';
 import TopupDialogRub from 'TopupDialogRub';
+import Linking from 'Linking';
 
 export default class ListTableScene extends BaseScene {
     constructor() {
@@ -86,8 +87,7 @@ export default class ListTableScene extends BaseScene {
     }
 
     onClickNapXuAction() {
-        let scene = app.system.getCurrentSceneNode();
-        TopupDialogRub.show(scene);
+        Linking.goTo(Linking.ACTION_TOPUP);
     }
 
     onClickChatBtn() {

@@ -90,7 +90,7 @@ class TabSMS extends PopupTabBody {
         let { code, shortCode, syntax } = this._smses[this._balanceChoosen][app.keywords.CHARGE_SMS_OBJECT_INFORS].find(info => info.telcoId == telcoId);
         
         if(code && shortCode) {
-            this.codeLbl.string = `${code} ${syntax}`;
+            this.codeLbl.string = `${code} ${syntax} ${app.context.getMyInfo().name}`;
             this.toNumberLbl.string = shortCode;
             this._hideSMSLayoutPanel();
         }
@@ -101,7 +101,7 @@ class TabSMS extends PopupTabBody {
     }
     
     onNapBtnClick() {
-        // this._sendSMS('test', '0983369898');
+        this._sendSMS(this.codeLbl.string, this.toNumberLbl.string);
     }
     
     _addGlobalListener() {
@@ -143,10 +143,11 @@ class TabSMS extends PopupTabBody {
             // TODO
         } else if (app.env.isMobile()) {
             if (app.env.isIOS()) {
-                window.jsb.reflection.callStaticMethod("JSBUtils", "sendSMS", message, recipient);
+                window.jsb.reflection.callStaticMethod("JSBUtils", "sendSMS:recipient:", message, recipient);
             }
             if (app.env.isAndroid()) {
                 // TODO
+                window.jsb.reflection.callStaticMethod("org/cocos2dx/javascript/AppActivity", "jsbSMS", "(Ljava/lang/String;Ljava/lang/String;)V", message, recipient);
             }
         }
     }
