@@ -18,7 +18,8 @@ export default class TabUserBank extends PopupTabBody {
 
             promptPrefab: cc.Prefab,
             promtpMainNode: cc.Node,
-            hintRichText: cc.RichText
+            hintRichText: cc.RichText,
+            p404: cc.Node
         };
 
 
@@ -223,7 +224,7 @@ export default class TabUserBank extends PopupTabBody {
 
             this.gridNode.addChild(this.getScrollViewNode());
         } else {
-            this.pageIsEmpty(this.gridNode);
+            this.showEmptyPage(this.p404);
         }
     }
 }

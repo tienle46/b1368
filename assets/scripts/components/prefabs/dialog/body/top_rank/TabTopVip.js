@@ -10,6 +10,7 @@ class TabTopVip extends PopupTabBody {
             contentNode: cc.Node,
             crowns: cc.Node,
             vips: cc.Node,
+            p404: cc.Node
         };
     }
 
@@ -53,7 +54,7 @@ class TabTopVip extends PopupTabBody {
     
     _renderGridFromUsernames(usernames) {
         if (usernames.length < 0) {
-            this.pageIsEmpty(this.contentNode);
+            this.showEmptyPage(this.p404);
             return;
         }
         let data = [

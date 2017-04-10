@@ -7,7 +7,7 @@ export default class TabUserAchievements extends PopupTabBody {
         super();
         this.p404 = {
             default: null,
-            type: cc.Prefab
+            type: cc.Node
         };
     }
 
@@ -57,8 +57,8 @@ export default class TabUserAchievements extends PopupTabBody {
             let gameListCol = res[app.keywords.GAME_NAME_LIST] || [];
 
             let data = [
-                gameListCol,
-                levelCol,
+                gameListCol.map(e => e),
+                levelCol.map(e => e),
                 winCol.map(e => isNull(e) ? '0' : e.toString()),
                 loseCol.map(e => isNull(e) ? '0' : e.toString())
             ];
@@ -78,7 +78,7 @@ export default class TabUserAchievements extends PopupTabBody {
 
             this.bodyNode.addChild(this.getScrollViewNode());
         } else {
-            this.pageIsEmpty(this.bodyNode);
+            this.showEmptyPage(this.p404);
         }
     }
     

@@ -275,17 +275,26 @@ export default class Scrollview extends Component {
         
         let tmp = [];
         let out = [];
-        let clone = app._.cloneDeep(input);
-        
-        if (clone[0])
-            while (clone[0].length > 0) {
-                let l = clone.length;
-                for (let i = 0; i < l; i++)
-                    tmp.push(clone[i].shift() || null);
-                    
+        if (input[0])
+            while (input[0].length > 0) {
+                let l = input.length;
+                for (let i = 0; i < l; i++) {
+                    tmp.push(input[i].shift() || null);
+                }
                 out.push(tmp);
                 tmp = [];
             }
+        // let clone = app._.cloneDeep(input);
+        
+        // if (clone[0])
+        //     while (clone[0].length > 0) {
+        //         let l = clone.length;
+        //         for (let i = 0; i < l; i++)
+        //             tmp.push(clone[i].shift() || null);
+                    
+        //         out.push(tmp);
+        //         tmp = [];
+        //     }
         return out;
     }
 }

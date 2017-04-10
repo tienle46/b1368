@@ -65,7 +65,7 @@ export default class PopupTabBody extends Actor {
     setPopup(popup) {
         this.popup = popup;
     }
-
+    
     init({ data = null, loadingProgress = null, emptyNode = null, didLoadDataCb = null } = {}) {
         this._data = data;
         this.progress = loadingProgress;
@@ -129,16 +129,18 @@ export default class PopupTabBody extends Actor {
         }
     }
     
-    pageIsEmpty(node, str) {
-        this.hideLoader(node);
+    showEmptyPage(emptyPage, str) {
+        this._hideLoading();
+        
+        if(emptyPage) {
+            emptyPage.active = true;
+            // node.children.map(child => cc.isValid(child) && child.destroy() && child.removeFromParent());
+            // node.addChild(p404Node);
 
-        let p404 = cc.instantiate(this.p404);
-        node.children.map(child => cc.isValid(child) && child.destroy() && child.removeFromParent());
-        node.addChild(p404);
-
-        if (str) {
-            let p404Component = p404.getComponent('P404');
-            p404Component && p404Component.setText(str);
+            // if (str) {
+            //     let p404Component = p404Node.getComponent('P404');
+            //     p404Component && p404Component.setText(str);
+            // }
         }
     }
     

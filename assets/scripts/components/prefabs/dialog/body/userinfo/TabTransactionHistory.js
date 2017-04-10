@@ -6,6 +6,9 @@ import moment from 'moment';
 class TabTransactionHistory extends DialogActor {
     constructor() {
         super();
+        this.properties = {
+            p404: cc.Node
+        };
     }
 
     start() {
@@ -70,7 +73,7 @@ class TabTransactionHistory extends DialogActor {
             this.node.addChild(this.getScrollViewNode());
 
         } else {
-            this.pageIsEmpty(this.node);
+            this.showEmptyPage(this.p404);
         }
     }
 

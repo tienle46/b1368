@@ -7,7 +7,7 @@ class TabHistory extends PopupTabBody {
         this.properties = {
             ...this.properties,
             bodyNode: cc.Node,
-            p404: cc.Prefab
+            p404: cc.Node
         };
     }
 
@@ -79,13 +79,8 @@ class TabHistory extends PopupTabBody {
             this.bodyNode.addChild(this.getScrollViewNode());
             this.hideLoader(this.bodyNode);
         } else {
-            this.pageIsEmpty(this.bodyNode);
+            this.showEmptyPage(this.p404);
         }
-    }
-    
-    pageIsEmpty(node) {
-        let p404 = cc.instantiate(this.p404);
-        node.addChild(p404);  
     }
 }
 
