@@ -99,8 +99,6 @@ export default class PlayerSamRenderer extends PlayerCardTurnBaseRenderer {
     showDownCards(cards = [], info = "") {
         this.cardList.clear();
 
-        console.warn("showDownCards: ", this.downCardLists, cards)
-
         if(this.downCardLists.length == 0) return;
 
         if(this.downCardLists.length == 1 || cards.length <= 7){
@@ -126,8 +124,6 @@ export default class PlayerSamRenderer extends PlayerCardTurnBaseRenderer {
     }
 
     showPlayerWinLoseInfo(iconPath, isWinner = false) {
-
-        console.warn("iconPath: ", iconPath, isWinner)
 
         if(iconPath){
             RubUtils.getSpriteFrameFromAtlas('blueTheme/atlas/text-ingame', iconPath, (sprite) => {

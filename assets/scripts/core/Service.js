@@ -160,7 +160,6 @@ class Service {
     }
 
     _onBuddyVariablesUpdate(event) {
-        console.log('_onBuddyVariablesUpdate: ', event);
         app.system.emit(SFS2X.SFSBuddyEvent.BUDDY_VARIABLES_UPDATE, event);
     }
 

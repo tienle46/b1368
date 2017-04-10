@@ -66,6 +66,7 @@ class GameSystem {
      */
     loadScene(sceneName, onLaunch, highPriority) {
         console.log("sceneName: ", sceneName);
+        this.setSceneChanging(true)
         cc.director.loadScene(sceneName, () => {
             console.log("load scene result", sceneName, cc.director.getScene());
             highPriority && isFunction(onLaunch) && onLaunch();
@@ -165,11 +166,12 @@ class GameSystem {
     }
 
     emit(name, ...args) {
+        
         if (this.sceneChanging) {
             (!this.__pendingEventOnSceneChanging.hasOwnProperty(name) || !this.__pendingEventOnSceneChanging[name]) && (this.__pendingEventOnSceneChanging[name] = []);
-            if (!app._.includes(this.__pendingEventOnSceneChanging[name], args)) {
-                this.__pendingEventOnSceneChanging[name].push(args);
-            }
+            //if (!app._.includes(this.__pendingEventOnSceneChanging[name], args)) {
+                this.__pendingEventOnSceneChanging[name].push([...args]);
+            //}
         } else {
             this.eventEmitter.emit(name, ...args);
             this._emitGameEvent(name, ...args);
@@ -177,6 +179,9 @@ class GameSystem {
     }
 
     setSceneChanging(changing) {
+
+        this.sceneChanging = changing;
+
         if (!changing) {
             this.__pendingEventOnSceneChanging && Object.getOwnPropertyNames(this.__pendingEventOnSceneChanging).forEach(name => {
 
@@ -186,12 +191,11 @@ class GameSystem {
                         this.emit(name, ...args);
                     });
                     window.release(this.__pendingEventOnSceneChanging[name], true);
+                    //window.release(this.__pendingEventOnSceneChanging[name], true);
                     this.__pendingEventOnSceneChanging[name] = null;
                 }
             });
         }
-
-        this.sceneChanging = changing;
     }
 
     // /**
@@ -382,6 +386,8 @@ class GameSystem {
         app.context.lastJoinedRoom = resultEvent.room;
         if (resultEvent.room && resultEvent.room.isJoined && resultEvent.room.isGame) {
 
+            this.setSceneChanging(true)
+
             app.context.currentRoom = resultEvent.room;
             let gameSceneName = null;
             let gameCode = utils.getGameCode(resultEvent.room);
@@ -443,6 +449,7 @@ class GameSystem {
     }
 
     _emitGameEvent(name, ...args) {
+
         if (this.enablePendingGameEvent) {
             this.pendingGameEvents.push({ name, args: args });
         } else {
@@ -451,6 +458,7 @@ class GameSystem {
     }
 
     _handlePendingGameEvents() {
+
         if (this.pendingGameEvents.length > 0) {
             this.pendingGameEvents.forEach(event => this.gameEventEmitter.emit(event.name, ...event.args));
             this.pendingGameEvents = [];

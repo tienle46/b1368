@@ -23,9 +23,6 @@ export default class BoardSam extends BoardCardTurnBase {
     }
 
     _onGameStateChanged(state, data, isJustJoined){
-
-        console.log("_onGameStateChanged: ", isJustJoined)
-
         if(state == app.const.game.state.BOARD_STATE_BAO_XAM){
             this._loadRemainCardCount(data)
         }

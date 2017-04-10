@@ -61,7 +61,7 @@ class TabExchangeHistory extends PopupTabBody {
     
     onGetChipBtnClick(e) {
         let { transferId } = e.currentTarget.value;
-        console.debug(transferId);
+        //console.debug(transferId);
         let sendObject = {
             'cmd': app.commands.GET_BACK_CHIPS,
             data: {

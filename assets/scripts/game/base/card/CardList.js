@@ -815,7 +815,9 @@ export default class CardList extends ActionComponent {
         } else {
             this.cards.forEach(card => {
                 let action = card.createActionFromOriginalInfo(duration);
-                action && card.node && card.node.runAction(action);
+                action && card.runActionWithCallback([action], () => {
+                    this.updateFinalPosition();
+                })
             });
         }
 

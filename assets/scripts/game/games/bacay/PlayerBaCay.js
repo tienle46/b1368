@@ -85,7 +85,8 @@ export default class PlayerBaCay extends PlayerCardBetTurn {
     }
 
     _onPlayerChangeBet(betAmount) {
-        if (betAmount <= 0 || this.board.scene.gameState != app.const.game.state.STATE_BET || !BaCayUtils.checkBetValue(betAmount, this)) {
+
+        if (!this.isItMe() || betAmount <= 0 || this.board.scene.gameState != app.const.game.state.STATE_BET || !BaCayUtils.checkBetValue(betAmount, this)) {
             //Show message && play sound invalid
             return;
         }

@@ -27,6 +27,7 @@ export default class PlayerCardTurnBaseRenderer extends PlayerCardRenderer {
     }
 
     setRemainCardCount(count = 0){
+        
         if(count == 0){
             this.setVisibleRemainCardNode();
         }else {

@@ -83,9 +83,9 @@ export default class PlayerSam extends PlayerCardTurnBase {
         }
     }
 
-    setRemainCardCount(remain) {
+    setRemainCardCount(remain, visible = true) {
         this.remainCardCount = remain;
-        this._updateRemainCardCount(this.remainCardCount, true)
+        this._updateRemainCardCount(this.remainCardCount, visible)
     }
 
     _onBaoXam(){
@@ -206,7 +206,7 @@ export default class PlayerSam extends PlayerCardTurnBase {
         this.renderer.showBao1(false);
         this.renderer.showBaoXam(false);
 
-        this.setRemainCardCount(0)
+        this.setRemainCardCount(0, false)
     }
 
     setMeDealCards(){

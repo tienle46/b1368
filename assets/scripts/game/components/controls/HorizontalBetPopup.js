@@ -49,7 +49,7 @@ class BetSlider extends Component {
 
         this._slider = this.sliderNode.getComponent(cc.Slider);
         this._progressBar = this.sliderNode.getComponent(cc.ProgressBar);
-        this.minValueLabel.string = `${this.minValue}`;
+        this.minValueLabel && (this.minValueLabel.string = `${this.minValue}`);
         this.maxValueLabel.string = `${this.maxValue}`;
         this.title && (this.titleLabel.string = this.title);
         this._setChooseAmount(this.currentValue);

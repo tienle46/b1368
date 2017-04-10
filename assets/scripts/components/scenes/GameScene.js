@@ -201,7 +201,7 @@ export default class GameScene extends BaseScene {
 
             if (this.room && this.room.isGame) {
                 this.gameCode = utils.getGameCode(this.room);
-                this._mergeGameData(this.room.getVariable(app.keywords.VARIABLE_GAME_INFO).value)
+                this.gameData = this.room.getVariable(app.keywords.VARIABLE_GAME_INFO).value
             }
 
             if (!this.gameData) {
@@ -216,12 +216,14 @@ export default class GameScene extends BaseScene {
             app.system.enablePendingGameEvent = false;
             e instanceof CreateGameException && this._onLoadSceneFail();
         }
+
+        this._initGameEvents();
     }
 
     _onGameData(isJustJoined = true) {
 
         if (this.room && this.room.isGame) {
-            this._mergeGameData(this.room.getVariable(app.keywords.VARIABLE_GAME_INFO).value)
+            this.gameData = this.room.getVariable(app.keywords.VARIABLE_GAME_INFO).value
         }
 
         if (this.gameData) {
@@ -232,7 +234,6 @@ export default class GameScene extends BaseScene {
     start() {
         super.start();
 
-        this._initGameEvents();
         app.system.enablePendingGameEvent = false;
         this._handlePendingEvents();
 
