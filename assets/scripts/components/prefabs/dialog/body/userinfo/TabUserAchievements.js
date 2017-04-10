@@ -48,6 +48,8 @@ export default class TabUserAchievements extends PopupTabBody {
     }
     
     _renderUserAchievements(res){
+        this.bodyNode.removeAllChildren();
+        
         let gameCodeList = res[app.keywords.GAME_CODE_LIST] || [];
         if (gameCodeList.length > 0) {
             let levelCol = res[app.keywords.LEVEL_LIST].map((e) => `Cấp độ ${e}`) || [];
@@ -75,7 +77,7 @@ export default class TabUserAchievements extends PopupTabBody {
                     colors: [new cc.Color(244, 228, 154), null, app.const.COLOR_YELLOW, app.const.COLOR_GRAY]
                 }
             });
-
+            
             this.bodyNode.addChild(this.getScrollViewNode());
         } else {
             this.showEmptyPage(this.p404);

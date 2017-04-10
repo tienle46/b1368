@@ -25,7 +25,7 @@ class TabHistory extends PopupTabBody {
     }
     
     onDataChanged(histories) {
-        histories && histories.length > 0 && this._renderHistory(histories);
+        histories && this._renderHistory(histories);
     }
 
     _addGlobalListener() {
@@ -77,7 +77,6 @@ class TabHistory extends PopupTabBody {
             this.initView(head, d, rubOptions);
 
             this.bodyNode.addChild(this.getScrollViewNode());
-            this.hideLoader(this.bodyNode);
         } else {
             this.showEmptyPage(this.p404);
         }

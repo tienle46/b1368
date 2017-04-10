@@ -11,14 +11,14 @@ class PlayerInvitePopup extends Component {
         this.properties = {
             ...this.properties,
             bgTransparent: cc.Node,
-            gameCodeLbl: cc.Label,
-            userSprite: cc.Sprite,
-            userNameLbl: cc.Label,
-            userGoldLbl: cc.Label,
-            roomInfoRxt: cc.RichText,
+            roomBetLbl: cc.Label,
+            roomCapacityLbl: cc.Label,
+            roomBalanceLbl: cc.Label,
             invokerSprite: cc.Sprite,
             invokerNameLbl: cc.Label,
-            invokerGoldLbl: cc.Label
+            invokerGoldLbl: cc.Label,
+            invokerLevelLbl: cc.Label,
+            checkBox: cc.Toggle
         };
         
         this._acceptListener = null;
@@ -28,20 +28,12 @@ class PlayerInvitePopup extends Component {
     onLoad() {
         super.onLoad();
         this.bgTransparent.on(cc.Node.EventType.TOUCH_START, () => true);
-
-        app.context.getUserAvatar(this.userSprite);
-        
-        let {name, coin} = app.context.getMyInfo();
-        
-        this.userNameLbl.string = name;
-        this.userGoldLbl.string = numberFormat(coin);
-        
-        this.gameCodeLbl.string = app.context.getSelectedGame() ? app.const.gameLabels[app.context.getSelectedGame()] : "";
+        this.checkBox.isChecked = !app.system.marker.getItemData(app.system.marker.SHOW_INVITATION_POPUP_OPTION);
     }
     
     /**
      * 
-     * @param {username: string, userCoin: int, avatarUrl: string, bet: int} invoker 
+     * @param {username: string, userCoin: int, avatarUrl: string, bet: int, roomCapacity: string, roomBalance: int} invoker 
      * @param {func} acceptListener 
      * @param {func} denyListener 
      * @param {cc.Node} node 
@@ -49,12 +41,14 @@ class PlayerInvitePopup extends Component {
      * @memberOf PlayerInvitePopup
      */
     init(node, invoker, acceptListener, denyListener) {
-        let {username, userCoin, avatarUrl, bet} = invoker;
+        let {username, userCoin, avatarUrl, bet, roomCapacity, roomBalance} = invoker;
         avatarUrl && RubUtils.loadSpriteFrame(this.invokerSprite, avatarUrl, null, true);
         this.invokerNameLbl.string = username;
         this.invokerGoldLbl.string = numberFormat(userCoin);
         
-        this.roomInfoRxt.string = `Tiền cược <color=#FFE000>${bet}</c>`;
+        this.roomBetLbl.string = numberFormat(bet);
+        this.roomCapacityLbl.string = roomCapacity;
+        this.roomBalanceLbl.string = numberFormat(roomBalance);
         
         this._acceptListener = acceptListener;
         this._denyListener = denyListener;
@@ -74,6 +68,9 @@ class PlayerInvitePopup extends Component {
     }
     
     close() {
+        if(this.checkBox.isChecked)
+            app.system.marker.setItem(app.system.marker.SHOW_INVITATION_POPUP_OPTION, !this.checkBox.isChecked);
+        
         if (this.node) {
             this.node.active = false;
             destroy(this.node);
