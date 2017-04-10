@@ -55,7 +55,7 @@
     "bacay-bg-dialog-bet.png": {
       "ver": "1.0.3",
       "uuid": "7e5411e7-0969-4c0e-8c02-ee0331807852",
-      "rawTextureUuid": "",
+      "rawTextureUuid": "00b4ba4c-3c73-4899-98b4-9fee564c9317",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": false,
@@ -99,7 +99,7 @@
     "bacay-bg-slide-complete.png": {
       "ver": "1.0.3",
       "uuid": "ca0ceb18-6358-420e-8c10-735c8d1afe8f",
-      "rawTextureUuid": "",
+      "rawTextureUuid": "00b4ba4c-3c73-4899-98b4-9fee564c9317",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": true,
@@ -121,7 +121,7 @@
     "bacay-bg-slide.png": {
       "ver": "1.0.3",
       "uuid": "2efb115e-ae40-4266-be50-7a6702d2e7e1",
-      "rawTextureUuid": "",
+      "rawTextureUuid": "00b4ba4c-3c73-4899-98b4-9fee564c9317",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": false,
@@ -165,7 +165,7 @@
     "bacay-btn-slide-bet.png": {
       "ver": "1.0.3",
       "uuid": "dc0e248a-5e13-47ff-977e-33f7a1142d0f",
-      "rawTextureUuid": "",
+      "rawTextureUuid": "00b4ba4c-3c73-4899-98b4-9fee564c9317",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": false,
@@ -1441,7 +1441,7 @@
     "text-tlmn-an-trang.png": {
       "ver": "1.0.3",
       "uuid": "51ad6d82-a10a-4774-93b6-1038add04f21",
-      "rawTextureUuid": "",
+      "rawTextureUuid": "00b4ba4c-3c73-4899-98b4-9fee564c9317",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": false,
