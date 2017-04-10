@@ -280,4 +280,7 @@ Commands.GET_SYSTEM_MESSAGES = "getSystemMessages";
 Commands.CHANGE_PERSONAL_MESSAGE_STATE = "changePersonalMessageState";
 Commands.GET_VIP_BENEFIT = "getVipBenefit";
 Commands.GET_BACK_CHIPS = "ceir";
+
+Commands.LIST_HU = "sj_jl";
+
 module.exports = Commands;

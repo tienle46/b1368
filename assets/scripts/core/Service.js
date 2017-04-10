@@ -289,7 +289,6 @@ class Service {
             // this._loginData = null;
 
             this._callCallback(SFS2X.SFSEvent.LOGIN, null, event.data);
-
         }
         
         this.startLagPolling(app.config.pingPongInterval);

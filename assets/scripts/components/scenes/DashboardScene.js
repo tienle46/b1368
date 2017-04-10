@@ -78,11 +78,13 @@ export default class DashboardScene extends BaseScene {
     _addGlobalListener() {
         super._addGlobalListener();
         app.system.addListener(app.commands.USER_LIST_GAME_CODE, this._onUserListGame, this);
+        app.system.addListener(app.commands.LIST_HU, this._onListHu, this);
     }
 
     _removeGlobalListener() {
         super._removeGlobalListener();
         app.system.removeListener(app.commands.USER_LIST_GAME_CODE, this._onUserListGame, this);
+        app.system.removeListener(app.commands.LIST_HU, this._onListHu, this);
     }
 
     _getGamesListFromServer() {
@@ -112,7 +114,25 @@ export default class DashboardScene extends BaseScene {
     _filterClientSupportedGames(gameCodes) {
         return ArrayUtils.isEmpty(gameCodes) ? [] : gameCodes.filter(gc => app.config.supportedGames.indexOf(gc) >= 0);
     }
-
+    
+    _onListHu(data) {
+        console.debug('_onListHu', data)
+        data = {
+            il: [1],
+            ml: [10000],
+            gcl: ['pom'],
+            stl: 12345242,
+            etl: 12545242,
+            rtl: 12345242 - 12545242
+        };
+    }
+    
+    _requestListHu() {
+        app.service.send({
+            cmd: app.commands.LIST_HU
+        });    
+    }
+    
     _initItemListGame() {
         const height = this.viewContainer.height || 200;
         const itemDimension = Math.floor(height / 2.0 - 37);
@@ -163,8 +183,10 @@ export default class DashboardScene extends BaseScene {
 
                     node && node.addChild(nodeItem);
                 }
-                if (index == app.context.gameList.length - 1)
+                if (index == app.context.gameList.length - 1) {
+                    this._requestListHu();
                     this.hideLoading();
+                }
             });
         });
         

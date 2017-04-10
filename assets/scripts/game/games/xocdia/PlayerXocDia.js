@@ -85,6 +85,7 @@ export default class PlayerXocDia extends PlayerCardBetTurn {
             this.scene.emit(Events.XOCDIA_ON_PLAYER_TOSSCHIP_ANIMATION, { myPos, betsList, isItMe, playerId, isReplace, prevList });
         } else {
             //TODO
+            app.system.showToast(err);
         }
 
     }
@@ -99,6 +100,8 @@ export default class PlayerXocDia extends PlayerCardBetTurn {
 
             this.scene.emit(Events.XOCDIA_ON_PLAYER_CANCEL_BET_SUCCESS, { myPos, isItMe, betsList, playerId });
             this.betData = [];
+        } else {
+             app.system.showToast(err);
         }
     }
 

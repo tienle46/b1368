@@ -123,14 +123,14 @@ export default class XocDiaControls extends GameControls {
     }
 
     onX2BtnClick(event) {
-        debug('onX2BtnClick', this.betData);
-        if (app.context.getMeBalance() - this._getTotalGoldUserBettedInBoard() < 0) {
-            app.system.error('Không đủ tiền để tiếp tục cược !');
+        if (app.context.getMeBalance() - 2 * this._getTotalGoldUserBettedInBoard() < 0) {
+            app.system.showToast(app.res.string('is_not_enough_money_to_bet'));
             return;
         }
-        this._setRebetBtnState(true);
 
         if (this.betData.length > 0) {
+            this._setRebetBtnState(true);
+            
             this.isInCancelPhase = false;
             // let data = this.betData.map(bet => {
             //     bet.b *= 2;
@@ -142,9 +142,8 @@ export default class XocDiaControls extends GameControls {
     }
 
     onReBetBtnClick() {
-        debug('onReBetBtnClick > this.previousBetData.', this.previousBetData)
         if (app.context.getMeBalance() - this._getPreviousUserGold() < 0) {
-            // app.system.error('Không đủ tiền để tiếp tục cược !');
+            app.system.showToast(app.res.string('is_not_enough_money_to_bet'));
             return;
         }
 
@@ -164,7 +163,7 @@ export default class XocDiaControls extends GameControls {
         };
         app.service.send(sendObject);
     }
-
+    
     _sendBetRequest(bet, isReplace) {
         let data = {};
         let b = null;
@@ -199,7 +198,7 @@ export default class XocDiaControls extends GameControls {
         }
         if (isItMe) {
             if (isReplace) {
-                this.scene.setPlayerBalance(app.context.getMeBalance() - this._getTotalGoldUserBettedInBoard());
+                this.scene.setPlayerBalance(app.context.getMeBalance() - this._getPreviousUserGold());
                 this.betData = betsList;
             } else {
                 this.betData = [...this.betData, ...betsList];
@@ -248,7 +247,7 @@ export default class XocDiaControls extends GameControls {
             // update gold
             this._updateGoldAmountOnControl(typeId, amount, isItMe, false, isReplace);
 
-            if (isItMe) {
+            if (isItMe && !isReplace) {
                 this.scene.changePlayerBalance(-amount);
             }
 

@@ -54,6 +54,7 @@ export default {
     password_changed_successfully: 'Đổi mật khẩu thành công',
     phonenumber_changed_successfully: 'Cập nhật số điện thoại thành công',
     is_ineligible: 'Không đủ điều kiện',
+    is_not_enough_money_to_bet: 'Bạn không đủ tiền để thực hiện thao tác này',
     is_waiting_card: 'Đang chờ duyệt thẻ',
     trading_is_denied: 'Giao dịch bị huỷ bỏ',
     got_money: 'Đã nhận lại tiền',
