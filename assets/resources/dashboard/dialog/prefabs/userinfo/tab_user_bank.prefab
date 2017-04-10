@@ -1584,7 +1584,7 @@
     "_tag": -1,
     "_opacityModifyRGB": false,
     "_id": "",
-    "_active": true,
+    "_active": false,
     "_components": [
       {
         "__id__": 57
@@ -6516,7 +6516,8 @@
     "promtpMainNode": {
       "__id__": 144
     },
-    "hintRichText": null
+    "hintRichText": null,
+    "p404": null
   },
   {
     "__type__": "cc.PrefabInfo",
