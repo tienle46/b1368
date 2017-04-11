@@ -76,7 +76,7 @@ export default {
     label_close: 'Đóng',
     label_withdrawal: 'Rút tiền',
     label_enter_game: 'Vào game',
-    random_invite_player_successfully: 'Lời mời vào bàn chơi đã được gửi đi',
+    random_invite_player_successfully: 'Lời mời vào bàn chơi \n đã được gửi đi',
     error_cannot_load_data: 'Không thể tải dữ liệu',
     loading_data: 'Đang tải dữ liệu...',
     re_sending_item_iap: 'Đang thực hiện lại giao dịch ...',

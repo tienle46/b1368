@@ -12,7 +12,7 @@
   "orientation": {
     "landscapeLeft": true,
     "landscapeRight": true,
-    "portrait": true,
+    "portrait": false,
     "upsideDown": false
   },
   "packageName": "com.b1368.playingcards",
