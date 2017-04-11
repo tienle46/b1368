@@ -16,6 +16,8 @@ export default class DashboardScene extends BaseScene {
             dailyDialog: cc.Node,
             dailyDialogContent: cc.Label
         };
+        
+        this.iconNodes = {};
     }
 
     onLoad() {
@@ -28,6 +30,7 @@ export default class DashboardScene extends BaseScene {
 
     onDestroy() {
         super.onDestroy();
+        this.free(this.iconNodes);
     }
 
     start() {
@@ -41,7 +44,7 @@ export default class DashboardScene extends BaseScene {
         
         app.context.gameList.length > 0 && this._initItemListGame();
         
-        setTimeout(()=>{
+        setTimeout(() => {
             let Linking = require('Linking');
             Linking.handlePendingActions();
         }, 1000);
@@ -92,7 +95,7 @@ export default class DashboardScene extends BaseScene {
             this.showLoading('Đang tải dữ liệu ....');
         }
         app.service.send({
-            'cmd': app.commands.USER_LIST_GAME_CODE,
+            cmd: app.commands.USER_LIST_GAME_CODE,
             data: {
                 [app.keywords.PARTNER_ID]: 1
             }
@@ -116,18 +119,22 @@ export default class DashboardScene extends BaseScene {
     }
     
     _onListHu(data) {
-        // console.debug('_onListHu', data)
-        data = {
-            il: [1],
-            ml: [10000],
-            gcl: ['pom'],
-            stl: 12345242,
-            etl: 12545242,
-            rtl: 12345242 - 12545242
-        };
+        console.debug('_onListHu', data)
+        
+        data.gcl.forEach((gc, i) => {
+            let endTime = data[i]['etl'],
+                id = data[i]['il'],
+                currentMoney = data[i]['ml'],
+                remainTime = data[i]['rml'],
+                startTime = data[i]['stl'];
+                
+            this.iconNodes[gc].initJar({id, remainTime, startTime, endTime, currentMoney});
+            console.debug(this.iconNodes[gc]);
+        }) 
     }
     
     _requestListHu() {
+        console.debug('_requestListHu');
         app.service.send({
             cmd: app.commands.LIST_HU
         });    
@@ -174,13 +181,15 @@ export default class DashboardScene extends BaseScene {
                     nodeItem.getComponent(cc.Sprite).spriteFrame = sprite;
                     nodeItem.setContentSize(itemDimension, itemDimension);
                     let itemComponent = nodeItem.getComponent('item');
-
+                    
                     itemComponent.gameCode = gc;
                     itemComponent.listenOnClickListener((gameCode) => {
                         app.context.setSelectedGame(gameCode);
                         this.changeScene(app.const.scene.LIST_TABLE_SCENE);
                     });
-
+                    
+                    this.iconNodes[gc] = itemComponent;
+                    
                     node && node.addChild(nodeItem);
                 }
                 if (index == app.context.gameList.length - 1) {
