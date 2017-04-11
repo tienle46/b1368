@@ -67,6 +67,8 @@ export default class TabMessages extends PopupTabBody {
      * @memberOf TabMessages
      */
     displayMessages(data) {
+        this.node.removeAllChildren();
+        
         let next = this.onPreviousBtnClick,
             prev = this.onNextBtnClick;
         

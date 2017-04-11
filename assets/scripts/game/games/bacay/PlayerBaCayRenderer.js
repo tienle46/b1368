@@ -245,7 +245,7 @@ export default class PlayerBaCayRenderer extends PlayerCardBetTurnRenderer {
         let master = this.scene.gamePlayers.master;
         if(master){
             
-            console.debug("master: ", master)
+            // console.debug("master: ", master)
             
             let coinChipAmount = this.scene.board.minBet > 0 ? Math.floor(betAmount / this.scene.board.minBet) : 1;
             coinChipAmount = Math.min(coinChipAmount, 3);

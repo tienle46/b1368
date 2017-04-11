@@ -116,7 +116,7 @@ export default class DashboardScene extends BaseScene {
     }
     
     _onListHu(data) {
-        console.debug('_onListHu', data)
+        // console.debug('_onListHu', data)
         data = {
             il: [1],
             ml: [10000],
