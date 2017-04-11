@@ -122,14 +122,13 @@ export default class DashboardScene extends BaseScene {
         console.debug('_onListHu', data)
         
         data.gcl.forEach((gc, i) => {
-            let endTime = data[i]['etl'],
-                id = data[i]['il'],
-                currentMoney = data[i]['ml'],
-                remainTime = data[i]['rml'],
-                startTime = data[i]['stl'];
+            let endTime = data['etl'][i],
+                id = data['il'][i],
+                currentMoney = data['ml'][i],
+                remainTime = data['rtl'][i],
+                startTime = data['stl'][i];
                 
             this.iconNodes[gc].initJar({id, remainTime, startTime, endTime, currentMoney});
-            console.debug(this.iconNodes[gc]);
         }) 
     }
     

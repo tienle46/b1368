@@ -16,6 +16,7 @@ class TabExchangeHistory extends PopupTabBody {
             bodyNode: cc.Node,
             chargeBtnNode: cc.Node,
             getChipBtnNode: cc.Node,
+            p404: cc.Node
         };
     }
 
@@ -172,7 +173,7 @@ class TabExchangeHistory extends PopupTabBody {
         ];
         this._initBody(data);
         } else {
-            this.pageIsEmpty(this.bodyNode);
+            this.showEmptyPage(this.p404);
         }
 
     }
