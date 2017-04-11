@@ -318,6 +318,23 @@ export default class PhomUtils {
 
         return valid;
     }
+    
+    static sortPhomCardSingleSolution(cards){
+        let phomListSolutions = PhomGenerator.generatePhomContainEatenCards(cards);
+        if (phomListSolutions.length > 0) {
+            ArrayUtils.removeAll(cards, phomListSolutions[0].getCards());
+            this._sortSingleCards(cards);
+
+            let phomCards = [];
+            phomListSolutions[0].forEach(phom => {
+                phomCards.push(...GameUtils.sortCardAscByRankFirstSuitLast(phom.cards))
+            })
+            cards.splice(0, 0, ...phomCards);
+        } else {
+            this._sortSingleCards(cards)
+        }
+        return cards;
+    }
 
     /**
      *
@@ -379,7 +396,7 @@ export default class PhomUtils {
     }
 
     static _sortSingleCards(cards) {
-        cards.sort(PhomUtils._compareByRank)
+        GameUtils.sortCardAscByRankFirstSuitLast(cards);
 
         let index = 0;
         let singleCards = [];

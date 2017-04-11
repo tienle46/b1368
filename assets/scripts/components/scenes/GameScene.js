@@ -10,6 +10,7 @@ import GamePlayers from 'GamePlayers';
 import GameChatComponent from "GameChatComponent";
 import Props from "../Props";
 import ArrayUtils from 'ArrayUtils';
+import CCUtils from 'CCUtils';
 
 export default class GameScene extends BaseScene {
 
@@ -82,6 +83,20 @@ export default class GameScene extends BaseScene {
         this.on(Events.ON_GAME_LOAD_DATA_AFTER_SCENE_START, this._loadGameDataAfterSceneStart, this);
         this.on(Events.ON_ROOM_CHANGE_MIN_BET, this._onRoomMinBetChanged, this);
         this.on(Events.ON_PLAYER_READY_STATE_CHANGED, this._onPlayerReadyStateChanged, this);
+        this.on(Events.ON_PLAYER_REGISTER_QUIT_ROOM, this._handleRegisterQuitRoom, this);
+    }
+
+    _handleRegisterQuitRoom(data){
+        if (data && data[app.keywords.SUCCESSFULL]) {
+            app.system.showToast(data[app.keywords.MESSAGE] || app.res.string("game_registered_quit_room"));
+
+            let register = data[app.keywords.REGISTER];
+            if(register){
+                CCUtils.setVisible(this.gameMenu.menuLock, true);
+            }else{
+                CCUtils.setVisible(this.gameMenu.menuLock, false);
+            }
+        }
     }
 
     clearReadyPlayer(){
@@ -143,6 +158,7 @@ export default class GameScene extends BaseScene {
         this.gameContext = {};
         this.gameData = {};
         this._penddingEvents = [];
+        this.gameMenu = this.gameMenuNode.getComponent('GameMenuPrefab')
 
         this.node.children.forEach(child => { child.opacity = 255 });
         Object.values(app.res.asset_tools).length < 1 && this._loadAssetTools();
@@ -312,11 +328,7 @@ export default class GameScene extends BaseScene {
         // this.showLoading();
         // app.service.sendRequest(new SFS2X.Requests.System.LeaveRoomRequest(this.room));
 
-        app.service.send({ cmd: app.commands.REGISTER_QUIT_ROOM, room: this.room }, (data) => {
-            if (data && data[app.keywords.SUCCESSFULL]) {
-                app.system.showToast(data[app.keywords.MESSAGE] || app.res.string("game_registered_quit_room"));
-            }
-        });
+        app.service.send({ cmd: app.commands.REGISTER_QUIT_ROOM, room: this.room });
     }
 
     _onActionLoadGameGuide() {

@@ -146,8 +146,7 @@ class TopBar extends DialogActor {
      */
 
     _fillUserData() {
-        this.userNameLbl.string = app.context.getMyInfo().name;
-
+        this.userNameLbl.string = app.context.getMeDisplayName()
         this.userInfoCoinLbl.string = `${utils.numberFormat(app.context.getMeBalance() || 0)}`;
     }
 

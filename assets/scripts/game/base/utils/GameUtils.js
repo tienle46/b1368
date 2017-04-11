@@ -141,4 +141,32 @@ export default class GameUtils {
     static getTotalPoint(cards = []) {
         return cards.reduce((point, card) => point + card.rank, 0);
     }
+
+    static getDisplayName(user){
+
+        if(!user) return "";
+
+        let displayName = user.variables.displayName && user.variables.displayName.value && user.variables.displayName.value.trim()
+        if(displayName && displayName.length > 0){
+            if(displayName.length > 12){
+                displayName = displayName.substr(0, 12) + '...'
+            }
+            return displayName
+        }else{
+            return user.name
+        }
+    }
+
+    static sortCardAscByRankFirstSuitLast(cards) {
+
+        cards && cards.sort((card1, card2) => {
+            let rankCompare = card1.rank - card2.rank
+            let suitCompare = card1.suit - card2.suit
+
+            return rankCompare == 0 ? suitCompare : rankCompare
+        })
+
+        return cards;
+    }
+
 }

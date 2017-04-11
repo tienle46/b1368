@@ -62,6 +62,7 @@ Events.ON_PLAYER_BAO_XAM = "on.player.baoXam";
 Events.ON_PLAYER_BAO_1 = "on.player.bao1";
 Events.ON_PLAYER_BACAY_CHANGE_BET = "on.player.bacayChangeBet";
 Events.ON_PLAYER_BACAY_GOP_GA = "on.player.bacayGopGa";
+Events.ON_PLAYER_REGISTER_QUIT_ROOM = "on.player.registerQuitRoom";
 
 Events.ON_USER_UPDATE_BALANCE = "on.user.updateBalance";
 Events.ON_USER_UPDATE_LEVEL = "on.user.updateLevel";

@@ -195,11 +195,11 @@ export default class Utils {
     }
 
     static formatNumberType1(value = 0) {
-        return value <= 9999 ? value : numeral(value).format('00.0a');
+        return value <= 9999 && value >= -9999 ? value : numeral(value).format('00.0a');
     }
 
     static formatNumberType2(value = 0) {
-        return value <= 99999 ? value : numeral(value).format('00.00a');
+        return value <= 99999 && value >= -99999 ? value : numeral(value).format('00.00a');
     }
     
     static upperCaseFirstLetter(string) {
