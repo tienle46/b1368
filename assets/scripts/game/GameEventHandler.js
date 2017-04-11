@@ -84,6 +84,7 @@ export default class GameEventHandler {
         app.system.addGameListener(Commands.XOCDIA_BET, this._onXocDiaPLayerBet, this);
         app.system.addGameListener(Commands.XOCDIA_CANCEL_BET, this._onXocDiaPLayerCancelBet, this);
         app.system.addGameListener(Commands.INVALID_PLAY_TURN, this._invalidPlayTurn, this);
+        app.system.addGameListener(Commands.REGISTER_QUIT_ROOM, this._onRegisterQuitRoom, this);
 
         app.system.addGameListener(Commands.ASSETS_USE_ITEM, this._assetsUseItem, this);
     }
@@ -128,9 +129,14 @@ export default class GameEventHandler {
         app.system.removeGameListener(Commands.XOCDIA_BET, this._onXocDiaPLayerBet, this);
         app.system.removeGameListener(Commands.XOCDIA_CANCEL_BET, this._onXocDiaPLayerCancelBet, this);
         app.system.removeGameListener(Commands.INVALID_PLAY_TURN, this._invalidPlayTurn, this);
+        app.system.removeGameListener(Commands.REGISTER_QUIT_ROOM, this._onRegisterQuitRoom, this);
 
         app.system.removeGameListener(Commands.ASSETS_USE_ITEM, this._assetsUseItem, this);
 
+    }
+
+    _onRegisterQuitRoom(data){
+        this.scene.emit(Events.ON_PLAYER_REGISTER_QUIT_ROOM, data);
     }
 
     _onPlayerGopGa(data) {
