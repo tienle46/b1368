@@ -17,12 +17,7 @@ export default class MessageCenterDialogRub {
          */
         this.multiTabPopup = node.getComponent("MultiTabPopup");
 
-        this.multiTabPopup.changeToChatTab = this.changeToChatTab.bind(this);
         this.multiTabPopup.setTitle('Tin nhắn');
-    }
-    
-    changeToChatTab(data) {
-        this.multiTabPopup && this.multiTabPopup.changeTab(MessageCenterDialogRub.TAB_SYSTEM_MESSAGE_INDEX, data);
     }
     
     show(parentNode = cc.director.getScene(), options = {}){

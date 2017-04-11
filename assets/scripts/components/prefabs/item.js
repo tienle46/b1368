@@ -1,5 +1,6 @@
 import app from 'app';
 import Component from 'Component';
+import JarComponent from 'JarComponent';
 
 class Item extends Component {
     constructor() {
@@ -7,7 +8,8 @@ class Item extends Component {
         this.properties = {
             gameCode: "",
             gameID: 0,
-            _clickListener: null
+            _clickListener: null,
+            jarComponent: JarComponent
         };
     }
 
@@ -26,6 +28,10 @@ class Item extends Component {
 
     handleClickItem() {
         this._clickListener && this._clickListener(this.gameCode);
+    }
+    
+    initJar({id, remainTime, startTime, endTime, currentMoney} = {}) {
+        this.jarComponent.init({id, remainTime, startTime, endTime, currentMoney});
     }
 }
 

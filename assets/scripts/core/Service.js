@@ -244,8 +244,8 @@ class Service {
     _reConnectWithLoginData(loginData) {
         this.connect((success) => {
             if (success) {
-                let { username, password, isQuickLogin, cb } = loginData;
-                this.requestAuthen(username, password, false, isQuickLogin, null, cb);
+                let { username, password, isQuickLogin, cb, accessToken } = loginData;
+                this.requestAuthen(username, password, false, isQuickLogin, accessToken, cb);
             }
         });
     }
@@ -416,7 +416,7 @@ class Service {
             data[app.keywords.UTM_CAMPAIGN] = cc.sys.localStorage.getItem('utm_campaign') || "";
         }
 
-        this._loginData = { username, password, isQuickLogin, cb };
+        this._loginData = { username, password, isQuickLogin, accessToken, cb };
 
         this._addCallback(SFS2X.SFSEvent.LOGIN, cb);
 

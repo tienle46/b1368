@@ -1168,8 +1168,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 42,
-      "height": 42
+      "width": 53,
+      "height": 53
     },
     "_children": [
       {
@@ -1224,8 +1224,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 42,
-      "height": 42
+      "width": 60,
+      "height": 55
     },
     "_children": [],
     "_rotationX": 0,
@@ -1234,7 +1234,7 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": 2,
+      "x": 4.9,
       "y": 0
     },
     "_skewX": 0,
@@ -1389,7 +1389,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 126.9,
-      "height": 40
+      "height": 26
     },
     "_children": [],
     "_rotationX": 0,
@@ -1398,8 +1398,8 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": 50.6,
-      "y": 1
+      "x": 62,
+      "y": -0.5
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -1428,7 +1428,7 @@
     "_useOriginalSize": false,
     "_actualFontSize": 20,
     "_fontSize": 20,
-    "_lineHeight": 40,
+    "_lineHeight": 26,
     "_enableWrapText": true,
     "_N$file": {
       "__uuid__": "8538fe1b-c3b4-48ca-849f-55e33a2c7a57"
@@ -1436,7 +1436,7 @@
     "_isSystemFontUsed": false,
     "_N$string": "Nhớ tài khoản",
     "_N$horizontalAlign": 1,
-    "_N$verticalAlign": 1,
+    "_N$verticalAlign": 0,
     "_N$overflow": 0
   },
   {
