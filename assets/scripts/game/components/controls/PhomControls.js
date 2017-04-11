@@ -157,6 +157,7 @@ export default class PhomControls extends GameControls {
     }
 
     _showWaitTurnControls(){
+
         this.hideAllControls();
         this.cardTurnBaseControls._showWaitTurnControls(true);
     }
@@ -175,11 +176,10 @@ export default class PhomControls extends GameControls {
         this._hideGameBeginControls();
 
         let nextTurnPlayerId = utils.getValue(data, Keywords.TURN_PLAYER_ID);
-        if (!nextTurnPlayerId) {
+        if (!nextTurnPlayerId || this.scene.gamePlayers.me.id != nextTurnPlayerId) {
             this._showWaitTurnControls();
-        }else{
-            isJustJoined && app.context.getMe().id != nextTurnPlayerId && this._showWaitTurnControls();
         }
+
     }
 
     _onGameEnding(data, isJustJoined) {

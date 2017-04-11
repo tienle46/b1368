@@ -103,11 +103,23 @@ export default class PlayerTLMNDLRenderer extends PlayerCardTurnBaseRenderer {
         if(this.downCardLists.length == 0) return;
 
         if(this.downCardLists.length == 1 || cards.length <= 7){
-            this.showInfoCardList && this.showInfoCardList.setCards(cards)
+            if(this.isPositionOnRight()){
+                this.showInfoCardList && this.showInfoCardList.setCards(cards.reverse())
+            }else{
+                this.showInfoCardList && this.showInfoCardList.setCards(cards)
+            }
         }else{
             let cardPerList = parseInt(cards.length / 2);
-            this.downCardLists[0] && this.downCardLists[0].setCards(cards.slice(0, cardPerList));
-            this.downCardLists[1] && this.downCardLists[1].setCards(cards.slice(cardPerList, cards.length));
+            let cardArr1 = cards.slice(0, cardPerList);
+            let cardArr2 = cards.slice(cardPerList, cards.length);
+
+            if(this.isPositionOnRight()){
+                this.downCardLists[0] && this.downCardLists[0].setCards(cardArr1.reverse());
+                this.downCardLists[1] && this.downCardLists[1].setCards(cardArr2.reverse());
+            }else{
+                this.downCardLists[0] && this.downCardLists[0].setCards(cardArr1);
+                this.downCardLists[1] && this.downCardLists[1].setCards(cardArr2);
+            }
         }
 
         this.downCardLists.forEach((downCardList, index) => {

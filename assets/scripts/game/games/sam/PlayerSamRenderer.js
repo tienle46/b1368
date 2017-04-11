@@ -102,7 +102,12 @@ export default class PlayerSamRenderer extends PlayerCardTurnBaseRenderer {
         if(this.downCardLists.length == 0) return;
 
         if(this.downCardLists.length == 1 || cards.length <= 7){
-            this.showInfoCardList && this.showInfoCardList.setCards(cards)
+            if(this.isPositionOnRight()){
+                this.showInfoCardList && this.showInfoCardList.setCards(cards.reverse())
+            }else{
+                this.showInfoCardList && this.showInfoCardList.setCards(cards)
+            }
+
         }else{
             let cardPerList = parseInt(cards.length / 2);
             this.downCardLists[0] && this.downCardLists[0].setCards(cards.slice(0, cardPerList));

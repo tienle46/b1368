@@ -41,8 +41,8 @@ export default class CardTurnBaseControls extends GameControls {
              * By default always show play button
              */
             utils.setInteractable(this.playButton, true);
-            utils.active(this.sortButton);
-            utils.deactive(this.skipTurnButton);
+            utils.setVisible(this.sortButton);
+            utils.setVisible(this.skipTurnButton, false);
         }else{
             utils.setVisible(this.playButton, false);
             utils.setVisible(this.sortButton, false);

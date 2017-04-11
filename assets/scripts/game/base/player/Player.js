@@ -214,7 +214,8 @@ export default class Player extends Actor {
         this.id = this.user.getPlayerId(this.board.room);
         this.balance = GameUtils.getUserBalance(this.user);
 
-        this.renderer.setName(this.username);
+        let displayName = GameUtils.getDisplayName(this.user);
+        this.renderer.setName(displayName);
         this.renderer.setBalance(this.balance);
         
         this._initPlayerAvatar();

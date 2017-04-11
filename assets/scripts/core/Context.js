@@ -94,8 +94,9 @@ class GameContext {
             "name": me.name,
             "coin": (me.variables.coin && me.variables.coin.value) || 0,
             "level": me.variables.lv,
-            "avatarUrl": (me.variables.avatarUrl && me.variables.avatarUrl.value) || null
-        } : null;
+            "avatarUrl": (me.variables.avatarUrl && me.variables.avatarUrl.value) || null,
+            "displayName": (me.variables.displayName && me.variables.displayName.value) || me.name
+        } : {};
     }
     
     getUserAvatar(spriteComponent) {
@@ -105,6 +106,24 @@ class GameContext {
     getMeBalance() {
         let me = this.getMe();
         return (me && me.variables.coin && me.variables.coin.value) || 0;
+    }
+
+    getMeDisplayName() {
+        let me = this.getMe()
+
+        if(me){
+            let displayName = me.variables.displayName && me.variables.displayName.value && me.variables.displayName.value.trim()
+            if(displayName && displayName.length > 0){
+                if(displayName.length > 12){
+                    displayName = displayName.substr(0, 12) + '...'
+                }
+                return displayName
+            }else{
+                return me.name
+            }
+        }
+
+        return "";
     }
 
     isJoinedGame() {

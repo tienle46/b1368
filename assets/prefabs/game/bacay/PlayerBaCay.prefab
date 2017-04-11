@@ -753,7 +753,7 @@
     "_tag": -1,
     "_opacityModifyRGB": false,
     "_id": "",
-    "_active": true,
+    "_active": false,
     "_components": [],
     "_prefab": {
       "__id__": 24
@@ -1663,7 +1663,7 @@
     "_tag": -1,
     "_opacityModifyRGB": false,
     "_id": "",
-    "_active": true,
+    "_active": false,
     "_components": [
       {
         "__id__": 51
