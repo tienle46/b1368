@@ -84,9 +84,7 @@ class EntranceScene extends BaseScene {
 
     handlePlayNowButton() {
         if (app.env.isMobile() || app.env.isBrowserTest()) {
-            let username = this._generateUserName("ysad12", app.config.DEVICE_ID, 0, 5);
-            let password = this._generateUserName("yz212", app.config.DEVICE_ID, 0, 6);
-            this.loginToDashboard(username, password, false, true);
+            this.loginToDashboard("", "", false, true);
         } else {
             app.system.info(app.res.string('play_now_not_support_on_mobile'))
         }
@@ -192,34 +190,33 @@ class EntranceScene extends BaseScene {
         }
     }
 
-    _generateUserName(key, deviceId, count, maxCall) {
-        try {
-            if (count < maxCall) {
-                let code2 = `${this._javaHashcode(deviceId)}${key}xintaocho`;
-                return this._generateUserName(key, code2, count + 1, maxCall);
-            }
-            return `p${Math.abs(this._javaHashcode(deviceId))}`;
-        } catch (e) {
-            app.system.info(app.res.string('play_now_not_available_right_now'))
-        }
-    }
-
-    _javaHashcode(str) {
-        let hash = 0;
-
-        try {
-            if (str.length == 0) return hash;
-            for (let i = 0; i < str.length; i++) {
-                let char = str.charCodeAt(i);
-                hash = ((hash << 5) - hash) + char;
-                hash = hash & hash; // Convert to 32bit integer
-            }
-            return hash;
-        } catch (e) {
-            throw new Error('hashCode: ' + e);
-        }
-    }
-
+    // _generateUserName(key, deviceId, count, maxCall) {
+    //     try {
+    //         if (count < maxCall) {
+    //             let code2 = `${this._javaHashcode(deviceId)}${key}xintaocho`;
+    //             return this._generateUserName(key, code2, count + 1, maxCall);
+    //         }
+    //         return `p${Math.abs(this._javaHashcode(deviceId))}`;
+    //     } catch (e) {
+    //         app.system.info(app.res.string('play_now_not_available_right_now'))
+    //     }
+    // }
+    //
+    // _javaHashcode(str) {
+    //     let hash = 0;
+    //
+    //     try {
+    //         if (str.length == 0) return hash;
+    //         for (let i = 0; i < str.length; i++) {
+    //             let char = str.charCodeAt(i);
+    //             hash = ((hash << 5) - hash) + char;
+    //             hash = hash & hash; // Convert to 32bit integer
+    //         }
+    //         return hash;
+    //     } catch (e) {
+    //         throw new Error('hashCode: ' + e);
+    //     }
+    // }
 
 }
 

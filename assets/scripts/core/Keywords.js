@@ -739,6 +739,7 @@ Keywords.APP_VERSION_KEY = "avrsn";
 Keywords.GAME_RULE = "r";
 Keywords.GAME_GUIDE = "g";
 Keywords.SUCCESSFULL = "s";
+Keywords.REGISTER = "register";
 Keywords.BA_CAY_GOP_GA_VALUE = "gopGaValue";
 
 //

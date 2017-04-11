@@ -60,7 +60,7 @@ export default class BaCayScene extends GameScene {
         });
     }
 
-    showChooseBetSlider(currentValue) {
+    showChooseBetSlider(currentValue, timeout = 5) {
         // let maxValue = this.board.minBet * 5;
         let minValue = this.board.minBet;
         let maxValue = BaCayUtils.calculateMaxPlayerBet(this.gamePlayers.me, this.gamePlayers.master);
@@ -71,10 +71,10 @@ export default class BaCayScene extends GameScene {
         }
 
         this._betPopup && this._betPopup.show({
-            submitOnHide: true,
             minValue,
             maxValue,
             currentValue,
+            timeout,
             cb: (betValue) => {
                 this._onClickChooseBetButton(betValue);
             }

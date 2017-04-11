@@ -17,6 +17,7 @@ export default class GameMenuPrefab extends Component {
         this.properties = {
             ...this.properties,
             menuBtn: cc.Node,
+            menuLock: cc.Node,
             chatBtn: cc.Node,
             topupBtn: cc.Node,
             menuPopup: cc.Node,

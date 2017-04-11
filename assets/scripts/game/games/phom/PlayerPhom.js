@@ -329,11 +329,15 @@ export default class PlayerPhom extends PlayerCardTurnBase {
 
         switch (state) {
             case PlayerPhom.STATE_PHOM_PLAY:
+
+                console.warn("PlayerPhom.STATE_PHOM_PLAY: ", PlayerPhom.STATE_PHOM_PLAY, this._isPlayImmediateAfterTakeCard)
+
                 this.renderer.cardList.cleanSelectedCard();
                 if(this._isPlayImmediateAfterTakeCard){
                     this.scene && this.scene.emit(Events.SHOW_WAIT_TURN_CONTROLS);
                     this._isPlayImmediateAfterTakeCard = false
                 }else {
+                    console.warn("emit Events.SHOW_PLAY_CONTROL_ONLY ")
                     this.scene && this.scene.emit(Events.SHOW_PLAY_CONTROL_ONLY);
                     if(this.renderer.cardList.cards.length == 1){
                         this.turnAdapter.playTurn(this.renderer.cardList.cards);
@@ -813,17 +817,21 @@ export default class PlayerPhom extends PlayerCardTurnBase {
 
         if (this.isItMe()) {
 
-            if(this.sortCardSolutionIndex == PhomUtils.SORT_HAND_CARD_BY_PHOM_SOLUTION){
-                PhomUtils.sortAsc(this.renderer.cardList.cards, PhomUtils.SORT_HAND_CARD_BY_PHOM_SOLUTION);
-            }else if(this.sortCardSolutionIndex == PhomUtils.SORT_HAND_CARD_BY_RANK){
-                PhomUtils.sortAsc(this.renderer.cardList.cards, PhomUtils.SORT_HAND_CARD_BY_RANK);
-            } else{
-                PhomUtils.sortAsc(this.renderer.cardList.cards, PhomUtils.SORT_HAND_CARD_BY_SUIT);
-            }
-
+            PhomUtils.sortPhomCardSingleSolution(this.renderer.cardList.cards);
             this.renderer.cardList.cleanHighlight();
-            this._updateSortCardSolutionIndex();
             this.renderer.cardList.onCardsChanged(true);
+
+            // if(this.sortCardSolutionIndex == PhomUtils.SORT_HAND_CARD_BY_PHOM_SOLUTION){
+            //     PhomUtils.sortAsc(this.renderer.cardList.cards, PhomUtils.SORT_HAND_CARD_BY_PHOM_SOLUTION);
+            // }else if(this.sortCardSolutionIndex == PhomUtils.SORT_HAND_CARD_BY_RANK){
+            //     PhomUtils.sortAsc(this.renderer.cardList.cards, PhomUtils.SORT_HAND_CARD_BY_RANK);
+            // } else{
+            //     PhomUtils.sortAsc(this.renderer.cardList.cards, PhomUtils.SORT_HAND_CARD_BY_SUIT);
+            // }
+            //
+            // this.renderer.cardList.cleanHighlight();
+            // this._updateSortCardSolutionIndex();
+            // this.renderer.cardList.onCardsChanged(true);
         }
     }
 
@@ -915,14 +923,21 @@ export default class PlayerPhom extends PlayerCardTurnBase {
         //     this.scene.board.onDoneDealCards()
         // }
 
-        !this.isItMe() && this.renderer.cardList.clear();
-
         if (this.scene.gameState == PlayerPhom.STATE_PHOM_PLAY) {
             this.turnPharse = PlayerPhom.TURN_PHRASE_PLAY_CARD
         } else if (this.scene.gameState == PlayerPhom.STATE_PHOM_EAT_TAKE) {
             this.turnPharse = PlayerPhom.TURN_PHRASE_TAKE_OR_EAT_CARD
         } else {
             this.turnPharse = 0;
+        }
+
+        if(this.isItMe()){
+            let nextTurnPlayerId = utils.getValue(data, Keywords.TURN_PLAYER_ID);
+            if (nextTurnPlayerId === this.id) {
+                this.setState(PlayerPhom.STATE_PHOM_PLAY);
+            }
+        }else{
+            this.renderer.cardList.clear();
         }
     }
 

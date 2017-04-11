@@ -237,7 +237,7 @@ export default class BoardPhom extends BoardCardTurnBase {
                 balanceChanged: balanceChangeAmounts[playerId],
                 text: resultTexts[playerId],
                 info: gameResultInfos[playerId],
-                cards: playerHandCards[playerId],
+                cards: GameUtils.sortCardAscByRankFirstSuitLast(playerHandCards[playerId]),
                 isWinner: winnerFlags[playerId],
                 point: points[playerId]
             })

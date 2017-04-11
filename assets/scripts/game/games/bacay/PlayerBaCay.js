@@ -141,7 +141,7 @@ export default class PlayerBaCay extends PlayerCardBetTurn {
 
     _onPlayerBet() {
         if (!this.isItMe() || !this.board.scene.gamePlayers.master) return;
-        this.board.scene.showChooseBetSlider(this.betAmount);
+        this.board.scene.showChooseBetSlider(this.betAmount, 10);
     }
 
     _onPlayerDownCard() {
