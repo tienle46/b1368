@@ -259,8 +259,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 106,
-      "height": 106
+      "width": 110,
+      "height": 110
     },
     "_children": [
       {
@@ -408,13 +408,13 @@
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
-      "x": -11.8,
+      "x": -10.68,
       "y": 0.5
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 100,
-      "height": 100
+      "width": 110,
+      "height": 110
     },
     "_children": [
       {
@@ -477,8 +477,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 100,
-      "height": 100
+      "width": 110,
+      "height": 110
     },
     "_children": [],
     "_rotationX": 0,
@@ -597,8 +597,8 @@
     "_enabled": true,
     "_layoutSize": {
       "__type__": "cc.Size",
-      "width": 100,
-      "height": 100
+      "width": 110,
+      "height": 110
     },
     "_resize": 1,
     "_N$layoutType": 0,
@@ -652,8 +652,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 106,
-      "height": 106
+      "width": 110,
+      "height": 110
     },
     "_children": [],
     "_rotationX": 0,
@@ -920,7 +920,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 102.2,
+      "width": 130.78,
       "height": 25
     },
     "_children": [],
@@ -931,7 +931,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": 66
+      "y": 70
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -965,7 +965,7 @@
     "_lineHeight": 25,
     "_enableWrapText": true,
     "_N$file": {
-      "__uuid__": "f7d3295b-8e12-456d-9621-9b8acc29ca1f"
+      "__uuid__": "707ff59f-f7c1-4eb4-a0de-41fd5e1c0123"
     },
     "_isSystemFontUsed": false,
     "_N$string": "PlayerName",
@@ -1022,7 +1022,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": -62
+      "y": -70
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -1072,7 +1072,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": -4
+      "y": 0
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -3130,7 +3130,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 140.79000000000002,
+      "width": 176.97,
       "height": 62
     },
     "_children": [
@@ -3191,7 +3191,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 100.79,
+      "width": 136.97,
       "height": 62
     },
     "_children": [],
@@ -3201,7 +3201,7 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": -7.105427357601002e-15,
+      "x": 0,
       "y": 0
     },
     "_skewX": 0,
@@ -3236,7 +3236,7 @@
     "_lineHeight": 62,
     "_enableWrapText": true,
     "_N$file": {
-      "__uuid__": "f7d3295b-8e12-456d-9621-9b8acc29ca1f"
+      "__uuid__": "707ff59f-f7c1-4eb4-a0de-41fd5e1c0123"
     },
     "_isSystemFontUsed": false,
     "_N$string": "10 điểm",
@@ -3293,7 +3293,7 @@
     "_enabled": true,
     "_layoutSize": {
       "__type__": "cc.Size",
-      "width": 140.79000000000002,
+      "width": 176.97,
       "height": 62
     },
     "_resize": 1,
@@ -5146,7 +5146,6 @@
     "ownerIcon": {
       "__id__": 21
     },
-    "masterIcon": null,
     "plusBalanceNode": {
       "__id__": 156
     },

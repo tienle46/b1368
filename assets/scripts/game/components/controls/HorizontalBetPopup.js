@@ -1,4 +1,5 @@
 import app from 'app';
+import Utils from 'Utils'
 import Component from 'Component';
 import utils from 'utils';
 
@@ -120,6 +121,32 @@ class BetSlider extends Component {
     _setSliderValue(value = 0){
         this._slider.progress = value;
         this._progressBar.progress = value;
+    }
+
+    setMaxValue(maxValue){
+
+        if(!Utils.isNumber(maxValue)) return;
+
+        this.maxValue = maxValue;
+
+        if(this.maxValue < this.minValue) {
+            this.maxValue = this.minValue
+            return;
+        }
+
+        this.maxValueLabel.string = `${this.maxValue}`;
+        this.range = this.maxValue - this.minValue;
+        if(this._chooseAmount > this.maxValue){
+            this._setChooseAmount(this.maxValue)
+        }
+
+        let progressValue = this._chooseAmount / this.maxValue
+        this._slider && (this._slider.progress = progressValue)
+        this._progressBar && (this._progressBar.progress = progressValue)
+    }
+
+    changeMaxValue(amount){
+        this.setMaxValue(this.maxValue + amount)
     }
 
     show({minValue = 0, maxValue = 0, currentValue = minValue, cb = null, timeout = 5, title, submitOnHide = false} = {}) {

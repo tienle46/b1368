@@ -48,6 +48,9 @@ export default class BoardBaCay extends BoardCardBetTurn {
         this.winRank = 0;
         this.setTotalGopGaValue(0);
         this._showGopGa(false);
+
+        this.scene.isShowBetPopup = false
+        this.scene.isShowCuocBienPopup = true
     }
 
     setTotalGopGaValue(value){

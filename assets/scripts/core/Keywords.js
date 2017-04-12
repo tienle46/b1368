@@ -767,3 +767,4 @@ Keywords.CHANGE_AVATAR_URL = "avatarUrl";
 Keywords.CHANGE_AVATAR = "changeAvatar";
 
 Keywords.CARDS = "cards";
+Keywords.ERROR_MESSAGE = "errMsg";

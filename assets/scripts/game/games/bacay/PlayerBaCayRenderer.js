@@ -32,6 +32,7 @@ export default class PlayerBaCayRenderer extends PlayerCardBetTurnRenderer {
             centerRightBetPositionAnchor: cc.Node,
             centerLeftBetPositionAnchor: cc.Node,
             bottomRightBetPositionAnchor: cc.Node,
+            masterIcon: cc.Node,
         }
 
         /**
@@ -262,6 +263,10 @@ export default class PlayerBaCayRenderer extends PlayerCardBetTurnRenderer {
 
         utils.setVisible(this.actionActor, false);
         this.visibleGopGaIcon(false);
+    }
+
+    setVisibleMaster(visible = false) {
+        utils.setActive(this.masterIcon, visible);
     }
 
 }

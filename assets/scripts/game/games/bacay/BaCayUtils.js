@@ -68,8 +68,8 @@ export default class BaCayUtils {
     }
 
     static calculateMaxCuocBien(player, player2){
-        let availableBalance1 = (GameUtils.getUserBalance(player.user) - player.betAmount - player.currentCuocBien) / 2;
-        let availableBalance2 = (GameUtils.getUserBalance(player2.user) - player2.betAmount - player2.currentCuocBien) / 2;
+        let availableBalance1 = parseInt((GameUtils.getUserBalance(player.user) - player.betAmount - player.currentCuocBien) / 2)
+        let availableBalance2 = parseInt((GameUtils.getUserBalance(player2.user) - player2.betAmount - player2.currentCuocBien) / 2)
         return Math.min(availableBalance1, availableBalance2);
     }
 

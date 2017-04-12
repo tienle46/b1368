@@ -141,12 +141,16 @@ export default class GameEventHandler {
 
     _onPlayerGopGa(data) {
 
+        let playerId, gopGaValue, errMsg
         let success = utils.getValue(data, app.keywords.SUCCESSFULL);
         if (success) {
-            let playerId = utils.getValue(data, Keywords.PLAYER_ID);
-            let gopGaValue = utils.getValue(data, Keywords.BA_CAY_GOP_GA_VALUE);
-            playerId && gopGaValue && this.scene.emit(Events.ON_PLAYER_BACAY_GOP_GA, playerId, gopGaValue);
+            playerId = utils.getValue(data, Keywords.PLAYER_ID);
+            gopGaValue = utils.getValue(data, Keywords.BA_CAY_GOP_GA_VALUE);
+        }else{
+            errMsg = utils.getValue(data, Keywords.BA_CAY_GOP_GA_VALUE)
         }
+
+        playerId && this.scene.emit(Events.ON_PLAYER_BACAY_GOP_GA, playerId, gopGaValue, errMsg || true);
     }
 
     _assetsUseItem(data) {

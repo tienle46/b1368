@@ -18,7 +18,6 @@ export default class PlayerRenderer extends ActorRenderer {
             playerNameLabel: cc.Label,
             balanceLabel: cc.Label,
             ownerIcon: cc.Node,
-            masterIcon: cc.Node,
             plusBalanceNode: cc.Node,
             plusBalanceLabel: cc.Label,
             minusBalanceLabel: cc.Label,
@@ -94,9 +93,7 @@ export default class PlayerRenderer extends ActorRenderer {
         utils.setActive(this.ownerIcon, visible);
     }
 
-    setVisibleMaster(visible) {
-        utils.setActive(this.masterIcon, visible);
-    }
+    setVisibleMaster(visible = false) {}
 
     setVisibleReady(visible) {
         this.ready = visible;
@@ -126,6 +123,7 @@ export default class PlayerRenderer extends ActorRenderer {
     }
 
     startPlusBalanceAnimation(balance) {
+
         if (!this.loaded || isNaN(balance) || balance == 0) return;
 
         let isWinner = balance > 0;
@@ -140,6 +138,7 @@ export default class PlayerRenderer extends ActorRenderer {
             } else {
                 this.minusBalanceLabel.string = balanceStr;
             }
+
             this.plusBalanceAnim.play();
         }
     }

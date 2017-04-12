@@ -671,6 +671,7 @@ export default class CardList extends ActionComponent {
 
     setSelecteds(cards, selected = true) {
         this.finishAllCardActions()
+        this.cards.forEach(card => card.setSelected(false, false, true))
         cards.forEach(card => card.setSelected(selected, true, true));
     }
 

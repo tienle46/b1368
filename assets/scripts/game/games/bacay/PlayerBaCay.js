@@ -3,7 +3,7 @@
  */
 
 import app from 'app';
-import game from 'game';
+import Utils from 'Utils';
 import Card from 'Card';
 import Events from 'Events';
 import GameUtils from 'GameUtils';
@@ -61,10 +61,22 @@ export default class PlayerBaCay extends PlayerCardBetTurn {
         this.scene.off(Events.ON_PLAYER_BACAY_GOP_GA, this._onPlayerGopGa, this);
     }
 
-    _onPlayerGopGa(playerId, gopGaValue){
-        if(playerId != this.id || gopGaValue <= 0) return;
+    _onPlayerGopGa(playerId, gopGaValue, errMsg){
+        if(playerId != this.id) return;
 
-        this.renderer.visibleGopGaIcon()
+        if(gopGaValue > 0){
+            this.renderer.visibleGopGaIcon()
+        }else {
+            let message;
+            if(Utils.isString(errMsg)){
+                message = errMsg;
+            }else if(errMsg){
+                message = app.res.string('game_bacay_min_balance_to_gop_ga', {amount: this.board.minBet * 3})
+            }
+
+            message && app.system.showToast(message)
+        }
+
     }
 
     _onShowGameEndingInfo(playerId, { name = "", text = null, iconPath = "", balanceChanged = NaN, info = "", cards = [], isWinner = false } = {}){
@@ -115,8 +127,12 @@ export default class PlayerBaCay extends PlayerCardBetTurn {
         let addToMasterBestAmount = uBet - this.betAmount;
 
         this.scene.emit(Events.ADD_BET_TO_MASTER, addToMasterBestAmount, this);
-        this.renderer.playBetAnimation(uBet);
         this.setBetAmount(uBet);
+
+        this.onChangeBetOrCuocBienAmount()
+
+        this.renderer.playBetAnimation(uBet);
+
     }
 
     setBetAmount(betAmount = 0) {
@@ -125,6 +141,9 @@ export default class PlayerBaCay extends PlayerCardBetTurn {
 
         this.betAmount = betAmount;
         this.renderer.showBetAmount(this.betAmount);
+
+        let availableBalance = GameUtils.getUserBalance(this.user) - this.betAmount
+        this.renderer.setBalance(availableBalance)
     }
 
     _handlePlayerDown(playerId, data) {
@@ -141,7 +160,13 @@ export default class PlayerBaCay extends PlayerCardBetTurn {
 
     _onPlayerBet() {
         if (!this.isItMe() || !this.board.scene.gamePlayers.master) return;
-        this.board.scene.showChooseBetSlider(this.betAmount, 10);
+
+        let maxValue = BaCayUtils.calculateMaxPlayerBet(this, this.scene.gamePlayers.master);
+        if(maxValue > this.betAmount){
+            this.board.scene.showChooseBetSlider(this.betAmount, maxValue, 10);
+        }else{
+            app.system.showToast(app.res.string('game_bacay_cannot_bet_more_than_current'))
+        }
     }
 
     _onPlayerDownCard() {
@@ -230,7 +255,9 @@ export default class PlayerBaCay extends PlayerCardBetTurn {
         if(state == app.const.game.state.STATE_BET){
             if(!this.isMaster && this.isPlaying() && this.scene.gamePlayers.isMePlaying()){
                 this.scene.emit(Events.SHOW_BACAY_BET_CONTROLS);
-                this.scene.showChooseBetSlider(this.betAmount);
+
+                let maxValue = BaCayUtils.calculateMaxPlayerBet(this, this.scene.gamePlayers.master);
+                this.scene.showChooseBetSlider(this.betAmount, maxValue);
             }
         }else if(state == app.const.game.state.STATE_DOWN) {
             if(this.isPlaying()) {
@@ -341,6 +368,14 @@ export default class PlayerBaCay extends PlayerCardBetTurn {
         );
     }
 
+    onChangeBetOrCuocBienAmount(){
+
+        if(this.scene.isShowBetPopup){
+            let maxValue = BaCayUtils.calculateMaxPlayerBet(this.scene.gamePlayers.me, this.scene.gamePlayers.master);
+            this.scene._betPopup.setMaxValue(maxValue)
+        }
+    }
+
     _updateCuocBienValue(value){
         if(!utils.isNumber(value)) return;
 
@@ -384,6 +419,8 @@ export default class PlayerBaCay extends PlayerCardBetTurn {
 
         gaHucPlayer.renderer.showCuocBienBtn(false);
         biHucPlayer.renderer.showCuocBienBtn(false);
+
+        this.onChangeBetOrCuocBienAmount()
     }
 }
 

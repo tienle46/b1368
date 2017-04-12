@@ -13,6 +13,12 @@ export default class PlusBalanceAnimation extends Component {
         this.endCallback = null;
     }
 
+    onLoad(){
+        super.onLoad()
+
+        this._plusAnim = this.node.getComponent(cc.Animation)
+    }
+
     onDestroy() {
         super.onDestroy()
         this.startCallback = null;
@@ -30,7 +36,7 @@ export default class PlusBalanceAnimation extends Component {
     }
 
     play() {
-        this.node.getComponent(cc.Animation).play();
+        this._plusAnim.play();
     }
 
     onAnimationStart() {
@@ -41,6 +47,7 @@ export default class PlusBalanceAnimation extends Component {
     onAnimationEnd() {
         this.node.active = false;
         this.endCallback && this.endCallback();
+        this._plusAnim.stop()
     }
 }
 

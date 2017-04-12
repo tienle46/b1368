@@ -1246,7 +1246,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 91.28,
+      "width": 0,
       "height": 30
     },
     "_children": [],
@@ -1294,7 +1294,7 @@
       "__uuid__": "8538fe1b-c3b4-48ca-849f-55e33a2c7a57"
     },
     "_isSystemFontUsed": false,
-    "_N$string": "tencuatoi",
+    "_N$string": "",
     "_N$horizontalAlign": 0,
     "_N$verticalAlign": 0,
     "_N$overflow": 0
@@ -1333,7 +1333,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 91.28,
+      "width": 0,
       "height": 30
     },
     "_children": [],
@@ -1381,7 +1381,7 @@
       "__uuid__": "8538fe1b-c3b4-48ca-849f-55e33a2c7a57"
     },
     "_isSystemFontUsed": false,
-    "_N$string": "tencuatoi",
+    "_N$string": "",
     "_N$horizontalAlign": 0,
     "_N$verticalAlign": 0,
     "_N$overflow": 0
@@ -1420,7 +1420,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 100.08,
+      "width": 11.12,
       "height": 30
     },
     "_children": [],
@@ -1468,7 +1468,7 @@
       "__uuid__": "8538fe1b-c3b4-48ca-849f-55e33a2c7a57"
     },
     "_isSystemFontUsed": false,
-    "_N$string": "53,000,000",
+    "_N$string": "0",
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
     "_N$overflow": 0

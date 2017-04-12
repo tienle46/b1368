@@ -902,7 +902,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 109.46,
+      "width": 139.23,
       "height": 25
     },
     "_children": [],
@@ -950,7 +950,7 @@
     "_lineHeight": 25,
     "_enableWrapText": true,
     "_N$file": {
-      "__uuid__": "f7d3295b-8e12-456d-9621-9b8acc29ca1f"
+      "__uuid__": "707ff59f-f7c1-4eb4-a0de-41fd5e1c0123"
     },
     "_isSystemFontUsed": false,
     "_N$string": "PlayerName",
@@ -2713,7 +2713,7 @@
     "_lineHeight": 62,
     "_enableWrapText": true,
     "_N$file": {
-      "__uuid__": "f7d3295b-8e12-456d-9621-9b8acc29ca1f"
+      "__uuid__": "707ff59f-f7c1-4eb4-a0de-41fd5e1c0123"
     },
     "_isSystemFontUsed": false,
     "_N$string": "10 điểm",
@@ -7351,7 +7351,6 @@
     "ownerIcon": {
       "__id__": 20
     },
-    "masterIcon": null,
     "plusBalanceNode": {
       "__id__": 228
     },

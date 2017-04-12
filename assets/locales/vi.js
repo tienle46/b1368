@@ -107,6 +107,8 @@ export default {
     game_bacay_ask_to_accept_cuoc_bien: '{{player}} muốn CƯỢC BIÊN với bạn {{value}}$',
     game_bacay_chi_cuoc_bien_mot_lan: 'Chỉ được cược biên với người chơi một lần',
     game_bacay_khong_the_cuoc_bien: 'Bạn không thể cược biên với người chơi này',
+    game_bacay_cannot_bet_more_than_current: 'Bạn không thể cược lớn hơn giá trị hiện tại',
+    game_bacay_min_balance_to_gop_ga: 'Bạn phải có trên {{amount}} để có thể góp gà',
     game_registered_quit_room: 'Đăng ký rời bàn thành công',
     game_start_deal_card: 'Bắt đầu \nchia bài',
     game_change_master_to_player: 'Chuyển chương cho người chơi {{playerName}}',

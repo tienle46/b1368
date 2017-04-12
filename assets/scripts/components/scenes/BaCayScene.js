@@ -26,6 +26,8 @@ export default class BaCayScene extends GameScene {
          * @private
          */
         this._betPopup = null;
+        this.isShowBetPopup = false;
+        this.isShowCuocBienPopup = false;
     }
 
     onLoad() {
@@ -45,6 +47,9 @@ export default class BaCayScene extends GameScene {
 
     showCuocBienPopup(maxValue, cb) {
 
+        this.isShowBetPopup = false
+        this.isShowCuocBienPopup = true
+
         if(maxValue < this.board.minBet) {
             app.system.showToast(app.res.string('game_not_enough_balance_to_cuoc_bien'));
             return;
@@ -60,10 +65,14 @@ export default class BaCayScene extends GameScene {
         });
     }
 
-    showChooseBetSlider(currentValue, timeout = 5) {
+    showChooseBetSlider(currentValue, maxValue, timeout = 5) {
         // let maxValue = this.board.minBet * 5;
+
+
+        this.isShowBetPopup = true
+        this.isShowCuocBienPopup = false
+
         let minValue = this.board.minBet;
-        let maxValue = BaCayUtils.calculateMaxPlayerBet(this.gamePlayers.me, this.gamePlayers.master);
 
         if(maxValue < minValue) {
             app.system.showToast(app.res.string('game_not_enough_balance_to_bet'));

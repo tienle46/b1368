@@ -975,7 +975,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": -62
+      "y": -66
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -1025,7 +1025,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": -4
+      "y": 0
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -2729,7 +2729,6 @@
     "ownerIcon": {
       "__id__": 21
     },
-    "masterIcon": null,
     "plusBalanceNode": {
       "__id__": 50
     },
