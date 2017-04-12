@@ -98,8 +98,6 @@ export default class GameMenuPrefab extends Component {
     }
 
     onClickChatButton(event) {
-        // console.debug('localStorage.getItem("testModel")', JSON.parse(localStorage.getItem("testModel")));
-        // this.scene.showGameResult(JSON.parse(localStorage.getItem("testModel")));
         this.scene.emit(Events.VISIBLE_INGAME_CHAT_COMPONENT);
     }
 

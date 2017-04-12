@@ -119,7 +119,7 @@ export default class DashboardScene extends BaseScene {
     }
     
     _onListHu(data) {
-        console.debug('_onListHu', data)
+        //console.debug('_onListHu', data)
         
         data.gcl.forEach((gc, i) => {
             let endTime = data['etl'][i],
@@ -133,7 +133,7 @@ export default class DashboardScene extends BaseScene {
     }
     
     _requestListHu() {
-        console.debug('_requestListHu');
+        //console.debug('_requestListHu');
         app.service.send({
             cmd: app.commands.LIST_HU
         });    
