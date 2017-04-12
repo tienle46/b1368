@@ -67,18 +67,30 @@ export default class DashboardScene extends BaseScene {
     }
 
     onShareBtnClick() {
-        window.FB.ui({
-            method: 'share_open_graph',
-            action_type: 'og.likes',
-            action_properties: JSON.stringify({
-                object: '....',
-            })
-        }, function(response) {
-            console.log('response', response);
-        });
+        if(app.env.isBrowser()){
+            window.FB.ui({
+                method: 'share_open_graph',
+                action_type: 'og.likes',
+                action_properties: JSON.stringify({
+                    object: '....',
+                })
+            }, function(response) {
+                console.log('response', response);
+            });
+        }
+        else if (app.env.isMobile()){
+            cc.log(`share on mobile`);
+            var info = new Object();
+            info.type  = "link";
+            info.link  = "http://b1368.com";
+            info.title = "Bài 1368";
+            info.text  = "Chơi miễn phí, rinh tiền tỉ";
+            info.image = "http://cocos2d-x.org/images/logo.png";
+            window.sdkbox.PluginFacebook.dialog(info);
+        }
+        
     }
-
-    _addGlobalListener() {
+   _addGlobalListener() {
         super._addGlobalListener();
         app.system.addListener(app.commands.USER_LIST_GAME_CODE, this._onUserListGame, this);
         app.system.addListener(app.commands.LIST_HU, this._onListHu, this);
@@ -119,8 +131,6 @@ export default class DashboardScene extends BaseScene {
     }
     
     _onListHu(data) {
-        //console.debug('_onListHu', data)
-        
         data.gcl.forEach((gc, i) => {
             let endTime = data['etl'][i],
                 id = data['il'][i],
@@ -133,7 +143,6 @@ export default class DashboardScene extends BaseScene {
     }
     
     _requestListHu() {
-        //console.debug('_requestListHu');
         app.service.send({
             cmd: app.commands.LIST_HU
         });    
