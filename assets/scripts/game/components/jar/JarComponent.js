@@ -57,6 +57,7 @@ export default class JarComponent extends Actor {
             // }
             cmd: 'sj_sjl'
         });
+        // console.debug('click!');
     }
     
     _addGlobalListener() {
@@ -72,18 +73,19 @@ export default class JarComponent extends Actor {
     _updateRemainTime(remainTime) {
         this.remainTime = remainTime;
         this.remainTimeLbl && (this.remainTimeLbl.string = moment(this.remainTime).format('hh:mm:ss'));
+        // console.debug(this.remainTime, this.timeout);
         
-        if (!this.timeout) {
-            this.timeout = requestTimeout(() => {
-                this._clearInterval();
-                this._updateRemainTime(this.remainTime - this.time);
-            }, this.time);
-        }
+        this.timeout = setTimeout(() => {
+            clearTimeout(this.timeout);
+            this._updateRemainTime(this.remainTime - this.time);
+        }, this.time);
     }
     
     _clearInterval() {
-        this.timeout && clearRequestTimeout(this.timeout);
+        // this.timeout && clearRequestTimeout(this.timeout);
+        clearTimeout(this.timeout);
         this.timeout = null;
+        // console.debug('this.timeout', this.timeout);
     }
     
     _onJarDetail(data) {

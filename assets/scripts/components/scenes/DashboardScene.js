@@ -196,7 +196,7 @@ export default class DashboardScene extends BaseScene {
                         this.changeScene(app.const.scene.LIST_TABLE_SCENE);
                     });
                     
-                    // this.iconComponents[gc] = itemComponent;
+                    // // this.iconComponents[gc] = itemComponent;
                     if(app.jarManager.hasJar(gc)) {
                         app.jarManager.addJarToParent(itemComponent.getJarAnchor(), gc);
                     }

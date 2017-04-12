@@ -36,12 +36,12 @@ export default class JarManager {
     }
     
     setJar(gc, data) {
-        if(this._jars[gc])
-            CCUtils.clearFromParent(this._jars[gc]);
+        // console.debug('setjar')
         this._jars[gc] = data;
     }
     
     setupJar(data) {
+        // console.debug('setupJar')
         data[app.keywords.GAME_CODE_LIST].forEach((gc, i) => {
             let endTime = data[app.keywords.END_TIME_LIST][i],
                 id = data[app.keywords.ID_LIST][i],
@@ -50,15 +50,8 @@ export default class JarManager {
                 startTime = data[app.keywords.START_TIME_LIST][i];
             
             let jar = cc.instantiate(app.res.prefab.jarPrefab);
+            jar._jarInit = {id, remainTime, startTime, endTime, currentMoney};
             this.setJar(gc, jar);
-            
-            if(jar) {
-                let jarComponent = jar.getComponent('JarComponent');
-                if(jarComponent) {
-                    jarComponent.init({id, remainTime, startTime, endTime, currentMoney});
-                }
-                jar.active = true;
-            }
         });
     }
     
@@ -68,13 +61,23 @@ export default class JarManager {
         if(!jar || !parent || !CCUtils.isNode(parent) || !CCUtils.isNode(jar))
             return;
         
+        let jarComponent = jar.getComponent('JarComponent');
+        if(jarComponent) {
+            jarComponent.init(this.getInitData(jar));
+        }
+        
+        jar.active = true;
+        
         if(hasButton) {
-            let jarComponent = jar.getComponent('JarComponent');
             if(jarComponent) {
                 jarComponent.activeBtnComponent();
             }
         }
         parent.addChild(jar);
+    }
+    
+    getInitData(jar) {
+        return jar._jarInit;    
     }
     
     hasJar(gc) {
