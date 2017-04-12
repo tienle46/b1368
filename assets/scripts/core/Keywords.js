@@ -768,3 +768,13 @@ Keywords.CHANGE_AVATAR = "changeAvatar";
 
 Keywords.CARDS = "cards";
 Keywords.ERROR_MESSAGE = "errMsg";
+
+// jar (hũ)
+Keywords.END_TIME_LIST = "etl";
+Keywords.START_TIME_LIST = "stl";
+Keywords.REMAIN_TIME_LIST = "rtl";
+Keywords.ID_LIST = "il";
+Keywords.MONEY_LIST = "ml";
+
+Keywords.NAME = "n";
+Keywords.DETAIL = "d";

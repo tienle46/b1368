@@ -17,7 +17,7 @@ export default class DashboardScene extends BaseScene {
             dailyDialogContent: cc.Label
         };
         
-        this.iconNodes = {};
+        this.iconComponents = {};
     }
 
     onLoad() {
@@ -30,11 +30,13 @@ export default class DashboardScene extends BaseScene {
 
     onDestroy() {
         super.onDestroy();
-        this.free(this.iconNodes);
+        this.free(this.iconComponents);
     }
 
     start() {
         super.start();
+        this._requestListHu();
+        
         this._getGamesListFromServer();
 
         /**
@@ -93,13 +95,11 @@ export default class DashboardScene extends BaseScene {
    _addGlobalListener() {
         super._addGlobalListener();
         app.system.addListener(app.commands.USER_LIST_GAME_CODE, this._onUserListGame, this);
-        app.system.addListener(app.commands.LIST_HU, this._onListHu, this);
     }
 
     _removeGlobalListener() {
         super._removeGlobalListener();
         app.system.removeListener(app.commands.USER_LIST_GAME_CODE, this._onUserListGame, this);
-        app.system.removeListener(app.commands.LIST_HU, this._onListHu, this);
     }
 
     _getGamesListFromServer() {
@@ -147,7 +147,7 @@ export default class DashboardScene extends BaseScene {
             cmd: app.commands.LIST_HU
         });    
     }
-    
+
     _initItemListGame() {
         const height = this.viewContainer.height || 200;
         const itemDimension = Math.floor(height / 2.0 - 37);
@@ -196,12 +196,15 @@ export default class DashboardScene extends BaseScene {
                         this.changeScene(app.const.scene.LIST_TABLE_SCENE);
                     });
                     
-                    this.iconNodes[gc] = itemComponent;
+                    // this.iconComponents[gc] = itemComponent;
+                    if(app.jarManager.hasJar(gc)) {
+                        app.jarManager.addJarToParent(itemComponent.getJarAnchor(), gc);
+                    }
                     
                     node && node.addChild(nodeItem);
                 }
                 if (index == app.context.gameList.length - 1) {
-                    this._requestListHu();
+                    // this._requestListHu();
                     this.hideLoading();
                 }
             });

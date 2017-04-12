@@ -19,7 +19,8 @@ export default class ListTableScene extends BaseScene {
             tableListCell: cc.Prefab,
             invitePopupPrefab: cc.Prefab,
             gameTitleLbl: cc.Label,
-            userMoneyLbl: cc.Label
+            userMoneyLbl: cc.Label,
+            jarAnchorNode: cc.Node
         };
 
         this.items = null;
@@ -54,6 +55,7 @@ export default class ListTableScene extends BaseScene {
 
     start() {
         super.start();
+        this._requestListHu();
         this._getFirstGameLobbyFromServer();
         this._getListGameMinBet();
     }
@@ -73,6 +75,7 @@ export default class ListTableScene extends BaseScene {
         app.system.addListener(SFS2X.SFSEvent.ROOM_JOIN, this._handleRoomJoinEvent, this);
         app.system.marker.getItemData(app.system.marker.SHOW_INVITATION_POPUP_OPTION) && app.system.addListener(app.commands.PLAYER_INVITE, this._onPlayerInviteEvent, this);
         app.system.addListener(SFS2X.SFSEvent.ROOM_JOIN_ERROR, this._onJoinRoomError, this);
+        app.system.addListener(app.commands.LIST_HU, this._onListHu, this);
     }
 
     _removeGlobalListener() {
@@ -84,8 +87,9 @@ export default class ListTableScene extends BaseScene {
         app.system.removeListener(SFS2X.SFSEvent.ROOM_JOIN, this._handleRoomJoinEvent, this);
         app.system.removeListener(app.commands.PLAYER_INVITE, this._onPlayerInviteEvent, this);
         app.system.removeListener(SFS2X.SFSEvent.ROOM_JOIN_ERROR, this._onJoinRoomError, this);
+        app.system.removeListener(app.commands.LIST_HU, this._onListHu, this);
     }
-
+    
     onClickNapXuAction() {
         Linking.goTo(Linking.ACTION_TOPUP);
     }
@@ -102,6 +106,19 @@ export default class ListTableScene extends BaseScene {
         this.__isCreatingRoom = false;
         this._clearInterval();
         this._sendRequestUserListRoom();
+    }
+    
+    _requestListHu() {
+        app.service.send({
+            cmd: app.commands.LIST_HU
+        });     
+    }
+    
+    _onListHu() {
+        if(app.jarManager.hasJar(this.gameCode)) {
+            let hasButton = true;
+            app.jarManager.addJarToParent(this.jarAnchorNode, this.gameCode, hasButton);
+        }
     }
     
     _getListGameMinBet() {
@@ -210,7 +227,7 @@ export default class ListTableScene extends BaseScene {
             }
         });
     }
-
+    
     _onUserListGroup(data) {
         if (data && data[app.keywords.GAME_LIST_RESULT] && data[app.keywords.GAME_LIST_RESULT] === this.gameCode) {
             let roomIds = data[app.keywords.GROUP_LIST_GROUP][app.keywords.GROUP_SHORT_NAME];
@@ -262,7 +279,8 @@ export default class ListTableScene extends BaseScene {
                     avatarUrl: event.inviterAvatarUrl || app.config.defaultAvatarUrl,
                     userCoin: event.inviterBalance,
                     roomCapacity: event.roomCapacity,
-                    roomBalance: this._calculateMinBalanceToJoinGame(event.b)
+                    roomBalance: this._calculateMinBalanceToJoinGame(event.b),
+                    inviterVipLevel: event.inviterVipLevel
                 },
                 this._onCancelInvitationBtnClick.bind(this),
                 this._onConfirmInvitationBtnClick.bind(this, joinRoomRequestData)

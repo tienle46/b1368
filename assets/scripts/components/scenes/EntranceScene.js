@@ -3,6 +3,7 @@ import app from 'app';
 import BaseScene from 'BaseScene';
 import BuddyManager from 'BuddyManager';
 import PromptPopup from 'PromptPopup';
+import JarManager from 'JarManager';
 
 class EntranceScene extends BaseScene {
 
@@ -72,6 +73,10 @@ class EntranceScene extends BaseScene {
 
         app.service.client._reset(true);
         app.context.reset()
+        
+        if(!app.jarManager) {
+            app.jarManager = new JarManager();
+        }
     }
 
     handleLoginAction() {

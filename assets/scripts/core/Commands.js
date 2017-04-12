@@ -282,5 +282,7 @@ Commands.GET_VIP_BENEFIT = "getVipBenefit";
 Commands.GET_BACK_CHIPS = "ceir";
 
 Commands.LIST_HU = "sj_jl";
+Commands.JAR_DETAIL = "sj_jd";
+Commands.USER_GOT_JAR = "sj_sjl";
 
 module.exports = Commands;

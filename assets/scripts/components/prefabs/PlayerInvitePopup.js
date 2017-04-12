@@ -33,7 +33,7 @@ class PlayerInvitePopup extends Component {
     
     /**
      * 
-     * @param {username: string, userCoin: int, avatarUrl: string, bet: int, roomCapacity: string, roomBalance: int} invoker 
+     * @param {username: string, userCoin: int, avatarUrl: string, bet: int, roomCapacity: string, roomBalance: int, inviterVipLevel:string} invoker 
      * @param {func} acceptListener 
      * @param {func} denyListener 
      * @param {cc.Node} node 
@@ -41,10 +41,11 @@ class PlayerInvitePopup extends Component {
      * @memberOf PlayerInvitePopup
      */
     init(node, invoker, acceptListener, denyListener) {
-        let {username, userCoin, avatarUrl, bet, roomCapacity, roomBalance} = invoker;
+        let {username, userCoin, avatarUrl, bet, roomCapacity, roomBalance, inviterVipLevel} = invoker;
         avatarUrl && RubUtils.loadSpriteFrame(this.invokerSprite, avatarUrl, null, true);
         this.invokerNameLbl.string = username;
         this.invokerGoldLbl.string = numberFormat(userCoin);
+        this.invokerLevelLbl.string = inviterVipLevel;
         
         this.roomBetLbl.string = numberFormat(bet);
         this.roomCapacityLbl.string = roomCapacity;

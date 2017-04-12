@@ -5,7 +5,7 @@ class Item extends Component {
     constructor() {
         super();
         this.properties = {
-            jarNode: cc.Node
+            jarAnchorNode: cc.Node
         };
 
         this._clickListener = null;
@@ -28,9 +28,13 @@ class Item extends Component {
         this._clickListener && this._clickListener(this.gameCode);
     }
     
-    initJar({id, remainTime, startTime, endTime, currentMoney} = {}) {
-        this.jarNode.getComponent('JarComponent').init({id, remainTime, startTime, endTime, currentMoney});
+    getJarAnchor() {
+        return this.jarAnchorNode;    
     }
+    
+    // initJar({id, remainTime, startTime, endTime, currentMoney} = {}) {
+    //     this.jarNode.getComponent('JarComponent').init({id, remainTime, startTime, endTime, currentMoney});
+    // }
 }
 
 app.createComponent(Item);

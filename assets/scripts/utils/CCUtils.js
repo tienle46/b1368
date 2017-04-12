@@ -4,7 +4,7 @@
 
 export default class CCUtils {
     static isNode(node) {
-        return !node && node instanceof cc.Node;
+        return node && node instanceof cc.Node;
     }
 
     static isValid(target) {
