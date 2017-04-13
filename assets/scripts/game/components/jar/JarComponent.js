@@ -51,13 +51,11 @@ export default class JarComponent extends Actor {
     
     onJarClick() {
         app.service.send({
-            // cmd: app.commands.JAR_DETAIL,
-            // data: {
-            //     [app.keywords.ID]: this.jarId
-            // }
-            cmd: 'sj_sjl'
+            cmd: app.commands.JAR_DETAIL,
+            data: {
+                [app.keywords.ID]: this.jarId
+            }
         });
-        // console.debug('click!');
     }
     
     _addGlobalListener() {
@@ -73,7 +71,6 @@ export default class JarComponent extends Actor {
     _updateRemainTime(remainTime) {
         this.remainTime = remainTime;
         this.remainTimeLbl && (this.remainTimeLbl.string = moment(this.remainTime).format('hh:mm:ss'));
-        // console.debug(this.remainTime, this.timeout);
         
         this.timeout = setTimeout(() => {
             clearTimeout(this.timeout);
@@ -82,10 +79,8 @@ export default class JarComponent extends Actor {
     }
     
     _clearInterval() {
-        // this.timeout && clearRequestTimeout(this.timeout);
         clearTimeout(this.timeout);
         this.timeout = null;
-        // console.debug('this.timeout', this.timeout);
     }
     
     _onJarDetail(data) {

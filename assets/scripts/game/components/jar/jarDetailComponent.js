@@ -37,7 +37,7 @@ export default class JarDetailComponent extends Actor {
     
     onEnable() {
         super.onEnable();
-        // this._requestListUserJars();      
+        this._requestListUserJars();  
     }
     
     initContent({name, content} = {}) {
@@ -69,20 +69,24 @@ export default class JarDetailComponent extends Actor {
     _requestListUserJars() {
         app.service.send({
             cmd: app.commands.USER_GOT_JAR,
+            data: {
+                [app.keywords.GAME_CODE]: app.context.getSelectedGame(),
+                [app.keywords.PAGE]: 1
+            }
         });
     }
     
     _onUserJarInfo(data) {
-        // let names = data['ul'],
-        //     chips = data['ml'];
+        let names = data['ul'],
+            chips = data['ml'];
         
-        // names.forEach((name, i) => {
-        //     this.userNameLbl.string = `${i+1}. ${name}`;
-        //     this.userMoneyLbl.string = Utils.formatNumberType1(chips[i]).toString().toUpperCase();
-        //     let item = cc.instantiate(this.itemUser);
-        //     item.active = true;
-        //     this.listUserContentNode.addChild(item);
-        // });
+        names.forEach((name, i) => {
+            this.userNameLbl.string = `${i+1}. ${name}`;
+            this.userMoneyLbl.string = Utils.formatNumberType1(chips[i]).toString().toUpperCase();
+            let item = cc.instantiate(this.itemUser);
+            item.active = true;
+            this.listUserContentNode.addChild(item);
+        });
     }
 }
 

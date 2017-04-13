@@ -36,12 +36,10 @@ export default class JarManager {
     }
     
     setJar(gc, data) {
-        // console.debug('setjar')
         this._jars[gc] = data;
     }
     
     setupJar(data) {
-        // console.debug('setupJar')
         data[app.keywords.GAME_CODE_LIST].forEach((gc, i) => {
             let endTime = data[app.keywords.END_TIME_LIST][i],
                 id = data[app.keywords.ID_LIST][i],
@@ -60,20 +58,26 @@ export default class JarManager {
         
         if(!jar || !parent || !CCUtils.isNode(parent) || !CCUtils.isNode(jar))
             return;
+        let data = this.getInitData(jar);
         
-        let jarComponent = jar.getComponent('JarComponent');
+        let cloner = cc.instantiate(jar); // clone this node to prevent node's component will be destroy while scene's changing. --> fix only in simulator
+        
+        let jarComponent = cloner.getComponent('JarComponent');
         if(jarComponent) {
-            jarComponent.init(this.getInitData(jar));
+            jarComponent.init(data);
         }
         
-        jar.active = true;
+        cloner.active = true;
         
         if(hasButton) {
             if(jarComponent) {
                 jarComponent.activeBtnComponent();
             }
         }
-        parent.addChild(jar);
+        
+        CCUtils.clearAllChildren(parent);
+        
+        parent.addChild(cloner);
     }
     
     getInitData(jar) {

@@ -1,7 +1,6 @@
 import app from 'app';
 import BaseScene from 'BaseScene';
 import SFS2X from 'SFS2X';
-import { requestTimeout, clearRequestTimeout } from 'TimeHacker';
 import ScrollMessagePopup from 'ScrollMessagePopup';
 import BuddyPopup from 'BuddyPopup';
 import CCUtils from 'CCUtils';
@@ -62,7 +61,6 @@ export default class ListTableScene extends BaseScene {
 
     onDestroy() {
         super.onDestroy();
-        this._clearInterval();
         window.release(this.items, this.enableMinbets);
     }
 
@@ -104,7 +102,6 @@ export default class ListTableScene extends BaseScene {
     
     onRefreshBtnClick() {
         this.__isCreatingRoom = false;
-        this._clearInterval();
         this._sendRequestUserListRoom();
     }
     
@@ -210,12 +207,6 @@ export default class ListTableScene extends BaseScene {
                 return data[app.keywords.GAME_RULE] ? data[app.keywords.GAME_RULE] : data[app.keywords.GAME_GUIDE];
             }
         });
-    }
-
-    // clear interval
-    _clearInterval() {
-        this.timeout && clearRequestTimeout(this.timeout);
-        this.timeout = null;
     }
 
     _getFirstGameLobbyFromServer() {
@@ -467,7 +458,6 @@ export default class ListTableScene extends BaseScene {
 
     _onJoinRoomError() {
         this.__isCreatingRoom = false;
-        this._clearInterval();
         this._sendRequestUserListRoom();
     }
 }

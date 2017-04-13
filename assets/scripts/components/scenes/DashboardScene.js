@@ -130,18 +130,6 @@ export default class DashboardScene extends BaseScene {
         return ArrayUtils.isEmpty(gameCodes) ? [] : gameCodes.filter(gc => app.config.supportedGames.indexOf(gc) >= 0);
     }
     
-    _onListHu(data) {
-        data.gcl.forEach((gc, i) => {
-            let endTime = data['etl'][i],
-                id = data['il'][i],
-                currentMoney = data['ml'][i],
-                remainTime = data['rtl'][i],
-                startTime = data['stl'][i];
-                
-            this.iconNodes[gc].initJar({id, remainTime, startTime, endTime, currentMoney});
-        }) 
-    }
-    
     _requestListHu() {
         app.service.send({
             cmd: app.commands.LIST_HU
