@@ -288,6 +288,12 @@ export default class BoardPhom extends BoardCardTurnBase {
         let winType = utils.getValue(data, Keywords.WIN_TYPE);
         let playersWinRanks = utils.getValue(data, Keywords.GAME_LIST_WIN);
         let rank = utils.getValue(data, Keywords.GAME_RANK_WIN);
+        let isU =   winType == app.const.game.PHOM_WIN_TYPE_U_THUONG ||
+                    winType == app.const.game.PHOM_WIN_TYPE_U_DEN ||
+                    winType == app.const.game.PHOM_WIN_TYPE_U_KHAN ||
+                    winType == app.const.game.PHOM_WIN_TYPE_U_TRON ||
+                    winType == app.const.game.PHOM_WIN_TYPE_U_PHOM_KIN
+
         playerIds.forEach((id, i) => {
             let isMom = playerHandCards[id].length == 9;
             let playersWinRank = playersWinRanks[i];
@@ -318,7 +324,9 @@ export default class BoardPhom extends BoardCardTurnBase {
                 winnerFlags[id] = true;
 
             } else {
-                if (isMom) {
+                if(isU){
+                    resultText = 'thua'
+                } else if (isMom) {
                     resultText = winType > 0 ? 'thua' : 'phom-mom';
                 } else {
                     switch (playersWinRank) {
