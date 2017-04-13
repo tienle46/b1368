@@ -22,7 +22,6 @@ export default class Marker {
     }
     
     _initDefaultGameState() {
-        console.debug(this.caches)
         
         if(!this.getItem(this.SOUND_OPTION)) {
             this.setItem(this.SOUND_OPTION, 'true');
