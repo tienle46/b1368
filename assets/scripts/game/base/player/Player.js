@@ -347,7 +347,7 @@ export default class Player extends Actor {
     }
 
     onGameStarting(data, isJustJoined) {
-
+        
     }
 
     onGameStarted(data, isJustJoined) {
@@ -358,15 +358,15 @@ export default class Player extends Actor {
 
     onGamePlaying(data, isJustJoined) {
         if (isJustJoined) {
-
+            console.debug('onGamePlaying', this.scene.room.getVariable('i'), this.scene.room.getVariable('sj_sjil'), isJustJoined);
         }
     }
 
     onGameEnding(data, isJustJoined) {
         if (isJustJoined) {
-
+            
         }
-
+        
         this.stopTimeLine();
     }
 

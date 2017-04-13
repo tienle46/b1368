@@ -136,7 +136,6 @@ class TabExchangeCard extends PopupTabBody {
                     }
                 }
                 this._initProviders();
-                // console.debug(this._tabData)
             }
         });
     }

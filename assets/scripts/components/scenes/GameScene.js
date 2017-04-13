@@ -85,7 +85,7 @@ export default class GameScene extends BaseScene {
         this.on(Events.ON_PLAYER_READY_STATE_CHANGED, this._onPlayerReadyStateChanged, this);
         this.on(Events.ON_PLAYER_REGISTER_QUIT_ROOM, this._handleRegisterQuitRoom, this);
     }
-
+    
     _handleRegisterQuitRoom(data){
         if (data && data[app.keywords.SUCCESSFULL]) {
             app.system.showToast(data[app.keywords.MESSAGE] || app.res.string("game_registered_quit_room"));

@@ -1,5 +1,5 @@
 import app from 'app';
-import Component from 'Component';
+import Actor from 'Actor';
 import SFS2X from 'SFS2X';
 import Events from 'Events';
 import utils from 'utils';
@@ -10,7 +10,7 @@ import ScrollMessagePopup from 'ScrollMessagePopup';
 
 const ACTION_LUAT_CHOI = 1;
 
-export default class GameMenuPrefab extends Component {
+export default class GameMenuPrefab extends Actor {
     constructor() {
         super();
 
@@ -24,7 +24,8 @@ export default class GameMenuPrefab extends Component {
             exitButton: cc.Button,
             guideButton: cc.Button,
             exitLabel: cc.Label,
-            guideLabel: cc.Label
+            guideLabel: cc.Label,
+            jarAnchorPoint: cc.Node
         }
 
 
@@ -37,7 +38,16 @@ export default class GameMenuPrefab extends Component {
         this.scene = app.system.currentScene;
         utils.deactive(this.menuPopup);
     }
-
+    
+    start() {
+        super.start();
+        let gameCode = app.context.getSelectedGame();
+        if(app.jarManager.hasJar(gameCode)) {
+            let hasButton = true;
+            app.jarManager.addJarToParent(this.jarAnchorPoint, gameCode, hasButton);
+        }
+    }
+    
     _onClickMenuItem(eventName, ...args) {
         this.hide();
         this.scene.emit(eventName, ...args);
@@ -80,11 +90,15 @@ export default class GameMenuPrefab extends Component {
     _onTouchGameMenu() {
         this.isMenuPopupShown && this.hide();
     }
-
+    
     onDisable() {
         this.menuPopup.off('touchstart', this._onTouchGameMenu, this);
     }
-
+    
+    onDestroy() {
+        super.onDestroy();    
+    }
+    
     show() {
         utils.active(this.menuPopup);
         this.isMenuPopupShown = true;

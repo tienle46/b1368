@@ -49,6 +49,7 @@ export default class JarManager {
             
             let jar = cc.instantiate(app.res.prefab.jarPrefab);
             jar._jarInit = {id, remainTime, startTime, endTime, currentMoney};
+            
             this.setJar(gc, jar);
         });
     }
@@ -63,6 +64,8 @@ export default class JarManager {
         let cloner = cc.instantiate(jar); // clone this node to prevent node's component will be destroy while scene's changing. --> fix only in simulator
         
         let jarComponent = cloner.getComponent('JarComponent');
+        jarComponent._gameCode = gc;
+        
         if(jarComponent) {
             jarComponent.init(data);
         }

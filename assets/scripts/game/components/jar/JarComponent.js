@@ -37,11 +37,14 @@ export default class JarComponent extends Actor {
     
     init({id, remainTime, startTime, endTime, currentMoney} = {}) {
         this._updateRemainTime(remainTime);
-        
+        this.updateTotalMoney(currentMoney);
+                
         this.jarId = id;
-        
-        this.jarTotalMoneyLbl.string = Utils.formatNumberType2(currentMoney).toString().toUpperCase();
         this.node.active = true;
+    }
+    
+    updateTotalMoney(totalMoney) {
+        this.jarTotalMoneyLbl.string = Utils.formatNumberType2(totalMoney).toString().toUpperCase();
     }
     
     onDestroy() {
@@ -60,12 +63,14 @@ export default class JarComponent extends Actor {
     
     _addGlobalListener() {
         super._addGlobalListener();
+        app.system.addListener(app.commands.LIST_HU, this._onListHu, this);
         app.system.addListener(app.commands.JAR_DETAIL, this._onJarDetail, this);
     }
 
     _removeGlobalListener() {
         super._removeGlobalListener();
         app.system.removeListener(app.commands.JAR_DETAIL, this._onJarDetail, this);
+        app.system.removeListener(app.commands.LIST_HU, this._onListHu, this);
     }
     
     _updateRemainTime(remainTime) {
@@ -93,6 +98,17 @@ export default class JarComponent extends Actor {
             jarDetailComponent.initContent({name, content});
             app.system.getCurrentSceneNode().addChild(jarDetail);
         }
+    }
+    
+    _onListHu(data) {
+        let index = data[app.keywords.GAME_CODE_LIST].findIndex((gc) => gc == this._gameCode);
+        
+        if(index > -1) {
+            let currentMoney = data[app.keywords.MONEY_LIST][index],
+                remainTime = data[app.keywords.REMAIN_TIME_LIST][index];
+            this.updateTotalMoney(currentMoney);
+            this._updateRemainTime(remainTime);
+        };
     }
 }
 

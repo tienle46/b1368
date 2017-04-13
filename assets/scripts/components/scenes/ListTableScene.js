@@ -54,9 +54,12 @@ export default class ListTableScene extends BaseScene {
 
     start() {
         super.start();
-        this._requestListHu();
         this._getFirstGameLobbyFromServer();
         this._getListGameMinBet();
+        if(app.jarManager.hasJar(this.gameCode)) {
+            let hasButton = true;
+            app.jarManager.addJarToParent(this.jarAnchorNode, this.gameCode, hasButton);
+        }
     }
 
     onDestroy() {
@@ -73,7 +76,6 @@ export default class ListTableScene extends BaseScene {
         app.system.addListener(SFS2X.SFSEvent.ROOM_JOIN, this._handleRoomJoinEvent, this);
         app.system.marker.getItemData(app.system.marker.SHOW_INVITATION_POPUP_OPTION) && app.system.addListener(app.commands.PLAYER_INVITE, this._onPlayerInviteEvent, this);
         app.system.addListener(SFS2X.SFSEvent.ROOM_JOIN_ERROR, this._onJoinRoomError, this);
-        app.system.addListener(app.commands.LIST_HU, this._onListHu, this);
     }
 
     _removeGlobalListener() {
@@ -85,7 +87,6 @@ export default class ListTableScene extends BaseScene {
         app.system.removeListener(SFS2X.SFSEvent.ROOM_JOIN, this._handleRoomJoinEvent, this);
         app.system.removeListener(app.commands.PLAYER_INVITE, this._onPlayerInviteEvent, this);
         app.system.removeListener(SFS2X.SFSEvent.ROOM_JOIN_ERROR, this._onJoinRoomError, this);
-        app.system.removeListener(app.commands.LIST_HU, this._onListHu, this);
     }
     
     onClickNapXuAction() {

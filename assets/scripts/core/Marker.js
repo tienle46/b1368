@@ -12,12 +12,24 @@ export default class Marker {
         
         this._initCaches();
         this._addGlobalStaticKeys();
+        this._initDefaultGameState();
     }
     
     _addGlobalStaticKeys() {
         this.SOUND_OPTION = 'sound_popup';
         this.SHOW_INVITATION_POPUP_OPTION = 'show_invitation_popup_option';
         // app.const.SOUND_OPTION = '!{{username}}sound_popup';
+    }
+    
+    _initDefaultGameState() {
+        console.debug(this.caches)
+        
+        if(!this.getItem(this.SOUND_OPTION)) {
+            this.setItem(this.SOUND_OPTION, 'true');
+        }
+        if(!this.getItem(this.SHOW_INVITATION_POPUP_OPTION)) {
+            this.setItem(this.SHOW_INVITATION_POPUP_OPTION, 'true');
+        }    
     }
     
     setItem(key, data) {
@@ -41,12 +53,12 @@ export default class Marker {
 
     getItem(key) {
         let k = this._validKey(key);
-        return k && this.caches[k];
+        return k ? this.caches[k] : null;
     }
 
     getItemData(key) {
         let item = this.getItem(key);
-        return item && item.data;
+        return item ? item.data : null;
     }
     
     isEqual(key, value) {
@@ -64,7 +76,7 @@ export default class Marker {
                 _$isNew: false,
                 _$isUpdated: false
             };
-        }    
+        }  
     }
     
     _validKey(key) {
@@ -76,7 +88,7 @@ export default class Marker {
 
     _isCached(key) {
         let k = this._validKey(key);
-        return k && this.caches.hasOwnProperty(k);
+        return k ? this.caches.hasOwnProperty(k) : null;
     }
     
     

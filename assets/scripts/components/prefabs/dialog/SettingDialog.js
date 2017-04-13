@@ -48,8 +48,8 @@ class SettingDialog extends DialogActor {
     }
     
     _initState() {
-        this.soundOptions.isChecked = app.system.marker.getItemData(app.system.marker.SOUND_OPTION) || false;
-        this.invitationOptions.isChecked = app.system.marker.getItemData(app.system.marker.SHOW_INVITATION_POPUP_OPTION) || false;
+        this.soundOptions.isChecked = (app.system.marker.getItemData(app.system.marker.SOUND_OPTION) == 'true') || false;
+        this.invitationOptions.isChecked = (app.system.marker.getItemData(app.system.marker.SHOW_INVITATION_POPUP_OPTION) == 'true') || false;
     }
     
     close() {

@@ -19,13 +19,6 @@ class PreloadScene extends Component {
             this.loading.getComponent('FullSceneProgress').show(app.res.string('loading_data'));
         }
 
-        if(!app.system.marker.getItemData(app.system.marker.SOUND_OPTION)) {
-            app.system.marker.setItem(app.system.marker.SOUND_OPTION, true);
-        }
-        if(!app.system.marker.getItemData(app.system.marker.SHOW_INVITATION_POPUP_OPTION)) {
-            app.system.marker.setItem(app.system.marker.SHOW_INVITATION_POPUP_OPTION, true);
-        }
-
         app.system.initOnFirstSceneLoaded()
 
         // let cards = [
