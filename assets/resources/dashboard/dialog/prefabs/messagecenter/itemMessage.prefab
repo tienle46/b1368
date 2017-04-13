@@ -25,7 +25,7 @@
     "_anchorPoint": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": 0.5
+      "y": 0.46
     },
     "_contentSize": {
       "__type__": "cc.Size",
@@ -97,7 +97,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 702,
-      "height": 55
+      "height": 58
     },
     "_children": [
       {
@@ -158,7 +158,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 682,
-      "height": 25
+      "height": 28
     },
     "_children": [],
     "_rotationX": 0,
@@ -168,7 +168,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": 27.5
+      "y": 29
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -202,7 +202,7 @@
     "_useOriginalSize": false,
     "_actualFontSize": 25,
     "_fontSize": 25,
-    "_lineHeight": 25,
+    "_lineHeight": 28,
     "_enableWrapText": true,
     "_N$file": {
       "__uuid__": "707ff59f-f7c1-4eb4-a0de-41fd5e1c0123"
@@ -284,7 +284,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": -2.5
+      "y": -4
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -344,7 +344,7 @@
     "_layoutSize": {
       "__type__": "cc.Size",
       "width": 702,
-      "height": 55
+      "height": 58
     },
     "_resize": 1,
     "_N$layoutType": 2,
@@ -416,7 +416,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 766,
-      "y": 0
+      "y": 3.2399999999999984
     },
     "_skewX": 0,
     "_skewY": 0,
