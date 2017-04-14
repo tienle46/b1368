@@ -426,6 +426,7 @@ export default class GameScene extends BaseScene {
 
         switch (this.gameLocalState) {
             case app.const.game.state.BEGIN:
+                app.jarManager.closeJarExplosive();
                 this._onGameStateBegin(data, isJustJoined, rejoining);
                 break;
             case app.const.game.state.STARTING:
@@ -438,6 +439,15 @@ export default class GameScene extends BaseScene {
                 this.emit(Events.ON_GAME_STATE_PLAYING, data, isJustJoined);
                 break;
             case app.const.game.state.ENDING:
+                let jarExplosiveData = utils.getVariable(this.room, app.keywords.JAR_EXPLOSIVE);
+                let usernames = jarExplosiveData[app.keywords.USERNAME_LIST] || [],
+                    moneyList = jarExplosiveData[app.keywords.MONEY_LIST] || [],
+                    messages = jarExplosiveData['msl'] || [];
+
+                    usernames.forEach((username, index) => {
+                        this.emit(Events.ON_USER_MAKES_JAR_EXPLOSION, username, messages[index] || null, moneyList[index]);
+                    });
+
                 this.emit(Events.ON_GAME_STATE_ENDING, data, isJustJoined);
                 break;
             default:

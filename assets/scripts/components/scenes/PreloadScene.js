@@ -45,6 +45,7 @@ class PreloadScene extends Component {
             { dir: 'toast/Toast', name: 'toast' },
             { dir: 'dashboard/grid/scrollview', name: 'scrollview' },
             { dir: 'jar/jarPrefab', name: 'jarPrefab' },
+            { dir: 'jar/jar_explosion', name: 'jarExplosive' },
             { dir: 'popup/FriendProfilePopup', name: 'friendProfilePopup' },
             { dir: 'dashboard/dialog/prefabs/dialog', name: 'dialog' },
             { dir: 'popup/MultiTabPopup', name: 'multiTabPopup' },

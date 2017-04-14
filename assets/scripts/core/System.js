@@ -370,34 +370,35 @@ class GameSystem {
     }
 
     _onAdminMessage(message, data) {
-
         let duration, showToast = true
         let messageType = data && data.t
-
+        let sceneName = this.getCurrentSceneName();
+        
         switch (messageType){
-            case app.const.adminMessage.MANUAL_DISMISS:
-                duration = Toast.FOREVER
+            case app.const.adminMessage.MANUAL_DISMISS: {
+                duration = Toast.FOREVER;
                 break;
-            case app.const.adminMessage.DAILY_LOGIN_MISSION:
-                let sceneName = this.getCurrentSceneName();
-                if (this.currentScene && sceneName == 'DashboardScene') {
+            }
+            case app.const.adminMessage.DAILY_LOGIN_MISSION: {
+                if (this.currentScene && sceneName == app.const.scene.DASHBOARD_SCENE) {
                     this.currentScene.showDailyLoginPopup(message);
                     showToast = false;
                     return;
                 }
                 break;
-            case app.const.adminMessage.LACK_OF_MONEY:
+            }
+            case app.const.adminMessage.LACK_OF_MONEY: {
                 showToast = false;
                 this._lackOfMoneyMessage = message;
-                !this.sceneChanging && (sceneName == 'ListTableScene' || sceneName == 'DashboardScene') && this.showLackOfMoneyMessagePopup();
+                !this.sceneChanging && (sceneName == app.const.scene.LIST_TABLE_SCENE || sceneName == app.const.scene.DASHBOARD_SCENE) && this.showLackOfMoneyMessagePopup();
                 break;
+            }
         }
 
         showToast && this.showToast(message, duration);
     }
 
     showLackOfMoneyMessagePopup(){
-
         this.currentScene && this._lackOfMoneyMessage && ConfirmPopup.showCustomConfirm(this.currentScene.node, this._lackOfMoneyMessage, {
             acceptLabel: app.res.string('label_topup_money'),
             acceptCb: () => {

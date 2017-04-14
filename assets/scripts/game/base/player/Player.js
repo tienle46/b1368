@@ -67,6 +67,7 @@ export default class Player extends Actor {
             this.scene.on(Events.ON_CLICK_START_GAME_BUTTON, this._onClickStartGameButton, this);
             this.scene.on(Events.ON_USER_USES_ASSET, this._onUserUsesAsset, this);
             this.scene.on(Events.ON_PLAYER_REENTER_GAME, this._onUserReenterGame, this);
+            this.scene.on(Events.ON_USER_MAKES_JAR_EXPLOSION, this._onUserGetJarExplosion, this);
         }
     }
 
@@ -91,6 +92,7 @@ export default class Player extends Actor {
             this.scene.off(Events.ON_USER_UPDATE_NEW_PLAYER, this._onUserUpdateNewPlayer, this);
             this.scene.off(Events.ON_USER_USES_ASSET, this._onUserUsesAsset, this);
             this.scene.off(Events.ON_PLAYER_REENTER_GAME, this._onUserReenterGame, this);
+            this.scene.off(Events.ON_USER_MAKES_JAR_EXPLOSION, this._onUserGetJarExplosion, this);
         }
     }
 
@@ -206,7 +208,21 @@ export default class Player extends Actor {
 
         return {myPos, isItMe};
     }
+    
+    _onUserGetJarExplosion(username, message, money) {
+        if(!this.isItMe())
+            return;
+        console.debug('_onUserGetJarExplosion', username, message, money);
+        console.debug('this.username', this.username, username);
 
+        if(this.username == username) {
+            app.jarManager.jarExplosive({username, money, message});
+            console.debug('_onUserGetJarExplosion');
+        } else {
+            // TODO: run coin anim
+        }
+    }
+    
     onEnable(renderer, renderData = {}) {
         super.onEnable(renderer, {...renderData, isItMe: this.user && this.user.isItMe, scene: this.scene, owner: this.isOwner});
 
@@ -358,7 +374,7 @@ export default class Player extends Actor {
 
     onGamePlaying(data, isJustJoined) {
         if (isJustJoined) {
-            // console.debug('onGamePlaying', this.scene.room.getVariable('i'), this.scene.room.getVariable('sj_sjil'), isJustJoined);
+            
         }
     }
 

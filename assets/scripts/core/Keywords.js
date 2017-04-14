@@ -464,6 +464,7 @@ Keywords.CHAT_USER_NAME = "u";
 Keywords.CHAT_SEND_TIME = "st";
 Keywords.KEY_NUM_OF_USER_INVITE = "n";
 //
+Keywords.USERNAME_LIST = "ul";
 Keywords.CHAT_USERNAME_LIST = "ul";
 Keywords.CHAT_STATUS_LIST = "sl";
 Keywords.CHAT_GENDER_LIST = "gl";
@@ -778,3 +779,5 @@ Keywords.MONEY_LIST = "ml";
 
 Keywords.NAME = "n";
 Keywords.DETAIL = "d";
+
+Keywords.JAR_EXPLOSIVE = "sj_sjil";

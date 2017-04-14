@@ -151,3 +151,5 @@ Events.ON_BUDDY_CHANGE_PLAYING_GAME = "on.buddy.changePlayingGame";
 Events.ON_BUDDY_UNREAD_MESSAGE_COUNT_CHANGED = "on.buddy.unreadMessageCountChanged";
 
 Events.CLEAN_GAME_AFTER_SHOW_RESULT = "clean.gameAfterShowResult";
+
+Events.ON_USER_MAKES_JAR_EXPLOSION = "on.user.makes.jar.explosion";

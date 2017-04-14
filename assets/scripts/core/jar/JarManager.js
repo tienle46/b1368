@@ -5,6 +5,8 @@ export default class JarManager {
     constructor() {
         this._jars = {};
         
+        this._jarExplosiveComponent = null;
+        
         this.addEventListener();
         
         this.start();
@@ -89,5 +91,23 @@ export default class JarManager {
     
     hasJar(gc) {
         return this._jars.hasOwnProperty(gc) && this._jars[gc] ? true : false;
+    }
+    
+    jarExplosive({username, money, message} = {}) {
+        let jarExplosive = cc.instantiate(app.res.prefab.jarExplosive);
+        if(jarExplosive) {
+            let jarExplosiveComponent = jarExplosive.getComponent('JarExplosive');
+            jarExplosiveComponent.init({username, money, message});
+            
+            this._jarExplosiveComponent = jarExplosiveComponent;
+            app.system.getCurrentSceneNode().addChild(jarExplosive);
+        } 
+    }
+    
+    closeJarExplosive() {
+        if(this._jarExplosiveComponent) {
+            this._jarExplosiveComponent.close();
+            this._jarExplosiveComponent = null;
+        }
     }
 }
