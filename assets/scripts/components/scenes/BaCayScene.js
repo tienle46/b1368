@@ -85,9 +85,16 @@ export default class BaCayScene extends GameScene {
             currentValue,
             timeout,
             cb: (betValue) => {
-                this._onClickChooseBetButton(betValue);
+                this.onHideChooseBetSlider()
+                betValue !== undefined && this._onClickChooseBetButton(betValue);
             }
         });
+    }
+
+    onHideChooseBetSlider(){
+        this.isShowBetPopup = false
+        this.isShowCuocBienPopup = false
+        this.gamePlayers.me.handlePendingCuocBienRequests();
     }
 
     hideChooseBetSlider() {

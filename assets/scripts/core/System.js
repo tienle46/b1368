@@ -389,7 +389,7 @@ class GameSystem {
             case app.const.adminMessage.LACK_OF_MONEY:
                 showToast = false;
                 this._lackOfMoneyMessage = message;
-                !this.sceneChanging && this.showLackOfMoneyMessagePopup();
+                !this.sceneChanging && (sceneName == 'ListTableScene' || sceneName == 'DashboardScene') && this.showLackOfMoneyMessagePopup();
                 break;
         }
 

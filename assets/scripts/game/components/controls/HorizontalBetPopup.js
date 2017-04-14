@@ -29,6 +29,7 @@ class BetSlider extends Component {
         this._progressBar = null;
         this._countDown = 5;
         this._submitOnHide = false;
+        this.cb = null;
 
     }
 
@@ -114,7 +115,10 @@ class BetSlider extends Component {
     }
 
     onClickSubmitButton(){
-        this.currentValue != this._chooseAmount && utils.isFunction(this.cb) && this.cb(this._chooseAmount);
+        if(utils.isFunction(this.cb)){
+            let newValue = this.currentValue != this._chooseAmount ? this._chooseAmount : undefined;
+            this.cb(newValue);
+        }
         this.hide();
     }
 

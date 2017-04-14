@@ -3130,7 +3130,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 176.97,
+      "width": 162.55,
       "height": 62
     },
     "_children": [
@@ -3154,7 +3154,7 @@
     "_tag": -1,
     "_opacityModifyRGB": false,
     "_id": "",
-    "_active": false,
+    "_active": true,
     "_components": [
       {
         "__id__": 103
@@ -3191,8 +3191,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 136.97,
-      "height": 62
+      "width": 122.55,
+      "height": 50
     },
     "_children": [],
     "_rotationX": 0,
@@ -3201,8 +3201,8 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": 0,
-      "y": 0
+      "x": -7.105427357601002e-15,
+      "y": 7
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -3231,9 +3231,9 @@
     },
     "_enabled": true,
     "_useOriginalSize": false,
-    "_actualFontSize": 38,
-    "_fontSize": 38,
-    "_lineHeight": 62,
+    "_actualFontSize": 34,
+    "_fontSize": 34,
+    "_lineHeight": 50,
     "_enableWrapText": true,
     "_N$file": {
       "__uuid__": "707ff59f-f7c1-4eb4-a0de-41fd5e1c0123"
@@ -3241,7 +3241,7 @@
     "_isSystemFontUsed": false,
     "_N$string": "10 điểm",
     "_N$horizontalAlign": 1,
-    "_N$verticalAlign": 1,
+    "_N$verticalAlign": 2,
     "_N$overflow": 0
   },
   {
@@ -3293,7 +3293,7 @@
     "_enabled": true,
     "_layoutSize": {
       "__type__": "cc.Size",
-      "width": 176.97,
+      "width": 162.55,
       "height": 62
     },
     "_resize": 1,

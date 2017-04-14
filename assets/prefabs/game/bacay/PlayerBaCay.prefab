@@ -3717,7 +3717,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 34,
-      "height": 40
+      "height": 45
     },
     "_children": [
       {
@@ -3740,7 +3740,7 @@
     "_tag": -1,
     "_opacityModifyRGB": false,
     "_id": "",
-    "_active": false,
+    "_active": true,
     "_components": [
       {
         "__id__": 121
@@ -3761,9 +3761,9 @@
     "_opacity": 255,
     "_color": {
       "__type__": "cc.Color",
-      "r": 53,
+      "r": 255,
       "g": 255,
-      "b": 61,
+      "b": 255,
       "a": 255
     },
     "_cascadeOpacityEnabled": true,
@@ -3777,8 +3777,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 0,
-      "height": 44
+      "width": 4,
+      "height": 40
     },
     "_children": [],
     "_rotationX": 0,
@@ -3820,17 +3820,17 @@
     },
     "_enabled": true,
     "_useOriginalSize": false,
-    "_actualFontSize": 26,
-    "_fontSize": 26,
-    "_lineHeight": 44,
+    "_actualFontSize": 32,
+    "_fontSize": 32,
+    "_lineHeight": 40,
     "_enableWrapText": true,
     "_N$file": {
-      "__uuid__": "f7d3295b-8e12-456d-9621-9b8acc29ca1f"
+      "__uuid__": "707ff59f-f7c1-4eb4-a0de-41fd5e1c0123"
     },
     "_isSystemFontUsed": false,
     "_N$string": "",
     "_N$horizontalAlign": 1,
-    "_N$verticalAlign": 1,
+    "_N$verticalAlign": 2,
     "_N$overflow": 0
   },
   {
@@ -3872,7 +3872,7 @@
     "_layoutSize": {
       "__type__": "cc.Size",
       "width": 34,
-      "height": 40
+      "height": 45
     },
     "_resize": 1,
     "_N$layoutType": 1,

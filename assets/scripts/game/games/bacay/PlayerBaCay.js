@@ -25,6 +25,7 @@ export default class PlayerBaCay extends PlayerCardBetTurn {
         this.pendingBiCuocBiens = null;
         this.currentCuocBien = 0;
         this.gopGaValue = 0;
+        this._pendingCuocBienRequests = null
     }
 
     _addGlobalListener() {
@@ -191,6 +192,7 @@ export default class PlayerBaCay extends PlayerCardBetTurn {
         this.biHucList = {};
         this.pendingCuocBiens = {};
         this.pendingBiCuocBiens = {};
+        this._pendingCuocBienRequests = []
     }
 
     onEnable() {
@@ -280,6 +282,7 @@ export default class PlayerBaCay extends PlayerCardBetTurn {
         this.biHucList = {};
         this.pendingCuocBiens = {};
         this.pendingBiCuocBiens = {};
+        this._pendingCuocBienRequests = []
         this.currentCuocBien = 0;
         this.gopGaValue = 0;
         this.setBetAmount(0);
@@ -312,6 +315,9 @@ export default class PlayerBaCay extends PlayerCardBetTurn {
         let maxCuocBienValue = BaCayUtils.calculateMaxCuocBien(mePlayer, this);
         if (maxCuocBienValue > 0) {
             this.scene.showCuocBienPopup(maxCuocBienValue, (cuocValue) => {
+
+                if(cuocValue == undefined) return;
+
                 let { valid, msg } = BaCayUtils.validateCuocBienValue(cuocValue, this.scene.gamePlayers.me, this);
                 if (valid) {
                     app.service.send({
@@ -333,8 +339,21 @@ export default class PlayerBaCay extends PlayerCardBetTurn {
         }
     }
 
+    handlePendingCuocBienRequests(){
+        this._pendingCuocBienRequests && this._pendingCuocBienRequests.reverse().forEach(request => {
+            this._onPlayerCuocBien(request.playerId, request.data)
+        })
+
+        this._pendingCuocBienRequests = []
+    }
+
     _onPlayerCuocBien(gaHucPlayerId, data) {
         if (!this.isItMe() || this.id == gaHucPlayerId) return;
+
+        if(this.scene.isShowCuocBienPopup){
+            this._pendingCuocBienRequests.push({playerId: gaHucPlayerId, data})
+            return;
+        }
 
         let gaHucPlayer = this.scene.gamePlayers.findPlayer(gaHucPlayerId);
         if(!gaHucPlayer) return;
