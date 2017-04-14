@@ -149,7 +149,12 @@ app.const.COLOR_BLACK = new cc.Color(0, 0, 0);
 app.const.COLOR_GRAY = new cc.Color(174, 174, 174);
 
 app.const.adminMessage = {};
+app.const.adminMessage.NORMAL_ALERT = 0;
+app.const.adminMessage.LACK_OF_MONEY = 1;
+app.const.adminMessage.REWARD = 2;
+app.const.adminMessage.CPI = 3;
 app.const.adminMessage.MANUAL_DISMISS = 4;
+app.const.adminMessage.DAILY_LOGIN_MISSION = 11;
 
 app.const.NUMBER_MESSAGES_KEEP_INGAME = 30;
 app.const.NUMBER_MESSAGES_KEEP_PER_BUDDY = 30;

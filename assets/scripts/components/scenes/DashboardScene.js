@@ -50,6 +50,8 @@ export default class DashboardScene extends BaseScene {
             let Linking = require('Linking');
             Linking.handlePendingActions();
         }, 1000);
+
+        app.system.showLackOfMoneyMessagePopup()
     }
 
     showDailyLoginPopup(message) {

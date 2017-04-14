@@ -36,6 +36,9 @@ export default class MessagePopup extends Component {
         this.requestData = null;
         this.text = '';
         this.loadingHeight = 100;
+
+        this.acceptLabel = null;
+        this.denyLabel = null;
     }
 
     onLoad() {
@@ -102,6 +105,9 @@ export default class MessagePopup extends Component {
 
     onClickAcceptButton() {
         this.hide();
+        
+        console.log("onClickAcceptButton: ", this.acceptCb)
+        
         this.acceptCb && this.acceptCb();
     }
 
@@ -119,16 +125,18 @@ export default class MessagePopup extends Component {
     }
 
     getDenyText() {
-        return app.res.string('label_close');
+        return this.denyLabel ? this.denyLabel : app.res.string('label_close');
     }
 
     getAcceptText() {
-        return app.res.string('label_accept');
+        return this.acceptLabel ? this.acceptLabel : app.res.string('label_accept');
     }
 
-    onShow(parentNode, textOrRequestData, denyCb, acceptCb) {
+    onShow({parentNode, textOrRequestData, denyCb, acceptCb, acceptLabel, denyLabel} = {}) {
         this.denyCb = denyCb;
         this.acceptCb = acceptCb;
+        this.acceptLabel = acceptLabel;
+        this.denyLabel = denyLabel;
 
         if (utils.isString(textOrRequestData)) {
             this.text = textOrRequestData;
@@ -137,31 +145,36 @@ export default class MessagePopup extends Component {
             this.text = null;
             this.requestData = textOrRequestData;
         }
+
         parentNode && parentNode.addChild(this.node, 10000);
     }
 
-    static show(parentNode, textOrRequestData, denyCb, acceptCb, componentName = 'MessagePopup') {
+    static showCustomPopup(parentNode, textOrRequestData, {acceptLabel, denyLabel, denyCb, acceptCb, componentName = 'MessagePopup'} = {}) {
 
         currentPopup && currentPopup.hide();
 
-        let args = [parentNode, textOrRequestData, denyCb, acceptCb];
+        let args = {parentNode, textOrRequestData, denyCb, acceptCb, acceptLabel, denyLabel};
         if (parentNode && textOrRequestData) {
             let prefab = this.getPrefab();
 
             if (prefab) {
-                this._createAndShow(prefab, componentName, ...args);
+                this._createAndShow(prefab, componentName, args);
             } else {
-                RubUtils.loadRes(`popup/${componentName}`, cc.Prefab).then((prefab) => this._createAndShow(prefab, componentName, ...args));
+                RubUtils.loadRes(`popup/${componentName}`, cc.Prefab).then((prefab) => this._createAndShow(prefab, componentName, args));
             }
         }
         window.release(args);
     }
 
-    static _createAndShow(prefab, componentName, ...args) {
+    static show(parentNode, textOrRequestData, denyCb, acceptCb, componentName = 'MessagePopup') {
+        this.showCustomPopup(parentNode, textOrRequestData, {denyCb, acceptCb, componentName})
+    }
+
+    static _createAndShow(prefab, componentName, args) {
         let messagePopupNode = cc.instantiate(prefab);
         let messagePopup = messagePopupNode.getComponent(`${componentName}`);
-        messagePopup.onShow(...args);
-        [...args].map(a => a = null);
+        messagePopup.onShow(args);
+        //[...args].map(a => a = null);
         currentPopup = messagePopup;
     }
 }

@@ -1,8 +1,10 @@
+const currencyName = "Chip";
+
 export default {
     system: "Hệ Thống",
-    currency_name: "Chip",
+    currency_name: currencyName,
     game_title: "B1368",
-    game_currency_unit: "Chip",
+    game_currency_unit: currencyName,
     lost_connection: "Kết nối tới máy chủ bị gián đoạn. Vui lòng đăng nhập lại!",
     waiting_server_response: 'Đang gửi yêu cầu tới server ....',
     change_language_fail: "Đổi ngôn ngữ thất bại",
@@ -29,7 +31,7 @@ export default {
     error_transfer_input_is_over_max: 'Số tiền {{type}} không được vượt quá {{max}}.',
     error_transfer_input_is_not_over_allow: 'Số tiền mỗi lần {{type}} không được vượt quá {{limit}}',
     error_transfer_input_is_too_small: 'Số tiền {{type}} tối thiểu là {{min}}.',
-    error_transfer_input_is_not_enough: 'Bạn cần tối thiểu {{amount}} chip để thực hiện thao tác này.',
+    error_transfer_input_is_not_enough: 'Bạn cần tối thiểu {{amount}} ' + currencyName + ' để thực hiện thao tác này.',
     error_balance_is_not_enough: 'Số dư trong tài khoản không đủ, cần tối thiểu {{amount}} trong ngân hàng.',
     error_system_not_support_join_room_have_password: 'Hệ thống chưa hỗ trợ vào bàn chơi có mật khẩu',
     error_undefined_please_try_again: 'Lỗi chưa xác định, vui lòng thử lại!',
@@ -42,9 +44,9 @@ export default {
     error_withdraw_amount_unable_to_greater_than: 'Số tiền cần rút không được lớn hơn {{amount}}',
     error_account_out_of_money: 'Tài khoản của bạn đã hết tiền',
 
-    get_transfer_success: 'Bạn đã rút thành công {{amount}} chip, chúc bạn chơi game vui vẻ.',
-    transfer_successfully: 'Chuyển thành công {{amount}} chip tới {{username}}.',
-    exchange_dialog_confirmation: 'Bạn có muốn đổi {{gold}} chip để nhận {{name}} ?',
+    get_transfer_success: 'Bạn đã rút thành công {{amount}} ' + currencyName + ', chúc bạn chơi game vui vẻ.',
+    transfer_successfully: 'Chuyển thành công {{amount}} ' + currencyName + 'tới {{username}}.',
+    exchange_dialog_confirmation: 'Bạn có muốn đổi {{gold}} ' + currencyName + ' để nhận {{name}} ?',
     really_wanna_quit: 'Bạn có chắc chắn muốn thoát ?',
     phone_number_confirmation: 'Xác nhận số điện thoại thành công.',
     user_got_invitation_to_join_room: '{{invoker}}  muốn mời bạn vào phòng chơi {{minBet}} xu.',
@@ -83,6 +85,7 @@ export default {
     sending_item_store_iap: 'Đang thực hiện giao dịch tới {{provider}}...',
     iap_buying_successfully_wait_server_response: 'Vật phẩm đã đc mua, đợi xác nhận từ server .....',
     label_input_withdrawal_amount: 'Nhập số tiền cần rút',
+    label_topup_money: 'Nạp tiền',
 
     game_error_phom_select_one_card_to_play: "Hãy chọn một quân bài để đánh",
     game_error_phom_cannot_play_card_in_eaten_phom: "Không thể đánh bài trong phỏm đã ăn",
@@ -171,4 +174,5 @@ export default {
     play_now_not_available_right_now: "Chức năng chơi ngay không thực hiện được vào lúc này. Vui lòng thử lại sau!",
     username_rule: "Tên đăng nhập (6 - 15 kí tự)",
     input_username_title: "Nhập tên đăng nhập",
+    message_not_enough_money: 'Bạn cần {{money}} ' + currencyName + ' để đủ điều kiện chơi trong bàn cược {{minBet}}',
 };

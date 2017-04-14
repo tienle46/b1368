@@ -60,6 +60,8 @@ export default class ListTableScene extends BaseScene {
             let hasButton = true;
             app.jarManager.addJarToParent(this.jarAnchorNode, this.gameCode, hasButton);
         }
+
+        app.system.showLackOfMoneyMessagePopup()
     }
 
     onDestroy() {

@@ -12,6 +12,7 @@ import utils from 'utils';
 import Toast from 'Toast';
 import { isFunction } from 'Utils';
 import Marker from 'Marker';
+import Linking from 'Linking'
 
 class GameSystem {
 
@@ -34,6 +35,7 @@ class GameSystem {
         this._delayChangeAppStateTimeoutId = 0;
 
         this._actionComponents = []
+        this._lackOfMoneyMessage = null
     }
 
     showLoader(message = "", duration) {
@@ -368,15 +370,43 @@ class GameSystem {
     }
 
     _onAdminMessage(message, data) {
-        let duration = data && data.t == app.const.adminMessage.MANUAL_DISMISS ? Toast.FOREVER : undefined;
-        let sceneName = this.getCurrentSceneName();
-        if (this.currentScene && sceneName == 'DashboardScene' && message.match(/(\"Đăng nhập hằng ngày\")/).length > 0) {
-            this.currentScene.showDailyLoginPopup(message);
-            return;
+
+        let duration, showToast = true
+        let messageType = data && data.t
+
+        switch (messageType){
+            case app.const.adminMessage.MANUAL_DISMISS:
+                duration = Toast.FOREVER
+                break;
+            case app.const.adminMessage.DAILY_LOGIN_MISSION:
+                let sceneName = this.getCurrentSceneName();
+                if (this.currentScene && sceneName == 'DashboardScene') {
+                    this.currentScene.showDailyLoginPopup(message);
+                    showToast = false;
+                    return;
+                }
+                break;
+            case app.const.adminMessage.LACK_OF_MONEY:
+                showToast = false;
+                this._lackOfMoneyMessage = message;
+                !this.sceneChanging && this.showLackOfMoneyMessagePopup();
+                break;
         }
-        this.showToast(message, duration);
+
+        showToast && this.showToast(message, duration);
     }
 
+    showLackOfMoneyMessagePopup(){
+
+        this.currentScene && this._lackOfMoneyMessage && ConfirmPopup.showCustomConfirm(this.currentScene.node, this._lackOfMoneyMessage, {
+            acceptLabel: app.res.string('label_topup_money'),
+            acceptCb: () => {
+                Linking.goTo(Linking.ACTION_TOPUP_CARD)
+            }
+        })
+
+        this._lackOfMoneyMessage = null;
+    }
 
     _onJoinRoomSuccess(resultEvent) {
         debug(resultEvent);

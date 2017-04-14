@@ -18,7 +18,7 @@ export default class ConfirmPopup extends MessagePopup {
     }
 
     getDenyText() {
-        return app.res.string('label_deny');
+        return this.denyLabel ? this.denyLabel : app.res.string('label_deny');
     }
 
     static getPrefab() {
@@ -27,6 +27,10 @@ export default class ConfirmPopup extends MessagePopup {
 
     static confirm(parentNode, message, denyCb, acceptCb) {
         this.show(parentNode, message, denyCb, acceptCb, 'ConfirmPopup');
+    }
+
+    static showCustomConfirm(parentNode, message, {acceptLabel, denyLabel, denyCb, acceptCb} = {}) {
+        super.showCustomPopup(parentNode, message, {acceptLabel, denyLabel, denyCb, acceptCb, componentName: 'ConfirmPopup'});
     }
 }
 
