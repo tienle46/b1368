@@ -39,6 +39,7 @@ export default class Player extends Actor {
         if (!this.board || !this.user) {
             throw new CreateGameException("Dữ liệu khởi tạo bàn chơi không đúng");
         }
+        
 
     }
 
@@ -212,14 +213,16 @@ export default class Player extends Actor {
     _onUserGetJarExplosion(username, message, money) {
         if(!this.isItMe())
             return;
-        console.debug('_onUserGetJarExplosion', username, message, money);
-        console.debug('this.username', this.username, username);
 
         if(this.username == username) {
             app.jarManager.jarExplosive({username, money, message});
-            console.debug('_onUserGetJarExplosion');
         } else {
-            // TODO: run coin anim
+            let winUser = this.scene.gamePlayers.findPlayer(username);
+            if(winUser) {
+                let pos = this.scene.gamePlayers.playerPositions.getPlayerAnchor(winUser.anchorIndex);
+                pos = this.node.parent ? this.node.parent.convertToWorldSpaceAR (pos) : this.node.convertToWorldSpaceAR (pos);
+                app.jarManager.runCoinFliesFromJarToUserAnim(pos);
+            }
         }
     }
     
@@ -358,7 +361,7 @@ export default class Player extends Actor {
         if (!isJustJoined) {
             this.onGameReset();
         }
-
+        
         this._sendReadyImmediately();
     }
 

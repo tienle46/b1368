@@ -2,6 +2,7 @@ import app from 'app';
 import Actor from 'Actor';
 import moment from 'moment';
 import Utils from 'Utils';
+import CCUtils from 'CCUtils';
 import { requestTimeout, clearRequestTimeout } from 'TimeHacker';
 
 
@@ -14,7 +15,8 @@ export default class JarComponent extends Actor {
             remainTimeLbl: cc.Label,
             jarTotalMoneyLbl: cc.Label,
             button: cc.Button,
-            jarDetailPrefab: cc.Prefab
+            jarDetailPrefab: cc.Prefab,
+            huCoin: cc.Node // this node will be animated
         }
         
         this._timeout = null;
@@ -109,6 +111,27 @@ export default class JarComponent extends Actor {
             this.updateTotalMoney(currentMoney);
             this._updateRemainTime(remainTime);
         };
+    }
+    
+    // @param destination : v2(x,y)
+    runCoinAnim(destination) {
+        let startPos = this.node.convertToWorldSpaceAR(this.node.getPosition());
+        for(let i = 0; i <= 20; i++) {
+            let huCoin = cc.instantiate(this.huCoin);
+            huCoin.setPosition(startPos.x, startPos.y);
+            
+            cc.director.getScene().addChild(huCoin);
+            
+            let midPoint = cc.p(Math.abs(startPos.x) - Math.abs(destination.x)/2, (Math.abs(destination.y) - 100) * (destination.y > 0 ? 1 : -1) );
+            var bezier = [startPos, midPoint, destination];
+            var bezierTo = cc.bezierTo(1  +  Math.random(0, 1), bezier);
+            
+            let sequence = cc.sequence(bezierTo, cc.callFunc(() => {
+                huCoin.active = false;
+                // CCUtils.destroy(huCoin);
+            }));
+            huCoin.runAction(sequence);
+        }
     }
 }
 

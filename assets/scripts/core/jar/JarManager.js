@@ -6,6 +6,7 @@ export default class JarManager {
         this._jars = {};
         
         this._jarExplosiveComponent = null;
+        this._currentJarComponent = null;
         
         this.addEventListener();
         
@@ -31,6 +32,10 @@ export default class JarManager {
     
     getJar(gc) {
         return this._jars[gc];
+    }
+    
+    getJarComponent(jar, componentName) {
+        return jar ? jar.getComponent(componentName) : null;
     }
     
     getJars() {
@@ -65,10 +70,12 @@ export default class JarManager {
         
         let cloner = cc.instantiate(jar); // clone this node to prevent node's component will be destroy while scene's changing. --> fix only in simulator
         
-        let jarComponent = cloner.getComponent('JarComponent');
-        jarComponent._gameCode = gc;
+        let jarComponent = this.getJarComponent(cloner, 'JarComponent');
+        
+        this._currentJarComponent = jarComponent;
         
         if(jarComponent) {
+            jarComponent._gameCode = gc;
             jarComponent.init(data);
         }
         
@@ -96,7 +103,7 @@ export default class JarManager {
     jarExplosive({username, money, message} = {}) {
         let jarExplosive = cc.instantiate(app.res.prefab.jarExplosive);
         if(jarExplosive) {
-            let jarExplosiveComponent = jarExplosive.getComponent('JarExplosive');
+            let jarExplosiveComponent = this.getJarComponent(jarExplosive, 'JarExplosive');
             jarExplosiveComponent.init({username, money, message});
             
             this._jarExplosiveComponent = jarExplosiveComponent;
@@ -108,6 +115,13 @@ export default class JarManager {
         if(this._jarExplosiveComponent) {
             this._jarExplosiveComponent.close();
             this._jarExplosiveComponent = null;
+        }
+    }
+    
+    runCoinFliesFromJarToUserAnim(destination) {
+        if(this._currentJarComponent) {
+            console.debug('runCoinAnim');
+            this._currentJarComponent.runCoinAnim(destination);
         }
     }
 }
