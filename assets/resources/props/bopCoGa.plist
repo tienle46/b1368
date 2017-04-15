@@ -179,13 +179,13 @@
             <key>premultiplyAlpha</key>
             <false/>
             <key>realTextureFileName</key>
-            <string>batconga.png</string>
+            <string>bopCoGa.png</string>
             <key>size</key>
             <string>{121,1282}</string>
             <key>smartupdate</key>
             <string>$TexturePacker:SmartUpdate:3edfab52fdb6bcddad6239029469ef07:90a37d9b00cf6ec830bf30c6fe9bdba9:e6b94e9b54147dee3e8e12b0c72bfe6b$</string>
             <key>textureFileName</key>
-            <string>batconga.png</string>
+            <string>bopCoGa.png</string>
         </dict>
     </dict>
 </plist>

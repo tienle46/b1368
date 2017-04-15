@@ -218,13 +218,13 @@
             <key>format</key>
             <integer>2</integer>
             <key>realTextureFileName</key>
-            <string>hddj-2.png</string>
+            <string>hatNuoc.png</string>
             <key>size</key>
             <string>{452,512}</string>
             <key>smartupdate</key>
             <string>$TexturePacker:SmartUpdate:9db510ea3166808aa767af477ef1ae16$</string>
             <key>textureFileName</key>
-            <string>hddj-2.png</string>
+            <string>hatNuoc.png</string>
         </dict>
     </dict>
 </plist>

@@ -452,7 +452,7 @@ export default class PlayerPhom extends PlayerCardTurnBase {
                 this.renderer.cardList.removeCards([card]);
             }
             // play sound
-            app.system.audioManager.play(app.system.audioManager.PHOM_BOC_BAI);
+            app.system.audioManager.play(app.system.audioManager.BOC_BAI);
         }});
     }
 

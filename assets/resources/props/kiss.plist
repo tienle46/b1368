@@ -254,13 +254,13 @@
             <key>premultiplyAlpha</key>
             <false/>
             <key>realTextureFileName</key>
-            <string>nuhon.png</string>
+            <string>kiss.png</string>
             <key>size</key>
             <string>{246,337}</string>
             <key>smartupdate</key>
             <string>$TexturePacker:SmartUpdate:ec4f8b13aeea1a6121e0df39d35f1db8:22a65ea443091bfe20eaf82ef7afda88:373669f17dd190da8ad801a7d18f9cbf$</string>
             <key>textureFileName</key>
-            <string>nuhon.png</string>
+            <string>kiss.png</string>
         </dict>
     </dict>
 </plist>

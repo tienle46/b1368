@@ -218,13 +218,13 @@
             <key>format</key>
             <integer>2</integer>
             <key>realTextureFileName</key>
-            <string>hddj-12.png</string>
+            <string>nemGach.png</string>
             <key>size</key>
             <string>{500,500}</string>
             <key>smartupdate</key>
             <string>$TexturePacker:SmartUpdate:55dbf2ae015b52e6985a18333db9291b$</string>
             <key>textureFileName</key>
-            <string>hddj-12.png</string>
+            <string>nemGach.png</string>
         </dict>
     </dict>
 </plist>

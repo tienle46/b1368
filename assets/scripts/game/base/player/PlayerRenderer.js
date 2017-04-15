@@ -135,8 +135,10 @@ export default class PlayerRenderer extends ActorRenderer {
 
             if (isWinner) {
                 this.plusBalanceLabel.string = `+${balanceStr}`;
+                app.system.audioManager.play(app.system.audioManager.THANG, true);
             } else {
                 this.minusBalanceLabel.string = balanceStr;
+                app.system.audioManager.play(app.system.audioManager.THUA, true);
             }
 
             this.plusBalanceAnim.play();

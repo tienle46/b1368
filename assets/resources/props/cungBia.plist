@@ -205,13 +205,13 @@
             <key>format</key>
             <integer>2</integer>
             <key>realTextureFileName</key>
-            <string>hddj-5.png</string>
+            <string>cungBia.png</string>
             <key>size</key>
             <string>{418,418}</string>
             <key>smartupdate</key>
             <string>$TexturePacker:SmartUpdate:f25ea044becf76d8ae185cd07a4ef6f6$</string>
             <key>textureFileName</key>
-            <string>hddj-5.png</string>
+            <string>cungBia.png</string>
         </dict>
     </dict>
 </plist>

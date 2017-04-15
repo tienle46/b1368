@@ -179,13 +179,13 @@
             <key>format</key>
             <integer>2</integer>
             <key>realTextureFileName</key>
-            <string>hddj-1.png</string>
+            <string>trungThoi.png</string>
             <key>size</key>
             <string>{1008,354}</string>
             <key>smartupdate</key>
             <string>$TexturePacker:SmartUpdate:c7cbc2b915e2dbe0eeae6c68888f04dc$</string>
             <key>textureFileName</key>
-            <string>hddj-1.png</string>
+            <string>trungThoi.png</string>
         </dict>
     </dict>
 </plist>
