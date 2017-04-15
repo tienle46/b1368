@@ -26,7 +26,6 @@ export default class Props extends Component {
             assets.forEach(asset => {
                 if (!cc.loader.isAutoRelease(asset))
                     cc.loader.setAutoRelease(asset, true);
-
                 propAssetNames.push(asset.name);
                 propAssets[asset.name] = asset;
             });
@@ -107,9 +106,8 @@ export default class Props extends Component {
         endPos: null,
         sample: PROP_SAMPLE
     }, finishCallback) {
-
         if (!atlas || !config.startPos) return;
-
+        
         const animatingNode = new cc.Node();
         const animation = animatingNode.addComponent(cc.Animation);
 
@@ -130,7 +128,18 @@ export default class Props extends Component {
             let clip = cc.AnimationClip.createWithSpriteFrames(spriteFrames, config.sample || PROP_SAMPLE);
             clip.name = 'run';
             clip.wrapMode = cc.WrapMode.Default;
-
+            
+            let names = atlas.name.split('.');
+            if(names && names[0]) {
+                let name = names[0];
+                let soundSource = `${name.charAt(0)}${name.slice(1).replace(/([A-Z])/g,($1) => `_${$1.toLowerCase()}`)}`.toUpperCase(); 
+                
+                console.debug('app.system.audioManager[`PROPS_${soundSource}`]', app.system.audioManager[`PROPS_${soundSource}`])
+                if(app.system.audioManager[`PROPS_${soundSource}`]) {
+                    app.system.audioManager.play(app.system.audioManager[`PROPS_${soundSource}`]);
+                }
+            }
+            
             animation.addClip(clip);
             animation.play('run');
             animation.on('finished', () => {

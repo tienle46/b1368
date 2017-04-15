@@ -32,6 +32,7 @@ export default class AudioManager {
                 if(!this.audioSources[key])
                     this.audioSources[key] = {url};
                 
+                // movingChip => MOVING_CHIP
                 let keyUpperCase = `${key.charAt(0)}${key.slice(1).replace(/([A-Z])/g,($1) => `_${$1.toLowerCase()}`)}`.toUpperCase();
                     
                 if(!this[keyUpperCase]) {
