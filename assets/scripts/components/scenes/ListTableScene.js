@@ -35,7 +35,7 @@ export default class ListTableScene extends BaseScene {
         this._isInitedRoomList = false;
         this.__isCreatingRoom = false;
         this.minBalanceMultiple = 0;
-
+        this._room = null;
     }
 
     onLoad() {
@@ -105,7 +105,7 @@ export default class ListTableScene extends BaseScene {
     
     onRefreshBtnClick() {
         this.__isCreatingRoom = false;
-        this._sendRequestUserListRoom();
+        this._sendRequestUserListRoom(this._room);
     }
     
     _requestListHu() {
@@ -296,6 +296,8 @@ export default class ListTableScene extends BaseScene {
 
     _handleRoomJoinEvent(event) {
         let room = event.room;
+        this._room = room;
+        
         if (room) {
             if (room.isGame === false && room.name && room.name.indexOf('lobby') > -1) {
                 this._sendRequestUserListRoom(room);
@@ -461,7 +463,7 @@ export default class ListTableScene extends BaseScene {
 
     _onJoinRoomError() {
         this.__isCreatingRoom = false;
-        this._sendRequestUserListRoom();
+        this._sendRequestUserListRoom(this._room);
     }
 }
 
