@@ -1,6 +1,7 @@
 {
   "ver": "1.2.4",
   "uuid": "208eeb03-c1d0-4d30-afb2-2e91493d0ea9",
+  "rawTextureUuid": "bed1bf6c-fcf4-4dce-96b3-79e100db9aad",
   "size": {
     "width": 418,
     "height": 418
@@ -10,6 +11,7 @@
     "hddj-5-0001.png": {
       "ver": "1.0.3",
       "uuid": "2584da1c-10f7-4547-9fb5-759fe2b0657d",
+      "rawTextureUuid": "bed1bf6c-fcf4-4dce-96b3-79e100db9aad",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": true,
@@ -31,6 +33,7 @@
     "hddj-5-0002.png": {
       "ver": "1.0.3",
       "uuid": "ac22e294-46fc-4a5d-988a-92141b90aa3e",
+      "rawTextureUuid": "bed1bf6c-fcf4-4dce-96b3-79e100db9aad",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": true,
@@ -52,6 +55,7 @@
     "hddj-5-0003.png": {
       "ver": "1.0.3",
       "uuid": "9c28c0cf-61a1-41aa-806c-27bfa5bf3e0c",
+      "rawTextureUuid": "bed1bf6c-fcf4-4dce-96b3-79e100db9aad",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": false,
@@ -73,6 +77,7 @@
     "hddj-5-0004.png": {
       "ver": "1.0.3",
       "uuid": "d85791c7-d831-49ce-9d37-14ea9c271f7a",
+      "rawTextureUuid": "bed1bf6c-fcf4-4dce-96b3-79e100db9aad",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": false,
@@ -94,6 +99,7 @@
     "hddj-5-0005.png": {
       "ver": "1.0.3",
       "uuid": "9462904c-36ca-4d97-863f-771149f184dc",
+      "rawTextureUuid": "bed1bf6c-fcf4-4dce-96b3-79e100db9aad",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": false,
@@ -115,6 +121,7 @@
     "hddj-5-0006.png": {
       "ver": "1.0.3",
       "uuid": "c80f8dca-b450-4ad6-a7d4-49e353d48cff",
+      "rawTextureUuid": "bed1bf6c-fcf4-4dce-96b3-79e100db9aad",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": false,
@@ -136,6 +143,7 @@
     "hddj-5-0007.png": {
       "ver": "1.0.3",
       "uuid": "3e0dba35-50de-48cc-8582-94c4d1412412",
+      "rawTextureUuid": "bed1bf6c-fcf4-4dce-96b3-79e100db9aad",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": false,
@@ -157,6 +165,7 @@
     "hddj-5-0008.png": {
       "ver": "1.0.3",
       "uuid": "ad22f702-91be-47d5-a407-6e545135a0ab",
+      "rawTextureUuid": "bed1bf6c-fcf4-4dce-96b3-79e100db9aad",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": false,
@@ -178,6 +187,7 @@
     "hddj-5-0009.png": {
       "ver": "1.0.3",
       "uuid": "021b2972-a462-4706-83ac-ae4c360538f5",
+      "rawTextureUuid": "bed1bf6c-fcf4-4dce-96b3-79e100db9aad",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": true,
@@ -199,6 +209,7 @@
     "hddj-5-0010.png": {
       "ver": "1.0.3",
       "uuid": "3ecd0e4a-3af1-481b-bd79-439da8dea910",
+      "rawTextureUuid": "bed1bf6c-fcf4-4dce-96b3-79e100db9aad",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": false,
@@ -220,6 +231,7 @@
     "hddj-5-0011.png": {
       "ver": "1.0.3",
       "uuid": "26c94e25-0d4a-4ea7-8a34-346ca26e6c4d",
+      "rawTextureUuid": "bed1bf6c-fcf4-4dce-96b3-79e100db9aad",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": false,
@@ -241,6 +253,7 @@
     "hddj-5-0012.png": {
       "ver": "1.0.3",
       "uuid": "befbc55e-7e16-4d8c-a9f5-a976bf6bdcae",
+      "rawTextureUuid": "bed1bf6c-fcf4-4dce-96b3-79e100db9aad",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": false,
@@ -262,6 +275,7 @@
     "hddj-5-0013.png": {
       "ver": "1.0.3",
       "uuid": "5093a71e-1213-44b0-b313-3a10a62f6ad1",
+      "rawTextureUuid": "bed1bf6c-fcf4-4dce-96b3-79e100db9aad",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": false,
@@ -283,6 +297,7 @@
     "hddj-5-0014.png": {
       "ver": "1.0.3",
       "uuid": "9ebc5b5d-aa77-4f30-ae05-8a7322634e5a",
+      "rawTextureUuid": "bed1bf6c-fcf4-4dce-96b3-79e100db9aad",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": false,
@@ -304,6 +319,7 @@
     "hddj-5-0015.png": {
       "ver": "1.0.3",
       "uuid": "8d9f1584-97de-4b18-b0d7-1992faf9d747",
+      "rawTextureUuid": "bed1bf6c-fcf4-4dce-96b3-79e100db9aad",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": false,
