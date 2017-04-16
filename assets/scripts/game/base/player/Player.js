@@ -213,16 +213,15 @@ export default class Player extends Actor {
     _onUserGetJarExplosion(username, message, money) {
         if(!this.isItMe())
             return;
-
+        console.debug('_onUserGetJarExplosion');
         if(this.username == username) {
             app.jarManager.jarExplosive({username, money, message});
-        } else {
-            let winUser = this.scene.gamePlayers.findPlayer(username);
-            if(winUser) {
-                let pos = this.scene.gamePlayers.playerPositions.getPlayerAnchor(winUser.anchorIndex);
-                pos = this.node.parent ? this.node.parent.convertToWorldSpaceAR (pos) : this.node.convertToWorldSpaceAR (pos);
-                app.jarManager.runCoinFliesFromJarToUserAnim(pos);
-            }
+        }
+        let winUser = this.scene.gamePlayers.findPlayer(username);
+        if(winUser) {
+            let pos = this.scene.gamePlayers.playerPositions.getPlayerAnchor(winUser.anchorIndex);
+            pos = this.node.parent ? this.node.parent.convertToWorldSpaceAR (pos) : this.node.convertToWorldSpaceAR (pos);
+            app.jarManager.runCoinFliesFromJarToUserAnim(pos);
         }
     }
     
