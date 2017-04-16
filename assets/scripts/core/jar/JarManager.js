@@ -107,7 +107,7 @@ export default class JarManager {
             jarExplosiveComponent.init({username, money, message});
             
             this._jarExplosiveComponent = jarExplosiveComponent;
-            app.system.getCurrentSceneNode().addChild(jarExplosive);
+            cc.director.getScene().addChild(jarExplosive);
         } 
     }
     
@@ -120,7 +120,6 @@ export default class JarManager {
     
     runCoinFliesFromJarToUserAnim(destination) {
         if(this._currentJarComponent) {
-            console.debug('runCoinAnim');
             this._currentJarComponent.runCoinAnim(destination);
         }
     }

@@ -166,7 +166,6 @@ export default class Player extends Actor {
     }
 
     _onPlayerChangeBalance(id, newBalance) {
-
         if (this.id == id) {
             let balanceVariable = this.user.variables[Keywords.USER_VARIABLE_BALANCE];
             let currentBalance = balanceVariable.value;
@@ -213,7 +212,6 @@ export default class Player extends Actor {
     _onUserGetJarExplosion(username, message, money) {
         if(!this.isItMe())
             return;
-        console.debug('_onUserGetJarExplosion');
         if(this.username == username) {
             app.jarManager.jarExplosive({username, money, message});
         }
@@ -223,6 +221,7 @@ export default class Player extends Actor {
             pos = this.node.parent ? this.node.parent.convertToWorldSpaceAR (pos) : this.node.convertToWorldSpaceAR (pos);
             app.jarManager.runCoinFliesFromJarToUserAnim(pos);
         }
+        app.system.audioManager.play(app.system.audioManager.NO_HU);
     }
     
     onEnable(renderer, renderData = {}) {
