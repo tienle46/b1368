@@ -134,13 +134,13 @@
             <key>premultiplyAlpha</key>
             <false/>
             <key>realTextureFileName</key>
-            <string>concho.png</string>
+            <string>thaCho.png</string>
             <key>size</key>
             <string>{512,379}</string>
             <key>smartupdate</key>
             <string>$TexturePacker:SmartUpdate:50f01c3001b31baee5209f6489c4cfa5:d88abd42511ba8639bf28c148eaaaf93:0e0299e9e4dd792098100cc2c3719fea$</string>
             <key>textureFileName</key>
-            <string>concho.png</string>
+            <string>thaCho.png</string>
         </dict>
     </dict>
 </plist>
