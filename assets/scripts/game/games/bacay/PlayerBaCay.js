@@ -83,13 +83,9 @@ export default class PlayerBaCay extends PlayerCardBetTurn {
     _onShowGameEndingInfo(playerId, { name = "", text = null, iconPath = "", balanceChanged = NaN, info = "", cards = [], isWinner = false } = {}){
         if(playerId != this.id || !this.isPlaying()) return;
 
-
-        if(balanceChanged > 0){
-            isWinner = true;
-        }
-
+        this.playSoundBaseOnBalanceChanged(balanceChanged);
         this.renderer.showAction(info);
-        this.renderer.startPlusBalanceAnimation(balanceChanged, isWinner);
+        this.renderer.startPlusBalanceAnimation(balanceChanged);
         this.setCards(cards, true);
     }
 

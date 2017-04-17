@@ -126,6 +126,8 @@ export default class PlayerXocDia extends PlayerCardBetTurn {
         let { playerId, balance } = data;
         if (playerId !== this.id)
             return;
+            
+        this.playSoundBaseOnBalanceChanged(balance);
         this.renderer.startPlusBalanceAnimation(balance);
     }
 
