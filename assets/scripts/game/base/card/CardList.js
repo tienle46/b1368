@@ -898,10 +898,14 @@ export default class CardList extends ActionComponent {
                 card.node.setPosition(localDestinationPoint);
                 card.node.zIndex = order--;
 
-                let animation = cc.spawn(
+                const kCardFlipTime = 0.25; 
+                const scaleTo = cc.scaleTo(kCardFlipTime / 2, 0, card.node.scaleY);
+                const reverse = cc.scaleTo(kCardFlipTime / 2, card.node.scaleX, card.node.scaleY);
+
+                let animation = cc.sequence(
                     cc.moveTo(CardList.DRAW_CARD_DURATION, cardPosition.x, cardPosition.y),
-                    cc.rotateBy(CardList.DRAW_CARD_DURATION, 720),
-                    // cc.scaleTo(CardList.DRAW_CARD_DURATION, -1 , 1),
+                    delay.clone(),
+                    scaleTo, reverse
                 );
                 actions.push(cc.callFunc(() => card.node && card.node.runAction(animation)));
                 actions.push(delay.clone());
