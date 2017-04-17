@@ -184,32 +184,47 @@ export default class PhomUtils {
     static findBestEatableCards(cards, eatenCards = [], eatingCard) {
         let bestEatableCards = []
 
-        let checkEatingCard = eatingCard;
+        let checkEatingCard = Card.from(eatingCard.byteValue);
+        checkEatingCard.locked = true;
+
+        let checkingEatenCards = [...eatenCards, checkEatingCard];
+        let phomLists = PhomGenerator.generatePhomContainEatenCards([...cards, checkEatingCard], checkingEatenCards);
+        if(phomLists.length > 0){
+            let eatablePhom = phomLists[0].filter(phom => ArrayUtils.contains(phom.cards, checkEatingCard))[0]
+            if(eatablePhom){
+                bestEatableCards = [...eatablePhom.cards]
+                ArrayUtils.remove(bestEatableCards, checkEatingCard);
+            }
+        }
+
+        return bestEatableCards
+
+        // let bestEatableCards = []
+        //
+        // // let checkEatingCard = eatingCard;
         // let checkEatingCard = Card.from(eatingCard.byteValue);
         // PhomUtils.setEaten(checkEatingCard)
-        // if(checkEatingCard) {
-            let allPhoms = PhomGenerator.generateAllPhom([...cards, checkEatingCard]).filter(phom => ArrayUtils.contains(phom.cards, checkEatingCard));
-            if(allPhoms.length > 0){
-                allPhoms.sort((phom1, phom2) => phom2.value() - phom1.value())
-
-                if(eatenCards.length == 0){
-                    bestEatableCards = allPhoms[0].cards
-                }else{
-                    allPhoms.some(phom => {
-                        let checkCards = [...cards];
-                        ArrayUtils.removeAll(checkCards, phom.cards)
-                        if(this.isContainPhomWithEatenCards(checkCards, eatenCards)){
-                            bestEatableCards = phom.cards
-                            return true
-                        }
-                    })
-                }
-
-                ArrayUtils.remove(bestEatableCards, checkEatingCard)
-            }
+        // let allPhoms = PhomGenerator.generateAllPhom([...cards, checkEatingCard]).filter(phom => ArrayUtils.contains(phom.cards, checkEatingCard));
+        // if(allPhoms.length > 0){
+        //     allPhoms.sort((phom1, phom2) => phom2.value() - phom1.value())
+        //
+        //     if(eatenCards.length == 0){
+        //         bestEatableCards = allPhoms[0].cards
+        //     }else{
+        //         allPhoms.some(phom => {
+        //             let checkCards = [...cards];
+        //             ArrayUtils.removeAll(checkCards, phom.cards)
+        //             if(this.isContainPhomWithEatenCards(checkCards, eatenCards)){
+        //                 bestEatableCards = phom.cards
+        //                 return true
+        //             }
+        //         })
+        //     }
+        //
+        //     ArrayUtils.remove(bestEatableCards, checkEatingCard)
         // }
-
-        return bestEatableCards;
+        //
+        // return bestEatableCards;
     }
 
     static findBestPhomList(cards = []) {

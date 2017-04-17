@@ -97,7 +97,10 @@ export default class PhomGenerator {
     }
 
     static _isValidPhomEatenCard(cards) {
-        return PhomGenerator._countEatenCard(cards) <= 1
+
+        let eatenCardCount = PhomGenerator._countEatenCard(cards);
+
+        return eatenCardCount <= 1
     }
 
     static _isValidPhomLength(cards) {
@@ -108,8 +111,7 @@ export default class PhomGenerator {
 
         let preCard;
         let isSuitPhom = this._isValidPhomEatenCard(cards) && this._isValidPhomLength(cards);
-        // isSuitPhom &&
-        cards.some(card => {
+        isSuitPhom && cards.some(card => {
             if (preCard) {
                 if (card.rank - preCard.rank != 1) {
                     isSuitPhom = false;

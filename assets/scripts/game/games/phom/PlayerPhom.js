@@ -330,14 +330,11 @@ export default class PlayerPhom extends PlayerCardTurnBase {
         switch (state) {
             case PlayerPhom.STATE_PHOM_PLAY:
 
-                console.warn("PlayerPhom.STATE_PHOM_PLAY: ", PlayerPhom.STATE_PHOM_PLAY, this._isPlayImmediateAfterTakeCard)
-
                 this.renderer.cardList.cleanSelectedCard();
                 if(this._isPlayImmediateAfterTakeCard){
                     this.scene && this.scene.emit(Events.SHOW_WAIT_TURN_CONTROLS);
                     this._isPlayImmediateAfterTakeCard = false
                 }else {
-                    console.warn("emit Events.SHOW_PLAY_CONTROL_ONLY ")
                     this.scene && this.scene.emit(Events.SHOW_PLAY_CONTROL_ONLY);
                     if(this.renderer.cardList.cards.length == 1){
                         this.turnAdapter.playTurn(this.renderer.cardList.cards);

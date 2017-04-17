@@ -23,8 +23,6 @@ export default class PlayerTurnBaseAdapter extends GameAdapter {
         this.preTurnPlayerId = 0;
         this.currentTurnPlayerId = 0;
         this.player.skippedTurn = false;
-
-        console.warn("reser player turn: ")
     }
 
     onEnable(){

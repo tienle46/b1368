@@ -132,9 +132,6 @@ export default class PlayerSamRenderer extends PlayerCardTurnBaseRenderer {
 
         if(iconPath){
             RubUtils.getSpriteFrameFromAtlas('blueTheme/atlas/text-ingame', iconPath, (sprite) => {
-
-                console.warn("sprite ---- ", sprite)
-
                 if(sprite){
                     CCUtils.setVisible(this.specialInfoImageNode)
                     this.specialInfoImageNode.getComponent(cc.Sprite).spriteFrame = sprite
