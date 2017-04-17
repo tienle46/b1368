@@ -212,10 +212,7 @@ export default class Player extends Actor {
     _onUserGetJarExplosion(username, message, money) {
         if(!this.isItMe())
             return;
-<<<<<<< HEAD
         debug('_onUserGetJarExplosion');
-=======
->>>>>>> 487026bdee21d553fe54146b70803e217e8424e4
         if(this.username == username) {
             app.jarManager.jarExplosive({username, money, message});
         }

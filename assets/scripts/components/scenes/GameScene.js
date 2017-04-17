@@ -443,11 +443,7 @@ export default class GameScene extends BaseScene {
                 let usernames = jarExplosiveData[app.keywords.USERNAME_LIST] || [],
                     moneyList = jarExplosiveData[app.keywords.MONEY_LIST] || [],
                     messages = jarExplosiveData['msl'] || [];
-<<<<<<< HEAD
                     debug('jarExplosiveData', jarExplosiveData);
-=======
->>>>>>> 487026bdee21d553fe54146b70803e217e8424e4
-                    
                     usernames.forEach((username, index) => {
                         this.emit(Events.ON_USER_MAKES_JAR_EXPLOSION, username, messages[index] || null, moneyList[index]);
                     });

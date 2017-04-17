@@ -30,10 +30,7 @@ export default class JarExplosive extends Actor {
         super.onEnable();
         
         this.timeout = setTimeout(() => {
-<<<<<<< HEAD
             debug('close close');
-=======
->>>>>>> 487026bdee21d553fe54146b70803e217e8424e4
             this.close();
         }, this.duration);
     }
