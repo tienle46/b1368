@@ -119,13 +119,13 @@
             <key>premultiplyAlpha</key>
             <false/>
             <key>realTextureFileName</key>
-            <string>nembom.png</string>
+            <string>nemBomb.png</string>
             <key>size</key>
             <string>{252,331}</string>
             <key>smartupdate</key>
             <string>$TexturePacker:SmartUpdate:b6ac306bb81472a2a25fbd5ae35700fe:c21fec9f9f092ba8431bef8432bb119a:a9d9d8bc855663780ba01205f755c955$</string>
             <key>textureFileName</key>
-            <string>nembom.png</string>
+            <string>nemBomb.png</string>
         </dict>
     </dict>
 </plist>

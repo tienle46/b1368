@@ -247,8 +247,9 @@ export default class Player extends Actor {
 
     avatarClicked() {
         if (!this.isItMe()) {
+            let avatarURL = (this.user.variables && this.user.variables.avatarUrl && this.user.variables.avatarUrl.value) || app.config.defaultAvatarUrl;
             let startNode = this.scene.gamePlayers.playerPositions.getPlayerAnchorByPlayerId(this.scene.gamePlayers.me.id, this.isItMe());
-            this.renderer.showUserProfilePopup(this.scene.node, this.user.name, this.user.id, this.scene.gamePlayers.isOwner(this.scene.gamePlayers.me.id), startNode, this.node);
+            this.renderer.showUserProfilePopup(this.scene.node, this.user.name, this.user.id, avatarURL, this.scene.gamePlayers.isOwner(this.scene.gamePlayers.me.id), startNode, this.node);
         }
     }
     
