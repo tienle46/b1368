@@ -12,8 +12,7 @@ class EntranceScene extends BaseScene {
 
         this.properties = {
             ...this.properties,
-            facebookButton: cc.Button,
-            promptPrefab: cc.Prefab
+            facebookButton: cc.Button
         }
 
         this.accessToken = null;
@@ -64,7 +63,8 @@ class EntranceScene extends BaseScene {
 
     start() {
         super.start();
-
+        this._showInputUsernamePopup();
+        
         if (app.buddyManager) {
             app.buddyManager.reset();
         } else {
@@ -170,7 +170,7 @@ class EntranceScene extends BaseScene {
     }
 
     _showInputUsernamePopup() {
-        PromptPopup.show(this.node, this.promptPrefab, {
+        PromptPopup.show(this.node, {
             handler: this._onUserDonePickupName.bind(this),
             title: app.res.string('input_username_title'),
             description: app.res.string('username_rule'),
