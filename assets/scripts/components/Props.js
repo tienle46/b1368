@@ -133,11 +133,7 @@ export default class Props extends Component {
             if(names && names[0]) {
                 let name = names[0];
                 let soundSource = `${name.charAt(0)}${name.slice(1).replace(/([A-Z])/g,($1) => `_${$1.toLowerCase()}`)}`.toUpperCase(); 
-<<<<<<< HEAD
-                debug('PROPS_${soundSource}`');
-                debug('app.system.audioManager[`PROPS_${soundSource}`]', app.system.audioManager[`PROPS_${soundSource}`])
-=======
->>>>>>> 487026bdee21d553fe54146b70803e217e8424e4
+
                 if(app.system.audioManager[`PROPS_${soundSource}`]) {
                     app.system.audioManager.play(app.system.audioManager[`PROPS_${soundSource}`]);
                 }

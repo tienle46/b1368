@@ -64,19 +64,15 @@ export default class JarExplosive extends Actor {
     }
     
     init({username, message, money} = {}) {
-<<<<<<< HEAD
         debug('on init', username, message, money);
-=======
->>>>>>> 487026bdee21d553fe54146b70803e217e8424e4
+
         this.message.string = message ? message : app.res.string('jar_explosion');
         this.amount.string = Utils.numberFormat(money, '0.0');
     }
     
     close() {
-<<<<<<< HEAD
         debug('close cmnr');
-=======
->>>>>>> 487026bdee21d553fe54146b70803e217e8424e4
+
         if(this.node) {
             this.node.active = false;
             CCUtils.destroy(this.node);                    
