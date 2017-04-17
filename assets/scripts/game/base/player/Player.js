@@ -251,7 +251,14 @@ export default class Player extends Actor {
             this.renderer.showUserProfilePopup(this.scene.node, this.user.name, this.user.id, this.scene.gamePlayers.isOwner(this.scene.gamePlayers.me.id), startNode, this.node);
         }
     }
-
+    
+    playSoundBaseOnBalanceChanged(balanceChanged) {
+        if(this.isItMe()) {
+            let isWinner = balanceChanged > 0;
+            app.system.audioManager.play(isWinner ? app.system.audioManager.THANG: app.system.audioManager.THUA);
+        }
+    }
+    
     _onUserUsesAsset(sender, receiver, assetId) {
         let playerIdSender = this.scene.gamePlayers.findPlayer(sender).id;
         if (playerIdSender != this.id)
@@ -264,7 +271,7 @@ export default class Player extends Actor {
 
         Props.playProp(prosName, {target: this.scene.gameMenuNode, startPos: senderPos, endPos: receiverPos});
     }
-
+    
     _updatePlayerAnchor() {
         let anchorIndex = this.scene.playerPositions.getPlayerAnchorIndex(this.id, this.isItMe())
         let anchor = this.scene.playerPositions.getPlayerAnchor(anchorIndex);

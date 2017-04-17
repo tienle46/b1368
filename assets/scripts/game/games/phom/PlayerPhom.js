@@ -947,7 +947,8 @@ export default class PlayerPhom extends PlayerCardTurnBase {
         if(!this.isItMe()){
             this.renderer.showDownCards(cards, info);
         }
-
+        
+        this.playSoundBaseOnBalanceChanged(balanceChanged);
         this.renderer.showEndGameCardInfo(info)
         this.renderer.showPlayerWinLoseInfo(text, isWinner)
         this.renderer.startPlusBalanceAnimation(balanceChanged);
