@@ -5,6 +5,7 @@ import NodeRub from 'NodeRub';
 import Props from 'Props';
 import numeral from 'numeral';
 import CCUtils from 'CCUtils';
+import RubUtils from 'RubUtils';
 
 export default class FriendProfilePopup extends DialogActor {
     constructor() {
@@ -15,6 +16,7 @@ export default class FriendProfilePopup extends DialogActor {
             propsGridView: cc.Layout,
             rtUserName: cc.Label,
             rtBalance: cc.Label,
+            userAvatar: cc.Sprite,
             bgNode: cc.Node,
             assetItemNode: cc.Node,
             assetItemSprite: cc.Sprite,
@@ -37,7 +39,7 @@ export default class FriendProfilePopup extends DialogActor {
 
     onLoad() {
         super.onLoad();
-
+        
         this._initTouchEvent();
 
         this._initNodeEvents();
@@ -55,10 +57,10 @@ export default class FriendProfilePopup extends DialogActor {
         super.start();
     }
 
-    displayUserDetail(userName, userId, isOwner) {
+    displayUserDetail(userName, userId, avatarURL, isOwner) {
         this.friendName = userName;
         this.friendId = userId;
-
+        RubUtils.loadSpriteFrame(this.userAvatar, avatarURL , null, true);
         this.kickable = app.context.getLastJoinedRoom().variables.kickable.value;
         this.kickBtn.node.active = this.kickable && isOwner;
 
@@ -191,7 +193,7 @@ export default class FriendProfilePopup extends DialogActor {
 
     _onSelectUserProfile(user) {
         this.rtUserName.string = `${user["u"]}`;
-        this.rtBalance.string = `${numeral(user["coin"]).format('0,0') || 0}`;
+        this.rtBalance.string = `${utils.numberFormat(user["coin"])}`;
     }
 
     _runPropsGridViewAction(isLeft = true) {
