@@ -21,7 +21,10 @@ class Linking {
             pendingActions.push({action, data});
         }
         try {
-                data && (data = JSON.parse(data));
+                if(data && typeof data == "string")
+                    data = JSON.parse(data);
+                
+                console.debug(data);
                 switch(action) {
                     case Linking.ACTION_PLAY_GAME:{
                         const {gameCode} = data;
@@ -199,7 +202,7 @@ class Linking {
     }
     
     
-    static _handleOpenPersonalInfoDialogAction(actionCode) {
+    static _handleOpenPersonalInfoDialogAction(actionCode, data) {
         let defaultTab = null;
         
         switch(actionCode) {
@@ -223,7 +226,9 @@ class Linking {
             }
         }
         
-        new PersonalInfoDialogRub().show(app.system.getCurrentSceneNode(), {focusTabIndex: defaultTab});
+        let personalRub = new PersonalInfoDialogRub();
+        data && personalRub.changeToTab(defaultTab, data);
+        personalRub.show(app.system.getCurrentSceneNode(), {focusTabIndex: defaultTab});
     }
     
     static _handleOpenTopRankDialogAction(actionCode) {

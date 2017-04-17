@@ -26,17 +26,19 @@ export default class PersonalInfoDialogRub {
         /**
          * @type {MultiTabPopup}
          */
+        this._data = null;
+        
         this.multiTabPopup = node.getComponent("MultiTabPopup");
-
-        this.multiTabPopup.changeToChatTab = this.changeToChatTab.bind(this);
     }
     
-    changeToChatTab(data) {
-        this.multiTabPopup && this.multiTabPopup.changeTab(PersonalInfoDialogRub.TAB_USER_INFO_INDEX, data);
+    changeToTab(tabIndex, data) {
+        this.multiTabPopup && this.multiTabPopup.changeTab(tabIndex);
+        this._data = data;
     }
     
     show(parentNode = cc.director.getScene(), options = {}){
-        this.multiTabPopup.show({parentNode, tabModels, ...options});
+        let initData = this._data;
+        this.multiTabPopup.show({parentNode, tabModels, initData, ...options});
     }
 }
 

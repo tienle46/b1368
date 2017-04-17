@@ -63,7 +63,6 @@ class EntranceScene extends BaseScene {
 
     start() {
         super.start();
-        this._showInputUsernamePopup();
         
         if (app.buddyManager) {
             app.buddyManager.reset();

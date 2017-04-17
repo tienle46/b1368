@@ -51,6 +51,13 @@ export default class TabUserBank extends PopupTabBody {
     }
     
     onDataChanged(data = {}) {
+        if(this.popup.initData) {
+            this.onChuyenTienBtnClick()
+            let { username } = this.popup.initData;
+            this._transferMoneyComponent.setReceiverName(username);
+            this.popup.resetInitData();
+            return;            
+        }
         data.messages && data.messages.length > 0 && this._renderUserData(data);
     }
     

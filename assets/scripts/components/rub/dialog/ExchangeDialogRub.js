@@ -16,12 +16,6 @@ export default class ExchangeDialogRub {
          * @type {MultiTabPopup}
          */
         this.multiTabPopup = node.getComponent("MultiTabPopup");
-
-        this.multiTabPopup.changeToChatTab = this.changeToChatTab.bind(this);
-    }
-    
-    changeToChatTab(data) {
-        this.multiTabPopup && this.multiTabPopup.changeTab(ExchangeDialogRub.TAB_EXCHANGE_CARD_INDEX, data);
     }
     
     show(parentNode = cc.director.getScene(), options = {}){

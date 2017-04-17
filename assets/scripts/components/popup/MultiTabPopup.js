@@ -42,6 +42,7 @@ export default class MultiTabPopup extends Component {
         this.bgTransparent.on(cc.Node.EventType.TOUCH_START, () => true);
         
         this._tabBodies = [];
+        console.debug('onLoad')
     }
 
     onEnable() {
@@ -177,15 +178,20 @@ export default class MultiTabPopup extends Component {
      *      data: Object
      * }
      */
-    show({ parentNode = cc.director.getScene(), focusTabIndex = 0, title = null, tabModels = [] } = {}) {
+    show({ parentNode = cc.director.getScene(), focusTabIndex = 0, title = null, tabModels = [], initData = null } = {}) {
 
         this._hidePopupInstance();
         this.title = title;
         this._tabModels = tabModels;
         this.focusTabIndex = focusTabIndex;
+        this.initData = initData; 
         parentNode.addChild(this.node);
     }
-
+    
+    resetInitData() {
+        this.initData = null;    
+    }
+    
     hide() {
         if (this.node) {
             this.node.active = false;

@@ -40,12 +40,20 @@ export default class TabBuddiesTransfer extends PopupTabBody {
             return;
         let {minTransfer, maxTransfer, feeTransfer} = data;
         
-        this.receiverEditBoxNode.string = this.receiverBuddyName || '';
+        if(this.receiverEditBoxNode.string == "") {
+            this.receiverEditBoxNode.string = this.receiverBuddyName || '';
+        }
+
         this.feeAmountLbl.string = `${numberFormat(feeTransfer)}%`;
         this.minAmountLbl.string = numberFormat(minTransfer);
         this.maxAmountLbl.string = numberFormat(maxTransfer);
     }
-
+    
+    setReceiverName(name) {
+        console.debug('name', name);
+        this.receiverEditBoxNode.string = name;
+    }
+    
     onTransferMoneyBtnClick() {
         let data = this.getComponentData();
 
