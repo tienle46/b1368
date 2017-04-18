@@ -24,7 +24,6 @@ class Linking {
                 if(data && typeof data == "string")
                     data = JSON.parse(data);
                 
-                console.debug(data);
                 switch(action) {
                     case Linking.ACTION_PLAY_GAME:{
                         const {gameCode} = data;
