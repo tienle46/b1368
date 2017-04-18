@@ -197,28 +197,28 @@ export default class CardList extends ActionComponent {
         switch (align) {
             case CardList.ALIGN_BOTTOM_LEFT:
                 return cc.v2(0, 0);
-                break;
+
             case CardList.ALIGN_BOTTOM_CENTER:
                 return cc.v2(0.5, 0);
-                break;
+
             case CardList.ALIGN_BOTTOM_RIGHT:
                 return cc.v2(1, 0);
-                break;
+
             case CardList.ALIGN_TOP_LEFT:
                 return cc.v2(0, 1);
-                break;
+
             case CardList.ALIGN_TOP_CENTER:
                 return cc.v2(0.5, 1);
-                break;
+
             case CardList.ALIGN_TOP_RIGHT:
                 return cc.v2(1, 1);
-                break;
+
             case CardList.ALIGN_CENTER_LEFT:
                 return cc.v2(0, 0.5);
-                break;
+
             case CardList.ALIGN_CENTER_RIGHT:
                 return cc.v2(1, 0.5);
-                break;
+
             default:
                 return cc.v2(0.5, 0.5);
         }
@@ -857,7 +857,7 @@ export default class CardList extends ActionComponent {
     static dealCards(actionComponent, anchorNode, playersCardLists, cardLengths, cb) {
 
         let maxLength = 0;
-        const delayTime = 0.008 + (4 - playersCardLists.length) * 0.008;
+        const delayTime = 0.04 + (4 - playersCardLists.length) * 0.01;
         const delay = cc.delayTime(delayTime);
         const actions = [delay.clone()];
 
@@ -898,15 +898,16 @@ export default class CardList extends ActionComponent {
                 card.node.setPosition(localDestinationPoint);
                 card.node.zIndex = order--;
 
-                const kCardFlipTime = 0.25; 
-                const scaleTo = cc.scaleTo(kCardFlipTime / 2, 0, card.node.scaleY);
-                const reverse = cc.scaleTo(kCardFlipTime / 2, card.node.scaleX, card.node.scaleY);
+                /*fake flip action */
+                const scaleTo = cc.scaleTo(CardList.CARD_FLIP_TIME / 2, 0, card.node.scaleY);
+                const reverse = cc.scaleTo(CardList.CARD_FLIP_TIME / 2, card.node.scaleX, card.node.scaleY);
 
                 let animation = cc.sequence(
                     cc.moveTo(CardList.DRAW_CARD_DURATION, cardPosition.x, cardPosition.y),
-                    delay.clone(),
-                    scaleTo, reverse
+                    scaleTo, 
+                    reverse
                 );
+                
                 actions.push(cc.callFunc(() => card.node && card.node.runAction(animation)));
                 actions.push(delay.clone());
             }
@@ -949,7 +950,7 @@ CardList.DEFAULT_MAX_WIDTH = 600;
 CardList.DEFAULT_MAX_HEIGHT = 300;
 CardList.TRANSFER_CARD_DURATION = 0.3;
 CardList.DRAW_CARD_DURATION = 0.4;
-CardList.CARD_FLIP_TIME = 0.3;
+CardList.CARD_FLIP_TIME = 0.5;
 
 
 CardList.ALIGN = cc.Enum({

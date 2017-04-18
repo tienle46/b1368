@@ -52,8 +52,12 @@ export default class DeckCardRenderer extends Component {
             if (this.cardList2.cards.length > 0) {
                 this.cardList2.clear();
             }
-
+            
             this.cardList1.transferTo(this.cardList2, this.cardList1.getRawCards());
+            this.cardList2.cards.forEach((card) =>{
+                const randomAngle = Math.floor(Math.random() * 10) - 5;
+                card.node.runAction(cc.rotateTo(0.2,randomAngle));
+            });
         }
 
 
@@ -68,7 +72,14 @@ export default class DeckCardRenderer extends Component {
         } else {
             this.cardList1.setCards(cards);
         }
+        
+        //random rotate card a bit to make it looks like player throw cards on deck
+        this.cardList1.cards.forEach((card) =>{
+            const randomAngle = Math.floor(Math.random() * 10) - 5;
+            card.node.runAction(cc.rotateTo(0.2,randomAngle));
+        });
     }
+ 
 
     _createCardList() {
         let cardListNode = cc.instantiate(this.cardListPrefab);

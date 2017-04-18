@@ -41,6 +41,11 @@ export default class BoardCard extends Board {
         // play sound
         app.system.audioManager.play(app.system.audioManager.CHIA_BAI, true);
         
+        //CardList thực sự của user this.scene.gamePlayers.me.renderer.cardList.node.parent
+        //this.scene.gamePlayers.me.renderer.cardList.node.parent đóng vai trò là Anchor
+        //18/04/2017: điều chỉnh vị trí của dealCardAnchor cho khớp với vị trí card list của user me
+        this.adjustDealCardAnchor();
+        
         CardList.dealCards(this.renderer.dealCardActionComponent, this.renderer.dealCardAnchor, playerHandCardLists, dealCards.length, () => {
             this.scene.emit(Events.ON_GAME_STATE_STARTED);
             this.onDoneDealCards()
@@ -48,8 +53,22 @@ export default class BoardCard extends Board {
 
         this.scene.emit(Events.ON_GAME_STATE_STARTING, data);
     }
+    adjustDealCardAnchor(){
+        const meCardList = this.scene.gamePlayers.me.renderer.cardList;
+        
+        const meAnchor = meCardList.node.parent;
+        const worldPosOfMeAnchor = meAnchor.parent.convertToWorldSpaceAR(meAnchor.getPosition());
+        const newPos = this.renderer.dealCardAnchor.parent.convertToNodeSpaceAR(worldPosOfMeAnchor);
+        
+        this.renderer.meDealCardListNode.setPosition(newPos);
+        
+        this.renderer.meDealCardList.setScale(meCardList.scale);
+        this.renderer.meDealCardList.setMaxDimension(meCardList.maxDimension);
+        this.renderer.meDealCardList.setAlign(meCardList.align);
+    }
 
     onDoneDealCards(){
+        
         this.renderer.meDealCardList.clear();
         this.meDealCards = [];
         // stop sound
