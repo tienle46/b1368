@@ -67,7 +67,11 @@ class TabTopVip extends PopupTabBody {
             usernames,
             usernames.map((status, index) => {
                 let len = this.vips.children.length;
-                return cc.instantiate(this.vips.children[index] ? this.vips.children[index] : this.vips.children[len - 1]);
+                this.vips.children.forEach(child => child.active = false);
+                
+                this.vips.children[index] ? (this.vips.children[index].active = true) : (this.vips.children[len - 1].active = true);
+                
+                return cc.instantiate(this.vips);
             }),
         ];
         

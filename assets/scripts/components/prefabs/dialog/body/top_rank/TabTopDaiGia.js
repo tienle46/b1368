@@ -11,6 +11,7 @@ class TabTopDaiGia extends PopupTabBody {
             contentNode: cc.Node,
             crownsNode: cc.Node,
             userMoneyLbl: cc.Label,
+            userMoneyNode: cc.Node,
             p404: cc.Node
         }
     }
@@ -70,7 +71,7 @@ class TabTopDaiGia extends PopupTabBody {
             usernames,
             balances.map((amount) => {
                 this.userMoneyLbl.string = `${Utils.numberFormat(amount)}`;
-                return cc.instantiate(this.userMoneyLbl.node);
+                return cc.instantiate(this.userMoneyNode);
             }),
         ];
         let head = {
