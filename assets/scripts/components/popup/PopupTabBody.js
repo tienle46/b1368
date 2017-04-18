@@ -133,13 +133,14 @@ export default class PopupTabBody extends Actor {
         
         if(emptyPage) {
             emptyPage.active = true;
-            // node.children.map(child => cc.isValid(child) && child.destroy() && child.removeFromParent());
-            // node.addChild(p404Node);
-
-            // if (str) {
-            //     let p404Component = p404Node.getComponent('P404');
-            //     p404Component && p404Component.setText(str);
-            // }
+        }
+    }
+    
+    hideEmptyPage(emptyPage, str) {
+        this._hideLoading();
+        
+        if(emptyPage) {
+            emptyPage.active = false;
         }
     }
     

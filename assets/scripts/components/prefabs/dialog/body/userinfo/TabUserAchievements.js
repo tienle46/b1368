@@ -21,7 +21,7 @@ export default class TabUserAchievements extends PopupTabBody {
     }
     
     onDataChanged(data) {
-        data && Object.keys(data).length > 0 && this._renderUserAchievements(data);
+        !this.loaded && data && Object.keys(data).length > 0 && this._renderUserAchievements(data);
     }
     
     _addGlobalListener() {
@@ -52,6 +52,7 @@ export default class TabUserAchievements extends PopupTabBody {
         
         let gameCodeList = res[app.keywords.GAME_CODE_LIST] || [];
         if (gameCodeList.length > 0) {
+            this.loaded = true;
             let levelCol = res[app.keywords.LEVEL_LIST].map((e) => `Cấp độ ${e}`) || [];
             // let levelCol = res[app.keywords.LEVEL_TITLE_LIST]|| [];
             let winCol = res[app.keywords.WIN_LIST] || [];

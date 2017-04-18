@@ -6517,7 +6517,9 @@
       "__id__": 144
     },
     "hintRichText": null,
-    "p404": null
+    "p404": {
+      "__id__": 48
+    }
   },
   {
     "__type__": "cc.PrefabInfo",
