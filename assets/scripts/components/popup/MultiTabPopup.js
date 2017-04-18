@@ -42,7 +42,6 @@ export default class MultiTabPopup extends Component {
         this.bgTransparent.on(cc.Node.EventType.TOUCH_START, () => true);
         
         this._tabBodies = [];
-        console.debug('onLoad')
     }
 
     onEnable() {

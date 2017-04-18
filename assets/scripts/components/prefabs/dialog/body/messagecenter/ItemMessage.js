@@ -16,6 +16,7 @@ export default class ItemMessage extends Component {
         };
         
         this._id = null; // only personal message has
+        this.isLongText = null; // only system message has
     }
 
     onLoad() {
@@ -32,6 +33,8 @@ export default class ItemMessage extends Component {
 
     onDestroy() {
         super.onDestroy();
+        this._id = null; // only personal message has
+        this.isLongText = null; // only system message has
     }
 
     createItem(id, title, description, time, isNew) {
@@ -75,6 +78,7 @@ export default class ItemMessage extends Component {
         this.titleLbl.string = title;
         if(description.length > 130) {
             description = `${description.slice(0, 130)}...`;
+            this.isLongText = true;
         }
         this.contentLbl.string = description;
     }
@@ -82,17 +86,21 @@ export default class ItemMessage extends Component {
     onMessageClick(e) {
         if(this._id) {
             let {id, description} = this._id;
-            app.service.send({
-                cmd: app.commands.CHANGE_PERSONAL_MESSAGE_STATE,
-                data: {
-                    id
-                }
-            }, (data) => {
-                app.system.info(description);
-                if(data[app.keywords.RESPONSE_RESULT]) {
-                    
-                }
-            });
+            if(id) {
+                app.service.send({
+                    cmd: app.commands.CHANGE_PERSONAL_MESSAGE_STATE,
+                    data: {
+                        id
+                    }
+                }, (data) => {
+                    app.system.info(description);
+                    if(data[app.keywords.RESPONSE_RESULT]) {
+                        
+                    }
+                });
+            } else {
+                this.isLongText ? ScrollMessagePopup.show(app.system.getCurrentSceneNode(), description) : app.system.info(description);
+            }
         }
     }
 }

@@ -137,7 +137,7 @@ export default class MessagePopup extends Component {
         this.acceptCb = acceptCb;
         this.acceptLabel = acceptLabel;
         this.denyLabel = denyLabel;
-
+        
         if (utils.isString(textOrRequestData)) {
             this.text = textOrRequestData;
             this.requestData = null;

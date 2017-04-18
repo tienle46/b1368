@@ -31,7 +31,7 @@ export class Row extends Component {
         }
 
         if(!app.env.isBrowser()) {
-            this.layout.paddingTop = 40;
+            this.layout.paddingTop = 10;
         }
         
         this.node.active = true;

@@ -23,7 +23,6 @@ class TabSystemMessage extends TabMessages {
                 time,
                 isNew
             } = message;
-
             return this.createItemMessage(id, title, msg, time, isNew);
         }));
     }
