@@ -27,7 +27,7 @@ export default class AvatarDialog extends DialogActor {
 
     onLoad() {
         super.onLoad();
-        this.bgNode.on(cc.Node.EventType.TOUCH_START, () => true)
+        this.bgNode && this.bgNode.on(cc.Node.EventType.TOUCH_START, () => true)
     }
 
     start() {

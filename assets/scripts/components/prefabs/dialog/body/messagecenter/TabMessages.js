@@ -10,6 +10,10 @@ export default class TabMessages extends PopupTabBody {
         this.properties = {
             ...this.properties,
             itemPrefab: cc.Prefab,
+            listMessagePanel: cc.Node,
+            detailMessagePanel: cc.Node,
+            itemMessageLbl: cc.Label,
+            p404: cc.Node
         };
     }
     
@@ -20,11 +24,13 @@ export default class TabMessages extends PopupTabBody {
     loadData() {
         if(Object.keys(this._data).length > 0)
             return false;
+            
         super.loadData();
         this._requestMessagesList();
         return true;
     }
     
+    //paging
     onPreviousBtnClick(page) {
         this._requestMessagesList(page);
     }
@@ -33,12 +39,27 @@ export default class TabMessages extends PopupTabBody {
         this._requestMessagesList(page);
     }
     
+    // back btn
+    onBackBtnClick() {
+       this._showListMessagePanel();
+    }
+    
     _addGlobalListener() {
         super._addGlobalListener();
     }
 
     _removeGlobalListener() {
         super._removeGlobalListener();
+    }
+    
+    _showListMessagePanel() {
+        CCUtils.active(this.listMessagePanel);
+        CCUtils.deactive(this.detailMessagePanel);
+    }
+    
+    _hideListMessagePanel() {
+        CCUtils.deactive(this.listMessagePanel);
+        CCUtils.active(this.detailMessagePanel);
     }
     
     /**
@@ -66,18 +87,23 @@ export default class TabMessages extends PopupTabBody {
      * 
      * @memberOf TabMessages
      */
-    displayMessages(data) {
-        this.node.removeAllChildren();
+    displayMessages(node, data) {
+        if(data.length > 0) {
+            this.hideEmptyPage(this.p404)
+            node.removeAllChildren();
         
-        let next = this.onPreviousBtnClick,
-            prev = this.onNextBtnClick;
-        
-        this.initView(null, data, {
-            paging: { next, prev, context: this },
-            size: this.node.getContentSize(),
-            isListView: true
-        });
-        this.node.addChild(this.getScrollViewNode());
+            let next = this.onPreviousBtnClick,
+                prev = this.onNextBtnClick;
+            
+            this.initView(null, data, {
+                paging: { next, prev, context: this },
+                size: this.node.getContentSize(),
+                isListView: true
+            });
+            node.addChild(this.getScrollViewNode());
+        } else {
+            this.showEmptyPage(this.p404)
+        }
     }
     
     hide() {

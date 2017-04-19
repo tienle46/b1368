@@ -17,6 +17,8 @@ export default class ItemMessage extends Component {
         
         this._id = null; // only personal message has
         this.isLongText = null; // only system message has
+        
+        this._listener = null;
     }
 
     onLoad() {
@@ -35,9 +37,10 @@ export default class ItemMessage extends Component {
         super.onDestroy();
         this._id = null; // only personal message has
         this.isLongText = null; // only system message has
+        this._listener = null;
     }
 
-    createItem(id, title, description, time, isNew) {
+    createItem(id, title, description, time, isNew, listener) {
         deactive(this.btn.node);
         if(isNew) {
             active(this.newIcon);
@@ -48,10 +51,10 @@ export default class ItemMessage extends Component {
             deactive(this.newIcon);
         }
        
-        this._fillData(id, title, description, time);
+        this._fillData(id, title, description, time, null, listener);
     }
     
-    createItemWithButton(id, title, description, time, action, handler, isReaded) {
+    createItemWithButton(id, title, description, time, action, handler, isReaded, listener) {
         isReaded ? deactive(this.newIcon): active(this.newIcon);
         
         if (action) {
@@ -62,15 +65,18 @@ export default class ItemMessage extends Component {
         } else {
             deactive(this.btn.node);
         }
-        this._fillData(id, title, description, time, action);
+        this._fillData(id, title, description, time, action, listener);
     }
     
-    _fillData(id, title, description, time, action) {
+    _fillData(id, title, description, time, action, listener) {
         if (action) {
             this.btnLbl.string = action;
             active(this.btn.node);
         } else {
             deactive(this.btn.node);
+        }
+        if(listener) {
+            this._listener = listener;
         }
         
         this._id = {id, description};
@@ -84,24 +90,7 @@ export default class ItemMessage extends Component {
     }
     
     onMessageClick(e) {
-        if(this._id) {
-            let {id, description} = this._id;
-            if(id) {
-                app.service.send({
-                    cmd: app.commands.CHANGE_PERSONAL_MESSAGE_STATE,
-                    data: {
-                        id
-                    }
-                }, (data) => {
-                    app.system.info(description);
-                    if(data[app.keywords.RESPONSE_RESULT]) {
-                        
-                    }
-                });
-            } else {
-                this.isLongText ? ScrollMessagePopup.show(app.system.getCurrentSceneNode(), description) : app.system.info(description);
-            }
-        }
+        this._listener && this._listener();
     }
 }
 

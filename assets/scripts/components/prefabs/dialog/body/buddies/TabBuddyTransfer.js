@@ -50,7 +50,6 @@ export default class TabBuddiesTransfer extends PopupTabBody {
     }
     
     setReceiverName(name) {
-        console.debug('name', name);
         this.receiverEditBoxNode.string = name;
     }
     

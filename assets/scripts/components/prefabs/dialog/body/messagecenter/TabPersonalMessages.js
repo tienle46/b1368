@@ -9,10 +9,21 @@ class TabPersonalMessages extends TabMessages {
     constructor() {
         super();
     }
-
+    
+    onEnable() {
+        super.onEnable();
+        this._showListMessagePanel();    
+    }
+    
+    showDetailPanel(id, description) {
+        this._hideListMessagePanel();
+        this.itemMessageLbl.string = description;
+        this._sendReadRequest(id, false);
+    }
+    
     //@override
     onDataChanged({messages = [], page} = {}) {
-        messages && messages.length > 0 && this.displayMessages(messages.map(message => {
+        messages && messages.length > 0 && this.displayMessages(this.listMessagePanel, messages.map(message => {
             let {id, title, msg, time, action, actionData, readed} = message;
 
             return this.createItemMessage(id, title, msg, time, action, actionData, readed);
@@ -32,6 +43,7 @@ class TabPersonalMessages extends TabMessages {
     //@override
     _requestMessagesList(page = 1) {
         this._initRequest(app.commands.GET_PERSONAL_MESSAGES, page);
+        this.showLoadingProgress();
     }
     
     _onGetPersonalMessages(data) {
@@ -41,12 +53,15 @@ class TabPersonalMessages extends TabMessages {
     _onActionBtnClick(id, action, data) {
         this.popup.hide();
         Linking.goTo(action, data);
-        
+        this._sendReadRequest(id, true);
+    }
+    
+    _sendReadRequest(id, needRemoveAction = false) {
         app.service.send({
             cmd: app.commands.CHANGE_PERSONAL_MESSAGE_STATE,
             data: {
                 id,
-                action: true
+                action: needRemoveAction
             }
         });
     }
@@ -55,7 +70,7 @@ class TabPersonalMessages extends TabMessages {
         if(this.itemPrefab) {
             let message = cc.instantiate(this.itemPrefab);
             let itemEventComponent = message.getComponent('ItemMessage');
-            itemEventComponent && itemEventComponent.createItemWithButton(id, title, description, time, action, this._onActionBtnClick.bind(this, id, action, actionData, itemEventComponent), isReaded);
+            itemEventComponent && itemEventComponent.createItemWithButton(id, title, description, time, action, this._onActionBtnClick.bind(this, id, action, actionData, itemEventComponent), isReaded, this.showDetailPanel.bind(this, id, description));
             return message;
         }
     }

@@ -25,11 +25,11 @@
     "_anchorPoint": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": 0.46
+      "y": 0.5
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 850,
+      "width": 816,
       "height": 81
     },
     "_children": [
@@ -96,8 +96,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 702,
-      "height": 58
+      "width": 650,
+      "height": 63
     },
     "_children": [
       {
@@ -113,7 +113,7 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": 7,
+      "x": 8,
       "y": 0
     },
     "_skewX": 0,
@@ -157,7 +157,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 682,
+      "width": 630,
       "height": 28
     },
     "_children": [],
@@ -168,7 +168,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": 29
+      "y": 31.5
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -273,7 +273,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 670,
+      "width": 650,
       "height": 25
     },
     "_children": [],
@@ -284,7 +284,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": -4
+      "y": -1.5
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -318,7 +318,7 @@
     "_N$font": {
       "__uuid__": "8538fe1b-c3b4-48ca-849f-55e33a2c7a57"
     },
-    "_N$maxWidth": 670,
+    "_N$maxWidth": 650,
     "_N$lineHeight": 25,
     "_N$imageAtlas": null
   },
@@ -343,8 +343,8 @@
     "_enabled": true,
     "_layoutSize": {
       "__type__": "cc.Size",
-      "width": 702,
-      "height": 58
+      "width": 650,
+      "height": 63
     },
     "_resize": 1,
     "_N$layoutType": 2,
@@ -358,7 +358,7 @@
     "_N$paddingLeft": 0,
     "_N$paddingRight": 0,
     "_N$paddingTop": 0,
-    "_N$paddingBottom": 0,
+    "_N$paddingBottom": 5,
     "_N$spacingX": 0,
     "_N$spacingY": 5,
     "_N$verticalDirection": 1,
@@ -415,8 +415,8 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": 766,
-      "y": 3.2399999999999984
+      "x": 733,
+      "y": 0
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -875,7 +875,7 @@
     "_enabled": true,
     "_layoutSize": {
       "__type__": "cc.Size",
-      "width": 850,
+      "width": 816,
       "height": 81
     },
     "_resize": 1,

@@ -32,7 +32,7 @@ export default class TabUserInfo extends PopupTabBody {
             changePasswordPanel: cc.Node,
             updatePhoneNumberPanel: cc.Node,
             vipInfoPanel: cc.Node,
-            changeAvatarDialog: cc.Prefab
+            changeAvatarPanel: cc.Node
         };
     }
 
@@ -104,8 +104,7 @@ export default class TabUserInfo extends PopupTabBody {
     }
 
     onChangeAvatarBtnClick() {
-        let changeAvatarDialog = cc.instantiate(this.changeAvatarDialog);
-        app.system.getCurrentSceneNode().addChild(changeAvatarDialog);
+        this._showChangeAvatarPanel();
     }
 
     onUpdateBtnClick() {
@@ -191,6 +190,7 @@ export default class TabUserInfo extends PopupTabBody {
         deactive(this.changePasswordPanel);
         deactive(this.updatePhoneNumberPanel);
         deactive(this.vipInfoPanel);
+        deactive(this.changeAvatarPanel);
     }
 
     _showChangePasswordPanel() {
@@ -198,6 +198,7 @@ export default class TabUserInfo extends PopupTabBody {
         active(this.changePasswordPanel);
         deactive(this.updatePhoneNumberPanel);
         deactive(this.vipInfoPanel);
+        deactive(this.changeAvatarPanel);
     }
 
     _showUpdatePhoneNumberPanel() {
@@ -205,6 +206,7 @@ export default class TabUserInfo extends PopupTabBody {
         deactive(this.changePasswordPanel);
         active(this.updatePhoneNumberPanel);
         deactive(this.vipInfoPanel);
+        deactive(this.changeAvatarPanel);
     }
 
     _showVipInfoPanel() {
@@ -212,8 +214,17 @@ export default class TabUserInfo extends PopupTabBody {
         deactive(this.changePasswordPanel);
         deactive(this.updatePhoneNumberPanel);
         active(this.vipInfoPanel);
+        deactive(this.changeAvatarPanel);
     }
-
+    
+    _showChangeAvatarPanel() {
+        deactive(this.userInfoPanel);
+        deactive(this.changePasswordPanel);
+        deactive(this.updatePhoneNumberPanel);
+        deactive(this.vipInfoPanel);
+        active(this.changeAvatarPanel);
+    }
+    
     _hide() {
         let parent = this.node.parent;
 

@@ -135,7 +135,7 @@
                 <key>spriteSourceSize</key>
                 <string>{52,53}</string>
                 <key>textureRect</key>
-                <string>{{1915,241},{52,53}}</string>
+                <string>{{1915,179},{52,53}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -221,13 +221,13 @@
                 <key>spriteOffset</key>
                 <string>{0,0}</string>
                 <key>spriteSize</key>
-                <string>{60,60}</string>
+                <string>{46,50}</string>
                 <key>spriteSourceSize</key>
-                <string>{60,60}</string>
+                <string>{50,50}</string>
                 <key>textureRect</key>
-                <string>{{1915,65},{60,60}}</string>
+                <string>{{665,1645},{46,50}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
             </dict>
             <key>coin.png</key>
             <dict>
@@ -510,7 +510,7 @@
                 <key>spriteSourceSize</key>
                 <string>{55,55}</string>
                 <key>textureRect</key>
-                <string>{{1915,127},{55,55}}</string>
+                <string>{{1915,65},{55,55}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -555,7 +555,7 @@
                 <key>spriteSourceSize</key>
                 <string>{55,55}</string>
                 <key>textureRect</key>
-                <string>{{1915,184},{55,55}}</string>
+                <string>{{1915,122},{55,55}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -648,7 +648,7 @@
             <key>size</key>
             <string>{1978,1695}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:f04fb9f603c19b8596c5db9adf639e6e:473ae4ec3bf4d3e6ab5ba5700c446a61:8a709fdd72fed976d4b9069b2228afd3$</string>
+            <string>$TexturePacker:SmartUpdate:448d69c6c97ff80f26532a38a80c2013:21bfd71885f4e3c1d0457b113102ce60:8a709fdd72fed976d4b9069b2228afd3$</string>
             <key>textureFileName</key>
             <string>general.png</string>
         </dict>

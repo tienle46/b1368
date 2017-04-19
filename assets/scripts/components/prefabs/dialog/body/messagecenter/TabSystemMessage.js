@@ -11,11 +11,12 @@ class TabSystemMessage extends TabMessages {
     
     onEnable() {
         super.onEnable();
-        //this.setLoadingData();
+        this._showListMessagePanel();
+        // this.setLoadingData();
     }
     
     onDataChanged({messages = [], page} = {}) {
-        messages && messages.length > 0 && this.displayMessages(messages.map(message => {
+        messages && messages.length > 0 && this.displayMessages(this.listMessagePanel, messages.map(message => {
             let {
                 id,
                 title,
@@ -25,6 +26,11 @@ class TabSystemMessage extends TabMessages {
             } = message;
             return this.createItemMessage(id, title, msg, time, isNew);
         }));
+    }
+    
+    showDetailPanel(description) {
+        this._hideListMessagePanel();
+        this.itemMessageLbl.string = description;        
     }
     
     _addGlobalListener() {
@@ -50,7 +56,7 @@ class TabSystemMessage extends TabMessages {
         if(this.itemPrefab) {
             let message = cc.instantiate(this.itemPrefab);
             let itemEventComponent = message.getComponent('ItemMessage');
-            itemEventComponent && itemEventComponent.createItem(id, title, description, time, isNew);
+            itemEventComponent && itemEventComponent.createItem(id, title, description, time, isNew, this.showDetailPanel.bind(this, description));
             return message;
         }
     }

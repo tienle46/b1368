@@ -56,11 +56,11 @@
                 <key>spriteOffset</key>
                 <string>{0,0}</string>
                 <key>spriteSize</key>
-                <string>{60,53}</string>
+                <string>{62,53}</string>
                 <key>spriteSourceSize</key>
-                <string>{60,55}</string>
+                <string>{62,53}</string>
                 <key>textureRect</key>
-                <string>{{1276,679},{60,53}}</string>
+                <string>{{1276,679},{62,53}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -69,11 +69,11 @@
                 <key>aliases</key>
                 <array/>
                 <key>spriteOffset</key>
-                <string>{-1,0}</string>
+                <string>{0,0}</string>
                 <key>spriteSize</key>
                 <string>{53,53}</string>
                 <key>spriteSourceSize</key>
-                <string>{55,55}</string>
+                <string>{53,53}</string>
                 <key>textureRect</key>
                 <string>{{1316,105},{53,53}}</string>
                 <key>textureRotated</key>
@@ -213,7 +213,7 @@
             <key>size</key>
             <string>{1574,733}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:5161189edfea5714d773c80442ecadb8:83b828ded5d362dc95c7c30e359038ea:70c8faf287b801f42cfa7c57415c1cdf$</string>
+            <string>$TexturePacker:SmartUpdate:706127c90684cd0218809c26627f83ed:10db6cf19f9517b4589e1a3fa1dd47a9:70c8faf287b801f42cfa7c57415c1cdf$</string>
             <key>textureFileName</key>
             <string>login.png</string>
         </dict>
