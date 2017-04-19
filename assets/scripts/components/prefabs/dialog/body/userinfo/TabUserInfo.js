@@ -175,7 +175,6 @@ export default class TabUserInfo extends PopupTabBody {
     _onUserUpdatePhoneNumber(data) {
         //update phonenumber
         if (data.hasOwnProperty(app.keywords.RESPONSE_RESULT) && data[app.keywords.RESPONSE_RESULT]) {
-            app.system.showLongToast(app.res.string('phonenumber_changed_successfully'));
             this.phoneNumber.string = this.newPhoneNumberEditbox.string;
             this.newPhoneNumberEditbox.string = "";
 

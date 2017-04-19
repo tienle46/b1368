@@ -25,13 +25,14 @@ class TopBar extends DialogActor {
             dropDownBgNode: cc.Node,
             promptPrefab: cc.Prefab,
             settingDialog: cc.Prefab,
-            soundControl: cc.Node,
+            vipLevel: cc.Label
         };
     }
 
     onLoad() {
         super.onLoad();
         this.dropDownBgNode.on(cc.Node.EventType.TOUCH_END, () => this.dropDownOptions.active = false);
+        this.vipLevel.string = app.context.getMyInfo().vipLevel;
     }
 
     onEnable() {
@@ -97,10 +98,6 @@ class TopBar extends DialogActor {
             this._onConfirmLogoutClick.bind(this)
         );
         this._hideDropDownMenu()
-    }
-
-    onSoundBtnClick() {
-        this.soundControl && this.soundControl.getComponent('SoundControl').show();
     }
 
     handleSettingAction(e) {

@@ -781,3 +781,5 @@ Keywords.NAME = "n";
 Keywords.DETAIL = "d";
 
 Keywords.JAR_EXPLOSIVE = "sj_sjil";
+
+Keywords.VIP_LEVEL = "vipLevel";

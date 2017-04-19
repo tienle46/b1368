@@ -5,6 +5,7 @@
 import app from 'app';
 import Events from 'Events';
 import RubUtils from 'RubUtils';
+import Utils from 'Utils';
 
 class GameContext {
 
@@ -88,14 +89,16 @@ class GameContext {
 
     getMyInfo() {
         let me = this.getMe();
+        let vipLevel =  Utils.getVariable(me, app.keywords.VIP_LEVEL, "Dân Thường");
         return me ? {
             "id": me.id,
             "isItMe": me.isItMe,
             "name": me.name,
-            "coin": (me.variables.coin && me.variables.coin.value) || 0,
+            "coin": Utils.getVariable(me, 'coin', 0),
             "level": me.variables.lv,
-            "avatarUrl": (me.variables.avatarUrl && me.variables.avatarUrl.value) || null,
-            "displayName": (me.variables.displayName && me.variables.displayName.value) || me.name
+            "avatarUrl": Utils.getVariable(me, 'avatarUrl', null),
+            "displayName": Utils.getVariable(me, 'displayName', me.name),
+            "vipLevel": vipLevel.name || vipLevel
         } : {};
     }
     
