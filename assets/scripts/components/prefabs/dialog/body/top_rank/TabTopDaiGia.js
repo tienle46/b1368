@@ -11,7 +11,6 @@ class TabTopDaiGia extends PopupTabBody {
             contentNode: cc.Node,
             crownsNode: cc.Node,
             userMoneyLbl: cc.Label,
-            userMoneyNode: cc.Node,
             p404: cc.Node
         }
     }
@@ -70,8 +69,7 @@ class TabTopDaiGia extends PopupTabBody {
             }),
             usernames,
             balances.map((amount) => {
-                this.userMoneyLbl.string = `${Utils.numberFormat(amount)}`;
-                return cc.instantiate(this.userMoneyNode);
+                return `${Utils.numberFormat(amount)}`
             }),
         ];
         let head = {
@@ -87,7 +85,10 @@ class TabTopDaiGia extends PopupTabBody {
         let rubOptions = {
             // paging: { prev, next, context: this },
             size: this.contentNode.getContentSize(),
-            group: { widths: [180, 380, ''] }
+            group: { 
+                widths: [180, 380, ''],
+                colors: [null, null, app.const.COLOR_YELLOW]
+            }
         };
 
         this.initView(head, data, rubOptions);

@@ -2495,7 +2495,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 415,
-      "height": 0
+      "height": 140
     },
     "_children": [
       {
@@ -2518,7 +2518,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": -197,
-      "y": -70
+      "y": 85
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -2579,7 +2579,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": -199,
-      "y": 185.5
+      "y": 50
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -2623,7 +2623,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 15.91,
-      "height": 30
+      "height": 28
     },
     "_children": [],
     "_rotationX": 0,
@@ -2632,8 +2632,8 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": 174,
-      "y": 3.6
+      "x": 174.7,
+      "y": 3.5
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -2664,7 +2664,7 @@
     "_useOriginalSize": false,
     "_actualFontSize": 28,
     "_fontSize": 28,
-    "_lineHeight": 30,
+    "_lineHeight": 28,
     "_enableWrapText": true,
     "_N$file": {
       "__uuid__": "707ff59f-f7c1-4eb4-a0de-41fd5e1c0123"
@@ -2757,7 +2757,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": -199,
-      "y": 135.5
+      "y": 0
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -2801,7 +2801,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 15.91,
-      "height": 30
+      "height": 28
     },
     "_children": [],
     "_rotationX": 0,
@@ -2810,8 +2810,8 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": 208.7,
-      "y": 4.4
+      "x": 208.2,
+      "y": 3.5
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -2842,7 +2842,7 @@
     "_useOriginalSize": false,
     "_actualFontSize": 28,
     "_fontSize": 28,
-    "_lineHeight": 30,
+    "_lineHeight": 28,
     "_enableWrapText": true,
     "_N$file": {
       "__uuid__": "707ff59f-f7c1-4eb4-a0de-41fd5e1c0123"
@@ -2935,7 +2935,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": -199,
-      "y": 85.5
+      "y": -50
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -2978,8 +2978,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 188.71,
-      "height": 30
+      "width": 171.77,
+      "height": 31
     },
     "_children": [],
     "_rotationX": 0,
@@ -2988,8 +2988,8 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": 175.7,
-      "y": 3.7
+      "x": 177.1,
+      "y": 1.5
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -3020,13 +3020,13 @@
     "_useOriginalSize": false,
     "_actualFontSize": 28,
     "_fontSize": 28,
-    "_lineHeight": 30,
+    "_lineHeight": 31,
     "_enableWrapText": true,
     "_N$file": {
       "__uuid__": "707ff59f-f7c1-4eb4-a0de-41fd5e1c0123"
     },
     "_isSystemFontUsed": false,
-    "_N$string": "Không giới hạn",
+    "_N$string": "123,345,4873",
     "_N$horizontalAlign": 0,
     "_N$verticalAlign": 0,
     "_N$overflow": 0
@@ -3195,8 +3195,8 @@
     "_alignFlags": 13,
     "_left": 20.5,
     "_right": 0,
-    "_top": 280,
-    "_bottom": 140,
+    "_top": 55,
+    "_bottom": 225,
     "_verticalCenter": 0,
     "_horizontalCenter": 0,
     "_isAbsLeft": true,
@@ -3219,9 +3219,9 @@
     "_layoutSize": {
       "__type__": "cc.Size",
       "width": 415,
-      "height": 0
+      "height": 140
     },
-    "_resize": 0,
+    "_resize": 1,
     "_N$layoutType": 2,
     "_N$padding": 0,
     "_N$cellSize": {
@@ -3294,7 +3294,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 218,
-      "y": 147
+      "y": 170
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -3936,7 +3936,7 @@
     "_alignFlags": 41,
     "_left": 435.5,
     "_right": -0.5,
-    "_top": 63,
+    "_top": 40,
     "_bottom": 140.5,
     "_verticalCenter": 0,
     "_horizontalCenter": 0,
@@ -4711,7 +4711,7 @@
     "_tag": -1,
     "_opacityModifyRGB": false,
     "_id": "",
-    "_active": false,
+    "_active": true,
     "_components": [
       {
         "__id__": 217
@@ -5447,7 +5447,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": -190,
-      "y": 53
+      "y": 100
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -5552,7 +5552,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 15.91,
-      "height": 30
+      "height": 28
     },
     "_children": [],
     "_rotationX": 0,
@@ -5561,7 +5561,7 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": 329,
+      "x": 331.9,
       "y": 3.6
     },
     "_skewX": 0,
@@ -5593,7 +5593,7 @@
     "_useOriginalSize": false,
     "_actualFontSize": 28,
     "_fontSize": 28,
-    "_lineHeight": 30,
+    "_lineHeight": 28,
     "_enableWrapText": true,
     "_N$file": {
       "__uuid__": "707ff59f-f7c1-4eb4-a0de-41fd5e1c0123"
@@ -5730,7 +5730,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 15.91,
-      "height": 30
+      "height": 28
     },
     "_children": [],
     "_rotationX": 0,
@@ -5739,7 +5739,7 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": 249.8,
+      "x": 252.6,
       "y": 3.6
     },
     "_skewX": 0,
@@ -5771,7 +5771,7 @@
     "_useOriginalSize": false,
     "_actualFontSize": 28,
     "_fontSize": 28,
-    "_lineHeight": 30,
+    "_lineHeight": 28,
     "_enableWrapText": true,
     "_N$file": {
       "__uuid__": "707ff59f-f7c1-4eb4-a0de-41fd5e1c0123"
@@ -5839,8 +5839,8 @@
     "_alignFlags": 13,
     "_left": 27.5,
     "_right": 0,
-    "_top": 112,
-    "_bottom": 218,
+    "_top": 65,
+    "_bottom": 265,
     "_verticalCenter": 0,
     "_horizontalCenter": 0,
     "_isAbsLeft": true,
@@ -5932,7 +5932,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": -35
+      "y": 12
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -6289,7 +6289,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": -53,
-      "y": -159
+      "y": -122
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -6559,7 +6559,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 91,
-      "y": -159
+      "y": -122
     },
     "_skewX": 0,
     "_skewY": 0,
