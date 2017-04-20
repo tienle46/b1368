@@ -158,6 +158,7 @@ export default class Card extends ActionComponent {
         // console.debug(`cardsAtlas ${this.cardsAtlas}`);
         this.cardSpriteFrame = this.cardsAtlas.getSpriteFrame(cardSpriteName);
         this.cardBG.spriteFrame = this.cardSpriteFrame;
+              
     }
 
     onEnable() {
