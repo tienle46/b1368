@@ -1398,7 +1398,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": -330
+      "y": -312
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -1437,7 +1437,7 @@
     },
     "space": 100,
     "orientation": 1,
-    "align": 9
+    "align": 7
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -2886,7 +2886,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 534,
+      "width": 22,
       "height": 103
     },
     "_children": [
@@ -2964,8 +2964,8 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": -378.99999999999994,
-      "y": 10
+      "x": -825,
+      "y": 207
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -3220,8 +3220,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 155,
-      "height": 70
+      "width": 157,
+      "height": 90
     },
     "_children": [
       {
@@ -3234,8 +3234,8 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": -204.49999999999991,
-      "y": 10
+      "x": -8,
+      "y": 36
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -3292,7 +3292,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": -3
+      "y": 6
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -3504,8 +3504,8 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": -29.999999999999883,
-      "y": 10
+      "x": -253,
+      "y": 207
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -4100,7 +4100,6 @@
     "playerPositionAnchorsNode": {
       "__id__": 58
     },
-    "jarAnchorNode": null,
     "maxPlayers": 4
   }
 ]

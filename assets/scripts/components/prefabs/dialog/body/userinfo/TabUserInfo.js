@@ -130,7 +130,7 @@ export default class TabUserInfo extends PopupTabBody {
         app.system.addListener(app.commands.USER_UPDATE_PASSWORD, this._onUserUpdatePassword, this);
         app.system.addListener(app.commands.UPDATE_PHONE_NUMBER, this._onUserUpdatePhoneNumber, this);
         app.system.addListener(SFSEvent.USER_VARIABLES_UPDATE, this._onUserVariablesUpdate, this);
-
+        app.system.addListener(app.commands.CHANGE_AVATAR, this._onUserChangeAvatar, this);
     }
 
     _removeGlobalListener() {
@@ -139,8 +139,15 @@ export default class TabUserInfo extends PopupTabBody {
         app.system.removeListener(app.commands.USER_UPDATE_PASSWORD, this._onUserUpdatePassword, this);
         app.system.removeListener(app.commands.UPDATE_PHONE_NUMBER, this._onUserUpdatePhoneNumber, this);
         app.system.removeListener(SFSEvent.USER_VARIABLES_UPDATE, this._onUserVariablesUpdate, this);
+        app.system.removeListener(app.commands.CHANGE_AVATAR, this._onUserChangeAvatar, this);
     }
-
+    
+    _onUserChangeAvatar(data) {
+         if (data[app.keywords.RESPONSE_RESULT]) {
+            this._showUserInfoPanel();
+        }
+    }
+    
     _isValidPasswordInput(str) {
         // minimum: 6, must have atleast a-z|A-Z|0-9, without space
         // /\s/.test(str) => true if str contains space

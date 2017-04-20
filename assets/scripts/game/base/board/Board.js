@@ -241,7 +241,7 @@ export default class Board extends Actor {
     onGameStatePreChange(boardState, data) {
         this.serverState = boardState;
 
-        console.log("onGameStatePreChange...", data);
+        console.log("onGameStatePreChange...", boardState, data);
 
         //TODO Process board state changed here
     }
