@@ -59,7 +59,7 @@ export default class FriendProfilePopup extends DialogActor {
     displayUserDetail(userName, userId, avatarURL, isOwner) {
         this.friendName = userName;
         this.friendId = userId;
-        avatarURL && app.context.loadUserAvatarByURL(avatarURL, this.invokerSprite);
+        avatarURL && app.context.loadUserAvatarByURL(avatarURL, this.userAvatar);
         this.kickable = app.context.getLastJoinedRoom().variables.kickable.value;
         this.kickBtn.node.active = this.kickable && isOwner;
 
