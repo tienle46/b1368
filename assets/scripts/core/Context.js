@@ -111,9 +111,9 @@ class GameContext {
         if(!url || !spriteComponent)
             return;
             
-        RubUtils.loadSpriteFrame(spriteComponent,  url, null, true, (spriteComp) => {
+        RubUtils.loadSpriteFrame(spriteComponent, url, null, true, (spriteComp) => {
             let parent = spriteComp.node.parent;
-            if(parent) {
+            if(parent && spriteComp.spriteFrame.textureLoaded()) {
                 let defaultSprite = parent.getComponent(cc.Sprite);
                 defaultSprite && (defaultSprite.spriteFrame = spriteComp.spriteFrame);
             }
