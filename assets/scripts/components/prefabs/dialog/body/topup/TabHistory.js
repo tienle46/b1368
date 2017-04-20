@@ -55,6 +55,7 @@ class TabHistory extends PopupTabBody {
     }
     
     _renderHistory(histories) {
+        this.hideEmptyPage(this.p404);
         if (histories.length > 0) {
             let d = [];
             histories.map((history, index) => {

@@ -15,6 +15,7 @@ class TabIAP extends PopupTabBody {
 
         this.__sending = false;
         this.__items = [];
+        
     }
 
     onLoad() {

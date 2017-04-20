@@ -31,6 +31,7 @@ class TabCard extends PopupTabBody {
         };
 
         this.providerId = null;
+        this._isRendered = false;
     }
 
     onLoad() {
@@ -50,7 +51,7 @@ class TabCard extends PopupTabBody {
     }
     
     onDataChanged(data) {
-        data && Object.keys(data).length > 0 && this._renderForm(data);
+        !this._isRendered && data && Object.keys(data).length > 0 && this._renderForm(data);
     }
    
     _addGlobalListener() {
@@ -127,6 +128,7 @@ class TabCard extends PopupTabBody {
     
     _renderForm(data) {
         let cardListIds = data[app.keywords.EXCHANGE_LIST.RESPONSE.ITEM_ID_LIST] || [];
+        this._isRendered = true;
         if (cardListIds.length > 0) {
             cardListIds.forEach((id, index) => {
                 let providerName = data[app.keywords.TASK_NAME_LIST][index];

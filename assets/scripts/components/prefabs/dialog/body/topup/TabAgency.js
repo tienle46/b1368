@@ -83,17 +83,21 @@ class TabAgency extends PopupTabBody {
             transferBtn.active = true;
             transferBtn._transferName =  agents[i].agent_name;
             
-            data.push([agents[i].agent_name, agents[i].call_number, fbIcon, transferBtn]);
+            data.push([`${agents[i].agent_name.slice(0, 11)}...`, agents[i].call_number, fbIcon, transferBtn]);
         }
 
         this.initView({
             data: ['Đại lý', 'Số ĐT', 'facebook', ''],
             options: {
-                fontColor: app.const.COLOR_YELLOW
+                fontColor: app.const.COLOR_YELLOW,
             }
         }, data, {
             size: this.node.getContentSize(),
-            isValidated: true
+            isValidated: true,
+            fontSize: 20,
+            group: {
+                widths: [260, '', '', '']
+            }
         });
 
         this.bodyNode.addChild(this.getScrollViewNode());

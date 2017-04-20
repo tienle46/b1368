@@ -27,6 +27,7 @@ class TabExchangeCard extends PopupTabBody {
 
         this.selectedItem = { id: null, gold: null, name: null };
         this._tabData = {};
+        this._isLoaded = false;
     }
     
     onLoad() {
@@ -45,7 +46,7 @@ class TabExchangeCard extends PopupTabBody {
     
     onDataChanged(data = {}) {
         let types = data[app.keywords.EXCHANGE_LIST.RESPONSE.TYPES];
-        types && types.length > 0 && this._renderCards(types);
+        !this._isLoaded && types && types.length > 0 && this._renderCards(types);
     }
     
     onClickBackBtn() {
@@ -97,7 +98,6 @@ class TabExchangeCard extends PopupTabBody {
             'cmd': app.commands.EXCHANGE_LIST,
             'data': {}
         };
-        
         this.showLoadingProgress();
         app.service.send(sendObject);
     }
@@ -110,6 +110,8 @@ class TabExchangeCard extends PopupTabBody {
     
     _renderCards(types) {
         let cardValues = [];
+        this._isLoaded = true;
+        
         types.map((type) => {
             if (type[app.keywords.EXCHANGE_LIST.RESPONSE.ITEM_TYPE] == app.const.EXCHANGE_LIST_CARD_TYPE_ID) {
                 const idList = type[app.keywords.EXCHANGE_LIST.RESPONSE.ITEM_ID_LIST];

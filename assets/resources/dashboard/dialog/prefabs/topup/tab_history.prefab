@@ -178,7 +178,7 @@
     "_tag": -1,
     "_opacityModifyRGB": false,
     "_id": "",
-    "_active": false,
+    "_active": true,
     "_components": [
       {
         "__id__": 13
@@ -215,8 +215,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 480,
-      "height": 242
+      "width": 190,
+      "height": 220
     },
     "_children": [],
     "_rotationX": 0,
@@ -261,7 +261,7 @@
       "__uuid__": "15309118-83a1-4341-aea4-5fe3dbe5dac6"
     },
     "_type": 1,
-    "_sizeMode": 0,
+    "_sizeMode": 1,
     "_fillType": 0,
     "_fillCenter": {
       "__type__": "cc.Vec2",

@@ -34,6 +34,7 @@ class TabSMS extends PopupTabBody {
 
         this._sending = false;
         this._balanceChoosen = null;
+        this._isRendered = false;
     }
 
     onLoad() {
@@ -57,7 +58,7 @@ class TabSMS extends PopupTabBody {
     }
     
     onDataChanged(data) {
-        data && Object.keys(data).length > 0 && this._renderSMS(data);
+        !this._isRendered && data && Object.keys(data).length > 0 && this._renderSMS(data);
     }
     
     onSMSBtnClick(e) {
@@ -152,7 +153,8 @@ class TabSMS extends PopupTabBody {
         }
     }
     
-    _renderSMS({smses = {}, cardListIds = [], providerNames = []} = {}) {        
+    _renderSMS({smses = {}, cardListIds = [], providerNames = []} = {}) {    
+        this._isRendered = true;    
         // app.keywords.CHARGE_SMS_OBJECT
         if (this._sending) {
             this._smses = smses;
