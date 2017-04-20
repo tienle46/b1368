@@ -5,7 +5,6 @@ import NodeRub from 'NodeRub';
 import Props from 'Props';
 import numeral from 'numeral';
 import CCUtils from 'CCUtils';
-import RubUtils from 'RubUtils';
 
 export default class FriendProfilePopup extends DialogActor {
     constructor() {
@@ -60,7 +59,7 @@ export default class FriendProfilePopup extends DialogActor {
     displayUserDetail(userName, userId, avatarURL, isOwner) {
         this.friendName = userName;
         this.friendId = userId;
-        RubUtils.loadSpriteFrame(this.userAvatar, avatarURL , null, true);
+        avatarURL && app.context.loadUserAvatarByURL(avatarURL, this.invokerSprite);
         this.kickable = app.context.getLastJoinedRoom().variables.kickable.value;
         this.kickBtn.node.active = this.kickable && isOwner;
 

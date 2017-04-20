@@ -1,7 +1,6 @@
 import app from 'app';
 import Component from 'Component';
 import { isFunction, numberFormat } from 'Utils';
-import RubUtils from 'RubUtils';
 import { destroy } from 'CCUtils';
 
 class PlayerInvitePopup extends Component {
@@ -42,7 +41,7 @@ class PlayerInvitePopup extends Component {
      */
     init(node, invoker, acceptListener, denyListener) {
         let {username, userCoin, avatarUrl, bet, roomCapacity, roomBalance, inviterVipLevel} = invoker;
-        avatarUrl && RubUtils.loadSpriteFrame(this.invokerSprite, avatarUrl, null, true);
+        avatarUrl && app.context.loadUserAvatarByURL(avatarUrl, this.invokerSprite);
         this.invokerNameLbl.string = username;
         this.invokerGoldLbl.string = numberFormat(userCoin);
         this.invokerLevelLbl.string = inviterVipLevel;

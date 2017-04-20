@@ -200,7 +200,7 @@ export default class PlayerRenderer extends ActorRenderer {
     initPlayerAvatar(url) {
         if(this.avatarNode) {
             let sprite = this.avatarNode.getComponentInChildren(cc.Sprite);
-            sprite && RubUtils.loadSpriteFrame(sprite, url, null, true);
+            sprite && url && app.context.loadUserAvatarByURL(url, sprite);
         }
     }
 

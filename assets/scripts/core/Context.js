@@ -103,7 +103,23 @@ class GameContext {
     }
     
     getUserAvatar(spriteComponent) {
-        RubUtils.loadSpriteFrame(spriteComponent, app.context.getMyInfo().avatarUrl ? app.context.getMyInfo().avatarUrl : app.config.defaultAvatarUrl , null, true);
+        let url = app.context.getMyInfo().avatarUrl ? app.context.getMyInfo().avatarUrl : app.config.defaultAvatarUrl;
+        this.loadUserAvatarByURL(url, spriteComponent);
+    }
+    
+    loadUserAvatarByURL(url, spriteComponent, cb) {
+        if(!url || !spriteComponent)
+            return;
+            
+        RubUtils.loadSpriteFrame(spriteComponent,  url, null, true, (spriteComp) => {
+            let parent = spriteComp.node.parent;
+            if(parent) {
+                let defaultSprite = parent.getComponent(cc.Sprite);
+                defaultSprite && (defaultSprite.spriteFrame = spriteComp.spriteFrame);
+            }
+            
+            cb && cb(spriteComp);
+        });
     }
     
     getMeBalance() {
