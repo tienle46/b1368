@@ -259,6 +259,21 @@
                 <key>textureRotated</key>
                 <true/>
             </dict>
+            <key>tlmn/an-trang.png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{-1,0}</string>
+                <key>spriteSize</key>
+                <string>{140,114}</string>
+                <key>spriteSourceSize</key>
+                <string>{160,120}</string>
+                <key>textureRect</key>
+                <string>{{1,127},{140,114}}</string>
+                <key>textureRotated</key>
+                <false/>
+            </dict>
             <key>tlmn/dut-ba-bich.png</key>
             <dict>
                 <key>aliases</key>
@@ -304,21 +319,6 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>tlmn/ăn-trang.png</key>
-            <dict>
-                <key>aliases</key>
-                <array/>
-                <key>spriteOffset</key>
-                <string>{-1,0}</string>
-                <key>spriteSize</key>
-                <string>{140,114}</string>
-                <key>spriteSourceSize</key>
-                <string>{160,120}</string>
-                <key>textureRect</key>
-                <string>{{1,127},{140,114}}</string>
-                <key>textureRotated</key>
-                <false/>
-            </dict>
         </dict>
         <key>metadata</key>
         <dict>
@@ -333,7 +333,7 @@
             <key>size</key>
             <string>{497,462}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:c3a0867b595af8521da4ff2a63bfca9c:b2625fa4d57321435d546c64ae65cced:934a5484d758fda80ef08ea532dcbb5f$</string>
+            <string>$TexturePacker:SmartUpdate:530b5f8ed1ce53ecdb01cd7c125b0a54:dcba569af256cbbcbd23017253949158:934a5484d758fda80ef08ea532dcbb5f$</string>
             <key>textureFileName</key>
             <string>text-ingame.png</string>
         </dict>
