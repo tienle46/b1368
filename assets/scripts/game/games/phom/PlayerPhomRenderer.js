@@ -90,12 +90,14 @@ export default class PlayerPhomRenderer extends PlayerCardTurnBaseRenderer {
     }
 
     downPhom(playerPhomList, player) {
-        return this._downPhomListComponent.addPhomList(player, playerPhomList, player.eatenCards);
+        return this._downPhomListComponent && this._downPhomListComponent.addPhomList(player, playerPhomList, player.eatenCards);
     }
 
     setCurrentPhom(currentPhomList, eatenCards = []) {
-        this._downPhomListComponent && this._downPhomListComponent.clear();
-        this._downPhomListComponent.addPhomList(null, currentPhomList, eatenCards);
+        if(this._downPhomListComponent) {
+            this._downPhomListComponent.clear();
+            this._downPhomListComponent.addPhomList(null, currentPhomList, eatenCards);
+        }
     }
 
     cleanHighlightDownPhom() {
@@ -250,8 +252,8 @@ export default class PlayerPhomRenderer extends PlayerCardTurnBaseRenderer {
         if (this.downCardInfoLabel && info.length > 0) {
             let centerPosition = this.data.isItMe ? this.cardList.getCenterHorizontalPosition() : this.downCardList && this.downCardList.getCenterHorizontalPosition()
             if(centerPosition){
-                this.downCardInfoNode.setPosition(centerPosition);
-                this.downCardInfoLabel.string = info
+                this.downCardInfoNode && this.downCardInfoNode.setPosition(centerPosition);
+                this.downCardInfoLabel && (this.downCardInfoLabel.string = info)
                 CCUtils.setVisible(this.downCardInfoNode);
             }
         }
@@ -262,7 +264,7 @@ export default class PlayerPhomRenderer extends PlayerCardTurnBaseRenderer {
             CCUtils.setVisible(this.specialInfoImageNode)
             RubUtils.getSpriteFrameFromAtlas('blueTheme/atlas/text-ingame', key, (sprite) => {
                 if(sprite){
-                    this.specialInfoImageNode.getComponent(cc.Sprite).spriteFrame = sprite
+                    this.specialInfoImageNode && (this.specialInfoImageNode.getComponent(cc.Sprite).spriteFrame = sprite)
                 }
             });
         }

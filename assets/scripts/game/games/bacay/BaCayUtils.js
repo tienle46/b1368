@@ -152,10 +152,11 @@ export default class BaCayUtils {
         if(!player || !masterPlayer) return player.board.minBet;
 
         let masterBalance = GameUtils.getUserBalance(masterPlayer.user)
-        let maxValue = player.scene.gamePlayers.players.length <= 1 || player.board.minBet <= 0 ? 0
+        let maxValueByPlayer = parseInt(GameUtils.getUserBalance(player.user) / 2)
+        let maxValueByMaster = player.scene.gamePlayers.players.length <= 1 || player.board.minBet <= 0 ? 0
             : parseInt(masterBalance / (2 * player.board.minBet * (player.scene.gamePlayers.players.length - 1)))
 
-        return maxValue >= 0 ? maxValue : app.const.MIN_INT
+        return Math.max(Math.min(maxValueByPlayer, maxValueByMaster), 0);
 
         // let currentBetAmount = !player.betAmount || player.betAmount < player.board.minBet ? player.board.minBet : player.betAmount;
         // let currentMasterBetAmount = !masterPlayer.betAmount || masterPlayer.betAmount < masterPlayer.board.minBet ? masterPlayer.board.minBet : masterPlayer.betAmount;

@@ -217,13 +217,13 @@ export default class BoardBaCay extends BoardCardBetTurn {
             if (playersWinRanks[i] == app.const.game.rank.GAME_RANK_FIRST) {
                 resultText = app.res.string('game_thang');
             } else {
-                if (winType == app.const.game.GENERAL_WIN_TYPE_NORMAL) {
-                    let cardCount = playersCardCounts && playersCardCounts[i];
-
-                    if (cardCount == PlayerBaCay.DEFAULT_HAND_CARD_COUNT) {
-                        resultText = app.res.string('game_sam_treo');
-                    }
-                }
+                // if (winType == app.const.game.GENERAL_WIN_TYPE_NORMAL) {
+                //     let cardCount = playersCardCounts && playersCardCounts[i];
+                //
+                //     if (cardCount == PlayerBaCay.DEFAULT_HAND_CARD_COUNT) {
+                //         resultText = app.res.string('game_sam_treo');
+                //     }
+                // }
 
                 if (!resultText) resultText = app.res.string('game_thua');
             }

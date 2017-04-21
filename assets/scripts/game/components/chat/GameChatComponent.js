@@ -190,9 +190,6 @@ export default class GameChatComponent extends Actor {
     }
 
     _initChatHistory() {
-
-        console.log('this.scene.gameContext.messages: ', this.scene.gameContext.messages);
-
         this.chatHistoryPanel.children.forEach(child => child.destroy() && child.removeFromParent(true));
         this.scene.gameContext.messages && this.scene.gameContext.messages.forEach(msgObj => this._addNewChatHistoryItem(msgObj.sender, msgObj.message));
     }
@@ -215,7 +212,7 @@ export default class GameChatComponent extends Actor {
 
     onQuickChatItemClick(event) {
         let text = event.target.getComponent('GameQuickChatItem').getLabelText();
-        log(`selected quick chat item ${text}`);
+        //log(`selected quick chat item ${text}`);
         this._sendChatMessage(text);
         
         // this.tabChatHistoryToggle.check();
@@ -246,7 +243,7 @@ export default class GameChatComponent extends Actor {
     onDestroy() {
         super.onDestroy();
         emotions.splice(0, emotions.length);
-        console.log('GameChatComponent: ');
+        //console.log('GameChatComponent: ');
     }
 
     _initEmotions() {

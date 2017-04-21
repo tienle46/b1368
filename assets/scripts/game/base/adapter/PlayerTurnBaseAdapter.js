@@ -14,7 +14,7 @@ export default class PlayerTurnBaseAdapter extends GameAdapter {
     constructor(player) {
         super();
         this.player = player;
-        this.timelineDuration = 20;
+        this.timelineDuration = 15;
         this.preTurnPlayerId = 0;
         this.currentTurnPlayerId = 0;
     }

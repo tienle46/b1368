@@ -16,7 +16,7 @@ export default class BoardTurnBaseAdapter extends GameAdapter {
         this.preTurnPlayerId;
         this.currentTurnPlayerId;
         this.lastPlayedTurn;
-        this.timelineDuration = 20;
+        this.timelineDuration = 15;
     }
 
     onEnable(){

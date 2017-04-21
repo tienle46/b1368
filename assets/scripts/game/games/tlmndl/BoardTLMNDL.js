@@ -143,6 +143,7 @@ export default class BoardTLMNDL extends BoardCardTurnBase {
          * Get game result icon
          * @type {Array}
          */
+        let gameResultInfos = {};
         let resultTexts = {};
         let winnerFlags = {};
 
@@ -154,6 +155,7 @@ export default class BoardTLMNDL extends BoardCardTurnBase {
                 switch (winType) {
                     case app.const.game.TLMN_WIN_TYPE_AN_TRANG:
                         resultText = 'tlmn-an-trang'
+                        gameResultInfos[id] = app.res.string('game_tlmn_an_trang')
                         break;
                     case app.const.game.TLMN_WIN_TYPE_DUT_BA_BICH:
                         resultText = 'tlmn-dut-ba-bich'
@@ -187,10 +189,9 @@ export default class BoardTLMNDL extends BoardCardTurnBase {
          * Get game result detail info
          * @type {Array}
          */
-        let gameResultInfos = {};
         playerIds.map(id => {
             var handCard = playerHandCards[id];
-            gameResultInfos[id] = handCard && handCard.length > 0 ? app.res.string('game_tlmn_card_count', {count: handCard.length}) : "";
+            !gameResultInfos[id] && (gameResultInfos[id] = handCard && handCard.length > 0 ? app.res.string('game_tlmn_card_count', {count: handCard.length}) : "");
         });
 
         Object.keys(thoiData).forEach(id => {

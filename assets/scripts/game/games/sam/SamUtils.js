@@ -87,23 +87,23 @@ export default class SamUtils {
                                 return maxPlayedCard.isHeo() ? selectedCards : null;
                         }
                         break;
-                    case SamUtils.GROUP_CARD_TYPE_BON_DOI_THONG:
-                        switch (playedCardsGroupType) {
-                            case SamUtils.GROUP_CARD_TYPE_TU_QUY:
-                                return selectedCards;
-                            case SamUtils.GROUP_CARD_TYPE_BA_DOI_THONG:
-                                return selectedCards;
-                            case SamUtils.GROUP_CARD_TYPE_DOI_HEO:
-                                return selectedCards;
-                            case SamUtils.GROUP_CARD_TYPE_RAC:
-                                return maxPlayedCard.isHeo() ? selectedCards : null;
-                        }
-                        break;
-                    case SamUtils.GROUP_CARD_TYPE_BA_DOI_THONG:
-                        if (playedCardsGroupType == SamUtils.GROUP_CARD_TYPE_RAC) {
-                            return maxPlayedCard.isHeo() ? selectedCards : null;
-                        }
-                        break;
+                    // case SamUtils.GROUP_CARD_TYPE_BON_DOI_THONG:
+                    //     switch (playedCardsGroupType) {
+                    //         case SamUtils.GROUP_CARD_TYPE_TU_QUY:
+                    //             return selectedCards;
+                    //         case SamUtils.GROUP_CARD_TYPE_BA_DOI_THONG:
+                    //             return selectedCards;
+                    //         case SamUtils.GROUP_CARD_TYPE_DOI_HEO:
+                    //             return selectedCards;
+                    //         case SamUtils.GROUP_CARD_TYPE_RAC:
+                    //             return maxPlayedCard.isHeo() ? selectedCards : null;
+                    //     }
+                    //     break;
+                    // case SamUtils.GROUP_CARD_TYPE_BA_DOI_THONG:
+                    //     if (playedCardsGroupType == SamUtils.GROUP_CARD_TYPE_RAC) {
+                    //         return maxPlayedCard.isHeo() ? selectedCards : null;
+                    //     }
+                    //     break;
                 }
             }
         }
@@ -140,18 +140,18 @@ export default class SamUtils {
                 let sanhType = this.getSanhType(selectedCards);
                 if (sanhType > 0) return sanhType;
 
-                if (this.isDoiThong(selectedCards)) {
-                    switch (numberOfCards) {
-                        case 6:
-                            return SamUtils.GROUP_CARD_TYPE_BA_DOI_THONG;
-                        case 8:
-                            return SamUtils.GROUP_CARD_TYPE_BON_DOI_THONG;
-                        case 10:
-                            return SamUtils.GROUP_CARD_TYPE_NAM_DOI_THONG;
-                        default:
-                            return SamUtils.GROUP_CARD_TYPE_INVALID;
-                    }
-                }
+                // if (this.isDoiThong(selectedCards)) {
+                //     switch (numberOfCards) {
+                //         case 6:
+                //             return SamUtils.GROUP_CARD_TYPE_BA_DOI_THONG;
+                //         case 8:
+                //             return SamUtils.GROUP_CARD_TYPE_BON_DOI_THONG;
+                //         case 10:
+                //             return SamUtils.GROUP_CARD_TYPE_NAM_DOI_THONG;
+                //         default:
+                //             return SamUtils.GROUP_CARD_TYPE_INVALID;
+                //     }
+                // }
             }
         }
         return SamUtils.GROUP_CARD_TYPE_INVALID;
@@ -195,58 +195,58 @@ export default class SamUtils {
         return -1;
     }
 
-    static isValidDoiThongRule(cards) {
-
-        let lastDoiRank = -1;
-        let index = 0;
-
-        while (index < cards.length) {
-
-            let fCard = cards[index];
-            let sCard = cards[index + 1];
-
-            if (fCard.rank == sCard.rank) {
-
-                let gRank = GameUtils.getRank(fCard, this.GAME_TYPE);
-
-                if (index == 0) {
-                    lastDoiRank = gRank;
-                } else {
-                    if (gRank - lastDoiRank != 1) {
-                        // khong phai hai doi thong
-                        return false;
-                    } else {
-                        lastDoiRank = gRank;
-                    }
-                }
-            } else {
-                // khong phai doi
-                return false;
-            }
-
-            index += 2;
-        }
-
-        return true;
-    }
-
-    static isDoiThong(cards) {
-
-        let isDoiThong = false;
-        let numberOfCards = cards.length;
-
-        if (numberOfCards >= 6 && numberOfCards % 2 == 0) {
-
-            let selectedCards = [...cards];
-            if (GameUtils.isContainHeo(selectedCards)) {
-                isDoiThong = this.isValidDoiThongRule(this.sortSpecialAsc(selectedCards, app.const.game.GAME_TYPE_SPECIAL_XAM));
-            } else {
-                isDoiThong = this.isValidDoiThongRule(selectedCards);
-            }
-        }
-
-        return isDoiThong;
-    }
+    // static isValidDoiThongRule(cards) {
+    //
+    //     let lastDoiRank = -1;
+    //     let index = 0;
+    //
+    //     while (index < cards.length) {
+    //
+    //         let fCard = cards[index];
+    //         let sCard = cards[index + 1];
+    //
+    //         if (fCard.rank == sCard.rank) {
+    //
+    //             let gRank = GameUtils.getRank(fCard, this.GAME_TYPE);
+    //
+    //             if (index == 0) {
+    //                 lastDoiRank = gRank;
+    //             } else {
+    //                 if (gRank - lastDoiRank != 1) {
+    //                     // khong phai hai doi thong
+    //                     return false;
+    //                 } else {
+    //                     lastDoiRank = gRank;
+    //                 }
+    //             }
+    //         } else {
+    //             // khong phai doi
+    //             return false;
+    //         }
+    //
+    //         index += 2;
+    //     }
+    //
+    //     return true;
+    // }
+    //
+    // static isDoiThong(cards) {
+    //
+    //     let isDoiThong = false;
+    //     let numberOfCards = cards.length;
+    //
+    //     if (numberOfCards >= 6 && numberOfCards % 2 == 0) {
+    //
+    //         let selectedCards = [...cards];
+    //         if (GameUtils.isContainHeo(selectedCards)) {
+    //             isDoiThong = this.isValidDoiThongRule(this.sortSpecialAsc(selectedCards, app.const.game.GAME_TYPE_SPECIAL_XAM));
+    //         } else {
+    //             isDoiThong = this.isValidDoiThongRule(selectedCards);
+    //         }
+    //     }
+    //
+    //     return isDoiThong;
+    // }
 
     static sortSpecialAsc(cards) {
         return cards.sort(Card.compareRank);

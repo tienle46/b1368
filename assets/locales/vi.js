@@ -142,6 +142,7 @@ export default {
     game_tlmn_thoi_ba_bich: 'Thối 3 bích',
     game_tlmn_cong: 'Cóng',
     game_sam_bao_sam: 'Báo Sâm',
+    game_sam_cannot_play_2_at_the_end: 'Không thể đánh 2 cuối cùng',
     game_cannot_skip_down_if_eaten: 'Không thể bỏ hạ khi bạn đã ăn!',
     buddy_not_in_your_buddy_list: 'Tài khoản {{buddyName}} không thuộc danh sách bạn bè của bạn',
     buddy_not_found_receiver_buddy: 'Không tìm thấy người chơi cần gửi tin nhắn đến',

@@ -157,6 +157,7 @@ export default class CardList extends ActionComponent {
         if (this.node) {
             CCUtils.clearAllChildren(this.node);
         }
+        this.__initCards = [];
     }
 
     _updateNodeSize() {
@@ -847,7 +848,7 @@ export default class CardList extends ActionComponent {
     }
 
     /**
-     * If cardLengths is array, make sure that
+     * If cardLengths is array, make sure that. My self play card always on position 0 of playersCardLists
      * @param dealDeckCard
      * @param playersCardLists
      * @param cardLengths
@@ -865,6 +866,15 @@ export default class CardList extends ActionComponent {
         if (!parentNode) return;
 
         const centerPoint = parentNode.convertToWorldSpaceAR(anchorNode.getPosition());
+        let containMySelf = false;
+
+        if(playersCardLists.length > 1){
+            let minScale = playersCardLists[1].scale;
+            if(playersCardLists[1].scale != minScale){
+                containMySelf = true;
+            }
+            playersCardLists[0].setScale(minScale);
+        }
 
         if (utils.isNumber(cardLengths)) {
 
@@ -895,13 +905,26 @@ export default class CardList extends ActionComponent {
                 const cardPosition = card.node.getPosition();
                 const localDestinationPoint = card.node.parent.convertToNodeSpaceAR(centerPoint);
 
+                let isDealForMySelf = containMySelf && j == 0
+                if(isDealForMySelf){
+                    let playerCardList = playersCardLists[0];
+                    let anchorPoint = playerCardList.node.getAnchorPoint();
+                    if(anchorPoint.x != 0.5 || anchorPoint.y != 0.5){
+                        let translateX = (anchorPoint.x - 0.5) * (Card.CARD_WIDTH + 4) * playerCardList.scale;
+                        let translateY = (anchorPoint.y - 0.5) * (Card.CARD_HEIGHT + 4) * playerCardList.scale;
+
+                        localDestinationPoint.x = localDestinationPoint.x + translateX
+                        localDestinationPoint.y = localDestinationPoint.y + translateY
+                    }
+                }
                 card.node.setPosition(localDestinationPoint);
+
                 card.node.zIndex = order--;
 
                 /*fake flip action */
                 const kFliptTime = 0.2;
-                const scaleTo = cc.scaleTo(kFliptTime, 0, card.node.scaleY);
-                const reverse = cc.scaleTo(kFliptTime, card.node.scaleX, card.node.scaleY);
+                const scaleTo = cc.scaleTo(kFliptTime, 0, isDealForMySelf ? 1 : card.node.scaleY);
+                const reverse = cc.scaleTo(kFliptTime, isDealForMySelf ? 1 : card.node.scaleX, isDealForMySelf ? 1 : card.node.scaleY);
 
                 let animation = cc.sequence(
                     cc.moveTo(CardList.DRAW_CARD_DURATION, cardPosition.x, cardPosition.y),
@@ -922,7 +945,6 @@ export default class CardList extends ActionComponent {
                 )
             )
         }
-
     }
 
     equals(cardList) {

@@ -6,7 +6,7 @@ import app from 'app';
 import game from 'game';
 import Card from 'Card';
 import Events from 'Events';
-import GameUtils from 'GameUtils';
+import ArrayUtils from 'ArrayUtils';
 import SamUtils from 'SamUtils';
 import PlayerCardTurnBase from 'PlayerCardTurnBase';
 import utils from "../../../utils/Utils";
@@ -128,8 +128,12 @@ export default class PlayerSam extends PlayerCardTurnBase {
 
         let cards = this.getSelectedCards();
         let preCards = this.getPrePlayedCards();
+        let remainCards = [...this.renderer.cardList.cards]
+        ArrayUtils.removeAll(remainCards, cards);
 
-        if (SamUtils.checkPlayCard(cards, preCards)) {
+        if(remainCards.length > 0 && remainCards.filter(card => card.rank == 2).length == remainCards.length){
+            app.system.showToast(app.res.string("game_sam_cannot_play_2_at_the_end"));
+        }else if (SamUtils.checkPlayCard(cards, preCards)) {
             this.turnAdapter.playTurn(cards);
         } else {
             app.system.showToast(app.res.string("invalid_play_card"));

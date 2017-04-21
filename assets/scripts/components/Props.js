@@ -80,8 +80,23 @@ export default class Props extends Component {
                 
                 animation.play('run');
                 animation.on('finished', () => {
-                    animatingNode.destroy();
-                    animatingNode.removeFromParent(true);
+                    if(spriteFrames.length > 3) { // remove 1st spriteFrame when it contains 4 frames
+                        spriteFrames.shift();
+                        animation.removeClip(clip,true);
+                        clip = cc.AnimationClip.createWithSpriteFrames(spriteFrames, 5);
+                        clip.name = 'run';
+                        clip.wrapMode = cc.WrapMode.Normal;
+                        animation.addClip(clip);
+                    }
+
+                    animation.play('run');
+                    animation.on('finished', () => {
+                        animatingNode.destroy();
+                        animatingNode.removeFromParent(true);
+                    });
+                    //
+                    // animatingNode.destroy();
+                    // animatingNode.removeFromParent(true);
                 });
             });
 
