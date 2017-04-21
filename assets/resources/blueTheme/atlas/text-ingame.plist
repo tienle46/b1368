@@ -139,21 +139,6 @@
                 <key>textureRotated</key>
                 <true/>
             </dict>
-            <key>sam/cong.png</key>
-            <dict>
-                <key>aliases</key>
-                <array/>
-                <key>spriteOffset</key>
-                <string>{-1,1}</string>
-                <key>spriteSize</key>
-                <string>{114,56}</string>
-                <key>spriteSourceSize</key>
-                <string>{160,60}</string>
-                <key>textureRect</key>
-                <string>{{161,405},{114,56}}</string>
-                <key>textureRotated</key>
-                <false/>
-            </dict>
             <key>sam/den-sam.png</key>
             <dict>
                 <key>aliases</key>
@@ -274,6 +259,21 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
+            <key>tlmn/cong.png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{-1,1}</string>
+                <key>spriteSize</key>
+                <string>{114,56}</string>
+                <key>spriteSourceSize</key>
+                <string>{160,60}</string>
+                <key>textureRect</key>
+                <string>{{161,405},{114,56}}</string>
+                <key>textureRotated</key>
+                <false/>
+            </dict>
             <key>tlmn/dut-ba-bich.png</key>
             <dict>
                 <key>aliases</key>
@@ -333,7 +333,7 @@
             <key>size</key>
             <string>{497,462}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:530b5f8ed1ce53ecdb01cd7c125b0a54:dcba569af256cbbcbd23017253949158:934a5484d758fda80ef08ea532dcbb5f$</string>
+            <string>$TexturePacker:SmartUpdate:1ceef1bb77e20ba213996cf87de8dd7f:854e423a0e97617e303c0f2fbb6915f5:934a5484d758fda80ef08ea532dcbb5f$</string>
             <key>textureFileName</key>
             <string>text-ingame.png</string>
         </dict>
