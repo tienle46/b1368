@@ -200,9 +200,15 @@ export default class BoardSam extends BoardCardTurnBase {
             let resultText;
             if (id == denOrThangXamPlayerId) {
                 switch (winType) {
+                    case app.const.game.XAM_WIN_TYPE_AN_TRANG:
+                        resultText = 'tlmn-an-trang'
+                        winnerFlags[id] = true;
+                        gameResultInfos[id] = app.res.string('game_tlmn_an_trang')
+                        break;
                     case app.const.game.XAM_WIN_TYPE_THANG_XAM:
                         resultText = 'sam-thang-sam'
                         winnerFlags[id] = true;
+                        gameResultInfos[id] = app.res.string('game_sam_thang_sam')
                         break;
                     case app.const.game.XAM_WIN_TYPE_DEN_XAM:
                         resultText = 'sam-den-sam'
@@ -239,7 +245,7 @@ export default class BoardSam extends BoardCardTurnBase {
 
                 if (!denOrThangXamPlayerId) {
                     let handCard = playerHandCards[id];
-                    gameResultInfos[id] = handCard && handCard.length > 0 ? app.res.string('game_result_card_count', {count: handCard.length}) : "";
+                    !gameResultInfos[id] && (gameResultInfos[id] = handCard && handCard.length > 0 ? app.res.string('game_result_card_count', {count: handCard.length}) : "");
                 }
             }
 

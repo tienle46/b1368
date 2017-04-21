@@ -306,6 +306,7 @@ app.const.game.PHOM_WIN_TYPE_U_PHOM_KIN = 5;
 app.const.game.XAM_WIN_TYPE_THANG_XAM = 1;
 app.const.game.XAM_WIN_TYPE_DEN_XAM = 2;
 app.const.game.XAM_WIN_TYPE_DEN_THOI_HEO = 3;
+app.const.game.XAM_WIN_TYPE_AN_TRANG = 4;
 //achievement
 app.const.game.ACHIEVEMENT_DETAIL_TYPE_TOTAL = 0;
 app.const.game.ACHIEVEMENT_DETAIL_TYPE_DAY = 1;
