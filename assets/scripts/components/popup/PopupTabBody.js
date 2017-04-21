@@ -56,6 +56,11 @@ export default class PopupTabBody extends Actor {
         super.onDestroy();
         this._doneCb = null;
         this._data = null;
+        
+        if (this._scrollView && cc.isValid(this._scrollView)) {
+            this._scrollView.destroy();
+            window.free(this._scrollView);
+        }
     }
 
     getPopup() {

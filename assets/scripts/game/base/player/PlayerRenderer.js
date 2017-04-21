@@ -82,7 +82,7 @@ export default class PlayerRenderer extends ActorRenderer {
 
     setName(name) {
         this.playerName = name;
-        this.playerNameLabel.string = name;
+        this.playerNameLabel.string = `${name.slice(0, 9)}...`;
     }
 
     setBalance(balance = 0) {

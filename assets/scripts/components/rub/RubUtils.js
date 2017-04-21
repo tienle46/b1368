@@ -1,4 +1,5 @@
 import app from 'app';
+import axios from 'axios';
 
 let RubUtils = {
     /**
@@ -111,35 +112,42 @@ let RubUtils = {
         options = Object.assign({}, o, options);
 
         function spriteFrameDefaultConfig(spriteComponent, texture2D) {
-            if (spriteComponent) {
+            if (spriteComponent && texture2D) {
                 spriteComponent.spriteFrame = new cc.SpriteFrame(texture2D);
-                
+            
                 for (let key in options) {
                     spriteComponent.hasOwnProperty(key) && options[key] && (spriteComponent[key] = options[key]);
                 }
 
                 ccSize && spriteComponent.node && spriteComponent.node.setContentSize(ccSize);
-                cb && cb(spriteComponent);
             }
+            cb && cb(spriteComponent);
         }
 
         if (isCORS) {
             if(!resURL.match(/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/))
                 return;
-                 
-            if (app.env.isBrowser()) {
-                textureCache = cc.textureCache.addImage(resURL);
-                
-                spriteFrameDefaultConfig(spriteComponent, textureCache);
-            } else {
-                cc.loader.load(resURL, (err, tex) => {
-                    if(err) console.error(err);
-                    
-                    if (tex && tex instanceof cc.Texture2D) {                        
-                        spriteFrameDefaultConfig(spriteComponent, tex);
+            axios.get(resURL).then(response => {
+                if(response.status == 200) {
+                    if (app.env.isBrowser()) {
+                        textureCache = cc.textureCache.addImage(resURL);
+                        
+                        spriteFrameDefaultConfig(spriteComponent, textureCache);
+                    } else {
+                        cc.loader.load(resURL, (err, tex) => {
+                            if(err) console.error(err);
+                            
+                            if (tex && tex instanceof cc.Texture2D) {                        
+                                spriteFrameDefaultConfig(spriteComponent, tex);
+                            }
+                        });
                     }
-                });
-            }
+                } else {
+                    spriteFrameDefaultConfig(null);
+                }
+            }).catch(err => {
+                spriteFrameDefaultConfig(null);
+            });
         } else {
             return RubUtils.loadRes(resURL, cc.SpriteFrame).then((spriteFrame) => {
                 if (spriteFrame) {

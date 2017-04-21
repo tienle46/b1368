@@ -208,7 +208,7 @@ app.getMessageFromServer = (error) => {
         // [...args].forEach(array => {
         //     if (!app._.isArray(array))
         //         return;
-        //
+        
         //     if (isRecursive) {
         //         array.map(a => {
         //             app._.isArray(a) && window.release(a, isRecursive);
