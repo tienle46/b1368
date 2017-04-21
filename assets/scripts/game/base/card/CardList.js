@@ -857,7 +857,7 @@ export default class CardList extends ActionComponent {
     static dealCards(actionComponent, anchorNode, playersCardLists, cardLengths, cb) {
 
         let maxLength = 0;
-        const delayTime = 0.04 + (4 - playersCardLists.length) * 0.01;
+        const delayTime = 0.002 + (4 - playersCardLists.length) * 0.005;
         const delay = cc.delayTime(delayTime);
         const actions = [delay.clone()];
 
@@ -899,12 +899,13 @@ export default class CardList extends ActionComponent {
                 card.node.zIndex = order--;
 
                 /*fake flip action */
-                const scaleTo = cc.scaleTo(CardList.CARD_FLIP_TIME / 2, 0, card.node.scaleY);
-                const reverse = cc.scaleTo(CardList.CARD_FLIP_TIME / 2, card.node.scaleX, card.node.scaleY);
+                const kFliptTime = 0.2;
+                const scaleTo = cc.scaleTo(kFliptTime, 0, card.node.scaleY);
+                const reverse = cc.scaleTo(kFliptTime, card.node.scaleX, card.node.scaleY);
 
                 let animation = cc.sequence(
                     cc.moveTo(CardList.DRAW_CARD_DURATION, cardPosition.x, cardPosition.y),
-                    scaleTo, 
+                    scaleTo,
                     reverse
                 );
                 
