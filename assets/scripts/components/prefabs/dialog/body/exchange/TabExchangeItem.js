@@ -2,7 +2,6 @@ import app from 'app';
 import PopupTabBody from 'PopupTabBody';
 import RubUtils from 'RubUtils';
 import Utils from 'Utils';
-import LoaderRub from 'LoaderRub';
 import CCUtils from 'CCUtils';
 
 class TabExchangeItem extends PopupTabBody {
@@ -15,6 +14,7 @@ class TabExchangeItem extends PopupTabBody {
             exchangeItem: cc.Node,
             exchangeItemImage: cc.Sprite,
             exchangeItemPrice: cc.Label,
+            exchangeItemName: cc.Label,
             layoutsNode: cc.Node,
             updatePhoneNumberNode: cc.Node,
             phoneNumberEditbox: cc.EditBox
@@ -110,31 +110,26 @@ class TabExchangeItem extends PopupTabBody {
 
                 for (let i = 0; i < idList.length; i++) {
                     let itemId = idList[i];
-                    // let itemIcon = `https://crossorigin.me/${iconList[i].replace('thumb.', '')}`;
-                    let itemIcon = `https://cdn1.iconfinder.com/data/icons/flat-business-icons/128/user-128.png`;
-                    
+                    let itemIconURL = `${iconList[i]}`;
                     let itemGold = goldList[i];
                     let itemName = nameList[i];
-
-                    let item = cc.instantiate(this.exchangeItem);
-                    item.active = true;
-
-                    let a = new LoaderRub(item, true);
-                    a.show();
+                
                     // add sprite to img 
-                    RubUtils.loadSpriteFrame(this.exchangeItemImage, itemIcon, this.exchangeItemImage.node.getContentSize(), true, (sprite) => {
-                        a.destroy();
+                    RubUtils.loadSpriteFrame(this.exchangeItemImage, itemIconURL, this.exchangeItemImage.node.getContentSize(), true, (sprite) => {
+                        // add price
+                        this.exchangeItemPrice.string = `${Utils.numberFormat(itemGold)} Chips`;
+                        this.exchangeItemName.string = `${itemName}`;
+                        
+                        let item = cc.instantiate(this.exchangeItem);
+                        item.active = true;
+                        
+                        let itemBtnNode = item.getChildByName('btn');
+                        itemBtnNode.itemId = itemId;
+                        itemBtnNode.itemName = itemName;
+                        itemBtnNode.itemGold = itemGold;
+
+                        this.contentNode.addChild(item);
                     });
-
-                    // add price
-                    this.exchangeItemPrice.string = `${Utils.numberFormat(itemGold)} XU`;
-
-                    let itemBtn = item.getChildByName('btn').getComponent(cc.Button);
-                    itemBtn.itemId = itemId;
-                    itemBtn.itemName = itemName;
-                    itemBtn.itemGold = itemGold;
-
-                    this.contentNode.addChild(item);
                 }
             }
         });
@@ -149,7 +144,7 @@ class TabExchangeItem extends PopupTabBody {
         let okCallback = this._onConfirmDialogBtnClick.bind(this, { gold, name, id });
 
         app.system.confirm(
-            app.res.string('exchange_dialog_confirmation', { gold, name }),
+            app.res.string('exchange_dialog_confirmation', {gold: Utils.numberFormat(gold), name }),
             denyCb,
             okCallback
         );
