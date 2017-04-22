@@ -1,4 +1,5 @@
 import app from 'app';
+import axios from 'axios';
 
 let RubUtils = {
     /**
@@ -25,13 +26,13 @@ let RubUtils = {
     },
     loadResDir: (dirUrl, assetType = null, callback) => {
         cc.loader.loadResDir(dirUrl, assetType, (error, assets) => {
-            if(error) {
+            if (error) {
                 console.error(error);
                 return;
             }
-            
+
             callback && callback(assets);
-            
+
             RubUtils.releaseAssets(assets);
         });
     },
@@ -99,9 +100,9 @@ let RubUtils = {
      * }
      */
     loadSpriteFrame: (spriteComponent, resURL, ccSize = null, isCORS = false, cb, options = {}) => {
-        if(!resURL)
-            return ;
-        
+        if (!resURL)
+            return;
+
         let textureCache;
 
         let o = {
@@ -112,30 +113,43 @@ let RubUtils = {
 
         function spriteFrameDefaultConfig(spriteComponent, texture2D) {
             if (spriteComponent) {
-                spriteComponent.spriteFrame = new cc.SpriteFrame(texture2D);
-                
+                texture2D && (spriteComponent.spriteFrame = new cc.SpriteFrame(texture2D));
+
                 for (let key in options) {
                     spriteComponent.hasOwnProperty(key) && options[key] && (spriteComponent[key] = options[key]);
                 }
 
                 ccSize && spriteComponent.node && spriteComponent.node.setContentSize(ccSize);
-                cb && cb(spriteComponent);
             }
+            cb && cb(spriteComponent);
         }
-
+        
         if (isCORS) {
-            if(!resURL.match(/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/))
+            if (!resURL.match(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/))
                 return;
-                 
+            
+            // TODO fetch 404 (axios cannot run in mobile platform)
             if (app.env.isBrowser()) {
-                textureCache = cc.textureCache.addImage(resURL);
+                // therefore, 404 detector only runs on browser
+                axios.get(resURL).then(response => {
+                    if (response.status == 200) {
+                        textureCache = cc.textureCache.addImage(resURL);
+                        spriteFrameDefaultConfig(spriteComponent, textureCache);
+                    } else {
+                        spriteFrameDefaultConfig(null);
+                    }
+                }).catch(err => {
+                    spriteFrameDefaultConfig(null);
+                });
                 
-                spriteFrameDefaultConfig(spriteComponent, textureCache);
+                // textureCache = cc.textureCache.addImage(resURL);
+
+                // spriteFrameDefaultConfig(spriteComponent, textureCache);
             } else {
                 cc.loader.load(resURL, (err, tex) => {
-                    if(err) console.error(err);
-                    
-                    if (tex && tex instanceof cc.Texture2D) {                        
+                    if (err) console.error(err);
+
+                    if (tex && tex instanceof cc.Texture2D) {
                         spriteFrameDefaultConfig(spriteComponent, tex);
                     }
                 });
@@ -148,6 +162,45 @@ let RubUtils = {
                 }
             }).catch(err => console.error(err));
         }
+        
+        
+        // if (isCORS) {
+        //     cc.log('text isCORS, ', resURL);
+        //     if (!resURL.match(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/))
+        //         return;
+        //     cc.log('text isCORS 2');
+        //     axios.get(resURL).then(response => {
+        //         if (response.status == 200) {
+        //             cc.log('text 200');
+        //             if (app.env.isBrowser()) {
+        //                 textureCache = cc.textureCache.addImage(resURL);
+        //                 cc.log('text ureCache1');
+        //                 spriteFrameDefaultConfig(spriteComponent, textureCache);
+        //             } else {
+        //                 cc.loader.load(resURL, (err, tex) => {
+        //                     if (err) console.error(err);
+        //                     cc.log('text ureCache2');
+        //                     if (tex && tex instanceof cc.Texture2D) {
+        //                         spriteFrameDefaultConfig(spriteComponent, tex);
+        //                     }
+        //                 });
+        //             }
+        //         } else {
+        //             cc.log('text null');
+        //             spriteFrameDefaultConfig(null);
+        //         }
+        //     }).catch(err => {
+        //         cc.log('text err', JSON.stringify(err));
+        //         spriteFrameDefaultConfig(null);
+        //     });
+        // } else {
+        //     return RubUtils.loadRes(resURL, cc.SpriteFrame).then((spriteFrame) => {
+        //         if (spriteFrame) {
+        //             spriteComponent.spriteFrame = spriteFrame;
+        //             spriteFrameDefaultConfig(spriteComponent);
+        //         }
+        //     }).catch(err => console.error(err));
+        // }
     },
     // usefull when assets is prefab
     releaseAssets: (assets) => {

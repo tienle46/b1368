@@ -42,7 +42,7 @@ export class Row extends Component {
         //     let sprite = this.node.getComponent(cc.Sprite);
         //     sprite.enabled = false;
         // }
-
+        
         this.node.addChild(node);
     }
 

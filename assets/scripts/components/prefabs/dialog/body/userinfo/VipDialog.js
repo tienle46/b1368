@@ -49,7 +49,7 @@ export default class VipDialog extends DialogActor {
             RubUtils.loadSpriteFrame(this.iconSprite, url, null, true);
             
             let iconSpriteNode = cc.instantiate(this.iconSpriteNode);
-            active(iconSpriteNode);
+            iconSpriteNode.active = true;
             
             this.iconContainerNode.addChild(iconSpriteNode);
         });

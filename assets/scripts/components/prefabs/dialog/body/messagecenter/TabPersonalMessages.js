@@ -23,7 +23,7 @@ class TabPersonalMessages extends TabMessages {
     
     //@override
     onDataChanged({messages = [], page} = {}) {
-        messages && messages.length > 0 && this.displayMessages(this.listMessagePanel, messages.map(message => {
+        messages && this.displayMessages(this.listMessagePanel, messages.map(message => {
             let {id, title, msg, time, action, actionData, readed} = message;
 
             return this.createItemMessage(id, title, msg, time, action, actionData, readed);

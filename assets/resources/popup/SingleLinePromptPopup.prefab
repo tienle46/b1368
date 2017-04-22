@@ -381,7 +381,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 157.33,
-      "height": 60
+      "height": 48
     },
     "_children": [],
     "_rotationX": 0,
@@ -391,7 +391,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": 12
+      "y": -1
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -422,7 +422,7 @@
     "_useOriginalSize": false,
     "_actualFontSize": 39,
     "_fontSize": 39,
-    "_lineHeight": 60,
+    "_lineHeight": 48,
     "_enableWrapText": true,
     "_N$file": {
       "__uuid__": "b2c0f634-158a-49ee-84f8-a41c8e7ebb56"
@@ -430,7 +430,7 @@
     "_isSystemFontUsed": false,
     "_N$string": "Hệ thống",
     "_N$horizontalAlign": 1,
-    "_N$verticalAlign": 2,
+    "_N$verticalAlign": 0,
     "_N$overflow": 0
   },
   {
@@ -559,7 +559,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 650,
-      "height": 105
+      "height": 60
     },
     "_children": [
       {
@@ -576,7 +576,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": 18.7
+      "y": 19.15
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -642,7 +642,7 @@
     "_tag": -1,
     "_opacityModifyRGB": false,
     "_id": "",
-    "_active": true,
+    "_active": false,
     "_components": [
       {
         "__id__": 17
@@ -724,7 +724,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": -21.449999999999996
+      "y": 0.6000000000000014
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -899,7 +899,7 @@
     "_layoutSize": {
       "__type__": "cc.Size",
       "width": 650,
-      "height": 105
+      "height": 60
     },
     "_resize": 1,
     "_N$layoutType": 2,
@@ -1870,7 +1870,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 50,
-      "height": 54
+      "height": 50
     },
     "_children": [],
     "_rotationX": 0,
@@ -1912,7 +1912,7 @@
       "__uuid__": "c3fb101f-1f9b-4cc1-b1d4-68f196b15bdd"
     },
     "_type": 0,
-    "_sizeMode": 0,
+    "_sizeMode": 2,
     "_fillType": 0,
     "_fillCenter": {
       "__type__": "cc.Vec2",
@@ -1921,7 +1921,7 @@
     },
     "_fillStart": 0,
     "_fillRange": 0,
-    "_isTrimmedMode": true,
+    "_isTrimmedMode": false,
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_atlas": {

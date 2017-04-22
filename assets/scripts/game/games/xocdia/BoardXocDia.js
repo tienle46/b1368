@@ -132,7 +132,6 @@ export default class BoardXocDia extends BoardCardBetTurn {
 
     // state === app.const.game.state.ENDING
     onBoardEnding(data) {
-        console.debug("onGameEnding BoardXocDia.js > data", data);
         let playerIds = utils.getValue(data, Keywords.GAME_LIST_PLAYER, []);
         let bets = utils.getValue(data, Keywords.XOCDIA_BET.AMOUNT, []);
         let playingPlayerIds = this.scene.gamePlayers.filterPlayingPlayer(playerIds);

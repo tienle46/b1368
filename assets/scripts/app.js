@@ -204,18 +204,18 @@ app.getMessageFromServer = (error) => {
 
     // release array
     window.release = function(...args) {
-        // let isRecursive = arguments[arguments.length - 1] === true;
-        // [...args].forEach(array => {
-        //     if (!app._.isArray(array))
-        //         return;
-        //
-        //     if (isRecursive) {
-        //         array.map(a => {
-        //             app._.isArray(a) && window.release(a, isRecursive);
-        //         });
-        //     }
-        //     array.length = 0;
-        // });
+        let isRecursive = arguments[arguments.length - 1] === true;
+        [...args].forEach(array => {
+            if (!app._.isArray(array))
+                return;
+        
+            if (isRecursive) {
+                array.map(a => {
+                    app._.isArray(a) && window.release(a, isRecursive);
+                });
+            }
+            array.length = 0;
+        });
     };
 
     window.log = function log(...args) {

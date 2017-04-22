@@ -13,6 +13,7 @@ export default class PromptPopup extends Component {
 
         this.properties = {
             ...this.properties,
+            bgTransparent: cc.Node,
             titleLbl: cc.Label,
             inputEditBox: cc.EditBox,
             descriptionLbl: cc.Label,
@@ -26,9 +27,7 @@ export default class PromptPopup extends Component {
 
     onEnable() {
         super.onEnable();
-        this.node.on(cc.Node.EventType.TOUCH_START, function() {
-            return;
-        });
+        this.node.on(cc.Node.EventType.TOUCH_START, () => null);
         this.node.zIndex = (app.const.popupZIndex - 1);
     }
 

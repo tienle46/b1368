@@ -12,9 +12,11 @@ export default class TabMessages extends PopupTabBody {
             itemPrefab: cc.Prefab,
             listMessagePanel: cc.Node,
             detailMessagePanel: cc.Node,
-            itemMessageLbl: cc.Label,
-            p404: cc.Node
+            itemMessageLbl: cc.Label
         };
+        
+        this._rendered = false;
+        this._childAdded = false;
     }
     
     onEnable() {
@@ -88,22 +90,18 @@ export default class TabMessages extends PopupTabBody {
      * @memberOf TabMessages
      */
     displayMessages(node, data) {
-        if(data.length > 0) {
-            this.hideEmptyPage(this.p404)
-            node.removeAllChildren();
+        this._rendered = true;
         
-            let next = this.onPreviousBtnClick,
-                prev = this.onNextBtnClick;
-            
-            this.initView(null, data, {
-                paging: { next, prev, context: this },
-                size: this.node.getContentSize(),
-                isListView: true
-            });
-            node.addChild(this.getScrollViewNode());
-        } else {
-            this.showEmptyPage(this.p404)
-        }
+        let next = this.onPreviousBtnClick,
+            prev = this.onNextBtnClick;
+        
+        this.initView(null, data, {
+            paging: { next, prev, context: this },
+            size: this.node.getContentSize(),
+            isListView: true
+        });
+        !this._childAdded && node.addChild(this.getScrollViewNode());
+        this._childAdded = true;
     }
     
     hide() {

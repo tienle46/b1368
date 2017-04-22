@@ -10,12 +10,9 @@ class EventDialog extends Actor {
         this.properties = {
             ...this.properties,
             pageContent: cc.Node,
-            btnGroupNode: cc.Node,
-            policyBtn: cc.Button,
-            attendBtn: cc.Button,
-            backBtn: cc.Button,
-            pageViewNode: cc.Node,
+            pageView: cc.PageView,
             eventPagePrefab: cc.Prefab,
+            pageIndicator: cc.PageViewIndicator,
             loadingNode: cc.Node
         };
 
@@ -35,9 +32,8 @@ class EventDialog extends Actor {
 
     onLoad() {
         this.eventPages = [];
-        this.node.on('touch-start', () => null)
-        this.node.on('touch-end', () => null)
-        this.pageView = this.pageViewNode.getComponent(cc.PageView)
+        this.node.on(cc.Node.EventType.TOUCH_START, () => null)
+        
         this.progress = this.loadingNode.getComponent('Progress')
     }
 
@@ -48,7 +44,7 @@ class EventDialog extends Actor {
 
     onDestroy() {
         super.onDestroy();
-        this.eventPages = null
+        window.release(this.eventPages)
     }
 
     _addGlobalListener() {
@@ -81,7 +77,10 @@ class EventDialog extends Actor {
                     id: listIds[index],
                     imageUrl: imageUrls[index],
                     actionCode: actionCodes[index],
-                    policyUrl: policyUrls[index]
+                    policyUrl: policyUrls[index],
+                    attendBtnListener: this._onClickAttendEvent.bind(this),
+                    policyBtnListener: this._onPolicyBtnClick.bind(this),
+                    backBtnListener: this._onBackBtnClick.bind(this)
                 });
                 this.pageView.addPage(eventPageNode);
                 this.eventPages.push(eventPage);
@@ -92,53 +91,39 @@ class EventDialog extends Actor {
     }
 
     onChangePage() {
-        this._updateControls(false);
-
+        // this._updateControls(false);
     }
 
-    onClickAttendEvent(){
-        let index = this.pageView.getCurrentPageIndex();
-        let eventPage = this.eventPages[index];
-
-        let actionCode = eventPage && eventPage.getComponentData().actionCode;
-        if(eventPage) {
-            this.hide();
-            Linking.goTo(actionCode);
-        }
+    _onPolicyBtnClick(){
+        CCUtils.setVisible(this.pageIndicator, false);
+    }
+    
+    _onClickAttendEvent(){
+        this.hide();
+    }
+    
+    _onBackBtnClick() {
+        CCUtils.setVisible(this.pageIndicator, true);
     }
 
-    onPolicyBtnClick() {
-        let index = this.pageView.getCurrentPageIndex();
-        let eventPage = this.eventPages[index];
-        eventPage && eventPage.showPolicy();
-        this._updateControls(true);
-    }
+    // _updateControls(policyShowing, eventPage) {
+    //     if(!eventPage){
+    //         let index = this.pageView.getCurrentPageIndex();
+    //         eventPage = this.eventPages[index];
+    //     }
 
-    onBackBtnClick() {
-        let index = this.pageView.getCurrentPageIndex();
-        let eventPage = this.eventPages[index];
-        eventPage && eventPage.showImage();
-        this._updateControls(false);
-    }
+    //     if (policyShowing) {
+    //         CCUtils.setVisible(this.backBtn, true)
+    //         CCUtils.setVisible(this.policyBtn, false)
+    //         CCUtils.setVisible(this.attendBtn, false)
+    //     } else {
+    //         CCUtils.setVisible(this.backBtn, false)
+    //         CCUtils.setVisible(this.policyBtn, true)
 
-    _updateControls(policyShowing, eventPage) {
-        if(!eventPage){
-            let index = this.pageView.getCurrentPageIndex();
-            eventPage = this.eventPages[index];
-        }
-
-        if (policyShowing) {
-            CCUtils.setVisible(this.backBtn, true)
-            CCUtils.setVisible(this.policyBtn, false)
-            CCUtils.setVisible(this.attendBtn, false)
-        } else {
-            CCUtils.setVisible(this.backBtn, false)
-            CCUtils.setVisible(this.policyBtn, true)
-
-            let actionCode = eventPage && eventPage.getComponentData().actionCode;
-            CCUtils.setVisible(this.attendBtn, !Utils.isEmpty(actionCode))
-        }
-    }
+    //         let actionCode = eventPage && eventPage.getComponentData().actionCode;
+    //         CCUtils.setVisible(this.attendBtn, !Utils.isEmpty(actionCode))
+    //     }
+    // }
 
     _getEventsFromServer() {
         this.progress && this.progress.hide();
@@ -154,10 +139,7 @@ class EventDialog extends Actor {
     }
 
     hide() {
-        let parent = this.node.parent;
-
-        CCUtils.clearFromParent(this.node);
-        CCUtils.clearFromParent(parent);
+        CCUtils.destroy(this.node);
     }
 }
 
