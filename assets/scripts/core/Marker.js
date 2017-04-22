@@ -3,6 +3,7 @@
  * Its data needs to be refreshed if has any change between currently data and new one.
  */
 import app from 'app';
+import Utils from 'Utils';
 
 export default class Marker {
     constructor() {
@@ -22,12 +23,11 @@ export default class Marker {
     }
     
     _initDefaultGameState() {
-        
         if(!this.getItem(this.SOUND_OPTION)) {
-            this.setItem(this.SOUND_OPTION, 'true');
+            this.setItem(this.SOUND_OPTION, true);
         }
         if(!this.getItem(this.SHOW_INVITATION_POPUP_OPTION)) {
-            this.setItem(this.SHOW_INVITATION_POPUP_OPTION, 'true');
+            this.setItem(this.SHOW_INVITATION_POPUP_OPTION, true);
         }    
     }
     
@@ -41,13 +41,25 @@ export default class Marker {
             _$isUpdated = this.isUpdatedData(key, data);
         }
         
-        this._localStorage.setItem(key, data);
-        
         k && (this.caches[k] = {
             data,
             _$isNew,
             _$isUpdated
         });
+        
+        if(_$isNew || _$isUpdated) {
+            // convert data to string in order to save into localStorage
+            if(!Utils.isString(data)) {
+                try {
+                    data = JSON.parse(data);
+                    data = JSON.stringify(data);
+                } catch(e) {
+                    // INGORE ERROR
+                }
+            }
+        
+            this._localStorage.setItem(key, data);
+        }
     }
 
     getItem(key) {
@@ -70,21 +82,28 @@ export default class Marker {
     
     _initCaches() {
         for(let key in this._localStorage) {
+            let data = this._localStorage.getItem(key);
+            try {
+                data = JSON.parse(data);
+            } catch(e) {
+                // INGORE ERROR
+            }
+             
             this.caches[key] = {
-                data: this._localStorage.getItem(key),
+                data,
                 _$isNew: false,
                 _$isUpdated: false
             };
-        }  
+        }
     }
     
     _validKey(key) {
         if(!key)
             return null;
             
-        return (key instanceof Object) ? JSON.stringify(key) : key.toString();
+        return (key instanceof Object) ? JSON.stringify(key) : `${key}`;
     }
-
+    
     _isCached(key) {
         let k = this._validKey(key);
         return k ? this.caches.hasOwnProperty(k) : null;

@@ -75,8 +75,8 @@ class Linking {
                     }
                     
                     case Linking.ACTION_EVENT: {
-                        let dialog = new DialogRub(app.system.getCurrentSceneNode(), null, { title: 'Sự kiện' });
-                        dialog.addBody('dashboard/dialog/prefabs/event/EventDialog', 'EventDialog');
+                        let dialog = cc.instantiate(app.res.prefab.eventDialog);
+                        app.system.getCurrentSceneNode().addChild(dialog);
                         break;
                     }
                     

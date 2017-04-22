@@ -2340,7 +2340,7 @@
     "_tag": -1,
     "_opacityModifyRGB": false,
     "_id": "7d3b3Njx6NGeZrZl1xjtBxZ",
-    "_active": false,
+    "_active": true,
     "_components": [
       {
         "__id__": 78
@@ -2388,7 +2388,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 2,
-      "y": -3
+      "y": 4.1
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -2472,7 +2472,7 @@
     "_spriteFrame": {
       "__uuid__": "93931f48-ea36-4fce-b8ae-05bc9900aa6b"
     },
-    "_type": 1,
+    "_type": 0,
     "_sizeMode": 0,
     "_fillType": 0,
     "_fillCenter": {
@@ -3221,7 +3221,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 157,
-      "height": 90
+      "height": 100
     },
     "_children": [
       {
@@ -3235,7 +3235,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": -8,
-      "y": 36
+      "y": 23
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -3276,13 +3276,13 @@
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
-      "x": 1,
-      "y": 0
+      "x": 0.5,
+      "y": 0.5
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 155,
-      "height": 70
+      "width": 122.17,
+      "height": 50
     },
     "_children": [],
     "_rotationX": 0,
@@ -3291,8 +3291,8 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": 0,
-      "y": 6
+      "x": -76.2,
+      "y": 52.8
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -3324,9 +3324,9 @@
     },
     "_enabled": true,
     "_useOriginalSize": false,
-    "_actualFontSize": 26,
-    "_fontSize": 26,
-    "_lineHeight": 40,
+    "_actualFontSize": 29,
+    "_fontSize": 29,
+    "_lineHeight": 50,
     "_enableWrapText": false,
     "_N$file": {
       "__uuid__": "b2c0f634-158a-49ee-84f8-a41c8e7ebb56"
@@ -3335,7 +3335,7 @@
     "_N$string": "SẮP XẾP",
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
-    "_N$overflow": 1
+    "_N$overflow": 0
   },
   {
     "__type__": "cc.LabelOutline",
@@ -3376,7 +3376,7 @@
     "_spriteFrame": {
       "__uuid__": "93931f48-ea36-4fce-b8ae-05bc9900aa6b"
     },
-    "_type": 1,
+    "_type": 0,
     "_sizeMode": 0,
     "_fillType": 0,
     "_fillCenter": {

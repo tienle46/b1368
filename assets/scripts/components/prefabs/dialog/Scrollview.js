@@ -83,14 +83,8 @@ export default class Scrollview extends Component {
                 // NodeRub.addWidgetComponentToNode(this.viewNode, wo);
             } else {
                 this._showPaging();
+                this._resizeView(true);
 
-                this.bodyNode.setContentSize(this.node.getContentSize().width, 374);
-                this.node.setContentSize(this.node.getContentSize().width, 374);
-                this.viewNode.setContentSize(this.node.getContentSize().width, 374);
-                
-                let wo = { bottom: 60 };
-                NodeRub.addWidgetComponentToNode(this.bodyNode, wo);
-                
                 // settup click events
                 this._addEventPagingBtn(this.options.paging);
 
@@ -163,8 +157,20 @@ export default class Scrollview extends Component {
         this.currentPage == 1 ? this._hideBtn(this.prevBtn) : this._showBtn(this.prevBtn);
         
         active(this.pagingNode);
+        let hasPaging = this.nextBtn.interactable || this.prevBtn.interactable;
         
-        if(!this.nextBtn.interactable && !this.prevBtn.interactable) {
+        this._resizeView(hasPaging);
+    }
+    
+    _resizeView(hasPaging) {
+        if(hasPaging) {
+            this.bodyNode.setContentSize(this.node.getContentSize().width, 374);
+            this.node.setContentSize(this.node.getContentSize().width, 374);
+            this.viewNode.setContentSize(this.node.getContentSize().width, 374);
+            
+            let wo = { bottom: 60 };
+            NodeRub.addWidgetComponentToNode(this.bodyNode, wo);
+        } else {
             this.bodyNode.setContentSize(this.node.getContentSize().width, 426);
             this.node.setContentSize(this.node.getContentSize().width, 426);
             this.viewNode.setContentSize(this.node.getContentSize().width, 426);
@@ -172,8 +178,8 @@ export default class Scrollview extends Component {
             NodeRub.addWidgetComponentToNode(this.viewNode, wo);
             this._hidePaging();
         }
+        
     }
-
     _validatedInput(data) {
         return app._.isArray(data) ? (this.options.isValidated ? data : this._validateData(data)) : [];
     }

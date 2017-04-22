@@ -48,6 +48,7 @@ class PreloadScene extends Component {
             { dir: 'jar/jar_explosion', name: 'jarExplosive' },
             { dir: 'popup/FriendProfilePopup', name: 'friendProfilePopup' },
             { dir: 'dashboard/dialog/prefabs/dialog', name: 'dialog' },
+            { dir: 'dashboard/dialog/prefabs/event/EventDialog', name: 'eventDialog' },
             { dir: 'popup/MultiTabPopup', name: 'multiTabPopup' },
             { dir: 'common/FullSceneProgress', name: 'fullSceneLoading' },
             { dir: 'popup/MessagePopup', name: 'messagePopup' },

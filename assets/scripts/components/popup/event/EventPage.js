@@ -5,6 +5,9 @@
 import app from 'app'
 import Actor from 'Actor'
 import CCUtils from 'CCUtils'
+import Utils from 'Utils'
+import RubUtils from 'RubUtils';
+import Linking from 'Linking';
 
 class EventPage extends Actor {
 
@@ -16,6 +19,9 @@ class EventPage extends Actor {
             nameLabel: cc.Label,
             imageNode: cc.Node,
             imageSprite: cc.Sprite,
+            attendBtnNode: cc.Node,
+            policyBtnNode: cc.Node,
+            backBtnNode: cc.Node,
             /**
              * @type(cc.WebView}
              */
@@ -23,6 +29,9 @@ class EventPage extends Actor {
         }
 
         this._showPolicyPage = false;
+        
+        this._backBtnListener = null;
+        this._attendBtnListener = null;
     }
 
     onDisable(){
@@ -32,7 +41,7 @@ class EventPage extends Actor {
 
     onEnable(){
         super.onEnable();
-        this.showImage();
+        this._showImage();
     }
 
     onWebLoaded(){
@@ -40,25 +49,41 @@ class EventPage extends Actor {
     }
 
     renderComponentData(data){
+        this.nameLabel.string = data.name || "";
         if(data.imageUrl){
-            let spriteFrame = this.loadImage(data.imageUrl)
-            this.imageSprite.spriteFrame = spriteFrame;
+            RubUtils.loadSpriteFrame(this.imageSprite, data.imageUrl, null, true);
         }
 
-        if(data.name){
-            this.nameLabel.string = data.name;
-        }
+        data.actionCode && !Utils.isEmpty(data.actionCode) && data.actionCode !== "''" ? CCUtils.active(this.attendBtnNode) : CCUtils.deactive(this.attendBtnNode);
+        data.policyUrl && !Utils.isEmpty(data.policyUrl) ? CCUtils.active(this.policyBtnNode) : CCUtils.deactive(this.policyBtnNode);
     }
-
+    
+    onAttendBtnClick() {
+        Linking.goTo(this.getComponentData().actionCode);
+        this.getComponentData().attendBtnListener && this.getComponentData().attendBtnListener();
+    }
+    
     showPolicy(){
-        CCUtils.setVisible(this.imageNode, false);
-        CCUtils.setVisible(this.webView, true);
-        this.getComponentData().policyUrl && (this.webView.url = this.getComponentData().policyUrl);
-    }
+        if(this.getComponentData().policyUrl) {
+            CCUtils.setVisible(this.imageNode, false);
+            CCUtils.active(this.webView);
+            CCUtils.active(this.backBtnNode);
 
-    showImage(){
+            this.webView.url = this.getComponentData().policyUrl
+            
+            this.getComponentData().policyBtnListener && this.getComponentData().policyBtnListener();
+        }
+    }
+    
+    onBackBtnClick() {
+        this._showImage();
+        this.getComponentData().backBtnListener && this.getComponentData().backBtnListener();
+        CCUtils.deactive(this.backBtnNode);
+    }
+    
+    _showImage(){
         CCUtils.setVisible(this.imageNode, true);
-        CCUtils.setVisible(this.webView, false);
+        CCUtils.deactive(this.webView);
     }
 }
 
