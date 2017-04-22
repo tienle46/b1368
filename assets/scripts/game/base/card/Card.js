@@ -265,7 +265,6 @@ export default class Card extends ActionComponent {
     }
 
     onClick() {
-        console.warn("onClick: ", this._clickListener)
         this._clickListener && this._clickListener(this);
     }
 

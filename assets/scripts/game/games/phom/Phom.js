@@ -87,12 +87,12 @@ export default class Phom extends CardList {
 
     joinable(card) {
         
-        console.warn("check jonnable: ", card)
+        // console.warn("check jonnable: ", card)
         
         let phomCard0 = this.cards[0];
         let phomCard1 = this.cards[1];
 
-        if(!phomCard0 || !phomCard1) return -1;
+        if(!phomCard0 || !phomCard1 || !card) return -1;
 
         if (phomCard0.rank == phomCard1.rank) {
             if (this.length == 4) {
