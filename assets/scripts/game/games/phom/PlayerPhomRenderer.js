@@ -58,6 +58,7 @@ export default class PlayerPhomRenderer extends PlayerCardTurnBaseRenderer {
         this._downPhomListComponent = null;
         this.animation = null;
         this._enabledPlayerPhomRenderer = false
+        this._onClickPlayedCardListener = null;
     }
 
     onEnable() {
@@ -113,6 +114,8 @@ export default class PlayerPhomRenderer extends PlayerCardTurnBaseRenderer {
         this.playedCardListNodes.forEach((node, index) => {
             if (index == this.anchorIndex) {
                 this.playedCardList = node.getComponent('CardList');
+                this.playedCardList.setClickableCard(true);
+                this._onClickPlayedCardListener && this.playedCardList.setOnCardClickListener(this._onClickPlayedCardListener)
             } else {
                 CCUtils.setVisible(node, false);
             }
@@ -158,6 +161,11 @@ export default class PlayerPhomRenderer extends PlayerCardTurnBaseRenderer {
         this.downPhomList = this._downPhomListComponent.phomList
     }
 
+    setOnClickPlayedCardListener(listener) {
+        this._onClickPlayedCardListener = listener;
+        this.playedCardList && this.playedCardList.setOnCardClickListener(listener)
+    }
+
     /**
      * This method must call inner method onEnable of PlayerPhom.
      * Component PlayerPhom must added above PlayerPhomRenderer
@@ -189,10 +197,17 @@ export default class PlayerPhomRenderer extends PlayerCardTurnBaseRenderer {
 
     addPlayedCard(cards, srcCardList, isItMe) {
         if (srcCardList) {
-            this.playedCardList.transferFrom(srcCardList, cards);
+            return this.playedCardList.transferFrom(srcCardList, cards);
         } else {
-            this.playedCardList.addCards(cards);
+            return this.playedCardList.addCards(cards);
         }
+    }
+
+    disableTappableAllPlayedCard(){
+        this.playedCardList.cards.forEach(card => {
+            card.setOnClickListener(null)
+            card.setVisibleTapHighlightNode(false)
+        });
     }
 
     addEatenCard(card, srcCardList, isItMe) {

@@ -2,6 +2,7 @@ import app from 'app';
 import ActionComponent from 'ActionComponent';
 import utils from 'utils';
 import GameUtils from 'GameUtils';
+import CCUtils from 'CCUtils';
 
 export default class Card extends ActionComponent {
 
@@ -17,6 +18,7 @@ export default class Card extends ActionComponent {
             highlightNode: cc.Node,
             disableNode: cc.Node,
             lockedNode: cc.Node,
+            tapHighlightNode: cc.Node,
             groupNode: cc.Node,
             groupNumberLabel: cc.Label,
             emptySprite: cc.SpriteFrame,
@@ -34,6 +36,16 @@ export default class Card extends ActionComponent {
         this.group = -1;
         this.locked = false;
         this.__originalInfo = {};
+    }
+
+    setVisibleTapHighlightNode(visible){
+        CCUtils.setVisible(this.tapHighlightNode, visible);
+        CCUtils.setVisible(this.highlightNode, visible);
+
+        !visible && this.setOnClickListener(null)
+
+        let animationComponent = this.tapHighlightNode && this.tapHighlightNode.getComponent(cc.Animation);
+        animationComponent && (visible ? animationComponent.play() : animationComponent.stop())
     }
 
     setDisableCard(disable){
@@ -95,8 +107,9 @@ export default class Card extends ActionComponent {
     }
 
     setLocked(locked) {
+        this.__locked = locked;
+
         if (!this.loaded) {
-            this.__locked = locked;
             return;
         }
 
@@ -119,8 +132,8 @@ export default class Card extends ActionComponent {
     }
 
     setHighlight(highlight) {
+        this.__highlight = highlight;
         if (!this.loaded) {
-            this.__highlight = highlight;
             return;
         }
 
@@ -252,6 +265,7 @@ export default class Card extends ActionComponent {
     }
 
     onClick() {
+        console.warn("onClick: ", this._clickListener)
         this._clickListener && this._clickListener(this);
     }
 

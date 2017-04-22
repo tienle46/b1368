@@ -25,6 +25,7 @@ export default class CardList extends ActionComponent {
             scale: 1.0,
             reveal: true,
             selectable: false,
+            clickableCard: false,
             draggable: false,
             maxDimension: CardList.DEFAULT_MAX_WIDTH,
             cardPrefab: cc.Prefab,
@@ -680,11 +681,12 @@ export default class CardList extends ActionComponent {
 
         if (this._revealOnClick) {
             this._revealSingleCard(card);
-        } else if (this.selectable) {
+        } else if (this.selectable || this.clickableCard) {
             this.onCardClickListener && this.onCardClickListener(card);
-            card.setSelected(!card.selected, true, true);
-            this.onSelectedCardChanged();
-
+            if(this.selectable){
+                card.setSelected(!card.selected, true, true);
+                this.onSelectedCardChanged();
+            }
         }
     }
 
@@ -807,7 +809,7 @@ export default class CardList extends ActionComponent {
         }
 
         this._adjustCardsPosition();
-        return removedCards;
+        return addedCards;
     }
 
     runCardActions(duration = CardList.TRANSFER_CARD_DURATION) {
@@ -955,6 +957,10 @@ export default class CardList extends ActionComponent {
         let compareCardBytes = this.cards.map(card => card.byteValue);
 
         return ArrayUtils.containsAll(thisCardBytes, compareCardBytes);
+    }
+
+    setClickableCard(clickableCard){
+        this.clickableCard = clickableCard;
     }
 }
 

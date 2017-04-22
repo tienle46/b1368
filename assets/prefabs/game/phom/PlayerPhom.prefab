@@ -1854,6 +1854,7 @@
     "scale": 0.6,
     "reveal": true,
     "selectable": false,
+    "clickableCard": false,
     "draggable": false,
     "maxDimension": 230,
     "cardPrefab": {
@@ -2005,6 +2006,7 @@
     "scale": 0.6,
     "reveal": true,
     "selectable": false,
+    "clickableCard": false,
     "draggable": false,
     "maxDimension": 230,
     "cardPrefab": {
@@ -2156,6 +2158,7 @@
     "scale": 0.6,
     "reveal": true,
     "selectable": false,
+    "clickableCard": false,
     "draggable": false,
     "maxDimension": 230,
     "cardPrefab": {
@@ -2307,6 +2310,7 @@
     "scale": 0.6,
     "reveal": true,
     "selectable": false,
+    "clickableCard": false,
     "draggable": false,
     "maxDimension": 230,
     "cardPrefab": {
@@ -2458,6 +2462,7 @@
     "scale": 0.6,
     "reveal": true,
     "selectable": false,
+    "clickableCard": false,
     "draggable": false,
     "maxDimension": 350,
     "cardPrefab": {
@@ -2908,6 +2913,7 @@
     "scale": 0.6,
     "reveal": true,
     "selectable": false,
+    "clickableCard": false,
     "draggable": false,
     "maxDimension": 430,
     "cardPrefab": {
@@ -3090,6 +3096,7 @@
     "scale": 0.6,
     "reveal": true,
     "selectable": false,
+    "clickableCard": false,
     "draggable": false,
     "maxDimension": 390,
     "cardPrefab": {
@@ -3241,6 +3248,7 @@
     "scale": 0.6,
     "reveal": true,
     "selectable": false,
+    "clickableCard": false,
     "draggable": false,
     "maxDimension": 410,
     "cardPrefab": {
@@ -3392,6 +3400,7 @@
     "scale": 0.6,
     "reveal": true,
     "selectable": false,
+    "clickableCard": false,
     "draggable": false,
     "maxDimension": 390,
     "cardPrefab": {
@@ -3474,7 +3483,7 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": 1090,
+      "x": 1000,
       "y": 5
     },
     "_skewX": 0,
@@ -3777,12 +3786,13 @@
     "scale": 1,
     "reveal": true,
     "selectable": true,
+    "clickableCard": false,
     "draggable": false,
-    "maxDimension": 890,
+    "maxDimension": 880,
     "cardPrefab": {
       "__uuid__": "1be1ace3-b9b3-4bf4-9c45-5c1d9eccac08"
     },
-    "space": 105,
+    "space": 95,
     "orientation": 1,
     "align": 8
   },
@@ -3905,6 +3915,7 @@
     "scale": 0.6,
     "reveal": true,
     "selectable": false,
+    "clickableCard": false,
     "draggable": false,
     "maxDimension": 230,
     "cardPrefab": {
@@ -3991,6 +4002,7 @@
     "scale": 0.6,
     "reveal": true,
     "selectable": false,
+    "clickableCard": false,
     "draggable": false,
     "maxDimension": 230,
     "cardPrefab": {
@@ -4077,6 +4089,7 @@
     "scale": 0.6,
     "reveal": true,
     "selectable": false,
+    "clickableCard": false,
     "draggable": false,
     "maxDimension": 230,
     "cardPrefab": {
@@ -4350,6 +4363,7 @@
     "scale": 0.7,
     "reveal": true,
     "selectable": false,
+    "clickableCard": false,
     "draggable": false,
     "maxDimension": 300,
     "cardPrefab": {
@@ -4436,6 +4450,7 @@
     "scale": 0.7,
     "reveal": true,
     "selectable": false,
+    "clickableCard": false,
     "draggable": false,
     "maxDimension": 300,
     "cardPrefab": {
@@ -4522,6 +4537,7 @@
     "scale": 0.7,
     "reveal": true,
     "selectable": false,
+    "clickableCard": false,
     "draggable": false,
     "maxDimension": 300,
     "cardPrefab": {
@@ -4809,6 +4825,7 @@
     "scale": 0.7,
     "reveal": true,
     "selectable": false,
+    "clickableCard": false,
     "draggable": false,
     "maxDimension": 300,
     "cardPrefab": {
@@ -4895,6 +4912,7 @@
     "scale": 0.7,
     "reveal": true,
     "selectable": false,
+    "clickableCard": false,
     "draggable": false,
     "maxDimension": 300,
     "cardPrefab": {
@@ -4981,6 +4999,7 @@
     "scale": 0.7,
     "reveal": true,
     "selectable": false,
+    "clickableCard": false,
     "draggable": false,
     "maxDimension": 300,
     "cardPrefab": {
@@ -5268,6 +5287,7 @@
     "scale": 0.7,
     "reveal": true,
     "selectable": false,
+    "clickableCard": false,
     "draggable": false,
     "maxDimension": 300,
     "cardPrefab": {
@@ -5354,6 +5374,7 @@
     "scale": 0.7,
     "reveal": true,
     "selectable": false,
+    "clickableCard": false,
     "draggable": false,
     "maxDimension": 300,
     "cardPrefab": {
@@ -5440,6 +5461,7 @@
     "scale": 0.7,
     "reveal": true,
     "selectable": false,
+    "clickableCard": false,
     "draggable": false,
     "maxDimension": 300,
     "cardPrefab": {
@@ -5727,6 +5749,7 @@
     "scale": 0.7,
     "reveal": true,
     "selectable": false,
+    "clickableCard": false,
     "draggable": false,
     "maxDimension": 300,
     "cardPrefab": {
@@ -5813,6 +5836,7 @@
     "scale": 0.7,
     "reveal": true,
     "selectable": false,
+    "clickableCard": false,
     "draggable": false,
     "maxDimension": 300,
     "cardPrefab": {
@@ -5899,6 +5923,7 @@
     "scale": 0.7,
     "reveal": true,
     "selectable": false,
+    "clickableCard": false,
     "draggable": false,
     "maxDimension": 300,
     "cardPrefab": {
@@ -6186,6 +6211,7 @@
     "scale": 0.7,
     "reveal": true,
     "selectable": false,
+    "clickableCard": false,
     "draggable": false,
     "maxDimension": 300,
     "cardPrefab": {
@@ -6272,6 +6298,7 @@
     "scale": 0.7,
     "reveal": true,
     "selectable": false,
+    "clickableCard": false,
     "draggable": false,
     "maxDimension": 300,
     "cardPrefab": {
@@ -6358,6 +6385,7 @@
     "scale": 0.7,
     "reveal": true,
     "selectable": false,
+    "clickableCard": false,
     "draggable": false,
     "maxDimension": 300,
     "cardPrefab": {

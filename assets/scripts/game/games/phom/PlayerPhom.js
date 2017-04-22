@@ -330,7 +330,9 @@ export default class PlayerPhom extends PlayerCardTurnBase {
         switch (state) {
             case PlayerPhom.STATE_PHOM_PLAY:
 
+                this.board._showTapHighlightOnMeTurn(false)
                 this.renderer.cardList.cleanSelectedCard();
+
                 if(this._isPlayImmediateAfterTakeCard){
                     this.scene && this.scene.emit(Events.SHOW_WAIT_TURN_CONTROLS);
                     this._isPlayImmediateAfterTakeCard = false
@@ -343,23 +345,31 @@ export default class PlayerPhom extends PlayerCardTurnBase {
                 break;
             case PlayerPhom.STATE_PHOM_JOIN:
                 this.scene && this.scene.emit(Events.SHOW_JOIN_PHOM_CONTROLS);
+                this.board._showTapHighlightOnMeTurn(false)
                 break;
             case PlayerPhom.STATE_PHOM_EAT_TAKE:
-                this.scene && this.scene.emit(Events.SHOW_EAT_AND_TAKE_CONTROLS);
+
+                this.board._showTapHighlightOnMeTurn()
+                // this.scene && this.scene.emit(Events.SHOW_EAT_AND_TAKE_CONTROLS);
+                // this.scene && this.scene.emit(Events.SHOW_PLAY_CONTROL_ONLY);
                 this._suggestEatPhom();
                 break;
             case PlayerPhom.STATE_PHOM_DOWN:
                 this.scene && this.scene.emit(Events.SHOW_DOWN_PHOM_CONTROLS);
+                this.board._showTapHighlightOnMeTurn(false)
                 break;
             case PlayerPhom.STATE_PHOM_PLAY_HO_U:
                 this.scene && this.scene.emit(Events.SHOW_U_PHOM_CONTROLS);
+                this.board._showTapHighlightOnMeTurn(false)
                 break;
             case PlayerPhom.STATE_ACTION_WAIT:
                 this.scene && this.scene.emit(Events.SHOW_WAIT_TURN_CONTROLS);
+                this.board._showTapHighlightOnMeTurn(false)
                 this._isPlayImmediateAfterTakeCard = false;
                 break;
             default:
                 this.scene && this.scene.emit(Events.SHOW_WAIT_TURN_CONTROLS);
+                this.board._showTapHighlightOnMeTurn(false)
         }
     }
 
@@ -369,6 +379,7 @@ export default class PlayerPhom extends PlayerCardTurnBase {
             if (eatableCards.length > 0) {
                 this.renderer.cardList.setSelecteds(eatableCards, true)
                 this.renderer.cardList.setHighlight(eatableCards);
+                this.board.lastPlayedCard && this.board.lastPlayedCard.setVisibleTapHighlightNode(true)
             }else{
                 this.renderer.cardList.clean();
             }
@@ -393,7 +404,6 @@ export default class PlayerPhom extends PlayerCardTurnBase {
             }
         }
     }
-    
 
     _onPlayerPlayedCards(playedCards, srcCardList, isItMe) {
         if (utils.isEmptyArray(playedCards)) return;
@@ -410,8 +420,13 @@ export default class PlayerPhom extends PlayerCardTurnBase {
             this._isPlayImmediateAfterTakeCard = true;
         }
         
-        
-        this.renderer.addPlayedCard(playedCards, srcCardList, isItMe);
+        this.renderer.disableTappableAllPlayedCard();
+        let addedCards = this.renderer.addPlayedCard(playedCards, srcCardList, isItMe);
+
+        if(addedCards.length > 0){
+            this.board.lastPlayedCard = addedCards[0];
+            this.board.lastPlayedCard.setOnClickListener(() => this._onPlayerEatCard(this.scene.gamePlayers.me))
+        }
     }
 
     sendUCommand(phomList) {
@@ -765,6 +780,33 @@ export default class PlayerPhom extends PlayerCardTurnBase {
         this.eatenCards.push(...cards)
     }
 
+    _onPlayerEatCard(player, checked = false) {
+
+        if(!checked && (!player || !player.isPlaying()) ) return;
+
+        let eatable;
+        let selectedCards = player.getSelectedCards();
+
+        if(selectedCards.length == 0){
+            let eatableCards = PhomUtils.findBestEatableCards(player.renderer.cardList.cards, player.eatenCards, player.board.lastPlayedCard);
+            if(eatableCards.length > 0){
+                eatable = true;
+            }else{
+                app.system.showToast(app.res.string('game_phom_not_found_eat_card'));
+            }
+        }else{
+            eatable = PhomUtils.checkEatPhom(player.getSelectedCards(), this.board.lastPlayedCard, player);
+            if(!eatable){
+                app.system.showToast(app.res.string('game_phom_cannot_eat'));
+            }
+        }
+
+        if(eatable){
+            app.service.send({cmd: Commands.PLAYER_EAT_CARD, data: {}, room: player.scene.room});
+            player.setState(PlayerPhom.STATE_ACTION_WAIT);
+        }
+    }
+
     _onEatCard() {
         /**
          * TODO
@@ -773,26 +815,28 @@ export default class PlayerPhom extends PlayerCardTurnBase {
          */
         if(!this.isItMe()) return;
 
-        let eatable;
-        let selectedCards = this.getSelectedCards();
-        if(selectedCards.length == 0){
-            let eatableCards = PhomUtils.findBestEatableCards(this.renderer.cardList.cards, this.eatenCards, this.board.lastPlayedCard);
-            if(eatableCards.length > 0){
-                eatable = true;
-            }else{
-                app.system.showToast(app.res.string('game_phom_not_found_eat_card'));
-            }
-        }else{
-            eatable = PhomUtils.checkEatPhom(this.getSelectedCards(), this.board.lastPlayedCard, this);
-            if(!eatable){
-                app.system.showToast(app.res.string('game_phom_cannot_eat'));
-            }
-        }
+        this._onPlayerEatCard(this, true);
 
-        if(eatable){
-            app.service.send({cmd: Commands.PLAYER_EAT_CARD, data: {}, room: this.scene.room});
-            this.setState(PlayerPhom.STATE_ACTION_WAIT);
-        }
+        // let eatable;
+        // let selectedCards = this.getSelectedCards();
+        // if(selectedCards.length == 0){
+        //     let eatableCards = PhomUtils.findBestEatableCards(this.renderer.cardList.cards, this.eatenCards, this.board.lastPlayedCard);
+        //     if(eatableCards.length > 0){
+        //         eatable = true;
+        //     }else{
+        //         app.system.showToast(app.res.string('game_phom_not_found_eat_card'));
+        //     }
+        // }else{
+        //     eatable = PhomUtils.checkEatPhom(this.getSelectedCards(), this.board.lastPlayedCard, this);
+        //     if(!eatable){
+        //         app.system.showToast(app.res.string('game_phom_cannot_eat'));
+        //     }
+        // }
+        //
+        // if(eatable){
+        //     app.service.send({cmd: Commands.PLAYER_EAT_CARD, data: {}, room: this.scene.room});
+        //     this.setState(PlayerPhom.STATE_ACTION_WAIT);
+        // }
     }
 
     _onTakeCard() {
@@ -861,6 +905,12 @@ export default class PlayerPhom extends PlayerCardTurnBase {
         if (this.isItMe()) {
             this.renderer.setSelectCardChangeListener(this._onSelectedCardsChanged.bind(this));
         }
+
+        this.renderer.setOnClickPlayedCardListener((card) => {
+            if(card.equals(this.board.lastPlayedCard)){
+                this._onEatCard();
+            }
+        });
     }
 
     isSelectSingleCard(){
@@ -889,8 +939,10 @@ export default class PlayerPhom extends PlayerCardTurnBase {
 
                 if (eatable) {
                     this.renderer.cardList.setHighlight(selectedCards);
+                    this.board.lastPlayedCard && this.board.lastPlayedCard.setVisibleTapHighlightNode(true)
                 } else {
                     this.renderer.cardList.cleanHighlight();
+                    this.board.lastPlayedCard && this.board.lastPlayedCard.setVisibleTapHighlightNode(false)
                 }
                 break;
             case PlayerPhom.STATE_PHOM_PLAY_HO_U:

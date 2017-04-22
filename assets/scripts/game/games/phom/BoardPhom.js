@@ -11,8 +11,7 @@ import BoardCardTurnBase from 'BoardCardTurnBase';
 import PlayerPhom from 'PlayerPhom';
 import Phom from 'Phom';
 import PhomList from 'PhomList';
-import CardList from 'CardList';
-import Card from 'Card';
+import CCUtils from 'CCUtils';
 import ArrayUtils from "../../../utils/ArrayUtils";
 
 export default class BoardPhom extends BoardCardTurnBase {
@@ -24,6 +23,7 @@ export default class BoardPhom extends BoardCardTurnBase {
         this.handCardSize = PlayerPhom.DEFAULT_HAND_CARD_COUNT;
         this.lastPlayedCard = null;
         this.allPhomList = null;
+        this._shouldHandleClickDeckCard = false;
     }
 
     onLoad() {
@@ -52,8 +52,13 @@ export default class BoardPhom extends BoardCardTurnBase {
 
     _onPlayerPlayedCards(playerId, playedCards, srcCardList, isItMe){
         app.system.audioManager.play(app.system.audioManager.DANH_BAI);
-        playedCards && playedCards.length > 0 && (this.lastPlayedCard = playedCards[0])
+        playedCards && playedCards.length > 0 && this.setLastPlayedCard(playedCards[0])
         //This don't call super, this event will be handle on player instead
+    }
+
+    setLastPlayedCard(card){
+        this.lastPlayedCard && this.lastPlayedCard.setVisibleTapHighlightNode(false)
+        this.lastPlayedCard = card
     }
 
     _getPlayerHandCardLists() {
@@ -154,7 +159,7 @@ export default class BoardPhom extends BoardCardTurnBase {
             if(playedPlayer){
                 let playerPlayedCards = playedPlayer.getPlayedCards();
                 if (playerPlayedCards.length > 0) {
-                    this.lastPlayedCard = playerPlayedCards[playerPlayedCards.length - 1];
+                    this.setLastPlayedCard(playerPlayedCards[playerPlayedCards.length - 1]);
                 }
             }
         }
@@ -308,7 +313,7 @@ export default class BoardPhom extends BoardCardTurnBase {
                         resultText = 'phom-u-den';
                         break;
                     case app.const.game.PHOM_WIN_TYPE_U_KHAN:
-                        resultText = 'phom-u-khan';
+                        resultText = 'thang';
                         break;
                     case app.const.game.PHOM_WIN_TYPE_U_TRON:
                         resultText = 'phom-u-tron';
@@ -372,6 +377,27 @@ export default class BoardPhom extends BoardCardTurnBase {
         super._cleanTurnRoutineData(playerId, false);
     }
 
+    _showTapHighlightOnMeTurn(visible = true){
+        if(this.scene.gamePlayers.isMePlaying()){
+            if(visible){
+                this.showDeckCardTapHighlight()
+            }else{
+                this.lastPlayedCard && this.lastPlayedCard.setVisibleTapHighlightNode(false)
+                this.showDeckCardTapHighlight(false)
+            }
+        }
+    }
+
+    onClickDeckCard(){
+        this._shouldHandleClickDeckCard && this.scene.emit(Events.ON_CLICK_TAKE_CARD_BUTTON);
+    }
+
+    showDeckCardTapHighlight(visible = true){
+        this._shouldHandleClickDeckCard = visible;
+        CCUtils.setVisible(this.renderer.tapHighlightNode, visible);
+        let animationComponent = this.renderer.tapHighlightNode.getComponent(cc.Animation);
+        animationComponent && (visible ? animationComponent.play() : animationComponent.stop())
+    }
 }
 
 app.createComponent(BoardPhom);

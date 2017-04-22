@@ -25,10 +25,8 @@ export default class PhomControls extends GameControls {
             skipJoinButton: cc.Button,
             downPhomButton: cc.Button,
             skipDownButton: cc.Button,
-            changePhomButton: cc.Button,
             uButton: cc.Button,
             doiUTronButton: cc.Button,
-            doiGuiButton: cc.Button,
         }
 
         /**
@@ -96,19 +94,12 @@ export default class PhomControls extends GameControls {
             utils.active(this.skipDownButton);
         }
 
-        // if(hideChange){
-        //     utils.deactive(this.changePhomButton);
-        // }else{
-        //     utils.active(this.changePhomButton);
-        // }
-
     }
 
     _showJoinPhomControls(){
         this.hideAllControls();
         utils.active(this.joinPhomButton);
         utils.active(this.skipJoinButton);
-        // utils.active(this.doiGuiButton);
     }
 
     _showOnTurnControls(){
@@ -150,10 +141,8 @@ export default class PhomControls extends GameControls {
         utils.deactive(this.skipJoinButton);
         utils.deactive(this.downPhomButton);
         utils.deactive(this.skipDownButton);
-        utils.deactive(this.changePhomButton);
         utils.deactive(this.uButton);
         utils.deactive(this.doiUTronButton);
-        utils.deactive(this.doiGuiButton);
     }
 
     _showWaitTurnControls(){
@@ -219,10 +208,6 @@ export default class PhomControls extends GameControls {
 
     onClickSkipDownButton(event){
         this.scene.emit(Events.ON_CLICK_SKIP_DOWN_PHOM_BUTTON);
-    }
-
-    onClickChangePhomButton(event){
-        this.scene.emit(Events.ON_CLICK_CHANGE_PHOM_BUTTON);
     }
 
     onClickChangeJoinPhomButton(event){

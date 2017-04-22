@@ -67,6 +67,8 @@ export default class PlayerBaCay extends PlayerCardBetTurn {
 
         if(gopGaValue > 0){
             this.renderer.visibleGopGaIcon()
+            let availableBalance = GameUtils.getUserBalance(this.user) - this.betAmount - gopGaValue
+            this.renderer.setBalance(availableBalance)
         }else {
             let message;
             if(Utils.isString(errMsg)){
