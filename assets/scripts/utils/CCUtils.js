@@ -34,7 +34,8 @@ export default class CCUtils {
     static destroy(target) {
         return target && cc.isValid(target) && target.destroy();
     }
-
+    
+    // destroy node's children (without given index)
     static destroyAllChildren(node, fromIndex = -1) {
         node && node.children && node.children.forEach((child, index) => index > fromIndex && CCUtils.destroy(child));
     }

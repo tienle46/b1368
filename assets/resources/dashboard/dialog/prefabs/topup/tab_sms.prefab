@@ -804,7 +804,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 138.32,
+      "width": 142.32,
       "height": 50
     },
     "_children": [
@@ -2343,7 +2343,7 @@
     "_tag": -1,
     "_opacityModifyRGB": false,
     "_id": "",
-    "_active": true,
+    "_active": false,
     "_components": [
       {
         "__id__": 145

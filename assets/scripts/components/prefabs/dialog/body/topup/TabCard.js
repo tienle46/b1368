@@ -128,8 +128,10 @@ class TabCard extends PopupTabBody {
     
     _renderForm(data) {
         let cardListIds = data[app.keywords.EXCHANGE_LIST.RESPONSE.ITEM_ID_LIST] || [];
-        this._isRendered = true;
-        if (cardListIds.length > 0) {
+        
+        if (!this._isRendered && cardListIds.length > 0) {
+            CCUtils.destroyAllChildren(this.providerContainerNode, 0);       
+            
             cardListIds.forEach((id, index) => {
                 let providerName = data[app.keywords.TASK_NAME_LIST][index];
                 let activeState = `${providerName.toLowerCase()}-active`;
@@ -160,31 +162,33 @@ class TabCard extends PopupTabBody {
                     }
                 });
             });
+            
+            // ratio
+            let cardRatios = data['cards'] ? data['cards']['rates'] : [];
+            
+            cardRatios.forEach(card => {
+                let {amount, balance, rate, promoteDesc} = card;
+                
+                this.ratioItemTitleLbl.string = `${numberFormat(amount)} VNĐ`;
+                this.ratioItemXuLbl.string = `${numberFormat(balance)} ${app.res.string('currency_name')}`;
+                
+                if(rate > 1) {
+                    CCUtils.active(this.ratioPromote) 
+                    this.ratioPromoteLbl = promoteDesc;
+                    this.ratioItemXuLbl.node.color = new cc.Color(255, 204, 0);
+                } else {
+                    CCUtils.deactive(this.ratioPromote);
+                    this.ratioItemXuLbl.node.color = app.const.COLOR_WHITE;
+                }
+                
+                let itemNode = cc.instantiate(this.ratioItem);
+                itemNode.active = true;
+                
+                this.ratioItemContainer.addChild(itemNode);
+            });
+            
+            this._isRendered = true;
         } 
-        
-        // ratio
-        let cardRatios = data['cards'] ? data['cards']['rates'] : [];
-        
-        cardRatios.forEach(card => {
-            let {amount, balance, rate, promoteDesc} = card;
-            
-            this.ratioItemTitleLbl.string = `${numberFormat(amount)} VNĐ`;
-            this.ratioItemXuLbl.string = `${numberFormat(balance)} ${app.res.string('currency_name')}`;
-            
-            if(rate > 1) {
-                CCUtils.active(this.ratioPromote) 
-                this.ratioPromoteLbl = promoteDesc;
-                this.ratioItemXuLbl.node.color = new cc.Color(255, 204, 0);
-            } else {
-                CCUtils.deactive(this.ratioPromote);
-                this.ratioItemXuLbl.node.color = app.const.COLOR_WHITE;
-            }
-            
-            let itemNode = cc.instantiate(this.ratioItem);
-            itemNode.active = true;
-            
-            this.ratioItemContainer.addChild(itemNode);
-        });
     }
 }
 

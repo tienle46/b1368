@@ -20,7 +20,7 @@ class TabGiftCode extends PopupTabBody {
     
     onConfirmBtnClick() {
         // TODO
-        app.system.showLongToast('Chức năng đang cập nhật.................');
+        app.system.showLongToast('Chức năng đang cập nhật..');
     }
 }
 
