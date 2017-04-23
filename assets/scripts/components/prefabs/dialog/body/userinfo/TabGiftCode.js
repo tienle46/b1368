@@ -1,13 +1,9 @@
 import app from 'app';
-import Component from 'Component';
+import PopupTabBody from 'PopupTabBody';
 
-class TabGiftCode extends Component {
+class TabGiftCode extends PopupTabBody {
     constructor() {
-        super()
-        this.messageLabel = {
-            default: null,
-            type: cc.Label
-        }
+        super();
         this.giftCodeInput = {
             default: null,
             type: cc.EditBox
@@ -16,21 +12,15 @@ class TabGiftCode extends Component {
 
     onLoad() {
         super.onLoad();
-
-        // wait til every requests is done
-        this.node.active = true;
-        this.messageLabel.horizontalAlign = cc.Label.HorizontalAlign.CENTER;
-        this.messageLabel.overflow = cc.Label.Overflow.RESIZE_HEIGHT;
-        this.messageLabel.enableWrapText = true
     }
 
     onEnable(){
         super.onEnable();
-
-        let userName = app.context.getMyInfo().name;
-        this.messageLabel.string = `Bạn đang sử dụng tài khoản "${userName}" để nhận thưởng`;
-
-        this.giftCodeInput.placeholder = 'Nhập mã code';
+    }
+    
+    onConfirmBtnClick() {
+        // TODO
+        app.system.showLongToast('Chức năng đang cập nhật.................');
     }
 }
 

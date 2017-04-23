@@ -3,13 +3,10 @@ import app from 'app';
 const url = `${app.const.DIALOG_DIR_PREFAB}/userinfo`;
 
 const tabModels = [
-    { title: 'Cá nhân',prefabPath: `${url}/tab_user_info`, componentName: 'TabUserInfo'},
-    { title: 'Thành tích',prefabPath: `${url}/tab_user_achievements`, componentName: 'TabUserAchievements'},
-    { title: 'Ngân hàng',prefabPath: `${url}/tab_user_bank`, componentName: 'TabUserBank'}
-     // , {
-     //     title: 'Gift Code',
-     //     value: `${url}/tab_gift_code`
-     // }
+    { title: 'Cá nhân', prefabPath: `${url}/tab_user_info`, componentName: 'TabUserInfo'},
+    { title: 'Thành tích', prefabPath: `${url}/tab_user_achievements`, componentName: 'TabUserAchievements'},
+    { title: 'Ngân hàng', prefabPath: `${url}/tab_user_bank`, componentName: 'TabUserBank'},
+    { title: 'Gift Code', prefabPath: `${url}/tab_gift_code`, componentName: 'TabGiftCode'}
      // , {
      //     title: 'Chuyển chip',
      //     value: 'tab_transfer_vc'
@@ -45,3 +42,4 @@ export default class PersonalInfoDialogRub {
 PersonalInfoDialogRub.TAB_USER_INFO_INDEX = 0;
 PersonalInfoDialogRub.TAB_USER_ACHIEVEMENTS_INDEX = 1;
 PersonalInfoDialogRub.TAB_USER_BANK_INDEX = 2;
+PersonalInfoDialogRub.TAB_GIFT_CODE_INDEX = 3;
