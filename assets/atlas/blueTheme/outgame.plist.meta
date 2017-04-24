@@ -602,28 +602,6 @@
       "spriteType": "normal",
       "subMetas": {}
     },
-    "table-scene-background-table.jpg": {
-      "ver": "1.0.3",
-      "uuid": "e6a80ade-3555-4d07-9c89-438e78024249",
-      "rawTextureUuid": "4f85580c-065d-409d-930b-c3e86a045380",
-      "trimType": "auto",
-      "trimThreshold": 1,
-      "rotated": false,
-      "offsetX": 0,
-      "offsetY": 0,
-      "trimX": 1,
-      "trimY": 1,
-      "width": 1334,
-      "height": 750,
-      "rawWidth": 1334,
-      "rawHeight": 750,
-      "borderTop": 0,
-      "borderBottom": 0,
-      "borderLeft": 0,
-      "borderRight": 0,
-      "spriteType": "normal",
-      "subMetas": {}
-    },
     "table-scene-bg-list-table.png": {
       "ver": "1.0.3",
       "uuid": "dff81377-c7d6-44f7-8da9-e7eedd70702a",
