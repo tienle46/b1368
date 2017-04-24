@@ -2255,7 +2255,7 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": 80,
+      "x": 530,
       "y": 0
     },
     "_skewX": 0,
@@ -2346,7 +2346,7 @@
     },
     "space": 124,
     "orientation": 1,
-    "align": 7
+    "align": 9
   },
   {
     "__type__": "cc.PrefabInfo",

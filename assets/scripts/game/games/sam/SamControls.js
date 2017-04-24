@@ -71,7 +71,7 @@ export default class SamControls extends GameControls {
     _showWaitTurnControls() {
         this.hideAllControls();
         this.cardTurnBaseControls._showWaitTurnControls();
-        this.isBaoSam && this.cardTurnBaseControls._showOnTurnControls(true, true)
+        // this.isBaoSam && this.cardTurnBaseControls._showOnTurnControls(true, true)
     }
 
     _onGameBegin(data, isJustJoined) {
