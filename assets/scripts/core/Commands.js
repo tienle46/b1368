@@ -285,4 +285,6 @@ Commands.LIST_HU = "sj_jl";
 Commands.JAR_DETAIL = "sj_jd";
 Commands.USER_GOT_JAR = "sj_sjl";
 
+Commands.GIFT_CODE = "useGiftCode";
+
 module.exports = Commands;
