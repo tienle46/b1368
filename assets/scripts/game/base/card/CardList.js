@@ -931,6 +931,9 @@ export default class CardList extends ActionComponent {
                 let animation = cc.sequence(
                     cc.moveTo(CardList.DRAW_CARD_DURATION, cardPosition.x, cardPosition.y),
                     scaleTo,
+                    cc.callFunc(()=>{
+                        card.setReveal(true);
+                    }),
                     reverse
                 );
                 

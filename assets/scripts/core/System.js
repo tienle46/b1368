@@ -108,6 +108,8 @@ class GameSystem {
         this.addListener(SFS2X.SFSEvent.ADMIN_MESSAGE, this._onAdminMessage, this);
         app.env.isIOS() && this.addListener(app.commands.IOS_IN_APP_PURCHASE, this._onSubmitPurchaseIOS, this);
         app.env.isAndroid() && this.addListener(app.commands.ANDROID_IN_APP_PURCHASE, this._onSubmitPurchaseAndroid, this);
+        
+        this.addListener(app.commands.GET_TOTAL_TOPUP, this._onTotalTopupFetched, this);
     }
 
     removeEventListener() {
@@ -118,6 +120,8 @@ class GameSystem {
         this.removeListener(SFS2X.SFSEvent.ADMIN_MESSAGE, this._onAdminMessage, this);
         app.env.isIOS() && this.removeListener(app.commands.IOS_IN_APP_PURCHASE, this._onSubmitPurchaseIOS, this);
         app.env.isAndroid() && this.removeListener(app.commands.ANDROID_IN_APP_PURCHASE, this._onSubmitPurchaseAndroid, this);
+        
+        this.removeListener(app.commands.GET_TOTAL_TOPUP, this._onTotalTopupFetched, this);
     }
 
     getCurrentSceneNode() {
@@ -393,9 +397,20 @@ class GameSystem {
                 !this.sceneChanging && (sceneName == app.const.scene.LIST_TABLE_SCENE || sceneName == app.const.scene.DASHBOARD_SCENE) && this.showLackOfMoneyMessagePopup();
                 break;
             }
+            case app.const.adminMessage.TOPUP_SUCCESSFULLY: {
+                app.service.send({
+                    cmd: app.commands.GET_TOTAL_TOPUP,
+                    data: {
+                    }
+                });
+                break;
+            }
         }
 
         showToast && this.showToast(message, duration);
+    }
+    _onTotalTopupFetched(data){
+        window.sdkbox.PluginOneSignal.sendTag("paid_user", data["total"]);
     }
 
     showLackOfMoneyMessagePopup(){

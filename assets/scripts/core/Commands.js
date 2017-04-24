@@ -286,5 +286,6 @@ Commands.JAR_DETAIL = "sj_jd";
 Commands.USER_GOT_JAR = "sj_sjl";
 
 Commands.GIFT_CODE = "useGiftCode";
+Commands.GET_TOTAL_TOPUP = "getTotalTopup";
 
 module.exports = Commands;
