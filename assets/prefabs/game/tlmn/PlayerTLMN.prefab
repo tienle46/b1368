@@ -2255,7 +2255,7 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": 90,
+      "x": 80,
       "y": 0
     },
     "_skewX": 0,
@@ -2338,6 +2338,7 @@
     "scale": 1,
     "reveal": true,
     "selectable": true,
+    "clickableCard": false,
     "draggable": false,
     "maxDimension": 900,
     "cardPrefab": {
@@ -3401,6 +3402,7 @@
     "scale": 0.6,
     "reveal": true,
     "selectable": false,
+    "clickableCard": false,
     "draggable": false,
     "maxDimension": 520,
     "cardPrefab": {
@@ -3487,6 +3489,7 @@
     "scale": 0.6,
     "reveal": true,
     "selectable": false,
+    "clickableCard": false,
     "draggable": false,
     "maxDimension": 520,
     "cardPrefab": {
@@ -3676,6 +3679,7 @@
     "scale": 0.6,
     "reveal": true,
     "selectable": false,
+    "clickableCard": false,
     "draggable": false,
     "maxDimension": 520,
     "cardPrefab": {
@@ -3816,6 +3820,7 @@
     "scale": 0.6,
     "reveal": true,
     "selectable": false,
+    "clickableCard": false,
     "draggable": false,
     "maxDimension": 520,
     "cardPrefab": {
@@ -4013,6 +4018,7 @@
     "scale": 0.6,
     "reveal": true,
     "selectable": false,
+    "clickableCard": false,
     "draggable": false,
     "maxDimension": 800,
     "cardPrefab": {
@@ -4202,6 +4208,7 @@
     "scale": 0.6,
     "reveal": true,
     "selectable": false,
+    "clickableCard": false,
     "draggable": false,
     "maxDimension": 520,
     "cardPrefab": {
@@ -4342,6 +4349,7 @@
     "scale": 0.6,
     "reveal": true,
     "selectable": false,
+    "clickableCard": false,
     "draggable": false,
     "maxDimension": 520,
     "cardPrefab": {
@@ -4542,6 +4550,7 @@
     "scale": 0.6,
     "reveal": true,
     "selectable": false,
+    "clickableCard": false,
     "draggable": false,
     "maxDimension": 520,
     "cardPrefab": {
@@ -4628,6 +4637,7 @@
     "scale": 0.6,
     "reveal": true,
     "selectable": false,
+    "clickableCard": false,
     "draggable": false,
     "maxDimension": 520,
     "cardPrefab": {

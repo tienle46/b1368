@@ -1640,7 +1640,7 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": 131,
+      "x": 80,
       "y": 0
     },
     "_skewX": 0,
@@ -1723,8 +1723,9 @@
     "scale": 1,
     "reveal": true,
     "selectable": true,
+    "clickableCard": false,
     "draggable": false,
-    "maxDimension": 980,
+    "maxDimension": 900,
     "cardPrefab": {
       "__uuid__": "1be1ace3-b9b3-4bf4-9c45-5c1d9eccac08"
     },
@@ -2412,6 +2413,7 @@
     "scale": 0.6,
     "reveal": true,
     "selectable": false,
+    "clickableCard": false,
     "draggable": false,
     "maxDimension": 520,
     "cardPrefab": {
@@ -2498,6 +2500,7 @@
     "scale": 0.6,
     "reveal": true,
     "selectable": false,
+    "clickableCard": false,
     "draggable": false,
     "maxDimension": 520,
     "cardPrefab": {
@@ -2684,6 +2687,7 @@
     "scale": 0.6,
     "reveal": true,
     "selectable": false,
+    "clickableCard": false,
     "draggable": false,
     "maxDimension": 460,
     "cardPrefab": {
@@ -2870,6 +2874,7 @@
     "scale": 0.6,
     "reveal": true,
     "selectable": false,
+    "clickableCard": false,
     "draggable": false,
     "maxDimension": 460,
     "cardPrefab": {
@@ -3056,6 +3061,7 @@
     "scale": 0.6,
     "reveal": true,
     "selectable": false,
+    "clickableCard": false,
     "draggable": false,
     "maxDimension": 460,
     "cardPrefab": {
@@ -3242,6 +3248,7 @@
     "scale": 0.6,
     "reveal": true,
     "selectable": false,
+    "clickableCard": false,
     "draggable": false,
     "maxDimension": 460,
     "cardPrefab": {
