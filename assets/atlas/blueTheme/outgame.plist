@@ -409,21 +409,6 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>table-scene/background-table.jpg</key>
-            <dict>
-                <key>aliases</key>
-                <array/>
-                <key>spriteOffset</key>
-                <string>{0,0}</string>
-                <key>spriteSize</key>
-                <string>{1334,750}</string>
-                <key>spriteSourceSize</key>
-                <string>{1334,750}</string>
-                <key>textureRect</key>
-                <string>{{1,1},{1334,750}}</string>
-                <key>textureRotated</key>
-                <false/>
-            </dict>
             <key>table-scene/bg-list-table.png</key>
             <dict>
                 <key>aliases</key>
@@ -993,7 +978,7 @@
             <key>size</key>
             <string>{1601,2037}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:e2e83b08288be8d688e27c7f2e8d5dce:fab3f03fa83f7fa7aa939da3d54c507c:6b189571179a8292dd8969d6228a5cba$</string>
+            <string>$TexturePacker:SmartUpdate:2ac02abb41aa9ed726cb841f9f19929d:09704bac3b0a0c2b77659c11ddd440f8:6b189571179a8292dd8969d6228a5cba$</string>
             <key>textureFileName</key>
             <string>outgame.png</string>
         </dict>
