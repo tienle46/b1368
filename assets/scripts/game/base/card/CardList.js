@@ -624,6 +624,8 @@ export default class CardList extends ActionComponent {
 
             let newChild = event.detail;
             newChild.setAnchorPoint(this.node.getAnchorPoint());
+            let cardComponent = newChild.getComponent('Card');
+            cardComponent && cardComponent.onAnchorPointChanged();
 
             if ((this._isHorizontal() && this._isLeftAlignment()) ||
                 (this._isVertical() && this._isTopAlignment()) ||

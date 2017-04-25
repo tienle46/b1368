@@ -38,6 +38,11 @@ export default class Card extends ActionComponent {
         this.__originalInfo = {};
     }
 
+    onAnchorPointChanged(){
+        let anchorPoint = this.node.getAnchorPoint();
+        this.tapHighlightNode && this.tapHighlightNode.children.forEach(child => child.setAnchorPoint(anchorPoint.x, 0));
+    }
+
     setVisibleTapHighlightNode(visible){
         CCUtils.setVisible(this.tapHighlightNode, visible);
         CCUtils.setVisible(this.highlightNode, visible);
