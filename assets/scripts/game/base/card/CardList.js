@@ -150,6 +150,11 @@ export default class CardList extends ActionComponent {
     }
 
     clear() {
+        this.removeAllCards();
+        this.__initCards = [];
+    }
+
+    removeAllCards() {
         if (this.cards) {
             this.cards.splice(0, this.cards.length);
         } else {
@@ -158,7 +163,6 @@ export default class CardList extends ActionComponent {
         if (this.node) {
             CCUtils.clearAllChildren(this.node);
         }
-        this.__initCards = [];
     }
 
     _updateNodeSize() {
@@ -478,8 +482,9 @@ export default class CardList extends ActionComponent {
 
     setCards(cards, active, reveal) {
         if (this.initiated) {
-            this.clear();
+            this.removeAllCards();
             this._fillCards({cards, active, reveal, autoAdjust: true, adjustDuration: 0});
+            this.__initCards = null
         } else {
             this.__initCards = [...cards];
         }
