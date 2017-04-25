@@ -181,7 +181,8 @@ export default class MultiTabPopup extends Component {
 
         this._hidePopupInstance();
         this.title = title;
-        this._tabModels = tabModels.filter(tab => tab.hidden === undefined || tab.hidden === false);
+        this._tabModels = tabModels;
+        // this._tabModels = tabModels.filter(tab => !tab.hide);
         this.focusTabIndex = focusTabIndex;
         this.initData = initData; 
         parentNode.addChild(this.node);

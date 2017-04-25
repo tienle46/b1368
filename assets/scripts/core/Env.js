@@ -54,15 +54,15 @@ export default (function(app) {
     };
 
     app.env.isMobileTest = function() {
-        return cc.sys.isMobile() && app.config.test;
+        return app.env.isMobile() && app.config.test;
     };
 
     app.env.isAndroidTest = function() {
-        return cc.sys.isMobileTest() && app.env.isAndroid();
+        return app.env.isMobileTest() && app.env.isAndroid();
     };
 
     app.env.isIOSTest = function() {
-        return cc.sys.isMobileTest() && app.env.isIOS();
+        return app.env.isMobileTest() && app.env.isIOS();
     };
 
     /**ENV LOG */
