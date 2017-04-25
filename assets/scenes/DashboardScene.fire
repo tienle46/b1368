@@ -5682,7 +5682,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 514.87,
+      "width": 478.7,
       "height": 50
     },
     "_children": [],
@@ -5693,7 +5693,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": 155
+      "y": 187
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -5723,15 +5723,15 @@
     },
     "_enabled": true,
     "_useOriginalSize": false,
-    "_actualFontSize": 50,
-    "_fontSize": 50,
+    "_actualFontSize": 35,
+    "_fontSize": 35,
     "_lineHeight": 50,
     "_enableWrapText": true,
     "_N$file": {
-      "__uuid__": "f7d3295b-8e12-456d-9621-9b8acc29ca1f"
+      "__uuid__": "b2c0f634-158a-49ee-84f8-a41c8e7ebb56"
     },
     "_isSystemFontUsed": false,
-    "_N$string": "Quà tặng đăng nhập mỗi ngày",
+    "_N$string": "Quà Tặng Đăng Nhập Mỗi Ngày",
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
     "_N$overflow": 0
@@ -5787,7 +5787,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": 25
+      "y": 57
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -5851,7 +5851,7 @@
     "_right": 0,
     "_top": 0,
     "_bottom": 0,
-    "_verticalCenter": 25,
+    "_verticalCenter": 57,
     "_horizontalCenter": 0,
     "_isAbsLeft": true,
     "_isAbsRight": true,
@@ -5885,8 +5885,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 186.02,
-      "height": 40
+      "width": 167.77,
+      "height": 38
     },
     "_children": [],
     "_rotationX": 0,
@@ -5896,7 +5896,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": -84
+      "y": -85
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -5926,12 +5926,12 @@
     },
     "_enabled": true,
     "_useOriginalSize": false,
-    "_actualFontSize": 35,
-    "_fontSize": 35,
-    "_lineHeight": 40,
+    "_actualFontSize": 30,
+    "_fontSize": 30,
+    "_lineHeight": 38,
     "_enableWrapText": true,
     "_N$file": {
-      "__uuid__": "b2c0f634-158a-49ee-84f8-a41c8e7ebb56"
+      "__uuid__": "707ff59f-f7c1-4eb4-a0de-41fd5e1c0123"
     },
     "_isSystemFontUsed": false,
     "_N$string": "Updating ....",
@@ -5997,7 +5997,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": -147
+      "y": -160
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -6141,8 +6141,8 @@
     },
     "_enabled": true,
     "_useOriginalSize": false,
-    "_actualFontSize": 35,
-    "_fontSize": 35,
+    "_actualFontSize": 30,
+    "_fontSize": 30,
     "_lineHeight": 40,
     "_enableWrapText": true,
     "_N$file": {
@@ -6385,8 +6385,8 @@
     },
     "_enabled": true,
     "_useOriginalSize": false,
-    "_actualFontSize": 35,
-    "_fontSize": 35,
+    "_actualFontSize": 30,
+    "_fontSize": 30,
     "_lineHeight": 40,
     "_enableWrapText": true,
     "_N$file": {
@@ -6551,7 +6551,7 @@
     "_left": 0,
     "_right": 0,
     "_top": 0,
-    "_bottom": 178,
+    "_bottom": 165,
     "_verticalCenter": 0,
     "_horizontalCenter": 0,
     "_isAbsLeft": true,

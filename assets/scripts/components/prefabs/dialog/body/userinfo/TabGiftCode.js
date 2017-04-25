@@ -49,7 +49,7 @@ class TabGiftCode extends PopupTabBody {
         if(Utils.isEmpty(code))
             return;
         
-        return code.length == allowedLength && /[a-zA-Z0-9]{5,}/.test(code) && /[a-zA-Z]/.test(code) && /[0-9]/.test(code) && !/\s/.test(code);
+        return code.trim().length == allowedLength && /[a-zA-Z0-9]{5,}/.test(code) && !/\s/.test(code);
     }
     
     _onGetGiftCode(data) {

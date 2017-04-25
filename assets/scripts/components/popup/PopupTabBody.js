@@ -101,7 +101,11 @@ export default class PopupTabBody extends Actor {
             this._showEmptyData();
         });
     }
-
+    
+    hideLoadingProgress() {
+        this.progress && this.progress.hide();
+    }
+    
     /**
      * Update UI data
      * @abstract

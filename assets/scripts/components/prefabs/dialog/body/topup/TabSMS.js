@@ -32,9 +32,7 @@ class TabSMS extends PopupTabBody {
             contentLayoutPanel: cc.Node
         };
 
-        this._sending = false;
         this._balanceChoosen = null;
-        this._isRendered = false;
     }
 
     onLoad() {
@@ -49,16 +47,19 @@ class TabSMS extends PopupTabBody {
     }
     
     loadData() {
-        if(Object.keys(this._data).length > 0)
-            return false;
+        if(this.loadedData)
+            return false
         super.loadData();
         
-        this._requestPaymentList();
+        this.showLoadingProgress();
+        app.system.marker.initRequest(app.system.marker.TOPUP_DIALOG_CACHE_TAB_SMS, this._requestPaymentList.bind(this), this._renderSMS.bind(this))
+        
         return true;
     }
     
     onDataChanged(data) {
-        !this._isRendered && data && Object.keys(data).length > 0 && this._renderSMS(data);
+        if(data && !app._.isEqual(data, this._data))
+            Object.keys(data).length > 0 && this._renderSMS(data);
     }
     
     onSMSBtnClick(e) {
@@ -77,8 +78,6 @@ class TabSMS extends PopupTabBody {
         //     toggle.check();
         //     this.onProviderBtnClick(toggle);
         // }
-
-       
     }
     
     onProviderBtnClick(toggle) {
@@ -124,19 +123,21 @@ class TabSMS extends PopupTabBody {
                 ]
             }
         };
-        
-        this.showLoadingProgress();
-        
-        this._sending = true;
-        
+                
         app.service.send(sendObject);
     }
 
     _onUserGetChargeList(data) {
         let cardListIds = data[app.keywords.EXCHANGE_LIST.RESPONSE.ITEM_ID_LIST] || [];
         let providerNames = data[app.keywords.TASK_NAME_LIST] || [];
+        let renderData = {
+            smses: data[app.keywords.CHARGE_SMS_OBJECT_IAC] || {}, 
+            cardListIds, 
+            providerNames
+        };
         
-        this.setLoadedData({smses: data[app.keywords.CHARGE_SMS_OBJECT_IAC] || {}, cardListIds, providerNames});
+        this.loadedData = true;
+        app.system.marker.renderRequest(app.system.marker.TOPUP_DIALOG_CACHE_TAB_SMS, renderData, this._renderSMS.bind(this));
     }
 
     _sendSMS(message, recipient) {
@@ -153,34 +154,29 @@ class TabSMS extends PopupTabBody {
         }
     }
     
-    _renderSMS({smses = {}, cardListIds = [], providerNames = []} = {}) {    
-        this._isRendered = true;    
+    _renderSMS({smses = {}, cardListIds = [], providerNames = []} = {}) {
+        this.hideLoadingProgress();  
         // app.keywords.CHARGE_SMS_OBJECT
-        if (this._sending) {
-            this._smses = smses;
-            
-            this._initProviderIcon(cardListIds, providerNames);
-            
-            this._sending = false;
+        this._smses = smses;
+        this._initProviderIcon(cardListIds, providerNames);
 
-            if (Object.keys(smses).length > 0) {
-                Object.keys(smses).forEach(key => {
-                    let moneySend = key,
-                        infos = smses[key][app.keywords.CHARGE_SMS_OBJECT_INFORS] || [],
-                        moneyGot = smses[key]['balance'],
-                        promoteDesc = smses[key]['promoteDesc'];
+        if (Object.keys(smses).length > 0) {
+            Object.keys(smses).forEach(key => {
+                let moneySend = key,
+                    infos = smses[key][app.keywords.CHARGE_SMS_OBJECT_INFORS] || [],
+                    moneyGot = smses[key]['balance'],
+                    promoteDesc = smses[key]['promoteDesc'];
 
-                    infos.forEach((smsInfo, i) => {
-                        let code = smsInfo.code,
-                            sendTo = smsInfo.shortCode,
-                            command = smsInfo.syntax,
-                            telcoId = smsInfo.telcoId,
-                            isChecked = i === 0;
+                infos.forEach((smsInfo, i) => {
+                    let code = smsInfo.code,
+                        sendTo = smsInfo.shortCode,
+                        command = smsInfo.syntax,
+                        telcoId = smsInfo.telcoId,
+                        isChecked = i === 0;
 
-                        this._initItem(code, command, sendTo, moneySend, moneyGot, isChecked, moneyGot > moneySend, promoteDesc, telcoId);
-                    });
+                    this._initItem(code, command, sendTo, moneySend, moneyGot, isChecked, moneyGot > moneySend, promoteDesc, telcoId);
                 });
-            }
+            });
         }
     }
     

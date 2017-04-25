@@ -5,7 +5,7 @@ const url = `${app.const.DIALOG_DIR_PREFAB}/topup`;
 const tabModels = [
     { title: 'Thẻ cào',prefabPath: `${url}/tab_card`, componentName: 'TabCard'},
     { title: 'SMS',prefabPath: `${url}/tab_sms`, componentName: 'TabSMS', hidden: app.env.isBrowser() ? !app.env.isBrowserTest() : !app.env.isMobile()},
-    { title: 'IAP',prefabPath: `${url}/tab_iap`, componentName: 'TabIAP',  hidden: app.env.isBrowser() ? !app.env.isBrowserTest() : !app.env.isMobile()},
+    { title: 'IAP',prefabPath: `${url}/tab_iap`, componentName: 'TabIAP', hidden: app.env.isBrowser() ? !app.env.isBrowserTest() : !app.env.isMobile()},
     { title: 'Lịch sử',prefabPath: `${url}/tab_history`, componentName: 'TabHistory'}
 ];
 

@@ -8,9 +8,10 @@ import Utils from 'Utils';
 export default class Marker {
     constructor() {
         this._localStorage = cc.sys.localStorage;
+        this._RQ = '$[RQ]'; // $[namespace] for caching requested data
         
         this.caches = {};
-        
+                
         this._initCaches();
         this._addGlobalStaticKeys();
         this._initDefaultGameState();
@@ -28,30 +29,74 @@ export default class Marker {
         }
         if(!this.getItem(this.SHOW_INVITATION_POPUP_OPTION)) {
             this.setItem(this.SHOW_INVITATION_POPUP_OPTION, true);
-        }    
+        }
+        
+        
+        // cache requests
+        this.TOPUP_DIALOG_CACHE_TAB_CARD = "$[RQ]_TOPUP_DIALOG_CACHE_TAB_CARD";
+        this.TOPUP_DIALOG_CACHE_TAB_SMS = "$[RQ]_TOPUP_DIALOG_CACHE_TAB_SMS";
+        this.TOPUP_DIALOG_CACHE_TAB_IAP = "$[RQ]_TOPUP_DIALOG_CACHE_TAB_IAP";
     }
     
+    // cache then render key request
+    renderRequest(key, renderData, callback) {
+        this.setItem(key, renderData);
+        
+        // if any changes
+        if(this.isUpdated(key)) {
+            if(Utils.isFunction(callback)) {
+                callback(renderData);     
+            }
+        }
+    }
+    
+    initRequest(key, requestCb, renderCb) {
+        // if key is cached
+        if(this._isCached(key)) {
+            let renderData = this.getItemData(key);
+            // render
+            renderData && renderCb(renderData);
+        }
+        
+        requestCb(); 
+    }
+    
+    /**
+     * 
+     * @param {any} key 
+     * @param {any} data 
+     * @param {any} stuff data 
+     * @returns 
+     * 
+     * @memberOf Marker
+     */
     setItem(key, data) {
         let k = this._validKey(key),
             _$isNew = true,
             _$isUpdated = true;
+        if(!k)
+            return;
         
         if(this._isCached(key)) {
             _$isNew = false;
             _$isUpdated = this.isUpdatedData(key, data);
         }
         
-        k && (this.caches[k] = {
+        let stateData = {
             data,
             _$isNew,
             _$isUpdated
-        });
+        };
+        
+        this._setStateData(key, stateData);
         
         if(_$isNew || _$isUpdated) {
             // convert data to string in order to save into localStorage
             if(!Utils.isString(data)) {
                 try {
-                    data = JSON.parse(data);
+                    if(!Utils.isObject)
+                        data = JSON.parse(data);
+                    
                     data = JSON.stringify(data);
                 } catch(e) {
                     // INGORE ERROR
@@ -60,11 +105,18 @@ export default class Marker {
         
             this._localStorage.setItem(key, data);
         }
+        
+        return stateData;
     }
 
     getItem(key) {
         let k = this._validKey(key);
-        return k ? this.caches[k] : null;
+        if(!k)
+            return null;
+        let namespace = this._getNamespaceFromScope(k);   
+        
+        let parentObject = namespace ? this.caches[namespace]: this.caches;
+        return parentObject[k];
     }
 
     getItemData(key) {
@@ -73,11 +125,50 @@ export default class Marker {
     }
     
     isEqual(key, value) {
-       return app._.isEqual(this.getItemData(key), value);     
+        return app._.isEqual(this.getItemData(key), value);     
     }
     
+    isNew(key) {
+       let item = this.getItem(key);
+       return item ? item._$isNew : null;
+    }
+    
+    /**
+     * current _$isUpdated state of key item
+     * @param {any} key 
+     * @returns 
+     * 
+     * @memberOf Marker
+     */
+    isUpdated(key) {
+       let item = this.getItem(key);
+       return item ? item._$isUpdated : null; 
+    }
+    
+    /**
+     * Comparation between current data and new data by key
+     * @param {any} key 
+     * @param {any} newData 
+     * @returns true if data is new, otherwise returns false
+     * 
+     * @memberOf Marker
+     */
     isUpdatedData(key, newData) {
         return !this.isEqual(key, newData);
+    }
+    
+    _setStateData(key, stateData) {
+        let k = this._validKey(key),
+        namespace = this._getNamespaceFromScope(k);   
+        
+        if(namespace) {
+            if(!this.caches[namespace])
+                this.caches[namespace] = {};
+            
+            this.caches[namespace][k] = stateData;
+        } else {
+            this.caches[k] = stateData;
+        }
     }
     
     _initCaches() {
@@ -88,12 +179,12 @@ export default class Marker {
             } catch(e) {
                 // INGORE ERROR
             }
-             
-            this.caches[key] = {
+            
+            this._setStateData(key, {
                 data,
                 _$isNew: false,
                 _$isUpdated: false
-            };
+            });
         }
     }
     
@@ -104,12 +195,44 @@ export default class Marker {
         return (key instanceof Object) ? JSON.stringify(key) : `${key}`;
     }
     
+    /**
+     * 
+     * @param {any} key 
+     * @param {any} [parentObject=this.caches] 
+     * @returns 
+     * 
+     * @memberOf Marker
+     */
     _isCached(key) {
         let k = this._validKey(key);
-        return k ? this.caches.hasOwnProperty(k) : null;
+        if(!k)
+            return false;
+        let namespace = this._getNamespaceFromScope(k);
+        
+        let parentObject = namespace ? this.caches[namespace] : this.caches;
+        
+        return parentObject && parentObject.hasOwnProperty(k);
     }
     
+    // return name if key contains namespace, otherwise return null;
+    _getNamespaceFromScope(key) {
+        key = this._validKey(key);
+        if(!key)
+            return;
+        
+        let pattern = /^(\$\[[A-Za-z0-9]+\]_)/;
+        
+        let matches = key.match(pattern);
+        let namespace = matches && matches[0].match(/[A-Za-z0-9]+/);
+        
+        // namespace && namespace.slice(0, -1); // remove `_` character
+        
+        return namespace;
+    }
     
+    log() {
+        console.log(this.caches);
+    }
 }
 
 // SUPPORT SCOPEABLE 

@@ -31,7 +31,6 @@ class TabCard extends PopupTabBody {
         };
 
         this.providerId = null;
-        this._isRendered = false;
     }
 
     onLoad() {
@@ -39,20 +38,27 @@ class TabCard extends PopupTabBody {
         CCUtils.deactive(this.cardLayoutPanel);
         // wait til every requests is done
         // this._initRatioGroup();
+        
+        app.system.marker.log();
     }
     
     loadData() {
-        if(Object.keys(this._data).length > 0)
+        if(this.loadedData)
             return false;
         super.loadData();
-                
-        this._initCardsGroup();
+        
+        this.showLoadingProgress();
+        
+        // init request
+        app.system.marker.initRequest(app.system.marker.TOPUP_DIALOG_CACHE_TAB_CARD, this._initCardsGroup.bind(this), this._renderForm.bind(this))
         return true;
     }
     
-    onDataChanged(data) {
-        !this._isRendered && data && Object.keys(data).length > 0 && this._renderForm(data);
-    }
+    // onDataChanged(data) {
+    //     console.debug(data, this._data, !app._.isEqual(data, this._data))
+    //     if(data && !app._.isEqual(data, this._data))
+    //         Object.keys(data).length > 0 && this._renderForm(data);
+    // }
    
     _addGlobalListener() {
         super._addGlobalListener();
@@ -68,17 +74,20 @@ class TabCard extends PopupTabBody {
         let sendObject = {
             'cmd': app.commands.USER_GET_CHARGE_LIST,
         };
-        
-        this.showLoadingProgress();
+                
         app.service.send(sendObject);
     }
 
     _onUserGetChargeList(data) {
-        this.setLoadedData({
+        // request Cache.
+        let renderData = {
             [app.keywords.EXCHANGE_LIST.RESPONSE.ITEM_ID_LIST]: data[app.keywords.EXCHANGE_LIST.RESPONSE.ITEM_ID_LIST] || [],
             [app.keywords.TASK_NAME_LIST]: data[app.keywords.TASK_NAME_LIST] || [],
             [app.keywords.CARDS]: data[app.keywords.CARDS] || {}
-        });
+        };
+        
+        this.loadedData = true;
+        app.system.marker.renderRequest(app.system.marker.TOPUP_DIALOG_CACHE_TAB_CARD, renderData, this._renderForm.bind(this));
     }
     
     onProviderBtnClick(toggle) {
@@ -127,9 +136,11 @@ class TabCard extends PopupTabBody {
     }
     
     _renderForm(data) {
+        this.hideLoadingProgress();
+        
         let cardListIds = data[app.keywords.EXCHANGE_LIST.RESPONSE.ITEM_ID_LIST] || [];
         
-        if (!this._isRendered && cardListIds.length > 0) {
+        if (cardListIds.length > 0) {
             CCUtils.destroyAllChildren(this.providerContainerNode, 0);       
             
             cardListIds.forEach((id, index) => {
@@ -186,8 +197,6 @@ class TabCard extends PopupTabBody {
                 
                 this.ratioItemContainer.addChild(itemNode);
             });
-            
-            this._isRendered = true;
         } 
     }
 }

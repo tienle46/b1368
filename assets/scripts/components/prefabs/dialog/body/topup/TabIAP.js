@@ -13,9 +13,7 @@ class TabIAP extends PopupTabBody {
             balance: cc.Label,
         };
 
-        this.__sending = false;
         this.__items = [];
-        
     }
 
     onLoad() {
@@ -28,19 +26,21 @@ class TabIAP extends PopupTabBody {
     }
 
     loadData() {
-        if(Object.keys(this._data).length > 0)
-            return false;
+        if(this.loadedData)
+            return false
         super.loadData();
         
-        this._requestPaymentList();
-
+        this.showLoadingProgress();
+        app.system.marker.initRequest(app.system.marker.TOPUP_DIALOG_CACHE_TAB_IAP, this._requestPaymentList.bind(this), this._renderIAP.bind(this))
+        
         this._initIAP();
 
         return false;
     }
     
     onDataChanged(data) {
-        data && Object.keys(data).length > 0 && this._renderIAP(data);
+        if(data && !app._.isEqual(data, this._data))
+            Object.keys(data).length > 0 && this._renderIAP(data);
     }
 
     _requestPaymentList() {
@@ -48,7 +48,6 @@ class TabIAP extends PopupTabBody {
             'cmd': app.commands.USER_GET_CHARGE_LIST,
         };
 
-        this.__sending = true;
         app.service.send(sendObject);
     }
 
@@ -155,28 +154,27 @@ class TabIAP extends PopupTabBody {
     }
     
     _renderIAP(iapData) {
-        if (this.__sending) {
-            this.__sending = false;
 
-            let { balances, currencies, prices, productIds } = iapData;
+        let { balances, currencies, prices, productIds } = iapData;
 
-            // app.keywords.CHARGE_SMS_OBJECT
-            if (balances && balances.length > 0) {
+        // app.keywords.CHARGE_SMS_OBJECT
+        if (balances && balances.length > 0) {
 
-                for (let i = 0; i < balances.length; i++) {
-                    let balance = balances[i];
-                    let currency = currencies[i];
-                    let price = prices[i];
-                    let productId = productIds[i];
+            for (let i = 0; i < balances.length; i++) {
+                let balance = balances[i];
+                let currency = currencies[i];
+                let price = prices[i];
+                let productId = productIds[i];
 
-                    this._initItem(balance, currency ? currency : "$", price, productId);
-                }
+                this._initItem(balance, currency ? currency : "$", price, productId);
             }
         }
     }
     
     _onUserGetIAPList(data) {
-        this.setLoadedData(app.env.isAndroid() ? data[app.keywords.IN_BILLING_PURCHASE] : data[app.keywords.IN_APP_PURCHASE]);
+        this.loadedData = true;
+        let renderData = app.env.isAndroid() ? data[app.keywords.IN_BILLING_PURCHASE] : data[app.keywords.IN_APP_PURCHASE];
+        app.system.marker.renderRequest(app.system.marker.TOPUP_DIALOG_CACHE_TAB_IAP, renderData, this._renderIAP.bind(this));
     }
 
     _initItem(balance, currency, price, productId) {
