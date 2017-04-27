@@ -151,7 +151,7 @@ export default class CardList extends ActionComponent {
 
     clear() {
         this.removeAllCards();
-        this.__initCards = [];
+        this.__initCards = null;
     }
 
     removeAllCards() {
