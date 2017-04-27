@@ -25,7 +25,9 @@ class TopBar extends DialogActor {
             dropDownBgNode: cc.Node,
             promptPrefab: cc.Prefab,
             settingDialog: cc.Prefab,
-            vipLevel: cc.Label
+            vipLevel: cc.Label,
+            fanPageNode: cc.Node,
+            shopBtnNode: cc.Node
         };
     }
 
@@ -115,15 +117,15 @@ class TopBar extends DialogActor {
     }
 
     onClickNapXuAction() {
-        Linking.goTo(Linking.ACTION_TOPUP);
+        app.visibilityManager.goTo(Linking.ACTION_TOPUP);
     }
 
     onFriendBtnClick() {
-        Linking.goTo(Linking.ACTION_BUDDY);
+        app.visibilityManager.goTo(Linking.ACTION_BUDDY);
     }
 
     onClickTransferAwardAction() {
-        Linking.goTo(Linking.ACTION_EXCHANGE);
+        app.visibilityManager.goTo(Linking.ACTION_EXCHANGE);
     }
 
     callSupportClicked(e) {
@@ -131,11 +133,11 @@ class TopBar extends DialogActor {
     }
 
     onClickMessageAction() {
-        Linking.goTo(Linking.ACTION_SYSTEM_MESSAGE);
+        app.visibilityManager.goTo(Linking.ACTION_SYSTEM_MESSAGE);
     }
 
     onClickUserInfoAction() {
-        Linking.goTo(Linking.ACTION_PERSONAL_INFO);
+        app.visibilityManager.goTo(Linking.ACTION_PERSONAL_INFO);
     }
 
     /**

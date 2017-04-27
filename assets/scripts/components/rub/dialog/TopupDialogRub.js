@@ -1,14 +1,5 @@
 import app from 'app';
 
-const url = `${app.const.DIALOG_DIR_PREFAB}/topup`;
-
-const tabModels = [
-    { title: 'Thẻ cào',prefabPath: `${url}/tab_card`, componentName: 'TabCard'},
-    { title: 'SMS',prefabPath: `${url}/tab_sms`, componentName: 'TabSMS', hide: app.env.isBrowser() ? !app.env.isBrowserTest() : !app.env.isMobile()},
-    { title: 'IAP',prefabPath: `${url}/tab_iap`, componentName: 'TabIAP',  hide: app.env.isBrowser() ? !app.env.isBrowserTest() : !app.env.isMobile()},
-    { title: 'Lịch sử',prefabPath: `${url}/tab_history`, componentName: 'TabHistory'}
-];
-
 export default class TopupDialogRub {
 
    constructor() {
@@ -19,6 +10,14 @@ export default class TopupDialogRub {
         this.multiTabPopup = node.getComponent("MultiTabPopup");
 
         this.multiTabPopup.changeToChatTab = this.changeToChatTab.bind(this);
+        const url = `${app.const.DIALOG_DIR_PREFAB}/topup`;
+
+        this.tabModels = [
+            { title: 'Thẻ cào',prefabPath: `${url}/tab_card`, componentName: 'TabCard'},
+            { title: 'SMS',prefabPath: `${url}/tab_sms`, componentName: 'TabSMS', hide: app.env.isBrowser() ? !app.env.isBrowserTest() : !app.env.isMobile()},
+            { title: 'IAP',prefabPath: `${url}/tab_iap`, componentName: 'TabIAP',  hide: app.env.isBrowser() ? !app.env.isBrowserTest() : !app.env.isMobile()},
+            { title: 'Lịch sử',prefabPath: `${url}/tab_history`, componentName: 'TabHistory'}
+        ];
     }
     
     changeToChatTab(data) {
@@ -26,7 +25,7 @@ export default class TopupDialogRub {
     }   
      
     show(parentNode = cc.director.getScene(), options = {}){
-        this.multiTabPopup.show({parentNode, tabModels, ...options});
+        this.multiTabPopup.show({parentNode, tabModels: this.tabModels, ...options});
     }
 }
 

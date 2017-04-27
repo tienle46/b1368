@@ -92,7 +92,7 @@ export default class ListTableScene extends BaseScene {
     }
     
     onClickNapXuAction() {
-        Linking.goTo(Linking.ACTION_TOPUP);
+        app.visibilityManager.goTo(Linking.ACTION_TOPUP);
     }
 
     onClickChatBtn() {

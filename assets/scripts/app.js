@@ -246,12 +246,11 @@ app.getMessageFromServer = (error) => {
      * }
      */
     window.onNativePostAction = function(jsonString) {
-        let Linking = require('Linking');
         try {
             let jsonParam = JSON.parse(jsonString);
             let actionParamStr = jsonParam['action_extras']
             let actionParam = actionParamStr == null || !actionParamStr.length ? "{}" : jsonParam['action_extras'];
-            Linking.goTo(jsonParam.action, actionParam);
+            app.visibilityManager.goTo(jsonParam.action, actionParam);
         } catch (e) {
             //DO nothing
         }

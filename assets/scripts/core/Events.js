@@ -21,6 +21,8 @@ Events.HANDLE_PLAYER_BET = "handle.playerBet";
 Events.HANDLE_PLAYER_CUOC_BIEN = "handle.playerGaHuc";
 Events.HANDLE_PLAYER_ACCEPT_CUOC_BIEN = "handle.playerAcceptHuc";
 
+Events.HIDING_COMPONENTS = "hiding.components";
+
 Events.CLIENT_CONFIG_CHANGED = "clientConfigChanged";
 
 Events.SHOW_GAME_BEGIN_CONTROLS = "show.gameBeginControls";

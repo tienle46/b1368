@@ -52,7 +52,7 @@ class TabPersonalMessages extends TabMessages {
     
     _onActionBtnClick(id, action, data) {
         this.popup.hide();
-        Linking.goTo(action, data);
+        app.visibilityManager.goTo(action, data);
         this._sendReadRequest(id, true);
     }
     

@@ -3,7 +3,7 @@ import Actor from 'Actor';
 import TimerRub from 'TimerRub';
 import Linking from 'Linking';
 
-class BottomBar extends Actor {
+class BottomBar extends Actor { // bottombar <- STUFF (visibility via manager) -> actor
     constructor() {
         super();
 
@@ -11,7 +11,8 @@ class BottomBar extends Actor {
             ...this.properties,
             highLightNode: cc.Node,
             titleContainerNode: cc.Node,
-            supportPhoneNumberLbl: cc.Label
+            supportPhoneNumberLbl: cc.Label,
+            eventBtnNode: cc.Node
         }
 
         this.intervalTimer = null;
@@ -36,12 +37,12 @@ class BottomBar extends Actor {
     }
 
     onClickEventAction() {
-        Linking.goTo(Linking.ACTION_EVENT);
+        app.visibilityManager.goTo(Linking.ACTION_EVENT);
     }
 
 
     onClickTopRankAction() {
-        Linking.goTo(Linking.ACTION_TOP_VIP);
+        app.visibilityManager.goTo(Linking.ACTION_TOP_VIP);
     }
 
     // on high light message listener

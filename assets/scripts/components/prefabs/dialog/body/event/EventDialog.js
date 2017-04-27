@@ -1,7 +1,6 @@
 import app from 'app';
 import Actor from 'Actor';
 import CCUtils from 'CCUtils';
-import Linking from 'Linking';
 import Utils from 'Utils'
 
 class EventDialog extends Actor {

@@ -94,7 +94,7 @@ export default class TabUserInfo extends PopupTabBody {
 
     onShowTopUpDialog() {
         this._hide();
-        Linking.goTo(Linking.ACTION_TOPUP);
+        app.visibilityManager.goTo(Linking.ACTION_TOPUP);
     }
 
     onLevelInfoBtnClick() {

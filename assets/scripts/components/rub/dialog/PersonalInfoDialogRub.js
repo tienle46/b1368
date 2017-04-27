@@ -1,21 +1,5 @@
 import app from 'app';
 
-const url = `${app.const.DIALOG_DIR_PREFAB}/userinfo`;
-
-const tabModels = [
-    { title: 'Cá nhân', prefabPath: `${url}/tab_user_info`, componentName: 'TabUserInfo'},
-    { title: 'Thành tích', prefabPath: `${url}/tab_user_achievements`, componentName: 'TabUserAchievements'},
-    { title: 'Ngân hàng', prefabPath: `${url}/tab_user_bank`, componentName: 'TabUserBank'},
-    { title: 'Gift Code', prefabPath: `${url}/tab_gift_code`, componentName: 'TabGiftCode'}
-     // , {
-     //     title: 'Chuyển chip',
-     //     value: 'tab_transfer_vc'
-     // }, {
-     //     title: 'Nhận chip',
-     //     value: 'tab_transfer_transaction'
-     // },
-];
-
 export default class PersonalInfoDialogRub {
 
     constructor() {
@@ -26,6 +10,22 @@ export default class PersonalInfoDialogRub {
         this._data = null;
         
         this.multiTabPopup = node.getComponent("MultiTabPopup");
+        
+        const url = `${app.const.DIALOG_DIR_PREFAB}/userinfo`;
+
+        this.tabModels = [
+            { title: 'Cá nhân', prefabPath: `${url}/tab_user_info`, componentName: 'TabUserInfo'},
+            { title: 'Thành tích', prefabPath: `${url}/tab_user_achievements`, componentName: 'TabUserAchievements'},
+            { title: 'Ngân hàng', prefabPath: `${url}/tab_user_bank`, componentName: 'TabUserBank'},
+            { title: 'Gift Code', prefabPath: `${url}/tab_gift_code`, componentName: 'TabGiftCode'}
+            // , {
+            //     title: 'Chuyển chip',
+            //     value: 'tab_transfer_vc'
+            // }, {
+            //     title: 'Nhận chip',
+            //     value: 'tab_transfer_transaction'
+            // },
+        ];
     }
     
     changeToTab(tabIndex, data) {
@@ -35,7 +35,7 @@ export default class PersonalInfoDialogRub {
     
     show(parentNode = cc.director.getScene(), options = {}){
         let initData = this._data;
-        this.multiTabPopup.show({parentNode, tabModels, initData, ...options});
+        this.multiTabPopup.show({parentNode, tabModels: this.tabModels, initData, ...options});
     }
 }
 

@@ -3,12 +3,12 @@
  */
 
 import app from 'app';
-import Component from 'Component';
+import VisibilityActor from 'VisibilityActor';
 import { destroy } from 'CCUtils';
 
 let currentPopup = null;
 
-export default class MultiTabPopup extends Component {
+export default class MultiTabPopup extends VisibilityActor { 
 
     constructor() {
         super();
@@ -63,8 +63,19 @@ export default class MultiTabPopup extends Component {
         super.start();
         this.changeTab(this.focusTabIndex);
     }
-
+    
+    // in some cases we need to check if tab have been added but it should be hide immediately.
+    /**
+     * @param {Func} condition: function condition with 1st parameter is a child tab 
+     * 
+     * @memberOf MultiTabPopup
+     */
+    filterTab(condition) {
+        this._tabModels = this._tabModels.filter(condition)
+    }
+    
     _initTab() {
+        console.warn('initTab');
         this._tabs = this._tabModels.map((model, index) => {
             let tabNode = cc.instantiate(this.tabPrefab);
             let tab = tabNode.getComponent('PopupTab');
@@ -178,11 +189,10 @@ export default class MultiTabPopup extends Component {
      * }
      */
     show({ parentNode = cc.director.getScene(), focusTabIndex = 0, title = null, tabModels = [], initData = null } = {}) {
-
         this._hidePopupInstance();
         this.title = title;
-        this._tabModels = tabModels;
-        // this._tabModels = tabModels.filter(tab => !tab.hide);
+        // this._tabModels = tabModels;
+        this._tabModels = tabModels.filter(tab => !tab.hide);
         this.focusTabIndex = focusTabIndex;
         this.initData = initData; 
         parentNode.addChild(this.node);

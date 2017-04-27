@@ -1641,7 +1641,7 @@
       "height": 200
     },
     "_resize": 0,
-    "_N$layoutType": 1,
+    "_N$layoutType": 0,
     "_N$padding": 0,
     "_N$cellSize": {
       "__type__": "cc.Size",
@@ -1675,6 +1675,9 @@
     },
     "supportPhoneNumberLbl": {
       "__id__": 15
+    },
+    "eventBtnNode": {
+      "__id__": 31
     }
   },
   {

@@ -417,7 +417,7 @@ class GameSystem {
         this.currentScene && this._lackOfMoneyMessage && ConfirmPopup.showCustomConfirm(this.currentScene.node, this._lackOfMoneyMessage, {
             acceptLabel: app.res.string('label_topup_money'),
             acceptCb: () => {
-                Linking.goTo(Linking.ACTION_TOPUP_CARD)
+                app.visibilityManager.goTo(Linking.ACTION_TOPUP_CARD)
             }
         })
 

@@ -2,12 +2,12 @@
  * Created by Thanh on 9/15/2016.
  */
 
-import Component from 'Component';
+import VisibilityActor from 'VisibilityActor';
 import Emitter from 'emitter';
 import Events from 'Events';
 import HttpImageLoader from 'HttpImageLoader';
 
-export default class Actor extends Component {
+export default class Actor extends VisibilityActor {
     constructor() {
         super();
 

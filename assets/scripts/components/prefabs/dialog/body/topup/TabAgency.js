@@ -35,7 +35,7 @@ class TabAgency extends PopupTabBody {
     onTransferBtnClick(e) {
         let currentTarget = e.currentTarget;
         let username = currentTarget._transferName;
-        Linking.goTo(Linking.ACTION_TRANSFER, {username});
+        app.visibilityManager.goTo(Linking.ACTION_TRANSFER, {username});
     }
     
     onDataChanged(data = {}) {

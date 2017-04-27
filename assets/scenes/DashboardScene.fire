@@ -3609,7 +3609,7 @@
       "height": 200
     },
     "_resize": 0,
-    "_N$layoutType": 1,
+    "_N$layoutType": 0,
     "_N$padding": 0,
     "_N$cellSize": {
       "__type__": "cc.Size",
@@ -3825,7 +3825,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 124,
-      "height": 455
+      "height": 350
     },
     "_children": [
       {
@@ -4607,7 +4607,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 2,
-      "y": -396.5
+      "y": -291.5
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -4926,7 +4926,7 @@
     "_layoutSize": {
       "__type__": "cc.Size",
       "width": 124,
-      "height": 455
+      "height": 350
     },
     "_resize": 1,
     "_N$layoutType": 2,
@@ -5094,6 +5094,12 @@
     },
     "vipLevel": {
       "__id__": 19
+    },
+    "fanPageNode": {
+      "__id__": 123
+    },
+    "shopBtnNode": {
+      "__id__": 62
     }
   },
   {
@@ -8253,7 +8259,7 @@
       "height": 200
     },
     "_resize": 0,
-    "_N$layoutType": 1,
+    "_N$layoutType": 0,
     "_N$padding": 0,
     "_N$cellSize": {
       "__type__": "cc.Size",
@@ -8287,6 +8293,9 @@
     },
     "supportPhoneNumberLbl": {
       "__id__": 209
+    },
+    "eventBtnNode": {
+      "__id__": 225
     }
   },
   {

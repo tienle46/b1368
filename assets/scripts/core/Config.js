@@ -1,6 +1,7 @@
 /**
  * Created by Thanh on 9/1/2016.
  */
+import VisibilityManager from 'VisibilityManager';
 
 var app = require('app');
 
@@ -93,6 +94,18 @@ app.config.actionLabels = {
     'PLAY_GAME': 'Vào game'
 };
 
+// list of things need to hide when submit app
+/** Ex:
+    1 Nạp thẻ cào (tuc)
+    2 Nạp SMS (cs)
+    3 Fanpage (fp)
+    4 Sự kiện (evt)
+    5 Đổi thưởng (ex)
+    6 Ngân hàng (bnk)
+    7 Bot (bot)
+    8 Giftcode (gc)
+ */
+app.config.features = {};
 
 app.config.parseConfigData = function(configData = {}) {
     app.config.fanpage = configData.fanpage || app.config.fanpage;
@@ -102,7 +115,16 @@ app.config.parseConfigData = function(configData = {}) {
     app.config.defaultAvatarUrl = configData.defaultAvatarUrl || app.config.defaultAvatarUrl;
     app.config.gameGroups = configData.gameGroups || app.config.gameGroups;
     app.config.actionLabels = Object.assign({}, app.config.actionLabels, configData.actionLabels || {});
-
+    app.config.features = configData.features || app.config.features;
+    
+    if(!app.visibilityManager) {
+        app.visibilityManager = new VisibilityManager(app.config.features);
+    }
+    
     const Events = require('Events');
     app.system.emit(Events.CLIENT_CONFIG_CHANGED)
-}
+};
+
+app.config.getFeature = function(code) {
+    return app.config.features && app.config.features[code];
+};

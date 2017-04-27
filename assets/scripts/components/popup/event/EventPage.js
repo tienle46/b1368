@@ -7,7 +7,6 @@ import Actor from 'Actor'
 import CCUtils from 'CCUtils'
 import Utils from 'Utils'
 import RubUtils from 'RubUtils';
-import Linking from 'Linking';
 
 class EventPage extends Actor {
 
@@ -59,7 +58,7 @@ class EventPage extends Actor {
     }
     
     onAttendBtnClick() {
-        Linking.goTo(this.getComponentData().actionCode);
+        app.visibilityManager.goTo(this.getComponentData().actionCode);
         this.getComponentData().attendBtnListener && this.getComponentData().attendBtnListener();
     }
     
