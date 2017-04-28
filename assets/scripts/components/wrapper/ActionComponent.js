@@ -95,6 +95,10 @@ export default class ActionComponent extends Component {
         super.onDestroy();
         this.onActionFinish();
     }
+
+    isComponentEnabled(){
+        return this.__isComponentEnabled;
+    }
 }
 
 app.createComponent(ActionComponent)

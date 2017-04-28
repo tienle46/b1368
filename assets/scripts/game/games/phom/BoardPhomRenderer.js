@@ -3,9 +3,7 @@
  */
 
 import app from 'app';
-import CCUtils from 'CCUtils';
 import GameUtils from 'GameUtils';
-import Events from 'Events';
 import BoardCardTurnBaseRenderer from 'BoardCardTurnBaseRenderer';
 
 export default class BoardPhomRenderer extends BoardCardTurnBaseRenderer {
@@ -22,8 +20,15 @@ export default class BoardPhomRenderer extends BoardCardTurnBaseRenderer {
         super._initCenterDeckCard()
     }
 
-    fillDeckFakeCards(){
-        this.deckCardRenderer.setCards(GameUtils.convertBytesToCards(Array(16).fill(0)));
+    fillDeckFakeCards(fakeCount){
+        if (fakeCount <= 0) return;
+
+        this.deckCardRenderer.setOnCardClickListener(() => this.data.actor.onClickDeckCard())
+        this.deckCardRenderer.setCards(GameUtils.convertBytesToCards(Array(fakeCount).fill(0)));
+        this.deckCardRenderer.cards.forEach(card => {
+            card.setOnClickListener(() => this.data.actor.onClickDeckCard())
+            card.setEnableScaleOnClick(true)
+        })
     }
 
     onLoad(){

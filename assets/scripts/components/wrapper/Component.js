@@ -51,6 +51,11 @@ export default class Component {
         this.__componentData = {...data };
     }
 
+    updateComponentData(data, renderImmediately = true){
+        this.__componentData = {...this.__componentData, ...data };
+        renderImmediately && this.renderComponentData(this.__componentData)
+    }
+
     /**
      * @param {object} data
      * @abstract

@@ -591,7 +591,7 @@ export default class CardList extends ActionComponent {
         } else {
             let removingCards = cardsOrRemoveAmount;
             if (removingCards.filter(card => !card.isEmpty()).length == 0) {
-                return this.cards.splice(0, removingCards.length);
+                return this.cards.splice(removingCards.length >= this.cards.length ? 0 : this.cards.length - removingCards.length, removingCards.length);
             } else {
                 return ArrayUtils.removeAll(this.cards, cardsOrRemoveAmount, null, true);
             }

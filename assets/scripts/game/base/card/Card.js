@@ -14,6 +14,7 @@ export default class Card extends ActionComponent {
                 default : null,
                 type : cc.SpriteAtlas
             },
+            bodyNode: cc.Node,
             cardBG: cc.Sprite,
             highlightNode: cc.Node,
             disableNode: cc.Node,
@@ -36,10 +37,30 @@ export default class Card extends ActionComponent {
         this.group = -1;
         this.locked = false;
         this.__originalInfo = {};
+        this.__enableScaleOnClick = false;
+    }
+
+    setEnableScaleOnClick(enable){
+        if(this.isComponentEnabled()){
+            let button = this.node.getComponent(cc.Button);
+            if(button){
+                if(enable){
+                    button.transition = cc.Button.Transition.SCALE
+                    button.zoomScale = 1.15;
+                    button.duration = 0.08;
+                }else{
+                    button.transition = cc.Button.Transition.NONE
+                    this.finishCardAction()
+                }
+            }
+        }else{
+            this.__enableScaleOnClick = enable;
+        }
     }
 
     onAnchorPointChanged(){
-        let anchorPoint = this.node.getAnchorPoint();
+        let anchorPoint = this.node.getAnchorPoint()
+        this.bodyNode.setAnchorPoint(anchorPoint)
         this.tapHighlightNode && this.tapHighlightNode.children.forEach(child => child.setAnchorPoint(anchorPoint.x, 0));
     }
 
@@ -51,6 +72,7 @@ export default class Card extends ActionComponent {
 
         let animationComponent = this.tapHighlightNode && this.tapHighlightNode.getComponent(cc.Animation);
         animationComponent && (visible ? animationComponent.play() : animationComponent.stop())
+        this.setEnableScaleOnClick(visible)
     }
 
     setDisableCard(disable){
@@ -167,8 +189,6 @@ export default class Card extends ActionComponent {
         this.suit = suit;
         this.byteValue = byteValue;
     }
-    
-    
 
     onLoad() {
         const cardSpriteName = `card_${this._getRankName()}_${this._getSuitName()}`;
@@ -197,6 +217,11 @@ export default class Card extends ActionComponent {
 
         if (this.__disable) {
             this.setDisableCard(this.__disable);
+        }
+
+        if(this.__enableScaleOnClick != undefined){
+            this.setEnableScaleOnClick(this.__enableScaleOnClick)
+            this.__enableScaleOnClick = undefined;
         }
 
         this.setReveal(this.reveal);
