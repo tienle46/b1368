@@ -94,6 +94,14 @@ export default class DashboardScene extends BaseScene {
         }
         
     }
+    
+    onInviteBtnClick() {
+        window.FB.ui({method: 'apprequests',
+            message: 'XXXXXXX'
+        }, function(response){
+            console.warn(response);
+        });
+    }
    _addGlobalListener() {
         super._addGlobalListener();
         app.system.addListener(app.commands.USER_LIST_GAME_CODE, this._onUserListGame, this);

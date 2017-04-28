@@ -33,7 +33,7 @@ app.config.PASSWORD_REGEX = /^(?=.*[A-Za-z])(?=.*\d).{6,15}$/;
 app.config.fbAppId = 226720277782952;
 app.config.fbxfbml = true;
 app.config.fbVersion = 'v2.8';
-app.config.fbScope = 'public_profile,email';
+app.config.fbScope = 'public_profile,email,user_friends';
 
 app.config.fanpage = `https://www.messenger.com/t/${app.config.fbAppId}`;
 app.config.supportHotline = '0983.369.898';
@@ -94,7 +94,7 @@ app.config.actionLabels = {
     'PLAY_GAME': 'Vào game'
 };
 
-// list of things need to hide when submit app
+// list of things which need to hide when submit app
 /** Ex:
     1 Nạp thẻ cào (tuc)
     2 Nạp SMS (cs)
@@ -119,6 +119,8 @@ app.config.parseConfigData = function(configData = {}) {
     
     if(!app.visibilityManager) {
         app.visibilityManager = new VisibilityManager(app.config.features);
+    } else {
+        app.visibilityManager.updateFeatures(app.config.features);
     }
     
     const Events = require('Events');
