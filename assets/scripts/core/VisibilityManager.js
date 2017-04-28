@@ -9,7 +9,8 @@ export default class VisibilityManager {
      */
     constructor(features) {
         this._link = require('Linking'); // dont know reason why I cant import Linking at file header
-        this._features = features;
+        this._features = this._initFeatures(features); // feature codes represent to element which will be displayed when value = `true`
+        
         this._components = {};
     }
     
@@ -47,8 +48,7 @@ export default class VisibilityManager {
         if(component) {
             // loop features
             for(let code in this._features) {
-                if(this._features[code])
-                    this._act(key, code, this._features[code]);  
+                this._act(key, code, this._features[code]);  
             }
         }
     }
@@ -60,26 +60,35 @@ export default class VisibilityManager {
         this._link.goTo(action, data);    
     }
     
+    _initFeatures(features) {
+        return Object.assign({}, {
+            [VisibilityManager.NAP_THE]: false,
+            [VisibilityManager.NAP_SMS]: false,
+            [VisibilityManager.FANPAGE]: false,
+            [VisibilityManager.EVENT]: false,
+            [VisibilityManager.EXCHANGE]: false,
+            [VisibilityManager.BANK]: false,
+            [VisibilityManager.BOT]: false,
+            [VisibilityManager.GIFT_CODE]: false,
+            [VisibilityManager.SYSTEM_MESSAGE]: false
+        }, features);        
+    }
+    
     _actionAllowed(action) {
-        if(this._features[VisibilityManager.NAP_SMS] && action === this._link.ACTION_TOPUP_SMS)
+        if((!this._features[VisibilityManager.NAP_SMS] && action === this._link.ACTION_TOPUP_SMS) ||
+            (!this._features[VisibilityManager.NAP_THE] && action === this._link.ACTION_TOPUP_CARD) ||
+            (!this._features[VisibilityManager.EXCHANGE] && this._link.isExchangeAction(action)) ||
+            ((!this._features[VisibilityManager.BANK] || !this._features[VisibilityManager.GIFT_CODE]) && this._link.isBankOrGiftCodeAction(action)) ||
+            (!this._features[VisibilityManager.FANPAGE] && action === this._link.ACTION_FANPAGE) ||
+            (!this._features[VisibilityManager.EVENT] && action === this._link.ACTION_EVENT)
+        ) {
             return false;
-        if(this._features[VisibilityManager.NAP_THE] && action === this._link.ACTION_TOPUP_CARD)
-            return false;
-        if(this._features[VisibilityManager.EXCHANGE] && this._link.isExchangeAction(action))
-            return false;
-        if((this._features[VisibilityManager.BANK] || this._features[VisibilityManager.GIFT_CODE]) && this._link.isBankOrGiftCodeAction(action))
-            return false;
-        if(this._features[VisibilityManager.FANPAGE] && action === this._link.ACTION_FANPAGE)
-            return false;
-        if(this._features[VisibilityManager.EVENT] && action === this._link.ACTION_EVENT)
-            return false;
-
+        }
+        
         return true;
     }
     
-    _act(key, code, states) {
-        if(!states)
-            return;
+    _act(key, code, state) {
         let component = this.getComponent(key);
          
         if(key === 'MultiTabPopup') {
@@ -97,13 +106,17 @@ export default class VisibilityManager {
                     tabComponentName = 'TabUserBank';
                     break;
                 }
+                case VisibilityManager.SYSTEM_MESSAGE: {
+                    tabComponentName = 'TabSystemMessage';
+                    break;
+                }
                 case VisibilityManager.GIFT_CODE: {
                     tabComponentName = 'TabGiftCode';
                     break;
                 }
             }
             
-            this._deactiveTab(key, component, tabComponentName);
+            this._tabBehavior(key, component, tabComponentName, state);
         } else { // else we need to hide element
             let expectedKey = null,
                 element = null;
@@ -127,20 +140,20 @@ export default class VisibilityManager {
             }
             
             if(key === expectedKey) {
-                this._deactiveElement(component, element);
+               this._elementBehavior(component, element, state);
             }
         }
         
     }
     
-    _deactiveTab(key, multiTabPopup, tabComponentName) {
-        if(key == 'MultiTabPopup') { 
-            tabComponentName && multiTabPopup.filterTab(tab => tab.componentName !== tabComponentName);
+    _tabBehavior(key, multiTabPopup, tabComponentName, state) {
+        if(key == 'MultiTabPopup' && tabComponentName) {
+            multiTabPopup.filterTab(tab => state? !tab.hide : (tab.componentName !== tabComponentName && !tab.hide));
         }
     }
     
-    _deactiveElement(component, node) {
-        component.activateBehavior(node, false);
+    _elementBehavior(component, node, state) {
+        component.activateBehavior(node, state);
     }
     
     _getKeyFromInstance(instanceName) {
@@ -158,6 +171,7 @@ export default class VisibilityManager {
     } 
 }
 
+// default features
 VisibilityManager.NAP_THE = "tuc";
 VisibilityManager.NAP_SMS = "cs";
 VisibilityManager.FANPAGE = "fp";
@@ -166,3 +180,4 @@ VisibilityManager.EXCHANGE = "ex";
 VisibilityManager.BANK = "bnk";
 VisibilityManager.BOT = "bot";
 VisibilityManager.GIFT_CODE = "gc";
+VisibilityManager.SYSTEM_MESSAGE = "sysm";
