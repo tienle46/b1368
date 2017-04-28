@@ -111,9 +111,12 @@ class GameContext {
         if(!url || !spriteComponent)
             return;
             
+        spriteComponent.node && spriteComponent.node.parent && (spriteComponent.node.parent.opacity = 0);
+        
         RubUtils.loadSpriteFrame(spriteComponent, url, null, true, (spriteComp) => {
             if(spriteComp && spriteComp.node.parent) {
                 let defaultSprite = spriteComp.node.parent.getComponent(cc.Sprite);
+                spriteComp.node.parent.opacity = 255;
                 defaultSprite && (defaultSprite.spriteFrame = spriteComp.spriteFrame);
             }
             
