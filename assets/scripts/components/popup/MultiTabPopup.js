@@ -75,7 +75,6 @@ export default class MultiTabPopup extends VisibilityActor {
     }
     
     _initTab() {
-        console.warn('initTab');
         this._tabs = this._tabModels.map((model, index) => {
             let tabNode = cc.instantiate(this.tabPrefab);
             let tab = tabNode.getComponent('PopupTab');
