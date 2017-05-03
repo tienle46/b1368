@@ -1,7 +1,7 @@
 import app from 'app';
 import PopupTabBody from 'PopupTabBody';
 import PromptPopup from 'PromptPopup';
-import { isEmpty, isNumber, active, deactive, numberFormat } from 'Utils';
+import { isEmpty, isNumber, active, deactive, numberFormat, timeFormat } from 'Utils';
 
 export default class TabUserBank extends PopupTabBody {
     constructor() {
@@ -220,7 +220,7 @@ export default class TabUserBank extends PopupTabBody {
                     fontColor: app.const.COLOR_YELLOW
                 }
             }, [
-                data.times,
+                data.times.map(time => timeFormat(time)),
                 data.messages
             ], {
                 // paging: { next, prev, context: this },

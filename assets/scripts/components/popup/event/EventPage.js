@@ -35,7 +35,7 @@ class EventPage extends Actor {
 
     onDisable(){
         super.onDisable();
-        this.showPolicy();
+        this.webView && this.showPolicy();
     }
 
     onEnable(){

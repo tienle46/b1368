@@ -2,6 +2,7 @@
  * Created by Thanh on 8/27/2016.
  */
 import numeral from 'numeral';
+import moment from 'moment';
 
 export default class Utils {
 
@@ -204,5 +205,9 @@ export default class Utils {
     
     static upperCaseFirstLetter(string) {
         return string.trim().toLowerCase().split(" ").map(s => s.charAt(0).toUpperCase() + s.slice(1)).join(" ");
+    }
+    
+    static timeFormat(string, defaultFormat = 'DD-MM-YYYY HH:mm:ss', expectedFormat = 'DD-MM-YYYY HH:mm') {
+        return moment(string, defaultFormat).format(expectedFormat);
     }
 }

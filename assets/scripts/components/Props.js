@@ -105,7 +105,7 @@ export default class Props extends Component {
     }
 
     static playEmotion(name, node) {
-        if (emotionAssets.length > 0) {
+        if (Object.keys(emotionAssets).length > 0) {
             let atlas = emotionAssets[name];
             this._playLoadedEmotion(atlas, node);
         } else {
@@ -174,7 +174,7 @@ export default class Props extends Component {
         endPos: null,
         sample: PROP_SAMPLE
     }, finishCallback) {
-        if (propAssets.length > 0) {
+        if (Object.keys(propAssets).length > 0) {
             let atlas = propAssets[prosName];
             this._playLoadedProp(atlas, config, finishCallback);
         } else {

@@ -3,7 +3,8 @@ import PopupTabBody from 'PopupTabBody';
 import RubResources from 'RubResources';
 import {
     isEmpty,
-    numberFormat
+    numberFormat,
+    timeFormat
 } from 'Utils';
 
 class TabExchangeHistory extends PopupTabBody {
@@ -112,7 +113,7 @@ class TabExchangeHistory extends PopupTabBody {
         let pattern = /Mã thẻ[^]*,/;
         if(res[app.keywords.EXCHANGE_HISTORY.RESPONSE.ITEM_ID_HISTORY] && res[app.keywords.EXCHANGE_HISTORY.RESPONSE.ITEM_ID_HISTORY].length > 0) {
             let data = [
-            res[app.keywords.EXCHANGE_HISTORY.RESPONSE.TIME_LIST],
+            res[app.keywords.EXCHANGE_HISTORY.RESPONSE.TIME_LIST].map(time => timeFormat(time)),
             res[app.keywords.EXCHANGE_HISTORY.RESPONSE.NAME_LIST],
             res[app.keywords.EXCHANGE_HISTORY.RESPONSE.STATUS_LIST].map((status, index) => {
                 switch (status) {
