@@ -106,8 +106,6 @@ export default class MessagePopup extends Component {
     onClickAcceptButton() {
         this.hide();
         
-        console.log("onClickAcceptButton: ", this.acceptCb)
-        
         this.acceptCb && this.acceptCb();
     }
 

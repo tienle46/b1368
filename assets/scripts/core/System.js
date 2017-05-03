@@ -155,8 +155,8 @@ class GameSystem {
         MessagePopup.show(this.getCurrentSceneNode(), message);
     }
 
-    error(message, closeCb) {
-        MessagePopup.show(this.getCurrentSceneNode(), message, closeCb);
+    error(message, closeCb, acceptCb) {
+        MessagePopup.show(this.getCurrentSceneNode(), message, closeCb, acceptCb);
     }
 
     confirm(message, cancelCallback, okCallback) {

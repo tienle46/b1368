@@ -76,8 +76,8 @@ export default class ListTableScene extends BaseScene {
         app.system.addListener(app.commands.USER_LIST_ROOM, this._onUserListRoom, this);
         app.system.addListener(app.commands.USER_CREATE_ROOM, this._onUserCreateRoom, this);
         app.system.addListener(SFS2X.SFSEvent.ROOM_JOIN, this._handleRoomJoinEvent, this);
+        app.service.addEventListener(SFS2X.SFSEvent.ROOM_JOIN_ERROR, this._onJoinRoomError, this);
         app.system.marker.getItemData(app.system.marker.SHOW_INVITATION_POPUP_OPTION) && app.system.addListener(app.commands.PLAYER_INVITE, this._onPlayerInviteEvent, this);
-        app.system.addListener(SFS2X.SFSEvent.ROOM_JOIN_ERROR, this._onJoinRoomError, this);
     }
 
     _removeGlobalListener() {
@@ -87,8 +87,8 @@ export default class ListTableScene extends BaseScene {
         app.system.removeListener(app.commands.USER_LIST_ROOM, this._onUserListRoom, this);
         app.system.removeListener(app.commands.USER_CREATE_ROOM, this._onUserCreateRoom, this);
         app.system.removeListener(SFS2X.SFSEvent.ROOM_JOIN, this._handleRoomJoinEvent, this);
+        app.service.removeEventListener(SFS2X.SFSEvent.ROOM_JOIN_ERROR, this._onJoinRoomError, this);
         app.system.removeListener(app.commands.PLAYER_INVITE, this._onPlayerInviteEvent, this);
-        app.system.removeListener(SFS2X.SFSEvent.ROOM_JOIN_ERROR, this._onJoinRoomError, this);
     }
     
     onClickNapXuAction() {
@@ -311,9 +311,9 @@ export default class ListTableScene extends BaseScene {
     }
 
     _sendRequestUserListRoom(room) {
-        if (this.timeout) {
-            return;
-        }
+        // if (this.timeout) {
+        //     return;
+        // }
 
         app.service.send({
             cmd: app.commands.USER_LIST_ROOM,
@@ -461,9 +461,12 @@ export default class ListTableScene extends BaseScene {
         }
     }
 
-    _onJoinRoomError() {
+    _onJoinRoomError(event) {
         this.__isCreatingRoom = false;
-        this._sendRequestUserListRoom(this._room);
+        if (event.errorCode) {
+            let _cb = this._sendRequestUserListRoom.bind(this, this._room);
+            app.system.error(app.getRoomErrorMessage(event) || event.errorMessage, _cb, _cb);
+        }
     }
 }
 

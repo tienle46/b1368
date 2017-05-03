@@ -530,7 +530,7 @@ class Service {
         if (event.errorCode) {
             this._hasCallback(SFS2X.SFSEvent.ROOM_JOIN_ERROR) && this._callCallbackAsync(SFS2X.SFSEvent.ROOM_JOIN_ERROR, event);
             app.system.hideLoader()
-            app.system.error(app.getRoomErrorMessage(event) || event.errorMessage);
+            // app.system.error(app.getRoomErrorMessage(event) || event.errorMessage);
         }
     }
 
