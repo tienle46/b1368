@@ -26,6 +26,7 @@ export default class BuddyManager {
 
     constructor() {
         this.buddies = [];
+        this._requestedBuddies = [];
         this.tmpBuddies = [];
         this.blackBuddyNames = [];
         this.initEventListener();
@@ -37,6 +38,7 @@ export default class BuddyManager {
         this.buddies = [];
         this.tmpBuddies = [];
         this.blackBuddyNames = [];
+        this._requestedBuddies = {};
         this.initEventListener();
     }
 
@@ -108,6 +110,10 @@ export default class BuddyManager {
         if (this.getBuddyByName(buddyName)) {
             app.system.showToast(app.res.string('buddy_already_in_buddy_list', { buddyName }));
         } else {
+            if(app._.includes(this._requestedBuddies, buddyName))
+                return;
+
+            this._requestedBuddies.push(buddyName);
             app.service.send({ cmd: app.commands.REQUEST_BUDDY, data: { buddyName } });
         }
     }

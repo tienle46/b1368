@@ -672,7 +672,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 181.57,
+      "width": 177.11,
       "height": 40
     },
     "_children": [],
@@ -744,8 +744,8 @@
     },
     "_enabled": true,
     "_useOriginalSize": false,
-    "_actualFontSize": 40,
-    "_fontSize": 40,
+    "_actualFontSize": 39,
+    "_fontSize": 39,
     "_lineHeight": 40,
     "_enableWrapText": true,
     "_N$file": {
@@ -808,8 +808,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 31.42,
-      "height": 70
+      "width": 28.58,
+      "height": 56
     },
     "_children": [
       {
@@ -955,7 +955,7 @@
     "_alignFlags": 9,
     "_left": 283.5,
     "_right": 0,
-    "_top": 91.5,
+    "_top": 98.5,
     "_bottom": 0,
     "_verticalCenter": 0,
     "_horizontalCenter": 0,
@@ -977,9 +977,9 @@
     },
     "_enabled": true,
     "_useOriginalSize": false,
-    "_actualFontSize": 50,
-    "_fontSize": 50,
-    "_lineHeight": 70,
+    "_actualFontSize": 45,
+    "_fontSize": 45,
+    "_lineHeight": 56,
     "_enableWrapText": true,
     "_N$file": {
       "__uuid__": "707ff59f-f7c1-4eb4-a0de-41fd5e1c0123"
