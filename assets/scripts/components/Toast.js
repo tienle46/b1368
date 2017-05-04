@@ -40,9 +40,11 @@ export default class Toast extends Component {
 
     _createToastItem(message, type, duration){
         let toastItemNode = cc.instantiate(this.toastItemPrefab);
-        let toastItem = toastItemNode.getComponent('ToastItem');
-        toastItem._init({message, type, duration});
-        this.toastList.addChild(toastItemNode);
+        if(toastItemNode) {
+            let toastItem = toastItemNode.getComponent('ToastItem');
+            toastItem._init({message, type, duration});
+            this.toastList.addChild(toastItemNode);
+        }
     }
 }
 

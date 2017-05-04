@@ -123,7 +123,9 @@ class EntranceScene extends BaseScene {
                                 this.accessToken = response.authResponse.accessToken; //get access token
                                 let user_id = response.authResponse.userID; //get FB UID
                                 let pointer = this;
+                                console.warn('response', response)
                                 window.FB.api('/me', (res) => {
+                                    console.warn('res', res)
                                     // let user_email = res.email; //get user email
                                     // you can store this data into your database
                                     //console.warn('window.FB.api: ', res);
@@ -154,11 +156,10 @@ class EntranceScene extends BaseScene {
                 var json = JSON.parse(xhr.responseText);
                 if (json["success"]) {
                     const username = json["username"];
-                    if (username && typeof username == 'string' && username.trim().length > 0) {
-                        this._onLoginWithAccessToken(username, accessToken);
-                    } else {
-                        this._showInputUsernamePopup();
+                    if (!username && typeof username !== 'string' || username.trim().length == 0) {
+                        username = `f${fbId}`;
                     }
+                    this._onLoginWithAccessToken(username, accessToken);
                 } else {
                     app.system.error(app.res.string('error_system'));
                 }
@@ -166,22 +167,6 @@ class EntranceScene extends BaseScene {
         };
         xhr.open("GET", `http://${app.config.host}:8922/user/fb/${fbId}`, true);
         xhr.send();
-    }
-
-    _showInputUsernamePopup() {
-        PromptPopup.show(this.node, {
-            handler: this._onUserDonePickupName.bind(this),
-            title: app.res.string('input_username_title'),
-            description: app.res.string('username_rule'),
-            acceptLabelText: app.res.string('label_enter_game'),
-            inputRegex: app.config.USER_NAME_REGEX,
-            inputErrorMessage: app.res.string('error_username_not_match'),
-            maxLength: app.config.MAX_USERNAME_LENGTH
-        })
-    }
-
-    _onUserDonePickupName(username) {
-        this._onLoginWithAccessToken(username, this.accessToken);
     }
 
     _activeFacebookBtn() {

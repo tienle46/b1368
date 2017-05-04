@@ -22,16 +22,17 @@ export default class Props extends Component {
     }
 
     static loadAllPropAsset() {
-        cc.loader.loadResDir('props/', cc.SpriteFrame, (err, assets) => {
+        RubUtils.loadResDir('props', cc.SpriteAtlas, (assets) => {
             assets.forEach(asset => {
                 if (!cc.loader.isAutoRelease(asset))
                     cc.loader.setAutoRelease(asset, true);
-                propAssetNames.push(asset.name);
-                propAssets[asset.name] = asset;
+
+                emotionAssetNames.push(asset.name);
+                emotionAssets[asset.name] = asset;
             });
         });
-
-        cc.loader.loadResDir('emotions/', cc.SpriteFrame, (err, assets) => {
+        
+        RubUtils.loadResDir('emotions', cc.SpriteAtlas, (assets) => {
             assets.forEach(asset => {
                 if (!cc.loader.isAutoRelease(asset))
                     cc.loader.setAutoRelease(asset, true);
@@ -106,9 +107,13 @@ export default class Props extends Component {
 
     static playEmotion(name, node) {
         if (Object.keys(emotionAssets).length > 0) {
+            // modify valid name
+            name = `${name.replace('.plist', '')}.plist`;
+            
             let atlas = emotionAssets[name];
             this._playLoadedEmotion(atlas, node);
         } else {
+            // dont need extension .plist
             RubUtils.getAtlasFromUrl(`emotions/${name}`, (atlas) => {
                 this._playLoadedEmotion(atlas, node);
             });

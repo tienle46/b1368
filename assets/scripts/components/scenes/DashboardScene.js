@@ -81,8 +81,7 @@ export default class DashboardScene extends BaseScene {
             }, function(response) {
                 console.log('response', response);
             });
-        }
-        else if (app.env.isMobile()){
+        } else if (app.env.isMobile()){
             cc.log(`share on mobile`);
             var info = new Object();
             info.type  = "link";
@@ -96,11 +95,13 @@ export default class DashboardScene extends BaseScene {
     }
     
     onInviteBtnClick() {
-        window.FB.ui({method: 'apprequests',
-            message: 'XXXXXXX'
-        }, function(response){
-            console.warn(response);
-        });
+        // window.FB.ui({method: 'apprequests',
+        //     message: 'XXXXXXX'
+        // }, function(response){
+        //     console.warn(response);
+        // });  
+        
+        app.visibilityManager.goTo('TOPUP')
     }
    _addGlobalListener() {
         super._addGlobalListener();
