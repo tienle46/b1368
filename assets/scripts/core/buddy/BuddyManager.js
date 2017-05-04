@@ -38,7 +38,7 @@ export default class BuddyManager {
         this.buddies = [];
         this.tmpBuddies = [];
         this.blackBuddyNames = [];
-        this._requestedBuddies = {};
+        this._requestedBuddies = [];
         this.initEventListener();
     }
 
