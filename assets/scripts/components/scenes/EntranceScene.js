@@ -25,7 +25,7 @@ class EntranceScene extends BaseScene {
                     if (isLogin) {
                         const fbId = sdkbox.PluginFacebook.getUserID();
                         this.accessToken = sdkbox.PluginFacebook.getAccessToken();
-                        this.getUserByFbId(fbId, this.accessToken);
+                        this._onLoginWithAccessToken(this.accessToken);
                     }
                 },
                 onAPI: function(tag, data) {},
@@ -104,7 +104,7 @@ class EntranceScene extends BaseScene {
             } else {
                 const fbId = window.sdkbox.PluginFacebook.getUserID();
                 this.accessToken = window.sdkbox.PluginFacebook.getAccessToken();
-                this.getUserByFbId(fbId, this.accessToken);
+                this._onLoginWithAccessToken(this.accessToken);
             }
         } else {
             if (window.FB) {
@@ -115,7 +115,7 @@ class EntranceScene extends BaseScene {
                         let uid = response.authResponse.userID;
                         this.accessToken = response.authResponse.accessToken;
 
-                        this.getUserByFbId(uid, this.accessToken);
+                        this._onLoginWithAccessToken(this.accessToken);
                     } else {
                         // the user is logged in to Facebook, but has not authenticated your app
                         window.FB.login((response) => {
@@ -129,7 +129,7 @@ class EntranceScene extends BaseScene {
                                     // let user_email = res.email; //get user email
                                     // you can store this data into your database
                                     //console.warn('window.FB.api: ', res);
-                                    pointer.getUserByFbId(user_id, this.accessToken);
+                                    pointer._onLoginWithAccessToken(this.accessToken);
                                 });
                             } else {
                                 //user hit cancel button
@@ -147,36 +147,12 @@ class EntranceScene extends BaseScene {
         }
     }
 
-    getUserByFbId(fbId, accessToken) {
-        const xhr = new XMLHttpRequest();
-
-        xhr.onreadystatechange = () => {
-            if (xhr.readyState == 4 && (xhr.status >= 200 && xhr.status < 400)) {
-                this.hideLoading();
-                var json = JSON.parse(xhr.responseText);
-                if (json["success"]) {
-                    const username = json["username"];
-                    if (!username && typeof username !== 'string' || username.trim().length == 0) {
-                        username = `f${fbId}`;
-                    }
-                    this._onLoginWithAccessToken(username, accessToken);
-                } else {
-                    app.system.error(app.res.string('error_system'));
-                }
-            }
-        };
-        xhr.open("GET", `http://${app.config.host}:8922/user/fb/${fbId}`, true);
-        xhr.send();
-    }
-
     _activeFacebookBtn() {
-        this.facebookButton && (this.facebookButton.interactable = true);
+        this && this.facebookButton && (this.facebookButton.interactable = true);
     }
 
-    _onLoginWithAccessToken(username, accessToken) {
-        if (username.length > 0) {
-            this.loginToDashboard(username, "", false, false, accessToken);
-        }
+    _onLoginWithAccessToken(accessToken) {
+        this.loginToDashboard("", "", false, false, accessToken);
     }
 
     // _generateUserName(key, deviceId, count, maxCall) {

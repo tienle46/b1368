@@ -89,7 +89,8 @@ class GameContext {
 
     getMyInfo() {
         let me = this.getMe();
-        let vipLevel =  Utils.getVariable(me, app.keywords.VIP_LEVEL, "Dân Thường");
+
+        let vipLevel =  Utils.getVariable(me, app.keywords.VIP_LEVEL, {});
         return me ? {
             "id": me.id,
             "isItMe": me.isItMe,
@@ -98,7 +99,7 @@ class GameContext {
             "level": me.variables.lv,
             "avatarUrl": Utils.getVariable(me, 'avatarUrl', null),
             "displayName": Utils.getVariable(me, 'displayName', me.name),
-            "vipLevel": vipLevel.name || vipLevel
+            "vipLevel": vipLevel.name || ""
         } : {};
     }
     

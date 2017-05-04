@@ -1,5 +1,5 @@
 /**
- * ability for pausing setInterval / setTimeout
+ * add ability for pausing setInterval / setTimeout
  * Usage: 
  * // create interval call every 5s
  * var timer = new TimerRub(() => {
