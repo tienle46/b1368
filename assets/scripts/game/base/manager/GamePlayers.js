@@ -45,13 +45,12 @@ export default class GamePlayers extends Component {
         this.playerPositions = this.scene.playerPositions;
         this._initGamePlayerProperties();
         this.initPlayers();
+        this.scene.setFirstTimePlay(true)
 
         this.scene.on(Events.ON_USER_EXIT_ROOM, this._onUserExitGame, this);
         this.scene.on(Events.ON_ROOM_CHANGE_OWNER, this._onChangeRoomOwner, this);
         this.scene.on(Events.ON_GAME_STATE_ENDING, this._onGameEnding, this);
-    }
 
-    onLoad() {
     }
 
     isMeReady(){
@@ -226,8 +225,10 @@ export default class GamePlayers extends Component {
         return playerId == this.ownerId;
     }
 
-    meIsOwner() {
-        return this.me && this.ownerId == this.me.id;
+    checkMeIsOwner() {
+        let me = app.context.getMe();
+        let ownerId = utils.getVariable(this.scene.room, app.keywords.VARIABLE_OWNER);
+        return me && ownerId && me.getPlayerId(this.scene.room) == ownerId;
     }
 
     _updateMaxPlayerId() {
@@ -261,6 +262,10 @@ export default class GamePlayers extends Component {
     }
 
     isMePlaying() {
+        return this.me && this.me.isPlaying();
+    }
+
+    isMeOwner() {
         return this.me && this.me.isPlaying();
     }
 

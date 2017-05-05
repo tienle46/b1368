@@ -48,6 +48,8 @@ app.const.gameCode.BA_CAY = 'bcy';
 app.const.gameCode.LIENG = 'lie';
 app.const.gameCode.XAM = 'xam';
 app.const.gameCode.BAU_CUA = 'tcc';
+app.const.gameCode.TLMNDL_SOLO = 'tds';
+app.const.gameCode.XAM_SOLO = 'xms';
 app.const.gameCode.ALL = 'xga';
 app.const.gameCode.XOC_DIA = 'xod';
 
@@ -55,10 +57,12 @@ app.const.gameCode.XOC_DIA = 'xod';
 app.const.gameLabels = {
     [app.const.gameCode.PHOM]: 'Phỏm',
     [app.const.gameCode.TLMNDL]: 'TLMN',
+    [app.const.gameCode.TLMNDL_SOLO]: 'TLMN-Solo',
     [app.const.gameCode.TLMN]: 'TLMN',
     [app.const.gameCode.TLMNM]: 'TLMN Mới',
     [app.const.gameCode.XITO]: 'Xì Tố',
     [app.const.gameCode.XAM]: 'Sâm',
+    [app.const.gameCode.XAM_SOLO]: 'Sâm-Solo',
     [app.const.gameCode.BA_CAY]: 'Ba Cây',
     [app.const.gameCode.LIENG]: 'Liêng',
     [app.const.gameCode.BAU_CUA]: 'Bầu Cua',
