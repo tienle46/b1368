@@ -275,7 +275,7 @@ export default class Player extends Actor {
             senderPos = this._getPosBasedOnWorldSpace(playerIdSender).myPos,
             receiverPos = this._getPosBasedOnWorldSpace(playerIdReceiver).myPos,
             prosName = Object.values(app.res.asset_tools).find(asset => asset.id == assetId).name;
-
+        
         Props.playProp(prosName, {target: this.scene.gameMenuNode, startPos: senderPos, endPos: receiverPos});
     }
     

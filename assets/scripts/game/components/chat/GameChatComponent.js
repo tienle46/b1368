@@ -63,7 +63,13 @@ export default class GameChatComponent extends Actor {
             }
 
             emotions.push(...assets);
-            emotions.forEach((asset, index) => {
+            
+            emotions.sort((a, b) => {
+                if(a.name < b.name) return -1;
+                if(a.name > b.name) return 1;
+                
+                return 0;
+            }).forEach((asset, index) => {
                 emotionTexts.push(`[:e${index}]`);
                 emotionNames.push(asset.name);
             });

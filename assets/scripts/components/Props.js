@@ -30,6 +30,7 @@ export default class Props extends Component {
                 emotionAssetNames.push(asset.name);
                 emotionAssets[asset.name] = asset;
             });
+            
         });
         
         RubUtils.loadResDir('emotions', cc.SpriteAtlas, (assets) => {
