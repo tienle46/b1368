@@ -86,13 +86,13 @@
         "__id__": 61
       },
       {
+        "__id__": 101
+      },
+      {
         "__id__": 104
       },
       {
         "__id__": 107
-      },
-      {
-        "__id__": 110
       }
     ],
     "_rotationX": 0,
@@ -114,10 +114,10 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 113
+        "__id__": 110
       },
       {
-        "__id__": 114
+        "__id__": 111
       }
     ],
     "_prefab": null,
@@ -1931,7 +1931,7 @@
         "__id__": 63
       },
       {
-        "__id__": 84
+        "__id__": 81
       }
     ],
     "_rotationX": 0,
@@ -1953,11 +1953,11 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 102
+        "__id__": 99
       }
     ],
     "_prefab": {
-      "__id__": 103
+      "__id__": 100
     },
     "groupIndex": 0
   },
@@ -2017,11 +2017,11 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 82
+        "__id__": 79
       }
     ],
     "_prefab": {
-      "__id__": 83
+      "__id__": 80
     },
     "groupIndex": 0
   },
@@ -2366,14 +2366,10 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 180,
+      "width": 187,
       "height": 85
     },
-    "_children": [
-      {
-        "__id__": 75
-      }
-    ],
+    "_children": [],
     "_rotationX": 0,
     "_rotationY": 0,
     "_scaleX": 1,
@@ -2381,7 +2377,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 965,
-      "y": 61
+      "y": 60
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -2393,103 +2389,16 @@
     "_active": false,
     "_components": [
       {
-        "__id__": 78
+        "__id__": 75
       },
-      {
-        "__id__": 79
-      }
-    ],
-    "_prefab": {
-      "__id__": 81
-    },
-    "groupIndex": 0
-  },
-  {
-    "__type__": "cc.Node",
-    "_name": "Label",
-    "_objFlags": 0,
-    "_opacity": 255,
-    "_color": {
-      "__type__": "cc.Color",
-      "r": 25,
-      "g": 25,
-      "b": 25,
-      "a": 255
-    },
-    "_cascadeOpacityEnabled": true,
-    "_parent": {
-      "__id__": 74
-    },
-    "_anchorPoint": {
-      "__type__": "cc.Vec2",
-      "x": 0.5,
-      "y": 0.5
-    },
-    "_contentSize": {
-      "__type__": "cc.Size",
-      "width": 100,
-      "height": 40
-    },
-    "_children": [],
-    "_rotationX": 0,
-    "_rotationY": 0,
-    "_scaleX": 1,
-    "_scaleY": 1,
-    "_position": {
-      "__type__": "cc.Vec2",
-      "x": 0,
-      "y": 0
-    },
-    "_skewX": 0,
-    "_skewY": 0,
-    "_localZOrder": 0,
-    "_globalZOrder": 0,
-    "_tag": -1,
-    "_opacityModifyRGB": false,
-    "_id": "68c1fwTb8xDrbHRhjHbvlxD",
-    "_active": true,
-    "_components": [
       {
         "__id__": 76
       }
     ],
     "_prefab": {
-      "__id__": 77
+      "__id__": 78
     },
     "groupIndex": 0
-  },
-  {
-    "__type__": "cc.Label",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 75
-    },
-    "_enabled": true,
-    "_useOriginalSize": false,
-    "_actualFontSize": 40,
-    "_fontSize": 40,
-    "_lineHeight": 60,
-    "_enableWrapText": false,
-    "_N$file": {
-      "__uuid__": "707ff59f-f7c1-4eb4-a0de-41fd5e1c0123"
-    },
-    "_isSystemFontUsed": false,
-    "_N$string": "Đợi",
-    "_N$horizontalAlign": 1,
-    "_N$verticalAlign": 1,
-    "_N$overflow": 1
-  },
-  {
-    "__type__": "cc.PrefabInfo",
-    "root": {
-      "__id__": 63
-    },
-    "asset": {
-      "__uuid__": "0c0a0d89-4062-4d51-b388-7169ecd36c9a"
-    },
-    "fileId": "d3174kdUaZEoawd6DAb2S0l",
-    "sync": false
   },
   {
     "__type__": "cc.Sprite",
@@ -2500,7 +2409,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "9c8a9f54-d1c0-4ad0-9da1-7bb2c9f8fda9"
+      "__uuid__": "5464aa66-19c0-4b73-8ae2-65737b11e47f"
     },
     "_type": 1,
     "_sizeMode": 0,
@@ -2516,7 +2425,7 @@
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_atlas": {
-      "__uuid__": "4bb00c8a-c321-4d5c-b859-a722596f04ed"
+      "__uuid__": "10ca67ea-2a3c-4512-b8a8-cfd37f9d8bbe"
     }
   },
   {
@@ -2548,7 +2457,7 @@
     "hoverSprite": null,
     "clickEvents": [
       {
-        "__id__": 80
+        "__id__": 77
       }
     ],
     "_N$interactable": true,
@@ -2654,13 +2563,13 @@
     },
     "_children": [
       {
-        "__id__": 85
+        "__id__": 82
       },
       {
-        "__id__": 90
+        "__id__": 87
       },
       {
-        "__id__": 95
+        "__id__": 92
       }
     ],
     "_rotationX": 0,
@@ -2682,11 +2591,11 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 100
+        "__id__": 97
       }
     ],
     "_prefab": {
-      "__id__": 101
+      "__id__": 98
     },
     "groupIndex": 0
   },
@@ -2704,7 +2613,7 @@
     },
     "_cascadeOpacityEnabled": true,
     "_parent": {
-      "__id__": 84
+      "__id__": 81
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -2736,14 +2645,14 @@
     "_active": false,
     "_components": [
       {
-        "__id__": 86
+        "__id__": 83
       },
       {
-        "__id__": 87
+        "__id__": 84
       }
     ],
     "_prefab": {
-      "__id__": 89
+      "__id__": 86
     },
     "groupIndex": 0
   },
@@ -2752,7 +2661,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 85
+      "__id__": 82
     },
     "_enabled": true,
     "_spriteFrame": {
@@ -2780,7 +2689,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 85
+      "__id__": 82
     },
     "_enabled": true,
     "transition": 3,
@@ -2804,7 +2713,7 @@
     "hoverSprite": null,
     "clickEvents": [
       {
-        "__id__": 88
+        "__id__": 85
       }
     ],
     "_N$interactable": true,
@@ -2826,13 +2735,13 @@
     "_N$normalSprite": null,
     "_N$disabledSprite": null,
     "_N$target": {
-      "__id__": 85
+      "__id__": 82
     }
   },
   {
     "__type__": "cc.ClickEvent",
     "target": {
-      "__id__": 84
+      "__id__": 81
     },
     "component": "CardTurnBaseControls",
     "handler": "onClickSkipTurnButton",
@@ -2841,7 +2750,7 @@
   {
     "__type__": "cc.PrefabInfo",
     "root": {
-      "__id__": 84
+      "__id__": 81
     },
     "asset": {
       "__uuid__": "21b0bffc-f6e9-418a-b748-a8e397dd7d1a"
@@ -2863,7 +2772,7 @@
     },
     "_cascadeOpacityEnabled": true,
     "_parent": {
-      "__id__": 84
+      "__id__": 81
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -2895,14 +2804,14 @@
     "_active": false,
     "_components": [
       {
-        "__id__": 91
+        "__id__": 88
       },
       {
-        "__id__": 92
+        "__id__": 89
       }
     ],
     "_prefab": {
-      "__id__": 94
+      "__id__": 91
     },
     "groupIndex": 0
   },
@@ -2911,7 +2820,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 90
+      "__id__": 87
     },
     "_enabled": true,
     "_spriteFrame": {
@@ -2939,7 +2848,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 90
+      "__id__": 87
     },
     "_enabled": true,
     "transition": 3,
@@ -2963,7 +2872,7 @@
     "hoverSprite": null,
     "clickEvents": [
       {
-        "__id__": 93
+        "__id__": 90
       }
     ],
     "_N$interactable": true,
@@ -2985,13 +2894,13 @@
     "_N$normalSprite": null,
     "_N$disabledSprite": null,
     "_N$target": {
-      "__id__": 90
+      "__id__": 87
     }
   },
   {
     "__type__": "cc.ClickEvent",
     "target": {
-      "__id__": 84
+      "__id__": 81
     },
     "component": "CardTurnBaseControls",
     "handler": "onClickSortButton",
@@ -3000,7 +2909,7 @@
   {
     "__type__": "cc.PrefabInfo",
     "root": {
-      "__id__": 84
+      "__id__": 81
     },
     "asset": {
       "__uuid__": "21b0bffc-f6e9-418a-b748-a8e397dd7d1a"
@@ -3022,7 +2931,7 @@
     },
     "_cascadeOpacityEnabled": true,
     "_parent": {
-      "__id__": 84
+      "__id__": 81
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -3054,14 +2963,14 @@
     "_active": false,
     "_components": [
       {
-        "__id__": 96
+        "__id__": 93
       },
       {
-        "__id__": 97
+        "__id__": 94
       }
     ],
     "_prefab": {
-      "__id__": 99
+      "__id__": 96
     },
     "groupIndex": 0
   },
@@ -3070,7 +2979,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 95
+      "__id__": 92
     },
     "_enabled": true,
     "_spriteFrame": {
@@ -3098,7 +3007,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 95
+      "__id__": 92
     },
     "_enabled": true,
     "transition": 3,
@@ -3122,7 +3031,7 @@
     "hoverSprite": null,
     "clickEvents": [
       {
-        "__id__": 98
+        "__id__": 95
       }
     ],
     "_N$interactable": true,
@@ -3144,13 +3053,13 @@
     "_N$normalSprite": null,
     "_N$disabledSprite": null,
     "_N$target": {
-      "__id__": 95
+      "__id__": 92
     }
   },
   {
     "__type__": "cc.ClickEvent",
     "target": {
-      "__id__": 84
+      "__id__": 81
     },
     "component": "CardTurnBaseControls",
     "handler": "onClickPlayButton",
@@ -3159,7 +3068,7 @@
   {
     "__type__": "cc.PrefabInfo",
     "root": {
-      "__id__": 84
+      "__id__": 81
     },
     "asset": {
       "__uuid__": "21b0bffc-f6e9-418a-b748-a8e397dd7d1a"
@@ -3172,24 +3081,24 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 84
+      "__id__": 81
     },
     "_enabled": true,
     "path": "",
     "playButton": {
-      "__id__": 97
+      "__id__": 94
     },
     "sortButton": {
-      "__id__": 92
+      "__id__": 89
     },
     "skipTurnButton": {
-      "__id__": 87
+      "__id__": 84
     }
   },
   {
     "__type__": "cc.PrefabInfo",
     "root": {
-      "__id__": 84
+      "__id__": 81
     },
     "asset": {
       "__uuid__": "21b0bffc-f6e9-418a-b748-a8e397dd7d1a"
@@ -3210,7 +3119,7 @@
       "__id__": 63
     },
     "cardTurnBaseControlsNode": {
-      "__id__": 84
+      "__id__": 81
     }
   },
   {
@@ -3252,7 +3161,7 @@
     },
     "_children": [
       {
-        "__id__": 105
+        "__id__": 102
       }
     ],
     "_rotationX": 0,
@@ -3280,11 +3189,11 @@
     "__type__": "cc.Node",
     "_objFlags": 0,
     "_parent": {
-      "__id__": 104
+      "__id__": 101
     },
     "_id": "57d74aBkXVGAIu1HurHXcVd",
     "_prefab": {
-      "__id__": 106
+      "__id__": 103
     },
     "_name": "GameMenuPrefab",
     "_active": true,
@@ -3301,7 +3210,7 @@
   {
     "__type__": "cc.PrefabInfo",
     "root": {
-      "__id__": 105
+      "__id__": 102
     },
     "asset": {
       "__uuid__": "a83d103a-eb85-48cf-a31c-c74bb4993783"
@@ -3337,7 +3246,7 @@
     },
     "_children": [
       {
-        "__id__": 108
+        "__id__": 105
       }
     ],
     "_rotationX": 0,
@@ -3365,11 +3274,11 @@
     "__type__": "cc.Node",
     "_objFlags": 0,
     "_parent": {
-      "__id__": 107
+      "__id__": 104
     },
     "_id": "8bb80Eu5ZBJk5Q/hIfDdtGr",
     "_prefab": {
-      "__id__": 109
+      "__id__": 106
     },
     "_name": "GameChatComponent_Left",
     "_active": true,
@@ -3386,7 +3295,7 @@
   {
     "__type__": "cc.PrefabInfo",
     "root": {
-      "__id__": 108
+      "__id__": 105
     },
     "asset": {
       "__uuid__": "ccc6dc7d-1f84-4476-9238-bb994a18233e"
@@ -3422,7 +3331,7 @@
     },
     "_children": [
       {
-        "__id__": 111
+        "__id__": 108
       }
     ],
     "_rotationX": 0,
@@ -3450,11 +3359,11 @@
     "__type__": "cc.Node",
     "_objFlags": 0,
     "_parent": {
-      "__id__": 110
+      "__id__": 107
     },
     "_id": "cc004yp7PBA/I8urt/Covio",
     "_prefab": {
-      "__id__": 112
+      "__id__": 109
     },
     "_name": "GameResult1ColumPopupPrefab",
     "_active": true,
@@ -3471,7 +3380,7 @@
   {
     "__type__": "cc.PrefabInfo",
     "root": {
-      "__id__": 111
+      "__id__": 108
     },
     "asset": {
       "__uuid__": "13af3e19-4431-492e-bc6d-c0412c0ab05a"
@@ -3510,7 +3419,7 @@
       "__id__": 15
     },
     "gameMenuNode": {
-      "__id__": 105
+      "__id__": 102
     },
     "gameControlsNode": {
       "__id__": 61
@@ -3519,7 +3428,7 @@
       "__id__": 57
     },
     "chatComponentNode": {
-      "__id__": 108
+      "__id__": 105
     },
     "tableNameLabel": {
       "__id__": 8
