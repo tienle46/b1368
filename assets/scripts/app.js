@@ -246,6 +246,7 @@ app.getMessageFromServer = (error) => {
      * }
      */
     window.onNativePostAction = function(jsonString) {
+        debug(`receive action with detail ${jsonString}`);
         try {
             let jsonParam = JSON.parse(jsonString);
             let actionParamStr = jsonParam['action_extras']
@@ -253,6 +254,7 @@ app.getMessageFromServer = (error) => {
             app.visibilityManager.goTo(jsonParam.action, actionParam);
         } catch (e) {
             //DO nothing
+            debug(`linking exception ${e}`);
         }
     };
 

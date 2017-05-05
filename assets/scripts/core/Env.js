@@ -129,7 +129,24 @@ export default (function(app) {
                     onGetTags: (jsonString) => {},
                     onIdsAvailable: (userId, pushToken) => {},
                     onPostNotification: (success, message) => {},
-                    onNotification: (isActive, message, additionalData) => {}
+                    onNotification: (isActive, message, additionalData) => {
+                        
+                    },
+                    onNotificationOpened: (message) => {
+                        // message: {"notification":{"payload":{"body":"onNotificationOpened","sound":"default","title":"onNotificationOpened","notificationID":"7ea8fd68-df2a-40a5-9c8e-fb992251cd7e","rawPayload":{"aps":{"alert":{"title":"onNotificationOpened","body":"onNotificationOpened"},"sound":"default"},"custom":{"a":{"action":"TOPUP_CARD"},"i":"7ea8fd68-df2a-40a5-9c8e-fb992251cd7e"}},"additionalData":{"action":"TOPUP_CARD"}},"shown":true,"displayType":1},"action":{}}
+                        debug(`message: ${message}`);
+                        
+                        let additionalData = message && message['notification'] && message['notification']['payload']['additionalData'];
+                        debug(`additionalData: ${additionalData}`);
+                        if(additionalData && additionalData.action){
+                            let Linking = require('Linking');
+                            
+                            let actionParamStr = additionalData['action_extras']
+                            let actionParam = actionParamStr == null || !actionParamStr.length ? "{}" : additionalData['action_extras'];
+                            
+                            Linking.goTo(additionalData['action'], actionParam);
+                        }
+                    }
                 });
             };
 
@@ -289,10 +306,15 @@ export default (function(app) {
             };
 
             if (cc.sys.isMobile && window.sdkbox) {
-                let plugins = [
+                
+                let plugins = [];
+                // if(cc.sys.isAndroid){
+                //     plugins.push(_initPluginOneSignal);
+                // }
+                
+                plugins = [...plugins,
                     _initPluginFacebook,
                     _initPluginGoogleAnalytics,
-                    _initPluginOneSignal,
                     _initPluginIAP,
                     _initPluginKochava
                 ].map(p => {

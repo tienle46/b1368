@@ -196,11 +196,11 @@ export default class Card extends ActionComponent {
         // console.debug(`cardsAtlas ${this.cardsAtlas}`);
         this.cardSpriteFrame = this.cardsAtlas.getSpriteFrame(cardSpriteName);
         this.cardBG.spriteFrame = this.cardSpriteFrame;
-              
     }
 
     onEnable() {
         super.onEnable();
+        // this.cardSpriteFrame && this.cardSpriteFrame.getTexture().setTexParameters(gl.LINEAR, gl.LINEAR_MIPMAP_LINEAR, gl.CLAMP_TO_EDGE, gl.CLAMP_TO_EDGE);
 
         utils.setVisible(this.lockedNode, this.locked);
         utils.setVisible(this.highlightNode, this.highlight);
