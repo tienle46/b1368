@@ -436,6 +436,7 @@ class GameSystem {
 
             app.context.currentRoom = resultEvent.room;
             let gameSceneName = null;
+            let onLoadFunc = null;
             let gameCode = utils.getGameCode(resultEvent.room);
 
             // check whether app.context.selectedGame is exists. if not re-set it
@@ -457,9 +458,17 @@ class GameSystem {
                 case app.const.gameCode.XOC_DIA:
                     gameSceneName = 'XocDiaScene';
                     break;
+                case app.const.gameCode.TLMNDL_SOLO:
+                    gameSceneName = 'TLMNDLScene';
+                    onLoadFunc = () => {this.currentScene && this.currentScene.setSoloGame(true)}
+                    break;
+                case app.const.gameCode.XAM_SOLO:
+                    gameSceneName = 'SamScene';
+                    onLoadFunc = () => {this.currentScene && this.currentScene.setSoloGame(true)}
+                    break;
             }
             if (gameSceneName) {
-                this.loadScene(gameSceneName);
+                this.loadScene(gameSceneName, onLoadFunc);
             } else {
                 this.hideLoader();
             }

@@ -19,6 +19,7 @@ export default class PlayerSamRenderer extends PlayerCardTurnBaseRenderer {
             specialInfoImageNode: cc.Node,
             downCardInfoLabel: cc.Label,
             downCardInfoNode: cc.Node,
+            soloDownCardAnchorNode: cc.Node,
             downCardAnchorNodes: {
                 default: [],
                 type: [cc.Node]
@@ -69,19 +70,27 @@ export default class PlayerSamRenderer extends PlayerCardTurnBaseRenderer {
         if(this.data.isItMe){
             this.showInfoCardList = this.cardList
         }else {
-            this.downCardAnchorNodes.forEach((node, index) => {
-                if (index == this.anchorIndex) {
-                    this.downCardLists = (node && node.getComponentsInChildren('CardList')) || [];
 
-                    if (this.downCardLists.length == 1) {
-                        this.showInfoCardList = this.downCardLists[0]
-                    } else if (this.downCardLists.length == 2) {
-                        this.showInfoCardList = this.downCardLists[1]
+            if(this.scene.isSoloGame){
+                this.downCardAnchorNodes.forEach((node, index) => CCUtils.setVisible(node, false))
+                CCUtils.setVisible(this.soloDownCardAnchorNode, true)
+                this.downCardLists = (this.soloDownCardAnchorNode.getComponentsInChildren('CardList')) || [];
+                this.showInfoCardList = this.downCardLists[0]
+            }else{
+                this.downCardAnchorNodes.forEach((node, index) => {
+                    if (index == this.anchorIndex) {
+                        this.downCardLists = (node && node.getComponentsInChildren('CardList')) || [];
+
+                        if (this.downCardLists.length == 1) {
+                            this.showInfoCardList = this.downCardLists[0]
+                        } else if (this.downCardLists.length == 2) {
+                            this.showInfoCardList = this.downCardLists[1]
+                        }
+                    } else {
+                        CCUtils.setVisible(node, false);
                     }
-                } else {
-                    CCUtils.setVisible(node, false);
-                }
-            })
+                })
+            }
         }
 
         if(this.showInfoCardList){

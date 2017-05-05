@@ -9,6 +9,11 @@ import numeral from 'numeral';
 
 export default class GameUtils {
 
+    static isSoloGame(gameRoom) {
+        let gameCode = utils.getGameCode(gameRoom);
+        return gameCode ? app.config.soloGames.indexOf(gameCode) >= 0 : false;
+    }
+
     static formatBalance(balance) {
         return utils.isNumber(balance) ? numeral(balance).format((balance < 1000000 ? '0,0' : '0.00a')) : "";
     }

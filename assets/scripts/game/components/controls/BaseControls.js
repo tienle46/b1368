@@ -5,6 +5,7 @@
 
 import app from 'app';
 import utils from 'utils';
+import CCUtils from 'CCUtils';
 import GameControls from 'GameControls';
 import { Events } from 'events';
 
@@ -16,7 +17,8 @@ export default class BaseControls extends GameControls {
             ...this.properties,
             readyButton: cc.Node,
             unreadyButton: cc.Node,
-            startButton: cc.Node
+            startButton: cc.Node,
+            waitButton: cc.Node
         }
 
         this.showStartButtonOnBegin = false;
@@ -48,6 +50,13 @@ export default class BaseControls extends GameControls {
         utils.deactive(this.startButton);
     }
 
+    onClickWaitButton() {
+        if(this.scene.gamePlayers.players.length > 1){
+            app.service.send({cmd: "pwr", data: {[app.keywords.PLAYER_ID]:  this.scene.gamePlayers.me.id}, room: this.scene.room})
+        }
+        //this.scene.emit(Events.ON_CLICK_WAIT_BUTTON);
+    }
+
     _onPlayerSetReadyState(playerId, ready, isItMe = this.scene.gamePlayers.isItMe(playerId)) {
         this.scene.hideLoading();
         isItMe && (ready ? this._onPlayerReady() : this._onPlayerUnready());
@@ -64,12 +73,14 @@ export default class BaseControls extends GameControls {
     }
 
     _showGameBeginControls() {
-        debug('_showGameBeginControls')
+
         if (app.system.currentScene.gamePlayers.isMeReady()) {
             this._onPlayerReady();
         } else {
             this._onPlayerUnready();
         }
+
+        this.setVisibleWaitButton(true);
 
         if(!this.serverAutoStartGame && this.showStartButtonOnBegin && this.scene.enoughPlayerToStartGame()){
             utils.active(this.startButton);
@@ -77,8 +88,8 @@ export default class BaseControls extends GameControls {
     }
 
     hideAllControls() {
-        utils.deactive(this.readyButton);
-        // utils.deactive(this.unreadyButton);
+        CCUtils.setVisible(this.readyButton, false);
+        CCUtils.setVisible(this.waitButton, false)
         this.hideStartButton();
     }
     
@@ -90,6 +101,15 @@ export default class BaseControls extends GameControls {
         if(!this.serverAutoStartGame && this.scene.gamePlayers.owner && this.scene.gamePlayers.owner.isItMe()){
             this.showStartButtonOnBegin = true;
             utils.active(this.startButton);
+        }
+    }
+
+    setVisibleWaitButton(visible = false){
+        if(visible){
+            this.scene.firstTimePlay && this.scene.isSoloGame && this.scene.gamePlayers.checkMeIsOwner() && CCUtils.setVisible(this.waitButton, true)
+        }else{
+            CCUtils.setVisible(this.waitButton, false)
+            this.scene.setFirstTimePlay(false)
         }
     }
 }

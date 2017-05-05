@@ -730,6 +730,7 @@ export default class CardList extends ActionComponent {
             return src.transferTo(this, cards, cb, this.reveal, reverse);
         } else {
             let reveal = cbOrOption && cbOrOption.hasOwnProperty('reveal') ? cbOrOption.reveal : this.reveal;
+            src.finishAllCardActions()
             let addedCards = src.addCards(cards, true, reveal);
             return src.transferTo(this, addedCards, cb, this.reveal, reverse);
         }
