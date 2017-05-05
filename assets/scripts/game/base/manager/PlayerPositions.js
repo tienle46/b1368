@@ -18,11 +18,19 @@ export default class PlayerPositions extends Component {
             inviteButtonName: 'inviteButton'
         }
         this.playerAnchors = null;
+        this.hiddenAnchors = null;
         this.scene;
     }
 
     isPositionOnTop() {
         return false;
+    }
+
+    onLoad(){
+        super.onLoad()
+
+        this.hiddenAnchors = []
+        this.playerAnchors = []
     }
 
     onEnable() {
@@ -39,6 +47,8 @@ export default class PlayerPositions extends Component {
             this.scene.on(Events.ON_GAME_STATE_PLAYING, this._onGamePlaying, this);
             this.scene.on(Events.ON_GAME_STATE_ENDING, this._onGameEnding, this);
         }
+
+        this.hiddenAnchors && this._hideAllAnchor(...this.hiddenAnchors)
     }
 
     _initPlayerAnchors() {
@@ -92,6 +102,11 @@ export default class PlayerPositions extends Component {
         }
     }
 
+    addToHideAnchor(...anchorIndexs){
+        !this.hiddenAnchors && (this.hiddenAnchors = [])
+        this.hiddenAnchors.push(...anchorIndexs)
+    }
+
     hideAllInviteButtons() {
         // this.playerAnchors.forEach((anchor, index) => {
         //     let inviteButton = anchor.getChildByName(this.inviteButtonName);
@@ -107,7 +122,7 @@ export default class PlayerPositions extends Component {
         });
 
         this.scene.gamePlayers.isMePlayGame() && excludeAnchorIndexes.push(1);
-        excludeAnchorIndexes.forEach(index => this.hideInviteButton(index));
+        [...excludeAnchorIndexes, ...this.hiddenAnchors].forEach(index => this.hideInviteButton(index));
     }
 
     getPlayerAnchorByPlayerId(playerId, isItMe) {
@@ -185,6 +200,13 @@ export default class PlayerPositions extends Component {
     hideAnchor(index) {
         // let anchor = index >= 0 && this.getPlayerAnchor(index);
         // if (anchor) anchor.active = false;
+    }
+
+    _hideAllAnchor(...indexs) {
+        indexs.forEach(index => {
+            let anchor = index >= 0 && this.getPlayerAnchor(index);
+            anchor && CCUtils.setVisible(anchor, false)
+        })
     }
 
     showAnchor(index) {

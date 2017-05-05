@@ -4680,6 +4680,9 @@
     "downCardInfoNode": {
       "__id__": 65
     },
+    "soloDownCardAnchorNode": {
+      "__id__": 94
+    },
     "downCardAnchorNodes": [
       null,
       {

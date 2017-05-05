@@ -160,6 +160,8 @@ export default class FriendProfilePopup extends DialogActor {
         };
 
         app.service.send(sendObject);
+
+        this.close()
     }
 
     _changePaginationState() {

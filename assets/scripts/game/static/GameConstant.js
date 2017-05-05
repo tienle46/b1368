@@ -131,64 +131,6 @@ app.const.game.seat.SEAT_TYPE_5_PLAYER = 5;
 app.const.game.seat.SEAT_TYPE_5_PLAYER_XITO = 51;
 app.const.game.seat.SEAT_TYPE_6_PLAYER = 6;
 
-app.const.game.rank.getRankString = function(rankType, rank) {
-    var retString = "";
-    switch (rankType) {
-        case app.const.game.rank.GAME_RANK_TYPE_WIN_DRAW_LOSE:
-        case app.const.game.rank.GAME_RANK_TYPE_WIN_LOSE:
-            if (rank == 1) {
-                retString = "Thắng";
-            } else if (rank == 2) {
-                retString = "Hòa";
-            } else if (rank == 0) {
-                retString = "Thua";
-            }
-            break;
-        case app.const.game.rank.GAME_RANK_TYPE_FIRST_LAST:
-            if (rank == app.const.game.rank.GAME_RANK_FIRST) {
-                retString = "Nhất";
-            } else if (rank == app.const.game.rank.GAME_RANK_SECOND) {
-                retString = "Nhì";
-            } else if (rank == app.const.game.rank.GAME_RANK_THIRD) {
-                retString = "Ba";
-            } else if (rank == app.const.game.rank.GAME_RANK_FOURTH) {
-                retString = "Bét";
-            }
-            break;
-        default:
-            break;
-
-    }
-    return retString;
-};
-
-app.const.game.gameMenuString = [
-    "Phỏm", "Xì tố", "Ba cây", "Liêng",
-    "Tiến lên MN", "TLMN Kiểu Mới", "TLMN Đếm lá", "Xâm",
-    "Bầu cua", "Cờ úp", " Cờ Tướng"
-];
-
-app.const.game.gameMenuStringShort = [
-    "Phỏm", "Xì tố", "Ba cây", "Liêng",
-    "TLMN", "TLMN Mới", "TLMN Đếm lá", "Xâm",
-    "Bầu cua", "Cờ úp", " Cờ Tướng"
-];
-
-app.const.game.gameServiceString = {
-    "pom": app.const.game.GAME_PHOM_ID,
-    "xit": app.const.game.GAME_XITO_ID,
-    "bcy": app.const.game.GAME_BACAY_ID,
-    "lie": app.const.game.GAME_LIENG_ID,
-    "tln": app.const.game.GAME_TLMN_ID,
-    "tnm": app.const.game.GAME_TLMN_MOI_ID,
-    "tnd": app.const.game.GAME_TLMN_DEM_LA_ID,
-    "xam": app.const.game.GAME_XAM_ID,
-    "tcc": app.const.game.GAME_BAUCUA_ID,
-    "cup": app.const.game.GAME_CUP_ID,
-    "ctg": app.const.game.GAME_CTG_ID,
-    "xga": app.const.game.GAME_XGAME
-};
-
 app.const.game.gameCodes = [
     "pom",
     "xit",
@@ -199,8 +141,8 @@ app.const.game.gameCodes = [
     "tnd",
     "xam",
     "tcc",
-    "cup",
-    "ctg",
+    "tds",
+    "xms",
     "xga"
 ];
 
@@ -210,43 +152,10 @@ app.const.game.maxPlayers = {
     "tnd": 4,
     "xam": 5,
     "xod": 9,
+    "tds": 2,
+    "xms": 2,
     "default": 2,
 };
-
-app.const.game.gameTableSeatType = [
-    4, 5, 6, 6,
-    4, 4, 4, 5,
-    6, 2, 2, null
-    //4, /*6, 6, 6*/
-];
-
-app.const.game.gameCardHandCardsFocusable = [
-    true, false, true, false,
-    true, true, true, true,
-    false, false, false, false
-    //true
-];
-
-app.const.game.gameDefaultHandCardsSize = [
-    9, 2, 3, 3,
-    13, 13, 13, 10,
-    0, 0, 0, 0, 13
-];
-
-app.const.game.gameIsTurnBase = [
-    true, true, false, true,
-    true, true, true, true,
-    false, false, false, false,
-    //false
-];
-
-
-app.const.game.showHandCardWhenPlaying = [
-    false, true, true, true,
-    true, false, false, false,
-    false, false, false, false,
-    //false
-];
 
 app.const.game.defaultGroupRoomRole = {};
 app.const.game.defaultGroupRoomRole[app.keywords.GROUP_ROOM_MIN_BALANCE] = 0;
@@ -365,128 +274,6 @@ app.const.game.TLMN_THOI_TYPE_BA_DOI_THONG = 2;
 app.const.game.TLMN_THOI_TYPE_TU_QUY = 3;
 app.const.game.TLMN_THOI_TYPE_BON_DOI_THONG = 4;
 app.const.game.TLMN_THOI_TYPE_BA_BICH = 5;
-
-app.const.game.getTLMNFirstRankSpecialString = function(winType) {
-    var retString = "";
-    switch (winType) {
-        case app.const.game.TLMN_WIN_TYPE_AN_TRANG:
-            retString = "Ăn trắng";
-            break;
-        case app.const.game.TLMN_WIN_TYPE_LUNG:
-            retString = "Lũng";
-            break;
-        case app.const.game.TLMN_WIN_TYPE_DUT_BA_BICH:
-            retString = "Đút 3 bích";
-            break;
-        case app.const.game.TLMN_WIN_TYPE_CONG_CA_LANG:
-            retString = "Cóng cả làng";
-            break;
-        default:
-            break;
-    }
-    return retString;
-};
-
-
-app.const.game.getPhomFirstRankSpecialString = function(winType) {
-    var retString = "";
-    switch (winType) {
-        case app.const.game.PHOM_WIN_TYPE_U_THUONG:
-            retString = " Ù ";
-            break;
-        case app.const.game.PHOM_WIN_TYPE_U_DEN:
-            retString = "Ù đền";
-            break;
-        case app.const.game.PHOM_WIN_TYPE_U_KHAN:
-            retString = "Ù khan";
-            break;
-        case app.const.game.PHOM_WIN_TYPE_U_TRON:
-            retString = "Ù tròn";
-            break;
-        case app.const.game.PHOM_WIN_TYPE_U_PHOM_KIN:
-            retString = "Ù phỏm kín";
-            break;
-        default:
-            break;
-    }
-    return retString;
-};
-
-
-app.const.game.getXamSpecialString = function(winType) {
-    var retString = "";
-    switch (winType) {
-        case app.const.game.XAM_WIN_TYPE_DEN_XAM:
-            retString = "Đền Xâm";
-            break;
-        case app.const.game.XAM_WIN_TYPE_DEN_THOI_HEO:
-            retString = "Đền Thối Heo";
-            break;
-        case app.const.game.XAM_WIN_TYPE_THANG_XAM:
-            retString = "Thắng Xâm";
-            break;
-        default:
-            break;
-    }
-    return retString;
-};
-
-app.const.game.getXiToSpecialString = function(xitoType) {
-    var retString = "";
-    switch (xitoType) {
-        case app.const.game.XAM_XAM_TYPE_THUNG_PHA_SANH:
-            retString = app.const.game.MESSAGE_XITO_THUNG_PHA_SANH;
-            break;
-        case app.const.game.XAM_XAM_TYPE_TU_QUY:
-            retString = app.const.game.MESSAGE_XITO_TU_QUY;
-            break;
-        case app.const.game.XAM_XAM_TYPE_CU_LU:
-            retString = app.const.game.MESSAGE_XITO_CU_LU;
-            break;
-        case app.const.game.XAM_XAM_TYPE_THUNG:
-            retString = app.const.game.MESSAGE_XITO_THUNG;
-            break;
-        case app.const.game.XAM_XAM_TYPE_SANH:
-            retString = app.const.game.MESSAGE_XITO_SANH;
-            break;
-        case app.const.game.XAM_XAM_TYPE_XAM_CO:
-            retString = app.const.game.MESSAGE_XITO_XAM_CO;
-            break;
-        case app.const.game.XAM_XAM_TYPE_THU:
-            retString = app.const.game.MESSAGE_XITO_THU;
-            break;
-        case app.const.game.XAM_XAM_TYPE_DOI:
-            retString = app.const.game.MESSAGE_XITO_DOI;
-            break;
-        case app.const.game.XAM_XAM_TYPE_MAU:
-            retString = app.const.game.MESSAGE_XITO_MAU;
-            break;
-        default:
-            break;
-    }
-    return retString;
-};
-
-app.const.game.getLiengSpecialString = function(liengType) {
-    var retString = "";
-    switch (liengType) {
-        case app.const.game.LIENG_LIENG_TYPE_SAP:
-            retString = app.const.game.getMessage(app.const.game.INFOR_SAP);
-            break;
-        case app.const.game.LIENG_LIENG_TYPE_LIENG:
-            retString = app.const.game.getMessage(app.const.game.INFOR_LIENG);
-            break;
-        case app.const.game.LIENG_LIENG_TYPE_DI:
-            retString = app.const.game.getMessage(app.const.game.INFOR_DI);
-            break;
-        case app.const.game.LIENG_LIENG_TYPE_DIEM:
-            retString = app.const.game.getMessage(app.const.game.INFOR_DO_DIEM);
-            break;
-        default:
-            break;
-    }
-    return retStrapp.const.game.ing;
-};
 
 app.const.game.GAME_TYPE_GENERAL = 0;
 app.const.game.GAME_TYPE_TIENLEN = 1;

@@ -1,5 +1,4 @@
 import app from 'app';
-import SFS2X from 'SFS2X';
 import { utils, GameUtils } from 'utils';
 import { Keywords } from 'core';
 import { BaseScene } from 'scenes';
@@ -63,6 +62,12 @@ export default class GameScene extends BaseScene {
         this.gameData = null;
         this._penddingEvents = null;
         this.gameContext = null;
+        this.isSoloGame = false;
+        this.firstTimePlay = undefined;
+    }
+
+    setFirstTimePlay(firstTimePlay){
+        this.firstTimePlay = firstTimePlay
     }
 
     _addGlobalListener() {
@@ -84,6 +89,11 @@ export default class GameScene extends BaseScene {
         this.on(Events.ON_ROOM_CHANGE_MIN_BET, this._onRoomMinBetChanged, this);
         this.on(Events.ON_PLAYER_READY_STATE_CHANGED, this._onPlayerReadyStateChanged, this);
         this.on(Events.ON_PLAYER_REGISTER_QUIT_ROOM, this._handleRegisterQuitRoom, this);
+        this.on(Events.ON_GAME_STATE_STARTING, this._onGameStarting, this);
+    }
+
+    _onGameStarting(){
+        this.firstTimePlay = false
     }
     
     _handleRegisterQuitRoom(data){
@@ -97,6 +107,10 @@ export default class GameScene extends BaseScene {
                 CCUtils.setVisible(this.gameMenu.menuLock, false);
             }
         }
+    }
+
+    setSoloGame(solo = false){
+        this.isSoloGame = solo
     }
 
     clearReadyPlayer(){
@@ -155,10 +169,14 @@ export default class GameScene extends BaseScene {
 
     onLoad() {
         super.onLoad();
+
+        this.firstPlayTime = true;
         this.gameContext = {};
         this.gameData = {};
         this._penddingEvents = [];
         this.gameMenu = this.gameMenuNode.getComponent('GameMenuPrefab')
+
+        this.isSoloGame = GameUtils.isSoloGame(app.context.currentRoom)
 
         this.node.children.forEach(child => { child.opacity = 255 });
         Object.values(app.res.asset_tools).length < 1 && this._loadAssetTools();
@@ -226,6 +244,16 @@ export default class GameScene extends BaseScene {
 
             if (!this.gameData) {
                 throw new CreateGameException(app.res.string('error_fail_to_load_game_data'));
+            }
+
+            if(!app.context.rejoiningGame){
+                let me = app.context.getMe();
+                let ownerId = utils.getVariable(this.room, app.keywords.VARIABLE_OWNER);
+
+
+                if(me && ownerId && me.getPlayerId(this.room) == ownerId){
+                    this.firstTimePlay = true
+                }
             }
 
             this._setGameInfo(this.room);

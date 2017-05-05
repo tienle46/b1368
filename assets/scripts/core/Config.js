@@ -46,7 +46,14 @@ app.config.supportedGames = [
     app.const.gameCode.XAM,
     app.const.gameCode.BA_CAY,
     app.const.gameCode.XOC_DIA,
+    app.const.gameCode.TLMNDL_SOLO,
+    app.const.gameCode.XAM_SOLO,
 ];
+
+app.config.soloGames = [
+    app.const.gameCode.TLMNDL_SOLO,
+    app.const.gameCode.XAM_SOLO,
+]
 
 app.config.listTableGroupFilters = [
     {min: 0, max: 1000},

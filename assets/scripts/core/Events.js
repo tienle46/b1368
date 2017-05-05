@@ -98,6 +98,7 @@ Events.ON_CLICK_REVEAL_BUTTON = "on.click.revealButton";
 Events.ON_CLICK_DOWN_BUTTON = "on.click.downButton";
 Events.ON_CLICK_CHOOSE_BET_BUTTON = "on.click.chooseBetButton";
 Events.ON_CLICK_START_GAME_BUTTON = "on.click.startGameButton";
+Events.ON_CLICK_WAIT_BUTTON = "on.click.waitButton";
 
 Events.ON_GAME_RESET = "on.game.reset";
 Events.ON_GAME_WAIT = "on.game.wait";
