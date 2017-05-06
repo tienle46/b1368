@@ -261,6 +261,7 @@ Keywords.GAME_LIST_PLAYER = "pl";
  * danh sach thang thua cua player
  */
 Keywords.GAME_LIST_WIN = "w";
+Keywords.CARD_TYPES = "cardTypes";
 /**
  * danh sach player da ha bai
  */

@@ -149,13 +149,47 @@ export default class BoardTLMNDL extends BoardCardTurnBase {
 
         let winType = utils.getValue(data, Keywords.WIN_TYPE);
         let playersWinRanks = utils.getValue(data, Keywords.GAME_LIST_WIN);
+        let cardTypes = utils.getValue(data, Keywords.CARD_TYPES);
         playerIds.forEach((id, i) => {
             let resultText = ''
+            let cardType = cardTypes[i];
+
             if (playersWinRanks[i] == app.const.game.rank.GAME_RANK_FIRST) {
                 switch (winType) {
                     case app.const.game.TLMN_WIN_TYPE_AN_TRANG:
                         resultText = 'tlmn-an-trang'
-                        gameResultInfos[id] = app.res.string('game_tlmn_an_trang')
+
+                        if(cardType){
+                            switch(cardType){
+                                case app.const.game.TLMN_CARD_TYPE_SANH_RONG_DONG_HOA:
+                                    gameResultInfos[id] = app.res.string('game_tlmn_sanh_rong_dong_hoa')
+                                    break;
+                                case app.const.game.TLMN_CARD_TYPE_SANH_RONG:
+                                    gameResultInfos[id] = app.res.string('game_tlmn_sanh_rong')
+                                    break;
+                                case app.const.game.TLMN_CARD_TYPE_DONG_HOA:
+                                    gameResultInfos[id] = app.res.string('game_tlmn_dong_hoa')
+                                    break;
+                                case app.const.game.TLMN_CARD_TYPE_SAU_DOI_THONG:
+                                    gameResultInfos[id] = app.res.string('game_tlmn_sau_doi_thong')
+                                    break;
+                                case app.const.game.TLMN_CARD_TYPE_NAM_DOI_THONG:
+                                    gameResultInfos[id] = app.res.string('game_tlmn_nam_doi_thong')
+                                    break;
+                                case app.const.game.TLMN_CARD_TYPE_SAU_DOI:
+                                    gameResultInfos[id] = app.res.string('game_tlmn_sau_doi')
+                                    break;
+                                case app.const.game.TLMN_CARD_TYPE_BON_NHOM_BA:
+                                    gameResultInfos[id] = app.res.string('game_tlmn_sam_co')
+                                    break;
+                                case app.const.game.TLMN_CARD_TYPE_TU_QUY_HEO:
+                                    gameResultInfos[id] = app.res.string('game_tlmn_tu_quy_hai')
+                                    break;
+                            }
+                        }
+
+                        !gameResultInfos[id] && (gameResultInfos[id] = app.res.string('game_tlmn_an_trang'))
+
                         break;
                     case app.const.game.TLMN_WIN_TYPE_DUT_BA_BICH:
                         resultText = 'tlmn-dut-ba-bich'
