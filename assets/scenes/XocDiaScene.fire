@@ -12312,8 +12312,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 36,
-      "height": 36
+      "width": 34,
+      "height": 34
     },
     "_children": [],
     "_rotationX": 0,
@@ -12322,8 +12322,8 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": 20.5,
-      "y": 131
+      "x": 19.5,
+      "y": 129
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -12366,16 +12366,16 @@
     "_N$padding": 0,
     "_N$cellSize": {
       "__type__": "cc.Size",
-      "width": 36,
-      "height": 36
+      "width": 34,
+      "height": 34
     },
     "_N$startAxis": 0,
     "_N$paddingLeft": 2.5,
     "_N$paddingRight": 2,
-    "_N$paddingTop": 1,
+    "_N$paddingTop": 4,
     "_N$paddingBottom": 1,
-    "_N$spacingX": 2.5,
-    "_N$spacingY": 2,
+    "_N$spacingX": 5,
+    "_N$spacingY": 3,
     "_N$verticalDirection": 1,
     "_N$horizontalDirection": 0
   },

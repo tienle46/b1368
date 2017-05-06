@@ -1548,8 +1548,8 @@
       "__uuid__": "b2c0f634-158a-49ee-84f8-a41c8e7ebb56"
     },
     "_isSystemFontUsed": false,
-    "_N$string": "10.000",
-    "_N$horizontalAlign": 2,
+    "_N$string": "1000",
+    "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
     "_N$overflow": 2
   },

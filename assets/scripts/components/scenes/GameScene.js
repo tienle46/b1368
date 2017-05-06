@@ -189,18 +189,14 @@ export default class GameScene extends BaseScene {
                 return;
             }
 
-            assets.sort((a, b) => {
-                if(a.name < b.name) return -1;
-                if(a.name > b.name) return 1;
-                
-                return 0;
-            }).forEach((asset, index) => {
-                app.res.asset_tools[asset.name] = {
-                    id: index,
-                    name: asset.name,
-                    spriteFrame: asset
-                };
-            });
+            assets.sort((a, b) => (a.name > b.name) ? 1 : (a.name < b.name) ? -1 : 0)
+                .forEach((asset, index) => {
+                    app.res.asset_tools[asset.name] = {
+                        id: index,
+                        name: asset.name,
+                        spriteFrame: asset
+                    };
+                });
         });
     }
 
