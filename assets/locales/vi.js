@@ -64,6 +64,7 @@ export default {
     got_money: 'Đã nhận lại tiền',
     request_is_denied: 'Đã huỷ yêu cầu',
     sent: 'Đã gửi thưởng',
+    game_heo: 'heo',
     game_heo_den: 'heo đen',
     game_heo_do: 'heo đỏ',
     game_ba_doi_thong: '3 đôi thông',

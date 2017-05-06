@@ -149,7 +149,7 @@ export default class BoardTLMNDL extends BoardCardTurnBase {
 
         let winType = utils.getValue(data, Keywords.WIN_TYPE);
         let playersWinRanks = utils.getValue(data, Keywords.GAME_LIST_WIN);
-        let cardTypes = utils.getValue(data, Keywords.CARD_TYPES);
+        let cardTypes = utils.getValue(data, Keywords.CARD_TYPES, []);
         playerIds.forEach((id, i) => {
             let resultText = ''
             let cardType = cardTypes[i];
