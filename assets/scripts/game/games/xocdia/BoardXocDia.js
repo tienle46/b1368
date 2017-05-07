@@ -61,6 +61,7 @@ export default class BoardXocDia extends BoardCardBetTurn {
                     hiddenText = true;
                     break;
                 case app.const.game.state.STATE_BET:
+                    this.renderer.stopDishShakeAnim();
                     message = 'Đặt cược';
                     break;
                 default:
@@ -140,7 +141,6 @@ export default class BoardXocDia extends BoardCardBetTurn {
 
         super.onBoardEnding(data);
 
-        this.renderer.stopDishShakeAnim();
         let dots = utils.getValue(data, Keywords.XOCDIA_RESULT_END_PHASE);
         if (dots && dots.length > 0) {
             this.renderer && this.renderer.initDots(dots);
