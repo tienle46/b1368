@@ -196,6 +196,15 @@ app.const.game.XAM_XAM_TYPE_THU = 7;
 app.const.game.XAM_XAM_TYPE_DOI = 8;
 app.const.game.XAM_XAM_TYPE_MAU = 9;
 
+app.const.game.TLMN_CARD_TYPE_SANH_RONG_DONG_HOA = 8
+app.const.game.TLMN_CARD_TYPE_SANH_RONG = 7
+app.const.game.TLMN_CARD_TYPE_DONG_HOA = 6
+app.const.game.TLMN_CARD_TYPE_SAU_DOI_THONG = 5
+app.const.game.TLMN_CARD_TYPE_NAM_DOI_THONG = 4
+app.const.game.TLMN_CARD_TYPE_SAU_DOI = 3
+app.const.game.TLMN_CARD_TYPE_BON_NHOM_BA = 2
+app.const.game.TLMN_CARD_TYPE_TU_QUY_HEO = 1
+
 app.const.game.GENERAL_WIN_TYPE_NORMAL = 0;
 app.const.game.TLMN_WIN_TYPE_AN_TRANG = 1;
 app.const.game.TLMN_WIN_TYPE_LUNG = 2;

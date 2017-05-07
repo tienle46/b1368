@@ -9,7 +9,7 @@ import {Keywords} from 'core';
 import {Events} from 'events';
 import BoardCardTurnBase from 'BoardCardTurnBase';
 import PlayerSam from 'PlayerSam';
-import TLMNUtils from 'TLMNUtils';
+import SamUtils from 'SamUtils';
 import Card from 'Card';
 import BoardSamRenderer from 'BoardSamRenderer';
 
@@ -184,6 +184,7 @@ export default class BoardSam extends BoardCardTurnBase {
 
     _getGameResultInfos(playerIds = [], playerHandCards, data) {
 
+        let thoiData = this._getThoiData(data);
         let winType = utils.getValue(data, Keywords.WIN_TYPE);
         let playersWinRanks = utils.getValue(data, Keywords.GAME_LIST_WIN);
         let playersCardCounts = utils.getValue(data, Keywords.GAME_LIST_PLAYER_CARDS_SIZE);
@@ -252,7 +253,62 @@ export default class BoardSam extends BoardCardTurnBase {
             resultTexts[id] = resultText;
         });
 
+        Object.keys(thoiData).forEach(id => {
+            let { types, counts } = thoiData[id];
+
+            if (types && types.length > 0) {
+                let str = `${app.res.string('game_thoi')} `;
+
+                types.forEach((thoiType, i) => {
+
+                    let count = counts[i]
+                    if(count > 0){
+                        let typeName = "";
+                        switch (thoiType) {
+                            case SamUtils.THOI_TYPE_HEO:
+                                typeName = app.res.string('game_heo');
+                                break;
+                            case SamUtils.THOI_TYPE_TU_QUY:
+                                typeName = app.res.string('game_tu_quy');
+                                break;
+                        }
+
+                        let subfix = i < types.length - 1 ? ', ' : '';
+                        str += count > 0 ? `${counts[i]} ${typeName}${subfix}` : `${typeName}${subfix}`;
+                    }
+                });
+
+                gameResultInfos[id] = str + (!utils.isEmpty(gameResultInfos[id]) ? `, ${gameResultInfos[id]}` : '');
+            }
+        });
+
         return {resultTexts, gameResultInfos, winnerFlags};
+    }
+
+    _getThoiData(data) {
+        let thoiData = {};
+
+        let thoiPlayerIds = utils.getValue(data, Keywords.THOI_PLAYER_LIST);
+        if (thoiPlayerIds) {
+
+            let thoiTypeArrayIndex = 0;
+            const thoiPlayerTypesCount = utils.getValue(data, Keywords.THOI_PLAYER_TYPES_COUNT);
+            const thoiTypesArray = utils.getValue(data, Keywords.THOI_TYPES_ARRAY);
+            const thoiTypeCountArray = utils.getValue(data, Keywords.THOI_TYPE_COUNT);
+
+            thoiPlayerIds && thoiTypesArray && thoiPlayerIds.forEach((id, index) => {
+                let typeCount = thoiPlayerTypesCount[index];
+
+                let types = thoiTypesArray.slice(thoiTypeArrayIndex, thoiTypeArrayIndex + typeCount);
+                let counts = thoiTypeCountArray.slice(thoiTypeArrayIndex, thoiTypeArrayIndex + typeCount);
+
+                thoiData[id] = {types: types, counts: counts};
+
+                thoiTypeArrayIndex += typeCount;
+            });
+
+        }
+        return thoiData;
     }
 }
 
