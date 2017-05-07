@@ -33,6 +33,7 @@ class TabSMS extends PopupTabBody {
         };
 
         this._balanceChoosen = null;
+        
     }
 
     onLoad() {
@@ -40,10 +41,17 @@ class TabSMS extends PopupTabBody {
         
         this._smses = [];
         this._providers = {};
+        this._enabledTelco = [];
         
         this._showSMSLayoutPanel();
         
         this.receiverLbl.string = app.context.getMyInfo().name;
+    }
+    
+    onDestroy() {
+        this._enabledTelco = [];
+        this._smses = [];
+        this._providers = {};  
     }
     
     loadData() {
@@ -158,7 +166,6 @@ class TabSMS extends PopupTabBody {
         this.hideLoadingProgress();  
         // app.keywords.CHARGE_SMS_OBJECT
         this._smses = smses;
-        this._initProviderIcon(cardListIds, providerNames);
 
         if (Object.keys(smses).length > 0) {
             Object.keys(smses).forEach(key => {
@@ -173,10 +180,14 @@ class TabSMS extends PopupTabBody {
                         command = smsInfo.syntax,
                         telcoId = smsInfo.telcoId,
                         isChecked = i === 0;
-
+                    
+                    if(!app._.includes(this._enabledTelco, telcoId))
+                        this._enabledTelco.push(telcoId);
+                    
                     this._initItem(code, command, sendTo, moneySend, moneyGot, isChecked, moneyGot > moneySend, promoteDesc, telcoId);
                 });
             });
+            this._initProviderIcon(cardListIds, providerNames);
         }
     }
     
@@ -202,30 +213,33 @@ class TabSMS extends PopupTabBody {
     }
     
     _initProviderIcon(cardListIds, providerNames) {
-        if (cardListIds.length > 0) {
-            cardListIds.forEach((id, index) => {
-                let providerName = providerNames[index];
-                let activeState = `${providerName.toLowerCase()}-active`;
-                let inactiveState = `${providerName.toLowerCase()}-inactive`;
-
-                RubUtils.getSpriteFramesFromAtlas(app.res.ATLAS_URLS.PROVIDERS, [activeState, inactiveState], (sprites) => {
-                    this.activeStateSprite.spriteFrame = sprites[activeState];
-                    this.inActiveStateSprite.spriteFrame = sprites[inactiveState];
-
-                    let provider = cc.instantiate(this.providerItemNode);
-                    this.addNode(provider);
-                    provider.active = true;
-
-                    let toggle = provider.getComponent(cc.Toggle);
-                    toggle.isChecked = index == 0;
-                    toggle.telcoId = id;
+        if (this._enabledTelco.length > 0) {
+            this._enabledTelco.forEach(id => {
+                let index = cardListIds.findIndex(cardListId => cardListId === id);
+                if(index >= 0) {
+                    let providerName = providerNames[index];
+                    let activeState = `${providerName.toLowerCase()}-active`;
+                    let inactiveState = `${providerName.toLowerCase()}-inactive`;
                     
-                    if(!this._providers[id])
-                        this._providers[id] = {};
-                    this._providers[id] = toggle;
-                    
-                    this.providerContainerNode.addChild(provider);
-                });
+                    RubUtils.getSpriteFramesFromAtlas(app.res.ATLAS_URLS.PROVIDERS, [activeState, inactiveState], (sprites) => {
+                        this.activeStateSprite.spriteFrame = sprites[activeState];
+                        this.inActiveStateSprite.spriteFrame = sprites[inactiveState];
+
+                        let provider = cc.instantiate(this.providerItemNode);
+                        this.addNode(provider);
+                        provider.active = true;
+
+                        let toggle = provider.getComponent(cc.Toggle);
+                        toggle.isChecked = index == 0;
+                        toggle.telcoId = id;
+                        
+                        if(!this._providers[id])
+                            this._providers[id] = {};
+                        this._providers[id] = toggle;
+                        
+                        this.providerContainerNode.addChild(provider);
+                    });
+                }
             });
         }
     }
