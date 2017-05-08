@@ -212,9 +212,9 @@ export default class TabUserBank extends PopupTabBody {
             //this.hintRichText.string = `<outline width=2 color=#000>Số tiền rút tối thiểu: <color=#FF0000>${numberFormat(this._minTransfer)}</c>. Tối thiểu cần có <color=#FF0000> ${numberFormat(this._remainTransfer)} </c> trong tài khoản.</o>`;
         }
         if (data.times.length > 0) {
-                this.hideEmptyPage(this.p404);
-                this.gridNode.removeAllChildren();
-                this.initView({
+            this.hideEmptyPage(this.p404);
+            
+            this.initView({
                 data: ['Thời gian', 'Nội dung'],
                 options: {
                     fontColor: app.const.COLOR_YELLOW
@@ -231,7 +231,7 @@ export default class TabUserBank extends PopupTabBody {
                 }
             });
 
-            this.gridNode.addChild(this.getScrollViewNode());
+            !this.getScrollViewNode().isChildOf(this.gridNode) && this.gridNode.addChild(this.getScrollViewNode());
         } else {
             this.showEmptyPage(this.p404);
         }

@@ -77,7 +77,7 @@ class TabHistory extends PopupTabBody {
 
             this.initView(head, d, rubOptions);
 
-            this.bodyNode.addChild(this.getScrollViewNode());
+            !this.getScrollViewNode().isChildOf(this.bodyNode) && this.bodyNode.addChild(this.getScrollViewNode());
         } else {
             this.showEmptyPage(this.p404);
         }

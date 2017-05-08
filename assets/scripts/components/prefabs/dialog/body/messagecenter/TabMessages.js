@@ -16,7 +16,6 @@ export default class TabMessages extends PopupTabBody {
         };
         
         this._rendered = false;
-        this._childAdded = false;
     }
     
     onEnable() {
@@ -100,8 +99,8 @@ export default class TabMessages extends PopupTabBody {
             size: this.node.getContentSize(),
             isListView: true
         });
-        !this._childAdded && node.addChild(this.getScrollViewNode());
-        this._childAdded = true;
+        
+        !this.getScrollViewNode().isChildOf(this.bodyNode) && node.addChild(this.getScrollViewNode());
     }
     
     hide() {

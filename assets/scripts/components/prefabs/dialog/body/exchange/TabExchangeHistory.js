@@ -203,8 +203,8 @@ class TabExchangeHistory extends PopupTabBody {
             paging: { next, prev, context: this },
             size: this.bodyNode.getContentSize()
         });
-
-        this.bodyNode.addChild(this.getScrollViewNode());
+        
+        !this.getScrollViewNode().isChildOf(this.bodyNode) && this.bodyNode.addChild(this.getScrollViewNode());
     }
 }
 

@@ -84,7 +84,7 @@ class TabTopVip extends PopupTabBody {
         }, data, {
             size: this.contentNode.getContentSize(),
         });
-        this.contentNode.addChild(this.getScrollViewNode());
+        !this.getScrollViewNode().isChildOf(this.contentNode) && this.contentNode.addChild(this.getScrollViewNode());
     }
 }
 

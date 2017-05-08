@@ -48,8 +48,6 @@ export default class TabUserAchievements extends PopupTabBody {
     }
     
     _renderUserAchievements(res){
-        this.bodyNode.removeAllChildren();
-        
         let gameCodeList = res[app.keywords.GAME_CODE_LIST] || [];
         if (gameCodeList.length > 0) {
             this.loaded = true;
@@ -79,7 +77,7 @@ export default class TabUserAchievements extends PopupTabBody {
                 }
             });
             
-            this.bodyNode.addChild(this.getScrollViewNode());
+            !this.getScrollViewNode().isChildOf(this.bodyNode) && this.bodyNode.addChild(this.getScrollViewNode());
         } else {
             this.showEmptyPage(this.p404);
         }

@@ -70,7 +70,8 @@ class TabTransactionHistory extends DialogActor {
             });
 
             this.hideLoader();
-            this.node.addChild(this.getScrollViewNode());
+            
+            !this.getScrollViewNode().isChildOf(this.node) && this.node.addChild(this.getScrollViewNode());
 
         } else {
             this.showEmptyPage(this.p404);

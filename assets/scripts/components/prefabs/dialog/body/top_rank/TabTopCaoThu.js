@@ -149,7 +149,8 @@ class TabTopCaoThu extends PopupTabBody {
                 colors: ['', '', new cc.Color(255, 214, 0)]
             }
         });
-        this.contentNode.addChild(this.getScrollViewNode());
+        
+        !this.getScrollViewNode().isChildOf(this.contentNode) && this.contentNode.addChild(this.getScrollViewNode());
     }
 
     onPreviousBtnClick(page) {

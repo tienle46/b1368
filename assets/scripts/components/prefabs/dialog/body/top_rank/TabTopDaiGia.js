@@ -93,7 +93,7 @@ class TabTopDaiGia extends PopupTabBody {
 
         this.initView(head, data, rubOptions);
 
-        this.contentNode.addChild(this.getScrollViewNode());
+        !this.getScrollViewNode().isChildOf(this.contentNode) && this.contentNode.addChild(this.getScrollViewNode());
     }
 }
 

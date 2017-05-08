@@ -99,8 +99,8 @@ class TabAgency extends PopupTabBody {
                 widths: [260, '', '', '']
             }
         });
-
-        this.bodyNode.addChild(this.getScrollViewNode());
+        
+        !this.getScrollViewNode().isChildOf(this.bodyNode) && this.bodyNode.addChild(this.getScrollViewNode());
     }
 }
 
