@@ -253,6 +253,7 @@ Keywords.VARIABLE_GAME_INFO = "i";
  * chi co ready list neu dang o trang thai playing thi co modeling tuong ung
  */
 Keywords.GAME_LIST_PLAYER = "pl";
+Keywords.GOP_GA_WINNER = "gopGaWinner";
 /**
  * danh sach user ready
  */

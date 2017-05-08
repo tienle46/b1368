@@ -64,11 +64,15 @@ export default class Card extends ActionComponent {
         this.tapHighlightNode && this.tapHighlightNode.children.forEach(child => child.setAnchorPoint(anchorPoint.x, 0));
     }
 
-    setVisibleTapHighlightNode(visible){
+    setVisibleTapHighlightNode(visible, onClickIfVisible){
         CCUtils.setVisible(this.tapHighlightNode, visible);
         CCUtils.setVisible(this.highlightNode, visible);
 
-        !visible && this.setOnClickListener(null)
+        if(visible){
+            this.setOnClickListener(onClickIfVisible)
+        }else{
+            this.setOnClickListener(null)
+        }
 
         let animationComponent = this.tapHighlightNode && this.tapHighlightNode.getComponent(cc.Animation);
         animationComponent && (visible ? animationComponent.play() : animationComponent.stop())
@@ -117,6 +121,8 @@ export default class Card extends ActionComponent {
     createActionFromOriginalInfo(duration) {
         let actions = [];
         let { position, rotation, scale } = this.__originalInfo;
+
+        // console.log("__originalInfo: ", this.__originalInfo)
 
         if (position && (position != this.node.position)) {
             actions.push(cc.moveTo(duration, position.x, position.y));

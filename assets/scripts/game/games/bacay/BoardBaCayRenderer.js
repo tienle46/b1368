@@ -35,9 +35,10 @@ export default class BoardBaCayRenderer extends BoardCardBetTurnRenderer {
 
     setVisibleGopGaComponent(visible){
         utils.setVisible(this.gopGaNode, visible);
-        if(visible){
-            utils.setInteractable(this.gopGaButton, true);
-        }
+    }
+
+    setInteractableGopGaButton(interactable = true){
+        utils.setInteractable(this.gopGaButton, interactable);
     }
 
     setGopGaLabelValue(value){

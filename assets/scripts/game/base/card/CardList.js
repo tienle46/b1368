@@ -768,6 +768,8 @@ export default class CardList extends ActionComponent {
             reverse
         });
 
+        // console.log("this.isHidden: ", this.isHidden)
+
         if(this.isHidden){
 
             removedCards.forEach((card, index) => {
@@ -821,6 +823,8 @@ export default class CardList extends ActionComponent {
     }
 
     runCardActions(duration = CardList.TRANSFER_CARD_DURATION) {
+
+        // console.log("runCardActions: ", duration, )
 
         if (duration == 0) {
             this.updateFinalPosition();
@@ -988,7 +992,7 @@ CardList.HORIZONTAL = 1;
 CardList.VERTICAL = 2;
 CardList.DEFAULT_MAX_WIDTH = 600;
 CardList.DEFAULT_MAX_HEIGHT = 300;
-CardList.TRANSFER_CARD_DURATION = 0.3;
+CardList.TRANSFER_CARD_DURATION = 1.5;
 CardList.DRAW_CARD_DURATION = 0.4;
 CardList.CARD_FLIP_TIME = 0.5;
 

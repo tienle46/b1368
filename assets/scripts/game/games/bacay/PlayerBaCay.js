@@ -244,7 +244,7 @@ export default class PlayerBaCay extends PlayerCardBetTurn {
 
         if(state == app.const.game.state.STATE_BET && this.scene.gamePlayers.isMePlaying()) {
             this._onGameStateBet();
-            !this.isItMe() && this.isPlaying() && this.renderer.showCuocBienBtn();
+            !this.isItMe() && this.isPlaying() && !this.isMaster && this.renderer.showCuocBienBtn();
         }else{
             this.renderer.showCuocBienBtn(false);
             this.scene.hideChooseBetSlider();
