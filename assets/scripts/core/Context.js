@@ -16,10 +16,11 @@ class GameContext {
         this.rejoiningGame = false;
         this.selectedGame = null; // selected game code
         this.purchaseItems = []; // stringifyJSON array : [{id, receipt, username}]
-        this.unreadMessageBuddies = []; // selected game code
-        this.chattingBuddies = []; // selected game code
+        this.unreadMessageBuddies = []; // buddies unreaded messages 
+        this.chattingBuddies = []; // buddies chatting ...
         this.gameList = []; // selected game code
         this.requestRandomInvite = undefined; //In rejoin game case GameScene not asign to false when requestRandomInvite == undefined
+        this.ctl = null; 
     }
 
     reset() {
@@ -164,6 +165,10 @@ class GameContext {
 
     needUpdatePhoneNumber() {
         return this.getMe()[app.keywords.UPDATE_PHONE_NUMBER];
+    }
+    
+    setCtlData(data) {
+        this.ctl = data;
     }
 }
 

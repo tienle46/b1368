@@ -31,7 +31,10 @@ class TabIAP extends PopupTabBody {
         super.loadData();
         
         this.showLoadingProgress();
-        app.system.marker.initRequest(app.system.marker.TOPUP_DIALOG_CACHE_TAB_IAP, this._requestPaymentList.bind(this), this._renderIAP.bind(this))
+        if(!app.context.ctl)
+            app.system.marker.initRequest(app.system.marker.TOPUP_DIALOG_CACHE_TAB_IAP, this._requestPaymentList.bind(this), this._renderIAP.bind(this))
+        else
+            this._onUserGetIAPList(app.context.ctl, true);
         
         this._initIAP();
 
@@ -171,10 +174,10 @@ class TabIAP extends PopupTabBody {
         }
     }
     
-    _onUserGetIAPList(data) {
+    _onUserGetIAPList(data, hasCtl = false) {
         this.loadedData = true;
         let renderData = app.env.isAndroid() ? data[app.keywords.IN_BILLING_PURCHASE] : data[app.keywords.IN_APP_PURCHASE];
-        app.system.marker.renderRequest(app.system.marker.TOPUP_DIALOG_CACHE_TAB_IAP, renderData, this._renderIAP.bind(this));
+        hasCtl ? this._renderIAP(renderData) : app.system.marker.renderRequest(app.system.marker.TOPUP_DIALOG_CACHE_TAB_IAP, renderData, this._renderIAP.bind(this));
     }
 
     _initItem(balance, currency, price, productId) {

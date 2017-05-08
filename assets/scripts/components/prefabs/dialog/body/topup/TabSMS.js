@@ -60,7 +60,10 @@ class TabSMS extends PopupTabBody {
         super.loadData();
         
         this.showLoadingProgress();
-        app.system.marker.initRequest(app.system.marker.TOPUP_DIALOG_CACHE_TAB_SMS, this._requestPaymentList.bind(this), this._renderSMS.bind(this))
+        if(!app.context.ctl)
+            app.system.marker.initRequest(app.system.marker.TOPUP_DIALOG_CACHE_TAB_SMS, this._requestPaymentList.bind(this), this._renderSMS.bind(this))
+        else
+            this._onUserGetChargeList(app.context.ctl, true);
         
         return true;
     }
@@ -135,7 +138,7 @@ class TabSMS extends PopupTabBody {
         app.service.send(sendObject);
     }
 
-    _onUserGetChargeList(data) {
+    _onUserGetChargeList(data, hasCtl = false) {
         let cardListIds = data[app.keywords.EXCHANGE_LIST.RESPONSE.ITEM_ID_LIST] || [];
         let providerNames = data[app.keywords.TASK_NAME_LIST] || [];
         let renderData = {
@@ -145,7 +148,7 @@ class TabSMS extends PopupTabBody {
         };
         
         this.loadedData = true;
-        app.system.marker.renderRequest(app.system.marker.TOPUP_DIALOG_CACHE_TAB_SMS, renderData, this._renderSMS.bind(this));
+        hasCtl ? this._renderSMS(renderData) :  app.system.marker.renderRequest(app.system.marker.TOPUP_DIALOG_CACHE_TAB_SMS, renderData, this._renderSMS.bind(this));
     }
 
     _sendSMS(message, recipient) {

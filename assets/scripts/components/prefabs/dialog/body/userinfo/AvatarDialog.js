@@ -66,7 +66,6 @@ export default class AvatarDialog extends DialogActor {
                 thumb, large
             }
         };
-        console.debug(resObj);
         
         app.service.send(resObj);    
     }

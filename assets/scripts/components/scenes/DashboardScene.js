@@ -38,7 +38,8 @@ export default class DashboardScene extends BaseScene {
         this._requestListHu();
         
         this._getGamesListFromServer();
-
+        !app.context.ctl && this._requestCtl();
+        
         /**
          * set requestRandomInvite = true to make sure player only receive random invite on first time join game group
          */
@@ -87,16 +88,29 @@ export default class DashboardScene extends BaseScene {
         
         app.visibilityManager.goTo('TOPUP')
     }
-   _addGlobalListener() {
+    
+    _requestCtl() {
+        app.service.send({
+            'cmd': app.commands.USER_GET_CHARGE_LIST,
+        });
+    }
+    
+    _addGlobalListener() {
         super._addGlobalListener();
         app.system.addListener(app.commands.USER_LIST_GAME_CODE, this._onUserListGame, this);
+        app.system.addListener(app.commands.USER_GET_CHARGE_LIST, this._onUserGetChargeList, this);
     }
 
     _removeGlobalListener() {
         super._removeGlobalListener();
         app.system.removeListener(app.commands.USER_LIST_GAME_CODE, this._onUserListGame, this);
+        app.system.removeListener(app.commands.USER_GET_CHARGE_LIST, this._onUserGetChargeList, this);
     }
-
+    
+    _onUserGetChargeList(data) {
+        app.context.setCtlData(data);  
+    }
+    
     _getGamesListFromServer() {
         if (app.context.gameList.length == 0) {
             this.showLoading('Đang tải dữ liệu ....');
