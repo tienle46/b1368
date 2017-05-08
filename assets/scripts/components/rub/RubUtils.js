@@ -129,7 +129,6 @@ let RubUtils = {
                 return;
             // TODO fetch 404 (axios cannot run in mobile platform)
             if (app.env.isBrowser()) {
-                console.debug('resURL', resURL);
                 // therefore, 404 detector only runs on browser
                 axios.get(resURL).then(response => {
                     if (response.status == 200) {
