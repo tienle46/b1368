@@ -1,5 +1,6 @@
 import app from 'app';
 import PopupTabBody from 'PopupTabBody';
+import Utils from 'Utils';
 
 class TabHistory extends PopupTabBody {
     constructor() {
@@ -56,12 +57,14 @@ class TabHistory extends PopupTabBody {
     
     _renderHistory(histories) {
         this.hideEmptyPage(this.p404);
-        if (histories.length > 0) {
-            let d = [];
-            histories.map((history, index) => {
-                d.push([history.time.split(' ')[0], history.money, history.balance]);
-            });
-
+        let d = [];
+        
+        Object.values(histories).map((history, index) => {
+            let {time, balance, money} = history;
+            d.push([Utils.timeFormat(time), Utils.numberFormat(balance), Utils.numberFormat(money)]);
+        });
+        
+        if (d.length > 0) {
             let head = {
                 data: ['Thời gian', 'Nội dung', 'Trạng thái'],
                 options: {
@@ -71,7 +74,8 @@ class TabHistory extends PopupTabBody {
 
             let rubOptions = {
                 size: this.bodyNode.getContentSize(),
-                group: { widths: [250, '', 150] },
+                group: { widths: [200, '', 150] },
+                fontSize: 20,
                 isValidated: true
             };
 
