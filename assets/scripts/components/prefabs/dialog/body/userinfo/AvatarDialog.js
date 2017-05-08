@@ -41,10 +41,12 @@ export default class AvatarDialog extends DialogActor {
     
     onClickAvatarItem(toggle) {
         let node = toggle.node;
-        let {name, description, spriteFrame, url} = node.data;
+        let {name, description, spriteFrame, thumb, large} = node.data;
         this.pickedAvatarSprite.spriteFrame = spriteFrame;
         this.pickedAvatarLbl.string = name;
-        this.selectedURL = url;
+        this.selectedURL = {
+            thumb, large
+        };
         this.pickedAvatarDescription.string = description;
         
         let lbl = node.getComponentInChildren(cc.Label);
@@ -56,12 +58,15 @@ export default class AvatarDialog extends DialogActor {
     }
     
     onConfirmBtnClick() {
+        let {thumb, large} = this.selectedURL;
+        
         let resObj = {
             cmd: app.commands.CHANGE_AVATAR,
             data:{
-                [app.keywords.CHANGE_AVATAR_URL]: this.selectedURL
+                thumb, large
             }
         };
+        console.debug(resObj);
         
         app.service.send(resObj);    
     }
@@ -101,23 +106,28 @@ export default class AvatarDialog extends DialogActor {
     _onListUserAvatars(data) {
         let {avatarUrls} = data;
         avatarUrls && avatarUrls.forEach((avatar, index) => {
-            let {thumb, name, desc} = avatar;
+            let {thumb, large, name, desc} = avatar;
+            let url = thumb;
+            
             // this.itemAvatar.spriteFrame = HttpImageLoader.loadImage(url, 'AvatarDialog');
-            thumb && RubUtils.loadSpriteFrame(this.itemAvatar, thumb, null, true, (sprite) => {
+            url && RubUtils.loadSpriteFrame(this.itemAvatar, url, null, true, (sprite) => {
                 this.itemLbl.string = name;
                 let item = cc.instantiate(this.itemNode);
                 item.active = true;
-                item.data = {
-                    name,
-                    description: desc,
-                    spriteFrame: sprite.spriteFrame,
-                    url
-                };
-                
-                let toggle = item.getComponent(cc.Toggle);
-                if(toggle) {
-                    toggle.isChecked = index === 0;
-                    toggle.isChecked && this.onClickAvatarItem(toggle);
+                if(sprite){
+                    item.data = {
+                        name,
+                        description: desc,
+                        spriteFrame: sprite.spriteFrame,
+                        thumb,
+                        large
+                    };
+                    
+                    let toggle = item.getComponent(cc.Toggle);
+                    if(toggle) {
+                        toggle.isChecked = index === 0;
+                        toggle.isChecked && this.onClickAvatarItem(toggle);
+                    }
                 }
                 this.itemContainerNode.addChild(item);
             });

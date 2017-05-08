@@ -765,7 +765,7 @@ Keywords.GAME_ENABLE_MINBET_LIST = "embl";
 Keywords.CONFIG_DATA = "configData";
 Keywords.AMOUNT = "amount";
 
-Keywords.CHANGE_AVATAR_URL = "avatarUrl";
+Keywords.CHANGE_AVATAR_URL = "avatar";
 Keywords.CHANGE_AVATAR = "changeAvatar";
 
 Keywords.CARDS = "cards";

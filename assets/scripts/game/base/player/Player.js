@@ -253,7 +253,7 @@ export default class Player extends Actor {
 
     avatarClicked() {
         if (!this.isItMe()) {
-            let avatarURL = (this.user.variables && this.user.variables.avatarUrl && this.user.variables.avatarUrl.value) || app.config.defaultAvatarUrl;
+            let avatarURL = (this.user.variables && this.user.variables.avatar && this.user.variables.avatar.value && this.user.variables.avatar.value.large) || app.config.defaultAvatarUrl;
             let startNode = this.scene.gamePlayers.playerPositions.getPlayerAnchorByPlayerId(this.scene.gamePlayers.me.id, this.isItMe());
             this.renderer.showUserProfilePopup(this.scene.node, this.user.name, this.user.id, avatarURL, this.scene.gamePlayers.isOwner(this.scene.gamePlayers.me.id), startNode, this.node);
         }
@@ -292,7 +292,7 @@ export default class Player extends Actor {
     }
     
     _initPlayerAvatar() {
-        let avatarURL = (this.user.variables && this.user.variables.avatarUrl && this.user.variables.avatarUrl.value) || app.config.defaultAvatarUrl;
+        let avatarURL = (this.user.variables && this.user.variables.avatar && this.user.variables.avatar.value && this.user.variables.avatar.value.thumb) || app.config.defaultAvatarUrl;
         avatarURL && this.renderer.initPlayerAvatar(avatarURL, true);
     }
     
