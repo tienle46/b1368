@@ -5002,7 +5002,8 @@
     "unreadyButton": null,
     "startButton": {
       "__id__": 146
-    }
+    },
+    "waitButton": null
   },
   {
     "__type__": "cc.PrefabInfo",

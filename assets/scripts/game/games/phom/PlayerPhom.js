@@ -379,7 +379,7 @@ export default class PlayerPhom extends PlayerCardTurnBase {
             if (eatableCards.length > 0) {
                 this.renderer.cardList.setSelecteds(eatableCards, true)
                 this.renderer.cardList.setHighlight(eatableCards);
-                this.board.lastPlayedCard && this.board.lastPlayedCard.setVisibleTapHighlightNode(true)
+                this.board.lastPlayedCard && this.board.lastPlayedCard.setVisibleTapHighlightNode(true, () => this._onPlayerEatCard(this.scene.gamePlayers.me))
             }else{
                 this.renderer.cardList.clean();
             }
@@ -782,10 +782,14 @@ export default class PlayerPhom extends PlayerCardTurnBase {
 
     _onPlayerEatCard(player, checked = false) {
 
+        console.log("_onPlayerEatCard: ", checked, !player || !player.isPlaying())
+
         if(!checked && (!player || !player.isPlaying()) ) return;
 
         let eatable;
         let selectedCards = player.getSelectedCards();
+
+        console.log("selectedCards: ", selectedCards)
 
         if(selectedCards.length == 0){
             let eatableCards = PhomUtils.findBestEatableCards(player.renderer.cardList.cards, player.eatenCards, player.board.lastPlayedCard);
@@ -939,7 +943,7 @@ export default class PlayerPhom extends PlayerCardTurnBase {
 
                 if (eatable) {
                     this.renderer.cardList.setHighlight(selectedCards);
-                    this.board.lastPlayedCard && this.board.lastPlayedCard.setVisibleTapHighlightNode(true)
+                    this.board.lastPlayedCard && this.board.lastPlayedCard.setVisibleTapHighlightNode(true, () => this._onPlayerEatCard(this.scene.gamePlayers.me))
                 } else {
                     this.renderer.cardList.cleanHighlight();
                     this.board.lastPlayedCard && this.board.lastPlayedCard.setVisibleTapHighlightNode(false)

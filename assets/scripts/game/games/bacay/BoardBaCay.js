@@ -101,7 +101,7 @@ export default class BoardBaCay extends BoardCardBetTurn {
 
     _handleBaCayDownCardPhrase(data) {
 
-        this._showGopGa(false);
+        // this._showGopGa(false);
 
         let playerIds = utils.getValue(data, app.keywords.GAME_LIST_PLAYER);
         let handCardBytes = utils.getValue(data, app.keywords.GAME_LIST_CARD);
@@ -164,7 +164,7 @@ export default class BoardBaCay extends BoardCardBetTurn {
 
     onBoardEnding(data) {
 
-        this._showGopGa(false);
+        // this._showGopGa(false);
 
         let playerIds = utils.getValue(data, Keywords.GAME_LIST_PLAYER, []);
         let playingPlayerIds = this.scene.gamePlayers.filterPlayingPlayer(playerIds);
@@ -191,12 +191,24 @@ export default class BoardBaCay extends BoardCardBetTurn {
             return model;
         });
 
+        let gopGaWinner = utils.getValue(data, Keywords.GOP_GA_WINNER, 0)
+        this._playGopGaWinnerAnimation(gopGaWinner)
+
+
         // setTimeout(() => this.scene.showGameResult(models, (shownTime) => {
         //     let remainTime = this.timelineRemain - shownTime;
         //     if (remainTime > 0 && this.scene.isEnding()) {
         //         this._startEndBoardTimeLine(remainTime);
         //     }
         // }), 500);
+    }
+
+    _playGopGaWinnerAnimation(gopGaWinnerId){
+        let gopGaWinnerPlayer = gopGaWinnerId <= 0 ? undefined : this.scene.gamePlayers.findPlayer(gopGaWinnerId)
+        this.renderer.setGopGaLabelValue(0)
+        if(gopGaWinnerPlayer){
+            GameAnim.flyTo({fromNode: this.renderer.gopGaCoinNode, toNode: gopGaWinnerPlayer.node, amount: 3, prefab: this.renderer.chipPrefab});
+        }
     }
 
     _getGameResultInfos(playerIds = [], playerHandCards, data) {
@@ -262,7 +274,8 @@ export default class BoardBaCay extends BoardCardBetTurn {
     }
 
     _showGopGa(visible){
-         this.renderer.setVisibleGopGaComponent(visible && this.scene.gamePlayers.isMePlaying());
+         this.renderer.setVisibleGopGaComponent(visible /*&& this.scene.gamePlayers.isMePlaying()*/);
+         this.renderer.setInteractableGopGaButton(true);
     }
 
     _addToGopGaValue(player, gopGaValue){
