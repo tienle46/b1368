@@ -38,7 +38,7 @@ class BottomBar extends Actor { // bottombar <- STUFF (visibility via manager) -
     }
     
     onHotLineBtnClick() {
-        cc.sys.openURL(`tel:${this.supportPhoneNumberLbl.string}`);    
+        cc.sys.openURL(`tel:${app.config.supportHotline}`);    
     }
     
     onClickEventAction() {

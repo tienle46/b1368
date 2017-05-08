@@ -101,10 +101,9 @@ export default class AvatarDialog extends DialogActor {
     _onListUserAvatars(data) {
         let {avatarUrls} = data;
         avatarUrls && avatarUrls.forEach((avatar, index) => {
-            let {url, name, desc} = avatar;
-            
+            let {thumb, name, desc} = avatar;
             // this.itemAvatar.spriteFrame = HttpImageLoader.loadImage(url, 'AvatarDialog');
-            RubUtils.loadSpriteFrame(this.itemAvatar, url, null, true, (sprite) => {
+            thumb && RubUtils.loadSpriteFrame(this.itemAvatar, thumb, null, true, (sprite) => {
                 this.itemLbl.string = name;
                 let item = cc.instantiate(this.itemNode);
                 item.active = true;
@@ -122,22 +121,6 @@ export default class AvatarDialog extends DialogActor {
                 }
                 this.itemContainerNode.addChild(item);
             });
-            // this.itemLbl.string = name;
-            // let item = cc.instantiate(this.itemNode);
-            // item.active = true;
-            // item.data = {
-            //     name,
-            //     description: desc,
-            //     spriteFrame: this.itemAvatar.spriteFrame,
-            //     url
-            // };
-            
-            // let toggle = item.getComponent(cc.Toggle);
-            // if(toggle) {
-            //     toggle.isChecked = index === 0;
-            //     toggle.isChecked && this.onClickAvatarItem(toggle);
-            // }
-            // this.itemContainerNode.addChild(item);
         })    
     }
     

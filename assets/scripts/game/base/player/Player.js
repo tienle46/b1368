@@ -293,7 +293,7 @@ export default class Player extends Actor {
     
     _initPlayerAvatar() {
         let avatarURL = (this.user.variables && this.user.variables.avatarUrl && this.user.variables.avatarUrl.value) || app.config.defaultAvatarUrl;
-        avatarURL && this.renderer.initPlayerAvatar(avatarURL);
+        avatarURL && this.renderer.initPlayerAvatar(avatarURL, true);
     }
     
     setOwner(isOwner) {

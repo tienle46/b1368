@@ -91,7 +91,7 @@ class GameContext {
 
     getMyInfo() {
         let me = this.getMe();
-
+        
         let vipLevel =  Utils.getVariable(me, app.keywords.VIP_LEVEL, {});
         return me ? {
             "id": me.id,
@@ -99,14 +99,14 @@ class GameContext {
             "name": me.name,
             "coin": Utils.getVariable(me, 'coin', 0),
             "level": me.variables.lv,
-            "avatarUrl": Utils.getVariable(me, 'avatarUrl', null),
+            "avatar": Utils.getVariable(me, 'avatar', {}),
             "displayName": Utils.getVariable(me, 'displayName', me.name),
             "vipLevel": vipLevel.name || ""
         } : {};
     }
     
-    getUserAvatar(spriteComponent) {
-        let url = app.context.getMyInfo().avatarUrl ? app.context.getMyInfo().avatarUrl : app.config.defaultAvatarUrl;
+    getUserAvatar(spriteComponent, isThumb = false) {
+        let url = app.context.getMyInfo()['avatar'][isThumb ? 'large' : 'thumb'] ? app.context.getMyInfo()['avatar'][isThumb ? 'large' : 'thumb'] : app.config.defaultAvatarUrl;
         this.loadUserAvatarByURL(url, spriteComponent);
     }
     

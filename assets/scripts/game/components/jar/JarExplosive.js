@@ -36,27 +36,11 @@ export default class JarExplosive extends Actor {
     }
     
     onShareBtnClick() {
-        if(app.env.isBrowser()){
-            window.FB.ui({
-                method: 'share_open_graph',
-                action_type: 'og.likes',
-                action_properties: JSON.stringify({
-                    object: '....',
-                })
-            }, function(response) {
-                console.log('response', response);
-            });
-        }
-        else if (app.env.isMobile()){
-            cc.log(`share on mobile`);
-            var info = new Object();
-            info.type  = "link";
-            info.link  = "http://b1368.com";
-            info.title = "Bài 1368";
-            info.text  = "Chơi miễn phí, rinh tiền tỉ";
-            info.image = "http://cocos2d-x.org/images/logo.png";
-            window.sdkbox.PluginFacebook.dialog(info);
-        }  
+        app.facebookActions.share({
+            link: 'http://b1368.com',
+            text: 'Nổ hũ, Chơi miễn phí, rinh tiền tỉ',
+            image: 'http://cocos2d-x.org/images/logo.png'
+        });
     }
     
     activeBtnComponent() {

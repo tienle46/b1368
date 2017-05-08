@@ -36,7 +36,7 @@ app.config.fbVersion = 'v2.8';
 app.config.fbScope = 'public_profile,email,user_friends';
 
 app.config.fanpage = `https://www.messenger.com/t/${app.config.fbAppId}`;
-app.config.supportHotline = '0983.369.898';
+app.config.supportHotline = '123456';
 app.config.defaultMinBalanceJoinGameRoomMultiple = 10;
 app.config.defaultAvatarUrl = "";
 

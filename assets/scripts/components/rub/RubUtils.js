@@ -127,9 +127,9 @@ let RubUtils = {
         if (isCORS) {
             if (!resURL.match(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/))
                 return;
-            
             // TODO fetch 404 (axios cannot run in mobile platform)
             if (app.env.isBrowser()) {
+                console.debug('resURL', resURL);
                 // therefore, 404 detector only runs on browser
                 axios.get(resURL).then(response => {
                     if (response.status == 200) {
