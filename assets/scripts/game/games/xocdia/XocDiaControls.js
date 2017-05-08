@@ -136,7 +136,6 @@ export default class XocDiaControls extends GameControls {
             //     bet.b *= 2;
             //     return bet;
             // });
-            console.debug('x2', this.betData);
             let data = this.betData;
             this._sendBetRequest(data);
         }
@@ -173,7 +172,6 @@ export default class XocDiaControls extends GameControls {
      */
     _groupBetByType(array) {
         let groupObject = array.reduce((obj, bet) => {
-            console.debug('obj, bet', obj, bet);
             obj[bet.bo] = obj[bet.bo] || 0;
             obj[bet.bo] += Number(bet.b);
             return obj;
@@ -251,7 +249,6 @@ export default class XocDiaControls extends GameControls {
             } else {
                 this.betData = this._addBetDataToArray(this.betData, betsList);
             }
-            console.debug('_onPlayerTossChip', this.betData);
         }
         
         let len = betsList.length;

@@ -50,20 +50,25 @@ class BuddyListTabBody extends PopupTabBody {
     }
 
     loadData() {
+        if(Object.keys(this._data).length > 0)
+            return false;
+        
         this.loadBuddyInfo();
         return false;
     }
 
     onDataChanged({ balances = [], buddyNames = [] } = {}) {
-
-        if (buddyNames.length == 0) return;
-
+        if (buddyNames.length === 0) return;
+        
         buddyNames.forEach((buddyName, index) => {
             let buddy = app.buddyManager.getBuddyByName(buddyName);
             buddy && (buddy.balance = balances[index]);
 
             let buddyItem = this._findCurrentBuddyItem(buddy);
             buddyItem && buddyItem.onBuddyChanged();
+            let unreadMessage = app.context.unreadMessageBuddies.find(message => message.buddyName === buddyName);
+            if(unreadMessage)
+                buddyItem.showNotify(unreadMessage.count);
         });
     }
 
@@ -106,6 +111,7 @@ class BuddyListTabBody extends PopupTabBody {
         app.system.addListener(Events.ON_BUDDY_LIST_UPDATE, this._onBuddyListUpdate, this);
         app.system.addListener(Events.ON_BUDDY_BLOCK_STATE_CHANGE, this._onBuddyBlockStateChange, this);
         app.system.addListener(Events.ON_BUDDY_ONLINE_STATE_CHANGED, this._onBuddyOnlineStateChange, this);
+        app.system.addListener(Events.ON_BUDDY_MESSAGE, this._onBuddyMessage, this);
     }
 
     _removeGlobalListener() {
@@ -115,8 +121,17 @@ class BuddyListTabBody extends PopupTabBody {
         app.system.removeListener(Events.ON_BUDDY_LIST_UPDATE, this._onBuddyListUpdate, this);
         app.system.removeListener(Events.ON_BUDDY_BLOCK_STATE_CHANGE, this._onBuddyBlockStateChange, this);
         app.system.removeListener(Events.ON_BUDDY_ONLINE_STATE_CHANGED, this._onBuddyOnlineStateChange, this);
+        app.system.removeListener(Events.ON_BUDDY_MESSAGE, this._onBuddyMessage, this);
     }
-
+    
+    _onBuddyMessage(senderName, toBuddyName, message, isItMe) {
+        if(isItMe) return;
+        
+        let unreadMessage = app.context.unreadMessageBuddies.find(message => message.buddyName === senderName);
+        if(unreadMessage)
+            buddyItem.showNotify(unreadMessage.count);
+    }
+    
     _onBuddyOnlineStateChange(isOnline, isItMe, buddy) {
         if (!isItMe) {
             let buddyItem = this._findCurrentBuddyItem(buddy);

@@ -12,6 +12,7 @@ class BottomBar extends Actor { // bottombar <- STUFF (visibility via manager) -
             highLightNode: cc.Node,
             titleContainerNode: cc.Node,
             supportPhoneNumberLbl: cc.Label,
+            hotlineBtn: cc.Button,
             eventBtnNode: cc.Node
         }
 
@@ -35,7 +36,11 @@ class BottomBar extends Actor { // bottombar <- STUFF (visibility via manager) -
             this.intervalTimer = null;
         }
     }
-
+    
+    onHotLineBtnClick() {
+        cc.sys.openURL(`tel:${this.supportPhoneNumberLbl.string}`);    
+    }
+    
     onClickEventAction() {
         app.visibilityManager.goTo(Linking.ACTION_EVENT);
     }

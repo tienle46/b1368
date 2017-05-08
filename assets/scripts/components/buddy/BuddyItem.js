@@ -7,6 +7,7 @@ import utils from 'utils';
 import PopupTabBody from 'PopupTabBody';
 import CCUtils from 'CCUtils';
 import HttpImageLoader from 'HttpImageLoader';
+import Events from 'Events';
 
 class BuddyItem extends PopupTabBody {
 
@@ -26,15 +27,17 @@ class BuddyItem extends PopupTabBody {
             lockedNode: cc.Node,
             avatarNode: cc.Node,
             avatarSpriteNode: cc.Node,
+            notificationNode: cc.Node,
+            notificationCount: cc.Label,
         }
 
         this.online = false;
         this.selected = false;
         this.name = "";
         this.isLoaded = false;
-        this.buddy = null,
-            this.buddyMenu = null,
-            this.onClickChatListener = null;
+        this.buddy = null;
+        this.buddyMenu = null;
+        this.onClickChatListener = null;
         this.onClickTransferListener = null;
         this.locked = false;
     }
@@ -77,7 +80,21 @@ class BuddyItem extends PopupTabBody {
         this.onClickChatListener = null;
         this.onClickTransferListener = null;
     }
-
+    
+    showNotify(count) {
+        this.notificationCount.string = count;    
+        
+        if(count > 0) {
+            utils.active(this.notificationNode);
+        } else {
+            this.hideNotify();
+        }
+    }
+    
+    hideNotify() {
+        utils.deactive(this.notificationNode);
+    }
+    
     setBuddyMenu(buddyMenu) {
         this.buddyMenu = buddyMenu;
     }
@@ -138,6 +155,8 @@ class BuddyItem extends PopupTabBody {
 
     onClickChatButton() {
         this._hideMenu();
+        this.hideNotify();
+        
         this.onClickChatListener && this.onClickChatListener(this.buddy);
     }
 

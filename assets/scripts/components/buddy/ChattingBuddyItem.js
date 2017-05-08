@@ -45,7 +45,6 @@ class ChattingBuddyItem extends Component {
 
     start() {
         super.start()
-        HttpImageLoader.loadDefaultAvatar(this.avatarSpriteNode.getComponent(cc.Sprite));
     }
 
     onDestroy() {
@@ -77,7 +76,9 @@ class ChattingBuddyItem extends Component {
 
         if (this.buddy) {
             this.nameLabel.string = this.buddy.name;
-
+            
+            app.context.getUserAvatar(this.avatarSpriteNode.getComponent(cc.Sprite));
+            
             if (this.buddy.isOnline()) {
                 utils.setVisible(this.onlineNode, true)
                 utils.setVisible(this.offlineNode, false)

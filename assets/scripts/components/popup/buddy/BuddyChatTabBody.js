@@ -6,7 +6,7 @@ import app from 'app';
 import utils from 'utils';
 import PopupTabBody from 'PopupTabBody';
 import Events from 'Events';
-import { destroy } from 'CCUtils';
+import CCUtils, { destroy } from 'CCUtils';
 
 class BuddyChatTabBody extends PopupTabBody {
 
@@ -248,6 +248,8 @@ class BuddyChatTabBody extends PopupTabBody {
     }
 
     loadData() {
+        if(Object.keys(this._data).length > 0)
+            return false;
         this.setLoadedData({ chattingBuddies: app.context.chattingBuddies }, false);
     }
 

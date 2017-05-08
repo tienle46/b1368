@@ -52,15 +52,17 @@ class GameContext {
     addToUnreadMessageBuddies(buddyName) {
         if (!buddyName) return;
 
-        let index = this.unreadMessageBuddies.indexOf(buddyName);
+        let index = this.unreadMessageBuddies.findIndex(message => message.buddyName === buddyName);
         if (index < 0) {
-            this.unreadMessageBuddies.push(buddyName);
+            this.unreadMessageBuddies.push({buddyName, count: 1});
             app.system.emit(Events.ON_BUDDY_UNREAD_MESSAGE_COUNT_CHANGED, this.unreadMessageBuddies.length);
+        } else {
+            this.unreadMessageBuddies[index].count += 1;
         }
     }
 
     removeUnreadMessageBuddies(buddyName) {
-        let index = this.unreadMessageBuddies.indexOf(buddyName);
+        let index = this.unreadMessageBuddies.findIndex(message => message.buddyName === buddyName);
         if (index >= 0) {
             this.unreadMessageBuddies.splice(index, 1);
             app.system.emit(Events.ON_BUDDY_UNREAD_MESSAGE_COUNT_CHANGED, this.unreadMessageBuddies.length);
