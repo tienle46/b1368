@@ -131,13 +131,28 @@
                 <key>spriteOffset</key>
                 <string>{0,0}</string>
                 <key>spriteSize</key>
-                <string>{306,306}</string>
+                <string>{306,310}</string>
                 <key>spriteSourceSize</key>
                 <string>{330,330}</string>
                 <key>textureRect</key>
-                <string>{{631,617},{306,306}}</string>
+                <string>{{631,617},{306,310}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
+            </dict>
+            <key>taixiu_ico.png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{0,0}</string>
+                <key>spriteSize</key>
+                <string>{306,316}</string>
+                <key>spriteSourceSize</key>
+                <string>{330,330}</string>
+                <key>textureRect</key>
+                <string>{{1,925},{306,316}}</string>
+                <key>textureRotated</key>
+                <true/>
             </dict>
             <key>tlmn_dl_ico.png</key>
             <dict>
@@ -150,7 +165,7 @@
                 <key>spriteSourceSize</key>
                 <string>{330,330}</string>
                 <key>textureRect</key>
-                <string>{{1,925},{306,314}}</string>
+                <string>{{319,925},{306,314}}</string>
                 <key>textureRotated</key>
                 <true/>
             </dict>
@@ -159,15 +174,15 @@
                 <key>aliases</key>
                 <array/>
                 <key>spriteOffset</key>
-                <string>{0,1}</string>
+                <string>{0,0}</string>
                 <key>spriteSize</key>
-                <string>{306,314}</string>
+                <string>{306,306}</string>
                 <key>spriteSourceSize</key>
                 <string>{330,330}</string>
                 <key>textureRect</key>
-                <string>{{317,925},{306,314}}</string>
+                <string>{{635,925},{306,306}}</string>
                 <key>textureRotated</key>
-                <true/>
+                <false/>
             </dict>
             <key>tlmn_ico.png</key>
             <dict>
@@ -210,7 +225,7 @@
                 <key>spriteSourceSize</key>
                 <string>{330,330}</string>
                 <key>textureRect</key>
-                <string>{{633,925},{306,306}}</string>
+                <string>{{647,1233},{306,306}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -226,9 +241,9 @@
             <key>realTextureFileName</key>
             <string>game_icons.png</string>
             <key>size</key>
-            <string>{952,1540}</string>
+            <string>{954,1540}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:120675ef6d76fd401252b5f7d57479f5:852ae67583ba2de2986cd274fe7368db:0b0b727a51cfcb9681e5e514ee1d2ffd$</string>
+            <string>$TexturePacker:SmartUpdate:812362387d7c2de3111097e638d4c27d:9f109571241b326b6f5fe189b5c3ce58:0b0b727a51cfcb9681e5e514ee1d2ffd$</string>
             <key>textureFileName</key>
             <string>game_icons.png</string>
         </dict>
