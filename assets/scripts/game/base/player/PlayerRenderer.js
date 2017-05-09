@@ -127,7 +127,7 @@ export default class PlayerRenderer extends ActorRenderer {
         if (!this.loaded || isNaN(balance) || balance == 0) return;
 
         let isWinner = balance > 0;
-        let balanceStr = utils.formatNumberType2(balance);
+        let balanceStr = GameUtils.formatBalanceShort(balance);
 
         if (this.plusBalanceLabel && this.plusBalanceNode && this.minusBalanceLabel) {
             this.minusBalanceLabel.string = "";

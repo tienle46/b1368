@@ -6,8 +6,8 @@ import utils from 'utils';
 import app from 'app';
 import CCUtils from 'CCUtils';
 import CardList from 'CardList';
+import GameUtils from 'GameUtils';
 import PlayerCardBetTurnRenderer from 'PlayerCardBetTurnRenderer';
-import GameUtils from "../../base/utils/GameUtils";
 import GameAnim from "../../components/anim/GameAnim";
 import * as Events from "../../../core/Events";
 
@@ -142,7 +142,7 @@ export default class PlayerBaCayRenderer extends PlayerCardBetTurnRenderer {
 
     showCuocBienValue(value){
         utils.active(this.cuocBienNode);
-        this.cuocBienLabel.string = `${utils.formatNumberType1(value)}`;
+        this.cuocBienLabel.string = `${GameUtils.formatBalanceShort(value)}`;
     }
 
     hideCuocBienValue(){
@@ -151,7 +151,7 @@ export default class PlayerBaCayRenderer extends PlayerCardBetTurnRenderer {
     }
 
     showBetAmount(amount){
-        let formatted = utils.formatNumberType1(amount);
+        let formatted = GameUtils.formatBalanceShort(amount);
         this.betLabel.string = `${formatted}`;
     }
 

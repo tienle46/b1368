@@ -18,6 +18,52 @@ export default class GameUtils {
         return utils.isNumber(balance) ? numeral(balance).format((balance < 1000000 ? '0,0' : '0.00a')) : "";
     }
 
+    static formatNumberType1(value = 0) {
+        return value <= 9999 && value >= -9999 ? value : numeral(value).format('00.0a');
+    }
+
+    static formatNumberType2(value = 0) {
+        return value <= 99999 && value >= -99999 ? value : numeral(value).format('00.0a');
+    }
+
+    static formatBalanceShort(balance) {
+
+        if(isNaN(balance)) return ""
+
+        let sign = ''
+        let formatted = ''
+
+        if(balance < 0){
+            sign = '-'
+            balance = Math.abs(balance)
+        }
+
+        if(balance <= 9999){
+            formatted = balance
+        }else if(balance <= 99999){
+            let adj = parseInt((balance / 1000 - parseInt(balance / 1000)) * 10)
+            formatted = adj == 0 ? `${parseInt(balance / 1000)}k` : `${parseInt(balance / 1000)}.${adj}k`
+        }else if(balance <= 999999){
+            formatted = `0.${parseInt((balance / 1000000 - parseInt(balance / 1000000)) * 100)}m`
+        }else{
+            let adj = parseInt((balance / 1000000 - parseInt(balance / 1000000)) * 10)
+            formatted = adj == 0 ? `${parseInt(balance / 1000000)}m` : `${parseInt(balance / 1000000)}.${adj}m`
+        }
+
+        return sign + formatted
+    }
+
+    static formatBalanceWithSign(balance) {
+
+        if(isNaN(balance)) return ""
+
+        if(balance > 0){
+            return '+' + this.formatBalanceShort(balance)
+        }else{
+            return this.formatBalanceShort(balance)
+        }
+    }
+
     static toChangedBalanceString(changeAmount) {
         return isNaN(changeAmount) ? '' : changeAmount > 0 ? `+${changeAmount}` : `${changeAmount}`;
     }

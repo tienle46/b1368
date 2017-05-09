@@ -50,7 +50,7 @@ export default class Card extends ActionComponent {
                     button.duration = 0.08;
                 }else{
                     button.transition = cc.Button.Transition.NONE
-                    this.finishCardAction()
+                    // this.finishCardAction()
                 }
             }
         }else{

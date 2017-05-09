@@ -4,6 +4,7 @@
 
 import app from 'app';
 import utils from 'utils';
+import GameUtils from 'GameUtils';
 import BoardRenderer from 'BoardRenderer';
 import BoardCardRenderer from 'BoardCardRenderer';
 import BoardCardBetTurnRenderer from 'BoardCardBetTurnRenderer';
@@ -42,7 +43,7 @@ export default class BoardBaCayRenderer extends BoardCardBetTurnRenderer {
     }
 
     setGopGaLabelValue(value){
-        this.gopGaLabel.string = `${utils.formatNumberType1(value)}`;
+        this.gopGaLabel.string = `${GameUtils.formatBalanceShort(value)}`;
     }
 
     disableGopGaValue(disable = true){

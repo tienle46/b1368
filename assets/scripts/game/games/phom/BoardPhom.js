@@ -313,7 +313,7 @@ export default class BoardPhom extends BoardCardTurnBase {
                         resultText = 'phom-u-den';
                         break;
                     case app.const.game.PHOM_WIN_TYPE_U_KHAN:
-                        resultText = 'thang';
+                        resultText = 'phom-u-khan';
                         break;
                     case app.const.game.PHOM_WIN_TYPE_U_TRON:
                         resultText = 'phom-u-tron';
