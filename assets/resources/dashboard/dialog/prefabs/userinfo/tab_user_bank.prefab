@@ -897,7 +897,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 138.6,
+      "width": 141.62,
       "height": 35
     },
     "_children": [],
@@ -1204,7 +1204,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 93.3,
+      "width": 96.32,
       "height": 35
     },
     "_children": [],
@@ -2742,7 +2742,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 204.78,
+      "width": 210.96,
       "height": 40
     },
     "_children": [
@@ -2810,7 +2810,7 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": 208.2,
+      "x": 212.3,
       "y": 3.5
     },
     "_skewX": 0,
@@ -2920,7 +2920,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 172.65,
+      "width": 178.83,
       "height": 40
     },
     "_children": [
@@ -2988,7 +2988,7 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": 177.1,
+      "x": 179.4,
       "y": 1.5
     },
     "_skewX": 0,
@@ -3659,7 +3659,7 @@
       "b": 255,
       "a": 255
     },
-    "_N$placeholder": "Sốchip chuyển",
+    "_N$placeholder": "Số chip chuyển",
     "_N$placeholderFontSize": 20,
     "_N$placeholderFontColor": {
       "__type__": "cc.Color",
@@ -5671,7 +5671,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 247.02,
+      "width": 253.2,
       "height": 40
     },
     "_children": [
