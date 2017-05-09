@@ -129,7 +129,7 @@ export default class PhomListComponent extends Component {
                     card.locked = ArrayUtils.contains(eatenCards, card)
                 })
                 phom && phom.setCards(phomModel.cards);
-
+                phomModel.renderComponent = phom;
             }
         })
     }

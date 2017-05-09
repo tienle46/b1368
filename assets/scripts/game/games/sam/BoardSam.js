@@ -195,6 +195,7 @@ export default class BoardSam extends BoardCardTurnBase {
          * @type {Array}
          */
         let resultTexts = {};
+        let antrangTypes = {};
         let winnerFlags = {};
         let gameResultInfos = {};
         playerIds.forEach((id, i) => {
@@ -205,11 +206,13 @@ export default class BoardSam extends BoardCardTurnBase {
                         resultText = 'tlmn-an-trang'
                         winnerFlags[id] = true;
                         gameResultInfos[id] = app.res.string('game_tlmn_an_trang')
+                        antrangTypes[id] = true
                         break;
                     case app.const.game.XAM_WIN_TYPE_THANG_XAM:
                         resultText = 'sam-thang-sam'
                         winnerFlags[id] = true;
                         gameResultInfos[id] = app.res.string('game_sam_thang_sam')
+                        antrangTypes[id] = true
                         break;
                     case app.const.game.XAM_WIN_TYPE_DEN_XAM:
                         resultText = 'sam-den-sam'
@@ -254,31 +257,35 @@ export default class BoardSam extends BoardCardTurnBase {
         });
 
         Object.keys(thoiData).forEach(id => {
-            let { types, counts } = thoiData[id];
 
-            if (types && types.length > 0) {
-                let str = `${app.res.string('game_thoi')} `;
+            if (!denOrThangXamPlayerId) {
 
-                types.forEach((thoiType, i) => {
+                let {types, counts} = thoiData[id];
 
-                    let count = counts[i]
-                    if(count > 0){
-                        let typeName = "";
-                        switch (thoiType) {
-                            case SamUtils.THOI_TYPE_HEO:
-                                typeName = app.res.string('game_heo');
-                                break;
-                            case SamUtils.THOI_TYPE_TU_QUY:
-                                typeName = app.res.string('game_tu_quy');
-                                break;
+                if (types && types.length > 0) {
+                    let str = `${app.res.string('game_thoi')} `;
+
+                    types.forEach((thoiType, i) => {
+
+                        let count = counts[i]
+                        if (count > 0) {
+                            let typeName = "";
+                            switch (thoiType) {
+                                case SamUtils.THOI_TYPE_HEO:
+                                    typeName = app.res.string('game_heo');
+                                    break;
+                                case SamUtils.THOI_TYPE_TU_QUY:
+                                    typeName = app.res.string('game_tu_quy');
+                                    break;
+                            }
+
+                            let subfix = i < types.length - 1 ? ', ' : '';
+                            str += count > 0 ? `${counts[i]} ${typeName}${subfix}` : `${typeName}${subfix}`;
                         }
+                    });
 
-                        let subfix = i < types.length - 1 ? ', ' : '';
-                        str += count > 0 ? `${counts[i]} ${typeName}${subfix}` : `${typeName}${subfix}`;
-                    }
-                });
-
-                gameResultInfos[id] = str + (!utils.isEmpty(gameResultInfos[id]) ? `, ${gameResultInfos[id]}` : '');
+                    gameResultInfos[id] = str + (!utils.isEmpty(gameResultInfos[id]) ? `, ${gameResultInfos[id]}` : '');
+                }
             }
         });
 

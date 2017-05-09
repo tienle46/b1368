@@ -275,7 +275,6 @@ export default class PlayerPhom extends PlayerCardTurnBase {
     _onGameRejoin(data) {
         super._onGameRejoin(data);
 
-
         this.eatenCards.forEach(card => {
             let cardInHand = ArrayUtils.findFirst(this.renderer.cardList.cards, card);
             cardInHand && PhomUtils.setEaten(cardInHand, true);
@@ -287,7 +286,7 @@ export default class PlayerPhom extends PlayerCardTurnBase {
             });
         });
 
-        if (!this.turnAdapter.isTurn()) return;
+        if (!this.isItMe() || !this.turnAdapter.isTurn()) return;
 
         let doneActionsInTurn = utils.getValue(data, Keywords.GAME_LIST_DONE_ACTION_WHEN_REJOIN);
 
@@ -349,7 +348,7 @@ export default class PlayerPhom extends PlayerCardTurnBase {
                 break;
             case PlayerPhom.STATE_PHOM_EAT_TAKE:
 
-                this.board._showTapHighlightOnMeTurn()
+                this.isItMe() && this.board._showTapHighlightOnMeTurn()
                 // this.scene && this.scene.emit(Events.SHOW_EAT_AND_TAKE_CONTROLS);
                 // this.scene && this.scene.emit(Events.SHOW_PLAY_CONTROL_ONLY);
                 this._suggestEatPhom();
@@ -689,7 +688,7 @@ export default class PlayerPhom extends PlayerCardTurnBase {
     }
 
     _handlePlayerHelpCard(playerId, data) {
-
+        
         if (playerId != this.id) return;
 
         let phomIndexToJoinCardMap = {}
@@ -708,7 +707,7 @@ export default class PlayerPhom extends PlayerCardTurnBase {
                 joinCardBytes && phomIndexToJoinCardMap[index].push(...GameUtils.convertBytesToCards(joinCardBytes));
             }
         })
-
+        
         Object.keys(phomIndexToJoinCardMap).forEach(phomIndex => {
             let phomJoinCards = phomIndexToJoinCardMap[phomIndex]
             let joinPhomComponent = this.board.allPhomList[phomIndex].renderComponent;
@@ -782,14 +781,10 @@ export default class PlayerPhom extends PlayerCardTurnBase {
 
     _onPlayerEatCard(player, checked = false) {
 
-        console.log("_onPlayerEatCard: ", checked, !player || !player.isPlaying())
-
         if(!checked && (!player || !player.isPlaying()) ) return;
 
         let eatable;
         let selectedCards = player.getSelectedCards();
-
-        console.log("selectedCards: ", selectedCards)
 
         if(selectedCards.length == 0){
             let eatableCards = PhomUtils.findBestEatableCards(player.renderer.cardList.cards, player.eatenCards, player.board.lastPlayedCard);

@@ -138,8 +138,8 @@ export default class BoardPhom extends BoardCardTurnBase {
 
                         let phom = currentAllPhoms[j + phomPlayerCount];
                         phom.setOwner(player.id);
-                        playerPhomList.add(phom.clone());
-                        this.allPhomList.push(phom.clone());
+                        playerPhomList.add(phom);
+                        this.allPhomList.push(phom);
                     }
 
                     phomPlayerCount += phomCount;
@@ -224,6 +224,8 @@ export default class BoardPhom extends BoardCardTurnBase {
     }
 
     onBoardEnding(data) {
+
+        this._showTapHighlightOnMeTurn(false)
 
         let playerIds = utils.getValue(data, Keywords.GAME_LIST_PLAYER, []);
         let playingPlayerIds = this.scene.gamePlayers.filterPlayingPlayer(playerIds);
