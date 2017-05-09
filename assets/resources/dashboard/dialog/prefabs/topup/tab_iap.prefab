@@ -1850,9 +1850,11 @@
   },
   {
     "__type__": "cc.ClickEvent",
-    "target": null,
-    "component": "TabSMS",
-    "handler": "onSMSBtnClick",
+    "target": {
+      "__id__": 1
+    },
+    "component": "TabIAP",
+    "handler": "onIapItemClick",
     "customEventData": ""
   },
   {

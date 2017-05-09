@@ -6,6 +6,7 @@ import VisibilityManager from 'VisibilityManager';
 var app = require('app');
 
 app.config = {};
+app.config.currencyName = "Chip";
 // app.config.host = "123.31.12.100";
 // app.config.port = 8481;
 app.config.host = "123.30.238.174";
@@ -115,6 +116,7 @@ app.config.actionLabels = {
 app.config.features = {};
 
 app.config.parseConfigData = function(configData = {}) {
+    app.config.currencyName = configData.currencyName || app.config.currencyName;
     app.config.fanpage = configData.fanpage || app.config.fanpage;
     app.config.supportHotline = configData.supportHotline || app.config.supportHotline;
     app.config.listTableGroupFilters = configData.listTableGroupFilters || app.config.listTableGroupFilters;

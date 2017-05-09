@@ -68,7 +68,7 @@ export default class JarManager {
             return;
         let data = this.getInitData(jar);
         
-        let cloner = cc.instantiate(jar); // clone this node to prevent node's component will be destroy while scene's changing. --> fix only in simulator
+        let cloner = cc.instantiate(jar); // clone this node to prevent node's component will be destroy while scene's changing. --> fixed only in simulator
         
         let jarComponent = this.getJarComponent(cloner, 'JarComponent');
         

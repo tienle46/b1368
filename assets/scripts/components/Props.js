@@ -26,7 +26,7 @@ export default class Props extends Component {
             assets.forEach(asset => {
                 if (!cc.loader.isAutoRelease(asset))
                     cc.loader.setAutoRelease(asset, true);
-
+                    
                 emotionAssetNames.push(asset.name);
                 emotionAssets[asset.name] = asset;
             });
@@ -37,7 +37,7 @@ export default class Props extends Component {
             assets.forEach(asset => {
                 if (!cc.loader.isAutoRelease(asset))
                     cc.loader.setAutoRelease(asset, true);
-
+                
                 emotionAssetNames.push(asset.name);
                 emotionAssets[asset.name] = asset;
             });
@@ -57,6 +57,7 @@ export default class Props extends Component {
         if (atlas && atlas.getSpriteFrames().length > 0) {
 
             const animatingNode = new cc.Node();
+            animatingNode.setPosition(animatingNode.getPosition().x + 10, animatingNode.getPosition().y + 25);
             const animation = animatingNode.addComponent(cc.Animation);
 
             const sprite = animatingNode.addComponent(cc.Sprite);
@@ -80,7 +81,7 @@ export default class Props extends Component {
                     animation.addClip(clip);
                 }
                 
-                animation.play('run');
+                animation.play(clip.name);
                 animation.on('finished', () => {
                     if(spriteFrames.length > 3) { // remove 1st spriteFrame when it contains 4 frames
                         spriteFrames.shift();
@@ -91,7 +92,7 @@ export default class Props extends Component {
                         animation.addClip(clip);
                     }
 
-                    animation.play('run');
+                    animation.play(clip.name);
                     animation.on('finished', () => {
                         animatingNode.destroy();
                         animatingNode.removeFromParent(true);
@@ -102,7 +103,7 @@ export default class Props extends Component {
                 });
             });
 
-            animation.play('run');
+            animation.play(clip.name);
         }
     }
 

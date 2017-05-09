@@ -1,0 +1,30 @@
+{
+  "ver": "1.0.0",
+  "uuid": "4659dd23-8d1b-4cdf-8211-b5bf0138c384",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "subMetas": {
+    "trump-nhanhlen": {
+      "ver": "1.0.3",
+      "uuid": "da7f754c-70fb-4adf-8759-3e9abc945960",
+      "rawTextureUuid": "4659dd23-8d1b-4cdf-8211-b5bf0138c384",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": -17,
+      "offsetY": -1,
+      "trimX": 0,
+      "trimY": 2,
+      "width": 136,
+      "height": 168,
+      "rawWidth": 170,
+      "rawHeight": 170,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}

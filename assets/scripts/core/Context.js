@@ -106,6 +106,11 @@ class GameContext {
         } : {};
     }
     
+    isVip() {
+        let info = this.getMyInfo();
+        return info.vipLevel && info.vipLevel !== "" && info.vipLevel !== "Phổ thông";   
+    }
+    
     getUserAvatar(spriteComponent, isThumb = false) {
         let url = app.context.getMyInfo()['avatar'][isThumb ? 'large' : 'thumb'] ? app.context.getMyInfo()['avatar'][isThumb ? 'large' : 'thumb'] : app.config.defaultAvatarUrl;
         this.loadUserAvatarByURL(url, spriteComponent);

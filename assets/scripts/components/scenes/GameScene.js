@@ -189,14 +189,22 @@ export default class GameScene extends BaseScene {
                 return;
             }
 
-            assets.sort((a, b) => (a.name > b.name) ? 1 : (a.name < b.name) ? -1 : 0)
-                .forEach((asset, index) => {
-                    app.res.asset_tools[asset.name] = {
-                        id: index,
-                        name: asset.name,
-                        spriteFrame: asset
-                    };
-                });
+            assets = assets.sort((a, b) => (a.name > b.name) ? 1 : (a.name < b.name) ? -1 : 0);
+            let vips = [];
+            Object.keys(app.res.vip_tools).forEach(name => {
+                let index = assets.findIndex(asset => asset.name === name);
+                if(index > -1){
+                    vips.push(assets[index]);
+                    assets.splice(index, 1);
+                }
+            });
+            assets = [...assets, ...vips].forEach((asset, index) => {
+                app.res.asset_tools[asset.name] = {
+                    id: index,
+                    name: asset.name,
+                    spriteFrame: asset
+                };
+            });
         });
     }
 

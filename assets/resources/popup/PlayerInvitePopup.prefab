@@ -378,7 +378,7 @@
       "__id__": 1
     },
     "component": "PlayerInvitePopup",
-    "handler": "close",
+    "handler": "onDenyBtnClick",
     "customEventData": ""
   },
   {
@@ -3557,7 +3557,7 @@
       "__id__": 1
     },
     "component": "PlayerInvitePopup",
-    "handler": "onDenyBtnClick",
+    "handler": "onAcceptBtnClick",
     "customEventData": ""
   },
   {
@@ -3827,7 +3827,7 @@
       "__id__": 1
     },
     "component": "PlayerInvitePopup",
-    "handler": "onAcceptBtnClick",
+    "handler": "onDenyBtnClick",
     "customEventData": ""
   },
   {

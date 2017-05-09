@@ -67,7 +67,6 @@ class TabIAP extends PopupTabBody {
     onIapItemClick(e) {
         // click
         let target = e.currentTarget;
-        cc.log(target.productId);
 
         if (app.env.isMobile() && window.sdkbox.IAP) {
             let name = target.productId;

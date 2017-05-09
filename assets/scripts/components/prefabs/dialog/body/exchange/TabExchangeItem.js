@@ -117,7 +117,7 @@ class TabExchangeItem extends PopupTabBody {
                     // add sprite to img 
                     RubUtils.loadSpriteFrame(this.exchangeItemImage, itemIconURL, this.exchangeItemImage.node.getContentSize(), true, (sprite) => {
                         // add price
-                        this.exchangeItemPrice.string = `${Utils.numberFormat(itemGold)} Chips`;
+                        this.exchangeItemPrice.string = `${Utils.numberFormat(itemGold)} ${app.config.currencyName}`;
                         this.exchangeItemName.string = `${itemName}`;
                         
                         let item = cc.instantiate(this.exchangeItem);

@@ -110,6 +110,13 @@ app.res.gameTopCapThuIcon = {
     "dnode/xms": "sam_ico",
 };
 
+// array contains prefix-key which is only allowed by VIP users.
+app.res.vip_emotions = ['trump'];
+app.res.vip_tools = {
+    cungBia:true,
+    hatNuoc:true,
+    trungThoi:true
+};
 app.res.asset_tools = {};
 
 /**

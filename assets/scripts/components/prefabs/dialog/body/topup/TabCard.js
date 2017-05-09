@@ -186,7 +186,7 @@ class TabCard extends PopupTabBody {
                 let {amount, balance, rate, promoteDesc} = card;
                 
                 this.ratioItemTitleLbl.string = `${numberFormat(amount)} VNĐ`;
-                this.ratioItemXuLbl.string = `${numberFormat(balance)} ${app.res.string('currency_name')}`;
+                this.ratioItemXuLbl.string = `${numberFormat(balance)} ${app.config.currencyName}`;
                 
                 if(rate > 1) {
                     CCUtils.active(this.ratioPromote) 

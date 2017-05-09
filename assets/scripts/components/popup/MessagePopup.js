@@ -113,7 +113,7 @@ export default class MessagePopup extends Component {
         this.hide();
         this.denyCb && this.denyCb();
     }
-
+    
     hide() {
         if (this.node) {
             this.node.active = false;

@@ -73,7 +73,7 @@ class TabTopDaiGia extends PopupTabBody {
             }),
         ];
         let head = {
-            data: ['STT', 'Tài khoản', 'Chips'],
+            data: ['STT', 'Tài khoản', `${app.config.currencyName}`],
             options: {
                 fontColor: app.const.COLOR_YELLOW
             }

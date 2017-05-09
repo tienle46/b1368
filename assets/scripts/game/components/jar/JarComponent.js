@@ -3,8 +3,7 @@ import Actor from 'Actor';
 import moment from 'moment';
 import Utils from 'Utils';
 import CCUtils from 'CCUtils';
-import { requestTimeout, clearRequestTimeout } from 'TimeHacker';
-
+import RubUtils from 'RubUtils';
 
 export default class JarComponent extends Actor {
     constructor() {
@@ -16,21 +15,31 @@ export default class JarComponent extends Actor {
             jarTotalMoneyLbl: cc.Label,
             button: cc.Button,
             jarDetailPrefab: cc.Prefab,
+            jarSprite: cc.Sprite,
             huCoin: cc.Node // this node will be animated
         }
         
         this._timeout = null;
         this.time = 1000; // 1s
         this.remainTime = 0;
-        this.jarId = null;  
+        this.jarId = null;
+        this.spriteFrames = [];
     }
   
     onLoad() {
         super.onLoad();
+        RubUtils.getAtlasFromUrl('jar/huvang', (atlas) => {
+            this.spriteFrames = atlas.getSpriteFrames();
+            this.jarSprite.spriteFrame = this.spriteFrames[0];
+        });
     }
     
     onEnable() {
         super.onEnable();
+    }
+    
+    onDestroy() {
+        window.release(this.spriteFrames);
     }
     
     activeBtnComponent() {
@@ -115,6 +124,10 @@ export default class JarComponent extends Actor {
     
     // @param destination : v2(x,y)
     runCoinAnim(destination) {
+        // open the jar
+        const animation = this.jarSprite.node.getComponent(cc.Animation) ? this.jarSprite.node.getComponent(cc.Animation) : this.jarSprite.node.addComponent(cc.Animation)
+        this.spriteFrames[1] && (this.jarSprite.spriteFrame = this.spriteFrames[1]);
+        
         if(this.node) {
             let startPos = this.node.convertToWorldSpaceAR(this.node.getPosition());
             for(let i = 0; i <= 20; i++) {
@@ -130,6 +143,7 @@ export default class JarComponent extends Actor {
                 let sequence = cc.sequence(bezierTo, cc.callFunc(() => {
                     huCoin.active = false;
                     CCUtils.destroy(huCoin);
+                    i === 20 && this.spriteFrames[0] && (this.jarSprite.spriteFrame = this.spriteFrames[0]);
                 }));
                 huCoin.runAction(sequence);
             }

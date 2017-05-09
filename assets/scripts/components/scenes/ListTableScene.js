@@ -36,6 +36,7 @@ export default class ListTableScene extends BaseScene {
         this.__isCreatingRoom = false;
         this.minBalanceMultiple = 0;
         this._room = null;
+        this._sentInviteRandomly = false;
     }
 
     onLoad() {
@@ -155,8 +156,10 @@ export default class ListTableScene extends BaseScene {
         let minBalance = this._calculateMinBalanceToJoinGame(minBet);
 
         if (minBalance > app.context.getMeBalance()) {
-            app.system.error(
-                app.res.string('error_user_not_enough_gold_to_join_room', { minBalance, currencyName: app.res.string('currency_name') })
+            app.system.confirm(
+                app.res.string('error_user_not_enough_gold_to_join_room', { minBalance }),
+                null,
+                this._onOpenTopUp.bind(this),
             );
         } else {
             if (password) {
@@ -170,7 +173,11 @@ export default class ListTableScene extends BaseScene {
             }
         }
     }
-
+    
+    _onOpenTopUp() {
+        app.visibilityManager.goTo(Linking.ACTION_TOPUP);
+    }
+    
     _onListGameMinBetResponse(data) {
         if (data) {
             this.enableMinbets = data[app.keywords.GAME_ENABLE_MINBET_LIST] || [];
@@ -276,8 +283,8 @@ export default class ListTableScene extends BaseScene {
                     roomBalance: this._calculateMinBalanceToJoinGame(event.b),
                     inviterVipLevel: event.inviterVipLevel
                 },
-                this._onCancelInvitationBtnClick.bind(this),
-                this._onConfirmInvitationBtnClick.bind(this, joinRoomRequestData)
+                this._onConfirmInvitationBtnClick.bind(this, joinRoomRequestData),
+                this._onCancelInvitationBtnClick.bind(this)
             );
             
             joinRoomRequestData = null;
@@ -331,7 +338,7 @@ export default class ListTableScene extends BaseScene {
     _onUserListRoom(data) {
         this._initRoomsListFromData(data);
         /*Need to check exactly equal true or undefined*/
-        if (app.context.requestRandomInvite === true || app.context.requestRandomInvite === undefined) {
+        if (!this._sentInviteRandomly && app.context.requestRandomInvite === true || app.context.requestRandomInvite === undefined) {
 
             app.service.send({
                 cmd: "randomInviteGame",
@@ -339,7 +346,8 @@ export default class ListTableScene extends BaseScene {
                     [app.keywords.GAME_CODE]: this.gameCode
                 }
             })
-
+            this._sentInviteRandomly = true;
+            
             // setTimeout(() => this.node && app.service.send({
             //     cmd: "randomInviteGame",
             //     data: {

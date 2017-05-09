@@ -20,7 +20,8 @@ export default class FriendProfilePopup extends DialogActor {
             assetItemNode: cc.Node,
             assetItemSprite: cc.Sprite,
             kickBtn: cc.Button,
-            addFriendBtn: cc.Button
+            addFriendBtn: cc.Button,
+            vipNode: cc.Node
         };
 
         // paging
@@ -92,6 +93,7 @@ export default class FriendProfilePopup extends DialogActor {
         this.totalPage = Math.ceil(this.totalItems / this.itemsPerPage);
         assets.map(asset => {
             this.assetItemSprite.spriteFrame = asset.spriteFrame;
+            this.vipNode.active = app.res.vip_tools[asset.name] || false;
             let assetNode = cc.instantiate(this.assetItemNode);
             assetNode.name = asset.name;
             assetNode.active = true;
@@ -102,9 +104,13 @@ export default class FriendProfilePopup extends DialogActor {
 
     propsItemClicked(e) {
         const prosName = e.target.name;
+        if(!app.context.isVip() && app.res.vip_tools[prosName]) {
+            app.system.showToast(app.res.string('error_vip_only'));
+            return;
+        }
         let itemId = app.res.asset_tools[prosName].id,
             ev = new cc.Event.EventCustom('on.asset.picked', true);
-
+        
         let sendObject = {
             cmd: app.commands.ASSETS_USE_ITEM,
             data: {

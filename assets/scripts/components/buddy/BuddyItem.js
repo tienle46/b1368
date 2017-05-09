@@ -50,7 +50,7 @@ class BuddyItem extends PopupTabBody {
         super.onEnable();
         this.isLoaded = true;
         this.playingGameLabel.string = app.res.string('game_playing_game');
-        this.currencyNameLabel.string = app.res.string('currency_name');
+        this.currencyNameLabel.string = app.config.currencyName;
 
         if (this.buddy) {
             this.onBuddyChanged();

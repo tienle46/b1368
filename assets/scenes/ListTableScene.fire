@@ -1922,7 +1922,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 0,
-      "height": 70
+      "height": 30
     },
     "_children": [],
     "_rotationX": 0,
@@ -1962,9 +1962,9 @@
     },
     "_enabled": true,
     "_useOriginalSize": false,
-    "_actualFontSize": 35,
-    "_fontSize": 35,
-    "_lineHeight": 70,
+    "_actualFontSize": 30,
+    "_fontSize": 30,
+    "_lineHeight": 0,
     "_enableWrapText": true,
     "_N$file": {
       "__uuid__": "b2c0f634-158a-49ee-84f8-a41c8e7ebb56"
@@ -1989,7 +1989,7 @@
     "_left": 98,
     "_right": 1086,
     "_top": 541,
-    "_bottom": -72,
+    "_bottom": -52,
     "_verticalCenter": 0,
     "_horizontalCenter": 0,
     "_isAbsLeft": true,
@@ -4979,8 +4979,8 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": 475,
-      "y": 308.1
+      "x": 474,
+      "y": 294
     },
     "_skewX": 0,
     "_skewY": 0,
