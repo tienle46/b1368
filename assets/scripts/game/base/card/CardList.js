@@ -932,9 +932,9 @@ export default class CardList extends ActionComponent {
                 card.node.zIndex = order--;
 
                 /*fake flip action */
-                const kFliptTime = 0.2;
-                const scaleTo = cc.scaleTo(kFliptTime, 0, isDealForMySelf ? 1 : card.node.scaleY);
-                const reverse = cc.scaleTo(kFliptTime, isDealForMySelf ? 1 : card.node.scaleX, isDealForMySelf ? 1 : card.node.scaleY);
+                const kFliptTime = 1;
+                const scaleTo = cc.scaleTo(kFliptTime, isDealForMySelf ? 0 : card.node.scaleX,  card.node.scaleY);
+                const reverse = cc.scaleTo(kFliptTime, card.node.scaleX , card.node.scaleY);
 
                 let animation = cc.sequence(
                     cc.moveTo(CardList.DRAW_CARD_DURATION, cardPosition.x, cardPosition.y),

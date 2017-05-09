@@ -108,11 +108,13 @@ export default (function(app) {
             /* eslint-disable no-console, no-unused-vars */
             let _initPluginFacebook = () => {
                 //facebook
+                debug(`facebook init`);
                 window.sdkbox.PluginFacebook.init();
             };
 
             let _initPluginGoogleAnalytics = () => {
                 //google analytics
+                debug(`analytics init`);
                 window.sdkbox.PluginGoogleAnalytics.init();
                 window.sdkbox.PluginGoogleAnalytics.startSession();
             };
@@ -301,23 +303,17 @@ export default (function(app) {
             };
             
             let _initPluginKochava = () => {
-                //facebook
                 window.sdkbox.PluginKochava.init();
             };
-
             if (cc.sys.isMobile && window.sdkbox) {
                 
-                let plugins = [];
-                // if(cc.sys.isAndroid){
-                //     plugins.push(_initPluginOneSignal);
-                // }
-                
-                plugins = [...plugins,
+                let plugins = [
                     _initPluginFacebook,
                     _initPluginGoogleAnalytics,
                     _initPluginIAP,
                     _initPluginKochava
                 ].map(p => {
+                    log(`what???`);
                     p();
                 });
 
