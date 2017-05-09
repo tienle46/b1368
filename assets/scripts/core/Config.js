@@ -36,7 +36,7 @@ app.config.fbxfbml = true;
 app.config.fbVersion = 'v2.8';
 app.config.fbScope = 'public_profile,email,user_friends';
 
-app.config.fanpage = `https://www.messenger.com/t/${app.config.fbAppId}`;
+app.config.fanpage = `http://m.me/songbaihoanggia`;
 app.config.supportHotline = '123456';
 app.config.defaultMinBalanceJoinGameRoomMultiple = 10;
 app.config.defaultAvatarUrl = "";

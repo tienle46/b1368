@@ -70,7 +70,7 @@ class TabIAP extends PopupTabBody {
 
         if (app.env.isMobile() && window.sdkbox.IAP) {
             let name = target.productId;
-
+            cc.log(`iap name ${name}`);
             app.system.showLoader(app.res.string('sending_item_store_iap', { provider: app.env.isIOS() ? 'Apple Store' : 'Google Play' }), 60);
             window.sdkbox.IAP.purchase(name);
         }
