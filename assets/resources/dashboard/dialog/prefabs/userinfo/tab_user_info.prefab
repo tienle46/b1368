@@ -5766,8 +5766,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 140,
-      "height": 71
+      "width": 100.79,
+      "height": 37
     },
     "_children": [],
     "_rotationX": 0,
@@ -5777,7 +5777,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": 2.4
+      "y": 5
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -5811,7 +5811,7 @@
     "_useOriginalSize": false,
     "_actualFontSize": 27,
     "_fontSize": 27,
-    "_lineHeight": 40,
+    "_lineHeight": 37,
     "_enableWrapText": false,
     "_N$file": {
       "__uuid__": "b2c0f634-158a-49ee-84f8-a41c8e7ebb56"
@@ -5820,7 +5820,7 @@
     "_N$string": "Quay lại",
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
-    "_N$overflow": 1
+    "_N$overflow": 0
   },
   {
     "__type__": "cc.LabelOutline",
@@ -6051,8 +6051,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 140,
-      "height": 71
+      "width": 45.23,
+      "height": 37
     },
     "_children": [],
     "_rotationX": 0,
@@ -6062,7 +6062,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": 2.4
+      "y": 5
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -6096,7 +6096,7 @@
     "_useOriginalSize": false,
     "_actualFontSize": 27,
     "_fontSize": 27,
-    "_lineHeight": 40,
+    "_lineHeight": 37,
     "_enableWrapText": false,
     "_N$file": {
       "__uuid__": "b2c0f634-158a-49ee-84f8-a41c8e7ebb56"
@@ -6105,7 +6105,7 @@
     "_N$string": "Đổi",
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
-    "_N$overflow": 1
+    "_N$overflow": 0
   },
   {
     "__type__": "cc.LabelOutline",
@@ -6889,8 +6889,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 140,
-      "height": 71
+      "width": 96.79,
+      "height": 37
     },
     "_children": [],
     "_rotationX": 0,
@@ -6900,7 +6900,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": 2.4
+      "y": 5
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -6934,7 +6934,7 @@
     "_useOriginalSize": false,
     "_actualFontSize": 27,
     "_fontSize": 27,
-    "_lineHeight": 40,
+    "_lineHeight": 37,
     "_enableWrapText": false,
     "_N$file": {
       "__uuid__": "b2c0f634-158a-49ee-84f8-a41c8e7ebb56"
@@ -6943,7 +6943,7 @@
     "_N$string": "Quay lại",
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
-    "_N$overflow": 1
+    "_N$overflow": 0
   },
   {
     "__type__": "cc.LabelOutline",
@@ -7174,8 +7174,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 160,
-      "height": 71
+      "width": 106.73,
+      "height": 37
     },
     "_children": [],
     "_rotationX": 0,
@@ -7185,7 +7185,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": 2.4
+      "y": 5
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -7219,7 +7219,7 @@
     "_useOriginalSize": false,
     "_actualFontSize": 27,
     "_fontSize": 27,
-    "_lineHeight": 40,
+    "_lineHeight": 37,
     "_enableWrapText": false,
     "_N$file": {
       "__uuid__": "b2c0f634-158a-49ee-84f8-a41c8e7ebb56"
@@ -7228,7 +7228,7 @@
     "_N$string": "Cập nhật",
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
-    "_N$overflow": 1
+    "_N$overflow": 0
   },
   {
     "__type__": "cc.LabelOutline",
@@ -10453,8 +10453,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 145,
-      "height": 70
+      "width": 106.02,
+      "height": 35
     },
     "_children": [],
     "_rotationX": 0,
@@ -10464,7 +10464,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": 0
+      "y": 4
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -10498,7 +10498,7 @@
     "_useOriginalSize": false,
     "_actualFontSize": 25,
     "_fontSize": 25,
-    "_lineHeight": 40,
+    "_lineHeight": 35,
     "_enableWrapText": false,
     "_N$file": {
       "__uuid__": "b2c0f634-158a-49ee-84f8-a41c8e7ebb56"
@@ -10507,7 +10507,7 @@
     "_N$string": "Xác nhận",
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
-    "_N$overflow": 1
+    "_N$overflow": 0
   },
   {
     "__type__": "cc.LabelOutline",
@@ -10723,8 +10723,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 145,
-      "height": 70
+      "width": 49.1,
+      "height": 35
     },
     "_children": [],
     "_rotationX": 0,
@@ -10734,7 +10734,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": 0
+      "y": 4
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -10768,7 +10768,7 @@
     "_useOriginalSize": false,
     "_actualFontSize": 25,
     "_fontSize": 25,
-    "_lineHeight": 40,
+    "_lineHeight": 35,
     "_enableWrapText": false,
     "_N$file": {
       "__uuid__": "b2c0f634-158a-49ee-84f8-a41c8e7ebb56"
@@ -10777,7 +10777,7 @@
     "_N$string": "Hủy",
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
-    "_N$overflow": 1
+    "_N$overflow": 0
   },
   {
     "__type__": "cc.LabelOutline",

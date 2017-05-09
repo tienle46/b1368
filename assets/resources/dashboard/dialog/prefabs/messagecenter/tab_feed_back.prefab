@@ -669,8 +669,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 150,
-      "height": 71
+      "width": 82.96,
+      "height": 40
     },
     "_children": [],
     "_rotationX": 0,
@@ -680,7 +680,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": 2.2
+      "y": 3.2
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -723,7 +723,7 @@
     "_N$string": "Góp Ý",
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
-    "_N$overflow": 1
+    "_N$overflow": 0
   },
   {
     "__type__": "cc.LabelOutline",

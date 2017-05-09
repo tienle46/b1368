@@ -104,7 +104,7 @@ export default class XocDiaControls extends GameControls {
             let amount = chipOptionsNode.getComponent('BetChip').getChipAmount();
 
             if (app.context.getMeBalance() - amount < 0) {
-                app.system.error('Không đủ tiền để tiếp tục cược !');
+                app.system.error('Không đủ chip để tiếp tục cược !');
                 return;
             }
             this._setRebetBtnState(true);

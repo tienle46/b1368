@@ -1842,8 +1842,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 180,
-      "height": 70
+      "width": 177.58,
+      "height": 37
     },
     "_children": [],
     "_rotationX": 0,
@@ -1853,7 +1853,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": 0
+      "y": 1.5
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -1887,7 +1887,7 @@
     "_useOriginalSize": false,
     "_actualFontSize": 27,
     "_fontSize": 27,
-    "_lineHeight": 70,
+    "_lineHeight": 37,
     "_enableWrapText": false,
     "_N$file": {
       "__uuid__": "b2c0f634-158a-49ee-84f8-a41c8e7ebb56"
@@ -1896,7 +1896,7 @@
     "_N$string": "500.000 VND",
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
-    "_N$overflow": 1
+    "_N$overflow": 0
   },
   {
     "__type__": "cc.LabelOutline",
@@ -3074,8 +3074,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 151,
-      "height": 47
+      "width": 111.55,
+      "height": 40
     },
     "_children": [],
     "_rotationX": 0,
@@ -3128,7 +3128,7 @@
     "_N$string": "Quay lại",
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
-    "_N$overflow": 1
+    "_N$overflow": 0
   },
   {
     "__type__": "cc.LabelOutline",
@@ -3344,8 +3344,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 151,
-      "height": 47
+      "width": 126.43,
+      "height": 40
     },
     "_children": [],
     "_rotationX": 0,
@@ -3618,9 +3618,7 @@
     },
     "_enabled": true,
     "path": "",
-    "p404": {
-      "__uuid__": "5506cff6-05a2-4783-8488-2c5459eaed0b"
-    },
+    "bodyNode": null,
     "scrollview": null,
     "providerItemNode": {
       "__id__": 7
@@ -3640,7 +3638,6 @@
     "inActiveStateSprite": {
       "__id__": 12
     },
-    "providerLbl": null,
     "balanceLbl": {
       "__id__": 41
     },

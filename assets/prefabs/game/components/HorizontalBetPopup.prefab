@@ -2612,8 +2612,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 120,
-      "height": 60
+      "width": 101.94,
+      "height": 34
     },
     "_children": [],
     "_rotationX": 0,
@@ -2623,7 +2623,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": 0
+      "y": 3
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -2657,7 +2657,7 @@
     "_useOriginalSize": false,
     "_actualFontSize": 24,
     "_fontSize": 24,
-    "_lineHeight": 40,
+    "_lineHeight": 34,
     "_enableWrapText": false,
     "_N$file": {
       "__uuid__": "b2c0f634-158a-49ee-84f8-a41c8e7ebb56"
@@ -2666,7 +2666,7 @@
     "_N$string": "Xác nhận",
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
-    "_N$overflow": 2
+    "_N$overflow": 0
   },
   {
     "__type__": "cc.LabelOutline",

@@ -87,7 +87,7 @@ class TabAgency extends PopupTabBody {
         }
 
         this.initView({
-            data: ['Đại lý', 'Số ĐT', 'facebook', ''],
+            data: ['Đại lý', 'Số ĐT', 'Facebook', ''],
             options: {
                 fontColor: app.const.COLOR_YELLOW,
             }

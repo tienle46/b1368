@@ -485,7 +485,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "19da3c9c-e6f8-4cd5-9eae-4a1c83d4f0c8"
+      "__uuid__": "bc8485bd-7963-4562-8a3c-caf12d9ea5e5"
     },
     "_type": 1,
     "_sizeMode": 0,
@@ -501,7 +501,7 @@
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_atlas": {
-      "__uuid__": "91ca6178-1c0f-4ca0-bdf3-9011ec0e806b"
+      "__uuid__": "4bb00c8a-c321-4d5c-b859-a722596f04ed"
     }
   },
   {
@@ -1487,7 +1487,7 @@
       "__uuid__": "b2c0f634-158a-49ee-84f8-a41c8e7ebb56"
     },
     "_isSystemFontUsed": false,
-    "_N$string": "Kích",
+    "_N$string": "Kick",
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
     "_N$overflow": 1
@@ -1529,7 +1529,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "9c8a9f54-d1c0-4ad0-9da1-7bb2c9f8fda9"
+      "__uuid__": "654cea23-c19f-42f3-aaa3-c5de28f79437"
     },
     "_type": 1,
     "_sizeMode": 0,

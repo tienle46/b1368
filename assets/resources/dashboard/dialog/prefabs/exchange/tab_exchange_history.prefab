@@ -427,7 +427,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 100,
+      "width": 88.4,
       "height": 33
     },
     "_children": [],
@@ -438,7 +438,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": 3
+      "y": 5
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -481,7 +481,7 @@
     "_N$string": "Nhận chip",
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
-    "_N$overflow": 1
+    "_N$overflow": 0
   },
   {
     "__type__": "cc.LabelOutline",
