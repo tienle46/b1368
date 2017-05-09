@@ -366,7 +366,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 137.86,
-      "height": 50
+      "height": 42
     },
     "_children": [],
     "_rotationX": 0,
@@ -376,7 +376,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": -4
+      "y": -6.8
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -410,7 +410,7 @@
     "_useOriginalSize": false,
     "_actualFontSize": 32,
     "_fontSize": 32,
-    "_lineHeight": 50,
+    "_lineHeight": 42,
     "_enableWrapText": true,
     "_N$file": {
       "__uuid__": "b2c0f634-158a-49ee-84f8-a41c8e7ebb56"
@@ -1817,8 +1817,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 100,
-      "height": 40
+      "width": 84.57,
+      "height": 36
     },
     "_children": [],
     "_rotationX": 0,
@@ -1828,7 +1828,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": 0
+      "y": 2
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -1862,7 +1862,7 @@
     "_useOriginalSize": false,
     "_actualFontSize": 26,
     "_fontSize": 26,
-    "_lineHeight": 40,
+    "_lineHeight": 36,
     "_enableWrapText": false,
     "_N$file": {
       "__uuid__": "b2c0f634-158a-49ee-84f8-a41c8e7ebb56"
@@ -1871,7 +1871,7 @@
     "_N$string": "Đồng ý",
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
-    "_N$overflow": 1
+    "_N$overflow": 0
   },
   {
     "__type__": "cc.LabelOutline",
@@ -2104,8 +2104,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 100,
-      "height": 40
+      "width": 50.9,
+      "height": 36
     },
     "_children": [],
     "_rotationX": 0,
@@ -2115,7 +2115,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": 0
+      "y": 2
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -2149,7 +2149,7 @@
     "_useOriginalSize": false,
     "_actualFontSize": 26,
     "_fontSize": 26,
-    "_lineHeight": 40,
+    "_lineHeight": 36,
     "_enableWrapText": false,
     "_N$file": {
       "__uuid__": "b2c0f634-158a-49ee-84f8-a41c8e7ebb56"
@@ -2158,7 +2158,7 @@
     "_N$string": "Hủy",
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
-    "_N$overflow": 1
+    "_N$overflow": 0
   },
   {
     "__type__": "cc.LabelOutline",
@@ -2197,7 +2197,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "85804928-2cbe-469a-9cfb-70c9a83fd8a8"
+      "__uuid__": "654cea23-c19f-42f3-aaa3-c5de28f79437"
     },
     "_type": 1,
     "_sizeMode": 0,

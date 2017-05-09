@@ -209,7 +209,7 @@ export default class TabUserBank extends PopupTabBody {
 
             this._remainTransfer = data.remainBalance;
 
-            //this.hintRichText.string = `<outline width=2 color=#000>Số tiền rút tối thiểu: <color=#FF0000>${numberFormat(this._minTransfer)}</c>. Tối thiểu cần có <color=#FF0000> ${numberFormat(this._remainTransfer)} </c> trong tài khoản.</o>`;
+            //this.hintRichText.string = `<outline width=2 color=#000>Số chip rút tối thiểu: <color=#FF0000>${numberFormat(this._minTransfer)}</c>. Tối thiểu cần có <color=#FF0000> ${numberFormat(this._remainTransfer)} </c> trong tài khoản.</o>`;
         }
         if (data.times.length > 0) {
             this.hideEmptyPage(this.p404);

@@ -1694,8 +1694,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 144.35,
-      "height": 51
+      "width": 63.92,
+      "height": 35
     },
     "_children": [],
     "_rotationX": 0,
@@ -1704,8 +1704,8 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": -1,
-      "y": 1
+      "x": 0,
+      "y": 1.5
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -1739,8 +1739,8 @@
     "_useOriginalSize": false,
     "_actualFontSize": 25,
     "_fontSize": 25,
-    "_lineHeight": 40,
-    "_enableWrapText": true,
+    "_lineHeight": 35,
+    "_enableWrapText": false,
     "_N$file": {
       "__uuid__": "b2c0f634-158a-49ee-84f8-a41c8e7ebb56"
     },
@@ -1748,7 +1748,7 @@
     "_N$string": "Tỉ giá",
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
-    "_N$overflow": 1
+    "_N$overflow": 0
   },
   {
     "__type__": "cc.LabelOutline",
@@ -1964,8 +1964,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 144.35,
-      "height": 51
+      "width": 109.62,
+      "height": 35
     },
     "_children": [],
     "_rotationX": 0,
@@ -1974,8 +1974,8 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": -1,
-      "y": 1
+      "x": 0,
+      "y": 1.5
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -2009,8 +2009,8 @@
     "_useOriginalSize": false,
     "_actualFontSize": 25,
     "_fontSize": 25,
-    "_lineHeight": 40,
-    "_enableWrapText": true,
+    "_lineHeight": 35,
+    "_enableWrapText": false,
     "_N$file": {
       "__uuid__": "b2c0f634-158a-49ee-84f8-a41c8e7ebb56"
     },
@@ -2018,7 +2018,7 @@
     "_N$string": "Xác Nhận",
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
-    "_N$overflow": 1
+    "_N$overflow": 0
   },
   {
     "__type__": "cc.LabelOutline",
@@ -2378,7 +2378,7 @@
     "_tag": -1,
     "_opacityModifyRGB": false,
     "_id": "",
-    "_active": false,
+    "_active": true,
     "_components": [
       {
         "__id__": 125
@@ -2791,7 +2791,7 @@
       "__uuid__": "e3c4e6bc-4253-4660-b308-20232cdbdb47"
     },
     "_isSystemFontUsed": false,
-    "_N$string": "Xu",
+    "_N$string": "Chip",
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
     "_N$overflow": 1
@@ -3100,7 +3100,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 202.38,
+      "width": 213.29,
       "height": 35
     },
     "_children": [
@@ -3172,8 +3172,8 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": 158,
-      "y": -3
+      "x": 163,
+      "y": -15.9
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -3182,7 +3182,7 @@
     "_tag": -1,
     "_opacityModifyRGB": false,
     "_id": "",
-    "_active": true,
+    "_active": false,
     "_components": [
       {
         "__id__": 98
@@ -3220,7 +3220,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 68.81,
-      "height": 40
+      "height": 28
     },
     "_children": [],
     "_rotationX": 0,
@@ -3230,7 +3230,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": 0
+      "y": -0.5
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -3261,7 +3261,7 @@
     "_useOriginalSize": false,
     "_actualFontSize": 18,
     "_fontSize": 18,
-    "_lineHeight": 40,
+    "_lineHeight": 28,
     "_enableWrapText": true,
     "_N$file": {
       "__uuid__": "e3c4e6bc-4253-4660-b308-20232cdbdb47"
@@ -3269,7 +3269,7 @@
     "_isSystemFontUsed": false,
     "_N$string": "KM 125%",
     "_N$horizontalAlign": 1,
-    "_N$verticalAlign": 1,
+    "_N$verticalAlign": 0,
     "_N$overflow": 0
   },
   {
@@ -3325,8 +3325,8 @@
     },
     "_alignFlags": 33,
     "_left": 0,
-    "_right": -98.81,
-    "_top": -14.5,
+    "_right": -98.35500000000002,
+    "_top": -1.5999999999999996,
     "_bottom": 0,
     "_verticalCenter": 0,
     "_horizontalCenter": 0,
@@ -3365,7 +3365,7 @@
     "_enableWrapText": true,
     "_N$file": null,
     "_isSystemFontUsed": true,
-    "_N$string": "100.000.000 XU",
+    "_N$string": "100.000.000Chip",
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
     "_N$overflow": 0
@@ -3702,8 +3702,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 144.35,
-      "height": 51
+      "width": 93.62,
+      "height": 35
     },
     "_children": [],
     "_rotationX": 0,
@@ -3712,8 +3712,8 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": -1,
-      "y": 1
+      "x": 0,
+      "y": 3
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -3747,7 +3747,7 @@
     "_useOriginalSize": false,
     "_actualFontSize": 25,
     "_fontSize": 25,
-    "_lineHeight": 40,
+    "_lineHeight": 35,
     "_enableWrapText": true,
     "_N$file": {
       "__uuid__": "b2c0f634-158a-49ee-84f8-a41c8e7ebb56"
@@ -3756,7 +3756,7 @@
     "_N$string": "Quay lại",
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
-    "_N$overflow": 1
+    "_N$overflow": 0
   },
   {
     "__type__": "cc.LabelOutline",
@@ -3858,7 +3858,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "9c8a9f54-d1c0-4ad0-9da1-7bb2c9f8fda9"
+      "__uuid__": "654cea23-c19f-42f3-aaa3-c5de28f79437"
     },
     "_type": 1,
     "_sizeMode": 0,

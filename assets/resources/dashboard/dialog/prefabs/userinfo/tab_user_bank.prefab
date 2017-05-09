@@ -897,8 +897,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 180,
-      "height": 70
+      "width": 138.6,
+      "height": 35
     },
     "_children": [],
     "_rotationX": 0,
@@ -908,7 +908,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": 0
+      "y": 5
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -942,16 +942,16 @@
     "_useOriginalSize": false,
     "_actualFontSize": 25,
     "_fontSize": 25,
-    "_lineHeight": 70,
+    "_lineHeight": 35,
     "_enableWrapText": false,
     "_N$file": {
       "__uuid__": "b2c0f634-158a-49ee-84f8-a41c8e7ebb56"
     },
     "_isSystemFontUsed": false,
-    "_N$string": "Chuyển tiền",
+    "_N$string": "Chuyển chip",
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
-    "_N$overflow": 1
+    "_N$overflow": 0
   },
   {
     "__type__": "cc.LabelOutline",
@@ -1204,8 +1204,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 170,
-      "height": 70
+      "width": 93.3,
+      "height": 35
     },
     "_children": [],
     "_rotationX": 0,
@@ -1215,7 +1215,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": 0
+      "y": 5
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -1249,16 +1249,16 @@
     "_useOriginalSize": false,
     "_actualFontSize": 25,
     "_fontSize": 25,
-    "_lineHeight": 70,
+    "_lineHeight": 35,
     "_enableWrapText": false,
     "_N$file": {
       "__uuid__": "b2c0f634-158a-49ee-84f8-a41c8e7ebb56"
     },
     "_isSystemFontUsed": false,
-    "_N$string": "Rút tiền",
+    "_N$string": "Rút chip",
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
-    "_N$overflow": 1
+    "_N$overflow": 0
   },
   {
     "__type__": "cc.LabelOutline",
@@ -2881,7 +2881,7 @@
       "__uuid__": "707ff59f-f7c1-4eb4-a0de-41fd5e1c0123"
     },
     "_isSystemFontUsed": false,
-    "_N$string": "Số tiền tối thiểu:",
+    "_N$string": "Số chip tối thiểu:",
     "_N$horizontalAlign": 0,
     "_N$verticalAlign": 1,
     "_N$overflow": 0
@@ -3059,7 +3059,7 @@
       "__uuid__": "707ff59f-f7c1-4eb4-a0de-41fd5e1c0123"
     },
     "_isSystemFontUsed": false,
-    "_N$string": "Số tiền tối đa:",
+    "_N$string": "Số chip tối đa:",
     "_N$horizontalAlign": 0,
     "_N$verticalAlign": 1,
     "_N$overflow": 0
@@ -3659,7 +3659,7 @@
       "b": 255,
       "a": 255
     },
-    "_N$placeholder": "Số xu chuyển",
+    "_N$placeholder": "Sốchip chuyển",
     "_N$placeholderFontSize": 20,
     "_N$placeholderFontColor": {
       "__type__": "cc.Color",
@@ -4078,8 +4078,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 150,
-      "height": 70
+      "width": 50.9,
+      "height": 36
     },
     "_children": [],
     "_rotationX": 0,
@@ -4089,7 +4089,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": 0.2
+      "y": 5
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -4123,7 +4123,7 @@
     "_useOriginalSize": false,
     "_actualFontSize": 26,
     "_fontSize": 26,
-    "_lineHeight": 70,
+    "_lineHeight": 36,
     "_enableWrapText": false,
     "_N$file": {
       "__uuid__": "b2c0f634-158a-49ee-84f8-a41c8e7ebb56"
@@ -4132,7 +4132,7 @@
     "_N$string": "Hủy",
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
-    "_N$overflow": 1
+    "_N$overflow": 0
   },
   {
     "__type__": "cc.LabelOutline",
@@ -4377,8 +4377,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 150,
-      "height": 70
+      "width": 93.13,
+      "height": 36
     },
     "_children": [],
     "_rotationX": 0,
@@ -4388,7 +4388,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": 0.2
+      "y": 5
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -4422,7 +4422,7 @@
     "_useOriginalSize": false,
     "_actualFontSize": 26,
     "_fontSize": 26,
-    "_lineHeight": 70,
+    "_lineHeight": 36,
     "_enableWrapText": false,
     "_N$file": {
       "__uuid__": "b2c0f634-158a-49ee-84f8-a41c8e7ebb56"
@@ -4431,7 +4431,7 @@
     "_N$string": "Chuyển",
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
-    "_N$overflow": 1
+    "_N$overflow": 0
   },
   {
     "__type__": "cc.LabelOutline",
@@ -5810,7 +5810,7 @@
       "__uuid__": "707ff59f-f7c1-4eb4-a0de-41fd5e1c0123"
     },
     "_isSystemFontUsed": false,
-    "_N$string": "Số tiền rút tối thiểu:",
+    "_N$string": "Số chip rút tối thiểu:",
     "_N$horizontalAlign": 0,
     "_N$verticalAlign": 1,
     "_N$overflow": 0
@@ -6163,7 +6163,7 @@
       "b": 255,
       "a": 255
     },
-    "_N$placeholder": "Nhập số tiền",
+    "_N$placeholder": "Nhập số chip",
     "_N$placeholderFontSize": 35,
     "_N$placeholderFontColor": {
       "__type__": "cc.Color",
@@ -6335,8 +6335,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 130,
-      "height": 70
+      "width": 54.51,
+      "height": 38
     },
     "_children": [],
     "_rotationX": 0,
@@ -6346,7 +6346,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": 1
+      "y": 5
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -6380,7 +6380,7 @@
     "_useOriginalSize": false,
     "_actualFontSize": 28,
     "_fontSize": 28,
-    "_lineHeight": 70,
+    "_lineHeight": 38,
     "_enableWrapText": false,
     "_N$file": {
       "__uuid__": "b2c0f634-158a-49ee-84f8-a41c8e7ebb56"
@@ -6389,7 +6389,7 @@
     "_N$string": "Hủy",
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
-    "_N$overflow": 1
+    "_N$overflow": 0
   },
   {
     "__type__": "cc.LabelOutline",
@@ -6605,8 +6605,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 130,
-      "height": 70
+      "width": 49.25,
+      "height": 38
     },
     "_children": [],
     "_rotationX": 0,
@@ -6616,7 +6616,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": 1
+      "y": 5
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -6650,7 +6650,7 @@
     "_useOriginalSize": false,
     "_actualFontSize": 28,
     "_fontSize": 28,
-    "_lineHeight": 70,
+    "_lineHeight": 38,
     "_enableWrapText": false,
     "_N$file": {
       "__uuid__": "b2c0f634-158a-49ee-84f8-a41c8e7ebb56"
@@ -6659,7 +6659,7 @@
     "_N$string": "Rút",
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
-    "_N$overflow": 1
+    "_N$overflow": 0
   },
   {
     "__type__": "cc.LabelOutline",

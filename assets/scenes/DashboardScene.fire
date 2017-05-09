@@ -5688,7 +5688,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 478.7,
+      "width": 474.7,
       "height": 50
     },
     "_children": [],
@@ -5891,7 +5891,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 167.77,
+      "width": 163.77,
       "height": 38
     },
     "_children": [],
@@ -6106,8 +6106,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 160,
-      "height": 65
+      "width": 97.62,
+      "height": 40
     },
     "_children": [],
     "_rotationX": 0,
@@ -6117,7 +6117,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": 2.2
+      "y": 4
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -6150,7 +6150,7 @@
     "_actualFontSize": 30,
     "_fontSize": 30,
     "_lineHeight": 40,
-    "_enableWrapText": true,
+    "_enableWrapText": false,
     "_N$file": {
       "__uuid__": "b2c0f634-158a-49ee-84f8-a41c8e7ebb56"
     },
@@ -6158,7 +6158,7 @@
     "_N$string": "Chia sẻ",
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
-    "_N$overflow": 1
+    "_N$overflow": 0
   },
   {
     "__type__": "cc.LabelOutline",
@@ -6186,7 +6186,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "9c8a9f54-d1c0-4ad0-9da1-7bb2c9f8fda9"
+      "__uuid__": "eafbd3ce-0478-4ae9-9b52-5e49a23c78ed"
     },
     "_type": 1,
     "_sizeMode": 0,
@@ -6350,8 +6350,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 160,
-      "height": 65
+      "width": 70.83,
+      "height": 40
     },
     "_children": [],
     "_rotationX": 0,
@@ -6361,7 +6361,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": 2.2
+      "y": 5
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -6394,7 +6394,7 @@
     "_actualFontSize": 30,
     "_fontSize": 30,
     "_lineHeight": 40,
-    "_enableWrapText": true,
+    "_enableWrapText": false,
     "_N$file": {
       "__uuid__": "b2c0f634-158a-49ee-84f8-a41c8e7ebb56"
     },
@@ -6402,7 +6402,7 @@
     "_N$string": "Đóng",
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
-    "_N$overflow": 1
+    "_N$overflow": 0
   },
   {
     "__type__": "cc.LabelOutline",

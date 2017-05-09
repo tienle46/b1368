@@ -71,9 +71,9 @@ app.config.gameGroups = {
 };
 
 app.config.actionLabels = {
-    'CASH': 'Rút tiền',
-    'TRANSFER': 'Chuyển tiền',
-    'TOPUP': 'Nạp tiền',
+    'CASH': 'Rút chip',
+    'TRANSFER': 'Chuyển chip',
+    'TOPUP': 'Nạp chip',
     'TOPUP_CARD': 'Nạp thẻ',
     'TOPUP_SMS': 'Nạp SMS',
     'TOPUP_IAP': 'Nạp IAP',

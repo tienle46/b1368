@@ -380,7 +380,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "SMS",
+    "_name": "IAP",
     "_objFlags": 0,
     "_opacity": 255,
     "_color": {
@@ -416,7 +416,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": 181.665
+      "y": 192.6
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -662,7 +662,7 @@
     "_alignFlags": 17,
     "_left": 0,
     "_right": 0,
-    "_top": -20,
+    "_top": -30.935000000000002,
     "_bottom": 0,
     "_verticalCenter": 0,
     "_horizontalCenter": 0,
@@ -1523,8 +1523,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 180,
-      "height": 70
+      "width": 171.5,
+      "height": 39
     },
     "_children": [],
     "_rotationX": 0,
@@ -1534,7 +1534,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": 0
+      "y": 1.5
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -1568,7 +1568,7 @@
     "_useOriginalSize": false,
     "_actualFontSize": 29,
     "_fontSize": 29,
-    "_lineHeight": 70,
+    "_lineHeight": 39,
     "_enableWrapText": false,
     "_N$file": {
       "__uuid__": "b2c0f634-158a-49ee-84f8-a41c8e7ebb56"
@@ -1577,7 +1577,7 @@
     "_N$string": "50.000 VND",
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
-    "_N$overflow": 1
+    "_N$overflow": 0
   },
   {
     "__type__": "cc.LabelOutline",

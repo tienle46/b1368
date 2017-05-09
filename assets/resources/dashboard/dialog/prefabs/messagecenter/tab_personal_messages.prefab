@@ -437,7 +437,7 @@
       "__uuid__": "8538fe1b-c3b4-48ca-849f-55e33a2c7a57"
     },
     "_isSystemFontUsed": false,
-    "_N$string": "xx",
+    "_N$string": "",
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 0,
     "_N$overflow": 3
@@ -663,8 +663,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 140,
-      "height": 71
+      "width": 100.79,
+      "height": 37
     },
     "_children": [],
     "_rotationX": 0,
@@ -674,7 +674,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": 2.4
+      "y": 6
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -708,7 +708,7 @@
     "_useOriginalSize": false,
     "_actualFontSize": 27,
     "_fontSize": 27,
-    "_lineHeight": 40,
+    "_lineHeight": 37,
     "_enableWrapText": false,
     "_N$file": {
       "__uuid__": "b2c0f634-158a-49ee-84f8-a41c8e7ebb56"
@@ -717,7 +717,7 @@
     "_N$string": "Quay lại",
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
-    "_N$overflow": 1
+    "_N$overflow": 0
   },
   {
     "__type__": "cc.LabelOutline",
@@ -917,8 +917,7 @@
     },
     "itemMessageLbl": {
       "__id__": 9
-    },
-    "p404": null
+    }
   },
   {
     "__type__": "cc.PrefabInfo",

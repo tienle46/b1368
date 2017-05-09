@@ -38,7 +38,7 @@ export default class JarExplosive extends Actor {
     onShareBtnClick() {
         app.facebookActions.share({
             link: 'http://b1368.com',
-            text: 'Nổ hũ, Chơi miễn phí, rinh tiền tỉ',
+            text: 'Nổ hũ, Chơi miễn phí, rinh chip tỉ',
             image: 'http://cocos2d-x.org/images/logo.png'
         });
     }

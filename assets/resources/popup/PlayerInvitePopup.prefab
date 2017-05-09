@@ -1298,7 +1298,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 136.94,
-      "y": 0
+      "y": -3.9
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -1342,7 +1342,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 0,
-      "height": 25
+      "height": 32
     },
     "_children": [],
     "_rotationX": 0,
@@ -1383,7 +1383,7 @@
     "_useOriginalSize": false,
     "_actualFontSize": 22,
     "_fontSize": 22,
-    "_lineHeight": 25,
+    "_lineHeight": 32,
     "_enableWrapText": true,
     "_N$file": {
       "__uuid__": "8538fe1b-c3b4-48ca-849f-55e33a2c7a57"
@@ -1429,7 +1429,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 0,
-      "height": 22
+      "height": 32
     },
     "_children": [],
     "_rotationX": 0,
@@ -1470,7 +1470,7 @@
     "_useOriginalSize": false,
     "_actualFontSize": 22,
     "_fontSize": 22,
-    "_lineHeight": 22,
+    "_lineHeight": 32,
     "_enableWrapText": true,
     "_N$file": {
       "__uuid__": "8538fe1b-c3b4-48ca-849f-55e33a2c7a57"
@@ -1516,7 +1516,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 11.12,
-      "height": 20
+      "height": 25
     },
     "_children": [],
     "_rotationX": 0,
@@ -1557,7 +1557,7 @@
     "_useOriginalSize": false,
     "_actualFontSize": 20,
     "_fontSize": 20,
-    "_lineHeight": 20,
+    "_lineHeight": 25,
     "_enableWrapText": true,
     "_N$file": {
       "__uuid__": "8538fe1b-c3b4-48ca-849f-55e33a2c7a57"
@@ -3301,7 +3301,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "greenBtn",
+    "_name": "violetBtn",
     "_objFlags": 0,
     "_opacity": 255,
     "_color": {
@@ -3362,7 +3362,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "acceptLabel",
+    "_name": "denyLabel",
     "_objFlags": 0,
     "_opacity": 255,
     "_color": {
@@ -3394,7 +3394,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": 0.5
+      "y": 3
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -3434,7 +3434,7 @@
       "__uuid__": "b2c0f634-158a-49ee-84f8-a41c8e7ebb56"
     },
     "_isSystemFontUsed": false,
-    "_N$string": "Đồng Ý",
+    "_N$string": "Từ chối",
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
     "_N$overflow": 1
@@ -3449,9 +3449,9 @@
     "_enabled": true,
     "_color": {
       "__type__": "cc.Color",
-      "r": 19,
-      "g": 19,
-      "b": 19,
+      "r": 24,
+      "g": 24,
+      "b": 24,
       "a": 255
     },
     "_width": 2
@@ -3464,7 +3464,7 @@
     "asset": {
       "__uuid__": "e85bde16-b688-4036-b178-0b41d4452ac9"
     },
-    "fileId": "7b1ceiPq4xKepPiQ8mxnroo",
+    "fileId": "822715YlolD3Z4AVndfRDV7",
     "sync": false
   },
   {
@@ -3476,7 +3476,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "9c8a9f54-d1c0-4ad0-9da1-7bb2c9f8fda9"
+      "__uuid__": "654cea23-c19f-42f3-aaa3-c5de28f79437"
     },
     "_type": 1,
     "_sizeMode": 0,
@@ -3543,9 +3543,7 @@
       "b": 255,
       "a": 255
     },
-    "_N$normalSprite": {
-      "__uuid__": "8012db4b-9874-4da7-9051-203564c02d72"
-    },
+    "_N$normalSprite": null,
     "_N$disabledSprite": null,
     "_N$target": {
       "__id__": 102
@@ -3557,7 +3555,7 @@
       "__id__": 1
     },
     "component": "PlayerInvitePopup",
-    "handler": "onAcceptBtnClick",
+    "handler": "onDenyBtnClick",
     "customEventData": ""
   },
   {
@@ -3568,12 +3566,12 @@
     "asset": {
       "__uuid__": "e85bde16-b688-4036-b178-0b41d4452ac9"
     },
-    "fileId": "d082c1jkwRGjLo6bQerHpL7",
+    "fileId": "f8a0bacTJJCPa/GRe/Jsp7/",
     "sync": false
   },
   {
     "__type__": "cc.Node",
-    "_name": "violetBtn",
+    "_name": "greenBtn",
     "_objFlags": 0,
     "_opacity": 255,
     "_color": {
@@ -3634,7 +3632,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "denyLabel",
+    "_name": "acceptLabel",
     "_objFlags": 0,
     "_opacity": 255,
     "_color": {
@@ -3666,7 +3664,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": 1
+      "y": 3
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -3706,7 +3704,7 @@
       "__uuid__": "b2c0f634-158a-49ee-84f8-a41c8e7ebb56"
     },
     "_isSystemFontUsed": false,
-    "_N$string": "Từ chối",
+    "_N$string": "Đồng Ý",
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
     "_N$overflow": 1
@@ -3721,9 +3719,9 @@
     "_enabled": true,
     "_color": {
       "__type__": "cc.Color",
-      "r": 24,
-      "g": 24,
-      "b": 24,
+      "r": 19,
+      "g": 19,
+      "b": 19,
       "a": 255
     },
     "_width": 2
@@ -3736,7 +3734,7 @@
     "asset": {
       "__uuid__": "e85bde16-b688-4036-b178-0b41d4452ac9"
     },
-    "fileId": "822715YlolD3Z4AVndfRDV7",
+    "fileId": "7b1ceiPq4xKepPiQ8mxnroo",
     "sync": false
   },
   {
@@ -3748,7 +3746,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "654cea23-c19f-42f3-aaa3-c5de28f79437"
+      "__uuid__": "9c8a9f54-d1c0-4ad0-9da1-7bb2c9f8fda9"
     },
     "_type": 1,
     "_sizeMode": 0,
@@ -3815,7 +3813,9 @@
       "b": 255,
       "a": 255
     },
-    "_N$normalSprite": null,
+    "_N$normalSprite": {
+      "__uuid__": "8012db4b-9874-4da7-9051-203564c02d72"
+    },
     "_N$disabledSprite": null,
     "_N$target": {
       "__id__": 111
@@ -3827,7 +3827,7 @@
       "__id__": 1
     },
     "component": "PlayerInvitePopup",
-    "handler": "onDenyBtnClick",
+    "handler": "onAcceptBtnClick",
     "customEventData": ""
   },
   {
@@ -3838,7 +3838,7 @@
     "asset": {
       "__uuid__": "e85bde16-b688-4036-b178-0b41d4452ac9"
     },
-    "fileId": "f8a0bacTJJCPa/GRe/Jsp7/",
+    "fileId": "d082c1jkwRGjLo6bQerHpL7",
     "sync": false
   },
   {

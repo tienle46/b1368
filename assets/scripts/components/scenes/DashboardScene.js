@@ -74,7 +74,7 @@ export default class DashboardScene extends BaseScene {
     onShareBtnClick() {
         app.facebookActions.share({
             link: 'http://b1368.com',
-            text: 'Chơi miễn phí, rinh tiền tỉ',
+            text: 'Chơi miễn phí, rinh chip tỉ',
             image: 'http://cocos2d-x.org/images/logo.png'
         });
     }

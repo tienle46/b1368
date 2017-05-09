@@ -36,7 +36,7 @@ const LOGIN_ERROR_MESSAGES_VI = {
     "35": "Bạn đang không trong phòng game",
     "36": "Không thể tải danh sách bạn bè trong phòng",
     "37": "Danh sách bạn bè của bạn đã đầy",
-    "38": "Không thể chặn vì người chơi đã đăng xuất",
+    "38": "Không thể chặn vì người chơi đã đăngchipất",
     "39": "Bạn đang cố gắng tạo set quá nhiều thông tin bạn bè",
     "40": "Bạn không có quyền truy nhập vào game, không đúng tiêu chí truy cập",
     "41": "Không có bàn chơi phù hợp, vui lòng thử phòng khác",

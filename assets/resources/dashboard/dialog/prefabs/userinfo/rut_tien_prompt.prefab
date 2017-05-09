@@ -144,7 +144,7 @@
       "__uuid__": "8538fe1b-c3b4-48ca-849f-55e33a2c7a57"
     },
     "_isSystemFontUsed": false,
-    "_N$string": "Vui lòng nhập số tiền cần rút",
+    "_N$string": "Vui lòng nhập số chip cần rút",
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
     "_N$overflow": 0
@@ -446,7 +446,7 @@
       "b": 255,
       "a": 255
     },
-    "_N$placeholder": "Nhập số tiền",
+    "_N$placeholder": "Nhập số chip",
     "_N$placeholderFontSize": 35,
     "_N$placeholderFontColor": {
       "__type__": "cc.Color",
@@ -599,7 +599,7 @@
       "__id__": 17
     },
     "_enabled": true,
-    "_N$string": "<outline width=2 color=#000>Số tiền rút tối thiểu: <color=#FF0000>2000</c>. Tối thiểu cần có <color=#FF0000> 5000 </c> trong tài khoản.</o>",
+    "_N$string": "<outline width=2 color=#000>Số chip rút tối thiểu: <color=#FF0000>2000</c>. Tối thiểu cần có <color=#FF0000> 5000 </c> trong tài khoản.</o>",
     "_N$horizontalAlign": 0,
     "_N$fontSize": 22,
     "_N$font": {
