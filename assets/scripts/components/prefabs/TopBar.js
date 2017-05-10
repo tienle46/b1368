@@ -193,7 +193,8 @@ class TopBar extends DialogActor {
     }
 
     _onConfigChanged() {
-        HttpImageLoader.loadDefaultAvatar(this.avatarSpriteNode.getComponent(cc.Sprite));
+        app.context.getUserAvatar(this.avatarSpriteNode.getComponent(cc.Sprite), true)
+        // HttpImageLoader.loadDefaultAvatar(this.avatarSpriteNode.getComponent(cc.Sprite));
     }
 
     _onBuddyNotifyCountChanged(count) {

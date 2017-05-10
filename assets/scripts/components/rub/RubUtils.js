@@ -100,7 +100,7 @@ let RubUtils = {
      * }
      */
     loadSpriteFrame: (spriteComponent, resURL, ccSize = null, isCORS = false, cb, options = {}) => {
-        if (!resURL)
+        if (!resURL || !spriteComponent)
             return;
 
         let textureCache;
