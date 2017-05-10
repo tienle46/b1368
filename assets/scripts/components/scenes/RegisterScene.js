@@ -34,6 +34,7 @@ export default class RegisterScene extends BaseScene {
                 app.system.showErrorToast(app.getMessageFromServer("LOGIN_ERROR_PASSWORD_NOT_VALID"));
             } else if (!this._isValidCaptcha()) {
                 app.system.showErrorToast(app.getMessageFromServer("LOGIN_ERROR_CAPTCHA_NOT_VALID"));
+                this.generateRandomString();
             }
         }
     }
@@ -61,13 +62,13 @@ export default class RegisterScene extends BaseScene {
     _isValidPasswordInput(str) {
         // minimum: 6, must have atleast a-z||A-Z|0-9, without space
         // /\s/.test(str) => true if str contains space
-        return str.length <= 16 && /[a-zA-Z0-9]{5,}/.test(str) && /[a-zA-Z]/.test(str) && /[0-9]/.test(str) && !/\s/.test(str) && str.length >= app.config.MINIMUM_PASSWORD;
+        return str.length <= app.config.MAX_PASSWORD_LENGTH && /[a-zA-Z0-9]/.test(str) && /[a-zA-Z]/.test(str) && /[0-9]/.test(str) && !/\s/.test(str) && str.length >= app.config.MINIMUM_PASSWORD;
     }
 
     _isValidUsernameInput(str) {
         // minimum: 5, a-zA-Z0-9, without space
         // /\s/.test(str) => true if str contains space
-        return str.length <= 21 && /[a-zA-Z0-9]{6,}/.test(str) && !/\s/.test(str);
+        return str.length <= app.config.MAX_USERNAME_LENGTH && /[a-zA-Z0-9]/.test(str) && !/\s/.test(str) && str.length >= app.config.MIN_USERNAME_LENGTH;
     }
 
     _isValidCaptcha() {

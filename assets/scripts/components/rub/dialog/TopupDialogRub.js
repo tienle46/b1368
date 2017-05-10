@@ -14,8 +14,8 @@ export default class TopupDialogRub {
 
         this.tabModels = [
             { title: 'Thẻ cào',prefabPath: `${url}/tab_card`, componentName: 'TabCard'},
-            { title: 'SMS',prefabPath: `${url}/tab_sms`, componentName: 'TabSMS', hide: app.env.isBrowser() ? !app.env.isBrowserTest() : !app.env.isMobile()},
-            { title: 'IAP',prefabPath: `${url}/tab_iap`, componentName: 'TabIAP',  hide: app.env.isBrowser() ? !app.env.isBrowserTest() : !app.env.isMobile()},
+            { title: 'SMS',prefabPath: `${url}/tab_sms`, componentName: 'TabSMS'},
+            { title: 'IAP',prefabPath: `${url}/tab_iap`, componentName: 'TabIAP',  hide: app.env.isBrowser()},
             { title: 'Lịch sử',prefabPath: `${url}/tab_history`, componentName: 'TabHistory'}
         ];
     }

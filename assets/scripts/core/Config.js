@@ -24,7 +24,7 @@ app.config.buildForMobile = true; // if ( sys.platform !== 'browser')
 app.config.app_secret_key = '63d9ccc8-9ce1-4165-80c8-b15eb84a780a';
 app.config.DEVICE_ID = 'a19c8e4ae2e82ef1c7846f32628d4ead3';
 app.config.MINIMUM_PASSWORD = 6;
-app.config.MAX_PASSWORD_LENGTH = 15;
+app.config.MAX_PASSWORD_LENGTH = 30;
 app.config.MIN_USERNAME_LENGTH = 6;
 app.config.MAX_USERNAME_LENGTH = 15;
 app.config.USER_NAME_REGEX = /^[a-zA-Z0-9._]{6,15}$/;
@@ -41,6 +41,13 @@ app.config.website = `http://bai1368.com`;
 app.config.supportHotline = '123456';
 app.config.defaultMinBalanceJoinGameRoomMultiple = 10;
 app.config.defaultAvatarUrl = "";
+app.config.filterLabels = ['Nông dân', 'Quý tộc', 'Hoàng gia'];
+// 1:bac 2:vang 3:kimcuong
+app.config.ingameGreetingVipMessages = {
+    1: 'Chào Dân Chơi {{username}} !',
+    2: 'Chào Đại Gia {{username}} !',
+    3: 'Chào anh Đại {{username}} ạ !'
+};
 
 app.config.supportedGames = [
     app.const.gameCode.PHOM,
@@ -58,9 +65,9 @@ app.config.soloGames = [
 ]
 
 app.config.listTableGroupFilters = [
-    {min: 0, max: 1000},
-    {min: 0, max: 10000},
-    {min: 0, max: 2000000000},
+    {min: 0, max: 1000, text: 'Nông dân'},
+    {min: 0, max: 10000, text: 'Quý tộc'},
+    {min: 0, max: 2000000000, text: 'Hoàng gia'}
 ];
 
 app.config.gameGroups = {

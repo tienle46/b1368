@@ -114,9 +114,16 @@ app.res.gameTopCapThuIcon = {
 // array contains prefix-key which is only allowed by VIP users.
 app.res.vip_emotions = ['trump'];
 app.res.vip_tools = {
-    cungBia:true,
-    hatNuoc:true,
-    trungThoi:true
+    bopCoGa: true,
+    kiss: true,
+    nemBomb: true,
+    nemCaChua: true,
+    nemGach: true,
+    thaCho: true,
+    // // user thuong`
+    // cungBia:false,
+    // hatNuoc:false,
+    // trungThoi:false
 };
 app.res.asset_tools = {};
 

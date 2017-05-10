@@ -595,8 +595,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 110,
-      "height": 110
+      "width": 115,
+      "height": 115
     },
     "_children": [],
     "_rotationX": 0,
@@ -605,7 +605,7 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": -55,
+      "x": -56,
       "y": 0
     },
     "_skewX": 0,
@@ -637,9 +637,7 @@
       "__id__": 15
     },
     "_enabled": true,
-    "_spriteFrame": {
-      "__uuid__": "01895aa1-fbbf-4589-b6bd-6354693ec6c0"
-    },
+    "_spriteFrame": null,
     "_type": 3,
     "_sizeMode": 0,
     "_fillType": 2,
@@ -653,9 +651,7 @@
     "_isTrimmedMode": true,
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
-    "_atlas": {
-      "__uuid__": "10ca67ea-2a3c-4512-b8a8-cfd37f9d8bbe"
-    }
+    "_atlas": null
   },
   {
     "__type__": "cc.ProgressBar",
@@ -4021,7 +4017,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 85.71,
-      "height": 55
+      "height": 34
     },
     "_children": [],
     "_rotationX": 0,
@@ -4031,7 +4027,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": 2
+      "y": 4
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -4065,7 +4061,7 @@
     "_useOriginalSize": false,
     "_actualFontSize": 24,
     "_fontSize": 24,
-    "_lineHeight": 55,
+    "_lineHeight": 34,
     "_enableWrapText": true,
     "_N$file": {
       "__uuid__": "f7d3295b-8e12-456d-9621-9b8acc29ca1f"

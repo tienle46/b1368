@@ -45,11 +45,11 @@ class TabGiftCode extends PopupTabBody {
         app.system.removeListener(app.commands.GIFT_CODE, this._onGetGiftCode, this);
     }
     
-    _isValidInput(code, allowedLength = 6) {
+    _isValidInput(code, allowedLength = 8) {
         if(Utils.isEmpty(code))
             return;
         
-        return code.trim().length == allowedLength && /[a-zA-Z0-9]{5,}/.test(code) && !/\s/.test(code);
+        return code.trim().length >= allowedLength && new RegExp(`[a-zA-Z0-9]{${allowedLength},10}`).test(code) && !/\s/.test(code);
     }
     
     _onGetGiftCode(data) {

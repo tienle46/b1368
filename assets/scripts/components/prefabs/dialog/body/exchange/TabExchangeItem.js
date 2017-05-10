@@ -181,9 +181,7 @@ class TabExchangeItem extends PopupTabBody {
         if (data[app.keywords.RESPONSE_RESULT] === true) {
             app.system.showToast(`${data[app.keywords.RESPONSE_MESSAGE]}`);
         } else { // true
-            app.system.error(
-                app.res.string('error_system')
-            );
+            app.system.error(data[app.keywords.RESPONSE_MESSAGE] ? data[app.keywords.RESPONSE_MESSAGE] : app.res.string('error_system'));
         }
     }
 

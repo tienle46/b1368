@@ -19,9 +19,12 @@ export default class ListTableScene extends BaseScene {
             invitePopupPrefab: cc.Prefab,
             gameTitleLbl: cc.Label,
             userMoneyLbl: cc.Label,
-            jarAnchorNode: cc.Node
+            jarAnchorNode: cc.Node,
+            filter1stLabel: cc.Label,
+            filter2ndLabel: cc.Label,
+            filter3rdLabel: cc.Label
         };
-
+        
         this.items = null;
         this.time = 2500 * 10; // creating new request for updating tables every 25s
         // filter button conditional 
@@ -45,6 +48,9 @@ export default class ListTableScene extends BaseScene {
         this.items = [];
         this.enableMinbets = [];
         this.userMoneyLbl.string = `${Utils.numberFormat(app.context.getMeBalance() || 0)}`;
+        [this.filter1stLabel, this.filter2ndLabel, this.filter3rdLabel].forEach((label, index) => {
+            label.string = app.config.listTableGroupFilters[index].text;
+        })
     }
 
     onEnable() {

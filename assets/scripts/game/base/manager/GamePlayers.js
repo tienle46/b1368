@@ -436,6 +436,7 @@ export default class GamePlayers extends Component {
     }
 
     onUserEnterRoom(user, room) {
+        this.greetingVip(user);
         if (user && user.isPlayer() && !this.findPlayer(user.getPlayerId(room))) {
 
             let newPlayer = this._addPlayer(user);
@@ -453,7 +454,28 @@ export default class GamePlayers extends Component {
             return true;
         }
     }
-
+    
+    greetingVip(user) {
+        let userVip = utils.getVariable(user, app.keywords.VIP_LEVEL);
+        if(userVip) {
+            let userVipId = userVip.id;
+            let userPriority = userVip.value;
+            if(userVipId > -1) {
+                let userShouldeSeeMessage = app.config.ingameGreetingVipMessages[userVipId];
+                this.players && this.players.forEach(player => {
+                    if(player.user.id === user.id)
+                        return;
+                        
+                    let vipLevel = utils.getVariable(player.user, app.keywords.VIP_LEVEL);
+                    if(vipLevel) {
+                        let {id, value} = vipLevel;
+                        priority < userPriority && player.say(userShouldeSeeMessage.replace(/{{username}}/i, GameUtils.getDisplayName(user)));
+                    }
+                }); 
+            }
+        }
+    }
+    
     onPlayerMessage(sender, message) {
         this.players.some(player => {
             if (player.name === sender.name) {

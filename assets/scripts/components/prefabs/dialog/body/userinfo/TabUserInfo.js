@@ -39,7 +39,7 @@ export default class TabUserInfo extends PopupTabBody {
     onLoad() {
         super.onLoad();
         this._showUserInfoPanel();
-        app.context.getUserAvatar(this.avatar);
+        this.avatar && app.context.getUserAvatar(this.avatar);
     }
 
     loadData() {
@@ -262,10 +262,10 @@ export default class TabUserInfo extends PopupTabBody {
             accountTypeName
         } = data;
 
-        this.userName.string = name;
+        this.userName.string = app.context.getMeDisplayName();
         this.chipAmout.string = numberFormat(balance);
 
-        this.userId.string = id;
+        this.userId.string = name;
         this.vipLevel.string = accountTypeName;
         // this.nextLevel.string = nextLevelName;
 

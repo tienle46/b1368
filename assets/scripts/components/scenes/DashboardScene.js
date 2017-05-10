@@ -14,7 +14,8 @@ export default class DashboardScene extends BaseScene {
             viewContainer: cc.Node,
             item: cc.Prefab,
             dailyDialog: cc.Node,
-            dailyDialogContent: cc.Label
+            dailyDialogContent: cc.Label,
+            dailyDialogTitle: cc.Label
         };
         
         this.iconComponents = {};
@@ -56,9 +57,10 @@ export default class DashboardScene extends BaseScene {
         app.system.showLackOfMoneyMessagePopup()
     }
 
-    showDailyLoginPopup(message) {
+    showDailyLoginPopup(title, message) {
         this.dailyDialog.active = true;
         this.dailyDialogContent.string = message;
+        this.dailyDialogTitle.string = title;
         
         let action = cc.sequence(cc.fadeIn(0.2), cc.delayTime(20), cc.fadeOut(0.5), cc.callFunc(()=> {
             this.dailyDialog.active = false;

@@ -22,7 +22,7 @@ export default class AvatarDialog extends DialogActor {
         };
         
         this.previousLabel = null;
-        this.selectedURL = null;
+        this.selectedObject = null;
     }
 
     onLoad() {
@@ -41,11 +41,11 @@ export default class AvatarDialog extends DialogActor {
     
     onClickAvatarItem(toggle) {
         let node = toggle.node;
-        let {name, description, spriteFrame, thumb, large} = node.data;
+        let {name, description, spriteFrame, thumb, large, vipValue} = node.data;
         this.pickedAvatarSprite.spriteFrame = spriteFrame;
         this.pickedAvatarLbl.string = name;
-        this.selectedURL = {
-            thumb, large
+        this.selectedObject = {
+            thumb, large, vipValue
         };
         this.pickedAvatarDescription.string = description;
         
@@ -58,7 +58,12 @@ export default class AvatarDialog extends DialogActor {
     }
     
     onConfirmBtnClick() {
-        let {thumb, large} = this.selectedURL;
+        let {thumb, large, vipValue} = this.selectedObject;
+        
+        if(app.context.getVipLevel() < vipValue) {
+            app.system.showToast(app.res.string('error_dont_have_permission'));
+            return;    
+        }
         
         let resObj = {
             cmd: app.commands.CHANGE_AVATAR,
@@ -104,10 +109,11 @@ export default class AvatarDialog extends DialogActor {
     
     _onListUserAvatars(data) {
         let {avatarUrls} = data;
-        avatarUrls && avatarUrls.forEach((avatar, index) => {
-            let {thumb, large, name, desc} = avatar;
+        
+        let index = 0;
+        app.async.mapSeries(avatarUrls, (avatar, cb) => {
+            let {thumb, large, name, desc, vipValue} = avatar;
             let url = thumb;
-            
             // this.itemAvatar.spriteFrame = HttpImageLoader.loadImage(url, 'AvatarDialog');
             url && RubUtils.loadSpriteFrame(this.itemAvatar, url, null, true, (sprite) => {
                 this.itemLbl.string = name;
@@ -119,7 +125,8 @@ export default class AvatarDialog extends DialogActor {
                         description: desc,
                         spriteFrame: sprite.spriteFrame,
                         thumb,
-                        large
+                        large,
+                        vipValue
                     };
                     
                     let toggle = item.getComponent(cc.Toggle);
@@ -129,8 +136,10 @@ export default class AvatarDialog extends DialogActor {
                     }
                 }
                 this.itemContainerNode.addChild(item);
+                index ++;
+                cb();                
             });
-        })    
+        });
     }
     
     onCloseBtnClick() {

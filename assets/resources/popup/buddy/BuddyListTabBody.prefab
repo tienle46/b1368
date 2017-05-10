@@ -1710,7 +1710,7 @@
     "node": {
       "__id__": 50
     },
-    "_enabled": true,
+    "_enabled": false,
     "_spriteFrame": {
       "__uuid__": "557487f4-ffb0-48d7-b414-a82737b7edf8"
     },

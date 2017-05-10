@@ -89,7 +89,14 @@ class GameContext {
     getMe() {
         return app.service.client.me;
     }
-
+    
+    getVipLevel() {
+        let me = this.getMe();
+        let vipLevel = Utils.getVariable(me, app.keywords.VIP_LEVEL, {});
+        
+        return vipLevel.value || 0;  
+    }
+    
     getMyInfo() {
         let me = this.getMe();
         

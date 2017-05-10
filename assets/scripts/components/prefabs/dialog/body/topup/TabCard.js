@@ -7,6 +7,41 @@ import {
 import RubUtils from 'RubUtils';
 import CCUtils from 'CCUtils';
 
+/**
+ * "Viettel": 1
+    "Mobi":2
+    "Vina": 3
+    "Gate": 4
+    "BIT": 5
+    "ZING": 6
+    "ONCash": 7
+    "VCOIN": 8
+    "Megacard": 9
+ */
+const CARD_SERIAL = {
+    1: [11, 15],
+    2: [9, 15],
+    3: [9, 15],
+    4: [10],
+    5: [10],
+    6: [12],
+    7: [12],
+    8: [10],
+    9: [12]
+};
+
+const CARD_CODE = {
+    1: [13, 15],
+    2: [12, 14],
+    3: [12, 15],
+    4: [10],
+    5: [9],
+    6: [12],
+    7: [12],
+    8: [10],
+    9: [12]
+};
+
 class TabCard extends PopupTabBody {
     constructor() {
         super();
@@ -26,7 +61,7 @@ class TabCard extends PopupTabBody {
             ratioPromote: cc.Node,
             ratioPromoteLbl: cc.Label,
             ratioItemXuLbl: cc.Label,
-            cardSerialEditBox: cc.EditBox,
+            cardCodeEditBox: cc.EditBox,
             serialNumberEditBox: cc.EditBox
         };
 
@@ -35,7 +70,6 @@ class TabCard extends PopupTabBody {
 
     onLoad() {
         super.onLoad();
-        CCUtils.deactive(this.cardLayoutPanel);
         // wait til every requests is done
         // this._initRatioGroup();
         
@@ -101,20 +135,26 @@ class TabCard extends PopupTabBody {
     }
     
     onHanleChargeBtnClick() {
-        let cardSerial = this.cardSerialEditBox.string.trim();
+        let cardCode = this.cardCodeEditBox.string.trim();
         let serialNumber = this.serialNumberEditBox.string.trim();
 
-        if (isEmpty(cardSerial) || isEmpty(serialNumber) || isNaN(cardSerial) || isNaN(serialNumber)) {
-            app.system.error(
-                app.res.string('error_user_enter_empty_input')
-            );
+        if (isEmpty(cardCode) || isEmpty(serialNumber)) {
+            app.system.error(app.res.string('error_user_enter_empty_input'));
         } else {
+            if(!this._validateCardSerial(serialNumber)) {
+                app.system.error(app.res.string('error_serial_number_is_invalid'));
+                return;
+            }
+            if(!this._validateCardCode(cardCode)) {
+                app.system.error(app.res.string('error_card_code_is_invalid'));
+                return;
+            }
             let sendObject = {
                 'cmd': app.commands.USER_SEND_CARD_CHARGE,
                 data: {
-                    [app.keywords.CHARGE_CARD_PROVIDER_ID]:this.providerId,
-                    [app.keywords.CARD_CODE]:cardSerial,
-                    [app.keywords.CARD_SERIAL]:serialNumber
+                    [app.keywords.CHARGE_CARD_PROVIDER_ID]: this.providerId,
+                    [app.keywords.CARD_CODE]: cardCode,
+                    [app.keywords.CARD_SERIAL]: serialNumber
                 }
             };
 
@@ -128,6 +168,16 @@ class TabCard extends PopupTabBody {
     
     onBackBtnClick() {
         this._showFormPanel();
+    }
+    
+    _validateCardSerial(str) {
+        let conditons = CARD_SERIAL[this.providerId];
+        return /[a-zA-Z0-9]/.test(str) && str.length >= conditons[0] && str.length <= conditons[conditons.length - 1] 
+    }
+    
+    _validateCardCode(str) {
+        let conditons = CARD_CODE[this.providerId];
+        return /[0-9]/.test(str) && !/[a-zA-Z]/.test(str) && str.length >= conditons[0] && str.length <= conditons[conditons.length - 1] 
     }
     
     _showRatioBtn() {
@@ -147,35 +197,39 @@ class TabCard extends PopupTabBody {
         
         if (cardListIds.length > 0) {
             CCUtils.destroyAllChildren(this.providerContainerNode, 0);       
-            
-            cardListIds.forEach((id, index) => {
+            let index = 0;
+            app.async.mapSeries(cardListIds, (id, cb) => {
                 let providerName = data[app.keywords.TASK_NAME_LIST][index];
                 let activeState = `${providerName.toLowerCase()}-active`;
                 let inactiveState = `${providerName.toLowerCase()}-inactive`;
-                
                 RubUtils.getSpriteFramesFromAtlas(app.res.ATLAS_URLS.PROVIDERS, [activeState, inactiveState], (sprites) => {
-                    this.activeStateSprite.spriteFrame = sprites[activeState];
-                    this.inActiveStateSprite.spriteFrame = sprites[inactiveState];
+                    if(sprites) {
+                        this.activeStateSprite.spriteFrame = sprites[activeState];
+                        this.inActiveStateSprite.spriteFrame = sprites[inactiveState];
 
-                    let provider = cc.instantiate(this.providerItemNode);
-                    this.addNode(provider);
-                    provider.active = true;
+                        let provider = cc.instantiate(this.providerItemNode);
+                        this.addNode(provider);
+                        provider.active = true;
 
-                    let toggle = provider.getComponent(cc.Toggle);
-                    toggle.isChecked = index == 0;
-                    toggle.providerName = providerName;
-                    toggle.providerId = id;
+                        let toggle = provider.getComponent(cc.Toggle);
+                        toggle.isChecked = index == 0;
+                        toggle.providerName = providerName;
+                        toggle.providerId = id;
 
-                    this.providerContainerNode.addChild(provider);
+                        this.providerContainerNode.addChild(provider);
 
-                    if (toggle.isChecked) {
-                        // toggle.check();
-                        this.onProviderBtnClick(toggle);
+                        if (toggle.isChecked) {
+                            // toggle.check();
+                            this.onProviderBtnClick(toggle);
+                        }
                     }
+                    index ++;
 
-                    if(index === cardListIds.length - 1) {
+                    if(index === cardListIds.length) {
                         this._showFormPanel();
                     }
+                    
+                    cb && cb();
                 });
             });
             

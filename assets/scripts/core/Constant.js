@@ -161,6 +161,7 @@ app.const.adminMessage.CPI = 3;
 app.const.adminMessage.MANUAL_DISMISS = 4;
 app.const.adminMessage.DAILY_LOGIN_MISSION = 11;
 app.const.adminMessage.TOPUP_SUCCESSFULLY = 12;
+app.const.adminMessage.REGISTER_BONUS = 14;
 
 app.const.NUMBER_MESSAGES_KEEP_INGAME = 30;
 app.const.NUMBER_MESSAGES_KEEP_PER_BUDDY = 30;

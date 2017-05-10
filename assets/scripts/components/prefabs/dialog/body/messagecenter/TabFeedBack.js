@@ -28,6 +28,10 @@ export default class TabFeedBack extends PopupTabBody {
     onFeedbackConfirmed() {
         let content = this.content.string;
         
+        if(content.trim().length > 200) {
+            app.system.showToast(app.res.string('error_feedback_too_long'));
+            return;
+        }
         //collect user feedback and send to server
         if (content && content.trim().length > 0) {
             var sendObject = {
