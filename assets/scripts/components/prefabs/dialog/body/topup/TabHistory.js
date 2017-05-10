@@ -60,8 +60,8 @@ class TabHistory extends PopupTabBody {
         let d = [];
         
         Object.values(histories).map((history, index) => {
-            let {time, balance, money} = history;
-            d.push([Utils.timeFormat(time), Utils.numberFormat(balance), Utils.numberFormat(money)]);
+            let {time, content, state} = history;
+            d.push([Utils.timeFormat(time), content, state]);
         });
         
         if (d.length > 0) {
