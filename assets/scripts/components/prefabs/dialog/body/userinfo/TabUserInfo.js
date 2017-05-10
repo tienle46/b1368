@@ -262,10 +262,10 @@ export default class TabUserInfo extends PopupTabBody {
             accountTypeName
         } = data;
 
-        this.userName.string = name;
+        this.userName.string = app.context.getMeDisplayName();
         this.chipAmout.string = numberFormat(balance);
 
-        this.userId.string = id;
+        this.userId.string = name;
         this.vipLevel.string = accountTypeName;
         // this.nextLevel.string = nextLevelName;
 

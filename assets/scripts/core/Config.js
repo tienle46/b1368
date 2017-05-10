@@ -60,7 +60,7 @@ app.config.soloGames = [
 app.config.listTableGroupFilters = [
     {min: 0, max: 1000, text: 'Nông dân'},
     {min: 0, max: 10000, text: 'Quý tộc'},
-    {min: 0, max: 2000000000, text: 'Hoàng gia'},
+    {min: 0, max: 2000000000, text: 'Hoàng gia'}
 ];
 
 app.config.gameGroups = {
