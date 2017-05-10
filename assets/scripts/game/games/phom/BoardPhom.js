@@ -11,6 +11,7 @@ import BoardCardTurnBase from 'BoardCardTurnBase';
 import PlayerPhom from 'PlayerPhom';
 import Phom from 'Phom';
 import PhomList from 'PhomList';
+import CardList from 'CardList';
 import CCUtils from 'CCUtils';
 import ArrayUtils from "../../../utils/ArrayUtils";
 
@@ -399,6 +400,20 @@ export default class BoardPhom extends BoardCardTurnBase {
         CCUtils.setVisible(this.renderer.tapHighlightNode, visible);
         let animationComponent = this.renderer.tapHighlightNode.getComponent(cc.Animation);
         animationComponent && (visible ? animationComponent.play() : animationComponent.stop())
+    }
+
+    adjustDealCardAnchor(){
+        const meCardList = this.scene.gamePlayers.me.renderer.cardList;
+
+        const meAnchor = meCardList.node.parent;
+        const worldPosOfMeAnchor = meAnchor.parent.convertToWorldSpaceAR(meAnchor.getPosition());
+        const newPos = this.renderer.dealCardAnchor.parent.convertToNodeSpaceAR(worldPosOfMeAnchor);
+
+        this.renderer.meDealCardListNode.setPosition(0, newPos.y);
+
+        this.renderer.meDealCardList.setScale(meCardList.scale);
+        this.renderer.meDealCardList.setMaxDimension(meCardList.maxDimension);
+        this.renderer.meDealCardList.setAlign(CardList.ALIGN_CENTER);
     }
 }
 
