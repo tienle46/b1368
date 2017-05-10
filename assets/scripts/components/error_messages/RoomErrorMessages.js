@@ -29,14 +29,14 @@ ROOM_ERROR_MESSAGE["vi"] = {
     "41": "Không có bàn chơi phù hợp, vui lòng thử phòng khác",
     "42": "Lời mời trước của bạn không hợp lệ, hoặc nó đến quá chậm",
     "28": {
-        "4": "Tài khoản không đủ để tham ra hoặc tạo bàn",
+        "4": "Tài khoản không đủ để tham gia hoặc tạo bàn",
         "5": "Không đúng số lượng người chơi tối đa trong bàn",
-        "6": "Số chip trong tài khoản không thuộc giới hạn tham ra hoặc tạo bàn",
-        "7": "Số chip trong tài khoản không thuộc giới hạn tham ra hoặc tạo bàn",
-        "8": "Cấp độ của bạn không thuộc giới hạn tham ra hoặc tạo bàn",
-        "9": "Cấp độ của bạn không thuộc giới hạn tham ra hoặc tạo bàn",
-        "10": "Mức cược bàn không thuộc giới hạn tham ra hoặc tạo bàn",
-        "11": "Mức cược bàn không thuộc giới hạn tham ra hoặc tạo bàn",
+        "6": "Số chip trong tài khoản không thuộc giới hạn tham gia hoặc tạo bàn",
+        "7": "Số chip trong tài khoản không thuộc giới hạn tham gia hoặc tạo bàn",
+        "8": "Cấp độ của bạn không thuộc giới hạn tham gia hoặc tạo bàn",
+        "9": "Cấp độ của bạn không thuộc giới hạn tham gia hoặc tạo bàn",
+        "10": "Mức cược bàn không thuộc giới hạn tham gia hoặc tạo bàn",
+        "11": "Mức cược bàn không thuộc giới hạn tham gia hoặc tạo bàn",
     }
 };
 
