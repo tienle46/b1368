@@ -1081,7 +1081,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "cardSerial",
+    "_name": "cardCode",
     "_objFlags": 0,
     "_opacity": 255,
     "_color": {
@@ -1139,7 +1139,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "cardSerialEditBox",
+    "_name": "cardCodeEditBox",
     "_objFlags": 0,
     "_opacity": 255,
     "_color": {
@@ -1212,7 +1212,7 @@
     "_N$backgroundImage": null,
     "_N$returnType": 0,
     "_N$inputFlag": 1,
-    "_N$inputMode": 2,
+    "_N$inputMode": 6,
     "_N$fontSize": 26,
     "_N$lineHeight": 71,
     "_N$fontColor": {
@@ -1443,7 +1443,7 @@
     "_N$backgroundImage": null,
     "_N$returnType": 0,
     "_N$inputFlag": 1,
-    "_N$inputMode": 2,
+    "_N$inputMode": 6,
     "_N$fontSize": 26,
     "_N$lineHeight": 71,
     "_N$fontColor": {
@@ -4014,7 +4014,7 @@
     "ratioItemXuLbl": {
       "__id__": 101
     },
-    "cardSerialEditBox": {
+    "cardCodeEditBox": {
       "__id__": 35
     },
     "serialNumberEditBox": {

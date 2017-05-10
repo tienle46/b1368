@@ -7,6 +7,41 @@ import {
 import RubUtils from 'RubUtils';
 import CCUtils from 'CCUtils';
 
+/**
+ * "Viettel": 1
+    "Mobi":2
+    "Vina": 3
+    "Gate": 4
+    "BIT": 5
+    "ZING": 6
+    "ONCash": 7
+    "VCOIN": 8
+    "Megacard": 9
+ */
+const CARD_SERIAL = {
+    1: [11, 15],
+    2: [9, 15],
+    3: [9, 15],
+    4: [10],
+    5: [10],
+    6: [12],
+    7: [12],
+    8: [10],
+    9: [12]
+};
+
+const CARD_CODE = {
+    1: [13, 15],
+    2: [12, 14],
+    3: [12, 15],
+    4: [10],
+    5: [9],
+    6: [12],
+    7: [12],
+    8: [10],
+    9: [12]
+};
+
 class TabCard extends PopupTabBody {
     constructor() {
         super();
@@ -26,7 +61,7 @@ class TabCard extends PopupTabBody {
             ratioPromote: cc.Node,
             ratioPromoteLbl: cc.Label,
             ratioItemXuLbl: cc.Label,
-            cardSerialEditBox: cc.EditBox,
+            cardCodeEditBox: cc.EditBox,
             serialNumberEditBox: cc.EditBox
         };
 
@@ -100,20 +135,26 @@ class TabCard extends PopupTabBody {
     }
     
     onHanleChargeBtnClick() {
-        let cardSerial = this.cardSerialEditBox.string.trim();
+        let cardCode = this.cardCodeEditBox.string.trim();
         let serialNumber = this.serialNumberEditBox.string.trim();
 
-        if (isEmpty(cardSerial) || isEmpty(serialNumber) || isNaN(cardSerial) || isNaN(serialNumber)) {
-            app.system.error(
-                app.res.string('error_user_enter_empty_input')
-            );
+        if (isEmpty(cardCode) || isEmpty(serialNumber)) {
+            app.system.error(app.res.string('error_user_enter_empty_input'));
         } else {
+            if(!this._validateCardSerial(serialNumber)) {
+                app.system.error(app.res.string('error_serial_number_is_invalid'));
+                return;
+            }
+            if(!this._validateCardCode(cardCode)) {
+                app.system.error(app.res.string('error_card_code_is_invalid'));
+                return;
+            }
             let sendObject = {
                 'cmd': app.commands.USER_SEND_CARD_CHARGE,
                 data: {
-                    [app.keywords.CHARGE_CARD_PROVIDER_ID]:this.providerId,
-                    [app.keywords.CARD_CODE]:cardSerial,
-                    [app.keywords.CARD_SERIAL]:serialNumber
+                    [app.keywords.CHARGE_CARD_PROVIDER_ID]: this.providerId,
+                    [app.keywords.CARD_CODE]: cardCode,
+                    [app.keywords.CARD_SERIAL]: serialNumber
                 }
             };
 
@@ -127,6 +168,18 @@ class TabCard extends PopupTabBody {
     
     onBackBtnClick() {
         this._showFormPanel();
+    }
+    
+    _validateCardSerial(str) {
+        let conditons = CARD_SERIAL[this.providerId];
+        console.debug('_validateCardSerial conditons', conditons)
+        return /[a-zA-Z0-9]/.test(str) && str.length >= conditons[0] && str.length <= conditons[conditons.length - 1] 
+    }
+    
+    _validateCardCode(str) {
+        let conditons = CARD_CODE[this.providerId];
+        console.debug('_validateCardCode conditons', conditons)
+        return /[0-9]/.test(str) && !/[a-zA-Z]/.test(str) && str.length >= conditons[0] && str.length <= conditons[conditons.length - 1] 
     }
     
     _showRatioBtn() {
