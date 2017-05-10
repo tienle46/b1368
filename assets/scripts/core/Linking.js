@@ -27,7 +27,7 @@ class Linking {
         try {
             if (data && typeof data == "string")
                 data = JSON.parse(data);
-
+            cc.log('action data', JSON.stringify(data))
             switch (action) {
                 case Linking.ACTION_PLAY_GAME:
                     {
@@ -103,10 +103,15 @@ class Linking {
 
                     // TODO
                 case Linking.ACTION_FANPAGE:
+                    cc.sys.openURL(`${app.config.fanpage}`);
                     break;
                 case Linking.ACTION_WEBSITE:
+                    cc.sys.openURL(`${app.config.website}`);
                     break;
                 case Linking.ACTION_PLAYER_INFO:
+                    break;
+                case Linking.ACTION_SHOW_TOAST:
+                    this._handleShowToastAction(action, data);
                     break;
             }
         } catch (e) {
@@ -297,7 +302,10 @@ class Linking {
             focusTabIndex: defaultTab
         });
     }
-    
+    static _handleShowToastAction(actionCode, data) {
+        cc.log(`_handleShowToastAction data ${data.message}`);
+        app.system.showToast(data.message);
+    }
     static isExchangeAction(action) {
         switch(action) {
             case Linking.ACTION_EXCHANGE:
@@ -357,7 +365,7 @@ Linking.ACTION_PERSONAL_INFO = 'PERSONAL_INFO'
 Linking.ACTION_PLAYER_INFO = 'PLAYER_INFO'
 Linking.ACTION_PERSONAL_STATISTIC = 'PERSONAL_STATISTIC'
 Linking.ACTION_PLAY_GAME = 'PLAY_GAME'
-
+Linking.ACTION_SHOW_TOAST = 'SHOW_TOAST'
 // Linking.ACTION_TOPUP = "TOPUP";
 // Linking.ACTION_PLAY_GAME = "PLAY_GAME";
 

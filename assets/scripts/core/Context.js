@@ -112,7 +112,7 @@ class GameContext {
     }
     
     getUserAvatar(spriteComponent, isThumb = false) {
-        let url = app.context.getMyInfo()['avatar'][isThumb ? 'large' : 'thumb'] ? app.context.getMyInfo()['avatar'][isThumb ? 'large' : 'thumb'] : app.config.defaultAvatarUrl;
+        let url = app.context.getMyInfo()['avatar'][isThumb ? 'thumb' : 'large'] ? app.context.getMyInfo()['avatar'][isThumb ? 'thumb' : 'large'] : app.config.defaultAvatarUrl;
         this.loadUserAvatarByURL(url, spriteComponent);
     }
     

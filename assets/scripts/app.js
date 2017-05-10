@@ -249,8 +249,10 @@ app.getMessageFromServer = (error) => {
         debug(`receive action with detail ${jsonString}`);
         try {
             let jsonParam = JSON.parse(jsonString);
-            let actionParamStr = jsonParam['action_extras']
-            let actionParam = actionParamStr == null || !actionParamStr.length ? "{}" : jsonParam['action_extras'];
+            let actionParamObject = jsonParam['action_extras'];
+            cc.log(`jsonParam['action_extras'] ${JSON.stringify(jsonParam['action_extras'])}`)
+            let actionParam = actionParamObject && Object.keys(actionParamObject).length > 0 ? actionParamObject : {};
+            cc.log(`actionParam ${JSON.stringify(actionParam)}`);
             require('Linking').goTo(jsonParam.action, actionParam);
         } catch (e) {
             //DO nothing
