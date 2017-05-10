@@ -247,41 +247,42 @@ export default class GameChatComponent extends Actor {
         if (this.emotionInited) return;
 
         this.emotionsList.children.map(child => child.destroy() && child.removeFromParent());
-        app.res.vip_emotions.forEach(exp => {
-            let reg = new RegExp(`^(${exp})*[-]`);
+        // app.res.vip_emotions.forEach(exp => {
+        //     let reg = new RegExp(`^(${exp})*[-]`);
             
-            emotions.forEach((asset, index) => {
-                if(!app.context.isVip() && reg.test(asset.name))
-                    return;
+        //     emotions.forEach((asset, index) => {
+        //         if(!app.context.isVip() && reg.test(asset.name))
+        //             return;
                     
-                const clickEvent = new cc.Component.EventHandler();
-                clickEvent.target = this.node;
-                clickEvent.component = 'GameChatComponent';
-                clickEvent.handler = 'emotionClicked';
-                clickEvent.customEventData = `${index}`;
+        //         const clickEvent = new cc.Component.EventHandler();
+        //         clickEvent.target = this.node;
+        //         clickEvent.component = 'GameChatComponent';
+        //         clickEvent.handler = 'emotionClicked';
+        //         clickEvent.customEventData = `${index}`;
 
-                let item = cc.instantiate(this.emotionChatItemPrefab);
-                item.getComponentInChildren(cc.Sprite).spriteFrame = asset;
-                item.name = asset.name;
-                item.getComponent(cc.Button).clickEvents = [clickEvent];
+        //         let item = cc.instantiate(this.emotionChatItemPrefab);
+        //         item.getComponentInChildren(cc.Sprite).spriteFrame = asset;
+        //         item.name = asset.name;
+        //         item.getComponent(cc.Button).clickEvents = [clickEvent];
 
-                this.emotionsList.addChild(item);
-            });
-        });
-        // emotions.forEach((asset, index) => {
-        //     const clickEvent = new cc.Component.EventHandler();
-        //     clickEvent.target = this.node;
-        //     clickEvent.component = 'GameChatComponent';
-        //     clickEvent.handler = 'emotionClicked';
-        //     clickEvent.customEventData = `${index}`;
-
-        //     let item = cc.instantiate(this.emotionChatItemPrefab);
-        //     item.getComponentInChildren(cc.Sprite).spriteFrame = asset;
-        //     item.name = asset.name;
-        //     item.getComponent(cc.Button).clickEvents = [clickEvent];
-
-        //     this.emotionsList.addChild(item);
+        //         this.emotionsList.addChild(item);
+        //     });
         // });
+        
+        emotions.forEach((asset, index) => {
+            const clickEvent = new cc.Component.EventHandler();
+            clickEvent.target = this.node;
+            clickEvent.component = 'GameChatComponent';
+            clickEvent.handler = 'emotionClicked';
+            clickEvent.customEventData = `${index}`;
+
+            let item = cc.instantiate(this.emotionChatItemPrefab);
+            item.getComponentInChildren(cc.Sprite).spriteFrame = asset;
+            item.name = asset.name;
+            item.getComponent(cc.Button).clickEvents = [clickEvent];
+
+            this.emotionsList.addChild(item);
+        });
 
         this.emotionInited = true;
     }

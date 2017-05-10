@@ -5,7 +5,7 @@ export default {
     game_title: "B1368",
     lost_connection: "Kết nối tới máy chủ bị gián đoạn. Vui lòng đăng nhập lại!",
     waiting_server_response: 'Đang gửi yêu cầu tới server ....',
-    change_language_fail: "Đổi ngôn ngữ thất bại",
+    change_language_fail: "Đổi ngôn ngữ thất bại",  
     invalid_play_card: "Bài không hợp lệ",
     coming_soon: "Chức năng đang hoàn thiện!",
     error_system: 'Lỗi hệ thống',
