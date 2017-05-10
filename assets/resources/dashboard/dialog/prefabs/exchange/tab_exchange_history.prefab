@@ -427,7 +427,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 88.4,
+      "width": 101.81,
       "height": 33
     },
     "_children": [],
@@ -438,7 +438,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": 5
+      "y": 4
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -470,15 +470,15 @@
     },
     "_enabled": true,
     "_useOriginalSize": false,
-    "_actualFontSize": 20,
-    "_fontSize": 20,
+    "_actualFontSize": 18,
+    "_fontSize": 18,
     "_lineHeight": 33,
-    "_enableWrapText": false,
+    "_enableWrapText": true,
     "_N$file": {
       "__uuid__": "b2c0f634-158a-49ee-84f8-a41c8e7ebb56"
     },
     "_isSystemFontUsed": false,
-    "_N$string": "Nhận chip",
+    "_N$string": "Hủy yêu cầu",
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
     "_N$overflow": 0

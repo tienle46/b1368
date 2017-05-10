@@ -172,13 +172,11 @@ class TabCard extends PopupTabBody {
     
     _validateCardSerial(str) {
         let conditons = CARD_SERIAL[this.providerId];
-        console.debug('_validateCardSerial conditons', conditons)
         return /[a-zA-Z0-9]/.test(str) && str.length >= conditons[0] && str.length <= conditons[conditons.length - 1] 
     }
     
     _validateCardCode(str) {
         let conditons = CARD_CODE[this.providerId];
-        console.debug('_validateCardCode conditons', conditons)
         return /[0-9]/.test(str) && !/[a-zA-Z]/.test(str) && str.length >= conditons[0] && str.length <= conditons[conditons.length - 1] 
     }
     

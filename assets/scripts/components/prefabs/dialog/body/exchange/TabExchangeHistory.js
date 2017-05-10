@@ -19,8 +19,15 @@ class TabExchangeHistory extends PopupTabBody {
             getChipBtnNode: cc.Node,
             p404: cc.Node
         };
+        
+        this._rendered = false;
     }
-
+    
+    onLoad() {
+       super.onLoad();
+       this._clickedBtn = null; 
+    }
+    
     start() {
         super.start();
     }
@@ -35,9 +42,13 @@ class TabExchangeHistory extends PopupTabBody {
     }
     
     onDataChanged(data) {
-        data && Object.keys(data).length > 0 && this._renderHistory(data);
+        !this._rendered && data && Object.keys(data).length > 0 && this._renderHistory(data);
     }
     
+    onDestroy() {
+        super.onDestroy();
+        window.release(this._res);    
+    }
     
     onChargeBtnClick(e) {
         let { cardSerial, serialNumber , telcoId} = e.currentTarget.value;
@@ -63,6 +74,8 @@ class TabExchangeHistory extends PopupTabBody {
     
     onGetChipBtnClick(e) {
         let { transferId } = e.currentTarget.value;
+        this._clickedBtn = e.currentTarget;
+        
         //console.debug(transferId);
         let sendObject = {
             'cmd': app.commands.GET_BACK_CHIPS,
@@ -112,6 +125,7 @@ class TabExchangeHistory extends PopupTabBody {
     _renderHistory(res) {
         let pattern = /Mã thẻ[^]*,/;
         if(res[app.keywords.EXCHANGE_HISTORY.RESPONSE.ITEM_ID_HISTORY] && res[app.keywords.EXCHANGE_HISTORY.RESPONSE.ITEM_ID_HISTORY].length > 0) {
+            this._rendered = true;
             let data = [
             res[app.keywords.EXCHANGE_HISTORY.RESPONSE.TIME_LIST].map(time => timeFormat(time)),
             res[app.keywords.EXCHANGE_HISTORY.RESPONSE.NAME_LIST],
@@ -182,8 +196,15 @@ class TabExchangeHistory extends PopupTabBody {
     _onGetChipBack(data) {
         if(data[app.keywords.RESPONSE_RESULT]) {
             app.system.showToast(data[app.keywords.RESPONSE_MESSAGE]);
+            if(this._clickedBtn) {
+                let { transferId } = this._clickedBtn.value;
+                if(transferId === data[app.keywords.ID]) {
+                    this._clickedBtn.removeFromParent();
+                }
+            }
+            
         } else {
-            app.system.error(app.res.string(data[app.keywords.RESPONSE_MESSAGE]));
+            app.system.error(data[app.keywords.RESPONSE_MESSAGE] ? data[app.keywords.RESPONSE_MESSAGE] : app.res.string('error_system'));
         }
     }
     
@@ -193,7 +214,7 @@ class TabExchangeHistory extends PopupTabBody {
         let prev = this.onPreviousBtnClick;
 
         let head = {
-            data: ['Thời gian', 'Loại vật phẩm', 'Thông tin', 'x'],
+            data: ['Thời gian', 'Loại vật phẩm', 'Thông tin', ''],
             options: {
                 fontColor: app.const.COLOR_YELLOW
             }
