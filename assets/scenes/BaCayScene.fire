@@ -774,7 +774,7 @@
     "_tag": -1,
     "_opacityModifyRGB": false,
     "_id": "8ded6v/paxLS6ob46lw/Osu",
-    "_active": false,
+    "_active": true,
     "_components": [
       {
         "__id__": 38
@@ -868,8 +868,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 160,
-      "height": 160
+      "width": 170,
+      "height": 170
     },
     "_children": [],
     "_rotationX": 0,
@@ -911,7 +911,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "af160ccf-ea9a-4f12-bf73-f2a528dc8e06"
+      "__uuid__": "e02591c8-b641-41a2-952e-f11f075ae53a"
     },
     "_type": 3,
     "_sizeMode": 0,
@@ -923,12 +923,10 @@
     },
     "_fillStart": 0.25,
     "_fillRange": -1,
-    "_isTrimmedMode": true,
+    "_isTrimmedMode": false,
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
-    "_atlas": {
-      "__uuid__": "10ca67ea-2a3c-4512-b8a8-cfd37f9d8bbe"
-    }
+    "_atlas": null
   },
   {
     "__type__": "cc.Widget",
@@ -941,10 +939,10 @@
     "isAlignOnce": true,
     "_target": null,
     "_alignFlags": 45,
-    "_left": 0,
-    "_right": 0,
-    "_top": 0,
-    "_bottom": 0,
+    "_left": -5,
+    "_right": -5,
+    "_top": -5,
+    "_bottom": -5,
     "_verticalCenter": 0,
     "_horizontalCenter": 0,
     "_isAbsLeft": true,
@@ -1010,7 +1008,7 @@
     "_tag": -1,
     "_opacityModifyRGB": false,
     "_id": "ef9c2Iaz5xCppZWsjsBBXat",
-    "_active": true,
+    "_active": false,
     "_components": [
       {
         "__id__": 25
@@ -2052,6 +2050,8 @@
     "timelineTextViewNode": {
       "__id__": 30
     },
+    "bottomTimelineTextViewNode": null,
+    "secondTimelineTextViewNode": null,
     "timeline": {
       "__id__": 18
     },

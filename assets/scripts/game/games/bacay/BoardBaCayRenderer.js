@@ -28,6 +28,8 @@ export default class BoardBaCayRenderer extends BoardCardBetTurnRenderer {
             default: null,
             type: cc.Node
         }
+
+        this.enableBottomTextOnReady = false
     }
 
     onEnable(){
@@ -52,6 +54,17 @@ export default class BoardBaCayRenderer extends BoardCardBetTurnRenderer {
 
     disableGopGaButton(){
         utils.setInteractable(this.gopGaButton, false);
+    }
+
+    setTimeLineMessage(message) {
+        this.timelineTextView.setText(message);
+    }
+
+    /**
+     * Disable set bottom timeline text
+     * @param message
+     */
+    setBottomTimeLineMessage(message) {
     }
 }
 

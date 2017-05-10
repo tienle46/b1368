@@ -9822,7 +9822,8 @@
     "unreadyButton": null,
     "startButton": {
       "__id__": 264
-    }
+    },
+    "waitButton": null
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -10634,7 +10635,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": -1.7000000000001592,
-      "y": -73.60000000000008
+      "y": -77
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -10643,7 +10644,7 @@
     "_tag": -1,
     "_opacityModifyRGB": false,
     "_id": "8eea5+t+ZhFeY7qk9SAnOYJ",
-    "_active": false,
+    "_active": true,
     "_components": [
       {
         "__id__": 311
@@ -10737,8 +10738,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 179,
-      "height": 177
+      "width": 200,
+      "height": 200
     },
     "_children": [],
     "_rotationX": 0,
@@ -10748,7 +10749,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": -3
+      "y": 0
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -10780,7 +10781,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "7259382a-003c-4379-beca-6c89ce836050"
+      "__uuid__": "e02591c8-b641-41a2-952e-f11f075ae53a"
     },
     "_type": 3,
     "_sizeMode": 0,
@@ -10791,13 +10792,11 @@
       "y": 0.5
     },
     "_fillStart": 0.25,
-    "_fillRange": -1,
-    "_isTrimmedMode": true,
+    "_fillRange": -0.5,
+    "_isTrimmedMode": false,
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
-    "_atlas": {
-      "__uuid__": "10ca67ea-2a3c-4512-b8a8-cfd37f9d8bbe"
-    }
+    "_atlas": null
   },
   {
     "__type__": "cc.Widget",
@@ -10810,10 +10809,10 @@
     "isAlignOnce": true,
     "_target": null,
     "_alignFlags": 45,
-    "_left": -31,
-    "_right": -31,
-    "_top": -27,
-    "_bottom": -33,
+    "_left": -41.5,
+    "_right": -41.5,
+    "_top": -41.5,
+    "_bottom": -41.5,
     "_verticalCenter": 0,
     "_horizontalCenter": 0,
     "_isAbsLeft": true,
@@ -12762,6 +12761,8 @@
     "timelineTextViewNode": {
       "__id__": 304
     },
+    "bottomTimelineTextViewNode": null,
+    "secondTimelineTextViewNode": null,
     "timeline": {
       "__id__": 292
     },
