@@ -73,6 +73,7 @@ export default {
     game_thoi: 'Thối',
     game_waiting_time: 'Thời gian chờ',
     game_waiting: 'Chờ',
+    game_waiting_for_game_start: 'Chờ ván mới bắt đầu',
     game_start: 'Bắt đầu',
     game_replay_waiting_time: 'Ván mới',
     label_accept: 'Đồng ý',
