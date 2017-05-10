@@ -40,6 +40,7 @@ app.config.fanpage = `http://m.me/songbaihoanggia`;
 app.config.supportHotline = '123456';
 app.config.defaultMinBalanceJoinGameRoomMultiple = 10;
 app.config.defaultAvatarUrl = "";
+app.config.filterLabels = ['Nông dân', 'Quý tộc', 'Hoàng gia'];
 
 app.config.supportedGames = [
     app.const.gameCode.PHOM,
@@ -57,9 +58,9 @@ app.config.soloGames = [
 ]
 
 app.config.listTableGroupFilters = [
-    {min: 0, max: 1000},
-    {min: 0, max: 10000},
-    {min: 0, max: 2000000000},
+    {min: 0, max: 1000, text: 'Nông dân'},
+    {min: 0, max: 10000, text: 'Quý tộc'},
+    {min: 0, max: 2000000000, text: 'Hoàng gia'},
 ];
 
 app.config.gameGroups = {

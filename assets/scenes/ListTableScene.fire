@@ -3097,7 +3097,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 170.64,
+      "width": 65.64,
       "height": 46
     },
     "_children": [],
@@ -3146,7 +3146,7 @@
       "__uuid__": "b2c0f634-158a-49ee-84f8-a41c8e7ebb56"
     },
     "_isSystemFontUsed": false,
-    "_N$string": "Nông dân",
+    "_N$string": "lbl1",
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 2,
     "_N$overflow": 0
@@ -3491,7 +3491,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 149.52,
+      "width": 71.2,
       "height": 46
     },
     "_children": [],
@@ -3540,7 +3540,7 @@
       "__uuid__": "b2c0f634-158a-49ee-84f8-a41c8e7ebb56"
     },
     "_isSystemFontUsed": false,
-    "_N$string": "Quý Tộc",
+    "_N$string": "lbl2",
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 2,
     "_N$overflow": 0
@@ -3875,7 +3875,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 185.08,
+      "width": 72.72,
       "height": 46
     },
     "_children": [],
@@ -3924,7 +3924,7 @@
       "__uuid__": "b2c0f634-158a-49ee-84f8-a41c8e7ebb56"
     },
     "_isSystemFontUsed": false,
-    "_N$string": "Hoàng Gia",
+    "_N$string": "lbl3",
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 2,
     "_N$overflow": 0
@@ -5383,6 +5383,15 @@
     },
     "jarAnchorNode": {
       "__id__": 133
+    },
+    "filter1stLabel": {
+      "__id__": 84
+    },
+    "filter2ndLabel": {
+      "__id__": 95
+    },
+    "filter3rdLabel": {
+      "__id__": 105
     }
   }
 ]

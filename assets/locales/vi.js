@@ -24,6 +24,7 @@ export default {
     error_exchange_dialog_not_enough_money: `Số chip hiện tại {{ownerCoin}} ${currencyName} không đủ để đổi vật phẩm {{name}}`,
     error_phone_number_is_invalid: 'Số điện thoại không hợp lệ',
     error_while_sending_feedback: 'Gửi góp ý thất bại, xin vui lòng thử lại',
+    error_feedback_too_long: 'Nội dung góp ý không được vượt quá 200 ký tự',
     error_function_does_not_support: 'Không thể thực hiện thao tác này !',
     error_password_changed_unsuccessfully: 'Đổi mật khẩu thất bại!',
     error_phonenumber_changed_unsuccessfully: 'Cập nhật số điện thoại thất bại!',
