@@ -39,7 +39,7 @@ export default class TabUserInfo extends PopupTabBody {
     onLoad() {
         super.onLoad();
         this._showUserInfoPanel();
-        app.context.getUserAvatar(this.avatar);
+        this.avatar && app.context.getUserAvatar(this.avatar);
     }
 
     loadData() {

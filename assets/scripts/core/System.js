@@ -385,7 +385,17 @@ class GameSystem {
             }
             case app.const.adminMessage.DAILY_LOGIN_MISSION: {
                 if (this.currentScene && sceneName == app.const.scene.DASHBOARD_SCENE) {
-                    this.currentScene.showDailyLoginPopup(message);
+                    var title = "Quà tặng đăng nhập hàng ngày";
+                    this.currentScene.showDailyLoginPopup(title, message);
+                    showToast = false;
+                    return;
+                }
+                break;
+            }
+            case app.const.adminMessage.REGISTER_BONUS: {
+                if (this.currentScene && sceneName == app.const.scene.DASHBOARD_SCENE) {
+                    var title = "Chào mừng bạn đến với game bài 1368";
+                    this.currentScene.showDailyLoginPopup(title, message);
                     showToast = false;
                     return;
                 }

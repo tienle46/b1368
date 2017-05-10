@@ -654,7 +654,7 @@
     "__type__": "cc.Node",
     "_name": "daily_gift_popup",
     "_objFlags": 0,
-    "_opacity": 0,
+    "_opacity": 255,
     "_color": {
       "__type__": "cc.Color",
       "r": 255,
@@ -850,7 +850,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 474.7,
+      "width": 478.7,
       "height": 50
     },
     "_children": [],
@@ -1034,7 +1034,7 @@
     "__type__": "cc.Node",
     "_name": "content",
     "_objFlags": 0,
-    "_opacity": 255,
+    "_opacity": 0,
     "_color": {
       "__type__": "cc.Color",
       "r": 255,
@@ -1049,11 +1049,11 @@
     "_anchorPoint": {
       "__type__": "cc.Vec2",
       "x": 0.5,
-      "y": 0.5
+      "y": 1
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 163.77,
+      "width": 860.77,
       "height": 38
     },
     "_children": [],
@@ -1064,7 +1064,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": -85
+      "y": -64
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -1102,10 +1102,10 @@
       "__uuid__": "707ff59f-f7c1-4eb4-a0de-41fd5e1c0123"
     },
     "_isSystemFontUsed": false,
-    "_N$string": "Updating ....",
+    "_N$string": "Update....",
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
-    "_N$overflow": 0
+    "_N$overflow": 3
   },
   {
     "__type__": "cc.LabelOutline",
@@ -1165,7 +1165,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": -160
+      "y": -190
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -1268,7 +1268,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 97.62,
+      "width": 101.62,
       "height": 40
     },
     "_children": [],
@@ -1512,7 +1512,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 70.83,
+      "width": 74.83,
       "height": 40
     },
     "_children": [],
@@ -1719,7 +1719,7 @@
     "_left": 0,
     "_right": 0,
     "_top": 0,
-    "_bottom": 165,
+    "_bottom": 135,
     "_verticalCenter": 0,
     "_horizontalCenter": 0,
     "_isAbsLeft": true,
@@ -8388,6 +8388,9 @@
     },
     "dailyDialogContent": {
       "__id__": 28
+    },
+    "dailyDialogTitle": {
+      "__id__": 22
     }
   }
 ]
