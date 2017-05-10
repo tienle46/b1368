@@ -41,6 +41,12 @@ app.config.supportHotline = '123456';
 app.config.defaultMinBalanceJoinGameRoomMultiple = 10;
 app.config.defaultAvatarUrl = "";
 app.config.filterLabels = ['Nông dân', 'Quý tộc', 'Hoàng gia'];
+// 1:bac 2:vang 3:kimcuong
+app.config.ingameGreetingVipMessages = {
+    1: 'Chào Dân Chơi {{username}} !',
+    2: 'Chào Đại Gia {{username}} !',
+    3: 'Chào anh Đại {{username}} ạ !'
+};
 
 app.config.supportedGames = [
     app.const.gameCode.PHOM,
