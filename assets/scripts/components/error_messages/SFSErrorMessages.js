@@ -64,8 +64,8 @@ const LOGIN_ERROR_MESSAGES_VI = {
         "119": "Tài khoản đã được đăng ký"
     },
     // CUSTOM ERROR FOR CLIENTS
-    "LOGIN_ERROR_USERNAME_NOT_VALID": "Tên đăng nhập phải lớn hơn 5 ký tự, chỉ bao gồm số hoặc chữ, không chứa các ký tự đặc biệt.",
-    "LOGIN_ERROR_PASSWORD_NOT_VALID": "Mật khẩu phải có nhiều hơn 6 ký tự, bao gồm chữ thường và số, không chứa ký tự đặc biệt.",
+    "LOGIN_ERROR_USERNAME_NOT_VALID": "Tên đăng nhập phải từ 6 - 15 ký tự, bao gồm số hoặc chữ.",
+    "LOGIN_ERROR_PASSWORD_NOT_VALID": "Mật khẩu từ 6 - 30 ký tự, chỉ gồm chữ thường và số.",
     "LOGIN_ERROR_CAPTCHA_NOT_VALID": "Mã xác nhận không đúng, vui lòng nhập lại."
 };
 

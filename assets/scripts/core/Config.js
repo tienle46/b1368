@@ -24,7 +24,7 @@ app.config.buildForMobile = true; // if ( sys.platform !== 'browser')
 app.config.app_secret_key = '63d9ccc8-9ce1-4165-80c8-b15eb84a780a';
 app.config.DEVICE_ID = 'a19c8e4ae2e82ef1c7846f32628d4ead3';
 app.config.MINIMUM_PASSWORD = 6;
-app.config.MAX_PASSWORD_LENGTH = 15;
+app.config.MAX_PASSWORD_LENGTH = 30;
 app.config.MIN_USERNAME_LENGTH = 6;
 app.config.MAX_USERNAME_LENGTH = 15;
 app.config.USER_NAME_REGEX = /^[a-zA-Z0-9._]{6,15}$/;
