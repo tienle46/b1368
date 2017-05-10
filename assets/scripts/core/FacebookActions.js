@@ -130,7 +130,7 @@ export default class FacebookActions {
                 text,
                 image
             };
-            window.sdkbox.PluginFacebook.dialog(info);
+            window.sdkbox.PluginFacebook.share(info);
         }
     }
     

@@ -15,8 +15,10 @@ const pendingActions = [];
 class Linking {
 
     static goTo(action, data) {
-
+        cc.log('!app.context.getMe()1', JSON.stringify(!app.context.getMe()));
+        
         if (!app.context.getMe()) {
+            cc.log('!app.context.getMe()');
             pendingActions.push({
                 action,
                 data
@@ -114,7 +116,7 @@ class Linking {
     }
     
     static handlePendingActions() {
-        log(`handling pending actions`);
+        log(`handling pending actions:`, JSON.stringify(pendingActions));
         if (pendingActions.length == 0) return;
 
         pendingActions.forEach(a => {

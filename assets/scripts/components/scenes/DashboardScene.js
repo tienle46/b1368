@@ -49,6 +49,7 @@ export default class DashboardScene extends BaseScene {
         
         setTimeout(() => {
             let Linking = require('Linking');
+            cc.log(`setTimeout`);
             Linking.handlePendingActions();
         }, 1000);
 
