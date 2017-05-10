@@ -43,6 +43,7 @@ export default {
     error_withdraw_amount_unable_to_greater_than: `Số chip cần rút không được lớn hơn {{amount}} ${currencyName}`,
     error_account_out_of_money: 'Tài khoản của bạn đã hết chip',
     error_vip_only: 'Bạn cần phải là vip để sử dụng chức năng này',
+    error_not_support_platform: 'Chức năng này không thể thực hiện trên nền tảng này',
 
     get_transfer_success: `Bạn đã rút thành công {{amount}} ${currencyName}, chúc bạn chơi game vui vẻ.`,
     transfer_successfully: `Chuyển thành công {{amount}} ${currencyName} tới {{username}}.`,

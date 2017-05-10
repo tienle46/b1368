@@ -153,7 +153,7 @@ class TabSMS extends PopupTabBody {
 
     _sendSMS(message, recipient) {
         if (app.env.isBrowser()) {
-            // TODO
+            app.system.showToast(app.res.string('error_not_support_platform'));
         } else if (app.env.isMobile()) {
             if (app.env.isIOS()) {
                 window.jsb.reflection.callStaticMethod("JSBUtils", "sendSMS:recipient:", message, recipient);

@@ -35,7 +35,6 @@ class TabCard extends PopupTabBody {
 
     onLoad() {
         super.onLoad();
-        CCUtils.deactive(this.cardLayoutPanel);
         // wait til every requests is done
         // this._initRatioGroup();
         
@@ -147,35 +146,39 @@ class TabCard extends PopupTabBody {
         
         if (cardListIds.length > 0) {
             CCUtils.destroyAllChildren(this.providerContainerNode, 0);       
-            
-            cardListIds.forEach((id, index) => {
+            let index = 0;
+            app.async.mapSeries(cardListIds, (id, cb) => {
                 let providerName = data[app.keywords.TASK_NAME_LIST][index];
                 let activeState = `${providerName.toLowerCase()}-active`;
                 let inactiveState = `${providerName.toLowerCase()}-inactive`;
-                
                 RubUtils.getSpriteFramesFromAtlas(app.res.ATLAS_URLS.PROVIDERS, [activeState, inactiveState], (sprites) => {
-                    this.activeStateSprite.spriteFrame = sprites[activeState];
-                    this.inActiveStateSprite.spriteFrame = sprites[inactiveState];
+                    if(sprites) {
+                        this.activeStateSprite.spriteFrame = sprites[activeState];
+                        this.inActiveStateSprite.spriteFrame = sprites[inactiveState];
 
-                    let provider = cc.instantiate(this.providerItemNode);
-                    this.addNode(provider);
-                    provider.active = true;
+                        let provider = cc.instantiate(this.providerItemNode);
+                        this.addNode(provider);
+                        provider.active = true;
 
-                    let toggle = provider.getComponent(cc.Toggle);
-                    toggle.isChecked = index == 0;
-                    toggle.providerName = providerName;
-                    toggle.providerId = id;
+                        let toggle = provider.getComponent(cc.Toggle);
+                        toggle.isChecked = index == 0;
+                        toggle.providerName = providerName;
+                        toggle.providerId = id;
 
-                    this.providerContainerNode.addChild(provider);
+                        this.providerContainerNode.addChild(provider);
 
-                    if (toggle.isChecked) {
-                        // toggle.check();
-                        this.onProviderBtnClick(toggle);
+                        if (toggle.isChecked) {
+                            // toggle.check();
+                            this.onProviderBtnClick(toggle);
+                        }
                     }
+                    index ++;
 
-                    if(index === cardListIds.length - 1) {
+                    if(index === cardListIds.length) {
                         this._showFormPanel();
                     }
+                    
+                    cb && cb();
                 });
             });
             
