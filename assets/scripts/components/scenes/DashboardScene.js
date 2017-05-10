@@ -125,6 +125,7 @@ export default class DashboardScene extends BaseScene {
 
     _onUserListGame(data) {
         let gameList = this._filterClientSupportedGames(data[app.keywords.SERVICE_CHILD_CODE_ARRAY]);
+        gameList.push('taixiu');
         let removedGames = app.context.gameList.length == 0 ? [] : ArrayUtils.removeAll([...gameList], app.context.gameList);
 
         if (removedGames.length < gameList.length) {
@@ -240,10 +241,16 @@ export default class DashboardScene extends BaseScene {
                     const nodeItem = cc.instantiate(this.item);
                     nodeItem.getComponent(cc.Sprite).spriteFrame = sprite;
                     nodeItem.setContentSize(itemDimension, itemDimension);
+                    gc === 'taixiu' && (nodeItem.opacity = 200);
+                    
                     let itemComponent = nodeItem.getComponent('item');
 
                     itemComponent.gameCode = gc;
                     itemComponent.listenOnClickListener((gameCode) => {
+                        if(gc === 'taixiu'){
+                            app.system.showToast('Game đang cập nhật...');
+                            return;
+                        }
                         app.context.setSelectedGame(gameCode);
                         this.changeScene(app.const.scene.LIST_TABLE_SCENE);
                     });

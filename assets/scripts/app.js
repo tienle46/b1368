@@ -251,7 +251,7 @@ app.getMessageFromServer = (error) => {
             let jsonParam = JSON.parse(jsonString);
             let actionParamStr = jsonParam['action_extras']
             let actionParam = actionParamStr == null || !actionParamStr.length ? "{}" : jsonParam['action_extras'];
-            app.visibilityManager.goTo(jsonParam.action, actionParam);
+            require('Linking').goTo(jsonParam.action, actionParam);
         } catch (e) {
             //DO nothing
             debug(`linking exception ${e}`);

@@ -118,7 +118,7 @@ class Linking {
         if (pendingActions.length == 0) return;
 
         pendingActions.forEach(a => {
-            app.visibilityManager.goTo(a.action, a.data);
+            this.goTo(a.action, a.data);
         });
         pendingActions.length = 0;
     }
