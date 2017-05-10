@@ -42,17 +42,31 @@ export default class VipDialog extends DialogActor {
     
     _onGetVipBenefit(data) {
         let {ids, urls, names, benefits} = data;
-
-        (ids || []).forEach((id, index) => {
+        
+        let index = 0;
+        app.async.mapSeries(ids || [], (id, cb) => {
             let url = urls[index];
             
-            RubUtils.loadSpriteFrame(this.iconSprite, url, null, true);
-            
-            let iconSpriteNode = cc.instantiate(this.iconSpriteNode);
-            iconSpriteNode.active = true;
-            
-            this.iconContainerNode.addChild(iconSpriteNode);
+            RubUtils.loadSpriteFrame(this.iconSprite, url, null, true, (sprite) => {
+                let iconSpriteNode = cc.instantiate(this.iconSpriteNode);
+                iconSpriteNode.active = true;
+                
+                this.iconContainerNode.addChild(iconSpriteNode);
+                
+                index ++;
+                cb && cb();
+            });
         });
+        // (ids || []).forEach((id, index) => {
+        //     let url = urls[index];
+            
+        //     RubUtils.loadSpriteFrame(this.iconSprite, url, null, true, (sprite) => {
+        //         let iconSpriteNode = cc.instantiate(this.iconSpriteNode);
+        //         iconSpriteNode.active = true;
+                
+        //         this.iconContainerNode.addChild(iconSpriteNode);
+        //     });
+        // });
         
         this._appendRowContent("Loại VIP", names);
         
