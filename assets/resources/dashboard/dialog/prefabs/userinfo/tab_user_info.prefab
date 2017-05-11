@@ -126,7 +126,7 @@
     "_tag": -1,
     "_opacityModifyRGB": false,
     "_id": "",
-    "_active": true,
+    "_active": false,
     "_components": [
       {
         "__id__": 139
@@ -7486,7 +7486,7 @@
     "_tag": -1,
     "_opacityModifyRGB": false,
     "_id": "",
-    "_active": false,
+    "_active": true,
     "_components": [
       {
         "__id__": 272
@@ -7581,7 +7581,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 150,
+      "width": 130,
       "height": 130
     },
     "_children": [],
@@ -7591,7 +7591,7 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": -192,
+      "x": -202,
       "y": 0
     },
     "_skewX": 0,
@@ -7633,7 +7633,7 @@
     },
     "_fillStart": 0,
     "_fillRange": 0,
-    "_isTrimmedMode": true,
+    "_isTrimmedMode": false,
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_atlas": {
@@ -7673,11 +7673,11 @@
       "height": 40
     },
     "_N$startAxis": 0,
-    "_N$paddingLeft": 33,
+    "_N$paddingLeft": 38,
     "_N$paddingRight": 0,
     "_N$paddingTop": 0,
     "_N$paddingBottom": 0,
-    "_N$spacingX": 35,
+    "_N$spacingX": 50,
     "_N$spacingY": 0,
     "_N$verticalDirection": 1,
     "_N$horizontalDirection": 0
