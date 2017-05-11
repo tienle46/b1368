@@ -1044,7 +1044,7 @@
       "y": 0.5
     },
     "_fillStart": 0.25,
-    "_fillRange": -1,
+    "_fillRange": 0,
     "_isTrimmedMode": false,
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
@@ -1328,6 +1328,7 @@
     },
     "_enabled": true,
     "path": "",
+    "lineHeight": 24,
     "label": {
       "__id__": 32
     },
@@ -2053,7 +2054,7 @@
       "__id__": 30
     },
     "bottomTimelineTextViewNode": null,
-    "secondTimelineTextViewNode": null,
+    "secondTimelineLabelNode": null,
     "timeline": {
       "__id__": 18
     },

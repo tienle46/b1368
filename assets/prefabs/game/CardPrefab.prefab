@@ -298,7 +298,7 @@
     "_tag": -1,
     "_opacityModifyRGB": false,
     "_id": "",
-    "_active": true,
+    "_active": false,
     "_components": [
       {
         "__id__": 8
@@ -420,7 +420,7 @@
     "_tag": -1,
     "_opacityModifyRGB": false,
     "_id": "",
-    "_active": true,
+    "_active": false,
     "_components": [
       {
         "__id__": 12
@@ -565,7 +565,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "7e00bd69-0112-4e38-a729-2763892d399e"
+      "__uuid__": "54a676a3-78ef-480f-b472-6af5750f2081"
     },
     "_type": 0,
     "_sizeMode": 0,
@@ -581,7 +581,7 @@
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_atlas": {
-      "__uuid__": "d5aaad75-96d5-4e2f-ae32-4419a02da552"
+      "__uuid__": "10ca67ea-2a3c-4512-b8a8-cfd37f9d8bbe"
     }
   },
   {
