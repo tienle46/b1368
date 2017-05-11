@@ -395,6 +395,7 @@ class GameSystem {
             case app.const.adminMessage.REGISTER_BONUS: {
                 if (this.currentScene && sceneName == app.const.scene.DASHBOARD_SCENE) {
                     var title = "Chào mừng bạn đến với game bài 1368";
+                    console.debug('title, message)', title, message);
                     this.currentScene.showDailyLoginPopup(title, message);
                     showToast = false;
                     return;
