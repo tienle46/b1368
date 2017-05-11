@@ -142,7 +142,7 @@ export default class GameChatComponent extends Actor {
 
     _initMessageHistory(){
 
-        console.log('this.scene.gameContext.messages: ', this.scene.gameContext.messages);
+        log('this.scene.gameContext.messages: ', this.scene.gameContext.messages);
 
         this.chatHistoryPanel.children.forEach(child => child.destroy() && child.removeFromParent(true));
 
@@ -240,7 +240,7 @@ export default class GameChatComponent extends Actor {
     onDestroy() {
         super.onDestroy();
         emotions.splice(0, emotions.length);
-        //console.log('GameChatComponent: ');
+        //log('GameChatComponent: ');
     }
 
     _initEmotions() {

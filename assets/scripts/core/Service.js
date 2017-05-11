@@ -445,7 +445,7 @@ class Service {
         if (!options) return;
 
         if (!this.client.isConnected()) {
-            console.log("_onConnectionLost  send ");
+            log("_onConnectionLost  send ");
             this._onConnectionLost();
             return;
         }
@@ -481,7 +481,7 @@ class Service {
 
     sendRequest(request, { cb = null, scope = null, cbName = null } = {}) {
 
-        console.log("sendRequest: ", this.client.isConnected(), request);
+        log("sendRequest: ", this.client.isConnected(), request);
 
         if (!this.client.isConnected() && !this.isConnecting) {
             this._onConnectionLost();
@@ -526,7 +526,7 @@ class Service {
     }
 
     _onJoinRoomError(event) {
-        console.log("_onJoinRoomError: ", event);
+        log("_onJoinRoomError: ", event);
         if (event.errorCode) {
             this._hasCallback(SFS2X.SFSEvent.ROOM_JOIN_ERROR) && this._callCallbackAsync(SFS2X.SFSEvent.ROOM_JOIN_ERROR, event);
             app.system.hideLoader()
@@ -535,7 +535,7 @@ class Service {
     }
 
     _onJoinRoomSuccess(event) {
-        console.log("_onJoinRoomSuccess: ", event);
+        log("_onJoinRoomSuccess: ", event);
         app.system.emit(SFS2X.SFSEvent.ROOM_JOIN, event);
     }
 

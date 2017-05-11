@@ -67,10 +67,10 @@ class GameSystem {
      * @param {function} onLaunch - On launch custom function
      */
     loadScene(sceneName, onLaunch, highPriority) {
-        console.log("sceneName: ", sceneName);
+        log("sceneName: ", sceneName);
         this.setSceneChanging(true)
         cc.director.loadScene(sceneName, () => {
-            console.log("load scene result", sceneName, cc.director.getScene());
+            log("load scene result", sceneName, cc.director.getScene());
             highPriority && isFunction(onLaunch) && onLaunch();
 
             if (cc.director.getScene().children[0]) {
@@ -303,7 +303,7 @@ class GameSystem {
     }
 
     _onSubmitPurchaseAndroid(data) {
-        cc.log('IAP: adata', JSON.stringify(data));
+        log('IAP: adata', JSON.stringify(data));
 
         if (!data[app.keywords.RESPONSE_RESULT]) {
             app.system.error(data.message || "");
@@ -337,17 +337,17 @@ class GameSystem {
 
     __removeSuccessItemInIAPLocalStorage(token) {
         let savedItems = app.context.getPurchases();
-        cc.log('IAP: savedItems > 0', savedItems.length);
+        log('IAP: savedItems > 0', savedItems.length);
 
         if (savedItems.length == 0) {
-            cc.log('IAP: savedItems1 === 0', savedItems.length);
+            log('IAP: savedItems1 === 0', savedItems.length);
             return;
         }
 
         let index = app._.findIndex(savedItems, ['receipt', token]);
-        cc.log('IAP: savedItems1 > length:', savedItems.length);
+        log('IAP: savedItems1 > length:', savedItems.length);
 
-        cc.log('iap: _onSubmitPurchase receipts >', index);
+        log('iap: _onSubmitPurchase receipts >', index);
         if (index > -1) {
             let string = cc.sys.localStorage.getItem(app.const.IAP_LOCAL_STORAGE);
             let item = savedItems[index];
@@ -357,12 +357,12 @@ class GameSystem {
         }
 
         if (savedItems.length == 0) {
-            cc.log('IAP: savedItems2 reset purchase === 0', savedItems.length);
+            log('IAP: savedItems2 reset purchase === 0', savedItems.length);
 
             app.context.setPurchases([]);
             cc.sys.localStorage.setItem(app.const.IAP_LOCAL_STORAGE, "");
         }
-        cc.log('IAP localStorage2 ITEM :', cc.sys.localStorage.getItem(app.const.IAP_LOCAL_STORAGE).split(';').length - 1);
+        log('IAP localStorage2 ITEM :', cc.sys.localStorage.getItem(app.const.IAP_LOCAL_STORAGE).split(';').length - 1);
 
     }
 
@@ -395,7 +395,7 @@ class GameSystem {
             case app.const.adminMessage.REGISTER_BONUS: {
                 if (this.currentScene && sceneName == app.const.scene.DASHBOARD_SCENE) {
                     var title = "Chào mừng bạn đến với game bài 1368";
-                    console.debug('title, message)', title, message);
+                    // console.debug('title, message)', title, message);
                     this.currentScene.showDailyLoginPopup(title, message);
                     showToast = false;
                     return;

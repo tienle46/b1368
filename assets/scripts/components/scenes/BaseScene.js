@@ -141,7 +141,7 @@ export default class BaseScene extends Actor {
             }
             if (result) {
 
-                console.log(`Logged in as ${app.context.getMe().name}`);
+                log(`Logged in as ${app.context.getMe().name}`);
 
                 if (app.env.isMobile() && window.sdkbox) {
                     window.sdkbox.PluginGoogleAnalytics.setUser(app.context.getMe().name);

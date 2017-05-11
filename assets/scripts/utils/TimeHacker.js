@@ -58,7 +58,7 @@ export default class TimeHacker {
                 return window.requestAnimationFrame || function(callback, element) {
                     setTimeout(function() {
                         callback();
-                        // console.log("set timeout with setTimeout");
+                        // log("set timeout with setTimeout");
                     }, 1000 / 60);
                 };
             })(),

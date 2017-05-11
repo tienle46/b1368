@@ -21,7 +21,7 @@ export default class ActionComponent extends Component {
 
         this.finishAllActions()
 
-        // console.log("runActionWithCallback: ", this.isHidden, delay, (this.__endActionCb ? true : false))
+        // log("runActionWithCallback: ", this.isHidden, delay, (this.__endActionCb ? true : false))
 
         if(utils.isFunction(cb)){
             this.__endActionCb = cb;

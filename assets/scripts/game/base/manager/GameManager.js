@@ -153,7 +153,7 @@ export default class GameManager {
     //
     // createPlayer(gameCode) {
     //
-    //     console.log("createPlayer: ", gameCode);
+    //     log("createPlayer: ", gameCode);
     //
     //     let playerClass = playerClassMap[gameCode];
     //     let playerRendererClassName = playerRendererNameMap[gameCode];

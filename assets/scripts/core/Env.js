@@ -71,7 +71,7 @@ export default (function(app) {
         let os = `os:${cc.sys.os} v${cc.sys.osVersion || cc.sys.osMainVersion}`;
         let env = 'in ' + (app.config.test ? 'Test' : 'Product') + ' environment';
 
-        console.log(`Running on ${platform} | ${os} ${env}`);
+        log(`Running on ${platform} | ${os} ${env}`);
     };
 
     app.env.log();
@@ -169,7 +169,7 @@ export default (function(app) {
                 app.env.sdkIAPSetListener = (processes) => {
                     let objectListener = {
                         onInitialized: (success) => {
-                            cc.log('IAP: success', JSON.stringify(success));
+                            log('IAP: success', JSON.stringify(success));
                         },
                         onSuccess: (product) => {
                             //Purchase success
@@ -200,22 +200,22 @@ export default (function(app) {
                              */
                         },
                         onFailure: (product, msg) => {
-                            cc.log('IAP: onFailure', JSON.stringify(product), JSON.stringify(msg));
+                            log('IAP: onFailure', JSON.stringify(product), JSON.stringify(msg));
                         }, //Purchase failed
                         onCanceled: (product) => {
-                            cc.log('IAP: onCanceled', JSON.stringify(product));
+                            log('IAP: onCanceled', JSON.stringify(product));
                         }, //Purchase was canceled by user
                         onRestored: (product) => {
-                            cc.log('IAP: success', JSON.stringify(product));
+                            log('IAP: success', JSON.stringify(product));
                         }, //Purchase restored
                         onProductRequestSuccess: (products) => {
                             //Returns you the data for all the iap products
                             //You can get each item using following method
-                            cc.log('\nIAP: onProductRequestSuccess', JSON.stringify(products));
+                            log('\nIAP: onProductRequestSuccess', JSON.stringify(products));
                         },
                         onProductRequestFailure: (msg) => {
                             //When product refresh request fails.
-                            cc.log('\nIAP: onProductRequestFailure', JSON.stringify(msg))
+                            log('\nIAP: onProductRequestFailure', JSON.stringify(msg))
                         }
                     };
 
@@ -234,7 +234,7 @@ export default (function(app) {
                 if (!_getIAPItemsFromStorage()) {
                     cc.sys.localStorage.setItem(app.const.IAP_LOCAL_STORAGE, "");
                     app.context.setPurchases([]);
-                    cc.log('IAP: cc.sys.localStorage.getItem(app.const.IAP_LOCAL_STORAGE) > init new > length', cc.sys.localStorage.getItem(app.const.IAP_LOCAL_STORAGE));
+                    log('IAP: cc.sys.localStorage.getItem(app.const.IAP_LOCAL_STORAGE) > init new > length', cc.sys.localStorage.getItem(app.const.IAP_LOCAL_STORAGE));
                 } else {
                     // stringifyJSON array : [{id, receipt}]
                     let receiptStringItems = _getIAPItemsFromStorage();
@@ -249,18 +249,18 @@ export default (function(app) {
                                 try {
                                     o = JSON.parse(stringifiedItem);
                                 } catch (e) {
-                                    cc.log('IAP -> ERROR: -->stringifiedItem', e);
+                                    log('IAP -> ERROR: -->stringifiedItem', e);
                                 }
                                 return o;
                             });
                             app.context.setPurchases(array);
-                            cc.log('IAP: IF');
+                            log('IAP: IF');
 
                         }());
                     } else {
                         cc.sys.localStorage.setItem(app.const.IAP_LOCAL_STORAGE, "");
                         app.context.setPurchases([]);
-                        cc.log('IAP: ELSE');
+                        log('IAP: ELSE');
                     }
                 }
 
@@ -271,8 +271,8 @@ export default (function(app) {
                         //You can get each item using following method
 
                         let receiptObjects = app.context.getPurchases();
-                        cc.log('\nIAP: receiptObjects', JSON.stringify(receiptObjects));
-                        cc.log('\nIAP: receiptObjects > length', JSON.stringify(receiptObjects.length));
+                        log('\nIAP: receiptObjects', JSON.stringify(receiptObjects));
+                        log('\nIAP: receiptObjects > length', JSON.stringify(receiptObjects.length));
 
                         if (receiptObjects.length > 0) {
                             let productIds = [];

@@ -469,7 +469,7 @@ export default class GamePlayers extends Component {
                     let vipLevel = utils.getVariable(player.user, app.keywords.VIP_LEVEL);
                     if(vipLevel) {
                         let {id, value} = vipLevel;
-                        priority < userPriority && player.say(userShouldeSeeMessage.replace(/{{username}}/i, GameUtils.getDisplayName(user)));
+                        value < userPriority && player.say(userShouldeSeeMessage.replace(/{{username}}/i, GameUtils.getDisplayName(user)));
                     }
                 }); 
             }

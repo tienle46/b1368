@@ -41,20 +41,21 @@ export default class AvatarDialog extends DialogActor {
     
     onClickAvatarItem(toggle) {
         let node = toggle.node;
-        let {name, description, spriteFrame, thumb, large, vipValue} = node.data;
-        this.pickedAvatarSprite.spriteFrame = spriteFrame;
-        this.pickedAvatarLbl.string = name;
-        this.selectedObject = {
-            thumb, large, vipValue
-        };
-        this.pickedAvatarDescription.string = description;
-        
-        let lbl = node.getComponentInChildren(cc.Label);
-        if(lbl) {
-            this.previousLabel && (this.previousLabel.node.color = app.const.COLOR_WHITE);
-            this.previousLabel = lbl;
-            lbl && (lbl.node.color = app.const.COLOR_YELLOW);
-        }
+        let {name, description, thumb, large, vipValue} = node.data;
+        RubUtils.loadSpriteFrame(this.pickedAvatarSprite, large, null, true, (sprite) =>{
+            this.pickedAvatarLbl.string = name;
+            this.selectedObject = {
+                thumb, large, vipValue
+            };
+            this.pickedAvatarDescription.string = description;
+            
+            let lbl = node.getComponentInChildren(cc.Label);
+            if(lbl) {
+                this.previousLabel && (this.previousLabel.node.color = app.const.COLOR_WHITE);
+                this.previousLabel = lbl;
+                lbl && (lbl.node.color = app.const.COLOR_YELLOW);
+            }
+        });
     }
     
     onConfirmBtnClick() {
@@ -123,7 +124,6 @@ export default class AvatarDialog extends DialogActor {
                     item.data = {
                         name,
                         description: desc,
-                        spriteFrame: sprite.spriteFrame,
                         thumb,
                         large,
                         vipValue

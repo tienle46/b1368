@@ -232,7 +232,7 @@ export default class GameEventHandler {
 
     _handlePlayerReEnterGame(data) {
         
-        console.log('',);
+        log('',);
         
         let playerId = utils.getValue(data, Keywords.PLAYER_ID, 0);
         let userId = utils.getValue(data, Keywords.USER_ID, 0);
@@ -317,7 +317,7 @@ export default class GameEventHandler {
     }
 
     _onRoomRemove(event) {
-        console.log('room remove: ', event);
+        log('room remove: ', event);
         this.scene.goBack();
     }
 

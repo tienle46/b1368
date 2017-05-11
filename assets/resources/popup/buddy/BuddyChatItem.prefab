@@ -131,7 +131,7 @@
     "_enabled": true,
     "_N$string": "<color=#F6D533>{sender}:</c> {message}",
     "_N$horizontalAlign": 0,
-    "_N$fontSize": 22,
+    "_N$fontSize": 30,
     "_N$font": {
       "__uuid__": "8538fe1b-c3b4-48ca-849f-55e33a2c7a57"
     },

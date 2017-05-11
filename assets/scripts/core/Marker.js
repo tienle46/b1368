@@ -238,6 +238,6 @@ export default class Marker {
     }
     
     log() {
-        console.log(this.caches);
+        log(this.caches);
     }
 }

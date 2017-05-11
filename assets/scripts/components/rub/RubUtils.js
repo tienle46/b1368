@@ -164,32 +164,32 @@ let RubUtils = {
         
         
         // if (isCORS) {
-        //     cc.log('text isCORS, ', resURL);
+        //     log('text isCORS, ', resURL);
         //     if (!resURL.match(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/))
         //         return;
-        //     cc.log('text isCORS 2');
+        //     log('text isCORS 2');
         //     axios.get(resURL).then(response => {
         //         if (response.status == 200) {
-        //             cc.log('text 200');
+        //             log('text 200');
         //             if (app.env.isBrowser()) {
         //                 textureCache = cc.textureCache.addImage(resURL);
-        //                 cc.log('text ureCache1');
+        //                 log('text ureCache1');
         //                 spriteFrameDefaultConfig(spriteComponent, textureCache);
         //             } else {
         //                 cc.loader.load(resURL, (err, tex) => {
         //                     if (err) console.error(err);
-        //                     cc.log('text ureCache2');
+        //                     log('text ureCache2');
         //                     if (tex && tex instanceof cc.Texture2D) {
         //                         spriteFrameDefaultConfig(spriteComponent, tex);
         //                     }
         //                 });
         //             }
         //         } else {
-        //             cc.log('text null');
+        //             log('text null');
         //             spriteFrameDefaultConfig(null);
         //         }
         //     }).catch(err => {
-        //         cc.log('text err', JSON.stringify(err));
+        //         log('text err', JSON.stringify(err));
         //         spriteFrameDefaultConfig(null);
         //     });
         // } else {

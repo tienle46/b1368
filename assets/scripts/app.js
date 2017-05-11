@@ -219,12 +219,17 @@ app.getMessageFromServer = (error) => {
     };
 
     window.log = function log(...args) {
-        console.log(...args);
+        
+        if(app.config.debug) return;
+        
+        log(...args);
     };
 
     window.debug = function debug(...args) {
+        if(app.config.debug) return;
+        
         if (app.config.buildForMobile) {
-            console.log(...args);
+            log(...args);
         } else {
             console.debug(...args);
         }
@@ -250,9 +255,9 @@ app.getMessageFromServer = (error) => {
         try {
             let jsonParam = JSON.parse(jsonString);
             let actionParamObject = jsonParam['action_extras'];
-            cc.log(`jsonParam['action_extras'] ${JSON.stringify(jsonParam['action_extras'])}`)
+            log(`jsonParam['action_extras'] ${JSON.stringify(jsonParam['action_extras'])}`)
             let actionParam = actionParamObject && Object.keys(actionParamObject).length > 0 ? actionParamObject : {};
-            cc.log(`actionParam ${JSON.stringify(actionParam)}`);
+            log(`actionParam ${JSON.stringify(actionParam)}`);
             require('Linking').goTo(jsonParam.action, actionParam);
         } catch (e) {
             //DO nothing

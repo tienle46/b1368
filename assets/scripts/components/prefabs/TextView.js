@@ -23,7 +23,7 @@ export default class TextView extends Component {
 
 
     onLoad() {
-        // console.log("onLoad textview: ", this.label.lineHeight);
+        // log("onLoad textview: ", this.label.lineHeight);
 
         this.lineHeight = this.getLabelLineHeight();
         this.label.overflow = cc.Label.Overflow.RESIZE_HEIGHT;

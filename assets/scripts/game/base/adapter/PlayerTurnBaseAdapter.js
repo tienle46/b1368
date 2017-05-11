@@ -72,7 +72,7 @@ export default class PlayerTurnBaseAdapter extends GameAdapter {
 
     isTurn() {
         
-        console.log("isTurn check this.currentTurnPlayerId: ", this.currentTurnPlayerId)
+        log("isTurn check this.currentTurnPlayerId: ", this.currentTurnPlayerId)
         
         return this.player.id == this.currentTurnPlayerId;
     }

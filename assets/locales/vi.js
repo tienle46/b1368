@@ -115,7 +115,7 @@ export default {
     game_result_bacay_nua_doi: 'Nửa đời',
     game_bacay_cuoc_bien: 'Cược biên',
     game_bacay_cuop_chuong: 'Cướp chương',
-    game_bacay_ask_to_accept_cuoc_bien: '{{player}} muốn CƯỢC BIÊN với bạn {{value}}$',
+    game_bacay_ask_to_accept_cuoc_bien: '{{player}} muốn CƯỢC BIÊN với bạn {{value}} Chip',
     game_bacay_chi_cuoc_bien_mot_lan: 'Chỉ được cược biên với người chơi một lần',
     game_bacay_khong_the_cuoc_bien: 'Bạn không thể cược biên với người chơi này',
     game_bacay_cannot_bet_more_than_current: 'Bạn không thể cược lớn hơn giá trị hiện tại',

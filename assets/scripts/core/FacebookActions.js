@@ -111,7 +111,7 @@ export default class FacebookActions {
         }
     }
     
-    share({type = "link", link = "http://b1368.com", title = `Bài ${app.res.string('game_title')}`, text = "", image = ""} = {}) {
+share({type = "link", link = "http://bai1368.com", title = `Bài ${app.res.string('game_title')}`, text = "Chơi hay thắng lớn", image = "http://cms.songbaihoanggia.com/uploadfiles/event_nohu.png"} = {}) {
         if(app.env.isBrowser()) {
             window.FB.ui({
                 method: 'share',
@@ -119,18 +119,32 @@ export default class FacebookActions {
                 title,
                 description: text,
             }, function(response) {
-                console.log('response', response);
+                log('response', response);
             });
         } else if (app.env.isMobile()){
-            cc.log(`share on mobile`);
-            var info = {
-                type,
-                link,
-                title,
-                text,
-                image
-            };
-            window.sdkbox.PluginFacebook.share(info);
+            log(`on share mobile`);
+            this._setLoginState(window.sdkbox.PluginFacebook.isLoggedIn());
+            
+            var info = new Object();
+            info.type  = "link";
+            info.link  = "http://www.bai1368.com";
+            info.title = `Bài ${app.res.string('game_title')}`;
+            info.text  = "Chơi hay thắng lớn";
+            info.image = "http://cms.songbaihoanggia.com/uploadfiles/share-fb.png";
+            sdkbox.PluginFacebook.share(info);
+            
+            if (this.isLoggedIn()) {
+                window.sdkbox.PluginFacebook.dialog(info);
+            }
+            else{
+                this._initSdk({
+                    onLogin: (isLogin, msg) => {
+                         window.sdkbox.PluginFacebook.dialog(info);
+                    }
+                });
+                window.sdkbox.PluginFacebook.login();
+            }
+           
         }
     }
     
