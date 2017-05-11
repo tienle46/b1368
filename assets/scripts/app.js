@@ -222,7 +222,7 @@ app.getMessageFromServer = (error) => {
         
         if(app.config.debug) return;
         
-        log(...args);
+        cc.log(...args);
     };
 
     window.debug = function debug(...args) {
