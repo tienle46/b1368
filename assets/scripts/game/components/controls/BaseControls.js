@@ -84,6 +84,7 @@ export default class BaseControls extends GameControls {
 
         if(!this.serverAutoStartGame && this.showStartButtonOnBegin && this.scene.enoughPlayerToStartGame()){
             utils.active(this.startButton);
+            app.system.currentScene.board.renderer.setBottomTimeLineMessage("");
         }
     }
 

@@ -37,15 +37,16 @@ export default class BoardCard extends Board {
 
     onDealCard(playerHandCardLists, dealCards, data) {
         this.meDealCards = [...dealCards]
-        
+
         // play sound
         app.system.audioManager.play(app.system.audioManager.CHIA_BAI, true);
         
-        //CardList thực sự của user this.scene.gamePlayers.me.renderer.cardList.node.parent
-        //this.scene.gamePlayers.me.renderer.cardList.node.parent đóng vai trò là Anchor
-        //18/04/2017: điều chỉnh vị trí của dealCardAnchor cho khớp với vị trí card list của user me
+        /**
+         * CardList thực sự của user this.scene.gamePlayers.me.renderer.cardList.node.parent
+         * this.scene.gamePlayers.me.renderer.cardList.node.parent đóng vai trò là Anchor
+         * 18/04/2017: điều chỉnh vị trí của dealCardAnchor cho khớp với vị trí card list của user me
+         */
         this.adjustDealCardAnchor();
-        
         CardList.dealCards(this.renderer.dealCardActionComponent, this.renderer.dealCardAnchor, playerHandCardLists, dealCards.length, () => {
             this.scene.emit(Events.ON_GAME_STATE_STARTED);
             this.onDoneDealCards()

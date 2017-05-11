@@ -14,7 +14,7 @@ app.config.port = 8921;
 app.config.zone = "XGame";
 app.config.debug = false;
 app.config.useSSL = false;
-app.config.test = true;
+app.config.test = false;
 app.config.testIngame = false;
 app.config.defaultLocale = 'vi';
 app.config.poorNetworkThreshold = 2000;
@@ -37,6 +37,7 @@ app.config.fbVersion = 'v2.8';
 app.config.fbScope = 'public_profile,email,user_friends';
 
 app.config.fanpage = `http://m.me/songbaihoanggia`;
+app.config.website = `http://bai1368.com`;
 app.config.supportHotline = '123456';
 app.config.defaultMinBalanceJoinGameRoomMultiple = 10;
 app.config.defaultAvatarUrl = "";
@@ -132,7 +133,7 @@ app.config.parseConfigData = function(configData = {}) {
     app.config.gameGroups = configData.gameGroups || app.config.gameGroups;
     app.config.actionLabels = Object.assign({}, app.config.actionLabels, configData.actionLabels || {});
     app.config.features = configData.features || app.config.features;
-    
+    app.config.website = configData.website || app.config.website
     if(!app.visibilityManager) {
         app.visibilityManager = new VisibilityManager(app.config.features);
     } else {

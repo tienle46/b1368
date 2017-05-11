@@ -15,7 +15,7 @@ export default class BoardRenderer extends ActorRenderer {
             ...this.properties,
             timelineTextViewNode: cc.Node,
             bottomTimelineTextViewNode: cc.Node,
-            secondTimelineTextViewNode: cc.Node,
+            secondTimelineLabelNode: cc.Node,
             timeline: {
                 default : null,
                 type : cc.Node
@@ -29,7 +29,7 @@ export default class BoardRenderer extends ActorRenderer {
 
         this.timelineTextView = null;
         this.bottomTimelineTextView = null;
-        this.secondTimelineTextView = null;
+        this.secondTimelineLabel = null;
         this.ellipseTimeLine = null;
         this.enableBottomTextOnReady = true
         this.timeoutInterval = null
@@ -41,7 +41,7 @@ export default class BoardRenderer extends ActorRenderer {
 
         this.timelineTextView = this.timelineTextViewNode.getComponent('TextView');
         this.bottomTimelineTextView = this.bottomTimelineTextViewNode && this.bottomTimelineTextViewNode.getComponent('TextView');
-        this.secondTimelineTextView = this.secondTimelineTextViewNode && this.secondTimelineTextViewNode.getComponent('TextView');
+        this.secondTimelineLabel = this.secondTimelineLabelNode && this.secondTimelineLabelNode.getComponent(cc.Label);
         this.ellipseTimeLine = this.timeline.getComponent('EllipseTimeLine');
 
         this.setTimeLineMessage("");
@@ -109,7 +109,7 @@ export default class BoardRenderer extends ActorRenderer {
     }
 
     setTimeLineSecondText(secondText) {
-        this.secondTimelineTextView && this.secondTimelineTextView.setText(secondText);
+        this.secondTimelineLabel && (this.secondTimelineLabel.string = secondText)
     }
 
     setTimeLineMessage(message) {

@@ -7,6 +7,7 @@ import Component from 'Component';
 import utils from 'utils';
 import CCUtils from 'CCUtils';
 import Events from 'Events'
+import ActionBlocker from 'ActionBlocker'
 
 export default class PlayerPositions extends Component {
 
@@ -63,8 +64,10 @@ export default class PlayerPositions extends Component {
     }
 
     onClickAnchorButton() {
-        app.service.send({ cmd: app.commands.PLAYER_INVITE, data: {}, room: this.scene.room });
-        app.system.showToast(app.res.string('random_invite_player_successfully'));
+        ActionBlocker.runAction("invitePlayGame", () => {
+            app.service.send({ cmd: app.commands.PLAYER_INVITE, data: {}, room: this.scene.room });
+            app.system.showToast(app.res.string('random_invite_player_successfully'));
+        })
     }
 
     _onGameReset(){

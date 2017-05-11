@@ -6,11 +6,11 @@ export default class TextView extends Component {
     constructor() {
         super();
         this.currentWidth = 0;
-        this.lineHeight = 24;
         this.isLoaded = false;
 
         this.properties = {
             ...this.properties,
+            lineHeight: 24,
             label: cc.Label,
             lines: 1,
             minWidth: 100,

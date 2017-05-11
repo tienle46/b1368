@@ -192,4 +192,6 @@ export default {
     username_rule: "Tên đăng nhập (6 - 15 kí tự)",
     input_username_title: "Nhập tên đăng nhập",
     message_not_enough_money: 'Bạn cần {{money}} ' + currencyName + ' để đủ điều kiện chơi trong bàn cược {{minBet}}',
+
+    message_block_invite_game_action: "Bạn chỉ được mời chơi {{time}} một lần",
 };
