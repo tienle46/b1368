@@ -65,7 +65,7 @@ const LOGIN_ERROR_MESSAGES_VI = {
     },
     // CUSTOM ERROR FOR CLIENTS
     "LOGIN_ERROR_USERNAME_NOT_VALID": "Tên đăng nhập phải từ 6 - 15 ký tự, bao gồm số hoặc chữ.",
-    "LOGIN_ERROR_PASSWORD_NOT_VALID": "Mật khẩu từ 6 - 30 ký tự, chỉ gồm chữ thường và số.",
+    "LOGIN_ERROR_PASSWORD_NOT_VALID": "Mật khẩu từ 6 - 30 ký tự, chỉ gồm chữ và số.",
     "LOGIN_ERROR_CAPTCHA_NOT_VALID": "Mã xác nhận không đúng, vui lòng nhập lại."
 };
 
