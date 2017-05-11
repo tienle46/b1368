@@ -654,7 +654,7 @@
     "__type__": "cc.Node",
     "_name": "daily_gift_popup",
     "_objFlags": 0,
-    "_opacity": 255,
+    "_opacity": 0,
     "_color": {
       "__type__": "cc.Color",
       "r": 255,
@@ -1049,7 +1049,7 @@
     "_anchorPoint": {
       "__type__": "cc.Vec2",
       "x": 0.5,
-      "y": 1
+      "y": 0.5
     },
     "_contentSize": {
       "__type__": "cc.Size",
@@ -1064,7 +1064,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": -64
+      "y": -100
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -1102,7 +1102,7 @@
       "__uuid__": "707ff59f-f7c1-4eb4-a0de-41fd5e1c0123"
     },
     "_isSystemFontUsed": false,
-    "_N$string": "Update....",
+    "_N$string": "updating...",
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
     "_N$overflow": 3
