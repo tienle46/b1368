@@ -157,7 +157,7 @@ export default class ListTableScene extends BaseScene {
     }
 
     onUserRequestJoinRoom({ id, minBet, password, isSpectator, roomCapacity } = {}) {
-        console.log('id: ', id, " minbet:", minBet, "Capacity: ", roomCapacity);
+        log('id: ', id, " minbet:", minBet, "Capacity: ", roomCapacity);
 
         let minBalance = this._calculateMinBalanceToJoinGame(minBet);
 

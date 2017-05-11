@@ -96,7 +96,7 @@ class FivePlayerPositions extends PlayerPositions {
 
     getPlayerAnchor(id){
 
-        console.log("cc.director.getScene(): ", cc.director.getScene(), this.scene.isSoloGame)
+        log("cc.director.getScene(): ", cc.director.getScene(), this.scene.isSoloGame)
 
         if(this.scene.isSoloGame){
             if(id == 1){

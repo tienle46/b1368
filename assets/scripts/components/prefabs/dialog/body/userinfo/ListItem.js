@@ -44,7 +44,7 @@ export default class ToggleableListItem extends Component {
 
     onLoad() {
         // this.descriptionLabel.node.on('active-in-hierarchy-changed', ()=>{
-        //     console.log(`active changed`);
+        //     log(`active changed`);
         // });
 
         const toggleEventHandle = new cc.Component.EventHandler();

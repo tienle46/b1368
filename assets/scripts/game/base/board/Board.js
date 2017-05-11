@@ -241,7 +241,7 @@ export default class Board extends Actor {
     onGameStatePreChange(boardState, data) {
         this.serverState = boardState;
 
-        console.log("onGameStatePreChange...", boardState, data);
+        log("onGameStatePreChange...", boardState, data);
 
         //TODO Process board state changed here
     }
@@ -340,14 +340,14 @@ export default class Board extends Actor {
             balanceChangedAmounts[id] = newBalance - currentBalance;
         });
 
-        console.log("currentPlayerBalances: ", currentPlayerBalances, newPlayersBalance);
+        log("currentPlayerBalances: ", currentPlayerBalances, newPlayersBalance);
 
         return balanceChangedAmounts;
     }
 
     _handleSetPlayerBalance(data) {
 
-        console.log("_handleSetPlayerBalance: ", data);
+        log("_handleSetPlayerBalance: ", data);
 
         let playerIds = utils.getValue(data, Keywords.GAME_LIST_PLAYER);
         let playersBalance = utils.getValue(data, Keywords.USER_BALANCE, []);

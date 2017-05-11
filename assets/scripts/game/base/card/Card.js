@@ -122,7 +122,7 @@ export default class Card extends ActionComponent {
         let actions = [];
         let { position, rotation, scale } = this.__originalInfo;
 
-        // console.log("__originalInfo: ", this.__originalInfo)
+        // log("__originalInfo: ", this.__originalInfo)
 
         if (position && (position != this.node.position)) {
             actions.push(cc.moveTo(duration, position.x, position.y));

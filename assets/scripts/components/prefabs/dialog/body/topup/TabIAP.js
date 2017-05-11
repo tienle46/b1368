@@ -70,7 +70,7 @@ class TabIAP extends PopupTabBody {
 
         if (app.env.isMobile() && window.sdkbox.IAP) {
             let name = target.productId;
-            cc.log(`iap name ${name}`);
+            log(`iap name ${name}`);
             app.system.showLoader(app.res.string('sending_item_store_iap', { provider: app.env.isIOS() ? 'Apple Store' : 'Google Play' }), 60);
             window.sdkbox.IAP.purchase(name);
         }
@@ -80,7 +80,7 @@ class TabIAP extends PopupTabBody {
         if (app.env.isMobile()) {
             app.env.sdkIAPSetListener({
                 onSuccess: (product) => {
-                    cc.log('\nIAP: onSuccess', JSON.stringify(product));
+                    log('\nIAP: onSuccess', JSON.stringify(product));
 
                     let purchases = [];
                     let contextItem = null;
@@ -92,12 +92,12 @@ class TabIAP extends PopupTabBody {
                         contextItem = { id: product.id, receipt: product.receiptCipheredPayload };
                     } else if (app.env.isAndroid()) {
                         try {
-                            cc.log('IAP -> ccc -> receipt', product.receipt);
+                            log('IAP -> ccc -> receipt', product.receipt);
                             product.receipt = (typeof product.receipt == 'string') ? product.receipt : `${product.receipt}`;
 
                             let productReceipt = JSON.parse(product.receipt);
                             if (!(productReceipt && productReceipt.hasOwnProperty('purchaseToken'))) {
-                                cc.log('IAP: --> purchaseToken not found!');
+                                log('IAP: --> purchaseToken not found!');
                                 return;
                             }
 
@@ -106,15 +106,15 @@ class TabIAP extends PopupTabBody {
                                 productId: product.id,
                                 token
                             }];
-                            cc.log('IAP purchase2', JSON.stringify(app.context.getPurchases()));
+                            log('IAP purchase2', JSON.stringify(app.context.getPurchases()));
                             contextItem = { id: product.id, receipt: token, username: app.context.getMyInfo().name || "" };
 
                         } catch (e) {
-                            cc.log('IAP : -> catch -> product.receipt is not in json format ', e)
+                            log('IAP : -> catch -> product.receipt is not in json format ', e)
                             return;
                         }
                     }
-                    cc.log('IAP contextItem', JSON.stringify(contextItem));
+                    log('IAP contextItem', JSON.stringify(contextItem));
                     (app.context.getPurchases() || []).push(contextItem);
 
                     if (contextItem) {
@@ -132,7 +132,7 @@ class TabIAP extends PopupTabBody {
                         };
 
                         app.system.showLoader(app.res.string('iap_buying_successfully_wait_server_response'), 60);
-                        cc.log('\nIAP sendObject:', JSON.stringify(sendObj))
+                        log('\nIAP sendObject:', JSON.stringify(sendObj))
                         app.service.send(sendObj);
                     } else {
                         app.system.hideLoader();
@@ -143,11 +143,11 @@ class TabIAP extends PopupTabBody {
                     //msg is the error message
                     app.system.hideLoader();
                     app.system.error(msg);
-                    cc.log('\nIAP: onFailure', JSON.stringify(product), JSON.stringify(msg))
+                    log('\nIAP: onFailure', JSON.stringify(product), JSON.stringify(msg))
                 },
                 onCanceled: (product) => {
                     //Purchase was canceled by user
-                    cc.log('\nIAP: onCanceled', JSON.stringify(product))
+                    log('\nIAP: onCanceled', JSON.stringify(product))
                     app.system.error(msg);
                     app.system.hideLoader();
                 },

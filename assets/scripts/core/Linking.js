@@ -15,10 +15,10 @@ const pendingActions = [];
 class Linking {
 
     static goTo(action, data) {
-        cc.log('!app.context.getMe()1', JSON.stringify(!app.context.getMe()));
+        log('!app.context.getMe()1', JSON.stringify(!app.context.getMe()));
         
         if (!app.context.getMe()) {
-            cc.log('!app.context.getMe()');
+            log('!app.context.getMe()');
             pendingActions.push({
                 action,
                 data
@@ -27,7 +27,7 @@ class Linking {
         try {
             if (data && typeof data == "string")
                 data = JSON.parse(data);
-            cc.log('action data', JSON.stringify(data))
+            log('action data', JSON.stringify(data))
             switch (action) {
                 case Linking.ACTION_PLAY_GAME:
                     {
@@ -303,7 +303,7 @@ class Linking {
         });
     }
     static _handleShowToastAction(actionCode, data) {
-        cc.log(`_handleShowToastAction data ${data.message}`);
+        log(`_handleShowToastAction data ${data.message}`);
         app.system.showToast(data.message);
     }
     static isExchangeAction(action) {

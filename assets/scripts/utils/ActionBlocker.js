@@ -26,12 +26,12 @@ export default class ActionBlocker {
 
 
             if( lastActionTime == undefined || !duration || (currentTime - lastActionTime) >= duration){
-                runFunc && runFunc()
+                runFunc && runFunc();
+                lastActionTimes[key] = currentTime;
             }else{
                 message && app.system.showToast(message)
             }
 
-            lastActionTimes[key] = currentTime;
         }
     }
 }

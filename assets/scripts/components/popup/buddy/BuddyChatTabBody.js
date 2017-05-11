@@ -59,7 +59,7 @@ class BuddyChatTabBody extends PopupTabBody {
 
     _onBuddyMessage(senderName, toBuddyName, message, isItMe) {
 
-        console.log('sender, toBuddy, message, isItMe: ', senderName, toBuddyName, message, isItMe);
+        log('sender, toBuddy, message, isItMe: ', senderName, toBuddyName, message, isItMe);
 
         if (!this.buddy) return;
 

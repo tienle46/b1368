@@ -223,7 +223,7 @@ export default class BuddyManager {
     }
 
     _onBuddyAdd(evtParams) {
-        console.log('_onBuddyAdd: ', evtParams);
+        log('_onBuddyAdd: ', evtParams);
         if (evtParams.buddy) {
             this.onBuddyListUpdate();
             app.system.showToast(app.res.string("buddy_added_buddy", { buddyName: evtParams.buddy.name }))
@@ -246,7 +246,7 @@ export default class BuddyManager {
     }
 
     _onBuddyRemove(evtParams) {
-        console.log('_onBuddyRemove: ', evtParams);
+        log('_onBuddyRemove: ', evtParams);
         if (evtParams.buddy) {
             this.onBuddyListUpdate();
             app.system.showToast(app.res.string("buddy_removed_buddy", { buddyName: evtParams.buddy.name }))
