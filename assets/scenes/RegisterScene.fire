@@ -747,7 +747,7 @@
     "_N$returnType": 0,
     "_N$inputFlag": 1,
     "_N$inputMode": 6,
-    "_N$fontSize": 30,
+    "_N$fontSize": 33,
     "_N$lineHeight": 40,
     "_N$fontColor": {
       "__type__": "cc.Color",
@@ -757,7 +757,7 @@
       "a": 255
     },
     "_N$placeholder": "Tên đăng nhập (6 - 15 ký tự)",
-    "_N$placeholderFontSize": 30,
+    "_N$placeholderFontSize": 33,
     "_N$placeholderFontColor": {
       "__type__": "cc.Color",
       "r": 255,
@@ -923,7 +923,7 @@
     "_N$returnType": 0,
     "_N$inputFlag": 0,
     "_N$inputMode": 6,
-    "_N$fontSize": 30,
+    "_N$fontSize": 33,
     "_N$lineHeight": 40,
     "_N$fontColor": {
       "__type__": "cc.Color",
@@ -933,7 +933,7 @@
       "a": 255
     },
     "_N$placeholder": "Mật khẩu (6 - 30 ký tự)",
-    "_N$placeholderFontSize": 30,
+    "_N$placeholderFontSize": 33,
     "_N$placeholderFontColor": {
       "__type__": "cc.Color",
       "r": 255,
@@ -941,7 +941,7 @@
       "b": 255,
       "a": 255
     },
-    "_N$maxLength": 30,
+    "_N$maxLength": 35,
     "_N$stayOnTop": false
   },
   {
@@ -1161,7 +1161,7 @@
     "_N$returnType": 0,
     "_N$inputFlag": 1,
     "_N$inputMode": 6,
-    "_N$fontSize": 30,
+    "_N$fontSize": 33,
     "_N$lineHeight": 40,
     "_N$fontColor": {
       "__type__": "cc.Color",
@@ -1171,7 +1171,7 @@
       "a": 255
     },
     "_N$placeholder": "Mã xác nhận",
-    "_N$placeholderFontSize": 30,
+    "_N$placeholderFontSize": 33,
     "_N$placeholderFontColor": {
       "__type__": "cc.Color",
       "r": 255,
