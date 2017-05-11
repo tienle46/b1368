@@ -109,7 +109,7 @@ class GameContext {
             "level": me.variables.lv,
             "avatar": Utils.getVariable(me, 'avatar', {}),
             "displayName": Utils.getVariable(me, 'displayName', me.name),
-            "vipLevel": vipLevel.name || ""
+            "vipLevel": vipLevel.name || "Phổ thông"
         } : {};
     }
     

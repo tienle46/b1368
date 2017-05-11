@@ -3785,7 +3785,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 196,
+      "width": 178,
       "height": 53
     },
     "_children": [],
@@ -3795,8 +3795,8 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": -77.6,
-      "y": 0.7
+      "x": -61,
+      "y": 1
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -3837,7 +3837,7 @@
     },
     "_isSystemFontUsed": false,
     "_N$string": "username123",
-    "_N$horizontalAlign": 1,
+    "_N$horizontalAlign": 0,
     "_N$verticalAlign": 1,
     "_N$overflow": 2
   },
@@ -3989,7 +3989,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 135,
+      "width": 118,
       "height": 37
     },
     "_children": [],
@@ -3999,8 +3999,8 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": -53.2,
-      "y": 0.7
+      "x": -36,
+      "y": 1
     },
     "_skewX": 0,
     "_skewY": 0,
