@@ -30,12 +30,13 @@ class GameSystem {
         this.sceneChanging = false;
         this._currentScene = null;
         this.isInactive = false;
-        this.initEventListener();
         this._sceneName = null;
         this._delayChangeAppStateTimeoutId = 0;
 
         this._actionComponents = []
         this._lackOfMoneyMessage = null
+        
+        this.initEventListener();
     }
 
     showLoader(message = "", duration) {
@@ -370,7 +371,7 @@ class GameSystem {
         log('IAP localStorage2 ITEM :', cc.sys.localStorage.getItem(app.const.IAP_LOCAL_STORAGE).split(';').length - 1);
 
     }
-
+    
     _onJoinRoomError(resultEvent) {
         if (resultEvent.errorCode) {
             this.hideLoader();

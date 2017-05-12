@@ -9,7 +9,6 @@ class TabTopVip extends PopupTabBody {
             ...this.properties,
             contentNode: cc.Node,
             crowns: cc.Node,
-            vips: cc.Node,
             p404: cc.Node
         };
     }
@@ -27,8 +26,8 @@ class TabTopVip extends PopupTabBody {
         return true;
     }
     
-    onDataChanged({usernames = []} = {}) {
-        usernames && usernames.length > 0 && this._renderGridFromUsernames(usernames);
+    onDataChanged({vips = []} = {}) {
+        vips && vips.length > 0 && this._renderGridFromVips(vips);
     }
     
     _addGlobalListener() {
@@ -52,27 +51,20 @@ class TabTopVip extends PopupTabBody {
         this.setLoadedData(data); 
     }
     
-    _renderGridFromUsernames(usernames) {
-        if (usernames.length < 0) {
+    _renderGridFromVips(vips) {
+        if (vips.length < 0) {
             this.showEmptyPage(this.p404);
             return;
         }
         let data = [
-            usernames.map((status, index) => {
+            vips.map((status, index) => {
                 if (this.crowns.children[index])
                     return cc.instantiate(this.crowns.children[index]);
                 else
                     return `${index + 1}`;
             }),
-            usernames,
-            usernames.map((status, index) => {
-                let len = this.vips.children.length;
-                this.vips.children.forEach(child => child.active = false);
-                
-                this.vips.children[index] ? (this.vips.children[index].active = true) : (this.vips.children[len - 1].active = true);
-                
-                return cc.instantiate(this.vips);
-            }),
+            vips.map(object => object.username),
+            vips.map(object => object.type)
         ];
         
         this.contentNode.setContentSize(850, this.contentNode.getContentSize().height);

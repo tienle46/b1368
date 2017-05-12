@@ -30,7 +30,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 1280,
-      "height": 64
+      "height": 74
     },
     "_children": [],
     "_rotationX": 0,
@@ -80,7 +80,7 @@
     "_layoutSize": {
       "__type__": "cc.Size",
       "width": 1280,
-      "height": 64
+      "height": 74
     },
     "_resize": 1,
     "_N$layoutType": 3,

@@ -139,6 +139,8 @@ app.config.parseConfigData = function(configData = {}) {
     } else {
         app.visibilityManager.updateFeatures(app.config.features);
     }
+    const ActionBlocker = require('ActionBlocker');
+    ActionBlocker.onClientConfigChanged(configData.blockConfig || {});
     
     const Events = require('Events');
     app.system.emit(Events.CLIENT_CONFIG_CHANGED)

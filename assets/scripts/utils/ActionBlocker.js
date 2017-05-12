@@ -4,12 +4,29 @@
 
 import app from 'app'
 
+/**
+ * @blockConfig
+ *      + keyMessage is key used in app.res.string(key) and it MUST have `time` as a parameter
+ *      + duration : time between twice actions
+ */
 const blockConfig = {
-    'invitePlayGame': {duration: 10000, message: app.res.string("message_block_invite_game_action", {time: "10s"})}
+    'invitePlayGame': {duration: 10*1000, keyMessage: "message_block_invite_game_action"},
+    'userWithdrawal': {duration: 20*60*1000, keyMessage: "message_block_exchange_card_action"},
 }
 
 const lastActionTimes = {
-    'invitePlayGame': 0
+    'invitePlayGame': 0,
+    'userWithdrawal': 0
+}
+
+// return user readable data based on millisecond
+function timeMeansurementFromMillisecond(duration) {
+    duration = duration/1000;
+    let seconds= Math.floor(duration % 60),
+        minutes=  Math.floor(duration/60 % 60),
+        hours= Math.floor(duration/(60*60) % 24);
+    
+    return (hours > 0 ? `${hours}h ${minutes > 0 ? minutes +'p': ''}` : minutes > 0 ? `${minutes}p ${seconds > 0 ? seconds +'s': ''}` : `${seconds}s`).trim();
 }
 
 export default class ActionBlocker {
@@ -21,7 +38,8 @@ export default class ActionBlocker {
         }else{
 
             let lastActionTime = lastActionTimes[key]
-            let {duration, message} = blockConfig[key]
+            let {duration, keyMessage} = blockConfig[key]
+            let message = app.res.string(keyMessage, {time: timeMeansurementFromMillisecond(duration)})
             let currentTime = new Date().getTime()
 
 
@@ -32,6 +50,17 @@ export default class ActionBlocker {
                 message && app.system.showToast(message)
             }
 
+        }
+    }
+    
+    /**
+     * @param {object} blockConfig 
+     * 
+     * @memberof ActionBlocker
+     */
+    onClientConfigChanged(blockConfig) {
+        for(var key in blockConfig) {
+            blockConfig[key] && (blockConfig[key]['duration'] = blockConfig[key]);
         }
     }
 }

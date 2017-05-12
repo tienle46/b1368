@@ -20,6 +20,7 @@ export default class ListTableScene extends BaseScene {
             gameTitleLbl: cc.Label,
             userMoneyLbl: cc.Label,
             jarAnchorNode: cc.Node,
+            arrowNode: cc.Node,
             filter1stLabel: cc.Label,
             filter2ndLabel: cc.Label,
             filter3rdLabel: cc.Label
@@ -296,7 +297,11 @@ export default class ListTableScene extends BaseScene {
             joinRoomRequestData = null;
         }
     }
-
+    
+    _onArrowBtnClick() {
+        
+    }
+    
     _onConfirmInvitationBtnClick(joinRoomRequestData) {
         this.invitationShowed = false;
 
@@ -369,35 +374,31 @@ export default class ListTableScene extends BaseScene {
         let minBets = data[app.keywords.ROOM_MIN_BET] || [];
         let passwords = data[app.keywords.ROOM_PASSWORD] || [];
         let userCounts = data[app.keywords.ROOM_USER_COUNT] || [];
-        let roomCapacitys = data[app.keywords.ROOM_USER_MAX] || [];
-
+        let roomCapacities = data[app.keywords.ROOM_USER_MAX] || [];
+        
+        let playableRooms = [];
+        let fullRooms = [];
+        for(let i = 0; i < displayIds.length; i++) {
+            let object = this._createRoomObject(ids[i], displayIds[i], minBets[i], userCounts[i], roomCapacities[i], passwords[i]);
+            (userCounts[i] === roomCapacities[i] ? fullRooms : playableRooms).push(object);
+        }
+        
         // room faker
-        this.enableMinbets.forEach(minBet => {
-            ids.push(0);
-            displayIds.push(0);
-            minBets.push(minBet);
-            passwords.push(null);
-            userCounts.push(0);
-            roomCapacitys.push(app.const.game.maxPlayers[this.gameCode || 'default']);
-        });
-
+        let fakers = [];
+        this.enableMinbets.forEach(minBet => fakers.push(this._createRoomObject(0, 0, minBet, 0, app.const.game.maxPlayers[this.gameCode || 'default'], null)));
+        
+        playableRooms = [...playableRooms, ...fakers, ...fullRooms];
+        
         if (!addMore) {
             this.items.forEach(item => item.node && CCUtils.destroy(item.node));
             window.release(this.items);
         }
 
-        for (let i = 0; i < displayIds.length; i++) {
+        for (let i = 0; i < playableRooms.length; i++) {
             let listCell = cc.instantiate(this.tableListCell);
             let cellComponent = listCell.getComponent('TableListCell');
             cellComponent.setOnClickListener((data) => this.onUserRequestJoinRoom(data));
-            cellComponent && cellComponent.initCell({
-                id: ids[i],
-                displayId: displayIds[i],
-                minBet: minBets[i],
-                userCount: userCounts[i],
-                roomCapacity: roomCapacitys[i],
-                password: passwords[i]
-            });
+            cellComponent && cellComponent.initCell(playableRooms[i]);
             this.addNode(listCell);
             this.items.push(cellComponent);
         }
@@ -405,7 +406,18 @@ export default class ListTableScene extends BaseScene {
         this._renderList();
         this._isInitedRoomList = true;
     }
-
+    
+    _createRoomObject(id, displayId, minBet, userCount, roomCapacity, password) {
+        return {
+            id,
+            displayId,
+            minBet,
+            userCount,
+            roomCapacity,
+            password
+        }   
+    }
+    
     _renderList() {
         this.contentInScroll.removeAllChildren();
         // CCUtils.clearAllChildren(this.contentInScroll);
