@@ -219,15 +219,17 @@ app.getMessageFromServer = (error) => {
     };
 
     window.log = function log(...args) {
+        
         if(app.config.debug) return;
-        console.log(...args);
+        
+        cc.log(...args);
     };
 
     window.debug = function debug(...args) {
-        // if(app.config.debug) return;
+        if(app.config.debug) return;
         
         if (app.config.buildForMobile) {
-            console.log(...args);
+            log(...args);
         } else {
             console.debug(...args);
         }

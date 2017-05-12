@@ -465,11 +465,12 @@ export default class GamePlayers extends Component {
                 this.players && this.players.forEach(player => {
                     if(player.user.id === user.id)
                         return;
-                        
                     let vipLevel = utils.getVariable(player.user, app.keywords.VIP_LEVEL);
                     if(vipLevel) {
                         let {id, value} = vipLevel;
                         value < userPriority && player.say(userShouldeSeeMessage.replace(/{{username}}/i, GameUtils.getDisplayName(user)));
+                    } else { // viplevel == undefined (maybe bot)
+                        player.say(userShouldeSeeMessage.replace(/{{username}}/i, GameUtils.getDisplayName(user)))
                     }
                 }); 
             }
