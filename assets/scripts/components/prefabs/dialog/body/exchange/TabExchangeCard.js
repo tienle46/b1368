@@ -4,6 +4,7 @@ import RubUtils from 'RubUtils';
 import NodeRub from 'NodeRub';
 import Utils from 'Utils';
 import CCUtils from 'CCUtils';
+import ActionBlocker from 'ActionBlocker';
 
 class TabExchangeCard extends PopupTabBody {
     constructor() {
@@ -194,23 +195,25 @@ class TabExchangeCard extends PopupTabBody {
     }
 
     onExchangeBtnClick(event) {
-        this.selectedItem = event.currentTarget.parent.itemSelected;
+        ActionBlocker.runAction("userWithdrawal", () => {
+            this.selectedItem = event.currentTarget.parent.itemSelected;
 
-        let denyCb = () => true;
-        let okCallback = this._onConfirmDialogBtnClick.bind(this);
+            let denyCb = () => true;
+            let okCallback = this._onConfirmDialogBtnClick.bind(this);
 
-        if (this.selectedItem.id) {
-            let { id, gold, name } = this.selectedItem;
-            app.system.confirm(
-                app.res.string('exchange_dialog_confirmation', { gold: Utils.numberFormat(gold), name }),
-                denyCb,
-                okCallback
-            );
-        } else {
-            app.system.error(
-                app.res.string('error_exchange_dialog_need_to_choice_item')
-            );
-        }
+            if (this.selectedItem.id) {
+                let { id, gold, name } = this.selectedItem;
+                app.system.confirm(
+                    app.res.string('exchange_dialog_confirmation', { gold: Utils.numberFormat(gold), name }),
+                    denyCb,
+                    okCallback
+                );
+            } else {
+                app.system.error(
+                    app.res.string('error_exchange_dialog_need_to_choice_item')
+                );
+            }
+        });
     }
 
     /**

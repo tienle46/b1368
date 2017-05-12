@@ -54,7 +54,7 @@ class TabGiftCode extends PopupTabBody {
     
     _onGetGiftCode(data) {
         if(data[app.keywords.RESPONSE_RESULT]) {
-            app.system.showLongToast(data[app.keywords.RESPONSE_MESSAGE]);
+            app.system.info(data[app.keywords.RESPONSE_MESSAGE]);
         } else {
             app.system.error(data[app.keywords.RESPONSE_MESSAGE] || app.res.string('error_unknow'));
         }

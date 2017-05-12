@@ -220,7 +220,6 @@ class TopBar extends DialogActor {
                 sprite && app.context.getUserAvatar(sprite, true);
             }
         });
-
     }
 
 }

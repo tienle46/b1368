@@ -196,4 +196,5 @@ export default {
     message_not_enough_money: 'Bạn cần {{money}} ' + currencyName + ' để đủ điều kiện chơi trong bàn cược {{minBet}}',
 
     message_block_invite_game_action: "Bạn chỉ được mời chơi {{time}} một lần",
+    message_block_exchange_card_action: "Bạn chỉ được đổi thưởng {{time}} một lần",
 };
