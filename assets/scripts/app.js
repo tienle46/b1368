@@ -255,9 +255,7 @@ app.getMessageFromServer = (error) => {
         try {
             let jsonParam = JSON.parse(jsonString);
             let actionParamObject = jsonParam['action_extras'];
-            log(`jsonParam['action_extras'] ${JSON.stringify(jsonParam['action_extras'])}`)
             let actionParam = actionParamObject && Object.keys(actionParamObject).length > 0 ? actionParamObject : {};
-            log(`actionParam ${JSON.stringify(actionParam)}`);
             require('Linking').goTo(jsonParam.action, actionParam);
         } catch (e) {
             //DO nothing

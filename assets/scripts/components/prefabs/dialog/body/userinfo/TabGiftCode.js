@@ -33,6 +33,7 @@ class TabGiftCode extends PopupTabBody {
                 'giftCode': input
             }
         });
+        this.showLoadingProgress();
     }
     
     _addGlobalListener() {
@@ -53,8 +54,10 @@ class TabGiftCode extends PopupTabBody {
     }
     
     _onGetGiftCode(data) {
+        this.hideLoadingProgress();
         if(data[app.keywords.RESPONSE_RESULT]) {
             app.system.info(data[app.keywords.RESPONSE_MESSAGE]);
+            this.giftCodeInput.string = "";
         } else {
             app.system.error(data[app.keywords.RESPONSE_MESSAGE] || app.res.string('error_unknow'));
         }
