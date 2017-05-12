@@ -40,12 +40,18 @@ class TableListCell extends Component {
         this._onClickListener = null;
     }
 
-    initCell({ id = 0, displayId = 0, minBet = 0, userCount = 0, roomCapacity = 0, password } = {}) {
-        this.setComponentData({ id, displayId, minBet, userCount, roomCapacity, password });
+    initCell({ id = 0, displayId = 0, minBet = 0, userCount = 0, roomCapacity = 0, password} = {}) {
+        this.setComponentData({ id, displayId, minBet, userCount, roomCapacity, password});
     }
 
     renderComponentData(data) {
         this.id = data.id;
+        let isFake = !(data.displayId > 0);
+        if(isFake){
+            this.idLbl.node.color = app.const.COLOR_YELLOW;
+            this.ratio.node.color = app.const.COLOR_YELLOW;
+        }
+        
         this.idLbl.string = data.displayId > 0 ? `${data.displayId}` : "#";
         this.numberCoinLabel.string = data.minBet;
         CCUtils.setVisible(this.lockIcon, data.password);
