@@ -100,7 +100,7 @@ export default class BuddyManager {
     }
 
     shouldRequestBuddy(buddyName){
-        return !this._requestedBuddies.indexOf(buddyName) && !this.getBuddyByName(buddyName);
+        return this._requestedBuddies.indexOf(buddyName) < 0 && !this.getBuddyByName(buddyName);
     }
 
     _requestBuddyResponse(data) {
@@ -121,6 +121,7 @@ export default class BuddyManager {
 
             this._requestedBuddies.push(buddyName);
             app.service.send({ cmd: app.commands.REQUEST_BUDDY, data: { buddyName } });
+            app.system.showToast(app.res.string('buddy_request_already_send', { buddyName }))
         }
     }
 
@@ -383,7 +384,7 @@ export default class BuddyManager {
         let isItMe = evtParams.isItMe;
 
         evtParams.changedVars.forEach((varName, i) => {
-            let value = isItMe ? app.service.client.buddyManager.getMyVariable(varName).value :
+            let value = isItMe ? utils.getVariable(app.service.client.buddyManager, varName):
                 utils.getVariable(app.service.client.buddyManager.getBuddyByName(evtParams.buddy.name), varName);
 
             if (varName == BuddyManager.MOOD_VARIABLE_NAME) {
