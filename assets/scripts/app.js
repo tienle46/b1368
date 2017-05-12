@@ -222,14 +222,14 @@ app.getMessageFromServer = (error) => {
         
         if(app.config.debug) return;
         
-        cc.log(...args);
+        console.log(...args);
     };
 
     window.debug = function debug(...args) {
         if(app.config.debug) return;
         
         if (app.config.buildForMobile) {
-            log(...args);
+            console.log(...args);
         } else {
             console.debug(...args);
         }

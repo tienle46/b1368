@@ -187,7 +187,7 @@ export default {
 
     hotline: "Hỗ trợ: {{hotline}}",
     logging_in_via_facebook: "Đang đăng nhập bằng facebook",
-    play_now_not_support_on_mobile: "Chức năng chơi ngay không được hỗ trợ trên bản Web. Vui lòng dùng chức năng này trên Điện thoại",
+    play_now_not_support_on_mobile: "Chức năng chơi ngay không được hỗ trợ trên \nbản Web. Vui lòng dùng chức năng này trên Điện thoại",
     play_now_not_available_right_now: "Chức năng chơi ngay không thực hiện được vào lúc này. Vui lòng thử lại sau!",
     username_rule: "Tên đăng nhập (6 - 15 kí tự)",
     input_username_title: "Nhập tên đăng nhập",
