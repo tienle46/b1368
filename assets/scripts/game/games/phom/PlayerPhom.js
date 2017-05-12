@@ -980,9 +980,11 @@ export default class PlayerPhom extends PlayerCardTurnBase {
         }
 
         if(this.isItMe()){
-            let nextTurnPlayerId = utils.getValue(data, Keywords.TURN_PLAYER_ID);
-            if (nextTurnPlayerId === this.id) {
-                this.setState(PlayerPhom.STATE_PHOM_PLAY);
+            if(!app.context.rejoiningGame){
+                let nextTurnPlayerId = utils.getValue(data, Keywords.TURN_PLAYER_ID);
+                if (nextTurnPlayerId === this.id) {
+                    this.setState(PlayerPhom.STATE_PHOM_PLAY);
+                }
             }
         }else{
             this.renderer.cardList.clear();

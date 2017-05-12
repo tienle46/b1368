@@ -250,6 +250,10 @@ class GameSystem {
                 }, 3000)
             }
         }
+
+        if(state == 'active'){
+            app.service._checkConnection();
+        }
     }
 
     addAppStateListener(component){

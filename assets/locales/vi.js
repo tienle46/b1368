@@ -20,7 +20,7 @@ export default {
     error_serial_number_is_invalid: "Số seri không hợp lệ.",
     error_changed_password_is_invalid: "Mật khẩu mới phải từ 6 ký tự trong đó có ít nhất 1 số, 1 ký tự thường, không có ký tự đặc biệt và dấu cách.",
     error_password_confirmation_is_not_the_same: "Nhập lại mật khẩu mới không chính xác",
-    error_user_not_enough_gold_to_join_room: `Bạn cần {{minBalance}} ${currencyName} để có thể tham ra bàn chơi.\nBạn có muốn Nạp Chip để tiếp tục ?`,
+    error_user_not_enough_gold_to_join_room: `Bạn cần {{minBalance}} ${currencyName} để có thể tham gia bàn chơi.\nBạn có muốn Nạp Chip để tiếp tục ?`,
     error_exchange_dialog_need_to_choice_item: "Chưa chọn loại phần thưởng",
     error_exchange_dialog_not_enough_money: `Số chip hiện tại {{ownerCoin}} ${currencyName} không đủ để đổi \nvật phẩm {{name}}`,
     error_phone_number_is_invalid: 'Số điện thoại không hợp lệ',
@@ -48,6 +48,7 @@ export default {
     error_account_out_of_money: 'Tài khoản của bạn đã hết chip',
     error_vip_only: 'Bạn cần phải là vip để sử dụng chức năng này',
     error_not_support_platform: 'Chức năng này không hỗ trợ trên phiên bản Web',
+    error_cannot_kick_player_vip: 'Bạn không thể kick người chơi có mức VIP cao hơn',
 
     get_transfer_success: `Bạn đã rút thành công {{amount}} ${currencyName}, chúc bạn chơi game vui vẻ.`,
     transfer_successfully: `Chuyển thành công {{amount}} ${currencyName} tới {{username}}.`,
@@ -183,6 +184,7 @@ export default {
     buddy_removed_buddy: "Đã hủy kết bạn với {{buddyName}}!",
     buddy_added_buddy: "{{buddyName}} đã được thêm vào danh sách bạn bè!",
     buddy_already_in_buddy_list: "{{buddyName}} đã tồn tại trong danh sách bạn bè!",
+    buddy_request_already_send: "Lời mời kết bạn đã được gửi tới {{buddyName}} ",
     buddy_select_buddy_to_chat: "Chọn bạn để chat!",
 
     hotline: "Hỗ trợ: {{hotline}}",

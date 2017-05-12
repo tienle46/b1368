@@ -8,7 +8,7 @@ ROOM_ERROR_MESSAGE["vi"] = {
     "16": "Phòng đã đầy, không thể tạo thêm bàn chơi",
     "17": "Bạn đã tạo quá số phòng cho phép",
     "18": "Tạo phòng thất bại",
-    "19": "Bạn đã tham ra bàn chơi. Vui lòng đăng nhập lại",
+    "19": "Bạn đã tham gia bàn chơi. Vui lòng đăng nhập lại",
     "20": "Bàn đã đủ số người chơi",
     "21": "Sai mật khẩu vào bàn",
     "22": "Bàn chơi không tồn tại",
