@@ -15,9 +15,8 @@ export default class ItemMessage extends Component {
             newIcon: cc.Node
         };
         
-        this._id = null; // only personal message has
-        this.isLongText = null; // only system message has
-        
+        this._id = null; // personal message only
+        this._resized = false;
         this._listener = null;
     }
 
@@ -31,12 +30,13 @@ export default class ItemMessage extends Component {
 
     onEnable() {
         super.onEnable();
+        !this._resized && this.node.setContentSize(this.node.getContentSize().width, this.node.getContentSize().height - 25 + this.contentLbl.node.getContentSize().height);
+        this._resized = true;
     }
-
+    
     onDestroy() {
         super.onDestroy();
         this._id = null; // only personal message has
-        this.isLongText = null; // only system message has
         this._listener = null;
     }
 
@@ -84,13 +84,17 @@ export default class ItemMessage extends Component {
         this.titleLbl.string = title;
         if(description.length > 130) {
             description = `${description.slice(0, 130)}...`;
-            this.isLongText = true;
         }
         this.contentLbl.string = description;
+        
+        this.node.active = true;
     }
     
     onMessageClick(e) {
-        this._listener && this._listener();
+        this._listener && (() => {
+            deactive(this.newIcon);
+            this._listener();
+        })();
     }
 }
 

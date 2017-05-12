@@ -28,9 +28,19 @@ class TabSystemMessage extends TabMessages {
         }));
     }
     
-    showDetailPanel(description) {
+    showDetailPanel(id, description, isNew) {
         this._hideListMessagePanel();
-        this.itemMessageLbl.string = description;        
+        this.itemMessageLbl.string = description; 
+        isNew && this._sendReadRequest(id);       
+    }
+    
+    _sendReadRequest(id) {
+        app.service.send({
+            cmd: app.commands.CHANGE_SYSTEM_MESSAGE_STATE,
+            data: {
+                id
+            }
+        });
     }
     
     _addGlobalListener() {
@@ -55,8 +65,9 @@ class TabSystemMessage extends TabMessages {
     createItemMessage(id, title, description, time, isNew) {
         if(this.itemPrefab) {
             let message = cc.instantiate(this.itemPrefab);
+            message.active = false;
             let itemEventComponent = message.getComponent('ItemMessage');
-            itemEventComponent && itemEventComponent.createItem(id, title, description, time, isNew, this.showDetailPanel.bind(this, description));
+            itemEventComponent && itemEventComponent.createItem(id, title, description, time, isNew, this.showDetailPanel.bind(this, id, description, isNew));
             return message;
         }
     }

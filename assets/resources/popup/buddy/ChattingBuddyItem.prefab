@@ -191,7 +191,7 @@
     },
     "_enabled": false,
     "_spriteFrame": {
-      "__uuid__": "0acb4201-29b0-40b6-a46e-0d01edc71c1d"
+      "__uuid__": "b22d7ec3-1c46-402f-af6c-77db5c9a57d5"
     },
     "_type": 0,
     "_sizeMode": 0,
@@ -230,7 +230,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "b22d7ec3-1c46-402f-af6c-77db5c9a57d5"
+      "__uuid__": "0acb4201-29b0-40b6-a46e-0d01edc71c1d"
     },
     "_type": 1,
     "_sizeMode": 0,
