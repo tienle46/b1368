@@ -24,12 +24,12 @@
     "_parent": null,
     "_anchorPoint": {
       "__type__": "cc.Vec2",
-      "x": 0.91,
+      "x": 0.93,
       "y": 1
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 216.4,
+      "width": 214,
       "height": 45
     },
     "_children": [
@@ -460,7 +460,7 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": 0,
+      "x": -4,
       "y": -8
     },
     "_skewX": 0,
@@ -498,7 +498,7 @@
       "__uuid__": "8538fe1b-c3b4-48ca-849f-55e33a2c7a57"
     },
     "_isSystemFontUsed": false,
-    "_N$string": "asd asd .",
+    "_N$string": "           ",
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
     "_N$overflow": 3
@@ -523,12 +523,13 @@
     },
     "_enabled": true,
     "path": "",
+    "lineHeight": 24,
     "label": {
       "__id__": 13
     },
     "lines": 1,
     "minWidth": 100,
-    "maxWidth": 300,
+    "maxWidth": 350,
     "resizeWidth": true,
     "increaseWidth": 10,
     "margin": 5
@@ -613,7 +614,7 @@
     "_enabled": true,
     "_layoutSize": {
       "__type__": "cc.Size",
-      "width": 216.4,
+      "width": 214,
       "height": 45
     },
     "_resize": 1,
