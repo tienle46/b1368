@@ -64,12 +64,12 @@ export default class FriendProfilePopup extends DialogActor {
         avatarURL && app.context.loadUserAvatarByURL(avatarURL, this.userAvatar);
         this.kickable = app.context.getLastJoinedRoom().variables.kickable.value;
 
-        CCUtils.setActive(this.kickBtn, isOwner && app.buddyManager.shouldRequestBuddy(user.name));
+        CCUtils.setVisible(this.kickBtn, isOwner && app.buddyManager.shouldRequestBuddy(user.name));
 
         var sendObject = {
             'cmd': app.commands.SELECT_PROFILE,
             'data': {
-                [app.keywords.USER_NAME]: userName
+                [app.keywords.USER_NAME]: user.name
             }
         };
 
@@ -140,7 +140,7 @@ export default class FriendProfilePopup extends DialogActor {
 
     inviteFriend() {
         app.buddyManager.requestAddBuddy(this.friendName);
-        CCUtils.setActive(this.kickBtn, false);
+        CCUtils.setVisible(this.kickBtn, false);
     }
 
     close() {
