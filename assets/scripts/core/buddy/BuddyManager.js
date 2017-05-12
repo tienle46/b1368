@@ -99,6 +99,10 @@ export default class BuddyManager {
         app.system.removeListener(app.commands.REQUEST_BUDDY, this._requestBuddyResponse, this);
     }
 
+    shouldRequestBuddy(buddyName){
+        return !this._requestedBuddies.indexOf(buddyName) && !this.getBuddyByName(buddyName);
+    }
+
     _requestBuddyResponse(data) {
         let message = data && data[app.keywords.RESPONSE_MESSAGE];
         message && app.system.showToast(message);
@@ -110,8 +114,10 @@ export default class BuddyManager {
         if (this.getBuddyByName(buddyName)) {
             app.system.showToast(app.res.string('buddy_already_in_buddy_list', { buddyName }));
         } else {
-            if(app._.includes(this._requestedBuddies, buddyName))
+            if(app._.includes(this._requestedBuddies, buddyName)){
+                app.system.showToast(app.res.string('buddy_request_already_send', { buddyName }));
                 return;
+            }
 
             this._requestedBuddies.push(buddyName);
             app.service.send({ cmd: app.commands.REQUEST_BUDDY, data: { buddyName } });

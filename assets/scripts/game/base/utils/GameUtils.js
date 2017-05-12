@@ -208,6 +208,17 @@ export default class GameUtils {
         }
     }
 
+    static getUserVipLevel(user){
+        let vipLevel = 0;
+
+        if(user){
+            let userVip = utils.getVariable(user, app.keywords.VIP_LEVEL);
+            vipLevel = userVip && userVip.value;
+        }
+
+        return vipLevel === undefined ? 0 : vipLevel;
+    }
+
     static sortCardAscByRankFirstSuitLast(cards) {
 
         cards && cards.sort((card1, card2) => {

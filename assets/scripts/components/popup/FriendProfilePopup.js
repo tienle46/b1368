@@ -1,7 +1,7 @@
 import app from 'app';
 import utils from 'utils';
 import DialogActor from 'DialogActor';
-import NodeRub from 'NodeRub';
+import GameUtils from 'GameUtils';
 import Props from 'Props';
 import numeral from 'numeral';
 import CCUtils from 'CCUtils';
@@ -57,12 +57,14 @@ export default class FriendProfilePopup extends DialogActor {
         super.start();
     }
 
-    displayUserDetail(userName, userId, avatarURL, isOwner) {
-        this.friendName = userName;
+    displayUserDetail(user, userId, avatarURL, isOwner) {
+        this.user = user;
+        this.friendName = user.name;
         this.friendId = userId;
         avatarURL && app.context.loadUserAvatarByURL(avatarURL, this.userAvatar);
         this.kickable = app.context.getLastJoinedRoom().variables.kickable.value;
-        this.kickBtn.node.active = this.kickable && isOwner;
+
+        CCUtils.setActive(this.kickBtn, isOwner && app.buddyManager.shouldRequestBuddy(user.name));
 
         var sendObject = {
             'cmd': app.commands.SELECT_PROFILE,
@@ -126,6 +128,7 @@ export default class FriendProfilePopup extends DialogActor {
     }
 
     kickUser() {
+
         if (!this.kickable) {
             app.system.showToast(app.res.string('error_function_does_not_support'));
         } else {
@@ -137,6 +140,7 @@ export default class FriendProfilePopup extends DialogActor {
 
     inviteFriend() {
         app.buddyManager.requestAddBuddy(this.friendName);
+        CCUtils.setActive(this.kickBtn, false);
     }
 
     close() {
@@ -155,17 +159,25 @@ export default class FriendProfilePopup extends DialogActor {
         app.system.removeListener(app.commands.BUDDY_INVITE_FRIEND, this._onBuddyInviateFriend, this);
     }
 
-    _onKickUser(id) {
-        //kick user khoi ban choi
-        var sendObject = {
-            'cmd': app.commands.PLAYER_KICK,
-            data: {
-                [app.keywords.USER_ID]: id
-            },
-            room: app.context.getLastJoinedRoom()
-        };
+    _onKickUser() {
 
-        app.service.send(sendObject);
+        let meVipLevel = GameUtils.getUserVipLevel(app.context.getMe());
+        let kickVipLevel = GameUtils.getUserVipLevel(this.user);
+
+        if(meVipLevel >= kickVipLevel){
+            //kick user khoi ban choi
+            var sendObject = {
+                'cmd': app.commands.PLAYER_KICK,
+                data: {
+                    [app.keywords.USER_ID]: this.friendId
+                },
+                room: app.context.getLastJoinedRoom()
+            };
+
+            app.service.send(sendObject);
+        }else{
+            app.system.showToast(app.res.string("error_cannot_kick_player_vip"))
+        }
 
         this.close()
     }

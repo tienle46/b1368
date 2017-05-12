@@ -143,10 +143,10 @@ export default class PlayerRenderer extends ActorRenderer {
         }
     }
 
-    showUserProfilePopup(node, userName, userId, avatarURL, isOwner, startAnimNode, endAnimNode) {
+    showUserProfilePopup(node, user, userId, avatarURL, isOwner, startAnimNode, endAnimNode) {
         let popup = cc.instantiate(this.friendProfilePopup);
         let component = popup.getComponent('FriendProfilePopup');
-        component.displayUserDetail(userName, userId, avatarURL, isOwner);
+        component.displayUserDetail(user, userId, avatarURL, isOwner);
         component.setCallbackOptions(startAnimNode, endAnimNode);
         node.addChild(popup);
     }

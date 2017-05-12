@@ -19,7 +19,7 @@ const LOGIN_ERROR_MESSAGES_VI = {
     "16": "Hệ thống đang quá tải, không thể tạo thêm bàn",
     "17": "Bạn đã tạo quá số lượng bàn quy định",
     "18": "Không thể tạo bàn",
-    "19": "Bạn đã tham ra bàn chơi. Vui lòng đăng nhập lại",
+    "19": "Bạn đã tham gia bàn chơi. Vui lòng đăng nhập lại",
     "20": "Bàn đã đủ số người chơi",
     "21": "Sai mật khẩu vào bàn",
     "22": "Bàn chơi không tồn tại",
