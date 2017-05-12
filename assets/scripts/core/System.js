@@ -241,19 +241,20 @@ class GameSystem {
             this._clearDelayUpdateHideState()
 
             if(state == 'inactive'){
-                this.isInactive = true
-                this._actionComponents.forEach(cmp => cmp.onAppStateChange(state))
+                this.isInactive = true;
+                this._actionComponents.forEach(cmp => cmp.onAppStateChange(state));
             }else{
                 this._delayChangeAppStateTimeoutId = setTimeout(() => {
-                    this.isInactive = false
-                    this._actionComponents.forEach(cmp => cmp.onAppStateChange(state))
+                    this.isInactive = false;
+                    this._actionComponents.forEach(cmp => cmp.onAppStateChange(state));
+                     if(state == 'active'){
+                        app.service._checkConnection();
+                    }
                 }, 3000)
             }
         }
 
-        if(state == 'active'){
-            app.service._checkConnection();
-        }
+       
     }
 
     addAppStateListener(component){
