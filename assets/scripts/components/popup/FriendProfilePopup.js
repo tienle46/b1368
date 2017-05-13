@@ -65,7 +65,7 @@ export default class FriendProfilePopup extends DialogActor {
         this.kickable = app.context.getLastJoinedRoom().variables.kickable.value;
 
         CCUtils.setVisible(this.kickBtn, this.kickable && isOwner);
-        CCUtils.setVisible(this.addFriendBtn, app.buddyManager.shouldRequestBuddy(user.name));
+        CCUtils.setInteractable(this.addFriendBtn, app.buddyManager.shouldRequestBuddy(user.name));
 
         var sendObject = {
             'cmd': app.commands.SELECT_PROFILE,
@@ -141,7 +141,7 @@ export default class FriendProfilePopup extends DialogActor {
 
     inviteFriend() {
         app.buddyManager.requestAddBuddy(this.friendName);
-        CCUtils.setVisible(this.addFriendBtn, false);
+        CCUtils.setInteractable(this.addFriendBtn, false);
     }
 
     close() {

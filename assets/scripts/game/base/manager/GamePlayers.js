@@ -462,17 +462,19 @@ export default class GamePlayers extends Component {
             let userPriority = userVip.value;
             if(userVipId > -1) {
                 let userShouldeSeeMessage = app.config.ingameGreetingVipMessages[userVipId];
-                this.players && this.players.forEach(player => {
-                    if(player.user.id === user.id)
-                        return;
-                    let vipLevel = utils.getVariable(player.user, app.keywords.VIP_LEVEL);
-                    if(vipLevel) {
-                        let {id, value} = vipLevel;
-                        value < userPriority && player.say(userShouldeSeeMessage.replace(/{{username}}/i, GameUtils.getDisplayName(user)));
-                    } else { // viplevel == undefined (maybe bot)
-                        player.say(userShouldeSeeMessage.replace(/{{username}}/i, GameUtils.getDisplayName(user)))
-                    }
-                }); 
+                if(userShouldeSeeMessage){
+                    this.players && this.players.forEach(player => {
+                        if(player.user.id === user.id)
+                            return;
+                        let vipLevel = utils.getVariable(player.user, app.keywords.VIP_LEVEL);
+                        if(vipLevel) {
+                            let {id, value} = vipLevel;
+                            value < userPriority && player.say(userShouldeSeeMessage.replace(/{{username}}/i, GameUtils.getDisplayName(user)));
+                        } else { // viplevel == undefined (maybe bot)
+                            player.say(userShouldeSeeMessage.replace(/{{username}}/i, GameUtils.getDisplayName(user)))
+                        }
+                    });
+                }
             }
         }
     }

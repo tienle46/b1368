@@ -155,4 +155,8 @@ export default class CCUtils {
         return node && type ? node.children.filter(child => child instanceof type) : [];
     }
 
+    static setInteractable(control, interactable) {
+        control instanceof cc.Button && (control.interactable = interactable ? true : false);
+    }
+
 }
