@@ -49,9 +49,11 @@ class TabSMS extends PopupTabBody {
     }
     
     onDestroy() {
+        super.onDestroy();
         this._enabledTelco = [];
         this._smses = [];
-        this._providers = {};  
+        this._providers = {};
+        this._balanceChoosen = null;
     }
     
     loadData() {

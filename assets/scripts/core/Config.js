@@ -40,7 +40,11 @@ app.config.fanpage = `http://m.me/songbaihoanggia`;
 app.config.website = `http://bai1368.com`;
 app.config.supportHotline = '123456';
 app.config.defaultMinBalanceJoinGameRoomMultiple = 10;
-app.config.defaultAvatarUrl = "";
+app.config.defaultAvatarUrl = {
+    large: '',
+    thumb: '',    
+};
+
 app.config.filterLabels = ['Nông dân', 'Quý tộc', 'Hoàng gia'];
 // 1:bac 2:vang 3:kimcuong
 app.config.ingameGreetingVipMessages = {

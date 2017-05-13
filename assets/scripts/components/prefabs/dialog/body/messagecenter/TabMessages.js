@@ -20,6 +20,7 @@ export default class TabMessages extends PopupTabBody {
     
     onEnable() {
         super.onEnable();
+        this._rendered = false;
     }
     
     loadData() {

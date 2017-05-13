@@ -254,11 +254,7 @@ export default class TabUserInfo extends PopupTabBody {
 
         let {
             balance,
-            benefit,
             id,
-            levelName,
-            nextLevelName,
-            nextBenefit,
             accountTypeName
         } = data;
 
@@ -266,8 +262,7 @@ export default class TabUserInfo extends PopupTabBody {
         this.chipAmout.string = numberFormat(balance);
 
         this.userId.string = name;
-        this.vipLevel.string = accountTypeName;
-        // this.nextLevel.string = nextLevelName;
+        this.vipLevel.string = accountTypeName || "";
 
         if (app.context.needUpdatePhoneNumber()) {
             this.phoneNumber.string = `Chưa cập nhật`;
@@ -276,16 +271,6 @@ export default class TabUserInfo extends PopupTabBody {
                 this.phoneNumber.string = data[app.keywords.PHONE_INVITE_PHONE_NEW];
             else
                 this.phoneNumber.string = `Chưa cập nhật`;
-        }
-
-        this.levelInfo = `Cấp độ: ${levelName}\n`;
-
-        if (benefit) {
-            this.levelInfo += `Quyền lợi: ${benefit}`;
-            // this.benefitLbl.string = `<color=#F6D533> Quyền lợi:</c> ${benefit}`;
-            // let size = this.benefitLbl.node.getContentSize();
-            // let height = size.height * this.benefitLbl._lineCount;
-            // this.benefitLbl.node.setContentSize(size.width, height);
         }
 
         if (nextBenefit) {

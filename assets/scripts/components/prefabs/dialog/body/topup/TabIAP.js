@@ -18,6 +18,7 @@ class TabIAP extends PopupTabBody {
 
     onLoad() {
         super.onLoad();
+        this.__items = [];
     }
 
     onDestroy() {
