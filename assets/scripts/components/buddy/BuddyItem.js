@@ -30,7 +30,7 @@ class BuddyItem extends PopupTabBody {
             notificationNode: cc.Node,
             notificationCount: cc.Label,
         }
-
+ 
         this.online = false;
         this.selected = false;
         this.name = "";

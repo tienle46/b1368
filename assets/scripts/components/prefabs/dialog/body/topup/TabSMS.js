@@ -178,25 +178,20 @@ class TabSMS extends PopupTabBody {
                     infos = smses[key][app.keywords.CHARGE_SMS_OBJECT_INFORS] || [],
                     moneyGot = smses[key]['balance'],
                     promoteDesc = smses[key]['promoteDesc'];
-
+                    
                 infos.forEach((smsInfo, i) => {
-                    let code = smsInfo.code,
-                        sendTo = smsInfo.shortCode,
-                        command = smsInfo.syntax,
-                        telcoId = smsInfo.telcoId,
-                        isChecked = i === 0;
+                    let telcoId = smsInfo.telcoId;
                     
                     if(!app._.includes(this._enabledTelco, telcoId))
-                        this._enabledTelco.push(telcoId);
-                    
-                    this._initItem(code, command, sendTo, moneySend, moneyGot, isChecked, moneyGot > moneySend, promoteDesc, telcoId);
+                        this._enabledTelco.push(telcoId); 
                 });
+                this._initItem(moneySend, moneyGot, moneyGot > moneySend, promoteDesc);
             });
             this._initProviderIcon(cardListIds, providerNames);
         }
     }
     
-    _initItem(code, syntax, sendTo, moneySend, moneyGot, isChecked, hasPromotion, promoteDesc, telcoId) {
+    _initItem(moneySend, moneyGot, hasPromotion, promoteDesc) {
         let iconNumber = Math.round(moneyGot / 10000) + 1;
         RubUtils.getSpriteFrameFromAtlas(app.res.ATLAS_URLS.CHIPS, `scoreIcon_${iconNumber >= 5 ? 5 : iconNumber}`, (sprite) => {
             this.iconSprite.spriteFrame = sprite;
@@ -211,7 +206,6 @@ class TabSMS extends PopupTabBody {
             let item = cc.instantiate(this.itemNode);
             item.active = true;
             item.moneySend = moneySend;
-            item.telcoId = telcoId;
             
             this.toggleGroupNode.addChild(item);
         });
