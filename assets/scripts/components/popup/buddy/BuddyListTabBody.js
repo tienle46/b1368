@@ -66,9 +66,6 @@ class BuddyListTabBody extends PopupTabBody {
 
             let buddyItem = this._findCurrentBuddyItem(buddy);
             buddyItem && buddyItem.onBuddyChanged();
-            let unreadMessage = app.context.unreadMessageBuddies.find(message => message.buddyName === buddyName);
-            if(unreadMessage)
-                buddyItem.showNotify(unreadMessage.count);
         });
     }
 
@@ -127,11 +124,8 @@ class BuddyListTabBody extends PopupTabBody {
     _onBuddyMessage(senderName, toBuddyName, message, isItMe) {
         if(isItMe) return;
         
-        let unreadMessage = app.context.unreadMessageBuddies.find(message => message.buddyName === senderName);
-        if(unreadMessage){
-            let buddyItem = this._findCurrentBuddyItem(senderName);
-            buddyItem.showNotify(unreadMessage.count);
-        }
+        let buddyItem = this._findCurrentBuddyItem(app.buddyManager.getBuddyByName(senderName));
+        buddyItem && buddyItem.onShowNotify(senderName);
     }
     
     _onBuddyOnlineStateChange(isOnline, isItMe, buddy) {
@@ -242,7 +236,6 @@ class BuddyListTabBody extends PopupTabBody {
     }
 
     renderBuddies(page = 1) {
-
         this.hideMenu();
         if (this.totalPage > 0 && page > this.totalPage) return;
 
@@ -332,7 +325,9 @@ class BuddyListTabBody extends PopupTabBody {
                 utils.setVisible(this.bodyNode, false);
             }
         });
-
+        
+        buddyItem.onShowNotify(buddy.name);
+        
         return buddyItem;
     }
 

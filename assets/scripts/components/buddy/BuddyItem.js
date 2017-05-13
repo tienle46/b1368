@@ -51,7 +51,7 @@ class BuddyItem extends PopupTabBody {
         this.isLoaded = true;
         this.playingGameLabel.string = app.res.string('game_playing_game');
         this.currencyNameLabel.string = app.config.currencyName;
-
+        
         if (this.buddy) {
             this.onBuddyChanged();
         }
@@ -70,9 +70,17 @@ class BuddyItem extends PopupTabBody {
             this.setBalance(this.buddy.balance);
             let gameRoomName = utils.getVariable(this.buddy, app.keywords.VARIABLE_PLAYING_GAME);
             this.setPlayingGame(gameRoomName);
+            
+            this.onShowNotify(this.buddy.name);
         }
     }
-
+    
+    onShowNotify(buddyName) {
+        let unreadMessage = app.context.unreadMessageBuddies.find(message => message.buddyName === buddyName);
+        if(unreadMessage)
+            this.showNotify(unreadMessage.count);    
+    }
+    
     onDestroy() {
         super.onDestroy()
         this.buddy = null;
@@ -83,7 +91,6 @@ class BuddyItem extends PopupTabBody {
     
     showNotify(count) {
         this.notificationCount.string = count;    
-        
         if(count > 0) {
             utils.active(this.notificationNode);
         } else {

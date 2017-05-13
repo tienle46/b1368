@@ -272,10 +272,6 @@ export default class TabUserInfo extends PopupTabBody {
             else
                 this.phoneNumber.string = `Chưa cập nhật`;
         }
-
-        if (nextBenefit) {
-            this.nextLvlBenefit = nextBenefit;
-        }
     }
 }
 

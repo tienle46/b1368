@@ -298,7 +298,6 @@ export default class BuddyManager {
     }
 
     _onBuddyMessage(evtParams) {
-
         let msgObj;
         try {
             msgObj = JSON.parse(evtParams.message);

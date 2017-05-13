@@ -58,17 +58,28 @@ class BuddyChatTabBody extends PopupTabBody {
     }
 
     _onBuddyMessage(senderName, toBuddyName, message, isItMe) {
-
-        log('sender, toBuddy, message, isItMe: ', senderName, toBuddyName, message, isItMe);
-
-        if (!this.buddy) return;
+        log('sender, toBuddy, message, isItMe: this.buddy', senderName, toBuddyName, message, isItMe, this.buddy);
+        if (!this.buddy) {
+            let buddy = app.buddyManager.getBuddyByName(senderName);
+            buddy && (buddy.newMessageCount = 0);
+            this._addChattingBuddy(buddy, true)
+            return;    
+        }
 
         if (isItMe) {
             if (toBuddyName != this.buddy.name) return;
         } else {
             if (senderName != this.buddy.name) {
                 let senderBuddy = this._findChattingBuddy(senderName);
-                senderBuddy && senderBuddy.onBuddyChanged();
+                if(senderBuddy) {
+                    senderBuddy.onBuddyChanged();
+                } else {
+                    let buddy = app.buddyManager.getBuddyByName(senderName);
+                    this._addChattingBuddy(buddy);
+                    let chattingBuddy = this._findChattingBuddy(senderName)
+                    chattingBuddy && chattingBuddy.onBuddyChanged();
+                    app.context.addToUnreadMessageBuddies(senderName);
+                }
                 return;
             }
         }
@@ -102,7 +113,7 @@ class BuddyChatTabBody extends PopupTabBody {
         if (!super.onDataChanged(data)) return;
 
         if (data) {
-            data.chattingBuddies && this._initChattingBuddyList(data.chattingBuddies)
+            data.chattingBuddies && this._initChattingBuddyList(data.chattingBuddies);
             this.buddy = data.buddy;
         }
 
@@ -113,7 +124,6 @@ class BuddyChatTabBody extends PopupTabBody {
         } else {
             buddyItem = this._findChattingBuddy(this.buddy);
         }
-
 
         if (this.buddy) {
             if (buddyItem) {
