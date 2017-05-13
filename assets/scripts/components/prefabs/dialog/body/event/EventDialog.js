@@ -59,9 +59,7 @@ class EventDialog extends Actor {
     _onLoadEventResponse(data) {
         const listHeader = data[app.keywords.SYSTEM_MESSAGE.RESPONSE.TITLE_LIST]
         const listIds = data[app.keywords.SYSTEM_MESSAGE.RESPONSE.ID_ITEM_LIST]
-        const actionCodes = data["actionCodes"]
-        const imageUrls = data['imageUrls']
-        const policyUrls = data['policyUrls']
+        const {actionCodes, actionDatas, imageUrls, policyUrls} = data;
 
         this.eventPages = [];
         CCUtils.clearAllChildren(this.pageContent);
@@ -76,6 +74,7 @@ class EventDialog extends Actor {
                     id: listIds[index],
                     imageUrl: imageUrls[index],
                     actionCode: actionCodes[index],
+                    actionData: actionCodes[index],
                     policyUrl: policyUrls[index],
                     attendBtnListener: this._onClickAttendEvent.bind(this),
                     policyBtnListener: this._onPolicyBtnClick.bind(this),

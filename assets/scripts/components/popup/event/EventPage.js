@@ -58,7 +58,7 @@ class EventPage extends Actor {
     }
     
     onAttendBtnClick() {
-        app.visibilityManager.goTo(this.getComponentData().actionCode);
+        app.visibilityManager.goTo(this.getComponentData().actionCode, this.getComponentData().actionData);
         this.getComponentData().attendBtnListener && this.getComponentData().attendBtnListener();
     }
     
