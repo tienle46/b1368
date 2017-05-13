@@ -45,6 +45,7 @@ export default class Board extends Actor {
         this.scene.on(Events.ON_GAME_RESET, this.onGameReset, this);
         this.scene.on(Events.ON_GAME_STATE_PRE_CHANGE, this.onGameStatePreChange, this, 0);
         this.scene.on(Events.ON_GAME_STATE_CHANGED, this.onGameStateChanged, this, 0);
+        this.scene.on(Events.ON_GAME_WAIT, this.onGameStateWait, this, 0);
         this.scene.on(Events.ON_GAME_STATE_BEGIN, this.onBoardBegin, this, 0);
         this.scene.on(Events.ON_GAME_STATE_STARTING, this.onBoardStarting, this, 0);
         this.scene.on(Events.ON_GAME_STATE_STARTED, this.onBoardStarted, this, 0);
@@ -54,6 +55,11 @@ export default class Board extends Actor {
         this.scene.on(Events.ON_PLAYER_READY_STATE_CHANGED, this._onPlayerSetReadyState, this);
         this.scene.on(Events.ON_GAME_REJOIN, this._onGameRejoin, this);
         this.scene.on(Events.ON_ROOM_CHANGE_MIN_BET, this._onRoomMinBetChanged, this);
+    }
+
+    onGameStateWait(){
+        this.stopTimeLine();
+
     }
 
     _onRoomMinBetChanged() {

@@ -128,8 +128,10 @@ class BuddyListTabBody extends PopupTabBody {
         if(isItMe) return;
         
         let unreadMessage = app.context.unreadMessageBuddies.find(message => message.buddyName === senderName);
-        if(unreadMessage)
+        if(unreadMessage){
+            let buddyItem = this._findCurrentBuddyItem(senderName);
             buddyItem.showNotify(unreadMessage.count);
+        }
     }
     
     _onBuddyOnlineStateChange(isOnline, isItMe, buddy) {

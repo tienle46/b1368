@@ -156,3 +156,6 @@ Events.ON_BUDDY_UNREAD_MESSAGE_COUNT_CHANGED = "on.buddy.unreadMessageCountChang
 Events.CLEAN_GAME_AFTER_SHOW_RESULT = "clean.gameAfterShowResult";
 
 Events.ON_USER_MAKES_JAR_EXPLOSION = "on.user.makes.jar.explosion";
+
+Events.CHANGE_SYSTEM_MESSAGE_COUNT = "change.systemMessageCount";
+

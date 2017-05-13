@@ -33,6 +33,14 @@ export default class BaseControls extends GameControls {
 
         this.scene.on(Events.ON_PLAYER_READY_STATE_CHANGED, this._onPlayerSetReadyState, this);
         this.scene.on(Events.SHOW_START_GAME_CONTROL, this._showStartGameControl, this);
+        this.scene.on(Events.ON_GAME_WAIT, this.onGameStateWait, this);
+    }
+
+    onGameStateWait(){
+
+        console.log("onGameStateWait: ")
+
+        this.hideStartButton()
     }
 
     onClickReadyButton() {

@@ -138,6 +138,7 @@ export default {
     game_phom_must_contain_all_eaten_card: 'Phỏm hạ phải chứa tất cả bài đã ăn',
     game_phom_cannot_eat: 'Không thể ăn, vui lòng chọn lại!',
     game_phom_not_found_eat_card: 'Không tìm thấy phỏm có thể ăn!',
+    game_bo_luot: 'Bỏ lượt',
     game_nhat: 'nhất',
     game_nhi: 'nhì',
     game_ba: 'ba',

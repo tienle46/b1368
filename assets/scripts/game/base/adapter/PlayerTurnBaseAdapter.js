@@ -169,6 +169,7 @@ export default class PlayerTurnBaseAdapter extends GameAdapter {
         this.player.skippedTurn = true;
         this.player.stopTimeLine();
         this._showWaitTurnControls();
+        this.player.say(app.res.string("game_bo_luot"))
     }
 
     _onGameEnding(data){

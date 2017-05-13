@@ -53,7 +53,19 @@ class TabPersonalMessages extends TabMessages {
     _onActionBtnClick(id, action, data) {
         this.popup.hide();
         app.visibilityManager.goTo(action, data);
-        this._sendReadRequest(id, true);
+        this._data.messages && this._data.messages.some(message => {
+            if(id == message.id && message.readed){
+                this._sendReadRequest(id, true);
+                return true;
+            }
+        })
+
+        // this.displayMessages(this.listMessagePanel, messages.map(message => {
+        //     let {id, title, msg, time, action, actionData, readed} = message;
+        //
+        //     return this.createItemMessage(id, title, msg, time, action, actionData, readed);
+        // }));
+
     }
     
     _sendReadRequest(id, needRemoveAction = false) {

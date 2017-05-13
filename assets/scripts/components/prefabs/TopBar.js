@@ -59,7 +59,8 @@ class TopBar extends DialogActor {
         app.system.addListener(SFS2X.SFSEvent.USER_VARIABLES_UPDATE, this._onUserVariablesUpdate, this);
         app.system.addListener(Events.ON_BUDDY_UNREAD_MESSAGE_COUNT_CHANGED, this._onBuddyNotifyCountChanged, this);
         app.system.addListener(Events.CLIENT_CONFIG_CHANGED, this._onConfigChanged, this);
-        app.system.addListener(app.commands.CHANGE_SYSTEM_MESSAGE_STATE, this._onSystemMessageChanged, this);
+        // app.system.addListener(app.commands.CHANGE_SYSTEM_MESSAGE_STATE, this._onSystemMessageChanged, this);
+        app.system.addListener(Events.CHANGE_SYSTEM_MESSAGE_COUNT, this._onSystemMessageChanged, this);
     }
 
     _removeGlobalListener() {
@@ -68,7 +69,8 @@ class TopBar extends DialogActor {
         app.system.removeListener(SFS2X.SFSEvent.USER_VARIABLES_UPDATE, this._onUserVariablesUpdate, this);
         app.system.removeListener(Events.ON_BUDDY_UNREAD_MESSAGE_COUNT_CHANGED, this._onBuddyNotifyCountChanged, this);
         app.system.removeListener(Events.CLIENT_CONFIG_CHANGED, this._onConfigChanged, this);
-        app.system.removeListener(app.commands.CHANGE_SYSTEM_MESSAGE_STATE, this._onSystemMessageChanged, this);
+        // app.system.removeListener(app.commands.CHANGE_SYSTEM_MESSAGE_STATE, this._onSystemMessageChanged, this);
+        app.system.removeListener(Events.CHANGE_SYSTEM_MESSAGE_COUNT, this._onSystemMessageChanged, this);
     }
 
     onClickLogout() {
@@ -179,13 +181,20 @@ class TopBar extends DialogActor {
         this.msgNotifyBgNode.active = count > 0;
         this.notifyCounterLbl.string = count;
     }
-    
-    _onSystemMessageChanged(data) {
-        if(data[app.keywords.RESPONSE_RESULT]) {
-            let count = Number(this.notifyCounterLbl.string) - 1;
+
+    _onSystemMessageChanged(amount) {
+        if(amount) {
+            let count = Number(this.notifyCounterLbl.string) + amount;
             this._updateSmsNotifystate(count);
-        }    
+        }
     }
+    
+    // _onSystemMessageChanged(data) {
+    //     if(data[app.keywords.RESPONSE_RESULT]) {
+    //         let count = Number(this.notifyCounterLbl.string) - 1;
+    //         this._updateSmsNotifystate(count);
+    //     }
+    // }
     
     _updateSmsNotifystate(count) {
         this.msgNotifyBgNode.active = count > 0;
