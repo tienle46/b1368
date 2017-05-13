@@ -107,6 +107,13 @@ class BetContainerButton extends Component {
 
         return acceptedEven || acceptedOdd;
     }
+    
+    betable(state) {
+        this.groupBtns.forEach(node => {
+            let btn = node.getComponent(cc.Button);
+            btn && (btn.interactable = state);
+        });
+    }
 }
 
 app.createComponent(BetContainerButton);
