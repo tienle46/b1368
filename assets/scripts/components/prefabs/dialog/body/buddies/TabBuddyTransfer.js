@@ -161,6 +161,7 @@ export default class TabBuddiesTransfer extends PopupTabBody {
         if (su) {
             let username = this.receiverEditBoxNode.string;
             let amount = numberFormat(this.transferAmountEditBoxNode.string);
+            this.maxAmountLbl.string = numberFormat(app.context.getMeBalance());
             app.system.showToast(app.res.string('transfer_successfully', {amount, username}));
         } else {
             let msg = data[app.keywords.RESPONSE_MESSAGE];
