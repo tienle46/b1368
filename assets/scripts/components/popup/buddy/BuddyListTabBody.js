@@ -91,7 +91,7 @@ class BuddyListTabBody extends PopupTabBody {
     }
 
     onDisable() {
-        super.onDisable();
+        // super.onDisable();
         this.hideMenu();
     }
 

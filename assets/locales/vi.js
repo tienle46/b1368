@@ -186,6 +186,7 @@ export default {
     buddy_added_buddy: "{{buddyName}} đã được thêm vào danh sách bạn bè!",
     buddy_already_in_buddy_list: "{{buddyName}} đã tồn tại trong danh sách bạn bè!",
     buddy_request_already_send: "Lời mời kết bạn đã được gửi tới {{buddyName}} ",
+    buddy_accepted_request: "Đã gửi lời mời kết bạn tới {{buddyName}} ",
     buddy_select_buddy_to_chat: "Chọn bạn để chat!",
 
     hotline: "Hỗ trợ: {{hotline}}",

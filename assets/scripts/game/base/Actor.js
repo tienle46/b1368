@@ -49,8 +49,8 @@ export default class Actor extends VisibilityActor {
 
     onDisable() {
         super.onDisable();
-        // this._removeGlobalListener();
-        // this.removeAllListener();
+        this._removeGlobalListener();
+        this.removeAllListener();
     }
 
     onDestroy() {

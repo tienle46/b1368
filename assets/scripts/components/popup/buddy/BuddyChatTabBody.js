@@ -108,7 +108,11 @@ class BuddyChatTabBody extends PopupTabBody {
 
         return findBuddyItem;
     }
-
+    
+    onDisable() {
+        super.onDisable();
+    }
+    
     onDataChanged(data) {
         if (!super.onDataChanged(data)) return;
 

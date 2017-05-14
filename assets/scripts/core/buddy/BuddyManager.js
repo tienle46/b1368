@@ -121,7 +121,7 @@ export default class BuddyManager {
 
             this._requestedBuddies.push(buddyName);
             app.service.send({ cmd: app.commands.REQUEST_BUDDY, data: { buddyName } });
-            app.system.showToast(app.res.string('buddy_request_already_send', { buddyName }))
+            // app.system.showToast(app.res.string('buddy_request_already_send', { buddyName }))
         }
     }
 
