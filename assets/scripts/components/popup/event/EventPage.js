@@ -35,11 +35,12 @@ class EventPage extends Actor {
 
     onDisable(){
         super.onDisable();
-        this.webView && this.showPolicy();
+        // !this._attendBtnClicked && this.webView && this.showPolicy();
     }
 
     onEnable(){
         super.onEnable();
+        this._attendBtnClicked = false;
         this._showImage();
     }
 
@@ -58,6 +59,7 @@ class EventPage extends Actor {
     }
     
     onAttendBtnClick() {
+        this._attendBtnClicked = true;
         app.visibilityManager.goTo(this.getComponentData().actionCode, this.getComponentData().actionData);
         this.getComponentData().attendBtnListener && this.getComponentData().attendBtnListener();
     }
@@ -67,7 +69,6 @@ class EventPage extends Actor {
             CCUtils.setVisible(this.imageNode, false);
             CCUtils.active(this.webView);
             CCUtils.active(this.backBtnNode);
-
             this.webView.url = this.getComponentData().policyUrl
             
             this.getComponentData().policyBtnListener && this.getComponentData().policyBtnListener();

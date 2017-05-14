@@ -1440,8 +1440,10 @@
     "_fontSize": 15,
     "_lineHeight": 20,
     "_enableWrapText": true,
-    "_N$file": null,
-    "_isSystemFontUsed": true,
+    "_N$file": {
+      "__uuid__": "8538fe1b-c3b4-48ca-849f-55e33a2c7a57"
+    },
+    "_isSystemFontUsed": false,
     "_N$string": "",
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
@@ -1467,6 +1469,7 @@
     },
     "_enabled": true,
     "path": "",
+    "lineHeight": 24,
     "label": {
       "__id__": 40
     },
