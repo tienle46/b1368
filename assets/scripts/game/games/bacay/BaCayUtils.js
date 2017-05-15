@@ -104,12 +104,12 @@ export default class BaCayUtils {
         let usernames = [me.user.name, player.user.name];
         let excludePlayers = [...me.getExcludeCuocBienPlayers(), ...player.getExcludeCuocBienPlayers()];
 
-        if(ArrayUtils.containsSome(excludePlayers, usernames)){
-            checkResult = false
-            msg = app.res.string('game_bacay_chi_cuoc_bien_mot_lan');
-        }else{
-            //More check action
-        }
+        // if(ArrayUtils.containsSome(excludePlayers, usernames)){
+        //     checkResult = false
+        //     msg = app.res.string('game_bacay_chi_cuoc_bien_mot_lan');
+        // }else{
+        //     //More check action
+        // }
 
         return {checkResult, msg};
     }
@@ -148,8 +148,8 @@ export default class BaCayUtils {
         return {valid: true, msg: ''};
     }
 
-    static calculateMaxPlayerBet(player, masterPlayer) {
-        if(!player || !masterPlayer) return player.board.minBet;
+    static calculateMaxPlayerBet(player, masterPlayer, defaultValue = 0) {
+        if(!player || !masterPlayer) return defaultValue;
 
         let masterBalance = GameUtils.getUserBalance(masterPlayer.user)
         let maxValueByPlayer = parseInt(GameUtils.getUserBalance(player.user) / 2)

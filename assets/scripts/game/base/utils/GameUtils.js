@@ -197,7 +197,7 @@ export default class GameUtils {
 
         if(!user) return "";
 
-        let displayName = user.variables.displayName && user.variables.displayName.value && user.variables.displayName.value.trim()
+        let displayName = utils.getVariable(user, "displayName")
         if(displayName && displayName.length > 0){
             if(displayName.length > 12){
                 displayName = displayName.substr(0, 12) + '...'

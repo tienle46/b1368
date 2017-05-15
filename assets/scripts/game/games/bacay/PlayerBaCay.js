@@ -337,6 +337,8 @@ export default class PlayerBaCay extends PlayerCardBetTurn {
                     //     SoundUtil.playSound(SoundConstant.INVALID_SELECTION);
                     //     return;
                 }
+
+                this.scene.onHideChooseBetSlider()
             });
         }
     }
@@ -352,6 +354,8 @@ export default class PlayerBaCay extends PlayerCardBetTurn {
     _onPlayerCuocBien(gaHucPlayerId, data) {
         if (!this.isItMe() || this.id == gaHucPlayerId) return;
 
+        console.log("_onPlayerCuocBien: ", this.scene.isShowCuocBienPopup, gaHucPlayerId)
+
         if(this.scene.isShowCuocBienPopup){
             this._pendingCuocBienRequests.push({playerId: gaHucPlayerId, data})
             return;
@@ -361,7 +365,7 @@ export default class PlayerBaCay extends PlayerCardBetTurn {
         if(!gaHucPlayer) return;
 
         let mePlayer = this.scene.gamePlayers.me;
-        let requestPlayerName = GameUtils.getDisplayName(gaHucPlayer);
+        let requestPlayerName = GameUtils.getDisplayName(gaHucPlayer.user);
         let requestMoney = utils.getValue(data, app.keywords.BACAY_HUC_VALUE);
         let denyCb = () => delete mePlayer.pendingBiCuocBiens[requestPlayerName];
         let okCallback = () => {

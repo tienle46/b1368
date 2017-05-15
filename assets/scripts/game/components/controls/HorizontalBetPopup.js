@@ -100,8 +100,11 @@ class BetSlider extends Component {
         return this._chooseAmount;
     }
 
-    hide() {
+    hide(summitValue) {
         utils.deactive(this.node, 0);
+        if(utils.isFunction(this.cb)){
+            this.cb(summitValue)
+        }
     }
 
     onClickSetMaxValue(){
@@ -115,11 +118,8 @@ class BetSlider extends Component {
     }
 
     onClickSubmitButton(){
-        if(utils.isFunction(this.cb)){
-            let newValue = this.currentValue != this._chooseAmount ? this._chooseAmount : undefined;
-            this.cb(newValue);
-        }
-        this.hide();
+        let newValue = this.currentValue != this._chooseAmount ? this._chooseAmount : undefined;
+        this.hide(newValue);
     }
 
     _setSliderValue(value = 0){

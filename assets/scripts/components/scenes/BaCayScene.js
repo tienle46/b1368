@@ -61,7 +61,6 @@ export default class BaCayScene extends GameScene {
             currentValue: 0,
             timeout: 10,
             cb,
-            title: app.res.string('game_bacay_cuoc_bien')
         });
     }
 
@@ -87,7 +86,8 @@ export default class BaCayScene extends GameScene {
             cb: (betValue) => {
                 this.onHideChooseBetSlider()
                 betValue !== undefined && this._onClickChooseBetButton(betValue);
-            }
+            },
+            title: app.res.string('game_bet_time')
         });
     }
 
@@ -99,6 +99,8 @@ export default class BaCayScene extends GameScene {
 
     hideChooseBetSlider() {
         this._betPopup && this._betPopup.hide();
+        this.isShowBetPopup = false
+        this.isShowCuocBienPopup = false
     }
 
     _onClickChooseBetButton(value) {

@@ -50,7 +50,7 @@ export default class BoardBaCay extends BoardCardBetTurn {
         this._showGopGa(false);
 
         this.scene.isShowBetPopup = false
-        this.scene.isShowCuocBienPopup = true
+        this.scene.isShowCuocBienPopup = false
     }
 
     setTotalGopGaValue(value){
@@ -275,7 +275,7 @@ export default class BoardBaCay extends BoardCardBetTurn {
 
     _showGopGa(visible){
          this.renderer.setVisibleGopGaComponent(visible /*&& this.scene.gamePlayers.isMePlaying()*/);
-         this.renderer.setInteractableGopGaButton(true);
+         this.renderer.setInteractableGopGaButton(this.scene.gamePlayers.isMePlaying());
     }
 
     _addToGopGaValue(player, gopGaValue){
