@@ -223,7 +223,8 @@ export default class GameEventHandler {
     }
 
     _handleChangeBoardMaster(data) {
-
+        let masterId = utils.getValue(data, "ma");
+        masterId && this.scene.emit(Events.CHANGE_GAME_MASTER, masterId)
     }
 
     _handlePlayerRejoinGame(data) {

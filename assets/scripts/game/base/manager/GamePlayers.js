@@ -50,6 +50,7 @@ export default class GamePlayers extends Component {
         this.scene.on(Events.ON_USER_EXIT_ROOM, this._onUserExitGame, this);
         this.scene.on(Events.ON_ROOM_CHANGE_OWNER, this._onChangeRoomOwner, this);
         this.scene.on(Events.ON_GAME_STATE_ENDING, this._onGameEnding, this);
+        this.scene.on(Events.CHANGE_GAME_MASTER, this._onChangeGameMaster, this);
 
     }
 
@@ -73,6 +74,10 @@ export default class GamePlayers extends Component {
             let masterPlayer = this.findPlayer(masterPlayerId);
             this.setMaster(masterPlayer);
         }
+    }
+
+    _onChangeGameMaster(masterId){
+        this.setMaster(this.findPlayer(masterId));
     }
 
     setMaster(masterPlayer){

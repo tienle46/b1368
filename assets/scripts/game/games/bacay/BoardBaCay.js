@@ -298,7 +298,7 @@ export default class BoardBaCay extends BoardCardBetTurn {
     }
 
     _onGameMasterChanged(oldMaster, newMaster){
-        oldMaster && app.system.showToast(app.res.string('game_change_master_to_player', {playerName: newMaster.user.name}))
+        oldMaster && app.system.showToast(app.res.string('game_change_master_to_player', {playerName: GameUtils.getDisplayName(newMaster.user)}))
     }
 
 
