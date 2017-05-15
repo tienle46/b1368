@@ -40,11 +40,7 @@ app.config.fanpage = `http://m.me/songbaihoanggia`;
 app.config.website = `http://bai1368.com`;
 app.config.supportHotline = '123456';
 app.config.defaultMinBalanceJoinGameRoomMultiple = 10;
-app.config.defaultAvatarUrl = {
-    large: 'http://cms.songbaihoanggia.com/uploadfiles/avatar/3.png',
-    thumb: 'http://cms.songbaihoanggia.com/uploadfiles/avatar/3.png',
-    small: 'http://cms.songbaihoanggia.com/uploadfiles/avatar/3.png'    
-};
+app.config.defaultAvatarUrl = "";
 
 app.config.filterLabels = ['Nông dân', 'Quý tộc', 'Hoàng gia'];
 // 1:bac 2:vang 3:kimcuong
@@ -134,7 +130,7 @@ app.config.parseConfigData = function(configData = {}) {
     app.config.supportHotline = configData.supportHotline || app.config.supportHotline;
     app.config.listTableGroupFilters = configData.listTableGroupFilters || app.config.listTableGroupFilters;
     app.config.fbAppId = configData.fbAppId || app.config.fbAppId;
-    // app.config.defaultAvatarUrl = configData.defaultAvatarUrl || app.config.defaultAvatarUrl;
+    app.config.defaultAvatarUrl = configData.defaultAvatarUrl || app.config.defaultAvatarUrl;
     app.config.gameGroups = configData.gameGroups || app.config.gameGroups;
     app.config.actionLabels = Object.assign({}, app.config.actionLabels, configData.actionLabels || {});
     app.config.features = configData.features || app.config.features;
