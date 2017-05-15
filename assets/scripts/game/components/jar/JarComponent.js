@@ -124,28 +124,30 @@ export default class JarComponent extends Actor {
     
     // @param destination : v2(x,y)
     runCoinAnim(destination) {
-        // open the jar
-        const animation = this.jarSprite.node.getComponent(cc.Animation) ? this.jarSprite.node.getComponent(cc.Animation) : this.jarSprite.node.addComponent(cc.Animation)
-        this.spriteFrames[1] && (this.jarSprite.spriteFrame = this.spriteFrames[1]);
-        
-        if(this.node) {
-            let startPos = this.node.convertToWorldSpaceAR(this.node.getPosition());
-            for(let i = 0; i <= 20; i++) {
-                let huCoin = cc.instantiate(this.huCoin);
-                huCoin.setPosition(startPos.x, startPos.y);
-                
-                cc.director.getScene().addChild(huCoin);
-                
-                let midPoint = cc.p(Math.abs(startPos.x) - Math.abs(destination.x)/2, (Math.abs(destination.y) - 100) * (destination.y > 0 ? 1 : -1) );
-                var bezier = [startPos, midPoint, destination];
-                var bezierTo = cc.bezierTo(1  +  Math.random(0, 1), bezier);
-                
-                let sequence = cc.sequence(bezierTo, cc.callFunc(() => {
-                    huCoin.active = false;
-                    CCUtils.destroy(huCoin);
-                    i === 20 && this.spriteFrames[0] && (this.jarSprite.spriteFrame = this.spriteFrames[0]);
-                }));
-                huCoin.runAction(sequence);
+        if(this && this.jarSprite) {
+            // open the jar
+            const animation = this.jarSprite.node.getComponent(cc.Animation) ? this.jarSprite.node.getComponent(cc.Animation) : this.jarSprite.node.addComponent(cc.Animation)
+            this.spriteFrames[1] && (this.jarSprite.spriteFrame = this.spriteFrames[1]);
+            
+            if(this.node) {
+                let startPos = this.node.convertToWorldSpaceAR(this.node.getPosition());
+                for(let i = 0; i <= 20; i++) {
+                    let huCoin = cc.instantiate(this.huCoin);
+                    huCoin.setPosition(startPos.x, startPos.y);
+                    
+                    cc.director.getScene().addChild(huCoin);
+                    
+                    let midPoint = cc.p(Math.abs(startPos.x) - Math.abs(destination.x)/2, (Math.abs(destination.y) - 100) * (destination.y > 0 ? 1 : -1) );
+                    var bezier = [startPos, midPoint, destination];
+                    var bezierTo = cc.bezierTo(1  +  Math.random(0, 1), bezier);
+                    
+                    let sequence = cc.sequence(bezierTo, cc.callFunc(() => {
+                        huCoin.active = false;
+                        CCUtils.destroy(huCoin);
+                        i === 20 && this.spriteFrames[0] && (this.jarSprite.spriteFrame = this.spriteFrames[0]);
+                    }));
+                    huCoin.runAction(sequence);
+                }
             }
         }
     }
