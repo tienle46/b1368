@@ -100,7 +100,7 @@ class GameContext {
     getMyInfo() {
         let me = this.getMe();
         let vipLevel =  Utils.getVariable(me, app.keywords.VIP_LEVEL, {});
-        return me ? {
+        return me ? {   
             "id": me.id,
             "isItMe": me.isItMe,
             "name": me.name,
@@ -117,9 +117,22 @@ class GameContext {
         return info.vipLevel && info.vipLevel !== "" && info.vipLevel !== "Dân thường";   
     }
     
-    getUserAvatar(spriteComponent, isThumb = false) {
-        let url = app.context.getMyInfo()['avatar'][isThumb ? 'thumb' : 'large'] ? app.context.getMyInfo()['avatar'][isThumb ? 'thumb' : 'large'] : app.config.defaultAvatarUrl;
+    /**
+     * 
+     * @param {any} spriteComponent 
+     * @param {string} [type='thumb'] 'thumb' || 'large'|| 'tiny'
+     * 
+     * @memberof GameContext
+     */
+    getMyAvatar(spriteComponent, type = 'thumb') {
+        let avatar = app.context.getMyInfo()['avatar'];
+        let validType = app._.includes(['thumb', 'large', 'tiny'], type) ? type : 'thumb';
+        let url = (avatar && avatar[validType]) || this.getDefaultAvatarURL(validType);
         this.loadUserAvatarByURL(url, spriteComponent);
+    }
+    
+    getDefaultAvatarURL(type) {
+        return (typeof app.config.defaultAvatarUrl === 'object') ? app.config.defaultAvatarUrl[type] : app.config.defaultAvatarUrl;
     }
     
     loadUserAvatarByURL(url, spriteComponent, cb) {

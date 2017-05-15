@@ -39,7 +39,7 @@ export default class TabUserInfo extends PopupTabBody {
     onLoad() {
         super.onLoad();
         this._showUserInfoPanel();
-        this.avatar && app.context.getUserAvatar(this.avatar);
+        this.avatar && app.context.getMyAvatar(this.avatar, 'large');
     }
 
     loadData() {
@@ -242,7 +242,7 @@ export default class TabUserInfo extends PopupTabBody {
         let changedVars = ev[app.keywords.BASE_EVENT_CHANGED_VARS] || [];
         changedVars.map(v => {
             if (v == app.keywords.CHANGE_AVATAR_URL) {
-                this.avatar && app.context.getUserAvatar(this.avatar);
+                this.avatar && app.context.getMyAvatar(this.avatar, 'large');
             }
         });
     }

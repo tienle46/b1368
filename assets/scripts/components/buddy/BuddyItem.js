@@ -6,7 +6,7 @@ import app from 'app';
 import utils from 'utils';
 import PopupTabBody from 'PopupTabBody';
 import CCUtils from 'CCUtils';
-import HttpImageLoader from 'HttpImageLoader';
+import RubUtils from 'RubUtils';
 import Events from 'Events';
 
 class BuddyItem extends PopupTabBody {
@@ -58,8 +58,7 @@ class BuddyItem extends PopupTabBody {
     }
 
     start() {
-        super.start()
-        HttpImageLoader.loadDefaultAvatar(this.avatarSpriteNode.getComponent(cc.Sprite));
+        super.start();
     }
 
     onBuddyChanged() {
@@ -71,8 +70,15 @@ class BuddyItem extends PopupTabBody {
             let gameRoomName = utils.getVariable(this.buddy, app.keywords.VARIABLE_PLAYING_GAME);
             this.setPlayingGame(gameRoomName);
             
+            this.setBuddyAvatar(this.buddy.avatar && this.buddy.avatar.thumb);
+            
             this.onShowNotify(this.buddy.name);
         }
+    }
+    
+    setBuddyAvatar(url) {
+        this._avatarURL = url || app.context.getDefaultAvatarURL('thumb');
+        RubUtils.loadSpriteFrame(this.avatarSpriteNode.getComponent(cc.Sprite), url, null, true);
     }
     
     onShowNotify(buddyName) {

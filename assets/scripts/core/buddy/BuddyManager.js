@@ -204,7 +204,7 @@ export default class BuddyManager {
 
     onBuddyListUpdate() {
         this.buddies.splice(0, this.buddies.length);
-        app.service.client.buddyManager.getBuddyList().forEach(buddy => this._addBuddyToList(buddy));
+        this.getAllBuddy().forEach(buddy => this._addBuddyToList(buddy));
         app.system.emit(Events.ON_BUDDY_LIST_UPDATE);
     }
 

@@ -139,9 +139,9 @@ class TabExchangeCard extends PopupTabBody {
                     let providerName = itemName.trim().match(/([a-zA-Z]{3,})/g);
                     providerName && (providerName = providerName[0]);
 
-                    let amount = itemName.match(/([0-9]{2,})+(K)/g);
-                    amount && (amount = Number(amount[0].replace('K', '')) * 1000);
-
+                    let amount = itemName.toUpperCase().match(/([0-9]{2,})+(K)/g);
+                    amount && (amount = Number(amount[0].toUpperCase().replace('K', '')) * 1000);
+                    
                     if (providerName && !Utils.isEmpty(providerName)) {
                         if (!this._tabData.hasOwnProperty(providerName) || !this._tabData[providerName]) {
                             this._tabData[providerName] = [];

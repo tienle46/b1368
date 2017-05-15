@@ -1847,8 +1847,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 0,
-      "height": 30
+      "width": 78.12,
+      "height": 38
     },
     "_children": [],
     "_rotationX": 0,
@@ -1890,13 +1890,13 @@
     "_useOriginalSize": false,
     "_actualFontSize": 30,
     "_fontSize": 30,
-    "_lineHeight": 0,
+    "_lineHeight": 38,
     "_enableWrapText": true,
     "_N$file": {
       "__uuid__": "b2c0f634-158a-49ee-84f8-a41c8e7ebb56"
     },
     "_isSystemFontUsed": false,
-    "_N$string": "",
+    "_N$string": "CCCC",
     "_N$horizontalAlign": 0,
     "_N$verticalAlign": 1,
     "_N$overflow": 0
@@ -1915,7 +1915,7 @@
     "_left": 98,
     "_right": 1086,
     "_top": 541,
-    "_bottom": -52,
+    "_bottom": -56,
     "_verticalCenter": 0,
     "_horizontalCenter": 0,
     "_isAbsLeft": true,

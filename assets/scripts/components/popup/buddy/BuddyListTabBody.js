@@ -57,15 +57,17 @@ class BuddyListTabBody extends PopupTabBody {
         return false;
     }
 
-    onDataChanged({ balances = [], buddyNames = [] } = {}) {
+    onDataChanged({ balances = [], buddyNames = [], avatarUrls = [] } = {}) {
         if (buddyNames.length === 0) return;
-        
         buddyNames.forEach((buddyName, index) => {
             let buddy = app.buddyManager.getBuddyByName(buddyName);
             buddy && (buddy.balance = balances[index]);
+            buddy && (buddy.avatar = avatarUrls[index]);
 
             let buddyItem = this._findCurrentBuddyItem(buddy);
-            buddyItem && buddyItem.onBuddyChanged();
+            if(buddyItem) {
+                buddyItem.onBuddyChanged();
+            }
         });
     }
 
@@ -176,8 +178,8 @@ class BuddyListTabBody extends PopupTabBody {
         app.service.send({ cmd: app.commands.GET_BUDDY_INFO, data: { buddyNames } });
     }
 
-    _onBuddyDetailInfoResponse({ balances = [], buddyNames = [] } = {}) {
-        this.setLoadedData({ balances, buddyNames })
+    _onBuddyDetailInfoResponse({ balances = [], buddyNames = [], avatarUrls = [] } = {}) {
+        this.setLoadedData({ balances, buddyNames, avatarUrls })
     }
 
     onFilterChanged() {

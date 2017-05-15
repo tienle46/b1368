@@ -49,7 +49,7 @@ class TopBar extends DialogActor {
         if(this.avatarSpriteNode){
             let sprite = this.avatarSpriteNode.getComponent(cc.Sprite);
             // app.context.getMyInfo().avatarUrl ? HttpImageLoader.loadImageToSprite(sprite, app.context.getMyInfo().avatarUrl) : HttpImageLoader.loadDefaultAvatar(sprite);
-            app.context.getUserAvatar(sprite, true);
+            app.context.getMyAvatar(sprite, 'thumb');
         }
     }
 
@@ -217,7 +217,7 @@ class TopBar extends DialogActor {
     }
 
     _onConfigChanged() {
-        app.context.getUserAvatar(this.avatarSpriteNode.getComponent(cc.Sprite), true)
+        app.context.getMyAvatar(this.avatarSpriteNode.getComponent(cc.Sprite), 'thumb')
         // HttpImageLoader.loadDefaultAvatar(this.avatarSpriteNode.getComponent(cc.Sprite));
     }
 
@@ -241,7 +241,7 @@ class TopBar extends DialogActor {
             if(v == app.keywords.CHANGE_AVATAR_URL) {
                 let sprite = this.avatarSpriteNode.getComponent(cc.Sprite);
                 // sprite && (RubUtils.loadImageToSprite(sprite, app.context.getMyInfo().avatarUrl))
-                sprite && app.context.getUserAvatar(sprite, true);
+                sprite && app.context.getMyAvatar(sprite, 'thumb');
             }
         });
     }

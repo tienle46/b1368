@@ -5,7 +5,7 @@
 import app from 'app';
 import utils from 'utils';
 import Component from 'Component';
-import HttpImageLoader from 'HttpImageLoader';
+import RubUtils from 'RubUtils';
 
 class ChattingBuddyItem extends Component {
 
@@ -76,8 +76,8 @@ class ChattingBuddyItem extends Component {
 
         if (this.buddy) {
             this.nameLabel.string = this.buddy.name;
-            
-            app.context.getUserAvatar(this.avatarSpriteNode.getComponent(cc.Sprite));
+
+            this.buddy.avatar && RubUtils.loadSpriteFrame(this.avatarSpriteNode.getComponent(cc.Sprite), this.buddy.avatar['tiny'], false, true);
             
             if (this.buddy.isOnline()) {
                 utils.setVisible(this.onlineNode, true)

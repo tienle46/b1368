@@ -100,9 +100,9 @@ let RubUtils = {
      * }
      */
     loadSpriteFrame: (spriteComponent, resURL, ccSize = null, isCORS = false, cb, options = {}) => {
-        if (!resURL || !spriteComponent)
+        if (!resURL || !spriteComponent || typeof resURL !== 'string')
             return;
-
+        
         let textureCache;
 
         let o = {
@@ -110,7 +110,7 @@ let RubUtils = {
             sizeMode: cc.Sprite.SizeMode.CUSTOM
         };
         options = Object.assign({}, o, options);
-
+        
         function spriteFrameDefaultConfig(spriteComponent, texture2D) {
             if (spriteComponent) {
                 texture2D && (spriteComponent.spriteFrame = new cc.SpriteFrame(texture2D));

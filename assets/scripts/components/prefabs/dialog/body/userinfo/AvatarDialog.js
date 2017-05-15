@@ -45,11 +45,11 @@ export default class AvatarDialog extends DialogActor {
     
     onClickAvatarItem(toggle) {
         let node = toggle.node;
-        let {name, description, thumb, large, vipValue} = node.data;
+        let {id, name, description, large, vipValue} = node.data;
         RubUtils.loadSpriteFrame(this.pickedAvatarSprite, large, null, true, (sprite) =>{
             this.pickedAvatarLbl.string = name;
             this.selectedObject = {
-                thumb, large, vipValue
+                id, vipValue
             };
             this.pickedAvatarDescription.string = description;
             
@@ -63,7 +63,7 @@ export default class AvatarDialog extends DialogActor {
     }
     
     onConfirmBtnClick() {
-        let {thumb, large, vipValue} = this.selectedObject;
+        let {id, vipValue} = this.selectedObject;
         
         if(app.context.getVipLevel() < vipValue) {
             app.system.showToast(app.res.string('error_dont_have_permission'));
@@ -73,7 +73,7 @@ export default class AvatarDialog extends DialogActor {
         let resObj = {
             cmd: app.commands.CHANGE_AVATAR,
             data:{
-                thumb, large
+                id
             }
         };
         
@@ -117,7 +117,7 @@ export default class AvatarDialog extends DialogActor {
         
         let index = 0;
         app.async.mapSeries(avatarUrls, (avatar, cb) => {
-            let {thumb, large, name, desc, vipValue} = avatar;
+            let {id, thumb, large, name, desc, vipValue} = avatar;
             let url = thumb;
             // this.itemAvatar.spriteFrame = HttpImageLoader.loadImage(url, 'AvatarDialog');
             url && RubUtils.loadSpriteFrame(this.itemAvatar, url, null, true, (sprite) => {
@@ -126,6 +126,7 @@ export default class AvatarDialog extends DialogActor {
                 item.active = true;
                 if(sprite){
                     item.data = {
+                        id,
                         name,
                         description: desc,
                         thumb,
