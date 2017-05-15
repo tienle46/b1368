@@ -47,12 +47,12 @@ export default class PlayerBaCayRenderer extends PlayerCardBetTurnRenderer {
     _addGlobalListener() {
         super._addGlobalListener();
 
-        this.scene.on(Events.ON_GAME_MASTER_CHANGED, this._onGameMasterChanged, this);
+        // this.scene.on(Events.ON_GAME_MASTER_CHANGED, this._onGameMasterChanged, this);
     }
 
     _removeGlobalListener() {
         super._removeGlobalListener();
-        this.scene.off(Events.ON_GAME_MASTER_CHANGED, this._onGameMasterChanged, this);
+        // this.scene.off(Events.ON_GAME_MASTER_CHANGED, this._onGameMasterChanged, this);
     }
 
     onLoad(){
@@ -250,7 +250,7 @@ export default class PlayerBaCayRenderer extends PlayerCardBetTurnRenderer {
             
             let coinChipAmount = this.scene.board.minBet > 0 ? Math.floor(betAmount / this.scene.board.minBet) : 1;
             coinChipAmount = Math.min(coinChipAmount, 3);
-            GameAnim.flyTo({fromNode: this.node, toNode: master.renderer.betCoinNode, amount: coinChipAmount, prefab: this.chipPrefab});
+            master.renderer && GameAnim.flyTo({fromNode: this.node, toNode: master.renderer.betCoinNode, amount: coinChipAmount, prefab: this.chipPrefab});
         }
     }
 

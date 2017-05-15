@@ -211,7 +211,7 @@ export default class BoardSam extends BoardCardTurnBase {
                     case app.const.game.XAM_WIN_TYPE_THANG_XAM:
                         resultText = 'sam-thang-sam'
                         winnerFlags[id] = true;
-                        gameResultInfos[id] = app.res.string('game_sam_thang_sam')
+                        gameResultInfos[id] = ""
                         antrangTypes[id] = true
                         break;
                     case app.const.game.XAM_WIN_TYPE_DEN_XAM:

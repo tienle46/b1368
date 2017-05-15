@@ -158,4 +158,5 @@ Events.CLEAN_GAME_AFTER_SHOW_RESULT = "clean.gameAfterShowResult";
 Events.ON_USER_MAKES_JAR_EXPLOSION = "on.user.makes.jar.explosion";
 
 Events.CHANGE_SYSTEM_MESSAGE_COUNT = "change.systemMessageCount";
+Events.CHANGE_GAME_MASTER = "change.gameMaster";
 

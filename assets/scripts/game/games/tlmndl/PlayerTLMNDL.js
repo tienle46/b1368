@@ -51,6 +51,10 @@ export default class PlayerTLMNDL extends PlayerCardTurnBase {
         }
     }
 
+    onLoseTurn(){
+        this.say(app.res.string("game_bo_luot"))
+    }
+
     setRemainCardCount(remain) {
 
         this.remainCardCount = remain;

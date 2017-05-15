@@ -236,6 +236,10 @@ export default class PlayerSam extends PlayerCardTurnBase {
         this.renderer.showPlayerWinLoseInfo(text, isWinner)
         this.renderer.startPlusBalanceAnimation(balanceChanged)
     }
+
+    onLoseTurn(){
+        this.say(app.res.string("game_bo_luot"))
+    }
 }
 
 PlayerSam.DEFAULT_HAND_CARD_COUNT = 10

@@ -361,7 +361,7 @@ export default class PlayerBaCay extends PlayerCardBetTurn {
         if(!gaHucPlayer) return;
 
         let mePlayer = this.scene.gamePlayers.me;
-        let requestPlayerName = gaHucPlayer.user.name;
+        let requestPlayerName = GameUtils.getDisplayName(gaHucPlayer);
         let requestMoney = utils.getValue(data, app.keywords.BACAY_HUC_VALUE);
         let denyCb = () => delete mePlayer.pendingBiCuocBiens[requestPlayerName];
         let okCallback = () => {
@@ -379,7 +379,7 @@ export default class PlayerBaCay extends PlayerCardBetTurn {
             }else{
                 msg.length > 0 && app.system.info(msg);
             }
-        };
+    };
 
         mePlayer.pendingBiCuocBiens[requestPlayerName] = requestMoney;
         app.system.confirm(
