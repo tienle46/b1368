@@ -1033,7 +1033,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": 70
+      "y": 0
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -1218,7 +1218,7 @@
     "_tag": -1,
     "_opacityModifyRGB": false,
     "_id": "",
-    "_active": false,
+    "_active": true,
     "_components": [
       {
         "__id__": 43
@@ -1387,6 +1387,7 @@
     },
     "_enabled": true,
     "path": "",
+    "lineHeight": 24,
     "label": {
       "__id__": 37
     },

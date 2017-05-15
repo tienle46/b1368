@@ -102,7 +102,7 @@ export default class BoardBaCay extends BoardCardBetTurn {
     _handleBaCayDownCardPhrase(data) {
 
         // this._showGopGa(false);
-
+        this.renderer.setInteractableGopGaButton(false);
         let playerIds = utils.getValue(data, app.keywords.GAME_LIST_PLAYER);
         let handCardBytes = utils.getValue(data, app.keywords.GAME_LIST_CARD);
         if (playerIds && handCardBytes) {
@@ -192,7 +192,7 @@ export default class BoardBaCay extends BoardCardBetTurn {
         });
 
         let gopGaWinner = utils.getValue(data, Keywords.GOP_GA_WINNER, 0)
-        this._playGopGaWinnerAnimation(gopGaWinner)
+        gopGaWinner > 0 && this._playGopGaWinnerAnimation(gopGaWinner)
 
 
         // setTimeout(() => this.scene.showGameResult(models, (shownTime) => {

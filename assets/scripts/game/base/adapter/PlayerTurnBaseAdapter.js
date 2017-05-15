@@ -71,9 +71,6 @@ export default class PlayerTurnBaseAdapter extends GameAdapter {
     }
 
     isTurn() {
-        
-        log("isTurn check this.currentTurnPlayerId: ", this.currentTurnPlayerId)
-        
         return this.player.id == this.currentTurnPlayerId;
     }
 
@@ -129,6 +126,7 @@ export default class PlayerTurnBaseAdapter extends GameAdapter {
 
     _handleLoseTurn(playerId){
         this.player.id === playerId && this.onLoseTurn();
+        this.player.onLoseTurn && this.player.onLoseTurn();
     }
 
     /**
@@ -169,7 +167,6 @@ export default class PlayerTurnBaseAdapter extends GameAdapter {
         this.player.skippedTurn = true;
         this.player.stopTimeLine();
         this._showWaitTurnControls();
-        this.player.say(app.res.string("game_bo_luot"))
     }
 
     _onGameEnding(data){
