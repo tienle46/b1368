@@ -76,10 +76,10 @@ class TabSMS extends PopupTabBody {
     }
     
     onSMSBtnClick(e) {
-        let { moneySend, telcoId } = e.currentTarget.parent;
+        let { moneySend } = e.currentTarget.parent;
         this._balanceChoosen = moneySend;
         Object.values(this._providers).forEach(toggle => {
-            toggle.isChecked = toggle.telcoId == telcoId;
+            // toggle.isChecked = toggle.telcoId == telcoId;
             if(toggle.isChecked) {
                 toggle.check();
                 this.onProviderBtnClick(toggle);
