@@ -31,6 +31,10 @@ export default class Marker {
             this.setItem(this.SHOW_INVITATION_POPUP_OPTION, true);
         }
         
+        // mark data login
+        this.USER_LOCAL_STORAGE = app.const.USER_LOCAL_STORAGE;
+        this.IAP_LOCAL_STORAGE = app.const.IAP_LOCAL_STORAGE;
+
         // cache requests
         this.TOPUP_DIALOG_CACHE_TAB_CARD = `${this._RQ}_TOPUP_DIALOG_CACHE_TAB_CARD`;
         this.TOPUP_DIALOG_CACHE_TAB_SMS = `${this._RQ}_TOPUP_DIALOG_CACHE_TAB_SMS`;
@@ -93,7 +97,7 @@ export default class Marker {
             // convert data to string in order to save into localStorage
             if(!Utils.isString(data)) {
                 try {
-                    if(!Utils.isObject)
+                    if(!Utils.isObject(data))
                         data = JSON.parse(data);
                     
                     data = JSON.stringify(data);

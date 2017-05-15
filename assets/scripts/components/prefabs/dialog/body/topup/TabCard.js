@@ -73,7 +73,6 @@ class TabCard extends PopupTabBody {
         // wait til every requests is done
         // this._initRatioGroup();
         this.providerId = null;
-        app.system.marker.log();
     }
     
     onDestroy() {
