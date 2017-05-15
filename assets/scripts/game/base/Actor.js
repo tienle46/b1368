@@ -106,6 +106,7 @@ export default class Actor extends VisibilityActor {
      * @abstract
      */
     _addGlobalListener() {
+        this._removeGlobalListener();
         this._assertEmitter();
     }
 

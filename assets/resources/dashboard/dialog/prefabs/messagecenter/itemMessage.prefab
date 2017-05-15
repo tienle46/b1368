@@ -469,7 +469,7 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": 28,
+      "x": 29,
       "y": 0
     },
     "_skewX": 0,
@@ -905,8 +905,6 @@
     },
     "_enabled": true,
     "path": "",
-    "p404": null,
-    "scrollview": null,
     "titleLbl": {
       "__id__": 4
     },

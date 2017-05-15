@@ -33,7 +33,18 @@ class TabExchangeCard extends PopupTabBody {
     
     onLoad() {
         super.onLoad();
+        this.selectedItem = { id: null, gold: null, name: null };
+        this._tabData = {};
+        this._isLoaded = false;
+        
         this._hideUpdatePhoneNumber();
+    }
+    
+    onDestroy() {
+        super.onDestroy();
+        window.free(this._tabData);
+        this.selectedItem = { id: null, gold: null, name: null };
+        this._isLoaded = false;
     }
     
     loadData() {
@@ -195,25 +206,23 @@ class TabExchangeCard extends PopupTabBody {
     }
 
     onExchangeBtnClick(event) {
-        ActionBlocker.runAction("userWithdrawal", () => {
-            this.selectedItem = event.currentTarget.parent.itemSelected;
+        this.selectedItem = event.currentTarget.parent.itemSelected;
 
-            let denyCb = () => true;
-            let okCallback = this._onConfirmDialogBtnClick.bind(this);
+        let denyCb = () => true;
+        let okCallback = this._onConfirmDialogBtnClick.bind(this);
 
-            if (this.selectedItem.id) {
-                let { id, gold, name } = this.selectedItem;
-                app.system.confirm(
-                    app.res.string('exchange_dialog_confirmation', { gold: Utils.numberFormat(gold), name }),
-                    denyCb,
-                    okCallback
-                );
-            } else {
-                app.system.error(
-                    app.res.string('error_exchange_dialog_need_to_choice_item')
-                );
-            }
-        });
+        if (this.selectedItem.id) {
+            let { id, gold, name } = this.selectedItem;
+            app.system.confirm(
+                app.res.string('exchange_dialog_confirmation', { gold: Utils.numberFormat(gold), name }),
+                denyCb,
+                okCallback
+            );
+        } else {
+            app.system.error(
+                app.res.string('error_exchange_dialog_need_to_choice_item')
+            );
+        }
     }
 
     /**
@@ -241,16 +250,18 @@ class TabExchangeCard extends PopupTabBody {
                 return;
             }
 
-            let data = {};
-            data[app.keywords.EXCHANGE.REQUEST.ID] = id;
-            let sendObject = {
-                'cmd': app.commands.EXCHANGE,
-                data
-            };
+            ActionBlocker.runAction(ActionBlocker.USER_WITHDRAWAL, () => {
+                let data = {};
+                data[app.keywords.EXCHANGE.REQUEST.ID] = id;
+                let sendObject = {
+                    'cmd': app.commands.EXCHANGE,
+                    data
+                };
 
-            // show loader
-            app.system.showLoader(app.res.string('waiting_server_response'));
-            app.service.send(sendObject);
+                // show loader
+                app.system.showLoader(app.res.string('waiting_server_response'));
+                app.service.send(sendObject);
+            });
         }
     }
 
@@ -259,6 +270,7 @@ class TabExchangeCard extends PopupTabBody {
         if (data[app.keywords.RESPONSE_RESULT] === true) {
             app.system.showToast(`${data[app.keywords.RESPONSE_MESSAGE]}`);
         } else { // true
+            ActionBlocker.resetLastTime(ActionBlocker.USER_WITHDRAWAL);
             app.system.error(data[app.keywords.RESPONSE_MESSAGE] ? data[app.keywords.RESPONSE_MESSAGE] : app.res.string('error_system'));
         }
     }

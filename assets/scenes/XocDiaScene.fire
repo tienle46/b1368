@@ -11047,6 +11047,7 @@
     },
     "_enabled": true,
     "path": "",
+    "lineHeight": 24,
     "label": {
       "__id__": 302
     },
@@ -12643,7 +12644,7 @@
       "__id__": 300
     },
     "bottomTimelineTextViewNode": null,
-    "secondTimelineTextViewNode": null,
+    "secondTimelineLabelNode": null,
     "timeline": {
       "__id__": 292
     },
@@ -12853,8 +12854,8 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": 567,
-      "y": -63
+      "x": 545,
+      "y": -62
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -13133,7 +13134,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": -113,
-      "y": 286
+      "y": 270
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -13326,7 +13327,7 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": 561,
+      "x": 545,
       "y": 166
     },
     "_skewX": 0,
@@ -13559,7 +13560,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 380,
-      "y": 284
+      "y": 270
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -13791,7 +13792,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 155,
-      "y": 286
+      "y": 270
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -14023,7 +14024,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": -379,
-      "y": 286
+      "y": 270
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -14263,8 +14264,8 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": -561,
-      "y": 165
+      "x": -545,
+      "y": 166
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -14313,7 +14314,7 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": 3,
+      "x": 0,
       "y": 0
     },
     "_skewX": 0,
@@ -14504,7 +14505,7 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": -568,
+      "x": -545,
       "y": -62
     },
     "_skewX": 0,
@@ -14554,7 +14555,7 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": 13,
+      "x": 0,
       "y": 0
     },
     "_skewX": 0,

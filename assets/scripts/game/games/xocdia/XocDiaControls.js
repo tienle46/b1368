@@ -406,7 +406,8 @@ export default class XocDiaControls extends GameControls {
 
         this.isInCancelPhase = false;
         this._setRebetBtnState(true);
-
+        this.betContainerButton.betable(false);
+        
         this._resetBoardControlBtns();
         this._resetBetData();
         // this.hideAllControls();
@@ -432,14 +433,14 @@ export default class XocDiaControls extends GameControls {
     }
 
     _onGameState(state, data, isJustJoined) {
-
         if (state === app.const.game.state.STATE_BET) {
+            this.betContainerButton.betable(true);
             this._resetBetData();
-            // all users are already
             this._showGameControls();
         } else if (state === app.const.game.state.BOARD_STATE_SHAKE) {
             this.hideBetControl();
-        }
+            this.betContainerButton.betable(false);
+        } 
     }
 
     _setBetOptionsLblsByRoomBet() {

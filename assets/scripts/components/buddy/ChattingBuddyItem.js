@@ -77,7 +77,7 @@ class ChattingBuddyItem extends Component {
         if (this.buddy) {
             this.nameLabel.string = this.buddy.name;
             
-            app.context.getUserAvatar(this.avatarSpriteNode.getComponent(cc.Sprite));
+            app.context.getUserAvatar(this.avatarSpriteNode.getComponent(cc.Sprite), true);
             
             if (this.buddy.isOnline()) {
                 utils.setVisible(this.onlineNode, true)

@@ -72,8 +72,13 @@ class TabCard extends PopupTabBody {
         super.onLoad();
         // wait til every requests is done
         // this._initRatioGroup();
-        
+        this.providerId = null;
         app.system.marker.log();
+    }
+    
+    onDestroy() {
+        super.onDestroy();
+        this.providerId = null;
     }
     
     loadData() {

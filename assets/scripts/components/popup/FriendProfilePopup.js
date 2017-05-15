@@ -151,13 +151,13 @@ export default class FriendProfilePopup extends DialogActor {
     _addGlobalListener() {
         super._addGlobalListener();
         app.system.addListener(app.commands.SELECT_PROFILE, this._onSelectUserProfile, this);
-        app.system.addListener(app.commands.BUDDY_INVITE_FRIEND, this._onBuddyInviateFriend, this);
+        // app.system.addListener(app.commands.BUDDY_INVITE_FRIEND, this._onBuddyInviteFriend, this);
     }
 
     _removeGlobalListener() {
         super._removeGlobalListener();
         app.system.removeListener(app.commands.SELECT_PROFILE, this._onSelectUserProfile, this);
-        app.system.removeListener(app.commands.BUDDY_INVITE_FRIEND, this._onBuddyInviateFriend, this);
+        // app.system.removeListener(app.commands.BUDDY_INVITE_FRIEND, this._onBuddyInviteFriend, this);
     }
 
     _onKickUser() {
@@ -224,9 +224,9 @@ export default class FriendProfilePopup extends DialogActor {
         this.node.emit('change-paging-state');
     }
 
-    _onBuddyInviateFriend(data) {
-        app.system.showToast(`Đã gửi lời mời kết bạn tới ${data[app.keywords.BUDDY_NAME]}`);
-    }
+    // _onBuddyInviteFriend(data) {
+    //     app.system.showToast(app.res.string('buddy_accepted_request', {buddyName: data[app.keywords.BUDDY_NAME]}));
+    // }
 }
 
 app.createComponent(FriendProfilePopup);

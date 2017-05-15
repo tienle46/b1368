@@ -14,9 +14,18 @@ const blockConfig = {
     'userWithdrawal': {duration: 20*60*1000, keyMessage: "message_block_exchange_card_action"},
 }
 
+/**
+ * managed by username as a namespace, with the same key in blockConfig
+ * Ex:
+ * lastActionTimes = {
+ *      username1: {
+ *          invitePlayGame: 0,
+ *          userWithdrawal: 1234,
+ *      }, ...
+ * }
+ */
 const lastActionTimes = {
-    'invitePlayGame': 0,
-    'userWithdrawal': 0
+    
 }
 
 // return user readable data based on millisecond
@@ -36,18 +45,24 @@ export default class ActionBlocker {
         if(!key){
             runFunc && runFunc()
         }else{
+            let username = app.context.getMyInfo() ? app.context.getMyInfo().name : null;
+            if(username) {
+                if(!lastActionTimes[username])
+                    lastActionTimes[username] = {};
+                if(!lastActionTimes[username].hasOwnProperty(key))
+                    lastActionTimes[username][key] = 0;
+                let lastActionTime = lastActionTimes[username][key]
+                let {duration, keyMessage} = blockConfig[key]
+                let message = app.res.string(keyMessage, {time: timeMeansurementFromMillisecond(duration)})
+                let currentTime = new Date().getTime()
 
-            let lastActionTime = lastActionTimes[key]
-            let {duration, keyMessage} = blockConfig[key]
-            let message = app.res.string(keyMessage, {time: timeMeansurementFromMillisecond(duration)})
-            let currentTime = new Date().getTime()
 
-
-            if( lastActionTime == undefined || !duration || (currentTime - lastActionTime) >= duration){
-                runFunc && runFunc();
-                lastActionTimes[key] = currentTime;
-            }else{
-                message && app.system.showToast(message)
+                if( lastActionTime == undefined || !duration || (currentTime - lastActionTime) >= duration){
+                    runFunc && runFunc();
+                    lastActionTimes[username][key] = currentTime;
+                } else {
+                    message && app.system.showToast(message)
+                }
             }
 
         }
@@ -58,9 +73,18 @@ export default class ActionBlocker {
      * 
      * @memberof ActionBlocker
      */
-    onClientConfigChanged(blockConfig) {
+    static onClientConfigChanged(blockConfig) {
         for(var key in blockConfig) {
             blockConfig[key] && (blockConfig[key]['duration'] = blockConfig[key]);
         }
     }
+    
+    static resetLastTime(key) {
+        let username = app.context.getMyInfo() ? app.context.getMyInfo().name : null;
+        if(username) {
+            lastActionTimes[username][key] = 0;
+        }
+    }
 }
+
+ActionBlocker.USER_WITHDRAWAL = "userWithdrawal";

@@ -11396,7 +11396,8 @@
     },
     "startButton": {
       "__id__": 366
-    }
+    },
+    "waitButton": null
   },
   {
     "__type__": "cc.PrefabInfo",

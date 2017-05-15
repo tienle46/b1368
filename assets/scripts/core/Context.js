@@ -99,7 +99,6 @@ class GameContext {
     
     getMyInfo() {
         let me = this.getMe();
-        
         let vipLevel =  Utils.getVariable(me, app.keywords.VIP_LEVEL, {});
         return me ? {
             "id": me.id,
@@ -109,13 +108,13 @@ class GameContext {
             "level": me.variables.lv,
             "avatar": Utils.getVariable(me, 'avatar', {}),
             "displayName": Utils.getVariable(me, 'displayName', me.name),
-            "vipLevel": vipLevel.name || "Phổ thông"
+            "vipLevel": vipLevel.name || "Dân thường"
         } : {};
     }
     
     isVip() {
         let info = this.getMyInfo();
-        return info.vipLevel && info.vipLevel !== "" && info.vipLevel !== "Phổ thông";   
+        return info.vipLevel && info.vipLevel !== "" && info.vipLevel !== "Dân thường";   
     }
     
     getUserAvatar(spriteComponent, isThumb = false) {

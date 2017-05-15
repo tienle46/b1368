@@ -27,7 +27,6 @@ export default class TabUserBank extends PopupTabBody {
         this._minTransfer = 0;
         this._maxTransfer = 0;
         this._remainTransfer = 0;
-        this._previousValue = 0;
         this._withdrawComponent = null;
         this._transferMoneyComponent = null;
     }
@@ -83,56 +82,56 @@ export default class TabUserBank extends PopupTabBody {
         this._showMainBody();
     }
 
-    onConfirmRutTienBtnClick(value) {
-        value = Number(value);
-        if (isEmpty(value)) {
-            app.system.error(app.res.string('error_user_enter_empty_input'));
-            return;
-        }
-        if (!isNumber(value) || value < 0) {
-            app.system.error(app.res.string('error_transfer_input_is_invalid', { type: 'rút' }));
-            return;
-        }
+    // onConfirmRutTienBtnClick(value) {
+    //     value = Number(value);
+    //     if (isEmpty(value)) {
+    //         app.system.error(app.res.string('error_user_enter_empty_input'));
+    //         return;
+    //     }
+    //     if (!isNumber(value) || value < 0) {
+    //         app.system.error(app.res.string('error_transfer_input_is_invalid', { type: 'rút' }));
+    //         return;
+    //     }
 
-        if (value > (this._balance - this._remainTransfer)) {
-            app.system.error(app.res.string('error_balance_is_not_enough', { amount: this._remainTransfer }));
-            return;
-        }
+    //     if (value > (this._balance - this._remainTransfer)) {
+    //         app.system.error(app.res.string('error_balance_is_not_enough', { amount: this._remainTransfer }));
+    //         return;
+    //     }
 
-        if (value < this._minTransfer) {
-            app.system.error(app.res.string('error_transfer_input_is_too_small', { type: 'rút', min: numberFormat(this._minTransfer) }));
-            return;
-        }
+    //     if (value < this._minTransfer) {
+    //         app.system.error(app.res.string('error_transfer_input_is_too_small', { type: 'rút', min: numberFormat(this._minTransfer) }));
+    //         return;
+    //     }
 
-        if (value > this._maxTransfer) {
-            app.system.error(app.res.string('error_transfer_input_is_not_over_allow', { type: 'rút', limit: numberFormat(this._maxTransfer) }));
-            return;
-        }
+    //     if (value > this._maxTransfer) {
+    //         app.system.error(app.res.string('error_transfer_input_is_not_over_allow', { type: 'rút', limit: numberFormat(this._maxTransfer) }));
+    //         return;
+    //     }
 
-        this._previousValue = value;
+    //     this._previousValue = value;
 
-        let sendObject = {
-            cmd: app.commands.USER_GET_MONEY_FROM_BANK,
-            data: {
-                [app.keywords.GOLD]: value
-            }
-        };
+    //     let sendObject = {
+    //         cmd: app.commands.USER_GET_MONEY_FROM_BANK,
+    //         data: {
+    //             [app.keywords.GOLD]: value
+    //         }
+    //     };
 
-        app.service.send(sendObject);
+    //     app.service.send(sendObject);
 
-        return true;
-    }
+    //     return true;
+    // }
 
     _addGlobalListener() {
         super._addGlobalListener();
         app.system.addListener(app.commands.BANK_IN_HISTORY, this._fillContent, this);
-        // app.system.addListener(app.commands.USER_GET_MONEY_FROM_BANK, this._onUserGetMoney, this);
+        app.system.addListener(app.commands.USER_GET_MONEY_FROM_BANK, this._onUserGetMoney, this);
     }
 
     _removeGlobalListener() {
         super._removeGlobalListener();
         app.system.removeListener(app.commands.BANK_IN_HISTORY, this._fillContent, this);
-        // app.system.removeListener(app.commands.USER_GET_MONEY_FROM_BANK, this._onUserGetMoney, this);
+        app.system.removeListener(app.commands.USER_GET_MONEY_FROM_BANK, this._onUserGetMoney, this);
     }
 
     _onUserTransferResponse(data) {
@@ -155,18 +154,21 @@ export default class TabUserBank extends PopupTabBody {
     _onUserGetMoney(data) {
         let su = data[app.keywords.RESPONSE_RESULT];
         if (su) {
-            this._balance -= this._previousValue;
+            let {amount} = data;
+            this._balance -= amount;
+            
             this.balanceLbl.string = numberFormat(this._balance);
-            app.system.info(app.res.string('get_transfer_success', { amount: this._previousValue }));
-        } else {
-            let msg = data[app.keywords.RESPONSE_MESSAGE];
-            if (msg) {
-                app.system.error(msg);
-            } else {
-                app.system.error(app.res.string('error_unknow'));
-            }
-        }
-        this._previousValue = 0;
+            // app.system.info(app.res.string('get_transfer_success', { amount: this._previousValue }));
+        } 
+        // else {
+        //     let msg = data[app.keywords.RESPONSE_MESSAGE];
+        //     if (msg) {
+        //         app.system.error(msg);
+        //     } else {
+        //         app.system.error(app.res.string('error_unknow'));
+        //     }
+        // }
+        // this._previousValue = 0;
     }
 
     _initUserData() {
