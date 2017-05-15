@@ -76,7 +76,6 @@ class ChattingBuddyItem extends Component {
 
         if (this.buddy) {
             this.nameLabel.string = this.buddy.name;
-
             this.buddy.avatar && RubUtils.loadSpriteFrame(this.avatarSpriteNode.getComponent(cc.Sprite), this.buddy.avatar['tiny'], false, true);
             
             if (this.buddy.isOnline()) {
