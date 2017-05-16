@@ -16,7 +16,7 @@ export default {
     error_gift_code_is_invalid: "Mã thưởng không đúng định dạng",
     error_user_enter_empty_input: "Vui lòng nhập đầy đủ thông tin",
     error_card_code_is_invalid: "Mã thẻ không hợp lệ",
-    error_dont_have_permission: "Bạn không đủ điều kiện sử dụng",
+    error_dont_have_permission: "Bạn không đủ điều kiện sử\ndụng",
     error_serial_number_is_invalid: "Số seri không hợp lệ.",
     error_changed_password_is_invalid: "Mật khẩu mới phải từ 6 ký tự trong đó có ít nhất 1 số, 1 ký tự thường, không có ký tự đặc biệt và dấu cách.",
     error_password_confirmation_is_not_the_same: "Nhập lại mật khẩu mới không chính xác",
