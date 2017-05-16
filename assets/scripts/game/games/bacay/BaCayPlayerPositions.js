@@ -108,6 +108,10 @@ class BaCayPlayerPositions extends PlayerPositions {
         return anchorIndex == 7 || anchorIndex == 8;
     }
 
+    isPositionOnLeft(anchorIndex) {
+        return anchorIndex == 3 || anchorIndex == 4;
+    }
+
     _getPlayerSeatIndexs(gameCode) {
         return baCayPlayerSeats;
     }

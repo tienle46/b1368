@@ -70,7 +70,7 @@ export default class PlayerRenderer extends ActorRenderer {
         this.isItMe && this.injectComponent();
     }
 
-    getMessageAnchorIndex(anchorIndex) {
+    getMessageAnchorIndex(anchorIndex = this.anchorIndex) {
         return anchorIndex;
     }
 
@@ -210,6 +210,14 @@ export default class PlayerRenderer extends ActorRenderer {
 
     isPositionOnRight(anchorIndex = this.anchorIndex){
         return this.scene.gamePlayers && this.scene.gamePlayers.playerPositions.isPositionOnRight(anchorIndex)
+    }
+
+    isPositionOnLeft(anchorIndex = this.anchorIndex){
+        return this.scene.gamePlayers && this.scene.gamePlayers.playerPositions.isPositionOnLeft(anchorIndex)
+    }
+
+    isMePositionOnLeft(anchorIndex = this.anchorIndex){
+        return this.scene.gamePlayers && this.scene.gamePlayers.playerPositions.isMePositionOnLeft(anchorIndex)
     }
 }
 
