@@ -94,6 +94,14 @@ class FivePlayerPositions extends PlayerPositions {
         return anchorIndex == 5;
     }
 
+    isPositionOnLeft(anchorIndex) {
+        return anchorIndex == 2;
+    }
+
+    isMePositionOnLeft(anchorIndex) {
+        return true;
+    }
+
     getPlayerAnchor(id){
 
         log("cc.director.getScene(): ", cc.director.getScene(), this.scene.isSoloGame)

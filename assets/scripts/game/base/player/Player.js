@@ -39,7 +39,6 @@ export default class Player extends Actor {
         if (!this.board || !this.user) {
             throw new CreateGameException("Dữ liệu khởi tạo bàn chơi không đúng");
         }
-        
 
     }
 
@@ -243,7 +242,7 @@ export default class Player extends Actor {
         this.renderer.setBalance(this.balance);
         
         this._initPlayerAvatar();
-        
+
         this._updatePlayerAnchor();
 
         // if(this.scene.checkReadyPlayer(this)){
@@ -305,7 +304,10 @@ export default class Player extends Actor {
 
     setMaster(isMaster) {
         this.isMaster = isMaster;
-        this.renderer.setVisibleMaster(isMaster);
+        /**
+         * Warning: this.renderer is null when old master leave room
+         */
+        this.renderer && this.renderer.setVisibleMaster(isMaster);
     }
 
     isReady() {

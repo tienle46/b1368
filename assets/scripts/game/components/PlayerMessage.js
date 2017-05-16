@@ -30,6 +30,7 @@ export default class PlayerMessage extends Component {
         this.playerRenderer = player;
 
         this.anchorIndex = this.playerRenderer.getMessageAnchorIndex();
+        this.updateAnchor(this.anchorIndex)
     }
 
     onLoad() {
@@ -46,18 +47,26 @@ export default class PlayerMessage extends Component {
     updateAnchor(anchorIndex) {
         if (!this.loaded) return;
 
+        this.anchorIndex = (this.playerRenderer && this.playerRenderer.getMessageAnchorIndex(anchorIndex));
 
-        this.anchorIndex = (this.playerRenderer && this.playerRenderer.getMessageAnchorIndex(anchorIndex)) || -1;
-        if (this.anchorIndex >= 0) {
+        console.log("this.anchorIndex: ", this.anchorIndex)
 
-            let isTopAnchor = this.playerRenderer.scene.gamePlayers.playerPositions.isPositionOnTop(anchorIndex);
-
-            if (isTopAnchor) {
+        if (this.anchorIndex == 0 && this.playerRenderer.isMePositionOnLeft()) {
+            this.textViewNode.setAnchorPoint(0.5, 0);
+            this.node.setPosition(30, 0);
+        }else if (this.anchorIndex > 0) {
+            if (this.playerRenderer.isPositionOnTop()) {
                 this.textViewNode.setAnchorPoint(0.5, 1);
-                this.node.setPosition(this.anchorBottom.getPosition());
-            } else {
+                this.node.setPosition(0, 0);
+            } else if (this.playerRenderer.isPositionOnLeft()) {
                 this.textViewNode.setAnchorPoint(0.5, 0);
-                this.node.setPosition(this.anchorTop.getPosition());
+                this.node.setPosition(30, 0);
+            } else if (this.playerRenderer.isPositionOnRight()) {
+                this.textViewNode.setAnchorPoint(0.5, 0);
+                this.node.setPosition(-30, 0);
+            }else{
+                this.textViewNode.setAnchorPoint(0.5, 0);
+                this.node.setPosition(0, 0);
             }
         } else {
             this.textViewNode.setAnchorPoint(0.5, 0);
@@ -97,7 +106,7 @@ export default class PlayerMessage extends Component {
             this.textView && this.textView.setText(message);
             this.timeoutId = setTimeout(() => {
                 this.hide();
-            }, 5000);
+            }, 4000);
         }
     }
 
