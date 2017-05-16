@@ -31,9 +31,10 @@ app.config.USER_NAME_REGEX = /^[a-zA-Z0-9._]{6,15}$/;
 app.config.PASSWORD_REGEX = /^(?=.*[A-Za-z])(?=.*\d).{6,15}$/;
 
 
-app.config.fbAppId = 226720277782952;
+// app.config.fbAppId = 226720277782952;
+app.config.fbAppId = 1793374524209784;
 app.config.fbxfbml = true;
-app.config.fbVersion = 'v2.8';
+app.config.fbVersion = 'v2.7';
 app.config.fbScope = 'public_profile,email,user_friends';
 
 app.config.fanpage = `http://m.me/songbaihoanggia`;
@@ -41,6 +42,18 @@ app.config.website = `http://bai1368.com`;
 app.config.supportHotline = '123456';
 app.config.defaultMinBalanceJoinGameRoomMultiple = 10;
 app.config.defaultAvatarUrl = "";
+app.config.shareFBConfig = {
+    link: app.config.website,
+    title: `Bài B1368`,
+    image: `http://cms.songbaihoanggia.com/uploadfiles/share-fb.png`,
+    info: {
+        daily: {
+            text: 'Chơi miễn phí, rinh chip tỉ',
+        }, // || {description, image, link, title}
+        newbie: 'Chơi miễn phí, rinh chip tỉ',  
+        jar: 'Nổ hũ, Chơi miễn phí, rinh chip tỉ',  
+    }
+};
 
 app.config.filterLabels = ['Nông dân', 'Quý tộc', 'Hoàng gia'];
 // 1:bac 2:vang 3:kimcuong
@@ -150,3 +163,18 @@ app.config.parseConfigData = function(configData = {}) {
 app.config.getFeature = function(code) {
     return app.config.features && app.config.features[code];
 };
+
+app.config.getShareObject = function(key) {
+    let shareObject = {};
+    let info = app.config.shareFBConfig.info[key];
+    if(typeof info === 'string') {
+        shareObject.text = info;
+    } else {
+        info.hasOwnProperty('description') && (shareObject.text = info.description);
+        info.hasOwnProperty('link') && (shareObject.link = info.link);
+        info.hasOwnProperty('title') && (shareObject.title = info.title);
+        info.hasOwnProperty('image') && (shareObject.image = info.image);
+    }
+    
+    return shareObject;
+}

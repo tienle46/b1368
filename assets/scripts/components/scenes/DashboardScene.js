@@ -1,6 +1,7 @@
 import app from 'app';
 import BaseScene from 'BaseScene';
 import RubUtils from 'RubUtils';
+import Utils from 'Utils';
 import NodeRub from 'NodeRub';
 import ArrayUtils from 'ArrayUtils';
 
@@ -23,6 +24,7 @@ export default class DashboardScene extends BaseScene {
 
     onLoad() {
         super.onLoad();
+        this._isNewBie = false;
     }
 
     onEnable() {
@@ -32,6 +34,7 @@ export default class DashboardScene extends BaseScene {
     onDestroy() {
         super.onDestroy();
         this.free(this.iconComponents);
+        this._isNewBie = false;
     }
 
     start() {
@@ -57,10 +60,11 @@ export default class DashboardScene extends BaseScene {
         app.system.showLackOfMoneyMessagePopup();
     }
 
-    showDailyLoginPopup(title, message) {
+    showDailyLoginPopup(message, isNewBie = false) {
+        this._isNewBie = isNewBie;
         this.dailyDialog.active = true;
         this.dailyDialogContent.string = message;
-        this.dailyDialogTitle.string = title;
+        this.dailyDialogTitle.string = isNewBie ? app.res.string('greeting_newbiew') : app.res.string('daily_gift');
         
         let action = cc.sequence(cc.fadeIn(0.2), cc.delayTime(20), cc.fadeOut(0.5), cc.callFunc(()=> {
             this.dailyDialog.active = false;
@@ -75,11 +79,7 @@ export default class DashboardScene extends BaseScene {
     }
 
     onShareBtnClick() {
-        app.facebookActions.share({
-            link: 'http://b1368.com',
-            text: 'Chơi miễn phí, rinh chip tỉ',
-            image: 'http://cocos2d-x.org/images/logo.png'
-        });
+        app.facebookActions.share(app.config.getShareObject(this._isNewBie ? 'newbie': 'daily'));
     }
     
     onInviteBtnClick() {

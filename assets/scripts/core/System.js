@@ -391,8 +391,7 @@ class GameSystem {
             }
             case app.const.adminMessage.DAILY_LOGIN_MISSION: {
                 if (this.currentScene && sceneName == app.const.scene.DASHBOARD_SCENE) {
-                    var title = "Quà tặng đăng nhập hàng ngày";
-                    this.currentScene.showDailyLoginPopup(title, message);
+                    this.currentScene.showDailyLoginPopup(message, false);
                     showToast = false;
                     return;
                 }
@@ -400,9 +399,8 @@ class GameSystem {
             }
             case app.const.adminMessage.REGISTER_BONUS: {
                 if (this.currentScene && sceneName == app.const.scene.DASHBOARD_SCENE) {
-                    var title = "Chào mừng bạn đến với game bài 1368";
                     // console.debug('title, message)', title, message);
-                    this.currentScene.showDailyLoginPopup(title, message);
+                    this.currentScene.showDailyLoginPopup(message, true);
                     showToast = false;
                     return;
                 }
