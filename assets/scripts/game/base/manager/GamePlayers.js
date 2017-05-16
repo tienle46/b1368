@@ -104,16 +104,15 @@ export default class GamePlayers extends Component {
             return;
         }
 
-        let newOwner = null;
         let ownerId = utils.getVariable(room, app.keywords.VARIABLE_OWNER);
-        if (ownerId && (!this.owner || ownerId == this.owner.id)) {
+        if(this.owner == null || this.owner.id != ownerId){
             this.owner && this.owner.setOwner(false);
-            newOwner = this.findPlayer(ownerId);
-        }
 
-        this.owner = newOwner;
-        this.owner && this.owner.setOwner(true);
-        this.ownerId = ownerId;
+            let newOwner = ownerId ? this.findPlayer(ownerId) : undefined;
+            this.owner = newOwner;
+            this.ownerId = ownerId
+            this.owner && this.owner.setOwner(true);
+        }
     }
 
     _onUserExitGame(user, room) {

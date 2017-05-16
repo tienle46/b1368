@@ -95,19 +95,19 @@ export default class PlayerBaCay extends PlayerCardBetTurn {
         return utils.getAllKeys(this.pendingCuocBiens, this.hucList, this.biHucList);
     }
 
-    _onPlayerChangeBet(betAmount) {
+    _onPlayerChangeBet(betAmount = 0) {
 
         if (!this.isItMe() || betAmount <= 0 || this.board.scene.gameState != app.const.game.state.STATE_BET || !BaCayUtils.checkBetValue(betAmount, this)) {
             //Show message && play sound invalid
             return;
         }
 
-        app.service.send({
+        betAmount > 0 && app.service.send({
             cmd: app.commands.PLAYER_BET,
             data: {
                 [app.keywords.PLAYER_BET_AMOUNT]: betAmount
             },
-            room: this.board.room
+            room: this.scene.room
         });
     }
 
@@ -321,7 +321,7 @@ export default class PlayerBaCay extends PlayerCardBetTurn {
                 if(cuocValue == undefined) return;
 
                 let { valid, msg } = BaCayUtils.validateCuocBienValue(cuocValue, this.scene.gamePlayers.me, this);
-                if (valid) {
+                if (valid && cuocValue > 0) {
                     app.service.send({
                         cmd: app.commands.BACAY_PLAYER_GA_HUC,
                         room: this.board.room,
@@ -353,8 +353,6 @@ export default class PlayerBaCay extends PlayerCardBetTurn {
 
     _onPlayerCuocBien(gaHucPlayerId, data) {
         if (!this.isItMe() || this.id == gaHucPlayerId) return;
-
-        console.log("_onPlayerCuocBien: ", this.scene.isShowCuocBienPopup, gaHucPlayerId)
 
         if(this.scene.isShowCuocBienPopup){
             this._pendingCuocBienRequests.push({playerId: gaHucPlayerId, data})
@@ -406,38 +404,47 @@ export default class PlayerBaCay extends PlayerCardBetTurn {
 
         this.currentCuocBien += value;
         this.renderer.showCuocBienBtn(false);
-        if(this.isItMe()){
-            this.renderer.showCuocBienValue(this.currentCuocBien);
-        }else{
-            this.renderer.showCuocBienValue(value);
-        }
+        this.renderer.showCuocBienValue(this.currentCuocBien);
+        // if(this.isItMe()){
+        //     this.renderer.showCuocBienValue(this.currentCuocBien);
+        // }else{
+        //     this.renderer.showCuocBienValue(value);
+        // }
     }
 
     _onPlayerAcceptCuocBien(gaHucPlayerId, biHucPlayerId, data){
         if(!this.isItMe()) return;
 
+        let hucValue = utils.getValue(data, "value", 0)
         let gaHucPlayer = this.scene.gamePlayers.findPlayer(gaHucPlayerId);
         let biHucPlayer = this.scene.gamePlayers.findPlayer(biHucPlayerId);
-        if (!biHucPlayer || !gaHucPlayer) return;
+        if (!biHucPlayer || !gaHucPlayer || hucValue <= 0) return;
 
-        let hucValue;
         let biHucName = biHucPlayer.user.name;
         let gaHucName = gaHucPlayer.user.name;
 
-        if (gaHucPlayer.isItMe() && gaHucPlayer.pendingCuocBiens.hasOwnProperty(biHucName)) {
-            // Truong hop minh la thang ga huc
-            hucValue = gaHucPlayer.pendingCuocBiens[biHucName];
+        if(gaHucPlayer.isItMe()){
+            gaHucPlayer.hucList[biHucName] = gaHucPlayer.hucList[biHucName] ? gaHucPlayer.hucList[biHucName] + hucValue : hucValue
             delete gaHucPlayer.pendingCuocBiens[biHucName];
-            gaHucPlayer.hucList[biHucName] = hucValue;
-            //TODO notify huc
+        }else{
+            gaHucPlayer.biHucList[gaHucName] = gaHucPlayer.biHucList[gaHucName] ? gaHucPlayer.biHucList[gaHucName] + hucValue : hucValue
+            delete biHucPlayer.pendingBiCuocBiens[gaHucName];
         }
 
-        if (biHucPlayer.isItMe() && biHucPlayer.pendingBiCuocBiens.hasOwnProperty(gaHucName)) {
-            hucValue = biHucPlayer.pendingBiCuocBiens[gaHucName];
-            biHucPlayer.biHucList[gaHucName] = hucValue;
-            delete biHucPlayer.pendingBiCuocBiens[gaHucName];
-            //TODO notify bi huc
-        }
+        // if (gaHucPlayer.isItMe() && gaHucPlayer.pendingCuocBiens.hasOwnProperty(biHucName)) {
+        //     // Truong hop minh la thang ga huc
+        //     hucValue = gaHucPlayer.pendingCuocBiens[biHucName];
+        //     delete gaHucPlayer.pendingCuocBiens[biHucName];
+        //     gaHucPlayer.hucList[biHucName] = hucValue;
+        //     //TODO notify huc
+        // }
+        //
+        // if (biHucPlayer.isItMe() && biHucPlayer.pendingBiCuocBiens.hasOwnProperty(gaHucName)) {
+        //     hucValue = biHucPlayer.pendingBiCuocBiens[gaHucName];
+        //     biHucPlayer.biHucList[gaHucName] = hucValue;
+        //     delete biHucPlayer.pendingBiCuocBiens[gaHucName];
+        //     //TODO notify bi huc
+        // }
 
         biHucPlayer._updateCuocBienValue(hucValue);
         gaHucPlayer._updateCuocBienValue(hucValue);
