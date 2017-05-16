@@ -557,7 +557,7 @@
       "y": 0.5
     },
     "_fillStart": 0.25,
-    "_fillRange": 0,
+    "_fillRange": -0.3,
     "_isTrimmedMode": true,
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
@@ -578,7 +578,7 @@
     },
     "_N$mode": 2,
     "_N$totalLength": 1,
-    "_N$progress": 0,
+    "_N$progress": 0.3,
     "_N$reverse": true
   },
   {

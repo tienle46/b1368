@@ -86,7 +86,7 @@ export default class PlayerRenderer extends ActorRenderer {
     }
 
     setBalance(balance = 0) {
-        this.balanceLabel && (this.balanceLabel.string = GameUtils.formatBalance(balance));
+        this.balanceLabel && (this.balanceLabel.string = GameUtils.formatBalanceShort(balance));
     }
 
     setVisibleOwner(visible) {

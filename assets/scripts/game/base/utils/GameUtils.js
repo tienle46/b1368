@@ -49,7 +49,7 @@ export default class GameUtils {
             let adj = parseInt((balance / 1000000 - parseInt(balance / 1000000)) * 10)
             formatted = adj == 0 ? `${parseInt(balance / 1000000)}m` : `${parseInt(balance / 1000000)}.${adj}m`
         }
-
+        
         return sign + formatted
     }
 

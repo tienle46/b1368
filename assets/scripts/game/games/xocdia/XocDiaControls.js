@@ -132,10 +132,6 @@ export default class XocDiaControls extends GameControls {
             this._setRebetBtnState(true);
             
             this.isInCancelPhase = false;
-            // let data = this.betData.map(bet => {
-            //     bet.b *= 2;
-            //     return bet;
-            // });
             let data = this.betData;
             this._sendBetRequest(data);
         }
@@ -191,9 +187,9 @@ export default class XocDiaControls extends GameControls {
      * 
      * @memberof XocDiaControls
      */
-    _addBetDataToArray(initArray, element) {
+    _addBetDataToArray(initArray, element, isReplace) {
         if(utils.isArray(element)) {
-            initArray = [...initArray, ...element];
+            initArray = isReplace ? [...element] : [...initArray, ...element];
             
             return this._groupBetByType(initArray);
         } else {
@@ -203,8 +199,11 @@ export default class XocDiaControls extends GameControls {
             return initArray.map((initData, index) => {
             
                 if(initData.bo === element.bo)
-                        initData.b += Number(element.b);
-                
+                        if(isReplace)
+                            initData.b -= Number(element.b);
+                        else 
+                            initData.b += Number(element.b);
+                            
                 return initData 
             });
         }
@@ -243,12 +242,9 @@ export default class XocDiaControls extends GameControls {
             this._clearUserGoldAmountOnControl(isItMe, prevList, playerId);
         }
         if (isItMe) {
-            if (isReplace) {
-                this.scene.setPlayerBalance(app.context.getMeBalance() - this._getPreviousUserGold());
-                this.betData = this._addBetDataToArray(this.betData, betsList);
-            } else {
-                this.betData = this._addBetDataToArray(this.betData, betsList);
-            }
+            isReplace && this.scene.setPlayerBalance(app.context.getMeBalance() - this._getPreviousUserGold());
+            
+            this.betData = this._addBetDataToArray(this.betData, betsList, isReplace);
         }
         
         let len = betsList.length;

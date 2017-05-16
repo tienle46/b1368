@@ -733,7 +733,7 @@
     "_tag": -1,
     "_opacityModifyRGB": false,
     "_id": "62a92/zSRZIaZ1ZLQM5n+fc",
-    "_active": false,
+    "_active": true,
     "_components": [
       {
         "__id__": 51
@@ -1001,7 +1001,7 @@
       "y": 0.5
     },
     "_fillStart": 0.25,
-    "_fillRange": 0,
+    "_fillRange": -0.7,
     "_isTrimmedMode": false,
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
@@ -1681,7 +1681,7 @@
     },
     "_N$mode": 2,
     "_N$totalLength": -1,
-    "_N$progress": 1,
+    "_N$progress": 0.7,
     "_N$reverse": false
   },
   {

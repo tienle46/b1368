@@ -654,7 +654,7 @@
     "__type__": "cc.Node",
     "_name": "daily_gift_popup",
     "_objFlags": 0,
-    "_opacity": 255,
+    "_opacity": 0,
     "_color": {
       "__type__": "cc.Color",
       "r": 255,
@@ -709,7 +709,7 @@
     "_tag": -1,
     "_opacityModifyRGB": false,
     "_id": "8323frv2S9Pa5zC2r+TxL38",
-    "_active": true,
+    "_active": false,
     "_components": [
       {
         "__id__": 47

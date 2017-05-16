@@ -484,6 +484,7 @@
     },
     "_enabled": true,
     "path": "",
+    "lineHeight": 24,
     "label": {
       "__id__": 10
     },
@@ -502,9 +503,7 @@
       "__id__": 8
     },
     "_enabled": true,
-    "_spriteFrame": {
-      "__uuid__": "de19ca54-b634-4c9b-b99e-09f912dc3937"
-    },
+    "_spriteFrame": null,
     "_type": 0,
     "_sizeMode": 0,
     "_fillType": 0,
@@ -518,9 +517,7 @@
     "_isTrimmedMode": true,
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
-    "_atlas": {
-      "__uuid__": "10ca67ea-2a3c-4512-b8a8-cfd37f9d8bbe"
-    }
+    "_atlas": null
   },
   {
     "__type__": "cc.Widget",
@@ -531,6 +528,7 @@
     },
     "_enabled": true,
     "isAlignOnce": true,
+    "_target": null,
     "_alignFlags": 32,
     "_left": 0,
     "_right": -68.93120000000005,
@@ -687,10 +685,8 @@
     "node": {
       "__id__": 18
     },
-    "_enabled": true,
-    "_spriteFrame": {
-      "__uuid__": "4e9993b7-948b-40c3-a1a8-0303a9193907"
-    },
+    "_enabled": false,
+    "_spriteFrame": null,
     "_type": 0,
     "_sizeMode": 1,
     "_fillType": 0,
@@ -704,9 +700,7 @@
     "_isTrimmedMode": true,
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
-    "_atlas": {
-      "__uuid__": "10ca67ea-2a3c-4512-b8a8-cfd37f9d8bbe"
-    }
+    "_atlas": null
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -805,6 +799,7 @@
     },
     "_enabled": true,
     "isAlignOnce": true,
+    "_target": null,
     "_alignFlags": 18,
     "_left": -20.04,
     "_right": 0,
@@ -866,6 +861,8 @@
     "timelineTextViewNode": {
       "__id__": 8
     },
+    "bottomTimelineTextViewNode": null,
+    "secondTimelineLabelNode": null,
     "timeline": {
       "__id__": 6
     },
@@ -948,11 +945,13 @@
     "scale": 0.5,
     "reveal": true,
     "selectable": false,
-    "space": 0,
+    "clickableCard": false,
+    "draggable": false,
     "maxDimension": 0,
     "cardPrefab": {
       "__uuid__": "1be1ace3-b9b3-4bf4-9c45-5c1d9eccac08"
     },
+    "space": 0,
     "orientation": 1,
     "align": 7
   },
@@ -1033,11 +1032,13 @@
     "scale": 0.5,
     "reveal": true,
     "selectable": false,
-    "space": 100,
+    "clickableCard": false,
+    "draggable": false,
     "maxDimension": 800,
     "cardPrefab": {
       "__uuid__": "1be1ace3-b9b3-4bf4-9c45-5c1d9eccac08"
     },
+    "space": 100,
     "orientation": 1,
     "align": 7
   },
