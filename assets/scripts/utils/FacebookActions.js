@@ -148,6 +148,15 @@ export default class FacebookActions {
                 this._initSdk({
                     onLogin: (isLogin, msg) => {
                         window.sdkbox.PluginFacebook.dialog(info);
+                    },
+                    onSharedSuccess : (message) => {
+                        
+                    },
+                    onSharedFailed : (message) => {
+                        
+                    },
+                    onSharedCancel : () => {
+                        
                     }
                 });
                 window.sdkbox.PluginFacebook.login();
