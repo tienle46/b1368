@@ -5,6 +5,7 @@ import app from 'app';
 import PopupTabBody from 'PopupTabBody';
 import {isNumber, active, deactive, numberFormat} from 'Utils';
 import CCUtils from 'CCUtils';
+import ActionBlocker from 'ActionBlocker';
 
 export default class TabBuddiesTransfer extends PopupTabBody {
 
@@ -88,14 +89,16 @@ export default class TabBuddiesTransfer extends PopupTabBody {
         }
 
         let reason = this.transferReasonEditBoxNode.string;
-        app.service.send({
-            cmd: app.commands.USER_TRANSFER_TO_USER,
-            data: {
-                [app.keywords.USERNAME]: receiver,
-                [app.keywords.GOLD]: money,
-                [app.keywords.TRANSFER_REASON]: reason
-            }
-        });
+        ActionBlocker.runAction(ActionBlocker.USER_TRANSFER, () => {
+            app.service.send({
+                cmd: app.commands.USER_TRANSFER_TO_USER,
+                data: {
+                    [app.keywords.USERNAME]: receiver,
+                    [app.keywords.GOLD]: money,
+                    [app.keywords.TRANSFER_REASON]: reason
+                }
+            });
+        })
     }
 
     _addGlobalListener() {

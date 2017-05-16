@@ -64,7 +64,7 @@ export default class PlayerPositions extends Component {
     }
 
     onClickAnchorButton() {
-        ActionBlocker.runAction("invitePlayGame", () => {
+        ActionBlocker.runAction(ActionBlocker.INVITE_PLAYER, () => {
             app.service.send({ cmd: app.commands.PLAYER_INVITE, data: {}, room: this.scene.room });
             app.system.showToast(app.res.string('random_invite_player_successfully'));
         })

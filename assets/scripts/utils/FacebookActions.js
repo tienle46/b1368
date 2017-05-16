@@ -116,7 +116,7 @@ export default class FacebookActions {
     share({
         link = app.config.shareFBConfig.link,
         title = app.config.shareFBConfig.title || `Bài ${app.res.string('game_title')}`,
-        text = "Chơi hay thắng lớn",
+        text = app.config.shareFBConfig.description,
         image = app.config.shareFBConfig.image || "http://cms.songbaihoanggia.com/uploadfiles/share-fb.png"
     } = {}) {
         if (app.env.isBrowser()) {
