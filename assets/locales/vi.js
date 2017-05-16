@@ -52,7 +52,7 @@ export default {
     
     greeting_newbiew: `Chào mừng bạn đến với game bài 1368`,
     daily_gift: `Quà tặng đăng nhập hàng ngày`,
-    get_transfer_success: `Bạn đã rút thành công {{amount}} ${currencyName}, chúc bạn chơi game vui vẻ.`,
+    get_transfer_success: `Bạn đã rút thành công {{amount}} ${currencyName}.\nChúc bạn chơi game vui vẻ.`,
     transfer_successfully: `Chuyển thành công {{amount}} ${currencyName} tới {{username}}.`,
     exchange_dialog_confirmation: `Bạn có muốn đổi {{gold}} ${currencyName} để nhận {{name}} ?`,
     really_wanna_quit: 'Bạn có chắc chắn muốn thoát ?',

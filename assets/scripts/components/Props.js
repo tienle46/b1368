@@ -67,6 +67,7 @@ export default class Props extends Component {
             node.addChild(animatingNode);
             
             let clip = cc.AnimationClip.createWithSpriteFrames(spriteFrames, 5);
+            clip.speed = 0.7;
             clip.name = 'run';
             clip.wrapMode = cc.WrapMode.Normal;
             animation.addClip(clip);

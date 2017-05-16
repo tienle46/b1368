@@ -442,7 +442,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 197,
+      "width": 213,
       "height": 213
     },
     "_children": [],
@@ -515,8 +515,8 @@
     "isAlignOnce": true,
     "_target": null,
     "_alignFlags": 45,
-    "_left": 26.5,
-    "_right": 622.5,
+    "_left": 18.5,
+    "_right": 614.5,
     "_top": 18,
     "_bottom": 12,
     "_verticalCenter": 0,
