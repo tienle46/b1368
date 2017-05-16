@@ -372,7 +372,7 @@ export default class GamePlayers extends Component {
     }
 
     onBoardOwnerChanged(owner) {
-        this.players.forEach(player => player.onBoardOwnerChanged());
+        this.players.forEach(player => player.onBoardOwnerChanged(owner));
     }
 
     onGameBegin(data) {

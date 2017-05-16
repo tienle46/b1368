@@ -249,7 +249,9 @@ export default class BoardSam extends BoardCardTurnBase {
 
                 if (!denOrThangXamPlayerId) {
                     let handCard = playerHandCards[id];
-                    !gameResultInfos[id] && (gameResultInfos[id] = handCard && handCard.length > 0 ? app.res.string('game_result_card_count', {count: handCard.length}) : "");
+                    if(!winnerFlags[id] && !gameResultInfos[id]){
+                        gameResultInfos[id] = handCard && handCard.length > 0 ? app.res.string('game_result_card_count', {count: handCard.length}) : "";
+                    }
                 }
             }
 
@@ -258,7 +260,7 @@ export default class BoardSam extends BoardCardTurnBase {
 
         Object.keys(thoiData).forEach(id => {
 
-            if (!denOrThangXamPlayerId) {
+            if (!denOrThangXamPlayerId && !winnerFlags[id]) {
 
                 let {types, counts} = thoiData[id];
 

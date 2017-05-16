@@ -62,10 +62,13 @@ export default class PlayerRenderer extends ActorRenderer {
 
         this.playerMessage = this.playerMessageNode.getComponent('PlayerMessage');
         this.playerMessage.setup(this);
-        
-        this._stopCountdown();
 
+        this._stopCountdown();
         this.loaded = true;
+
+        if(this.anchorIndex >= 0){
+            this.updatePlayerAnchor(this.anchorIndex)
+        }
 
         this.isItMe && this.injectComponent();
     }

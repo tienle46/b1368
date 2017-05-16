@@ -18,7 +18,8 @@ export default class PlayerXocDiaRenderer extends PlayerCardBetTurnRenderer {
     }
 
     getMessageAnchorIndex(anchorIndex) {
-        this.actor.isItMe() ? -1 : anchorIndex;
+        return anchorIndex;
+        // this.actor.isItMe() ? -1 : anchorIndex;
     }
 
     injectComponent(){

@@ -299,7 +299,7 @@ export default class Player extends Actor {
     
     setOwner(isOwner) {
         this.isOwner = isOwner;
-        this.renderer.setVisibleOwner(isOwner);
+        this.renderer && this.renderer.setVisibleOwner(isOwner);
     }
 
     setMaster(isMaster) {

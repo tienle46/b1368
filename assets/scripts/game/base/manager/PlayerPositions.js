@@ -254,6 +254,22 @@ export default class PlayerPositions extends Component {
 
         return nextPlayerId;
     }
+
+    isPositionOnTop(anchorIndex) {
+        return false
+    }
+
+    isPositionOnRight(anchorIndex) {
+        return false
+    }
+
+    isPositionOnLeft(anchorIndex) {
+        return false
+    }
+
+    isMePositionOnLeft() {
+        return false;
+    }
 }
 
 PlayerPositions.ALIGN_TOP = 'TOP'

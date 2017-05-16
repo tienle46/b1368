@@ -225,13 +225,15 @@ export default class BoardTLMNDL extends BoardCardTurnBase {
          */
         playerIds.map(id => {
             var handCard = playerHandCards[id];
-            !gameResultInfos[id] && (gameResultInfos[id] = handCard && handCard.length > 0 ? app.res.string('game_tlmn_card_count', {count: handCard.length}) : "");
+            if(!winnerFlags[id] && !gameResultInfos[id]){
+                gameResultInfos[id] = handCard && handCard.length > 0 ? app.res.string('game_tlmn_card_count', {count: handCard.length}) : "";
+            }
         });
 
         Object.keys(thoiData).forEach(id => {
             let { types, counts } = thoiData[id];
 
-            if (types && types.length > 0) {
+            if (types && types.length > 0 && !winnerFlags[id]) {
                 let str = `${app.res.string('game_thoi')} `;
 
                 types.forEach((type, i) => {
@@ -242,7 +244,7 @@ export default class BoardTLMNDL extends BoardCardTurnBase {
                     str += count > 0 ? `${counts[i]} ${typeName}${subfix}` : `${typeName}${subfix}`;
                 });
 
-                gameResultInfos[id] = str + (!utils.isEmpty(gameResultInfos[id]) ? `, ${gameResultInfos[id]}` : '');
+                gameResultInfos[id] = str + (playersWinRanks[id] != app.const.game.rank.GAME_RANK_FIRST && !utils.isEmpty(gameResultInfos[id]) ? `, ${gameResultInfos[id]}` : '');
             }
         });
 

@@ -45,25 +45,25 @@ export default class PlayerMessage extends Component {
     }
 
     updateAnchor(anchorIndex) {
+
+        this.anchorIndex = anchorIndex;
         if (!this.loaded) return;
 
-        this.anchorIndex = (this.playerRenderer && this.playerRenderer.getMessageAnchorIndex(anchorIndex));
-
-        console.log("this.anchorIndex: ", this.anchorIndex)
+        //this.anchorIndex = (this.playerRenderer && this.playerRenderer.getMessageAnchorIndex(anchorIndex));
 
         if (this.anchorIndex == 0 && this.playerRenderer.isMePositionOnLeft()) {
             this.textViewNode.setAnchorPoint(0.5, 0);
-            this.node.setPosition(30, 0);
+            this.node.setPosition(35, 0);
         }else if (this.anchorIndex > 0) {
             if (this.playerRenderer.isPositionOnTop()) {
                 this.textViewNode.setAnchorPoint(0.5, 1);
                 this.node.setPosition(0, 0);
             } else if (this.playerRenderer.isPositionOnLeft()) {
-                this.textViewNode.setAnchorPoint(0.5, 0);
-                this.node.setPosition(30, 0);
+                this.textViewNode.setAnchorPoint(0.5, 0.5);
+                this.node.setPosition(35, 0);
             } else if (this.playerRenderer.isPositionOnRight()) {
-                this.textViewNode.setAnchorPoint(0.5, 0);
-                this.node.setPosition(-30, 0);
+                this.textViewNode.setAnchorPoint(0.5, 0.5);
+                this.node.setPosition(-35, 0);
             }else{
                 this.textViewNode.setAnchorPoint(0.5, 0);
                 this.node.setPosition(0, 0);
