@@ -233,14 +233,13 @@ class TabExchangeCard extends PopupTabBody {
      * @memberOf TabExchangeCard
      */
     _onConfirmDialogBtnClick(event) {
-
         let parentNode = this.node.parent.parent;
 
         if (app.context.needUpdatePhoneNumber()) {
             // hide this node
             this._showUpdatePhoneNumber();
         } else {
-            let { id, gold, } = this.selectedItem;
+            let { id, gold, name} = this.selectedItem;
             let myCoin = app.context.getMeBalance();
 
             if (Number(myCoin) < Number(gold)) {
