@@ -387,7 +387,8 @@ export default class PlayerBaCay extends PlayerCardBetTurn {
         app.system.confirm(
             app.res.string('game_bacay_ask_to_accept_cuoc_bien', {player: requestPlayerName, value: requestMoney}),
             denyCb,
-            okCallback
+            okCallback,
+            true
         );
     }
 

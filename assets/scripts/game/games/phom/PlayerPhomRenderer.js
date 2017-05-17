@@ -288,6 +288,11 @@ export default class PlayerPhomRenderer extends PlayerCardTurnBaseRenderer {
     clearCards(isEnding){
         !isEnding && super.clearCards(isEnding);
     }
+
+    hideHandCardList(){
+        this.cardList.cards.forEach(card => card.node.runAction(cc.spawn(cc.fadeOut(1), cc.scaleTo(0.8, 0.2, 0.2))))
+        this.cardList.runActionWithCallback([cc.delayTime(0.8)], () => this.cardList.clear())
+    }
 }
 
 app.createComponent(PlayerPhomRenderer);

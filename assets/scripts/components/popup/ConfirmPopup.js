@@ -25,8 +25,8 @@ export default class ConfirmPopup extends MessagePopup {
         return app.res.prefab.confirmPopup;
     }
 
-    static confirm(parentNode, message, denyCb, acceptCb) {
-        this.show(parentNode, message, denyCb, acceptCb, 'ConfirmPopup');
+    static confirm(parentNode, message, denyCb, acceptCb, multi) {
+        this.show(parentNode, message, denyCb, acceptCb, 'ConfirmPopup', multi);
     }
 
     static showCustomConfirm(parentNode, message, {acceptLabel, denyLabel, denyCb, acceptCb} = {}) {

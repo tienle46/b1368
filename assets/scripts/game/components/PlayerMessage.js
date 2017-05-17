@@ -53,7 +53,7 @@ export default class PlayerMessage extends Component {
 
         if (this.anchorIndex == 0 && this.playerRenderer.isMePositionOnLeft()) {
             this.textViewNode.setAnchorPoint(0.5, 0);
-            this.node.setPosition(35, 0);
+            this.node.setPosition(35, -15);
         }else if (this.anchorIndex > 0) {
             if (this.playerRenderer.isPositionOnTop()) {
                 this.textViewNode.setAnchorPoint(0.5, 1);

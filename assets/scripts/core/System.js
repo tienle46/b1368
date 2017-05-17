@@ -146,22 +146,22 @@ class GameSystem {
         this._addToastToScene();
     }
 
-    info(title, message) {
+    info(title, message, multi = true) {
 
         if (arguments.length == 1) {
             message = title;
             title = app.res.string('system');
         }
 
-        MessagePopup.show(this.getCurrentSceneNode(), message);
+        MessagePopup.show(this.getCurrentSceneNode(), message, null, null, undefined, multi);
     }
 
     error(message, closeCb, acceptCb) {
         MessagePopup.show(this.getCurrentSceneNode(), message, closeCb, acceptCb);
     }
 
-    confirm(message, cancelCallback, okCallback) {
-        ConfirmPopup.confirm(this.getCurrentSceneNode(), message, cancelCallback, okCallback);
+    confirm(message, cancelCallback, okCallback, multi) {
+        ConfirmPopup.confirm(this.getCurrentSceneNode(), message, cancelCallback, okCallback, multi);
     }
 
     /**
