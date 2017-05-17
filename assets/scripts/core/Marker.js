@@ -7,7 +7,7 @@ import Utils from 'Utils';
 
 export default class Marker {
     constructor() {
-        this._localStorage = cc.sys.localStorage;
+        cc.sys.localStorage = cc.sys.localStorage;
         this._RQ = '$[RQ]'; // $[namespace] for caching requested data
         
         this.caches = {};
@@ -106,7 +106,7 @@ export default class Marker {
                 }
             }
         
-            this._localStorage.setItem(key, data);
+            cc.sys.localStorage.setItem(key, data);
         }
         
         return stateData;
@@ -116,9 +116,15 @@ export default class Marker {
         let k = this._validKey(key);
         if(!k)
             return null;
-        let namespace = this._getNamespaceFromScope(k);   
+        let namespace = this._getNamespaceFromScope(k);
         
         let parentObject = namespace ? this.caches[namespace]: this.caches;
+        
+        // sometimes cc.sys need delayed time after mapping in initCaches
+        if(!parentObject[k]) {
+            cc.sys.localStorage.getItem(k) && (parentObject[k] = this.setItem(k, cc.sys.localStorage.getItem(k)));
+        }
+        
         return parentObject[k];
     }
     
@@ -183,8 +189,10 @@ export default class Marker {
     }
     
     _initCaches() {
-        for(let key in this._localStorage) {
-            let data = this._localStorage.getItem(key);
+        for (var i = 0; i <  cc.sys.localStorage.length; i++){
+            let key = cc.sys.localStorage.key(i);
+            let data = cc.sys.localStorage.getItem(key);
+            
             try {
                 data = JSON.parse(data);
             } catch(e) {
