@@ -379,7 +379,7 @@ export default class CardList extends ActionComponent {
 
         let cardSize = this._isHorizontal() ? this.cardWidth : this.cardHeight;
         let cardDistance = (this.maxDimension - cardSize) / (this.cards.length - 1);
-        this._overlapSpace = cardDistance < this._realSpace ? cardDistance : this._realSpace;
+        this._overlapSpace = (cardDistance < this._realSpace ? cardDistance : this._realSpace); //5 is transparent space
     }
 
     _isSamePosition(pos1, pos2) {

@@ -987,7 +987,8 @@ export default class PlayerPhom extends PlayerCardTurnBase {
                 }
             }
         }else{
-            this.renderer.cardList.clear();
+            // this.renderer.cardList.clear();
+            this.renderer.hideHandCardList();
         }
     }
 

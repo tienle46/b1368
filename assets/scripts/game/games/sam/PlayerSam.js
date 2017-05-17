@@ -58,7 +58,9 @@ export default class PlayerSam extends PlayerCardTurnBase {
     }
 
     _onPlayerPlayedCards(cards, cardList, isItMe){
-        if(!isItMe){
+        if(isItMe) {
+            this.scene.emit(Events.SHOW_WAIT_TURN_CONTROLS)
+        }else{
             this.setRemainCardCount(cards ? this.remainCardCount - cards.length : this.remainCardCount)
         }
     }
