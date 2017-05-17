@@ -168,14 +168,15 @@ export default class TabUserInfo extends PopupTabBody {
     _onUserUpdatePassword(data) {
         //update password
         if (data.hasOwnProperty(app.keywords.UPDATE_PROFILE_RESULT) && data[app.keywords.UPDATE_PROFILE_RESULT] == true) {
-            app.system.showLongToast(app.res.string('password_changed_successfully'));
+            app.system.showLongToast(data[app.keywords.RESPONSE_MESSAGE] || app.res.string('password_changed_successfully'));
+            
             this.currPassword.string = "";
             this.newPassword.string = "";
             this.passwordConfirmation.string = "";
 
             this._showUserInfoPanel();
         } else {
-            app.system.error(app.res.string('error_password_changed_unsuccessfully'));
+            app.system.error(data[app.keywords.RESPONSE_MESSAGE] || app.res.string('error_password_changed_unsuccessfully'));
         }
     }
 
