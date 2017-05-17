@@ -255,14 +255,14 @@ export default class TabUserInfo extends PopupTabBody {
         let {
             balance,
             id,
-            accountTypeName
+            vipLevelName
         } = data;
 
         this.userName.string = app.context.getMeDisplayName();
         this.chipAmout.string = numberFormat(balance);
 
         this.userId.string = name;
-        this.vipLevel.string = accountTypeName || "";
+        this.vipLevel.string = vipLevelName || "";
 
         if (app.context.needUpdatePhoneNumber()) {
             this.phoneNumber.string = `Chưa cập nhật`;

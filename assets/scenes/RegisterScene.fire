@@ -499,7 +499,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 537,
-      "height": 495
+      "height": 490
     },
     "_children": [
       {
@@ -570,7 +570,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 255.36,
-      "height": 80
+      "height": 75
     },
     "_children": [],
     "_rotationX": 0,
@@ -609,7 +609,7 @@
     "_useOriginalSize": false,
     "_actualFontSize": 60,
     "_fontSize": 60,
-    "_lineHeight": 80,
+    "_lineHeight": 75,
     "_enableWrapText": true,
     "_N$file": {
       "__uuid__": "b2c0f634-158a-49ee-84f8-a41c8e7ebb56"
@@ -617,7 +617,7 @@
     "_isSystemFontUsed": false,
     "_N$string": "ĐĂNG KÝ",
     "_N$horizontalAlign": 1,
-    "_N$verticalAlign": 0,
+    "_N$verticalAlign": 1,
     "_N$overflow": 0
   },
   {
@@ -658,7 +658,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": 95.5
+      "y": 98
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -834,7 +834,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": -13.5
+      "y": -11
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -1016,7 +1016,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": -120,
-      "y": -110.5
+      "y": -108
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -1568,7 +1568,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": -209
+      "y": -206.5
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -1811,7 +1811,7 @@
     "_layoutSize": {
       "__type__": "cc.Size",
       "width": 537,
-      "height": 495
+      "height": 490
     },
     "_resize": 1,
     "_N$layoutType": 2,
