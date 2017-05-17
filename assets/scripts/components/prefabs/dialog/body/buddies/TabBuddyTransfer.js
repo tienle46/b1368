@@ -44,7 +44,13 @@ export default class TabBuddiesTransfer extends PopupTabBody {
         if(this.receiverEditBoxNode.string == "") {
             this.receiverEditBoxNode.string = this.receiverBuddyName || '';
         }
-
+         
+        if (app.context.getMeBalance() < (data.minTransfer * (1 + data.feeTransfer/100))) {
+            active(this.warningLbl);
+            this.warningLbl.string = app.res.string('error_long_is_ineligible');
+            deactive(this.maxLblNode);
+        }
+        
         this.feeAmountLbl.string = `${numberFormat(feeTransfer)}%`;
         this.minAmountLbl.string = numberFormat(minTransfer);
         this.maxAmountLbl.string = numberFormat(maxTransfer);
@@ -75,8 +81,8 @@ export default class TabBuddiesTransfer extends PopupTabBody {
             return;
         }
 
-        if (app.context.getMeBalance() < (data.minTransfer + data.feeTransfer)) {
-            app.system.showToast(app.res.string('error_transfer_input_is_not_enough', {amount: numberFormat(data.minTransfer + data.feeTransfer)}));
+        if (app.context.getMeBalance() < (data.minTransfer * (1 + data.feeTransfer/100))) {
+            app.system.showToast(app.res.string('error_transfer_input_is_not_enough', {amount: numberFormat(data.minTransfer * (1 + data.feeTransfer/100))}));
             return;
         }
 
@@ -150,13 +156,10 @@ export default class TabBuddiesTransfer extends PopupTabBody {
         this.setComponentData({
             feeTransfer: data["feeTransfer"] || 0,
             minTransfer: data["minTransfer"] || 0,
-            maxTransfer: data["maxTransfer"] ? Math.min(currentMoney, data["maxTransfer"]) : currentMoney
+            maxTransfer: currentMoney < data["maxTransfer"] ? currentMoney * (1 - data["feeTransfer"]/100) : data["maxTransfer"]
         })
 
         this.renderComponentData(this.getComponentData())
-
-        // active(this.warningLbl);
-        // this.warningLbl.string = app.res.string('error_long_is_ineligible');
     }
 
     _onUserTransferResponse(data) {
