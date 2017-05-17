@@ -153,8 +153,19 @@ export default class BoardBaCay extends BoardCardBetTurn {
     }
 
     _getPlayerHandCards(playerIds = [], data = {}) {
-        data[Keywords.GAME_LIST_PLAYER_CARDS_SIZE] = new Array(playerIds.length).fill(3)
-        return super._getPlayerHandCards(playerIds, data);
+
+        if(data[Keywords.GAME_LIST_CARD]){
+            data[Keywords.GAME_LIST_PLAYER_CARDS_SIZE] = new Array(playerIds.length).fill(3)
+            return super._getPlayerHandCards(playerIds, data);
+        }else{
+            let result = {};
+            playerIds.forEach(id => {
+                let player = this.scene.gamePlayers.findPlayer(id);
+                result[id] = player ? [...player.getCards()] : [];
+            });
+
+            return result;
+        }
     }
 
     onBoardEnding(data) {
