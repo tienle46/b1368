@@ -69,7 +69,7 @@ export default class TabBuddiesTransfer extends PopupTabBody {
             app.system.showToast(app.res.string('error_user_enter_empty_input'));
             return;
         }
-
+        
         let money = Number(this.transferAmountEditBoxNode.string);
         if (!isNumber(money)) {
             app.system.showToast(app.res.string('error_transfer_input_is_invalid', {type: 'chuyển'}));
