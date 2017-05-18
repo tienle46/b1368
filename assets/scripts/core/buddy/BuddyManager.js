@@ -108,14 +108,16 @@ export default class BuddyManager {
         message && app.system.showToast(message);
     }
 
-    requestAddBuddy(buddyName) {
+    requestAddBuddy(buddyName, buddyDisplayName) {
         if (!buddyName) return;
-
-        if (this.getBuddyByName(buddyName)) {
-            app.system.showToast(app.res.string('buddy_already_in_buddy_list', { buddyName }));
+        
+        if (this.containsBuddy(buddyName)) {
+            let buddy = this.getBuddyByName(buddyName);
+            
+            app.system.showToast(app.res.string('buddy_already_in_buddy_list', { buddyName: buddyDisplayName}));
         } else {
             if(app._.includes(this._requestedBuddies, buddyName)){
-                app.system.showToast(app.res.string('buddy_request_already_send', { buddyName }));
+                app.system.showToast(app.res.string('buddy_request_already_send', { buddyName: buddyDisplayName }));
                 return;
             }
 
@@ -127,7 +129,7 @@ export default class BuddyManager {
 
     _confirmAddBuddy(data) {
         if (data && data.sender) {
-            app.system.confirm(app.res.string('confirm_add_to_buddy_list', { sender: data.sender }), null, () => {
+            app.system.confirm(app.res.string('confirm_add_to_buddy_list', { sender: data.displayName }), null, () => {
                 app.service.send({ cmd: app.commands.CONFIRM_ADD_BUDDY, data: { sender: data.sender } });
             });
         }
@@ -138,7 +140,9 @@ export default class BuddyManager {
     }
 
     containsBuddy(buddyName) {
-        return app.service.client.buddyManager.containsBuddy(buddyName);
+        let buddy = this.getBuddyByName(buddyName);
+        return this.buddies.find(b => b == buddy);
+        // return app.service.client.buddyManager.containsBuddy(buddyName);
     }
 
     destroy() {
@@ -226,14 +230,18 @@ export default class BuddyManager {
     }
 
     getBuddyByName(name) {
-        return name && app.service.client.buddyManager.getBuddyByName(name);
+        let buddy = name && app.service.client.buddyManager.getBuddyByName(name);
+        buddy && !buddy.hasOwnProperty('displayName') && (buddy.displayName = buddy.getNickName() || buddy.name);
+        
+        return buddy;
     }
 
     _onBuddyAdd(evtParams) {
         log('_onBuddyAdd: ', evtParams);
         if (evtParams.buddy) {
             this.onBuddyListUpdate();
-            app.system.showToast(app.res.string("buddy_added_buddy", { buddyName: evtParams.buddy.name }))
+            let displayName = evtParams.buddy.displayName || evtParams.buddy.getNickName() || evtParams.buddy.name;
+            app.system.showToast(app.res.string("buddy_added_buddy", { buddyName: displayName }))
         }
 
         // if(!evtParams.buddy.isTemp()){
@@ -256,7 +264,8 @@ export default class BuddyManager {
         log('_onBuddyRemove: ', evtParams);
         if (evtParams.buddy) {
             this.onBuddyListUpdate();
-            app.system.showToast(app.res.string("buddy_removed_buddy", { buddyName: evtParams.buddy.name }))
+            let displayName = evtParams.buddy.displayName || evtParams.buddy.getNickName() || evtParams.buddy.name;
+            app.system.showToast(app.res.string("buddy_removed_buddy", { buddyName: displayName}))
         }
 
         // let index = this.buddies.indexOf(evtParams.buddy);

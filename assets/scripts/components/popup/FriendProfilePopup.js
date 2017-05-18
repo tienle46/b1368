@@ -14,6 +14,7 @@ export default class FriendProfilePopup extends DialogActor {
             ...this.properties,
             propsGridView: cc.Layout,
             rtUserName: cc.Label,
+            rtDisplayName: cc.Label,
             rtBalance: cc.Label,
             userAvatar: cc.Sprite,
             bgNode: cc.Node,
@@ -49,7 +50,7 @@ export default class FriendProfilePopup extends DialogActor {
 
     onEnable() {
         super.onEnable();
-
+        
         utils.setInteractable(this.addFriendBtn, !(this.friendName && app.buddyManager.containsBuddy(this.friendName)));
     }
 
@@ -140,7 +141,7 @@ export default class FriendProfilePopup extends DialogActor {
     }
 
     inviteFriend() {
-        app.buddyManager.requestAddBuddy(this.friendName);
+        app.buddyManager.requestAddBuddy(this.friendName, this.rtDisplayName.string);
         CCUtils.setInteractable(this.addFriendBtn, false);
     }
 
@@ -214,6 +215,7 @@ export default class FriendProfilePopup extends DialogActor {
 
     _onSelectUserProfile(user) {
         this.rtUserName.string = `${user["u"]}`;
+        this.rtDisplayName.string = `${user["displayName"]}`;
         this.rtBalance.string = `${utils.numberFormat(user["coin"])}`;
     }
 

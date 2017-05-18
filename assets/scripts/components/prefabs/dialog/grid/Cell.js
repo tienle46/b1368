@@ -28,7 +28,7 @@ export class Cell extends Component {
                     this.node.removeComponent(this.label);
                 }
                 let widgetOptions = { hortizontalCenter: true };
-                !app.env.isBrowser() && (widgetOptions.top = 15); 
+                !app.env.isBrowser() && (widgetOptions.top = -5); 
                 
                 NodeRub.addWidgetComponentToNode(data, widgetOptions);
                 data.active = true;
