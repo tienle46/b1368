@@ -156,14 +156,14 @@ class TabExchangeHistory extends PopupTabBody {
             }),
             res[app.keywords.EXCHANGE_HISTORY.RESPONSE.STATUS_LIST].map((status, index) => {
                 switch (status) {
-                    case 1:
+                    case 11:
                     case 2:
                         let transferId = res[app.keywords.EXCHANGE_HISTORY.RESPONSE.ITEM_ID_HISTORY][index];
-                        
                         let btnNode = cc.instantiate(this.getChipBtnNode);
                             btnNode.value = { transferId };
                             return btnNode;
                     case 3:
+                    case 12:
                         var cardSerial, serialNumber;
                         var exec = pattern.exec(res[app.keywords.DETAIL_LIST][index]);
                         if (exec && exec.length > 0) {

@@ -75,7 +75,7 @@ class ChattingBuddyItem extends Component {
         log('onBuddyChanged buddy: ', this.buddy);
 
         if (this.buddy) {
-            this.nameLabel.string = this.buddy.name;
+            this.nameLabel.string = this.buddy.displayName || this.buddy.getNickName() || this.buddy.name;
             this.buddy.avatar && RubUtils.loadSpriteFrame(this.avatarSpriteNode.getComponent(cc.Sprite), this.buddy.avatar['tiny'], false, true);
             
             if (this.buddy.isOnline()) {

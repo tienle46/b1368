@@ -17,6 +17,11 @@ export class Row extends Component {
     onEnable() {
         super.onEnable();
         this.verticalAlignCenterText();
+        
+        if(!this._iniWithNode && !app.env.isBrowser()) {
+            this.layout.paddingTop = 40;
+            cc.log('1', this.layout.paddingTop)
+        }
     }
     
     init(cells, showBg) {
@@ -29,10 +34,6 @@ export class Row extends Component {
                 this.node.addChild(cell);
             });
         }
-
-        if(!app.env.isBrowser()) {
-            this.layout.paddingTop = 10;
-        }
         
         this.node.active = true;
     }
@@ -42,6 +43,7 @@ export class Row extends Component {
         //     let sprite = this.node.getComponent(cc.Sprite);
         //     sprite.enabled = false;
         // }
+        this._iniWithNode = true;
         
         this.node.addChild(node);
     }

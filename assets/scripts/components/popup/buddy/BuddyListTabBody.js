@@ -57,18 +57,30 @@ class BuddyListTabBody extends PopupTabBody {
         return false;
     }
 
-    onDataChanged({ balances = [], buddyNames = [], avatarUrls = [] } = {}) {
+    onDataChanged({ balances = [], buddyNames = [], avatarUrls = [], displayName = [] } = {}) {
         if (buddyNames.length === 0) return;
+        let temp = [];
         buddyNames.forEach((buddyName, index) => {
             let buddy = app.buddyManager.getBuddyByName(buddyName);
-            buddy && (buddy.balance = balances[index]);
-            buddy && (buddy.avatar = avatarUrls[index]);
 
+            if(buddy) {
+                buddy.balance = balances[index]
+                buddy.avatar = avatarUrls[index]
+                buddy.displayName = displayName[index] || buddyName || buddy.getNickName() || buddy.name
+            }
+            
             let buddyItem = this._findCurrentBuddyItem(buddy);
-            if(buddyItem) {
-                buddyItem.onBuddyChanged();
+            buddyItem && buddyItem.onBuddyChanged();
+            
+            if(buddy && !buddyItem) {
+                temp.push(buddy);
             }
         });
+        
+        if(app.buddyManager.buddies.length < 1 && temp.length > 0) { // when remove buddy, dont know why buddies list is empty
+            this.setBuddyList(temp, true);
+            temp = [];
+        }
     }
 
     onLoad() {

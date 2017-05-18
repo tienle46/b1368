@@ -63,7 +63,7 @@ class BuddyItem extends PopupTabBody {
 
     onBuddyChanged() {
         if (this.buddy) {
-            this.nameLabel.string = this.buddy.name;
+            this.nameLabel.string = this.buddy.displayName || this.buddy.getNickName() || this.buddy.name;
             this.setBlocked(this.buddy.isBlocked())
             this.setOnlineState(this.buddy.isOnline());
             this.setBalance(this.buddy.balance);
@@ -155,7 +155,7 @@ class BuddyItem extends PopupTabBody {
     }
 
     setBalance(balance = 0) {
-        this.balanceLabel.string = `${balance}`;
+        this.balanceLabel.string = `${utils.numberFormat(balance)}`;
     }
 
     onItemClicked() {
