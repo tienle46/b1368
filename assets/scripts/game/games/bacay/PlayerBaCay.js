@@ -62,13 +62,18 @@ export default class PlayerBaCay extends PlayerCardBetTurn {
         this.scene.off(Events.ON_PLAYER_BACAY_GOP_GA, this._onPlayerGopGa, this);
     }
 
+    _updateAvailableBalance(){
+        let availableBalance = GameUtils.getUserBalance(this.user) - this.betAmount - (this.gopGaValue || 0) - (this.currentCuocBien || 0);
+        this.renderer.setBalance(availableBalance)
+    }
+
     _onPlayerGopGa(playerId, gopGaValue, errMsg){
         if(playerId != this.id) return;
 
         if(gopGaValue > 0){
+            this.gopGaValue = gopGaValue;
             this.renderer.visibleGopGaIcon()
-            let availableBalance = GameUtils.getUserBalance(this.user) - this.betAmount - gopGaValue
-            this.renderer.setBalance(availableBalance)
+            this._updateAvailableBalance()
         }else {
             let message;
             if(Utils.isString(errMsg)){
@@ -141,8 +146,7 @@ export default class PlayerBaCay extends PlayerCardBetTurn {
         this.betAmount = betAmount;
         this.renderer.showBetAmount(this.betAmount);
 
-        let availableBalance = GameUtils.getUserBalance(this.user) - this.betAmount
-        this.renderer.setBalance(availableBalance)
+        this._updateAvailableBalance()
     }
 
     _handlePlayerDown(playerId, data) {
@@ -354,7 +358,7 @@ export default class PlayerBaCay extends PlayerCardBetTurn {
     _onPlayerCuocBien(gaHucPlayerId, data) {
         if (!this.isItMe() || this.id == gaHucPlayerId) return;
 
-        if(this.scene.isShowCuocBienPopup){
+        if(this.scene.isShowCuocBienPopup || this.scene.isShowBetPopup){
             this._pendingCuocBienRequests.push({playerId: gaHucPlayerId, data})
             return;
         }
@@ -398,6 +402,8 @@ export default class PlayerBaCay extends PlayerCardBetTurn {
             let maxValue = BaCayUtils.calculateMaxPlayerBet(this.scene.gamePlayers.me, this.scene.gamePlayers.master);
             this.scene._betPopup.setMaxValue(maxValue)
         }
+
+        this._updateAvailableBalance()
     }
 
     _updateCuocBienValue(value){
