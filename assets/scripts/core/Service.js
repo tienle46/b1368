@@ -66,7 +66,16 @@ class Service {
         config.useSSL = app.config.useSSL;
 
         this.client = new SFS2X.SmartFox(config);
-        this.client.setClientDetails("MOZILLA", "1.0.0");
+        
+        let clientType = 'MOZILLA';
+       
+        if (app.env.isIOS()){
+            clientType = 'IOS';
+        }
+        else if (app.env.isAndroid()){
+            clientType = 'ANDROID';
+        }
+        this.client.setClientDetails(clientType, "1.0.0");
         //this.client.setReconnectionSeconds(120);
 
         this._registerSmartFoxEvent();
