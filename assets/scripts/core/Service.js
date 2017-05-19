@@ -260,8 +260,11 @@ class Service {
             this._handleLagPollingResponse(event);
         } else if (event.cmd === app.commands.SYSTEM_MESSAGE) {
             let params = event[app.keywords.BASE_EVENT_PARAMS];
-            let messageList = params[app.keywords.MESSAGE_LIST];
-            messageList && messageList.length > 0 && app.system.info(`${messageList[0]}`);
+            let messageType = event && event.t;
+            
+            messageList && messageList.length > 0 && messageList.forEach(message => {
+                messageType === app.const.adminMessage.TOAST ? app.system.showLongToast(message) : app.system.info(message);
+            });
         } else if (event.cmd === app.commands.CLIENT_CONFIG) {
             this._dispatchClientConfig(event.params);
         } else {
