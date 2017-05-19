@@ -99,8 +99,7 @@ export default class BaCayScene extends GameScene {
 
     hideChooseBetSlider() {
         this._betPopup && this._betPopup.hide();
-        this.isShowBetPopup = false
-        this.isShowCuocBienPopup = false
+        this.onHideChooseBetSlider()
     }
 
     _onClickChooseBetButton(value) {
