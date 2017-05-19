@@ -19,8 +19,6 @@ class TabExchangeHistory extends PopupTabBody {
             getChipBtnNode: cc.Node,
             p404: cc.Node
         };
-        
-        this._rendered = false;
     }
     
     onLoad() {
@@ -42,7 +40,7 @@ class TabExchangeHistory extends PopupTabBody {
     }
     
     onDataChanged(data) {
-        !this._rendered && data && Object.keys(data).length > 0 && this._renderHistory(data);
+        // data && Object.keys(data).length > 0 && this._renderHistory(data);
     }
     
     onDestroy() {
@@ -119,17 +117,18 @@ class TabExchangeHistory extends PopupTabBody {
     }
 
     _onGetExchangeHistory(data) {
-        this.setLoadedData(data);
+        // this.setLoadedData(data);
+        this._renderHistory(data)
     }
     
     _renderHistory(res) {
         let pattern = /Mã thẻ[^]*,/;
-        if(res[app.keywords.EXCHANGE_HISTORY.RESPONSE.ITEM_ID_HISTORY] && res[app.keywords.EXCHANGE_HISTORY.RESPONSE.ITEM_ID_HISTORY].length > 0) {
+        // if(res[app.keywords.EXCHANGE_HISTORY.RESPONSE.ITEM_ID_HISTORY] && res[app.keywords.EXCHANGE_HISTORY.RESPONSE.ITEM_ID_HISTORY].length > 0) {
             this._rendered = true;
             let data = [
-            res[app.keywords.EXCHANGE_HISTORY.RESPONSE.TIME_LIST].map(time => timeFormat(time)),
-            res[app.keywords.EXCHANGE_HISTORY.RESPONSE.NAME_LIST],
-            res[app.keywords.EXCHANGE_HISTORY.RESPONSE.STATUS_LIST].map((status, index) => {
+            (res[app.keywords.EXCHANGE_HISTORY.RESPONSE.TIME_LIST] || []).map(time => timeFormat(time)),
+            (res[app.keywords.EXCHANGE_HISTORY.RESPONSE.NAME_LIST] || []),
+            (res[app.keywords.EXCHANGE_HISTORY.RESPONSE.STATUS_LIST] || []).map((status, index) => {
                 switch (status) {
                     case 1:
                     case 10:
@@ -154,7 +153,7 @@ class TabExchangeHistory extends PopupTabBody {
                         return app.res.string('error_system');
                 }
             }),
-            res[app.keywords.EXCHANGE_HISTORY.RESPONSE.STATUS_LIST].map((status, index) => {
+            (res[app.keywords.EXCHANGE_HISTORY.RESPONSE.STATUS_LIST] || []).map((status, index) => {
                 switch (status) {
                     case 11:
                     case 2:
@@ -187,10 +186,7 @@ class TabExchangeHistory extends PopupTabBody {
             }),
         ];
         this._initBody(data);
-        } else {
-            this.showEmptyPage(this.p404);
-        }
-
+        // }
     }
     
     _onGetChipBack(data) {
@@ -210,6 +206,7 @@ class TabExchangeHistory extends PopupTabBody {
     
     
     _initBody(data) {
+        this.hideLoadingProgress();
         let next = this.onNextBtnClick;
         let prev = this.onPreviousBtnClick;
 

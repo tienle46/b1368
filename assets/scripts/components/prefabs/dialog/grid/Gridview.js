@@ -48,7 +48,6 @@ export class GridView extends Component {
         if (this.node.children) {
             this.node.children.map(child => child.destroy() && child.removeFromParent());
         }
-        log('updating list......')
         data.map((D, i) => {
             this._initListRow(D, i % 2 !== 0);
         });
@@ -58,7 +57,7 @@ export class GridView extends Component {
         if (this.node.children) {
             this.node.children.map(child => child.destroy() && child.removeFromParent());
         }
-        log('updating view......')
+
         head && this._initHead(head);
         data && this._initBody(data, this.options);
     }

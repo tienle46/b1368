@@ -106,7 +106,6 @@ export default class Scrollview extends Component {
         data = this._validatedInput(data);
 
         this.isEndedPage = data.length < this.itemsPerPage;
-        
         if (data.length == 0) {
             this._pageIsEmpty();
             this._updatePagingState();
