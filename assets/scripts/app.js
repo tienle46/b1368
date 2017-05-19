@@ -277,6 +277,7 @@ app.getMessageFromServer = (error) => {
 
         // setup game environment by platform
         app.env.__setupEnvironment();
+        app.service._initSmartFoxClient();
     })();
 
     window.app = app;

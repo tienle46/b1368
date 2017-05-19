@@ -55,7 +55,7 @@ class Service {
         this.isConnecting = false;
         this._pendingRequests = [];
 
-        this._initSmartFoxClient();
+        // this._initSmartFoxClient();
     }
     
     _initSmartFoxClient() {
