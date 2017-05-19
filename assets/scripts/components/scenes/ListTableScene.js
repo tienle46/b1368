@@ -83,6 +83,7 @@ export default class ListTableScene extends BaseScene {
         app.system.addListener(app.commands.USER_LIST_GROUP, this._onUserListGroup, this);
         app.system.addListener(app.commands.USER_LIST_ROOM, this._onUserListRoom, this);
         app.system.addListener(app.commands.USER_CREATE_ROOM, this._onUserCreateRoom, this);
+        app.system.addListener(SFS2X.SFSEvent.USER_VARIABLES_UPDATE, this._onUserVariablesUpdate, this);
         app.system.addListener(SFS2X.SFSEvent.ROOM_JOIN, this._handleRoomJoinEvent, this);
         app.service.addEventListener(SFS2X.SFSEvent.ROOM_JOIN_ERROR, this._onJoinRoomError, this);
         app.system.marker.getItemData(app.system.marker.SHOW_INVITATION_POPUP_OPTION) && app.system.addListener(app.commands.PLAYER_INVITE, this._onPlayerInviteEvent, this);
@@ -94,6 +95,7 @@ export default class ListTableScene extends BaseScene {
         app.system.removeListener(app.commands.USER_LIST_GROUP, this._onUserListGroup, this);
         app.system.removeListener(app.commands.USER_LIST_ROOM, this._onUserListRoom, this);
         app.system.removeListener(app.commands.USER_CREATE_ROOM, this._onUserCreateRoom, this);
+        app.system.removeListener(SFS2X.SFSEvent.USER_VARIABLES_UPDATE, this._onUserVariablesUpdate, this);
         app.system.removeListener(SFS2X.SFSEvent.ROOM_JOIN, this._handleRoomJoinEvent, this);
         app.service.removeEventListener(SFS2X.SFSEvent.ROOM_JOIN_ERROR, this._onJoinRoomError, this);
         app.system.removeListener(app.commands.PLAYER_INVITE, this._onPlayerInviteEvent, this);
@@ -493,6 +495,15 @@ export default class ListTableScene extends BaseScene {
             let _cb = this._sendRequestUserListRoom.bind(this, this._room);
             app.system.error(app.getRoomErrorMessage(event) || event.errorMessage, _cb, _cb);
         }
+    }
+    
+    _onUserVariablesUpdate(ev) {
+        let changedVars = ev[app.keywords.BASE_EVENT_CHANGED_VARS] || [];
+        changedVars.map(v => {
+            if (v == 'coin') {
+                this.userMoneyLbl.string = `${Utils.numberFormat(app.context.getMeBalance() || 0)}`;
+            }
+        });
     }
 }
 
