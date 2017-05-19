@@ -57,6 +57,13 @@ export default class PlayerSam extends PlayerCardTurnBase {
         this.scene.off(Events.ON_PLAYER_BAO_1, this._onPlayerBao1, this);
     }
 
+    _onSkipTurn() {
+        if(this.isItMe()){
+            this.turnAdapter.skipTurn();
+            this.renderer.cardList.cleanSelectedCard();
+        }
+    }
+
     _onPlayerPlayedCards(cards, cardList, isItMe){
         if(isItMe) {
             this.scene.emit(Events.SHOW_WAIT_TURN_CONTROLS)

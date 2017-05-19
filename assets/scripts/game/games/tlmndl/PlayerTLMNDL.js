@@ -78,8 +78,10 @@ export default class PlayerTLMNDL extends PlayerCardTurnBase {
     }
 
     _onSkipTurn() {
-        this.turnAdapter.skipTurn();
-        this.renderer.cardList.cleanSelectedCard();
+        if(this.isItMe()){
+            this.turnAdapter.skipTurn();
+            this.renderer.cardList.cleanSelectedCard();
+        }
     }
 
     _onSortCards() {

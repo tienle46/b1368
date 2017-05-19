@@ -32,7 +32,9 @@ export default class PlayerCardTurnBase extends PlayerCard {
     }
 
     _onSkipTurn() {
-        this.turnAdapter.skipTurn();
+        if(this.isItMe()){
+            this.turnAdapter.skipTurn();
+        }
     }
 
     isTurnOwner(){

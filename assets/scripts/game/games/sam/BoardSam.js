@@ -195,24 +195,44 @@ export default class BoardSam extends BoardCardTurnBase {
          * @type {Array}
          */
         let resultTexts = {};
-        let antrangTypes = {};
         let winnerFlags = {};
         let gameResultInfos = {};
+        let cardTypes = utils.getValue(data, Keywords.CARD_TYPES, []);
         playerIds.forEach((id, i) => {
             let resultText;
+            let cardType = cardTypes[i];
+
             if (id == denOrThangXamPlayerId) {
                 switch (winType) {
                     case app.const.game.XAM_WIN_TYPE_AN_TRANG:
                         resultText = 'tlmn-an-trang'
                         winnerFlags[id] = true;
-                        gameResultInfos[id] = app.res.string('game_tlmn_an_trang')
-                        antrangTypes[id] = true
+                        if(cardType){
+                            switch(cardType){
+                                case app.const.game.SAM_CARD_TYPE_SANH_RONG:
+                                    gameResultInfos[id] = app.res.string('game_tlmn_sanh_rong')
+                                    break;
+                                case app.const.game.SAM_CARD_TYPE_TU_QUY_HAI:
+                                    gameResultInfos[id] = app.res.string('game_tlmn_tu_quy_hai')
+                                    break;
+                                case app.const.game.SAM_CARD_TYPE_DONG_CHAT:
+                                    gameResultInfos[id] = app.res.string('game_dong_chat')
+                                    break;
+                                case app.const.game.SAM_CARD_TYPE_BA_SAM_CO:
+                                    gameResultInfos[id] = app.res.string('game_ba_sam_co')
+                                    break;
+                                case app.const.game.SAM_CARD_TYPE_NAM_DOI:
+                                    gameResultInfos[id] = app.res.string('game_nam_doi')
+                                    break;
+                            }
+                        }
+
+                        !gameResultInfos[id] && (gameResultInfos[id] = app.res.string('game_tlmn_an_trang'))
                         break;
                     case app.const.game.XAM_WIN_TYPE_THANG_XAM:
                         resultText = 'sam-thang-sam'
                         winnerFlags[id] = true;
                         gameResultInfos[id] = ""
-                        antrangTypes[id] = true
                         break;
                     case app.const.game.XAM_WIN_TYPE_DEN_XAM:
                         resultText = 'sam-den-sam'
