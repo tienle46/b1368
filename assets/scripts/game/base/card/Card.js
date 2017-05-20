@@ -202,6 +202,7 @@ export default class Card extends ActionComponent {
         // console.warn(`cardsAtlas ${this.cardsAtlas}`);
         this.cardSpriteFrame = this.cardsAtlas.getSpriteFrame(cardSpriteName);
         this.cardBG.spriteFrame = this.cardSpriteFrame;
+        this.texBackBG = this.cardsAtlas.getSpriteFrame('cards_back')
     }
 
     onEnable() {
@@ -212,7 +213,7 @@ export default class Card extends ActionComponent {
         utils.setVisible(this.highlightNode, this.highlight);
 
         this.loaded = true;
-
+        
         if (this.__locked) {
             this.setLocked(this.__locked);
         }
@@ -229,7 +230,6 @@ export default class Card extends ActionComponent {
             this.setEnableScaleOnClick(this.__enableScaleOnClick)
             this.__enableScaleOnClick = undefined;
         }
-
         this.setReveal(this.reveal);
     }
 
@@ -293,7 +293,7 @@ export default class Card extends ActionComponent {
 
     setReveal(isFaceUp) {
         this.reveal = isFaceUp;
-        this.cardBG.spriteFrame = isFaceUp ? this.cardSpriteFrame : this.texBackBG;
+        this.cardBG.spriteFrame = isFaceUp ? this.cardSpriteFrame : this.texBackBG ? this.texBackBG : this.cardsAtlas.getSpriteFrame('cards_back');
     }
 
     setOnClickListener(cb) {
