@@ -273,6 +273,12 @@ export default class BoardBaCay extends BoardCardBetTurn {
             return false;
         }
 
+        let me = this.scene.gamePlayers.me;
+        let availableBalance = GameUtils.getUserBalance(me.user) - me.betAmount * 2 - me.currentCuocBien * 2
+        if(availableBalance < this.minBet * 3){
+            return false
+        }
+
         return true;
 
         //TODO verify gop ga
@@ -280,7 +286,15 @@ export default class BoardBaCay extends BoardCardBetTurn {
 
     _showGopGa(visible){
          this.renderer.setVisibleGopGaComponent(visible /*&& this.scene.gamePlayers.isMePlaying()*/);
-         this.renderer.setInteractableGopGaButton(this.scene.gamePlayers.isMePlaying());
+
+         if(this.scene.gamePlayers.isMePlaying() && !this.scene.gamePlayers.me.isMaster){
+            let me = this.scene.gamePlayers.me;
+            let availableBalance = GameUtils.getUserBalance(me.user) - me.betAmount * 2 - me.currentCuocBien * 2
+            this.renderer.setInteractableGopGaButton(availableBalance > this.minBet * 3)
+         }else{
+             this.renderer.setInteractableGopGaButton(false)
+         }
+
     }
 
     _addToGopGaValue(player, gopGaValue){

@@ -62,8 +62,12 @@ export default class PlayerBaCay extends PlayerCardBetTurn {
         this.scene.off(Events.ON_PLAYER_BACAY_GOP_GA, this._onPlayerGopGa, this);
     }
 
+    getTotalBetValue(){
+        return this.betAmount + this.gopGaValue + this.currentCuocBien
+    }
+
     _updateAvailableBalance(){
-        let availableBalance = GameUtils.getUserBalance(this.user) - this.betAmount - (this.gopGaValue || 0) - (this.currentCuocBien || 0);
+        let availableBalance = GameUtils.getUserBalance(this.user) - this.getTotalBetValue()
         this.renderer.setBalance(availableBalance)
     }
 

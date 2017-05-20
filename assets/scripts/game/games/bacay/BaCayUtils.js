@@ -68,9 +68,14 @@ export default class BaCayUtils {
     }
 
     static calculateMaxCuocBien(player, player2){
-        let availableBalance1 = parseInt((GameUtils.getUserBalance(player.user) - player.betAmount - player.currentCuocBien) / 2)
-        let availableBalance2 = parseInt((GameUtils.getUserBalance(player2.user) - player2.betAmount - player2.currentCuocBien) / 2)
-        return Math.min(availableBalance1, availableBalance2);
+
+        let totalMaxCuocBien1 = parseInt((GameUtils.getUserBalance(player.user) - player.betAmount * 2 - player.gopGaValue) / 2)
+        let totalMaxCuocBien2 = parseInt((GameUtils.getUserBalance(player2.user) - player2.betAmount * 2 - player2.gopGaValue) / 2)
+
+        let availableBalance1 = totalMaxCuocBien1 - player.currentCuocBien;
+        let availableBalance2 = totalMaxCuocBien2 - player2.currentCuocBien;
+
+        return Math.min(availableBalance1 < 0 ? 0 : availableBalance1, availableBalance2 < 0 ? 0 : availableBalance2);
     }
 
     static checkCuocBienWithPlayer(me, player){
@@ -90,7 +95,11 @@ export default class BaCayUtils {
             checkResult = false
             msg = app.res.string('game_bacay_chi_cuoc_bien_mot_lan');
         }else{
-            //More check action
+            let maxCuocBien = this.calculateMaxCuocBien(me, player);
+            if(maxCuocBien <= 0){
+                checkResult = false
+                msg = app.res.string('game_bacay_not_enough_balance_to_cuoc_bien');
+            }
         }
 
         return {checkResult, msg};
@@ -151,10 +160,11 @@ export default class BaCayUtils {
     static calculateMaxPlayerBet(player, masterPlayer, defaultValue = 0) {
         if(!player || !masterPlayer) return defaultValue;
 
-        let masterBalance = GameUtils.getUserBalance(masterPlayer.user)
         let maxValueByPlayer = parseInt(GameUtils.getUserBalance(player.user) / 2)
+
+        let masterBalance = GameUtils.getUserBalance(masterPlayer.user)
         let maxValueByMaster = player.scene.gamePlayers.players.length <= 1 || player.board.minBet <= 0 ? 0
-            : parseInt(masterBalance / (2 * player.board.minBet * (player.scene.gamePlayers.players.length - 1)))
+            : parseInt(masterBalance / (2 * (player.scene.gamePlayers.players.length - 1)))
 
         return Math.max(Math.min(maxValueByPlayer, maxValueByMaster), 0);
 
