@@ -198,8 +198,8 @@ export default class Card extends ActionComponent {
 
     onLoad() {
         const cardSpriteName = `card_${this._getRankName()}_${this._getSuitName()}`;
-        // console.debug(`cardSpriteName ${cardSpriteName}`);
-        // console.debug(`cardsAtlas ${this.cardsAtlas}`);
+        // console.warn(`cardSpriteName ${cardSpriteName}`);
+        // console.warn(`cardsAtlas ${this.cardsAtlas}`);
         this.cardSpriteFrame = this.cardsAtlas.getSpriteFrame(cardSpriteName);
         this.cardBG.spriteFrame = this.cardSpriteFrame;
     }

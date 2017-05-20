@@ -140,7 +140,6 @@ export default class BoardXocDia extends BoardCardBetTurn {
         let playerResults = utils.getValue(data, Keywords.WIN, []);
 
         super.onBoardEnding(data);
-
         let dots = utils.getValue(data, Keywords.XOCDIA_RESULT_END_PHASE);
         if (dots && dots.length > 0) {
             this.renderer && this.renderer.initDots(dots);

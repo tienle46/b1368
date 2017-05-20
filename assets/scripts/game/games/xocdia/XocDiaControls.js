@@ -107,7 +107,7 @@ export default class XocDiaControls extends GameControls {
                 app.system.error('Không đủ chip để tiếp tục cược !');
                 return;
             }
-            this._setRebetBtnState(true);
+            this._setRebetBtnState(this.previousBetData.length > 0);
 
             let betTypeId = event.currentTarget.id;
 
