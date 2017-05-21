@@ -1,0 +1,30 @@
+{
+  "ver": "1.0.0",
+  "uuid": "8974f316-9aa4-4905-bb5c-b22a72887c5b",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "subMetas": {
+    "trump-ngonandi": {
+      "ver": "1.0.3",
+      "uuid": "8891f143-13ac-42f2-8d87-70b9b69d0afd",
+      "rawTextureUuid": "8974f316-9aa4-4905-bb5c-b22a72887c5b",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 2.5,
+      "offsetY": -1.5,
+      "trimX": 32,
+      "trimY": 5,
+      "width": 111,
+      "height": 163,
+      "rawWidth": 170,
+      "rawHeight": 170,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}

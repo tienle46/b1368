@@ -374,7 +374,9 @@ export default class XocDiaControls extends GameControls {
     }
 
     _onGameBegin(data, isJustJoined) {
+        this.betContainerButton.betable(false);
         this._resetBetData();
+        this._setRebetBtnState(this.previousBetData.length > 0);
         this._resetBoardControlBtns();
         this.hideAllControls();
         this._showGameBeginControls();
