@@ -44,10 +44,15 @@ class BetOptionsGroup extends Component {
     }
 
     getChipByAmount(amount) {
-        let chipComponent = this.chips.find((chip) => chip.amount >= amount);
-        let maxAmountOfChip = Math.max.apply(Math,this.chips.map(function(chip){return chip.amount;}))
-        if(!chipComponent && amount >= maxAmountOfChip)
-            chipComponent = this.chips.find((chip) => chip.amount == maxAmountOfChip);
+        // let chipComponent = this.chips.find((chip) => chip.amount >= amount);
+        // let maxAmountOfChip = Math.max.apply(Math,this.chips.map(function(chip){return chip.amount;}))
+        // if(!chipComponent && amount >= maxAmountOfChip)
+        //     chipComponent = this.chips.find((chip) => chip.amount == maxAmountOfChip);
+            
+        // let chip = chipComponent && chipComponent.getChipIcon(cc.size(25, 25));
+        
+        let closest = this.chips.sort( (a, b) => Math.abs(amount - a.amount) - Math.abs(amount - b.amount) )[0];
+        let chipComponent = this.chips.find((chip) => chip.amount == closest.amount);
             
         let chip = chipComponent && chipComponent.getChipIcon(cc.size(25, 25));
         
