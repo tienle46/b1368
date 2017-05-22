@@ -444,7 +444,6 @@ export default class XocDiaControls extends GameControls {
 
     _onGameState(state, data, isJustJoined) {
         if (state === app.const.game.state.STATE_BET) {
-            console.warn('2', this._playerJoinOnBetShake, isJustJoined)
             this.betContainerButton.betable(!isJustJoined && !this._playerJoinOnBetShake);
             this._resetBetData();
             this._showGameControls();
@@ -453,7 +452,6 @@ export default class XocDiaControls extends GameControls {
             this.hideBetControl();
             this.betContainerButton.betable(false);
             this._playerJoinOnBetShake = isJustJoined;
-            console.warn('1', this._playerJoinOnBetShake)
         } 
     }
 
