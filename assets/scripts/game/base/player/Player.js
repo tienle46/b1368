@@ -104,16 +104,17 @@ export default class Player extends Actor {
         userObj.push(this.user.name);
         userObj.push(this.user.privilegeId);
         userObj.push(this.id);
-        userObj.push([...this.user.getVariables()]);
+        // userObj.push([...this.user.getVariables()]);
+        userObj.push([]);
 
         let newUser = SFS2X.Entities.SFSUser.fromArray(userObj, this.board.room);
+        newUser.variables = {...this.user.variables};
         newUser._setUserManager(app.service.client.userManager);
 
         this.board.room._removeUser(this.user);
         app.service.client.userManager._removeUser(this.user);
         app.service.client.userManager._addUser(newUser);
         this.board.room._addUser(newUser);
-
         this.user = newUser;
     }
 

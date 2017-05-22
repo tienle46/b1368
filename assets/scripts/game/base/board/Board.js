@@ -346,8 +346,6 @@ export default class Board extends Actor {
             balanceChangedAmounts[id] = newBalance - currentBalance;
         });
 
-        log("currentPlayerBalances: ", currentPlayerBalances, newPlayersBalance);
-
         return balanceChangedAmounts;
     }
 

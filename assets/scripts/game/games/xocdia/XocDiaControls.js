@@ -159,7 +159,23 @@ export default class XocDiaControls extends GameControls {
             this._setRebetBtnState(false);
         }
     }
-
+    
+    initBoard(bets = [], playerIds = []) {
+        bets.forEach((bet, index) => {
+            for(let typeId in bet) {
+                let amount = bet[typeId];
+                let toNode = this.betContainerButton.getBetTypeByTypeId(typeId);
+                let chip = this.betOptionsGroup.getChipByAmount(amount);
+                let isItMe = this.scene.gamePlayers.isItMe(playerIds[index]);
+                this._updateGoldAmountOnControl(typeId,amount, isItMe, false, false);
+                
+                let betIndex = this.betOptionsGroup.getChipIndexByAmount(amount, this.scene.board.minBet);
+                let chipDisplayPoint = this.xocDiaAnim.getRealEndPoint(toNode);
+                this.xocDiaAnim.addChip(toNode, chip, playerIds[index], typeId, betIndex, chipDisplayPoint);
+            }
+        })    
+    }
+    
     onCancelBetBtnClick() {
         let [data] = [{}];
 

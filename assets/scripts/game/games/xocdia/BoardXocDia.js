@@ -129,6 +129,7 @@ export default class BoardXocDia extends BoardCardBetTurn {
 
     _loadGamePlayData(data) {
         super._loadGamePlayData({...data, masterIdOwner: true });
+        data.b && data.b.length > 0 && this.scene.gameControls.initBoard(data.b, data.pl);
     }
 
     // state === app.const.game.state.ENDING

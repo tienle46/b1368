@@ -36,16 +36,37 @@ export default class XocDiaAnim {
     }
 
     tossChip(startPos, toNode, chip, playerId, typeId, betIndex) {
-
+        this.addChip(toNode, chip, playerId, typeId, betIndex, startPos);
+        
+        // position based on world space
+        let realEndPoint = this.getRealEndPoint(toNode);
+        
+        chip.runAction(cc.sequence(cc.moveTo(0.1 + app._.random(0, 0.2), realEndPoint)));
+    }
+    
+    addChip(toNode, chip, playerId, typeId, betIndex, startPos) {
         this._totalChipCount++;
         let betTypename = betTypeIdToNameMap[typeId];
+        
         if (betIndex >= 0 && betIndex < 4 && betTypename && this.chipManager[betTypename]) {
             this.chipManager[betTypename][betIndex + 1].push(chip);
         }
-        if (this._totalChipCount > 50) {
-            this.removeSinglePreviousChip();
-        }
+        
+        chip.name = "miniChip";
+        chip.playerId = playerId;
+        chip.betId = toNode.id;
+        chip.setPosition(startPos);
+        
+        this.chipLayer.addChild(chip);
 
+        if (!this.totalChipOnPlayer.hasOwnProperty(playerId)) {
+            this.totalChipOnPlayer[playerId] = 1;
+        } else {
+            this.totalChipOnPlayer[playerId] += 1;
+        }
+    }
+    
+    getRealEndPoint(toNode) {
         // and node where chip would be tossed to
         let toNodeSize = toNode.getContentSize();
         let toNodePos = toNode.getPosition();
@@ -54,22 +75,10 @@ export default class XocDiaAnim {
         let endPoint = cc.v2(toNodePos.x + cc.randomMinus1To1() * 1 / 2 * toNodeSize.width * 0.8, toNodePos.y + cc.randomMinus1To1() * 1 / 2 * (toNodeSize.height - 55) * 0.8);
         // position based on world space
         let realEndPoint = toNode.parent ? toNode.parent.convertToWorldSpaceAR(endPoint) : toNode.convertToWorldSpaceAR(endPoint);
-
-        chip.name = "miniChip";
-        chip.playerId = playerId;
-        chip.betId = toNode.id;
-        chip.setPosition(startPos);
-
-        if (!this.totalChipOnPlayer.hasOwnProperty(playerId)) {
-            this.totalChipOnPlayer[playerId] = 1;
-        } else {
-            this.totalChipOnPlayer[playerId] += 1;
-        }
-
-        this.chipLayer.addChild(chip);
-        chip.runAction(cc.sequence(cc.moveTo(0.1 + app._.random(0, 0.2), realEndPoint)));
+        
+        return realEndPoint;
     }
-
+    
     receiveChip(toPos, playerId, betId) {
         this.totalChipOnPlayer[playerId] = 0;
         // and node where chip would be tossed to

@@ -93,10 +93,10 @@ export default class GamePlayers extends Component {
         this.scene.emit(Events.ON_GAME_MASTER_CHANGED, oldMaster, masterPlayer);
     }
 
-    _onPlayerReEnterGame(playerId, userId) {
-        let player = this.findPlayer(playerId);
-        player && this._replaceUser(player, userId);
-    }
+    // _onPlayerReEnterGame(playerId, userId) {
+    //     let player = this.findPlayer(playerId);
+    //     player && this._replaceUser(player, userId);
+    // }
 
     _onChangeRoomOwner(room) {
 
@@ -320,31 +320,32 @@ export default class GamePlayers extends Component {
 
     }
 
-    _replaceUser(player, newId) {
+    // _replaceUser(player, newId) {
 
-        let oldUser = player.user;
-        if (!oldUser) {
-            return;
-        }
+    //     let oldUser = player.user;
+    //     if (!oldUser) {
+    //         return;
+    //     }
 
-        let userObj = [];
-        userObj.push(newId);
-        userObj.push(oldUser.name);
-        userObj.push(oldUser.privilegeId);
-        userObj.push(player.id);
-        userObj.push(this._getUserVariablesData(oldUser));
+    //     let userObj = [];
+    //     userObj.push(newId);
+    //     userObj.push(oldUser.name);
+    //     userObj.push(oldUser.privilegeId);
+    //     userObj.push(player.id);
+    //     //this._getUserVariablesData(oldUser)
+    //     userObj.push(Object.assign({}, oldUser.variables));
 
-        let newUser = SFS2X.Entities.SFSUser.fromArray(userObj, this.board.room);
-        newUser._setUserManager(app.service.client.userManager);
+    //     let newUser = SFS2X.Entities.SFSUser.fromArray(userObj, this.board.room);
+    //     newUser._setUserManager(app.service.client.userManager);
 
-        this.board.room._removeUser(oldUser);
+    //     this.board.room._removeUser(oldUser);
 
-        app.service.client.userManager._removeUser(oldUser);
-        app.service.client.userManager._addUser(newUser);
+    //     app.service.client.userManager._removeUser(oldUser);
+    //     app.service.client.userManager._addUser(newUser);
 
-        this.board.room._addUser(newUser);
-        player.user = newUser;
-    }
+    //     this.board.room._addUser(newUser);
+    //     player.user = newUser;
+    // }
 
     countPlayingPlayers() {
         var count = 0;
@@ -497,12 +498,12 @@ export default class GamePlayers extends Component {
         }
     }
 
-    onPlayerReEnterGame(playerId, newUserId) {
-        let player = this.findPlayer(playerId);
-        if (player) {
-            this._replaceUser(player, newUserId);
-        }
-    }
+    // onPlayerReEnterGame(playerId, newUserId) {
+    //     let player = this.findPlayer(playerId);
+    //     if (player) {
+    //         this._replaceUser(player, newUserId);
+    //     }
+    // }
 
     handlePlayer(playerId, cmd, data) {
 
@@ -524,11 +525,10 @@ export default class GamePlayers extends Component {
 
     getCurrentPlayerBalances(playerIds) {
         let playerBalances = {};
-
         this.players.forEach(player => {
             playerBalances[player.id] = GameUtils.getUserBalance(player.user)
         });
-
+        
         return playerBalances;
     }
 
