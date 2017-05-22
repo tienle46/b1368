@@ -6613,8 +6613,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 74.75,
-      "height": 52
+      "width": 84.00000000000001,
+      "height": 45
     },
     "_children": [],
     "_rotationX": 0,
@@ -6657,8 +6657,8 @@
     },
     "_enabled": true,
     "_useOriginalSize": false,
-    "_actualFontSize": 35,
-    "_fontSize": 35,
+    "_actualFontSize": 28,
+    "_fontSize": 28,
     "_lineHeight": 40,
     "_enableWrapText": false,
     "_N$file": {
@@ -6668,7 +6668,7 @@
     "_N$string": "1K",
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
-    "_N$overflow": 2
+    "_N$overflow": 1
   },
   {
     "__type__": "cc.Widget",
@@ -6682,9 +6682,9 @@
     "_target": null,
     "_alignFlags": 45,
     "_left": 50.3,
-    "_right": 11.450000000000003,
-    "_top": 5.0000000000000036,
-    "_bottom": 5,
+    "_right": 2.200000000000003,
+    "_top": 8.500000000000004,
+    "_bottom": 8.5,
     "_verticalCenter": 0,
     "_horizontalCenter": 0,
     "_isAbsLeft": true,
@@ -7254,8 +7254,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 74.75,
-      "height": 52
+      "width": 84,
+      "height": 45
     },
     "_children": [],
     "_rotationX": 0,
@@ -7298,18 +7298,18 @@
     },
     "_enabled": true,
     "_useOriginalSize": false,
-    "_actualFontSize": 37,
-    "_fontSize": 35,
+    "_actualFontSize": 28,
+    "_fontSize": 28,
     "_lineHeight": 40,
     "_enableWrapText": false,
     "_N$file": {
       "__uuid__": "b2c0f634-158a-49ee-84f8-a41c8e7ebb56"
     },
     "_isSystemFontUsed": false,
-    "_N$string": "50K",
+    "_N$string": "50M",
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
-    "_N$overflow": 2
+    "_N$overflow": 1
   },
   {
     "__type__": "cc.Widget",
@@ -7323,9 +7323,9 @@
     "_target": null,
     "_alignFlags": 45,
     "_left": 50.29999999999998,
-    "_right": 11.450000000000017,
-    "_top": 5,
-    "_bottom": 5,
+    "_right": 2.200000000000017,
+    "_top": 8.5,
+    "_bottom": 8.5,
     "_verticalCenter": 0,
     "_horizontalCenter": 0,
     "_isAbsLeft": true,
@@ -7831,8 +7831,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 74.75,
-      "height": 52
+      "width": 84,
+      "height": 45
     },
     "_children": [],
     "_rotationX": 0,
@@ -7875,8 +7875,8 @@
     },
     "_enabled": true,
     "_useOriginalSize": false,
-    "_actualFontSize": 37,
-    "_fontSize": 35,
+    "_actualFontSize": 28,
+    "_fontSize": 28,
     "_lineHeight": 40,
     "_enableWrapText": false,
     "_N$file": {
@@ -7886,7 +7886,7 @@
     "_N$string": "50K",
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
-    "_N$overflow": 2
+    "_N$overflow": 1
   },
   {
     "__type__": "cc.Widget",
@@ -7900,9 +7900,9 @@
     "_target": null,
     "_alignFlags": 45,
     "_left": 50.29999999999998,
-    "_right": 11.450000000000017,
-    "_top": 5,
-    "_bottom": 5.000000000000002,
+    "_right": 2.200000000000017,
+    "_top": 8.5,
+    "_bottom": 8.5,
     "_verticalCenter": 0,
     "_horizontalCenter": 0,
     "_isAbsLeft": true,
@@ -8408,8 +8408,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 74.75,
-      "height": 52
+      "width": 84,
+      "height": 45
     },
     "_children": [],
     "_rotationX": 0,
@@ -8452,8 +8452,8 @@
     },
     "_enabled": true,
     "_useOriginalSize": false,
-    "_actualFontSize": 31,
-    "_fontSize": 35,
+    "_actualFontSize": 28,
+    "_fontSize": 28,
     "_lineHeight": 40,
     "_enableWrapText": false,
     "_N$file": {
@@ -8463,7 +8463,7 @@
     "_N$string": "100k",
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
-    "_N$overflow": 2
+    "_N$overflow": 1
   },
   {
     "__type__": "cc.Widget",
@@ -8477,9 +8477,9 @@
     "_target": null,
     "_alignFlags": 45,
     "_left": 50.29999999999998,
-    "_right": 11.450000000000017,
-    "_top": 5,
-    "_bottom": 5,
+    "_right": 2.200000000000017,
+    "_top": 8.5,
+    "_bottom": 8.5,
     "_verticalCenter": 0,
     "_horizontalCenter": 0,
     "_isAbsLeft": true,

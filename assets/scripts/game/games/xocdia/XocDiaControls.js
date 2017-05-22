@@ -46,6 +46,12 @@ export default class XocDiaControls extends GameControls {
     }
 
     onEnable() {
+        this._playerJoinOnBetShake = false;
+        this.betData = [];
+        this.previousBetData = [];
+        this.isInCancelPhase = false;
+        this.xocDiaAnim = null;
+        
         this.baseControls = this.baseControlsNode.getComponent('BaseControls');
         /**
          * @type {BetOptionsGroup}
@@ -86,6 +92,12 @@ export default class XocDiaControls extends GameControls {
         this.scene.off(Events.XOCDIA_ON_PLAYER_TOSSCHIP_ANIMATION, this._onPlayerTossChip, this);
         this.scene.off(Events.XOCDIA_ON_PLAYER_CANCEL_BET_SUCCESS, this._onPlayerCancelBetSuccess, this);
         this.scene.off(Events.XOCDIA_ON_PLAYER_RECEIVE_CHIP_ANIMATION, this._onPlayerReceiveChip, this);
+        
+        this._playerJoinOnBetShake = false;
+        this.betData = [];
+        this.previousBetData = [];
+        this.isInCancelPhase = false;
+        this.xocDiaAnim = null;
     }
 
     _showGameControls() {
@@ -432,12 +444,14 @@ export default class XocDiaControls extends GameControls {
 
     _onGameState(state, data, isJustJoined) {
         if (state === app.const.game.state.STATE_BET) {
-            this.betContainerButton.betable(true);
+            this.betContainerButton.betable(!isJustJoined && !this._playerJoinOnBetShake);
             this._resetBetData();
             this._showGameControls();
         } else if (state === app.const.game.state.BOARD_STATE_SHAKE) {
             this.hideBetControl();
             this.betContainerButton.betable(false);
+            console.de
+            this._playerJoinOnBetShake = isJustJoined;
         } 
     }
 
