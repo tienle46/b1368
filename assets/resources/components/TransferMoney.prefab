@@ -900,7 +900,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 207.78,
+      "width": 213.96,
       "height": 30
     },
     "_children": [
@@ -1118,7 +1118,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 175.65,
+      "width": 181.83,
       "height": 30
     },
     "_children": [
@@ -1387,8 +1387,8 @@
       "__uuid__": "e3c4e6bc-4253-4660-b308-20232cdbdb47"
     },
     "_isSystemFontUsed": false,
-    "_N$string": "Bạn chưa đủ điều kiện thực hiện chức năng này ",
-    "_N$horizontalAlign": 1,
+    "_N$string": "Bạn chưa đủ điều kiện thực hiện   chức năng này ",
+    "_N$horizontalAlign": 0,
     "_N$verticalAlign": 1,
     "_N$overflow": 3
   },

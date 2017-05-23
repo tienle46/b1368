@@ -237,13 +237,12 @@ class Service {
                 }
 
                 app.system.loadScene(app.const.scene.ENTRANCE_SCENE, () => {
-                    let okBtn = this._loginData && (this._reConnectWithLoginData.bind(this, this._loginData) || (() => {}));
-
-                    app.system.confirm(app.res.string('lost_connection'), null, okBtn);
-                });
-            } else {
-                app.system.loadScene(app.const.scene.ENTRANCE_SCENE, () => {
-                    app.system.info(app.string.res('lost_connection'));
+                    if(this._loginData) {
+                        let okBtn = this._reConnectWithLoginData.bind(this, this._loginData);
+                        app.system.confirm(app.res.string('lost_connection'), null, okBtn);
+                    } else {
+                        app.system.info(app.res.string('lost_connection_without_reconnect'));
+                    }
                 });
             }
         }

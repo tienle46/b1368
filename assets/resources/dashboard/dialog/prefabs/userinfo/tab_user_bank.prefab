@@ -1938,7 +1938,7 @@
     "_tag": -1,
     "_opacityModifyRGB": false,
     "_id": "",
-    "_active": false,
+    "_active": true,
     "_components": [
       {
         "__id__": 147
@@ -3109,7 +3109,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": -197,
-      "y": -71
+      "y": -75
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -3149,8 +3149,8 @@
       "__uuid__": "e3c4e6bc-4253-4660-b308-20232cdbdb47"
     },
     "_isSystemFontUsed": false,
-    "_N$string": "Bạn chưa đủ điều kiện thực hiện chức năng này ",
-    "_N$horizontalAlign": 1,
+    "_N$string": "Bạn chưa đủ điều kiện thực hiện\nchức năng này ",
+    "_N$horizontalAlign": 0,
     "_N$verticalAlign": 1,
     "_N$overflow": 3
   },
