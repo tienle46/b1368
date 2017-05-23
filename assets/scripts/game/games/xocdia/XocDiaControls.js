@@ -462,7 +462,7 @@ export default class XocDiaControls extends GameControls {
             this._resetBetData();
             this._showGameControls();
             
-        } else if (state === app.const.game.state.BOARD_STATE_SHAKE) {
+        } else if (state === app.const.game.state.READY) {
             this.hideBetControl();
             this.betContainerButton.betable(false);
         } 

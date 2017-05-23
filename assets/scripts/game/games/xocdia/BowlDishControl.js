@@ -19,7 +19,17 @@ class BowlDishControl extends Component {
         this.bowlPos = this.bowlNode.getPosition();
         this.wrapPos = this.wrapper.getPosition();
     }
-
+    
+    onDestroy() {
+        super.onDestroy();
+        this._clearTimeout();
+    }
+    
+    _clearTimeout() {
+        clearTimeout(this.timeout);
+        this.timeout = null;
+    }
+    
     resetBowlPosition() {
         this.bowlNode.setPosition(this.bowlPos);
         
@@ -39,6 +49,10 @@ class BowlDishControl extends Component {
 
         let sequence = cc.repeatForever(cc.sequence(actions));
         this.wrapper.runAction(sequence);
+        this.timeout = setTimeout(() => {
+            this.wrapper && this.stopDishShaker();
+            this._clearTimeout();
+        }, 3000); // stop dish after 3s
     }
 
     stopDishShaker() {
@@ -46,6 +60,7 @@ class BowlDishControl extends Component {
         this.wrapper.stopAllActions();
         this.wrapper.setPosition(startPos);
         this.wrapPos = startPos;
+        this._clearTimeout();
     }
 
     openBowlAnim() {

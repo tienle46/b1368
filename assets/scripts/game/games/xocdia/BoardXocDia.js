@@ -56,10 +56,10 @@ export default class BoardXocDia extends BoardCardBetTurn {
                     message = app.res.string('game_replay_waiting_time');
                     hiddenText = true;
                     break;
-                case app.const.game.state.READY:
-                    message = app.res.string('game_start');
-                    hiddenText = true;
-                    break;
+                // case app.const.game.state.READY:
+                //     message = app.res.string('game_start');
+                //     hiddenText = true;
+                //     break;
                 case app.const.game.state.STATE_BET:
                     this.renderer.stopDishShakeAnim();
                     message = 'Đặt cược';
@@ -72,22 +72,9 @@ export default class BoardXocDia extends BoardCardBetTurn {
         
         this.renderer.showTimeLine(duration, message, hiddenText);
         
-        if (this.scene.gameState == app.const.game.state.BOARD_STATE_SHAKE) {
+        if (this.scene.gameState == app.const.game.state.READY) {
             this.renderer.hideTimeLine();
         }
-        
-        // if (this.scene.gameState == app.const.game.state.STATE_BET) {
-        //     if (this.renderer) {
-        //         this.timeLineInterval = requestInterval(() => {
-        //             if (duration == 0) {
-        //                 clearRequestInterval(this.timeLineInterval);
-        //                 return;
-        //             }
-        //             this.timeLineInterval && this.renderer.setTimeLineMessage(duration);
-        //             duration--;
-        //         }, 1000);
-        //     }
-        // }
     }
 
     onGameStatePreChange(boardState, data, isJustJoined) {
@@ -122,9 +109,6 @@ export default class BoardXocDia extends BoardCardBetTurn {
     // }
 
     _onGameState(state, data, isJustJoined) {
-        if (state === app.const.game.state.BOARD_STATE_SHAKE) {
-            this.renderer.runDishShakeAnim();
-        }
     }
 
     _loadGamePlayData(data) {
@@ -177,7 +161,7 @@ export default class BoardXocDia extends BoardCardBetTurn {
     }
 
     _onGameBegin() {
-        this.renderer.stopDishShakeAnim();
+        this.renderer.runDishShakeAnim();
         // hiding all bets and table on game board
         this.renderer.hideElements();
         // check if room has history, preload data

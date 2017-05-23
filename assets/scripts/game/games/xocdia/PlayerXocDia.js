@@ -140,7 +140,7 @@ export default class PlayerXocDia extends PlayerCardBetTurn {
             this.isItMe() && this.renderer.hidePlayerComponentOnBetting();
         }
 
-        if (state == app.const.game.state.BOARD_STATE_SHAKE) {
+        if (state == app.const.game.state.READY) {
             this.isItMe() && this.renderer.showPlayerComponentOnShake();
         }
     }
