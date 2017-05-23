@@ -64,13 +64,15 @@ export default class BoardXocDia extends BoardCardBetTurn {
                     this.renderer.stopDishShakeAnim();
                     message = 'Đặt cược';
                     break;
-                default:
+                default:          
                     message = app.res.string('game_waiting');
+                    this.renderer.hideTimeLine();
                     break;
             }
         }
         
-        this.renderer.showTimeLine(duration, message, hiddenText);
+        this.scene.gameState && this.renderer.showTimeLine(duration, message, hiddenText);
+        
         
         if (this.scene.gameState == app.const.game.state.READY) {
             this.renderer.hideTimeLine();
@@ -161,6 +163,8 @@ export default class BoardXocDia extends BoardCardBetTurn {
     }
 
     _onGameBegin() {
+        console.warn('_onGameBegin');
+        
         this.renderer.runDishShakeAnim();
         // hiding all bets and table on game board
         this.renderer.hideElements();

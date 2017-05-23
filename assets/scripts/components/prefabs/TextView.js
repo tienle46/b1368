@@ -28,6 +28,9 @@ export default class TextView extends Component {
         this.lineHeight = this.getLabelLineHeight();
         this.label.overflow = cc.Label.Overflow.RESIZE_HEIGHT;
         this.label.string = "";
+        if(!app.env.isBrowser())
+            this.label.node.setPosition(0, 13)
+            
         this.isLoaded = true;
         this.currentWidth = this.node.width;
 
