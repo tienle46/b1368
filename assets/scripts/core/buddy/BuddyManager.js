@@ -237,11 +237,11 @@ export default class BuddyManager {
     }
 
     _onBuddyAdd(evtParams) {
-        log('_onBuddyAdd: ', evtParams);
+        // log('_onBuddyAdd: ', evtParams);
         if (evtParams.buddy) {
             this.onBuddyListUpdate();
-            let displayName = evtParams.buddy.displayName || evtParams.buddy.getNickName() || evtParams.buddy.name;
-            app.system.showToast(app.res.string("buddy_added_buddy", { buddyName: displayName }))
+            // let displayName = evtParams.buddy.displayName || evtParams.buddy.getNickName() || evtParams.buddy.name;
+            // app.system.showToast(app.res.string("buddy_added_buddy", { buddyName: displayName }))
         }
 
         // if(!evtParams.buddy.isTemp()){
