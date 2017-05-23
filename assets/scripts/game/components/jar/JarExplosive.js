@@ -1,6 +1,6 @@
 import app from 'app';
 import Actor from 'Actor';
-import Utils from 'Utils';
+import GameUtils from 'GameUtils';
 import CCUtils from 'CCUtils';
 
 export default class JarExplosive extends Actor {
@@ -47,7 +47,7 @@ export default class JarExplosive extends Actor {
         debug('on init', username, message, money);
 
         this.message.string = message ? message : app.res.string('jar_explosion');
-        this.amount.string = Utils.numberFormat(money, '0.0');
+        this.amount.string = GameUtils.formatBalanceShort(money);
     }
     
     close() {

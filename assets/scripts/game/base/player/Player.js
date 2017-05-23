@@ -168,10 +168,7 @@ export default class Player extends Actor {
     _onPlayerChangeBalance(id, newBalance) {
         if (this.id == id) {
             let balanceVariable = this.user.variables[Keywords.USER_VARIABLE_BALANCE];
-            console.warn('balanceVariable', balanceVariable);
-            console.warn('Keywords.USER_VARIABLE_BALANCE', Keywords.USER_VARIABLE_BALANCE);
-            console.warn('newBalance', newBalance);
-            console.warn('this.user.variables', this.user.variables);
+          
             if(balanceVariable) {
                 let currentBalance = balanceVariable.value;
 
@@ -218,7 +215,6 @@ export default class Player extends Actor {
     _onUserGetJarExplosion(username, message, money) {
         if(!this.isItMe())
             return;
-        debug('_onUserGetJarExplosion');
         if(this.username == username) {
             app.jarManager.jarExplosive({username, money, message});
         }
@@ -229,6 +225,8 @@ export default class Player extends Actor {
             app.jarManager.runCoinFliesFromJarToUserAnim(pos);
         }
         app.system.audioManager.play(app.system.audioManager.NO_HU);
+        
+        app.jarManager.updateJarMoney(this.scene.gameCode, money);
     }
     
     onEnable(renderer, renderData = {}) {

@@ -8,6 +8,8 @@ export default class JarManager {
         this._jarExplosiveComponent = null;
         this._currentJarComponent = null;
         
+        this._tmpData = {}; // {gc:string, data{id, remainTime, startTime, endTime, currentMoney}}
+        this._currentParent = null;
         this.addEventListener();
         
         this.start();
@@ -27,14 +29,14 @@ export default class JarManager {
     }
     
     updateJar(gc, newData) {
-        this.setJar(newData);
+        this.setJar(gc, newData);
     }
     
     getJar(gc) {
         return this._jars[gc];
     }
     
-    getJarComponent(jar, componentName) {
+    getComponentInJar(jar, componentName) {
         return jar ? jar.getComponent(componentName) : null;
     }
     
@@ -42,8 +44,26 @@ export default class JarManager {
         return this._jars;    
     }
     
+    /**
+     * 
+     * @param {any} gc 
+     * @param {cc.Node} data 
+     * 
+     * @memberof JarManager
+     */
     setJar(gc, data) {
         this._jars[gc] = data;
+        this.updateJarComponent(gc);
+    }
+    
+    updateJarComponent(gc) {
+        let jarComponent = this._getJarComponent(gc);
+        if(jarComponent) {
+            let {id, remainTime, startTime, endTime, currentMoney} = this.getJarDataFromGC(gc);
+        
+            currentMoney && jarComponent.updateTotalMoney(currentMoney);
+            remainTime && jarComponent._updateRemainTime(remainTime);
+        }
     }
     
     setupJar(data) {
@@ -55,7 +75,7 @@ export default class JarManager {
                 startTime = data[app.keywords.START_TIME_LIST][i];
             
             let jar = cc.instantiate(app.res.prefab.jarPrefab);
-            jar._jarInit = {id, remainTime, startTime, endTime, currentMoney};
+            jar._jarData = {id, remainTime, startTime, endTime, currentMoney};
             
             this.setJar(gc, jar);
         });
@@ -66,11 +86,14 @@ export default class JarManager {
         
         if(!jar || !parent || !CCUtils.isNode(parent) || !CCUtils.isNode(jar))
             return;
-        let data = this.getInitData(jar);
+        let data = this.getJarData(jar);
         
         let cloner = cc.instantiate(jar); // clone this node to prevent node's component will be destroy while scene's changing. --> fixed only in simulator
+        cloner._jarData = data;
         
-        let jarComponent = this.getJarComponent(cloner, 'JarComponent');
+        this.updateJar(gc, cloner);
+        
+        let jarComponent = this.getComponentInJar(this.getJar(gc), 'JarComponent');
         
         this._currentJarComponent = jarComponent;
         
@@ -79,7 +102,7 @@ export default class JarManager {
             jarComponent.init(data);
         }
         
-        cloner.active = true;
+        this.getJar(gc).active = true;
         
         if(hasButton) {
             if(jarComponent) {
@@ -89,11 +112,16 @@ export default class JarManager {
         
         CCUtils.clearAllChildren(parent);
         
-        parent.addChild(cloner);
+        this._currentParent = parent;
+        this._currentParent.addChild(this.getJar(gc));
     }
     
-    getInitData(jar) {
-        return jar._jarInit;    
+    getJarData(jar) {
+        return jar._jarData || null;    
+    }
+    
+    getJarDataFromGC(gc) {
+        return this.getJarData(this.getJar(gc)) || null;   
     }
     
     hasJar(gc) {
@@ -103,8 +131,8 @@ export default class JarManager {
     jarExplosive({username, money, message} = {}) {
         let jarExplosive = cc.instantiate(app.res.prefab.jarExplosive);
         if(jarExplosive) {
-            let jarExplosiveComponent = this.getJarComponent(jarExplosive, 'JarExplosive');
-            jarExplosiveComponent.init({username, money, message});
+            let jarExplosiveComponent = this.getComponentInJar(jarExplosive, 'JarExplosive');
+            jarExplosiveComponent && jarExplosiveComponent.init({username, money, message});
             
             this._jarExplosiveComponent = jarExplosiveComponent;
             cc.director.getScene().addChild(jarExplosive);
@@ -122,5 +150,20 @@ export default class JarManager {
         if(this._currentJarComponent) {
             this._currentJarComponent.runCoinAnim(destination);
         }
+    }
+    
+    updateJarMoney(gc, money) {
+        let jarComponent = this._getCurrentJarComponentInScene();
+        jarComponent && jarComponent.updateTotalMoney((this.getJarDataFromGC(gc).currentMoney || 0) - money);
+    }
+    
+    _getJarComponent(gc) {
+        let jar = this.getJar(gc);
+        return this.getComponentInJar(jar, 'JarComponent');
+    }
+    
+    _getCurrentJarComponentInScene() {
+        let jarComponent = this._currentParent.getComponentInChildren('JarComponent');
+        return jarComponent;
     }
 }

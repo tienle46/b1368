@@ -54,6 +54,7 @@ export default class BoardCard extends Board {
 
         this.scene.emit(Events.ON_GAME_STATE_STARTING, data);
     }
+    
     adjustDealCardAnchor(){
         const meCardList = this.scene.gamePlayers.me.renderer.cardList;
         

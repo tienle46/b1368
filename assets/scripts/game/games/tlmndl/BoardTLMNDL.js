@@ -65,6 +65,7 @@ export default class BoardTLMNDL extends BoardCardTurnBase {
         let playerIds = utils.getValue(data, Keywords.GAME_LIST_PLAYER)
         let playerRemainCardSizes = utils.getValue(data, Keywords.GAME_LIST_PLAYER_CARDS_SIZE, []);
         if(playerIds && playerRemainCardSizes && playerIds.length == playerRemainCardSizes.length){
+            console.warn('_loadRemainCardCount', playerIds, playerRemainCardSizes);
             playerIds.forEach((id, index) => {
                 this.scene.emit(Events.ON_PLAYER_REMAIN_CARD_COUNT, id, playerRemainCardSizes[index]);
             });
@@ -108,7 +109,7 @@ export default class BoardTLMNDL extends BoardCardTurnBase {
                 balanceChanged: balanceChangeAmounts[playerId],
                 text: resultTexts[playerId],
                 info: gameResultInfos[playerId],
-                cards: GameUtils.sortCardAscByRankFirstSuitLast(playerHandCards[playerId]),
+                cards: TLMNUtils.sortAsc(playerHandCards[playerId]),
                 isWinner: winnerFlags[playerId]
             })
         })

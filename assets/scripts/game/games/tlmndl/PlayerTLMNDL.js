@@ -19,7 +19,12 @@ export default class PlayerTLMNDL extends PlayerCardTurnBase {
         this.sortSolution = TLMNUtils.SORT_BY_RANK;
         this.remainCardCount = PlayerTLMNDL.DEFAULT_HAND_CARD_COUNT;
     }
-
+    
+    onLoad() {
+        super.onLoad();
+        this.remainCardCount = PlayerTLMNDL.DEFAULT_HAND_CARD_COUNT;
+    }
+    
     _addGlobalListener() {
         super._addGlobalListener();
 

@@ -1,7 +1,7 @@
 import app from 'app';
 import Actor from 'Actor';
 import moment from 'moment';
-import Utils from 'Utils';
+import GameUtils from 'GameUtils';
 import CCUtils from 'CCUtils';
 import RubUtils from 'RubUtils';
 
@@ -34,12 +34,16 @@ export default class JarComponent extends Actor {
         });
     }
     
-    onEnable() {
-        super.onEnable();
+    start() {
+        super.start();
+        
+        app.service.send({
+            cmd: app.commands.LIST_HU
+        });
     }
     
-    onDestroy() {
-        window.release(this.spriteFrames);
+    onEnable() {
+        super.onEnable();
     }
     
     activeBtnComponent() {
@@ -47,20 +51,25 @@ export default class JarComponent extends Actor {
     }
     
     init({id, remainTime, startTime, endTime, currentMoney} = {}) {
+        remainTime = Math.abs(new Date().getTime() - endTime);
+        
         this._updateRemainTime(remainTime);
         this.updateTotalMoney(currentMoney);
-                
+        
         this.jarId = id;
         this.node.active = true;
     }
     
     updateTotalMoney(totalMoney) {
-        this.jarTotalMoneyLbl.string = Utils.formatNumberType2(totalMoney).toString().toUpperCase();
+        totalMoney < 0 && (totalMoney = 0);
+        this.jarTotalMoneyLbl.string = GameUtils.formatBalanceShort(totalMoney).toString().toUpperCase();
     }
     
     onDestroy() {
         super.onDestroy();
         this._clearInterval();
+        this.remainTime = 0;
+        window.release(this.spriteFrames);
     }
     
     onJarClick() {
@@ -74,14 +83,14 @@ export default class JarComponent extends Actor {
     
     _addGlobalListener() {
         super._addGlobalListener();
-        app.system.addListener(app.commands.LIST_HU, this._onListHu, this);
+        // app.system.addListener(app.commands.LIST_HU, this._onListHu, this);
         app.system.addListener(app.commands.JAR_DETAIL, this._onJarDetail, this);
     }
 
     _removeGlobalListener() {
         super._removeGlobalListener();
         app.system.removeListener(app.commands.JAR_DETAIL, this._onJarDetail, this);
-        app.system.removeListener(app.commands.LIST_HU, this._onListHu, this);
+        // app.system.removeListener(app.commands.LIST_HU, this._onListHu, this);
     }
     
     _updateRemainTime(remainTime) {
@@ -111,16 +120,16 @@ export default class JarComponent extends Actor {
         }
     }
     
-    _onListHu(data) {
-        let index = data[app.keywords.GAME_CODE_LIST].findIndex((gc) => gc == this._gameCode);
+    // _onListHu(data) {
+    //     let index = data[app.keywords.GAME_CODE_LIST].findIndex((gc) => gc == this._gameCode);
         
-        if(index > -1) {
-            let currentMoney = data[app.keywords.MONEY_LIST][index],
-                remainTime = data[app.keywords.REMAIN_TIME_LIST][index];
-            this.updateTotalMoney(currentMoney);
-            this._updateRemainTime(remainTime);
-        };
-    }
+    //     if(index > -1) {
+    //         let currentMoney = data[app.keywords.MONEY_LIST][index],
+    //             remainTime = data[app.keywords.REMAIN_TIME_LIST][index];
+    //         this.updateTotalMoney(currentMoney);
+    //         this._updateRemainTime(remainTime);
+    //     };
+    // }
     
     // @param destination : v2(x,y)
     runCoinAnim(destination) {

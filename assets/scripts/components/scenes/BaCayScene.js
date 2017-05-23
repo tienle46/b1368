@@ -7,6 +7,7 @@ import GameScene from 'GameScene';
 import Events from 'Events';
 import HorizontalBetPopup from 'HorizontalBetPopup';
 import BaCayUtils from "../../game/games/bacay/BaCayUtils";
+import Utils from 'Utils';
 
 export default class BaCayScene extends GameScene {
     constructor() {
@@ -28,10 +29,15 @@ export default class BaCayScene extends GameScene {
         this._betPopup = null;
         this.isShowBetPopup = false;
         this.isShowCuocBienPopup = false;
+        
+        this._betPhaseDuration = 0;
+        this._startBetPhaseTime = 0; // ms
     }
 
     onLoad() {
         super.onLoad();
+        this._betPhaseDuration = 0;
+        this._startBetPhaseTime = 0; // ms
     }
 
     onEnable() {
@@ -41,27 +47,39 @@ export default class BaCayScene extends GameScene {
         this._betPopup = this.chooseBetSliderNode.getComponent('HorizontalBetPopup');
 
         super.onEnable();
-
+        
+        this.on(Events.ON_GAME_STATE_PRE_CHANGE, this._onGameStatePreChange, this, 0);
         this.on(Events.ON_CLICK_CHOOSE_BET_BUTTON, this._onClickChooseBetButton, this);
     }
-
+    
+    _onGameStatePreChange(boardState, data) {
+        if(boardState === app.const.game.state.BOARD_STATE_BET) {
+            this._betPhaseDuration = Utils.getValue(data, app.keywords.BOARD_PHASE_DURATION);
+            this._startBetPhaseTime = new Date().getTime();
+        }
+        
+        //TODO Process board state changed here
+    }
+    
     showCuocBienPopup(maxValue, cb) {
-
         this.isShowBetPopup = false
         this.isShowCuocBienPopup = true
+        let remainTime = parseInt(this._betPhaseDuration - (new Date().getTime() - this._startBetPhaseTime)/1000 - 1);
+        if(remainTime > 0) {
+            if(maxValue < this.board.minBet) {
+                app.system.showToast(app.res.string('game_not_enough_balance_to_cuoc_bien'));
+                return;
+            }
 
-        if(maxValue < this.board.minBet) {
-            app.system.showToast(app.res.string('game_not_enough_balance_to_cuoc_bien'));
-            return;
+            this._betPopup && this._betPopup.show({
+                minValue: this.board.minBet,
+                maxValue,
+                currentValue: 0,
+                timeout: remainTime,
+                cb,
+            });
         }
-
-        this._betPopup && this._betPopup.show({
-            minValue: this.board.minBet,
-            maxValue,
-            currentValue: 0,
-            timeout: 10,
-            cb,
-        });
+        
     }
 
     showChooseBetSlider(currentValue, maxValue, timeout = 5) {
