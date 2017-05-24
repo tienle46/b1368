@@ -67,7 +67,6 @@ class BuddyListTabBody extends PopupTabBody {
                 buddy.balance = balances[index]
                 buddy.avatar = avatarUrls[index]
                 buddy.displayName = displayNames[index] || buddyName || buddy.getNickName() || buddy.name
-                console.warn(buddy.displayName)
             }
             
             let buddyItem = this._findCurrentBuddyItem(buddy);
