@@ -226,7 +226,8 @@ export default class BoardTLMNDL extends BoardCardTurnBase {
          */
         playerIds.map(id => {
             var handCard = playerHandCards[id];
-            if(!winnerFlags[id] && !gameResultInfos[id]){
+
+            if(!winnerFlags[id] || !gameResultInfos[id]){
                 gameResultInfos[id] = handCard && handCard.length > 0 ? app.res.string('game_tlmn_card_count', {count: handCard.length}) : "";
             }
         });
@@ -238,14 +239,15 @@ export default class BoardTLMNDL extends BoardCardTurnBase {
                 let str = `${app.res.string('game_thoi')} `;
 
                 types.forEach((type, i) => {
-                    let typeName = TLMNUtils.getTLMNThoiString(type);
-                    let subfix = i < types.length - 1 ? ', ' : '';
                     let count = counts[i]
-
-                    str += count > 0 ? `${counts[i]} ${typeName}${subfix}` : `${typeName}${subfix}`;
+                    let subfix = i < types.length - 1 ? ', ' : '';
+                    str +=TLMNUtils.getTLMNThoiString(type, count, subfix)
                 });
 
-                gameResultInfos[id] = str + (playersWinRanks[id] != app.const.game.rank.GAME_RANK_FIRST && !utils.isEmpty(gameResultInfos[id]) ? `, ${gameResultInfos[id]}` : '');
+                gameResultInfos[id] = utils.isEmpty(gameResultInfos[id]) ? str : str + `, ${gameResultInfos[id]}`
+
+                // gameResultInfos[id] = str + `, ${gameResultInfos[id]}`
+                // gameResultInfos[id] = str + (playersWinRanks[id] != app.const.game.rank.GAME_RANK_FIRST && !utils.isEmpty(gameResultInfos[id]) ? `, ${gameResultInfos[id]}` : '');
             }
         });
 
