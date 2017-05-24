@@ -224,14 +224,13 @@ class Service {
             app.system.loadScene(app.const.scene.ENTRANCE_SCENE);
         } else {
             if (scene) {
-                let sceneName = scene.name;
                 let isLoggedIn = true;
                 // exception Scene: sences which are still presit when lost connection occurred. otherwise will be back to ENTRANCE_SCENE
                 let isInExceptionScene = app._.includes([
                     app.const.scene.ENTRANCE_SCENE,
                     app.const.scene.LOGIN_SCENE,
                     app.const.scene.REGISTER_SCENE
-                ], sceneName);
+                ], scene);
                 if (isInExceptionScene) {
                     isLoggedIn = false;
                     // this._loginData && this._reConnectWithLoginData(this._loginData);

@@ -225,8 +225,6 @@ export default class Player extends Actor {
             app.jarManager.runCoinFliesFromJarToUserAnim(pos);
         }
         app.system.audioManager.play(app.system.audioManager.NO_HU);
-        
-        app.jarManager.updateJarMoney(this.scene.gameCode, money);
     }
     
     onEnable(renderer, renderData = {}) {

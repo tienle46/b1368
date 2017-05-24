@@ -145,9 +145,7 @@ export default class DashboardScene extends BaseScene {
     }
     
     _requestListHu() {
-        app.service.send({
-            cmd: app.commands.LIST_HU
-        });    
+        app.jarManager.requestUpdateJarList();   
     }
 
     _initItemListGame() {

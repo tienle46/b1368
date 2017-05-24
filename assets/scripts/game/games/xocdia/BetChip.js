@@ -28,13 +28,13 @@ class BetChip extends Component {
         let str = isNaN(amount) ? amount : this._convertAmountFromNumberToString(amount);
         this.amountLbl.string = str;
 
-        if (str.length >= 3) {
-            let size = {
-                width: 150,
-                height: this.node.getContentSize().height
-            };
-            this.node.setContentSize(size);
-        }
+        // if (str.length >= 3) {
+        //     let size = {
+        //         width: 150,
+        //         height: this.node.getContentSize().height
+        //     };
+        //     this.node.setContentSize(size);
+        // }
     }
 
     // 1000 -> 1k , 10000 -> 10k, 15000 -> 15k

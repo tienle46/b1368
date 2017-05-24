@@ -379,7 +379,7 @@ export default class XocDiaControls extends GameControls {
         if (isItMe) {
             this._resetBetData();
             this.scene.loadPlayerBalance();
-            this._setRebetBtnState(true);
+            this._setRebetBtnState(this.previousBetData.length > 0);
         }
 
         this._clearUserGoldAmountOnControl(isItMe, betsList, playerId);

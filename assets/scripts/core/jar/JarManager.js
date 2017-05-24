@@ -8,7 +8,6 @@ export default class JarManager {
         this._jarExplosiveComponent = null;
         this._currentJarComponent = null;
         
-        this._tmpData = {}; // {gc:string, data{id, remainTime, startTime, endTime, currentMoney}}
         this._currentParent = null;
         this.addEventListener();
         
@@ -67,6 +66,7 @@ export default class JarManager {
     }
     
     setupJar(data) {
+        this._jars = {};
         data[app.keywords.GAME_CODE_LIST].forEach((gc, i) => {
             let endTime = data[app.keywords.END_TIME_LIST][i],
                 id = data[app.keywords.ID_LIST][i],
@@ -86,34 +86,37 @@ export default class JarManager {
         
         if(!jar || !parent || !CCUtils.isNode(parent) || !CCUtils.isNode(jar))
             return;
-        let data = this.getJarData(jar);
+            
+        let _jarData = this.getJarData(jar);
         
         let cloner = cc.instantiate(jar); // clone this node to prevent node's component will be destroy while scene's changing. --> fixed only in simulator
-        cloner._jarData = data;
         
-        this.updateJar(gc, cloner);
+        if(cloner) {
+            cloner._jarData = _jarData;
         
-        let jarComponent = this.getComponentInJar(this.getJar(gc), 'JarComponent');
-        
-        this._currentJarComponent = jarComponent;
-        
-        if(jarComponent) {
-            jarComponent._gameCode = gc;
-            jarComponent.init(data);
-        }
-        
-        this.getJar(gc).active = true;
-        
-        if(hasButton) {
+            this.updateJar(gc, cloner);
+            
+            let jarComponent = this.getComponentInJar(this.getJar(gc), 'JarComponent');
+            
+            this._currentJarComponent = jarComponent;
+            
             if(jarComponent) {
-                jarComponent.activeBtnComponent();
+                jarComponent._gameCode = gc;
+                jarComponent.init(_jarData);
             }
+            
+            this.getJar(gc).active = true;
+            
+            if(hasButton) {
+                if(jarComponent) {
+                    jarComponent.activeBtnComponent();
+                }
+            }
+            
+            CCUtils.clearAllChildren(parent);
+            
+            parent.addChild(this.getJar(gc));
         }
-        
-        CCUtils.clearAllChildren(parent);
-        
-        this._currentParent = parent;
-        this._currentParent.addChild(this.getJar(gc));
     }
     
     getJarData(jar) {
@@ -152,18 +155,14 @@ export default class JarManager {
         }
     }
     
-    updateJarMoney(gc, money) {
-        let jarComponent = this._getCurrentJarComponentInScene();
-        jarComponent && jarComponent.updateTotalMoney((this.getJarDataFromGC(gc).currentMoney || 0) - money);
-    }
-    
     _getJarComponent(gc) {
         let jar = this.getJar(gc);
         return this.getComponentInJar(jar, 'JarComponent');
     }
     
-    _getCurrentJarComponentInScene() {
-        let jarComponent = this._currentParent && this._currentParent.getComponentInChildren('JarComponent');
-        return jarComponent;
+    requestUpdateJarList() {
+        app.service.send({
+            cmd: app.commands.LIST_HU
+        }); 
     }
 }

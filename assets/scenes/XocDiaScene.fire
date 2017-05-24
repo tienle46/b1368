@@ -6791,7 +6791,7 @@
       "a": 255
     },
     "duration": 0.1,
-    "zoomScale": 1.2,
+    "zoomScale": 1.05,
     "pressedSprite": null,
     "hoverSprite": null,
     "clickEvents": [],
@@ -7378,7 +7378,7 @@
       "a": 255
     },
     "duration": 0.1,
-    "zoomScale": 1.2,
+    "zoomScale": 1.05,
     "pressedSprite": null,
     "hoverSprite": null,
     "clickEvents": [],
@@ -7955,7 +7955,7 @@
       "a": 255
     },
     "duration": 0.1,
-    "zoomScale": 1.2,
+    "zoomScale": 1.05,
     "pressedSprite": null,
     "hoverSprite": null,
     "clickEvents": [],
@@ -8532,7 +8532,7 @@
       "a": 255
     },
     "duration": 0.1,
-    "zoomScale": 1.2,
+    "zoomScale": 1.05,
     "pressedSprite": null,
     "hoverSprite": null,
     "clickEvents": [],
@@ -8608,7 +8608,7 @@
       "width": 606,
       "height": 92
     },
-    "_resize": 2,
+    "_resize": 1,
     "_N$layoutType": 1,
     "_N$padding": 0,
     "_N$cellSize": {

@@ -21,7 +21,6 @@ export default class JarComponent extends Actor {
         
         this._timeout = null;
         this.time = 1000; // 1s
-        this.remainTime = 0;
         this.jarId = null;
         this.spriteFrames = [];
     }
@@ -68,7 +67,6 @@ export default class JarComponent extends Actor {
     onDestroy() {
         super.onDestroy();
         this._clearInterval();
-        this.remainTime = 0;
         window.release(this.spriteFrames);
     }
     
@@ -83,23 +81,22 @@ export default class JarComponent extends Actor {
     
     _addGlobalListener() {
         super._addGlobalListener();
-        // app.system.addListener(app.commands.LIST_HU, this._onListHu, this);
+        app.system.addListener(app.commands.LIST_HU, this._onListHu, this);
         app.system.addListener(app.commands.JAR_DETAIL, this._onJarDetail, this);
     }
 
     _removeGlobalListener() {
         super._removeGlobalListener();
         app.system.removeListener(app.commands.JAR_DETAIL, this._onJarDetail, this);
-        // app.system.removeListener(app.commands.LIST_HU, this._onListHu, this);
+        app.system.removeListener(app.commands.LIST_HU, this._onListHu, this);
     }
     
     _updateRemainTime(remainTime) {
-        this.remainTime = remainTime;
-        this.remainTimeLbl && (this.remainTimeLbl.string = moment(this.remainTime).format('hh:mm:ss'));
+        this.remainTimeLbl && (this.remainTimeLbl.string = moment(remainTime).format('hh:mm:ss'));
         
         this.timeout = setTimeout(() => {
             clearTimeout(this.timeout);
-            this._updateRemainTime(this.remainTime - this.time);
+            this._updateRemainTime(remainTime - this.time);
         }, this.time);
     }
     
@@ -120,16 +117,18 @@ export default class JarComponent extends Actor {
         }
     }
     
-    // _onListHu(data) {
-    //     let index = data[app.keywords.GAME_CODE_LIST].findIndex((gc) => gc == this._gameCode);
+    _onListHu(data) {
+        let index = data[app.keywords.GAME_CODE_LIST].findIndex((gc) => gc == this._gameCode);
         
-    //     if(index > -1) {
-    //         let currentMoney = data[app.keywords.MONEY_LIST][index],
-    //             remainTime = data[app.keywords.REMAIN_TIME_LIST][index];
-    //         this.updateTotalMoney(currentMoney);
-    //         this._updateRemainTime(remainTime);
-    //     };
-    // }
+        if(index > -1) {
+            let currentMoney = data[app.keywords.MONEY_LIST][index],
+                endTime = data[app.keywords.END_TIME_LIST][index],
+                remainTime = Math.abs(new Date().getTime() - endTime);
+            
+            this.updateTotalMoney(currentMoney);
+            this._updateRemainTime(remainTime);
+        };
+    }
     
     // @param destination : v2(x,y)
     runCoinAnim(destination) {
