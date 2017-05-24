@@ -163,7 +163,7 @@ export default class JarManager {
     }
     
     _getCurrentJarComponentInScene() {
-        let jarComponent = this._currentParent.getComponentInChildren('JarComponent');
+        let jarComponent = this._currentParent && this._currentParent.getComponentInChildren('JarComponent');
         return jarComponent;
     }
 }

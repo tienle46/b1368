@@ -26,7 +26,6 @@ export default class DashboardScene extends BaseScene {
     onLoad() {
         super.onLoad();
         this._isNewBie = false;
-        app.context.isLoggedIn = true;
     }
 
     onEnable() {

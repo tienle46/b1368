@@ -163,8 +163,6 @@ export default class BoardXocDia extends BoardCardBetTurn {
     }
 
     _onGameBegin() {
-        console.warn('_onGameBegin');
-        
         this.renderer.runDishShakeAnim();
         // hiding all bets and table on game board
         this.renderer.hideElements();

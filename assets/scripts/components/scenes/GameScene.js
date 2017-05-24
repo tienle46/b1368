@@ -177,7 +177,7 @@ export default class GameScene extends BaseScene {
         this.gameMenu = this.gameMenuNode.getComponent('GameMenuPrefab')
 
         this.isSoloGame = GameUtils.isSoloGame(app.context.currentRoom)
-
+        
         this.node.children.forEach(child => { child.opacity = 255 });
         Object.values(app.res.asset_tools).length < 1 && this._loadAssetTools();
     }
@@ -307,6 +307,7 @@ export default class GameScene extends BaseScene {
         this.gameEventHandler && this.gameEventHandler.removeGameEventListener();
         this.gameContext = {};
         this.gameData = {};
+        app.context.rejoiningGame = false;
         window.release(this._penddingEvents);
         Props.releaseAllPropAsset();
     }
