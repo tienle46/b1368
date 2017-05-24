@@ -293,28 +293,37 @@ export default class TLMNUtils {
         return isDoiThong;
     }
 
-    static getTLMNThoiString(thoiType) {
+    static getTLMNThoiString(thoiType, count, subfix = '') {
+
         let retString = "";
+        let skipCount = false;
         switch (thoiType) {
             case TLMNUtils.THOI_TYPE_HEO_DEN:
-                retString = app.res.string('game_heo_den');
+                retString = app.res.string('game_heo_den')
                 break;
             case TLMNUtils.THOI_TYPE_HEO_DO:
-                retString = app.res.string('game_heo_do');
+                retString = app.res.string('game_heo_do')
                 break;
             case TLMNUtils.THOI_TYPE_BA_DOI_THONG:
-                retString = app.res.string('game_ba_doi_thong');
+                retString = app.res.string('game_ba_doi_thong')
+                skipCount = true;
                 break;
             case TLMNUtils.THOI_TYPE_TU_QUY:
-                retString = app.res.string('game_tu_quy');
+                retString = app.res.string('game_tu_quy')
                 break;
             case TLMNUtils.THOI_TYPE_BON_DOI_THONG:
-                retString = app.res.string('game_bon_doi_thong');
+                retString = app.res.string('game_bon_doi_thong')
+                skipCount = true;
                 break;
             case TLMNUtils.THOI_TYPE_BA_BICH:
-                retString = app.res.string('game_ba_bich');
+                retString = app.res.string('game_ba_bich')
                 break;
         }
+
+        if(retString.length > 0){
+            return count > 0 && !skipCount ? `${count} ${retString}${subfix}` : `${retString}${subfix}`;
+        }
+
         return retString;
     }
 
