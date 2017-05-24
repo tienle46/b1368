@@ -4011,6 +4011,9 @@
     "emotionsPanel": {
       "__id__": 104
     },
+    "emotionScroll": {
+      "__id__": 111
+    },
     "quickChatPanel": {
       "__id__": 114
     },

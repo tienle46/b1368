@@ -774,7 +774,7 @@
     "_tag": -1,
     "_opacityModifyRGB": false,
     "_id": "8ded6v/paxLS6ob46lw/Osu",
-    "_active": false,
+    "_active": true,
     "_components": [
       {
         "__id__": 38
@@ -1288,7 +1288,7 @@
     "_isSystemFontUsed": false,
     "_N$string": "Đặt Cược",
     "_N$horizontalAlign": 1,
-    "_N$verticalAlign": 1,
+    "_N$verticalAlign": 2,
     "_N$overflow": 0
   },
   {
@@ -1328,7 +1328,7 @@
     },
     "_enabled": true,
     "path": "",
-    "lineHeight": 24,
+    "lineHeight": 50,
     "label": {
       "__id__": 32
     },

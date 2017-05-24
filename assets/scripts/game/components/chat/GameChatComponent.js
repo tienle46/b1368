@@ -36,6 +36,7 @@ export default class GameChatComponent extends Actor {
             logChatItemPrefab: cc.Prefab,
             // panels
             emotionsPanel: cc.Node,
+            emotionScroll: cc.ScrollView,
             quickChatPanel: cc.Node,
             chatHistoryPanel: cc.Node,
             chatHistoryScroll: cc.ScrollView,
@@ -283,7 +284,8 @@ export default class GameChatComponent extends Actor {
 
             this.emotionsList.addChild(item);
         });
-
+        this.emotionScroll.scrollToTop();
+        
         this.emotionInited = true;
     }
 

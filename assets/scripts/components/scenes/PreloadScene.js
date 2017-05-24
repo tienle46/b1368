@@ -20,7 +20,11 @@ class PreloadScene extends Component {
         }
 
         app.system.initOnFirstSceneLoaded()
-
+        // cc.TextUtils.label_wordRex = /([a-zA-Z0-9ÄÖÜäöüßéèçàùêâîôûа-яА-ЯЁё]+|\S)/;
+        // cc.TextUtils.label_lastWordRex = /([a-zA-Z0-9ÄÖÜäöüßéèçàùêâîôûа-яА-ЯЁё]+|\S)$/;
+        // cc.TextUtils.label_lastEnglish = /[a-zA-Z0-9ÄÖÜäöüßéèçàùêâîôûа-яА-ЯЁё]+$/;
+        // cc.TextUtils.label_firsrEnglish = /^[a-zA-Z0-9ÄÖÜäöüßéèçàùêâîôûа-яА-ЯЁё]/;
+        
         // let cards = [
         //     Card.from(Card.RANK_AT, Card.SUIT_ZO),
         //     Card.from(Card.RANK_HAI, Card.SUIT_ZO),
