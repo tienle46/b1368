@@ -41,7 +41,6 @@ const LOGIN_ERROR_MESSAGES_VI = {
     "40": "Bạn không có quyền truy nhập vào game, không đúng tiêu chí truy cập",
     "41": "Không có bàn chơi phù hợp, vui lòng thử phòng khác",
     "42": "Lời mời trước của bạn không hợp lệ, hoặc nó đến quá chậm",
-
     "28": {
         "0": "Lỗi hệ thống. Vui lòng gọi hỗ trợ!",
         "4": "Tài khoản của bạn không hợp lệ",
@@ -59,10 +58,11 @@ const LOGIN_ERROR_MESSAGES_VI = {
         "114": "Không tìm thấy thông tin tài khoản Facebook",
         "115": "Phiên bản game chưa được đăng ký với nhà phát hành",
         "116": "Tài khoản chưa được kích hoạt",
-        "117": "Tài khoản đã bị BAN khỏi hệ thống",
+        "117": "Tài khoản đã bị khóa vĩnh viễn",
         "118": "Chức năng chơi ngay tạm khóa",
         "119": "Tài khoản đã được đăng ký"
     },
+    "unknown": "Lỗi không xác định {{errorCode}}. Vui lòng gọi hỗ trợ!",
     // CUSTOM ERROR FOR CLIENTS
     "LOGIN_ERROR_USERNAME_NOT_VALID": "Tên đăng nhập phải từ 6 - 15 ký tự, bao gồm số hoặc chữ.",
     "LOGIN_ERROR_PASSWORD_NOT_VALID": "Mật khẩu từ 6 - 30 ký tự, chỉ gồm chữ và số.",

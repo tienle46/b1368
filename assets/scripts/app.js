@@ -182,10 +182,18 @@ app.getMessageFromServer = (error) => {
     } else {
         errorCode = error.errorCode;
         errorMessage = error.errorMessage;
-        if (typeof messages[errorCode] === 'object') {
-            message = messages[errorCode][errorMessage];
-        } else {
-            message = messages[errorCode];
+        if(errorCode != undefined){
+            if (typeof messages[errorCode] === 'object') {
+                message = messages[errorCode][errorMessage];
+                if(!message){
+                    message = errorMessage;
+                }
+            } else {
+                message = messages[errorCode];
+                if(message && typeof message !== 'string'){
+                    message = undefined
+                }
+            }
         }
     }
 
