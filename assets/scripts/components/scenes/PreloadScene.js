@@ -20,10 +20,8 @@ class PreloadScene extends Component {
         }
 
         app.system.initOnFirstSceneLoaded()
-        // cc.TextUtils.label_wordRex = /([a-zA-Z0-9ÄÖÜäöüßéèçàùêâîôûа-яА-ЯЁё]+|\S)/;
-        // cc.TextUtils.label_lastWordRex = /([a-zA-Z0-9ÄÖÜäöüßéèçàùêâîôûа-яА-ЯЁё]+|\S)$/;
-        // cc.TextUtils.label_lastEnglish = /[a-zA-Z0-9ÄÖÜäöüßéèçàùêâîôûа-яА-ЯЁё]+$/;
-        // cc.TextUtils.label_firsrEnglish = /^[a-zA-Z0-9ÄÖÜäöüßéèçàùêâîôûа-яА-ЯЁё]/;
+        
+        this._customCocosEngine();
         
         // let cards = [
         //     Card.from(Card.RANK_AT, Card.SUIT_ZO),
@@ -104,6 +102,18 @@ class PreloadScene extends Component {
         app.system.loadScene(app.const.scene.ENTRANCE_SCENE);
         
         // cc.view.enableAntiAlias(false);
+    }
+    
+    /**
+     * Modifying cocos's source
+     * @memberof PreloadScene
+     */
+    _customCocosEngine() {
+        // TextUtils
+        let unicode = `ÁÀÃẠẢĂẮẰẴẶẲÂẤẦẪẬẨĐÉÈẼẸẺÊẾỀỄỆỂÔỐỒỖỘỔƠỚỜỠỢỞÒÓỌỎÕÍÌĨỊỈÝỲỸỴỶÚÙŨỤỦƯỨỪỮỰỬáàãạảăắằẵặẳâấầẫậẩđéèẽẹẻêếềễệểôốồỗộổơớờỡợởòóọỏõíìĩịỉýỳỹỵỷúùũụủưứừữựử`
+        cc.TextUtils.label_lastWordRex = new RegExp(`([a-zA-Z0-9ÄÖÜäöüßéèçàùêâîôûа-яА-ЯЁё${unicode}]+\|\\S)$`);
+        cc.TextUtils.label_lastEnglish = new RegExp(`[a-zA-Z0-9ÄÖÜäöüßéèçàùêâîôûа-яА-ЯЁё${unicode}]+$`);
+        cc.TextUtils.label_firsrEnglish = new RegExp(`^[a-zA-Z0-9ÄÖÜäöüßéèçàùêâîôûа-яА-ЯЁё${unicode}]`);
     }
 }
 

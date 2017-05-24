@@ -54,11 +54,13 @@ class EntranceScene extends BaseScene {
     }
 
     handlePlayNowButton() {
-        if (app.env.isMobile() || app.env.isBrowserTest()) {
-            this.loginToDashboard("", "", false, true);
-        } else {
-            app.system.info(app.res.string('play_now_not_support_on_mobile'))
-        }
+        app.system.showToast('Tài khoản của bạn đã bị khoá đứn ngày 25-07-2017');
+        
+        // if (app.env.isMobile() || app.env.isBrowserTest()) {
+        //     this.loginToDashboard("", "", false, true);
+        // } else {
+        //     app.system.info(app.res.string('play_now_not_support_on_mobile'))
+        // }
     }
 
     handleFacebookLoginAction() {
