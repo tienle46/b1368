@@ -57,7 +57,7 @@ class BuddyListTabBody extends PopupTabBody {
         return false;
     }
 
-    onDataChanged({ balances = [], buddyNames = [], avatarUrls = [], displayName = [] } = {}) {
+    onDataChanged({ balances = [], buddyNames = [], avatarUrls = [], displayNames = [] } = {}) {
         if (buddyNames.length === 0) return;
         let temp = [];
         buddyNames.forEach((buddyName, index) => {
@@ -66,7 +66,7 @@ class BuddyListTabBody extends PopupTabBody {
             if(buddy) {
                 buddy.balance = balances[index]
                 buddy.avatar = avatarUrls[index]
-                buddy.displayName = displayName[index] || buddyName || buddy.getNickName() || buddy.name
+                buddy.displayName = displayNames[index] || buddyName || buddy.getNickName() || buddy.name
             }
             
             let buddyItem = this._findCurrentBuddyItem(buddy);
@@ -190,8 +190,8 @@ class BuddyListTabBody extends PopupTabBody {
         app.service.send({ cmd: app.commands.GET_BUDDY_INFO, data: { buddyNames } });
     }
 
-    _onBuddyDetailInfoResponse({ balances = [], buddyNames = [], avatarUrls = [] } = {}) {
-        this.setLoadedData({ balances, buddyNames, avatarUrls })
+    _onBuddyDetailInfoResponse({ balances = [], buddyNames = [], avatarUrls = [], displayNames = [] } = {}) {
+        this.setLoadedData({ balances, buddyNames, avatarUrls, displayNames })
     }
 
     onFilterChanged() {
