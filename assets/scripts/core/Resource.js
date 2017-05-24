@@ -115,9 +115,9 @@ app.res.gameTopCapThuIcon = {
 app.res.vip_emotions = ['trump'];
 app.res.vip_tools = {
     bopCoGa: true,
-    kiss: true,
+    // kiss: true,
     nemBomb: true,
-    nemCaChua: true,
+    // nemCaChua: true,
     nemGach: true,
     thaCho: true,
     // // user thuong`
