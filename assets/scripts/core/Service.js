@@ -236,7 +236,7 @@ class Service {
                     return;
                 }
 
-                app.system.loadScene(app.const.scene.ENTRANCE_SCENE, () => {
+                app.context.isLoggedIn && app.system.loadScene(app.const.scene.ENTRANCE_SCENE, () => {
                     if(this._loginData) {
                         let okBtn = this._reConnectWithLoginData.bind(this, this._loginData);
                         app.system.confirm(app.res.string('lost_connection'), null, okBtn);

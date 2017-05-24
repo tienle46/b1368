@@ -20,11 +20,13 @@ export default class DashboardScene extends BaseScene {
         };
         
         this.iconComponents = {};
+        this._isNewBie = false;
     }
 
     onLoad() {
         super.onLoad();
         this._isNewBie = false;
+        app.context.isLoggedIn = true;
     }
 
     onEnable() {

@@ -20,7 +20,8 @@ class GameContext {
         this.chattingBuddies = []; // buddies chatting ...
         this.gameList = []; // selected game code
         this.requestRandomInvite = undefined; //In rejoin game case GameScene not asign to false when requestRandomInvite == undefined
-        this.ctl = null; 
+        this.ctl = null;
+        this.isLoggedIn = false;
     }
 
     reset() {
