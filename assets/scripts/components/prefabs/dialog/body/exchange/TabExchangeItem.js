@@ -165,7 +165,7 @@ class TabExchangeItem extends PopupTabBody {
                 return;
             }
             
-            ActionBlocker.runAction(ActionBlocker.USER_WITHDRAWAL, () => {
+            ActionBlocker.runAction(ActionBlocker.USER_EXCHANGE_ITEM, () => {
                 let data = {};
                 data[app.keywords.EXCHANGE.REQUEST.ID] = id;
                 let sendObject = {
@@ -184,7 +184,7 @@ class TabExchangeItem extends PopupTabBody {
         if (data[app.keywords.RESPONSE_RESULT] === true) {
             app.system.showToast(`${data[app.keywords.RESPONSE_MESSAGE]}`);
         } else {            
-            ActionBlocker.resetLastTime(ActionBlocker.USER_WITHDRAWAL);
+            ActionBlocker.resetLastTime(ActionBlocker.USER_EXCHANGE_ITEM);
             data[app.keywords.RESPONSE_MESSAGE]  && app.system.error(data[app.keywords.RESPONSE_MESSAGE]);
         }
     }

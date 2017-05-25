@@ -12,6 +12,7 @@ import app from 'app'
 const blockConfig = {
     'invitePlayGame': {duration: 10*1000, keyMessage: "message_block_invite_game_action"},
     'userWithdrawal': {duration: 20*60*1000, keyMessage: "message_block_exchange_card_action"},
+    'userExchangeItem': {duration: 20*60*1000, keyMessage: "message_block_exchange_card_action"},
     'userTransfer': {duration: 10*1000, keyMessage: "message_block_transfer_action"},
 };
 
@@ -89,5 +90,6 @@ export default class ActionBlocker {
 }
 
 ActionBlocker.USER_WITHDRAWAL = "userWithdrawal";
+ActionBlocker.USER_EXCHANGE_ITEM = "userExchangeItem";
 ActionBlocker.INVITE_PLAYER = "invitePlayGame";
 ActionBlocker.USER_TRANSFER = "userTransfer";
