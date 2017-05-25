@@ -35,6 +35,8 @@ class TopBar extends DialogActor {
         super.onLoad();
         this.dropDownBgNode.on(cc.Node.EventType.TOUCH_END, () => this.dropDownOptions.active = false);
         this.vipLevel.string = app.context.getMyInfo().vipLevel;
+        this.notifyCounterLbl.string = app.context.personalMessagesCount;
+        this.msgNotifyBgNode.active = Number(this.notifyCounterLbl.string) > 0;
     }
 
     onEnable() {
@@ -45,7 +47,8 @@ class TopBar extends DialogActor {
 
     start() {
         super.start();
-        this._requestMessageNotification(app.context.unreadMessageBuddies.length);
+        this._requestMessageNotification();
+        
         if(this.avatarSpriteNode){
             let sprite = this.avatarSpriteNode.getComponent(cc.Sprite);
             // app.context.getMyInfo().avatarUrl ? HttpImageLoader.loadImageToSprite(sprite, app.context.getMyInfo().avatarUrl) : HttpImageLoader.loadDefaultAvatar(sprite);
@@ -56,6 +59,7 @@ class TopBar extends DialogActor {
     _addGlobalListener() {
         super._addGlobalListener();
         app.system.addListener(app.commands.NEW_NOTIFICATION_COUNT, this._onNotifyCount, this);
+        app.system.addListener(app.commands.USER_MSG_COUNT, this._onUserMsgCount, this);
         app.system.addListener(SFS2X.SFSEvent.USER_VARIABLES_UPDATE, this._onUserVariablesUpdate, this);
         app.system.addListener(Events.ON_BUDDY_UNREAD_MESSAGE_COUNT_CHANGED, this._onBuddyNotifyCountChanged, this);
         app.system.addListener(Events.CLIENT_CONFIG_CHANGED, this._onConfigChanged, this);
@@ -66,6 +70,7 @@ class TopBar extends DialogActor {
     _removeGlobalListener() {
         super._removeGlobalListener();
         app.system.removeListener(app.commands.NEW_NOTIFICATION_COUNT, this._onNotifyCount, this);
+        app.system.removeListener(app.commands.USER_MSG_COUNT, this._onUserMsgCount, this);
         app.system.removeListener(SFS2X.SFSEvent.USER_VARIABLES_UPDATE, this._onUserVariablesUpdate, this);
         app.system.removeListener(Events.ON_BUDDY_UNREAD_MESSAGE_COUNT_CHANGED, this._onBuddyNotifyCountChanged, this);
         app.system.removeListener(Events.CLIENT_CONFIG_CHANGED, this._onConfigChanged, this);
@@ -146,8 +151,14 @@ class TopBar extends DialogActor {
 
     /**
      * PRIVATES 
-     */
-
+    */
+      
+    _onUserMsgCount(data) {
+        let {count} = data;
+        app.context.personalMessagesCount += count;
+        this._updateSmsNotifystate(count)
+    }
+    
     _fillUserData() {
         this.userNameLbl.string = app.context.getMeDisplayName()
         this.userInfoCoinLbl.string = `${utils.numberFormat(app.context.getMeBalance() || 0)}`;
@@ -176,16 +187,15 @@ class TopBar extends DialogActor {
     }
 
     _onNotifyCount(data) {
-        let count = data[app.keywords.NEWS_CONTENT];
-        this._updateSmsNotifystate(count);
-        this.msgNotifyBgNode.active = count > 0;
-        this.notifyCounterLbl.string = count;
+        let {sysMsgCount, userMsgCount} = data;
+        let count = sysMsgCount + userMsgCount;
+        app.context.personalMessagesCount = userMsgCount;
+        this._updateSmsNotifystate(count, true);
     }
 
     _onSystemMessageChanged(amount) {
         if(amount) {
-            let count = Number(this.notifyCounterLbl.string) + amount;
-            this._updateSmsNotifystate(count);
+            this._updateSmsNotifystate(amount);
         }
     }
     
@@ -196,9 +206,9 @@ class TopBar extends DialogActor {
     //     }
     // }
     
-    _updateSmsNotifystate(count) {
-        this.msgNotifyBgNode.active = count > 0;
-        this.notifyCounterLbl.string = count;
+    _updateSmsNotifystate(count, isReplace) {
+        this.notifyCounterLbl.string = !isReplace ? Number(this.notifyCounterLbl.string) + count : count;
+        this.msgNotifyBgNode.active = Number(this.notifyCounterLbl.string) > 0;
     }
     
     _requestMessageNotification() {
@@ -207,7 +217,7 @@ class TopBar extends DialogActor {
         };
         app.service.send(sendObject);
     }
-
+    
     _onConfirmLogoutClick() {
         app.service.manuallyDisconnect();
     }

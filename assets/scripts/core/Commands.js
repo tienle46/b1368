@@ -289,4 +289,6 @@ Commands.USER_GOT_JAR = "sj_sjl";
 Commands.GIFT_CODE = "useGiftCode";
 Commands.GET_TOTAL_TOPUP = "getTotalTopup";
 
+Commands.USER_MSG_COUNT = "userMsgCount";
+
 module.exports = Commands;

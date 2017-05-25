@@ -3,6 +3,7 @@ import PopupTabBody from 'PopupTabBody';
 import RubUtils from 'RubUtils';
 import Utils from 'Utils';
 import CCUtils from 'CCUtils';
+import ActionBlocker from 'ActionBlocker';
 
 class TabExchangeItem extends PopupTabBody {
     constructor() {
@@ -163,16 +164,18 @@ class TabExchangeItem extends PopupTabBody {
                 );
                 return;
             }
-
-            let data = {};
-            data[app.keywords.EXCHANGE.REQUEST.ID] = id;
-            let sendObject = {
-                'cmd': app.commands.EXCHANGE,
-                data
-            };
-            // show loader
-            app.system.showLoader(app.res.string('waiting_server_response'));
-            app.service.send(sendObject);
+            
+            ActionBlocker.runAction(ActionBlocker.USER_WITHDRAWAL, () => {
+                let data = {};
+                data[app.keywords.EXCHANGE.REQUEST.ID] = id;
+                let sendObject = {
+                    'cmd': app.commands.EXCHANGE,
+                    data
+                };
+                // show loader
+                app.system.showLoader(app.res.string('waiting_server_response'));
+                app.service.send(sendObject);
+            });
         }
     }
 
@@ -180,8 +183,9 @@ class TabExchangeItem extends PopupTabBody {
         app.system.hideLoader();
         if (data[app.keywords.RESPONSE_RESULT] === true) {
             app.system.showToast(`${data[app.keywords.RESPONSE_MESSAGE]}`);
-        } else { // true
-            app.system.error(data[app.keywords.RESPONSE_MESSAGE] ? data[app.keywords.RESPONSE_MESSAGE] : app.res.string('error_system'));
+        } else {            
+            ActionBlocker.resetLastTime(ActionBlocker.USER_WITHDRAWAL);
+            data[app.keywords.RESPONSE_MESSAGE]  && app.system.error(data[app.keywords.RESPONSE_MESSAGE]);
         }
     }
 

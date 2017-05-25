@@ -3,7 +3,7 @@
  */
 import app from 'app';
 import TabMessages from 'TabMessages';
-import Linking from 'Linking';
+import Events from 'Events';
 
 class TabPersonalMessages extends TabMessages {
     constructor() {
@@ -33,11 +33,13 @@ class TabPersonalMessages extends TabMessages {
     _addGlobalListener() {
         super._addGlobalListener();
         app.system.addListener(app.commands.GET_PERSONAL_MESSAGES, this._onGetPersonalMessages, this);
+        app.system.addListener(app.commands.CHANGE_PERSONAL_MESSAGE_STATE, this._onPersonalMessageChanged, this);
     }
 
     _removeGlobalListener() {
         super._removeGlobalListener();
         app.system.removeListener(app.commands.GET_PERSONAL_MESSAGES, this._onGetPersonalMessages, this);
+        app.system.removeListener(app.commands.CHANGE_PERSONAL_MESSAGE_STATE, this._onPersonalMessageChanged, this);
     }
     
     //@override
@@ -59,13 +61,25 @@ class TabPersonalMessages extends TabMessages {
                 return true;
             }
         })
+    }
+    
+    _onPersonalMessageChanged(data) {
+        let id = data.id;
+        let result = data[app.keywords.RESPONSE_RESULT]
 
-        // this.displayMessages(this.listMessagePanel, messages.map(message => {
-        //     let {id, title, msg, time, action, actionData, readed} = message;
-        //
-        //     return this.createItemMessage(id, title, msg, time, action, actionData, readed);
-        // }));
-
+        if(result) {
+            this._data.messages && this._data.messages.some(message => {
+                if(message.id == id){
+                    if(!message.readed){
+                        app.context.personalMessagesCount && (app.context.personalMessagesCount -= 1);
+                        app.system.emit(Events.CHANGE_SYSTEM_MESSAGE_COUNT, -1)
+                    }
+                    message.readed = true;
+                    this.onDataChanged(this._data)
+                    return true;
+                }
+            })
+        }    
     }
     
     _sendReadRequest(id, needRemoveAction = false) {

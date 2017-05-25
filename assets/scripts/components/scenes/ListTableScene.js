@@ -286,7 +286,7 @@ export default class ListTableScene extends BaseScene {
             invitePopupComponent && invitePopupComponent.init(app.system.getCurrentSceneNode(), {
                     username: event.u,
                     bet: event.b,
-                    avatarUrl: event.inviterAvatarUrl || app.config.defaultAvatarUrl,
+                    avatarUrl: event.inviterAvatarUrl || app.config.defaultAvatarUrl.thumb,
                     userCoin: event.inviterBalance,
                     roomCapacity: event.roomCapacity,
                     roomBalance: this._calculateMinBalanceToJoinGame(event.b),

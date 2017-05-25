@@ -12,7 +12,8 @@ class EventDialog extends Actor {
             pageView: cc.PageView,
             eventPagePrefab: cc.Prefab,
             pageIndicator: cc.PageViewIndicator,
-            loadingNode: cc.Node
+            loadingNode: cc.Node,
+            bgTransparent: cc.Node
         };
 
         this.groupType = app.const.DYNAMIC_GROUP_NEW_EVENT;
@@ -31,7 +32,7 @@ class EventDialog extends Actor {
 
     onLoad() {
         this.eventPages = [];
-        this.node.on(cc.Node.EventType.TOUCH_START, () => null)
+        this.bgTransparent.on(cc.Node.EventType.TOUCH_START, () => true);
         
         this.progress = this.loadingNode.getComponent('Progress')
     }

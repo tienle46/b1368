@@ -268,9 +268,9 @@ class TabExchangeCard extends PopupTabBody {
         app.system.hideLoader();
         if (data[app.keywords.RESPONSE_RESULT] === true) {
             app.system.showToast(`${data[app.keywords.RESPONSE_MESSAGE]}`);
-        } else { // true
+        } else {
             ActionBlocker.resetLastTime(ActionBlocker.USER_WITHDRAWAL);
-            app.system.error(data[app.keywords.RESPONSE_MESSAGE] ? data[app.keywords.RESPONSE_MESSAGE] : app.res.string('error_system'));
+            data[app.keywords.RESPONSE_MESSAGE]  && app.system.error(data[app.keywords.RESPONSE_MESSAGE]);
         }
     }
 

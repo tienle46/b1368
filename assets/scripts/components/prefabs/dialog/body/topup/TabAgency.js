@@ -83,7 +83,8 @@ class TabAgency extends PopupTabBody {
             transferBtn.active = true;
             transferBtn._transferName =  agents[i].agent_name;
             
-            data.push([`${agents[i].agent_name.slice(0, 11)}...`, agents[i].call_number, fbIcon, transferBtn]);
+            let agentName = agents[i].agent_name;
+            data.push([`${agentName.length > 11 ? agentName.slice(0, 11)+'...': agentName}`, agents[i].call_number, fbIcon, transferBtn]);
         }
 
         this.initView({
@@ -94,7 +95,7 @@ class TabAgency extends PopupTabBody {
         }, data, {
             size: this.node.getContentSize(),
             isValidated: true,
-            fontSize: 20,
+            fontSize: 25,
             group: {
                 widths: [260, '', '', '']
             }

@@ -18,6 +18,7 @@ class GameContext {
         this.purchaseItems = []; // stringifyJSON array : [{id, receipt, username}]
         this.unreadMessageBuddies = []; // buddies unreaded messages 
         this.chattingBuddies = []; // buddies chatting ...
+        this.personalMessagesCount = 0;
         this.gameList = []; // selected game code
         this.requestRandomInvite = undefined; //In rejoin game case GameScene not asign to false when requestRandomInvite == undefined
         this.ctl = null;

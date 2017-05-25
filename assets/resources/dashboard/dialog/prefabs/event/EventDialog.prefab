@@ -3606,6 +3606,9 @@
     },
     "loadingNode": {
       "__id__": 86
+    },
+    "bgTransparent": {
+      "__id__": 2
     }
   },
   {
