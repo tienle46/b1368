@@ -4,6 +4,7 @@
 
 import app from 'app';
 import SFS2X from 'SFS2X';
+import Toast from 'Toast';
 
 const requestCallbackNames = {
     [SFS2X.Requests.Handshake]: SFS2X.SFSEvent.HANDSHAKE,
@@ -269,10 +270,13 @@ class Service {
             this._handleLagPollingResponse(event);
         } else if (event.cmd === app.commands.SYSTEM_MESSAGE) {
             let params = event[app.keywords.BASE_EVENT_PARAMS];
-            let messageType = event && event.t;
+            let messageType = event && event[app.keywords.ADMIN_MESSAGE_TYPE];
+            let messageList = event && event[app.keywords.ADMIN_MESSAGE_LIST];
+            let duration = (event && event.duration * 1000) || Toast.LONG_TIME;
+            let title = event && event.title;
             
             messageList && messageList.length > 0 && messageList.forEach(message => {
-                messageType === app.const.adminMessage.TOAST ? app.system.showLongToast(message) : app.system.info(message);
+                messageType === app.const.adminMessage.TOAST ? app.system.showToast(message, duration) : title ? app.system.info(title, message) : app.system.info(message);
             });
         } else if (event.cmd === app.commands.CLIENT_CONFIG) {
             this._dispatchClientConfig(event.params);

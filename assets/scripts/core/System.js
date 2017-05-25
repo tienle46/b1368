@@ -302,7 +302,7 @@ class GameSystem {
             if (data[app.keywords.RESPONSE_RESULT]) {
                 app.system.showToast(messages[i]);
             } else {
-                app.system.error(messages[i] || app.res.string('trading_is_denied'));
+                app.system.error(messages[i] || app.res.string('trading_is_cancelled'));
                 break;
             }
         }
@@ -380,9 +380,14 @@ class GameSystem {
     }
 
     _onAdminMessage(message, data) {
-        let duration, showToast = true
-        let messageType = data && data.t
-        let sceneName = this.getCurrentSceneName();
+        console.warn('message, data', message, data);
+        
+        let duration = data.duration * 1000,
+            title = data.title,
+            showToast = true,
+            messageType = data && data.t,
+            sceneName = this.getCurrentSceneName();
+        
         switch (messageType){
             case app.const.adminMessage.MANUAL_DISMISS: {
                 duration = Toast.FOREVER;
@@ -423,7 +428,8 @@ class GameSystem {
             }
             case app.const.adminMessage.ALERT: {
                 showToast = false;
-                this.info(message);
+                
+                title ? this.info(title, message) : this.info(message);
                 break;
             }
         }
