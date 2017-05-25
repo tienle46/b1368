@@ -133,10 +133,9 @@ export default class AvatarDialog extends DialogActor {
                         large,
                         vipValue
                     };
-                    
                     let toggle = item.getComponent(cc.Toggle);
                     if(toggle) {
-                        toggle.isChecked = index === 0;
+                        toggle.isChecked = (app.context.getMyInfo().avatar && app.context.getMyInfo().avatar.thumb == thumb || index === 0)
                         toggle.isChecked && this.onClickAvatarItem(toggle);
                     }
                 }

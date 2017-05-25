@@ -11,11 +11,11 @@
                 <key>spriteOffset</key>
                 <string>{0,0}</string>
                 <key>spriteSize</key>
-                <string>{256,256}</string>
+                <string>{170,170}</string>
                 <key>spriteSourceSize</key>
-                <string>{256,256}</string>
+                <string>{170,170}</string>
                 <key>textureRect</key>
-                <string>{{1,1},{256,256}}</string>
+                <string>{{1,1},{170,170}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -26,11 +26,11 @@
                 <key>spriteOffset</key>
                 <string>{0,0}</string>
                 <key>spriteSize</key>
-                <string>{256,256}</string>
+                <string>{170,170}</string>
                 <key>spriteSourceSize</key>
-                <string>{256,256}</string>
+                <string>{170,170}</string>
                 <key>textureRect</key>
-                <string>{{259,1},{256,256}}</string>
+                <string>{{173,1},{170,170}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -46,9 +46,9 @@
             <key>realTextureFileName</key>
             <string>trump-clgt.png</string>
             <key>size</key>
-            <string>{516,258}</string>
+            <string>{344,172}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:32cd9c5440afa854707c326ce64c24fc:46bbbee5c272b1ac4b02131cfc1d8757:0d2db3a4753f255111a39672a99dccac$</string>
+            <string>$TexturePacker:SmartUpdate:dfe5fd29556b58bab6c07a489fda1c19:a2352da1ad5933cbd39757638b4ad5cc:0d2db3a4753f255111a39672a99dccac$</string>
             <key>textureFileName</key>
             <string>trump-clgt.png</string>
         </dict>

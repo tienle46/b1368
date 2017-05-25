@@ -148,7 +148,7 @@ export default class MessagePopup extends Component {
     }
 
     static showCustomPopup(parentNode, textOrRequestData, {acceptLabel, denyLabel, denyCb, acceptCb, componentName = 'MessagePopup', multi = false} = {}) {
-
+        
         !multi && currentPopup && currentPopup.hide();
 
         let args = {parentNode, textOrRequestData, denyCb, acceptCb, acceptLabel, denyLabel};

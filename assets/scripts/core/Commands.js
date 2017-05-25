@@ -280,7 +280,6 @@ Commands.GET_SYSTEM_MESSAGES = "getSystemMessages";
 Commands.CHANGE_PERSONAL_MESSAGE_STATE = "changePersonalMessageState";
 Commands.CHANGE_SYSTEM_MESSAGE_STATE = "changeSystemMessageState";
 Commands.GET_VIP_BENEFIT = "getVipBenefit";
-Commands.GET_BACK_CHIPS = "ceir";
 
 Commands.LIST_HU = "sj_jl";
 Commands.JAR_DETAIL = "sj_jd";
@@ -290,5 +289,8 @@ Commands.GIFT_CODE = "useGiftCode";
 Commands.GET_TOTAL_TOPUP = "getTotalTopup";
 
 Commands.USER_MSG_COUNT = "userMsgCount";
+Commands.GET_EXCHANGE_DETAIL = "getExDetail";
+Commands.CANCEL_EXCHANGE_REQUEST = "ceir";
+Commands.GET_CHIPS_BACK = "getExRefund";
 
 module.exports = Commands;

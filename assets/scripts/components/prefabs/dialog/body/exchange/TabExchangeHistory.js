@@ -6,6 +6,7 @@ import {
     numberFormat,
     timeFormat
 } from 'Utils';
+import ConfirmPopup from 'ConfirmPopup';
 
 class TabExchangeHistory extends PopupTabBody {
     constructor() {
@@ -15,9 +16,9 @@ class TabExchangeHistory extends PopupTabBody {
         this.properties = {
             ...this.properties,
             bodyNode: cc.Node,
-            chargeBtnNode: cc.Node,
-            getChipBtnNode: cc.Node,
-            p404: cc.Node
+            getChipsBtnNode: cc.Node,
+            cancelBtnNode: cc.Node,
+            detailBtnNode: cc.Node,
         };
     }
     
@@ -48,40 +49,47 @@ class TabExchangeHistory extends PopupTabBody {
         window.release(this._res);    
     }
     
-    onChargeBtnClick(e) {
-        let { cardSerial, serialNumber , telcoId} = e.currentTarget.value;
-        // console.debug(cardSerial, serialNumber, telcoId);
-
-        if (isEmpty(cardSerial) || isEmpty(serialNumber) || isNaN(cardSerial) || isNaN(serialNumber)) {
-            app.system.error(
-                app.res.string('error_user_enter_empty_input')
-            );
-        } else {
-            let sendObject = {
-                'cmd': app.commands.USER_SEND_CARD_CHARGE,
-                data: {
-                    [app.keywords.CHARGE_CARD_PROVIDER_ID]: telcoId,
-                    [app.keywords.CARD_CODE]: cardSerial,
-                    [app.keywords.CARD_SERIAL]: serialNumber
-                }
-            };
-
-            app.service.send(sendObject); // send request and get `smsg` (system_message) response from server
-        }
-    }
-    
-    onGetChipBtnClick(e) {
+    cancelRequestBtnClick(e) {
         let { transferId } = e.currentTarget.value;
         this._clickedBtn = e.currentTarget;
         
         //console.debug(transferId);
         let sendObject = {
-            'cmd': app.commands.GET_BACK_CHIPS,
+            'cmd': app.commands.CANCEL_EXCHANGE_REQUEST,
             data: {
                 [app.keywords.ID]: transferId,
             }
         };
         app.service.send(sendObject);
+    }
+    
+    onGetChipBtnClikc(e) {
+        let { transferId } = e.currentTarget.value;
+        this._clickedBtn = e.currentTarget;
+        
+        //console.debug(transferId);
+        let sendObject = {
+            'cmd': app.commands.GET_CHIPS_BACK,
+            data: {
+                [app.keywords.ID]: transferId,
+            }
+        };
+        app.service.send(sendObject);    
+    }
+    
+    onDetailBtnClick(e) {
+        let { transferId } = e.currentTarget.value;
+        this._clickedBtn = e.currentTarget;
+        
+        let sendObject = {
+            'cmd': app.commands.GET_EXCHANGE_DETAIL,
+            data: {
+                [app.keywords.ID]: transferId,
+            }
+        };
+        app.service.send(sendObject);    
+        
+        // console.debug(cardSerial, serialNumber, telcoId);
     }
     
     onNextBtnClick(page) {
@@ -95,15 +103,68 @@ class TabExchangeHistory extends PopupTabBody {
     _addGlobalListener() {
         super._addGlobalListener();
         app.system.addListener(app.commands.EXCHANGE_HISTORY, this._onGetExchangeHistory, this);
-        app.system.addListener(app.commands.GET_BACK_CHIPS, this._onGetChipBack, this);
+        app.system.addListener(app.commands.CANCEL_EXCHANGE_REQUEST, this._onCancelExchange, this);
+        app.system.addListener(app.commands.GET_CHIPS_BACK, this._onGetChipsBack, this);
+        app.system.addListener(app.commands.GET_EXCHANGE_DETAIL, this._onGetExchangeDetail, this);
     }
 
     _removeGlobalListener() {
         super._removeGlobalListener();
         app.system.removeListener(app.commands.EXCHANGE_HISTORY, this._onGetExchangeHistory, this);
-        app.system.removeListener(app.commands.GET_BACK_CHIPS, this._onGetChipBack, this);
+        app.system.removeListener(app.commands.CANCEL_EXCHANGE_REQUEST, this._onCancelExchange, this);
+        app.system.removeListener(app.commands.GET_CHIPS_BACK, this._onGetChipsBack, this);
+        app.system.removeListener(app.commands.GET_EXCHANGE_DETAIL, this._onGetExchangeDetail, this);
     }
+    
+    _onGetExchangeDetail(data) {
+        console.warn(data);
+        let {detail, code, serial, telco} = data;
+        console.warn(detail, code, serial, telco);
+       
+        if(detail) {
+            if(code && serial)
+                ConfirmPopup.showCustomConfirm(app.system.getCurrentSceneNode(), detail, {
+                    acceptLabel: app.res.string('label_topup_money'),
+                    acceptCb: this._onChargeCard.bind(this, code, serial, telco)
+                });
+            else 
+                app.system.info(detail);
+        } 
+    }
+    
+    _onChargeCard(code, serial, telcoId) {
+        if (isEmpty(code) || isEmpty(serial)) {
+            app.system.error(
+                app.res.string('error_user_enter_empty_input')
+            );
+        } else {
+            
+            let sendObject = {
+                'cmd': app.commands.USER_SEND_CARD_CHARGE,
+                data: {
+                    [app.keywords.CHARGE_CARD_PROVIDER_ID]: telcoId,
+                    [app.keywords.CARD_CODE]: code,
+                    [app.keywords.CARD_SERIAL]: serial
+                }
+            };
 
+            app.service.send(sendObject); // send request and get `smsg` (system_message) response from server
+        }
+    }
+    
+    _onGetChipsBack(data) {
+        if(data[app.keywords.RESPONSE_RESULT]) {
+            if(this._clickedBtn) {
+                let { transferId } = this._clickedBtn.value;
+                if(transferId === data[app.keywords.ID]) {
+                    this._clickedBtn.removeFromParent();
+                }
+            }
+        } else {
+            app.system.error(data[app.keywords.RESPONSE_MESSAGE] ? data[app.keywords.RESPONSE_MESSAGE] : app.res.string('error_system'));
+        }
+    }
+    
     _getHistoriesFromServer(page = 1) {
         let sendObject = {
             'cmd': app.commands.EXCHANGE_HISTORY,
@@ -123,9 +184,8 @@ class TabExchangeHistory extends PopupTabBody {
     
     _renderHistory(res) {
         let pattern = /Mã thẻ[^]*,/;
-        // if(res[app.keywords.EXCHANGE_HISTORY.RESPONSE.ITEM_ID_HISTORY] && res[app.keywords.EXCHANGE_HISTORY.RESPONSE.ITEM_ID_HISTORY].length > 0) {
-            this._rendered = true;
-            let data = [
+        this._rendered = true;
+        let data = [
             (res[app.keywords.EXCHANGE_HISTORY.RESPONSE.TIME_LIST] || []).map(time => timeFormat(time)),
             (res[app.keywords.EXCHANGE_HISTORY.RESPONSE.NAME_LIST] || []),
             (res[app.keywords.EXCHANGE_HISTORY.RESPONSE.STATUS_LIST] || []).map((status, index) => {
@@ -144,61 +204,78 @@ class TabExchangeHistory extends PopupTabBody {
                         }
                         return app.res.string('sent');
                     case 100:
-                        return app.res.string('trading_is_denied');
+                        return app.res.string('trading_is_cancelled');
                     case 101:
                         return app.res.string('got_money');
                     case 102:
-                        return app.res.string('request_is_denied');
+                        return app.res.string('request_is_cancelled');
                     default:
                         return app.res.string('error_system');
                 }
             }),
             (res[app.keywords.EXCHANGE_HISTORY.RESPONSE.STATUS_LIST] || []).map((status, index) => {
+                let transferId = res[app.keywords.EXCHANGE_HISTORY.RESPONSE.ITEM_ID_HISTORY][index];
+                
                 switch (status) {
+                    case 1:
+                        let getChipBtnNode = cc.instantiate(this.getChipsBtnNode);
+                        getChipBtnNode.value = {
+                            transferId
+                        };
+                        return getChipBtnNode;
+                        // var cardSerial, serialNumber;
+                        // var exec = pattern.exec(res[app.keywords.DETAIL_LIST][index]);
+                        // if (exec && exec.length > 0) {
+                        //     let str = exec[0];
+                        //     let info = str.match(/\d+/g);
+                        //     let telcoId = res['telcoArr'][index];
+                        //     if (info && info.length >= 2) {
+                        //         cardSerial = info[0];
+                        //         serialNumber = info[1];
+                        //         info = null;
+                        //     }
+
+                        //     let btnNode = cc.instantiate(this.getChipsBtnNode);
+                        //     btnNode.value = {
+                        //         cardSerial,
+                        //         serialNumber,
+                        //         telcoId
+                        //     };
+                        //     return btnNode;
+                        // }
+                        // return '';
                     case 11:
                     case 2:
-                        let transferId = res[app.keywords.EXCHANGE_HISTORY.RESPONSE.ITEM_ID_HISTORY][index];
-                        let btnNode = cc.instantiate(this.getChipBtnNode);
-                            btnNode.value = { transferId };
-                            return btnNode;
+                        let cancelBtnNode = cc.instantiate(this.cancelBtnNode);
+                        cancelBtnNode.value = {
+                            transferId
+                        };
+                        return cancelBtnNode;
+                    case 101:
+                    case 102:
                     case 3:
                     case 12:
-                        var cardSerial, serialNumber;
-                        var exec = pattern.exec(res[app.keywords.DETAIL_LIST][index]);
-                        if (exec && exec.length > 0) {
-                            let str = exec[0];
-                            let info = str.match(/\d+/g);
-                            let telcoId = res['telcoArr'][index];
-                            if (info && info.length >= 2) {
-                                cardSerial = info[0];
-                                serialNumber = info[1];
-                                info = null;
-                            }
-                            
-                            let btnNode = cc.instantiate(this.chargeBtnNode);
-                            btnNode.value = { cardSerial, serialNumber, telcoId };
-                            return btnNode;
-                        }
-                        return '';
+                        let detailBtnNode = cc.instantiate(this.detailBtnNode);
+                        detailBtnNode.value = {
+                            transferId
+                        };
+                        return detailBtnNode;
                     default:
                         return '';
                 }
             }),
         ];
         this._initBody(data);
-        // }
     }
     
-    _onGetChipBack(data) {
+    _onCancelExchange(data) {
         if(data[app.keywords.RESPONSE_RESULT]) {
-            app.system.showToast(data[app.keywords.RESPONSE_MESSAGE]);
             if(this._clickedBtn) {
                 let { transferId } = this._clickedBtn.value;
                 if(transferId === data[app.keywords.ID]) {
                     this._clickedBtn.removeFromParent();
                 }
             }
-            
         } else {
             app.system.error(data[app.keywords.RESPONSE_MESSAGE] ? data[app.keywords.RESPONSE_MESSAGE] : app.res.string('error_system'));
         }
