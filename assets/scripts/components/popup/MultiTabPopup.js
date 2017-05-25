@@ -64,6 +64,11 @@ export default class MultiTabPopup extends VisibilityActor {
         this.changeTab(this.focusTabIndex);
     }
     
+    setNotifyCountForTab(index, count = 0){
+        let popupTab = index && this._tabs[index];
+        popupTab && popupTab.setNotifyCount(count)
+    }
+    
     // in some cases we need to check if tab have been added but it should be hide immediately.
     /**
      * @param {Func} condition: function condition with 1st parameter is a child tab 
