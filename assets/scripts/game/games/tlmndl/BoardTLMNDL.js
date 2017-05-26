@@ -64,7 +64,6 @@ export default class BoardTLMNDL extends BoardCardTurnBase {
     _loadRemainCardCount(data){
         let playerIds = utils.getValue(data, Keywords.GAME_LIST_PLAYER)
         let playerRemainCardSizes = utils.getValue(data, Keywords.GAME_LIST_PLAYER_CARDS_SIZE, []);
-        console.warn('_loadRemainCardCount', playerIds, playerRemainCardSizes);
         if(playerIds && playerRemainCardSizes && playerIds.length == playerRemainCardSizes.length){
             playerIds.forEach((id, index) => {
                 this.scene.emit(Events.ON_PLAYER_REMAIN_CARD_COUNT, id, playerRemainCardSizes[index]);

@@ -380,8 +380,6 @@ class GameSystem {
     }
 
     _onAdminMessage(message, data) {
-        console.warn('message, data', message, data);
-        
         let duration = data.duration * 1000,
             title = data.title,
             showToast = true,

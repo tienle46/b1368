@@ -117,9 +117,7 @@ class TabExchangeHistory extends PopupTabBody {
     }
     
     _onGetExchangeDetail(data) {
-        console.warn(data);
         let {detail, code, serial, telco} = data;
-        console.warn(detail, code, serial, telco);
        
         if(detail) {
             if(code && serial)
