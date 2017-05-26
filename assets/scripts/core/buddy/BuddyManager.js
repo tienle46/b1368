@@ -138,11 +138,11 @@ export default class BuddyManager {
     getAllBuddy() {
         return app.service.client.buddyManager.getBuddyList();
     }
-
+    
     containsBuddy(buddyName) {
-        let buddy = this.getBuddyByName(buddyName);
-        return this.buddies.find(b => b == buddy);
-        // return app.service.client.buddyManager.containsBuddy(buddyName);
+        // let buddy = this.getBuddyByName(buddyName);
+        // return this.buddies.find(b => b == buddy);
+        return app.service.client.buddyManager.containsBuddy(buddyName) && this.buddies.find(b => b == buddy);
     }
 
     destroy() {

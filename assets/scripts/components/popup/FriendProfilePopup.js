@@ -50,8 +50,8 @@ export default class FriendProfilePopup extends DialogActor {
 
     onEnable() {
         super.onEnable();
-        
-        utils.setInteractable(this.addFriendBtn, !(this.friendName && app.buddyManager.containsBuddy(this.friendName)));
+        console.warn(app.buddyManager.containsBuddy(this.friendName), app.buddyManager.shouldRequestBuddy(this.friendName));
+        utils.setInteractable(this.addFriendBtn, !(this.friendName && app.buddyManager.containsBuddy(this.friendName)) && app.buddyManager.shouldRequestBuddy(this.friendName));
     }
 
     start() {

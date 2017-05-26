@@ -19,8 +19,7 @@ export class Row extends Component {
         this.verticalAlignCenterText();
         
         if(!this._iniWithNode && !app.env.isBrowser()) {
-            this.layout.paddingTop = 40;
-            cc.log('1', this.layout.paddingTop)
+            this.layout.paddingTop = 40
         }
     }
     
@@ -44,6 +43,9 @@ export class Row extends Component {
         //     sprite.enabled = false;
         // }
         this._iniWithNode = true;
+        
+        this.layout.paddingTop = 0
+        
         
         this.node.addChild(node);
     }
