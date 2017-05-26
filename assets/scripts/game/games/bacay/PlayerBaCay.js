@@ -96,7 +96,7 @@ export default class PlayerBaCay extends PlayerCardBetTurn {
 
         this.playSoundBaseOnBalanceChanged(balanceChanged);
         this.renderer.showAction(info);
-        this.renderer.startPlusBalanceAnimation(balanceChanged);
+        this.renderer.startPlusBalanceAnimation(balanceChanged, true);
         this.setCards(cards, true);
     }
 

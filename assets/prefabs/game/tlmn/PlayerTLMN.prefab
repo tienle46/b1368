@@ -4541,11 +4541,14 @@
     },
     "_enabled": true,
     "_defaultClip": {
-      "__uuid__": "698e786f-73fc-4961-9d9d-fb8a1ac1ca25"
+      "__uuid__": "5509dac4-07fc-4756-808f-a66792615c28"
     },
     "_clips": [
       {
         "__uuid__": "698e786f-73fc-4961-9d9d-fb8a1ac1ca25"
+      },
+      {
+        "__uuid__": "5509dac4-07fc-4756-808f-a66792615c28"
       }
     ],
     "playOnLoad": false

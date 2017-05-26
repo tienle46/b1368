@@ -3,12 +3,19 @@
  */
 
 import app from 'app';
-import VisibilityActor from 'VisibilityActor';
+import Actor from 'Actor';
 import { destroy } from 'CCUtils';
 
 let currentPopup = null;
 
-export default class MultiTabPopup extends VisibilityActor { 
+/**
+ * ComponentData = {
+ *   tabNotifyData: {
+ *      index (int): count (int)
+ *   }
+ * }
+ */
+export default class MultiTabPopup extends Actor {
 
     constructor() {
         super();
@@ -40,7 +47,8 @@ export default class MultiTabPopup extends VisibilityActor {
         super.onLoad();
         this.progress = this.loadingNode.getComponent('Progress');
         this.bgTransparent.on(cc.Node.EventType.TOUCH_START, () => true);
-        
+
+        this._tabs = [];
         this._tabBodies = [];
     }
 
@@ -48,6 +56,11 @@ export default class MultiTabPopup extends VisibilityActor {
         super.onEnable();
         this._initTab();
         currentPopup = this;
+
+        let {tabNotifyData} = this.getComponentData();
+        tabNotifyData && Object.keys(tabNotifyData).forEach(key => {
+            this.setNotifyCountForTab(key, tabNotifyData[key]);
+        })
     }
 
     onDisable() {
@@ -62,6 +75,17 @@ export default class MultiTabPopup extends VisibilityActor {
     start() {
         super.start();
         this.changeTab(this.focusTabIndex);
+    }
+    
+    setNotifyCountForTab(index, count = 0){
+
+        console.log(this)
+
+        let popupTab = index >= 0 && this._tabs[index];
+        popupTab && popupTab.setNotifyCount(count)
+
+        console.log("setNotifyCountForTab index = ", index, " count=", count, " popupTab=", popupTab)
+
     }
     
     // in some cases we need to check if tab have been added but it should be hide immediately.

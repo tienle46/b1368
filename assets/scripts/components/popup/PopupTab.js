@@ -4,6 +4,7 @@
 
 import app from 'app';
 import Component from 'Component';
+import CCUtils from 'CCUtils';
 
 export default class PopupTab extends Component {
 
@@ -12,6 +13,7 @@ export default class PopupTab extends Component {
         this.properties = {
             ...super.properties,
             titleLabel: cc.Label,
+            notifyNode: cc.Node,
             inactiveNode: cc.Node,
             activeNode: cc.Node,
             toggle: cc.Toggle,
@@ -25,11 +27,27 @@ export default class PopupTab extends Component {
         this.onClickListener = null;
     }
 
+    onLoad(){
+        super.onLoad()
+
+        CCUtils.setVisible(this.notifyNode, false)
+        this.notifyLabel = this.notifyNode && this.notifyNode.getComponentInChildren(cc.Label);
+    }
+
     onEnable() {
         super.onEnable();
 
         this.toggle.toggleGroup = this.toggleGroup;
         this.titleLabel.string = this.title;
+    }
+
+    setNotifyCount(count){
+        if(!count || count < 0){
+            CCUtils.setVisible(this.notifyNode, false)
+        }else{
+            this.notifyLabel && (this.notifyLabel.string = `${count}`);
+            CCUtils.setVisible(this.notifyNode, true)
+        }
     }
 
     onDestroy() {

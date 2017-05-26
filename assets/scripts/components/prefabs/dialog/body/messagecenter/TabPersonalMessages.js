@@ -71,8 +71,7 @@ class TabPersonalMessages extends TabMessages {
             this._data.messages && this._data.messages.some(message => {
                 if(message.id == id){
                     if(!message.readed){
-                        app.context.personalMessagesCount && (app.context.personalMessagesCount -= 1);
-                        app.system.emit(Events.CHANGE_SYSTEM_MESSAGE_COUNT, -1)
+                        app.system.emit(Events.CHANGE_PERSONAL_MESSAGE_COUNT, -1)
                     }
                     message.readed = true;
                     this.onDataChanged(this._data)

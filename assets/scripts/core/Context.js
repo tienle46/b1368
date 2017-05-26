@@ -7,6 +7,9 @@ import Events from 'Events';
 import RubUtils from 'RubUtils';
 import Utils from 'Utils';
 
+/**
+ * Make sure that System.js require before
+ */
 class GameContext {
 
     constructor() {
@@ -22,6 +25,54 @@ class GameContext {
         this.gameList = []; // selected game code
         this.requestRandomInvite = undefined; //In rejoin game case GameScene not asign to false when requestRandomInvite == undefined
         this.ctl = null;
+        this.systemMessageCount = 0;
+
+        this._addContextEventListener()
+    }
+
+    _addContextEventListener(){
+        app.system.addListener(app.commands.NEW_NOTIFICATION_COUNT, this._onNotifyCount, this);
+        app.system.addListener(app.commands.USER_MSG_COUNT, this._setChangePersonalMessageCount, this);
+        app.system.addListener(Events.CHANGE_SYSTEM_MESSAGE_COUNT, this._changeSystemMessageCount, this, 0);
+        app.system.addListener(Events.CHANGE_PERSONAL_MESSAGE_COUNT, this._changePersonalMessageCount, this, 0);
+    }
+
+    _onNotifyCount(data) {
+        let {sysMsgCount, userMsgCount} = data;
+        this.systemMessageCount = Math.max(sysMsgCount, 0);
+        this.personalMessagesCount = Math.max(userMsgCount, 0);
+
+        console.error("systemMessageCount: ", this.systemMessageCount, "personalMessagesCount: ", this.personalMessagesCount);
+
+        app.system.emit(Events.ON_MESSAGE_COUNT_CHANGED);
+    }
+
+    getTotalMessageCount(){
+        return this.systemMessageCount + this.personalMessagesCount
+    }
+
+    _setChangePersonalMessageCount(data){
+        this._changePersonalMessageCount(data.count, true)
+    }
+
+    _changeSystemMessageCount(count = 0, isReplace = false){
+        if(isReplace){
+            this.systemMessageCount = Math.max(count, 0);
+        }else{
+            this.systemMessageCount = Math.max(this.systemMessageCount + count);
+        }
+
+        app.system.emit(Events.ON_MESSAGE_COUNT_CHANGED);
+    }
+
+    _changePersonalMessageCount(count = 0, isReplace = false){
+        if(isReplace){
+            this.personalMessagesCount = Math.max(count, 0);
+        }else{
+            this.personalMessagesCount = Math.max(this.personalMessagesCount + count);
+        }
+
+        app.system.emit(Events.ON_MESSAGE_COUNT_CHANGED);
     }
 
     reset() {
