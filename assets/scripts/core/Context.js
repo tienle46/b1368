@@ -42,8 +42,6 @@ class GameContext {
         this.systemMessageCount = Math.max(sysMsgCount, 0);
         this.personalMessagesCount = Math.max(userMsgCount, 0);
 
-        console.error("systemMessageCount: ", this.systemMessageCount, "personalMessagesCount: ", this.personalMessagesCount);
-
         app.system.emit(Events.ON_MESSAGE_COUNT_CHANGED);
     }
 
@@ -78,18 +76,23 @@ class GameContext {
     reset() {
         this.chattingBuddies = [];
         this.unreadMessageBuddies = [];
+        this.systemMessageCount = 0;
+        this.personalMessagesCount = 0;
+        this.lastJoinedRoom = null;
+        this.currentRoom = null;
+        this.groupId = null;
     }
 
     getPurchases() {
         let username = this.getMyInfo() ? this.getMyInfo().name : null;
         if (username)
             return this.purchaseItems.filter(item => item.username = username) || [];
-        return [];
+        return this.purchaseItems || [];
     }
 
     /**
      * @param {Array} purchases
-     * 
+     *
      * @memberOf GameContext
      */
     setPurchases(purchases) {
@@ -100,6 +103,10 @@ class GameContext {
         if (!app.buddyManager.findBuddyInList(this.chattingBuddies, buddy)) {
             this.chattingBuddies.push(buddy);
         }
+    }
+
+    getUnreadMessageBuddyCount(){
+        return this.unreadMessageBuddies.length
     }
 
     addToUnreadMessageBuddies(buddyName) {
@@ -141,18 +148,18 @@ class GameContext {
     getMe() {
         return app.service.client.me;
     }
-    
+
     getVipLevel() {
         let me = this.getMe();
         let vipLevel = Utils.getVariable(me, app.keywords.VIP_LEVEL, {});
-        
-        return vipLevel.value || 0;  
+
+        return vipLevel.value || 0;
     }
-    
+
     getMyInfo() {
         let me = this.getMe();
         let vipLevel =  Utils.getVariable(me, app.keywords.VIP_LEVEL, {});
-        return me ? {   
+        return me ? {
             "id": me.id,
             "isItMe": me.isItMe,
             "name": me.name,
@@ -163,17 +170,17 @@ class GameContext {
             "vipLevel": vipLevel.name || "Dân thường"
         } : {};
     }
-    
+
     isVip() {
         let info = this.getMyInfo();
-        return info.vipLevel && info.vipLevel !== "" && info.vipLevel !== "Dân thường";   
+        return info.vipLevel && info.vipLevel !== "" && info.vipLevel !== "Dân thường";
     }
-    
+
     /**
-     * 
-     * @param {any} spriteComponent 
+     *
+     * @param {any} spriteComponent
      * @param {string} [type='thumb'] 'thumb' || 'large'|| 'tiny'
-     * 
+     *
      * @memberof GameContext
      */
     getMyAvatar(spriteComponent, type = 'thumb') {
@@ -182,28 +189,28 @@ class GameContext {
         let url = (avatar && avatar[validType]) || this.getDefaultAvatarURL(validType);
         this.loadUserAvatarByURL(url, spriteComponent);
     }
-    
+
     getDefaultAvatarURL(type) {
         return (typeof app.config.defaultAvatarUrl === 'object') ? app.config.defaultAvatarUrl[type] : app.config.defaultAvatarUrl;
     }
-    
+
     loadUserAvatarByURL(url, spriteComponent, cb) {
         if(!url || !spriteComponent)
             return;
-            
+
         spriteComponent.node && spriteComponent.node.parent && (spriteComponent.node.parent.opacity = 0);
-        
+
         RubUtils.loadSpriteFrame(spriteComponent, url, null, true, (spriteComp) => {
             if(spriteComp && spriteComp.node.parent) {
                 let defaultSprite = spriteComp.node.parent.getComponent(cc.Sprite);
                 spriteComp.node.parent.opacity = 255;
                 defaultSprite && (defaultSprite.spriteFrame = spriteComp.spriteFrame);
             }
-            
+
             cb && cb(spriteComp);
         });
     }
-    
+
     getMeBalance() {
         let me = this.getMe();
         return (me && me.variables.coin && me.variables.coin.value) || 0;
@@ -242,7 +249,7 @@ class GameContext {
     needUpdatePhoneNumber() {
         return this.getMe()[app.keywords.UPDATE_PHONE_NUMBER];
     }
-    
+
     setCtlData(data) {
         this.ctl = data;
     }

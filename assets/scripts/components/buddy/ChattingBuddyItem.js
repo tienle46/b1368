@@ -72,7 +72,6 @@ class ChattingBuddyItem extends Component {
     }
 
     onBuddyChanged() {
-        log('onBuddyChanged buddy: ', this.buddy);
 
         if (this.buddy) {
             this.nameLabel.string = this.buddy.displayName || this.buddy.getNickName() || this.buddy.name;

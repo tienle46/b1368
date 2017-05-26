@@ -78,14 +78,10 @@ export default class MultiTabPopup extends Actor {
     }
     
     setNotifyCountForTab(index, count = 0){
-
-        console.log(this)
-
-        let popupTab = index >= 0 && this._tabs[index];
-        popupTab && popupTab.setNotifyCount(count)
-
-        console.log("setNotifyCountForTab index = ", index, " count=", count, " popupTab=", popupTab)
-
+        if(this.isComponentLoaded()){
+            let popupTab = index >= 0 && this._tabs && this._tabs[index];
+            popupTab && popupTab.setNotifyCount(count)
+        }
     }
     
     // in some cases we need to check if tab have been added but it should be hide immediately.

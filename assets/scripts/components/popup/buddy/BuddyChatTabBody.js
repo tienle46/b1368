@@ -6,6 +6,7 @@ import app from 'app';
 import utils from 'utils';
 import PopupTabBody from 'PopupTabBody';
 import Events from 'Events';
+import BuddyPopup from 'BuddyPopup';
 import CCUtils, { destroy } from 'CCUtils';
 
 class BuddyChatTabBody extends PopupTabBody {
@@ -58,7 +59,6 @@ class BuddyChatTabBody extends PopupTabBody {
     }
 
     _onBuddyMessage(senderName, toBuddyName, message, isItMe) {
-        log('sender, toBuddy, message, isItMe: this.buddy', senderName, toBuddyName, message, isItMe, this.buddy);
         if (!this.buddy) {
             let buddy = app.buddyManager.getBuddyByName(senderName);
             buddy && (buddy.newMessageCount = 0);
@@ -167,7 +167,6 @@ class BuddyChatTabBody extends PopupTabBody {
             this.chattingBuddyList.addChild(chattingBuddyNode);
             this.chattingBuddyItems.push(chattingBuddy);
             app.context.addToChattingBuddies(buddy);
-            app.context.removeUnreadMessageBuddies(buddy.name);
 
             if (autoSelect) {
                 chattingBuddy.select()
@@ -269,6 +268,8 @@ class BuddyChatTabBody extends PopupTabBody {
 
     onEnable() {
         super.onEnable();
+
+        this.popup.setNotifyCountForTab(BuddyPopup.TAB_CHAT_INDEX, app.context.getUnreadMessageBuddyCount());
     }
 
     onDestroy() {

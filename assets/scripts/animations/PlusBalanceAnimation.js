@@ -11,14 +11,8 @@ export default class PlusBalanceAnimation extends Component {
 
         this.properties = {
             ...this.properties,
-            normalAnimName: {
-                default: "plusBalance",
-                type: cc.String
-            },
-            slowAnimName: {
-                default: "plusBalanceSlow",
-                type: cc.String
-            }
+            normalAnimName: "plusBalance",
+            slowAnimName: "plusBalanceSlow"
         }
 
         this.player = null;

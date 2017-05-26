@@ -3,6 +3,7 @@
  */
 
 import app from 'app';
+import Events from 'Events';
 import MultiTabPopup from 'MultiTabPopup';
 
 const tabModels = [
@@ -18,10 +19,29 @@ export default class BuddyPopup {
          * @type {MultiTabPopup}
          */
         this.multiTabPopup = node.getComponent("MultiTabPopup");
-
         this.multiTabPopup.changeToChatTab = this.changeToChatTab.bind(this);
+        this.multiTabPopup.setComponentData({
+            tabNotifyData: {
+                [BuddyPopup.TAB_CHAT_INDEX]: app.context.getUnreadMessageBuddyCount()
+            }
+        })
+
+        this.multiTabPopup._addGlobalListener = () => {
+            app.system.addListener(Events.ON_BUDDY_UNREAD_MESSAGE_COUNT_CHANGED, this._onBuddyNotifyCountChanged, this);
+        }
+
+        this.multiTabPopup._removeGlobalListener = () => {
+            app.system.removeListener(Events.ON_BUDDY_UNREAD_MESSAGE_COUNT_CHANGED, this._onBuddyNotifyCountChanged, this);
+        }
     }
-    
+
+    _onBuddyNotifyCountChanged(count = 0){
+        if(count < 0){
+            count = 0;
+        }
+        this.multiTabPopup.setNotifyCountForTab(BuddyPopup.TAB_CHAT_INDEX, count);
+    }
+
     changeToChatTab(data) {
         this.multiTabPopup && this.multiTabPopup.changeTab(BuddyPopup.TAB_CHAT_INDEX, data)
     }

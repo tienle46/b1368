@@ -6146,7 +6146,7 @@
     "_tag": -1,
     "_opacityModifyRGB": false,
     "_id": "c82f2d1s+pP+byxIAHkLTEl",
-    "_active": true,
+    "_active": false,
     "_components": [
       {
         "__id__": 175
@@ -6405,7 +6405,7 @@
     "_tag": -1,
     "_opacityModifyRGB": false,
     "_id": "92637vzeHdDZ7it9b9LKnLr",
-    "_active": true,
+    "_active": false,
     "_components": [
       {
         "__id__": 183
