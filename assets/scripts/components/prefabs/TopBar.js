@@ -35,14 +35,14 @@ class TopBar extends DialogActor {
         super.onLoad();
         this.dropDownBgNode.on(cc.Node.EventType.TOUCH_END, () => this.dropDownOptions.active = false);
         this.vipLevel.string = app.context.getMyInfo().vipLevel;
-        this.notifyCounterLbl.string = app.context.personalMessagesCount;
-        this.msgNotifyBgNode.active = Number(this.notifyCounterLbl.string) > 0;
+        CCUtils.setVisible(this.msgNotifyBgNode, false);
     }
 
     onEnable() {
-        super.onEnable();
-        this._fillUserData();
-        this._onBuddyNotifyCountChanged();
+        super.onEnable()
+        this._fillUserData()
+        this._onBuddyNotifyCountChanged()
+        this._onMessageCountChanged()
     }
 
     start() {
@@ -58,24 +58,19 @@ class TopBar extends DialogActor {
 
     _addGlobalListener() {
         super._addGlobalListener();
-        app.system.addListener(app.commands.NEW_NOTIFICATION_COUNT, this._onNotifyCount, this);
-        app.system.addListener(app.commands.USER_MSG_COUNT, this._onUserMsgCount, this);
         app.system.addListener(SFS2X.SFSEvent.USER_VARIABLES_UPDATE, this._onUserVariablesUpdate, this);
         app.system.addListener(Events.ON_BUDDY_UNREAD_MESSAGE_COUNT_CHANGED, this._onBuddyNotifyCountChanged, this);
         app.system.addListener(Events.CLIENT_CONFIG_CHANGED, this._onConfigChanged, this);
-        // app.system.addListener(app.commands.CHANGE_SYSTEM_MESSAGE_STATE, this._onSystemMessageChanged, this);
-        app.system.addListener(Events.CHANGE_SYSTEM_MESSAGE_COUNT, this._onSystemMessageChanged, this);
+        app.system.addListener(Events.ON_MESSAGE_COUNT_CHANGED, this._onMessageCountChanged, this);
     }
 
     _removeGlobalListener() {
         super._removeGlobalListener();
-        app.system.removeListener(app.commands.NEW_NOTIFICATION_COUNT, this._onNotifyCount, this);
-        app.system.removeListener(app.commands.USER_MSG_COUNT, this._onUserMsgCount, this);
         app.system.removeListener(SFS2X.SFSEvent.USER_VARIABLES_UPDATE, this._onUserVariablesUpdate, this);
         app.system.removeListener(Events.ON_BUDDY_UNREAD_MESSAGE_COUNT_CHANGED, this._onBuddyNotifyCountChanged, this);
         app.system.removeListener(Events.CLIENT_CONFIG_CHANGED, this._onConfigChanged, this);
-        // app.system.removeListener(app.commands.CHANGE_SYSTEM_MESSAGE_STATE, this._onSystemMessageChanged, this);
         app.system.removeListener(Events.CHANGE_SYSTEM_MESSAGE_COUNT, this._onSystemMessageChanged, this);
+        app.system.removeListener(Events.ON_MESSAGE_COUNT_CHANGED, this._onMessageCountChanged, this);
     }
 
     onClickLogout() {
@@ -148,16 +143,6 @@ class TopBar extends DialogActor {
     onClickUserInfoAction() {
         app.visibilityManager.goTo(Linking.ACTION_PERSONAL_INFO);
     }
-
-    /**
-     * PRIVATES 
-    */
-      
-    _onUserMsgCount(data) {
-        let {count} = data;
-        app.context.personalMessagesCount += count;
-        this._updateSmsNotifystate(count)
-    }
     
     _fillUserData() {
         this.userNameLbl.string = app.context.getMeDisplayName()
@@ -186,29 +171,10 @@ class TopBar extends DialogActor {
         return true;
     }
 
-    _onNotifyCount(data) {
-        let {sysMsgCount, userMsgCount} = data;
-        let count = sysMsgCount + userMsgCount;
-        app.context.personalMessagesCount = userMsgCount;
-        this._updateSmsNotifystate(count, true);
-    }
-
-    _onSystemMessageChanged(amount) {
-        if(amount) {
-            this._updateSmsNotifystate(amount);
-        }
-    }
-    
-    // _onSystemMessageChanged(data) {
-    //     if(data[app.keywords.RESPONSE_RESULT]) {
-    //         let count = Number(this.notifyCounterLbl.string) - 1;
-    //         this._updateSmsNotifystate(count);
-    //     }
-    // }
-    
-    _updateSmsNotifystate(count, isReplace) {
-        this.notifyCounterLbl.string = !isReplace ? Number(this.notifyCounterLbl.string) + count : count;
-        this.msgNotifyBgNode.active = Number(this.notifyCounterLbl.string) > 0;
+    _onMessageCountChanged(){
+        let totalMessageCount = app.context.getTotalMessageCount();
+        this.notifyCounterLbl.string = totalMessageCount;
+        this.msgNotifyBgNode.active = totalMessageCount > 0;
     }
     
     _requestMessageNotification() {

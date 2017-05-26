@@ -14,6 +14,7 @@ export default class Component {
 
         this.__componentData = null
         this.__isComponentEnabled = false
+        this.__isComponentLoaded = false
         this.loadedAssets = []; // assets (cc.Font, cc.SpriteFrame, cc.SpriteAtlas ...) will be release when destroy
         this.loadedNodes = []; // nodes will be destroy & removeFromParent when component onDestroy
     }
@@ -39,12 +40,12 @@ export default class Component {
         this.loadedNodes.push(node);
     }
 
-    isComponentEnabled() {
-        return this.__isComponentEnabled;
-    }
-
     getComponentData() {
         return this.__componentData || {};
+    }
+
+    isComponentLoaded() {
+        return this.__isComponentLoaded;
     }
 
     setComponentData(data) {
@@ -94,6 +95,8 @@ export default class Component {
                 }
             });
         }
+
+        this.__isComponentLoaded = true;
     }
 
     start() {}
@@ -107,6 +110,7 @@ export default class Component {
 
     onDisable() {
         this.__isComponentEnabled = false;
+        this.__isComponentLoaded = false;
     }
 
     onDestroy() {

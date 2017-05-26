@@ -45,7 +45,7 @@ export default class PopupTab extends Component {
         if(!count || count < 0){
             CCUtils.setVisible(this.notifyNode, false)
         }else{
-            this.notifyLabel && (this.notifyLabel.toLocaleString = `${count}`);
+            this.notifyLabel && (this.notifyLabel.string = `${count}`);
             CCUtils.setVisible(this.notifyNode, true)
         }
     }

@@ -16,44 +16,34 @@ const tabModels = [
 export default class MessageCenterDialogRub {
 
     constructor() {
+
         let node = cc.instantiate(app.res.prefab.multiTabPopup);
         /**
          * @type {MultiTabPopup}
          */
         this.multiTabPopup = node.getComponent("MultiTabPopup");
-
         this.multiTabPopup.setTitle('Tin nhắn');
-
-        let addGlobalListener = this.multiTabPopup._addGlobalListener;
-        let removeGlobalListener = this.multiTabPopup._removeGlobalListener;
-
-        addGlobalListener.bind(this.multiTabPopup)
-        removeGlobalListener.bind(this.multiTabPopup)
+        this.multiTabPopup.setComponentData({
+            tabNotifyData: {
+                [MessageCenterDialogRub.TAB_SYSTEM_MESSAGE_INDEX]:  app.context.systemMessageCount,
+                [MessageCenterDialogRub.TAB_PERSONAL_MESSAGE_INDEX]: app.context.personalMessagesCount
+            }
+        })
 
         this.multiTabPopup._addGlobalListener = () => {
-            addGlobalListener();
-
-            app.system.addListener(Events.CHANGE_SYSTEM_MESSAGE_COUNT, this.onChangeSystemMessageCount, this)
-            app.system.addListener(Events.CHANGE_USER_MESSAGE_COUNT, this.onChangeUserMessageCount, this)
+            app.system.addListener(Events.ON_MESSAGE_COUNT_CHANGED, this.onChangeMessageCount, this)
         }
 
         this.multiTabPopup._removeGlobalListener = () => {
-            removeGlobalListener();
-
-            app.system.removeListener(Events.CHANGE_SYSTEM_MESSAGE_COUNT, this.onChangeSystemMessageCount, this)
-            app.system.removeListener(Events.CHANGE_USER_MESSAGE_COUNT, this.onChangeUserMessageCount, this)
+            app.system.removeListener(Events.CHANGE_PERSONAL_MESSAGE_COUNT, this.onChangeMessageCount, this)
         }
-
     }
 
-    onChangeUserMessageCount(count){
-        this.multiTabPopup.setNotifyCountForTab(MessageCenterDialogRub.TAB_PERSONAL_MESSAGE_INDEX, count)
+    onChangeMessageCount(){
+        this.multiTabPopup.setNotifyCountForTab(MessageCenterDialogRub.TAB_SYSTEM_MESSAGE_INDEX, app.context.systemMessageCount)
+        this.multiTabPopup.setNotifyCountForTab(MessageCenterDialogRub.TAB_PERSONAL_MESSAGE_INDEX, app.context.personalMessagesCount)
     }
 
-    onChangeSystemMessageCount(count){
-        this.multiTabPopup.setNotifyCountForTab(MessageCenterDialogRub.TAB_SYSTEM_MESSAGE_INDEX, count)
-    }
-    
     show(parentNode = cc.director.getScene(), options = {}){
         this.multiTabPopup.show({parentNode, tabModels, options});
     }

@@ -113,17 +113,17 @@ class GameSystem {
         this.addListener(app.commands.GET_TOTAL_TOPUP, this._onTotalTopupFetched, this);
     }
 
-    removeEventListener() {
-        this.removeListener(SFS2X.SFSEvent.ROOM_JOIN, this._onJoinRoomSuccess, this);
-        this.removeListener(SFS2X.SFSEvent.ROOM_JOIN_ERROR, this._onJoinRoomError, this);
-        this.removeListener(app.commands.HIGH_LIGHT_MESSAGE, this._onHighLightMessage, this);
-        this.removeListener(app.commands.UPDATE_PHONE_NUMBER, this._onUpdatePhoneNumber, this);
-        this.removeListener(SFS2X.SFSEvent.ADMIN_MESSAGE, this._onAdminMessage, this);
-        app.env.isIOS() && this.removeListener(app.commands.IOS_IN_APP_PURCHASE, this._onSubmitPurchaseIOS, this);
-        app.env.isAndroid() && this.removeListener(app.commands.ANDROID_IN_APP_PURCHASE, this._onSubmitPurchaseAndroid, this);
-        
-        this.removeListener(app.commands.GET_TOTAL_TOPUP, this._onTotalTopupFetched, this);
-    }
+    // removeEventListener() {
+    //     this.removeListener(SFS2X.SFSEvent.ROOM_JOIN, this._onJoinRoomSuccess, this);
+    //     this.removeListener(SFS2X.SFSEvent.ROOM_JOIN_ERROR, this._onJoinRoomError, this);
+    //     this.removeListener(app.commands.HIGH_LIGHT_MESSAGE, this._onHighLightMessage, this);
+    //     this.removeListener(app.commands.UPDATE_PHONE_NUMBER, this._onUpdatePhoneNumber, this);
+    //     this.removeListener(SFS2X.SFSEvent.ADMIN_MESSAGE, this._onAdminMessage, this);
+    //     app.env.isIOS() && this.removeListener(app.commands.IOS_IN_APP_PURCHASE, this._onSubmitPurchaseIOS, this);
+    //     app.env.isAndroid() && this.removeListener(app.commands.ANDROID_IN_APP_PURCHASE, this._onSubmitPurchaseAndroid, this);
+    //
+    //     this.removeListener(app.commands.GET_TOTAL_TOPUP, this._onTotalTopupFetched, this);
+    // }
 
     getCurrentSceneNode() {
         return this._currentScene && this._currentScene.node;
