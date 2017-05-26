@@ -166,7 +166,7 @@ export default class PlayerTLMNDL extends PlayerCardTurnBase {
         this.playSoundBaseOnBalanceChanged(balanceChanged);
         this.renderer.showEndGameCardInfo(info)
         this.renderer.showPlayerWinLoseInfo(text, isWinner)
-        this.renderer.startPlusBalanceAnimation(balanceChanged)
+        this.renderer.startPlusBalanceAnimation(balanceChanged, true)
     }
 }
 

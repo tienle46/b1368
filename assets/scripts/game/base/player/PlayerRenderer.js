@@ -125,7 +125,7 @@ export default class PlayerRenderer extends ActorRenderer {
         this.playerMessage.show(message);
     }
 
-    startPlusBalanceAnimation(balance) {
+    startPlusBalanceAnimation(balance, playSlowAnim = false) {
         if (!this.loaded || isNaN(balance)) return;
        
         let isWinner = balance >= 0;
@@ -141,7 +141,11 @@ export default class PlayerRenderer extends ActorRenderer {
                 this.minusBalanceLabel.string = balanceStr;
             }
 
-            this.plusBalanceAnim.play();
+            if(playSlowAnim){
+                this.plusBalanceAnim.playSlow();
+            }else{
+                this.plusBalanceAnim.play();
+            }
         }
     }
 

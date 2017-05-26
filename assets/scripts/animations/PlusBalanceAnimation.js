@@ -8,6 +8,19 @@ import Component from 'Component';
 export default class PlusBalanceAnimation extends Component {
     constructor() {
         super();
+
+        this.properties = {
+            ...this.properties,
+            normalAnimName: {
+                default: "plusBalance",
+                type: cc.String
+            },
+            slowAnimName: {
+                default: "plusBalanceSlow",
+                type: cc.String
+            }
+        }
+
         this.player = null;
         this.startCallback = null;
         this.endCallback = null;
@@ -36,7 +49,11 @@ export default class PlusBalanceAnimation extends Component {
     }
 
     play() {
-        this._plusAnim.play();
+        this._plusAnim.play(this.normalAnimName);
+    }
+
+    playSlow(){
+        this._plusAnim.play(this.slowAnimName);
     }
 
     onAnimationStart() {

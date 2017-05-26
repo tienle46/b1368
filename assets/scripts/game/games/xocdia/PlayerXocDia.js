@@ -128,7 +128,7 @@ export default class PlayerXocDia extends PlayerCardBetTurn {
             return;
             
         this.playSoundBaseOnBalanceChanged(balance);
-        this.renderer.startPlusBalanceAnimation(balance);
+        this.renderer.startPlusBalanceAnimation(balance, true);
     }
 
     _onGameRejoin(data) {
