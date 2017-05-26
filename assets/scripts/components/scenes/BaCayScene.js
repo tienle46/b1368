@@ -70,7 +70,8 @@ export default class BaCayScene extends GameScene {
                 app.system.showToast(app.res.string('game_not_enough_balance_to_cuoc_bien'));
                 return;
             }
-
+            
+            this._betPopup.titleLabel.string = "Cược biên";
             this._betPopup && this._betPopup.show({
                 minValue: this.board.minBet,
                 maxValue,

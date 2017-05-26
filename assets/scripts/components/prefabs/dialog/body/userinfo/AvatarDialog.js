@@ -28,6 +28,7 @@ export default class AvatarDialog extends DialogActor {
     onLoad() {
         super.onLoad();
         this.bgNode && this.bgNode.on(cc.Node.EventType.TOUCH_START, () => true);
+        this.pickedAvatarDescription.node.opacity = 0;
         this.previousLabel = null;
         this.selectedObject = null;
     }
@@ -46,6 +47,7 @@ export default class AvatarDialog extends DialogActor {
     onClickAvatarItem(toggle) {
         let node = toggle.node;
         let {id, name, description, large, vipValue} = node.data;
+        this.pickedAvatarDescription.node.opacity = 255;
         RubUtils.loadSpriteFrame(this.pickedAvatarSprite, large, null, true, (sprite) =>{
             this.pickedAvatarLbl.string = name;
             this.selectedObject = {
@@ -135,7 +137,7 @@ export default class AvatarDialog extends DialogActor {
                     };
                     let toggle = item.getComponent(cc.Toggle);
                     if(toggle) {
-                        toggle.isChecked = (app.context.getMyInfo().avatar && app.context.getMyInfo().avatar.thumb == thumb || index === 0)
+                        toggle.isChecked = (app.context.getMyInfo().avatar && app.context.getMyInfo().avatar.thumb == thumb)
                         toggle.isChecked && this.onClickAvatarItem(toggle);
                     }
                 }
