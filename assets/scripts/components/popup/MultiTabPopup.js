@@ -60,7 +60,7 @@ export default class MultiTabPopup extends Actor {
         let {tabNotifyData} = this.getComponentData();
         tabNotifyData && Object.keys(tabNotifyData).forEach(key => {
             this.setNotifyCountForTab(key, tabNotifyData[key]);
-        })
+        });
     }
 
     onDisable() {

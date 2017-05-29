@@ -87,7 +87,7 @@ class GameContext {
         let username = this.getMyInfo() ? this.getMyInfo().name : null;
         if (username)
             return this.purchaseItems.filter(item => item.username = username) || [];
-        return this.purchaseItems || [];
+        return [];
     }
 
     /**

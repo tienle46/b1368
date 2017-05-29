@@ -159,6 +159,8 @@ Events.ON_USER_MAKES_JAR_EXPLOSION = "on.user.makes.jar.explosion";
 
 Events.CHANGE_SYSTEM_MESSAGE_COUNT = "change.systemMessageCount";
 Events.CHANGE_PERSONAL_MESSAGE_COUNT = "change.userMessageCount";
+Events.ON_NEW_ADDED_PERSONAL_MESSAGE = "on.newAddedPersonalMessage";
+Events.ON_NEW_ADDED_SYSTEM_MESSAGE = "on.newAddedSystemMessage";
 Events.CHANGE_GAME_MASTER = "change.gameMaster";
 Events.ON_MESSAGE_COUNT_CHANGED = "on.messageCountChanged";
 

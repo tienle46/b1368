@@ -48,12 +48,15 @@ class TabSystemMessage extends TabMessages {
         super._addGlobalListener();
         app.system.addListener(app.commands.GET_SYSTEM_MESSAGES, this._onGetSystemMessages, this);
         app.system.addListener(app.commands.CHANGE_SYSTEM_MESSAGE_STATE, this._onSystemMessageChanged, this);
+        app.system.addListener(Events.ON_NEW_ADDED_SYSTEM_MESSAGE, this.onNewAddedPersonalMessage, this); // server send new message while dialog is displaying... -> update new
+
     }
 
     _removeGlobalListener() {
         super._removeGlobalListener();
         app.system.removeListener(app.commands.GET_SYSTEM_MESSAGES, this._onGetSystemMessages, this);
         app.system.removeListener(app.commands.CHANGE_SYSTEM_MESSAGE_STATE, this._onSystemMessageChanged, this);
+        app.system.removeListener(Events.ON_NEW_ADDED_SYSTEM_MESSAGE, this.onNewAddedPersonalMessage, this); // server send new message while dialog is displaying... -> update new
     }
 
     _onSystemMessageChanged(data) {

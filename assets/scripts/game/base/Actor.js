@@ -107,6 +107,7 @@ export default class Actor extends VisibilityActor {
      */
     _addGlobalListener() {
         this._removeGlobalListener();
+        this._addCustomListeners();
         this._assertEmitter();
     }
 
@@ -123,6 +124,7 @@ export default class Actor extends VisibilityActor {
      */
     _removeGlobalListener() {
         this._assertEmitter();
+        this._removeCustomListeners();
     }
 
     _emitPendingEvent() {
@@ -143,4 +145,10 @@ export default class Actor extends VisibilityActor {
     loadImage(url, cb) {
         return HttpImageLoader.loadImage(url, this.constructor.name, cb);
     }
+    
+    /**
+     * abstracts
+     */
+    _addCustomListeners(){}
+    _removeCustomListeners(){}
 }

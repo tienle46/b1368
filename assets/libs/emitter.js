@@ -100,7 +100,7 @@ export default class Emitter {
                     this._checkContext(callbacks[i], context) && callbacks.splice(i--, 1);
                 }
             }
-
+            
             return this;
         }
 

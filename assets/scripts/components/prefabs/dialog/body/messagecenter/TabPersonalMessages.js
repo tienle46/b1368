@@ -34,12 +34,18 @@ class TabPersonalMessages extends TabMessages {
         super._addGlobalListener();
         app.system.addListener(app.commands.GET_PERSONAL_MESSAGES, this._onGetPersonalMessages, this);
         app.system.addListener(app.commands.CHANGE_PERSONAL_MESSAGE_STATE, this._onPersonalMessageChanged, this);
+        app.system.addListener(Events.ON_NEW_ADDED_PERSONAL_MESSAGE, this.onNewAddedPersonalMessage, this); // server send new message while dialog is displaying... -> update new
     }
 
     _removeGlobalListener() {
         super._removeGlobalListener();
         app.system.removeListener(app.commands.GET_PERSONAL_MESSAGES, this._onGetPersonalMessages, this);
         app.system.removeListener(app.commands.CHANGE_PERSONAL_MESSAGE_STATE, this._onPersonalMessageChanged, this);
+        app.system.removeListener(Events.ON_NEW_ADDED_PERSONAL_MESSAGE, this.onNewAddedPersonalMessage, this);
+    }
+    
+    onNewAddedPersonalMessage() {
+        this._requestMessagesList();
     }
     
     //@override

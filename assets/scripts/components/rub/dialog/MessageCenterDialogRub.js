@@ -18,6 +18,7 @@ export default class MessageCenterDialogRub {
     constructor() {
 
         let node = cc.instantiate(app.res.prefab.multiTabPopup);
+        this.__node = node;
         /**
          * @type {MultiTabPopup}
          */
@@ -29,19 +30,33 @@ export default class MessageCenterDialogRub {
                 [MessageCenterDialogRub.TAB_PERSONAL_MESSAGE_INDEX]: app.context.personalMessagesCount
             }
         })
-
+        
         this.multiTabPopup._addGlobalListener = () => {
             app.system.addListener(Events.ON_MESSAGE_COUNT_CHANGED, this.onChangeMessageCount, this)
         }
 
         this.multiTabPopup._removeGlobalListener = () => {
-            app.system.removeListener(Events.CHANGE_PERSONAL_MESSAGE_COUNT, this.onChangeMessageCount, this)
+            app.system.removeListener(Events.ON_MESSAGE_COUNT_CHANGED, this.onChangeMessageCount, this)
         }
+        
+        this.currentSystemMessageCount = app.context.systemMessageCount
+        this.currentPersonalMessageCount = app.context.personalMessagesCount
     }
 
     onChangeMessageCount(){
-        this.multiTabPopup.setNotifyCountForTab(MessageCenterDialogRub.TAB_SYSTEM_MESSAGE_INDEX, app.context.systemMessageCount)
-        this.multiTabPopup.setNotifyCountForTab(MessageCenterDialogRub.TAB_PERSONAL_MESSAGE_INDEX, app.context.personalMessagesCount)
+        this.multiTabPopup._tabModels && this.multiTabPopup.setNotifyCountForTab(MessageCenterDialogRub.TAB_SYSTEM_MESSAGE_INDEX, app.context.systemMessageCount)
+        this.multiTabPopup._tabModels && this.multiTabPopup.setNotifyCountForTab(MessageCenterDialogRub.TAB_PERSONAL_MESSAGE_INDEX, app.context.personalMessagesCount)
+        
+        if(this.currentSystemMessageCount < app.context.systemMessageCount) { // -> new message
+            app.system.emit(Events.ON_NEW_ADDED_SYSTEM_MESSAGE)
+        }
+        
+        if(this.currentPersonalMessageCount < app.context.personalMessagesCount) { // -> new message
+            app.system.emit(Events.ON_NEW_ADDED_PERSONAL_MESSAGE)
+        }
+        
+        this.currentSystemMessageCount = app.context.systemMessageCount;
+        this.currentPersonalMessageCount = app.context.personalMessagesCount;
     }
 
     show(parentNode = cc.director.getScene(), options = {}){
