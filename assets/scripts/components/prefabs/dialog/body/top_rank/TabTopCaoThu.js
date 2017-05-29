@@ -35,7 +35,7 @@ class TabTopCaoThu extends PopupTabBody {
     }
     
     onDataChanged({usernames = [], wons, gc} = {}) {
-        usernames && usernames.length > 0 && this._renderGridFromUsernames(usernames, wons, gc);
+       
     }
 
     _addGlobalListener() {
@@ -53,7 +53,7 @@ class TabTopCaoThu extends PopupTabBody {
         app.config.supportedGames.length > 0 && app.async.mapSeries(app.config.supportedGames, (gameCode, cb) => {
             let gameIconPath = app.res.gameIcon[gameCode];
 
-            gameIconPath && RubUtils.getSpriteFrameFromAtlas('blueTheme/atlas/game_icons', gameIconPath, (sprite) => {
+            this.backGroundSprite && gameIconPath && RubUtils.getSpriteFrameFromAtlas('blueTheme/atlas/game_icons', gameIconPath, (sprite) => {
                 this.backGroundSprite.spriteFrame = sprite;
                 let node = cc.instantiate(this.gameItem);
                 let toggle = node.getComponent(cc.Toggle);
@@ -108,6 +108,8 @@ class TabTopCaoThu extends PopupTabBody {
     }
 
     _onGetTopPlayers(data) {
+        let {usernames = [], wons, gc} = data;
+        this._renderGridFromUsernames(usernames, wons, gc);
         this.setLoadedData(data);
     }
     
@@ -134,7 +136,6 @@ class TabTopCaoThu extends PopupTabBody {
     _initBody(d) {
         // let next = this.onNextBtnClick;
         // let prev = this.onPreviousBtnClick;
-
         this.initView({
             data: ['STT', 'Tài khoản', 'Thắng'],
             options: {

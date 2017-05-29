@@ -90,7 +90,8 @@ export default class BoardRenderer extends ActorRenderer {
             this.timeLineInSecond = timeInSecond;
             this.setTimeLineMessage("");
             this.setTimeLineSecondText(`${this.timeLineInSecond--}`);
-            this.setBottomTimeLineMessage(app.res.string('game_waiting_for_game_start'))
+            // this.setBottomTimeLineMessage(app.res.string('game_waiting_for_game_start'))
+            this.setBottomTimeLineMessage('')
 
             this.timeoutInterval = setInterval(() => {
                 if(this.timeLineInSecond < 0){
@@ -100,7 +101,7 @@ export default class BoardRenderer extends ActorRenderer {
                 }
             }, 1000);
 
-        }else{
+        } else {
             this.setTimeLineMessage(message);
             this.setBottomTimeLineMessage("")
         }

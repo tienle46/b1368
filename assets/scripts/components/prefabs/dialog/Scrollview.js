@@ -67,7 +67,8 @@ export default class Scrollview extends Component {
             this.isEndedPage = total < this.itemsPerPage;
 
             this._updateItemsPerPage(mainData);
-
+            
+            console.warn('mainData.length', mainData.length);
             if (mainData.length == 0) {
                 this._pageIsEmpty();
                 this._updatePagingState();
@@ -184,6 +185,7 @@ export default class Scrollview extends Component {
     }
 
     _pageIsEmpty() {
+        console.warn('_p404');
         app.system.hideLoader();
         if (!this._p404) {
             this._p404 = cc.instantiate(this.p404);
