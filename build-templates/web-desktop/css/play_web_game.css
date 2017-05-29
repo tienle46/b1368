@@ -1,0 +1,75 @@
+a{
+	text-decoration: none;
+}
+body{
+	background: #01081b url('../image/bg_body.jpg') no-repeat;
+    background-size: cover;
+    font-family: Roboto;
+    font-size: 15px;
+    line-height: 1.5;
+	width:980px;
+	margin:0 auto;
+	/* padding:15px 0; */
+}
+.pull-right{
+	float:right;
+}
+.pull-left{
+	float:left;
+}
+.clearfix{
+	clear:both;
+}
+/*Import font*/
+@font-face { 
+	font-family: 'iCielPanton'; 
+	src: url('../fonts/panton.ttf') format('truetype'); 
+}
+
+/*--- HEADER*/
+.header{
+	margin:20px 0;
+}
+.logo-1368 img{
+	float:left;
+}
+.logo-1368 h1{
+	font-family:iCielPanton;
+	font-size:20px;
+    color: #f3d621;
+	margin: 20px;
+}
+.taigame-1368{
+	margin:15px 0;
+}
+.copyright{
+	text-align:center;
+	color:#499ae0;
+	font-size:13px;
+}
+
+/*--- CONTAINER*/
+.container-1368 {
+    margin-top: 20px;
+	z-index: 9999;
+}
+
+/*--- Banner left right*/
+.qc-left{
+	margin: 0 0 5px 0;
+    padding: 0;
+    width: 200px;
+	position: fixed;
+    left: 0;
+    top: 15%;
+	z-index: -1;
+}
+.qc-right{
+	margin: 0 0 5px 0;
+    padding: 0;
+    width: 200px;
+    position: fixed;
+    right: 0;
+    top: 15%;
+	z-index: -1;
+}
