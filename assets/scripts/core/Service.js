@@ -425,6 +425,7 @@ class Service {
         data[app.keywords.APP_SECRET_KEY] = app.config.app_secret_key;
         data['isMobile'] = app.env.isMobile()
         data[app.keywords.DEVICE_ID] = app.config.DEVICE_ID;
+        data[app.keywords.VERSION] = app.config.version;
         data[app.keywords.QUICK_PLAY] = isQuickLogin;
 
         if(password){
