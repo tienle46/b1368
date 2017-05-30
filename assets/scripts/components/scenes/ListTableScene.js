@@ -118,12 +118,6 @@ export default class ListTableScene extends BaseScene {
         this._sendRequestUserListRoom(this._room);
     }
     
-    _requestListHu() {
-        app.service.send({
-            cmd: app.commands.LIST_HU
-        });     
-    }
-    
     _onListHu() {
         if(app.jarManager.hasJar(this.gameCode)) {
             let hasButton = true;

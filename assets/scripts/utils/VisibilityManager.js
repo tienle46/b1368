@@ -70,7 +70,8 @@ export default class VisibilityManager {
             [VisibilityManager.BANK]: false,
             [VisibilityManager.BOT]: false,
             [VisibilityManager.GIFT_CODE]: false,
-            [VisibilityManager.SYSTEM_MESSAGE]: false
+            [VisibilityManager.SYSTEM_MESSAGE]: false,
+            [VisibilityManager.SMASH_JAR]: false
         }, features);        
     }
     
@@ -185,3 +186,4 @@ VisibilityManager.BANK = "bnk";
 VisibilityManager.BOT = "bot";
 VisibilityManager.GIFT_CODE = "gc";
 VisibilityManager.SYSTEM_MESSAGE = "sysm";
+VisibilityManager.SMASH_JAR = "smashjar";
