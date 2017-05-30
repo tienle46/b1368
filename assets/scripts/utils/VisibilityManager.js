@@ -169,6 +169,10 @@ export default class VisibilityManager {
         
         return null;
     } 
+    
+    isActive(featureKey) {
+        return this._features[featureKey];
+    }
 }
 
 // default features
