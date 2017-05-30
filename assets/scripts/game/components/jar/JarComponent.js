@@ -36,9 +36,7 @@ export default class JarComponent extends Actor {
     start() {
         super.start();
         
-        app.service.send({
-            cmd: app.commands.LIST_HU
-        });
+        app.jarManager.requestUpdateJarList();
     }
     
     onEnable() {

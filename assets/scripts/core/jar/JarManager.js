@@ -1,5 +1,6 @@
 import app from 'app';
 import CCUtils from 'CCUtils';
+import VisibilityManager from 'VisibilityManager';
 
 export default class JarManager {
     constructor() {
@@ -20,11 +21,11 @@ export default class JarManager {
     addEventListener() {
         this.removeEventListener();
 
-        app.system.addListener(app.commands.LIST_HU, this.setupJar, this);
+        app.visibilityManager.isActive(VisibilityManager.SMASH_JAR) && app.system.addListener(app.commands.LIST_HU, this.setupJar, this);
     }
     
     removeEventListener() {
-        app.system.removeListener(app.commands.LIST_HU, this.setupJar, this);
+        app.visibilityManager.isActive(VisibilityManager.SMASH_JAR) && app.system.removeListener(app.commands.LIST_HU, this.setupJar, this);
     }
     
     updateJar(gc, newData) {
@@ -161,7 +162,7 @@ export default class JarManager {
     }
     
     requestUpdateJarList() {
-        app.service.send({
+        app.visibilityManager.isActive(VisibilityManager.SMASH_JAR) &&  app.service.send({
             cmd: app.commands.LIST_HU
         }); 
     }

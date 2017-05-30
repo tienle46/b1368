@@ -154,6 +154,8 @@ export default class BaseScene extends Actor {
                         let tryToConnectInterval = setInterval(() => {
                             if(!app.service.client.isConnected()) {
                                 clearInterval(tryToConnectInterval)
+                                app.config.useSSL = false;
+                                app.service.client.config.useSSL = false;
                                 this._tryToConnectAndLogin(username, password, isRegister, isQuickLogin, accessToken, true)
                             }
                         }, 100)
