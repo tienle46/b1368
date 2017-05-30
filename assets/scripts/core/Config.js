@@ -7,13 +7,14 @@ var app = require('app');
 
 app.config = {};
 app.config.currencyName = "Chip";
-app.config.host = "123.31.12.100";
+// app.config.host = "123.31.12.100";
 // app.config.port = 8481;
 // app.config.host = "123.30.238.174";
-app.config.port = 8921;
+app.config.host = "1368casino.com";
 app.config.zone = "XGame";
 app.config.debug = false;
-app.config.useSSL = false;
+app.config.useSSL = true;
+app.config.port = app.config.useSSL ? 8843 : 8921;
 app.config.test = false;
 app.config.testIngame = false;
 app.config.defaultLocale = 'vi';
