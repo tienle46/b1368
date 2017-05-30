@@ -8,6 +8,7 @@ import PopupTabBody from 'PopupTabBody';
 import CCUtils from 'CCUtils';
 import RubUtils from 'RubUtils';
 import Events from 'Events';
+import VisibilityManager from 'VisibilityManager';
 
 class BuddyItem extends PopupTabBody {
 
@@ -29,6 +30,7 @@ class BuddyItem extends PopupTabBody {
             avatarSpriteNode: cc.Node,
             notificationNode: cc.Node,
             notificationCount: cc.Label,
+            transferBtnNode: cc.Node,
         }
  
         this.online = false;
@@ -44,6 +46,7 @@ class BuddyItem extends PopupTabBody {
 
     onLoad() {
         super.onLoad();
+        this.transferBtnNode.active = app.visibilityManager.isActive(VisibilityManager.BANK);
     }
 
     onEnable() {

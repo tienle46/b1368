@@ -160,7 +160,10 @@ export default class VisibilityManager {
     _getKeyFromInstance(instanceName) {
         if(!instanceName)
             return;
-            
+        
+        /**
+         * instanceName format: abcd <name>
+         */
         let pattern = /(\<[A-Za-z-_0-9]+\>)/;
         let matches = instanceName.match(pattern);
         if(matches) {

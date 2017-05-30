@@ -1965,7 +1965,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 50,
-      "height": 114
+      "height": 59
     },
     "_children": [
       {
@@ -2052,7 +2052,7 @@
     "_tag": -1,
     "_opacityModifyRGB": false,
     "_id": "",
-    "_active": true,
+    "_active": false,
     "_components": [
       {
         "__id__": 69
@@ -2271,7 +2271,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": -3,
-      "y": -27.5
+      "y": 0
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -2653,7 +2653,7 @@
     "_layoutSize": {
       "__type__": "cc.Size",
       "width": 50,
-      "height": 114
+      "height": 59
     },
     "_resize": 1,
     "_N$layoutType": 2,
@@ -2761,6 +2761,9 @@
     },
     "notificationCount": {
       "__id__": 78
+    },
+    "transferBtnNode": {
+      "__id__": 65
     }
   },
   {
