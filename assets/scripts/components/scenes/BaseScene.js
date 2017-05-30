@@ -116,11 +116,7 @@ export default class BaseScene extends Actor {
         if (app.service.client.isConnected()) {
             this._requestAuthen(username, password, isRegister, isQuickLogin, accessToken);
         } else {
-            app.service.connect((success) => {
-                if (success) {
-                    this._requestAuthen(username, password, isRegister, isQuickLogin, accessToken);
-                }
-            });
+            this._tryToConnectAndLogin(username, password, isRegister, isQuickLogin, accessToken);
         }
     }
 
@@ -133,11 +129,39 @@ export default class BaseScene extends Actor {
         }
     }
 
-    _requestAuthen(username, password, isRegister, isQuickLogin, accessToken) {
+    _tryToConnectAndLogin(username, password, isRegister, isQuickLogin, accessToken, tryOneTime){
+        app.service.connect((success) => {
+            if (success) {
+                this._requestAuthen(username, password, isRegister, isQuickLogin, accessToken, tryOneTime);
+            }
+        });
+    }
+
+    _requestAuthen(username, password, isRegister, isQuickLogin, accessToken, tryOneTime) {
         app.service.requestAuthen(username, password, isRegister, isQuickLogin, accessToken, (error, result) => {
             if (error) {
-                app.system.hideLoader();
-                app.system.showErrorToast(app.getMessageFromServer(error));
+                console.log(error.errorMessage)
+                let splitMsgs = error && error.errorMessage && error.errorMessage.split('|');
+                if(splitMsgs && splitMsgs.length > 0 && splitMsgs[0] == 'submitServer'){
+                    if(tryOneTime){
+                        error = "5"; //Hệ thống đang quá tải
+                        app.system.hideLoader();
+                        app.system.showErrorToast(app.getMessageFromServer(error));
+                    }else{
+                        app.config.host = splitMsgs[1]
+                        app.config.port = parseInt(splitMsgs[2])
+                        app.service.disconnect();
+                        let tryToConnectInterval = setInterval(() => {
+                            if(!app.service.client.isConnected()) {
+                                clearInterval(tryToConnectInterval)
+                                this._tryToConnectAndLogin(username, password, isRegister, isQuickLogin, accessToken, true)
+                            }
+                        }, 100)
+                    }
+                }else{
+                    app.system.hideLoader();
+                    app.system.showErrorToast(app.getMessageFromServer(error));
+                }
             }
             if (result) {
 
