@@ -219,25 +219,25 @@ class Service {
         this._pendingRequests = [];
         this.stopLagPolling();
 
+        let isLoggedIn = true;
         let scene = app.system.getCurrentSceneName();
+        // exception Scene: sences which are still presit when lost connection occurred. otherwise will be back to ENTRANCE_SCENE
+        let isInExceptionScene = app._.includes([
+            app.const.scene.ENTRANCE_SCENE,
+            app.const.scene.LOGIN_SCENE,
+            app.const.scene.REGISTER_SCENE
+        ], scene);
+        if (isInExceptionScene) {
+            isLoggedIn = false;
+            // this._loginData && this._reConnectWithLoginData(this._loginData);
+            return;
+        }
+
         if (event && event.reason === "manual") {
             this._loginData = null;
             app.system.loadScene(app.const.scene.ENTRANCE_SCENE);
         } else {
             if (scene) {
-                let isLoggedIn = true;
-                // exception Scene: sences which are still presit when lost connection occurred. otherwise will be back to ENTRANCE_SCENE
-                let isInExceptionScene = app._.includes([
-                    app.const.scene.ENTRANCE_SCENE,
-                    app.const.scene.LOGIN_SCENE,
-                    app.const.scene.REGISTER_SCENE
-                ], scene);
-                if (isInExceptionScene) {
-                    isLoggedIn = false;
-                    // this._loginData && this._reConnectWithLoginData(this._loginData);
-                    return;
-                }
-                
                 isLoggedIn && app.system.loadScene(app.const.scene.ENTRANCE_SCENE, () => {
                     if(this._loginData) {
                         let okBtn = this._reConnectWithLoginData.bind(this, this._loginData);
@@ -384,6 +384,14 @@ class Service {
             this.client.connect(app.config.host, app.config.port);
         }
 
+    }
+
+    disconnectOnly(){
+        this.sendRequest(new SFS2X.Requests.System.ManualDisconnectionRequest);
+
+        // this.isConnected() ? (0 < this._socketEngine.reconnectionSeconds && this.send(new SFS2X.Requests.System.ManualDisconnectionRequest), setTimeout(function (a) {
+            a._handleClientDisconnection(SFS2X.Utils.ClientDisconnectionReason.MANUAL);
+        // }, 100, this)) : this._log.info("You are not connected");
     }
 
     /**

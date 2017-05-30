@@ -40,7 +40,6 @@ class GameSystem {
         this.initEventListener();
         if(!app.visibilityManager) 
             app.visibilityManager = new VisibilityManager(app.config.features);
-        console.warn('aaa')
     }
 
     showLoader(message = "", duration) {
