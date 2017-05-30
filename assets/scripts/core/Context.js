@@ -6,6 +6,7 @@ import app from 'app';
 import Events from 'Events';
 import RubUtils from 'RubUtils';
 import Utils from 'Utils';
+import VisibilityManager from 'VisibilityManager';
 
 /**
  * Make sure that System.js require before
@@ -33,13 +34,13 @@ class GameContext {
     _addContextEventListener(){
         app.system.addListener(app.commands.NEW_NOTIFICATION_COUNT, this._onNotifyCount, this);
         app.system.addListener(app.commands.USER_MSG_COUNT, this._setChangePersonalMessageCount, this);
-        app.system.addListener(Events.CHANGE_SYSTEM_MESSAGE_COUNT, this._changeSystemMessageCount, this, 0);
+        app.visibilityManager.isActive(VisibilityManager.SYSTEM_MESSAGE) && app.system.addListener(Events.CHANGE_SYSTEM_MESSAGE_COUNT, this._changeSystemMessageCount, this, 0);
         app.system.addListener(Events.CHANGE_PERSONAL_MESSAGE_COUNT, this._changePersonalMessageCount, this, 0);
     }
 
     _onNotifyCount(data) {
         let {sysMsgCount, userMsgCount} = data;
-        this.systemMessageCount = Math.max(sysMsgCount, 0);
+        this.systemMessageCount = app.visibilityManager.isActive(VisibilityManager.SYSTEM_MESSAGE) ? Math.max(sysMsgCount, 0) : 0;
         this.personalMessagesCount = Math.max(userMsgCount, 0);
 
         app.system.emit(Events.ON_MESSAGE_COUNT_CHANGED);
@@ -87,7 +88,7 @@ class GameContext {
         let username = this.getMyInfo() ? this.getMyInfo().name : null;
         if (username)
             return this.purchaseItems.filter(item => item.username = username) || [];
-        return [];
+        return this.purchaseItems || [];
     }
 
     /**

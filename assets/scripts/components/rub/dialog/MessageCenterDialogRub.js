@@ -1,5 +1,6 @@
 import app from 'app';
 import Events from 'Events';
+import VisibilityManager from 'VisibilityManager';
 
 const url = `${app.const.DIALOG_DIR_PREFAB}/messagecenter`;
 
@@ -24,6 +25,9 @@ export default class MessageCenterDialogRub {
          */
         this.multiTabPopup = node.getComponent("MultiTabPopup");
         this.multiTabPopup.setTitle('Tin nhắn');
+        MessageCenterDialogRub.TAB_PERSONAL_MESSAGE_INDEX = app.visibilityManager.isActive(VisibilityManager.SYSTEM_MESSAGE) ? 1 : 0;
+        MessageCenterDialogRub.TAB_FEEDBACK_INDEX = app.visibilityManager.isActive(VisibilityManager.SYSTEM_MESSAGE) ? 2 : 1;
+        
         this.multiTabPopup.setComponentData({
             tabNotifyData: {
                 [MessageCenterDialogRub.TAB_SYSTEM_MESSAGE_INDEX]:  app.context.systemMessageCount,
@@ -44,18 +48,20 @@ export default class MessageCenterDialogRub {
     }
 
     onChangeMessageCount(){
-        this.multiTabPopup._tabModels && this.multiTabPopup.setNotifyCountForTab(MessageCenterDialogRub.TAB_SYSTEM_MESSAGE_INDEX, app.context.systemMessageCount)
-        this.multiTabPopup._tabModels && this.multiTabPopup.setNotifyCountForTab(MessageCenterDialogRub.TAB_PERSONAL_MESSAGE_INDEX, app.context.personalMessagesCount)
-        
-        if(this.currentSystemMessageCount < app.context.systemMessageCount) { // -> new message
-            app.system.emit(Events.ON_NEW_ADDED_SYSTEM_MESSAGE)
+        // sometime we need to hide system message
+        if(app.visibilityManager.isActive(VisibilityManager.SYSTEM_MESSAGE)) {
+            this.multiTabPopup._tabModels && this.multiTabPopup.setNotifyCountForTab(MessageCenterDialogRub.TAB_SYSTEM_MESSAGE_INDEX, app.context.systemMessageCount)
+            if(this.currentSystemMessageCount < app.context.systemMessageCount) { // -> new message
+                app.system.emit(Events.ON_NEW_ADDED_SYSTEM_MESSAGE)
+            }
+            this.currentSystemMessageCount = app.context.systemMessageCount;
         }
         
+        // personal message always be dislayed
+        this.multiTabPopup._tabModels && this.multiTabPopup.setNotifyCountForTab(MessageCenterDialogRub.TAB_PERSONAL_MESSAGE_INDEX, app.context.personalMessagesCount)
         if(this.currentPersonalMessageCount < app.context.personalMessagesCount) { // -> new message
             app.system.emit(Events.ON_NEW_ADDED_PERSONAL_MESSAGE)
         }
-        
-        this.currentSystemMessageCount = app.context.systemMessageCount;
         this.currentPersonalMessageCount = app.context.personalMessagesCount;
     }
 

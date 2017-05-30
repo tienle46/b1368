@@ -13,6 +13,7 @@ import Toast from 'Toast';
 import { isFunction } from 'Utils';
 import Marker from 'Marker';
 import Linking from 'Linking'
+import VisibilityManager from 'VisibilityManager';
 
 class GameSystem {
 
@@ -37,6 +38,9 @@ class GameSystem {
         this._lackOfMoneyMessage = null
         
         this.initEventListener();
+        if(!app.visibilityManager) 
+            app.visibilityManager = new VisibilityManager(app.config.features);
+        console.warn('aaa')
     }
 
     showLoader(message = "", duration) {
