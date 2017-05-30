@@ -141,8 +141,6 @@ export default class BuddyManager {
     
     containsBuddy(buddyName) {
         let buddy = this.getBuddyByName(buddyName);
-        console.warn('app.service.client.buddyManager.containsBuddy(buddyName)', app.service.client.buddyManager.containsBuddy(buddyName));
-        console.warn('this.buddies.find(b => b == buddy)', this.buddies.find(b => b == buddy));
         // return this.buddies.find(b => b == buddy);
         return app.service.client.buddyManager.containsBuddy(buddyName) && this.buddies.find(b => b == buddy);
     }
