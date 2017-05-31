@@ -13,12 +13,11 @@ import CardTurnBaseControls from 'CardTurnBaseControls';
 export default class TLMNDLControls extends GameControls {
     constructor() {
         super();
-
-        this.properties = {
-            ...this.properties,
+        
+        this.properties = this.assignProperties({
             baseControlsNode: cc.Node,
             cardTurnBaseControlsNode: cc.Node
-        }
+        });
 
         this.baseControls = null;
         this.cardTurnBaseControls = null;

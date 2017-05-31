@@ -13,10 +13,8 @@ class BuddyChatTabBody extends PopupTabBody {
 
     constructor() {
         super();
-
-        this.properties = {
-            ...this.properties,
-
+        
+        this.properties = this.assignProperties({
             /**
              * @type {cc.EditBox}
              */
@@ -33,7 +31,7 @@ class BuddyChatTabBody extends PopupTabBody {
             chatScroll: cc.ScrollView,
             chattingBuddyPrefab: cc.Prefab,
             toggleGroup: cc.ToggleGroup
-        }
+        });
 
         this.buddy = null;
         this.chattingBuddyItems = null;

@@ -11,9 +11,8 @@ import Linking from 'Linking';
 export default class ListTableScene extends BaseScene {
     constructor() {
         super();
-
-        this.properties = {
-            ...this.properties,
+        
+        this.properties = this.assignProperties({
             contentInScroll: cc.Node,
             tableListCell: cc.Prefab,
             invitePopupPrefab: cc.Prefab,
@@ -24,7 +23,7 @@ export default class ListTableScene extends BaseScene {
             filter1stLabel: cc.Label,
             filter2ndLabel: cc.Label,
             filter3rdLabel: cc.Label
-        };
+        });
         
         this.items = null;
         this.time = 2500 * 10; // creating new request for updating tables every 25s

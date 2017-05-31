@@ -14,14 +14,13 @@ import GameUtils from "../../base/utils/GameUtils";
 export default class BaCayControls extends GameControls {
     constructor() {
         super();
-
-        this.properties = {
-            ...this.properties,
+        
+        this.properties = this.assignProperties({
             baseControlsNode: cc.Node,
             cardBetTurnControlsNode: cc.Node,
             downBtn: cc.Button,
             revealAllBtn: cc.Button
-        }
+        });
 
         /**
          * @type {BaseControls}

@@ -14,14 +14,13 @@ import CCUtils from 'CCUtils'
 export default class PhomListComponent extends Component {
     constructor() {
         super();
-
+        
         this.align = {
             default: CardList.ALIGN_CENTER,
             type: CardList.ALIGN
         }
-
-        this.properties = {
-            ...this.properties,
+        
+        this.properties = this.assignProperties({
             phomPrefab: cc.Prefab,
             phomNodes: {
                 default: [],
@@ -29,7 +28,7 @@ export default class PhomListComponent extends Component {
             },
             cardScale: 0.6,
             space: 80,
-        }
+        });
 
         this.phomList = null;
         this.phoms = null;

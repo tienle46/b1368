@@ -10,9 +10,8 @@ import PlayerCardTurnBaseRenderer from 'PlayerCardTurnBaseRenderer';
 export default class PlayerTLMNDLRenderer extends PlayerCardTurnBaseRenderer {
     constructor() {
         super();
-
-        this.properties = {
-            ...this.properties,
+        
+        this.properties = this.assignProperties({
             specialInfoImageNode: cc.Node,
             downCardInfoLabel: cc.Label,
             downCardInfoNode: cc.Node,
@@ -20,8 +19,8 @@ export default class PlayerTLMNDLRenderer extends PlayerCardTurnBaseRenderer {
                 default: [],
                 type: [cc.Node]
             }
-        }
-
+        });
+       
         /**
          * @type {[CardList]}
          */

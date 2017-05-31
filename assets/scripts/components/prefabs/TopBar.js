@@ -11,9 +11,8 @@ import Linking from 'Linking';
 class TopBar extends DialogActor {
     constructor() {
         super();
-
-        this.properties = {
-            ...this.properties,
+        
+        this.properties = this.assignProperties({
             userInfoCoinLbl: cc.Label,
             userNameLbl: cc.Label,
             msgNotifyBgNode: cc.Node,
@@ -28,7 +27,7 @@ class TopBar extends DialogActor {
             vipLevel: cc.Label,
             fanPageNode: cc.Node,
             shopBtnNode: cc.Node
-        };
+        });
     }
 
     onLoad() {

@@ -10,10 +10,9 @@ import Utils from 'Utils'
 export default class PromptPopup extends Component {
     constructor() {
         super();
-
-        this.properties = {
-            ...this.properties,
-            bgTransparent: cc.Node,
+        
+        this.properties = this.assignProperties({
+             bgTransparent: cc.Node,
             titleLbl: cc.Label,
             inputEditBox: cc.EditBox,
             descriptionLbl: cc.Label,
@@ -22,7 +21,8 @@ export default class PromptPopup extends Component {
             mainNode: cc.Node,
             bodyNode: cc.Node,
             popupBkg: cc.Node
-        };
+        });
+        
     }
 
     onEnable() {
@@ -49,7 +49,7 @@ export default class PromptPopup extends Component {
         let promptNode = cc.instantiate(app.res.prefab.promptPopup);
         let prompt = promptNode.getComponent('PromptPopup');
         if(prompt){
-            prompt.setComponentData({...options});
+            prompt.setComponentData(Object.assign({}, options));
             parentNode.addChild(promptNode);
         }
     }
@@ -60,7 +60,7 @@ export default class PromptPopup extends Component {
         let promptNode = cc.instantiate(app.res.prefab.singleLinePromptPopup);
         let prompt = promptNode.getComponent('PromptPopup');
         if(prompt){
-            prompt.setComponentData({...options});
+            prompt.setComponentData(Object.assign({}, options));
             parentNode.addChild(promptNode);
         }
     }

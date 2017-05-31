@@ -14,9 +14,7 @@ class BuddyItem extends PopupTabBody {
 
     constructor() {
         super();
-
-        this.properties = {
-            ...this.properties,
+        this.properties = this.assignProperties({
             nameLabel: cc.Label,
             balanceLabel: cc.Label,
             gameLabel: cc.Label,
@@ -31,8 +29,8 @@ class BuddyItem extends PopupTabBody {
             notificationNode: cc.Node,
             notificationCount: cc.Label,
             transferBtnNode: cc.Node,
-        }
- 
+        });
+        
         this.online = false;
         this.selected = false;
         this.name = "";

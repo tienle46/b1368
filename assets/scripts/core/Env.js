@@ -81,7 +81,6 @@ export default (function(app) {
      **************************************************ENV SETUP **************************************************
      **************************************************************************************************************/
     app.env.__setupEnvironment = function() {
-
         if (app.env.isBrowser()) {
             var Fingerprint2 = require('fingerprinter');
 

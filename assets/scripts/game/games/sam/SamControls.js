@@ -13,14 +13,13 @@ import CardTurnBaseControls from 'CardTurnBaseControls';
 export default class SamControls extends GameControls {
     constructor() {
         super();
-
-        this.properties = {
-            ...this.properties,
+        
+        this.properties = this.assignProperties({
             baseControlsNode: cc.Node,
             cardTurnBaseControlsNode: cc.Node,
             baoXamBtn: cc.Button,
             boBaoXamBtn: cc.Button
-        }
+        });
 
         /**
          * @type {BaseControls}
