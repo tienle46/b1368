@@ -8,14 +8,13 @@ import Component from 'Component';
 export default class GameChatHistoryItem extends Component {
     constructor() {
         super();
-
-        this.properties = {
-            ...this.properties,
+        
+        this.properties = this.assignProperties({
             messageRichText: cc.RichText,
             messageTemplate: cc.String,
             senderRegex: cc.String,
             messageRegex: cc.String,
-        }
+        });
 
         this._sender = "";
         this._message = "";

@@ -12,15 +12,14 @@ import Utils from 'Utils';
 export default class BaCayScene extends GameScene {
     constructor() {
         super();
-
-        this.properties = {
-            ...this.properties,
+        
+        this.properties = this.assignProperties({
             /**
              * @type {cc.Node}
              */
             chooseBetSliderNode: cc.Node,
             testPlayerNode: cc.Node
-        }
+        });
 
         /**
          * @type {HorizontalBetPopup}

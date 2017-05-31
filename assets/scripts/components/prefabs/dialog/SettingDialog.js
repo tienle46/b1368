@@ -4,12 +4,12 @@ import DialogActor from 'DialogActor';
 class SettingDialog extends DialogActor {
     constructor() {
         super();
-        this.properties = {
-            ...this.properties,
-            bgTransparent: cc.Node,
+        
+        this.properties = this.assignProperties({
+           bgTransparent: cc.Node,
             soundOptions: cc.Toggle,
             invitationOptions: cc.Toggle,
-        }
+        });
     }
 
     onLoad() {

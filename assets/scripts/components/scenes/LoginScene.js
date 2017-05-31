@@ -6,13 +6,12 @@ import Base64 from 'Base64';
 export default class LoginScene extends BaseScene {
     constructor() {
         super();
-
-        this.properties = {
-            ...this.properties,
+        
+        this.properties = this.assignProperties({
             userNameEditBox: cc.EditBox,
             userPasswordEditBox: cc.EditBox,
             checkBox: cc.Toggle,
-        }
+        });
 
         this.b64 = new Base64();
     }

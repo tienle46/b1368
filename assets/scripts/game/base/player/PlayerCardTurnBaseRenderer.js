@@ -8,11 +8,10 @@ import PlayerCardRenderer from 'PlayerCardRenderer';
 export default class PlayerCardTurnBaseRenderer extends PlayerCardRenderer {
     constructor() {
         super();
-
-        this.properties = {
-            ...this.properties,
+        
+        this.properties = this.assignProperties({
             remainCardCount: cc.Node,
-        }
+        });
 
         this.remainCardCountLabel = null;
     }

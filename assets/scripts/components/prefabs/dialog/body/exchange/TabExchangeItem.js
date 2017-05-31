@@ -8,9 +8,8 @@ import ActionBlocker from 'ActionBlocker';
 class TabExchangeItem extends PopupTabBody {
     constructor() {
         super();
-
-        this.properties = {
-            ...this.properties,
+        
+        this.properties = this.assignProperties({
             contentNode: cc.Node,
             exchangeItem: cc.Node,
             exchangeItemImage: cc.Sprite,
@@ -19,7 +18,7 @@ class TabExchangeItem extends PopupTabBody {
             layoutsNode: cc.Node,
             updatePhoneNumberNode: cc.Node,
             phoneNumberEditbox: cc.EditBox
-        };
+        });
     }
 
     onLoad() {

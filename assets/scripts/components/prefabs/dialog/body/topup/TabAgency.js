@@ -5,12 +5,12 @@ import Linking from 'Linking';
 class TabAgency extends PopupTabBody {
     constructor() {
         super();
-        this.properties = {
-            ...this.properties,
+        
+        this.properties = this.assignProperties({
             bodyNode: cc.Node,
             fbBtn: cc.Node,
             transferBtn: cc.Node,
-        };
+        });
     }
 
     onLoad() {

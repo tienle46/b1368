@@ -10,9 +10,8 @@ import TextView from 'TextView';
 export default class BoardRenderer extends ActorRenderer {
     constructor() {
         super();
-
-        this.properties = {
-            ...this.properties,
+        
+        this.properties = this.assignProperties({
             timelineTextViewNode: cc.Node,
             bottomTimelineTextViewNode: cc.Node,
             secondTimelineLabelNode: cc.Node,
@@ -20,7 +19,7 @@ export default class BoardRenderer extends ActorRenderer {
                 default : null,
                 type : cc.Node
             }
-        }
+        });
 
         this.chipPrefab = {
             default: null,

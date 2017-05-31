@@ -15,9 +15,8 @@ export default class GameScene extends BaseScene {
 
     constructor() {
         super();
-
-        this.properties = {
-            ...this.properties,
+        
+        this.properties = this.assignProperties({
             boardNode: cc.Node,
             gameMenuNode: cc.Node,
             gameControlsNode: cc.Node,
@@ -27,7 +26,7 @@ export default class GameScene extends BaseScene {
             tableMinBetLabel: cc.Label,
             playerPositionAnchorsNode: cc.Node,
             maxPlayers: 4
-        }
+        });
 
         /**
          * @type {IngameChatComponent}
@@ -352,7 +351,7 @@ export default class GameScene extends BaseScene {
     _mergeGameData(newGameData){
         let readyPlayerIds = this.gameData[app.keywords.ROOM_READY_PLAYERS];
 
-        this.gameData = {...this.gameData, ...newGameData}
+        this.gameData = Object.assign(this.gameData, newGameData)
 
         readyPlayerIds && this._addToReadyPlayers(...readyPlayerIds)
     }

@@ -10,13 +10,12 @@ import { CCUtils, utils } from 'utils';
 export default class PlayerMessage extends Component {
     constructor() {
         super();
-
-        this.properties = {
-            ...this.properties,
+        
+        this.properties = this.assignProperties({
             textViewNode: cc.Node,
             anchorTop: cc.Node,
             anchorBottom: cc.Node
-        }
+        });
 
         this.message = null;
         this.textView = null;

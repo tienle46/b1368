@@ -14,9 +14,7 @@ export default class XocDiaControls extends GameControls {
     constructor() {
         super();
 
-
-        this.properties = {
-            ...this.properties,
+        this.properties = this.assignProperties({
             baseControlsNode: cc.Node,
             betOptionsGroupNode: cc.Node,
             btnGroupNode: cc.Node,
@@ -24,7 +22,7 @@ export default class XocDiaControls extends GameControls {
             dealer: cc.Node,
             receiveChipDestinationNode: cc.Node,
             reBetBtn: cc.Button
-        }
+        });
 
         /**
          * @type {BaseControls}

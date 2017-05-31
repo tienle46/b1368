@@ -9,9 +9,8 @@ import CCUtils from 'CCUtils';
 export default class FriendProfilePopup extends DialogActor {
     constructor() {
         super();
-
-        this.properties = {
-            ...this.properties,
+        
+        this.properties = this.assignProperties({
             propsGridView: cc.Layout,
             rtUserName: cc.Label,
             rtDisplayName: cc.Label,
@@ -23,7 +22,7 @@ export default class FriendProfilePopup extends DialogActor {
             kickBtn: cc.Button,
             addFriendBtn: cc.Button,
             vipNode: cc.Node
-        };
+        });
 
         // paging
         this.itemsPerPage = 18;

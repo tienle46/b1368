@@ -12,12 +12,11 @@ import Base64 from 'Base64';
 export default class BaseScene extends Actor {
     constructor() {
         super();
-
-        this.properties = {
-            ...this.properties,
+        
+        this.properties = this.assignProperties({
             emptyNode: cc.Node,
             bodyNode: cc.Node,
-        }
+        });
 
         this.loading = true;
         this.progress = null;

@@ -11,9 +11,8 @@ class ChattingBuddyItem extends Component {
 
     constructor() {
         super();
-
-        this.properties = {
-            ...this.properties,
+        
+        this.properties = this.assignProperties({
             nameLabel: cc.Label,
             onlineNode: cc.Node,
             offlineNode: cc.Node,
@@ -22,7 +21,7 @@ class ChattingBuddyItem extends Component {
             newMessageCountNode: cc.Node,
             newMessageCountLabel: cc.Label,
             toggle: cc.Toggle
-        }
+        });
 
         this.selected = false;
         this.buddy = null;

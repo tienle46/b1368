@@ -14,9 +14,8 @@ export default class PhomControls extends GameControls {
 
     constructor() {
         super();
-
-        this.properties = {
-            ...this.properties,
+        
+        this.properties = this.assignProperties({
             baseControlsNode: cc.Node,
             cardTurnBaseControlsNode: cc.Node,
             eatButton: cc.Button,
@@ -27,7 +26,7 @@ export default class PhomControls extends GameControls {
             skipDownButton: cc.Button,
             uButton: cc.Button,
             doiUTronButton: cc.Button,
-        }
+        });
 
         /**
          * @type {BaseControls}

@@ -9,11 +9,10 @@ export default class PlusBalanceAnimation extends Component {
     constructor() {
         super();
 
-        this.properties = {
-            ...this.properties,
+        this.properties = this.assignProperties({
             normalAnimName: "plusBalance",
             slowAnimName: "plusBalanceSlow"
-        }
+        });
 
         this.player = null;
         this.startCallback = null;

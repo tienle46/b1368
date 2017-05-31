@@ -14,9 +14,8 @@ import * as Events from "../../../core/Events";
 export default class PlayerBaCayRenderer extends PlayerCardBetTurnRenderer {
     constructor() {
         super();
-
-        this.properties = {
-            ...this.properties,
+        
+        this.properties = this.assignProperties({
             betComponent: cc.Node,
             defaultGopGaIconNode: cc.Node,
             inlineGopGaIconNode: cc.Node,
@@ -33,8 +32,8 @@ export default class PlayerBaCayRenderer extends PlayerCardBetTurnRenderer {
             centerLeftBetPositionAnchor: cc.Node,
             bottomRightBetPositionAnchor: cc.Node,
             masterIcon: cc.Node,
-        }
-
+        });
+        
         /**
          * @type {cc.Animation}
          */

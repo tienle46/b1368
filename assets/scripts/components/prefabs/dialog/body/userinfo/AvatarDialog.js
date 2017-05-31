@@ -8,8 +8,7 @@ export default class AvatarDialog extends DialogActor {
     constructor() {
         super();
 
-        this.properties = {
-            ...this.properties,
+        this.properties = this.assignProperties({
             bgNode: cc.Node,
             itemContainerNode: cc.Node,
             itemNode: cc.Node,
@@ -19,7 +18,7 @@ export default class AvatarDialog extends DialogActor {
             pickedAvatarSprite: cc.Sprite,
             pickedAvatarLbl: cc.Label,
             pickedAvatarDescription: cc.Label,
-        };
+        });
         
         this.previousLabel = null;
         this.selectedObject = null;

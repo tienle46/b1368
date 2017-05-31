@@ -6,13 +6,12 @@ import CCUtils from 'CCUtils';
 export default class JarExplosive extends Actor {
     constructor() {
         super();
-
-        this.properties = {
-            ...this.properties,
+        
+        this.properties = this.assignProperties({
             amount: cc.Label,
             message: cc.Label,
             bgTransparent: cc.Node
-        };
+        });
         
         this.timeout = null;
         this.duration = 60000; // 6s

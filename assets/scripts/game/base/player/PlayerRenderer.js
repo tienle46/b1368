@@ -12,9 +12,8 @@ import RubUtils from 'RubUtils';
 export default class PlayerRenderer extends ActorRenderer {
     constructor() {
         super();
-
-        this.properties = {
-            ...this.properties,
+        
+        this.properties = this.assignProperties({
             playerNameLabel: cc.Label,
             balanceLabel: cc.Label,
             ownerIcon: cc.Node,
@@ -25,7 +24,7 @@ export default class PlayerRenderer extends ActorRenderer {
             playerTimeLineProgress: cc.ProgressBar,
             avatarNode: cc.Node,
             friendProfilePopup: cc.Prefab
-        }
+        });
 
         this.playerMessage = null;
         this.plusBalanceAnim = null;
