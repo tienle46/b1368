@@ -31,12 +31,11 @@ export default class GameResultPopup extends Actor {
         this.animation = null;
         this.loaded = false;
         this.__models__ = null;
-
-        this.properties = {
-            ...this.properties,
+    
+        this.properties = this.assignProperties({
             showAnimName: 'showGameResult',
             hideAnimName: 'hideGameResult',
-        }
+        });
     }
 
     onLoad() {

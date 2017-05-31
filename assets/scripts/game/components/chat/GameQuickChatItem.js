@@ -8,10 +8,10 @@ import Component from 'Component';
 export default class GameQuickChatItem extends Component {
     constructor() {
         super();
-        this.properties = {
-            ...this.properties,
+        
+        this.properties = this.assignProperties({
             label: cc.Label,
-        }
+        });
     }
 
     setLabel(text) {

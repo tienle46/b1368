@@ -6,14 +6,13 @@ import CCUtils from 'CCUtils';
 export default class TabMessages extends PopupTabBody {
     constructor() {
         super();
-
-        this.properties = {
-            ...this.properties,
+        
+        this.properties = this.assignProperties({
             itemPrefab: cc.Prefab,
             listMessagePanel: cc.Node,
             detailMessagePanel: cc.Node,
             itemMessageLbl: cc.Label
-        };
+        });
         
         this._rendered = false;
     }

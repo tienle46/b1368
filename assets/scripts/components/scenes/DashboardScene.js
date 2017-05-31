@@ -8,16 +8,15 @@ import ArrayUtils from 'ArrayUtils';
 export default class DashboardScene extends BaseScene {
     constructor() {
         super();
-
-        this.properties = {
-            ...this.properties,
+        
+        this.properties = this.assignProperties({
             pageView: cc.PageView,
             viewContainer: cc.Node,
             item: cc.Prefab,
             dailyDialog: cc.Node,
             dailyDialogContent: cc.Label,
             dailyDialogTitle: cc.Label
-        };
+        });
         
         this.iconComponents = {};
         this._isNewBie = false;

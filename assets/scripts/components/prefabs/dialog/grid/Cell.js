@@ -6,11 +6,10 @@ import { isNode, isNull } from 'Utils';
 export class Cell extends Component {
     constructor() {
         super();
-
-        this.properties = {
-            ...this.properties,
+        
+        this.properties = this.assignProperties({
             label: cc.Label
-        };
+        });
     }
 
     /**

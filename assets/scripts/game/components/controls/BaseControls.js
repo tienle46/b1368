@@ -12,14 +12,13 @@ import { Events } from 'events';
 export default class BaseControls extends GameControls {
     constructor() {
         super();
-
-        this.properties = {
-            ...this.properties,
+        
+        this.properties = this.assignProperties({
             readyButton: cc.Node,
             unreadyButton: cc.Node,
             startButton: cc.Node,
             waitButton: cc.Node
-        }
+        });
 
         this.showStartButtonOnBegin = false;
         this.serverAutoStartGame = false;

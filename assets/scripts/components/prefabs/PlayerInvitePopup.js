@@ -6,10 +6,9 @@ import { destroy } from 'CCUtils';
 class PlayerInvitePopup extends Component {
     constructor() {
         super();
-
-        this.properties = {
-            ...this.properties,
-            bgTransparent: cc.Node,
+        
+         this.properties = this.assignProperties({
+           bgTransparent: cc.Node,
             roomBetLbl: cc.Label,
             roomCapacityLbl: cc.Label,
             roomBalanceLbl: cc.Label,
@@ -18,7 +17,7 @@ class PlayerInvitePopup extends Component {
             invokerGoldLbl: cc.Label,
             invokerLevelLbl: cc.Label,
             checkBox: cc.Toggle
-        };
+        });
         
         this._acceptListener = null;
         this._denyListener = null;

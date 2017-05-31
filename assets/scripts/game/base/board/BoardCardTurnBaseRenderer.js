@@ -10,14 +10,12 @@ import BoardCardRenderer from 'BoardCardRenderer';
 export default class BoardCardTurnBaseRenderer extends BoardCardRenderer {
     constructor() {
         super();
-
-        this.properties = {
-            ...this.properties,
+        
+        this.properties = this.assignProperties({
             deckCardNode: cc.Node,
             deckCardPrefab: cc.Prefab,
             deckCardName: "CardList"
-         }
-
+        });
     }
 
     _initCenterDeckCard(){

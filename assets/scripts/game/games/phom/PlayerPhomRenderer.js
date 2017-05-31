@@ -15,9 +15,8 @@ import RubUtils from 'RubUtils'
 export default class PlayerPhomRenderer extends PlayerCardTurnBaseRenderer {
     constructor() {
         super();
-
-        this.properties = {
-            ...this.properties,
+        
+        this.properties = this.assignProperties({
             eatenCardListNode2: cc.Node,
             eatenCardListNode3: cc.Node,
             eatenCardListNode4: cc.Node,
@@ -40,7 +39,7 @@ export default class PlayerPhomRenderer extends PlayerCardTurnBaseRenderer {
                 default: [],
                 type: [cc.Node]
             },
-        }
+        });
 
         /**
          * @type {CardList}

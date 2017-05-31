@@ -10,11 +10,11 @@ export default class Toast extends Component {
 
     constructor() {
         super();
-        this.properties = {
-            ...this.properties,
+        
+        this.properties = this.assignProperties({
             toastItemPrefab : cc.Prefab,
             toastList : cc.Node,
-        }
+        });
     }
 
     onEnable(){

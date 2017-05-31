@@ -10,11 +10,10 @@ class EntranceScene extends BaseScene {
 
     constructor() {
         super();
-
-        this.properties = {
-            ...this.properties,
+        
+        this.properties = this.assignProperties({
             facebookButton: cc.Button
-        }
+        });
     }
 
     onLoad() {

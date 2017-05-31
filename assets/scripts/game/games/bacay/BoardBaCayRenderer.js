@@ -12,12 +12,11 @@ import BoardCardBetTurnRenderer from 'BoardCardBetTurnRenderer';
 export default class BoardBaCayRenderer extends BoardCardBetTurnRenderer {
     constructor() {
         super();
-
-        this.properties = {
-            ...this.properties,
+        
+        this.properties = this.assignProperties({
             gopGaButton: cc.Button,
             gopGaLabel: cc.Label,
-        }
+        });
 
         this.gopGaCoinNode = {
             default: null,

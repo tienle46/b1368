@@ -3,18 +3,12 @@
  */
 
 import app from 'app';
-import Progress from 'Progress';
 import Component from 'Component';
 
 export default class FullSceneProgress extends Component {
     constructor() {
-
         super();
-
-        this.properties = {
-            ...this.properties,
-        }
-
+        
         this.progressNode = {
             default: null,
             type: cc.Node
