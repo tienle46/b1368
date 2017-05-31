@@ -5,14 +5,13 @@ import utils from 'utils';
 export default class BoardXocDiaRenderer extends BoardRenderer {
     constructor() {
         super();
-
-        this.properties = {
-            ...this.properties,
+        
+        this.properties = this.assignProperties({
             dishContainerNode: cc.Node,
             statisticTableNode: cc.Node,
             resultNode: cc.Node,
             resultText: cc.Label
-        }
+        });
     }
 
     onEnable() {

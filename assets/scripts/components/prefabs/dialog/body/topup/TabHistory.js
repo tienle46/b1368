@@ -5,11 +5,11 @@ import Utils from 'Utils';
 class TabHistory extends PopupTabBody {
     constructor() {
         super();
-        this.properties = {
-            ...this.properties,
+        
+        this.properties = this.assignProperties({
             bodyNode: cc.Node,
             p404: cc.Node
-        };
+        });
     }
 
     onLoad() {

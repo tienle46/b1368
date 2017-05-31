@@ -273,9 +273,9 @@ app.getMessageFromServer = (error) => {
 
     /* INIT GAME */
     (function _setupGame() {
-        // update pollyfill
+         // update pollyfill
         require('Pollyfill')(app);
-        
+
         require('PreLoader');
         app.service = require("Service");
         require('Env')(app);

@@ -10,14 +10,13 @@ class BuddyMenu extends Component {
 
     constructor() {
         super();
-
-        this.properties = {
-            ...this.properties,
+        
+        this.properties = this.assignProperties({
             blockButton: cc.Button,
             unblockButton: cc.Button,
             bodyNode: cc.Node,
-        }
-
+        });
+    
         this._buddy = null;
         this.popupPosition = null;
         this.payload = null;

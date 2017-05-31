@@ -10,9 +10,8 @@ import PlayerRenderer from 'PlayerRenderer';
 export default class PlayerCardRenderer extends PlayerRenderer {
     constructor() {
         super();
-
-        this.properties = {
-            ...this.properties,
+        
+        this.properties = this.assignProperties({
             cardListPrefab: cc.Prefab,
             myCardAnchor: cc.Node,
             leftCardAnchor: cc.Node,
@@ -22,7 +21,7 @@ export default class PlayerCardRenderer extends PlayerRenderer {
             defaultCardAnchor: cc.Node,
             defaultCardAnchor2: cc.Node,
             mePlayCardListNode: cc.Node,
-        }
+        });
 
         this.cardList = null;
         this.selectCardChangeListener = null;

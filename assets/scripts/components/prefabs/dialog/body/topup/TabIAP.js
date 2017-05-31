@@ -5,13 +5,13 @@ import { deactive, active, numberFormat } from 'Utils';
 class TabIAP extends PopupTabBody {
     constructor() {
         super();
-        this.properties = {
-            ...this.properties,
-            contentNode: cc.Node,
+        
+        this.properties = this.assignProperties({
+             contentNode: cc.Node,
             itemNode: cc.Node,
             money: cc.Label,
             balance: cc.Label,
-        };
+        });
 
         this.__items = [];
     }

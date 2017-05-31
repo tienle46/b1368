@@ -6,15 +6,14 @@ import Utils from 'Utils'
 class EventDialog extends Actor {
     constructor() {
         super();
-        this.properties = {
-            ...this.properties,
+        this.properties = this.assignProperties({
             pageContent: cc.Node,
             pageView: cc.PageView,
             eventPagePrefab: cc.Prefab,
             pageIndicator: cc.PageViewIndicator,
             loadingNode: cc.Node,
             bgTransparent: cc.Node
-        };
+        });
 
         this.groupType = app.const.DYNAMIC_GROUP_NEW_EVENT;
         /**

@@ -6,14 +6,14 @@ import ScrollMessagePopup from 'ScrollMessagePopup';
 export default class ItemMessage extends Component {
     constructor() {
         super();
-        this.properties = {
-            ...this.properties,
+        
+        this.properties = this.assignProperties({
             titleLbl: cc.Label,
             contentLbl: cc.RichText,
             btnLbl: cc.Label,
             btn: cc.Button,
             newIcon: cc.Node
-        };
+        });
         
         this._id = null; // personal message only
         this._resized = false;

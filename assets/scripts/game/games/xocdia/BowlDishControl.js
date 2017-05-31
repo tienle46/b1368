@@ -6,13 +6,12 @@ class BowlDishControl extends Component {
     constructor() {
         super();
         
-        this.properties = {
-            ...this.properties,
+        this.properties = this.assignProperties({
             wrapper: cc.Node,
             bowlNode: cc.Node,
             circleGroup: cc.Node,
             timeLineNode: cc.Node
-        }
+        });
     }
 
     onLoad() {
