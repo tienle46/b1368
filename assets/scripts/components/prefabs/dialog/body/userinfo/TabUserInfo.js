@@ -15,9 +15,8 @@ import {
 export default class TabUserInfo extends PopupTabBody {
     constructor() {
         super();
-
-        this.properties = {
-            ...this.properties,
+        
+        this.properties = this.assignProperties({
             userName: cc.Label,
             avatar: cc.Sprite,
             vipLevel: cc.Label,
@@ -33,7 +32,7 @@ export default class TabUserInfo extends PopupTabBody {
             updatePhoneNumberPanel: cc.Node,
             vipInfoPanel: cc.Node,
             changeAvatarPanel: cc.Node
-        };
+        });
     }
 
     onLoad() {

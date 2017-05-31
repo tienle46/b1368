@@ -13,11 +13,11 @@ export default class PlayerPositions extends Component {
 
     constructor() {
         super();
-
-        this.properties = {
-            ...this.properties,
+        
+        this.properties = this.assignProperties({
             inviteButtonName: 'inviteButton'
-        }
+        });
+        
         this.playerAnchors = null;
         this.hiddenAnchors = null;
         this.scene;

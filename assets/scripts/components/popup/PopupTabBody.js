@@ -10,12 +10,11 @@ export default class PopupTabBody extends Actor {
 
     constructor(props) {
         super(props);
-
-        this.properties = {
-            ...this.properties,
-            bodyNode: cc.Node,
+        
+        this.properties = this.assignProperties({
+             bodyNode: cc.Node,
             scrollview: cc.Prefab
-        }
+        });
 
         /**
          * @type {Progress}
@@ -112,7 +111,7 @@ export default class PopupTabBody extends Actor {
      */
     onDataChanged(data) {
         if (!this._isTabEnable) {
-            this._data = {...this._data, ...data };
+            this._data = Object.assign({}, this._data, data);
         }
         
         return this._isTabEnable;
@@ -121,7 +120,8 @@ export default class PopupTabBody extends Actor {
     setLoadedData(data, renderImmediately = true) {
         this._hideLoading();
         this.dataLoaded = true;
-        this._data = {...this._data, ...data };
+ 
+        this._data = Object.assign({}, this._data, data);
         renderImmediately && this._renderData(this._data);
     }
     

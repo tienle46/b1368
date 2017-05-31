@@ -10,13 +10,12 @@ import GameControls from 'GameControls';
 export default class CardTurnBaseControls extends GameControls {
     constructor() {
         super();
-
-        this.properties = {
-            ...this.properties,
+        
+        this.properties = this.assignProperties({
             playButton: cc.Button,
             sortButton: cc.Button,
             skipTurnButton: cc.Button
-        }
+        });
     }
 
     onEnable(){

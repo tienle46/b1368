@@ -6,16 +6,15 @@ import Linking from 'Linking';
 class BottomBar extends Actor { // bottombar <- STUFF (visibility via manager) -> actor
     constructor() {
         super();
-
-        this.properties = {
-            ...this.properties,
+        
+        this.properties = this.assignProperties({
             highLightNode: cc.Node,
             titleContainerNode: cc.Node,
             supportPhoneNumberLbl: cc.Label,
             hotlineBtn: cc.Button,
             eventBtnNode: cc.Node
-        }
-
+        });
+       
         this.intervalTimer = null;
         this.interval = 2000; // display high light message after 2s, if any
     }

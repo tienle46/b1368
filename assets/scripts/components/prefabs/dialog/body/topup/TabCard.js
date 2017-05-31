@@ -45,10 +45,9 @@ const CARD_CODE = {
 class TabCard extends PopupTabBody {
     constructor() {
         super();
-
-        this.properties = {
-            ...this.properties,
-            activeStateSprite: cc.Sprite,
+        
+        this.properties = this.assignProperties({
+             activeStateSprite: cc.Sprite,
             inActiveStateSprite: cc.Sprite,
             providerItemNode: cc.Node,
             providerContainerNode: cc.Node,
@@ -63,7 +62,7 @@ class TabCard extends PopupTabBody {
             ratioItemXuLbl: cc.Label,
             cardCodeEditBox: cc.EditBox,
             serialNumberEditBox: cc.EditBox
-        };
+        });
 
         this.providerId = null;
     }

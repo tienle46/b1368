@@ -8,16 +8,15 @@ import RubUtils from 'RubUtils';
 export default class JarComponent extends Actor {
     constructor() {
         super();
-
-        this.properties = {
-            ...this.properties,
+        
+        this.properties = this.assignProperties({
             remainTimeLbl: cc.Label,
             jarTotalMoneyLbl: cc.Label,
             button: cc.Button,
             jarDetailPrefab: cc.Prefab,
             jarSprite: cc.Sprite,
             huCoin: cc.Node // this node will be animated
-        }
+        });
         
         this._timeout = null;
         this.time = 1000; // 1s

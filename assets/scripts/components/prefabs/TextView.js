@@ -7,9 +7,8 @@ export default class TextView extends Component {
         super();
         this.currentWidth = 0;
         this.isLoaded = false;
-
-        this.properties = {
-            ...this.properties,
+        
+        this.properties = this.assignProperties({
             lineHeight: 24,
             label: cc.Label,
             lines: 1,
@@ -18,7 +17,7 @@ export default class TextView extends Component {
             resizeWidth: true,
             increaseWidth: 40,
             margin: 5
-        };
+        });
     }
 
 

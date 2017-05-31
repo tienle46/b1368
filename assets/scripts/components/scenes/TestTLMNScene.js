@@ -10,13 +10,13 @@ import SFS2X from 'SFS2X';
 
 class TestScene extends Component {
     constructor() {
-        super()
-        this.properties = {
-            ...this.properties,
+        super();
+        
+        this.properties = this.assignProperties({
             playerAnchorNode: cc.Node,
             playerNode: cc.Node,
             myCardListNode: cc.Node,
-        }
+        });
     }
 
     onLoad(){

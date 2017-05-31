@@ -14,12 +14,11 @@ import CCUtils from 'CCUtils'
 export default class GamePlayers extends Component {
     constructor() {
         super();
-
-        this.properties = {
-            ...this.properties,
+        
+        this.properties = this.assignProperties({
             playerPrefab: cc.Prefab,
             playerClassName: ""
-        }
+        });
 
         this.me = null;
         this.owner = null;

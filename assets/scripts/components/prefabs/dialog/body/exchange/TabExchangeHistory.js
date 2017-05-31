@@ -12,13 +12,12 @@ class TabExchangeHistory extends PopupTabBody {
         super();
         this.flag = null;
         
-        this.properties = {
-            ...this.properties,
+        this.properties = this.assignProperties({
             bodyNode: cc.Node,
             getChipsBtnNode: cc.Node,
             cancelBtnNode: cc.Node,
             detailBtnNode: cc.Node,
-        };
+        });
     }
     
     onLoad() {
@@ -175,7 +174,7 @@ class TabExchangeHistory extends PopupTabBody {
     }
 
     _onGetExchangeHistory(data) {
-        // this.setLoadedData(data);
+        this.setLoadedData(data);
         this._renderHistory(data)
     }
     
