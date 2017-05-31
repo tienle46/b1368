@@ -23,8 +23,8 @@ export function getEmotionName(text) {
 export default class GameChatComponent extends Actor {
     constructor() {
         super();
-        this.properties = {
-            ...this.properties,
+        
+        this.properties = this.assignProperties({
             quickChatsList: cc.Node,
             emotionsList: cc.Node,
             chatHistoryNode: cc.Node,
@@ -48,7 +48,7 @@ export default class GameChatComponent extends Actor {
              * @type {cc.Toggle}
              */
             tabEmoChatToggle: cc.Toggle,
-        }
+        });
 
         this.quickChats = null;
         this.animation = null;

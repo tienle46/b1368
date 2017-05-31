@@ -19,9 +19,8 @@ export default class CardList extends ActionComponent {
             default: CardList.ALIGN_CENTER_LEFT,
             type: CardList.ALIGN
         }
-
-        this.properties = {
-            ...this.properties,
+        
+        this.properties = this.assignProperties({
             scale: 1.0,
             reveal: true,
             selectable: false,
@@ -30,7 +29,7 @@ export default class CardList extends ActionComponent {
             maxDimension: CardList.DEFAULT_MAX_WIDTH,
             cardPrefab: cc.Prefab,
             space: Card.CARD_WIDTH
-        }
+        });
 
         this.cardWidth = Card.CARD_WIDTH;
         this.cardHeight = Card.CARD_HEIGHT;

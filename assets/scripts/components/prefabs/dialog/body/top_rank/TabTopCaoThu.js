@@ -6,15 +6,14 @@ import { setOpacity } from 'Utils';
 class TabTopCaoThu extends PopupTabBody {
     constructor() {
         super();
-
-        this.properties = {
-            ...this.properties,
-            gamePicker: cc.Node,
+        
+        this.properties = this.assignProperties({
+             gamePicker: cc.Node,
             contentNode: cc.Node,
             crownsNode: cc.Node,
             gameItem: cc.Node,
             backGroundSprite: cc.Sprite
-        }
+        });
 
         this.currentGameCode = null;
         this.itemLoaded = null;

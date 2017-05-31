@@ -10,10 +10,11 @@ import { CCUtils, utils } from 'utils';
 export default class ToastItem extends Component {
     constructor() {
         super();
-        this.properties = {
-            ...this.properties,
+        
+        this.properties = this.assignProperties({
             textViewNode: cc.Node,
-        }
+        });
+        
         this.message = null;
         this.timeoutId = null;
         this.duration = 5000;

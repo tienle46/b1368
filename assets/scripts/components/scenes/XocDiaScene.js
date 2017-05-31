@@ -10,9 +10,8 @@ import HorizontalBetPopup from 'HorizontalBetPopup';
 export default class XocDiaScene extends GameScene {
     constructor() {
         super();
-
-        this.properties = {
-            ...this.properties,
+        
+        this.properties = this.assignProperties({
             chipLayer: {
                 default: null,
                 type: cc.Node
@@ -22,7 +21,7 @@ export default class XocDiaScene extends GameScene {
                 default: null,
                 type: cc.Label
             }
-        };
+        });
 
         this.userGold = 0;
     }

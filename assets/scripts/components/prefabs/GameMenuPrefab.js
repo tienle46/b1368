@@ -13,10 +13,9 @@ const ACTION_LUAT_CHOI = 1;
 export default class GameMenuPrefab extends Actor {
     constructor() {
         super();
-
-        this.properties = {
-            ...this.properties,
-            menuBtn: cc.Node,
+        
+        this.properties = this.assignProperties({
+           menuBtn: cc.Node,
             menuLock: cc.Node,
             chatBtn: cc.Node,
             topupBtn: cc.Node,
@@ -26,8 +25,7 @@ export default class GameMenuPrefab extends Actor {
             exitLabel: cc.Label,
             guideLabel: cc.Label,
             jarAnchorPoint: cc.Node
-        }
-
+        });
 
         this.scene = null;
         this.isMenuPopupShown = false;

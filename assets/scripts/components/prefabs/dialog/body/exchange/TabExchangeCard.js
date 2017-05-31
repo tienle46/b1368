@@ -9,8 +9,7 @@ import ActionBlocker from 'ActionBlocker';
 class TabExchangeCard extends PopupTabBody {
     constructor() {
         super();
-        this.properties = {
-            ...this.properties,
+        this.properties = this.assignProperties({
             providerItemNode: cc.Node,
             cardItemNode: cc.Node,
             providerContainerNode: cc.Node,
@@ -24,7 +23,7 @@ class TabExchangeCard extends PopupTabBody {
             layoutsNode: cc.Node,
             updatePhoneNumberNode: cc.Node,
             phoneNumberEditbox: cc.EditBox
-        };
+        });
 
         this.selectedItem = { id: null, gold: null, name: null };
         this._tabData = {};

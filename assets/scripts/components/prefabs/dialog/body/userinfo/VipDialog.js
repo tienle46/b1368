@@ -7,9 +7,8 @@ import RubUtils from 'RubUtils';
 export default class VipDialog extends DialogActor {
     constructor() {
         super();
-
-        this.properties = {
-            ...this.properties,
+        
+        this.properties = this.assignProperties({
             benefitContainerNode: cc.Node,
             benefitRowItem: cc.Node,
             benefitNameLbl: cc.Label,
@@ -19,7 +18,7 @@ export default class VipDialog extends DialogActor {
             type2Lbl: cc.Label,
             type3Lbl: cc.Label,
             iconSprite: cc.Sprite
-        };
+        });
     }
 
     onLoad() {

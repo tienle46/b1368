@@ -9,13 +9,12 @@ import BoardRenderer from 'BoardRenderer';
 export default class BoardCardRenderer extends BoardRenderer {
     constructor() {
         super();
-
-        this.properties = {
-            ...this.properties,
+        
+        this.properties = this.assignProperties({
             dealCardAnchor: cc.Node,
             dealCardActionComponentNode: cc.Node,
             meDealCardListNode: cc.Node
-        }
+        });
 
         /**
          * @type {CardList}

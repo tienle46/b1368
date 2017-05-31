@@ -6,9 +6,8 @@ import {destroy} from 'CCUtils';
 export default class JarDetailComponent extends Actor {
     constructor() {
         super();
-
-        this.properties = {
-            ...this.properties,
+        
+        this.properties = this.assignProperties({
             bgTransparent: cc.Node,
             textContentScrollNode: cc.Node,
             textContentItem: cc.RichText,
@@ -18,7 +17,7 @@ export default class JarDetailComponent extends Actor {
             itemUser: cc.Node,
             userNameLbl: cc.Label,
             userMoneyLbl: cc.Label
-        }
+        });
         
         this._timeout = null;
         this.time = 1000; // 1s

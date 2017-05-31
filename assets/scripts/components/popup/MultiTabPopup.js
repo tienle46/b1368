@@ -19,9 +19,8 @@ export default class MultiTabPopup extends Actor {
 
     constructor() {
         super();
-
-        this.properties = {
-            ...this.properties,
+        
+        this.properties = this.assignProperties({
             titleLabel: cc.Label,
             bgTransparent: cc.Node,
             bodyNode: cc.Node,
@@ -30,7 +29,7 @@ export default class MultiTabPopup extends Actor {
             toggleGroup: cc.ToggleGroup,
             emptyBody: cc.Node,
             tabPrefab: cc.Prefab,
-        }
+        });
 
         /**
          * @type {Progress}+
@@ -146,7 +145,8 @@ export default class MultiTabPopup extends Actor {
                             this._visibleBodyNode();
 
                             bodyComponent.setPopup(this);
-                            bodyComponent.init({ data: {...model.data, ...data }, emptyNode: this.emptyNode, loadingProgress: this.progress });
+                            // bodyComponent.init({ data: {...model.data, ...data }, emptyNode: this.emptyNode, loadingProgress: this.progress });
+                            bodyComponent.init({ data: Object.assign({}, model.data, data), emptyNode: this.emptyNode, loadingProgress: this.progress });
                             this.bodyNode.addChild(bodyTabNode);
                             this._tabBodies[tabIndex] = bodyComponent;
                         } else {

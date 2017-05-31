@@ -10,11 +10,10 @@ import GameControls from 'GameControls';
 export default class CardBetTurnControls extends GameControls {
     constructor() {
         super();
-
-        this.properties = {
-            ...this.properties,
+        
+        this.properties = this.assignProperties({
             betButton: cc.Button
-        }
+        });
     }
 
     onEnable(){
