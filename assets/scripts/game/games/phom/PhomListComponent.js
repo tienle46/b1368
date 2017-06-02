@@ -39,7 +39,7 @@ export default class PhomListComponent extends Component {
         this.phoms = [];
         this.down = [];
         this.phomList = new PhomList();
-
+        
         this.phomNodes.forEach((phomNode, i) => {
             let phom = phomNode.getComponent('Phom');
             //phom.setProperties({space: this.space, scale: this.cardScale, alignment: this.align})
