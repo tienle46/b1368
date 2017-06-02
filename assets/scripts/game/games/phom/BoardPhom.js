@@ -29,7 +29,7 @@ export default class BoardPhom extends BoardCardTurnBase {
 
     onLoad() {
         super.onLoad();
-        this.allPhomList = []; //new PhomList();
+        this.allPhomList = [];
     }
 
     onEnable() {
@@ -42,7 +42,7 @@ export default class BoardPhom extends BoardCardTurnBase {
     }
 
     getAllBoardPhomList(){
-        return this.allPhomList.map(phom => phom.renderComponent || phom);
+        return this.allPhomList.map(phom => (phom && phom.renderComponent) || phom);
     }
 
     _reset() {
@@ -189,7 +189,7 @@ export default class BoardPhom extends BoardCardTurnBase {
     }
 
     deHighLightPhomList() {
-        this.allPhomList.forEach(phom => phom.cleanHighlight());
+        this.allPhomList.forEach(phom => phom && phom.cleanHighlight());
     }
 
     _setDeckFakeCard(fakeCount = 16) {
