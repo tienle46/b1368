@@ -142,7 +142,7 @@ export default class BaseScene extends Actor {
             if (error) {
                
                 let splitMsgs = error && error.errorMessage && error.errorMessage.split('|');
-                if(splitMsgs && splitMsgs.length > 0){
+                if(splitMsgs && splitMsgs.length > 1){
                     if(splitMsgs[0] == 'submitServer'){
                         if(tryOneTime){
                             error = "5"; //Hệ thống đang quá tải
