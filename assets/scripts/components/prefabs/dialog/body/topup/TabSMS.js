@@ -100,10 +100,11 @@ class TabSMS extends PopupTabBody {
         // TODO: change text
         let { telcoId } = toggle;
         
-        let { code, shortCode, syntax } = this._smses[this._balanceChoosen][app.keywords.CHARGE_SMS_OBJECT_INFORS].find(info => info.telcoId == telcoId);
+        let { code, shortCode, syntax, content } = this._smses[this._balanceChoosen][app.keywords.CHARGE_SMS_OBJECT_INFORS].find(info => info.telcoId == telcoId);
         
         if(code && shortCode) {
-            this.codeLbl.string = `${code} ${syntax} ${app.context.getMyInfo().name}`;
+            // this.codeLbl.string = `${code} ${syntax} ${app.context.getMyInfo().name}`;
+            this.codeLbl.string = `${code} ${syntax} ${content}`;
             this.toNumberLbl.string = shortCode;
             this._hideSMSLayoutPanel();
         }
