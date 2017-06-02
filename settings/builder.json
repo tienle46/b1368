@@ -20,5 +20,6 @@
   "renderMode": "0",
   "startScene": "19d77baf-45a8-424b-b934-835d4149344d",
   "title": "B1368",
-  "webOrientation": "auto"
+  "webOrientation": "auto",
+  "inlineSpriteFrames_native": true
 }
