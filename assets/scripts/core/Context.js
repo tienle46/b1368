@@ -27,6 +27,7 @@ class GameContext {
         this.requestRandomInvite = undefined; //In rejoin game case GameScene not asign to false when requestRandomInvite == undefined
         this.ctl = null;
         this.systemMessageCount = 0;
+        this.newVersionInfo = null;
 
         this._addContextEventListener()
     }

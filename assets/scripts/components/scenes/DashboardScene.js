@@ -54,9 +54,15 @@ export default class DashboardScene extends BaseScene {
         
         setTimeout(() => {
             let Linking = require('Linking');
-            log(`setTimeout`);
             Linking.handlePendingActions();
-        }, 1000);
+            if(app.context.newVersionInfo){
+                let message = app.res.string("message_update_version", {version: app.context.newVersionInfo.newVersion})
+                app.system.confirm(message, null, () => {
+                    cc.sys.openURL(app.context.newVersionInfo.newVersionLink);
+                })
+                app.context.newVersionInfo = null;
+            }
+        }, 600);
 
         app.system.showLackOfMoneyMessagePopup();
     }

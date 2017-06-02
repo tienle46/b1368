@@ -142,23 +142,34 @@ export default class BaseScene extends Actor {
             if (error) {
                 console.log(error.errorMessage)
                 let splitMsgs = error && error.errorMessage && error.errorMessage.split('|');
-                if(splitMsgs && splitMsgs.length > 0 && splitMsgs[0] == 'submitServer'){
-                    if(tryOneTime){
-                        error = "5"; //Hệ thống đang quá tải
-                        app.system.hideLoader();
-                        app.system.showErrorToast(app.getMessageFromServer(error));
-                    }else{
-                        app.config.host = splitMsgs[1]
-                        app.config.port = parseInt(splitMsgs[2])
-                        app.service.disconnect();
-                        let tryToConnectInterval = setInterval(() => {
-                            if(!app.service.client.isConnected()) {
-                                clearInterval(tryToConnectInterval)
-                                app.config.useSSL = false;
-                                app.service.client.config.useSSL = false;
-                                this._tryToConnectAndLogin(username, password, isRegister, isQuickLogin, accessToken, true)
-                            }
-                        }, 100)
+                if(splitMsgs && splitMsgs.length > 0){
+                    if(splitMsgs[0] == 'submitServer'){
+                        if(tryOneTime){
+                            error = "5"; //Hệ thống đang quá tải
+                            app.system.hideLoader();
+                            app.system.showErrorToast(app.getMessageFromServer(error));
+                        }else{
+                            app.config.host = splitMsgs[1]
+                            app.config.port = parseInt(splitMsgs[2])
+                            app.service.disconnect();
+                            let tryToConnectInterval = setInterval(() => {
+                                if(!app.service.client.isConnected()) {
+                                    clearInterval(tryToConnectInterval)
+                                    app.config.useSSL = false;
+                                    app.service.client.config.useSSL = false;
+                                    this._tryToConnectAndLogin(username, password, isRegister, isQuickLogin, accessToken, true)
+                                }
+                            }, 100)
+                        }
+                    }else if(splitMsgs[0] == '121'){ //Force update version
+                        let versionStr = splitMsgs[1];
+                        let downloadLink = splitMsgs[2];
+                        if(versionStr && downloadLink){
+                            let message = app.res.string("message_force_update_version", {version: versionStr})
+                            app.system.confirm(message, null, () => {
+                                cc.sys.openURL(downloadLink);
+                            })
+                        }
                     }
                 }else{
                     app.system.hideLoader();
@@ -173,6 +184,11 @@ export default class BaseScene extends Actor {
                     window.sdkbox.PluginGoogleAnalytics.setUser(app.context.getMe().name);
                 }
                 app.system.showLoader('Đăng nhập thành công ...');
+
+
+                if(result.newVersion && result.newVersionLink){
+                    app.context.newVersionInfo = {newVersion: result.newVersion, newVersionLink: result.newVersionLink}
+                }
 
                 /**
                  * after login try to resend iap saved on local storage
