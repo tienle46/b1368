@@ -140,7 +140,7 @@ export default class BaseScene extends Actor {
     _requestAuthen(username, password, isRegister, isQuickLogin, accessToken, tryOneTime) {
         app.service.requestAuthen(username, password, isRegister, isQuickLogin, accessToken, (error, result) => {
             if (error) {
-                console.log(error.errorMessage)
+               
                 let splitMsgs = error && error.errorMessage && error.errorMessage.split('|');
                 if(splitMsgs && splitMsgs.length > 0 && splitMsgs[0] == 'submitServer'){
                     if(tryOneTime){

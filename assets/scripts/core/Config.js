@@ -10,9 +10,9 @@ app.config.currencyName = "Chip";
 // app.config.useSSL = false;
 // app.config.host = "123.31.12.100";
 // app.config.port = 8921;
-app.config.useSSL = true;
+app.config.useSSL = false;
 app.config.host = "1368casino.com";
-app.config.port = app.config.useSSL ? 8843 : 8921;
+app.config.port = app.config.useSSL ? 443 : 8921;
 app.config.version = 0x00010000;
 app.config.zone = "XGame";
 app.config.debug = false;
@@ -30,7 +30,7 @@ app.config.MAX_PASSWORD_LENGTH = 30;
 app.config.MIN_USERNAME_LENGTH = 6;
 app.config.MAX_USERNAME_LENGTH = 15;
 app.config.USER_NAME_REGEX = /^[a-zA-Z0-9._]{6,15}$/;
-app.config.PASSWORD_REGEX = /^(?=.*[A-Za-z])(?=.*\d).{6,15}$/;
+app.config.PASSWORD_REGEX = /^(?=.*[A-Za-z])(?=.*\d).{6,30}$/;
 
 
 app.config.fbAppId = 226720277782952;
