@@ -598,7 +598,7 @@ export default class PlayerPhom extends PlayerCardTurnBase {
 
         // this.board.deHighLightPhomList();
 
-        this.currentGuiPhomSolutions = PhomUtils.getJoinPhomSolutions(this.board.getAllBoardPhomList().filter(phom => phom.owner != this.id), processCards);
+        this.currentGuiPhomSolutions = PhomUtils.getJoinPhomSolutions(this.board.getAllBoardPhomList().filter(phom => phom && phom.owner != this.id), processCards);
 
         if (this.currentGuiPhomSolutions.length == 0) {
             if (isAllCard) {
@@ -639,7 +639,7 @@ export default class PlayerPhom extends PlayerCardTurnBase {
 
         this.renderer.cardList.finishAllCardActions();
         let currentGuiSolution = this.currentGuiPhomSolutions[this.guiPhomSolutionId];
-        currentGuiSolution.forEach((node, k) => {
+        currentGuiSolution.solutions.forEach((node, k) => {
             let nodeCard = node.card;
             nodeCard.setHighlight(true);
             nodeCard.setSelected(true, true, true);
