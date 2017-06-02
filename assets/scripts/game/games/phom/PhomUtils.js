@@ -189,6 +189,7 @@ export default class PhomUtils {
 
         let checkingEatenCards = [...eatenCards, checkEatingCard];
         let phomLists = PhomGenerator.generatePhomContainEatenCards([...cards, checkEatingCard], checkingEatenCards);
+        console.warn('findBestEatableCards', phomLists);
         if(phomLists.length > 0){
             let eatablePhom = phomLists[0].filter(phom => ArrayUtils.contains(phom.cards, checkEatingCard))[0]
             if(eatablePhom){
@@ -335,13 +336,17 @@ export default class PhomUtils {
     }
     
     static sortPhomCardSingleSolution(cards){
+        console.warn('sortPhomCardSingleSolution cards', cards)
+        
         let phomListSolutions = PhomGenerator.generatePhomContainEatenCards(cards);
+        console.warn('sortPhomCardSingleSolution phomListSolutions', phomListSolutions)
         if (phomListSolutions.length > 0) {
             ArrayUtils.removeAll(cards, phomListSolutions[0].getCards());
             this._sortSingleCards(cards);
 
             let phomCards = [];
             phomListSolutions[0].forEach(phom => {
+                console.warn('phom.cards', phom.cards)
                 phomCards.push(...GameUtils.sortCardAscByRankFirstSuitLast(phom.cards))
             })
             cards.splice(0, 0, ...phomCards);

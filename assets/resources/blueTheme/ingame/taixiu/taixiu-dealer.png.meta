@@ -1,0 +1,30 @@
+{
+  "ver": "1.0.0",
+  "uuid": "5c5829b3-4959-42f2-8721-0458c571ed8b",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "subMetas": {
+    "taixiu-dealer": {
+      "ver": "1.0.3",
+      "uuid": "7a3f2650-2df9-4512-a81f-9e2681be1e4b",
+      "rawTextureUuid": "5c5829b3-4959-42f2-8721-0458c571ed8b",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": -1,
+      "trimX": 0,
+      "trimY": 2,
+      "width": 137,
+      "height": 151,
+      "rawWidth": 137,
+      "rawHeight": 153,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}
