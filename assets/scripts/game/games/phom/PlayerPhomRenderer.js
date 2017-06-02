@@ -68,6 +68,7 @@ export default class PlayerPhomRenderer extends PlayerCardTurnBaseRenderer {
     }
 
     cleanPlayerCards() {
+        console.warn('this.downPhomList cleanPlayerCards', this.downPhomList)
         this.downPhomList && this.downPhomList.clear();
         this.eatenCardList && this.eatenCardList.clear();
         this.playedCardList && this.playedCardList.clear();
@@ -155,7 +156,9 @@ export default class PlayerPhomRenderer extends PlayerCardTurnBaseRenderer {
         /**
          * In first time load player, method _reloadComponentOnIndexChanged call before this._downPhomListComponent.phomList assigned
          */
-
+        
+        console.warn('start this.downPhomList cleanPlayerCards', this.downPhomList)
+        
         this.downPhomList && this.downPhomList.clear();
         this.downPhomList = this._downPhomListComponent.phomList
     }
