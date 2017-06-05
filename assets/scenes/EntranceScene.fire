@@ -1560,9 +1560,6 @@
     "bodyNode": null,
     "facebookButton": {
       "__id__": 23
-    },
-    "promptPrefab": {
-      "__uuid__": "a8f2ac52-6f07-4ebc-9285-b34a82167f57"
     }
   }
 ]

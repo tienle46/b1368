@@ -30,7 +30,7 @@ export default class Scrollview extends Component {
 
         this.itemsPerPage = 10;
     }
-
+    
     onDestroy() {
         this.prevBtn.node && this.prevBtn.node.off(cc.Node.EventType.TOUCH_END, this._registerPrevEventBtnClick);
         this.prevBtn.node && this.nextBtn.node.off(cc.Node.EventType.TOUCH_END, this._registerNextEventBtnClick);
