@@ -35,7 +35,7 @@ class GameContext {
     _addContextEventListener(){
         app.system.addListener(app.commands.NEW_NOTIFICATION_COUNT, this._onNotifyCount, this);
         app.system.addListener(app.commands.USER_MSG_COUNT, this._setChangePersonalMessageCount, this);
-        app.visibilityManager.isActive(VisibilityManager.SYSTEM_MESSAGE) && app.system.addListener(Events.CHANGE_SYSTEM_MESSAGE_COUNT, this._changeSystemMessageCount, this, 0);
+        app.system.addListener(Events.CHANGE_SYSTEM_MESSAGE_COUNT, this._changeSystemMessageCount, this, 0);
         app.system.addListener(Events.CHANGE_PERSONAL_MESSAGE_COUNT, this._changePersonalMessageCount, this, 0);
     }
 
@@ -56,13 +56,15 @@ class GameContext {
     }
 
     _changeSystemMessageCount(count = 0, isReplace = false){
-        if(isReplace){
-            this.systemMessageCount = Math.max(count, 0);
-        }else{
-            this.systemMessageCount = Math.max(this.systemMessageCount + count);
-        }
+        if(app.visibilityManager.isActive(VisibilityManager.SYSTEM_MESSAGE)) {
+            if(isReplace){
+                this.systemMessageCount = Math.max(count, 0);
+            }else{
+                this.systemMessageCount = Math.max(this.systemMessageCount + count);
+            }
 
-        app.system.emit(Events.ON_MESSAGE_COUNT_CHANGED);
+            app.system.emit(Events.ON_MESSAGE_COUNT_CHANGED);
+        }
     }
 
     _changePersonalMessageCount(count = 0, isReplace = false){
