@@ -388,8 +388,7 @@ class GameSystem {
             showToast = true,
             messageType = data && data.t,
             sceneName = this.getCurrentSceneName();
-        console.warn(message, data);
-        
+                    
         switch (messageType){
             case app.const.adminMessage.MANUAL_DISMISS: {
                 duration = Toast.FOREVER;
