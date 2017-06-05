@@ -23,6 +23,7 @@ export default class MessagePopup extends Component {
             loadingComponent: cc.Node,
             contentComponent: cc.Node,
             popupComponent: cc.Node,
+            titleLbl: cc.Label,
             componentName: 'MessagePopup'
         }
 
@@ -90,7 +91,11 @@ export default class MessagePopup extends Component {
         this._hideLoading();
         this.messageLabel.string = message;
     }
-
+    
+    setTitle(message = "") {
+        this.titleLbl.string = message;
+    }
+    
     _showLoading() {
         this.loadingComponent.height = this.loadingHeight;
         this.loading.show(120, () => this.hide());
@@ -130,12 +135,14 @@ export default class MessagePopup extends Component {
         return this.acceptLabel ? this.acceptLabel : app.res.string('label_accept');
     }
 
-    onShow({parentNode, textOrRequestData, denyCb, acceptCb, acceptLabel, denyLabel} = {}) {
+    onShow({parentNode, textOrRequestData, denyCb, acceptCb, acceptLabel, denyLabel, title} = {}) {
         this.denyCb = denyCb;
         this.acceptCb = acceptCb;
         this.acceptLabel = acceptLabel;
         this.denyLabel = denyLabel;
         
+        title && utils.isString(title) && this.setTitle(title);
+            
         if (utils.isString(textOrRequestData)) {
             this.text = textOrRequestData;
             this.requestData = null;
@@ -147,11 +154,11 @@ export default class MessagePopup extends Component {
         parentNode && parentNode.addChild(this.node, 10000);
     }
 
-    static showCustomPopup(parentNode, textOrRequestData, {acceptLabel, denyLabel, denyCb, acceptCb, componentName = 'MessagePopup', multi = false} = {}) {
+    static showCustomPopup(parentNode, textOrRequestData, {acceptLabel, denyLabel, denyCb, acceptCb, componentName = 'MessagePopup', multi = false, title} = {}) {
         
         !multi && currentPopup && currentPopup.hide();
 
-        let args = {parentNode, textOrRequestData, denyCb, acceptCb, acceptLabel, denyLabel};
+        let args = {parentNode, textOrRequestData, denyCb, acceptCb, acceptLabel, denyLabel, title};
         if (parentNode && textOrRequestData) {
             let prefab = this.getPrefab();
 
@@ -164,8 +171,8 @@ export default class MessagePopup extends Component {
         window.release(args);
     }
 
-    static show(parentNode, textOrRequestData, denyCb, acceptCb, componentName = 'MessagePopup', multi = false) {
-        this.showCustomPopup(parentNode, textOrRequestData, {denyCb, acceptCb, componentName, multi})
+    static show(parentNode, textOrRequestData, denyCb, acceptCb, componentName = 'MessagePopup', multi = false, title) {
+        this.showCustomPopup(parentNode, textOrRequestData, {denyCb, acceptCb, componentName, multi, title})
     }
 
     static _createAndShow(prefab, componentName, args) {

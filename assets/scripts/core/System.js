@@ -156,7 +156,7 @@ class GameSystem {
             title = app.res.string('system');
         }
 
-        MessagePopup.show(this.getCurrentSceneNode(), message, null, null, undefined, multi);
+        MessagePopup.show(this.getCurrentSceneNode(), message, null, null, undefined, multi, title);
     }
 
     error(message, closeCb, acceptCb) {
@@ -388,6 +388,7 @@ class GameSystem {
             showToast = true,
             messageType = data && data.t,
             sceneName = this.getCurrentSceneName();
+        console.warn(message, data);
         
         switch (messageType){
             case app.const.adminMessage.MANUAL_DISMISS: {
