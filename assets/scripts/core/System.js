@@ -310,7 +310,7 @@ class GameSystem {
             }
             case app.const.adminMessage.DAILY_LOGIN_MISSION: {
                 if (this.currentScene && sceneName == app.const.scene.DASHBOARD_SCENE) {
-                    this.currentScene.showDailyLoginPopup(message, false);
+                    this.currentScene.showDailyLoginPopup(message, false, title);
                     showToast = false;
                     return;
                 }
@@ -319,7 +319,7 @@ class GameSystem {
             case app.const.adminMessage.REGISTER_BONUS: {
                 if (this.currentScene && sceneName == app.const.scene.DASHBOARD_SCENE) {
                     // console.debug('title, message)', title, message);
-                    this.currentScene.showDailyLoginPopup(message, true);
+                    this.currentScene.showDailyLoginPopup(message, true, title);
                     showToast = false;
                     return;
                 }

@@ -67,11 +67,12 @@ export default class DashboardScene extends BaseScene {
         app.system.showLackOfMoneyMessagePopup();
     }
 
-    showDailyLoginPopup(message, isNewBie = false) {
+    showDailyLoginPopup(message, isNewBie = false, title) {
         this._isNewBie = isNewBie;
         this.dailyDialog.active = true;
         this.dailyDialogContent.string = message;
         this.dailyDialogTitle.string = isNewBie ? app.res.string('greeting_newbiew') : app.res.string('daily_gift');
+        title && (this.dailyDialogTitle.string = title);
         
         let action = cc.sequence(cc.fadeIn(0.2), cc.delayTime(20), cc.fadeOut(0.5), cc.callFunc(()=> {
             this.dailyDialog.active = false;

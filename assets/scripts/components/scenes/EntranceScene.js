@@ -22,7 +22,7 @@ class EntranceScene extends BaseScene {
             app.facebookActions = new FacebookActions();
         }
         app.facebookActions.init(this._activeFacebookBtn.bind(this));
-        
+       
         super.onLoad();
     }
 

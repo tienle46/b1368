@@ -206,6 +206,7 @@ export default class BaseScene extends Actor {
             return;
 
         let receipts = app.iap.getPurchasesByUsername(app.context.getMyInfo().name);
+        cc.log('\nIAP: receipts -->', JSON.stringify(receipts));
         
         if (!receipts || receipts.length == 0)
             return;

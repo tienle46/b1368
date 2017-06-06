@@ -22,16 +22,27 @@ export default class IAPManager {
     }
     
     setPurchases(items) {
-        this.users = {};
-        
+        let arrayObject = [];
         items.forEach(item => {
+            if(!window.isJSON(item))
+                return;
+            
+            if(typeof item === 'string')
+                try {
+                    item = JSON.parse(item);
+                } catch(e) {}
+            
             this.addPurchaseByUsername(item.username, item);
+            arrayObject.push(item);
         });
-        
-        this.purchases = items;    
+
+        this.purchases = arrayObject;    
     } 
     
     addPurchaseByUsername(username, item) {
+        if(!username || !item)
+            return;
+        
         if(!this.users[username])
             this.users[username] = [];
         
@@ -39,6 +50,8 @@ export default class IAPManager {
     }
     
     getPurchasesByUsername(username) {
+        if(!username)
+            return;
         if(!this.users[username])
             this.users[username] = [];
             
@@ -60,10 +73,11 @@ export default class IAPManager {
         this._setIAPItemsForStorage(stringData);
     }
     
-    removePurchase(item) {
-        let token = item.token;
+    removePurchase(token) {
+        cc.log('IAP: removePurchase item...', typeof token);
         
         let savedItems = this.getPurchases();
+        log('IAP: savedItems ', JSON.stringify(savedItems));
         log('IAP: savedItems > 0', savedItems.length);
 
         if (savedItems.length == 0) {
@@ -73,7 +87,9 @@ export default class IAPManager {
         
         // remove bought token
         let removed = app._.remove(savedItems, (item) => {
-           return item.receipt == token; 
+            log('IAP: removed1', JSON.stringify(item), item && item.receipt == token);
+            
+            return item && item.receipt == token; 
         }); // <-- affect to savedItems
         
         log('IAP: removed', JSON.stringify(removed));
@@ -100,7 +116,6 @@ export default class IAPManager {
             this._initEmptyLocalPurchase();
         }
         
-        log('IAP localStorage2 ITEM :', cc.sys.localStorage.getItem(app.const.IAP_LOCAL_STORAGE).split(';').length - 1);
         this.setPurchases(savedItems);
     }
     
@@ -121,26 +136,27 @@ export default class IAPManager {
             if(lastCharacter === ";") 
                 receiptStringItems = receiptStringItems.substring(0, lastIndex);
             
-            if (receiptStringItems && receiptStringItems.length > 0 && ~receiptStringItems.indexOf(';')) {
-                (function() {
-                    let receipts = receiptStringItems.split(';');
-                    // remove last [""] element
-                    // array.pop();
-                    let users = {}; // receipts bought by user 
-                    receipts.map(stringifiedItem => {
-                        let o = stringifiedItem;
+            log("IAP: stringifiedItems", JSON.stringify(receiptStringItems));
 
-                        try {
-                            o = JSON.parse(stringifiedItem);
-                        } catch (e) {
-                            log('IAP -> ERROR: -->stringifiedItem', JSON.stringify(e));
-                        }
-                        return o;
-                    });
+            if (receiptStringItems && receiptStringItems.length > 0) {
+                let receipts = receiptStringItems.split(';');
+                // remove last [""] element
+                // array.pop();
+                
+                receipts.map(stringifiedItem => {
+                    log("\nIAP: stringifiedItem", JSON.stringify(stringifiedItem));
+                    let o = stringifiedItem;
                     
-                    this.setPurchases(receipts);
-                    log('IAP: IF', JSON.stringify(this.purchases));
-                }());
+                    try {
+                        o = JSON.parse(stringifiedItem);
+                    } catch (e) {
+                        log('\nIAP -> ERROR: -->stringifiedItem', JSON.stringify(e));
+                    }
+                    return o;
+                });
+                
+                this.setPurchases(receipts);
+                log('\nIAP: IF', JSON.stringify(this.purchases));
             } else {
                 this._initEmptyLocalPurchase();
                 this.setPurchases([]);
@@ -216,6 +232,8 @@ export default class IAPManager {
     }
     
     _onSubmitPurchaseIOS(data) {
+        log('\nIAP: _onSubmitPurchaseIOS', JSON.stringify(data));
+        
         let messages = data['messages'] || [];
         let receipts = data['purchasedProducts'] || [];
 
@@ -226,7 +244,7 @@ export default class IAPManager {
         app.system.hideLoader();
         for (let i = 0; i < messages.length; i++) {
             if (data[app.keywords.RESPONSE_RESULT]) {
-                app.system.showToast(messages[i]);
+                messages[i] && app.system.showToast(messages[i]);
             } else {
                 app.system.error(messages[i] || app.res.string('trading_is_cancelled'));
                 break;
@@ -249,19 +267,19 @@ export default class IAPManager {
         for (let i = 0; i < receipts.length; i++) {
             let receipt = receipts[i];
             if (receipt.su) {
-                this.removePurchase(receipt.token);
-                app.system.showToast(receipt.msg);
+                this.removePurchase(receipt);
+                receipt.msg && app.system.showToast(receipt.msg);
             } else {
                 app.system.error(receipt.msg);
             }
         }
 
         unverifiedPurchases.forEach(purchase => {
-            this.removePurchase(purchase.token);
+            this.removePurchase(purchase);
         });
 
         consumedProducts.forEach(purchase => {
-            this.removePurchase(purchase.token);
+            this.removePurchase(purchase);
         });
 
         app.system.hideLoader();

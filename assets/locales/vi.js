@@ -52,7 +52,7 @@ export default {
     error_cannot_kick_player_vip: 'Bạn không thể kick người chơi có mức VIP cao hơn',
     
     greeting_newbiew: `Chào mừng bạn đến với game bài 1368`,
-    daily_gift: `Quà tặng đăng nhập hàng ngày`,
+    daily_gift: `Quà đăng nhập hàng ngày`,
     get_transfer_success: `Bạn đã rút thành công {{amount}} ${currencyName}. Chúc bạn chơi game vui vẻ.`,
     transfer_successfully: `Chuyển thành công {{amount}} ${currencyName} tới {{username}}.`,
     exchange_dialog_confirmation: `Bạn có muốn đổi {{gold}} ${currencyName} để nhận {{name}} ?`,

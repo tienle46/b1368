@@ -128,7 +128,7 @@ class TabIAP extends PopupTabBody {
                             }
                         };
 
-                        app.system.showLoader(app.res.string('iap_buying_successfully_wait_server_response'), 60);
+                        this.currentScene && sceneName == app.const.scene.DASHBOARD_SCENE && app.system.showLoader(app.res.string('iap_buying_successfully_wait_server_response'), 60);
                         log('\nIAP sendObject:', JSON.stringify(sendObj))
                         app.service.send(sendObj);
                     } else {
