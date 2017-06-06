@@ -19,7 +19,6 @@ class GameContext {
         this.lastJoinedRoom = null;
         this.rejoiningGame = false;
         this.selectedGame = null; // selected game code
-        this.purchaseItems = []; // stringifyJSON array : [{id, receipt, username}]
         this.unreadMessageBuddies = []; // buddies unreaded messages 
         this.chattingBuddies = []; // buddies chatting ...
         this.personalMessagesCount = 0;
@@ -85,22 +84,6 @@ class GameContext {
         this.lastJoinedRoom = null;
         this.currentRoom = null;
         this.groupId = null;
-    }
-
-    getPurchases() {
-        let username = this.getMyInfo() ? this.getMyInfo().name : null;
-        if (username)
-            return this.purchaseItems.filter(item => item.username = username) || [];
-        return this.purchaseItems || [];
-    }
-
-    /**
-     * @param {Array} purchases
-     *
-     * @memberOf GameContext
-     */
-    setPurchases(purchases) {
-        this.purchaseItems = purchases;
     }
 
     addToChattingBuddies(buddy) {

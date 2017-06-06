@@ -65,29 +65,30 @@ export default class IAPManager {
         
         // set to local storage
         let stringData = this._getIAPItemsFromStorage();
-        if(stringData != "" || stringData.length > 0)
-            stringData += `;`;
-    
-        stringData += `${JSON.stringify(item)}`;
+        let stringifyItem = JSON.stringify(item);
+        
+        if(stringData != "" || stringData.length > 0) {
+            stringData = stringData.split(';').push(stringifyItem).join(';');
+        } else if(stringData == "") {
+            stringData += `${stringifyItem}`;
+        }
+        log('\nIAP: addPurchase stringData', stringData);
         
         this._setIAPItemsForStorage(stringData);
     }
     
     removePurchase(token) {
-        cc.log('IAP: removePurchase item...', typeof token);
-        
         let savedItems = this.getPurchases();
-        log('IAP: savedItems ', JSON.stringify(savedItems));
-        log('IAP: savedItems > 0', savedItems.length);
+        // // log('\nIAP: savedItems ', JSON.stringify(savedItems));
+        // // log('\nIAP: savedItems > 0', savedItems.length);
 
         if (savedItems.length == 0) {
-            log('IAP: savedItems1 === 0', savedItems.length);
+            // log('IAP: savedItems1 === 0', savedItems.length);
             return;
         }
         
         // remove bought token
         let removed = app._.remove(savedItems, (item) => {
-            log('IAP: removed1', JSON.stringify(item), item && item.receipt == token);
             
             return item && item.receipt == token; 
         }); // <-- affect to savedItems
@@ -96,6 +97,7 @@ export default class IAPManager {
         
         // renew string storage
         let stringData = savedItems.join(';');
+        // log('IAP: stringData', stringData);
         
         this._setIAPItemsForStorage(stringData);
         
@@ -127,7 +129,7 @@ export default class IAPManager {
         if (!this._hasPurchase()) {
             this._initEmptyLocalPurchase();
             this.setPurchases([]);
-            log('IAP: cc.sys.localStorage.getItem(app.const.IAP_LOCAL_STORAGE) > init new > length', cc.sys.localStorage.getItem(app.const.IAP_LOCAL_STORAGE), JSON.stringify(this.purchases));
+            // log('IAP: cc.sys.localStorage.getItem(app.const.IAP_LOCAL_STORAGE) > init new > length', cc.sys.localStorage.getItem(app.const.IAP_LOCAL_STORAGE), JSON.stringify(this.purchases));
         } else {
             // stringifyJSON array : [{id, receipt, username}]
             let receiptStringItems = this._getIAPItemsFromStorage(); // {id, receipt, username};{id, receipt, username};{id, receipt, username};
@@ -136,7 +138,7 @@ export default class IAPManager {
             if(lastCharacter === ";") 
                 receiptStringItems = receiptStringItems.substring(0, lastIndex);
             
-            log("IAP: stringifiedItems", JSON.stringify(receiptStringItems));
+            // log("IAP: stringifiedItems", JSON.stringify(receiptStringItems));
 
             if (receiptStringItems && receiptStringItems.length > 0) {
                 let receipts = receiptStringItems.split(';');
@@ -144,7 +146,7 @@ export default class IAPManager {
                 // array.pop();
                 
                 receipts.map(stringifiedItem => {
-                    log("\nIAP: stringifiedItem", JSON.stringify(stringifiedItem));
+                    // log("\nIAP: stringifiedItem", JSON.stringify(stringifiedItem));
                     let o = stringifiedItem;
                     
                     try {
@@ -156,7 +158,7 @@ export default class IAPManager {
                 });
                 
                 this.setPurchases(receipts);
-                log('\nIAP: IF', JSON.stringify(this.purchases));
+                // log('\nIAP: IF', JSON.stringify(this.purchases));
             } else {
                 this._initEmptyLocalPurchase();
                 this.setPurchases([]);
@@ -171,8 +173,8 @@ export default class IAPManager {
                 //You can get each item using following method
 
                 let receipts = this.getPurchases();
-                log('\nIAP: receiptObjects', JSON.stringify(receipts));
-                log('\nIAP: receiptObjects > length', JSON.stringify(receipts.length));
+                // log('\nIAP: receiptObjects', JSON.stringify(receipts));
+                // log('\nIAP: receiptObjects > length', JSON.stringify(receipts.length));
 
                 if (receipts.length > 0) {
                     let productIds = [];
@@ -232,7 +234,7 @@ export default class IAPManager {
     }
     
     _onSubmitPurchaseIOS(data) {
-        log('\nIAP: _onSubmitPurchaseIOS', JSON.stringify(data));
+        // log('\nIAP: _onSubmitPurchaseIOS', JSON.stringify(data));
         
         let messages = data['messages'] || [];
         let receipts = data['purchasedProducts'] || [];

@@ -107,7 +107,7 @@ class TabIAP extends PopupTabBody {
                                 productId: product.id,
                                 token
                             }];
-                            log('IAP purchase2', JSON.stringify(app.iap.getPurchases()));
+                            // log('IAP purchase2', JSON.stringify(app.iap.getPurchases()));
                             contextItem = { id: product.id, receipt: token, username: app.context.getMyInfo().name || "" };
 
                         } catch (e) {
@@ -115,7 +115,7 @@ class TabIAP extends PopupTabBody {
                             return;
                         }
                     }
-                    log('IAP contextItem', JSON.stringify(contextItem));
+                    // log('IAP contextItem', JSON.stringify(contextItem));
                     app.iap.addPurchase(contextItem)
                     
                     if (contextItem) {
