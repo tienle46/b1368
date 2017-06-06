@@ -60,7 +60,7 @@ body{
     padding: 0;
     width: 200px;
 	position: fixed;
-    left: 0;
+    left: 180px;
     top: 15%;
 	z-index: -1;
 }
@@ -69,7 +69,13 @@ body{
     padding: 0;
     width: 200px;
     position: fixed;
-    right: 0;
+    right: 180px;
     top: 15%;
 	z-index: -1;
+}
+@media(max-width:1366px){
+	.qc-left,
+	.qc-right{
+		display: none;
+	}
 }
