@@ -301,7 +301,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 137.86,
+      "width": 133.86,
       "height": 60
     },
     "_children": [
@@ -439,7 +439,7 @@
     "_enabled": true,
     "_layoutSize": {
       "__type__": "cc.Size",
-      "width": 137.86,
+      "width": 133.86,
       "height": 60
     },
     "_resize": 1,
@@ -2531,6 +2531,9 @@
     },
     "popupComponent": {
       "__id__": 21
+    },
+    "titleLbl": {
+      "__id__": 9
     },
     "componentName": "MessagePopup",
     "messageLabel": {

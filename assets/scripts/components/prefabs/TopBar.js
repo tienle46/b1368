@@ -69,7 +69,6 @@ class TopBar extends DialogActor {
         app.system.removeListener(SFS2X.SFSEvent.USER_VARIABLES_UPDATE, this._onUserVariablesUpdate, this);
         app.system.removeListener(Events.ON_BUDDY_UNREAD_MESSAGE_COUNT_CHANGED, this._onBuddyNotifyCountChanged, this);
         app.system.removeListener(Events.CLIENT_CONFIG_CHANGED, this._onConfigChanged, this);
-        app.system.removeListener(Events.CHANGE_SYSTEM_MESSAGE_COUNT, this._onSystemMessageChanged, this);
         app.system.removeListener(Events.ON_MESSAGE_COUNT_CHANGED, this._onMessageCountChanged, this);
     }
 
