@@ -280,6 +280,7 @@ app.getMessageFromServer = (error) => {
         app.service = require("Service");
         require('Env')(app);
         app.system = require("System");
+
         /**
          * @type {Context}
          */

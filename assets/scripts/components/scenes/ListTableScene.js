@@ -313,7 +313,7 @@ export default class ListTableScene extends BaseScene {
         this._room = room;
         
         if (room) {
-            if (room.isGame === false && room.name && room.name.indexOf('lobby') > -1) {
+            if (room.isGame === false && room.name && ~room.name.indexOf('lobby')) {
                 this._sendRequestUserListRoom(room);
             }
         } else {

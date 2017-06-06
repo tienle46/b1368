@@ -27,7 +27,7 @@ class BetOptionsGroup extends Component {
 
     setLblOptions(roomBet) {
         this.chips = [];
-        this.node.children.filter((child) => child.name.indexOf('chip') > -1).forEach((child, index) => {
+        this.node.children.filter((child) => ~child.name.indexOf('chip')).forEach((child, index) => {
             let amount = MULTIPLES[index] * Number(roomBet);
             let betChip = child.getComponent('BetChip');
             betChip && betChip.setChipAmountLbl(amount);

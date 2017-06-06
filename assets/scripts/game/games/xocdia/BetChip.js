@@ -57,11 +57,11 @@ class BetChip extends Component {
     // 1M -> 1.000.000, 1.5M -> 1.500.000
     _convertAmountFromStringToNum(str) {
         let amount = 0;
-        if (str.indexOf('K') > -1) {
+        if (~str.indexOf('K')) {
             str = str.replace('K', '.');
             amount = Number(str);
             return str.match(/\d+(\.)/) ? amount * 1000 : amount;
-        } else if (str.indexOf('M') > -1) {
+        } else if (~str.indexOf('M')) {
             str = str.replace('M', '.');
             amount = Number(str);
             return str.match(/\d+(\.)/) ? amount * 1000 * 1000 : amount;
@@ -81,7 +81,7 @@ class BetChip extends Component {
     onChipChecked() {
         this.node.dispatchEvent(new cc.Event.EventCustom('chip-checked', true));
         (!this.amount) && (this.amount = this._convertAmountFromStringToNum(this.amountLbl.string));
-        this.setLblColor(app.const.COLOR_YELLOW);
+        // this.setLblColor(app.const.COLOR_YELLOW);
     }
 
     setLblColor(color) {

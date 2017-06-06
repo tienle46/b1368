@@ -222,7 +222,12 @@ class Linking {
 
     static _handleOpenExchangeDialogAction(actionCode) {
         let defaultTab = null;
-
+        
+        if(app.config.ALPHA_TEST) {
+            app.system.info(app.res.string('coming_soon'));
+            return;
+        }
+       
         switch (actionCode) {
             case Linking.ACTION_EXCHANGE:
             case Linking.ACTION_EXCHANGE_CARD:

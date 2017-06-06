@@ -221,83 +221,17 @@ export default (function(app) {
                     window.sdkbox.IAP.setListener(objectListener);
                 };
 
-                function _getIAPItemsFromStorage() {
-                    return cc.sys.localStorage.getItem(app.const.IAP_LOCAL_STORAGE) || "";
+                if(!app.system) {
+                   log('IAP: !app.system', app.system)
                 }
-
-                window.sdkbox.IAP.init();
-                window.sdkbox.IAP.setDebug(true);
-
-                // save failed items to localStorage
-                if (!_getIAPItemsFromStorage()) {
-                    cc.sys.localStorage.setItem(app.const.IAP_LOCAL_STORAGE, "");
-                    app.context.setPurchases([]);
-                    log('IAP: cc.sys.localStorage.getItem(app.const.IAP_LOCAL_STORAGE) > init new > length', cc.sys.localStorage.getItem(app.const.IAP_LOCAL_STORAGE));
-                } else {
-                    // stringifyJSON array : [{id, receipt}]
-                    let receiptStringItems = _getIAPItemsFromStorage();
-                    if (receiptStringItems && receiptStringItems.length > 0 && receiptStringItems.indexOf(';') > -1) {
-                        (function() {
-                            let array = receiptStringItems.split(';');
-                            // remove last [""] element
-                            array.pop();
-                            array.map(stringifiedItem => {
-                                let o = stringifiedItem;
-
-                                try {
-                                    o = JSON.parse(stringifiedItem);
-                                } catch (e) {
-                                    log('IAP -> ERROR: -->stringifiedItem', e);
-                                }
-                                return o;
-                            });
-                            app.context.setPurchases(array);
-                            log('IAP: IF');
-
-                        }());
-                    } else {
-                        cc.sys.localStorage.setItem(app.const.IAP_LOCAL_STORAGE, "");
-                        app.context.setPurchases([]);
-                        log('IAP: ELSE');
-                    }
+                
+                if(!app.iap){
+                    let IAPManager = require('IAPManager');
+                    
+                    app.iap = new IAPManager();
+                    app.iap.init(window.sdkbox.IAP);
                 }
-
-                // setup listener
-                app.env.sdkIAPSetListener({
-                    onProductRequestSuccess: (products) => {
-                        //Returns you the data for all the iap products
-                        //You can get each item using following method
-
-                        let receiptObjects = app.context.getPurchases();
-                        log('\nIAP: receiptObjects', JSON.stringify(receiptObjects));
-                        log('\nIAP: receiptObjects > length', JSON.stringify(receiptObjects.length));
-
-                        if (receiptObjects.length > 0) {
-                            let productIds = [];
-                            for (let i = 0; i < products.length; i++) {
-                                // loop
-                                productIds.push(products[i].id);
-                            }
-
-                            let purchases = [];
-                            receiptObjects.forEach((stringifiedItem) => {
-                                let item = JSON.parse(stringifiedItem);
-                                if (app._.includes(productIds, item.id)) {
-                                    purchases.push(item);
-                                    // if (app.env.isIOS()) {
-                                    //     purchases.push(item.receipt);
-                                    // } else if (app.env.isAndroid()) {
-                                    //     purchases.push({ productId: item.id, token: item.receipt });
-                                    // }
-                                }
-                            });
-
-                            app.context.setPurchases(purchases);
-
-                            window.release(productIds);
-                        }
-                    }
-                });
+                
             };
             
             let _initPluginKochava = () => {
@@ -311,7 +245,6 @@ export default (function(app) {
                     _initPluginIAP,
                     _initPluginKochava
                 ].map(p => {
-                    log(`what???`);
                     p();
                 });
 

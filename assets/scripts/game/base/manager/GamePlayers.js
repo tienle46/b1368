@@ -465,7 +465,7 @@ export default class GamePlayers extends Component {
         if(userVip) {
             let userVipId = userVip.id;
             let userPriority = userVip.value;
-            if(userVipId > -1) {
+            if(~userVipId) {
                 let userShouldeSeeMessage = app.config.ingameGreetingVipMessages[userVipId];
                 if(userShouldeSeeMessage){
                     this.players && this.players.forEach(player => {

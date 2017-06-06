@@ -111,7 +111,7 @@ export default class Marker {
         
         return stateData;
     }
-
+    
     getItem(key) {
         let k = this._validKey(key);
         if(!k)

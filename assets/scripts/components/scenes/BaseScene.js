@@ -205,7 +205,8 @@ export default class BaseScene extends Actor {
         if (!app.env.isMobile())
             return;
 
-        let receipts = app.context.getPurchases();
+        let receipts = app.iap.getPurchasesByUsername(app.context.getMyInfo().name);
+        
         if (!receipts || receipts.length == 0)
             return;
 
@@ -229,7 +230,9 @@ export default class BaseScene extends Actor {
         };
 
         app.env.isAndroid() && (sendObj.data.resubmit = true);
-        app.system.showLoader(app.res.string('re_sending_item_iap'), 60);
+        cc.log('\nIAP: resendIAPSavedItem', JSON.stringify(sendObj));
+        
+        // app.system.showLoader(app.res.string('re_sending_item_iap'), 60);
         app.service.send(sendObj);
     }
 }

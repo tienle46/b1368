@@ -118,7 +118,7 @@ export default class JarComponent extends Actor {
     _onListHu(data) {
         let index = data[app.keywords.GAME_CODE_LIST].findIndex((gc) => gc == this._gameCode);
         
-        if(index > -1) {
+        if(~index) {
             let currentMoney = data[app.keywords.MONEY_LIST][index],
                 endTime = data[app.keywords.END_TIME_LIST][index],
                 remainTime = Math.abs(new Date().getTime() - endTime);

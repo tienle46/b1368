@@ -81,7 +81,7 @@ class TabIAP extends PopupTabBody {
         if (app.env.isMobile()) {
             app.env.sdkIAPSetListener({
                 onSuccess: (product) => {
-                    log('\nIAP: onSuccess', JSON.stringify(product));
+                    log('\nIAP: onSuccess tab', JSON.stringify(product));
 
                     let purchases = [];
                     let contextItem = null;
@@ -90,7 +90,7 @@ class TabIAP extends PopupTabBody {
                     if (app.env.isIOS()) {
                         purchases = [product.receiptCipheredPayload];
 
-                        contextItem = { id: product.id, receipt: product.receiptCipheredPayload };
+                        contextItem = { id: product.id, receipt: product.receiptCipheredPayload , username: app.context.getMyInfo().name || ""};
                     } else if (app.env.isAndroid()) {
                         try {
                             log('IAP -> ccc -> receipt', product.receipt);
@@ -107,7 +107,7 @@ class TabIAP extends PopupTabBody {
                                 productId: product.id,
                                 token
                             }];
-                            log('IAP purchase2', JSON.stringify(app.context.getPurchases()));
+                            log('IAP purchase2', JSON.stringify(app.iap.getPurchases()));
                             contextItem = { id: product.id, receipt: token, username: app.context.getMyInfo().name || "" };
 
                         } catch (e) {
@@ -116,14 +116,10 @@ class TabIAP extends PopupTabBody {
                         }
                     }
                     log('IAP contextItem', JSON.stringify(contextItem));
-                    (app.context.getPurchases() || []).push(contextItem);
-
+                    app.iap.addPurchase(contextItem)
+                    
                     if (contextItem) {
-                        app.context.setPurchases(app.context.getPurchases());
-
-                        let string = cc.sys.localStorage.getItem(app.const.IAP_LOCAL_STORAGE);
-                        string += `${JSON.stringify(contextItem)};`;
-                        cc.sys.localStorage.setItem(app.const.IAP_LOCAL_STORAGE, string);
+                        app.iap.setPurchases(app.iap.getPurchases());
 
                         let sendObj = {
                             cmd: app.env.isIOS() ? app.commands.IOS_IN_APP_PURCHASE : app.commands.ANDROID_IN_APP_PURCHASE,
@@ -144,12 +140,11 @@ class TabIAP extends PopupTabBody {
                     //msg is the error message
                     app.system.hideLoader();
                     app.system.error(msg);
-                    log('\nIAP: onFailure', JSON.stringify(product), JSON.stringify(msg))
+                    log('\nIAP: onFailure tab', JSON.stringify(product), JSON.stringify(msg))
                 },
                 onCanceled: (product) => {
                     //Purchase was canceled by user
-                    log('\nIAP: onCanceled', JSON.stringify(product))
-                    app.system.error(msg);
+                    log('\nIAP: onCanceled tab', JSON.stringify(product))
                     app.system.hideLoader();
                 },
             });

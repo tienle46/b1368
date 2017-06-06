@@ -14,6 +14,7 @@ import { isFunction } from 'Utils';
 import Marker from 'Marker';
 import Linking from 'Linking'
 import VisibilityManager from 'VisibilityManager';
+import IAPManager from 'IAPManager';
 
 class GameSystem {
 
@@ -110,8 +111,6 @@ class GameSystem {
         this.addListener(app.commands.HIGH_LIGHT_MESSAGE, this._onHighLightMessage, this);
         this.addListener(app.commands.UPDATE_PHONE_NUMBER, this._onUpdatePhoneNumber, this);
         this.addListener(SFS2X.SFSEvent.ADMIN_MESSAGE, this._onAdminMessage, this);
-        app.env.isIOS() && this.addListener(app.commands.IOS_IN_APP_PURCHASE, this._onSubmitPurchaseIOS, this);
-        app.env.isAndroid() && this.addListener(app.commands.ANDROID_IN_APP_PURCHASE, this._onSubmitPurchaseAndroid, this);
         
         this.addListener(app.commands.GET_TOTAL_TOPUP, this._onTotalTopupFetched, this);
     }
@@ -122,8 +121,6 @@ class GameSystem {
     //     this.removeListener(app.commands.HIGH_LIGHT_MESSAGE, this._onHighLightMessage, this);
     //     this.removeListener(app.commands.UPDATE_PHONE_NUMBER, this._onUpdatePhoneNumber, this);
     //     this.removeListener(SFS2X.SFSEvent.ADMIN_MESSAGE, this._onAdminMessage, this);
-    //     app.env.isIOS() && this.removeListener(app.commands.IOS_IN_APP_PURCHASE, this._onSubmitPurchaseIOS, this);
-    //     app.env.isAndroid() && this.removeListener(app.commands.ANDROID_IN_APP_PURCHASE, this._onSubmitPurchaseAndroid, this);
     //
     //     this.removeListener(app.commands.GET_TOTAL_TOPUP, this._onTotalTopupFetched, this);
     // }
@@ -292,89 +289,6 @@ class GameSystem {
         this.eventEmitter.removeListener(eventName);
     }
 
-    _onSubmitPurchaseIOS(data) {
-        let messages = data['messages'] || [];
-        let receipts = data['purchasedProducts'] || [];
-
-        receipts.forEach(receipt => {
-            this.__removeSuccessItemInIAPLocalStorage(receipt);
-        });
-
-        this.hideLoader();
-        for (let i = 0; i < messages.length; i++) {
-            if (data[app.keywords.RESPONSE_RESULT]) {
-                app.system.showToast(messages[i]);
-            } else {
-                app.system.error(messages[i] || app.res.string('trading_is_cancelled'));
-                break;
-            }
-        }
-    }
-
-    _onSubmitPurchaseAndroid(data) {
-        log('IAP: adata', JSON.stringify(data));
-
-        if (!data[app.keywords.RESPONSE_RESULT]) {
-            app.system.error(data.message || "");
-            this.hideLoader();
-            return;
-        }
-        let receipts = data['purchasedProducts'] || [];
-        let unverifiedPurchases = data['unverifiedPurchases'] || [];
-        let consumedProducts = data['consumedProducts'] || [];
-
-        for (let i = 0; i < receipts.length; i++) {
-            let receipt = receipts[i];
-            if (receipt.su) {
-                this.__removeSuccessItemInIAPLocalStorage(receipt.token);
-                app.system.showToast(receipt.msg);
-            } else {
-                app.system.error(receipt.msg);
-            }
-        }
-
-        unverifiedPurchases.forEach(purchase => {
-            this.__removeSuccessItemInIAPLocalStorage(purchase.token);
-        });
-
-        consumedProducts.forEach(purchase => {
-            this.__removeSuccessItemInIAPLocalStorage(purchase.token);
-        });
-
-        this.hideLoader();
-    }
-
-    __removeSuccessItemInIAPLocalStorage(token) {
-        let savedItems = app.context.getPurchases();
-        log('IAP: savedItems > 0', savedItems.length);
-
-        if (savedItems.length == 0) {
-            log('IAP: savedItems1 === 0', savedItems.length);
-            return;
-        }
-
-        let index = app._.findIndex(savedItems, ['receipt', token]);
-        log('IAP: savedItems1 > length:', savedItems.length);
-
-        log('iap: _onSubmitPurchase receipts >', index);
-        if (index > -1) {
-            let string = cc.sys.localStorage.getItem(app.const.IAP_LOCAL_STORAGE);
-            let item = savedItems[index];
-            cc.sys.localStorage.setItem(app.const.IAP_LOCAL_STORAGE, string.replace(`${JSON.stringify(item)};`, ""));
-
-            savedItems.splice(index, 1); // also affected to app.context.purchasesItem
-        }
-
-        if (savedItems.length == 0) {
-            log('IAP: savedItems2 reset purchase === 0', savedItems.length);
-
-            app.context.setPurchases([]);
-            cc.sys.localStorage.setItem(app.const.IAP_LOCAL_STORAGE, "");
-        }
-        log('IAP localStorage2 ITEM :', cc.sys.localStorage.getItem(app.const.IAP_LOCAL_STORAGE).split(';').length - 1);
-
-    }
-    
     _onJoinRoomError(resultEvent) {
         if (resultEvent.errorCode) {
             this.hideLoader();

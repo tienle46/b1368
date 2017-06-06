@@ -16,6 +16,7 @@ app.config.host = "1368casino.com";
 // app.config.host = "1368.company";
 app.config.port = app.config.useSSL ? 443 : 8921;
 app.config.version = 0x00010000;
+app.config.ALPHA_TEST = true;
 app.config.zone = "XGame";
 app.config.debug = false;
 app.config.test = false;

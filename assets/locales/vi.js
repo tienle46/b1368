@@ -8,7 +8,7 @@ export default {
     waiting_server_response: 'Đang gửi yêu cầu tới server ....',
     change_language_fail: "Đổi ngôn ngữ thất bại",  
     invalid_play_card: "Bài không hợp lệ",
-    coming_soon: "Chức năng đang hoàn thiện!",
+    coming_soon: "Chức năng đang phát triển!",
     error_system: 'Hệ thống không thể thực hiện yêu cầu. Vui lòng thử lại sau!',
     error_unknow: 'Lỗi Không xác định, vui lòng gọi tổng đài để được hỗ trợ.',
     error_not_support_game: "Game không được hỗ trợ",
