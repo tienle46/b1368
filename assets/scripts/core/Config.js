@@ -37,8 +37,10 @@ app.config.PASSWORD_REGEX = /^(?=.*[A-Za-z])(?=.*\d).{6,30}$/;
 
 
 app.config.fbAppId = 226720277782952;
+// app.config.fbAppId = 1793374524209784; // <- app test
 app.config.fbxfbml = true;
 app.config.fbVersion = 'v2.8';
+// app.config.fbVersion = 'v2.7'; // <- app test too
 app.config.fbScope = 'public_profile,email,user_friends';
 
 app.config.fanpage = `http://m.me/songbaihoanggia`;

@@ -219,7 +219,7 @@ export default class GameScene extends BaseScene {
 
     _setGameMinBetInfo() {
         let minBet = utils.getVariable(this.room, app.keywords.VARIABLE_MIN_BET, "");
-        this.tableMinBetLabel && (this.tableMinBetLabel.string = 'Cược ' + GameUtils.formatBalance(minBet));
+        this.tableMinBetLabel && (this.tableMinBetLabel.string = 'Cược ' + GameUtils.formatBalanceShort(minBet));
     }
 
     _setTableNameLabel() {
