@@ -171,7 +171,7 @@ export default class BaseScene extends Actor {
                         }
                     }
                 } else {
-                    if(error.errorCode == '114') { // facebook token is invalid
+                    if(error.errorMessage == '114') { // facebook token is invalid
                         // logout fb 
                         app.facebookActions.logout(() => app.facebookActions.login(this._onLoginWithAccessToken.bind(this)));
                         return;
