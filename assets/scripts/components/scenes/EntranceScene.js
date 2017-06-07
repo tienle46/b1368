@@ -70,10 +70,6 @@ class EntranceScene extends BaseScene {
         this && this.facebookButton && (this.facebookButton.interactable = true);
     }
 
-    _onLoginWithAccessToken(fbId, accessToken) {
-        this.loginToDashboard("", "", false, false, accessToken, fbId);
-    }
-
     // _generateUserName(key, deviceId, count, maxCall) {
     //     try {
     //         if (count < maxCall) {

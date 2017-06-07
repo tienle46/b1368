@@ -140,15 +140,14 @@ export default class BaseScene extends Actor {
     _requestAuthen(username, password, isRegister, isQuickLogin, accessToken, fbId, tryOneTime, cb) {        
         app.service.requestAuthen(username, password, isRegister, isQuickLogin, accessToken, fbId, (error, result) => {
             if (error) {
-               
-                let splitMsgs = error && error.errorMessage && error.errorMessage.split('|');
+                let splitMsgs = error.errorMessage && error.errorMessage.split('|');
                 if(splitMsgs && splitMsgs.length > 1){
                     if(splitMsgs[0] == 'submitServer'){
                         if(tryOneTime){
                             error = "5"; //Hệ thống đang quá tải
                             app.system.hideLoader();
                             app.system.showErrorToast(app.getMessageFromServer(error));
-                        }else{
+                        } else {
                             app.config.host = splitMsgs[1]
                             app.config.port = parseInt(splitMsgs[2])
                             app.service.disconnect();
@@ -161,7 +160,7 @@ export default class BaseScene extends Actor {
                                 }
                             }, 100)
                         }
-                    }else if(splitMsgs[0] == '121'){ //Force update version
+                    } else if(splitMsgs[0] == '121'){ //Force update version
                         let versionStr = splitMsgs[1];
                         let downloadLink = splitMsgs[2];
                         if(versionStr && downloadLink){
@@ -171,7 +170,12 @@ export default class BaseScene extends Actor {
                             })
                         }
                     }
-                }else{
+                } else {
+                    if(error.errorCode == '114') { // facebook token is invalid
+                        // logout fb 
+                        app.facebookActions.logout(() => app.facebookActions.login(this._onLoginWithAccessToken.bind(this)));
+                        return;
+                    } 
                     app.system.hideLoader();
                     app.system.showErrorToast(app.getMessageFromServer(error));
                     
@@ -202,7 +206,11 @@ export default class BaseScene extends Actor {
             }
         });
     }
-
+    
+    _onLoginWithAccessToken(fbId, accessToken) {
+        this.loginToDashboard("", "", false, false, accessToken, fbId);
+    }
+    
     _resendIAPSavedItem() {
         if (!app.env.isMobile())
             return;

@@ -41,7 +41,29 @@ export default class TabUserInfo extends PopupTabBody {
         this._showUserInfoPanel();
         this.avatar && app.context.getMyAvatar(this.avatar, 'large');
     }
-
+    
+    onCurrentPasswordEditboxEdited(e, b) {
+        if(!this.currPassword.isFocused()) {
+            this.newPassword.stayOnTop = true;
+            this.newPassword.setFocus();
+        }
+    }
+    
+    onNewPasswordEditboxEdited(e, b) {
+        if(!this.currPassword.isFocused()) {
+            this.passwordConfirmation.stayOnTop = true;
+            this.passwordConfirmation.setFocus();
+        }
+    }
+    
+    onChangePasswordReturnKeyPressed() {
+       this.onConfirmationBtnClick();
+    }
+    
+    onUpdatePhoneReturnKeyPressed() {
+        this.onUpdateBtnClick();
+    }
+    
     loadData() {
         if(Object.keys(this._data).length > 0)
             return false;

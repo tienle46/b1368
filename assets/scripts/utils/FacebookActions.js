@@ -163,7 +163,21 @@ export default class FacebookActions {
 
         }
     }
-
+    
+    logout(cb = null) {
+        if(app.env.isBrowser()) {
+            window.FB.logout((response) => {
+                this._setLoginState(false);
+                cb && cb();
+            }); 
+        } else if(app.env.isMobile()) {
+            this._setLoginState(false);
+            window.sdkbox.PluginFacebook.logout();
+            cb && cb();
+        }
+        
+    }
+    
     isLoggedIn() {
         return this._isLoggedIn;
     }
