@@ -1148,7 +1148,7 @@
     "_N$returnType": 0,
     "_N$inputFlag": 1,
     "_N$inputMode": 3,
-    "_N$fontSize": 20,
+    "_N$fontSize": 40,
     "_N$lineHeight": 40,
     "_N$fontColor": {
       "__type__": "cc.Color",

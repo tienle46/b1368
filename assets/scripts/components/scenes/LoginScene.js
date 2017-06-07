@@ -19,20 +19,13 @@ export default class LoginScene extends BaseScene {
 
     onLoad() {
         super.onLoad();
-        if(app.env.isBrowser()) {
-            this.userPasswordEditBox.stayOnTop = true;
-        }
-    }
-    
-    onDisable() {
-       if(app.env.isBrowser()) {
-            this.userPasswordEditBox.stayOnTop = false;
-        }     
     }
     
     onUserNameEditboxEdited(e, b) {
-        if(!this.userPasswordEditBox.isFocused())
+        if(!this.userPasswordEditBox.isFocused()) {
+            this.userPasswordEditBox.stayOnTop = true;
             this.userPasswordEditBox.setFocus();
+        }
     }
     
     onReturnKeyPressed() {

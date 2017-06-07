@@ -4914,7 +4914,7 @@
     "_N$returnType": 0,
     "_N$inputFlag": 0,
     "_N$inputMode": 6,
-    "_N$fontSize": 20,
+    "_N$fontSize": 25,
     "_N$lineHeight": 40,
     "_N$fontColor": {
       "__type__": "cc.Color",
@@ -5231,7 +5231,7 @@
     "_N$returnType": 0,
     "_N$inputFlag": 0,
     "_N$inputMode": 6,
-    "_N$fontSize": 20,
+    "_N$fontSize": 25,
     "_N$lineHeight": 40,
     "_N$fontColor": {
       "__type__": "cc.Color",
@@ -5548,7 +5548,7 @@
     "_N$returnType": 0,
     "_N$inputFlag": 0,
     "_N$inputMode": 6,
-    "_N$fontSize": 20,
+    "_N$fontSize": 25,
     "_N$lineHeight": 40,
     "_N$fontColor": {
       "__type__": "cc.Color",
@@ -6512,7 +6512,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 326.37,
+      "width": 323.37,
       "height": 40
     },
     "_children": [],
@@ -6558,7 +6558,7 @@
     "_actualFontSize": 30,
     "_fontSize": 30,
     "_lineHeight": 40,
-    "_enableWrapText": false,
+    "_enableWrapText": true,
     "_N$file": {
       "__uuid__": "8538fe1b-c3b4-48ca-849f-55e33a2c7a57"
     },
@@ -6659,7 +6659,7 @@
     },
     "_enabled": true,
     "_useOriginalSize": false,
-    "_string": "",
+    "_string": "123123",
     "_tabIndex": 0,
     "editingDidBegan": [],
     "textChanged": [],
@@ -6671,7 +6671,7 @@
     "_N$returnType": 0,
     "_N$inputFlag": 1,
     "_N$inputMode": 3,
-    "_N$fontSize": 20,
+    "_N$fontSize": 27,
     "_N$lineHeight": 50,
     "_N$fontColor": {
       "__type__": "cc.Color",
@@ -6889,7 +6889,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 96.79,
+      "width": 100.79,
       "height": 37
     },
     "_children": [],
@@ -7174,7 +7174,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 106.73,
+      "width": 110.73,
       "height": 37
     },
     "_children": [],
