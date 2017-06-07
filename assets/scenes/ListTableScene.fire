@@ -2979,7 +2979,7 @@
     "node": {
       "__id__": 79
     },
-    "_enabled": true,
+    "_enabled": false,
     "_spriteFrame": {
       "__uuid__": "9a09ecb9-23dd-4a3b-8b7a-0836efd66c6f"
     },
@@ -3178,7 +3178,7 @@
         "__id__": 87
       }
     ],
-    "_N$isChecked": true
+    "_N$isChecked": false
   },
   {
     "__type__": "cc.ToggleGroup",
@@ -5319,6 +5319,15 @@
     },
     "filter3rdLabel": {
       "__id__": 103
+    },
+    "radio1": {
+      "__id__": 85
+    },
+    "radio2": {
+      "__id__": 96
+    },
+    "radio3": {
+      "__id__": 106
     }
   }
 ]

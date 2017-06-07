@@ -23,7 +23,10 @@ export default class ListTableScene extends BaseScene {
             arrowNode: cc.Node,
             filter1stLabel: cc.Label,
             filter2ndLabel: cc.Label,
-            filter3rdLabel: cc.Label
+            filter3rdLabel: cc.Label,
+            radio1: cc.Toggle,
+            radio2: cc.Toggle,
+            radio3: cc.Toggle
         };
         
         this.items = null;
@@ -51,7 +54,7 @@ export default class ListTableScene extends BaseScene {
         this.userMoneyLbl.string = `${Utils.numberFormat(app.context.getMeBalance() || 0)}`;
         [this.filter1stLabel, this.filter2ndLabel, this.filter3rdLabel].forEach((label, index) => {
             label.string = app.config.listTableGroupFilters[index].text;
-        })
+        });
     }
 
     onEnable() {
@@ -193,18 +196,15 @@ export default class ListTableScene extends BaseScene {
     }
 
     onClickNongDanBtn() {
-        this.filterCond = app.config.listTableGroupFilters[0];
-        this._renderList();
+        this._activeFilterByIndex(0);
     }
 
     onClickQuyTocBtn() {
-        this.filterCond = app.config.listTableGroupFilters[1];
-        this._renderList();
+        this._activeFilterByIndex(1);
     }
 
-    onClickHoangGiaBtn() {
-        this.filterCond = app.config.listTableGroupFilters[2];
-        this._renderList();
+    onClickHoangGiaBtn(e) {
+        this._activeFilterByIndex(2);
     }
 
     onClickGuideBtn() {
@@ -239,6 +239,7 @@ export default class ListTableScene extends BaseScene {
 
             if (minBalanceMultiples && minBalanceMultiples.length > 0) {
                 this.minBalanceMultiple = minBalanceMultiples[0];
+                this._filterByUserMoney(this.minBalanceMultiple);
             }
 
             if (roomIds && roomIds.length > 0) {
@@ -246,7 +247,28 @@ export default class ListTableScene extends BaseScene {
             }
         }
     }
-
+    
+    _activeFilterByIndex(index) {
+        this.filterCond = app.config.listTableGroupFilters[index];
+        this._renderList();    
+    }
+    
+    _filterByUserMoney(minBalanceMultiples) {
+        app.context.minBalanceMultiple = minBalanceMultiples[0];
+        // hightlight bet range by user money
+        let minMoney =  app.context.getMeBalance()/this.minBalanceMultiple;
+        let index = app.config.listTableGroupFilters.findIndex((o) => (minMoney >= o.min && minMoney <= o.max));
+        this[`radio1`].isChecked = false;
+        if(index === -1 && minMoney >= app._.maxBy(app.config.listTableGroupFilters, (o) => o.max).max) {
+            this._activeFilterByIndex(app.config.listTableGroupFilters.length - 1);
+            this[`radio3`].isChecked = true;
+            
+        } else if(~index) {
+            this._activeFilterByIndex(index);
+            this[`radio${index + 1}`].isChecked = true;
+        }
+    }
+    
     _sendRequestUserJoinLobbyRoom(lobbyId) {
         if (!lobbyId) {
             app.system.info(app.res.string('error_undefined_please_try_again'));
@@ -311,7 +333,7 @@ export default class ListTableScene extends BaseScene {
     _handleRoomJoinEvent(event) {
         let room = event.room;
         this._room = room;
-        
+
         if (room) {
             if (room.isGame === false && room.name && ~room.name.indexOf('lobby')) {
                 this._sendRequestUserListRoom(room);
