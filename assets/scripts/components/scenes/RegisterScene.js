@@ -18,14 +18,39 @@ export default class RegisterScene extends BaseScene {
         super.onLoad();
         this.captchaLabel = this.resetCaptcha.getChildByName('label').getComponent(cc.Label);
         this.generateRandomString();
+        if(app.env.isBrowser()) {
+            this.userPasswordEditBox.stayOnTop = true;
+            this.userCaptchaEditBox.stayOnTop = true;
+        }
     }
-
+     
+    onDisable() {
+       if(app.env.isBrowser()) {
+            this.userPasswordEditBox.stayOnTop = false;
+            this.userCaptchaEditBox.stayOnTop = false;
+        }     
+    }
+    
+    onUserNameEditboxEdited(e, b) {
+        if(!this.userPasswordEditBox.isFocused())
+            this.userPasswordEditBox.setFocus();
+    }
+    
+    onPasswordEditboxEdited(e, b) {
+        if(!this.userCaptchaEditBox.isFocused())
+            this.userCaptchaEditBox.setFocus();
+    }
+    
+    onReturnKeyPressed() {
+       this.handleRegistryAction();
+    }
+    
     handleRegistryAction() {
         let username = this.userNameEditBox.string.trim();
         let password = this.userPasswordEditBox.string.trim();
 
         if (this._isValidUserInputs(username, password)) {
-            this.loginToDashboard(username, password, true);
+            this.loginToDashboard(username, password, true, false, null, null, this.generateRandomString.bind(this));
         } else {
             this.hideLoading();
             if (!this._isValidUsernameInput(username)) {
@@ -34,8 +59,8 @@ export default class RegisterScene extends BaseScene {
                 app.system.showErrorToast(app.getMessageFromServer("LOGIN_ERROR_PASSWORD_NOT_VALID"));
             } else if (!this._isValidCaptcha()) {
                 app.system.showErrorToast(app.getMessageFromServer("LOGIN_ERROR_CAPTCHA_NOT_VALID"));
-                this.generateRandomString();
             }
+            this.generateRandomString();
         }
     }
 

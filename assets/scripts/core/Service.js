@@ -419,11 +419,12 @@ class Service {
      * @param {function} cb
      */
 
-    requestAuthen(username = "", password = "", isRegister = false, isQuickLogin = false, accessToken = null, cb) {
+    requestAuthen(username = "", password = "", isRegister = false, isQuickLogin = false, accessToken = null, facebookId = null, cb) {
         let data = {};
         data[app.keywords.IS_REGISTER] = isRegister;
         data[app.keywords.APP_SECRET_KEY] = app.config.app_secret_key;
-        data['isMobile'] = app.env.isMobile()
+        data['isMobile'] = app.env.isMobile();
+        facebookId && (data[app.keywords.FACEBOOK_ID] = facebookId);
         data[app.keywords.DEVICE_ID] = app.config.DEVICE_ID;
         data[app.keywords.VERSION] = app.config.version;
         data[app.keywords.QUICK_PLAY] = isQuickLogin;

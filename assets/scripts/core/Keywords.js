@@ -168,6 +168,7 @@ Keywords.USER_EXP_POINT = "uep";
 Keywords.LEVEL_EXP_POINT = "iexp";
 Keywords.NEXT_LEVEL_EXP_POINT = "uexp";
 Keywords.NEXT_LEVEL_EXP_PERCENT = "pl";
+Keywords.FACEBOOK_ID = "facebookId";
 //Task
 Keywords.TASK_CODE = "tc";
 Keywords.TASK_NAME = "tn";

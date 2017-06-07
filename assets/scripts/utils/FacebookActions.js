@@ -53,24 +53,23 @@ export default class FacebookActions {
 
     /**
      * 
-     * @param {Function} [runtimeCb] = (accessTokenId) => {}
-     * @param {Funcion} responseCb = (fbId, accessToken) => {}
+     * @param {Function} runtimeCb = (fbId, accessToken) => {} // -> Login 
      * 
      * @memberof FacebookActions
      */
-    login(runtimeCb = null, responseCb = null) {
+    login(runtimeCb = null) {
         if (app.env.isMobile()) {
             this._setLoginState(window.sdkbox.PluginFacebook.isLoggedIn());
 
             if (!this.isLoggedIn()) {
                 this._initSdk({
                     onLogin: (isLogin, msg) => {
-                        isLogin && this._handlerLoginAction(window.sdkbox.PluginFacebook.getUserID(), window.sdkbox.PluginFacebook.getAccessToken(), runtimeCb, responseCb);
+                        isLogin && this._handlerLoginAction(window.sdkbox.PluginFacebook.getUserID(), window.sdkbox.PluginFacebook.getAccessToken(), runtimeCb);
                     }
                 });
                 window.sdkbox.PluginFacebook.login();
             } else {
-                this._handlerLoginAction(window.sdkbox.PluginFacebook.getUserID(), window.sdkbox.PluginFacebook.getAccessToken(), runtimeCb, responseCb);
+                this._handlerLoginAction(window.sdkbox.PluginFacebook.getUserID(), window.sdkbox.PluginFacebook.getAccessToken(), runtimeCb);
             }
         } else {
             if (window.FB) {
@@ -83,7 +82,7 @@ export default class FacebookActions {
                         let uid = response.authResponse.userID;
                         let accessToken = response.authResponse.accessToken;
 
-                        this._handlerLoginAction(uid, accessToken, runtimeCb, responseCb);
+                        this._handlerLoginAction(uid, accessToken, runtimeCb);
                     } else {
                         // the user is logged in to Facebook, but has not authenticated your app
                         window.FB.login((response) => {
@@ -95,7 +94,7 @@ export default class FacebookActions {
                                     // let user_email = res.email; //get user email
                                     // you can store this data into your database
                                     //console.warn('window.FB.api: ', res);
-                                    this._handlerLoginAction(user_id, accessToken, runtimeCb, responseCb);
+                                    this._handlerLoginAction(user_id, accessToken, runtimeCb);
                                 });
                             } else {
                                 //user hit cancel button
@@ -199,16 +198,15 @@ export default class FacebookActions {
     }
 
     /**
-     * @param {Function} [runtimeCb] = (accessTokenId) => {}
-     * @param {Funcion} responseCb = (fbId, accessToken) => {}
+     * @param {Function} [runtimeCb] = (fbId, accessToken) => {}
      * 
      * @memberof FacebookActions
      */
-    _handlerLoginAction(fbId, accessToken, runtimeCb, responseCb) {
-        this._setAccessToken(accessToken);
+    _handlerLoginAction(fbId, accessToken, runtimeCb) {
         this._setFacebookId(fbId);
-
-        runtimeCb && runtimeCb(this.getAccessToken());
-        responseCb && responseCb(this.getFacebookId(), this.getAccessToken());
+        this._setAccessToken(accessToken);
+        
+        console.warn(fbId);
+        runtimeCb && runtimeCb(this.getFacebookId(), this.getAccessToken());
     }
 }

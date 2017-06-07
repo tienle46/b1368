@@ -109,14 +109,14 @@ export default class BaseScene extends Actor {
         app.system.loadScene(name, onLaunched);
     }
 
-    loginToDashboard(username, password, isRegister = false, isQuickLogin = false, accessToken = null) {
+    loginToDashboard(username, password, isRegister = false, isQuickLogin = false, accessToken = null, fbId = null, cb) {
 
         app.system.showLoader('Đang kết nối đến server ...');
 
         if (app.service.client.isConnected()) {
-            this._requestAuthen(username, password, isRegister, isQuickLogin, accessToken);
+            this._requestAuthen(username, password, isRegister, isQuickLogin, accessToken, fbId, null, cb);
         } else {
-            this._tryToConnectAndLogin(username, password, isRegister, isQuickLogin, accessToken);
+            this._tryToConnectAndLogin(username, password, isRegister, isQuickLogin, accessToken, fbId, null, cb);
         }
     }
 
@@ -129,16 +129,16 @@ export default class BaseScene extends Actor {
         }
     }
 
-    _tryToConnectAndLogin(username, password, isRegister, isQuickLogin, accessToken, tryOneTime){
+    _tryToConnectAndLogin(username, password, isRegister, isQuickLogin, accessToken, fbId, tryOneTime, cb){
         app.service.connect((success) => {
             if (success) {
-                this._requestAuthen(username, password, isRegister, isQuickLogin, accessToken, tryOneTime);
+                this._requestAuthen(username, password, isRegister, isQuickLogin, accessToken, fbId, tryOneTime, cb);
             }
         });
     }
 
-    _requestAuthen(username, password, isRegister, isQuickLogin, accessToken, tryOneTime) {
-        app.service.requestAuthen(username, password, isRegister, isQuickLogin, accessToken, (error, result) => {
+    _requestAuthen(username, password, isRegister, isQuickLogin, accessToken, fbId, tryOneTime, cb) {        
+        app.service.requestAuthen(username, password, isRegister, isQuickLogin, accessToken, fbId, (error, result) => {
             if (error) {
                
                 let splitMsgs = error && error.errorMessage && error.errorMessage.split('|');
@@ -157,7 +157,7 @@ export default class BaseScene extends Actor {
                                     clearInterval(tryToConnectInterval)
                                     app.config.useSSL = false;
                                     app.service.client.config.useSSL = false;
-                                    this._tryToConnectAndLogin(username, password, isRegister, isQuickLogin, accessToken, true)
+                                    this._tryToConnectAndLogin(username, password, isRegister, isQuickLogin, accessToken, fbId, true)
                                 }
                             }, 100)
                         }
@@ -174,6 +174,8 @@ export default class BaseScene extends Actor {
                 }else{
                     app.system.hideLoader();
                     app.system.showErrorToast(app.getMessageFromServer(error));
+                    
+                    isRegister && cb && cb();
                 }
             }
             if (result) {
