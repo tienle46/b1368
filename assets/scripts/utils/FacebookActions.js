@@ -104,8 +104,7 @@ export default class FacebookActions {
                                 // this.accessToken = null;
                             }
                         }, {
-                            scope: `${app.config.fbScope}`,
-                            auth_type: 'reauthenticate'
+                            scope: `${app.config.fbScope}`
                         });
                     }
                 });
