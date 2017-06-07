@@ -141,6 +141,7 @@ export default class BaseScene extends Actor {
         app.service.requestAuthen(username, password, isRegister, isQuickLogin, accessToken, fbId, (error, result) => {
             if (error) {
                 let splitMsgs = error.errorMessage && error.errorMessage.split('|');
+                
                 if(splitMsgs && splitMsgs.length > 1){
                     if(splitMsgs[0] == 'submitServer'){
                         if(tryOneTime){
@@ -171,7 +172,7 @@ export default class BaseScene extends Actor {
                         }
                     }
                 } else {
-                    if(error.errorMessage == '114') { // facebook token is invalid
+                    if(error.errorMessage == '122') { // facebook token is invalid, sdkbox saves local token, logout order to renew
                         // logout fb 
                         app.facebookActions.logout(() => app.facebookActions.login(this._onLoginWithAccessToken.bind(this)));
                         return;

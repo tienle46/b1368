@@ -34,6 +34,8 @@ export default class FacebookActions {
                         xfbml: `${ app.config.fbxfbml }`,
                         version: `${ app.config.fbVersion }`
                     });
+                    window.FB.getLoginStatus((response) => {}); // some browsers prevent cache/cookie from 3rd party. Call this function to inital cookie (tested on Chrome, Opera)
+                    
                     window.FB.AppEvents.logPageView();
                     cb && cb();
                 };
@@ -102,7 +104,8 @@ export default class FacebookActions {
                                 // this.accessToken = null;
                             }
                         }, {
-                            scope: `${app.config.fbScope}`
+                            scope: `${app.config.fbScope}`,
+                            auth_type: 'reauthenticate'
                         });
                     }
                 });
@@ -189,7 +192,7 @@ export default class FacebookActions {
     getAccessToken() {
         return this._accessToken;
     }
-
+    
     _setFacebookId(id) {
         this._id = id;
     }
@@ -220,7 +223,6 @@ export default class FacebookActions {
         this._setFacebookId(fbId);
         this._setAccessToken(accessToken);
         
-        console.warn(fbId);
-        runtimeCb && runtimeCb(this.getFacebookId(), this.getAccessToken());
+        runtimeCb && runtimeCb(this.getFacebookId(), `${this.getAccessToken()}`);
     }
 }
