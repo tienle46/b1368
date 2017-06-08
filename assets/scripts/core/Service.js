@@ -254,8 +254,8 @@ class Service {
     _reConnectWithLoginData(loginData) {
         this.connect((success) => {
             if (success) {
-                let { username, password, isQuickLogin, cb, accessToken } = loginData;
-                this.requestAuthen(username, password, false, isQuickLogin, accessToken, cb);
+                let { username, password, isQuickLogin, cb, accessToken, facebookId } = loginData;
+                this.requestAuthen(username, password, false, isQuickLogin, accessToken, facebookId, cb);
             }
         });
     }
@@ -444,11 +444,12 @@ class Service {
             data[app.keywords.UTM_CAMPAIGN] = cc.sys.localStorage.getItem('utm_campaign') || "";
         }
 
-        this._loginData = { username, password, isQuickLogin, accessToken, cb };
+        this._loginData = { username, password, isQuickLogin, accessToken, facebookId, cb };
 
         this._addCallback(SFS2X.SFSEvent.LOGIN, cb);
 
         app.system.showLoader('Đang gửi thông tin đăng nhập ...');
+        
         this.sendRequest(new SFS2X.Requests.System.LoginRequest(username, password, data, app.config.zone));
     }
 

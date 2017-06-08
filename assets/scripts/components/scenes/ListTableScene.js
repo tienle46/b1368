@@ -258,14 +258,14 @@ export default class ListTableScene extends BaseScene {
         // hightlight bet range by user money
         let minMoney =  app.context.getMeBalance()/this.minBalanceMultiple;
         let index = app.config.listTableGroupFilters.findIndex((o) => (minMoney >= o.min && minMoney <= o.max));
-        this[`radio1`].isChecked = false;
+        this[`radio1`] && (this[`radio1`].isChecked = false);
         if(index === -1 && minMoney >= app._.maxBy(app.config.listTableGroupFilters, (o) => o.max).max) {
             this._activeFilterByIndex(app.config.listTableGroupFilters.length - 1);
-            this[`radio3`].isChecked = true;
+            this[`radio3`] && (this[`radio3`].isChecked = true);
             
         } else if(~index) {
             this._activeFilterByIndex(index);
-            this[`radio${index + 1}`].isChecked = true;
+            this[`radio${index + 1}`] && (this[`radio${index + 1}`].isChecked = true);
         }
     }
     

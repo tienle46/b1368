@@ -244,9 +244,16 @@ export default class Player extends Actor {
 
         // if(this.scene.checkReadyPlayer(this)){
         this.setReady(this.scene.checkReadyPlayer(this));
+        
+        app.system.addAppStateListener(this)
         // }
     }
-
+    
+    onDestroy() {
+        super.onDestroy();
+        app.system.removeAppStateListener(this);     
+    }
+    
     avatarClicked() {
         if (!this.isItMe()) {
             let avatar = utils.getVariable(this.user, 'avatar', {});
@@ -258,7 +265,7 @@ export default class Player extends Actor {
     
     playSoundBaseOnBalanceChanged(balanceChanged) {
         if(this.isItMe()) {
-            let isWinner = balanceChanged > 0;
+            let isWinner = balanceChanged >= 0;
             app.system.audioManager.play(isWinner ? app.system.audioManager.THANG: app.system.audioManager.THUA);
         }
     }
@@ -292,6 +299,14 @@ export default class Player extends Actor {
         let avatar = utils.getVariable(this.user, 'avatar', {});
         let avatarURL = (avatar && avatar['thumb']) || app.context.getDefaultAvatarURL('thumb');
         avatarURL && this.renderer.initPlayerAvatar(avatarURL);
+    }
+    
+    onAppStateChange(state){
+        if(this.isItMe() && state == 'active') {
+            if(this.scene.gameState === app.const.game.state.READY) {
+                !this.isReady() && app.service.send({cmd: app.commands.PLAYER_READY, room: this.scene.room});
+            }
+        }
     }
     
     setOwner(isOwner) {
@@ -404,6 +419,7 @@ export default class Player extends Actor {
     }
 
     onGameReset() {
+        this.ready = false;
         // if(this.scene.gameState != app.const.game.state.READY){
         //     this.ready = false;
         // }

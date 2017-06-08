@@ -260,7 +260,7 @@ class GameSystem {
 
     addAppStateListener(component){
         if(component && component.onAppStateChange && this._actionComponents.indexOf(component) < 0){
-            this._actionComponents.push(component)
+            this._actionComponents.push(component);
         }
     }
 
