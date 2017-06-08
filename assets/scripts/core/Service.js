@@ -420,6 +420,8 @@ class Service {
      */
 
     requestAuthen(username = "", password = "", isRegister = false, isQuickLogin = false, accessToken = null, facebookId = null, cb) {
+        this.sendRequest(new SFS2X.Requests.System.LogoutRequest());
+        
         let data = {};
         data[app.keywords.IS_REGISTER] = isRegister;
         data[app.keywords.APP_SECRET_KEY] = app.config.app_secret_key;
