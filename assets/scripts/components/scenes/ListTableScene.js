@@ -249,23 +249,23 @@ export default class ListTableScene extends BaseScene {
     }
     
     _activeFilterByIndex(index) {
+        for(let i = 1; i <= 3; i++) 
+            this[`radio${i}`] && (this[`radio${i}`].isChecked = false);
+        
         this.filterCond = app.config.listTableGroupFilters[index];
+        
+        this[`radio${index + 1}`] && (this[`radio${index + 1}`].isChecked = true);
         this._renderList();    
     }
     
     _filterByUserMoney(minBalanceMultiples) {
-        app.context.minBalanceMultiple = minBalanceMultiples[0];
         // hightlight bet range by user money
-        let minMoney =  app.context.getMeBalance()/this.minBalanceMultiple;
+        let minMoney =  app.context.getMeBalance()/minBalanceMultiples;
         let index = app.config.listTableGroupFilters.findIndex((o) => (minMoney >= o.min && minMoney <= o.max));
-        this[`radio1`] && (this[`radio1`].isChecked = false);
-        if(index === -1 && minMoney >= app._.maxBy(app.config.listTableGroupFilters, (o) => o.max).max) {
-            this._activeFilterByIndex(app.config.listTableGroupFilters.length - 1);
-            this[`radio3`] && (this[`radio3`].isChecked = true);
-            
-        } else if(~index) {
+        index === -1 && minMoney >= app._.maxBy(app.config.listTableGroupFilters, (o) => o.max).max && (index = 2);
+        
+        if(~index) {
             this._activeFilterByIndex(index);
-            this[`radio${index + 1}`] && (this[`radio${index + 1}`].isChecked = true);
         }
     }
     
@@ -419,6 +419,23 @@ export default class ListTableScene extends BaseScene {
             cellComponent && cellComponent.initCell(playableRooms[i]);
             this.addNode(listCell);
             this.items.push(cellComponent);
+        }
+       
+        
+        // filter by playing room
+        let room = app._.maxBy(this.items.filter(item => {
+            let userCount = item.getComponentData().userCount;
+            let roomCapacity = item.getComponentData().roomCapacity;
+            return userCount < roomCapacity;
+        }), (item) => {
+            let userCount = item.getComponentData().userCount;
+            return userCount;
+        });
+        
+        if (room) {
+            let minBet = room.getComponentData().minBet;
+            let index = app.config.listTableGroupFilters.findIndex(cond => minBet >= cond.min && minBet <= cond.max);
+            this._activeFilterByIndex(index);
         }
 
         this._renderList();
