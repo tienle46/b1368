@@ -297,10 +297,12 @@ class GameSystem {
     }
 
     _onAdminMessage(message, data) {
+        !data && (data = { t: app.const.adminMessage.ALERT});
+        
         let duration = data.duration * 1000,
             title = data.title,
             showToast = true,
-            messageType = data && data.t,
+            messageType = data.t,
             sceneName = this.getCurrentSceneName();
                     
         switch (messageType){

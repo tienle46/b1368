@@ -22,6 +22,7 @@ export default class BaseScene extends Actor {
         this.progress = null;
         this.onShown = null;
         this.isLoaded = false;
+        this._showFBLoginPopup = false;
     }
 
     _addToPendingAddPopup(message) {
@@ -174,7 +175,8 @@ export default class BaseScene extends Actor {
                 } else {
                     if(error.errorMessage == '122') { // facebook token is invalid, sdkbox saves local token, logout order to renew
                         // logout fb 
-                        app.facebookActions.logout(() => app.facebookActions.login(this._onLoginWithAccessToken.bind(this)));
+                        app.facebookActions.logout(() => app.facebookActions.login(this._onLoginWithAccessToken.bind(this)), this._showFBLoginPopup); // at this line, this._showFBLoginPopup = true
+                        this._showFBLoginPopup = false;
                         return;
                     } 
                     app.system.hideLoader();
