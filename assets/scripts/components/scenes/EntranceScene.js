@@ -60,7 +60,6 @@ class EntranceScene extends BaseScene {
     }
 
     handleFacebookLoginAction() {
-        this.accessToken = null;
         this.showLoading(app.res.string('logging_in_via_facebook'));
         
         app.facebookActions.login(this._onLoginWithAccessToken.bind(this))

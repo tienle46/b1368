@@ -24,7 +24,7 @@ app.config.testIngame = false;
 app.config.defaultLocale = 'vi';
 app.config.poorNetworkThreshold = 2000;
 app.config.pingPongPollQueueSize = 3;
-app.config.pingPongInterval = 60000;
+app.config.pingPongInterval = 20000; // 20s
 app.config.buildForMobile = true; // if ( sys.platform !== 'browser')
 app.config.app_secret_key = '63d9ccc8-9ce1-4165-80c8-b15eb84a780a';
 app.config.DEVICE_ID = 'a19c8e4ae2e82ef1c7846f32628d4ead3';
@@ -36,11 +36,11 @@ app.config.USER_NAME_REGEX = /^[a-zA-Z0-9._]{6,15}$/;
 app.config.PASSWORD_REGEX = /^(?=.*[A-Za-z])(?=.*\d).{6,30}$/;
 
 
-app.config.fbAppId = 226720277782952;
-// app.config.fbAppId = 1793374524209784; // <- app test
+// app.config.fbAppId = 226720277782952;
+app.config.fbAppId = 1793374524209784; // <- app test
 app.config.fbxfbml = true;
-app.config.fbVersion = 'v2.8';
-// app.config.fbVersion = 'v2.7'; // <- app test too
+// app.config.fbVersion = 'v2.8';
+app.config.fbVersion = 'v2.7'; // <- app test too
 app.config.fbScope = 'public_profile,email,user_friends';
 
 app.config.fanpage = `http://m.me/songbaihoanggia`;

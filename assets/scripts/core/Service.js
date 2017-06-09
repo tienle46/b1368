@@ -48,9 +48,11 @@ class Service {
         this.client = null;
         this._eventCallbacks = {};
         this._eventScopes = {};
-
+        
         this._valueQueue = [];
         this._lagPollingInterval = null;
+        this._lagPollingPrepared = true;
+        this._isShowLoginPopup = false;
         this._poorNetwork = false;
         this._loginData = null;
         this.isConnecting = false;
@@ -213,7 +215,6 @@ class Service {
     }
 
     _onConnectionLost(event) {
-
         this.client.buddyManager._inited = false;
         this.isConnecting = false;
         this._pendingRequests = [];
@@ -234,23 +235,32 @@ class Service {
         }
 
         if (event && event.reason === "manual") {
-            this._loginData = null;
-            app.system.loadScene(app.const.scene.ENTRANCE_SCENE);
+            if(this._isShowLoginPopup) {
+                this._changeSceneWhenDisconnect();
+                this._isShowLoginPopup = false;
+            } else {
+                this._loginData = null;
+                app.system.loadScene(app.const.scene.ENTRANCE_SCENE); 
+            }
         } else {
             if (scene) {
-                isLoggedIn && app.system.loadScene(app.const.scene.ENTRANCE_SCENE, () => {
-                    if(this._loginData) {
-                        let okBtn = this._reConnectWithLoginData.bind(this, this._loginData);
-                        app.system.confirm(app.res.string('lost_connection'), null, okBtn);
-                    } else {
-                        app.system.info(app.res.string('lost_connection_without_reconnect'));
-                    }
-                });
+                isLoggedIn && this._changeSceneWhenDisconnect();
             }
         }
         event = null;
     }
-
+    
+    _changeSceneWhenDisconnect() {
+        app.system.loadScene(app.const.scene.ENTRANCE_SCENE, () => {
+            if(this._loginData) {
+                let okBtn = this._reConnectWithLoginData.bind(this, this._loginData);
+                app.system.confirm(app.res.string('lost_connection'), null, okBtn);
+            } else {
+                app.system.info(app.res.string('lost_connection_without_reconnect'));
+            }
+        });    
+    }
+    
     _reConnectWithLoginData(loginData) {
         this.connect((success) => {
             if (success) {
@@ -579,16 +589,21 @@ class Service {
 
     startLagPolling(pollingInterval) {
         this.stopLagPolling();
-        this.interval = pollingInterval;
         this._lagPollingInterval = setInterval(() => {
             let currentTimeInMilis = (new Date()).getTime();
-            this.send({
-                cmd: app.commands.XLAG,
-                data: {
-                    [app.keywords.XLAG_VALUE]: currentTimeInMilis
-                }
-            });
-        }, this.interval);
+            if(this._lagPollingPrepared) {
+                this.send({
+                    cmd: app.commands.XLAG,
+                    data: {
+                        [app.keywords.XLAG_VALUE]: currentTimeInMilis
+                    }
+                });
+                this._lagPollingPrepared = null;
+            } else {
+                // maybe user's disconnected
+                this._showReloginPopupWhenDiconnectivity();
+            }
+        }, pollingInterval);
     }
 
     stopLagPolling() {
@@ -598,10 +613,16 @@ class Service {
             this._lagPollingInterval = null;
         }
     }
-
+    
+    _showReloginPopupWhenDiconnectivity() {
+        this._isShowLoginPopup = true;
+        this.client._socketEngine.reconnectionSeconds = 0;
+        this.client.disconnect();
+    }
+    
     _handleLagPollingResponse(event) {
         if (event.cmd === app.commands.XLAG) {
-
+            this._lagPollingPrepared = true;
             let resObj = event.params;
             let curRecVal = (new Date()).getTime();
             let curSendVal = resObj[app.keywords.XLAG_VALUE];
@@ -621,6 +642,7 @@ class Service {
             this._valueQueue.forEach(value => { totalLatency += value; });
             var averageLatency = totalLatency / this._valueQueue.length;
             this._poorNetwork = averageLatency > app.config.poorNetworkThreshold;
+            this._poorNetwork && this._showReloginPopupWhenDiconnectivity();
         }
     }
 

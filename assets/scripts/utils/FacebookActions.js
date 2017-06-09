@@ -87,7 +87,7 @@ export default class FacebookActions {
                         this._handlerLoginAction(uid, accessToken, runtimeCb);
                     } else {
                         // the user is logged in to Facebook, but has not authenticated your app
-                        window.FB.login((response) => {
+                        window.FB.login((response) => {                            
                             if (response.authResponse) {
                                 let accessToken = response.authResponse.accessToken; //get access token
                                 let user_id = response.authResponse.userID; //get FB UID
@@ -102,6 +102,7 @@ export default class FacebookActions {
                                 //user hit cancel button
                                 //console.warn('User cancelled login or did not fully authorize.');
                                 // this.accessToken = null;
+                                app.system.hideLoader();
                             }
                         }, {
                             scope: `${app.config.fbScope}`
@@ -166,11 +167,11 @@ export default class FacebookActions {
         }
     }
     
-    logout(cb = null) {
+    logout(cb = null, sendLogin) {
         if(app.env.isBrowser()) {
             window.FB.logout((response) => {
                 this._setLoginState(false);
-                cb && cb();
+                sendLogin && cb && cb();
             }); 
         } else if(app.env.isMobile()) {
             this._setLoginState(false);
