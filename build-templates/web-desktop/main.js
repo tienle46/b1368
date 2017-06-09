@@ -106,7 +106,7 @@
 
         // jsList
         var jsList = settings.jsList;
-        var bundledScript = settings.debug ? 'project.dev.js?v=2' : 'project.js?v=2';
+        var bundledScript = settings.debug ? 'project.dev.js' : 'project.js';
         if (jsList) {
             jsList.push(bundledScript);
         }
