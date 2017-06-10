@@ -239,7 +239,7 @@ export default class ListTableScene extends BaseScene {
 
             if (minBalanceMultiples && minBalanceMultiples.length > 0) {
                 this.minBalanceMultiple = minBalanceMultiples[0];
-                this._filterByUserMoney(this.minBalanceMultiple);
+                // this._filterByUserMoney(this.minBalanceMultiple);
             }
 
             if (roomIds && roomIds.length > 0) {
