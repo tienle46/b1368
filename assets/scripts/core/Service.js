@@ -390,6 +390,14 @@ class Service {
         if (this.client.isConnected()) {
             this._onConnection({ success: true });
         } else {
+            if(this.client._socketEngine.isConnecting) {
+                this.client._socketEngine.isConnecting = false;
+                this.client.disconnect();
+                setTimeout(() => {
+                    this.connect();
+                }, 200);
+                return;
+            }
             this._addCallback(SFS2X.SFSEvent.CONNECTION, cb);
             this.client.connect(app.config.host, app.config.port);
         }
