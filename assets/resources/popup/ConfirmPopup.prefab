@@ -2055,9 +2055,7 @@
       "b": 255,
       "a": 255
     },
-    "_N$normalSprite": {
-      "__uuid__": "8012db4b-9874-4da7-9051-203564c02d72"
-    },
+    "_N$normalSprite": null,
     "_N$disabledSprite": null,
     "_N$target": {
       "__id__": 55
@@ -2628,6 +2626,7 @@
     "popupComponent": {
       "__id__": 23
     },
+    "titleLbl": null,
     "componentName": "ConfirmPopup",
     "messageLabel": {
       "__id__": 46

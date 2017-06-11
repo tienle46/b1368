@@ -164,6 +164,7 @@
     },
     "_enabled": true,
     "path": "",
+    "lineHeight": 24,
     "label": {
       "__id__": 3
     },
@@ -183,7 +184,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "e3a6bbbf-9036-49b0-99dc-e7c42a9b729b"
+      "__uuid__": "ab717479-134d-4783-9a56-0e89f2afaa31"
     },
     "_type": 1,
     "_sizeMode": 0,
@@ -198,7 +199,9 @@
     "_isTrimmedMode": true,
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
-    "_atlas": null
+    "_atlas": {
+      "__uuid__": "10ca67ea-2a3c-4512-b8a8-cfd37f9d8bbe"
+    }
   },
   {
     "__type__": "cc.Layout",
