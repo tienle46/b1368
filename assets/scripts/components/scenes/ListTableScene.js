@@ -152,10 +152,6 @@ export default class ListTableScene extends BaseScene {
         app.service.send(sendObject);
     }
 
-    _calculateMinBalanceToJoinGame(minBet) {
-        return minBet * (this.minBalanceMultiple > 0 ? this.minBalanceMultiple : app.config.defaultMinBalanceJoinGameRoomMultiple);
-    }
-
     onUserRequestJoinRoom({ id, minBet, password, isSpectator, roomCapacity } = {}) {
         log('id: ', id, " minbet:", minBet, "Capacity: ", roomCapacity);
 
@@ -176,21 +172,6 @@ export default class ListTableScene extends BaseScene {
                 } else {
                     this._createRoom({ minBet, roomCapacity });
                 }
-            }
-        }
-    }
-    
-    _onOpenTopUp() {
-        app.visibilityManager.goTo(Linking.ACTION_TOPUP);
-    }
-    
-    _onListGameMinBetResponse(data) {
-        if (data) {
-            this.enableMinbets = data[app.keywords.GAME_ENABLE_MINBET_LIST] || [];
-            this.enableMinbets.sort((a, b) => a - b);
-
-            if (this._isInitedRoomList) {
-                this._initRoomsListFromData({}, true);
             }
         }
     }
@@ -232,6 +213,10 @@ export default class ListTableScene extends BaseScene {
         });
     }
     
+    _calculateMinBalanceToJoinGame(minBet) {
+        return minBet * (this.minBalanceMultiple > 0 ? this.minBalanceMultiple : app.config.defaultMinBalanceJoinGameRoomMultiple);
+    }
+    
     _onUserListGroup(data) {
         if (data && data[app.keywords.GAME_LIST_RESULT] && data[app.keywords.GAME_LIST_RESULT] === this.gameCode) {
             let roomIds = data[app.keywords.GROUP_LIST_GROUP][app.keywords.GROUP_SHORT_NAME];
@@ -239,11 +224,25 @@ export default class ListTableScene extends BaseScene {
 
             if (minBalanceMultiples && minBalanceMultiples.length > 0) {
                 this.minBalanceMultiple = minBalanceMultiples[0];
-                // this._filterByUserMoney(this.minBalanceMultiple);
             }
 
             if (roomIds && roomIds.length > 0) {
                 this._sendRequestUserJoinLobbyRoom(roomIds[0]);
+            }
+        }
+    }
+    
+    _onOpenTopUp() {
+        app.visibilityManager.goTo(Linking.ACTION_TOPUP);
+    }
+    
+    _onListGameMinBetResponse(data) {
+        if (data) {
+            this.enableMinbets = data[app.keywords.GAME_ENABLE_MINBET_LIST] || [];
+            this.enableMinbets.sort((a, b) => a - b);
+
+            if (this._isInitedRoomList) {
+                this._initRoomsListFromData({}, true);
             }
         }
     }
@@ -258,13 +257,19 @@ export default class ListTableScene extends BaseScene {
         this._renderList();    
     }
     
-    _filterByUserMoney(minBalanceMultiples) {
-        // hightlight bet range by user money
-        let minMoney =  app.context.getMeBalance()/minBalanceMultiples;
-        let index = app.config.listTableGroupFilters.findIndex((o) => (minMoney >= o.min && minMoney <= o.max));
-        index === -1 && minMoney >= app._.maxBy(app.config.listTableGroupFilters, (o) => o.max).max && (index = 2);
+    _bestSuitableRoom(rooms, minBalanceMultiple) {
+       let minMoney = app.context.getMeBalance() / this.minBalanceMultiple;
+        let room = app._.maxBy(rooms.filter(item => {
+            let {userCount, roomCapacity, minBet} = item.getComponentData();
+            return userCount >= 1 && userCount < roomCapacity && minBet <= minMoney;
+        }), (item) => {
+            let {minBet} = item.getComponentData();
+            return minBet;
+        });
         
-        if(~index) {
+        if (room) {
+            let minBet = room.getComponentData().minBet;
+            let index = app.config.listTableGroupFilters.findIndex(cond => minBet >= cond.min && minBet <= cond.max);
             this._activeFilterByIndex(index);
         }
     }
@@ -421,22 +426,8 @@ export default class ListTableScene extends BaseScene {
             this.items.push(cellComponent);
         }
        
-        
         // filter by playing room
-        let room = app._.maxBy(this.items.filter(item => {
-            let userCount = item.getComponentData().userCount;
-            let roomCapacity = item.getComponentData().roomCapacity;
-            return userCount < roomCapacity;
-        }), (item) => {
-            let userCount = item.getComponentData().userCount;
-            return userCount;
-        });
-        
-        if (room) {
-            let minBet = room.getComponentData().minBet;
-            let index = app.config.listTableGroupFilters.findIndex(cond => minBet >= cond.min && minBet <= cond.max);
-            this._activeFilterByIndex(index);
-        }
+        this.minBalanceMultiple && this._bestSuitableRoom(this.items, this.minBalanceMultiple);
 
         this._renderList();
         this._isInitedRoomList = true;
