@@ -1835,7 +1835,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "40040145-8dea-468e-9518-a9d746f810ab"
+      "__uuid__": "a11a9698-60d5-40c2-87d9-ad36c9ef8076"
     },
     "_type": 1,
     "_sizeMode": 0,
@@ -1850,7 +1850,9 @@
     "_isTrimmedMode": true,
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
-    "_atlas": null
+    "_atlas": {
+      "__uuid__": "4bb00c8a-c321-4d5c-b859-a722596f04ed"
+    }
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -1884,6 +1886,7 @@
     "popupComponent": {
       "__id__": 5
     },
+    "titleLbl": null,
     "componentName": "MessagePopup",
     "messageLabel": {
       "__id__": 29
