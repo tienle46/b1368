@@ -114,10 +114,10 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 123
+        "__id__": 121
       },
       {
-        "__id__": 124
+        "__id__": 122
       }
     ],
     "_prefab": null,
@@ -3710,11 +3710,7 @@
       "width": 0,
       "height": 0
     },
-    "_children": [
-      {
-        "__id__": 121
-      }
-    ],
+    "_children": [],
     "_rotationX": 0,
     "_rotationY": 0,
     "_scaleX": 1,
@@ -3735,39 +3731,6 @@
     "_components": [],
     "_prefab": null,
     "groupIndex": 0
-  },
-  {
-    "__type__": "cc.Node",
-    "_objFlags": 0,
-    "_parent": {
-      "__id__": 120
-    },
-    "_id": "cc004yp7PBA/I8urt/Covio",
-    "_prefab": {
-      "__id__": 122
-    },
-    "_name": "GameResult1ColumPopupPrefab",
-    "_active": true,
-    "_position": {
-      "__type__": "cc.Vec2",
-      "x": 0,
-      "y": 0
-    },
-    "_rotationX": 0,
-    "_rotationY": 0,
-    "_localZOrder": 0,
-    "_globalZOrder": 0
-  },
-  {
-    "__type__": "cc.PrefabInfo",
-    "root": {
-      "__id__": 121
-    },
-    "asset": {
-      "__uuid__": "13af3e19-4431-492e-bc6d-c0412c0ab05a"
-    },
-    "fileId": "1cb7cR4MAFDSoDPzgYZ1gAZ",
-    "sync": true
   },
   {
     "__type__": "cc.Canvas",

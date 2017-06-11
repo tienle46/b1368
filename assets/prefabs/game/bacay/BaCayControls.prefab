@@ -317,7 +317,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "0da026cb-0614-45ff-b5cf-3838e8f4ef6b"
+      "__uuid__": "eafbd3ce-0478-4ae9-9b52-5e49a23c78ed"
     },
     "_type": 1,
     "_sizeMode": 0,
@@ -384,9 +384,7 @@
       "b": 255,
       "a": 255
     },
-    "_N$normalSprite": {
-      "__uuid__": "0da026cb-0614-45ff-b5cf-3838e8f4ef6b"
-    },
+    "_N$normalSprite": null,
     "_N$disabledSprite": null,
     "_N$target": {
       "__id__": 3
@@ -702,9 +700,7 @@
       "b": 255,
       "a": 255
     },
-    "_N$normalSprite": {
-      "__uuid__": "8012db4b-9874-4da7-9051-203564c02d72"
-    },
+    "_N$normalSprite": null,
     "_N$disabledSprite": null,
     "_N$target": {
       "__id__": 14
@@ -785,7 +781,8 @@
     "unreadyButton": null,
     "startButton": {
       "__id__": 14
-    }
+    },
+    "waitButton": null
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -943,7 +940,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 73.29,
+      "width": 77.69000000000001,
       "height": 40
     },
     "_children": [],
@@ -1036,7 +1033,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "b7da0bda-f05c-414a-99ae-65f8e25ed85f"
+      "__uuid__": "9c8a9f54-d1c0-4ad0-9da1-7bb2c9f8fda9"
     },
     "_type": 1,
     "_sizeMode": 0,
