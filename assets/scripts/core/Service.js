@@ -438,7 +438,13 @@ class Service {
      */
 
     requestAuthen(username = "", password = "", isRegister = false, isQuickLogin = false, accessToken = null, facebookId = null, cb) {
-        this.sendRequest(new SFS2X.Requests.System.LogoutRequest());
+        if(this.client.me) {
+            this.sendRequest(new SFS2X.Requests.System.LogoutRequest());
+            setTimeout(() => {
+                this.requestAuthen(username,password,isRegister,isQuickLogin,accessToken,facebookId,cb);
+            }, 200);
+            return;
+        }
         
         let data = {};
         data[app.keywords.IS_REGISTER] = isRegister;

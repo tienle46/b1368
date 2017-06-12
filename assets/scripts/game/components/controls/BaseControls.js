@@ -115,7 +115,7 @@ export default class BaseControls extends GameControls {
 
     setVisibleWaitButton(visible = false){
         if(visible){
-            this.scene.firstTimePlay && this.scene.isSoloGame && this.scene.gamePlayers.checkMeIsOwner() && CCUtils.setVisible(this.waitButton, true)
+            this.scene.firstTimePlay && this.scene.isSoloGame && this.scene.gamePlayers.checkMeIsOwner() && CCUtils.setVisible(this.waitButton, false)
         }else{
             CCUtils.setVisible(this.waitButton, false)
             this.scene.setFirstTimePlay(false)
