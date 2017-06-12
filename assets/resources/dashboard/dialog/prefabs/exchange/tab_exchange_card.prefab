@@ -59,11 +59,11 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 113
+        "__id__": 114
       }
     ],
     "_prefab": {
-      "__id__": 114
+      "__id__": 115
     },
     "groupIndex": 0
   },
@@ -2553,7 +2553,7 @@
         "__id__": 83
       },
       {
-        "__id__": 90
+        "__id__": 91
       }
     ],
     "_rotationX": 0,
@@ -2575,7 +2575,7 @@
     "_active": false,
     "_components": [],
     "_prefab": {
-      "__id__": 112
+      "__id__": 113
     },
     "groupIndex": 0
   },
@@ -2745,14 +2745,14 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 87
+        "__id__": 88
       },
       {
-        "__id__": 88
+        "__id__": 89
       }
     ],
     "_prefab": {
-      "__id__": 89
+      "__id__": 90
     },
     "groupIndex": 0
   },
@@ -2806,7 +2806,7 @@
       }
     ],
     "_prefab": {
-      "__id__": 86
+      "__id__": 87
     },
     "groupIndex": 0
   },
@@ -2824,7 +2824,11 @@
     "editingDidBegan": [],
     "textChanged": [],
     "editingDidEnded": [],
-    "editingReturn": [],
+    "editingReturn": [
+      {
+        "__id__": 86
+      }
+    ],
     "_N$backgroundImage": null,
     "_N$returnType": 0,
     "_N$inputFlag": 1,
@@ -2849,6 +2853,15 @@
     },
     "_N$maxLength": 11,
     "_N$stayOnTop": false
+  },
+  {
+    "__type__": "cc.ClickEvent",
+    "target": {
+      "__id__": 1
+    },
+    "component": "TabExchangeCard",
+    "handler": "onClickUpdateBtn",
+    "customEventData": ""
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -2954,10 +2967,10 @@
     },
     "_children": [
       {
-        "__id__": 91
+        "__id__": 92
       },
       {
-        "__id__": 100
+        "__id__": 101
       }
     ],
     "_rotationX": 0,
@@ -2979,14 +2992,14 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 109
+        "__id__": 110
       },
       {
-        "__id__": 110
+        "__id__": 111
       }
     ],
     "_prefab": {
-      "__id__": 111
+      "__id__": 112
     },
     "groupIndex": 0
   },
@@ -3004,7 +3017,7 @@
     },
     "_cascadeOpacityEnabled": true,
     "_parent": {
-      "__id__": 90
+      "__id__": 91
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -3018,7 +3031,7 @@
     },
     "_children": [
       {
-        "__id__": 92
+        "__id__": 93
       }
     ],
     "_rotationX": 0,
@@ -3040,14 +3053,14 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 96
+        "__id__": 97
       },
       {
-        "__id__": 97
+        "__id__": 98
       }
     ],
     "_prefab": {
-      "__id__": 99
+      "__id__": 100
     },
     "groupIndex": 0
   },
@@ -3065,7 +3078,7 @@
     },
     "_cascadeOpacityEnabled": true,
     "_parent": {
-      "__id__": 91
+      "__id__": 92
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -3097,14 +3110,14 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 93
+        "__id__": 94
       },
       {
-        "__id__": 94
+        "__id__": 95
       }
     ],
     "_prefab": {
-      "__id__": 95
+      "__id__": 96
     },
     "groupIndex": 0
   },
@@ -3113,7 +3126,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 92
+      "__id__": 93
     },
     "_enabled": true,
     "_useOriginalSize": false,
@@ -3135,7 +3148,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 92
+      "__id__": 93
     },
     "_enabled": true,
     "_color": {
@@ -3163,7 +3176,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 91
+      "__id__": 92
     },
     "_enabled": true,
     "_spriteFrame": {
@@ -3191,7 +3204,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 91
+      "__id__": 92
     },
     "_enabled": true,
     "transition": 3,
@@ -3215,7 +3228,7 @@
     "hoverSprite": null,
     "clickEvents": [
       {
-        "__id__": 98
+        "__id__": 99
       }
     ],
     "_N$interactable": true,
@@ -3237,7 +3250,7 @@
     "_N$normalSprite": null,
     "_N$disabledSprite": null,
     "_N$target": {
-      "__id__": 91
+      "__id__": 92
     }
   },
   {
@@ -3274,7 +3287,7 @@
     },
     "_cascadeOpacityEnabled": true,
     "_parent": {
-      "__id__": 90
+      "__id__": 91
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -3288,7 +3301,7 @@
     },
     "_children": [
       {
-        "__id__": 101
+        "__id__": 102
       }
     ],
     "_rotationX": 0,
@@ -3310,14 +3323,14 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 105
+        "__id__": 106
       },
       {
-        "__id__": 106
+        "__id__": 107
       }
     ],
     "_prefab": {
-      "__id__": 108
+      "__id__": 109
     },
     "groupIndex": 0
   },
@@ -3335,7 +3348,7 @@
     },
     "_cascadeOpacityEnabled": true,
     "_parent": {
-      "__id__": 100
+      "__id__": 101
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -3367,14 +3380,14 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 102
+        "__id__": 103
       },
       {
-        "__id__": 103
+        "__id__": 104
       }
     ],
     "_prefab": {
-      "__id__": 104
+      "__id__": 105
     },
     "groupIndex": 0
   },
@@ -3383,7 +3396,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 101
+      "__id__": 102
     },
     "_enabled": true,
     "_useOriginalSize": false,
@@ -3405,7 +3418,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 101
+      "__id__": 102
     },
     "_enabled": true,
     "_color": {
@@ -3433,7 +3446,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 100
+      "__id__": 101
     },
     "_enabled": true,
     "_spriteFrame": {
@@ -3461,7 +3474,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 100
+      "__id__": 101
     },
     "_enabled": true,
     "transition": 3,
@@ -3485,7 +3498,7 @@
     "hoverSprite": null,
     "clickEvents": [
       {
-        "__id__": 107
+        "__id__": 108
       }
     ],
     "_N$interactable": true,
@@ -3507,7 +3520,7 @@
     "_N$normalSprite": null,
     "_N$disabledSprite": null,
     "_N$target": {
-      "__id__": 100
+      "__id__": 101
     }
   },
   {
@@ -3535,7 +3548,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 90
+      "__id__": 91
     },
     "_enabled": true,
     "_layoutSize": {
@@ -3566,7 +3579,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 90
+      "__id__": 91
     },
     "_enabled": true,
     "isAlignOnce": true,

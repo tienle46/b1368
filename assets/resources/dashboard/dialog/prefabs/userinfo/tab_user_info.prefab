@@ -6577,7 +6577,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 323.37,
+      "width": 326.37,
       "height": 40
     },
     "_children": [],
@@ -6724,7 +6724,7 @@
     },
     "_enabled": true,
     "_useOriginalSize": false,
-    "_string": "123123",
+    "_string": "",
     "_tabIndex": 0,
     "editingDidBegan": [],
     "textChanged": [],

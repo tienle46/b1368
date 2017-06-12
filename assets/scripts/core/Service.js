@@ -217,7 +217,6 @@ class Service {
     _onConnectionLost(event) {
         this.client.buddyManager._inited = false;
         this.isConnecting = false;
-        this._lagPollingPrepared = true;
         this._pendingRequests = [];
         this.stopLagPolling();
 
@@ -606,16 +605,15 @@ class Service {
                     }
                 });
                 this._lagPollingPrepared = null;
-                console.warn('startLagPolling', this._lagPollingPrepared)
             } else {
                 // maybe user's disconnected
-                console.warn('không có lagPollingPrepared', this._lagPollingPrepared);
                 this._showReloginPopupWhenDiconnectivity();
             }
         }, pollingInterval);
     }
 
     stopLagPolling() {
+        this._lagPollingPrepared = true;
         if (this._lagPollingInterval) {
             clearInterval(this._lagPollingInterval);
             this._valueQueue = [];

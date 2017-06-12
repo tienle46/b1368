@@ -36,6 +36,24 @@ export default class TabBuddiesTransfer extends PopupTabBody {
         this._sendRequest();
     }
     
+    onReceiverEditBoxEdited(e, b) {
+        if(!this.receiverEditBoxNode.isFocused()) {
+            this.transferAmountEditBoxNode.stayOnTop = true;
+            this.transferAmountEditBoxNode.setFocus();
+        }
+    }
+    
+    onTransferAmountEditboxEdited(e, b) {
+        if(!this.receiverEditBoxNode.isFocused()) {
+            this.transferReasonEditBoxNode.stayOnTop = true;
+            this.transferReasonEditBoxNode.setFocus();
+        }
+    }
+    
+    onTransferMoneyReturnKeyPressed() {
+       this.onTransferMoneyBtnClick();
+    }
+    
     renderComponentData(data) {
         if(!data)
             return;

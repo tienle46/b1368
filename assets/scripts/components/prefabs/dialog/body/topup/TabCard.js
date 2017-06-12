@@ -75,6 +75,11 @@ class TabCard extends PopupTabBody {
         this.providerId = null;
     }
     
+    onCardCodeEditBoxEdited(e, b) {
+        this.serialNumberEditBox.stayOnTop = true;
+        this.serialNumberEditBox.setFocus();
+    }
+    
     onDestroy() {
         super.onDestroy();
         this.providerId = null;
@@ -139,6 +144,8 @@ class TabCard extends PopupTabBody {
     }
     
     onHanleChargeBtnClick() {
+        this.serialNumberEditBox.stayOnTop && (this.serialNumberEditBox.stayOnTop = false);
+        
         let cardCode = this.cardCodeEditBox.string.trim();
         let serialNumber = this.serialNumberEditBox.string.trim();
 
