@@ -640,7 +640,6 @@ class Service {
                 }
                 this._valueQueue.push(curRecVal - curSendVal);
                 this._updatePoorNetwork();
-                console.warn('_handleLagPollingResponse', this._lagPollingPrepared);
             }
         }
     }
