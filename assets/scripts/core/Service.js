@@ -217,6 +217,7 @@ class Service {
     _onConnectionLost(event) {
         this.client.buddyManager._inited = false;
         this.isConnecting = false;
+        this._lagPollingPrepared = true;
         this._pendingRequests = [];
         this.stopLagPolling();
 
@@ -402,14 +403,6 @@ class Service {
             this.client.connect(app.config.host, app.config.port);
         }
 
-    }
-
-    disconnectOnly(){
-        this.sendRequest(new SFS2X.Requests.System.ManualDisconnectionRequest);
-
-        // this.isConnected() ? (0 < this._socketEngine.reconnectionSeconds && this.send(new SFS2X.Requests.System.ManualDisconnectionRequest), setTimeout(function (a) {
-            a._handleClientDisconnection(SFS2X.Utils.ClientDisconnectionReason.MANUAL);
-        // }, 100, this)) : this._log.info("You are not connected");
     }
 
     /**
@@ -613,8 +606,10 @@ class Service {
                     }
                 });
                 this._lagPollingPrepared = null;
+                console.warn('startLagPolling', this._lagPollingPrepared)
             } else {
                 // maybe user's disconnected
+                console.warn('không có lagPollingPrepared', this._lagPollingPrepared);
                 this._showReloginPopupWhenDiconnectivity();
             }
         }, pollingInterval);
@@ -636,16 +631,18 @@ class Service {
     
     _handleLagPollingResponse(event) {
         if (event.cmd === app.commands.XLAG) {
-            this._lagPollingPrepared = true;
             let resObj = event.params;
             let curRecVal = (new Date()).getTime();
             let curSendVal = resObj[app.keywords.XLAG_VALUE];
             if (curSendVal) {
+                this._lagPollingPrepared = true;
+                
                 if (this._valueQueue.length >= app.config.pingPongPollQueueSize) {
                     this._valueQueue.splice(0, 1);
                 }
                 this._valueQueue.push(curRecVal - curSendVal);
                 this._updatePoorNetwork();
+                console.warn('_handleLagPollingResponse', this._lagPollingPrepared);
             }
         }
     }
