@@ -48,6 +48,7 @@ export default class ListTableScene extends BaseScene {
 
     onLoad() {
         super.onLoad();
+        this._sentInviteRandomly = false;
         this.filterCond = app.config.listTableGroupFilters[0];
         this.items = [];
         this.enableMinbets = [];
@@ -372,8 +373,7 @@ export default class ListTableScene extends BaseScene {
     _onUserListRoom(data) {
         this._initRoomsListFromData(data);
         /*Need to check exactly equal true or undefined*/
-        if (!this._sentInviteRandomly && app.context.requestRandomInvite === true || app.context.requestRandomInvite === undefined) {
-
+        if (!this._sentInviteRandomly && (app.context.requestRandomInvite === true || app.context.requestRandomInvite === undefined)) {
             // app.service.send({
             //     cmd: "randomInviteGame",
             //     data: {
@@ -401,12 +401,14 @@ export default class ListTableScene extends BaseScene {
         
         let playableRooms = [];
         let fullRooms = [];
+        let emptyRoom = true;
         for(let i = 0; i < displayIds.length; i++) {
+            emptyRoom = false;
             let object = this._createRoomObject(ids[i], displayIds[i], minBets[i], userCounts[i], roomCapacities[i], passwords[i]);
             (userCounts[i] === roomCapacities[i] ? fullRooms : playableRooms).push(object);
         }
         
-        if(playableRooms.length < 1) {
+        if(emptyRoom) {
             let minMoney =  app.context.getMeBalance()/this.minBalanceMultiple;
             let index = app.config.listTableGroupFilters.findIndex((o) => (minMoney >= o.min && minMoney <= o.max));
             
@@ -437,7 +439,7 @@ export default class ListTableScene extends BaseScene {
             this.items.push(cellComponent);
         }
         
-        this._renderList();
+        this.minBalanceMultiple && this._bestSuitableRoom(this.items, this.minBalanceMultiple);
         this._isInitedRoomList = true;
     }
     

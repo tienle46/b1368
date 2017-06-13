@@ -295,7 +295,7 @@ export default class GameScene extends BaseScene {
         /**
          * set requestRandomInvite = false to make sure player only receive random invite on first time join game group
          */
-        app.context.requestRandomInvite && (app.context.requestRandomInvite = false);
+        app.context.requestRandomInvite = false;
         
         // user sees greeting
         this.gamePlayers && this.gamePlayers.greetingVip(app.context.getMe());
