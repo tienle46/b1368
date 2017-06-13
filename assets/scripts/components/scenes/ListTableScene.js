@@ -258,7 +258,7 @@ export default class ListTableScene extends BaseScene {
     }
     
     _bestSuitableRoom(rooms, minBalanceMultiple) {
-       let minMoney = app.context.getMeBalance() / this.minBalanceMultiple;
+        let minMoney = app.context.getMeBalance() / this.minBalanceMultiple;
         let room = app._.maxBy(rooms.filter(item => {
             let {userCount, roomCapacity, minBet} = item.getComponentData();
             return userCount >= 1 && userCount < roomCapacity && minBet <= minMoney;
@@ -374,20 +374,20 @@ export default class ListTableScene extends BaseScene {
         /*Need to check exactly equal true or undefined*/
         if (!this._sentInviteRandomly && app.context.requestRandomInvite === true || app.context.requestRandomInvite === undefined) {
 
-            app.service.send({
-                cmd: "randomInviteGame",
-                data: {
-                    [app.keywords.GAME_CODE]: this.gameCode
-                }
-            })
-            this._sentInviteRandomly = true;
-            
-            // setTimeout(() => this.node && app.service.send({
+            // app.service.send({
             //     cmd: "randomInviteGame",
             //     data: {
             //         [app.keywords.GAME_CODE]: this.gameCode
             //     }
-            // }), 500);
+            // })
+            this._sentInviteRandomly = true;
+            
+            setTimeout(() => this.node && app.service.send({
+                cmd: "randomInviteGame",
+                data: {
+                    [app.keywords.GAME_CODE]: this.gameCode
+                }
+            }), 500);
         }
     }
 
@@ -404,6 +404,17 @@ export default class ListTableScene extends BaseScene {
         for(let i = 0; i < displayIds.length; i++) {
             let object = this._createRoomObject(ids[i], displayIds[i], minBets[i], userCounts[i], roomCapacities[i], passwords[i]);
             (userCounts[i] === roomCapacities[i] ? fullRooms : playableRooms).push(object);
+        }
+        
+        if(playableRooms.length < 1) {
+            let minMoney =  app.context.getMeBalance()/this.minBalanceMultiple;
+            let index = app.config.listTableGroupFilters.findIndex((o) => (minMoney >= o.min && minMoney <= o.max));
+            
+            if(index === -1 && minMoney >= app._.maxBy(app.config.listTableGroupFilters, (o) => o.max).max) {
+                this._activeFilterByIndex(app.config.listTableGroupFilters.length - 1);
+            } else if(~index) {
+                this._activeFilterByIndex(index);
+            }
         }
         
         // room faker
@@ -425,10 +436,7 @@ export default class ListTableScene extends BaseScene {
             this.addNode(listCell);
             this.items.push(cellComponent);
         }
-       
-        // filter by playing room
-        this.minBalanceMultiple && this._bestSuitableRoom(this.items, this.minBalanceMultiple);
-
+        
         this._renderList();
         this._isInitedRoomList = true;
     }

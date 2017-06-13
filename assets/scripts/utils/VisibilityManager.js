@@ -62,16 +62,16 @@ export default class VisibilityManager {
     
     _initFeatures(features) {
         return Object.assign({}, {
-            [VisibilityManager.NAP_THE]: true,
-            [VisibilityManager.NAP_SMS]: true,
-            [VisibilityManager.FANPAGE]: true,
-            [VisibilityManager.EVENT]: true,
-            [VisibilityManager.EXCHANGE]: true,
+            [VisibilityManager.NAP_THE]: false,
+            [VisibilityManager.NAP_SMS]: false,
+            [VisibilityManager.FANPAGE]: false,
+            [VisibilityManager.EVENT]: false,
+            [VisibilityManager.EXCHANGE]: false,
             [VisibilityManager.BANK]: true,
-            [VisibilityManager.BOT]: true,
-            [VisibilityManager.GIFT_CODE]: true,
-            [VisibilityManager.SYSTEM_MESSAGE]: true,
-            [VisibilityManager.SMASH_JAR]: true
+            [VisibilityManager.BOT]: false,
+            [VisibilityManager.GIFT_CODE]: false,
+            [VisibilityManager.SYSTEM_MESSAGE]: false,
+            [VisibilityManager.SMASH_JAR]: false
         }, features);        
     }
     
