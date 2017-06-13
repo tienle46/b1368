@@ -6,7 +6,7 @@
   "includeSdk": [
     "anysdk"
   ],
-  "inlineSpriteFrames": false,
+  "inlineSpriteFrames": true,
   "mergeStartScene": false,
   "oauthLoginServer": "",
   "orientation": {
