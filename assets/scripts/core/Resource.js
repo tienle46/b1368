@@ -120,10 +120,10 @@ app.res.vip_tools = {
     // // nemCaChua: true,
     // nemGach: true,
     // thaCho: true,
-    // // // user thuong`
-    // // cungBia:false,
-    // // hatNuoc:false,
-    // // trungThoi:false
+    // // user thuong`
+    // cungBia:false,
+    // hatNuoc:false,
+    // trungThoi:false
 };
 app.res.asset_tools = {};
 

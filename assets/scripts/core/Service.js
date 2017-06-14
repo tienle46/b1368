@@ -301,6 +301,8 @@ class Service {
     }
 
     _onLogin(event) {
+        this.client._socketEngine.reconnectionSeconds = Math.max(0, this.client._socketEngine.reconnectionSeconds - 30);
+
         if (event.data[app.keywords.UPDATE_PHONE_NUMBER]) {
             app.context.getMe()[app.keywords.UPDATE_PHONE_NUMBER] = event.data[app.keywords.UPDATE_PHONE_NUMBER] || true;
         }
