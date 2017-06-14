@@ -267,7 +267,6 @@ export default class ListTableScene extends BaseScene {
             let {minBet} = item.getComponentData();
             return minBet;
         });
-        
         if (room) {
             let minBet = room.getComponentData().minBet;
             let index = app.config.listTableGroupFilters.findIndex(cond => minBet >= cond.min && minBet <= cond.max);
@@ -408,17 +407,6 @@ export default class ListTableScene extends BaseScene {
             (userCounts[i] === roomCapacities[i] ? fullRooms : playableRooms).push(object);
         }
         
-        if(emptyRoom) {
-            let minMoney =  app.context.getMeBalance()/this.minBalanceMultiple;
-            let index = app.config.listTableGroupFilters.findIndex((o) => (minMoney >= o.min && minMoney <= o.max));
-            
-            if(index === -1 && minMoney >= app._.maxBy(app.config.listTableGroupFilters, (o) => o.max).max) {
-                this._activeFilterByIndex(app.config.listTableGroupFilters.length - 1);
-            } else if(~index) {
-                this._activeFilterByIndex(index);
-            }
-        }
-        
         // room faker
         let fakers = [];
         this.enableMinbets.forEach(minBet => fakers.push(this._createRoomObject(0, 0, minBet, 0, app.const.game.maxPlayers[this.gameCode || 'default'], null)));
@@ -439,7 +427,19 @@ export default class ListTableScene extends BaseScene {
             this.items.push(cellComponent);
         }
         
-        this.minBalanceMultiple && this._bestSuitableRoom(this.items, this.minBalanceMultiple);
+        if(emptyRoom) {
+            let minMoney =  app.context.getMeBalance()/this.minBalanceMultiple;
+            let index = app.config.listTableGroupFilters.findIndex((o) => (minMoney >= o.min && minMoney <= o.max));
+            
+            if(index === -1 && minMoney >= app._.maxBy(app.config.listTableGroupFilters, (o) => o.max).max) {
+                this._activeFilterByIndex(app.config.listTableGroupFilters.length - 1);
+            } else if(~index) {
+                this._activeFilterByIndex(index);
+            }
+        } else {
+            this.minBalanceMultiple && this._bestSuitableRoom(this.items, this.minBalanceMultiple);
+        }
+        
         this._isInitedRoomList = true;
     }
     
