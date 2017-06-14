@@ -392,6 +392,7 @@ class Service {
         } else {
             if(this.client._socketEngine.isConnecting) {
                 this.client._socketEngine.isConnecting = false;
+                this.client._socketEngine.reconnectionSeconds = 0;
                 this.client.disconnect();
                 setTimeout(() => {
                     this.connect();
@@ -411,6 +412,7 @@ class Service {
 
         this.isConnecting = false;
         if (this.client.isConnected()) {
+            this.client._socketEngine.reconnectionSeconds = 0;
             this.client.disconnect();
         }
     }
@@ -658,7 +660,7 @@ class Service {
         if (this.client._socketEngine.reconnectionSeconds == 0) {
             this.sendRequest(new SFS2X.Requests.System.ManualDisconnectionRequest());
         }
-
+        this.client._socketEngine.reconnectionSeconds = 0;
         this.client.disconnect();
     }
 
