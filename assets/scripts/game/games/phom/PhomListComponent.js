@@ -89,7 +89,7 @@ export default class PhomListComponent extends Component {
         if (!player) {
             this._setPhomListWithoutPlayer(newPhomList, firstEmptyPhomComponentIndex, eatenCards);
         } else {
-            newPhomList.forEach((newPhom, i) => {
+            newPhomList.phoms.forEach((newPhom, i) => {
 
                 if (i < PhomList.MAX_PHOM_COUNT) {
 
@@ -121,7 +121,7 @@ export default class PhomListComponent extends Component {
     }
 
     _setPhomListWithoutPlayer(phomList, firstEmptyPhomComponentIndex, eatenCards = []) {
-        phomList && phomList.forEach((phomModel, index) => {
+        phomList && phomList.phoms.forEach((phomModel, index) => {
             let phom = this.phoms[index + firstEmptyPhomComponentIndex];
             if (phom) {
                 phomModel.cards.forEach(card => {

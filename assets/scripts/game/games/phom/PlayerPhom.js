@@ -599,7 +599,6 @@ export default class PlayerPhom extends PlayerCardTurnBase {
         // this.board.deHighLightPhomList();
 
         this.currentGuiPhomSolutions = PhomUtils.getJoinPhomSolutions(this.board.getAllBoardPhomList().filter(phom => phom && phom.owner != this.id), processCards);
-
         if (this.currentGuiPhomSolutions.length == 0) {
             if (isAllCard) {
                 this.setState(PlayerPhom.STATE_PHOM_PLAY);
@@ -666,7 +665,7 @@ export default class PlayerPhom extends PlayerCardTurnBase {
         this.renderer.downPhom(playerPhomList, this);
         this.eatenCards.length = 0;
         this.renderer.eatenCardList.clear();
-        this.board.allPhomList.push(...playerPhomList);
+        this.board.allPhomList.push(...playerPhomList.phoms);
 
         if (this.isItMe()) {
             this.isItMe() && this.renderer.cardList.cleanCardGroup();

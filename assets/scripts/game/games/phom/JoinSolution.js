@@ -7,8 +7,7 @@ import PhomList from 'PhomList';
 // export default class JoinSolution extends Array{
 //     constructor(solution) {
 //         super();
-//         this.solutions = [];
-        
+
 //         solution && this.push(...solution);
 //     }
 
@@ -123,7 +122,7 @@ export default class JoinSolution {
     }
     
     get length() {
-        return this.phoms.length;    
+        return this.solutions.length;    
     }
     
     isEmpty(){
@@ -165,6 +164,10 @@ export default class JoinSolution {
     removeNodeAt(index) {
         this.splice(index, 1);
     }
+    
+    indexOf(item) {
+        return this.solutions.indexOf(item);
+    }
 
     value() {
         let value = this.solutions.length * 1000;
@@ -181,7 +184,11 @@ export default class JoinSolution {
 
         return value;
     }
-
+    
+    getSolutions() {
+        return this.solutions;
+    }
+    
     equals(solutions) {
         let isSame = false;
 
@@ -207,7 +214,8 @@ export default class JoinSolution {
 
         return isSame;
     }
-
+    
+    // [solutions]
     static sortSolution(solutions) {
         solutions.sort((solution1, solution2) => {
             return solution2.value() - solution1.value();
@@ -220,10 +228,10 @@ export default class JoinSolution {
      */
     static removeSubSolution(solutions) {
         if (solutions.length > 0) {
-            let bestSolutionSize = solutions[0].length;
+            let bestSolutionSize = solutions[0].getSolutions().length;
 
             for (let i = solutions.length - 1; i > 0; i--) {
-                if (solutions[i].length < bestSolutionSize) {
+                if (solutions[i].getSolutions().length < bestSolutionSize) {
                     solutions.splice(i, 1);
                 }
             }
@@ -233,7 +241,7 @@ export default class JoinSolution {
     static removeEmptySolution(solutions) {
         if (solutions.length > 0) {
             for (let i = solutions.length - 1; i >= 0; i--) {
-                if (solutions[i] == 0) {
+                if (solutions[i].getSolutions().length == 0) {
                     solutions.splice(i, 1);
                 }
             }
