@@ -11,7 +11,7 @@ import Linking from 'Linking';
 export default class ListTableScene extends BaseScene {
     constructor() {
         super();
-        
+
         this.properties = this.assignProperties({
             contentInScroll: cc.Node,
             tableListCell: cc.Prefab,
@@ -22,7 +22,10 @@ export default class ListTableScene extends BaseScene {
             arrowNode: cc.Node,
             filter1stLabel: cc.Label,
             filter2ndLabel: cc.Label,
-            filter3rdLabel: cc.Label
+            filter3rdLabel: cc.Label,
+            radio1: cc.Toggle,
+            radio2: cc.Toggle,
+            radio3: cc.Toggle
         });
         
         this.items = null;
@@ -44,13 +47,14 @@ export default class ListTableScene extends BaseScene {
 
     onLoad() {
         super.onLoad();
+        this._sentInviteRandomly = false;
         this.filterCond = app.config.listTableGroupFilters[0];
         this.items = [];
         this.enableMinbets = [];
         this.userMoneyLbl.string = `${Utils.numberFormat(app.context.getMeBalance() || 0)}`;
         [this.filter1stLabel, this.filter2ndLabel, this.filter3rdLabel].forEach((label, index) => {
             label.string = app.config.listTableGroupFilters[index].text;
-        })
+        });
     }
 
     onEnable() {
@@ -148,10 +152,6 @@ export default class ListTableScene extends BaseScene {
         app.service.send(sendObject);
     }
 
-    _calculateMinBalanceToJoinGame(minBet) {
-        return minBet * (this.minBalanceMultiple > 0 ? this.minBalanceMultiple : app.config.defaultMinBalanceJoinGameRoomMultiple);
-    }
-
     onUserRequestJoinRoom({ id, minBet, password, isSpectator, roomCapacity } = {}) {
         log('id: ', id, " minbet:", minBet, "Capacity: ", roomCapacity);
 
@@ -175,35 +175,17 @@ export default class ListTableScene extends BaseScene {
             }
         }
     }
-    
-    _onOpenTopUp() {
-        app.visibilityManager.goTo(Linking.ACTION_TOPUP);
-    }
-    
-    _onListGameMinBetResponse(data) {
-        if (data) {
-            this.enableMinbets = data[app.keywords.GAME_ENABLE_MINBET_LIST] || [];
-            this.enableMinbets.sort((a, b) => a - b);
-
-            if (this._isInitedRoomList) {
-                this._initRoomsListFromData({}, true);
-            }
-        }
-    }
 
     onClickNongDanBtn() {
-        this.filterCond = app.config.listTableGroupFilters[0];
-        this._renderList();
+        this._activeFilterByIndex(0);
     }
 
     onClickQuyTocBtn() {
-        this.filterCond = app.config.listTableGroupFilters[1];
-        this._renderList();
+        this._activeFilterByIndex(1);
     }
 
-    onClickHoangGiaBtn() {
-        this.filterCond = app.config.listTableGroupFilters[2];
-        this._renderList();
+    onClickHoangGiaBtn(e) {
+        this._activeFilterByIndex(2);
     }
 
     onClickGuideBtn() {
@@ -231,6 +213,10 @@ export default class ListTableScene extends BaseScene {
         });
     }
     
+    _calculateMinBalanceToJoinGame(minBet) {
+        return minBet * (this.minBalanceMultiple > 0 ? this.minBalanceMultiple : app.config.defaultMinBalanceJoinGameRoomMultiple);
+    }
+    
     _onUserListGroup(data) {
         if (data && data[app.keywords.GAME_LIST_RESULT] && data[app.keywords.GAME_LIST_RESULT] === this.gameCode) {
             let roomIds = data[app.keywords.GROUP_LIST_GROUP][app.keywords.GROUP_SHORT_NAME];
@@ -245,7 +231,48 @@ export default class ListTableScene extends BaseScene {
             }
         }
     }
+    
+    _onOpenTopUp() {
+        app.visibilityManager.goTo(Linking.ACTION_TOPUP);
+    }
+    
+    _onListGameMinBetResponse(data) {
+        if (data) {
+            this.enableMinbets = data[app.keywords.GAME_ENABLE_MINBET_LIST] || [];
+            this.enableMinbets.sort((a, b) => a - b);
 
+            if (this._isInitedRoomList) {
+                this._initRoomsListFromData({}, true);
+            }
+        }
+    }
+    
+    _activeFilterByIndex(index) {
+        for(let i = 1; i <= 3; i++) 
+            this[`radio${i}`] && (this[`radio${i}`].isChecked = false);
+        
+        this.filterCond = app.config.listTableGroupFilters[index];
+        
+        this[`radio${index + 1}`] && (this[`radio${index + 1}`].isChecked = true);
+        this._renderList();    
+    }
+    
+    _bestSuitableRoom(rooms, minBalanceMultiple) {
+        let minMoney = app.context.getMeBalance() / this.minBalanceMultiple;
+        let room = app._.maxBy(rooms.filter(item => {
+            let {userCount, roomCapacity, minBet} = item.getComponentData();
+            return userCount >= 1 && userCount < roomCapacity && minBet <= minMoney;
+        }), (item) => {
+            let {minBet} = item.getComponentData();
+            return minBet;
+        });
+        if (room) {
+            let minBet = room.getComponentData().minBet;
+            let index = app.config.listTableGroupFilters.findIndex(cond => minBet >= cond.min && minBet <= cond.max);
+            this._activeFilterByIndex(index);
+        }
+    }
+    
     _sendRequestUserJoinLobbyRoom(lobbyId) {
         if (!lobbyId) {
             app.system.info(app.res.string('error_undefined_please_try_again'));
@@ -310,9 +337,9 @@ export default class ListTableScene extends BaseScene {
     _handleRoomJoinEvent(event) {
         let room = event.room;
         this._room = room;
-        
+
         if (room) {
-            if (room.isGame === false && room.name && room.name.indexOf('lobby') > -1) {
+            if (room.isGame === false && room.name && ~room.name.indexOf('lobby')) {
                 this._sendRequestUserListRoom(room);
             }
         } else {
@@ -344,22 +371,21 @@ export default class ListTableScene extends BaseScene {
     _onUserListRoom(data) {
         this._initRoomsListFromData(data);
         /*Need to check exactly equal true or undefined*/
-        if (!this._sentInviteRandomly && app.context.requestRandomInvite === true || app.context.requestRandomInvite === undefined) {
-
-            app.service.send({
-                cmd: "randomInviteGame",
-                data: {
-                    [app.keywords.GAME_CODE]: this.gameCode
-                }
-            })
-            this._sentInviteRandomly = true;
-            
-            // setTimeout(() => this.node && app.service.send({
+        if (!this._sentInviteRandomly && (app.context.requestRandomInvite === true || app.context.requestRandomInvite === undefined)) {
+            // app.service.send({
             //     cmd: "randomInviteGame",
             //     data: {
             //         [app.keywords.GAME_CODE]: this.gameCode
             //     }
-            // }), 500);
+            // })
+            this._sentInviteRandomly = true;
+            
+            setTimeout(() => this.node && app.service.send({
+                cmd: "randomInviteGame",
+                data: {
+                    [app.keywords.GAME_CODE]: this.gameCode
+                }
+            }), 500);
         }
     }
 
@@ -373,7 +399,9 @@ export default class ListTableScene extends BaseScene {
         
         let playableRooms = [];
         let fullRooms = [];
+        let emptyRoom = true;
         for(let i = 0; i < displayIds.length; i++) {
+            emptyRoom = false;
             let object = this._createRoomObject(ids[i], displayIds[i], minBets[i], userCounts[i], roomCapacities[i], passwords[i]);
             (userCounts[i] === roomCapacities[i] ? fullRooms : playableRooms).push(object);
         }
@@ -397,8 +425,20 @@ export default class ListTableScene extends BaseScene {
             this.addNode(listCell);
             this.items.push(cellComponent);
         }
-
-        this._renderList();
+        
+        if(emptyRoom) {
+            let minMoney =  app.context.getMeBalance()/this.minBalanceMultiple;
+            let index = app.config.listTableGroupFilters.findIndex((o) => (minMoney >= o.min && minMoney <= o.max));
+            
+            if(index === -1 && minMoney >= app._.maxBy(app.config.listTableGroupFilters, (o) => o.max).max) {
+                this._activeFilterByIndex(app.config.listTableGroupFilters.length - 1);
+            } else if(~index) {
+                this._activeFilterByIndex(index);
+            }
+        } else {
+            this.minBalanceMultiple && this._bestSuitableRoom(this.items, this.minBalanceMultiple);
+        }
+        
         this._isInitedRoomList = true;
     }
     

@@ -3,7 +3,6 @@
  */
 
 import ArrayUtils from "ArrayUtils";
-import PhomUtils from "./PhomUtils";
 
 export default class PhomList {
     constructor(phoms) {
@@ -65,7 +64,7 @@ export default class PhomList {
 
     equals(phomList) {
         if (this.length != phomList.length) return false;
-        return ArrayUtils.containsAll(this, phomList);
+        return ArrayUtils.containsAll(this.phoms, phomList);
     }
 
     value() {
@@ -73,7 +72,7 @@ export default class PhomList {
     }
 
     remove(phom) {
-        return ArrayUtils.remove(this, phom);
+        return ArrayUtils.remove(this.phoms, phom);
     }
     
     forEach(cb) {
@@ -90,6 +89,18 @@ export default class PhomList {
     
     sort(cb) {
        return this.phoms.sort(cb); 
+    }
+    
+    some(cb) {
+        return this.phoms.some(cb);
+    }
+    
+    splice(start, count) {
+        this.phoms.splice(start, count);
+    }
+    
+    indexOf(item) {
+        return this.phoms.indexOf(item);
     }
 }
 
