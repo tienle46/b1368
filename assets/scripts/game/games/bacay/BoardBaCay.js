@@ -117,7 +117,8 @@ export default class BoardBaCay extends BoardCardBetTurn {
     }
 
     _loadGamePlayData(data) {
-        super._loadGamePlayData({...data, masterIdOwner: true});
+        // super._loadGamePlayData({...data, masterIdOwner: true});
+        super._loadGamePlayData(Object.assign({}, data, {masterIdOwner: true}));
 
         let gamePhrase = utils.getValue(data, app.keywords.BOARD_STATE_KEYWORD);
         if(gamePhrase == app.const.game.state.STATE_DOWN) {
