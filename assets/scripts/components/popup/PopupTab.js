@@ -10,14 +10,14 @@ export default class PopupTab extends Component {
 
     constructor(props) {
         super(props);
-        this.properties = {
-            ...super.properties,
+        
+        this.properties = this.assignProperties({
             titleLabel: cc.Label,
             notifyNode: cc.Node,
             inactiveNode: cc.Node,
             activeNode: cc.Node,
             toggle: cc.Toggle,
-        }
+        });
 
         /**
          * @type {cc.ToggleGroup}

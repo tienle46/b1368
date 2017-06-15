@@ -35,7 +35,7 @@ export default class PersonalInfoDialogRub {
     
     show(parentNode = cc.director.getScene(), options = {}){
         let initData = this._data;
-        this.multiTabPopup.show({parentNode, tabModels: this.tabModels, initData, ...options});
+        this.multiTabPopup.show(Object.assign({}, {parentNode, tabModels: this.tabModels, initData}, options));
     }
 }
 

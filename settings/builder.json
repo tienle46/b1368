@@ -21,5 +21,6 @@
   "startScene": "19d77baf-45a8-424b-b934-835d4149344d",
   "title": "B1368",
   "webOrientation": "auto",
-  "inlineSpriteFrames_native": true
+  "inlineSpriteFrames_native": true,
+  "optimizeHotUpdate": false
 }

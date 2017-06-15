@@ -25,7 +25,7 @@ export default class TopupDialogRub {
     }   
      
     show(parentNode = cc.director.getScene(), options = {}){
-        this.multiTabPopup.show({parentNode, tabModels: this.tabModels, ...options});
+        this.multiTabPopup.show(Object.assign({}, {parentNode, tabModels: this.tabModels}, options));
     }
 }
 

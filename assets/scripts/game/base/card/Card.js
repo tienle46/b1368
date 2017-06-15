@@ -90,7 +90,7 @@ export default class Card extends ActionComponent {
     }
 
     setOriginalInfo(info = {}) {
-        this.__originalInfo = {...this.__originalInfo, ...info };
+        this.__originalInfo = Object.assign({}, this.__originalInfo, info);
     }
 
     updateFinalPosition() {

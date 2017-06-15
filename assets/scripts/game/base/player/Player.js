@@ -108,7 +108,7 @@ export default class Player extends Actor {
         userObj.push([]);
 
         let newUser = SFS2X.Entities.SFSUser.fromArray(userObj, this.board.room);
-        newUser.variables = {...this.user.variables};
+        newUser.variables = Object.assign({}, this.user.variables);
         newUser._setUserManager(app.service.client.userManager);
 
         this.board.room._removeUser(this.user);
@@ -228,7 +228,7 @@ export default class Player extends Actor {
     }
     
     onEnable(renderer, renderData = {}) {
-        super.onEnable(renderer, {...renderData, isItMe: this.user && this.user.isItMe, scene: this.scene, owner: this.isOwner});
+        super.onEnable(renderer, Object.assign({}, renderData, {isItMe: this.user && this.user.isItMe, scene: this.scene, owner: this.isOwner}));
 
         this.username = this.user.name;
         this.id = this.user.getPlayerId(this.board.room);

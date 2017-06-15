@@ -47,7 +47,7 @@ export default class BuddyPopup {
     }
     
     show(parentNode = cc.director.getScene(), options = {}){
-        this.multiTabPopup.show({parentNode, tabModels, ...options});
+        this.multiTabPopup.show(Object.assign({}, {parentNode, tabModels}, options));
     }
 }
 
