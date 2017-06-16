@@ -40,6 +40,7 @@ export default class DashboardScene extends BaseScene {
 
     start() {
         super.start();
+        !app.context.enableMinbets && this._getListGameMinBet();
         this._requestListHu();
         
         this._getGamesListFromServer();
@@ -108,12 +109,14 @@ export default class DashboardScene extends BaseScene {
     
     _addGlobalListener() {
         super._addGlobalListener();
+        app.system.addListener(app.commands.GET_LIST_GAME_MINBET, this._onListGameMinBetResponse, this);
         app.system.addListener(app.commands.USER_LIST_GAME_CODE, this._onUserListGame, this);
         app.system.addListener(app.commands.USER_GET_CHARGE_LIST, this._onUserGetChargeList, this);
     }
 
     _removeGlobalListener() {
         super._removeGlobalListener();
+        app.system.removeListener(app.commands.GET_LIST_GAME_MINBET, this._onListGameMinBetResponse, this);
         app.system.removeListener(app.commands.USER_LIST_GAME_CODE, this._onUserListGame, this);
         app.system.removeListener(app.commands.USER_GET_CHARGE_LIST, this._onUserGetChargeList, this);
     }
@@ -133,7 +136,19 @@ export default class DashboardScene extends BaseScene {
             }
         });
     }
-
+    
+    _getListGameMinBet() {
+        console.warn('_getListGameMinBet')
+        app.service.send({
+            cmd: app.commands.GET_LIST_GAME_MINBET,
+        });
+    }
+    
+    _onListGameMinBetResponse(data) {
+        console.warn(data);
+        app.context.enableMinbets = data;
+    }
+    
     _onUserListGame(data) {
         let gameList = this._filterClientSupportedGames(data[app.keywords.SERVICE_CHILD_CODE_ARRAY]);
         gameList.push('taixiu');
@@ -261,7 +276,9 @@ export default class DashboardScene extends BaseScene {
                             return;
                         }
                         app.context.setSelectedGame(gameCode);
-                        this.changeScene(app.const.scene.LIST_TABLE_SCENE);
+                        this.changeScene(app.const.scene.LIST_TABLE_SCENE, () => {
+                            
+                        });
                     });
                     
                     if(app.jarManager.hasJar(gc)) {

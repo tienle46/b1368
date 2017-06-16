@@ -71,12 +71,12 @@ class GameSystem {
      * @param {string} sceneName - Scene Name want to load. The name of scene have been configured in {source} app.const.scene.*
      * @param {function} onLaunch - On launch custom function
      */
-    loadScene(sceneName, onLaunch, highPriority) {
+    loadScene(sceneName, onLaunch, initData) {
         log("sceneName: ", sceneName);
         this.setSceneChanging(true)
         cc.director.loadScene(sceneName, () => {
             log("load scene result", sceneName, cc.director.getScene());
-            highPriority && isFunction(onLaunch) && onLaunch();
+            // highPriority && isFunction(onLaunch) && onLaunch();
 
             if (cc.director.getScene().children[0]) {
                 app.service && app.service.removeAllCallback(this.getCurrentSceneName());
@@ -85,7 +85,8 @@ class GameSystem {
 
                 if (this._currentScene) {
                     this._sceneName = sceneName;
-
+                    this._currentScene.testData(initData);
+                    
                     this._addToastToScene();
 
                     let container = this.getCurrentSceneNode().getChildByName('Container');
@@ -96,12 +97,13 @@ class GameSystem {
                         let action2 = cc.moveTo(.12, cc.v2(0, 0));
                         container.runAction(cc.spawn(cc.callFunc(() => {
                             cc.game.removePersistRootNode(this.getCurrentSceneNode());
-                        }), action2));
+                        }), action2));                        
                     }
                 }
             }
-
-            !highPriority && isFunction(onLaunch) && onLaunch();
+            
+            isFunction(onLaunch) && onLaunch();
+            // !highPriority && isFunction(onLaunch) && onLaunch();
         });
     }
 

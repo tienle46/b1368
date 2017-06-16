@@ -24,7 +24,8 @@ class GameContext {
         this.personalMessagesCount = 0;
         this.gameList = []; // selected game code
         this.requestRandomInvite = undefined; //In rejoin game case GameScene not asign to false when requestRandomInvite == undefined
-        this.ctl = null;
+        this.ctl = null; // data in topup->(tabCard/tabIAP/tabSMS)
+        this.enableMinbets = null; //{gameCode: [Array]}, game minbet
         this.systemMessageCount = 0;
         this.newVersionInfo = null;
 
@@ -47,7 +48,7 @@ class GameContext {
     }
 
     getTotalMessageCount(){
-        return this.systemMessageCount + this.personalMessagesCount
+        return this.systemMessageCount + this.personalMessagesCount;
     }
 
     _setChangePersonalMessageCount(data){

@@ -30,6 +30,8 @@ export default class ListTableScene extends BaseScene {
         };
         
         this.items = null;
+        this.fakers = null; // room fakers
+        
         this.time = 2500 * 10; // creating new request for updating tables every 25s
         // filter button conditional 
         this.filterCond = null;
@@ -51,6 +53,7 @@ export default class ListTableScene extends BaseScene {
         this._sentInviteRandomly = false;
         this.filterCond = app.config.listTableGroupFilters[0];
         this.items = [];
+        this.fakers = []; // room fakers
         this.enableMinbets = [];
         this.userMoneyLbl.string = `${Utils.numberFormat(app.context.getMeBalance() || 0)}`;
         [this.filter1stLabel, this.filter2ndLabel, this.filter3rdLabel].forEach((label, index) => {
@@ -67,7 +70,24 @@ export default class ListTableScene extends BaseScene {
     start() {
         super.start();
         this._getFirstGameLobbyFromServer();
-        this._getListGameMinBet();
+        !app.context.enableMinbets ? this._getListGameMinBet() : (this.enableMinbets = app.context.enableMinbets[this.gameCode].sort((a, b) => a - b));
+
+        if(this.enableMinbets) {
+            let roomFakers = [];
+            
+            this.enableMinbets.forEach(minBet => this.fakers.push(this._createRoomObject(0, 0, minBet, 0, app.const.game.maxPlayers[this.gameCode || 'default'], null)));
+            
+            this.fakers.forEach(object => {
+                let listCell = cc.instantiate(this.tableListCell);
+                let cellComponent = listCell.getComponent('TableListCell');
+                // cellComponent.setOnClickListener((data) => this.onUserRequestJoinRoom(data));
+                cellComponent && cellComponent.initCell(object);
+                this.addNode(listCell);
+                this.items.push(cellComponent)
+            });
+            this._renderList()
+        }
+        
         if(app.jarManager.hasJar(this.gameCode)) {
             let hasButton = true;
             app.jarManager.addJarToParent(this.jarAnchorNode, this.gameCode, hasButton);
@@ -78,12 +98,13 @@ export default class ListTableScene extends BaseScene {
 
     onDestroy() {
         super.onDestroy();
-        window.release(this.items, this.enableMinbets);
+        this.items = [];
+        this.enableMinbets = []
+        // window.release(this.items, this.enableMinbets);
     }
 
     _addGlobalListener() {
         super._addGlobalListener();
-        app.system.addListener(app.commands.GET_LIST_GAME_MINBET, this._onListGameMinBetResponse, this);
         app.system.addListener(app.commands.USER_LIST_GROUP, this._onUserListGroup, this);
         app.system.addListener(app.commands.USER_LIST_ROOM, this._onUserListRoom, this);
         app.system.addListener(app.commands.USER_CREATE_ROOM, this._onUserCreateRoom, this);
@@ -408,16 +429,16 @@ export default class ListTableScene extends BaseScene {
         }
         
         // room faker
-        let fakers = [];
-        this.enableMinbets.forEach(minBet => fakers.push(this._createRoomObject(0, 0, minBet, 0, app.const.game.maxPlayers[this.gameCode || 'default'], null)));
+        // let fakers = [];
+        // this.enableMinbets.forEach(minBet => fakers.push(this._createRoomObject(0, 0, minBet, 0, app.const.game.maxPlayers[this.gameCode || 'default'], null)));
         
-        playableRooms = [...playableRooms, ...fakers, ...fullRooms];
+        playableRooms = [...playableRooms, ...this.fakers, ...fullRooms];
         
         if (!addMore) {
             this.items.forEach(item => item.node && CCUtils.destroy(item.node));
             window.release(this.items);
         }
-
+        
         for (let i = 0; i < playableRooms.length; i++) {
             let listCell = cc.instantiate(this.tableListCell);
             let cellComponent = listCell.getComponent('TableListCell');
@@ -454,11 +475,11 @@ export default class ListTableScene extends BaseScene {
         }   
     }
     
-    _renderList() {
+    _renderList(items) {
         this.contentInScroll.removeAllChildren();
         // CCUtils.clearAllChildren(this.contentInScroll);
 
-        let filterItems = this._filterItems();
+        let filterItems = this._filterItems(items);
         if (filterItems.length > 0) {
             this.setVisibleEmptyNode(false);
             this.contentInScroll && filterItems.map(item => this.contentInScroll.addChild(item.node));
@@ -469,8 +490,8 @@ export default class ListTableScene extends BaseScene {
         this.hideLoading();
     }
 
-    _filterItems() {
-        return this.items.filter(item => {
+    _filterItems(items) {
+        return (items || this.items).filter(item => {
             let minbet = item.getComponentData().minBet;
             return minbet >= this.filterCond.min && minbet <= this.filterCond.max;
         });

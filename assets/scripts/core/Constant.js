@@ -163,6 +163,7 @@ app.const.adminMessage.ALERT = 5;
 app.const.adminMessage.DAILY_LOGIN_MISSION = 11;
 app.const.adminMessage.TOPUP_SUCCESSFULLY = 12;
 app.const.adminMessage.REGISTER_BONUS = 14;
+app.const.adminMessage.KICK_MESSAGE = 16;
 
 app.const.NUMBER_MESSAGES_KEEP_INGAME = 30;
 app.const.NUMBER_MESSAGES_KEEP_PER_BUDDY = 30;
