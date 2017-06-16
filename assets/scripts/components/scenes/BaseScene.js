@@ -104,10 +104,14 @@ export default class BaseScene extends Actor {
         this.progress && this.progress.hide();
         this.loading = false;
     }
-
-    changeScene(name, onLaunched) {
+    
+    testData(data) {
+        this._initedData = data;
+    }
+    
+    changeScene(name, onLaunched, initData) {
         this.showLoading()
-        app.system.loadScene(name, onLaunched);
+        app.system.loadScene(name, onLaunched, initData);
     }
 
     loginToDashboard(username, password, isRegister = false, isQuickLogin = false, accessToken = null, fbId = null, cb) {
@@ -168,7 +172,7 @@ export default class BaseScene extends Actor {
                         if(versionStr && downloadLink){
                             let message = app.res.string("message_force_update_version", {version: versionStr})
                             app.system.confirm(message, null, () => {
-                                cc.sys.openURL(downloadLink);
+                                cc.sys.openURL(downloadLink);   
                             })
                         }
                     }
@@ -205,7 +209,7 @@ export default class BaseScene extends Actor {
                 
                 // app.system.marker.initCaches();
                 
-                this.changeScene(app.const.scene.DASHBOARD_SCENE, () => {setTimeout(() => this._resendIAPSavedItem(), 2000)});
+                this.changeScene(app.const.scene.DASHBOARD_SCENE, () => {setTimeout(() => this._resendIAPSavedItem(), 2000)}, {a: 1, b: 2});
             }
         });
     }
