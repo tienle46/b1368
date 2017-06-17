@@ -138,14 +138,12 @@ export default class DashboardScene extends BaseScene {
     }
     
     _getListGameMinBet() {
-        console.warn('_getListGameMinBet')
         app.service.send({
             cmd: app.commands.GET_LIST_GAME_MINBET,
         });
     }
     
     _onListGameMinBetResponse(data) {
-        console.warn(data);
         app.context.enableMinbets = data;
     }
     

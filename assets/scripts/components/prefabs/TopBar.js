@@ -209,7 +209,7 @@ class TopBar extends DialogActor {
     _onUserVariablesUpdate(ev) {
         let changedVars = ev[app.keywords.BASE_EVENT_CHANGED_VARS] || [];
         changedVars.map(v => {
-            if (v == 'coin') {
+            if (v == app.keywords.USER_VARIABLE_BALANCE) {
                 this.userInfoCoinLbl.string = `${utils.numberFormat(app.context.getMeBalance() || 0)}`;
             }
             
@@ -217,6 +217,15 @@ class TopBar extends DialogActor {
                 let sprite = this.avatarSpriteNode.getComponent(cc.Sprite);
                 // sprite && (RubUtils.loadImageToSprite(sprite, app.context.getMyInfo().avatarUrl))
                 sprite && app.context.getMyAvatar(sprite, 'thumb');
+            }
+            
+            if(v == app.keywords.USER_VARIABLE_DISPLAY_NAME) {
+                let me = app.context.getMyInfo();
+                this.userNameLbl.string = app.context.getMyInfo().displayName;
+            }
+            
+            if(v == app.keywords.VIP_LEVEL) {
+                this.vipLevel.string = app.context.getMyInfo().vipLevel;
             }
         });
     }

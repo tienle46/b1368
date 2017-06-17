@@ -20,6 +20,7 @@ export default class ListTableScene extends BaseScene {
             gameTitleLbl: cc.Label,
             userMoneyLbl: cc.Label,
             jarAnchorNode: cc.Node,
+            scrollView: cc.ScrollView,
             arrowNode: cc.Node,
             filter1stLabel: cc.Label,
             filter2ndLabel: cc.Label,
@@ -76,6 +77,8 @@ export default class ListTableScene extends BaseScene {
             let roomFakers = [];
             
             this.enableMinbets.forEach(minBet => this.fakers.push(this._createRoomObject(0, 0, minBet, 0, app.const.game.maxPlayers[this.gameCode || 'default'], null)));
+            
+            this.contentInScroll.removeAllChildren();
             
             this.fakers.forEach(object => {
                 let listCell = cc.instantiate(this.tableListCell);
@@ -269,7 +272,7 @@ export default class ListTableScene extends BaseScene {
         }
     }
     
-    _activeFilterByIndex(index) {
+    _activeFilterByIndex(index) {        
         for(let i = 1; i <= 3; i++) 
             this[`radio${i}`] && (this[`radio${i}`].isChecked = false);
         
@@ -421,34 +424,34 @@ export default class ListTableScene extends BaseScene {
         
         let playableRooms = [];
         let fullRooms = [];
-        let emptyRoom = true;
         for(let i = 0; i < displayIds.length; i++) {
-            emptyRoom = false;
             let object = this._createRoomObject(ids[i], displayIds[i], minBets[i], userCounts[i], roomCapacities[i], passwords[i]);
             (userCounts[i] === roomCapacities[i] ? fullRooms : playableRooms).push(object);
+        }
+        
+        let isEmptyList = fullRooms.length > 0 || playableRooms.length > 0
+        
+        if (!addMore) {
+            this.items.forEach(item => item.node && CCUtils.destroy(item.node));
+            this.items = [];
         }
         
         // room faker
         // let fakers = [];
         // this.enableMinbets.forEach(minBet => fakers.push(this._createRoomObject(0, 0, minBet, 0, app.const.game.maxPlayers[this.gameCode || 'default'], null)));
+        let rooms = [...playableRooms, ...this.fakers, ...fullRooms];
         
-        playableRooms = [...playableRooms, ...this.fakers, ...fullRooms];
-        
-        if (!addMore) {
-            this.items.forEach(item => item.node && CCUtils.destroy(item.node));
-            window.release(this.items);
-        }
-        
-        for (let i = 0; i < playableRooms.length; i++) {
+        for (let i = 0; i < rooms.length; i++) {
             let listCell = cc.instantiate(this.tableListCell);
             let cellComponent = listCell.getComponent('TableListCell');
             cellComponent.setOnClickListener((data) => this.onUserRequestJoinRoom(data));
-            cellComponent && cellComponent.initCell(playableRooms[i]);
+            cellComponent && cellComponent.initCell(rooms[i]);
             this.addNode(listCell);
+            this.contentInScroll.addChild(listCell);
             this.items.push(cellComponent);
         }
         
-        if(emptyRoom) {
+        if(isEmptyList) {
             let minMoney =  app.context.getMeBalance()/this.minBalanceMultiple;
             let index = app.config.listTableGroupFilters.findIndex((o) => (minMoney >= o.min && minMoney <= o.max));
             
@@ -475,14 +478,18 @@ export default class ListTableScene extends BaseScene {
         }   
     }
     
-    _renderList(items) {
-        this.contentInScroll.removeAllChildren();
-        // CCUtils.clearAllChildren(this.contentInScroll);
+    _renderList() {
+        // this.contentInScroll.removeAllChildren();
+        
+        this.contentInScroll && this.contentInScroll.children && this.contentInScroll.children.forEach(child => child.active = false);
 
-        let filterItems = this._filterItems(items);
+        let filterItems = this._filterItems();
+        
         if (filterItems.length > 0) {
             this.setVisibleEmptyNode(false);
-            this.contentInScroll && filterItems.map(item => this.contentInScroll.addChild(item.node));
+            // this.contentInScroll && filterItems.forEach(item => this.contentInScroll.addChild(item.node));
+            this.contentInScroll && filterItems.forEach(item => item.node.active = true);
+            this.scrollView.scrollToOffset(cc.p(0,0))
         } else {
             this.setVisibleEmptyNode(true);
         }
@@ -490,8 +497,8 @@ export default class ListTableScene extends BaseScene {
         this.hideLoading();
     }
 
-    _filterItems(items) {
-        return (items || this.items).filter(item => {
+    _filterItems() {
+        return this.items.filter(item => {
             let minbet = item.getComponentData().minBet;
             return minbet >= this.filterCond.min && minbet <= this.filterCond.max;
         });

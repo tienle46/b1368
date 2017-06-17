@@ -151,10 +151,10 @@ class GameContext {
             "id": me.id,
             "isItMe": me.isItMe,
             "name": me.name,
-            "coin": Utils.getVariable(me, 'coin', 0),
+            "coin": Utils.getVariable(me, app.keywords.USER_VARIABLE_BALANCE, 0),
             "level": me.variables.lv,
-            "avatar": Utils.getVariable(me, 'avatar', {}),
-            "displayName": Utils.getVariable(me, 'displayName', me.name),
+            "avatar": Utils.getVariable(me, app.keywords.CHANGE_AVATAR_URL, {}),
+            "displayName": Utils.getVariable(me, app.keywords.USER_VARIABLE_DISPLAY_NAME, me.name),
             "vipLevel": vipLevel.name || "Dân thường"
         } : {};
     }
@@ -172,7 +172,7 @@ class GameContext {
      * @memberof GameContext
      */
     getMyAvatar(spriteComponent, type = 'thumb') {
-        let avatar = app.context.getMyInfo()['avatar'];
+        let avatar = app.context.getMyInfo()[app.keywords.CHANGE_AVATAR_URL];
         let validType = app._.includes(['thumb', 'large', 'tiny'], type) ? type : 'thumb';
         let url = (avatar && avatar[validType]) || this.getDefaultAvatarURL(validType);
         this.loadUserAvatarByURL(url, spriteComponent);
@@ -201,21 +201,21 @@ class GameContext {
 
     getMeBalance() {
         let me = this.getMe();
-        return (me && me.variables.coin && me.variables.coin.value) || 0;
+        return 1 || 0;
     }
 
     getMeDisplayName() {
         let me = this.getMe()
 
         if(me){
-            let displayName = me.variables.displayName && me.variables.displayName.value && me.variables.displayName.value.trim()
+            let displayName = me.variables[app.keywords.USER_VARIABLE_DISPLAY_NAME] && me.variables[app.keywords.USER_VARIABLE_DISPLAY_NAME].value && me.variables[app.keywords.USER_VARIABLE_DISPLAY_NAME].value.trim()
             if(displayName && displayName.length > 0){
                 if(displayName.length > 12){
-                    displayName = displayName.substr(0, 12) + '...'
+                    displayName = displayName.substr(0, 12) + '...';
                 }
-                return displayName
+                return displayName;
             }else{
-                return me.name
+                return me.name;
             }
         }
 
