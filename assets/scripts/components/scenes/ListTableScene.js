@@ -75,20 +75,30 @@ export default class ListTableScene extends BaseScene {
 
         if(this.enableMinbets) {
             let roomFakers = [];
-            
             this.enableMinbets.forEach(minBet => this.fakers.push(this._createRoomObject(0, 0, minBet, 0, app.const.game.maxPlayers[this.gameCode || 'default'], null)));
             
             this.contentInScroll.removeAllChildren();
             
             this.fakers.forEach(object => {
                 let listCell = cc.instantiate(this.tableListCell);
+                listCell.active = false;
                 let cellComponent = listCell.getComponent('TableListCell');
-                // cellComponent.setOnClickListener((data) => this.onUserRequestJoinRoom(data));
+                let data = { id:0, minBet:object.minBet, password: object.password, isSpectator:false, roomCapacity: object.roomCapacity};
+                cellComponent.setOnClickListener(() => this.onUserRequestJoinRoom(data));
                 cellComponent && cellComponent.initCell(object);
                 this.addNode(listCell);
+                this.contentInScroll.addChild(listCell);
                 this.items.push(cellComponent)
             });
-            this._renderList()
+            
+            let minMoney =  app.context.getMeBalance()/this.minBalanceMultiple;
+            let index = app.config.listTableGroupFilters.findIndex((o) => (minMoney >= o.min && minMoney <= o.max));
+            
+            if(index === -1 && minMoney >= app._.maxBy(app.config.listTableGroupFilters, (o) => o.max).max) {
+                this._activeFilterByIndex(app.config.listTableGroupFilters.length - 1, false);
+            } else if(~index) {
+                this._activeFilterByIndex(index, false);
+            }
         }
         
         if(app.jarManager.hasJar(this.gameCode)) {
@@ -272,13 +282,13 @@ export default class ListTableScene extends BaseScene {
         }
     }
     
-    _activeFilterByIndex(index) {        
+    _activeFilterByIndex(index, showActivate = true) {        
         for(let i = 1; i <= 3; i++) 
             this[`radio${i}`] && (this[`radio${i}`].isChecked = false);
         
         this.filterCond = app.config.listTableGroupFilters[index];
         
-        this[`radio${index + 1}`] && (this[`radio${index + 1}`].isChecked = true);
+        this[`radio${index + 1}`] && (this[`radio${index + 1}`].isChecked = showActivate || this._isInitedRoomList);
         this.scrollView.stopAutoScroll();
         this._renderList();    
     }
@@ -444,6 +454,7 @@ export default class ListTableScene extends BaseScene {
         
         for (let i = 0; i < rooms.length; i++) {
             let listCell = cc.instantiate(this.tableListCell);
+            listCell.active = false;
             let cellComponent = listCell.getComponent('TableListCell');
             cellComponent.setOnClickListener((data) => this.onUserRequestJoinRoom(data));
             cellComponent && cellComponent.initCell(rooms[i]);
@@ -481,11 +492,9 @@ export default class ListTableScene extends BaseScene {
     
     _renderList() {
         // this.contentInScroll.removeAllChildren();
-        
         this.contentInScroll && this.contentInScroll.children && this.contentInScroll.children.forEach(child => child.active = false);
 
         let filterItems = this._filterItems();
-        
         if (filterItems.length > 0) {
             this.setVisibleEmptyNode(false);
             // this.contentInScroll && filterItems.forEach(item => this.contentInScroll.addChild(item.node));
