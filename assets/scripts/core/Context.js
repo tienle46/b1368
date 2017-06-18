@@ -201,7 +201,7 @@ class GameContext {
 
     getMeBalance() {
         let me = this.getMe();
-        return 1 || 0;
+        return (me && me.variables.coin && me.variables.coin.value) || 0;
     }
 
     getMeDisplayName() {

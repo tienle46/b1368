@@ -279,6 +279,7 @@ export default class ListTableScene extends BaseScene {
         this.filterCond = app.config.listTableGroupFilters[index];
         
         this[`radio${index + 1}`] && (this[`radio${index + 1}`].isChecked = true);
+        this.scrollView.stopAutoScroll();
         this._renderList();    
     }
     
@@ -429,7 +430,7 @@ export default class ListTableScene extends BaseScene {
             (userCounts[i] === roomCapacities[i] ? fullRooms : playableRooms).push(object);
         }
         
-        let isEmptyList = fullRooms.length > 0 || playableRooms.length > 0
+        let isEmptyList = !(fullRooms.length > 0 || playableRooms.length > 0)
         
         if (!addMore) {
             this.items.forEach(item => item.node && CCUtils.destroy(item.node));
