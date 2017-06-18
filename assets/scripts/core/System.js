@@ -14,7 +14,6 @@ import { isFunction } from 'Utils';
 import Marker from 'Marker';
 import Linking from 'Linking'
 import VisibilityManager from 'VisibilityManager';
-import IAPManager from 'IAPManager';
 
 class GameSystem {
 
@@ -27,6 +26,7 @@ class GameSystem {
         this.audioManager = null;
         this.enablePendingGameEvent = false;
         this.toast = null;
+        this.kickMessage = null;
         // high light message
         (!this.hlm) && (this.hlm = new HighLightMessageRub());
         this.sceneChanging = false;
@@ -318,6 +318,11 @@ class GameSystem {
                     showToast = false;
                     return;
                 }
+                break;
+            }
+            case app.const.adminMessage.KICK_MESSAGE: {
+                this.kickMessage  = message;
+                showToast = false;
                 break;
             }
             case app.const.adminMessage.REGISTER_BONUS: {

@@ -254,7 +254,8 @@ class Service {
         app.system.loadScene(app.const.scene.ENTRANCE_SCENE, () => {
             if(this._loginData) {
                 let okBtn = this._reConnectWithLoginData.bind(this, this._loginData);
-                app.system.confirm(app.res.string('lost_connection'), null, okBtn);
+                app.system.confirm(app.system.kickMessage || app.res.string('lost_connection'), null, okBtn);
+                app.system.kickMessage && (app.system.kickMessage = null);
             } else {
                 app.system.info(app.res.string('lost_connection_without_reconnect'));
             }
