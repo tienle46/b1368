@@ -43,25 +43,25 @@ export default class TabUserInfo extends PopupTabBody {
     }
     
     onCurrentPasswordEditboxEdited(e, b) {
-        if(!this.currPassword.isFocused()) {
+        if(app.env.isBrowser() && !this.currPassword.isFocused()) {
             this.newPassword.stayOnTop = true;
             this.newPassword.setFocus();
         }
     }
     
     onNewPasswordEditboxEdited(e, b) {
-        if(!this.currPassword.isFocused()) {
+        if(app.env.isBrowser() && !this.currPassword.isFocused()) {
             this.passwordConfirmation.stayOnTop = true;
             this.passwordConfirmation.setFocus();
         }
     }
     
     onChangePasswordReturnKeyPressed() {
-       this.onConfirmationBtnClick();
+       app.env.isBrowser() && this.onConfirmationBtnClick();
     }
     
     onUpdatePhoneReturnKeyPressed() {
-        this.onUpdateBtnClick();
+       app.env.isBrowser() && this.onUpdateBtnClick();
     }
     
     loadData() {

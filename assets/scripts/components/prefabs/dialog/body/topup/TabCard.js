@@ -76,8 +76,10 @@ class TabCard extends PopupTabBody {
     }
     
     onCardCodeEditBoxEdited(e, b) {
-        this.serialNumberEditBox.stayOnTop = true;
-        this.serialNumberEditBox.setFocus();
+        if(app.env.isBrowser() && !this.serialNumberEditBox.isFocused()) {
+            this.serialNumberEditBox.stayOnTop = true;
+            this.serialNumberEditBox.setFocus();
+        }
     }
     
     onDestroy() {

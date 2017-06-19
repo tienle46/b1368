@@ -71,10 +71,8 @@ export default class ListTableScene extends BaseScene {
     start() {
         super.start();
         this._getFirstGameLobbyFromServer();
-        !app.context.enableMinbets ? this._getListGameMinBet() : (this.enableMinbets = app.context.enableMinbets[this.gameCode].sort((a, b) => a - b));
-
-        if(this.enableMinbets) {
-            let roomFakers = [];
+        (!app.context.enableMinbets || !app.context.enableMinbets[this.gameCode]) ? this._getListGameMinBet() : (this.enableMinbets = app.context.enableMinbets[this.gameCode].sort((a, b) => a - b));
+        if(this.enableMinbets.length > 0) {
             this.enableMinbets.forEach(minBet => this.fakers.push(this._createRoomObject(0, 0, minBet, 0, app.const.game.maxPlayers[this.gameCode || 'default'], null)));
             
             this.contentInScroll.removeAllChildren();
@@ -118,6 +116,7 @@ export default class ListTableScene extends BaseScene {
 
     _addGlobalListener() {
         super._addGlobalListener();
+        app.system.addListener(app.commands.GET_LIST_GAME_MINBET, this._onListGameMinBetResponse, this);
         app.system.addListener(app.commands.USER_LIST_GROUP, this._onUserListGroup, this);
         app.system.addListener(app.commands.USER_LIST_ROOM, this._onUserListRoom, this);
         app.system.addListener(app.commands.USER_CREATE_ROOM, this._onUserCreateRoom, this);
@@ -448,6 +447,9 @@ export default class ListTableScene extends BaseScene {
         }
         
         // room faker
+        if(this.fakers.length < 1) {
+            this.enableMinbets.forEach(minBet => this.fakers.push(this._createRoomObject(0, 0, minBet, 0, app.const.game.maxPlayers[this.gameCode || 'default'], null)));
+        }
         // let fakers = [];
         // this.enableMinbets.forEach(minBet => fakers.push(this._createRoomObject(0, 0, minBet, 0, app.const.game.maxPlayers[this.gameCode || 'default'], null)));
         let rooms = [...playableRooms, ...this.fakers, ...fullRooms];

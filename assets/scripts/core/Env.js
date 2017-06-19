@@ -81,7 +81,12 @@ export default (function(app) {
      **************************************************ENV SETUP **************************************************
      **************************************************************************************************************/
     app.env.__setupEnvironment = function() {
-
+        app.config.useSSL = app.env.isBrowser();
+        cc.log('use ssl', app.config.useSSL);
+        cc.log('use ssl app.env.isBrowser', app.env.isBrowser());
+        app.config.port = app.config.useSSL ? 443 : 8921;
+        cc.log('use ssl p', app.config.port);
+        
         if (app.env.isBrowser()) {
             var Fingerprint2 = require('fingerprinter');
 

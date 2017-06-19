@@ -37,21 +37,21 @@ export default class TabBuddiesTransfer extends PopupTabBody {
     }
     
     onReceiverEditBoxEdited(e, b) {
-        if(!this.receiverEditBoxNode.isFocused()) {
+        if(app.env.isBrowser() && !this.receiverEditBoxNode.isFocused()) {
             this.transferAmountEditBoxNode.stayOnTop = true;
             this.transferAmountEditBoxNode.setFocus();
         }
     }
     
     onTransferAmountEditboxEdited(e, b) {
-        if(!this.receiverEditBoxNode.isFocused()) {
+        if(app.env.isBrowser() && !this.receiverEditBoxNode.isFocused()) {
             this.transferReasonEditBoxNode.stayOnTop = true;
             this.transferReasonEditBoxNode.setFocus();
         }
     }
     
     onTransferMoneyReturnKeyPressed() {
-       this.onTransferMoneyBtnClick();
+       app.env.isBrowser() && this.onTransferMoneyBtnClick();
     }
     
     renderComponentData(data) {

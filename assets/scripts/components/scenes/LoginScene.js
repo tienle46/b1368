@@ -22,14 +22,14 @@ export default class LoginScene extends BaseScene {
     }
     
     onUserNameEditboxEdited(e, b) {
-        if(!this.userPasswordEditBox.isFocused()) {
+        if(app.env.isBrowser() && !this.userPasswordEditBox.isFocused()) {
             this.userPasswordEditBox.stayOnTop = true;
             this.userPasswordEditBox.setFocus();
         }
     }
     
     onReturnKeyPressed() {
-       this.handleLoginAction();
+       app.env.isBrowser() && this.handleLoginAction();
     }
     
     onEnable() {
