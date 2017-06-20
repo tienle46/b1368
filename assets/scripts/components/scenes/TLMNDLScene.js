@@ -4,9 +4,6 @@
 
 import app from 'app';
 import GameScene from 'GameScene';
-import BoardTLMNDL from 'BoardTLMNDL';
-import TLMNDLControls from 'TLMNDLControls';
-import FourPlayerPositions from 'FourPlayerPositions';
 import Events from 'Events';
 
 export default class TLMNDLScene extends GameScene {
@@ -17,7 +14,7 @@ export default class TLMNDLScene extends GameScene {
     onLoad(){
         super.onLoad();
     }
-
+    
     _addGlobalListener(){
         super._addGlobalListener();
 

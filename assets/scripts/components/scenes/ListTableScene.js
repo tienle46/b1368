@@ -70,6 +70,8 @@ export default class ListTableScene extends BaseScene {
 
     start() {
         super.start();
+        this[`radio1`].checkMark.node.active = false;
+        
         this._getFirstGameLobbyFromServer();
         (!app.context.enableMinbets || !app.context.enableMinbets[this.gameCode]) ? this._getListGameMinBet() : (this.enableMinbets = app.context.enableMinbets[this.gameCode].sort((a, b) => a - b));
         if(this.enableMinbets.length > 0) {
@@ -281,7 +283,11 @@ export default class ListTableScene extends BaseScene {
         }
     }
     
-    _activeFilterByIndex(index, showActivate = true) {        
+    _activeFilterByIndex(index, showActivate = true) {
+        if(showActivate && !this[`radio1`].checkMark.node.active) {
+            this[`radio1`].checkMark.node.active = true;
+        }      
+        
         for(let i = 1; i <= 3; i++) 
             this[`radio${i}`] && (this[`radio${i}`].isChecked = false);
         
@@ -301,11 +307,13 @@ export default class ListTableScene extends BaseScene {
             let {minBet} = item.getComponentData();
             return minBet;
         });
+        
+        let index = 0;
         if (room) {
             let minBet = room.getComponentData().minBet;
-            let index = app.config.listTableGroupFilters.findIndex(cond => minBet >= cond.min && minBet <= cond.max);
-            this._activeFilterByIndex(index);
+            index = app.config.listTableGroupFilters.findIndex(cond => minBet >= cond.min && minBet <= cond.max);
         }
+        this._activeFilterByIndex(index);
     }
     
     _sendRequestUserJoinLobbyRoom(lobbyId) {

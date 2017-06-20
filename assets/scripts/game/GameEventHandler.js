@@ -87,6 +87,8 @@ export default class GameEventHandler {
         app.system.addGameListener(Commands.REGISTER_QUIT_ROOM, this._onRegisterQuitRoom, this);
 
         app.system.addGameListener(Commands.ASSETS_USE_ITEM, this._assetsUseItem, this);
+        
+        app.system.addGameListener(Commands.GET_CURRENT_GAME_DATA, this._getCurrentGameData, this);
     }
 
     removeGameEventListener() {
@@ -132,9 +134,17 @@ export default class GameEventHandler {
         app.system.removeGameListener(Commands.REGISTER_QUIT_ROOM, this._onRegisterQuitRoom, this);
 
         app.system.removeGameListener(Commands.ASSETS_USE_ITEM, this._assetsUseItem, this);
-
+        
+        app.system.removeGameListener(Commands.GET_CURRENT_GAME_DATA, this._getCurrentGameData, this);
     }
-
+    
+    // {gameData, gamePhaseData, playerData} = data;
+    _getCurrentGameData(data) {
+        app.service._gameDataTimeout && clearTimeout(app.service._gameDataTimeout);
+        
+        this.scene.handleGameRefresh(data);
+    }
+    
     _onRegisterQuitRoom(data){
         this.scene.emit(Events.ON_PLAYER_REGISTER_QUIT_ROOM, data);
     }

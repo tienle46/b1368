@@ -31,18 +31,18 @@ export default class RegisterScene extends BaseScene {
         }     
     }
     
-    onUserNameEditboxEdited(e, b) {
-        if(!this.userPasswordEditBox.isFocused())
+    onUserNameEditboxEdited() {
+        if(app.env.isBrowser() && !this.userPasswordEditBox.isFocused())
             this.userPasswordEditBox.setFocus();
     }
     
-    onPasswordEditboxEdited(e, b) {
-        if(!this.userCaptchaEditBox.isFocused())
+    onPasswordEditboxEdited() {
+        if(app.env.isBrowser() && !this.userCaptchaEditBox.isFocused())
             this.userCaptchaEditBox.setFocus();
     }
     
     onReturnKeyPressed() {
-       this.handleRegistryAction();
+       app.env.isBrowser() && this.handleRegistryAction();
     }
     
     handleRegistryAction() {

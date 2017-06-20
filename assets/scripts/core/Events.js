@@ -118,6 +118,7 @@ Events.ON_GAME_LOAD_DATA_AFTER_SCENE_START = "on.game.loadDataAfterSceneStart";
 Events.ON_GAME_MASTER_CHANGED = "on.game.masterChanged";
 Events.ON_GAME_STATE_CHANGED = "on.game.stateChanged"
 Events.ON_GAME_STATE_PRE_CHANGE = "on.game.statePreChange"
+Events.ON_GAME_REFRESH = "on.game.refresh"
 
 Events.ON_ACTION_EXIT_GAME = "on.action.exitGame";
 Events.ON_ACTION_LOAD_GAME_GUIDE = "on.action.loadGameGuide";

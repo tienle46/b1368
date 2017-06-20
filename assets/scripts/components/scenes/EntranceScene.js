@@ -35,7 +35,7 @@ class EntranceScene extends BaseScene {
             app.buddyManager = new BuddyManager();
         }
 
-        app.service.client._reset(true);
+        app.service.getClient()._reset(true);
         app.context.reset()
         
         if(!app.jarManager) {

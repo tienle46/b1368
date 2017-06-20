@@ -59,6 +59,7 @@ export default class PlayerTurnBaseAdapter extends GameAdapter {
         this.scene.off(Events.ON_GAME_CLEAN_TURN_ROUTINE_DATA, this._cleanTurnRoutineData, this);
         this.scene.off(Events.ON_GAME_LOAD_PLAY_DATA, this._loadGamePlayData, this);
         this.scene.off(Events.ON_GAME_REJOIN, this._onGameRejoin, this);
+        this.scene.off(Events.ON_GAME_REFRESH, this._onGameRefresh, this);
     }
 
     _onGameRejoin(data){
@@ -69,7 +70,12 @@ export default class PlayerTurnBaseAdapter extends GameAdapter {
             onTurnPlayerId == this.player.id && remainTime && this.player.startTimeLine(remainTime);
         }
     }
-
+    
+    _onGameRefresh(data) {
+        let playerData = data.playerData || {}; 
+        this._onGameRejoin(playerData);   
+    }
+    
     isTurn() {
         return this.player.id == this.currentTurnPlayerId;
     }
@@ -157,7 +163,6 @@ export default class PlayerTurnBaseAdapter extends GameAdapter {
         //TODO play sound
 
         let showPlayControlOnly = !this.preTurnPlayerId && !this.scene.board.getLastPlayedTurnPlayerId();
-
         if(this.player.isItMe()) {
             this.scene.emit(Events.SHOW_ON_TURN_CONTROLS, showPlayControlOnly);
         }

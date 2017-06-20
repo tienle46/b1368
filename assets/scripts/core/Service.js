@@ -51,12 +51,12 @@ class Service {
         
         this._valueQueue = [];
         this._lagPollingInterval = null;
-        this._lagPollingPrepared = true;
         this._isShowLoginPopup = false;
         this._poorNetwork = false;
         this._loginData = null;
         this.isConnecting = false;
         this._pendingRequests = [];
+        this._xlagTimeout = null;
 
         // this._initSmartFoxClient();
     }
@@ -221,6 +221,7 @@ class Service {
         this.stopLagPolling();
 
         let isLoggedIn = true;
+        
         let scene = app.system.getCurrentSceneName();
         // exception Scene: sences which are still presit when lost connection occurred. otherwise will be back to ENTRANCE_SCENE
         let isInExceptionScene = app._.includes([
@@ -393,7 +394,7 @@ class Service {
         } else {
             if(this.client._socketEngine.isConnecting) {
                 this.client._socketEngine.isConnecting = false;
-                this.client.disconnect();
+                // this.client.disconnect();
                 setTimeout(() => {
                     this.connect();
                 }, 200);
@@ -598,28 +599,43 @@ class Service {
         this.stopLagPolling();
         this._lagPollingInterval = setInterval(() => {
             let currentTimeInMilis = (new Date()).getTime();
-            if(this._lagPollingPrepared) {
-                this.send({
-                    cmd: app.commands.XLAG,
-                    data: {
-                        [app.keywords.XLAG_VALUE]: currentTimeInMilis
-                    }
-                });
-                this._lagPollingPrepared = null;
-            } else {
-                // maybe user's disconnected
-                this._showReloginPopupWhenDiconnectivity();
-            }
+            // set timeout for disconnection 
+            this._xlagTimeout = setTimeout(() => {
+                if(app.context.isJoinedGame()) {
+                    // send refresh
+                    this.send({
+                        cmd: app.commands.GET_CURRENT_GAME_DATA,
+                        room: app.context.currentRoom
+                    });
+                    
+                    // manually disconnect if nothing no response in 4s
+                    this._gameDataTimeout = setTimeout(() => {
+                        this._showReloginPopupWhenDiconnectivity();
+                    }, 4 * 1000);
+                } else {
+                    this._showReloginPopupWhenDiconnectivity();
+                }
+            }, pollingInterval * 2);
+            
+            // send xlag request
+            this.send({
+                cmd: app.commands.XLAG,
+                data: {
+                    [app.keywords.XLAG_VALUE]: currentTimeInMilis
+                }
+            });
+            
         }, pollingInterval);
     }
 
     stopLagPolling() {
-        this._lagPollingPrepared = true;
         if (this._lagPollingInterval) {
             clearInterval(this._lagPollingInterval);
             this._valueQueue = [];
             this._lagPollingInterval = null;
         }
+        this._xlagTimeout && clearTimeout(this._xlagTimeout);
+        this._gameDataTimeout && clearTimeout(this._gameDataTimeout);
     }
     
     _showReloginPopupWhenDiconnectivity() {
@@ -634,7 +650,8 @@ class Service {
             let curRecVal = (new Date()).getTime();
             let curSendVal = resObj[app.keywords.XLAG_VALUE];
             if (curSendVal) {
-                this._lagPollingPrepared = true;
+                // clear timeout
+                this._xlagTimeout && clearTimeout(this._xlagTimeout);
                 
                 if (this._valueQueue.length >= app.config.pingPongPollQueueSize) {
                     this._valueQueue.splice(0, 1);

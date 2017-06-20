@@ -264,7 +264,6 @@ export default class GameScene extends BaseScene {
             this._loadGameData();
 
         } catch (e) {
-            console.warn(e);
             app.system.enablePendingGameEvent = false;
             e instanceof CreateGameException && this._onLoadSceneFail();
         }
@@ -362,7 +361,14 @@ export default class GameScene extends BaseScene {
         state && this.emit(Events.ON_GAME_STATE_CHANGE, state, this.gameData, true, true);
         this.emit(Events.ON_GAME_REJOIN, data);
     }
-
+    
+    handleGameRefresh(data) {
+        this.gameData = {...data.gameData, ...data.gamePhaseData};
+        this._mergeGameData(data.playerData);
+        // this._onGameRejoin(data.playerData);
+        this.emit(Events.ON_GAME_REFRESH, data);    
+    }
+    
     _onActionExitGame() {
         // this.showLoading();
         // app.service.sendRequest(new SFS2X.Requests.System.LeaveRoomRequest(this.room));
@@ -378,7 +384,6 @@ export default class GameScene extends BaseScene {
 
         let currentGameState = utils.getValue(this.gameData, Keywords.BOARD_STATE_KEYWORD);
         let isStateAfterReady = GameUtils.isStateAfterReady(currentGameState);
-
         /**
          * Current is call board._initPlayingData && board._loadGamePlayData directly. But when player or other component need to get data,
          * below line code will be switch to using emit via scene emitter
@@ -416,7 +421,7 @@ export default class GameScene extends BaseScene {
             return;
         }
 
-        if (app.service.client.isConnected()) {
+        if (app.service.getClient().isConnected()) {
             app.system.error('Không thể khởi tạo bàn chơi. Quay lại màn hình chọn bàn chơi!', () => {
                 app.system.loadScene(app.const.scene.LIST_TABLE_SCENE);
             });
@@ -430,8 +435,9 @@ export default class GameScene extends BaseScene {
     goBack() {
 
         app.system.setSceneChanging(true);
-
-        if (app.service.client.isConnected()) {
+        app.context.currentRoom && (app.context.currentRoom.isGame = false);
+        
+        if (app.service.getClient().isConnected()) {
             app.system.loadScene(app.const.scene.LIST_TABLE_SCENE);
         } else {
             app.system.loadScene(app.const.scene.LOGIN_SCENE);

@@ -4,6 +4,7 @@ export default {
     system: "Hệ Thống",
     game_title: "B1368",
     lost_connection: "Kết nối tới máy chủ bị gián đoạn. Vui lòng đăng nhập lại!",
+    can_not_connect_to_server: "Không thể kết nối tới máy chủ",
     lost_connection_without_reconnect: "Kết nối tới máy chủ bị gián đoạn!",
     waiting_server_response: 'Đang gửi yêu cầu tới server ....',
     change_language_fail: "Đổi ngôn ngữ thất bại",  

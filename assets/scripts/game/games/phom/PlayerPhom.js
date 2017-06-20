@@ -271,7 +271,7 @@ export default class PlayerPhom extends PlayerCardTurnBase {
                 break;
         }
     }
-
+    
     _onGameRejoin(data) {
         super._onGameRejoin(data);
 

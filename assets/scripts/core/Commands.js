@@ -292,5 +292,6 @@ Commands.USER_MSG_COUNT = "userMsgCount";
 Commands.GET_EXCHANGE_DETAIL = "getExDetail";
 Commands.CANCEL_EXCHANGE_REQUEST = "ceir";
 Commands.GET_CHIPS_BACK = "getExRefund";
+Commands.GET_CURRENT_GAME_DATA = "getCurrentGameData";
 
 module.exports = Commands;

@@ -81,11 +81,7 @@ export default (function(app) {
      **************************************************ENV SETUP **************************************************
      **************************************************************************************************************/
     app.env.__setupEnvironment = function() {
-        app.config.useSSL = app.env.isBrowser();
-        cc.log('use ssl', app.config.useSSL);
-        cc.log('use ssl app.env.isBrowser', app.env.isBrowser());
-        app.config.port = app.config.useSSL ? 443 : 8921;
-        cc.log('use ssl p', app.config.port);
+        
         
         if (app.env.isBrowser()) {
             var Fingerprint2 = require('fingerprinter');
@@ -94,7 +90,9 @@ export default (function(app) {
                 app.config.DEVICE_ID = printer;
             });
         } else if (app.env.isMobile()) {
-
+            app.config.useSSL = app.env.isBrowser();
+            app.config.port = app.config.useSSL ? 443 : 8921;
+            
             if (app.env.isIOS()) {
                 app.config.DEVICE_ID = window.jsb.reflection.callStaticMethod("FCUUID", "uuidForDevice");
                 app.config.CARRIER_NAME = window.jsb.reflection.callStaticMethod("JSBUtils", "carrierName");

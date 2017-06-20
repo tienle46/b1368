@@ -26,6 +26,7 @@ class GameContext {
         this.requestRandomInvite = undefined; //In rejoin game case GameScene not asign to false when requestRandomInvite == undefined
         this.ctl = null; // data in topup->(tabCard/tabIAP/tabSMS)
         this.enableMinbets = null; //{gameCode: [Array]}, game minbet
+        // this.roomsListData = null; // listTableScene's rooms : {index: condFilter's index, rooms: []}
         this.systemMessageCount = 0;
         this.newVersionInfo = null;
 
@@ -59,7 +60,7 @@ class GameContext {
         if(app.visibilityManager.isActive(VisibilityManager.SYSTEM_MESSAGE)) {
             if(isReplace){
                 this.systemMessageCount = Math.max(count, 0);
-            }else{
+            } else {
                 this.systemMessageCount = Math.max(this.systemMessageCount + count);
             }
 
@@ -134,7 +135,7 @@ class GameContext {
      * @returns {SFS2X.Entities.SFSUser}
      */
     getMe() {
-        return app.service.client.me;
+        return app.service.getClient().me;
     }
 
     getVipLevel() {

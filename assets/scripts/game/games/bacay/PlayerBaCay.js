@@ -204,7 +204,7 @@ export default class PlayerBaCay extends PlayerCardBetTurn {
     onEnable() {
         super.onEnable(this.getComponent('PlayerBaCayRenderer'));
     }
-
+    
     _onGameRejoin(data) {
         super._onGameRejoin(data);
         // if (this.isPlaying() && !this.scene.isEnding() && !this.isItMe()) {

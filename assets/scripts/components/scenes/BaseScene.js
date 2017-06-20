@@ -118,7 +118,7 @@ export default class BaseScene extends Actor {
 
         app.system.showLoader('Đang kết nối đến server ...');
 
-        if (app.service.client.isConnected()) {
+        if (app.service.getClient().isConnected()) {
             this._requestAuthen(username, password, isRegister, isQuickLogin, accessToken, fbId, null, cb);
         } else {
             this._tryToConnectAndLogin(username, password, isRegister, isQuickLogin, accessToken, fbId, null, cb);
@@ -158,10 +158,10 @@ export default class BaseScene extends Actor {
                             app.config.port = parseInt(splitMsgs[2])
                             app.service.disconnect();
                             let tryToConnectInterval = setInterval(() => {
-                                if(!app.service.client.isConnected()) {
+                                if(!app.service.getClient().isConnected()) {
                                     clearInterval(tryToConnectInterval)
                                     app.config.useSSL = false;
-                                    app.service.client.config.useSSL = false;
+                                    app.service.getClient().config.useSSL = false;
                                     this._tryToConnectAndLogin(username, password, isRegister, isQuickLogin, accessToken, fbId, true)
                                 }
                             }, 100)

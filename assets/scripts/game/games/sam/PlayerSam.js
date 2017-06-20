@@ -181,7 +181,7 @@ export default class PlayerSam extends PlayerCardTurnBase {
     //     let interactable = SamUtils.checkPlayCard(selectedCards, this.getPrePlayedCards(), app.const.game.GAME_TYPE_TIENLEN);
     //     this.scene.emit(Events.SET_INTERACTABLE_PLAY_CONTROL, interactable);
     // }
-
+    
     _onGameRejoin(data) {
         super._onGameRejoin(data);
         if (this.isPlaying() && !this.scene.isEnding() && !this.isItMe()) {

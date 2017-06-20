@@ -136,13 +136,13 @@ export default class BuddyManager {
     }
 
     getAllBuddy() {
-        return app.service.client.buddyManager.getBuddyList();
+        return app.service.getClient().buddyManager.getBuddyList();
     }
     
     containsBuddy(buddyName) {
         let buddy = this.getBuddyByName(buddyName);
         // return this.buddies.find(b => b == buddy);
-        return app.service.client.buddyManager.containsBuddy(buddyName) && this.buddies.find(b => b == buddy);
+        return app.service.getClient().buddyManager.containsBuddy(buddyName) && this.buddies.find(b => b == buddy);
     }
 
     destroy() {
@@ -155,7 +155,7 @@ export default class BuddyManager {
     }
 
     sendInitBuddy() {
-        !app.service.client.buddyManager.isInited() && app.service.send({ cmd: app.commands.BUDDY_INIT_LIST, data: {} });
+        !app.service.getClient().buddyManager.isInited() && app.service.send({ cmd: app.commands.BUDDY_INIT_LIST, data: {} });
     }
 
     addBuddy(buddyName) {
@@ -224,13 +224,13 @@ export default class BuddyManager {
     }
 
     goOffline() {
-        if (app.service.client.buddyManager.getMyOnlineState()) {
+        if (app.service.getClient().buddyManager.getMyOnlineState()) {
             app.service.sendRequest(new SFS2X.Requests.BuddyList.GoOnlineRequest(false));
         }
     }
 
     getBuddyByName(name) {
-        let buddy = name && app.service.client.buddyManager.getBuddyByName(name);
+        let buddy = name && app.service.getClient().buddyManager.getBuddyByName(name);
         buddy && !buddy.hasOwnProperty('displayName') && (buddy.displayName = buddy.getNickName() || buddy.name);
         
         return buddy;
@@ -384,7 +384,7 @@ export default class BuddyManager {
 
     _onBuddyOnlineStateChange(evtParams) {
         let isItMe = evtParams.isItMe;
-        let isOnline = isItMe ? app.service.client.buddyManager.getMyOnlineState() : evtParams.buddy.isOnline();
+        let isOnline = isItMe ? app.service.getClient().buddyManager.getMyOnlineState() : evtParams.buddy.isOnline();
         app.system.emit(Events.ON_BUDDY_ONLINE_STATE_CHANGED, isOnline, isItMe, evtParams.buddy);
     }
 
@@ -392,8 +392,8 @@ export default class BuddyManager {
         let isItMe = evtParams.isItMe;
 
         evtParams.changedVars.forEach((varName, i) => {
-            let value = isItMe ? utils.getVariable(app.service.client.buddyManager, varName):
-                utils.getVariable(app.service.client.buddyManager.getBuddyByName(evtParams.buddy.name), varName);
+            let value = isItMe ? utils.getVariable(app.service.getClient().buddyManager, varName):
+                utils.getVariable(app.service.getClient().buddyManager.getBuddyByName(evtParams.buddy.name), varName);
 
             if (varName == BuddyManager.MOOD_VARIABLE_NAME) {
                 app.system.emit(Events.ON_BUDDY_MOOD_CHANGED, value || "", isItMe, evtParams.buddy);

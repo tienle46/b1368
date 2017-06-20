@@ -55,13 +55,19 @@ export default class Board extends Actor {
         this.scene.on(Events.ON_PLAYER_READY_STATE_CHANGED, this._onPlayerSetReadyState, this);
         this.scene.on(Events.ON_GAME_REJOIN, this._onGameRejoin, this);
         this.scene.on(Events.ON_ROOM_CHANGE_MIN_BET, this._onRoomMinBetChanged, this);
+        this.scene.on(Events.ON_GAME_REFRESH, this._onBoardRefresh, this);
     }
 
     onGameStateWait(){
         this.stopTimeLine();
 
     }
-
+    
+    _onBoardRefresh(data) {
+        let boardData = data.gameData;
+        this._onGameRejoin(boardData);
+    }
+    
     _onRoomMinBetChanged() {
         this._loadBoardMinBet();
     }
