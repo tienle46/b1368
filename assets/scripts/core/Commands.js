@@ -293,5 +293,7 @@ Commands.GET_EXCHANGE_DETAIL = "getExDetail";
 Commands.CANCEL_EXCHANGE_REQUEST = "ceir";
 Commands.GET_CHIPS_BACK = "getExRefund";
 Commands.GET_CURRENT_GAME_DATA = "getCurrentGameData";
+Commands.USER_DISCONNECTED = "userDisconnected";
+Commands.REPLACE_FAKE_USER = "replaceFakeUser";
 
 module.exports = Commands;

@@ -787,3 +787,5 @@ Keywords.DETAIL = "d";
 Keywords.JAR_EXPLOSIVE = "sj_sjil";
 
 Keywords.VIP_LEVEL = "vipLevel";
+Keywords.USER_NAME = "username";
+Keywords.ROOM_NAME = "roomName";

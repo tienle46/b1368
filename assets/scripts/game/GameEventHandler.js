@@ -87,8 +87,9 @@ export default class GameEventHandler {
         app.system.addGameListener(Commands.REGISTER_QUIT_ROOM, this._onRegisterQuitRoom, this);
 
         app.system.addGameListener(Commands.ASSETS_USE_ITEM, this._assetsUseItem, this);
-        
         app.system.addGameListener(Commands.GET_CURRENT_GAME_DATA, this._getCurrentGameData, this);
+        app.system.addGameListener(Commands.USER_DISCONNECTED, this._onHandleUserDisconnected, this, 0);
+        app.system.addGameListener(Commands.REPLACE_FAKE_USER, this._replaceFakeUser, this);
     }
 
     removeGameEventListener() {
@@ -134,8 +135,9 @@ export default class GameEventHandler {
         app.system.removeGameListener(Commands.REGISTER_QUIT_ROOM, this._onRegisterQuitRoom, this);
 
         app.system.removeGameListener(Commands.ASSETS_USE_ITEM, this._assetsUseItem, this);
-        
         app.system.removeGameListener(Commands.GET_CURRENT_GAME_DATA, this._getCurrentGameData, this);
+        app.system.removeGameListener(Commands.USER_DISCONNECTED, this._onHandleUserDisconnected, this, 0);
+        app.system.removeGameListener(Commands.REPLACE_FAKE_USER, this._replaceFakeUser, this);
     }
     
     // {gameData, gamePhaseData, playerData} = data;
@@ -144,7 +146,8 @@ export default class GameEventHandler {
         
         this.scene.handleGameRefresh(data);
     }
-    
+
+
     _onRegisterQuitRoom(data){
         this.scene.emit(Events.ON_PLAYER_REGISTER_QUIT_ROOM, data);
     }
@@ -241,10 +244,14 @@ export default class GameEventHandler {
         this.scene.handleRejoinGame(data);
     }
 
+    _replaceFakeUser(data) {
+        let playerId = utils.getValue(data,  "playerId",  0);
+        let userId = utils.getValue(data, "userId", 0);
+        
+        this.scene.emit(Events.ON_PLAYER_REENTER_GAME, playerId, userId);
+    }
+    
     _handlePlayerReEnterGame(data) {
-        
-        log('',);
-        
         let playerId = utils.getValue(data, Keywords.PLAYER_ID, 0);
         let userId = utils.getValue(data, Keywords.USER_ID, 0);
         this.scene.emit(Events.ON_PLAYER_REENTER_GAME, playerId, userId);
@@ -305,16 +312,35 @@ export default class GameEventHandler {
     isCurrentGameRoom(event) {
         return event.sourceRoom && event.sourceRoom === app.context.currentRoom.id;
     }
+                    
+    _onHandleUserDisconnected(data = {}){
+        let playerId = utils.getValue(data, app.keywords.PLAYER_ID, 0);
+        let username =  utils.getValue(data, app.keywords.USER_NAME, "");
+        let roomName =  utils.getValue(data, app.keywords.ROOM_NAME, "");
+        
+        let disconnectedPlayer = this.scene.gamePlayers.findPlayer(username);
+        if(disconnectedPlayer != null){
+            this.scene.emit(Events.ON_USER_EXIT_ROOM, disconnectedPlayer.user, this.scene.room, playerId);
+        }
+    }
 
     _onUserExitRoom(event) {
         if (!event.user || !event.room || !this.scene.room || event.room.id != this.scene.room.id) {
             return;
         }
 
-        this.scene.emit(Events.ON_USER_EXIT_ROOM, event.user, event.room, event.user.getPlayerId(event.room));
+        if(event.user){    
 
-        if (event.user && event.user.isItMe) {
-            this.scene.goBack();
+            if ( event.user.isItMe) {
+                this.scene.emit(Events.ON_USER_EXIT_ROOM, event.user, event.room, event.user.getPlayerId(event.room));
+                this.scene.goBack();
+            }
+            
+            // this.scene.emit(Events.ON_USER_EXIT_ROOM, event.user, event.room, event.user.getPlayerId(event.room));
+            // 
+            // if ( event.user.isItMe) {
+            //     this.scene.goBack();
+            // }
         }
     }
 

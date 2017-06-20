@@ -5,6 +5,7 @@
 import app from 'app';
 import SFS2X from 'SFS2X';
 import Toast from 'Toast';
+import utils from 'utils';
 
 const requestCallbackNames = {
     [SFS2X.Requests.Handshake]: SFS2X.SFSEvent.HANDSHAKE,
@@ -277,7 +278,6 @@ class Service {
     }
 
     _onExtensionEvent(event) {
-        debug(event);
         if (event.cmd === app.commands.XLAG) {
             this._handleLagPollingResponse(event);
         } else if (event.cmd === app.commands.SYSTEM_MESSAGE) {
@@ -292,6 +292,9 @@ class Service {
             });
         } else if (event.cmd === app.commands.CLIENT_CONFIG) {
             this._dispatchClientConfig(event.params);
+        } else if (event.cmd === app.commands.USER_DISCONNECTED) {
+            this._onUserDisconnected(event.params);
+            app.system.emit(event.cmd, event.params, event);
         } else {
             if (this._hasCallback(event.cmd)) {
                 this._callCallbackAsync(event.cmd, event.params);
@@ -300,6 +303,23 @@ class Service {
             app.system.emit(event.cmd, event.params, event);
         }
         event = null;
+    }
+    
+    _onUserDisconnected(data = {}){
+        let playerId = utils.getValue(data, app.keywords.PLAYER_ID, 0);
+        let username =  utils.getValue(data, app.keywords.USER_NAME, "");
+        let roomName =  utils.getValue(data, app.keywords.ROOM_NAME, "");
+        
+        if(roomName.length > 0 && username.length > 0){
+            
+            let joinedRoom = this.client.getRoomByName(roomName);
+            
+            if(joinedRoom){
+                joinedRoom._removeUser(username)
+            }
+            
+            this.client.userManager._removeUser(username);
+        }
     }
 
     _onLogin(event) {
