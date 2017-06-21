@@ -35,13 +35,13 @@ export default class Player extends Actor {
         this.scene = board.scene;
         this.board = board;
         this.user = user;
-
+        
         if (!this.board || !this.user) {
             throw new CreateGameException("Dữ liệu khởi tạo bàn chơi không đúng");
         }
 
     }
-
+    
     getUniqueName(){
         return `${super.getUniqueName()}_${this.user && this.user.name}`
     }
@@ -198,6 +198,7 @@ export default class Player extends Actor {
     }
 
     _onUserExitRoom(user, room) {
+        if(!user || !room) return;
         if (user && this.user && user.id == this.user.id) {
             this.stopTimeLine();
         }

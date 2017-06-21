@@ -119,6 +119,8 @@ export default class GameScene extends BaseScene {
     }
 
     _onUserExitGame(user, room) {
+        if(!user || !room) return;
+        
         if (this.room.id == room.id) {
             let playerId = user.getPlayerId(this.board.room);
             playerId > 0 && this._onPlayerReadyStateChanged(playerId, false);

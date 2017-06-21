@@ -90,9 +90,6 @@ export default (function(app) {
                 app.config.DEVICE_ID = printer;
             });
         } else if (app.env.isMobile()) {
-            app.config.useSSL = app.env.isBrowser();
-            app.config.port = app.config.useSSL ? 443 : 8921;
-            
             if (app.env.isIOS()) {
                 app.config.DEVICE_ID = window.jsb.reflection.callStaticMethod("FCUUID", "uuidForDevice");
                 app.config.CARRIER_NAME = window.jsb.reflection.callStaticMethod("JSBUtils", "carrierName");

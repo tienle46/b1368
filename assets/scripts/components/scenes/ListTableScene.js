@@ -294,7 +294,9 @@ export default class ListTableScene extends BaseScene {
         this.filterCond = app.config.listTableGroupFilters[index];
         
         this[`radio${index + 1}`] && (this[`radio${index + 1}`].isChecked = showActivate || this._isInitedRoomList);
-        this.scrollView.stopAutoScroll();
+        
+        this.scrollView.stopAutoScroll(); // stop scrolling before rendering list
+        
         this._renderList();    
     }
     
@@ -502,14 +504,20 @@ export default class ListTableScene extends BaseScene {
     
     _renderList() {
         // this.contentInScroll.removeAllChildren();
-        this.contentInScroll && this.contentInScroll.children && this.contentInScroll.children.forEach(child => child.active = false);
+        // this.contentInScroll && this.contentInScroll.children && this.contentInScroll.children.forEach(child => child.active = false);
 
         let filterItems = this._filterItems();
         if (filterItems.length > 0) {
             this.setVisibleEmptyNode(false);
-            // this.contentInScroll && filterItems.forEach(item => this.contentInScroll.addChild(item.node));
-            this.contentInScroll && filterItems.forEach(item => item.node.active = true);
-            this.scrollView.scrollToOffset(cc.p(0,0))
+            this.contentInScroll.children.forEach((child) => {
+                let cell = child.getComponent('TableListCell');
+                if(cell) {
+                    let minbet = cell.getComponentData().minBet;
+                    child.active = (minbet >= this.filterCond.min && minbet <= this.filterCond.max)
+                }
+            });
+            // // this.contentInScroll && filterItems.forEach(item => this.contentInScroll.addChild(item.node));
+            // this.contentInScroll && filterItems.forEach(item => item.node.active = true);
         } else {
             this.setVisibleEmptyNode(true);
         }

@@ -116,9 +116,10 @@ export default class GamePlayers extends Component {
     }
 
     _onUserExitGame(user, room) {
-        let player = this.findPlayer(user.name);
+        if(!user || !room) return;
 
-        if (player) {
+        let player = this.findPlayer(user.name);
+        if (player && player.user) {
             player.isReady() && this.exittedPlayers.push({
                 id: player.id,
                 name: player.user.name,
