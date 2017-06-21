@@ -163,17 +163,17 @@ export default class MultiTabPopup extends Actor {
     }
 
     _hideAllBodyChildren() {
-        this.bodyNode.children && this.bodyNode.children.forEach(child => child.active = false);
+        this.bodyNode && this.bodyNode.children && this.bodyNode.children.forEach(child => child.active = false);
     }
 
     _visibleBodyNode(visible = true) {
-        this.bodyNode.active = visible;
+        this.bodyNode && (this.bodyNode.active = visible);
         visible && (this.emptyBody.active = false);
     }
 
     _showEmptyBody() {
-        this.bodyNode.active = false;
-        this.emptyBody.active = true;
+        this.bodyNode && (this.bodyNode.active = false);
+        this.emptyBody && (this.emptyBody.active = true);
     }
 
     setTitle(title = app.res.string('system')) {

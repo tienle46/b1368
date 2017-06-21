@@ -144,6 +144,7 @@ export default class BaseScene extends Actor {
 
     _requestAuthen(username, password, isRegister, isQuickLogin, accessToken, fbId, tryOneTime, cb) {        
         app.service.requestAuthen(username, password, isRegister, isQuickLogin, accessToken, fbId, (error, result) => {
+            console.warn('err, result', error, result);
             if (error) {
                 let splitMsgs = error.errorMessage && error.errorMessage.split('|');
                 

@@ -43,7 +43,7 @@ export default class DashboardScene extends BaseScene {
         !app.context.enableMinbets && this._getListGameMinBet();
         this._requestListHu();
         
-        this._getGamesListFromServer();
+        app.context.gameList.length < 1 && this._getGamesListFromServer();
         !app.context.ctl && this._requestCtl();
         
         /**

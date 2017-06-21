@@ -207,6 +207,7 @@ class Service {
     }
 
     _onConnection(event) {
+        console.warn('onConnection', event)
         this.isConnecting = false;
         this._callCallback(SFS2X.SFSEvent.CONNECTION, event.success);
 
@@ -334,8 +335,7 @@ class Service {
             app.context.rejoiningGame = true;
             app.system.enablePendingGameEvent = true;
         } else {
-            // this._loginData = null;
-
+            // this._loginData = null;            
             this._callCallback(SFS2X.SFSEvent.LOGIN, null, event.data);
         }
         
@@ -420,6 +420,7 @@ class Service {
                 }, 200);
                 return;
             }
+            
             this._addCallback(SFS2X.SFSEvent.CONNECTION, cb);
             this.client.connect(app.config.host, app.config.port);
         }
@@ -630,9 +631,11 @@ class Service {
                     
                     // manually disconnect if nothing no response in 4s
                     this._gameDataTimeout = setTimeout(() => {
+                        console.warn('_gameDataTimeout')
                         this._showReloginPopupWhenDiconnectivity();
                     }, 4 * 1000);
                 } else {
+                        console.warn('_xlagTimeout')
                     this._showReloginPopupWhenDiconnectivity();
                 }
             }, pollingInterval * 2);
