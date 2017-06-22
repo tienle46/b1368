@@ -70,7 +70,7 @@ export default class FriendProfilePopup extends DialogActor {
         var sendObject = {
             'cmd': app.commands.SELECT_PROFILE,
             'data': {
-                [app.keywords.USER_NAME]: user.name
+                [app.keywords.USER_ID]: user.name
             }
         };
 

@@ -234,7 +234,7 @@ export default class Player extends Actor {
         this.username = this.user.name;
         this.id = this.user.getPlayerId(this.board.room);
         this.balance = GameUtils.getUserBalance(this.user);
-
+        
         let displayName = GameUtils.getDisplayName(this.user);
         this.renderer.setName(displayName);
         this.renderer.setBalance(this.balance);
@@ -258,6 +258,7 @@ export default class Player extends Actor {
     avatarClicked() {
         if (!this.isItMe()) {
             let avatar = utils.getVariable(this.user, 'avatar', {});
+            
             let avatarURL = (avatar && avatar['large']) || app.context.getDefaultAvatarURL('large');
             let startNode = this.scene.gamePlayers.playerPositions.getPlayerAnchorByPlayerId(this.scene.gamePlayers.me.id, this.isItMe());
             this.renderer.showUserProfilePopup(this.scene.node, this.user, this.user.id, avatarURL, this.scene.gamePlayers.isOwner(this.scene.gamePlayers.me.id), startNode, this.node);
