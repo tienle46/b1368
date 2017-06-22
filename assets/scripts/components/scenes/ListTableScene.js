@@ -77,6 +77,7 @@ export default class ListTableScene extends BaseScene {
             
             this.fakers.forEach(object => {
                 let listCell = cc.instantiate(this.tableListCell);
+                listCell.zIndex = ListTableScene.TYPE_FAKE_ROOM;
                 listCell.active = false;
                 let cellComponent = listCell.getComponent('TableListCell');
                 let data = { id:0, minBet:object.minBet, password: object.password, isSpectator:false, roomCapacity: object.roomCapacity};
@@ -458,6 +459,8 @@ export default class ListTableScene extends BaseScene {
             this.enableMinbets.forEach(minBet => this.fakers.push(this._createRoomObject(0, 0, minBet, 0, app.const.game.maxPlayers[this.gameCode || 'default'], null)));
         }
         
+        this.contentInScroll.children.forEach(item => item && item.zIndex !== ListTableScene.TYPE_FAKE_ROOM && CCUtils.destroy(item));
+        
         if(isEmptyList) {
             let minMoney =  app.context.getMeBalance()/this.minBalanceMultiple;
             let index = app.config.listTableGroupFilters.findIndex((o) => (minMoney >= o.min && minMoney <= o.max));
@@ -467,21 +470,45 @@ export default class ListTableScene extends BaseScene {
             } else if(~index) {
                 this._activeFilterByIndex(index);
             }
-        } else {
-            this.contentInScroll.children.forEach(item => item && CCUtils.destroy(item));
-            
-            // re-order children  
-            let rooms = [...playableRooms, ...this.fakers, ...fullRooms];
-            
-            for (let i = 0; i < rooms.length; i++) {
-                let listCell = cc.instantiate(this.tableListCell);
-                listCell.active = false;
-                let cellComponent = listCell.getComponent('TableListCell');
-                cellComponent.setOnClickListener((data) => this.onUserRequestJoinRoom(data));
-                cellComponent && cellComponent.initCell(rooms[i]);
-                this.addNode(listCell);
-                this.contentInScroll.addChild(listCell);
+        } else {            
+            // re-order children 
+            let createRooms = (array, type) => {
+                for (let i = 0; i < array.length; i++) {
+                    let listCell = cc.instantiate(this.tableListCell);
+                    listCell.active = false;
+                    listCell.zIndex = type;
+                    let cellComponent = listCell.getComponent('TableListCell');
+                    cellComponent.setOnClickListener((data) => this.onUserRequestJoinRoom(data));
+                    cellComponent && cellComponent.initCell(array[i]);
+                    this.addNode(listCell);
+                    this.contentInScroll.addChild(listCell);
+                }
             }
+            
+            createRooms(playableRooms, 1);
+            createRooms(fullRooms, 3);
+            
+            // let rooms = [...playableRooms, ...fullRooms];
+            
+            // for (let i = 0; i < rooms.length; i++) {
+            //     let listCell = cc.instantiate(this.tableListCell);
+            //     listCell.active = false;
+            //     let cellComponent = listCell.getComponent('TableListCell');
+            //     cellComponent.setOnClickListener((data) => this.onUserRequestJoinRoom(data));
+            //     cellComponent && cellComponent.initCell(rooms[i]);
+            //     this.addNode(listCell);
+            //     this.contentInScroll.addChild(listCell);
+            // }
+            
+            // for (let i = 0; i < rooms.length; i++) {
+            //     let listCell = cc.instantiate(this.tableListCell);
+            //     listCell.active = false;
+            //     let cellComponent = listCell.getComponent('TableListCell');
+            //     cellComponent.setOnClickListener((data) => this.onUserRequestJoinRoom(data));
+            //     cellComponent && cellComponent.initCell(rooms[i]);
+            //     this.addNode(listCell);
+            //     this.contentInScroll.addChild(listCell);
+            // }
             
             this.minBalanceMultiple && this._bestSuitableRoom(this.minBalanceMultiple);
         }
@@ -591,4 +618,5 @@ export default class ListTableScene extends BaseScene {
     }
 }
 
+ListTableScene.TYPE_FAKE_ROOM = 2;
 app.createComponent(ListTableScene);
