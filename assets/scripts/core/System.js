@@ -115,6 +115,8 @@ class GameSystem {
         this.addListener(SFS2X.SFSEvent.ADMIN_MESSAGE, this._onAdminMessage, this);
         
         this.addListener(app.commands.GET_TOTAL_TOPUP, this._onTotalTopupFetched, this);
+        
+        this.addListener(app.commands.CANCEL_REJOIN, this._onCancelRejoin, this);
     }
 
     // removeEventListener() {
@@ -290,7 +292,11 @@ class GameSystem {
     removeAllListener(eventName) {
         this.eventEmitter.removeListener(eventName);
     }
-
+    
+    _onCancelRejoin(data) {
+        this.loadScene(app.const.scene.DASHBOARD_SCENE);
+    }
+    
     _onJoinRoomError(resultEvent) {
         if (resultEvent.errorCode) {
             this.hideLoader();

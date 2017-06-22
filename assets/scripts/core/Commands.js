@@ -296,4 +296,6 @@ Commands.GET_CURRENT_GAME_DATA = "getCurrentGameData";
 Commands.USER_DISCONNECTED = "userDisconnected";
 Commands.REPLACE_FAKE_USER = "replaceFakeUser";
 
+Commands.CANCEL_REJOIN = "cancelRejoin";
+
 module.exports = Commands;
