@@ -69,7 +69,7 @@ export default class BoardPhom extends BoardCardTurnBase {
 
     _loadGamePlayData(data) {
         super._loadGamePlayData(data);
-
+                
         let playerIds = utils.getValue(data, Keywords.GAME_LIST_PLAYER);
         if (utils.isEmpty(playerIds)) return;
 
@@ -160,7 +160,7 @@ export default class BoardPhom extends BoardCardTurnBase {
             if(playedPlayer){
                 let playerPlayedCards = playedPlayer.getPlayedCards();
                 if (playerPlayedCards.length > 0) {
-                    this.setLastPlayedCard(playerPlayedCards[playerPlayedCards.length - 1]);
+                    this.setLastPlayedCard(playerPlayedCards[playerPlayedCards.length - 1]);                    
                 }
             }
         }

@@ -38,7 +38,7 @@ export default class BoardPhomRenderer extends BoardCardTurnBaseRenderer {
     onEnable(){
         super.onEnable();
         this._initCenterDeckCard();
-
+        
         this.tapHighlightNode.removeFromParent();
         let currentSceneNode = app.system.getCurrentSceneNode();
         currentSceneNode && currentSceneNode.addChild(this.tapHighlightNode)

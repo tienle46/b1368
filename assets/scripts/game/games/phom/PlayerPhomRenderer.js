@@ -110,8 +110,9 @@ export default class PlayerPhomRenderer extends PlayerCardTurnBaseRenderer {
         this.cleanPlayerCards()
 
         this._downPhomListComponent && this._downPhomListComponent.clear();
-
+        
         this.playedCardListNodes.forEach((node, index) => {
+            if(!node) return;
             if (index == this.anchorIndex) {
                 this.playedCardList = node.getComponent('CardList');
                 this.playedCardList.setClickableCard(true);
@@ -129,6 +130,7 @@ export default class PlayerPhomRenderer extends PlayerCardTurnBaseRenderer {
             this.downCardInfoNode.setPosition(0, 0);
         }else{
             this.downCardListNodes.forEach((node, index) => {
+                if(!node) return;
                 if (index == this.anchorIndex) {
                     this.downCardList = node.getComponent('CardList');
                     node.parent && node.parent.addChild(this.downCardInfoNode);
@@ -140,6 +142,7 @@ export default class PlayerPhomRenderer extends PlayerCardTurnBaseRenderer {
         }
 
         this.downPhomListNodes.forEach((node, index) => {
+            if(!node) return;
             if (index == this.anchorIndex) {
                 this._downPhomListComponent = node.getComponent('PhomListComponent');
                 this.downPhomList = this._downPhomListComponent.phomList;

@@ -183,21 +183,23 @@ export default class PhomUtils {
 
     static findBestEatableCards(cards, eatenCards = [], eatingCard) {
         let bestEatableCards = []
+        
+        if(eatingCard) {
+            let checkEatingCard = Card.from(eatingCard.byteValue);
+            checkEatingCard.locked = true;
 
-        let checkEatingCard = Card.from(eatingCard.byteValue);
-        checkEatingCard.locked = true;
-
-        let checkingEatenCards = [...eatenCards, checkEatingCard];
-        let phomLists = PhomGenerator.generatePhomContainEatenCards([...cards, checkEatingCard], checkingEatenCards);
-        if(phomLists.length > 0){
-            let eatablePhom = phomLists[0].filter(phom => ArrayUtils.contains(phom.cards, checkEatingCard))[0]
-            if(eatablePhom){
-                bestEatableCards = [...eatablePhom.cards]
-                ArrayUtils.remove(bestEatableCards, checkEatingCard);
+            let checkingEatenCards = [...eatenCards, checkEatingCard];
+            let phomLists = PhomGenerator.generatePhomContainEatenCards([...cards, checkEatingCard], checkingEatenCards);
+            if(phomLists.length > 0){
+                let eatablePhom = phomLists[0].filter(phom => ArrayUtils.contains(phom.cards, checkEatingCard))[0]
+                if(eatablePhom){
+                    bestEatableCards = [...eatablePhom.cards]
+                    ArrayUtils.remove(bestEatableCards, checkEatingCard);
+                }
             }
         }
 
-        return bestEatableCards
+        return bestEatableCards;
 
         // let bestEatableCards = []
         //

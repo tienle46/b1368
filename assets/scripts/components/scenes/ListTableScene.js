@@ -72,20 +72,9 @@ export default class ListTableScene extends BaseScene {
         
         this._getFirstGameLobbyFromServer();
         (!app.context.enableMinbets || !app.context.enableMinbets[this.gameCode]) ? this._getListGameMinBet() : (this.enableMinbets = app.context.enableMinbets[this.gameCode].sort((a, b) => a - b));
+        
         if(this.enableMinbets.length > 0) {
-            this.enableMinbets.forEach(minBet => this.fakers.push(this._createRoomObject(0, 0, minBet, 0, app.const.game.maxPlayers[this.gameCode || 'default'], null)));
-            
-            this.fakers.forEach(object => {
-                let listCell = cc.instantiate(this.tableListCell);
-                listCell.zIndex = ListTableScene.TYPE_FAKE_ROOM;
-                listCell.active = false;
-                let cellComponent = listCell.getComponent('TableListCell');
-                let data = { id:0, minBet:object.minBet, password: object.password, isSpectator:false, roomCapacity: object.roomCapacity};
-                cellComponent.setOnClickListener(() => this.onUserRequestJoinRoom(data));
-                cellComponent && cellComponent.initCell(object);
-                this.addNode(listCell);
-                this.contentInScroll.addChild(listCell);
-            });
+            this._createRoomFakers();
             
             let minMoney =  app.context.getMeBalance()/this.minBalanceMultiple;
             let index = app.config.listTableGroupFilters.findIndex((o) => (minMoney >= o.min && minMoney <= o.max));
@@ -294,6 +283,22 @@ export default class ListTableScene extends BaseScene {
         this._renderList();    
     }
     
+    _createRoomFakers() {
+        this.enableMinbets.forEach(minBet => this.fakers.push(this._createRoomObject(0, 0, minBet, 0, app.const.game.maxPlayers[this.gameCode || 'default'], null)));
+            
+        this.fakers.forEach(object => {
+            let listCell = cc.instantiate(this.tableListCell);
+            listCell.zIndex = ListTableScene.TYPE_FAKE_ROOM;
+            listCell.active = false;
+            let cellComponent = listCell.getComponent('TableListCell');
+            let data = { id:0, minBet:object.minBet, password: object.password, isSpectator:false, roomCapacity: object.roomCapacity};
+            cellComponent.setOnClickListener(() => this.onUserRequestJoinRoom(data));
+            cellComponent && cellComponent.initCell(object);
+            this.addNode(listCell);
+            this.contentInScroll.addChild(listCell);
+        });
+    }
+    
     _bestSuitableRoom(minBalanceMultiple) {
         let minMoney = app.context.getMeBalance() / this.minBalanceMultiple;
         let rooms = this.contentInScroll.children;
@@ -455,8 +460,8 @@ export default class ListTableScene extends BaseScene {
         let isEmptyList = !(fullRooms.length > 0 || playableRooms.length > 0)
         
         // room faker
-        if(this.fakers.length < 1) {
-            this.enableMinbets.forEach(minBet => this.fakers.push(this._createRoomObject(0, 0, minBet, 0, app.const.game.maxPlayers[this.gameCode || 'default'], null)));
+        if(this.fakers.length < 1 || addMore) {
+            this._createRoomFakers();
         }
         
         this.contentInScroll.children.forEach(item => item && item.zIndex !== ListTableScene.TYPE_FAKE_ROOM && CCUtils.destroy(item));
@@ -484,7 +489,6 @@ export default class ListTableScene extends BaseScene {
                     this.contentInScroll.addChild(listCell);
                 }
             }
-            
             createRooms(playableRooms, 1);
             createRooms(fullRooms, 3);
             

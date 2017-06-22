@@ -207,7 +207,6 @@ class Service {
     }
 
     _onConnection(event) {
-        console.warn('onConnection', event)
         this.isConnecting = false;
         this._callCallback(SFS2X.SFSEvent.CONNECTION, event.success);
 
@@ -631,11 +630,9 @@ class Service {
                     
                     // manually disconnect if nothing no response in 4s
                     this._gameDataTimeout = setTimeout(() => {
-                        console.warn('_gameDataTimeout')
                         this._showReloginPopupWhenDiconnectivity();
                     }, 4 * 1000);
                 } else {
-                        console.warn('_xlagTimeout')
                     this._showReloginPopupWhenDiconnectivity();
                 }
             }, pollingInterval * 2);

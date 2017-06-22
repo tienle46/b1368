@@ -319,13 +319,14 @@ export default class PlayerPhom extends PlayerCardTurnBase {
                 this._processAfterEatOrTake(isAn);
             }
         }else{
-            this.setState(PlayerPhom.STATE_PHOM_EAT_TAKE)
+            // this.setState(this.board.PlayerPhom.STATE_PHOM_EAT_TAKE)
+            this.setState(this.board.lastPlayedCard ? PlayerPhom.STATE_PHOM_EAT_TAKE : PlayerPhom.STATE_PHOM_PLAY);
         }
     }
 
     setState(state) {
         this.state = state;
-
+                
         switch (state) {
             case PlayerPhom.STATE_PHOM_PLAY:
 
@@ -347,7 +348,6 @@ export default class PlayerPhom extends PlayerCardTurnBase {
                 this.board._showTapHighlightOnMeTurn(false)
                 break;
             case PlayerPhom.STATE_PHOM_EAT_TAKE:
-
                 this.isItMe() && this.board._showTapHighlightOnMeTurn()
                 // this.scene && this.scene.emit(Events.SHOW_EAT_AND_TAKE_CONTROLS);
                 // this.scene && this.scene.emit(Events.SHOW_PLAY_CONTROL_ONLY);
