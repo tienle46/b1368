@@ -64,7 +64,7 @@ export default class BoardSam extends BoardCardTurnBase {
 
     _loadGamePlayData(data) {
         super._loadGamePlayData(data);
-
+        console.warn('loadGameData data', data)
         /**
          * Get deck card size
          */
@@ -98,9 +98,14 @@ export default class BoardSam extends BoardCardTurnBase {
         } else {
             let currentBaoXamStatus = utils.getValue(data, Keywords.IS_BAO_XAM);
             let currentBaoXamPlayerIds = utils.getValue(data, Keywords.BAO_XAM_SUCCESS_PLAYER_ID);
-
+            console.warn('currentBaoXamStatus', currentBaoXamStatus);
+            console.warn('currentBaoXamPlayerIds', currentBaoXamPlayerIds);
+            
             currentBaoXamPlayerIds && currentBaoXamStatus && currentBaoXamPlayerIds.forEach((baoXamPlayerId, i) => {
                 let sentBaoXamValue = currentBaoXamStatus[i] ? 1 : 0;
+                this._samBao = true;
+                
+                console.warn('SHOW_BAO_XAM_CONTROLS');
                 baoXamPlayerId && this.scene.emit(Events.ON_PLAYER_BAO_XAM, sentBaoXamValue, sentBaoXamValue);
             })
         }

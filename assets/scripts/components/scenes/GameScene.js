@@ -358,7 +358,11 @@ export default class GameScene extends BaseScene {
     }
 
     _onGameRejoin(data) {
-        this._mergeGameData(data)
+        this._mergeGameData(data);
+        let registeredQuitRoom = data["registeredQuitRoom"];
+        
+        CCUtils.setVisible(this.gameMenu.menuLock, registeredQuitRoom);
+        
         let state = utils.getValue(this.gameData, app.keywords.BOARD_STATE_KEYWORD);
         state && this.emit(Events.ON_GAME_STATE_CHANGE, state, this.gameData, true, true);
         this.emit(Events.ON_GAME_REJOIN, data);

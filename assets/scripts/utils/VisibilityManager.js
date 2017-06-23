@@ -67,7 +67,7 @@ export default class VisibilityManager {
             [VisibilityManager.FANPAGE]: false,
             [VisibilityManager.EVENT]: false,
             [VisibilityManager.EXCHANGE]: false,
-            [VisibilityManager.BANK]: true,
+            [VisibilityManager.BANK]: false,
             [VisibilityManager.BOT]: false,
             [VisibilityManager.GIFT_CODE]: false,
             [VisibilityManager.SYSTEM_MESSAGE]: false,
