@@ -90,6 +90,7 @@ class Service {
         this._removeSmartFoxEvent();
 
         this.addEventListener(SFS2X.SFSEvent.LOGIN, this._onLogin);
+        this.addEventListener(SFS2X.SFSEvent.SOCKET_ERROR, this._onSocketError);
         this.addEventListener(SFS2X.SFSEvent.LOGIN_ERROR, this._onLoginError);
         this.addEventListener(SFS2X.SFSEvent.CONNECTION, this._onConnection);
         this.addEventListener(SFS2X.SFSEvent.CONNECTION_LOST, this._onConnectionLost);
@@ -118,6 +119,7 @@ class Service {
 
     _removeSmartFoxEvent() {
         this.removeEventListener(SFS2X.SFSEvent.LOGIN, this._onLogin);
+        this.removeEventListener(SFS2X.SFSEvent.SOCKET_ERROR, this._onSocketError);
         this.removeEventListener(SFS2X.SFSEvent.LOGIN_ERROR, this._onLoginError);
         this.removeEventListener(SFS2X.SFSEvent.CONNECTION, this._onConnection);
         this.removeEventListener(SFS2X.SFSEvent.CONNECTION_LOST, this._onConnectionLost);
@@ -143,7 +145,26 @@ class Service {
         this.removeEventListener(SFS2X.SFSBuddyEvent.BUDDY_ONLINE_STATE_CHANGE, this._onBuddyOnlineStateChange);
         this.removeEventListener(SFS2X.SFSBuddyEvent.BUDDY_VARIABLES_UPDATE, this._onBuddyVariablesUpdate);
     }
-
+    
+    _onSocketError(event) {
+        let scene = app.system.getCurrentSceneName();
+        app.system.hideLoader();
+        // exception Scene: sences which are still presit when lost connection occurred. otherwise will be back to ENTRANCE_SCENE
+        let isInOutgameScene = app._.includes([
+            app.const.scene.ENTRANCE_SCENE,
+            app.const.scene.LOGIN_SCENE,
+            app.const.scene.REGISTER_SCENE
+        ], scene);
+        
+        if(isInOutgameScene) {
+            app.system.info(app.res.string('can_not_connect_to_server'));
+        } else {
+            app.system.loadScene(app.const.scene.ENTRANCE_SCENE, () => {
+                app.system.info(app.res.string('can_not_connect_to_server'));
+            });   
+        }
+    }
+    
     _onBuddyAdd(event) {
         app.system.emit(SFS2X.SFSBuddyEvent.BUDDY_ADD, event);
     }
