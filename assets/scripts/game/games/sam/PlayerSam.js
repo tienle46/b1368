@@ -98,17 +98,21 @@ export default class PlayerSam extends PlayerCardTurnBase {
     }
 
     _onBaoXam(){
-        app.service.send({cmd: app.commands.PLAYER_BAO_XAM, data: {[app.keywords.IS_BAO_XAM]: true}, room: this.scene.room}, (data) => {
-            this._handlePlayerBaoXam(data);
-        });
-        this.scene.emit(Events.SHOW_WAIT_TURN_CONTROLS);
+        if(this.isItMe()) {
+            app.service.send({cmd: app.commands.PLAYER_BAO_XAM, data: {[app.keywords.IS_BAO_XAM]: true}, room: this.scene.room}, (data) => {
+                this._handlePlayerBaoXam(data);
+            });
+            this.scene.emit(Events.SHOW_WAIT_TURN_CONTROLS);            
+        }
     }
 
     _onBoBaoXam(){
-        app.service.send({cmd: app.commands.PLAYER_BAO_XAM, data: {[app.keywords.IS_BAO_XAM]: false}, room: this.scene.room}, (data) => {
-            this._handlePlayerBaoXam(data);
-        });
-        this.scene.emit(Events.SHOW_WAIT_TURN_CONTROLS);
+        if(this.isItMe()) {
+            app.service.send({cmd: app.commands.PLAYER_BAO_XAM, data: {[app.keywords.IS_BAO_XAM]: false}, room: this.scene.room}, (data) => {
+                this._handlePlayerBaoXam(data);
+            });
+            this.scene.emit(Events.SHOW_WAIT_TURN_CONTROLS);
+        }
     }
 
     _onPlayerPlayedTurn(playerId, data){
@@ -120,7 +124,7 @@ export default class PlayerSam extends PlayerCardTurnBase {
 
     _handlePlayerBaoXam(data){
         this.sentBaoXamValue = utils.getValue(data, app.keywords.IS_BAO_XAM) ? 1 : 0;
-
+    
         if (this.sentBaoXamValue == 1) {
             this.renderer.showBaoXam(true);
         }
@@ -202,7 +206,7 @@ export default class PlayerSam extends PlayerCardTurnBase {
         if(pId == this.id){
             this.sentBaoXamValue = 1;
             this.renderer.showBaoXam(true);
-        }else{
+        } else {
             this.sentBaoXamValue = -1;
             this.renderer.showBaoXam(false);
             this.scene.emit(Events.SHOW_WAIT_TURN_CONTROLS);

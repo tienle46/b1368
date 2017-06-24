@@ -287,7 +287,6 @@ export default class Player extends Actor {
     
     _updatePlayerAnchor() {
         let anchorIndex = this.scene.playerPositions.getPlayerAnchorIndex(this.id, this.isItMe())
-        console.warn(anchorIndex, this.id, this.isItMe(), this.user);
         let anchor = this.scene.playerPositions.getPlayerAnchor(anchorIndex);
         anchor && this.node.setPosition(anchor.getPosition());
         this.setAnchorIndex(anchorIndex)

@@ -64,7 +64,6 @@ export default class BoardSam extends BoardCardTurnBase {
 
     _loadGamePlayData(data) {
         super._loadGamePlayData(data);
-        console.warn('loadGameData data', data)
         /**
          * Get deck card size
          */
@@ -91,24 +90,28 @@ export default class BoardSam extends BoardCardTurnBase {
         /**
          * Get bao sam player data
          */
-
-        if (this.scene.gameState != app.const.game.state.BOARD_STATE_BAO_XAM) {
-            let baoXamPlayerId = GameUtils.getPlayerId(data);
-            baoXamPlayerId && this.scene.emit(Events.ON_PLAYER_BAO_XAM, baoXamPlayerId);
-        } else {
-            let currentBaoXamStatus = utils.getValue(data, Keywords.IS_BAO_XAM);
-            let currentBaoXamPlayerIds = utils.getValue(data, Keywords.BAO_XAM_SUCCESS_PLAYER_ID);
-            console.warn('currentBaoXamStatus', currentBaoXamStatus);
-            console.warn('currentBaoXamPlayerIds', currentBaoXamPlayerIds);
+        let currentBaoXamStatus = utils.getValue(data, Keywords.IS_BAO_XAM);
+        let currentBaoXamPlayerIds = utils.getValue(data, Keywords.BAO_XAM_SUCCESS_PLAYER_ID);
+        
+        currentBaoXamPlayerIds && currentBaoXamStatus && currentBaoXamPlayerIds.forEach((baoXamPlayerId, i) => {
+            let sentBaoXamValue = currentBaoXamStatus[i] ? 1 : 0;
+            baoXamPlayerId && this.scene.emit(Events.ON_PLAYER_BAO_XAM, sentBaoXamValue, sentBaoXamValue);
+        }) 
+        // if (this.scene.gameState != app.const.game.state.BOARD_STATE_BAO_XAM) {
+        //     let baoXamPlayerId = GameUtils.getPlayerId(data);
+        //     baoXamPlayerId && this.scene.emit(Events.ON_PLAYER_BAO_XAM, baoXamPlayerId);
+        // } else {
+        //     let currentBaoXamStatus = utils.getValue(data, Keywords.IS_BAO_XAM);
+        //     let currentBaoXamPlayerIds = utils.getValue(data, Keywords.BAO_XAM_SUCCESS_PLAYER_ID);
+        //         console.warn('currentBaoXamStatus', currentBaoXamStatus)
+        //         console.warn('currentBaoXamPlayerIds', currentBaoXamPlayerIds)
             
-            currentBaoXamPlayerIds && currentBaoXamStatus && currentBaoXamPlayerIds.forEach((baoXamPlayerId, i) => {
-                let sentBaoXamValue = currentBaoXamStatus[i] ? 1 : 0;
-                this._samBao = true;
-                
-                console.warn('SHOW_BAO_XAM_CONTROLS');
-                baoXamPlayerId && this.scene.emit(Events.ON_PLAYER_BAO_XAM, sentBaoXamValue, sentBaoXamValue);
-            })
-        }
+        //     currentBaoXamPlayerIds && currentBaoXamStatus && currentBaoXamPlayerIds.forEach((baoXamPlayerId, i) => {
+        //         let sentBaoXamValue = currentBaoXamStatus[i] ? 1 : 0;
+        //         console.warn('setBaoXamValue', sentBaoXamValue)
+        //         baoXamPlayerId && this.scene.emit(Events.ON_PLAYER_BAO_XAM, sentBaoXamValue, sentBaoXamValue);
+        //     })
+        // }
 
         /**
          * get player bao 1 data
