@@ -66,7 +66,8 @@ class BottomBar extends Actor { // bottombar <- STUFF (visibility via manager) -
         if (hlm && this.highLightNode && this.intervalTimer) {
             // pause timer
             this.intervalTimer.pause();
-
+            let rc = app.system.hlm.getLastMessage().rc;
+            
             // show hight light
             let txt = this.highLightNode.getComponent(cc.RichText) || this.highLightNode.getComponent(cc.label);
             // update text
@@ -89,7 +90,7 @@ class BottomBar extends Actor { // bottombar <- STUFF (visibility via manager) -
                 repeatCount--;
                 // if complete counting, resume timer interval
                 repeatCount === 0 && this.intervalTimer.resume();
-            })), Number(hlm.rc));
+            })), Number(rc || hlm.rc));
 
             this.highLightNode.runAction(rp);
         }

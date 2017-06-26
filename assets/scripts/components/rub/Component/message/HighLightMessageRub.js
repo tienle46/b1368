@@ -20,4 +20,8 @@ export default class HighLightMessageRub {
     getMessage() {
         return this.messages.shift();
     }
+    
+    getLastMessage() {
+        return this.messages[this.messages.length - 1];
+    }
 }

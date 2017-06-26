@@ -289,9 +289,9 @@ export default class GameScene extends BaseScene {
 
         app.system.enablePendingGameEvent = false;
         this._handlePendingEvents();
-
-        GameChatComponent.loadEmotions();
-        Props.loadAllPropAsset();
+        
+        GameChatComponent && GameChatComponent.loadEmotions();
+        Props && Props.loadAllPropAsset();
 
         /**
          * set requestRandomInvite = false to make sure player only receive random invite on first time join game group

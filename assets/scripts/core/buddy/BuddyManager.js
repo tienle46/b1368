@@ -105,7 +105,7 @@ export default class BuddyManager {
 
     _requestBuddyResponse(data) {
         let message = data && data[app.keywords.RESPONSE_MESSAGE];
-        message && app.system.showToast(message);
+        message && app.system.showLongToast(message);
     }
 
     requestAddBuddy(buddyName, buddyDisplayName) {
@@ -114,16 +114,16 @@ export default class BuddyManager {
         if (this.containsBuddy(buddyName)) {
             let buddy = this.getBuddyByName(buddyName);
             
-            app.system.showToast(app.res.string('buddy_already_in_buddy_list', { buddyName: buddyDisplayName}));
+            app.system.showLongToast(app.res.string('buddy_already_in_buddy_list', { buddyName: buddyDisplayName}));
         } else {
             if(app._.includes(this._requestedBuddies, buddyName)){
-                app.system.showToast(app.res.string('buddy_request_already_send', { buddyName: buddyDisplayName }));
+                app.system.showLongToast(app.res.string('buddy_request_already_send', { buddyName: buddyDisplayName }));
                 return;
             }
 
             this._requestedBuddies.push(buddyName);
             app.service.send({ cmd: app.commands.REQUEST_BUDDY, data: { buddyName } });
-            // app.system.showToast(app.res.string('buddy_request_already_send', { buddyName }))
+            // app.system.showLongToast(app.res.string('buddy_request_already_send', { buddyName }))
         }
     }
 
@@ -175,7 +175,7 @@ export default class BuddyManager {
             if (buddy.isOnline()) {
                 app.service.sendRequest(new SFS2X.Requests.BuddyList.BlockBuddyRequest(buddy.name, true));
             } else {
-                app.system.showToast(app.res.string('buddy_cannot_block_offline_buddy'));
+                app.system.showLongToast(app.res.string('buddy_cannot_block_offline_buddy'));
             }
         }
     }
@@ -185,7 +185,7 @@ export default class BuddyManager {
             if (buddy.isOnline() || buddy.isBlocked()) {
                 app.service.sendRequest(new SFS2X.Requests.BuddyList.BlockBuddyRequest(buddy.name, false));
             } else {
-                app.system.showToast(app.res.string('buddy_cannot_block_offline_buddy'));
+                app.system.showLongToast(app.res.string('buddy_cannot_block_offline_buddy'));
             }
         }
     }
@@ -202,7 +202,7 @@ export default class BuddyManager {
             app.service.sendRequest(new SFS2X.Requests.BuddyList.BuddyMessageRequest(JSON.stringify(msgObj), buddy));
             //app.service.sendRequest(new SFS2X.Requests.BuddyList.BuddyMessageRequest(message, buddy));
         } else {
-            app.system.showToast(app.res.string('buddy_not_found_receiver_buddy'));
+            app.system.showLongToast(app.res.string('buddy_not_found_receiver_buddy'));
         }
     }
 
@@ -241,7 +241,7 @@ export default class BuddyManager {
         if (evtParams.buddy) {
             this.onBuddyListUpdate();
             // let displayName = evtParams.buddy.displayName || evtParams.buddy.getNickName() || evtParams.buddy.name;
-            // app.system.showToast(app.res.string("buddy_added_buddy", { buddyName: displayName }))
+            // app.system.showLongToast(app.res.string("buddy_added_buddy", { buddyName: displayName }))
         }
 
         // if(!evtParams.buddy.isTemp()){
@@ -265,7 +265,7 @@ export default class BuddyManager {
         if (evtParams.buddy) {
             this.onBuddyListUpdate();
             let displayName = evtParams.buddy.displayName || evtParams.buddy.getNickName() || evtParams.buddy.name;
-            app.system.showToast(app.res.string("buddy_removed_buddy", { buddyName: displayName}))
+            app.system.showLongToast(app.res.string("buddy_removed_buddy", { buddyName: displayName}))
         }
 
         // let index = this.buddies.indexOf(evtParams.buddy);
@@ -286,7 +286,7 @@ export default class BuddyManager {
     _onBuddyError(evtParams) {
         let message = this._getErrorMessageByCode(evtParams.errorCode);
         if (message) {
-            app.system.showToast(message);
+            app.system.showLongToast(message);
         }
     }
 
