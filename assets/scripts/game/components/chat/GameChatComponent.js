@@ -154,7 +154,11 @@ export default class GameChatComponent extends Actor {
     }
 
     hide() {
-        this.animation && this.animation.play(this.hideAnimName);
+        let animationState = this.animation && this.animation.getAnimationState(this.hideAnimName);
+        if(animationState && !animationState.isPlaying) {
+            this.animation.play(this.hideAnimName);
+        }
+        
         this.showing = false;
     }
 
