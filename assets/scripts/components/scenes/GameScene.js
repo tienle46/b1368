@@ -368,7 +368,8 @@ export default class GameScene extends BaseScene {
     }
     
     handleGameRefresh(data) {
-        this.gameData = {...data.gameData, ...data.gamePhaseData};
+        this.gameData = Object.assign({}, data.gameData, data.gamePhaseData);
+        // this.gameData = {...data.gameData, ...data.gamePhaseData};
         this._mergeGameData(data.playerData);
         // this._onGameRejoin(data.playerData);
         this.emit(Events.ON_GAME_REFRESH, data);    
