@@ -23,7 +23,7 @@ export default class Toast extends Component {
     }
 
     info(message, duration = Toast.SHORT_TIME){
-        this._createToastItem(message, ToastItem.TYPE_MESSAGE, duration);
+        this._createToastItem(message, ToastItem.TYPE_MESSAGE, duration || Toast.SHORT_TIME);
     }
 
     longInfo(message){
