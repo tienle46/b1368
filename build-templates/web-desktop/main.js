@@ -115,9 +115,9 @@
         }
 
         // anysdk scripts
-        if (cc.sys.isNative && cc.sys.isMobile) {
-            jsList = jsList.concat(['jsb_anysdk.js', 'jsb_anysdk_constants.js']);
-        }
+        // if (cc.sys.isNative && cc.sys.isMobile) {
+        //     jsList = jsList.concat(['jsb_anysdk.js', 'jsb_anysdk_constants.js']);
+        // }
 
         jsList = jsList.map(function (x) { return 'src/' + x; });
 
