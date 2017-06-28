@@ -105,7 +105,7 @@ export default class IAPManager {
         savedItems.forEach((string) => {
             stringData += `${stringData};`;
         });
-        stringData = receiptStringItems.substring(0, stringData.length - 1);
+        stringData = stringData.substring(0, stringData.length - 1);
         
         this._setIAPItemsForStorage(stringData);
      
