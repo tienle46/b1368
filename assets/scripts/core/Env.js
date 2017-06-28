@@ -167,7 +167,7 @@ export default (function(app) {
                 app.env.sdkIAPSetListener = (processes) => {
                     let objectListener = {
                         onInitialized: (success) => {
-                            log('IAP: success', JSON.stringify(success));
+                            log('\nIAP: success', JSON.stringify(success));
                         },
                         onSuccess: (product) => {
                             //Purchase success
@@ -222,7 +222,7 @@ export default (function(app) {
                 };
 
                 if(!app.system) {
-                   log('IAP: !app.system', app.system)
+                   log('\nIAP: !app.system', app.system)
                 }
                 
                 if(!app.iap){

@@ -93,12 +93,12 @@ class TabIAP extends PopupTabBody {
                         contextItem = { id: product.id, receipt: product.receiptCipheredPayload , username: app.context.getMyInfo().name || ""};
                     } else if (app.env.isAndroid()) {
                         try {
-                            log('IAP -> ccc -> receipt', product.receipt);
+                            log('\nIAP -> ccc -> receipt', product.receipt);
                             product.receipt = (typeof product.receipt == 'string') ? product.receipt : `${product.receipt}`;
 
                             let productReceipt = JSON.parse(product.receipt);
                             if (!(productReceipt && productReceipt.hasOwnProperty('purchaseToken'))) {
-                                log('IAP: --> purchaseToken not found!');
+                                log('\nIAP: --> purchaseToken not found!');
                                 return;
                             }
 
@@ -111,7 +111,7 @@ class TabIAP extends PopupTabBody {
                             contextItem = { id: product.id, receipt: token, username: app.context.getMyInfo().name || "" };
 
                         } catch (e) {
-                            log('IAP : -> catch -> product.receipt is not in json format ', e)
+                            log('\nIAP : -> catch -> product.receipt is not in json format ', e)
                             return;
                         }
                     }
@@ -119,8 +119,6 @@ class TabIAP extends PopupTabBody {
                     app.iap.addPurchase(contextItem)
                     
                     if (contextItem) {
-                        app.iap.setPurchases(app.iap.getPurchases());
-
                         let sendObj = {
                             cmd: app.env.isIOS() ? app.commands.IOS_IN_APP_PURCHASE : app.commands.ANDROID_IN_APP_PURCHASE,
                             data: {
