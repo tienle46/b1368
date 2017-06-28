@@ -66,9 +66,11 @@ export default class IAPManager {
         // set to local storage
         let stringData = this._getIAPItemsFromStorage();
         let stringifyItem = JSON.stringify(item);
+        log('\nIAP: stringData', typeof stringData, JSON.stringify(stringData));
         
         if(stringData != "" || stringData.length > 0) {
-            stringData = stringData.split(';').push(stringifyItem).join(';');
+            stringData = stringData.split(';').concat(stringifyItem).join(';');
+            
         } else if(stringData == "") {
             stringData += `${stringifyItem}`;
         }
@@ -79,13 +81,14 @@ export default class IAPManager {
     
     removePurchase(token) {
         let savedItems = this.getPurchases();
-        // // log('\nIAP: savedItems ', JSON.stringify(savedItems));
-        // // log('\nIAP: savedItems > 0', savedItems.length);
+        log('\nIAP: savedItems ', JSON.stringify(savedItems));
+        log('\nIAP: savedItems > 0', savedItems.length);
 
         if (savedItems.length == 0) {
             // log('IAP: savedItems1 === 0', savedItems.length);
             return;
         }
+        log('\nIAP: savedItems 1', savedItems.length);
         
         // remove bought token
         let removed = app._.remove(savedItems, (item) => {
@@ -93,27 +96,21 @@ export default class IAPManager {
             return item && item.receipt == token; 
         }); // <-- affect to savedItems
         
-        log('IAP: removed', JSON.stringify(removed));
+        log('\nIAP: removed', JSON.stringify(removed));
+        log('\nIAP: savedItem remain', JSON.stringify(savedItems));
+        log('\nIAP: savedItem join', JSON.stringify(savedItems.join(';')));
         
         // renew string storage
-        let stringData = savedItems.join(';');
-        // log('IAP: stringData', stringData);
+        let stringData = "";
+        savedItems.forEach((string) => {
+            stringData += `${stringData};`;
+        });
+        stringData = receiptStringItems.substring(0, stringData.length - 1);
         
         this._setIAPItemsForStorage(stringData);
-        
-        // let index = app._.findIndex(savedItems, ['receipt', token]);
-        // log('IAP: savedItems1 > length:', savedItems.length);
-        // log('iap: _onSubmitPurchase receipts >', index);
-        // // update localStorage
-        // if (index > -1) {
-        //     let string = this._getIAPItemsFromStorage();
-        //     let bought = savedItems[index];
-        //     this._setIAPItemsForStorage(string.replace(`${JSON.stringify(bought)};`, ""))
-        //     savedItems.splice(index, 1); // also affected to this.purchases
-        // }
-
+     
         if (savedItems.length == 0) {
-            log('IAP: savedItems2 reset purchase === 0', savedItems.length);
+            log('\nIAP: savedItems2 reset purchase === 0', savedItems.length);
             
             this._initEmptyLocalPurchase();
         }
@@ -138,7 +135,7 @@ export default class IAPManager {
             if(lastCharacter === ";") 
                 receiptStringItems = receiptStringItems.substring(0, lastIndex);
             
-            // log("IAP: stringifiedItems", JSON.stringify(receiptStringItems));
+            log("\nIAP: stringifiedItems", JSON.stringify(receiptStringItems));
 
             if (receiptStringItems && receiptStringItems.length > 0) {
                 let receipts = receiptStringItems.split(';');
@@ -162,7 +159,7 @@ export default class IAPManager {
             } else {
                 this._initEmptyLocalPurchase();
                 this.setPurchases([]);
-                log('IAP: ELSE');
+                log('\nIAP: ELSE');
             }
         }
         
@@ -188,17 +185,12 @@ export default class IAPManager {
                         let item = JSON.parse(stringifiedItem);
                         if (app._.includes(productIds, item.id)) {
                             purchasedItems.push(item);
-                            // if (app.env.isIOS()) {
-                            //     purchases.push(item.receipt);
-                            // } else if (app.env.isAndroid()) {
-                            //     purchases.push({ productId: item.id, token: item.receipt });
-                            // }
                         }
                     });
 
                     this.setPurchases(purchasedItems);
 
-                    window.release(productIds);
+                    productIds = [];
                 }
             }
         });
@@ -219,11 +211,16 @@ export default class IAPManager {
         let lastCharacter = data[lastIndex]
         if(lastCharacter === ";") 
             data = data.substring(0, lastIndex);
-                
+        log('\nIAP: data storage', JSON.stringify(data))        
         return data.trim() || "";
     }
     
     _setIAPItemsForStorage(string) {
+        
+        if(typeof string !== "string")
+            string = JSON.stringify(string);
+        log('\IAP: _setIAPItemsForStorage', string);
+        
         (app.system.marker || cc.sys.localStorage).setItem(app.const.IAP_LOCAL_STORAGE, string);
         
         // app.system.marker ? app.system.marker.setItem(app.const.IAP_LOCAL_STORAGE, string): cc.sys.localStorage.setItem(app.const.IAP_LOCAL_STORAGE, string);
@@ -238,7 +235,7 @@ export default class IAPManager {
         
         let messages = data['messages'] || [];
         let receipts = data['purchasedProducts'] || [];
-
+        
         receipts.forEach(receipt => {
             this.removePurchase(receipt);
         });
@@ -255,7 +252,7 @@ export default class IAPManager {
     }
 
     _onSubmitPurchaseAndroid(data) {
-        log('IAP: adata', JSON.stringify(data));
+        log('\nIAP: adata', JSON.stringify(data));
 
         if (!data[app.keywords.RESPONSE_RESULT]) {
             app.system.error(data.message || "");

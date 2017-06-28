@@ -14,7 +14,7 @@ class TopupDialog extends DialogActor {
         });
 
         if (app.env.isMobile() && window.sdkbox.IAP) {
-            log('IAP: ----> Topup:', cc.sys.localStorage.getItem(app.const.IAP_LOCAL_STORAGE));
+            log('\nIAP: ----> Topup:', cc.sys.localStorage.getItem(app.const.IAP_LOCAL_STORAGE));
         }
     }
 

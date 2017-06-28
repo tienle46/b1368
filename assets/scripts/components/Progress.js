@@ -22,7 +22,6 @@ export default class Progress extends Component {
 
     onEnable() {
         this.spinNode.runAction(cc.repeatForever(cc.rotateBy(1.0, 360)));
-
         if (this.duration) {
             this.interval = setTimeout(() => {
                 this.interval && clearTimeout(this.interval);
