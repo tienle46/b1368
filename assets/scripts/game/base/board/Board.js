@@ -366,8 +366,8 @@ export default class Board extends Actor {
         playerIds && playersBalance && playersExp && playerIds.forEach((id, i) => {
             let newBalance = playersBalance[i];
             let newExp = playersExp[i];
-
-            newBalance && this.scene.emit(Events.ON_PLAYER_SET_BALANCE, id, newBalance);
+            
+            this.scene.emit(Events.ON_PLAYER_SET_BALANCE, id, newBalance);
             //TODO chưa xử lý exp
         });
     }

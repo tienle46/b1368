@@ -66,7 +66,10 @@ class BottomBar extends Actor { // bottombar <- STUFF (visibility via manager) -
         if (hlm && this.highLightNode && this.intervalTimer) {
             // pause timer
             this.intervalTimer.pause();
-            let rc = app.system.hlm.getLastMessage().rc;
+            let rc = null;
+            if(app.system.hlm.getLastMessage()) {
+                rc = app.system.hlm.getLastMessage().rc;
+            }
             
             // show hight light
             let txt = this.highLightNode.getComponent(cc.RichText) || this.highLightNode.getComponent(cc.label);

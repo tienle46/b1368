@@ -615,7 +615,7 @@ export default class ListTableScene extends BaseScene {
     _onUserVariablesUpdate(ev) {
         let changedVars = ev[app.keywords.BASE_EVENT_CHANGED_VARS] || [];
         changedVars.map(v => {
-            if (v == 'coin') {
+        if (v == 'coin') {
                 this.userMoneyLbl.string = `${Utils.numberFormat(app.context.getMeBalance() || 0)}`;
             }
         });
