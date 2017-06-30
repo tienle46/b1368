@@ -50,7 +50,6 @@ export default class FriendProfilePopup extends DialogActor {
 
     onEnable() {
         super.onEnable();
-        utils.setInteractable(this.addFriendBtn, !(this.friendName && app.buddyManager.containsBuddy(this.friendName)) && app.buddyManager.shouldRequestBuddy(this.friendName));
     }
 
     start() {
@@ -60,6 +59,8 @@ export default class FriendProfilePopup extends DialogActor {
     displayUserDetail(user, userId, avatarURL, isOwner) {
         this.user = user;
         this.friendName = user.name;
+        utils.setInteractable(this.addFriendBtn, !(this.friendName && app.buddyManager.containsBuddy(this.friendName)) && app.buddyManager.shouldRequestBuddy(this.friendName));
+
         this.friendId = userId;
         avatarURL && app.context.loadUserAvatarByURL(avatarURL, this.userAvatar);
         this.kickable = app.context.getLastJoinedRoom().variables.kickable.value;

@@ -115,9 +115,6 @@ export default class BaseScene extends Actor {
     }
 
     loginToDashboard(username, password, isRegister = false, isQuickLogin = false, accessToken = null, fbId = null, cb) {
-
-        app.system.showLoader('Đang kết nối đến server ...');
-
         if (app.service.getClient().isConnected()) {
             this._requestAuthen(username, password, isRegister, isQuickLogin, accessToken, fbId, null, cb);
         } else {
@@ -142,7 +139,8 @@ export default class BaseScene extends Actor {
         });
     }
 
-    _requestAuthen(username, password, isRegister, isQuickLogin, accessToken, fbId, tryOneTime, cb) {        
+    _requestAuthen(username, password, isRegister, isQuickLogin, accessToken, fbId, tryOneTime, cb) {
+        app.system.showLoader('Đang kết nối đến server ...');
         app.service.requestAuthen(username, password, isRegister, isQuickLogin, accessToken, fbId, (error, result) => {
             if (error) {
                 let splitMsgs = error.errorMessage && error.errorMessage.split('|');

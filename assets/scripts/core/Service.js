@@ -386,14 +386,16 @@ class Service {
      * @param cb
      */
     connect(cb) {
-
+        
         this.isConnecting = true;
 
         if (this.client.isConnected()) {
             this._onConnection({ success: true });
         } else {
+           
             if(this.client._socketEngine.isConnecting) {
                 this.client._socketEngine.isConnecting = false;
+                this.isConnecting = false;
                 this.client._socketEngine.reconnectionSeconds = 0;
                 this.client.disconnect();
                 setTimeout(() => {
