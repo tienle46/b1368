@@ -804,6 +804,7 @@ export default class PlayerPhom extends PlayerCardTurnBase {
             app.service.send({cmd: Commands.PLAYER_EAT_CARD, data: {}, room: player.scene.room});
             player.setState(PlayerPhom.STATE_ACTION_WAIT);
         }
+        this.board.lastPlayedCard.setOnClickListener(null);
     }
 
     _onEatCard() {

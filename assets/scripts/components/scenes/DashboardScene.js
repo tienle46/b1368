@@ -44,7 +44,11 @@ export default class DashboardScene extends BaseScene {
         this._requestListHu();
         
         app.context.gameList.length < 1 && this._getGamesListFromServer();
-        !app.context.ctl && this._requestCtl();
+        
+        if(!app.context.ctl) {
+            this._requestCtl();
+            app.buddyManager.sendInitBuddy();
+        }
         
         /**
          * set requestRandomInvite = true to make sure player only receive random invite on first time join game group
@@ -157,7 +161,6 @@ export default class DashboardScene extends BaseScene {
             this._initItemListGame();
         }
         removedGames = [];
-        app.buddyManager.sendInitBuddy();
     }
 
     _filterClientSupportedGames(gameCodes) {
