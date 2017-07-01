@@ -163,12 +163,12 @@ export default class PhomControls extends GameControls {
 
     _onGamePlaying(data, isJustJoined) {
         this._hideGameBeginControls();
-
-        let nextTurnPlayerId = utils.getValue(data, Keywords.TURN_PLAYER_ID);
-        if (!nextTurnPlayerId || this.scene.gamePlayers.me.id != nextTurnPlayerId) {
-            this._showWaitTurnControls();
+        if(this.scene.gamePlayers && this.scene.gamePlayers.me) {
+            let nextTurnPlayerId = utils.getValue(data, Keywords.TURN_PLAYER_ID);
+            if (!nextTurnPlayerId || this.scene.gamePlayers.me.id != nextTurnPlayerId) {
+                this._showWaitTurnControls();
+            }
         }
-
     }
 
     _onGameEnding(data, isJustJoined) {
