@@ -5,6 +5,7 @@
 import app from 'app';
 import SFS2X from 'SFS2X';
 import Toast from 'Toast';
+import utils from 'utils';
 
 const requestCallbackNames = {
     [SFS2X.Requests.Handshake]: SFS2X.SFSEvent.HANDSHAKE,
@@ -51,12 +52,12 @@ class Service {
         
         this._valueQueue = [];
         this._lagPollingInterval = null;
-        this._lagPollingPrepared = true;
         this._isShowLoginPopup = false;
         this._poorNetwork = false;
         this._loginData = null;
         this.isConnecting = false;
         this._pendingRequests = [];
+        this._xlagTimeout = null;
 
         // this._initSmartFoxClient();
     }
@@ -89,6 +90,7 @@ class Service {
         this._removeSmartFoxEvent();
 
         this.addEventListener(SFS2X.SFSEvent.LOGIN, this._onLogin);
+        this.addEventListener(SFS2X.SFSEvent.SOCKET_ERROR, this._onSocketError);
         this.addEventListener(SFS2X.SFSEvent.LOGIN_ERROR, this._onLoginError);
         this.addEventListener(SFS2X.SFSEvent.CONNECTION, this._onConnection);
         this.addEventListener(SFS2X.SFSEvent.CONNECTION_LOST, this._onConnectionLost);
@@ -117,6 +119,7 @@ class Service {
 
     _removeSmartFoxEvent() {
         this.removeEventListener(SFS2X.SFSEvent.LOGIN, this._onLogin);
+        this.removeEventListener(SFS2X.SFSEvent.SOCKET_ERROR, this._onSocketError);
         this.removeEventListener(SFS2X.SFSEvent.LOGIN_ERROR, this._onLoginError);
         this.removeEventListener(SFS2X.SFSEvent.CONNECTION, this._onConnection);
         this.removeEventListener(SFS2X.SFSEvent.CONNECTION_LOST, this._onConnectionLost);
@@ -142,7 +145,26 @@ class Service {
         this.removeEventListener(SFS2X.SFSBuddyEvent.BUDDY_ONLINE_STATE_CHANGE, this._onBuddyOnlineStateChange);
         this.removeEventListener(SFS2X.SFSBuddyEvent.BUDDY_VARIABLES_UPDATE, this._onBuddyVariablesUpdate);
     }
-
+    
+    _onSocketError(event) {
+        let scene = app.system.getCurrentSceneName();
+        app.system.hideLoader();
+        // exception Scene: sences which are still presit when lost connection occurred. otherwise will be back to ENTRANCE_SCENE
+        let isInOutgameScene = app._.includes([
+            app.const.scene.ENTRANCE_SCENE,
+            app.const.scene.LOGIN_SCENE,
+            app.const.scene.REGISTER_SCENE
+        ], scene);
+        
+        if(isInOutgameScene) {
+            app.system.info(app.res.string('can_not_connect_to_server'));
+        } else {
+            app.system.loadScene(app.const.scene.ENTRANCE_SCENE, () => {
+                app.system.info(app.res.string('can_not_connect_to_server'));
+            });   
+        }
+    }
+    
     _onBuddyAdd(event) {
         app.system.emit(SFS2X.SFSBuddyEvent.BUDDY_ADD, event);
     }
@@ -221,6 +243,7 @@ class Service {
         this.stopLagPolling();
 
         let isLoggedIn = true;
+        
         let scene = app.system.getCurrentSceneName();
         // exception Scene: sences which are still presit when lost connection occurred. otherwise will be back to ENTRANCE_SCENE
         let isInExceptionScene = app._.includes([
@@ -254,7 +277,8 @@ class Service {
         app.system.loadScene(app.const.scene.ENTRANCE_SCENE, () => {
             if(this._loginData) {
                 let okBtn = this._reConnectWithLoginData.bind(this, this._loginData);
-                app.system.confirm(app.res.string('lost_connection'), null, okBtn);
+                app.system.confirm(app.system.kickMessage || app.res.string('lost_connection'), null, okBtn);
+                app.system.kickMessage && (app.system.kickMessage = null);
             } else {
                 app.system.info(app.res.string('lost_connection_without_reconnect'));
             }
@@ -290,6 +314,9 @@ class Service {
             });
         } else if (event.cmd === app.commands.CLIENT_CONFIG) {
             this._dispatchClientConfig(event.params);
+        } else if (event.cmd === app.commands.USER_DISCONNECTED) {
+            this._onUserDisconnected(event.params);
+            app.system.emit(event.cmd, event.params, event);
         } else {
             if (this._hasCallback(event.cmd)) {
                 this._callCallbackAsync(event.cmd, event.params);
@@ -299,7 +326,23 @@ class Service {
         }
         event = null;
     }
-
+    
+    _onUserDisconnected(data = {}){
+        let username =  utils.getValue(data, app.keywords.USER_NAME, "");
+        let roomName =  utils.getValue(data, app.keywords.ROOM_NAME, "");
+        
+        if(roomName.length > 0 && username.length > 0){
+            
+            let joinedRoom = this.client.getRoomByName(roomName);
+            
+            if(joinedRoom){
+                joinedRoom._removeUser(username)
+            }
+            
+            this.client.userManager._removeUser(username);
+        }
+    }
+    
     _onLogin(event) {
         this.client._socketEngine.reconnectionSeconds = Math.max(0, this.client._socketEngine.reconnectionSeconds - 30);
 
@@ -443,6 +486,8 @@ class Service {
             }, 200);
             return;
         }
+        
+        app.context && (app.context.ctl = null);
         
         let data = {};
         data[app.keywords.IS_REGISTER] = isRegister;
@@ -603,28 +648,43 @@ class Service {
         this.stopLagPolling();
         this._lagPollingInterval = setInterval(() => {
             let currentTimeInMilis = (new Date()).getTime();
-            if(this._lagPollingPrepared) {
-                this.send({
-                    cmd: app.commands.XLAG,
-                    data: {
-                        [app.keywords.XLAG_VALUE]: currentTimeInMilis
-                    }
-                });
-                this._lagPollingPrepared = null;
-            } else {
-                // maybe user's disconnected
-                this._showReloginPopupWhenDiconnectivity();
-            }
+            // set timeout for disconnection 
+            this._xlagTimeout = setTimeout(() => {
+                if(app.context.isJoinedGame()) {
+                    // send refresh
+                    this.send({
+                        cmd: app.commands.GET_CURRENT_GAME_DATA,
+                        room: app.context.currentRoom
+                    });
+                    
+                    // manually disconnect if nothing no response in 4s
+                    this._gameDataTimeout = setTimeout(() => {
+                        this._showReloginPopupWhenDiconnectivity();
+                    }, 4 * 1000);
+                } else {
+                    this._showReloginPopupWhenDiconnectivity();
+                }
+            }, pollingInterval * 2);
+            
+            // send xlag request
+            this.send({
+                cmd: app.commands.XLAG,
+                data: {
+                    [app.keywords.XLAG_VALUE]: currentTimeInMilis
+                }
+            });
+            
         }, pollingInterval);
     }
 
     stopLagPolling() {
-        this._lagPollingPrepared = true;
         if (this._lagPollingInterval) {
             clearInterval(this._lagPollingInterval);
             this._valueQueue = [];
             this._lagPollingInterval = null;
         }
+        this._xlagTimeout && clearTimeout(this._xlagTimeout);
+        this._gameDataTimeout && clearTimeout(this._gameDataTimeout);
     }
     
     _showReloginPopupWhenDiconnectivity() {
@@ -639,7 +699,8 @@ class Service {
             let curRecVal = (new Date()).getTime();
             let curSendVal = resObj[app.keywords.XLAG_VALUE];
             if (curSendVal) {
-                this._lagPollingPrepared = true;
+                // clear timeout
+                this._xlagTimeout && clearTimeout(this._xlagTimeout);
                 
                 if (this._valueQueue.length >= app.config.pingPongPollQueueSize) {
                     this._valueQueue.splice(0, 1);

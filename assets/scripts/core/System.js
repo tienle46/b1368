@@ -14,6 +14,7 @@ import { isFunction } from 'Utils';
 import Marker from 'Marker';
 import Linking from 'Linking'
 import VisibilityManager from 'VisibilityManager';
+import BuddyManager from 'BuddyManager';
 
 class GameSystem {
 
@@ -388,7 +389,12 @@ class GameSystem {
 
         app.context.lastJoinedRoom = resultEvent.room;
         if (resultEvent.room && resultEvent.room.isJoined && resultEvent.room.isGame) {
-
+            if (app.buddyManager) {
+                app.buddyManager.reset();
+            } else {
+                app.buddyManager = new BuddyManager();
+            }
+            app.buddyManager.sendInitBuddy();
             this.setSceneChanging(true)
 
             app.context.currentRoom = resultEvent.room;
