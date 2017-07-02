@@ -331,7 +331,8 @@ export default class Board extends Actor {
 
         this.state = app.const.game.state.ENDING;
         this._handleSetPlayerBalance(data);
-
+        app.context.rejoiningGame = false;
+        
         // TODO Khi cần show hiệu ứng thì dùng thông tin này để hiển thị các trường hợp đặc biệt
         // Byte tbBoardWinType = resObj.getByte(SmartfoxKeyword.KEYWORD_WIN_TYPE);
         // if (tbBoardWinType != null) {
@@ -362,12 +363,20 @@ export default class Board extends Actor {
         let playerIds = utils.getValue(data, Keywords.GAME_LIST_PLAYER);
         let playersBalance = utils.getValue(data, Keywords.USER_BALANCE, []);
         let playersExp = utils.getValue(data, Keywords.BOARD_EXP_POINT_LIST, []);
-
+        console.log("Keywords.USER_BALANCE: ", playersBalance);
+        
         playerIds && playersBalance && playersExp && playerIds.forEach((id, i) => {
             let newBalance = playersBalance[i];
             let newExp = playersExp[i];
             
-            this.scene.emit(Events.ON_PLAYER_SET_BALANCE, id, newBalance);
+            // this.scene.emit(Events.ON_PLAYER_SET_BALANCE, id, newBalance);
+            if(app.context.rejoiningGame){
+                if(!this.scene.gamePlayers.isItMe(id)){
+                    this.scene.emit(Events.ON_PLAYER_SET_BALANCE, id, newBalance);
+                }
+            }else{
+                this.scene.emit(Events.ON_PLAYER_SET_BALANCE, id, newBalance);
+            }
             //TODO chưa xử lý exp
         });
     }
