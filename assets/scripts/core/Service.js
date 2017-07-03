@@ -147,7 +147,11 @@ class Service {
     }
     
     _onSocketError(event) {
-        let scene = app.system.getCurrentSceneName();
+        let scene = app.system.getCurrentSceneName();    
+        
+        if(scene && scene._errorMessageTimeout)
+            clearTimeout(scene._errorMessageTimeout);
+            
         app.system.hideLoader();
         // exception Scene: sences which are still presit when lost connection occurred. otherwise will be back to ENTRANCE_SCENE
         let isInOutgameScene = app._.includes([
@@ -228,6 +232,11 @@ class Service {
     }
 
     _onConnection(event) {
+        let scene = app.system.getCurrentSceneName();
+        
+        if(scene && scene._errorMessageTimeout)
+            clearTimeout(scene._errorMessageTimeout);
+        
         this.isConnecting = false;
         this._callCallback(SFS2X.SFSEvent.CONNECTION, event.success);
 
@@ -456,7 +465,6 @@ class Service {
      * Disconnect to game server
      */
     disconnect() {
-
         this.isConnecting = false;
         if (this.client.isConnected()) {
             this.client._socketEngine.reconnectionSeconds = 0;
@@ -517,7 +525,7 @@ class Service {
 
         this._addCallback(SFS2X.SFSEvent.LOGIN, cb);
 
-        app.system.showLoader('Đang gửi thông tin đăng nhập ...');
+        app.system.showLoader(app.res.string('sending_login_data'));
         
         this.sendRequest(new SFS2X.Requests.System.LoginRequest(username, password, data, app.config.zone));
     }

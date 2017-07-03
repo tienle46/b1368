@@ -23,6 +23,7 @@ export default class BaseScene extends Actor {
         this.onShown = null;
         this.isLoaded = false;
         this._showFBLoginPopup = false;
+        this._errorMessageTimeout = null;
     }
 
     _addToPendingAddPopup(message) {
@@ -72,6 +73,7 @@ export default class BaseScene extends Actor {
 
     onDestroy() {
         super.onDestroy();
+        clearTimeout(this._errorMessageTimeout);
         app.system.setSceneChanging(true);
     }
 
@@ -88,7 +90,7 @@ export default class BaseScene extends Actor {
         this.showLoading(message, 20, payload);
     }
 
-    showLoading(message = '', timeoutInSeconds = 10, payload = '') {
+    showLoading(message = '', timeoutInSeconds = 30, payload = '') {
         this.hideLoading(payload);
 
         if (utils.isNumber(message)) {
@@ -110,11 +112,21 @@ export default class BaseScene extends Actor {
     }
     
     changeScene(name, onLaunched, initData) {
-        this.showLoading()
+        this.showLoading();
+        clearTimeout(this._errorMessageTimeout);
         app.system.loadScene(name, onLaunched, initData);
     }
 
     loginToDashboard(username, password, isRegister = false, isQuickLogin = false, accessToken = null, fbId = null, cb) {
+        this.showLoading(app.res.string('connecting_to_server'));
+        
+        this._errorMessageTimeout = setTimeout(() => {
+            if(app.service.getClient()._socketEngine.isConnecting){
+                app.service.getClient()._socketEngine.disconnect();
+                // app.service._onSocketError();
+            }
+        }, 15 * 1000);
+        
         if (app.service.getClient().isConnected()) {
             this._requestAuthen(username, password, isRegister, isQuickLogin, accessToken, fbId, null, cb);
         } else {
@@ -140,7 +152,7 @@ export default class BaseScene extends Actor {
     }
 
     _requestAuthen(username, password, isRegister, isQuickLogin, accessToken, fbId, tryOneTime, cb) {
-        app.system.showLoader('Đang kết nối đến server ...');
+        clearTimeout(this._errorMessageTimeout);
         app.service.requestAuthen(username, password, isRegister, isQuickLogin, accessToken, fbId, (error, result) => {
             if (error) {
                 let splitMsgs = error.errorMessage && error.errorMessage.split('|');
@@ -194,7 +206,7 @@ export default class BaseScene extends Actor {
                 if (app.env.isMobile() && window.sdkbox) {
                     window.sdkbox.PluginGoogleAnalytics.setUser(app.context.getMe().name);
                 }
-                app.system.showLoader('Đăng nhập thành công ...');
+                this.showLoading(app.res.string('login_success'));
 
 
                 if(result.newVersion && result.newVersionLink){
