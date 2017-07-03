@@ -27,7 +27,26 @@ export default class DashboardScene extends BaseScene {
         super.onLoad();
         this._isNewBie = false;
     }
-
+    
+    testClick() {
+        console.warn(1)
+        function getRandomIntInclusive(min, max) {
+            min = Math.ceil(min);
+            max = Math.floor(max);
+            return Math.floor(Math.random() * (max - min + 1)) + min; //The maximum is inclusive and the minimum is inclusive 
+        }
+        let random = getRandomIntInclusive(1, 3);
+        console.warn('c', random);
+        
+        app.service.send({
+            cmd: app.commands.HIGH_LIGHT_MESSAGE,
+            data: {
+                msg: 'Lorem ipsum dolor sit amet',
+                rc: random
+            }
+        });
+    }
+    
     onEnable() {
         super.onEnable();
     }

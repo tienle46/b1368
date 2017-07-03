@@ -58,45 +58,7 @@ class BottomBar extends Actor { // bottombar <- STUFF (visibility via manager) -
     }
 
     _onRunningHLM() {
-        let hlm = app.system.hlm.getMessage();
-
-        /**
-         * hlm -> pause interval -> display message -> resume -> hlm
-         */
-        if (hlm && this.highLightNode && this.intervalTimer) {
-            // pause timer
-            this.intervalTimer.pause();
-            let rc = null;
-            if(app.system.hlm.getLastMessage()) {
-                rc = app.system.hlm.getLastMessage().rc;
-            }
-            
-            // show hight light
-            let txt = this.highLightNode.getComponent(cc.RichText) || this.highLightNode.getComponent(cc.label);
-            // update text
-            txt.string = hlm.msg;
-
-            let txtWidth = this.highLightNode.getContentSize().width;
-            let montorWidth = cc.director.getWinSize().width;
-            let nodePositionY = this.highLightNode.getPosition().y;
-
-            let movingTime = (txtWidth + montorWidth / 2) / 85;
-            let startPosition = cc.v2(this.highLightNode.getPosition());
-            let endPosition = cc.v2(0 - txtWidth - montorWidth / 2, nodePositionY);
-
-
-            let action = cc.moveTo(movingTime, endPosition);
-            let repeatCount = hlm.rc;
-
-            let rp = cc.repeat(cc.sequence(action, cc.callFunc(() => {
-                this.highLightNode.setPosition(startPosition);
-                repeatCount--;
-                // if complete counting, resume timer interval
-                repeatCount === 0 && this.intervalTimer.resume();
-            })), Number(rc || hlm.rc));
-
-            this.highLightNode.runAction(rp);
-        }
+        app.system.hlm.runMessage(this.intervalTimer, this.highLightNode);
     }
 
     _addGlobalListener() {

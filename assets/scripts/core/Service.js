@@ -486,11 +486,11 @@ class Service {
      * @param {function} cb
      */
 
-    requestAuthen(username = "", password = "", isRegister = false, isQuickLogin = false, accessToken = null, facebookId = null, cb) {
+    requestAuthen(username = "", password = "", isRegister = false, isQuickLogin = false, accessToken = null, facebookId = null, cb, tempRegister = false) {
         if(this.client.me) {
             this.sendRequest(new SFS2X.Requests.System.LogoutRequest());
             setTimeout(() => {
-                this.requestAuthen(username,password,isRegister,isQuickLogin,accessToken,facebookId,cb);
+                this.requestAuthen(username,password,isRegister,isQuickLogin,accessToken,facebookId,cb,tempRegister);
             }, 200);
             return;
         }
@@ -501,6 +501,7 @@ class Service {
         data[app.keywords.IS_REGISTER] = isRegister;
         data[app.keywords.APP_SECRET_KEY] = app.config.app_secret_key;
         data['isMobile'] = app.env.isMobile();
+        tempRegister && (data['tempRegister'] = tempRegister);
         facebookId && (data[app.keywords.FACEBOOK_ID] = facebookId);
         data[app.keywords.DEVICE_ID] = app.config.DEVICE_ID;
         data[app.keywords.VERSION] = app.config.version;
