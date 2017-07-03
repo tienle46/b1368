@@ -24,7 +24,7 @@ export default class HighLightMessageRub {
     
     // message: {msg, rc}
     pushMessage(message) {
-        // let updated = false;
+        let updated = false;
         // if(this.messages[message.msg]) {
         //     updated = this.getRepeatCount(this.messages[message.msg]) != message.rc;
         // }
