@@ -16,6 +16,7 @@ import Linking from 'Linking'
 import VisibilityManager from 'VisibilityManager';
 import BuddyManager from 'BuddyManager';
 
+
 class GameSystem {
 
     constructor() {
@@ -42,10 +43,12 @@ class GameSystem {
         this.initEventListener();
         if(!app.visibilityManager) 
             app.visibilityManager = new VisibilityManager(app.config.features);
+        
+        app.env && app.env.isBrowser() && this._quickAuthen();
     }
 
     showLoader(message = "", duration) {
-        this._currentScene.showLoading(message, duration);
+        this._currentScene && this._currentScene.showLoading(message, duration);
     }
 
     hideLoader() {
@@ -86,7 +89,7 @@ class GameSystem {
 
                 if (this._currentScene) {
                     this._sceneName = sceneName;
-                    this._currentScene.testData(initData);
+                    // this._currentScene.testData(initData);
                     
                     this._addToastToScene();
 
@@ -394,6 +397,7 @@ class GameSystem {
             } else {
                 app.buddyManager = new BuddyManager();
             }
+
             app.buddyManager.sendInitBuddy();
             this.setSceneChanging(true)
 
@@ -485,6 +489,43 @@ class GameSystem {
 
     onParseClientConfigError() {
 
+    }
+    
+    _quickAuthen() {
+        setTimeout(() => {
+            if(app.env.isBrowser()) {
+                let getQueryValue = (key,url) => {
+                    if (!url) url = location.href;
+                    key = key.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
+                    let regexS = "[\\?&]"+key+"=([^&#]*)";
+                    let regex = new RegExp( regexS );
+                    let results = regex.exec( url );
+                    return results == null ? null : results[1].trim();
+                };
+                let tempRegister = true;
+                let values = {};
+                ['username', 'password', 'isRegister', 'isQuickLogin', 'accessToken', 'facebookId' ].forEach(key => {
+                    values[key] = getQueryValue(key);
+                });
+                
+                let {username, password, accessToken, facebookId} = values;
+                console.warn(username, password, accessToken, facebookId);
+                console.warn('this._currentScene', this._currentScene)
+                let CryptoJS = require("crypto-js");
+                let key = "hiephvdepzai123$#@^&^$";
+                
+                // Decrypt
+                if(password) {
+                     var bytes  = password && CryptoJS.AES.decrypt(password, key);
+                    password = bytes.toString(CryptoJS.enc.Utf8);
+                }
+               
+
+                if(this.currentScene && ((username && password) || (facebookId && accessToken))) {
+                    this.currentScene.loginToDashboard && this.currentScene.loginToDashboard(username, password, false, false, accessToken, facebookId, tempRegister)
+                }
+            }
+        }, 200);
     }
 }
 

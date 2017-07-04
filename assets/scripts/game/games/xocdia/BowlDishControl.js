@@ -12,7 +12,9 @@ class BowlDishControl extends Component {
             bowlNode: cc.Node,
             circleGroup: cc.Node,
             timeLineNode: cc.Node
-        }
+        };
+        
+        this._isShaking = false;
     }
 
     onLoad() {
@@ -48,18 +50,27 @@ class BowlDishControl extends Component {
         let actions = shakers.map((s) => cc.moveTo(0.01, cc.v2(s.x, s.y)).clone());
 
         let sequence = cc.repeatForever(cc.sequence(actions));
+        this._isShaking = true;
         this.wrapper.runAction(sequence);
     }
 
     stopDishShaker() {
         let startPos = this.wrapPos;
+        this._isShaking = false;
         this.wrapper.stopAllActions();
         this.wrapper.setPosition(startPos);
         this.wrapPos = startPos;
         this._clearTimeout();
     }
-
+    
+    isShaking() {
+        return this._isShaking;
+    }
+    
     openBowlAnim() {
+        if(this.isShaking())
+            return;
+        
         let bowlPos = this.bowlPos;
         
         let action = cc.moveTo(1, cc.v2(-67, bowlPos.y));

@@ -128,7 +128,10 @@ export default class BoardXocDia extends BoardCardBetTurn {
 
         super.onBoardEnding(data);
         let dots = utils.getValue(data, Keywords.XOCDIA_RESULT_END_PHASE);
+        
         if (dots && dots.length > 0) {
+            if(this.renderer.isShaking())
+                return;
             this.renderer && this.renderer.initDots(dots);
             var t1 = requestTimeout(() => {
                 this.renderer && this.renderer.openBowlAnim(); // this will end up 1s

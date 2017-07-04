@@ -69,6 +69,8 @@ export default class Player extends Actor {
             this.scene.on(Events.ON_PLAYER_REENTER_GAME, this._onUserReenterGame, this);
             this.scene.on(Events.ON_USER_MAKES_JAR_EXPLOSION, this._onUserGetJarExplosion, this);
         }
+        
+        app.system.addListener(app.commands.START_GAME, this._onStartGame, this);
     }
 
     _removeGlobalListener() {
@@ -94,6 +96,8 @@ export default class Player extends Actor {
             this.scene.off(Events.ON_PLAYER_REENTER_GAME, this._onUserReenterGame, this);
             this.scene.off(Events.ON_USER_MAKES_JAR_EXPLOSION, this._onUserGetJarExplosion, this);
         }
+        
+        app.system.removeListener(app.commands.START_GAME, this._onStartGame, this);
     }
 
     _onUserReenterGame(playerId, userId){
@@ -117,7 +121,13 @@ export default class Player extends Actor {
         this.board.room._addUser(newUser);
         this.user = newUser;
     }
-
+    
+    _onStartGame(data) {
+        if(this.isItMe && data[app.keywords.SUCCESSFULL] && data[app.keywords.RESPONSE_MESSAGE]) {
+            app.system.showToast(data[app.keywords.RESPONSE_MESSAGE]);
+        }
+    }
+    
     _onUserUpdateNewPlayer(user) {
         if (user.id == this.user.id) {
             if (this.scene.gameState == app.const.game.state.WAIT || this.scene.gameState == app.const.game.state.READY) {

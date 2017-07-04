@@ -73,7 +73,11 @@ export default class BoardXocDiaRenderer extends BoardRenderer {
     runDishShakeAnim() {
         this.bowlDishControl.dishShaker();
     }
-
+    
+    isShaking() {
+        return this.bowlDishControl.isShaking();
+    }
+    
     stopDishShakeAnim() {
         this.bowlDishControl.stopDishShaker();
     }

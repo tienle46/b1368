@@ -156,6 +156,7 @@ class GameContext {
             "level": me.variables.lv,
             "avatar": Utils.getVariable(me, app.keywords.CHANGE_AVATAR_URL, {}),
             "displayName": Utils.getVariable(me, app.keywords.USER_VARIABLE_DISPLAY_NAME, me.name),
+            "verified": Utils.getVariable(me, app.keywords.USER_VARIABLE_VERIFIED, false),
             "vipLevel": vipLevel.name || "Dân thường"
         } : {};
     }

@@ -247,7 +247,7 @@ export default class GameEventHandler {
     _replaceFakeUser(data) {
         let playerId = utils.getValue(data,  "playerId",  0);
         let userId = utils.getValue(data, "userId", 0);
-        
+
         this.scene.emit(Events.ON_PLAYER_REENTER_GAME, playerId, userId);
     }
     

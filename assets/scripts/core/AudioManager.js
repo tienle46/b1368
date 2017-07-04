@@ -114,6 +114,23 @@ export default class AudioManager {
        cc.audioEngine.setMaxAudioInstance(num); 
     }
     
+    getState(name) {
+        let id = this.getId(name);
+        return cc.audioEngine.getState(id);
+    }
+    
+    isPlaying(name) {
+        return this.getState(name) === cc.audioEngine.AudioState.PLAYING;
+    }
+    
+    isInitalzing(name) {
+        return this.getState(name) === cc.audioEngine.AudioState.INITIALZING;
+    }
+    
+    isPaused(name) {
+        return this.getState(name) === cc.audioEngine.AudioState.PAUSED;
+    }
+    
     _initAudio() {
         RubUtils.getAudioClipsFromResDir(this._soundDirUrl, (clips) => {
             clips && clips.forEach(rawUrl => {
