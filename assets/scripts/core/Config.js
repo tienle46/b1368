@@ -15,7 +15,7 @@ app.config.host = "1368casino.com";
 // app.config.host = "1368.company";
 app.config.port = app.config.useSSL ? 443 : 8921;
 app.config.version = 0x00010001;
-app.config.ALPHA_TEST = true;
+app.config.ALPHA_TEST = false;
 app.config.zone = "XGame";
 app.config.debug = false;
 app.config.test = false;
@@ -142,6 +142,7 @@ app.config.actionLabels = {
     8 Giftcode (gc)
  */
 app.config.features = {};
+app.config.verifyAccountSyntax = {}; // {viettel, mobi, vina}
 
 app.config.parseConfigData = function(configData = {}) {
     app.config.currencyName = configData.currencyName || app.config.currencyName;
@@ -155,7 +156,8 @@ app.config.parseConfigData = function(configData = {}) {
     app.config.features = configData.features || app.config.features;
     app.config.website = configData.website || app.config.website;
     app.config.shareFBConfig = configData.shareFBConfig || app.config.shareFBConfig;
-
+    app.config.verifyAccountSyntax = configData.verifyAccountSyntax || app.config.verifyAccountSyntax;
+    
     if(!app.visibilityManager) {
         app.visibilityManager = new VisibilityManager(app.config.features);
     } else {

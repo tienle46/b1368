@@ -147,6 +147,7 @@ class GameContext {
 
     getMyInfo() {
         let me = this.getMe();
+        console.warn('me', me);
         let vipLevel =  Utils.getVariable(me, app.keywords.VIP_LEVEL, {});
         return me ? {
             "id": me.id,
