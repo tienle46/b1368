@@ -424,7 +424,7 @@ export default class PlayerPhom extends PlayerCardTurnBase {
 
         if(addedCards.length > 0){
             this.board.lastPlayedCard = addedCards[0];
-            this.board.lastPlayedCard.setOnClickListener(() => this._onPlayerEatCard(this.scene.gamePlayers.me))
+            this.board.lastPlayedCard.setOnClickListener(isItMe && this.state == PlayerPhom.STATE_PHOM_EAT_TAKE ? () => this._onPlayerEatCard(this.scene.gamePlayers.me): null)
         }
     }
 

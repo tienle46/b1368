@@ -198,7 +198,7 @@
         "__id__": 9
       },
       {
-        "__id__": 14
+        "__id__": 13
       },
       {
         "__id__": 18
@@ -389,6 +389,118 @@
   },
   {
     "__type__": "cc.Node",
+    "_name": "countDown",
+    "_objFlags": 0,
+    "_opacity": 255,
+    "_color": {
+      "__type__": "cc.Color",
+      "r": 255,
+      "g": 255,
+      "b": 255,
+      "a": 255
+    },
+    "_cascadeOpacityEnabled": true,
+    "_parent": {
+      "__id__": 3
+    },
+    "_anchorPoint": {
+      "__type__": "cc.Vec2",
+      "x": 0.5,
+      "y": 0.5
+    },
+    "_contentSize": {
+      "__type__": "cc.Size",
+      "width": 135,
+      "height": 135
+    },
+    "_children": [],
+    "_rotationX": 0,
+    "_rotationY": 0,
+    "_scaleX": 1,
+    "_scaleY": 1,
+    "_position": {
+      "__type__": "cc.Vec2",
+      "x": 0,
+      "y": 0
+    },
+    "_skewX": 0,
+    "_skewY": 0,
+    "_localZOrder": 0,
+    "_globalZOrder": 0,
+    "_tag": -1,
+    "_opacityModifyRGB": false,
+    "_id": "",
+    "_active": true,
+    "_components": [
+      {
+        "__id__": 10
+      },
+      {
+        "__id__": 11
+      }
+    ],
+    "_prefab": {
+      "__id__": 12
+    },
+    "groupIndex": 0
+  },
+  {
+    "__type__": "cc.Sprite",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 9
+    },
+    "_enabled": true,
+    "_spriteFrame": {
+      "__uuid__": "882c3876-8b70-4767-961e-99f54582665c"
+    },
+    "_type": 3,
+    "_sizeMode": 0,
+    "_fillType": 2,
+    "_fillCenter": {
+      "__type__": "cc.Vec2",
+      "x": 0.5,
+      "y": 0.5
+    },
+    "_fillStart": 0.25,
+    "_fillRange": -0.6,
+    "_isTrimmedMode": true,
+    "_srcBlendFactor": 770,
+    "_dstBlendFactor": 771,
+    "_atlas": {
+      "__uuid__": "6f4c92ba-6679-40eb-aa0d-116f3a838af3"
+    }
+  },
+  {
+    "__type__": "cc.ProgressBar",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 9
+    },
+    "_enabled": true,
+    "_N$barSprite": {
+      "__id__": 10
+    },
+    "_N$mode": 2,
+    "_N$totalLength": -1,
+    "_N$progress": 0.6,
+    "_N$reverse": false
+  },
+  {
+    "__type__": "cc.PrefabInfo",
+    "root": {
+      "__id__": 1
+    },
+    "asset": {
+      "__uuid__": "44c85142-ac8b-486f-b9b3-7fbb888e5945"
+    },
+    "fileId": "b80aa0KgSBGTaCsjLyZiTm9",
+    "sync": false
+  },
+  {
+    "__type__": "cc.Node",
     "_name": "avatar",
     "_objFlags": 0,
     "_opacity": 255,
@@ -415,7 +527,7 @@
     },
     "_children": [
       {
-        "__id__": 10
+        "__id__": 14
       }
     ],
     "_rotationX": 0,
@@ -437,7 +549,7 @@
     "_active": true,
     "_components": [],
     "_prefab": {
-      "__id__": 13
+      "__id__": 17
     },
     "groupIndex": 0
   },
@@ -455,7 +567,7 @@
     },
     "_cascadeOpacityEnabled": true,
     "_parent": {
-      "__id__": 9
+      "__id__": 13
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -487,11 +599,11 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 11
+        "__id__": 15
       }
     ],
     "_prefab": {
-      "__id__": 12
+      "__id__": 16
     },
     "groupIndex": 0
   },
@@ -500,7 +612,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 10
+      "__id__": 14
     },
     "_enabled": true,
     "_spriteFrame": {
@@ -543,118 +655,6 @@
       "__uuid__": "44c85142-ac8b-486f-b9b3-7fbb888e5945"
     },
     "fileId": "dc59c2vkatGy5z4v8k2fTgq",
-    "sync": false
-  },
-  {
-    "__type__": "cc.Node",
-    "_name": "countDown",
-    "_objFlags": 0,
-    "_opacity": 255,
-    "_color": {
-      "__type__": "cc.Color",
-      "r": 255,
-      "g": 255,
-      "b": 255,
-      "a": 255
-    },
-    "_cascadeOpacityEnabled": true,
-    "_parent": {
-      "__id__": 3
-    },
-    "_anchorPoint": {
-      "__type__": "cc.Vec2",
-      "x": 0.5,
-      "y": 0.5
-    },
-    "_contentSize": {
-      "__type__": "cc.Size",
-      "width": 115,
-      "height": 115
-    },
-    "_children": [],
-    "_rotationX": 0,
-    "_rotationY": 0,
-    "_scaleX": 1,
-    "_scaleY": 1,
-    "_position": {
-      "__type__": "cc.Vec2",
-      "x": 0,
-      "y": 0
-    },
-    "_skewX": 0,
-    "_skewY": 0,
-    "_localZOrder": 0,
-    "_globalZOrder": 0,
-    "_tag": -1,
-    "_opacityModifyRGB": false,
-    "_id": "",
-    "_active": true,
-    "_components": [
-      {
-        "__id__": 15
-      },
-      {
-        "__id__": 16
-      }
-    ],
-    "_prefab": {
-      "__id__": 17
-    },
-    "groupIndex": 0
-  },
-  {
-    "__type__": "cc.Sprite",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 14
-    },
-    "_enabled": true,
-    "_spriteFrame": {
-      "__uuid__": "882c3876-8b70-4767-961e-99f54582665c"
-    },
-    "_type": 3,
-    "_sizeMode": 0,
-    "_fillType": 2,
-    "_fillCenter": {
-      "__type__": "cc.Vec2",
-      "x": 0.5,
-      "y": 0.5
-    },
-    "_fillStart": 0.25,
-    "_fillRange": -0.6,
-    "_isTrimmedMode": true,
-    "_srcBlendFactor": 770,
-    "_dstBlendFactor": 771,
-    "_atlas": {
-      "__uuid__": "6f4c92ba-6679-40eb-aa0d-116f3a838af3"
-    }
-  },
-  {
-    "__type__": "cc.ProgressBar",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 14
-    },
-    "_enabled": true,
-    "_N$barSprite": {
-      "__id__": 15
-    },
-    "_N$mode": 2,
-    "_N$totalLength": -1,
-    "_N$progress": 0.6,
-    "_N$reverse": false
-  },
-  {
-    "__type__": "cc.PrefabInfo",
-    "root": {
-      "__id__": 1
-    },
-    "asset": {
-      "__uuid__": "44c85142-ac8b-486f-b9b3-7fbb888e5945"
-    },
-    "fileId": "b80aa0KgSBGTaCsjLyZiTm9",
     "sync": false
   },
   {
@@ -990,7 +990,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": 0
+      "y": -2.3
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -4530,7 +4530,9 @@
       "__id__": 137
     },
     "_enabled": true,
-    "path": ""
+    "path": "",
+    "normalAnimName": "plusBalance",
+    "slowAnimName": "plusBalanceSlow"
   },
   {
     "__type__": "cc.Animation",
@@ -4605,10 +4607,10 @@
       "__id__": 125
     },
     "playerTimeLineProgress": {
-      "__id__": 16
+      "__id__": 11
     },
     "avatarNode": {
-      "__id__": 9
+      "__id__": 13
     },
     "friendProfilePopup": {
       "__uuid__": "1bf9733a-77b6-469a-a40a-85f31f24fa38"
