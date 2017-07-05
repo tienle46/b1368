@@ -10,7 +10,7 @@ import BaseControls from 'BaseControls';
 import CardBetTurnControls from 'CardBetTurnControls';
 import XocDiaAnim from 'XocDiaAnim';
 
-export default class GameBetControls extends GameControls {
+export default class XocDiaControls extends GameControls {
     constructor() {
         super();
 
@@ -482,3 +482,5 @@ export default class GameBetControls extends GameControls {
         this.betContainerButton.resetBtns();
     }
 }
+
+app.createComponent(XocDiaControls);

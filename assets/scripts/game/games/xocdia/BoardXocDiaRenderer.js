@@ -1,16 +1,13 @@
 import app from 'app';
-import BoardRenderer from 'BoardRenderer';
+import BoardGameBetRenderer from 'BoardGameBetRenderer';
 import utils from 'utils';
 
-export default class BoardXocDiaRenderer extends BoardRenderer {
+export default class BoardXocDiaRenderer extends BoardGameBetRenderer {
     constructor() {
         super();
         
         this.properties = this.assignProperties({
             dishContainerNode: cc.Node,
-            statisticTableNode: cc.Node,
-            resultNode: cc.Node,
-            resultText: cc.Label
         });
     }
 
@@ -18,7 +15,7 @@ export default class BoardXocDiaRenderer extends BoardRenderer {
         super.onEnable();
 
         this.bowlDishControl = this.dishContainerNode.getComponent('BowlDishControl');
-        this.statisticTable = this.statisticTableNode.getComponent('StatisticTable');
+
     }
 
     hideElements() {
@@ -29,7 +26,6 @@ export default class BoardXocDiaRenderer extends BoardRenderer {
     }
 
     displayResultFromDots(dots) {
-        debug('getResultTextFromDots', dots);
         //0: even, 1: odd
         let evenCount = 0;
         for (let i = 0; i < dots.length; i++) {
@@ -51,15 +47,6 @@ export default class BoardXocDiaRenderer extends BoardRenderer {
                 return;
             }
         }
-    }
-
-    hideResult() {
-        utils.deactive(this.resultNode);
-    }
-
-    showResult(text) {
-        utils.active(this.resultNode);
-        this.resultText.string = text.toUpperCase();
     }
 
     showElements() {

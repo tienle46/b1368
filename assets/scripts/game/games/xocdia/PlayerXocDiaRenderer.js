@@ -17,16 +17,9 @@ export default class PlayerXocDiaRenderer extends PlayerCardBetTurnRenderer {
         super.onEnable(...args);
     }
 
-    getMessageAnchorIndex(anchorIndex) {
-        return anchorIndex;
-        // this.actor.isItMe() ? -1 : anchorIndex;
-    }
+    
 
-    injectComponent(){
-        // this.balanceLabel && (this.balanceLabel.toLocaleString = '');
-        this.balanceLabel = this.scene.meBalanceLabel;
-        this.actor && (this.balanceLabel.string = GameUtils.formatBalanceShort(this.actor.balance));
-    }
+    
 
     // setVisibleReady(visible) {
     //     super.setVisibleReady(visible);
