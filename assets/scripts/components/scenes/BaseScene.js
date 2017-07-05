@@ -7,6 +7,7 @@ import utils from 'utils';
 import Actor from 'Actor';
 import FullSceneProgress from 'FullSceneProgress';
 import CCUtils from 'CCUtils';
+import Base64 from 'Base64';
 
 export default class BaseScene extends Actor {
     constructor() {
@@ -200,7 +201,11 @@ export default class BaseScene extends Actor {
                 }
             }
             if (result) {
-
+                // set storage
+                let b64 = new Base64();
+                let userInfo = b64.encodeSafe(`${username}:${password}`);
+                app.system.marker.setItem(app.const.USER_LOCAL_STORAGE, userInfo);
+                
                 log(`Logged in as ${app.context.getMe().name}`);
 
                 if (app.env.isMobile() && window.sdkbox) {

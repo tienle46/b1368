@@ -138,4 +138,10 @@ export default class AudioManager {
             });
         });
     }
+    
+    playOneInstanceOnly(name) {
+        if(!app.system.audioManager.getId(name) || !app.system.audioManager.isPlaying(name)) {
+            app.system.audioManager.play(name);
+        }
+    }
 }

@@ -447,8 +447,7 @@ export default class GamePlayers extends Component {
 
             let newPlayer = this._addPlayer(user);
             
-            if(!app.system.audioManager.isPlaying(app.system.audioManager.JOIN_BOARD))
-                app.system.audioManager.play(app.system.audioManager.JOIN_BOARD);
+            app.system.audioManager.playOneInstanceOnly(app.system.audioManager.JOIN_BOARD);
             
             if (newPlayer) {
                 let boardState = this.board.isPlaying() || this.board.isStarting() ? app.const.game.state.PLAYING

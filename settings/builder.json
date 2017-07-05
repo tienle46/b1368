@@ -7,7 +7,7 @@
     "anysdk"
   ],
   "inlineSpriteFrames": true,
-  "mergeStartScene": false,
+  "mergeStartScene": true,
   "oauthLoginServer": "",
   "orientation": {
     "landscapeLeft": true,

@@ -26,6 +26,7 @@ export default class DashboardScene extends BaseScene {
     onLoad() {
         super.onLoad();
         this._isNewBie = false;
+        cc.log('dash board r ne em oi')
     }
     
     // testClick() {
