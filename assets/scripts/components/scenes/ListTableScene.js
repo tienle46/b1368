@@ -5,7 +5,6 @@ import ScrollMessagePopup from 'ScrollMessagePopup';
 import BuddyPopup from 'BuddyPopup';
 import CCUtils from 'CCUtils';
 import Utils from 'Utils';
-import TopupDialogRub from 'TopupDialogRub';
 import Linking from 'Linking';
 
 export default class ListTableScene extends BaseScene {
@@ -29,6 +28,8 @@ export default class ListTableScene extends BaseScene {
             radio3: cc.Toggle
         });
         
+        this.fakers = null; // room fakers
+        
         this.time = 2500 * 10; // creating new request for updating tables every 25s
         // filter button conditional 
         this.filterCond = null;
@@ -49,8 +50,6 @@ export default class ListTableScene extends BaseScene {
         super.onLoad();
         this._sentInviteRandomly = false;
         this.filterCond = app.config.listTableGroupFilters[0];
-        this.progressComponent = this.progressComponentNode.getComponent('Progress');
-        
         this.fakers = []; // room fakers
         this.enableMinbets = [];
         this.userMoneyLbl.string = `${Utils.numberFormat(app.context.getMeBalance() || 0)}`;
@@ -69,20 +68,20 @@ export default class ListTableScene extends BaseScene {
         super.start();
         this[`radio1`].checkMark.node.active = false;
         
-        // this._getFirstGameLobbyFromServer();
+        this._getFirstGameLobbyFromServer();
         (!app.context.enableMinbets || !app.context.enableMinbets[this.gameCode]) ? this._getListGameMinBet() : (this.enableMinbets = app.context.enableMinbets[this.gameCode].sort((a, b) => a - b));
         
         if(this.enableMinbets.length > 0) {
             this._createRoomFakers();
             
-            // let minMoney =  app.context.getMeBalance()/this.minBalanceMultiple;
-            // let index = app.config.listTableGroupFilters.findIndex((o) => (minMoney >= o.min && minMoney <= o.max));
+            let minMoney =  app.context.getMeBalance()/this.minBalanceMultiple;
+            let index = app.config.listTableGroupFilters.findIndex((o) => (minMoney >= o.min && minMoney <= o.max));
             
-            // if(index === -1 && minMoney >= app._.maxBy(app.config.listTableGroupFilters, (o) => o.max).max) {
-            //     this._activeFilterByIndex(app.config.listTableGroupFilters.length - 1, false);
-            // } else if(~index) {
-            //     this._activeFilterByIndex(index, false);
-            // }
+            if(index === -1 && minMoney >= app._.maxBy(app.config.listTableGroupFilters, (o) => o.max).max) {
+                this._activeFilterByIndex(app.config.listTableGroupFilters.length - 1, false);
+            } else if(~index) {
+                this._activeFilterByIndex(index, false);
+            }
         }
         
         if(app.jarManager.hasJar(this.gameCode)) {
@@ -166,7 +165,7 @@ export default class ListTableScene extends BaseScene {
             }
         };
 
-        this.showLoading();
+        app.system.showLoader();
         app.service.send(sendObject);
     }
 
@@ -179,7 +178,7 @@ export default class ListTableScene extends BaseScene {
             app.system.confirm(
                 app.res.string('error_user_not_enough_gold_to_join_room', { minBalance }),
                 null,
-                this._onOpenTopUp.bind(this)
+                this._onOpenTopUp.bind(this),
             );
         } else {
             if (password) {
@@ -220,19 +219,7 @@ export default class ListTableScene extends BaseScene {
             }
         });
     }
-    
-    showLoading(message = '', timeoutInSeconds = 30, payload = '') {
-        if(this.progressComponent) {
-            this.progressComponent.show(timeoutInSeconds);
-        }
-    }   
-    
-    hideLoading() {
-       if(this.progressComponent) {
-            this.progressComponent.hide();
-        } 
-    }
-    
+
     _getFirstGameLobbyFromServer() {
         this.showLoading(app.res.string('loading_data'));
         app.service.send({
@@ -291,7 +278,7 @@ export default class ListTableScene extends BaseScene {
         
         this.scrollView.stopAutoScroll(); // stop scrolling before rendering list
         
-        this._renderList(showActivate);    
+        this._renderList();    
     }
     
     _createRoomFakers() {
@@ -542,10 +529,7 @@ export default class ListTableScene extends BaseScene {
         }   
     }
     
-    _renderList(showActivate) {
-        if(!showActivate)
-            return;
-            
+    _renderList() {
         // this.contentInScroll.removeAllChildren();
         // this.contentInScroll && this.contentInScroll.children && this.contentInScroll.children.forEach(child => child.active = false);
 

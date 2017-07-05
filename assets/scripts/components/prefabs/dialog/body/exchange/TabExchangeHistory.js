@@ -1,6 +1,5 @@
 import app from 'app';
 import PopupTabBody from 'PopupTabBody';
-import RubResources from 'RubResources';
 import {
     isEmpty,
     numberFormat,
