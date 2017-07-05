@@ -1,7 +1,7 @@
 import app from 'app';
 import Component from 'Component';
 
-class BetChip extends Component {
+class BetTypeBtn extends Component {
     constructor() {
         super();
 
@@ -63,4 +63,4 @@ class BetChip extends Component {
     }
 }
 
-app.createComponent(BetChip);
+app.createComponent(BetTypeBtn);

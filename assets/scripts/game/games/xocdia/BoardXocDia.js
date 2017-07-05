@@ -116,6 +116,8 @@ export default class BoardXocDia extends BoardCardBetTurn {
     _loadGamePlayData(data) {
         super._loadGamePlayData({...data, masterIdOwner: true });
         data.b && data.b.length > 0 && this.scene.gameControls.initBoard(data.b, data.pl);
+        delete data.b;
+        delete data.w;
     }
 
     // state === app.const.game.state.ENDING
@@ -125,7 +127,7 @@ export default class BoardXocDia extends BoardCardBetTurn {
         let playingPlayerIds = this.scene.gamePlayers.filterPlayingPlayer(playerIds);
         let balanceChangeAmounts = this._getPlayerBalanceChangeAmounts(playerIds, data);
         let playerResults = utils.getValue(data, Keywords.WIN, []);
-
+        
         super.onBoardEnding(data);
         let dots = utils.getValue(data, Keywords.XOCDIA_RESULT_END_PHASE);
         

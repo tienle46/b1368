@@ -6,6 +6,7 @@ import app from 'app';
 import GameScene from 'GameScene';
 import Events from 'Events';
 import HorizontalBetPopup from 'HorizontalBetPopup';
+import GameUtils from 'GameUtils';
 
 export default class XocDiaScene extends GameScene {
     constructor() {
@@ -39,20 +40,28 @@ export default class XocDiaScene extends GameScene {
 
         super.onEnable();
     }
-
+    
+    setMeBalanceLabelRenderer(amount) {
+        console.warn('setMeBalanceLabelRenderer', amount)
+        this.meBalanceLabel.string = GameUtils.formatBalanceShort(amount);
+    }
+    
     enoughPlayerToStartGame() {
         return this.gamePlayers.players.length > 0;
     }
 
     changePlayerBalance(amount) {
+        console.warn('changePlayerBalance', amount);
         this.gamePlayers.me && this.gamePlayers.me.changePlayerBalance(amount);
     }
 
     setPlayerBalance(amount) {
+        console.warn('setPlayerBalance', amount);
         this.gamePlayers.me && this.gamePlayers.me.setPlayerBalance(amount);
     }
 
     loadPlayerBalance() {
+        console.warn('loadPlayerBalance', amount);
         this.gamePlayers.me && this.gamePlayers.me.loadPlayerBalance();
     }
 }

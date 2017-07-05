@@ -89,6 +89,7 @@ export default class PlayerRenderer extends ActorRenderer {
     }
 
     setBalance(balance = 0) {
+        console.warn('set cmnr', balance);
         this.balanceLabel && (this.balanceLabel.string = GameUtils.formatBalanceShort(balance));
     }
 

@@ -51,7 +51,7 @@ export default class PlayerXocDia extends PlayerCardBetTurn {
 
         this.balanceAvailable = this.balance;
     }
-
+    
     _setBalance(balance) {
         this.balanceAvailable = balance;
 
@@ -101,7 +101,7 @@ export default class PlayerXocDia extends PlayerCardBetTurn {
             this.scene.emit(Events.XOCDIA_ON_PLAYER_CANCEL_BET_SUCCESS, { myPos, isItMe, betsList, playerId });
             this.betData = [];
         } else {
-             app.system.showToast(err);
+            app.system.showToast(err);
         }
     }
 
@@ -124,6 +124,7 @@ export default class PlayerXocDia extends PlayerCardBetTurn {
 
     _onPlayerChangeMoneyAnim(data) {
         let { playerId, balance } = data;
+        console.warn(balance);
         if (playerId !== this.id)
             return;
             
@@ -157,6 +158,7 @@ export default class PlayerXocDia extends PlayerCardBetTurn {
     }
 
     loadPlayerBalance() {
+        console.warn('loadPlayerBalance')
         this.balanceAvailable = app.context.getMeBalance();
         this.renderer.setBalance(this.balanceAvailable);
     }
