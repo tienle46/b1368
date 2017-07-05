@@ -220,10 +220,6 @@ export default (function(app) {
                     objectListener = Object.assign({}, objectListener, processes);
                     window.sdkbox.IAP.setListener(objectListener);
                 };
-
-                if(!app.system) {
-                   log('\nIAP: !app.system', app.system)
-                }
                 
                 if(!app.iap){
                     let IAPManager = require('IAPManager');

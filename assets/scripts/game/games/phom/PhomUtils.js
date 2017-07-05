@@ -288,7 +288,7 @@ export default class PhomUtils {
 
         let isInside = ArrayUtils.contains(solutions, joinSolution);
         if (!isInside) {
-            solutions.push(new JoinSolution(joinSolution));
+            solutions.push(new JoinSolution(joinSolution.getSolutions()));
         }
     }
 

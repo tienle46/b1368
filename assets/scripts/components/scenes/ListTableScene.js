@@ -26,12 +26,8 @@ export default class ListTableScene extends BaseScene {
             filter3rdLabel: cc.Label,
             radio1: cc.Toggle,
             radio2: cc.Toggle,
-            radio3: cc.Toggle,
-            loadingNode: cc.Node,
-            progressComponentNode: cc.Node
+            radio3: cc.Toggle
         });
-        
-        this.fakers = null; // room fakers
         
         this.time = 2500 * 10; // creating new request for updating tables every 25s
         // filter button conditional 
@@ -183,7 +179,7 @@ export default class ListTableScene extends BaseScene {
             app.system.confirm(
                 app.res.string('error_user_not_enough_gold_to_join_room', { minBalance }),
                 null,
-                this._onOpenTopUp.bind(this),
+                this._onOpenTopUp.bind(this)
             );
         } else {
             if (password) {
