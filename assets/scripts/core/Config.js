@@ -8,7 +8,6 @@ var app = require('app');
 app.config = {};
 app.config.currencyName = "Chip";
 // app.config.useSSL = false;
-<<<<<<< HEAD
 // app.config.host = "123.31.12.100";
 // app.config.host = "123.31.24.103";
 app.config.useSSL = cc.sys.isBrowser;
@@ -17,17 +16,6 @@ app.config.host = "1368casino.com";
 app.config.port = app.config.useSSL ? 443 : 8921;
 app.config.version = 0x00010001;
 app.config.ALPHA_TEST = false;
-=======
-app.config.host = "123.31.12.100";
-// app.config.host = "45.76.152.12";
-// app.config.port = 8921;
-app.config.useSSL = false;
-// app.config.host = "1368casino.com";
-// app.config.host = "1368.company";
-app.config.port = app.config.useSSL ? 443 : 8721;
-app.config.version = 0x00010000;
-app.config.ALPHA_TEST = true;
->>>>>>> 15fb88b5b2c33d3e3024025f15d14e860fc08ac7
 app.config.zone = "XGame";
 app.config.debug = true;
 app.config.test = false;
