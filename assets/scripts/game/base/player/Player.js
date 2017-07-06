@@ -169,7 +169,6 @@ export default class Player extends Actor {
             let balanceVariable = this.user.variables[Keywords.USER_VARIABLE_BALANCE];
             let newBalanceVariable = balanceVariable ? new SFS2X.Entities.Variables.SFSUserVariable(balanceVariable.name, newBalance, balanceVariable.type)
                 : new SFS2X.Entities.Variables.SFSUserVariable(Keywords.USER_VARIABLE_BALANCE, newBalance)
-            
             this.user._setVariable(newBalanceVariable);
             this._setBalance(newBalance);
         }
@@ -194,15 +193,9 @@ export default class Player extends Actor {
     }
 
     _onUserUpdateBalance(user) {
-         console.warn('this.scene._immediateUpdate1', this.scene._immediateUpdate);
-        if (!this.scene._immediateUpdate && this.user.name == user.name) {
+        if (this.user.name == user.name) {
             let newBalance = GameUtils.getUserBalance(user);
-            console.warn('newBalance', newBalance);
             this._setBalance(newBalance);
-        }
-        if(this.scene._immediateUpdate) {
-            this.scene._immediateUpdate = false;
-            console.warn('this.scene._immediateUpdate', this.scene._immediateUpdate);
         }
     }
 

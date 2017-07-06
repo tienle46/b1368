@@ -137,7 +137,7 @@ export default class XocDiaControls extends GameControls {
             app.system.showToast(app.res.string('is_not_enough_money_to_bet'));
             return;
         }
-
+        
         if (this.betData.length > 0) {
             this._setRebetBtnState(true);
             
@@ -161,7 +161,6 @@ export default class XocDiaControls extends GameControls {
     }
     
     initBoard(bets = [], playerIds = []) {
-        this.scene._immediateUpdate = false;
         bets.forEach((bet, index) => {
             for(let typeId in bet) {
                 let amount = bet[typeId];
@@ -170,9 +169,12 @@ export default class XocDiaControls extends GameControls {
                 let isItMe = this.scene.gamePlayers.isItMe(playerIds[index]);
                 this._updateGoldAmountOnControl(typeId,amount, isItMe, false, false);
                 if(isItMe) {
-                    this.scene._immediateUpdate = true;
+                    this.betData.push({ 
+                        [app.keywords.XOCDIA_BET.AMOUNT]: Number(amount),
+                        [app.keywords.XOCDIA_BET.TYPE]: typeId
+                    });
+                    // this.scene.changePlayerBalance(-amount);
                     // console.warn('app.context.getMeBalance() - amount', this.scene.gamePlayers.me.balance, this.scene.gamePlayers.me.balance - amount);
-                    this.scene.changePlayerBalance(-amount);
                 }
                 
                 let betIndex = this.betOptionsGroup.getChipIndexByAmount(amount, this.scene.board.minBet);
@@ -484,6 +486,11 @@ export default class XocDiaControls extends GameControls {
     }
 
     _resetBetData() {
+        if(app.context.rejoiningGame) {
+            app.context.rejoiningGame = false;
+            return;
+        }
+            
         this.betData = [];
     }
 

@@ -1,6 +1,7 @@
 import app from 'app';
 import Events from 'Events';
 import PlayerCardBetTurn from 'PlayerCardBetTurn';
+import GameUtils from 'GameUtils';
 
 export default class PlayerXocDia extends PlayerCardBetTurn {
 
@@ -124,10 +125,9 @@ export default class PlayerXocDia extends PlayerCardBetTurn {
 
     _onPlayerChangeMoneyAnim(data) {
         let { playerId, balance } = data;
-        console.warn(balance);
         if (playerId !== this.id)
             return;
-            
+        
         this.playSoundBaseOnBalanceChanged(balance);
         this.renderer.startPlusBalanceAnimation(balance, true);
     }
@@ -135,7 +135,23 @@ export default class PlayerXocDia extends PlayerCardBetTurn {
     _onGameRejoin(data) {
         super._onGameRejoin(data);
     }
-
+    
+    /**
+     * Override
+     */
+    _onUserUpdateBalance(user) {
+        if (this.user.name == user.name) {
+            let newBalance = GameUtils.getUserBalance(user);
+            this._setBalance(newBalance);
+            
+            console.warn('this.scene.gameControls.betData', this.scene.gameControls.betData);
+            this.scene.gameControls.betData.forEach(bet => {
+                let amount = bet[app.keywords.XOCDIA_BET.AMOUNT];
+                this.changePlayerBalance(-amount);
+            });
+        }
+    }
+    
     _onGameState(state, data, isJustJoined) {
         if (state == app.const.game.state.STATE_BET) {
             this.isItMe() && this.renderer.hidePlayerComponentOnBetting();

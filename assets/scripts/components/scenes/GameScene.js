@@ -80,7 +80,6 @@ export default class GameScene extends BaseScene {
             }))
         }, this, 1);
         
-        this.on(Events.ON_GAME_RESET, this._onGameReset, this, 0);
         this.on(Events.ON_USER_EXIT_ROOM, this._onUserExitGame, this, 0);
         this.on(Events.ON_ACTION_EXIT_GAME, this._onActionExitGame, this);
         this.on(Events.ON_PLAYER_CHAT_MESSAGE, this._onPlayerChatMessage, this, 0);
@@ -91,14 +90,6 @@ export default class GameScene extends BaseScene {
         this.on(Events.ON_PLAYER_READY_STATE_CHANGED, this._onPlayerReadyStateChanged, this);
         this.on(Events.ON_PLAYER_REGISTER_QUIT_ROOM, this._handleRegisterQuitRoom, this);
         this.on(Events.ON_GAME_STATE_STARTING, this._onGameStarting, this);
-    }
-    
-    _onGameReset() {
-        // console.warn('_onGameReset', , this.gameData)
-        // for(let key in this._rejoinDataCp) {
-        //     this.gameData[key] = null;
-        //     delete this.gameData[key];
-        // }
     }
     
     _onGameStarting(){
@@ -367,9 +358,6 @@ export default class GameScene extends BaseScene {
     }
 
     _onGameRejoin(data) {
-        this._rejoinDataCp = Object.assign({}, data);
-        console.warn('this._rejoinDataCp', this._rejoinDataCp);
-        
         this._mergeGameData(data);
         let registeredQuitRoom = data["registeredQuitRoom"];
         
