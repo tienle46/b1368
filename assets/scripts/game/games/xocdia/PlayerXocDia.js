@@ -164,7 +164,10 @@ export default class PlayerXocDia extends PlayerCardBetTurn {
     _onGameStateBet() {}
 
     changePlayerBalance(amount) {
-        this.setPlayerBalance(this.balanceAvailable + Number(amount) < 0 ? Math.abs(this.balanceAvailable) : this.balanceAvailable + Number(amount));
+        if(this.balanceAvailable + Number(amount) < 0)
+            return;
+            
+        this.setPlayerBalance(this.balanceAvailable + Number(amount));
     }
 
     setPlayerBalance(amount) {
