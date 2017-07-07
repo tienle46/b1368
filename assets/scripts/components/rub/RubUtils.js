@@ -58,7 +58,7 @@ let RubUtils = {
      */
     getSpriteFramesFromAtlas: (atlasURL, keys, callback) => {
         var async = require('async');
-
+        
         if (!(keys instanceof Array) || keys.length < 1)
             return;
 

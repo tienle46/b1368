@@ -45,6 +45,7 @@ class PreloadScene extends Component {
 
         let resources = [
             { dir: 'toast/Toast', name: 'toast' },
+            { dir: 'dashboard/dialog/prefabs/verification_dialog', name: 'verificationDialog' },
             { dir: 'dashboard/grid/scrollview', name: 'scrollview' },
             { dir: 'jar/jarPrefab', name: 'jarPrefab' },
             { dir: 'jar/jar_explosion', name: 'jarExplosive' },

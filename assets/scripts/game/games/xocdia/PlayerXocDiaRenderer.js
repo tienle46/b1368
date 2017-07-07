@@ -22,7 +22,6 @@ export default class PlayerXocDiaRenderer extends PlayerCardBetTurnRenderer {
     }
 
     injectComponent(){
-        console.warn('injectComponent');
         // this.balanceLabel && (this.balanceLabel.toLocaleString = '');
         this.balanceLabel = this.scene.meBalanceLabel;
         this.actor && (this.balanceLabel.string = GameUtils.formatBalanceShort(this.actor.balance));

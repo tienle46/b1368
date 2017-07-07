@@ -21,11 +21,11 @@ export default class JarManager {
     addEventListener() {
         this.removeEventListener();
 
-        app.visibilityManager.isActive(VisibilityManager.SMASH_JAR) && app.system.addListener(app.commands.LIST_HU, this.setupJar, this);
+        app.system.addListener(app.commands.LIST_HU, this.setupJar, this);
     }
     
     removeEventListener() {
-        app.visibilityManager.isActive(VisibilityManager.SMASH_JAR) && app.system.removeListener(app.commands.LIST_HU, this.setupJar, this);
+        app.system.removeListener(app.commands.LIST_HU, this.setupJar, this);
     }
     
     updateJar(gc, newData) {
@@ -162,6 +162,7 @@ export default class JarManager {
     }
     
     requestUpdateJarList() {
+        console.warn('app.visibilityManager.isActive(VisibilityManager.SMASH_JAR)', app.visibilityManager.isActive(VisibilityManager.SMASH_JAR));
         app.visibilityManager.isActive(VisibilityManager.SMASH_JAR) &&  app.service.send({
             cmd: app.commands.LIST_HU
         }); 

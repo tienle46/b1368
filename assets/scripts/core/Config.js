@@ -157,7 +157,7 @@ app.config.parseConfigData = function(configData = {}) {
     app.config.website = configData.website || app.config.website;
     app.config.shareFBConfig = configData.shareFBConfig || app.config.shareFBConfig;
     app.config.verifyAccountSyntax = configData.verifyAccountSyntax || app.config.verifyAccountSyntax;
-    
+
     if(!app.visibilityManager) {
         app.visibilityManager = new VisibilityManager(app.config.features);
     } else {

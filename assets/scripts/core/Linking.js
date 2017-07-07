@@ -252,6 +252,7 @@ class Linking {
                 }
         }
         
+        
         if(app.context.getMyInfo().verified) {
             new ExchangeDialogRub().show(app.system.getCurrentSceneNode(), {
                 focusTabIndex: defaultTab
@@ -263,45 +264,11 @@ class Linking {
                 this._onShowVerifyCode.bind(this)
             );
         }
-        
     }
     
     static _onShowVerifyCode() {
-        let username = app.context.getMyInfo().name;
-        // shortCode: recipient
-        
-        if(app.env.isBrowser()) {
-            let text = "";
-            for(let carrier in app.config.verifyAccountSyntax) {
-                let {shortCode, syntax, money} = app.config.verifyAccountSyntax[carrier];
-                text += `${syntax} ${shortCode}. Chi phí: ${money}vnđ\n`;
-            }
-            text = text.replace(/\n$/, '');
-            
-            app.system.info(text);
-        } else if(app.env.isMobile()) {
-            // detect carrier
-            let carrier = 'viettel';
-            let {shortCode, syntax} = app.config.verifyAccountSyntax[carrier];
-            if (app.env.isIOS()) {
-                window.jsb.reflection.callStaticMethod("JSBUtils", "sendSMS:recipient:", syntax, shortCode);
-            }
-            if (app.env.isAndroid()) {
-                window.jsb.reflection.callStaticMethod("org/cocos2dx/javascript/AppActivity", "jsbSMS", "(Ljava/lang/String;Ljava/lang/String;)V", syntax, shortCode);
-            }
-            // TODO
-            // unable to get carrier name ?? ----
-            //                                  |
-            //                                  v
-            // let text = "";
-            // for(let carrier in app.config.verifyAccountSyntax) {
-            //     let {shortCode, syntax, money} = app.config.verifyAccountSyntax[carrier];
-            //     text += `${syntax} ${shortCode}. Chi phí: ${money}vnđ\n`;
-            // }
-            // text = text.replace(/\n$/, '');
-            
-            // app.system.info(text);
-        }
+        let dialog = cc.instantiate(app.res.prefab.verificationDialog);
+        app.system.getCurrentSceneNode().addChild(dialog, 100);
     }
     
     static _handleOpenPersonalInfoDialogAction(actionCode, data) {

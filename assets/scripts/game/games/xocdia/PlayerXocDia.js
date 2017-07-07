@@ -143,8 +143,7 @@ export default class PlayerXocDia extends PlayerCardBetTurn {
         if (this.user.name == user.name) {
             let newBalance = GameUtils.getUserBalance(user);
             this._setBalance(newBalance);
-            
-            console.warn('this.scene.gameControls.betData', this.scene.gameControls.betData);
+            // console.warn('_onUserUpdateBalance', [...this.scene.gameControls.betData]);
             this.scene.gameControls.betData.forEach(bet => {
                 let amount = bet[app.keywords.XOCDIA_BET.AMOUNT];
                 this.changePlayerBalance(-amount);
@@ -165,7 +164,7 @@ export default class PlayerXocDia extends PlayerCardBetTurn {
     _onGameStateBet() {}
 
     changePlayerBalance(amount) {
-        this.setPlayerBalance(this.balanceAvailable + Number(amount));
+        this.setPlayerBalance(this.balanceAvailable + Number(amount) < 0 ? Math.abs(this.balanceAvailable) : this.balanceAvailable + Number(amount));
     }
 
     setPlayerBalance(amount) {
@@ -174,7 +173,6 @@ export default class PlayerXocDia extends PlayerCardBetTurn {
     }
 
     loadPlayerBalance() {
-        console.warn('loadPlayerBalance')
         this.balanceAvailable = app.context.getMeBalance();
         this.renderer.setBalance(this.balanceAvailable);
     }
