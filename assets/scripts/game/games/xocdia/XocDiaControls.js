@@ -112,8 +112,8 @@ export default class XocDiaControls extends GameControls {
         let chipOptionsNode = this.betOptionsGroup.getCheckedItem();
         if (chipOptionsNode) {
             let amount = chipOptionsNode.getComponent('BetChip').getChipAmount();
-
-            if (app.context.getMeBalance() - amount < 0) {
+            
+            if (app.context.getMeBalance() - this._getTotalGoldUserBettedInBoard() < 0) {
                 app.system.error('Không đủ chip để tiếp tục cược !');
                 return;
             }
