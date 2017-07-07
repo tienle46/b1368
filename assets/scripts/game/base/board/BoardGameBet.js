@@ -73,8 +73,7 @@ export default class BoardGameBet extends BoardCard {
      * @memberof BoardGameBet
      */
     // state === app.const.game.state.ENDING
-    onBoardEnding(data) {
-    }
+    onBoardEnding(data) {}
 
     _reset() {
         super._reset();
@@ -98,16 +97,15 @@ export default class BoardGameBet extends BoardCard {
         duration && this.startTimeLine(duration);
     }
 
-    onGameStateChanged(boardState, data, isJustJoined) {
-
-    }
-
-    _onGameState(state, data, isJustJoined) {
-    }
+    onGameStateChanged(boardState, data, isJustJoined) {}
+    
+    _onGameState(state, data, isJustJoined) {}
 
     _loadGamePlayData(data) {
         super._loadGamePlayData(Object.assign({}, data, {masterIdOwner: true}));
         data.b && data.b.length > 0 && this.scene.gameControls.initBoard(data.b, data.pl);
+        delete data.b;
+        delete data.w;
     }
 
     _onGameBegin() {

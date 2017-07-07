@@ -110,8 +110,8 @@ export default class GameBetControls extends GameControls {
         let chipOptionsNode = this.betOptionsGroup.getCheckedItem();
         if (chipOptionsNode) {
             let amount = chipOptionsNode.getComponent('BetChip').getChipAmount();
-
-            if (app.context.getMeBalance() - amount < 0) {
+            
+            if (app.context.getMeBalance() - this._getTotalGoldUserBettedInBoard() < 0) {
                 app.system.error('Không đủ chip để tiếp tục cược !');
                 return;
             }
@@ -135,7 +135,7 @@ export default class GameBetControls extends GameControls {
             app.system.showToast(app.res.string('is_not_enough_money_to_bet'));
             return;
         }
-
+        
         if (this.betData.length > 0) {
             this._setRebetBtnState(true);
             
@@ -166,12 +166,21 @@ export default class GameBetControls extends GameControls {
                 let chip = this.betOptionsGroup.getChipByAmount(amount);
                 let isItMe = this.scene.gamePlayers.isItMe(playerIds[index]);
                 this._updateGoldAmountOnControl(typeId,amount, isItMe, false, false);
+                if(isItMe) {
+                    this.betData.push({ 
+                        [app.keywords.XOCDIA_BET.AMOUNT]: Number(amount),
+                        [app.keywords.XOCDIA_BET.TYPE]: typeId
+                    });
+                    // this.scene.changePlayerBalance(-amount);
+                    // console.warn('app.context.getMeBalance() - amount', this.scene.gamePlayers.me.balance, this.scene.gamePlayers.me.balance - amount);
+                }
                 
                 let betIndex = this.betOptionsGroup.getChipIndexByAmount(amount, this.scene.board.minBet);
                 let chipDisplayPoint = this.xocDiaAnim.getRealEndPoint(toNode);
                 this.xocDiaAnim.addChip(toNode, chip, playerIds[index], typeId, betIndex, chipDisplayPoint);
             }
-        })    
+        });
+        bets.length = 0; 
     }
     
     onCancelBetBtnClick() {
@@ -475,6 +484,11 @@ export default class GameBetControls extends GameControls {
     }
 
     _resetBetData() {
+        if(app.context.rejoiningGame) {
+            app.context.rejoiningGame = false;
+            return;
+        }
+            
         this.betData = [];
     }
 

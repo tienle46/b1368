@@ -9,9 +9,9 @@ app.config = {};
 app.config.currencyName = "Chip";
 // app.config.useSSL = false;
 // app.config.host = "123.31.12.100";
-// app.config.host = "123.31.24.103";
-app.config.useSSL = cc.sys.isBrowser;
-app.config.host = "1368casino.com";
+app.config.host = "123.31.24.103";
+app.config.useSSL = cc.sys.isBrowser? false: false;
+// app.config.host = "1368casino.com";
 // app.config.host = "1368.company";
 app.config.port = app.config.useSSL ? 443 : 8921;
 app.config.version = 0x00010001;
@@ -157,7 +157,7 @@ app.config.parseConfigData = function(configData = {}) {
     app.config.website = configData.website || app.config.website;
     app.config.shareFBConfig = configData.shareFBConfig || app.config.shareFBConfig;
     app.config.verifyAccountSyntax = configData.verifyAccountSyntax || app.config.verifyAccountSyntax;
-    
+
     if(!app.visibilityManager) {
         app.visibilityManager = new VisibilityManager(app.config.features);
     } else {

@@ -4,7 +4,6 @@
 
 import utils from 'utils';
 import app from 'app';
-import CardList from 'CardList';
 import PlayerCardBetTurnRenderer from 'PlayerCardBetTurnRenderer';
 import GameUtils from "../../base/utils/GameUtils";
 

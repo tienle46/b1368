@@ -87,6 +87,9 @@ export default class PlayerGameBet extends Player {
     }
     
     changePlayerBalance(amount) {
+        if(this.balanceAvailable + Number(amount))
+            return;
+            
         this.setPlayerBalance(this.balanceAvailable + Number(amount));
     }
 
@@ -112,11 +115,22 @@ export default class PlayerGameBet extends Player {
     }
     
     _onGameRejoin(data){
-        // if(this.isPlaying()){
-        //     if (this.isItMe()) {
-               
-        //     }
-        // }
+        super._onGameRejoin(data);
+    }
+    
+    /**
+     * Override
+     */
+    _onUserUpdateBalance(user) {
+        if (this.user.name == user.name) {
+            let newBalance = GameUtils.getUserBalance(user);
+            this._setBalance(newBalance);
+            // console.warn('_onUserUpdateBalance', [...this.scene.gameControls.betData]);
+            this.scene.gameControls.betData.forEach(bet => {
+                let amount = bet[app.keywords.XOCDIA_BET.AMOUNT];
+                this.changePlayerBalance(-amount);
+            });
+        }
     }
     
     _onGameState(state, data, isJustJoined) {

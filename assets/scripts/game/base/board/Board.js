@@ -322,6 +322,7 @@ export default class Board extends Actor {
     }
 
     onBoardEnding(data = {}, isJustJoined) {
+        this.jumpedToBoardEnd = true;
         this.timelineRemain = utils.getValue(data, Keywords.BOARD_PHASE_DURATION);
         this.scene.clearReadyPlayer();
 

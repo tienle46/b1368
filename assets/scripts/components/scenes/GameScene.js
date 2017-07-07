@@ -78,7 +78,7 @@ export default class GameScene extends BaseScene {
                 args: args
             }))
         }, this, 1);
-
+        
         this.on(Events.ON_USER_EXIT_ROOM, this._onUserExitGame, this, 0);
         this.on(Events.ON_ACTION_EXIT_GAME, this._onActionExitGame, this);
         this.on(Events.ON_PLAYER_CHAT_MESSAGE, this._onPlayerChatMessage, this, 0);
@@ -90,7 +90,7 @@ export default class GameScene extends BaseScene {
         this.on(Events.ON_PLAYER_REGISTER_QUIT_ROOM, this._handleRegisterQuitRoom, this);
         this.on(Events.ON_GAME_STATE_STARTING, this._onGameStarting, this);
     }
-
+    
     _onGameStarting(){
         this.firstTimePlay = false
     }
@@ -451,7 +451,7 @@ export default class GameScene extends BaseScene {
     }
 
     _onGameStateBegin(data, isJustJoined, isRejoining) {
-        if (!isRejoining && this.gameState != app.const.game.state.READY) {
+        if ((!isRejoining || this.jumpedToBoardEnd) && this.gameState != app.const.game.state.READY) {
             this.emit(Events.ON_GAME_RESET);
         }
         this.emit(Events.ON_GAME_STATE_BEGIN, data, isJustJoined);

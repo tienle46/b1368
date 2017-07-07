@@ -1,7 +1,8 @@
 import app from 'app';
-import PlayerCardBetTurn from 'PlayerCardBetTurn';
+import PlayerGameBet from 'PlayerGameBet';
+import GameUtils from 'GameUtils';
 
-export default class PlayerXocDia extends PlayerCardBetTurn {
+export default class PlayerXocDia extends PlayerGameBet {
     constructor(board, user) {
         super(board, user);
         this.RENDER_COMPONENT = 'PlayerXocDiaRenderer';
@@ -19,14 +20,19 @@ export default class PlayerXocDia extends PlayerCardBetTurn {
         super._removeGlobalListener();
     }
 
-    onEnable() {
-        super.onEnable(this.getComponent('PlayerXocDiaRenderer'));
-    }
+    onEnable() {}
+    
 
-    onGameEnding(data) {
-        super.onGameEnding(data);
+    onGameEnding(data, isJustJoined) {
+        super.onGameEnding(data, isJustJoined);
         this.renderer.stopAllAnimation();
     }
+
+    _onGameRejoin(data) {
+        super._onGameRejoin(data);
+    }
+    
+    _onGameStateBet() {}
 }
 
 app.createComponent(PlayerXocDia);
