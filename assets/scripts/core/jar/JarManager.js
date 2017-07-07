@@ -53,17 +53,6 @@ export default class JarManager {
      */
     setJar(gc, data) {
         this._jars[gc] = data;
-        this.updateJarComponent(gc);
-    }
-    
-    updateJarComponent(gc) {
-        let jarComponent = this._getJarComponent(gc);
-        if(jarComponent) {
-            let {id, remainTime, startTime, endTime, currentMoney} = this.getJarDataFromGC(gc);
-        
-            currentMoney && jarComponent.updateTotalMoney(currentMoney);
-            remainTime && jarComponent._updateRemainTime(remainTime);
-        }
     }
     
     setupJar(data) {
@@ -89,12 +78,12 @@ export default class JarManager {
             return;
             
         let _jarData = this.getJarData(jar);
-        
+
         let cloner = cc.instantiate(jar); // clone this node to prevent node's component will be destroy while scene's changing. --> fixed only in simulator
         
         if(cloner) {
             cloner._jarData = _jarData;
-        
+            
             this.updateJar(gc, cloner);
             
             let jarComponent = this.getComponentInJar(this.getJar(gc), 'JarComponent');
@@ -162,7 +151,6 @@ export default class JarManager {
     }
     
     requestUpdateJarList() {
-        console.warn('app.visibilityManager.isActive(VisibilityManager.SMASH_JAR)', app.visibilityManager.isActive(VisibilityManager.SMASH_JAR));
         app.visibilityManager.isActive(VisibilityManager.SMASH_JAR) &&  app.service.send({
             cmd: app.commands.LIST_HU
         }); 

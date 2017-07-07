@@ -66,7 +66,7 @@ class Service {
 
         var config = {};
         config.zone = app.config.zone;
-        config.debug = app.config.debug;
+        config.debug = false;
         config.useSSL = app.config.useSSL;
 
         this.client = new SFS2X.SmartFox(config);
