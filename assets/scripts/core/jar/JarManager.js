@@ -78,35 +78,58 @@ export default class JarManager {
             return;
             
         let _jarData = this.getJarData(jar);
-
-        let cloner = cc.instantiate(jar); // clone this node to prevent node's component will be destroy while scene's changing. --> fixed only in simulator
         
-        if(cloner) {
-            cloner._jarData = _jarData;
+        let jarComponent = this.getComponentInJar(this.getJar(gc), 'JarComponent');
             
-            this.updateJar(gc, cloner);
-            
-            let jarComponent = this.getComponentInJar(this.getJar(gc), 'JarComponent');
-            
-            this._currentJarComponent = jarComponent;
-            
-            if(jarComponent) {
-                jarComponent._gameCode = gc;
-                jarComponent.init(_jarData);
-            }
-            
-            this.getJar(gc).active = true;
-            
-            if(hasButton) {
-                if(jarComponent) {
-                    jarComponent.activeBtnComponent();
-                }
-            }
-            
-            CCUtils.clearAllChildren(parent);
-            
-            parent.addChild(this.getJar(gc));
+        this._currentJarComponent = jarComponent;
+        
+        if(jarComponent) {
+            jarComponent._gameCode = gc;
+            jarComponent.init(_jarData);
         }
+        
+        jarComponent.node.active = true;
+        
+        if(hasButton) {
+            if(jarComponent) {
+                jarComponent.activeBtnComponent();
+            }
+        }
+        
+        CCUtils.clearAllChildren(parent);
+        
+        parent.addChild(this.getJar(gc));
+              
+        // let _jarData = this.getJarData(jar);
+
+        // let cloner = cc.instantiate(jar); // clone this node to prevent node's component will be destroy while scene's changing. --> fixed only in simulator
+        
+        // if(cloner) {
+        //     cloner._jarData = _jarData;
+            
+        //     this.updateJar(gc, cloner);
+            
+        //     let jarComponent = this.getComponentInJar(this.getJar(gc), 'JarComponent');
+            
+        //     this._currentJarComponent = jarComponent;
+            
+        //     if(jarComponent) {
+        //         jarComponent._gameCode = gc;
+        //         jarComponent.init(_jarData);
+        //     }
+            
+        //     this.getJar(gc).active = true;
+            
+        //     if(hasButton) {
+        //         if(jarComponent) {
+        //             jarComponent.activeBtnComponent();
+        //         }
+        //     }
+            
+        //     CCUtils.clearAllChildren(parent);
+            
+        //     parent.addChild(this.getJar(gc));
+        // }
     }
     
     getJarData(jar) {

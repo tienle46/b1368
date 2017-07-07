@@ -71,6 +71,7 @@ export default class ListTableScene extends BaseScene {
         this[`radio1`].checkMark.node.active = false;
         
         this._getFirstGameLobbyFromServer();
+        
         (!app.context.enableMinbets || !app.context.enableMinbets[this.gameCode]) ? this._getListGameMinBet() : (this.enableMinbets = app.context.enableMinbets[this.gameCode].sort((a, b) => a - b));
         
         if(this.enableMinbets.length > 0) {
