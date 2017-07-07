@@ -93,6 +93,7 @@ class BowlDishControl extends Component {
          * III(-1, -1)  | -1        II(1, -1)
          *              v
          */
+        
         let randomPosInRange = [{ x: 1, y: 1 }, { x: 1, y: -1 }, { x: -1, y: -1 }, { x: -1, y: 1 }];
         let acceptedArea = this.circleGroup.getContentSize();
         let random = app._.random;
