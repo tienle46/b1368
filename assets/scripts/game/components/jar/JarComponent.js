@@ -36,7 +36,7 @@ export default class JarComponent extends Actor {
     start() {
         super.start();
         
-        app.system.getCurrentSceneName() !== app.const.scene.DASHBOARD_SCENE && app.jarManager.requestUpdateJarList();
+        app.system.getCurrentSceneName() !== app.const.scene.DASHBOARD_SCENE && !app.context.rejoiningGame && app.jarManager.requestUpdateJarList();
     }
     
     onEnable() {

@@ -131,7 +131,6 @@ export default class HighLightMessageRub {
     }
     
     _onHLMUpdated(message) {
-        console.warn('_onHLMUpdated', message);
         if(message.updated) {
             this._resetHighLightPosition();
             this._repeatAnim(message);
