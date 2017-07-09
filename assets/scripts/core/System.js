@@ -43,8 +43,6 @@ class GameSystem {
         this.initEventListener();
         if(!app.visibilityManager) 
             app.visibilityManager = new VisibilityManager(app.config.features);
-        
-        app.env && app.env.isBrowser() && this._quickAuthen();
     }
 
     showLoader(message = "", duration) {
@@ -86,7 +84,7 @@ class GameSystem {
                 app.service && app.service.removeAllCallback(this.getCurrentSceneName());
 
                 this._currentScene = cc.director.getScene().children[0].getComponent(sceneName);
-
+                
                 if (this._currentScene) {
                     this._sceneName = sceneName;
                     // this._currentScene.testData(initData);

@@ -79,7 +79,6 @@ class VerificationDialog extends DialogActor {
             let inactiveState = `${providerName.toLowerCase()}-inactive`;
 
             RubUtils.getSpriteFramesFromAtlas(app.res.ATLAS_URLS.PROVIDERS, [activeState, inactiveState], (sprites) => {
-                console.warn(sprites);
                 
                 if(sprites) {
                     this.activeStateSprite.spriteFrame = sprites[activeState];

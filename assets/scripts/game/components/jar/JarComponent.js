@@ -36,7 +36,7 @@ export default class JarComponent extends Actor {
     start() {
         super.start();
         
-        app.jarManager.requestUpdateJarList();
+        app.system.getCurrentSceneName() !== app.const.scene.DASHBOARD_SCENE && !app.context.rejoiningGame && app.jarManager.requestUpdateJarList();
     }
     
     onEnable() {
@@ -72,6 +72,10 @@ export default class JarComponent extends Actor {
         super.onDestroy();
         this._clearInterval();
         window.release(this.spriteFrames);
+        
+        let jar = cc.instantiate(app.res.prefab.jarPrefab);
+        jar._jarData = this.node._jarData;
+        app.jarManager.updateJar(this._gameCode, jar);
     }
     
     onJarClick() {
@@ -128,7 +132,11 @@ export default class JarComponent extends Actor {
         if(~index) {
             let currentMoney = data[app.keywords.MONEY_LIST][index], //  total money in current jar
                 endTime = data[app.keywords.END_TIME_LIST][index],
-                remainTime = Math.abs(new Date().getTime() - endTime);
+                remainTime = Math.abs(new Date().getTime() - endTime),
+                id = data[app.keywords.ID_LIST][index],
+                startTime = data[app.keywords.START_TIME_LIST][index];
+                
+            this.node._jarData = {id, remainTime, startTime, endTime, currentMoney};
             
             this._updateData(remainTime, currentMoney)
         };
