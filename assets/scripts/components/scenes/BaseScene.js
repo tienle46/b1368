@@ -118,7 +118,7 @@ export default class BaseScene extends Actor {
         app.system.loadScene(name, onLaunched, initData);
     }
 
-    loginToDashboard(username, password, isRegister = false, isQuickLogin = false, accessToken = null, fbId = null, cb) {
+    loginToDashboard(username, password, isRegister = false, isQuickLogin = false, accessToken = null, fbId = null, cb, tmpRegister = false) {
         this.showLoading(app.res.string('connecting_to_server'));
         
         this._errorMessageTimeout = setTimeout(() => {
@@ -129,9 +129,9 @@ export default class BaseScene extends Actor {
         }, 15 * 1000);
         
         if (app.service.getClient().isConnected()) {
-            this._requestAuthen(username, password, isRegister, isQuickLogin, accessToken, fbId, null, cb);
+            this._requestAuthen(username, password, isRegister, isQuickLogin, accessToken, fbId, null, cb, tmpRegister);
         } else {
-            this._tryToConnectAndLogin(username, password, isRegister, isQuickLogin, accessToken, fbId, null, cb);
+            this._tryToConnectAndLogin(username, password, isRegister, isQuickLogin, accessToken, fbId, null, cb, tmpRegister);
         }
     }
 
@@ -144,15 +144,15 @@ export default class BaseScene extends Actor {
         }
     }
 
-    _tryToConnectAndLogin(username, password, isRegister, isQuickLogin, accessToken, fbId, tryOneTime, cb){
+    _tryToConnectAndLogin(username, password, isRegister, isQuickLogin, accessToken, fbId, tryOneTime, cb, tmpRegister){
         app.service.connect((success) => {
             if (success) {
-                this._requestAuthen(username, password, isRegister, isQuickLogin, accessToken, fbId, tryOneTime, cb);
+                this._requestAuthen(username, password, isRegister, isQuickLogin, accessToken, fbId, tryOneTime, cb, tmpRegister);
             }
         });
     }
 
-    _requestAuthen(username, password, isRegister, isQuickLogin, accessToken, fbId, tryOneTime, cb) {
+    _requestAuthen(username, password, isRegister, isQuickLogin, accessToken, fbId, tryOneTime, cb, tmpRegister) {
         clearTimeout(this._errorMessageTimeout);
         app.service.requestAuthen(username, password, isRegister, isQuickLogin, accessToken, fbId, (error, result) => {
             if (error) {
@@ -210,6 +210,8 @@ export default class BaseScene extends Actor {
 
                 if (app.env.isMobile() && window.sdkbox) {
                     window.sdkbox.PluginGoogleAnalytics.setUser(app.context.getMe().name);
+                } else if(app.env.isBrowser()) {
+                    window.history.pushState("", "Bai1368", "/");
                 }
                 this.showLoading(app.res.string('login_success'));
 
@@ -226,7 +228,7 @@ export default class BaseScene extends Actor {
                 
                 this.changeScene(app.const.scene.DASHBOARD_SCENE, () => {setTimeout(() => this._resendIAPSavedItem(), 2000)}, {a: 1, b: 2});
             }
-        });
+        }, tmpRegister);
     }
     
     _onLoginWithAccessToken(fbId, accessToken) {

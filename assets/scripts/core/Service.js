@@ -297,8 +297,8 @@ class Service {
     _reConnectWithLoginData(loginData) {
         this.connect((success) => {
             if (success) {
-                let { username, password, isQuickLogin, cb, accessToken, facebookId } = loginData;
-                this.requestAuthen(username, password, false, isQuickLogin, accessToken, facebookId, cb);
+                let { username, password, isQuickLogin, cb, accessToken, facebookId, tempRegister } = loginData;
+                this.requestAuthen(username, password, false, isQuickLogin, accessToken, facebookId, cb, tempRegister);
             }
         });
     }
@@ -490,7 +490,7 @@ class Service {
         if(this.client.me) {
             this.sendRequest(new SFS2X.Requests.System.LogoutRequest());
             setTimeout(() => {
-                this.requestAuthen(username,password,isRegister,isQuickLogin,accessToken,facebookId,cb,tempRegister);
+                this.requestAuthen(username,password,isRegister,isQuickLogin,accessToken,facebookId,cb, tempRegister);
             }, 200);
             return;
         }
@@ -522,8 +522,8 @@ class Service {
             data[app.keywords.UTM_CAMPAIGN] = cc.sys.localStorage.getItem('utm_campaign') || "";
         }
 
-        this._loginData = { username, password, isQuickLogin, accessToken, facebookId, cb };
-
+        this._loginData = { username, password, isQuickLogin, accessToken, facebookId, cb, tempRegister };
+        
         this._addCallback(SFS2X.SFSEvent.LOGIN, cb);
 
         app.system.showLoader(app.res.string('sending_login_data'));
