@@ -29,20 +29,45 @@ export default class GameMenuPrefab extends Actor {
 
         this.scene = null;
         this.isMenuPopupShown = false;
+        this._jarAdded = false;
     }
 
     onEnable() {
         super.onEnable();
         this.scene = app.system.currentScene;
+        this._addedJar = false;
         utils.deactive(this.menuPopup);
     }
     
     start() {
         super.start();
+       
+        app.context.rejoiningGame ? app.jarManager.requestUpdateJarList() : this._addJar(app.context.getSelectedGame());
+    }
+    
+    _addGlobalListener() {
+        super._addGlobalListener();
+        app.system.addListener(app.commands.LIST_HU, this._onListHu, this);
+    }
+    
+    _removeGlobalListener() {
+        super._removeGlobalListener();
+        app.system.removeListener(app.commands.LIST_HU, this._onListHu, this);
+    }
+    
+    _onListHu(data) {
         let gameCode = app.context.getSelectedGame();
-        if(app.jarManager.hasJar(gameCode)) {
+        if(!this._addedJar && gameCode && !app.jarManager.isChildOf(this.jarAnchorPoint)) {
+            let gc = data[app.keywords.GAME_CODE_LIST].find((gc) => gc == gameCode);
+            gc && this._addJar(gc);
+        }
+    }
+    
+    _addJar(gameCode) {
+        if(!this._addedJar && gameCode && app.jarManager.hasJar(gameCode)) {
             let hasButton = true;
             app.jarManager.addJarToParent(this.jarAnchorPoint, gameCode, hasButton);
+            this._addedJar = true;
         }
     }
     

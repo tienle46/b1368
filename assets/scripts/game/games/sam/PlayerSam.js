@@ -204,8 +204,9 @@ export default class PlayerSam extends PlayerCardTurnBase {
     _onGameTruePlay(data){
         let pId = utils.getValue(data, app.keywords.BAO_XAM_SUCCESS_PLAYER_ID);
         if(pId == this.id){
+            let samState = utils.getValue(data, app.keywords.IS_BAO_XAM);
             this.sentBaoXamValue = 1;
-            this.renderer.showBaoXam(true);
+            this.renderer.showBaoXam(samState);
         } else {
             this.sentBaoXamValue = -1;
             this.renderer.showBaoXam(false);

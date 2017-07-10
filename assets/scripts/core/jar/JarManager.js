@@ -53,17 +53,6 @@ export default class JarManager {
      */
     setJar(gc, data) {
         this._jars[gc] = data;
-        this.updateJarComponent(gc);
-    }
-    
-    updateJarComponent(gc) {
-        let jarComponent = this._getJarComponent(gc);
-        if(jarComponent) {
-            let {id, remainTime, startTime, endTime, currentMoney} = this.getJarDataFromGC(gc);
-        
-            currentMoney && jarComponent.updateTotalMoney(currentMoney);
-            remainTime && jarComponent._updateRemainTime(remainTime);
-        }
     }
     
     setupJar(data) {
@@ -85,39 +74,29 @@ export default class JarManager {
     addJarToParent(parent, gc, hasButton) {
         let jar = this.getJar(gc);
         
-        if(!jar || !parent || !CCUtils.isNode(parent) || !CCUtils.isNode(jar))
+        if(!jar || !parent || !CCUtils.isNode(parent) || !CCUtils.isNode(jar) || this.isChildOf(gc, parent))
             return;
-            
-        let _jarData = this.getJarData(jar);
         
-        let cloner = cc.instantiate(jar); // clone this node to prevent node's component will be destroy while scene's changing. --> fixed only in simulator
+        let jarComponent = this.getComponentInJar(this.getJar(gc), 'JarComponent');
+            
+        this._currentJarComponent = jarComponent;
         
-        if(cloner) {
-            cloner._jarData = _jarData;
-        
-            this.updateJar(gc, cloner);
-            
-            let jarComponent = this.getComponentInJar(this.getJar(gc), 'JarComponent');
-            
-            this._currentJarComponent = jarComponent;
-            
-            if(jarComponent) {
-                jarComponent._gameCode = gc;
-                jarComponent.init(_jarData);
-            }
-            
-            this.getJar(gc).active = true;
-            
-            if(hasButton) {
-                if(jarComponent) {
-                    jarComponent.activeBtnComponent();
-                }
-            }
-            
-            CCUtils.clearAllChildren(parent);
-            
-            parent.addChild(this.getJar(gc));
+        if(jarComponent) {
+            jarComponent._gameCode = gc;
+            jarComponent.init(this.getJarData(jar));
         }
+        
+        jarComponent.node.active = true;
+        
+        if(hasButton) {
+            if(jarComponent) {
+                jarComponent.activeBtnComponent();
+            }
+        }
+        
+        CCUtils.clearAllChildren(parent);
+        
+        parent.addChild(jar);
     }
     
     getJarData(jar) {
@@ -130,6 +109,16 @@ export default class JarManager {
     
     hasJar(gc) {
         return this._jars.hasOwnProperty(gc) && this._jars[gc] ? true : false;
+    }
+    
+    isValid(gc) {
+        return cc.isValid(this.getJar(gc));
+    }
+    
+    isChildOf(gc, parent) {
+        let jar = this.getJar(gc);
+
+        return this.isValid(gc) && jar.isChildOf(parent);
     }
     
     jarExplosive({username, money, message} = {}) {
@@ -162,7 +151,6 @@ export default class JarManager {
     }
     
     requestUpdateJarList() {
-        console.warn('app.visibilityManager.isActive(VisibilityManager.SMASH_JAR)', app.visibilityManager.isActive(VisibilityManager.SMASH_JAR));
         app.visibilityManager.isActive(VisibilityManager.SMASH_JAR) &&  app.service.send({
             cmd: app.commands.LIST_HU
         }); 

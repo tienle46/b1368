@@ -36,7 +36,7 @@ class GameSystem {
         this.isInactive = false;
         this._sceneName = null;
         this._delayChangeAppStateTimeoutId = 0;
-
+        
         this._actionComponents = []
         this._lackOfMoneyMessage = null
         
@@ -44,7 +44,7 @@ class GameSystem {
         if(!app.visibilityManager) 
             app.visibilityManager = new VisibilityManager(app.config.features);
         
-        app.env && app.env.isBrowser() && this._quickAuthen();
+        this._sentQuickAuthen = false;
     }
 
     showLoader(message = "", duration) {
@@ -86,7 +86,7 @@ class GameSystem {
                 app.service && app.service.removeAllCallback(this.getCurrentSceneName());
 
                 this._currentScene = cc.director.getScene().children[0].getComponent(sceneName);
-
+                
                 if (this._currentScene) {
                     this._sceneName = sceneName;
                     // this._currentScene.testData(initData);
@@ -492,40 +492,35 @@ class GameSystem {
     }
     
     _quickAuthen() {
-        setTimeout(() => {
-            if(app.env.isBrowser()) {
-                let getQueryValue = (key,url) => {
-                    if (!url) url = location.href;
-                    key = key.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
-                    let regexS = "[\\?&]"+key+"=([^&#]*)";
-                    let regex = new RegExp( regexS );
-                    let results = regex.exec( url );
-                    return results == null ? null : results[1].trim();
-                };
-                let tempRegister = true;
-                let values = {};
-                ['username', 'password', 'isRegister', 'isQuickLogin', 'accessToken', 'facebookId' ].forEach(key => {
-                    values[key] = getQueryValue(key);
-                });
-                
-                let {username, password, accessToken, facebookId} = values;
-                console.warn(username, password, accessToken, facebookId);
-                console.warn('this._currentScene', this._currentScene)
-                let CryptoJS = require("crypto-js");
-                let key = "hiephvdepzai123$#@^&^$";
-                
-                // Decrypt
-                if(password) {
-                     var bytes  = password && CryptoJS.AES.decrypt(password, key);
-                    password = bytes.toString(CryptoJS.enc.Utf8);
-                }
-               
-
-                if(this.currentScene && ((username && password) || (facebookId && accessToken))) {
-                    this.currentScene.loginToDashboard && this.currentScene.loginToDashboard(username, password, false, false, accessToken, facebookId, tempRegister)
-                }
+        if(app.env.isBrowser() && !this._sentQuickAuthen) {
+            let getQueryValue = (key,url) => {
+                if (!url) url = location.href;
+                key = key.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
+                let regexS = "[\\?&]"+key+"=([^&#]*)";
+                let regex = new RegExp( regexS );
+                let results = regex.exec( url );
+                return results == null ? null : results[1].trim();
+            };
+            let tempRegister = true;
+            let values = {};
+            ['username', 'password', 'isRegister', 'isQuickLogin', 'facebookToken', 'facebookId' ].forEach(key => {
+                values[key] = getQueryValue(key);
+            });
+            
+            let {username, password, facebookToken, facebookId} = values;
+            let CryptoJS = require("crypto-js");
+            
+            // Decrypt
+            if(password) {
+                var bytes  = password && CryptoJS.AES.decrypt(password, app.config.CRYPTO_AES_KEY);
+                password = bytes.toString(CryptoJS.enc.Utf8);
             }
-        }, 200);
+
+            if(this.currentScene && ((username && password) || (facebookId && facebookToken))) {
+                this.currentScene.loginToDashboard && this.currentScene.loginToDashboard(username, password, false, false, facebookToken, facebookId, null, tempRegister)
+            }
+            this._sentQuickAuthen = true;
+        }
     }
 }
 

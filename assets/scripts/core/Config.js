@@ -8,8 +8,8 @@ var app = require('app');
 app.config = {};
 app.config.currencyName = "Chip";
 // app.config.useSSL = false;
-// app.config.host = "123.31.12.100";
-app.config.host = "123.31.24.103";
+app.config.host = "123.31.12.100";
+// app.config.host = "123.31.24.103";
 app.config.useSSL = cc.sys.isBrowser? false: false;
 // app.config.host = "1368casino.com";
 // app.config.host = "1368.company";
@@ -33,7 +33,7 @@ app.config.MIN_USERNAME_LENGTH = 6;
 app.config.MAX_USERNAME_LENGTH = 15;
 app.config.USER_NAME_REGEX = /^[a-zA-Z0-9._]{6,15}$/;
 app.config.PASSWORD_REGEX = /^(?=.*[A-Za-z])(?=.*\d).{6,30}$/;
-
+app.config.CRYPTO_AES_KEY = 'hiephvdepzai123$#@^&^$';
 
 app.config.fbAppId = 265548353914142;
 // app.config.fbAppId = 1793374524209784; // <- app test

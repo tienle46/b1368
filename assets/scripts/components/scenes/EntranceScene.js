@@ -41,6 +41,8 @@ class EntranceScene extends BaseScene {
         if(!app.jarManager) {
             app.jarManager = new JarManager();
         }
+        
+        app.env.isBrowser() && app.system._quickAuthen();
     }
 
     handleLoginAction() {

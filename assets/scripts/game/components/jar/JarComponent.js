@@ -35,7 +35,7 @@ export default class JarComponent extends Actor {
     start() {
         super.start();
         
-        app.jarManager.requestUpdateJarList();
+        app.system.getCurrentSceneName() !== app.const.scene.DASHBOARD_SCENE && !app.context.rejoiningGame && app.jarManager.requestUpdateJarList();
     }
     
     onEnable() {
@@ -48,23 +48,33 @@ export default class JarComponent extends Actor {
     
     init({id, remainTime, startTime, endTime, currentMoney} = {}) {
         remainTime = Math.abs(new Date().getTime() - endTime);
+        this.jarId = id;
         
-        this._updateRemainTime(remainTime);
+        this._updateRemainTimeInterval(remainTime);
         this.updateTotalMoney(currentMoney);
         
-        this.jarId = id;
         this.node.active = true;
     }
     
+    _updateData(remainTime, totalMoney) {
+        this.remainTime = remainTime;
+        this.updateTotalMoney(totalMoney);
+    }
+    
     updateTotalMoney(totalMoney) {
-        totalMoney < 0 && (totalMoney = 0);
-        this.jarTotalMoneyLbl.string = GameUtils.formatBalanceShort(totalMoney).toString().toUpperCase();
+        this.totalMoney = totalMoney;
+        this.totalMoney < 0 && (this.totalMoney = 0);
+        this.jarTotalMoneyLbl.string = GameUtils.formatBalanceShort(this.totalMoney).toString().toUpperCase();
     }
     
     onDestroy() {
         super.onDestroy();
         this._clearInterval();
         window.release(this.spriteFrames);
+        
+        let jar = cc.instantiate(app.res.prefab.jarPrefab);
+        jar._jarData = this.node._jarData;
+        app.jarManager.updateJar(this._gameCode, jar);
     }
     
     onJarClick() {
@@ -88,12 +98,13 @@ export default class JarComponent extends Actor {
         app.system.removeListener(app.commands.LIST_HU, this._onListHu, this);
     }
     
-    _updateRemainTime(remainTime) {
-        this.remainTimeLbl && (this.remainTimeLbl.string = moment(remainTime).format('hh:mm:ss'));
+    _updateRemainTimeInterval(remainTime) {
+        this.remainTime = remainTime;
+        this.remainTimeLbl && (this.remainTimeLbl.string = moment(this.remainTime).format('hh:mm:ss'));
         
         this.timeout = setTimeout(() => {
             clearTimeout(this.timeout);
-            this._updateRemainTime(remainTime - this.time);
+            this._updateRemainTimeInterval(this.remainTime - this.time);
         }, this.time);
     }
     
@@ -118,12 +129,15 @@ export default class JarComponent extends Actor {
         let index = data[app.keywords.GAME_CODE_LIST].findIndex((gc) => gc == this._gameCode);
         
         if(~index) {
-            let currentMoney = data[app.keywords.MONEY_LIST][index],
+            let currentMoney = data[app.keywords.MONEY_LIST][index], //  total money in current jar
                 endTime = data[app.keywords.END_TIME_LIST][index],
-                remainTime = Math.abs(new Date().getTime() - endTime);
+                remainTime = Math.abs(new Date().getTime() - endTime),
+                id = data[app.keywords.ID_LIST][index],
+                startTime = data[app.keywords.START_TIME_LIST][index];
+                
+            this.node._jarData = {id, remainTime, startTime, endTime, currentMoney};
             
-            this.updateTotalMoney(currentMoney);
-            this._updateRemainTime(remainTime);
+            this._updateData(remainTime, currentMoney)
         };
     }
     
