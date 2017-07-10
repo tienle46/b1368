@@ -31,5 +31,3 @@ export default class PlayerGameBetRenderer extends PlayerRenderer {
         utils.active(this.playerNameLabel);
     }
 }
-
-app.createComponent(PlayerGameBetRenderer);

@@ -93,7 +93,7 @@ export default class BoardGameBet extends BoardCard {
             this.renderer.showElements();
         }
 
-        let duration = utils.getValue(data, app.app.keywords.BOARD_PHASE_DURATION);
+        let duration = utils.getValue(data, app.keywords.BOARD_PHASE_DURATION);
         duration && this.startTimeLine(duration);
     }
 

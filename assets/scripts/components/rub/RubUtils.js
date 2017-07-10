@@ -201,7 +201,7 @@ let RubUtils = {
         //     }).catch(err => console.error(err));
         // }
     },
-    // usefull when assets is prefab
+    // useful when assets is prefab
     releaseAssets: (assets) => {
         let ins = assets;
 

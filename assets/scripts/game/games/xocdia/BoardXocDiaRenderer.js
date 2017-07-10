@@ -75,10 +75,6 @@ export default class BoardXocDiaRenderer extends BoardGameBetRenderer {
     initDots(dots = []) {
         this.bowlDishControl.initDotsArray(dots);
     }
-
-    updateBoardResultHistory(results) {
-        this.statisticTable.updateSeparateTable(results);
-    }
 }
 
 app.createComponent(BoardXocDiaRenderer);

@@ -8,7 +8,7 @@ export default class PlayerGameBet extends Player {
         super(board, user);
         this.betAdapter = new PlayerBetTurnAdapter(board);
         
-        this.RENDERER_COMPONENT = 'PlayerGameBetRenderer';
+        this.RENDERER_COMPONENT = null;
         
         this.balanceAvailable = 0;
         
@@ -24,8 +24,8 @@ export default class PlayerGameBet extends Player {
         this.betAdapter._init(this.board, this);
     }
     
-    onEnable() {
-        super.onEnable(this.getComponent(this.RENDERER_COMPONENT));
+    onEnable(renderer, renderData = {}) {
+        this.RENDERER_COMPONENT && this.getComponent(this.RENDERER_COMPONENT) && super.onEnable(this.getComponent(this.RENDERER_COMPONENT));
 
         this.balanceAvailable = this.balance;
     }

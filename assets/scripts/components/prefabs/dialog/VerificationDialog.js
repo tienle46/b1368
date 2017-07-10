@@ -7,8 +7,7 @@ class VerificationDialog extends DialogActor {
     constructor() {
         super();
         
-        this.properties = {
-            ...this.properties, 
+        this.properties = this.assignProperties({
             transparentBg: cc.Node,
             syntaxRichTxt: cc.RichText,
             providerContainerNode: cc.Node,
@@ -17,7 +16,7 @@ class VerificationDialog extends DialogActor {
             inActiveStateSprite: cc.Sprite,
             backBtn: cc.Node,
             okBtn: cc.Node
-        };
+        });
         this.currentSyntax = "";
         this.currentShortCode = "";
     }

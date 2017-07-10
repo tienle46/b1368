@@ -5,7 +5,7 @@ import GameUtils from 'GameUtils';
 export default class PlayerXocDia extends PlayerGameBet {
     constructor(board, user) {
         super(board, user);
-        this.RENDER_COMPONENT = 'PlayerXocDiaRenderer';
+        this.RENDERER_COMPONENT = 'PlayerXocDiaRenderer';
     }
     
     onLoad() {
@@ -20,7 +20,10 @@ export default class PlayerXocDia extends PlayerGameBet {
         super._removeGlobalListener();
     }
 
-    onEnable() {}
+    // onEnable(renderer, renderData = {}) {
+    //     console.warn(this.RENDERER_COMPONENT, this.getComponent(this.RENDERER_COMPONENT))
+    //     super.onEnable(this.getComponent(this.RENDERER_COMPONENT));
+    // }
     
 
     onGameEnding(data, isJustJoined) {
@@ -31,8 +34,6 @@ export default class PlayerXocDia extends PlayerGameBet {
     _onGameRejoin(data) {
         super._onGameRejoin(data);
     }
-    
-    _onGameStateBet() {}
 }
 
 app.createComponent(PlayerXocDia);
