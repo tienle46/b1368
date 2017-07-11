@@ -210,9 +210,10 @@ export default class BaseScene extends Actor {
 
                 if (app.env.isMobile() && window.sdkbox) {
                     window.sdkbox.PluginGoogleAnalytics.setUser(app.context.getMe().name);
-                } else if(app.env.isBrowser()) {
-                    window.history.pushState("", "Bai1368", "/");
-                }
+                } 
+                // else if(app.env.isBrowser()) {
+                //     window.history.pushState("", "Bai1368", "/");
+                // }
                 this.showLoading(app.res.string('login_success'));
 
 
