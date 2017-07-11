@@ -41,13 +41,25 @@ export default class SamUtils {
             let maxSelectedCard = selectedSortedCards[selectedSortedCards.length - 1];
             let maxPlayedCard = prePlayedSortedCards[prePlayedSortedCards.length - 1];
             let compareMaxCardValue = SamUtils.compareSamRank(maxSelectedCard, maxPlayedCard);
-
+            
             if (selectedCardsGroupType == playedCardsGroupType) {
                 // if (selectedCardsGroupType == SamUtils.GROUP_CARD_TYPE_SANH && selectedCards.length != tempPlayedCards.length) {
                 //     return null;
                 // }
+                if(selectedCardsGroupType === SamUtils.GROUP_CARD_TYPE_SANH_SPECIAL) {
+                    selectedSortedCards = this.sortSpecialAsc([...selectedCards]);
+                    prePlayedSortedCards = this.sortSpecialAsc([...prePlayedCards]);
+                   
+                    if(this.isValidSanhRule(selectedSortedCards, app.const.game.GAME_TYPE_SPECIAL_XAM) &&
+                        this.isValidSanhRule(prePlayedSortedCards, app.const.game.GAME_TYPE_SPECIAL_XAM)) {
+                        maxSelectedCard = selectedSortedCards[selectedSortedCards.length - 1];
+                        maxPlayedCard = prePlayedSortedCards[prePlayedSortedCards.length - 1];
+                        compareMaxCardValue = maxSelectedCard.rank - maxPlayedCard.rank;
+                     }
+                }
                 return selectedCards.length == prePlayedCards.length && compareMaxCardValue > 0 ? selectedCards : null;
             } else {
+                
                 switch (selectedCardsGroupType) {
                     /**
                      * Trường hợp cùng đôi 2 thì đã được bắt ở trên
@@ -164,7 +176,6 @@ export default class SamUtils {
 
             let rank1 = GameUtils.getRank(selectedCards[i], gameType);
             let rank2 = GameUtils.getRank(selectedCards[i - 1], gameType);
-
             if ((rank1 - rank2) != 1) {
                 isSanh = false;
                 break;
@@ -178,6 +189,7 @@ export default class SamUtils {
 
         let selectedCards = [...cards];
         let isSanh = this.isValidSanhRule(selectedCards);
+        
         let isContainHeo = GameUtils.isContainHeo(selectedCards);
 
         if (isSanh && !isContainHeo) {
