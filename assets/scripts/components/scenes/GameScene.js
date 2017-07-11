@@ -458,7 +458,6 @@ export default class GameScene extends BaseScene {
     }
 
     _onGameStateChange(state, data, isJustJoined, rejoining) {
-
         state == app.const.game.state.WAIT && this.emit(Events.ON_GAME_WAIT)
 
         if (this.gameState == app.const.game.state.WAIT) {

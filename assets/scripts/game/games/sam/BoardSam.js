@@ -22,7 +22,7 @@ export default class BoardSam extends BoardCardTurnBase {
         this.handCardSize = PlayerSam.DEFAULT_HAND_CARD_COUNT;
     }
 
-    _onGameStateChanged(state, data, isJustJoined){
+    onGameStateChanged(state, data, isJustJoined){
         if(state == app.const.game.state.BOARD_STATE_BAO_XAM){
             this._loadRemainCardCount(data)
         }

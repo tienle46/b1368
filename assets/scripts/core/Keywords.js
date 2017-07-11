@@ -784,6 +784,7 @@ Keywords.MONEY_LIST = "ml";
 
 Keywords.NAME = "n";
 Keywords.DETAIL = "d";
+Keywords.TOTAL_MONEY = "totalMoney";
 
 Keywords.JAR_EXPLOSIVE = "sj_sjil";
 

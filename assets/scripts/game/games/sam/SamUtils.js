@@ -11,7 +11,6 @@ import ArrayUtils from "../../../utils/ArrayUtils";
 export default class SamUtils {
 
     static checkPlayCard(playCards, playedCards) {
-        console.warn(playCards, playedCards);
         return playCards && playCards.length > 0 && !ArrayUtils.isEmpty(this.getValidSelectedCards(playCards, playedCards));
     }
 

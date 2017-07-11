@@ -73,7 +73,7 @@ export default class Board extends Actor {
     }
 
     _loadBoardMinBet() {
-        if (this.room.containsVariable(app.keywords.VARIABLE_MIN_BET)) {
+        if (this.room && this.room.containsVariable(app.keywords.VARIABLE_MIN_BET)) {
             this.minBet = utils.getVariable(this.room, app.keywords.VARIABLE_MIN_BET);
         }
     }

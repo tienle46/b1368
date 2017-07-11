@@ -115,12 +115,13 @@ export default class JarComponent extends Actor {
     
     _onJarDetail(data) {
         let name = data[app.keywords.NAME],
-            content = data[app.keywords.DETAIL];
-      
+            content = data[app.keywords.DETAIL],
+            total = data[app.keywords.TOTAL_MONEY];
+            
         let jarDetail = cc.instantiate(this.jarDetailPrefab);
         let jarDetailComponent = jarDetail.getComponent('jarDetailComponent');
         if(jarDetailComponent) {
-            jarDetailComponent.initContent({name, content});
+            jarDetailComponent.initContent({name, content, total});
             app.system.getCurrentSceneNode().addChild(jarDetail);
         }
     }
