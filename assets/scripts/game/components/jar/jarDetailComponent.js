@@ -39,9 +39,10 @@ export default class JarDetailComponent extends Actor {
         this._requestListUserJars();  
     }
     
-    initContent({name, content} = {}) {
+    initContent({name, content, total} = {}) {
         content = content || "";
         this.textContentItem.string = content;
+        this.jarTotalMoneyLbl.string = total ? `${Utils.numberFormat(total)}`: "";
     }
     
     onDestroy() {
