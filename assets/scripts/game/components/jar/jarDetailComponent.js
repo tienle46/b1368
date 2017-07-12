@@ -81,6 +81,10 @@ export default class JarDetailComponent extends Actor {
             chips = data['ml'];
         
         names.forEach((name, i) => {
+            if(name.length > 9) {
+                name = `${name.substr(0, 6)}...`;
+            }
+            
             this.userNameLbl.string = `${i+1}. ${name}`;
             this.userMoneyLbl.string = Utils.formatNumberType1(chips[i]).toString().toUpperCase();
             let item = cc.instantiate(this.itemUser);
