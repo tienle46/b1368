@@ -6,8 +6,6 @@ import utils from 'utils';
 import app from 'app';
 import Events from 'Events';
 import GameControls from 'GameControls';
-import BaseControls from 'BaseControls';
-import CardBetTurnControls from 'CardBetTurnControls';
 import XocDiaAnim from 'XocDiaAnim';
 
 export default class GameBetControls extends GameControls {
@@ -55,7 +53,6 @@ export default class GameBetControls extends GameControls {
          */
         this.betOptionsGroup = this.betOptionsGroupNode.getComponent('BetOptionsGroup');
         this.betContainerButton = this.betContainerNode.getComponent('BetContainerButton');
-        this.btnGroup = this.btnGroupNode.getComponent('betOptionsGroup');
         this._setRebetBtnState(false);
 
         super.onEnable();        
@@ -111,7 +108,7 @@ export default class GameBetControls extends GameControls {
         if (chipOptionsNode) {
             let amount = chipOptionsNode.getComponent('BetChip').getChipAmount();
 
-            if (app.context.getMeBalance() - amount < 0) {
+            if (app.context.getMeBalance() - this._getTotalGoldUserBettedInBoard() < 0) {
                 app.system.error('Không đủ chip để tiếp tục cược !');
                 return;
             }

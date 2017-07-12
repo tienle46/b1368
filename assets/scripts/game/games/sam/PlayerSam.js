@@ -27,7 +27,7 @@ export default class PlayerSam extends PlayerCardTurnBase {
 
     _addGlobalListener() {
         super._addGlobalListener();
-
+        
         this.scene.on(Events.ON_CLICK_PLAY_BUTTON, this._onPlayTurn, this);
         this.scene.on(Events.ON_CLICK_SKIP_TURN_BUTTON, this._onSkipTurn, this);
         this.scene.on(Events.ON_CLICK_SORT_BUTTON, this._onSortCards, this);
@@ -43,7 +43,7 @@ export default class PlayerSam extends PlayerCardTurnBase {
 
     _removeGlobalListener() {
         super._removeGlobalListener();
-
+        
         this.scene.off(Events.ON_CLICK_PLAY_BUTTON, this._onPlayTurn, this);
         this.scene.off(Events.ON_CLICK_SKIP_TURN_BUTTON, this._onSkipTurn, this);
         this.scene.off(Events.ON_CLICK_SORT_BUTTON, this._onSortCards, this);

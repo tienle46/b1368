@@ -28,7 +28,7 @@ class EntranceScene extends BaseScene {
 
     start() {
         super.start();
-        
+        log('asdasdasdasdasd');
         if (app.buddyManager) {
             app.buddyManager.reset();
         } else {

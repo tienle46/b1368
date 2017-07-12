@@ -406,7 +406,6 @@ export default class Player extends Actor {
     }
 
     onGameStarting(data, isJustJoined) {
-        
     }
 
     onGameStarted(data, isJustJoined) {

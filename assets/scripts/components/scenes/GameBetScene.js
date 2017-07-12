@@ -33,7 +33,6 @@ export default class GameBetScene extends GameScene {
     }
 
     changePlayerBalance(amount) {
-        console.warn('changePlayerBalance', amount);
         this.gamePlayers.me && this.gamePlayers.me.changePlayerBalance(amount);
     }
 

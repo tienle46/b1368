@@ -2,6 +2,7 @@ import Player from 'Player';
 import PlayerBetTurnAdapter from 'PlayerBetTurnAdapter';
 import Events from 'Events';
 import app from 'app';
+import GameUtils from 'GameUtils';
 
 export default class PlayerGameBet extends Player {
     constructor(board, user) {
@@ -87,7 +88,7 @@ export default class PlayerGameBet extends Player {
     }
     
     changePlayerBalance(amount) {
-        if(this.balanceAvailable + Number(amount))
+        if(this.balanceAvailable + Number(amount) < 0)
             return;
             
         this.setPlayerBalance(this.balanceAvailable + Number(amount));
@@ -105,7 +106,7 @@ export default class PlayerGameBet extends Player {
     
     _setBalance(balance) {
         this.balanceAvailable = balance;
-
+        
         super._setBalance(balance);
     }
     
@@ -115,7 +116,6 @@ export default class PlayerGameBet extends Player {
     }
     
     _onGameRejoin(data){
-        super._onGameRejoin(data);
     }
     
     /**

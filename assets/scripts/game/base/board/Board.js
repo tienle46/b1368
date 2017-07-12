@@ -322,6 +322,7 @@ export default class Board extends Actor {
     }
 
     onBoardEnding(data = {}, isJustJoined) {
+        console.warn('onBoardEnding', data);
         this.jumpedToBoardEnd = true;
         this.timelineRemain = utils.getValue(data, Keywords.BOARD_PHASE_DURATION);
         this.scene.clearReadyPlayer();
@@ -358,8 +359,7 @@ export default class Board extends Actor {
     }
 
     _handleSetPlayerBalance(data) {
-
-        log("_handleSetPlayerBalance: ", data);
+        console.warn('_handleSetPlayerBalance', data)
 
         let playerIds = utils.getValue(data, Keywords.GAME_LIST_PLAYER);
         let playersBalance = utils.getValue(data, Keywords.USER_BALANCE, []);

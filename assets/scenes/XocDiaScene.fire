@@ -7088,7 +7088,7 @@
     "node": {
       "__id__": 189
     },
-    "_enabled": false,
+    "_enabled": true,
     "_spriteFrame": {
       "__uuid__": "606da669-8ca6-4f99-a432-af9996d0c89e"
     },
@@ -7667,7 +7667,7 @@
     "node": {
       "__id__": 205
     },
-    "_enabled": false,
+    "_enabled": true,
     "_spriteFrame": {
       "__uuid__": "606da669-8ca6-4f99-a432-af9996d0c89e"
     },
@@ -8246,7 +8246,7 @@
     "node": {
       "__id__": 221
     },
-    "_enabled": false,
+    "_enabled": true,
     "_spriteFrame": {
       "__uuid__": "606da669-8ca6-4f99-a432-af9996d0c89e"
     },

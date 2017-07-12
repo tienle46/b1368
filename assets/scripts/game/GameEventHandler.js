@@ -263,6 +263,7 @@ export default class GameEventHandler {
 
         changedVars && changedVars.forEach((varName) => {
             if (Keywords.USER_VARIABLE_BALANCE == varName) {
+                console.warn('ON_USER_UPDATE_BALANCE', user);
                 this.scene.emit(Events.ON_USER_UPDATE_BALANCE, user);
             } else if (Keywords.USER_VARIABLE_LEVEL == varName) {
                 this.scene.emit(Events.ON_USER_UPDATE_LEVEL, user);

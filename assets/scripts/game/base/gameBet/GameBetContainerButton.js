@@ -1,7 +1,24 @@
-import app from 'app';
 import Component from 'Component';
 
-class BetContainerButton extends Component {
+// export const betTypeNameToIdMap = {
+//     round: 1,
+//     odd: 2,
+//     fourWhite: 3,
+//     fourRed: 4,
+//     threeWhite: 5,
+//     threeRed: 6
+// }
+
+// export const betTypeIdToNameMap = {
+//     1: 'round',
+//     2: 'odd',
+//     3: 'fourWhite',
+//     4: 'fourRed',
+//     5: 'threeWhite',
+//     6: 'threeRed',
+// }
+
+export default class GameBetContainerButton extends Component {
     constructor() {
         super();
 
@@ -97,5 +114,3 @@ class BetContainerButton extends Component {
         });
     }
 }
-
-app.createComponent(BetContainerButton);
