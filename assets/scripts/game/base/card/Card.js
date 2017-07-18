@@ -135,8 +135,8 @@ export default class Card extends ActionComponent {
         if (scale && (scale != this.node.scale)) {
             actions.push(cc.scaleTo(duration, scale));
         }
-
-        return actions.length > 0 ? cc.sequence(cc.spawn(actions), cc.callFunc(this.updateFinalPosition, this)) : null;
+        
+        return actions.length > 0 ? cc.sequence([...actions, cc.callFunc(this.updateFinalPosition, this)]) : null;
     }
 
     setLocked(locked) {

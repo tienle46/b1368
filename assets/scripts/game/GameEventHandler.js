@@ -260,7 +260,9 @@ export default class GameEventHandler {
     _onUserVariablesUpdate(event) {
         let changedVars = event.changedVars;
         let user = event.user;
-
+        
+        console.warn('_onUserVariablesUpdate', event);
+        
         changedVars && changedVars.forEach((varName) => {
             if (Keywords.USER_VARIABLE_BALANCE == varName) {
                 console.warn('ON_USER_UPDATE_BALANCE', user);

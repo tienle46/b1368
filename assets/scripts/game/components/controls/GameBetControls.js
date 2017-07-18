@@ -167,6 +167,11 @@ export default class GameBetControls extends GameControls {
                 let isItMe = this.scene.gamePlayers.isItMe(playerIds[index]);
                 this._updateGoldAmountOnControl(typeId,amount, isItMe, false, false);
                 
+                isItMe && this.betData.push({ 
+                    [app.keywords.XOCDIA_BET.AMOUNT]: Number(amount),
+                    [app.keywords.XOCDIA_BET.TYPE]: typeId
+                });
+                
                 let betIndex = this.betOptionsGroup.getChipIndexByAmount(amount, this.scene.board.minBet);
                 let chipDisplayPoint = this.xocDiaAnim.getRealEndPoint(toNode);
                 this.xocDiaAnim.addChip(toNode, chip, playerIds[index], typeId, betIndex, chipDisplayPoint);
@@ -475,6 +480,11 @@ export default class GameBetControls extends GameControls {
     }
 
     _resetBetData() {
+        if(app.context.rejoiningGame) {
+            app.context.rejoiningGame = false;
+            return;
+        }
+
         this.betData = [];
     }
 

@@ -41,7 +41,7 @@ export default class BetChipAnim {
         // position based on world space
         let realEndPoint = this.getRealEndPoint(toNode);
         
-        chip.runAction(cc.sequence(cc.moveTo(0.1 + app._.random(0, 0.2), realEndPoint)));
+        chip.runAction(cc.moveTo(0.1 + app._.random(0, 0.2), realEndPoint));
     }
     
     addChip(toNode, chip, playerId, typeId, betIndex, startPos) {

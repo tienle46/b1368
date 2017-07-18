@@ -375,6 +375,7 @@ export default class Board extends Actor {
                 if(!this.scene.gamePlayers.isItMe(id)){
                     this.scene.emit(Events.ON_PLAYER_SET_BALANCE, id, newBalance);
                 }
+                app.context.rejoiningGame = false;
             }else{
                 this.scene.emit(Events.ON_PLAYER_SET_BALANCE, id, newBalance);
             }
