@@ -286,14 +286,14 @@ export default class TabUserInfo extends PopupTabBody {
         this.userId.string = name;
         this.vipLevel.string = vipLevelName || "";
 
-        if (app.context.needUpdatePhoneNumber()) {
+        // if (app.context.needUpdatePhoneNumber()) {
+        //     this.phoneNumber.string = `Chưa cập nhật`;
+        // } else {
+        if (data[app.keywords.PHONE_INVITE_PHONE_NEW])
+            this.phoneNumber.string = data[app.keywords.PHONE_INVITE_PHONE_NEW];
+        else
             this.phoneNumber.string = `Chưa cập nhật`;
-        } else {
-            if (data[app.keywords.PHONE_INVITE_PHONE_NEW])
-                this.phoneNumber.string = data[app.keywords.PHONE_INVITE_PHONE_NEW];
-            else
-                this.phoneNumber.string = `Chưa cập nhật`;
-        }
+        // }
     }
 }
 

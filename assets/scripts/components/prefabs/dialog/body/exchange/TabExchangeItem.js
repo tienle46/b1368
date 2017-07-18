@@ -152,30 +152,30 @@ class TabExchangeItem extends PopupTabBody {
 
     _onConfirmDialogBtnClick(data) {
         let { gold, name, id } = data;
-        if (app.context.needUpdatePhoneNumber()) {
-           this._showUpdatePhoneNumber();
-        } else {
-            let myCoin = app.context.getMeBalance();
+        // if (app.context.needUpdatePhoneNumber()) {
+        //    this._showUpdatePhoneNumber();
+        // } else {
+        let myCoin = app.context.getMeBalance();
 
-            if (Number(myCoin) < Number(gold)) {
-                app.system.error(
-                    app.res.string('error_exchange_dialog_not_enough_money', { ownerCoin: Utils.numberFormat(myCoin), name })
-                );
-                return;
-            }
-            
-            ActionBlocker.runAction(ActionBlocker.USER_EXCHANGE_ITEM, () => {
-                let data = {};
-                data[app.keywords.EXCHANGE.REQUEST.ID] = id;
-                let sendObject = {
-                    'cmd': app.commands.EXCHANGE,
-                    data
-                };
-                // show loader
-                app.system.showLoader(app.res.string('waiting_server_response'));
-                app.service.send(sendObject);
-            });
+        if (Number(myCoin) < Number(gold)) {
+            app.system.error(
+                app.res.string('error_exchange_dialog_not_enough_money', { ownerCoin: Utils.numberFormat(myCoin), name })
+            );
+            return;
         }
+        
+        ActionBlocker.runAction(ActionBlocker.USER_EXCHANGE_ITEM, () => {
+            let data = {};
+            data[app.keywords.EXCHANGE.REQUEST.ID] = id;
+            let sendObject = {
+                'cmd': app.commands.EXCHANGE,
+                data
+            };
+            // show loader
+            app.system.showLoader(app.res.string('waiting_server_response'));
+            app.service.send(sendObject);
+        });
+        // }
     }
 
     _onExchange(data) {
