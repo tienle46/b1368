@@ -7,26 +7,28 @@ export default class BoardGameBetRenderer extends BoardRenderer {
         
         this.properties = this.assignProperties({
             historicalTableNode: cc.Node,
+            shakenControlNode: cc.Node,
             resultNode: cc.Node,
             resultText: cc.Label
         });
         
-        this.HISTORIAL_COMPONENT = 'StatisticTable';
+        this.HISTORIAL_COMPONENT = null;
+        this.SHAKEN_CONTROL = null;
     }
 
     onEnable() {
         super.onEnable();
-        
+        this.shakenControl = this.shakenControlNode.getComponent(this.SHAKEN_CONTROL);
         this.historicalTable = this.historicalTableNode.getComponent(this.HISTORIAL_COMPONENT);
     }
-    
-    /**
-     * @override
-     */
+
     hideElements() {
+        this.shakenControl.reset();
+        utils.deactive(this.resultNode);
+        // utils.deactive(this.shakenControlNode); // always show dish on a board
+        // utils.deactive(this.historicalTable);
     }
 
-    
     hideResult() {
         utils.deactive(this.resultNode);
     }
@@ -36,20 +38,29 @@ export default class BoardGameBetRenderer extends BoardRenderer {
         this.resultText.string = text.toUpperCase();
     }
     
-    /**
-     * @override
-     */
     showElements() {
-        this.bowlDishControl.resetBowlPosition();
+        this.shakenControl.reset();
 
-        utils.active(this.dishContainerNode);
-        // utils.active(this.statisticTableNode);
+        utils.active(this.shakenControlNode);
     }
     
-    /**
-     * @override
-     */
     updateBoardResultHistory(results) {
-        this.historicalTable.updateSeparateTable(results);
+        this.historicalTable.updateTableInfo(results);
+    }
+    
+    runDishShakeAnim() {
+        this.shakenControl.play();
+    }
+    
+    isShaking() {
+        return this.shakenControl.isShaking();
+    }
+    
+    stopDishShakeAnim() {
+        this.shakenControl.stop();
+    }
+
+    openBowlAnim() {
+        this.shakenControl.openTheBowl();
     }
 }

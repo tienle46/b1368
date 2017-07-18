@@ -1,23 +1,24 @@
-import app from 'app';
 import Component from 'Component';
-import NodeRub from 'NodeRub';
 
-class BowlDishControl extends Component {
+export default class ShakenControl extends Component {
     constructor() {
         super();
         
         this.properties = this.assignProperties({
             wrapper: cc.Node,
             bowlNode: cc.Node,
-            circleGroup: cc.Node,
             timeLineNode: cc.Node
         });
         
         this._isShaking = false;
+        this.timeout = null;
     }
 
     onLoad() {
+        super.onLoad();
+        this.timeout = null;
         this.bowlPos = this.bowlNode.getPosition();
+        
         this.wrapPos = this.wrapper.getPosition();
     }
     
@@ -31,17 +32,14 @@ class BowlDishControl extends Component {
         this.timeout = null;
     }
     
-    resetBowlPosition() {
+    reset() {
         this.bowlNode.setPosition(this.bowlPos);
         
         this.bowlNode.zIndex = 1;
         this.timeLineNode.zIndex = 2;
-        
-        this.circleGroup.children.forEach(child => child.destroy());
-        this.circleGroup.removeAllChildren();
     }
 
-    dishShaker() {
+    play() {
         let startPos = this.wrapper.getPosition();
         this.bowlNode.setPosition(this.bowlPos);
 
@@ -53,7 +51,7 @@ class BowlDishControl extends Component {
         this.wrapper.runAction(sequence);
     }
 
-    stopDishShaker() {
+    stop() {
         let startPos = this.wrapPos;
         this._isShaking = false;
         this.wrapper.stopAllActions();
@@ -66,7 +64,7 @@ class BowlDishControl extends Component {
         return this._isShaking;
     }
     
-    openBowlAnim() {
+    openTheBowl() {
         if(this.isShaking())
             return;
         
@@ -78,44 +76,4 @@ class BowlDishControl extends Component {
             this.bowlNode.zIndex = 3;
         })));
     }
-
-    initDotsArray(dots = []) {
-        // 0: white, 1: red
-        let colors = ['blueTheme/ingame/xocdia/trang', 'blueTheme/ingame/xocdia/do'];
-
-        /**
-         *              ^
-         * IV(-1, 1)    | +1        I(1;1)
-         *  -1          |         +1
-         * <-|----------0----------|->
-         *              | 
-         * III(-1, -1)  | -1        II(1, -1)
-         *              v
-         */
-        
-        let randomPosInRange = [{ x: 1, y: 1 }, { x: 1, y: -1 }, { x: -1, y: -1 }, { x: -1, y: 1 }];
-        let acceptedArea = this.circleGroup.getContentSize();
-        let random = app._.random;
-        let size = cc.size(18, 18);
-        
-        dots.forEach((dot, i) => {
-            let posX = random(random(0, 1 / 2), randomPosInRange[i].x * (acceptedArea.width - size.width) / 2);
-            let posY = random(random(0, 1 / 2), randomPosInRange[i].y * (acceptedArea.height - size.height) / 2);
-            let nodeOptions = {
-                size: size,
-                position: cc.v2(posX, posY),
-                name: 'dot',
-                sprite: {
-                    spriteFrame: colors[dot],
-                    type: cc.Sprite.Type.SLICE,
-                    sizeMode: cc.Sprite.SizeMode.CUSTOM,
-                }
-            };
-
-            let node = NodeRub.createNodeByOptions(nodeOptions);
-            this.circleGroup.addChild(node);
-        });
-    }
 }
-
-app.createComponent(BowlDishControl);

@@ -6,7 +6,7 @@ import utils from 'utils';
 import app from 'app';
 import Events from 'Events';
 import GameControls from 'GameControls';
-import XocDiaAnim from 'XocDiaAnim';
+import BetChipAnim from 'BetChipAnim';
 
 export default class GameBetControls extends GameControls {
     constructor() {
@@ -39,6 +39,9 @@ export default class GameBetControls extends GameControls {
         this.previousBetData = [];
         this.isInCancelPhase = false;
         this.xocDiaAnim = null;
+        
+        this.BET_COINTAINER_BUTTON_COMPONENT = 'BetContainerButton';
+        this.BET_OPTION_GROUP_COMPONENT = 'BetOptionsGroup';
     }
 
     onEnable() {
@@ -51,12 +54,12 @@ export default class GameBetControls extends GameControls {
         /**
          * @type {BetOptionsGroup}
          */
-        this.betOptionsGroup = this.betOptionsGroupNode.getComponent('BetOptionsGroup');
-        this.betContainerButton = this.betContainerNode.getComponent('BetContainerButton');
+        this.betOptionsGroup = this.betOptionsGroupNode.getComponent(this.BET_OPTION_GROUP_COMPONENT );
+        this.betContainerButton = this.betContainerNode.getComponent(this.BET_COINTAINER_BUTTON_COMPONENT);
         this._setRebetBtnState(false);
 
         super.onEnable();        
-        this.xocDiaAnim = new XocDiaAnim(app.system.currentScene);
+        this.xocDiaAnim = new BetChipAnim(app.system.currentScene, this.betContainerButton.getBetTypeIdToNameMap());
 
         this.scene.on(Events.ON_GAME_STATE_BEGIN, this._onGameBegin, this);
         this.scene.on(Events.ON_GAME_STATE_STARTING, this._onGameStarting, this);

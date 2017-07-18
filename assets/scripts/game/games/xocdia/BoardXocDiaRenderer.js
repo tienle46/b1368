@@ -1,28 +1,12 @@
 import app from 'app';
 import BoardGameBetRenderer from 'BoardGameBetRenderer';
-import utils from 'utils';
 
 export default class BoardXocDiaRenderer extends BoardGameBetRenderer {
     constructor() {
         super();
         
-        this.properties = this.assignProperties({
-            dishContainerNode: cc.Node,
-        });
-    }
-
-    onEnable() {
-        super.onEnable();
-
-        this.bowlDishControl = this.dishContainerNode.getComponent('BowlDishControl');
-
-    }
-
-    hideElements() {
-        this.bowlDishControl.resetBowlPosition();
-        utils.deactive(this.resultNode);
-        // utils.deactive(this.dishContainerNode); // always show dish on a board
-        // utils.deactive(this.statisticTableNode);
+        this.HISTORIAL_COMPONENT = 'XocDiaHistoricalTable';
+        this.SHAKEN_CONTROL = 'XocDiaShakenControl';
     }
 
     displayResultFromDots(dots) {
@@ -49,31 +33,8 @@ export default class BoardXocDiaRenderer extends BoardGameBetRenderer {
         }
     }
 
-    showElements() {
-        this.bowlDishControl.resetBowlPosition();
-
-        utils.active(this.dishContainerNode);
-        // utils.active(this.statisticTableNode);
-    }
-
-    runDishShakeAnim() {
-        this.bowlDishControl.dishShaker();
-    }
-    
-    isShaking() {
-        return this.bowlDishControl.isShaking();
-    }
-    
-    stopDishShakeAnim() {
-        this.bowlDishControl.stopDishShaker();
-    }
-
-    openBowlAnim() {
-        this.bowlDishControl.openBowlAnim();
-    }
-
     initDots(dots = []) {
-        this.bowlDishControl.initDotsArray(dots);
+        this.shakenControl.initDotsArray(dots);
     }
 }
 

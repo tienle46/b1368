@@ -1,18 +1,18 @@
 import app from 'app';
-import { betTypeIdToNameMap } from 'BetContainerButton';
 import { destroy } from 'CCUtils';
 
-export default class XocDiaAnim {
+export default class BetChipAnim {
 
-    constructor(scene) {
+    constructor(scene, betTypeIdToNameMap) {
         this.scene = scene;
         this.chipLayer = scene.chipLayer;
         this.chipManager = {};
         this._allChipList = [];
         this._totalChipCount = 0;
         this.totalChipOnPlayer = {};
-
-        Object.values(betTypeIdToNameMap).forEach(name => {
+        this.betTypeIdToNameMap = betTypeIdToNameMap;
+        
+        Object.values(this.betTypeIdToNameMap).forEach(name => {
             let obj = {
                 1: [],
                 2: [],
@@ -46,7 +46,7 @@ export default class XocDiaAnim {
     
     addChip(toNode, chip, playerId, typeId, betIndex, startPos) {
         this._totalChipCount++;
-        let betTypename = betTypeIdToNameMap[typeId];
+        let betTypename = this.betTypeIdToNameMap[typeId];
         
         if (betIndex >= 0 && betIndex < 4 && betTypename && this.chipManager[betTypename]) {
             this.chipManager[betTypename][betIndex + 1].push(chip);

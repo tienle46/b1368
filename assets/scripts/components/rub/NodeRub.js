@@ -198,7 +198,7 @@ let NodeRub = {
      * }
      */
     addSpriteComponentToNode: (node, options) => {
-        let sprite = node.addComponent(cc.Sprite);
+        let sprite = node.getComponent(cc.Sprite) || node.addComponent(cc.Sprite);
         let spriteFrame = options.spriteFrame;
         options = Object.assign({
             type: cc.Sprite.Type.SLICED,
@@ -209,9 +209,9 @@ let NodeRub = {
 
             RubUtils.loadSpriteFrame(sprite, spriteFrame, node.getContentSize(), options.isCORS || false, options.cb, options);
         } else if (spriteFrame instanceof cc.SpriteFrame) {
-            sprite.spriteFrame = spriteFrame;
             delete options.spriteFrame;
-
+            sprite.spriteFrame = spriteFrame;
+            
             for (let key in options) {
                 sprite[key] = options[key];
             }
