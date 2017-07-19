@@ -779,7 +779,6 @@ export default class PlayerPhom extends PlayerCardTurnBase {
     }
 
     _onPlayerEatCard(player, checked = false) {
-
         if(!checked && (!player || !player.isPlaying()) ) return;
 
         let eatable;
@@ -857,7 +856,7 @@ export default class PlayerPhom extends PlayerCardTurnBase {
 
         if (this.isItMe()) {
 
-            PhomUtils.sortPhomCardSingleSolution(this.renderer.cardList.cards);
+            PhomUtils.sortPhomCardSingleSolution(this.renderer.cardList.cards, this.eatenCards);
             this.renderer.cardList.cleanHighlight();
             this.renderer.cardList.onCardsChanged(true);
 
