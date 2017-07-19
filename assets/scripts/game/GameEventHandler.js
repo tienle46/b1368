@@ -90,6 +90,8 @@ export default class GameEventHandler {
         app.system.addGameListener(Commands.GET_CURRENT_GAME_DATA, this._getCurrentGameData, this);
         app.system.addGameListener(Commands.USER_DISCONNECTED, this._onHandleUserDisconnected, this, 0);
         app.system.addGameListener(Commands.REPLACE_FAKE_USER, this._replaceFakeUser, this);
+        
+        app.system.addGameListener(app.commands.PLAYER_BAO_XAM, this._handlePlayerBaoXam, this);
     }
 
     removeGameEventListener() {
@@ -138,6 +140,13 @@ export default class GameEventHandler {
         app.system.removeGameListener(Commands.GET_CURRENT_GAME_DATA, this._getCurrentGameData, this);
         app.system.removeGameListener(Commands.USER_DISCONNECTED, this._onHandleUserDisconnected, this, 0);
         app.system.removeGameListener(Commands.REPLACE_FAKE_USER, this._replaceFakeUser, this);
+        
+        app.system.removeGameListener(app.commands.PLAYER_BAO_XAM, this._handlePlayerBaoXam, this);
+        
+    }
+    
+    _handlePlayerBaoXam(data) {
+        this.scene.emit(Events.ON_PLAYER_BAO_XAM_RESPONSE, data);
     }
     
     // {gameData, gamePhaseData, playerData} = data;

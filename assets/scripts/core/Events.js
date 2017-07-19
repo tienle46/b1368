@@ -165,3 +165,4 @@ Events.ON_NEW_ADDED_SYSTEM_MESSAGE = "on.newAddedSystemMessage";
 Events.CHANGE_GAME_MASTER = "change.gameMaster";
 Events.ON_MESSAGE_COUNT_CHANGED = "on.messageCountChanged";
 
+Events.ON_PLAYER_BAO_XAM_RESPONSE = "on.playerBaoXamResponse";

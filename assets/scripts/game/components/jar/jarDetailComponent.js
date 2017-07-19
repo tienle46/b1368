@@ -1,7 +1,7 @@
 import app from 'app';
 import Actor from 'Actor';
 import Utils from 'Utils';
-import {destroy} from 'CCUtils';
+import {destroy, setActive} from 'CCUtils';
 
 export default class JarDetailComponent extends Actor {
     constructor() {
@@ -11,7 +11,7 @@ export default class JarDetailComponent extends Actor {
             bgTransparent: cc.Node,
             textContentScrollNode: cc.Node,
             textContentItem: cc.RichText,
-            htmlContentViewNode: cc.WebView,
+            htmlContentView: cc.WebView,
             jarTotalMoneyLbl: cc.Label,
             listUserContentNode: cc.Node,
             itemUser: cc.Node,
@@ -27,7 +27,19 @@ export default class JarDetailComponent extends Actor {
   
     onLoad() {
         super.onLoad();
-        this.bgTransparent.on(cc.Node.EventType.TOUCH_START, () => true);
+        this.bgTransparent.on(cc.Node.EventType.TOUCH_START, () => true); 
+        
+        
+        if(this.content.match(/^https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/)) {
+            // open web view
+            this.openWebView();
+            console.warn('this.htmlContentView', this.htmlContentView);
+            this.htmlContentView.url = 'https://bai1368.com/game/play/jar/bacay.html';
+        } else {
+            this.openTextView();
+            this.textContentItem.string = this.content;
+        }
+        this.content = "";
     }
     
     start() {
@@ -40,9 +52,18 @@ export default class JarDetailComponent extends Actor {
     }
     
     initContent({name, content, total} = {}) {
-        content = content || "";
-        this.textContentItem.string = content;
+        this.content = content || "";
         this.jarTotalMoneyLbl.string = total ? `${Utils.numberFormat(total)}`: "";
+    }
+    
+    openWebView() {
+        setActive(this.htmlContentView.node);  
+        setActive(this.textContentScrollNode, false);  
+    }
+    
+    openTextView() {
+        setActive(this.htmlContentView.node, false);  
+        setActive(this.textContentScrollNode);
     }
     
     onDestroy() {
