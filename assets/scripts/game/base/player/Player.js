@@ -193,7 +193,6 @@ export default class Player extends Actor {
     }
 
     _onUserUpdateBalance(user) {
-        console.warn('_onUserUpdateBalance', user);
         if (this.user.name == user.name) {
             let newBalance = GameUtils.getUserBalance(user);
             this._setBalance(newBalance);

@@ -245,7 +245,6 @@ class GameSystem {
 
         if(app.env.isBrowser()){
             this.isInactive = state == 'inactive'
-            console.warn('this._actionComponents', this._actionComponents);
             this._actionComponents.forEach(cmp => cmp.onAppStateChange(state))
         }else{
             this._clearDelayUpdateHideState()

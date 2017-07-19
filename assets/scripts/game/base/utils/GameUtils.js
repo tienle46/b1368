@@ -224,7 +224,7 @@ export default class GameUtils {
         cards && cards.sort((card1, card2) => {
             let rankCompare = card1.rank - card2.rank
             let suitCompare = card1.suit - card2.suit
-
+            
             return rankCompare == 0 ? suitCompare : rankCompare
         })
 

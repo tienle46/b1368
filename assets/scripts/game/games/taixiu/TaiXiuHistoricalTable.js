@@ -7,12 +7,12 @@ class TaiXiuHistoricalTable extends HistoricalTable {
         super();
         
         this.properties = this.assignProperties({
-            oddLbl: cc.Label,
-            evenLbl: cc.Label,
-            colors: {
+            childLbl: cc.Label,
+            faces: {
                 default: [],
-                type: [cc.SpriteFrame]
-            }
+                type: [cc.Sprite]
+            },
+            facesAtlas: cc.SpriteAtlas
         });
     }
 

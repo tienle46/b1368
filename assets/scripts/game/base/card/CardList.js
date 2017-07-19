@@ -459,7 +459,7 @@ export default class CardList extends ActionComponent {
     }
 
     onCardsChanged(reverse = false) {
-        this.stopAllCardActions();
+        // this.stopAllCardActions();
         this.updateFinalPosition();
         reverse && this.cards.reverse();
         this._adjustCardsPosition();
@@ -752,10 +752,10 @@ export default class CardList extends ActionComponent {
             this.removeCards(cards);
             return;
         }
-
+        
         this.stopAllCardActions();
         destCardList.stopAllCardActions();
-
+        
         const currentDestLength = destCardList.cards.length;
         const removedCards = this._removeCardModelOnly(cards);
         const addedCards = destCardList._fillCards({

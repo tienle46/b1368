@@ -186,7 +186,7 @@ export default class PlayerTurnBaseAdapter extends GameAdapter {
          */
 
         if(this.scene.gameState != app.const.game.state.WAIT && this.scene.gameState != app.const.game.state.READY){
-
+            
             let turnOwnerId = utils.getValue(data, Keywords.TURN_PLAYER_ID);
             if(turnOwnerId == this.player.id){
                 let turnDuration = utils.getValue(data, Keywords.BOARD_PHASE_DURATION);
