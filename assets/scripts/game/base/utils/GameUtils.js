@@ -42,7 +42,7 @@ export default class GameUtils {
             formatted = balance
         }else if(balance <= 99999){
             // let adj = parseInt((balance / 1000 - parseInt(balance / 1000)) * 10)
-            let adj = parseInt(balance - parseInt(balance / 1000) * 1000) / 100
+            let adj = parseInt((balance - parseInt(balance / 1000) * 1000) / 100)
             formatted = adj == 0 ? `${parseInt(balance / 1000)}k` : `${parseInt(balance / 1000)}.${adj}k`
         }else if(balance <= 999999){
             formatted = `${parseInt(balance / 1000)}k`

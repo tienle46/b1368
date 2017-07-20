@@ -41,7 +41,6 @@ class VerificationDialog extends DialogActor {
     okBtnClick() {
         if(app.env.isMobile()) {
             // detect carrier
-            let {shortCode, syntax} = app.config.verifyAccountSyntax[carrier];
             if (app.env.isIOS()) {
                 window.jsb.reflection.callStaticMethod("JSBUtils", "sendSMS:recipient:", this.currentSyntax, this.currentShortCode);
             }

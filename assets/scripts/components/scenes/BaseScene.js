@@ -119,7 +119,6 @@ export default class BaseScene extends Actor {
 
     loginToDashboard(username, password, isRegister = false, isQuickLogin = false, accessToken = null, fbId = null, cb, tmpRegister = false) {
         this.showLoading(app.res.string('connecting_to_server'));
-        
         this._errorMessageTimeout = setTimeout(() => {
             if(app.service.getClient()._socketEngine.isConnecting){
                 app.service.getClient()._socketEngine.disconnect();
