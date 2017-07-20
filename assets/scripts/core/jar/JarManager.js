@@ -1,6 +1,7 @@
 import app from 'app';
 import CCUtils from 'CCUtils';
 import VisibilityManager from 'VisibilityManager';
+import Events from 'Events';
 
 export default class JarManager {
     constructor() {
@@ -10,22 +11,22 @@ export default class JarManager {
         this._currentJarComponent = null;
         
         this._currentParent = null;
-        this.addEventListener();
         
         this.start();
     }
     
     start() {
+        this.addEventListener();
     }
     
     addEventListener() {
         this.removeEventListener();
 
-        app.system.addListener(app.commands.LIST_HU, this.setupJar, this);
+        app.system.addListener(Events.ON_LIST_HU_RESPONSE, this.setupJar, this);
     }
     
     removeEventListener() {
-        app.system.removeListener(app.commands.LIST_HU, this.setupJar, this);
+        app.system.removeListener(Events.ON_LIST_HU_RESPONSE, this.setupJar, this);
     }
     
     updateJar(gc, newData) {
@@ -69,6 +70,8 @@ export default class JarManager {
             
             this.setJar(gc, jar);
         });
+
+        app.system.emit(Events.ON_LIST_HU_UPDATED, data)
     }
     
     addJarToParent(parent, gc, hasButton) {

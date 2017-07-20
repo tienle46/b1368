@@ -15,7 +15,7 @@ import Marker from 'Marker';
 import Linking from 'Linking'
 import VisibilityManager from 'VisibilityManager';
 import BuddyManager from 'BuddyManager';
-
+import Events from 'Events';
 
 class GameSystem {
 
@@ -121,8 +121,13 @@ class GameSystem {
         this.addListener(app.commands.GET_TOTAL_TOPUP, this._onTotalTopupFetched, this);
         
         this.addListener(app.commands.CANCEL_REJOIN, this._onCancelRejoin, this);
+        this.addListener(app.commands.LIST_HU, this._onListHu, this);
     }
-
+    
+    _onListHu(data) {
+        this.emit(Events.ON_LIST_HU_RESPONSE, data)    
+    }
+    
     // removeEventListener() {
     //     this.removeListener(SFS2X.SFSEvent.ROOM_JOIN, this._onJoinRoomSuccess, this);
     //     this.removeListener(SFS2X.SFSEvent.ROOM_JOIN_ERROR, this._onJoinRoomError, this);

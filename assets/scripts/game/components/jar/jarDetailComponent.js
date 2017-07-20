@@ -33,7 +33,6 @@ export default class JarDetailComponent extends Actor {
         if(this.content.match(/^https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/)) {
             // open web view
             this.openWebView();
-            console.warn('this.htmlContentView', this.htmlContentView);
             this.htmlContentView.url = 'https://bai1368.com/game/play/jar/bacay.html';
         } else {
             this.openTextView();

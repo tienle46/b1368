@@ -4,6 +4,7 @@ import moment from 'moment';
 import GameUtils from 'GameUtils';
 import CCUtils from 'CCUtils';
 import RubUtils from 'RubUtils';
+import Events from 'Events';
 
 export default class JarComponent extends Actor {
     constructor() {
@@ -27,8 +28,10 @@ export default class JarComponent extends Actor {
     onLoad() {
         super.onLoad();
         RubUtils.getAtlasFromUrl('jar/huvang', (atlas) => {
-            this.spriteFrames = atlas.getSpriteFrames();
-            this.jarSprite.spriteFrame = this.spriteFrames[0];
+            if(this.jarSprite) {
+                this.spriteFrames = atlas.getSpriteFrames();
+                this.jarSprite.spriteFrame = this.spriteFrames[0];
+            }
         });
     }
     
@@ -88,19 +91,23 @@ export default class JarComponent extends Actor {
     
     _addGlobalListener() {
         super._addGlobalListener();
-        app.system.addListener(app.commands.LIST_HU, this._onListHu, this);
-        app.system.addListener(app.commands.JAR_DETAIL, this._onJarDetail, this);
+        app.system.removeListener(app.commands.JAR_DETAIL, this._onJarDetail, this);
+        app.system.addListener(Events.ON_LIST_HU_UPDATED, this._onListHu, this);
     }
 
     _removeGlobalListener() {
         super._removeGlobalListener();
         app.system.removeListener(app.commands.JAR_DETAIL, this._onJarDetail, this);
-        app.system.removeListener(app.commands.LIST_HU, this._onListHu, this);
+        app.system.removeListener(Events.ON_LIST_HU_UPDATED, this._onListHu, this);
     }
     
     _updateRemainTimeInterval(remainTime) {
         this.remainTime = remainTime;
         this.remainTimeLbl && (this.remainTimeLbl.string = moment(this.remainTime).format('hh:mm:ss'));
+        if(this.remainTime <= 0) {
+            this.destroy();
+            return;
+        }
         
         this.timeout = setTimeout(() => {
             clearTimeout(this.timeout);

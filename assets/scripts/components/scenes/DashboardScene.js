@@ -1,30 +1,34 @@
-import app from 'app';
-import BaseScene from 'BaseScene';
-import RubUtils from 'RubUtils';
-import Utils from 'Utils';
-import NodeRub from 'NodeRub';
-import ArrayUtils from 'ArrayUtils';
+import app from 'app'
+import BaseScene from 'BaseScene'
+import RubUtils from 'RubUtils'
+import Utils from 'Utils'
+import NodeRub from 'NodeRub'
+import ArrayUtils from 'ArrayUtils'
+import Events from 'Events'
 
 export default class DashboardScene extends BaseScene {
     constructor() {
         super();
-        
-        this.properties = this.assignProperties({
+
+        this.properties = {
+            ...this.properties,
             pageView: cc.PageView,
             viewContainer: cc.Node,
             item: cc.Prefab,
             dailyDialog: cc.Node,
             dailyDialogContent: cc.Label,
             dailyDialogTitle: cc.Label
-        });
+        };
         
         this.iconComponents = {};
         this._isNewBie = false;
+        this._jarAdded = false;
     }
 
     onLoad() {
         super.onLoad();
         this._isNewBie = false;
+        this._jarAdded = false;
     }
     
     // testClick() {
@@ -57,7 +61,6 @@ export default class DashboardScene extends BaseScene {
     start() {
         super.start();
         !app.context.enableMinbets && this._getListGameMinBet();
-        this._requestListHu();
         
         app.context.gameList.length < 1 && this._getGamesListFromServer();
         
@@ -194,61 +197,6 @@ export default class DashboardScene extends BaseScene {
         var node = null;
         let count = 0;
         
-        // app.context.gameList.forEach((gc, index) => {
-        //     if(index > 8 && !indicator) {
-        //         var indicator = this.pageView.indicator.node;
-        //         indicator && indicator.opacity < 255 && (indicator.opacity = 255);
-        //     }
-            
-        //     if (index % 8 === 0) {
-        //         let pageNodeOptions = {
-        //             name: 'pageNode',
-        //             size: cc.size(998, 455),
-        //             // position: cc.v2(500, 0),
-        //             layout: {
-        //                 type: cc.Layout.Type.GRID,
-        //                 resizeMode: cc.Layout.ResizeMode.CHILDREN,
-        //                 startAxis: cc.Layout.AxisDirection.HORIZONTAL,
-        //                 cellSize: cc.size(180, 180),
-        //                 padding: 0,
-        //                 spacingX: 85,
-        //                 spacingY: 55,
-        //                 verticalDirection: cc.Layout.VerticalDirection.TOP_TO_BOTTOM,
-        //                 horizontalDirection: cc.Layout.HorizontalDirection.LEFT_TO_RIGHT
-        //             }
-        //         };
-        //         node = NodeRub.createNodeByOptions(pageNodeOptions);
-        //         this.pageView.addPage(node);
-        //     }
-        //     let gameIconPath = app.res.gameIcon[gc];
-            
-        //     gameIconPath && RubUtils.getSpriteFrameFromAtlas('blueTheme/atlas/game_icons', gameIconPath, (sprite) => {
-        //         if (sprite) {
-        //             const nodeItem = cc.instantiate(this.item);
-        //             nodeItem.getComponent(cc.Sprite).spriteFrame = sprite;
-        //             nodeItem.setContentSize(itemDimension, itemDimension);
-        //             let itemComponent = nodeItem.getComponent('item');
-                    
-        //             itemComponent.gameCode = gc;
-        //             itemComponent.listenOnClickListener((gameCode) => {
-        //                 app.context.setSelectedGame(gameCode);
-        //                 this.changeScene(app.const.scene.LIST_TABLE_SCENE);
-        //             });
-                    
-        //             // // this.iconComponents[gc] = itemComponent;
-        //             if(app.jarManager.hasJar(gc)) {
-        //                 app.jarManager.addJarToParent(itemComponent.getJarAnchor(), gc);
-        //             }
-
-        //             node && node.addChild(item)
-        //         }
-        //         if (index == app.context.gameList.length - 1) {
-        //             // this._requestListHu();
-        //             this.hideLoading();
-        //         }
-        //     });
-        // });
-        
         let gameItems = [];
         app.async.mapSeries(app.context.gameList, (gc, cb) => {
             if (count > 8 && !indicator) {
@@ -293,15 +241,9 @@ export default class DashboardScene extends BaseScene {
                             return;
                         }
                         app.context.setSelectedGame(gameCode);
-                        this.changeScene(app.const.scene.LIST_TABLE_SCENE, () => {
-                            
-                        });
+                        this.changeScene(app.const.scene.LIST_TABLE_SCENE);
                     });
-                    
-                    if(app.jarManager.hasJar(gc)) {
-                        app.jarManager.addJarToParent(itemComponent.getJarAnchor(), gc);
-                    }
-                    
+                                
                     gameItems.push(nodeItem);
                     // node && node.addChild(nodeItem);
 
@@ -310,6 +252,7 @@ export default class DashboardScene extends BaseScene {
                 if (count == app.context.gameList.length){
                     gameItems.forEach(nodeItem => node && node.addChild(nodeItem));
                     gameItems.length = 0;
+                    this._requestListHu();
                     this.hideLoading();
                 }
 
