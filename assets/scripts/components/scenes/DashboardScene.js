@@ -1,24 +1,21 @@
 import app from 'app'
 import BaseScene from 'BaseScene'
 import RubUtils from 'RubUtils'
-import Utils from 'Utils'
 import NodeRub from 'NodeRub'
 import ArrayUtils from 'ArrayUtils'
-import Events from 'Events'
 
 export default class DashboardScene extends BaseScene {
     constructor() {
         super();
 
-        this.properties = {
-            ...this.properties,
+        this.properties = this.assignProperties({
             pageView: cc.PageView,
             viewContainer: cc.Node,
             item: cc.Prefab,
             dailyDialog: cc.Node,
             dailyDialogContent: cc.Label,
             dailyDialogTitle: cc.Label
-        };
+        });
         
         this.iconComponents = {};
         this._isNewBie = false;
