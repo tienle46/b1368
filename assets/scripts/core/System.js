@@ -122,6 +122,13 @@ class GameSystem {
         
         this.addListener(app.commands.CANCEL_REJOIN, this._onCancelRejoin, this);
         this.addListener(app.commands.LIST_HU, this._onListHu, this);
+        
+        this.addListener(app.commands.IOS_IN_APP_PURCHASE, this._onSubmitPurchase, this);
+        this.addListener(app.commands.ANDROID_IN_APP_PURCHASE, this._onSubmitPurchase, this);
+    }
+    
+    _onSubmitPurchase(data) {
+        this.emit(app.env.isIOS() ? Events.ON_SUBMIT_PURCHASE_IOS : Events.ON_SUBMIT_PURCHASE_ANDROID, data)    
     }
     
     _onListHu(data) {

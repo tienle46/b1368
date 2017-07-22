@@ -189,7 +189,7 @@ export default class PlayerGameBet extends Player {
             let betData = bets[playerIdIndex];
             // user will be get chip after dealer got it
             setTimeout(() => {
-                this.scene.emit(Events.XOCDIA_ON_PLAYER_RECEIVE_CHIP_ANIMATION, { userPos: myPos, playerId, betData, dots, isItMe });
+                this.scene && this.scene.emit(Events.XOCDIA_ON_PLAYER_RECEIVE_CHIP_ANIMATION, { userPos: myPos, playerId, betData, dots, isItMe });
             }, 500);
         }
         return;

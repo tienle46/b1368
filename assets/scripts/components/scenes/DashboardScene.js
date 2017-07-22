@@ -28,22 +28,23 @@ export default class DashboardScene extends BaseScene {
         this._jarAdded = false;
     }
     
-    // testClick() {
-    //     function getRandomIntInclusive(min, max) {
-    //         min = Math.ceil(min);
-    //         max = Math.floor(max);
-    //         return Math.floor(Math.random() * (max - min + 1)) + min; //The maximum is inclusive and the minimum is inclusive 
-    //     }
-    //     let random = getRandomIntInclusive(1, 3);
-        
-    //     app.service.send({
-    //         cmd: app.commands.HIGH_LIGHT_MESSAGE,
-    //         data: {
-    //             msg: 'Lorem ipsum dolor sit amet',
-    //             rc: random
-    //         }
-    //     });
-    // }
+    testClick() {
+        let data = {
+            su: true,
+            unverifiedPurchases: [],
+            consumedProducts:[],
+            purchasedProducts: [{
+                msg: "Bạn đã nạp thành công 20000 Chip vào tài khoản djoker",
+                su: true,
+                productId: 'com.1368inc.phatloc.20kc',
+                token: 'gadnjhbjlohdnijahkfebdej.AO-J1Oyf126egFrlky3FRZ_Li0VG4lxKFHb-yPeQx3lI6LIAsU0gGxqh_KvGgLogOTtcq3gbXKL825aysiEHKe0IZAe1JbZRp5A0y4CAi25Rw1ttJuXouqnjKD-k4BGXwTcW9t8u4ndRtm16o8dM1tqE6hM5eDVYgg'
+            }]
+        }
+       
+        let contextItem = { id: data.purchasedProducts[0].productId, receipt: data.purchasedProducts[0].token, username: app.context.getMyInfo().name || "" };
+        app.iap.addPurchase(contextItem)
+        app.service.send({cmd: "testBilling", data});
+    }
     
     onEnable() {
         super.onEnable();

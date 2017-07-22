@@ -168,3 +168,5 @@ Events.ON_MESSAGE_COUNT_CHANGED = "on.messageCountChanged";
 Events.ON_PLAYER_BAO_XAM_RESPONSE = "on.playerBaoXamResponse";
 Events.ON_LIST_HU_RESPONSE = "on.ListHuResponse";
 Events.ON_LIST_HU_UPDATED = "on.ListHuUpdated";
+Events.ON_SUBMIT_PURCHASE_IOS = "on.submitPurchaseIOS";
+Events.ON_SUBMIT_PURCHASE_ANDROID = "on.submitPurchaseAndroid";

@@ -71,7 +71,8 @@ export default (function(app) {
         let os = `os:${cc.sys.os} v${cc.sys.osVersion || cc.sys.osMainVersion}`;
         let env = 'in ' + (app.config.test ? 'Test' : 'Product') + ' environment';
 
-        log(`Running on ${platform} | ${os} ${env}`);
+        cc.log(`Running on ${platform} | ${os} ${env}`);
+        
     };
 
     app.env.log();

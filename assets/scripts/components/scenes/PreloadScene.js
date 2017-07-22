@@ -18,6 +18,10 @@ class PreloadScene extends Component {
         if (this.loading) {
             this.loading.getComponent('FullSceneProgress').show(app.res.string('loading_data'));
         }
+        let IAPManager = require('IAPManager');
+                    
+        app.iap = new IAPManager();
+        app.iap.init();
 
         app.system.initOnFirstSceneLoaded()
         

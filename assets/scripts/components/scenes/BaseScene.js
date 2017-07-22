@@ -5,7 +5,6 @@
 import app from 'app';
 import utils from 'utils';
 import Actor from 'Actor';
-import FullSceneProgress from 'FullSceneProgress';
 import CCUtils from 'CCUtils';
 import Base64 from 'Base64';
 
@@ -242,7 +241,6 @@ export default class BaseScene extends Actor {
             return;
 
         let receipts = app.iap.getPurchasesByUsername(app.context.getMyInfo().name);
-        cc.log('\nIAP: receipts -->', JSON.stringify(receipts), receipts.length);
         
         if (!receipts || receipts.length == 0)
             return;
@@ -267,7 +265,6 @@ export default class BaseScene extends Actor {
         };
 
         app.env.isAndroid() && (sendObj.data.resubmit = true);
-        cc.log('\nIAP: resendIAPSavedItem', JSON.stringify(sendObj));
         
         // app.system.showLoader(app.res.string('re_sending_item_iap'), 60);
         app.service.send(sendObj);
