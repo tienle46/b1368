@@ -108,7 +108,8 @@ export default class JarComponent extends Actor {
         duration = moment.duration(duration.asSeconds() - this.time, 'seconds');
         
         this.remainTimeLbl && (this.remainTimeLbl.string = duration.hours() + ":" + duration.minutes() + ":" + duration.seconds());
-        if(this.remainTime <= 0) {
+        
+        if(Number(duration.seconds()) < 0) {
             this.destroy();
             return;
         }

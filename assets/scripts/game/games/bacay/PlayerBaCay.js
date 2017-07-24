@@ -25,7 +25,7 @@ export default class PlayerBaCay extends PlayerCardBetTurn {
         this.pendingBiCuocBiens = null;
         this.currentCuocBien = 0;
         this.gopGaValue = 0;
-        this._pendingCuocBienRequests = null
+        this._pendingCuocBienRequests = null;
     }
 
     _addGlobalListener() {
@@ -121,7 +121,6 @@ export default class PlayerBaCay extends PlayerCardBetTurn {
     }
 
     _onAddBetToMaster(amount, player) {
-
         if (this.isMaster && amount) {
             this.setBetAmount(this.betAmount + amount);
             this.renderer.showAddBetToMasterAnimation(amount, player);
@@ -144,12 +143,11 @@ export default class PlayerBaCay extends PlayerCardBetTurn {
     }
 
     setBetAmount(betAmount = 0) {
-
         if (!utils.isNumber(betAmount)) betAmount = 0;
 
         this.betAmount = betAmount;
         this.renderer.showBetAmount(this.betAmount);
-
+        
         this._updateAvailableBalance()
     }
 
@@ -198,7 +196,7 @@ export default class PlayerBaCay extends PlayerCardBetTurn {
         this.biHucList = {};
         this.pendingCuocBiens = {};
         this.pendingBiCuocBiens = {};
-        this._pendingCuocBienRequests = []
+        this._pendingCuocBienRequests = [];
     }
 
     onEnable() {
@@ -211,7 +209,7 @@ export default class PlayerBaCay extends PlayerCardBetTurn {
         //     let cards = Array(PlayerBaCay.DEFAULT_HAND_CARD_COUNT).fill(0).map(value => {return Card.from(value)});
         //     this.setCards(cards, false);
         // }
-
+        
         if (data && data.hasOwnProperty(app.keywords.BACAY_BI_HUC_PLAYER_ID)) {
             // danh sach bi huc chua nhung thang huc minh
             let biHucPlayerId = utils.getValue(app.keywords.BACAY_BI_HUC_PLAYER_ID);
@@ -272,6 +270,10 @@ export default class PlayerBaCay extends PlayerCardBetTurn {
                 this.scene.showChooseBetSlider(this.betAmount, maxValue);
             }
         }else if(state == app.const.game.state.STATE_DOWN) {
+            if(this.isItMe() && app.system.getCurrentSceneNode().getComponentInChildren('ConfirmPopup')) {
+                app.system.getCurrentSceneNode().getComponentInChildren('ConfirmPopup').hide();
+            }
+
             if(this.isPlaying()) {
                 this.scene.emit(Events.SHOW_DOWN_CARD_CONTROLS);
             }
@@ -279,7 +281,7 @@ export default class PlayerBaCay extends PlayerCardBetTurn {
     }
 
     _onGameStateBet() {
-        if (this.isPlaying() && !this.isMaster) {
+        if (this.isPlaying() && !this.isMaster && !app.context.rejoiningGame) {
             this.renderer.playBetAnimation(this.board.minBet);
             this.setBetAmount(this.board.minBet);
             this.scene.emit(Events.ADD_BET_TO_MASTER, this.board.minBet, this);

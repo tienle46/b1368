@@ -135,15 +135,6 @@ class EventDialog extends Actor {
                 [app.keywords.SYSTEM_MESSAGE.REQUEST.PAGE_NUMBER]: 1
             }
         });
-        console.warn('params',{
-            cmd: app.commands.LIST_SYSTEM_MESSAGE,
-            data: {
-                [app.keywords.SYSTEM_MESSAGE.REQUEST.ACTION_TYPE]: app.const.DYNAMIC_ACTION_BROWSE,
-                [app.keywords.SYSTEM_MESSAGE.REQUEST.GROUP_TYPE]: this.groupType,
-                [app.keywords.SYSTEM_MESSAGE.REQUEST.NODE_ID]: 0,
-                [app.keywords.SYSTEM_MESSAGE.REQUEST.PAGE_NUMBER]: 1
-            }
-        } )
     }
 
     hide() {

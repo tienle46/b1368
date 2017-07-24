@@ -132,7 +132,7 @@ export default class BoardBaCay extends BoardCardBetTurn {
         let downPlayerIds = utils.getValue(data, app.keywords.GAME_LIST_DOWN);
         let betAmounts = utils.getValue(data, app.keywords.GAME_LIST_BET);
         let bCards = utils.getValue(data, app.keywords.GAME_LIST_CARD);
-
+        
         for (let i = 0; i < playerIds.length; i++) {
             let player = this.scene.gamePlayers.findPlayer(playerIds[i]);
             if (player != null) {
