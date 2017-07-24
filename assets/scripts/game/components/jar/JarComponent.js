@@ -91,7 +91,7 @@ export default class JarComponent extends Actor {
     
     _addGlobalListener() {
         super._addGlobalListener();
-        app.system.removeListener(app.commands.JAR_DETAIL, this._onJarDetail, this);
+        app.system.addListener(app.commands.JAR_DETAIL, this._onJarDetail, this);
         app.system.addListener(Events.ON_LIST_HU_UPDATED, this._onListHu, this);
     }
 
