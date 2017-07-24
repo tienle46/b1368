@@ -25,7 +25,7 @@ export default class IAPManager {
     setPurchases(items) {
         let arrayObject = [];
         items.forEach(item => {
-            if(!window.isJSON(item))
+            if(item=="null" || !window.isJSON(item))
                 return;
             
             if(typeof item === 'string')

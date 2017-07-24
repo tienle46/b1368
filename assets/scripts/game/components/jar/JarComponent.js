@@ -20,7 +20,7 @@ export default class JarComponent extends Actor {
         });
         
         this._timeout = null;
-        this.time = 1000; // 1s
+        this.time = 1; // 1s
         this.jarId = null;
         this.spriteFrames = [];
     }
@@ -50,12 +50,13 @@ export default class JarComponent extends Actor {
     }
     
     init({id, remainTime, startTime, endTime, currentMoney} = {}) {
-        remainTime = Math.abs(new Date().getTime() - endTime);
+        let now = moment();
+        remainTime = Math.abs(now - endTime);
+        
         this.jarId = id;
         
         this._updateRemainTimeInterval(remainTime);
         this.updateTotalMoney(currentMoney);
-        
         this.node.active = true;
     }
     
@@ -103,7 +104,10 @@ export default class JarComponent extends Actor {
     
     _updateRemainTimeInterval(remainTime) {
         this.remainTime = remainTime;
-        this.remainTimeLbl && (this.remainTimeLbl.string = moment(this.remainTime).format('hh:mm:ss'));
+        let duration = moment.duration(remainTime);
+        duration = moment.duration(duration.asSeconds() - this.time, 'seconds');
+        
+        this.remainTimeLbl && (this.remainTimeLbl.string = duration.hours() + ":" + duration.minutes() + ":" + duration.seconds());
         if(this.remainTime <= 0) {
             this.destroy();
             return;
@@ -111,8 +115,8 @@ export default class JarComponent extends Actor {
         
         this.timeout = setTimeout(() => {
             clearTimeout(this.timeout);
-            this._updateRemainTimeInterval(this.remainTime - this.time);
-        }, this.time);
+            this._updateRemainTimeInterval(duration.as('milliseconds'));
+        }, this.time * 1000);
     }
     
     _clearInterval() {

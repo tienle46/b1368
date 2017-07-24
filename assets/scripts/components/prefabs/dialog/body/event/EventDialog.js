@@ -61,6 +61,7 @@ class EventDialog extends Actor {
         const listIds = data[app.keywords.SYSTEM_MESSAGE.RESPONSE.ID_ITEM_LIST]
         const {actionCodes, actionDatas, imageUrls, policyUrls} = data;
 
+        
         this.eventPages = [];
         CCUtils.clearAllChildren(this.pageContent);
 
@@ -74,7 +75,7 @@ class EventDialog extends Actor {
                     id: listIds[index],
                     imageUrl: imageUrls[index],
                     actionCode: actionCodes[index],
-                    actionData: actionCodes[index],
+                    actionData: actionDatas[index],
                     policyUrl: policyUrls[index],
                     attendBtnListener: this._onClickAttendEvent.bind(this),
                     policyBtnListener: this._onPolicyBtnClick.bind(this),
@@ -134,6 +135,15 @@ class EventDialog extends Actor {
                 [app.keywords.SYSTEM_MESSAGE.REQUEST.PAGE_NUMBER]: 1
             }
         });
+        console.warn('params',{
+            cmd: app.commands.LIST_SYSTEM_MESSAGE,
+            data: {
+                [app.keywords.SYSTEM_MESSAGE.REQUEST.ACTION_TYPE]: app.const.DYNAMIC_ACTION_BROWSE,
+                [app.keywords.SYSTEM_MESSAGE.REQUEST.GROUP_TYPE]: this.groupType,
+                [app.keywords.SYSTEM_MESSAGE.REQUEST.NODE_ID]: 0,
+                [app.keywords.SYSTEM_MESSAGE.REQUEST.PAGE_NUMBER]: 1
+            }
+        } )
     }
 
     hide() {
