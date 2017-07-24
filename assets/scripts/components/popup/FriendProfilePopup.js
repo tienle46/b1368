@@ -214,7 +214,7 @@ export default class FriendProfilePopup extends DialogActor {
 
     _onSelectUserProfile(user) {
         this.rtUserName.string = `${user["u"]}`;
-        this.rtDisplayName.string = `${user["displayName"]}`;
+        this.rtDisplayName.string = `${user["displayName"].length >= 20 ? user["displayName"].substr(0, 12) + '...': user["displayName"]}`;
         this.rtBalance.string = `${utils.numberFormat(user["coin"])}`;
     }
 
