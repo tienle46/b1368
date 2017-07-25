@@ -4451,7 +4451,9 @@
       "__id__": 134
     },
     "_enabled": true,
-    "path": ""
+    "path": "",
+    "normalAnimName": "plusBalance",
+    "slowAnimName": "plusBalanceSlow"
   },
   {
     "__type__": "cc.Animation",

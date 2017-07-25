@@ -1,6 +1,5 @@
 import app from 'app';
 import HistoricalTable from 'HistoricalTable';
-import NodeRub from 'NodeRub';
 
 class TaiXiuHistoricalTable extends HistoricalTable {
     constructor() {
@@ -43,7 +42,7 @@ class TaiXiuHistoricalTable extends HistoricalTable {
     }
     
     /**
-     * @interface
+     * @override
      * @param type:  0: even, 1: odd
      * @return cc.Node
      */
@@ -57,6 +56,14 @@ class TaiXiuHistoricalTable extends HistoricalTable {
         // NodeRub.addSpriteComponentToNode(cell, {spriteFrame: this.colors[type]});
 
         // return cell;
+    }
+    
+    show() {
+        this.node.runAction(cc.moveTo(.1, cc.v2(513, 0)));
+    }
+    
+    hide() {
+        this.node.runAction(cc.moveTo(.1, cc.v2(784, 0)));
     }
 }
 
