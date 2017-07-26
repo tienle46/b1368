@@ -93,6 +93,10 @@ export default class EllipseTimeLine extends Component {
         super.onDestroy()
         this.stop(false);
     }
+    
+    hideProgressBar() {
+        utils.deactive(this._playerTimeLineProgress);
+    }
 }
 
 app.createComponent(EllipseTimeLine);

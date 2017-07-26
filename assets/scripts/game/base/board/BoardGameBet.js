@@ -61,14 +61,13 @@ export default class BoardGameBet extends BoardCard {
         
         this.scene.gameState && this.renderer.showTimeLine(duration, message, hiddenText);
         
-        
         if (this.scene.gameState == app.const.game.state.READY) {
             this.renderer.hideTimeLine();
         }
     }
     
     /**
-     * @override
+     * @interface
      * @param {any} data 
      * @memberof BoardGameBet
      */

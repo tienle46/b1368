@@ -1,11 +1,13 @@
 import app from 'app';
 import BoardGameBet from 'BoardGameBet';
 import utils from 'utils';
+import Events from 'Events';
 
 export default class BoardTaiXiu extends BoardGameBet {
     constructor() {
         super();
-        this.RENDERER_COMPONENT = 'BoardXocDiaRenderer';
+        
+        this.RENDERER_COMPONENT = 'BoardTaiXiuRenderer';
     }
 
     onLoad() {
@@ -17,10 +19,32 @@ export default class BoardTaiXiu extends BoardGameBet {
     }
 
     onGameStateChanged(boardState, data, isJustJoined) {
-
+        super.onGameStateChanged(boardState, data, isJustJoined);
+        
+        if(boardState == app.const.game.state.STATE_BET) {
+            this.renderer.shakenControlAppearance(false);
+            this.renderer.clockAppearance(true);
+        }
     }
-
-
+    
+    /**
+     * @override
+     * 
+     * @param {any} duration 
+     * @param {any} message 
+     * @memberof BoardTaiXiu
+     */
+    startTimeLine(duration, message) {
+        super.startTimeLine(duration, message);        
+        if (this.scene.gameState == app.const.game.state.STATE_BET) {
+            this.renderer.showTimeLineCountDown(duration, false, function(timeLineInSecond) {
+                if(timeLineInSecond === 10) {
+                    this.renderer.alarm(timeLineInSecond);
+                }
+            }, this);
+        }
+    }
+    
     // //@override
     // onBoardStarting(data = {}, isJustJoined) {
 
@@ -45,6 +69,37 @@ export default class BoardTaiXiu extends BoardGameBet {
 
 
         super.onBoardEnding(data);
+        this.renderer.shakenControlAppearance(true);
+        
+        let result = {sum: 12, text: 'Tài', faces:[3, 4, 5]};
+        
+        if (result) {
+            if(this.renderer.isShaking())
+                return;
+            this.renderer && this.renderer.placedOnDish(result.faces);
+            
+            this.node.runAction(cc.sequence(cc.delayTime(.5), cc.callFun(() => {
+                this.renderer && this.renderer.openBowlAnim(); // this will end up 1s
+            }), cc.delayTime(1.2), cc.callFun(() => {
+                this.renderer && this.renderer.showResult(`${result.sum} - ${result.text}`);
+                // emit anim
+                playingPlayerIds && playingPlayerIds.forEach((id) => {
+                    let playerId = id;
+                    let balance = balanceChangeAmounts[id];
+                    this.scene && this.scene.emit(Events.XOCDIA_ON_PLAYER_RUN_MONEY_BALANCE_CHANGE_ANIM, { balance, playerId });
+                });
+            }), cc.delayTime(.3), cc.callFun(() => {
+                console.warn('Events.XOCDIA_ON_DISTRIBUTE_CHIP')
+                // this.scene && this.scene.emit(Events.XOCDIA_ON_DISTRIBUTE_CHIP, { playingPlayerIds, bets, playerResults, dots });
+            }), cc.delayTime(2),  cc.callFun(() => {
+                this.renderer && this.renderer.hideResult();
+            })));
+        }
+        
+    }
+    
+    toggleTable() {
+        this.renderer.toggleTable();
     }
 }
 

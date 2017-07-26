@@ -52,7 +52,7 @@ export default class BoardXocDia extends BoardGameBet {
         if (dots && dots.length > 0) {
             if(this.renderer.isShaking())
                 return;
-            this.renderer && this.renderer.initDots(dots);
+            this.renderer && this.renderer.placedOnDish(dots);
             var t1 = requestTimeout(() => {
                 this.renderer && this.renderer.openBowlAnim(); // this will end up 1s
                 clearRequestTimeout(t1);

@@ -1,4 +1,5 @@
 import Component from 'Component';
+import app from 'app';
 
 export default class ShakenControl extends Component {
     constructor() {
@@ -7,7 +8,8 @@ export default class ShakenControl extends Component {
         this.properties = this.assignProperties({
             wrapper: cc.Node,
             bowlNode: cc.Node,
-            timeLineNode: cc.Node
+            timeLineNode: cc.Node,
+            placedArea: cc.Node
         });
         
         this._isShaking = false;
@@ -37,6 +39,9 @@ export default class ShakenControl extends Component {
         
         this.bowlNode.zIndex = 1;
         this.timeLineNode.zIndex = 2;
+        
+        this.placedArea.children.forEach(child => child.destroy());
+        this.placedArea.removeAllChildren();
     }
 
     play() {
@@ -76,4 +81,20 @@ export default class ShakenControl extends Component {
             this.bowlNode.zIndex = 3;
         })));
     }
+    
+    hide() {
+        this.node.active = false;
+    }
+    
+    show() {
+        this.node.active = true;
+    }
+    
+    /**
+     * @interface
+     * 
+     * @param {any} [dots=[]] 
+     * @memberof ShakenControl
+     */
+    placedOnDish(dots = []) {}
 }

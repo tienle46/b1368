@@ -698,8 +698,7 @@ class Service {
     
     _showReloginPopupWhenDiconnectivity() {
         this._isShowLoginPopup = true;
-        this.client._socketEngine.reconnectionSeconds = 0;
-        this.client.disconnect();
+        this.disconnect();
     }
     
     _handleLagPollingResponse(event) {
@@ -734,8 +733,7 @@ class Service {
         if (this.client._socketEngine.reconnectionSeconds == 0) {
             this.sendRequest(new SFS2X.Requests.System.ManualDisconnectionRequest());
         }
-        this.client._socketEngine.reconnectionSeconds = 0;
-        this.client.disconnect();
+        this.disconnect();
     }
 
     _dispatchClientConfig(data) {

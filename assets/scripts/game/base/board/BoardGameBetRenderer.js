@@ -21,14 +21,22 @@ export default class BoardGameBetRenderer extends BoardRenderer {
         this.shakenControl = this.shakenControlNode.getComponent(this.SHAKEN_CONTROL);
         this.historicalTable = this.historicalTableNode.getComponent(this.HISTORIAL_COMPONENT);
     }
-
+    
+    shakenControlAppearance(isShow = true) {
+        this.shakenControl[isShow ? 'show' : 'hide'](); 
+    }
+    
+    historicalTableAppearance(isShow = true) {
+        this.historicalTable[isShow ? 'show' : 'hide']();
+    }
+    
     hideElements() {
         this.shakenControl.reset();
         utils.deactive(this.resultNode);
         // utils.deactive(this.shakenControlNode); // always show dish on a board
         // utils.deactive(this.historicalTable);
     }
-
+    
     hideResult() {
         utils.deactive(this.resultNode);
     }
@@ -40,11 +48,11 @@ export default class BoardGameBetRenderer extends BoardRenderer {
     
     showElements() {
         this.shakenControl.reset();
-
         utils.active(this.shakenControlNode);
     }
     
     updateBoardResultHistory(results) {
+        results = [{faces: [1, 3, 4], text: 'Xiu'}, {faces: [4, 3, 4], text: 'Tai'}]
         this.historicalTable.updateTableInfo(results);
     }
     
@@ -62,5 +70,9 @@ export default class BoardGameBetRenderer extends BoardRenderer {
 
     openBowlAnim() {
         this.shakenControl.openTheBowl();
+    }
+    
+    placedOnDish(dots = []) {
+        this.shakenControl.placedOnDish(dots);
     }
 }

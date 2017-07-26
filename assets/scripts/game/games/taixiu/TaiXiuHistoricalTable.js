@@ -13,57 +13,71 @@ class TaiXiuHistoricalTable extends HistoricalTable {
             },
             facesAtlas: cc.SpriteAtlas
         });
+        
+        this._isShowed = false;
     }
 
     onLoad() {
         super.onLoad();
+        this.node.setPosition(cc.v2(784, 0));
     }
     
     /**
      * @override
      * 
-     * @param {any} infors 
+     * @param {any} infors [{type}]
      * @memberof XocDiaStatisticTable
      */
     updateTableInfo(infors) {
-        // //only update newest 32 cells
-        // let numberCellsInTable = 32;
-        // if (infors.length > numberCellsInTable)
-        //     infors = infors.slice(0, numberCellsInTable + 1);
+        //only update newest 32 cells
+        let numberCellsInTable = 22;
+        if (infors.length > numberCellsInTable)
+            infors = infors.slice(0, numberCellsInTable + 1);
 
-        // super.updateTableInfo(infors);
-      
-        // //0: even, 1: odd
-        // let evens = infors.filter((type) => type === 0).length;
-        // let odds = infors.filter((type) => type === 1).length;
-
-        // this.evenLbl.string = evens;
-        // this.oddLbl.string = odds;
+        super.updateTableInfo(infors);
     }
     
     /**
      * @override
-     * @param type:  0: even, 1: odd
+     * @param type {faces: [], text: 'Tai'}
      * @return cc.Node
      */
     modifyItem(type) {
-        // // 0: white, 1: red
-        // // let colors = ['blueTheme/ingame/xocdia/trang', 'blueTheme/ingame/xocdia/do'];
+        type.faces.forEach((face, index) => {
+            this.faces[index].spriteFrame = this.facesAtlas.getSpriteFrame(face);
+        });
+        this.childLbl.text = type.text;
         
-        // let cell = cc.instantiate(this.childItem);
-        // cell.active = true;
+        let cell = cc.instantiate(this.childItem);
+        cell.active = true;
 
-        // NodeRub.addSpriteComponentToNode(cell, {spriteFrame: this.colors[type]});
-
-        // return cell;
+        return cell;
     }
     
+    /**
+     * @override
+     * 
+     * @memberof TaiXiuHistoricalTable
+     */
     show() {
-        this.node.runAction(cc.moveTo(.1, cc.v2(513, 0)));
+        this.node.runAction(cc.sequence(cc.moveTo(.1, cc.v2(513, 0)), cc.callFunc(() => {
+            this._isShowed = true;
+        })));
     }
     
+    /**
+     * @override
+     * 
+     * @memberof TaiXiuHistoricalTable
+     */
     hide() {
-        this.node.runAction(cc.moveTo(.1, cc.v2(784, 0)));
+        this.node.runAction(cc.sequence(cc.moveTo(.1, cc.v2(784, 0)), cc.callFunc(() => {
+            this._isShowed = false;
+        })));
+    }
+    
+    toggleTable() {
+        this._isShowed ? this.hide() : this.show();    
     }
 }
 

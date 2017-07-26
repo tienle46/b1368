@@ -32,10 +32,6 @@ export default class BoardXocDiaRenderer extends BoardGameBetRenderer {
             }
         }
     }
-
-    initDots(dots = []) {
-        this.shakenControl.initDotsArray(dots);
-    }
 }
 
 app.createComponent(BoardXocDiaRenderer);

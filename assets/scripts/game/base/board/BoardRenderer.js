@@ -5,7 +5,6 @@
 import app from 'app';
 import utils from 'utils';
 import ActorRenderer from 'ActorRenderer';
-import TextView from 'TextView';
 
 export default class BoardRenderer extends ActorRenderer {
     constructor() {
@@ -68,7 +67,26 @@ export default class BoardRenderer extends ActorRenderer {
 
         this.timeoutInterval > 0 && clearInterval(this.timeoutInterval)
     }
+    
+    showTimeLineCountDown(timeInSecond, showProgressBar = true, callBackInterval, context) {
+        !showProgressBar && this.ellipseTimeLine && this.ellipseTimeLine.hideProgressBar();
+        this.timeLineInSecond = timeInSecond;
+        this.setTimeLineMessage("");
+        this.setTimeLineSecondText(`${this.timeLineInSecond--}`);
+        // this.setBottomTimeLineMessage(app.res.string('game_waiting_for_game_start'))
+        this.setBottomTimeLineMessage('')
 
+        this.timeoutInterval = setInterval(() => {
+            if(this.timeLineInSecond < 0){
+                this.hideTimeLine()
+            }else{
+                callBackInterval && callBackInterval.call(context, this.timeLineInSecond)
+                
+                this.setTimeLineSecondText(`${this.timeLineInSecond--}`)
+            }
+        }, 1000);
+    }
+    
     isEnableBottomTimeLineTextOnReady(){
         return this.enableBottomTextOnReady && app.system.currentScene && app.system.currentScene.gameState == app.const.game.state.READY
     }
@@ -85,21 +103,7 @@ export default class BoardRenderer extends ActorRenderer {
         hiddenText && (message = '');
 
         if (this.isEnableBottomTimeLineTextOnReady()) {
-
-            this.timeLineInSecond = timeInSecond;
-            this.setTimeLineMessage("");
-            this.setTimeLineSecondText(`${this.timeLineInSecond--}`);
-            // this.setBottomTimeLineMessage(app.res.string('game_waiting_for_game_start'))
-            this.setBottomTimeLineMessage('')
-
-            this.timeoutInterval = setInterval(() => {
-                if(this.timeLineInSecond < 0){
-                    this.hideTimeLine()
-                }else{
-                    this.setTimeLineSecondText(`${this.timeLineInSecond--}`)
-                }
-            }, 1000);
-
+            this.showTimeLineCountDown(timeInSecond)
         } else {
             this.setTimeLineMessage(message);
             this.setBottomTimeLineMessage("")

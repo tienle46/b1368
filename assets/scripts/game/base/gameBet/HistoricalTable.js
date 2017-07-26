@@ -27,4 +27,12 @@ export default class HistoricalTable extends Component {
      * @return cc.Node
      */
     modifyItem() {}
+    
+    show() {
+        this.node.active = true;
+    }
+    
+    hide() {
+        this.node.active = false;
+    }
 }
