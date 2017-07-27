@@ -204,13 +204,15 @@ let NodeRub = {
             type: cc.Sprite.Type.SLICED,
             sizeMode: cc.Sprite.SizeMode.CUSTOM
         }, options);
+        
         if (typeof spriteFrame === 'string') {
             delete options.spriteFrame;
-
+            
             RubUtils.loadSpriteFrame(sprite, spriteFrame, node.getContentSize(), options.isCORS || false, options.cb, options);
         } else if (spriteFrame instanceof cc.SpriteFrame) {
             delete options.spriteFrame;
             sprite.spriteFrame = spriteFrame;
+            console.warn('node.getContentSize()', node.getContentSize())
             
             for (let key in options) {
                 sprite[key] = options[key];

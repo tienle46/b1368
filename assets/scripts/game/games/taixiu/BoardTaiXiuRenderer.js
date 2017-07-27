@@ -22,7 +22,7 @@ export default class BoardTaiXiuRenderer extends BoardGameBetRenderer {
     /**
      * 
      * 
-     * @param {any} result {sum: int, text: string}
+     * @param {any} result text
      * @memberof BoardTaiXiuRenderer
      */
     displayResult(result) {

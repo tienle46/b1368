@@ -19,6 +19,7 @@ export default class BoardTaiXiu extends BoardGameBet {
     }
 
     onGameStateChanged(boardState, data, isJustJoined) {
+        console.warn('boardState, data, isJustJoined', boardState, data, isJustJoined)
         super.onGameStateChanged(boardState, data, isJustJoined);
         
         if(boardState == app.const.game.state.STATE_BET) {
@@ -61,6 +62,7 @@ export default class BoardTaiXiu extends BoardGameBet {
 
     // state === app.const.game.state.ENDING
     onBoardEnding(data) {
+        console.warn('onBoardEnding')
         let playerIds = utils.getValue(data, app.keywords.GAME_LIST_PLAYER, []);
         let bets = utils.getValue(data, app.keywords.XOCDIA_BET.AMOUNT, []);
         let playingPlayerIds = this.scene.gamePlayers.filterPlayingPlayer(playerIds);
@@ -78,9 +80,9 @@ export default class BoardTaiXiu extends BoardGameBet {
                 return;
             this.renderer && this.renderer.placedOnDish(result.faces);
             
-            this.node.runAction(cc.sequence(cc.delayTime(.5), cc.callFun(() => {
+            this.node.runAction(cc.sequence(cc.delayTime(.5), cc.callFunc(() => {
                 this.renderer && this.renderer.openBowlAnim(); // this will end up 1s
-            }), cc.delayTime(1.2), cc.callFun(() => {
+            }), cc.delayTime(1.2), cc.callFunc(() => {
                 this.renderer && this.renderer.showResult(`${result.sum} - ${result.text}`);
                 // emit anim
                 playingPlayerIds && playingPlayerIds.forEach((id) => {
@@ -88,10 +90,10 @@ export default class BoardTaiXiu extends BoardGameBet {
                     let balance = balanceChangeAmounts[id];
                     this.scene && this.scene.emit(Events.XOCDIA_ON_PLAYER_RUN_MONEY_BALANCE_CHANGE_ANIM, { balance, playerId });
                 });
-            }), cc.delayTime(.3), cc.callFun(() => {
+            }), cc.delayTime(.3), cc.callFunc(() => {
                 console.warn('Events.XOCDIA_ON_DISTRIBUTE_CHIP')
                 // this.scene && this.scene.emit(Events.XOCDIA_ON_DISTRIBUTE_CHIP, { playingPlayerIds, bets, playerResults, dots });
-            }), cc.delayTime(2),  cc.callFun(() => {
+            }), cc.delayTime(2),  cc.callFunc(() => {
                 this.renderer && this.renderer.hideResult();
             })));
         }
