@@ -17,7 +17,26 @@ class XocDiaShakenControl extends ShakenControl {
     reset() {
         super.reset();
     }
-
+    
+    /**
+     * @override
+     * 
+     * @returns 
+     * @memberof XocDiaShakenControl
+     */
+    openTheBowl() {
+        if(this.isShaking())
+            return;
+        
+        let bowlPos = this.bowlPos;
+        
+        let action = cc.moveTo(1, cc.v2(-67, bowlPos.y));
+        this.bowlNode.runAction(cc.sequence(action, cc.callFunc(() => {
+            this.bowlPos = bowlPos;
+            this.bowlNode.zIndex = 3;
+        })));
+    }
+    
     /**
      * @override
      * 

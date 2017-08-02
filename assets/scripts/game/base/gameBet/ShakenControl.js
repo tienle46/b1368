@@ -69,25 +69,23 @@ export default class ShakenControl extends Component {
         return this._isShaking;
     }
     
-    openTheBowl() {
-        if(this.isShaking())
-            return;
-        
-        let bowlPos = this.bowlPos;
-        
-        let action = cc.moveTo(1, cc.v2(-67, bowlPos.y));
-        this.bowlNode.runAction(cc.sequence(action, cc.callFunc(() => {
-            this.bowlPos = bowlPos;
-            this.bowlNode.zIndex = 3;
+    /**
+     * @interface
+     * 
+     * @memberof ShakenControl
+     */
+    openTheBowl() {}
+    
+    hide() {
+        this.node.runAction(cc.sequence(cc.fadeOut(.3), cc.callFunc(() => {
+            this.node.active = false;
         })));
     }
     
-    hide() {
-        this.node.active = false;
-    }
-    
     show() {
-        this.node.active = true;
+        this.node.runAction(cc.sequence(cc.fadeIn(.3), cc.callFunc(() => {
+            this.node.active = true;
+        })));
     }
     
     /**

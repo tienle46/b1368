@@ -10,9 +10,27 @@ class TaiXiuShakenControl extends ShakenControl {
                 type: cc.SpriteAtlas,
                 default: null
             },
-            diceNode: cc.Node,
             diceSprite: cc.Sprite
         });
+    }
+
+    /**
+     * @override
+     * 
+     * @returns 
+     * @memberof TaiXiuShakenControl
+     */
+    openTheBowl() {
+        if(this.isShaking())
+            return;
+        
+        let bowlPos = this.bowlPos;
+        
+        let action = cc.moveTo(1, cc.v2(bowlPos.x, 451));
+        this.bowlNode.runAction(cc.sequence(action, cc.callFunc(() => {
+            this.bowlPos = bowlPos;
+            this.bowlNode.zIndex = 3;
+        })));
     }
     
      /**
@@ -37,7 +55,7 @@ class TaiXiuShakenControl extends ShakenControl {
         
         let randomPosInRange = [{ x: app._.random(-1, 1), y: 1 }, { x: 1, y: -1 }, { x: -1, y: -1 }];
         let acceptedArea = this.placedArea.getContentSize();
-        let size = this.diceNode.getContentSize();
+        let size = this.diceSprite.node.getContentSize();
         
         dices.forEach((dice, i) => {
             let posX = app._.random(app._.random(0, 1 / 2), randomPosInRange[i].x * (acceptedArea.width - size.width) / 2);
@@ -45,11 +63,11 @@ class TaiXiuShakenControl extends ShakenControl {
            
             this.diceSprite.spriteFrame = this.dices.getSpriteFrame(`dice_${dice}`)
             
-            let node = cc.instantiate(this.diceNode);
-            node.active = true;
-            node.setPosition(cc.v2(posX, posY));
+            let node = cc.instantiate(this.diceSprite.node)
+            node.active = true
+            node.setPosition(cc.v2(posX, posY))
             
-            this.placedArea.addChild(node);
+            this.placedArea.addChild(node)
         });
     }
 }
