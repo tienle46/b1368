@@ -55,6 +55,7 @@ export default {
     error_not_support_platform: 'Chức năng này không hỗ trợ trên phiên bản Web',
     error_cannot_kick_player_vip: 'Bạn không thể kick người chơi có mức VIP cao hơn',
     error_un_verified: 'Bạn cần xác minh tài khoản để sử dụng chức năng này.',
+    otp_message: 'Để sử dụng tính năng này, vui lòng cài ứng dụng OTP hoặc gọi hotline: {{supportHotline}} để được hỗ trợ',
     
     greeting_newbiew: `Chào mừng bạn đến với game bài 1368`,
     daily_gift: `Quà đăng nhập hàng ngày`,

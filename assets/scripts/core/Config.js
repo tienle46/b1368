@@ -45,6 +45,17 @@ app.config.fbScope = 'public_profile,email,user_friends';
 app.config.fanpage = `http://m.me/songbaihoanggia`;
 app.config.website = `http://bai1368.com`;
 app.config.supportHotline = '123456';
+app.config.otp = true;
+app.config.otp_config = {
+    exchange: {
+        enabled: true,
+        msg: `Để sử dụng tính năng này, vui lòng cài ứng dụng OTP hoặc gọi hotline: ${app.config.supportHotline} để được hỗ trợ`
+    },
+    topup: {
+        enabled: true,
+        msg: `Để sử dụng tính năng này, vui lòng cài ứng dụng OTP hoặc gọi hotline: ${app.config.supportHotline} để được hỗ trợ`
+    }
+};
 app.config.defaultMinBalanceJoinGameRoomMultiple = 10;
 app.config.defaultAvatarUrl = "";
 app.config.shareFBConfig = {
@@ -157,7 +168,9 @@ app.config.parseConfigData = function(configData = {}) {
     app.config.website = configData.website || app.config.website;
     app.config.shareFBConfig = configData.shareFBConfig || app.config.shareFBConfig;
     app.config.verifyAccountSyntax = configData.verifyAccountSyntax || app.config.verifyAccountSyntax;
-
+    app.config.opt = configData.opt || app.config.opt;
+    app.config.opt_config = configData.opt_config || app.config.opt_config;
+    
     if(!app.visibilityManager) {
         app.visibilityManager = new VisibilityManager(app.config.features);
     } else {

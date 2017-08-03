@@ -15,7 +15,8 @@ export default class VisibilityManager {
     }
     
     updateFeatures(features) {
-        this._features = features;  
+        this._features = features;
+        // app.system.emit('iap_updated', features);
     }
     
     addComponent(instance) {

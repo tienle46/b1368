@@ -181,7 +181,12 @@ class Linking {
 
     static _handleOpenTopUpDialogAction(actionCode) {
         let defaultTab = null;
-
+        
+         if(app.config.otp) {
+            app.system.info((app.config.otp_config && app.config.otp_config.topup && app.config.otp_config.topup.msg) || app.res.string('otp_message', {supportHotline: app.config.supportHotline}));
+            return;
+        }
+        
         switch (actionCode) {
             case Linking.ACTION_TOPUP:
             case Linking.ACTION_TOPUP_CARD:
@@ -214,6 +219,11 @@ class Linking {
 
     static _handleOpenExchangeDialogAction(actionCode) {
         let defaultTab = null;
+        
+        if(app.config.otp) {
+            app.system.info((app.config.otp_config && app.config.otp_config.exchange && app.config.otp_config.exchange.msg) || app.res.string('otp_message', {supportHotline: app.config.supportHotline}));
+            return;
+        }
         
         if(app.config.ALPHA_TEST) {
             app.system.info(app.res.string('coming_soon'));
