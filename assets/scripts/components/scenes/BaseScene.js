@@ -150,7 +150,27 @@ export default class BaseScene extends Actor {
     }
 
     _requestAuthen(username, password, isRegister, isQuickLogin, accessToken, fbId, tryOneTime, cb, tmpRegister) {
+        
         clearTimeout(this._errorMessageTimeout);
+        // cc.log(`isAndroid ${app.env.isAndroid()}`, app.env.isMobile(),  cc.sys.os, cc.sys.OS_ANDROID, cc.sys.platform , cc.sys.ANDROID);
+        if (app.env.isAndroid()) {
+            const isRooted = window.jsb.reflection.callStaticMethod("org/cocos2dx/javascript/JSBUtils", "isRooted", "()Z");
+            // cc.log(`device rooted ? ${isRooted} `);
+            if(isRooted){
+                this.hideLoading();
+                app.system.info(app.res.string('message_not_support_rooted_device'));
+                return;
+            }
+        }
+        else if(app.env.isIOS()){
+            const isJailbroken = window.jsb.reflection.callStaticMethod("JSBUtils", "isJailbroken");
+            if(isJailbroken){
+                this.hideLoading();
+                app.system.info(app.res.string('message_not_support_rooted_device'));
+                return;
+            }
+        }
+        
         app.service.requestAuthen(username, password, isRegister, isQuickLogin, accessToken, fbId, (error, result) => {
             if (error) {
                 let splitMsgs = error.errorMessage && error.errorMessage.split('|');

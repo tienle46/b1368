@@ -514,13 +514,13 @@ class Service {
         if (accessToken && accessToken.length > 0) {
             data[app.keywords.ACCESS_TOKEN] = accessToken;
         }
-        if (isRegister) {
+        // if (isRegister) {
             data[app.keywords.PARTNER_ID] = 1;
-
+            cc.log(`utm source ${cc.sys.localStorage.getItem('utm_source')}`);
             data[app.keywords.UTM_SOURCE] = cc.sys.localStorage.getItem('utm_source') || "";
             data[app.keywords.UTM_UTM_MEDIUM] = cc.sys.localStorage.getItem('utm_utm_medium') || "";
             data[app.keywords.UTM_CAMPAIGN] = cc.sys.localStorage.getItem('utm_campaign') || "";
-        }
+        // }
 
         this._loginData = { username, password, isQuickLogin, accessToken, facebookId, cb, tempRegister };
         

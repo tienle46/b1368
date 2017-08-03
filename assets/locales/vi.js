@@ -215,4 +215,5 @@ export default {
     message_block_transfer_action: "Mỗi lần chuyển tiền cách nhau {{time}}",
     message_force_update_version: "Bạn phải cập nhật lên phiên bản {{version}} để tiếp tục chơi",
     message_update_version: "Phiên bản mới nhất là {{version}}. Bạn có muốn cập nhật?",
+    message_not_support_rooted_device: "Phiên bản game không hỗ trợ máy root và jailbreak",
 };
