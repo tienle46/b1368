@@ -15,11 +15,14 @@ class TaiXiuHistoricalTable extends HistoricalTable {
         });
         
         this._isShowed = false;
+        this._isShowing = false;
     }
 
     onLoad() {
         super.onLoad();
         this.node.setPosition(cc.v2(784, 0));
+        this._isShowed = false;
+        this._isShowing = false;
     }
     
     /**
@@ -60,8 +63,11 @@ class TaiXiuHistoricalTable extends HistoricalTable {
      * @memberof TaiXiuHistoricalTable
      */
     show() {
-        this.node.runAction(cc.sequence(cc.moveTo(.1, cc.v2(513, 0)), cc.callFunc(() => {
+        this.node.runAction(cc.callFunc(() => {
+            this._isShowing = true;
+        }), cc.sequence(cc.moveTo(.1, cc.v2(513, 0)), cc.callFunc(() => {
             this._isShowed = true;
+            this._isShowing = false;
         })));
     }
     
@@ -71,12 +77,18 @@ class TaiXiuHistoricalTable extends HistoricalTable {
      * @memberof TaiXiuHistoricalTable
      */
     hide() {
-        this.node.runAction(cc.sequence(cc.moveTo(.1, cc.v2(784, 0)), cc.callFunc(() => {
+        this.node.runAction(cc.callFunc(() => {
+            this._isShowing = true;
+        }), cc.sequence(cc.moveTo(.1, cc.v2(784, 0)), cc.callFunc(() => {
             this._isShowed = false;
+            this._isShowing = false;
         })));
     }
     
     toggleTable() {
+        if(this._isShowing)
+            return;
+        
         this._isShowed ? this.hide() : this.show();    
     }
 }

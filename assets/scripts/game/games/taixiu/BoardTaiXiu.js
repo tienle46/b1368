@@ -91,7 +91,6 @@ export default class BoardTaiXiu extends BoardGameBet {
                     this.scene && this.scene.emit(Events.XOCDIA_ON_PLAYER_RUN_MONEY_BALANCE_CHANGE_ANIM, { balance, playerId });
                 });
             }), cc.delayTime(.3), cc.callFunc(() => {
-                console.warn('Events.XOCDIA_ON_DISTRIBUTE_CHIP')
                 // this.scene && this.scene.emit(Events.XOCDIA_ON_DISTRIBUTE_CHIP, { playingPlayerIds, bets, playerResults, dots });
             }), cc.delayTime(2),  cc.callFunc(() => {
                 this.renderer && this.renderer.hideResult();

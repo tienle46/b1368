@@ -26,7 +26,9 @@ export default class FacebookActions {
             cb && cb();
         } else if (app.env.isBrowser()) {
             if (window.FB) {
-                cb && cb();
+                window.FB.getLoginStatus((response) => {
+                    cb && cb();
+                });
             } else {
                 window.fbAsyncInit = () => {
                     window.FB.init({
@@ -34,11 +36,13 @@ export default class FacebookActions {
                         xfbml: `${ app.config.fbxfbml }`,
                         version: `${ app.config.fbVersion }`
                     });
-                    window.FB.getLoginStatus((response) => {}); // some browsers prevent cache/cookie from 3rd party. Call this function to inital cookie (tested on Chrome, Opera)
+                    window.FB.getLoginStatus((response) => {
+                        cb && cb();
+                    }); // some browsers prevent cache/cookie from 3rd party. Call this function to initate cookie (tested on Chrome, Opera)
                     
                     window.FB.AppEvents.logPageView();
-                    cb && cb();
                 };
+                
                 (function (d, s, id) {
                     var js, fjs = d.getElementsByTagName(s)[0];
                     if (d.getElementById(id)) {
@@ -76,6 +80,7 @@ export default class FacebookActions {
         } else {
             if (window.FB) {
                 window.FB.getLoginStatus((response) => {
+                    console.warn('response', response)
                     if (response.status === 'connected') {
                         this._setLoginState(true);
 
@@ -86,6 +91,7 @@ export default class FacebookActions {
 
                         this._handlerLoginAction(uid, accessToken, runtimeCb);
                     } else {
+                        console.warn('response2', response)
                         // the user is logged in to Facebook, but has not authenticated your app
                         window.FB.login((response) => {                            
                             if (response.authResponse) {

@@ -35,8 +35,8 @@ app.config.USER_NAME_REGEX = /^[a-zA-Z0-9._]{6,15}$/;
 app.config.PASSWORD_REGEX = /^(?=.*[A-Za-z])(?=.*\d).{6,30}$/;
 app.config.CRYPTO_AES_KEY = 'hiephvdepzai123$#@^&^$';
 
-app.config.fbAppId = 265548353914142;
-// app.config.fbAppId = 1793374524209784; // <- app test
+// app.config.fbAppId = 265548353914142;
+app.config.fbAppId = 1793374524209784; // <- app test
 app.config.fbxfbml = true;
 // app.config.fbVersion = 'v2.8';
 app.config.fbVersion = 'v2.7'; // <- app test too

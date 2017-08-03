@@ -6,7 +6,8 @@ export default class BoardTaiXiuRenderer extends BoardGameBetRenderer {
         super();
         
         this.properties = this.assignProperties({
-            clockNode: cc.Node
+            clockNode: cc.Node,
+            clockAtlas: cc.SpriteAtlas
         });
         
         this.HISTORIAL_COMPONENT = 'TaiXiuHistoricalTable';
@@ -49,10 +50,33 @@ export default class BoardTaiXiuRenderer extends BoardGameBetRenderer {
      */
     alarm(duration) {
         //TODO: vibrating animation
-        this.clockNode.runAction(cc.sequence(cc.delayTime(duration + 1), cc.callFunc(() => {
+        // (-2) == shake in 3s
+        this.clockNode.runAction(cc.sequence(cc.delayTime(duration - 2), cc.callFunc(() => {
+            const animation = this.clockNode.getComponent(cc.Animation) || this.clockNode.addComponent(cc.Animation);
+
+            const sprite = this.clockNode.getComponent(cc.Sprite) || this.clockNode.addComponent(cc.Sprite);
+            sprite.spriteFrame = this.clockAtlas.getSpriteFrames()[0];
+
+            let spriteFrames = this.clockAtlas.getSpriteFrames();
+            let clip = cc.AnimationClip.createWithSpriteFrames(spriteFrames, 5);
+            clip.name = 'shake';
+            clip.wrapMode = cc.WrapMode.Default;
+            
+            //TODO: run sound
+            animation.addClip(clip);
+            this.clockNode.runAction(cc.repeatForever(cc.callFunc(() => {
+                console.warn('123');
+                // animation.play(clip.name);
+                // animation.on('finished', () => {
+                //     console.warn('x');
+                // });
+            })))
+        }), cc.delayTime(3), cc.callFunc(() => {
             this.clockAppearance(false) 
         })));
     }
+    
+    
 }
 
 app.createComponent(BoardTaiXiuRenderer);

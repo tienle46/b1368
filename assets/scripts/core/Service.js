@@ -503,6 +503,8 @@ class Service {
         data['isMobile'] = app.env.isMobile();
         tempRegister && (data['tempRegister'] = tempRegister);
         facebookId && (data[app.keywords.FACEBOOK_ID] = facebookId);
+        console.warn('facebookId', facebookId)
+        console.warn('accessToken', accessToken)
         data[app.keywords.DEVICE_ID] = app.config.DEVICE_ID;
         data[app.keywords.VERSION] = app.config.version;
         data[app.keywords.QUICK_PLAY] = isQuickLogin;
