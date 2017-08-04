@@ -51,6 +51,7 @@ export default class BoardTaiXiuRenderer extends BoardGameBetRenderer {
     alarm(duration) {
         //TODO: vibrating animation
         // (-2) == shake in 3s
+        let clipName = 'shake';
         this.clockNode.runAction(cc.sequence(cc.delayTime(duration - 2), cc.callFunc(() => {
             const animation = this.clockNode.getComponent(cc.Animation) || this.clockNode.addComponent(cc.Animation);
 
@@ -59,19 +60,22 @@ export default class BoardTaiXiuRenderer extends BoardGameBetRenderer {
 
             let spriteFrames = this.clockAtlas.getSpriteFrames();
             let clip = cc.AnimationClip.createWithSpriteFrames(spriteFrames, 5);
-            clip.name = 'shake';
+            clip.name = clipName;
             clip.wrapMode = cc.WrapMode.Default;
             
             //TODO: run sound
             animation.addClip(clip);
-            this.clockNode.runAction(cc.repeatForever(cc.callFunc(() => {
-                console.warn('123');
-                // animation.play(clip.name);
-                // animation.on('finished', () => {
-                //     console.warn('x');
-                // });
-            })))
+            animation.play(clip.name);
+            animation.on('finished', () => {
+                animation.play(clip.name);
+            });
         }), cc.delayTime(3), cc.callFunc(() => {
+            const animation = this.clockNode.getComponent(cc.Animation) || this.clockNode.addComponent(cc.Animation);
+            let state = animation.getAnimationState(clipName);
+            if(state.isPlaying) {
+                animation.pause(clipName);
+            }
+            animation.removeClip(clipName);
             this.clockAppearance(false) 
         })));
     }
