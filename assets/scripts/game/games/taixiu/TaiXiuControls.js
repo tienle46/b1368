@@ -9,6 +9,7 @@ export default class TaiXiuControls extends GameBetControls {
     constructor() {
         super();
         this.BET_COINTAINER_BUTTON_COMPONENT = 'TaiXiuBetContainerButton';
+        this.BET_TYPE_BTN_COMPONENT = 'TaiXiuBetTypeBtn';
     }
 
     onEnable() {

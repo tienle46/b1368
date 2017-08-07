@@ -25,6 +25,7 @@ export default class BoardTaiXiu extends BoardGameBet {
         if(boardState == app.const.game.state.STATE_BET) {
             this.renderer.shakenControlAppearance(false);
             this.renderer.clockAppearance(true);
+            this.scene.gameControls.hide();
         }
     }
     
@@ -44,6 +45,10 @@ export default class BoardTaiXiu extends BoardGameBet {
                 }
             }, this);
         }
+        
+        // if (this.scene.gameState == app.const.game.state.ENDING) {
+        //     this.renderer.hideTimeLine();
+        // }
     }
     
     // //@override

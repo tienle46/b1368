@@ -236,7 +236,6 @@ export default class BaseScene extends Actor {
                 }
                 this.showLoading(app.res.string('login_success'));
 
-
                 if(result.newVersion && result.newVersionLink){
                     app.context.newVersionInfo = {newVersion: result.newVersion, newVersionLink: result.newVersionLink}
                 }

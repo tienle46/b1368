@@ -18,10 +18,27 @@ class XocDiaShakenControl extends ShakenControl {
         super.reset();
     }
     
+    
     /**
      * @override
      * 
-     * @returns 
+     * @memberof XocDiaShakenControl
+     */
+    play() {
+        let startPos = this.wrapper.getPosition();
+        this.bowlNode.setPosition(this.bowlPos);
+
+        let shakers = [cc.delayTime(0.5).clone(), startPos, { x: startPos.x, y: startPos.y + 1 }, { x: startPos.x, y: startPos.y - 4 }, { x: startPos.x + 3, y: startPos.y }, { x: startPos.x - 7, y: startPos.y - 4 }, { x: startPos.x + 3, y: startPos.y + 2 }, { x: startPos.x - 6, y: startPos.y + 1 }, { x: startPos.x - 12, y: startPos.y - 1 }, { x: startPos.x - 14, y: startPos.y - 2 }, { x: startPos.x - 7, y: startPos.y - 4 }, { x: startPos.x - 7, y: startPos.y - 9 }, { x: startPos.x, y: startPos.y - 9 }, startPos];
+        let actions = shakers.map((s) => cc.moveTo(0.01, cc.v2(s.x, s.y)).clone());
+
+        let sequence = cc.repeatForever(cc.sequence(actions));
+        this._isShaking = true;
+        this.wrapper.runAction(sequence);
+    }
+    
+    /**
+     * @override
+     * 
      * @memberof XocDiaShakenControl
      */
     openTheBowl() {

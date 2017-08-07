@@ -10,6 +10,7 @@ export default class GameBetContainerButton extends Component {
                 type: [cc.Node]
             }
         });
+        this.BET_TYPE_BTN_COMPONENT = 'BetTypeBtn';
     }
 
     onLoad() {
@@ -49,8 +50,15 @@ export default class GameBetContainerButton extends Component {
 
     resetBtns() {
         this.groupBtns.forEach((btn) => {
-            btn.getComponent('BetTypeBtn').setLbls(0);
+            btn.getComponent(this.BET_TYPE_BTN_COMPONENT).setLbls(0);
         });
+    }
+    
+    // betTypeBtn
+    userBetApperanace(state = true) {
+       this.groupBtns.forEach((btn) => {
+            btn.getComponent(this.BET_TYPE_BTN_COMPONENT).setLbls(0);
+        }); 
     }
     
     // interface

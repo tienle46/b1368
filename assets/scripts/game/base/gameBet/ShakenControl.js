@@ -83,9 +83,9 @@ export default class ShakenControl extends Component {
     }
     
     show() {
-        this.node.runAction(cc.sequence(cc.fadeIn(.3), cc.callFunc(() => {
-            this.node.active = true;
-        })));
+        this.node.active = true;
+        // this.node.opacity = 255;
+        this.node.runAction(cc.fadeIn(.3));
     }
     
     /**

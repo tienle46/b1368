@@ -8,15 +8,35 @@ class TaiXiuBetTypeBtn extends BetTypeBtn {
         this.properties = this.assignProperties({
             hightLight: cc.Node
         });
+        
+        this.allBetState = false;
+        this.allBetState = false;
     }
     
     onLoad() {
-        super.onLoad();
+        // super.onLoad();
         this.hide();
+        this.highlight(false);
     }
     
-    highlight() {
-        CCUtils.active(this.highlight);
+    showAllBetLbl() {
+        CCUtils.setActive(this.allBetWrap)
+    }
+    
+    hideAllBetLbl() {
+        CCUtils.setActive(this.allBetWrap, false)
+    }
+    
+    showOwnBetLbl() {
+        CCUtils.setActive(this.ownBetWrap)
+    }
+    
+    hideOwnBetLbl() {
+        CCUtils.setActive(this.ownBetWrap, false)
+    }
+    
+    highlight(state = true) {
+        CCUtils.setActive(this.hightLight, state);
     }
 }
 

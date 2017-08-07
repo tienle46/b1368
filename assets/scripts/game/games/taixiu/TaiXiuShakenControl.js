@@ -14,6 +14,7 @@ class TaiXiuShakenControl extends ShakenControl {
         });
     }
 
+    
     /**
      * @override
      * 

@@ -19,8 +19,10 @@ export default class BetTypeBtn extends Component {
 
     onLoad() {
         this.setLbls(0);
+        this.allBetAmount = 0
+        this.ownBetAmount = 0
     }
-    
+        
     showAllBetLbl() {
         CCUtils.setActive(this.allBetWrap)
     }
@@ -34,7 +36,7 @@ export default class BetTypeBtn extends Component {
     }
     
     hideOwnBetLbl() {
-        CCUtils.setActive(this.ownBetWrap, true)
+        CCUtils.setActive(this.ownBetWrap, false)
     }
     
     show() {
@@ -91,6 +93,10 @@ export default class BetTypeBtn extends Component {
     updateLbls(amount, isMinus) {
         this.updateAllLbl(amount, isMinus)
         this.updateOwnLbl(amount, isMinus)
+    }
+    
+    update(dt) {
+        
     }
 }
 

@@ -1330,6 +1330,12 @@
     },
     "ownLbl": {
       "__id__": 25
+    },
+    "allBetWrap": {
+      "__id__": 18
+    },
+    "ownBetWrap": {
+      "__id__": 24
     }
   },
   {
@@ -2044,6 +2050,12 @@
     },
     "ownLbl": {
       "__id__": 45
+    },
+    "allBetWrap": {
+      "__id__": 38
+    },
+    "ownBetWrap": {
+      "__id__": 44
     }
   },
   {
@@ -3127,6 +3139,12 @@
     },
     "ownLbl": {
       "__id__": 74
+    },
+    "allBetWrap": {
+      "__id__": 67
+    },
+    "ownBetWrap": {
+      "__id__": 73
     }
   },
   {
@@ -4145,6 +4163,12 @@
     },
     "ownLbl": {
       "__id__": 102
+    },
+    "allBetWrap": {
+      "__id__": 95
+    },
+    "ownBetWrap": {
+      "__id__": 101
     }
   },
   {
@@ -5163,6 +5187,12 @@
     },
     "ownLbl": {
       "__id__": 130
+    },
+    "allBetWrap": {
+      "__id__": 123
+    },
+    "ownBetWrap": {
+      "__id__": 129
     }
   },
   {
@@ -6181,6 +6211,12 @@
     },
     "ownLbl": {
       "__id__": 158
+    },
+    "allBetWrap": {
+      "__id__": 151
+    },
+    "ownBetWrap": {
+      "__id__": 157
     }
   },
   {
@@ -11268,7 +11304,7 @@
     "timeLineNode": {
       "__id__": 292
     },
-    "circleGroup": {
+    "placedArea": {
       "__id__": 287
     },
     "colors": [
@@ -12771,9 +12807,6 @@
     },
     "resultText": {
       "__id__": 359
-    },
-    "dishContainerNode": {
-      "__id__": 282
     },
     "chipPrefab": {
       "__uuid__": "e74aede9-fe2e-4ea9-87d0-71730289b91b"

@@ -42,6 +42,7 @@ export default class GameBetControls extends GameControls {
         
         this.BET_COINTAINER_BUTTON_COMPONENT = 'BetContainerButton';
         this.BET_OPTION_GROUP_COMPONENT = 'BetOptionsGroup';
+        this.BET_TYPE_BTN_COMPONENT = 'BetTypeBtn';
     }
 
     onEnable() {
@@ -125,7 +126,7 @@ export default class GameBetControls extends GameControls {
             let bet = {};
             bet[app.keywords.XOCDIA_BET.AMOUNT] = Number(amount);
             bet[app.keywords.XOCDIA_BET.TYPE] = betTypeId;
-
+            
             this._sendBetRequest(bet);
         }
     }
@@ -356,7 +357,7 @@ export default class GameBetControls extends GameControls {
 
     _updateGoldAmountOnControl(betTypeId, amount, isItMe, isMinus, isReplace) {
         let toNode = this.betContainerButton.getBetTypeByTypeId(betTypeId);
-        let betTypeBtn = toNode.getComponent('BetTypeBtn');
+        let betTypeBtn = toNode.getComponent(this.BET_TYPE_BTN_COMPONENT); 
         // control gold
         if (this.isInCancelPhase) {
             betTypeBtn.updateLbls(amount, isMinus);
