@@ -570,6 +570,7 @@ export default class ListTableScene extends BaseScene {
          * If create room successfully, response going handle by join room success follow
          */
         this.showLoading('Đang vào bàn chơi....');
+        
         app.service.send({
             cmd: app.commands.USER_CREATE_ROOM,
             data: {

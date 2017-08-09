@@ -21,7 +21,7 @@ export default class BoardGameBet extends BoardCard {
         if(this.scene) {
             this.scene.on(Events.ON_GAME_STATE_BEGIN, this._onGameBegin, this);
             this.scene.on(Events.ON_GAME_STATE, this._onGameState, this);
-            this.scene.on(Events.XOCDIA_ON_BOARD_UPDATE_PREVIOUS_RESULT_HISTORY, this._onUpdateBoardResultHistory, this);
+            this.scene.on(Events.GAMEBET_ON_BOARD_UPDATE_PREVIOUS_HISTORY, this._onUpdateBoardResultHistory, this);
         }
     }
 
@@ -31,7 +31,7 @@ export default class BoardGameBet extends BoardCard {
         if(this.scene) {
             this.scene.off(Events.ON_GAME_STATE_BEGIN, this._onGameBegin, this);
             this.scene.off(Events.ON_GAME_STATE, this._onGameState, this);
-            this.scene.off(Events.XOCDIA_ON_BOARD_UPDATE_PREVIOUS_RESULT_HISTORY, this._onUpdateBoardResultHistory, this);
+            this.scene.off(Events.GAMEBET_ON_BOARD_UPDATE_PREVIOUS_HISTORY, this._onUpdateBoardResultHistory, this);
         }
     }
     

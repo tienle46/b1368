@@ -6,12 +6,17 @@ class TaiXiuHistoricalTable extends HistoricalTable {
         super();
         
         this.properties = this.assignProperties({
+            wrapper: cc.Node,
             childLbl: cc.Label,
             faces: {
                 default: [],
                 type: [cc.Sprite]
             },
-            facesAtlas: cc.SpriteAtlas
+            facesAtlas: cc.SpriteAtlas,
+            historicalDices: {
+                default: [],
+                type: [cc.Sprite]
+            }
         });
         
         this._isShowed = false;
@@ -26,18 +31,27 @@ class TaiXiuHistoricalTable extends HistoricalTable {
     }
     
     /**
-     * @override
+     * @extending
      * 
-     * @param {any} infors [{type}]
-     * @memberof XocDiaStatisticTable
+     * @param {any} infors [{faces: [], text: 'Tai'}] {}
+     * @memberof TaiXiuHistoricalTable
      */
     updateTableInfo(infors) {
+        if(infors.length < 1)
+            return
+        
         //only update newest 32 cells
-        let numberCellsInTable = 22;
+        let numberCellsInTable = 22
         if (infors.length > numberCellsInTable)
-            infors = infors.slice(0, numberCellsInTable + 1);
+            infors = infors.slice(0, numberCellsInTable + 1)
 
-        super.updateTableInfo(infors);
+        super.updateTableInfo(infors)
+        
+        // update dices on historical btn
+        let latestResult = infors[infors.length - 1]
+        latestResult.faces.forEach((face, index) => {
+            this.faces[index].spriteFrame = this.facesAtlas.getSpriteFrame(face);
+        })
     }
     
     /**
@@ -47,7 +61,7 @@ class TaiXiuHistoricalTable extends HistoricalTable {
      */
     modifyItem(type) {
         type.faces.forEach((face, index) => {
-            this.faces[index].spriteFrame = this.facesAtlas.getSpriteFrame(face);
+            this.historicalDices[index].spriteFrame = this.facesAtlas.getSpriteFrame(face);
         });
         this.childLbl.text = type.text;
         
@@ -63,12 +77,12 @@ class TaiXiuHistoricalTable extends HistoricalTable {
      * @memberof TaiXiuHistoricalTable
      */
     show() {
-        this.node.runAction(cc.callFunc(() => {
+        this.wrapper.runAction(cc.sequence(cc.callFunc(() => {
             this._isShowing = true;
-        }), cc.sequence(cc.moveTo(.1, cc.v2(513, 0)), cc.callFunc(() => {
+        }), cc.moveTo(.1, cc.v2(-270, 0)), cc.callFunc(() => {
             this._isShowed = true;
             this._isShowing = false;
-        })));
+        })))
     }
     
     /**
@@ -77,12 +91,12 @@ class TaiXiuHistoricalTable extends HistoricalTable {
      * @memberof TaiXiuHistoricalTable
      */
     hide() {
-        this.node.runAction(cc.callFunc(() => {
+        this.wrapper.runAction(cc.sequence(cc.callFunc(() => {
             this._isShowing = true;
-        }), cc.sequence(cc.moveTo(.1, cc.v2(784, 0)), cc.callFunc(() => {
+        }), cc.moveTo(.1, cc.v2(0, 0)), cc.callFunc(() => {
             this._isShowed = false;
             this._isShowing = false;
-        })));
+        })))
     }
     
     toggleTable() {

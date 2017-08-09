@@ -21,7 +21,7 @@ class XocDiaHistoricalTable extends HistoricalTable {
     }
     
     /**
-     * @override
+     * @extending
      * 
      * @param {any} infors 
      * @memberof XocDiaStatisticTable

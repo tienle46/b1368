@@ -15,7 +15,7 @@ export default class PlayerGameBet extends Player {
         
         // used to save currently in-phase-betted data of this user,
         //because client's connection will be occured while betting,
-        // it is more neccessary when save betData on its event emitter `XOCDIA_ON_PLAYER_BET`;
+        // it is more neccessary when save betData on its event emitter `GAMEBET_ON_PLAYER_BET`;
         this.betData = []; 
     }
 
@@ -40,10 +40,10 @@ export default class PlayerGameBet extends Player {
             
             // ingame
             this.scene.on(Events.ON_GAME_STATE, this._onGameState, this);
-            this.scene.on(Events.XOCDIA_ON_PLAYER_BET, this._onPlayerBet, this);
-            this.scene.on(Events.XOCDIA_ON_PLAYER_CANCELBET, this._onPlayerCancelBet, this);
-            this.scene.on(Events.XOCDIA_ON_DISTRIBUTE_CHIP, this._onDistributeChip, this);
-            this.scene.on(Events.XOCDIA_ON_PLAYER_RUN_MONEY_BALANCE_CHANGE_ANIM, this._onPlayerChangeMoneyAnim, this);
+            this.scene.on(Events.GAMEBET_ON_PLAYER_BET, this._onPlayerBet, this);
+            this.scene.on(Events.GAMEBET_ON_PLAYER_CANCELBET, this._onPlayerCancelBet, this);
+            this.scene.on(Events.GAMEBET_ON_DISTRIBUTE_CHIP, this._onDistributeChip, this);
+            this.scene.on(Events.GAMEBET_ON_PLAYER_RUN_MONEY_BALANCE_CHANGE_ANIM, this._onPlayerChangeMoneyAnim, this);
         }
     }
 
@@ -56,10 +56,10 @@ export default class PlayerGameBet extends Player {
             
             // ingame
             this.scene.off(Events.ON_GAME_STATE, this._onGameState, this);
-            this.scene.off(Events.XOCDIA_ON_PLAYER_BET, this._onPlayerBet, this);
-            this.scene.off(Events.XOCDIA_ON_PLAYER_CANCELBET, this._onPlayerCancelBet, this);
-            this.scene.off(Events.XOCDIA_ON_DISTRIBUTE_CHIP, this._onDistributeChip, this);
-            this.scene.off(Events.XOCDIA_ON_PLAYER_RUN_MONEY_BALANCE_CHANGE_ANIM, this._onPlayerChangeMoneyAnim, this);
+            this.scene.off(Events.GAMEBET_ON_PLAYER_BET, this._onPlayerBet, this);
+            this.scene.off(Events.GAMEBET_ON_PLAYER_CANCELBET, this._onPlayerCancelBet, this);
+            this.scene.off(Events.GAMEBET_ON_DISTRIBUTE_CHIP, this._onDistributeChip, this);
+            this.scene.off(Events.GAMEBET_ON_PLAYER_RUN_MONEY_BALANCE_CHANGE_ANIM, this._onPlayerChangeMoneyAnim, this);
         }
     }
 
@@ -155,7 +155,7 @@ export default class PlayerGameBet extends Player {
             let { myPos, isItMe } = this._getPosBasedOnWorldSpace(playerId);
             
             app.system.audioManager.play(app.system.audioManager.XOCDIA_MOVING_CHIPS);
-            this.scene.emit(Events.XOCDIA_ON_PLAYER_TOSSCHIP_ANIMATION, { myPos, betsList, isItMe, playerId, isReplace, prevList });
+            this.scene.emit(Events.GAMEBET_ON_PLAYER_TOSSCHIP_ANIMATION, { myPos, betsList, isItMe, playerId, isReplace, prevList });
         } else {
             //TODO
             app.system.showToast(err);
@@ -171,29 +171,22 @@ export default class PlayerGameBet extends Player {
             let isItMe = this.scene.gamePlayers.isItMe(playerId);
             let myPos = this.scene.gamePlayers.playerPositions.getPlayerAnchorByPlayerId(playerId, isItMe);
 
-            this.scene.emit(Events.XOCDIA_ON_PLAYER_CANCEL_BET_SUCCESS, { myPos, isItMe, betsList, playerId });
+            this.scene.emit(Events.GAMEBET_ON_PLAYER_CANCEL_BET_SUCCESS, { myPos, isItMe, betsList, playerId });
             this.betData = [];
         } else {
              app.system.showToast(err);
         }
     }
-
-    _onDistributeChip(data) {
-        let { playingPlayerIds, bets, dots } = data;
-        let playerIdIndex = playingPlayerIds.findIndex(id => id == this.id);
-
-        if (playerIdIndex !== undefined) {
-            let playerId = this.id;
-            let isItMe = this.scene.gamePlayers.isItMe(playerId);
-            let { myPos } = this._getPosBasedOnWorldSpace(playerId);
-            let betData = bets[playerIdIndex];
-            // user will be get chip after dealer got it
-            setTimeout(() => {
-                this.scene && this.scene.emit(Events.XOCDIA_ON_PLAYER_RECEIVE_CHIP_ANIMATION, { userPos: myPos, playerId, betData, dots, isItMe });
-            }, 500);
-        }
-        return;
-    }
+    
+    /**
+     * @interface
+     * 
+     * @param {any} data 
+     * @param {any} dots 
+     * @returns 
+     * @memberof PlayerGameBet
+     */
+    _onDistributeChip(data, dots) {}
 
     _onPlayerChangeMoneyAnim(data) {
         let { playerId, balance } = data;

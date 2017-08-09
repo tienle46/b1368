@@ -10,25 +10,29 @@ export default class GameBetContainerButton extends Component {
                 type: [cc.Node]
             }
         });
+        
+        // map the ids rely on the server. Eg: (xocdia)
+        // 1: 'even',
+        // 2: 'odd',
+        // 3: 'fourWhite',
+        // 4: 'fourRed',
+        // 5: 'threeWhite',
+        // 6: 'threeRed'
+        this.betTypeIdsMap = []
+        
         this.BET_TYPE_BTN_COMPONENT = 'BetTypeBtn';
     }
 
     onLoad() {
         this._typeSetup();
     }
-
+    
     _typeSetup() {
-        // this.nEven.id = 1;
-        // this.nOdd.id = 2;
-        // this.n4Reds.id = 3;
-        // this.n4Blacks.id = 4;
-        // this.n3Reds1Black.id = 5;
-        // this.n3Blacks1Red.id = 6;
         this.groupBtns.forEach((btnNode, i) => {
-            btnNode.id = (i + 1);
+            btnNode.id = this.betTypeIdsMap[i];
         });
     }
-
+    
     //@typeId 1: Chẵn, 2: Lẻ, 3: 4 Trắng, 4: 4 Đỏ, 5: 3 Trắng 1 Đỏ, 6: 3 Đỏ 1 Trắng
     getBetTypeByTypeId(id) {
         return this.groupBtns[id - 1];

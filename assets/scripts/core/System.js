@@ -435,7 +435,9 @@ class GameSystem {
                     gameSceneName = 'BaCayScene';
                     break;
                 case app.const.gameCode.XOC_DIA:
-                    // gameSceneName = 'XocDiaScene';
+                    gameSceneName = 'XocDiaScene';
+                    break;
+                case app.const.gameCode.TAI_XIU:
                     gameSceneName = 'TaiXiuScene';
                     break;
                 case app.const.gameCode.TLMNDL_SOLO:

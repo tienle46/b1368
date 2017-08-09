@@ -158,7 +158,7 @@ export default class JarComponent extends Actor {
     runCoinAnim(destination) {
         if(this && this.jarSprite) {
             // open the jar
-            const animation = this.jarSprite.node.getComponent(cc.Animation) ? this.jarSprite.node.getComponent(cc.Animation) : this.jarSprite.node.addComponent(cc.Animation)
+            // const animation = this.jarSprite.node.getComponent(cc.Animation) ? this.jarSprite.node.getComponent(cc.Animation) : this.jarSprite.node.addComponent(cc.Animation)
             this.spriteFrames[1] && (this.jarSprite.spriteFrame = this.spriteFrames[1]);
             
             if(this.node) {

@@ -93,7 +93,9 @@ export default class DashboardScene extends BaseScene {
             Linking.handlePendingActions();
             if(app.context.newVersionInfo){
                 let message = app.res.string("message_update_version", {version: app.context.newVersionInfo.newVersion})
-                app.system.confirm(message, null, () => {
+                app.system.confirm(message, () => {
+                    app.context.newVersionInfo = null;
+                }, () => {
                     cc.sys.openURL(app.context.newVersionInfo.newVersionLink);
                     app.context.newVersionInfo = null;
                 })
@@ -184,7 +186,6 @@ export default class DashboardScene extends BaseScene {
     
     _onUserListGame(data) {
         let gameList = this._filterClientSupportedGames(data[app.keywords.SERVICE_CHILD_CODE_ARRAY]);
-        gameList.push('taixiu');
         let removedGames = app.context.gameList.length == 0 ? [] : ArrayUtils.removeAll([...gameList], app.context.gameList);
 
         if (removedGames.length < gameList.length) {
@@ -248,10 +249,6 @@ export default class DashboardScene extends BaseScene {
 
                     itemComponent.gameCode = gc;
                     itemComponent.listenOnClickListener((gameCode) => {
-                        if(gc === 'taixiu'){
-                            app.system.showToast('Game đang cập nhật...');
-                            return;
-                        }
                         app.context.setSelectedGame(gameCode);
                         this.changeScene(app.const.scene.LIST_TABLE_SCENE);
                     });

@@ -34,7 +34,7 @@ export default class GameBetControls extends GameControls {
 
         // used to save currently in-phase-betted data of this user, 
         // because client's connection will be occured while betting, 
-        // it is more neccessary when save betData on its event emitter `XOCDIA_ON_PLAYER_BET`;
+        // it is more neccessary when save betData on its event emitter `GAMEBET_ON_PLAYER_BET`;
         this.betData = [];
         this.previousBetData = [];
         this.isInCancelPhase = false;
@@ -72,9 +72,9 @@ export default class GameBetControls extends GameControls {
         this.scene.on(Events.SHOW_GAME_BEGIN_CONTROLS, this._showGameBeginControls, this);
         this.scene.on(Events.HIDE_ALL_CONTROLS, this.hideAllControls, this);
 
-        this.scene.on(Events.XOCDIA_ON_PLAYER_TOSSCHIP_ANIMATION, this._onPlayerTossChip, this);
-        this.scene.on(Events.XOCDIA_ON_PLAYER_CANCEL_BET_SUCCESS, this._onPlayerCancelBetSuccess, this);
-        this.scene.on(Events.XOCDIA_ON_PLAYER_RECEIVE_CHIP_ANIMATION, this._onPlayerReceiveChip, this);
+        this.scene.on(Events.GAMEBET_ON_PLAYER_TOSSCHIP_ANIMATION, this._onPlayerTossChip, this);
+        this.scene.on(Events.GAMEBET_ON_PLAYER_CANCEL_BET_SUCCESS, this._onPlayerCancelBetSuccess, this);
+        this.scene.on(Events.GAMEBET_ON_PLAYER_RECEIVE_CHIP_ANIMATION, this._onPlayerReceiveChip, this);
     }
 
     onDestroy() {
@@ -87,9 +87,9 @@ export default class GameBetControls extends GameControls {
         this.scene.off(Events.ON_GAME_STATE_ENDING, this._onGameEnding, this);
         this.scene.off(Events.SHOW_GAME_BEGIN_CONTROLS, this._showGameBeginControls, this);
         this.scene.off(Events.HIDE_ALL_CONTROLS, this.hideAllControls, this);
-        this.scene.off(Events.XOCDIA_ON_PLAYER_TOSSCHIP_ANIMATION, this._onPlayerTossChip, this);
-        this.scene.off(Events.XOCDIA_ON_PLAYER_CANCEL_BET_SUCCESS, this._onPlayerCancelBetSuccess, this);
-        this.scene.off(Events.XOCDIA_ON_PLAYER_RECEIVE_CHIP_ANIMATION, this._onPlayerReceiveChip, this);
+        this.scene.off(Events.GAMEBET_ON_PLAYER_TOSSCHIP_ANIMATION, this._onPlayerTossChip, this);
+        this.scene.off(Events.GAMEBET_ON_PLAYER_CANCEL_BET_SUCCESS, this._onPlayerCancelBetSuccess, this);
+        this.scene.off(Events.GAMEBET_ON_PLAYER_RECEIVE_CHIP_ANIMATION, this._onPlayerReceiveChip, this);
         
         this.betData = [];
         this.previousBetData = [];
@@ -284,27 +284,12 @@ export default class GameBetControls extends GameControls {
     }
 
     /**
-     * @param userPos: cc.v2
-     * @param betData: {<betid1> : <amount>, <betid2> : <amount>}
+     * @interface
+     * 
+     * @param betData: betted data
+     * @param successData // <- data responsed by server
      */
-    _onPlayerReceiveChip(data) {
-        let {
-            userPos,
-            playerId,
-            betData,
-            dots,
-            isItMe
-        } = data;
-        let toPos = isItMe ? this.receiveChipDestinationNode.parent.convertToWorldSpaceAR(this.receiveChipDestinationNode.getPosition()) : userPos;
-
-        for (let id in betData) {
-            let isWinner = this.betContainerButton.doesBetTypeIdWin(Number(id), dots);
-            if (!isWinner) {
-                toPos = this.dealer.parent.convertToWorldSpaceAR(this.dealer.getPosition());
-            }
-            this.xocDiaAnim.receiveChip(toPos, playerId, id);
-        }
-    }
+    _onPlayerReceiveChip(betData, successData) {}
 
     _onTossChipAnim(data = {
         b: null,

@@ -6,37 +6,38 @@ class TaiXiuBetTypeBtn extends BetTypeBtn {
     constructor() {
         super();
         this.properties = this.assignProperties({
-            hightLight: cc.Node
+            highlightNode: cc.Node
         });
-        
-        this.allBetState = false;
-        this.allBetState = false;
     }
     
     onLoad() {
-        // super.onLoad();
-        this.hide();
-        this.highlight(false);
+        super.onLoad()
+        this.highlight(false)
     }
     
-    showAllBetLbl() {
-        CCUtils.setActive(this.allBetWrap)
-    }
-    
-    hideAllBetLbl() {
-        CCUtils.setActive(this.allBetWrap, false)
-    }
-    
-    showOwnBetLbl() {
-        CCUtils.setActive(this.ownBetWrap)
-    }
-    
-    hideOwnBetLbl() {
-        CCUtils.setActive(this.ownBetWrap, false)
+    reset() {
+        super.reset()
+        this.highlight(false)
     }
     
     highlight(state = true) {
-        CCUtils.setActive(this.hightLight, state);
+        if(state) {
+            this.highlightNode.stopAllActions()
+            this.highlightNode.runAction(cc.fadeIn(.2))
+        } else {
+            this.highlightNode.opacity = 0
+        }
+        // CCUtils.setActive(this.hightLight, state);
+    }
+    
+    update(dt) {
+        if(this.ownBetAmount === 0 || this.allBetAmount === 0  ) {
+            this.allBetAmount === 0 && this.hideAllBetLbl()
+            this.ownBetAmount === 0 && this.hideOwnBetLbl()
+        } else {
+            this.allBetAmount > 0 && !this.allBetWrap.active && this.showAllBetLbl()
+            this.ownBetAmount > 0 && !this.ownBetWrap.active && this.showOwnBetLbl()
+        }
     }
 }
 

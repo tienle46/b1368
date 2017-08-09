@@ -131,21 +131,6 @@ app.const.game.seat.SEAT_TYPE_5_PLAYER = 5;
 app.const.game.seat.SEAT_TYPE_5_PLAYER_XITO = 51;
 app.const.game.seat.SEAT_TYPE_6_PLAYER = 6;
 
-app.const.game.gameCodes = [
-    "pom",
-    "xit",
-    "bcy",
-    "lie",
-    "tln",
-    "tnm",
-    "tnd",
-    "xam",
-    "tcc",
-    "tds",
-    "xms",
-    "xga"
-];
-
 app.const.game.maxPlayers = {
     "pom": 4,
     "bcy": 9,
@@ -154,6 +139,7 @@ app.const.game.maxPlayers = {
     "xod": 9,
     "tds": 2,
     "xms": 2,
+    "gtx": 9,
     "default": 2,
 };
 

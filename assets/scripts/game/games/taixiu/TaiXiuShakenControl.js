@@ -6,14 +6,57 @@ class TaiXiuShakenControl extends ShakenControl {
         super();
         
         this.properties = this.assignProperties({
-            dices: {
-                type: cc.SpriteAtlas,
-                default: null
-            },
-            diceSprite: cc.Sprite
+            dices: cc.SpriteAtlas,
+            diceSprite: cc.Sprite,
+            dealerShakes: cc.SpriteAtlas,
+            dealerNode: cc.Node
         });
     }
 
+    /**
+     * @override
+     * 
+     * @memberof TaiXiuShakenControl
+     */
+    play() {
+        this.wrapper.active = false
+        let clipName = 'taiXiuDealerShakes'
+        this.dealerNode.runAction(cc.sequence(cc.fadeIn(.3), cc.callFunc(() => {
+            let animation = this.dealerNode.getComponent(cc.Animation) || this.dealerNode.addComponent(cc.Sprite)
+
+            const sprite = this.dealerNode.getComponent(cc.Sprite) || this.dealerNode.addComponent(cc.Sprite)
+            sprite.spriteFrame = this.dealerShakes.getSpriteFrames()[0]
+
+            let spriteFrames = this.dealerShakes.getSpriteFrames()
+            let clip = cc.AnimationClip.createWithSpriteFrames(spriteFrames, 2)
+            clip.name = clipName
+            clip.wrapMode = cc.WrapMode.Default
+            
+            //TODO: run sound
+            animation.addClip(clip);
+            animation.play(clip.name);
+            
+            this._isShaking = true;
+            
+            animation.on('finished', () => {
+                animation.play(clip.name);
+            })
+        })))
+    }
+    
+    /**
+     * @extending
+     * 
+     * @memberof TaiXiuShakenControl
+     */
+    stop() {
+        super.stop();
+        this.dealerNode.stopAllActions();
+        this.dealerNode.runAction(cc.sequence(cc.fadeOut(.1), cc.callFunc(() => {
+            const sprite = this.dealerNode.getComponent(cc.Sprite) || this.dealerNode.addComponent(cc.Sprite)
+            sprite.spriteFrame = this.dealerShakes.getSpriteFrames()[0]
+        })))
+    }
     
     /**
      * @override
@@ -25,13 +68,14 @@ class TaiXiuShakenControl extends ShakenControl {
         if(this.isShaking())
             return;
         
-        let bowlPos = this.bowlPos;
+        this.wrapper.active = true
+        let bowlPos = this.bowlPos
         
         let action = cc.moveTo(1, cc.v2(bowlPos.x, 451));
         this.bowlNode.runAction(cc.sequence(action, cc.callFunc(() => {
-            this.bowlPos = bowlPos;
-            this.bowlNode.zIndex = 3;
-        })));
+            this.bowlPos = bowlPos
+            this.bowlNode.zIndex = 3
+        })))
     }
     
      /**

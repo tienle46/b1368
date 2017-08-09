@@ -88,6 +88,7 @@ app.config.supportedGames = [
     app.const.gameCode.XOC_DIA,
     app.const.gameCode.TLMNDL_SOLO,
     app.const.gameCode.XAM_SOLO,
+    app.const.gameCode.TAI_XIU
 ];
 
 app.config.soloGames = [
@@ -156,7 +157,6 @@ app.config.features = {};
 app.config.verifyAccountSyntax = {}; // {viettel, mobi, vina}
 
 app.config.parseConfigData = function(configData = {}) {
-    console.warn('conf', configData);
     app.config.currencyName = configData.currencyName || app.config.currencyName;
     app.config.fanpage = configData.fanpage || app.config.fanpage;
     app.config.supportHotline = configData.supportHotline || app.config.supportHotline;

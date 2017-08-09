@@ -21,7 +21,12 @@ class TabPersonalMessages extends TabMessages {
         this._sendReadRequest(id, false);
     }
     
-    //@override
+    /**
+     * @override
+     * 
+     * @param {any} [{messages = [], page}={}] 
+     * @memberof TabPersonalMessages
+     */
     onDataChanged({messages = [], page} = {}) {
         messages && this.displayMessages(this.listMessagePanel, messages.map(message => {
             let {id, title, msg, time, action, actionData, readed} = message;

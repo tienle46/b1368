@@ -80,7 +80,9 @@ export default class BoardTaiXiuRenderer extends BoardGameBetRenderer {
         })));
     }
     
-    
+    displayBowlWrap() {
+        this.shakenControl.wrapper.active = true;
+    }
 }
 
 app.createComponent(BoardTaiXiuRenderer);

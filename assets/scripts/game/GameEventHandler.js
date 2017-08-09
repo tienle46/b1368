@@ -191,7 +191,7 @@ export default class GameEventHandler {
         let isSuccess = utils.getValue(data, app.keywords.XOCDIA_CANCEL_BET.RESPONSE.IS_SUCCESS);
         let err = utils.getValue(data, app.keywords.XOCDIA_CANCEL_BET.RESPONSE.ERROR_MSG);
         let d = { playerId, isSuccess, err };
-        playerId && this.scene.emit(Events.XOCDIA_ON_PLAYER_CANCELBET, d);
+        playerId && this.scene.emit(Events.GAMEBET_ON_PLAYER_CANCELBET, d);
     }
 
     _onXocDiaPLayerBet(data) {
@@ -201,7 +201,7 @@ export default class GameEventHandler {
         let err = utils.getValue(data, app.keywords.XOCDIA_BET.RESPONSE.ERROR_MSG);
         let isReplace = utils.getValue(data, app.keywords.XOCDIA_BET.RESPONSE.IS_REPLACE);
         let d = { playerId, betsList, isSuccess, err, isReplace };
-        playerId && this.scene.emit(Events.XOCDIA_ON_PLAYER_BET, d);
+        playerId && this.scene.emit(Events.GAMEBET_ON_PLAYER_BET, d);
     }
 
     _onPlayerHucAccepted(data) {
@@ -298,7 +298,7 @@ export default class GameEventHandler {
             }
 
             if (varName == Keywords.VARIABLE_XOCDIA_HISTORY) {
-                this.scene.emit(Events.XOCDIA_ON_BOARD_UPDATE_PREVIOUS_RESULT_HISTORY, room.variables[varName].value);
+                this.scene.emit(Events.GAMEBET_ON_BOARD_UPDATE_PREVIOUS_HISTORY, room.variables[varName].value);
             }
         });
     }

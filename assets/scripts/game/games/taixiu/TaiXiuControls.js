@@ -19,6 +19,37 @@ export default class TaiXiuControls extends GameBetControls {
     onDestroy() {
         super.onDestroy();
     }
+    
+    highLightWinBets(ids) {
+        if(ids.length === 0) return
+            
+        this.betContainerButton.highLightBets(ids)
+    }
+    
+    /**
+     * @override
+     * 
+     * @param data => betData: {<betid1> : <amount>, <betid2> : <amount>}
+     * @param dots // <- result data responsed by server
+     */
+    _onPlayerReceiveChip(data, winIds) {
+        let {
+            userPos,
+            playerId,
+            betData,
+            isItMe
+        } = data;
+        let toPos = isItMe ? this.receiveChipDestinationNode.parent.convertToWorldSpaceAR(this.receiveChipDestinationNode.getPosition()) : userPos;
+
+        for (let id in betData) {
+            let isWinner = this.betContainerButton.doesBetTypeIdWin(Number(id), winIds);
+            if (!isWinner) {
+                toPos = this.dealer.parent.convertToWorldSpaceAR(this.dealer.getPosition());
+            }
+            console.warn('toPos', toPos)
+            this.xocDiaAnim.receiveChip(toPos, playerId, id);
+        }
+    }
 }
 
 app.createComponent(TaiXiuControls);

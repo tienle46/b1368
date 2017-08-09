@@ -130,15 +130,16 @@ Events.SET_INTERACTABLE_JOIN_PHOM_CONTROL = "set.interactableJoinPhomControl";
 
 Events.ADD_BET_TO_MASTER = "add.betToMaster";
 
-Events.XOCDIA_ON_BOARD_UPDATE_PREVIOUS_RESULT_HISTORY = "xocdia.on.board.update.previous.result.history";
+Events.GAMEBET_ON_BOARD_UPDATE_PREVIOUS_HISTORY = "gamebet.on.board.update.previous.result.history";
+Events.GAMEBET_ON_DISTRIBUTE_CHIP = "gamebet.on.distribute.chip";
+Events.GAMEBET_ON_PLAYER_CANCELBET = "gamebet.on.player.cancelBet";
+Events.GAMEBET_ON_PLAYER_BET = "gamebet.on.player.bet";
+Events.GAMEBET_ON_PLAYER_TOSSCHIP_ANIMATION = "gamebet.on.player.tosschip.anim";
+Events.GAMEBET_ON_PLAYER_CANCEL_BET_SUCCESS = "gamebet.on.player.cancel.bet.success";
+Events.GAMEBET_ON_PLAYER_RECEIVE_CHIP_ANIMATION = "gamebet.on.player.receive.chip.anim";
+Events.GAMEBET_ON_PLAYER_RUN_MONEY_BALANCE_CHANGE_ANIM = "gamebet.on.player.run.money.balance.change.anim";
+
 Events.XOCDIA_ON_DISTRIBUTE_CHIP = "xocdia.on.distribute.chip";
-Events.XOCDIA_ON_PLAYER_CANCELBET = "xocdia.on.player.cancelBet";
-Events.XOCDIA_ON_PLAYER_BET = "xocdia.on.player.bet";
-Events.XOCDIA_ON_PLAYER_TOSSCHIP_ANIMATION = "xocdia.on.player.tosschip.anim";
-Events.XOCDIA_ON_PLAYER_CANCEL_BET_SUCCESS = "xocdia.on.player.cancel.bet.success";
-Events.XOCDIA_ON_PLAYER_GET_CHIP_SUCCESS = "xocdia.on.player.get.chip.success";
-Events.XOCDIA_ON_PLAYER_RECEIVE_CHIP_ANIMATION = "xocdia.on.player.receive.chip.anim";
-Events.XOCDIA_ON_PLAYER_RUN_MONEY_BALANCE_CHANGE_ANIM = "xocdia.on.player.run.money.balance.change.anim";
 
 Events.ON_USER_USES_ASSET = "on.user.uses.asset";
 
