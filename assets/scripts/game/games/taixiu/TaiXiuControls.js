@@ -46,7 +46,6 @@ export default class TaiXiuControls extends GameBetControls {
             if (!isWinner) {
                 toPos = this.dealer.parent.convertToWorldSpaceAR(this.dealer.getPosition());
             }
-            console.warn('toPos', toPos)
             this.xocDiaAnim.receiveChip(toPos, playerId, id);
         }
     }

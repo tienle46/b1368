@@ -12,6 +12,11 @@ export default class PlayerTaiXiu extends PlayerGameBet {
         super.onLoad();
     }
     
+    onEnable() {
+        super.onEnable()
+        // hide money    
+    }
+    
     _addGlobalListener() {
         super._addGlobalListener();
     }

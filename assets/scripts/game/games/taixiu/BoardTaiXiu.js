@@ -19,10 +19,11 @@ export default class BoardTaiXiu extends BoardGameBet {
     }
 
     onGameStateChanged(boardState, data, isJustJoined) {
-        console.warn('boardState, data, isJustJoined', boardState, data, isJustJoined)
+        // console.warn('boardState, data, isJustJoined', boardState, data, isJustJoined)
         super.onGameStateChanged(boardState, data, isJustJoined);
         
         if(boardState == app.const.game.state.STATE_BET) {
+            this.renderer.dealerAppearance(true)
             this.renderer.shakenControlAppearance(false);
             this.renderer.clockAppearance(true)
         }
@@ -79,21 +80,23 @@ export default class BoardTaiXiu extends BoardGameBet {
         super.onBoardEnding(data);
         this.renderer.shakenControlAppearance(true);
         
-        // let dots = utils.getValue(data, app.keywords.XOCDIA_RESULT_END_PHASE);
-        console.warn('bets', bets);
+        let faces = utils.getValue(data, app.keywords.XOCDIA_RESULT_END_PHASE);
+        let winIds = utils.getValue(data, 'winBetOptions', []);
         
-        let result = {sum: 12, text: 'Tài', faces:[3, 4, 5], winIds: [1, 2, 3]};
+        // console.warn('bets', bets);
+        // let result = {sum: 12, text: 'Tài', faces:[3, 4, 5], winIds: [1, 2, 3]};
         
-        if (result) {
+        if (faces && faces.length > 0) {
             if(this.renderer.isShaking())
                 return;
-            this.renderer && this.renderer.placedOnDish(result.faces);
+            this.renderer && this.renderer.placedOnDish(faces);
             
             this.node.runAction(cc.sequence(cc.delayTime(.5), cc.callFunc(() => {
+                this.renderer.clockAppearance(false);
                 this.renderer && this.renderer.openBowlAnim(); // this will end up 1s
             }), cc.delayTime(1.2), cc.callFunc(() => {
-                this.renderer && this.renderer.showResult(`${result.sum} - ${result.text}`)
-                this.scene.gameControls.highLightWinBets(result.winIds)
+                this.renderer && this.renderer.displayResult(faces)
+                this.scene.gameControls.highLightWinBets(winIds)
                 
                 // emit anim
                 playingPlayerIds && playingPlayerIds.forEach((id) => {
@@ -102,7 +105,7 @@ export default class BoardTaiXiu extends BoardGameBet {
                     this.scene && this.scene.emit(Events.GAMEBET_ON_PLAYER_RUN_MONEY_BALANCE_CHANGE_ANIM, { balance, playerId });
                 });
             }), cc.delayTime(.3), cc.callFunc(() => {
-                this.scene && this.scene.emit(Events.GAMEBET_ON_DISTRIBUTE_CHIP, { playingPlayerIds, bets, playerResults }, result.winIds);
+                this.scene && this.scene.emit(Events.GAMEBET_ON_DISTRIBUTE_CHIP, { playingPlayerIds, bets, playerResults }, winIds);
             }), cc.delayTime(2),  cc.callFunc(() => {
                 this.renderer && this.renderer.hideResult();
             })));
@@ -112,6 +115,14 @@ export default class BoardTaiXiu extends BoardGameBet {
     
     toggleTable() {
         this.renderer.toggleTable();
+    }
+    
+    _onGameBegin() {
+        //hide board dealer
+        this.renderer.dealerAppearance(false)
+        
+        // dealer shakes
+        super._onGameBegin()
     }
 }
 

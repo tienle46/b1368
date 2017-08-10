@@ -35,7 +35,7 @@ export default class GameBetContainerButton extends Component {
     
     //@typeId 1: Chẵn, 2: Lẻ, 3: 4 Trắng, 4: 4 Đỏ, 5: 3 Trắng 1 Đỏ, 6: 3 Đỏ 1 Trắng
     getBetTypeByTypeId(id) {
-        return this.groupBtns[id - 1];
+        return this.groupBtns.find(btnNode => btnNode.id == id);
     }
 
     getBetTypePositionById(id) {

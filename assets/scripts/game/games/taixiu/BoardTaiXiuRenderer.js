@@ -7,7 +7,8 @@ export default class BoardTaiXiuRenderer extends BoardGameBetRenderer {
         
         this.properties = this.assignProperties({
             clockNode: cc.Node,
-            clockAtlas: cc.SpriteAtlas
+            clockAtlas: cc.SpriteAtlas,
+            dealerNode: cc.Node
         });
         
         this.HISTORIAL_COMPONENT = 'TaiXiuHistoricalTable';
@@ -23,11 +24,18 @@ export default class BoardTaiXiuRenderer extends BoardGameBetRenderer {
     /**
      * 
      * 
-     * @param {any} result text
+     * @param {Array} results 
      * @memberof BoardTaiXiuRenderer
      */
-    displayResult(result) {
-        console.warn('result', result);
+    displayResult(results) {
+        let sum = results.reduce((a,b) => a + b, 0);
+        if(sum <= 3)
+            return
+        
+        //[4, 10] => Xỉu, [11, 17] => Tài
+        let result = sum <= 10 ? 'Xỉu' : 'Tài'
+        
+        this.showResult(`${sum} - ${result}`);
     }
     
     toggleTable() {
@@ -75,13 +83,17 @@ export default class BoardTaiXiuRenderer extends BoardGameBetRenderer {
             if(state.isPlaying) {
                 animation.pause(clipName);
             }
-            animation.removeClip(clipName);
             this.clockAppearance(false) 
+            animation.removeClip(clipName, true);
         })));
     }
     
     displayBowlWrap() {
         this.shakenControl.wrapper.active = true;
+    }
+    
+    dealerAppearance(state = true) {
+        this.dealerNode.runAction(cc[state ? 'fadeIn': 'fadeOut'](.2))
     }
 }
 

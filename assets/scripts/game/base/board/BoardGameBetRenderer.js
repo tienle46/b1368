@@ -52,7 +52,8 @@ export default class BoardGameBetRenderer extends BoardRenderer {
     }
     
     updateBoardResultHistory(results) {
-        results = [{faces: [1, 3, 4], text: 'Xiu'}, {faces: [4, 3, 4], text: 'Tai'}]
+        if(results.length < 1)
+            return
         this.historicalTable.updateTableInfo(results);
     }
     

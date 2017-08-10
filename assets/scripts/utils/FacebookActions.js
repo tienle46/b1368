@@ -80,7 +80,6 @@ export default class FacebookActions {
         } else {
             if (window.FB) {
                 window.FB.getLoginStatus((response) => {
-                    console.warn('response', response)
                     if (response.status === 'connected') {
                         this._setLoginState(true);
 
@@ -91,7 +90,6 @@ export default class FacebookActions {
 
                         this._handlerLoginAction(uid, accessToken, runtimeCb);
                     } else {
-                        console.warn('response2', response)
                         // the user is logged in to Facebook, but has not authenticated your app
                         window.FB.login((response) => {                            
                             if (response.authResponse) {

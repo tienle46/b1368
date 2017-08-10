@@ -31,13 +31,11 @@ class TaiXiuBetTypeBtn extends BetTypeBtn {
     }
     
     update(dt) {
-        if(this.ownBetAmount === 0 || this.allBetAmount === 0  ) {
-            this.allBetAmount === 0 && this.hideAllBetLbl()
-            this.ownBetAmount === 0 && this.hideOwnBetLbl()
-        } else {
-            this.allBetAmount > 0 && !this.allBetWrap.active && this.showAllBetLbl()
-            this.ownBetAmount > 0 && !this.ownBetWrap.active && this.showOwnBetLbl()
-        }
+        this.allBetAmount == 0 && this.hideAllBetLbl()
+        this.ownBetAmount == 0 && this.hideOwnBetLbl()
+        
+        this.allBetAmount > 0 && !this.allBetWrap.active && this.showAllBetLbl()
+        this.ownBetAmount > 0 && !this.ownBetWrap.active && this.showOwnBetLbl()
     }
 }
 

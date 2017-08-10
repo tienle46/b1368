@@ -6,7 +6,7 @@ export default class GameBetScene extends GameScene {
         super();
         
         this.properties = this.assignProperties({
-            chipLayer: cc.Node,
+            chipLayer: cc.Node, // place animated chip
             meBalanceLabel: cc.Label
         });
         

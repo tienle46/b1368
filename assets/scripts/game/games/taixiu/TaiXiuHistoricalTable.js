@@ -61,11 +61,15 @@ class TaiXiuHistoricalTable extends HistoricalTable {
      */
     modifyItem(type) {
         type.faces.forEach((face, index) => {
-            this.historicalDices[index].spriteFrame = this.facesAtlas.getSpriteFrame(face);
-        });
-        this.childLbl.text = type.text;
+            this.historicalDices[index].spriteFrame = this.facesAtlas.getSpriteFrame(face)
+        })
         
-        let cell = cc.instantiate(this.childItem);
+        let sum = type.faces.reduce((a,b) => a + b, 0)
+        
+        this.childLbl.string = `${type.text} ${sum}`
+        this.childLbl.node.color = sum > 3 && sum <= 10 ? new cc.Color(203, 148, 21) : new cc.Color(255, 255, 255)
+        
+        let cell = cc.instantiate(this.childItem)
         cell.active = true;
 
         return cell;

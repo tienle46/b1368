@@ -212,7 +212,6 @@ let NodeRub = {
         } else if (spriteFrame instanceof cc.SpriteFrame) {
             delete options.spriteFrame;
             sprite.spriteFrame = spriteFrame;
-            console.warn('node.getContentSize()', node.getContentSize())
             
             for (let key in options) {
                 sprite[key] = options[key];

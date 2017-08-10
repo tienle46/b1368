@@ -1,6 +1,7 @@
 import app from 'app'
 import Component from 'Component'
 import CCUtils from 'CCUtils'
+import GameUtils from 'GameUtils'
 
 export default class BetTypeBtn extends Component {
     constructor() {
@@ -19,7 +20,7 @@ export default class BetTypeBtn extends Component {
 
     onLoad() {
         super.onLoad()
-        
+
         this.reset()
     }
     
@@ -67,12 +68,12 @@ export default class BetTypeBtn extends Component {
     
     setAllLbl(amount) {
         this.allBetAmount = amount
-        this.allLbl.string = this.allBetAmount
+        this.allLbl.string = GameUtils.formatBalanceShort(this.allBetAmount)
     }
 
     setOwnLbl(amount) {
         this.ownBetAmount = amount
-        this.ownLbl.string = this.ownBetAmount
+        this.ownLbl.string = GameUtils.formatBalanceShort(this.ownBetAmount)
     }
 
     setLbls(amount) {
