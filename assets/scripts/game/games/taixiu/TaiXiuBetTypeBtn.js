@@ -1,6 +1,5 @@
 import app from 'app';
 import BetTypeBtn from 'BetTypeBtn';
-import CCUtils from 'CCUtils'
 
 class TaiXiuBetTypeBtn extends BetTypeBtn {
     constructor() {
@@ -27,7 +26,6 @@ class TaiXiuBetTypeBtn extends BetTypeBtn {
         } else {
             this.highlightNode.opacity = 0
         }
-        // CCUtils.setActive(this.hightLight, state);
     }
     
     update(dt) {
