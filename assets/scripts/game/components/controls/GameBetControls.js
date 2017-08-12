@@ -108,6 +108,7 @@ export default class GameBetControls extends GameControls {
     }
 
     onBetBtnClick(event) {
+        console.warn('click')
         let chipOptionsNode = this.betOptionsGroup.getCheckedItem();
         if (chipOptionsNode) {
             let amount = chipOptionsNode.getComponent('BetChip').getChipAmount();

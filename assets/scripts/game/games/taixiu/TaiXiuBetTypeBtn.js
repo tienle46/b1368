@@ -1,7 +1,7 @@
 import app from 'app';
 import BetTypeBtn from 'BetTypeBtn';
 
-class TaiXiuBetTypeBtn extends BetTypeBtn {
+export default class TaiXiuBetTypeBtn extends BetTypeBtn {
     constructor() {
         super();
         this.properties = this.assignProperties({

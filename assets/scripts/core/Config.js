@@ -88,7 +88,8 @@ app.config.supportedGames = [
     app.const.gameCode.XOC_DIA,
     app.const.gameCode.TLMNDL_SOLO,
     app.const.gameCode.XAM_SOLO,
-    app.const.gameCode.TAI_XIU
+    app.const.gameCode.TAI_XIU,
+    // app.const.gameCode.BAU_CUA
 ];
 
 app.config.soloGames = [

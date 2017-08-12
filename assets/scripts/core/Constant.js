@@ -53,6 +53,7 @@ app.const.gameCode.XAM_SOLO = 'xms';
 app.const.gameCode.ALL = 'xga';
 app.const.gameCode.XOC_DIA = 'xod';
 app.const.gameCode.TAI_XIU = 'gtx';
+app.const.gameCode.BAU_CUA = 'bcua';
 
 
 app.const.gameLabels = {
@@ -69,7 +70,8 @@ app.const.gameLabels = {
     [app.const.gameCode.BAU_CUA]: 'Bầu Cua',
     [app.const.gameCode.ALL]: 'B1368',
     [app.const.gameCode.XOC_DIA]: 'Xóc Đĩa',
-    [app.const.gameCode.TAI_XIU]: 'Tài Xỉu'
+    [app.const.gameCode.TAI_XIU]: 'Tài Xỉu',
+    [app.const.gameCode.BAU_CUA]: 'Bầu Cua',
 };
 
 /**

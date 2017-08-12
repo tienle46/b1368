@@ -40,7 +40,7 @@ export default class BoardTaiXiu extends BoardGameBet {
         super.startTimeLine(duration, message);        
         if (this.scene.gameState == app.const.game.state.STATE_BET) {
             this.renderer.showTimeLineCountDown(duration, false, function(timeLineInSecond) {
-                if(timeLineInSecond === 10) {
+                if(timeLineInSecond === 8) {
                     this.renderer.alarm(timeLineInSecond);
                 }
             }, this);

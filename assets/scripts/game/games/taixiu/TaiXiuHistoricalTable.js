@@ -1,7 +1,7 @@
 import app from 'app';
 import HistoricalTable from 'HistoricalTable';
 
-class TaiXiuHistoricalTable extends HistoricalTable {
+export default class TaiXiuHistoricalTable extends HistoricalTable {
     constructor() {
         super();
         
@@ -25,7 +25,6 @@ class TaiXiuHistoricalTable extends HistoricalTable {
 
     onLoad() {
         super.onLoad();
-        this.node.setPosition(cc.v2(784, 0));
         this._isShowed = false;
         this._isShowing = false;
     }
@@ -48,20 +47,26 @@ class TaiXiuHistoricalTable extends HistoricalTable {
         super.updateTableInfo(infors)
         
         // update dices on historical btn
+        this.modifyHistoricalTitle(infors);
+    }
+    
+    modifyHistoricalTitle(infors) {
+        // update dices on historical btn
         let latestResult = infors[infors.length - 1]
         latestResult.faces.forEach((face, index) => {
-            this.faces[index].spriteFrame = this.facesAtlas.getSpriteFrame(face);
+            this.historicalDices[index].spriteFrame = this.facesAtlas.getSpriteFrame(face);
         })
     }
     
     /**
      * @override
      * @param type {faces: [], text: 'Tai'}
+     * @param isLast boolean 
      * @return cc.Node
      */
     modifyItem(type) {
         type.faces.forEach((face, index) => {
-            this.historicalDices[index].spriteFrame = this.facesAtlas.getSpriteFrame(face)
+            this.faces[index].spriteFrame = this.facesAtlas.getSpriteFrame(face)
         })
         
         let sum = type.faces.reduce((a,b) => a + b, 0)

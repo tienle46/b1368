@@ -28290,7 +28290,7 @@
     },
     "_isSystemFontUsed": false,
     "_spacingX": 0,
-    "_N$string": "Xiu 12",
+    "_N$string": "",
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
     "_N$fontFamily": "Arial",
@@ -28418,9 +28418,7 @@
       "__id__": 761
     },
     "_enabled": true,
-    "_spriteFrame": {
-      "__uuid__": "3e459bda-fe56-41af-9754-52bb7746708b"
-    },
+    "_spriteFrame": null,
     "_type": 1,
     "_sizeMode": 0,
     "_fillType": 0,
@@ -28496,9 +28494,7 @@
       "__id__": 763
     },
     "_enabled": true,
-    "_spriteFrame": {
-      "__uuid__": "d56a0eb0-cae1-4ae0-b897-31888b8741b6"
-    },
+    "_spriteFrame": null,
     "_type": 1,
     "_sizeMode": 0,
     "_fillType": 0,
@@ -28574,9 +28570,7 @@
       "__id__": 765
     },
     "_enabled": true,
-    "_spriteFrame": {
-      "__uuid__": "3d38116c-6dc1-42cc-beed-89fa309606b4"
-    },
+    "_spriteFrame": null,
     "_type": 1,
     "_sizeMode": 0,
     "_fillType": 0,

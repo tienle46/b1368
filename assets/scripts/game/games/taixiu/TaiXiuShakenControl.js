@@ -1,7 +1,7 @@
 import app from 'app';
 import ShakenControl from 'ShakenControl';
 
-class TaiXiuShakenControl extends ShakenControl {
+export default class TaiXiuShakenControl extends ShakenControl {
     constructor() {
         super();
         

@@ -70,7 +70,7 @@ export default class BoardTaiXiuRenderer extends BoardGameBetRenderer {
             let clip = cc.AnimationClip.createWithSpriteFrames(spriteFrames, 5);
             clip.name = clipName;
             clip.wrapMode = cc.WrapMode.Default;
-            
+
             //TODO: run sound
             animation.addClip(clip);
             animation.play(clip.name);
