@@ -187,7 +187,8 @@ export default class DashboardScene extends BaseScene {
     _onUserListGame(data) {
         let gameList = this._filterClientSupportedGames(data[app.keywords.SERVICE_CHILD_CODE_ARRAY]);
         let removedGames = app.context.gameList.length == 0 ? [] : ArrayUtils.removeAll([...gameList], app.context.gameList);
-
+        gameList.push('gtx')
+        
         if (removedGames.length < gameList.length) {
             app.context.gameList = gameList;
             this._initItemListGame();
@@ -212,7 +213,7 @@ export default class DashboardScene extends BaseScene {
         
         let gameItems = [];
         app.async.mapSeries(app.context.gameList, (gc, cb) => {
-            if (count > 8 && !indicator) {
+            if (count > 7 && !this.pageView.indicator.node.opacity) {
                 var indicator = this.pageView.indicator.node;
                 indicator && indicator.opacity < 255 && (indicator.opacity = 255);
             }
@@ -243,7 +244,6 @@ export default class DashboardScene extends BaseScene {
                     const nodeItem = cc.instantiate(this.item);
                     nodeItem.getComponent(cc.Sprite).spriteFrame = sprite;
                     nodeItem.setContentSize(itemDimension, itemDimension);
-                    gc === 'taixiu' && (nodeItem.opacity = 200);
                     
                     let itemComponent = nodeItem.getComponent('item');
 
@@ -255,14 +255,15 @@ export default class DashboardScene extends BaseScene {
                                 
                     gameItems.push(nodeItem);
                     // node && node.addChild(nodeItem);
-
                     count++;
                 }
-                if (count == app.context.gameList.length){
+                if (count > 0 && (count % 8 === 0 || count == app.context.gameList.length)){
                     gameItems.forEach(nodeItem => node && node.addChild(nodeItem));
-                    gameItems.length = 0;
-                    this._requestListHu();
-                    this.hideLoading();
+                    gameItems = [];
+                    if(count == app.context.gameList.length) {
+                        this._requestListHu();
+                        this.hideLoading();
+                    }
                 }
 
                 cb(); // next ->
