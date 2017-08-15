@@ -10,7 +10,6 @@ export default class PlayerGameBetRenderer extends PlayerRenderer {
 
     onLoad() {
         super.onLoad();
-        this.balanceLabel.node.opacity = 0
     }
     
     onEnable(){

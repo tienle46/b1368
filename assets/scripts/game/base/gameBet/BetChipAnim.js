@@ -4,7 +4,7 @@ import { destroy } from 'CCUtils';
 class ChipManager {
     /**
      * Creates an instance of ChipManager.
-     * @param {Number} totalAllowedChip // total chip per player
+     * @param {Number} totalAllowedChip // total chips on board per player
      * @param {Array} betTypeIds 
      * @memberof ChipManager
      */
@@ -12,7 +12,7 @@ class ChipManager {
         this.chips = {};
         this._totalAllowedChip = totalAllowedChip;
         this._betTypeIds = betTypeIds;
-        this._amountChipPerBet = totalAllowedChip/betTypeIds.length;
+        this._amountChipPerBet = Math.ceil(totalAllowedChip/betTypeIds.length); // the total actual chip may be larger than totalAllowedChip 
     }    
     
     add(chip) {
@@ -20,8 +20,9 @@ class ChipManager {
         this.chips[chip.playerId][chip.betId].push(chip)
         if(this.chips[chip.playerId][chip.betId].length > this._amountChipPerBet) {
             let _1stChip = this.chips[chip.playerId][chip.betId].shift()
+            
             if(_1stChip instanceof cc.Node) {
-                _1stChip.destroy()
+                destroy(_1stChip)
             } 
         }
     }
@@ -30,7 +31,7 @@ class ChipManager {
         for(let key in this.chips) {
             Object.keys(this.chips[key]).forEach(k => this.chips[key][k] = [])
             // this.chips[key] = null;
-        }   
+        }  
     }
     
     clearChips(playerId, betId) {
@@ -56,7 +57,7 @@ class ChipManager {
     }
     
     _initPlayer(playerId) {
-        if(!this.chips.hasOwnProperty('playerId') || !this.chips.playerId) {
+        if(!this.chips.hasOwnProperty(playerId) || !this.chips[playerId]) {
             this.chips[playerId] = {}
             this._betTypeIds.forEach(betId => {
                 this.chips[playerId][betId] = []
@@ -70,34 +71,10 @@ export default class BetChipAnim {
     constructor(scene, betTypeIdToNameMap) {
         this.scene = scene;
         this.chipLayer = scene.chipLayer;
-        // this._allChipList = [];
-        // this._totalChipCount = 0;
-        // this.totalChipOnPlayer = {};
         
         this.betTypeIdToNameMap = betTypeIdToNameMap;
-        this.chipManager = new ChipManager(300, Object.keys(this.betTypeIdToNameMap));
-        
-        // Object.values(this.betTypeIdToNameMap).forEach(name => {
-        //     let obj = 
-        //         1: [],
-        //         2: [],
-        //         3: [],
-        //         4: []
-        //     };
-
-        //     this.chipManager[name] = obj;
-        //     this._allChipList.push(...Object.values(obj));
-        // });
-    }
-
-    _resetChipManager() {
-        // this._totalChipCount = 0;
-        // this.totalChipOnPlayer = {};
-        // this._allChipList.forEach(arr => window.release(arr));
-    }
-
-    reset() {
-        this._resetChipManager();
+        // 330 ~ 330kb alloc
+        this.chipManager = new ChipManager(330, Object.keys(this.betTypeIdToNameMap));
     }
 
     tossChip(startPos, toNode, chip, playerId, typeId, betIndex) {
@@ -110,28 +87,13 @@ export default class BetChipAnim {
     }
     
     addChip(toNode, chip, playerId, typeId, betIndex, startPos) {
-        // this._totalChipCount++;
-        
-        // let betTypename = this.betTypeIdToNameMap[typeId];
-        
-        // if (betIndex >= 0 && betIndex < 4 && betTypename && this.chipManager[betTypename]) {
-        //     this.chipManager[betTypename][betIndex + 1].push(chip);
-        // }
-        
         chip.name = "miniChip";
         chip.playerId = playerId;
-        console.warn('typeId', typeId)
         chip.betId = typeId;
         chip.setPosition(startPos);
         
         this.chipManager.add(chip)
         this.chipLayer.addChild(chip);
-
-        // if (!this.totalChipOnPlayer.hasOwnProperty(playerId)) {
-        //     this.totalChipOnPlayer[playerId] = 1;
-        // } else {
-        //     this.totalChipOnPlayer[playerId] += 1;
-        // }
     }
     
     getRealEndPoint(toNode) {
@@ -148,7 +110,6 @@ export default class BetChipAnim {
     }
     
     receiveChip(toPos, playerId, betId) {
-        // this.totalChipOnPlayer[playerId] = 0;
         // and node where chip would be tossed to
         this.chipLayer.children.filter(child => (child.playerId == playerId) && (child.betId == betId)).map((chip) => {
             let action = cc.moveTo(0.1 + app._.random(0, 0.2), toPos);
@@ -160,11 +121,7 @@ export default class BetChipAnim {
     }
 
     clearPlayerChip(playerId) {
-        // delete this.totalChipOnPlayer[playerId];
         this.chipManager.clearChips(playerId)
-        // this.chipLayer.children.filter(child => (child.playerId == playerId)).map((chip) => {
-        //     destroy(chip);
-        // });
     }
 
     clearAllChip() {

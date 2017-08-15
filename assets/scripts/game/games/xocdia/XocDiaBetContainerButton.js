@@ -26,10 +26,10 @@ class XocDiaBetContainerButton extends GameBetContainerButton {
         
         // 1: 'even',
         // 2: 'odd',
-        // 3: 'fourRed',
-        // 4: 'fourWhite',
-        // 5: 'threeRed'
-        // 6: 'threeWhite',
+        // 3: 'fourWhite',
+        // 4: 'fourRed',
+        // 5: 'threeWhite',
+        // 6: 'threeRed',
         this.betTypeIdsMap = [1, 2, 3, 4, 5, 6]
     }
     

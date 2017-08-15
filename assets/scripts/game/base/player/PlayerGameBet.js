@@ -29,6 +29,9 @@ export default class PlayerGameBet extends Player {
         this.RENDERER_COMPONENT && this.getComponent(this.RENDERER_COMPONENT) && super.onEnable(this.getComponent(this.RENDERER_COMPONENT));
 
         this.balanceAvailable = this.balance;
+        if(this.isItMe()) {
+            this.renderer.balanceLabel.node.opacity = 0
+        }
     }
     
     _addGlobalListener(){

@@ -123,7 +123,7 @@ export default class Player extends Actor {
     }
     
     _onStartGame(data) {
-        if(this.isItMe && data[app.keywords.SUCCESSFULL] && data[app.keywords.RESPONSE_MESSAGE]) {
+        if(this.isItMe() && data[app.keywords.SUCCESSFULL] && data[app.keywords.RESPONSE_MESSAGE]) {
             app.system.showToast(data[app.keywords.RESPONSE_MESSAGE]);
         }
     }
