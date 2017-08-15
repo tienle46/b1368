@@ -45,7 +45,7 @@
     "_globalZOrder": 0,
     "_opacityModifyRGB": false,
     "groupIndex": 0,
-    "autoReleaseAssets": false
+    "autoReleaseAssets": true
   },
   {
     "__type__": "cc.Node",
@@ -66,15 +66,6 @@
       },
       {
         "__id__": 618
-      },
-      {
-        "__id__": 725
-      },
-      {
-        "__id__": 704
-      },
-      {
-        "__id__": 656
       },
       {
         "__id__": 801
@@ -23330,6 +23321,15 @@
       },
       {
         "__id__": 620
+      },
+      {
+        "__id__": 725
+      },
+      {
+        "__id__": 704
+      },
+      {
+        "__id__": 656
       }
     ],
     "_tag": -1,
@@ -24559,7 +24559,7 @@
     "_name": "historical",
     "_objFlags": 0,
     "_parent": {
-      "__id__": 2
+      "__id__": 618
     },
     "_children": [
       {
@@ -26440,7 +26440,7 @@
     "_name": "shakenContainer",
     "_objFlags": 0,
     "_parent": {
-      "__id__": 2
+      "__id__": 618
     },
     "_children": [
       {
@@ -27244,7 +27244,7 @@
     "_name": "gamePlayer",
     "_objFlags": 0,
     "_parent": {
-      "__id__": 2
+      "__id__": 618
     },
     "_children": [
       {
@@ -27427,7 +27427,7 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": 545,
+      "x": 571,
       "y": -62
     },
     "_skewX": 0,
@@ -27706,8 +27706,8 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": -113,
-      "y": 265
+      "x": -163,
+      "y": 291
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -27900,7 +27900,7 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": 545,
+      "x": 571,
       "y": 166
     },
     "_skewX": 0,
@@ -28133,7 +28133,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 380,
-      "y": 265
+      "y": 291
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -28365,7 +28365,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 155,
-      "y": 265
+      "y": 291
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -28597,7 +28597,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": -379,
-      "y": 265
+      "y": 291
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -28837,7 +28837,7 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": -545,
+      "x": -572,
       "y": 166
     },
     "_skewX": 0,
@@ -29078,7 +29078,7 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": -545,
+      "x": -572,
       "y": -62
     },
     "_skewX": 0,
@@ -29319,7 +29319,7 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": -541,
+      "x": -572,
       "y": -255
     },
     "_skewX": 0,
@@ -29556,7 +29556,7 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": -541,
+      "x": -572,
       "y": -255
     },
     "_skewX": 0,

@@ -7,6 +7,9 @@ export default class TaiXiuBetTypeBtn extends BetTypeBtn {
         this.properties = this.assignProperties({
             highlightNode: cc.Node
         });
+       
+        this.updateTimer = 0;
+        this.updateInterval = 0.2;
     }
     
     onLoad() {
@@ -29,6 +32,10 @@ export default class TaiXiuBetTypeBtn extends BetTypeBtn {
     }
     
     update(dt) {
+        this.updateTimer += dt;
+        if (this.updateTimer < this.updateInterval) {
+            return; // we don't need to do the math every frame
+        }
         this.allBetAmount == 0 && this.hideAllBetLbl()
         this.ownBetAmount == 0 && this.hideOwnBetLbl()
         

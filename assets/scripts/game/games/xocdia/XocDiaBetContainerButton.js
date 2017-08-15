@@ -1,6 +1,7 @@
 import app from 'app';
 import GameBetContainerButton from 'GameBetContainerButton';
 
+// OLD
 // export const betTypeNameToIdMap = {
 //     even: 1,
 //     odd: 2,
@@ -9,7 +10,7 @@ import GameBetContainerButton from 'GameBetContainerButton';
 //     threeWhite: 5,
 //     threeRed: 6
 // }
-
+// OLD
 // export const betTypeIdToNameMap = {
 //     1: 'even',
 //     2: 'odd',
@@ -18,16 +19,17 @@ import GameBetContainerButton from 'GameBetContainerButton';
 //     5: 'threeWhite',
 //     6: 'threeRed',
 // }
+
 class XocDiaBetContainerButton extends GameBetContainerButton {
     constructor() {
         super();
         
         // 1: 'even',
         // 2: 'odd',
-        // 3: 'fourWhite',
-        // 4: 'fourRed',
-        // 5: 'threeWhite',
-        // 6: 'threeRed'
+        // 3: 'fourRed',
+        // 4: 'fourWhite',
+        // 5: 'threeRed'
+        // 6: 'threeWhite',
         this.betTypeIdsMap = [1, 2, 3, 4, 5, 6]
     }
     

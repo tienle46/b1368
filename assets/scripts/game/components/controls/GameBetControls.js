@@ -38,7 +38,7 @@ export default class GameBetControls extends GameControls {
         this.betData = [];
         this.previousBetData = [];
         this.isInCancelPhase = false;
-        this.xocDiaAnim = null;
+        this.betChipAnim = null;
         
         this.BET_COINTAINER_BUTTON_COMPONENT = 'BetContainerButton';
         this.BET_OPTION_GROUP_COMPONENT = 'BetOptionsGroup';
@@ -49,7 +49,7 @@ export default class GameBetControls extends GameControls {
         this.betData = [];
         this.previousBetData = [];
         this.isInCancelPhase = false;
-        this.xocDiaAnim = null;
+        this.betChipAnim = null;
         
         this.baseControls = this.baseControlsNode.getComponent('BaseControls');
         /**
@@ -60,7 +60,7 @@ export default class GameBetControls extends GameControls {
         this._setRebetBtnState(false);
 
         super.onEnable();        
-        this.xocDiaAnim = new BetChipAnim(app.system.currentScene, this.betContainerButton.getBetTypeIdToNameMap());
+        this.betChipAnim = new BetChipAnim(app.system.currentScene, this.betContainerButton.getBetTypeIdToNameMap());
 
         this.scene.on(Events.ON_GAME_STATE_BEGIN, this._onGameBegin, this);
         this.scene.on(Events.ON_GAME_STATE_STARTING, this._onGameStarting, this);
@@ -94,7 +94,7 @@ export default class GameBetControls extends GameControls {
         this.betData = [];
         this.previousBetData = [];
         this.isInCancelPhase = false;
-        this.xocDiaAnim = null;
+        this.betChipAnim = null;
     }
 
     _showGameControls() {
@@ -108,7 +108,6 @@ export default class GameBetControls extends GameControls {
     }
 
     onBetBtnClick(event) {
-        console.warn('click')
         let chipOptionsNode = this.betOptionsGroup.getCheckedItem();
         if (chipOptionsNode) {
             let amount = chipOptionsNode.getComponent('BetChip').getChipAmount();
@@ -175,8 +174,8 @@ export default class GameBetControls extends GameControls {
                 });
                 
                 let betIndex = this.betOptionsGroup.getChipIndexByAmount(amount, this.scene.board.minBet);
-                let chipDisplayPoint = this.xocDiaAnim.getRealEndPoint(toNode);
-                this.xocDiaAnim.addChip(toNode, chip, playerIds[index], typeId, betIndex, chipDisplayPoint);
+                let chipDisplayPoint = this.betChipAnim.getRealEndPoint(toNode);
+                this.betChipAnim.addChip(toNode, chip, playerIds[index], typeId, betIndex, chipDisplayPoint);
             }
         })    
     }
@@ -310,7 +309,7 @@ export default class GameBetControls extends GameControls {
             }
 
             let betIndex = this.betOptionsGroup.getChipIndexByAmount(amount, this.scene.board.minBet);
-            this.xocDiaAnim.tossChip(fromPos, toNode, chip, playerId, typeId, betIndex);
+            this.betChipAnim.tossChip(fromPos, toNode, chip, playerId, typeId, betIndex);
         }
     }
 
@@ -376,7 +375,7 @@ export default class GameBetControls extends GameControls {
     }
 
     _clearUserGoldAmountOnControl(isItMe, betsList, playerId) {
-        this.xocDiaAnim.clearPlayerChip(playerId);
+        this.betChipAnim.clearPlayerChip(playerId);
         for (let i = 0; i < betsList.length; i++) {
             let betTypeId = betsList[i][app.keywords.XOCDIA_BET.TYPE];
             let amount = betsList[i][app.keywords.XOCDIA_BET.AMOUNT];
@@ -397,7 +396,7 @@ export default class GameBetControls extends GameControls {
         this.hideAllControls();
         this._showGameBeginControls();
 
-        this.xocDiaAnim.clearAllChip();
+        this.betChipAnim.clearAllChip();
     }
 
     _onGameStarting(data, isJustJoined) {

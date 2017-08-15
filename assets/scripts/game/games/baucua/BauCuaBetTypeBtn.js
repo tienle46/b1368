@@ -6,7 +6,6 @@ class BauCuaBetTypeBtn extends TaiXiuBetTypeBtn {
         super();
     }
     
-    
     /**
      * @override
      * 
@@ -14,6 +13,10 @@ class BauCuaBetTypeBtn extends TaiXiuBetTypeBtn {
      * @memberof BauCuaBetTypeBtn <- TaiXiuBetTypeBtn
      */
     update(dt) {
+        this.updateTimer += dt;
+        if (this.updateTimer < this.updateInterval) {
+            return; // we don't need to do the math every frame
+        }
         // this.allBetAmount == 0 && this.hideAllBetLbl()
         this.ownBetAmount == 0 && this.hideOwnBetLbl()
         

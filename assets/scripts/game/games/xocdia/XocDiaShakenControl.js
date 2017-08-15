@@ -61,8 +61,10 @@ class XocDiaShakenControl extends ShakenControl {
      * @memberof XocDiaShakenControl
      */
     placedOnDish(dots = []) {
+        console.warn(dots)
+        
         // 0: white, 1: red
-        // let colors = ['blueTheme/ingame/xocdia/trang', 'blueTheme/ingame/xocdia/do'];
+        // let colors = ['blueTheme/ingame/xocdia/do', 'blueTheme/ingame/xocdia/trang'];
 
         /**
          *              ^
