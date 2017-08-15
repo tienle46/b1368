@@ -11,11 +11,11 @@
                 <key>spriteOffset</key>
                 <string>{0,0}</string>
                 <key>spriteSize</key>
-                <string>{85,89}</string>
+                <string>{83,89}</string>
                 <key>spriteSourceSize</key>
-                <string>{85,89}</string>
+                <string>{83,89}</string>
                 <key>textureRect</key>
-                <string>{{1,1},{85,89}}</string>
+                <string>{{1,1},{83,89}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -26,11 +26,11 @@
                 <key>spriteOffset</key>
                 <string>{0,0}</string>
                 <key>spriteSize</key>
-                <string>{85,89}</string>
+                <string>{83,89}</string>
                 <key>spriteSourceSize</key>
-                <string>{85,89}</string>
+                <string>{83,89}</string>
                 <key>textureRect</key>
-                <string>{{88,1},{85,89}}</string>
+                <string>{{86,1},{83,89}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -41,11 +41,11 @@
                 <key>spriteOffset</key>
                 <string>{0,0}</string>
                 <key>spriteSize</key>
-                <string>{85,89}</string>
+                <string>{83,89}</string>
                 <key>spriteSourceSize</key>
-                <string>{85,89}</string>
+                <string>{83,89}</string>
                 <key>textureRect</key>
-                <string>{{175,1},{85,89}}</string>
+                <string>{{171,1},{83,89}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -56,11 +56,11 @@
                 <key>spriteOffset</key>
                 <string>{0,0}</string>
                 <key>spriteSize</key>
-                <string>{85,89}</string>
+                <string>{83,89}</string>
                 <key>spriteSourceSize</key>
-                <string>{85,89}</string>
+                <string>{83,89}</string>
                 <key>textureRect</key>
-                <string>{{262,1},{85,89}}</string>
+                <string>{{256,1},{83,89}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -71,11 +71,11 @@
                 <key>spriteOffset</key>
                 <string>{0,0}</string>
                 <key>spriteSize</key>
-                <string>{85,89}</string>
+                <string>{83,89}</string>
                 <key>spriteSourceSize</key>
-                <string>{85,89}</string>
+                <string>{83,89}</string>
                 <key>textureRect</key>
-                <string>{{349,1},{85,89}}</string>
+                <string>{{341,1},{83,89}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -86,11 +86,11 @@
                 <key>spriteOffset</key>
                 <string>{0,0}</string>
                 <key>spriteSize</key>
-                <string>{85,89}</string>
+                <string>{83,89}</string>
                 <key>spriteSourceSize</key>
-                <string>{85,89}</string>
+                <string>{83,89}</string>
                 <key>textureRect</key>
-                <string>{{436,1},{85,89}}</string>
+                <string>{{426,1},{83,89}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -106,9 +106,9 @@
             <key>realTextureFileName</key>
             <string>dices.png</string>
             <key>size</key>
-            <string>{522,91}</string>
+            <string>{510,91}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:581a87ac5bb4ec5d116869cf09f8cd3d:c3a881d8110c6dac4246d2f22e8fc56e:0b8c924a885b289e4bf3d63d1b8f8d66$</string>
+            <string>$TexturePacker:SmartUpdate:404df95da1683a406c3a8784c469bcdf:e36bdd1a844de4d76453f1621786d1e7:0b8c924a885b289e4bf3d63d1b8f8d66$</string>
             <key>textureFileName</key>
             <string>dices.png</string>
         </dict>

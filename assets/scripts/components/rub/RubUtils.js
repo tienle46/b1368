@@ -159,7 +159,7 @@ let RubUtils = {
                     spriteComponent.spriteFrame = spriteFrame;
                     spriteFrameDefaultConfig(spriteComponent);
                 }
-            }).catch(err => console.error(err));
+            }).catch(err => {});
         }
         
         

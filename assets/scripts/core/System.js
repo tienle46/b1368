@@ -232,7 +232,7 @@ class GameSystem {
     //  * @deprecated
     //  */
     // _emitToScene(){
-    //     this.currentScene && this.currentScene.emit(name, ...args);
+    //     this._currentScene && this._currentScene.emit(name, ...args);
     //
     // }
 
@@ -335,8 +335,8 @@ class GameSystem {
                 break;
             }
             case app.const.adminMessage.DAILY_LOGIN_MISSION: {
-                if (this.currentScene && sceneName == app.const.scene.DASHBOARD_SCENE) {
-                    this.currentScene.showDailyLoginPopup(message, false, title);
+                if (this._currentScene && sceneName == app.const.scene.DASHBOARD_SCENE) {
+                    this._currentScene.showDailyLoginPopup(message, false, title);
                     showToast = false;
                     return;
                 }
@@ -348,9 +348,9 @@ class GameSystem {
                 break;
             }
             case app.const.adminMessage.REGISTER_BONUS: {
-                if (this.currentScene && sceneName == app.const.scene.DASHBOARD_SCENE) {
+                if (this._currentScene && sceneName == app.const.scene.DASHBOARD_SCENE) {
                     // console.debug('title, message)', title, message);
-                    this.currentScene.showDailyLoginPopup(message, true, title);
+                    this._currentScene.showDailyLoginPopup(message, true, title);
                     showToast = false;
                     return;
                 }
@@ -387,7 +387,7 @@ class GameSystem {
     }
 
     showLackOfMoneyMessagePopup(){
-        this.currentScene && this._lackOfMoneyMessage && ConfirmPopup.showCustomConfirm(this.currentScene.node, this._lackOfMoneyMessage, {
+        this._currentScene && this._lackOfMoneyMessage && ConfirmPopup.showCustomConfirm(this._currentScene.node, this._lackOfMoneyMessage, {
             acceptLabel: app.res.string('label_topup_money'),
             acceptCb: () => {
                 app.visibilityManager.goTo(Linking.ACTION_TOPUP_CARD)
@@ -443,11 +443,11 @@ class GameSystem {
                     break;
                 case app.const.gameCode.TLMNDL_SOLO:
                     gameSceneName = 'TLMNDLScene';
-                    onLoadFunc = () => {this.currentScene && this.currentScene.setSoloGame(true)}
+                    onLoadFunc = () => {this._currentScene && this._currentScene.setSoloGame(true)}
                     break;
                 case app.const.gameCode.XAM_SOLO:
                     gameSceneName = 'SamScene';
-                    onLoadFunc = () => {this.currentScene && this.currentScene.setSoloGame(true)}
+                    onLoadFunc = () => {this._currentScene && this._currentScene.setSoloGame(true)}
                     break;
             }
             if (gameSceneName) {
@@ -532,8 +532,8 @@ class GameSystem {
                 password = bytes.toString(CryptoJS.enc.Utf8);
             }
 
-            if(this.currentScene && ((username && password) || (facebookId && facebookToken))) {
-                this.currentScene.loginToDashboard && this.currentScene.loginToDashboard(username, password, false, false, facebookToken, facebookId, null, tempRegister)
+            if(this._currentScene && ((username && password) || (facebookId && facebookToken))) {
+                this._currentScene.loginToDashboard && this._currentScene.loginToDashboard(username, password, false, false, facebookToken, facebookId, null, tempRegister)
             }
             this._sentQuickAuthen = true;
         }

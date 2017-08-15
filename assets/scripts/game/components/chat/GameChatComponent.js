@@ -143,10 +143,10 @@ export default class GameChatComponent extends Actor {
 
     _initMessageHistory(){
 
-        log('this.scene.gameContext.messages: ', this.scene.gameContext.messages);
+        // log('this.scene.gameContext.messages: ', this.scene.gameContext.messages);
 
         this.chatHistoryPanel.children.forEach(child => child.destroy() && child.removeFromParent(true));
-
+        console.warn('this.scene', this.scene)
         this.scene.gameContext.messages && this.scene.gameContext.messages.forEach(messageObj => {
             this._addNewChatHistoryItem(messageObj.sender, messageObj.message)
         });

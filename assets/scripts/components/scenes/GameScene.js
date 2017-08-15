@@ -178,6 +178,7 @@ export default class GameScene extends BaseScene {
         this.gameMenu = this.gameMenuNode.getComponent('GameMenuPrefab')
 
         this.isSoloGame = GameUtils.isSoloGame(app.context.currentRoom)
+        app.system.setCurrentScene(this);
         
         this.node.children.forEach(child => { child.opacity = 255 });
         Object.values(app.res.asset_tools).length < 1 && this._loadAssetTools();
@@ -234,7 +235,6 @@ export default class GameScene extends BaseScene {
     onEnable() {
         super.onEnable();
 
-        app.system.setCurrentScene(this);
         this.chatComponent = this.chatComponentNode.getComponent('GameChatComponent');
         this.gamePlayers = this.playerLayer.getComponent('GamePlayers');
 
