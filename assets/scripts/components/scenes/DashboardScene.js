@@ -187,7 +187,6 @@ export default class DashboardScene extends BaseScene {
     _onUserListGame(data) {
         let gameList = this._filterClientSupportedGames(data[app.keywords.SERVICE_CHILD_CODE_ARRAY]);
         let removedGames = app.context.gameList.length == 0 ? [] : ArrayUtils.removeAll([...gameList], app.context.gameList);
-        gameList.push('gtx')
         
         if (removedGames.length < gameList.length) {
             app.context.gameList = gameList;
