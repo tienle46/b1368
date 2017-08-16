@@ -242,8 +242,6 @@ export default class GameScene extends BaseScene {
         try {
             this.room = app.context.currentRoom;
             
-            console.warn('this.room', this.room)
-            
             if (this.room && this.room.isGame) {
                 this.gameCode = utils.getGameCode(this.room);
                 this.gameData = this.room.getVariable(app.keywords.VARIABLE_GAME_INFO).value

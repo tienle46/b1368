@@ -140,6 +140,7 @@ app.const.game.maxPlayers = {
     "tds": 2,
     "xms": 2,
     "gtx": 9,
+    "tcc": 9,
     "default": 2,
 };
 

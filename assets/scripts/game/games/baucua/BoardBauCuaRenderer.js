@@ -17,14 +17,22 @@ export default class BoardBauCuaRenderer extends BoardTaiXiuRenderer {
      * @memberof BoardBauCuaRenderer
      */
     displayResult(results) {
-        let sum = results.reduce((a,b) => a + b, 0);
-        if(sum <= 3)
-            return
+        let faceTypeIdToName = {
+            1 : 'Bầu',
+            2 : 'Cua',
+            3 : 'Tôm',
+            4 : 'Cá',
+            5 : 'Gà',
+            6 : 'Hươu'
+        }
         
-        //[4, 10] => Xỉu, [11, 17] => Tài
-        let result = sum <= 10 ? 'Xỉu' : 'Tài'
+        let text = ""
+        results.forEach(id => {
+            text +=  faceTypeIdToName[id] + '-'
+        });
+        text = text.replace(/-?$/,"")
         
-        this.showResult(`${sum} - ${result}`);
+        this.showResult(`${text}`);
     }
 }
 

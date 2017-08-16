@@ -6,12 +6,12 @@ class BauCuaHistoricalTable extends TaiXiuHistoricalTable {
         super();
         
         this.faceTypeIdToName = {
-            1 : 'ca',
-            2 : 'huou',
-            3 : 'cua',
-            4 : 'ga',
-            5 : 'tom',
-            6 : 'bau',
+            1 : 'bau',
+            2 : 'cua',
+            3 : 'tom',
+            4 : 'ca',
+            5 : 'ga',
+            6 : 'huou',
         }
     }
 
@@ -25,13 +25,12 @@ class BauCuaHistoricalTable extends TaiXiuHistoricalTable {
         // update dices on historical btn
         let latestResult = infors[infors.length - 1]
         latestResult.forEach((face, index) => {
-            this.faces[index].spriteFrame = this.facesAtlas.getSpriteFrame(this.faceTypeIdToName[face]);
+            this.historicalDices[index].spriteFrame = this.facesAtlas.getSpriteFrame(this.faceTypeIdToName[face]);
         })
     }
     
     updateTableInfo(infors) {
-        infors = [[1, 3, 4], [4, 4, 3], [2, 5, 6]]
-        
+        // infors = [[1, 3, 4], [4, 4, 3], [2, 5, 6]]
         if(infors.length < 1)
             return
         
@@ -57,7 +56,7 @@ class BauCuaHistoricalTable extends TaiXiuHistoricalTable {
      */
     modifyItem(typeIds, isLast) {
         typeIds.forEach((face, index) => {
-            this.historicalDices[index].spriteFrame = this.facesAtlas.getSpriteFrame(`${this.faceTypeIdToName[face]}${isLast ? '_hl' : ''}`)
+            this.faces[index].spriteFrame = this.facesAtlas.getSpriteFrame(`${this.faceTypeIdToName[face]}${isLast ? '_hl' : ''}`)
         })
         
         let cell = cc.instantiate(this.childItem)

@@ -1,5 +1,4 @@
 import Component from 'Component';
-import app from 'app';
 
 export default class ShakenControl extends Component {
     constructor() {

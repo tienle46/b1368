@@ -1,8 +1,8 @@
 import app from 'app';
-import PlayerGameBet from 'PlayerGameBet';
+import PlayerTaiXiu from 'PlayerTaiXiu';
 import Events from 'Events';
 
-export default class PlayerBauCua extends PlayerGameBet {
+export default class PlayerBauCua extends PlayerTaiXiu {
     constructor(board, user) {
         super(board, user);
         this.RENDERER_COMPONENT = 'PlayerBauCuaRenderer';

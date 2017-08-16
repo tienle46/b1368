@@ -6,12 +6,12 @@ class BauCuaShakenControl extends TaiXiuShakenControl {
         super();
         
         this.faceTypeIdToName = {
-            1 : 'ca',
-            2 : 'huou',
-            3 : 'cua',
-            4 : 'ga',
-            5 : 'tom',
-            6 : 'bau',
+            1 : 'bau',
+            2 : 'cua',
+            3 : 'tom',
+            4 : 'ca',
+            5 : 'ga',
+            6 : 'huou',
         }
     }
 
@@ -22,9 +22,6 @@ class BauCuaShakenControl extends TaiXiuShakenControl {
      * @memberof BauCuaShakenControl
      */
     placedOnDish(dices = []) {
-        console.warn('dices')
-        dices = [3, 4, 1]
-        
         // 0: white, 1: red
         // let colors = ['blueTheme/ingame/xocdia/trang', 'blueTheme/ingame/xocdia/do'];
 
@@ -51,7 +48,6 @@ class BauCuaShakenControl extends TaiXiuShakenControl {
             let node = cc.instantiate(this.diceSprite.node)
             node.active = true
             node.setPosition(cc.v2(posX, posY))
-            console.warn(i);
             this.placedArea.addChild(node)
         });
     }

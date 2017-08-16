@@ -5,7 +5,8 @@ export default class TaiXiuBetTypeBtn extends BetTypeBtn {
     constructor() {
         super();
         this.properties = this.assignProperties({
-            highlightNode: cc.Node
+            highlightNode: cc.Node,
+            placedArea: cc.Node
         });
        
         this.updateTimer = 0;
@@ -15,6 +16,7 @@ export default class TaiXiuBetTypeBtn extends BetTypeBtn {
     onLoad() {
         super.onLoad()
         this.highlight(false)
+        this.node.placedArea = this.placedArea;
     }
     
     reset() {

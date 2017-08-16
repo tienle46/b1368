@@ -501,7 +501,6 @@ export default class ListTableScene extends BaseScene {
 
             this.minBalanceMultiple && this._bestSuitableRoom(this.minBalanceMultiple);
         // }
-        
         this._isInitedRoomList = true;
     }
     

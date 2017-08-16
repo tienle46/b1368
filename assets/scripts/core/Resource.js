@@ -77,7 +77,8 @@ app.res.gameIcon = {
     "xit": "xito_ico",
     "mbh": "maubinh_ico",
     "xod": "xocdia_ico",
-    "gtx": "taixiu_ico"
+    "gtx": "taixiu_ico",
+    "tcc": "baucua_ico"
 };
 app.res.gameTopCapThuIcon = {
     // // bai 3 mien

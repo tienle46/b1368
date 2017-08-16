@@ -97,12 +97,15 @@ export default class BetChipAnim {
     }
     
     getRealEndPoint(toNode) {
+        if(toNode.placedArea)
+            toNode = toNode.placedArea
+                
         // and node where chip would be tossed to
         let toNodeSize = toNode.getContentSize();
         let toNodePos = toNode.getPosition();
 
         // chip would be located inside `toNode` area
-        let endPoint = cc.v2(toNodePos.x + cc.randomMinus1To1() * 1 / 2 * toNodeSize.width * 0.8, toNodePos.y + cc.randomMinus1To1() * 1 / 2 * (toNodeSize.height - 55) * 0.8);
+        let endPoint = cc.v2(toNodePos.x + cc.randomMinus1To1() * 1 / 2 * toNodeSize.width * 0.76, toNodePos.y + cc.randomMinus1To1() * 1 / 2 * (toNodeSize.height - 45) * 0.76);
         // position based on world space
         let realEndPoint = toNode.parent ? toNode.parent.convertToWorldSpaceAR(endPoint) : toNode.convertToWorldSpaceAR(endPoint);
         

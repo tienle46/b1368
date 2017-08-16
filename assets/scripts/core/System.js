@@ -438,8 +438,10 @@ class GameSystem {
                     gameSceneName = 'XocDiaScene';
                     break;
                 case app.const.gameCode.TAI_XIU:
-                    // gameSceneName = 'BauCuaScene';
                     gameSceneName = 'TaiXiuScene';
+                    break;
+                case app.const.gameCode.BAU_CUA:
+                    gameSceneName = 'BauCuaScene';
                     break;
                 case app.const.gameCode.TLMNDL_SOLO:
                     gameSceneName = 'TLMNDLScene';

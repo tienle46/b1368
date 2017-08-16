@@ -1447,6 +1447,9 @@
     },
     "highlightNode": {
       "__id__": 18
+    },
+    "placedArea": {
+      "__id__": 28
     }
   },
   {
@@ -2329,6 +2332,9 @@
     },
     "highlightNode": {
       "__id__": 41
+    },
+    "placedArea": {
+      "__id__": 51
     }
   },
   {
@@ -3140,6 +3146,9 @@
     },
     "highlightNode": {
       "__id__": 62
+    },
+    "placedArea": {
+      "__id__": 71
     }
   },
   {
@@ -3856,6 +3865,9 @@
     },
     "highlightNode": {
       "__id__": 81
+    },
+    "placedArea": {
+      "__id__": 90
     }
   },
   {
@@ -4572,6 +4584,9 @@
     },
     "highlightNode": {
       "__id__": 100
+    },
+    "placedArea": {
+      "__id__": 109
     }
   },
   {
@@ -5288,6 +5303,9 @@
     },
     "highlightNode": {
       "__id__": 119
+    },
+    "placedArea": {
+      "__id__": 128
     }
   },
   {
@@ -6004,6 +6022,9 @@
     },
     "highlightNode": {
       "__id__": 138
+    },
+    "placedArea": {
+      "__id__": 147
     }
   },
   {
@@ -6720,6 +6741,9 @@
     },
     "highlightNode": {
       "__id__": 157
+    },
+    "placedArea": {
+      "__id__": 166
     }
   },
   {
@@ -7436,6 +7460,9 @@
     },
     "highlightNode": {
       "__id__": 176
+    },
+    "placedArea": {
+      "__id__": 185
     }
   },
   {
@@ -8152,6 +8179,9 @@
     },
     "highlightNode": {
       "__id__": 195
+    },
+    "placedArea": {
+      "__id__": 204
     }
   },
   {
@@ -8868,6 +8898,9 @@
     },
     "highlightNode": {
       "__id__": 214
+    },
+    "placedArea": {
+      "__id__": 223
     }
   },
   {
@@ -9584,6 +9617,9 @@
     },
     "highlightNode": {
       "__id__": 233
+    },
+    "placedArea": {
+      "__id__": 242
     }
   },
   {
@@ -10300,6 +10336,9 @@
     },
     "highlightNode": {
       "__id__": 252
+    },
+    "placedArea": {
+      "__id__": 261
     }
   },
   {
@@ -11016,6 +11055,9 @@
     },
     "highlightNode": {
       "__id__": 271
+    },
+    "placedArea": {
+      "__id__": 280
     }
   },
   {
@@ -11732,6 +11774,9 @@
     },
     "highlightNode": {
       "__id__": 290
+    },
+    "placedArea": {
+      "__id__": 299
     }
   },
   {
@@ -12448,6 +12493,9 @@
     },
     "highlightNode": {
       "__id__": 309
+    },
+    "placedArea": {
+      "__id__": 318
     }
   },
   {
@@ -13108,6 +13156,9 @@
     },
     "highlightNode": {
       "__id__": 330
+    },
+    "placedArea": {
+      "__id__": 335
     }
   },
   {
@@ -13666,6 +13717,9 @@
     },
     "highlightNode": {
       "__id__": 345
+    },
+    "placedArea": {
+      "__id__": 350
     }
   },
   {
@@ -14224,6 +14278,9 @@
     },
     "highlightNode": {
       "__id__": 360
+    },
+    "placedArea": {
+      "__id__": 365
     }
   },
   {
@@ -14782,6 +14839,9 @@
     },
     "highlightNode": {
       "__id__": 375
+    },
+    "placedArea": {
+      "__id__": 380
     }
   },
   {
@@ -15340,6 +15400,9 @@
     },
     "highlightNode": {
       "__id__": 390
+    },
+    "placedArea": {
+      "__id__": 395
     }
   },
   {
@@ -15898,6 +15961,9 @@
     },
     "highlightNode": {
       "__id__": 405
+    },
+    "placedArea": {
+      "__id__": 410
     }
   },
   {
@@ -16345,7 +16411,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 589,
-      "height": 62
+      "height": 50
     },
     "_rotationX": 0,
     "_rotationY": 0,
@@ -16566,6 +16632,9 @@
     },
     "highlightNode": {
       "__id__": 423
+    },
+    "placedArea": {
+      "__id__": 428
     }
   },
   {
@@ -17195,6 +17264,9 @@
     },
     "highlightNode": {
       "__id__": 439
+    },
+    "placedArea": {
+      "__id__": 444
     }
   },
   {
@@ -17753,6 +17825,9 @@
     },
     "highlightNode": {
       "__id__": 454
+    },
+    "placedArea": {
+      "__id__": 459
     }
   },
   {
@@ -18311,6 +18386,9 @@
     },
     "highlightNode": {
       "__id__": 469
+    },
+    "placedArea": {
+      "__id__": 474
     }
   },
   {
@@ -18869,6 +18947,9 @@
     },
     "highlightNode": {
       "__id__": 484
+    },
+    "placedArea": {
+      "__id__": 489
     }
   },
   {
@@ -19427,6 +19508,9 @@
     },
     "highlightNode": {
       "__id__": 499
+    },
+    "placedArea": {
+      "__id__": 504
     }
   },
   {
@@ -19985,6 +20069,9 @@
     },
     "highlightNode": {
       "__id__": 514
+    },
+    "placedArea": {
+      "__id__": 519
     }
   },
   {
@@ -21204,7 +21291,7 @@
     "node": {
       "__id__": 555
     },
-    "_enabled": false,
+    "_enabled": true,
     "_spriteFrame": {
       "__uuid__": "606da669-8ca6-4f99-a432-af9996d0c89e"
     },
@@ -21783,7 +21870,7 @@
     "node": {
       "__id__": 571
     },
-    "_enabled": false,
+    "_enabled": true,
     "_spriteFrame": {
       "__uuid__": "606da669-8ca6-4f99-a432-af9996d0c89e"
     },
@@ -22362,7 +22449,7 @@
     "node": {
       "__id__": 587
     },
-    "_enabled": false,
+    "_enabled": true,
     "_spriteFrame": {
       "__uuid__": "606da669-8ca6-4f99-a432-af9996d0c89e"
     },
