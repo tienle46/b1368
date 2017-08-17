@@ -1,6 +1,6 @@
 import ButtonScaler from 'ButtonScaler';
 import RubUtils from 'RubUtils';
-import { isFunction } from 'Utils';
+import { isFunction } from 'GeneralUtils';
 
 let NodeRub = {
     /**

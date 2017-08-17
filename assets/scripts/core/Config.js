@@ -181,7 +181,7 @@ app.config.parseConfigData = function(configData = {}) {
     const ActionBlocker = require('ActionBlocker');
     ActionBlocker.onClientConfigChanged(configData.blockConfig || {});
     
-    const Events = require('Events');
+    const Events = require('GameEvents');
     app.system.emit(Events.CLIENT_CONFIG_CHANGED)
 };
 

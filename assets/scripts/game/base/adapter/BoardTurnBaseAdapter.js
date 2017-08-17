@@ -3,8 +3,8 @@
  */
 
 import app from 'app';
-import utils from 'utils'
-import Events from 'Events'
+import utils from 'PackageUtils'
+import Events from 'GameEvents'
 import GameAdapter from 'GameAdapter';
 import {Keywords} from 'core'
 import GameUtils from 'GameUtils';

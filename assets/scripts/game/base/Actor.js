@@ -4,7 +4,7 @@
 
 import VisibilityActor from 'VisibilityActor';
 import Emitter from 'emitter';
-import Events from 'Events';
+import Events from 'GameEvents';
 import HttpImageLoader from 'HttpImageLoader';
 
 export default class Actor extends VisibilityActor {

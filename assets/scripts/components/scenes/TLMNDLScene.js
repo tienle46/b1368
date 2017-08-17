@@ -4,7 +4,7 @@
 
 import app from 'app';
 import GameScene from 'GameScene';
-import Events from 'Events';
+import Events from 'GameEvents';
 
 export default class TLMNDLScene extends GameScene {
     constructor() {

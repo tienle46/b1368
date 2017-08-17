@@ -1,6 +1,6 @@
 import app from 'app';
 import PopupTabBody from 'PopupTabBody';
-import Utils from 'Utils';
+import Utils from 'GeneralUtils';
 
 class TabHistory extends PopupTabBody {
     constructor() {

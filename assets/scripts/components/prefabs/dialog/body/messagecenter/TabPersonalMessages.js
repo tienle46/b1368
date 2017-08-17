@@ -3,7 +3,7 @@
  */
 import app from 'app';
 import TabMessages from 'TabMessages';
-import Events from 'Events';
+import Events from 'GameEvents';
 
 class TabPersonalMessages extends TabMessages {
     constructor() {

@@ -4,7 +4,7 @@ import moment from 'moment';
 import GameUtils from 'GameUtils';
 import CCUtils from 'CCUtils';
 import RubUtils from 'RubUtils';
-import Events from 'Events';
+import Events from 'GameEvents';
 
 export default class JarComponent extends Actor {
     constructor() {

@@ -2,9 +2,9 @@
  * Created by Thanh on 9/19/2016.
  */
 
-import utils from 'utils';
+import utils from 'PackageUtils';
 import app from 'app';
-import Events from 'Events';
+import Events from 'GameEvents';
 import GameControls from 'GameControls';
 import BetChipAnim from 'BetChipAnim';
 

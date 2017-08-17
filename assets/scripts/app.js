@@ -292,7 +292,7 @@ app.getMessageFromServer = (error) => {
          * @type {Context}
          */
         app.context = require("Context");
-        app.event = require("Events");
+        app.event = require('GameEvents');
 
         // setup game environment by platform
         app.env.__setupEnvironment();

@@ -2,7 +2,7 @@
  * Created by Thanh on 8/23/2016.
  */
 
-import utils from 'utils';
+import utils from 'PackageUtils';
 import app from 'app';
 import game from 'game';
 import { Actor } from 'components';

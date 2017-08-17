@@ -3,12 +3,12 @@
  */
 
 import app from 'app';
-import utils from 'utils';
+import utils from 'PackageUtils';
 import Actor from 'Actor';
 import CCUtils from 'CCUtils';
 import SFS2X from 'SFS2X';
 import LoaderRub from 'LoaderRub';
-import Events from "Events";
+import Events from 'GameEvents';
 import RubUtils from 'RubUtils';
 
 const emotionTexts = [];

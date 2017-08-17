@@ -3,7 +3,7 @@
  */
 
 import app from 'app';
-import { utils, GameUtils } from 'utils';
+import { utils, GameUtils } from 'PackageUtils';
 import ActorRenderer from 'ActorRenderer';
 import PlusBalanceAnimation from 'PlusBalanceAnimation';
 import PlayerMessage from 'PlayerMessage';

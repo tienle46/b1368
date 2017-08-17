@@ -5,7 +5,7 @@
 import app from 'app';
 import Component from 'Component';
 import CCUtils, { isNode, destroy } from 'CCUtils';
-import Utils from 'Utils'
+import Utils from 'GeneralUtils'
 
 export default class PromptPopup extends Component {
     constructor() {

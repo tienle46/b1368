@@ -3,7 +3,7 @@
  */
 import app from 'app';
 import Actor from 'Actor'
-import Utils from 'Utils';
+import Utils from 'GeneralUtils';
 import CCUtils from 'CCUtils';
 
 class WithdrawMoneyComponent extends Actor {

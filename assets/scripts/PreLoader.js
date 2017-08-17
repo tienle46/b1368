@@ -11,4 +11,4 @@ import * as events from 'events';
 import * as exceptions from 'exceptions';
 import * as game from 'game';
 import * as gameComponent from 'game-components';
-import * as utils from 'utils';
+import * as utils from 'PackageUtils';

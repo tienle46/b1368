@@ -5,11 +5,11 @@
 import app from 'app';
 import game from 'game';
 import Card from 'Card';
-import Events from 'Events';
+import Events from 'GameEvents';
 import ArrayUtils from 'ArrayUtils';
 import SamUtils from 'SamUtils';
 import PlayerCardTurnBase from 'PlayerCardTurnBase';
-import utils from "../../../utils/Utils";
+import utils from "GeneralUtils";
 
 export default class PlayerSam extends PlayerCardTurnBase {
 

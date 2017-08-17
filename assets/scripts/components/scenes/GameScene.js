@@ -1,5 +1,5 @@
 import app from 'app';
-import { utils, GameUtils } from 'utils';
+import { utils, GameUtils } from 'PackageUtils';
 import { Keywords } from 'core';
 import { BaseScene } from 'scenes';
 import { Events, Emitter } from 'events'

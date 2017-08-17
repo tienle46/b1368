@@ -1,7 +1,7 @@
 import app from 'app';
 import Component from 'Component';
 import NodeRub from 'NodeRub';
-import { isFunction } from 'Utils';
+import { isFunction } from 'GeneralUtils';
 import { active, deactive } from 'CCUtils';
 
 export default class Scrollview extends Component {

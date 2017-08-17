@@ -1,7 +1,7 @@
 import app from 'app';
 import CCUtils from 'CCUtils';
 import VisibilityManager from 'VisibilityManager';
-import Events from 'Events';
+import Events from 'GameEvents';
 
 export default class JarManager {
     constructor() {

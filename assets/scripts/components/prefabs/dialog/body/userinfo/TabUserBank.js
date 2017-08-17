@@ -1,7 +1,7 @@
 import app from 'app';
 import PopupTabBody from 'PopupTabBody';
 import PromptPopup from 'PromptPopup';
-import { isEmpty, isNumber, active, deactive, numberFormat, timeFormat } from 'Utils';
+import { isEmpty, isNumber, active, deactive, numberFormat, timeFormat } from 'GeneralUtils';
 
 export default class TabUserBank extends PopupTabBody {
     constructor() {

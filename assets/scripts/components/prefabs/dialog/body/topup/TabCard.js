@@ -3,7 +3,7 @@ import PopupTabBody from 'PopupTabBody';
 import {
     isEmpty,
     numberFormat
-} from 'Utils';
+} from 'GeneralUtils';
 import RubUtils from 'RubUtils';
 import CCUtils from 'CCUtils';
 

@@ -2,7 +2,7 @@
  * Created by Thanh on 9/15/2016.
  */
 
-import utils from 'utils';
+import utils from 'PackageUtils';
 import Component from 'Component';
 
 const componentAbstractMethods = ['update', 'lateUpdate', 'onLoad', 'start', 'onEnable', 'onDisable', 'onDestroy', 'onFocusInEditor', 'onLostFocusInEditor'];

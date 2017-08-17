@@ -1,6 +1,6 @@
 import app from 'app';
 import Actor from 'Actor';
-import Events from 'Events';
+import Events from 'GameEvents';
 
 class Item extends Actor {
     constructor() {

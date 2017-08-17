@@ -1,9 +1,9 @@
 import app from 'app';
-import {utils, GameUtils} from 'utils';
+import {utils, GameUtils} from 'PackageUtils';
 import SFS2X from 'SFS2X';
 import CreateGameException from 'CreateGameException';
 import Actor from 'Actor';
-import Events from 'Events'
+import Events from 'GameEvents'
 import {Keywords} from 'core';
 import Props from 'Props';
 import {getEmotionName} from 'GameChatComponent';

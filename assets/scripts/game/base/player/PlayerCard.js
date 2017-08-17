@@ -2,9 +2,9 @@
  * Created by Thanh on 8/23/2016.
  */
 
-import {utils, GameUtils} from 'utils';
+import {utils, GameUtils} from 'PackageUtils';
 import Player from 'Player';
-import Events from 'Events';
+import Events from 'GameEvents';
 import {Keywords} from 'core';
 
 export default class PlayerCard extends Player {

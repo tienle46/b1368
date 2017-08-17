@@ -4,7 +4,7 @@ import {
     isEmpty,
     numberFormat,
     timeFormat
-} from 'Utils';
+} from 'GeneralUtils';
 import ConfirmPopup from 'ConfirmPopup';
 
 class TabExchangeHistory extends PopupTabBody {

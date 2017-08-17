@@ -3,7 +3,7 @@
  */
 
 import app from 'app';
-import utils from 'utils';
+import utils from 'PackageUtils';
 import { Actor } from 'components';
 import GameUtils from 'GameUtils';
 

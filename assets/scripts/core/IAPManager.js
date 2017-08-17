@@ -1,5 +1,5 @@
 import app from 'app';
-import Events from 'Events';
+import Events from 'GameEvents';
 
 export default class IAPManager {
     constructor() {

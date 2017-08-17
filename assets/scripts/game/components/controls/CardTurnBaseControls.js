@@ -3,8 +3,8 @@
  */
 
 import app from 'app';
-import utils from 'utils';
-import Events from 'Events';
+import utils from 'PackageUtils';
+import Events from 'GameEvents';
 import GameControls from 'GameControls';
 
 export default class CardTurnBaseControls extends GameControls {

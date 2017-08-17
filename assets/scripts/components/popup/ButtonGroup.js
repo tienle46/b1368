@@ -1,6 +1,6 @@
 import app from 'app';
 import Component from 'Component';
-import { isFunction } from 'Utils';
+import { isFunction } from 'GeneralUtils';
 
 /**
  * @class ButtonGroup

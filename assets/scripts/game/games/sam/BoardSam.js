@@ -4,7 +4,7 @@
 
 import app from 'app';
 import game from 'game';
-import {utils, GameUtils} from 'utils';
+import {utils, GameUtils} from 'PackageUtils';
 import {Keywords} from 'core';
 import {Events} from 'events';
 import BoardCardTurnBase from 'BoardCardTurnBase';

@@ -1,6 +1,6 @@
 import app from 'app';
 import PopupTabBody from 'PopupTabBody';
-import { isNull } from 'Utils';
+import { isNull } from 'GeneralUtils';
 
 export default class TabUserAchievements extends PopupTabBody {
     constructor() {

@@ -1,5 +1,5 @@
 import BoardRenderer from 'BoardRenderer';
-import utils from 'utils';
+import utils from 'PackageUtils';
 
 export default class BoardGameBetRenderer extends BoardRenderer {
     constructor() {

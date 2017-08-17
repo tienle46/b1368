@@ -1,6 +1,6 @@
 import app from 'app';
 import ActionComponent from 'ActionComponent';
-import utils from 'utils';
+import utils from 'PackageUtils';
 import GameUtils from 'GameUtils';
 import CCUtils from 'CCUtils';
 

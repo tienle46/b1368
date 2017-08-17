@@ -3,7 +3,7 @@
  */
 
 import app from 'app';
-import { utils, GameUtils } from 'utils';
+import { utils, GameUtils } from 'PackageUtils';
 import SFS2X from 'SFS2X';
 import async from 'async';
 import { Events } from 'events'

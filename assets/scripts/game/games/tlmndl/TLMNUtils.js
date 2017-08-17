@@ -4,7 +4,7 @@
 
 import app from 'app'
 import Card from 'Card'
-import {GameUtils, utils} from 'utils'
+import {GameUtils, utils} from 'PackageUtils'
 
 
 export default class TLMNUtils {

@@ -4,7 +4,7 @@
 
 import app from 'app'
 import PhomList from 'PhomList';
-import {GameUtils, utils} from 'utils'
+import {GameUtils, utils} from 'PackageUtils'
 import JoinSolution from "JoinSolution";
 import JoinNode from "JoinNode";
 import Card from 'Card';

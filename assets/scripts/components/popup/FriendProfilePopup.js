@@ -1,5 +1,5 @@
 import app from 'app';
-import utils from 'utils';
+import utils from 'PackageUtils';
 import DialogActor from 'DialogActor';
 import GameUtils from 'GameUtils';
 import Props from 'Props';

@@ -1,7 +1,7 @@
 ﻿import app from 'app';
 import ActionComponent from 'ActionComponent';
 import Card from 'Card';
-import utils from 'utils';
+import utils from 'PackageUtils';
 import CCUtils from "CCUtils";
 import ArrayUtils from "ArrayUtils";
 

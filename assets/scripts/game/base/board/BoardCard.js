@@ -2,7 +2,7 @@
  * Created by Thanh on 8/23/2016.
  */
 
-import { utils, GameUtils } from 'utils';
+import { utils, GameUtils } from 'PackageUtils';
 import app from 'app';
 import Board from 'Board';
 import Card from 'Card';

@@ -3,9 +3,9 @@
  */
 
 import app from 'app';
-import utils from 'utils';
+import utils from 'PackageUtils';
 import PopupTabBody from 'PopupTabBody';
-import Events from 'Events';
+import Events from 'GameEvents';
 import CCUtils from 'CCUtils';
 
 class BuddyListTabBody extends PopupTabBody {

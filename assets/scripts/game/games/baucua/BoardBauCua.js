@@ -1,7 +1,7 @@
 import app from 'app';
 import BoardGameBet from 'BoardGameBet';
-import utils from 'utils';
-import Events from 'Events';
+import utils from 'PackageUtils';
+import Events from 'GameEvents';
 
 export default class BoardBauCua extends BoardGameBet {
     constructor() {

@@ -3,9 +3,9 @@
  */
 
 import app from 'app';
-import Events from 'Events';
+import Events from 'GameEvents';
 import RubUtils from 'RubUtils';
-import Utils from 'Utils';
+import Utils from 'GeneralUtils';
 import VisibilityManager from 'VisibilityManager';
 
 /**

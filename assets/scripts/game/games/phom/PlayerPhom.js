@@ -5,8 +5,8 @@
 import app from 'app';
 import game from 'game';
 import Card from 'Card';
-import Events from 'Events';
-import {utils, GameUtils} from 'utils';
+import Events from 'GameEvents';
+import {utils, GameUtils} from 'PackageUtils';
 import PlayerCardTurnBase from 'PlayerCardTurnBase';
 import PhomList from 'PhomList';
 import Commands from 'Commands';

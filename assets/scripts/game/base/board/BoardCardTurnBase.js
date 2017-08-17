@@ -3,11 +3,11 @@
  */
 
 import app from 'app'
-import utils from 'utils'
+import utils from 'PackageUtils'
 import BoardTurnBaseAdapter from 'BoardTurnBaseAdapter';
 import BoardCard from 'BoardCard';
 import Keywords from 'Keywords'
-import Events from 'Events'
+import Events from 'GameEvents'
 
 export default class BoardCardTurnBase extends BoardCard {
 

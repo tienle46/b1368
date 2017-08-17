@@ -3,7 +3,7 @@
  */
 
 import app from 'app';
-import Events from 'Events';
+import Events from 'GameEvents';
 import MultiTabPopup from 'MultiTabPopup';
 
 const tabModels = [

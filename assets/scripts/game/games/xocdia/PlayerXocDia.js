@@ -1,6 +1,6 @@
 import app from 'app';
 import PlayerGameBet from 'PlayerGameBet';
-import Events from 'Events';
+import Events from 'GameEvents';
 
 export default class PlayerXocDia extends PlayerGameBet {
     constructor(board, user) {

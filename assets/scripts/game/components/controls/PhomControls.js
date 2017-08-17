@@ -3,7 +3,7 @@
  */
 
 import app from 'app';
-import utils from 'utils';
+import utils from 'PackageUtils';
 import GameControls from 'GameControls';
 import BaseControls from 'BaseControls';
 import CardTurnBaseControls from 'CardTurnBaseControls';

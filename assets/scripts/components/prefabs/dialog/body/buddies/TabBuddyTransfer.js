@@ -3,7 +3,7 @@
  */
 import app from 'app';
 import PopupTabBody from 'PopupTabBody';
-import {isNumber, active, deactive, numberFormat} from 'Utils';
+import {isNumber, active, deactive, numberFormat} from 'GeneralUtils';
 import CCUtils from 'CCUtils';
 import ActionBlocker from 'ActionBlocker';
 

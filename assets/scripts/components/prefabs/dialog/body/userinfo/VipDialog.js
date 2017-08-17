@@ -1,7 +1,7 @@
 import app from 'app';
 import DialogActor from 'DialogActor';
 import { destroy, active } from 'CCUtils';
-import Utils from 'Utils';
+import Utils from 'GeneralUtils';
 import RubUtils from 'RubUtils';
 
 export default class VipDialog extends DialogActor {

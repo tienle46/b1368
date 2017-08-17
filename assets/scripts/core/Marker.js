@@ -3,7 +3,7 @@
  * Its data needs to be refreshed if has any change between currently data and new one.
  */
 import app from 'app';
-import Utils from 'Utils';
+import Utils from 'GeneralUtils';
 
 export default class Marker {
     constructor() {

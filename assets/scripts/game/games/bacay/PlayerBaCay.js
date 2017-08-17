@@ -3,14 +3,14 @@
  */
 
 import app from 'app';
-import Utils from 'Utils';
+import Utils from 'GeneralUtils';
 import Card from 'Card';
-import Events from 'Events';
+import Events from 'GameEvents';
 import GameUtils from 'GameUtils';
 import BaCayUtils from 'BaCayUtils';
 import CardList from 'CardList';
 import PlayerCardBetTurn from 'PlayerCardBetTurn';
-import utils from "../../../utils/Utils";
+import utils from "GeneralUtils";
 import GameAnim from "../../components/anim/GameAnim";
 
 export default class PlayerBaCay extends PlayerCardBetTurn {

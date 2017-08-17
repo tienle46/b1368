@@ -5,7 +5,7 @@
 import app from 'app';
 import Actor from 'Actor';
 import GameResultItem from 'GameResultItem';
-import { GameUtils } from 'utils';
+import { GameUtils } from 'PackageUtils';
 import Commands from "Commands";
 import CCUtils from "CCUtils";
 import ArrayUtils from "ArrayUtils";

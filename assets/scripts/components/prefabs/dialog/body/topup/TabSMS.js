@@ -5,7 +5,7 @@ import {
     deactive,
     active,
     numberFormat
-} from 'Utils';
+} from 'GeneralUtils';
 
 class TabSMS extends PopupTabBody {
     constructor() {

@@ -2,7 +2,7 @@ import app from 'app';
 import PopupTabBody from 'PopupTabBody';
 import RubUtils from 'RubUtils';
 import NodeRub from 'NodeRub';
-import Utils from 'Utils';
+import Utils from 'GeneralUtils';
 import CCUtils from 'CCUtils';
 import ActionBlocker from 'ActionBlocker';
 

@@ -3,7 +3,7 @@
  */
 
 import app from 'app';
-import utils from 'utils';
+import utils from 'PackageUtils';
 import Actor from 'Actor';
 import CCUtils from 'CCUtils';
 import Base64 from 'Base64';

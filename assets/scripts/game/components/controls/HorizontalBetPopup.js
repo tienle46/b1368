@@ -1,7 +1,7 @@
 import app from 'app';
-import Utils from 'Utils'
+import Utils from 'GeneralUtils'
 import Component from 'Component';
-import utils from 'utils';
+import utils from 'PackageUtils';
 
 class BetSlider extends Component {
     constructor() {

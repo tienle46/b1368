@@ -1,6 +1,6 @@
 import app from 'app';
 import Component from 'Component';
-import { isFunction, numberFormat } from 'Utils';
+import { isFunction, numberFormat } from 'GeneralUtils';
 import { destroy } from 'CCUtils';
 
 class PlayerInvitePopup extends Component {

@@ -3,7 +3,7 @@
  */
 
 import app from 'app';
-import utils from 'utils';
+import utils from 'PackageUtils';
 import RubUtils from 'RubUtils';
 import Component from 'Component';
 import Progress from 'Progress';

@@ -2,7 +2,7 @@
  * Created by Thanh on 9/15/2016.
  */
 
-import utils from 'utils';
+import utils from 'PackageUtils';
 import app from 'app';
 import CardList from 'CardList';
 import PhomListComponent from 'PhomListComponent';

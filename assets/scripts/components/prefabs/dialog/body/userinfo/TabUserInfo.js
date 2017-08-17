@@ -5,7 +5,7 @@ import {
     active,
     deactive,
     numberFormat
-} from 'Utils';
+} from 'GeneralUtils';
 import Linking from 'Linking';
 import CCUtils from 'CCUtils';
 import {

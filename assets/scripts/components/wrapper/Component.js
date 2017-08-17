@@ -2,7 +2,7 @@
  * Created by Thanh on 9/1/2016.
  */
 import { destroy } from 'CCUtils';
-import Utils from 'Utils';
+import Utils from 'GeneralUtils';
 
 export default class Component {
     constructor() {

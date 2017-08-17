@@ -1,8 +1,8 @@
 import app from 'app';
 import BoardGameBet from 'BoardGameBet';
-import utils from 'utils';
+import utils from 'PackageUtils';
 import { requestTimeout, clearRequestTimeout } from 'TimeHacker';
-import Events from 'Events';
+import Events from 'GameEvents';
 
 export default class BoardXocDia extends BoardGameBet {
     constructor() {

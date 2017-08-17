@@ -1,5 +1,5 @@
 import app from 'app';
-import utils from 'utils';
+import utils from 'PackageUtils';
 import Component from 'Component';
 
 export default class TextView extends Component {

@@ -1,7 +1,7 @@
 import app from 'app';
 import PlayerRenderer from 'PlayerRenderer';
 import GameUtils from "GameUtils";
-import utils from 'utils';
+import utils from 'PackageUtils';
 
 export default class PlayerGameBetRenderer extends PlayerRenderer {
     constructor() {

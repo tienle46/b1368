@@ -4,7 +4,7 @@ import SFS2X from 'SFS2X';
 import ScrollMessagePopup from 'ScrollMessagePopup';
 import BuddyPopup from 'BuddyPopup';
 import CCUtils from 'CCUtils';
-import Utils from 'Utils';
+import Utils from 'GeneralUtils';
 import Linking from 'Linking';
 
 export default class ListTableScene extends BaseScene {

@@ -4,9 +4,9 @@
 
 import app from 'app';
 import Component from 'Component';
-import utils from 'utils';
+import utils from 'PackageUtils';
 import CCUtils from 'CCUtils';
-import Events from 'Events'
+import Events from 'GameEvents'
 import ActionBlocker from 'ActionBlocker'
 
 export default class PlayerPositions extends Component {

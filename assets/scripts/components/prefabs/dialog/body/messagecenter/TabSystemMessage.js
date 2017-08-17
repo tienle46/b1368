@@ -2,7 +2,7 @@
  * Created by trungnt on 10/14/16.
  */
 import app from 'app';
-import Events from 'Events';
+import Events from 'GameEvents';
 import TabMessages from 'TabMessages';
 
 class TabSystemMessage extends TabMessages {

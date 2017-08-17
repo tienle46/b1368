@@ -1,6 +1,6 @@
 import BaseScene from 'BaseScene';
 import app from 'app';
-import { isEmpty } from 'Utils';
+import { isEmpty } from 'GeneralUtils';
 import Base64 from 'Base64';
 
 export default class LoginScene extends BaseScene {

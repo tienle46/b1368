@@ -4,7 +4,7 @@
 
 import app from 'app';
 import Component from 'Component';
-import utils from 'utils';
+import utils from 'PackageUtils';
 
 export default class EllipseTimeLine extends Component {
 

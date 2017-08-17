@@ -1,6 +1,6 @@
 import app from 'app';
 import DialogActor from 'DialogActor';
-import { numberFormat } from 'Utils';
+import { numberFormat } from 'GeneralUtils';
 import moment from 'moment';
 
 class TabTransactionHistory extends DialogActor {

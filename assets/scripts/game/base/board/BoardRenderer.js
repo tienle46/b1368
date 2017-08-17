@@ -3,7 +3,7 @@
  */
 
 import app from 'app';
-import utils from 'utils';
+import utils from 'PackageUtils';
 import ActorRenderer from 'ActorRenderer';
 
 export default class BoardRenderer extends ActorRenderer {

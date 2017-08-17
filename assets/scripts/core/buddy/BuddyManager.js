@@ -3,9 +3,9 @@
  */
 
 import app from 'app';
-import utils from 'utils';
+import utils from 'PackageUtils';
 import SFS2X from 'SFS2X';
-import Events from "Events";
+import Events from 'GameEvents';
 
 /**
  * Buddy => SFS2X.Entities.SFSBuddy => { id, name, blocked, temp, variables};

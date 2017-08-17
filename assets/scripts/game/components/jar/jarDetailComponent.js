@@ -1,6 +1,6 @@
 import app from 'app';
 import Actor from 'Actor';
-import Utils from 'Utils';
+import Utils from 'GeneralUtils';
 import {destroy, setActive} from 'CCUtils';
 
 export default class JarDetailComponent extends Actor {

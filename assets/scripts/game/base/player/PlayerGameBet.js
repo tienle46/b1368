@@ -1,6 +1,6 @@
 import Player from 'Player';
 import PlayerBetTurnAdapter from 'PlayerBetTurnAdapter';
-import Events from 'Events';
+import Events from 'GameEvents';
 import app from 'app';
 import GameUtils from 'GameUtils';
 

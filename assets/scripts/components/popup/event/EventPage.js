@@ -5,7 +5,7 @@
 import app from 'app'
 import Actor from 'Actor'
 import CCUtils from 'CCUtils'
-import Utils from 'Utils'
+import Utils from 'GeneralUtils'
 import RubUtils from 'RubUtils';
 
 class EventPage extends Actor {

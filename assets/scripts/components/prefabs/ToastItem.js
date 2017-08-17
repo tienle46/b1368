@@ -5,7 +5,7 @@
 import app from 'app';
 import Component from 'Component';
 import TextView from 'TextView';
-import { CCUtils, utils } from 'utils';
+import { CCUtils, utils } from 'PackageUtils';
 
 export default class ToastItem extends Component {
     constructor() {

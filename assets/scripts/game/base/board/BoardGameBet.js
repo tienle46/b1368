@@ -1,7 +1,7 @@
 import BoardCard from 'BoardCard';
-import Events from 'Events';
+import Events from 'GameEvents';
 import app from 'app';
-import utils from 'utils';
+import utils from 'PackageUtils';
 
 export default class BoardGameBet extends BoardCard {
     constructor(room, scene) {

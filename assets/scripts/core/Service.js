@@ -5,7 +5,7 @@
 import app from 'app';
 import SFS2X from 'SFS2X';
 import Toast from 'Toast';
-import utils from 'utils';
+import utils from 'PackageUtils';
 
 const requestCallbackNames = {
     [SFS2X.Requests.Handshake]: SFS2X.SFSEvent.HANDSHAKE,

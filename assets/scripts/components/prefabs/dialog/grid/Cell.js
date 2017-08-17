@@ -1,7 +1,7 @@
 import app from 'app';
 import Component from 'Component';
 import NodeRub from 'NodeRub';
-import { isNode, isNull } from 'Utils';
+import { isNode, isNull } from 'GeneralUtils';
 
 export class Cell extends Component {
     constructor() {
