@@ -525,12 +525,11 @@ class GameSystem {
                 values[key] = getQueryValue(key);
             });
             
-            // let {username, password, facebookToken, facebookId} = values;
-            // let aesjs = require("aes-js");
-            // var key = [ 1, 2, 3, 43, 5, 26, 7, 81, 19, 10, 11, 12, 13, 14, 15, 16 ];
-            // // Convert text to bytes
-            // var text = 'xxx1234';
-            // var textBytes = aesjs.utils.utf8.toBytes(text);
+            let {username, password, facebookToken, facebookId} = values;
+            
+            // Convert text to bytes
+            
+            // var textBytes = aesjs.utils.utf8.toBytes(password);
             // console.warn(textBytes);
             // // The counter is optional, and if omitted will begin at 1
             // var aesCtr = new aesjs.ModeOfOperation.ctr(key, new aesjs.Counter(5));
@@ -538,30 +537,34 @@ class GameSystem {
             // // To print or store the binary data, you may convert it to hex
             // var encryptedHex = aesjs.utils.hex.fromBytes(encryptedBytes);
             // console.warn(encryptedHex);
+            
             // // "a338eda3874ed884b6199150d36f49988c90f5c47fe7792b0cf8c7f77eeffd87
             // //  ea145b73e82aefcf2076f881c88879e4e25b1d7b24ba2788"
 
-            // // When ready to decrypt the hex string, convert it back to bytes
+            // When ready to decrypt the hex string, convert it back to bytes
             // var encryptedBytes = aesjs.utils.hex.toBytes(encryptedHex);
-
-            // // The counter mode of operation maintains internal state, so to
-            // // decrypt a new instance must be instantiated.
-            // var aesCtr = new aesjs.ModeOfOperation.ctr(key, new aesjs.Counter(5));
-            // var decryptedBytes = aesCtr.decrypt(encryptedBytes);
-
-            // // Convert our bytes back into text
-            // var decryptedText = aesjs.utils.utf8.fromBytes(decryptedBytes);
-            // console.log(decryptedText);
             
-            // // Decrypt
-            // if(password) {
-            //     var bytes  = password && CryptoJS.AES.decrypt(password, app.config.CRYPTO_AES_KEY);
-            //     password = bytes.toString(CryptoJS.enc.Utf8);
-            // }
+            
+            // Decrypt
+            if(password) {
+                let aesjs = require("aes-js");
+                var key = [ 1, 2, 3, 43, 5, 26, 7, 81, 19, 10, 11, 12, 13, 14, 15, 16 ];
+                //hexed: afcce71697 = 12345
+                var encryptedBytes = aesjs.utils.hex.toBytes(password);
+                
+                // The counter mode of operation maintains internal state, so to
+                // decrypt a new instance must be instantiated.
+                var aesCtr = new aesjs.ModeOfOperation.ctr(key, new aesjs.Counter(5));
+                var decryptedBytes = aesCtr.decrypt(encryptedBytes);
+    
+                // Convert our bytes back into text
+                password = aesjs.utils.utf8.fromBytes(decryptedBytes);
+                // console.log(password);
+            }
 
-            // if(this._currentScene && ((username && password) || (facebookId && facebookToken))) {
-            //     this._currentScene.loginToDashboard && this._currentScene.loginToDashboard(username, password, false, false, facebookToken, facebookId, null, tempRegister)
-            // }
+            if(this._currentScene && ((username && password) || (facebookId && facebookToken))) {
+                this._currentScene.loginToDashboard && this._currentScene.loginToDashboard(username, password, false, false, facebookToken, facebookId, null, tempRegister)
+            }
             this._sentQuickAuthen = true;
         }
     }
