@@ -9,7 +9,8 @@ export default class TaiXiuShakenControl extends ShakenControl {
             dices: cc.SpriteAtlas,
             diceSprite: cc.Sprite,
             dealerShakes: cc.SpriteAtlas,
-            dealerNode: cc.Node
+            dealerNode: cc.Node,
+            openBowlRibbon: cc.Node
         });
     }
 
@@ -19,7 +20,7 @@ export default class TaiXiuShakenControl extends ShakenControl {
      * @memberof TaiXiuShakenControl
      */
     play() {
-        this.wrapper.active = false
+        this.hideWrapper()
         let clipName = 'taiXiuDealerShakes'
         this.dealerNode.runAction(cc.sequence(cc.fadeIn(.3), cc.callFunc(() => {
             let animation = this.dealerNode.getComponent(cc.Animation) || this.dealerNode.addComponent(cc.Sprite)
@@ -68,11 +69,22 @@ export default class TaiXiuShakenControl extends ShakenControl {
         if(this.isShaking())
             return;
         
-        this.wrapper.active = true
         let bowlPos = this.bowlPos
         
-        let action = cc.moveTo(1, cc.v2(bowlPos.x, 451));
-        this.bowlNode.runAction(cc.sequence(action, cc.callFunc(() => {
+        // open_bowl ribbon action
+        let ribbonActions = cc.repeatForever(cc.sequence(cc.fadeIn(.1), cc.scaleTo(.2, 1.07, 1.06), cc.scaleTo(.2, 1, 1)));
+        this.openBowlRibbon.runAction(ribbonActions);
+        
+        let openBowlAction = cc.moveTo(1, cc.v2(bowlPos.x, 451));
+        
+        this.bowlNode.runAction(cc.sequence(cc.delayTime(1), cc.callFunc(() => {
+            this.showWrapper()
+            this.openBowlRibbon.stopAllActions()
+            this.openBowlRibbon.runAction(cc.sequence(cc.fadeOut(.2), cc.callFunc(() => {
+                this.openBowlRibbon.scaleX = 1
+                this.openBowlRibbon.scaleY = 1
+            })))
+        }), cc.delayTime(.5), openBowlAction, cc.callFunc(() => {
             this.bowlPos = bowlPos
             this.bowlNode.zIndex = 3
         })))
@@ -114,6 +126,14 @@ export default class TaiXiuShakenControl extends ShakenControl {
             
             this.placedArea.addChild(node)
         });
+    }
+    
+    showWrapper() {
+        this.wrapper.active = true
+    }
+    
+    hideWrapper() {
+        this.wrapper.active = false
     }
 }
 

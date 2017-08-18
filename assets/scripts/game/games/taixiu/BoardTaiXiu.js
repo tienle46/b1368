@@ -25,6 +25,7 @@ export default class BoardTaiXiu extends BoardGameBet {
         if(boardState == app.const.game.state.STATE_BET) {
             this.renderer.dealerAppearance(true)
             this.renderer.shakenControlAppearance(false);
+            this.renderer.startBetRibbonApperance();
             this.renderer.clockAppearance(true)
         }
     }
@@ -46,11 +47,8 @@ export default class BoardTaiXiu extends BoardGameBet {
             }, this);
         } else if(this.scene.gameState == app.const.game.state.ENDING) {
             this.renderer.displayBowlWrap()
+            this.renderer.hideTimeLine();
         }
-        
-        // if (this.scene.gameState == app.const.game.state.ENDING) {
-        //     this.renderer.hideTimeLine();
-        // }
     }
     
     // //@override
@@ -93,21 +91,21 @@ export default class BoardTaiXiu extends BoardGameBet {
             
             this.node.runAction(cc.sequence(cc.delayTime(.5), cc.callFunc(() => {
                 this.renderer.clockAppearance(false);
-                this.renderer && this.renderer.openBowlAnim(); // this will end up 1s
-            }), cc.delayTime(1.2), cc.callFunc(() => {
+                this.renderer && this.renderer.openBowlAnim(); // total consumption: 2.5s
+            }), cc.delayTime(3.5), cc.callFunc(() => {
                 this.renderer && this.renderer.displayResult(faces)
                 this.scene.gameControls.highLightWinBets(winIds)
-                
+            }), cc.delayTime(1), cc.callFunc(() => {
+                this.renderer && this.renderer.hideResult();
+            }), cc.delayTime(1), cc.callFunc(() => {
+                this.scene && this.scene.emit(Events.GAMEBET_ON_DISTRIBUTE_CHIP, { playingPlayerIds, bets, playerResults }, winIds);
+            }), cc.delayTime(.5), cc.callFunc(() => {
                 // emit anim
                 playingPlayerIds && playingPlayerIds.forEach((id) => {
                     let playerId = id
                     let balance = balanceChangeAmounts[id]
                     this.scene && this.scene.emit(Events.GAMEBET_ON_PLAYER_RUN_MONEY_BALANCE_CHANGE_ANIM, { balance, playerId });
                 });
-            }), cc.delayTime(.3), cc.callFunc(() => {
-                this.scene && this.scene.emit(Events.GAMEBET_ON_DISTRIBUTE_CHIP, { playingPlayerIds, bets, playerResults }, winIds);
-            }), cc.delayTime(2),  cc.callFunc(() => {
-                this.renderer && this.renderer.hideResult();
             })));
         }
         

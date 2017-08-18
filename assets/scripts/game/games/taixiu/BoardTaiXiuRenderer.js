@@ -8,6 +8,7 @@ export default class BoardTaiXiuRenderer extends BoardGameBetRenderer {
         this.properties = this.assignProperties({
             clockNode: cc.Node,
             clockAtlas: cc.SpriteAtlas,
+            startBetRibbon: cc.Node,
             dealerNode: cc.Node
         });
         
@@ -94,6 +95,31 @@ export default class BoardTaiXiuRenderer extends BoardGameBetRenderer {
     
     dealerAppearance(state = true) {
         this.dealerNode.runAction(cc[state ? 'fadeIn': 'fadeOut'](.2))
+    }
+    
+    startBetRibbonApperance() {
+        let ribbonActions = cc.repeatForever(cc.sequence(cc.fadeIn(.1), cc.scaleTo(.2, 1.07, 1.06), cc.scaleTo(.2, 1, 1)))
+        this.startBetRibbon.runAction(ribbonActions)
+        
+        setTimeout(() => {
+            if(this && this.startBetRibbon) {
+                this.startBetRibbon.stopAllActions()
+                this.startBetRibbon.runAction(cc.sequence(cc.fadeOut(.2), cc.callFunc(() => {
+                    this.startBetRibbon.scaleX = 1
+                    this.startBetRibbon.scaleY = 1
+                })))
+            }
+        }, 1000)
+    }
+    
+    /**
+     * @extending
+     * 
+     * @memberof BoardTaiXiuRenderer
+     */
+    hideResult() {
+        super.hideResult()
+        this.shakenControl.hideWrapper()
     }
 }
 
