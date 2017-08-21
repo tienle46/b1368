@@ -9,6 +9,7 @@ export default class BoardTaiXiuRenderer extends BoardGameBetRenderer {
             clockNode: cc.Node,
             clockAtlas: cc.SpriteAtlas,
             startBetRibbon: cc.Node,
+            startNewBoardRibbon: cc.Node,
             dealerNode: cc.Node
         });
         
@@ -30,8 +31,10 @@ export default class BoardTaiXiuRenderer extends BoardGameBetRenderer {
      */
     displayResult(results) {
         let sum = results.reduce((a,b) => a + b, 0);
-        if(sum <= 3)
+        if(sum <= 3 || sum >= 18) {
+            this.showResult(`${sum}`);
             return
+        }
         
         //[4, 10] => Xỉu, [11, 17] => Tài
         let result = sum <= 10 ? 'Xỉu' : 'Tài'
@@ -98,18 +101,11 @@ export default class BoardTaiXiuRenderer extends BoardGameBetRenderer {
     }
     
     startBetRibbonApperance() {
-        let ribbonActions = cc.repeatForever(cc.sequence(cc.fadeIn(.1), cc.scaleTo(.2, 1.07, 1.06), cc.scaleTo(.2, 1, 1)))
-        this.startBetRibbon.runAction(ribbonActions)
-        
-        setTimeout(() => {
-            if(this && this.startBetRibbon) {
-                this.startBetRibbon.stopAllActions()
-                this.startBetRibbon.runAction(cc.sequence(cc.fadeOut(.2), cc.callFunc(() => {
-                    this.startBetRibbon.scaleX = 1
-                    this.startBetRibbon.scaleY = 1
-                })))
-            }
-        }, 1000)
+        this._ribbonAction(this.startBetRibbon)
+    }
+    
+    startNewBoardRibbonApperance() {
+        this._ribbonAction(this.startNewBoardRibbon)
     }
     
     /**
@@ -120,6 +116,21 @@ export default class BoardTaiXiuRenderer extends BoardGameBetRenderer {
     hideResult() {
         super.hideResult()
         this.shakenControl.hideWrapper()
+    }
+    
+    _ribbonAction(ribbonNode) {
+        let ribbonActions = cc.repeatForever(cc.sequence(cc.fadeIn(.1), cc.scaleTo(.2, 1.07, 1.06), cc.scaleTo(.2, 1, 1)))
+        ribbonNode.runAction(ribbonActions)
+        
+        setTimeout(() => {
+            if(this && ribbonNode) {
+                ribbonNode.stopAllActions()
+                ribbonNode.runAction(cc.sequence(cc.fadeOut(.2), cc.callFunc(() => {
+                    ribbonNode.scaleX = 1
+                    ribbonNode.scaleY = 1
+                })))
+            }
+        }, 1000)
     }
 }
 

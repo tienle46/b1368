@@ -22,6 +22,10 @@ export default class BoardTaiXiu extends BoardGameBet {
         // console.warn('boardState, data, isJustJoined', boardState, data, isJustJoined)
         super.onGameStateChanged(boardState, data, isJustJoined);
         
+        if(boardState == app.const.game.state.READY) {
+            this.renderer.startNewBoardRibbonApperance();
+        }
+        
         if(boardState == app.const.game.state.STATE_BET) {
             this.renderer.dealerAppearance(true)
             this.renderer.shakenControlAppearance(false);
