@@ -19,7 +19,7 @@ export default class PlayerXocDia extends PlayerGameBet {
     _removeGlobalListener() {
         super._removeGlobalListener();
     }
-
+    
     // onEnable(renderer, renderData = {}) {
     //     console.warn(this.RENDERER_COMPONENT, this.getComponent(this.RENDERER_COMPONENT))
     //     super.onEnable(this.getComponent(this.RENDERER_COMPONENT));

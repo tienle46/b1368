@@ -1,7 +1,6 @@
 import app from 'app';
 import BoardGameBet from 'BoardGameBet';
 import utils from 'PackageUtils';
-import { requestTimeout, clearRequestTimeout } from 'TimeHacker';
 import Events from 'GameEvents';
 
 export default class BoardXocDia extends BoardGameBet {
@@ -53,33 +52,23 @@ export default class BoardXocDia extends BoardGameBet {
             if(this.renderer.isShaking())
                 return;
             this.renderer && this.renderer.placedOnDish(dots);
-            var t1 = requestTimeout(() => {
-                this.renderer && this.renderer.openBowlAnim(); // this will end up 1s
-                clearRequestTimeout(t1);
-                var t2 = requestTimeout(() => {
-                    clearRequestTimeout(t2);
-                    // show result
-                    this.renderer && this.renderer.displayResultFromDots(dots);
-
-                    var t3 = requestTimeout(() => {
-                        clearRequestTimeout(t3);
-
-                        this.renderer && this.renderer.hideResult();
-                    }, 3500); // hide it after 2s
-                    // emit anim
-                    playingPlayerIds && playingPlayerIds.forEach((id, index) => {
-                        let playerId = id;
-                        let balance = balanceChangeAmounts[id];
-                        this.scene && this.scene.emit(Events.GAMEBET_ON_PLAYER_RUN_MONEY_BALANCE_CHANGE_ANIM, { balance, playerId });
-                    });
-                }, 1200); // show result and runing money balance anim after 1.2s
-
-                var t4 = requestTimeout(() => {
-                    clearRequestTimeout(t4);
-
-                    this.scene && this.scene.emit(Events.GAMEBET_ON_DISTRIBUTE_CHIP, { playingPlayerIds, bets, playerResults }, dots);
-                }, 1500); // emit event after 1.5s
-            }, 500);
+            
+            this.node.runAction(cc.sequence(cc.delayTime(.5), cc.callFunc(() => {
+                this.renderer && this.renderer.openBowlAnim(); // total consumption: 1.5s
+            }), cc.delayTime(2.5), cc.callFunc(() => {
+                this.renderer && this.renderer.displayResultFromDots(dots);
+            }), cc.delayTime(1), cc.callFunc(() => {
+                this.renderer && this.renderer.hideResult();
+            }), cc.delayTime(1), cc.callFunc(() => {
+                this.scene && this.scene.emit(Events.GAMEBET_ON_DISTRIBUTE_CHIP, { playingPlayerIds, bets, playerResults }, dots);
+            }), cc.delayTime(.5), cc.callFunc(() => {
+                // emit anim
+                playingPlayerIds && playingPlayerIds.forEach((id) => {
+                    let playerId = id
+                    let balance = balanceChangeAmounts[id]
+                    this.scene && this.scene.emit(Events.GAMEBET_ON_PLAYER_RUN_MONEY_BALANCE_CHANGE_ANIM, { balance, playerId });
+                });
+            })));
         }
 
         // this.scene.emit(Events.XOCDIA_ON_CONTROL_SAVE_PREVIOUS_BETDATA, bets, playerIds);

@@ -62,6 +62,21 @@ export default class PlayerTaiXiu extends PlayerGameBet {
     _onGameRejoin(data) {
         super._onGameRejoin(data);
     }
+    
+    /**
+     * @extending
+     * 
+     * @param {any} state 
+     * @param {any} data 
+     * @param {any} isJustJoined 
+     * @memberof PlayerXocDia
+     */
+    _onGameState(state, data, isJustJoined) {
+        super._onGameState(state, data, isJustJoined);
+        if (state == app.const.game.state.STATE_BET) {
+            this.isItMe() && this.renderer.showPlayerComponentOnShake();
+        }
+    }
 }
 
 app.createComponent(PlayerTaiXiu);
