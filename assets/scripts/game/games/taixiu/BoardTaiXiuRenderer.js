@@ -15,12 +15,21 @@ export default class BoardTaiXiuRenderer extends BoardGameBetRenderer {
         
         this.HISTORIAL_COMPONENT = 'TaiXiuHistoricalTable';
         this.SHAKEN_CONTROL = 'TaiXiuShakenControl';
+        
+        this._ribbonTimeout = null;
     }
     
     onLoad() {
-        super.onLoad();
-        
-        this.clockNode.opacity = 0;
+        super.onLoad()
+        this._ribbonTimeout = null
+
+        this.clockNode.opacity = 0
+    }
+    
+    onDestroy() {
+        super.onDestroy()
+        this._ribbonTimeout && clearTimeout(this._ribbonTimeout)
+        this._ribbonTimeout = null    
     }
     
     /**
@@ -121,8 +130,12 @@ export default class BoardTaiXiuRenderer extends BoardGameBetRenderer {
     _ribbonAction(ribbonNode) {
         let ribbonActions = cc.repeatForever(cc.sequence(cc.fadeIn(.1), cc.scaleTo(.2, 1.07, 1.06), cc.scaleTo(.2, 1, 1)))
         ribbonNode.runAction(ribbonActions)
+        this._ribbonTimeout && clearTimeout(this._ribbonTimeout)
         
-        setTimeout(() => {
+        this._ribbonTimeout = setTimeout(() => {
+            clearTimeout(this._ribbonTimeout)
+            this._ribbonTimeout = null
+
             if(this && ribbonNode) {
                 ribbonNode.stopAllActions()
                 ribbonNode.runAction(cc.sequence(cc.fadeOut(.2), cc.callFunc(() => {
