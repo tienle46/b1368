@@ -5,11 +5,9 @@
 import app from 'app';
 import GameScene from 'GameScene';
 import Events from 'GameEvents';
-import HorizontalBetPopup from 'HorizontalBetPopup';
-import BaCayUtils from "../../game/games/bacay/BaCayUtils";
 import Utils from 'GeneralUtils';
 
-export default class BaCayScene extends GameScene {
+export default class LiengScene extends GameScene {
     constructor() {
         super();
         
@@ -40,9 +38,9 @@ export default class BaCayScene extends GameScene {
     }
 
     onEnable() {
-        this.board = this.boardNode.getComponent('BoardBaCay');
+        this.board = this.boardNode.getComponent('BoardLieng');
         this.gameControls = this.gameControlsNode.getComponent('BaCayControls');
-        this.playerPositions = this.playerPositionAnchorsNode.getComponent('BaCayPlayerPositions');
+        this.playerPositions = this.playerPositionAnchorsNode.getComponent('FivePlayerPositions');
         this._betPopup = this.chooseBetSliderNode.getComponent('HorizontalBetPopup');
 
         super.onEnable();
@@ -60,33 +58,9 @@ export default class BaCayScene extends GameScene {
         //TODO Process board state changed here
     }
     
-    showCuocBienPopup(maxValue, cb) {
-        this.isShowBetPopup = false
-        this.isShowCuocBienPopup = true
-        let remainTime = parseInt(this._betPhaseDuration - (new Date().getTime() - this._startBetPhaseTime)/1000 - 1);
-        if(remainTime > 0) {
-            if(maxValue < this.board.minBet) {
-                app.system.showToast(app.res.string('game_not_enough_balance_to_cuoc_bien'));
-                return;
-            }
-            
-            this._betPopup.titleLabel.string = "Cược biên";
-            this._betPopup && this._betPopup.show({
-                minValue: this.board.minBet,
-                maxValue,
-                currentValue: 0,
-                timeout: remainTime,
-                cb,
-            });
-        }
-    }
 
-    showChooseBetSlider(currentValue, maxValue, timeout = 5) {
+    showChooseBetSlider(currentValue, maxValue, timeout = 20) {
         // let maxValue = this.board.minBet * 5;
-
-
-        this.isShowBetPopup = true
-        this.isShowCuocBienPopup = false
 
         let minValue = this.board.minBet;
 
@@ -94,35 +68,32 @@ export default class BaCayScene extends GameScene {
             app.system.showToast(app.res.string('game_not_enough_balance_to_bet'));
             return;
         }
-
+        
+        if(maxValue < currentValue) {
+            maxValue = currentValue;
+        }
+        
+        minValue = currentValue;
+        
         this._betPopup && this._betPopup.show({
             minValue,
             maxValue,
             currentValue,
             timeout,
-            cb: (betValue) => {
-                this.onHideChooseBetSlider()
-                betValue !== undefined && this._onClickChooseBetButton(betValue);
-            },
+            cb: this._onClickChooseBetButton,
+            ctx: this,
             title: app.res.string('game_bet_time')
         });
     }
 
-    onHideChooseBetSlider(){
-        this.isShowBetPopup = false
-        this.isShowCuocBienPopup = false
-        this.gamePlayers.me.handlePendingCuocBienRequests();
-    }
-
     hideChooseBetSlider() {
         this._betPopup && this._betPopup.hide();
-        this.onHideChooseBetSlider()
     }
 
     _onClickChooseBetButton(value) {
-        let amount = value || this._betPopup.getAmountNumber();
-        this.emit(Events.ON_PLAYER_BACAY_CHANGE_BET, amount);
+        let amount = value || this._betPopup.getAmountNumber()
+        this.emit('on.player.changed.bet', amount);
     }
 }
 
-app.createComponent(BaCayScene);
+app.createComponent(LiengScene);

@@ -1,9 +1,9 @@
-import BoardCard from 'BoardCard';
+import Board from 'Board';
 import Events from 'GameEvents';
 import app from 'app';
 import utils from 'PackageUtils';
 
-export default class BoardGameBet extends BoardCard {
+export default class BoardGameBet extends Board {
     constructor(room, scene) {
         super(room, scene);
         

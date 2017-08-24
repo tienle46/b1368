@@ -36,6 +36,7 @@ app.const.game.state.CENTER_Y_PADDING_BOTTOM = 28;
 app.const.game.state.ENDING = 2;
 app.const.game.state.STATE_BAO_XAM = 5;
 app.const.game.state.TURN_BASE_TRUE_PLAY = 3;
+app.const.game.state.BET_TURNING = 3; // lieng
 app.const.game.state.STATE_FACE_DOWN = 5;
 app.const.game.state.STATE_WAIT_TURN = 4;
 app.const.game.state.STATE_BET = 5;
@@ -141,6 +142,7 @@ app.const.game.maxPlayers = {
     "xms": 2,
     "gtx": 9,
     "tcc": 9,
+    "lie": 5,
     "default": 2,
 };
 

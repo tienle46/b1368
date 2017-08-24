@@ -443,6 +443,9 @@ class GameSystem {
                 case app.const.gameCode.BAU_CUA:
                     gameSceneName = 'BauCuaScene';
                     break;
+                case app.const.gameCode.LIENG:
+                    gameSceneName = 'LiengScene';
+                    break;
                 case app.const.gameCode.TLMNDL_SOLO:
                     gameSceneName = 'TLMNDLScene';
                     onLoadFunc = () => {this._currentScene && this._currentScene.setSoloGame(true)}

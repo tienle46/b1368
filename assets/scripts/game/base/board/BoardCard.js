@@ -21,7 +21,6 @@ export default class BoardCard extends Board {
 
     onGameStatePreChange(boardState, data) {
         super.onGameStatePreChange(boardState, data);
-
         if (data && data.hasOwnProperty(app.keywords.DEAL_CARD_LIST_KEYWORD)) {
             this._dealCards(data);
         }

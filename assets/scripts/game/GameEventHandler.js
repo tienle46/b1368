@@ -92,6 +92,10 @@ export default class GameEventHandler {
         app.system.addGameListener(Commands.REPLACE_FAKE_USER, this._replaceFakeUser, this);
         
         app.system.addGameListener(app.commands.PLAYER_BAO_XAM, this._handlePlayerBaoXam, this);
+        
+        //Lieng
+        app.system.addGameListener(app.commands.PLAYER_PLAY_BET_TURN, this._onPlayerTo, this);
+        
     }
 
     removeGameEventListener() {
@@ -143,6 +147,16 @@ export default class GameEventHandler {
         
         app.system.removeGameListener(app.commands.PLAYER_BAO_XAM, this._handlePlayerBaoXam, this);
         
+        
+        // Lieng
+        app.system.removeGameListener(app.commands.PLAYER_PLAY_BET_TURN, this._onPlayerTo, this);
+    }
+    
+    _onPlayerTo(data) {
+        let onTurnPlayerId = utils.getValue(data, app.keywords.TURN_PLAYER_ID);
+        let previousPlayerId = utils.getValue(data, app.keywords.PLAYER_ID);
+        let betAmount = utils.getValue(data, app.keywords.VARIABLE_MIN_BET);
+        this.scene.emit('on.player.to', previousPlayerId, onTurnPlayerId, betAmount);
     }
     
     _handlePlayerBaoXam(data) {

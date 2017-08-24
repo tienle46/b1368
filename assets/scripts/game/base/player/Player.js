@@ -31,7 +31,6 @@ export default class Player extends Actor {
     }
 
     _init(board, user) {
-
         this.scene = board.scene;
         this.board = board;
         this.user = user;
@@ -446,7 +445,9 @@ export default class Player extends Actor {
 
         let newPlayer = utils.getVariable(this.user, "newPlayer");
         if (!newPlayer) {
-            app.service.send({cmd: app.commands.PLAYER_READY, room: this.scene.room});
+            this.node.runAction(cc.sequence(cc.delayTime(.4), cc.callFunc(() => {
+                app.service.send({cmd: app.commands.PLAYER_READY, room: this.scene.room})
+            })));
         }
     }
 

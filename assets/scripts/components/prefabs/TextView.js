@@ -126,10 +126,9 @@ export default class TextView extends Component {
 
     _setTextViewSize() {
         if (!this.label) return;
-
         this.label.node.width = this.minWidth;
         this.label.node.height = this.lineHeight;
-        this.label.fontSize = this.fontSize;
+        this.fontSize && (this.label.fontSize = this.fontSize);
     }
 
     getWidth() {

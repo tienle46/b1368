@@ -87,6 +87,7 @@ export default class BoardBaCay extends BoardCardBetTurn {
         } else if (boardState == app.const.game.state.STATE_DOWN) {
             message = app.res.string('game_down_card_time');
             this._handleBaCayDownCardPhrase(data);
+            console.warn('data', data);
         }
 
         let duration = utils.getValue(data, app.keywords.BOARD_PHASE_DURATION);

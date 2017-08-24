@@ -29,7 +29,8 @@ export default class PlayerPositions extends Component {
 
     onLoad(){
         super.onLoad()
-
+        this.scene = app.system.currentScene;
+        
         this.hiddenAnchors = []
         this.playerAnchors = []
     }
@@ -38,8 +39,8 @@ export default class PlayerPositions extends Component {
         super.onEnable();
         this._initPlayerAnchors();
 
-        this.scene = app.system.currentScene;
-
+        // this.scene = app.system.currentScene;
+        
         if(this.scene){
             this.scene.on(Events.ON_GAME_RESET, this._onGameReset, this);
             this.scene.on(Events.ON_GAME_STATE_BEGIN, this._onGameBegin, this);

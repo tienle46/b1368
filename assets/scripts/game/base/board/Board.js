@@ -60,7 +60,6 @@ export default class Board extends Actor {
 
     onGameStateWait(){
         this.stopTimeLine();
-
     }
     
     _onBoardRefresh(data) {

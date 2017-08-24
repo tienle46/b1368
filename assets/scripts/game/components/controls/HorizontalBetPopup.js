@@ -102,7 +102,7 @@ class BetSlider extends Component {
 
     hide(summitValue) {
         utils.deactive(this.node, 0);
-        if(utils.isFunction(this.cb)){
+        if(utils.isFunction(this.cb) && app.context.getSelectedGame == app.const.gameCode.BA_CAY){
             this.cb(summitValue)
         }
     }
@@ -118,8 +118,13 @@ class BetSlider extends Component {
     }
 
     onClickSubmitButton(){
-        let newValue = this.currentValue != this._chooseAmount ? this._chooseAmount : undefined;
-        this.hide(newValue);
+        let newValue = this.currentValue != this._chooseAmount ? this._chooseAmount : (app.context.getSelectedGame == app.const.gameCode.BA_CAY ? undefined : this.currentValue);
+        if(app.context.getSelectedGame == app.const.gameCode.BA_CAY) {
+            this.hide(newValue)
+        } else {
+            utils.deactive(this.node, 0);
+            this.cb.call(this.ctx, newValue);
+        }
     }
 
     _setSliderValue(value = 0){
@@ -153,7 +158,7 @@ class BetSlider extends Component {
         this.setMaxValue(this.maxValue + amount)
     }
 
-    show({minValue = 0, maxValue = 0, currentValue = minValue, cb = null, timeout = 5, title, submitOnHide = false} = {}) {
+    show({minValue = 0, maxValue = 0, ctx = null, currentValue = minValue, cb = null, timeout = 5, title, submitOnHide = false} = {}) {
         this.minValue = minValue;
         this.maxValue = maxValue;
         this.range = maxValue - minValue;
@@ -162,7 +167,16 @@ class BetSlider extends Component {
         this.title = title;
         this._submitOnHide = submitOnHide;
         this.cb = cb;
+        this.ctx = ctx;
+        
         utils.active(this.node, 255);
+    }
+    
+    onDestroy() {
+        super.onDestroy();
+        
+        this.cb = null;
+        this.ctx = {};
     }
 }
 

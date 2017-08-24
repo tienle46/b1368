@@ -293,9 +293,6 @@ Keywords.GAME_LIST_RESULT = "s";
 Keywords.PLAYER_REJOIN_TURN_COUNT_REMAIN = "ct";
 //Lieng
 Keywords.GAME_LIST_UP_BO = "s";
-Keywords.GAME_LAST_BET_VALUE = "cb";
-Keywords.GAME_TOTAL_BET_VALUE = "tb";
-Keywords.GAME_LIST_LIENG_TYPE = "ct";
 //xito
 //    Keywords.XITO_FACE_DOWN_PHASE = "ccd";
 //Player
