@@ -48,7 +48,7 @@ export default class LiengControls extends GameControls {
         this.scene.on(Events.ON_GAME_STATE_STARTED, this._onGameStarted, this, 0);
         this.scene.on(Events.ON_GAME_STATE_PLAYING, this._onGamePlaying, this);
         this.scene.on(Events.ON_GAME_STATE_ENDING, this._onGameEnding, this);
-        this.scene.on('on.player.to', this._onPlayerTo, this);
+        this.scene.on(Events.ON_PLAYER_TO, this._onPlayerTo, this);
         this.scene.on(Events.HANDLE_SKIP_TURN, this._handleSkipTurn, this);
     }
     
@@ -160,7 +160,7 @@ export default class LiengControls extends GameControls {
     _showGuide() {
         this.guide.runAction(cc.sequence(cc.callFunc(() => {
             this._isGuideShowing = true
-        }), cc.moveTo(.1, cc.v2(200, 238)), cc.callFunc(() => {
+        }), cc.moveTo(.1, cc.v2(200, 228)), cc.callFunc(() => {
             this._isGuideShowed = true
             this._isGuideShowing = false
         })))
@@ -169,7 +169,7 @@ export default class LiengControls extends GameControls {
     _hideGuide() {
         this.guide.runAction(cc.sequence(cc.callFunc(() => {
             this._isGuideShowing = true
-        }), cc.moveTo(.1, cc.v2(-190, 238)), cc.callFunc(() => {
+        }), cc.moveTo(.1, cc.v2(-190, 228)), cc.callFunc(() => {
             this._isGuideShowed = false
             this._isGuideShowing = false
         })))

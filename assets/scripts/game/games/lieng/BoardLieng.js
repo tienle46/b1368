@@ -31,8 +31,9 @@ export default class BoardLieng extends BoardCardBetTurn {
         this.renderer = this.node.getComponent('BoardLiengRenderer');
         super.onEnable();
 
-        this.scene.on('on.player.to', this._onPlayerTo, this);
+        this.scene.on(Events.ON_PLAYER_TO, this._onPlayerTo, this);
         this.scene.on(Events.HANDLE_SKIP_TURN, this._handleSkipTurn, this);
+        this.scene.on(Events.ON_FIRST_PLAYER_TO, this._onShowToIcon, this);
     }
 
     get gameType() {
@@ -50,12 +51,12 @@ export default class BoardLieng extends BoardCardBetTurn {
                 case app.const.game.state.READY:
                     message = app.res.string('game_start');
                     break;
-                case app.const.game.state.BET_TURNING:
-                    message = app.res.string('lieng_game_bet');
-                    break;
             }
         }
         super.startTimeLine(duration, message);
+        if(this.scene.gameState != app.const.game.state.READY) {
+            this.renderer.hideTimeLine()
+        }
     }
 
     onGameStatePreChange(boardState, data, isJustJoined) {
@@ -75,6 +76,7 @@ export default class BoardLieng extends BoardCardBetTurn {
             
     onBoardStarting(...args){
         super.onBoardStarting(...args);
+        this.renderer.setVisibleTotalAmountComponent(true)
     }
     
     
@@ -128,6 +130,9 @@ export default class BoardLieng extends BoardCardBetTurn {
         
         let gamePhase = utils.getValue(data, app.keywords.BOARD_STATE_KEYWORD);
         
+        if(gamePhase != app.const.game.state.READY)
+            this.renderer.setVisibleTotalAmountComponent(true)
+        
         if(gamePhase == app.const.game.state.BET_TURNING) {
             /**
              * Load player down card & player bet amount
@@ -145,7 +150,11 @@ export default class BoardLieng extends BoardCardBetTurn {
             }
         }
     }
-
+    
+    _onShowToIcon(playerId) {
+        this.scene.gamePlayers.players.forEach(player => player.renderer.setVisibleTo(player.id == playerId));
+    }
+    
     _getPlayerHandCards(playerIds = [], data = {}) {
 
         if(data[Keywords.GAME_LIST_CARD]){
@@ -157,7 +166,6 @@ export default class BoardLieng extends BoardCardBetTurn {
                 let player = this.scene.gamePlayers.findPlayer(id);
                 result[id] = player ? [...player.getCards()] : [];
             });
-
             return result;
         }
     }
@@ -200,7 +208,8 @@ export default class BoardLieng extends BoardCardBetTurn {
         super._reset();
         this.winRank = 0;
         this.setTotalBetAmount(0);
-
+        
+        this.renderer.setVisibleTotalAmountComponent(false)
         this.scene.isShowBetPopup = false
         this.scene.isShowCuocBienPopup = false
     }

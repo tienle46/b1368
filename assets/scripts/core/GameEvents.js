@@ -100,6 +100,10 @@ Events.ON_CLICK_CHOOSE_BET_BUTTON = "on.click.chooseBetButton";
 Events.ON_CLICK_START_GAME_BUTTON = "on.click.startGameButton";
 Events.ON_CLICK_WAIT_BUTTON = "on.click.waitButton";
 
+Events.ON_PLAYER_TO = "on.player.to";
+Events.ON_PLAYER_CHANGED_BET = "on.player.changed.bet";
+Events.ON_FIRST_PLAYER_TO = "on.first.player.to";
+
 Events.ON_GAME_RESET = "on.game.reset";
 Events.ON_GAME_WAIT = "on.game.wait";
 Events.ON_GAME_STATE_BEGIN = "on.game.stateBegin";

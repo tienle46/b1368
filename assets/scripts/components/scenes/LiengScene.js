@@ -92,7 +92,7 @@ export default class LiengScene extends GameScene {
 
     _onClickChooseBetButton(value) {
         let amount = value || this._betPopup.getAmountNumber()
-        this.emit('on.player.changed.bet', amount);
+        this.emit(Events.ON_PLAYER_CHANGED_BET, amount);
     }
 }
 
