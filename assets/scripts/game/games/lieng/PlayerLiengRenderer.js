@@ -100,6 +100,10 @@ export default class PlayerLiengRenderer extends PlayerCardRenderer {
     revealAllCards(){
         this.cardList.cards.forEach(card => card.setReveal(true));
     }
+    
+    downAllCards(){
+        this.cardList.cards.forEach(card => card.setReveal(false));
+    }
 
     _getHandCardAlign(){
         let positionOnRight = this.scene.gamePlayers.playerPositions.isPositionOnRight(this.anchorIndex);

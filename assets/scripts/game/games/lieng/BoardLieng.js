@@ -190,6 +190,7 @@ export default class BoardLieng extends BoardCardBetTurn {
                 player._timeDuration && player.startTimeLine(player._timeDuration)
             } else if(previousPlayerId == player.id){
                 player.stopTimeLine()
+                player.renderer.downAllCards()
                 player.renderer.showAction(app.res.string('game_result_lieng_upbo'));
             }
         });
@@ -207,6 +208,7 @@ export default class BoardLieng extends BoardCardBetTurn {
     _getGameResultInfos(playerIds = [], playerHandCards, data) {
 
         let playersWinRanks = utils.getValue(data, Keywords.GAME_LIST_WIN);
+        let cardTypes = utils.getValue(data, Keywords.LIENG_CARD_TYPE);
 
         /**
          * Get game result icon
@@ -231,7 +233,7 @@ export default class BoardLieng extends BoardCardBetTurn {
                 if (!resultText) resultText = app.res.string('game_thua');
             }
 
-            gameResultInfos[id] = LiengUtils.createPlayerHandCardInfo(playerHandCards[id]);
+            gameResultInfos[id] = LiengUtils.createPlayerHandCardInfo(playerHandCards[id], cardTypes[i]);
             resultTexts[id] = resultText;
         })
 

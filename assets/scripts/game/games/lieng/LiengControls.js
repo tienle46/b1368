@@ -18,15 +18,25 @@ export default class LiengControls extends GameControls {
             toBtnNode: cc.Node,
             theoBtnNode: cc.Node,
             theoBtn: cc.Button,
-            upboBtnNode: cc.Node
+            upboBtnNode: cc.Node,
+            guide: cc.Node
         });
 
         /**
          * @type {BaseControls}
          */
-        this.baseControls = null;
+        this.baseControls = null
+        
+        this._isGuideShowed = false
+        this._isGuideShowing = false
     }
-
+    
+    onLoad() {
+        super.onLoad()
+        this._isGuideShowed = false
+        this._isGuideShowing = false
+    }
+    
     onEnable() {
 
         this.baseControls = this.baseControlsNode.getComponent('BaseControls');
@@ -84,6 +94,13 @@ export default class LiengControls extends GameControls {
         app.service.send({cmd: app.commands.PLAYER_SKIP_TURN, data: {}, room: this.scene.room});
     }
     
+    toggleGuide() {
+        if(this._isGuideShowing)
+            return;
+
+        this._isGuideShowed ? this._hideGuide() : this._showGuide();    
+    }
+    
     _onPlayerTo(previousPlayerId, onTurnPlayerId, betAmount) {
         this._skipTurn(onTurnPlayerId)
     }
@@ -138,6 +155,24 @@ export default class LiengControls extends GameControls {
         } else {
             this.hideAllControls()
         }
+    }
+    
+    _showGuide() {
+        this.guide.runAction(cc.sequence(cc.callFunc(() => {
+            this._isGuideShowing = true
+        }), cc.moveTo(.1, cc.v2(200, 238)), cc.callFunc(() => {
+            this._isGuideShowed = true
+            this._isGuideShowing = false
+        })))
+    }
+    
+    _hideGuide() {
+        this.guide.runAction(cc.sequence(cc.callFunc(() => {
+            this._isGuideShowing = true
+        }), cc.moveTo(.1, cc.v2(-190, 238)), cc.callFunc(() => {
+            this._isGuideShowed = false
+            this._isGuideShowing = false
+        })))
     }
 }
 

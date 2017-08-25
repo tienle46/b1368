@@ -94,6 +94,7 @@ export default class PlayerLieng extends PlayerCardBetTurn {
 
         this.playSoundBaseOnBalanceChanged(balanceChanged);
         this.renderer.showAction(info);
+        this.renderer.betComponentAppearance(false);
         this.renderer.startPlusBalanceAnimation(balanceChanged, true);
         this.setCards(cards, true);
     }
