@@ -29,22 +29,6 @@ class BauCuaHistoricalTable extends TaiXiuHistoricalTable {
         })
     }
     
-    updateTableInfo(infors) {
-        // infors = [[1, 3, 4], [4, 4, 3], [2, 5, 6]]
-        if(infors.length < 1)
-            return
-        
-        //only update newest 32 cells
-        let numberCellsInTable = 22
-        if (infors.length > numberCellsInTable)
-            infors = infors.slice(0, numberCellsInTable + 1)
-
-        super.updateTableInfo(infors)
-        
-        // update dices on historical btn
-        this.modifyHistoricalTitle(infors);
-    }
-    
     /**
      * @override
      * 

@@ -76,7 +76,7 @@ export default class BoardCard extends Board {
         app.system.audioManager.stop(app.system.audioManager.CHIA_BAI);
     }
 
-    _getPlayerHandCards(playerIds, data) {
+    _getPlayerHandCards(playerIds, data, isFake = false) {
         let playerHandCards = {};
 
         let handCardIndex = 0;
@@ -98,10 +98,10 @@ export default class BoardCard extends Board {
 
             let playerCardBytes = handCards.slice(handCardIndex, handCardIndex + playerCardCount);
             playerHandCards[id] = GameUtils.convertBytesToCards(playerCardBytes);
-
+          
             handCardIndex += playerCardCount;
         });
-
+        
         return playerHandCards;
     }
 

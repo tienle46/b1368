@@ -40,9 +40,9 @@ export default class TaiXiuHistoricalTable extends HistoricalTable {
             return
         
         //only update newest 32 cells
-        let numberCellsInTable = 22
-        if (infors.length > numberCellsInTable)
-            infors = infors.slice(0, numberCellsInTable + 1)
+        // let numberCellsInTable = 22
+        // if (infors.length > numberCellsInTable)
+        //     infors = infors.slice(0, numberCellsInTable + 1)
 
         super.updateTableInfo(infors)
         

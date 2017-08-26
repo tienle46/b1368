@@ -3812,7 +3812,7 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": 1090,
+      "x": 1093,
       "y": 60
     },
     "_skewX": 0,
@@ -3927,7 +3927,7 @@
     "_target": null,
     "_alignFlags": 36,
     "_left": 0,
-    "_right": -1263.5,
+    "_right": -1186.5,
     "_top": 0,
     "_bottom": 17.5,
     "_verticalCenter": 0,
@@ -4020,7 +4020,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 640,
-      "y": 262
+      "y": 260
     },
     "_skewX": 0,
     "_skewY": 0,

@@ -102,7 +102,8 @@ export default class PlayerLieng extends PlayerCardBetTurn {
         this.renderer.showAction(info);
         this.renderer.betComponentAppearance(false);
         this.renderer.startPlusBalanceAnimation(balanceChanged, true);
-        this.setCards(cards, true);
+        
+        cards.length > 0 && this.setCards(cards, true);
     }
 
     _onPlayerChangedBet(betAmount = 0) {

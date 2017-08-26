@@ -159,7 +159,7 @@ export default class BoardLieng extends BoardCardBetTurn {
 
         if(data[Keywords.GAME_LIST_CARD]){
             data[Keywords.GAME_LIST_PLAYER_CARDS_SIZE] = new Array(playerIds.length).fill(3)
-            return super._getPlayerHandCards(playerIds, data);
+            return super._getPlayerHandCards(playerIds, data, true);
         }else{
             let result = {};
             playerIds.forEach(id => {
@@ -226,25 +226,26 @@ export default class BoardLieng extends BoardCardBetTurn {
         let resultTexts = {};
         let resultIconPaths = {};
         let gameResultInfos = {};
-        playerIds.forEach((id, i) => {
-            let resultText;
-            if (playersWinRanks[i] == app.const.game.rank.GAME_RANK_FIRST) {
-                resultText = app.res.string('game_thang');
-            } else {
-                // if (winType == app.const.game.GENERAL_WIN_TYPE_NORMAL) {
-                //     let cardCount = playersCardCounts && playersCardCounts[i];
-                //
-                //     if (cardCount == PlayerBaCay.DEFAULT_HAND_CARD_COUNT) {
-                //         resultText = app.res.string('game_sam_treo');
-                //     }
-                // }
+        if(cardTypes && playersWinRanks)
+            playerIds.forEach((id, i) => {
+                let resultText;
+                if (playersWinRanks[i] == app.const.game.rank.GAME_RANK_FIRST) {
+                    resultText = app.res.string('game_thang');
+                } else {
+                    // if (winType == app.const.game.GENERAL_WIN_TYPE_NORMAL) {
+                    //     let cardCount = playersCardCounts && playersCardCounts[i];
+                    //
+                    //     if (cardCount == PlayerBaCay.DEFAULT_HAND_CARD_COUNT) {
+                    //         resultText = app.res.string('game_sam_treo');
+                    //     }
+                    // }
 
-                if (!resultText) resultText = app.res.string('game_thua');
-            }
+                    if (!resultText) resultText = app.res.string('game_thua');
+                }
 
-            gameResultInfos[id] = LiengUtils.createPlayerHandCardInfo(playerHandCards[id], cardTypes[i]);
-            resultTexts[id] = resultText;
-        })
+                gameResultInfos[id] = LiengUtils.createPlayerHandCardInfo(playerHandCards[id], cardTypes[i]);
+                resultTexts[id] = resultText;
+            })
 
         return {resultTexts, gameResultInfos, resultIconPaths};
     }
