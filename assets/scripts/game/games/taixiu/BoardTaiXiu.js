@@ -71,7 +71,7 @@ export default class BoardTaiXiu extends BoardGameBet {
 
     // state === app.const.game.state.ENDING
     onBoardEnding(data) {
-        console.warn('onBoardEnding', data)
+        // console.warn('onBoardEnding', data)
         let playerIds = utils.getValue(data, app.keywords.GAME_LIST_PLAYER, []);
         let bets = utils.getValue(data, app.keywords.XOCDIA_BET.AMOUNT, []);
         let playingPlayerIds = this.scene.gamePlayers.filterPlayingPlayer(playerIds);

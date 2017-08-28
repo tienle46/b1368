@@ -53,7 +53,7 @@ export default class PlayerLieng extends PlayerCardBetTurn {
             !this._timeDuration && (this._timeDuration = duration)
             let isFirstBet = data.isFirstBet || false
             if(isFirstBet) {
-                this.scene.emit(Events.ON_FIRST_PLAYER_TO, onTurnPlayerId)
+                this.scene.emit(Events.ON_FIRST_PLAYER_TO, onTurnPlayerId, duration)
             }
             onTurnPlayerId == this.id && duration && this.startTimeLine(this._timeDuration)
         }

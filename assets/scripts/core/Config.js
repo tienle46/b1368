@@ -45,7 +45,7 @@ app.config.fbScope = 'public_profile,email,user_friends';
 app.config.fanpage = `http://m.me/songbaihoanggia`;
 app.config.website = `http://bai1368.com`;
 app.config.supportHotline = '123456';
-app.config.otp = true;
+app.config.otp = false;
 app.config.otp_config = {
     exchange: {
         enabled: true,

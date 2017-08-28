@@ -18,6 +18,7 @@ export default class BoardLieng extends BoardCardBetTurn {
         this.winRank = 0;
         this.handCardSize = PlayerBaCay.DEFAULT_HAND_CARD_COUNT;
         this.totalBetAmount = 0;
+        this._duration = 0;
     }
 
     onLoad() {
@@ -151,7 +152,9 @@ export default class BoardLieng extends BoardCardBetTurn {
         }
     }
     
-    _onShowToIcon(playerId) {
+    _onShowToIcon(playerId, duration) {
+        this._duration = duration;
+        
         this.scene.gamePlayers.players.forEach(player => player.renderer.setVisibleTo(player.id == playerId));
     }
     
@@ -175,8 +178,8 @@ export default class BoardLieng extends BoardCardBetTurn {
             if(!player.isPlaying())
                 return;
             
-            if(onTurnPlayerId == player.id) {
-                player._timeDuration && player.startTimeLine(player._timeDuration)
+            if(onTurnPlayerId == player.id) {                
+                this._duration && player.startTimeLine(this._duration)
             } else if(previousPlayerId == player.id){
                 this.renderer.setTotalValue(this.totalBetAmount);
                 
@@ -208,6 +211,7 @@ export default class BoardLieng extends BoardCardBetTurn {
         super._reset();
         this.winRank = 0;
         this.setTotalBetAmount(0);
+        this._duration = 0;
         
         this.renderer.setVisibleTotalAmountComponent(false)
         this.scene.isShowBetPopup = false

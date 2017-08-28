@@ -121,7 +121,7 @@ export default class TaiXiuShakenControl extends ShakenControl {
             
             let posY = app._.random(app._.random(0, 1 / 2), randomPosInRange[i].y * (acceptedArea.height - size.height) / 2)
            
-            this.diceSprite.spriteFrame = this.dices.getSpriteFrame(`dice_${dice}`)
+            this.diceSprite.spriteFrame = this._getDiceSpriteFrame(dice)
             
             let node = cc.instantiate(this.diceSprite.node)
             node.active = true
@@ -137,6 +137,10 @@ export default class TaiXiuShakenControl extends ShakenControl {
     
     hideWrapper() {
         this.wrapper.active = false
+    }
+    
+    _getDiceSpriteFrame(dice) {
+        return this.dices.getSpriteFrame(`dice_${dice}`)
     }
 }
 

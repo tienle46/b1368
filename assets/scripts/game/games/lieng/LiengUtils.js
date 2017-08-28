@@ -41,7 +41,8 @@ export default class LiengUtils {
                 let point = this.toLiengPoint(this.getTotalPoint(cards));
                 switch (point) {
                     case 10:
-                        str = app.res.string('game_result_bacay_10_point');
+                        point = 0;
+                        str = app.res.string('game_result_bacay_point', {point});
                         break;
                     case 1:
                         str = app.res.string('game_result_bacay_tit');
