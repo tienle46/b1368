@@ -127,6 +127,7 @@ export default {
     game_bacay_cuoc_bien: 'Cược biên',
     game_bacay_cuop_chuong: 'Cướp chương',
     game_result_lieng_di: 'Đĩ',
+    game_result_lieng_dong_hoa: 'Đồng hoa',
     game_result_lieng_lieng: 'Liêng',
     game_result_lieng_sap: 'Sáp',
     game_bacay_ask_to_accept_cuoc_bien: '{{player}} muốn CƯỢC BIÊN với bạn {{value}} Chip',

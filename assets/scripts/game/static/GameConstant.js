@@ -168,11 +168,16 @@ app.const.game.TLMN_THOI_TYPE_TU_QUY = 3;
 app.const.game.TLMN_THOI_TYPE_BON_DOI_THONG = 4;
 app.const.game.TLMN_THOI_TYPE_BA_BICH = 5;
 
-//    General(0), SAP(1), LIENG(2), DI(3), TINH_DIEM(4)
-app.const.game.LIENG_LIENG_TYPE_SAP = 1;
-app.const.game.LIENG_LIENG_TYPE_LIENG = 2;
+// SAP(7), LIENG(4, 5, 6), DI(3), DONG_HOA(2), TINH_DIEM(1), UP_BO(0);
+app.const.game.LIENG_LIENG_TYPE_UP_BO = 0;
+app.const.game.LIENG_LIENG_TYPE_DIEM = 1;
+app.const.game.LIENG_LIENG_TYPE_DONG_HOA = 2;
 app.const.game.LIENG_LIENG_TYPE_DI = 3;
-app.const.game.LIENG_LIENG_TYPE_DIEM = 4;
+app.const.game.LIENG_LIENG_TYPE_LIENG_1 = 4;
+app.const.game.LIENG_LIENG_TYPE_LIENG_2 = 5;
+app.const.game.LIENG_LIENG_TYPE_LIENG_3 = 6;
+app.const.game.LIENG_LIENG_TYPE_SAP = 7;
+
 
 //UP_BO(0), THUNG_PHA_SANH(1), TU_QUY(2), CU_LU(3), THUNG(4), SANH(5), XAM_CO(6), THU(7), DOI(8), MAU(9);
 app.const.game.XAM_XAM_TYPE_THUNG_PHA_SANH = 1;

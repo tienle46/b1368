@@ -789,4 +789,4 @@ Keywords.VIP_LEVEL = "vipLevel";
 Keywords.USER_NAME = "username";
 Keywords.ROOM_NAME = "roomName";
 
-Keywords.LIENG_CARD_TYPE = "ct"; //SAP(6), LIENG(3, 4, 5), DI(2), TINH_DIEM(1), UP_BO(0);
+Keywords.LIENG_CARD_TYPE = "ct"; // SAP(7), LIENG(4, 5, 6), DI(3), DONG_HOA(2), TINH_DIEM(1), UP_BO(0);

@@ -162,7 +162,7 @@ export default class BoardLieng extends BoardCardBetTurn {
 
         if(data[Keywords.GAME_LIST_CARD]){
             data[Keywords.GAME_LIST_PLAYER_CARDS_SIZE] = new Array(playerIds.length).fill(3)
-            return super._getPlayerHandCards(playerIds, data, true);
+            return super._getPlayerHandCards(playerIds, data);
         }else{
             let result = {};
             playerIds.forEach(id => {
@@ -201,6 +201,7 @@ export default class BoardLieng extends BoardCardBetTurn {
                 player._timeDuration && player.startTimeLine(player._timeDuration)
             } else if(previousPlayerId == player.id){
                 player.stopTimeLine()
+                player.setSkipState(true)
                 player.renderer.downAllCards()
                 player.renderer.showAction(app.res.string('game_result_lieng_upbo'));
             }

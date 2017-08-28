@@ -26,35 +26,23 @@ export default class LiengUtils {
      * 
      * @static
      * @param {any} [cards=[]] 
-     * @param {any} cardType SAP(6), LIENG(3, 4, 5), DI(2), TINH_DIEM(1), UP_BO(0);
+     * @param {any} cardType SAP(7), LIENG(4, 5, 6), DI(3), DONG_HOA(2), TINH_DIEM(1), UP_BO(0);
      * @returns 
      * @memberof LiengUtils
      */
     static createPlayerHandCardInfo(cards = [], cardType){
         let str = '';
         switch(cardType) {
-            case 0: {
+            case app.const.game.LIENG_LIENG_TYPE_UP_BO: {
                 str = app.res.string('game_result_lieng_upbo')
                 break;
             }
-            case 1: {
+            case app.const.game.LIENG_LIENG_TYPE_DIEM: {
                 let point = this.toLiengPoint(this.getTotalPoint(cards));
                 switch (point) {
                     case 10:
                         point = 0;
                         str = app.res.string('game_result_bacay_point', {point});
-                        break;
-                    case 1:
-                        str = app.res.string('game_result_bacay_tit');
-                        // str = "Tịt..";
-                        break;
-                    case 2:
-                        str = app.res.string('game_result_bacay_nai');
-                        // str = "Nái..";
-                        break;
-                    case 5:
-                        str = app.res.string('game_result_bacay_nua_doi');
-                        // str = "Nửa đời";
                         break;
                     default:
                         str = app.res.string('game_result_bacay_point', {point});
@@ -62,17 +50,21 @@ export default class LiengUtils {
                 }
                 break;
             }
-            case 2: {
+            case app.const.game.LIENG_LIENG_TYPE_DONG_HOA: {
+                str = app.res.string('game_result_lieng_dong_hoa')
+                break;
+            }
+            case app.const.game.LIENG_LIENG_TYPE_DI: {
                 str = app.res.string('game_result_lieng_di')
                 break;
             }
-            case 3:
-            case 4:
-            case 5: {
+            case app.const.game.LIENG_LIENG_TYPE_LIENG_1:
+            case app.const.game.LIENG_LIENG_TYPE_LIENG_2:
+            case app.const.game.LIENG_LIENG_TYPE_LIENG_3: {
                 str = app.res.string('game_result_lieng_lieng')
                 break;
             }
-            case 6: {
+            case app.const.game.LIENG_LIENG_TYPE_SAP: {
                 str = app.res.string('game_result_lieng_sap')
                 break;
             }
