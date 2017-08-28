@@ -91,8 +91,7 @@ export default class LiengControls extends GameControls {
     }
     
     onClickUpBoBtn() {
-        let mePlayer = this.scene.gamePlayers.me;
-        mePlayer.setSkipState(true)
+        this.scene.emit('on.user.skips.turn.set.board.state')
         app.service.send({cmd: app.commands.PLAYER_SKIP_TURN, data: {}, room: this.scene.room});
     }
     

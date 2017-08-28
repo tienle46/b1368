@@ -14,7 +14,6 @@ export default class PlayerLieng extends PlayerCardBetTurn {
         this._pendingCuocBienRequests = null;
         
         this._timeDuration = 0
-        this._isSkiped = false
     }
 
     _addGlobalListener() {
@@ -75,7 +74,6 @@ export default class PlayerLieng extends PlayerCardBetTurn {
     onLoad() {
         super.onLoad();
         this._timeDuration = 0
-        this.setSkipState(false)
     }
 
     onEnable() {
@@ -86,7 +84,6 @@ export default class PlayerLieng extends PlayerCardBetTurn {
     onGameReset(){
         super.onGameReset();
         this._timeDuration = 0
-        this.setSkipState(false)
         
         this.renderer.betComponentAppearance(false);
         this.setBetAmount(0);
@@ -98,15 +95,14 @@ export default class PlayerLieng extends PlayerCardBetTurn {
         this.renderer.stopAllAnimation();
     }
     
-    _onShowGameEndingInfo(playerId, { name = "", text = null, iconPath = "", balanceChanged = NaN, info = "", cards = [], isWinner = false } = {}){
+    _onShowGameEndingInfo(playerId, { name = "", text = null, iconPath = "", balanceChanged = NaN, info = "", cards = [], isWinner = false } = {}, isSkiped = true){
         if(playerId != this.id || !this.isPlaying()) return;
 
         this.playSoundBaseOnBalanceChanged(balanceChanged);
         this.renderer.betComponentAppearance(false);
         this.renderer.startPlusBalanceAnimation(balanceChanged, true);
         
-        // console.warn('this._isSkiped', this._isSkiped)
-        if(!this._isSkiped) {
+        if(!isSkiped && this.isPlaying()) {
             this.renderer.showAction(info)
             this.setCards(cards, true)
         }
@@ -137,10 +133,6 @@ export default class PlayerLieng extends PlayerCardBetTurn {
     onGameStarting(data, isJustJoined) {
         super.onGameStarting(data, isJustJoined)
         this.renderer.betComponentAppearance(true);
-    }
-    
-    setSkipState(state) {
-        this._isSkiped = state
     }
 }
 
