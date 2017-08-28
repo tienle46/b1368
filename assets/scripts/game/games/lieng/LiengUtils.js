@@ -21,33 +21,62 @@ export default class LiengUtils {
         return cards.reduce((initedPoint, card) => initedPoint + (card.rank >= 10 ? 0: card.rank), 0)
     }
     
-    static createPlayerHandCardInfo(cards = []){
+    /**
+     * 
+     * 
+     * @static
+     * @param {any} [cards=[]] 
+     * @param {any} cardType SAP(6), LIENG(3, 4, 5), DI(2), TINH_DIEM(1), UP_BO(0);
+     * @returns 
+     * @memberof LiengUtils
+     */
+    static createPlayerHandCardInfo(cards = [], cardType){
         let str = '';
-        let point = this.toLiengPoint(this.getTotalPoint(cards));
-        switch (point) {
-            case 10:
-                str = app.res.string('game_result_bacay_10_point');
+        switch(cardType) {
+            case 0: {
+                str = app.res.string('game_result_lieng_upbo')
                 break;
-            case 1:
-                str = app.res.string('game_result_bacay_tit');
-                // str = "Tịt..";
+            }
+            case 1: {
+                let point = this.toLiengPoint(this.getTotalPoint(cards));
+                switch (point) {
+                    case 10:
+                        str = app.res.string('game_result_bacay_10_point');
+                        break;
+                    case 1:
+                        str = app.res.string('game_result_bacay_tit');
+                        // str = "Tịt..";
+                        break;
+                    case 2:
+                        str = app.res.string('game_result_bacay_nai');
+                        // str = "Nái..";
+                        break;
+                    case 5:
+                        str = app.res.string('game_result_bacay_nua_doi');
+                        // str = "Nửa đời";
+                        break;
+                    default:
+                        str = app.res.string('game_result_bacay_point', {point});
+                        break;
+                }
                 break;
-            case 2:
-                str = app.res.string('game_result_bacay_nai');
-                // str = "Nái..";
+            }
+            case 2: {
+                str = app.res.string('game_result_lieng_di')
                 break;
-            case 5:
-                str = app.res.string('game_result_bacay_nua_doi');
-                // str = "Nửa đời";
+            }
+            case 3:
+            case 4:
+            case 5: {
+                str = app.res.string('game_result_lieng_lieng')
                 break;
-            case 0:
-                str = app.res.string('game_result_lieng_upbo');
+            }
+            case 6: {
+                str = app.res.string('game_result_lieng_sap')
                 break;
-            default:
-                str = app.res.string('game_result_bacay_point', {point});
-                break;
+            }
         }
-
+        
         return str;
     }
 }

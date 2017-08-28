@@ -156,7 +156,7 @@ export default class GameEventHandler {
         let onTurnPlayerId = utils.getValue(data, app.keywords.TURN_PLAYER_ID);
         let previousPlayerId = utils.getValue(data, app.keywords.PLAYER_ID);
         let betAmount = utils.getValue(data, app.keywords.VARIABLE_MIN_BET);
-        this.scene.emit('on.player.to', previousPlayerId, onTurnPlayerId, betAmount);
+        this.scene.emit(Events.ON_PLAYER_TO, previousPlayerId, onTurnPlayerId, betAmount);
     }
     
     _handlePlayerBaoXam(data) {

@@ -31,8 +31,9 @@ export default class BoardLieng extends BoardCardBetTurn {
         this.renderer = this.node.getComponent('BoardLiengRenderer');
         super.onEnable();
 
-        this.scene.on('on.player.to', this._onPlayerTo, this);
+        this.scene.on(Events.ON_PLAYER_TO, this._onPlayerTo, this);
         this.scene.on(Events.HANDLE_SKIP_TURN, this._handleSkipTurn, this);
+        this.scene.on(Events.ON_FIRST_PLAYER_TO, this._onShowToIcon, this);
     }
 
     get gameType() {
@@ -50,12 +51,12 @@ export default class BoardLieng extends BoardCardBetTurn {
                 case app.const.game.state.READY:
                     message = app.res.string('game_start');
                     break;
-                case app.const.game.state.BET_TURNING:
-                    message = app.res.string('lieng_game_bet');
-                    break;
             }
         }
         super.startTimeLine(duration, message);
+        if(this.scene.gameState != app.const.game.state.READY) {
+            this.renderer.hideTimeLine()
+        }
     }
 
     onGameStatePreChange(boardState, data, isJustJoined) {
@@ -75,6 +76,7 @@ export default class BoardLieng extends BoardCardBetTurn {
             
     onBoardStarting(...args){
         super.onBoardStarting(...args);
+        this.renderer.setVisibleTotalAmountComponent(true)
     }
     
     
@@ -128,6 +130,9 @@ export default class BoardLieng extends BoardCardBetTurn {
         
         let gamePhase = utils.getValue(data, app.keywords.BOARD_STATE_KEYWORD);
         
+        if(gamePhase != app.const.game.state.READY)
+            this.renderer.setVisibleTotalAmountComponent(true)
+        
         if(gamePhase == app.const.game.state.BET_TURNING) {
             /**
              * Load player down card & player bet amount
@@ -145,19 +150,22 @@ export default class BoardLieng extends BoardCardBetTurn {
             }
         }
     }
-
+    
+    _onShowToIcon(playerId) {
+        this.scene.gamePlayers.players.forEach(player => player.renderer.setVisibleTo(player.id == playerId));
+    }
+    
     _getPlayerHandCards(playerIds = [], data = {}) {
 
         if(data[Keywords.GAME_LIST_CARD]){
             data[Keywords.GAME_LIST_PLAYER_CARDS_SIZE] = new Array(playerIds.length).fill(3)
-            return super._getPlayerHandCards(playerIds, data);
+            return super._getPlayerHandCards(playerIds, data, true);
         }else{
             let result = {};
             playerIds.forEach(id => {
                 let player = this.scene.gamePlayers.findPlayer(id);
                 result[id] = player ? [...player.getCards()] : [];
             });
-
             return result;
         }
     }
@@ -190,6 +198,7 @@ export default class BoardLieng extends BoardCardBetTurn {
                 player._timeDuration && player.startTimeLine(player._timeDuration)
             } else if(previousPlayerId == player.id){
                 player.stopTimeLine()
+                player.renderer.downAllCards()
                 player.renderer.showAction(app.res.string('game_result_lieng_upbo'));
             }
         });
@@ -199,7 +208,8 @@ export default class BoardLieng extends BoardCardBetTurn {
         super._reset();
         this.winRank = 0;
         this.setTotalBetAmount(0);
-
+        
+        this.renderer.setVisibleTotalAmountComponent(false)
         this.scene.isShowBetPopup = false
         this.scene.isShowCuocBienPopup = false
     }
@@ -207,6 +217,7 @@ export default class BoardLieng extends BoardCardBetTurn {
     _getGameResultInfos(playerIds = [], playerHandCards, data) {
 
         let playersWinRanks = utils.getValue(data, Keywords.GAME_LIST_WIN);
+        let cardTypes = utils.getValue(data, Keywords.LIENG_CARD_TYPE);
 
         /**
          * Get game result icon
@@ -215,25 +226,26 @@ export default class BoardLieng extends BoardCardBetTurn {
         let resultTexts = {};
         let resultIconPaths = {};
         let gameResultInfos = {};
-        playerIds.forEach((id, i) => {
-            let resultText;
-            if (playersWinRanks[i] == app.const.game.rank.GAME_RANK_FIRST) {
-                resultText = app.res.string('game_thang');
-            } else {
-                // if (winType == app.const.game.GENERAL_WIN_TYPE_NORMAL) {
-                //     let cardCount = playersCardCounts && playersCardCounts[i];
-                //
-                //     if (cardCount == PlayerBaCay.DEFAULT_HAND_CARD_COUNT) {
-                //         resultText = app.res.string('game_sam_treo');
-                //     }
-                // }
+        if(cardTypes && playersWinRanks)
+            playerIds.forEach((id, i) => {
+                let resultText;
+                if (playersWinRanks[i] == app.const.game.rank.GAME_RANK_FIRST) {
+                    resultText = app.res.string('game_thang');
+                } else {
+                    // if (winType == app.const.game.GENERAL_WIN_TYPE_NORMAL) {
+                    //     let cardCount = playersCardCounts && playersCardCounts[i];
+                    //
+                    //     if (cardCount == PlayerBaCay.DEFAULT_HAND_CARD_COUNT) {
+                    //         resultText = app.res.string('game_sam_treo');
+                    //     }
+                    // }
 
-                if (!resultText) resultText = app.res.string('game_thua');
-            }
+                    if (!resultText) resultText = app.res.string('game_thua');
+                }
 
-            gameResultInfos[id] = LiengUtils.createPlayerHandCardInfo(playerHandCards[id]);
-            resultTexts[id] = resultText;
-        })
+                gameResultInfos[id] = LiengUtils.createPlayerHandCardInfo(playerHandCards[id], cardTypes[i]);
+                resultTexts[id] = resultText;
+            })
 
         return {resultTexts, gameResultInfos, resultIconPaths};
     }

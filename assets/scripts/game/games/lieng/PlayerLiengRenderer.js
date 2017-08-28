@@ -22,6 +22,9 @@ export default class PlayerLiengRenderer extends PlayerCardRenderer {
             leftBetPositionAnchor: cc.Node,
             bottomRightBetPositionAnchor: cc.Node,
             masterIcon: cc.Node,
+            defaultCardAnchorBottomRight: cc.Node,
+            defaultCardAnchorBottomLeft: cc.Node,
+            toIcon: cc.Node
         });
         
         /**
@@ -49,6 +52,13 @@ export default class PlayerLiengRenderer extends PlayerCardRenderer {
     onEnable(...args){
         super.onEnable(...args);
         this.actionNodeAnim = this.actionNode.getComponent(cc.Animation);
+        
+        let player = this.data.actor
+        let actionChangedPos = this._getCardAnchorPoint(player);
+        if(actionChangedPos) {
+            actionChangedPos = actionChangedPos.getPosition()
+            this.actionNode.setPosition(actionChangedPos.x, actionChangedPos.y)
+        }
     }
 
     updatePlayerAnchor(anchorIndex){
@@ -63,7 +73,7 @@ export default class PlayerLiengRenderer extends PlayerCardRenderer {
         let anchor = null;
         
         if(player.isItMe()) {
-            anchor = this.topBetPositionAnchor
+            anchor = this.betComponent
         } else {
             switch(this.anchorIndex) {
                 case 2: {
@@ -83,7 +93,8 @@ export default class PlayerLiengRenderer extends PlayerCardRenderer {
                     break;
                 }
                 default: { // 1
-                    anchor = this.topBetPositionAnchor
+                    // anchor = this.topBetPositionAnchor
+                    anchor = this.betComponent
                     break;
                 }
             }
@@ -99,6 +110,10 @@ export default class PlayerLiengRenderer extends PlayerCardRenderer {
 
     revealAllCards(){
         this.cardList.cards.forEach(card => card.setReveal(true));
+    }
+    
+    downAllCards(){
+        this.cardList.cards.forEach(card => card.setReveal(false));
     }
 
     _getHandCardAlign(){
@@ -117,8 +132,34 @@ export default class PlayerLiengRenderer extends PlayerCardRenderer {
         if(player && player.isItMe())
             return this.myCardAnchor;
         
-        let positionOnRight = player && this.isPositionOnRight(player.anchorIndex);
-        return positionOnRight ? this.defaultCardAnchor2 : this.defaultCardAnchor;
+        // let positionOnRight = player && this.isPositionOnRight(player.anchorIndex);
+        // return positionOnRight ? this.defaultCardAnchor2 : this.defaultCardAnchor;
+        let anchor = null;
+        
+        switch(this.anchorIndex) {
+            case 2: {
+                anchor = this.defaultCardAnchorBottomRight
+                break;
+            }
+            case 3: {
+                anchor = this.rightCardAnchor
+                break;
+            }
+            case 4: {
+                anchor = this.leftCardAnchor
+                break;
+            }
+            case 5: {
+                anchor = this.defaultCardAnchorBottomLeft
+                break;
+            }
+            default: { // 1
+                anchor = this.myCardAnchor
+                break;
+            }
+        }
+        
+        return anchor;
     }
 
     /**
@@ -178,7 +219,11 @@ export default class PlayerLiengRenderer extends PlayerCardRenderer {
 
         utils.setVisible(this.actionActor, false);
     }
-
+    
+    setVisibleTo(visible = false) {
+        utils.setActive(this.toIcon, visible);
+    }
+    
     setVisibleMaster(visible = false) {
         utils.setActive(this.masterIcon, visible);
     }

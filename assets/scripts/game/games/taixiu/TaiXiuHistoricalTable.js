@@ -40,9 +40,9 @@ export default class TaiXiuHistoricalTable extends HistoricalTable {
             return
         
         //only update newest 32 cells
-        let numberCellsInTable = 22
-        if (infors.length > numberCellsInTable)
-            infors = infors.slice(0, numberCellsInTable + 1)
+        // let numberCellsInTable = 22
+        // if (infors.length > numberCellsInTable)
+        //     infors = infors.slice(0, numberCellsInTable + 1)
 
         super.updateTableInfo(infors)
         
@@ -71,7 +71,13 @@ export default class TaiXiuHistoricalTable extends HistoricalTable {
         
         let sum = type.faces.reduce((a,b) => a + b, 0)
         
-        this.childLbl.string = `${type.text} ${sum}`
+        if(!type.text || type.text == ''){
+            type.text = 'Sấp 3'
+            this.childLbl.string = `${type.text}`
+        } else {
+            this.childLbl.string = `${type.text} ${sum}`
+        }
+        
         this.childLbl.node.color = sum > 3 && sum <= 10 ? new cc.Color(203, 148, 21) : new cc.Color(255, 255, 255)
         
         let cell = cc.instantiate(this.childItem)

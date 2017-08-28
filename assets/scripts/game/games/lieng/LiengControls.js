@@ -18,15 +18,25 @@ export default class LiengControls extends GameControls {
             toBtnNode: cc.Node,
             theoBtnNode: cc.Node,
             theoBtn: cc.Button,
-            upboBtnNode: cc.Node
+            upboBtnNode: cc.Node,
+            guide: cc.Node
         });
 
         /**
          * @type {BaseControls}
          */
-        this.baseControls = null;
+        this.baseControls = null
+        
+        this._isGuideShowed = false
+        this._isGuideShowing = false
     }
-
+    
+    onLoad() {
+        super.onLoad()
+        this._isGuideShowed = false
+        this._isGuideShowing = false
+    }
+    
     onEnable() {
 
         this.baseControls = this.baseControlsNode.getComponent('BaseControls');
@@ -38,7 +48,7 @@ export default class LiengControls extends GameControls {
         this.scene.on(Events.ON_GAME_STATE_STARTED, this._onGameStarted, this, 0);
         this.scene.on(Events.ON_GAME_STATE_PLAYING, this._onGamePlaying, this);
         this.scene.on(Events.ON_GAME_STATE_ENDING, this._onGameEnding, this);
-        this.scene.on('on.player.to', this._onPlayerTo, this);
+        this.scene.on(Events.ON_PLAYER_TO, this._onPlayerTo, this);
         this.scene.on(Events.HANDLE_SKIP_TURN, this._handleSkipTurn, this);
     }
     
@@ -82,6 +92,13 @@ export default class LiengControls extends GameControls {
     
     onClickUpBoBtn() {
         app.service.send({cmd: app.commands.PLAYER_SKIP_TURN, data: {}, room: this.scene.room});
+    }
+    
+    toggleGuide() {
+        if(this._isGuideShowing)
+            return;
+
+        this._isGuideShowed ? this._hideGuide() : this._showGuide();    
     }
     
     _onPlayerTo(previousPlayerId, onTurnPlayerId, betAmount) {
@@ -138,6 +155,24 @@ export default class LiengControls extends GameControls {
         } else {
             this.hideAllControls()
         }
+    }
+    
+    _showGuide() {
+        this.guide.runAction(cc.sequence(cc.callFunc(() => {
+            this._isGuideShowing = true
+        }), cc.moveTo(.1, cc.v2(200, 228)), cc.callFunc(() => {
+            this._isGuideShowed = true
+            this._isGuideShowing = false
+        })))
+    }
+    
+    _hideGuide() {
+        this.guide.runAction(cc.sequence(cc.callFunc(() => {
+            this._isGuideShowing = true
+        }), cc.moveTo(.1, cc.v2(-190, 228)), cc.callFunc(() => {
+            this._isGuideShowed = false
+            this._isGuideShowing = false
+        })))
     }
 }
 

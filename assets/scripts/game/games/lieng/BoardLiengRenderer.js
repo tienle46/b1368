@@ -25,7 +25,7 @@ export default class BoardLiengRenderer extends BoardCardBetTurnRenderer {
         super.onEnable();
     }
 
-    setVisibleGopGaComponent(visible){
+    setVisibleTotalAmountComponent(visible){
         utils.setVisible(this.totalAmoutNode, visible);
     }
 

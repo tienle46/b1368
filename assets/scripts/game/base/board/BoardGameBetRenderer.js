@@ -54,7 +54,7 @@ export default class BoardGameBetRenderer extends BoardRenderer {
     updateBoardResultHistory(results) {
         if(results.length < 1)
             return
-        this.historicalTable.updateTableInfo(results);
+        this.node.runAction(cc.sequence(cc.delayTime(3), cc.callFunc(()=> this.historicalTable.updateTableInfo(results))));
     }
     
     runDishShakeAnim() {

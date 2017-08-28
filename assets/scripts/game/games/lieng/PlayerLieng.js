@@ -20,7 +20,7 @@ export default class PlayerLieng extends PlayerCardBetTurn {
         super._addGlobalListener();
 
         this.scene.on(Events.ON_GAME_STATE, this._onGameState, this);
-        this.scene.on('on.player.changed.bet', this._onPlayerChangedBet, this);
+        this.scene.on(Events.ON_PLAYER_CHANGED_BET, this._onPlayerChangedBet, this);
         this.scene.on(Events.SHOW_GAME_ENDING_INFO, this._onShowGameEndingInfo, this);
     }
 
@@ -28,7 +28,7 @@ export default class PlayerLieng extends PlayerCardBetTurn {
         super._removeGlobalListener();
 
         this.scene.off(Events.ON_GAME_STATE, this._onGameState, this);
-        this.scene.off('on.player.changed.bet', this._onPlayerChangedBet, this);
+        this.scene.off(Events.ON_PLAYER_CHANGED_BET, this._onPlayerChangedBet, this);
         this.scene.off(Events.SHOW_GAME_ENDING_INFO, this._onShowGameEndingInfo, this);
     }
 
@@ -41,6 +41,9 @@ export default class PlayerLieng extends PlayerCardBetTurn {
     }
     
     onGamePlaying(data, isJustJoined) {
+        if(!this.isItMe())
+            return;
+
         super.onGamePlaying(data, isJustJoined);
         let gamePhase = utils.getValue(data, app.keywords.BOARD_STATE_KEYWORD);
         
@@ -48,7 +51,10 @@ export default class PlayerLieng extends PlayerCardBetTurn {
             let onTurnPlayerId = utils.getValue(data, app.keywords.TURN_PLAYER_ID);
             let duration = utils.getValue(data, app.keywords.TURN_BASE_PLAYER_TURN_DURATION);
             !this._timeDuration && (this._timeDuration = duration)
-            
+            let isFirstBet = data.isFirstBet || false
+            if(isFirstBet) {
+                this.scene.emit(Events.ON_FIRST_PLAYER_TO, onTurnPlayerId)
+            }
             onTurnPlayerId == this.id && duration && this.startTimeLine(this._timeDuration)
         }
     }
@@ -94,8 +100,10 @@ export default class PlayerLieng extends PlayerCardBetTurn {
 
         this.playSoundBaseOnBalanceChanged(balanceChanged);
         this.renderer.showAction(info);
+        this.renderer.betComponentAppearance(false);
         this.renderer.startPlusBalanceAnimation(balanceChanged, true);
-        this.setCards(cards, true);
+        
+        cards.length > 0 && this.setCards(cards, true);
     }
 
     _onPlayerChangedBet(betAmount = 0) {
