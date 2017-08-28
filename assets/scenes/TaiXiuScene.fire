@@ -26051,7 +26051,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "c583e109-4447-45f3-a4dd-25cd7a7ccb15"
+      "__uuid__": "0d52a2ae-9612-4af1-96f0-6bcce2f82421"
     },
     "_type": 1,
     "_sizeMode": 0,
@@ -29546,9 +29546,7 @@
       "__id__": 789
     },
     "_enabled": true,
-    "_spriteFrame": {
-      "__uuid__": "47c06e92-7456-4465-bb44-5ef56b2c0aa0"
-    },
+    "_spriteFrame": null,
     "_type": 0,
     "_sizeMode": 1,
     "_fillType": 0,
@@ -29562,9 +29560,7 @@
     "_isTrimmedMode": true,
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
-    "_atlas": {
-      "__uuid__": "ccc9bb38-0765-4f9d-86b1-5edfa1be770c"
-    }
+    "_atlas": null
   },
   {
     "__type__": "cc.Animation",

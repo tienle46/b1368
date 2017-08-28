@@ -514,6 +514,12 @@ class Service {
         if (accessToken && accessToken.length > 0) {
             data[app.keywords.ACCESS_TOKEN] = accessToken;
         }
+        
+        if (app.env.isMobile()) {
+            data[app.keywords.PACKAGE_NAME]  = app.config.packageName;
+            data[app.keywords.BUILD_TYPE] = app.config.buildType;
+        }
+        
         // if (isRegister) {
             data[app.keywords.PARTNER_ID] = 1;
             cc.log(`utm source ${cc.sys.localStorage.getItem('utm_source')}`);

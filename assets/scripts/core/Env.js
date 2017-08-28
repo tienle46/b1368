@@ -94,10 +94,13 @@ export default (function(app) {
             if (app.env.isIOS()) {
                 app.config.DEVICE_ID = window.jsb.reflection.callStaticMethod("FCUUID", "uuidForDevice");
                 app.config.CARRIER_NAME = window.jsb.reflection.callStaticMethod("JSBUtils", "carrierName");
+                app.config.packageName = window.jsb.reflection.callStaticMethod("JSBUtils", "packageName");
             }
             if (app.env.isAndroid()) {
                 app.config.DEVICE_ID = window.jsb.reflection.callStaticMethod("org/cocos2dx/javascript/JSBUtils", "uuidForDevice", "()Ljava/lang/String;");
                 app.config.CARRIER_NAME = window.jsb.reflection.callStaticMethod("org/cocos2dx/javascript/JSBUtils", "carrierName", "()Ljava/lang/String;");
+                app.config.packageName = window.jsb.reflection.callStaticMethod("org/cocos2dx/javascript/JSBUtils", "packageName", "()Ljava/lang/String;");
+                
             }
 
             _setupSDKBox();
