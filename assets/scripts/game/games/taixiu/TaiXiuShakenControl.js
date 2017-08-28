@@ -29,7 +29,8 @@ export default class TaiXiuShakenControl extends ShakenControl {
             sprite.spriteFrame = this.dealerShakes.getSpriteFrames()[0]
 
             let spriteFrames = this.dealerShakes.getSpriteFrames()
-            let clip = cc.AnimationClip.createWithSpriteFrames(spriteFrames, 2)
+            let clip = cc.AnimationClip.createWithSpriteFrames(spriteFrames, 6)
+            clip.speed = 0.5;
             clip.name = clipName
             clip.wrapMode = cc.WrapMode.Default
             

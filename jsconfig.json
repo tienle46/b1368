@@ -9,6 +9,7 @@
         "local",
         "settings",
         "temp",
-        "assets/scripts"
+        "assets/scripts",
+        "build"
     ]
 }
