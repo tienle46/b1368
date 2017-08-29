@@ -14,10 +14,10 @@ export default class DashboardScene extends BaseScene {
             item: cc.Prefab,
             dailyDialog: cc.Node,
             dailyDialogContent: cc.Label,
-            dailyDialogTitle: cc.Label
+            dailyDialogTitle: cc.Label,
+            gameIcons: cc.SpriteAtlas
         });
         
-        this.iconComponents = {};
         this._isNewBie = false;
         this._jarAdded = false;
     }
@@ -28,45 +28,12 @@ export default class DashboardScene extends BaseScene {
         this._jarAdded = false;
     }
     
-    testClick() {
-        // let data = {
-        //     su: true,
-        //     unverifiedPurchases: [],
-        //     consumedProducts:[],
-        //     purchasedProducts: [{
-        //         msg: "Bạn đã nạp thành công 20000 Chip vào tài khoản djoker",
-        //         su: true,
-        //         productId: 'com.1368inc.phatloc.20kc',
-        //         token: 'gadnjhbjlohdnijahkfebdej.AO-J1Oyf126egFrlky3FRZ_Li0VG4lxKFHb-yPeQx3lI6LIAsU0gGxqh_KvGgLogOTtcq3gbXKL825aysiEHKe0IZAe1JbZRp5A0y4CAi25Rw1ttJuXouqnjKD-k4BGXwTcW9t8u4ndRtm16o8dM1tqE6hM5eDVYgg'
-        //     }]
-        // }
-       
-        // let contextItem = { id: data.purchasedProducts[0].productId, receipt: data.purchasedProducts[0].token, username: app.context.getMyInfo().name || "" };
-        // app.iap.addPurchase(contextItem)
-        // app.service.send({cmd: "testBilling", data});
-        function getRandomIntInclusive(min, max) {
-            min = Math.ceil(min);
-            max = Math.floor(max);
-            return Math.floor(Math.random() * (max - min + 1)) + min; //The maximum is inclusive and the minimum is inclusive 
-        }
-        let random = getRandomIntInclusive(1, 3);
-        
-        app.service.send({
-            cmd: app.commands.HIGH_LIGHT_MESSAGE,
-            data: {
-                msg: 'Lorem ipsum dolor sit amet ' + random,
-                rc: random
-            }
-        });
-    }
-    
     onEnable() {
         super.onEnable();
     }
 
     onDestroy() {
         super.onDestroy();
-        this.free(this.iconComponents);
         this._isNewBie = false;
     }
 
@@ -211,12 +178,9 @@ export default class DashboardScene extends BaseScene {
         let count = 0;
         
         let gameItems = [];
-        app.async.mapSeries(app.context.gameList, (gc, cb) => {
-            if (count > 7 && !this.pageView.indicator.node.opacity) {
-                var indicator = this.pageView.indicator.node;
-                indicator && indicator.opacity < 255 && (indicator.opacity = 255);
-            }
-            if (count % 8 === 0) {
+        
+        app.context.gameList.forEach((gc, index) => {
+            if (index % 8 === 0) {
                 let pageNodeOptions = {
                     name: 'pageNode',
                     size: cc.size(998, 455),
@@ -236,38 +200,39 @@ export default class DashboardScene extends BaseScene {
                 node = NodeRub.createNodeByOptions(pageNodeOptions);
                 this.pageView.addPage(node);
             }
-            let gameIconPath = app.res.gameIcon[gc];
+            let gameIconPath = app.res.gameIcon[gc]
+            if(gameIconPath) {
+                let sprite = this.gameIcons.getSpriteFrame(gameIconPath)
 
-            gameIconPath && RubUtils.getSpriteFrameFromAtlas('blueTheme/atlas/game_icons', gameIconPath, (sprite) => {
                 if (sprite) {
                     const nodeItem = cc.instantiate(this.item);
                     nodeItem.getComponent(cc.Sprite).spriteFrame = sprite;
                     nodeItem.setContentSize(itemDimension, itemDimension);
                     
                     let itemComponent = nodeItem.getComponent('item');
-
+    
                     itemComponent.gameCode = gc;
                     itemComponent.listenOnClickListener((gameCode) => {
                         app.context.setSelectedGame(gameCode);
                         this.changeScene(app.const.scene.LIST_TABLE_SCENE);
                     });
-                                
-                    gameItems.push(nodeItem);
-                    // node && node.addChild(nodeItem);
-                    count++;
-                }
-                if (count > 0 && (count % 8 === 0 || count == app.context.gameList.length)){
-                    gameItems.forEach(nodeItem => node && node.addChild(nodeItem));
-                    gameItems = [];
-                    if(count == app.context.gameList.length) {
-                        this._requestListHu();
-                        this.hideLoading();
+                    
+                    node.addChild(nodeItem)
+                    
+                    if (index > 0 && (index % 8 === 0 || index == (app.context.gameList.length - 1))){
+                        if (index > 8 && !this.pageView.indicator.node.opacity) {
+                            var indicator = this.pageView.indicator.node;
+                            indicator && indicator.opacity < 255 && (indicator.opacity = 255);
+                        }
+                        
+                        if(index == app.context.gameList.length - 1) {
+                            this._requestListHu();
+                            this.hideLoading();
+                        }
                     }
                 }
-
-                cb(); // next ->
-            });
-        });
+            }
+        })
     }
 }
 

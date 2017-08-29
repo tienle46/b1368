@@ -650,6 +650,7 @@
     "scrollThreshold": 0.5,
     "autoPageTurningThreshold": 100,
     "pageTurningEventTiming": 0.1,
+    "pageTurningSpeed": 0.3,
     "pageEvents": [],
     "_N$sizeMode": 0,
     "_N$direction": 0,
@@ -8654,6 +8655,9 @@
     },
     "dailyDialogTitle": {
       "__id__": 22
+    },
+    "gameIcons": {
+      "__uuid__": "93465fa0-fce2-468e-9854-ab8502fbd590"
     }
   }
 ]

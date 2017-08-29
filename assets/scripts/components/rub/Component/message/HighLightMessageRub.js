@@ -4,7 +4,6 @@
  * @export
  * @class HighLightMessageRub
  */
-import app from 'app';
 
 export default class HighLightMessageRub {
     constructor() {
@@ -74,8 +73,12 @@ export default class HighLightMessageRub {
     }
     
     runMessage(intervalTimer, highLightNode) {
-        if(this.isEmptyStack())
+        if(this.isEmptyStack()){
+            intervalTimer.pause()
             return;
+        }
+        if(intervalTimer.isPaused())
+            intervalTimer.resume()
             
         let hlm = this.getMessage();
         
