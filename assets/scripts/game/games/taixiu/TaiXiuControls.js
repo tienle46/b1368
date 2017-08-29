@@ -49,6 +49,20 @@ export default class TaiXiuControls extends GameBetControls {
             this.betChipAnim.receiveChip(toPos, playerId, id);
         }
     }
+    
+    /**
+     * @extending
+     * 
+     * @param {any} data 
+     * @param {any} isJustJoined 
+     * @memberof TaiXiuControls <- GameBetControls
+     */
+    _onGameEnding(data, isJustJoined) {
+        this.node.runAction(cc.sequence(cc.delayTime(6), cc.callFunc(() => {
+            super._onGameEnding(data, isJustJoined)
+        })))
+    }
+    
 }
 
 app.createComponent(TaiXiuControls);

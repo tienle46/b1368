@@ -41,9 +41,6 @@ export default class PlayerLieng extends PlayerCardBetTurn {
     }
     
     onGamePlaying(data, isJustJoined) {
-        if(!this.isItMe())
-            return;
-
         super.onGamePlaying(data, isJustJoined);
         let gamePhase = utils.getValue(data, app.keywords.BOARD_STATE_KEYWORD);
         
@@ -55,6 +52,8 @@ export default class PlayerLieng extends PlayerCardBetTurn {
             if(isFirstBet) {
                 this.scene.emit(Events.ON_FIRST_PLAYER_TO, onTurnPlayerId, duration)
             }
+            console.warn('onTurnPlayerId', onTurnPlayerId == this.id, duration)
+            
             onTurnPlayerId == this.id && duration && this.startTimeLine(this._timeDuration)
         }
     }
@@ -127,15 +126,15 @@ export default class PlayerLieng extends PlayerCardBetTurn {
         super._onGameRejoin(data);
         if (this.isPlaying()) {
             this.renderer.betComponentAppearance(true)
+        } else {
+            this.renderer.betComponentAppearance(false)
         }
     }
     
     onGameStarting(data, isJustJoined) {
         super.onGameStarting(data, isJustJoined)
-        this.renderer.betComponentAppearance(true);
+        this.renderer.betComponentAppearance(true)
     }
 }
-
-PlayerLieng.DEFAULT_HAND_CARD_COUNT = 3
 
 app.createComponent(PlayerLieng);

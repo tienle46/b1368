@@ -47,7 +47,24 @@ export default class BoardLieng extends BoardCardBetTurn {
         this.totalBetAmount = value;
         this.renderer.setTotalValue(value);
     }
-
+    
+    // /**
+    //  * @extending 
+    //  * 
+    //  * @param {any} data 
+    //  * @memberof BoardLieng <- BoardCard
+    //  */
+    // _dealCards(data) {
+    //     this.node.runAction(cc.sequence(cc.delayTime(1), cc.callFunc(() => {
+    //         super._dealCards(data)
+    //     })))
+    //     // let cardBytes = data[app.keywords.DEAL_CARD_LIST_KEYWORD] || [];
+    //     // let dealCards = cardBytes.map(cardByte => Card.from(cardByte));
+    //     // let playerHandCardLists = this.scene.gamePlayers.getPlayerHandCardLists();
+    //     // playerHandCardLists.splice(0, 0, this.renderer.meDealCardList);
+    //     // this.onDealCard(playerHandCardLists, dealCards, data);
+    // }
+    
     startTimeLine(duration, message){
         if(utils.isEmpty(message)){
             switch (this.scene.gameState){
@@ -72,6 +89,7 @@ export default class BoardLieng extends BoardCardBetTurn {
     
     onGameStateChanged(boardState, data, isJustJoined) {
         super.onGameStateChanged(boardState, data, isJustJoined);
+
         if(boardState == app.const.game.state.BET_TURNING && (!app.context.rejoiningGame || this.totalBetAmount == 0)) {
             this.scene.gamePlayers.players.forEach(player => player.playPlayerBet(this.minBet)) // prebet
         }
@@ -127,7 +145,6 @@ export default class BoardLieng extends BoardCardBetTurn {
     }
     
     _loadGamePlayData(data) {
-        // super._loadGamePlayData({...data, masterIdOwner: true});
         super._loadGamePlayData(Object.assign({}, data, {masterIdOwner: true}));
         // console.warn('_loadGamePlayData', data)
         

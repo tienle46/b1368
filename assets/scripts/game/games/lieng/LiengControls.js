@@ -149,8 +149,11 @@ export default class LiengControls extends GameControls {
     _hideGameBeginControls(data, isJustJoined) {
         this.baseControls.hideAllControls();
         
-        let gamePhase = utils.getValue(data, app.keywords.BOARD_STATE_KEYWORD);
+        let gamePhase = utils.getValue(data, app.keywords.BOARD_STATE_KEYWORD)
         let onTurnPlayerId = utils.getValue(data, app.keywords.TURN_PLAYER_ID)
+        if(gamePhase === undefined || onTurnPlayerId === undefined)
+            return;
+
         if(gamePhase == app.const.game.state.BET_TURNING && onTurnPlayerId && this.scene.gamePlayers.isItMe(onTurnPlayerId)) {
             this.showBetControls()
         } else {

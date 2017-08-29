@@ -413,17 +413,11 @@ export default class GameBetControls extends GameControls {
     }
 
     _onGameEnding(data, isJustJoined) {
-        debug('_onGameEnding data.b', data.b, this.previousBetData, this.betData);
+        // console.warn('_onGameEnding data.b', data.b, this.previousBetData, this.betData);
+    
         // save previous data before empty it 
         this.previousBetData = this.betData;
-
-        this.isInCancelPhase = false;
-        this._setRebetBtnState(true);
-        this.betContainerButton.betable(false);
-        
-        this._resetBoardControlBtns();
-        this._resetBetData();
-        // this.hideAllControls();
+        this._resetControls()
     }
 
     hideAllControls() {
@@ -476,5 +470,16 @@ export default class GameBetControls extends GameControls {
 
     _resetBoardControlBtns() {
         this.betContainerButton.resetBtns();
+    }
+    
+    _resetControls() {
+        this.isInCancelPhase = false;
+        this._setRebetBtnState(true);
+        this.betContainerButton.betable(false);
+        
+        this._resetBoardControlBtns();
+        this._resetBetData();
+        
+        // this.hideAllControls();
     }
 }
