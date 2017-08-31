@@ -551,18 +551,17 @@ class GameSystem {
             // Decrypt
             if(password) {
                 let aesjs = require("aes-js");
-                var key = [ 1, 2, 3, 43, 5, 26, 7, 81, 19, 10, 11, 12, 13, 14, 15, 16 ];
+                var key = [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 ];
                 //hexed: afcce71697 = 12345
                 var encryptedBytes = aesjs.utils.hex.toBytes(password);
                 
                 // The counter mode of operation maintains internal state, so to
                 // decrypt a new instance must be instantiated.
-                var aesCtr = new aesjs.ModeOfOperation.ctr(key, new aesjs.Counter(5));
+                var aesCtr = new aesjs.ModeOfOperation.ctr(key, new aesjs.Counter(10));
                 var decryptedBytes = aesCtr.decrypt(encryptedBytes);
     
                 // Convert our bytes back into text
                 password = aesjs.utils.utf8.fromBytes(decryptedBytes);
-                // console.log(password);
             }
 
             if(this._currentScene && ((username && password) || (facebookId && facebookToken))) {
