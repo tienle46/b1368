@@ -121,6 +121,7 @@ export default {
     game_down_card_time: 'Hạ bài',
     game_bacay_sap: 'Sáp',
     game_result_bacay_point: '{{point}} nước',
+    game_result_lieng_point: '{{point}} điểm',
     game_result_lieng_upbo: 'Úp bỏ',
     game_result_bacay_10_point: 'Mười nước',
     game_result_bacay_tit: 'Tịt...',

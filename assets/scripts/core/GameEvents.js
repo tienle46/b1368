@@ -103,6 +103,7 @@ Events.ON_CLICK_WAIT_BUTTON = "on.click.waitButton";
 Events.ON_PLAYER_TO = "on.player.to";
 Events.ON_PLAYER_CHANGED_BET = "on.player.changed.bet";
 Events.ON_FIRST_PLAYER_TO = "on.first.player.to";
+Events.ON_LAST_PLAYER_TO = "on.last.player.to";
 
 Events.ON_GAME_RESET = "on.game.reset";
 Events.ON_GAME_WAIT = "on.game.wait";

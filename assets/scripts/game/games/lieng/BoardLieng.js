@@ -19,7 +19,6 @@ export default class BoardLieng extends BoardCardBetTurn {
         this.handCardSize = PlayerBaCay.DEFAULT_HAND_CARD_COUNT;
         this.totalBetAmount = 0;
         this._duration = 0;
-        this._isSkiped = false;
     }
 
     onLoad() {
@@ -35,7 +34,6 @@ export default class BoardLieng extends BoardCardBetTurn {
 
         this.scene.on(Events.ON_PLAYER_TO, this._onPlayerTo, this);
         this.scene.on(Events.HANDLE_SKIP_TURN, this._handleSkipTurn, this);
-        this.scene.on('on.user.skips.turn.set.board.state', this._setSkipState, this);
         this.scene.on(Events.ON_FIRST_PLAYER_TO, this._onShowToIcon, this);
     }
 
@@ -102,19 +100,28 @@ export default class BoardLieng extends BoardCardBetTurn {
     
     
     onBoardEnding(data) {
-        // console.warn('_onBoardEnding', data)
+        console.warn('_onBoardEnding', data)
         
         let playerIds = utils.getValue(data, Keywords.GAME_LIST_PLAYER, []);
         let playingPlayerIds = this.scene.gamePlayers.filterPlayingPlayer(playerIds);
         let playerInfos = this.scene.gamePlayers.getBasicPlayerInfo(playerIds);
-
+        let skips = utils.getValue(data, app.keywords.GAME_LIST_UP_BO)
+        
         let balanceChangeAmounts = this._getPlayerBalanceChangeAmounts(playerIds, data);
         let playerHandCards = this._getPlayerHandCards(playerIds, data);
         let {resultTexts, gameResultInfos, resultIconPaths} = this._getGameResultInfos(playerIds, playerHandCards, data);
 
         super.onBoardEnding(data);
-
-        let models = playerIds.filter(playerId => (playingPlayerIds.indexOf(playerId) >= 0)).map(playerId => {
+        
+        let _needDownAllCardsOnBoard = false
+        
+        playerIds.filter(playerId => (playingPlayerIds.indexOf(playerId) >= 0)).forEach((playerId, index) => {
+            if(this.scene.gamePlayers.isItMe(playerId) && skips[index]) {
+                _needDownAllCardsOnBoard = true
+            }
+        });
+        
+        playerIds.filter(playerId => (playingPlayerIds.indexOf(playerId) >= 0)).forEach((playerId, index) => {
             let model = {
                 name: playerInfos[playerId].name,
                 balanceChanged: balanceChangeAmounts[playerId],
@@ -123,11 +130,8 @@ export default class BoardLieng extends BoardCardBetTurn {
                 cards: playerHandCards[playerId],
                 text: resultTexts[playerId]
             }
-            // console.warn(model)
             
-            this.scene.emit(Events.SHOW_GAME_ENDING_INFO, playerId, model, this._isSkiped);
-
-            return model;
+            this.scene.emit(Events.SHOW_GAME_ENDING_INFO, playerId, model, _needDownAllCardsOnBoard || skips[index]);
         });
     }
     
@@ -192,7 +196,7 @@ export default class BoardLieng extends BoardCardBetTurn {
         }
     }
     
-    _onPlayerTo (previousPlayerId, onTurnPlayerId, betAmount) {
+    _onPlayerTo(previousPlayerId, onTurnPlayerId, betAmount) {
         this.scene.gamePlayers.players.forEach(player => {
             if(!player.isPlaying())
                 return;
@@ -212,8 +216,6 @@ export default class BoardLieng extends BoardCardBetTurn {
         let onTurnPlayerId = utils.getValue(data, app.keywords.TURN_PLAYER_ID);
         let previousPlayerId = utils.getValue(data, app.keywords.PLAYER_ID);
         
-        this._isSkiped = true
-        
         this.scene.gamePlayers.players.forEach(player => {
             if(!player.isPlaying())
                 return;
@@ -223,7 +225,7 @@ export default class BoardLieng extends BoardCardBetTurn {
             } else if(previousPlayerId == player.id){
                 player.stopTimeLine()
                 player.renderer.downAllCards()
-                player.renderer.showAction(app.res.string('game_result_lieng_upbo'));
+                player.renderer.showAction('', false);
             }
         });
     }
@@ -233,15 +235,10 @@ export default class BoardLieng extends BoardCardBetTurn {
         this.winRank = 0;
         this.setTotalBetAmount(0);
         this._duration = 0;
-        this._isSkiped = false
         
         this.renderer.setVisibleTotalAmountComponent(false)
         this.scene.isShowBetPopup = false
         this.scene.isShowCuocBienPopup = false
-    }
-    
-    _setSkipState() {
-        this._isSkiped = true  
     }
     
     _getGameResultInfos(playerIds = [], playerHandCards, data) {
@@ -273,7 +270,7 @@ export default class BoardLieng extends BoardCardBetTurn {
                     if (!resultText) resultText = app.res.string('game_thua');
                 }
                 
-                gameResultInfos[id] = LiengUtils.createPlayerHandCardInfo(playerHandCards[id], cardTypes[i], this._isSkiped);
+                gameResultInfos[id] = LiengUtils.createPlayerHandCardInfo(playerHandCards[id], cardTypes[i]);
                 resultTexts[id] = resultText;
             })
 

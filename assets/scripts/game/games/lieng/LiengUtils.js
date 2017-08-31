@@ -34,7 +34,7 @@ export default class LiengUtils {
         let str = '';
         switch(cardType) {
             case app.const.game.LIENG_LIENG_TYPE_UP_BO: {
-                str = app.res.string('game_result_lieng_upbo')
+                // str = app.res.string('game_result_lieng_upbo')
                 break;
             }
             case app.const.game.LIENG_LIENG_TYPE_DIEM: {
@@ -42,10 +42,10 @@ export default class LiengUtils {
                 switch (point) {
                     case 10:
                         point = 0;
-                        str = app.res.string('game_result_bacay_point', {point});
+                        str = app.res.string('game_result_lieng_point', {point});
                         break;
                     default:
-                        str = app.res.string('game_result_bacay_point', {point});
+                        str = app.res.string('game_result_lieng_point', {point});
                         break;
                 }
                 break;

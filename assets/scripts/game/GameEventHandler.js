@@ -153,10 +153,13 @@ export default class GameEventHandler {
     }
     
     _onPlayerTo(data) {
+        console.warn('daa', data)
+        
         let onTurnPlayerId = utils.getValue(data, app.keywords.TURN_PLAYER_ID);
         let previousPlayerId = utils.getValue(data, app.keywords.PLAYER_ID);
         let betAmount = utils.getValue(data, app.keywords.VARIABLE_MIN_BET);
-        this.scene.emit(Events.ON_PLAYER_TO, previousPlayerId, onTurnPlayerId, betAmount);
+        let isLastBet = utils.getValue(data, app.keywords.GAME_LAST_BET);
+        this.scene.emit(Events.ON_PLAYER_TO, previousPlayerId, onTurnPlayerId, betAmount, isLastBet);
     }
     
     _handlePlayerBaoXam(data) {

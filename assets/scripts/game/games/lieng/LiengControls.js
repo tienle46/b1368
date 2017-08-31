@@ -18,6 +18,7 @@ export default class LiengControls extends GameControls {
             toBtnNode: cc.Node,
             theoBtnNode: cc.Node,
             theoBtn: cc.Button,
+            toBtn: cc.Button,
             upboBtnNode: cc.Node,
             guide: cc.Node
         });
@@ -50,6 +51,7 @@ export default class LiengControls extends GameControls {
         this.scene.on(Events.ON_GAME_STATE_ENDING, this._onGameEnding, this);
         this.scene.on(Events.ON_PLAYER_TO, this._onPlayerTo, this);
         this.scene.on(Events.HANDLE_SKIP_TURN, this._handleSkipTurn, this);
+        this.scene.on(Events.ON_LAST_PLAYER_TO, this._onLastPlayerTo, this);
     }
     
     hideAllControls() {
@@ -91,7 +93,6 @@ export default class LiengControls extends GameControls {
     }
     
     onClickUpBoBtn() {
-        this.scene.emit('on.user.skips.turn.set.board.state')
         app.service.send({cmd: app.commands.PLAYER_SKIP_TURN, data: {}, room: this.scene.room});
     }
     
@@ -102,8 +103,11 @@ export default class LiengControls extends GameControls {
         this._isGuideShowed ? this._hideGuide() : this._showGuide();    
     }
     
-    _onPlayerTo(previousPlayerId, onTurnPlayerId, betAmount) {
+    _onPlayerTo(previousPlayerId, onTurnPlayerId, betAmount, isLastBet) {
         this._skipTurn(onTurnPlayerId)
+        if(this.scene.gamePlayers.isItMe(onTurnPlayerId)) {
+            this.toBtn.interactable = !isLastBet
+        }
     }
     
     _handleSkipTurn(data) {
@@ -153,7 +157,9 @@ export default class LiengControls extends GameControls {
         let onTurnPlayerId = utils.getValue(data, app.keywords.TURN_PLAYER_ID)
         if(gamePhase === undefined || onTurnPlayerId === undefined)
             return;
-
+        
+        this.toBtn.interactable = true;
+        
         if(gamePhase == app.const.game.state.BET_TURNING && onTurnPlayerId && this.scene.gamePlayers.isItMe(onTurnPlayerId)) {
             this.showBetControls()
         } else {

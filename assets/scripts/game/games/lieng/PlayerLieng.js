@@ -14,6 +14,7 @@ export default class PlayerLieng extends PlayerCardBetTurn {
         this._pendingCuocBienRequests = null;
         
         this._timeDuration = 0
+        this._isAllIn = false
     }
 
     _addGlobalListener() {
@@ -35,7 +36,13 @@ export default class PlayerLieng extends PlayerCardBetTurn {
     setBetAmount(betAmount = 0) {
         if (!utils.isNumber(betAmount)) betAmount = 0;
         this.betAmount = betAmount
-        this.renderer.setBalance(GameUtils.getUserBalance(this.user) - this.betAmount)
+        let currentMoney = GameUtils.getUserBalance(this.user) - this.betAmount
+        this.renderer.setBalance(currentMoney)
+        
+        this._isAllIn = currentMoney === 0
+        if(this._isAllIn) {
+            this.renderer.showAction('', true)
+        }
         
         this.renderer.showBetAmount(this.betAmount)
     }
@@ -45,14 +52,21 @@ export default class PlayerLieng extends PlayerCardBetTurn {
         let gamePhase = utils.getValue(data, app.keywords.BOARD_STATE_KEYWORD);
         
         if(gamePhase == app.const.game.state.BET_TURNING) {
+            console.warn('d', data)
+            
             let onTurnPlayerId = utils.getValue(data, app.keywords.TURN_PLAYER_ID);
             let duration = utils.getValue(data, app.keywords.TURN_BASE_PLAYER_TURN_DURATION);
             !this._timeDuration && (this._timeDuration = duration)
             let isFirstBet = data.isFirstBet || false
+            let isLastBet = data.isLastBet || false
+            
             if(isFirstBet) {
                 this.scene.emit(Events.ON_FIRST_PLAYER_TO, onTurnPlayerId, duration)
             }
-            console.warn('onTurnPlayerId', onTurnPlayerId == this.id, duration)
+            
+            if(isLastBet) {
+                onTurnPlayerId == this.id && this.scene.emit(Events.ON_LAST_PLAYER_TO)
+            }
             
             onTurnPlayerId == this.id && duration && this.startTimeLine(this._timeDuration)
         }
@@ -83,6 +97,7 @@ export default class PlayerLieng extends PlayerCardBetTurn {
     onGameReset(){
         super.onGameReset();
         this._timeDuration = 0
+        this._isAllIn = false
         
         this.renderer.betComponentAppearance(false);
         this.setBetAmount(0);
@@ -102,8 +117,8 @@ export default class PlayerLieng extends PlayerCardBetTurn {
         this.renderer.startPlusBalanceAnimation(balanceChanged, true);
         
         if(!isSkiped && this.isPlaying()) {
-            this.renderer.showAction(info)
-            this.setCards(cards, true)
+            this.renderer.showAction(info, this._isAllIn)
+            cards.length > 0 && this.setCards(cards, true)
         }
     }
 

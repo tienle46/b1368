@@ -2347,7 +2347,7 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": 541,
+      "x": 550,
       "y": 15
     },
     "_skewX": 0,
@@ -2572,7 +2572,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 310,
-      "y": 222
+      "y": 229
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -2796,7 +2796,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": -310,
-      "y": 222
+      "y": 229
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -3019,7 +3019,7 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": -541,
+      "x": -552,
       "y": 15
     },
     "_skewX": 0,
@@ -3463,7 +3463,7 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": -541,
+      "x": -552,
       "y": -238
     },
     "_skewX": 0,
@@ -4394,7 +4394,7 @@
       }
     ],
     "_N$interactable": true,
-    "_N$enableAutoGrayEffect": false,
+    "_N$enableAutoGrayEffect": true,
     "_N$normalColor": {
       "__type__": "cc.Color",
       "r": 214,
@@ -4926,6 +4926,9 @@
     },
     "theoBtn": {
       "__id__": 140
+    },
+    "toBtn": {
+      "__id__": 135
     },
     "upboBtnNode": {
       "__id__": 143

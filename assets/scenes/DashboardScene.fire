@@ -623,10 +623,10 @@
     "direction": 0,
     "cellSize": {
       "__type__": "cc.Size",
-      "width": 10,
-      "height": 10
+      "width": 25,
+      "height": 25
     },
-    "spacing": 10
+    "spacing": 20
   },
   {
     "__type__": "cc.PageView",

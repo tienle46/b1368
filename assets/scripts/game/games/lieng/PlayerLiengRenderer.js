@@ -24,7 +24,10 @@ export default class PlayerLiengRenderer extends PlayerCardRenderer {
             masterIcon: cc.Node,
             defaultCardAnchorBottomRight: cc.Node,
             defaultCardAnchorBottomLeft: cc.Node,
-            toIcon: cc.Node
+            toIcon: cc.Node,
+            actionSprite: cc.Sprite,
+            liengSkipSprite: cc.SpriteFrame,
+            liengAllInSprite: cc.SpriteFrame
         });
         
         /**
@@ -184,9 +187,31 @@ export default class PlayerLiengRenderer extends PlayerCardRenderer {
 
         cardList.setAlign(CardList.ALIGN_CENTER);
     }
-
-    showAction(text = ''){
-
+    
+    /**
+     * 
+     * 
+     * @param {string} [text=''] 
+     * @param {int} type 1: up bo, 2: tat tay
+     * @memberof PlayerLiengRenderer
+     */
+    showAction(text = '', isAllIn){
+        let player = this.data.actor
+        
+        this.actionSprite.spriteFrame = null
+        player.isItMe() && this.actionSprite.node.setScale(1, 1)
+        
+        console.warn('text', text)
+        if(isAllIn !== undefined) {
+            player.isItMe() && this.actionSprite.node.setScale(1.94, 1.94)
+            if(isAllIn) {
+                this.actionSprite.spriteFrame = this.liengAllInSprite
+            } else {
+                this.actionSprite.spriteFrame = this.liengSkipSprite
+            }
+            return
+        }
+        
         this.actionLabel.string = text;
 
         if(!utils.isEmpty(text)){
@@ -216,7 +241,9 @@ export default class PlayerLiengRenderer extends PlayerCardRenderer {
 
     _reset(){
         super._reset();
-
+        this.actionSprite.node.setScale(1, 1)
+        this.actionSprite.spriteFrame = null
+        
         utils.setVisible(this.actionActor, false);
     }
     
