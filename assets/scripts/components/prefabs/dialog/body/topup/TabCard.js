@@ -168,6 +168,7 @@ class TabCard extends PopupTabBody {
                 app.system.error(app.res.string('error_card_code_is_invalid'));
                 return;
             }
+            
             let sendObject = {
                 'cmd': app.commands.USER_SEND_CARD_CHARGE,
                 data: {
@@ -176,8 +177,9 @@ class TabCard extends PopupTabBody {
                     [app.keywords.CARD_SERIAL]: serialNumber
                 }
             };
-
+            
             app.service.send(sendObject); // send request and get `smsg` (system_message) response from server
+            this.node.parent.parent.parent.parent.destroy()
         }
     }
     

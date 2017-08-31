@@ -20,6 +20,7 @@ export default class ListTableScene extends BaseScene {
             jarAnchorNode: cc.Node,
             scrollView: cc.ScrollView,
             arrowNode: cc.Node,
+            createRoomDialogPrefab: cc.Prefab,
             filter1stLabel: cc.Label,
             filter2ndLabel: cc.Label,
             filter3rdLabel: cc.Label,
@@ -96,7 +97,19 @@ export default class ListTableScene extends BaseScene {
         super.onDestroy();
         this.enableMinbets = []
     }
-
+    
+    onCreateRoomBtnClick() {
+        let dialog = cc.instantiate(this.createRoomDialogPrefab)
+        // _createRoom
+        dialog.getComponent('CreateRoomDialog').initGrid(app.system.getCurrentSceneNode(), {
+            title: this.gameTitleLbl.string,
+            minBalanceMultiple: this.minBalanceMultiple,
+            minBets: this.enableMinbets,
+            okBtnCb: this._createRoom,
+            roomCapacity: app.const.game.maxPlayers[this.gameCode || 'default'],
+        }, this);
+    }
+    
     _addGlobalListener() {
         super._addGlobalListener();
         app.system.addListener(app.commands.GET_LIST_GAME_MINBET, this._onListGameMinBetResponse, this);
@@ -178,7 +191,7 @@ export default class ListTableScene extends BaseScene {
             app.system.confirm(
                 app.res.string('error_user_not_enough_gold_to_join_room', { minBalance }),
                 null,
-                this._onOpenTopUp.bind(this),
+                this._onOpenTopUp.bind(this)
             );
         } else {
             if (password) {
@@ -297,7 +310,7 @@ export default class ListTableScene extends BaseScene {
         });
     }
     
-    _bestSuitableRoom(minBalanceMultiple) {
+    _bestSuitableRoom() {
         let minMoney = app.context.getMeBalance() / this.minBalanceMultiple;
         let rooms = this.contentInScroll.children;
         
