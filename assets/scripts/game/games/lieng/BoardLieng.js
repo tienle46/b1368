@@ -46,6 +46,36 @@ export default class BoardLieng extends BoardCardBetTurn {
         this.renderer.setTotalValue(value);
     }
     
+    /**
+     * @extending 
+     * 
+     * @param {any} data 
+     * @param {any} isJustJoined 
+     * @memberof BoardLieng <- BoardCard
+     */
+    onBoardPlaying(data, isJustJoined) {
+        super.onBoardPlaying(data, isJustJoined)
+        if(isJustJoined) {
+            let playerIds = utils.getValue(data, Keywords.GAME_LIST_PLAYER, []);
+            let playingPlayerIds = this.scene.gamePlayers.filterPlayingPlayer(playerIds);
+            let onTurnPlayerId = utils.getValue(data, app.keywords.TURN_PLAYER_ID);
+            let duration = utils.getValue(data, app.keywords.TURN_BASE_PLAYER_TURN_DURATION);
+            
+            playerIds.forEach((playerId, index) => {
+                if((playingPlayerIds.indexOf(playerId) >= 0)) {
+                    let player = this.scene.gamePlayers.findPlayer(playerId);
+                    if(!player.isPlaying())
+                        return
+                    
+                    player.createFakeCards()
+                    player.renderer.betComponentAppearance(true)
+                    if(onTurnPlayerId == playerId)
+                        player.startTimeLine(duration)
+                }
+            });
+        }
+    }
+    
     // /**
     //  * @extending 
     //  * 
@@ -88,7 +118,7 @@ export default class BoardLieng extends BoardCardBetTurn {
     onGameStateChanged(boardState, data, isJustJoined) {
         super.onGameStateChanged(boardState, data, isJustJoined);
 
-        if(boardState == app.const.game.state.BET_TURNING && (!app.context.rejoiningGame || this.totalBetAmount == 0)) {
+        if(boardState == app.const.game.state.BET_TURNING && !isJustJoined) {
             this.scene.gamePlayers.players.forEach(player => player.playPlayerBet(this.minBet)) // prebet
         }
     }
@@ -100,7 +130,7 @@ export default class BoardLieng extends BoardCardBetTurn {
     
     
     onBoardEnding(data) {
-        console.warn('_onBoardEnding', data)
+        // console.warn('_onBoardEnding', data)
         
         let playerIds = utils.getValue(data, Keywords.GAME_LIST_PLAYER, []);
         let playingPlayerIds = this.scene.gamePlayers.filterPlayingPlayer(playerIds);
@@ -115,9 +145,9 @@ export default class BoardLieng extends BoardCardBetTurn {
         
         let _needDownAllCardsOnBoard = false
         
-        playerIds.filter(playerId => (playingPlayerIds.indexOf(playerId) >= 0)).forEach((playerId, index) => {
-            if(this.scene.gamePlayers.isItMe(playerId) && skips[index]) {
-                _needDownAllCardsOnBoard = true
+        playerIds.forEach((playerId, index) => {
+            if((playingPlayerIds.indexOf(playerId) >= 0) && this.scene.gamePlayers.isItMe(playerId) && skips[index] == true) {
+                _needDownAllCardsOnBoard = skips[index]
             }
         });
         
@@ -130,9 +160,11 @@ export default class BoardLieng extends BoardCardBetTurn {
                 cards: playerHandCards[playerId],
                 text: resultTexts[playerId]
             }
-            
+
             this.scene.emit(Events.SHOW_GAME_ENDING_INFO, playerId, model, _needDownAllCardsOnBoard || skips[index]);
         });
+        
+        this.scene.board.setTotalBetAmount(0);
     }
     
     /**

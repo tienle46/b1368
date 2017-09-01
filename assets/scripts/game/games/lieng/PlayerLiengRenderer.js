@@ -204,10 +204,8 @@ export default class PlayerLiengRenderer extends PlayerCardRenderer {
         let player = this.data.actor
         
         this.actionSprite.spriteFrame = null
-        player.isItMe() && this.actionSprite.node.setScale(1, 1)
         
-        if(ial !== undefined) {
-            player.isItMe() && this.actionSprite.node.setScale(1.94, 1.94)
+        if(ial !== undefined && !player.isItMe()) {
             if(ial) {
                 this.actionSprite.spriteFrame = this.liengAllInSprite
             } else {
@@ -245,7 +243,6 @@ export default class PlayerLiengRenderer extends PlayerCardRenderer {
 
     _reset(){
         super._reset();
-        this.actionSprite.node.setScale(1, 1)
         this.actionSprite.spriteFrame = null
         
         utils.setVisible(this.actionActor, false);

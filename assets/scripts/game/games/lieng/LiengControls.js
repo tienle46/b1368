@@ -66,7 +66,7 @@ export default class LiengControls extends GameControls {
         this.hideAllControls();
 
         // this.scene.board.acceptedAmount() == 0 => 1st Tố -> disable Theo
-        this.theoBtn.interactable = this.scene.board.acceptedAmount() !== 0;
+        // this.theoBtn.interactable = this.scene.board.acceptedAmount() !== 0;
         
         this.setVisible(this.toBtnNode, true)
         this.setVisible(this.theoBtnNode, true)
