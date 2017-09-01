@@ -52,8 +52,6 @@ export default class PlayerLieng extends PlayerCardBetTurn {
         let gamePhase = utils.getValue(data, app.keywords.BOARD_STATE_KEYWORD);
         
         if(gamePhase == app.const.game.state.BET_TURNING) {
-            console.warn('d', data)
-            
             let onTurnPlayerId = utils.getValue(data, app.keywords.TURN_PLAYER_ID);
             let duration = utils.getValue(data, app.keywords.TURN_BASE_PLAYER_TURN_DURATION);
             !this._timeDuration && (this._timeDuration = duration)

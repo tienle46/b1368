@@ -196,15 +196,19 @@ export default class PlayerLiengRenderer extends PlayerCardRenderer {
      * @memberof PlayerLiengRenderer
      */
     showAction(text = '', isAllIn){
+        let ial = isAllIn
+        
+        if(!utils.isEmpty(text) && ial !== undefined)
+            ial = undefined
+        
         let player = this.data.actor
         
         this.actionSprite.spriteFrame = null
         player.isItMe() && this.actionSprite.node.setScale(1, 1)
         
-        console.warn('text', text)
-        if(isAllIn !== undefined) {
+        if(ial !== undefined) {
             player.isItMe() && this.actionSprite.node.setScale(1.94, 1.94)
-            if(isAllIn) {
+            if(ial) {
                 this.actionSprite.spriteFrame = this.liengAllInSprite
             } else {
                 this.actionSprite.spriteFrame = this.liengSkipSprite

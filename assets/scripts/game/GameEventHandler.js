@@ -153,8 +153,6 @@ export default class GameEventHandler {
     }
     
     _onPlayerTo(data) {
-        console.warn('daa', data)
-        
         let onTurnPlayerId = utils.getValue(data, app.keywords.TURN_PLAYER_ID);
         let previousPlayerId = utils.getValue(data, app.keywords.PLAYER_ID);
         let betAmount = utils.getValue(data, app.keywords.VARIABLE_MIN_BET);
