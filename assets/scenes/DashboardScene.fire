@@ -586,7 +586,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 100,
-      "height": 27
+      "height": 52
     },
     "_rotationX": 0,
     "_rotationY": 0,
@@ -618,13 +618,13 @@
     },
     "_indicators": [],
     "spriteFrame": {
-      "__uuid__": "c9fa51ff-3f01-4601-8f80-325d1b11dab7"
+      "__uuid__": "36a82a4a-4a52-4f79-9c91-4ed42408d20f"
     },
     "direction": 0,
     "cellSize": {
       "__type__": "cc.Size",
-      "width": 25,
-      "height": 25
+      "width": 50,
+      "height": 50
     },
     "spacing": 20
   },

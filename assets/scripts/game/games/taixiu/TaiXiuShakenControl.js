@@ -120,7 +120,7 @@ export default class TaiXiuShakenControl extends ShakenControl {
             // let posX = randomPosInRange[i].x * (acceptedArea.width/2 - size.width) / 2
             if(i != 0) 
                 // posX <<= 1 
-                posX = randomPosInRange[i].x * (acceptedArea.width - size.width) / 2 + randomPosInRange[i].x * app._.random(1/2, 1)
+                posX = randomPosInRange[i].x * (acceptedArea.width - size.width) / 2 + randomPosInRange[i].x * app._.random(1/2, 3/4)
             
             let posY = app._.random(app._.random(0, 1 / 2), randomPosInRange[i].y * (acceptedArea.height - size.height) / 2)
            
