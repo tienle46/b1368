@@ -459,7 +459,7 @@ export default class CardList extends ActionComponent {
     }
 
     onCardsChanged(reverse = false) {
-        // this.stopAllCardActions();
+        this.stopAllCardActions();
         this.updateFinalPosition();
         reverse && this.cards.reverse();
         this._adjustCardsPosition();
@@ -741,6 +741,7 @@ export default class CardList extends ActionComponent {
      * @param dest
      */
     transferTo(dest = null, cards = [], cb = null, reveal = dest && dest.reveal, reverse = false) {
+        
         this.cleanSelectedCard();
 
         // Xoá model object ngay lập tức, sau đó thực hiện animation
@@ -845,7 +846,7 @@ export default class CardList extends ActionComponent {
     }
 
     finishAllCardActions(cardList = this, ...args) {
-        // cardList.node && cardList.node.stopAllActions();
+        cardList.node && cardList.node.stopAllActions();
         cardList.cards.forEach(card => card.finishCardAction());
         if (cardList.__endActionCb) {
             let endAction = cardList.__endActionCb;
