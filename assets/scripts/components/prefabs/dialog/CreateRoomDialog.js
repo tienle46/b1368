@@ -2,6 +2,7 @@ import app from 'app';
 import DialogActor from 'DialogActor';
 import { destroy } from 'CCUtils';
 import GameUtils from 'GameUtils';
+import Utils from 'GeneralUtils';
 
 class CreateRoomDialog extends DialogActor {
     constructor() {
@@ -10,6 +11,7 @@ class CreateRoomDialog extends DialogActor {
         this.properties = this.assignProperties({
             itemNode: cc.Node,
             itemLabel: cc.Label,
+            neededLabel: cc.Label,
             itemSprite: cc.Sprite,
             container: cc.Node,
             transparentBg: cc.Node,
@@ -35,7 +37,9 @@ class CreateRoomDialog extends DialogActor {
     
     initGrid(parent, {title = "", minBalanceMultiple = null, minBets = [], okBtnCb = null, roomCapacity = null} = {}, context) {            
         let minMoney =  app.context.getMeBalance()/minBalanceMultiple
+        
         this.title.string = title
+        this._minBalanceMultiple = minBalanceMultiple
         
         this.itemLabel.node.tag = CreateRoomDialog.TAG_LABEL
         this.itemSprite.node.tag = CreateRoomDialog.TAG_BACKGROUND
@@ -81,6 +85,8 @@ class CreateRoomDialog extends DialogActor {
         this._setState(this._previousToggle, false)
         this._setState(this._currentToggle, true)
         this._amount = e.node._bet
+        
+        this.neededLabel.string = Utils.numberFormat(this._amount * this._minBalanceMultiple)
     }
     
     okBtnClick() {

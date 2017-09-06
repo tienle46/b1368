@@ -623,8 +623,8 @@
     "direction": 0,
     "cellSize": {
       "__type__": "cc.Size",
-      "width": 50,
-      "height": 50
+      "width": 40,
+      "height": 40
     },
     "spacing": 20
   },
@@ -2395,7 +2395,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 222.26,
+      "width": 225.26,
       "height": 40
     },
     "_rotationX": 0,
@@ -8394,7 +8394,7 @@
       }
     ],
     "_tag": -1,
-    "_active": true,
+    "_active": false,
     "_components": [
       {
         "__id__": 247
@@ -8501,7 +8501,7 @@
     },
     "_enabled": true,
     "_useOriginalSize": false,
-    "_actualFontSize": 40,
+    "_actualFontSize": 20,
     "_fontSize": 20,
     "_lineHeight": 40,
     "_enableWrapText": false,

@@ -905,7 +905,7 @@
     "_cascadeOpacityEnabled": true,
     "_anchorPoint": {
       "__type__": "cc.Vec2",
-      "x": 0.5,
+      "x": 0,
       "y": 0.5
     },
     "_contentSize": {
@@ -919,7 +919,7 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": -76.325,
+      "x": -113.855,
       "y": -26.5
     },
     "_skewX": 0,
@@ -2690,6 +2690,9 @@
     },
     "itemLabel": {
       "__id__": 44
+    },
+    "neededLabel": {
+      "__id__": 25
     },
     "itemSprite": {
       "__id__": 38
