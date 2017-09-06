@@ -182,7 +182,7 @@ class Linking {
     static _handleOpenTopUpDialogAction(actionCode) {
         let defaultTab = null;
         
-         if(app.config.otp) {
+         if(app.config.otp && app.config.otp_config.topup.enabled) {
             app.system.info((app.config.otp_config && app.config.otp_config.topup && app.config.otp_config.topup.msg) || app.res.string('otp_message', {supportHotline: app.config.supportHotline}));
             return;
         }
@@ -220,7 +220,7 @@ class Linking {
     static _handleOpenExchangeDialogAction(actionCode) {
         let defaultTab = null;
         
-        if(app.config.otp) {
+        if(app.config.otp && app.config.otp_config.exchange.enabled) {
             app.system.info((app.config.otp_config && app.config.otp_config.exchange && app.config.otp_config.exchange.msg) || app.res.string('otp_message', {supportHotline: app.config.supportHotline}));
             return;
         }
