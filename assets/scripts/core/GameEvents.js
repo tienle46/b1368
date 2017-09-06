@@ -176,3 +176,5 @@ Events.ON_LIST_HU_RESPONSE = "on.ListHuResponse";
 Events.ON_LIST_HU_UPDATED = "on.ListHuUpdated";
 Events.ON_SUBMIT_PURCHASE_IOS = "on.submitPurchaseIOS";
 Events.ON_SUBMIT_PURCHASE_ANDROID = "on.submitPurchaseAndroid";
+
+Events.ON_NEW_NOTIFICATION = "on.new.notification";

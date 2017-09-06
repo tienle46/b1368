@@ -1,6 +1,5 @@
 import app from 'app'
 import BaseScene from 'BaseScene'
-import RubUtils from 'RubUtils'
 import NodeRub from 'NodeRub'
 import ArrayUtils from 'ArrayUtils'
 
@@ -36,7 +35,23 @@ export default class DashboardScene extends BaseScene {
         super.onDestroy();
         this._isNewBie = false;
     }
-
+    
+    testClick() {        
+        function getRandomIntInclusive(min, max) {
+            min = Math.ceil(min);
+            max = Math.floor(max);
+            return Math.floor(Math.random() * (max - min + 1)) + min; //The maximum is inclusive and the minimum is inclusive 
+        }
+        let random = getRandomIntInclusive(1, 3);
+        
+        app.service.send({
+            cmd: app.commands.HIGH_LIGHT_MESSAGE,
+            data: {
+                msg: 'new notification from dashboard ' + random,
+            }
+        });
+    }
+    
     start() {
         super.start();
         !app.context.enableMinbets && this._getListGameMinBet();

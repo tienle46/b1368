@@ -29,8 +29,6 @@ class GameSystem {
         this.enablePendingGameEvent = false;
         this.toast = null;
         this.kickMessage = null;
-        // high light message
-        (!this.hlm) && (this.hlm = new HighLightMessageRub());
         this.sceneChanging = false;
         this._currentScene = null;
         this.isInactive = false;
@@ -43,6 +41,9 @@ class GameSystem {
         this.initEventListener();
         if(!app.visibilityManager) 
             app.visibilityManager = new VisibilityManager(app.config.features);
+
+        // high light message
+        (!this.hlm) && (this.hlm = new HighLightMessageRub());
         
         this._sentQuickAuthen = false;
     }
@@ -101,6 +102,10 @@ class GameSystem {
                         let action2 = cc.moveTo(.12, cc.v2(0, 0));
                         container.runAction(cc.spawn(cc.callFunc(() => {
                             cc.game.removePersistRootNode(this.getCurrentSceneNode());
+                            
+                            if(this.notify) {
+                                this.notify.setStartTime()
+                            }
                         }), action2));                        
                     }
                 }
@@ -125,6 +130,8 @@ class GameSystem {
         
         this.addListener(app.commands.IOS_IN_APP_PURCHASE, this._onSubmitPurchase, this);
         this.addListener(app.commands.ANDROID_IN_APP_PURCHASE, this._onSubmitPurchase, this);
+        
+        this.addListener(app.commands.NOTIFICATION_MESSAGE, this._onNotification, this);
     }
     
     _onSubmitPurchase(data) {
@@ -461,6 +468,11 @@ class GameSystem {
                 this.hideLoader();
             }
         }
+    }
+    
+    // {msg, duration}
+    _onNotification(data) {
+        app.system.emit(Events.ON_NEW_NOTIFICATION, data.msg, data.duration)
     }
 
     _onHighLightMessage(resultEvent) {

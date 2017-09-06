@@ -1,6 +1,7 @@
 import app from 'app';
 import Component from 'Component';
 import AudioManager from 'AudioManager';
+import NotificationMessage from 'NotificationMessage';
 
 class PreloadScene extends Component {
     constructor() {
@@ -50,6 +51,7 @@ class PreloadScene extends Component {
         let resources = [
             { dir: 'toast/Toast', name: 'toast' },
             { dir: 'dashboard/dialog/prefabs/verification_dialog', name: 'verificationDialog' },
+            { dir: 'components/Notification', name: 'notification' },
             { dir: 'dashboard/grid/scrollview', name: 'scrollview' },
             { dir: 'jar/jarPrefab', name: 'jarPrefab' },
             { dir: 'jar/jar_explosion', name: 'jarExplosive' },
@@ -88,17 +90,7 @@ class PreloadScene extends Component {
         });
         
         app.system.audioManager = new AudioManager();
-
-        // app.async.parallel([
-        //     () => (callback) => {
-        //         cc.loader.loadRes("", (err, prefab) => {
-        //             app.res.spriteFrame[res.name] = prefab;
-        //             prefab ? callback(null, true) : callback();
-        //         });
-        //     }
-        // ], (error, results) => {
-        //
-        // })
+        app.system.notify = new NotificationMessage();
     }
 
     onLoadResourceDone() {

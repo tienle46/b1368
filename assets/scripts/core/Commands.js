@@ -298,4 +298,6 @@ Commands.REPLACE_FAKE_USER = "replaceFakeUser";
 
 Commands.CANCEL_REJOIN = "cancelRejoin";
 
+Commands.NOTIFICATION_MESSAGE = "notify";
+
 module.exports = Commands;

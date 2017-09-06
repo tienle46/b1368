@@ -288,4 +288,15 @@ export default class BaseScene extends Actor {
         // app.system.showLoader(app.res.string('re_sending_item_iap'), 60);
         app.service.send(sendObj);
     }
+    
+    update(dt) {
+        this.updateTimer += dt;
+        if (this.updateTimer < this.updateInterval) {
+            return; // we don't need to do the math every frame
+        }
+        
+        if(app.system.notify && !app.system.notify.isEmptyStack()) {
+            app.system.notify.calling()
+        }
+    }
 }

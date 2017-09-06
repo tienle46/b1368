@@ -2395,7 +2395,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 225.26,
+      "width": 222.26,
       "height": 40
     },
     "_rotationX": 0,
@@ -8394,7 +8394,7 @@
       }
     ],
     "_tag": -1,
-    "_active": false,
+    "_active": true,
     "_components": [
       {
         "__id__": 247
