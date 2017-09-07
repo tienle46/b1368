@@ -48,6 +48,7 @@ class CreateRoomDialog extends DialogActor {
             this.itemLabel.string = GameUtils.formatBalanceShort(amount)
             if(amount > minMoney) {
                 this.itemSprite.spriteFrame = this.inactiveSprite
+                this.itemLabel.node.color = CreateRoomDialog.COLOR_GRAY
             } else {
                 this.itemLabel.node.color = app.const.COLOR_WHITE
             }
