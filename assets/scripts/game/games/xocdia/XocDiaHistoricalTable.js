@@ -49,7 +49,6 @@ class XocDiaHistoricalTable extends HistoricalTable {
      */
     modifyItem(type) {
         // 0: white, 1: red
-        // let colors = ['blueTheme/ingame/xocdia/trang', 'blueTheme/ingame/xocdia/do'];
         
         let cell = cc.instantiate(this.childItem);
         cell.active = true;

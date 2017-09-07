@@ -78,17 +78,6 @@ export default class LoaderRub {
         // rotate cricle node
         circleNode.runAction(cc.repeatForever(cc.rotateBy(1.0, 360)));
 
-        // // cricle -> light
-        // let lightNode = new cc.Node();
-        // lightNode.name = 'light';
-        // lightNode.setPosition(0, 54.07);
-        // lightNode.setContentSize(cc.size(43, 36));
-
-        // circleNode.addChild(lightNode);
-
-        // let lightSprite = lightNode.addComponent(cc.Sprite);
-        // RubUtils.loadSpriteFrame(lightSprite, 'textures/light-indicator', lightNode.getContentSize());
-
         // loader -> spade Node
         let spadeNode = new cc.Node();
         spadeNode.name = 'spade';

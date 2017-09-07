@@ -1750,7 +1750,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "30cc6b5b-38e7-48db-944c-7fa69f530bd6"
+      "__uuid__": "51d3c4b5-7e51-4fe4-9976-18a01cde9570"
     },
     "_type": 0,
     "_sizeMode": 0,
@@ -1765,7 +1765,9 @@
     "_isTrimmedMode": true,
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
-    "_atlas": null
+    "_atlas": {
+      "__uuid__": "91ca6178-1c0f-4ca0-bdf3-9011ec0e806b"
+    }
   },
   {
     "__type__": "cc.Widget",
@@ -4344,7 +4346,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "d66eb822-4612-45f3-9a12-2c05a263c477"
+      "__uuid__": "00be5254-8acf-4d14-848e-ee29f3593776"
     },
     "_type": 1,
     "_sizeMode": 0,
@@ -4359,7 +4361,9 @@
     "_isTrimmedMode": true,
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
-    "_atlas": null
+    "_atlas": {
+      "__uuid__": "10ca67ea-2a3c-4512-b8a8-cfd37f9d8bbe"
+    }
   },
   {
     "__type__": "cc.Button",
@@ -4473,8 +4477,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 181,
-      "height": 83
+      "width": 183,
+      "height": 85
     },
     "_rotationX": 0,
     "_rotationY": 0,
@@ -4501,7 +4505,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "e865f9dc-8bf1-4033-9275-f527b0a0df83"
+      "__uuid__": "a803da36-8d1d-4eaa-84dc-d866d24266d9"
     },
     "_type": 0,
     "_sizeMode": 1,
@@ -4516,7 +4520,9 @@
     "_isTrimmedMode": true,
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
-    "_atlas": null
+    "_atlas": {
+      "__uuid__": "10ca67ea-2a3c-4512-b8a8-cfd37f9d8bbe"
+    }
   },
   {
     "__type__": "cc.Button",
@@ -4630,8 +4636,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 183,
-      "height": 83
+      "width": 185,
+      "height": 85
     },
     "_rotationX": 0,
     "_rotationY": 0,
@@ -4658,7 +4664,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "2b1ccbc6-d10b-43f7-9744-37abd3ec7812"
+      "__uuid__": "6d8531b9-8c22-449e-817d-c7b082af1187"
     },
     "_type": 0,
     "_sizeMode": 1,
@@ -4673,7 +4679,9 @@
     "_isTrimmedMode": true,
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
-    "_atlas": null
+    "_atlas": {
+      "__uuid__": "10ca67ea-2a3c-4512-b8a8-cfd37f9d8bbe"
+    }
   },
   {
     "__type__": "cc.Button",
@@ -4758,7 +4766,7 @@
     },
     "_children": [],
     "_tag": -1,
-    "_active": true,
+    "_active": false,
     "_components": [
       {
         "__id__": 149
@@ -4788,7 +4796,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 70,
-      "height": 66
+      "height": 68
     },
     "_rotationX": 0,
     "_rotationY": 0,
@@ -4815,7 +4823,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "a10e5297-f330-4517-a6b7-55ef634288cc"
+      "__uuid__": "8e2494fd-64cc-4287-84fb-427172c64792"
     },
     "_type": 0,
     "_sizeMode": 1,
@@ -4830,7 +4838,9 @@
     "_isTrimmedMode": true,
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
-    "_atlas": null
+    "_atlas": {
+      "__uuid__": "cd819e6a-43e5-4b91-aa7b-ca6af717685f"
+    }
   },
   {
     "__type__": "cc.Button",
@@ -4973,8 +4983,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 360,
-      "height": 446
+      "width": 362,
+      "height": 448
     },
     "_rotationX": 0,
     "_rotationY": 0,
@@ -5138,10 +5148,10 @@
     "isAlignOnce": true,
     "_target": null,
     "_alignFlags": 12,
-    "_left": -370,
+    "_left": -371,
     "_right": 0,
     "_top": 0,
-    "_bottom": 5,
+    "_bottom": 4,
     "_verticalCenter": 0,
     "_horizontalCenter": 0,
     "_isAbsLeft": true,
@@ -5162,7 +5172,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "8f6513c0-4275-41f7-805d-1bb7f7ecb679"
+      "__uuid__": "8ec39547-66b3-4b79-a4b9-3589e379476f"
     },
     "_type": 0,
     "_sizeMode": 1,
@@ -5177,7 +5187,9 @@
     "_isTrimmedMode": true,
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
-    "_atlas": null
+    "_atlas": {
+      "__uuid__": "cd819e6a-43e5-4b91-aa7b-ca6af717685f"
+    }
   },
   {
     "__type__": "cc.PrefabInfo",

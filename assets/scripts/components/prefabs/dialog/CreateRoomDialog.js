@@ -48,21 +48,20 @@ class CreateRoomDialog extends DialogActor {
             this.itemLabel.string = GameUtils.formatBalanceShort(amount)
             if(amount > minMoney) {
                 this.itemSprite.spriteFrame = this.inactiveSprite
-                this.itemLabel.node.color = CreateRoomDialog.COLOR_GRAY
             } else {
                 this.itemLabel.node.color = app.const.COLOR_WHITE
             }
             
             let item = cc.instantiate(this.itemNode)
-            if(amount > minMoney) {
-                item.getComponent(cc.Toggle).interactable = false
-            }
             let toggle = item.getComponent(cc.Toggle)
+            if(amount > minMoney) {
+                toggle.interactable = false
+            }
             toggle.isChecked = index == 0
             item.active = true
             item._bet = amount
             
-            if(toggle.isChecked) 
+            if(toggle.isChecked && toggle.interactable) 
                 this.onItemClick(toggle)
           
             this.container.addChild(item)

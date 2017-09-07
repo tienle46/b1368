@@ -98,9 +98,6 @@ export default class TaiXiuShakenControl extends ShakenControl {
      * @memberof TaiXiuShakenControl
      */
     placedOnDish(dices = []) {
-        // 0: white, 1: red
-        // let colors = ['blueTheme/ingame/xocdia/trang', 'blueTheme/ingame/xocdia/do'];
-
         /**
          *       I([-1, 1], 1)
          *              
