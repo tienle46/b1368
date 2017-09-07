@@ -109,14 +109,14 @@ class CreateRoomDialog extends DialogActor {
         if(!toggleNode)
             return
         
-        let toggleBackground = toggleNode.getChildByTag('BG')
+        let toggleBackground = toggleNode.getChildByTag(CreateRoomDialog.TAG_BACKGROUND )
         if(toggleBackground) {
             let sprite = toggleNode.getComponent(cc.Sprite)
             if(sprite) {
                 sprite.spriteFrame = active ?  this.normalSprite: this.inactiveSprite
             }
         }
-        let toggleLabel = toggleNode.getChildByTag('LBL')
+        let toggleLabel = toggleNode.getChildByTag(CreateRoomDialog.TAG_LABEL)
         
         if(toggleLabel) {
             toggleLabel.color = active ? CreateRoomDialog.COLOR_YELLOW : app.const.COLOR_WHITE
@@ -127,7 +127,7 @@ class CreateRoomDialog extends DialogActor {
 }
 CreateRoomDialog.COLOR_GRAY = new cc.Color(50, 63, 87)
 CreateRoomDialog.COLOR_YELLOW = new cc.Color(245, 208, 56)
-CreateRoomDialog.TAG_BACKGROUND = 'BG'
-CreateRoomDialog.TAG_LABEL = 'LBL'
+CreateRoomDialog.TAG_BACKGROUND = 101
+CreateRoomDialog.TAG_LABEL = 102
 
 app.createComponent(CreateRoomDialog);

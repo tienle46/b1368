@@ -8,13 +8,14 @@ var app = require('app');
 app.config = {};
 app.config.currencyName = "Chip";
 // app.config.useSSL = false;
-app.config.host = "123.31.12.100";
+// app.config.host = "123.31.12.100";
+
 // app.config.host = "123.31.24.103";
 app.config.useSSL = cc.sys.isBrowser? false: false;
 // app.config.host = "1368casino.com";
-// app.config.host = "1368.company";
+app.config.host = "1368.company";
 app.config.port = app.config.useSSL ? 443 : 8921;
-app.config.version = 0x00010003;
+app.config.version = 0x00010008;
 app.config.ALPHA_TEST = false;
 app.config.zone = "XGame";
 app.config.debug = true;
@@ -44,7 +45,7 @@ app.config.fbScope = 'public_profile,email,user_friends';
 
 app.config.fanpage = `http://m.me/songbaihoanggia`;
 app.config.website = `http://bai1368.com`;
-app.config.supportHotline = '123456';
+app.config.supportHotline = '0974851368';
 app.config.otp = false;
 app.config.otp_config = {
     exchange: {
@@ -89,8 +90,8 @@ app.config.supportedGames = [
     app.const.gameCode.TLMNDL_SOLO,
     app.const.gameCode.XAM_SOLO,
     app.const.gameCode.TAI_XIU,
-    app.const.gameCode.BAU_CUA,
-    app.const.gameCode.LIENG
+    app.const.gameCode.BAU_CUA
+    // app.const.gameCode.LIENG
 ];
 
 app.config.soloGames = [
@@ -171,8 +172,12 @@ app.config.parseConfigData = function(configData = {}) {
     app.config.website = configData.website || app.config.website;
     app.config.shareFBConfig = configData.shareFBConfig || app.config.shareFBConfig;
     app.config.verifyAccountSyntax = configData.verifyAccountSyntax || app.config.verifyAccountSyntax;
-    app.config.opt = configData.opt || app.config.opt;
-    app.config.opt_config = configData.opt_config || app.config.opt_config;
+    
+    //Default otp false, only apply otp config for Android only
+    if (app.env.isAndroid()) {
+        configData.hasOwnProperty('otp') && (app.config.otp = configData.otp);
+        app.config.otp_config = configData.otp_config || app.config.otp_config;    
+    }
     
     if(!app.visibilityManager) {
         app.visibilityManager = new VisibilityManager(app.config.features);
