@@ -7,7 +7,6 @@ import Utils from 'GeneralUtils';
 
 export default class Marker {
     constructor() {
-        cc.sys.localStorage = cc.sys.localStorage;
         this._RQ = '$[RQ]'; // $[namespace] for caching requested data
         
         this.caches = {};
@@ -172,6 +171,17 @@ export default class Marker {
      */
     isUpdatedData(key, newData) {
         return !this.isEqual(key, newData);
+    }
+    
+    removeItem(key) {
+        let k = this._validKey(key),
+        namespace = this._getNamespaceFromScope(k);   
+        
+        if((namespace ? this.caches[namespace] : this.caches).hasOwnProperty(k)) {
+            delete (namespace ? this.caches[namespace] : this.caches)
+            
+            cc.sys.localStorage.removeItem(k)
+        }
     }
     
     _setStateData(key, stateData) {
