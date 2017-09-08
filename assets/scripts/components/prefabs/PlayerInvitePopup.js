@@ -1,6 +1,6 @@
 import app from 'app';
 import Component from 'Component';
-import { isFunction, numberFormat } from 'GeneralUtils';
+import { numberFormat } from 'GeneralUtils';
 import { destroy } from 'CCUtils';
 
 class PlayerInvitePopup extends Component {
@@ -41,7 +41,7 @@ class PlayerInvitePopup extends Component {
     init(node, invoker, acceptListener, denyListener) {
         let {username, userCoin, avatarUrl, bet, roomCapacity, roomBalance, inviterVipLevel} = invoker;
         avatarUrl && app.context.loadUserAvatarByURL(avatarUrl, this.invokerSprite);
-        this.invokerNameLbl.string = username;
+        this.invokerNameLbl.string = username.length > 12 ? username.substr(0, 12) + '...': username;
         this.invokerGoldLbl.string = numberFormat(userCoin);
         this.invokerLevelLbl.string = inviterVipLevel;
         

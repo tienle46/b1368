@@ -220,16 +220,17 @@ export default class GameScene extends BaseScene {
     }
 
     _setGameMinBetInfo() {
-        let minBet = utils.getVariable(this.room, app.keywords.VARIABLE_MIN_BET, "");
-        this.tableMinBetLabel && (this.tableMinBetLabel.string = 'Cược ' + GameUtils.formatBalanceShort(minBet));
+        // let minBet = utils.getVariable(this.room, app.keywords.VARIABLE_MIN_BET, "");
+        // this.tableMinBetLabel && (this.tableMinBetLabel.string = 'Cược ' + GameUtils.formatBalanceShort(minBet));
+        let gameName = app.const.gameLabels[this.gameCode] || "";
+        this.tableMinBetLabel && (this.tableMinBetLabel.string = gameName);
     }
 
     _setTableNameLabel() {
-        let gameName = app.const.gameLabels[this.gameCode] || "";
-        let roomName = this.room.name.substring(3, 5);
         let tableName = this.room.name.substring(5, this.room.name.length) || "";
-
-        this.tableNameLabel.string = this.gameCode != app.const.gameCode.XOC_DIA ? app.res.string('game_table_name', { tableName, gameName }) : `Bàn ${tableName}`;
+        let gameBet = GameUtils.formatBalanceShort(utils.getVariable(this.room, app.keywords.VARIABLE_MIN_BET, ""));
+        
+        this.tableNameLabel.string = this.gameCode != app.const.gameCode.XOC_DIA ? app.res.string('game_table_name', { tableName, gameBet }) : `B${tableName} - ${gameBet}`;
     }
 
     onEnable() {
