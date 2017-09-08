@@ -17,6 +17,11 @@ app.config.host = "1368.company";
 app.config.port = app.config.useSSL ? 443 : 8921;
 app.config.version = 0x00010008;
 app.config.ALPHA_TEST = false;
+
+app.config.packageName = "";
+// app.config.buildType = "full";
+app.config.buildType = "store";
+
 app.config.zone = "XGame";
 app.config.debug = true;
 app.config.test = false;
@@ -36,8 +41,8 @@ app.config.USER_NAME_REGEX = /^[a-zA-Z0-9._]{6,15}$/;
 app.config.PASSWORD_REGEX = /^(?=.*[A-Za-z])(?=.*\d).{6,30}$/;
 app.config.CRYPTO_AES_KEY = 'hiephvdepzai123$#@^&^$';
 
-// app.config.fbAppId = 265548353914142;
-app.config.fbAppId = 1793374524209784; // <- app test
+app.config.fbAppId = 265548353914142;
+// app.config.fbAppId = 1793374524209784; // <- app test
 app.config.fbxfbml = true;
 // app.config.fbVersion = 'v2.8';
 app.config.fbVersion = 'v2.7'; // <- app test too
@@ -173,8 +178,8 @@ app.config.parseConfigData = function(configData = {}) {
     app.config.shareFBConfig = configData.shareFBConfig || app.config.shareFBConfig;
     app.config.verifyAccountSyntax = configData.verifyAccountSyntax || app.config.verifyAccountSyntax;
     
-    //Default otp false, only apply otp config for Android only
-    if (app.env.isAndroid()) {
+    // Default otp false, only apply otp config for Android only
+    if (app.env.isAndroid() && app.config.buildType === "store") {
         configData.hasOwnProperty('otp') && (app.config.otp = configData.otp);
         app.config.otp_config = configData.otp_config || app.config.otp_config;    
     }
