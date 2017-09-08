@@ -58,6 +58,8 @@ export default class LoginScene extends BaseScene {
             let userInfo = this.b64.encodeSafe(`${username}:${password}`);
             app.system.marker.setItem(app.const.USER_LOCAL_STORAGE, userInfo);
             // cc.sys.localStorage.setItem(app.const.USER_LOCAL_STORAGE, userInfo);
+        } else {
+            app.system.marker.setItem(app.const.USER_LOCAL_STORAGE);
         }
         this._loginToDashboard(username, password);
     }
@@ -74,8 +76,9 @@ export default class LoginScene extends BaseScene {
     _isSaved() {
         // let userInfo = cc.sys.localStorage.getItem(app.const.USER_LOCAL_STORAGE);
         let userInfo = app.system.marker.getItemData(app.const.USER_LOCAL_STORAGE, userInfo);
-        
-        return (userInfo && this.b64.decodeSafe(userInfo)) || null;
+        if (!userInfo)
+            return false
+        return this.b64.decodeSafe(userInfo);
     }
 
     _isChecked() {
