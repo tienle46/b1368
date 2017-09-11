@@ -36,21 +36,21 @@ export default class DashboardScene extends BaseScene {
         this._isNewBie = false;
     }
     
-    testClick() {        
-        function getRandomIntInclusive(min, max) {
-            min = Math.ceil(min);
-            max = Math.floor(max);
-            return Math.floor(Math.random() * (max - min + 1)) + min; //The maximum is inclusive and the minimum is inclusive 
-        }
-        let random = getRandomIntInclusive(1, 3);
+    // testClick() {        
+    //     function getRandomIntInclusive(min, max) {
+    //         min = Math.ceil(min);
+    //         max = Math.floor(max);
+    //         return Math.floor(Math.random() * (max - min + 1)) + min; //The maximum is inclusive and the minimum is inclusive 
+    //     }
+    //     let random = getRandomIntInclusive(1, 3);
         
-        app.service.send({
-            cmd: app.commands.HIGH_LIGHT_MESSAGE,
-            data: {
-                msg: 'new notification from dashboard ' + random,
-            }
-        });
-    }
+    //     app.service.send({
+    //         cmd: app.commands.HIGH_LIGHT_MESSAGE,
+    //         data: {
+    //             msg: 'new notification from dashboard ' + random,
+    //         }
+    //     });
+    // }
     
     start() {
         super.start();
@@ -235,7 +235,7 @@ export default class DashboardScene extends BaseScene {
                     node.addChild(nodeItem)
                     
                     if (index > 0 && (index % 8 === 0 || index == (app.context.gameList.length - 1))){
-                        if (index > 8 && !this.pageView.indicator.node.opacity) {
+                        if (index >= 8 && !this.pageView.indicator.node.opacity) {
                             var indicator = this.pageView.indicator.node;
                             indicator && indicator.opacity < 255 && (indicator.opacity = 255);
                         }
