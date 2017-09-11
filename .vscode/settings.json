@@ -23,5 +23,6 @@
     },
     "files.autoSave": "onFocusChange",
     "extensions.autoUpdate": true,
-    "editor.trimAutoWhitespace": false
+    "editor.trimAutoWhitespace": false,
+    "git.ignoreLimitWarning": true
 }
