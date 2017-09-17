@@ -62,7 +62,7 @@ export default class DashboardScene extends BaseScene {
             this._requestCtl();
             app.buddyManager.sendInitBuddy();
         }
-        
+
         /**
          * set requestRandomInvite = true to make sure player only receive random invite on first time join game group
          */
@@ -70,7 +70,7 @@ export default class DashboardScene extends BaseScene {
         
         app.context.gameList.length > 0 && this._initItemListGame();
         
-        setTimeout(() => {
+        this.node.runAction(cc.sequence(cc.delayTime(.6), cc.callFunc(() => {
             let Linking = require('Linking');
             Linking.handlePendingActions();
             if(app.context.newVersionInfo){
@@ -82,9 +82,12 @@ export default class DashboardScene extends BaseScene {
                     app.context.newVersionInfo = null;
                 })
             }
-        }, 600);
+        })))
 
         app.system.showLackOfMoneyMessagePopup();
+        
+        // create mini game
+        app.taiXiuTreoManager.createIcon()
     }
 
     showDailyLoginPopup(message, isNewBie = false, title) {
@@ -190,9 +193,6 @@ export default class DashboardScene extends BaseScene {
         const itemDimension = Math.floor(height / 2.0 - 37);
 
         var node = null;
-        let count = 0;
-        
-        let gameItems = [];
         
         app.context.gameList.forEach((gc, index) => {
             if (index % 8 === 0) {

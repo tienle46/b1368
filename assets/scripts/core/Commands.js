@@ -300,4 +300,11 @@ Commands.CANCEL_REJOIN = "cancelRejoin";
 
 Commands.NOTIFICATION_MESSAGE = "notify";
 
+Commands.MINIGAME_TAI_XIU_CHANGE_STATE = "mng_taixiuChangeState";
+Commands.MINIGAME_TAI_XIU_BET = "mng_taixiuBet";
+Commands.MINIGAME_TAI_XIU_GET_STATE = "mng_taixiuState";
+Commands.MINIGAME_TAI_XIU_GET_HISTORY = "mng_taixiuHistory";
+Commands.MINIGAME_TAI_XIU_FOLLOW = "mng_taixiuFollow";
+Commands.MINIGAME_TAI_XIU_UNFOLLOW = "mng_taixiuUnfollow";
+
 module.exports = Commands;

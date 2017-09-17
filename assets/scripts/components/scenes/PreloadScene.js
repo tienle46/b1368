@@ -19,11 +19,14 @@ class PreloadScene extends Component {
         if (this.loading) {
             this.loading.getComponent('FullSceneProgress').show(app.res.string('loading_data'));
         }
-        let IAPManager = require('IAPManager');
-                    
+        let IAPManager = require('IAPManager'); 
         app.iap = new IAPManager();
         app.iap.init();
 
+        // tai xiu treo
+        let TaiXiuTreoManager = require('TaiXiuTreoManager')
+        app.taiXiuTreoManager = new TaiXiuTreoManager()
+        
         app.system.initOnFirstSceneLoaded()
         
         this._customCocosEngine();
@@ -64,6 +67,7 @@ class PreloadScene extends Component {
             { dir: 'popup/ConfirmPopup', name: 'confirmPopup' },
             { dir: 'popup/PromptPopup', name: 'promptPopup' },
             { dir: 'popup/SingleLinePromptPopup', name: 'singleLinePromptPopup' },
+            { dir: 'taixiuTreo/HangedSicBoPrefab', name: 'hangedSicBo' },
         ];
 
         app.async.parallel(resources.map((res) => {
@@ -100,7 +104,7 @@ class PreloadScene extends Component {
         
         // cc.view.enableAntiAlias(false);
     }
-    
+
     /**
      * Modifying cocos's source
      * @memberof PreloadScene

@@ -23,6 +23,9 @@ export default class BaseScene extends Actor {
         this.isLoaded = false;
         this._showFBLoginPopup = false;
         this._errorMessageTimeout = null;
+        
+        this.updateTimer = 0
+        this.updateInterval = .2
     }
 
     _addToPendingAddPopup(message) {

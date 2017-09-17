@@ -1,0 +1,30 @@
+{
+  "ver": "1.0.0",
+  "uuid": "01004a24-ca1b-4deb-a68e-198f9f780f3b",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "subMetas": {
+    "tai-xiu-treo": {
+      "ver": "1.0.3",
+      "uuid": "1bc37060-c4c0-4d55-b489-2031766a902a",
+      "rawTextureUuid": "01004a24-ca1b-4deb-a68e-198f9f780f3b",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 2,
+      "trimY": 2,
+      "width": 876,
+      "height": 532,
+      "rawWidth": 880,
+      "rawHeight": 536,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}
