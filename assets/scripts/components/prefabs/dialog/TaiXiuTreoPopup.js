@@ -11,6 +11,7 @@ class TaiXiuTreoPopup extends DialogActor {
         
         this.properties = this.assignProperties({
             transparentBg: cc.Node,
+            bodyNode: cc.Node, // used on onBoardEnding's animations to prevent cc.delayTime
             popupId: cc.Label,
             timeToNextLbl: cc.Label,
             timeToNextBg: cc.Node,
@@ -79,6 +80,9 @@ class TaiXiuTreoPopup extends DialogActor {
     }
     
     onTaiZoneClicked() {
+        if(this._selectedBet == TaiXiuTreoManager.TAI_ID || !app.taiXiuTreoManager.allowBetting())
+            return
+            
         this.hideBetGroupPanel()
         
         this._selectedBet = TaiXiuTreoManager.TAI_ID
@@ -87,6 +91,9 @@ class TaiXiuTreoPopup extends DialogActor {
     }
     
     onXiuZoneClicked() {
+        if(this._selectedBet == TaiXiuTreoManager.XIU_ID || !app.taiXiuTreoManager.allowBetting())
+            return
+        
         this.hideBetGroupPanel()
         
         this._selectedBet = TaiXiuTreoManager.XIU_ID
@@ -174,7 +181,7 @@ class TaiXiuTreoPopup extends DialogActor {
     
     showBetGroupPanel() {
         this.betGroupPanel.active = true
-        this.betGroupPanel.runAction(cc.spawn(cc.moveTo(.3, cc.v2(0, -257)), cc.fadeTo(.3, 255)))
+        this.betGroupPanel.runAction(cc.spawn(cc.moveTo(.1, cc.v2(0, -257)), cc.fadeTo(.1, 255)))
     }
     
     hideBetOptionGroupContainer() {
@@ -293,8 +300,12 @@ class TaiXiuTreoPopup extends DialogActor {
         this.showPhase()
         this.phaseText.string = `${text}`
         
-        let a1 = cc.spawn(cc.scaleTo(.1, 1.2, 1.2), cc.fadeIn(.1))
-        let a2 = cc.spawn(cc.scaleTo(.1, 1, 1), cc.fadeOut(.1))
+        let scaleTo = 1.2
+        let origin = 1
+        let duration = .1
+        
+        let a1 = cc.spawn(cc.scaleTo(duration, scaleTo, scaleTo), cc.fadeIn(duration))
+        let a2 = cc.spawn(cc.scaleTo(duration, origin, origin), cc.fadeOut(duration))
         let action = cc.sequence(a1, a2).repeatForever()
         
         this.phaseText.node.runAction(action)
@@ -305,7 +316,9 @@ class TaiXiuTreoPopup extends DialogActor {
     }
     
     onUserBetsSuccessfully(totalPlayerTai, totalPlayerXiu) {
+        console.warn('this.ifAny(totalPlayerTai)', this.ifAny(totalPlayerTai), totalPlayerTai)
         if(this.ifAny(totalPlayerTai)) {
+            console.warn('?', totalPlayerTai, totalPlayerXiu)
             this.taiUserBettedLabel.string = numberFormat(totalPlayerTai)
             this.taiUserBetLabel.string = 0
         } 
@@ -400,12 +413,69 @@ class TaiXiuTreoPopup extends DialogActor {
         return e === 0 || e
     }
     
-    // can keo
-    onBoardEnding() {
+    onBoardEnding(remainTime, data) {
+        let {
+            balanceChanged,
+            option,
+            dices,
+            paybackTai,
+            paybackXiu,
+            totalPlayerTai,
+            totalPlayerXiu
+        } = data
         
+        let balanceDuration = 3 // 3s to run animation for balancing phase
+        let actions = []
+        actions = [cc.callFunc(() => {
+            this.taiUserBetLabel.string = 0
+            this.xiuUserBetLabel.string = 0
+            this.hideBetGroupPanel()
+            this.onUserBetsSuccessfully(totalPlayerTai, totalPlayerXiu)
+        })]
+        
+        if(remainTime > balanceDuration + 2) {
+            let balancePhaseActions = [
+                cc.callFunc(() => {
+                    this.changePhase("Cân Kèo")
+                }),
+                cc.delayTime(balanceDuration),
+                // cc.callFunc(() => {
+                    
+                // })
+            ]
+            actions = [...actions, ...balancePhaseActions]
+        }
+        
+        let endActions = [
+            cc.callFunc(() => {
+                this.changePhase("Mở Bát")
+            }),
+            cc.delayTime(2),
+            cc.callFunc(() => {                
+                // balanceChanged -> runAnim changed balance
+                this.balanceChanged(balanceChanged)
+                
+                // option -> runAnim noticing <-> runAnim open bowl
+                this.isNanChecked() ?  this.showBowl() : this.hideBowl()
+                // console.warn('balanceChanged', balanceChanged, 'option', option, 'remainTime', remainTime)
+                this.countDownRemainTimeToNext(remainTime)
+                
+                // runAnim open bowl
+                this.placeDices(dices)
+                
+                // runAnim noticing
+                this.notification(option)
+                
+                // paybackTai, paybackXiu -> runAnimpayback -> show message
+            })
+        ]
+        
+        actions = [...actions, ...endActions]
+        
+        this.bodyNode.runAction(cc.sequence(actions))
     }
     
-    resetData() {
+    resetData(bettedTai, bettedXiu) {
         this.hideBowl()
         this.hideTimeToNext()
         this.clearDices()
@@ -419,8 +489,8 @@ class TaiXiuTreoPopup extends DialogActor {
         this.taiTotalMoney.string = 0
         this.xiuTotalMoney.string = 0
         
-        this.taiUserBettedLabel.string = 0
-        this.xiuUserBettedLabel.string = 0
+        this.taiUserBettedLabel.string = bettedTai
+        this.xiuUserBettedLabel.string = bettedXiu
         
         this.taiUserBetLabel.string = 0
         this.xiuUserBetLabel.string = 0

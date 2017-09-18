@@ -85,9 +85,6 @@ export default class DashboardScene extends BaseScene {
         })))
 
         app.system.showLackOfMoneyMessagePopup();
-        
-        // create mini game
-        app.taiXiuTreoManager.createIcon()
     }
 
     showDailyLoginPopup(message, isNewBie = false, title) {

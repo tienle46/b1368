@@ -71,6 +71,20 @@ export default class BaseScene extends Actor {
     start() {
         super.start();
         app.system.setSceneChanging(false);
+        
+        let name = app.system.getCurrentSceneName()
+        if(name == app.const.scene.ENTRANCE_SCENE && app.taiXiuTreoManager) {
+            app.taiXiuTreoManager.onDestroy()
+            return
+        }
+        let isInOutgameScene = app._.includes([
+            app.const.scene.ENTRANCE_SCENE,
+            app.const.scene.LOGIN_SCENE,
+            app.const.scene.REGISTER_SCENE
+        ], name);
+        if(!isInOutgameScene && app.taiXiuTreoManager) 
+            // create mini game
+            app.taiXiuTreoManager.createIcon()
     }
 
     onDestroy() {
