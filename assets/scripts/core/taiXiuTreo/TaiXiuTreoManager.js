@@ -75,7 +75,7 @@ export default class TaiXiuTreoManager {
         }
             
         this._currentBet[selected] += text
-        let realAmount = this._betted[selected] + Number(this._currentBet[selected])
+        let realAmount = Number(this._currentBet[selected])
         if(isNaN(realAmount)) {
             app.system.showToast('Sai định dạng')
             this._currentBet[selected] = ""
@@ -163,16 +163,17 @@ export default class TaiXiuTreoManager {
         }
         
         this._currentBet[selected] += amount
-        let realAmount = this._betted[selected] + this._currentBet[selected]
-        if(isNaN(realAmount)) {
+        if(isNaN(this._currentBet[selected])) {
             app.system.showToast('Sai định dạng')
             this._currentBet[selected] = 0
             return
         }
+        // let realAmount = this._betted[selected] + this._currentBet[selected]
         
-        console.warn('betted', this._betted)
-        console.warn('_currentBet', this._currentBet)
-        this._popupComponent.updateBetBalance(realAmount)
+        // console.warn('betted', this._betted)
+        // console.warn('_currentBet', this._currentBet)
+        
+        this._popupComponent.updateBetBalance(this._currentBet[selected])
     }
     
     _onTaiXiuBet(data) {
@@ -201,7 +202,7 @@ export default class TaiXiuTreoManager {
         this._popupComponent.updateInfo(null, playerTaiCount, totalTaiAmount, playerXiuCount, totalXiuAmount)
         
         // update user's money 
-        app.context.setBalance(app.context.getMeBalance() + -1 * ((tai || 0) + (xiu || 0)))
+        app.context.setBalance(app.context.getMeBalance() + -1 * ((totalPlayerTai || 0) + (totalPlayerXiu || 0)))
     }
     
     _onTaiXiuStateChange(data) {
@@ -236,25 +237,33 @@ export default class TaiXiuTreoManager {
         console.warn('state', state, 'Id', this._currentId, data)
         this.setBoardState(state)
         
+        let phase = ""
+        
         switch(state) {
             case TaiXiuTreoManager.GAME_STATE_WAIT:
             case TaiXiuTreoManager.GAME_STATE_BET:
                 this._resetBetAmount()
                 this._popupComponent.resetData()
-                
+                phase = "Đặt Cược"
                 // this._popupComponent.taiUserBetLabel.string = numberFormat(this._betted[TaiXiuTreoManager.TAI_ID])
                 // this._popupComponent.xiuUserBetLabel.string = numberFormat(this._betted[TaiXiuTreoManager.XIU_ID])
                 if(this._popupState === TaiXiuTreoManager.POPUP_STATE_OPENING && !this._tracker[this._currentId][TaiXiuTreoManager.FOLLOWING]) {
                     app.service.send({ cmd: app.commands.MINIGAME_TAI_XIU_FOLLOW })
                     this._track(this._currentId, TaiXiuTreoManager.FOLLOWING, true)
                 }
-               
+                
+                this._popupComponent.changePhase(phase)
                 this._popupComponent.countDownRemainTime(remainTime)
                 break
             case TaiXiuTreoManager.GAME_STATE_BALANCING:
-               
+                
                 break
             case TaiXiuTreoManager.GAME_STATE_END:
+                // cân kèo (TODO)
+                phase = "Mở Bát"
+                this._popupComponent.onBoardEnding()
+                
+                this._popupComponent.changePhase(phase)
                 this._popupComponent.hideBetGroupPanel()
                 // TODO
                 // update user money
@@ -317,7 +326,7 @@ export default class TaiXiuTreoManager {
         this._popupComponent.updateBetBalance(realAmount)
     }
     
-    onDestroy(popupOnly = false) {           
+    onDestroy(popupOnly = false) { 
         this._popupState = TaiXiuTreoManager.POPUP_STATE_INITIALIZE
         this._boardState = TaiXiuTreoManager.GAME_STATE_WAIT
         this._currentId = null

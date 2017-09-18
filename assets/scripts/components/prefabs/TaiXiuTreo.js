@@ -29,7 +29,7 @@ class TaiXiuTreo extends Actor {
     
     onEnable() {
         super.onEnable()
-        this.node.on(cc.Node.EventType.TOUCH_END, this._onClick, this);
+        this.node.on(cc.Node.EventType.TOUCH_END, this._onClick, this)
     }
     
     _addGlobalListener() {

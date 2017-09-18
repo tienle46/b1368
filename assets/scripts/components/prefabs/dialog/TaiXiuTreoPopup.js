@@ -1,6 +1,6 @@
 import app from 'app'
 import DialogActor from 'DialogActor'
-import { destroy } from 'CCUtils'
+// import { destroy } from 'CCUtils'
 import { numberFormat } from 'GeneralUtils'
 import { formatBalanceShort } from 'GameUtils'
 import TaiXiuTreoManager from 'TaiXiuTreoManager'
@@ -21,10 +21,12 @@ class TaiXiuTreoPopup extends DialogActor {
             taiUsers: cc.Label,
             taiTotalMoney: cc.Label,
             taiUserBetLabel: cc.Label,
+            taiUserBettedLabel: cc.Label,
             xiuIcon: cc.Node,
             xiuUsers: cc.Label,
             xiuTotalMoney: cc.Label,
             xiuUserBetLabel: cc.Label,
+            xiuUserBettedLabel: cc.Label,
             historicalContainer: cc.Node,
             historicalSpriteItem: cc.Sprite,
             historicalSprites: {
@@ -44,6 +46,8 @@ class TaiXiuTreoPopup extends DialogActor {
             bowl: cc.Node,
             balanceChangedNode: cc.Node,
             balanceChangedLabel: cc.Label,
+            phaseNode: cc.Node,
+            phaseText: cc.Label,
         });
        
         this._selectedBet = null
@@ -60,12 +64,14 @@ class TaiXiuTreoPopup extends DialogActor {
     
     onCloseBtnClick() {
         // destroy(this.node);
-        this.node.active = false
+        // this.node.active = false
+        this.node.setPosition(-9999, -9999) // move to -9999, -9999 because cc_Node.runAction stops while inactive
         app.system.emit('tai.xiu.treo.on.close.btn.clicked')
     }
     
     showPopup() {
-        this.node.active = true
+        // this.node.active = true
+        this.node.setPosition(0, 0)
     }
     
     onDestroy() {
@@ -94,11 +100,11 @@ class TaiXiuTreoPopup extends DialogActor {
     }
     
     hideRemainTimeBg() {
-        this.remainTimeBg.active = false  
+        this.remainTimeBg.active = false
     }
     
     showRemainTimeBg() {
-        this.remainTimeBg.active = true  
+        this.remainTimeBg.active = true
     }
     
     hideBowl() {
@@ -162,10 +168,13 @@ class TaiXiuTreoPopup extends DialogActor {
     
     hideBetGroupPanel() {
         this.betGroupPanel.active = false
+        this.betGroupPanel.opacity = 0
+        this.betGroupPanel.setPosition(cc.v2(0, -500))
     }
     
     showBetGroupPanel() {
         this.betGroupPanel.active = true
+        this.betGroupPanel.runAction(cc.spawn(cc.moveTo(.3, cc.v2(0, -257)), cc.fadeTo(.3, 255)))
     }
     
     hideBetOptionGroupContainer() {
@@ -270,9 +279,40 @@ class TaiXiuTreoPopup extends DialogActor {
         this.balanceChangedLabel.node.runAction(action)
     }
     
+    showPhase() {
+        this.phaseNode.active = true
+        this.phaseText.node.opacity = 255
+    }
+    
+    hidePhase() {
+        this.phaseNode.active = false
+        this.phaseText.node.stopAllActions()
+    }
+    
+    changePhase(text) {
+        this.showPhase()
+        this.phaseText.string = `${text}`
+        
+        let a1 = cc.spawn(cc.scaleTo(.1, 1.2, 1.2), cc.fadeIn(.1))
+        let a2 = cc.spawn(cc.scaleTo(.1, 1, 1), cc.fadeOut(.1))
+        let action = cc.sequence(a1, a2).repeatForever()
+        
+        this.phaseText.node.runAction(action)
+        
+        this.phaseNode.runAction(cc.sequence(cc.delayTime(1), cc.callFunc(() => {
+            this.hidePhase()
+        })))
+    }
+    
     onUserBetsSuccessfully(totalPlayerTai, totalPlayerXiu) {
-        this.ifAny(totalPlayerTai) && (this.taiUserBetLabel.string = numberFormat(totalPlayerTai))
-        this.ifAny(totalPlayerXiu) && (this.xiuUserBetLabel.string = numberFormat(totalPlayerXiu))
+        if(this.ifAny(totalPlayerTai)) {
+            this.taiUserBettedLabel.string = numberFormat(totalPlayerTai)
+            this.taiUserBetLabel.string = 0
+        } 
+        if (this.ifAny(totalPlayerXiu)) {
+            this.xiuUserBettedLabel.string = numberFormat(totalPlayerXiu)
+            this.xiuUserBetLabel.string = 0
+        }
     }
     
     updateBetBalance(amount) {
@@ -325,7 +365,13 @@ class TaiXiuTreoPopup extends DialogActor {
             
             this.historicalContainer.addChild(item)
             if(index == histories.length - 1) {
-                item.runAction(cc.repeatForever(cc.fadeTo(1, 0)))
+                
+                let y = item.getPosition().y
+                let action = cc.sequence(
+                    cc.moveTo(.3, cc.v2(this.node.getPosition().x, y + 35)), 
+                    cc.moveTo(.3, cc.v2(this.node.getPosition().x, y))
+                ).easing(cc.easeOut(2)).repeatForever()
+                item.runAction(action)
             }
         })
     }
@@ -354,6 +400,11 @@ class TaiXiuTreoPopup extends DialogActor {
         return e === 0 || e
     }
     
+    // can keo
+    onBoardEnding() {
+        
+    }
+    
     resetData() {
         this.hideBowl()
         this.hideTimeToNext()
@@ -368,6 +419,9 @@ class TaiXiuTreoPopup extends DialogActor {
         this.taiTotalMoney.string = 0
         this.xiuTotalMoney.string = 0
         
+        this.taiUserBettedLabel.string = 0
+        this.xiuUserBettedLabel.string = 0
+        
         this.taiUserBetLabel.string = 0
         this.xiuUserBetLabel.string = 0
         
@@ -378,6 +432,7 @@ class TaiXiuTreoPopup extends DialogActor {
         this.xiuIcon.setScale(1, 1)
         
         this.hideChangedBalance()
+        this.hidePhase()
     }
 }
 
