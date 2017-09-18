@@ -306,5 +306,6 @@ Commands.MINIGAME_TAI_XIU_GET_STATE = "mng_taixiuState";
 Commands.MINIGAME_TAI_XIU_GET_HISTORY = "mng_taixiuHistory";
 Commands.MINIGAME_TAI_XIU_FOLLOW = "mng_taixiuFollow";
 Commands.MINIGAME_TAI_XIU_UNFOLLOW = "mng_taixiuUnfollow";
+Commands.MINIGAME_TAI_XIU_REMAIN_TIME = "mng_taixiuRemainTime";
 
 module.exports = Commands;

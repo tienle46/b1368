@@ -42,6 +42,8 @@ class TaiXiuTreoPopup extends DialogActor {
             diceSprite: cc.Sprite,
             placedArea: cc.Node,
             bowl: cc.Node,
+            balanceChangedNode: cc.Node,
+            balanceChangedLabel: cc.Label,
         });
        
         this._selectedBet = null
@@ -250,6 +252,24 @@ class TaiXiuTreoPopup extends DialogActor {
         )))
     }
     
+    showChangedBalance() {
+        this.balanceChangedNode.active = true
+        this.balanceChangedLabel.node.opacity = 255
+    }
+    
+    hideChangedBalance() {
+        this.balanceChangedNode.active = false
+        this.balanceChangedLabel.node.setPosition(cc.v2(0,0))
+    }
+    
+    balanceChanged(balanceChanged) {
+        this.showChangedBalance()
+        this.balanceChangedLabel.string = `${balanceChanged}`
+        
+        let action = cc.spawn(cc.moveTo(4, cc.v2(0, 150)), cc.fadeTo(4, 0))
+        this.balanceChangedLabel.node.runAction(action)
+    }
+    
     onUserBetsSuccessfully(totalPlayerTai, totalPlayerXiu) {
         this.ifAny(totalPlayerTai) && (this.taiUserBetLabel.string = numberFormat(totalPlayerTai))
         this.ifAny(totalPlayerXiu) && (this.xiuUserBetLabel.string = numberFormat(totalPlayerXiu))
@@ -298,12 +318,15 @@ class TaiXiuTreoPopup extends DialogActor {
         }
         
         this.historicalContainer.removeAllChildren()
-        histories.forEach(id => {
+        histories.forEach((id, index) => {
             this.historicalSpriteItem.spriteFrame = this.historicalSprites[TaiXiuIdToSpriteId[id]]
             let item = cc.instantiate(this.historicalSpriteItem.node)
             item.active = true
             
             this.historicalContainer.addChild(item)
+            if(index == histories.length - 1) {
+                item.runAction(cc.repeatForever(cc.fadeTo(1, 0)))
+            }
         })
     }
     
@@ -353,6 +376,8 @@ class TaiXiuTreoPopup extends DialogActor {
         
         this.xiuIcon.stopAllActions()
         this.xiuIcon.setScale(1, 1)
+        
+        this.hideChangedBalance()
     }
 }
 
