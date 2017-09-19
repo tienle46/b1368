@@ -191,28 +191,28 @@ export default class TaiXiuTreoManager {
         let {
             tai, // số tiền user(me) mới gửi lên
             xiu,
-            totalPlayerTai, // tổng số tiền user(me) đã đặt sau khi server tính toán cân kèo
-            totalPlayerXiu,
+            acceptedTaiAmount, // tổng số tiền user(me) đã đặt sau khi server tính toán cân kèo
+            acceptedXiuAmount,
             totalTaiAmount, // tổng số tiền tất cả users đã cược cho vị này
-            playerTaiCount, // tổng số users đã cược vào vị này
+            totalTaiCount, // tổng số users đã cược vào vị này
             totalXiuAmount,
-            playerXiuCount 
+            totalXiuCount 
         } = data
       
         this._currentBet[TaiXiuTreoManager.TAI_ID] = 0
         this._currentBet[TaiXiuTreoManager.XIU_ID] = 0
         
-        totalPlayerTai > 0 && (this._betted[TaiXiuTreoManager.TAI_ID] = totalPlayerTai)
-        totalPlayerXiu > 0 && (this._betted[TaiXiuTreoManager.XIU_ID] = totalPlayerXiu)
+        acceptedTaiAmount > 0 && (this._betted[TaiXiuTreoManager.TAI_ID] = acceptedTaiAmount)
+        acceptedXiuAmount > 0 && (this._betted[TaiXiuTreoManager.XIU_ID] = acceptedXiuAmount)
         
-        this._popupComponent.onUserBetsSuccessfully(totalPlayerTai, totalPlayerXiu)
-        this._popupComponent.updateInfo(null, playerTaiCount, totalTaiAmount, playerXiuCount, totalXiuAmount)
+        this._popupComponent.onUserBetsSuccessfully(acceptedTaiAmount, acceptedXiuAmount)
+        this._popupComponent.updateInfo(null, totalTaiCount, totalTaiAmount, totalXiuCount, totalXiuAmount)
         
         // update user's money
         let current = app.context.getMeBalance()
-        let changed = -1 * ((totalPlayerTai || 0) + (totalPlayerXiu || 0))
-        console.warn('__REMAIN MONEY: CURRENT', current, 'CHANGED', changed, 'REMAINED', app.context.getMeBalance() + -1 * ((totalPlayerTai || 0) + (totalPlayerXiu || 0)))
-        app.context.setBalance(app.context.getMeBalance() + -1 * ((totalPlayerTai || 0) + (totalPlayerXiu || 0)))
+        let changed = -1 * ((acceptedTaiAmount || 0) + (acceptedXiuAmount || 0))
+        console.warn('__REMAIN MONEY: CURRENT', current, 'CHANGED', changed, 'REMAINED', app.context.getMeBalance() + -1 * ((acceptedTaiAmount || 0) + (acceptedXiuAmount || 0)))
+        app.context.setBalance(app.context.getMeBalance() + -1 * ((acceptedTaiAmount || 0) + (acceptedXiuAmount || 0)))
     }
     
     _onTaiXiuStateChange(data) {
@@ -230,16 +230,16 @@ export default class TaiXiuTreoManager {
             dices, // <- state 3
             paybackTai, // <- state 3
             paybackXiu, // <- state 3
-            totalPlayerTai, // <- state 3 // tổng số tiền user(me) đã đặt sau khi server tính toán cân kèo
-            totalPlayerXiu, // <- state 3 
+            taiAmount, // totalPlayerTai <- state 3 // tổng số tiền user(me) đã đặt sau khi server tính toán cân kèo
+            xiuAmount, // totalPlayerXiu <- state 3 
             histories,
             id,
             remainTime,
             state,
             totalTaiAmount,
-            playerTaiCount,
+            totalTaiCount, // playerTaiCount
             totalXiuAmount,
-            playerXiuCount 
+            totalXiuCount  // playerXiuCount 
         } = data
         
         this._currentId = id
@@ -274,8 +274,8 @@ export default class TaiXiuTreoManager {
                     dices,
                     paybackTai,
                     paybackXiu,
-                    totalPlayerTai,
-                    totalPlayerXiu
+                    taiAmount,
+                    xiuAmount
                 })
                 // update user money
                 balance && app.context.setBalance(balance)
@@ -283,7 +283,7 @@ export default class TaiXiuTreoManager {
                 break
         }
         
-        this._popupComponent.updateInfo(id, playerTaiCount, totalTaiAmount, playerXiuCount, totalXiuAmount)
+        this._popupComponent.updateInfo(id, totalTaiCount, totalTaiAmount, totalXiuCount, totalXiuAmount)
         this._popupComponent.initBetOption(betTemplates)
         this._popupComponent.initHistories(histories)
     }
