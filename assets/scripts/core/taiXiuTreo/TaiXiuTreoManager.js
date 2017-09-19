@@ -31,6 +31,7 @@ export default class TaiXiuTreoManager {
         app.system.addListener(app.commands.MINIGAME_TAI_XIU_CHANGE_STATE, this._onTaiXiuStateChange, this);
         app.system.addListener(app.commands.MINIGAME_TAI_XIU_BET, this._onTaiXiuBet, this);
         app.system.addListener(app.commands.MINIGAME_TAI_XIU_REMAIN_TIME, this._updateIconRemainTime, this);
+        app.system.addListener(app.commands.MINIGAME_TAI_XIU_BET_CHANGED, this._onBetChanged, this);
         app.system.addListener('tai.xiu.treo.on.bet.btn.clicked', this._onBetItemBtnClick, this);
         app.system.addListener('tai.xiu.treo.on.close.btn.clicked', this._onClosePopup, this);
         app.system.addListener('tai.xiu.treo.preparing.new.game', this._onNewBoardIsComming, this);
@@ -45,12 +46,26 @@ export default class TaiXiuTreoManager {
         app.system.removeListener(app.commands.MINIGAME_TAI_XIU_CHANGE_STATE, this._onTaiXiuStateChange, this);
         app.system.removeListener(app.commands.MINIGAME_TAI_XIU_BET, this._onTaiXiuBet, this);
         app.system.removeListener(app.commands.MINIGAME_TAI_XIU_REMAIN_TIME, this._updateIconRemainTime, this);
+        app.system.removeListener(app.commands.MINIGAME_TAI_XIU_BET_CHANGED, this._onBetChanged, this);
         app.system.removeListener('tai.xiu.treo.on.bet.btn.clicked', this._onBetItemBtnClick, this);
         app.system.removeListener('tai.xiu.treo.on.close.btn.clicked', this._onClosePopup, this);
         app.system.removeListener('tai.xiu.treo.preparing.new.game', this._onNewBoardIsComming, this);
         app.system.removeListener('tai.xiu.treo.on.confirm.bet', this._bet, this);
         app.system.removeListener('tai.xiu.treo.show.bet.group.panel', this._showBetGroupPanel, this);
         app.system.removeListener('tai.xiu.treo.bet.text.clicked', this._onBetTextBtnClick, this);
+    }
+    
+    _onBetChanged(data) {
+        let {
+            totalTaiAmount,
+            totalTaiCount,
+            totalXiuAmount,
+            totalXiuCount  
+        } = data 
+        
+        console.warn(data)
+        
+        this._popupComponent.updateInfo(this._currentId, totalTaiCount, totalTaiAmount, totalXiuCount, totalXiuAmount)
     }
     
     _updateIconRemainTime(data) {
@@ -228,16 +243,16 @@ export default class TaiXiuTreoManager {
             dices, // <- state 3
             paybackTai, // <- state 3
             paybackXiu, // <- state 3
-            taiAmount, // totalPlayerTai <- state 3 // tổng số tiền user(me) đã đặt sau khi server tính toán cân kèo
-            xiuAmount, // totalPlayerXiu <- state 3 
+            taiAmount, // <- state 3 // tổng số tiền user(me) đã đặt sau khi server tính toán cân kèo
+            xiuAmount, // <- state 3 
             histories,
             id,
             remainTime,
             state,
             totalTaiAmount,
-            totalTaiCount, // playerTaiCount
+            totalTaiCount,
             totalXiuAmount,
-            totalXiuCount  // playerXiuCount 
+            totalXiuCount   
         } = data
         
         this._currentId = id

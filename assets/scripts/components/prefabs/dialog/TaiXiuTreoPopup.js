@@ -149,6 +149,8 @@ class TaiXiuTreoPopup extends DialogActor {
     }
     
     placeDices(dices = []) {
+        this.clearDices()
+        
         let randomPosInRange = [{ x: app._.random(-1, 1), y: 1 }, { x: 1, y: -1 }, { x: -1, y: -1 }]
         let acceptedArea = this.placedArea.getContentSize()
         let size = this.diceSprite.node.getContentSize()
@@ -285,7 +287,7 @@ class TaiXiuTreoPopup extends DialogActor {
     
     balanceChanged(balanceChanged) {
         this.showChangedBalance()
-        this.balanceChangedLabel.string = `${balanceChanged}`
+        this.balanceChangedLabel.string = balanceChanged >= 0 ? `+${balanceChanged}`  : `${balanceChanged}`
         
         let action = cc.spawn(cc.moveTo(4, cc.v2(0, 150)), cc.fadeTo(4, 0))
         this.balanceChangedLabel.node.runAction(action)

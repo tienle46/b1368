@@ -303,9 +303,13 @@ Commands.NOTIFICATION_MESSAGE = "notify";
 Commands.MINIGAME_TAI_XIU_CHANGE_STATE = "mng_taixiuChangeState";
 Commands.MINIGAME_TAI_XIU_BET = "mng_taixiuBet";
 Commands.MINIGAME_TAI_XIU_GET_STATE = "mng_taixiuState";
-Commands.MINIGAME_TAI_XIU_GET_HISTORY = "mng_taixiuHistory";
 Commands.MINIGAME_TAI_XIU_FOLLOW = "mng_taixiuFollow";
 Commands.MINIGAME_TAI_XIU_UNFOLLOW = "mng_taixiuUnfollow";
 Commands.MINIGAME_TAI_XIU_REMAIN_TIME = "mng_taixiuRemainTime";
+Commands.MINIGAME_TAI_XIU_TOP_PLAYERS = "mng_taixiuTopPlayer";
+Commands.MINIGAME_TAI_XIU_DICE_HISTORY = "mng_taixiuDiceHistory";
+Commands.MINIGAME_TAI_XIU_BET_CHANGED = "mng_taixiuBetChanged";
+Commands.MINIGAME_TAI_XIU_HISTORY = "mng_taixiuHistory";
+
 
 module.exports = Commands;
