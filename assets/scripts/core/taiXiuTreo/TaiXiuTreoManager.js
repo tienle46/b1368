@@ -63,8 +63,6 @@ export default class TaiXiuTreoManager {
             totalXiuCount  
         } = data 
         
-        console.warn(data)
-        
         this._popupComponent.updateInfo(this._currentId, totalTaiCount, totalTaiAmount, totalXiuCount, totalXiuAmount)
     }
     
@@ -142,11 +140,18 @@ export default class TaiXiuTreoManager {
     _createPopup(data) {
         if(!this._isIconCreated() || this._popupState !== TaiXiuTreoManager.POPUP_STATE_INITIALIZE)
             return
+        let {
+            taiAmount,
+            xiuAmount
+        } = data
         this._popupComponent = this._iconComponent.createPopup(data)
         
         app.system.getCurrentSceneNode().addChild(this._popupComponent.node, 10)
         this.setPopupState(TaiXiuTreoManager.POPUP_STATE_OPENING)
-        
+
+        this._betted[TaiXiuTreoManager.TAI_ID] = taiAmount || 0
+        this._betted[TaiXiuTreoManager.XIU_ID] = xiuAmount || 0
+
         this._onTaiXiuStateChange(data)        
     }
     

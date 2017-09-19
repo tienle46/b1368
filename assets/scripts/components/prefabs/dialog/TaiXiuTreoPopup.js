@@ -386,7 +386,7 @@ class TaiXiuTreoPopup extends DialogActor {
                 
                 let y = item.getPosition().y
                 let action = cc.sequence(
-                    cc.moveTo(.3, cc.v2(this.node.getPosition().x, y + 35)), 
+                    cc.moveTo(.3, cc.v2(this.node.getPosition().x, y + 20)), 
                     cc.moveTo(.3, cc.v2(this.node.getPosition().x, y))
                 ).easing(cc.easeOut(2)).repeatForever()
                 item.runAction(action)
