@@ -6294,7 +6294,7 @@
       "__id__": 1
     },
     "component": "TaiXiuTreoPopup",
-    "handler": "onOtherBtnClick",
+    "handler": "showKeypadPanel",
     "customEventData": ""
   },
   {
@@ -6404,8 +6404,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 132.47,
-      "height": 38
+      "width": 140.21,
+      "height": 35
     },
     "_rotationX": 0,
     "_rotationY": 0,
@@ -6432,16 +6432,16 @@
     },
     "_enabled": true,
     "_useOriginalSize": false,
-    "_actualFontSize": 30,
-    "_fontSize": 30,
-    "_lineHeight": 38,
+    "_actualFontSize": 26,
+    "_fontSize": 26,
+    "_lineHeight": 35,
     "_enableWrapText": true,
     "_N$file": {
       "__uuid__": "707ff59f-f7c1-4eb4-a0de-41fd5e1c0123"
     },
     "_isSystemFontUsed": false,
     "_spacingX": 0,
-    "_N$string": "Mức cược",
+    "_N$string": "Chọn nhanh",
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
     "_N$fontFamily": "Arial",
@@ -6546,7 +6546,7 @@
       "__id__": 1
     },
     "component": "TaiXiuTreoPopup",
-    "handler": "onOtherBtnClick",
+    "handler": "showBetOptionGroupContainer",
     "customEventData": ""
   },
   {
@@ -7367,6 +7367,12 @@
     },
     "phaseText": {
       "__id__": 223
+    },
+    "otherBtnNode": {
+      "__id__": 187
+    },
+    "optionBtnNode": {
+      "__id__": 195
     }
   },
   {

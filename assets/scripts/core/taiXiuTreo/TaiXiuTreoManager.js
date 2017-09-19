@@ -125,8 +125,6 @@ export default class TaiXiuTreoManager {
     }
     
     _createPopup(data) {
-        console.warn('_createPopup this._betted', this._betted)
-        console.warn('_createPopup this._currentBet', this._currentBet)
         if(!this._isIconCreated() || this._popupState !== TaiXiuTreoManager.POPUP_STATE_INITIALIZE)
             return
         this._popupComponent = this._iconComponent.createPopup(data)
@@ -263,6 +261,7 @@ export default class TaiXiuTreoManager {
                 
                 this._popupComponent.changePhase("Đặt Cược")
                 this._popupComponent.countDownRemainTime(remainTime)
+                this._popupComponent.initHistories(histories)
                 break
             case TaiXiuTreoManager.GAME_STATE_BALANCING:
                 
@@ -275,7 +274,8 @@ export default class TaiXiuTreoManager {
                     paybackTai,
                     paybackXiu,
                     taiAmount,
-                    xiuAmount
+                    xiuAmount,
+                    histories
                 })
                 // update user money
                 balance && app.context.setBalance(balance)
@@ -285,7 +285,6 @@ export default class TaiXiuTreoManager {
         
         this._popupComponent.updateInfo(id, totalTaiCount, totalTaiAmount, totalXiuCount, totalXiuAmount)
         this._popupComponent.initBetOption(betTemplates)
-        this._popupComponent.initHistories(histories)
     }
     
     _hideIcon() {
@@ -393,8 +392,6 @@ export default class TaiXiuTreoManager {
     }
     
     showPopup() {
-        console.warn('showPopup this._betted', this._betted)
-        console.warn('showPopup this._currentBet', this._currentBet)
         if(!this._isPopupCreated())
             return
         this.setPopupState(TaiXiuTreoManager.POPUP_STATE_OPENING)
