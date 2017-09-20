@@ -3,6 +3,8 @@ import app from 'app'
 export default class TaiXiuTreoManager {
     
     constructor() {
+        this._meMoney = 0
+        
         this._betted = {
             [TaiXiuTreoManager.TAI_ID]: 0,
             [TaiXiuTreoManager.XIU_ID]: 0
@@ -56,6 +58,9 @@ export default class TaiXiuTreoManager {
     }
     
     _onBetChanged(data) {
+        if(this._isPopupCreated())
+            return
+            
         let {
             totalTaiAmount,
             totalTaiCount,
@@ -86,9 +91,13 @@ export default class TaiXiuTreoManager {
         if(typeof this._currentBet[selected] !== 'string') {
             this._currentBet[selected] = ""
         }
-            
+        
         this._currentBet[selected] += text
+        if(this._currentBet[selected].length > 10)
+            return
+            
         let realAmount = Number(this._currentBet[selected])
+
         if(isNaN(realAmount)) {
             app.system.showToast('Sai định dạng')
             this._currentBet[selected] = ""
@@ -134,7 +143,17 @@ export default class TaiXiuTreoManager {
         
         app.system.getCurrentSceneNode().addChild(item)
         
-        app.service.send({cmd: app.commands.MINIGAME_TAI_XIU_REMAIN_TIME})    
+        app.service.send({cmd: app.commands.MINIGAME_TAI_XIU_REMAIN_TIME})
+        
+        this.setMeBalance(app.context.getMeBalance())
+    }
+    
+    setMeBalance(amount) {
+        this._meMoney = amount
+    }
+    
+    updateMeBalance(amount) {
+        this._meMoney += amount
     }
     
     _createPopup(data) {
@@ -197,8 +216,11 @@ export default class TaiXiuTreoManager {
         
         // console.warn('betted', this._betted)
         // console.warn('_currentBet', this._currentBet)
-        
+        let prev = this._meMoney
+        this.updateMeBalance(-amount)
+        this._popupComponent.updateUserMoney(this._meMoney)
         this._popupComponent.updateBetBalance(this._currentBet[selected])
+        console.warn('prev', prev, 'amount', amount, 'cur', this._meMoney)
     }
     
     _onTaiXiuBet(data) {
@@ -214,7 +236,8 @@ export default class TaiXiuTreoManager {
             totalTaiAmount, // tổng số tiền tất cả users đã cược cho vị này
             totalTaiCount, // tổng số users đã cược vào vị này
             totalXiuAmount,
-            totalXiuCount 
+            totalXiuCount,
+            balance
         } = data
       
         this._currentBet[TaiXiuTreoManager.TAI_ID] = 0
@@ -227,10 +250,8 @@ export default class TaiXiuTreoManager {
         this._popupComponent.updateInfo(null, totalTaiCount, totalTaiAmount, totalXiuCount, totalXiuAmount)
         
         // update user's money
-        let current = app.context.getMeBalance()
-        let changed = -1 * ((acceptedTaiAmount || 0) + (acceptedXiuAmount || 0))
-        console.warn('__REMAIN MONEY: CURRENT', current, 'CHANGED', changed, 'REMAINED', app.context.getMeBalance() + -1 * ((acceptedTaiAmount || 0) + (acceptedXiuAmount || 0)))
-        app.context.setBalance(app.context.getMeBalance() + -1 * ((acceptedTaiAmount || 0) + (acceptedXiuAmount || 0)))
+        app.context.setBalance(balance)
+        this.setMeBalance(balance)
     }
     
     _onTaiXiuStateChange(data) {
@@ -282,6 +303,7 @@ export default class TaiXiuTreoManager {
                 this._popupComponent.changePhase("Đặt Cược")
                 this._popupComponent.countDownRemainTime(remainTime)
                 this._popupComponent.initHistories(histories)
+                this._popupComponent.updateUserMoney(this._meMoney)
                 break
             case TaiXiuTreoManager.GAME_STATE_BALANCING:
                 
@@ -295,10 +317,10 @@ export default class TaiXiuTreoManager {
                     paybackXiu,
                     taiAmount,
                     xiuAmount,
-                    histories
+                    histories,
+                    balance
                 })
-                // update user money
-                balance && app.context.setBalance(balance)
+               
                 this._resetBetAmount()
                 break
         }
@@ -319,8 +341,7 @@ export default class TaiXiuTreoManager {
     }
     
     _bet() {
-        
-        if(this._currentBet[TaiXiuTreoManager.TAI_ID] + this._currentBet[TaiXiuTreoManager.XIU_ID] > app.context.getMeBalance()) {
+        if(Number(this._currentBet[TaiXiuTreoManager.TAI_ID]) + Number(this._currentBet[TaiXiuTreoManager.XIU_ID]) > this._meMoney) {
             app.system.showToast('Số tiền không đủ')
             return     
         } 

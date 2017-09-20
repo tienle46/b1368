@@ -13,6 +13,7 @@ class TaiXiuTreoPopup extends DialogActor {
             transparentBg: cc.Node,
             bodyNode: cc.Node, // used on onBoardEnding's animations to prevent cc.delayTime
             popupId: cc.Label,
+            userMoneyLbl: cc.Label,
             timeToNextLbl: cc.Label,
             timeToNextBg: cc.Node,
             remainTime: cc.Label,
@@ -60,10 +61,14 @@ class TaiXiuTreoPopup extends DialogActor {
     onLoad() {
         super.onLoad();
         this.transparentBg.on('touchstart', () => {});
-
+        
         this.hideTimeToNext()
         this.hideBetGroupPanel()
         this.iniKeypad()
+    }
+    
+    updateUserMoney(amount) {
+        this.userMoneyLbl.string = numberFormat(amount)
     }
     
     onCloseBtnClick() {
@@ -427,6 +432,7 @@ class TaiXiuTreoPopup extends DialogActor {
             paybackXiu,
             taiAmount,
             xiuAmount,
+            balance,
             histories
         } = data
                 
@@ -437,6 +443,7 @@ class TaiXiuTreoPopup extends DialogActor {
             this.xiuUserBetLabel.string = 0
             this.hideBetGroupPanel()
             this.onUserBetsSuccessfully(taiAmount, xiuAmount)
+            this.updateUserMoney(app.context.getMeBalance())
         })]
         
         if(remainTime > balanceDuration + 2) {
@@ -463,6 +470,8 @@ class TaiXiuTreoPopup extends DialogActor {
                 // balanceChanged -> runAnim changed balance
                 this.balanceChanged(balanceChanged)
                 
+                // update user money
+                balance && app.context.setBalance(balance)
                 // option -> runAnim noticing <-> runAnim open bowl
                 this.isNanChecked() ?  this.showBowl() : this.hideBowl()
                
@@ -488,6 +497,7 @@ class TaiXiuTreoPopup extends DialogActor {
         this.hideBetGroupPanel()
         
         this._remainTime = 0
+        this._selectedBet = null
         this.popupId.string = ""
         
         this.taiUsers.string = 0

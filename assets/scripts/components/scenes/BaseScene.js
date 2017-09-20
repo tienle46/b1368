@@ -77,14 +77,11 @@ export default class BaseScene extends Actor {
             app.taiXiuTreoManager.onDestroy()
             return
         }
-        let isInOutgameScene = app._.includes([
-            app.const.scene.ENTRANCE_SCENE,
-            app.const.scene.LOGIN_SCENE,
-            app.const.scene.REGISTER_SCENE
-        ], name);
-        if(!isInOutgameScene && app.taiXiuTreoManager) 
-            // create mini game
+        
+        if(app.taiXiuTreoManager && (name == app.const.scene.LIST_TABLE_SCENE || name == app.const.scene.DASHBOARD_SCENE) ) {
             app.taiXiuTreoManager.createIcon()
+            return
+        }
     }
 
     onDestroy() {
