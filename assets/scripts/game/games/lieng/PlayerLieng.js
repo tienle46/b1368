@@ -146,7 +146,7 @@ export default class PlayerLieng extends PlayerCardBetTurn {
     
     onGameStarting(data, isJustJoined) {
         super.onGameStarting(data, isJustJoined)
-        this.renderer.betComponentAppearance(true)
+        this.renderer.betComponentAppearance(true && this.isPlaying())
     }
 }
 

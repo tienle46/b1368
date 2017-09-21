@@ -145,16 +145,23 @@ export default class BoardLieng extends BoardCardBetTurn {
         super.onBoardEnding(data);
         
         let _needDownAllCardsOnBoard = false
+        let playerDoesNotSkipCounter = 0
         
         playerIds.forEach((playerId, index) => {
-            if((playingPlayerIds.indexOf(playerId) >= 0) && this.scene.gamePlayers.isItMe(playerId) && skips[index] == true) {
-                _needDownAllCardsOnBoard = skips[index]
-            }
-            
-            if((playingPlayerIds.indexOf(playerId) >= 0) && balanceChangeAmounts[playerId] > 0) {
-                balanceChangeAmounts[playerId] += betAmounts[index]
+            if(playingPlayerIds.indexOf(playerId) >= 0) {
+                if(balanceChangeAmounts[playerId] > 0) {
+                    balanceChangeAmounts[playerId] += betAmounts[index]
+                }
+                if(skips[index] != true)
+                    playerDoesNotSkipCounter ++
             }
         });
+        
+        playerIds.forEach((playerId, index) => {
+            if(this.scene.gamePlayers.isItMe(playerId) && skips[index] == true) {
+                _needDownAllCardsOnBoard = playerDoesNotSkipCounter == 1
+            }
+        })
         
         playerIds.filter(playerId => (playingPlayerIds.indexOf(playerId) >= 0)).forEach((playerId, index) => {
             let model = {

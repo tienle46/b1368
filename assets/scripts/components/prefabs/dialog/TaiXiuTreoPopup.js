@@ -299,7 +299,7 @@ class TaiXiuTreoPopup extends DialogActor {
     
     balanceChanged(balanceChanged) {
         this.showChangedBalance()
-        this.balanceChangedLabel.string = balanceChanged >= 0 ? `+${balanceChanged}`  : `${balanceChanged}`
+        this.balanceChangedLabel.string = balanceChanged >= 0 ? `+${numberFormat(balanceChanged)}`  : `${numberFormat(balanceChanged)}`
         
         let action = cc.spawn(cc.moveTo(4, cc.v2(0, 150)), cc.fadeTo(4, 0))
         this.balanceChangedLabel.node.runAction(action)
