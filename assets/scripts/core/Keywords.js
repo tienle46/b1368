@@ -793,4 +793,5 @@ Keywords.VIP_LEVEL = "vipLevel";
 Keywords.USER_NAME = "username";
 Keywords.ROOM_NAME = "roomName";
 
+Keywords.LIENG_BET_AMOUNT = "betAmounts"; // list total amount user betted in this board
 Keywords.LIENG_CARD_TYPE = "ct"; // SAP(7), LIENG(4, 5, 6), DI(3), DONG_HOA(2), TINH_DIEM(1), UP_BO(0);

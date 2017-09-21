@@ -136,7 +136,8 @@ export default class BoardLieng extends BoardCardBetTurn {
         let playingPlayerIds = this.scene.gamePlayers.filterPlayingPlayer(playerIds);
         let playerInfos = this.scene.gamePlayers.getBasicPlayerInfo(playerIds);
         let skips = utils.getValue(data, app.keywords.GAME_LIST_UP_BO)
-        
+        let betAmounts = utils.getValue(data, app.keywords.LIENG_BET_AMOUNT)
+
         let balanceChangeAmounts = this._getPlayerBalanceChangeAmounts(playerIds, data);
         let playerHandCards = this._getPlayerHandCards(playerIds, data);
         let {resultTexts, gameResultInfos, resultIconPaths} = this._getGameResultInfos(playerIds, playerHandCards, data);
@@ -148,6 +149,10 @@ export default class BoardLieng extends BoardCardBetTurn {
         playerIds.forEach((playerId, index) => {
             if((playingPlayerIds.indexOf(playerId) >= 0) && this.scene.gamePlayers.isItMe(playerId) && skips[index] == true) {
                 _needDownAllCardsOnBoard = skips[index]
+            }
+            
+            if((playingPlayerIds.indexOf(playerId) >= 0) && balanceChangeAmounts[playerId] > 0) {
+                balanceChangeAmounts[playerId] += betAmounts[index]
             }
         });
         
