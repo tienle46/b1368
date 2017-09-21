@@ -19,8 +19,8 @@ app.config.version = 0x00010008;
 app.config.ALPHA_TEST = false;
 
 app.config.packageName = "";
-// app.config.buildType = "full";
-app.config.buildType = "store";
+app.config.buildType = "full";
+// app.config.buildType = "store";
 
 app.config.zone = "XGame";
 app.config.debug = true;
@@ -51,7 +51,7 @@ app.config.fbScope = 'public_profile,email,user_friends';
 app.config.fanpage = `http://m.me/songbaihoanggia`;
 app.config.website = `http://bai1368.com`;
 app.config.supportHotline = '0974851368';
-app.config.otp = false;
+app.config.otp = false; //default false;
 app.config.otp_config = {
     exchange: {
         enabled: true,
