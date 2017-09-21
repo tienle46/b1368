@@ -51,7 +51,8 @@ class TaiXiuTreoPopup extends DialogActor {
             phaseNode: cc.Node,
             phaseText: cc.Label,
             otherBtnNode: cc.Node,
-            optionBtnNode: cc.Node
+            optionBtnNode: cc.Node,
+            historyPrefab: cc.Prefab
         });
        
         this._selectedBet = null
@@ -65,6 +66,8 @@ class TaiXiuTreoPopup extends DialogActor {
         this.hideTimeToNext()
         this.hideBetGroupPanel()
         this.iniKeypad()
+        
+        this._bowlPos = this.bowl.getPosition()
     }
     
     updateUserMoney(amount) {
@@ -150,7 +153,7 @@ class TaiXiuTreoPopup extends DialogActor {
     onHuyBtnClick() {
         if(this._selectedBet === null)
             return
-        app.system.emit('tai.xiu.treo.on.cancel.btn.clicked', this._selectedBet)
+        app.system.emit('tai.xiu.treo.on.cancel.btn.clicked')
     }
     
     placeDices(dices = []) {
@@ -235,6 +238,10 @@ class TaiXiuTreoPopup extends DialogActor {
     showTimeToNext() {
         this.timeToNextBg.active = true
     }    
+    
+    resetBowlPosition() {
+        this.bowl.setPosition(this._bowlPos)
+    }
     
     countDownRemainTimeToNext(remainTime) {
         this.hideRemainTimeBg()
@@ -338,11 +345,15 @@ class TaiXiuTreoPopup extends DialogActor {
         }
     }
     
-    updateBetBalance(amount) {
+    updateBetBalance(amount, isBoth = false) {
         if(this._selectedBet === null)
             return
         
-        this[this._selectedBet == TaiXiuTreoManager.TAI_ID ? 'taiUserBetLabel' : 'xiuUserBetLabel'].string = numberFormat(amount)
+        if(isBoth) {
+            this.taiUserBetLabel.string = numberFormat(amount)
+            this.xiuUserBetLabel.string = numberFormat(amount)
+        } else
+            this[this._selectedBet == TaiXiuTreoManager.TAI_ID ? 'taiUserBetLabel' : 'xiuUserBetLabel'].string = numberFormat(amount)
     }
     
     updateInfo(id, totalTaiCount, totalTaiAmount, totalXiuCount, totalXiuAmount) {
@@ -443,7 +454,7 @@ class TaiXiuTreoPopup extends DialogActor {
             this.xiuUserBetLabel.string = 0
             this.hideBetGroupPanel()
             this.onUserBetsSuccessfully(taiAmount, xiuAmount)
-            this.updateUserMoney(app.context.getMeBalance())
+            this.updateUserMoney(app.context.getMeBalance() + paybackTai + paybackXiu)
         })]
         
         if(remainTime > balanceDuration + 2) {
@@ -468,10 +479,14 @@ class TaiXiuTreoPopup extends DialogActor {
             cc.delayTime(1),
             cc.callFunc(() => {                
                 // balanceChanged -> runAnim changed balance
-                this.balanceChanged(balanceChanged)
+                balanceChanged && this.balanceChanged(balanceChanged)
                 
                 // update user money
-                balance && app.context.setBalance(balance)
+                if(balance) {
+                    app.context.setBalance(balance)
+                    this.updateUserMoney(balance)
+                }
+                
                 // option -> runAnim noticing <-> runAnim open bowl
                 this.isNanChecked() ?  this.showBowl() : this.hideBowl()
                
@@ -490,11 +505,21 @@ class TaiXiuTreoPopup extends DialogActor {
         this.bodyNode.runAction(cc.sequence(actions))
     }
     
+    openHistoryPopup() {
+        return cc.instantiate(this.historyPrefab)
+    }
+    
+    onHistoryBtnClick() {
+        app.system.emit('tai.xiu.treo.history.clicked')
+    }
+    
     resetData(bettedTai, bettedXiu) {
         this.hideBowl()
         this.hideTimeToNext()
         this.clearDices()
         this.hideBetGroupPanel()
+        
+        this.resetBowlPosition()
         
         this._remainTime = 0
         this._selectedBet = null

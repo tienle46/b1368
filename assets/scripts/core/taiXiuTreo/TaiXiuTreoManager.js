@@ -41,6 +41,7 @@ export default class TaiXiuTreoManager {
         app.system.addListener('tai.xiu.treo.on.cancel.btn.clicked', this._cancel, this);
         app.system.addListener('tai.xiu.treo.show.bet.group.panel', this._showBetGroupPanel, this);
         app.system.addListener('tai.xiu.treo.bet.text.clicked', this._onBetTextBtnClick, this);
+        app.system.addListener('tai.xiu.treo.history.clicked', this._onHistoryBtnClicked, this);
     }
     
     _removeEventListeners() {
@@ -55,10 +56,19 @@ export default class TaiXiuTreoManager {
         app.system.removeListener('tai.xiu.treo.on.confirm.bet', this._bet, this);
         app.system.removeListener('tai.xiu.treo.show.bet.group.panel', this._showBetGroupPanel, this);
         app.system.removeListener('tai.xiu.treo.bet.text.clicked', this._onBetTextBtnClick, this);
+        app.system.removeListener('tai.xiu.treo.history.clicked', this._taiXiuTreoHistoryClicked, this);
+    }
+    
+    _onHistoryBtnClicked() {
+        if(!this._isPopupCreated())
+            return
+            
+        let popup = this._popupComponent.openHistoryPopup()
+        app.system.getCurrentSceneNode().addChild(popup, TaiXiuTreoManager.HISTORY_ZINDEX)
     }
     
     _onBetChanged(data) {
-        if(this._isPopupCreated())
+        if(!this._isPopupCreated())
             return
             
         let {
@@ -149,11 +159,11 @@ export default class TaiXiuTreoManager {
     }
     
     setMeBalance(amount) {
-        this._meMoney = amount
+        this._meMoney = Number(amount)
     }
     
     updateMeBalance(amount) {
-        this._meMoney += amount
+        this._meMoney += Number(amount)
     }
     
     _createPopup(data) {
@@ -165,7 +175,7 @@ export default class TaiXiuTreoManager {
         } = data
         this._popupComponent = this._iconComponent.createPopup(data)
         
-        app.system.getCurrentSceneNode().addChild(this._popupComponent.node, 10)
+        app.system.getCurrentSceneNode().addChild(this._popupComponent.node, TaiXiuTreoManager.POPUP_ZINDEX)
         this.setPopupState(TaiXiuTreoManager.POPUP_STATE_OPENING)
 
         this._betted[TaiXiuTreoManager.TAI_ID] = taiAmount || 0
@@ -205,7 +215,10 @@ export default class TaiXiuTreoManager {
         if(typeof this._currentBet[selected] !== 'number') {
             this._currentBet[selected] = 0
         }
-        
+        if(amount > this._meMoney) {
+            app.system.showToast('Số tiền không đủ.')
+            return
+        }
         this._currentBet[selected] += amount
         if(isNaN(this._currentBet[selected])) {
             app.system.showToast('Sai định dạng')
@@ -217,8 +230,11 @@ export default class TaiXiuTreoManager {
         // console.warn('betted', this._betted)
         // console.warn('_currentBet', this._currentBet)
         let prev = this._meMoney
+        
         this.updateMeBalance(-amount)
+        
         this._popupComponent.updateUserMoney(this._meMoney)
+        
         this._popupComponent.updateBetBalance(this._currentBet[selected])
         console.warn('prev', prev, 'amount', amount, 'cur', this._meMoney)
     }
@@ -252,6 +268,8 @@ export default class TaiXiuTreoManager {
         // update user's money
         app.context.setBalance(balance)
         this.setMeBalance(balance)
+        
+        this._popupComponent.updateUserMoney(balance)
     }
     
     _onTaiXiuStateChange(data) {
@@ -303,6 +321,7 @@ export default class TaiXiuTreoManager {
                 this._popupComponent.changePhase("Đặt Cược")
                 this._popupComponent.countDownRemainTime(remainTime)
                 this._popupComponent.initHistories(histories)
+                console.warn('this._meMoney', this._meMoney)
                 this._popupComponent.updateUserMoney(this._meMoney)
                 break
             case TaiXiuTreoManager.GAME_STATE_BALANCING:
@@ -320,7 +339,9 @@ export default class TaiXiuTreoManager {
                     histories,
                     balance
                 })
-               
+                
+                balance && this.setMeBalance(balance)
+                
                 this._resetBetAmount()
                 break
         }
@@ -341,7 +362,12 @@ export default class TaiXiuTreoManager {
     }
     
     _bet() {
-        if(Number(this._currentBet[TaiXiuTreoManager.TAI_ID]) + Number(this._currentBet[TaiXiuTreoManager.XIU_ID]) > this._meMoney) {
+        console.warn('_bet cur Tai', Number(this._currentBet[TaiXiuTreoManager.TAI_ID]))
+        console.warn('_bet cur Xiu', Number(this._currentBet[TaiXiuTreoManager.XIU_ID]))
+        console.warn('_bet cur Tong', Number(this._currentBet[TaiXiuTreoManager.TAI_ID]) + Number(this._currentBet[TaiXiuTreoManager.XIU_ID]))
+        console.warn('_bet meMoney', this._meMoney)
+        let realMoney = app.context.getMeBalance()
+        if(Number(this._currentBet[TaiXiuTreoManager.TAI_ID]) + Number(this._currentBet[TaiXiuTreoManager.XIU_ID]) > realMoney) {
             app.system.showToast('Số tiền không đủ')
             return     
         } 
@@ -355,12 +381,18 @@ export default class TaiXiuTreoManager {
         })
     }
     
-    _cancel(selected) {
+    _cancel() {
         if(!this._isPopupCreated())
             return
-        this._currentBet[selected] = 0
+        
+        this.updateMeBalance(this._currentBet[TaiXiuTreoManager.TAI_ID] + this._currentBet[TaiXiuTreoManager.XIU_ID])
+        
+        this._currentBet[TaiXiuTreoManager.TAI_ID] = 0
+        this._currentBet[TaiXiuTreoManager.XIU_ID] = 0
+
         // let realAmount = this._betted[selected] + this._currentBet[selected]
-        this._popupComponent.updateBetBalance(this._currentBet[selected])
+        this._popupComponent.updateUserMoney(this._meMoney)
+        this._popupComponent.updateBetBalance(0, true)
     }
     
     onDestroy(popupOnly = false) { 
@@ -460,3 +492,7 @@ TaiXiuTreoManager.GAME_STATE_END = 3
 TaiXiuTreoManager.POPUP_STATE_INITIALIZE = 0
 TaiXiuTreoManager.POPUP_STATE_OPENING = 1
 TaiXiuTreoManager.POPUP_STATE_CLOSED = 2
+
+
+TaiXiuTreoManager.POPUP_ZINDEX = 10
+TaiXiuTreoManager.HISTORY_ZINDEX = 20
