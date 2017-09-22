@@ -1,11 +1,11 @@
 import app from 'app'
-import DialogActor from 'DialogActor'
+import Actor from 'Actor'
 // import { destroy } from 'CCUtils'
 import { numberFormat } from 'GeneralUtils'
 import { formatBalanceShort } from 'GameUtils'
 import TaiXiuTreoManager from 'TaiXiuTreoManager'
 
-class TaiXiuTreoPopup extends DialogActor {
+class TaiXiuTreoPopup extends Actor {
     constructor() {
         super();
         
@@ -52,7 +52,11 @@ class TaiXiuTreoPopup extends DialogActor {
             phaseText: cc.Label,
             otherBtnNode: cc.Node,
             optionBtnNode: cc.Node,
-            historyPrefab: cc.Prefab
+            historyPrefab: cc.Prefab,
+            lastHistoricalSprites: {
+                default: [],
+                type: cc.SpriteFrame
+            }
         });
        
         this._selectedBet = null
@@ -66,8 +70,27 @@ class TaiXiuTreoPopup extends DialogActor {
         this.hideTimeToNext()
         this.hideBetGroupPanel()
         this.iniKeypad()
-        
+               
         this._bowlPos = this.bowl.getPosition()
+    }
+    
+    onEnable() {
+        super.onEnable()
+        app.system.addAppStateListener(this)    
+    }
+    
+    _addGlobalListener() {
+       super._addGlobalListener()
+       app.system.addListener('update.count.down', this._onUpdateCountDown, this);
+    }
+
+    _removeGlobalListener() {
+       super._removeGlobalListener()
+       app.system.removeListener('update.count.down', this._onUpdateCountDown, this);
+    }
+    
+    _onUpdateCountDown(remainTime) {
+        this._remainTime = remainTime
     }
     
     updateUserMoney(amount) {
@@ -117,6 +140,10 @@ class TaiXiuTreoPopup extends DialogActor {
         app.system.emit('tai.xiu.treo.on.bet.btn.clicked', amount, this._selectedBet)
     }
     
+    onAppStateChange(state) {
+        app.system.emit('tai.xiu.treo.app.state.changed', state)  
+    }
+    
     hideRemainTimeBg() {
         this.remainTimeBg.active = false
     }
@@ -131,6 +158,11 @@ class TaiXiuTreoPopup extends DialogActor {
     
     showBowl() {
         this.bowl.active = true  
+    }
+    
+    onNanBtnClick() {
+        console.warn('this.nanCheckBox.isChecked', this.nanCheckBox.isChecked)
+        app.system.emit('tai.xiu.treo.nan.btn.clicked', this.nanCheckBox.isChecked)
     }
     
     isNanChecked() {
@@ -276,7 +308,7 @@ class TaiXiuTreoPopup extends DialogActor {
                 if(emitter && this._remainTime == 0) {
                     app.system.emit(emitter)
                 }
-                lbl.node.color = this._remainTime <= 5 ? cc.Color.RED : cc.Color.WHITE
+                lbl.node.color = this._remainTime <= 5 ? cc.Color.RED : cc.Color.BLACK
                 
                 if(this._remainTime < 0) {
                     this._remainTime = 0
@@ -381,7 +413,7 @@ class TaiXiuTreoPopup extends DialogActor {
         })
     }
     
-    initHistories(histories) {
+    initHistories(histories, state) {
         if(!histories || histories.length < 1)
             return
         
@@ -393,19 +425,23 @@ class TaiXiuTreoPopup extends DialogActor {
         
         this.historicalContainer.removeAllChildren()
         histories.forEach((id, index) => {
-            this.historicalSpriteItem.spriteFrame = this.historicalSprites[TaiXiuIdToSpriteId[id]]
+            this.historicalSpriteItem.spriteFrame = (index == histories.length - 1) ? 
+                        this.lastHistoricalSprites[TaiXiuIdToSpriteId[id]] :
+                        this.historicalSprites[TaiXiuIdToSpriteId[id]]
+                        
             let item = cc.instantiate(this.historicalSpriteItem.node)
             item.active = true
             
             this.historicalContainer.addChild(item)
             if(index == histories.length - 1) {
-                
-                let y = item.getPosition().y
-                let action = cc.sequence(
-                    cc.moveTo(.3, cc.v2(this.node.getPosition().x, y + 20)), 
-                    cc.moveTo(.3, cc.v2(this.node.getPosition().x, y))
-                ).easing(cc.easeOut(2)).repeatForever()
-                item.runAction(action)
+                if(state === TaiXiuTreoManager.GAME_STATE_END) {
+                    let y = item.getPosition().y
+                    let action = cc.sequence(
+                        cc.moveTo(.4, cc.v2(this.node.getPosition().x, y + 10)), 
+                        cc.moveTo(.4, cc.v2(this.node.getPosition().x, y))
+                    ).easing(cc.easeOut(2)).repeatForever()
+                    item.runAction(action)
+                }
             }
         })
     }
@@ -434,7 +470,7 @@ class TaiXiuTreoPopup extends DialogActor {
         return e === 0 || e
     }
     
-    onBoardEnding(remainTime, data) {
+    onBoardEnding(remainTime, data, state) {
         let {
             balanceChanged,
             option,
@@ -457,8 +493,9 @@ class TaiXiuTreoPopup extends DialogActor {
             this.updateUserMoney(app.context.getMeBalance() + paybackTai + paybackXiu)
         })]
         
+        this.hideRemainTimeBg()
+        
         if(remainTime > balanceDuration + 2) {
-           
             let balancePhaseActions = [
                 cc.callFunc(() => {
                     this.changePhase("Cân Kèo")
@@ -471,10 +508,12 @@ class TaiXiuTreoPopup extends DialogActor {
             actions = [...actions, ...balancePhaseActions]
         }
         
+        this._remainTime = remainTime
+        
         let endActions = [
             cc.callFunc(() => {
                 this.changePhase("Mở Bát")
-                this.countDownRemainTimeToNext(remainTime)
+                this.countDownRemainTimeToNext(this._remainTime)
             }),
             cc.delayTime(1),
             cc.callFunc(() => {                
@@ -496,7 +535,7 @@ class TaiXiuTreoPopup extends DialogActor {
                 // runAnim noticing
                 this.notification(option)
                 
-                this.initHistories(histories)
+                this.initHistories(histories, state)
             })
         ]
         

@@ -25,6 +25,11 @@ export default class TaiXiuTreoManager {
         this._tracker = {} // track the requesting about follow/unfollow between the boards
         
         this._lastPos = null // the last ico's position
+        
+        this._nanChecked = false
+        
+        this._duration = 0 // phase duration
+        this._startedTime = 0 // phase started time
     }
 
     _addEventListeners() {
@@ -34,14 +39,16 @@ export default class TaiXiuTreoManager {
         app.system.addListener(app.commands.MINIGAME_TAI_XIU_BET, this._onTaiXiuBet, this);
         app.system.addListener(app.commands.MINIGAME_TAI_XIU_REMAIN_TIME, this._updateIconRemainTime, this);
         app.system.addListener(app.commands.MINIGAME_TAI_XIU_BET_CHANGED, this._onBetChanged, this);
-        app.system.addListener('tai.xiu.treo.on.bet.btn.clicked', this._onBetItemBtnClick, this);
+        app.system.addListener('tai.xiu.treo.on.bet.btn.clicked', this._onBetItemBtnClicked, this);
         app.system.addListener('tai.xiu.treo.on.close.btn.clicked', this._onClosePopup, this);
         app.system.addListener('tai.xiu.treo.preparing.new.game', this._onNewBoardIsComming, this);
         app.system.addListener('tai.xiu.treo.on.confirm.bet', this._bet, this);
         app.system.addListener('tai.xiu.treo.on.cancel.btn.clicked', this._cancel, this);
         app.system.addListener('tai.xiu.treo.show.bet.group.panel', this._showBetGroupPanel, this);
-        app.system.addListener('tai.xiu.treo.bet.text.clicked', this._onBetTextBtnClick, this);
+        app.system.addListener('tai.xiu.treo.bet.text.clicked', this._onBetTextBtnClicked, this);
         app.system.addListener('tai.xiu.treo.history.clicked', this._onHistoryBtnClicked, this);
+        app.system.addListener('tai.xiu.treo.nan.btn.clicked', this._onNanBtnClicked, this);
+        app.system.addListener('tai.xiu.treo.app.state.changed', this._onAppStateChanged, this);
     }
     
     _removeEventListeners() {
@@ -50,13 +57,31 @@ export default class TaiXiuTreoManager {
         app.system.removeListener(app.commands.MINIGAME_TAI_XIU_BET, this._onTaiXiuBet, this);
         app.system.removeListener(app.commands.MINIGAME_TAI_XIU_REMAIN_TIME, this._updateIconRemainTime, this);
         app.system.removeListener(app.commands.MINIGAME_TAI_XIU_BET_CHANGED, this._onBetChanged, this);
-        app.system.removeListener('tai.xiu.treo.on.bet.btn.clicked', this._onBetItemBtnClick, this);
+        app.system.removeListener('tai.xiu.treo.on.bet.btn.clicked', this._onBetItemBtnClicked, this);
         app.system.removeListener('tai.xiu.treo.on.close.btn.clicked', this._onClosePopup, this);
         app.system.removeListener('tai.xiu.treo.preparing.new.game', this._onNewBoardIsComming, this);
         app.system.removeListener('tai.xiu.treo.on.confirm.bet', this._bet, this);
+        app.system.removeListener('tai.xiu.treo.on.cancel.btn.clicked', this._cancel, this);
         app.system.removeListener('tai.xiu.treo.show.bet.group.panel', this._showBetGroupPanel, this);
-        app.system.removeListener('tai.xiu.treo.bet.text.clicked', this._onBetTextBtnClick, this);
+        app.system.removeListener('tai.xiu.treo.bet.text.clicked', this._onBetTextBtnClicked, this);
         app.system.removeListener('tai.xiu.treo.history.clicked', this._taiXiuTreoHistoryClicked, this);
+        app.system.removeListener('tai.xiu.treo.nan.btn.clicked', this._onNanBtnClicked, this);
+        app.system.removeListener('tai.xiu.treo.app.state.changed', this._onAppStateChanged, this);
+    }
+    
+    _onAppStateChanged(state) {
+        if(state == 'active') {
+            let deltaTime = parseInt((new Date().getTime() - this._startedTime)/1000)
+            if(deltaTime > this._duration) {
+                app.service.send({ cmd: app.commands.MINIGAME_TAI_XIU_GET_STATE })
+            } else { // phase is still running, update counter
+                app.system.emit('update.count.down', this._duration - deltaTime, this._boardState)
+            }
+        }      
+    }
+    
+    _onNanBtnClicked(state) {
+        this._nanChecked = state 
     }
     
     _onHistoryBtnClicked() {
@@ -90,7 +115,7 @@ export default class TaiXiuTreoManager {
         this._iconComponent.node.active = remainTime >= 0
     }
     
-    _onBetTextBtnClick(text, selected) {
+    _onBetTextBtnClicked(text, selected) {
         if(!this._isPopupCreated())
             return
     
@@ -118,6 +143,10 @@ export default class TaiXiuTreoManager {
         // console.warn('_currentBet', this._currentBet)
         // console.warn('realAmount', realAmount)
         this._popupComponent.updateBetBalance(realAmount)                 
+    }
+    
+    isNan() {
+        return this._nanChecked
     }
     
     _showBetGroupPanel() {
@@ -167,16 +196,18 @@ export default class TaiXiuTreoManager {
     }
     
     _createPopup(data) {
-        if(!this._isIconCreated() || this._popupState !== TaiXiuTreoManager.POPUP_STATE_INITIALIZE)
+        if(!this._isIconCreated())
             return
         let {
             taiAmount,
             xiuAmount
         } = data
-        this._popupComponent = this._iconComponent.createPopup(data)
         
-        app.system.getCurrentSceneNode().addChild(this._popupComponent.node, TaiXiuTreoManager.POPUP_ZINDEX)
-        this.setPopupState(TaiXiuTreoManager.POPUP_STATE_OPENING)
+        if(!this._isPopupCreated()) {
+            this._popupComponent = this._iconComponent.createPopup(data)
+            app.system.getCurrentSceneNode().addChild(this._popupComponent.node, TaiXiuTreoManager.POPUP_ZINDEX)
+            this.setPopupState(TaiXiuTreoManager.POPUP_STATE_OPENING)
+        }
 
         this._betted[TaiXiuTreoManager.TAI_ID] = taiAmount || 0
         this._betted[TaiXiuTreoManager.XIU_ID] = xiuAmount || 0
@@ -204,7 +235,7 @@ export default class TaiXiuTreoManager {
         return this._popupComponent && this._popupComponent.node && this._popupComponent.node.isChildOf(app.system.getCurrentSceneNode()) 
     }
     
-    _onBetItemBtnClick(amount, selected) {
+    _onBetItemBtnClicked(amount, selected) {
         if(!this._isPopupCreated())
             return
         
@@ -229,20 +260,14 @@ export default class TaiXiuTreoManager {
         
         // console.warn('betted', this._betted)
         // console.warn('_currentBet', this._currentBet)
-        let prev = this._meMoney
-        
         this.updateMeBalance(-amount)
-        
         this._popupComponent.updateUserMoney(this._meMoney)
-        
         this._popupComponent.updateBetBalance(this._currentBet[selected])
-        console.warn('prev', prev, 'amount', amount, 'cur', this._meMoney)
     }
     
     _onTaiXiuBet(data) {
         if(!this._isPopupCreated() && !this._isIconCreated())
             return
-        console.warn('_onTaiXiuBet', data)
         
         let {
             tai, // số tiền user(me) mới gửi lên
@@ -278,6 +303,7 @@ export default class TaiXiuTreoManager {
         if(!this._isPopupCreated() || !this._isIconCreated()) {
             return        
         }
+        
         let {
             balance, // <- state 3
             betTemplates,
@@ -306,6 +332,9 @@ export default class TaiXiuTreoManager {
         console.warn('state', state, 'Id', this._currentId, data)
         this.setBoardState(state)
         
+        this._setDuration(remainTime) 
+        this._setTime()
+
         switch(state) {
             case TaiXiuTreoManager.GAME_STATE_WAIT:
             case TaiXiuTreoManager.GAME_STATE_BET:
@@ -320,8 +349,7 @@ export default class TaiXiuTreoManager {
                 
                 this._popupComponent.changePhase("Đặt Cược")
                 this._popupComponent.countDownRemainTime(remainTime)
-                this._popupComponent.initHistories(histories)
-                console.warn('this._meMoney', this._meMoney)
+                this._popupComponent.initHistories(histories, state)
                 this._popupComponent.updateUserMoney(this._meMoney)
                 break
             case TaiXiuTreoManager.GAME_STATE_BALANCING:
@@ -338,7 +366,7 @@ export default class TaiXiuTreoManager {
                     xiuAmount,
                     histories,
                     balance
-                })
+                }, state)
                 
                 balance && this.setMeBalance(balance)
                 
@@ -350,6 +378,14 @@ export default class TaiXiuTreoManager {
         this._popupComponent.initBetOption(betTemplates)
     }
     
+    _setDuration(duration) {
+        this._duration = duration // phase duration
+    }
+    
+    _setTime() {
+        this._startedTime = new Date().getTime() // phase started time
+    }
+
     _hideIcon() {
         this._iconComponent.node.active = false    
     }
@@ -362,10 +398,6 @@ export default class TaiXiuTreoManager {
     }
     
     _bet() {
-        console.warn('_bet cur Tai', Number(this._currentBet[TaiXiuTreoManager.TAI_ID]))
-        console.warn('_bet cur Xiu', Number(this._currentBet[TaiXiuTreoManager.XIU_ID]))
-        console.warn('_bet cur Tong', Number(this._currentBet[TaiXiuTreoManager.TAI_ID]) + Number(this._currentBet[TaiXiuTreoManager.XIU_ID]))
-        console.warn('_bet meMoney', this._meMoney)
         let realMoney = app.context.getMeBalance()
         if(Number(this._currentBet[TaiXiuTreoManager.TAI_ID]) + Number(this._currentBet[TaiXiuTreoManager.XIU_ID]) > realMoney) {
             app.system.showToast('Số tiền không đủ')
@@ -385,7 +417,15 @@ export default class TaiXiuTreoManager {
         if(!this._isPopupCreated())
             return
         
-        this.updateMeBalance(this._currentBet[TaiXiuTreoManager.TAI_ID] + this._currentBet[TaiXiuTreoManager.XIU_ID])
+        if(typeof this._currentBet[TaiXiuTreoManager.XIU_ID] === 'string') {
+            this._currentBet[TaiXiuTreoManager.XIU_ID] = ""
+        }
+
+        if(typeof this._currentBet[TaiXiuTreoManager.TAI_ID] === 'string') {
+            this._currentBet[TaiXiuTreoManager.TAI_ID] = ""
+        }
+        
+        this.updateMeBalance(Number(this._currentBet[TaiXiuTreoManager.TAI_ID]) + Number(this._currentBet[TaiXiuTreoManager.XIU_ID]))
         
         this._currentBet[TaiXiuTreoManager.TAI_ID] = 0
         this._currentBet[TaiXiuTreoManager.XIU_ID] = 0
@@ -400,6 +440,8 @@ export default class TaiXiuTreoManager {
         this._boardState = TaiXiuTreoManager.GAME_STATE_WAIT
         this._currentId = null
         this._tracker = {}
+        this._duration = 0
+        this._startedTime = 0
         
         if(popupOnly) {
             this._popupComponent = null

@@ -38,7 +38,6 @@ class TaiXiuTreo extends Actor {
 
     _removeGlobalListener() {
         super._removeGlobalListener();
-        app.system.addListener(app.commands.MINIGAME_TAI_XIU_GET_STATE, this._updateRemainTime, this);
     }
     
     onDestroy() {
