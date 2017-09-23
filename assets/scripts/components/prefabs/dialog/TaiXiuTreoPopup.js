@@ -44,7 +44,7 @@ class TaiXiuTreoPopup extends Actor {
             betItemAmount: cc.Label,
             dices: cc.SpriteAtlas,
             diceSprite: cc.Sprite,
-            placedArea: cc.Node,
+            diceArea: cc.Node,
             bowl: cc.Node,
             balanceChangedNode: cc.Node,
             balanceChangedLabel: cc.Label,
@@ -61,6 +61,9 @@ class TaiXiuTreoPopup extends Actor {
        
         this._selectedBet = null
         this._remainTime = 0
+        this._diceNodes = []
+        this._waitUntilUserOpensBowl = null
+        this._endPhaseRunning = false
     }
 
     onLoad() {
@@ -72,6 +75,8 @@ class TaiXiuTreoPopup extends Actor {
         this.iniKeypad()
                
         this._bowlPos = this.bowl.getPosition()
+        
+        this.bowl.on(cc.Node.EventType.TOUCH_MOVE, this._onBowlMoving, this)
     }
     
     onEnable() {
@@ -89,8 +94,11 @@ class TaiXiuTreoPopup extends Actor {
        app.system.removeListener('update.count.down', this._onUpdateCountDown, this);
     }
     
-    _onUpdateCountDown(remainTime) {
+    _onUpdateCountDown(remainTime, state) {
         this._remainTime = remainTime
+        if(state !== TaiXiuTreoManager.GAME_STATE_END) {
+            this._resetIconAnimation()
+        }
     }
     
     updateUserMoney(amount) {
@@ -111,6 +119,7 @@ class TaiXiuTreoPopup extends Actor {
     
     onDestroy() {
         super.onDestroy();
+        this._diceNodes = []
     }
     
     onTaiZoneClicked() {
@@ -161,7 +170,6 @@ class TaiXiuTreoPopup extends Actor {
     }
     
     onNanBtnClick() {
-        console.warn('this.nanCheckBox.isChecked', this.nanCheckBox.isChecked)
         app.system.emit('tai.xiu.treo.nan.btn.clicked', this.nanCheckBox.isChecked)
     }
     
@@ -170,7 +178,8 @@ class TaiXiuTreoPopup extends Actor {
     }
     
     clearDices() {
-        this.placedArea.removeAllChildren()
+        this.diceArea.removeAllChildren()
+        this._diceNodes = []
     }
     
     onKeyBtnClick(e) {
@@ -190,28 +199,66 @@ class TaiXiuTreoPopup extends Actor {
     
     placeDices(dices = []) {
         this.clearDices()
-        
-        let randomPosInRange = [{ x: app._.random(-1, 1), y: 1 }, { x: 1, y: -1 }, { x: -1, y: -1 }]
-        let acceptedArea = this.placedArea.getContentSize()
-        let size = this.diceSprite.node.getContentSize()
+
+        let positions = [{ x: 4, y: 74.9 }, { x: 33.3, y: 27.5 }, { x: -30.3, y: 27 }]
         
         dices.forEach((dice, i) => {
-            let posX = app._.random(app._.random(0, 1 / 2), randomPosInRange[i].x * (acceptedArea.width - size.width) / 2)
-            // let posX = randomPosInRange[i].x * (acceptedArea.width/2 - size.width) / 2
-            if(i != 0) 
-                // posX <<= 1 
-                posX = randomPosInRange[i].x * (acceptedArea.width - size.width) / 2 + randomPosInRange[i].x * app._.random(1/4, 1/2)
-            
-            let posY = app._.random(app._.random(0, 1 / 2), randomPosInRange[i].y * (acceptedArea.height - size.height) / 2)
-           
+            let {x, y} = positions[i]
             this.diceSprite.spriteFrame = this.dices.getSpriteFrame(`dice_${dice}`)
             
             let node = cc.instantiate(this.diceSprite.node)
             node.active = true
-            node.setPosition(cc.v2(posX, posY))
+            node.setPosition(cc.v2(x, y))
             
-            this.placedArea.addChild(node)
+            this._diceNodes.push(node)
+            
+            this.diceArea.addChild(node)
         });
+    }
+    
+    _getPointOfDice(diceNode) {
+        let localPos = diceNode.getPosition()
+        // let localPos = this.bowl.parent.convertToNodeSpace(diceNode.getPosition())
+        // let worldPos = diceNode.parent.convertToWorldSpace(diceNode.getPosition())
+        localPos.y *= 4 / 3
+        return {x: localPos.x, y: localPos.y}
+    }
+    
+    _distanceBetween2Points(p1, p2) {
+        return Math.sqrt(Math.pow(p2.x - p1.x, 2) + Math.pow(p2.y - p1.y, 2))
+    }
+    
+    _arePointsOutOfBowl(points) {
+        console.warn('points', points)
+        
+        let worldBowlPos = this.bowl.getPosition()
+        // let worldBowlPos = this.bowl.parent.convertToWorldSpace(this.bowl.getPosition())
+        console.warn('worldBowlPos', worldBowlPos)
+        
+        let radius = this.getBowlRadius()
+        console.warn('radius', radius)
+        
+        let distances = []
+        
+        points.forEach(point => {
+            distances.push(this._distanceBetween2Points(point, worldBowlPos))
+        })
+        
+        console.warn('distances', distances)
+        
+        return distances.every(distance => distance > radius)
+    }
+    
+    _onBowlMoving(e) {
+        let points = this._diceNodes.map(dice => this._getPointOfDice(dice))
+        
+        if(this._arePointsOutOfBowl(points) && !this._endPhaseRunning) {
+            this._waitUntilUserOpensBowl && this._waitUntilUserOpensBowl()
+        }
+    }
+    
+    getBowlRadius() {
+        return (this.bowl.getContentSize().width - 10 )/ 2 
     }
     
     hideBetGroupPanel() {
@@ -291,9 +338,8 @@ class TaiXiuTreoPopup extends Actor {
     }
     
     notification(optionId) {
+        this._resetIconAnimation()
         let target = optionId == TaiXiuTreoManager.TAI_ID ? this.taiIcon : this.xiuIcon
-        
-        target.stopAllActions()
         
         target.runAction(cc.repeatForever(cc.sequence(cc.scaleTo(.1, 1.2, 1.2), cc.scaleTo(.1, 1, 1))))
     }
@@ -470,7 +516,7 @@ class TaiXiuTreoPopup extends Actor {
         return e === 0 || e
     }
     
-    onBoardEnding(remainTime, data, state) {
+    onBoardEnding(duration, remainTime, data, state) {
         let {
             balanceChanged,
             option,
@@ -482,66 +528,77 @@ class TaiXiuTreoPopup extends Actor {
             balance,
             histories
         } = data
-                
-        let balanceDuration = 3 // 3s to run animation for balancing phase
-        let actions = []
-        actions = [cc.callFunc(() => {
-            this.taiUserBetLabel.string = 0
-            this.xiuUserBetLabel.string = 0
-            this.hideBetGroupPanel()
-            this.onUserBetsSuccessfully(taiAmount, xiuAmount)
-            this.updateUserMoney(app.context.getMeBalance() + paybackTai + paybackXiu)
-        })]
         
         this.hideRemainTimeBg()
         
-        if(remainTime > balanceDuration + 2) {
-            let balancePhaseActions = [
+        let balanceDuration = 3 // 3s to run animation for balancing phase
+        
+        let actions = [
+            cc.callFunc(() => {
+                this.taiUserBetLabel.string = 0
+                this.xiuUserBetLabel.string = 0
+                this.hideBetGroupPanel()
+                this.onUserBetsSuccessfully(taiAmount, xiuAmount)
+                this.updateUserMoney(app.context.getMeBalance() + paybackTai + paybackXiu)
+            }),
+            ...(remainTime > duration - (balanceDuration + 1) ? [
                 cc.callFunc(() => {
                     this.changePhase("Cân Kèo")
                 }),
                 cc.delayTime(balanceDuration),
+            ]: [])
+        ]
+        
+        this._remainTime = remainTime - balanceDuration
+        
+        let beforeEndPhaseActions = [
+            ...(remainTime > duration - (balanceDuration + 3) ? [
                 cc.callFunc(() => {
-                    remainTime -= balanceDuration    
+                    this.changePhase("Mở Bát")
                 })
-            ]
-            actions = [...actions, ...balancePhaseActions]
-        }
-        
-        this._remainTime = remainTime
-        
-        let endActions = [
-            cc.callFunc(() => {
-                this.changePhase("Mở Bát")
-                this.countDownRemainTimeToNext(this._remainTime)
-            }),
+            ] : []),
             cc.delayTime(1),
-            cc.callFunc(() => {                
-                // balanceChanged -> runAnim changed balance
-                balanceChanged && this.balanceChanged(balanceChanged)
+            cc.callFunc(() => {
+                this._remainTime -= 1
                 
-                // update user money
-                if(balance) {
-                    app.context.setBalance(balance)
-                    this.updateUserMoney(balance)
+                this.countDownRemainTimeToNext(this._remainTime)
+                
+                if(this.isNanChecked()) {
+                    this.showBowl()
+                    this._waitUntilUserOpensBowl = this.endPhaseAnimation.bind(this, balance, balanceChanged, option, histories, state)
+                } else {
+                    this.hideBowl()
+                    this.endPhaseAnimation(balance, balanceChanged, option, histories, state)                
                 }
                 
-                // option -> runAnim noticing <-> runAnim open bowl
-                this.isNanChecked() ?  this.showBowl() : this.hideBowl()
-               
                 // runAnim open bowl
                 this.placeDices(dices)
-                
-                // runAnim noticing
-                this.notification(option)
-                
-                this.initHistories(histories, state)
             })
         ]
         
-        actions = [...actions, ...endActions]
+        actions = [...actions, ...beforeEndPhaseActions]
         
         this.bodyNode.runAction(cc.sequence(actions))
+    }
+    
+    endPhaseAnimation(balance, balanceChanged, option, histories, state) {
+        this.hideBowl()
+        
+        this._endPhaseRunning = true
+        
+        // balanceChanged -> runAnim changed balance
+        balanceChanged && this.balanceChanged(balanceChanged)
+        
+        // update user money
+        if(balance) {
+            app.context.setBalance(balance)
+            this.updateUserMoney(balance)
+        }
+        
+        // runAnim noticing
+        this.notification(option)
+        
+        this.initHistories(histories, state)    
     }
     
     openHistoryPopup() {
@@ -563,27 +620,43 @@ class TaiXiuTreoPopup extends Actor {
         this._remainTime = 0
         this._selectedBet = null
         this.popupId.string = ""
+        this._waitUntilUserOpensBowl = null
+        this._endPhaseRunning = false
         
+        this._resetLbls()
+        
+        this.taiUserBettedLabel.string = bettedTai
+        this.xiuUserBettedLabel.string = bettedXiu
+        
+        this._resetIconAnimation()
+        
+        this.hideChangedBalance()
+        this.hidePhase()
+    }
+    
+    _resetLbls() {
         this.taiUsers.string = 0
         this.xiuUsers.string = 0
         
         this.taiTotalMoney.string = 0
         this.xiuTotalMoney.string = 0
         
-        this.taiUserBettedLabel.string = bettedTai
-        this.xiuUserBettedLabel.string = bettedXiu
-        
         this.taiUserBetLabel.string = 0
         this.xiuUserBetLabel.string = 0
-        
+    }
+    
+    _resetIconAnimation() {
         this.taiIcon.stopAllActions()
         this.taiIcon.setScale(1, 1)
         
         this.xiuIcon.stopAllActions()
         this.xiuIcon.setScale(1, 1)
-        
-        this.hideChangedBalance()
-        this.hidePhase()
+    }
+    
+    update(dt) {
+        if(app.taiXiuTreoManager.isEnding() && this._remainTime <= 5 && !this._endPhaseRunning) {
+            this._waitUntilUserOpensBowl && this._waitUntilUserOpensBowl()
+        }
     }
 }
 

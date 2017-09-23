@@ -26,7 +26,7 @@ export default class TaiXiuTreoManager {
         
         this._lastPos = null // the last ico's position
         
-        this._nanChecked = false
+        this._nanState = false
         
         this._duration = 0 // phase duration
         this._startedTime = 0 // phase started time
@@ -81,7 +81,7 @@ export default class TaiXiuTreoManager {
     }
     
     _onNanBtnClicked(state) {
-        this._nanChecked = state 
+        this._nanState = state 
     }
     
     _onHistoryBtnClicked() {
@@ -146,7 +146,7 @@ export default class TaiXiuTreoManager {
     }
     
     isNan() {
-        return this._nanChecked
+        return this._nanState
     }
     
     _showBetGroupPanel() {
@@ -162,6 +162,10 @@ export default class TaiXiuTreoManager {
     
     allowBetting() {
         return this._boardState === TaiXiuTreoManager.GAME_STATE_BET     
+    }
+    
+    isEnding() {
+        return this._boardState === TaiXiuTreoManager.GAME_STATE_END   
     }
     
     _onNewBoardIsComming() {
@@ -356,7 +360,7 @@ export default class TaiXiuTreoManager {
                 
                 break
             case TaiXiuTreoManager.GAME_STATE_END:
-                this._popupComponent.onBoardEnding(remainTime, {
+                this._popupComponent.onBoardEnding(duration, remainTime, {
                     balanceChanged,
                     option,
                     dices,
