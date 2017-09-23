@@ -304,11 +304,14 @@ class TaiXiuTreoPopup extends Actor {
         this._countDownRemainTime(this.remainTime, remainTime)
     }
     
-    notification(optionId) {
+    notification(optionId, time) {
         this._resetIconAnimation()
         let target = optionId == TaiXiuTreoManager.TAI_ID ? this.taiIcon : this.xiuIcon
-        
-        target.runAction(cc.repeatForever(cc.sequence(cc.scaleTo(.1, 1.2, 1.2), cc.scaleTo(.1, 1, 1))))
+        let action = cc.sequence(cc.scaleTo(.1, 1.2, 1.2), cc.scaleTo(.1, 1, 1))
+        target.runAction(action.repeatForever())
+        target.runAction(cc.sequence(cc.delayTime(time >= 2? time - 2 : 0), cc.callFunc(() => {
+            this._resetIconAnimation()
+        })))
     }
     
     showChangedBalance() {
@@ -461,7 +464,6 @@ class TaiXiuTreoPopup extends Actor {
                 this.xiuUserBetLabel.string = 0
                 this.hideBetGroupPanel()
                 this.onUserBetsSuccessfully(taiAmount, xiuAmount)
-                this.updateUserMoney(app.context.getMeBalance() + paybackTai + paybackXiu)
             }),
             ...(remainTime > duration - (balanceDuration + 1) ? [
                 cc.callFunc(() => {
@@ -474,6 +476,10 @@ class TaiXiuTreoPopup extends Actor {
         this._remainTime = remainTime - balanceDuration
         
         let beforeEndPhaseActions = [
+            cc.callFunc(() => {
+                app.context.setBalance(app.context.getMeBalance() + paybackTai + paybackXiu)
+                this.updateUserMoney(app.context.getMeBalance())
+            }),
             ...(remainTime > duration - (balanceDuration + 3) ? [
                 cc.callFunc(() => {
                     this.changePhase("Mở Bát")
@@ -518,7 +524,7 @@ class TaiXiuTreoPopup extends Actor {
         }
         
         // runAnim noticing
-        this.notification(option)
+        this.notification(option, this._remainTime)
         
         this.initHistories(histories, state)    
     }
