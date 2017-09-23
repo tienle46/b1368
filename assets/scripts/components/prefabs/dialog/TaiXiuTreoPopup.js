@@ -77,6 +77,8 @@ class TaiXiuTreoPopup extends Actor {
         this._bowlPos = this.bowl.getPosition()
         
         this.bowl.on(cc.Node.EventType.TOUCH_MOVE, this._onBowlMoving, this)
+        
+        this.nanCheckBox.isChecked = app.taiXiuTreoManager.isNan()
     }
     
     onEnable() {
@@ -84,14 +86,25 @@ class TaiXiuTreoPopup extends Actor {
         app.system.addAppStateListener(this)    
     }
     
+    onDestroy() {
+        super.onDestroy()
+        app.system.removeAppStateListener(this)
+        
+        this._selectedBet = null
+        this._remainTime = 0
+        this._diceNodes = []
+        this._waitUntilUserOpensBowl = null
+        this._endPhaseRunning = false    
+    }
+    
     _addGlobalListener() {
        super._addGlobalListener()
-       app.system.addListener('update.count.down', this._onUpdateCountDown, this);
+       app.system.addListener('tai.xiu.treo.popup.update.count.down', this._onUpdateCountDown, this);
     }
 
     _removeGlobalListener() {
        super._removeGlobalListener()
-       app.system.removeListener('update.count.down', this._onUpdateCountDown, this);
+       app.system.removeListener('tai.xiu.treo.popup.update.count.down', this._onUpdateCountDown, this);
     }
     
     _onUpdateCountDown(remainTime, state) {
@@ -115,11 +128,6 @@ class TaiXiuTreoPopup extends Actor {
     showPopup() {
         // this.node.active = true
         this.node.setPosition(0, 0)
-    }
-    
-    onDestroy() {
-        super.onDestroy();
-        this._diceNodes = []
     }
     
     onTaiZoneClicked() {
@@ -216,47 +224,6 @@ class TaiXiuTreoPopup extends Actor {
         });
     }
     
-    _getPointOfDice(diceNode) {
-        let localPos = diceNode.getPosition()
-        // let localPos = this.bowl.parent.convertToNodeSpace(diceNode.getPosition())
-        // let worldPos = diceNode.parent.convertToWorldSpace(diceNode.getPosition())
-        localPos.y *= 4 / 3
-        return {x: localPos.x, y: localPos.y}
-    }
-    
-    _distanceBetween2Points(p1, p2) {
-        return Math.sqrt(Math.pow(p2.x - p1.x, 2) + Math.pow(p2.y - p1.y, 2))
-    }
-    
-    _arePointsOutOfBowl(points) {
-        console.warn('points', points)
-        
-        let worldBowlPos = this.bowl.getPosition()
-        // let worldBowlPos = this.bowl.parent.convertToWorldSpace(this.bowl.getPosition())
-        console.warn('worldBowlPos', worldBowlPos)
-        
-        let radius = this.getBowlRadius()
-        console.warn('radius', radius)
-        
-        let distances = []
-        
-        points.forEach(point => {
-            distances.push(this._distanceBetween2Points(point, worldBowlPos))
-        })
-        
-        console.warn('distances', distances)
-        
-        return distances.every(distance => distance > radius)
-    }
-    
-    _onBowlMoving(e) {
-        let points = this._diceNodes.map(dice => this._getPointOfDice(dice))
-        
-        if(this._arePointsOutOfBowl(points) && !this._endPhaseRunning) {
-            this._waitUntilUserOpensBowl && this._waitUntilUserOpensBowl()
-        }
-    }
-    
     getBowlRadius() {
         return (this.bowl.getContentSize().width - 10 )/ 2 
     }
@@ -344,27 +311,6 @@ class TaiXiuTreoPopup extends Actor {
         target.runAction(cc.repeatForever(cc.sequence(cc.scaleTo(.1, 1.2, 1.2), cc.scaleTo(.1, 1, 1))))
     }
     
-    _countDownRemainTime(lbl, remainTime, haveMinutes = false, emitter = undefined) {
-        lbl.node.stopAllActions()
-        this._remainTime = remainTime
-        lbl.node.runAction(cc.repeatForever(cc.sequence(
-            cc.callFunc(() => {
-                lbl.string = haveMinutes ? this._remainTime : this._secondsToMinutes(this._remainTime)    
-                this._remainTime -= 1
-                if(emitter && this._remainTime == 0) {
-                    app.system.emit(emitter)
-                }
-                lbl.node.color = this._remainTime <= 5 ? cc.Color.RED : cc.Color.BLACK
-                
-                if(this._remainTime < 0) {
-                    this._remainTime = 0
-                    lbl.node.stopAllActions()
-                }
-            }),
-            cc.delayTime(1)
-        )))
-    }
-    
     showChangedBalance() {
         this.balanceChangedNode.active = true
         this.balanceChangedLabel.node.opacity = 255
@@ -413,11 +359,11 @@ class TaiXiuTreoPopup extends Actor {
     }
     
     onUserBetsSuccessfully(totalPlayerTai, totalPlayerXiu) {
-        if(this.ifAny(totalPlayerTai)) {
+        if(this._ifAny(totalPlayerTai)) {
             this.taiUserBettedLabel.string = numberFormat(totalPlayerTai)
             this.taiUserBetLabel.string = 0
         } 
-        if (this.ifAny(totalPlayerXiu)) {
+        if (this._ifAny(totalPlayerXiu)) {
             this.xiuUserBettedLabel.string = numberFormat(totalPlayerXiu)
             this.xiuUserBetLabel.string = 0
         }
@@ -437,11 +383,11 @@ class TaiXiuTreoPopup extends Actor {
     updateInfo(id, totalTaiCount, totalTaiAmount, totalXiuCount, totalXiuAmount) {
         id && (this.popupId.string = `#${id}`)
         
-        this.ifAny(totalTaiCount) && (this.taiUsers.string = totalTaiCount)
-        this.ifAny(totalXiuCount) && (this.xiuUsers.string = totalXiuCount)
+        this._ifAny(totalTaiCount) && (this.taiUsers.string = totalTaiCount)
+        this._ifAny(totalXiuCount) && (this.xiuUsers.string = totalXiuCount)
         
-        this.ifAny(totalTaiAmount) && (this.taiTotalMoney.string = numberFormat(totalTaiAmount))
-        this.ifAny(totalXiuAmount) && (this.xiuTotalMoney.string = numberFormat(totalXiuAmount))
+        this._ifAny(totalTaiAmount) && (this.taiTotalMoney.string = numberFormat(totalTaiAmount))
+        this._ifAny(totalXiuAmount) && (this.xiuTotalMoney.string = numberFormat(totalXiuAmount))
     }
     
     initBetOption(options) {
@@ -490,30 +436,6 @@ class TaiXiuTreoPopup extends Actor {
                 }
             }
         })
-    }
-    
-    _secondsToMinutes(secs) {
-        // let now = moment();
-        // let remainTime = Math.abs(now - startTime);
-        
-        // let duration = moment.duration(remainTime);
-        // duration = moment.duration(duration.asSeconds(), 'seconds');
-        
-        // return duration.minutes() + ":" + duration.seconds()
-        
-        function pad(num) {
-            return ("0"+num).slice(-2)
-        }
-        
-        let minutes = Math.floor(secs / 60)
-        secs = secs % 60
-        minutes = minutes % 60
-        
-        return `${pad(minutes)}:${pad(secs)}`
-    }
-    
-    ifAny(e) {
-        return e === 0 || e
     }
     
     onBoardEnding(duration, remainTime, data, state) {
@@ -632,6 +554,86 @@ class TaiXiuTreoPopup extends Actor {
         
         this.hideChangedBalance()
         this.hidePhase()
+    }
+    
+    _getPointOfDice(diceNode) {
+        let localPos = diceNode.getPosition()
+        // let localPos = this.bowl.parent.convertToNodeSpace(diceNode.getPosition())
+        // let worldPos = diceNode.parent.convertToWorldSpace(diceNode.getPosition())
+        localPos.y *= 4 / 3
+        return {x: localPos.x, y: localPos.y}
+    }
+    
+    _distanceBetween2Points(p1, p2) {
+        return Math.sqrt(Math.pow(p2.x - p1.x, 2) + Math.pow(p2.y - p1.y, 2))
+    }
+    
+    _arePointsOutOfBowl(points) {
+        let worldBowlPos = this.bowl.getPosition()
+        // let worldBowlPos = this.bowl.parent.convertToWorldSpace(this.bowl.getPosition())
+        
+        let radius = this.getBowlRadius()
+        
+        let distances = []
+        
+        points.forEach(point => {
+            distances.push(this._distanceBetween2Points(point, worldBowlPos))
+        })
+        
+        return distances.every(distance => distance > radius)
+    }
+    
+    _onBowlMoving(e) {
+        let points = this._diceNodes.map(dice => this._getPointOfDice(dice))
+        
+        if(this._arePointsOutOfBowl(points) && !this._endPhaseRunning) {
+            this._waitUntilUserOpensBowl && this._waitUntilUserOpensBowl()
+        }
+    }
+    
+    _countDownRemainTime(lbl, remainTime, haveMinutes = false, emitter = undefined) {
+        lbl.node.stopAllActions()
+        this._remainTime = remainTime
+        lbl.node.runAction(cc.repeatForever(cc.sequence(
+            cc.callFunc(() => {
+                lbl.string = haveMinutes ? this._remainTime : this._secondsToMinutes(this._remainTime)    
+                this._remainTime -= 1
+                if(emitter && this._remainTime == 0) {
+                    app.system.emit(emitter)
+                }
+                lbl.node.color = this._remainTime <= 5 ? cc.Color.RED : cc.Color.BLACK
+                
+                if(this._remainTime < 0) {
+                    this._remainTime = 0
+                    lbl.node.stopAllActions()
+                }
+            }),
+            cc.delayTime(1)
+        )))
+    }
+    
+    _secondsToMinutes(secs) {
+        // let now = moment();
+        // let remainTime = Math.abs(now - startTime);
+        
+        // let duration = moment.duration(remainTime);
+        // duration = moment.duration(duration.asSeconds(), 'seconds');
+        
+        // return duration.minutes() + ":" + duration.seconds()
+        
+        function pad(num) {
+            return ("0"+num).slice(-2)
+        }
+        
+        let minutes = Math.floor(secs / 60)
+        secs = secs % 60
+        minutes = minutes % 60
+        
+        return `${pad(minutes)}:${pad(secs)}`
+    }
+    
+    _ifAny(e) {
+        return e === 0 || e
     }
     
     _resetLbls() {

@@ -23,21 +23,16 @@ class TaiXiuTreo extends Actor {
         this.draggable = this.node.getComponent('Draggable')
     }
     
-    start() {
-        super.start()
-    }
-    
     onEnable() {
         super.onEnable()
         this.node.on(cc.Node.EventType.TOUCH_END, this._onClick, this)
+        app.system.addAppStateListener(this)    
     }
     
-    _addGlobalListener() {
-        super._addGlobalListener();
-    }
-
-    _removeGlobalListener() {
-        super._removeGlobalListener();
+    onAppStateChange(state) {
+        if(state == 'active') {
+            app.service.send({cmd: app.commands.MINIGAME_TAI_XIU_REMAIN_TIME})
+        }
     }
     
     onDestroy() {
@@ -45,8 +40,9 @@ class TaiXiuTreo extends Actor {
         if(app.taiXiuTreoManager) {
             app.taiXiuTreoManager.onDestroy()
         }
+        app.system.removeAppStateListener(this)
     }
-    
+   
     _onClick() {
         if(this.draggable && this.draggable.isIdle()) {
             if(app.taiXiuTreoManager.needRequestNew())
