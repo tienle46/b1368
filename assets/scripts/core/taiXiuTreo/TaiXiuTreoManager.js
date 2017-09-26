@@ -47,6 +47,7 @@ export default class TaiXiuTreoManager {
         app.system.addListener('tai.xiu.treo.show.bet.group.panel', this._showBetGroupPanel, this)
         app.system.addListener('tai.xiu.treo.bet.text.clicked', this._onBetTextBtnClicked, this)
         app.system.addListener('tai.xiu.treo.history.clicked', this._onHistoryBtnClicked, this)
+        app.system.addListener('tai.xiu.treo.soicau.clicked', this._onSoiCauBtnClicked, this)
         app.system.addListener('tai.xiu.treo.nan.btn.clicked', this._onNanBtnClicked, this)
         app.system.addListener('tai.xiu.treo.app.state.changed', this._onAppStateChanged, this)
     }
@@ -64,7 +65,8 @@ export default class TaiXiuTreoManager {
         app.system.removeListener('tai.xiu.treo.on.cancel.btn.clicked', this._cancel, this)
         app.system.removeListener('tai.xiu.treo.show.bet.group.panel', this._showBetGroupPanel, this)
         app.system.removeListener('tai.xiu.treo.bet.text.clicked', this._onBetTextBtnClicked, this)
-        app.system.removeListener('tai.xiu.treo.history.clicked', this._taiXiuTreoHistoryClicked, this)
+        app.system.removeListener('tai.xiu.treo.history.clicked', this._onHistoryBtnClicked, this)
+        app.system.removeListener('tai.xiu.treo.soicau.clicked', this._onSoiCauBtnClicked, this)
         app.system.removeListener('tai.xiu.treo.nan.btn.clicked', this._onNanBtnClicked, this)
         app.system.removeListener('tai.xiu.treo.app.state.changed', this._onAppStateChanged, this)
     }
@@ -86,7 +88,7 @@ export default class TaiXiuTreoManager {
     }
     
     createIcon() {
-        let item = cc.instantiate(app.res.prefab.hangedSicBo)
+        let item = cc.instantiate(app.res.prefab.hungSicBo)
         item.active = false
         this._iconComponent = item.getComponent('TaiXiuTreo')
         item.setPosition(this._lastPos || cc.v2(574, 101))
@@ -370,6 +372,14 @@ export default class TaiXiuTreoManager {
             return
             
         let popup = this._popupComponent.openHistoryPopup()
+        app.system.getCurrentSceneNode().addChild(popup, TaiXiuTreoManager.HISTORY_ZINDEX)
+    }
+    
+    _onSoiCauBtnClicked() {
+        if(!this._isPopupCreated())
+            return
+            
+        let popup = this._popupComponent.openSoiCauPopup()
         app.system.getCurrentSceneNode().addChild(popup, TaiXiuTreoManager.HISTORY_ZINDEX)
     }
     

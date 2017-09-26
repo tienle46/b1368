@@ -2441,7 +2441,7 @@
     "target": {
       "__id__": 1
     },
-    "component": "HangedSicboHistoryPopup",
+    "component": "HungSicboHistoryPopup",
     "handler": "onCloseBtnClick",
     "customEventData": ""
   },
@@ -2457,7 +2457,7 @@
     "sync": false
   },
   {
-    "__type__": "151e0KftmdOjazIH0YcOzfZ",
+    "__type__": "497c3GE6c9Eia2GFh+Eq0QS",
     "_name": "",
     "_objFlags": 0,
     "node": {

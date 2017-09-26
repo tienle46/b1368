@@ -53,6 +53,7 @@ class TaiXiuTreoPopup extends Actor {
             otherBtnNode: cc.Node,
             optionBtnNode: cc.Node,
             historyPrefab: cc.Prefab,
+            soiCauPrefab: cc.Prefab,
             lastHistoricalSprites: {
                 default: [],
                 type: cc.SpriteFrame
@@ -304,7 +305,7 @@ class TaiXiuTreoPopup extends Actor {
         this._countDownRemainTime(this.remainTime, remainTime)
     }
     
-    notification(optionId, time) {
+    annoucement(optionId, time) {
         this._resetIconAnimation()
         let target = optionId == TaiXiuTreoManager.TAI_ID ? this.taiIcon : this.xiuIcon
         let action = cc.sequence(cc.scaleTo(.1, 1.2, 1.2), cc.scaleTo(.1, 1, 1))
@@ -411,6 +412,10 @@ class TaiXiuTreoPopup extends Actor {
     initHistories(histories, state) {
         if(!histories || histories.length < 1)
             return
+        
+        if(histories.length > 18) {
+            histories = histories.slice(-18)
+        }
         
         // xiu: 1, tai: 2
         let TaiXiuIdToSpriteId = {
@@ -524,7 +529,7 @@ class TaiXiuTreoPopup extends Actor {
         }
         
         // runAnim noticing
-        this.notification(option, this._remainTime)
+        this.annoucement(option, this._remainTime)
         
         this.initHistories(histories, state)    
     }
@@ -533,8 +538,16 @@ class TaiXiuTreoPopup extends Actor {
         return cc.instantiate(this.historyPrefab)
     }
     
+    openSoiCauPopup() {
+        return cc.instantiate(this.soiCauPrefab)
+    }
+    
     onHistoryBtnClick() {
         app.system.emit('tai.xiu.treo.history.clicked')
+    }
+    
+    onSoiCauBtnClick() {
+        app.system.emit('tai.xiu.treo.soicau.clicked')
     }
     
     resetData(bettedTai, bettedXiu) {

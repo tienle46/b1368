@@ -67,7 +67,7 @@ class PreloadScene extends Component {
             { dir: 'popup/ConfirmPopup', name: 'confirmPopup' },
             { dir: 'popup/PromptPopup', name: 'promptPopup' },
             { dir: 'popup/SingleLinePromptPopup', name: 'singleLinePromptPopup' },
-            { dir: 'taixiuTreo/HangedSicBoPrefab', name: 'hangedSicBo' },
+            { dir: 'taixiuTreo/HungSicBoPrefab', name: 'hungSicBo' },
         ];
 
         app.async.parallel(resources.map((res) => {
