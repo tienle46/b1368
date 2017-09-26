@@ -310,6 +310,7 @@ Commands.MINIGAME_TAI_XIU_TOP_PLAYERS = "mng_taixiuTopPlayer";
 Commands.MINIGAME_TAI_XIU_DICE_HISTORY = "mng_taixiuDiceHistory";
 Commands.MINIGAME_TAI_XIU_BET_CHANGED = "mng_taixiuBetChanged";
 Commands.MINIGAME_TAI_XIU_HISTORY = "mng_taixiuHistory";
-
+Commands.MINIGAME_CHAT = "mng_taixiuChat";
+Commands.MINIGAME_CHAT_HISTORY = "mng_taixiuChatHistory";
 
 module.exports = Commands;

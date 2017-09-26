@@ -11,6 +11,7 @@ class TaiXiuTreoPopup extends Actor {
         
         this.properties = this.assignProperties({
             transparentBg: cc.Node,
+            bgTaiXiuTreo: cc.Node,
             bodyNode: cc.Node, // used on onBoardEnding's animations to prevent cc.delayTime
             popupId: cc.Label,
             userMoneyLbl: cc.Label,
@@ -54,6 +55,7 @@ class TaiXiuTreoPopup extends Actor {
             optionBtnNode: cc.Node,
             historyPrefab: cc.Prefab,
             soiCauPrefab: cc.Prefab,
+            chatPrefab: cc.Prefab,
             lastHistoricalSprites: {
                 default: [],
                 type: cc.SpriteFrame
@@ -65,6 +67,8 @@ class TaiXiuTreoPopup extends Actor {
         this._diceNodes = []
         this._waitUntilUserOpensBowl = null
         this._endPhaseRunning = false
+        
+        this._chatComponent = null // uses to save ChatPopup instance
     }
 
     onLoad() {
@@ -80,6 +84,18 @@ class TaiXiuTreoPopup extends Actor {
         this.bowl.on(cc.Node.EventType.TOUCH_MOVE, this._onBowlMoving, this)
         
         this.nanCheckBox.isChecked = app.taiXiuTreoManager.isNan()
+    }
+    
+    onChatBoxHide() {
+        this.bgTaiXiuTreo.runAction(
+            cc.moveTo(.1, cc.v2(0, this.bgTaiXiuTreo.getPosition().y))
+        )
+    }
+    
+    onChatBoxShow() {
+        this.bgTaiXiuTreo.runAction(
+            cc.moveTo(.1, cc.v2(-169, this.bgTaiXiuTreo.getPosition().y))
+        ) 
     }
     
     onEnable() {
@@ -119,9 +135,24 @@ class TaiXiuTreoPopup extends Actor {
         this.userMoneyLbl.string = numberFormat(amount)
     }
     
+    onChatBtnClick() {
+        if(!this._chatComponent) {
+            let node = cc.instantiate(this.chatPrefab)
+            node.opacity = 0
+            node.setPosition(857, 35)
+            this._chatComponent = node.getComponent(TaiXiuTreoPopup.CHAT_COMPONENT)
+            
+            node.on('chat.box.hide', this.onChatBoxHide, this)
+            
+            node.on('chat.box.show', this.onChatBoxShow, this)
+            
+            this.node.addChild(node)
+        }
+        
+        this._chatComponent.toggle()
+    }
+    
     onCloseBtnClick() {
-        // destroy(this.node);
-        // this.node.active = false
         this.node.setPosition(-9999, -9999) // move to -9999, -9999 because cc_Node.runAction stops while inactive
         app.system.emit('tai.xiu.treo.on.close.btn.clicked')
     }
@@ -209,7 +240,7 @@ class TaiXiuTreoPopup extends Actor {
     placeDices(dices = []) {
         this.clearDices()
 
-        let positions = [{ x: 4, y: 74.9 }, { x: 33.3, y: 27.5 }, { x: -30.3, y: 27 }]
+        let positions = [{ x: -19, y: 74.9 }, { x: 18.3, y: 27.5 }, { x: -45.3, y: 27 }]
         
         dices.forEach((dice, i) => {
             let {x, y} = positions[i]
@@ -577,8 +608,6 @@ class TaiXiuTreoPopup extends Actor {
     
     _getPointOfDice(diceNode) {
         let localPos = diceNode.getPosition()
-        // let localPos = this.bowl.parent.convertToNodeSpace(diceNode.getPosition())
-        // let worldPos = diceNode.parent.convertToWorldSpace(diceNode.getPosition())
         localPos.y *= 4 / 3
         return {x: localPos.x, y: localPos.y}
     }
@@ -632,14 +661,6 @@ class TaiXiuTreoPopup extends Actor {
     }
     
     _secondsToMinutes(secs) {
-        // let now = moment();
-        // let remainTime = Math.abs(now - startTime);
-        
-        // let duration = moment.duration(remainTime);
-        // duration = moment.duration(duration.asSeconds(), 'seconds');
-        
-        // return duration.minutes() + ":" + duration.seconds()
-        
         function pad(num) {
             return ("0"+num).slice(-2)
         }
@@ -680,5 +701,7 @@ class TaiXiuTreoPopup extends Actor {
         }
     }
 }
+
+TaiXiuTreoPopup.CHAT_COMPONENT = 'HungSicboChatPopup'
 
 app.createComponent(TaiXiuTreoPopup);

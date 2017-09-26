@@ -1,6 +1,5 @@
 import app from 'app'
 import Actor from 'Actor'
-import TaiXiuTreoManager from 'TaiXiuTreoManager'
 
 class SoiCauDialog extends Actor {
     constructor() {
