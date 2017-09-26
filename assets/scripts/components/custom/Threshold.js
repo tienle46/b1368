@@ -38,7 +38,7 @@ class Threshold extends Component {
     
     _onTouchEnd(e) {
         // e.stopPropagationImmediate()
-        if(this.draggable && this.draggable.isMoved()) {
+        if(this.draggable) {
             let T = this._componentShouldBeMovedTo(this.node.getPosition())
             this._moveToThreshold(T)
         }

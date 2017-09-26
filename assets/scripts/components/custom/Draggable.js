@@ -6,12 +6,16 @@ class Draggable extends Component {
         super()
         
         this._state = Draggable.STATE_IDLE
+        
+        this._prePos = null
     }
     
     onLoad() {
         super.onLoad()
         
         this._state = Draggable.STATE_IDLE
+        
+        this._prePos = this.node.getPosition()
     }
     
     onEnable() {
@@ -32,13 +36,19 @@ class Draggable extends Component {
     
     _onTouchMove(e) {
         let delta = e.touch.getDelta();
-        this.node.setPosition(cc.v2(this.node.getPosition().x + delta.x, this.node.getPosition().y + delta.y));
+        this.node.setPosition(cc.v2(this.node.getPosition().x + delta.x, this.node.getPosition().y + delta.y))
         this._state = Draggable.STATE_MOVING
     }
     
     _onTouchEnd(e) {
-        if(this._state == Draggable.STATE_MOVING) 
+        let isOut = this._isOutThreshold()
+        
+        this._prePos = this.node.getPosition();
+
+        if(isOut && this._state == Draggable.STATE_MOVING) 
             this._state = Draggable.STATE_MOVED
+        else 
+            this._state = Draggable.STATE_IDLE
     }
     
     isMoved() {
@@ -47,6 +57,12 @@ class Draggable extends Component {
     
     isIdle() {
         return this._state == Draggable.STATE_IDLE
+    }
+    
+    _isOutThreshold() {
+        let threshold = this.node.getContentSize().width / 3
+        let _curPos = this.node.getPosition()
+        return Math.abs(_curPos.x - this._prePos.x) >= threshold || Math.abs(_curPos.y - this._prePos.y) >= threshold
     }
 }
 
