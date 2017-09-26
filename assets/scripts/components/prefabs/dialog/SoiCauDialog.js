@@ -179,7 +179,7 @@ class SoiCauDialog extends Actor {
             let x = i * SoiCauDialog.SIZE_OF_CELL
             let y = SoiCauDialog.SIZE_OF_CELL * (sum - step) / step
             
-            return cc.v2(x, y)
+            return {x, y}
         })
         cb && cb(ctx, values, points, color)
     }
@@ -202,8 +202,8 @@ class SoiCauDialog extends Actor {
             return
             
         color && (ctx.strokeColor = color)
-        ctx.moveTo(u)
-        ctx.lineTo(v)
+        ctx.moveTo(u.x, u.y)
+        ctx.lineTo(v.x, v.y)
         ctx.stroke()
         ctx.close()
     }
