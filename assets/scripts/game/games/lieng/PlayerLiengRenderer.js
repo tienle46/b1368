@@ -27,7 +27,9 @@ export default class PlayerLiengRenderer extends PlayerCardRenderer {
             toIcon: cc.Node,
             actionSprite: cc.Sprite,
             liengSkipSprite: cc.SpriteFrame,
-            liengAllInSprite: cc.SpriteFrame
+            liengAllInSprite: cc.SpriteFrame,
+            meSkipSprite: cc.SpriteFrame,
+            meAllSprite: cc.SpriteFrame
         });
         
         /**
@@ -205,12 +207,8 @@ export default class PlayerLiengRenderer extends PlayerCardRenderer {
         
         this.actionSprite.spriteFrame = null
         
-        if(ial !== undefined && !player.isItMe()) {
-            if(ial) {
-                this.actionSprite.spriteFrame = this.liengAllInSprite
-            } else {
-                this.actionSprite.spriteFrame = this.liengSkipSprite
-            }
+        if(ial !== undefined) {
+            this.actionSprite.spriteFrame = player.isItMe() ? ial ? this.meAllSprite : this.meSkipSprite : ial ? this.liengAllInSprite : this.liengSkipSprite
             return
         }
         
