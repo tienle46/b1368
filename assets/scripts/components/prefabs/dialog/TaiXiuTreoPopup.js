@@ -4,6 +4,7 @@ import Actor from 'Actor'
 import { numberFormat } from 'GeneralUtils'
 import { formatBalanceShort } from 'GameUtils'
 import TaiXiuTreoManager from 'TaiXiuTreoManager'
+import ScrollMessagePopup from 'ScrollMessagePopup'
 
 class TaiXiuTreoPopup extends Actor {
     constructor() {
@@ -604,6 +605,15 @@ class TaiXiuTreoPopup extends Actor {
         
         this.hideChangedBalance()
         this.hidePhase()
+    }
+    
+    onClickInfoBtn() {
+        ScrollMessagePopup.show(this.node, {
+            cmd: app.commands.MINIGAME_TAI_XIU_GUIDE,
+            parser: (data) => {
+                return data[app.keywords.EVENT_CONTENT] || "";
+            }
+        });
     }
     
     _getPointOfDice(diceNode) {
