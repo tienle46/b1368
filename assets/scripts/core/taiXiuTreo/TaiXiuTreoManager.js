@@ -173,6 +173,7 @@ export default class TaiXiuTreoManager {
     _createPopup(data) {
         if(!this._isIconCreated())
             return
+            
         let {
             taiAmount,
             xiuAmount
@@ -180,10 +181,12 @@ export default class TaiXiuTreoManager {
         
         if(!this._isPopupCreated()) {
             this._popupComponent = this._iconComponent.createPopup(data)
-            app.system.getCurrentSceneNode().addChild(this._popupComponent.node, TaiXiuTreoManager.POPUP_ZINDEX)
-            this.setPopupState(TaiXiuTreoManager.POPUP_STATE_OPENING)
+            if(this._popupComponent) {
+                app.system.getCurrentSceneNode().addChild(this._popupComponent.node, TaiXiuTreoManager.POPUP_ZINDEX)
+                this.setPopupState(TaiXiuTreoManager.POPUP_STATE_OPENING)
+            } 
         }
-
+        
         this._betted[TaiXiuTreoManager.TAI_ID] = taiAmount || 0
         this._betted[TaiXiuTreoManager.XIU_ID] = xiuAmount || 0
 

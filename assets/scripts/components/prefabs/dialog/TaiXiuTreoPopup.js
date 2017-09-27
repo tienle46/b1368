@@ -218,7 +218,7 @@ class TaiXiuTreoPopup extends Actor {
     }
     
     clearDices() {
-        this.diceArea.removeAllChildren()
+        this.diceArea.removeAllChildren(false)
         this._diceNodes = []
     }
     
@@ -429,7 +429,7 @@ class TaiXiuTreoPopup extends Actor {
         if(!options || options.length < 1)
             return
         
-        this.betOptionGroupContainer.removeAllChildren()
+        this.betOptionGroupContainer.removeAllChildren(false)
         options.forEach(amount => {
             this.betItemAmount.string = formatBalanceShort(amount)
             let item = cc.instantiate(this.betItem)
@@ -454,7 +454,7 @@ class TaiXiuTreoPopup extends Actor {
             [TaiXiuTreoManager.TAI_ID]: 1
         }
         
-        this.historicalContainer.removeAllChildren()
+        this.historicalContainer.removeAllChildren(false)
         histories.forEach((id, index) => {
             this.historicalSpriteItem.spriteFrame = (index == histories.length - 1) ? 
                         this.lastHistoricalSprites[TaiXiuIdToSpriteId[id]] :

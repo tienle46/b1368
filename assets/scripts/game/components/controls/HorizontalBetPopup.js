@@ -74,6 +74,10 @@ class BetSlider extends Component {
 
     _toSliderValue(value){
         value = Math.max(0, value - this.minValue);
+        
+        if(this.range == 0)
+            return 1
+            
         let sliderValue = this.range > 0 ? value / this.range : 0;
 
         return sliderValue || 0;

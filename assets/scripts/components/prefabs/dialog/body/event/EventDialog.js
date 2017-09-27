@@ -138,7 +138,7 @@ class EventDialog extends Actor {
     }
 
     hide() {
-        this.node.removeFromParent();
+        this.node.removeFromParent(false);
         CCUtils.destroy(this.node);
     }
 }

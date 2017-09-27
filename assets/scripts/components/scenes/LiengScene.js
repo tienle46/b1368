@@ -58,11 +58,19 @@ export default class LiengScene extends GameScene {
         //TODO Process board state changed here
     }
     
-
+    
+    /**
+     * 
+     * @param {any} currentValue accepted value on the board
+     * @param {any} maxValue user's amount
+     * @param {number} [timeout=20] 
+     * @returns 
+     * @memberof LiengScene
+     */
     showChooseBetSlider(currentValue, maxValue, timeout = 20) {
         // let maxValue = this.board.minBet * 5;
 
-        let minValue = this.board.minBet;
+        let minValue = currentValue || this.board.minBet;
 
         if(maxValue < minValue) {
             app.system.showToast(app.res.string('game_not_enough_balance_to_bet'));
@@ -72,9 +80,7 @@ export default class LiengScene extends GameScene {
         if(maxValue < currentValue) {
             maxValue = currentValue;
         }
-        
-        minValue = currentValue;
-        
+
         this._betPopup && this._betPopup.show({
             minValue,
             maxValue,

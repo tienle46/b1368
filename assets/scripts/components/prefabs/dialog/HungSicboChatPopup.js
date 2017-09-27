@@ -56,12 +56,11 @@ class HungSicBoChatPopup extends Actor {
     _onChatHistory(data) {
         let { messages } = data
         
-        this.container.removeAllChildren()
+        this.container.removeAllChildren(false)
         
         if(!messages && messages.length < 1)
             return
-        
-        messages.forEach(message => {
+        messages.forEach((message, index) => {
             let {sender, msg} = message
             
             this._addItem(sender, msg)
@@ -119,7 +118,6 @@ class HungSicBoChatPopup extends Actor {
         this.item.string = `<color=${HungSicBoChatPopup.USERNAME_COLOR}>${username}:</c> ${text}`
         let item = cc.instantiate(this.item.node)
         item.active = true
-        
         this.container.addChild(item)
         this._nodeInstances.push(item)
     }

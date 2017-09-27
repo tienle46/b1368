@@ -62,7 +62,6 @@ class TaiXiuTreo extends Actor {
             
         let popup = cc.instantiate(this.popup)
         let popupComponent = popup.getComponent('TaiXiuTreoPopup')
-        
         return popupComponent
     }
     

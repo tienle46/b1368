@@ -186,10 +186,11 @@ export default class BoardLieng extends BoardCardBetTurn {
      * @memberof BoardLieng
      */
     acceptedAmount(){
-        let accepted = Math.max.apply(Math, this.scene.gamePlayers.players.map((me) => me.betAmount))
+        let accepted = Math.max.apply(Math, this.scene.gamePlayers.players.map((player) => player.betAmount))
         // accepted == board.minBet => the 1st round.
         // return accepted === this.minBet ? accepted * 2 : accepted
-        return accepted
+        let meBalance = this.scene.gamePlayers.me.balance
+        return accepted >= meBalance ? meBalance : accepted
     }
     
     _loadGamePlayData(data) {

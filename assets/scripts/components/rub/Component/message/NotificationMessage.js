@@ -154,7 +154,7 @@ export default class NotificationMessage {
         this._remainTime = 0
         this._currentNode = null
         
-        node.removeFromParent()
+        node.removeFromParent(false)
         
         // remove first
         this.messages.splice(0, 1)

@@ -250,7 +250,7 @@ export default class GameChatComponent extends Actor {
     _initEmotions() {
         if (this.emotionInited) return;
 
-        this.emotionsList.children.map(child => child.destroy() && child.removeFromParent());
+        this.emotionsList.children.map(child => child.destroy() && child.removeFromParent(false));
         // app.res.vip_emotions.forEach(exp => {
         //     let reg = new RegExp(`^(${exp})*[-]`);
             

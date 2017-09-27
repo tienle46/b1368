@@ -17,7 +17,7 @@ export default class HistoricalTable extends Component {
     updateTableInfo(infors) {
         //clear table
         // this.tableNode.children.map((child, i) => i > 0 && child.destroy());
-        this.tableNode.removeAllChildren();
+        this.tableNode.removeAllChildren(false);
         
         infors.forEach((data, i) => this.tableNode.addChild(this.modifyItem(data, i == infors.length - 1)));
     }

@@ -106,7 +106,8 @@ export default class LiengControls extends GameControls {
     _onPlayerTo(previousPlayerId, onTurnPlayerId, betAmount, isLastBet) {
         this._skipTurn(onTurnPlayerId)
         if(this.scene.gamePlayers.isItMe(onTurnPlayerId)) {
-            this.toBtn.interactable = !isLastBet
+            let meBalance = this.scene.gamePlayers.me.balance
+            this.toBtn.interactable = !(meBalance <= betAmount || isLastBet)
         }
     }
     

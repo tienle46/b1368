@@ -40,7 +40,7 @@ export default class ShakenControl extends Component {
         this.timeLineNode.zIndex = 2;
         
         this.placedArea.children.forEach(child => child.destroy());
-        this.placedArea.removeAllChildren();
+        this.placedArea.removeAllChildren(false);
     }
 
     play() {
