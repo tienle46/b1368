@@ -74,9 +74,10 @@ class HungSicBoChatPopup extends Actor {
             
             if(!text || text === "")
                 return
-                
+            
+            this._incrementId = Date.now()
             app.service.send({cmd: app.commands.MINIGAME_CHAT, data: {
-                id: (++this._incrementId).toString(),
+                id: this._incrementId.toString(),
                 msg: text
             }})
             
@@ -95,11 +96,11 @@ class HungSicBoChatPopup extends Actor {
         let text = null
         
         if(typeof data === 'string') {
-            name = app.context.getMeDisplayName()
+            name = app.context.getMyInfo().displayName
             text = data
         } else if(data instanceof Object && !(data instanceof Array)) {
             let {sender, msg, id} = data
-            if(id == this._incrementId)
+            if(id === this._incrementId.toString())
                 return
                 
             name = sender
@@ -113,6 +114,10 @@ class HungSicBoChatPopup extends Actor {
         if(this._nodeInstances.length > HungSicBoChatPopup.MAX_INSTANCE) {
             let node = this._nodeInstances.shift()
             node.destroy()   
+        }
+        
+        if(username.length > 12) {
+            username = `${username.substr(0, 12)}...`
         }
         
         this.item.string = `<color=${HungSicBoChatPopup.USERNAME_COLOR}>${username}:</c> ${text}`

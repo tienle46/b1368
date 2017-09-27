@@ -219,8 +219,6 @@ class TopBar extends DialogActor {
     }
     
     _onUserChangesBalance(balance) {
-        console.warn('app.context.getMeBalance()', app.context.getMeBalance())
-        console.warn('balance', balance)
         this.userInfoCoinLbl.string = `${utils.numberFormat(balance || 0)}`;
     }
 }
