@@ -57,6 +57,7 @@ class TaiXiuTreoPopup extends Actor {
             historyPrefab: cc.Prefab,
             soiCauPrefab: cc.Prefab,
             chatPrefab: cc.Prefab,
+            rankPopupPrefab: cc.Prefab,
             lastHistoricalSprites: {
                 default: [],
                 type: cc.SpriteFrame
@@ -258,7 +259,7 @@ class TaiXiuTreoPopup extends Actor {
     }
     
     getBowlRadius() {
-        return (this.bowl.getContentSize().width - 10 )/ 2 
+        return (this.bowl.getContentSize().width - 20 )/ 2 
     }
     
     hideBetGroupPanel() {
@@ -574,6 +575,14 @@ class TaiXiuTreoPopup extends Actor {
         return cc.instantiate(this.soiCauPrefab)
     }
     
+    openRankPopup() {
+        return cc.instantiate(this.rankPopupPrefab)
+    }
+    
+    onRankBtnClick() {
+        app.system.emit('tai.xiu.treo.rank.clicked')
+    }
+    
     onHistoryBtnClick() {
         app.system.emit('tai.xiu.treo.history.clicked')
     }
@@ -617,7 +626,8 @@ class TaiXiuTreoPopup extends Actor {
     }
     
     _getPointOfDice(diceNode) {
-        let localPos = diceNode.getPosition()
+        // let localPos = diceNode.getPosition()
+        let localPos = this.diceArea.convertToNodeSpace(diceNode.getPosition())
         localPos.y *= 4 / 3
         return {x: localPos.x, y: localPos.y}
     }
@@ -627,9 +637,8 @@ class TaiXiuTreoPopup extends Actor {
     }
     
     _arePointsOutOfBowl(points) {
-        let worldBowlPos = this.bowl.getPosition()
-        // let worldBowlPos = this.bowl.parent.convertToWorldSpace(this.bowl.getPosition())
-        
+        // let worldBowlPos = this.bowl.getPosition()
+        let worldBowlPos = this.diceArea.convertToNodeSpace(this.bowl.getPosition())
         let radius = this.getBowlRadius()
         
         let distances = []
@@ -637,13 +646,12 @@ class TaiXiuTreoPopup extends Actor {
         points.forEach(point => {
             distances.push(this._distanceBetween2Points(point, worldBowlPos))
         })
-        
         return distances.every(distance => distance > radius)
     }
     
     _onBowlMoving(e) {
         let points = this._diceNodes.map(dice => this._getPointOfDice(dice))
-        
+        console.warn('points', points)
         if(this._arePointsOutOfBowl(points) && !this._endPhaseRunning) {
             this._waitUntilUserOpensBowl && this._waitUntilUserOpensBowl()
         }

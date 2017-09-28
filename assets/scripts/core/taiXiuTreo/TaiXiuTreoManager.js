@@ -49,6 +49,7 @@ export default class TaiXiuTreoManager {
         app.system.addListener('tai.xiu.treo.history.clicked', this._onHistoryBtnClicked, this)
         app.system.addListener('tai.xiu.treo.soicau.clicked', this._onSoiCauBtnClicked, this)
         app.system.addListener('tai.xiu.treo.nan.btn.clicked', this._onNanBtnClicked, this)
+        app.system.addListener('tai.xiu.treo.rank.clicked', this._onRankBtnClicked, this)
         app.system.addListener('tai.xiu.treo.app.state.changed', this._onAppStateChanged, this)
     }
     
@@ -68,6 +69,7 @@ export default class TaiXiuTreoManager {
         app.system.removeListener('tai.xiu.treo.history.clicked', this._onHistoryBtnClicked, this)
         app.system.removeListener('tai.xiu.treo.soicau.clicked', this._onSoiCauBtnClicked, this)
         app.system.removeListener('tai.xiu.treo.nan.btn.clicked', this._onNanBtnClicked, this)
+        app.system.removeListener('tai.xiu.treo.rank.clicked', this._onRankBtnClicked, this)
         app.system.removeListener('tai.xiu.treo.app.state.changed', this._onAppStateChanged, this)
     }
     
@@ -384,6 +386,14 @@ export default class TaiXiuTreoManager {
             
         let popup = this._popupComponent.openSoiCauPopup()
         app.system.getCurrentSceneNode().addChild(popup, TaiXiuTreoManager.HISTORY_ZINDEX)
+    }
+    
+    _onRankBtnClicked() {
+        if(!this._isPopupCreated())
+            return
+        
+        let popup = this._popupComponent.openRankPopup()
+        app.system.getCurrentSceneNode().addChild(popup, TaiXiuTreoManager.HISTORY_ZINDEX) 
     }
     
     _onBetChanged(data) {
