@@ -227,4 +227,8 @@ export default {
     message_force_update_version: "Bạn phải cập nhật lên phiên bản {{version}} để tiếp tục chơi",
     message_update_version: "Phiên bản mới nhất là {{version}}. Bạn có muốn cập nhật?",
     message_not_support_rooted_device: "Phiên bản game không hỗ trợ máy root và jailbreak",
+    
+    tai_xiu_treo_min_bet: "Số tiền cược mỗi cửa tối thiểu là {{minBet}}",
+    tai_xiu_treo_invalid: "Sai định dạng",
+    tai_xiu_treo_reject: "Hệ thống từ chối đặt cược",
 };

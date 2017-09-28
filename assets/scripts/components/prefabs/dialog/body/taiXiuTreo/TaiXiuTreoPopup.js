@@ -5,6 +5,7 @@ import { numberFormat } from 'GeneralUtils'
 import { formatBalanceShort } from 'GameUtils'
 import TaiXiuTreoManager from 'TaiXiuTreoManager'
 import ScrollMessagePopup from 'ScrollMessagePopup'
+import Events from 'GameEvents'
 
 class TaiXiuTreoPopup extends Actor {
     constructor() {
@@ -69,7 +70,7 @@ class TaiXiuTreoPopup extends Actor {
         this._diceNodes = []
         this._waitUntilUserOpensBowl = null
         this._endPhaseRunning = false
-        
+        this._acceptedMinBet = 0
         this._chatComponent = null // uses to save ChatPopup instance
     }
 
@@ -86,6 +87,7 @@ class TaiXiuTreoPopup extends Actor {
         this.bowl.on(cc.Node.EventType.TOUCH_MOVE, this._onBowlMoving, this)
         
         this.nanCheckBox.isChecked = app.taiXiuTreoManager.isNan()
+        this._acceptedMinBet = 0
     }
     
     onChatBoxHide() {
@@ -156,7 +158,7 @@ class TaiXiuTreoPopup extends Actor {
     
     onCloseBtnClick() {
         this.node.setPosition(-9999, -9999) // move to -9999, -9999 because cc_Node.runAction stops while inactive
-        app.system.emit('tai.xiu.treo.on.close.btn.clicked')
+        app.system.emit(Events.TAI_XIU_TREO_ON_CLOSE_BTN_CLICKED)
     }
     
     showPopup() {
@@ -172,7 +174,7 @@ class TaiXiuTreoPopup extends Actor {
         
         this._selectedBet = TaiXiuTreoManager.TAI_ID
         
-        app.system.emit('tai.xiu.treo.show.bet.group.panel')
+        app.system.emit(Events.TAI_XIU_TREO_SHOW_BET_GROUP_PANEL)
     }
     
     onXiuZoneClicked() {
@@ -182,17 +184,17 @@ class TaiXiuTreoPopup extends Actor {
         this.hideBetGroupPanel()
         
         this._selectedBet = TaiXiuTreoManager.XIU_ID
-        app.system.emit('tai.xiu.treo.show.bet.group.panel')
+        app.system.emit(Events.TAI_XIU_TREO_SHOW_BET_GROUP_PANEL)
     }
     
     onBetBtnClick(e) {
         let {amount} = e.currentTarget
         
-        app.system.emit('tai.xiu.treo.on.bet.btn.clicked', amount, this._selectedBet)
+        app.system.emit(Events.TAI_XIU_TREO_ON_BET_BTN_CLICKED, amount, this._selectedBet)
     }
     
     onAppStateChange(state) {
-        app.system.emit('tai.xiu.treo.app.state.changed', state)  
+        app.system.emit(Events.TAI_XIU_TREO_ON_APP_STATE_CHANGED, state)  
     }
     
     hideRemainTimeBg() {
@@ -212,7 +214,7 @@ class TaiXiuTreoPopup extends Actor {
     }
     
     onNanBtnClick() {
-        app.system.emit('tai.xiu.treo.nan.btn.clicked', this.nanCheckBox.isChecked)
+        app.system.emit(Events.TAI_XIU_TREO_NAN_BTN_CLICKED, this.nanCheckBox.isChecked)
     }
     
     isNanChecked() {
@@ -226,17 +228,21 @@ class TaiXiuTreoPopup extends Actor {
     
     onKeyBtnClick(e) {
         let {_text} = e.currentTarget
-        app.system.emit('tai.xiu.treo.bet.text.clicked', _text, this._selectedBet)
+        app.system.emit(Events.TAI_XIU_TREO_BET_TEXT_CLICKED, _text, this._selectedBet)
     }
     
     onConfirmBtnClick() {
-        app.system.emit('tai.xiu.treo.on.confirm.bet')
+        app.system.emit(Events.TAI_XIU_TREO_ON_CONFIRM_BTN_CLICKED)
+    }
+    
+    getMinBet() {
+        return this._acceptedMinBet    
     }
     
     onHuyBtnClick() {
         if(this._selectedBet === null)
             return
-        app.system.emit('tai.xiu.treo.on.cancel.btn.clicked')
+        app.system.emit(Events.TAI_XIU_TREO_ON_CANCEL_BTN_CLICKED)
     }
     
     placeDices(dices = []) {
@@ -299,7 +305,7 @@ class TaiXiuTreoPopup extends Actor {
     
     iniKeypad() {
         let keys = Array.from(Array(10).keys())
-        keys.push(`00`, `000`)
+        keys.push(`000`, `${TaiXiuTreoManager.BACK_SYMBOL}`)
         
         keys.forEach(k => {
             this.keyText.string = k
@@ -326,7 +332,7 @@ class TaiXiuTreoPopup extends Actor {
     countDownRemainTimeToNext(remainTime) {
         this.hideRemainTimeBg()
         this.showTimeToNext()
-        this._countDownRemainTime(this.timeToNextLbl, remainTime, true, 'tai.xiu.treo.preparing.new.game')
+        this._countDownRemainTime(this.timeToNextLbl, remainTime, true, Events.TAI_XIU_TREO_PREPARING_NEW_GAME)
     }
     
     countDownRemainTime(remainTime) {
@@ -430,6 +436,8 @@ class TaiXiuTreoPopup extends Actor {
     initBetOption(options) {
         if(!options || options.length < 1)
             return
+        
+        this._acceptedMinBet = options[0]
         
         this.betOptionGroupContainer.removeAllChildren(false)
         options.forEach(amount => {
@@ -580,15 +588,15 @@ class TaiXiuTreoPopup extends Actor {
     }
     
     onRankBtnClick() {
-        app.system.emit('tai.xiu.treo.rank.clicked')
+        app.system.emit(Events.TAI_XIU_TREO_RANK_BTN_CLICKED)
     }
     
     onHistoryBtnClick() {
-        app.system.emit('tai.xiu.treo.history.clicked')
+        app.system.emit(Events.TAI_XIU_TREO_HISTORY_CLICKED)
     }
     
     onSoiCauBtnClick() {
-        app.system.emit('tai.xiu.treo.soicau.clicked')
+        app.system.emit(Events.TAI_XIU_TREO_SOI_CAU_CLICKED)
     }
     
     resetData(bettedTai, bettedXiu) {

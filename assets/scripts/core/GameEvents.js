@@ -178,3 +178,17 @@ Events.ON_SUBMIT_PURCHASE_IOS = "on.submitPurchaseIOS";
 Events.ON_SUBMIT_PURCHASE_ANDROID = "on.submitPurchaseAndroid";
 
 Events.ON_NEW_NOTIFICATION = "on.new.notification";
+
+// hung sicbo
+Events.TAI_XIU_TREO_ON_BET_BTN_CLICKED = "tai.xiu.treo.on.bet.btn.clicked";
+Events.TAI_XIU_TREO_ON_CLOSE_BTN_CLICKED = "tai.xiu.treo.on.close.btn.clicked";
+Events.TAI_XIU_TREO_ON_CONFIRM_BTN_CLICKED = "tai.xiu.treo.on.confirm.bet";
+Events.TAI_XIU_TREO_ON_CANCEL_BTN_CLICKED = "tai.xiu.treo.on.cancel.btn.clicked";
+Events.TAI_XIU_TREO_PREPARING_NEW_GAME = "tai.xiu.treo.preparing.new.game";
+Events.TAI_XIU_TREO_SHOW_BET_GROUP_PANEL = "tai.xiu.treo.show.bet.group.panel";
+Events.TAI_XIU_TREO_BET_TEXT_CLICKED = "tai.xiu.treo.bet.text.clicked";
+Events.TAI_XIU_TREO_HISTORY_CLICKED = "tai.xiu.treo.history.clicked";
+Events.TAI_XIU_TREO_SOI_CAU_CLICKED = "tai.xiu.treo.soicau.clicked";
+Events.TAI_XIU_TREO_NAN_BTN_CLICKED = "tai.xiu.treo.nan.btn.clicked";
+Events.TAI_XIU_TREO_RANK_BTN_CLICKED = "tai.xiu.treo.rank.clicked";
+Events.TAI_XIU_TREO_ON_APP_STATE_CHANGED = "tai.xiu.treo.app.state.changed";
