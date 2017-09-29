@@ -6,6 +6,7 @@ import { formatBalanceShort } from 'GameUtils'
 import TaiXiuTreoManager from 'TaiXiuTreoManager'
 import ScrollMessagePopup from 'ScrollMessagePopup'
 import Events from 'GameEvents'
+import Draggable from 'Draggable'
 
 class TaiXiuTreoPopup extends Actor {
     constructor() {
@@ -48,7 +49,7 @@ class TaiXiuTreoPopup extends Actor {
             dices: cc.SpriteAtlas,
             diceSprite: cc.Sprite,
             diceArea: cc.Node,
-            bowl: cc.Node,
+            bowl: Draggable,
             balanceChangedNode: cc.Node,
             balanceChangedLabel: cc.Label,
             phaseNode: cc.Node,
@@ -62,7 +63,8 @@ class TaiXiuTreoPopup extends Actor {
             lastHistoricalSprites: {
                 default: [],
                 type: cc.SpriteFrame
-            }
+            },
+            diceAnimAtlas: cc.SpriteAtlas
         });
        
         this._selectedBet = null
@@ -82,10 +84,10 @@ class TaiXiuTreoPopup extends Actor {
         this.hideBetGroupPanel()
         this.iniKeypad()
                
-        this._bowlPos = this.bowl.getPosition()
-        
-        this.bowl.on(cc.Node.EventType.TOUCH_MOVE, this._onBowlMoving, this)
-        
+        this.bowl.lock()
+        this._bowlPos = this.bowl.node.getPosition()
+        this.bowl.node.on(cc.Node.EventType.TOUCH_MOVE, this._onBowlMoving, this)
+
         this.nanCheckBox.isChecked = app.taiXiuTreoManager.isNan()
         this._acceptedMinBet = 0
     }
@@ -206,11 +208,11 @@ class TaiXiuTreoPopup extends Actor {
     }
     
     hideBowl() {
-        this.bowl.active = false  
+        this.bowl.node.active = false  
     }
     
     showBowl() {
-        this.bowl.active = true  
+        this.bowl.node.active = true  
     }
     
     onNanBtnClick() {
@@ -265,7 +267,7 @@ class TaiXiuTreoPopup extends Actor {
     }
     
     getBowlRadius() {
-        return (this.bowl.getContentSize().width - 20 )/ 2 
+        return (this.bowl.node.getContentSize().width - 20 )/ 2 
     }
     
     hideBetGroupPanel() {
@@ -326,7 +328,7 @@ class TaiXiuTreoPopup extends Actor {
     }    
     
     resetBowlPosition() {
-        this.bowl.setPosition(this._bowlPos)
+        this.bowl.node.setPosition(this._bowlPos)
     }
     
     countDownRemainTimeToNext(remainTime) {
@@ -349,7 +351,7 @@ class TaiXiuTreoPopup extends Actor {
         let target = optionId == TaiXiuTreoManager.TAI_ID ? this.taiIcon : this.xiuIcon
         let action = cc.sequence(cc.scaleTo(.1, 1.2, 1.2), cc.scaleTo(.1, 1, 1))
         target.runAction(action.repeatForever())
-        target.runAction(cc.sequence(cc.delayTime(time >= 2? time - 2 : 0), cc.callFunc(() => {
+        target.runAction(cc.sequence(cc.delayTime(time >= 2? time - 1 : 0), cc.callFunc(() => {
             this._resetIconAnimation()
         })))
     }
@@ -502,7 +504,7 @@ class TaiXiuTreoPopup extends Actor {
         
         this.hideRemainTimeBg()
         
-        let balanceDuration = 3 // 3s to run animation for balancing phase
+        let balanceDuration = 1.5 // 1.5s to run animation for balancing phase
         
         let actions = [
             cc.callFunc(() => {
@@ -510,6 +512,7 @@ class TaiXiuTreoPopup extends Actor {
                 this.xiuUserBetLabel.string = 0
                 this.hideBetGroupPanel()
                 this.onUserBetsSuccessfully(taiAmount, xiuAmount)
+                this.showBowl()
             }),
             ...(remainTime > duration - (balanceDuration + 1) ? [
                 cc.callFunc(() => {
@@ -520,38 +523,47 @@ class TaiXiuTreoPopup extends Actor {
         ]
         
         this._remainTime = remainTime - balanceDuration
+        let diceAnim = this._getDiceAnimClip(this.diceAnimAtlas, this.diceArea)
         
-        let beforeEndPhaseActions = [
-            cc.callFunc(() => {
-                app.context.setBalance(app.context.getMeBalance() + paybackTai + paybackXiu)
-                this.updateUserMoney(app.context.getMeBalance())
-            }),
-            ...(remainTime > duration - (balanceDuration + 3) ? [
+        if(diceAnim) {
+            let animation = diceAnim.animation
+            let wait = diceAnim.duration
+            
+            let beforeEndPhaseActions = [
                 cc.callFunc(() => {
-                    this.changePhase("Mở Bát")
-                })
-            ] : []),
-            cc.delayTime(1),
-            cc.callFunc(() => {
-                this._remainTime -= 1
-                
-                this.countDownRemainTimeToNext(this._remainTime)
-                
-                if(this.isNanChecked()) {
-                    this.showBowl()
-                    this._waitUntilUserOpensBowl = this.endPhaseAnimation.bind(this, balance, balanceChanged, option, histories, state)
-                } else {
                     this.hideBowl()
-                    this.endPhaseAnimation(balance, balanceChanged, option, histories, state)                
-                }
-                
-                // runAnim open bowl
-                this.placeDices(dices)
-            })
-        ]
-        
-        actions = [...actions, ...beforeEndPhaseActions]
-        
+                    app.context.setBalance(app.context.getMeBalance() + paybackTai + paybackXiu)
+                    this.updateUserMoney(app.context.getMeBalance())
+                    animation.play('run')
+                }),
+                cc.delayTime(wait || 0),
+                ...(remainTime > duration - (balanceDuration + 3) ? [
+                    cc.callFunc(() => {
+                        this.changePhase("Mở Bát")
+                    })
+                ] : []),
+                cc.delayTime(.5),
+                cc.callFunc(() => {
+                    this._remainTime -= .5
+                    this.bowl.unlock()
+                    this.countDownRemainTimeToNext(this._remainTime)
+                    
+                    if(this.isNanChecked()) {
+                        this.showBowl()
+                        this._waitUntilUserOpensBowl = this.endPhaseAnimation.bind(this, balance, balanceChanged, option, histories, state)
+                    } else {
+                        this.hideBowl()
+                        this.endPhaseAnimation(balance, balanceChanged, option, histories, state)                
+                    }
+                    
+                    // runAnim open bowl
+                    this.placeDices(dices)
+                })
+            ]
+            
+            actions = [...actions, ...beforeEndPhaseActions]
+        }
+          
         this.bodyNode.runAction(cc.sequence(actions))
     }
     
@@ -607,6 +619,8 @@ class TaiXiuTreoPopup extends Actor {
         
         this.resetBowlPosition()
         
+        this.bowl.lock()
+        
         this._remainTime = 0
         this._selectedBet = null
         this.popupId.string = ""
@@ -633,6 +647,40 @@ class TaiXiuTreoPopup extends Actor {
         });
     }
     
+    /**
+     * 
+     * @param {any} atlas
+     * @param {any} node : parent node which contains animating node
+     * @returns {animation: cc.Animation, duration: Int}
+     * @memberof TaiXiuTreoPopup
+     */
+    _getDiceAnimClip(atlas, node) {
+        if (atlas && atlas.getSpriteFrames().length > 0) {
+
+            const animatingNode = new cc.Node();
+            const animation = animatingNode.addComponent(cc.Animation);
+
+            const sprite = animatingNode.addComponent(cc.Sprite);
+            let spriteFrames = atlas.getSpriteFrames();
+            sprite.trim = false;
+            sprite.spriteFrame = spriteFrames[0];            
+            node.addChild(animatingNode);
+            let clip = cc.AnimationClip.createWithSpriteFrames(spriteFrames, 30);
+            clip.speed = 0.7;
+            clip.name = 'run';
+            clip.wrapMode = cc.WrapMode.Normal;
+            animation.addClip(clip);
+            animation.on('finished', () => {
+                animatingNode.destroy();
+                animatingNode.removeFromParent(true);
+            });
+
+            return {animation, duration: clip.duration, name: clip.name}
+        }
+        
+        return null
+    }
+    
     _getPointOfDice(diceNode) {
         // let localPos = diceNode.getPosition()
         let localPos = this.diceArea.convertToNodeSpace(diceNode.getPosition())
@@ -645,8 +693,8 @@ class TaiXiuTreoPopup extends Actor {
     }
     
     _arePointsOutOfBowl(points) {
-        // let worldBowlPos = this.bowl.getPosition()
-        let worldBowlPos = this.diceArea.convertToNodeSpace(this.bowl.getPosition())
+        // let worldBowlPos = this.bowl.node.getPosition()
+        let worldBowlPos = this.diceArea.convertToNodeSpace(this.bowl.node.getPosition())
         let radius = this.getBowlRadius()
         
         let distances = []
@@ -659,7 +707,6 @@ class TaiXiuTreoPopup extends Actor {
     
     _onBowlMoving(e) {
         let points = this._diceNodes.map(dice => this._getPointOfDice(dice))
-        console.warn('points', points)
         if(this._arePointsOutOfBowl(points) && !this._endPhaseRunning) {
             this._waitUntilUserOpensBowl && this._waitUntilUserOpensBowl()
         }

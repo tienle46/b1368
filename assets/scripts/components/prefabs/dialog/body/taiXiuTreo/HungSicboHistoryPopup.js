@@ -71,9 +71,8 @@ class HungSicboHistoryPopup extends Actor {
     }
     
     _addItem(id, changedAmount, option, paybackTai, paybackXiu, playerName, taiAmount, time, xiuAmount, point) {
-        
         this.itemIdLbl.string = `${id}`
-        this.dateLbl.string = timeFormat(time, 'DD/MM/YYYY HH:mm')
+        time && (this.dateLbl.string = timeFormat(time, 'DD/MM/YYYY HH:mm'))
         this.betted.string = `${this._color('Tài', HungSicboHistoryPopup.COLOR_ORANGE)} - ${formatBalanceShort(taiAmount)}\n${this._color('Xỉu', HungSicboHistoryPopup.COLOR_CYAN)} - ${formatBalanceShort(xiuAmount)}`
 
         let result = this._onResult(option)

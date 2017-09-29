@@ -35,6 +35,9 @@ class Draggable extends Component {
     }
     
     _onTouchMove(e) {
+        if(this.isLocked())
+            return
+            
         let delta = e.touch.getDelta();
         this.node.setPosition(cc.v2(this.node.getPosition().x + delta.x, this.node.getPosition().y + delta.y))
         this._state = Draggable.STATE_MOVING
@@ -59,6 +62,18 @@ class Draggable extends Component {
         return this._state == Draggable.STATE_IDLE
     }
     
+    isLocked() {
+        return this._state == Draggable.STATE_LOCKED    
+    }
+    
+    lock() {
+        this._state = Draggable.STATE_LOCKED
+    }
+    
+    unlock() {
+        this._state = Draggable.STATE_IDLE
+    }
+    
     _isOutThreshold() {
         let threshold = this.node.getContentSize().width / 3
         let _curPos = this.node.getPosition()
@@ -69,5 +84,6 @@ class Draggable extends Component {
 Draggable.STATE_IDLE = 0
 Draggable.STATE_MOVING = 1
 Draggable.STATE_MOVED = 2
+Draggable.STATE_LOCKED = 3 // unable to move
 
 app.createComponent(Draggable)

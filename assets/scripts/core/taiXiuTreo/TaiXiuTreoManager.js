@@ -303,9 +303,10 @@ export default class TaiXiuTreoManager {
             totalTaiAmount,
             totalTaiCount,
             totalXiuAmount,
-            totalXiuCount   
+            totalXiuCount,
+            forceReset
         } = data
-        
+
         this._currentId = id
         
         this._watchTracker(this._currentId)
@@ -314,7 +315,7 @@ export default class TaiXiuTreoManager {
         
         this._setDuration(remainTime) 
         this._setPopupTime()
-
+        forceReset && this._resetBetAmount()
         switch(state) {
             case TaiXiuTreoManager.GAME_STATE_WAIT:
             case TaiXiuTreoManager.GAME_STATE_BET:

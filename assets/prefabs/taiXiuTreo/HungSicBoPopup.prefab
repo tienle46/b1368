@@ -7866,7 +7866,7 @@
       "__id__": 94
     },
     "bowl": {
-      "__id__": 163
+      "__id__": 165
     },
     "balanceChangedNode": {
       "__id__": 167
@@ -7905,7 +7905,10 @@
       {
         "__uuid__": "6b44dc4d-b923-4341-91ab-fbdb1aa0499c"
       }
-    ]
+    ],
+    "diceAnimAtlas": {
+      "__uuid__": "8ae1221c-11d1-43e6-915b-925a6118017d"
+    }
   },
   {
     "__type__": "cc.PrefabInfo",
