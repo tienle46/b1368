@@ -64,7 +64,8 @@ class TaiXiuTreoPopup extends Actor {
                 default: [],
                 type: cc.SpriteFrame
             },
-            diceAnimAtlas: cc.SpriteAtlas
+            diceAnimAtlas: cc.SpriteAtlas,
+            runAnimNode: cc.Node
         });
        
         this._selectedBet = null
@@ -90,6 +91,8 @@ class TaiXiuTreoPopup extends Actor {
 
         this.nanCheckBox.isChecked = app.taiXiuTreoManager.isNan()
         this._acceptedMinBet = 0
+        
+        this.onChatBtnClick()
     }
     
     onChatBoxHide() {
@@ -376,7 +379,7 @@ class TaiXiuTreoPopup extends Actor {
     
     showPhase() {
         this.phaseNode.active = true
-        this.phaseText.node.opacity = 255
+        this.phaseText.node.opacity = 0
     }
     
     hidePhase() {
@@ -388,19 +391,15 @@ class TaiXiuTreoPopup extends Actor {
         this.showPhase()
         this.phaseText.string = `${text}`
         
-        let scaleTo = 1.2
-        let origin = 1
-        let duration = .1
-        
-        let a1 = cc.spawn(cc.scaleTo(duration, scaleTo, scaleTo), cc.fadeIn(duration))
-        let a2 = cc.spawn(cc.scaleTo(duration, origin, origin), cc.fadeOut(duration))
-        let action = cc.sequence(a1, a2).repeatForever()
-        
-        this.phaseText.node.runAction(action)
-        
-        this.phaseNode.runAction(cc.sequence(cc.delayTime(delayTime), cc.callFunc(() => {
-            this.hidePhase()
-        })))
+        this.phaseNode.runAction(cc.sequence(
+            cc.callFunc(() => {
+                this.phaseText.node.runAction(cc.fadeIn(.3))
+            }),
+            cc.delayTime(delayTime),
+            cc.callFunc(() => {
+                this.phaseText.node.runAction(cc.fadeOut(.5))
+            })
+        ))
     }
     
     onUserBetsSuccessfully(totalPlayerTai, totalPlayerXiu) {
@@ -504,7 +503,7 @@ class TaiXiuTreoPopup extends Actor {
         
         this.hideRemainTimeBg()
         
-        let balanceDuration = 1.5 // 1.5s to run animation for balancing phase
+        let balanceDuration = 2.5 // 2.5s to run animation for balancing phase
         
         let actions = [
             cc.callFunc(() => {
@@ -523,28 +522,17 @@ class TaiXiuTreoPopup extends Actor {
         ]
         
         this._remainTime = remainTime - balanceDuration
-        let diceAnim = this._getDiceAnimClip(this.diceAnimAtlas, this.diceArea)
-        
-        if(diceAnim) {
-            let animation = diceAnim.animation
-            let wait = diceAnim.duration
-            
-            let beforeEndPhaseActions = [
-                cc.callFunc(() => {
-                    this.hideBowl()
-                    app.context.setBalance(app.context.getMeBalance() + paybackTai + paybackXiu)
-                    this.updateUserMoney(app.context.getMeBalance())
-                    animation.play('run')
-                }),
-                cc.delayTime(wait || 0),
-                ...(remainTime > duration - (balanceDuration + 3) ? [
+        let diceAnim = this._getDiceAnimClip(this.diceAnimAtlas, this.runAnimNode, () => {
+            this.showBowl()
+            let afterDicesDown = [
+                ...(remainTime > duration - (balanceDuration + 2) ? [
                     cc.callFunc(() => {
                         this.changePhase("Mở Bát")
                     })
                 ] : []),
-                cc.delayTime(.5),
+                cc.delayTime(1.5),
                 cc.callFunc(() => {
-                    this._remainTime -= .5
+                    this._remainTime -= 1.5
                     this.bowl.unlock()
                     this.countDownRemainTimeToNext(this._remainTime)
                     
@@ -561,10 +549,23 @@ class TaiXiuTreoPopup extends Actor {
                 })
             ]
             
+            this.bodyNode.runAction(cc.sequence(afterDicesDown))
+        })
+        
+        if(diceAnim) {
+            let beforeEndPhaseActions = [
+                cc.callFunc(() => {
+                    this.hideBowl()
+                    app.context.setBalance(app.context.getMeBalance() + paybackTai + paybackXiu)
+                    this.updateUserMoney(app.context.getMeBalance())
+                    diceAnim.animation.play(diceAnim.name)
+                }),
+            ]
+            
             actions = [...actions, ...beforeEndPhaseActions]
+            
+            this.bodyNode.runAction(cc.sequence(actions))
         }
-          
-        this.bodyNode.runAction(cc.sequence(actions))
     }
     
     endPhaseAnimation(balance, balanceChanged, option, histories, state) {
@@ -654,7 +655,7 @@ class TaiXiuTreoPopup extends Actor {
      * @returns {animation: cc.Animation, duration: Int}
      * @memberof TaiXiuTreoPopup
      */
-    _getDiceAnimClip(atlas, node) {
+    _getDiceAnimClip(atlas, node, cb) {
         if (atlas && atlas.getSpriteFrames().length > 0) {
 
             const animatingNode = new cc.Node();
@@ -663,18 +664,23 @@ class TaiXiuTreoPopup extends Actor {
             const sprite = animatingNode.addComponent(cc.Sprite);
             let spriteFrames = atlas.getSpriteFrames();
             sprite.trim = false;
+            sprite.sizeMode = cc.Sprite.SizeMode.RAW
             sprite.spriteFrame = spriteFrames[0];            
             node.addChild(animatingNode);
+            
             let clip = cc.AnimationClip.createWithSpriteFrames(spriteFrames, 30);
-            clip.speed = 0.7;
+            clip.speed = 0.5;
             clip.name = 'run';
-            clip.wrapMode = cc.WrapMode.Normal;
+            clip.wrapMode = cc.WrapMode.Default;
+            
             animation.addClip(clip);
             animation.on('finished', () => {
                 animatingNode.destroy();
                 animatingNode.removeFromParent(true);
+                cb && cb()
             });
 
+            
             return {animation, duration: clip.duration, name: clip.name}
         }
         
@@ -712,17 +718,18 @@ class TaiXiuTreoPopup extends Actor {
         }
     }
     
-    _countDownRemainTime(lbl, remainTime, haveMinutes = false, emitter = undefined) {
+    _countDownRemainTime(lbl, remainTime, onlySecs = false, emitter = undefined) {
         lbl.node.stopAllActions()
         this._remainTime = remainTime
         lbl.node.runAction(cc.repeatForever(cc.sequence(
             cc.callFunc(() => {
-                lbl.string = haveMinutes ? this._remainTime : this._secondsToMinutes(this._remainTime)    
+                lbl.string = onlySecs ? this._remainTime : this._secondsToMinutes(this._remainTime)    
                 this._remainTime -= 1
                 if(emitter && this._remainTime == 0) {
                     app.system.emit(emitter)
                 }
-                lbl.node.color = this._remainTime <= 5 ? cc.Color.RED : cc.Color.BLACK
+                
+                lbl.node.color = this._remainTime <= 5 ? cc.Color.RED : onlySecs ? cc.Color.WHITE : cc.Color.BLACK
                 
                 if(this._remainTime < 0) {
                     this._remainTime = 0
