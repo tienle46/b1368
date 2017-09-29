@@ -87,6 +87,13 @@ class HungSicBoChatPopup extends Actor {
         })
     }
     
+    onEditingDidBegan () {
+        app.env.isBrowser() && (this.chatEditBox.stayOnTop = true)
+    }
+    
+    onEditingDidEnded () {
+        app.env.isBrowser() && this.chatEditBox.setFocus()
+    }
     /**
      * @param {object || string} data 
      * @memberof HungSicBoChatPopap

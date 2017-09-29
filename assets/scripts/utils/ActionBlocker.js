@@ -14,7 +14,7 @@ const blockConfig = {
     'userWithdrawal': {duration: 20*60*1000, keyMessage: "message_block_exchange_card_action"},
     'userExchangeItem': {duration: 20*60*1000, keyMessage: "message_block_exchange_card_action"},
     'userTransfer': {duration: 10*1000, keyMessage: "message_block_transfer_action"},
-    'userChat': {duration: 5*1000, keyMessage: "message_block_chat_action"},
+    'userChat': {duration: 2*1000, keyMessage: "message_block_chat_action"},
 };
 
 /**
