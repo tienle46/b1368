@@ -27,6 +27,7 @@ class HungSicboHistoryPopup extends Actor {
         this.bgTransparent.on('touchstart', function() {
             return;
         });
+        this.dateLbl.string = ""
     }
     
     _addGlobalListener() {
