@@ -94,6 +94,7 @@ class HungSicBoChatPopup extends Actor {
     onEditingDidEnded () {
         app.env.isBrowser() && this.chatEditBox.setFocus()
     }
+    
     /**
      * @param {object || string} data 
      * @memberof HungSicBoChatPopap
@@ -170,6 +171,8 @@ class HungSicBoChatPopup extends Actor {
             cc.callFunc(() => {
                 this._state = HungSicBoChatPopup.STATE_HIDE
                 this.node.opacity = 0
+                
+                this.chatEditBox.stayOnTop = false
             })
         ))        
     }
