@@ -16,6 +16,7 @@ class EventDialog extends Actor {
          */
         this.dialog = null;
         this.progress = null;
+        this._url = null
     }
 
     setDialog(dialog){
@@ -25,6 +26,7 @@ class EventDialog extends Actor {
     onLoad() {
         this.bgTransparent.on(cc.Node.EventType.TOUCH_START, () => true);
         this.progress = this.loadingNode.getComponent('Progress')
+        this._url && (this.webView.url = this._url)
     }
 
     start(){
@@ -34,9 +36,10 @@ class EventDialog extends Actor {
     onDestroy() {
         super.onDestroy();
     }
+    
     loadURL(webURL){
         CCUtils.active(this.webView);
-        this.webView && (this.webView.url = webURL);
+        this._url = webURL
     }
 
     hide() {
