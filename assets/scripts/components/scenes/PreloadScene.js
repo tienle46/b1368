@@ -61,6 +61,7 @@ class PreloadScene extends Component {
             { dir: 'popup/FriendProfilePopup', name: 'friendProfilePopup' },
             { dir: 'dashboard/dialog/prefabs/dialog', name: 'dialog' },
             { dir: 'dashboard/dialog/prefabs/event/EventDialog', name: 'eventDialog' },
+            { dir: 'dashboard/dialog/prefabs/WebviewDialog', name: 'webviewDialog' },
             { dir: 'popup/MultiTabPopup', name: 'multiTabPopup' },
             { dir: 'common/FullSceneProgress', name: 'fullSceneLoading' },
             { dir: 'popup/MessagePopup', name: 'messagePopup' },

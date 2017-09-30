@@ -640,12 +640,17 @@ class TaiXiuTreoPopup extends Actor {
     }
     
     onClickInfoBtn() {
-        ScrollMessagePopup.show(this.node, {
-            cmd: app.commands.MINIGAME_TAI_XIU_GUIDE,
-            parser: (data) => {
-                return data[app.keywords.EVENT_CONTENT] || "";
-            }
-        });
+        // ScrollMessagePopup.show(this.node, {
+        //     cmd: app.commands.MINIGAME_TAI_XIU_GUIDE,
+        //     parser: (data) => {
+        //         return data[app.keywords.EVENT_CONTENT] || "";
+        //     }
+        // });
+        
+        let dialog = cc.instantiate(app.res.prefab.webviewDialog);
+        const dialogComponent = dialog.getComponent('WebviewDialog');
+        dialogComponent.loadURL('http://google.com');
+        app.system.getCurrentSceneNode().addChild(dialog, TaiXiuTreoManager.HISTORY_ZINDEX);
     }
     
     /**
