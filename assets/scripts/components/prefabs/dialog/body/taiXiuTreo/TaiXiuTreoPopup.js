@@ -525,23 +525,21 @@ class TaiXiuTreoPopup extends Actor {
         let diceAnim = this._getDiceAnimClip(this.diceAnimAtlas, this.runAnimNode, () => {
             let afterDicesDown;
             
-            if(this.isNanChecked()) 
-                this.showBowl()
-                
+            this.showBowl()
             afterDicesDown = [
-                ...(remainTime > duration - (balanceDuration + 2) && this.isNanChecked() ? [
+                ...(remainTime > duration - (balanceDuration + 2)? [
                     cc.callFunc(() => {
                         this.changePhase("Mở Bát")
                     })
                 ] : []),
-                cc.delayTime(this.isNanChecked() ? 1 : 0),
+                cc.delayTime(1),
                 cc.callFunc(() => {
-                    this.isNanChecked() && (this._remainTime -= 1)
+                    this._remainTime -= 1
                     this.bowl.unlock()
                     this.countDownRemainTimeToNext(this._remainTime)
                     
                     if(this.isNanChecked()) {
-                        // this.showBowl()
+                        this.showBowl()
                         this._waitUntilUserOpensBowl = this.endPhaseAnimation.bind(this, balance, balanceChanged, option, histories, state)
                     } else {
                         this.hideBowl()
