@@ -253,7 +253,7 @@ class TaiXiuTreoPopup extends Actor {
     placeDices(dices = []) {
         this.clearDices()
 
-        let positions = [{ x: -19, y: 74.9 }, { x: 18.3, y: 27.5 }, { x: -45.3, y: 27 }]
+        let positions = [{ x: -19, y: 70.9 }, { x: 18.3, y: 23.5 }, { x: -45.3, y: 23 }]
         
         dices.forEach((dice, i) => {
             let {x, y} = positions[i]
@@ -503,7 +503,7 @@ class TaiXiuTreoPopup extends Actor {
         
         this.hideRemainTimeBg()
         
-        let balanceDuration = 2.5 // 2.5s to run animation for balancing phase
+        let balanceDuration = 2 // 2s to run animation for balancing phase
         
         let actions = [
             cc.callFunc(() => {
@@ -523,21 +523,25 @@ class TaiXiuTreoPopup extends Actor {
         
         this._remainTime = remainTime - balanceDuration
         let diceAnim = this._getDiceAnimClip(this.diceAnimAtlas, this.runAnimNode, () => {
-            this.showBowl()
-            let afterDicesDown = [
-                ...(remainTime > duration - (balanceDuration + 2) ? [
+            let afterDicesDown;
+            
+            if(this.isNanChecked()) 
+                this.showBowl()
+                
+            afterDicesDown = [
+                ...(remainTime > duration - (balanceDuration + 2) && this.isNanChecked() ? [
                     cc.callFunc(() => {
                         this.changePhase("Mở Bát")
                     })
                 ] : []),
-                cc.delayTime(1.5),
+                cc.delayTime(this.isNanChecked() ? 1 : 0),
                 cc.callFunc(() => {
-                    this._remainTime -= 1.5
+                    this.isNanChecked() && (this._remainTime -= 1)
                     this.bowl.unlock()
                     this.countDownRemainTimeToNext(this._remainTime)
                     
                     if(this.isNanChecked()) {
-                        this.showBowl()
+                        // this.showBowl()
                         this._waitUntilUserOpensBowl = this.endPhaseAnimation.bind(this, balance, balanceChanged, option, histories, state)
                     } else {
                         this.hideBowl()
