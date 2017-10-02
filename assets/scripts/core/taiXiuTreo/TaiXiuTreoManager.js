@@ -30,13 +30,13 @@ export default class TaiXiuTreoManager {
         this._nanState = false
         
         this._popupPhaseDuration = 0 // phase duration
-        this._popupStartedTime = 0 // phase started time
+        this._timeFlag = 0 // phase started time
     }
 
     _addEventListeners() {
         this._removeEventListeners()
         app.system.addListener(app.commands.MINIGAME_TAI_XIU_GET_STATE, this._createPopup, this)
-        app.system.addListener(app.commands.MINIGAME_TAI_XIU_CHANGE_STATE, this._onTaiXiuStateChange, this)
+        app.system.addListener(app.commands.MINIGAME_TAI_XIU_CHANGE_STATE, this._onStateChange, this)
         app.system.addListener(app.commands.MINIGAME_TAI_XIU_BET, this._onTaiXiuBet, this)
         app.system.addListener(app.commands.MINIGAME_TAI_XIU_REMAIN_TIME, this._updateIconRemainTime, this)
         app.system.addListener(app.commands.MINIGAME_TAI_XIU_BET_CHANGED, this._onBetChanged, this)
@@ -56,7 +56,7 @@ export default class TaiXiuTreoManager {
     
     _removeEventListeners() {
         app.system.removeListener(app.commands.MINIGAME_TAI_XIU_GET_STATE, this._createPopup, this)
-        app.system.removeListener(app.commands.MINIGAME_TAI_XIU_CHANGE_STATE, this._onTaiXiuStateChange, this)
+        app.system.removeListener(app.commands.MINIGAME_TAI_XIU_CHANGE_STATE, this._onStateChange, this)
         app.system.removeListener(app.commands.MINIGAME_TAI_XIU_BET, this._onTaiXiuBet, this)
         app.system.removeListener(app.commands.MINIGAME_TAI_XIU_REMAIN_TIME, this._updateIconRemainTime, this)
         app.system.removeListener(app.commands.MINIGAME_TAI_XIU_BET_CHANGED, this._onBetChanged, this)
@@ -118,7 +118,7 @@ export default class TaiXiuTreoManager {
         this._tracker = {}
         
         this._popupPhaseDuration = 0
-        this._popupStartedTime = 0
+        this._timeFlag = 0
         
         if(popupOnly) {
             this._popupComponent = null
@@ -176,7 +176,7 @@ export default class TaiXiuTreoManager {
     _createPopup(data) {
         if(!this._isIconCreated())
             return
-            
+        console.warn('data', data)
         let {
             taiAmount,
             xiuAmount
@@ -193,7 +193,7 @@ export default class TaiXiuTreoManager {
         this._betted[TaiXiuTreoManager.TAI_ID] = taiAmount || 0
         this._betted[TaiXiuTreoManager.XIU_ID] = xiuAmount || 0
 
-        this._onTaiXiuStateChange(data)        
+        this._onStateChange(data)        
     }
     
     _onClosePopup() {
@@ -278,7 +278,7 @@ export default class TaiXiuTreoManager {
         this._popupComponent.updateUserMoney(balance)
     }
     
-    _onTaiXiuStateChange(data) {
+    _onStateChange(data) {
         // console.warn('_onTaiXiuStateChange', data)
         
         if(!this._isPopupCreated() || !this._isIconCreated()) {
@@ -314,7 +314,7 @@ export default class TaiXiuTreoManager {
         this.setBoardState(state)
         
         this._setDuration(remainTime) 
-        this._setPopupTime()
+        
         forceReset && this._resetBetAmount()
         switch(state) {
             case TaiXiuTreoManager.GAME_STATE_WAIT:
@@ -360,14 +360,20 @@ export default class TaiXiuTreoManager {
     }
     
     _onAppStateChanged(state) {
+        if(!this._isPopupCreated())
+            return
+            
         if(state == 'active') {
-            let deltaTime = parseInt((Date.now() - this._popupStartedTime)/1000)
-            if(deltaTime > this._popupPhaseDuration) {
+            let deltaTime = parseInt((Date.now() - this._timeFlag)/1000)
+            if(this._phaseFlag && deltaTime > this._phaseFlag) {
                 app.service.send({ cmd: app.commands.MINIGAME_TAI_XIU_GET_STATE })
             } else { // phase is still running, update counter
                 app.system.emit('tai.xiu.treo.popup.update.count.down', this._popupPhaseDuration - deltaTime, this._boardState)
             }
-        }      
+        } else if(state == 'inactive'){
+            this._setPopupTime()
+            this._phaseFlag = this._popupComponent.getRemainTime()
+        }
     }
     
     _onNanBtnClicked(state) {
@@ -460,7 +466,7 @@ export default class TaiXiuTreoManager {
     }
     
     _setPopupTime() {
-        this._popupStartedTime = Date.now() // phase started time
+        this._timeFlag = Date.now() // phase started time
     }
 
     _hideIcon() {

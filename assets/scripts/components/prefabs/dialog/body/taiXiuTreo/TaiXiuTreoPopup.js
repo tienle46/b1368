@@ -590,6 +590,10 @@ class TaiXiuTreoPopup extends Actor {
         this.initHistories(histories, state)    
     }
     
+    getRemainTime() {
+        return this._remainTime
+    }
+    
     openHistoryPopup() {
         return cc.instantiate(this.historyPrefab)
     }
