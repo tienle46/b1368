@@ -1,6 +1,7 @@
 import app from 'app'
 import Actor from 'Actor'
 import ActionBlocker from 'ActionBlocker';
+import Events from 'GameEvents'
 
 class HungSicBoChatPopup extends Actor {
     constructor() {
@@ -45,12 +46,20 @@ class HungSicBoChatPopup extends Actor {
         super._addGlobalListener()
         app.system.addListener(app.commands.MINIGAME_CHAT_HISTORY, this._onChatHistory, this);
         app.system.addListener(app.commands.MINIGAME_CHAT, this._appendChild, this);
+        app.system.addListener(Events.TAI_XIU_TREO_SHOW_BET_GROUP_PANEL, this._onDisableSetOnTop, this)
+        app.system.addListener(Events.TAI_XIU_TREO_HISTORY_CLICKED, this._onDisableSetOnTop, this)
+        app.system.addListener(Events.TAI_XIU_TREO_SOI_CAU_CLICKED, this._onDisableSetOnTop, this)
+        app.system.addListener(Events.TAI_XIU_TREO_RANK_BTN_CLICKED, this._onDisableSetOnTop, this)
     }
 
     _removeGlobalListener() {
        super._removeGlobalListener()
        app.system.removeListener(app.commands.MINIGAME_CHAT_HISTORY, this._onChatHistory, this);
        app.system.removeListener(app.commands.MINIGAME_CHAT, this._appendChild, this);
+       app.system.removeListener(Events.TAI_XIU_TREO_SHOW_BET_GROUP_PANEL, this._onDisableSetOnTop, this)
+       app.system.removeListener(Events.TAI_XIU_TREO_HISTORY_CLICKED, this._onDisableSetOnTop, this)
+       app.system.removeListener(Events.TAI_XIU_TREO_SOI_CAU_CLICKED, this._onDisableSetOnTop, this)
+       app.system.removeListener(Events.TAI_XIU_TREO_RANK_BTN_CLICKED, this._onDisableSetOnTop, this)
     }
     
     _onChatHistory(data) {
@@ -93,6 +102,10 @@ class HungSicBoChatPopup extends Actor {
     
     onEditingDidEnded () {
         app.env.isBrowser() && this.chatEditBox.setFocus()
+    }
+    
+    _onDisableSetOnTop() {
+        app.env.isBrowser() && (this.chatEditBox.stayOnTop = false)
     }
     
     /**
