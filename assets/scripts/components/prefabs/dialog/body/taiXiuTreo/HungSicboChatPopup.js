@@ -145,7 +145,6 @@ class HungSicBoChatPopup extends Actor {
         }
         if(!username) {
             username = 'Game bài 1368'
-            this.chatScroll.scrollToTop();
         }
         
         if(username.length > 12) {
