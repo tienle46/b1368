@@ -72,7 +72,7 @@ class TaiXiuTreoPopup extends Actor {
         this._remainTime = 0
         this._diceNodes = []
         this._waitUntilUserOpensBowl = null
-        this._endPhaseRunning = false
+        this._popupAnimationState = TaiXiuTreoPopup.POPUP_ANIM_STATE_IDLE
         this._acceptedMinBet = 0
         this._chatComponent = null // uses to save ChatPopup instance
         
@@ -130,7 +130,7 @@ class TaiXiuTreoPopup extends Actor {
         this._remainTime = 0
         this._diceNodes = []
         this._waitUntilUserOpensBowl = null
-        this._endPhaseRunning = false    
+        this._popupAnimationState = TaiXiuTreoPopup.POPUP_ANIM_STATE_IDLE    
     }
     
     _addGlobalListener() {
@@ -399,7 +399,7 @@ class TaiXiuTreoPopup extends Actor {
         let target = optionId == TaiXiuTreoManager.TAI_ID ? this.taiIcon : this.xiuIcon
         let action = cc.sequence(cc.scaleTo(.1, 1.2, 1.2), cc.scaleTo(.1, 1, 1))
         target.runAction(action.repeatForever())
-        target.runAction(cc.sequence(cc.delayTime(time >= 2? time - 1 : 0), cc.callFunc(() => {
+        target.runAction(cc.sequence(cc.delayTime(time >= 2? time - .5 : 0), cc.callFunc(() => {
             this._resetIconAnimation()
         })))
     }
@@ -537,6 +537,11 @@ class TaiXiuTreoPopup extends Actor {
     }
     
     onBoardEnding(duration, remainTime, data, state) {
+        if(this._popupAnimationState >= TaiXiuTreoPopup.POPUP_ANIM_STATE_ON_BOARD_END)
+            return
+        
+        this._popupAnimationState = TaiXiuTreoPopup.POPUP_ANIM_STATE_ON_BOARD_END
+        
         let {
             balanceChanged,
             option,
@@ -569,10 +574,9 @@ class TaiXiuTreoPopup extends Actor {
             ]: [])
         ]
         
-        this._remainTime = remainTime - balanceDuration
         let diceAnim = this._getDiceAnimClip(this.diceAnimAtlas, this.runAnimNode, () => {
             let afterDicesDown;
-            
+
             this.showBowl()
             afterDicesDown = [
                 ...(remainTime > duration - (balanceDuration + 2)? [
@@ -582,11 +586,11 @@ class TaiXiuTreoPopup extends Actor {
                 ] : []),
                 cc.delayTime(1),
                 cc.callFunc(() => {
-                    this._remainTime -= 1
-                    this.bowl.unlock()
+                    this._remainTime = remainTime - balanceDuration - diceAnim.duration - 2
                     this.countDownRemainTimeToNext(this._remainTime)
-                    
+
                     if(this.isNanChecked()) {
+                        this.bowl.unlock()
                         this.showBowl()
                         this._waitUntilUserOpensBowl = this.endPhaseAnimation.bind(this, balance, balanceChanged, option, histories, state)
                     } else {
@@ -621,7 +625,7 @@ class TaiXiuTreoPopup extends Actor {
     endPhaseAnimation(balance, balanceChanged, option, histories, state) {
         this.hideBowl()
         
-        this._endPhaseRunning = true
+        this._popupAnimationState = TaiXiuTreoPopup.POPUP_ANIM_STATE_ENDED
         
         // balanceChanged -> runAnim changed balance
         balanceChanged && this.balanceChanged(balanceChanged)
@@ -680,7 +684,7 @@ class TaiXiuTreoPopup extends Actor {
         this._selectedBet = null
         this.popupId.string = ""
         this._waitUntilUserOpensBowl = null
-        this._endPhaseRunning = false
+        this._popupAnimationState = TaiXiuTreoPopup.POPUP_ANIM_STATE_IDLE
         
         this._resetLbls()
         
@@ -740,7 +744,7 @@ class TaiXiuTreoPopup extends Actor {
             });
 
             
-            return {animation, duration: clip.duration, name: clip.name}
+            return {animation, duration: Math.round(clip.duration), name: clip.name}
         }
         
         return null
@@ -777,7 +781,7 @@ class TaiXiuTreoPopup extends Actor {
     
     _onBowlMoving(e) {
         let points = this._diceNodes.map(dice => this._getPointOfDice(dice))
-        if(this._arePointsOutOfBowl(points) && !this._endPhaseRunning) {
+        if(this._arePointsOutOfBowl(points) && this._popupAnimationState != TaiXiuTreoPopup.POPUP_ANIM_STATE_ENDED) {
             this._waitUntilUserOpensBowl && this._waitUntilUserOpensBowl()
         }
     }
@@ -841,7 +845,7 @@ class TaiXiuTreoPopup extends Actor {
     }
     
     update(dt) {
-        if(app.taiXiuTreoManager.isEnding() && this._remainTime <= 5 && !this._endPhaseRunning) {
+        if(app.taiXiuTreoManager.isEnding() && this._remainTime <= 5 && this._popupAnimationState != TaiXiuTreoPopup.POPUP_ANIM_STATE_ENDED) {
             this._waitUntilUserOpensBowl && this._waitUntilUserOpensBowl()
         }
         
@@ -850,10 +854,15 @@ class TaiXiuTreoPopup extends Actor {
             this.hideBowl()
             this.hideTimeToNext()
             this.clearDices()
+            this.showRemainTimeBg()
         }
     }
 }
 
 TaiXiuTreoPopup.CHAT_COMPONENT = 'HungSicboChatPopup'
+TaiXiuTreoPopup.POPUP_ANIM_STATE_IDLE = 1
+TaiXiuTreoPopup.POPUP_ANIM_STATE_CHANGE_PHASE = 2
+TaiXiuTreoPopup.POPUP_ANIM_STATE_ON_BOARD_END = 3
+TaiXiuTreoPopup.POPUP_ANIM_STATE_ENDED = 3.1
 
 app.createComponent(TaiXiuTreoPopup);

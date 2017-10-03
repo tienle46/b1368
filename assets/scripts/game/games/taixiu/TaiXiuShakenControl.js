@@ -117,9 +117,9 @@ export default class TaiXiuShakenControl extends ShakenControl {
             // let posX = randomPosInRange[i].x * (acceptedArea.width/2 - size.width) / 2
             if(i != 0) 
                 // posX <<= 1 
-                posX = randomPosInRange[i].x * (acceptedArea.width - size.width) / 2 + randomPosInRange[i].x * app._.random(1/4, 1/2)
+                posX = randomPosInRange[i].x * (acceptedArea.width - size.width) / 2 + randomPosInRange[i].x * app._.random(1/5, 1/4)
             
-            let posY = app._.random(app._.random(0, 1 / 2), randomPosInRange[i].y * (acceptedArea.height - size.height) / 2)
+            let posY = app._.random(app._.random(0, 1 / 2), randomPosInRange[i].y * (acceptedArea.height - size.height + 24) / 2) 
            
             this.diceSprite.spriteFrame = this._getDiceSpriteFrame(dice)
             
