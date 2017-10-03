@@ -11,7 +11,8 @@ class HungSicBoChatPopup extends Actor {
             item: cc.RichText,
             container: cc.Node,
             chatEditBox: cc.EditBox,
-            chatScroll: cc.ScrollView
+            chatScroll: cc.ScrollView,
+            view: cc.Node
         });
         
         this._incrementId = 0
@@ -25,6 +26,8 @@ class HungSicBoChatPopup extends Actor {
         this._incrementId = 0
         this._nodeInstances = []
         this._state = HungSicBoChatPopup.STATE_HIDE
+        
+        this.viewHeight = this.view.getContentSize().height
     }
     
     start() {
@@ -74,7 +77,11 @@ class HungSicBoChatPopup extends Actor {
             
             this._addItem(sender, msg)
         })
-        this.chatScroll.scrollToBottom();
+        
+        this.container.runAction(cc.sequence(cc.delayTime(.1), cc.callFunc(() => {
+            if(this.container.getContentSize().height > this.viewHeight)
+                this.chatScroll.scrollToBottom();
+        })))
     }
     
     onSubmit() {
@@ -135,6 +142,10 @@ class HungSicBoChatPopup extends Actor {
         if(this._nodeInstances.length > HungSicBoChatPopup.MAX_INSTANCE) {
             let node = this._nodeInstances.shift()
             node.destroy()   
+        }
+        if(!username) {
+            username = 'Game bài 1368'
+            this.chatScroll.scrollToTop();
         }
         
         if(username.length > 12) {
