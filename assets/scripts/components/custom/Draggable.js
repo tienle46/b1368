@@ -14,7 +14,7 @@ class Draggable extends Component {
         super.onLoad()
         
         this._state = Draggable.STATE_IDLE
-        
+
         this._prePos = this.node.getPosition()
     }
     
@@ -31,11 +31,14 @@ class Draggable extends Component {
     }
     
     _onTouchStart(e) {
+        if(this.isLocked())
+            return
+            
         this._state = Draggable.STATE_IDLE    
     }
     
     _onTouchMove(e) {
-        if(this.isLocked())
+        if(this.isLocked()) 
             return
             
         let delta = e.touch.getDelta();
@@ -44,6 +47,9 @@ class Draggable extends Component {
     }
     
     _onTouchEnd(e) {
+        if(this.isLocked())
+            return
+            
         let isOut = this._isOutThreshold()
         
         this._prePos = this.node.getPosition();

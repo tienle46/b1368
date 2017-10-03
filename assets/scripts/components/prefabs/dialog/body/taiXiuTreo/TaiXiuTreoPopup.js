@@ -4,7 +4,6 @@ import Actor from 'Actor'
 import { numberFormat } from 'GeneralUtils'
 import { formatBalanceShort } from 'GameUtils'
 import TaiXiuTreoManager from 'TaiXiuTreoManager'
-import ScrollMessagePopup from 'ScrollMessagePopup'
 import Events from 'GameEvents'
 import Draggable from 'Draggable'
 
@@ -40,6 +39,7 @@ class TaiXiuTreoPopup extends Actor {
                 type: [cc.SpriteFrame]
             },
             virtualKeypadContainer: cc.Node,
+            deleteItem: cc.Node,
             keyItem: cc.Node,
             keyText: cc.Label,
             betGroupPanel: cc.Node,
@@ -84,8 +84,7 @@ class TaiXiuTreoPopup extends Actor {
         this.hideTimeToNext()
         this.hideBetGroupPanel()
         this.iniKeypad()
-               
-        this.bowl.lock()
+        
         this._bowlPos = this.bowl.node.getPosition()
         this.bowl.node.on(cc.Node.EventType.TOUCH_MOVE, this._onBowlMoving, this)
 
@@ -93,6 +92,13 @@ class TaiXiuTreoPopup extends Actor {
         this._acceptedMinBet = 0
         
         this.onChatBtnClick()
+        
+        this.showBowl()
+    }
+    
+    start() {
+        super.start()
+        this.bowl.lock()    
     }
     
     onChatBoxHide() {
@@ -211,11 +217,13 @@ class TaiXiuTreoPopup extends Actor {
     }
     
     hideBowl() {
-        this.bowl.node.active = false  
+        if(this.bowl.node.active)
+            this.bowl.node.active = false  
     }
     
     showBowl() {
-        this.bowl.node.active = true  
+        if(!this.bowl.node.active)
+            this.bowl.node.active = true  
     }
     
     onNanBtnClick() {
@@ -227,12 +235,19 @@ class TaiXiuTreoPopup extends Actor {
     }
     
     clearDices() {
-        this.diceArea.removeAllChildren(false)
-        this._diceNodes = []
+        if(this._diceNodes.length > 0) {
+            this.diceArea.removeAllChildren(false)
+            this._diceNodes = []
+        }
     }
     
     onKeyBtnClick(e) {
         let {_text} = e.currentTarget
+        app.system.emit(Events.TAI_XIU_TREO_BET_TEXT_CLICKED, _text, this._selectedBet)
+    }
+    
+    onDeleteBtnClick() {
+        let _text = TaiXiuTreoManager.BACK_SYMBOL
         app.system.emit(Events.TAI_XIU_TREO_BET_TEXT_CLICKED, _text, this._selectedBet)
     }
     
@@ -310,7 +325,7 @@ class TaiXiuTreoPopup extends Actor {
     
     iniKeypad() {
         let keys = Array.from(Array(10).keys())
-        keys.push(`000`, `${TaiXiuTreoManager.BACK_SYMBOL}`)
+        keys.push(`000`)
         
         keys.forEach(k => {
             this.keyText.string = k
@@ -320,14 +335,21 @@ class TaiXiuTreoPopup extends Actor {
             
             this.virtualKeypadContainer.addChild(key)
         })
+        
+        //delete
+        let deleteItem = cc.instantiate(this.deleteItem)
+        deleteItem.active = true
+        this.virtualKeypadContainer.addChild(deleteItem)
     }
     
     hideTimeToNext() {
-        this.timeToNextBg.active = false
+        if(this.timeToNextBg.active)
+            this.timeToNextBg.active = false
     }
     
     showTimeToNext() {
-        this.timeToNextBg.active = true
+        if(!this.timeToNextBg.active)
+            this.timeToNextBg.active = true
     }    
     
     resetBowlPosition() {
@@ -398,6 +420,9 @@ class TaiXiuTreoPopup extends Actor {
             cc.delayTime(delayTime),
             cc.callFunc(() => {
                 this.phaseText.node.runAction(cc.fadeOut(.5))
+            }),
+            cc.callFunc(() => {
+                this.hidePhase()
             })
         ))
     }
@@ -500,7 +525,7 @@ class TaiXiuTreoPopup extends Actor {
             balance,
             histories
         } = data
-        
+        this.bowl.lock()
         this.hideRemainTimeBg()
         
         let balanceDuration = 2 // 2s to run animation for balancing phase
@@ -515,7 +540,7 @@ class TaiXiuTreoPopup extends Actor {
             }),
             ...(remainTime > duration - (balanceDuration + 1) ? [
                 cc.callFunc(() => {
-                    this.changePhase("Cân Kèo")
+                    this.changePhase("Cân kèo")
                 }),
                 cc.delayTime(balanceDuration),
             ]: [])
@@ -789,6 +814,13 @@ class TaiXiuTreoPopup extends Actor {
     update(dt) {
         if(app.taiXiuTreoManager.isEnding() && this._remainTime <= 5 && !this._endPhaseRunning) {
             this._waitUntilUserOpensBowl && this._waitUntilUserOpensBowl()
+        }
+        
+        if(app.taiXiuTreoManager.allowBetting()) {
+            this._resetIconAnimation()
+            this.hideBowl()
+            this.hideTimeToNext()
+            this.clearDices()
         }
     }
 }

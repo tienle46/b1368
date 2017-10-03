@@ -176,7 +176,7 @@ export default class TaiXiuTreoManager {
     _createPopup(data) {
         if(!this._isIconCreated())
             return
-        console.warn('data', data)
+            
         let {
             taiAmount,
             xiuAmount
@@ -328,7 +328,9 @@ export default class TaiXiuTreoManager {
                     this._track(this._currentId, TaiXiuTreoManager.FOLLOWING, true)
                 }
                 
-                this._popupComponent.changePhase("Đặt Cược")
+                if(remainTime > duration - 1)
+                    this._popupComponent.changePhase("Đặt Cược")
+                    
                 this._popupComponent.countDownRemainTime(remainTime)
                 this._popupComponent.initHistories(histories, state)
                 this._popupComponent.updateUserMoney(this._meMoney)

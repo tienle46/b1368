@@ -495,10 +495,12 @@ export default class GameScene extends BaseScene {
                 this.emit(Events.ON_GAME_STATE_ENDING, data, isJustJoined);
                 
                     let jarExplosiveData = utils.getVariable(this.room, app.keywords.JAR_EXPLOSIVE);
+                    
                     if(jarExplosiveData) {
                         let usernames = jarExplosiveData[app.keywords.USERNAME_LIST] || [],
                         moneyList = jarExplosiveData[app.keywords.MONEY_LIST] || [],
                         messages = jarExplosiveData['msl'] || [];
+                    
                         usernames.forEach((username, index) => {
                             this.emit(Events.ON_USER_MAKES_JAR_EXPLOSION, username, messages[index] || null, moneyList[index]);
                         });
