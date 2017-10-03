@@ -192,7 +192,7 @@ class TaiXiuTreoPopup extends Actor {
                return
                 
             btn.runAction(cc.sequence(cc.delayTime(2), cc.callFunc(() => {
-                if(this._clickCounter >=5 && TaiXiuTreoManager.allowBetting()) {
+                if(this._clickCounter >=5 && app.taiXiuTreoManager.allowBetting()) {
                     app.service.send({cmd: app.commands.MINIGAME_TAI_XIU_GET_OPTION})
                 }
                 this._clickCounter = 0
