@@ -29,7 +29,9 @@ export default class TaiXiuTreoManager {
         
         this._nanState = false
         
-        this._timeFlag = 0 // phase started time
+        this._remainTimeBeforeAppChangesState = 0 // phase started time
+        
+        this._userInitMoney = 0
     }
 
     _addEventListeners() {
@@ -52,6 +54,7 @@ export default class TaiXiuTreoManager {
         app.system.addListener(Events.TAI_XIU_TREO_RANK_BTN_CLICKED, this._onRankBtnClicked, this)
         app.system.addListener(Events.TAI_XIU_TREO_ON_APP_STATE_CHANGED, this._onAppStateChanged, this)
         app.system.addListener(Events.TAI_XIU_TREO_ON_COUNTING_DOWN, this._updateRemainTime, this)
+        app.system.addListener(app.commands.MINIGAME_TAI_XIU_STOP, this._onGameDestroy, this)
     }
     
     _removeEventListeners() {
@@ -73,6 +76,7 @@ export default class TaiXiuTreoManager {
         app.system.removeListener(Events.TAI_XIU_TREO_RANK_BTN_CLICKED, this._onRankBtnClicked, this)
         app.system.removeListener(Events.TAI_XIU_TREO_ON_APP_STATE_CHANGED, this._onAppStateChanged, this)
         app.system.removeListener(Events.TAI_XIU_TREO_ON_COUNTING_DOWN, this._updateRemainTime, this)
+        app.system.removeListener(app.commands.MINIGAME_TAI_XIU_STOP, this._onGameDestroy, this)
     }
     
     isNan() {
@@ -118,8 +122,8 @@ export default class TaiXiuTreoManager {
         this._currentId = null
         this._tracker = {}
         
-        this._popupPhaseDuration = 0
-        this._timeFlag = 0
+        this._userInitMoney = 0
+        this._remainTimeBeforeAppChangesState = 0
         
         if(popupOnly) {
             this._popupComponent = null
@@ -155,6 +159,14 @@ export default class TaiXiuTreoManager {
         }
         
         this._popupComponent.showPopup()
+    }
+    
+    _onGameDestroy() {
+        app.context.setBalance(this._userInitMoney)
+        if(this._isIconCreated())
+            this._iconComponent.destroy()
+        if(this._isPopupCreated())
+            this._iconComponent.destroy()
     }
     
     _onNewBoardIsComming() {
@@ -315,9 +327,13 @@ export default class TaiXiuTreoManager {
         this.setBoardState(state)
         
         forceReset && this._resetBetAmount()
+        
         switch(state) {
             case TaiXiuTreoManager.GAME_STATE_WAIT:
             case TaiXiuTreoManager.GAME_STATE_BET:
+                if(forceReset) {
+                    this._userInitMoney = app.context.getMeBalance()
+                }
                 this._popupComponent.resetData(this._betted[TaiXiuTreoManager.TAI_ID], this._betted[TaiXiuTreoManager.XIU_ID])
                 
                 // this._popupComponent.taiUserBetLabel.string = numberFormat(this._betted[TaiXiuTreoManager.TAI_ID])
@@ -365,7 +381,7 @@ export default class TaiXiuTreoManager {
             return
             
         if(state == 'active') {
-            let deltaTime = Math.round((Date.now() - this._timeFlag)/1000)
+            let deltaTime = Math.round((Date.now() - this._remainTimeBeforeAppChangesState)/1000)
             if(deltaTime > this._remainTimeBeforeAppChangesState) {
                 app.service.send({ cmd: app.commands.MINIGAME_TAI_XIU_GET_STATE })
             } else { // phase is still running, update counter
@@ -464,7 +480,7 @@ export default class TaiXiuTreoManager {
     }
     
     _setPopupTime() {
-        this._timeFlag = Date.now() // phase started time
+        this._remainTimeBeforeAppChangesState = Date.now() // phase started time
     }
 
     _hideIcon() {
