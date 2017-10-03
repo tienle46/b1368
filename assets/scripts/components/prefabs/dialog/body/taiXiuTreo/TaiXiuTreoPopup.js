@@ -136,13 +136,13 @@ class TaiXiuTreoPopup extends Actor {
     _addGlobalListener() {
        super._addGlobalListener()
        
-       app.system.addListener('tai.xiu.treo.popup.update.count.down', this._onUpdateCountDown, this);
+       app.system.addListener(Events.TAI_XIU_TREO_ON_UPDATE_COUNT_DOWN, this._onUpdateCountDown, this);
        app.system.addListener(app.commands.MINIGAME_TAI_XIU_GET_OPTION, this._onTaiXiuGetOption, this);
     }
 
     _removeGlobalListener() {
        super._removeGlobalListener()
-       app.system.removeListener('tai.xiu.treo.popup.update.count.down', this._onUpdateCountDown, this);
+       app.system.removeListener(Events.TAI_XIU_TREO_ON_UPDATE_COUNT_DOWN, this._onUpdateCountDown, this);
        app.system.removeListener(app.commands.MINIGAME_TAI_XIU_GET_OPTION, this._onTaiXiuGetOption, this);
     }
     
@@ -789,6 +789,7 @@ class TaiXiuTreoPopup extends Actor {
             cc.callFunc(() => {
                 lbl.string = onlySecs ? this._remainTime : this._secondsToMinutes(this._remainTime)    
                 this._remainTime -= 1
+                
                 if(emitter && this._remainTime == 0) {
                     app.system.emit(emitter)
                 }

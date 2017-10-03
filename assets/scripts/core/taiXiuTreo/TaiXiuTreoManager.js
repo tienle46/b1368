@@ -29,7 +29,6 @@ export default class TaiXiuTreoManager {
         
         this._nanState = false
         
-        this._popupPhaseDuration = 0 // phase duration
         this._timeFlag = 0 // phase started time
     }
 
@@ -52,6 +51,7 @@ export default class TaiXiuTreoManager {
         app.system.addListener(Events.TAI_XIU_TREO_NAN_BTN_CLICKED, this._onNanBtnClicked, this)
         app.system.addListener(Events.TAI_XIU_TREO_RANK_BTN_CLICKED, this._onRankBtnClicked, this)
         app.system.addListener(Events.TAI_XIU_TREO_ON_APP_STATE_CHANGED, this._onAppStateChanged, this)
+        app.system.addListener(Events.TAI_XIU_TREO_ON_COUNTING_DOWN, this._updateRemainTime, this)
     }
     
     _removeEventListeners() {
@@ -72,6 +72,7 @@ export default class TaiXiuTreoManager {
         app.system.removeListener(Events.TAI_XIU_TREO_NAN_BTN_CLICKED, this._onNanBtnClicked, this)
         app.system.removeListener(Events.TAI_XIU_TREO_RANK_BTN_CLICKED, this._onRankBtnClicked, this)
         app.system.removeListener(Events.TAI_XIU_TREO_ON_APP_STATE_CHANGED, this._onAppStateChanged, this)
+        app.system.removeListener(Events.TAI_XIU_TREO_ON_COUNTING_DOWN, this._updateRemainTime, this)
     }
     
     isNan() {
@@ -313,8 +314,6 @@ export default class TaiXiuTreoManager {
         
         this.setBoardState(state)
         
-        this._setDuration(remainTime) 
-        
         forceReset && this._resetBetAmount()
         switch(state) {
             case TaiXiuTreoManager.GAME_STATE_WAIT:
@@ -366,15 +365,16 @@ export default class TaiXiuTreoManager {
             return
             
         if(state == 'active') {
-            let deltaTime = parseInt((Date.now() - this._timeFlag)/1000)
-            if(this._phaseFlag && deltaTime > this._phaseFlag) {
+            let deltaTime = Math.round((Date.now() - this._timeFlag)/1000)
+            if(deltaTime > this._remainTimeBeforeAppChangesState) {
                 app.service.send({ cmd: app.commands.MINIGAME_TAI_XIU_GET_STATE })
             } else { // phase is still running, update counter
-                app.system.emit('tai.xiu.treo.popup.update.count.down', this._popupPhaseDuration - deltaTime, this._boardState)
+                let remain = this._remainTimeBeforeAppChangesState - deltaTime
+                app.system.emit(Events.TAI_XIU_TREO_ON_UPDATE_COUNT_DOWN, remain, this._boardState)
             }
         } else if(state == 'inactive'){
             this._setPopupTime()
-            this._phaseFlag = this._popupComponent.getRemainTime()
+            this._remainTimeBeforeAppChangesState = this._popupComponent.getRemainTime()
         }
     }
     
@@ -461,10 +461,6 @@ export default class TaiXiuTreoManager {
         // console.warn('_currentBet', this._currentBet)
         // console.warn('realAmount', realAmount)
         this._popupComponent.updateBetBalance(realAmount)                 
-    }
-    
-    _setDuration(duration) {
-        this._popupPhaseDuration = duration // phase duration
     }
     
     _setPopupTime() {

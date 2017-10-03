@@ -192,3 +192,5 @@ Events.TAI_XIU_TREO_SOI_CAU_CLICKED = "tai.xiu.treo.soicau.clicked";
 Events.TAI_XIU_TREO_NAN_BTN_CLICKED = "tai.xiu.treo.nan.btn.clicked";
 Events.TAI_XIU_TREO_RANK_BTN_CLICKED = "tai.xiu.treo.rank.clicked";
 Events.TAI_XIU_TREO_ON_APP_STATE_CHANGED = "tai.xiu.treo.app.state.changed";
+Events.TAI_XIU_TREO_ON_UPDATE_COUNT_DOWN = "tai.xiu.treo.popup.update.count.down";
+Events.TAI_XIU_TREO_ON_COUNTING_DOWN = "tai.xiu.treo.popup.couting.down";
