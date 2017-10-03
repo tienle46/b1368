@@ -18,7 +18,7 @@ class HungSicBoChatPopup extends Actor {
         this._incrementId = 0
         this._nodeInstances = []
         
-        this._state = HungSicBoChatPopup.STATE_HIDE
+        this._state = HungSicBoChatPopup.STATE_HIDE    
     }
 
     onLoad() {

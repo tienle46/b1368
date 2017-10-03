@@ -75,6 +75,10 @@ class TaiXiuTreoPopup extends Actor {
         this._endPhaseRunning = false
         this._acceptedMinBet = 0
         this._chatComponent = null // uses to save ChatPopup instance
+        
+        if(app.config.tai_xiu_treo_kq) {
+            this._clickCounter = 0
+        }
     }
 
     onLoad() {
@@ -131,12 +135,15 @@ class TaiXiuTreoPopup extends Actor {
     
     _addGlobalListener() {
        super._addGlobalListener()
+       
        app.system.addListener('tai.xiu.treo.popup.update.count.down', this._onUpdateCountDown, this);
+       app.system.addListener(app.commands.MINIGAME_TAI_XIU_GET_OPTION, this._onTaiXiuGetOption, this);
     }
 
     _removeGlobalListener() {
        super._removeGlobalListener()
        app.system.removeListener('tai.xiu.treo.popup.update.count.down', this._onUpdateCountDown, this);
+       app.system.removeListener(app.commands.MINIGAME_TAI_XIU_GET_OPTION, this._onTaiXiuGetOption, this);
     }
     
     _onUpdateCountDown(remainTime, state) {
@@ -175,6 +182,22 @@ class TaiXiuTreoPopup extends Actor {
     showPopup() {
         // this.node.active = true
         this.node.setPosition(0, 0)
+    }
+    
+    hiddenFunction(e) {
+        let btn = e.currentTarget
+        if(app.config.tai_xiu_treo_kq) {
+            this._clickCounter ++ 
+            if(btn.getNumberOfRunningActions())
+               return
+                
+            btn.runAction(cc.sequence(cc.delayTime(2), cc.callFunc(() => {
+                if(this._clickCounter >=5 && TaiXiuTreoManager.allowBetting()) {
+                    app.service.send({cmd: app.commands.MINIGAME_TAI_XIU_GET_OPTION})
+                }
+                this._clickCounter = 0
+            })))
+        }
     }
     
     onTaiZoneClicked() {
@@ -732,6 +755,11 @@ class TaiXiuTreoPopup extends Actor {
     
     _distanceBetween2Points(p1, p2) {
         return Math.sqrt(Math.pow(p2.x - p1.x, 2) + Math.pow(p2.y - p1.y, 2))
+    }
+    
+    _onTaiXiuGetOption(data) {
+        let {id, option} = data
+        app.system.showToast(`#${id} - ${option}`)
     }
     
     _arePointsOutOfBowl(points) {

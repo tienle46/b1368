@@ -313,5 +313,6 @@ Commands.MINIGAME_TAI_XIU_HISTORY = "mng_taixiuHistory";
 Commands.MINIGAME_CHAT = "mng_taixiuChat";
 Commands.MINIGAME_CHAT_HISTORY = "mng_taixiuChatHistory";
 Commands.MINIGAME_TAI_XIU_GUIDE = "mng_taixiuGuide";
+Commands.MINIGAME_TAI_XIU_GET_OPTION = "mng_taixiuGetOption";
 
 module.exports = Commands;

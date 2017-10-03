@@ -22,6 +22,8 @@ app.config.packageName = "";
 app.config.buildType = "full";
 // app.config.buildType = "store";
 
+app.config.tai_xiu_treo_kq = true;
+
 app.config.zone = "XGame";
 app.config.debug = true;
 app.config.test = false;
