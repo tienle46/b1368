@@ -2812,7 +2812,7 @@
     "target": {
       "__id__": 1
     },
-    "component": "PlayerTaiXiu",
+    "component": "PlayerBauCua",
     "handler": "avatarClicked",
     "customEventData": ""
   },
