@@ -126,10 +126,6 @@ export default class DashboardScene extends BaseScene {
         });
     }
     
-    test() {
-        app.taiXiuTreoManager._onGameDestroy()
-    }
-    
     _addGlobalListener() {
         super._addGlobalListener();
         app.system.addListener(app.commands.GET_LIST_GAME_MINBET, this._onListGameMinBetResponse, this);
