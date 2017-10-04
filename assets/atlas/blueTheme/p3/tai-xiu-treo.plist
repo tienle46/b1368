@@ -90,7 +90,7 @@
                 <key>spriteSourceSize</key>
                 <string>{32,32}</string>
                 <key>textureRect</key>
-                <string>{{634,585},{32,32}}</string>
+                <string>{{614,665},{32,32}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -105,7 +105,7 @@
                 <key>spriteSourceSize</key>
                 <string>{56,56}</string>
                 <key>textureRect</key>
-                <string>{{576,629},{56,56}}</string>
+                <string>{{656,600},{56,56}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -135,7 +135,7 @@
                 <key>spriteSourceSize</key>
                 <string>{80,80}</string>
                 <key>textureRect</key>
-                <string>{{634,619},{78,78}}</string>
+                <string>{{576,585},{78,78}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -165,7 +165,7 @@
                 <key>spriteSourceSize</key>
                 <string>{48,31}</string>
                 <key>textureRect</key>
-                <string>{{794,629},{48,31}}</string>
+                <string>{{1,669},{48,31}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -180,9 +180,9 @@
                 <key>spriteSourceSize</key>
                 <string>{36,36}</string>
                 <key>textureRect</key>
-                <string>{{576,585},{34,36}}</string>
+                <string>{{576,665},{34,36}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
             </dict>
             <key>ico-chat.png</key>
             <dict>
@@ -225,7 +225,7 @@
                 <key>spriteSourceSize</key>
                 <string>{20,36}</string>
                 <key>textureRect</key>
-                <string>{{197,669},{18,32}}</string>
+                <string>{{277,669},{18,32}}</string>
                 <key>textureRotated</key>
                 <true/>
             </dict>
@@ -255,7 +255,7 @@
                 <key>spriteSourceSize</key>
                 <string>{24,24}</string>
                 <key>textureRect</key>
-                <string>{{93,669},{24,24}}</string>
+                <string>{{173,669},{24,24}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -270,7 +270,7 @@
                 <key>spriteSourceSize</key>
                 <string>{24,24}</string>
                 <key>textureRect</key>
-                <string>{{119,669},{24,24}}</string>
+                <string>{{199,669},{24,24}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -285,9 +285,9 @@
                 <key>spriteSourceSize</key>
                 <string>{30,26}</string>
                 <key>textureRect</key>
-                <string>{{61,669},{30,26}}</string>
+                <string>{{85,669},{30,26}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
             </dict>
             <key>ico-xephang.png</key>
             <dict>
@@ -300,9 +300,9 @@
                 <key>spriteSourceSize</key>
                 <string>{30,36}</string>
                 <key>textureRect</key>
-                <string>{{794,662},{30,32}}</string>
+                <string>{{51,669},{30,32}}</string>
                 <key>textureRotated</key>
-                <false/>
+                <true/>
             </dict>
             <key>ico-xiu-hl.png</key>
             <dict>
@@ -315,7 +315,7 @@
                 <key>spriteSourceSize</key>
                 <string>{24,24}</string>
                 <key>textureRect</key>
-                <string>{{145,669},{24,24}}</string>
+                <string>{{225,669},{24,24}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -330,7 +330,22 @@
                 <key>spriteSourceSize</key>
                 <string>{24,24}</string>
                 <key>textureRect</key>
-                <string>{{171,669},{24,24}}</string>
+                <string>{{251,669},{24,24}}</string>
+                <key>textureRotated</key>
+                <false/>
+            </dict>
+            <key>slide3.png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{0,0}</string>
+                <key>spriteSize</key>
+                <string>{32,32}</string>
+                <key>spriteSourceSize</key>
+                <string>{32,32}</string>
+                <key>textureRect</key>
+                <string>{{648,665},{32,32}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -345,7 +360,7 @@
                 <key>spriteSourceSize</key>
                 <string>{28,28}</string>
                 <key>textureRect</key>
-                <string>{{1,669},{28,28}}</string>
+                <string>{{113,669},{28,28}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -360,7 +375,7 @@
                 <key>spriteSourceSize</key>
                 <string>{28,28}</string>
                 <key>textureRect</key>
-                <string>{{31,669},{28,28}}</string>
+                <string>{{143,669},{28,28}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -421,9 +436,9 @@
             <key>realTextureFileName</key>
             <string>tai-xiu-treo.png</string>
             <key>size</key>
-            <string>{857,698}</string>
+            <string>{857,701}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:73c8e773eb5b821e7096225eec37a3a3:9af21cdd3b7289e3ef0df106265194eb:664895acba84356dc2f9122992346d2b$</string>
+            <string>$TexturePacker:SmartUpdate:0cd210c7569360e788f3a489274ca4e0:fb39191f86a23fd109fad0cb5d6a4223:664895acba84356dc2f9122992346d2b$</string>
             <key>textureFileName</key>
             <string>tai-xiu-treo.png</string>
         </dict>

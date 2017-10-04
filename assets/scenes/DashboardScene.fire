@@ -618,15 +618,15 @@
     },
     "_indicators": [],
     "spriteFrame": {
-      "__uuid__": "dc0e248a-5e13-47ff-977e-33f7a1142d0f"
+      "__uuid__": "b3d333c2-81da-4a78-b30c-1db7881059bd"
     },
     "direction": 0,
     "cellSize": {
       "__type__": "cc.Size",
-      "width": 40,
-      "height": 40
+      "width": 15,
+      "height": 15
     },
-    "spacing": 20
+    "spacing": 10
   },
   {
     "__type__": "cc.PageView",
@@ -8394,7 +8394,7 @@
       }
     ],
     "_tag": -1,
-    "_active": true,
+    "_active": false,
     "_components": [
       {
         "__id__": 247
