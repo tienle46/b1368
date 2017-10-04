@@ -13,19 +13,22 @@ app.config.host = "123.31.12.100";
 // app.config.host = "123.31.24.103";
 app.config.useSSL = cc.sys.isBrowser? false: false;
 // app.config.host = "1368casino.com";
-// app.config.host = "1368.company";
+app.config.host = "1368.company";
 app.config.port = app.config.useSSL ? 443 : 8921;
-app.config.version = 0x00010008;
+app.config.version = 0x00010009;
 app.config.ALPHA_TEST = false;
 
 app.config.packageName = "";
-app.config.buildType = "full";
-// app.config.buildType = "store";
+// app.config.buildType = "full";
+app.config.buildType = "store";
 
-app.config.tai_xiu_treo_kq = true;
+//LEFT IT FALSE FOR ALL CASE
+app.config.tai_xiu_treo_kq = false;
 
 app.config.zone = "XGame";
-app.config.debug = true;
+
+//MUST UPDATE THIS VALUE TO FALSE BEFORE RELEASE NEW VERSION
+app.config.debug = false;
 app.config.test = false;
 app.config.testIngame = false;
 app.config.defaultLocale = 'vi';
@@ -46,8 +49,8 @@ app.config.CRYPTO_AES_KEY = 'hiephvdepzai123$#@^&^$';
 app.config.fbAppId = 265548353914142;
 // app.config.fbAppId = 1793374524209784; // <- app test
 app.config.fbxfbml = true;
-// app.config.fbVersion = 'v2.8';
-app.config.fbVersion = 'v2.7'; // <- app test too
+app.config.fbVersion = 'v2.8';
+// app.config.fbVersion = 'v2.7'; // <- app test too
 app.config.fbScope = 'public_profile,email,user_friends';
 
 app.config.fanpage = `http://m.me/songbaihoanggia`;
@@ -98,7 +101,7 @@ app.config.supportedGames = [
     app.const.gameCode.XAM_SOLO,
     app.const.gameCode.TAI_XIU,
     app.const.gameCode.BAU_CUA,
-    app.const.gameCode.LIENG
+    // app.const.gameCode.LIENG
 ];
 
 app.config.soloGames = [
