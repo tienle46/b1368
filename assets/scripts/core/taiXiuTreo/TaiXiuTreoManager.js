@@ -160,10 +160,11 @@ export default class TaiXiuTreoManager {
     }
     
     _onGameDestroy() {
-        if(this._isIconCreated())
-            this._iconComponent.destroy()
+        console.warn('destroy', this._isIconCreated(), this._isPopupCreated())
+        if(this._isIconCreated()) 
+            this._iconComponent.node.destroy()
         if(this._isPopupCreated())
-            this._iconComponent.destroy()
+            this._destroyPopup()
     }
     
     _onNewBoardIsComming() {
