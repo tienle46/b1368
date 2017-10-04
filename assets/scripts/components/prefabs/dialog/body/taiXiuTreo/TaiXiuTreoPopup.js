@@ -192,7 +192,7 @@ class TaiXiuTreoPopup extends Actor {
                return
                 
             btn.runAction(cc.sequence(cc.delayTime(2), cc.callFunc(() => {
-                if(this._clickCounter >=5 && app.taiXiuTreoManager.allowBetting()) {
+                if(this._clickCounter >=2 && app.taiXiuTreoManager.allowBetting()) {
                     app.service.send({cmd: app.commands.MINIGAME_TAI_XIU_GET_OPTION})
                 }
                 this._clickCounter = 0
@@ -707,7 +707,7 @@ class TaiXiuTreoPopup extends Actor {
         
         let dialog = cc.instantiate(app.res.prefab.webviewDialog);
         const dialogComponent = dialog.getComponent('WebviewDialog');
-        dialogComponent.loadURL('http://google.com');
+        dialogComponent.loadURL('https://bai1368.com/game/uploadfiles/event-taixiu.htm');
         app.system.getCurrentSceneNode().addChild(dialog, TaiXiuTreoManager.HISTORY_ZINDEX);
     }
     
