@@ -347,8 +347,8 @@ class TaiXiuTreoPopup extends Actor {
     }
     
     iniKeypad() {
-        let keys = Array.from(Array(10).keys())
-        keys.push(`000`)
+        let keys = Array.from(Array(9).keys()).map(a => a + 1)
+        keys.push(`0`,`000`)
         
         keys.forEach(k => {
             this.keyText.string = k
