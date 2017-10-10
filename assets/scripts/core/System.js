@@ -389,6 +389,7 @@ class GameSystem {
 
         showToast && this.showToast(message, duration);
     }
+    
     _onTotalTopupFetched(data){
         // window.sdkbox.PluginOneSignal.sendTag("paid_user", data["total"]);
     }

@@ -5,7 +5,6 @@
 import app from 'app';
 import Events from 'GameEvents';
 import GameControls from 'GameControls';
-import GameUtils from "GameUtils";
 import utils from "GeneralUtils";
 import LiengUtils from 'LiengUtils';
 
@@ -60,6 +59,7 @@ export default class LiengControls extends GameControls {
         this.setVisible(this.toBtnNode, false);
         this.setVisible(this.theoBtnNode, false);
         this.setVisible(this.upboBtnNode, false);
+        this.scene.hideChooseBetSlider()
     }
 
     showBetControls(){

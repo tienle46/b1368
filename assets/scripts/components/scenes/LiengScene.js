@@ -6,6 +6,7 @@ import app from 'app';
 import GameScene from 'GameScene';
 import Events from 'GameEvents';
 import Utils from 'GeneralUtils';
+import LiengSlider from 'LiengSlider'
 
 export default class LiengScene extends GameScene {
     constructor() {
@@ -15,17 +16,14 @@ export default class LiengScene extends GameScene {
             /**
              * @type {cc.Node}
              */
-            chooseBetSliderNode: cc.Node,
-            testPlayerNode: cc.Node
+            chooseBetSliderNode: LiengSlider
         });
 
         /**
          * @type {HorizontalBetPopup}
          * @private
          */
-        this._betPopup = null;
         this.isShowBetPopup = false;
-        this.isShowCuocBienPopup = false;
         
         this._betPhaseDuration = 0;
         this._startBetPhaseTime = 0; // ms
@@ -41,7 +39,6 @@ export default class LiengScene extends GameScene {
         this.board = this.boardNode.getComponent('BoardLieng');
         this.gameControls = this.gameControlsNode.getComponent('BaCayControls');
         this.playerPositions = this.playerPositionAnchorsNode.getComponent('FivePlayerPositions');
-        this._betPopup = this.chooseBetSliderNode.getComponent('HorizontalBetPopup');
 
         super.onEnable();
         
@@ -67,38 +64,33 @@ export default class LiengScene extends GameScene {
      * @returns 
      * @memberof LiengScene
      */
-    showChooseBetSlider(currentValue, maxValue, timeout = 20) {
+    showChooseBetSlider(currentValue, maxValue) {
         // let maxValue = this.board.minBet * 5;
-
-        let minValue = currentValue || this.board.minBet;
-
+        let divisor = this.board.minBet
+        let boardValue = this.board.totalBetAmount
+        let minValue = currentValue
+        let userMoney = this.board.gamePlayers.me.balance
+        
         if(maxValue < minValue) {
             app.system.showToast(app.res.string('game_not_enough_balance_to_bet'));
             return;
         }
         
-        if(maxValue < currentValue) {
-            maxValue = currentValue;
-        }
-
-        this._betPopup && this._betPopup.show({
+        this.chooseBetSliderNode.show({
+            divisor,
+            boardValue,
             minValue,
-            maxValue,
-            currentValue,
-            timeout,
-            cb: this._onClickChooseBetButton,
-            ctx: this,
-            title: app.res.string('game_bet_time')
+            userMoney
         });
     }
 
     hideChooseBetSlider() {
-        this._betPopup && this._betPopup.hide();
+        this.chooseBetSliderNode.hide();
     }
 
-    _onClickChooseBetButton(value) {
-        let amount = value || this._betPopup.getAmountNumber()
-        this.emit(Events.ON_PLAYER_CHANGED_BET, amount);
+    _onClickChooseBetButton() {
+        let amount = this.chooseBetSliderNode.getCurrentValue()
+        amount && this.emit(Events.ON_PLAYER_CHANGED_BET, amount);
     }
 }
 
