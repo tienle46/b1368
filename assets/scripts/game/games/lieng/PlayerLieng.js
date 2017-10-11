@@ -76,7 +76,7 @@ export default class PlayerLieng extends PlayerCardBetTurn {
     
     playPlayerBet(amount, isReplace = false) {
         if(this.isPlaying()) {
-            this.renderer.playBetAnimation(amount);
+            this.renderer.playBetAnimation(amount)
             let bet = isReplace ? amount : this.betAmount + amount
             
             this.setBetAmount(bet);
@@ -129,6 +129,7 @@ export default class PlayerLieng extends PlayerCardBetTurn {
 
     _onGameRejoin(data) {
         super._onGameRejoin(data);
+        
         if (this.isPlaying()) {
             this.renderer.betComponentAppearance(true)
         } else {

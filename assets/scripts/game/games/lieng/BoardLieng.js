@@ -198,7 +198,7 @@ export default class BoardLieng extends BoardCardBetTurn {
         
         let gamePhase = utils.getValue(data, app.keywords.BOARD_STATE_KEYWORD);
         
-        this.renderer.setVisibleTotalAmountComponent(gamePhase != app.const.game.state.READY)
+        this.renderer.setVisibleTotalAmountComponent(gamePhase === app.const.game.state.BET_TURNING)
         
         if(gamePhase == app.const.game.state.BET_TURNING) {
             /**

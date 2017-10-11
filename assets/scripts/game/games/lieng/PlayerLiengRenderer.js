@@ -52,6 +52,7 @@ export default class PlayerLiengRenderer extends PlayerCardRenderer {
         super.onLoad()
 
         this.betLabel = this.betCoinNode.getComponentInChildren(cc.Label);
+        
     }
 
     onEnable(...args){
@@ -61,8 +62,9 @@ export default class PlayerLiengRenderer extends PlayerCardRenderer {
         let player = this.data.actor
         let actionChangedPos = this._getCardAnchorPoint(player);
         if(actionChangedPos) {
-            actionChangedPos = actionChangedPos.getPosition()
+            this._actionNodePos = actionChangedPos.getPosition()
             this.actionNode.setPosition(actionChangedPos.x, actionChangedPos.y)
+            // this._actionNodePos = this.actionNode.getPosition()
         }
     }
 
@@ -80,34 +82,68 @@ export default class PlayerLiengRenderer extends PlayerCardRenderer {
         if(player.isItMe()) {
             anchor = this.betComponent
         } else {
-            switch(this.anchorIndex) {
-                case 2: {
-                    anchor = this.rightBetPositionAnchor
-                    break;
-                }
-                case 3: {
-                    anchor = this.bottomRightBetPositionAnchor
-                    break;
-                }
-                case 4: {
-                    anchor = this.bottomLeftBetPositionAnchor
-                    break;
-                }
-                case 5: {
-                    anchor = this.leftBetPositionAnchor
-                    break;
-                }
-                default: { // 1
-                    // anchor = this.topBetPositionAnchor
-                    anchor = this.betComponent
-                    break;
-                }
-            }
+            anchor = this._getBetComponentPosByIndex(this.anchorIndex)
         }
         
         this.betComponent.setPosition(anchor.getPosition())
     }
     
+    _getBetComponentPosByIndex(anchorIndex) {
+        let anchor
+        switch(anchorIndex) {
+            case 2: {
+                anchor = this.rightBetPositionAnchor
+                break;
+            }
+            case 3: {
+                anchor = this.bottomRightBetPositionAnchor
+                break;
+            }
+            case 4: {
+                anchor = this.bottomLeftBetPositionAnchor
+                break;
+            }
+            case 5: {
+                anchor = this.leftBetPositionAnchor
+                break;
+            }
+            default: { // 1
+                // anchor = this.topBetPositionAnchor
+                anchor = this.betComponent
+                break;
+            }
+        } 
+        
+        return anchor
+    }
+    
+    _updateActorNodePosition() {
+        let player = this.data.actor
+        let anchor = null;
+        
+        if(player.isItMe()) {
+            anchor = this.betComponent
+        } else {
+            anchor = this._getBetComponentPosByIndex(this.anchorIndex)
+        }
+        
+        anchor = anchor.getPosition()
+        let multiple = 1
+        
+        switch(this.anchorIndex) {
+            case 1:
+            case 3: {
+                multiple = -1
+                break;
+            }
+        }
+        
+        anchor.x = anchor.x + multiple * (this.actionNode.getContentSize().width / 2 - 14)
+        anchor.y += 20
+        this.actionNode.setPosition(cc.v2(anchor.x, anchor.y))
+    }
+    
+            
     showBetAmount(amount){
         let formatted = GameUtils.formatBalanceShort(amount);
         this.betLabel.string = `${formatted}`;
@@ -215,6 +251,7 @@ export default class PlayerLiengRenderer extends PlayerCardRenderer {
         this.actionLabel.string = text;
 
         if(!utils.isEmpty(text)){
+            this._updateActorNodePosition()
             utils.setVisible(this.actionActor, true);
         }
     }
@@ -242,7 +279,7 @@ export default class PlayerLiengRenderer extends PlayerCardRenderer {
     _reset(){
         super._reset();
         this.actionSprite.spriteFrame = null
-        
+        this.actionNode.setPosition(cc.v2(this._actionNodePos.x, this._actionNodePos.y))
         utils.setVisible(this.actionActor, false);
     }
     
