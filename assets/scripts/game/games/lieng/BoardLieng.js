@@ -187,8 +187,7 @@ export default class BoardLieng extends BoardCardBetTurn {
      */
     acceptedAmount(){
         let accepted = Math.max.apply(Math, this.scene.gamePlayers.players.map((player) => player.betAmount))
-        // accepted == board.minBet => the 1st round.
-        // return accepted === this.minBet ? accepted * 2 : accepted
+        
         let meBalance = this.scene.gamePlayers.me.balance
         return accepted >= meBalance ? meBalance : accepted
     }
@@ -199,8 +198,7 @@ export default class BoardLieng extends BoardCardBetTurn {
         
         let gamePhase = utils.getValue(data, app.keywords.BOARD_STATE_KEYWORD);
         
-        if(gamePhase != app.const.game.state.READY)
-            this.renderer.setVisibleTotalAmountComponent(true)
+        this.renderer.setVisibleTotalAmountComponent(gamePhase != app.const.game.state.READY)
         
         if(gamePhase == app.const.game.state.BET_TURNING) {
             /**
@@ -249,7 +247,8 @@ export default class BoardLieng extends BoardCardBetTurn {
             if(onTurnPlayerId == player.id) {                
                 this._duration && player.startTimeLine(this._duration)
             } else if(previousPlayerId == player.id){
-                this.renderer.setTotalValue(this.totalBetAmount);
+                // this.renderer.setTotalValue(this.totalBetAmount);
+                this.setTotalBetAmount(this.totalBetAmount)
                 
                 player.playPlayerBet(betAmount, true)
                 player.stopTimeLine()

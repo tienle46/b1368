@@ -16,7 +16,7 @@ export default class LiengScene extends GameScene {
             /**
              * @type {cc.Node}
              */
-            chooseBetSliderNode: LiengSlider
+            betSlider: LiengSlider
         });
 
         /**
@@ -43,7 +43,6 @@ export default class LiengScene extends GameScene {
         super.onEnable();
         
         this.on(Events.ON_GAME_STATE_PRE_CHANGE, this._onGameStatePreChange, this, 0);
-        this.on(Events.ON_CLICK_CHOOSE_BET_BUTTON, this._onClickChooseBetButton, this);
     }
     
     _onGameStatePreChange(boardState, data) {
@@ -64,19 +63,18 @@ export default class LiengScene extends GameScene {
      * @returns 
      * @memberof LiengScene
      */
-    showChooseBetSlider(currentValue, maxValue) {
+    showChooseBetSlider(currentValue, userMoney) {
         // let maxValue = this.board.minBet * 5;
         let divisor = this.board.minBet
         let boardValue = this.board.totalBetAmount
-        let minValue = currentValue
-        let userMoney = this.board.gamePlayers.me.balance
+        let minValue = currentValue || divisor
         
-        if(maxValue < minValue) {
+        if(userMoney < divisor) {
             app.system.showToast(app.res.string('game_not_enough_balance_to_bet'));
             return;
         }
-        
-        this.chooseBetSliderNode.show({
+            
+        this.betSlider.show({
             divisor,
             boardValue,
             minValue,
@@ -85,12 +83,15 @@ export default class LiengScene extends GameScene {
     }
 
     hideChooseBetSlider() {
-        this.chooseBetSliderNode.hide();
+        this.betSlider.hide();
     }
 
-    _onClickChooseBetButton() {
-        let amount = this.chooseBetSliderNode.getCurrentValue()
-        amount && this.emit(Events.ON_PLAYER_CHANGED_BET, amount);
+    getChoosenBetAmount() {
+        return this.betSlider.getCurrentValue()
+    }
+    
+    setSliderValues(value) {
+        this.betSlider.setValues(value)
     }
 }
 

@@ -23,7 +23,7 @@ class BetSlider extends Component {
     onLoad() {
         super.onLoad()
         
-        this.show({userMoney: 11125, divisor: 500, minValue: 1234, boardValue: 0})
+        // this.show({userMoney: 11125, divisor: 500, minValue: 1234, boardValue: 1000})
     }
 
     onEnable() {
@@ -31,38 +31,55 @@ class BetSlider extends Component {
         this.currentValue = Math.min(this._minValue, this._userMoney)
         this.setToolTip(0)
     }
-   
+    
+    onDisable() {
+        this.progressBar.progress = 0
+        this.slider.progress = 0  
+    }
+    
     onSliderChange(e) {
         this.progressBar.progress = e.progress;        
         const value = this.progressBar.progress * this._range
             
         this.setToolTip(value)
     }
-
+    
+    setValues({minValue, boardValue}) {
+        if(minValue) {
+            this._minValue = minValue
+            this._range = this._userMoney - this._minValue
+            
+            this.currentValue = Math.min(this._minValue, this._userMoney)
+            this.setToolTip(0)
+        }
+        
+        this._boardValue = boardValue
+    }
+    
     onMinBtnClicked() {
         this._calculate(0)
     }
     
     on1GaBtnClicked() {
-        this._calculate(this._boardValue)
+        this._calculate(this._boardValue, true)
     }
     
     on2GaBtnClicked() {
-        this._calculate(this._boardValue * 2)
+        this._calculate(this._boardValue * 2, true)
     }
     
     onAllInBtnClicked() {
         this._calculate(this._userMoney)
     }
     
-    _calculate(val) {
+    _calculate(val, isBoard) {
         let ratio = this._range ? val / this._range : 1
         ratio = ratio > 1 ? 1 : ratio
 
         this.progressBar.progress = ratio
         this.slider.progress = ratio
         let value = this.progressBar.progress * this._range
-        this.setToolTip(value)    
+        this.setToolTip(value, isBoard)    
     }
     
     hide() {
@@ -91,9 +108,9 @@ class BetSlider extends Component {
         return this.currentValue
     }
     
-    setToolTip(progressBarValue) {
+    setToolTip(progressBarValue, isBoard = false) {
         let multiples = Math.round(progressBarValue / this._divisor)
-        this.currentValue = Math.min(this._minValue, this._userMoney) + this._divisor * multiples
+        this.currentValue = (isBoard ? 0 : Math.min(this._minValue, this._userMoney)) + this._divisor * multiples
             
         this.toolTipLbl.string = formatBalanceShort(this.currentValue)
 

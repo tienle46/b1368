@@ -7411,7 +7411,7 @@
       "__id__": 62
     },
     "maxPlayers": 5,
-    "chooseBetSliderNode": {
+    "betSlider": {
       "__id__": 224
     }
   }

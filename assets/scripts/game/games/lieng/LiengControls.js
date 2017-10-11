@@ -71,13 +71,27 @@ export default class LiengControls extends GameControls {
         this.setVisible(this.toBtnNode, true)
         this.setVisible(this.theoBtnNode, true)
         this.setVisible(this.upboBtnNode, true)
+        
+        let mePlayer = this.scene.gamePlayers.me;
+        let maxValue = LiengUtils.calculateBetable(mePlayer);
+        this.scene.showChooseBetSlider(this.scene.board.acceptedAmount(), maxValue);
     }
     
     onClickToBtn(){
-        let mePlayer = this.scene.gamePlayers.me;
-        
-        let maxValue = LiengUtils.calculateBetable(mePlayer);
-        this.scene.showChooseBetSlider(this.scene.board.acceptedAmount(), maxValue);
+        let betAmount = this.scene.getChoosenBetAmount()
+        console.log('onClickToBtn', betAmount)
+        if (!this.scene.gamePlayers.me.isItMe() || betAmount <= 0 || this.scene.gameState != app.const.game.state.BET_TURNING ) {
+            //Show message && play sound invalid
+            return;
+        }
+
+        betAmount > 0 && app.service.send({
+            cmd: app.commands.PLAYER_PLAY_BET_TURN,
+            data: {
+                [app.keywords.PLAYER_BET_AMOUNT]: betAmount
+            },
+            room: this.scene.room
+        });
     }
 
     onClickTheoBtn() {

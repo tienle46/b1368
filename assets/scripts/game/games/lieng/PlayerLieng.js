@@ -77,8 +77,15 @@ export default class PlayerLieng extends PlayerCardBetTurn {
     playPlayerBet(amount, isReplace = false) {
         if(this.isPlaying()) {
             this.renderer.playBetAnimation(amount);
-            this.setBetAmount(isReplace ? amount : this.betAmount + amount);
-            this.scene.board.setTotalBetAmount(this.scene.gamePlayers.players.reduce((a, b) => a + b.betAmount, 0));
+            let bet = isReplace ? amount : this.betAmount + amount
+            
+            this.setBetAmount(bet);
+            let totalBetAmount = this.scene.gamePlayers.players.reduce((a, b) => a + b.betAmount, 0)
+            this.scene.board.setTotalBetAmount(totalBetAmount)
+            
+            let values = {minBet: bet}
+            this.isItMe() && (values.boardValue = totalBetAmount)
+            this.scene.setSliderValues({boardValue: totalBetAmount})
         }
     }
     
@@ -118,21 +125,6 @@ export default class PlayerLieng extends PlayerCardBetTurn {
             this.renderer.showAction(info, this._isAllIn)
             cards.length > 0 && this.setCards(cards, true)
         }
-    }
-
-    _onPlayerChangedBet(betAmount = 0) {
-        if (!this.isItMe() || betAmount <= 0 || this.board.scene.gameState != app.const.game.state.BET_TURNING ) {
-            //Show message && play sound invalid
-            return;
-        }
-
-        betAmount > 0 && app.service.send({
-            cmd: app.commands.PLAYER_PLAY_BET_TURN,
-            data: {
-                [app.keywords.PLAYER_BET_AMOUNT]: betAmount
-            },
-            room: this.scene.room
-        });
     }
 
     _onGameRejoin(data) {
