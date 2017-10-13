@@ -28,10 +28,10 @@ export default class TabBuddiesTransfer extends PopupTabBody {
 
         this.receiverBuddyName = null;
     }
-
+    
     start() {
         super.start();
-
+        
         this._sendRequest();
     }
     
