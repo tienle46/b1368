@@ -3,20 +3,19 @@
  */
 
 import app from 'app';
-import utils from 'utils';
-import Events from 'Events';
+import utils from 'PackageUtils';
+import Events from 'GameEvents';
 import GameControls from 'GameControls';
 
 export default class CardTurnBaseControls extends GameControls {
     constructor() {
         super();
-
-        this.properties = {
-            ...this.properties,
+        
+        this.properties = this.assignProperties({
             playButton: cc.Button,
             sortButton: cc.Button,
             skipTurnButton: cc.Button
-        }
+        });
     }
 
     onEnable(){
@@ -35,18 +34,36 @@ export default class CardTurnBaseControls extends GameControls {
         utils.deactive(this.skipTurnButton);
     }
 
-    _showWaitTurnControls(){
-        // utils.deactive(this.playButton);
-        utils.setInteractable(this.playButton, false);
-        utils.active(this.sortButton);
-        utils.deactive(this.skipTurnButton);
+    _showWaitTurnControls(playControlInteractable = true){
+        if(this.scene.gamePlayers.isMePlaying()){
+            /**
+             * By default always show play button
+             */
+            utils.setInteractable(this.playButton, true);
+            utils.setVisible(this.sortButton);
+            utils.setVisible(this.skipTurnButton, false);
+        }else{
+            utils.setVisible(this.playButton, false);
+            utils.setVisible(this.sortButton, false);
+            utils.setVisible(this.skipTurnButton, false);
+        }
     }
 
-    _showOnTurnControls(showPlayControlOnly){
-        utils.active(this.playButton);
-        utils.active(this.sortButton);
-        this.setInteractable(this.playButton, false);
-        showPlayControlOnly ? utils.deactive(this.skipTurnButton) : utils.active(this.skipTurnButton);
+    _showOnTurnControls(showPlayControlOnly, playControlInteractable = true){
+        if(this.scene.gamePlayers.isMePlaying()){
+            utils.active(this.playButton);
+            utils.active(this.sortButton);
+            /**
+             * By default always show play button
+             */
+            this.setInteractable(this.playButton, true);
+            showPlayControlOnly ? utils.deactive(this.skipTurnButton) : utils.active(this.skipTurnButton);
+        }else{
+            utils.setVisible(this.playButton, false);
+            utils.setVisible(this.sortButton, false);
+            utils.setVisible(this.skipTurnButton, false);
+        }
+
     }
 
     _setVisiblePlayControl(visible){
@@ -54,7 +71,10 @@ export default class CardTurnBaseControls extends GameControls {
     }
 
     _setInteractablePlayControl(interactable){
-        this.setInteractable(this.playButton, interactable);
+        /**
+         * By default always show play button
+         */
+        this.setInteractable(this.playButton, true);
     }
 
     onClickPlayButton(event){

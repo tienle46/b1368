@@ -3,21 +3,20 @@
  */
 
 import app from 'app';
-import { utils, GameUtils } from 'utils';
+import { utils, GameUtils } from 'PackageUtils';
 import ActorRenderer from 'ActorRenderer';
 import PlusBalanceAnimation from 'PlusBalanceAnimation';
 import PlayerMessage from 'PlayerMessage';
+import RubUtils from 'RubUtils';
 
 export default class PlayerRenderer extends ActorRenderer {
     constructor() {
         super();
-
-        this.properties = {
-            ...this.properties,
+        
+        this.properties = this.assignProperties({
             playerNameLabel: cc.Label,
             balanceLabel: cc.Label,
             ownerIcon: cc.Node,
-            masterIcon: cc.Node,
             plusBalanceNode: cc.Node,
             plusBalanceLabel: cc.Label,
             minusBalanceLabel: cc.Label,
@@ -25,7 +24,7 @@ export default class PlayerRenderer extends ActorRenderer {
             playerTimeLineProgress: cc.ProgressBar,
             avatarNode: cc.Node,
             friendProfilePopup: cc.Prefab
-        }
+        });
 
         this.playerMessage = null;
         this.plusBalanceAnim = null;
@@ -43,7 +42,6 @@ export default class PlayerRenderer extends ActorRenderer {
     }
 
     _init(data) {
-        console.log("init player renderer")
         super._init(data);
         this.scene = app.system.currentScene;
         this.isItMe = data.isItMe;
@@ -52,8 +50,10 @@ export default class PlayerRenderer extends ActorRenderer {
     onEnable() {
         super.onEnable();
 
-        this.setVisibleOwner(this.data.owner);
-        this.setVisibleMaster(this.data.master);
+        if(this.data){
+            this.setVisibleOwner(this.data.owner);
+            this.setVisibleMaster(this.data.master);
+        }
         // this.setVisibleReady(this.data.ready);
 
         this.plusBalanceAnim = this.plusBalanceNode.getComponent('PlusBalanceAnimation');
@@ -63,13 +63,16 @@ export default class PlayerRenderer extends ActorRenderer {
         this.playerMessage.setup(this);
 
         this._stopCountdown();
-
         this.loaded = true;
+
+        if(this.anchorIndex >= 0){
+            this.updatePlayerAnchor(this.anchorIndex)
+        }
 
         this.isItMe && this.injectComponent();
     }
 
-    getMessageAnchorIndex(anchorIndex) {
+    getMessageAnchorIndex(anchorIndex = this.anchorIndex) {
         return anchorIndex;
     }
 
@@ -81,20 +84,18 @@ export default class PlayerRenderer extends ActorRenderer {
 
     setName(name) {
         this.playerName = name;
-        this.playerNameLabel.string = name;
+        this.playerNameLabel.string = name.length > 9? `${name.slice(0, 9)}...` : name;
     }
 
     setBalance(balance = 0) {
-        this.balanceLabel && (this.balanceLabel.string = GameUtils.formatBalance(balance));
+        this.balanceLabel && (this.balanceLabel.string = GameUtils.formatBalanceShort(balance));
     }
 
     setVisibleOwner(visible) {
         utils.setActive(this.ownerIcon, visible);
     }
 
-    setVisibleMaster(visible) {
-        utils.setActive(this.masterIcon, visible);
-    }
+    setVisibleMaster(visible = false) {}
 
     setVisibleReady(visible) {
         this.ready = visible;
@@ -123,10 +124,13 @@ export default class PlayerRenderer extends ActorRenderer {
         this.playerMessage.show(message);
     }
 
-    startPlusBalanceAnimation(balance) {
+    startPlusBalanceAnimation(balance, playSlowAnim = false) {
         if (!this.loaded || isNaN(balance)) return;
-        let isWinner = balance > 0;
-        let balanceStr = GameUtils.formatBalance(balance);
+        if(balance == 0)
+            return;
+            
+        let isWinner = balance >= 0;
+        let balanceStr = GameUtils.formatBalanceShort(balance) || 0;
 
         if (this.plusBalanceLabel && this.plusBalanceNode && this.minusBalanceLabel) {
             this.minusBalanceLabel.string = "";
@@ -137,14 +141,19 @@ export default class PlayerRenderer extends ActorRenderer {
             } else {
                 this.minusBalanceLabel.string = balanceStr;
             }
-            this.plusBalanceAnim.play();
+
+            if(playSlowAnim){
+                this.plusBalanceAnim.playSlow();
+            }else{
+                this.plusBalanceAnim.play();
+            }
         }
     }
 
-    showUserProfilePopup(node, userName, userId, isOwner, startAnimNode, endAnimNode) {
+    showUserProfilePopup(node, user, userId, avatarURL, isOwner, startAnimNode, endAnimNode) {
         let popup = cc.instantiate(this.friendProfilePopup);
         let component = popup.getComponent('FriendProfilePopup');
-        component.displayUserDetail(userName, userId, isOwner);
+        component.displayUserDetail(user, userId, avatarURL, isOwner);
         component.setCallbackOptions(startAnimNode, endAnimNode);
         node.addChild(popup);
     }
@@ -193,6 +202,29 @@ export default class PlayerRenderer extends ActorRenderer {
 
     _findStatusLabel(statusNode) {
         return statusNode ? statusNode.children.filter(child => child instanceof cc.Label).pop() : null;
+    }
+    
+    initPlayerAvatar(url) {
+        if(this.avatarNode) {
+            let sprite = this.avatarNode.getComponentInChildren(cc.Sprite);
+            sprite && url && app.context.loadUserAvatarByURL(url, sprite);
+        }
+    }
+
+    isPositionOnTop(anchorIndex = this.anchorIndex){
+        return this.scene.gamePlayers && this.scene.gamePlayers.playerPositions.isPositionOnTop(anchorIndex)
+    }
+
+    isPositionOnRight(anchorIndex = this.anchorIndex){
+        return this.scene.gamePlayers && this.scene.gamePlayers.playerPositions.isPositionOnRight(anchorIndex)
+    }
+
+    isPositionOnLeft(anchorIndex = this.anchorIndex){
+        return this.scene.gamePlayers && this.scene.gamePlayers.playerPositions.isPositionOnLeft(anchorIndex)
+    }
+
+    isMePositionOnLeft(anchorIndex = this.anchorIndex){
+        return this.scene.gamePlayers && this.scene.gamePlayers.playerPositions.isMePositionOnLeft(anchorIndex)
     }
 }
 

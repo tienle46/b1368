@@ -1,22 +1,27 @@
 import app from 'app';
-import DialogActor from 'DialogActor';
+import Component from 'Component';
+import {active, deactive} from 'CCUtils';
+import ScrollMessagePopup from 'ScrollMessagePopup';
 
-export default class ItemMessage extends DialogActor {
+export default class ItemMessage extends Component {
     constructor() {
         super();
-        this.properties = {
-            ...this.properties,
+        
+        this.properties = this.assignProperties({
             titleLbl: cc.Label,
             contentLbl: cc.RichText,
             btnLbl: cc.Label,
             btn: cc.Button,
-            nodeButton: cc.Button
-        }
+            newIcon: cc.Node
+        });
+        
+        this._id = null; // personal message only
+        this._resized = false;
+        this._listener = null;
     }
 
     onLoad() {
         super.onLoad();
-        this.btn.node.active = false;
     }
 
     start() {
@@ -25,53 +30,71 @@ export default class ItemMessage extends DialogActor {
 
     onEnable() {
         super.onEnable();
+        !this._resized && this.node.setContentSize(this.node.getContentSize().width, this.node.getContentSize().height - 25 + this.contentLbl.node.getContentSize().height);
+        this._resized = true;
     }
-
+    
     onDestroy() {
         super.onDestroy();
+        this._id = null; // only personal message has
+        this._listener = null;
     }
 
-    init(id, title, content, groupType, btnText) {
-        this.node.id = id;
-        this.node.groupType = groupType;
-
+    createItem(id, title, description, time, isNew, listener) {
+        deactive(this.btn.node);
+        if(isNew) {
+            active(this.newIcon);
+        } else {
+            let maxWidth = 825;
+            this.titleLbl.node.setContentSize(maxWidth, this.titleLbl.node.getContentSize().height);
+            this.contentLbl.maxWidth = maxWidth;
+            deactive(this.newIcon);
+        }
+       
+        this._fillData(id, title, description, time, null, listener);
+    }
+    
+    createItemWithButton(id, title, description, time, action, handler, isReaded, listener) {
+        isReaded ? deactive(this.newIcon): active(this.newIcon);
+        
+        if (action) {
+            this.btnLbl.string = action;
+            
+            active(this.btn.node);
+            this.btn.node.on(cc.Node.EventType.TOUCH_END, handler);
+        } else {
+            deactive(this.btn.node);
+        }
+        this._fillData(id, title, description, time, action, listener);
+    }
+    
+    _fillData(id, title, description, time, action, listener) {
+        if (action) {
+            this.btnLbl.string = action;
+            active(this.btn.node);
+        } else {
+            deactive(this.btn.node);
+        }
+        if(listener) {
+            this._listener = listener;
+        }
+        
+        this._id = {id, description};
+        
         this.titleLbl.string = title;
-        this.contentLbl.string = content;
-        if (btnText) {
-            this.btnLbl.string = btnText;
-            this.btn.node.active = true;
+        if(description.length > 130) {
+            description = `${description.slice(0, 130)}...`;
         }
-
-        let clickEvent = new cc.Component.EventHandler();
-        clickEvent.target = this.node;
-        clickEvent.component = 'ItemMessage';
-        clickEvent.handler = 'requestMessagesList';
-
-        this.nodeButton.clickEvents = [clickEvent];
+        this.contentLbl.string = description;
+        
+        this.node.active = true;
     }
-
-    requestMessagesList(e) {
-        let target = e.currentTarget;
-
-        if (target) {
-            console.debug(target);
-
-            let id = target.id;
-            let groupType = target.groupType;
-
-            var sendObject = {
-                'cmd': app.commands.LIST_SYSTEM_MESSAGE,
-                'cbKey': app.commands.LIST_SYSTEM_MESSAGE,
-                'data': {
-                    [app.keywords.SYSTEM_MESSAGE_DETAIL.REQUEST.ACTION_TYPE]: app.const.DYNAMIC_ACTION_BROWSE,
-                    [app.keywords.SYSTEM_MESSAGE_DETAIL.REQUEST.GROUP_TYPE]: groupType,
-                    [app.keywords.SYSTEM_MESSAGE_DETAIL.REQUEST.NODE_ID]: id,
-                    // [app.keywords.SYSTEM_MESSAGE.REQUEST.PAGE_NUMBER]: page
-                }
-            };
-
-            app.service.send(sendObject);
-        }
+    
+    onMessageClick(e) {
+        this._listener && (() => {
+            deactive(this.newIcon);
+            this._listener();
+        })();
     }
 }
 

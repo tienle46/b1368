@@ -8,29 +8,56 @@ import Component from 'Component';
 export default class PlusBalanceAnimation extends Component {
     constructor() {
         super();
+
+        this.properties = this.assignProperties({
+            normalAnimName: "plusBalance",
+            slowAnimName: "plusBalanceSlow"
+        });
+
         this.player = null;
         this.startCallback = null;
         this.endCallback = null;
     }
 
-    setup({player = null, startCallback = null, endCallback = null} = {}){
+    onLoad(){
+        super.onLoad()
+
+        this._plusAnim = this.node.getComponent(cc.Animation)
+    }
+
+    onDestroy() {
+        super.onDestroy()
+        this.startCallback = null;
+        this.endCallback = null;
+    }
+
+    setup({ player = null, startCallback = null, endCallback = null } = {}) {
         this.player = player;
         this.startCallback = startCallback;
         this.endCallback = endCallback;
+
+        player = null;
+        startCallback = null;
+        endCallback = null;
     }
 
-    play(){
-        this.node.getComponent(cc.Animation).play();
+    play() {
+        this._plusAnim.play(this.normalAnimName);
     }
 
-    onAnimationStart(){
+    playSlow(){
+        this._plusAnim.play(this.slowAnimName);
+    }
+
+    onAnimationStart() {
         this.node.active = true;
         this.startCallback && this.startCallback();
     }
 
-    onAnimationEnd(){
+    onAnimationEnd() {
         this.node.active = false;
         this.endCallback && this.endCallback();
+        this._plusAnim.stop()
     }
 }
 

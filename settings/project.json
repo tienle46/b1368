@@ -1,96 +1,23 @@
 {
   "collision-matrix": [
     [
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false
-    ],
-    [
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false
-    ],
-    [
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false
-    ],
-    [
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false
-    ],
-    [
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false
-    ],
-    [
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false
-    ],
-    [
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false
+      true
     ]
   ],
-  "excluded-modules": [
-    "ParticleSystem",
-    "TiledMap",
-    "Spine Skeleton",
-    "Collider",
-    "MotionStreak",
-    "DragonBones"
-  ],
-  "group-list": [
-    "cardPrefab",
-    "core",
-    "game",
-    "game_core",
-    "components",
-    "game_components",
-    "scenes"
-  ],
-  "start-scene": "19d77baf-45a8-424b-b934-835d4149344d",
-  "design-resolution-width": 960,
   "design-resolution-height": 640,
-  "fit-width": false,
+  "design-resolution-width": 960,
+  "excluded-modules": [],
   "fit-height": true,
-  "use-project-simulator-setting": false,
+  "fit-width": false,
+  "group-list": [
+    "default"
+  ],
   "simulator-orientation": false,
-  "use-customize-simulator": false,
   "simulator-resolution": {
-    "width": 960,
-    "height": 640
-  }
+    "height": 640,
+    "width": 960
+  },
+  "start-scene": "19d77baf-45a8-424b-b934-835d4149344d",
+  "use-customize-simulator": false,
+  "use-project-simulator-setting": false
 }

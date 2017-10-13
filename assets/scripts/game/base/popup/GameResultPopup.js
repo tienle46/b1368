@@ -5,9 +5,10 @@
 import app from 'app';
 import Actor from 'Actor';
 import GameResultItem from 'GameResultItem';
-import { GameUtils } from 'utils';
-import * as Commands from "../../../core/Commands";
-import ArrayUtils from "../../../utils/ArrayUtils";
+import { GameUtils } from 'PackageUtils';
+import Commands from "Commands";
+import CCUtils from "CCUtils";
+import ArrayUtils from "ArrayUtils";
 
 export default class GameResultPopup extends Actor {
     constructor() {
@@ -30,12 +31,11 @@ export default class GameResultPopup extends Actor {
         this.animation = null;
         this.loaded = false;
         this.__models__ = null;
-
-        this.properties = {
-            ...this.properties,
+    
+        this.properties = this.assignProperties({
             showAnimName: 'showGameResult',
             hideAnimName: 'hideGameResult',
-        }
+        });
     }
 
     onLoad() {
@@ -68,8 +68,7 @@ export default class GameResultPopup extends Actor {
 
     clear() {
         this.__models__ = null;
-        this.content.children.forEach(child => child.destroy());
-        this.content.removeAllChildren();
+        CCUtils.clearAllChildren(this.content);
     }
 
     _showResultData(models) {

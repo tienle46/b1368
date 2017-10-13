@@ -1,80 +1,80 @@
 import app from 'app';
-import DialogActor from 'DialogActor';
-import numeral from 'numeral';
+import PopupTabBody from 'PopupTabBody';
+import Utils from 'GeneralUtils';
 
-class TabTopDaiGia extends DialogActor {
+class TabTopDaiGia extends PopupTabBody {
     constructor() {
         super();
-
-        this.properties = {
-            ...this.properties,
+        
+        this.properties = this.assignProperties({
             contentNode: cc.Node,
             crownsNode: cc.Node,
             userMoneyLbl: cc.Label,
-        }
+            p404: cc.Node
+        });
     }
 
     onLoad() {
         super.onLoad();
     }
 
-    start() {
-        super.start();
-        this._getDataFromServer(this.currentPage)
+    loadData() {
+        if(Object.keys(this._data).length > 0)
+            return false;
+        super.loadData();
+        
+        this._getDataFromServer();
+        return true;
     }
+    
+    onDataChanged({usernames = [], balances = [], gc} = {}) {
+        usernames && usernames.length > 0 && this._renderGridFromUsernames(usernames, balances);
+    }
+
 
     _addGlobalListener() {
         super._addGlobalListener();
-        app.system.addListener(app.commands.RANK_GROUP, this._onGetRankGroup, this);
+        app.system.addListener(app.commands.GET_TOP_BALANCE_PLAYERS, this._onGetTopBalancePlayers, this);
     }
 
     _removeGlobalListener() {
         super._removeGlobalListener();
-        app.system.removeListener(app.commands.RANK_GROUP, this._onGetRankGroup, this);
+        app.system.removeListener(app.commands.GET_TOP_BALANCE_PLAYERS, this._onGetTopBalancePlayers, this);
     }
 
     _getDataFromServer(page) {
-        let topNodeId = 8;
-        let sendObject = {
-            'cmd': app.commands.RANK_GROUP,
-            'data': {
-                [app.keywords.RANK_GROUP_TYPE]: app.const.DYNAMIC_GROUP_LEADER_BOARD,
-                [app.keywords.RANK_ACTION_TYPE]: app.const.DYNAMIC_ACTION_BROWSE,
-                [app.keywords.PAGE]: page,
-                [app.keywords.RANK_NODE_ID]: topNodeId,
-            }
-        };
-
-        app.system.showLoader();
-        app.service.send(sendObject);
+        app.service.send({
+            'cmd': app.commands.GET_TOP_BALANCE_PLAYERS,
+        });
+        this.showLoadingProgress();
     }
 
-    _onGetRankGroup(res) {
-        res[app.keywords.USERNAME_LIST] = res[app.keywords.USERNAME_LIST] || [];
-        if (res[app.keywords.USERNAME_LIST].length < 0) {
-            this.pageIsEmpty(this.contentNode);
+    _onGetTopBalancePlayers(res) {
+        this.setLoadedData(res);
+    }
+    
+    _renderGridFromUsernames(usernames, balances) {
+        if (usernames.length < 0) {
+            this.showEmptyPage(this.p404);
             return;
         }
         let data = [
-            res[app.keywords.USERNAME_LIST].map((status, index) => {
-                let p = res['p'] || 1;
-                let order = (index + 1) + (p - 1) * 20;
+            usernames.map((status, index) => {
+                let order = index + 1;
                 if (this.crownsNode.children[index] && order <= 3)
                     return cc.instantiate(this.crownsNode.children[index]);
                 else
-                    return `${order}.`;
+                    return `${order}`;
             }),
-            res[app.keywords.USERNAME_LIST],
-            res['ui1l'].map((amount) => {
-                this.userMoneyLbl.string = `${numeral(amount).format('0,0')}`;
-                return cc.instantiate(this.userMoneyLbl.node);
+            usernames,
+            balances.map((amount) => {
+                return `${Utils.numberFormat(amount)}`
             }),
         ];
         let head = {
-            data: ['STT', 'Tài khoản', 'Chips'],
+            data: ['STT', 'Tài khoản', `${app.config.currencyName}`],
             options: {
-                fontColor: app.const.COLOR_YELLOW,
-                fontSize: 25
+                fontColor: app.const.COLOR_YELLOW
             }
         };
 
@@ -82,23 +82,17 @@ class TabTopDaiGia extends DialogActor {
         let prev = this.onPreviousBtnClick;
 
         let rubOptions = {
-            paging: { prev, next, context: this },
+            // paging: { prev, next, context: this },
             size: this.contentNode.getContentSize(),
-            group: { widths: ['', 380, ''] }
+            group: { 
+                widths: [180, 380, ''],
+                colors: [null, null, app.const.COLOR_YELLOW]
+            }
         };
 
         this.initView(head, data, rubOptions);
 
-        this.contentNode.addChild(this.getScrollViewNode());
-        app.system.hideLoader();
-    }
-
-    onPreviousBtnClick(page) {
-        this._getDataFromServer(page);
-    }
-
-    onNextBtnClick(page) {
-        this._getDataFromServer(page);
+        !this.getScrollViewNode().isChildOf(this.contentNode) && this.contentNode.addChild(this.getScrollViewNode());
     }
 }
 

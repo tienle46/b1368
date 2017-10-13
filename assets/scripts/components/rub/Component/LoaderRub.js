@@ -1,5 +1,6 @@
 import RubUtils from 'RubUtils';
 import app from 'app';
+import { destroy } from 'CCUtils';
 
 export default class LoaderRub {
     constructor(node = cc.director.getScene(), hideBg = false, opts = {}) {
@@ -77,17 +78,6 @@ export default class LoaderRub {
         // rotate cricle node
         circleNode.runAction(cc.repeatForever(cc.rotateBy(1.0, 360)));
 
-        // // cricle -> light
-        // let lightNode = new cc.Node();
-        // lightNode.name = 'light';
-        // lightNode.setPosition(0, 54.07);
-        // lightNode.setContentSize(cc.size(43, 36));
-
-        // circleNode.addChild(lightNode);
-
-        // let lightSprite = lightNode.addComponent(cc.Sprite);
-        // RubUtils.loadSpriteFrame(lightSprite, 'textures/light-indicator', lightNode.getContentSize());
-
         // loader -> spade Node
         let spadeNode = new cc.Node();
         spadeNode.name = 'spade';
@@ -114,19 +104,24 @@ export default class LoaderRub {
     hide() {
         if (this.isShowing) {
             this.spinLoaderNode.active = false;
-            clearTimeout(this.timer);
+            this.clearTimeout();
             this.isShowing = false;
         }
     }
 
     destroy() {
-        this.spinLoaderNode.destroy();
-        this.spinLoaderNode.removeFromParent();
+        this.clearTimeout();
+        destroy(this.spinLoaderNode);
     }
 
     _setTimer(time) {
-        this.timer = setTimeout((() => {
+        this.timer = setTimeout(() => {
             this.spinLoaderNode.active && this.hide();
-        }).bind(this), time);
+        }, time);
+    }
+
+    clearTimeout() {
+        clearTimeout(this.timer);
+        this.timer = null;
     }
 }

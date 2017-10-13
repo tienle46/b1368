@@ -32,7 +32,7 @@ Commands.SYSTEM_MESSAGE = "smsg";
 Commands.NOTIFICATION_COUNT = "nc";
 Commands.SELECT_PROFILE = "u_si";
 Commands.UPDATE_PROFILE = "u_ui";
-Commands.UPDATE_PHONE_NUMBER = "upn";
+Commands.UPDATE_PHONE_NUMBER = "updatePhone";
 Commands.DOWNLOAD_IMAGE = "cim";
 Commands.UPLOAD_IMAGE = "uim";
 Commands.PLAYER_CHAT = "chat";
@@ -40,6 +40,7 @@ Commands.USER_CHANGE_PASSWORD = "u_up";
 Commands.UPDATE_GAME_OFFLINE = "e_go";
 Commands.USER_UPDATE_PROFILE = "u_ui";
 Commands.USER_PROFILE = "u_si";
+Commands.USER_PROFILE_NEW = "userProfile";
 Commands.USER_UPDATE_PASSWORD = "u_up";
 Commands.PLAYER_REJOIN_ROOM = "rjd";
 Commands.PLAYER_REENTER_ROOM = "red";
@@ -249,5 +250,70 @@ Commands.START_GAME = 'startGame';
 Commands.REGISTER_QUIT_ROOM = 'registerQuitRoom';
 Commands.INVALID_PLAY_TURN = "invalidPlayTurn";
 Commands.GET_BUDDY_DETAIL_INFO = "buddyDetailInfo";
+
+// CHUYEN TIEN
+Commands.USER_TRANSFER_CONFIG = 'getTransferInfo';
+Commands.USER_TRANSFER_TO_USER = "b_at";
+Commands.USER_GET_MONEY_FROM_BANK = "b_aw";
+Commands.GET_BUDDY_INFO = "getBuddyInfo";
+Commands.REQUEST_BUDDY = "requestBuddy";
+Commands.CONFIRM_ADD_BUDDY = "confirmAddBuddy";
+
+Commands.BANK_IN_HISTORY = "bankInHistory";
+Commands.IOS_IN_APP_PURCHASE = "submitPurchase";
+Commands.ANDROID_IN_APP_PURCHASE = "submitBilling";
+Commands.GET_LIST_GAME_MINBET = "gmbl";
+Commands.CLIENT_CONFIG = "clientConfig";
+Commands.BANK_ACCOUNT_WITHDRAW_INFO = "b_awi";
+Commands.GET_WITHDRAW_INFO = "getWithdrawInfo";
+
+// AVATAR
+Commands.USER_AVATARS = "avatarUrls";
+Commands.CHANGE_AVATAR = "changeAvatar";
+
+Commands.GET_TOP_PLAYERS = "getTopPlayers";
+Commands.GET_TOP_VIP_PLAYERS = "getTopVipPlayers";
+Commands.GET_TOP_BALANCE_PLAYERS = "getTopBalancePlayers";
+
+Commands.GET_PERSONAL_MESSAGES = "getPersonalMessages";
+Commands.GET_SYSTEM_MESSAGES = "getSystemMessages";
+Commands.CHANGE_PERSONAL_MESSAGE_STATE = "changePersonalMessageState";
+Commands.CHANGE_SYSTEM_MESSAGE_STATE = "changeSystemMessageState";
+Commands.GET_VIP_BENEFIT = "getVipBenefit";
+
+Commands.LIST_HU = "sj_jl";
+Commands.JAR_DETAIL = "sj_jd";
+Commands.USER_GOT_JAR = "sj_sjl";
+
+Commands.GIFT_CODE = "useGiftCode";
+Commands.GET_TOTAL_TOPUP = "getTotalTopup";
+
+Commands.USER_MSG_COUNT = "userMsgCount";
+Commands.GET_EXCHANGE_DETAIL = "getExDetail";
+Commands.CANCEL_EXCHANGE_REQUEST = "ceir";
+Commands.GET_CHIPS_BACK = "getExRefund";
+Commands.GET_CURRENT_GAME_DATA = "getCurrentGameData";
+Commands.USER_DISCONNECTED = "userDisconnected";
+Commands.REPLACE_FAKE_USER = "replaceFakeUser";
+
+Commands.CANCEL_REJOIN = "cancelRejoin";
+
+Commands.NOTIFICATION_MESSAGE = "notify";
+
+Commands.MINIGAME_TAI_XIU_CHANGE_STATE = "mng_taixiuChangeState";
+Commands.MINIGAME_TAI_XIU_BET = "mng_taixiuBet";
+Commands.MINIGAME_TAI_XIU_GET_STATE = "mng_taixiuState";
+Commands.MINIGAME_TAI_XIU_FOLLOW = "mng_taixiuFollow";
+Commands.MINIGAME_TAI_XIU_UNFOLLOW = "mng_taixiuUnfollow";
+Commands.MINIGAME_TAI_XIU_REMAIN_TIME = "mng_taixiuRemainTime";
+Commands.MINIGAME_TAI_XIU_TOP_PLAYERS = "mng_taixiuTopPlayer";
+Commands.MINIGAME_TAI_XIU_DICE_HISTORY = "mng_taixiuDiceHistory";
+Commands.MINIGAME_TAI_XIU_BET_CHANGED = "mng_taixiuBetChanged";
+Commands.MINIGAME_TAI_XIU_HISTORY = "mng_taixiuHistory";
+Commands.MINIGAME_CHAT = "mng_taixiuChat";
+Commands.MINIGAME_CHAT_HISTORY = "mng_taixiuChatHistory";
+Commands.MINIGAME_TAI_XIU_GUIDE = "mng_taixiuGuide";
+Commands.MINIGAME_TAI_XIU_GET_OPTION = "mng_taixiuGetOption";
+Commands.MINIGAME_TAI_XIU_STOP = "mng_taixiuStop";
 
 module.exports = Commands;

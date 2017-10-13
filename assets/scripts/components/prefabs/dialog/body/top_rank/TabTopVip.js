@@ -1,74 +1,72 @@
 import app from 'app';
-import DialogActor from 'DialogActor';
+import PopupTabBody from 'PopupTabBody';
 
-class TabTopVip extends DialogActor {
+class TabTopVip extends PopupTabBody {
     constructor() {
         super();
-
-        this.properties = {
-            ...this.properties,
+        
+        this.properties = this.assignProperties({
             contentNode: cc.Node,
             crowns: cc.Node,
-            vips: cc.Node,
-        };
+            p404: cc.Node
+        });
     }
 
     onLoad() {
         super.onLoad();
     }
-
-    start() {
-        super.start();
-        this._getRankGroup()
+    
+    loadData() {
+        if(Object.keys(this._data).length > 0)
+            return false;
+        super.loadData();
+        
+        this._getRankGroup();
+        return true;
     }
-
+    
+    onDataChanged({vips = []} = {}) {
+        vips && vips.length > 0 && this._renderGridFromVips(vips);
+    }
+    
     _addGlobalListener() {
         super._addGlobalListener();
-        app.system.addListener(app.commands.RANK_GROUP, this._showBody, this);
+        app.system.addListener(app.commands.GET_TOP_VIP_PLAYERS, this._onGetTopVipPlayers, this);
     }
 
     _removeGlobalListener() {
         super._removeGlobalListener();
-        app.system.removeListener(app.commands.RANK_GROUP, this._showBody, this);
+        app.system.removeListener(app.commands.GET_TOP_VIP_PLAYERS, this._onGetTopVipPlayers, this);
     }
 
     _getRankGroup() {
-        let topNodeId = 14,
-            currentPage = 1;
-        console.debug('this.contentNode3', this.contentNode.getContentSize());
-
-        let sendObject = {
-            'cmd': app.commands.RANK_GROUP,
-            'data': {
-                [app.keywords.RANK_GROUP_TYPE]: app.const.DYNAMIC_GROUP_LEADER_BOARD,
-                [app.keywords.RANK_ACTION_TYPE]: app.const.DYNAMIC_ACTION_BROWSE,
-                [app.keywords.PAGE]: currentPage,
-                [app.keywords.RANK_NODE_ID]: topNodeId,
-            }
-        };
-        app.system.showLoader();
-        app.service.send(sendObject);
+        app.service.send({
+            'cmd': app.commands.GET_TOP_VIP_PLAYERS,
+        });
+        this.showLoadingProgress();
     }
 
-    _showBody(d) {
-        let ul = d[app.keywords.USERNAME_LIST] || [];
-        if (ul.length < 0) {
-            this.pageIsEmpty(this.contentNode);
+    _onGetTopVipPlayers(data) {
+        this.setLoadedData(data); 
+    }
+    
+    _renderGridFromVips(vips) {
+        if (vips.length < 0) {
+            this.showEmptyPage(this.p404);
             return;
         }
         let data = [
-            ul.map((status, index) => {
+            vips.map((status, index) => {
                 if (this.crowns.children[index])
                     return cc.instantiate(this.crowns.children[index]);
                 else
-                    return `${index + 1}.`;
+                    return `${index + 1}`;
             }),
-            ul,
-            ul.map((status, index) => {
-                let len = this.vips.children.length;
-                return cc.instantiate(this.vips.children[index] ? this.vips.children[index] : this.vips.children[len - 1]);
-            }),
+            vips.map(object => object.username),
+            vips.map(object => object.type)
         ];
+        
+        this.contentNode.setContentSize(850, this.contentNode.getContentSize().height);
         this.initView({
             data: ['STT', 'Tài khoản', 'Loại'],
             options: {
@@ -77,8 +75,7 @@ class TabTopVip extends DialogActor {
         }, data, {
             size: this.contentNode.getContentSize(),
         });
-        this.contentNode.addChild(this.getScrollViewNode());
-        app.system.hideLoader();
+        !this.getScrollViewNode().isChildOf(this.contentNode) && this.contentNode.addChild(this.getScrollViewNode());
     }
 }
 

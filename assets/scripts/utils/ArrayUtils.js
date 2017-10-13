@@ -17,7 +17,7 @@ export default class ArrayUtils {
     }
 
     static findFirst(arr, findItem, equalsFn) {
-        let index = this.findIndex(arr, removing, equalsFn);
+        let index = this.findIndex(arr, findItem, equalsFn);
         return index >= 0 && arr[index];
     }
 
@@ -30,12 +30,11 @@ export default class ArrayUtils {
      */
     static findIndex(arr, findItem, equalsFn) {
         if (!arr || !findItem) return -1;
-
+        
         let index = -1;
         if (equalsFn || findItem.equals) {
             equalsFn = equalsFn || ((obj1, obj2) => obj1.equals(obj2));
             arr.some((val, i) => {
-
                 if (equalsFn(val, findItem)) {
                     index = i;
                     return true;
@@ -44,7 +43,7 @@ export default class ArrayUtils {
         } else {
             index = arr.indexOf(findItem);
         }
-
+        
         return index;
     }
 
@@ -56,11 +55,13 @@ export default class ArrayUtils {
      * @returns {Array} remove item has removed
      */
     static remove(arr, removing, equalsFn) {
-        let index = this.findIndex(arr, removing, equalsFn);
-        if (index >= 0) {
-            let removedObj = arr[index];
-            arr.splice(index, 1);
-            return removedObj;
+        if(arr && arr.length > 0){
+            let index = this.findIndex(arr, removing, equalsFn);
+            if (index >= 0) {
+                let removedObj = arr[index];
+                arr.splice(index, 1);
+                return removedObj;
+            }
         }
     }
 
@@ -86,6 +87,14 @@ export default class ArrayUtils {
         return removedCards;
     }
 
+    static swap(arr, index1, index2){
+        if(!arr || index1 < 0 || index1 >= arr.length || index2 < 0 || index2 >= arr.length) return;
+
+        let tmp = arr[index1]
+        arr[index1] = arr[index2]
+        arr[index2] = tmp
+    }
+
     /**
      *
      * @param {Array} arr
@@ -106,10 +115,10 @@ export default class ArrayUtils {
      */
     static containsAll(arr, checkArr, equalsFn) {
 
-        if (!arr || !checkArr || arr.length != checkArr.length) return false;
+        if (!arr || !checkArr || arr.length < checkArr.length) return false;
 
         let containObjs = arr.filter(obj => this.findIndex(checkArr, obj, equalsFn) >= 0);
-        return containObjs.length == arr.length;
+        return containObjs.length == checkArr.length;
     }
 
     /**

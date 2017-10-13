@@ -1,0 +1,30 @@
+{
+  "ver": "1.0.0",
+  "uuid": "c276e048-585e-4ec6-9682-ffa538f0e71d",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "subMetas": {
+    "trump-dungnhon": {
+      "ver": "1.0.3",
+      "uuid": "762cf345-ea82-459a-8e8e-0f4f5796b728",
+      "rawTextureUuid": "c276e048-585e-4ec6-9682-ffa538f0e71d",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": -5,
+      "offsetY": -0.5,
+      "trimX": 9,
+      "trimY": 2,
+      "width": 142,
+      "height": 167,
+      "rawWidth": 170,
+      "rawHeight": 170,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}

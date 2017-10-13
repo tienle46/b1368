@@ -1,6 +1,6 @@
 import ButtonScaler from 'ButtonScaler';
 import RubUtils from 'RubUtils';
-import { isFunction } from 'Utils';
+import { isFunction } from 'GeneralUtils';
 
 let NodeRub = {
     /**
@@ -48,6 +48,7 @@ let NodeRub = {
             widget.isAlignLeft = true;
             widget.left = opts.left;
         }
+        window.free(opts);
     },
     /**
      * @param {any} options:
@@ -64,6 +65,7 @@ let NodeRub = {
      *      color: new cc.Color
      *      width: number
      *  }
+     *  (optional) fontColor:
      * }
      */
     addLabelComponentToNode: (node, options) => {
@@ -76,11 +78,15 @@ let NodeRub = {
         delete options.outline;
         delete options.font;
         delete options.text;
-
+        if (options.fontColor) {
+            node.color = options.fontColor;
+            delete options.fontColor;
+        }
         for (let key in options) {
             label[key] = options[key];
         }
         node.getLineCount = () => label._lineCount;
+        window.free(options);
     },
     /**
      * @param options
@@ -92,6 +98,7 @@ let NodeRub = {
      * horizontalAlign: # default cc.Label.HorizontalAlign.CENTER,
      * maxWidth: number
      * overflow: # default.cc.Label.Overflow.CLAMP
+     *  (optional) fontColor:
      * }
      */
     addRichTextComponentToNode: (node, options) => {
@@ -101,12 +108,17 @@ let NodeRub = {
 
         delete options.text;
         delete options.font;
+        if (options.fontColor) {
+            node.color = options.fontColor;
+            delete options.fontColor;
+        }
 
         for (let key in options) {
             rich[key] = options[key];
         }
 
         node.getLineCount = () => rich._lineCount;
+        window.free(options);
     },
     /**
      * @param options
@@ -117,6 +129,7 @@ let NodeRub = {
         let outline = node.getComponent(cc.LabelOutline) || node.addComponent(cc.LabelOutline);
         outline.color = options.color;
         outline.width = options.width;
+        window.free(options);
     },
     /**
      * @param options
@@ -137,6 +150,7 @@ let NodeRub = {
         for (var key in options) {
             layout[key] = options[key];
         }
+        window.free(options);
     },
     /**
      * @param options
@@ -170,6 +184,7 @@ let NodeRub = {
             let lblNode = NodeRub.createNodeByOptions(o);
             node.addChild(lblNode);
         }
+        window.free(options);
     },
     /**
      * @param options
@@ -183,25 +198,26 @@ let NodeRub = {
      * }
      */
     addSpriteComponentToNode: (node, options) => {
-        let sprite = node.addComponent(cc.Sprite);
+        let sprite = node.getComponent(cc.Sprite) || node.addComponent(cc.Sprite);
         let spriteFrame = options.spriteFrame;
-        let o = {
+        options = Object.assign({
             type: cc.Sprite.Type.SLICED,
             sizeMode: cc.Sprite.SizeMode.CUSTOM
-        };
-        o = Object.assign(o, options);
+        }, options);
+        
         if (typeof spriteFrame === 'string') {
-            delete o.spriteFrame;
-
-            RubUtils.loadSpriteFrame(sprite, spriteFrame, node.getContentSize(), options.isCORS || false, options.cb, o);
+            delete options.spriteFrame;
+            
+            RubUtils.loadSpriteFrame(sprite, spriteFrame, node.getContentSize(), options.isCORS || false, options.cb, options);
         } else if (spriteFrame instanceof cc.SpriteFrame) {
+            delete options.spriteFrame;
             sprite.spriteFrame = spriteFrame;
-            delete o.spriteFrame;
-
-            for (let key in o) {
-                sprite[key] = o[key];
+            
+            for (let key in options) {
+                sprite[key] = options[key];
             }
         }
+        window.free(options);
     },
     /**
      * @param options
@@ -212,6 +228,7 @@ let NodeRub = {
     addWebViewComponentToNode: (node, options) => {
         let webView = node.getComponent(cc.WebView) || node.addComponent(cc.WebView);
         webView.url = options.url;
+        window.free(options);
     },
     /**
      * 
@@ -228,6 +245,7 @@ let NodeRub = {
         options.hasOwnProperty('toggleGroup') && (toggle.toggleGroup = options.toggleGroup);
         options.hasOwnProperty('event') && (toggle.checkEvents = [options.event]);
         options.hasOwnProperty('isChecked') && (toggle.isChecked = options.isChecked);
+        window.free(options);
     },
     /**
      * @param options
@@ -253,14 +271,14 @@ let NodeRub = {
      * }
      */
     addEditBoxComponentToNode: (node, options) => {
-        let o = {
+        options = Object.assign({
             string: '',
             returnType: cc.EditBox.KeyboardReturnType.DEFAULT,
             inputFlag: cc.EditBox.InputFlag.SENSITIVE,
             inputMode: cc.EditBox.InputMode.SINGLE_LINE,
             stayOnTop: false
-        };
-        options = Object.assign(o, options);
+        }, options);
+
         let editbox = node.getComponent(cc.EditBox) || node.addComponent(cc.EditBox);
 
         let size = node.getContentSize();
@@ -277,11 +295,12 @@ let NodeRub = {
         };
 
         if (typeof options.backgroundImage === 'string') {
-            RubUtils.loadRes(options.backgroundImage, true).then(handleOptions);
+            RubUtils.loadRes(options.backgroundImage, cc.SpriteFrame).then(handleOptions);
         } else {
             handleOptions();
         }
 
+        window.free(options);
     },
     /**
      * @param {any} options
@@ -295,30 +314,12 @@ let NodeRub = {
      *      anchor: <cc.v2>,
      *      scale: <cc.v2>,
      *      opacity: <number>,
-     *      // addComponentsToNodeByOptions's options
-     * 
-     *      @optional children: [{options}, {options}]
      * }
      * @returns  cc.Node
      */
     createNodeByOptions(options) {
         let node = new cc.Node();
         options.name && (node.name = options.name);
-
-        let __prefix = '_n_';
-        node._setValue = (key, value) => {
-            node[`${__prefix}${key}`] = value;
-        };
-
-        node._getValue = (key) => {
-            return node[`${__prefix}${key}`];
-        };
-        if (options.values) {
-            for (let v in options.values) {
-                node._setValue(v, options.values[v]);
-                // node[`${__prefix}${v}`] = options.values[v];
-            }
-        }
         options.opacity && (node.opacity = options.opacity);
 
         options.size && node.setContentSize(options.size);
@@ -332,13 +333,12 @@ let NodeRub = {
 
         NodeRub.addComponentsToNodeByOptions(node, options);
 
-        if (options.children && options.children.length > 0) {
-            options.children.forEach((childOption) => {
-                let n = NodeRub.createNodeByOptions(childOption);
-                node.addChild(n);
-            });
-        }
-
+        // if (options.children && options.children.length > 0) {
+        //     options.children.forEach((childOption) => {
+        //         let n = NodeRub.createNodeByOptions(childOption);
+        //         node.addChild(n);
+        //     });
+        // }
         return node;
     },
     /**
@@ -445,6 +445,8 @@ let NodeRub = {
 
         // webView
         options.webview && NodeRub.addWebViewComponentToNode(node, options.webview);
+
+        window.free(options);
     }
 };
 

@@ -2,11 +2,11 @@
  * Created by Thanh on 8/23/2016.
  */
 
-import utils from 'utils';
+import utils from 'PackageUtils';
 import app from 'app';
-import game from 'game'
+import game from 'game';
 import { Actor } from 'components';
-import Events from 'events'
+import Events from 'events';
 import { Keywords } from 'core';
 
 export default class Board extends Actor {
@@ -24,38 +24,7 @@ export default class Board extends Actor {
         this.readyPhaseDuration = app.const.DEFAULT_READY_PHASE_DURATION;
         this.timelineRemain = 0;
         this.gameCode = "";
-
     }
-
-    // _init(scene) {
-    //
-    //     console.log("onload Board: " + this);
-    //
-    //     this.scene = scene;
-    //     this.room = scene.room;
-    //     this.gameCode = scene.gameCode;
-    //     this.state = app.const.game.state.INITED;
-    //     this.gameData = scene.gameData;
-    //
-    //     if (this.room.containsVariable(app.keywords.VARIABLE_MIN_BET)) {
-    //         this.minBet = utils.getVariable(this.room, app.keywords.VARIABLE_MIN_BET);
-    //     }
-    //
-    //     if (this.gameData.hasOwnProperty(app.keywords.BOARD_STATE_KEYWORD)) {
-    //         this.serverState = this.gameData[app.keywords.BOARD_STATE_KEYWORD];
-    //         this.state = app.const.game.state.BEGIN;
-    //     }
-    //
-    //     this.scene.on(Events.ON_GAME_STATE_CHANGE, this.onGameStatePreChange, this);
-    //     this.scene.on(Events.ON_GAME_STATE_BEGIN, this.onBoardBegin, this);
-    //     this.scene.on(Events.ON_GAME_STATE_STARTING, this.onBoardStarting, this);
-    //     this.scene.on(Events.ON_GAME_STATE_STARTED, this.onBoardStarted, this);
-    //     this.scene.on(Events.ON_GAME_STATE_PLAYING, this.onBoardPlaying, this);
-    //     this.scene.on(Events.ON_GAME_STATE_ENDING, this.onBoardEnding, this);
-    //     this.scene.on(Events.ON_GAME_LOAD_PLAY_DATA, this._loadGamePlayData, this);
-    //     this.scene.on(Events.ON_PLAYER_READY_STATE_CHANGED, this._onPlayerSetReadyState, this);
-    //     this.scene.on(Events.ON_GAME_REJOIN, this._onGameRejoin, this);
-    // }
 
     onEnable(...args) {
         super.onEnable(...args);
@@ -76,6 +45,7 @@ export default class Board extends Actor {
         this.scene.on(Events.ON_GAME_RESET, this.onGameReset, this);
         this.scene.on(Events.ON_GAME_STATE_PRE_CHANGE, this.onGameStatePreChange, this, 0);
         this.scene.on(Events.ON_GAME_STATE_CHANGED, this.onGameStateChanged, this, 0);
+        this.scene.on(Events.ON_GAME_WAIT, this.onGameStateWait, this, 0);
         this.scene.on(Events.ON_GAME_STATE_BEGIN, this.onBoardBegin, this, 0);
         this.scene.on(Events.ON_GAME_STATE_STARTING, this.onBoardStarting, this, 0);
         this.scene.on(Events.ON_GAME_STATE_STARTED, this.onBoardStarted, this, 0);
@@ -85,14 +55,24 @@ export default class Board extends Actor {
         this.scene.on(Events.ON_PLAYER_READY_STATE_CHANGED, this._onPlayerSetReadyState, this);
         this.scene.on(Events.ON_GAME_REJOIN, this._onGameRejoin, this);
         this.scene.on(Events.ON_ROOM_CHANGE_MIN_BET, this._onRoomMinBetChanged, this);
+        this.scene.on(Events.ON_GAME_REFRESH, this._onBoardRefresh, this);
     }
 
+    onGameStateWait(){
+        this.stopTimeLine();
+    }
+    
+    _onBoardRefresh(data) {
+        let boardData = data.gameData;
+        this._onGameRejoin(boardData);
+    }
+    
     _onRoomMinBetChanged() {
         this._loadBoardMinBet();
     }
 
     _loadBoardMinBet() {
-        if (this.room.containsVariable(app.keywords.VARIABLE_MIN_BET)) {
+        if (this.room && this.room.containsVariable(app.keywords.VARIABLE_MIN_BET)) {
             this.minBet = utils.getVariable(this.room, app.keywords.VARIABLE_MIN_BET);
         }
     }
@@ -272,17 +252,16 @@ export default class Board extends Actor {
     onGameStatePreChange(boardState, data) {
         this.serverState = boardState;
 
-        console.log("onGameStatePreChange...", data);
+        log("onGameStatePreChange...", boardState, data);
 
         //TODO Process board state changed here
     }
 
     _reset() {
-        this.scene.hideGameResult();
         this.renderer && this.renderer._reset();
     }
 
-    onGameReset(){
+    onGameReset() {
         this._reset();
     }
 
@@ -295,8 +274,6 @@ export default class Board extends Actor {
         let boardTimeLine = utils.getValue(data, Keywords.BOARD_PHASE_DURATION);
         boardTimeLine && (this.readyPhaseDuration = boardTimeLine);
 
-        console.warn("on board begin: readyDuration: ", this.readyPhaseDuration, " justJoined: ", isJustJoined, " meReady: ", this.scene.gamePlayers.me.isReady());
-
         //Support for new ready flow
         if (this.readyPhaseDuration && this.scene.enoughPlayerToStartGame()) {
             if (isJustJoined) {
@@ -308,14 +285,6 @@ export default class Board extends Actor {
             this.startTimeLine(boardTimeLine);
             this.scene.emit(Events.SHOW_START_GAME_CONTROL);
         }
-
-        // if (this.readyPhaseDuration && !this.scene.gamePlayers.me.isReady()) {
-        //     if (this.scene.gamePlayers.meIsOwner()) {
-        //         boardTimeLine *= 2;
-        //     }
-        //
-        //     this.startTimeLine(boardTimeLine, () => { this.scene.emit(Events.ON_ACTION_EXIT_GAME) });
-        // }
 
         this.state = app.const.game.state.BEGIN;
     }
@@ -352,7 +321,9 @@ export default class Board extends Actor {
     }
 
     onBoardEnding(data = {}, isJustJoined) {
+        this.jumpedToBoardEnd = true;
         this.timelineRemain = utils.getValue(data, Keywords.BOARD_PHASE_DURATION);
+        this.scene.clearReadyPlayer();
 
         if (isJustJoined) {
             this._startEndBoardTimeLine(this.timelineRemain);
@@ -360,7 +331,8 @@ export default class Board extends Actor {
 
         this.state = app.const.game.state.ENDING;
         this._handleSetPlayerBalance(data);
-
+        app.context.rejoiningGame = false;
+        
         // TODO Khi cần show hiệu ứng thì dùng thông tin này để hiển thị các trường hợp đặc biệt
         // Byte tbBoardWinType = resObj.getByte(SmartfoxKeyword.KEYWORD_WIN_TYPE);
         // if (tbBoardWinType != null) {
@@ -381,24 +353,28 @@ export default class Board extends Actor {
             balanceChangedAmounts[id] = newBalance - currentBalance;
         });
 
-        console.log("currentPlayerBalances: ", currentPlayerBalances, newPlayersBalance);
-
         return balanceChangedAmounts;
     }
 
     _handleSetPlayerBalance(data) {
-
-        console.log("_handleSetPlayerBalance: ", data);
-
         let playerIds = utils.getValue(data, Keywords.GAME_LIST_PLAYER);
         let playersBalance = utils.getValue(data, Keywords.USER_BALANCE, []);
         let playersExp = utils.getValue(data, Keywords.BOARD_EXP_POINT_LIST, []);
-
+        console.log("Keywords.USER_BALANCE: ", playersBalance);
+        
         playerIds && playersBalance && playersExp && playerIds.forEach((id, i) => {
             let newBalance = playersBalance[i];
             let newExp = playersExp[i];
-
-            newBalance && this.scene.emit(Events.ON_PLAYER_SET_BALANCE, id, newBalance);
+            
+            // this.scene.emit(Events.ON_PLAYER_SET_BALANCE, id, newBalance);
+            if(app.context.rejoiningGame){
+                if(!this.scene.gamePlayers.isItMe(id)){
+                    this.scene.emit(Events.ON_PLAYER_SET_BALANCE, id, newBalance);
+                }
+                app.context.rejoiningGame = false;
+            }else{
+                this.scene.emit(Events.ON_PLAYER_SET_BALANCE, id, newBalance);
+            }
             //TODO chưa xử lý exp
         });
     }

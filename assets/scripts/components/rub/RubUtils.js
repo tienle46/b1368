@@ -1,41 +1,89 @@
+import app from 'app';
+
 let RubUtils = {
-    loadRes: (resURL, isSpriteFrame = false) => {
+    /**
+     * @resURL {string}
+     * @assetType {cc.SpriteFrame || cc.Font || cc.SpriteAtlas ...}
+     */
+    loadRes: (resURL, assetType = null) => {
         return new Promise((resolve, reject) => {
             function handler(err, asset) {
                 if (err)
                     reject(err);
 
                 resolve(asset);
+
                 RubUtils.releaseAssets(asset);
             }
 
-            if (isSpriteFrame) {
-                cc.loader.loadRes(resURL, cc.SpriteFrame, handler);
+            if (assetType) {
+                cc.loader.loadRes(resURL, assetType, handler);
             } else {
                 cc.loader.loadRes(resURL, handler);
             }
         });
     },
-    getSpriteFrameFromAtlas: (resURL, key, cb) => {
+    loadResDir: (dirUrl, assetType = null, callback) => {
+        cc.loader.loadResDir(dirUrl, assetType, (error, assets) => {
+            if (error) {
+                console.error(error);
+                return;
+            }
+
+            callback && callback(assets);
+
+            RubUtils.releaseAssets(assets);
+        });
+    },
+    getAudioClipsFromResDir: (dirUrl, callback) => {
+        RubUtils.loadResDir(dirUrl, cc.AudioClip, callback);
+    },
+    getAtlasFromUrl: (url, cb) => {
+        RubUtils.loadRes(url, cc.SpriteAtlas).then((atlas) => {
+            cb && cb(atlas);
+        }).catch(err => console.error(err));
+    },
+    getSpriteFrameFromAtlas: (atlasURL, key, cb) => {
         // load SpriteAtlas (Atlas), and get one of them SpriteFrame
         // Note Atlas resource file (plist) usually of the same name and a picture file (PNG) placed in a directory,
         // So should need to in the second parameter specifies the resource type.
-        cc.loader.loadRes(resURL, cc.SpriteAtlas, function(err, atlas) {
-            if (err)
-                console.error(err);
-
+        RubUtils.getAtlasFromUrl(atlasURL, (atlas) => {
             let frame = atlas.getSpriteFrame(key);
-            cb(frame);
-            RubUtils.releaseAssets(frame);
-            // sprite.spriteFrame = frame;
+            cb && cb(frame);
+        });
+    },
+    /**
+     * @return callback(sprites)
+     */
+    getSpriteFramesFromAtlas: (atlasURL, keys, callback) => {
+        var async = require('async');
+        
+        if (!(keys instanceof Array) || keys.length < 1)
+            return;
+
+        let sprites = {};
+        let count = 0;
+
+        async.mapSeries(keys, (key, cb) => {
+            RubUtils.getSpriteFrameFromAtlas(atlasURL, key, (sprite) => {
+                if (sprite) {
+                    count++;
+                    sprites[key] = sprite;
+                }
+                if (count == keys.length) {
+                    callback(sprites);
+                    window.free(sprites);
+                }
+
+                cb && cb(); // next ->
+            });
         });
     },
     loadFont: (component, url, cb) => {
-        cc.loader.loadRes(url, cc.Font, (err, font) => {
+        RubUtils.loadRes(url, cc.Font).then((font) => {
             component.font = font;
             cb && cb(font);
-            RubUtils.releaseAssets(font)
-        });
+        }).catch(err => console.error(err));
     },
     /**
      * @param spriteComponent: (cc.Component) sprite we need to add spriteFrame to
@@ -51,6 +99,9 @@ let RubUtils = {
      * }
      */
     loadSpriteFrame: (spriteComponent, resURL, ccSize = null, isCORS = false, cb, options = {}) => {
+        if (!resURL || !spriteComponent || typeof resURL !== 'string')
+            return;
+        
         let textureCache;
 
         let o = {
@@ -58,72 +109,98 @@ let RubUtils = {
             sizeMode: cc.Sprite.SizeMode.CUSTOM
         };
         options = Object.assign({}, o, options);
-
-        function spriteFrameDefaultConfig(spriteComponent) {
+        
+        function spriteFrameDefaultConfig(spriteComponent, texture2D) {
             if (spriteComponent) {
+                texture2D && (spriteComponent.spriteFrame = new cc.SpriteFrame(texture2D));
+
                 for (let key in options) {
                     spriteComponent.hasOwnProperty(key) && options[key] && (spriteComponent[key] = options[key]);
                 }
 
                 ccSize && spriteComponent.node && spriteComponent.node.setContentSize(ccSize);
-                cb && cb(spriteComponent);
             }
-
+            cb && cb(spriteComponent);
         }
-
+        
         if (isCORS) {
-            textureCache = cc.textureCache.addImage(resURL);
-            let spriteFrame = new cc.SpriteFrame(textureCache);
-            spriteComponent.spriteFrame = spriteFrame;
-            spriteFrameDefaultConfig(spriteComponent);
+            if (!resURL.match(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/))
+                return;
+            // TODO fetch 404 (axios cannot run in mobile platform)
+            if (app.env.isBrowser()) {
+                // // therefore, 404 detector only runs on browser
+                // axios.get(resURL).then(response => {
+                //     if (response.status == 200) {
+                //         textureCache = cc.textureCache.addImage(resURL);
+                //         spriteFrameDefaultConfig(spriteComponent, textureCache);
+                //     } else {
+                //         spriteFrameDefaultConfig(null);
+                //     }
+                // }).catch(err => {
+                //     spriteFrameDefaultConfig(null);
+                // });
+                
+                textureCache = cc.textureCache.addImage(resURL);
+
+                spriteFrameDefaultConfig(spriteComponent, textureCache);
+            } else {
+                cc.loader.load(resURL, (err, tex) => {
+                    if (err) console.error(err);
+
+                    if (tex && tex instanceof cc.Texture2D) {
+                        spriteFrameDefaultConfig(spriteComponent, tex);
+                    }
+                });
+            }
         } else {
-            return RubUtils.loadRes(resURL, true).then((spriteFrame) => {
+            return RubUtils.loadRes(resURL, cc.SpriteFrame).then((spriteFrame) => {
                 if (spriteFrame) {
                     spriteComponent.spriteFrame = spriteFrame;
                     spriteFrameDefaultConfig(spriteComponent);
                 }
-            });
+            }).catch(err => {});
         }
+        
+        
+        // if (isCORS) {
+        //     log('text isCORS, ', resURL);
+        //     if (!resURL.match(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/))
+        //         return;
+        //     log('text isCORS 2');
+        //     axios.get(resURL).then(response => {
+        //         if (response.status == 200) {
+        //             log('text 200');
+        //             if (app.env.isBrowser()) {
+        //                 textureCache = cc.textureCache.addImage(resURL);
+        //                 log('text ureCache1');
+        //                 spriteFrameDefaultConfig(spriteComponent, textureCache);
+        //             } else {
+        //                 cc.loader.load(resURL, (err, tex) => {
+        //                     if (err) console.error(err);
+        //                     log('text ureCache2');
+        //                     if (tex && tex instanceof cc.Texture2D) {
+        //                         spriteFrameDefaultConfig(spriteComponent, tex);
+        //                     }
+        //                 });
+        //             }
+        //         } else {
+        //             log('text null');
+        //             spriteFrameDefaultConfig(null);
+        //         }
+        //     }).catch(err => {
+        //         log('text err', JSON.stringify(err));
+        //         spriteFrameDefaultConfig(null);
+        //     });
+        // } else {
+        //     return RubUtils.loadRes(resURL, cc.SpriteFrame).then((spriteFrame) => {
+        //         if (spriteFrame) {
+        //             spriteComponent.spriteFrame = spriteFrame;
+        //             spriteFrameDefaultConfig(spriteComponent);
+        //         }
+        //     }).catch(err => console.error(err));
+        // }
     },
-    calcWidthByGroup: (parentWidth, widths = [], spaceX = 0) => {
-        // parentWidth -= 2 * padding;
-        // ['', '10%', 30, '']
-        widths = widths.map((width) => {
-            let w;
-
-            if (width) {
-                if (!isNaN(Number(width))) {
-                    w = Number(width);
-                } else {
-                    if (width.indexOf('%') > 0) {
-                        w = Number(width.replace('%', '')) * parentWidth / 100;
-                    } else
-                        w = null;
-                }
-                if (w && w < 0)
-                    w = null;
-            } else
-                w = null;
-
-            return w;
-        }); // => [null, 10*parentWidth/100, 30, null]
-
-        // total width inside array
-        let totalWidth = widths.reduce((p, n) => !isNaN(p) && (Number(p) + Number(n)), 0);
-
-        // remaing array which cotains null -> ["", null...]
-        let remains = widths.filter((e) => !isNaN(e) && Number(e) === 0).length;
-
-        // remaining width for null array, it will be equally divided.
-        let n = parentWidth > totalWidth ? parentWidth - totalWidth : 0;
-        let equallyDivided = n / remains;
-
-        return widths.map((e) => {
-            let number = ((e === null && Number(e) === 0 && equallyDivided) || e) - spaceX;
-            return number > 0 ? number : 0;
-        });
-    },
-    // usefull when assets is prefab
+    // useful when assets is prefab
     releaseAssets: (assets) => {
         let ins = assets;
 
@@ -133,22 +210,19 @@ let RubUtils = {
         if (ins.length < 0)
             return;
         ins.map(asset => {
-            let deps = asset && cc.loader.getDependsRecursively(asset);
-            deps && deps.length > 0 && cc.loader.release(asset);
-        });
-        RubUtils.releaseArray(ins, true);
-    },
-    releaseArray: (array, isRecursive = false) => {
-        if (!app._.isArray(array))
-            return;
+            if (asset) {
+                if (!cc.loader.isAutoRelease(asset)) {
+                    if (asset._name && (asset._name == "loading_rotate_img" || asset._name == "loading_fixed_img"))
+                        cc.loader.setAutoRelease(asset, true);
+                    else
+                        cc.loader.setAutoReleaseRecursively(asset, true);
+                }
 
-        if (isRecursive) {
-            array.map(a => {
-                app._.isArray(a) && RubUtils.releaseArray(a, isRecursive);
-            });
-        }
-        array.length = 0;
-        array = [];
+                let deps = cc.loader.getDependsRecursively(asset);
+                deps && deps.length > 0 && cc.loader.release(asset);
+            }
+        });
+        window.release(ins, true);
     }
 };
 export default RubUtils;

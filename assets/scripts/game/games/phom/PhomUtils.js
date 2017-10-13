@@ -4,7 +4,7 @@
 
 import app from 'app'
 import PhomList from 'PhomList';
-import {GameUtils, utils} from 'utils'
+import {GameUtils, utils} from 'PackageUtils'
 import JoinSolution from "JoinSolution";
 import JoinNode from "JoinNode";
 import Card from 'Card';
@@ -14,10 +14,6 @@ import ArrayUtils from "ArrayUtils";
 export default class PhomUtils {
 
     constructor(){}
-
-    static get GAME_TYPE() {
-        return app.const.game.GAME_TYPE_TIENLEN;
-    };
 
     static isPhomByRank(cards, sorted = false) {
         let sortedCards = sorted ? cards : PhomUtils.sortAsc([...cards], PhomUtils.SORT_BY_RANK);
@@ -31,11 +27,6 @@ export default class PhomUtils {
     }
 
     static getAllCards(phoms){
-        
-        console.log("getAllCards: ", phoms.reduce((cards, phom) => {
-            return [...cards, ...phom.cards];
-        }, []));
-        
         return !ArrayUtils.isEmpty(phoms) && phoms.reduce((cards, phom) => {
             return [...cards, ...phom.cards];
         }, []) || [];
@@ -68,21 +59,32 @@ export default class PhomUtils {
         return false;
     }
 
-    static validateGuiPhom(cards, player) {
+    static findBestJoinPhomSolution(allPhomList, cards){
+        let joinPhomSolutions = PhomUtils.getJoinPhomSolutions(allPhomList, cards)
+        return joinPhomSolutions.length > 0 ? joinPhomSolutions[0] : null;
+    }
+
+    static checkGuiPhom(allPhomList, player){
+
+        let selectedCards = player.getSelectedCards();
+        let bestJoinPhomSolution = this.findBestJoinPhomSolution(allPhomList.filter(phom => phom.owner != this.id), selectedCards);
+        if(bestJoinPhomSolution && bestJoinPhomSolution.length == selectedCards.length) {
+            return true
+        }
+
+        return false
+    }
+
+    static validateGuiPhom(allPhomList, player) {
 
         let valid = false;
         let guiSolution = null;
         let selectedCards = player.getSelectedCards();
+        let bestJoinPhomSolution = this.findBestJoinPhomSolution(allPhomList.filter(phom => phom.owner != player.id), selectedCards);
 
-        if(player.currentGuiPhomSolutions.length > 0 && selectedCards.length > 0){
-            player.currentGuiPhomSolutions.some(solution => {
-                let joinCards = solution.map(joinNode => joinNode.card);
-                if(ArrayUtils.containsAll(cards, joinCards)){
-                    guiSolution = solution;
-                    valid= true;
-                    return true;
-                }
-            });
+        if(bestJoinPhomSolution && bestJoinPhomSolution.length == selectedCards.length) {
+            valid = true
+            guiSolution = bestJoinPhomSolution
         }
 
         return {valid, guiSolution}
@@ -91,22 +93,26 @@ export default class PhomUtils {
     static checkDownPhom(cards, player) {
 
         let solutionIndex = -1;
-        let haphomList = PhomUtils.bestPhomList(cards);
-
-        if(haphomList.getCards().length == cards.length){
-            let haphomValue = haphomList.value();
-            player.currentHaPhomSolutions.some((phomList, i) => {
-
-                console.log("haphomValue: ", haphomValue, " ", phomList.value())
-
-                if(phomList.value() == haphomValue){
-                    solutionIndex = i;
-                    return true;
-                }
-            });
+        if(this.containAllEatenCards(cards, player.eatenCards)){
+            let haphomList = PhomUtils.findBestPhomListContainEatenCards(cards);
+            if(haphomList.getCards().length == cards.length){
+                return true;
+            }
         }
 
-        return solutionIndex >= 0;
+        return false;
+
+        // if(haphomList.getCards().length == cards.length){
+        //     let haphomValue = haphomList.value();
+        //     player.currentHaPhomSolutions.some((phomList, i) => {
+        //         if(phomList.value() == haphomValue){
+        //             solutionIndex = i;
+        //             return true;
+        //         }
+        //     });
+        // }
+        //
+        // return solutionIndex >= 0;
     }
 
     static isPhom(cards){
@@ -120,7 +126,7 @@ export default class PhomUtils {
     }
 
     static checkEatPhom(cards, eatingCard, player) {
-        let eatable = cards && cards.length == 2 && this.isPhom([...cards, eatingCard])
+        let eatable = cards && cards.length >= 2 && this.isPhom([...cards, eatingCard])
             && (player.eatenCards.length == 0 || !ArrayUtils.containsSome(cards, player.eatenCards));
 
         if(eatable && player.eatenCards.length > 0){
@@ -144,31 +150,25 @@ export default class PhomUtils {
         return eatable;
     }
 
-    static validateDownPhom(cards, player) {
-        let message, downPhomList;
+    static containAllEatenCards(cards, eatenCards){
+        let selectedEatenCardCount = cards.filter(card => PhomUtils.isEaten(card)).length;
+        return selectedEatenCardCount == eatenCards.length;
+    }
 
-        let selectedCards = player.getSelectedCards();
-        let valid = player.currentHaPhomSolutions.length > 0 && player.currentHaPhomSolutions[player.haPhomSolutionId].getCards().length == selectedCards.length;
+    static validateDownPhom(selectedCards, player) {
+        let valid = false, message, downPhomList;
 
-        if(valid){
-            let selectedEatenCardCount = selectedCards.filter(card => PhomUtils.isEaten(card)).length;
-            if(selectedEatenCardCount != player.eatenCards.length){
-                valid = false;
-                message = app.res.string('game_phom_must_contain_all_eaten_card');
-            }
+        if(!this.containAllEatenCards(selectedCards, player.eatenCards)){
+            message = app.res.string('game_phom_must_contain_all_eaten_card');
         }else{
-            message = app.res.string('game_phom_invalid_down_phom');
-        }
-
-
-        valid && player.eatenCards.some(eatenCard => {
-            if (ArrayUtils.findIndex(selectedCards, eatenCard) == -1) {
-                valid = false;
-                return true;
+            let haphomList = PhomUtils.findBestPhomListContainEatenCards(selectedCards);
+            if(haphomList.getCards().length == selectedCards.length){
+                valid = true;
+                downPhomList = haphomList
+            }else{
+                message = app.res.string('game_phom_invalid_down_phom');
             }
-        });
-
-        valid && (downPhomList = player.currentHaPhomSolutions[player.haPhomSolutionId]);
+        }
 
         return {valid, downPhomList, message}
     }
@@ -181,13 +181,66 @@ export default class PhomUtils {
         card.setLocked(eaten);
     }
 
-    static bestPhomList(cards) {
+    static findBestEatableCards(cards, eatenCards = [], eatingCard) {
+        let bestEatableCards = []
+        
+        if(eatingCard) {
+            let checkEatingCard = Card.from(eatingCard.byteValue);
+            checkEatingCard.locked = true;
+
+            let checkingEatenCards = [...eatenCards, checkEatingCard];
+            let phomLists = PhomGenerator.generatePhomContainEatenCards([...cards, checkEatingCard], checkingEatenCards);
+            if(phomLists.length > 0){
+                let eatablePhom = phomLists[0].filter(phom => ArrayUtils.contains(phom.cards, checkEatingCard))[0]
+                if(eatablePhom){
+                    bestEatableCards = [...eatablePhom.cards]
+                    ArrayUtils.remove(bestEatableCards, checkEatingCard);
+                }
+            }
+        }
+
+        return bestEatableCards;
+
+        // let bestEatableCards = []
+        //
+        // // let checkEatingCard = eatingCard;
+        // let checkEatingCard = Card.from(eatingCard.byteValue);
+        // PhomUtils.setEaten(checkEatingCard)
+        // let allPhoms = PhomGenerator.generateAllPhom([...cards, checkEatingCard]).filter(phom => ArrayUtils.contains(phom.cards, checkEatingCard));
+        // if(allPhoms.length > 0){
+        //     allPhoms.sort((phom1, phom2) => phom2.value() - phom1.value())
+        //
+        //     if(eatenCards.length == 0){
+        //         bestEatableCards = allPhoms[0].cards
+        //     }else{
+        //         allPhoms.some(phom => {
+        //             let checkCards = [...cards];
+        //             ArrayUtils.removeAll(checkCards, phom.cards)
+        //             if(this.isContainPhomWithEatenCards(checkCards, eatenCards)){
+        //                 bestEatableCards = phom.cards
+        //                 return true
+        //             }
+        //         })
+        //     }
+        //
+        //     ArrayUtils.remove(bestEatableCards, checkEatingCard)
+        // }
+        //
+        // return bestEatableCards;
+    }
+
+    static findBestPhomList(cards = []) {
         let phomLists = PhomGenerator.generate(cards);
         return phomLists.length > 0 ? phomLists[0] : new PhomList();
     }
 
+    static findBestPhomListContainEatenCards(cards, eatenCards) {
+        let phomLists = PhomGenerator.generatePhomContainEatenCards(cards, eatenCards);
+        return phomLists.length > 0 ? phomLists[0] : new PhomList();
+    }
+
     static isUTron(phomList, player) {
-        if (player.handCards.length != 10 || player.eatenCards.length > 2 || phomList.getCards().length != player.handCards.length) {
+        if (player.handCards.length != 10 || phomList.getCards().length != player.handCards.length) {
             return false;
         }
         return true;
@@ -235,13 +288,16 @@ export default class PhomUtils {
 
         let isInside = ArrayUtils.contains(solutions, joinSolution);
         if (!isInside) {
-            solutions.push(new JoinSolution(joinSolution));
+            solutions.push(new JoinSolution(joinSolution.getSolutions()));
         }
     }
 
     static checkPlayCard(playCards = [], cards = []) {
 
-        if (playCards.length != 1) return false;
+        if(playCards.length != 1) {
+            app.system.showToast(app.res.string('game_error_phom_select_one_card_to_play'));
+            return;
+        }
 
         let playingCard = playCards[0];
         let eatenCards = cards.filter(card => PhomUtils.isEaten(card));
@@ -251,12 +307,19 @@ export default class PhomUtils {
             let checkingCards = [...cards];
             ArrayUtils.remove(checkingCards, playingCard);
             valid = this.isContainPhomWithEatenCards(checkingCards, eatenCards);
+            if(!valid){
+                app.system.showToast(app.res.string('game_error_phom_cannot_play_card_in_eaten_phom'));
+            }
         }
 
         return valid;
     }
 
-    static isContainPhomWithEatenCards(cards, eatenCards) {
+    static isContainEatenCards(cards) {
+        return cards && cards.filter(card => PhomUtils.isEaten(card)).length > 0;
+    }
+
+    static isContainPhomWithEatenCards(cards = [], eatenCards = []) {
 
         let valid = true;
         let eatenPhoms = PhomGenerator.generatePhomByEatenCard(cards, eatenCards);
@@ -272,6 +335,23 @@ export default class PhomUtils {
 
         return valid;
     }
+    
+    static sortPhomCardSingleSolution(cards, eatenCards){
+        let phomListSolutions = PhomGenerator.generatePhomContainEatenCards(cards, eatenCards);
+        if (phomListSolutions.length > 0) {
+            ArrayUtils.removeAll(cards, phomListSolutions[0].getCards());
+            this._sortSingleCards(cards);
+
+            let phomCards = [];
+            phomListSolutions[0].forEach(phom => {
+                phomCards.push(...GameUtils.sortCardAscByRankFirstSuitLast(phom.cards))
+            })
+            cards.splice(0, 0, ...phomCards);
+        } else {
+            this._sortSingleCards(cards)
+        }
+        return cards;
+    }
 
     /**
      *
@@ -279,8 +359,9 @@ export default class PhomUtils {
      * @param type {Number} - PhomUtils.SORT_BY_RANK || PhomUtils.SORT_BY_SUIT;
      */
     static sortAsc(cards, type = PhomUtils.SORT_BY_RANK) {
-        if(!cards) return;
+        if(!cards || cards.length == 0) return cards;
 
+        let phomListSolutions;
         switch (type){
             case PhomUtils.SORT_BY_RANK:
                 return cards.sort(PhomUtils._compareByRank);
@@ -288,32 +369,52 @@ export default class PhomUtils {
             case PhomUtils.SORT_BY_SUIT:
                 return cards.sort(PhomUtils._compareBySuit);
                 break;
-            case PhomUtils.SORT_BY_PHOM_FIRST:
-                cards.sort(PhomUtils._compareByRank);
-                this._sortSingleCards(cards);
+            case PhomUtils.SORT_HAND_CARD_BY_RANK:
+                phomListSolutions = PhomGenerator.generatePhomContainEatenCards(cards);
+                if (phomListSolutions.length > 0) {
+                    let phomCards = phomListSolutions[0].getCards();
+                    ArrayUtils.removeAll(cards, phomCards);
+                    cards.sort(PhomUtils._compareByRank);
+                    cards.splice(0, 0, ...phomCards);
+                } else {
+                    cards.sort(PhomUtils._compareByRank);
+                }
                 return cards;
                 break;
-            case PhomUtils.SORT_BY_PHOM_SOLUTION:
-                let phomListSolutions = PhomGenerator.generate(cards);
-
+            case PhomUtils.SORT_HAND_CARD_BY_SUIT:
+                phomListSolutions = PhomGenerator.generatePhomContainEatenCards(cards);
+                if (phomListSolutions.length > 0) {
+                    let phomCards = phomListSolutions[0].getCards();
+                    ArrayUtils.removeAll(cards, phomCards);
+                    cards.sort(PhomUtils._compareByRank);
+                    cards.sort(PhomUtils._compareBySuit);
+                    cards.splice(0, 0, ...phomCards);
+                } else {
+                    cards.sort(PhomUtils._compareByRank);
+                    cards.sort(PhomUtils._compareBySuit);
+                }
+                return cards;
+                break;
+            case PhomUtils.SORT_HAND_CARD_BY_PHOM_SOLUTION:
+                phomListSolutions = PhomGenerator.generatePhomContainEatenCards(cards);
                 if (phomListSolutions.length > 0) {
                     let phomCards = phomListSolutions[0].getCards();
                     ArrayUtils.removeAll(cards, phomCards);
                     this._sortSingleCards(cards);
                     cards.splice(0, 0, ...phomCards);
                 } else {
-                    cards.sort(PhomUtils._compareByRank);
+                    this._sortSingleCards(cards)
                 }
-
                 return cards;
-
                 break;
             default:
-                return cards.sort(PhomUtils._compareByRank);
+                return cards.sort(PhomUtils._compareByRank)
         }
     }
 
     static _sortSingleCards(cards) {
+        GameUtils.sortCardAscByRankFirstSuitLast(cards);
+
         let index = 0;
         let singleCards = [];
         while (index < cards.length) {
@@ -348,12 +449,12 @@ export default class PhomUtils {
 
 }
 
-
-
-PhomUtils.SORT_BY_RANK = 1;
-PhomUtils.SORT_BY_SUIT = 2;
-PhomUtils.SORT_BY_PHOM_FIRST = 3;
-PhomUtils.SORT_BY_PHOM_SOLUTION = 4;
-
+PhomUtils.SORT_BY_RANK = 2;
+PhomUtils.SORT_BY_SUIT = 3;
 PhomUtils.COMPARE_RANK = 1;
 PhomUtils.COMPARE_SUIT = 2;
+PhomUtils.SORT_HAND_CARD_BY_PHOM_SOLUTION = 4;
+PhomUtils.SORT_HAND_CARD_BY_RANK = 5;
+PhomUtils.SORT_HAND_CARD_BY_SUIT = 6;
+
+PhomUtils.GAME_TYPE = app.const.game.GAME_TYPE_TIENLEN

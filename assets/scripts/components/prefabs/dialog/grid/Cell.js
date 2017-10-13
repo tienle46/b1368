@@ -1,11 +1,15 @@
 import app from 'app';
 import Component from 'Component';
 import NodeRub from 'NodeRub';
-import { isNode, isNull } from 'Utils';
+import { isNode, isNull } from 'GeneralUtils';
 
 export class Cell extends Component {
     constructor() {
         super();
+        
+        this.properties = this.assignProperties({
+            label: cc.Label
+        });
     }
 
     /**
@@ -16,13 +20,16 @@ export class Cell extends Component {
      *  button: {}
      * }
      */
-    init(data) {
+    init(data, options) {
         if (data instanceof Object) {
             if (isNode(data)) {
-                if (this.node.getComponent(cc.Label)) {
-                    this.node.removeComponent(cc.Label);
+                if (this.label) {
+                    this.node.removeComponent(this.label);
                 }
-                NodeRub.addWidgetComponentToNode(data, { hortizontalCenter: true });
+                let widgetOptions = { hortizontalCenter: true };
+                !app.env.isBrowser() && (widgetOptions.top = -5); 
+                
+                NodeRub.addWidgetComponentToNode(data, widgetOptions);
                 data.active = true;
                 this.node.addChild(data);
                 return;
@@ -39,15 +46,30 @@ export class Cell extends Component {
             // richtext
             options.richtext && NodeRub.addRichTextComponentToNode(this.node, options.richtext);
         } else {
-            let text = isNull(data) ? "" : data.toString();
-            NodeRub.addLabelComponentToNode(this.node, {
-                text
-            });
+            let o = Object.assign({}, options);
+            o.text = isNull(data) ? "" : data.toString();
+            NodeRub.addLabelComponentToNode(this.node, o);
         }
     }
 
     setWidth(width) {
         this.node.setContentSize(width, this.node.getContentSize().height);
+    }
+
+    setColor(color) {
+        if (color instanceof cc.Color)
+            this.node.color = color;
+    }
+    
+    resizeHeight(numberOfLines) {
+        if(this.label.overflow == cc.Label.Overflow.CLAMP) {
+            this.label.lineHeight = this.label.fontSize + 10;
+            let height = numberOfLines * this.label.lineHeight + 35;
+            
+            this.label.verticalAlign = cc.Label.VerticalAlign.CENTER;
+            
+            this.node.setContentSize(this.node.getContentSize().width, height);
+        }
     }
 }
 

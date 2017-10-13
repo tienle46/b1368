@@ -1,34 +1,41 @@
 import BaseScene from 'BaseScene';
 import app from 'app';
-import { isEmpty } from 'Utils';
+import { isEmpty } from 'GeneralUtils';
 import Base64 from 'Base64';
 
 export default class LoginScene extends BaseScene {
     constructor() {
         super();
-
-        this.userNameEditBox = {
-            default: null,
-            type: cc.EditBox
-        };
-
-        this.userPasswordEditBox = {
-            default: null,
-            type: cc.EditBox
-        };
-
-        this.checkBox = {
-            default: null,
-            type: cc.Toggle
-        };
+        
+        this.properties = this.assignProperties({
+            userNameEditBox: cc.EditBox,
+            userPasswordEditBox: cc.EditBox,
+            checkBox: cc.Toggle,
+        });
 
         this.b64 = new Base64();
     }
 
     onLoad() {
         super.onLoad();
-        this.userNameEditBox.string = "";
-        this.userPasswordEditBox.string = "";
+    }
+    
+    onUserNameEditboxEdited(e, b) {
+        if(app.env.isBrowser() && !this.userPasswordEditBox.isFocused()) {
+            this.userPasswordEditBox.stayOnTop = true;
+            this.userPasswordEditBox.setFocus();
+        }
+    }
+    
+    onReturnKeyPressed() {
+        if(app.env.isBrowser()) {
+            this.userPasswordEditBox.isFocused() && (this.userPasswordEditBox.stayOnTop = false)
+            this.handleLoginAction();
+        }
+    }
+    
+    onEnable() {
+        super.onEnable();
 
         if (this._isSaved()) {
             let [username, password] = this._isSaved().split(':');
@@ -42,16 +49,17 @@ export default class LoginScene extends BaseScene {
         let password = this.userPasswordEditBox.string.trim();
 
         if (isEmpty(username) || isEmpty(password)) {
-            app.system.error(
-                app.res.string('error_user_enter_empty_input')
-            );
+            app.system.showErrorToast(app.res.string('error_user_enter_empty_input'));
             return;
         }
 
         if (this._isChecked()) {
             // set storage
             let userInfo = this.b64.encodeSafe(`${username}:${password}`);
-            cc.sys.localStorage.setItem(app.const.USER_LOCAL_STORAGE, userInfo);
+            app.system.marker.setItem(app.const.USER_LOCAL_STORAGE, userInfo);
+            // cc.sys.localStorage.setItem(app.const.USER_LOCAL_STORAGE, userInfo);
+        } else {
+            app.system.marker.setItem(app.const.USER_LOCAL_STORAGE);
         }
         this._loginToDashboard(username, password);
     }
@@ -66,8 +74,11 @@ export default class LoginScene extends BaseScene {
 
     // check if the user information saved.
     _isSaved() {
-        let userInfo = cc.sys.localStorage.getItem(app.const.USER_LOCAL_STORAGE);
-        return (userInfo && this.b64.decodeSafe(userInfo)) || null;
+        // let userInfo = cc.sys.localStorage.getItem(app.const.USER_LOCAL_STORAGE);
+        let userInfo = app.system.marker.getItemData(app.const.USER_LOCAL_STORAGE, userInfo);
+        if (!userInfo)
+            return false
+        return this.b64.decodeSafe(userInfo);
     }
 
     _isChecked() {

@@ -1,101 +1,29 @@
-import DialogRub from 'DialogRub';
-import ExchangeDialog from 'ExchangeDialog';
-import RubUtils from 'RubUtils';
 import app from 'app';
 
-export default class ExchangeDialogRub extends DialogRub {
-    constructor(node, tabs, options) {
-        super(node, tabs, options);
+const url = `${app.const.DIALOG_DIR_PREFAB}/exchange`;
+const tabModels = [
+    { title: 'Thẻ cào',prefabPath: `${url}/tab_exchange_card`, componentName: 'TabExchangeCard'},
+    { title: 'Vật phẩm',prefabPath: `${url}/tab_exchange_item`, componentName: 'TabExchangeItem'},
+    { title: 'Lịch sử',prefabPath: `${url}/tab_exchange_history`, componentName: 'TabExchangeHistory'},
+    { title: 'Đại lý',prefabPath: `${url}/tab_agency`, componentName: 'TabAgency'}
+];
+
+export default class ExchangeDialogRub {
+
+    constructor() {
+        let node = cc.instantiate(app.res.prefab.multiTabPopup);
+        /**
+         * @type {MultiTabPopup}
+         */
+        this.multiTabPopup = node.getComponent("MultiTabPopup");
     }
-
-    init() {
-        super.init();
-        this.exchangeDialogComponent = this.prefab.addComponent(ExchangeDialog);
-        this._addPhoneUpdateBody();
-    }
-
-    _addPhoneUpdateBody() {
-        let prefabUrl = 'dashboard/dialog/prefabs/exchange/update_phone_number';
-        RubUtils.loadRes(prefabUrl).then((prefab) => {
-            this.upn = cc.instantiate(prefab);
-            // this.upn.y = this.upn.getPositionY() - 50;
-
-            // add to dialogNode 
-            this.dialogNode.addChild(this.upn);
-
-            this.upnBtnGroupNode = this.upn.getChildByName('btnGroup');
-            // hide this node
-            this._hideUpdatePhoneNumberNode();
-        }).then(() => {
-            // register btn event
-            this._registerBackBtnEvent();
-            this._registerConfirmBtnEvent();
-        });
-    }
-
-    // update_phone_number -> confirmBtn
-    _registerConfirmBtnEvent() {
-        let confirmBtnNode = this.upnBtnGroupNode.getChildByName('confirmBtn');
-
-        confirmBtnNode.on(cc.Node.EventType.TOUCH_END, ((e) => {
-            e.stopPropagation();
-            this._onUpdatePhoneBtnClick();
-        }).bind(this));
-    }
-
-    // update_phone_number -> backBtn
-    _registerBackBtnEvent() {
-        let backBtnNode = this.upnBtnGroupNode.getChildByName('backBtn');
-
-        backBtnNode.on(cc.Node.EventType.TOUCH_END, (e) => {
-            e.stopPropagation();
-
-            this._toggleBody();
-        });
-    }
-
-    // change state between update_phone_number node and current node inside body
-    _toggleBody() {
-        // show current body
-        if (this.bodyNode.children[0]) this.bodyNode.children[0].active = true;
-
-        // hide update_phone_number node
-        this._hideUpdatePhoneNumberNode();
-    }
-
-    _hideUpdatePhoneNumberNode() {
-        this.upn.active = false;
-    }
-
-    _onUpdatePhoneBtnClick() {
-        let input = this.upn.getChildByName('input').getComponent(cc.EditBox);
-        let phoneNumber = input.string;
-
-        // invalid phone number
-        if (!phoneNumber || isNaN(Number(phoneNumber)) || phoneNumber.length < 8) {
-            app.system.error(
-                app.res.string('error_phone_number_is_invalid')
-            );
-        } else {
-            let data = {};
-            data[app.keywords.PHONE_NUMBER] = phoneNumber;
-            let sendObject = {
-                cmd: app.commands.UPDATE_PHONE_NUMBER,
-                data
-            };
-
-            app.service.send(sendObject, (data) => {
-                if (data[app.keywords.RESPONSE_RESULT]) {
-                    app.system.info(
-                        app.res.string('phone_number_confirmation')
-                    );
-                    // this._toggleBody();
-                } else {
-                    app.system.error(
-                        app.res.string('error_system')
-                    );
-                }
-            });
-        }
+    
+    show(parentNode = cc.director.getScene(), options = {}){
+        this.multiTabPopup.show(Object.assign({}, {parentNode, tabModels}, options));
     }
 }
+
+ExchangeDialogRub.TAB_EXCHANGE_CARD_INDEX = 0;
+ExchangeDialogRub.TAB_EXCHANGE_ITEM_INDEX = 1;
+ExchangeDialogRub.TAB_EXCHANGE_HISTORY_INDEX = 2;
+ExchangeDialogRub.TAB_EXCHANGE_AGENCY_INDEX = 3;

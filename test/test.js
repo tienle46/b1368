@@ -3,8 +3,8 @@
  */
 'use strict';
 
-var TLMNUtils = require('../assets/scripts/game/games/tlmndl/TLMNUtils')
-var Card = require('../assets/scripts/game/base/card/Card')
+var TLMNUtils = require('TLMNUtils')
+var Card = require('Card')
 
 let checkSelectedCards = [
     Card.from(Card.RANK_BA, Card.SUIT_BICH), Card.from(Card.RANK_BA, Card.SUIT_TEP),

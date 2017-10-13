@@ -1,8 +1,8 @@
 import app from 'app';
-import Component from 'Component';
+import Actor from 'Actor';
 import SFS2X from 'SFS2X';
-import Events from 'Events';
-import utils from 'utils';
+import Events from 'GameEvents';
+import utils from 'PackageUtils';
 import TopupDialogRub from 'TopupDialogRub';
 import Keywords from 'Keywords';
 import Commands from 'Commands';
@@ -10,33 +10,67 @@ import ScrollMessagePopup from 'ScrollMessagePopup';
 
 const ACTION_LUAT_CHOI = 1;
 
-export default class GameMenuPrefab extends Component {
+export default class GameMenuPrefab extends Actor {
     constructor() {
         super();
-
-        this.properties = {
-            ...this.properties,
-            menuBtn: cc.Node,
+        
+        this.properties = this.assignProperties({
+           menuBtn: cc.Node,
+            menuLock: cc.Node,
             chatBtn: cc.Node,
             topupBtn: cc.Node,
             menuPopup: cc.Node,
             exitButton: cc.Button,
             guideButton: cc.Button,
             exitLabel: cc.Label,
-            guideLabel: cc.Label
-        }
-
+            guideLabel: cc.Label,
+            jarAnchorPoint: cc.Node
+        });
 
         this.scene = null;
         this.isMenuPopupShown = false;
+        this._jarAdded = false;
     }
 
     onEnable() {
         super.onEnable();
         this.scene = app.system.currentScene;
+        this._addedJar = false;
         utils.deactive(this.menuPopup);
     }
-
+    
+    start() {
+        super.start();
+       
+        app.context.rejoiningGame ? app.jarManager.requestUpdateJarList() : this._addJar(app.context.getSelectedGame());
+    }
+    
+    _addGlobalListener() {
+        super._addGlobalListener();
+        app.system.addListener(app.commands.LIST_HU, this._onListHu, this);
+    }
+    
+    _removeGlobalListener() {
+        super._removeGlobalListener();
+        app.system.removeListener(app.commands.LIST_HU, this._onListHu, this);
+    }
+    
+    _onListHu(data) {
+        let gameCode = app.context.getSelectedGame();
+        if(!this._addedJar && gameCode && !app.jarManager.isChildOf(this.jarAnchorPoint)) {
+            let gc = data[app.keywords.GAME_CODE_LIST].find((gc) => gc == gameCode);
+            gc && this._addJar(gc);
+        }
+    }
+    
+    _addJar(gameCode) {
+        if(!this._addedJar && gameCode && app.jarManager.hasJar(gameCode)) {
+            let hasButton = true;
+            app.jarManager.addJarToParent(this.jarAnchorPoint, gameCode, hasButton);
+            this._addedJar = true;
+        }
+    }
+    
     _onClickMenuItem(eventName, ...args) {
         this.hide();
         this.scene.emit(eventName, ...args);
@@ -68,7 +102,8 @@ export default class GameMenuPrefab extends Component {
     }
 
     onClickMenuButton(event) {
-        this.isMenuPopupShown ? this.hide() : this.show();
+        // this.isMenuPopupShown ? this.hide() : this.show();
+        this.onClickExitButton();
     }
 
     onClickOutsideMenuPopup() {
@@ -78,11 +113,15 @@ export default class GameMenuPrefab extends Component {
     _onTouchGameMenu() {
         this.isMenuPopupShown && this.hide();
     }
-
+    
     onDisable() {
         this.menuPopup.off('touchstart', this._onTouchGameMenu, this);
     }
-
+    
+    onDestroy() {
+        super.onDestroy();    
+    }
+    
     show() {
         utils.active(this.menuPopup);
         this.isMenuPopupShown = true;
@@ -96,8 +135,6 @@ export default class GameMenuPrefab extends Component {
     }
 
     onClickChatButton(event) {
-        // console.debug('localStorage.getItem("testModel")', JSON.parse(localStorage.getItem("testModel")));
-        // this.scene.showGameResult(JSON.parse(localStorage.getItem("testModel")));
         this.scene.emit(Events.VISIBLE_INGAME_CHAT_COMPONENT);
     }
 

@@ -1,7 +1,6 @@
-var BaseScene = require('BaseScene');
-var app = require('app');
 
-const MINIMUM_PASSWORD = 6;
+import app from 'app';
+import BaseScene from 'BaseScene';
 
 export default class RegisterScene extends BaseScene {
     constructor() {
@@ -9,62 +8,69 @@ export default class RegisterScene extends BaseScene {
 
         this.properties = {
             resetCaptcha: cc.Node,
-        }
-
-        this.userNameEditBox = {
-            default: null,
-            type: cc.EditBox
+            userNameEditBox: cc.EditBox,
+            userPasswordEditBox: cc.EditBox,
+            userCaptchaEditBox: cc.EditBox,
         };
-
-        this.userPasswordEditBox = {
-            default: null,
-            type: cc.EditBox
-        };
-
-        this.userCaptchaEditBox = {
-            default: null,
-            type: cc.EditBox
-        };
-
     }
 
     onLoad() {
         super.onLoad();
         this.captchaLabel = this.resetCaptcha.getChildByName('label').getComponent(cc.Label);
         this.generateRandomString();
-        this.userNameEditBox.string = `a${this._generateRandomString(9)}${1}`;
-        this.userPasswordEditBox.string = `aA${this._generateRandomString(9)}${1}`;
+        if(app.env.isBrowser()) {
+            this.userPasswordEditBox.stayOnTop = true;
+            this.userCaptchaEditBox.stayOnTop = true;
+        }
     }
-
+     
+    onDisable() {
+       if(app.env.isBrowser()) {
+            this.userPasswordEditBox.stayOnTop = false;
+            this.userCaptchaEditBox.stayOnTop = false;
+        }     
+    }
+    
+    onUserNameEditboxEdited() {
+        if(app.env.isBrowser() && !this.userPasswordEditBox.isFocused())
+            this.userPasswordEditBox.setFocus();
+    }
+    
+    onPasswordEditboxEdited() {
+        if(app.env.isBrowser() && !this.userCaptchaEditBox.isFocused())
+            this.userCaptchaEditBox.setFocus();
+    }
+    
+    onReturnKeyPressed() {
+       app.env.isBrowser() && this.handleRegistryAction();
+    }
+    
     handleRegistryAction() {
-        this.showLoading();
         let username = this.userNameEditBox.string.trim();
         let password = this.userPasswordEditBox.string.trim();
 
         if (this._isValidUserInputs(username, password)) {
-            this.loginToDashboard(username, password, true);
+            this.loginToDashboard(username, password, true, false, null, null, this.generateRandomString.bind(this));
         } else {
             this.hideLoading();
-
             if (!this._isValidUsernameInput(username)) {
-                app.system.error(app.getMessageFromServer("LOGIN_ERROR_USERNAME_NOT_VALID"));
+                app.system.showErrorToast(app.getMessageFromServer("LOGIN_ERROR_USERNAME_NOT_VALID"));
             } else if (!this._isValidPasswordInput(password)) {
-                app.system.error(app.getMessageFromServer("LOGIN_ERROR_PASSWORD_NOT_VALID"));
+                app.system.showErrorToast(app.getMessageFromServer("LOGIN_ERROR_PASSWORD_NOT_VALID"));
             } else if (!this._isValidCaptcha()) {
-                app.system.error(app.getMessageFromServer("LOGIN_ERROR_CAPTCHA_NOT_VALID"));
+                app.system.showErrorToast(app.getMessageFromServer("LOGIN_ERROR_CAPTCHA_NOT_VALID"));
             }
+            this.generateRandomString();
         }
     }
 
     generateRandomString() {
-        this.captchaLabel.string = this._generateRandomString(MINIMUM_PASSWORD); // genarate from [2, 6] to avoid "0.xxx" in string
+        this.captchaLabel.string = this._generateRandomString(app.config.MINIMUM_PASSWORD); // genarate from [2, 6] to avoid "0.xxx" in string
     }
 
-    back() { // back to EntranceScene
-        this.showLoading();
+    back() {
         this.changeScene(app.const.scene.ENTRANCE_SCENE);
     }
-
 
     /**
      *  PRIVATE METHODS
@@ -81,14 +87,13 @@ export default class RegisterScene extends BaseScene {
     _isValidPasswordInput(str) {
         // minimum: 6, must have atleast a-z||A-Z|0-9, without space
         // /\s/.test(str) => true if str contains space
-        return /[a-zA-Z]/.test(str) && /[0-9]/.test(str) && !/\s/.test(str) && str.length >= MINIMUM_PASSWORD;
+        return str.length <= app.config.MAX_PASSWORD_LENGTH && /^[a-zA-Z0-9]*$/.test(str) && /[a-zA-Z]/.test(str) && /[0-9]/.test(str) && !/\s/.test(str) && str.length >= app.config.MINIMUM_PASSWORD;
     }
 
     _isValidUsernameInput(str) {
-        // minimum: 6, a-zA-Z0-9, without space
+        // minimum: 5, a-zA-Z0-9, without space
         // /\s/.test(str) => true if str contains space
-
-        return /[a-zA-Z0-9]{6,}/.test(str) && !/\s/.test(str);
+        return str.length <= app.config.MAX_USERNAME_LENGTH && /^[a-zA-Z0-9]*$/.test(str) && str.length >= app.config.MIN_USERNAME_LENGTH;
     }
 
     _isValidCaptcha() {

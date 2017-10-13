@@ -1,8 +1,8 @@
 import app from 'app';
 import Component from 'Component';
-import RubUtils from 'RubUtils';
 import NodeRub from 'NodeRub';
-import { isFunction } from 'Utils';
+import { isFunction } from 'GeneralUtils';
+import { active, deactive } from 'CCUtils';
 
 export default class Scrollview extends Component {
     constructor() {
@@ -10,6 +10,7 @@ export default class Scrollview extends Component {
 
         this.properties = {
             gridview: cc.Prefab,
+            listview: cc.Prefab,
             p404: cc.Prefab,
             contentNode: cc.Node,
             pagingNode: cc.Node,
@@ -23,38 +24,51 @@ export default class Scrollview extends Component {
         this.currentPage = 1;
         this.isEndedPage = false;
 
-        this._gridview = null;
-        this._gridviewComp = null;
+        this._view = null;
+        this._viewComp = null;
         this._p404 = null;
 
         this.itemsPerPage = 10;
     }
+    
+    onDestroy() {
+        this.prevBtn.node && this.prevBtn.node.off(cc.Node.EventType.TOUCH_END, this._registerPrevEventBtnClick);
+        this.prevBtn.node && this.nextBtn.node.off(cc.Node.EventType.TOUCH_END, this._registerNextEventBtnClick);
+        window.free(this.options);
+        super.onDestroy();
+    }
 
-    initView(head, body, options) {
+    initView(headData, mainData, options) {
         this.options = Object.assign({}, this.options, options);
         // this.options = options;
+        
+        // is Listview
+        let componetName;
+        if (this.options.isListView) {
+            this._view = cc.instantiate(this.listview);
+            componetName = 'ListView';
+        } else { // is Gridview
+            this._view = cc.instantiate(this.gridview);
+            componetName = 'Gridview';
+        }
+        this.addNode(this._view);
+        this._viewComp = this._view.getComponent(componetName);
 
-        this._gridview = cc.instantiate(this.gridview);
-        this.addNode(this._gridview);
-
-        this._gridviewComp = this._gridview.getComponent('Gridview');
-
-        if (this._gridviewComp) {
-
+        if (this._viewComp) {
             if (this.options.isListView) {
                 // this.itemsPerPage = body.length;
-                this._gridviewComp.initList(body, options);
+                this._viewComp.init(mainData, options);
             } else {
-                body = this._validatedInput(body);
-                this._gridviewComp.init(head, body, options);
+                mainData = this._validatedInput(mainData);
+                this._viewComp.init(headData, mainData, options);
             }
-            let bLen = body.length;
+            let total = mainData.length;
 
-            this.isEndedPage = bLen < this.itemsPerPage;
+            this.isEndedPage = total < this.itemsPerPage;
 
-            this._updateItemsPerPage(body);
-
-            if (body.length == 0) {
+            this._updateItemsPerPage(mainData);
+            
+            if (mainData.length == 0) {
                 this._pageIsEmpty();
                 this._updatePagingState();
                 return;
@@ -62,27 +76,25 @@ export default class Scrollview extends Component {
 
             if (!this.options.paging) {
                 this._hidePaging();
-                this.bodyNode.setContentSize(this.node.getContentSize().width, 426);
-                this.viewNode.setContentSize(this.node.getContentSize().width, 426);
-                let wo = { bottom: -60 };
-                NodeRub.addWidgetComponentToNode(this.viewNode, wo);
+                // this.bodyNode.setContentSize(this.node.getContentSize().width, 426);
+                // this.node.setContentSize(this.node.getContentSize().width, 426);
+                // this.viewNode.setContentSize(this.node.getContentSize().width, 426);
+                // let wo = { bottom: -60 };
+                // NodeRub.addWidgetComponentToNode(this.viewNode, wo);
             } else {
                 this._showPaging();
-
-                this.bodyNode.setContentSize(this.node.getContentSize().width, 366);
-                this.viewNode.setContentSize(this.node.getContentSize().width, 366);
+                this._resizeView(true);
 
                 // settup click events
-                let prevEvent = this.options.paging.prev;
-                let nextEvent = this.options.paging.next;
-                this._addEventPagingBtn(prevEvent, nextEvent, this.options.paging.context);
+                this._addEventPagingBtn(this.options.paging);
 
                 this._updatePagingState();
             }
 
             this._addToNode(this.contentNode);
         }
-        RubUtils.releaseArray([head, body], true);
+        
+        window.release([headData, mainData], true);
     }
 
     updateOptions(options) {
@@ -93,9 +105,7 @@ export default class Scrollview extends Component {
         this._setupInNewBody();
         data = this._validatedInput(data);
 
-        // this._detectViewState(data);
         this.isEndedPage = data.length < this.itemsPerPage;
-
         if (data.length == 0) {
             this._pageIsEmpty();
             this._updatePagingState();
@@ -104,20 +114,19 @@ export default class Scrollview extends Component {
 
         this._updateItemsPerPage(data);
 
-        this._p404 && (this._p404.active = false);
+        this._p404 && deactive(this._p404);
 
         this._updatePagingState();
 
-        this.viewNode.active = true;
+        active(this.viewNode);
 
         if (this.options.isListView) {
-            this._gridviewComp.updateList(data, options);
+            this._viewComp.updateList(data, options);
         } else {
-            this._gridviewComp.updateView(head, data, options);
+            this._viewComp.updateView(head, data, options);
         }
 
-
-        RubUtils.releaseArray([head, data], true);
+        window.release([head, data], true);
     }
 
     _updateItemsPerPage(items) {
@@ -129,25 +138,47 @@ export default class Scrollview extends Component {
     _updatePagingState() {
         // currentPage = 1
         //  -> end
-        if (this.isEndedPage && this.currentPage == 1) {
-            this._hidePaging();
-            return;
-        }
-        this._showPaging();
+        // if (this.isEndedPage && this.currentPage == 1) {
+        //     this._hidePaging();
+        //     return;
+        // }
+        if(this.options.paging)
+            this._showPaging();
     }
 
     _hidePaging() {
-        this.pagingNode.active = false;
+        deactive(this.pagingNode);
     }
 
-    _showPaging() {
-        this.pagingNode.active = true;
-
+    _showPaging() {        
         // setup Button state
         (this.isEndedPage || (this._p404 && this._p404.active)) ? this._hideBtn(this.nextBtn): this._showBtn(this.nextBtn);
         this.currentPage == 1 ? this._hideBtn(this.prevBtn) : this._showBtn(this.prevBtn);
+        
+        active(this.pagingNode);
+        let hasPaging = this.nextBtn.interactable || this.prevBtn.interactable;
+        
+        this._resizeView(hasPaging);
     }
-
+    
+    _resizeView(hasPaging) {
+        if(hasPaging) {
+            this.bodyNode.setContentSize(this.node.getContentSize().width, 374);
+            this.node.setContentSize(this.node.getContentSize().width, 374);
+            this.viewNode.setContentSize(this.node.getContentSize().width, 374);
+            
+            let wo = { bottom: 60 };
+            NodeRub.addWidgetComponentToNode(this.bodyNode, wo);
+        } else {
+            this.bodyNode.setContentSize(this.node.getContentSize().width, 426);
+            this.node.setContentSize(this.node.getContentSize().width, 426);
+            this.viewNode.setContentSize(this.node.getContentSize().width, 426);
+            let wo = { bottom: -60 };
+            NodeRub.addWidgetComponentToNode(this.viewNode, wo);
+            this._hidePaging();
+        }
+        
+    }
     _validatedInput(data) {
         return app._.isArray(data) ? (this.options.isValidated ? data : this._validateData(data)) : [];
     }
@@ -156,10 +187,11 @@ export default class Scrollview extends Component {
         app.system.hideLoader();
         if (!this._p404) {
             this._p404 = cc.instantiate(this.p404);
+            this.addNode(this._p404);
             this.bodyNode.addChild(this._p404);
         }
-        this.viewNode.active = false;
-        this._p404.active = true;
+        deactive(this.viewNode);
+        active(this._p404);
         // if (str) {
         //     let p404Component = p404.getComponent('P404');
         //     p404Component && p404Component.setText(str);
@@ -174,52 +206,55 @@ export default class Scrollview extends Component {
     }
 
     _addToNode(node) {
-        if (this._gridview) {
-            node.addChild(this._gridview);
+        if (this._view) {
+            node.addChild(this._view);
         }
     }
 
-    _addEventPagingBtn(prevEvent, nextEvent, context) {
-        if (prevEvent) {
-            if (isFunction(prevEvent)) {
-                this.prevBtn.node.on(cc.Node.EventType.TOUCH_END, () => {
-                    if (this.currentPage == 1) {
-                        this._hideBtn(this.prevBtn);
-                        return;
-                    }
-                    this.currentPage--;
-
-                    this._showBtn(this.prevBtn);
-
-                    prevEvent.call(context, this.currentPage);
-                });
-            }
+    _addEventPagingBtn(pagingOptions) {
+        if (pagingOptions.prev && isFunction(pagingOptions.prev)) {
+            this.prevBtn.node.on(cc.Node.EventType.TOUCH_END, this._registerPrevEventBtnClick, this);
         }
 
-        if (nextEvent) {
-            if (isFunction(nextEvent)) {
-                this.nextBtn.node.on(cc.Node.EventType.TOUCH_END, () => {
-                    if (this.isEndedPage) {
-                        this._hideBtn(this.nextBtn);
-                        return;
-                    }
-                    this._showBtn(this.nextBtn);
-                    this.currentPage++;
-
-                    nextEvent.call(context, this.currentPage);
-                });
-            }
+        if (pagingOptions.next && isFunction(pagingOptions.next)) {
+            this.nextBtn.node.on(cc.Node.EventType.TOUCH_END, this._registerNextEventBtnClick, this);
         }
+    }
+
+    _registerPrevEventBtnClick() {
+        let prevEvent = this.options.paging.prev;
+        
+        if (this.currentPage == 1) {
+            this._hideBtn(this.prevBtn);
+            return;
+        }
+        this.currentPage--;
+        
+        this._showBtn(this.prevBtn);
+
+        prevEvent.call(this.options.paging.context, this.currentPage);
+    }
+
+    _registerNextEventBtnClick() {
+        let nextEvent = this.options.paging.next;
+
+        if (this.isEndedPage) {
+            this._hideBtn(this.nextBtn);
+            return;
+        }
+        this._showBtn(this.nextBtn);
+        
+        this.currentPage++;
+        
+        nextEvent.call(this.options.paging.context, this.currentPage);
     }
 
     _showBtn(btn) {
         btn.interactable = true;
-        btn.node.opacity = 255;
     }
 
     _hideBtn(btn) {
         btn.interactable = false;
-        btn.node.opacity = 0;
     }
 
     /**
@@ -242,6 +277,9 @@ export default class Scrollview extends Component {
      * @memberOf GridViewRub
      */
     _validateData(input) {
+        if(this.options.isListView)
+            return input;
+            
         if (input instanceof Array && input.length < 1)
             return [];
 
@@ -254,14 +292,12 @@ export default class Scrollview extends Component {
         //         }
         //         return d;
         //     });
-        //     console.debug('input', input);
 
         //     return input;
         // }
-
+        
         let tmp = [];
         let out = [];
-
         if (input[0])
             while (input[0].length > 0) {
                 let l = input.length;
@@ -271,7 +307,17 @@ export default class Scrollview extends Component {
                 out.push(tmp);
                 tmp = [];
             }
-
+        // let clone = app._.cloneDeep(input);
+        
+        // if (clone[0])
+        //     while (clone[0].length > 0) {
+        //         let l = clone.length;
+        //         for (let i = 0; i < l; i++)
+        //             tmp.push(clone[i].shift() || null);
+                    
+        //         out.push(tmp);
+        //         tmp = [];
+        //     }
         return out;
     }
 }

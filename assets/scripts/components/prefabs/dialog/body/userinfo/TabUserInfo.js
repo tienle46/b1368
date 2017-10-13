@@ -1,40 +1,87 @@
 import app from 'app';
-import DialogActor from 'DialogActor';
-import numeral from 'numeral';
-import { isEmpty } from 'Utils';
+import PopupTabBody from 'PopupTabBody';
+import {
+    isEmpty,
+    active,
+    deactive,
+    numberFormat
+} from 'GeneralUtils';
+import Linking from 'Linking';
+import CCUtils from 'CCUtils';
+import {
+    SFSEvent
+} from 'SFS2X';
 
-export default class TabUserInfo extends DialogActor {
+export default class TabUserInfo extends PopupTabBody {
     constructor() {
         super();
-
-        this.properties = {
-            ...this.properties,
+        
+        this.properties = this.assignProperties({
             userName: cc.Label,
+            avatar: cc.Sprite,
             vipLevel: cc.Label,
             chipAmout: cc.Label,
             phoneNumber: cc.Label,
-            emailAddress: cc.Label,
+            userId: cc.Label,
             currPassword: cc.EditBox,
             newPassword: cc.EditBox,
             passwordConfirmation: cc.EditBox,
+            newPhoneNumberEditbox: cc.EditBox,
             userInfoPanel: cc.Node,
             changePasswordPanel: cc.Node,
-        };
+            updatePhoneNumberPanel: cc.Node,
+            vipInfoPanel: cc.Node,
+            changeAvatarPanel: cc.Node
+        });
     }
 
     onLoad() {
         super.onLoad();
         this._showUserInfoPanel();
-        this.emailAddress.string = `Chưa cập nhật`;
+        this.avatar && app.context.getMyAvatar(this.avatar, 'large');
     }
-
-    start() {
-        super.start();
+    
+    onCurrentPasswordEditboxEdited(e, b) {
+        if(app.env.isBrowser() && !this.currPassword.isFocused()) {
+            this.newPassword.stayOnTop = true;
+            this.newPassword.setFocus();
+        }
+    }
+    
+    onNewPasswordEditboxEdited(e, b) {
+        if(app.env.isBrowser() && !this.currPassword.isFocused()) {
+            this.passwordConfirmation.stayOnTop = true;
+            this.passwordConfirmation.setFocus();
+        }
+    }
+    
+    onChangePasswordReturnKeyPressed() {
+       app.env.isBrowser() && this.onConfirmationBtnClick();
+    }
+    
+    onUpdatePhoneReturnKeyPressed() {
+       app.env.isBrowser() && this.onUpdateBtnClick();
+    }
+    
+    loadData() {
+        if(Object.keys(this._data).length > 0)
+            return false;
+        super.loadData();
+        
         this._initUserData();
+        return false;
     }
-
+    
+    onDataChanged(data = {}) {
+        data && this._renderUserInfo(data);
+    }
+    
     onShowChangePasswordPanel() {
         this._showChangePasswordPanel();
+    }
+
+    onShowUpdatePhonenumberPanel() {
+        this._showUpdatePhoneNumberPanel();
     }
 
     onBackBtnClick() {
@@ -49,9 +96,9 @@ export default class TabUserInfo extends DialogActor {
         if (isEmpty(currentPwd) || isEmpty(newPwd) || isEmpty(pwdConfirmation)) {
             app.system.error(app.res.string('error_user_enter_empty_input'));
         } else if (!this._isValidPasswordInput(newPwd)) {
-            app.system.error(app.res.string('error_changed_password_is_invalid'));
+            app.system.showErrorToast(app.res.string('error_changed_password_is_invalid'));
         } else if (newPwd != pwdConfirmation) {
-            app.system.error(app.res.string('error_password_confirmation_is_not_the_same'));
+            app.system.showErrorToast(app.res.string('error_password_confirmation_is_not_the_same'));
         } else {
             let data = {};
             data[app.keywords.PROFILE_OLD_PASS] = currentPwd;
@@ -62,23 +109,66 @@ export default class TabUserInfo extends DialogActor {
                 data
             };
 
-            app.system.showLoader();
+            app.service.send(sendObject);
+        }
+    }
+
+    onShowTopUpDialog() {
+        this._hide();
+        app.visibilityManager.goTo(Linking.ACTION_TOPUP);
+    }
+
+    onLevelInfoBtnClick() {
+        // let string = this.levelInfo || "Đang cập nhật.";
+        // app.system.info(string);
+        this._showVipInfoPanel();
+    }
+
+    onChangeAvatarBtnClick() {
+        this._showChangeAvatarPanel();
+    }
+
+    onUpdateBtnClick() {
+        let newPhoneNumber = this.newPhoneNumberEditbox.string.trim() || "";
+        if (isEmpty(newPhoneNumber)) {
+            app.system.error(app.res.string('error_user_enter_empty_input'));
+        } else {
+            let data = {
+                [app.keywords.PHONE_NUMBER]: newPhoneNumber
+            };
+            let sendObject = {
+                cmd: app.commands.UPDATE_PHONE_NUMBER,
+                data
+            };
+
             app.service.send(sendObject);
         }
     }
 
     _addGlobalListener() {
         super._addGlobalListener();
-        app.system.addListener(app.commands.USER_PROFILE, this._onUserProfile, this);
+        app.system.addListener(app.commands.USER_PROFILE_NEW, this._onUserProfile, this);
         app.system.addListener(app.commands.USER_UPDATE_PASSWORD, this._onUserUpdatePassword, this);
+        app.system.addListener(app.commands.UPDATE_PHONE_NUMBER, this._onUserUpdatePhoneNumber, this);
+        app.system.addListener(SFSEvent.USER_VARIABLES_UPDATE, this._onUserVariablesUpdate, this);
+        app.system.addListener(app.commands.CHANGE_AVATAR, this._onUserChangeAvatar, this);
     }
 
     _removeGlobalListener() {
         super._removeGlobalListener();
-        app.system.removeListener(app.commands.USER_PROFILE, this._onUserProfile, this);
+        app.system.removeListener(app.commands.USER_PROFILE_NEW, this._onUserProfile, this);
         app.system.removeListener(app.commands.USER_UPDATE_PASSWORD, this._onUserUpdatePassword, this);
+        app.system.removeListener(app.commands.UPDATE_PHONE_NUMBER, this._onUserUpdatePhoneNumber, this);
+        app.system.removeListener(SFSEvent.USER_VARIABLES_UPDATE, this._onUserVariablesUpdate, this);
+        app.system.removeListener(app.commands.CHANGE_AVATAR, this._onUserChangeAvatar, this);
     }
-
+    
+    _onUserChangeAvatar(data) {
+         if (data[app.keywords.RESPONSE_RESULT]) {
+            this._showUserInfoPanel();
+        }
+    }
+    
     _isValidPasswordInput(str) {
         // minimum: 6, must have atleast a-z|A-Z|0-9, without space
         // /\s/.test(str) => true if str contains space
@@ -86,54 +176,124 @@ export default class TabUserInfo extends DialogActor {
     }
 
     _initUserData() {
-        let data = {};
-        data[app.keywords.USER_NAME] = app.context.getMyInfo().name;
-
-        let sendObj = {
-            cmd: app.commands.USER_PROFILE,
-            data
-        };
-
-        app.system.showLoader();
-        app.service.send(sendObj);
+        app.service.send( {
+            cmd: app.commands.USER_PROFILE_NEW,
+        });
+        this.showLoadingProgress();
     }
 
     _onUserProfile(data) {
-        let { name, coin } = app.context.getMyInfo();
-
-        this.userName.string = name;
-        this.chipAmout.string = numeral(coin).format('0,0');
-
-
-        this.vipLevel.string = `Tỉ phú`;
-
-        if (app.context.needUpdatePhoneNumber()) {
-            this.phoneNumber.string = `Chưa cập nhật`;
-        } else {
-            this.phoneNumber.string = data[app.keywords.PHONE_INVITE_PHONE];
-        }
-        app.system.hideLoader();
+        this.setLoadedData(data);
     }
 
     _onUserUpdatePassword(data) {
         //update password
-        app.system.hideLoader();
         if (data.hasOwnProperty(app.keywords.UPDATE_PROFILE_RESULT) && data[app.keywords.UPDATE_PROFILE_RESULT] == true) {
-            app.system.info(app.res.string('password_changed_successfully'));
+            app.system.showLongToast(data[app.keywords.RESPONSE_MESSAGE] || app.res.string('password_changed_successfully'));
+            
+            this.currPassword.string = "";
+            this.newPassword.string = "";
+            this.passwordConfirmation.string = "";
+
             this._showUserInfoPanel();
         } else {
-            app.system.error(app.res.string('error_password_changed_unsuccessfully'));
+            app.system.error(data[app.keywords.RESPONSE_MESSAGE] || app.res.string('error_password_changed_unsuccessfully'));
+        }
+    }
+
+    _onUserUpdatePhoneNumber(data) {
+        //update phonenumber
+        if (data.hasOwnProperty(app.keywords.RESPONSE_RESULT) && data[app.keywords.RESPONSE_RESULT]) {
+            this.phoneNumber.string = this.newPhoneNumberEditbox.string;
+            this.newPhoneNumberEditbox.string = "";
+
+            this._showUserInfoPanel();
+        } else {
+            app.system.error(app.res.string('error_phonenumber_changed_unsuccessfully'));
         }
     }
 
     _showUserInfoPanel() {
-        this.userInfoPanel.active = true;
-        this.changePasswordPanel.active = false;
+        active(this.userInfoPanel);
+        deactive(this.changePasswordPanel);
+        deactive(this.updatePhoneNumberPanel);
+        deactive(this.vipInfoPanel);
+        deactive(this.changeAvatarPanel);
     }
 
     _showChangePasswordPanel() {
-        this.changePasswordPanel.active = true;
-        this.userInfoPanel.active = false;
+        deactive(this.userInfoPanel);
+        active(this.changePasswordPanel);
+        deactive(this.updatePhoneNumberPanel);
+        deactive(this.vipInfoPanel);
+        deactive(this.changeAvatarPanel);
+    }
+
+    _showUpdatePhoneNumberPanel() {
+        deactive(this.userInfoPanel);
+        deactive(this.changePasswordPanel);
+        active(this.updatePhoneNumberPanel);
+        deactive(this.vipInfoPanel);
+        deactive(this.changeAvatarPanel);
+    }
+
+    _showVipInfoPanel() {
+        deactive(this.userInfoPanel);
+        deactive(this.changePasswordPanel);
+        deactive(this.updatePhoneNumberPanel);
+        active(this.vipInfoPanel);
+        deactive(this.changeAvatarPanel);
+    }
+    
+    _showChangeAvatarPanel() {
+        deactive(this.userInfoPanel);
+        deactive(this.changePasswordPanel);
+        deactive(this.updatePhoneNumberPanel);
+        deactive(this.vipInfoPanel);
+        active(this.changeAvatarPanel);
+    }
+    
+    _hide() {
+        let parent = this.node.parent;
+
+        CCUtils.clearFromParent(this.node);
+        CCUtils.clearFromParent(parent);
+    }
+
+    _onUserVariablesUpdate(ev) {
+        let changedVars = ev[app.keywords.BASE_EVENT_CHANGED_VARS] || [];
+        changedVars.map(v => {
+            if (v == app.keywords.CHANGE_AVATAR_URL) {
+                this.avatar && app.context.getMyAvatar(this.avatar, 'large');
+            }
+        });
+    }
+    
+    _renderUserInfo(data) {
+        let {
+            name
+        } = app.context.getMyInfo();
+
+        let {
+            balance,
+            id,
+            vipLevelName
+        } = data;
+
+        this.userName.string = app.context.getMeDisplayName();
+        this.chipAmout.string = numberFormat(balance);
+
+        this.userId.string = name;
+        this.vipLevel.string = vipLevelName || "";
+
+        // if (app.context.needUpdatePhoneNumber()) {
+        //     this.phoneNumber.string = `Chưa cập nhật`;
+        // } else {
+        if (data[app.keywords.PHONE_INVITE_PHONE_NEW])
+            this.phoneNumber.string = data[app.keywords.PHONE_INVITE_PHONE_NEW];
+        else
+            this.phoneNumber.string = `Chưa cập nhật`;
+        // }
     }
 }
 

@@ -1,2 +1,1 @@
-# Mình thích thì mình đặt tên vậy hoy! 
-# updating ...
+# Rubs

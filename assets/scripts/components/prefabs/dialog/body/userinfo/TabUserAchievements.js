@@ -1,21 +1,29 @@
 import app from 'app';
-import DialogActor from 'DialogActor';
-import { isNull } from 'Utils';
+import PopupTabBody from 'PopupTabBody';
+import { isNull } from 'GeneralUtils';
 
-export default class TabUserAchievements extends DialogActor {
+export default class TabUserAchievements extends PopupTabBody {
     constructor() {
         super();
-        this.bodyNode = {
+        this.p404 = {
             default: null,
             type: cc.Node
         };
     }
 
-    start() {
-        super.start();
+    loadData() {
+        if(Object.keys(this._data).length > 0)
+            return false;
+        super.loadData();
+        
         this._getAchievementsDataFromServer();
+        return true;
     }
-
+    
+    onDataChanged(data) {
+        !this.loaded && data && Object.keys(data).length > 0 && this._renderUserAchievements(data);
+    }
+    
     _addGlobalListener() {
         super._addGlobalListener();
         app.system.addListener(app.commands.USER_ACHIEVEMENT, this._onUserAchievement, this);
@@ -30,30 +38,35 @@ export default class TabUserAchievements extends DialogActor {
         let sendObj = {
             cmd: app.commands.USER_ACHIEVEMENT
         };
-
+        
+        this.showLoadingProgress();
         app.service.send(sendObj);
     }
 
     _onUserAchievement(res) {
-        let gameListCol = res[app.keywords.GAME_NAME_LIST] || [];
-        if (gameListCol.length > 0) {
+        this.setLoadedData(res);
+    }
+    
+    _renderUserAchievements(res){
+        let gameCodeList = res[app.keywords.GAME_CODE_LIST] || [];
+        if (gameCodeList.length > 0) {
+            this.loaded = true;
             let levelCol = res[app.keywords.LEVEL_LIST].map((e) => `Cấp độ ${e}`) || [];
             // let levelCol = res[app.keywords.LEVEL_TITLE_LIST]|| [];
             let winCol = res[app.keywords.WIN_LIST] || [];
             let loseCol = res[app.keywords.LOST_LIST] || [];
+            let gameListCol = res[app.keywords.GAME_NAME_LIST] || [];
 
             let data = [
-                gameListCol,
-                levelCol,
+                gameListCol.map(e => e),
+                levelCol.map(e => e),
                 winCol.map(e => isNull(e) ? '0' : e.toString()),
                 loseCol.map(e => isNull(e) ? '0' : e.toString())
             ];
 
             let head = {
-                data: ['Tên Game', 'Cấp độ', 'Thắng', 'Thua'],
                 options: {
-                    fontColor: app.const.COLOR_YELLOW,
-                    fontSize: 25
+                    fontColor: app.const.COLOR_YELLOW
                 }
             };
 
@@ -63,12 +76,13 @@ export default class TabUserAchievements extends DialogActor {
                     colors: [new cc.Color(244, 228, 154), null, app.const.COLOR_YELLOW, app.const.COLOR_GRAY]
                 }
             });
-
-            this.bodyNode.addChild(this.getScrollViewNode());
+            
+            !this.getScrollViewNode().isChildOf(this.bodyNode) && this.bodyNode.addChild(this.getScrollViewNode());
         } else {
-            this.pageIsEmpty(this.bodyNode);
+            this.showEmptyPage(this.p404);
         }
     }
+    
 }
 
 app.createComponent(TabUserAchievements);

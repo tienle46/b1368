@@ -2,9 +2,9 @@
  * Created by Thanh on 9/19/2016.
  */
 
-import utils from 'utils';
+import utils from 'PackageUtils';
 import app from 'app';
-import Events from 'Events';
+import Events from 'GameEvents';
 import GameControls from 'GameControls';
 import BaseControls from 'BaseControls';
 import Keywords from 'Keywords'
@@ -13,12 +13,11 @@ import CardTurnBaseControls from 'CardTurnBaseControls';
 export default class TLMNDLControls extends GameControls {
     constructor() {
         super();
-
-        this.properties = {
-            ...this.properties,
+        
+        this.properties = this.assignProperties({
             baseControlsNode: cc.Node,
             cardTurnBaseControlsNode: cc.Node
-        }
+        });
 
         this.baseControls = null;
         this.cardTurnBaseControls = null;
@@ -44,12 +43,13 @@ export default class TLMNDLControls extends GameControls {
 
     _showOnTurnControls(showPlayControlOnly) {
         this.hideAllControls();
-        this.cardTurnBaseControls._showOnTurnControls(showPlayControlOnly);
+        this.cardTurnBaseControls._showOnTurnControls(showPlayControlOnly, true);
     }
 
     _showWaitTurnControls() {
         this.hideAllControls();
         this.cardTurnBaseControls._showWaitTurnControls();
+        // this.cardTurnBaseControls._showOnTurnControls(true, true);
     }
 
     _onGameBegin(data, isJustJoined) {

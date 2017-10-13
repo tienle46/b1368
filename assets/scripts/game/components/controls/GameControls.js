@@ -3,7 +3,7 @@
  */
 
 import Actor from 'Actor'
-import utils from 'utils';
+import utils from 'PackageUtils';
 
 export default class GameControls extends Actor {
     constructor() {

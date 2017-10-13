@@ -4,7 +4,7 @@
 
 import app from 'app';
 import game from 'game';
-import { utils, GameUtils } from 'utils';
+import { utils, GameUtils } from 'PackageUtils';
 import { Keywords } from 'core';
 import { Events } from 'events';
 import BoardCardTurnBase from 'BoardCardTurnBase';
@@ -45,6 +45,32 @@ export default class BoardTLMNDL extends BoardCardTurnBase {
         super.onGameStatePreChange(boardState, data);
     }
 
+
+    onBoardStarting(data, isJustJoined){
+        super.onBoardStarting(data, isJustJoined)
+
+        //TODO need to check why isJustJoined is false (undefined)
+        this._loadRemainCardCount(data)
+    }
+
+    onBoardPlaying(data, isJustJoined){
+        super.onBoardPlaying(data, isJustJoined)
+        
+        if(isJustJoined && this.isPlaying()) {
+            this._loadRemainCardCount(data)
+        }
+    }
+
+    _loadRemainCardCount(data){
+        let playerIds = utils.getValue(data, Keywords.GAME_LIST_PLAYER)
+        let playerRemainCardSizes = utils.getValue(data, Keywords.GAME_LIST_PLAYER_CARDS_SIZE, []);
+        if(playerIds && playerRemainCardSizes && playerIds.length == playerRemainCardSizes.length){
+            playerIds.forEach((id, index) => {
+                this.scene.emit(Events.ON_PLAYER_REMAIN_CARD_COUNT, id, playerRemainCardSizes[index]);
+            });
+        }
+    }
+
     _loadGamePlayData(data) {
         super._loadGamePlayData(data);
 
@@ -56,19 +82,6 @@ export default class BoardTLMNDL extends BoardCardTurnBase {
             let cards = GameUtils.convertBytesToCards(deckCardsBytes);
             cards = GameUtils.sortCardAsc(cards, this.gameType);
             this.renderer.addToDeck(cards);
-        }
-
-        /**
-         * Get remain player card size
-         */
-        if (this.isPlaying()) {
-            let playerIds = utils.getValue(data, Keywords.GAME_LIST_PLAYER);
-            let playerRemainCardSizes = utils.getValue(data, Keywords.GAME_LIST_PLAYER_CARDS_SIZE,
-                playerIds && new Array(playerIds.length).fill(PlayerTLMNDL.DEFAULT_HAND_CARD_COUNT));
-
-            playerIds && playerRemainCardSizes && playerIds.forEach((id, index) => {
-                this.scene.emit(Events.ON_PLAYER_REMAIN_CARD_COUNT, id, playerRemainCardSizes[index]);
-            });
         }
 
         /**
@@ -88,26 +101,38 @@ export default class BoardTLMNDL extends BoardCardTurnBase {
 
         super.onBoardEnding(data);
 
-        let models = playerIds.filter(playerId => (playingPlayerIds.indexOf(playerId) >= 0)).map(playerId => {
-            return {
+        playingPlayerIds.forEach(playerId => {
+            let player = this.scene.gamePlayers.findPlayer(playerId);
+            player && player.showEndGameInfo({
                 name: playerInfos[playerId].name,
                 balanceChanged: balanceChangeAmounts[playerId],
                 text: resultTexts[playerId],
                 info: gameResultInfos[playerId],
-                cards: playerHandCards[playerId],
+                cards: TLMNUtils.sortAsc(playerHandCards[playerId]),
                 isWinner: winnerFlags[playerId]
-            };
-        });
+            })
+        })
 
-        setTimeout(() => this.scene.showGameResult(models, (shownTime) => {
-            let remainTime = this.timelineRemain - shownTime;
-            if (remainTime > 0 && this.scene.isEnding()) {
-                this.renderer.cleanDeckCards();
-                if(this.scene.gamePlayers.players.length > 1){
-                    this._startEndBoardTimeLine(remainTime);
-                }
-            }
-        }), 500);
+        // let models = playerIds.filter(playerId => (playingPlayerIds.indexOf(playerId) >= 0)).map(playerId => {
+        //     return {
+        //         name: playerInfos[playerId].name,
+        //         balanceChanged: balanceChangeAmounts[playerId],
+        //         text: resultTexts[playerId],
+        //         info: gameResultInfos[playerId],
+        //         cards: playerHandCards[playerId],
+        //         isWinner: winnerFlags[playerId]
+        //     };
+        // });
+        //
+        // setTimeout(() => this.scene.showGameResult(models, (shownTime) => {
+        //     let remainTime = this.timelineRemain - shownTime;
+        //     if (remainTime > 0 && this.scene.isEnding()) {
+        //         this.renderer.cleanDeckCards();
+        //         if(this.scene.gamePlayers.players.length > 1){
+        //             this._startEndBoardTimeLine(remainTime);
+        //         }
+        //     }
+        // }), 500);
     }
 
     _getGameResultInfos(playerIds = [], playerHandCards, data) {
@@ -118,27 +143,62 @@ export default class BoardTLMNDL extends BoardCardTurnBase {
          * Get game result icon
          * @type {Array}
          */
-        let resultIconPaths = {};
+        let gameResultInfos = {};
         let resultTexts = {};
         let winnerFlags = {};
 
         let winType = utils.getValue(data, Keywords.WIN_TYPE);
         let playersWinRanks = utils.getValue(data, Keywords.GAME_LIST_WIN);
+        let cardTypes = utils.getValue(data, Keywords.CARD_TYPES, []);
         playerIds.forEach((id, i) => {
             let resultText = ''
+            let cardType = cardTypes[i];
+
             if (playersWinRanks[i] == app.const.game.rank.GAME_RANK_FIRST) {
                 switch (winType) {
                     case app.const.game.TLMN_WIN_TYPE_AN_TRANG:
-                        resultText = app.res.string('game_tlmn_an_trang');
+                        resultText = 'tlmn-an-trang'
+
+                        if(cardType){
+                            switch(cardType){
+                                case app.const.game.TLMN_CARD_TYPE_SANH_RONG_DONG_HOA:
+                                    gameResultInfos[id] = app.res.string('game_tlmn_sanh_rong_dong_hoa')
+                                    break;
+                                case app.const.game.TLMN_CARD_TYPE_SANH_RONG:
+                                    gameResultInfos[id] = app.res.string('game_tlmn_sanh_rong')
+                                    break;
+                                case app.const.game.TLMN_CARD_TYPE_DONG_HOA:
+                                    gameResultInfos[id] = app.res.string('game_tlmn_dong_hoa')
+                                    break;
+                                case app.const.game.TLMN_CARD_TYPE_SAU_DOI_THONG:
+                                    gameResultInfos[id] = app.res.string('game_tlmn_sau_doi_thong')
+                                    break;
+                                case app.const.game.TLMN_CARD_TYPE_NAM_DOI_THONG:
+                                    gameResultInfos[id] = app.res.string('game_tlmn_nam_doi_thong')
+                                    break;
+                                case app.const.game.TLMN_CARD_TYPE_SAU_DOI:
+                                    gameResultInfos[id] = app.res.string('game_tlmn_sau_doi')
+                                    break;
+                                case app.const.game.TLMN_CARD_TYPE_BON_NHOM_BA:
+                                    gameResultInfos[id] = app.res.string('game_tlmn_sam_co')
+                                    break;
+                                case app.const.game.TLMN_CARD_TYPE_TU_QUY_HEO:
+                                    gameResultInfos[id] = app.res.string('game_tlmn_tu_quy_hai')
+                                    break;
+                            }
+                        }
+
+                        !gameResultInfos[id] && (gameResultInfos[id] = app.res.string('game_tlmn_an_trang'))
+
                         break;
                     case app.const.game.TLMN_WIN_TYPE_DUT_BA_BICH:
-                        resultText = app.res.string('game_tlmn_dut_ba_bich');
+                        resultText = 'tlmn-dut-ba-bich'
                         break;
                     case app.const.game.TLMN_WIN_TYPE_LUNG:
-                        resultText = app.res.string('game_tlmn_lung');
+                        resultText = 'tlmn-lung'
                         break;
                     default:
-                        resultText = app.res.string('game_thang');
+                        resultText = 'thang'
                 }
                 winnerFlags[id] = true;
             } else {
@@ -146,10 +206,10 @@ export default class BoardTLMNDL extends BoardCardTurnBase {
                     case app.const.game.TLMN_WIN_TYPE_THOI_BA_BICH:
                         // if (GameUtils.containsCard(playerHandCards[id], Card.from(Card.RANK_BA, Card.SUIT_BICH)))
                         if (ArrayUtils.contains(playerHandCards[id], Card.from(Card.RANK_BA, Card.SUIT_BICH)))
-                            resultText = app.res.string('game_tlmn_thoi_ba_bich');
+                            resultText = 'tlmn-thoi-ba-bich'
                         break;
                     default:
-                        resultText = app.res.string('game_thua');
+                        resultText = 'thua'
                 }
                 winnerFlags[id] = false;
             }
@@ -157,32 +217,36 @@ export default class BoardTLMNDL extends BoardCardTurnBase {
             resultTexts[id] = resultText;
         });
 
-        congPlayerIds && congPlayerIds.forEach(id => resultTexts[id] = app.res.string('game_tlmn_cong'));
+        congPlayerIds && congPlayerIds.forEach(id => resultTexts[id] = 'tlmn-cong')
 
         /**
          * Get game result detail info
          * @type {Array}
          */
-        let gameResultInfos = {};
         playerIds.map(id => {
             var handCard = playerHandCards[id];
-            gameResultInfos[id] = handCard && handCard.length > 0 ? app.res.string('game_tlmn_card_count', {count: handCard.length}) : "";
+
+            if(!winnerFlags[id] || !gameResultInfos[id]){
+                gameResultInfos[id] = handCard && handCard.length > 0 ? app.res.string('game_tlmn_card_count', {count: handCard.length}) : "";
+            }
         });
 
         Object.keys(thoiData).forEach(id => {
             let { types, counts } = thoiData[id];
 
-            if (types && types.length > 0) {
+            if (types && types.length > 0 && !winnerFlags[id]) {
                 let str = `${app.res.string('game_thoi')} `;
 
                 types.forEach((type, i) => {
-                    let typeName = TLMNUtils.getTLMNThoiString(type);
+                    let count = counts[i]
                     let subfix = i < types.length - 1 ? ', ' : '';
-
-                    str += `${counts[i]} ${typeName}${subfix}`;
+                    str +=TLMNUtils.getTLMNThoiString(type, count, subfix)
                 });
 
-                gameResultInfos[id] = str + (!utils.isEmpty(gameResultInfos[id]) ? `, ${gameResultInfos[id]}` : '');
+                gameResultInfos[id] = utils.isEmpty(gameResultInfos[id]) ? str : str + `, ${gameResultInfos[id]}`
+
+                // gameResultInfos[id] = str + `, ${gameResultInfos[id]}`
+                // gameResultInfos[id] = str + (playersWinRanks[id] != app.const.game.rank.GAME_RANK_FIRST && !utils.isEmpty(gameResultInfos[id]) ? `, ${gameResultInfos[id]}` : '');
             }
         });
 

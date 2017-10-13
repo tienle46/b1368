@@ -1,49 +1,53 @@
+/**
+ * Actor inside dialog
+ */
 import Actor from 'Actor';
 import app from 'app';
 import NodeRub from 'NodeRub';
+import LoaderRub from 'LoaderRub';
 
 export default class DialogActor extends Actor {
     constructor() {
         super();
-
-        this.properties = {
-            ...this.properties,
+        
+        this.properties = this.assignProperties({
             p404: cc.Prefab,
             scrollview: cc.Prefab
-        };
-
+        });
+       
         this._scrollView = null;
         this.tabGroup = null;
         this.data = null;
         this.isLoaded = false;
+        this.loaders = {};
     }
 
-    setData(data){
+    setData(data) {
         this.data = data;
 
-        if(this.isLoaded){
+        if (this.isLoaded) {
             this._onDataChanged();
         }
     }
 
-    onEnable(...args){
+    onLoad() {
+        super.onLoad();
+    }
+
+    onEnable(...args) {
         super.onEnable(...args);
 
         this.isLoaded = true;
         this._onDataChanged();
     }
 
-    onDisable(){
+    onDisable() {
         super.onDisable();
 
         this.isLoaded = false;
     }
 
-    _onDataChanged(){
-
-    }
-
-    setTabGroup(tabGroup){
+    setTabGroup(tabGroup) {
         this.tabGroup = tabGroup;
     }
 
@@ -51,17 +55,24 @@ export default class DialogActor extends Actor {
         super.onDestroy();
         if (this._scrollView && cc.isValid(this._scrollView)) {
             this._scrollView.destroy();
-            this._scrollView = null;
+            window.free(this._scrollView);
+            // this._scrollView = null;
         }
+
+        for (let key in this.loaders) {
+            this.loaders[key] && this.loaders[key].destroy();
+            this.loaders[key] = null;
+        }
+        this.loaders = null;
     }
 
     initView(head, data, options) {
         if (!this._scrollView) {
             this._scrollView = cc.instantiate(this.scrollview);
-            let o = { top: 0, left: 0, right: 0, bottom: 0 };
+            // console.debug(cc.loader.isAutoRelease(this.scrollview));
             this._scrollView.getComponent('Scrollview').initView(head, data, options);
-            NodeRub.addWidgetComponentToNode(this._scrollView, o);
-            o = null;
+            NodeRub.addWidgetComponentToNode(this._scrollView, { top: 0, left: 0, right: 0, bottom: 0 });
+            this.addNode(this._scrollView)
         } else {
             this._scrollView.getComponent('Scrollview').updateOptions(options);
             this._scrollView.getComponent('Scrollview').updateView(head, data);
@@ -73,7 +84,8 @@ export default class DialogActor extends Actor {
     }
 
     pageIsEmpty(node, str) {
-        app.system.hideLoader();
+        this.hideLoader(node);
+
         let p404 = cc.instantiate(this.p404);
         node.children.map(child => cc.isValid(child) && child.destroy() && child.removeFromParent());
         node.addChild(p404);
@@ -82,5 +94,41 @@ export default class DialogActor extends Actor {
             let p404Component = p404.getComponent('P404');
             p404Component && p404Component.setText(str);
         }
+    }
+
+    showLoader(node) {
+        node = node || this.node;
+        if (node) {
+            let nodeKey = node.__instanceId;
+            if (!this.loaders[nodeKey]) {
+                this.loaders[nodeKey] = new LoaderRub(node);
+            }
+
+            this.loaders[nodeKey].show();
+        }
+    }
+
+    hideLoader(node) {
+        node = node || this.node;
+        if (node) {
+            let nodeKey = node.__instanceId;
+            if (!this.loaders[nodeKey])
+                return;
+
+            this.loaders[nodeKey].hide();
+        }
+    }
+
+    getDialog(node, isDialog = false) {
+        let dialogNode = node && isDialog ? node : node.parent.parent;
+        return (dialogNode && dialogNode.getComponent('Dialog'));
+    }
+
+    getSharedData(dialog, key) {
+        return dialog && dialog.getSharedData(key);
+    }
+
+    _onDataChanged() {
+
     }
 }

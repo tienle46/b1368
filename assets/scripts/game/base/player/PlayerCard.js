@@ -2,9 +2,9 @@
  * Created by Thanh on 8/23/2016.
  */
 
-import {utils, GameUtils} from 'utils';
+import {utils, GameUtils} from 'PackageUtils';
 import Player from 'Player';
-import Events from 'Events';
+import Events from 'GameEvents';
 import {Keywords} from 'core';
 
 export default class PlayerCard extends Player {
@@ -18,16 +18,28 @@ export default class PlayerCard extends Player {
     _addGlobalListener(){
         super._addGlobalListener();
 
-        this.scene.on(Events.ON_GAME_REJOIN, this._onGameRejoin, this);
-        this.scene.on(Events.SHOW_PLAY_CONTROL, this._onSelectedCardsChanged, this);
+        if(this.scene){
+            this.scene.on(Events.ON_GAME_REJOIN, this._onGameRejoin, this);
+            this.scene.on(Events.ON_GAME_REFRESH, this._onBoardRefresh, this);
+            this.scene.on(Events.SHOW_PLAY_CONTROL, this._onSelectedCardsChanged, this);
+        }
     }
 
     _removeGlobalListener(){
         super._removeGlobalListener();
-        this.scene.off(Events.ON_GAME_REJOIN, this._onGameRejoin, this);
-        this.scene.off(Events.SHOW_PLAY_CONTROL, this._onSelectedCardsChanged, this);
+
+        if(this.scene) {
+            this.scene.off(Events.ON_GAME_REJOIN, this._onGameRejoin, this);
+            this.scene.off(Events.ON_GAME_REFRESH, this._onBoardRefresh, this);
+            this.scene.off(Events.SHOW_PLAY_CONTROL, this._onSelectedCardsChanged, this);
+        }
     }
 
+    _onBoardRefresh(data) {
+        let playerData = data.playerData;
+        this._onGameRejoin(playerData);
+    }
+    
     _onGameRejoin(data){
         if(this.isPlaying()){
             if (this.isItMe()) {
@@ -87,12 +99,13 @@ export default class PlayerCard extends Player {
     }
 
     onGameStarted(data, isJustJoined){
-
         super.onGameStarted(data, isJustJoined);
+        this.setMeDealCards();
+    }
 
-        if(data instanceof Array){
-            this.isItMe() ? this.setCards(data) : this.isReady() && this.createFakeCards();
-        }
+    setMeDealCards(){
+        let dealCards = this.scene.board.meDealCards || [];
+        this.isItMe() ? this.setCards(dealCards) : this.isReady() && this.createFakeCards();
     }
 
     getSelectedCards() {
@@ -104,11 +117,8 @@ export default class PlayerCard extends Player {
     }
 
     onGameEnding(data = {}, isJustJoined){
-
-        console.log("onGameEnding player")
-
         super.onGameEnding(data, isJustJoined);
-        this.renderer.clearCards();
+        this.renderer.clearCards(true);
     }
 
     _onSelectedCardsChanged(selectedCards){

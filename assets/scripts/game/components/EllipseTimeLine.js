@@ -4,7 +4,7 @@
 
 import app from 'app';
 import Component from 'Component';
-import utils from 'utils';
+import utils from 'PackageUtils';
 
 export default class EllipseTimeLine extends Component {
 
@@ -90,7 +90,12 @@ export default class EllipseTimeLine extends Component {
     }
 
     onDestroy() {
+        super.onDestroy()
         this.stop(false);
+    }
+    
+    hideProgressBar() {
+        utils.deactive(this._playerTimeLineProgress);
     }
 }
 

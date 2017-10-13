@@ -3,7 +3,7 @@
  */
 
 import Emitter from 'emitter'
-import Events from 'Events'
+import Events from 'GameEvents'
 
 export {
     Emitter,

@@ -4,20 +4,21 @@
 
 
 import app from 'app';
-import utils from 'utils';
+import utils from 'PackageUtils';
+import CCUtils from 'CCUtils';
 import GameControls from 'GameControls';
 import { Events } from 'events';
 
 export default class BaseControls extends GameControls {
     constructor() {
         super();
-
-        this.properties = {
-            ...this.properties,
+        
+        this.properties = this.assignProperties({
             readyButton: cc.Node,
             unreadyButton: cc.Node,
-            startButton: cc.Node
-        }
+            startButton: cc.Node,
+            waitButton: cc.Node
+        });
 
         this.showStartButtonOnBegin = false;
         this.serverAutoStartGame = false;
@@ -31,15 +32,23 @@ export default class BaseControls extends GameControls {
 
         this.scene.on(Events.ON_PLAYER_READY_STATE_CHANGED, this._onPlayerSetReadyState, this);
         this.scene.on(Events.SHOW_START_GAME_CONTROL, this._showStartGameControl, this);
+        this.scene.on(Events.ON_GAME_WAIT, this.onGameStateWait, this);
+    }
+
+    onGameStateWait(){
+
+        console.log("onGameStateWait: ")
+
+        this.hideStartButton()
     }
 
     onClickReadyButton() {
-        this.scene.showShortLoading('ready');
+        //this.scene.showShortLoading();
         app.service.send({ cmd: app.commands.PLAYER_READY, room: this.scene.room });
     }
 
     onClickUnreadyButton() {
-        this.scene.showShortLoading('unready');
+        //this.scene.showShortLoading();
         app.service.send({ cmd: app.commands.PLAYER_UNREADY, room: this.scene.room });
     }
 
@@ -48,8 +57,15 @@ export default class BaseControls extends GameControls {
         utils.deactive(this.startButton);
     }
 
+    onClickWaitButton() {
+        if(this.scene.gamePlayers.players.length > 1){
+            app.service.send({cmd: "pwr", data: {[app.keywords.PLAYER_ID]:  this.scene.gamePlayers.me.id}, room: this.scene.room})
+        }
+        //this.scene.emit(Events.ON_CLICK_WAIT_BUTTON);
+    }
+
     _onPlayerSetReadyState(playerId, ready, isItMe = this.scene.gamePlayers.isItMe(playerId)) {
-        this.scene.hideLoading('ready');
+        this.scene.hideLoading();
         isItMe && (ready ? this._onPlayerReady() : this._onPlayerUnready());
     }
 
@@ -64,28 +80,44 @@ export default class BaseControls extends GameControls {
     }
 
     _showGameBeginControls() {
-        debug('_showGameBeginControls')
+
         if (app.system.currentScene.gamePlayers.isMeReady()) {
             this._onPlayerReady();
         } else {
             this._onPlayerUnready();
         }
 
+        this.setVisibleWaitButton(true);
+
         if(!this.serverAutoStartGame && this.showStartButtonOnBegin && this.scene.enoughPlayerToStartGame()){
             utils.active(this.startButton);
+            app.system.currentScene.board.renderer.setBottomTimeLineMessage("");
         }
     }
 
     hideAllControls() {
-        utils.deactive(this.readyButton);
-        // utils.deactive(this.unreadyButton);
+        CCUtils.setVisible(this.readyButton, false);
+        CCUtils.setVisible(this.waitButton, false)
+        this.hideStartButton();
+    }
+    
+    hideStartButton() {
         utils.deactive(this.startButton);
     }
-
+    
     _showStartGameControl(){
         if(!this.serverAutoStartGame && this.scene.gamePlayers.owner && this.scene.gamePlayers.owner.isItMe()){
             this.showStartButtonOnBegin = true;
             utils.active(this.startButton);
+        }
+    }
+
+    setVisibleWaitButton(visible = false){
+        if(visible){
+            this.scene.firstTimePlay && this.scene.isSoloGame && this.scene.gamePlayers.checkMeIsOwner() && CCUtils.setVisible(this.waitButton, false)
+        }else{
+            CCUtils.setVisible(this.waitButton, false)
+            this.scene.setFirstTimePlay(false)
         }
     }
 }

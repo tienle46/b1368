@@ -1,101 +1,122 @@
 import app from 'app';
-import DialogActor from 'DialogActor';
-import numeral from 'numeral';
+import PopupTabBody from 'PopupTabBody';
+import RubUtils from 'RubUtils';
+import {
+    deactive,
+    active,
+    numberFormat
+} from 'GeneralUtils';
 
-class TabSMS extends DialogActor {
+class TabSMS extends PopupTabBody {
     constructor() {
         super();
-        this.properties = {
-            ...this.properties,
+        
+        this.properties = this.assignProperties({
             toggleGroupNode: cc.Node,
             itemNode: cc.Node,
-            h1Lbl: cc.Label,
-            sendToLbl: cc.Label,
-            commandLbl: cc.Label,
             moneyGetLbl: cc.Label,
-        };
+            iconSprite: cc.Sprite,
+            moneySend: cc.Label,
+            promotionNode: cc.Node,
+            promoteDescLbl: cc.Label,
+            // new design
+            activeStateSprite: cc.Sprite,
+            inActiveStateSprite: cc.Sprite,
+            providerItemNode: cc.Node,
+            providerContainerNode: cc.Node,
+            receiverLbl: cc.Label,
+            codeLbl: cc.Label,
+            toNumberLbl: cc.Label,
+            smsLayoutPanel: cc.Node,
+            contentLayoutPanel: cc.Node
+        });
+        
+        this._balanceChoosen = null;
+        
     }
 
     onLoad() {
-        let data = {
-            ap: ['com.bamienstudio.baibamien.4000g', 'com.bamienstudio.baibamien.8000g'],
-            bp: {
-                dl: ['4000 Gold (1AU -> 4000Xu)', 'Test (0AU -> 1Xu)'],
-                il: ['com.milabs.4000', 'android.test.purchased']
-            },
-            c: {
-
-            },
-            il: [],
-            nl: [],
-            s: {
-                b: [30000,
-                    50000,
-                    120000,
-                    200000,
-                    350000,
-                    750000,
-                    120000,
-                    200000,
-                    350000,
-                    120000,
-                    200000,
-                    350000
-                ],
-                s: [8698,
-                    8798,
-                    9029,
-                    9029,
-                    9029,
-                    9029,
-                    9029,
-                    9029,
-                    9029,
-                    9029,
-                    9029,
-                    9029
-                ],
-                c: ["DR 1 bitcoin",
-                    "DR 1 bitcoin",
-                    "MW 20000 VLA NAP 1/bitcoin",
-                    "MW 30000 VLA NAP 1/bitcoin",
-                    "MW 50000 VLA NAP 1/bitcoin",
-                    "MW 100000 VLA NAP 1/bitcoin",
-                    "MW VLA NAP20 1/bitcoin",
-                    "MW VLA NAP30 1/bitcoin",
-                    "MW VLA NAP50 1/bitcoin",
-                    "MW VLA NAP20 1/bitcoin",
-                    "MW VLA NAP30 1/bitcoin",
-                    "MW VLA NAP50 1/bitcoin"
-                ],
-                m: ["10000 VN\U0110",
-                    "15000 VN\U0110",
-                    "Viettel  20K",
-                    "Viettel  30K",
-                    "Viettel  50K",
-                    "Viettel  100K",
-                    "Mobi  20K",
-                    "Mobi  30K",
-                    "Mobi  50K",
-                    "Vina  20K",
-                    "Vina  30K",
-                    "Vina  50K"
-                ]
+        super.onLoad();
+        
+        this._smses = [];
+        this._providers = {};
+        this._enabledTelco = [];
+        
+        this._showSMSLayoutPanel();
+        
+        this.receiverLbl.string = app.context.getMyInfo().name;
+    }
+    
+    onDestroy() {
+        super.onDestroy();
+        this._enabledTelco = [];
+        this._smses = [];
+        this._providers = {};
+        this._balanceChoosen = null;
+    }
+    
+    loadData() {
+        if(this.loadedData)
+            return false
+        super.loadData();
+        
+        this.showLoadingProgress();
+        if(!app.context.ctl)
+            app.system.marker.initRequest(app.system.marker.TOPUP_DIALOG_CACHE_TAB_SMS, this._requestPaymentList.bind(this), this._renderSMS.bind(this))
+        else
+            this._onUserGetChargeList(app.context.ctl, true);
+        
+        return true;
+    }
+    
+    onDataChanged(data) {
+        if(data && !app._.isEqual(data, this._data))
+            Object.keys(data).length > 0 && this._renderSMS(data);
+    }
+    
+    onSMSBtnClick(e) {
+        let { moneySend } = e.currentTarget.parent;
+        this._balanceChoosen = moneySend;
+        Object.values(this._providers).forEach(toggle => {
+            // toggle.isChecked = toggle.telcoId == telcoId;
+            if(toggle.isChecked) {
+                toggle.check();
+                this.onProviderBtnClick(toggle);
             }
+        });
+        this._hideSMSLayoutPanel();
+        // let toggle = this._providers[telcoId];
+        // if(toggle) {
+        //     toggle.check();
+        //     this.onProviderBtnClick(toggle);
+        // }
+    }
+    
+    onProviderBtnClick(toggle) {
+        if(!this._balanceChoosen)
+            return;
+            
+        // TODO: change text
+        let { telcoId } = toggle;
+        
+        let { code, shortCode, syntax, content } = this._smses[this._balanceChoosen][app.keywords.CHARGE_SMS_OBJECT_INFORS].find(info => info.telcoId == telcoId);
+        
+        if(code && shortCode) {
+            // this.codeLbl.string = `${code} ${syntax} ${app.context.getMyInfo().name}`;
+            this.codeLbl.string = `${code} ${syntax} ${content}`;
+            this.toNumberLbl.string = shortCode;
+            this._hideSMSLayoutPanel();
         }
-
-        this._onUserGetChargeList(data);
     }
-
-    start() {
-        super.start();
-        // this._requestPaymentList();
+    
+    onBackBtnClick() {
+        this._showSMSLayoutPanel();    
     }
-
-    onItemBtnClick() {
-
+    
+    onNapBtnClick() {
+        this._sendSMS(this.codeLbl.string, this.toNumberLbl.string);
     }
-
+    
     _addGlobalListener() {
         super._addGlobalListener();
         app.system.addListener(app.commands.USER_GET_CHARGE_LIST, this._onUserGetChargeList, this);
@@ -109,60 +130,127 @@ class TabSMS extends DialogActor {
     _requestPaymentList() {
         var sendObject = {
             'cmd': app.commands.USER_GET_CHARGE_LIST,
+            data: {
+                carrierNames: [
+                    // carrier name is here.
+                ]
+            }
         };
-
+                
         app.service.send(sendObject);
     }
 
-    _onUserGetChargeList(data) {
-        // app.keywords.CHARGE_SMS_OBJECT
-        if (data.hasOwnProperty(app.keywords.CHARGE_SMS_OBJECT)) {
-            const obj = data[app.keywords.CHARGE_SMS_OBJECT];
-            if (obj.hasOwnProperty(app.keywords.CHARGE_SMS_MONEY_GOT) && obj.hasOwnProperty(app.keywords.CHARGE_SMS_MONEY_LOST) &&
-                obj.hasOwnProperty(app.keywords.CHARGE_SMS_SHORT_CODE) &&
-                obj.hasOwnProperty(app.keywords.CHARGE_SMS_COMMAND)
-            ) {
-                let moneyGotList = obj[app.keywords.CHARGE_SMS_MONEY_GOT];
-                let moneySpendList = obj[app.keywords.CHARGE_SMS_MONEY_LOST];
-                let sendToList = obj[app.keywords.CHARGE_SMS_SHORT_CODE];
-                let commandList = obj[app.keywords.CHARGE_SMS_COMMAND];
-
-                for (let i = 0; i < moneyGotList.length; i++) {
-                    let smsModel = {};
-                    smsModel['moneyGot'] = moneyGotList[i];
-                    smsModel['moneyLost'] = moneySpendList[i];
-                    smsModel['sendTo'] = sendToList[i];
-                    smsModel['command'] = commandList[i];
-                    smsModel['isChecked'] = i === 0;
-
-                    this._initItem(smsModel);
-                }
-            }
-        }
-
-        //TODO: what the hell is ac
-        if (data.hasOwnProperty('ac')) {
-            let smsObj = data['ac'];
-
-        }
+    _onUserGetChargeList(data, hasCtl = false) {
+        let cardListIds = data[app.keywords.EXCHANGE_LIST.RESPONSE.ITEM_ID_LIST] || [];
+        let providerNames = data[app.keywords.TASK_NAME_LIST] || [];
+        let renderData = {
+            smses: data[app.keywords.CHARGE_SMS_OBJECT_IAC] || {}, 
+            cardListIds, 
+            providerNames
+        };
+        
+        this.loadedData = true;
+        hasCtl ? this._renderSMS(renderData) :  app.system.marker.renderRequest(app.system.marker.TOPUP_DIALOG_CACHE_TAB_SMS, renderData, this._renderSMS.bind(this));
     }
 
-    _initItem({ command, sendTo, moneyGot, isChecked }) {
-        let cmdArray = command.split(' ');
-        let h1 = cmdArray.shift();
-        let cmd = cmdArray.join(' ');
+    _sendSMS(message, recipient) {
+        if (app.env.isBrowser()) {
+            app.system.showToast(app.res.string('error_not_support_platform'));
+        } else if (app.env.isMobile()) {
+            if (app.env.isIOS()) {
+                window.jsb.reflection.callStaticMethod("JSBUtils", "sendSMS:recipient:", message, recipient);
+            }
+            if (app.env.isAndroid()) {
+                // TODO
+                window.jsb.reflection.callStaticMethod("org/cocos2dx/javascript/AppActivity", "jsbSMS", "(Ljava/lang/String;Ljava/lang/String;)V", message, recipient);
+            }
+        }
+    }
+    
+    _renderSMS({smses = {}, cardListIds = [], providerNames = []} = {}) {
+        this.hideLoadingProgress();  
+        // app.keywords.CHARGE_SMS_OBJECT
+        this._smses = smses;
 
-        this.h1Lbl.string = h1;
-        this.commandLbl.string = cmd;
-        this.sendToLbl.string = `Gửi ${sendTo}`;
-        this.moneyGetLbl.string = `${numeral(moneyGot).format('0,0')}`;
+        if (Object.keys(smses).length > 0) {
+            Object.keys(smses).forEach(key => {
+                let moneySend = key,
+                    infos = smses[key][app.keywords.CHARGE_SMS_OBJECT_INFORS] || [],
+                    moneyGot = smses[key]['balance'],
+                    promoteDesc = smses[key]['promoteDesc'];
+                    
+                infos.forEach((smsInfo, i) => {
+                    let telcoId = smsInfo.telcoId;
+                    
+                    if(!app._.includes(this._enabledTelco, telcoId))
+                        this._enabledTelco.push(telcoId); 
+                });
+                this._initItem(moneySend, moneyGot, moneyGot > moneySend, promoteDesc);
+            });
+            this._initProviderIcon(cardListIds, providerNames);
+        }
+    }
+    
+    _initItem(moneySend, moneyGot, hasPromotion, promoteDesc) {
+        let iconNumber = Math.round(moneyGot / 10000) + 1;
+        RubUtils.getSpriteFrameFromAtlas(app.res.ATLAS_URLS.CHIPS, `scoreIcon_${iconNumber >= 5 ? 5 : iconNumber}`, (sprite) => {
+            this.iconSprite.spriteFrame = sprite;
 
-        let item = cc.instantiate(this.itemNode);
-        item.active = true;
-        let toggle = item.getComponent(cc.Toggle);
-        toggle.isChecked = isChecked;
+            this.moneyGetLbl.string = `${numberFormat(moneyGot)}`;
+            this.moneySend.string = `${numberFormat(moneySend)} VNĐ`;
+            
+            this.promotionNode.active = hasPromotion;
+            this.promoteDescLbl.string = promoteDesc || "";
+            
+            
+            let item = cc.instantiate(this.itemNode);
+            item.active = true;
+            item.moneySend = moneySend;
+            
+            this.toggleGroupNode.addChild(item);
+        });
+    }
+    
+    _initProviderIcon(cardListIds, providerNames) {
+        if (this._enabledTelco.length > 0) {
+            this._enabledTelco.forEach(id => {
+                let index = cardListIds.findIndex(cardListId => cardListId === id);
+                if(index >= 0) {
+                    let providerName = providerNames[index];
+                    let activeState = `${providerName.toLowerCase()}-active`;
+                    let inactiveState = `${providerName.toLowerCase()}-inactive`;
+                    
+                    RubUtils.getSpriteFramesFromAtlas(app.res.ATLAS_URLS.PROVIDERS, [activeState, inactiveState], (sprites) => {
+                        this.activeStateSprite.spriteFrame = sprites[activeState];
+                        this.inActiveStateSprite.spriteFrame = sprites[inactiveState];
 
-        this.toggleGroupNode.addChild(item);
+                        let provider = cc.instantiate(this.providerItemNode);
+                        this.addNode(provider);
+                        provider.active = true;
+
+                        let toggle = provider.getComponent(cc.Toggle);
+                        toggle.isChecked = index == 0;
+                        toggle.telcoId = id;
+                        
+                        if(!this._providers[id])
+                            this._providers[id] = {};
+                        this._providers[id] = toggle;
+                        
+                        this.providerContainerNode.addChild(provider);
+                    });
+                }
+            });
+        }
+    }
+    
+    _showSMSLayoutPanel() {
+        active(this.smsLayoutPanel)
+        deactive(this.contentLayoutPanel);
+    }
+    
+    _hideSMSLayoutPanel() {
+        deactive(this.smsLayoutPanel)
+        active(this.contentLayoutPanel);
     }
 }
 

@@ -1,6 +1,7 @@
 import app from 'app';
+import Utils from 'GeneralUtils'
 import Component from 'Component';
-import utils from 'utils';
+import utils from 'PackageUtils';
 
 class BetSlider extends Component {
     constructor() {
@@ -28,6 +29,7 @@ class BetSlider extends Component {
         this._progressBar = null;
         this._countDown = 5;
         this._submitOnHide = false;
+        this.cb = null;
 
     }
 
@@ -49,7 +51,7 @@ class BetSlider extends Component {
 
         this._slider = this.sliderNode.getComponent(cc.Slider);
         this._progressBar = this.sliderNode.getComponent(cc.ProgressBar);
-        this.minValueLabel.string = `${this.minValue}`;
+        this.minValueLabel && (this.minValueLabel.string = `${this.minValue}`);
         this.maxValueLabel.string = `${this.maxValue}`;
         this.title && (this.titleLabel.string = this.title);
         this._setChooseAmount(this.currentValue);
@@ -72,6 +74,10 @@ class BetSlider extends Component {
 
     _toSliderValue(value){
         value = Math.max(0, value - this.minValue);
+        
+        if(this.range == 0)
+            return 1
+            
         let sliderValue = this.range > 0 ? value / this.range : 0;
 
         return sliderValue || 0;
@@ -98,8 +104,11 @@ class BetSlider extends Component {
         return this._chooseAmount;
     }
 
-    hide() {
+    hide(summitValue) {
         utils.deactive(this.node, 0);
+        if(utils.isFunction(this.cb) && app.context.getSelectedGame == app.const.gameCode.BA_CAY){
+            this.cb(summitValue)
+        }
     }
 
     onClickSetMaxValue(){
@@ -113,8 +122,13 @@ class BetSlider extends Component {
     }
 
     onClickSubmitButton(){
-        this.currentValue != this._chooseAmount && utils.isFunction(this.cb) && this.cb(this._chooseAmount);
-        this.hide();
+        let newValue = this.currentValue != this._chooseAmount ? this._chooseAmount : (app.context.getSelectedGame == app.const.gameCode.BA_CAY ? undefined : this.currentValue);
+        if(app.context.getSelectedGame == app.const.gameCode.BA_CAY) {
+            this.hide(newValue)
+        } else {
+            utils.deactive(this.node, 0);
+            this.cb.call(this.ctx, newValue);
+        }
     }
 
     _setSliderValue(value = 0){
@@ -122,7 +136,33 @@ class BetSlider extends Component {
         this._progressBar.progress = value;
     }
 
-    show({minValue = 0, maxValue = 0, currentValue = minValue, cb = null, timeout = 5, title, submitOnHide = false} = {}) {
+    setMaxValue(maxValue){
+
+        if(!Utils.isNumber(maxValue)) return;
+
+        this.maxValue = maxValue;
+
+        if(this.maxValue < this.minValue) {
+            this.maxValue = this.minValue
+            return;
+        }
+
+        this.maxValueLabel.string = `${this.maxValue}`;
+        this.range = this.maxValue - this.minValue;
+        if(this._chooseAmount > this.maxValue){
+            this._setChooseAmount(this.maxValue)
+        }
+
+        let progressValue = this._chooseAmount / this.maxValue
+        this._slider && (this._slider.progress = progressValue)
+        this._progressBar && (this._progressBar.progress = progressValue)
+    }
+
+    changeMaxValue(amount){
+        this.setMaxValue(this.maxValue + amount)
+    }
+
+    show({minValue = 0, maxValue = 0, ctx = null, currentValue = minValue, cb = null, timeout = 5, title, submitOnHide = false} = {}) {
         this.minValue = minValue;
         this.maxValue = maxValue;
         this.range = maxValue - minValue;
@@ -131,7 +171,16 @@ class BetSlider extends Component {
         this.title = title;
         this._submitOnHide = submitOnHide;
         this.cb = cb;
+        this.ctx = ctx;
+        
         utils.active(this.node, 255);
+    }
+    
+    onDestroy() {
+        super.onDestroy();
+        
+        this.cb = null;
+        this.ctx = {};
     }
 }
 

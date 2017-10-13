@@ -22,8 +22,6 @@ class DialogTab extends Component {
             default: null,
             type: cc.Node
         };
-
-        this.toggle = null;
     }
 
     onLoad() {
@@ -51,7 +49,7 @@ class DialogTab extends Component {
         this.tabNode.parent.addChild(tab);
 
         this.addNode(tab);
-
+                
         if (isChecked)
             this.onCheckedEvent(toggle);
     }
@@ -60,7 +58,7 @@ class DialogTab extends Component {
         let tab = this.node.children[tabIndex];
         if (tab) {
             let toggle = tab.getComponent(cc.Toggle);
-            toggle.check();
+            toggle.isChecked = true;
             this.onCheckedEvent(toggle, data);
         }
     }
@@ -77,16 +75,33 @@ class DialogTab extends Component {
     }
 
     // e: cc.Toggle
-    onCheckedEvent(e, data) {
-        let id = e.__instanceId;
-        let value = e.value;
-        let componentName = e.componentName;
-
+    onCheckedEvent(toggle, data) {
+        let id = toggle.__instanceId;
+        let value = toggle.value;
+        let componentName = toggle.componentName;
+        
+        this._changeLblOutlineColor(toggle);
+        
         if (value) {
             this.dialogComponent.addToBody(id, value, componentName, this, data);
         } else {
             this.dialogComponent.clearBody();
         }
+    }
+    
+    _changeLblOutlineColor(toggle) {
+        this.node.children.forEach(tabNode => {
+            if(tabNode.active) {
+                // change label outline's color by tab state
+                let toggleComponent = tabNode.getComponent(cc.Toggle);
+                let lbl = tabNode.getChildByName('lbl');
+                if(lbl && toggleComponent) {
+                    let lblComponent = lbl.getComponent(cc.LabelOutline);
+                    lblComponent.color = toggle == toggleComponent ? new cc.Color(147, 110, 0) : new cc.Color(1, 106, 181);
+                }
+            }
+        });
+        
     }
 }
 

@@ -3,11 +3,11 @@
  */
 
 import app from 'app'
-import utils from 'utils'
+import utils from 'PackageUtils'
 import BoardTurnBaseAdapter from 'BoardTurnBaseAdapter';
 import BoardCard from 'BoardCard';
 import Keywords from 'Keywords'
-import Events from 'Events'
+import Events from 'GameEvents'
 
 export default class BoardCardTurnBase extends BoardCard {
 
@@ -33,7 +33,7 @@ export default class BoardCardTurnBase extends BoardCard {
         this.turnAdapter.onEnable();
 
         this.scene.on(Events.ON_GAME_CLEAN_TURN_ROUTINE_DATA, this._cleanTurnRoutineData, this);
-        this.scene.on(Events.ON_PLAYER_PLAYED_CARDS, this._onPlayerPlayedCards, this);
+        this.scene.on(Events.ON_PLAYER_PLAYED_CARDS, this._onPlayerPlayedCards, this, 0);
     }
 
     onDisable(){
@@ -41,9 +41,11 @@ export default class BoardCardTurnBase extends BoardCard {
         this.turnAdapter.onDisable();
     }
 
-    _onPlayerPlayedCards(playedCards, srcCardList, isItMe){
+    _onPlayerPlayedCards(playerId, playedCards, srcCardList, isItMe){
         this.playedCards = playedCards;
         this.renderer.addToDeck(playedCards, srcCardList, isItMe);
+      
+        app.system.audioManager.play(app.system.audioManager.DANH_BAI);
     }
 
     getLastPlayedTurnPlayerId(){
@@ -75,8 +77,6 @@ export default class BoardCardTurnBase extends BoardCard {
 
     _handleBoardTurnBaseTruePlay(data){
 
-        console.log(this.scene._eventEmitter);
-
         let turnDuration = utils.getValue(data, Keywords.TURN_BASE_PLAYER_TURN_DURATION)
         if (turnDuration) {
             this.scene.emit(Events.HANDLE_TURN_DURATION, turnDuration);
@@ -88,8 +88,6 @@ export default class BoardCardTurnBase extends BoardCard {
         if (nextTurnPlayerId) {
             this.scene.emit(Events.HANDLE_CHANGE_TURN, nextTurnPlayerId);
         }
-
-        log("nextTurnPlayerId: ", nextTurnPlayerId)
     }
 
     onBoardPlaying(data, isJustJoined){

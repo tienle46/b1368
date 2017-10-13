@@ -1,60 +1,74 @@
 import app from 'app';
 import Component from 'Component';
-import EntranceScene from 'EntranceScene';
-import FullSceneProgress from 'FullSceneProgress';
+import AudioManager from 'AudioManager';
+import NotificationMessage from 'NotificationMessage';
 
 class PreloadScene extends Component {
     constructor() {
         super();
 
-        this.fullSceneLoadingPrefab = {
-            default: null,
-            type: cc.Prefab
-        };
-        this.loadingPrefab = {
-            default: null,
-            type: cc.Prefab
-        };
         this.loading = {
             default: null,
             type: cc.Node
-        };
+        }
     }
 
     onLoad() {
-        app.res.prefab.loading = this.loadingPrefab;
-        app.res.prefab.fullSceneLoading = this.fullSceneLoadingPrefab;
+        super.onLoad()
+
         if (this.loading) {
-            debug(this.loading);
             this.loading.getComponent('FullSceneProgress').show(app.res.string('loading_data'));
-        } else {
-            debug(`what the heck?`);
         }
+        let IAPManager = require('IAPManager'); 
+        app.iap = new IAPManager();
+        app.iap.init();
 
-        this._setupEnvironment();
-    }
-
-    _setupEnvironment() {
-        if (cc.sys.isBrowser) {
-            cc.game.pause = () => {};
-            cc.game.setFrameRate(48);
-        }
-
-        cc.game.on(cc.game.EVENT_HIDE, function() {
-            app.system.isInactive = true;
-        });
-
-        cc.game.on(cc.game.EVENT_SHOW, function() {
-            app.system.isInactive = false;
-        });
+        // tai xiu treo
+        let TaiXiuTreoManager = require('TaiXiuTreoManager')
+        app.taiXiuTreoManager = new TaiXiuTreoManager()
+        
+        app.system.initOnFirstSceneLoaded()
+        
+        this._customCocosEngine();
+        
+        // let cards = [
+        //     Card.from(Card.RANK_AT, Card.SUIT_ZO),
+        //     Card.from(Card.RANK_HAI, Card.SUIT_ZO),
+        //     Card.from(Card.RANK_BA, Card.SUIT_ZO),
+        //     Card.from(Card.RANK_BON, Card.SUIT_BICH),
+        //     Card.from(Card.RANK_NAM, Card.SUIT_ZO),
+        //     Card.from(Card.RANK_SAU, Card.SUIT_TEP),
+        //     Card.from(Card.RANK_BAY, Card.SUIT_ZO),
+        //     Card.from(Card.RANK_TAM, Card.SUIT_BICH),
+        //     Card.from(Card.RANK_CHIN, Card.SUIT_ZO),
+        //     Card.from(Card.RANK_Q, Card.SUIT_ZO)
+        // ];
+        //
+        // cards[0].setLocked(true);
+        //
+        // PhomGenerator.generatePhomContainEatenCards(cards, [Card.from(Card.RANK_AT, Card.SUIT_ZO)]);
     }
 
     onEnable() {
+
         let resources = [
             { dir: 'toast/Toast', name: 'toast' },
+            { dir: 'dashboard/dialog/prefabs/verification_dialog', name: 'verificationDialog' },
+            { dir: 'components/Notification', name: 'notification' },
             { dir: 'dashboard/grid/scrollview', name: 'scrollview' },
+            { dir: 'jar/jarPrefab', name: 'jarPrefab' },
+            { dir: 'jar/jar_explosion', name: 'jarExplosive' },
             { dir: 'popup/FriendProfilePopup', name: 'friendProfilePopup' },
             { dir: 'dashboard/dialog/prefabs/dialog', name: 'dialog' },
+            { dir: 'dashboard/dialog/prefabs/event/EventDialog', name: 'eventDialog' },
+            { dir: 'dashboard/dialog/prefabs/WebviewDialog', name: 'webviewDialog' },
+            { dir: 'popup/MultiTabPopup', name: 'multiTabPopup' },
+            { dir: 'common/FullSceneProgress', name: 'fullSceneLoading' },
+            { dir: 'popup/MessagePopup', name: 'messagePopup' },
+            { dir: 'popup/ConfirmPopup', name: 'confirmPopup' },
+            { dir: 'popup/PromptPopup', name: 'promptPopup' },
+            { dir: 'popup/SingleLinePromptPopup', name: 'singleLinePromptPopup' },
+            { dir: 'taixiuTreo/HungSicBoPrefab', name: 'hungSicBo' },
         ];
 
         app.async.parallel(resources.map((res) => {
@@ -73,18 +87,35 @@ class PreloadScene extends Component {
                 }
             });
 
-            console.log("results: ", results);
-
             if (loadedRes) {
                 this.onLoadResourceDone();
             } else {
                 app.system.error(app.res.string('error_cannot_load_data'));
             }
         });
+        
+        app.system.audioManager = new AudioManager();
+        app.system.notify = new NotificationMessage();
     }
 
     onLoadResourceDone() {
-        app.system.loadScene('EntranceScene');
+        let frameSize = cc.view.getFrameSize(); // 1280x720
+        cc.view.setDesignResolutionSize(frameSize.width, frameSize.height, cc.ResolutionPolicy.EXACT_FIT);
+        app.system.loadScene(app.const.scene.ENTRANCE_SCENE);
+        
+        // cc.view.enableAntiAlias(false);
+    }
+
+    /**
+     * Modifying cocos's source
+     * @memberof PreloadScene
+     */
+    _customCocosEngine() {
+        // TextUtils
+        let unicode = `ÁÀÃẠẢĂẮẰẴẶẲÂẤẦẪẬẨĐÉÈẼẸẺÊẾỀỄỆỂÔỐỒỖỘỔƠỚỜỠỢỞÒÓỌỎÕÍÌĨỊỈÝỲỸỴỶÚÙŨỤỦƯỨỪỮỰỬáàãạảăắằẵặẳâấầẫậẩđéèẽẹẻêếềễệểôốồỗộổơớờỡợởòóọỏõíìĩịỉýỳỹỵỷúùũụủưứừữựử`
+        cc.TextUtils.label_lastWordRex = new RegExp(`([a-zA-Z0-9ÄÖÜäöüßéèçàùêâîôûа-яА-ЯЁё${unicode}]+\|\\S)$`);
+        cc.TextUtils.label_lastEnglish = new RegExp(`[a-zA-Z0-9ÄÖÜäöüßéèçàùêâîôûа-яА-ЯЁё${unicode}]+$`);
+        cc.TextUtils.label_firsrEnglish = new RegExp(`^[a-zA-Z0-9ÄÖÜäöüßéèçàùêâîôûа-яА-ЯЁё${unicode}]`);
     }
 }
 

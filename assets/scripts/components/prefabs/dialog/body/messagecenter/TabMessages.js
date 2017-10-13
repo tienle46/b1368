@@ -1,114 +1,113 @@
 import app from 'app';
-import DialogActor from 'DialogActor';
+import PopupTabBody from 'PopupTabBody';
 import MessageEvent from 'MessageEvent';
-import ListItemToggleableRub from 'ListItemToggleableRub';
-import ListViewRub from 'ListViewRub';
+import CCUtils from 'CCUtils';
 
-export default class TabMessages extends DialogActor {
+export default class TabMessages extends PopupTabBody {
     constructor() {
         super();
-
-        this.properties = {
-            ...this.properties,
+        
+        this.properties = this.assignProperties({
             itemPrefab: cc.Prefab,
-        };
-
-        this.endPage = false;
-        this.itemPerPage = 0;
-        this.currentPage = 1;
-
-        this.groupType = app.const.DYNAMIC_GROUP_NEW_EVENT;
+            listMessagePanel: cc.Node,
+            detailMessagePanel: cc.Node,
+            itemMessageLbl: cc.Label
+        });
+        
+        this._rendered = false;
+    }
+    
+    onEnable() {
+        super.onEnable();
+        this._rendered = false;
+    }
+    
+    loadData() {
+        if(Object.keys(this._data).length > 0)
+            return false;
+            
+        super.loadData();
+        this._requestMessagesList();
+        return true;
+    }
+    
+    //paging
+    onPreviousBtnClick(page) {
+        this._requestMessagesList(page);
     }
 
-    onLoad() {
-        super.onLoad();
-
-        app.system.showLoader();
-        let next = this.onNextBtnClick.bind(this);
-        let prev = this.onPreviousBtnClick.bind(this);
+    onNextBtnClick(page) {
+        this._requestMessagesList(page);
     }
-
-
-    start() {
-        super.start();
-        this._requestMessagesList(1);
+    
+    // back btn
+    onBackBtnClick() {
+       this._showListMessagePanel();
     }
-
+    
     _addGlobalListener() {
         super._addGlobalListener();
-        app.system.addListener(app.commands.LIST_SYSTEM_MESSAGE, this._onListSystemMessage, this);
     }
 
     _removeGlobalListener() {
         super._removeGlobalListener();
-        app.system.removeListener(app.commands.LIST_SYSTEM_MESSAGE, this._onListSystemMessage, this);
     }
-
-
-    onPreviousBtnClick() {
-        this._requestMessagesList(this.currentPage);
+    
+    _showListMessagePanel() {
+        CCUtils.active(this.listMessagePanel);
+        CCUtils.deactive(this.detailMessagePanel);
     }
-
-    onNextBtnClick() {
-        this._requestMessagesList(this.currentPage);
+    
+    _hideListMessagePanel() {
+        CCUtils.deactive(this.listMessagePanel);
+        CCUtils.active(this.detailMessagePanel);
     }
-
-    _requestMessagesList(page, nodeId = 0) {
-        var sendObject = {
-            'cmd': app.commands.LIST_SYSTEM_MESSAGE,
-            'cbKey': app.commands.LIST_SYSTEM_MESSAGE,
-            'data': {
-                [app.keywords.SYSTEM_MESSAGE.REQUEST.ACTION_TYPE]: app.const.DYNAMIC_ACTION_BROWSE,
-                [app.keywords.SYSTEM_MESSAGE.REQUEST.GROUP_TYPE]: this.groupType,
-                [app.keywords.SYSTEM_MESSAGE.REQUEST.NODE_ID]: nodeId,
-                [app.keywords.SYSTEM_MESSAGE.REQUEST.PAGE_NUMBER]: page
+    
+    /**
+     * @abstract
+     * 
+     * @param {number} [page=1] 
+     * 
+     * @memberOf TabMessages
+     */
+    _requestMessagesList(page = 1) {}
+    
+    _initRequest(cmd, page = 1) {
+        app.service.send({
+            cmd,
+            data: {
+                [app.keywords.PAGE_NEW]: page
             }
-        };
-
-        app.system.showLoader();
-        app.service.send(sendObject);
+        });
+        this.showLoadingProgress();
     }
-
-    _onListSystemMessage(data) {
-        //convert raw data to list models
-        // this.currentPage = data[app.keywords.SYSTEM_MESSAGE.RESPONSE.CURRENT_PAGE];
-
-        let listHeader = data[app.keywords.SYSTEM_MESSAGE.RESPONSE.TITLE_LIST] || [];
-        let listSub = data[app.keywords.SYSTEM_MESSAGE.RESPONSE.TIME_LIST] || [];
-        let listIds = data[app.keywords.SYSTEM_MESSAGE.RESPONSE.ID_ITEM_LIST] || [];
-
-        let content = data[app.keywords.SYSTEM_MESSAGE_DETAIL.RESPONSE.CONTENT];
-        if (content) {
-            app.system.info(content);
-            return;
-        }
-
-        if (listHeader.length > 0) {
-            let messages = [];
-            for (let i = 0; i < listHeader.length; i++) {
-                // let event = new MessageEvent({ title: listHeader[i], sub: listSub[i], nodeId: listIds[i] });
-                // events.push(event);
-                let message = cc.instantiate(this.itemPrefab);
-                let itemEventComponent = message.getComponent('ItemMessage');
-                itemEventComponent.init(listIds[i], listHeader[i], listSub[i], this.groupType);
-                messages.push(message);
-            }
-            this._displayEvents(messages);
-        } else {
-            this.pageIsEmpty(this.node);
-        }
-    }
-
-    _displayEvents(events) {
-        let next, prev;
-
-        this.initView(null, events, {
+    
+    /**
+     * 
+     * @param {Array} data 
+     * 
+     * @memberOf TabMessages
+     */
+    displayMessages(node, data) {
+        this._rendered = true;
+        
+        let next = this.onPreviousBtnClick,
+            prev = this.onNextBtnClick;
+        
+        this.initView(null, data, {
             paging: { next, prev, context: this },
             size: this.node.getContentSize(),
             isListView: true
         });
-        this.node.addChild(this.getScrollViewNode());
-        app.system.hideLoader();
+        
+        !this.getScrollViewNode().isChildOf(this.bodyNode) && node.addChild(this.getScrollViewNode());
+    }
+    
+    hide() {
+        let parent = this.node.parent;
+
+        CCUtils.clearFromParent(this.node);
+        CCUtils.clearFromParent(parent);
     }
 }
 

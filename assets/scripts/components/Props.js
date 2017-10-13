@@ -4,86 +4,204 @@
 
 import app from 'app';
 import Component from 'Component';
+import CCUtils from 'CCUtils';
+import RubUtils from 'RubUtils';
 
-var props = [
-    "hddj-1",
-    "hddj-2",
-    "hddj-3",
-    "hddj-5",
-    "hddj-6",
-    "hddj-7",
-    "hddj-8",
-    "hddj-9",
-    "hddj-11",
-    "hddj-12",
-]
+let propAssets = {};
+let emotionAssets = {};
+
+let propAssetNames = [];
+let emotionAssetNames = [];
+
+const PROP_SAMPLE = 10;
 
 export default class Props extends Component {
 
     constructor() {
         super();
-
     }
 
-    static playPropName(prosName, resPath, sample, startPos, endPos, finishCallback) {
-        cc.loader.loadRes(`${resPath}/${prosName}`, cc.SpriteAtlas, (err, atlas) => {
+    static loadAllPropAsset() {
+        RubUtils.loadResDir('props', cc.SpriteAtlas, (assets) => {
+            assets.forEach(asset => {
+                if (!cc.loader.isAutoRelease(asset))
+                    cc.loader.setAutoRelease(asset, true);
+                    
+                emotionAssetNames.push(asset.name);
+                emotionAssets[asset.name] = asset;
+            });
+            
+        });
+        
+        RubUtils.loadResDir('emotions', cc.SpriteAtlas, (assets) => {
+            assets.forEach(asset => {
+                if (!cc.loader.isAutoRelease(asset))
+                    cc.loader.setAutoRelease(asset, true);
+                
+                emotionAssetNames.push(asset.name);
+                emotionAssets[asset.name] = asset;
+            });
+        });
+    }
 
-            if (err) {
-                debug(err);
-                return;
-            }
+    static releaseAllPropAsset() {
+        Object.values(propAssets).forEach(asset => cc.loader.release(asset));
+        Object.values(emotionAssets).forEach(asset => cc.loader.release(asset));
 
-            cc.loader.loadRes(`${resPath}/thumbs/${prosName}`, cc.SpriteFrame, (err, spriteFrame) => {
+        propAssets = {};
+        emotionAssets = {};
+        window.release([propAssetNames, emotionAssetNames], true);
+    }
 
-                if (err) {
-                    debug(err);
-                    return;
-                }
+    static _playLoadedEmotion(atlas, node) {
+        if (atlas && atlas.getSpriteFrames().length > 0) {
 
-                const animatingNode = new cc.Node();
-                const animation = animatingNode.addComponent(cc.Animation);
-                const sprite = animatingNode.addComponent(cc.Sprite);
-                sprite.trim = false;
-                sprite.spriteFrame = spriteFrame;
+            const animatingNode = new cc.Node();
+            animatingNode.setPosition(animatingNode.getPosition().x + 10, animatingNode.getPosition().y + 25);
+            const animation = animatingNode.addComponent(cc.Animation);
 
-                animatingNode.position = startPos;
+            const sprite = animatingNode.addComponent(cc.Sprite);
+            let spriteFrames = atlas.getSpriteFrames();
+            sprite.trim = false;
+            sprite.spriteFrame = spriteFrames[0];            
+            node.addChild(animatingNode);
+            
+            let clip = cc.AnimationClip.createWithSpriteFrames(spriteFrames, 5);
+            clip.speed = 0.7;
+            clip.name = 'run';
+            clip.wrapMode = cc.WrapMode.Normal;
+            animation.addClip(clip);
 
-                cc.director.getScene().addChild(animatingNode);
-
-                let moveToAction = cc.callFunc(() => null);
-
-                if (endPos) {
-                    moveToAction = cc.moveTo(0.6, endPos);
-                }
-
-                const seq = cc.sequence(moveToAction, cc.callFunc(() => {
-
-
-                    var spriteFrames = atlas.getSpriteFrames();
-
-                    var clip = cc.AnimationClip.createWithSpriteFrames(spriteFrames, sample);
+            animation.on('finished', () => {
+                if(spriteFrames.length > 3) { // remove 1st spriteFrame when it contains 4 frames
+                    spriteFrames.shift();
+                    animation.removeClip(clip,true);
+                    clip = cc.AnimationClip.createWithSpriteFrames(spriteFrames, 5);
                     clip.name = 'run';
-                    clip.wrapMode = cc.WrapMode.Default;
-
+                    clip.wrapMode = cc.WrapMode.Normal;
                     animation.addClip(clip);
-                    animation.play('run');
+                }
+                
+                animation.play(clip.name);
+                animation.on('finished', () => {
+                    if(spriteFrames.length > 3) { // remove 1st spriteFrame when it contains 4 frames
+                        spriteFrames.shift();
+                        animation.removeClip(clip,true);
+                        clip = cc.AnimationClip.createWithSpriteFrames(spriteFrames, 5);
+                        clip.name = 'run';
+                        clip.wrapMode = cc.WrapMode.Normal;
+                        animation.addClip(clip);
+                    }
 
+                    animation.play(clip.name);
                     animation.on('finished', () => {
                         animatingNode.destroy();
                         animatingNode.removeFromParent(true);
-                        finishCallback && finishCallback();
                     });
-                }));
-
-                animatingNode.runAction(seq);
+                    //
+                    // animatingNode.destroy();
+                    // animatingNode.removeFromParent(true);
+                });
             });
 
+            animation.play(clip.name);
+        }
+    }
+
+    static playEmotion(name, node) {
+        if (Object.keys(emotionAssets).length > 0) {
+            // modify valid name
+            name = `${name.replace('.plist', '')}.plist`;
+            
+            let atlas = emotionAssets[name];
+            this._playLoadedEmotion(atlas, node);
+        } else {
+            // dont need extension .plist
+            RubUtils.getAtlasFromUrl(`emotions/${name}`, (atlas) => {
+                this._playLoadedEmotion(atlas, node);
+            });
+        }
+    }
+
+    static _playLoadedProp(atlas, config = {
+        target: null,
+        startPos: null,
+        endPos: null,
+        sample: PROP_SAMPLE
+    }, finishCallback) {
+        if (!atlas || !config.startPos) return;
+        
+        const animatingNode = new cc.Node();
+        const animation = animatingNode.addComponent(cc.Animation);
+
+        const sprite = animatingNode.addComponent(cc.Sprite);
+        sprite.trim = false;
+        sprite.spriteFrame = atlas.getSpriteFrames()[0];
+
+        animatingNode.position = config.startPos;
+
+        if (config.target && config.target instanceof cc.Node) {
+            config.target.addChild(animatingNode);
+        } else {
+            cc.director.getScene().addChild(animatingNode);
+        }
+
+        let mainAction = cc.callFunc(() => {
+            let spriteFrames = atlas.getSpriteFrames();
+            let clip = cc.AnimationClip.createWithSpriteFrames(spriteFrames, config.sample || PROP_SAMPLE);
+            clip.name = 'run';
+            clip.wrapMode = cc.WrapMode.Default;
+            
+            let names = atlas.name.split('.');
+            if(names && names[0]) {
+                let name = names[0];
+                let soundSource = `${name.charAt(0)}${name.slice(1).replace(/([A-Z])/g,($1) => `_${$1.toLowerCase()}`)}`.toUpperCase(); 
+
+                if(app.system.audioManager[`PROPS_${soundSource}`]) {
+                    app.system.audioManager.play(app.system.audioManager[`PROPS_${soundSource}`]);
+                }
+            }
+            
+            animation.addClip(clip);
+            animation.play('run');
+            animation.on('finished', () => {
+                animatingNode.destroy();
+                animatingNode.removeFromParent(true);
+                finishCallback && finishCallback();
+            });
+            config = null;
+            finishCallback = null;
+        });
+
+        animatingNode.runAction(config.endPos ? cc.sequence(cc.moveTo(0.6, config.endPos), mainAction) : mainAction);
+    }
+
+    static playProp(prosName, config = {
+        target: null,
+        startPos: null,
+        endPos: null,
+        sample: PROP_SAMPLE
+    }, finishCallback) {
+        if (Object.keys(propAssets).length > 0) {
+            let atlas = propAssets[prosName];
+            this._playLoadedProp(atlas, config, finishCallback);
+        } else {
+            this.playPropName(prosName, 'props', config.sample || PROP_SAMPLE, config.startPos, config.endPos, finishCallback)
+        }
+    }
+
+    static playPropName(prosName, resPath, sample, startPos, endPos, finishCallback) {
+        RubUtils.getAtlasFromUrl(`${resPath}/${prosName}`, (atlas) => {
+            this._playLoadedProp(atlas, { startPos, endPos }, finishCallback);
         });
     }
-    static playPropAtIndex(propIndex, startNode, endNode) {
-        const propName = props[propIndex];
 
-        Props.playPropName(propName, 'props/', 10, startNode, endNode);
+    static playPropAtIndex(propIndex, startNode, endNode) {
+        let propName = propAssetNames[propIndex];
+        propName && this.playProp(propName, {
+            startPos: CCUtils.getWorldPosition(startNode),
+            endPos: CCUtils.getWorldPosition(endNode)
+        });
     }
 }
 

@@ -4,36 +4,22 @@
 
 import app from 'app';
 import Component from 'Component';
-import utils from 'utils';
+import utils from 'PackageUtils';
 import CCUtils from 'CCUtils';
-import Events from 'Events'
+import Events from 'GameEvents'
+import ActionBlocker from 'ActionBlocker'
 
 export default class PlayerPositions extends Component {
 
-    static get ALIGN_TOP() {
-        return 'TOP';
-    }
-
-    static get ALIGN_BOTTOM() {
-        return 'BOTTOM';
-    }
-
-    static get ALIGN_LEFT() {
-        return 'LEFT';
-    }
-
-    static get ALIGN_RIGHT() {
-        return 'RIGHT';
-    }
-
     constructor() {
         super();
-
-        this.properties = {
-            ...this.properties,
+        
+        this.properties = this.assignProperties({
             inviteButtonName: 'inviteButton'
-        }
+        });
+        
         this.playerAnchors = null;
+        this.hiddenAnchors = null;
         this.scene;
     }
 
@@ -41,18 +27,30 @@ export default class PlayerPositions extends Component {
         return false;
     }
 
+    onLoad(){
+        super.onLoad()
+        this.scene = app.system.currentScene;
+        
+        this.hiddenAnchors = []
+        this.playerAnchors = []
+    }
+
     onEnable() {
         super.onEnable();
         this._initPlayerAnchors();
 
+        // this.scene = app.system.currentScene;
+        
+        if(this.scene){
+            this.scene.on(Events.ON_GAME_RESET, this._onGameReset, this);
+            this.scene.on(Events.ON_GAME_STATE_BEGIN, this._onGameBegin, this);
+            this.scene.on(Events.ON_GAME_STATE_STARTING, this._onGameStarting, this);
+            this.scene.on(Events.ON_GAME_STATE_STARTED, this._onGameStarted, this);
+            this.scene.on(Events.ON_GAME_STATE_PLAYING, this._onGamePlaying, this);
+            this.scene.on(Events.ON_GAME_STATE_ENDING, this._onGameEnding, this);
+        }
 
-        this.scene = app.system.currentScene;
-        this.scene.on(Events.ON_GAME_RESET, this._onGameReset, this);
-        this.scene.on(Events.ON_GAME_STATE_BEGIN, this._onGameBegin, this);
-        this.scene.on(Events.ON_GAME_STATE_STARTING, this._onGameStarting, this);
-        this.scene.on(Events.ON_GAME_STATE_STARTED, this._onGameStarted, this);
-        this.scene.on(Events.ON_GAME_STATE_PLAYING, this._onGamePlaying, this);
-        this.scene.on(Events.ON_GAME_STATE_ENDING, this._onGameEnding, this);
+        this.hiddenAnchors && this._hideAllAnchor(...this.hiddenAnchors)
     }
 
     _initPlayerAnchors() {
@@ -67,8 +65,10 @@ export default class PlayerPositions extends Component {
     }
 
     onClickAnchorButton() {
-        app.service.send({ cmd: app.commands.PLAYER_INVITE, data: {}, room: this.scene.room });
-        app.system.showToast(app.res.string('random_invite_player_successfully'));
+        ActionBlocker.runAction(ActionBlocker.INVITE_PLAYER, () => {
+            app.service.send({ cmd: app.commands.PLAYER_INVITE, data: {}, room: this.scene.room });
+            app.system.showToast(app.res.string('random_invite_player_successfully'));
+        })
     }
 
     _onGameReset(){
@@ -106,11 +106,16 @@ export default class PlayerPositions extends Component {
         }
     }
 
+    addToHideAnchor(...anchorIndexs){
+        !this.hiddenAnchors && (this.hiddenAnchors = [])
+        this.hiddenAnchors.push(...anchorIndexs)
+    }
+
     hideAllInviteButtons() {
-        this.playerAnchors.forEach((anchor, index) => {
-            let inviteButton = anchor.getChildByName(this.inviteButtonName);
-            utils.deactive(inviteButton);
-        });
+        // this.playerAnchors.forEach((anchor, index) => {
+        //     let inviteButton = anchor.getChildByName(this.inviteButtonName);
+        //     utils.deactive(inviteButton);
+        // });
     }
 
     showAllInviteButtons(excludeAnchorIndexes = []) {
@@ -121,7 +126,7 @@ export default class PlayerPositions extends Component {
         });
 
         this.scene.gamePlayers.isMePlayGame() && excludeAnchorIndexes.push(1);
-        excludeAnchorIndexes.forEach(index => this.hideInviteButton(index));
+        [...excludeAnchorIndexes, ...this.hiddenAnchors].forEach(index => this.hideInviteButton(index));
     }
 
     getPlayerAnchorByPlayerId(playerId, isItMe) {
@@ -156,7 +161,6 @@ export default class PlayerPositions extends Component {
         let seatIndexs = this._getPlayerSeatIndexs(gameCode);
         let meId = app.context.getMe().getPlayerId(app.system.currentScene.board.room);
         let seatIndex = seatIndexs[meId][playerId];
-        debug('playerId', playerId, 'meId', meId, 'seatIndex', seatIndex);
         return { seatIndex, seatIndexs, meId };
     }
 
@@ -198,8 +202,15 @@ export default class PlayerPositions extends Component {
     }
 
     hideAnchor(index) {
-        let anchor = index >= 0 && this.getPlayerAnchor(index);
-        if (anchor) anchor.active = false;
+        // let anchor = index >= 0 && this.getPlayerAnchor(index);
+        // if (anchor) anchor.active = false;
+    }
+
+    _hideAllAnchor(...indexs) {
+        indexs.forEach(index => {
+            let anchor = index >= 0 && this.getPlayerAnchor(index);
+            anchor && CCUtils.setVisible(anchor, false)
+        })
     }
 
     showAnchor(index) {
@@ -244,4 +255,25 @@ export default class PlayerPositions extends Component {
 
         return nextPlayerId;
     }
+
+    isPositionOnTop(anchorIndex) {
+        return false
+    }
+
+    isPositionOnRight(anchorIndex) {
+        return false
+    }
+
+    isPositionOnLeft(anchorIndex) {
+        return false
+    }
+
+    isMePositionOnLeft() {
+        return false;
+    }
 }
+
+PlayerPositions.ALIGN_TOP = 'TOP'
+PlayerPositions.ALIGN_BOTTOM = 'BOTTOM'
+PlayerPositions.ALIGN_LEFT = 'LEFT'
+PlayerPositions.ALIGN_RIGHT = 'RIGHT'

@@ -9,17 +9,24 @@ import BoardRenderer from 'BoardRenderer';
 export default class BoardCardRenderer extends BoardRenderer {
     constructor() {
         super();
-
-        this.properties = {
-            ...this.properties,
+        
+        this.properties = this.assignProperties({
             dealCardAnchor: cc.Node,
+            dealCardActionComponentNode: cc.Node,
             meDealCardListNode: cc.Node
-        }
+        });
 
         /**
          * @type {CardList}
          */
         this.meDealCardList = null;
+        this.dealCardActionComponent = null;
+    }
+
+    onLoad(){
+        super.onLoad()
+
+        this.dealCardActionComponent = this.dealCardActionComponentNode && this.dealCardActionComponentNode.getComponent('ActionComponent')
     }
 
     onEnable(){

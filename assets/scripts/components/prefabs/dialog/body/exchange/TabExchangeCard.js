@@ -1,158 +1,219 @@
 import app from 'app';
-import DialogActor from 'DialogActor';
+import PopupTabBody from 'PopupTabBody';
 import RubUtils from 'RubUtils';
-import ExchangeDialog from 'ExchangeDialog';
 import NodeRub from 'NodeRub';
-import numeral from 'numeral';
+import Utils from 'GeneralUtils';
+import CCUtils from 'CCUtils';
+import ActionBlocker from 'ActionBlocker';
 
-class TabExchangeCard extends DialogActor {
+class TabExchangeCard extends PopupTabBody {
     constructor() {
         super();
-        this.properties = {
-            ...this.properties,
-            listAmountCardContentNode: cc.Node,
-            cardAmountItem: cc.Node,
-            providerLbl: cc.Label,
+        this.properties = this.assignProperties({
+            providerItemNode: cc.Node,
+            cardItemNode: cc.Node,
             providerContainerNode: cc.Node,
-            providerDropDownNode: cc.Node,
-            providerDropDownItem: cc.Node,
-            amountNumberLbl: cc.Label,
-            amountNumberDropDownListNode: cc.Node,
-            amountNumberDropDownItem: cc.Node,
-            hint: cc.RichText
-        };
+            cardItemsContainerNode: cc.Node,
+            activeStateSprite: cc.Sprite,
+            inActiveStateSprite: cc.Sprite,
+            // providerLbl: cc.Label,
+            balanceLbl: cc.Label,
+            goldLbl: cc.Label,
+            itemLogoSprite: cc.Sprite,
+            layoutsNode: cc.Node,
+            updatePhoneNumberNode: cc.Node,
+            phoneNumberEditbox: cc.EditBox
+        });
 
         this.selectedItem = { id: null, gold: null, name: null };
+        this._tabData = {};
+        this._isLoaded = false;
     }
-
+    
     onLoad() {
         super.onLoad();
-        // wait til every requests is done
-        // this.node.active = false;
-        // show loader
-        // app.system.showLoader();
-        // this._getExchangeDialogComponent().hideUpdatePhone();
-        this.hint.string = "";
+        this.selectedItem = { id: null, gold: null, name: null };
+        this._tabData = {};
+        this._isLoaded = false;
+        
+        this._hideUpdatePhoneNumber();
     }
-
-    start() {
-        super.start();
+    
+    onDestroy() {
+        super.onDestroy();
+        window.free(this._tabData);
+        this.selectedItem = { id: null, gold: null, name: null };
+        this._isLoaded = false;
+    }
+    
+    loadData() {
+        if(Object.keys(this._data).length > 0)
+            return false;
+        super.loadData();
+        
         this._initCardsList();
+        return true;
     }
+    
+    onDataChanged(data = {}) {
+        let types = data[app.keywords.EXCHANGE_LIST.RESPONSE.TYPES];
+        !this._isLoaded && types && types.length > 0 && this._renderCards(types);
+    }
+    
+    onClickBackBtn() {
+        this._hideUpdatePhoneNumber();
+    }
+    
+    onClickUpdateBtn() {
+        let phoneNumber = this.phoneNumberEditbox.string; 
+        
+        // invalid phone number
+        if (!phoneNumber || isNaN(Number(phoneNumber)) || phoneNumber.length < 8) {
+            app.system.error(
+                app.res.string('error_phone_number_is_invalid')
+            );
+        } else {
+            let sendObject = {
+                cmd: app.commands.UPDATE_PHONE_NUMBER,
+                data: {
+                    [app.keywords.PHONE_NUMBER]: phoneNumber
+                }
+            };
 
+            app.service.send(sendObject);
+        } 
+    }
+    
     _addGlobalListener() {
         super._addGlobalListener();
         app.system.addListener(app.commands.EXCHANGE_LIST, this._onGetExchangeList, this);
         app.system.addListener(app.commands.EXCHANGE, this._onExchange, this);
+        app.system.addListener(app.commands.UPDATE_PHONE_NUMBER, this._onUpdatePhoneNumber, this);
     }
 
     _removeGlobalListener() {
         super._removeGlobalListener();
         app.system.removeListener(app.commands.EXCHANGE, this._onExchange, this);
         app.system.removeListener(app.commands.EXCHANGE_LIST, this._onGetExchangeList, this);
+        app.system.removeListener(app.commands.UPDATE_PHONE_NUMBER, this._onUpdatePhoneNumber, this);
     }
-
+    
+    _onUpdatePhoneNumber(data) {
+        if (data[app.keywords.RESPONSE_RESULT]) {
+            this._hideUpdatePhoneNumber();
+        }
+    }
+    
     _initCardsList() {
         var sendObject = {
             'cmd': app.commands.EXCHANGE_LIST,
             'data': {}
         };
-
-        app.system.showLoader();
+        this.showLoadingProgress();
         app.service.send(sendObject);
     }
 
     _onGetExchangeList(data) {
-        if (data[app.keywords.EXCHANGE_LIST.RESPONSE.TYPES]) {
-            let cardValues = [];
+        this.setLoadedData({
+            [app.keywords.EXCHANGE_LIST.RESPONSE.TYPES]: data[app.keywords.EXCHANGE_LIST.RESPONSE.TYPES] || []
+        });
+    }
+    
+    _renderCards(types) {
+        let cardValues = [];
+        this._isLoaded = true;
+        
+        types.map((type) => {
+            if (type[app.keywords.EXCHANGE_LIST.RESPONSE.ITEM_TYPE] == app.const.EXCHANGE_LIST_CARD_TYPE_ID) {
+                const idList = type[app.keywords.EXCHANGE_LIST.RESPONSE.ITEM_ID_LIST];
+                const nameList = type[app.keywords.EXCHANGE_LIST.RESPONSE.ITEM_NAME_LIST];
+                const goldList = type[app.keywords.EXCHANGE_LIST.RESPONSE.ITEM_GOLD_LIST];
+                const iconList = type[app.keywords.EXCHANGE_LIST.RESPONSE.ITEM_ICON_LIST];
 
-            let exchangeTypes = data[app.keywords.EXCHANGE_LIST.RESPONSE.TYPES];
-            exchangeTypes.map((type) => {
-                if (type[app.keywords.EXCHANGE_LIST.RESPONSE.ITEM_TYPE] == app.const.EXCHANGE_LIST_CARD_TYPE_ID) {
-                    const idList = type[app.keywords.EXCHANGE_LIST.RESPONSE.ITEM_ID_LIST];
-                    const nameList = type[app.keywords.EXCHANGE_LIST.RESPONSE.ITEM_NAME_LIST];
-                    const goldList = type[app.keywords.EXCHANGE_LIST.RESPONSE.ITEM_GOLD_LIST];
-                    const iconList = type[app.keywords.EXCHANGE_LIST.RESPONSE.ITEM_ICON_LIST];
+                for (let i = 0; i < idList.length; i++) {
+                    let itemId = idList[i];
+                    // let itemIcon = iconList[i].replace('thumb.', '');
+                    let neededGold = goldList[i];
+                    let itemName = nameList[i];
+                    let providerName = itemName.trim().match(/([a-zA-Z]{3,})/g);
+                    providerName && (providerName = providerName[0]);
 
-                    for (let i = 0; i < idList.length; i++) {
-                        let itemId = idList[i];
-                        // let itemIcon = iconList[i].replace('thumb.', '');
-                        let itemGold = goldList[i];
-                        let itemName = nameList[i];
-                        let amount = itemName.match(/([0-9]{2,})+(K)/g);
-                        amount && (amount = amount[0]);
-                        amount && (amount = Number(amount.replace('K', '')) * 1000);
-
-
-                        if (!app._.includes(cardValues, amount)) {
-                            cardValues.push(amount);
-
-                            // setup card item
-                            let ratioNode = cc.instantiate(this.cardAmountItem);
-                            let ratioItem = ratioNode.getComponent('RatioItem');
-                            ratioItem.initItemWithoutRatio(amount, itemGold);
-                            ratioNode.active = true;
-
-                            // add to container
-                            this.listAmountCardContentNode.addChild(ratioNode);
+                    let amount = itemName.toUpperCase().match(/([0-9]{2,})+(K)/g);
+                    amount && (amount = Number(amount[0].toUpperCase().replace('K', '')) * 1000);
+                    
+                    if (providerName && !Utils.isEmpty(providerName)) {
+                        if (!this._tabData.hasOwnProperty(providerName) || !this._tabData[providerName]) {
+                            this._tabData[providerName] = [];
                         }
-
-
-                        // init providerDropDown list
-                        let providerItem = cc.instantiate(this.providerDropDownItem);
-                        let lbl = providerItem.getChildByName('providername').getComponent(cc.Label);
-                        lbl && (lbl.string = itemName);
-
-                        providerItem.providerName = itemName;
-                        providerItem.providerPrice = itemGold;
-                        providerItem.providerId = itemId;
-                        providerItem.active = true;
-
-                        this.providerDropDownNode.addChild(providerItem);
+                        this._tabData[providerName].push({ id: itemId, gold: amount, needed: neededGold, name: itemName });
                     }
                 }
-            });
-            exchangeTypes = null;
+                this._initProviders();
+            }
+        });
+    }
+    
+    _initProviders() {
+        let count = 0;
+        for (let key in this._tabData) {
+            let activeState = `${key.toLowerCase()}-active`;
+            let inactiveState = `${key.toLowerCase()}-inactive`;
+            RubUtils.getSpriteFramesFromAtlas('blueTheme/atlas/providers', [activeState, inactiveState], (sprites) => {
+                this.activeStateSprite.spriteFrame = sprites[activeState];
+                this.inActiveStateSprite.spriteFrame = sprites[inactiveState];
 
-            // hide loader
-            app.system.hideLoader();
-        } else {
-            this.pageIsEmpty(this.node);
+                let provider = cc.instantiate(this.providerItemNode);
+                this.addNode(provider);
+                provider.active = true;
+                provider.name = key;
+
+                let toggle = provider.getComponent(cc.Toggle);
+                toggle.isChecked = count == 0;
+                this.providerContainerNode.addChild(provider);
+
+                if (toggle.isChecked) {
+                    // toggle.check();
+                    this.onProviderBtnClick(toggle);
+                }
+
+                count++;
+            });
         }
     }
 
-    onShowProviderDropDownBtnClick() {
-        this._toggleDropdown();
-    }
+    onProviderBtnClick(toggle) {
+        let name = toggle.node.name;
+        RubUtils.getSpriteFrameFromAtlas('blueTheme/atlas/providers', name.toLowerCase(), (sprite) => {
+            CCUtils.destroyAllChildren(this.cardItemsContainerNode, 0);
 
-    onProviderItemBtnClick(e) {
-        let target = e.currentTarget;
-        this.providerLbl.string = `${target.providerName}`;
+            this._tabData[name].forEach(item => {
+                // this.providerLbl.string = name.toUpperCase();
+                this.balanceLbl.string = Utils.numberFormat(item.needed);
+                this.goldLbl.string = `${Utils.numberFormat(item.gold)} VNĐ`;
 
-        this.hint.string = `<color=#FAE407>${target.providerName}</color> cần <color=#FAE407>${numeral(target.providerPrice).format('0,0')}</color> Xu để đổi.`;
+                this.itemLogoSprite.spriteFrame = sprite;
 
-        this.selectedItem = {
-            id: target.providerId,
-            gold: target.providerPrice,
-            name: target.providerName
-        };
+                let cardItem = cc.instantiate(this.cardItemNode);
+                this.addNode(cardItem);
 
-        this._toggleDropdown();
-    }
+                cardItem.active = true;
+                cardItem.itemSelected = { id: item.id, gold: item.needed, name: item.name };
 
-    _toggleDropdown() {
-        let state = this.providerContainerNode.active;
-        this.providerContainerNode.active = !state;
+                this.cardItemsContainerNode.addChild(cardItem);
+            });
+        });
     }
 
     onExchangeBtnClick(event) {
+        this.selectedItem = event.currentTarget.parent.itemSelected;
+
         let denyCb = () => true;
         let okCallback = this._onConfirmDialogBtnClick.bind(this);
 
         if (this.selectedItem.id) {
             let { id, gold, name } = this.selectedItem;
             app.system.confirm(
-                app.res.string('exchange_dialog_confirmation', { gold: numeral(gold).format('0,0'), name }),
+                app.res.string('exchange_dialog_confirmation', { gold: Utils.numberFormat(gold), name }),
                 denyCb,
                 okCallback
             );
@@ -171,25 +232,23 @@ class TabExchangeCard extends DialogActor {
      * @memberOf TabExchangeCard
      */
     _onConfirmDialogBtnClick(event) {
-
         let parentNode = this.node.parent.parent;
 
-        if (app.context.needUpdatePhoneNumber()) {
-            // hide this node
-            this._hide();
-            // show update_phone_number
-            this._getExchangeDialogComponent().showUpdatePhone();
-        } else {
-            let { id, gold, } = this.selectedItem;
-            let myCoin = app.context.getMyInfo().coin;
+        // if (app.context.needUpdatePhoneNumber()) {
+        //     // hide this node
+        //     this._showUpdatePhoneNumber();
+        // } else {
+        let { id, gold, name} = this.selectedItem;
+        let myCoin = app.context.getMeBalance();
 
-            if (Number(myCoin) < Number(gold)) {
-                app.system.error(
-                    app.res.string('error_exchange_dialog_not_enough_money', { ownerCoin: numeral(myCoin).format('0,0'), name })
-                );
-                return;
-            }
+        if (Number(myCoin) < Number(gold)) {
+            app.system.error(
+                app.res.string('error_exchange_dialog_not_enough_money', { ownerCoin: Utils.numberFormat(myCoin), name })
+            );
+            return;
+        }
 
+        ActionBlocker.runAction(ActionBlocker.USER_WITHDRAWAL, () => {
             let data = {};
             data[app.keywords.EXCHANGE.REQUEST.ID] = id;
             let sendObject = {
@@ -198,36 +257,30 @@ class TabExchangeCard extends DialogActor {
             };
 
             // show loader
-            app.system.showLoader();
+            app.system.showLoader(app.res.string('waiting_server_response'));
             app.service.send(sendObject);
-        }
+        });
+        // }
     }
 
     _onExchange(data) {
         app.system.hideLoader();
-        if (data[app.keywords.RESPONSE_RESULT] === false) {
-            app.system.info(`${data[app.keywords.RESPONSE_MESSAGE]}`);
-        } else { // true
-            app.system.error(
-                app.res.string('error_system')
-            );
+        if (data[app.keywords.RESPONSE_RESULT] === true) {
+            app.system.showToast(`${data[app.keywords.RESPONSE_MESSAGE]}`);
+        } else {
+            ActionBlocker.resetLastTime(ActionBlocker.USER_WITHDRAWAL);
+            data[app.keywords.RESPONSE_MESSAGE]  && app.system.error(data[app.keywords.RESPONSE_MESSAGE]);
         }
     }
 
-    _getExchangeDialogComponent() {
-        // this node -> body -> dialog -> dialog (parent)
-        let dialogNode = this.node.parent.parent.parent;
-        console.log(dialogNode.getComponent(ExchangeDialog));
-
-        return dialogNode.getComponent(ExchangeDialog);
+    _hideUpdatePhoneNumber() {
+        CCUtils.deactive(this.updatePhoneNumberNode);
+        CCUtils.active(this.layoutsNode);
     }
-
-    _getUpdatePhoneNode() {
-        return this._getExchangeDialogComponent().updatePhoneNode();
-    }
-
-    _hide() {
-        this.node.active = false;
+    
+    _showUpdatePhoneNumber() {
+        CCUtils.active(this.updatePhoneNumberNode);
+        CCUtils.deactive(this.layoutsNode);
     }
 }
 

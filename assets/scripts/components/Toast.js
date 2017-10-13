@@ -10,11 +10,11 @@ export default class Toast extends Component {
 
     constructor() {
         super();
-        this.properties = {
-            ...this.properties,
+        
+        this.properties = this.assignProperties({
             toastItemPrefab : cc.Prefab,
             toastList : cc.Node,
-        }
+        });
     }
 
     onEnable(){
@@ -23,7 +23,7 @@ export default class Toast extends Component {
     }
 
     info(message, duration = Toast.SHORT_TIME){
-        this._createToastItem(message, ToastItem.TYPE_MESSAGE, duration);
+        this._createToastItem(message, ToastItem.TYPE_MESSAGE, duration || Toast.SHORT_TIME);
     }
 
     longInfo(message){
@@ -40,14 +40,16 @@ export default class Toast extends Component {
 
     _createToastItem(message, type, duration){
         let toastItemNode = cc.instantiate(this.toastItemPrefab);
-        let toastItem = toastItemNode.getComponent('ToastItem');
-        toastItem._init({message, type, duration});
-        this.toastList.addChild(toastItemNode);
+        if(toastItemNode) {
+            let toastItem = toastItemNode.getComponent('ToastItem');
+            toastItem._init({message, type, duration});
+            this.toastList.addChild(toastItemNode);
+        }
     }
 }
 
-Toast.LONG_TIME = 10000;
-Toast.SHORT_TIME = 10000;
+Toast.SHORT_TIME = 4000;
+Toast.LONG_TIME = 6000;
 Toast.FOREVER = 10000000;
 
 app.createComponent(Toast);

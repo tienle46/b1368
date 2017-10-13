@@ -3,7 +3,7 @@
  */
 
 import app from 'app'
-import {GameUtils, utils} from 'utils'
+import {GameUtils, utils} from 'PackageUtils'
 import Card from "../../base/card/Card";
 import ArrayUtils from "../../../utils/ArrayUtils";
 
@@ -68,9 +68,14 @@ export default class BaCayUtils {
     }
 
     static calculateMaxCuocBien(player, player2){
-        let availableBalance1 = (GameUtils.getUserBalance(player.user) - player.betAmount - player.currentCuocBien) / 2;
-        let availableBalance2 = (GameUtils.getUserBalance(player2.user) - player2.betAmount - player2.currentCuocBien) / 2;
-        return Math.min(availableBalance1, availableBalance2);
+
+        let totalMaxCuocBien1 = parseInt((GameUtils.getUserBalance(player.user) - player.betAmount * 2 - player.gopGaValue) / 2)
+        let totalMaxCuocBien2 = parseInt((GameUtils.getUserBalance(player2.user) - player2.betAmount * 2 - player2.gopGaValue) / 2)
+
+        let availableBalance1 = totalMaxCuocBien1 - player.currentCuocBien;
+        let availableBalance2 = totalMaxCuocBien2 - player2.currentCuocBien;
+
+        return Math.min(availableBalance1 < 0 ? 0 : availableBalance1, availableBalance2 < 0 ? 0 : availableBalance2);
     }
 
     static checkCuocBienWithPlayer(me, player){
@@ -90,7 +95,11 @@ export default class BaCayUtils {
             checkResult = false
             msg = app.res.string('game_bacay_chi_cuoc_bien_mot_lan');
         }else{
-            //More check action
+            let maxCuocBien = this.calculateMaxCuocBien(me, player);
+            if(maxCuocBien <= 0){
+                checkResult = false
+                msg = app.res.string('game_bacay_not_enough_balance_to_cuoc_bien');
+            }
         }
 
         return {checkResult, msg};
@@ -104,12 +113,12 @@ export default class BaCayUtils {
         let usernames = [me.user.name, player.user.name];
         let excludePlayers = [...me.getExcludeCuocBienPlayers(), ...player.getExcludeCuocBienPlayers()];
 
-        if(ArrayUtils.containsSome(excludePlayers, usernames)){
-            checkResult = false
-            msg = app.res.string('game_bacay_chi_cuoc_bien_mot_lan');
-        }else{
-            //More check action
-        }
+        // if(ArrayUtils.containsSome(excludePlayers, usernames)){
+        //     checkResult = false
+        //     msg = app.res.string('game_bacay_chi_cuoc_bien_mot_lan');
+        // }else{
+        //     //More check action
+        // }
 
         return {checkResult, msg};
     }
@@ -148,14 +157,25 @@ export default class BaCayUtils {
         return {valid: true, msg: ''};
     }
 
-    static calculateMaxPlayerBet(player, masterPlayer) {
-        if(!player || !masterPlayer) return player.board.minBet;
+    static calculateMaxPlayerBet(player, masterPlayer, defaultValue = 0) {
+        if(!player || !masterPlayer) return defaultValue;
 
-        let totalPlayBalance = GameUtils.getUserBalance(player.user);
-        let masterBalance = GameUtils.getUserBalance(masterPlayer.user);
-        let maxBet1 = masterBalance / 2 - masterPlayer.betAmount;
-        let maxBet2 = totalPlayBalance - player.betAmount - player.currentCuocBien;
+        let maxValueByPlayer = parseInt(GameUtils.getUserBalance(player.user) / 2)
 
-        return Math.min(maxBet1, maxBet2);
+        let masterBalance = GameUtils.getUserBalance(masterPlayer.user)
+        let maxValueByMaster = player.scene.gamePlayers.players.length <= 1 || player.board.minBet <= 0 ? 0
+            : parseInt(masterBalance / (2 * (player.scene.gamePlayers.players.length - 1)))
+
+        return Math.max(Math.min(maxValueByPlayer, maxValueByMaster), 0);
+
+        // let currentBetAmount = !player.betAmount || player.betAmount < player.board.minBet ? player.board.minBet : player.betAmount;
+        // let currentMasterBetAmount = !masterPlayer.betAmount || masterPlayer.betAmount < masterPlayer.board.minBet ? masterPlayer.board.minBet : masterPlayer.betAmount;
+        //
+        // let totalPlayBalance = GameUtils.getUserBalance(player.user)
+        // let masterBalance = GameUtils.getUserBalance(masterPlayer.user)
+        // let maxBet1 = parseInt(masterBalance / 2 - currentMasterBetAmount)
+        // let maxBet2 =  parseInt((totalPlayBalance - player.currentCuocBien) / 2)
+        //
+        // return Math.min(maxBet1, maxBet2);
     }
 }

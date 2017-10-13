@@ -1,58 +1,60 @@
-cc.Class({
-    extends: cc.Component,
+import app from 'app';
+import Actor from 'Actor';
+import Events from 'GameEvents';
 
-    properties: {
-        // foo: {
-        //    default: null,      // The default value will be used only when the component attaching
-        //                           to a node for the first time
-        //    url: cc.Texture2D,  // optional, default is typeof default
-        //    serializable: true, // optional, default is true
-        //    visible: true,      // optional, default is true
-        //    displayName: 'Foo', // optional
-        //    readonly: false,    // optional, default is false
-        // },
-        // ...
+class Item extends Actor {
+    constructor() {
+        super();
+        this.properties = {
+            jarAnchorNode: cc.Node
+        };
 
-        gameCode: "",
-        gameID: 0,
-        _clickListener: null
-
-    },
-
-    // use this for initialization
-    onLoad: function () {
-
-        // var listenerTouch = {
-        //     event: cc.EventListener.TOUCH_ONE_BY_ONE,
-        //     onTouchBegan: function(touch, event) {
-        //         this.handleClickItem();
-        //         return true;
-        //     }.bind(this)
-        // };
-
-        // var listenerClick = {
-        //     event: cc.EventListener.KEYBOARD,
-        //     onKeyPressed: function(keyCode, event) {
-        //         this.handleClickItem();
-        //         return true;
-        //     }.bind(this)
-        // };
-
-        // cc.eventManager.addListener(listenerTouch,this.node);
-        // cc.eventManager.addListener(listenerClick,this.node);
-
-    },
-
-    listenOnClickListener:function (cb) {
-        this._clickListener = cb;
-    },
-
-    handleClickItem:function () {
-        this._clickListener && this._clickListener(this.gameCode);
+        this._clickListener = null;
+        this.gameCode = null;
+        this._jarAdded = false;
     }
 
-    // called every frame, uncomment this function to activate update callback
-    // update: function (dt) {
+    onLoad() {
+        super.onLoad();
+    }
+    
+    _addGlobalListener() {
+        super._addGlobalListener();
+        app.system.addListener(Events.ON_LIST_HU_UPDATED, this._updateItemJar, this);
+    }
+    
+    _removeGlobalListener() {
+        super._removeGlobalListener();
+        app.system.removeListener(Events.ON_LIST_HU_UPDATED, this._updateItemJar, this);
+    }
+    
+    _updateItemJar() {
+        if(!this._jarAdded && app.jarManager.hasJar(this.gameCode)) {
+            this._jarAdded = true;
+            app.jarManager.addJarToParent(this.getJarAnchor(), this.gameCode);
+        }
+    }
+    
+    onDestroy() {
+        super.onDestroy();
+        this._clickListener = null;
+    }
 
-    // },
-});
+    listenOnClickListener(cb) {
+        this._clickListener = cb;
+    }
+
+    handleClickItem() {
+        this._clickListener && this._clickListener(this.gameCode);
+    }
+    
+    getJarAnchor() {
+        return this.jarAnchorNode;    
+    }
+    
+    // initJar({id, remainTime, startTime, endTime, currentMoney} = {}) {
+    //     this.jarNode.getComponent('JarComponent').init({id, remainTime, startTime, endTime, currentMoney});
+    // }
+}
+
+app.createComponent(Item);

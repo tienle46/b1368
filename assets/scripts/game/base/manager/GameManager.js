@@ -55,7 +55,8 @@ const maxPlayersMap = {
     [app.const.gameCode.TLMN]: 4,
     [app.const.gameCode.TLMNM]: 4,
     [app.const.gameCode.BA_CAY]: 8,
-    [app.const.gameCode.BAU_CUA]: 6,
+    [app.const.gameCode.BAU_CUA]: 9,
+    [app.const.gameCode.XOC_DIA]: 9,
     [app.const.gameCode.XAM]: 4,
     [app.const.gameCode.XITO]: 5,
     [app.const.gameCode.LIENG]: 5,
@@ -93,6 +94,7 @@ export default class GameManager {
                         callback();
                     }
                 });
+
             },
             (callback) => {
                 let playerPath = playerPrefabPathMap[gameCode];
@@ -127,9 +129,6 @@ export default class GameManager {
                 }
             });
 
-            log("results: ", results);
-            log("err: ", err);
-
             if (loadedRes) {
                 cb && cb();
             } else {
@@ -155,7 +154,7 @@ export default class GameManager {
     //
     // createPlayer(gameCode) {
     //
-    //     console.log("createPlayer: ", gameCode);
+    //     log("createPlayer: ", gameCode);
     //
     //     let playerClass = playerClassMap[gameCode];
     //     let playerRendererClassName = playerRendererNameMap[gameCode];

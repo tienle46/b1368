@@ -53,6 +53,18 @@ export default class FourPlayerPositions extends PlayerPositions {
         return anchorIndex == 3;
     }
 
+    isPositionOnRight(anchorIndex) {
+        return anchorIndex == 4;
+    }
+
+    isPositionOnLeft(anchorIndex) {
+        return anchorIndex == 2;
+    }
+
+    isMePositionOnLeft() {
+        return true;
+    }
+
     getPlayerAnchor(id){
         switch (id){
             case 1:

@@ -1,16 +1,15 @@
 import app from 'app';
-import utils from 'utils';
+import utils from 'PackageUtils';
 import Component from 'Component';
 
 export default class TextView extends Component {
     constructor() {
         super();
         this.currentWidth = 0;
-        this.lineHeight = 24;
         this.isLoaded = false;
-
-        this.properties = {
-            ...this.properties,
+        
+        this.properties = this.assignProperties({
+            lineHeight: 24,
             label: cc.Label,
             lines: 1,
             minWidth: 100,
@@ -18,22 +17,24 @@ export default class TextView extends Component {
             resizeWidth: true,
             increaseWidth: 40,
             margin: 5
-        };
+        });
     }
 
 
     onLoad() {
-        // console.log("onLoad textview: ", this.label.lineHeight);
+        // log("onLoad textview: ", this.label.lineHeight);
 
         this.lineHeight = this.getLabelLineHeight();
         this.label.overflow = cc.Label.Overflow.RESIZE_HEIGHT;
         this.label.string = "";
+            
         this.isLoaded = true;
         this.currentWidth = this.node.width;
 
     }
+
     getLabelLineHeight() {
-        if (cc.sys.isBrowser) {
+        if (app.env.isBrowser()) {
             return this.label.lineHeight;
         }
 
@@ -125,10 +126,9 @@ export default class TextView extends Component {
 
     _setTextViewSize() {
         if (!this.label) return;
-
         this.label.node.width = this.minWidth;
         this.label.node.height = this.lineHeight;
-        this.label.fontSize = this.fontSize;
+        this.fontSize && (this.label.fontSize = this.fontSize);
     }
 
     getWidth() {

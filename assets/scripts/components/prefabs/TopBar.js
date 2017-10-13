@@ -1,74 +1,76 @@
 import app from 'app';
-import Actor from 'Actor';
-import TimerRub from 'TimerRub';
-import DialogRub from 'DialogRub';
+import utils from 'PackageUtils';
+import DialogActor from 'DialogActor';
+import SFS2X from 'SFS2X';
+import Events from 'GameEvents';
+import HttpImageLoader from 'HttpImageLoader';
+import PromptPopup from 'PromptPopup';
+import CCUtils from 'CCUtils';
+import Linking from 'Linking';
 
-class TopBar extends Actor {
+class TopBar extends DialogActor {
     constructor() {
         super();
-
-        this.properties = {
-            ...this.properties,
-            highLightNode: cc.Node,
-            moreButton: cc.Button,
-            eventButton: cc.Button,
-            backButton: cc.Button,
-            chatBtn: cc.Button,
-            soundControl: cc.Node,
-            titleContainerNode: cc.Node,
+        
+        this.properties = this.assignProperties({
+            userInfoCoinLbl: cc.Label,
+            userNameLbl: cc.Label,
+            msgNotifyBgNode: cc.Node,
+            avatarSpriteNode: cc.Node,
+            notifyCounterLbl: cc.Label,
+            buddyNotifyLbl: cc.Label,
+            buddyNotifyNode: cc.Node,
             dropDownOptions: cc.Node,
-            supportPhoneNumberLbl: cc.Label,
             dropDownBgNode: cc.Node,
-            promptPrefab: cc.Prefab
-        }
-
-        this._showBack = false;
-        this.intervalTimer = null;
-        this.interval = 2000; // display high light message after 2s, if any
+            promptPrefab: cc.Prefab,
+            settingDialog: cc.Prefab,
+            vipLevel: cc.Label,
+            fanPageNode: cc.Node,
+            shopBtnNode: cc.Node
+        });
     }
 
     onLoad() {
         super.onLoad();
-        if (this._showBack) {
-            this.moreButton.node.active = false;
-            this.eventButton.node.active = false;
-            this.titleContainerNode.active = false;
-        } else {
-            this.backButton.node.active = false;
-            this.chatBtn.node.active = false;
-        }
-
-        this.dropDownBgNode.on(cc.Node.EventType.TOUCH_END, () => {
-            this.dropDownOptions.active = false;
-        });
-
-        this.supportPhoneNumberLbl.string = `Hỗ trợ: ${app.config.supportHotline}`;
+        this.dropDownBgNode.on(cc.Node.EventType.TOUCH_END, () => this.dropDownOptions.active = false);
+        this.vipLevel.string = app.context.getMyInfo().vipLevel;
+        CCUtils.setVisible(this.msgNotifyBgNode, false);
     }
 
-    giveFeedbackClicked() {
-        let prompt = cc.instantiate(this.promptPrefab);
-        let option = {
-            handler: this._onFeedbackConfirmed.bind(this),
-            title: 'Góp ý',
-            description: 'Nhập ý kiến :',
-            editBox: {
-                height: 150,
-                inputMode: cc.EditBox.InputMode.ANY
-            }
-        };
-        prompt.getComponent('PromptPopup').init(null, option);
+    onEnable() {
+        super.onEnable()
+        this._fillUserData()
+        this._onBuddyNotifyCountChanged()
+        this._onMessageCountChanged()
     }
 
-    onDestroy() {
-        super.onDestroy();
-        if (this.intervalTimer) {
-            this.intervalTimer.clear();
-            this.intervalTimer = null;
+    start() {
+        super.start();
+        this._requestMessageNotification();
+        
+        if(this.avatarSpriteNode){
+            let sprite = this.avatarSpriteNode.getComponent(cc.Sprite);
+            // app.context.getMyInfo().avatarUrl ? HttpImageLoader.loadImageToSprite(sprite, app.context.getMyInfo().avatarUrl) : HttpImageLoader.loadDefaultAvatar(sprite);
+            app.context.getMyAvatar(sprite, 'thumb');
         }
     }
 
-    showBackButton() {
-        this._showBack = true;
+    _addGlobalListener() {
+        super._addGlobalListener();
+        app.system.addListener(SFS2X.SFSEvent.USER_VARIABLES_UPDATE, this._onUserVariablesUpdate, this);
+        app.system.addListener(Events.ON_BUDDY_UNREAD_MESSAGE_COUNT_CHANGED, this._onBuddyNotifyCountChanged, this);
+        app.system.addListener(Events.CLIENT_CONFIG_CHANGED, this._onConfigChanged, this);
+        app.system.addListener(Events.ON_MESSAGE_COUNT_CHANGED, this._onMessageCountChanged, this);
+        app.system.addListener('user.changes.balance', this._onUserChangesBalance, this);
+    }
+
+    _removeGlobalListener() {
+        super._removeGlobalListener();
+        app.system.removeListener(SFS2X.SFSEvent.USER_VARIABLES_UPDATE, this._onUserVariablesUpdate, this);
+        app.system.removeListener(Events.ON_BUDDY_UNREAD_MESSAGE_COUNT_CHANGED, this._onBuddyNotifyCountChanged, this);
+        app.system.removeListener(Events.CLIENT_CONFIG_CHANGED, this._onConfigChanged, this);
+        app.system.removeListener(Events.ON_MESSAGE_COUNT_CHANGED, this._onMessageCountChanged, this);
+        app.system.removeListener('user.changes.balance', this._onUserChangesBalance, this);
     }
 
     onClickLogout() {
@@ -77,28 +79,27 @@ class TopBar extends Actor {
             null,
             this._onConfirmLogoutClick.bind(this)
         );
+        this._hideDropDownMenu()
     }
 
     onFanpageClicked() {
         cc.sys.openURL(`${app.config.fanpage}`);
+        this._hideDropDownMenu()
     }
 
-    onSoundBtnClick() {
-        this.soundControl && this.soundControl.getComponent('SoundControl').show();
+    giveFeedbackClicked() {
+        PromptPopup.show(app.system.getCurrentSceneNode(), {
+            handler: this._onFeedbackConfirmed.bind(this),
+            title: 'Góp ý',
+            description: 'Nhập ý kiến',
+            acceptLabelText: "Gửi"
+        })
+        this._hideDropDownMenu()
     }
 
     handleSettingAction(e) {
-
-    }
-
-    onClickEventAction() {
-        let dialog = new DialogRub(this.node.parent, null, { title: 'Sự kiện' });
-        dialog.addBody('dashboard/dialog/prefabs/event/event_dialog');
-    }
-
-
-    onChatBtnClick() {
-        console.log('onChatClick');
+        let dialog = cc.instantiate(this.settingDialog);
+        app.system.getCurrentSceneNode().addChild(dialog);
     }
 
     handleMoreAction() {
@@ -106,73 +107,33 @@ class TopBar extends Actor {
         this.dropDownOptions.active = !state;
     }
 
-    handleBackAction() {
-        // this._listenBackAction && this._listenBackAction();
-        app.system.loadScene(app.const.scene.DASHBOARD_SCENE);
+    onClickNapXuAction() {
+        app.visibilityManager.goTo(Linking.ACTION_TOPUP);
     }
 
-
-    /**
-     * PRIVATES 
-     */
-
-    _onConfirmLogoutClick() {
-        app.service.manuallyDisconnect();
+    onFriendBtnClick() {
+        app.visibilityManager.goTo(Linking.ACTION_BUDDY);
     }
 
-    // on high light message listener
-    _onHLMListener() {
-        if (!this.intervalTimer) {
-            this.intervalTimer = new TimerRub(this._onRunningHLM.bind(this), this.interval);
-        }
+    onClickTransferAwardAction() {
+        app.visibilityManager.goTo(Linking.ACTION_EXCHANGE);
     }
 
-    _onRunningHLM() {
-        let hlm = app.system.hlm.getMessage();
-
-        /**
-         * hlm -> pause interval -> display message -> resume -> hlm
-         */
-        if (hlm && this.highLightNode && this.intervalTimer) {
-            // pause timer
-            this.intervalTimer.pause();
-
-            // show hight light
-            let txt = this.highLightNode.getComponent(cc.RichText) || this.highLightNode.getComponent(cc.label);
-            // update text
-            txt.string = hlm.msg;
-
-            let txtWidth = this.highLightNode.getContentSize().width;
-            let montorWidth = cc.director.getWinSize().width;
-            let nodePositionY = this.highLightNode.getPosition().y;
-
-            let movingTime = (txtWidth + montorWidth / 2) / 85;
-            let startPosition = cc.v2(this.highLightNode.getPosition());
-            let endPosition = cc.v2(0 - txtWidth - montorWidth / 2, nodePositionY);
-
-
-            let action = cc.moveTo(movingTime, endPosition);
-            let repeatCount = hlm.rc;
-
-            let rp = cc.repeat(cc.sequence(action, cc.callFunc(() => {
-                this.highLightNode.setPosition(startPosition);
-                repeatCount--;
-                // if complete counting, resume timer interval
-                repeatCount === 0 && this.intervalTimer.resume();
-            })), Number(hlm.rc));
-
-            this.highLightNode.runAction(rp);
-        }
+    callSupportClicked(e) {
+        cc.sys.openURL(`tel:${app.config.supportHotline}`);
     }
 
-    _addGlobalListener() {
-        super._addGlobalListener();
-        this.titleContainerNode.active && app.system.addListener(app.commands.HIGH_LIGHT_MESSAGE, this._onHLMListener, this);
+    onClickMessageAction() {
+        app.visibilityManager.goTo(Linking.ACTION_SYSTEM_MESSAGE);
     }
 
-    _removeGlobalListener() {
-        super._removeGlobalListener();
-        this.titleContainerNode.active && app.system.removeListener(app.commands.HIGH_LIGHT_MESSAGE, this._onHLMListener, this);
+    onClickUserInfoAction() {
+        app.visibilityManager.goTo(Linking.ACTION_PERSONAL_INFO);
+    }
+    
+    _fillUserData() {
+        this.userNameLbl.string = app.context.getMeDisplayName()
+        this.userInfoCoinLbl.string = `${utils.numberFormat(app.context.getMeBalance() || 0)}`;
     }
 
     _onFeedbackConfirmed(content) {
@@ -194,6 +155,71 @@ class TopBar extends Actor {
 
             }, app.const.scene.DASHBOARD_SCENE);
         }
+        return true;
+    }
+
+    _onMessageCountChanged(){
+        let totalMessageCount = app.context.getTotalMessageCount();
+        this.notifyCounterLbl.string = totalMessageCount;
+        this.msgNotifyBgNode.active = totalMessageCount > 0;
+    }
+    
+    _requestMessageNotification() {
+        let sendObject = {
+            cmd: app.commands.NEW_NOTIFICATION_COUNT
+        };
+        app.service.send(sendObject);
+    }
+    
+    _onConfirmLogoutClick() {
+        app.service.manuallyDisconnect();
+    }
+
+    _hideDropDownMenu() {
+        CCUtils.setVisible(this.dropDownOptions, false)
+    }
+
+    _onConfigChanged() {
+        app.context.getMyAvatar(this.avatarSpriteNode.getComponent(cc.Sprite), 'thumb')
+        // HttpImageLoader.loadDefaultAvatar(this.avatarSpriteNode.getComponent(cc.Sprite));
+    }
+
+    _onBuddyNotifyCountChanged(count) {
+        if (count > 0) {
+            this.buddyNotifyLbl.string = `${count}`;
+            utils.setVisible(this.buddyNotifyNode, true);
+        } else {
+            this.buddyNotifyLbl.string = '';
+            utils.setVisible(this.buddyNotifyNode, false);
+        }
+    }
+
+    _onUserVariablesUpdate(ev) {
+        let changedVars = ev[app.keywords.BASE_EVENT_CHANGED_VARS] || [];
+        changedVars.map(v => {
+            if (v == app.keywords.USER_VARIABLE_BALANCE) {
+                this.userInfoCoinLbl.string = `${utils.numberFormat(app.context.getMeBalance() || 0)}`;
+            }
+            
+            if(v == app.keywords.CHANGE_AVATAR_URL) {
+                let sprite = this.avatarSpriteNode.getComponent(cc.Sprite);
+                // sprite && (RubUtils.loadImageToSprite(sprite, app.context.getMyInfo().avatarUrl))
+                sprite && app.context.getMyAvatar(sprite, 'thumb');
+            }
+            
+            if(v == app.keywords.USER_VARIABLE_DISPLAY_NAME) {
+                let me = app.context.getMyInfo();
+                this.userNameLbl.string = app.context.getMyInfo().displayName;
+            }
+            
+            if(v == app.keywords.VIP_LEVEL) {
+                this.vipLevel.string = app.context.getMyInfo().vipLevel;
+            }
+        });
+    }
+    
+    _onUserChangesBalance(balance) {
+        this.userInfoCoinLbl.string = `${utils.numberFormat(balance || 0)}`;
     }
 }
 

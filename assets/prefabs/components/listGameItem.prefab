@@ -10,14 +10,14 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "GameResultItemPrefab",
+    "_name": "GameIconItem",
     "_objFlags": 0,
     "_opacity": 255,
     "_color": {
       "__type__": "cc.Color",
-      "r": 214,
-      "g": 214,
-      "b": 214,
+      "r": 255,
+      "g": 255,
+      "b": 255,
       "a": 255
     },
     "_cascadeOpacityEnabled": true,
@@ -29,10 +29,14 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 700,
-      "height": 80
+      "width": 180,
+      "height": 180
     },
-    "_children": [],
+    "_children": [
+      {
+        "__id__": 2
+      }
+    ],
     "_rotationX": 0,
     "_rotationY": 0,
     "_scaleX": 1,
@@ -52,22 +56,80 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 2
-      },
-      {
-        "__id__": 3
-      },
-      {
         "__id__": 4
+      },
+      {
+        "__id__": 5
       },
       {
         "__id__": 6
       }
     ],
     "_prefab": {
-      "__id__": 7
+      "__id__": 8
     },
     "groupIndex": 0
+  },
+  {
+    "__type__": "cc.Node",
+    "_name": "huAnchor",
+    "_objFlags": 0,
+    "_opacity": 255,
+    "_color": {
+      "__type__": "cc.Color",
+      "r": 255,
+      "g": 255,
+      "b": 255,
+      "a": 255
+    },
+    "_cascadeOpacityEnabled": true,
+    "_parent": {
+      "__id__": 1
+    },
+    "_anchorPoint": {
+      "__type__": "cc.Vec2",
+      "x": 0.5,
+      "y": 0.5
+    },
+    "_contentSize": {
+      "__type__": "cc.Size",
+      "width": 0,
+      "height": 0
+    },
+    "_children": [],
+    "_rotationX": 0,
+    "_rotationY": 0,
+    "_scaleX": 1,
+    "_scaleY": 1,
+    "_position": {
+      "__type__": "cc.Vec2",
+      "x": 57,
+      "y": -33
+    },
+    "_skewX": 0,
+    "_skewY": 0,
+    "_localZOrder": 0,
+    "_globalZOrder": 0,
+    "_tag": -1,
+    "_opacityModifyRGB": false,
+    "_id": "",
+    "_active": true,
+    "_components": [],
+    "_prefab": {
+      "__id__": 3
+    },
+    "groupIndex": 0
+  },
+  {
+    "__type__": "cc.PrefabInfo",
+    "root": {
+      "__id__": 1
+    },
+    "asset": {
+      "__uuid__": "8bc08dd6-c378-4084-ba29-be3b5c62ef0a"
+    },
+    "fileId": "f2a2cA8FMFFiYFU5ccuP2yI",
+    "sync": false
   },
   {
     "__type__": "cc.Sprite",
@@ -77,7 +139,9 @@
       "__id__": 1
     },
     "_enabled": true,
-    "_spriteFrame": null,
+    "_spriteFrame": {
+      "__uuid__": "3c68eaf1-37a9-4205-b829-9418fda047f9"
+    },
     "_type": 1,
     "_sizeMode": 0,
     "_fillType": 0,
@@ -91,7 +155,9 @@
     "_isTrimmedMode": true,
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
-    "_atlas": null
+    "_atlas": {
+      "__uuid__": "93465fa0-fce2-468e-9854-ab8502fbd590"
+    }
   },
   {
     "__type__": "cdd8clWz2ZKeInElqTHkrjB",
@@ -101,9 +167,9 @@
       "__id__": 1
     },
     "_enabled": true,
-    "gameCode": "",
-    "gameID": 0,
-    "_clickListener": null
+    "jarAnchorNode": {
+      "__id__": 2
+    }
   },
   {
     "__type__": "cc.Button",
@@ -113,28 +179,28 @@
       "__id__": 1
     },
     "_enabled": true,
-    "transition": 0,
+    "transition": 3,
     "pressedColor": {
       "__type__": "cc.Color",
       "r": 127,
       "g": 127,
       "b": 127,
-      "a": 127.5
+      "a": 127
     },
     "hoverColor": {
       "__type__": "cc.Color",
       "r": 127,
       "g": 127,
       "b": 127,
-      "a": 127.5
+      "a": 127
     },
     "duration": 0.1,
-    "zoomScale": 1.2,
+    "zoomScale": 1.05,
     "pressedSprite": null,
     "hoverSprite": null,
     "clickEvents": [
       {
-        "__id__": 5
+        "__id__": 7
       }
     ],
     "_N$interactable": true,
@@ -151,7 +217,7 @@
       "r": 127,
       "g": 127,
       "b": 127,
-      "a": 127.5
+      "a": 127
     },
     "_N$normalSprite": null,
     "_N$disabledSprite": null,
@@ -167,18 +233,6 @@
     "component": "item",
     "handler": "handleClickItem",
     "customEventData": ""
-  },
-  {
-    "__type__": "d2d23CyXOhMxYG3ydeJ57ya",
-    "_name": "",
-    "_objFlags": 0,
-    "node": {
-      "__id__": 1
-    },
-    "_enabled": true,
-    "path": "",
-    "pressedScale": 1.12,
-    "transDuration": 0.08
   },
   {
     "__type__": "cc.PrefabInfo",

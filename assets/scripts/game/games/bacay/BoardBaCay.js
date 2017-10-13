@@ -4,7 +4,7 @@
 
 import app from 'app';
 import game from 'game';
-import { utils, GameUtils } from 'utils';
+import { utils, GameUtils } from 'PackageUtils';
 import { Keywords } from 'core';
 import { Events } from 'events';
 import BoardCardBetTurn from 'BoardCardBetTurn';
@@ -48,6 +48,9 @@ export default class BoardBaCay extends BoardCardBetTurn {
         this.winRank = 0;
         this.setTotalGopGaValue(0);
         this._showGopGa(false);
+
+        this.scene.isShowBetPopup = false
+        this.scene.isShowCuocBienPopup = false
     }
 
     setTotalGopGaValue(value){
@@ -98,8 +101,8 @@ export default class BoardBaCay extends BoardCardBetTurn {
 
     _handleBaCayDownCardPhrase(data) {
 
-        this._showGopGa(false);
-
+        // this._showGopGa(false);
+        this.renderer.setInteractableGopGaButton(false);
         let playerIds = utils.getValue(data, app.keywords.GAME_LIST_PLAYER);
         let handCardBytes = utils.getValue(data, app.keywords.GAME_LIST_CARD);
         if (playerIds && handCardBytes) {
@@ -114,7 +117,8 @@ export default class BoardBaCay extends BoardCardBetTurn {
     }
 
     _loadGamePlayData(data) {
-        super._loadGamePlayData({...data, masterIdOwner: true});
+        // super._loadGamePlayData({...data, masterIdOwner: true});
+        super._loadGamePlayData(Object.assign({}, data, {masterIdOwner: true}));
 
         let gamePhrase = utils.getValue(data, app.keywords.BOARD_STATE_KEYWORD);
         if(gamePhrase == app.const.game.state.STATE_DOWN) {
@@ -128,7 +132,7 @@ export default class BoardBaCay extends BoardCardBetTurn {
         let downPlayerIds = utils.getValue(data, app.keywords.GAME_LIST_DOWN);
         let betAmounts = utils.getValue(data, app.keywords.GAME_LIST_BET);
         let bCards = utils.getValue(data, app.keywords.GAME_LIST_CARD);
-
+        
         for (let i = 0; i < playerIds.length; i++) {
             let player = this.scene.gamePlayers.findPlayer(playerIds[i]);
             if (player != null) {
@@ -149,19 +153,24 @@ export default class BoardBaCay extends BoardCardBetTurn {
         }
     }
 
-    _getPlayerHandCards(playerIds) {
-        let result = {};
-        playerIds.forEach(id => {
-            let player = this.scene.gamePlayers.findPlayer(id);
-            result[id] = player ? [...player.getCards()] : [];
-        });
+    _getPlayerHandCards(playerIds = [], data = {}) {
 
-        return result;
+        if(data[Keywords.GAME_LIST_CARD]){
+            data[Keywords.GAME_LIST_PLAYER_CARDS_SIZE] = new Array(playerIds.length).fill(3)
+            return super._getPlayerHandCards(playerIds, data);
+        }else{
+            let result = {};
+            playerIds.forEach(id => {
+                let player = this.scene.gamePlayers.findPlayer(id);
+                result[id] = player ? [...player.getCards()] : [];
+            });
+
+            return result;
+        }
     }
 
     onBoardEnding(data) {
-
-        this._showGopGa(false);
+        // this._showGopGa(false);
 
         let playerIds = utils.getValue(data, Keywords.GAME_LIST_PLAYER, []);
         let playingPlayerIds = this.scene.gamePlayers.filterPlayingPlayer(playerIds);
@@ -188,12 +197,24 @@ export default class BoardBaCay extends BoardCardBetTurn {
             return model;
         });
 
+        let gopGaWinner = utils.getValue(data, Keywords.GOP_GA_WINNER, 0)
+        gopGaWinner > 0 && this._playGopGaWinnerAnimation(gopGaWinner)
+
+
         // setTimeout(() => this.scene.showGameResult(models, (shownTime) => {
         //     let remainTime = this.timelineRemain - shownTime;
         //     if (remainTime > 0 && this.scene.isEnding()) {
         //         this._startEndBoardTimeLine(remainTime);
         //     }
         // }), 500);
+    }
+
+    _playGopGaWinnerAnimation(gopGaWinnerId){
+        let gopGaWinnerPlayer = gopGaWinnerId <= 0 ? undefined : this.scene.gamePlayers.findPlayer(gopGaWinnerId)
+        this.renderer.setGopGaLabelValue(0)
+        if(gopGaWinnerPlayer){
+            GameAnim.flyTo({fromNode: this.renderer.gopGaCoinNode, toNode: gopGaWinnerPlayer.node, amount: 3, prefab: this.renderer.chipPrefab});
+        }
     }
 
     _getGameResultInfos(playerIds = [], playerHandCards, data) {
@@ -214,13 +235,13 @@ export default class BoardBaCay extends BoardCardBetTurn {
             if (playersWinRanks[i] == app.const.game.rank.GAME_RANK_FIRST) {
                 resultText = app.res.string('game_thang');
             } else {
-                if (winType == app.const.game.GENERAL_WIN_TYPE_NORMAL) {
-                    let cardCount = playersCardCounts && playersCardCounts[i];
-
-                    if (cardCount == PlayerBaCay.DEFAULT_HAND_CARD_COUNT) {
-                        resultText = app.res.string('game_sam_treo');
-                    }
-                }
+                // if (winType == app.const.game.GENERAL_WIN_TYPE_NORMAL) {
+                //     let cardCount = playersCardCounts && playersCardCounts[i];
+                //
+                //     if (cardCount == PlayerBaCay.DEFAULT_HAND_CARD_COUNT) {
+                //         resultText = app.res.string('game_sam_treo');
+                //     }
+                // }
 
                 if (!resultText) resultText = app.res.string('game_thua');
             }
@@ -234,8 +255,6 @@ export default class BoardBaCay extends BoardCardBetTurn {
 
     onClickGopGaButton(){
 
-        console.log("on click gop ga")
-
         this._shouldToGopGa() && app.service.send({
             cmd: app.commands.BACAY_PLAYER_GOP_GA,
             data: {
@@ -247,8 +266,6 @@ export default class BoardBaCay extends BoardCardBetTurn {
 
     _shouldToGopGa(){
 
-        console.log("on click gop ga: ", this.scene.gamePlayers.isMePlaying())
-
         if(!this.scene.gamePlayers.isMePlaying()){
             return false;
         }
@@ -257,13 +274,28 @@ export default class BoardBaCay extends BoardCardBetTurn {
             return false;
         }
 
+        let me = this.scene.gamePlayers.me;
+        let availableBalance = GameUtils.getUserBalance(me.user) - me.betAmount * 2 - me.currentCuocBien * 2
+        if(availableBalance < this.minBet * 3){
+            return false
+        }
+
         return true;
 
         //TODO verify gop ga
     }
 
     _showGopGa(visible){
-        this.renderer.setVisibleGopGaComponent(visible);
+         this.renderer.setVisibleGopGaComponent(visible /*&& this.scene.gamePlayers.isMePlaying()*/);
+
+         if(this.scene.gamePlayers.isMePlaying() && !this.scene.gamePlayers.me.isMaster){
+            let me = this.scene.gamePlayers.me;
+            let availableBalance = GameUtils.getUserBalance(me.user) - me.betAmount * 2 - me.currentCuocBien * 2
+            this.renderer.setInteractableGopGaButton(availableBalance > this.minBet * 3)
+         }else{
+             this.renderer.setInteractableGopGaButton(false)
+         }
+
     }
 
     _addToGopGaValue(player, gopGaValue){
@@ -274,12 +306,8 @@ export default class BoardBaCay extends BoardCardBetTurn {
     }
 
     _onPlayerGopGa(playerId, gopGaValue){
-
-        console.log("_onPlayerGopGa: ", playerId);
-
         let gopGaPlayer = this.scene.gamePlayers.findPlayer(playerId);
         if(gopGaPlayer){
-            console.log("gopGaPlayer: ", gopGaPlayer);
             GameAnim.flyTo({fromNode: gopGaPlayer.node, toNode: this.renderer.gopGaCoinNode, amount: 3, prefab: this.renderer.chipPrefab});
             this._addToGopGaValue(gopGaPlayer, gopGaValue);
 
@@ -290,7 +318,7 @@ export default class BoardBaCay extends BoardCardBetTurn {
     }
 
     _onGameMasterChanged(oldMaster, newMaster){
-        oldMaster && app.system.showToast(app.res.string('game_change_master_to_player', {playerName: newMaster.user.name}))
+        oldMaster && app.system.showToast(app.res.string('game_change_master_to_player', {playerName: GameUtils.getDisplayName(newMaster.user)}))
     }
 
 

@@ -3,14 +3,11 @@
  */
 
 import app from 'app'
-import {GameUtils, utils} from 'utils'
+import Card from 'Card'
+import {GameUtils, utils} from 'PackageUtils'
 
 
 export default class TLMNUtils {
-
-    static get GAME_TYPE() {
-        return app.const.game.GAME_TYPE_TIENLEN;
-    };
 
     constructor() {
     }
@@ -296,33 +293,68 @@ export default class TLMNUtils {
         return isDoiThong;
     }
 
-    static getTLMNThoiString(thoiType) {
+    static getTLMNThoiString(thoiType, count, subfix = '') {
+
         let retString = "";
+        let skipCount = false;
         switch (thoiType) {
             case TLMNUtils.THOI_TYPE_HEO_DEN:
-                retString = app.res.string('game_heo_den');
+                retString = app.res.string('game_heo_den')
                 break;
             case TLMNUtils.THOI_TYPE_HEO_DO:
-                retString = app.res.string('game_heo_do');
+                retString = app.res.string('game_heo_do')
                 break;
             case TLMNUtils.THOI_TYPE_BA_DOI_THONG:
-                retString = app.res.string('game_ba_doi_thong');
+                retString = app.res.string('game_ba_doi_thong')
+                skipCount = true;
                 break;
             case TLMNUtils.THOI_TYPE_TU_QUY:
-                retString = app.res.string('game_tu_quy');
+                retString = app.res.string('game_tu_quy')
                 break;
             case TLMNUtils.THOI_TYPE_BON_DOI_THONG:
-                retString = app.res.string('game_bon_doi_thong');
+                retString = app.res.string('game_bon_doi_thong')
+                skipCount = true;
                 break;
             case TLMNUtils.THOI_TYPE_BA_BICH:
-                retString = app.res.string('game_ba_bich');
+                retString = app.res.string('game_ba_bich')
                 break;
         }
+
+        if(retString.length > 0){
+            return count > 0 && !skipCount ? `${count} ${retString}${subfix}` : `${retString}${subfix}`;
+        }
+
         return retString;
+    }
+
+    // static sortAsc(cards, type = TLMNUtils.SORT_BY_RANK){
+    //     if(!cards || cards.length == 0) return cards;
+
+    //     if(type == TLMNUtils.SORT_BY_RANK){
+    //         return cards.sort((card1, card2) => {
+    //             let card1Rank = card1.rank == Card.RANK_AT ? Card.RANK_ACE : card1.rank == Card.RANK_HAI ? Card.RANK_DEUCE : card1.rank;
+    //             let card2Rank = card2.rank == Card.RANK_AT ? Card.RANK_ACE : card2.rank == Card.RANK_HAI ? Card.RANK_DEUCE : card2.rank;
+    //             return card1Rank - card2Rank;
+    //         });
+    //     }else{
+    //         return cards.sort((card1, card2) => card1.suit - card2.suit);
+    //     }
+    // }
+
+    static sortAsc(cards, type = TLMNUtils.SORT_BY_RANK){
+        if(!cards || cards.length == 0) return cards;
+
+        return cards.sort((card1, card2) => {
+            let card1Rank = card1.rank == Card.RANK_AT ? Card.RANK_ACE : card1.rank == Card.RANK_HAI ? Card.RANK_DEUCE : card1.rank;
+            let card2Rank = card2.rank == Card.RANK_AT ? Card.RANK_ACE : card2.rank == Card.RANK_HAI ? Card.RANK_DEUCE : card2.rank;
+            return (card1Rank * 10 + card1.suit) - (card2Rank * 10 + card2.suit);
+        });
     }
 
 }
 
+TLMNUtils.SORT_BY_RANK = 1;
+TLMNUtils.SORT_BY_SUIT = 2;
 
 TLMNUtils.THOI_TYPE_HEO_DEN = 0;
 TLMNUtils.THOI_TYPE_HEO_DO = 1;
@@ -346,3 +378,5 @@ TLMNUtils.GROUP_CARD_TYPE_SAU_DOI = 12;
 TLMNUtils.GROUP_CARD_TYPE_DOI_HEO = 13;
 TLMNUtils.GROUP_CARD_TYPE_TU_QUY_HEO = 14;
 TLMNUtils.GROUP_CARD_TYPE_TU_QUY_BA = 15;
+
+TLMNUtils.GAME_TYPE = app.const.game.GAME_TYPE_TIENLEN

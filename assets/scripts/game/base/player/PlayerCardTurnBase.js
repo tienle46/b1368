@@ -32,7 +32,13 @@ export default class PlayerCardTurnBase extends PlayerCard {
     }
 
     _onSkipTurn() {
-        this.turnAdapter.skipTurn();
+        if(this.isItMe()){
+            this.turnAdapter.skipTurn();
+        }
+    }
+
+    isTurnOwner(){
+        this.id == this.board.turnAdapter.currentTurnPlayerId;
     }
 
     getPrePlayedCards() {
@@ -42,6 +48,17 @@ export default class PlayerCardTurnBase extends PlayerCard {
     onGameReset(){
         super.onGameReset();
         this.turnAdapter && this.turnAdapter._reset();
+    }
+
+    _updateRemainCardCount(count, visible = false){
+
+        if(this.isPlaying()){
+            if(!this.isItMe()){
+                this.renderer.setVisibleRemainCardNode(count > 0 && visible)
+            }
+
+            this.renderer.setRemainCardCount(count);
+        }
     }
 
 }

@@ -3,6 +3,7 @@ import Component from 'Component';
 import DialogTab from 'DialogTab';
 import RubUtils from 'RubUtils';
 import NodeRub from 'NodeRub';
+import { destroy } from 'CCUtils';
 
 export default class Dialog extends Component {
     constructor() {
@@ -14,7 +15,6 @@ export default class Dialog extends Component {
             titleLbl: cc.Label,
             bgTransparent: cc.Node
         };
-
     }
 
     onLoad() {
@@ -26,17 +26,29 @@ export default class Dialog extends Component {
         super.onEnable();
         this.bgTransparent.on(cc.Node.EventType.TOUCH_START, () => true);
         this.addedNodes = {};
+        this.sharedData = {};
     }
 
     onDestroy() {
         super.onDestroy();
-        this.addedNodes = {};
+        this.addedNodes = null;
+        this.sharedData = null;
+    }
+
+    hide() {
+        this.onCloseBtnClick();
     }
 
     onCloseBtnClick() {
-        // this.releaseAssets();
-        this.node.parent.destroy();
-        this.node.parent.removeFromParent();
+        destroy(this.node.parent);
+    }
+
+    addSharedData(key, data) {
+        this.sharedData[key] = data;
+    }
+
+    getSharedData(key) {
+        return this.sharedData[key];
     }
 
     addToBody(id, url, componentName, tabGroup, data) {
@@ -53,7 +65,12 @@ export default class Dialog extends Component {
 
 
     setTitle(string) {
-        this.titleLbl.string = string.toUpperCase();
+        if(this.titleLbl) {
+            this.titleLbl.string = string.toUpperCase();
+            if(!app.env.isBrowser()) {
+                this.titleLbl.node.setPositionY(this.titleLbl.node.getPositionY() - 15); 
+            }
+        }
     }
 
     _showBody(id, data) {
@@ -61,7 +78,7 @@ export default class Dialog extends Component {
             this.bodyNode.children.map(node => {
                 if (node._$tabComponentName) {
                     let component = node.getComponent(node._$tabComponentName);
-                    component && component.setData(data);
+                    component && component.setData && component.setData(data);
                 }
                 node.active = (node._$uid == id);
             });
@@ -69,7 +86,7 @@ export default class Dialog extends Component {
     }
 
     _addContentPrefabToBody(id, prefabURL, componentName, tabGroup, data) {
-        return RubUtils.loadRes(prefabURL).then((prefab) => {
+        return RubUtils.loadRes(prefabURL, cc.Prefab).then((prefab) => {
             this.addAsset(prefab);
             let p = cc.instantiate(prefab);
             p._$uid = id;
@@ -82,15 +99,14 @@ export default class Dialog extends Component {
                  */
                 let tabComponent = p.getComponent(componentName);
                 if (tabComponent) {
-                    tabComponent.setTabGroup(tabGroup);
-                    tabComponent.setData(data);
+                    //tabComponent && tabComponent.setDialog && tabComponent.setDialog(this);
+                    tabComponent.setTabGroup && tabComponent.setTabGroup(tabGroup);
+                    tabComponent.setData && tabComponent.setData(data);
                 }
             }
 
             return p;
-        }).catch((e) => {
-            error('err', e);
-        });
+        }).catch((e) => console.warn('err', e));
     }
 
     // add content node to body node

@@ -13,8 +13,14 @@ export default class PhomGenerator {
 
         let allPhoms = this.generateAllPhom(cards);
 
+        let generatedPhomLists = this.splitToPhomList(allPhoms)
+
+        return this._sortPhomLists(generatedPhomLists);
+    }
+
+    static splitToPhomList(allPhoms){
         let generatedPhomLists = [...allPhoms.map(phom => new PhomList([phom]))];
-        
+
         this._generateSubsetAlgorithm(allPhoms.map((phom, i) => i), 2, (indexArr) => {
             let phoms = allPhoms.filter((value, i) => indexArr.indexOf(i) >= 0);
             !this._isDuplicateCardInPhom(phoms) && generatedPhomLists.push(new PhomList(phoms));
@@ -25,21 +31,35 @@ export default class PhomGenerator {
             !this._isDuplicateCardInPhom(phoms) && generatedPhomLists.push(new PhomList(phoms));
         });
 
-        return this._sortPhomLists(generatedPhomLists);
+        return generatedPhomLists;
     }
 
-    static generatePhomByEatenCard(cards, eatenCards){
-        let allPhoms = this.generateAllPhom(cards);
+    static generatePhomContainEatenCards(cards = [], eatenCards = []) {
+
+        let phomLists = this.generate(cards);
+        
+        if(eatenCards.length > 0){
+            phomLists = phomLists.filter(phomList => ArrayUtils.containsAll(phomList.cards, eatenCards))
+        }
+        
+        return phomLists;
+
+    }
+
+    static generatePhomByEatenCard(cards = [], eatenCards = []){
         let phomMap = {};
 
-        eatenCards.forEach((eatenCard) => {
-            phomMap[eatenCard] = allPhoms.filter(phom => ArrayUtils.contains(phom.cards, eatenCard));
-        });
+        if(cards.length > 0){
+            let allPhoms = this.generateAllPhom(cards);
+            eatenCards.forEach((eatenCard) => {
+                phomMap[eatenCard] = allPhoms.filter(phom => ArrayUtils.contains(phom.cards, eatenCard));
+            });
+        }
 
         return phomMap;
     }
 
-    static generateAllPhom(cards){
+    static generateAllPhom(cards = []){
         cards = PhomUtils.sortAsc([...cards]);
         let phomByRanks = this._findPhomByRank([...cards]);
         let phomBySuits = this._findPhomBySuit([...cards]);
@@ -77,7 +97,10 @@ export default class PhomGenerator {
     }
 
     static _isValidPhomEatenCard(cards) {
-        return PhomGenerator._countEatenCard(cards) <= 1
+
+        let eatenCardCount = PhomGenerator._countEatenCard(cards);
+
+        return eatenCardCount <= 1
     }
 
     static _isValidPhomLength(cards) {
@@ -87,8 +110,8 @@ export default class PhomGenerator {
     static _isSuitPhom(cards) {
 
         let preCard;
-        let isSuitPhom = this._isValidPhomLength(cards);
-        cards.some(card => {
+        let isSuitPhom = this._isValidPhomEatenCard(cards) && this._isValidPhomLength(cards);
+        isSuitPhom && cards.some(card => {
             if (preCard) {
                 if (card.rank - preCard.rank != 1) {
                     isSuitPhom = false;
@@ -134,19 +157,16 @@ export default class PhomGenerator {
 
     static _findPhomBySuit(cards) {
         const phoms = [];
-        // cards.forEach(card => console.log("rank: ", card.rank, " suit: ", card.suit));
 
         for (let suit = 0; suit < 4; suit++) {
 
             let sameSuitCards = cards.filter(card => card.suit == suit);
             let sortedCards = PhomUtils.sortAsc(sameSuitCards);
-            // sortedCards.forEach(card => console.log("rank: ", card.rank, " suit: ", card.suit));
 
             for (let i = 3; i <= sortedCards.length && i < 6; i++) {
                 for (let j = 0; j <= sortedCards.length - i; j++) {
 
                     let checkCards = sortedCards.slice(j, j + i);
-                    // checkCards.forEach(card => console.log("rank: ", card.rank, " suit: ", card.suit));
 
                     if (PhomGenerator._isSuitPhom(checkCards)) {
                         phoms.push(new Phom(checkCards));

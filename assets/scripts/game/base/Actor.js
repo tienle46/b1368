@@ -2,10 +2,12 @@
  * Created by Thanh on 9/15/2016.
  */
 
-import Component from 'Component';
+import VisibilityActor from 'VisibilityActor';
 import Emitter from 'emitter';
+import Events from 'GameEvents';
+import HttpImageLoader from 'HttpImageLoader';
 
-export default class Actor extends Component {
+export default class Actor extends VisibilityActor {
     constructor() {
         super();
 
@@ -18,6 +20,7 @@ export default class Actor extends Component {
         this.initiated = false;
         this._eventEmitter = null;
         this.__pendingEmitEvents = null;
+        this.autoReleaseHttpImage = true;
     }
 
     /**
@@ -33,7 +36,7 @@ export default class Actor extends Component {
     onEnable(renderer = this.renderer, renderData = this.renderData) {
         super.onEnable();
         this.renderer = renderer;
-        this.renderData = {...renderData, actor: this };
+        this.renderData = Object.assign({}, renderData, {actor: this});
         this.renderer && this.renderer._init(this.renderData);
         this._addGlobalListener();
     }
@@ -54,6 +57,7 @@ export default class Actor extends Component {
         super.onDestroy();
         this._removeGlobalListener();
         this.removeAllListener();
+        this.autoReleaseHttpImage && HttpImageLoader.clearImage(this.constructor.name);
     }
 
     emit(name, ...args) {
@@ -102,6 +106,8 @@ export default class Actor extends Component {
      * @abstract
      */
     _addGlobalListener() {
+        this._removeGlobalListener();
+        this._addCustomListeners();
         this._assertEmitter();
     }
 
@@ -118,6 +124,7 @@ export default class Actor extends Component {
      */
     _removeGlobalListener() {
         this._assertEmitter();
+        this._removeCustomListeners();
     }
 
     _emitPendingEvent() {
@@ -125,10 +132,23 @@ export default class Actor extends Component {
 
             let argArr = this.__pendingEmitEvents[name];
             argArr && argArr.forEach(args => {
+                // if (name == Events.ON_GAME_LOAD_DATA_AFTER_SCENE_START) {
+                //     console.warn('emit args: ', args);
+                // }
                 this._eventEmitter.emit(name, ...args);
             });
         });
 
         this.__pendingEmitEvents = {};
     }
+
+    loadImage(url, cb) {
+        return HttpImageLoader.loadImage(url, this.constructor.name, cb);
+    }
+    
+    /**
+     * abstracts
+     */
+    _addCustomListeners(){}
+    _removeCustomListeners(){}
 }

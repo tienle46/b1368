@@ -3,7 +3,7 @@
  */
 
 import app from 'app';
-import { utils, GameUtils } from 'utils';
+import { utils, GameUtils } from 'PackageUtils';
 import SFS2X from 'SFS2X';
 import async from 'async';
 import { Events } from 'events'
@@ -15,6 +15,16 @@ export default class GameEventHandler {
         this.scene = scene;
         this._handleEventImediate = true;
         this._listenerMap = {};
+        this._restoringGame = false
+    }
+
+    setRestoringGame(restoring = true){
+        this._restoringGame = restoring;
+        !restoring && this._handlePendingEvents();
+    }
+
+    isRestoringGame(){
+        return this._restoringGame;
     }
 
     setHandleEventImmediate(imediate) {
@@ -74,8 +84,18 @@ export default class GameEventHandler {
         app.system.addGameListener(Commands.XOCDIA_BET, this._onXocDiaPLayerBet, this);
         app.system.addGameListener(Commands.XOCDIA_CANCEL_BET, this._onXocDiaPLayerCancelBet, this);
         app.system.addGameListener(Commands.INVALID_PLAY_TURN, this._invalidPlayTurn, this);
+        app.system.addGameListener(Commands.REGISTER_QUIT_ROOM, this._onRegisterQuitRoom, this);
 
         app.system.addGameListener(Commands.ASSETS_USE_ITEM, this._assetsUseItem, this);
+        app.system.addGameListener(Commands.GET_CURRENT_GAME_DATA, this._getCurrentGameData, this);
+        app.system.addGameListener(Commands.USER_DISCONNECTED, this._onHandleUserDisconnected, this, 0);
+        app.system.addGameListener(Commands.REPLACE_FAKE_USER, this._replaceFakeUser, this);
+        
+        app.system.addGameListener(app.commands.PLAYER_BAO_XAM, this._handlePlayerBaoXam, this);
+        
+        //Lieng
+        app.system.addGameListener(app.commands.PLAYER_PLAY_BET_TURN, this._onPlayerTo, this);
+        
     }
 
     removeGameEventListener() {
@@ -118,21 +138,56 @@ export default class GameEventHandler {
         app.system.removeGameListener(Commands.XOCDIA_BET, this._onXocDiaPLayerBet, this);
         app.system.removeGameListener(Commands.XOCDIA_CANCEL_BET, this._onXocDiaPLayerCancelBet, this);
         app.system.removeGameListener(Commands.INVALID_PLAY_TURN, this._invalidPlayTurn, this);
+        app.system.removeGameListener(Commands.REGISTER_QUIT_ROOM, this._onRegisterQuitRoom, this);
 
         app.system.removeGameListener(Commands.ASSETS_USE_ITEM, this._assetsUseItem, this);
+        app.system.removeGameListener(Commands.GET_CURRENT_GAME_DATA, this._getCurrentGameData, this);
+        app.system.removeGameListener(Commands.USER_DISCONNECTED, this._onHandleUserDisconnected, this, 0);
+        app.system.removeGameListener(Commands.REPLACE_FAKE_USER, this._replaceFakeUser, this);
+        
+        app.system.removeGameListener(app.commands.PLAYER_BAO_XAM, this._handlePlayerBaoXam, this);
+        
+        
+        // Lieng
+        app.system.removeGameListener(app.commands.PLAYER_PLAY_BET_TURN, this._onPlayerTo, this);
+    }
+    
+    _onPlayerTo(data) {
+        let onTurnPlayerId = utils.getValue(data, app.keywords.TURN_PLAYER_ID);
+        let previousPlayerId = utils.getValue(data, app.keywords.PLAYER_ID);
+        let betAmount = utils.getValue(data, app.keywords.VARIABLE_MIN_BET);
+        let isLastBet = utils.getValue(data, app.keywords.GAME_LAST_BET);
+        this.scene.emit(Events.ON_PLAYER_TO, previousPlayerId, onTurnPlayerId, betAmount, isLastBet);
+    }
+    
+    _handlePlayerBaoXam(data) {
+        this.scene.emit(Events.ON_PLAYER_BAO_XAM_RESPONSE, data);
+    }
+    
+    // {gameData, gamePhaseData, playerData} = data;
+    _getCurrentGameData(data) {
+        app.service._gameDataTimeout && clearTimeout(app.service._gameDataTimeout);
+        
+        this.scene.handleGameRefresh(data);
+    }
 
+
+    _onRegisterQuitRoom(data){
+        this.scene.emit(Events.ON_PLAYER_REGISTER_QUIT_ROOM, data);
     }
 
     _onPlayerGopGa(data) {
 
+        let playerId, gopGaValue, errMsg
         let success = utils.getValue(data, app.keywords.SUCCESSFULL);
-        console.log("_onPlayerGopGa su", success, " ")
         if (success) {
-            console.log("_onPlayerGopGa su", success, " ")
-            let playerId = utils.getValue(data, Keywords.PLAYER_ID);
-            let gopGaValue = utils.getValue(data, Keywords.BA_CAY_GOP_GA_VALUE);
-            playerId && gopGaValue && this.scene.emit(Events.ON_PLAYER_BACAY_GOP_GA, playerId, gopGaValue);
+            playerId = utils.getValue(data, Keywords.PLAYER_ID);
+            gopGaValue = utils.getValue(data, Keywords.BA_CAY_GOP_GA_VALUE);
+        }else{
+            errMsg = utils.getValue(data, Keywords.BA_CAY_GOP_GA_VALUE)
         }
+
+        playerId && this.scene.emit(Events.ON_PLAYER_BACAY_GOP_GA, playerId, gopGaValue, errMsg || true);
     }
 
     _assetsUseItem(data) {
@@ -151,7 +206,7 @@ export default class GameEventHandler {
         let isSuccess = utils.getValue(data, app.keywords.XOCDIA_CANCEL_BET.RESPONSE.IS_SUCCESS);
         let err = utils.getValue(data, app.keywords.XOCDIA_CANCEL_BET.RESPONSE.ERROR_MSG);
         let d = { playerId, isSuccess, err };
-        playerId && this.scene.emit(Events.XOCDIA_ON_PLAYER_CANCELBET, d);
+        playerId && this.scene.emit(Events.GAMEBET_ON_PLAYER_CANCELBET, d);
     }
 
     _onXocDiaPLayerBet(data) {
@@ -161,7 +216,7 @@ export default class GameEventHandler {
         let err = utils.getValue(data, app.keywords.XOCDIA_BET.RESPONSE.ERROR_MSG);
         let isReplace = utils.getValue(data, app.keywords.XOCDIA_BET.RESPONSE.IS_REPLACE);
         let d = { playerId, betsList, isSuccess, err, isReplace };
-        playerId && this.scene.emit(Events.XOCDIA_ON_PLAYER_BET, d);
+        playerId && this.scene.emit(Events.GAMEBET_ON_PLAYER_BET, d);
     }
 
     _onPlayerHucAccepted(data) {
@@ -205,13 +260,21 @@ export default class GameEventHandler {
     }
 
     _handleChangeBoardMaster(data) {
-
+        let masterId = utils.getValue(data, "ma");
+        masterId && this.scene.emit(Events.CHANGE_GAME_MASTER, masterId)
     }
 
     _handlePlayerRejoinGame(data) {
         this.scene.handleRejoinGame(data);
     }
 
+    _replaceFakeUser(data) {
+        let playerId = utils.getValue(data,  "playerId",  0);
+        let userId = utils.getValue(data, "userId", 0);
+
+        this.scene.emit(Events.ON_PLAYER_REENTER_GAME, playerId, userId);
+    }
+    
     _handlePlayerReEnterGame(data) {
         let playerId = utils.getValue(data, Keywords.PLAYER_ID, 0);
         let userId = utils.getValue(data, Keywords.USER_ID, 0);
@@ -221,7 +284,8 @@ export default class GameEventHandler {
     _onUserVariablesUpdate(event) {
         let changedVars = event.changedVars;
         let user = event.user;
-
+        
+        
         changedVars && changedVars.forEach((varName) => {
             if (Keywords.USER_VARIABLE_BALANCE == varName) {
                 this.scene.emit(Events.ON_USER_UPDATE_BALANCE, user);
@@ -249,7 +313,7 @@ export default class GameEventHandler {
             }
 
             if (varName == Keywords.VARIABLE_XOCDIA_HISTORY) {
-                this.scene.emit(Events.XOCDIA_ON_BOARD_UPDATE_PREVIOUS_RESULT_HISTORY, room.variables[varName].value);
+                this.scene.emit(Events.GAMEBET_ON_BOARD_UPDATE_PREVIOUS_HISTORY, room.variables[varName].value);
             }
         });
     }
@@ -273,18 +337,35 @@ export default class GameEventHandler {
     isCurrentGameRoom(event) {
         return event.sourceRoom && event.sourceRoom === app.context.currentRoom.id;
     }
+                    
+    _onHandleUserDisconnected(data = {}){
+        let playerId = utils.getValue(data, app.keywords.PLAYER_ID, 0);
+        let username =  utils.getValue(data, app.keywords.USER_NAME, "");
+        let roomName =  utils.getValue(data, app.keywords.ROOM_NAME, "");
+        
+        let disconnectedPlayer = this.scene.gamePlayers.findPlayer(username);
+        if(disconnectedPlayer != null){
+            this.scene.emit(Events.ON_USER_EXIT_ROOM, disconnectedPlayer.user, this.scene.room, playerId);
+        }
+    }
 
     _onUserExitRoom(event) {
-        console.log(event)
-
         if (!event.user || !event.room || !this.scene.room || event.room.id != this.scene.room.id) {
             return;
         }
 
-        this.scene.emit(Events.ON_USER_EXIT_ROOM, event.user, event.room);
+        if(event.user){    
 
-        if (event.user && event.user.isItMe) {
-            this.scene.goBack();
+            if ( event.user.isItMe) {
+                this.scene.emit(Events.ON_USER_EXIT_ROOM, event.user, event.room, event.user.getPlayerId(event.room));
+                this.scene.goBack();
+            }
+            
+            // this.scene.emit(Events.ON_USER_EXIT_ROOM, event.user, event.room, event.user.getPlayerId(event.room));
+            // 
+            // if ( event.user.isItMe) {
+            //     this.scene.goBack();
+            // }
         }
     }
 
@@ -298,7 +379,7 @@ export default class GameEventHandler {
     }
 
     _onRoomRemove(event) {
-        console.log('room remove: ', event);
+        log('room remove: ', event);
         this.scene.goBack();
     }
 
@@ -347,7 +428,6 @@ export default class GameEventHandler {
     }
 
     _onPlayerReady(data) {
-        console.log("on player ready: ", data)
         let playerId = utils.getValue(data, app.keywords.PLAYER_ID);
         playerId && this.scene.emit(Events.ON_PLAYER_READY_STATE_CHANGED, playerId, true, this.scene.gamePlayers.isItMe(playerId));
     }
@@ -360,9 +440,6 @@ export default class GameEventHandler {
     _handleChangePlayerBalance(data) {
         let playerIds = utils.getValue(data, Keywords.GAME_LIST_PLAYER);
         let playersBalances = utils.getValue(data, Keywords.USER_BALANCE);
-
-        log("_handleChangePlayerBalance: ", playersBalances);
-
         playerIds && playersBalances && playerIds.forEach((id, index) => {
             this.scene.emit(Events.ON_PLAYER_CHANGE_BALANCE, id, playersBalances[index]);
         });

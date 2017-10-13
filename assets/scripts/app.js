@@ -1,13 +1,12 @@
+/* eslint-disable no-console, no-unused-vars */
 /**
  * Created by Thanh on 8/23/2016.
  */
-
 'use strict';
 
 var app = module.exports;
-var MESSAGES = require('GameErrorMessage');
-var Fingerprint2 = require('fingerprinter');
-var Promise = require('Promise-polyfill');
+var SFSErrorMessages = require('SFSErrorMessages');
+var RoomErrorMessages = require('RoomErrorMessages');
 var _ = require('lodash');
 
 app.LANG = "vi";
@@ -20,7 +19,6 @@ require("Constant");
 require("Config");
 require("Resource");
 
-import createBuddyManager from 'BuddyManager';
 
 app.createComponent = (classNameOrInstance, extendClass = undefined, ...args) => {
 
@@ -40,11 +38,13 @@ app.createComponent = (classNameOrInstance, extendClass = undefined, ...args) =>
         instance = new classNameOrInstance();
     }
 
-    instance.properties = instance.properties || {};
     instance.extends = extendClass || instance.extends || cc.Component;
 
 
-    const objPropsMap = {}; // contains keys which belong to "Object" type ( {a:1, b:2} ) and aren't empty object ( {} )
+    instance.properties = instance.properties || {};
+
+
+    let objPropsMap = {}; // contains keys which belong to "Object" type ( {a:1, b:2} ) and aren't empty object ( {} )
 
     let isCocosComponent = (element) => {
         return typeof element === 'function' && element === cc[element.name.substr(3)];
@@ -61,7 +61,7 @@ app.createComponent = (classNameOrInstance, extendClass = undefined, ...args) =>
         }
 
         return isCocosComponent(element) || isCocosProperty(element) ? element : undefined;
-    }
+    };
 
     // // Check if element is instance of cc[xxx]
     // function isComponentOfCC(el) {
@@ -89,6 +89,7 @@ app.createComponent = (classNameOrInstance, extendClass = undefined, ...args) =>
 
             // if (instance[key] && isComponentOfCC(instance[key])) {
             let value = getCocosValue(instance[key], key);
+
             if (value) {
                 instance.properties[key] = value; //instance[key];
             } else {
@@ -116,7 +117,6 @@ app.createComponent = (classNameOrInstance, extendClass = undefined, ...args) =>
                 if (method instanceof Function) {
                     instance[name] = method;
                 }
-
             }
         });
 
@@ -145,79 +145,97 @@ app.createComponent = (classNameOrInstance, extendClass = undefined, ...args) =>
         };
     }
 
-    return cc.Class(instance);
+    cc.Class(instance);
+    instance = null;
+};
+
+
+app.getRoomErrorMessage = (error) => {
+    let message, errorCode = "",
+        errorMessage = "",
+        messages = RoomErrorMessages[app.LANG];
+
+    if (typeof error == 'string') {
+        errorCode = error;
+        message = messages[error];
+    } else {
+        errorCode = error.errorCode;
+        errorMessage = error.errorMessage;
+        if (typeof messages[errorCode] === 'object') {
+            message = messages[errorCode][errorMessage];
+        } else {
+            message = messages[errorCode];
+        }
+    }
+
+    return message || app.res.string('error_undefined', { error: `${errorCode}:${errorMessage}` });
 };
 
 app.getMessageFromServer = (error) => {
-    let { errorCode, errorMessage } = error;
+    let message, errorCode = "",
+        errorMessage = "",
+        messages = SFSErrorMessages[app.LANG];
 
-    let M = MESSAGES[app.LANG];
-    return (typeof error === 'object') ? (typeof M[errorCode] === 'object') ? M[errorCode][errorMessage] : M[errorCode] : M[error];
+    if (typeof error == 'string') {
+        errorCode = error;
+        message = messages[error];
+    } else {
+        errorCode = error.errorCode;
+        errorMessage = error.errorMessage;
+        if(errorCode != undefined){
+            if (typeof messages[errorCode] === 'object') {
+                message = messages[errorCode][errorMessage];
+                if(!message){
+                    message = errorMessage;
+                }
+            } else {
+                message = messages[errorCode];
+                if(message && typeof message !== 'string'){
+                    message = undefined
+                }
+            }
+        }
+    }
+
+    return message || app.res.string('error_undefined', { error: `${errorCode}:${errorMessage}` });
 };
 
-/* INIT GAME */
-_setupGame();
-
-function _setupGame() {
-    require('PreLoader');
-    app.service = require("Service");
-    app.system = require("System");
-    /**
-     * @type {Context}
-     */
-    app.context = require("Context");
-    app.event = require("Events");
-    app.buddyManager = createBuddyManager();
-}
-// if browser
-
-if (cc.sys.isBrowser) {
-    new Fingerprint2().get((printer) => {
-        app.DEVICE_ID = printer;
-    });
-} else {
-    window.Promise = Promise;
-    // app.DEVICE_ID = 'a19c8e4ae2e82ef1c7846f32628d4ead3';
-    if (cc.sys.platform == cc.sys.IPHONE || cc.sys.platform == cc.sys.IPAD) {
-        app.DEVICE_ID = jsb.reflection.callStaticMethod("FCUUID", "uuidForDevice");
-        log(`ios udid ${app.DEVICE_ID}`);
-    } else {
-        app.DEVICE_ID = 'a19c8e4ae2e82ef1c7846f32628d4ead3';
-    }
-}
-if (cc.sys.isMobile && sdkbox) {
-    //facebook
-    sdkbox.PluginFacebook.init();
-
-    //google analytics
-    sdkbox.PluginGoogleAnalytics.init();
-    sdkbox.PluginGoogleAnalytics.startSession();
-
-    //onesignal
-    sdkbox.PluginOneSignal.init();
-    sdkbox.PluginOneSignal.registerForPushNotifications();
-    // sdkbox.PluginOneSignal.setSubscription(true);
-    sdkbox.PluginOneSignal.enableInAppAlertNotification(true);
-
-    sdkbox.PluginOneSignal.setListener({
-        onSendTag: (success, key, message) => {},
-        onGetTags: (jsonString) => {},
-        onIdsAvailable: (userId, pushToken) => {},
-        onPostNotification: (success, message) => {},
-        onNotification: (isActive, message, additionalData) => {
-
-        }
-    });
-
-
-}
-
 (function() {
+    window.free = function(object) {
+        if (!app._.isObject(object) || object instanceof cc.Component)
+            return;
+
+        for (let key in object) {
+            object[key] = null;
+        }
+    };
+
+    // release array
+    window.release = function(...args) {
+        let isRecursive = arguments[arguments.length - 1] === true;
+        [...args].forEach(array => {
+            if (!app._.isArray(array))
+                return;
+        
+            if (isRecursive) {
+                array.map(a => {
+                    app._.isArray(a) && window.release(a, isRecursive);
+                });
+            }
+            array.length = 0;
+        });
+    };
+
     window.log = function log(...args) {
+        
+        if(app.config.debug) return;
+        
         console.log(...args);
     };
 
     window.debug = function debug(...args) {
+        if(app.config.debug) return;
+        
         if (app.config.buildForMobile) {
             console.log(...args);
         } else {
@@ -232,12 +250,66 @@ if (cc.sys.isMobile && sdkbox) {
     window.warn = function warn(...args) {
         console.warn(...args);
     };
-    window.onNativePostAction = function(jsonString){
-        log("---> onNativePostAction", jsonString);
+
+    /**
+     *
+     * @param jsonString = {
+     *      “action”:”action namne”,
+     *      ”action_extras”: {}}
+     * }
+     */
+    window.onNativePostAction = function(jsonString) {
+        debug(`receive action with detail ${jsonString}`);
+        try {
+            let jsonParam = JSON.parse(jsonString);
+            let actionParamObject = jsonParam['action_extras'];
+            let actionParam = actionParamObject && Object.keys(actionParamObject).length > 0 ? actionParamObject : {};
+            require('Linking').goTo(jsonParam.action, actionParam);
+        } catch (e) {
+            //DO nothing
+            debug(`linking exception ${e}`);
+        }
     }
-    require('Pollyfill')(app);
+    
+    window.isJSON = (str) => {
+        if ( /^\s*$/.test(str) ) return false;
+        str = str.replace(/\\(?:["\\\/bfnrt]|u[0-9a-fA-F]{4})/g, '@');
+        str = str.replace(/"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g, ']');
+        str = str.replace(/(?:^|:|,)(?:\s*\[)+/g, '');
+        return (/^[\],:{}\s]*$/).test(str);
+    }
+    
+    /* INIT GAME */
+    (function _setupGame() {
+         // update pollyfill
+        require('Pollyfill')(app);
+
+        require('PreLoader');
+        app.service = require("Service");
+        require('Env')(app);
+        app.system = require("System");
+        /**
+         * @type {Context}
+         */
+        app.context = require("Context");
+        app.event = require('GameEvents');
+
+        // setup game environment by platform
+        app.env.__setupEnvironment();
+        app.service._initSmartFoxClient();
+    })();
 
     window.app = app;
     window.game = app.game;
+
+    // window.addEventListener("beforeunload", function(event) {
+    //     console.debug('unloaded! ')
+    //     app.service.send({
+    //         cmd: 'rep_p_exitGame',
+    //         data: {
+    //             data: true
+    //         }
+    //     }, true);
+    // });
 })();
 // cc.game.setFrameRate(30);

@@ -3,7 +3,7 @@
   "_name": "plusBalance",
   "_objFlags": 0,
   "_rawFiles": null,
-  "_duration": 1.5,
+  "_duration": 4.08,
   "sample": 60,
   "speed": 1,
   "wrapMode": 1,
@@ -12,33 +12,73 @@
       "scaleX": [
         {
           "frame": 0,
-          "value": 0.6,
+          "value": 0.9,
           "curve": [
-            -0.42,
-            2.32,
-            0.95,
-            2.86
+            0.2,
+            0.99,
+            0.41,
+            1
           ]
         },
         {
-          "frame": 1.5,
-          "value": 0.8
+          "frame": 1.9833333333333334,
+          "value": 1.4,
+          "curve": [
+            0.6,
+            0,
+            0.8,
+            0.01
+          ]
+        },
+        {
+          "frame": 2,
+          "value": 1.4,
+          "curve": [
+            0.6,
+            0,
+            0.8,
+            0
+          ]
+        },
+        {
+          "frame": 4.083333333333333,
+          "value": 1
         }
       ],
       "scaleY": [
         {
           "frame": 0,
-          "value": 0.6,
+          "value": 0.9,
           "curve": [
-            -0.5,
-            2.94,
-            1.19,
-            3.18
+            0.2,
+            0.99,
+            0.4,
+            1
           ]
         },
         {
-          "frame": 1.5,
-          "value": 0.8
+          "frame": 1.9833333333333334,
+          "value": 1.4,
+          "curve": [
+            0.61,
+            0,
+            0.8,
+            0.01
+          ]
+        },
+        {
+          "frame": 2,
+          "value": 1.4,
+          "curve": [
+            0.6,
+            0,
+            0.8,
+            0
+          ]
+        },
+        {
+          "frame": 4.083333333333333,
+          "value": 1
         }
       ],
       "position": [
@@ -46,20 +86,23 @@
           "frame": 0,
           "value": [
             0,
-            -60
+            -30
           ],
-          "curve": [
-            0.3,
-            1.44,
-            0.77,
-            1.41
-          ]
+          "curve": "linear"
         },
         {
-          "frame": 1.5,
+          "frame": 1.9833333333333334,
           "value": [
             0,
-            70
+            15
+          ],
+          "curve": "linear"
+        },
+        {
+          "frame": 4.083333333333333,
+          "value": [
+            0,
+            50
           ]
         }
       ]
@@ -72,7 +115,7 @@
       "params": []
     },
     {
-      "frame": 1.5,
+      "frame": 4,
       "func": "onAnimationEnd",
       "params": []
     }

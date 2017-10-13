@@ -1,0 +1,56 @@
+{
+  "ver": "1.2.4",
+  "uuid": "86d9dc13-87a4-4321-888e-db7e5df34c8b",
+  "rawTextureUuid": "9d346d26-7c61-4fbf-a008-f4ff628384f8",
+  "size": {
+    "width": 344,
+    "height": 172
+  },
+  "type": "Texture Packer",
+  "subMetas": {
+    "NGONANDI.png": {
+      "ver": "1.0.3",
+      "uuid": "fd404b4e-4bde-4c88-8410-00ee9a4e636b",
+      "rawTextureUuid": "9d346d26-7c61-4fbf-a008-f4ff628384f8",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 1,
+      "trimY": 1,
+      "width": 170,
+      "height": 170,
+      "rawWidth": 170,
+      "rawHeight": 170,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "spriteType": "normal",
+      "subMetas": {}
+    },
+    "NGONANDI1.png": {
+      "ver": "1.0.3",
+      "uuid": "b770a1d7-f48b-4ef2-a0ce-6bdb5ca10546",
+      "rawTextureUuid": "9d346d26-7c61-4fbf-a008-f4ff628384f8",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 173,
+      "trimY": 1,
+      "width": 170,
+      "height": 170,
+      "rawWidth": 170,
+      "rawHeight": 170,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "spriteType": "normal",
+      "subMetas": {}
+    }
+  }
+}

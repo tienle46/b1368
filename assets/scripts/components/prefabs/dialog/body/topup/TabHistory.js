@@ -1,25 +1,33 @@
 import app from 'app';
-import DialogActor from 'DialogActor';
-import numeral from 'numeral';
+import PopupTabBody from 'PopupTabBody';
+import Utils from 'GeneralUtils';
 
-class TabHistory extends DialogActor {
+class TabHistory extends PopupTabBody {
     constructor() {
         super();
-        this.properties = {
-            ...this.properties,
-            bodyNode: cc.Node
-        };
+        
+        this.properties = this.assignProperties({
+            bodyNode: cc.Node,
+            p404: cc.Node
+        });
     }
 
     onLoad() {
         super.onLoad();
     }
 
-    start() {
-        super.start();
+    loadData() {
+        if(Object.keys(this._data).length > 0)
+            return false;
+        super.loadData();
+        
         this._requestHistories();
+        return false;
     }
-
+    
+    onDataChanged(histories) {
+        histories && this._renderHistory(histories);
+    }
 
     _addGlobalListener() {
         super._addGlobalListener();
@@ -32,34 +40,7 @@ class TabHistory extends DialogActor {
     }
 
     _onUserChargeHistory(data) {
-        let histories = data.histories || [];
-        if (histories.length > 0) {
-            let d = [];
-            histories.map((history, index) => {
-                d.push([`${index + 1}`, history.time, history.money, history.balance]);
-            });
-
-            let head = {
-                data: ['STT', 'Thời gian', 'Nội dung', 'Trạng thái'],
-                options: {
-                    fontColor: app.const.COLOR_YELLOW,
-                    fontSize: 25
-                }
-            };
-
-            let rubOptions = {
-                size: this.bodyNode.getContentSize(),
-                group: { widths: [100, '', '', ''] },
-                isValidated: true
-            };
-
-            this.initView(head, d, rubOptions);
-
-            this.bodyNode.addChild(this.getScrollViewNode());
-            app.system.hideLoader();
-        } else {
-            this.pageIsEmpty(this.bodyNode);
-        }
+        this.setLoadedData(data.histories || []);
     }
 
     _requestHistories() {
@@ -69,8 +50,41 @@ class TabHistory extends DialogActor {
                 p: 1
             }
         };
-
+        
+        this.showLoadingProgress();
         app.service.send(sendObject);
+    }
+    
+    _renderHistory(histories) {
+        this.hideEmptyPage(this.p404);
+        let d = [];
+        
+        Object.values(histories).map((history, index) => {
+            let {time, content, state} = history;
+            d.push([Utils.timeFormat(time), content, state]);
+        });
+        
+        if (d.length > 0) {
+            let head = {
+                data: ['Thời gian', 'Nội dung', 'Trạng thái'],
+                options: {
+                    fontColor: app.const.COLOR_YELLOW
+                }
+            };
+
+            let rubOptions = {
+                size: this.bodyNode.getContentSize(),
+                group: { widths: [200, '', 150] },
+                fontSize: 20,
+                isValidated: true
+            };
+
+            this.initView(head, d, rubOptions);
+
+            !this.getScrollViewNode().isChildOf(this.bodyNode) && this.bodyNode.addChild(this.getScrollViewNode());
+        } else {
+            this.showEmptyPage(this.p404);
+        }
     }
 }
 

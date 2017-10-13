@@ -84,6 +84,10 @@ class SixPlayerPositions extends PlayerPositions {
         return anchorIndex == 6;
     }
 
+    isPositionOnLeft(anchorIndex) {
+        return anchorIndex == 2;
+    }
+
     _getPlayerSeatIndexs(gameCode) {
         return sixPlayerSeats;
     }

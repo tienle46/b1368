@@ -3,7 +3,8 @@
  */
 
 import app from 'app';
-import utils from 'utils';
+import utils from 'PackageUtils';
+import GameUtils from 'GameUtils';
 import BoardRenderer from 'BoardRenderer';
 import BoardCardRenderer from 'BoardCardRenderer';
 import BoardCardBetTurnRenderer from 'BoardCardBetTurnRenderer';
@@ -11,12 +12,11 @@ import BoardCardBetTurnRenderer from 'BoardCardBetTurnRenderer';
 export default class BoardBaCayRenderer extends BoardCardBetTurnRenderer {
     constructor() {
         super();
-
-        this.properties = {
-            ...this.properties,
+        
+        this.properties = this.assignProperties({
             gopGaButton: cc.Button,
             gopGaLabel: cc.Label,
-        }
+        });
 
         this.gopGaCoinNode = {
             default: null,
@@ -27,6 +27,8 @@ export default class BoardBaCayRenderer extends BoardCardBetTurnRenderer {
             default: null,
             type: cc.Node
         }
+
+        this.enableBottomTextOnReady = false
     }
 
     onEnable(){
@@ -35,13 +37,14 @@ export default class BoardBaCayRenderer extends BoardCardBetTurnRenderer {
 
     setVisibleGopGaComponent(visible){
         utils.setVisible(this.gopGaNode, visible);
-        if(visible){
-            utils.setInteractable(this.gopGaButton, true);
-        }
+    }
+
+    setInteractableGopGaButton(interactable = true){
+        utils.setInteractable(this.gopGaButton, interactable);
     }
 
     setGopGaLabelValue(value){
-        this.gopGaLabel.string = `${value}`;
+        this.gopGaLabel.string = `${GameUtils.formatBalanceShort(value)}`;
     }
 
     disableGopGaValue(disable = true){
@@ -50,6 +53,17 @@ export default class BoardBaCayRenderer extends BoardCardBetTurnRenderer {
 
     disableGopGaButton(){
         utils.setInteractable(this.gopGaButton, false);
+    }
+
+    setTimeLineMessage(message) {
+        this.timelineTextView.setText(message);
+    }
+
+    /**
+     * Disable set bottom timeline text
+     * @param message
+     */
+    setBottomTimeLineMessage(message) {
     }
 }
 

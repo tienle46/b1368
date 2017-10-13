@@ -5,24 +5,23 @@
 import app from 'app';
 import Component from 'Component';
 import TextView from 'TextView';
-import {CCUtils, utils} from 'utils';
+import { CCUtils, utils } from 'PackageUtils';
 
 export default class ToastItem extends Component {
     constructor() {
         super();
-        this.properties = {
-            ...this.properties,
-            textViewNode : cc.Node,
-        }
+        
+        this.properties = this.assignProperties({
+            textViewNode: cc.Node,
+        });
+        
         this.message = null;
         this.timeoutId = null;
         this.duration = 5000;
         this.type = ToastItem.TYPE_MESSAGE;
     }
 
-    onLoad(){
-
-        debug("onload toast: ", this.message)
+    onLoad() {
 
         let textView = this.textViewNode.getComponent('TextView');
         textView.setText(this.message || "");
@@ -33,18 +32,21 @@ export default class ToastItem extends Component {
         this.timeoutId = setTimeout(() => this.hide(), this.duration);
     }
 
-    _init({message = "", type = ToastItem.TYPE_MESSAGE, duration = 5000} = {}){
+    _init({ message = "", type = ToastItem.TYPE_MESSAGE, duration = 5000 } = {}) {
         this.message = message;
         this.type = type;
         this.duration = duration;
     }
 
-    hide(){
-        this.node.destroy();
-        this.node.removeFromParent(true);
+    hide() {
+        let action = cc.sequence(cc.fadeOut(0.3), cc.callFunc(() => {
+            CCUtils.destroy(this.node);
+        }));
+        this.node.runAction(action);
     }
 
-    onDestroy(){
+    onDestroy() {
+        super.onDestroy()
         this.timeoutId && clearTimeout(this.timeoutId);
     }
 

@@ -4,7 +4,7 @@
 
 import app from 'app';
 import PlayerTurnBaseAdapter from 'PlayerTurnBaseAdapter';
-import {utils, GameUtils} from 'utils';
+import {utils, GameUtils} from 'PackageUtils';
 import {Commands, Keywords} from 'core';
 import {Events} from 'events';
 
@@ -22,15 +22,17 @@ export default class PlayerCardTurnBaseAdapter extends PlayerTurnBaseAdapter {
 
         if(this.player.id === playerId && cards.length > 0){
             this.player.isItMe() && (cards = this.player.findCards(cards));
+            this.scene.emit(Events.ON_PLAYER_PLAYED_CARDS, playerId, cards, this.player.renderer.cardList, this.player.isItMe());
             this.player._onPlayerPlayedCards && this.player._onPlayerPlayedCards(cards, this.player.renderer.cardList, this.player.isItMe());
-            this.scene.emit(Events.ON_PLAYER_PLAYED_CARDS, cards, this.player.renderer.cardList, this.player.isItMe());
         }
     }
 
     /**
      * @abstract
      */
-    playTurn(cards){
+    playTurn(cards = []){
+        if(cards.length == 0) return;
+
         let cardBytes = GameUtils.convertToBytes(cards);
         let sendParams = {
             cmd: Commands.PLAYER_PLAY_CARD,

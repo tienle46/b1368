@@ -129,11 +129,15 @@ class NinePlayerPositions extends PlayerPositions {
     }
 
     isPositionOnTop(anchorIndex) {
-        return anchorIndex == 3 || anchorIndex == 4 || anchorIndex == 5;
+        return anchorIndex == 4 || anchorIndex == 5 || anchorIndex == 6 || anchorIndex == 7;
     }
 
     isPositionOnRight(anchorIndex) {
-        return anchorIndex == 6;
+        return anchorIndex == 8 || anchorIndex == 9;
+    }
+
+    isPositionOnLeft(anchorIndex) {
+        return anchorIndex == 2 || anchorIndex == 3;
     }
 
     _getNextSeatIndex(seatIndex) {

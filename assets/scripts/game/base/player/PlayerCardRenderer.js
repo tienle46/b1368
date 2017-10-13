@@ -3,16 +3,15 @@
  */
 
 import app from 'app';
-import utils from 'utils';
+import utils from 'PackageUtils';
 import CardList from 'CardList';
 import PlayerRenderer from 'PlayerRenderer';
 
 export default class PlayerCardRenderer extends PlayerRenderer {
     constructor() {
         super();
-
-        this.properties = {
-            ...this.properties,
+        
+        this.properties = this.assignProperties({
             cardListPrefab: cc.Prefab,
             myCardAnchor: cc.Node,
             leftCardAnchor: cc.Node,
@@ -21,7 +20,8 @@ export default class PlayerCardRenderer extends PlayerRenderer {
             bottomCardAnchor: cc.Node,
             defaultCardAnchor: cc.Node,
             defaultCardAnchor2: cc.Node,
-        }
+            mePlayCardListNode: cc.Node,
+        });
 
         this.cardList = null;
         this.selectCardChangeListener = null;
@@ -30,26 +30,29 @@ export default class PlayerCardRenderer extends PlayerRenderer {
     onEnable(){
         super.onEnable();
 
-        let cardListNode = cc.instantiate(this.cardListPrefab);
-        this._getCardAnchorPoint(this.data.actor).addChild(cardListNode);
+        if(this.data && this.data.isItMe && this.mePlayCardListNode){
+            this.cardList = this.mePlayCardListNode.getComponent('CardList')
+            this._initHandCardList(this.cardList, this.data && this.data.isItMe, true);
+        }else{
+            let cardListNode = cc.instantiate(this.cardListPrefab);
+            this._getCardAnchorPoint(this.data && this.data.actor).addChild(cardListNode);
+            this.cardList = cardListNode.getComponent('CardList');
+            this._initHandCardList(this.cardList, this.data && this.data.isItMe);
+        }
 
-        let cardList = cardListNode.getComponent('CardList');
-        this._initHandCardList(cardList, this.data.isItMe);
-
-        cardList.setPosition(0, 0);
-        cardList.setSelectCardChangeListener(this.selectCardChangeListener);
-
-        this.cardList = cardList;
+        this.cardList.setPosition(0, 0);
+        this.cardList.setSelectCardChangeListener(this.selectCardChangeListener);
     }
 
-    _initHandCardList(cardList, isItMe){
+    _initHandCardList(cardList, isItMe, setMeCardDefaultConfig = true){
         if (isItMe) {
-            cardList.setMaxDimension(900);
-            cardList.setDraggable(true);
-            cardList.setSelectable(true);
-            cardList.setAlign(CardList.ALIGN_BOTTOM_LEFT);
-            // cardList.setAnchorPoint(0, 0);
-            cardList.setReveal(true);
+            if(setMeCardDefaultConfig){
+                cardList.setMaxDimension(900);
+                cardList.setDraggable(true);
+                cardList.setSelectable(true);
+                cardList.setAlign(CardList.ALIGN_BOTTOM_LEFT);
+                cardList.setReveal(true);
+            }
         } else {
             cardList.setMaxDimension(0);
             cardList.setScale(app.const.game.DECK_CARD_SCALE);

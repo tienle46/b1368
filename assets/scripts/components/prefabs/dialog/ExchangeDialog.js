@@ -14,16 +14,20 @@ class ExchangeDialog extends Component {
         });
     }
 
-    updatePhoneNode() {
-        return this.node.getChildByName('dialog').getChildByName('update_phone_number');
+    start() {
+        super.start();
+    }
+    
+    onDestroy() {
+        super.onDestroy();
+    }
+    
+    showNode(updatePhoneNode) {
+       updatePhoneNode.active = true;
     }
 
-    showUpdatePhone() {
-        if (this.updatePhoneNode()) this.updatePhoneNode().active = true;
-    }
-
-    hideUpdatePhone() {
-        if (this.updatePhoneNode()) this.updatePhoneNode().active = false;
+    hideNode(updatePhoneNode) {
+       updatePhoneNode.active = false;
     }
 }
 

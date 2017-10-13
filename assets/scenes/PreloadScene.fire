@@ -824,7 +824,6 @@
     },
     "_enabled": true,
     "path": "",
-    "active": true,
     "progressNode": {
       "__id__": 6
     },
@@ -868,10 +867,6 @@
     },
     "_enabled": true,
     "path": "",
-    "fullSceneLoadingPrefab": {
-      "__uuid__": "e3817d59-05ca-4bf3-8ca9-89a91e43595b"
-    },
-    "loadingPrefab": null,
     "loading": {
       "__id__": 5
     }

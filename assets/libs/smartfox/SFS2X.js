@@ -1123,7 +1123,7 @@ SFS2X.Controllers.SystemController.prototype._fnSetBuddyVariables = function (a)
             f.push(k.name);
         }
         if (e) this._sfs.buddyManager._setMyVariables(g);
-        else if (null != d) d._setVariables(g), i = sfs.buddyManager.getMyOnlineState();
+        else if (null != d) d._setVariables(g), i = this._sfs.buddyManager.getMyOnlineState();
         else {
             this._log.warn("Unexpected:  buddy '" + c + "' not found in local Buddy List when trying to set his Buddy Variables");
             return;
@@ -3354,7 +3354,10 @@ SFS2X.SocketEngine = function (a) {
     this._disconnectionReason = SFS2X.Utils.ClientDisconnectionReason.UNKNOWN;
 };
 SFS2X.SocketEngine.prototype.connect = function (a, b, c) {
-    this.isConnected ? this._log.error("Connection is already active") : this.isConnecting ? this._log.error("A connection attempt is already in progress") : (this.isConnecting = !0, this._socket = new WebSocket("ws" + (c ? "s" : "") + "://" + a + ":" + b + "/websocket"), this._socket._scope = this, this._socket.onopen = this._onSocketConnect, this._socket.onclose = this._onSocketDisconnect, this._socket.onmessage = this._onSocketData, this._socket.onerror = this._onSocketError);
+    this.isConnected ? this._log.error("Connection is already active") : this.isConnecting
+        ? this._log.error("A connection attempt is already in progress")
+        : (this.isConnecting = !0,
+            this._socket = new WebSocket("ws" + (c ? "s" : "") + "://" + a + ":" + b + "/websocket"), this._socket._scope = this, this._socket.onopen = this._onSocketConnect, this._socket.onclose = this._onSocketDisconnect, this._socket.onmessage = this._onSocketData, this._socket.onerror = this._onSocketError);
 };
 SFS2X.SocketEngine.prototype.disconnect = function (a) {
     this._disconnectionReason = a;

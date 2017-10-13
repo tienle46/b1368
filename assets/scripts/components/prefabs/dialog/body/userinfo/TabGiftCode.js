@@ -1,13 +1,10 @@
 import app from 'app';
-import Component from 'Component';
+import PopupTabBody from 'PopupTabBody';
+import Utils from 'GeneralUtils';
 
-class TabGiftCode extends Component {
+class TabGiftCode extends PopupTabBody {
     constructor() {
-        super()
-        this.messageLabel = {
-            default: null,
-            type: cc.Label
-        }
+        super();
         this.giftCodeInput = {
             default: null,
             type: cc.EditBox
@@ -15,16 +12,55 @@ class TabGiftCode extends Component {
     }
 
     onLoad() {
-        // wait til every requests is done
-        this.node.active = true;
+        super.onLoad();
+    }
 
-        this.messageLabel.horizontalAlign = cc.Label.HorizontalAlign.CENTER;
-        this.messageLabel.overflow = cc.Label.Overflow.RESIZE_HEIGHT;
-        this.messageLabel.enableWrapText = true;
-        let userName = app.context.getMyInfo().name;
-        this.messageLabel.string = `Bạn đang sử dụng tài khoản "${userName}" để nhận thưởng`;
+    onEnable(){
+        super.onEnable();
+    }
+    
+    onConfirmBtnClick() {
+        let input = this.giftCodeInput.string.trim();
+        
+        if(!this._isValidInput(input)) {
+            app.system.error(app.res.string('error_gift_code_is_invalid'));
+            return;
+        }
+            
+        app.service.send({
+            cmd: app.commands.GIFT_CODE,
+            data: {
+                'giftCode': input
+            }
+        });
+        this.showLoadingProgress();
+    }
+    
+    _addGlobalListener() {
+        super._addGlobalListener();
+        app.system.addListener(app.commands.GIFT_CODE, this._onGetGiftCode, this);
+    }
 
-        this.giftCodeInput.placeholder = 'Nhập mã code';
+    _removeGlobalListener() {
+        super._removeGlobalListener();
+        app.system.removeListener(app.commands.GIFT_CODE, this._onGetGiftCode, this);
+    }
+    
+    _isValidInput(code, allowedLength = 8) {
+        if(Utils.isEmpty(code))
+            return;
+        
+        return code.trim().length >= allowedLength && new RegExp(`[a-zA-Z0-9]{${allowedLength},10}`).test(code) && !/\s/.test(code);
+    }
+    
+    _onGetGiftCode(data) {
+        this.hideLoadingProgress();
+        if(data[app.keywords.RESPONSE_RESULT]) {
+            app.system.info(data[app.keywords.RESPONSE_MESSAGE]);
+            this.giftCodeInput.string = "";
+        } else {
+            app.system.error(data[app.keywords.RESPONSE_MESSAGE] || app.res.string('error_unknow'));
+        }
     }
 }
 

@@ -1,21 +1,22 @@
 import app from 'app';
-import SFS2X from 'SFS2X';
-import { utils, GameUtils } from 'utils';
+import { utils, GameUtils } from 'PackageUtils';
 import { Keywords } from 'core';
 import { BaseScene } from 'scenes';
 import { Events, Emitter } from 'events'
 import { CreateGameException } from 'exceptions';
 import { gameManager, GameEventHandler, Board, TLMNDLBoard, TLMNDLPlayer } from 'game';
-import IngameChatComponent from 'IngameChatComponent';
 import GamePlayers from 'GamePlayers';
+import GameChatComponent from "GameChatComponent";
+import Props from "../Props";
+import ArrayUtils from 'ArrayUtils';
+import CCUtils from 'CCUtils';
 
 export default class GameScene extends BaseScene {
 
     constructor() {
         super();
-
-        this.properties = {
-            ...this.properties,
+        
+        this.properties = this.assignProperties({
             boardNode: cc.Node,
             gameMenuNode: cc.Node,
             gameControlsNode: cc.Node,
@@ -23,10 +24,9 @@ export default class GameScene extends BaseScene {
             chatComponentNode: cc.Node,
             tableNameLabel: cc.Label,
             tableMinBetLabel: cc.Label,
-            gameResultPopupNode: cc.Node,
             playerPositionAnchorsNode: cc.Node,
             maxPlayers: 4
-        }
+        });
 
         /**
          * @type {IngameChatComponent}
@@ -56,15 +56,17 @@ export default class GameScene extends BaseScene {
          * @type {GameEventHandler}
          */
         this.gameEventHandler = null;
-        /**
-         * @type {GameResultPopup}
-         */
-        this.gameResultPopup = null;
-
         this.gameCode = null;
         this.gameState = null;
         this.gameData = null;
         this._penddingEvents = null;
+        this.gameContext = null;
+        this.isSoloGame = false;
+        this.firstTimePlay = undefined;
+    }
+
+    setFirstTimePlay(firstTimePlay){
+        this.firstTimePlay = firstTimePlay
     }
 
     _addGlobalListener() {
@@ -76,25 +78,83 @@ export default class GameScene extends BaseScene {
                 args: args
             }))
         }, this, 1);
-
+        
+        this.on(Events.ON_USER_EXIT_ROOM, this._onUserExitGame, this, 0);
         this.on(Events.ON_ACTION_EXIT_GAME, this._onActionExitGame, this);
+        this.on(Events.ON_PLAYER_CHAT_MESSAGE, this._onPlayerChatMessage, this, 0);
         this.on(Events.ON_ACTION_LOAD_GAME_GUIDE, this._onActionLoadGameGuide, this);
         this.on(Events.VISIBLE_INGAME_CHAT_COMPONENT, this._onVisibleIngameChatComponent, this);
         this.on(Events.ON_GAME_LOAD_DATA_AFTER_SCENE_START, this._loadGameDataAfterSceneStart, this);
         this.on(Events.ON_ROOM_CHANGE_MIN_BET, this._onRoomMinBetChanged, this);
-        this.on(Events.ON_PLAYER_READY_STATE_CHANGED, (playerId, ready) => {
+        this.on(Events.ON_PLAYER_READY_STATE_CHANGED, this._onPlayerReadyStateChanged, this);
+        this.on(Events.ON_PLAYER_REGISTER_QUIT_ROOM, this._handleRegisterQuitRoom, this);
+        this.on(Events.ON_GAME_STATE_STARTING, this._onGameStarting, this);
+    }
+    
+    _onGameStarting(){
+        this.firstTimePlay = false
+    }
+    
+    _handleRegisterQuitRoom(data){
+        if (data && data[app.keywords.SUCCESSFULL]) {
+            app.system.showToast(data[app.keywords.MESSAGE] || app.res.string("game_registered_quit_room"));
 
-            let readyPlayerIds = utils.getValue(this.gameData, app.keywords.ROOM_READY_PLAYERS, []);
-            if (ready) {
-                readyPlayerIds.push(playerId);
-            } else {
-                let index = readyPlayerIds.indexOf(playerId);
-                index >= 0 && readyPlayerIds.splice(index, 1);
+            let register = data[app.keywords.REGISTER];
+            if(register){
+                CCUtils.setVisible(this.gameMenu.menuLock, true);
+            }else{
+                CCUtils.setVisible(this.gameMenu.menuLock, false);
             }
+        }
+    }
 
-            this.gameData[app.keywords.ROOM_READY_PLAYERS] = readyPlayerIds;
+    setSoloGame(solo = false){
+        this.isSoloGame = solo
+    }
 
-        }, this);
+    clearReadyPlayer(){
+        this._assertReadyPlayersInited()
+        this.gameData[app.keywords.ROOM_READY_PLAYERS].length = 0
+    }
+
+    _onUserExitGame(user, room) {
+        if(!user || !room) return;
+        
+        if (this.room.id == room.id) {
+            let playerId = user.getPlayerId(this.board.room);
+            playerId > 0 && this._onPlayerReadyStateChanged(playerId, false);
+        }
+    }
+
+    _onPlayerReadyStateChanged(playerId, ready) {
+
+        /**
+         * Make sure that ROOM_READY_PLAYERS is inited by call this method
+         */
+        this._assertReadyPlayersInited()
+        let readyPlayerIds = utils.getValue(this.gameData, app.keywords.ROOM_READY_PLAYERS);
+
+        if (ready) {
+            this._addToReadyPlayers(playerId)
+        } else {
+            ArrayUtils.remove(readyPlayerIds, playerId);
+        }
+    }
+
+    _onUserExitRoom(user, room, playerId) {
+        this._assertReadyPlayersInited();
+        let readyPlayerIds = utils.getValue(this.gameData, app.keywords.ROOM_READY_PLAYERS, [])
+        readyPlayerIds && ArrayUtils.remove(readyPlayerIds, playerId)
+    }
+
+    _onPlayerChatMessage(sender, message) {
+        if (!this.gameContext.messages) {
+            this.gameContext.messages = [];
+        }
+        this.gameContext.messages.push({ sender: sender.name, message });
+        if (this.gameContext.messages.length > app.const.NUMBER_MESSAGES_KEEP_INGAME) {
+            this.gameContext.messages.shift();
+        }
     }
 
     _onVisibleIngameChatComponent() {
@@ -110,10 +170,17 @@ export default class GameScene extends BaseScene {
 
     onLoad() {
         super.onLoad();
+
+        this.firstPlayTime = true;
+        this.gameContext = {};
+        this.gameData = {};
         this._penddingEvents = [];
+        this.gameMenu = this.gameMenuNode.getComponent('GameMenuPrefab')
 
+        this.isSoloGame = GameUtils.isSoloGame(app.context.currentRoom)
+        app.system.setCurrentScene(this);
+        
         this.node.children.forEach(child => { child.opacity = 255 });
-
         Object.values(app.res.asset_tools).length < 1 && this._loadAssetTools();
     }
 
@@ -124,14 +191,22 @@ export default class GameScene extends BaseScene {
                 return;
             }
 
-            assets.forEach((asset, index) => {
+            assets = assets.sort((a, b) => (a.name > b.name) ? 1 : (a.name < b.name) ? -1 : 0);
+            let vips = [];
+            Object.keys(app.res.vip_tools).forEach(name => {
+                let index = assets.findIndex(asset => asset.name === name);
+                if(index > -1){
+                    vips.push(assets[index]);
+                    assets.splice(index, 1);
+                }
+            });
+            assets = [...assets, ...vips].forEach((asset, index) => {
                 app.res.asset_tools[asset.name] = {
                     id: index,
                     name: asset.name,
                     spriteFrame: asset
                 };
             });
-
         });
     }
 
@@ -145,74 +220,97 @@ export default class GameScene extends BaseScene {
     }
 
     _setGameMinBetInfo() {
-        let minBet = utils.getVariable(this.room, app.keywords.VARIABLE_MIN_BET, "");
-        this.tableMinBetLabel && (this.tableMinBetLabel.string = GameUtils.formatBalance(minBet));
+        // let minBet = utils.getVariable(this.room, app.keywords.VARIABLE_MIN_BET, "");
+        // this.tableMinBetLabel && (this.tableMinBetLabel.string = 'Cược ' + GameUtils.formatBalanceShort(minBet));
+        let gameName = app.const.gameLabels[this.gameCode] || "";
+        this.tableMinBetLabel && (this.tableMinBetLabel.string = gameName);
     }
 
     _setTableNameLabel() {
-        let roomName = this.room.name.substring(3, 5);
         let tableName = this.room.name.substring(5, this.room.name.length) || "";
-
-        this.tableNameLabel.string = app.res.string('game_table_name', { tableName });
+        let gameBet = GameUtils.formatBalanceShort(utils.getVariable(this.room, app.keywords.VARIABLE_MIN_BET, ""));
+        
+        this.tableNameLabel.string = this.gameCode != app.const.gameCode.XOC_DIA ? app.res.string('game_table_name', { tableName, gameBet }) : `B${tableName} - ${gameBet}`;
     }
 
     onEnable() {
         super.onEnable();
 
-        // utils.deactive(this.chatComponentNode);
-        // utils.deactive(this.gameResultPopupNode);
-
-        app.system.setCurrentScene(this);
-        this.chatComponent = this.chatComponentNode.getComponent('IngameChatLeftComponent');
+        this.chatComponent = this.chatComponentNode.getComponent('GameChatComponent');
         this.gamePlayers = this.playerLayer.getComponent('GamePlayers');
 
 
         try {
             this.room = app.context.currentRoom;
-
+            
             if (this.room && this.room.isGame) {
                 this.gameCode = utils.getGameCode(this.room);
-                this.gameData = this.room.getVariable(app.keywords.VARIABLE_GAME_INFO).value;
+                this.gameData = this.room.getVariable(app.keywords.VARIABLE_GAME_INFO).value
             }
 
             if (!this.gameData) {
                 throw new CreateGameException(app.res.string('error_fail_to_load_game_data'));
             }
 
+            if(!app.context.rejoiningGame){
+                let me = app.context.getMe();
+                let ownerId = utils.getVariable(this.room, app.keywords.VARIABLE_OWNER);
+
+
+                if(me && ownerId && me.getPlayerId(this.room) == ownerId){
+                    this.firstTimePlay = true
+                }
+            }
+
             this._setGameInfo(this.room);
             this._loadGameData();
 
         } catch (e) {
-            error(e);
             app.system.enablePendingGameEvent = false;
             e instanceof CreateGameException && this._onLoadSceneFail();
         }
+
+        this._initGameEvents();
     }
 
     _onGameData(isJustJoined = true) {
 
         if (this.room && this.room.isGame) {
-            this.gameData = this.room.getVariable(app.keywords.VARIABLE_GAME_INFO).value;
+            this.gameData = this.room.getVariable(app.keywords.VARIABLE_GAME_INFO).value
         }
 
         if (this.gameData) {
             this._loadGameData(isJustJoined);
         }
-
     }
 
     start() {
         super.start();
 
-        this._initGameEvents();
         app.system.enablePendingGameEvent = false;
         this._handlePendingEvents();
+        
+        GameChatComponent && GameChatComponent.loadEmotions();
+        Props && Props.loadAllPropAsset();
+
+        /**
+         * set requestRandomInvite = false to make sure player only receive random invite on first time join game group
+         */
+        app.context.requestRandomInvite = false;
+        
+        // user sees greeting
+        this.gamePlayers && this.gamePlayers.greetingVip(app.context.getMe());
     }
 
     onDestroy() {
         super.onDestroy();
         this.removeAllListener();
         this.gameEventHandler && this.gameEventHandler.removeGameEventListener();
+        this.gameContext = {};
+        this.gameData = {};
+        app.context.rejoiningGame = false;
+        window.release(this._penddingEvents);
+        Props.releaseAllPropAsset();
     }
 
     isPlaying() {
@@ -251,32 +349,48 @@ export default class GameScene extends BaseScene {
         this.gameEventHandler.addGameEventListener();
     }
 
+    _mergeGameData(newGameData){
+        let readyPlayerIds = this.gameData[app.keywords.ROOM_READY_PLAYERS];
+
+        this.gameData = Object.assign(this.gameData, newGameData)
+
+        readyPlayerIds && this._addToReadyPlayers(...readyPlayerIds)
+    }
+
     _onGameRejoin(data) {
+        this._mergeGameData(data);
+        let registeredQuitRoom = data["registeredQuitRoom"];
+        
+        CCUtils.setVisible(this.gameMenu.menuLock, registeredQuitRoom);
+        
         let state = utils.getValue(this.gameData, app.keywords.BOARD_STATE_KEYWORD);
         state && this.emit(Events.ON_GAME_STATE_CHANGE, state, this.gameData, true, true);
         this.emit(Events.ON_GAME_REJOIN, data);
     }
-
+    
+    handleGameRefresh(data) {
+        this.gameData = Object.assign({}, data.gameData, data.gamePhaseData);
+        // this.gameData = {...data.gameData, ...data.gamePhaseData};
+        this._mergeGameData(data.playerData);
+        // this._onGameRejoin(data.playerData);
+        this.emit(Events.ON_GAME_REFRESH, data);    
+    }
+    
     _onActionExitGame() {
         // this.showLoading();
-        app.service.sendRequest(new SFS2X.Requests.System.LeaveRoomRequest(this.room));
+        // app.service.sendRequest(new SFS2X.Requests.System.LeaveRoomRequest(this.room));
 
-        app.service.send({ cmd: app.commands.REGISTER_QUIT_ROOM, room: this.room }, (data) => {
-            if (data && data[app.keywords.SUCCESSFULL]) {
-                app.system.showToast(app.res.string("game_registered_quit_room"));
-            }
-        });
+        app.service.send({ cmd: app.commands.REGISTER_QUIT_ROOM, room: this.room });
     }
 
     _onActionLoadGameGuide() {
         app.system.info(app.res.string('coming_soon'));
     }
 
-    _loadGameData(isJustJoined) {
+    _loadGameData(isJustJoined = true) {
 
         let currentGameState = utils.getValue(this.gameData, Keywords.BOARD_STATE_KEYWORD);
         let isStateAfterReady = GameUtils.isStateAfterReady(currentGameState);
-
         /**
          * Current is call board._initPlayingData && board._loadGamePlayData directly. But when player or other component need to get data,
          * below line code will be switch to using emit via scene emitter
@@ -290,6 +404,7 @@ export default class GameScene extends BaseScene {
     }
 
     _loadGameDataAfterSceneStart(data, isJustJoined) {
+
         let currentGameState = utils.getValue(data, Keywords.BOARD_STATE_KEYWORD);
         let isStateAfterReady = GameUtils.isStateAfterReady(currentGameState);
 
@@ -303,18 +418,8 @@ export default class GameScene extends BaseScene {
     }
 
     _loadPlayerReadyState() {
-
-        let readyPlayerIds = utils.getValue(this.gameData, app.keywords.GAME_LIST_PLAYER, []);
-        this.gameData[app.keywords.ROOM_READY_PLAYERS] = [...readyPlayerIds];
-
+        this._assertReadyPlayersInited();
         this._updatePlayerReadyState(this.gameData)
-
-        // console.warn("_loadPlayerReadyState", readyPlayerIds, );
-        //
-        // readyPlayerIds && readyPlayerIds.forEach(id => {
-        //     this.emit(Events.ON_PLAYER_READY_STATE_CHANGED, id, true, this.gamePlayers.isItMe(id));
-        //     console.warn("_loadPlayerReadyState single: ", id, this.gamePlayers.isItMe(id));
-        // });
     }
 
     _onLoadSceneFail() {
@@ -323,7 +428,7 @@ export default class GameScene extends BaseScene {
             return;
         }
 
-        if (app.service.client.isConnected()) {
+        if (app.service.getClient().isConnected()) {
             app.system.error('Không thể khởi tạo bàn chơi. Quay lại màn hình chọn bàn chơi!', () => {
                 app.system.loadScene(app.const.scene.LIST_TABLE_SCENE);
             });
@@ -337,8 +442,9 @@ export default class GameScene extends BaseScene {
     goBack() {
 
         app.system.setSceneChanging(true);
-
-        if (app.service.client.isConnected()) {
+        app.context.currentRoom && (app.context.currentRoom.isGame = false);
+        
+        if (app.service.getClient().isConnected()) {
             app.system.loadScene(app.const.scene.LIST_TABLE_SCENE);
         } else {
             app.system.loadScene(app.const.scene.LOGIN_SCENE);
@@ -346,13 +452,14 @@ export default class GameScene extends BaseScene {
     }
 
     _onGameStateBegin(data, isJustJoined, isRejoining) {
-        if (!isRejoining && this.gameState != app.const.game.state.READY) {
+        if ((!isRejoining || this.jumpedToBoardEnd) && this.gameState != app.const.game.state.READY) {
             this.emit(Events.ON_GAME_RESET);
         }
         this.emit(Events.ON_GAME_STATE_BEGIN, data, isJustJoined);
     }
 
     _onGameStateChange(state, data, isJustJoined, rejoining) {
+        state == app.const.game.state.WAIT && this.emit(Events.ON_GAME_WAIT)
 
         if (this.gameState == app.const.game.state.WAIT) {
             this.gameState = app.const.game.state.READY;
@@ -360,9 +467,8 @@ export default class GameScene extends BaseScene {
             this._onGameData();
         }
 
-        let localState = GameUtils.convertToLocalGameState(state);
         this.gameState = state;
-        this.gameLocalState = localState;
+        this.gameLocalState = GameUtils.convertToLocalGameState(state);
 
         if (this.gameState == app.const.game.state.WAIT) {
             this.emit(Events.ON_GAME_RESET);
@@ -370,10 +476,10 @@ export default class GameScene extends BaseScene {
         }
 
         this.emit(Events.ON_GAME_STATE_PRE_CHANGE, state, data, isJustJoined);
-
-
-        switch (localState) {
+        
+        switch (this.gameLocalState) {
             case app.const.game.state.BEGIN:
+                app.jarManager.closeJarExplosive();
                 this._onGameStateBegin(data, isJustJoined, rejoining);
                 break;
             case app.const.game.state.STARTING:
@@ -385,15 +491,27 @@ export default class GameScene extends BaseScene {
             case app.const.game.state.PLAYING:
                 this.emit(Events.ON_GAME_STATE_PLAYING, data, isJustJoined);
                 break;
-            case app.const.game.state.ENDING:
+            case app.const.game.state.ENDING: {
                 this.emit(Events.ON_GAME_STATE_ENDING, data, isJustJoined);
+                
+                    let jarExplosiveData = utils.getVariable(this.room, app.keywords.JAR_EXPLOSIVE);
+                    
+                    if(jarExplosiveData) {
+                        let usernames = jarExplosiveData[app.keywords.USERNAME_LIST] || [],
+                        moneyList = jarExplosiveData[app.keywords.MONEY_LIST] || [],
+                        messages = jarExplosiveData['msl'] || [];
+                    
+                        usernames.forEach((username, index) => {
+                            this.emit(Events.ON_USER_MAKES_JAR_EXPLOSION, username, messages[index] || null, moneyList[index]);
+                        });
+                    }
                 break;
+            }
             default:
                 this.emit(Events.ON_GAME_STATE, this.gameState, data, isJustJoined);
         }
 
-        this._updatePlayerReadyState(data, true);
-
+        this._updatePlayerReadyState(data);
         this.emit(Events.ON_GAME_STATE_CHANGED, state, data, isJustJoined);
     }
 
@@ -413,27 +531,28 @@ export default class GameScene extends BaseScene {
 
             }
 
-            persistToGameData && (this.gameData[app.keywords.ROOM_READY_PLAYERS] = readyPlayerIds);
+            this._addToReadyPlayers(...readyPlayerIds);
         }
+    }
+    
+    _assertReadyPlayersInited(){
+        if(!this.gameData[app.keywords.ROOM_READY_PLAYERS]){
+            this.gameData[app.keywords.ROOM_READY_PLAYERS] = []
+        }
+    }
+
+    _addToReadyPlayers(...playerIds){
+        this._assertReadyPlayersInited();
+        let readyPlayerIds = this.gameData[app.keywords.ROOM_READY_PLAYERS];
+        playerIds.forEach(id => {
+            readyPlayerIds.indexOf(id) < 0 && readyPlayerIds.push(id)
+        })
     }
 
     checkReadyPlayer(player) {
-
-
-        if (this.gameData.hasOwnProperty(app.keywords.ROOM_READY_PLAYERS)) {
-
-            let readyPlayerIds = utils.getValue(this.gameData, app.keywords.ROOM_READY_PLAYERS, []);
-
-            return readyPlayerIds.indexOf(player.id) >= 0;
-        }
-    }
-
-    showGameResult(models, cb) {
-        !utils.isEmptyArray(models) && this.gameResultPopup && this.gameResultPopup.show(models, cb);
-    }
-
-    hideGameResult() {
-        this.gameResultPopup && this.gameResultPopup.hide();
+        this._assertReadyPlayersInited()
+        let readyPlayerIds = utils.getValue(this.gameData, app.keywords.ROOM_READY_PLAYERS);
+        return readyPlayerIds.indexOf(player.id) >= 0;
     }
 
     enoughPlayerToStartGame() {

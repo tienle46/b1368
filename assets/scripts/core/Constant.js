@@ -5,6 +5,14 @@
 var app = require('app');
 
 app.const = {};
+
+app.const.MAX_INT = 2147483647
+app.const.MIN_INT = -2147483647
+
+app.const.LOADING_SHORT_DURATION = 15;
+app.const.LOADING_MEDIUM_DURATION = 30;
+app.const.LOADING_LONG_DURATION = 60;
+
 app.const.dialogZIndex = 9999;
 app.const.topupZIndex = 10000;
 app.const.loadingZIndex = 10000;
@@ -18,6 +26,7 @@ app.const.EXCHANGE_LIST_CARD_TYPE_ID = 1;
 app.const.EXCHANGE_LIST_ITEM_TYPE_ID = 2;
 
 app.const.USER_LOCAL_STORAGE = "userInfo";
+app.const.IAP_LOCAL_STORAGE = "iapItems";
 
 app.const.scene = {};
 app.const.scene.ENTRANCE_SCENE = "EntranceScene";
@@ -39,8 +48,29 @@ app.const.gameCode.BA_CAY = 'bcy';
 app.const.gameCode.LIENG = 'lie';
 app.const.gameCode.XAM = 'xam';
 app.const.gameCode.BAU_CUA = 'tcc';
+app.const.gameCode.TLMNDL_SOLO = 'tds';
+app.const.gameCode.XAM_SOLO = 'xms';
 app.const.gameCode.ALL = 'xga';
 app.const.gameCode.XOC_DIA = 'xod';
+app.const.gameCode.TAI_XIU = 'gtx';
+
+
+app.const.gameLabels = {
+    [app.const.gameCode.PHOM]: 'Phỏm',
+    [app.const.gameCode.TLMNDL]: 'TLMN',
+    [app.const.gameCode.TLMNDL_SOLO]: 'TLMN-Solo',
+    [app.const.gameCode.TLMN]: 'TLMN',
+    [app.const.gameCode.TLMNM]: 'TLMN Mới',
+    [app.const.gameCode.XITO]: 'Xì Tố',
+    [app.const.gameCode.XAM]: 'Sâm',
+    [app.const.gameCode.XAM_SOLO]: 'Sâm-Solo',
+    [app.const.gameCode.BA_CAY]: 'Ba Cây',
+    [app.const.gameCode.LIENG]: 'Liêng',
+    [app.const.gameCode.BAU_CUA]: 'Bầu Cua',
+    [app.const.gameCode.ALL]: 'B1368',
+    [app.const.gameCode.XOC_DIA]: 'Xóc Đĩa',
+    [app.const.gameCode.TAI_XIU]: 'Tài Xỉu'
+};
 
 /**
  * System message type
@@ -125,5 +155,25 @@ app.const.COLOR_GREEN = new cc.Color(100, 173, 45);
 app.const.COLOR_BLACK = new cc.Color(0, 0, 0);
 app.const.COLOR_GRAY = new cc.Color(174, 174, 174);
 
-app.const.adminMessage = {}
+app.const.adminMessage = {};
+app.const.adminMessage.TOAST = 0;
+app.const.adminMessage.LACK_OF_MONEY = 1;
+app.const.adminMessage.REWARD = 2;
+app.const.adminMessage.CPI = 3;
 app.const.adminMessage.MANUAL_DISMISS = 4;
+app.const.adminMessage.ALERT = 5;
+app.const.adminMessage.DAILY_LOGIN_MISSION = 11;
+app.const.adminMessage.TOPUP_SUCCESSFULLY = 12;
+app.const.adminMessage.REGISTER_BONUS = 14;
+app.const.adminMessage.KICK_MESSAGE = 16;
+
+app.const.NUMBER_MESSAGES_KEEP_INGAME = 30;
+app.const.NUMBER_MESSAGES_KEEP_PER_BUDDY = 30;
+
+
+/**
+ * =============================================== 
+ *  ACTION CODES
+ * =============================================== 
+ */
+app.const.ACTION_CODES = ['CASH', 'TRANSFER', 'TOPUP', 'TOPUP_CARD', 'TOPUP_SMS', 'TOPUP_IAP', 'EVENT', 'BUDDY', 'BANK', 'GIFT_CODE', 'SYSTEM_MESSAGE', 'PERSONAL_MESSAGE', 'EXCHANGE', 'EXCHANGE_CARD', 'EXCHANGE_ITEM', 'EXCHANGE_HISTORY', 'BUDDY_CHAT', 'FEEDBACK', 'FANPAGE', 'WEBSITE', 'TOP_VIP', 'TOP_CAO_THU', 'TOP_DAI_GIA', 'AGENT', 'TOPUP_HISTORY', 'PERSONAL_INFO', 'PLAYER_INFO', 'PERSONAL_STATISTIC', 'PLAY_GAME'];

@@ -1,24 +1,48 @@
 import app from 'app';
-import DialogActor from 'DialogActor';
+import PopupTabBody from 'PopupTabBody';
+import Linking from 'Linking';
 
-class TabAgency extends DialogActor {
+class TabAgency extends PopupTabBody {
     constructor() {
         super();
-        this.properties = {
-            ...this.properties,
-            bodyNode: cc.Node
-        };
+        
+        this.properties = this.assignProperties({
+            bodyNode: cc.Node,
+            fbBtn: cc.Node,
+            transferBtn: cc.Node,
+        });
     }
 
     onLoad() {
         super.onLoad();
     }
-
-    start() {
-        super.start();
+    
+    loadData() {
+        if(Object.keys(this._data).length > 0)
+            return false;
+        super.loadData();
+        
         this._getAgencyDataFromServer();
+        return true;
     }
-
+    
+    onFacebookBtnClick(e) {
+        let currentTarget = e.currentTarget;
+        let link = currentTarget.fbLink;
+        cc.sys.openURL(link);
+    }
+    
+    onTransferBtnClick(e) {
+        let currentTarget = e.currentTarget;
+        let username = currentTarget._transferName;
+        app.visibilityManager.goTo(Linking.ACTION_TRANSFER, {username});
+    }
+    
+    onDataChanged(data = {}) {
+        let {agents} = data;
+        agents && agents.length > 0 && this._renderAgency(agents);
+    }
+    
     _addGlobalListener() {
         super._addGlobalListener();
         app.system.addListener(app.commands.AGENCY, this._onListAgency, this);
@@ -33,35 +57,51 @@ class TabAgency extends DialogActor {
         let sendObj = {
             cmd: app.commands.AGENCY
         };
-
-        app.system.showLoader();
+        
+        this.showLoadingProgress();
         app.service.send(sendObj);
     }
 
     _onListAgency(res) {
-        app.system.hideLoader();
-
         try {
             let d = JSON.parse(res[app.keywords.AGENT]).agents;
-            let data = [];
-            for (let i = 0; i < d.length; i++) {
-                data.push([d[i].agent_name, d[i].call_number, d[i].fblink]);
-            }
-
-            this.initView({
-                data: ['Đại lý', 'Số DT', 'facebook'],
-                options: {
-                    fontColor: app.const.COLOR_YELLOW
-                }
-            }, data, {
-                size: this.node.getContentSize(),
-                isValidated: true
-            });
-
-            this.bodyNode.addChild(this.getScrollViewNode());
+            this.setLoadedData({agents: d});
         } catch (e) {
             app.system.error(e.message);
         }
+    }
+    
+    _renderAgency(agents) {
+        let data = [];
+        
+        for (let i = 0; i < agents.length; i++) {
+            let fbIcon = cc.instantiate(this.fbBtn);
+            fbIcon.active = true;
+            fbIcon.fbLink =  agents[i].fblink;
+            
+            let transferBtn = cc.instantiate(this.transferBtn);
+            transferBtn.active = true;
+            transferBtn._transferName =  agents[i].agent_name;
+            
+            let agentName = agents[i].agent_name;
+            data.push([`${agentName.length > 11 ? agentName.slice(0, 11)+'...': agentName}`, agents[i].call_number, fbIcon, transferBtn]);
+        }
+
+        this.initView({
+            data: ['Đại lý', 'Số ĐT', 'Facebook', ''],
+            options: {
+                fontColor: app.const.COLOR_YELLOW,
+            }
+        }, data, {
+            size: this.node.getContentSize(),
+            isValidated: true,
+            fontSize: 25,
+            group: {
+                widths: [260, '', '', '']
+            }
+        });
+        
+        !this.getScrollViewNode().isChildOf(this.bodyNode) && this.bodyNode.addChild(this.getScrollViewNode());
     }
 }
 

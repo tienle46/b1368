@@ -18,11 +18,17 @@ export default class SamScene extends GameScene {
         super.onLoad();
     }
 
+    // setSoloGame(solo){
+    //     super.setSoloGame(solo)
+    //
+    //     this.playerPositions.addToHideAnchor(2, 3, 5)
+    // }
+
     onEnable(){
         this.board = this.boardNode.getComponent('BoardSam');
         this.gameControls = this.gameControlsNode.getComponent('SamControls');
         this.playerPositions = this.playerPositionAnchorsNode.getComponent('FivePlayerPositions');
-        this.gameResultPopup = this.gameResultPopupNode.getComponent('GameResultPopup');
+        this.playerPositions.setScene && this.playerPositions.setScene(this);
 
         super.onEnable();
     }

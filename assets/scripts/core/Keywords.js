@@ -23,12 +23,14 @@ Keywords.RESPONSE_RESULT = "su";
 Keywords.RESPONSE_MESSAGE = "msg";
 //
 Keywords.PAGE = "p";
+Keywords.PAGE_NEW = "page";
 Keywords.PAGE_COUNT = "pc";
 Keywords.ID = "i";
 Keywords.KEY_SEARCH = "k";
 Keywords.QUANTITY = "q";
 Keywords.UPDATE_RESULT = "su";
 Keywords.UPDATE_PROFILE_RESULT = "s";
+Keywords.UPDATE_PHONE_NUMBER = "updatePhone";
 Keywords.REQUEST_ERROR_CODE = "e";
 //
 //
@@ -44,8 +46,7 @@ Keywords.ABOUT = "a";
 Keywords.INVITED_CODE = "rc";
 Keywords.INVITE_CODE = "ic";
 Keywords.CALL_NUMBER = "p";
-Keywords.UPDATE_PHONE_NUMBER = "upn";
-Keywords.PHONE_NUMBER = "pn";
+Keywords.PHONE_NUMBER = "phoneNumber";
 Keywords.EXP_POINT = "ep";
 Keywords.BALANCE = "ba";
 Keywords.SINGLE_OR_MARRIED = "rs";
@@ -62,6 +63,7 @@ Keywords.LOST = "lo";
 Keywords.LOST_LIST = "ll";
 Keywords.LOST_COUNT = "ls";
 Keywords.DRAW = "d";
+Keywords.DETAIL_LIST = "dtl";
 Keywords.DRAW_LIST = "dl";
 Keywords.DRAW_COUNT = "dr";
 Keywords.PLAYED_TIME = "pt";
@@ -79,6 +81,9 @@ Keywords.VERSION = "v";
 Keywords.QUICK_PLAY = "qply";
 Keywords.ACCESS_TOKEN = "at";
 Keywords.PARTNER_ID = "pid";
+Keywords.IS_OTP = "isOtp";
+Keywords.PACKAGE_NAME = "packageName";
+Keywords.BUILD_TYPE = "buildType";
 Keywords.IS_UPDATE = "iu";
 Keywords.DOWNLOAD_LINK = "dl";
 Keywords.LAST_MOVE_PLAYER_ID = "lm";
@@ -104,8 +109,8 @@ Keywords.GROUP_ROOM_COUNT = "rC";
 Keywords.GROUP_ROLE_ID = "rId";
 Keywords.GROUP_LOBBY_ROOM_ID = "o";
 Keywords.ROLE_LIST = "rol";
-Keywords.ROLE_MAX_BALANCE = "mxB";
-Keywords.ROLE_MIN_BALANCE = "miB";
+Keywords.ROLE_MAX_BALANCE = "mxb";
+Keywords.ROLE_MIN_BALANCE = "mib";
 Keywords.ROLE_MAX_LEVEL = "mxl";
 Keywords.ROLE_MIN_LEVEL = "mil";
 Keywords.ROLE_MAX_ROOM_IN_GORUP = "mxr";
@@ -145,6 +150,8 @@ Keywords.BUDDY_MESSAGE_SENDER_LIST = "sl";
 Keywords.BUDDY_MESSAGE_SEND_TIME_LIST = "stl";
 Keywords.BUDDY_MESSAGE_SEND_TIME = "st";
 Keywords.USERNAME_LIST = "unl";
+Keywords.USERNAME = "un";
+
 // COUNT LIST
 Keywords.COUNT_LIST = "cl";
 
@@ -164,6 +171,7 @@ Keywords.USER_EXP_POINT = "uep";
 Keywords.LEVEL_EXP_POINT = "iexp";
 Keywords.NEXT_LEVEL_EXP_POINT = "uexp";
 Keywords.NEXT_LEVEL_EXP_PERCENT = "pl";
+Keywords.FACEBOOK_ID = "facebookId";
 //Task
 Keywords.TASK_CODE = "tc";
 Keywords.TASK_NAME = "tn";
@@ -249,6 +257,7 @@ Keywords.VARIABLE_GAME_INFO = "i";
  * chi co ready list neu dang o trang thai playing thi co modeling tuong ung
  */
 Keywords.GAME_LIST_PLAYER = "pl";
+Keywords.GOP_GA_WINNER = "gopGaWinner";
 /**
  * danh sach user ready
  */
@@ -257,6 +266,7 @@ Keywords.GAME_LIST_PLAYER = "pl";
  * danh sach thang thua cua player
  */
 Keywords.GAME_LIST_WIN = "w";
+Keywords.CARD_TYPES = "cardTypes";
 /**
  * danh sach player da ha bai
  */
@@ -286,9 +296,7 @@ Keywords.GAME_LIST_RESULT = "s";
 Keywords.PLAYER_REJOIN_TURN_COUNT_REMAIN = "ct";
 //Lieng
 Keywords.GAME_LIST_UP_BO = "s";
-Keywords.GAME_LAST_BET_VALUE = "cb";
-Keywords.GAME_TOTAL_BET_VALUE = "tb";
-Keywords.GAME_LIST_LIENG_TYPE = "ct";
+Keywords.GAME_LAST_BET = "isLastBet";
 //xito
 //    Keywords.XITO_FACE_DOWN_PHASE = "ccd";
 //Player
@@ -460,6 +468,7 @@ Keywords.CHAT_USER_NAME = "u";
 Keywords.CHAT_SEND_TIME = "st";
 Keywords.KEY_NUM_OF_USER_INVITE = "n";
 //
+Keywords.USERNAME_LIST = "ul";
 Keywords.CHAT_USERNAME_LIST = "ul";
 Keywords.CHAT_STATUS_LIST = "sl";
 Keywords.CHAT_GENDER_LIST = "gl";
@@ -480,6 +489,7 @@ Keywords.BOARD_STATE_KEYWORD = "gp";
 Keywords.DEAL_CARD_LIST_KEYWORD = "sc";
 //Phone invite
 Keywords.PHONE_INVITE_PHONE = "p";
+Keywords.PHONE_INVITE_PHONE_NEW = "phone";
 Keywords.PHONE_INVITE_STATUS = "s";
 Keywords.PHONE_IS_ACTIVE = "a";
 Keywords.PHONE_IS_VALID = "v";
@@ -567,6 +577,7 @@ Keywords.RANK_NODE_ID = "ni";
 Keywords.RANK_TYPE_NAME = "hl";
 Keywords.RANK_TYPE_ID = "itl";
 Keywords.RANK_TYPE_ICON = "iml";
+Keywords.MESSAGE = "msg";
 
 //DOI THUONG
 Keywords.EXCHANGE_LIST = {
@@ -725,6 +736,8 @@ Keywords.ADMIN_MESSAGE_LIST = "ml";
 Keywords.ROOM_BET = "b";
 Keywords.ROOM_CAPACITY = "mu";
 Keywords.USER_VARIABLE_BALANCE = "coin";
+Keywords.USER_VARIABLE_DISPLAY_NAME = "displayName";
+Keywords.USER_VARIABLE_VERIFIED = "verified";
 Keywords.USER_VARIABLE_IS_TESTER = "$IS_TESTER";
 Keywords.ROOM_READY_PLAYERS = "readyPlayers";
 
@@ -733,7 +746,52 @@ Keywords.APP_VERSION_KEY = "avrsn";
 Keywords.GAME_RULE = "r";
 Keywords.GAME_GUIDE = "g";
 Keywords.SUCCESSFULL = "s";
+Keywords.REGISTER = "register";
 Keywords.BA_CAY_GOP_GA_VALUE = "gopGaValue";
 
 //
 Keywords.AGENT = "agent";
+
+Keywords.MONEY_FEE = "f";
+Keywords.MIN_TRANSFER_AMOUNT = "mit";
+Keywords.MAX_TRANSFER_AMOUNT = "mxt";
+Keywords.GOLD = "gold";
+Keywords.TRANSFER_REASON = "tr";
+Keywords.TRANSFER_USER_ID = "n";
+
+Keywords.CHARGE_SMS_OBJECT_IAC = "iac";
+// Keywords.CHARGE_SMS_OBJECT_INFORS = "iacInfos";
+Keywords.IN_APP_PURCHASE = "ap";
+Keywords.IN_BILLING_PURCHASE = "bp";
+Keywords.CHARGE_SMS_OBJECT_INFORS = "infos";
+Keywords.VARIABLE_PLAYING_GAME = "gr";
+Keywords.GAME_MINBET_LIST = "mbl";
+Keywords.GAME_ENABLE_MINBET_LIST = "embl";
+Keywords.CONFIG_DATA = "configData";
+Keywords.AMOUNT = "amount";
+
+Keywords.CHANGE_AVATAR_URL = "avatar";
+Keywords.CHANGE_AVATAR = "changeAvatar";
+
+Keywords.CARDS = "cards";
+Keywords.ERROR_MESSAGE = "errMsg";
+
+// jar (hũ)
+Keywords.END_TIME_LIST = "etl";
+Keywords.START_TIME_LIST = "stl";
+Keywords.REMAIN_TIME_LIST = "rtl";
+Keywords.ID_LIST = "il";
+Keywords.MONEY_LIST = "ml";
+
+Keywords.NAME = "n";
+Keywords.DETAIL = "d";
+Keywords.TOTAL_MONEY = "totalMoney";
+
+Keywords.JAR_EXPLOSIVE = "sj_sjil";
+
+Keywords.VIP_LEVEL = "vipLevel";
+Keywords.USER_NAME = "username";
+Keywords.ROOM_NAME = "roomName";
+
+Keywords.LIENG_BET_AMOUNT = "betAmounts"; // list total amount user betted in this board
+Keywords.LIENG_CARD_TYPE = "ct"; // SAP(7), LIENG(4, 5, 6), DI(3), DONG_HOA(2), TINH_DIEM(1), UP_BO(0);

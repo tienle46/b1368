@@ -3,28 +3,14 @@
  */
 
 import app from 'app';
-import GameScene from 'GameScene';
-import Events from 'Events';
-import HorizontalBetPopup from 'HorizontalBetPopup';
+import GameBetScene from 'GameBetScene';
 
-export default class XocDiaScene extends GameScene {
+export default class XocDiaScene extends GameBetScene {
     constructor() {
         super();
-
-        this.properties = {
-            ...this.properties,
-            chipLayer: {
-                default: null,
-                type: cc.Node
-            },
-
-            meBalanceLabel: {
-                default: null,
-                type: cc.Label
-            }
-        };
-
-        this.userGold = 0;
+        
+        this.BOARD_COMPONENT = 'BoardXocDia';
+        this.CONTROL_COMPONENT = 'XocDiaControls';
     }
 
     onLoad() {
@@ -32,29 +18,9 @@ export default class XocDiaScene extends GameScene {
     }
 
     onEnable() {
-        this.board = this.boardNode.getComponent('BoardXocDia');
-        this.gameControls = this.gameControlsNode.getComponent('XocDiaControls');
-        this.playerPositions = this.playerPositionAnchorsNode.getComponent('NinePlayerPositions');
-        // this.gameResultPopup = this.gameResultPopupNode.getComponent('GameResultPopup');
-
         super.onEnable();
     }
-
-    enoughPlayerToStartGame() {
-        return this.gamePlayers.players.length > 0;
-    }
-
-    changePlayerBalance(amount) {
-        this.gamePlayers.me && this.gamePlayers.me.changePlayerBalance(amount);
-    }
-
-    setPlayerBalance(amount) {
-        this.gamePlayers.me && this.gamePlayers.me.setPlayerBalance(amount);
-    }
-
-    loadPlayerBalance() {
-        this.gamePlayers.me && this.gamePlayers.me.loadPlayerBalance();
-    }
+    
 }
 
 app.createComponent(XocDiaScene);

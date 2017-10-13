@@ -1,0 +1,30 @@
+{
+  "ver": "1.0.0",
+  "uuid": "5d91fb57-83ad-47f6-a10d-02e38c12bd0c",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "subMetas": {
+    "trump-hen": {
+      "ver": "1.0.3",
+      "uuid": "1e08bc66-c6ca-43a1-8e51-3319615ba227",
+      "rawTextureUuid": "5d91fb57-83ad-47f6-a10d-02e38c12bd0c",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": -2,
+      "offsetY": -1.5,
+      "trimX": 2,
+      "trimY": 5,
+      "width": 336,
+      "height": 165,
+      "rawWidth": 344,
+      "rawHeight": 172,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}

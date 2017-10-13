@@ -1,43 +1,31 @@
 import app from 'app';
-import Component from 'components';
-import utils from 'utils';
+import ActionComponent from 'ActionComponent';
+import utils from 'PackageUtils';
 import GameUtils from 'GameUtils';
+import CCUtils from 'CCUtils';
 
-export default class Card extends Component {
+export default class Card extends ActionComponent {
 
     constructor(byteValue) {
         super();
 
-        this.properties = {
-            ...this.properties,
-            rankNode: cc.Label,
-            suitNode: cc.Sprite,
-            mainPic: cc.Sprite,
+         this.properties = {
+            cardsAtlas: {
+                default : null,
+                type : cc.SpriteAtlas
+            },
+            bodyNode: cc.Node,
             cardBG: cc.Sprite,
-            redTextColor: new cc.Color().fromHEX('#C70003'),
-            blackTextColor: new cc.Color().fromHEX('#242424'),
-            texFrontBG: cc.SpriteFrame,
-            texBackBG: cc.SpriteFrame,
             highlightNode: cc.Node,
+            disableNode: cc.Node,
             lockedNode: cc.Node,
+            tapHighlightNode: cc.Node,
             groupNode: cc.Node,
             groupNumberLabel: cc.Label,
             emptySprite: cc.SpriteFrame,
-
-            texFaces: {
-                default: [],
-                type: cc.SpriteFrame
-            },
-
-            texSuitBig: {
-                default: [],
-                type: cc.SpriteFrame
-            },
-
-            texSuitSmall: {
-                default: [],
-                type: cc.SpriteFrame
-            },
+            // cardSpriteFrame : cc.SpriteFrame,
+            texBackBG: cc.SpriteFrame,
+            disableCard: false
         }
 
         byteValue != null && byteValue != undefined && this.initFromByte(byteValue);
@@ -49,10 +37,60 @@ export default class Card extends Component {
         this.group = -1;
         this.locked = false;
         this.__originalInfo = {};
+        this.__enableScaleOnClick = false;
+    }
+
+    setEnableScaleOnClick(enable){
+        if(this.isComponentEnabled()){
+            let button = this.node.getComponent(cc.Button);
+            if(button){
+                if(enable){
+                    button.transition = cc.Button.Transition.SCALE
+                    button.zoomScale = 1.15;
+                    button.duration = 0.08;
+                }else{
+                    button.transition = cc.Button.Transition.NONE
+                    // this.finishCardAction()
+                }
+            }
+        }else{
+            this.__enableScaleOnClick = enable;
+        }
+    }
+
+    onAnchorPointChanged(){
+        let anchorPoint = this.node.getAnchorPoint()
+        this.bodyNode.setAnchorPoint(anchorPoint)
+        this.tapHighlightNode && this.tapHighlightNode.children.forEach(child => child.setAnchorPoint(anchorPoint.x, 0));
+    }
+
+    setVisibleTapHighlightNode(visible, onClickIfVisible){
+        CCUtils.setVisible(this.tapHighlightNode, visible);
+        CCUtils.setVisible(this.highlightNode, visible);
+
+        if(visible){
+            this.setOnClickListener(onClickIfVisible)
+        }else{
+            this.setOnClickListener(null)
+        }
+
+        let animationComponent = this.tapHighlightNode && this.tapHighlightNode.getComponent(cc.Animation);
+        animationComponent && (visible ? animationComponent.play() : animationComponent.stop())
+        this.setEnableScaleOnClick(visible)
+    }
+
+    setDisableCard(disable){
+        if (!this.loaded) {
+            this.__disable = disable;
+            return;
+        }
+
+        this.disableCard = disable;
+        utils.setVisible(this.disableNode, disable);
     }
 
     setOriginalInfo(info = {}) {
-        this.__originalInfo = {...this.__originalInfo, ...info };
+        this.__originalInfo = Object.assign({}, this.__originalInfo, info);
     }
 
     updateFinalPosition() {
@@ -69,18 +107,22 @@ export default class Card extends Component {
     }
 
     finishCardAction() {
-        this.node.stopAllActions();
+        if(this.node){
+            this.node.stopAllActions();
 
-        let { position, rotation, scale } = this.__originalInfo;
+            let { position, rotation, scale } = this.__originalInfo;
 
-        position && this.node.setPosition(position);
-        rotation && (this.node.rotation = rotation);
-        scale && this.node.setScale(scale);
+            position && this.node.setPosition(position);
+            rotation && (this.node.rotation = rotation);
+            scale && this.node.setScale(scale);
+        }
     }
 
     createActionFromOriginalInfo(duration) {
         let actions = [];
         let { position, rotation, scale } = this.__originalInfo;
+
+        // log("__originalInfo: ", this.__originalInfo)
 
         if (position && (position != this.node.position)) {
             actions.push(cc.moveTo(duration, position.x, position.y));
@@ -93,15 +135,23 @@ export default class Card extends Component {
         if (scale && (scale != this.node.scale)) {
             actions.push(cc.scaleTo(duration, scale));
         }
-
-        return actions.length > 0 ? cc.sequence(cc.spawn(actions), cc.callFunc(this.updateFinalPosition, this)) : null;
+        
+        if(actions.length > 0){
+            if(actions.length == 1){
+                return actions.length > 0 ? cc.sequence([...actions, cc.callFunc(this.updateFinalPosition, this)]) : null;
+            }else{
+                return actions.length > 0 ? cc.sequence(cc.spawn(actions), cc.callFunc(this.updateFinalPosition, this)) : null;
+            }
+        }
     }
 
     setLocked(locked) {
+        this.__locked = locked;
+
         if (!this.loaded) {
-            this.__locked = locked;
             return;
         }
+
         this.locked = locked;
         utils.setVisible(this.lockedNode, locked);
     }
@@ -117,12 +167,12 @@ export default class Card extends Component {
     }
 
     isEmpty() {
-        return this.byteValue < 5;
+        return this.byteValue < 4;
     }
 
     setHighlight(highlight) {
+        this.__highlight = highlight;
         if (!this.loaded) {
-            this.__highlight = highlight;
             return;
         }
 
@@ -135,8 +185,8 @@ export default class Card extends Component {
 
         if (args.length == 1) {
             byteValue = args[0];
-            rank = byteValue >> 2;
-            suit = byteValue & 0x03;
+            rank = (byteValue >> 2)
+            suit = (byteValue & 0x03)
         } else if (args.length == 2) {
             rank = args[0];
             suit = args[1];
@@ -153,64 +203,93 @@ export default class Card extends Component {
     }
 
     onLoad() {
-
-        this.rankNode.string = this._getRankName();
-        this.suitNode.spriteFrame = this.texSuitSmall[this.suit] || this.emptyNode;
-        this.rankNode.node.color = this.isRedSuit() ? this.redTextColor : this.blackTextColor;
-        //this.rank > 10 => isFaceCard
-        this.mainPic.spriteFrame = this.rank > 10 ? this.texFaces[this.rank - 10 - 1] : this.texSuitBig[this.suit] || this.emptySprite;
-
+        const cardSpriteName = `card_${this._getRankName()}_${this._getSuitName()}`;
+        // console.warn(`cardSpriteName ${cardSpriteName}`);
+        // console.warn(`cardsAtlas ${this.cardsAtlas}`);
+        this.cardSpriteFrame = this.cardsAtlas.getSpriteFrame(cardSpriteName);
+        this.cardBG.spriteFrame = this.cardSpriteFrame;
+        this.texBackBG = this.cardsAtlas.getSpriteFrame('cards_back')
     }
 
     onEnable() {
         super.onEnable();
+        // this.cardSpriteFrame && this.cardSpriteFrame.getTexture().setTexParameters(gl.LINEAR, gl.LINEAR_MIPMAP_LINEAR, gl.CLAMP_TO_EDGE, gl.CLAMP_TO_EDGE);
 
         utils.setVisible(this.lockedNode, this.locked);
         utils.setVisible(this.highlightNode, this.highlight);
 
         this.loaded = true;
-
+        
         if (this.__locked) {
             this.setLocked(this.__locked);
         }
 
         if (this.__highlight) {
-            this.setLocked(this.__highlight);
+            this.setHighlight(this.__highlight);
         }
 
+        if (this.__disable) {
+            this.setDisableCard(this.__disable);
+        }
+
+        if(this.__enableScaleOnClick != undefined){
+            this.setEnableScaleOnClick(this.__enableScaleOnClick)
+            this.__enableScaleOnClick = undefined;
+        }
         this.setReveal(this.reveal);
     }
 
-    onActive() {
-        super.onActive();
+    onDestroy() {
+        super.onDestroy();
+        this._clickListener = null;
     }
 
     _getRankName() {
         switch (this.rank) {
             case Card.RANK_J:
-                return 'J';
+                return 'j';
             case Card.RANK_Q:
-                return 'Q';
+                return 'q';
             case Card.RANK_K:
-                return 'K';
+                return 'k';
             case Card.RANK_AT:
             case Card.RANK_ACE:
-                return 'A';
+                return 'a';
             default:
                 return '' + this.rank;
         }
     }
+    _getSuitName() {
+        switch (this.suit) {
+            case Card.SUIT_BICH:
+                return 'bich';
+            case Card.SUIT_TEP:
+                return 'tep';
+            case Card.SUIT_ZO:
+                return 'ro';
+            case Card.SUIT_CO:
+                return 'co';
+            default:
+                return 'bich';
+        }
+    }
 
-    setSelected(selected, runAction = true) {
-        if (this.selected == selected) return;
+    setSelected(selected, runAction = true, forceUpdate = false) {
+        if (this.selected == selected && !forceUpdate) return;
+
+
+        if(forceUpdate && this.selected == selected){
+            this.finishCardAction()
+        }else{
+            this.node && this.node.stopAllActions();
+        }
 
         this.selected = selected;
-        this.node.stopAllActions();
 
         if (runAction) {
-            this.node.runAction(cc.moveTo(0.2, this.node.x, selected ? this._selectedMargin : 0));
+            this.node && this.node.runAction(cc.moveTo(0.2, this.node.x, selected ? this._selectedMargin : 0));
         } else {
-            this.node.setPositionY(selected ? this._selectedMargin : 0);
+            this.node && this.node.setPositionY(selected ? this._selectedMargin : 0);
         }
     }
 
@@ -220,10 +299,7 @@ export default class Card extends Component {
 
     setReveal(isFaceUp) {
         this.reveal = isFaceUp;
-        this.rankNode.node.active = isFaceUp;
-        this.suitNode.node.active = isFaceUp;
-        this.mainPic.node.active = isFaceUp;
-        this.cardBG.spriteFrame = isFaceUp ? this.texFrontBG : this.texBackBG;
+        this.cardBG.spriteFrame = isFaceUp ? this.cardSpriteFrame : this.texBackBG ? this.texBackBG : this.cardsAtlas.getSpriteFrame('cards_back');
     }
 
     setOnClickListener(cb) {
@@ -239,7 +315,7 @@ export default class Card extends Component {
     }
 
     static toByte(rank, suit) {
-        return rank << 2 | suit & 0x03;
+        return (rank << 2) | (suit & 0x03);
     }
 
     /**
@@ -343,8 +419,8 @@ Card.SECOND_CARD_GROUP = 1;
 Card.THIRD_CARD_GROUP = 2;
 Card.VERTICAL_SPACE_TO_SECOND_POSITION_Y = 24;
 /**/
-Card.CARD_WIDTH = 96;
-Card.CARD_HEIGHT = 140;
+Card.CARD_WIDTH = 126;
+Card.CARD_HEIGHT = 156;
 Card.CARD_SHADOW_LEFT_WIDTH = 2;
 Card.CARD_SHADOW_RIGHT_WIDTH = 1;
 Card.CARD_KNOW_LEFT = 13;

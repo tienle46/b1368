@@ -3,7 +3,7 @@
  */
 
 import app from 'app';
-import utils from 'utils';
+import utils from 'PackageUtils';
 import GameControls from 'GameControls';
 import BaseControls from 'BaseControls';
 import CardTurnBaseControls from 'CardTurnBaseControls';
@@ -14,9 +14,8 @@ export default class PhomControls extends GameControls {
 
     constructor() {
         super();
-
-        this.properties = {
-            ...this.properties,
+        
+        this.properties = this.assignProperties({
             baseControlsNode: cc.Node,
             cardTurnBaseControlsNode: cc.Node,
             eatButton: cc.Button,
@@ -25,11 +24,9 @@ export default class PhomControls extends GameControls {
             skipJoinButton: cc.Button,
             downPhomButton: cc.Button,
             skipDownButton: cc.Button,
-            changePhomButton: cc.Button,
             uButton: cc.Button,
             doiUTronButton: cc.Button,
-            doiGuiButton: cc.Button,
-        }
+        });
 
         /**
          * @type {BaseControls}
@@ -63,38 +60,37 @@ export default class PhomControls extends GameControls {
         this.scene.on(Events.SHOW_JOIN_PHOM_CONTROLS, this._showJoinPhomControls, this);
         this.scene.on(Events.SET_INTERACTABLE_HA_PHOM_CONTROL, this._setInteractableHaPhomControl, this);
         this.scene.on(Events.SET_INTERACTABLE_EAT_CONTROL, this._setInteractableEatControl, this);
+        this.scene.on(Events.SET_INTERACTABLE_JOIN_PHOM_CONTROL, this._setInteractableJoinPhomControl, this);
     }
 
-    _setInteractableHaPhomControl(interactable){
+    _setInteractableHaPhomControl(interactable = true){
         this.setInteractable(this.downPhomButton, interactable);
     }
 
-    _setInteractableEatControl(interactable){
+    _setInteractableEatControl(interactable = true){
         this.setInteractable(this.eatButton, interactable);
+    }
+
+    _setInteractableJoinPhomControl(interactable = true){
+        this.setInteractable(this.joinPhomButton, interactable);
     }
 
     _showUPhomControls(){
         this.hideAllControls();
         utils.active(this.uButton);
         utils.active(this.doiUTronButton);
-        this.setInteractable(this.uButton, true);
+        //this.setInteractable(this.uButton, true);
     }
 
     _showDownPhomControls(hideSkip, hideChange){
         this.hideAllControls();
         utils.active(this.downPhomButton);
-        this.setInteractable(this.downPhomButton, true);
+        //this.setInteractable(this.downPhomButton, true);
 
         if(hideSkip){
             utils.deactive(this.skipDownButton);
         }else{
             utils.active(this.skipDownButton);
-        }
-
-        if(hideChange){
-            utils.deactive(this.changePhomButton);
-        }else{
-            utils.active(this.changePhomButton);
         }
 
     }
@@ -103,7 +99,6 @@ export default class PhomControls extends GameControls {
         this.hideAllControls();
         utils.active(this.joinPhomButton);
         utils.active(this.skipJoinButton);
-        utils.active(this.doiGuiButton);
     }
 
     _showOnTurnControls(){
@@ -114,7 +109,7 @@ export default class PhomControls extends GameControls {
 
     _showPlayControl(){
         this.hideAllControls();
-        this.cardTurnBaseControls._showOnTurnControls(true);
+        this.cardTurnBaseControls._showOnTurnControls(true, true);
     }
 
     _onGameBegin(data, isJustJoined) {
@@ -145,33 +140,33 @@ export default class PhomControls extends GameControls {
         utils.deactive(this.skipJoinButton);
         utils.deactive(this.downPhomButton);
         utils.deactive(this.skipDownButton);
-        utils.deactive(this.changePhomButton);
         utils.deactive(this.uButton);
         utils.deactive(this.doiUTronButton);
-        utils.deactive(this.doiGuiButton);
     }
 
     _showWaitTurnControls(){
+
         this.hideAllControls();
-        this.cardTurnBaseControls._showWaitTurnControls();
+        this.cardTurnBaseControls._showWaitTurnControls(true);
     }
 
     _showEatAndTakeControls(){
         this.hideAllControls();
 
-        this.cardTurnBaseControls._showWaitTurnControls();
+        this.cardTurnBaseControls._showWaitTurnControls(true);
         utils.active(this.eatButton);
         utils.active(this.takeButton);
 
-        this.setInteractable(this.eatButton, false);
+        //this.setInteractable(this.eatButton, false);
     }
 
     _onGamePlaying(data, isJustJoined) {
         this._hideGameBeginControls();
-
-        let nextTurnPlayerId = utils.getValue(data, Keywords.TURN_PLAYER_ID);
-        if (!nextTurnPlayerId) {
-            this._showWaitTurnControls();
+        if(this.scene.gamePlayers && this.scene.gamePlayers.me) {
+            let nextTurnPlayerId = utils.getValue(data, Keywords.TURN_PLAYER_ID);
+            if (!nextTurnPlayerId || this.scene.gamePlayers.me.id != nextTurnPlayerId) {
+                this._showWaitTurnControls();
+            }
         }
     }
 
@@ -214,8 +209,8 @@ export default class PhomControls extends GameControls {
         this.scene.emit(Events.ON_CLICK_SKIP_DOWN_PHOM_BUTTON);
     }
 
-    onClickChangePhomButton(event){
-        this.scene.emit(Events.ON_CLICK_CHANGE_PHOM_BUTTON);
+    onClickChangeJoinPhomButton(event){
+        this.scene.emit(Events.ON_CLICK_CHANGE_JOIN_PHOM_BUTTON);
     }
 
     onClickUButton(event){

@@ -1,58 +1,42 @@
 import app from 'app';
 import Component from 'Component';
-import { isFunction } from 'Utils';
+import { isFunction } from 'GeneralUtils';
+import CCUtils from 'CCUtils';
 
 class TableListCell extends Component {
     constructor() {
         super();
-
-        this.numberCoinLabel = {
-            default: null,
-            type: cc.Label
-        };
-
-        this.levelBkg = {
-            default: null,
-            type: cc.Sprite
-        };
-
-        this.roomProgress = {
-            default: null,
-            type: cc.ProgressBar
-        };
-
-        this.lockIcon = {
-            default: null,
-            type: cc.Node
-        };
-
-        this.ratio = {
-            default: null,
-            type: cc.Label
-        };
-
-        this.idLbl = {
-            default: null,
-            type: cc.Label
-        };
+        
+        this.properties = this.assignProperties({
+            numberCoinLabel: cc.Label,
+            roomProgress: cc.ProgressBar,
+            lockIcon: cc.Node,
+            ratio: cc.Label,
+            idLbl: cc.Label
+        });
 
         this._onClickListener = null;
     }
-
-    onLoad() {
-        this.balance = app.context.getMyInfo().coin;
+    
+    initCell({ id = 0, displayId = 0, minBet = 0, userCount = 0, roomCapacity = 0, password} = {}) {
+        this.setComponentData({ id, displayId, minBet, userCount, roomCapacity, password});
     }
 
-    initCell(id, minBet, userCount = 1, userMax, password) {
-        id && (this.id = id) && (this.idLbl.string = this.id);
-        minBet && this._changeMinBet(minBet);
-        (userCount || userCount === 0) && userMax && this._changeProgressBar(userCount, userMax);
-        password && this._roomPassword(password);
-    }
+    renderComponentData(data) {
+        if(data) {
+            this.id = data.id;
+            let isFake = !(data.displayId > 0);
+            if(isFake){
+                this.idLbl.node.color = app.const.COLOR_YELLOW;
+                this.ratio.node.color = app.const.COLOR_YELLOW;
+            }
+            
+            this.idLbl.string = data.displayId > 0 ? `${data.displayId}` : "#";
+            this.numberCoinLabel.string = data.minBet;
+            CCUtils.setVisible(this.lockIcon, data.password);
 
-    _changeMinBet(minBet) {
-        this.minBet = minBet;
-        this.numberCoinLabel.string = this.minBet;
+            this._changeProgressBar(data.userCount, data.roomCapacity);
+        }
     }
 
     _changeProgressBar(current, max) {
@@ -60,13 +44,9 @@ class TableListCell extends Component {
         this.roomProgress.progress = current / max;
     }
 
-    _roomPassword(password) {
-        this.lockIcon.active = true;
-        this.password = password;
-    }
-
     onDestroy() {
         super.onDestroy();
+        this._onClickListener = null;
     }
 
     setOnClickListener(clickListener) {
@@ -74,7 +54,7 @@ class TableListCell extends Component {
     }
 
     onClickEvent() {
-        this._onClickListener && this._onClickListener();
+        this._onClickListener && this._onClickListener(this.getComponentData());
     }
 }
 app.createComponent(TableListCell);

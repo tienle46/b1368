@@ -13,6 +13,7 @@ app.res.prefab.scrollview = cc.Prefab;
 app.res.prefab.loading = cc.Prefab;
 app.res.prefab.fullSceneLoading = cc.Prefab;
 
+app.res.spriteFrame = {};
 
 app.res.getString = app.res.string = (key, params) => {
     return i18next.t(key, params);
@@ -69,14 +70,15 @@ app.res.gameIcon = {
     "tnd": "tlmn_dl_ico",
     "tds": "tlmn_dl_solo_ico",
     "xam": "sam_ico",
-    // "xms": "blueTheme/atlas/game_icons/sam_solo_ico",
-    "xms": "sam_ico",
+    "xms": "sam_solo_ico",
     "bcy": "bacay_ico",
     "lie": "lieng_ico",
     "pom": "phom_ico",
     "xit": "xito_ico",
     "mbh": "maubinh_ico",
-    "xod": "xocdia_ico"
+    "xod": "xocdia_ico",
+    "gtx": "taixiu_ico",
+    "tcc": "baucua_ico"
 };
 app.res.gameTopCapThuIcon = {
     // // bai 3 mien
@@ -110,6 +112,20 @@ app.res.gameTopCapThuIcon = {
     "dnode/xms": "sam_ico",
 };
 
+// array contains prefix-key which is only allowed by VIP users.
+app.res.vip_emotions = ['trump'];
+app.res.vip_tools = {
+    bopCoGa: true,
+    // kiss: true,
+    nemBomb: true,
+    // nemCaChua: true,
+    nemGach: true,
+    thaCho: true,
+    // // user thuong`
+    // cungBia:false,
+    // hatNuoc:false,
+    // trungThoi:false
+};
 app.res.asset_tools = {};
 
 /**
@@ -130,4 +146,10 @@ app.res.gameName = {
     "pom": app.res.string('game_name_phom'),
     "xit": app.res.string('game_name_xi_to'),
     "xod": app.res.string('game_name_xoc_dia'),
-}
+};
+
+
+app.res.ATLAS_URLS = {
+    PROVIDERS: 'blueTheme/atlas/providers',
+    CHIPS: 'blueTheme/atlas/chips'
+};

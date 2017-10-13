@@ -8,17 +8,17 @@ export default class Emitter {
         this._callbacks = {};
     }
 
-    __logEmitter(){
+    __logEmitter() {
         let count = Object.keys(this._callbacks).reduce((total, cbArr) => total + cbArr.length, 0);
-        
+
         console.warn('Emitter callback counts: ', count, this._callbacks);
     }
 
-    __logEmitterByEvent(event){
+    __logEmitterByEvent(event) {
 
         let callbacks = this._callbacks[`$${event}`];
 
-        console.warn('Emitter ', event, " :",  callbacks.length, callbacks);
+        console.warn('Emitter ', event, " :", callbacks.length, callbacks);
     }
 
     /**
@@ -31,37 +31,36 @@ export default class Emitter {
      */
     addListener(event, fn, context, priority) {
 
-        if(fn) {
+        if (fn) {
             let fnName = fn.name;
-            if(fnName.startsWith('bound ')){
+            if (fnName.startsWith('bound ')) {
                 let strs = fnName.split(' ');
                 strs.length > 1 && (fnName = strs[1]);
             }
 
-            if(context){
+            if (context) {
                 fn = fn.bind(context);
                 fn.__context = context;
             }
 
             fn.__fnName = fnName;
 
-            if(typeof priority == 'number' && priority >= 0){
+            if (typeof priority == 'number' && priority >= 0) {
                 (this._callbacks[`$${event}`] = this._callbacks['$' + event] || []).splice(priority, 0, fn);
-            }else{
+            } else {
                 (this._callbacks[`$${event}`] = this._callbacks['$' + event] || []).push(fn);
             }
-
         }
 
         return this;
     }
 
     _checkContext(cb, context) {
-        return cb && (!context || (cb.__context === context || (cb.fn && cb.fn.__context === context )));
+        return cb && (!context || (cb.__context === context || (cb.fn && cb.fn.__context === context)));
     }
 
-    _isSameInstance(cb, fn2){
-        if(cb.__fnName){
+    _isSameInstance(cb, fn2) {
+        if (cb.__fnName) {
             return typeof fn2 == 'function' && cb.__fnName === fn2.name.split(' ').pop();
         }
         return typeof cb == 'function' && typeof fn2 == 'function' && cb.name.split(' ').pop() === fn2.name.split(' ').pop();
@@ -82,7 +81,9 @@ export default class Emitter {
 
         // all
         if (!event && !fn) {
-            this._callbacks = {};
+            for (let key in this._callbacks) {
+                this._callbacks[key] = null;
+            }
             return this;
         }
 
@@ -92,14 +93,14 @@ export default class Emitter {
 
         // remove all handlers
         if (event && !fn) {
-            if(!context){
-                delete this._callbacks[`$${event}`];
-            }else{
+            if (!context) {
+                this._callbacks[`$${event}`] = null;
+            } else {
                 for (let i = 0; i < callbacks.length; i++) {
                     this._checkContext(callbacks[i], context) && callbacks.splice(i--, 1);
                 }
             }
-
+            
             return this;
         }
 
@@ -107,6 +108,9 @@ export default class Emitter {
             let cb = callbacks[i];
             if (this._checkContext(cb, context) && this._isSameInstance(cb, fn)) {
                 callbacks.splice(i--, 1);
+                if (callbacks.length < 1) {
+                    this._callbacks[`$${event}`] = null;
+                }
             }
         }
 
@@ -136,7 +140,7 @@ export default class Emitter {
      * @api public
      */
 
-    off(event, fn, context){
+    off(event, fn, context) {
         this.removeListener(event, fn, context);
     }
 
@@ -148,17 +152,17 @@ export default class Emitter {
      * @param {Mixed} ...
      * @return {Emitter}
      */
-    emit (event, ...args) {
+    emit(event, ...args) {
 
         let callbacks = this._callbacks[`$${event}`];
         callbacks && callbacks.forEach(cb => {
-                cb(...args);
+            cb(...args);
         });
 
         return this;
     }
 
-    listeners (event) {
+    listeners(event) {
         return this._callbacks[`$${event}`] || [];
     }
 
@@ -170,7 +174,7 @@ export default class Emitter {
      * @api public
      */
 
-    hasListeners (event) {
+    hasListeners(event) {
         return !!this.listeners(event).length;
     }
 

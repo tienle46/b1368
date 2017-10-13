@@ -1,42 +1,35 @@
-import DialogRub from 'DialogRub';
-import TopupDialog from 'TopupDialog';
 import app from 'app';
 
-export default class TopUpDialogRub {
+export default class TopupDialogRub {
 
-    constructor(node) {
-        let url = `${app.const.DIALOG_DIR_PREFAB}/topup`;
-        let tabs = [{
-            title: 'Thẻ cào',
-            value: `${url}/tab_card`
-        }, {
-            title: 'SMS',
-            value: `${url}/tab_sms`
+   constructor() {
+        let node = cc.instantiate(app.res.prefab.multiTabPopup);
+        /**
+         * @type {MultiTabPopup}
+         */
+        this.multiTabPopup = node.getComponent("MultiTabPopup");
 
-        }, {
-            title: 'IAP',
-            value: `${url}/tab_iap`
-        }, {
-            title: 'Lịch sử',
-            value: `${url}/tab_history`
-        }];
+        this.multiTabPopup.changeToChatTab = this.changeToChatTab.bind(this);
+        const url = `${app.const.DIALOG_DIR_PREFAB}/topup`;
 
-        let options = {
-            // itemHeight: 26.5
-        };
-
-        this.options = { tabs, options };
-        this.node = node;
-        this.dialog = null;
-        this.init();
+        this.tabModels = [
+            { title: 'Thẻ cào',prefabPath: `${url}/tab_card`, componentName: 'TabCard'},
+            { title: 'SMS',prefabPath: `${url}/tab_sms`, componentName: 'TabSMS'},
+            { title: 'IAP',prefabPath: `${url}/tab_iap`, componentName: 'TabIAP',  hide: app.env.isBrowser()},
+            { title: 'Lịch sử',prefabPath: `${url}/tab_history`, componentName: 'TabHistory'}
+        ];
     }
-
-    init() {
-        this.dialog = new DialogRub(this.node, this.options.tabs, { title: 'Nạp Tiền' });
-        this.topupDialogComponent = this.dialog.addComponent(TopupDialog);
-    }
-
-    static show(parentNode) {
-        return new this(parentNode);
+    
+    changeToChatTab(data) {
+        this.multiTabPopup && this.multiTabPopup.changeTab(TopupDialogRub.TAB_CARD_INDEX, data);
+    }   
+     
+    show(parentNode = cc.director.getScene(), options = {}){
+        this.multiTabPopup.show(Object.assign({}, {parentNode, tabModels: this.tabModels}, options));
     }
 }
+
+TopupDialogRub.TAB_CARD_INDEX = 0;
+TopupDialogRub.TAB_SMS_INDEX = 1;
+TopupDialogRub.TAB_IAP_INDEX = 2;
+TopupDialogRub.TAB_HISTORY_INDEX = 3;

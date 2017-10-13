@@ -8,9 +8,6 @@ import {Card, CardList} from 'game-components';
 import GameUtils from 'GameUtils';
 
 export default class DeckCardRenderer extends Component {
-    static get DEFAULT_SCALE() {
-        return 0.8
-    };
 
     constructor() {
         super();
@@ -55,13 +52,16 @@ export default class DeckCardRenderer extends Component {
             if (this.cardList2.cards.length > 0) {
                 this.cardList2.clear();
             }
-
+            
             this.cardList1.transferTo(this.cardList2, this.cardList1.getRawCards());
+            this.cardList2.cards.forEach((card) =>{
+                const randomAngle = Math.floor(Math.random() * 10) + 5;
+                card.node.runAction(cc.rotateTo(0.2,randomAngle));
+            });
         }
 
 
         if (srcCardList) {
-        console.log("srcCardList before: ", srcCardList.cards.length);
             if (isItMe) {
                 srcCardList.transferTo(this.cardList1, cards);
             } else {
@@ -69,16 +69,22 @@ export default class DeckCardRenderer extends Component {
                 let addedCards = srcCardList.addCards(cards, true, true);
                 srcCardList.transferTo(this.cardList1, addedCards);
             }
-        console.log("srcCardList after: ", srcCardList.cards.length);
         } else {
             this.cardList1.setCards(cards);
         }
+        
+        //random rotate card a bit to make it looks like player throw cards on deck
+        this.cardList1.cards.forEach((card) =>{
+            const randomAngle = Math.floor(Math.random() * 10) + 5;
+            card.node.runAction(cc.rotateTo(0.2,randomAngle));
+        });
     }
+ 
 
     _createCardList() {
         let cardListNode = cc.instantiate(this.cardListPrefab);
         let cardList = cardListNode.getComponent('CardList');
-        cardList.setProperties({scale: DeckCardRenderer.DEFAULT_SCALE, x: 0, y: 0, maxDimension: 500})
+        cardList.setProperties({space: 80, scale: 0.7, x: 0, y: 0, maxDimension: 600})
         cardList.setAnchorPoint(0.5, 0.5);
         return cardList;
     }

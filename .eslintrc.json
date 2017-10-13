@@ -4,7 +4,7 @@
         "comma-dangle": 0,
         "no-console": ["error", { "allow": ["log", "error"] }],
         "no-constant-condition": 0,
-        "semi": 1
+        "semi": 0
     },
     "ecmaFeatures": {
         "modules": true

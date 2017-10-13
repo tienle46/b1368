@@ -3,22 +3,22 @@
  */
 
 import app from 'app';
-import {utils, GameUtils} from 'utils';
+import {utils, GameUtils} from 'PackageUtils';
 import SFS2X from 'SFS2X';
 import Component from 'components';
 import {gameManager, Player, PlayerRenderer} from 'game';
 import {CreateGameException} from 'exceptions';
 import {Events} from 'events'
+import CCUtils from 'CCUtils'
 
 export default class GamePlayers extends Component {
     constructor() {
         super();
-
-        this.properties = {
-            ...this.properties,
+        
+        this.properties = this.assignProperties({
             playerPrefab: cc.Prefab,
             playerClassName: ""
-        }
+        });
 
         this.me = null;
         this.owner = null;
@@ -44,13 +44,13 @@ export default class GamePlayers extends Component {
         this.playerPositions = this.scene.playerPositions;
         this._initGamePlayerProperties();
         this.initPlayers();
+        this.scene.setFirstTimePlay(true)
 
         this.scene.on(Events.ON_USER_EXIT_ROOM, this._onUserExitGame, this);
         this.scene.on(Events.ON_ROOM_CHANGE_OWNER, this._onChangeRoomOwner, this);
         this.scene.on(Events.ON_GAME_STATE_ENDING, this._onGameEnding, this);
-    }
+        this.scene.on(Events.CHANGE_GAME_MASTER, this._onChangeGameMaster, this);
 
-    onLoad() {
     }
 
     isMeReady(){
@@ -75,6 +75,10 @@ export default class GamePlayers extends Component {
         }
     }
 
+    _onChangeGameMaster(masterId){
+        this.setMaster(this.findPlayer(masterId));
+    }
+
     setMaster(masterPlayer){
         if(!masterPlayer || (this.master && this.master.id == masterPlayer.id)) return;
 
@@ -88,10 +92,10 @@ export default class GamePlayers extends Component {
         this.scene.emit(Events.ON_GAME_MASTER_CHANGED, oldMaster, masterPlayer);
     }
 
-    _onPlayerReEnterGame(playerId, userId) {
-        let player = this.findPlayer(playerId);
-        player && this._replaceUser(player, userId);
-    }
+    // _onPlayerReEnterGame(playerId, userId) {
+    //     let player = this.findPlayer(playerId);
+    //     player && this._replaceUser(player, userId);
+    // }
 
     _onChangeRoomOwner(room) {
 
@@ -99,22 +103,22 @@ export default class GamePlayers extends Component {
             return;
         }
 
-        let newOwner = null;
         let ownerId = utils.getVariable(room, app.keywords.VARIABLE_OWNER);
-        if (ownerId && (!this.owner || ownerId == this.owner.id)) {
+        if(this.owner == null || this.owner.id != ownerId){
             this.owner && this.owner.setOwner(false);
-            newOwner = this.findPlayer(ownerId);
-        }
 
-        this.owner = newOwner;
-        this.owner && this.owner.setOwner(true);
-        this.ownerId = ownerId;
+            let newOwner = ownerId ? this.findPlayer(ownerId) : undefined;
+            this.owner = newOwner;
+            this.ownerId = ownerId
+            this.owner && this.owner.setOwner(true);
+        }
     }
 
     _onUserExitGame(user, room) {
-        let player = this.findPlayer(user.name);
+        if(!user || !room) return;
 
-        if (player) {
+        let player = this.findPlayer(user.name);
+        if (player && player.user) {
             player.isReady() && this.exittedPlayers.push({
                 id: player.id,
                 name: player.user.name,
@@ -225,8 +229,10 @@ export default class GamePlayers extends Component {
         return playerId == this.ownerId;
     }
 
-    meIsOwner() {
-        return this.me && this.ownerId == this.me.id;
+    checkMeIsOwner() {
+        let me = app.context.getMe();
+        let ownerId = utils.getVariable(this.scene.room, app.keywords.VARIABLE_OWNER);
+        return me && ownerId && me.getPlayerId(this.scene.room) == ownerId;
     }
 
     _updateMaxPlayerId() {
@@ -260,6 +266,10 @@ export default class GamePlayers extends Component {
     }
 
     isMePlaying() {
+        return this.me && this.me.isPlaying();
+    }
+
+    isMeOwner() {
         return this.me && this.me.isPlaying();
     }
 
@@ -300,7 +310,7 @@ export default class GamePlayers extends Component {
                 delete this._idToPlayerMap[player.id];
                 delete this._idToPlayerMap[player.user.name];
 
-                this.scene.playerLayer.removeChild(player.node);
+                CCUtils.clearFromParent(player.node)
                 this.playerPositions.showInviteButtonByPlayerId(player.id);
                 this._onPlayerDataChanged();
 
@@ -310,31 +320,32 @@ export default class GamePlayers extends Component {
 
     }
 
-    _replaceUser(player, newId) {
+    // _replaceUser(player, newId) {
 
-        let oldUser = player.user;
-        if (!oldUser) {
-            return;
-        }
+    //     let oldUser = player.user;
+    //     if (!oldUser) {
+    //         return;
+    //     }
 
-        let userObj = [];
-        userObj.push(newId);
-        userObj.push(oldUser.name);
-        userObj.push(oldUser.privilegeId);
-        userObj.push(player.id);
-        userObj.push(this._getUserVariablesData(oldUser));
+    //     let userObj = [];
+    //     userObj.push(newId);
+    //     userObj.push(oldUser.name);
+    //     userObj.push(oldUser.privilegeId);
+    //     userObj.push(player.id);
+    //     //this._getUserVariablesData(oldUser)
+    //     userObj.push(Object.assign({}, oldUser.variables));
 
-        let newUser = SFS2X.Entities.SFSUser.fromArray(userObj, this.board.room);
-        newUser._setUserManager(app.service.client.userManager);
+    //     let newUser = SFS2X.Entities.SFSUser.fromArray(userObj, this.board.room);
+    //     newUser._setUserManager(app.service.client.userManager);
 
-        this.board.room._removeUser(oldUser);
+    //     this.board.room._removeUser(oldUser);
 
-        app.service.client.userManager._removeUser(oldUser);
-        app.service.client.userManager._addUser(newUser);
+    //     app.service.client.userManager._removeUser(oldUser);
+    //     app.service.client.userManager._addUser(newUser);
 
-        this.board.room._addUser(newUser);
-        player.user = newUser;
-    }
+    //     this.board.room._addUser(newUser);
+    //     player.user = newUser;
+    // }
 
     countPlayingPlayers() {
         var count = 0;
@@ -362,7 +373,7 @@ export default class GamePlayers extends Component {
     }
 
     onBoardOwnerChanged(owner) {
-        this.players.forEach(player => player.onBoardOwnerChanged());
+        this.players.forEach(player => player.onBoardOwnerChanged(owner));
     }
 
     onGameBegin(data) {
@@ -430,10 +441,13 @@ export default class GamePlayers extends Component {
     }
 
     onUserEnterRoom(user, room) {
+        this.greetingVip(user);
         if (user && user.isPlayer() && !this.findPlayer(user.getPlayerId(room))) {
 
             let newPlayer = this._addPlayer(user);
-
+            
+            app.system.audioManager.playOneInstanceOnly(app.system.audioManager.JOIN_BOARD);
+            
             if (newPlayer) {
                 let boardState = this.board.isPlaying() || this.board.isStarting() ? app.const.game.state.PLAYING
                     : this.board.isBegin() ? app.const.game.state.BEGIN
@@ -447,7 +461,31 @@ export default class GamePlayers extends Component {
             return true;
         }
     }
-
+    
+    greetingVip(user) {
+        let userVip = utils.getVariable(user, app.keywords.VIP_LEVEL);
+        if(userVip) {
+            let userVipId = userVip.id;
+            let userPriority = userVip.value;
+            if(~userVipId) {
+                let userShouldeSeeMessage = app.config.ingameGreetingVipMessages[userVipId];
+                if(userShouldeSeeMessage){
+                    this.players && this.players.forEach(player => {
+                        if(player.user.id === user.id)
+                            return;
+                        let vipLevel = utils.getVariable(player.user, app.keywords.VIP_LEVEL);
+                        if(vipLevel) {
+                            let {id, value} = vipLevel;
+                            value < userPriority && player.say(userShouldeSeeMessage.replace(/{{username}}/i, GameUtils.getDisplayName(user)));
+                        } else { // viplevel == undefined (maybe bot)
+                            player.say(userShouldeSeeMessage.replace(/{{username}}/i, GameUtils.getDisplayName(user)))
+                        }
+                    });
+                }
+            }
+        }
+    }
+    
     onPlayerMessage(sender, message) {
         this.players.some(player => {
             if (player.name === sender.name) {
@@ -462,12 +500,12 @@ export default class GamePlayers extends Component {
         }
     }
 
-    onPlayerReEnterGame(playerId, newUserId) {
-        let player = this.findPlayer(playerId);
-        if (player) {
-            this._replaceUser(player, newUserId);
-        }
-    }
+    // onPlayerReEnterGame(playerId, newUserId) {
+    //     let player = this.findPlayer(playerId);
+    //     if (player) {
+    //         this._replaceUser(player, newUserId);
+    //     }
+    // }
 
     handlePlayer(playerId, cmd, data) {
 
@@ -480,8 +518,8 @@ export default class GamePlayers extends Component {
 
     getPlayerHandCardLists() {
         let cardLists = [];
-        this.players.forEach(player => {
-            !player.isItMe() && cardLists.splice(player.anchorIndex, 0, player.renderer.cardList);
+        this.players.filter(player => player.isPlaying() && !player.isItMe()).forEach(player => {
+            cardLists.splice(player.anchorIndex, 0, player.renderer.cardList);
         });
 
         return cardLists;
@@ -489,11 +527,10 @@ export default class GamePlayers extends Component {
 
     getCurrentPlayerBalances(playerIds) {
         let playerBalances = {};
-
         this.players.forEach(player => {
             playerBalances[player.id] = GameUtils.getUserBalance(player.user)
         });
-
+        
         return playerBalances;
     }
 
@@ -531,7 +568,8 @@ export default class GamePlayers extends Component {
 
             if (retPlayer != null && lastPlayedId == retPlayer.id) return null;
 
-            if(count++ > 4) break;
+            //Make sure that while loop break on error
+            if(count++ > 10) break;
 
         } while (retPlayer == null || !retPlayer.isPlaying());
 
