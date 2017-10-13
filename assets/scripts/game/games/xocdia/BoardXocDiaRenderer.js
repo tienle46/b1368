@@ -1,36 +1,15 @@
 import app from 'app';
-import BoardRenderer from 'BoardRenderer';
-import utils from 'utils';
+import BoardGameBetRenderer from 'BoardGameBetRenderer';
 
-export default class BoardXocDiaRenderer extends BoardRenderer {
+export default class BoardXocDiaRenderer extends BoardGameBetRenderer {
     constructor() {
         super();
-
-        this.properties = {
-            ...this.properties,
-            dishContainerNode: cc.Node,
-            statisticTableNode: cc.Node,
-            resultNode: cc.Node,
-            resultText: cc.Label
-        }
-    }
-
-    onEnable() {
-        super.onEnable();
-
-        this.bowlDishControl = this.dishContainerNode.getComponent('BowlDishControl');
-        this.statisticTable = this.statisticTableNode.getComponent('StatisticTable');
-    }
-
-    hideElements() {
-        this.bowlDishControl.resetBowlPosition();
-        utils.deactive(this.resultNode);
-        // utils.deactive(this.dishContainerNode); // always show dish on a board
-        // utils.deactive(this.statisticTableNode);
+        
+        this.HISTORIAL_COMPONENT = 'XocDiaHistoricalTable';
+        this.SHAKEN_CONTROL = 'XocDiaShakenControl';
     }
 
     displayResultFromDots(dots) {
-        debug('getResultTextFromDots', dots);
         //0: even, 1: odd
         let evenCount = 0;
         for (let i = 0; i < dots.length; i++) {
@@ -52,46 +31,6 @@ export default class BoardXocDiaRenderer extends BoardRenderer {
                 return;
             }
         }
-    }
-
-    hideResult() {
-        utils.deactive(this.resultNode);
-    }
-
-    showResult(text) {
-        utils.active(this.resultNode);
-        this.resultText.string = text.toUpperCase();
-    }
-
-    showElements() {
-        this.bowlDishControl.resetBowlPosition();
-
-        utils.active(this.dishContainerNode);
-        // utils.active(this.statisticTableNode);
-    }
-
-    runDishShakeAnim() {
-        this.bowlDishControl.dishShaker();
-    }
-    
-    isShaking() {
-        return this.bowlDishControl.isShaking();
-    }
-    
-    stopDishShakeAnim() {
-        this.bowlDishControl.stopDishShaker();
-    }
-
-    openBowlAnim() {
-        this.bowlDishControl.openBowlAnim();
-    }
-
-    initDots(dots = []) {
-        this.bowlDishControl.initDotsArray(dots);
-    }
-
-    updateBoardResultHistory(results) {
-        this.statisticTable.updateSeparateTable(results);
     }
 }
 

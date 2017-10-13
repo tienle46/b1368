@@ -1,9 +1,9 @@
 import app from 'app';
-import {utils, GameUtils} from 'utils';
+import {utils, GameUtils} from 'PackageUtils';
 import SFS2X from 'SFS2X';
 import CreateGameException from 'CreateGameException';
 import Actor from 'Actor';
-import Events from 'Events'
+import Events from 'GameEvents'
 import {Keywords} from 'core';
 import Props from 'Props';
 import {getEmotionName} from 'GameChatComponent';
@@ -31,7 +31,6 @@ export default class Player extends Actor {
     }
 
     _init(board, user) {
-
         this.scene = board.scene;
         this.board = board;
         this.user = user;
@@ -112,8 +111,8 @@ export default class Player extends Actor {
         userObj.push([]);
 
         let newUser = SFS2X.Entities.SFSUser.fromArray(userObj, this.board.room);
-        newUser.variables = {...this.user.variables};
-        newUser._setUserManager(app.service.getClient().userManager);
+        newUser.variables = Object.assign({}, this.user.variables);
+        newUser._setUserManager(app.service.client.userManager);
 
         this.board.room._removeUser(this.user);
         app.service.getClient().userManager._removeUser(this.user);
@@ -123,7 +122,7 @@ export default class Player extends Actor {
     }
     
     _onStartGame(data) {
-        if(this.isItMe && data[app.keywords.SUCCESSFULL] && data[app.keywords.RESPONSE_MESSAGE]) {
+        if(this.isItMe() && data[app.keywords.SUCCESSFULL] && data[app.keywords.RESPONSE_MESSAGE]) {
             app.system.showToast(data[app.keywords.RESPONSE_MESSAGE]);
         }
     }
@@ -238,7 +237,7 @@ export default class Player extends Actor {
     }
     
     onEnable(renderer, renderData = {}) {
-        super.onEnable(renderer, {...renderData, isItMe: this.user && this.user.isItMe, scene: this.scene, owner: this.isOwner});
+        super.onEnable(renderer, Object.assign({}, renderData, {isItMe: this.user && this.user.isItMe, scene: this.scene, owner: this.isOwner}));
 
         this.username = this.user.name;
         this.id = this.user.getPlayerId(this.board.room);
@@ -406,7 +405,6 @@ export default class Player extends Actor {
     }
 
     onGameStarting(data, isJustJoined) {
-        
     }
 
     onGameStarted(data, isJustJoined) {
@@ -447,7 +445,9 @@ export default class Player extends Actor {
 
         let newPlayer = utils.getVariable(this.user, "newPlayer");
         if (!newPlayer) {
-            app.service.send({cmd: app.commands.PLAYER_READY, room: this.scene.room});
+            this.node.runAction(cc.sequence(cc.delayTime(.4), cc.callFunc(() => {
+                app.service.send({cmd: app.commands.PLAYER_READY, room: this.scene.room})
+            })));
         }
     }
 

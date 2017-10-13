@@ -1,15 +1,15 @@
 import app from 'app';
 import PopupTabBody from 'PopupTabBody';
-import Utils from 'Utils';
+import Utils from 'GeneralUtils';
 
 class TabHistory extends PopupTabBody {
     constructor() {
         super();
-        this.properties = {
-            ...this.properties,
+        
+        this.properties = this.assignProperties({
             bodyNode: cc.Node,
             p404: cc.Node
-        };
+        });
     }
 
     onLoad() {

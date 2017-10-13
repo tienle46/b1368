@@ -4,13 +4,12 @@ import PopupTabBody from 'PopupTabBody';
 class TabTopVip extends PopupTabBody {
     constructor() {
         super();
-
-        this.properties = {
-            ...this.properties,
+        
+        this.properties = this.assignProperties({
             contentNode: cc.Node,
             crowns: cc.Node,
             p404: cc.Node
-        };
+        });
     }
 
     onLoad() {

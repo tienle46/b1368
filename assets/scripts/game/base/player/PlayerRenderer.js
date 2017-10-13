@@ -3,7 +3,7 @@
  */
 
 import app from 'app';
-import { utils, GameUtils } from 'utils';
+import { utils, GameUtils } from 'PackageUtils';
 import ActorRenderer from 'ActorRenderer';
 import PlusBalanceAnimation from 'PlusBalanceAnimation';
 import PlayerMessage from 'PlayerMessage';
@@ -12,9 +12,8 @@ import RubUtils from 'RubUtils';
 export default class PlayerRenderer extends ActorRenderer {
     constructor() {
         super();
-
-        this.properties = {
-            ...this.properties,
+        
+        this.properties = this.assignProperties({
             playerNameLabel: cc.Label,
             balanceLabel: cc.Label,
             ownerIcon: cc.Node,
@@ -25,7 +24,7 @@ export default class PlayerRenderer extends ActorRenderer {
             playerTimeLineProgress: cc.ProgressBar,
             avatarNode: cc.Node,
             friendProfilePopup: cc.Prefab
-        }
+        });
 
         this.playerMessage = null;
         this.plusBalanceAnim = null;

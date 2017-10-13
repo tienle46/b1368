@@ -12,14 +12,6 @@ import BuddyPopup from 'BuddyPopup';
 
 const pendingActions = [];
 
-function isJSON(str) {
-    if ( /^\s*$/.test(str) ) return false;
-    str = str.replace(/\\(?:["\\\/bfnrt]|u[0-9a-fA-F]{4})/g, '@');
-    str = str.replace(/"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g, ']');
-    str = str.replace(/(?:^|:|,)(?:\s*\[)+/g, '');
-    return (/^[\],:{}\s]*$/).test(str);
-}
-
 
 class Linking {
 
@@ -34,7 +26,7 @@ class Linking {
             });
         }
         try {
-            if (data && typeof data == "string" && isJSON(data))
+            if (data && typeof data == "string" && window.isJSON(data))
                 data = JSON.parse(data);
                 
             log('action data', JSON.stringify(data))
@@ -189,7 +181,12 @@ class Linking {
 
     static _handleOpenTopUpDialogAction(actionCode) {
         let defaultTab = null;
-
+        
+         if(app.config.otp && app.config.otp_config.topup.enabled) {
+            app.system.info((app.config.otp_config && app.config.otp_config.topup && app.config.otp_config.topup.msg) || app.res.string('otp_message', {supportHotline: app.config.supportHotline}));
+            return;
+        }
+        
         switch (actionCode) {
             case Linking.ACTION_TOPUP:
             case Linking.ACTION_TOPUP_CARD:
@@ -222,6 +219,11 @@ class Linking {
 
     static _handleOpenExchangeDialogAction(actionCode) {
         let defaultTab = null;
+        
+        if(app.config.otp && app.config.otp_config.exchange.enabled) {
+            app.system.info((app.config.otp_config && app.config.otp_config.exchange && app.config.otp_config.exchange.msg) || app.res.string('otp_message', {supportHotline: app.config.supportHotline}));
+            return;
+        }
         
         if(app.config.ALPHA_TEST) {
             app.system.info(app.res.string('coming_soon'));

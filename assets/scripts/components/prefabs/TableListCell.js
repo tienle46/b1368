@@ -1,20 +1,19 @@
 import app from 'app';
 import Component from 'Component';
-import { isFunction } from 'Utils';
+import { isFunction } from 'GeneralUtils';
 import CCUtils from 'CCUtils';
 
 class TableListCell extends Component {
     constructor() {
         super();
         
-        this.properties = {
-            ...this.properties,
+        this.properties = this.assignProperties({
             numberCoinLabel: cc.Label,
             roomProgress: cc.ProgressBar,
             lockIcon: cc.Node,
             ratio: cc.Label,
             idLbl: cc.Label
-        };
+        });
 
         this._onClickListener = null;
     }

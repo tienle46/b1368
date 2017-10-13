@@ -4,16 +4,17 @@
  * @export
  * @class HighLightMessageRub
  */
-import app from 'app';
 
 export default class HighLightMessageRub {
     constructor() {
         this.messages = {};
         this.intervalTimer = null;
         this.highLightNode = null;
+        
+        this._currentIndex = 0;
     }
     
-    // TODO: hiện h chưa làm đc để sau test vậy @@ 
+    //TODO
     // addEventListeners() {
     //     app.system.on('2lightmessage_updated', this._onHLMUpdated);
     // }
@@ -40,7 +41,7 @@ export default class HighLightMessageRub {
     }
     
     getFirstMessage() {
-        let firstKey = Object.keys(this.messages)[0];
+        let firstKey = Object.keys(this.messages)[this._currentIndex];
         return firstKey && this.messages[firstKey];
     }
     
@@ -51,7 +52,6 @@ export default class HighLightMessageRub {
             updated
         };
         // if(updated) {
-        //     console.warn('updated', updated)
         //     app.system.emit('2lightmessage_updated', this.messages[message.msg]);
         // }
     }
@@ -66,16 +66,28 @@ export default class HighLightMessageRub {
     }
     
     removeMessage(message) {
-        this.messages[message.msg] = null;
-        delete this.messages[message.msg];
+        if(message.rc == 0) {
+            this.messages[message.msg] = null;
+            delete this.messages[message.msg];
+        }
     }
     
     runMessage(intervalTimer, highLightNode) {
-        if(this.isEmptyStack())
+        if(this.isEmptyStack()){
+            intervalTimer.pause()
             return;
+        }
+        if(intervalTimer.isPaused())
+            intervalTimer.resume()
             
         let hlm = this.getMessage();
-         
+        
+        if(this._currentIndex >= Object.keys(this.messages).length) {
+            this._currentIndex = 0;
+        } else {
+            this._currentIndex ++;
+        }
+        
         /**
          * hlm -> pause interval -> display message -> resume -> hlm
          */
@@ -91,7 +103,7 @@ export default class HighLightMessageRub {
             // update text
             txt.string = hlm.msg;            
             
-            this._repeatAnim(hlm);
+            this._runAnim(hlm);
         }
     }
     
@@ -99,7 +111,7 @@ export default class HighLightMessageRub {
         return Object.keys(this.messages).length === 0;
     }
     
-    _repeatAnim(hlm) {
+    _runAnim(hlm) {
         if(!this.highLightNode || !this.intervalTimer)
             return;
         let txtWidth = this.highLightNode.getContentSize().width;
@@ -113,19 +125,14 @@ export default class HighLightMessageRub {
         
         let startPosition = cc.v2(this.highLightNode.getPosition());
         this._resetHighLightPosition();
-        
-        let repeatCount = hlm.rc;
-        
-        let rp = cc.repeat(cc.sequence(action, cc.callFunc(() => {
+
+        let rp = cc.sequence(action, cc.callFunc(() => {
             this.highLightNode.setPosition(startPosition);
-            
-            repeatCount--;
             // if complete counting, resume timer interval
-            if(repeatCount === 0) {
-                this.removeMessage(hlm);
-                this.intervalTimer.resume();
-            }
-        })), Number(hlm.rc));
+            hlm.rc--;
+            this.removeMessage(hlm);
+            this.intervalTimer.resume();
+        }));
 
         this.highLightNode.runAction(rp);   
     }
@@ -133,7 +140,7 @@ export default class HighLightMessageRub {
     _onHLMUpdated(message) {
         if(message.updated) {
             this._resetHighLightPosition();
-            this._repeatAnim(message);
+            this._runAnim(message);
             message.updated = false;
         }
     }

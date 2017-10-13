@@ -1,4 +1,5 @@
 import app from 'app';
+import Events from 'GameEvents';
 
 export default class IAPManager {
     constructor() {
@@ -13,8 +14,8 @@ export default class IAPManager {
     }
     
     _addEventListeners() {
-        app.env.isIOS() && app.system.addListener(app.commands.IOS_IN_APP_PURCHASE, this._onSubmitPurchaseIOS, this);
-        app.env.isAndroid() && app.system.addListener(app.commands.ANDROID_IN_APP_PURCHASE, this._onSubmitPurchaseAndroid, this);
+        app.system.addListener(Events.ON_SUBMIT_PURCHASE_IOS, this._onSubmitPurchaseIOS, this);
+        app.system.addListener(Events.ON_SUBMIT_PURCHASE_ANDROID, this._onSubmitPurchaseAndroid, this);
     }
     
     getPurchases() {
@@ -24,7 +25,7 @@ export default class IAPManager {
     setPurchases(items) {
         let arrayObject = [];
         items.forEach(item => {
-            if(!window.isJSON(item))
+            if(item=="null" || !window.isJSON(item))
                 return;
             
             if(typeof item === 'string')
@@ -66,7 +67,6 @@ export default class IAPManager {
         // set to local storage
         let stringData = this._getIAPItemsFromStorage();
         let stringifyItem = JSON.stringify(item);
-        log('\nIAP: stringData', typeof stringData, JSON.stringify(stringData));
         
         if(stringData != "" || stringData.length > 0) {
             stringData = stringData.split(';').concat(stringifyItem).join(';');
@@ -74,43 +74,33 @@ export default class IAPManager {
         } else if(stringData == "") {
             stringData += `${stringifyItem}`;
         }
-        log('\nIAP: addPurchase stringData', stringData);
         
         this._setIAPItemsForStorage(stringData);
     }
     
     removePurchase(token) {
         let savedItems = this.getPurchases();
-        log('\nIAP: savedItems ', JSON.stringify(savedItems));
-        log('\nIAP: savedItems > 0', savedItems.length);
 
         if (savedItems.length == 0) {
             // log('IAP: savedItems1 === 0', savedItems.length);
             return;
         }
-        log('\nIAP: savedItems 1', savedItems.length);
         
         // remove bought token
-        let removed = app._.remove(savedItems, (item) => {
-            
+        app._.remove(savedItems, (item) => {
             return item && item.receipt == token; 
         }); // <-- affect to savedItems
-        
-        log('\nIAP: removed', JSON.stringify(removed));
-        log('\nIAP: savedItem remain', JSON.stringify(savedItems));
-        log('\nIAP: savedItem join', JSON.stringify(savedItems.join(';')));
         
         // renew string storage
         let stringData = "";
         savedItems.forEach((string) => {
-            stringData += `${stringData};`;
+            stringData += `${string};`;
         });
         stringData = stringData.substring(0, stringData.length - 1);
         
         this._setIAPItemsForStorage(stringData);
      
         if (savedItems.length == 0) {
-            log('\nIAP: savedItems2 reset purchase === 0', savedItems.length);
             
             this._initEmptyLocalPurchase();
         }
@@ -119,9 +109,9 @@ export default class IAPManager {
     }
     
     _initPluginIAP(sdkboxIAP) {
-        sdkboxIAP.init();
-        sdkboxIAP.setDebug(true);
-                
+        // sdkboxIAP.init();
+        // sdkboxIAP.setDebug(true);
+        
         // save failed items to localStorage
         if (!this._hasPurchase()) {
             this._initEmptyLocalPurchase();
@@ -135,8 +125,6 @@ export default class IAPManager {
             if(lastCharacter === ";") 
                 receiptStringItems = receiptStringItems.substring(0, lastIndex);
             
-            log("\nIAP: stringifiedItems", JSON.stringify(receiptStringItems));
-
             if (receiptStringItems && receiptStringItems.length > 0) {
                 let receipts = receiptStringItems.split(';');
                 // remove last [""] element
@@ -155,45 +143,43 @@ export default class IAPManager {
                 });
                 
                 this.setPurchases(receipts);
-                // log('\nIAP: IF', JSON.stringify(this.purchases));
             } else {
                 this._initEmptyLocalPurchase();
                 this.setPurchases([]);
-                log('\nIAP: ELSE');
             }
         }
         
-        // setup listener
-        app.env.sdkIAPSetListener({
-            onProductRequestSuccess: (products) => {
-                //Returns you the data for all the iap products
-                //You can get each item using following method
+        // // setup listener
+        // app.env.sdkIAPSetListener({
+        //     onProductRequestSuccess: (products) => {
+        //         //Returns you the data for all the iap products
+        //         //You can get each item using following method
 
-                let receipts = this.getPurchases();
-                // log('\nIAP: receiptObjects', JSON.stringify(receipts));
-                // log('\nIAP: receiptObjects > length', JSON.stringify(receipts.length));
+        //         let receipts = this.getPurchases();
+        //         // log('\nIAP: receiptObjects', JSON.stringify(receipts));
+        //         // log('\nIAP: receiptObjects > length', JSON.stringify(receipts.length));
 
-                if (receipts.length > 0) {
-                    let productIds = [];
-                    for (let i = 0; i < products.length; i++) {
-                        // loop
-                        productIds.push(products[i].id);
-                    }
+        //         if (receipts.length > 0) {
+        //             let productIds = [];
+        //             for (let i = 0; i < products.length; i++) {
+        //                 // loop
+        //                 productIds.push(products[i].id);
+        //             }
 
-                    let purchasedItems = [];
-                    receipts.forEach((stringifiedItem) => {
-                        let item = JSON.parse(stringifiedItem);
-                        if (app._.includes(productIds, item.id)) {
-                            purchasedItems.push(item);
-                        }
-                    });
+        //             let purchasedItems = [];
+        //             receipts.forEach((stringifiedItem) => {
+        //                 let item = JSON.parse(stringifiedItem);
+        //                 if (app._.includes(productIds, item.id)) {
+        //                     purchasedItems.push(item);
+        //                 }
+        //             });
 
-                    this.setPurchases(purchasedItems);
+        //             this.setPurchases(purchasedItems);
 
-                    productIds = [];
-                }
-            }
-        });
+        //             productIds = [];
+        //         }
+        //     }
+        // });
     }
     
     _initEmptyLocalPurchase() {
@@ -202,6 +188,9 @@ export default class IAPManager {
     
     _getIAPItemsFromStorage() {
         let data = app.system.marker ? app.system.marker.getItemData(app.const.IAP_LOCAL_STORAGE) : cc.sys.localStorage.getItem(app.const.IAP_LOCAL_STORAGE); // <-- string
+        if(typeof data !== 'string')
+            data = JSON.stringify(data);
+        
         if(!data)
             return "";
         
@@ -211,7 +200,7 @@ export default class IAPManager {
         let lastCharacter = data[lastIndex]
         if(lastCharacter === ";") 
             data = data.substring(0, lastIndex);
-        log('\nIAP: data storage', JSON.stringify(data))        
+
         return data.trim() || "";
     }
     
@@ -219,7 +208,6 @@ export default class IAPManager {
         
         if(typeof string !== "string")
             string = JSON.stringify(string);
-        log('\IAP: _setIAPItemsForStorage', string);
         
         (app.system.marker || cc.sys.localStorage).setItem(app.const.IAP_LOCAL_STORAGE, string);
         
@@ -234,7 +222,7 @@ export default class IAPManager {
         // log('\nIAP: _onSubmitPurchaseIOS', JSON.stringify(data));
         
         let messages = data['messages'] || [];
-        let receipts = data['purchasedProducts'] || [];
+        let receipts = data['purchasedProducts'] || []; // [<string>]
         
         receipts.forEach(receipt => {
             this.removePurchase(receipt);
@@ -250,23 +238,38 @@ export default class IAPManager {
             }
         }
     }
-
+    
+    /**
+     * (sfs_array) purchasedProducts: 
+        (sfs_object) 
+        (utf_string) msg: Bạn đã nạp thành công 20000 Chip vào tài khoản djoker
+        (bool) su: true
+        (utf_string) productId: com.1368inc.phatloc.20kc
+        (utf_string) token: gadnjhbjlohdnijahkfebdej.AO-J1Oyf126egFrlky3FRZ_Li0VG4lxKFHb-yPeQx3lI6LIAsU0gGxqh_KvGgLogOTtcq3gbXKL825aysiEHKe0IZAe1JbZRp5A0y4CAi25Rw1ttJuXouqnjKD-k4BGXwTcW9t8u4ndRtm16o8dM1tqE6hM5eDVYgg
+        
+        (bool) su: true
+        (sfs_array) unverifiedPurchases: 
+        (sfs_array) consumedProducts:
+     * 
+     * @param {any} data 
+     * @returns 
+     * @memberof IAPManager
+     */
     _onSubmitPurchaseAndroid(data) {
-        log('\nIAP: adata', JSON.stringify(data));
-
         if (!data[app.keywords.RESPONSE_RESULT]) {
             app.system.error(data.message || "");
             app.system.hideLoader();
             return;
         }
-        let receipts = data['purchasedProducts'] || [];
-        let unverifiedPurchases = data['unverifiedPurchases'] || [];
-        let consumedProducts = data['consumedProducts'] || [];
+    
+        let receipts = data['purchasedProducts'] || []; // [{}]
+        let unverifiedPurchases = data['unverifiedPurchases'] || []; // [{}]
+        let consumedProducts = data['consumedProducts'] || [];  // [{}]
 
         for (let i = 0; i < receipts.length; i++) {
             let receipt = receipts[i];
             if (receipt.su) {
-                this.removePurchase(receipt);
+                this.removePurchase(receipt.token);
                 receipt.msg && app.system.showToast(receipt.msg);
             } else {
                 app.system.error(receipt.msg);
@@ -274,11 +277,11 @@ export default class IAPManager {
         }
 
         unverifiedPurchases.forEach(purchase => {
-            this.removePurchase(purchase);
+            this.removePurchase(purchase.token);
         });
 
         consumedProducts.forEach(purchase => {
-            this.removePurchase(purchase);
+            this.removePurchase(purchase.token);
         });
 
         app.system.hideLoader();

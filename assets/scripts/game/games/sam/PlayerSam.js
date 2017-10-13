@@ -5,11 +5,11 @@
 import app from 'app';
 import game from 'game';
 import Card from 'Card';
-import Events from 'Events';
+import Events from 'GameEvents';
 import ArrayUtils from 'ArrayUtils';
 import SamUtils from 'SamUtils';
 import PlayerCardTurnBase from 'PlayerCardTurnBase';
-import utils from "../../../utils/Utils";
+import utils from "GeneralUtils";
 
 export default class PlayerSam extends PlayerCardTurnBase {
 
@@ -27,7 +27,7 @@ export default class PlayerSam extends PlayerCardTurnBase {
 
     _addGlobalListener() {
         super._addGlobalListener();
-
+        
         this.scene.on(Events.ON_CLICK_PLAY_BUTTON, this._onPlayTurn, this);
         this.scene.on(Events.ON_CLICK_SKIP_TURN_BUTTON, this._onSkipTurn, this);
         this.scene.on(Events.ON_CLICK_SORT_BUTTON, this._onSortCards, this);
@@ -39,11 +39,13 @@ export default class PlayerSam extends PlayerCardTurnBase {
         this.scene.on(Events.ON_GAME_STATE_TRUE_PLAY, this._onGameTruePlay, this);
         this.scene.on(Events.ON_PLAYER_BAO_XAM, this._onPlayerBaoXam, this);
         this.scene.on(Events.ON_PLAYER_BAO_1, this._onPlayerBao1, this);
+        
+        this.scene.on(Events.ON_PLAYER_BAO_XAM_RESPONSE, this._handlePlayerBaoXam, this);
     }
 
     _removeGlobalListener() {
         super._removeGlobalListener();
-
+        
         this.scene.off(Events.ON_CLICK_PLAY_BUTTON, this._onPlayTurn, this);
         this.scene.off(Events.ON_CLICK_SKIP_TURN_BUTTON, this._onSkipTurn, this);
         this.scene.off(Events.ON_CLICK_SORT_BUTTON, this._onSortCards, this);
@@ -55,6 +57,8 @@ export default class PlayerSam extends PlayerCardTurnBase {
         this.scene.off(Events.ON_GAME_STATE, this._onGameState, this);
         this.scene.off(Events.ON_PLAYER_BAO_XAM, this._onPlayerBaoXam, this);
         this.scene.off(Events.ON_PLAYER_BAO_1, this._onPlayerBao1, this);
+        
+        this.scene.off(Events.ON_PLAYER_BAO_XAM_RESPONSE, this._handlePlayerBaoXam, this);
     }
 
     _onSkipTurn() {
@@ -99,18 +103,14 @@ export default class PlayerSam extends PlayerCardTurnBase {
 
     _onBaoXam(){
         if(this.isItMe()) {
-            app.service.send({cmd: app.commands.PLAYER_BAO_XAM, data: {[app.keywords.IS_BAO_XAM]: true}, room: this.scene.room}, (data) => {
-                this._handlePlayerBaoXam(data);
-            });
+            app.service.send({cmd: app.commands.PLAYER_BAO_XAM, data: {[app.keywords.IS_BAO_XAM]: true}, room: this.scene.room});
             this.scene.emit(Events.SHOW_WAIT_TURN_CONTROLS);            
         }
     }
 
     _onBoBaoXam(){
         if(this.isItMe()) {
-            app.service.send({cmd: app.commands.PLAYER_BAO_XAM, data: {[app.keywords.IS_BAO_XAM]: false}, room: this.scene.room}, (data) => {
-                this._handlePlayerBaoXam(data);
-            });
+            app.service.send({cmd: app.commands.PLAYER_BAO_XAM, data: {[app.keywords.IS_BAO_XAM]: false}, room: this.scene.room});
             this.scene.emit(Events.SHOW_WAIT_TURN_CONTROLS);
         }
     }
@@ -124,8 +124,9 @@ export default class PlayerSam extends PlayerCardTurnBase {
 
     _handlePlayerBaoXam(data){
         this.sentBaoXamValue = utils.getValue(data, app.keywords.IS_BAO_XAM) ? 1 : 0;
+        let pid  = utils.getValue(data, app.keywords.PLAYER_ID);
     
-        if (this.sentBaoXamValue == 1) {
+        if (pid == this.id && this.sentBaoXamValue == 1) {
             this.renderer.showBaoXam(true);
         }
     }
@@ -204,9 +205,9 @@ export default class PlayerSam extends PlayerCardTurnBase {
     _onGameTruePlay(data){
         let pId = utils.getValue(data, app.keywords.BAO_XAM_SUCCESS_PLAYER_ID);
         if(pId == this.id){
-            let samState = utils.getValue(data, app.keywords.IS_BAO_XAM);
+            // let samState = utils.getValue(data, app.keywords.IS_BAO_XAM);
             this.sentBaoXamValue = 1;
-            this.renderer.showBaoXam(samState);
+            this.renderer.showBaoXam(true);
         } else {
             this.sentBaoXamValue = -1;
             this.renderer.showBaoXam(false);

@@ -3,7 +3,7 @@
  */
 
 import app from 'app';
-import utils from 'utils'
+import utils from 'PackageUtils'
 import Component from 'Component';
 
 export default class ActionComponent extends Component {
@@ -21,8 +21,6 @@ export default class ActionComponent extends Component {
 
         this.finishAllActions()
 
-        // log("runActionWithCallback: ", this.isHidden, delay, (this.__endActionCb ? true : false))
-
         if(utils.isFunction(cb)){
             this.__endActionCb = cb;
         }
@@ -30,9 +28,9 @@ export default class ActionComponent extends Component {
         if(this.isHidden){
             this.onActionFinish()
         }else{
-            delay > 0 && actions.push(cc.delayTime(delay))
-            cb && actions.push(cc.callFunc(() => this.onActionFinish()))
-
+            delay > 0 && actions.push(cc.delayTime(delay).clone())
+            cb && actions.push(cc.callFunc(() => this.onActionFinish()).clone())
+            
             this.node && actions.length > 0 ? this.node.runAction(cc.sequence(actions)) : this.onActionFinish()
         }
     }

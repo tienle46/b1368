@@ -10,11 +10,10 @@ class EntranceScene extends BaseScene {
 
     constructor() {
         super();
-
-        this.properties = {
-            ...this.properties,
+        
+        this.properties = this.assignProperties({
             facebookButton: cc.Button
-        }
+        });
     }
 
     onLoad() {
@@ -29,7 +28,7 @@ class EntranceScene extends BaseScene {
 
     start() {
         super.start();
-        
+        log('asdasdasdasdasd');
         if (app.buddyManager) {
             app.buddyManager.reset();
         } else {

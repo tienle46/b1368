@@ -13,7 +13,7 @@ export default class SingleLinePromptPopup {
         let promptNode = cc.instantiate(app.res.prefab.singleLinePromptPopup);
         let prompt = promptNode.getComponent('PromptPopup');
         if(prompt){
-            prompt.setComponentData({...options});
+            prompt.setComponentData(Object.assign({}, options));
             parentNode.addChild(promptNode);
         }
     }

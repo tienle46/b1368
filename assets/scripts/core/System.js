@@ -8,14 +8,14 @@ import Emitter from 'emitter';
 import HighLightMessageRub from 'HighLightMessageRub';
 import MessagePopup from 'MessagePopup';
 import ConfirmPopup from 'ConfirmPopup';
-import utils from 'utils';
+import utils from 'PackageUtils';
 import Toast from 'Toast';
-import { isFunction } from 'Utils';
+import { isFunction } from 'GeneralUtils';
 import Marker from 'Marker';
 import Linking from 'Linking'
 import VisibilityManager from 'VisibilityManager';
 import BuddyManager from 'BuddyManager';
-
+import Events from 'GameEvents';
 
 class GameSystem {
 
@@ -29,8 +29,6 @@ class GameSystem {
         this.enablePendingGameEvent = false;
         this.toast = null;
         this.kickMessage = null;
-        // high light message
-        (!this.hlm) && (this.hlm = new HighLightMessageRub());
         this.sceneChanging = false;
         this._currentScene = null;
         this.isInactive = false;
@@ -43,6 +41,9 @@ class GameSystem {
         this.initEventListener();
         if(!app.visibilityManager) 
             app.visibilityManager = new VisibilityManager(app.config.features);
+
+        // high light message
+        (!this.hlm) && (this.hlm = new HighLightMessageRub());
         
         this._sentQuickAuthen = false;
     }
@@ -101,6 +102,10 @@ class GameSystem {
                         let action2 = cc.moveTo(.12, cc.v2(0, 0));
                         container.runAction(cc.spawn(cc.callFunc(() => {
                             cc.game.removePersistRootNode(this.getCurrentSceneNode());
+                            
+                            if(this.notify) {
+                                this.notify.setStartTime()
+                            }
                         }), action2));                        
                     }
                 }
@@ -121,8 +126,22 @@ class GameSystem {
         this.addListener(app.commands.GET_TOTAL_TOPUP, this._onTotalTopupFetched, this);
         
         this.addListener(app.commands.CANCEL_REJOIN, this._onCancelRejoin, this);
+        this.addListener(app.commands.LIST_HU, this._onListHu, this);
+        
+        this.addListener(app.commands.IOS_IN_APP_PURCHASE, this._onSubmitPurchase, this);
+        this.addListener(app.commands.ANDROID_IN_APP_PURCHASE, this._onSubmitPurchase, this);
+        
+        this.addListener(app.commands.NOTIFICATION_MESSAGE, this._onNotification, this);
     }
-
+    
+    _onSubmitPurchase(data) {
+        this.emit(app.env.isIOS() ? Events.ON_SUBMIT_PURCHASE_IOS : Events.ON_SUBMIT_PURCHASE_ANDROID, data)    
+    }
+    
+    _onListHu(data) {
+        this.emit(Events.ON_LIST_HU_RESPONSE, data)    
+    }
+    
     // removeEventListener() {
     //     this.removeListener(SFS2X.SFSEvent.ROOM_JOIN, this._onJoinRoomSuccess, this);
     //     this.removeListener(SFS2X.SFSEvent.ROOM_JOIN_ERROR, this._onJoinRoomError, this);
@@ -220,7 +239,7 @@ class GameSystem {
     //  * @deprecated
     //  */
     // _emitToScene(){
-    //     this.currentScene && this.currentScene.emit(name, ...args);
+    //     this._currentScene && this._currentScene.emit(name, ...args);
     //
     // }
 
@@ -323,8 +342,8 @@ class GameSystem {
                 break;
             }
             case app.const.adminMessage.DAILY_LOGIN_MISSION: {
-                if (this.currentScene && sceneName == app.const.scene.DASHBOARD_SCENE) {
-                    this.currentScene.showDailyLoginPopup(message, false, title);
+                if (this._currentScene && sceneName == app.const.scene.DASHBOARD_SCENE) {
+                    this._currentScene.showDailyLoginPopup(message, false, title);
                     showToast = false;
                     return;
                 }
@@ -336,9 +355,9 @@ class GameSystem {
                 break;
             }
             case app.const.adminMessage.REGISTER_BONUS: {
-                if (this.currentScene && sceneName == app.const.scene.DASHBOARD_SCENE) {
+                if (this._currentScene && sceneName == app.const.scene.DASHBOARD_SCENE) {
                     // console.debug('title, message)', title, message);
-                    this.currentScene.showDailyLoginPopup(message, true, title);
+                    this._currentScene.showDailyLoginPopup(message, true, title);
                     showToast = false;
                     return;
                 }
@@ -370,12 +389,13 @@ class GameSystem {
 
         showToast && this.showToast(message, duration);
     }
+    
     _onTotalTopupFetched(data){
         // window.sdkbox.PluginOneSignal.sendTag("paid_user", data["total"]);
     }
 
     showLackOfMoneyMessagePopup(){
-        this.currentScene && this._lackOfMoneyMessage && ConfirmPopup.showCustomConfirm(this.currentScene.node, this._lackOfMoneyMessage, {
+        this._currentScene && this._lackOfMoneyMessage && ConfirmPopup.showCustomConfirm(this._currentScene.node, this._lackOfMoneyMessage, {
             acceptLabel: app.res.string('label_topup_money'),
             acceptCb: () => {
                 app.visibilityManager.goTo(Linking.ACTION_TOPUP_CARD)
@@ -425,13 +445,22 @@ class GameSystem {
                 case app.const.gameCode.XOC_DIA:
                     gameSceneName = 'XocDiaScene';
                     break;
+                case app.const.gameCode.TAI_XIU:
+                    gameSceneName = 'TaiXiuScene';
+                    break;
+                case app.const.gameCode.BAU_CUA:
+                    gameSceneName = 'BauCuaScene';
+                    break;
+                case app.const.gameCode.LIENG:
+                    gameSceneName = 'LiengScene';
+                    break;
                 case app.const.gameCode.TLMNDL_SOLO:
                     gameSceneName = 'TLMNDLScene';
-                    onLoadFunc = () => {this.currentScene && this.currentScene.setSoloGame(true)}
+                    onLoadFunc = () => {this._currentScene && this._currentScene.setSoloGame(true)}
                     break;
                 case app.const.gameCode.XAM_SOLO:
                     gameSceneName = 'SamScene';
-                    onLoadFunc = () => {this.currentScene && this.currentScene.setSoloGame(true)}
+                    onLoadFunc = () => {this._currentScene && this._currentScene.setSoloGame(true)}
                     break;
             }
             if (gameSceneName) {
@@ -440,6 +469,11 @@ class GameSystem {
                 this.hideLoader();
             }
         }
+    }
+    
+    // {msg, duration}
+    _onNotification(data) {
+        app.system.emit(Events.ON_NEW_NOTIFICATION, data.msg, data.duration)
     }
 
     _onHighLightMessage(resultEvent) {
@@ -508,16 +542,43 @@ class GameSystem {
             });
             
             let {username, password, facebookToken, facebookId} = values;
-            let CryptoJS = require("crypto-js");
+            
+            // Convert text to bytes
+            
+            // var textBytes = aesjs.utils.utf8.toBytes(password);
+            // console.warn(textBytes);
+            // // The counter is optional, and if omitted will begin at 1
+            // var aesCtr = new aesjs.ModeOfOperation.ctr(key, new aesjs.Counter(5));
+            // var encryptedBytes = aesCtr.encrypt(textBytes);
+            // // To print or store the binary data, you may convert it to hex
+            // var encryptedHex = aesjs.utils.hex.fromBytes(encryptedBytes);
+            // console.warn(encryptedHex);
+            
+            // // "a338eda3874ed884b6199150d36f49988c90f5c47fe7792b0cf8c7f77eeffd87
+            // //  ea145b73e82aefcf2076f881c88879e4e25b1d7b24ba2788"
+
+            // When ready to decrypt the hex string, convert it back to bytes
+            // var encryptedBytes = aesjs.utils.hex.toBytes(encryptedHex);
+            
             
             // Decrypt
             if(password) {
-                var bytes  = password && CryptoJS.AES.decrypt(password, app.config.CRYPTO_AES_KEY);
-                password = bytes.toString(CryptoJS.enc.Utf8);
+                let aesjs = require("aes-js");
+                var key = [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 ];
+                //hexed: afcce71697 = 12345
+                var encryptedBytes = aesjs.utils.hex.toBytes(password);
+                
+                // The counter mode of operation maintains internal state, so to
+                // decrypt a new instance must be instantiated.
+                var aesCtr = new aesjs.ModeOfOperation.ctr(key, new aesjs.Counter(10));
+                var decryptedBytes = aesCtr.decrypt(encryptedBytes);
+    
+                // Convert our bytes back into text
+                password = aesjs.utils.utf8.fromBytes(decryptedBytes);
             }
 
-            if(this.currentScene && ((username && password) || (facebookId && facebookToken))) {
-                this.currentScene.loginToDashboard && this.currentScene.loginToDashboard(username, password, false, false, facebookToken, facebookId, null, tempRegister)
+            if(this._currentScene && ((username && password) || (facebookId && facebookToken))) {
+                this._currentScene.loginToDashboard && this._currentScene.loginToDashboard(username, password, false, false, facebookToken, facebookId, null, tempRegister)
             }
             this._sentQuickAuthen = true;
         }

@@ -1,5 +1,5 @@
 import app from 'app';
-import utils from 'utils';
+import utils from 'PackageUtils';
 import Component from 'Component';
 
 export default class TextView extends Component {
@@ -7,9 +7,8 @@ export default class TextView extends Component {
         super();
         this.currentWidth = 0;
         this.isLoaded = false;
-
-        this.properties = {
-            ...this.properties,
+        
+        this.properties = this.assignProperties({
             lineHeight: 24,
             label: cc.Label,
             lines: 1,
@@ -18,7 +17,7 @@ export default class TextView extends Component {
             resizeWidth: true,
             increaseWidth: 40,
             margin: 5
-        };
+        });
     }
 
 
@@ -127,10 +126,9 @@ export default class TextView extends Component {
 
     _setTextViewSize() {
         if (!this.label) return;
-
         this.label.node.width = this.minWidth;
         this.label.node.height = this.lineHeight;
-        this.label.fontSize = this.fontSize;
+        this.fontSize && (this.label.fontSize = this.fontSize);
     }
 
     getWidth() {

@@ -1,6 +1,7 @@
 import app from 'app';
 import Component from 'Component';
 import AudioManager from 'AudioManager';
+import NotificationMessage from 'NotificationMessage';
 
 class PreloadScene extends Component {
     constructor() {
@@ -18,7 +19,14 @@ class PreloadScene extends Component {
         if (this.loading) {
             this.loading.getComponent('FullSceneProgress').show(app.res.string('loading_data'));
         }
+        let IAPManager = require('IAPManager'); 
+        app.iap = new IAPManager();
+        app.iap.init();
 
+        // tai xiu treo
+        let TaiXiuTreoManager = require('TaiXiuTreoManager')
+        app.taiXiuTreoManager = new TaiXiuTreoManager()
+        
         app.system.initOnFirstSceneLoaded()
         
         this._customCocosEngine();
@@ -46,18 +54,21 @@ class PreloadScene extends Component {
         let resources = [
             { dir: 'toast/Toast', name: 'toast' },
             { dir: 'dashboard/dialog/prefabs/verification_dialog', name: 'verificationDialog' },
+            { dir: 'components/Notification', name: 'notification' },
             { dir: 'dashboard/grid/scrollview', name: 'scrollview' },
             { dir: 'jar/jarPrefab', name: 'jarPrefab' },
             { dir: 'jar/jar_explosion', name: 'jarExplosive' },
             { dir: 'popup/FriendProfilePopup', name: 'friendProfilePopup' },
             { dir: 'dashboard/dialog/prefabs/dialog', name: 'dialog' },
             { dir: 'dashboard/dialog/prefabs/event/EventDialog', name: 'eventDialog' },
+            { dir: 'dashboard/dialog/prefabs/WebviewDialog', name: 'webviewDialog' },
             { dir: 'popup/MultiTabPopup', name: 'multiTabPopup' },
             { dir: 'common/FullSceneProgress', name: 'fullSceneLoading' },
             { dir: 'popup/MessagePopup', name: 'messagePopup' },
             { dir: 'popup/ConfirmPopup', name: 'confirmPopup' },
             { dir: 'popup/PromptPopup', name: 'promptPopup' },
             { dir: 'popup/SingleLinePromptPopup', name: 'singleLinePromptPopup' },
+            { dir: 'taixiuTreo/HungSicBoPrefab', name: 'hungSicBo' },
         ];
 
         app.async.parallel(resources.map((res) => {
@@ -84,17 +95,7 @@ class PreloadScene extends Component {
         });
         
         app.system.audioManager = new AudioManager();
-
-        // app.async.parallel([
-        //     () => (callback) => {
-        //         cc.loader.loadRes("", (err, prefab) => {
-        //             app.res.spriteFrame[res.name] = prefab;
-        //             prefab ? callback(null, true) : callback();
-        //         });
-        //     }
-        // ], (error, results) => {
-        //
-        // })
+        app.system.notify = new NotificationMessage();
     }
 
     onLoadResourceDone() {
@@ -104,7 +105,7 @@ class PreloadScene extends Component {
         
         // cc.view.enableAntiAlias(false);
     }
-    
+
     /**
      * Modifying cocos's source
      * @memberof PreloadScene

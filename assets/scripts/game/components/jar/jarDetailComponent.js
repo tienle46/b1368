@@ -1,24 +1,23 @@
 import app from 'app';
 import Actor from 'Actor';
-import Utils from 'Utils';
-import {destroy} from 'CCUtils';
+import Utils from 'GeneralUtils';
+import {destroy, setActive} from 'CCUtils';
 
 export default class JarDetailComponent extends Actor {
     constructor() {
         super();
-
-        this.properties = {
-            ...this.properties,
+        
+        this.properties = this.assignProperties({
             bgTransparent: cc.Node,
             textContentScrollNode: cc.Node,
             textContentItem: cc.RichText,
-            htmlContentViewNode: cc.WebView,
+            htmlContentView: cc.WebView,
             jarTotalMoneyLbl: cc.Label,
             listUserContentNode: cc.Node,
             itemUser: cc.Node,
             userNameLbl: cc.Label,
             userMoneyLbl: cc.Label
-        }
+        });
         
         this._timeout = null;
         this.time = 1000; // 1s
@@ -28,7 +27,18 @@ export default class JarDetailComponent extends Actor {
   
     onLoad() {
         super.onLoad();
-        this.bgTransparent.on(cc.Node.EventType.TOUCH_START, () => true);
+        this.bgTransparent.on(cc.Node.EventType.TOUCH_START, () => true); 
+        
+        
+        if(this.content.match(/^https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/)) {
+            // open web view
+            this.openWebView();
+            this.htmlContentView.url = 'https://bai1368.com/game/play/jar/bacay.html';
+        } else {
+            this.openTextView();
+            this.textContentItem.string = this.content;
+        }
+        this.content = "";
     }
     
     start() {
@@ -40,9 +50,19 @@ export default class JarDetailComponent extends Actor {
         this._requestListUserJars();  
     }
     
-    initContent({name, content} = {}) {
-        content = content || "";
-        this.textContentItem.string = content;
+    initContent({name, content, total} = {}) {
+        this.content = content || "";
+        this.jarTotalMoneyLbl.string = total ? `${Utils.numberFormat(total)}`: "";
+    }
+    
+    openWebView() {
+        setActive(this.htmlContentView.node);  
+        setActive(this.textContentScrollNode, false);  
+    }
+    
+    openTextView() {
+        setActive(this.htmlContentView.node, false);  
+        setActive(this.textContentScrollNode);
     }
     
     onDestroy() {
@@ -81,6 +101,10 @@ export default class JarDetailComponent extends Actor {
             chips = data['ml'];
         
         names.forEach((name, i) => {
+            if(name.length > 9) {
+                name = `${name.substr(0, 6)}...`;
+            }
+            
             this.userNameLbl.string = `${i+1}. ${name}`;
             this.userMoneyLbl.string = Utils.formatNumberType1(chips[i]).toString().toUpperCase();
             let item = cc.instantiate(this.itemUser);

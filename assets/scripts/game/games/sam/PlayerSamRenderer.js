@@ -3,7 +3,7 @@
  */
 
 import app from 'app';
-import utils from 'utils';
+import utils from 'PackageUtils';
 import CCUtils from 'CCUtils'
 import RubUtils from 'RubUtils';
 import PlayerCardTurnBaseRenderer from 'PlayerCardTurnBaseRenderer';
@@ -11,9 +11,8 @@ import PlayerCardTurnBaseRenderer from 'PlayerCardTurnBaseRenderer';
 export default class PlayerSamRenderer extends PlayerCardTurnBaseRenderer {
     constructor() {
         super();
-
-        this.properties = {
-            ...this.properties,
+        
+        this.properties = this.assignProperties({
             baoXamNode: cc.Node,
             bao1Node: cc.Node,
             specialInfoImageNode: cc.Node,
@@ -24,7 +23,7 @@ export default class PlayerSamRenderer extends PlayerCardTurnBaseRenderer {
                 default: [],
                 type: [cc.Node]
             }
-        }
+        });
 
         this.downCardLists = null;
         this.showInfoCardList = null;

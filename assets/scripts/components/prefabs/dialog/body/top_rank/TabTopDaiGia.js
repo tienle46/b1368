@@ -1,18 +1,17 @@
 import app from 'app';
 import PopupTabBody from 'PopupTabBody';
-import Utils from 'Utils';
+import Utils from 'GeneralUtils';
 
 class TabTopDaiGia extends PopupTabBody {
     constructor() {
         super();
-
-        this.properties = {
-            ...this.properties,
+        
+        this.properties = this.assignProperties({
             contentNode: cc.Node,
             crownsNode: cc.Node,
             userMoneyLbl: cc.Label,
             p404: cc.Node
-        }
+        });
     }
 
     onLoad() {

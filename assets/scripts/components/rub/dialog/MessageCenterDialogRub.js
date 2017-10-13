@@ -1,5 +1,5 @@
 import app from 'app';
-import Events from 'Events';
+import Events from 'GameEvents';
 import VisibilityManager from 'VisibilityManager';
 
 const url = `${app.const.DIALOG_DIR_PREFAB}/messagecenter`;

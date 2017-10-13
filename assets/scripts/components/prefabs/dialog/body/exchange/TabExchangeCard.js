@@ -2,15 +2,14 @@ import app from 'app';
 import PopupTabBody from 'PopupTabBody';
 import RubUtils from 'RubUtils';
 import NodeRub from 'NodeRub';
-import Utils from 'Utils';
+import Utils from 'GeneralUtils';
 import CCUtils from 'CCUtils';
 import ActionBlocker from 'ActionBlocker';
 
 class TabExchangeCard extends PopupTabBody {
     constructor() {
         super();
-        this.properties = {
-            ...this.properties,
+        this.properties = this.assignProperties({
             providerItemNode: cc.Node,
             cardItemNode: cc.Node,
             providerContainerNode: cc.Node,
@@ -24,7 +23,7 @@ class TabExchangeCard extends PopupTabBody {
             layoutsNode: cc.Node,
             updatePhoneNumberNode: cc.Node,
             phoneNumberEditbox: cc.EditBox
-        };
+        });
 
         this.selectedItem = { id: null, gold: null, name: null };
         this._tabData = {};
@@ -235,33 +234,33 @@ class TabExchangeCard extends PopupTabBody {
     _onConfirmDialogBtnClick(event) {
         let parentNode = this.node.parent.parent;
 
-        if (app.context.needUpdatePhoneNumber()) {
-            // hide this node
-            this._showUpdatePhoneNumber();
-        } else {
-            let { id, gold, name} = this.selectedItem;
-            let myCoin = app.context.getMeBalance();
+        // if (app.context.needUpdatePhoneNumber()) {
+        //     // hide this node
+        //     this._showUpdatePhoneNumber();
+        // } else {
+        let { id, gold, name} = this.selectedItem;
+        let myCoin = app.context.getMeBalance();
 
-            if (Number(myCoin) < Number(gold)) {
-                app.system.error(
-                    app.res.string('error_exchange_dialog_not_enough_money', { ownerCoin: Utils.numberFormat(myCoin), name })
-                );
-                return;
-            }
-
-            ActionBlocker.runAction(ActionBlocker.USER_WITHDRAWAL, () => {
-                let data = {};
-                data[app.keywords.EXCHANGE.REQUEST.ID] = id;
-                let sendObject = {
-                    'cmd': app.commands.EXCHANGE,
-                    data
-                };
-
-                // show loader
-                app.system.showLoader(app.res.string('waiting_server_response'));
-                app.service.send(sendObject);
-            });
+        if (Number(myCoin) < Number(gold)) {
+            app.system.error(
+                app.res.string('error_exchange_dialog_not_enough_money', { ownerCoin: Utils.numberFormat(myCoin), name })
+            );
+            return;
         }
+
+        ActionBlocker.runAction(ActionBlocker.USER_WITHDRAWAL, () => {
+            let data = {};
+            data[app.keywords.EXCHANGE.REQUEST.ID] = id;
+            let sendObject = {
+                'cmd': app.commands.EXCHANGE,
+                data
+            };
+
+            // show loader
+            app.system.showLoader(app.res.string('waiting_server_response'));
+            app.service.send(sendObject);
+        });
+        // }
     }
 
     _onExchange(data) {

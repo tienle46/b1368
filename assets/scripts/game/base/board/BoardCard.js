@@ -2,7 +2,7 @@
  * Created by Thanh on 8/23/2016.
  */
 
-import { utils, GameUtils } from 'utils';
+import { utils, GameUtils } from 'PackageUtils';
 import app from 'app';
 import Board from 'Board';
 import Card from 'Card';
@@ -21,7 +21,6 @@ export default class BoardCard extends Board {
 
     onGameStatePreChange(boardState, data) {
         super.onGameStatePreChange(boardState, data);
-
         if (data && data.hasOwnProperty(app.keywords.DEAL_CARD_LIST_KEYWORD)) {
             this._dealCards(data);
         }
@@ -99,10 +98,10 @@ export default class BoardCard extends Board {
 
             let playerCardBytes = handCards.slice(handCardIndex, handCardIndex + playerCardCount);
             playerHandCards[id] = GameUtils.convertBytesToCards(playerCardBytes);
-
+          
             handCardIndex += playerCardCount;
         });
-
+        
         return playerHandCards;
     }
 

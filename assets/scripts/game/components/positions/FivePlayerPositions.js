@@ -3,7 +3,7 @@
  */
 
 import app from 'app';
-import utils from 'utils';
+import utils from 'PackageUtils';
 import CCUtils from 'CCUtils';
 import GameUtils from 'GameUtils';
 import PlayerPositions from 'PlayerPositions';

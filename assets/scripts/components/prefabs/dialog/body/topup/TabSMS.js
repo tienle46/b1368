@@ -5,14 +5,13 @@ import {
     deactive,
     active,
     numberFormat
-} from 'Utils';
+} from 'GeneralUtils';
 
 class TabSMS extends PopupTabBody {
     constructor() {
         super();
         
-        this.properties = {
-            ...this.properties,
+        this.properties = this.assignProperties({
             toggleGroupNode: cc.Node,
             itemNode: cc.Node,
             moneyGetLbl: cc.Label,
@@ -30,8 +29,8 @@ class TabSMS extends PopupTabBody {
             toNumberLbl: cc.Label,
             smsLayoutPanel: cc.Node,
             contentLayoutPanel: cc.Node
-        };
-
+        });
+        
         this._balanceChoosen = null;
         
     }

@@ -3,7 +3,7 @@
  */
 import app from 'app';
 import PopupTabBody from 'PopupTabBody';
-import {isNumber, active, deactive, numberFormat} from 'Utils';
+import {isNumber, active, deactive, numberFormat} from 'GeneralUtils';
 import CCUtils from 'CCUtils';
 import ActionBlocker from 'ActionBlocker';
 
@@ -11,9 +11,8 @@ export default class TabBuddiesTransfer extends PopupTabBody {
 
     constructor() {
         super();
-
-        this.properties = {
-            ...this.properties,
+        
+        this.properties = this.assignProperties({
             formTransferNode: cc.Node,
             receiverEditBoxNode: cc.EditBox,
             transferAmountEditBoxNode: cc.EditBox,
@@ -25,7 +24,7 @@ export default class TabBuddiesTransfer extends PopupTabBody {
             maxLblNode: cc.Node,
             mainNode: cc.Node,
             loadingNode: cc.Node
-        };
+        });
 
         this.receiverBuddyName = null;
     }

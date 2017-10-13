@@ -3,12 +3,12 @@
  */
 
 import app from 'app';
-import utils from 'utils';
+import utils from 'PackageUtils';
 import Actor from 'Actor';
 import CCUtils from 'CCUtils';
 import SFS2X from 'SFS2X';
 import LoaderRub from 'LoaderRub';
-import Events from "Events";
+import Events from 'GameEvents';
 import RubUtils from 'RubUtils';
 
 const emotionTexts = [];
@@ -23,8 +23,8 @@ export function getEmotionName(text) {
 export default class GameChatComponent extends Actor {
     constructor() {
         super();
-        this.properties = {
-            ...this.properties,
+        
+        this.properties = this.assignProperties({
             quickChatsList: cc.Node,
             emotionsList: cc.Node,
             chatHistoryNode: cc.Node,
@@ -48,7 +48,7 @@ export default class GameChatComponent extends Actor {
              * @type {cc.Toggle}
              */
             tabEmoChatToggle: cc.Toggle,
-        }
+        });
 
         this.quickChats = null;
         this.animation = null;
@@ -143,10 +143,9 @@ export default class GameChatComponent extends Actor {
 
     _initMessageHistory(){
 
-        log('this.scene.gameContext.messages: ', this.scene.gameContext.messages);
+        // log('this.scene.gameContext.messages: ', this.scene.gameContext.messages);
 
         this.chatHistoryPanel.children.forEach(child => child.destroy() && child.removeFromParent(true));
-
         this.scene.gameContext.messages && this.scene.gameContext.messages.forEach(messageObj => {
             this._addNewChatHistoryItem(messageObj.sender, messageObj.message)
         });
@@ -251,7 +250,7 @@ export default class GameChatComponent extends Actor {
     _initEmotions() {
         if (this.emotionInited) return;
 
-        this.emotionsList.children.map(child => child.destroy() && child.removeFromParent());
+        this.emotionsList.children.map(child => child.destroy() && child.removeFromParent(false));
         // app.res.vip_emotions.forEach(exp => {
         //     let reg = new RegExp(`^(${exp})*[-]`);
             

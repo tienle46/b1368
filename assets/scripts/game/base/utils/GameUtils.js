@@ -3,7 +3,7 @@
  */
 
 import app from 'app';
-import utils from 'utils';
+import utils from 'PackageUtils';
 import Card from 'Card';
 import numeral from 'numeral';
 
@@ -41,7 +41,8 @@ export default class GameUtils {
         if(balance <= 9999){
             formatted = balance
         }else if(balance <= 99999){
-            let adj = parseInt((balance / 1000 - parseInt(balance / 1000)) * 10)
+            // let adj = parseInt((balance / 1000 - parseInt(balance / 1000)) * 10)
+            let adj = parseInt((balance - parseInt(balance / 1000) * 1000) / 100)
             formatted = adj == 0 ? `${parseInt(balance / 1000)}k` : `${parseInt(balance / 1000)}.${adj}k`
         }else if(balance <= 999999){
             formatted = `${parseInt(balance / 1000)}k`
@@ -224,7 +225,7 @@ export default class GameUtils {
         cards && cards.sort((card1, card2) => {
             let rankCompare = card1.rank - card2.rank
             let suitCompare = card1.suit - card2.suit
-
+            
             return rankCompare == 0 ? suitCompare : rankCompare
         })
 

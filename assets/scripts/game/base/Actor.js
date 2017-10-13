@@ -4,7 +4,7 @@
 
 import VisibilityActor from 'VisibilityActor';
 import Emitter from 'emitter';
-import Events from 'Events';
+import Events from 'GameEvents';
 import HttpImageLoader from 'HttpImageLoader';
 
 export default class Actor extends VisibilityActor {
@@ -36,7 +36,7 @@ export default class Actor extends VisibilityActor {
     onEnable(renderer = this.renderer, renderData = this.renderData) {
         super.onEnable();
         this.renderer = renderer;
-        this.renderData = {...renderData, actor: this };
+        this.renderData = Object.assign({}, renderData, {actor: this});
         this.renderer && this.renderer._init(this.renderData);
         this._addGlobalListener();
     }

@@ -3,21 +3,19 @@
  */
 
 import app from 'app';
-import utils from 'utils';
+import utils from 'PackageUtils';
 import Actor from 'Actor';
-import FullSceneProgress from 'FullSceneProgress';
 import CCUtils from 'CCUtils';
 import Base64 from 'Base64';
 
 export default class BaseScene extends Actor {
     constructor() {
         super();
-
-        this.properties = {
-            ...this.properties,
+        
+        this.properties = this.assignProperties({
             emptyNode: cc.Node,
             bodyNode: cc.Node,
-        }
+        });
 
         this.loading = true;
         this.progress = null;
@@ -25,6 +23,9 @@ export default class BaseScene extends Actor {
         this.isLoaded = false;
         this._showFBLoginPopup = false;
         this._errorMessageTimeout = null;
+        
+        this.updateTimer = 0
+        this.updateInterval = .2
     }
 
     _addToPendingAddPopup(message) {
@@ -70,6 +71,17 @@ export default class BaseScene extends Actor {
     start() {
         super.start();
         app.system.setSceneChanging(false);
+        
+        let name = app.system.getCurrentSceneName()
+        if(name == app.const.scene.ENTRANCE_SCENE && app.taiXiuTreoManager) {
+            app.taiXiuTreoManager.onDestroy()
+            return
+        }
+        
+        if(app.taiXiuTreoManager && (name == app.const.scene.LIST_TABLE_SCENE || name == app.const.scene.DASHBOARD_SCENE) ) {
+            app.taiXiuTreoManager.createIcon()
+            return
+        }
     }
 
     onDestroy() {
@@ -120,7 +132,6 @@ export default class BaseScene extends Actor {
 
     loginToDashboard(username, password, isRegister = false, isQuickLogin = false, accessToken = null, fbId = null, cb, tmpRegister = false) {
         this.showLoading(app.res.string('connecting_to_server'));
-        
         this._errorMessageTimeout = setTimeout(() => {
             if(app.service.getClient()._socketEngine.isConnecting){
                 app.service.getClient()._socketEngine.disconnect();
@@ -153,7 +164,27 @@ export default class BaseScene extends Actor {
     }
 
     _requestAuthen(username, password, isRegister, isQuickLogin, accessToken, fbId, tryOneTime, cb, tmpRegister) {
+        
         clearTimeout(this._errorMessageTimeout);
+        // cc.log(`isAndroid ${app.env.isAndroid()}`, app.env.isMobile(),  cc.sys.os, cc.sys.OS_ANDROID, cc.sys.platform , cc.sys.ANDROID);
+        if (app.env.isAndroid()) {
+            const isRooted = window.jsb.reflection.callStaticMethod("org/cocos2dx/javascript/JSBUtils", "isRooted", "()Z");
+            // cc.log(`device rooted ? ${isRooted} `);
+            if(isRooted){
+                this.hideLoading();
+                app.system.info(app.res.string('message_not_support_rooted_device'));
+                return;
+            }
+        }
+        else if(app.env.isIOS()){
+            const isJailbroken = window.jsb.reflection.callStaticMethod("JSBUtils", "isJailbroken");
+            if(isJailbroken){
+                this.hideLoading();
+                app.system.info(app.res.string('message_not_support_rooted_device'));
+                return;
+            }
+        }
+        
         app.service.requestAuthen(username, password, isRegister, isQuickLogin, accessToken, fbId, (error, result) => {
             if (error) {
                 let splitMsgs = error.errorMessage && error.errorMessage.split('|');
@@ -202,20 +233,24 @@ export default class BaseScene extends Actor {
             }
             if (result) {
                 // set storage
-                let b64 = new Base64();
-                let userInfo = b64.encodeSafe(`${username}:${password}`);
-                app.system.marker.setItem(app.const.USER_LOCAL_STORAGE, userInfo);
-                
+                if(isRegister) {
+                    let b64 = new Base64();
+                    let userInfo = b64.encodeSafe(`${username}:${password}`);
+                    app.system.marker.setItem(app.const.USER_LOCAL_STORAGE, userInfo);
+                }
+               
                 log(`Logged in as ${app.context.getMe().name}`);
 
                 if (app.env.isMobile() && window.sdkbox) {
                     window.sdkbox.PluginGoogleAnalytics.setUser(app.context.getMe().name);
                 } 
-                // else if(app.env.isBrowser()) {
-                //     window.history.pushState("", "Bai1368", "/");
-                // }
+                else if(app.env.isBrowser()) {
+                    let l = location.href;
+                    l = l.split("?")
+                    l && l.length > 0 && (l = l[0])
+                    l && window.history.pushState("", "Bai1368", l);
+                }
                 this.showLoading(app.res.string('login_success'));
-
 
                 if(result.newVersion && result.newVersionLink){
                     app.context.newVersionInfo = {newVersion: result.newVersion, newVersionLink: result.newVersionLink}
@@ -241,7 +276,6 @@ export default class BaseScene extends Actor {
             return;
 
         let receipts = app.iap.getPurchasesByUsername(app.context.getMyInfo().name);
-        cc.log('\nIAP: receipts -->', JSON.stringify(receipts), receipts.length);
         
         if (!receipts || receipts.length == 0)
             return;
@@ -266,9 +300,19 @@ export default class BaseScene extends Actor {
         };
 
         app.env.isAndroid() && (sendObj.data.resubmit = true);
-        cc.log('\nIAP: resendIAPSavedItem', JSON.stringify(sendObj));
         
         // app.system.showLoader(app.res.string('re_sending_item_iap'), 60);
         app.service.send(sendObj);
+    }
+    
+    update(dt) {
+        this.updateTimer += dt;
+        if (this.updateTimer < this.updateInterval) {
+            return; // we don't need to do the math every frame
+        }
+        
+        if(app.system.notify && !app.system.notify.isEmptyStack()) {
+            app.system.notify.calling()
+        }
     }
 }

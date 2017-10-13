@@ -1,5 +1,5 @@
 import app from 'app';
-import { utils, GameUtils } from 'utils';
+import { utils, GameUtils } from 'PackageUtils';
 import { Keywords } from 'core';
 import { BaseScene } from 'scenes';
 import { Events, Emitter } from 'events'
@@ -15,9 +15,8 @@ export default class GameScene extends BaseScene {
 
     constructor() {
         super();
-
-        this.properties = {
-            ...this.properties,
+        
+        this.properties = this.assignProperties({
             boardNode: cc.Node,
             gameMenuNode: cc.Node,
             gameControlsNode: cc.Node,
@@ -27,7 +26,7 @@ export default class GameScene extends BaseScene {
             tableMinBetLabel: cc.Label,
             playerPositionAnchorsNode: cc.Node,
             maxPlayers: 4
-        }
+        });
 
         /**
          * @type {IngameChatComponent}
@@ -179,6 +178,7 @@ export default class GameScene extends BaseScene {
         this.gameMenu = this.gameMenuNode.getComponent('GameMenuPrefab')
 
         this.isSoloGame = GameUtils.isSoloGame(app.context.currentRoom)
+        app.system.setCurrentScene(this);
         
         this.node.children.forEach(child => { child.opacity = 255 });
         Object.values(app.res.asset_tools).length < 1 && this._loadAssetTools();
@@ -220,29 +220,29 @@ export default class GameScene extends BaseScene {
     }
 
     _setGameMinBetInfo() {
-        let minBet = utils.getVariable(this.room, app.keywords.VARIABLE_MIN_BET, "");
-        this.tableMinBetLabel && (this.tableMinBetLabel.string = 'Cược ' + GameUtils.formatBalanceShort(minBet));
+        // let minBet = utils.getVariable(this.room, app.keywords.VARIABLE_MIN_BET, "");
+        // this.tableMinBetLabel && (this.tableMinBetLabel.string = 'Cược ' + GameUtils.formatBalanceShort(minBet));
+        let gameName = app.const.gameLabels[this.gameCode] || "";
+        this.tableMinBetLabel && (this.tableMinBetLabel.string = gameName);
     }
 
     _setTableNameLabel() {
-        let gameName = app.const.gameLabels[this.gameCode] || "";
-        let roomName = this.room.name.substring(3, 5);
         let tableName = this.room.name.substring(5, this.room.name.length) || "";
-
-        this.tableNameLabel.string = this.gameCode != app.const.gameCode.XOC_DIA ? app.res.string('game_table_name', { tableName, gameName }) : `Bàn ${tableName}`;
+        let gameBet = GameUtils.formatBalanceShort(utils.getVariable(this.room, app.keywords.VARIABLE_MIN_BET, ""));
+        
+        this.tableNameLabel.string = this.gameCode != app.const.gameCode.XOC_DIA ? app.res.string('game_table_name', { tableName, gameBet }) : `B${tableName} - ${gameBet}`;
     }
 
     onEnable() {
         super.onEnable();
 
-        app.system.setCurrentScene(this);
         this.chatComponent = this.chatComponentNode.getComponent('GameChatComponent');
         this.gamePlayers = this.playerLayer.getComponent('GamePlayers');
 
 
         try {
             this.room = app.context.currentRoom;
-
+            
             if (this.room && this.room.isGame) {
                 this.gameCode = utils.getGameCode(this.room);
                 this.gameData = this.room.getVariable(app.keywords.VARIABLE_GAME_INFO).value
@@ -352,7 +352,7 @@ export default class GameScene extends BaseScene {
     _mergeGameData(newGameData){
         let readyPlayerIds = this.gameData[app.keywords.ROOM_READY_PLAYERS];
 
-        this.gameData = {...this.gameData, ...newGameData}
+        this.gameData = Object.assign(this.gameData, newGameData)
 
         readyPlayerIds && this._addToReadyPlayers(...readyPlayerIds)
     }
@@ -369,7 +369,8 @@ export default class GameScene extends BaseScene {
     }
     
     handleGameRefresh(data) {
-        this.gameData = {...data.gameData, ...data.gamePhaseData};
+        this.gameData = Object.assign({}, data.gameData, data.gamePhaseData);
+        // this.gameData = {...data.gameData, ...data.gamePhaseData};
         this._mergeGameData(data.playerData);
         // this._onGameRejoin(data.playerData);
         this.emit(Events.ON_GAME_REFRESH, data);    
@@ -458,7 +459,6 @@ export default class GameScene extends BaseScene {
     }
 
     _onGameStateChange(state, data, isJustJoined, rejoining) {
-
         state == app.const.game.state.WAIT && this.emit(Events.ON_GAME_WAIT)
 
         if (this.gameState == app.const.game.state.WAIT) {
@@ -476,7 +476,7 @@ export default class GameScene extends BaseScene {
         }
 
         this.emit(Events.ON_GAME_STATE_PRE_CHANGE, state, data, isJustJoined);
-
+        
         switch (this.gameLocalState) {
             case app.const.game.state.BEGIN:
                 app.jarManager.closeJarExplosive();
@@ -491,19 +491,22 @@ export default class GameScene extends BaseScene {
             case app.const.game.state.PLAYING:
                 this.emit(Events.ON_GAME_STATE_PLAYING, data, isJustJoined);
                 break;
-            case app.const.game.state.ENDING:
+            case app.const.game.state.ENDING: {
                 this.emit(Events.ON_GAME_STATE_ENDING, data, isJustJoined);
-            
-                let jarExplosiveData = utils.getVariable(this.room, app.keywords.JAR_EXPLOSIVE);
-                if(jarExplosiveData) {
-                    let usernames = jarExplosiveData[app.keywords.USERNAME_LIST] || [],
-                    moneyList = jarExplosiveData[app.keywords.MONEY_LIST] || [],
-                    messages = jarExplosiveData['msl'] || [];
-                    usernames.forEach((username, index) => {
-                        this.emit(Events.ON_USER_MAKES_JAR_EXPLOSION, username, messages[index] || null, moneyList[index]);
-                    });
-                }
+                
+                    let jarExplosiveData = utils.getVariable(this.room, app.keywords.JAR_EXPLOSIVE);
+                    
+                    if(jarExplosiveData) {
+                        let usernames = jarExplosiveData[app.keywords.USERNAME_LIST] || [],
+                        moneyList = jarExplosiveData[app.keywords.MONEY_LIST] || [],
+                        messages = jarExplosiveData['msl'] || [];
+                    
+                        usernames.forEach((username, index) => {
+                            this.emit(Events.ON_USER_MAKES_JAR_EXPLOSION, username, messages[index] || null, moneyList[index]);
+                        });
+                    }
                 break;
+            }
             default:
                 this.emit(Events.ON_GAME_STATE, this.gameState, data, isJustJoined);
         }

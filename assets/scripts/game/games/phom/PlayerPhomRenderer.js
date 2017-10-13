@@ -2,7 +2,7 @@
  * Created by Thanh on 9/15/2016.
  */
 
-import utils from 'utils';
+import utils from 'PackageUtils';
 import app from 'app';
 import CardList from 'CardList';
 import PhomListComponent from 'PhomListComponent';
@@ -15,9 +15,8 @@ import RubUtils from 'RubUtils'
 export default class PlayerPhomRenderer extends PlayerCardTurnBaseRenderer {
     constructor() {
         super();
-
-        this.properties = {
-            ...this.properties,
+        
+        this.properties = this.assignProperties({
             eatenCardListNode2: cc.Node,
             eatenCardListNode3: cc.Node,
             eatenCardListNode4: cc.Node,
@@ -40,7 +39,7 @@ export default class PlayerPhomRenderer extends PlayerCardTurnBaseRenderer {
                 default: [],
                 type: [cc.Node]
             },
-        }
+        });
 
         /**
          * @type {CardList}
@@ -159,7 +158,7 @@ export default class PlayerPhomRenderer extends PlayerCardTurnBaseRenderer {
         /**
          * In first time load player, method _reloadComponentOnIndexChanged call before this._downPhomListComponent.phomList assigned
          */
-
+        
         this.downPhomList && this.downPhomList.clear();
         this.downPhomList = this._downPhomListComponent.phomList
     }

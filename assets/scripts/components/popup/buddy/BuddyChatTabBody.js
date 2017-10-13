@@ -3,9 +3,9 @@
  */
 
 import app from 'app';
-import utils from 'utils';
+import utils from 'PackageUtils';
 import PopupTabBody from 'PopupTabBody';
-import Events from 'Events';
+import Events from 'GameEvents';
 import BuddyPopup from 'BuddyPopup';
 import CCUtils, { destroy } from 'CCUtils';
 
@@ -13,10 +13,8 @@ class BuddyChatTabBody extends PopupTabBody {
 
     constructor() {
         super();
-
-        this.properties = {
-            ...this.properties,
-
+        
+        this.properties = this.assignProperties({
             /**
              * @type {cc.EditBox}
              */
@@ -33,7 +31,7 @@ class BuddyChatTabBody extends PopupTabBody {
             chatScroll: cc.ScrollView,
             chattingBuddyPrefab: cc.Prefab,
             toggleGroup: cc.ToggleGroup
-        }
+        });
 
         this.buddy = null;
         this.chattingBuddyItems = null;

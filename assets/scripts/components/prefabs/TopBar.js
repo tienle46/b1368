@@ -1,8 +1,8 @@
 import app from 'app';
-import utils from 'utils';
+import utils from 'PackageUtils';
 import DialogActor from 'DialogActor';
 import SFS2X from 'SFS2X';
-import Events from 'Events';
+import Events from 'GameEvents';
 import HttpImageLoader from 'HttpImageLoader';
 import PromptPopup from 'PromptPopup';
 import CCUtils from 'CCUtils';
@@ -11,9 +11,8 @@ import Linking from 'Linking';
 class TopBar extends DialogActor {
     constructor() {
         super();
-
-        this.properties = {
-            ...this.properties,
+        
+        this.properties = this.assignProperties({
             userInfoCoinLbl: cc.Label,
             userNameLbl: cc.Label,
             msgNotifyBgNode: cc.Node,
@@ -28,7 +27,7 @@ class TopBar extends DialogActor {
             vipLevel: cc.Label,
             fanPageNode: cc.Node,
             shopBtnNode: cc.Node
-        };
+        });
     }
 
     onLoad() {
@@ -62,6 +61,7 @@ class TopBar extends DialogActor {
         app.system.addListener(Events.ON_BUDDY_UNREAD_MESSAGE_COUNT_CHANGED, this._onBuddyNotifyCountChanged, this);
         app.system.addListener(Events.CLIENT_CONFIG_CHANGED, this._onConfigChanged, this);
         app.system.addListener(Events.ON_MESSAGE_COUNT_CHANGED, this._onMessageCountChanged, this);
+        app.system.addListener('user.changes.balance', this._onUserChangesBalance, this);
     }
 
     _removeGlobalListener() {
@@ -70,6 +70,7 @@ class TopBar extends DialogActor {
         app.system.removeListener(Events.ON_BUDDY_UNREAD_MESSAGE_COUNT_CHANGED, this._onBuddyNotifyCountChanged, this);
         app.system.removeListener(Events.CLIENT_CONFIG_CHANGED, this._onConfigChanged, this);
         app.system.removeListener(Events.ON_MESSAGE_COUNT_CHANGED, this._onMessageCountChanged, this);
+        app.system.removeListener('user.changes.balance', this._onUserChangesBalance, this);
     }
 
     onClickLogout() {
@@ -96,15 +97,6 @@ class TopBar extends DialogActor {
         this._hideDropDownMenu()
     }
 
-    onClickLogout() {
-        app.system.confirm(
-            app.res.string('really_wanna_quit'),
-            null,
-            this._onConfirmLogoutClick.bind(this)
-        );
-        this._hideDropDownMenu()
-    }
-
     handleSettingAction(e) {
         let dialog = cc.instantiate(this.settingDialog);
         app.system.getCurrentSceneNode().addChild(dialog);
@@ -113,10 +105,6 @@ class TopBar extends DialogActor {
     handleMoreAction() {
         let state = this.dropDownOptions.active;
         this.dropDownOptions.active = !state;
-    }
-
-    updateUserCoin() {
-        this.userInfoCoinLbl.string = `${utils.numberFormat(app.context.getMeBalance() || 0)}`;
     }
 
     onClickNapXuAction() {
@@ -229,7 +217,10 @@ class TopBar extends DialogActor {
             }
         });
     }
-
+    
+    _onUserChangesBalance(balance) {
+        this.userInfoCoinLbl.string = `${utils.numberFormat(balance || 0)}`;
+    }
 }
 
 app.createComponent(TopBar);

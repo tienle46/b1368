@@ -25,7 +25,7 @@ export default class TimerRub {
         this.startTime = null;
         this.remaining = 0;
 
-        this.state = 0; // 0 = idle, 1 = running, 2 = paused, 3 = resume
+        this.state = TimerRub.STATE_IDLE; // 0 = idle, 1 = running, 2 = paused, 3 = resume
 
         this._init();
     }
@@ -33,31 +33,35 @@ export default class TimerRub {
     _init() {
         this.startTime = new Date().getTime();
         (!this.timerId) && (this.timerId = setInterval(this.cb, this.interval));
-        this.state = 1;
+        this.state = TimerRub.STATE_RUNNING;
     }
 
     pause() {
-        if (this.state != 1) return;
+        if (this.state != TimerRub.STATE_RUNNING) return;
 
         let remain = this.interval - (new Date().getTime() - this.startTime);
 
         this.remaining = remain > 0 ? remain : 100;
 
         this.clear(this.timerId);
-        this.state = 2;
+        this.state = TimerRub.STATE_PAUSED;
+    }
+    
+    isPaused() {
+        return this.state == TimerRub.STATE_PAUSED;
     }
 
     resume() {
-        if (this.state != 2) return;
+        if (!this.isPaused()) return;
 
-        this.state = 3;
+        this.state = TimerRub.STATE_RESUME;
         timeout && clearTimeout(timeout);
         var timeout = null;
         timeout = setTimeout(this.timeoutCallback.bind(this), this.remaining);
     }
 
     timeoutCallback() {
-        if (this.state != 3) return;
+        if (this.state != TimerRub.STATE_RESUME) return;
         // this.cb();
 
         this.startTime = new Date().getTime();
@@ -65,10 +69,14 @@ export default class TimerRub {
         this.timerId = null;
         (!this.timerId) && (this.timerId = setInterval(this.cb, this.interval));
         this.remaining = 0;
-        this.state = 1;
+        this.state = TimerRub.STATE_RUNNING;
     }
 
     clear() {
         clearInterval(this.timerId);
     }
 }
+TimerRub.STATE_IDLE = 0;
+TimerRub.STATE_RUNNING = 1;
+TimerRub.STATE_PAUSED = 2;
+TimerRub.STATE_RESUME = 3;

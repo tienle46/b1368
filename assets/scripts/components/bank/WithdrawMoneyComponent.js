@@ -3,21 +3,20 @@
  */
 import app from 'app';
 import Actor from 'Actor'
-import Utils from 'Utils';
+import Utils from 'GeneralUtils';
 import CCUtils from 'CCUtils';
 
 class WithdrawMoneyComponent extends Actor {
 
     constructor() {
         super();
-        this.properties = {
-            ...this.properties,
+        this.properties = this.assignProperties({
             availableBalanceLabel: cc.Label,
             minLabel: cc.Label,
             inputEditBox: cc.EditBox,
             mainNode: cc.Node,
             loadingNode: cc.Node
-        }
+        });
 
         this.loadedData = false
         this.onBackButtonClickListener = undefined

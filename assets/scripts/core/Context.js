@@ -3,10 +3,11 @@
  */
 
 import app from 'app';
-import Events from 'Events';
+import Events from 'GameEvents';
 import RubUtils from 'RubUtils';
-import Utils from 'Utils';
+import Utils from 'GeneralUtils';
 import VisibilityManager from 'VisibilityManager';
+import SFS2X from 'SFS2X';
 
 /**
  * Make sure that System.js require before
@@ -137,7 +138,19 @@ class GameContext {
     getMe() {
         return app.service.getClient().me;
     }
+    
+    setBalance(newBalance) {
+        let me = this.getMe()
+        
+        let balanceVariable = me.variables[app.keywords.USER_VARIABLE_BALANCE];
+        let newBalanceVariable = balanceVariable ? new SFS2X.Entities.Variables.SFSUserVariable(balanceVariable.name, newBalance, balanceVariable.type)
+            : new SFS2X.Entities.Variables.SFSUserVariable(app.keywords.USER_VARIABLE_BALANCE, newBalance)
+        me._setVariable(newBalanceVariable);
+        let balance = me.variables[app.keywords.USER_VARIABLE_BALANCE].value
 
+        app.system.emit('user.changes.balance', balance)
+    }
+    
     getVipLevel() {
         let me = this.getMe();
         let vipLevel = Utils.getVariable(me, app.keywords.VIP_LEVEL, {});

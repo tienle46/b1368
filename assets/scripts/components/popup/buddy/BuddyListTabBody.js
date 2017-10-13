@@ -3,19 +3,17 @@
  */
 
 import app from 'app';
-import utils from 'utils';
+import utils from 'PackageUtils';
 import PopupTabBody from 'PopupTabBody';
-import Events from 'Events';
+import Events from 'GameEvents';
 import CCUtils from 'CCUtils';
 
 class BuddyListTabBody extends PopupTabBody {
 
     constructor() {
         super();
-
-        this.properties = {
-            ...this.properties,
-
+        
+        this.properties = this.assignProperties({
             leftBuddyListComponent: cc.Node,
             rightBuddyListComponent: cc.Node,
             filterEditBoxNode: cc.EditBox,
@@ -30,8 +28,7 @@ class BuddyListTabBody extends PopupTabBody {
                 default: 3,
                 type: cc.Integer
             },
-
-        }
+        });
 
         this.filterEditBox = null;
         this.filteredBuddies = [];

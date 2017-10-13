@@ -4,16 +4,14 @@ import SFS2X from 'SFS2X';
 import ScrollMessagePopup from 'ScrollMessagePopup';
 import BuddyPopup from 'BuddyPopup';
 import CCUtils from 'CCUtils';
-import Utils from 'Utils';
-import TopupDialogRub from 'TopupDialogRub';
+import Utils from 'GeneralUtils';
 import Linking from 'Linking';
 
 export default class ListTableScene extends BaseScene {
     constructor() {
         super();
 
-        this.properties = {
-            ...this.properties,
+        this.properties = this.assignProperties({
             contentInScroll: cc.Node,
             tableListCell: cc.Prefab,
             invitePopupPrefab: cc.Prefab,
@@ -22,13 +20,14 @@ export default class ListTableScene extends BaseScene {
             jarAnchorNode: cc.Node,
             scrollView: cc.ScrollView,
             arrowNode: cc.Node,
+            createRoomDialogPrefab: cc.Prefab,
             filter1stLabel: cc.Label,
             filter2ndLabel: cc.Label,
             filter3rdLabel: cc.Label,
             radio1: cc.Toggle,
             radio2: cc.Toggle,
             radio3: cc.Toggle
-        };
+        });
         
         this.fakers = null; // room fakers
         
@@ -99,7 +98,19 @@ export default class ListTableScene extends BaseScene {
         super.onDestroy();
         this.enableMinbets = []
     }
-
+    
+    onCreateRoomBtnClick() {
+        let dialog = cc.instantiate(this.createRoomDialogPrefab)
+        // _createRoom
+        dialog.getComponent('CreateRoomDialog').initGrid(app.system.getCurrentSceneNode(), {
+            title: this.gameTitleLbl.string,
+            minBalanceMultiple: this.minBalanceMultiple,
+            minBets: this.enableMinbets,
+            okBtnCb: this._createRoom,
+            roomCapacity: app.const.game.maxPlayers[this.gameCode || 'default'],
+        }, this);
+    }
+    
     _addGlobalListener() {
         super._addGlobalListener();
         app.system.addListener(app.commands.GET_LIST_GAME_MINBET, this._onListGameMinBetResponse, this);
@@ -181,7 +192,7 @@ export default class ListTableScene extends BaseScene {
             app.system.confirm(
                 app.res.string('error_user_not_enough_gold_to_join_room', { minBalance }),
                 null,
-                this._onOpenTopUp.bind(this),
+                this._onOpenTopUp.bind(this)
             );
         } else {
             if (password) {
@@ -300,7 +311,7 @@ export default class ListTableScene extends BaseScene {
         });
     }
     
-    _bestSuitableRoom(minBalanceMultiple) {
+    _bestSuitableRoom() {
         let minMoney = app.context.getMeBalance() / this.minBalanceMultiple;
         let rooms = this.contentInScroll.children;
         
@@ -450,33 +461,42 @@ export default class ListTableScene extends BaseScene {
         let passwords = data[app.keywords.ROOM_PASSWORD] || [];
         let userCounts = data[app.keywords.ROOM_USER_COUNT] || [];
         let roomCapacities = data[app.keywords.ROOM_USER_MAX] || [];
+        let emptyRoomIndex = data['emptyRoomIndexs'] >= 0 ? data['emptyRoomIndexs'] : 1000;
+        emptyRoomIndex >= displayIds.length && (emptyRoomIndex = displayIds.length);
         
         let playableRooms = [];
-        let fullRooms = [];
+        // let fullRooms = [];
+        // for(let i = 0; i < displayIds.length; i++) {
+        //     let object = this._createRoomObject(ids[i], displayIds[i], minBets[i], userCounts[i], roomCapacities[i], passwords[i]);
+        //     (userCounts[i] === roomCapacities[i] ? fullRooms : playableRooms).push(object);
+        // }
+        
         for(let i = 0; i < displayIds.length; i++) {
             let object = this._createRoomObject(ids[i], displayIds[i], minBets[i], userCounts[i], roomCapacities[i], passwords[i]);
-            (userCounts[i] === roomCapacities[i] ? fullRooms : playableRooms).push(object);
+            playableRooms.push(object);
         }
         
-        let isEmptyList = !(fullRooms.length > 0 || playableRooms.length > 0)
+        // let isEmptyList = !(fullRooms.length > 0 || playableRooms.length > 0)
         
         // room faker
         if(this.fakers.length < 1 || addMore) {
             this._createRoomFakers();
         }
         
-        this.contentInScroll.children.forEach(item => item && item.zIndex !== ListTableScene.TYPE_FAKE_ROOM && CCUtils.destroy(item));
+        playableRooms = [...playableRooms.slice(0, emptyRoomIndex), ...this.fakers, ...playableRooms.slice(emptyRoomIndex, playableRooms.length)];
+
+        this.contentInScroll.children.forEach(item => item && CCUtils.destroy(item));
         
-        if(isEmptyList) {
-            let minMoney =  app.context.getMeBalance()/this.minBalanceMultiple;
-            let index = app.config.listTableGroupFilters.findIndex((o) => (minMoney >= o.min && minMoney <= o.max));
+        // if(isEmptyList) {
+        //     let minMoney =  app.context.getMeBalance()/this.minBalanceMultiple;
+        //     let index = app.config.listTableGroupFilters.findIndex((o) => (minMoney >= o.min && minMoney <= o.max));
             
-            if(index === -1 && minMoney >= app._.maxBy(app.config.listTableGroupFilters, (o) => o.max).max) {
-                this._activeFilterByIndex(app.config.listTableGroupFilters.length - 1);
-            } else if(~index) {
-                this._activeFilterByIndex(index);
-            }
-        } else {            
+        //     if(index === -1 && minMoney >= app._.maxBy(app.config.listTableGroupFilters, (o) => o.max).max) {
+        //         this._activeFilterByIndex(app.config.listTableGroupFilters.length - 1);
+        //     } else if(~index) {
+        //         this._activeFilterByIndex(index);
+        //     }
+        // } else {            
             // re-order children 
             let createRooms = (array, type) => {
                 for (let i = 0; i < array.length; i++) {
@@ -491,33 +511,10 @@ export default class ListTableScene extends BaseScene {
                 }
             }
             createRooms(playableRooms, 1);
-            createRooms(fullRooms, 3);
-            
-            // let rooms = [...playableRooms, ...fullRooms];
-            
-            // for (let i = 0; i < rooms.length; i++) {
-            //     let listCell = cc.instantiate(this.tableListCell);
-            //     listCell.active = false;
-            //     let cellComponent = listCell.getComponent('TableListCell');
-            //     cellComponent.setOnClickListener((data) => this.onUserRequestJoinRoom(data));
-            //     cellComponent && cellComponent.initCell(rooms[i]);
-            //     this.addNode(listCell);
-            //     this.contentInScroll.addChild(listCell);
-            // }
-            
-            // for (let i = 0; i < rooms.length; i++) {
-            //     let listCell = cc.instantiate(this.tableListCell);
-            //     listCell.active = false;
-            //     let cellComponent = listCell.getComponent('TableListCell');
-            //     cellComponent.setOnClickListener((data) => this.onUserRequestJoinRoom(data));
-            //     cellComponent && cellComponent.initCell(rooms[i]);
-            //     this.addNode(listCell);
-            //     this.contentInScroll.addChild(listCell);
-            // }
-            
+            // createRooms(fullRooms, 3);
+
             this.minBalanceMultiple && this._bestSuitableRoom(this.minBalanceMultiple);
-        }
-        
+        // }
         this._isInitedRoomList = true;
     }
     
@@ -586,6 +583,7 @@ export default class ListTableScene extends BaseScene {
          * If create room successfully, response going handle by join room success follow
          */
         this.showLoading('Đang vào bàn chơi....');
+        
         app.service.send({
             cmd: app.commands.USER_CREATE_ROOM,
             data: {

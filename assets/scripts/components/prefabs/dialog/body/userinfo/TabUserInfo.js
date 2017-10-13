@@ -5,7 +5,7 @@ import {
     active,
     deactive,
     numberFormat
-} from 'Utils';
+} from 'GeneralUtils';
 import Linking from 'Linking';
 import CCUtils from 'CCUtils';
 import {
@@ -15,9 +15,8 @@ import {
 export default class TabUserInfo extends PopupTabBody {
     constructor() {
         super();
-
-        this.properties = {
-            ...this.properties,
+        
+        this.properties = this.assignProperties({
             userName: cc.Label,
             avatar: cc.Sprite,
             vipLevel: cc.Label,
@@ -33,7 +32,7 @@ export default class TabUserInfo extends PopupTabBody {
             updatePhoneNumberPanel: cc.Node,
             vipInfoPanel: cc.Node,
             changeAvatarPanel: cc.Node
-        };
+        });
     }
 
     onLoad() {
@@ -287,14 +286,14 @@ export default class TabUserInfo extends PopupTabBody {
         this.userId.string = name;
         this.vipLevel.string = vipLevelName || "";
 
-        if (app.context.needUpdatePhoneNumber()) {
+        // if (app.context.needUpdatePhoneNumber()) {
+        //     this.phoneNumber.string = `Chưa cập nhật`;
+        // } else {
+        if (data[app.keywords.PHONE_INVITE_PHONE_NEW])
+            this.phoneNumber.string = data[app.keywords.PHONE_INVITE_PHONE_NEW];
+        else
             this.phoneNumber.string = `Chưa cập nhật`;
-        } else {
-            if (data[app.keywords.PHONE_INVITE_PHONE_NEW])
-                this.phoneNumber.string = data[app.keywords.PHONE_INVITE_PHONE_NEW];
-            else
-                this.phoneNumber.string = `Chưa cập nhật`;
-        }
+        // }
     }
 }
 

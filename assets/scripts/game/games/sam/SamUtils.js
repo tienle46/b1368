@@ -3,7 +3,7 @@
  */
 
 import app from 'app'
-import {GameUtils, utils} from 'utils'
+import {GameUtils, utils} from 'PackageUtils'
 import Card from "../../base/card/Card";
 import ArrayUtils from "../../../utils/ArrayUtils";
 

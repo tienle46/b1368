@@ -3,7 +3,7 @@
  */
 
 import app from 'app';
-import utils from 'utils';
+import utils from 'PackageUtils';
 import GameUtils from 'GameUtils';
 import BoardRenderer from 'BoardRenderer';
 import BoardCardRenderer from 'BoardCardRenderer';
@@ -12,12 +12,11 @@ import BoardCardBetTurnRenderer from 'BoardCardBetTurnRenderer';
 export default class BoardBaCayRenderer extends BoardCardBetTurnRenderer {
     constructor() {
         super();
-
-        this.properties = {
-            ...this.properties,
+        
+        this.properties = this.assignProperties({
             gopGaButton: cc.Button,
             gopGaLabel: cc.Label,
-        }
+        });
 
         this.gopGaCoinNode = {
             default: null,

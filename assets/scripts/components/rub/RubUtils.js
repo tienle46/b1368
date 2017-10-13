@@ -1,5 +1,4 @@
 import app from 'app';
-import axios from 'axios';
 
 let RubUtils = {
     /**
@@ -129,21 +128,21 @@ let RubUtils = {
                 return;
             // TODO fetch 404 (axios cannot run in mobile platform)
             if (app.env.isBrowser()) {
-                // therefore, 404 detector only runs on browser
-                axios.get(resURL).then(response => {
-                    if (response.status == 200) {
-                        textureCache = cc.textureCache.addImage(resURL);
-                        spriteFrameDefaultConfig(spriteComponent, textureCache);
-                    } else {
-                        spriteFrameDefaultConfig(null);
-                    }
-                }).catch(err => {
-                    spriteFrameDefaultConfig(null);
-                });
+                // // therefore, 404 detector only runs on browser
+                // axios.get(resURL).then(response => {
+                //     if (response.status == 200) {
+                //         textureCache = cc.textureCache.addImage(resURL);
+                //         spriteFrameDefaultConfig(spriteComponent, textureCache);
+                //     } else {
+                //         spriteFrameDefaultConfig(null);
+                //     }
+                // }).catch(err => {
+                //     spriteFrameDefaultConfig(null);
+                // });
                 
-                // textureCache = cc.textureCache.addImage(resURL);
+                textureCache = cc.textureCache.addImage(resURL);
 
-                // spriteFrameDefaultConfig(spriteComponent, textureCache);
+                spriteFrameDefaultConfig(spriteComponent, textureCache);
             } else {
                 cc.loader.load(resURL, (err, tex) => {
                     if (err) console.error(err);
@@ -159,7 +158,7 @@ let RubUtils = {
                     spriteComponent.spriteFrame = spriteFrame;
                     spriteFrameDefaultConfig(spriteComponent);
                 }
-            }).catch(err => console.error(err));
+            }).catch(err => {});
         }
         
         
@@ -201,7 +200,7 @@ let RubUtils = {
         //     }).catch(err => console.error(err));
         // }
     },
-    // usefull when assets is prefab
+    // useful when assets is prefab
     releaseAssets: (assets) => {
         let ins = assets;
 

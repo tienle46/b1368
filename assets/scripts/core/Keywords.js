@@ -81,6 +81,9 @@ Keywords.VERSION = "v";
 Keywords.QUICK_PLAY = "qply";
 Keywords.ACCESS_TOKEN = "at";
 Keywords.PARTNER_ID = "pid";
+Keywords.IS_OTP = "isOtp";
+Keywords.PACKAGE_NAME = "packageName";
+Keywords.BUILD_TYPE = "buildType";
 Keywords.IS_UPDATE = "iu";
 Keywords.DOWNLOAD_LINK = "dl";
 Keywords.LAST_MOVE_PLAYER_ID = "lm";
@@ -293,9 +296,7 @@ Keywords.GAME_LIST_RESULT = "s";
 Keywords.PLAYER_REJOIN_TURN_COUNT_REMAIN = "ct";
 //Lieng
 Keywords.GAME_LIST_UP_BO = "s";
-Keywords.GAME_LAST_BET_VALUE = "cb";
-Keywords.GAME_TOTAL_BET_VALUE = "tb";
-Keywords.GAME_LIST_LIENG_TYPE = "ct";
+Keywords.GAME_LAST_BET = "isLastBet";
 //xito
 //    Keywords.XITO_FACE_DOWN_PHASE = "ccd";
 //Player
@@ -784,9 +785,13 @@ Keywords.MONEY_LIST = "ml";
 
 Keywords.NAME = "n";
 Keywords.DETAIL = "d";
+Keywords.TOTAL_MONEY = "totalMoney";
 
 Keywords.JAR_EXPLOSIVE = "sj_sjil";
 
 Keywords.VIP_LEVEL = "vipLevel";
 Keywords.USER_NAME = "username";
 Keywords.ROOM_NAME = "roomName";
+
+Keywords.LIENG_BET_AMOUNT = "betAmounts"; // list total amount user betted in this board
+Keywords.LIENG_CARD_TYPE = "ct"; // SAP(7), LIENG(4, 5, 6), DI(3), DONG_HOA(2), TINH_DIEM(1), UP_BO(0);

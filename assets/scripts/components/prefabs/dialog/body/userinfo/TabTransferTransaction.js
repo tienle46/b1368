@@ -1,6 +1,6 @@
 import app from 'app';
 import Component from 'Component';
-import { numberFormat } from 'Utils';
+import { numberFormat } from 'GeneralUtils';
 import moment from 'moment';
 
 class TabTransferTransaction extends Component {

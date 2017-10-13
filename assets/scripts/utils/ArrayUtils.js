@@ -30,7 +30,7 @@ export default class ArrayUtils {
      */
     static findIndex(arr, findItem, equalsFn) {
         if (!arr || !findItem) return -1;
-
+        
         let index = -1;
         if (equalsFn || findItem.equals) {
             equalsFn = equalsFn || ((obj1, obj2) => obj1.equals(obj2));

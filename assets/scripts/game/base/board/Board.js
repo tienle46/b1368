@@ -2,7 +2,7 @@
  * Created by Thanh on 8/23/2016.
  */
 
-import utils from 'utils';
+import utils from 'PackageUtils';
 import app from 'app';
 import game from 'game';
 import { Actor } from 'components';
@@ -60,7 +60,6 @@ export default class Board extends Actor {
 
     onGameStateWait(){
         this.stopTimeLine();
-
     }
     
     _onBoardRefresh(data) {
@@ -73,7 +72,7 @@ export default class Board extends Actor {
     }
 
     _loadBoardMinBet() {
-        if (this.room.containsVariable(app.keywords.VARIABLE_MIN_BET)) {
+        if (this.room && this.room.containsVariable(app.keywords.VARIABLE_MIN_BET)) {
             this.minBet = utils.getVariable(this.room, app.keywords.VARIABLE_MIN_BET);
         }
     }
@@ -358,9 +357,6 @@ export default class Board extends Actor {
     }
 
     _handleSetPlayerBalance(data) {
-
-        log("_handleSetPlayerBalance: ", data);
-
         let playerIds = utils.getValue(data, Keywords.GAME_LIST_PLAYER);
         let playersBalance = utils.getValue(data, Keywords.USER_BALANCE, []);
         let playersExp = utils.getValue(data, Keywords.BOARD_EXP_POINT_LIST, []);
@@ -375,6 +371,7 @@ export default class Board extends Actor {
                 if(!this.scene.gamePlayers.isItMe(id)){
                     this.scene.emit(Events.ON_PLAYER_SET_BALANCE, id, newBalance);
                 }
+                app.context.rejoiningGame = false;
             }else{
                 this.scene.emit(Events.ON_PLAYER_SET_BALANCE, id, newBalance);
             }

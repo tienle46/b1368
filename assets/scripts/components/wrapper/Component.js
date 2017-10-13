@@ -2,7 +2,7 @@
  * Created by Thanh on 9/1/2016.
  */
 import { destroy } from 'CCUtils';
-import Utils from 'Utils';
+import Utils from 'GeneralUtils';
 
 export default class Component {
     constructor() {
@@ -49,11 +49,11 @@ export default class Component {
     }
 
     setComponentData(data) {
-        this.__componentData = {...data };
+        this.__componentData = data;
     }
 
     updateComponentData(data, renderImmediately = true){
-        this.__componentData = {...this.__componentData, ...data };
+        this.__componentData = Object.assign({}, this.__componentData, data);
         renderImmediately && this.renderComponentData(this.__componentData)
     }
 
@@ -157,5 +157,9 @@ export default class Component {
 
         nodes && nodes.map(node => destroy(node));
         window.release(this.loadedNodes);
+    }
+    
+    assignProperties(properties) {
+        return Object.assign({}, this.properties, properties);
     }
 }

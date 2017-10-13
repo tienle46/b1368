@@ -14,14 +14,13 @@ import CCUtils from 'CCUtils'
 export default class PhomListComponent extends Component {
     constructor() {
         super();
-
+        
         this.align = {
             default: CardList.ALIGN_CENTER,
             type: CardList.ALIGN
         }
-
-        this.properties = {
-            ...this.properties,
+        
+        this.properties = this.assignProperties({
             phomPrefab: cc.Prefab,
             phomNodes: {
                 default: [],
@@ -29,7 +28,7 @@ export default class PhomListComponent extends Component {
             },
             cardScale: 0.6,
             space: 80,
-        }
+        });
 
         this.phomList = null;
         this.phoms = null;
@@ -40,7 +39,7 @@ export default class PhomListComponent extends Component {
         this.phoms = [];
         this.down = [];
         this.phomList = new PhomList();
-
+        
         this.phomNodes.forEach((phomNode, i) => {
             let phom = phomNode.getComponent('Phom');
             //phom.setProperties({space: this.space, scale: this.cardScale, alignment: this.align})
@@ -90,7 +89,7 @@ export default class PhomListComponent extends Component {
         if (!player) {
             this._setPhomListWithoutPlayer(newPhomList, firstEmptyPhomComponentIndex, eatenCards);
         } else {
-            newPhomList.forEach((newPhom, i) => {
+            newPhomList.phoms.forEach((newPhom, i) => {
 
                 if (i < PhomList.MAX_PHOM_COUNT) {
 
@@ -122,7 +121,7 @@ export default class PhomListComponent extends Component {
     }
 
     _setPhomListWithoutPlayer(phomList, firstEmptyPhomComponentIndex, eatenCards = []) {
-        phomList && phomList.forEach((phomModel, index) => {
+        phomList && phomList.phoms.forEach((phomModel, index) => {
             let phom = this.phoms[index + firstEmptyPhomComponentIndex];
             if (phom) {
                 phomModel.cards.forEach(card => {

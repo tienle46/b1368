@@ -3,7 +3,7 @@
  */
 
 import app from 'app';
-import {utils, GameUtils} from 'utils';
+import {utils, GameUtils} from 'PackageUtils';
 import SFS2X from 'SFS2X';
 import Component from 'components';
 import {gameManager, Player, PlayerRenderer} from 'game';
@@ -14,12 +14,11 @@ import CCUtils from 'CCUtils'
 export default class GamePlayers extends Component {
     constructor() {
         super();
-
-        this.properties = {
-            ...this.properties,
+        
+        this.properties = this.assignProperties({
             playerPrefab: cc.Prefab,
             playerClassName: ""
-        }
+        });
 
         this.me = null;
         this.owner = null;

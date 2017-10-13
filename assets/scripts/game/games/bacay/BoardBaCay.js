@@ -4,7 +4,7 @@
 
 import app from 'app';
 import game from 'game';
-import { utils, GameUtils } from 'utils';
+import { utils, GameUtils } from 'PackageUtils';
 import { Keywords } from 'core';
 import { Events } from 'events';
 import BoardCardBetTurn from 'BoardCardBetTurn';
@@ -117,7 +117,8 @@ export default class BoardBaCay extends BoardCardBetTurn {
     }
 
     _loadGamePlayData(data) {
-        super._loadGamePlayData({...data, masterIdOwner: true});
+        // super._loadGamePlayData({...data, masterIdOwner: true});
+        super._loadGamePlayData(Object.assign({}, data, {masterIdOwner: true}));
 
         let gamePhrase = utils.getValue(data, app.keywords.BOARD_STATE_KEYWORD);
         if(gamePhrase == app.const.game.state.STATE_DOWN) {
@@ -131,7 +132,7 @@ export default class BoardBaCay extends BoardCardBetTurn {
         let downPlayerIds = utils.getValue(data, app.keywords.GAME_LIST_DOWN);
         let betAmounts = utils.getValue(data, app.keywords.GAME_LIST_BET);
         let bCards = utils.getValue(data, app.keywords.GAME_LIST_CARD);
-
+        
         for (let i = 0; i < playerIds.length; i++) {
             let player = this.scene.gamePlayers.findPlayer(playerIds[i]);
             if (player != null) {

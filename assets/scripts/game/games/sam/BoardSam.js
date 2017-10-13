@@ -4,7 +4,7 @@
 
 import app from 'app';
 import game from 'game';
-import {utils, GameUtils} from 'utils';
+import {utils, GameUtils} from 'PackageUtils';
 import {Keywords} from 'core';
 import {Events} from 'events';
 import BoardCardTurnBase from 'BoardCardTurnBase';
@@ -22,7 +22,7 @@ export default class BoardSam extends BoardCardTurnBase {
         this.handCardSize = PlayerSam.DEFAULT_HAND_CARD_COUNT;
     }
 
-    _onGameStateChanged(state, data, isJustJoined){
+    onGameStateChanged(state, data, isJustJoined){
         if(state == app.const.game.state.BOARD_STATE_BAO_XAM){
             this._loadRemainCardCount(data)
         }

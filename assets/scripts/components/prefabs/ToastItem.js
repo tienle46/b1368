@@ -5,15 +5,16 @@
 import app from 'app';
 import Component from 'Component';
 import TextView from 'TextView';
-import { CCUtils, utils } from 'utils';
+import { CCUtils, utils } from 'PackageUtils';
 
 export default class ToastItem extends Component {
     constructor() {
         super();
-        this.properties = {
-            ...this.properties,
+        
+        this.properties = this.assignProperties({
             textViewNode: cc.Node,
-        }
+        });
+        
         this.message = null;
         this.timeoutId = null;
         this.duration = 5000;

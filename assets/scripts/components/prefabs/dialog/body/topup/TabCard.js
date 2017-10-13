@@ -3,7 +3,7 @@ import PopupTabBody from 'PopupTabBody';
 import {
     isEmpty,
     numberFormat
-} from 'Utils';
+} from 'GeneralUtils';
 import RubUtils from 'RubUtils';
 import CCUtils from 'CCUtils';
 
@@ -45,10 +45,9 @@ const CARD_CODE = {
 class TabCard extends PopupTabBody {
     constructor() {
         super();
-
-        this.properties = {
-            ...this.properties,
-            activeStateSprite: cc.Sprite,
+        
+        this.properties = this.assignProperties({
+             activeStateSprite: cc.Sprite,
             inActiveStateSprite: cc.Sprite,
             providerItemNode: cc.Node,
             providerContainerNode: cc.Node,
@@ -63,7 +62,7 @@ class TabCard extends PopupTabBody {
             ratioItemXuLbl: cc.Label,
             cardCodeEditBox: cc.EditBox,
             serialNumberEditBox: cc.EditBox
-        };
+        });
 
         this.providerId = null;
     }
@@ -79,6 +78,13 @@ class TabCard extends PopupTabBody {
         if(app.env.isBrowser() && !this.serialNumberEditBox.isFocused()) {
             this.serialNumberEditBox.stayOnTop = true;
             this.serialNumberEditBox.setFocus();
+        }
+    }
+    
+    onSerialNumberEditBoxBegan(e, b) {
+        if(app.env.isBrowser() && this.serialNumberEditBox.stayOnTop) {
+            this.serialNumberEditBox.stayOnTop = false;
+            // this.serialNumberEditBox.setFocus();
         }
     }
     
@@ -162,6 +168,7 @@ class TabCard extends PopupTabBody {
                 app.system.error(app.res.string('error_card_code_is_invalid'));
                 return;
             }
+            
             let sendObject = {
                 'cmd': app.commands.USER_SEND_CARD_CHARGE,
                 data: {
@@ -170,8 +177,9 @@ class TabCard extends PopupTabBody {
                     [app.keywords.CARD_SERIAL]: serialNumber
                 }
             };
-
+            
             app.service.send(sendObject); // send request and get `smsg` (system_message) response from server
+            this.node.parent.parent.parent.parent.destroy()
         }
     }
     

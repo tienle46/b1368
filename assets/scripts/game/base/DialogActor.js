@@ -9,13 +9,12 @@ import LoaderRub from 'LoaderRub';
 export default class DialogActor extends Actor {
     constructor() {
         super();
-
-        this.properties = {
-            ...this.properties,
+        
+        this.properties = this.assignProperties({
             p404: cc.Prefab,
             scrollview: cc.Prefab
-        };
-
+        });
+       
         this._scrollView = null;
         this.tabGroup = null;
         this.data = null;

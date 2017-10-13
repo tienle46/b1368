@@ -4,7 +4,7 @@
 
 import app from 'app';
 import PlayerTurnBaseAdapter from 'PlayerTurnBaseAdapter';
-import {utils, GameUtils} from 'utils';
+import {utils, GameUtils} from 'PackageUtils';
 import {Commands, Keywords} from 'core';
 import {Events} from 'events';
 

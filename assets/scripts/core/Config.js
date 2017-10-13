@@ -9,15 +9,26 @@ app.config = {};
 app.config.currencyName = "Chip";
 // app.config.useSSL = false;
 app.config.host = "123.31.12.100";
+
 // app.config.host = "123.31.24.103";
 app.config.useSSL = cc.sys.isBrowser? false: false;
 // app.config.host = "1368casino.com";
 // app.config.host = "1368.company";
 app.config.port = app.config.useSSL ? 443 : 8921;
-app.config.version = 0x00010001;
+app.config.version = 0x00010009;
 app.config.ALPHA_TEST = false;
+
+app.config.packageName = "";
+// app.config.buildType = "full";
+app.config.buildType = "store";
+
+//LEFT IT FALSE FOR ALL CASE
+app.config.tai_xiu_treo_kq = false;
+
 app.config.zone = "XGame";
-app.config.debug = true;
+
+//MUST UPDATE THIS VALUE TO FALSE BEFORE RELEASE NEW VERSION
+app.config.debug = false;
 app.config.test = false;
 app.config.testIngame = false;
 app.config.defaultLocale = 'vi';
@@ -38,13 +49,24 @@ app.config.CRYPTO_AES_KEY = 'hiephvdepzai123$#@^&^$';
 app.config.fbAppId = 265548353914142;
 // app.config.fbAppId = 1793374524209784; // <- app test
 app.config.fbxfbml = true;
-// app.config.fbVersion = 'v2.8';
-app.config.fbVersion = 'v2.7'; // <- app test too
+app.config.fbVersion = 'v2.8';
+// app.config.fbVersion = 'v2.7'; // <- app test too
 app.config.fbScope = 'public_profile,email,user_friends';
 
 app.config.fanpage = `http://m.me/songbaihoanggia`;
 app.config.website = `http://bai1368.com`;
-app.config.supportHotline = '123456';
+app.config.supportHotline = '0974851368';
+app.config.otp = false; //default false;
+app.config.otp_config = {
+    exchange: {
+        enabled: true,
+        msg: `Để sử dụng tính năng này, vui lòng cài ứng dụng OTP hoặc gọi hotline: ${app.config.supportHotline} để được hỗ trợ`
+    },
+    topup: {
+        enabled: true,
+        msg: `Để sử dụng tính năng này, vui lòng cài ứng dụng OTP hoặc gọi hotline: ${app.config.supportHotline} để được hỗ trợ`
+    }
+};
 app.config.defaultMinBalanceJoinGameRoomMultiple = 10;
 app.config.defaultAvatarUrl = "";
 app.config.shareFBConfig = {
@@ -77,6 +99,9 @@ app.config.supportedGames = [
     app.const.gameCode.XOC_DIA,
     app.const.gameCode.TLMNDL_SOLO,
     app.const.gameCode.XAM_SOLO,
+    app.const.gameCode.TAI_XIU,
+    app.const.gameCode.BAU_CUA,
+    app.const.gameCode.LIENG
 ];
 
 app.config.soloGames = [
@@ -157,7 +182,13 @@ app.config.parseConfigData = function(configData = {}) {
     app.config.website = configData.website || app.config.website;
     app.config.shareFBConfig = configData.shareFBConfig || app.config.shareFBConfig;
     app.config.verifyAccountSyntax = configData.verifyAccountSyntax || app.config.verifyAccountSyntax;
-
+    
+    // Default otp false, only apply otp config for Android only
+    if (app.env.isAndroid() && app.config.buildType === "store") {
+        configData.hasOwnProperty('otp') && (app.config.otp = configData.otp);
+        app.config.otp_config = configData.otp_config || app.config.otp_config;    
+    }
+    
     if(!app.visibilityManager) {
         app.visibilityManager = new VisibilityManager(app.config.features);
     } else {
@@ -166,7 +197,7 @@ app.config.parseConfigData = function(configData = {}) {
     const ActionBlocker = require('ActionBlocker');
     ActionBlocker.onClientConfigChanged(configData.blockConfig || {});
     
-    const Events = require('Events');
+    const Events = require('GameEvents');
     app.system.emit(Events.CLIENT_CONFIG_CHANGED)
 };
 

@@ -2,21 +2,20 @@
  * Created by Thanh on 9/15/2016.
  */
 
-import utils from 'utils';
+import utils from 'PackageUtils';
 import app from 'app';
 import CCUtils from 'CCUtils';
 import CardList from 'CardList';
 import GameUtils from 'GameUtils';
 import PlayerCardBetTurnRenderer from 'PlayerCardBetTurnRenderer';
 import GameAnim from "../../components/anim/GameAnim";
-import * as Events from "../../../core/Events";
+import * as Events from "GameEvents";
 
 export default class PlayerBaCayRenderer extends PlayerCardBetTurnRenderer {
     constructor() {
         super();
-
-        this.properties = {
-            ...this.properties,
+        
+        this.properties = this.assignProperties({
             betComponent: cc.Node,
             defaultGopGaIconNode: cc.Node,
             inlineGopGaIconNode: cc.Node,
@@ -33,8 +32,8 @@ export default class PlayerBaCayRenderer extends PlayerCardBetTurnRenderer {
             centerLeftBetPositionAnchor: cc.Node,
             bottomRightBetPositionAnchor: cc.Node,
             masterIcon: cc.Node,
-        }
-
+        });
+        
         /**
          * @type {cc.Animation}
          */

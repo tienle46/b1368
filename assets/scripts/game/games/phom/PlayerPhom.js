@@ -5,8 +5,8 @@
 import app from 'app';
 import game from 'game';
 import Card from 'Card';
-import Events from 'Events';
-import {utils, GameUtils} from 'utils';
+import Events from 'GameEvents';
+import {utils, GameUtils} from 'PackageUtils';
 import PlayerCardTurnBase from 'PlayerCardTurnBase';
 import PhomList from 'PhomList';
 import Commands from 'Commands';
@@ -598,8 +598,7 @@ export default class PlayerPhom extends PlayerCardTurnBase {
 
         // this.board.deHighLightPhomList();
 
-        this.currentGuiPhomSolutions = PhomUtils.getJoinPhomSolutions(this.board.getAllBoardPhomList().filter(phom => phom.owner != this.id), processCards);
-
+        this.currentGuiPhomSolutions = PhomUtils.getJoinPhomSolutions(this.board.getAllBoardPhomList().filter(phom => phom && phom.owner != this.id), processCards);
         if (this.currentGuiPhomSolutions.length == 0) {
             if (isAllCard) {
                 this.setState(PlayerPhom.STATE_PHOM_PLAY);
@@ -639,7 +638,7 @@ export default class PlayerPhom extends PlayerCardTurnBase {
 
         this.renderer.cardList.finishAllCardActions();
         let currentGuiSolution = this.currentGuiPhomSolutions[this.guiPhomSolutionId];
-        currentGuiSolution.forEach((node, k) => {
+        currentGuiSolution.solutions.forEach((node, k) => {
             let nodeCard = node.card;
             nodeCard.setHighlight(true);
             nodeCard.setSelected(true, true, true);
@@ -666,7 +665,7 @@ export default class PlayerPhom extends PlayerCardTurnBase {
         this.renderer.downPhom(playerPhomList, this);
         this.eatenCards.length = 0;
         this.renderer.eatenCardList.clear();
-        this.board.allPhomList.push(...playerPhomList);
+        this.board.allPhomList.push(...playerPhomList.phoms);
 
         if (this.isItMe()) {
             this.isItMe() && this.renderer.cardList.cleanCardGroup();
@@ -780,7 +779,6 @@ export default class PlayerPhom extends PlayerCardTurnBase {
     }
 
     _onPlayerEatCard(player, checked = false) {
-
         if(!checked && (!player || !player.isPlaying()) ) return;
 
         let eatable;
@@ -858,7 +856,7 @@ export default class PlayerPhom extends PlayerCardTurnBase {
 
         if (this.isItMe()) {
 
-            PhomUtils.sortPhomCardSingleSolution(this.renderer.cardList.cards);
+            PhomUtils.sortPhomCardSingleSolution(this.renderer.cardList.cards, this.eatenCards);
             this.renderer.cardList.cleanHighlight();
             this.renderer.cardList.onCardsChanged(true);
 

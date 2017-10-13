@@ -1,5 +1,5 @@
 import app from 'app';
-import utils from 'utils';
+import utils from 'PackageUtils';
 import DialogActor from 'DialogActor';
 import GameUtils from 'GameUtils';
 import Props from 'Props';
@@ -9,9 +9,8 @@ import CCUtils from 'CCUtils';
 export default class FriendProfilePopup extends DialogActor {
     constructor() {
         super();
-
-        this.properties = {
-            ...this.properties,
+        
+        this.properties = this.assignProperties({
             propsGridView: cc.Layout,
             rtUserName: cc.Label,
             rtDisplayName: cc.Label,
@@ -23,7 +22,7 @@ export default class FriendProfilePopup extends DialogActor {
             kickBtn: cc.Button,
             addFriendBtn: cc.Button,
             vipNode: cc.Node
-        };
+        });
 
         // paging
         this.itemsPerPage = 18;
@@ -215,7 +214,7 @@ export default class FriendProfilePopup extends DialogActor {
 
     _onSelectUserProfile(user) {
         this.rtUserName.string = `${user["u"]}`;
-        this.rtDisplayName.string = `${user["displayName"]}`;
+        this.rtDisplayName.string = `${user["displayName"].length >= 20 ? user["displayName"].substr(0, 12) + '...': user["displayName"]}`;
         this.rtBalance.string = `${utils.numberFormat(user["coin"])}`;
     }
 

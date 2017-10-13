@@ -26,7 +26,9 @@ export default class FacebookActions {
             cb && cb();
         } else if (app.env.isBrowser()) {
             if (window.FB) {
-                cb && cb();
+                window.FB.getLoginStatus((response) => {
+                    cb && cb();
+                });
             } else {
                 window.fbAsyncInit = () => {
                     window.FB.init({
@@ -34,11 +36,13 @@ export default class FacebookActions {
                         xfbml: `${ app.config.fbxfbml }`,
                         version: `${ app.config.fbVersion }`
                     });
-                    window.FB.getLoginStatus((response) => {}); // some browsers prevent cache/cookie from 3rd party. Call this function to inital cookie (tested on Chrome, Opera)
+                    window.FB.getLoginStatus((response) => {
+                        cb && cb();
+                    }); // some browsers prevent cache/cookie from 3rd party. Call this function to initate cookie (tested on Chrome, Opera)
                     
                     window.FB.AppEvents.logPageView();
-                    cb && cb();
                 };
+                
                 (function (d, s, id) {
                     var js, fjs = d.getElementsByTagName(s)[0];
                     if (d.getElementById(id)) {

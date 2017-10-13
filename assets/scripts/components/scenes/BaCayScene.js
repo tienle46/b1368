@@ -4,23 +4,22 @@
 
 import app from 'app';
 import GameScene from 'GameScene';
-import Events from 'Events';
+import Events from 'GameEvents';
 import HorizontalBetPopup from 'HorizontalBetPopup';
 import BaCayUtils from "../../game/games/bacay/BaCayUtils";
-import Utils from 'Utils';
+import Utils from 'GeneralUtils';
 
 export default class BaCayScene extends GameScene {
     constructor() {
         super();
-
-        this.properties = {
-            ...this.properties,
+        
+        this.properties = this.assignProperties({
             /**
              * @type {cc.Node}
              */
             chooseBetSliderNode: cc.Node,
             testPlayerNode: cc.Node
-        }
+        });
 
         /**
          * @type {HorizontalBetPopup}
@@ -80,7 +79,6 @@ export default class BaCayScene extends GameScene {
                 cb,
             });
         }
-        
     }
 
     showChooseBetSlider(currentValue, maxValue, timeout = 5) {

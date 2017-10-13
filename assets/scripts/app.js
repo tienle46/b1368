@@ -228,13 +228,13 @@ app.getMessageFromServer = (error) => {
 
     window.log = function log(...args) {
         
-        if(!app.config.debug) return;
+        if(app.config.debug) return;
         
         console.log(...args);
     };
 
     window.debug = function debug(...args) {
-        if(!app.config.debug) return;
+        if(app.config.debug) return;
         
         if (app.config.buildForMobile) {
             console.log(...args);
@@ -269,33 +269,30 @@ app.getMessageFromServer = (error) => {
             //DO nothing
             debug(`linking exception ${e}`);
         }
-    };
+    }
     
-    window.isJSON = function(str) {
-        if(typeof str !== 'string') return false;
-        
+    window.isJSON = (str) => {
         if ( /^\s*$/.test(str) ) return false;
         str = str.replace(/\\(?:["\\\/bfnrt]|u[0-9a-fA-F]{4})/g, '@');
         str = str.replace(/"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g, ']');
         str = str.replace(/(?:^|:|,)(?:\s*\[)+/g, '');
         return (/^[\],:{}\s]*$/).test(str);
-    };
+    }
     
     /* INIT GAME */
     (function _setupGame() {
-        // update pollyfill
+         // update pollyfill
         require('Pollyfill')(app);
-        
+
         require('PreLoader');
         app.service = require("Service");
         require('Env')(app);
         app.system = require("System");
-
         /**
          * @type {Context}
          */
         app.context = require("Context");
-        app.event = require("Events");
+        app.event = require('GameEvents');
 
         // setup game environment by platform
         app.env.__setupEnvironment();

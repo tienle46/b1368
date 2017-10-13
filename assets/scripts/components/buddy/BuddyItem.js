@@ -3,20 +3,18 @@
  */
 
 import app from 'app';
-import utils from 'utils';
+import utils from 'PackageUtils';
 import PopupTabBody from 'PopupTabBody';
 import CCUtils from 'CCUtils';
 import RubUtils from 'RubUtils';
-import Events from 'Events';
+import Events from 'GameEvents';
 import VisibilityManager from 'VisibilityManager';
 
 class BuddyItem extends PopupTabBody {
 
     constructor() {
         super();
-
-        this.properties = {
-            ...this.properties,
+        this.properties = this.assignProperties({
             nameLabel: cc.Label,
             balanceLabel: cc.Label,
             gameLabel: cc.Label,
@@ -31,8 +29,8 @@ class BuddyItem extends PopupTabBody {
             notificationNode: cc.Node,
             notificationCount: cc.Label,
             transferBtnNode: cc.Node,
-        }
- 
+        });
+        
         this.online = false;
         this.selected = false;
         this.name = "";

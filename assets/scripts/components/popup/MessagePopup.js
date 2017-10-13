@@ -3,7 +3,7 @@
  */
 
 import app from 'app';
-import utils from 'utils';
+import utils from 'PackageUtils';
 import RubUtils from 'RubUtils';
 import Component from 'Component';
 import Progress from 'Progress';
@@ -14,9 +14,8 @@ let currentPopup
 export default class MessagePopup extends Component {
     constructor() {
         super();
-
-        this.properties = {
-            ...this.properties,
+        
+        this.properties = this.assignProperties({
             acceptButton: cc.Button,
             acceptButtonLabel: cc.Label,
             denyButtonLabel: cc.Label,
@@ -25,7 +24,7 @@ export default class MessagePopup extends Component {
             popupComponent: cc.Node,
             titleLbl: cc.Label,
             componentName: 'MessagePopup'
-        }
+        });
 
         this.messageLabel = {
             default: null,

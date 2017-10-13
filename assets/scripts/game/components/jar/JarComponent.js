@@ -4,23 +4,23 @@ import moment from 'moment';
 import GameUtils from 'GameUtils';
 import CCUtils from 'CCUtils';
 import RubUtils from 'RubUtils';
+import Events from 'GameEvents';
 
 export default class JarComponent extends Actor {
     constructor() {
         super();
-
-        this.properties = {
-            ...this.properties,
+        
+        this.properties = this.assignProperties({
             remainTimeLbl: cc.Label,
             jarTotalMoneyLbl: cc.Label,
             button: cc.Button,
             jarDetailPrefab: cc.Prefab,
             jarSprite: cc.Sprite,
             huCoin: cc.Node // this node will be animated
-        }
+        });
         
         this._timeout = null;
-        this.time = 1000; // 1s
+        this.time = 1; // 1s
         this.jarId = null;
         this.spriteFrames = [];
     }
@@ -28,8 +28,10 @@ export default class JarComponent extends Actor {
     onLoad() {
         super.onLoad();
         RubUtils.getAtlasFromUrl('jar/huvang', (atlas) => {
-            this.spriteFrames = atlas.getSpriteFrames();
-            this.jarSprite.spriteFrame = this.spriteFrames[0];
+            if(this.jarSprite) {
+                this.spriteFrames = atlas.getSpriteFrames();
+                this.jarSprite.spriteFrame = this.spriteFrames[0];
+            }
         });
     }
     
@@ -48,12 +50,13 @@ export default class JarComponent extends Actor {
     }
     
     init({id, remainTime, startTime, endTime, currentMoney} = {}) {
-        remainTime = Math.abs(new Date().getTime() - endTime);
+        let now = moment();
+        remainTime = Math.abs(now - endTime);
+        
         this.jarId = id;
         
         this._updateRemainTimeInterval(remainTime);
         this.updateTotalMoney(currentMoney);
-        
         this.node.active = true;
     }
     
@@ -89,24 +92,32 @@ export default class JarComponent extends Actor {
     
     _addGlobalListener() {
         super._addGlobalListener();
-        app.system.addListener(app.commands.LIST_HU, this._onListHu, this);
         app.system.addListener(app.commands.JAR_DETAIL, this._onJarDetail, this);
+        app.system.addListener(Events.ON_LIST_HU_UPDATED, this._onListHu, this);
     }
 
     _removeGlobalListener() {
         super._removeGlobalListener();
         app.system.removeListener(app.commands.JAR_DETAIL, this._onJarDetail, this);
-        app.system.removeListener(app.commands.LIST_HU, this._onListHu, this);
+        app.system.removeListener(Events.ON_LIST_HU_UPDATED, this._onListHu, this);
     }
     
     _updateRemainTimeInterval(remainTime) {
         this.remainTime = remainTime;
-        this.remainTimeLbl && (this.remainTimeLbl.string = moment(this.remainTime).format('hh:mm:ss'));
+        let duration = moment.duration(remainTime);
+        duration = moment.duration(duration.asSeconds() - this.time, 'seconds');
+        
+        this.remainTimeLbl && (this.remainTimeLbl.string = duration.hours() + ":" + duration.minutes() + ":" + duration.seconds());
+        
+        if(Number(duration.seconds()) < 0) {
+            this.destroy();
+            return;
+        }
         
         this.timeout = setTimeout(() => {
             clearTimeout(this.timeout);
-            this._updateRemainTimeInterval(this.remainTime - this.time);
-        }, this.time);
+            this._updateRemainTimeInterval(duration.as('milliseconds'));
+        }, this.time * 1000);
     }
     
     _clearInterval() {
@@ -116,12 +127,13 @@ export default class JarComponent extends Actor {
     
     _onJarDetail(data) {
         let name = data[app.keywords.NAME],
-            content = data[app.keywords.DETAIL];
-      
+            content = data[app.keywords.DETAIL],
+            total = data[app.keywords.TOTAL_MONEY];
+            
         let jarDetail = cc.instantiate(this.jarDetailPrefab);
         let jarDetailComponent = jarDetail.getComponent('jarDetailComponent');
         if(jarDetailComponent) {
-            jarDetailComponent.initContent({name, content});
+            jarDetailComponent.initContent({name, content, total});
             app.system.getCurrentSceneNode().addChild(jarDetail);
         }
     }
@@ -146,7 +158,7 @@ export default class JarComponent extends Actor {
     runCoinAnim(destination) {
         if(this && this.jarSprite) {
             // open the jar
-            const animation = this.jarSprite.node.getComponent(cc.Animation) ? this.jarSprite.node.getComponent(cc.Animation) : this.jarSprite.node.addComponent(cc.Animation)
+            // const animation = this.jarSprite.node.getComponent(cc.Animation) ? this.jarSprite.node.getComponent(cc.Animation) : this.jarSprite.node.addComponent(cc.Animation)
             this.spriteFrames[1] && (this.jarSprite.spriteFrame = this.spriteFrames[1]);
             
             if(this.node) {

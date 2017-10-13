@@ -4,11 +4,10 @@ import PopupTabBody from 'PopupTabBody';
 export default class TabFeedBack extends PopupTabBody {
     constructor() {
         super();
-
-        this.properties = {
-            ...this.properties,
+        
+        this.properties = this.assignProperties({
             content: cc.EditBox,
-        };
+        });
     }
     
     onEnable() {

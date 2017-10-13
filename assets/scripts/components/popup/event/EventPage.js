@@ -5,16 +5,15 @@
 import app from 'app'
 import Actor from 'Actor'
 import CCUtils from 'CCUtils'
-import Utils from 'Utils'
+import Utils from 'GeneralUtils'
 import RubUtils from 'RubUtils';
 
 class EventPage extends Actor {
 
     constructor() {
         super();
-
-        this.properties = {
-            ...this.properties,
+        
+        this.properties = this.assignProperties({
             nameLabel: cc.Label,
             imageNode: cc.Node,
             imageSprite: cc.Sprite,
@@ -25,7 +24,7 @@ class EventPage extends Actor {
              * @type(cc.WebView}
              */
             webView: cc.WebView,
-        }
+        });
 
         this._showPolicyPage = false;
         

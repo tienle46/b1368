@@ -3,7 +3,7 @@
  */
 
 import app from 'app';
-import Events from 'Events';
+import Events from 'GameEvents';
 import MultiTabPopup from 'MultiTabPopup';
 
 const tabModels = [
@@ -47,7 +47,7 @@ export default class BuddyPopup {
     }
     
     show(parentNode = cc.director.getScene(), options = {}){
-        this.multiTabPopup.show({parentNode, tabModels, ...options});
+        this.multiTabPopup.show(Object.assign({}, {parentNode, tabModels}, options));
     }
 }
 

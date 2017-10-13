@@ -1,14 +1,13 @@
 import app from 'app';
 import PopupTabBody from 'PopupTabBody';
 import PromptPopup from 'PromptPopup';
-import { isEmpty, isNumber, active, deactive, numberFormat, timeFormat } from 'Utils';
+import { isEmpty, isNumber, active, deactive, numberFormat, timeFormat } from 'GeneralUtils';
 
 export default class TabUserBank extends PopupTabBody {
     constructor() {
         super();
-
-        this.properties = {
-            ...this.properties,
+        
+        this.properties = this.assignProperties({
             balanceLbl: cc.Label,
             gridNode: cc.Node,
 
@@ -20,8 +19,7 @@ export default class TabUserBank extends PopupTabBody {
             promtpMainNode: cc.Node,
             hintRichText: cc.RichText,
             p404: cc.Node
-        };
-
+        });
 
         this._balance = 0;
         this._minTransfer = 0;

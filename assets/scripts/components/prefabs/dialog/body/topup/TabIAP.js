@@ -1,17 +1,17 @@
 import app from 'app';
 import PopupTabBody from 'PopupTabBody';
-import { deactive, active, numberFormat } from 'Utils';
+import { deactive, active, numberFormat } from 'GeneralUtils';
 
 class TabIAP extends PopupTabBody {
     constructor() {
         super();
-        this.properties = {
-            ...this.properties,
-            contentNode: cc.Node,
+        
+        this.properties = this.assignProperties({
+             contentNode: cc.Node,
             itemNode: cc.Node,
             money: cc.Label,
             balance: cc.Label,
-        };
+        });
 
         this.__items = [];
     }

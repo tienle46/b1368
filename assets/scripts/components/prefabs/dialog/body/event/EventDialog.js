@@ -1,20 +1,19 @@
 import app from 'app';
 import Actor from 'Actor';
 import CCUtils from 'CCUtils';
-import Utils from 'Utils'
+import Utils from 'GeneralUtils'
 
 class EventDialog extends Actor {
     constructor() {
         super();
-        this.properties = {
-            ...this.properties,
+        this.properties = this.assignProperties({
             pageContent: cc.Node,
             pageView: cc.PageView,
             eventPagePrefab: cc.Prefab,
             pageIndicator: cc.PageViewIndicator,
             loadingNode: cc.Node,
             bgTransparent: cc.Node
-        };
+        });
 
         this.groupType = app.const.DYNAMIC_GROUP_NEW_EVENT;
         /**
@@ -62,6 +61,7 @@ class EventDialog extends Actor {
         const listIds = data[app.keywords.SYSTEM_MESSAGE.RESPONSE.ID_ITEM_LIST]
         const {actionCodes, actionDatas, imageUrls, policyUrls} = data;
 
+        
         this.eventPages = [];
         CCUtils.clearAllChildren(this.pageContent);
 
@@ -75,7 +75,7 @@ class EventDialog extends Actor {
                     id: listIds[index],
                     imageUrl: imageUrls[index],
                     actionCode: actionCodes[index],
-                    actionData: actionCodes[index],
+                    actionData: actionDatas[index],
                     policyUrl: policyUrls[index],
                     attendBtnListener: this._onClickAttendEvent.bind(this),
                     policyBtnListener: this._onPolicyBtnClick.bind(this),
@@ -138,7 +138,7 @@ class EventDialog extends Actor {
     }
 
     hide() {
-        this.node.removeFromParent();
+        this.node.removeFromParent(false);
         CCUtils.destroy(this.node);
     }
 }

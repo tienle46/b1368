@@ -9,11 +9,10 @@ import BoardCardTurnBaseRenderer from 'BoardCardTurnBaseRenderer';
 export default class BoardPhomRenderer extends BoardCardTurnBaseRenderer {
     constructor() {
         super();
-
-        this.properties = {
-            ...this.properties,
+        
+        this.properties = this.assignProperties({
             tapHighlightNode: cc.Node
-        }
+        });
     }
 
     _initCenterDeckCard() {

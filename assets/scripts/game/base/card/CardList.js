@@ -1,7 +1,7 @@
 ﻿import app from 'app';
 import ActionComponent from 'ActionComponent';
 import Card from 'Card';
-import utils from 'utils';
+import utils from 'PackageUtils';
 import CCUtils from "CCUtils";
 import ArrayUtils from "ArrayUtils";
 
@@ -19,9 +19,8 @@ export default class CardList extends ActionComponent {
             default: CardList.ALIGN_CENTER_LEFT,
             type: CardList.ALIGN
         }
-
-        this.properties = {
-            ...this.properties,
+        
+        this.properties = this.assignProperties({
             scale: 1.0,
             reveal: true,
             selectable: false,
@@ -30,7 +29,7 @@ export default class CardList extends ActionComponent {
             maxDimension: CardList.DEFAULT_MAX_WIDTH,
             cardPrefab: cc.Prefab,
             space: Card.CARD_WIDTH
-        }
+        });
 
         this.cardWidth = Card.CARD_WIDTH;
         this.cardHeight = Card.CARD_HEIGHT;
@@ -742,7 +741,7 @@ export default class CardList extends ActionComponent {
      * @param dest
      */
     transferTo(dest = null, cards = [], cb = null, reveal = dest && dest.reveal, reverse = false) {
-
+        
         this.cleanSelectedCard();
 
         // Xoá model object ngay lập tức, sau đó thực hiện animation
@@ -754,10 +753,10 @@ export default class CardList extends ActionComponent {
             this.removeCards(cards);
             return;
         }
-
+        
         this.stopAllCardActions();
         destCardList.stopAllCardActions();
-
+        
         const currentDestLength = destCardList.cards.length;
         const removedCards = this._removeCardModelOnly(cards);
         const addedCards = destCardList._fillCards({

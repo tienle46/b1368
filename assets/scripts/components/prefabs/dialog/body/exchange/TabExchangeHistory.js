@@ -1,11 +1,10 @@
 import app from 'app';
 import PopupTabBody from 'PopupTabBody';
-import RubResources from 'RubResources';
 import {
     isEmpty,
     numberFormat,
     timeFormat
-} from 'Utils';
+} from 'GeneralUtils';
 import ConfirmPopup from 'ConfirmPopup';
 
 class TabExchangeHistory extends PopupTabBody {
@@ -13,13 +12,12 @@ class TabExchangeHistory extends PopupTabBody {
         super();
         this.flag = null;
         
-        this.properties = {
-            ...this.properties,
+        this.properties = this.assignProperties({
             bodyNode: cc.Node,
             getChipsBtnNode: cc.Node,
             cancelBtnNode: cc.Node,
             detailBtnNode: cc.Node,
-        };
+        });
     }
     
     onLoad() {
@@ -176,7 +174,7 @@ class TabExchangeHistory extends PopupTabBody {
     }
 
     _onGetExchangeHistory(data) {
-        // this.setLoadedData(data);
+        this.setLoadedData(data);
         this._renderHistory(data)
     }
     

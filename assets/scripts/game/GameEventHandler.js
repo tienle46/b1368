@@ -3,7 +3,7 @@
  */
 
 import app from 'app';
-import { utils, GameUtils } from 'utils';
+import { utils, GameUtils } from 'PackageUtils';
 import SFS2X from 'SFS2X';
 import async from 'async';
 import { Events } from 'events'
@@ -90,6 +90,12 @@ export default class GameEventHandler {
         app.system.addGameListener(Commands.GET_CURRENT_GAME_DATA, this._getCurrentGameData, this);
         app.system.addGameListener(Commands.USER_DISCONNECTED, this._onHandleUserDisconnected, this, 0);
         app.system.addGameListener(Commands.REPLACE_FAKE_USER, this._replaceFakeUser, this);
+        
+        app.system.addGameListener(app.commands.PLAYER_BAO_XAM, this._handlePlayerBaoXam, this);
+        
+        //Lieng
+        app.system.addGameListener(app.commands.PLAYER_PLAY_BET_TURN, this._onPlayerTo, this);
+        
     }
 
     removeGameEventListener() {
@@ -138,6 +144,24 @@ export default class GameEventHandler {
         app.system.removeGameListener(Commands.GET_CURRENT_GAME_DATA, this._getCurrentGameData, this);
         app.system.removeGameListener(Commands.USER_DISCONNECTED, this._onHandleUserDisconnected, this, 0);
         app.system.removeGameListener(Commands.REPLACE_FAKE_USER, this._replaceFakeUser, this);
+        
+        app.system.removeGameListener(app.commands.PLAYER_BAO_XAM, this._handlePlayerBaoXam, this);
+        
+        
+        // Lieng
+        app.system.removeGameListener(app.commands.PLAYER_PLAY_BET_TURN, this._onPlayerTo, this);
+    }
+    
+    _onPlayerTo(data) {
+        let onTurnPlayerId = utils.getValue(data, app.keywords.TURN_PLAYER_ID);
+        let previousPlayerId = utils.getValue(data, app.keywords.PLAYER_ID);
+        let betAmount = utils.getValue(data, app.keywords.VARIABLE_MIN_BET);
+        let isLastBet = utils.getValue(data, app.keywords.GAME_LAST_BET);
+        this.scene.emit(Events.ON_PLAYER_TO, previousPlayerId, onTurnPlayerId, betAmount, isLastBet);
+    }
+    
+    _handlePlayerBaoXam(data) {
+        this.scene.emit(Events.ON_PLAYER_BAO_XAM_RESPONSE, data);
     }
     
     // {gameData, gamePhaseData, playerData} = data;
@@ -182,7 +206,7 @@ export default class GameEventHandler {
         let isSuccess = utils.getValue(data, app.keywords.XOCDIA_CANCEL_BET.RESPONSE.IS_SUCCESS);
         let err = utils.getValue(data, app.keywords.XOCDIA_CANCEL_BET.RESPONSE.ERROR_MSG);
         let d = { playerId, isSuccess, err };
-        playerId && this.scene.emit(Events.XOCDIA_ON_PLAYER_CANCELBET, d);
+        playerId && this.scene.emit(Events.GAMEBET_ON_PLAYER_CANCELBET, d);
     }
 
     _onXocDiaPLayerBet(data) {
@@ -192,7 +216,7 @@ export default class GameEventHandler {
         let err = utils.getValue(data, app.keywords.XOCDIA_BET.RESPONSE.ERROR_MSG);
         let isReplace = utils.getValue(data, app.keywords.XOCDIA_BET.RESPONSE.IS_REPLACE);
         let d = { playerId, betsList, isSuccess, err, isReplace };
-        playerId && this.scene.emit(Events.XOCDIA_ON_PLAYER_BET, d);
+        playerId && this.scene.emit(Events.GAMEBET_ON_PLAYER_BET, d);
     }
 
     _onPlayerHucAccepted(data) {
@@ -260,7 +284,8 @@ export default class GameEventHandler {
     _onUserVariablesUpdate(event) {
         let changedVars = event.changedVars;
         let user = event.user;
-
+        
+        
         changedVars && changedVars.forEach((varName) => {
             if (Keywords.USER_VARIABLE_BALANCE == varName) {
                 this.scene.emit(Events.ON_USER_UPDATE_BALANCE, user);
@@ -288,7 +313,7 @@ export default class GameEventHandler {
             }
 
             if (varName == Keywords.VARIABLE_XOCDIA_HISTORY) {
-                this.scene.emit(Events.XOCDIA_ON_BOARD_UPDATE_PREVIOUS_RESULT_HISTORY, room.variables[varName].value);
+                this.scene.emit(Events.GAMEBET_ON_BOARD_UPDATE_PREVIOUS_HISTORY, room.variables[varName].value);
             }
         });
     }

@@ -5,7 +5,7 @@
 import app from 'app';
 import SFS2X from 'SFS2X';
 import Toast from 'Toast';
-import utils from 'utils';
+import utils from 'PackageUtils';
 
 const requestCallbackNames = {
     [SFS2X.Requests.Handshake]: SFS2X.SFSEvent.HANDSHAKE,
@@ -514,13 +514,19 @@ class Service {
         if (accessToken && accessToken.length > 0) {
             data[app.keywords.ACCESS_TOKEN] = accessToken;
         }
-        if (isRegister) {
+        
+        if (app.env.isMobile()) {
+            data[app.keywords.PACKAGE_NAME]  = app.config.packageName;
+            data[app.keywords.BUILD_TYPE] = app.config.buildType;
+        }
+        
+        // if (isRegister) {
             data[app.keywords.PARTNER_ID] = 1;
-
+            cc.log(`utm source ${cc.sys.localStorage.getItem('utm_source')}`);
             data[app.keywords.UTM_SOURCE] = cc.sys.localStorage.getItem('utm_source') || "";
             data[app.keywords.UTM_UTM_MEDIUM] = cc.sys.localStorage.getItem('utm_utm_medium') || "";
             data[app.keywords.UTM_CAMPAIGN] = cc.sys.localStorage.getItem('utm_campaign') || "";
-        }
+        // }
 
         this._loginData = { username, password, isQuickLogin, accessToken, facebookId, cb, tempRegister };
         
@@ -698,8 +704,7 @@ class Service {
     
     _showReloginPopupWhenDiconnectivity() {
         this._isShowLoginPopup = true;
-        this.client._socketEngine.reconnectionSeconds = 0;
-        this.client.disconnect();
+        this.disconnect();
     }
     
     _handleLagPollingResponse(event) {
@@ -734,8 +739,7 @@ class Service {
         if (this.client._socketEngine.reconnectionSeconds == 0) {
             this.sendRequest(new SFS2X.Requests.System.ManualDisconnectionRequest());
         }
-        this.client._socketEngine.reconnectionSeconds = 0;
-        this.client.disconnect();
+        this.disconnect();
     }
 
     _dispatchClientConfig(data) {

@@ -4,7 +4,7 @@
 
 import app from 'app'
 import PhomList from 'PhomList';
-import {GameUtils, utils} from 'utils'
+import {GameUtils, utils} from 'PackageUtils'
 import JoinSolution from "JoinSolution";
 import JoinNode from "JoinNode";
 import Card from 'Card';
@@ -288,7 +288,7 @@ export default class PhomUtils {
 
         let isInside = ArrayUtils.contains(solutions, joinSolution);
         if (!isInside) {
-            solutions.push(new JoinSolution(joinSolution));
+            solutions.push(new JoinSolution(joinSolution.getSolutions()));
         }
     }
 
@@ -336,8 +336,8 @@ export default class PhomUtils {
         return valid;
     }
     
-    static sortPhomCardSingleSolution(cards){
-        let phomListSolutions = PhomGenerator.generatePhomContainEatenCards(cards);
+    static sortPhomCardSingleSolution(cards, eatenCards){
+        let phomListSolutions = PhomGenerator.generatePhomContainEatenCards(cards, eatenCards);
         if (phomListSolutions.length > 0) {
             ArrayUtils.removeAll(cards, phomListSolutions[0].getCards());
             this._sortSingleCards(cards);

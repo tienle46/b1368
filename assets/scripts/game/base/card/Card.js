@@ -1,6 +1,6 @@
 import app from 'app';
 import ActionComponent from 'ActionComponent';
-import utils from 'utils';
+import utils from 'PackageUtils';
 import GameUtils from 'GameUtils';
 import CCUtils from 'CCUtils';
 
@@ -90,7 +90,7 @@ export default class Card extends ActionComponent {
     }
 
     setOriginalInfo(info = {}) {
-        this.__originalInfo = {...this.__originalInfo, ...info };
+        this.__originalInfo = Object.assign({}, this.__originalInfo, info);
     }
 
     updateFinalPosition() {
@@ -135,8 +135,14 @@ export default class Card extends ActionComponent {
         if (scale && (scale != this.node.scale)) {
             actions.push(cc.scaleTo(duration, scale));
         }
-
-        return actions.length > 0 ? cc.sequence(cc.spawn(actions), cc.callFunc(this.updateFinalPosition, this)) : null;
+        
+        if(actions.length > 0){
+            if(actions.length == 1){
+                return actions.length > 0 ? cc.sequence([...actions, cc.callFunc(this.updateFinalPosition, this)]) : null;
+            }else{
+                return actions.length > 0 ? cc.sequence(cc.spawn(actions), cc.callFunc(this.updateFinalPosition, this)) : null;
+            }
+        }
     }
 
     setLocked(locked) {
