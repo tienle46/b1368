@@ -79,7 +79,6 @@ export default class LiengControls extends GameControls {
     
     onClickToBtn(){
         let betAmount = this.scene.getChoosenBetAmount()
-        console.log('onClickToBtn', betAmount)
         if (!this.scene.gamePlayers.me.isItMe() || betAmount <= 0 || this.scene.gameState != app.const.game.state.BET_TURNING ) {
             //Show message && play sound invalid
             return;
