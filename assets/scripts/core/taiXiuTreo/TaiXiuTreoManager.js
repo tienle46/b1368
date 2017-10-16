@@ -1,5 +1,6 @@
 import app from 'app'
 import Events from 'GameEvents'
+import SFS2X from 'SFS2X'
 
 export default class TaiXiuTreoManager {
     
@@ -53,6 +54,7 @@ export default class TaiXiuTreoManager {
         app.system.addListener(Events.TAI_XIU_TREO_ON_APP_STATE_CHANGED, this._onAppStateChanged, this)
         app.system.addListener(Events.TAI_XIU_TREO_ON_COUNTING_DOWN, this._updateRemainTime, this)
         app.system.addListener(app.commands.MINIGAME_TAI_XIU_STOP, this._onGameDestroy, this)
+        app.system.addListener(SFS2X.SFSEvent.USER_VARIABLES_UPDATE, this._onUserVariablesUpdate, this);
     }
     
     _removeEventListeners() {
@@ -75,6 +77,7 @@ export default class TaiXiuTreoManager {
         app.system.removeListener(Events.TAI_XIU_TREO_ON_APP_STATE_CHANGED, this._onAppStateChanged, this)
         app.system.removeListener(Events.TAI_XIU_TREO_ON_COUNTING_DOWN, this._updateRemainTime, this)
         app.system.removeListener(app.commands.MINIGAME_TAI_XIU_STOP, this._onGameDestroy, this)
+        app.system.removeListener(SFS2X.SFSEvent.USER_VARIABLES_UPDATE, this._onUserVariablesUpdate, this);
     }
     
     isNan() {
@@ -160,7 +163,6 @@ export default class TaiXiuTreoManager {
     }
     
     _onGameDestroy() {
-        console.warn('destroy', this._isIconCreated(), this._isPopupCreated())
         if(this._isIconCreated()) 
             this._iconComponent.node.destroy()
         if(this._isPopupCreated())
@@ -218,6 +220,20 @@ export default class TaiXiuTreoManager {
             app.service.send({cmd: app.commands.MINIGAME_TAI_XIU_UNFOLLOW})
             this._track(this._currentId, TaiXiuTreoManager.UNFOLLOW, true)
         }
+    }
+    
+    _onUserVariablesUpdate(ev) {
+        if(!this._isIconCreated() || !this._isPopupCreated())
+            return
+
+        let changedVars = ev[app.keywords.BASE_EVENT_CHANGED_VARS] || [];
+        changedVars.map(v => {
+            if (v == app.keywords.USER_VARIABLE_BALANCE) {
+                let userMoney = app.context.getMeBalance() - (Number(this._currentBet[TaiXiuTreoManager.TAI_ID]) + Number(this._currentBet[TaiXiuTreoManager.XIU_ID]))
+                this.setMeBalance(userMoney)
+                this._popupComponent.updateUserMoney(this._meMoney)
+            }
+        });    
     }
     
     _isIconCreated() {
