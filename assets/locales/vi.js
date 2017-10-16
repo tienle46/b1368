@@ -231,4 +231,5 @@ export default {
     tai_xiu_treo_min_bet: "Số tiền cược mỗi cửa tối thiểu là {{minBet}}",
     tai_xiu_treo_invalid: "Sai định dạng",
     tai_xiu_treo_reject: "Hệ thống từ chối đặt cược",
+    error_transfer_captcha_is_not_match: "Mã xác nhận không đúng"
 };

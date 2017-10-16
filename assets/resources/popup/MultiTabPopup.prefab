@@ -310,7 +310,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": 226
+      "y": 214.6
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -354,8 +354,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 121.28,
-      "height": 48
+      "width": 249.08,
+      "height": 50
     },
     "_rotationX": 0,
     "_rotationY": 0,
@@ -364,7 +364,7 @@
     "_position": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": 6
+      "y": 10.7
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -384,16 +384,16 @@
     "_useOriginalSize": false,
     "_actualFontSize": 40,
     "_fontSize": 40,
-    "_lineHeight": 48,
+    "_lineHeight": 50,
     "_enableWrapText": true,
     "_N$file": {
       "__uuid__": "b2c0f634-158a-49ee-84f8-a41c8e7ebb56"
     },
     "_isSystemFontUsed": false,
     "_spacingX": 0,
-    "_N$string": "B1368",
+    "_N$string": "chuyển khoản",
     "_N$horizontalAlign": 1,
-    "_N$verticalAlign": 0,
+    "_N$verticalAlign": 2,
     "_N$fontFamily": "Arial",
     "_N$overflow": 0
   },
