@@ -61,7 +61,7 @@ class TopBar extends DialogActor {
         app.system.addListener(Events.ON_BUDDY_UNREAD_MESSAGE_COUNT_CHANGED, this._onBuddyNotifyCountChanged, this);
         app.system.addListener(Events.CLIENT_CONFIG_CHANGED, this._onConfigChanged, this);
         app.system.addListener(Events.ON_MESSAGE_COUNT_CHANGED, this._onMessageCountChanged, this);
-        app.system.addListener('user.changes.balance', this._onUserChangesBalance, this);
+        app.system.addListener(Events.USER_CHANGES_BALANCE, this._onUserChangesBalance, this);
     }
 
     _removeGlobalListener() {
@@ -70,7 +70,7 @@ class TopBar extends DialogActor {
         app.system.removeListener(Events.ON_BUDDY_UNREAD_MESSAGE_COUNT_CHANGED, this._onBuddyNotifyCountChanged, this);
         app.system.removeListener(Events.CLIENT_CONFIG_CHANGED, this._onConfigChanged, this);
         app.system.removeListener(Events.ON_MESSAGE_COUNT_CHANGED, this._onMessageCountChanged, this);
-        app.system.removeListener('user.changes.balance', this._onUserChangesBalance, this);
+        app.system.removeListener(Events.USER_CHANGES_BALANCE, this._onUserChangesBalance, this);
     }
 
     onClickLogout() {
