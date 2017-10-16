@@ -64,8 +64,11 @@ export default class LiengScene extends GameScene {
      * @memberof LiengScene
      */
     showChooseBetSlider(currentValue, userMoney) {
+        if(this.betSlider.node.active == true)
+            return
+            
         // let maxValue = this.board.minBet * 5;
-        let divisor = this.board.minBet
+        let divisor = this.board.minBet * 2
         let boardValue = this.board.totalBetAmount
         let minValue = currentValue || divisor
         
