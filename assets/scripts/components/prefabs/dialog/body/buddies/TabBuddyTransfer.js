@@ -70,7 +70,7 @@ export default class TabBuddiesTransfer extends PopupTabBody {
     setReceiverBuddyName(username, displayName){
         this.username.string = username
         this.displayName.string = displayName || ''
-        let agent = _checkAgent()
+        let agent = this._checkAgent()
         if(agent){
             this.displayName.string = agent.agentName
             this._verifySprite(0)
@@ -82,7 +82,6 @@ export default class TabBuddiesTransfer extends PopupTabBody {
     onClickAgentButton(e){
         let target = e.currentTarget
         let {agentName, username} = target._d
-        // console.warn(agentName ,username)
         this.displayName.string =  agentName
         this.username.string =  username
         
@@ -90,10 +89,7 @@ export default class TabBuddiesTransfer extends PopupTabBody {
     }
     
     onEdittingDidEnd(){
-        // console.warn('this.listAgent', this.listAgent)
-        // console.warn('this.username.string',  this.username.string)
         let agent =  this._checkAgent()
-        // console.warn('agentfilter', agent)
         if(agent){
             this.displayName.string = agent.agentName
             this._verifySprite(0)
@@ -113,6 +109,11 @@ export default class TabBuddiesTransfer extends PopupTabBody {
     
     onCancelButton(){
        this._clearInputs()
+       this.cb && this.cb()
+    }
+    
+    setOnClickBackButtonListener(cb) {
+        this.cb = cb
     }
     
     onClickTransferButton() {
@@ -163,7 +164,6 @@ export default class TabBuddiesTransfer extends PopupTabBody {
     }
     
     _onUserTransferResponse(data) {
-        console.warn(data)
         let su = data[app.keywords.RESPONSE_RESULT];
         if (su) {
             let username = this.username.string;

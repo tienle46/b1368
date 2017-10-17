@@ -184,7 +184,6 @@ export default class MultiTabPopup extends Actor {
     }
 
     changeTab(tabIndex, data) {
-        console.warn('changeTab', tabIndex, data)
         if (tabIndex == this.activeTabIndex || tabIndex < 0 || tabIndex >= this._tabs.length) return;
 
         this.activeTabIndex = tabIndex;
