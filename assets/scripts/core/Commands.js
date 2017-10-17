@@ -235,6 +235,7 @@ Commands.INGAME_CHAT_MESSAGE_LIST = "gicml";
 
 // Agency
 Commands.AGENCY = "agent";
+Commands.BANK_TRANSFER_POLICY = "bankTransferPolicy";
 
 //TRANSFER TRANSACTION
 Commands.TRANSFER_TRANSACTION = 'b_ath';

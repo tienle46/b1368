@@ -3,8 +3,8 @@ import app from 'app';
 const url = `${app.const.DIALOG_DIR_PREFAB}/agency`;
 
 const tabModels = [
-    { title: 'Chuyển khoản', prefabPath: `${url}/TransferMoney`, componentName: 'TabBuddyTransfer'},
-    { title: 'Chuyển khoản', prefabPath: `${url}/TransferMoney`, componentName: 'TabBuddyTransfer'},
+    { title: 'Chuyển chip', prefabPath: `${url}/TransferMoney`, componentName: 'TabBuddyTransfer'},
+    { title: 'Quy định', prefabPath: `${url}/PolicyMoney`, componentName: 'TabBuddyPolicy'},
 ];
 
 export default class AgencyDialogRub {

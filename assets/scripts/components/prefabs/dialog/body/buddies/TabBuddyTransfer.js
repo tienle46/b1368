@@ -54,6 +54,15 @@ export default class TabBuddiesTransfer extends PopupTabBody {
         this.verifySprite.spriteFrame = type != null ? this.verifySpriteFrames[type] : null
     }
     
+    _clearInputs(){
+        this.displayName.string = ''
+        this.username.string = ''
+        this.amountLbl.string = ''
+        this.transferReason.string = ''
+        this.maXacNhan.string = ''
+        this._verifySprite(null)
+    }
+    
     onClickAgentButton(e){
         let target = e.currentTarget
         let {agentName, username} = target._d
@@ -87,12 +96,7 @@ export default class TabBuddiesTransfer extends PopupTabBody {
     }
     
     onCancelButton(){
-        this.displayName.string = ''
-        this.username.string = ''
-        this.amountLbl.string = ''
-        this.transferReason.string = ''
-        this.maXacNhan.string = ''
-        this._verifySprite(null)
+       this._clearInputs()
     }
     
     onClickTransferButton() {
@@ -103,7 +107,7 @@ export default class TabBuddiesTransfer extends PopupTabBody {
             return;
         }
         if (!isNumber(money)) {
-            console.warn(money)
+            // console.warn(money)
             app.system.showToast(app.res.string('error_transfer_input_is_invalid', {type: 'chuyển'}));
             return;
         }
@@ -149,6 +153,7 @@ export default class TabBuddiesTransfer extends PopupTabBody {
             let username = this.username.string;
             let amount = this.amountLbl.string;
             app.system.showToast(app.res.string('transfer_successfully', {amount, username}));
+            this._clearInputs()
         } else {
             let msg = data[app.keywords.RESPONSE_MESSAGE];
             app.system.showToast(msg || app.res.string('error_unknow'));
@@ -156,7 +161,7 @@ export default class TabBuddiesTransfer extends PopupTabBody {
     }
     
     _onUserVariablesUpdate(data) {
-        console.warn(data)
+        // console.warn(data)
         let changedVars = data[app.keywords.BASE_EVENT_CHANGED_VARS] || [];
         changedVars.map(v => {
             if (v == app.keywords.USER_VARIABLE_BALANCE) {
@@ -196,7 +201,7 @@ export default class TabBuddiesTransfer extends PopupTabBody {
     }
     
     _onGetTransferInfo(data){
-        console.warn(data)
+        // console.warn(data)
         let {feeTransfer, minTransfer, maxTransfer} = data
         let balance = app.context.getMeBalance()
         this.balance = balance
@@ -248,6 +253,18 @@ export default class TabBuddiesTransfer extends PopupTabBody {
         //         agentName: 'wefwfwefwffw',
         //         fbLink: 'hihid hi.com',
         //         username: 'hanoi3'
+        //     },
+        //     {
+        //         callNumber: 'wefwefw',
+        //         agentName: 'ahihahih1',
+        //         fbLink: 'hihid hi.com',
+        //         username: 'hanoi0'
+        //     },
+        //     {
+        //         callNumber: 'wefwefw',
+        //         agentName: 'ahihihoho2',
+        //         fbLink: 'hihid hi.com',
+        //         username: 'hanoi5'
         //     },
         // ]
         this.listAgent = agents
