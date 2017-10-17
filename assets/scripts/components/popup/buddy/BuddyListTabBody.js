@@ -331,7 +331,7 @@ class BuddyListTabBody extends PopupTabBody {
         });
         buddyItem.setClickTransferListener((buddy) => {
             if (this.transferMoneyComponent) {
-                this.transferMoneyComponent.setReceiverBuddyName(buddy.name)
+                this.transferMoneyComponent.setReceiverBuddyName(buddy.name, buddy.displayName)
                 utils.setVisible(this.transferMoneyNode, true);
                 utils.setVisible(this.bodyNode, false);
             }

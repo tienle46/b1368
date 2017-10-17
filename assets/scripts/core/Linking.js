@@ -8,6 +8,7 @@ import PersonalInfoDialogRub from 'PersonalInfoDialogRub';
 import ExchangeDialogRub from 'ExchangeDialogRub';
 import TopRankDialogRub from 'TopRankDialogRub';
 import MessageCenterDialogRub from 'MessageCenterDialogRub';
+import AgencyDialogRub from 'AgencyDialogRub';
 import BuddyPopup from 'BuddyPopup';
 
 const pendingActions = [];
@@ -115,6 +116,9 @@ class Linking {
                 case Linking.ACTION_SHOW_TOAST:
                     this._handleShowToastAction(action, data);
                     break;
+                case Linking.ACTION_AGENCY:
+                    this._showAgencyDialog(action, data)
+                    break;
             }
         } catch (e) {
             console.error(e);
@@ -131,7 +135,13 @@ class Linking {
         });
         pendingActions.length = 0;
     }
-
+    
+    static _showAgencyDialog(action, data) {
+        new AgencyDialogRub().show(app.system.getCurrentSceneNode(), {
+            focusTabIndex: AgencyDialogRub.TAB_AGENCY_INDEX
+        })    
+    }
+    
     static _handleOpenBuddyPopupAction(actionCode) {
         let defaultTab = null;
 
@@ -396,6 +406,7 @@ Linking.ACTION_PLAYER_INFO = 'PLAYER_INFO'
 Linking.ACTION_PERSONAL_STATISTIC = 'PERSONAL_STATISTIC'
 Linking.ACTION_PLAY_GAME = 'PLAY_GAME'
 Linking.ACTION_SHOW_TOAST = 'SHOW_TOAST'
+Linking.ACTION_AGENCY = 'AGENCY'
 // Linking.ACTION_TOPUP = "TOPUP";
 // Linking.ACTION_PLAY_GAME = "PLAY_GAME";
 

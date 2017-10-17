@@ -235,6 +235,7 @@ Commands.INGAME_CHAT_MESSAGE_LIST = "gicml";
 
 // Agency
 Commands.AGENCY = "agent";
+Commands.BANK_TRANSFER_POLICY = "bankTransferPolicy";
 
 //TRANSFER TRANSACTION
 Commands.TRANSFER_TRANSACTION = 'b_ath';
@@ -266,6 +267,7 @@ Commands.GET_LIST_GAME_MINBET = "gmbl";
 Commands.CLIENT_CONFIG = "clientConfig";
 Commands.BANK_ACCOUNT_WITHDRAW_INFO = "b_awi";
 Commands.GET_WITHDRAW_INFO = "getWithdrawInfo";
+Commands.GET_DISPLAY_NAME = "getDisplayName";
 
 // AVATAR
 Commands.USER_AVATARS = "avatarUrls";
@@ -315,5 +317,8 @@ Commands.MINIGAME_CHAT_HISTORY = "mng_taixiuChatHistory";
 Commands.MINIGAME_TAI_XIU_GUIDE = "mng_taixiuGuide";
 Commands.MINIGAME_TAI_XIU_GET_OPTION = "mng_taixiuGetOption";
 Commands.MINIGAME_TAI_XIU_STOP = "mng_taixiuStop";
+
+
+Commands.AGENCY_LIST = "agent";
 
 module.exports = Commands;

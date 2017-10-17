@@ -119,7 +119,7 @@ export default class MultiTabPopup extends Actor {
     _changeBody(tabIndex, data) {
         let model = this._tabModels[tabIndex];
         let tabBody = this._tabBodies[tabIndex];
-
+        
         if (model && (tabBody || model.prefabPath)) {
             this.setTitle(model.title);
             this._hideAllBodyChildren();
@@ -129,10 +129,10 @@ export default class MultiTabPopup extends Actor {
                 tabBody.onDataChanged(data);
                 tabBody.node.active = true;
             } else if (model.prefabPath) {
-
                 this.showLoading()
 
                 cc.loader.loadRes(model.prefabPath, cc.Prefab, (error, prefab) => {
+                
                     this.hideLoading()
 
                     if (error || !prefab) {
