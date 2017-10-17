@@ -52,7 +52,6 @@ class BuddyMenu extends Component {
 
     _updateBlockButton(){
         if (this._buddy) {
-            log('_updateBlockButton: ', this._buddy.isBlocked());
             let blocked = this._buddy.isBlocked();
             utils.setVisible(this.unblockButton, blocked);
             utils.setVisible(this.blockButton, !blocked);

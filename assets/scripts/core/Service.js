@@ -522,7 +522,6 @@ class Service {
         
         // if (isRegister) {
             data[app.keywords.PARTNER_ID] = 1;
-            cc.log(`utm source ${cc.sys.localStorage.getItem('utm_source')}`);
             data[app.keywords.UTM_SOURCE] = cc.sys.localStorage.getItem('utm_source') || "";
             data[app.keywords.UTM_UTM_MEDIUM] = cc.sys.localStorage.getItem('utm_utm_medium') || "";
             data[app.keywords.UTM_CAMPAIGN] = cc.sys.localStorage.getItem('utm_campaign') || "";

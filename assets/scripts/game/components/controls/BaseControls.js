@@ -36,9 +36,6 @@ export default class BaseControls extends GameControls {
     }
 
     onGameStateWait(){
-
-        console.log("onGameStateWait: ")
-
         this.hideStartButton()
     }
 

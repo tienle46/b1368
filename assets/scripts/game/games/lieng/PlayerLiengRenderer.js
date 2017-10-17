@@ -270,10 +270,12 @@ export default class PlayerLiengRenderer extends PlayerCardRenderer {
         }
     }
     
-    playBetAnimation(betAmount){
+    playBetAnimation(betAmount, toNode){
+        if(!toNode)
+            toNode = this.betCoinNode
         let coinChipAmount = this.scene.board.minBet > 0 ? Math.floor(betAmount / this.scene.board.minBet) : 1
         coinChipAmount = Math.min(coinChipAmount, 3)
-        GameAnim.flyTo({fromNode: this.node, toNode: this.betCoinNode, amount: coinChipAmount, prefab: this.chipPrefab})
+        GameAnim.flyTo({fromNode: this.node, toNode: toNode, amount: coinChipAmount, prefab: this.chipPrefab})
     }
 
     _reset(){

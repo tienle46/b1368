@@ -119,7 +119,7 @@ export default class BoardLieng extends BoardCardBetTurn {
         super.onGameStateChanged(boardState, data, isJustJoined);
 
         if(boardState == app.const.game.state.BET_TURNING && !isJustJoined) {
-            this.scene.gamePlayers.players.forEach(player => player.playPlayerBet(this.minBet)) // prebet
+            this.scene.gamePlayers.players.forEach(player => player.playerGopGaA(this.minBet, this.renderer.totalAmoutNode)) // prebet
         }
     }
             
@@ -149,7 +149,7 @@ export default class BoardLieng extends BoardCardBetTurn {
         
         playerIds.forEach((playerId, index) => {
             if(playingPlayerIds.indexOf(playerId) >= 0) {
-                if(balanceChangeAmounts[playerId] > 0) {
+                if(balanceChangeAmounts[playerId] > 0 && betAmounts && betAmounts[index]) {
                     balanceChangeAmounts[playerId] += betAmounts[index]
                 }
                 if(skips[index] != true)
@@ -206,6 +206,8 @@ export default class BoardLieng extends BoardCardBetTurn {
              */
             let playerIds = utils.getValue(data, Keywords.GAME_LIST_PLAYER, []);
             let betAmounts = utils.getValue(data, app.keywords.GAME_LIST_BET);
+            
+            this.setTotalBetAmount(this.minBet * playerIds.length)
             
             for (let i = 0; i < playerIds.length; i++) {
                 let player = this.scene.gamePlayers.findPlayer(playerIds[i]);

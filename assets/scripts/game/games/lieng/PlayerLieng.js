@@ -74,13 +74,23 @@ export default class PlayerLieng extends PlayerCardBetTurn {
         super.createFakeCards(3);
     }
     
+    playerGopGaA(amount, toNode) {
+        if(this.isPlaying()) {
+            this.renderer.playBetAnimation(amount, toNode)
+            let totalBetAmount = this.scene.board.totalBetAmount + amount
+            this.scene.board.setTotalBetAmount(totalBetAmount)
+        }
+    }
+    
     playPlayerBet(amount, isReplace = false) {
         if(this.isPlaying()) {
+            amount -= this.scene.board.minBet
+            
             this.renderer.playBetAnimation(amount)
             let bet = isReplace ? amount : this.betAmount + amount
             
             this.setBetAmount(bet);
-            let totalBetAmount = this.scene.gamePlayers.players.reduce((a, b) => a + b.betAmount, 0)
+            let totalBetAmount = this.scene.board.totalBetAmount + amount
             this.scene.board.setTotalBetAmount(totalBetAmount)
             
             let values = {minBet: bet}

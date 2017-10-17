@@ -68,7 +68,7 @@ export default class LiengScene extends GameScene {
             return
             
         // let maxValue = this.board.minBet * 5;
-        let divisor = this.board.minBet * 2
+        let divisor = this.board.minBet
         let boardValue = this.board.totalBetAmount
         let minValue = currentValue || divisor
         

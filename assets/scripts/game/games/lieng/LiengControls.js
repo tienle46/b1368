@@ -78,12 +78,12 @@ export default class LiengControls extends GameControls {
     }
     
     onClickToBtn(){
-        let betAmount = this.scene.getChoosenBetAmount()
+        let betAmount = this.scene.getChoosenBetAmount() + this.scene.board.minBet
         if (!this.scene.gamePlayers.me.isItMe() || betAmount <= 0 || this.scene.gameState != app.const.game.state.BET_TURNING ) {
             //Show message && play sound invalid
             return;
         }
-
+        
         betAmount > 0 && app.service.send({
             cmd: app.commands.PLAYER_PLAY_BET_TURN,
             data: {
@@ -99,7 +99,7 @@ export default class LiengControls extends GameControls {
         app.service.send({
             cmd: app.commands.PLAYER_PLAY_BET_TURN,
             data: {
-                [app.keywords.PLAYER_BET_AMOUNT]: this.scene.board.acceptedAmount() >= maxValue ? maxValue : this.scene.board.acceptedAmount()
+                [app.keywords.PLAYER_BET_AMOUNT]: (this.scene.board.acceptedAmount() >= maxValue ? maxValue : this.scene.board.acceptedAmount()) + this.scene.board.minBet
             },
             room: this.scene.room
         });
