@@ -63,6 +63,22 @@ export default class TabBuddiesTransfer extends PopupTabBody {
         this._verifySprite(null)
     }
     
+    _checkAgent(){
+        return this.listAgent.filter(agent => agent.username == this.username.string)[0]
+    }
+    
+    setReceiverBuddyName(username, displayName){
+        this.username.string = username
+        this.displayName.string = displayName || ''
+        let agent = _checkAgent()
+        if(agent){
+            this.displayName.string = agent.agentName
+            this._verifySprite(0)
+        }else{
+            this._verifySprite(1)
+        }
+    }
+    
     onClickAgentButton(e){
         let target = e.currentTarget
         let {agentName, username} = target._d
@@ -76,7 +92,7 @@ export default class TabBuddiesTransfer extends PopupTabBody {
     onEdittingDidEnd(){
         // console.warn('this.listAgent', this.listAgent)
         // console.warn('this.username.string',  this.username.string)
-        let agent =  this.listAgent.filter(agent => agent.username == this.username.string)[0];
+        let agent =  this._checkAgent()
         // console.warn('agentfilter', agent)
         if(agent){
             this.displayName.string = agent.agentName
