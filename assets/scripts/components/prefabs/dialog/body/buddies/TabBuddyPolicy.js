@@ -41,11 +41,7 @@ export default class TabBuddyPolicy extends PopupTabBody {
     }
     
     _onTaiXiuHistory(data){
-        console.warn(data)
-        // if (!resURL.match(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/))
-        // let content = 'lorem ipsum hsofj auduof j v lorem ipsum hsofj auduof lorem ipsum hsofj auduo florem ipsum hsofj auduof'
-        // let content = 'http://www.24h.com.vn'
-        const content = data.c
+        const content = data.c || ""
         if(content.match(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/)){
                 this.webView.node.active = true
                 this.contentScr.node.active = false
