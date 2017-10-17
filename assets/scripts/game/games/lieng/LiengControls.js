@@ -78,6 +78,7 @@ export default class LiengControls extends GameControls {
     }
     
     onClickToBtn(){
+        // +  this.scene.board.minBet vi server sida
         let betAmount = this.scene.getChoosenBetAmount() + this.scene.board.minBet
         if (!this.scene.gamePlayers.me.isItMe() || betAmount <= 0 || this.scene.gameState != app.const.game.state.BET_TURNING ) {
             //Show message && play sound invalid
