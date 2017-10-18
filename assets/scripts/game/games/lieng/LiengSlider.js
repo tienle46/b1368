@@ -75,7 +75,7 @@ class BetSlider extends Component {
     _calculate(val, isBoard) {
         let ratio = this._range ? val / this._range : 1
         ratio = ratio > 1 ? 1 : ratio
-
+        
         this.progressBar.progress = ratio
         this.slider.progress = ratio
         let value = this.progressBar.progress * this._range
@@ -117,7 +117,7 @@ class BetSlider extends Component {
         if((this.currentValue >= this._userMoney || this._minValue + progressBarValue >= this._userMoney) && this.progressBar.progress === 1) {
             this.currentValue = this._userMoney
             this.toolTipLbl.string = 'All-in'
-        } 
+        }
     }
     
     onHandleBtnClicked() {
