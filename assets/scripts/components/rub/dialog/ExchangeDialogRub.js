@@ -3,7 +3,7 @@ import app from 'app';
 const url = `${app.const.DIALOG_DIR_PREFAB}/exchange`;
 const tabModels = [
     { title: 'Thẻ cào',prefabPath: `${url}/tab_exchange_card`, componentName: 'TabExchangeCard'},
-    { title: 'Vật phẩm',prefabPath: `${url}/tab_exchange_item`, componentName: 'TabExchangeItem'},
+    // { title: 'Vật phẩm',prefabPath: `${url}/tab_exchange_item`, componentName: 'TabExchangeItem'},
     { title: 'Lịch sử',prefabPath: `${url}/tab_exchange_history`, componentName: 'TabExchangeHistory'},
     { title: 'Quy định',prefabPath: `${url}/tab_agency`, componentName: 'TabAgency'}
 ];

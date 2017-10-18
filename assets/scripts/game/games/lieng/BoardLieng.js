@@ -130,7 +130,7 @@ export default class BoardLieng extends BoardCardBetTurn {
     
     
     onBoardEnding(data) {
-        // console.warn('_onBoardEnding', data)
+        console.warn('[BoardLieng] _onBoardEnding', data)
         
         let playerIds = utils.getValue(data, Keywords.GAME_LIST_PLAYER, []);
         let playingPlayerIds = this.scene.gamePlayers.filterPlayingPlayer(playerIds);
@@ -149,7 +149,7 @@ export default class BoardLieng extends BoardCardBetTurn {
         
         playerIds.forEach((playerId, index) => {
             if(playingPlayerIds.indexOf(playerId) >= 0) {
-                if(balanceChangeAmounts[playerId] > 0 && betAmounts && betAmounts[index]) {
+                if(balanceChangeAmounts[playerId] && balanceChangeAmounts[playerId] > 0 && betAmounts && betAmounts[index]) {
                     balanceChangeAmounts[playerId] += betAmounts[index]
                 }
                 if(skips[index] != true)

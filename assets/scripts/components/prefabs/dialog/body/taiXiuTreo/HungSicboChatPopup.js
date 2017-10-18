@@ -122,36 +122,43 @@ class HungSicBoChatPopup extends Actor {
     _appendChild(data) {
         let name = null
         let text = null
+        let ft = null
         
         if(typeof data === 'string') {
             name = app.context.getMyInfo().displayName
             text = data
         } else if(data instanceof Object && !(data instanceof Array)) {
-            let {sender, msg, id} = data
+            let {sender, msg, id, ft} = data
             if(id === this._incrementId.toString())
                 return
                 
             name = sender
             text = msg
+            ft = ft
         }
         
-        name && text && this._addItem(name, text)
+        name && text && this._addItem(name, text, ft)
     }
     
-    _addItem(username, text) {
+    _addItem(username, text, ft) {
         if(this._nodeInstances.length > HungSicBoChatPopup.MAX_INSTANCE) {
             let node = this._nodeInstances.shift()
             node.destroy()   
         }
         if(!username) {
-            username = 'Game bài 1368'
+            username = 'Bài 1368'
         }
         
-        if(username.length > 12) {
-            username = `${username.substr(0, 12)}...`
+        if(ft) {
+            username = ft.replace(/({[a-zA-Z0-9-_]+})/g, username)
+        } else {
+            if(username.length > 12) {
+                username = `${username.substr(0, 12)}...`
+            }
+            username = `<color=${HungSicBoChatPopup.USERNAME_COLOR}>${username}</c>`
         }
         
-        this.item.string = `<color=${HungSicBoChatPopup.USERNAME_COLOR}>${username}:</c> ${text}`
+        this.item.string = `${username}: ${text}`
         let item = cc.instantiate(this.item.node)
         item.active = true
         this.container.addChild(item)

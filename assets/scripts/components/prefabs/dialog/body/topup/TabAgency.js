@@ -22,8 +22,8 @@ class TabAgency extends PopupTabBody {
     1. Đổi thẻ tự động, không giới hạn cấp độ, không giới hạn hạn mức
     2. Tài khoản đã được xác minh bằng số điện thoại
     3. Tài khoản đã từng nạp thẻ cào vào game
-    4. Tài khoản phải còn ít nhất 30.000 Chip sau khi đổi thưởng
-    5. Vật phẩm sẽ được chuyển qua đường bưu điện, mọi chi phí vận chuyển do bai1368.com chi trả, giá quy đổi vật phẩm có thể thay đổi theo thời gian.`
+    4. Tài khoản phải còn ít nhất 30.000 Chip sau khi đổi thưởng`
+    // 5. Vật phẩm sẽ được chuyển qua đường bưu điện, mọi chi phí vận chuyển do bai1368.com chi trả, giá quy đổi vật phẩm có thể thay đổi theo thời gian.
     }
 }
 
