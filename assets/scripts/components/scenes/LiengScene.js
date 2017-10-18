@@ -71,6 +71,7 @@ export default class LiengScene extends GameScene {
         let divisor = this.board.minBet
         let boardValue = this.board.totalBetAmount
         let minValue = currentValue || divisor
+        userMoney = userMoney - this.board.minBet
         
         if(userMoney < divisor) {
             app.system.showToast(app.res.string('game_not_enough_balance_to_bet'));

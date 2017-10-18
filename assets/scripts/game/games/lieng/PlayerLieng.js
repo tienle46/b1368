@@ -79,13 +79,13 @@ export default class PlayerLieng extends PlayerCardBetTurn {
             this.renderer.playBetAnimation(amount, toNode)
             let totalBetAmount = this.scene.board.totalBetAmount + amount
             this.scene.board.setTotalBetAmount(totalBetAmount)
+            
+            this.scene.setSliderValues({boardValue: totalBetAmount})
         }
     }
     
     playPlayerBet(amount, isReplace = false) {
         if(this.isPlaying()) {
-            amount -= this.scene.board.minBet
-            
             this.renderer.playBetAnimation(amount)
             let bet = isReplace ? amount : this.betAmount + amount
             

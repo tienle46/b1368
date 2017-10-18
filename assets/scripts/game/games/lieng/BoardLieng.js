@@ -242,6 +242,8 @@ export default class BoardLieng extends BoardCardBetTurn {
     }
     
     _onPlayerTo(previousPlayerId, onTurnPlayerId, betAmount) {
+        console.warn('_onPlayerTo betAmount', betAmount)
+        
         this.scene.gamePlayers.players.forEach(player => {
             if(!player.isPlaying())
                 return;
@@ -252,6 +254,9 @@ export default class BoardLieng extends BoardCardBetTurn {
                 // this.renderer.setTotalValue(this.totalBetAmount);
                 this.setTotalBetAmount(this.totalBetAmount)
                 
+                if(player.balance > betAmount)
+                    betAmount -= this.minBet
+                    
                 player.playPlayerBet(betAmount, true)
                 player.stopTimeLine()
             }
