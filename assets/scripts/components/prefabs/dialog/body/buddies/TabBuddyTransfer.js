@@ -94,12 +94,16 @@ export default class TabBuddiesTransfer extends PopupTabBody {
             this.displayName.string = agent.agentName
             this._verifySprite(0)
         }else{
-            app.service.send({
-                cmd: app.commands.GET_DISPLAY_NAME,
-                data:{
-                    [app.keywords.USER_NAME]: this.username.string.trim()
-                }
-            })
+            const username = this.username.string.trim()
+            if(username)
+                app.service.send({
+                    cmd: app.commands.GET_DISPLAY_NAME,
+                    data:{
+                        [app.keywords.USER_NAME]: username
+                    }
+                })
+            else
+                this._clearInputs()
         }
     }
     
@@ -236,6 +240,7 @@ export default class TabBuddiesTransfer extends PopupTabBody {
             }
         })
     }
+    
     _sendRequest() {
         // this.showLoading()
         app.service.send({cmd: app.commands.USER_TRANSFER_CONFIG});
@@ -243,48 +248,8 @@ export default class TabBuddiesTransfer extends PopupTabBody {
     }
         
     _onGetListAgency(data){
-        // cc.warn(data)
         let {agents} = data
-        // agents = [
-        //     {
-        //         callNumber: '02284142',
-        //         agentName: 'aneo',
-        //         fbLink: 'hihihi.com',
-        //         username: 'hanoi'
-        //     },
-        //     {
-        //         callNumber: '11122',
-        //         agentName: 'andsdseo',
-        //         fbLink: 'hihid hi.com',
-        //         username: 'hanoi1'
-        //     },
-        //     {
-        //         callNumber: 'wewrge',
-        //         agentName: 'andergegsdseo',
-        //         fbLink: 'hihid hi.com',
-        //         username: 'hanoi2'
-        //     },
-        //     {
-        //         callNumber: 'wefwefw',
-        //         agentName: 'wefwfwefwffw',
-        //         fbLink: 'hihid hi.com',
-        //         username: 'hanoi3'
-        //     },
-        //     {
-        //         callNumber: 'wefwefw',
-        //         agentName: 'ahihahih1',
-        //         fbLink: 'hihid hi.com',
-        //         username: 'hanoi0'
-        //     },
-        //     {
-        //         callNumber: 'wefwefw',
-        //         agentName: 'ahihihoho2',
-        //         fbLink: 'hihid hi.com',
-        //         username: 'hanoi5'
-        //     },
-        // ]
         this.listAgent = agents
-        // console.warn(this.listAgent)
         this.content.removeAllChildren()
         
         agents.map((a, i) => {
@@ -296,11 +261,6 @@ export default class TabBuddiesTransfer extends PopupTabBody {
             row.color = (i%2 === 0) ? new cc.Color(3, 26, 67) : new cc.Color(1, 9, 28)
             this.content.addChild(row)
         })
-    //    if (agents && agents.length > 0) {
-    //     agents.map(agency => {
-    //         let {callNumber, agentName, fbLink} = agency
-    //     })
-    //     }
     }
 }
 app.createComponent(TabBuddiesTransfer);
