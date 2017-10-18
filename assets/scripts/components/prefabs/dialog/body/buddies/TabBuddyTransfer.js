@@ -185,7 +185,7 @@ export default class TabBuddiesTransfer extends PopupTabBody {
         let changedVars = data[app.keywords.BASE_EVENT_CHANGED_VARS] || [];
         changedVars.map(v => {
             if (v == app.keywords.USER_VARIABLE_BALANCE) {
-                this.balanceLbl.string = `${utils.numberFormat(app.context.getMeBalance() || 0)}`;
+                this.balanceLbl && (this.balanceLbl.string = `${utils.numberFormat(app.context.getMeBalance() || 0)}`);
             }
         })
     }
