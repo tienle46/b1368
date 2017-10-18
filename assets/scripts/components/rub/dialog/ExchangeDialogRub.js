@@ -5,7 +5,7 @@ const tabModels = [
     { title: 'Thẻ cào',prefabPath: `${url}/tab_exchange_card`, componentName: 'TabExchangeCard'},
     { title: 'Vật phẩm',prefabPath: `${url}/tab_exchange_item`, componentName: 'TabExchangeItem'},
     { title: 'Lịch sử',prefabPath: `${url}/tab_exchange_history`, componentName: 'TabExchangeHistory'},
-    { title: 'Đại lý',prefabPath: `${url}/tab_agency`, componentName: 'TabAgency'}
+    { title: 'Quy định',prefabPath: `${url}/tab_agency`, componentName: 'TabAgency'}
 ];
 
 export default class ExchangeDialogRub {

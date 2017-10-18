@@ -1,107 +1,29 @@
 import app from 'app';
 import PopupTabBody from 'PopupTabBody';
-import Linking from 'Linking';
 
 class TabAgency extends PopupTabBody {
     constructor() {
         super();
         
-        this.properties = this.assignProperties({
-            bodyNode: cc.Node,
-            fbBtn: cc.Node,
-            transferBtn: cc.Node,
-        });
+        this.properties = {
+            text: cc.RichText
+        }
     }
 
     onLoad() {
         super.onLoad();
-    }
-    
-    loadData() {
-        if(Object.keys(this._data).length > 0)
-            return false;
-        super.loadData();
         
-        this._getAgencyDataFromServer();
-        return true;
+        this._renderAgency()
     }
     
-    onFacebookBtnClick(e) {
-        let currentTarget = e.currentTarget;
-        let link = currentTarget.fbLink;
-        cc.sys.openURL(link);
-    }
-    
-    onTransferBtnClick(e) {
-        let currentTarget = e.currentTarget;
-        let username = currentTarget._transferName;
-        app.visibilityManager.goTo(Linking.ACTION_TRANSFER, {username});
-    }
-    
-    onDataChanged(data = {}) {
-        let {agents} = data;
-        agents && agents.length > 0 && this._renderAgency(agents);
-    }
-    
-    _addGlobalListener() {
-        super._addGlobalListener();
-        app.system.addListener(app.commands.AGENCY, this._onListAgency, this);
-    }
-
-    _removeGlobalListener() {
-        super._removeGlobalListener();
-        app.system.removeListener(app.commands.AGENCY, this._onListAgency, this);
-    }
-
-    _getAgencyDataFromServer() {
-        let sendObj = {
-            cmd: app.commands.AGENCY
-        };
+    _renderAgency() {
+        this.text.string = `<color=#efbb01>Ban quản trị tại Bài 1368 xin được gửi toàn bộ các bài thủ hướng dẫn cách đổi thưởng tại bai1368.com, cách thức đổi thưởng vô cùng thuận tiện và nhanh chóng. Chỉ cần yêu cầu tài khoản thõa mãn những điều kiện dưới đây:</c>
         
-        this.showLoadingProgress();
-        app.service.send(sendObj);
-    }
-
-    _onListAgency(res) {
-        try {
-            let d = JSON.parse(res[app.keywords.AGENT]).agents;
-            this.setLoadedData({agents: d});
-        } catch (e) {
-            app.system.error(e.message);
-        }
-    }
-    
-    _renderAgency(agents) {
-        let data = [];
-        
-        for (let i = 0; i < agents.length; i++) {
-            let fbIcon = cc.instantiate(this.fbBtn);
-            fbIcon.active = true;
-            fbIcon.fbLink =  agents[i].fblink;
-            
-            let transferBtn = cc.instantiate(this.transferBtn);
-            transferBtn.active = true;
-            transferBtn._transferName =  agents[i].agent_name;
-            
-            let agentName = agents[i].agent_name;
-            data.push([`${agentName.length > 11 ? agentName.slice(0, 11)+'...': agentName}`, agents[i].call_number, fbIcon, transferBtn]);
-        }
-
-        this.initView({
-            data: ['Đại lý', 'Số ĐT', 'Facebook', ''],
-            options: {
-                fontColor: app.const.COLOR_YELLOW,
-            }
-        }, data, {
-            size: this.node.getContentSize(),
-            isValidated: true,
-            fontSize: 25,
-            group: {
-                widths: [260, '', '', '']
-            }
-        });
-        
-        !this.getScrollViewNode().isChildOf(this.bodyNode) && this.bodyNode.addChild(this.getScrollViewNode());
+    1. Đổi thẻ tự động, không giới hạn cấp độ, không giới hạn hạn mức
+    2. Tài khoản đã được xác minh bằng số điện thoại
+    3. Tài khoản đã từng nạp thẻ cào vào game
+    4. Tài khoản phải còn ít nhất 30.000 Chip sau khi đổi thưởng
+    5. Vật phẩm sẽ được chuyển qua đường bưu điện, mọi chi phí vận chuyển do bai1368.com chi trả, giá quy đổi vật phẩm có thể thay đổi theo thời gian.`
     }
 }
 

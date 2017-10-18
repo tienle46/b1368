@@ -242,8 +242,6 @@ export default class BoardLieng extends BoardCardBetTurn {
     }
     
     _onPlayerTo(previousPlayerId, onTurnPlayerId, betAmount) {
-        console.warn('_onPlayerTo betAmount', betAmount)
-        
         this.scene.gamePlayers.players.forEach(player => {
             if(!player.isPlaying())
                 return;
