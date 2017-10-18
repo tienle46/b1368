@@ -1845,7 +1845,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "topContain",
+    "_name": "agency",
     "_objFlags": 0,
     "_parent": {
       "__id__": 48
@@ -2061,7 +2061,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "topBtn",
+    "_name": "agencyBtn",
     "_objFlags": 0,
     "_parent": {
       "__id__": 49
@@ -3514,6 +3514,9 @@
     "hotlineBtn": null,
     "eventBtnNode": {
       "__id__": 80
+    },
+    "agencyBtnNode": {
+      "__id__": 49
     }
   },
   {

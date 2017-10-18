@@ -39,9 +39,6 @@ class GameSystem {
         this._lackOfMoneyMessage = null
         
         this.initEventListener();
-        if(!app.visibilityManager) 
-            app.visibilityManager = new VisibilityManager(app.config.features);
-
         // high light message
         (!this.hlm) && (this.hlm = new HighLightMessageRub());
         

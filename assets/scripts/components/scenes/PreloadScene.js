@@ -27,6 +27,11 @@ class PreloadScene extends Component {
         let TaiXiuTreoManager = require('TaiXiuTreoManager')
         app.taiXiuTreoManager = new TaiXiuTreoManager()
         
+        // visibility
+        
+        let VisibilityManager = require('VisibilityManager')
+        app.visibilityManager = new VisibilityManager(app.config.features);
+
         app.system.initOnFirstSceneLoaded()
         
         this._customCocosEngine();

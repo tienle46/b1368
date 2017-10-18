@@ -189,16 +189,11 @@ app.config.parseConfigData = function(configData = {}) {
         app.config.otp_config = configData.otp_config || app.config.otp_config;    
     }
     
-    if(!app.visibilityManager) {
-        app.visibilityManager = new VisibilityManager(app.config.features);
-    } else {
-        app.visibilityManager.updateFeatures(app.config.features);
-    }
     const ActionBlocker = require('ActionBlocker');
     ActionBlocker.onClientConfigChanged(configData.blockConfig || {});
     
     const Events = require('GameEvents');
-    app.system.emit(Events.CLIENT_CONFIG_CHANGED)
+    app.system.emit(Events.CLIENT_CONFIG_CHANGED, app.config.features)
 };
 
 app.config.getFeature = function(code) {

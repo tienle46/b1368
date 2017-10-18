@@ -1,4 +1,6 @@
 import CCUtils from 'CCUtils';
+import Events from 'GameEvents';
+import app from 'app'
 
 export default class VisibilityManager {
     /**
@@ -12,11 +14,20 @@ export default class VisibilityManager {
         this._features = this._initFeatures(features); // feature codes represent to element which will be displayed when value = `true`
         
         this._components = {};
+        
+        this._addEventListeners()
+    }
+    
+    _addEventListeners() {
+        app.system.addListener(Events.CLIENT_CONFIG_CHANGED, this.updateFeatures, this)
     }
     
     updateFeatures(features) {
         this._features = features;
-        // app.system.emit('iap_updated', features);
+
+        for(let key in this._components) {
+            this.checkVisible(this._components[key])
+        }
     }
     
     addComponent(instance) {
@@ -44,6 +55,9 @@ export default class VisibilityManager {
     }
     
     checkVisible(instance) {
+        if(!instance)
+            return
+            
         let key = this._getKeyFromInstance(instance.name);
         let component = this.getComponent(key);
         if(component) {
@@ -72,7 +86,8 @@ export default class VisibilityManager {
             [VisibilityManager.BOT]: false,
             [VisibilityManager.GIFT_CODE]: false,
             [VisibilityManager.SYSTEM_MESSAGE]: false,
-            [VisibilityManager.SMASH_JAR]: false
+            [VisibilityManager.SMASH_JAR]: false,
+            [VisibilityManager.AGENCY]: false
         }, features);        
     }
     
@@ -139,6 +154,12 @@ export default class VisibilityManager {
                     element = component.eventBtnNode;
                     break;
                 }
+                
+                case VisibilityManager.AGENCY: {
+                    expectedKey = 'BottomBar';
+                    element = component.agencyBtnNode;
+                    break;
+                }
             }
             
             if(key === expectedKey) {
@@ -191,3 +212,4 @@ VisibilityManager.BOT = "bot";
 VisibilityManager.GIFT_CODE = "gc";
 VisibilityManager.SYSTEM_MESSAGE = "sysm";
 VisibilityManager.SMASH_JAR = "smashjar";
+VisibilityManager.AGENCY = "agent";

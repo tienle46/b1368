@@ -21,6 +21,8 @@ Events.HANDLE_PLAYER_BET = "handle.playerBet";
 Events.HANDLE_PLAYER_CUOC_BIEN = "handle.playerGaHuc";
 Events.HANDLE_PLAYER_ACCEPT_CUOC_BIEN = "handle.playerAcceptHuc";
 
+Events.VISIBILITY_FEATURES_UPDATED = "visibility.feature.updated";
+
 Events.USER_CHANGES_BALANCE = "user.changes.balance";
 
 Events.HIDING_COMPONENTS = "hiding.components";

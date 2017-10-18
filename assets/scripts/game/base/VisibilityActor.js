@@ -1,5 +1,6 @@
 import Component from 'Component';
 import app from 'app';
+import Events from 'GameEvents';
 
 export default class VisibilityActor extends Component {
     constructor() {
@@ -14,12 +15,9 @@ export default class VisibilityActor extends Component {
         }
     }
     
-    onEnable() {
-        super.onEnable();
-    }
-    
     onDestroy() {
         super.onDestroy();
+        this._removeGlobalListener()
         app.visibilityManager && app.visibilityManager.removeComponent(this); 
     }
     

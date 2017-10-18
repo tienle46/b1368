@@ -53,6 +53,8 @@ class HungSicBoChatPopup extends Actor {
         app.system.addListener(Events.TAI_XIU_TREO_HISTORY_CLICKED, this._onDisableSetOnTop, this)
         app.system.addListener(Events.TAI_XIU_TREO_SOI_CAU_CLICKED, this._onDisableSetOnTop, this)
         app.system.addListener(Events.TAI_XIU_TREO_RANK_BTN_CLICKED, this._onDisableSetOnTop, this)
+        app.system.addListener(Events.TAI_XIU_TREO_ON_CLOSE_BTN_CLICKED, this._onDisableSetOnTop, this)
+        
     }
 
     _removeGlobalListener() {
@@ -63,6 +65,7 @@ class HungSicBoChatPopup extends Actor {
        app.system.removeListener(Events.TAI_XIU_TREO_HISTORY_CLICKED, this._onDisableSetOnTop, this)
        app.system.removeListener(Events.TAI_XIU_TREO_SOI_CAU_CLICKED, this._onDisableSetOnTop, this)
        app.system.removeListener(Events.TAI_XIU_TREO_RANK_BTN_CLICKED, this._onDisableSetOnTop, this)
+       app.system.removeListener(Events.TAI_XIU_TREO_ON_CLOSE_BTN_CLICKED, this._onDisableSetOnTop, this)
     }
     
     _onChatHistory(data) {
@@ -73,9 +76,9 @@ class HungSicBoChatPopup extends Actor {
         if(!messages && messages.length < 1)
             return
         messages.forEach((message, index) => {
-            let {sender, msg} = message
+            let {sender, msg, ft} = message
             
-            this._addItem(sender, msg)
+            this._addItem(sender, msg, ft)
         })
         
         this.container.runAction(cc.sequence(cc.delayTime(.1), cc.callFunc(() => {
@@ -122,7 +125,7 @@ class HungSicBoChatPopup extends Actor {
     _appendChild(data) {
         let name = null
         let text = null
-        let ft = null
+        let formatText = null
         
         if(typeof data === 'string') {
             name = app.context.getMyInfo().displayName
@@ -134,13 +137,13 @@ class HungSicBoChatPopup extends Actor {
                 
             name = sender
             text = msg
-            ft = ft
+            formatText = ft
         }
         
-        name && text && this._addItem(name, text, ft)
+        name && text && this._addItem(name, text, formatText)
     }
     
-    _addItem(username, text, ft) {
+    _addItem(username, text, formatText) {
         if(this._nodeInstances.length > HungSicBoChatPopup.MAX_INSTANCE) {
             let node = this._nodeInstances.shift()
             node.destroy()   
@@ -149,15 +152,15 @@ class HungSicBoChatPopup extends Actor {
             username = 'Bài 1368'
         }
         
-        if(ft) {
-            username = ft.replace(/({[a-zA-Z0-9-_]+})/g, username)
+        if(formatText) {
+            username = formatText.replace(/({[a-zA-Z0-9-_]+})/g, username)
         } else {
             if(username.length > 12) {
                 username = `${username.substr(0, 12)}...`
             }
             username = `<color=${HungSicBoChatPopup.USERNAME_COLOR}>${username}</c>`
         }
-        
+              
         this.item.string = `${username}: ${text}`
         let item = cc.instantiate(this.item.node)
         item.active = true

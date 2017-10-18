@@ -12,7 +12,8 @@ class BottomBar extends Actor { // bottombar <- STUFF (visibility via manager) -
             titleContainerNode: cc.Node,
             supportPhoneNumberLbl: cc.Label,
             hotlineBtn: cc.Button,
-            eventBtnNode: cc.Node
+            eventBtnNode: cc.Node,
+            agencyBtnNode: cc.Node
         });
        
         this.intervalTimer = null;
