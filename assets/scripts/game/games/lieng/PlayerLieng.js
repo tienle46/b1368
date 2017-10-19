@@ -140,7 +140,7 @@ export default class PlayerLieng extends PlayerCardBetTurn {
     _onGameRejoin(data) {
         super._onGameRejoin(data);
         
-        if (this.isPlaying()) {
+        if (this.isPlaying() && this.scene.gameState === app.const.game.state.BET_TURNING) {
             this.renderer.betComponentAppearance(true)
         } else {
             this.renderer.betComponentAppearance(false)

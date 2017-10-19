@@ -130,18 +130,17 @@ export default class BoardLieng extends BoardCardBetTurn {
     
     
     onBoardEnding(data) {
-        console.warn('[BoardLieng] _onBoardEnding', data)
+        app.env.isBrowser() && console.warn('[BoardLieng] _onBoardEnding', data)
         
         let playerIds = utils.getValue(data, Keywords.GAME_LIST_PLAYER, []);
         let playingPlayerIds = this.scene.gamePlayers.filterPlayingPlayer(playerIds);
         let playerInfos = this.scene.gamePlayers.getBasicPlayerInfo(playerIds);
         let skips = utils.getValue(data, app.keywords.GAME_LIST_UP_BO)
-        let betAmounts = utils.getValue(data, app.keywords.LIENG_BET_AMOUNT)
+        let betAmounts = utils.getValue(data, app.keywords.LIENG_BET_AMOUNT) || utils.getValue(data, app.keywords.LIENG_BET_AMOUNT)
 
         let balanceChangeAmounts = this._getPlayerBalanceChangeAmounts(playerIds, data);
         let playerHandCards = this._getPlayerHandCards(playerIds, data);
         let {resultTexts, gameResultInfos, resultIconPaths} = this._getGameResultInfos(playerIds, playerHandCards, data);
-
         super.onBoardEnding(data);
         
         let _needDownAllCardsOnBoard = false
@@ -172,7 +171,7 @@ export default class BoardLieng extends BoardCardBetTurn {
                 cards: playerHandCards[playerId],
                 text: resultTexts[playerId]
             }
-
+            
             this.scene.emit(Events.SHOW_GAME_ENDING_INFO, playerId, model, _needDownAllCardsOnBoard || skips[index]);
         });
         
@@ -293,7 +292,7 @@ export default class BoardLieng extends BoardCardBetTurn {
     _getGameResultInfos(playerIds = [], playerHandCards, data) {
 
         let playersWinRanks = utils.getValue(data, Keywords.GAME_LIST_WIN);
-        let cardTypes = utils.getValue(data, Keywords.LIENG_CARD_TYPE);
+        let cardTypes = utils.getValue(data, data[Keywords.LIENG_CARD_TYPE] ? Keywords.LIENG_CARD_TYPE : "ct");
 
         /**
          * Get game result icon
@@ -318,7 +317,7 @@ export default class BoardLieng extends BoardCardBetTurn {
 
                     if (!resultText) resultText = app.res.string('game_thua');
                 }
-                
+
                 gameResultInfos[id] = LiengUtils.createPlayerHandCardInfo(playerHandCards[id], cardTypes[i]);
                 resultTexts[id] = resultText;
             })
