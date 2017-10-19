@@ -96,14 +96,29 @@ export default class LiengControls extends GameControls {
 
     onClickTheoBtn() {
         let maxValue = LiengUtils.calculateBetable(this.scene.gamePlayers.me)
+        let betAmount = this.scene.getChoosenBetAmount()
+        let accepted = (this.scene.board.acceptedAmount() >= maxValue ? maxValue : this.scene.board.acceptedAmount()) + this.scene.board.minBet
+        const sendTheo = () => {
+            app.service.send({
+                cmd: app.commands.PLAYER_PLAY_BET_TURN,
+                data: {
+                    [app.keywords.PLAYER_BET_AMOUNT]: accepted
+                },
+                room: this.scene.room
+            });
+        }
         
-        app.service.send({
-            cmd: app.commands.PLAYER_PLAY_BET_TURN,
-            data: {
-                [app.keywords.PLAYER_BET_AMOUNT]: (this.scene.board.acceptedAmount() >= maxValue ? maxValue : this.scene.board.acceptedAmount()) + this.scene.board.minBet
-            },
-            room: this.scene.room
-        });
+        if(betAmount > accepted) {
+            app.system.confirm(
+                app.res.string('error_lieng_following_instead_of_bet'),
+                null,
+                sendTheo
+            );
+            
+            return
+        }
+        
+        sendTheo()
     }
     
     onClickUpBoBtn() {
