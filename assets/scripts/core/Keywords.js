@@ -796,4 +796,5 @@ Keywords.ROOM_NAME = "roomName";
 Keywords.AGENCY_VERSION = "version";
 
 Keywords.LIENG_BET_AMOUNT = "betAmounts"; // list total amount user betted in this board
-Keywords.LIENG_CARD_TYPE = "ct"; // SAP(7), LIENG(4, 5, 6), DI(3), DONG_HOA(2), TINH_DIEM(1), UP_BO(0);
+Keywords.LIENG_CARD_TYPE = "cardTypes"; // SAP(7), LIENG(4, 5, 6), DI(3), DONG_HOA(2), TINH_DIEM(1), UP_BO(0);
+Keywords.NEW_ALL_PLAYER_CARDS = "cards";
