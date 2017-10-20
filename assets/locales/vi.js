@@ -37,6 +37,7 @@ export default {
     error_phonenumber_changed_unsuccessfully: 'Cập nhật số điện thoại thất bại!',
     error_long_is_ineligible: 'Bạn hiện tại không đủ điều kiện thực hiện chức năng này.',
     error_transfer_input_is_invalid: 'Số chip {{type}} không hợp lệ.',
+    error_transfer_fee_type: 'Chưa chọn người chịu phí!',
     error_transfer_input_is_over_max: 'Số chip {{type}} không được vượt quá {{max}}.',
     error_transfer_input_is_not_over_allow: `Số chip mỗi lần {{type}} không được vượt quá {{limit}} ${currencyName}.`,
     error_transfer_input_is_too_small: `Số chip {{type}} tối thiểu là {{min}} ${currencyName}.`,

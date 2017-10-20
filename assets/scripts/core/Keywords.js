@@ -756,6 +756,7 @@ Keywords.MONEY_FEE = "f";
 Keywords.MIN_TRANSFER_AMOUNT = "mit";
 Keywords.MAX_TRANSFER_AMOUNT = "mxt";
 Keywords.GOLD = "gold";
+Keywords.FEE_TYPE = "feeType";
 Keywords.TRANSFER_REASON = "tr";
 Keywords.TRANSFER_USER_ID = "n";
 

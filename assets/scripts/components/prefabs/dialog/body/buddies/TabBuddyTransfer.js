@@ -19,11 +19,17 @@ export default class TabBuddiesTransfer extends PopupTabBody {
             balanceLbl: cc.Label,
             agentName: cc.Label,
             displayName: cc.Label,
+            displayNameNode: cc.Node,
             username: cc.EditBox,
             amountLbl: cc.EditBox,
+            optionsLbl: cc.Label,
+            optionsDropdownContainer: cc.Node,
+            optionsDropdown: cc.Node,
+            itemOptionNode: cc.Node,
             transferReason: cc.EditBox,
             maXacNhan: cc.EditBox,
             phoneNumber: cc.Label,
+            areaLbl: cc.Label,
             captcha: cc.Label ,
             verifySpriteFrames:{
                 type: cc.SpriteFrame,
@@ -35,7 +41,8 @@ export default class TabBuddiesTransfer extends PopupTabBody {
         this.balance = 0 
         this.feeTransfer = 0 
         this.minTransfer = 0 
-        this.maxTransfer = 0 
+        this.maxTransfer = 0
+        this.feeType = 1
         this.listAgent = []
         this.receiverBuddyName = null;
     }
@@ -43,11 +50,57 @@ export default class TabBuddiesTransfer extends PopupTabBody {
     start() {
         super.start();
         this._getCaptcha();
+        this._setOptionFee()
         this._sendRequest();
     }
     
     _getCaptcha(){
         this.captcha.string = Math.random().toString(36).slice(2, 6)
+    }
+    
+    _setOptionFee(){
+        let options = [
+            {
+                feeType: 1,
+                label: 'Người chuyển chịu phí'
+                
+            },
+            {
+                feeType: 2,
+                label: 'Người nhận chịu phí'
+                
+            },
+            {
+                feeType: 3,
+                label: 'Chia đôi phí'
+                
+            },
+        ]
+        options.forEach(o => {
+            let item = cc.instantiate(this.itemOptionNode)
+            item.active = true
+            item._label = o.label
+            item._feeType = o.feeType
+            let itemLabel = item.getComponentInChildren(cc.Label)
+            itemLabel.string = o.label
+            this.optionsDropdown.addChild(item)
+        })
+        
+    }
+        
+    _sendRequest() {
+        // this.showLoading()
+        app.service.send({cmd: app.commands.USER_TRANSFER_CONFIG});
+        this.getAgencyList()
+    }
+    
+    getAgencyList() {
+        app.service.send({
+            cmd : app.commands.AGENCY_LIST,
+            data:{
+                [app.keywords.AGENCY_VERSION]: app.config.version
+            }
+        })
     }
     
     _verifySprite(type){
@@ -61,6 +114,8 @@ export default class TabBuddiesTransfer extends PopupTabBody {
         this.transferReason.string = ''
         this.maXacNhan.string = ''
         this._verifySprite(null)
+        this.optionsLbl.string = 'Người chuyển chịu phí'
+        this.feeType = 1
     }
     
     _checkAgent(){
@@ -79,18 +134,34 @@ export default class TabBuddiesTransfer extends PopupTabBody {
         }
     }
     
+    onclickDropdownNode() {
+        this.optionsDropdownContainer.active = !this.optionsDropdownContainer.active 
+    }
+    
+    onclickContainer() {
+        this.optionsDropdownContainer.active = false
+    }
+    
+    onClickItem(e) {
+        let target = e.currentTarget
+        this.optionsLbl.string = target._label
+        this.feeType = target._feeType
+        this.optionsDropdownContainer.active = false
+    }
+    
     onClickAgentButton(e){
         let target = e.currentTarget
         let {agentName, username} = target._d
         this.displayName.string =  agentName
         this.username.string =  username
-        
+        this.displayNameNode.active = true
         this._verifySprite(0)
     }
     
     onEdittingDidEnd(){
         let agent =  this._checkAgent()
         if(agent){
+            this.displayNameNode.active = true
             this.displayName.string = agent.agentName
             this._verifySprite(0)
         }else{
@@ -120,9 +191,26 @@ export default class TabBuddiesTransfer extends PopupTabBody {
         this.cb = cb
     }
     
+    _calculateSenderFee() {
+        switch(this.feeType) {
+            case 1 :
+            return this.feeTransfer
+            case 2 :
+            return 0
+            case 3 :
+            return this.feeTransfer/2
+        }
+    }
+    
     onClickTransferButton() {
         let [balance, feeTransfer, minTransfer, maxTransfer] = [this.balance , this.feeTransfer, this.minTransfer, this.maxTransfer]
         let [receiver, money, reason, maXacNhan] =  [this.username.string, Number(this.amountLbl.string.replace(/,/g, "")), this.transferReason.string, this.maXacNhan.string]
+        let [feeType, captchaStr] = [this.feeType, this.captcha.string]
+       
+       this._getCaptcha()
+       this.maXacNhan.string = ''
+              
+        let senderFee = this._calculateSenderFee()
         if (!receiver) {
             app.system.showToast(app.res.string('error_user_enter_empty_input'));
             return;
@@ -133,35 +221,43 @@ export default class TabBuddiesTransfer extends PopupTabBody {
             return;
         }
         
+        if (balance < (minTransfer * (1 + senderFee/100))) {
+            app.system.showToast(app.res.string('error_transfer_input_is_not_enough', {amount: minTransfer * (1 + senderFee/100)}));
+            return;
+        }
+        
         if (money < minTransfer) {
             app.system.showToast(app.res.string('error_transfer_input_is_too_small', {type: "chuyển", min: minTransfer}));
             return;
         }
-    
-        if (balance < (minTransfer * (1 + feeTransfer/100))) {
-            app.system.showToast(app.res.string('error_transfer_input_is_not_enough', {amount: data.minTransfer * (1 + data.feeTransfer/100)}));
+        
+        if (!feeType) {
+            app.system.showToast(app.res.string('error_transfer_fee_type'));
             return;
         }
         
         if (money > maxTransfer) {
             app.system.showToast(app.res.string('error_transfer_input_is_over_max', {
                 type: 'chuyển',
-                max: maxTransfer
+                max: parseInt(maxTransfer)
             }));
             return;
         }
         
-        if (maXacNhan != this.captcha.string) {
+        if (maXacNhan != captchaStr) {
             app.system.showToast(app.res.string('error_transfer_captcha_is_not_match'));
             return;
         }
         
-        this._getCaptcha()
+        this.optionsLbl.string = 'Người chuyển chịu phí'
+        this.feeType = 1
+        console.log('result', receiver, money, feeType, reason)
         app.service.send({
             cmd: app.commands.USER_TRANSFER_TO_USER,
             data: {
                 [app.keywords.USERNAME]: receiver,
                 [app.keywords.GOLD]: money,
+                [app.keywords.FEE_TYPE]: feeType,
                 [app.keywords.TRANSFER_REASON]: reason
             }
         })
@@ -194,11 +290,13 @@ export default class TabBuddiesTransfer extends PopupTabBody {
         // console.warn(data)
         let {username, displayName, isAgent} = data
         if(displayName) {
+            this.displayNameNode.active = true
             this.displayName.string = displayName
             this._verifySprite(1)
         }else{
             this._verifySprite(null)
             this.displayName.string = ''
+            this.displayNameNode.active = false
         }
     }
     
@@ -221,43 +319,32 @@ export default class TabBuddiesTransfer extends PopupTabBody {
     }
     
     _onGetTransferInfo(data){
-        // console.warn(data)
+        // console.warn('_onGetTransferInfo', data)
         let {feeTransfer, minTransfer, maxTransfer} = data
+        console.log(maxTransfer)
         let balance = app.context.getMeBalance()
         this.balance = balance
         this.feeTransfer = feeTransfer
+        let senderFee = this._calculateSenderFee()
         this.minTransfer = minTransfer
         maxTransfer = maxTransfer
-        this.maxTransfer = balance < maxTransfer ? balance * (1 - feeTransfer/100) : maxTransfer
+        this.maxTransfer = balance < maxTransfer ? balance * (1 - senderFee/100) : maxTransfer
         this.balanceLbl.string = numberFormat(app.context.getMeBalance())
-    }
-    
-    getAgencyList() {
-        app.service.send({
-            cmd : app.commands.AGENCY_LIST,
-            data:{
-                [app.keywords.AGENCY_VERSION]: app.config.version
-            }
-        })
-    }
-    
-    _sendRequest() {
-        // this.showLoading()
-        app.service.send({cmd: app.commands.USER_TRANSFER_CONFIG});
-        this.getAgencyList()
     }
         
     _onGetListAgency(data){
+        // console.warn('_onGetListAgency',data)
         let {agents} = data
         this.listAgent = agents
         this.content.removeAllChildren()
         
         agents.map((a, i) => {
-            this.phoneNumber.string = numberFormat(a.callNumber)
+            this.phoneNumber.string = a.callNumber
             this.agentName.string = a.agentName
+            this.areaLbl.string = a.area
             let row = cc.instantiate(this.row)
             row.active = true
-            row._d = {agentName: a.agentName, username: a.username}
+            row._d = {agentName: a.agentName, username: a.username, area: a.area}
             row.color = (i%2 === 0) ? new cc.Color(3, 26, 67) : new cc.Color(1, 9, 28)
             this.content.addChild(row)
         })
