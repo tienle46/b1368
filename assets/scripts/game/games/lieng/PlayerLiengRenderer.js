@@ -105,6 +105,7 @@ export default class PlayerLiengRenderer extends PlayerCardRenderer {
             }
             case 5: {
                 anchor = this.leftBetPositionAnchor
+                this.toIcon.setPosition(-25, this.toIcon.getPosition().y)
                 break;
             }
             default: { // 1

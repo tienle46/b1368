@@ -82,7 +82,7 @@ export default class BoardCard extends Board {
         let handCardIndex = 0;
         let handCardSizes = utils.getValue(data, Keywords.GAME_LIST_PLAYER_CARDS_SIZE, []);
         let handCards =  utils.getValue(data, data[Keywords.NEW_ALL_PLAYER_CARDS] ? Keywords.NEW_ALL_PLAYER_CARDS : Keywords.GAME_LIST_CARD, []);
-
+        
         // for (let i = 0; i < playerIds.length; i++) {
         //     let id = playerIds[i];
         //

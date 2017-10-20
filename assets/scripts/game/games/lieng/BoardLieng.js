@@ -198,10 +198,15 @@ export default class BoardLieng extends BoardCardBetTurn {
         let gamePhase = utils.getValue(data, app.keywords.BOARD_STATE_KEYWORD);
         
         this.renderer.setVisibleTotalAmountComponent(gamePhase === app.const.game.state.BET_TURNING)
+        let firstBetId = data.firstBet
+        if(firstBetId) {
+            let duration = utils.getValue(data, app.keywords.TURN_BASE_PLAYER_TURN_DURATION)
+            this._onShowToIcon(firstBetId, duration)
+        }
         
         if(gamePhase == app.const.game.state.BET_TURNING) {
             /**
-             * Load player down card & player bet amount
+             * loadGameData player down card & player bet amount
              */
             let playerIds = utils.getValue(data, Keywords.GAME_LIST_PLAYER, []);
             let betAmounts = utils.getValue(data, app.keywords.GAME_LIST_BET);
@@ -227,7 +232,7 @@ export default class BoardLieng extends BoardCardBetTurn {
     
     _getPlayerHandCards(playerIds = [], data = {}) {
 
-        if(data[Keywords.GAME_LIST_CARD]){
+        if(data[Keywords.NEW_ALL_PLAYER_CARDS]){
             data[Keywords.GAME_LIST_PLAYER_CARDS_SIZE] = new Array(playerIds.length).fill(3)
             return super._getPlayerHandCards(playerIds, data);
         }else{
@@ -293,7 +298,7 @@ export default class BoardLieng extends BoardCardBetTurn {
 
         let playersWinRanks = utils.getValue(data, Keywords.GAME_LIST_WIN);
         let cardTypes = utils.getValue(data, data[Keywords.LIENG_CARD_TYPE] ? Keywords.LIENG_CARD_TYPE : "ct");
-
+        
         /**
          * Get game result icon
          * @type {Array}
@@ -317,11 +322,12 @@ export default class BoardLieng extends BoardCardBetTurn {
 
                     if (!resultText) resultText = app.res.string('game_thua');
                 }
-
+                
+                
                 gameResultInfos[id] = LiengUtils.createPlayerHandCardInfo(playerHandCards[id], cardTypes[i]);
                 resultTexts[id] = resultText;
             })
-
+        
         return {resultTexts, gameResultInfos, resultIconPaths};
     }
 }
