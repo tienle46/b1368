@@ -126,7 +126,11 @@ class TopBar extends DialogActor {
     onClickMessageAction() {
         app.visibilityManager.goTo(Linking.ACTION_SYSTEM_MESSAGE);
     }
-
+    
+    onClickTopRankAction() {
+        app.visibilityManager.goTo(Linking.ACTION_TOP_VIP);
+    }
+    
     onClickUserInfoAction() {
         app.visibilityManager.goTo(Linking.ACTION_PERSONAL_INFO);
     }
