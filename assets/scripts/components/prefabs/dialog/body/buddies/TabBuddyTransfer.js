@@ -105,6 +105,7 @@ export default class TabBuddiesTransfer extends PopupTabBody {
     
     _verifySprite(type){
         this.verifySprite.spriteFrame = type != null ? this.verifySpriteFrames[type] : null
+        this.displayNameNode.active = this.verifySprite.spriteFrame !== null
     }
     
     _clearInputs(){
@@ -126,6 +127,7 @@ export default class TabBuddiesTransfer extends PopupTabBody {
         this.username.string = username
         this.displayName.string = displayName || ''
         let agent = this._checkAgent()
+
         if(agent){
             this.displayName.string = agent.agentName
             this._verifySprite(0)
@@ -154,14 +156,12 @@ export default class TabBuddiesTransfer extends PopupTabBody {
         let {agentName, username} = target._d
         this.displayName.string =  agentName
         this.username.string =  username
-        this.displayNameNode.active = true
         this._verifySprite(0)
     }
     
     onEdittingDidEnd(){
         let agent =  this._checkAgent()
         if(agent){
-            this.displayNameNode.active = true
             this.displayName.string = agent.agentName
             this._verifySprite(0)
         }else{
@@ -290,13 +290,11 @@ export default class TabBuddiesTransfer extends PopupTabBody {
         // console.warn(data)
         let {username, displayName, isAgent} = data
         if(displayName) {
-            this.displayNameNode.active = true
             this.displayName.string = displayName
             this._verifySprite(1)
         }else{
             this._verifySprite(null)
             this.displayName.string = ''
-            this.displayNameNode.active = false
         }
     }
     
@@ -321,7 +319,6 @@ export default class TabBuddiesTransfer extends PopupTabBody {
     _onGetTransferInfo(data){
         // console.warn('_onGetTransferInfo', data)
         let {feeTransfer, minTransfer, maxTransfer} = data
-        console.log(maxTransfer)
         let balance = app.context.getMeBalance()
         this.balance = balance
         this.feeTransfer = feeTransfer
