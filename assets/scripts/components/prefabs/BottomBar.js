@@ -45,7 +45,6 @@ class BottomBar extends Actor { // bottombar <- STUFF (visibility via manager) -
         app.visibilityManager.goTo(Linking.ACTION_EVENT);
     }
 
-
     onClickTopRankAction() {
         app.visibilityManager.goTo(Linking.ACTION_AGENCY);
     }

@@ -23,7 +23,7 @@ export default class VisibilityManager {
     }
     
     updateFeatures(features) {
-        this._features = features;
+        this._features = Object.assign({}, this._features, features);
 
         for(let key in this._components) {
             this.checkVisible(this._components[key])
@@ -137,7 +137,6 @@ export default class VisibilityManager {
         } else { // else we need to hide element
             let expectedKey = null,
                 element = null;
-                
             switch(code) {
                 case VisibilityManager.EXCHANGE: {
                     expectedKey = 'TopBar';
