@@ -337,7 +337,8 @@ export default class TabBuddiesTransfer extends PopupTabBody {
         
         agents.map((a, i) => {
             this.phoneNumber.string = a.callNumber
-            this.agentName.string = a.agentName
+            let agentName =  a.agentName.length > 12 ? `${a.agentName.substr(0, 11)}...` : a.agentName
+            this.agentName.string = agentName
             this.areaLbl.string = a.area
             let row = cc.instantiate(this.row)
             row.active = true
@@ -345,6 +346,15 @@ export default class TabBuddiesTransfer extends PopupTabBody {
             row.color = (i%2 === 0) ? new cc.Color(3, 26, 67) : new cc.Color(1, 9, 28)
             this.content.addChild(row)
         })
+            // let agentNameTest = 'Mguyen Van Trinh '
+            // let agentName =  agentNameTest.length > 12 ? `${agentNameTest.substr(0, 11)}...` : agentNameTest
+            // this.agentName.string = agentNameTest
+            // this.agentName.string = agentName
+            // // this.areaLbl.string = a.area
+            // let row = cc.instantiate(this.row)
+            // row.active = true
+            // this.content.addChild(row)
     }
+    
 }
 app.createComponent(TabBuddiesTransfer);
