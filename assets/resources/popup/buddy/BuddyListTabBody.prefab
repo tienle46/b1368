@@ -5024,7 +5024,7 @@
       "b": 255,
       "a": 255
     },
-    "_N$placeholder": "Username",
+    "_N$placeholder": "Tài khoản nhận chíp",
     "_N$placeholderFontSize": 20,
     "_N$placeholderFontColor": {
       "__type__": "cc.Color",
@@ -8641,7 +8641,7 @@
     },
     "_isSystemFontUsed": false,
     "_spacingX": 0,
-    "_N$string": "",
+    "_N$string": "Mguyen Van ...",
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
     "_N$fontFamily": "Arial",
