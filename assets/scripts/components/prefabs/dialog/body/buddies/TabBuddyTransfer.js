@@ -337,7 +337,8 @@ export default class TabBuddiesTransfer extends PopupTabBody {
         
         agents.map((a, i) => {
             this.phoneNumber.string = a.callNumber
-            this.agentName.string = a.agentName
+            let agentName =  a.agentName.length > 11 ? `${a.agentName.substr(0, 7)}...` : a.agentName
+            this.agentName.string = agentName
             this.areaLbl.string = a.area
             let row = cc.instantiate(this.row)
             row.active = true
