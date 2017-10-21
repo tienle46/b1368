@@ -321,7 +321,6 @@ export default class TabBuddiesTransfer extends PopupTabBody {
     _onGetTransferInfo(data){
         // console.warn('_onGetTransferInfo', data)
         let {feeTransfer, minTransfer, maxTransfer} = data
-        console.log(maxTransfer)
         let balance = app.context.getMeBalance()
         this.balance = balance
         this.feeTransfer = feeTransfer
