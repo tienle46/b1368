@@ -318,7 +318,7 @@ Commands.MINIGAME_TAI_XIU_GUIDE = "mng_taixiuGuide";
 Commands.MINIGAME_TAI_XIU_GET_OPTION = "mng_taixiuGetOption";
 Commands.MINIGAME_TAI_XIU_STOP = "mng_taixiuStop";
 
-
+Commands.BANK_TRANSFER_HISTORY_DETAIL = "b_athd";
 Commands.AGENCY_LIST = "agent";
 
 module.exports = Commands;

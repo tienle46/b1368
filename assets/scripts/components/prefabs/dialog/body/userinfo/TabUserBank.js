@@ -18,7 +18,8 @@ export default class TabUserBank extends PopupTabBody {
             promptPrefab: cc.Prefab,
             promtpMainNode: cc.Node,
             hintRichText: cc.RichText,
-            p404: cc.Node
+            p404: cc.Node,
+            detailBtnNode: cc.Node
         });
 
         this._balance = 0;
@@ -79,59 +80,38 @@ export default class TabUserBank extends PopupTabBody {
     onBackBtnClick() {
         this._showMainBody();
     }
-
-    // onConfirmRutTienBtnClick(value) {
-    //     value = Number(value);
-    //     if (isEmpty(value)) {
-    //         app.system.error(app.res.string('error_user_enter_empty_input'));
-    //         return;
-    //     }
-    //     if (!isNumber(value) || value < 0) {
-    //         app.system.error(app.res.string('error_transfer_input_is_invalid', { type: 'rút' }));
-    //         return;
-    //     }
-
-    //     if (value > (this._balance - this._remainTransfer)) {
-    //         app.system.error(app.res.string('error_balance_is_not_enough', { amount: this._remainTransfer }));
-    //         return;
-    //     }
-
-    //     if (value < this._minTransfer) {
-    //         app.system.error(app.res.string('error_transfer_input_is_too_small', { type: 'rút', min: numberFormat(this._minTransfer) }));
-    //         return;
-    //     }
-
-    //     if (value > this._maxTransfer) {
-    //         app.system.error(app.res.string('error_transfer_input_is_not_over_allow', { type: 'rút', limit: numberFormat(this._maxTransfer) }));
-    //         return;
-    //     }
-
-    //     this._previousValue = value;
-
-    //     let sendObject = {
-    //         cmd: app.commands.USER_GET_MONEY_FROM_BANK,
-    //         data: {
-    //             [app.keywords.GOLD]: value
-    //         }
-    //     };
-
-    //     app.service.send(sendObject);
-
-    //     return true;
-    // }
-
+    
+    onDetailBtnClick(e) {
+        let {_itemId} = e.currentTarget
+        if(_itemId) {
+            app.service.send({
+                cmd: app.commands.BANK_TRANSFER_HISTORY_DETAIL,
+                data: {
+                    [app.keywords.ID]: _itemId
+                }
+            })
+        }
+    }
+    
     _addGlobalListener() {
         super._addGlobalListener();
         app.system.addListener(app.commands.BANK_IN_HISTORY, this._fillContent, this);
         app.system.addListener(app.commands.USER_GET_MONEY_FROM_BANK, this._onUserGetMoney, this);
+        app.system.addListener(app.commands.BANK_TRANSFER_HISTORY_DETAIL, this._onBankHistoryDetail, this);
     }
 
     _removeGlobalListener() {
         super._removeGlobalListener();
         app.system.removeListener(app.commands.BANK_IN_HISTORY, this._fillContent, this);
         app.system.removeListener(app.commands.USER_GET_MONEY_FROM_BANK, this._onUserGetMoney, this);
+        app.system.removeListener(app.commands.BANK_TRANSFER_HISTORY_DETAIL, this._onBankHistoryDetail, this);
     }
-
+    
+    _onBankHistoryDetail(data) {
+        const message = data[app.keywords.TRANSFER_REASON]
+        message && app.system.info('Chi tiết chuyển khoản', message)    
+    }
+    
     _onUserTransferResponse(data) {
         let su = data[app.keywords.RESPONSE_RESULT];
         if (su) {
@@ -211,23 +191,41 @@ export default class TabUserBank extends PopupTabBody {
 
             //this.hintRichText.string = `<outline width=2 color=#000>Số chip rút tối thiểu: <color=#FF0000>${numberFormat(this._minTransfer)}</c>. Tối thiểu cần có <color=#FF0000> ${numberFormat(this._remainTransfer)} </c> trong tài khoản.</o>`;
         }
+        
+        const d = [
+            data.times.map(time => timeFormat(time)),
+            data.messages,
+            data[app.keywords.ID_LIST].map(id => {
+                let btn = cc.instantiate(this.detailBtnNode)
+                btn._itemId = id
+                
+                return btn
+            })
+        ]
+        
         if (data.times.length > 0) {
             this.hideEmptyPage(this.p404);
             
             this.initView({
-                data: ['Thời gian', 'Nội dung'],
+                data: ['Thời gian', 'Nội dung', 'Chi tiết'],
                 options: {
                     fontColor: app.const.COLOR_YELLOW
                 }
             }, [
                 data.times.map(time => timeFormat(time)),
-                data.messages
+                data.messages,
+                data[app.keywords.ID_LIST].map(id => {
+                    let btn = cc.instantiate(this.detailBtnNode)
+                    btn._itemId = id
+                    
+                    return btn
+                })
             ], {
                 // paging: { next, prev, context: this },
                 size: this.gridNode.getContentSize(),
                 fontSize: 22,
                 group: {
-                    widths: [270, '']
+                    widths: [270, '', 120]
                 }
             });
 

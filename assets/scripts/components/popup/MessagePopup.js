@@ -28,7 +28,7 @@ export default class MessagePopup extends Component {
 
         this.messageLabel = {
             default: null,
-            type: cc.Label,
+            type: cc.RichText,
         };
         this.loading = null;
         this.acceptCb = null;
