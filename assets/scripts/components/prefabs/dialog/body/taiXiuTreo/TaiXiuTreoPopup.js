@@ -65,7 +65,12 @@ class TaiXiuTreoPopup extends Actor {
                 type: cc.SpriteFrame
             },
             diceAnimAtlas: cc.SpriteAtlas,
-            runAnimNode: cc.Node
+            runAnimNode: cc.Node,
+            
+            winStreakNode: cc.Node,
+            loseStreakNode: cc.Node,
+            winLbl: cc.Label,
+            loseLbl: cc.Label
         });
        
         this._selectedBet = null
@@ -80,7 +85,20 @@ class TaiXiuTreoPopup extends Actor {
             this._clickCounter = 0
         }
     }
-
+    
+    streakAppear(active) {
+        this.winStreakNode.active = active
+        this.loseStreakNode.active = active
+    }
+    
+    setWinStreak(total) {
+        this.winLbl.string = total
+    }
+    
+    setLoseStreak(total) {
+        this.loseLbl.string = total
+    }
+    
     onLoad() {
         super.onLoad();
         this.transparentBg.on('touchstart', () => {});
@@ -574,6 +592,19 @@ class TaiXiuTreoPopup extends Actor {
             ]: [])
         ]
         
+        if(remainTime <= 6) {
+            actions = [...actions, cc.callFunc(() => {
+                this._remainTime = remainTime - 1
+                this.countDownRemainTimeToNext(this._remainTime)
+                
+                this.endPhaseAnimation(balance, balanceChanged, option, histories, state)
+                // runAnim open bowl
+                this.placeDices(dices)
+            })]
+            this.bodyNode.runAction(cc.sequence(actions))
+            return
+        } 
+        
         let diceAnim = this._getDiceAnimClip(this.diceAnimAtlas, this.runAnimNode, () => {
             let afterDicesDown;
 
@@ -588,7 +619,7 @@ class TaiXiuTreoPopup extends Actor {
                 cc.callFunc(() => {
                     this._remainTime = remainTime - balanceDuration - diceAnim.duration - 2
                     this.countDownRemainTimeToNext(this._remainTime)
-
+                    
                     if(this.isNanChecked()) {
                         this.bowl.unlock()
                         this.showBowl()
@@ -617,7 +648,6 @@ class TaiXiuTreoPopup extends Actor {
             ]
             
             actions = [...actions, ...beforeEndPhaseActions]
-            
             this.bodyNode.runAction(cc.sequence(actions))
         }
     }
@@ -787,13 +817,18 @@ class TaiXiuTreoPopup extends Actor {
     }
     
     _countDownRemainTime(lbl, remainTime, onlySecs = false, emitter = undefined) {
+        if(this._remainTime < 0)
+            return
         lbl.node.stopAllActions()
+            
         this._remainTime = remainTime
         lbl.node.runAction(cc.repeatForever(cc.sequence(
             cc.callFunc(() => {
+                if(this._remainTime < 0)
+                    return
                 lbl.string = onlySecs ? this._remainTime : this._secondsToMinutes(this._remainTime)    
                 this._remainTime -= 1
-                
+        
                 if(emitter && this._remainTime == 0) {
                     app.system.emit(emitter)
                 }

@@ -333,7 +333,9 @@ export default class TaiXiuTreoManager {
             totalTaiCount,
             totalXiuAmount,
             totalXiuCount,
-            forceReset
+            forceReset,
+            winStreak,
+            loseStreak
         } = data
 
         this._currentId = id
@@ -359,6 +361,7 @@ export default class TaiXiuTreoManager {
                 if(remainTime > duration - 1)
                     this._popupComponent.changePhase("Đặt Cược")
                     
+                this._popupComponent.bodyNode.stopAllActions()
                 this._popupComponent.countDownRemainTime(remainTime)
                 this._popupComponent.initHistories(histories, state)
                 this._popupComponent.updateUserMoney(this._meMoney)
@@ -384,6 +387,12 @@ export default class TaiXiuTreoManager {
                 this._resetBetAmount()
                 break
         }
+        
+        const hasWinStreak = data.hasOwnProperty('winStreak')
+        const hasloseStreak = data.hasOwnProperty('winStreak')
+        this._popupComponent.streakAppear(hasWinStreak && hasloseStreak)
+        hasWinStreak && this._popupComponent.setWinStreak(winStreak)
+        hasloseStreak && this._popupComponent.setLoseStreak(loseStreak)
         
         this._popupComponent.updateInfo(id, totalTaiCount, totalTaiAmount, totalXiuCount, totalXiuAmount)
         this._popupComponent.initBetOption(betTemplates)
