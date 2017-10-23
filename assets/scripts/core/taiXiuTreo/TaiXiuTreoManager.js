@@ -379,7 +379,7 @@ export default class TaiXiuTreoManager {
                     balance
                 }, state)
                 
-                this.setMeBalance(balance || 0)
+                balance && this.setMeBalance(balance)
                 
                 this._resetBetAmount()
                 break

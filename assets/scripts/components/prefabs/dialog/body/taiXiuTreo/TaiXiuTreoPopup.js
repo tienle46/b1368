@@ -155,7 +155,6 @@ class TaiXiuTreoPopup extends Actor {
 
     updateUserMoney(amount) {
         this.userMoneyLbl.string = numberFormat(amount)
-        console.warn('> updateUserMoney', amount)
     }
     
     onChatBtnClick() {
