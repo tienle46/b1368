@@ -152,9 +152,10 @@ class TaiXiuTreoPopup extends Actor {
             this._resetIconAnimation()
         }
     }
-    
+
     updateUserMoney(amount) {
         this.userMoneyLbl.string = numberFormat(amount)
+        console.warn('> updateUserMoney', amount)
     }
     
     onChatBtnClick() {

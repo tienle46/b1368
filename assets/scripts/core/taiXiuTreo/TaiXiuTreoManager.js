@@ -205,7 +205,8 @@ export default class TaiXiuTreoManager {
         
         this._betted[TaiXiuTreoManager.TAI_ID] = taiAmount || 0
         this._betted[TaiXiuTreoManager.XIU_ID] = xiuAmount || 0
-
+        
+        this.setMeBalance(app.context.getMeBalance())
         this._resetTimeFlag()   
         this._onStateChange(data)
     }
@@ -394,13 +395,10 @@ export default class TaiXiuTreoManager {
             
         if(state == 'active') {
             let deltaTime = Math.round((Date.now() - this._timeFlag)/1000)
-            console.warn('deltaTime', deltaTime)
             if(this._timeFlag && deltaTime > this._remainTimeBeforeAppChangesState) {
-                console.warn('this._timeFlag', this._timeFlag)
                 app.service.send({ cmd: app.commands.MINIGAME_TAI_XIU_GET_STATE })
             } else { // phase is still running, update counter
                 let remain = this._remainTimeBeforeAppChangesState - deltaTime
-                console.warn('remain', remain)
                 app.system.emit(Events.TAI_XIU_TREO_ON_UPDATE_COUNT_DOWN, remain, this._boardState)
             }
         } else if(state == 'inactive'){

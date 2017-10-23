@@ -135,7 +135,7 @@ export default class DashboardScene extends BaseScene {
         app.service.send({
             cmd: app.commands.USER_LIST_GAME_CODE,
             data: {
-                [app.keywords.PARTNER_ID]: 1
+                // [app.keywords.PARTNER_ID]: 1
             }
         });
     }
