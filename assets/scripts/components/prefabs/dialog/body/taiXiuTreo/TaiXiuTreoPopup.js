@@ -728,7 +728,7 @@ class TaiXiuTreoPopup extends Actor {
         let dialog = cc.instantiate(app.res.prefab.webviewDialog);
         const dialogComponent = dialog.getComponent('WebviewDialog');
         dialogComponent.setTitle('Đu dây')
-        dialogComponent.loadURL('https://bai1368.com/game/uploadfiles/event-taixiu.htm');
+        dialogComponent.loadURL(`https://bai1368.com/su-kien/tai-xiu.htm?xuser=${app.context.getMyInfo().name}`);
         app.system.getCurrentSceneNode().addChild(dialog, TaiXiuTreoManager.HISTORY_ZINDEX);
     }
     
