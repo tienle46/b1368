@@ -4,7 +4,7 @@
 var app = require('app');
 
 app.config = {};
-app.config.currencyName = "Chip";
+app.config.currencyName = "chip";
 // app.config.useSSL = false;
 app.config.host = "123.31.12.100";
 
@@ -122,9 +122,9 @@ app.config.gameGroups = {
 };
 
 app.config.actionLabels = {
-    'CASH': 'Rút chip',
-    'TRANSFER': 'Chuyển chip',
-    'TOPUP': 'Nạp chip',
+    'CASH': `Rút ${app.config.currencyName}`,
+    'TRANSFER': `Chuyển ${app.config.currencyName}`,
+    'TOPUP': `Nạp ${app.config.currencyName}`,
     'TOPUP_CARD': 'Nạp thẻ',
     'TOPUP_SMS': 'Nạp SMS',
     'TOPUP_IAP': 'Nạp IAP',
