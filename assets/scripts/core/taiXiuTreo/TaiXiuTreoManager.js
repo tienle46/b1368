@@ -399,6 +399,7 @@ export default class TaiXiuTreoManager {
     }
     
     _onAppStateChanged(state) {
+        console.log(`hang sicbo state ${state}`);
         if(!this._isPopupCreated())
             return
             

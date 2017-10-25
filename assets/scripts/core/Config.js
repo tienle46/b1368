@@ -6,12 +6,12 @@ var app = require('app');
 app.config = {};
 app.config.currencyName = "Chip";
 // app.config.useSSL = false;
-// app.config.host = "123.31.12.100";
+app.config.host = "123.31.12.100";
 
 // app.config.host = "123.31.24.103";
 app.config.useSSL = cc.sys.isBrowser? false: false;
 // app.config.host = "1368casino.com";
-app.config.host = "1368.company";
+// app.config.host = "1368.company";
 app.config.port = app.config.useSSL ? 443 : 8921;
 app.config.version = 0x00010010;
 app.config.ALPHA_TEST = false;
