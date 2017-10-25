@@ -334,8 +334,6 @@ export default class TaiXiuTreoManager {
             totalXiuAmount,
             totalXiuCount,
             forceReset,
-            winStreak,
-            loseStreak
         } = data
 
         this._currentId = id
@@ -387,12 +385,6 @@ export default class TaiXiuTreoManager {
                 this._resetBetAmount()
                 break
         }
-        
-        const hasWinStreak = data.hasOwnProperty('winStreak')
-        const hasloseStreak = data.hasOwnProperty('winStreak')
-        this._popupComponent.streakAppear(hasWinStreak && hasloseStreak)
-        hasWinStreak && this._popupComponent.setWinStreak(winStreak)
-        hasloseStreak && this._popupComponent.setLoseStreak(loseStreak)
         
         this._popupComponent.updateInfo(id, totalTaiCount, totalTaiAmount, totalXiuCount, totalXiuAmount)
         this._popupComponent.initBetOption(betTemplates)

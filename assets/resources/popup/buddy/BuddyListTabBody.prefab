@@ -4969,8 +4969,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 208.8,
-      "height": 52.6
+      "width": 336,
+      "height": 53
     },
     "_rotationX": 0,
     "_rotationY": 0,
@@ -4978,7 +4978,7 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": -65.6,
+      "x": -2,
       "y": 0
     },
     "_skewX": 0,
@@ -5033,7 +5033,7 @@
       "b": 175,
       "a": 255
     },
-    "_N$maxLength": 10,
+    "_N$maxLength": 100,
     "_N$stayOnTop": false
   },
   {
@@ -5065,7 +5065,7 @@
     "isAlignOnce": true,
     "_target": null,
     "_alignFlags": 8,
-    "_left": 15,
+    "_left": 14.999999999999998,
     "_right": 0,
     "_top": 0,
     "_bottom": 0,
@@ -5255,8 +5255,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 208.8,
-      "height": 52.6
+      "width": 333,
+      "height": 53
     },
     "_rotationX": 0,
     "_rotationY": 0,
@@ -5264,7 +5264,7 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": -65.6,
+      "x": -3,
       "y": 0
     },
     "_skewX": 0,
@@ -5315,7 +5315,7 @@
       "b": 175,
       "a": 255
     },
-    "_N$maxLength": 10,
+    "_N$maxLength": 30,
     "_N$stayOnTop": false
   },
   {
@@ -5336,7 +5336,7 @@
     "isAlignOnce": true,
     "_target": null,
     "_alignFlags": 8,
-    "_left": 15,
+    "_left": 15.499999999999986,
     "_right": 0,
     "_top": 0,
     "_bottom": 0,
@@ -5961,8 +5961,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 208.8,
-      "height": 52.6
+      "width": 337,
+      "height": 53
     },
     "_rotationX": 0,
     "_rotationY": 0,
@@ -5970,7 +5970,7 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": -65.6,
+      "x": -1,
       "y": 0
     },
     "_skewX": 0,
@@ -6017,7 +6017,7 @@
       "b": 175,
       "a": 255
     },
-    "_N$maxLength": 20,
+    "_N$maxLength": 50,
     "_N$stayOnTop": false
   },
   {
@@ -6031,7 +6031,7 @@
     "isAlignOnce": true,
     "_target": null,
     "_alignFlags": 8,
-    "_left": 15,
+    "_left": 15.499999999999993,
     "_right": 0,
     "_top": 0,
     "_bottom": 0,
