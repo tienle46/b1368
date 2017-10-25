@@ -18,7 +18,13 @@ class EventDialog extends Actor {
         this.progress = null;
         this._url = null
     }
-
+    
+    setTitle(string) {
+        if(string) {
+            this.titleLabel.string = string
+        }    
+    }
+    
     setDialog(dialog){
         this.dialog = dialog;
     }

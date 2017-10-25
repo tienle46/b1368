@@ -66,11 +66,6 @@ class TaiXiuTreoPopup extends Actor {
             },
             diceAnimAtlas: cc.SpriteAtlas,
             runAnimNode: cc.Node,
-            
-            winStreakNode: cc.Node,
-            loseStreakNode: cc.Node,
-            winLbl: cc.Label,
-            loseLbl: cc.Label
         });
        
         this._selectedBet = null
@@ -84,19 +79,6 @@ class TaiXiuTreoPopup extends Actor {
         if(app.config.tai_xiu_treo_kq) {
             this._clickCounter = 0
         }
-    }
-    
-    streakAppear(active) {
-        this.winStreakNode.active = active
-        this.loseStreakNode.active = active
-    }
-    
-    setWinStreak(total) {
-        this.winLbl.string = total
-    }
-    
-    setLoseStreak(total) {
-        this.loseLbl.string = total
     }
     
     onLoad() {
@@ -592,7 +574,7 @@ class TaiXiuTreoPopup extends Actor {
             ]: [])
         ]
         
-        if(remainTime <= 6) {
+        if(remainTime <= 8) {
             actions = [...actions, cc.callFunc(() => {
                 this._remainTime = remainTime - 1
                 this.countDownRemainTimeToNext(this._remainTime)
@@ -737,6 +719,15 @@ class TaiXiuTreoPopup extends Actor {
         
         let dialog = cc.instantiate(app.res.prefab.webviewDialog);
         const dialogComponent = dialog.getComponent('WebviewDialog');
+        dialogComponent.setTitle('Hướng dẫn')
+        dialogComponent.loadURL('https://bai1368.com/game/uploadfiles/event-taixiu.htm');
+        app.system.getCurrentSceneNode().addChild(dialog, TaiXiuTreoManager.HISTORY_ZINDEX);
+    }
+    
+    onClickStreakBtn() {
+        let dialog = cc.instantiate(app.res.prefab.webviewDialog);
+        const dialogComponent = dialog.getComponent('WebviewDialog');
+        dialogComponent.setTitle('Đu dây')
         dialogComponent.loadURL('https://bai1368.com/game/uploadfiles/event-taixiu.htm');
         app.system.getCurrentSceneNode().addChild(dialog, TaiXiuTreoManager.HISTORY_ZINDEX);
     }
