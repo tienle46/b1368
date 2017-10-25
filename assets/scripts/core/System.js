@@ -245,9 +245,10 @@ class GameSystem {
             cc.game.pause = () => {};
             cc.game.setFrameRate(48);
         }
-
-        cc.game.on(cc.game.EVENT_SHOW, () => app.system.changeAppState('active'))
-        cc.game.on(cc.game.EVENT_HIDE, () => app.system.changeAppState('inactive'))
+        if(app.env.isBrowser()){
+            cc.game.on(cc.game.EVENT_SHOW, () => app.system.changeAppState('active'))
+            cc.game.on(cc.game.EVENT_HIDE, () => app.system.changeAppState('inactive'))
+        }
     }
 
     _clearDelayUpdateHideState(){
