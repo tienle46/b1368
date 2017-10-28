@@ -707,6 +707,13 @@ class TaiXiuTreoPopup extends Actor {
         
         this.hideChangedBalance()
         this.hidePhase()
+        
+        console.warn('this._animatingNode', this._animatingNode)
+        if(this._animatingNode) {
+            this._animatingNode.destroy();
+            this._animatingNode.removeFromParent(true);
+            this._animatingNode = null
+        }
     }
     
     onClickInfoBtn() {
@@ -741,16 +748,21 @@ class TaiXiuTreoPopup extends Actor {
      */
     _getDiceAnimClip(atlas, node, cb) {
         if (atlas && atlas.getSpriteFrames().length > 0) {
+            if(this._animatingNode) {
+                this._animatingNode.destroy();
+                this._animatingNode.removeFromParent(true);
+                this._animatingNode = null
+            }
+            
+            this._animatingNode = new cc.Node();
+            const animation = this._animatingNode.addComponent(cc.Animation);
 
-            const animatingNode = new cc.Node();
-            const animation = animatingNode.addComponent(cc.Animation);
-
-            const sprite = animatingNode.addComponent(cc.Sprite);
+            const sprite = this._animatingNode.addComponent(cc.Sprite);
             let spriteFrames = atlas.getSpriteFrames();
             sprite.trim = false;
             sprite.sizeMode = cc.Sprite.SizeMode.RAW
             sprite.spriteFrame = spriteFrames[0];            
-            node.addChild(animatingNode);
+            node.addChild(this._animatingNode);
             
             let clip = cc.AnimationClip.createWithSpriteFrames(spriteFrames, 30);
             clip.speed = 0.5;
@@ -759,8 +771,9 @@ class TaiXiuTreoPopup extends Actor {
             
             animation.addClip(clip);
             animation.on('finished', () => {
-                animatingNode.destroy();
-                animatingNode.removeFromParent(true);
+                this._animatingNode.destroy();
+                this._animatingNode.removeFromParent(true);
+                this._animatingNode = null
                 cb && cb()
             });
 

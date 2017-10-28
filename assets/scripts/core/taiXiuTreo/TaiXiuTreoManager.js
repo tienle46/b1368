@@ -308,7 +308,7 @@ export default class TaiXiuTreoManager {
     }
     
     _onStateChange(data) {
-        // console.warn('_onTaiXiuStateChange', data)
+        console.warn('_onTaiXiuStateChange', data)
         
         if(!this._isPopupCreated() || !this._isIconCreated()) {
             return        
