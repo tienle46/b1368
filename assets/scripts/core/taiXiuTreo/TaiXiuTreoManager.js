@@ -51,7 +51,7 @@ export default class TaiXiuTreoManager {
         app.system.addListener(Events.TAI_XIU_TREO_SOI_CAU_CLICKED, this._onSoiCauBtnClicked, this)
         app.system.addListener(Events.TAI_XIU_TREO_NAN_BTN_CLICKED, this._onNanBtnClicked, this)
         app.system.addListener(Events.TAI_XIU_TREO_RANK_BTN_CLICKED, this._onRankBtnClicked, this)
-        app.system.addListener(Events.TAI_XIU_TREO_ON_APP_STATE_CHANGED, this._onAppStateChanged, this)
+        // app.system.addListener(Events.TAI_XIU_TREO_ON_APP_STATE_CHANGED, this._onAppStateChanged, this)
         app.system.addListener(Events.TAI_XIU_TREO_ON_COUNTING_DOWN, this._updateRemainTime, this)
         app.system.addListener(app.commands.MINIGAME_TAI_XIU_STOP, this._onGameDestroy, this)
         app.system.addListener(SFS2X.SFSEvent.USER_VARIABLES_UPDATE, this._onUserVariablesUpdate, this);
@@ -74,7 +74,7 @@ export default class TaiXiuTreoManager {
         app.system.removeListener(Events.TAI_XIU_TREO_SOI_CAU_CLICKED, this._onSoiCauBtnClicked, this)
         app.system.removeListener(Events.TAI_XIU_TREO_NAN_BTN_CLICKED, this._onNanBtnClicked, this)
         app.system.removeListener(Events.TAI_XIU_TREO_RANK_BTN_CLICKED, this._onRankBtnClicked, this)
-        app.system.removeListener(Events.TAI_XIU_TREO_ON_APP_STATE_CHANGED, this._onAppStateChanged, this)
+        // app.system.removeListener(Events.TAI_XIU_TREO_ON_APP_STATE_CHANGED, this._onAppStateChanged, this)
         app.system.removeListener(Events.TAI_XIU_TREO_ON_COUNTING_DOWN, this._updateRemainTime, this)
         app.system.removeListener(app.commands.MINIGAME_TAI_XIU_STOP, this._onGameDestroy, this)
         app.system.removeListener(SFS2X.SFSEvent.USER_VARIABLES_UPDATE, this._onUserVariablesUpdate, this);
@@ -308,8 +308,6 @@ export default class TaiXiuTreoManager {
     }
     
     _onStateChange(data) {
-        console.warn('_onTaiXiuStateChange', data)
-        
         if(!this._isPopupCreated() || !this._isIconCreated()) {
             return        
         }
@@ -356,13 +354,8 @@ export default class TaiXiuTreoManager {
                     this._track(this._currentId, TaiXiuTreoManager.FOLLOWING, true)
                 }
                 
-                if(remainTime > duration - 1)
-                    this._popupComponent.changePhase("Đặt Cược")
-                    
-                this._popupComponent.bodyNode.stopAllActions()
-                this._popupComponent.countDownRemainTime(remainTime)
-                this._popupComponent.initHistories(histories, state)
-                this._popupComponent.updateUserMoney(this._meMoney)
+                this._popupComponent.onBoardBetting(duration, remainTime, histories, state, this._meMoney)
+                
                 break
             case TaiXiuTreoManager.GAME_STATE_BALANCING:
                 
@@ -390,24 +383,23 @@ export default class TaiXiuTreoManager {
         this._popupComponent.initBetOption(betTemplates)
     }
     
-    _onAppStateChanged(state) {
-        console.log(`hang sicbo state ${state}`);
-        if(!this._isPopupCreated())
-            return
-            
-        if(state == 'active') {
-            let deltaTime = Math.round((Date.now() - this._timeFlag)/1000)
-            if(this._timeFlag && deltaTime > this._remainTimeBeforeAppChangesState) {
-                app.service.send({ cmd: app.commands.MINIGAME_TAI_XIU_GET_STATE })
-            } else { // phase is still running, update counter
-                let remain = this._remainTimeBeforeAppChangesState - deltaTime
-                app.system.emit(Events.TAI_XIU_TREO_ON_UPDATE_COUNT_DOWN, remain, this._boardState)
-            }
-        } else if(state == 'inactive'){
-            this._remainTimeBeforeAppChangesState = this._popupComponent.getRemainTime()
-            this._timeFlag = Date.now()
-        }
-    }
+
+    // _onAppStateChanged(state) {
+    //     if(!this._isPopupCreated())
+    //         return
+    //     if(state == 'active') {
+    //         let deltaTime = Math.round((Date.now() - this._timeFlag)/1000)
+    //         if(this._timeFlag && deltaTime > this._remainTimeBeforeAppChangesState) {
+    //             app.service.send({ cmd: app.commands.MINIGAME_TAI_XIU_GET_STATE })
+    //         } else { // phase is still running, update counter
+    //             let remain = this._remainTimeBeforeAppChangesState - deltaTime
+    //             app.system.emit(Events.TAI_XIU_TREO_ON_UPDATE_COUNT_DOWN, remain, this._boardState)
+    //         }
+    //     } else if(state == 'inactive'){
+    //         this._remainTimeBeforeAppChangesState = this._popupComponent.getRemainTime()
+    //         this._timeFlag = Date.now()
+    //     }
+    // }
     
     _resetTimeFlag() {
         this._timeFlag = 0

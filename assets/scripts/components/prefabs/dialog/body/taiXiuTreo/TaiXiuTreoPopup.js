@@ -69,7 +69,7 @@ class TaiXiuTreoPopup extends Actor {
         });
        
         this._selectedBet = null
-        this._remainTime = 0
+        // this._remainTime = 0
         this._diceNodes = []
         this._waitUntilUserOpensBowl = null
         this._popupAnimationState = TaiXiuTreoPopup.POPUP_ANIM_STATE_IDLE
@@ -79,6 +79,9 @@ class TaiXiuTreoPopup extends Actor {
         if(app.config.tai_xiu_treo_kq) {
             this._clickCounter = 0
         }
+        
+        this._lastTime = null // <- the last time
+        this._time = {min: 0, sec: 0}
     }
     
     onLoad() {
@@ -127,7 +130,6 @@ class TaiXiuTreoPopup extends Actor {
         app.system.removeAppStateListener(this)
         
         this._selectedBet = null
-        this._remainTime = 0
         this._diceNodes = []
         this._waitUntilUserOpensBowl = null
         this._popupAnimationState = TaiXiuTreoPopup.POPUP_ANIM_STATE_IDLE    
@@ -146,12 +148,12 @@ class TaiXiuTreoPopup extends Actor {
        app.system.removeListener(app.commands.MINIGAME_TAI_XIU_GET_OPTION, this._onTaiXiuGetOption, this);
     }
     
-    _onUpdateCountDown(remainTime, state) {
-        this._remainTime = remainTime
-        if(state !== TaiXiuTreoManager.GAME_STATE_END) {
-            this._resetIconAnimation()
-        }
-    }
+    // _onUpdateCountDown(remainTime, state) {
+    //     this._remainTime = remainTime
+    //     if(state !== TaiXiuTreoManager.GAME_STATE_END) {
+    //         this._resetIconAnimation()
+    //     }
+    // }
 
     updateUserMoney(amount) {
         this.userMoneyLbl.string = numberFormat(amount)
@@ -233,6 +235,7 @@ class TaiXiuTreoPopup extends Actor {
     
     hideRemainTimeBg() {
         this.remainTimeBg.active = false
+        this.remainTime.node.color = cc.Color.BLACK
     }
     
     showRemainTimeBg() {
@@ -368,6 +371,8 @@ class TaiXiuTreoPopup extends Actor {
     hideTimeToNext() {
         if(this.timeToNextBg.active)
             this.timeToNextBg.active = false
+            
+        this.timeToNextLbl.node.color = cc.Color.WHITE
     }
     
     showTimeToNext() {
@@ -379,29 +384,27 @@ class TaiXiuTreoPopup extends Actor {
         this.bowl.node.setPosition(this._bowlPos)
     }
     
-    countDownRemainTimeToNext(remainTime) {
+    countDownRemainTimeToNext() {
         this.hideRemainTimeBg()
         this.showTimeToNext()
-        this._countDownRemainTime(this.timeToNextLbl, remainTime, true, Events.TAI_XIU_TREO_PREPARING_NEW_GAME)
+        
+        this.timeToNextLbl.string = `${Number(this._time.sec)}`
     }
     
-    countDownRemainTime(remainTime) {
+    countDownRemainTime() {
         this.showRemainTimeBg()
         this.hideTimeToNext()
         // remove dices if any
         this.clearDices()
         
-        this._countDownRemainTime(this.remainTime, remainTime)
+        this.remainTime.string = `${this._time.min}:${this._time.sec}`
     }
     
-    annoucement(optionId, time) {
+    annoucement(optionId) {
         this._resetIconAnimation()
         let target = optionId == TaiXiuTreoManager.TAI_ID ? this.taiIcon : this.xiuIcon
         let action = cc.sequence(cc.scaleTo(.1, 1.2, 1.2), cc.scaleTo(.1, 1, 1))
         target.runAction(action.repeatForever())
-        target.runAction(cc.sequence(cc.delayTime(time >= 2? time - .5 : 0), cc.callFunc(() => {
-            this._resetIconAnimation()
-        })))
     }
     
     showChangedBalance() {
@@ -536,6 +539,69 @@ class TaiXiuTreoPopup extends Actor {
         })
     }
     
+    onBoardBetting(duration, remainTime, histories, state, currentMoney) {
+        if(remainTime > duration - 1)
+            this.changePhase("Đặt Cược")
+        
+        this.bodyNode.stopAllActions()
+        this._resetIconAnimation()
+        
+        this._initTimer(remainTime)
+        this._time.sec < 10 && (this.remainTime.node.color = cc.Color.RED)
+    
+        this.countDownRemainTime()
+        this.initHistories(histories, state)
+        this.updateUserMoney(currentMoney)
+    }
+    
+    updateTimer() {
+        if(!this._time)
+            return
+            
+        var timestr;
+        var date = new Date();
+    
+        date.setHours(0);
+        date.setMinutes(this._time.min);
+        date.setSeconds(this._time.sec);
+        
+        // get the elapsed time 
+        var elapsedTime = Date.now() - this._lastTime;
+        
+        // set the lastTime var to 'now' so we can calculate the
+        // elapsed time between this event and the next event
+        this._lastTime = Date.now();
+        
+        // instead of (date.getTime() - 1000) you need to 
+        // put in the time that actually has elapsed.
+        var newDate = new Date(date.getTime() - elapsedTime);
+        var temp = newDate.toTimeString().split(" ");
+        var tempsplit = temp[0].split(':');
+        
+        this._time.min = tempsplit[1];
+        this._time.sec = tempsplit[2];
+    
+        timestr = this._time.min + this._time.sec;
+        
+        const inBetPhase = app.taiXiuTreoManager.allowBetting()
+        
+        if (timestr === '0000') {
+            inBetPhase ? this.hideRemainTimeBg() : this.hideTimeToNext()
+        }
+    
+        if (timestr != '0000') {
+            if(inBetPhase) {
+                this.remainTime.string = `${this._time.min}:${this._time.sec}`
+                this._time.sec < 10 && (this.remainTime.node.color = cc.Color.RED)
+            } else {
+                this.timeToNextLbl.string = `${Number(this._time.sec)}`
+                this._time.sec < 5 && (this.timeToNextLbl.node.color = cc.Color.RED)
+            }
+            setTimeout(this.updateTimer.bind(this), 1000);
+        }
+            
+    }
+          
     onBoardEnding(duration, remainTime, data, state) {
         if(this._popupAnimationState >= TaiXiuTreoPopup.POPUP_ANIM_STATE_ON_BOARD_END)
             return
@@ -555,6 +621,9 @@ class TaiXiuTreoPopup extends Actor {
         } = data
         this.bowl.lock()
         this.hideRemainTimeBg()
+        
+        this._initTimer(remainTime)
+        this._time.sec < 5 && (this.timeToNextLbl.node.color = cc.Color.RED)
         
         let balanceDuration = 2 // 2s to run animation for balancing phase
         
@@ -576,8 +645,7 @@ class TaiXiuTreoPopup extends Actor {
         
         if(remainTime <= 8) {
             actions = [...actions, cc.callFunc(() => {
-                this._remainTime = remainTime - 1
-                this.countDownRemainTimeToNext(this._remainTime)
+                this.countDownRemainTimeToNext()
                 
                 this.endPhaseAnimation(balance, balanceChanged, option, histories, state)
                 // runAnim open bowl
@@ -599,13 +667,13 @@ class TaiXiuTreoPopup extends Actor {
                 ] : []),
                 cc.delayTime(1),
                 cc.callFunc(() => {
-                    this._remainTime = remainTime - balanceDuration - diceAnim.duration - 2
-                    this.countDownRemainTimeToNext(this._remainTime)
+                    this.countDownRemainTimeToNext()
                     
                     if(this.isNanChecked()) {
                         this.bowl.unlock()
                         this.showBowl()
                         this._waitUntilUserOpensBowl = this.endPhaseAnimation.bind(this, balance, balanceChanged, option, histories, state)
+                        setTimeout(this._waitUntilUserOpensBowl, 4000)
                     } else {
                         this.hideBowl()
                         this.endPhaseAnimation(balance, balanceChanged, option, histories, state)                
@@ -635,6 +703,9 @@ class TaiXiuTreoPopup extends Actor {
     }
     
     endPhaseAnimation(balance, balanceChanged, option, histories, state) {
+        if(this._popupAnimationState == TaiXiuTreoPopup.POPUP_ANIM_STATE_ENDED)
+            return
+            
         this.hideBowl()
         
         this._popupAnimationState = TaiXiuTreoPopup.POPUP_ANIM_STATE_ENDED
@@ -649,14 +720,14 @@ class TaiXiuTreoPopup extends Actor {
         }
         
         // runAnim noticing
-        this.annoucement(option, this._remainTime)
+        this.annoucement(option)
         
         this.initHistories(histories, state)    
     }
     
-    getRemainTime() {
-        return this._remainTime
-    }
+    // getRemainTime() {
+    //     return this._remainTime
+    // }
     
     openHistoryPopup() {
         return cc.instantiate(this.historyPrefab)
@@ -692,7 +763,7 @@ class TaiXiuTreoPopup extends Actor {
         
         this.bowl.lock()
         
-        this._remainTime = 0
+        // this._remainTime = 0
         this._selectedBet = null
         this.popupId.string = ""
         this._waitUntilUserOpensBowl = null
@@ -708,7 +779,6 @@ class TaiXiuTreoPopup extends Actor {
         this.hideChangedBalance()
         this.hidePhase()
         
-        console.warn('this._animatingNode', this._animatingNode)
         if(this._animatingNode) {
             this._animatingNode.destroy();
             this._animatingNode.removeFromParent(true);
@@ -737,6 +807,18 @@ class TaiXiuTreoPopup extends Actor {
         dialogComponent.setTitle('Đu dây')
         dialogComponent.loadURL(`https://bai1368.com/su-kien/tai-xiu.htm?xuser=${app.context.getMyInfo().name}`);
         app.system.getCurrentSceneNode().addChild(dialog, TaiXiuTreoManager.HISTORY_ZINDEX);
+    }
+    
+    _initTimer(remainTime) {
+        const initTime = this._secondsToMinutes(remainTime).split(":")
+        this._time = {
+            min: initTime[0],
+            sec: initTime[1]
+        }
+        
+        // set the last Time (start time) in this phase
+        this._lastTime = new Date()
+        setTimeout(this.updateTimer.bind(this), 1000)    
     }
     
     /**
@@ -820,34 +902,6 @@ class TaiXiuTreoPopup extends Actor {
         }
     }
     
-    _countDownRemainTime(lbl, remainTime, onlySecs = false, emitter = undefined) {
-        if(this._remainTime < 0)
-            return
-        lbl.node.stopAllActions()
-            
-        this._remainTime = remainTime
-        lbl.node.runAction(cc.repeatForever(cc.sequence(
-            cc.callFunc(() => {
-                if(this._remainTime < 0)
-                    return
-                lbl.string = onlySecs ? this._remainTime : this._secondsToMinutes(this._remainTime)    
-                this._remainTime -= 1
-        
-                if(emitter && this._remainTime == 0) {
-                    app.system.emit(emitter)
-                }
-                
-                lbl.node.color = this._remainTime <= 5 ? cc.Color.RED : onlySecs ? cc.Color.WHITE : cc.Color.BLACK
-                
-                if(this._remainTime < 0) {
-                    this._remainTime = 0
-                    lbl.node.stopAllActions()
-                }
-            }),
-            cc.delayTime(1)
-        )))
-    }
-    
     _secondsToMinutes(secs) {
         function pad(num) {
             return ("0"+num).slice(-2)
@@ -884,10 +938,6 @@ class TaiXiuTreoPopup extends Actor {
     }
     
     update(dt) {
-        if(app.taiXiuTreoManager.isEnding() && this._remainTime <= 5 && this._popupAnimationState != TaiXiuTreoPopup.POPUP_ANIM_STATE_ENDED) {
-            this._waitUntilUserOpensBowl && this._waitUntilUserOpensBowl()
-        }
-        
         if(app.taiXiuTreoManager.allowBetting()) {
             this._resetIconAnimation()
             this.hideBowl()
