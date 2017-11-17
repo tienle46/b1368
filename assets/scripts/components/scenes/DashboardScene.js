@@ -175,6 +175,8 @@ export default class DashboardScene extends BaseScene {
 
         var node = null;
         
+        this.pageView.removeAllPages()
+        
         app.context.gameList.forEach((gc, index) => {
             if (index % 8 === 0) {
                 let pageNodeOptions = {
