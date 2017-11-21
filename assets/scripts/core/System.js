@@ -274,7 +274,15 @@ class GameSystem {
                     this.isInactive = false;
                     this._actionComponents.forEach(cmp => cmp.onAppStateChange(state));
                      if(state == 'active'){
-                        app.service._checkConnection();
+                        let scene = this.getCurrentSceneName();    
+                        
+                        let isInOutgameScene = app._.includes([
+                            app.const.scene.ENTRANCE_SCENE,
+                            app.const.scene.LOGIN_SCENE,
+                            app.const.scene.REGISTER_SCENE
+                        ], scene)
+                        if(!isInOutgameScene)
+                            app.service._checkConnection();
                     }
                 }, 3000)
             }
