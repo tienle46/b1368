@@ -329,7 +329,7 @@ class GameSystem {
     _onJoinRoomError(resultEvent) {
         if (resultEvent.errorCode) {
             this.hideLoader();
-            this.error(event.errorMessage);
+            this.error(resultEvent.errorMessage);
         }
     }
 

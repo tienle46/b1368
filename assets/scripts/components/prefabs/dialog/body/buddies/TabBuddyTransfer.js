@@ -313,7 +313,7 @@ export default class TabBuddiesTransfer extends PopupTabBody {
         app.system.removeListener(app.commands.USER_TRANSFER_TO_USER, this._onUserTransferResponse, this);
         app.system.removeListener(app.commands.AGENCY_LIST, this._onGetListAgency, this);
         app.system.removeListener(app.commands.GET_DISPLAY_NAME, this._onGetEdittingDidEnd, this);
-        app.system.addListener(SFS2X.SFSEvent.USER_VARIABLES_UPDATE, this._onUserVariablesUpdate, this);
+        app.system.removeListener(SFS2X.SFSEvent.USER_VARIABLES_UPDATE, this._onUserVariablesUpdate, this);
     }
     
     _onGetTransferInfo(data){
@@ -346,14 +346,6 @@ export default class TabBuddiesTransfer extends PopupTabBody {
             row.color = (i%2 === 0) ? new cc.Color(3, 26, 67) : new cc.Color(1, 9, 28)
             this.content.addChild(row)
         })
-            // let agentNameTest = 'Mguyen Van Trinh '
-            // let agentName =  agentNameTest.length > 12 ? `${agentNameTest.substr(0, 11)}...` : agentNameTest
-            // this.agentName.string = agentNameTest
-            // this.agentName.string = agentName
-            // // this.areaLbl.string = a.area
-            // let row = cc.instantiate(this.row)
-            // row.active = true
-            // this.content.addChild(row)
     }
     
 }
