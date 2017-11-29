@@ -270,6 +270,41 @@ app.getMessageFromServer = (error) => {
             debug(`linking exception ${e}`);
         }
     }
+    window.onAndroidCaptchaVerified = function(data) {
+        let jsonParam = JSON.parse(data);
+        console.log(`onAndroidCaptchaVerified`, jsonParam);
+        if(jsonParam["token"] && jsonParam["token"].length > 0) {
+            
+            if(app.const.scene.REGISTER_SCENE === app.system.getCurrentSceneName()){
+                app.system.currentScene.doRegister(false);
+            }
+            else if(app.const.scene.ENTRANCE_SCENE === app.system.getCurrentSceneName()){
+                if(jsonParam["cbAction"] === "playNow" )
+                    app.system.currentScene.doPlaynow();
+                if(jsonParam["cbAction"] === "fbLogin" )
+                    app.system.currentScene.doLoginFacebook();
+            }
+            else{
+                //
+            }
+        }
+        else{
+            if(jsonParam["errorCode"] && jsonParam["errorCode"].length > 0){
+                switch (jsonParam["errorCode"]) {
+                    case "NETWORK_ERROR" :
+                        app.system.showErrorToast('Không thể kết nối đến máy chủ, xin vui lòng kiểm tra lại kết nối');
+                        break;
+                    case "UNSUPPORTED" :
+                        app.system.showErrorToast('Phiên bản hệ điều hành không được hỗ trợ.');
+                        break;
+                    case "UNKNOWN_ERROR" :
+                        app.system.showErrorToast('Không thể xác thực thiết bị, vui lòng liên hệ hotline');
+                        break;
+                }
+            }
+        }
+        app.system.currentScene && app.system.currentScene.hideLoading();
+    }
     
     window.isJSON = (str) => {
         if ( /^\s*$/.test(str) ) return false;

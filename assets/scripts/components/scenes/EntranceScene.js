@@ -51,19 +51,37 @@ class EntranceScene extends BaseScene {
     handleRegisterButton() {
         this.changeScene(app.const.scene.REGISTER_SCENE);
     }
-
+    doPlaynow(){
+        this.loginToDashboard("", "", false, true);
+    }
+    doLoginFacebook(){
+        this.showLoading(app.res.string('logging_in_via_facebook'));
+        
+        app.facebookActions.login(this._onLoginWithAccessToken.bind(this))
+    }
     handlePlayNowButton() {
         if (app.env.isMobile() || app.env.isBrowserTest()) {
-            this.loginToDashboard("", "", false, true);
+            
+            if(app.config.use_recaptcha && app.env.isAndroid()){
+                //call jsb
+                this.showLoading();
+                window.jsb.reflection.callStaticMethod("org/cocos2dx/javascript/JSBUtils", "verifyWithReCaptcha", "(Ljava/lang/String;)V","playNow");
+            }
+            else{
+                this.doPlaynow();
+            }
         } else {
             app.system.info(app.res.string('play_now_not_support_on_mobile'))
         }
     }
 
     handleFacebookLoginAction() {
-        this.showLoading(app.res.string('logging_in_via_facebook'));
-        
-        app.facebookActions.login(this._onLoginWithAccessToken.bind(this))
+        if(app.config.use_recaptcha && app.env.isAndroid()){
+            window.jsb.reflection.callStaticMethod("org/cocos2dx/javascript/JSBUtils", "verifyWithReCaptcha", "(Ljava/lang/String;)V", "fbLogin");
+        }
+        else{
+            this.doLoginFacebook();
+        }
     }
 
     _activeFacebookBtn() {

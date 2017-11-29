@@ -110,7 +110,7 @@ export default (function(app) {
             /* eslint-disable no-console, no-unused-vars */
             let _initPluginFacebook = () => {
                 //facebook
-                debug(`facebook init`);
+                console.log(`facebook init with version `, window.sdkbox.PluginFacebook.getSDKVersion());
                 window.sdkbox.PluginFacebook.init();
             };
 
