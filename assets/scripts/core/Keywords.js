@@ -759,6 +759,7 @@ Keywords.GOLD = "gold";
 Keywords.FEE_TYPE = "feeType";
 Keywords.TRANSFER_REASON = "tr";
 Keywords.TRANSFER_USER_ID = "n";
+Keywords.OTP_CODE = "otpCode";
 
 Keywords.CHARGE_SMS_OBJECT_IAC = "iac";
 // Keywords.CHARGE_SMS_OBJECT_INFORS = "iacInfos";

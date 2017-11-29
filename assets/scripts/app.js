@@ -200,6 +200,19 @@ app.getMessageFromServer = (error) => {
     return message || app.res.string('error_undefined', { error: `${errorCode}:${errorMessage}` });
 };
 
+app.sendSMS = (message, recipient) => {
+    if (app.env.isBrowser()) {
+        app.system.showToast(app.res.string('error_not_support_platform'));
+    } else if (app.env.isMobile()) {
+        if (app.env.isIOS()) {
+            window.jsb.reflection.callStaticMethod("JSBUtils", "sendSMS:recipient:", message, recipient);
+        }
+        if (app.env.isAndroid()) {
+            window.jsb.reflection.callStaticMethod("org/cocos2dx/javascript/AppActivity", "jsbSMS", "(Ljava/lang/String;Ljava/lang/String;)V", message, recipient);
+        }
+    }
+}
+
 (function() {
     window.free = function(object) {
         if (!app._.isObject(object) || object instanceof cc.Component)

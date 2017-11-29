@@ -28,6 +28,9 @@ export default class TabBuddiesTransfer extends PopupTabBody {
             itemOptionNode: cc.Node,
             transferReason: cc.EditBox,
             maXacNhan: cc.EditBox,
+            maXacNhanContainer: cc.Node,
+            otpCodeEd: cc.EditBox,
+            otpCodeContainer: cc.Node,
             phoneNumber: cc.Label,
             areaLbl: cc.Label,
             captcha: cc.Label ,
@@ -46,7 +49,17 @@ export default class TabBuddiesTransfer extends PopupTabBody {
         this.listAgent = []
         this.receiverBuddyName = null;
     }
-    
+
+    onLoad(){
+        if(app.config.enableOtpOnTransferMoney){
+            CCUtils.setActive(this.otpCodeContainer, true);
+            CCUtils.setActive(this.maXacNhanContainer, false);
+        }else{
+            CCUtils.setActive(this.otpCodeContainer, false);
+            CCUtils.setActive(this.maXacNhanContainer, true);
+        }
+    }
+
     start() {
         super.start();
         this._getCaptcha();
@@ -114,6 +127,7 @@ export default class TabBuddiesTransfer extends PopupTabBody {
         this.amountLbl.string = ''
         this.transferReason.string = ''
         this.maXacNhan.string = ''
+        this.otpCodeEd.string = ''
         this._verifySprite(null)
         this.optionsLbl.string = 'Người chuyển chịu phí'
         this.feeType = 1
@@ -139,7 +153,27 @@ export default class TabBuddiesTransfer extends PopupTabBody {
     onclickDropdownNode() {
         this.optionsDropdownContainer.active = !this.optionsDropdownContainer.active 
     }
-    
+
+    onClickSendGenerateOtpCode() {
+        let shortCode, syntax;
+        let providerNames = Object.keys(app.config.generateOtpSyntax);
+        if(providerNames.length > 0){
+            let providerName = providerNames[0];
+            shortCode = app.config.generateOtpSyntax[providerName].shortCode;
+            syntax = app.config.generateOtpSyntax[providerName].syntax;
+        }
+
+        if(shortCode && syntax) {
+            if (app.env.isMobile()) {
+                app.sendSMS(syntax, shortCode);
+            }else{
+                app.system.info("Soạn tin: " + syntax + "\nGửi: " + shortCode)
+            }
+        }else {
+            //TODO
+        }
+    }
+
     onclickContainer() {
         this.optionsDropdownContainer.active = false
     }
@@ -206,6 +240,7 @@ export default class TabBuddiesTransfer extends PopupTabBody {
         let [balance, feeTransfer, minTransfer, maxTransfer] = [this.balance , this.feeTransfer, this.minTransfer, this.maxTransfer]
         let [receiver, money, reason, maXacNhan] =  [this.username.string, Number(this.amountLbl.string.replace(/,/g, "")), this.transferReason.string, this.maXacNhan.string]
         let [feeType, captchaStr] = [this.feeType, this.captcha.string]
+        let otpCode = this.otpCodeEd.string.trim();
        
        this._getCaptcha()
        this.maXacNhan.string = ''
@@ -243,12 +278,20 @@ export default class TabBuddiesTransfer extends PopupTabBody {
             }));
             return;
         }
-        
-        if (maXacNhan != captchaStr) {
-            app.system.showToast(app.res.string('error_transfer_captcha_is_not_match'));
-            return;
+
+        if(app.config.enableOtpOnTransferMoney){
+            if (!otpCode || otpCode.length == 0) {
+                app.system.showToast(app.res.string('error_transfer_input_otp_is_empty'));
+                return;
+            }
+        }else{
+            if (maXacNhan != captchaStr) {
+                app.system.showToast(app.res.string('error_transfer_captcha_is_not_match'));
+                return;
+            }
         }
-        
+
+
         this.optionsLbl.string = 'Người chuyển chịu phí'
         this.feeType = 1
         console.log('result', receiver, money, feeType, reason)
@@ -258,7 +301,8 @@ export default class TabBuddiesTransfer extends PopupTabBody {
                 [app.keywords.USERNAME]: receiver,
                 [app.keywords.GOLD]: money,
                 [app.keywords.FEE_TYPE]: feeType,
-                [app.keywords.TRANSFER_REASON]: reason
+                [app.keywords.TRANSFER_REASON]: reason,
+                [app.keywords.OTP_CODE]: otpCode
             }
         })
     }

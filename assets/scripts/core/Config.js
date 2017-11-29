@@ -167,6 +167,8 @@ app.config.actionLabels = {
  */
 app.config.features = {};
 app.config.verifyAccountSyntax = {}; // {viettel, mobi, vina}
+app.config.generateOtpSyntax = {}; // {viettel, mobi, vina}
+app.config.enableOtpOnTransferMoney = true;
 
 app.config.parseConfigData = function(configData = {}) {
     app.config.currencyName = configData.currencyName || app.config.currencyName;
@@ -181,7 +183,9 @@ app.config.parseConfigData = function(configData = {}) {
     app.config.website = configData.website || app.config.website;
     app.config.shareFBConfig = configData.shareFBConfig || app.config.shareFBConfig;
     app.config.verifyAccountSyntax = configData.verifyAccountSyntax || app.config.verifyAccountSyntax;
-    
+    app.config.generateOtpSyntax = configData.generateOtpSyntax || app.config.generateOtpSyntax;
+    app.config.enableOtpOnTransferMoney = configData.enableOtpOnTransferMoney == undefined ? app.config.enableOtpOnTransferMoney : configData.enableOtpOnTransferMoney;
+
     // Default otp false, only apply otp config for Android only
     if (app.env.isAndroid() && app.config.buildType === "store") {
         configData.hasOwnProperty('otp') && (app.config.otp = configData.otp);
