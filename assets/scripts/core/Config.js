@@ -6,14 +6,14 @@ var app = require('app');
 app.config = {};
 app.config.currencyName = "chip";
 // app.config.useSSL = false;
-app.config.host = "123.31.12.100";
+// app.config.host = "123.31.12.100";
 
 // app.config.host = "123.31.24.103";
 app.config.useSSL = cc.sys.isBrowser? false: false;
 // app.config.host = "1368casino.com";
-// app.config.host = "1368.company";
+app.config.host = "1368.company";
 app.config.port = app.config.useSSL ? 443 : 8921;
-app.config.version = 0x00010012;
+app.config.version = 0x00010013;
 app.config.ALPHA_TEST = false;
 
 app.config.packageName = "";
@@ -22,6 +22,7 @@ app.config.buildType = "store";
 
 //LEFT IT FALSE FOR ALL CASE
 app.config.tai_xiu_treo_kq = false;
+app.config.use_recaptcha = false;
 
 app.config.zone = "XGame";
 
@@ -166,6 +167,8 @@ app.config.actionLabels = {
  */
 app.config.features = {};
 app.config.verifyAccountSyntax = {}; // {viettel, mobi, vina}
+app.config.generateOtpSyntax = {}; // {viettel, mobi, vina}
+app.config.enableOtpOnTransferMoney = true;
 
 app.config.parseConfigData = function(configData = {}) {
     app.config.currencyName = configData.currencyName || app.config.currencyName;
@@ -180,7 +183,9 @@ app.config.parseConfigData = function(configData = {}) {
     app.config.website = configData.website || app.config.website;
     app.config.shareFBConfig = configData.shareFBConfig || app.config.shareFBConfig;
     app.config.verifyAccountSyntax = configData.verifyAccountSyntax || app.config.verifyAccountSyntax;
-    
+    app.config.generateOtpSyntax = configData.generateOtpSyntax || app.config.generateOtpSyntax;
+    app.config.enableOtpOnTransferMoney = configData.enableOtpOnTransferMoney == undefined ? app.config.enableOtpOnTransferMoney : configData.enableOtpOnTransferMoney;
+
     // Default otp false, only apply otp config for Android only
     if (app.env.isAndroid() && app.config.buildType === "store") {
         configData.hasOwnProperty('otp') && (app.config.otp = configData.otp);

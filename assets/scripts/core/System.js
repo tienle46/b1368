@@ -273,6 +273,7 @@ class GameSystem {
                 this._delayChangeAppStateTimeoutId = setTimeout(() => {
                     this.isInactive = false;
                     this._actionComponents.forEach(cmp => cmp.onAppStateChange(state));
+
                      if(state == 'active'){
                         let scene = this.getCurrentSceneName();    
                         

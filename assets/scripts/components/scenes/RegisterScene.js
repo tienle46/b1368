@@ -18,6 +18,14 @@ export default class RegisterScene extends BaseScene {
         super.onLoad();
         this.captchaLabel = this.resetCaptcha.getChildByName('label').getComponent(cc.Label);
         this.generateRandomString();
+        
+        if(app.config.use_recaptcha && app.env.isAndroid()){
+            this.resetCaptcha.active = false;
+        }
+        else{
+            this.resetCaptcha.active = true;
+        }
+        
         if(app.env.isBrowser()) {
             this.userPasswordEditBox.stayOnTop = true;
             this.userCaptchaEditBox.stayOnTop = true;
@@ -45,12 +53,28 @@ export default class RegisterScene extends BaseScene {
        app.env.isBrowser() && this.handleRegistryAction();
     }
     
+    doRegister(skipValidate){
+        let username = this.userNameEditBox.string.trim();
+        let password = this.userPasswordEditBox.string.trim();
+        if (skipValidate || this._isValidUserInputs(username, password)) {
+            this.loginToDashboard(username, password, true, false, null, null, this.generateRandomString.bind(this));
+        }
+    }
+    
     handleRegistryAction() {
         let username = this.userNameEditBox.string.trim();
         let password = this.userPasswordEditBox.string.trim();
 
         if (this._isValidUserInputs(username, password)) {
-            this.loginToDashboard(username, password, true, false, null, null, this.generateRandomString.bind(this));
+            if(app.config.use_recaptcha && app.env.isAndroid()){
+                //call jsb
+                this.showLoading();
+                window.jsb.reflection.callStaticMethod("org/cocos2dx/javascript/JSBUtils", "verifyWithReCaptcha", "(Ljava/lang/String;)V","manualRegister");
+            }
+            else{
+                this.doRegister(true);
+            }
+            
         } else {
             this.hideLoading();
             if (!this._isValidUsernameInput(username)) {
@@ -97,6 +121,7 @@ export default class RegisterScene extends BaseScene {
     }
 
     _isValidCaptcha() {
+        if (app.config.use_recaptcha && app.env.isAndroid())  return true; //always return true due to apply Google Safetynet API
         return this.userCaptchaEditBox.string === this.captchaLabel.string;
     }
 }
