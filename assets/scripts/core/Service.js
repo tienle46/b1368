@@ -205,6 +205,7 @@ class Service {
         let message = event.message || "";
         let data = event.data;
         app.system.emit(SFS2X.SFSEvent.ADMIN_MESSAGE, message, data);
+        app.system.hideLoader()
     }
 
     _onPublicMessage(event) {
