@@ -21,16 +21,16 @@ class MiniPokerCardHand extends Actor {
     loadCardsByType(type) {
         switch (type) {
             case MiniPokerCardType.DOI_J:
-                this.loadCardsByValues([44, 45, 48, 52, 4])
+                this.loadCardsByValues([46, 47, 48, 52, 4])
                 break;
             case MiniPokerCardType.HAI_DOI:
-                this.loadCardsByValues([44, 45, 48, 49, 52]);
+                this.loadCardsByValues([46, 47, 50, 51, 52]);
                 break;
             case MiniPokerCardType.SAM:
                 this.loadCardsByValues([4, 5, 6, 10, 15]);
                 break;
             case MiniPokerCardType.SANH:
-                this.loadCardsByValues([4, 9, 14, 16, 21]);
+                this.loadCardsByValues([7, 11, 14, 18, 21]);
                 break;
             case MiniPokerCardType.THUNG:
                 this.loadCardsByValues([4, 12, 20, 28, 44]);
@@ -42,10 +42,10 @@ class MiniPokerCardHand extends Actor {
                 this.loadCardsByValues([4, 5, 6, 7, 44]);
                 break;
             case MiniPokerCardType.THUNG_PHA_SANH:
-                this.loadCardsByValues([4, 8, 12, 16, 20]);
+                this.loadCardsByValues([7, 11, 15, 19, 23]);
                 break;
             case MiniPokerCardType.THUNG_PHA_SANH_J:
-                this.loadCardsByValues([40, 44, 48, 52, 4]);
+                this.loadCardsByValues([42, 46, 50, 54, 6]);
                 break;
             default:
                 this.loadCardsByValues([40, 44, 48, 52, 4]);

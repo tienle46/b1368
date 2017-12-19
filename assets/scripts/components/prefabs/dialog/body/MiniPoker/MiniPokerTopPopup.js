@@ -1,6 +1,7 @@
 import app from 'app';
 import BasePopup from 'BasePopup';
 import MiniPokerTopItem from 'MiniPokerTopItem';
+import CCUtils from 'CCUtils';
 
 class MiniPokerTopPopup extends BasePopup {
     constructor() {
@@ -24,6 +25,7 @@ class MiniPokerTopPopup extends BasePopup {
     onDisable() {
         super.onDisable();
 
+        this._removeItems();
         this._deregisterEventListener();
     }
 
@@ -46,25 +48,21 @@ class MiniPokerTopPopup extends BasePopup {
         data.topPlayers.forEach((info, idx) => {
             this._addItem(idx, info);
         });
+
     }
 
     _removeItems() {
-        this.container.children.forEach((child) => {
-            if (child !== this.itemPrefab) {
-                child.removeFromParent();
-            }
-        });
+        CCUtils.clearAllChildren(this.container);
     }
 
     _addItem(idx, data) {
-        warn('idx', idx,
-            'data', data);
         var item = cc.instantiate(this.itemPrefab);
         item.active = true;
         var itemCtrl = item.getComponent(MiniPokerTopItem);
         itemCtrl.loadData(idx, data);
         this.container.addChild(item);
     }
+    
 }
 
 app.createComponent(MiniPokerTopPopup);

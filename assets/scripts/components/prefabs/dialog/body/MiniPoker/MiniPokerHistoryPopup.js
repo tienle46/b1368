@@ -1,6 +1,7 @@
 import app from 'app';
 import BasePopup from 'BasePopup';
 import MiniPokerHistoryItem from 'MiniPokerHistoryItem';
+import CCUtils from 'CCUtils';
 
 class MiniPokerHistoryPopup extends BasePopup {
     constructor() {
@@ -21,6 +22,7 @@ class MiniPokerHistoryPopup extends BasePopup {
 
     onDisable() {
         super.onDisable();
+        warn('On disable');
 
         this._deregisterEventListener();
     }
@@ -48,11 +50,7 @@ class MiniPokerHistoryPopup extends BasePopup {
     }
 
     _removeItems() {
-        this.container.children.forEach((child) => {
-            if (child !== this.itemPrefab) {
-                child.removeFromParent();
-            }
-        });
+        CCUtils.clearAllChildren(this.container);
     }
 
     _addItem(info) {

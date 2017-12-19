@@ -15,11 +15,11 @@ MiniPokerCardType.THUNG_PHA_SANH_J = 9;
 MiniPokerCardType.getNameForType = function(type) {
     switch (type) {
         case MiniPokerCardType.DOI_J:
-            return 'Đôi J';
+            return 'Đôi J trở lên';
         case MiniPokerCardType.HAI_DOI:
             return 'Hai đôi';
         case MiniPokerCardType.SAM:
-            return 'Sâm';
+            return 'Sám cô';
         case MiniPokerCardType.SANH:
             return 'Sảnh';
         case MiniPokerCardType.THUNG:

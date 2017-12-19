@@ -11,6 +11,7 @@ export default class MiniPokerContext {
         this.curBetValue = 0;
         this.selectedBet = 0;
         this.lastSpinTime = 0;
+        this.prizeConfig = null;
 
         this.isLoadedConfig = false;
         this.popup = null;
@@ -100,6 +101,7 @@ export default class MiniPokerContext {
         this.subInterval = data.subInterval;
         this.spinInterval = data.spinInterval;
         this.curBetValue = this.betValues[this.selectedBet];
+        this.prizeConfig = data.prizeConfig;
 
         this.isLoadedConfig = true;
 
