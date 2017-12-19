@@ -318,6 +318,13 @@ Commands.MINIGAME_TAI_XIU_GUIDE = "mng_taixiuGuide";
 Commands.MINIGAME_TAI_XIU_GET_OPTION = "mng_taixiuGetOption";
 Commands.MINIGAME_TAI_XIU_STOP = "mng_taixiuStop";
 
+Commands.MINIGAME_MINI_POKER_SUBSCRIBE = "mng_pokerSubscribe";
+Commands.MINIGAME_MINI_POKER_HISTORY = "mng_pokerHistory";
+Commands.MINIGAME_MINI_POKER_TOP_PLAYER = "mng_pokerTopPlayer";
+Commands.MINIGAME_MINI_POKER_SYNC_JACKPOT_VALUES = "mng_pokerSync";
+Commands.MINIGAME_MINI_POKER_PLAY = "mng_pokerPlay";
+Commands.MINIGAME_MINI_POKER_GET_CONFIG = "mng_pokerConfig";
+
 Commands.BANK_TRANSFER_HISTORY_DETAIL = "b_athd";
 Commands.AGENCY_LIST = "agent";
 
