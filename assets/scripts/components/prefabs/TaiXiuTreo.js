@@ -16,11 +16,8 @@ class TaiXiuTreo extends Actor {
         this.properties = this.assignProperties({
             popup: cc.Prefab,
             remainTime: cc.Label,
-            miniPokerPrefab: cc.Prefab
         })
 
-        this.miniPokerPopup = null;
-        
         this._lastTime = null
         this._time = {min: 0, sec: 0}
     }
@@ -32,7 +29,7 @@ class TaiXiuTreo extends Actor {
     
     onEnable() {
         super.onEnable()
-        this.node.on(cc.Node.EventType.TOUCH_END, this._onClick, this)
+        // this.node.on(cc.Node.EventType.TOUCH_END, this._onClick, this)
         app.system.addAppStateListener(this)
     }
     
@@ -91,6 +88,15 @@ class TaiXiuTreo extends Actor {
     }
    
     _onClick() {
+        if (app.taiXiuTreoManager.needRequestNew()) {
+            app.service.send({
+                cmd: app.commands.MINIGAME_TAI_XIU_GET_STATE
+            })
+        }
+        else {
+            app.taiXiuTreoManager.showPopup()
+        }
+
         // if(this.draggable && this.draggable.isIdle()) {
         //     if(app.taiXiuTreoManager.needRequestNew())
         //         app.service.send({
@@ -100,21 +106,6 @@ class TaiXiuTreo extends Actor {
         //         app.taiXiuTreoManager.showPopup()
         // }
 
-        if (this._initMiniPoker()) {
-            var miniPokerPopupController = this.miniPokerPopup.getComponent(MiniPokerPopup);
-            miniPokerPopupController.openPopup(true);
-        }
-    }
-
-    _initMiniPoker() {
-        if (!this.miniPokerPopup && this.miniPokerPrefab) {
-            this.miniPokerPopup = cc.instantiate(this.miniPokerPrefab);
-            this.miniPokerPopup.active = false;
-            app.system.getCurrentSceneNode().addChild(this.miniPokerPopup);
-        }
-
-        if (this.miniPokerPopup) return true;
-        return false;
     }
     
     createPopup(data) {

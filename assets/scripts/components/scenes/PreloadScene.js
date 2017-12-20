@@ -26,7 +26,11 @@ class PreloadScene extends Component {
         // tai xiu treo
         let TaiXiuTreoManager = require('TaiXiuTreoManager')
         app.taiXiuTreoManager = new TaiXiuTreoManager()
-        
+
+        // Minigames icon
+        let MiniGamesManager = require('MiniGamesManager');
+        app.minigameManager = new MiniGamesManager();
+
         // visibility
         
         let VisibilityManager = require('VisibilityManager')
@@ -74,6 +78,7 @@ class PreloadScene extends Component {
             { dir: 'popup/PromptPopup', name: 'promptPopup' },
             { dir: 'popup/SingleLinePromptPopup', name: 'singleLinePromptPopup' },
             { dir: 'taixiuTreo/HungSicBoPrefab', name: 'hungSicBo' },
+            { dir: 'MinigameIcon/MiniGameIcon', name: 'minigameIcon'},
         ];
 
         app.async.parallel(resources.map((res) => {

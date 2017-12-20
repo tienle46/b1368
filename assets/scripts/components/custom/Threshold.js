@@ -8,13 +8,14 @@ import Component from 'Component'
  * @class Threshold
  * @extends {Component}
  */
-class Threshold extends Component {
+export default class Threshold extends Component {
     constructor() {
         super()
     }
     
     onLoad() {
         super.onLoad()
+        warn('threshold');
         this.node.opacity = 180
         
         this.draggable = this.node.getComponent('Draggable')
@@ -49,14 +50,21 @@ class Threshold extends Component {
         this.node.stopAllActions()
         
         let time = .2
+
+        let pos = this._getPositionForType(type);
+        this.node.runAction(cc.moveTo(time, pos));
+    }
+
+    _getPositionForType(type) {
+
         let curPos = this._getNodeSpace()
         let nodeSize = this.node.getContentSize()
         let winSize = this._getWinSize()
-        
+
         if(type == Threshold.WINDOW_EDGE_TYPE_TOP || type == Threshold.WINDOW_EDGE_TYPE_BOTTOM) {
-            this.node.runAction(cc.moveTo(time, cc.v2(curPos.x, (type == Threshold.WINDOW_EDGE_TYPE_BOTTOM ? - 1: 1) * ((winSize.height - nodeSize.height) / 2 - Threshold.WINDOW_PADDING))))
+            return cc.v2(curPos.x, (type == Threshold.WINDOW_EDGE_TYPE_BOTTOM ? - 1: 1) * ((winSize.height - nodeSize.height) / 2 - Threshold.WINDOW_PADDING))
         } else if (type == Threshold.WINDOW_EDGE_TYPE_RIGHT || type == Threshold.WINDOW_EDGE_TYPE_LEFT) {
-            this.node.runAction(cc.moveTo(time, cc.v2((type == Threshold.WINDOW_EDGE_TYPE_LEFT ? - 1: 1) * ((winSize.width - nodeSize.width) / 2 - Threshold.WINDOW_PADDING), curPos.y)))
+            return cc.v2((type == Threshold.WINDOW_EDGE_TYPE_LEFT ? - 1: 1) * ((winSize.width - nodeSize.width) / 2 - Threshold.WINDOW_PADDING), curPos.y)
         }
     }
     
