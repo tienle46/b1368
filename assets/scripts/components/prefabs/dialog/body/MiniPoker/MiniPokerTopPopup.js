@@ -62,7 +62,7 @@ class MiniPokerTopPopup extends BasePopup {
         itemCtrl.loadData(idx, data);
         this.container.addChild(item);
     }
-    
+
 }
 
 app.createComponent(MiniPokerTopPopup);
