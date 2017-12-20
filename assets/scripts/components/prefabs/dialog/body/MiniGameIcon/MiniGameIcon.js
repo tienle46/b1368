@@ -122,25 +122,25 @@ class MiniGameIcon extends Actor {
 
     onMiniPokerPopupClicked() {
 
-        if (this._checkClickable()) {
-            if (this._initMiniPoker()) {
-                var miniPokerPopupController = this.miniPokerPopup.getComponent(MiniPokerPopup);
-                miniPokerPopupController.openPopup(true);
-            }
+        if (this._initMiniPoker()) {
+            var miniPokerPopupController = this.miniPokerPopup.getComponent(MiniPokerPopup);
+            miniPokerPopupController.openPopup(true);
         }
+        
     }
 
     onTaiXiuPopupClicked() {
-        if (this._checkClickable()) {
-            if (app.taiXiuTreoManager.needRequestNew()) {
-                app.service.send({
-                    cmd: app.commands.MINIGAME_TAI_XIU_GET_STATE
-                })
-            }
-            else {
-                app.taiXiuTreoManager.showPopup()
-            }
+        if (app.taiXiuTreoManager.needRequestNew()) {
+            app.service.send({
+                cmd: app.commands.MINIGAME_TAI_XIU_GET_STATE
+            })
         }
+        else {
+            app.taiXiuTreoManager.showPopup()
+        }
+        // if (this._checkClickable()) {
+        //
+        // }
     }
 
     _onMainButtonClicked() {
