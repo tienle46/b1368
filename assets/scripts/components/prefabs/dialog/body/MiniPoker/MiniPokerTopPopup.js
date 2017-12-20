@@ -42,7 +42,7 @@ class MiniPokerTopPopup extends BasePopup {
     }
 
     _onReceivedTop(data) {
-        warn('top', data);
+        // warn('top', data);
         this._removeItems();
 
         data.topPlayers.forEach((info, idx) => {

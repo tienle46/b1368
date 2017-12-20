@@ -43,19 +43,19 @@ export default class MiniPokerContext {
     }
 
     _onReceivedConfig(data) {
-        warn('config', data);
+        // warn('config', data);
         this.loadConfig(data);
     }
 
     _onReceivedJackpotSync(data) {
-        warn('Jackpot sync', data);
+        // warn('Jackpot sync', data);
 
         this.jackpotValues = data.jackpotValues;
         this.popup && this.popup.updateJarMoneys();
     }
 
     _onReceivedPlayResult(data) {
-        warn('result', data);
+        // warn('result', data);
         if (data.error) {
             this.popup && this.popup.showError(data.error);
             return;
@@ -66,7 +66,7 @@ export default class MiniPokerContext {
     }
 
     _onUserVariablesUpdate(data) {
-        warn('user variable update', data);
+        // warn('user variable update', data);
         if (data.changedVars.indexOf(app.keywords.USER_VARIABLE_BALANCE)) {
             var newBalance = Utils.getVariable(data, app.keywords.USER_VARIABLE_BALANCE, app.context.getMeBalance());
             app.context.setBalance(newBalance);
@@ -76,17 +76,17 @@ export default class MiniPokerContext {
     }
 
     sendSubscribe() {
-        warn('send subscribe');
+        // warn('send subscribe');
         app.service.send({cmd: app.commands.MINIGAME_MINI_POKER_SUBSCRIBE});
     }
 
     sendGetConfig() {
         app.service.send({cmd: app.commands.MINIGAME_MINI_POKER_GET_CONFIG});
-        warn('send get config');
+        // warn('send get config');
     }
 
     sendPlay(betAmount) {
-        warn('Send play', betAmount);
+        // warn('Send play', betAmount);
         app.service.send({
             cmd: app.commands.MINIGAME_MINI_POKER_PLAY,
             data: {

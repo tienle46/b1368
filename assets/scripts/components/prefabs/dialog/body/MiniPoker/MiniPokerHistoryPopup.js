@@ -22,7 +22,7 @@ class MiniPokerHistoryPopup extends BasePopup {
 
     onDisable() {
         super.onDisable();
-        warn('On disable');
+        // warn('On disable');
 
         this._deregisterEventListener();
     }
@@ -36,12 +36,12 @@ class MiniPokerHistoryPopup extends BasePopup {
     }
 
     _sendGetHistory() {
-        warn('send get history');
+        // warn('send get history');
         app.service.send({cmd: app.commands.MINIGAME_MINI_POKER_HISTORY});
     }
 
     _onReceivedHistory(data) {
-        warn('history', data);
+        // warn('history', data);
         this._removeItems();
 
         data.histories.forEach((info) => {

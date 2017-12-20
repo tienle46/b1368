@@ -126,7 +126,7 @@ class MiniGameIcon extends Actor {
             var miniPokerPopupController = this.miniPokerPopup.getComponent(MiniPokerPopup);
             miniPokerPopupController.openPopup(true);
         }
-        
+
     }
 
     onTaiXiuPopupClicked() {

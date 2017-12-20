@@ -35,7 +35,6 @@ export default class BasePopup extends Actor {
     }
 
     closePopup(animated) {
-        cc.warn('closed')
         if (animated) {
             this._closePopupWithAnimation();
         } else {

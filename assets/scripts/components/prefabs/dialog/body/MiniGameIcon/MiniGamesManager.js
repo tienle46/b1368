@@ -10,7 +10,6 @@ export default class MiniGamesManager {
 
     createIcon() {
         this.icon = cc.instantiate(app.res.prefab.minigameIcon);
-        warn('lastpos', this._lastPos);
         var iconPos = (this._lastPos || cc.p(574, 101));
         this.icon.setPosition(iconPos);
         app.system.getCurrentSceneNode().addChild(this.icon);

@@ -203,7 +203,7 @@ class MiniPokerPopup extends BasePopup {
         }
 
         var delay = (app.miniPokerContext.lastSpinTime + app.miniPokerContext.spinInterval - this._getCurTime()) / 1000;
-        warn('delay', delay);
+        // warn('delay', delay);
         if (delay <= 0) {
             this.onBtnSpinClicked();
         } else {
@@ -218,7 +218,7 @@ class MiniPokerPopup extends BasePopup {
         if (!app.miniPokerContext.isLoadedConfig) return;
 
         var checkSpinTime = this._checkSpinTime();
-        warn(checkSpinTime);
+        // warn(checkSpinTime);
         if (checkSpinTime) {
             app.miniPokerContext.sendPlay(app.miniPokerContext.curBetValue);
             // this.enableSpin = false;
