@@ -53,7 +53,6 @@ export default class FullSceneProgress extends Component {
 
     show(text = "", duration = this.duration, timeoutCb) {
         this.hide();
-
         this.text = text;
         this.duration = duration;
         this.timeoutCb = timeoutCb;

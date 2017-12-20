@@ -74,10 +74,13 @@ class GameSystem {
      * @param {function} onLaunch - On launch custom function
      */
     loadScene(sceneName, onLaunch, initData) {
-        log("sceneName: ", sceneName);
-        this.setSceneChanging(true)
+
+        this.setSceneChanging(true);
+        
+        cc.log(`>>debug cc.director.getScene(): ${JSON.stringify(cc.director._getSceneUuid(sceneName))}\n`);
+        
         cc.director.loadScene(sceneName, () => {
-            log("load scene result", sceneName, cc.director.getScene());
+
             // highPriority && isFunction(onLaunch) && onLaunch();
 
             if (cc.director.getScene().children[0]) {
@@ -111,6 +114,7 @@ class GameSystem {
             isFunction(onLaunch) && onLaunch();
             // !highPriority && isFunction(onLaunch) && onLaunch();
         });
+        
     }
 
     initEventListener() {
@@ -259,7 +263,6 @@ class GameSystem {
     }
 
     changeAppState(state= 'active'){
-
         if(app.env.isBrowser()){
             this.isInactive = state == 'inactive'
             this._actionComponents.forEach(cmp => cmp.onAppStateChange(state))

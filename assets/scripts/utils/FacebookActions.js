@@ -70,7 +70,11 @@ export default class FacebookActions {
             if (!this.isLoggedIn()) {
                 this._initSdk({
                     onLogin: (isLogin, msg) => {
-                        isLogin && this._handlerLoginAction(window.sdkbox.PluginFacebook.getUserID(), window.sdkbox.PluginFacebook.getAccessToken(), runtimeCb);
+                        if(isLogin)
+                            this._handlerLoginAction(window.sdkbox.PluginFacebook.getUserID(), window.sdkbox.PluginFacebook.getAccessToken(), runtimeCb);
+                        else {
+                            app.system.hideLoader()
+                        }
                     }
                 });
                 window.sdkbox.PluginFacebook.login();
