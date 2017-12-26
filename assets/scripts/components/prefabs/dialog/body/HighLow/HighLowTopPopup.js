@@ -20,6 +20,18 @@ class HighLowTopPopup extends BasePopup {
         // this._registerEventListener();
 
         // this._sendGetTop();
+        // let data = {
+        //     topPlayers: [
+        //         {
+        //             time: '12/3/4444',
+        //             playerName: 'aneohihi',
+        //             bet: '123M',
+        //             info: '123K',
+        //             winAmount: '34M' 
+        //         }
+        //     ]
+        // }
+        // this._onReceivedTop(data)
     }
 
     onDisable() {

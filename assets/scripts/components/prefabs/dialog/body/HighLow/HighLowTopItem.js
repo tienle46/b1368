@@ -13,7 +13,7 @@ class HighLowTopItem extends Actor {
             lblUsername: cc.Label,
             lblBet: cc.Label,
             lblInfo: cc.Label,
-            lblAmount: cc.Label,
+            lblWin: cc.Label,
 
         });
 

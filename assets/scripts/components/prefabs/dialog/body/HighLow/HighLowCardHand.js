@@ -2,23 +2,15 @@ import app from 'app';
 import Actor from 'Actor';
 import Card from 'Card';
 
-class HighLowCardHand extends Actor {
+class HighLowCardHand {
 
-    constructor() {
-        super();
-
-        this.properties = this.assignProperties({
-            cardAtlas: cc.SpriteAtlas,
-        });
-    }
-
-    getSpriteName(card) {
+    static getSpriteName(card) {
         var rank = card >> 2;
         var suit = card & 0x03;
         return `card_${this._getRankName(rank)}_${this._getSuitName(suit)}`;
     }
 
-    _getRankName(rank) {
+    static _getRankName(rank) {
         switch (rank) {
             case Card.RANK_J:
                 return 'j';
@@ -33,7 +25,7 @@ class HighLowCardHand extends Actor {
         }
     }
 
-    _getSuitName(suit) {
+    static _getSuitName(suit) {
         switch (suit) {
             case Card.SUIT_BICH:
                 return 'bich';
@@ -49,4 +41,4 @@ class HighLowCardHand extends Actor {
     }
 }
 
-app.createComponent(HighLowCardHand);
+export default HighLowCardHand

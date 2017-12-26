@@ -15,7 +15,20 @@ class HighLowHistoryPopup extends BasePopup {
 
     onEnable() {
         super.onEnable();
-
+        // let data = {
+        //     histories: [
+        //         {
+        //             session: 1231234,
+        //             time: 123,
+        //             turn: 123,
+        //             action: 'ahhihi',
+        //             bet: 123,
+        //             winAmount: 123,
+        //             card: 44,
+        //         }
+        //     ]
+        // }
+        // this._onReceivedHistory(data)
         // this._registerEventListener();
         // this._sendGetHistory();
     }

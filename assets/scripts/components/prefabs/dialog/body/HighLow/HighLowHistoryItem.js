@@ -1,6 +1,6 @@
 import app from 'app';
 import Actor from 'Actor';
-import HighLowCardHand from 'HighLowCardHand'
+import HighLowCardHand from './HighLowCardHand'
 import Utils from 'GeneralUtils';
 
 class HighLowHistoryItem extends Actor {
@@ -35,10 +35,6 @@ class HighLowHistoryItem extends Actor {
         this.lblBet.string = bet
         this.lblWin.string = win
 
-        this.lblTime.string = time;
-        this.lblWin.string = Utils.formatNumberType1(win);
-        this.lblBet.string = Utils.formatNumberType1(bet);
-        this.lblCardTypeName.string = cardTypeName;
         this.cardHand.spriteFrame = this.cardAtlas.getSpriteFrame(HighLowCardHand.getSpriteName(card))
     }
 

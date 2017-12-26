@@ -72,3 +72,5 @@ assets/test/TestScene.fire.meta
 assets/test/TestScene.js
 assets/test/TestScene.js.meta
 assets/scripts/components/scenes/TestScene.js.meta
+
+.vscode/chrome
