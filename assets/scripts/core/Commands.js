@@ -325,6 +325,10 @@ Commands.MINIGAME_MINI_POKER_SYNC_JACKPOT_VALUES = "mng_pokerSync";
 Commands.MINIGAME_MINI_POKER_PLAY = "mng_pokerPlay";
 Commands.MINIGAME_MINI_POKER_GET_CONFIG = "mng_pokerConfig";
 
+// TODO
+// Commands.MINIGAME_HIGH_LOW_HISTORY = "mng_pokerHistory";
+// Commands.MINIGAME_HIGH_LOW_TOP_PLAYER = "mng_pokerTopPlayer";
+
 Commands.BANK_TRANSFER_HISTORY_DETAIL = "b_athd";
 Commands.AGENCY_LIST = "agent";
 

@@ -15,18 +15,20 @@ class HighLowHistoryPopup extends BasePopup {
 
     onEnable() {
         super.onEnable();
+        // let histories = []
+        // for(let i = 0; i< 15; i++) {
+        //     histories.push({
+        //         session: `000000${i}`,
+        //         time: `00${i}`,
+        //         turn: `00${i}`,
+        //         action: `ohoho${i}`,
+        //         bet: 123,
+        //         winAmount: 123,
+        //         card: i+5,
+        //     })
+        // }
         // let data = {
-        //     histories: [
-        //         {
-        //             session: 1231234,
-        //             time: 123,
-        //             turn: 123,
-        //             action: 'ahhihi',
-        //             bet: 123,
-        //             winAmount: 123,
-        //             card: 44,
-        //         }
-        //     ]
+        //     histories
         // }
         // this._onReceivedHistory(data)
         // this._registerEventListener();
@@ -41,16 +43,16 @@ class HighLowHistoryPopup extends BasePopup {
     }
 
     _registerEventListener() {
-        app.system.addListener(app.commands.MINIGAME_MINI_POKER_HISTORY, this._onReceivedHistory, this);
+        app.system.addListener(app.commands.MINIGAME_HIGH_LOW_HISTORY, this._onReceivedHistory, this);
     }
 
     _deregisterEventListener() {
-        app.system.removeListener(app.commands.MINIGAME_MINI_POKER_HISTORY, this._onReceivedHistory, this);
+        app.system.removeListener(app.commands.MINIGAME_HIGH_LOW_HISTORY, this._onReceivedHistory, this);
     }
 
     _sendGetHistory() {
         // warn('send get history');
-        app.service.send({cmd: app.commands.MINIGAME_MINI_POKER_HISTORY});
+        app.service.send({cmd: app.commands.MINIGAME_HIGH_LOW_HISTORY});
     }
 
     _onReceivedHistory(data) {

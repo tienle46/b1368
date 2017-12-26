@@ -20,16 +20,18 @@ class HighLowTopPopup extends BasePopup {
         // this._registerEventListener();
 
         // this._sendGetTop();
+        // let topPlayers = []
+        // for(let i=0; i< 15; i++) {
+        //     topPlayers.push({
+        //         time: `12/3/201${i}`,
+        //         playerName: `aneo${i}`,
+        //         bet: `00${i}`,
+        //         info: '123K',
+        //         winAmount: '34M' 
+        //     })
+        // }
         // let data = {
-        //     topPlayers: [
-        //         {
-        //             time: '12/3/4444',
-        //             playerName: 'aneohihi',
-        //             bet: '123M',
-        //             info: '123K',
-        //             winAmount: '34M' 
-        //         }
-        //     ]
+        //     topPlayers
         // }
         // this._onReceivedTop(data)
     }
@@ -42,15 +44,15 @@ class HighLowTopPopup extends BasePopup {
     }
 
     _sendGetTop() {
-        app.service.send({cmd:app.commands.MINIGAME_MINI_POKER_TOP_PLAYER});
+        app.service.send({cmd:app.commands.MINIGAME_HIGH_LOW_TOP_PLAYER});
     }
 
     _registerEventListener() {
-        app.system.addListener(app.commands.MINIGAME_MINI_POKER_TOP_PLAYER, this._onReceivedTop, this);
+        app.system.addListener(app.commands.MINIGAME_HIGH_LOW_TOP_PLAYER, this._onReceivedTop, this);
     }
 
     _deregisterEventListener() {
-        app.system.removeListener(app.commands.MINIGAME_MINI_POKER_TOP_PLAYER, this._onReceivedTop, this);
+        app.system.removeListener(app.commands.MINIGAME_HIGH_LOW_TOP_PLAYER, this._onReceivedTop, this);
     }
 
     _onReceivedTop(data) {
