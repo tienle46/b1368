@@ -16,10 +16,6 @@ class HighLowTopPopup extends BasePopup {
 
     onEnable() {
         super.onEnable();
-
-        // this._registerEventListener();
-
-        // this._sendGetTop();
         // let topPlayers = []
         // for(let i=0; i< 15; i++) {
         //     topPlayers.push({
@@ -34,25 +30,29 @@ class HighLowTopPopup extends BasePopup {
         //     topPlayers
         // }
         // this._onReceivedTop(data)
+
+        this._registerEventListener();
+
+        this._sendGetTop();
     }
 
     onDisable() {
         super.onDisable();
 
-        // this._removeItems();
-        // this._deregisterEventListener();
+        this._removeItems();
+        this._deregisterEventListener();
     }
 
     _sendGetTop() {
-        app.service.send({cmd:app.commands.MINIGAME_HIGH_LOW_TOP_PLAYER});
+        app.service.send({cmd:app.commands.MINIGAME_CAO_THAP_TOP_PLAYER});
     }
 
     _registerEventListener() {
-        app.system.addListener(app.commands.MINIGAME_HIGH_LOW_TOP_PLAYER, this._onReceivedTop, this);
+        app.system.addListener(app.commands.MINIGAME_CAO_THAP_TOP_PLAYER, this._onReceivedTop, this);
     }
 
     _deregisterEventListener() {
-        app.system.removeListener(app.commands.MINIGAME_HIGH_LOW_TOP_PLAYER, this._onReceivedTop, this);
+        app.system.removeListener(app.commands.MINIGAME_CAO_THAP_TOP_PLAYER, this._onReceivedTop, this);
     }
 
     _onReceivedTop(data) {
