@@ -1,9 +1,9 @@
 import app from 'app';
 import BasePopup from 'BasePopup';
-import HighLowHistoryItem from 'HighLowHistoryItem'
+import HighLowHistoryItemInfoItem from 'HighLowHistoryItemInfoItem'
 import CCUtils from 'CCUtils';
 
-class HighLowHistoryPopup extends BasePopup {
+class HighLowHistoryItemInfoPopup extends BasePopup {
     constructor() {
         super();
 
@@ -15,18 +15,19 @@ class HighLowHistoryPopup extends BasePopup {
 
     onEnable() {
         super.onEnable();
-        // let histories = []
+        let info = []
         // for(let i = 0; i< 15; i++) {
-        //     histories.push({
-        //         i: `000${i}`,
+        //     info.push({
+        //         time: `12/22/201${i}`,
         //         step: `00${i}`,
+        //         action: `ohoho${i}`,
         //         bet: 123,
         //         winAmount: 123,
         //         card: i+5,
         //     })
         // }
         // let data = {
-        //     histories
+        //     info
         // }
         // this._onReceivedHistory(data)
         // this._registerEventListener();
@@ -41,23 +42,26 @@ class HighLowHistoryPopup extends BasePopup {
     }
 
     _registerEventListener() {
-        app.system.addListener(app.commands.MINIGAME_CAO_THAP_HISTORY, this._onReceivedHistory, this);
+        //TODO
+        // app.system.addListener(app.commands.MINIGAME_CAO_THAP_HISTORY, this._onReceivedHistory, this);
     }
 
     _deregisterEventListener() {
-        app.system.removeListener(app.commands.MINIGAME_CAO_THAP_HISTORY, this._onReceivedHistory, this);
+        //TODO
+        // app.system.removeListener(app.commands.MINIGAME_CAO_THAP_HISTORY, this._onReceivedHistory, this);
     }
 
     _sendGetHistory() {
         // warn('send get history');
-        app.service.send({cmd: app.commands.MINIGAME_CAO_THAP_HISTORY});
+        //TODO
+        // app.service.send({cmd: app.commands.MINIGAME_CAO_THAP_HISTORY});
     }
 
     _onReceivedHistory(data) {
         // warn('history', data);
         this._removeItems();
 
-        data.histories.forEach((info) => {
+        data.info.forEach((info) => {
             this._addItem(info);
         });
     }
@@ -70,11 +74,11 @@ class HighLowHistoryPopup extends BasePopup {
         var item = cc.instantiate(this.itemPrefab);
         item.active = true;
 
-        var itemCtrl = item.getComponent(HighLowHistoryItem);
+        var itemCtrl = item.getComponent(HighLowHistoryItemInfoItem);
         itemCtrl.loadData(info);
         this.container.addChild(item);
     }
 
 }
 
-app.createComponent(HighLowHistoryPopup);
+app.createComponent(HighLowHistoryItemInfoPopup);

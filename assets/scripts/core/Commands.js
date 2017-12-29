@@ -326,6 +326,8 @@ Commands.MINIGAME_MINI_POKER_PLAY = "mng_pokerPlay";
 Commands.MINIGAME_MINI_POKER_GET_CONFIG = "mng_pokerConfig";
 
 Commands.MINIGAME_CAO_THAP_HISTORY = "mng_caoThapHistory";
+// TODO
+// Commands.MINIGAME_CAO_THAP_HISTORY = "mng_caoThapHistory";
 Commands.MINIGAME_CAO_THAP_TOP_PLAYER = "mng_caoThapTopPlayer";
 
 Commands.BANK_TRANSFER_HISTORY_DETAIL = "b_athd";
