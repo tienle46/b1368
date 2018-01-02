@@ -15,9 +15,24 @@
                 <key>spriteSourceSize</key>
                 <string>{71,88}</string>
                 <key>textureRect</key>
-                <string>{{908,166},{71,88}}</string>
+                <string>{{846,166},{71,88}}</string>
                 <key>textureRotated</key>
                 <true/>
+            </dict>
+            <key>A-2.png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{0,0}</string>
+                <key>spriteSize</key>
+                <string>{71,88}</string>
+                <key>spriteSourceSize</key>
+                <string>{71,88}</string>
+                <key>textureRect</key>
+                <string>{{936,166},{71,88}}</string>
+                <key>textureRotated</key>
+                <false/>
             </dict>
             <key>bg-gold.png</key>
             <dict>
@@ -30,9 +45,9 @@
                 <key>spriteSourceSize</key>
                 <string>{202,60}</string>
                 <key>textureRect</key>
-                <string>{{846,166},{202,60}}</string>
+                <string>{{753,443},{202,60}}</string>
                 <key>textureRotated</key>
-                <true/>
+                <false/>
             </dict>
             <key>bg-menu.png</key>
             <dict>
@@ -120,7 +135,7 @@
                 <key>spriteSourceSize</key>
                 <string>{65,65}</string>
                 <key>textureRect</key>
-                <string>{{908,239},{65,65}}</string>
+                <string>{{846,239},{65,65}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -135,7 +150,7 @@
                 <key>spriteSourceSize</key>
                 <string>{65,65}</string>
                 <key>textureRect</key>
-                <string>{{908,306},{65,65}}</string>
+                <string>{{913,256},{65,65}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -165,7 +180,7 @@
                 <key>spriteSourceSize</key>
                 <string>{46,46}</string>
                 <key>textureRect</key>
-                <string>{{913,443},{46,46}}</string>
+                <string>{{957,443},{46,46}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -180,7 +195,7 @@
                 <key>spriteSourceSize</key>
                 <string>{51,51}</string>
                 <key>textureRect</key>
-                <string>{{807,443},{51,51}}</string>
+                <string>{{900,323},{51,51}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -210,7 +225,7 @@
                 <key>spriteSourceSize</key>
                 <string>{51,51}</string>
                 <key>textureRect</key>
-                <string>{{860,443},{51,51}}</string>
+                <string>{{953,323},{51,51}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -225,7 +240,7 @@
                 <key>spriteSourceSize</key>
                 <string>{52,52}</string>
                 <key>textureRect</key>
-                <string>{{753,443},{52,52}}</string>
+                <string>{{846,306},{52,52}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -241,9 +256,9 @@
             <key>realTextureFileName</key>
             <string>caothap.png</string>
             <key>size</key>
-            <string>{997,501}</string>
+            <string>{1008,504}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:c1236a3c584630d2e05ff1e55cf969d0:e2a45e2e0a7559f233ffcf85d626cf64:3af258f5c61c3eaec856f81b60801c25$</string>
+            <string>$TexturePacker:SmartUpdate:4f5879d957089976d73de565deccb060:a0976a76c88207e31b7f40f0423d1f94:3af258f5c61c3eaec856f81b60801c25$</string>
             <key>textureFileName</key>
             <string>caothap.png</string>
         </dict>
