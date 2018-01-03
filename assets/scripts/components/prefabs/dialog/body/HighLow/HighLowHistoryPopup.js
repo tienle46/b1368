@@ -1,6 +1,7 @@
 import app from 'app';
 import BasePopup from 'BasePopup';
 import HighLowHistoryItem from 'HighLowHistoryItem'
+import HighLowHistoryItemInfo from 'HighLowHistoryItemInfo'
 import CCUtils from 'CCUtils';
 
 class HighLowHistoryPopup extends BasePopup {
@@ -8,8 +9,10 @@ class HighLowHistoryPopup extends BasePopup {
         super();
 
         this.properties = this.assignProperties({
-            container : cc.Node,
-            itemPrefab: cc.Node
+            container: cc.Node,
+            itemPrefab: cc.Node,
+            bodyHistory: cc.Node,
+            bodyHistoryDetail: cc.Node
         });
     }
 
@@ -38,6 +41,7 @@ class HighLowHistoryPopup extends BasePopup {
         // warn('On disable');
 
         this._deregisterEventListener();
+        this._changeToMainHistory()
     }
 
     _registerEventListener() {
@@ -50,7 +54,18 @@ class HighLowHistoryPopup extends BasePopup {
 
     _sendGetHistory() {
         // warn('send get history');
-        app.service.send({cmd: app.commands.MINIGAME_CAO_THAP_HISTORY});
+        app.service.send({ cmd: app.commands.MINIGAME_CAO_THAP_HISTORY });
+    }
+
+    _sendGetHistoryDetail(i) {
+        // warn('send get history');
+        //TODO
+        app.service.send({
+            cmd: app.commands.MINIGAME_CAO_THAP_HISTORY_DETAIL,
+            data: {
+                i
+            }
+        });
     }
 
     _onReceivedHistory(data) {
@@ -60,6 +75,33 @@ class HighLowHistoryPopup extends BasePopup {
         data.histories.forEach((info) => {
             this._addItem(info);
         });
+    }
+
+    onBtnInfoClicked(e) {
+        let itemNode = e.currentTarget.parent
+        let item = itemNode.getComponent(HighLowHistoryItem)
+        let itemId = item.itemId
+        this.bodyHistoryDetail.getComponent(HighLowHistoryItemInfo).time = item.time
+        this._showHistoryDetailByItem(itemId)
+    }
+    
+    _showHistoryDetailByItem(itemId) {
+        this.bodyHistory.active = false
+        this.bodyHistoryDetail.active = true
+        this._sendGetHistoryDetail(itemId)
+        
+    }
+    
+    _changeToMainHistory(){
+        if (this.bodyHistory.active == false) {
+            this.bodyHistory.active = true
+            this.bodyHistoryDetail.active = false
+        }
+        this.bodyHistoryDetail.getComponent(HighLowHistoryItemInfo)._removeItems()
+    }
+
+    onBtnBackClicked() {
+        this._changeToMainHistory()
     }
 
     _removeItems() {

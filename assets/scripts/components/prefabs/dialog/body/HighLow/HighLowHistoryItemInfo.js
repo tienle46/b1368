@@ -1,9 +1,9 @@
 import app from 'app';
-import BasePopup from 'BasePopup';
 import HighLowHistoryItemInfoItem from 'HighLowHistoryItemInfoItem'
 import CCUtils from 'CCUtils';
+import Component from 'Component';
 
-class HighLowHistoryItemInfoPopup extends BasePopup {
+class HighLowHistoryItemInfo extends Component{
     constructor() {
         super();
 
@@ -11,13 +11,12 @@ class HighLowHistoryItemInfoPopup extends BasePopup {
             container: cc.Node,
             itemPrefab: cc.Node
         });
-        this.itemId = 0
-        this.time = ''
+        this.time = null
     }
 
     onEnable() {
-        super.onEnable();
-        let info = []
+        // super.onEnable();
+        // let info = []
         // for(let i = 0; i< 15; i++) {
         //     info.push({
         //         time: `12/22/201${i}`,
@@ -33,35 +32,20 @@ class HighLowHistoryItemInfoPopup extends BasePopup {
         // }
         // this._onReceivedHistory(data)
         this._registerEventListener();
-        this._sendGetHistory();
     }
 
     onDisable() {
-        super.onDisable();
-        // warn('On disable');
+        // super.onDisable();
 
         this._deregisterEventListener();
     }
 
     _registerEventListener() {
-        //TODO
         app.system.addListener(app.commands.MINIGAME_CAO_THAP_HISTORY_DETAIL, this._onReceivedHistory, this);
     }
 
     _deregisterEventListener() {
-        //TODO
         app.system.removeListener(app.commands.MINIGAME_CAO_THAP_HISTORY_DETAIL, this._onReceivedHistory, this);
-    }
-
-    _sendGetHistory() {
-        // warn('send get history');
-        //TODO
-        app.service.send({
-            cmd: app.commands.MINIGAME_CAO_THAP_HISTORY_DETAIL,
-            data: {
-                i: this.itemId
-            }
-        });
     }
 
     _onReceivedHistory(data) {
@@ -86,7 +70,7 @@ class HighLowHistoryItemInfoPopup extends BasePopup {
         itemCtrl.loadData(info);
         this.container.addChild(item);
     }
-
+    
 }
 
-app.createComponent(HighLowHistoryItemInfoPopup);
+app.createComponent(HighLowHistoryItemInfo);

@@ -34,6 +34,21 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
+            <key>back.png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{0,0}</string>
+                <key>spriteSize</key>
+                <string>{139,46}</string>
+                <key>spriteSourceSize</key>
+                <string>{139,46}</string>
+                <key>textureRect</key>
+                <string>{{1,463},{139,46}}</string>
+                <key>textureRotated</key>
+                <false/>
+            </dict>
             <key>bg-gold.png</key>
             <dict>
                 <key>aliases</key>
@@ -180,7 +195,7 @@
                 <key>spriteSourceSize</key>
                 <string>{46,46}</string>
                 <key>textureRect</key>
-                <string>{{957,443},{46,46}}</string>
+                <string>{{142,463},{46,46}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -256,9 +271,9 @@
             <key>realTextureFileName</key>
             <string>caothap.png</string>
             <key>size</key>
-            <string>{1008,504}</string>
+            <string>{1008,510}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:4f5879d957089976d73de565deccb060:a0976a76c88207e31b7f40f0423d1f94:3af258f5c61c3eaec856f81b60801c25$</string>
+            <string>$TexturePacker:SmartUpdate:ed19cf9fedeb76c915fec17efd309266:78fc36d9e2f8fde78aa0a26095d1618f:3af258f5c61c3eaec856f81b60801c25$</string>
             <key>textureFileName</key>
             <string>caothap.png</string>
         </dict>

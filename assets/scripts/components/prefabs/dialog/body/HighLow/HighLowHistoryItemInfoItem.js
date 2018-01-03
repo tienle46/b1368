@@ -17,7 +17,7 @@ class HighLowHistoryItemInfoItem extends Actor {
             cardAtlas: cc.SpriteAtlas,
         });
         this.popupInfo = null;
-        this.time = ''
+        this.time = null
     }
 
     loadData(data) {
