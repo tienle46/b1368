@@ -3,6 +3,7 @@ import Actor from 'Actor';
 import HighLowCardHand from './HighLowCardHand'
 // import MessagePopup from 'MessagePopup';
 import Utils from 'GeneralUtils';
+import GameUtils from 'GameUtils';
 
 class HighLowHistoryItemInfoItem extends Actor {
     constructor() {
@@ -33,7 +34,7 @@ class HighLowHistoryItemInfoItem extends Actor {
         this.lblTime.string = this.time
         this.lblStep.string = step
         this.lblAction.string = predict
-        this.lblWin.string = win
+        this.lblWin.string = GameUtils.formatNumberType1(win)
         // this.info = info
 
         this.cardHand.spriteFrame = this.cardAtlas.getSpriteFrame(HighLowCardHand.getSpriteName(card))
