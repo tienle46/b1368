@@ -29,15 +29,15 @@ class HighLowHistoryPopup extends BasePopup {
         //     histories
         // }
         // this._onReceivedHistory(data)
-        // this._registerEventListener();
-        // this._sendGetHistory();
+        this._registerEventListener();
+        this._sendGetHistory();
     }
 
     onDisable() {
         super.onDisable();
         // warn('On disable');
 
-        // this._deregisterEventListener();
+        this._deregisterEventListener();
     }
 
     _registerEventListener() {

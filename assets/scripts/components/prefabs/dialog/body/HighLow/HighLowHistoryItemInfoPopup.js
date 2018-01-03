@@ -8,9 +8,11 @@ class HighLowHistoryItemInfoPopup extends BasePopup {
         super();
 
         this.properties = this.assignProperties({
-            container : cc.Node,
+            container: cc.Node,
             itemPrefab: cc.Node
         });
+        this.itemId = 0
+        this.time = ''
     }
 
     onEnable() {
@@ -30,39 +32,44 @@ class HighLowHistoryItemInfoPopup extends BasePopup {
         //     info
         // }
         // this._onReceivedHistory(data)
-        // this._registerEventListener();
-        // this._sendGetHistory();
+        this._registerEventListener();
+        this._sendGetHistory();
     }
 
     onDisable() {
         super.onDisable();
         // warn('On disable');
 
-        // this._deregisterEventListener();
+        this._deregisterEventListener();
     }
 
     _registerEventListener() {
         //TODO
-        // app.system.addListener(app.commands.MINIGAME_CAO_THAP_HISTORY, this._onReceivedHistory, this);
+        app.system.addListener(app.commands.MINIGAME_CAO_THAP_HISTORY_DETAIL, this._onReceivedHistory, this);
     }
 
     _deregisterEventListener() {
         //TODO
-        // app.system.removeListener(app.commands.MINIGAME_CAO_THAP_HISTORY, this._onReceivedHistory, this);
+        app.system.removeListener(app.commands.MINIGAME_CAO_THAP_HISTORY_DETAIL, this._onReceivedHistory, this);
     }
 
     _sendGetHistory() {
         // warn('send get history');
         //TODO
-        // app.service.send({cmd: app.commands.MINIGAME_CAO_THAP_HISTORY});
+        app.service.send({
+            cmd: app.commands.MINIGAME_CAO_THAP_HISTORY_DETAIL,
+            data: {
+                i: this.itemId
+            }
+        });
     }
 
     _onReceivedHistory(data) {
         // warn('history', data);
         this._removeItems();
 
-        data.info.forEach((info) => {
-            this._addItem(info);
+        data.details.forEach((details) => {
+            this._addItem(details);
         });
     }
 
@@ -75,6 +82,7 @@ class HighLowHistoryItemInfoPopup extends BasePopup {
         item.active = true;
 
         var itemCtrl = item.getComponent(HighLowHistoryItemInfoItem);
+        itemCtrl.time = this.time
         itemCtrl.loadData(info);
         this.container.addChild(item);
     }

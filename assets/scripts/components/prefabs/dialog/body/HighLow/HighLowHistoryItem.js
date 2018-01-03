@@ -36,6 +36,9 @@ class HighLowHistoryItem extends Actor {
         this.lblStepNumber.string = stepNumber
         this.lblBet.string = bet
         this.lblWin.string = win
+        
+        this.itemId = data.i
+        this.time = this.formatTime(data.time)
         // this.info = info
         // this.info = info
 
@@ -52,6 +55,8 @@ class HighLowHistoryItem extends Actor {
             this.popupInfo = cc.instantiate(this.popupHistoryItemInfoPrefab);
             this.popupInfo.active = false;
             this.popupInfo.position = cc.p(0,0);
+            this.popupInfo.getComponent(HighLowHistoryItemInfoPopup).itemId = this.itemId
+            this.popupInfo.getComponent(HighLowHistoryItemInfoPopup).time = this.time
             this.addNode(this.popupInfo);
             app.system.getCurrentSceneNode().addChild(this.popupInfo, 30);
         }

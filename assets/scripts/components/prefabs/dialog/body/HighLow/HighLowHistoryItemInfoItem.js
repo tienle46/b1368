@@ -17,18 +17,22 @@ class HighLowHistoryItemInfoItem extends Actor {
             cardAtlas: cc.SpriteAtlas,
         });
         this.popupInfo = null;
+        this.time = ''
     }
 
     loadData(data) {
-        let time = this.formatTime(data.time);
+        // let time = this.formatTime(data.time);
         let step = data.step
-        let action = data.action
+        let predict = ''
+        if(data.predict != undefined) {
+            predict = data.predict ? 'trên' : 'dưới'
+        }
         let win = data.winAmount || 0;
         let card = data.card
         
-        this.lblTime.string = time
+        this.lblTime.string = this.time
         this.lblStep.string = step
-        this.lblAction.string = action
+        this.lblAction.string = predict
         this.lblWin.string = win
         // this.info = info
 

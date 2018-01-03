@@ -1,6 +1,5 @@
 import BasePopup from 'BasePopup';
 import CardStreak from 'CardStreak';
-import HighLowSpecialCard from 'HighLowSpecialCard';
 
 class HighLowPopup extends BasePopup {
     constructor() {
