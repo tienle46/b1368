@@ -12,7 +12,8 @@ class HighLowHistoryPopup extends BasePopup {
             container: cc.Node,
             itemPrefab: cc.Node,
             bodyHistory: cc.Node,
-            bodyHistoryDetail: cc.Node
+            bodyHistoryDetail: cc.Node,
+            historyScrollView: cc.ScrollView
         });
     }
 
@@ -33,7 +34,7 @@ class HighLowHistoryPopup extends BasePopup {
         // }
         // this._onReceivedHistory(data)
         this._registerEventListener();
-        this._sendGetHistory();
+        this.scheduleOnce(this._sendGetHistory, 0.2);
     }
 
     onDisable() {
@@ -41,7 +42,6 @@ class HighLowHistoryPopup extends BasePopup {
         // warn('On disable');
 
         this._deregisterEventListener();
-        this._changeToMainHistory()
     }
 
     _registerEventListener() {
@@ -75,6 +75,16 @@ class HighLowHistoryPopup extends BasePopup {
         data.histories.forEach((info) => {
             this._addItem(info);
         });
+    }
+    
+    _onclosePopup() {
+        this.historyScrollView.scrollToTop()
+        this._changeToMainHistory()
+    }
+    
+    onBtnCloseClicked() {
+        this._onclosePopup()
+        super.onBtnCloseClicked()
     }
 
     onBtnInfoClicked(e) {

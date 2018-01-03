@@ -5078,6 +5078,9 @@
     },
     "bodyHistoryDetail": {
       "__id__": 87
+    },
+    "historyScrollView": {
+      "__id__": 81
     }
   },
   {
