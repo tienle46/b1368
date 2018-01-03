@@ -19,7 +19,7 @@ class MiniPokerTopPopup extends BasePopup {
 
         this._registerEventListener();
 
-        this._sendGetTop();
+        this.scheduleOnce(this._sendGetTop, .25);
     }
 
     onDisable() {

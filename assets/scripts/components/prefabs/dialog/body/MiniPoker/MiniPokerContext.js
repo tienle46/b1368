@@ -32,14 +32,14 @@ export default class MiniPokerContext {
         app.system.addListener(app.commands.MINIGAME_MINI_POKER_GET_CONFIG, this._onReceivedConfig, this);
         app.system.addListener(app.commands.MINIGAME_MINI_POKER_SYNC_JACKPOT_VALUES, this._onReceivedJackpotSync, this);
         app.system.addListener(app.commands.MINIGAME_MINI_POKER_PLAY, this._onReceivedPlayResult, this);
-        app.system.addListener(SFS2X.SFSEvent.USER_VARIABLES_UPDATE, this._onUserVariablesUpdate, this);
+        // app.system.addListener(SFS2X.SFSEvent.USER_VARIABLES_UPDATE, this._onUserVariablesUpdate, this);
     }
 
     _removeEventListeners() {
         app.system.removeListener(app.commands.MINIGAME_MINI_POKER_GET_CONFIG, this._onReceivedConfig, this);
         app.system.removeListener(app.commands.MINIGAME_MINI_POKER_SYNC_JACKPOT_VALUES, this._onReceivedJackpotSync, this);
         app.system.removeListener(app.commands.MINIGAME_MINI_POKER_PLAY, this._onReceivedPlayResult, this);
-        app.system.removeListener(SFS2X.SFSEvent.USER_VARIABLES_UPDATE, this._onUserVariablesUpdate, this);
+        // app.system.removeListener(SFS2X.SFSEvent.USER_VARIABLES_UPDATE, this._onUserVariablesUpdate, this);
     }
 
     _onReceivedConfig(data) {
@@ -55,13 +55,14 @@ export default class MiniPokerContext {
     }
 
     _onReceivedPlayResult(data) {
-        // warn('result', data);
         if (data.error) {
             this.popup && this.popup.showError(data.error);
             return;
         }
 
         this.lastSpinTime = this.getCurrentTime();
+        var newBalance = data.ba || app.context.getMeBalance();
+        app.context.setBalance(newBalance);
         this.popup && this.popup.showResult(data);
     }
 
@@ -99,7 +100,7 @@ export default class MiniPokerContext {
         this.jackpotValues = data.jackpotValues;
         this.betValues = data.bets;
         this.subInterval = data.subInterval;
-        this.spinInterval = data.spinInterval;
+        this.spinInterval = data.spinInterval + 100;
         this.curBetValue = this.betValues[this.selectedBet];
         this.prizeConfig = data.prizeConfig;
 

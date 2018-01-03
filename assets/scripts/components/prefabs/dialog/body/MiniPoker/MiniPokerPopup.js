@@ -81,7 +81,7 @@ class MiniPokerPopup extends BasePopup {
         // warn(cc.kCCRepeatForever);
         if (app.miniPokerContext.subInterval === 0 ||
             this._getCurTime() - app.miniPokerContext.lastSpinTime > app.miniPokerContext.subInterval) {
-            this._subscribe();
+            this.scheduleOnce(this._subscribe, .2)
         }
         this.updateBalance();
         this.loadBetConfig();
@@ -189,8 +189,8 @@ class MiniPokerPopup extends BasePopup {
     }
 
     onQuickSpinStateChanged() {
-        var btnSpinController = this.btnSpin.getComponent(cc.Button);
-        btnSpinController && (btnSpinController.interactable = !this.quickSpinToggle.isChecked);
+        // var btnSpinController = this.btnSpin.getComponent(cc.Button);
+        // btnSpinController && (btnSpinController.interactable = !this.quickSpinToggle.isChecked);
 
         this._checkQuickSpin();
     }
@@ -218,12 +218,14 @@ class MiniPokerPopup extends BasePopup {
         if (!app.miniPokerContext.isLoadedConfig) return;
 
         var checkSpinTime = this._checkSpinTime();
-        // warn(checkSpinTime);
+
         if (checkSpinTime) {
             app.miniPokerContext.sendPlay(app.miniPokerContext.curBetValue);
             // this.enableSpin = false;
             this._unscheduleSubscribe();
             this._scheduleSubscribe();
+        } else {
+            app.system.showLongToast("Bạn đã quay quá nhanh");
         }
     }
 
@@ -254,6 +256,8 @@ class MiniPokerPopup extends BasePopup {
         this.lblBet1.color = this.toggleEnableColor;
         this.lblBet2.color = this.toggleDisableColor;
         this.lblBet3.color = this.toggleDisableColor;
+
+        this.updateJarMoneys();
     }
 
     onBtnBet2Clicked() {
@@ -262,6 +266,8 @@ class MiniPokerPopup extends BasePopup {
         this.lblBet1.color = this.toggleDisableColor;
         this.lblBet2.color = this.toggleEnableColor;
         this.lblBet3.color = this.toggleDisableColor;
+
+        this.updateJarMoneys();
     }
 
     onBtnBet3Clicked() {
@@ -270,6 +276,8 @@ class MiniPokerPopup extends BasePopup {
         this.lblBet1.color = this.toggleDisableColor;
         this.lblBet2.color = this.toggleDisableColor;
         this.lblBet3.color = this.toggleEnableColor;
+
+        this.updateJarMoneys();
     }
 
     updateBalance() {
@@ -288,14 +296,14 @@ class MiniPokerPopup extends BasePopup {
 
     showError(error) {
         if (error.message) {
-            this._showErroMessage(error.message);
+            this._showErrorMessage(error.message);
         } else {
-            this._showErroMessage(MiniPokerErrorCode.valueOf(error.code));
+            this._showErrorMessage(MiniPokerErrorCode.valueOf(error.code));
         }
     }
 
-    _showErroMessage(msg) {
-        warn("error message: " + msg);
+    _showErrorMessage(msg) {
+        app.system.showLongToast(msg);
     }
 
     showResult(data) {
@@ -318,14 +326,24 @@ class MiniPokerPopup extends BasePopup {
             if (isWin && winAmount > 0) {
                 this._showWinMoney(cardType, winAmount);
             }
+            this.updateBalance();
             this._checkQuickSpin();
         }.bind(this));
     }
 
     _showWinMoney(cardType, winAmount) {
-        this.lblWinMoney && (this.lblWinMoney.string = MiniPokerCardType.getNameForType(cardType) + " +" + winAmount);
-        var anim = this.lblWinMoney.node.getComponent(cc.Animation);
-        anim.play("WinMoneyUp");
+        if (cardType === MiniPokerCardType.THUNG_PHA_SANH_J) {
+            var username = app.context.getMeDisplayName();
+            var money = winAmount;
+            var message = "Chúc mừng bạn đã nổ hũ game Mini Poker.";
+            app.jarManager.jarExplosive({
+                username, money, message
+            });
+        } else {
+            this.lblWinMoney && (this.lblWinMoney.string = MiniPokerCardType.getNameForType(cardType) + " +" + winAmount);
+            var anim = this.lblWinMoney.node.getComponent(cc.Animation);
+            anim.play("WinMoneyUp");
+        }
     }
 }
 
