@@ -196,6 +196,7 @@ class MiniPokerPopup extends BasePopup {
     }
 
     _checkQuickSpin() {
+        if (app.miniPokerContext.checkResultQueue()) return;
         if (this.isSpinning) return;
         if (!this.quickSpinToggle.isChecked) {
             this.unschedule(this.onBtnSpinClicked);
@@ -211,11 +212,22 @@ class MiniPokerPopup extends BasePopup {
         }
     }
 
+    testSpin() {
+        var min = 4;
+        var max = 55;
+        this.cardStreak1.spinToCard(Math.floor(Math.random() * (max - min + 1)) + min);
+    }
+
     onBtnSpinClicked() {
         var anim = this.btnSpin.getComponent(cc.Animation);
         anim.play("ButtonSpinAnimation");
+        //
+        // this.testSpin();
+        // return;
 
         if (!app.miniPokerContext.isLoadedConfig) return;
+
+        if (!app.miniPokerContext.checkCurrentMoney()) return;
 
         var checkSpinTime = this._checkSpinTime();
 
@@ -225,7 +237,7 @@ class MiniPokerPopup extends BasePopup {
             this._unscheduleSubscribe();
             this._scheduleSubscribe();
         } else {
-            app.system.showLongToast("Bạn đã quay quá nhanh");
+            this.showError("Bạn đã quay quá nhanh");
         }
     }
 
@@ -317,7 +329,7 @@ class MiniPokerPopup extends BasePopup {
             this.updateJarMoneys();
         }
         this.isSpinning = true;
-        this.cardStreak1.spinToCard(cards[0], 3);
+        this.cardStreak1.spinToCard(cards[0]);
         this.cardStreak2.spinToCard(cards[1], 3.25);
         this.cardStreak3.spinToCard(cards[2], 3.5);
         this.cardStreak4.spinToCard(cards[3], 3.75);

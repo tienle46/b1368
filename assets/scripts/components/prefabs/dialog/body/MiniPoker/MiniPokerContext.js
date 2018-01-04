@@ -13,6 +13,8 @@ export default class MiniPokerContext {
         this.lastSpinTime = 0;
         this.prizeConfig = null;
 
+        this.resultQueue = [];
+
         this.isLoadedConfig = false;
         this.popup = null;
 
@@ -55,6 +57,33 @@ export default class MiniPokerContext {
     }
 
     _onReceivedPlayResult(data) {
+        this.resultQueue.push(data);
+        warn("resultQueue", this.resultQueue.length);
+
+        if (this.resultQueue.length === 1) {
+            this._displayResult();
+        }
+    }
+
+    checkResultQueue() {
+        if (this.resultQueue.length > 0) {
+            this._displayResult();
+            return true;
+        }
+        return false;
+    }
+
+    checkCurrentMoney() {
+        if (app.context.getMeBalance() < this.curBetValue) {
+            this.popup && this.popup.showError("Bạn không đủ tiền đẻ chơi tiếp.");
+            return false;
+        }
+        return true;
+    }
+
+    _displayResult() {
+        var data = this.resultQueue.splice(0, 1)[0];
+
         if (data.error) {
             this.popup && this.popup.showError(data.error);
             return;

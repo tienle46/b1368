@@ -12,7 +12,32 @@ class CardStreak extends Actor {
         });
     }
 
-    spinToCard(cardValue, duration, onComplete) {
+    spinToCard(cardValue, duration = false, onComplete) {
+
+        if (duration) {
+            this._spinToCardWithAnimation(cardValue, duration, onComplete);
+        } else {
+            this._spinToCardWithoutAnimation(cardValue, onComplete);
+        }
+    }
+
+    _spinToCardWithoutAnimation(cardValue, onComplete) {
+        this._removeCards();
+        var lastMotionBlurCard = cc.instantiate(this.motionBlurPrefab);
+        lastMotionBlurCard.position = cc.p(0, CardStreak.START_Y + 1 * CardStreak.CARD_HEIGHT);
+        var motionCardController = lastMotionBlurCard.getComponent(MotionBlurCard);
+        motionCardController.initWithCardValue(cardValue);
+        motionCardController.enableMotionBlur(false);
+
+        var curY = this.container.y;
+        var targetY = curY - 1 * CardStreak.CARD_HEIGHT;
+        this.container.y = targetY;
+        if (onComplete) {
+            onComplete();
+        }
+    }
+
+    _spinToCardWithAnimation(cardValue, duration, onComplete) {
         this._removeCards();
         this._generateCard();
         var lastMotionBlurCard = cc.instantiate(this.motionBlurPrefab);
