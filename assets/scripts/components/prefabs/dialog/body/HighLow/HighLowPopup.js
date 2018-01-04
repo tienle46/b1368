@@ -1,5 +1,6 @@
 import BasePopup from 'BasePopup';
 import CardStreak from 'CardStreak';
+import HighLowContext from "HighLowContext";
 
 class HighLowPopup extends BasePopup {
     constructor() {
@@ -15,18 +16,38 @@ class HighLowPopup extends BasePopup {
         this.isSpinning = false
     }
     
-    onStartBtnClicked() {
-        if(this.playFrame.node.active == true) {
-            this.playFrame.node.active = false
-            this.card.node.active = true
-        }
+    _commonInit() {
+        (!app.highLowContext) && (app.highLowContext = new HighLowContext());
+        (app.highLowContext) && (app.highLowContext.popup = this);
     }
     
-    _playSpinCard() {
+    onLoad() {
+        super.onLoad()
+        
+        this._commonInit()
+    }
+    
+    
+    enableCardStreak() {
+        this.playFrame.node.active = false
+        this.card.node.active = true
+    }
+    disableCardStreak() {
+        this.playFrame.node.active = true
+        this.card.node.active = false
+    }
+    
+    onStartBtnClicked() {
+        this.enableCardStreak()
+        
+        app.highLowContext.sendStart(1000);
+        app.highLowContext.sendGetPlay(1000);
+    }
+    
+    playSpinCard(cardValue, duration = 3) {
         if(this.card.node.active == true && !this.isSpinning){
-            let cardValue = this.card._randomCardValue()
             this.isSpinning = true
-            this.card.spinToCard(cardValue, 3, () => {
+            this.card.spinToCard(cardValue, duration, () => {
                 this.isSpinning = false
                 if(cardValue < 8) {
                     let children = this.atGroup.children
@@ -38,10 +59,10 @@ class HighLowPopup extends BasePopup {
     }
     
     onHigherBetBtnClicked() {
-        this._playSpinCard()
+        app.highLowContext.sendGetPlay(1000, 1);
     }
     onLowerBetBtnClicked() {
-        this._playSpinCard()
+        app.highLowContext.sendGetPlay(1000, 0);
     }
 
     onEnable() {
@@ -49,7 +70,9 @@ class HighLowPopup extends BasePopup {
     }
 
     onDisable() {
+        this.disableCardStreak()
         super.onDisable();
+        app.highLowContext.popup = null;
     }
 
 }
