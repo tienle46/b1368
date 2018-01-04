@@ -4395,7 +4395,7 @@
       "__id__": 3
     },
     "component": "HighLowPopup",
-    "handler": "onPlayBtnClicked",
+    "handler": "onHigherBetBtnClicked",
     "customEventData": ""
   },
   {
@@ -4625,7 +4625,7 @@
       "__id__": 3
     },
     "component": "HighLowPopup",
-    "handler": "onPlayBtnClicked",
+    "handler": "onLowerBetBtnClicked",
     "customEventData": ""
   },
   {
