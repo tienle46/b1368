@@ -2,7 +2,7 @@ import app from 'app';
 import Utils from 'GeneralUtils';
 
 export default class HighLowContext {
-    constructor () {
+    constructor() {
         this.jackpotValues = []
         this.betValues = []
         this.duration = null
@@ -14,13 +14,13 @@ export default class HighLowContext {
 
         this.sendGetConfig();
     }
-    
+
     sendGetConfig() {
         app.service.send({
             cmd: app.commands.MINIGAME_CAO_THAP_CONFIG
         })
     }
-    
+
     sendStart(bet) {
         const sendObject = {
             cmd: app.commands.MINIGAME_CAO_THAP_START,
@@ -30,7 +30,7 @@ export default class HighLowContext {
         }
         app.service.send(sendObject)
     }
-    
+
     sendGetPlay(bet, predict) {
         const sendObject = {
             cmd: app.commands.MINIGAME_CAO_THAP_PLAY,
@@ -41,18 +41,24 @@ export default class HighLowContext {
         }
         app.service.send(sendObject)
     }
-    
-    // sendGetConfig() {
-    //     app.service.send({
-    //         cmd: app.commands.MINIGAME_CAO_THAP_CONFIG
-    //     })
-    // }
-    
+
+    sendEnd(bet) {
+        app.service.send({
+            cmd: app.commands.MINIGAME_CAO_THAP_END,
+            data: {
+                bet
+            }
+        })
+    }
+
     loadConfig(data) {
         this.jackpotValues = data.jackpotValues;
         this.betValues = data.bets;
         this.duration = data.duration;
         this.isLoadedConfig = true;
+        if(data.playing){
+            this.popup && this.popup.playSpinCard(data.cards, 0)
+        }
     }
 
 
@@ -69,21 +75,21 @@ export default class HighLowContext {
         app.system.removeListener(app.commands.MINIGAME_CAO_THAP_END, this._onReceivedEnd, this);
         app.system.removeListener(app.commands.MINIGAME_CAO_THAP_CONFIG, this._onReceivedConfig, this);
     }
-    
-    _onReceivedStart(data){
-        
+
+    _onReceivedStart(data) {
+        this.sendGetPlay(1000)
     }
-    
-    _onReceivedPlay(data){
-        if(this.isStart){
+
+    _onReceivedPlay(data) {
+        if (this.isStart) {
             this.isStart = false
-            this.popup && this.popup.playSpinCard(data.card, 0)
+            this.popup && this.popup.playSpinCard(data.cards, 0)
         }
-        this.popup && this.popup.playSpinCard(data.card)
+        this.popup && this.popup.playSpinCard(data.cards)
     }
-    
-    _onReceivedEnd(data){
-        
+
+    _onReceivedEnd(data) {
+
     }
     _onReceivedConfig(data) {
         // warn('config', data);

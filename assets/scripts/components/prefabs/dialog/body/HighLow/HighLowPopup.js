@@ -7,7 +7,7 @@ class HighLowPopup extends BasePopup {
         super();
 
         this.properties = this.assignProperties({
-            playFrame : cc.Sprite,
+            startBtn : cc.Node,
             card: CardStreak,
             highLowAtlas: cc.SpriteAtlas,
             atGroup: cc.Node,
@@ -29,19 +29,19 @@ class HighLowPopup extends BasePopup {
     
     
     enableCardStreak() {
-        this.playFrame.node.active = false
+        this.startBtn.active = false
         this.card.node.active = true
     }
     disableCardStreak() {
-        this.playFrame.node.active = true
+        this.startBtn.active = true
         this.card.node.active = false
     }
     
     onStartBtnClicked() {
         this.enableCardStreak()
         
+        // app.highLowContext.sendEnd(1000);
         app.highLowContext.sendStart(1000);
-        app.highLowContext.sendGetPlay(1000);
     }
     
     playSpinCard(cardValue, duration = 3) {
@@ -69,10 +69,14 @@ class HighLowPopup extends BasePopup {
         super.onEnable();
     }
 
-    onDisable() {
+    onBtnCloseClicked(){
         this.disableCardStreak()
-        super.onDisable();
         app.highLowContext.popup = null;
+        super.onBtnCloseClicked()
+    }
+    
+    onDisable() {
+        super.onDisable();
     }
 
 }
