@@ -58,7 +58,6 @@ export default class MiniPokerContext {
 
     _onReceivedPlayResult(data) {
         this.resultQueue.push(data);
-        warn("resultQueue", this.resultQueue.length);
 
         if (this.resultQueue.length === 1) {
             this._displayResult();

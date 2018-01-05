@@ -15,7 +15,6 @@ export default class Threshold extends Component {
     
     onLoad() {
         super.onLoad()
-        warn('threshold');
         this.node.opacity = 180
         
         this.draggable = this.node.getComponent('Draggable')
