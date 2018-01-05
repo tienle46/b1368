@@ -86,6 +86,8 @@ class MiniPokerPopup extends BasePopup {
         this.updateBalance();
         this.loadBetConfig();
         this.updateJarMoneys();
+
+        (app.miniPokerContext) && (app.miniPokerContext.sendGetConfig());
     }
 
     _scheduleSubscribe() {
@@ -221,7 +223,7 @@ class MiniPokerPopup extends BasePopup {
     onBtnSpinClicked() {
         var anim = this.btnSpin.getComponent(cc.Animation);
         anim.play("ButtonSpinAnimation");
-        //
+
         // this.testSpin();
         // return;
 
@@ -329,7 +331,7 @@ class MiniPokerPopup extends BasePopup {
             this.updateJarMoneys();
         }
         this.isSpinning = true;
-        this.cardStreak1.spinToCard(cards[0]);
+        this.cardStreak1.spinToCard(cards[0], 3);
         this.cardStreak2.spinToCard(cards[1], 3.25);
         this.cardStreak3.spinToCard(cards[2], 3.5);
         this.cardStreak4.spinToCard(cards[3], 3.75);
