@@ -57,7 +57,7 @@ export default class HighLowContext {
         this.duration = data.duration;
         this.isLoadedConfig = true;
         if(data.playing){
-            this.popup && this.popup.playSpinCard(data.cards, 0)
+            this._setStartGame(data.card)
         }
     }
 
@@ -82,10 +82,10 @@ export default class HighLowContext {
 
     _onReceivedPlay(data) {
         if (this.isStart) {
-            this.isStart = false
-            this.popup && this.popup.playSpinCard(data.cards, 0)
+            this._setStartGame(data.card)
+        } else {
+            this.popup && this.popup.onReceivedPlay(data.card)
         }
-        this.popup && this.popup.playSpinCard(data.cards)
     }
 
     _onReceivedEnd(data) {
@@ -94,6 +94,11 @@ export default class HighLowContext {
     _onReceivedConfig(data) {
         // warn('config', data);
         this.loadConfig(data);
+    }
+    
+    _setStartGame(cardValue) {
+        this.isStart = false
+        this.popup && this.popup.onReceivedStart(cardValue)
     }
 
 }

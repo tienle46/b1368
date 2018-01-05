@@ -1,6 +1,7 @@
 import app from 'app';
 import Actor from 'Actor';
 import MiniPokerPopup from 'MiniPokerPopup';
+import MiniHighLowPopup from 'MiniHighLowPopup';
 import Draggable from 'Draggable';
 import MiniGameIconThreshold from 'MiniGameIconThreshold';
 import MiniGamesManager from 'MiniGamesManager';
@@ -17,9 +18,11 @@ class MiniGameIcon extends Actor {
 
             // Popup prefabs
             miniPokerPrefab: cc.Prefab,
+            miniHighLowPrefab: cc.Prefab,
         });
 
         this.miniPokerPopup = null;
+        this.miniHighLowPopup = null;
         this.isAnimating = false;
     }
 
@@ -141,6 +144,25 @@ class MiniGameIcon extends Actor {
         // if (this._checkClickable()) {
         //
         // }
+    }
+    
+    _initHighLow() {
+        if (this.miniHighLowPopup) return true;
+        if (this.miniHighLowPrefab) {
+            this.miniHighLowPopup = cc.instantiate(this.miniHighLowPrefab);
+            this.miniHighLowPopup.active = false;
+            app.system.getCurrentSceneNode().addChild(this.miniHighLowPopup);
+            return true;
+        }
+
+        return false;
+    }
+    
+    onMiniGameHighLowClicked() {
+        if (this._initHighLow()) {
+            var miniHighLowPopupController = this.miniHighLowPopup.getComponent(MiniHighLowPopup);
+            miniHighLowPopupController.openPopup(true);
+        }
     }
 
     _onMainButtonClicked() {
