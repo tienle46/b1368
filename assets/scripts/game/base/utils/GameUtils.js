@@ -26,6 +26,10 @@ export default class GameUtils {
         return value <= 99999 && value >= -99999 ? value : numeral(value).format('00.0a');
     }
 
+    static formatNumberType3(value = 0) {
+        return value <= 9999 && value >= -9999 ? value : numeral(value).format('0.0a');
+    }
+
     static formatBalanceShort(balance) {
 
         if(isNaN(balance)) return ""

@@ -294,11 +294,11 @@ class MiniPokerPopup extends BasePopup {
     }
 
     updateBalance() {
-        this.lblGold.string = GameUtils.formatNumberType1(app.context.getMeBalance());
+        this.lblGold.string = GameUtils.formatNumberType3(app.context.getMeBalance());
     }
 
     updateJarMoneys() {
-        this.lblHuMoney.string = GameUtils.formatNumberType1(app.miniPokerContext.getCurJackpotMoney());
+        this.lblHuMoney.string = GameUtils.formatNumberType3(app.miniPokerContext.getCurJackpotMoney());
     }
 
     loadBetConfig() {
