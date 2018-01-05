@@ -25,11 +25,11 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 179
+        "__id__": 180
       }
     ],
     "_prefab": {
-      "__id__": 180
+      "__id__": 181
     },
     "_id": "",
     "_opacity": 255,
@@ -193,21 +193,21 @@
         "__id__": 165
       },
       {
-        "__id__": 169
+        "__id__": 170
       },
       {
-        "__id__": 172
+        "__id__": 173
       }
     ],
     "_tag": -1,
     "_active": true,
     "_components": [
       {
-        "__id__": 177
+        "__id__": 178
       }
     ],
     "_prefab": {
-      "__id__": 178
+      "__id__": 179
     },
     "_id": "",
     "_opacity": 255,
@@ -5522,7 +5522,7 @@
     },
     "_children": [],
     "_tag": -1,
-    "_active": true,
+    "_active": false,
     "_components": [
       {
         "__id__": 166
@@ -5532,7 +5532,7 @@
       }
     ],
     "_prefab": {
-      "__id__": 168
+      "__id__": 169
     },
     "_id": "",
     "_opacity": 255,
@@ -5629,7 +5629,11 @@
     "hoverSprite": {
       "__uuid__": "e9ec654c-97a2-4787-9325-e6a10375219a"
     },
-    "clickEvents": [],
+    "clickEvents": [
+      {
+        "__id__": 168
+      }
+    ],
     "_N$interactable": true,
     "_N$enableAutoGrayEffect": false,
     "_N$normalColor": {
@@ -5657,6 +5661,15 @@
     }
   },
   {
+    "__type__": "cc.ClickEvent",
+    "target": {
+      "__id__": 1
+    },
+    "component": "MiniHighLowPopup",
+    "handler": "onEndBtnClicked",
+    "customEventData": ""
+  },
+  {
     "__type__": "cc.PrefabInfo",
     "root": {
       "__id__": 1
@@ -5679,11 +5692,11 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 170
+        "__id__": 171
       }
     ],
     "_prefab": {
-      "__id__": 171
+      "__id__": 172
     },
     "_id": "",
     "_opacity": 255,
@@ -5726,7 +5739,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 169
+      "__id__": 170
     },
     "_enabled": true,
     "_useOriginalSize": false,
@@ -5768,14 +5781,14 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 173
+        "__id__": 174
       },
       {
-        "__id__": 174
+        "__id__": 175
       }
     ],
     "_prefab": {
-      "__id__": 176
+      "__id__": 177
     },
     "_id": "",
     "_opacity": 255,
@@ -5818,7 +5831,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 172
+      "__id__": 173
     },
     "_enabled": true,
     "_spriteFrame": {
@@ -5846,7 +5859,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 172
+      "__id__": 173
     },
     "_enabled": true,
     "transition": 3,
@@ -5874,7 +5887,7 @@
     },
     "clickEvents": [
       {
-        "__id__": 175
+        "__id__": 176
       }
     ],
     "_N$interactable": true,
@@ -5900,7 +5913,7 @@
       "__uuid__": "29158224-f8dd-4661-a796-1ffab537140e"
     },
     "_N$target": {
-      "__id__": 172
+      "__id__": 173
     }
   },
   {
@@ -5908,7 +5921,7 @@
     "target": {
       "__id__": 1
     },
-    "component": "HighLowPopup",
+    "component": "MiniHighLowPopup",
     "handler": "onBtnCloseClicked",
     "customEventData": ""
   },
@@ -5982,6 +5995,9 @@
     },
     "atGroup": {
       "__id__": 153
+    },
+    "btnEnd": {
+      "__id__": 165
     }
   },
   {

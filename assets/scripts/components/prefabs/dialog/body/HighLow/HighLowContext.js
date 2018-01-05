@@ -7,7 +7,7 @@ export default class HighLowContext {
         this.betValues = []
         this.duration = null
         this.isLoadedConfig = false
-        this.isStart = true
+        this.playing = false
         this.popup = null;
 
         this._registerEventListeners();
@@ -56,7 +56,7 @@ export default class HighLowContext {
         this.betValues = data.bets;
         this.duration = data.duration;
         this.isLoadedConfig = true;
-        if(data.playing){
+        if (data.playing) {
             this._setStartGame(data.card)
         }
     }
@@ -81,7 +81,7 @@ export default class HighLowContext {
     }
 
     _onReceivedPlay(data) {
-        if (this.isStart) {
+        if (!this.playing) {
             this._setStartGame(data.card)
         } else {
             this.popup && this.popup.onReceivedPlay(data.card)
@@ -89,15 +89,16 @@ export default class HighLowContext {
     }
 
     _onReceivedEnd(data) {
-
+        this.playing = false
+        this.popup && this.popup.onReceivedEnd()
     }
     _onReceivedConfig(data) {
         // warn('config', data);
         this.loadConfig(data);
     }
-    
+
     _setStartGame(cardValue) {
-        this.isStart = false
+        this.playing = true
         this.popup && this.popup.onReceivedStart(cardValue)
     }
 

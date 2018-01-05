@@ -11,6 +11,7 @@ class MiniHighLowPopup extends BasePopup {
             card: CardStreak,
             highLowAtlas: cc.SpriteAtlas,
             atGroup: cc.Node,
+            btnEnd: cc.Node,
         });
         this.atCount = 0
         this.isSpinning = false
@@ -28,13 +29,13 @@ class MiniHighLowPopup extends BasePopup {
     }
     
     onBtnCloseClicked() {
-        this.disableCardStreak()
+        // this.disableCardStreak()
         app.highLowContext.popup = null;
         super.onBtnCloseClicked()
     }
 
     onStartBtnClicked() {
-        this.enableCardStreak()
+        // this.enableCardStreak()
 
         // app.highLowContext.sendEnd(1000);
         app.highLowContext.sendStart(1000);
@@ -63,14 +64,21 @@ class MiniHighLowPopup extends BasePopup {
     onReceivedPlay(cardValue) {
         this.playSpinCard(cardValue)
     }
+    
+    onReceivedEnd() {
+        // app.highLowContext.sendStart(1000)
+        this.disableCardStreak()
+    }
 
     enableCardStreak() {
         this.startBtn.active = false
         this.card.node.active = true
+        this.btnEnd.active = true
     }
     disableCardStreak() {
         this.startBtn.active = true
         this.card.node.active = false
+        this.btnEnd.active = false
     }
 
     playSpinCard(cardValue, duration = 3) {
