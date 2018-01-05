@@ -12,13 +12,18 @@ class CardStreak extends Actor {
         });
     }
 
-    spinToCard(cardValue, duration = false, onComplete) {
+    doAnimation() {
+        this._removeCards();
+        this._generateCard();
 
-        if (duration) {
-            this._spinToCardWithAnimation(cardValue, duration, onComplete);
-        } else {
-            this._spinToCardWithoutAnimation(cardValue, onComplete);
-        }
+        var lastChild = this.container.children[this.container.children.length - 1];
+        (lastChild && lastChild.getComponent(MotionBlurCard).enableMotionBlur(false));
+
+        
+    }
+
+    spinToCard(cardValue, duration = 0, onComplete) {
+        this._spinToCardWithAnimation(cardValue, duration, onComplete);
     }
 
     _spinToCardWithoutAnimation(cardValue, onComplete) {

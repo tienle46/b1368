@@ -202,8 +202,8 @@ class MiniPokerPopup extends BasePopup {
         if (this.isSpinning) return;
         if (!this.quickSpinToggle.isChecked) {
             this.unschedule(this.onBtnSpinClicked);
-            return;
-        }
+            return;}
+
 
         var delay = (app.miniPokerContext.lastSpinTime + app.miniPokerContext.spinInterval - this._getCurTime()) / 1000;
         // warn('delay', delay);
@@ -252,8 +252,7 @@ class MiniPokerPopup extends BasePopup {
 
         var date = new Date();
         var curTime = date.getTime();
-        if (curTime - app.miniPokerContext.lastSpinTime >= app.miniPokerContext.spinInterval) {
-            // app.miniPokerContext.lastSpinTime = curTime;
+        if (curTime - app.miniPokerContext.lastSpinTime >= app.miniPokerContext.spinInterval - 1000) {
             return true;
         }
         return false;
