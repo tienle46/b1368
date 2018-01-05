@@ -328,7 +328,6 @@ class MiniPokerPopup extends BasePopup {
         var cards = data.cards;
         if (data.jackpots) {
             app.miniPokerContext.jackpotValues = data.jackpots;
-            this.updateJarMoneys();
         }
         this.isSpinning = true;
         this.cardStreak1.spinToCard(cards[0], 3);
@@ -341,6 +340,7 @@ class MiniPokerPopup extends BasePopup {
                 this._showWinMoney(cardType, winAmount);
             }
             this.updateBalance();
+            this.updateJarMoneys();
             this._checkQuickSpin();
         }.bind(this));
     }
