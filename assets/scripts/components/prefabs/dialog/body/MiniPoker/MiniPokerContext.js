@@ -45,7 +45,7 @@ export default class MiniPokerContext {
     }
 
     _onReceivedConfig(data) {
-        // warn('config', data);
+        warn('config', data);
         this.loadConfig(data);
     }
 
@@ -74,7 +74,7 @@ export default class MiniPokerContext {
 
     checkCurrentMoney() {
         if (app.context.getMeBalance() < this.curBetValue) {
-            this.popup && this.popup.showError("Bạn không đủ tiền đẻ chơi tiếp.");
+            this.popup && this.popup.showError({message: "Bạn không đủ tiền đẻ chơi tiếp."});
             return false;
         }
         return true;
@@ -115,7 +115,6 @@ export default class MiniPokerContext {
     }
 
     sendPlay(betAmount) {
-        // warn('Send play', betAmount);
         app.service.send({
             cmd: app.commands.MINIGAME_MINI_POKER_PLAY,
             data: {
@@ -128,7 +127,7 @@ export default class MiniPokerContext {
         this.jackpotValues = data.jackpotValues;
         this.betValues = data.bets;
         this.subInterval = data.subInterval;
-        this.spinInterval = data.spinInterval + 100;
+        this.spinInterval = data.spinInterval + 2000;
         this.curBetValue = this.betValues[this.selectedBet];
         this.prizeConfig = data.prizeConfig;
 

@@ -239,7 +239,7 @@ class MiniPokerPopup extends BasePopup {
             this._unscheduleSubscribe();
             this._scheduleSubscribe();
         } else {
-            this.showError("Bạn đã quay quá nhanh");
+            this.showError({message: "Bạn đã quay quá nhanh."});
         }
     }
 
@@ -330,11 +330,11 @@ class MiniPokerPopup extends BasePopup {
             app.miniPokerContext.jackpotValues = data.jackpots;
         }
         this.isSpinning = true;
-        this.cardStreak1.spinToCard(cards[0], 3);
-        this.cardStreak2.spinToCard(cards[1], 3.25);
-        this.cardStreak3.spinToCard(cards[2], 3.5);
-        this.cardStreak4.spinToCard(cards[3], 3.75);
-        this.cardStreak5.spinToCard(cards[4], 4, function () {
+        this.cardStreak1.spinToCard(cards[0], 3.75);
+        this.cardStreak2.spinToCard(cards[1], 4);
+        this.cardStreak3.spinToCard(cards[2], 4.25);
+        this.cardStreak4.spinToCard(cards[3], 4.5);
+        this.cardStreak5.spinToCard(cards[4], 4.75, function () {
             this.isSpinning = false;
             if (isWin && winAmount > 0) {
                 this._showWinMoney(cardType, winAmount);

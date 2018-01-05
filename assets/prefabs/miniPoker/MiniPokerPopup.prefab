@@ -7970,8 +7970,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 179.64,
-      "height": 40
+      "width": 506.89,
+      "height": 60
     },
     "_rotationX": 0,
     "_rotationY": 0,
@@ -7998,16 +7998,16 @@
     },
     "_enabled": false,
     "_useOriginalSize": false,
-    "_actualFontSize": 32,
-    "_fontSize": 32,
-    "_lineHeight": 40,
+    "_actualFontSize": 54,
+    "_fontSize": 54,
+    "_lineHeight": 60,
     "_enableWrapText": true,
     "_N$file": {
       "__uuid__": "9fe70ddd-70fb-44bd-b9db-37684d3a8275"
     },
     "_isSystemFontUsed": false,
     "_spacingX": 0,
-    "_N$string": "+5,000,000",
+    "_N$string": "Đôi J trở lên + 250",
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
     "_N$fontFamily": "Arial",
@@ -8041,12 +8041,12 @@
     "_enabled": true,
     "_color": {
       "__type__": "cc.Color",
-      "r": 255,
-      "g": 8,
-      "b": 8,
+      "r": 98,
+      "g": 58,
+      "b": 120,
       "a": 255
     },
-    "_width": 1
+    "_width": 4
   },
   {
     "__type__": "cc.PrefabInfo",
