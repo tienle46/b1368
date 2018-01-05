@@ -9,6 +9,7 @@ export default class HighLowContext {
         this.isLoadedConfig = false
         this.playing = false
         this.popup = null;
+        this.startTime = 0;
 
         this._registerEventListeners();
 
@@ -50,12 +51,35 @@ export default class HighLowContext {
             }
         })
     }
+    
+    now() {
+        var time = new Date();
+        return time.getTime();
+    }
+    
+    getRemainingTime() {
+        var now = this.now();
+        console.warn('now', now, 'startTime', this.startTime);
+        
+        var remainingTimeInSecond = this.duration - ((this.now() - this.startTime) / 1000);
+        return this.formatTime(remainingTimeInSecond);
+    }
+    
+    formatTime(time) {
+                console.warn('time', time);
+
+        var minute = Math.floor(time / 60);
+        var second = Math.floor(time - minute * 60);
+        
+        return minute + ":" + second;
+    }
 
     loadConfig(data) {
         this.jackpotValues = data.jackpotValues;
-        this.betValues = data.bets;
         this.duration = data.duration;
         this.isLoadedConfig = true;
+        this.betValues = data.bets;
+        this.popup && this.popup.loadConfig(this.betValues, this.duration, this.jackpotValues)
         if (data.playing) {
             this._setStartGame(data.card)
         }
@@ -77,7 +101,8 @@ export default class HighLowContext {
     }
 
     _onReceivedStart(data) {
-        this.sendGetPlay(1000)
+        let betValue = this.popup && this.popup.betValue
+        this.sendGetPlay(betValue)
     }
 
     _onReceivedPlay(data) {
@@ -99,6 +124,7 @@ export default class HighLowContext {
 
     _setStartGame(cardValue) {
         this.playing = true
+        this.startTime = this.now()
         this.popup && this.popup.onReceivedStart(cardValue)
     }
 
