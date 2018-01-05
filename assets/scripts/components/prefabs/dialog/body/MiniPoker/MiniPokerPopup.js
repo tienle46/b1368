@@ -91,7 +91,7 @@ class MiniPokerPopup extends BasePopup {
     }
 
     _scheduleSubscribe() {
-        var interval = (app.miniPokerContext.subInterval / 1000) || 30;
+        var interval = (app.miniPokerContext.spinInterval / 1000) || 30;
 
         this.schedule(this._subscribe, interval);
     }

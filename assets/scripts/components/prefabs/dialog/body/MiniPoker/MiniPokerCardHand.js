@@ -45,7 +45,7 @@ class MiniPokerCardHand extends Actor {
                 this.loadCardsByValues([7, 11, 15, 19, 23]);
                 break;
             case MiniPokerCardType.THUNG_PHA_SANH_J:
-                this.loadCardsByValues([42, 46, 50, 54, 6]);
+                this.loadCardsByValues([30, 34, 38, 42, 46]);
                 break;
             default:
                 this.loadCardsByValues([40, 44, 48, 52, 4]);
