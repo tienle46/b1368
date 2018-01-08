@@ -1,8 +1,8 @@
 
-cc.CustomEaseBackInOut = cc.ActionEase.extend({
+export default class CustomEaseBackInOut extends cc.ActionEase {
 
-    update: function (dt) {
-        var overshoot = 1.70158 * 1525;
+    update(dt) {
+        var overshoot = 0.5;
         dt = dt * 2;
         if (dt < 1) {
             this._inner.update((dt * dt * ((overshoot + 1) * dt - overshoot)) / 2);
@@ -10,21 +10,21 @@ cc.CustomEaseBackInOut = cc.ActionEase.extend({
             dt = dt - 2;
             this._inner.update((dt * dt * ((overshoot + 1) * dt + overshoot)) / 2 + 1);
         }
-    },
+    }
 
-    clone: function () {
-        var action = new cc.CustomEaseBackInOut();
+    clone() {
+        var action = new CustomEaseBackInOut();
         action.initWithAction(this._inner.clone());
         return action;
-    },
-
-    reverse: function () {
-        return new cc.CustomEaseBackInOut(this._inner.reverse());
     }
-});
 
-cc.CustomEaseBackInOut.create = function (action) {
-    return new cc.CustomEaseBackInOut(action);
+    reverse() {
+        return new CustomEaseBackInOut(this._inner.reverse());
+    }
+}
+
+CustomEaseBackInOut.create = function (action) {
+    return new CustomEaseBackInOut(action);
 };
 
 cc._customEaseBackInOutObj = {
