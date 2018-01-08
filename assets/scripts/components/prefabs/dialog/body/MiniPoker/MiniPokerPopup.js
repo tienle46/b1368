@@ -258,9 +258,9 @@ class MiniPokerPopup extends BasePopup {
     onBtnBet1Clicked() {
         app.miniPokerContext.updateCurBet(0);
 
-        this.lblBet1.color = this.toggleEnableColor;
-        this.lblBet2.color = this.toggleDisableColor;
-        this.lblBet3.color = this.toggleDisableColor;
+        this.lblBet1.getChildByName("Title").color = this.toggleEnableColor;
+        this.lblBet2.getChildByName("Title").color = this.toggleDisableColor;
+        this.lblBet3.getChildByName("Title").color = this.toggleDisableColor;
 
         this.updateJarMoneys();
         this._disableAutoSpin();
@@ -269,9 +269,9 @@ class MiniPokerPopup extends BasePopup {
     onBtnBet2Clicked() {
         app.miniPokerContext.updateCurBet(1);
 
-        this.lblBet1.color = this.toggleDisableColor;
-        this.lblBet2.color = this.toggleEnableColor;
-        this.lblBet3.color = this.toggleDisableColor;
+        this.lblBet1.getChildByName("Title").color = this.toggleDisableColor;
+        this.lblBet2.getChildByName("Title").color = this.toggleEnableColor;
+        this.lblBet3.getChildByName("Title").color = this.toggleDisableColor;
 
         this.updateJarMoneys();
         this._disableAutoSpin();
@@ -280,9 +280,9 @@ class MiniPokerPopup extends BasePopup {
     onBtnBet3Clicked() {
         app.miniPokerContext.updateCurBet(2);
 
-        this.lblBet1.color = this.toggleDisableColor;
-        this.lblBet2.color = this.toggleDisableColor;
-        this.lblBet3.color = this.toggleEnableColor;
+        this.lblBet1.getChildByName("Title").color = this.toggleDisableColor;
+        this.lblBet2.getChildByName("Title").color = this.toggleDisableColor;
+        this.lblBet3.getChildByName("Title").color = this.toggleEnableColor;
 
         this.updateJarMoneys();
         this._disableAutoSpin();
@@ -311,6 +311,7 @@ class MiniPokerPopup extends BasePopup {
             if (btnBet) {
                 btnBet.active = true;
                 btnBet.getComponentInChildren(cc.Label).string = GameUtils.formatBalanceShort(app.miniPokerContext.betValues[i]);
+                // warn('Btn bet', btnBet);
             }
         }
     }

@@ -46,7 +46,7 @@ export default class MiniPokerContext {
     }
 
     _onReceivedConfig(data) {
-        warn('config', data);
+        // warn('config', data);
         this.loadConfig(data);
     }
 
@@ -60,7 +60,7 @@ export default class MiniPokerContext {
     _onReceivedPlayResult(data) {
         this.resultQueue.push(data);
 
-        if (this.resultQueue.length === 1) {
+        if (this.resultQueue.length === 1 && !this.popup.isSpinning) {
             this._displayResult();
         }
     }
