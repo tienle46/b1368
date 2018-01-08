@@ -1,6 +1,7 @@
 import app from 'app';
 import SFS2X from 'SFS2X';
 import Utils from 'GeneralUtils';
+import Linking from 'Linking';
 
 export default class MiniPokerContext {
     constructor () {
@@ -75,6 +76,7 @@ export default class MiniPokerContext {
     checkCurrentMoney() {
         if (app.context.getMeBalance() < this.curBetValue) {
             this.popup && this.popup.showError({message: "Bạn không đủ tiền đẻ chơi tiếp."});
+            app.visibilityManager.goTo(Linking.ACTION_TOPUP);
             return false;
         }
         return true;
