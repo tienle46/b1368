@@ -52,6 +52,63 @@ export default class HighLowContext {
         })
     }
 
+    _registerEventListeners() {
+        app.system.addListener(app.commands.MINIGAME_CAO_THAP_START, this._onReceivedStart, this);
+        app.system.addListener(app.commands.MINIGAME_CAO_THAP_PLAY, this._onReceivedPlay, this);
+        app.system.addListener(app.commands.MINIGAME_CAO_THAP_END, this._onReceivedEnd, this);
+        app.system.addListener(app.commands.MINIGAME_CAO_THAP_CONFIG, this._onReceivedConfig, this);
+    }
+
+    _removeEventListeners() {
+        app.system.removeListener(app.commands.MINIGAME_CAO_THAP_START, this._onReceivedStart, this);
+        app.system.removeListener(app.commands.MINIGAME_CAO_THAP_PLAY, this._onReceivedPlay, this);
+        app.system.removeListener(app.commands.MINIGAME_CAO_THAP_END, this._onReceivedEnd, this);
+        app.system.removeListener(app.commands.MINIGAME_CAO_THAP_CONFIG, this._onReceivedConfig, this);
+    }
+    
+    _onReceivedConfig(data) {
+        // warn('config', data);
+        this.loadConfig(data);
+    }
+
+    _onReceivedStart(data) {
+        let betValue = this.popup && this.popup.betValue
+        this.sendGetPlay(betValue)
+    }
+
+    _onReceivedPlay(data) {
+        if (!this.playing) {
+            this._setStartGame(data.card)
+        } else {
+            this.popup && this.popup.onReceivedPlay(data.card)
+        }
+    }
+
+    _onReceivedEnd(data) {
+        this.playing = false
+        this.popup && this.popup.onReceivedEnd()
+        this.startTime = null
+    }
+    
+    loadConfig(data) {
+        this.duration = data.duration;
+        this.isLoadedConfig = true;
+        this.jackpotValues = data.jackpotValues;
+        // fake
+        // this.jackpotValues = [1000, 2000, 3000, 4000, 5000];
+        this.betValues = data.bets;
+        this.popup && this.popup.loadConfig()
+        if (data.playing) {
+            this._setStartGame(data.card)
+        }
+    }
+
+    _setStartGame(cardValue) {
+        this.playing = true
+        this.startTime = this.now()
+        this.popup && this.popup.onReceivedStart(cardValue)
+    }
+    
     now() {
         let time = new Date();
         return time.getTime();
@@ -72,62 +129,6 @@ export default class HighLowContext {
         let second = Math.floor(time % 60);
 
         return minute + ":" + second;
-    }
-
-    loadConfig(data) {
-        this.duration = data.duration;
-        this.isLoadedConfig = true;
-        this.jackpotValues = data.jackpotValues;
-        // fake
-        // this.jackpotValues = [1000, 2000, 3000, 4000, 5000];
-        this.betValues = data.bets;
-        this.popup && this.popup.loadConfig()
-        if (data.playing) {
-            this._setStartGame(data.card)
-        }
-    }
-
-
-    _registerEventListeners() {
-        app.system.addListener(app.commands.MINIGAME_CAO_THAP_START, this._onReceivedStart, this);
-        app.system.addListener(app.commands.MINIGAME_CAO_THAP_PLAY, this._onReceivedPlay, this);
-        app.system.addListener(app.commands.MINIGAME_CAO_THAP_END, this._onReceivedEnd, this);
-        app.system.addListener(app.commands.MINIGAME_CAO_THAP_CONFIG, this._onReceivedConfig, this);
-    }
-
-    _removeEventListeners() {
-        app.system.removeListener(app.commands.MINIGAME_CAO_THAP_START, this._onReceivedStart, this);
-        app.system.removeListener(app.commands.MINIGAME_CAO_THAP_PLAY, this._onReceivedPlay, this);
-        app.system.removeListener(app.commands.MINIGAME_CAO_THAP_END, this._onReceivedEnd, this);
-        app.system.removeListener(app.commands.MINIGAME_CAO_THAP_CONFIG, this._onReceivedConfig, this);
-    }
-
-    _onReceivedStart(data) {
-        let betValue = this.popup && this.popup.betValue
-        this.sendGetPlay(betValue)
-    }
-
-    _onReceivedPlay(data) {
-        if (!this.playing) {
-            this._setStartGame(data.card)
-        } else {
-            this.popup && this.popup.onReceivedPlay(data.card)
-        }
-    }
-
-    _onReceivedEnd(data) {
-        this.playing = false
-        this.popup && this.popup.onReceivedEnd()
-    }
-    _onReceivedConfig(data) {
-        // warn('config', data);
-        this.loadConfig(data);
-    }
-
-    _setStartGame(cardValue) {
-        this.playing = true
-        this.startTime = this.now()
-        this.popup && this.popup.onReceivedStart(cardValue)
     }
 
 }

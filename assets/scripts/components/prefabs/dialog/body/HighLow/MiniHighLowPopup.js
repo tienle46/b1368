@@ -20,6 +20,9 @@ class MiniHighLowPopup extends BasePopup {
             itemBet: cc.Node,
             remainingTime: cc.Label,
             lblJackpotValue: cc.Label,
+            btnHigh: cc.Node,
+            btnLow: cc.Node,
+            lblJackpotValue: cc.Label,
             
             highLowHistoryPrefab: cc.Prefab,
             highLowTopPrefab: cc.Prefab,
@@ -59,7 +62,7 @@ class MiniHighLowPopup extends BasePopup {
         app.highLowContext.sendStart(this.betValue);
     }
     onReceivedStart(cardValue) {
-        this.playSpinCard(cardValue, 0)
+        this.playSpinCard(cardValue)
         this.enableCardStreak()
         this.switchBetInteractable(false)
         this._startTimer()
@@ -82,13 +85,16 @@ class MiniHighLowPopup extends BasePopup {
 
     //EndTurn
     onEndBtnClicked() {
-        app.highLowContext.sendEnd(this.betValue);
+        if(!this.isSpinning) {
+            app.highLowContext.sendEnd(this.betValue);
+        }
     }
     onReceivedEnd() {
         // app.highLowContext.sendStart(1000)
         this.removeAtCards()
         this.disableCardStreak()
         this.switchBetInteractable(true)
+        this._stopTimer()
     }
 
     //ClosePopup
@@ -162,6 +168,7 @@ class MiniHighLowPopup extends BasePopup {
 
     //when End Game
     removeAtCards() {
+        this.atCount = 0
         let children = this.atGroup.children
         children.forEach(node => {
             node.getComponent(cc.Sprite).spriteFrame = this.highLowAtlas.getSpriteFrame('A-1')
@@ -181,10 +188,15 @@ class MiniHighLowPopup extends BasePopup {
         this.isSpinning = true
         this.card.spinToCard(cardValue, duration, () => {
             this.isSpinning = false
+            this.btnHigh.active = true
+            this.btnLow.active = true
             if (cardValue < 8) {
                 let children = this.atGroup.children
                 children[this.atCount].getComponent(cc.Sprite).spriteFrame = this.highLowAtlas.getSpriteFrame('A-2')
                 this.atCount++
+                this.btnHigh.active = false
+            } else if (cardValue < 12) {
+                this.btnLow.active = false
             }
         })
     }
@@ -196,6 +208,7 @@ class MiniHighLowPopup extends BasePopup {
 
     _stopTimer() {
         this.unschedule(this._updateTimer);
+        this._updateTimer()
     }
 
     _updateTimer() {
