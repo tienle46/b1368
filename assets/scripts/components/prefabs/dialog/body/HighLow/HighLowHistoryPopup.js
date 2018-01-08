@@ -59,7 +59,6 @@ class HighLowHistoryPopup extends BasePopup {
 
     _sendGetHistoryDetail(i) {
         // warn('send get history');
-        //TODO
         app.service.send({
             cmd: app.commands.MINIGAME_CAO_THAP_HISTORY_DETAIL,
             data: {

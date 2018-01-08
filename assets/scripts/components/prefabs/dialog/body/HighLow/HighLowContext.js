@@ -9,7 +9,7 @@ export default class HighLowContext {
         this.isLoadedConfig = false
         this.playing = false
         this.popup = null;
-        this.startTime = 0;
+        this.startTime = null;
 
         this._registerEventListeners();
 
@@ -51,35 +51,37 @@ export default class HighLowContext {
             }
         })
     }
-    
+
     now() {
-        var time = new Date();
+        let time = new Date();
         return time.getTime();
     }
-    
+
     getRemainingTime() {
-        var now = this.now();
-        console.warn('now', now, 'startTime', this.startTime);
-        
-        var remainingTimeInSecond = this.duration - ((this.now() - this.startTime) / 1000);
+        let now = this.now();
+        let playingTime = 0
+        playingTime = this.startTime && this.now() - this.startTime
+        let remainingTimeInSecond = this.duration - (playingTime / 1000);
         return this.formatTime(remainingTimeInSecond);
     }
-    
-    formatTime(time) {
-                console.warn('time', time);
 
-        var minute = Math.floor(time / 60);
-        var second = Math.floor(time - minute * 60);
-        
+    formatTime(time) {
+        // console.warn('time', time);
+
+        let minute = Math.floor(time / 60);
+        let second = Math.floor(time % 60);
+
         return minute + ":" + second;
     }
 
     loadConfig(data) {
-        this.jackpotValues = data.jackpotValues;
         this.duration = data.duration;
         this.isLoadedConfig = true;
+        this.jackpotValues = data.jackpotValues;
+        // fake
+        // this.jackpotValues = [1000, 2000, 3000, 4000, 5000];
         this.betValues = data.bets;
-        this.popup && this.popup.loadConfig(this.betValues, this.duration, this.jackpotValues)
+        this.popup && this.popup.loadConfig()
         if (data.playing) {
             this._setStartGame(data.card)
         }
