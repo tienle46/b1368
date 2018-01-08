@@ -6,6 +6,7 @@ export default class MiniPokerErrorCode {
     }
 }
 
+MiniPokerErrorCode.INACTIVE = new MiniPokerErrorCode("-1", "Game Mini Poker hiện tại đang tạm khóa.");
 MiniPokerErrorCode.UNKNOWN = new MiniPokerErrorCode("0", "Lỗi không xác định");
 MiniPokerErrorCode.NOT_ENOUGH_JACKPOT_PAY = new MiniPokerErrorCode("1", "Hũ hết tiền");
 MiniPokerErrorCode.UPDATE_JACKPOT_VALUE_FAIL = new MiniPokerErrorCode("2", "Không thay đổi được giá trị Jackpot");
@@ -14,6 +15,7 @@ MiniPokerErrorCode.PLAYER_NOT_ENOUGH_MONEY = new MiniPokerErrorCode("4", "Không
 MiniPokerErrorCode.CANNOT_UPDATE_PLAYER_MONEY = new MiniPokerErrorCode("5", "Lỗi cập nhật tiền trong CSDL");
 MiniPokerErrorCode.INVALID_BET_MONEY = new MiniPokerErrorCode("6", "Sai mức cược");
 MiniPokerErrorCode.FLOOD_PLAY = new MiniPokerErrorCode("7", "Thời gian quay quá nhanh");
+MiniPokerErrorCode.INITIATE_JACKPOT_FAIL = new MiniPokerErrorCode("8", "Game Mini Poker hiện tại đang tạm khóa");
 
 MiniPokerErrorCode.valueOf = function(code) {
     switch (code) {
