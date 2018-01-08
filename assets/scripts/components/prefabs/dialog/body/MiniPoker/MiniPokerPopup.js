@@ -87,7 +87,9 @@ class MiniPokerPopup extends BasePopup {
         this.loadBetConfig();
         this.updateJarMoneys();
 
+        // this._disableBetButtons();
         (app.miniPokerContext) && (app.miniPokerContext.sendGetConfig());
+
     }
 
     _scheduleSubscribe() {
@@ -180,16 +182,6 @@ class MiniPokerPopup extends BasePopup {
         popupTopController && popupTopController.openPopup(true);
     }
 
-    onBtnQuickSpinClicked() {
-        // this.quickSpinToggle && this.quickSpinToggle.check();
-        if (this.quickSpinToggle) {
-            if (this.quickSpinToggle.isChecked)
-                this.quickSpinToggle.uncheck();
-            else
-                this.quickSpinToggle.check();
-        }
-    }
-
     onQuickSpinStateChanged() {
         // var btnSpinController = this.btnSpin.getComponent(cc.Button);
         // btnSpinController && (btnSpinController.interactable = !this.quickSpinToggle.isChecked);
@@ -271,6 +263,7 @@ class MiniPokerPopup extends BasePopup {
         this.lblBet3.color = this.toggleDisableColor;
 
         this.updateJarMoneys();
+        this._disableAutoSpin();
     }
 
     onBtnBet2Clicked() {
@@ -281,6 +274,7 @@ class MiniPokerPopup extends BasePopup {
         this.lblBet3.color = this.toggleDisableColor;
 
         this.updateJarMoneys();
+        this._disableAutoSpin();
     }
 
     onBtnBet3Clicked() {
@@ -291,6 +285,13 @@ class MiniPokerPopup extends BasePopup {
         this.lblBet3.color = this.toggleEnableColor;
 
         this.updateJarMoneys();
+        this._disableAutoSpin();
+    }
+
+    _disableAutoSpin() {
+        if (this.quickSpinToggle && this.quickSpinToggle.isChecked) {
+            this.quickSpinToggle.uncheck();
+        }
     }
 
     updateBalance() {
@@ -302,9 +303,35 @@ class MiniPokerPopup extends BasePopup {
     }
 
     loadBetConfig() {
-        this.lblBet1.getComponent(cc.Label).string = GameUtils.formatBalanceShort(app.miniPokerContext.betValues[0]);
-        this.lblBet2.getComponent(cc.Label).string = GameUtils.formatBalanceShort(app.miniPokerContext.betValues[1]);
-        this.lblBet3.getComponent(cc.Label).string = GameUtils.formatBalanceShort(app.miniPokerContext.betValues[2]);
+        this._disableBetButtons();
+        var count = app.miniPokerContext.betValues.length;
+
+        for (var i = 0; i < count; i ++) {
+            let btnBet = this._getBtnBetForIdx(i);
+            if (btnBet) {
+                btnBet.active = true;
+                btnBet.getComponentInChildren(cc.Label).string = GameUtils.formatBalanceShort(app.miniPokerContext.betValues[i]);
+            }
+        }
+    }
+
+    _disableBetButtons() {
+        this.lblBet1.active = false;
+        this.lblBet2.active = false;
+        this.lblBet3.active = false;
+    }
+
+    _getBtnBetForIdx(idx) {
+        switch (idx) {
+            case 0:
+                return this.lblBet1;
+            case 1:
+                return this.lblBet2;
+            case 2:
+                return this.lblBet3;
+            default:
+                return null;
+        }
     }
 
     showError(error) {
