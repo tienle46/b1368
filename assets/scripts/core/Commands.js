@@ -325,6 +325,7 @@ Commands.MINIGAME_MINI_POKER_SYNC_JACKPOT_VALUES = "mng_pokerSync";
 Commands.MINIGAME_MINI_POKER_PLAY = "mng_pokerPlay";
 Commands.MINIGAME_MINI_POKER_GET_CONFIG = "mng_pokerConfig";
 
+Commands.MINIGAME_CAO_THAP_TOP_PLAYER = "mng_caoThapTopPlayer";
 Commands.MINIGAME_CAO_THAP_HISTORY = "mng_caoThapHistory";
 Commands.MINIGAME_CAO_THAP_HISTORY_DETAIL = "mng_caoThapHistoryDetail";
 Commands.MINIGAME_CAO_THAP_START = "mng_caoThapStart";
