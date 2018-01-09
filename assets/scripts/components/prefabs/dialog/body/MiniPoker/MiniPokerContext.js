@@ -78,7 +78,7 @@ export default class MiniPokerContext {
             // this.popup && this.popup.showError({message: "Bạn không đủ tiền đẻ chơi tiếp."});
             this.popup && this.popup.disableAutoSpin();
             app.system.confirm(
-                app.res.string("Bạn không đủ tiền để chơi tiếp."),
+                app.res.string("Bạn không đủ chip để chơi tiếp, nạp thêm nha."),
                 null,
                 this._showTopup
             );
