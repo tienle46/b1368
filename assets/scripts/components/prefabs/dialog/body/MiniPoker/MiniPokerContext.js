@@ -58,6 +58,7 @@ export default class MiniPokerContext {
     }
 
     _onReceivedPlayResult(data) {
+        warn('result', data);
         this.resultQueue.push(data);
 
         if (this.resultQueue.length === 1 && !this.popup.isSpinning) {
@@ -76,6 +77,7 @@ export default class MiniPokerContext {
     checkCurrentMoney() {
         if (app.context.getMeBalance() < this.curBetValue) {
             this.popup && this.popup.showError({message: "Bạn không đủ tiền đẻ chơi tiếp."});
+            this.popup && this.popup.disableAutoSpin();
             app.visibilityManager.goTo(Linking.ACTION_TOPUP);
             return false;
         }
@@ -90,7 +92,7 @@ export default class MiniPokerContext {
             return;
         }
 
-        this.lastSpinTime = this.getCurrentTime();
+        this.updateLastSpinTime();
         var newBalance = data.ba || app.context.getMeBalance();
         app.context.setBalance(newBalance);
         this.popup && this.popup.showResult(data);
@@ -125,6 +127,10 @@ export default class MiniPokerContext {
         });
     }
 
+    updateLastSpinTime() {
+        this.lastSpinTime = this.getCurrentTime();
+    }
+
     loadConfig(data) {
         this.jackpotValues = data.jackpotValues;
         this.betValues = data.bets;
@@ -149,5 +155,17 @@ export default class MiniPokerContext {
     getCurrentTime() {
         var date = new Date();
         return date.getTime();
+    }
+
+    getIdxForBet(bet) {
+        for (var i = 0; i < this.betValues.length; i ++) {
+            if (bet === this.betValues[i])
+                return i;
+        }
+        return 0;
+    }
+
+    updateJackpotForIdx(newJackpotValue, idx) {
+        this.jackpotValues[idx] = newJackpotValue;
     }
 }

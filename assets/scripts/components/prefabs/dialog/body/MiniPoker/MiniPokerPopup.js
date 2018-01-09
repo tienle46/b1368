@@ -8,6 +8,7 @@ import MiniPokerContext from 'MiniPokerContext';
 import MiniPokerCardType from 'MiniPokerCardType';
 import MiniPokerErrorCode from 'MiniPokerErrorCode';
 import GameUtils from 'GameUtils';
+import {numberFormat} from 'GeneralUtils';
 
 class MiniPokerPopup extends BasePopup {
     constructor() {
@@ -190,13 +191,15 @@ class MiniPokerPopup extends BasePopup {
     }
 
     _checkQuickSpin() {
-        if (app.miniPokerContext.checkResultQueue()) return;
-        if (this.isSpinning) return;
         if (!this.quickSpinToggle.isChecked) {
+            this._enableBetButtons(true);
             this.unschedule(this.onBtnSpinClicked);
-            return;}
+            return;
+        }
+        if (this.isSpinning) return;
 
 
+        this._enableBetButtons(false);
         var delay = (app.miniPokerContext.lastSpinTime + app.miniPokerContext.spinInterval - this._getCurTime()) / 1000;
         // warn('delay', delay);
         if (delay <= 0) {
@@ -206,18 +209,13 @@ class MiniPokerPopup extends BasePopup {
         }
     }
 
-    testSpin() {
-        var min = 4;
-        var max = 55;
-        this.cardStreak1.spinToCard(Math.floor(Math.random() * (max - min + 1)) + min);
-    }
-
     onBtnSpinClicked() {
         var anim = this.btnSpin.getComponent(cc.Animation);
         anim.play("ButtonSpinAnimation");
 
         // this.testSpin();
         // return;
+        if (this.isSpinning) return;
 
         if (!app.miniPokerContext.isLoadedConfig) return;
 
@@ -227,7 +225,8 @@ class MiniPokerPopup extends BasePopup {
 
         if (checkSpinTime) {
             app.miniPokerContext.sendPlay(app.miniPokerContext.curBetValue);
-            // this.enableSpin = false;
+            app.miniPokerContext.updateLastSpinTime();
+
             this._unscheduleSubscribe();
             this._scheduleSubscribe();
         } else {
@@ -263,7 +262,7 @@ class MiniPokerPopup extends BasePopup {
         this.lblBet3.getChildByName("Title").color = this.toggleDisableColor;
 
         this.updateJarMoneys();
-        this._disableAutoSpin();
+        this.disableAutoSpin();
     }
 
     onBtnBet2Clicked() {
@@ -274,7 +273,7 @@ class MiniPokerPopup extends BasePopup {
         this.lblBet3.getChildByName("Title").color = this.toggleDisableColor;
 
         this.updateJarMoneys();
-        this._disableAutoSpin();
+        this.disableAutoSpin();
     }
 
     onBtnBet3Clicked() {
@@ -285,10 +284,20 @@ class MiniPokerPopup extends BasePopup {
         this.lblBet3.getChildByName("Title").color = this.toggleEnableColor;
 
         this.updateJarMoneys();
-        this._disableAutoSpin();
+        this.disableAutoSpin();
     }
 
-    _disableAutoSpin() {
+    _enableBetButtons(enable) {
+        var count = app.miniPokerContext.betValues.length;
+        for (var i = 0; i < count; i ++) {
+            var betBtn = this._getBtnBetForIdx(i);
+            if (betBtn) {
+                betBtn.getComponent(cc.Toggle).interactable = enable;
+            }
+        }
+    }
+
+    disableAutoSpin() {
         if (this.quickSpinToggle && this.quickSpinToggle.isChecked) {
             this.quickSpinToggle.uncheck();
         }
@@ -353,8 +362,8 @@ class MiniPokerPopup extends BasePopup {
         var bet = data.bet || 0;
         var cardType = data.cardType || 0;
         var cards = data.cards;
-        if (data.jackpots) {
-            app.miniPokerContext.jackpotValues = data.jackpots;
+        if (data.jackpot) {
+            app.miniPokerContext.updateJackpotForIdx(data.jackpot, app.miniPokerContext.getIdxForBet(bet));
         }
         this.isSpinning = true;
         this.cardStreak1.spinToCard(cards[0], 3.75);
@@ -368,6 +377,7 @@ class MiniPokerPopup extends BasePopup {
             }
             this.updateBalance();
             this.updateJarMoneys();
+            if (app.miniPokerContext.checkResultQueue()) return;
             this._checkQuickSpin();
         }.bind(this));
     }
@@ -381,7 +391,7 @@ class MiniPokerPopup extends BasePopup {
                 username, money, message
             });
         } else {
-            this.lblWinMoney && (this.lblWinMoney.string = MiniPokerCardType.getNameForType(cardType) + " +" + winAmount);
+            this.lblWinMoney && (this.lblWinMoney.string = MiniPokerCardType.getNameForType(cardType) + " +" + numberFormat(winAmount));
             var anim = this.lblWinMoney.node.getComponent(cc.Animation);
             anim.play("WinMoneyUp");
         }

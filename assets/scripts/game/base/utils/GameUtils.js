@@ -18,6 +18,10 @@ export default class GameUtils {
         return utils.isNumber(balance) ? numeral(balance).format((balance < 1000000 ? '0,0' : '0.00a')) : "";
     }
 
+    static formatBalance1(balance) {
+        return utils.isNumber(balance) ? numeral(balance).format((balance < 10000 ? '0.0' : '0.00')) : "";
+    }
+
     static formatNumberType1(value = 0) {
         return value <= 9999 && value >= -9999 ? value : numeral(value).format('00.0a');
     }

@@ -19,8 +19,6 @@ class CardStreak extends Actor {
 
         var lastChild = this.container.children[this.container.children.length - 1];
         (lastChild && lastChild.getComponent(MotionBlurCard).enableMotionBlur(false));
-
-        
     }
 
     spinToCard(cardValue, duration = 0, onComplete) {

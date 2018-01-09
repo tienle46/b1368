@@ -282,8 +282,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 731,
-      "height": 402
+      "width": 735,
+      "height": 406
     },
     "_rotationX": 0,
     "_rotationY": 0,
@@ -4675,7 +4675,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 259,
+      "width": 283,
       "height": 65
     },
     "_rotationX": 0,
@@ -4742,8 +4742,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 65,
-      "height": 65
+      "width": 73,
+      "height": 73
     },
     "_rotationX": 0,
     "_rotationY": 0,
@@ -4751,7 +4751,7 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": 32.5,
+      "x": 36.5,
       "y": 0
     },
     "_skewX": 0,
@@ -4796,8 +4796,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 65,
-      "height": 65
+      "width": 73,
+      "height": 73
     },
     "_rotationX": 0,
     "_rotationY": 0,
@@ -4950,7 +4950,7 @@
     "node": {
       "__id__": 146
     },
-    "_enabled": true,
+    "_enabled": false,
     "transition": 3,
     "pressedColor": {
       "__type__": "cc.Color",
@@ -5009,7 +5009,7 @@
       "__id__": 146
     },
     "_enabled": true,
-    "transition": 0,
+    "transition": 3,
     "pressedColor": {
       "__type__": "cc.Color",
       "r": 211,
@@ -5025,7 +5025,7 @@
       "a": 255
     },
     "duration": 0.1,
-    "zoomScale": 1.2,
+    "zoomScale": 1.05,
     "pressedSprite": null,
     "hoverSprite": null,
     "clickEvents": [],
@@ -5169,8 +5169,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 65,
-      "height": 65
+      "width": 73,
+      "height": 73
     },
     "_rotationX": 0,
     "_rotationY": 0,
@@ -5178,7 +5178,7 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": 129.5,
+      "x": 141.5,
       "y": 0
     },
     "_skewX": 0,
@@ -5377,7 +5377,7 @@
     "node": {
       "__id__": 159
     },
-    "_enabled": true,
+    "_enabled": false,
     "transition": 3,
     "pressedColor": {
       "__type__": "cc.Color",
@@ -5436,7 +5436,7 @@
       "__id__": 159
     },
     "_enabled": true,
-    "transition": 0,
+    "transition": 3,
     "pressedColor": {
       "__type__": "cc.Color",
       "r": 211,
@@ -5452,7 +5452,7 @@
       "a": 255
     },
     "duration": 0.1,
-    "zoomScale": 1.2,
+    "zoomScale": 1.05,
     "pressedSprite": null,
     "hoverSprite": null,
     "clickEvents": [],
@@ -5586,8 +5586,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 65,
-      "height": 65
+      "width": 73,
+      "height": 73
     },
     "_rotationX": 0,
     "_rotationY": 0,
@@ -5595,7 +5595,7 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": 226.5,
+      "x": 246.5,
       "y": 0
     },
     "_skewX": 0,
@@ -5794,7 +5794,7 @@
     "node": {
       "__id__": 171
     },
-    "_enabled": true,
+    "_enabled": false,
     "transition": 3,
     "pressedColor": {
       "__type__": "cc.Color",
@@ -5853,7 +5853,7 @@
       "__id__": 171
     },
     "_enabled": true,
-    "transition": 0,
+    "transition": 3,
     "pressedColor": {
       "__type__": "cc.Color",
       "r": 211,
@@ -5869,7 +5869,7 @@
       "a": 255
     },
     "duration": 0.1,
-    "zoomScale": 1.2,
+    "zoomScale": 1.05,
     "pressedSprite": null,
     "hoverSprite": null,
     "clickEvents": [],
@@ -5965,7 +5965,7 @@
     "_enabled": true,
     "_layoutSize": {
       "__type__": "cc.Size",
-      "width": 259,
+      "width": 283,
       "height": 65
     },
     "_resize": 1,
