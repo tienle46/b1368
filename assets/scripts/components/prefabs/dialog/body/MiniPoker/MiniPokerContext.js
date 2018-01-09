@@ -58,7 +58,6 @@ export default class MiniPokerContext {
     }
 
     _onReceivedPlayResult(data) {
-        warn('result', data);
         this.resultQueue.push(data);
 
         if (this.resultQueue.length === 1 && !this.popup.isSpinning) {
@@ -76,12 +75,20 @@ export default class MiniPokerContext {
 
     checkCurrentMoney() {
         if (app.context.getMeBalance() < this.curBetValue) {
-            this.popup && this.popup.showError({message: "Bạn không đủ tiền đẻ chơi tiếp."});
+            // this.popup && this.popup.showError({message: "Bạn không đủ tiền đẻ chơi tiếp."});
             this.popup && this.popup.disableAutoSpin();
-            app.visibilityManager.goTo(Linking.ACTION_TOPUP);
+            app.system.confirm(
+                app.res.string("Bạn không đủ tiền để chơi tiếp."),
+                null,
+                this._showTopup
+            );
             return false;
         }
         return true;
+    }
+
+    _showTopup() {
+        app.visibilityManager.goTo(Linking.ACTION_TOPUP)
     }
 
     _displayResult() {

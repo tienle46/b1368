@@ -74,6 +74,7 @@ class MiniPokerPopup extends BasePopup {
 
         (!app.miniPokerContext) && (app.miniPokerContext = new MiniPokerContext());
         (app.miniPokerContext) && (app.miniPokerContext.popup = this);
+        app.miniPokerContext && (app.miniPokerContext.updateCurBet(0));
     }
 
     onEnable() {
@@ -213,8 +214,6 @@ class MiniPokerPopup extends BasePopup {
         var anim = this.btnSpin.getComponent(cc.Animation);
         anim.play("ButtonSpinAnimation");
 
-        // this.testSpin();
-        // return;
         if (this.isSpinning) return;
 
         if (!app.miniPokerContext.isLoadedConfig) return;
@@ -224,6 +223,7 @@ class MiniPokerPopup extends BasePopup {
         var checkSpinTime = this._checkSpinTime();
 
         if (checkSpinTime) {
+            warn('Cur bet', app.miniPokerContext.curBetValue);
             app.miniPokerContext.sendPlay(app.miniPokerContext.curBetValue);
             app.miniPokerContext.updateLastSpinTime();
 
