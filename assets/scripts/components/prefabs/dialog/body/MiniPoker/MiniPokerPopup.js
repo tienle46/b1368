@@ -223,7 +223,7 @@ class MiniPokerPopup extends BasePopup {
         var checkSpinTime = this._checkSpinTime();
 
         if (checkSpinTime) {
-            warn('Cur bet', app.miniPokerContext.curBetValue);
+            // warn('Cur bet', app.miniPokerContext.curBetValue);
             app.miniPokerContext.sendPlay(app.miniPokerContext.curBetValue);
             app.miniPokerContext.updateLastSpinTime();
 
