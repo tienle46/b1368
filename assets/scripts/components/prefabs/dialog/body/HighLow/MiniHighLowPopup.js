@@ -23,7 +23,7 @@ class MiniHighLowPopup extends BasePopup {
             btnHigh: cc.Node,
             btnLow: cc.Node,
             lblJackpotValue: cc.Label,
-            
+
             highLowHistoryPrefab: cc.Prefab,
             highLowTopPrefab: cc.Prefab,
         });
@@ -31,7 +31,7 @@ class MiniHighLowPopup extends BasePopup {
         this.isSpinning = false
         this.betValue = 0
         this.jackpotValue = 0
-        
+
         this.highLowHistoryPopup = null
         this.highLowTopPopup = null
     }
@@ -85,7 +85,7 @@ class MiniHighLowPopup extends BasePopup {
 
     //EndTurn
     onEndBtnClicked() {
-        if(!this.isSpinning) {
+        if (!this.isSpinning) {
             app.highLowContext.sendEnd(this.betValue);
         }
     }
@@ -93,6 +93,7 @@ class MiniHighLowPopup extends BasePopup {
         // app.highLowContext.sendStart(1000)
         this.removeAtCards()
         this.disableCardStreak()
+        this._showHighLowBtns()
         this.switchBetInteractable(true)
         this._stopTimer()
     }
@@ -103,7 +104,7 @@ class MiniHighLowPopup extends BasePopup {
         app.highLowContext.popup = null;
         super.onBtnCloseClicked()
     }
-    
+
     onEnable() {
         super.onEnable();
     }
@@ -130,7 +131,7 @@ class MiniHighLowPopup extends BasePopup {
             positionBetButtons.push(betNode.getPosition())
         })
         CCUtils.clearAllChildren(this.toggleGroup);
-        
+
         return positionBetButtons
     }
     _generateNewBtnBet(btnBetPositions) {
@@ -146,14 +147,14 @@ class MiniHighLowPopup extends BasePopup {
             item.setPosition(btnBetPositions[i])
         })
     }
-    
+
     //Update jackpot Value and bet when click bet
     _updateBetAndJackpotValue(bet, jackpot) {
         this.betValue = bet
         this.jackpotValue = jackpot
         this.lblJackpotValue.string = this.jackpotValue
     }
-    
+
     //hide and show cark streak
     enableCardStreak() {
         this.startBtn.active = false
@@ -164,6 +165,11 @@ class MiniHighLowPopup extends BasePopup {
         this.startBtn.active = true
         this.card.node.active = false
         this.btnEnd.active = false
+    }
+
+    _showHighLowBtns() {
+        this.btnHigh.active = true
+        this.btnLow.active = true
     }
 
     //when End Game
@@ -188,8 +194,7 @@ class MiniHighLowPopup extends BasePopup {
         this.isSpinning = true
         this.card.spinToCard(cardValue, duration, () => {
             this.isSpinning = false
-            this.btnHigh.active = true
-            this.btnLow.active = true
+            this._showHighLowBtns()
             if (cardValue < 8) {
                 let children = this.atGroup.children
                 children[this.atCount].getComponent(cc.Sprite).spriteFrame = this.highLowAtlas.getSpriteFrame('A-2')
@@ -200,7 +205,7 @@ class MiniHighLowPopup extends BasePopup {
             }
         })
     }
-    
+
     // TIMER
     _startTimer() {
         this.schedule(this._updateTimer, 1);
@@ -215,7 +220,7 @@ class MiniHighLowPopup extends BasePopup {
         let remainingTime = app.highLowContext.getRemainingTime();
         this.remainingTime.string = remainingTime
     }
-    
+
     //Init popup
     _initHighLowHistory() {
         if (this.highLowHistoryPopup) return true;
@@ -228,7 +233,7 @@ class MiniHighLowPopup extends BasePopup {
 
         return false;
     }
-    
+
     _initTopHistory() {
         if (this.highLowTopPopup) return true;
         if (this.highLowTopPrefab) {
@@ -240,7 +245,7 @@ class MiniHighLowPopup extends BasePopup {
 
         return false;
     }
-    
+
     //Click pop up
     onHistoryBtnClicked() {
         if (this._initHighLowHistory()) {
@@ -254,7 +259,7 @@ class MiniHighLowPopup extends BasePopup {
             miniHighLowPopupController.openPopup(true);
         }
     }
-    
+
 }
 
 app.createComponent(MiniHighLowPopup);

@@ -77,7 +77,9 @@ export default class HighLowContext {
     }
 
     _onReceivedPlay(data) {
+        // data.card = 5
         if (!this.playing) {
+            // data.card = 4 + Math.floor(Math.random()*52)
             this._setStartGame(data.card)
         } else {
             this.popup && this.popup.onReceivedPlay(data.card)
@@ -86,8 +88,8 @@ export default class HighLowContext {
 
     _onReceivedEnd(data) {
         this.playing = false
-        this.popup && this.popup.onReceivedEnd()
         this.startTime = null
+        this.popup && this.popup.onReceivedEnd()
     }
     
     loadConfig(data) {
