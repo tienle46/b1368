@@ -58,6 +58,7 @@ export default class MiniPokerContext {
     }
 
     _onReceivedPlayResult(data) {
+        warn ('Result', data);
         this.resultQueue.push(data);
 
         if (this.resultQueue.length === 1 && !this.popup.isSpinning) {
@@ -100,7 +101,7 @@ export default class MiniPokerContext {
         }
 
         this.updateLastSpinTime();
-        var newBalance = data.ba || app.context.getMeBalance();
+        var newBalance = data.ba;
         app.context.setBalance(newBalance);
         this.popup && this.popup.showResult(data);
     }
