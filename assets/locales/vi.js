@@ -42,7 +42,6 @@ export default {
     error_transfer_input_is_not_over_allow: `Số ${currencyName} mỗi lần {{type}} không được vượt quá {{limit}} ${currencyName}.`,
     error_transfer_input_is_too_small: `Số ${currencyName} {{type}} tối thiểu là {{min}} ${currencyName}.`,
     error_transfer_input_is_not_enough: `Bạn cần tối thiểu {{amount}} ${currencyName} để thực hiện thao tác này.`,
-    error_transfer_input_otp_is_empty: `Bạn cần nhập mã OTP`,
     error_balance_is_not_enough: 'Số dư trong tài khoản không đủ, cần tối thiểu {{amount}} trong ngân hàng.',
     error_system_not_support_join_room_have_password: 'Hệ thống chưa hỗ trợ vào bàn chơi có mật khẩu',
     error_undefined_please_try_again: 'Lỗi chưa xác định, vui lòng thử lại!',

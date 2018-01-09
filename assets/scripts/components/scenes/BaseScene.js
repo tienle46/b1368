@@ -73,14 +73,24 @@ export default class BaseScene extends Actor {
         app.system.setSceneChanging(false);
         
         let name = app.system.getCurrentSceneName()
-        if(name == app.const.scene.ENTRANCE_SCENE && app.taiXiuTreoManager) {
-            app.taiXiuTreoManager.onDestroy()
-            return
-        }
+        // if(name == app.const.scene.ENTRANCE_SCENE && app.taiXiuTreoManager) {
+        //     app.taiXiuTreoManager.onDestroy()
+        //     return
+        // }
         
-        if(app.taiXiuTreoManager && (name == app.const.scene.LIST_TABLE_SCENE || name == app.const.scene.DASHBOARD_SCENE) ) {
-            app.taiXiuTreoManager.createIcon()
-            return
+        // if(app.taiXiuTreoManager && (name == app.const.scene.LIST_TABLE_SCENE || name == app.const.scene.DASHBOARD_SCENE) ) {
+        //     app.taiXiuTreoManager.createIcon()
+        //     return
+        // }
+
+        if (name === app.const.scene.ENTRANCE_SCENE && app.minigameManager) {
+            app.minigameManager.onDestroy();
+            return;
+        }
+
+        if (app.minigameManager &&
+            (name === app.const.scene.LIST_TABLE_SCENE || name === app.const.scene.DASHBOARD_SCENE)) {
+            app.minigameManager.createIcon();
         }
     }
 
