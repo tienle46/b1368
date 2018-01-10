@@ -8130,8 +8130,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 506.89,
-      "height": 60
+      "width": 557.2,
+      "height": 70
     },
     "_rotationX": 0,
     "_rotationY": 0,
@@ -8160,14 +8160,14 @@
     "_useOriginalSize": false,
     "_actualFontSize": 54,
     "_fontSize": 54,
-    "_lineHeight": 60,
+    "_lineHeight": 70,
     "_enableWrapText": true,
     "_N$file": {
       "__uuid__": "9fe70ddd-70fb-44bd-b9db-37684d3a8275"
     },
     "_isSystemFontUsed": false,
     "_spacingX": 0,
-    "_N$string": "Đôi J trở lên + 250",
+    "_N$string": "Đôi J trở lên + 2,500",
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
     "_N$fontFamily": "Arial",
