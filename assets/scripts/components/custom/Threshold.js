@@ -69,7 +69,7 @@ class Threshold extends Component {
      * 
      * @param {any} x 
      * @param {any} y 
-     * @returns Array [{x; 0} => via Ox, {0; y} => via Ox, {0; 0} => via (0; 0)]
+     * @returns Array [{x; 0} => via Oy, {0; y} => via Ox, {0; 0} => via (0; 0)]
      * @memberof TestScene
      */
     _getSymmetryPoints(point) {
