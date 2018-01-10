@@ -1,5 +1,6 @@
 import BasePopup from 'BasePopup';
 import CardStreak from 'CardStreak';
+import HighLowCardStreak from 'HighLowCardStreak';
 import HighLowContext from "HighLowContext";
 import CCUtils from 'CCUtils';
 import GameUtils from 'GameUtils';
@@ -12,7 +13,7 @@ class MiniHighLowPopup extends BasePopup {
 
         this.properties = this.assignProperties({
             startBtn: cc.Node,
-            card: CardStreak,
+            card: HighLowCardStreak,
             highLowAtlas: cc.SpriteAtlas,
             atGroup: cc.Node,
             btnEnd: cc.Node,
@@ -192,7 +193,7 @@ class MiniHighLowPopup extends BasePopup {
     //spin the card streak
     playSpinCard(cardValue, duration = 3) {
         this.isSpinning = true
-        this.card.spinToCard(cardValue, duration, () => {
+        this.card.startAnimate(duration, cardValue, () => {
             this.isSpinning = false
             this._turnOnInteractableHighLowBtns()
             if (cardValue < 8) {
