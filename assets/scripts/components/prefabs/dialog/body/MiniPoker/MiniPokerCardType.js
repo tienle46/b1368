@@ -10,7 +10,7 @@ MiniPokerCardType.THUNG = 5;
 MiniPokerCardType.CU_LU = 6;
 MiniPokerCardType.TU_QUY = 7;
 MiniPokerCardType.THUNG_PHA_SANH = 8;
-MiniPokerCardType.THUNG_PHA_SANH_J = 9;
+MiniPokerCardType.THUNG_PHA_SANH_CHUA = 9;
 
 MiniPokerCardType.getNameForType = function(type) {
     switch (type) {
@@ -30,8 +30,8 @@ MiniPokerCardType.getNameForType = function(type) {
             return 'Tứ quý';
         case MiniPokerCardType.THUNG_PHA_SANH:
             return 'Thùng phá sảnh';
-        case MiniPokerCardType.THUNG_PHA_SANH_J:
-            return 'Thùng phá sảnh J';
+        case MiniPokerCardType.THUNG_PHA_SANH_CHUA:
+            return 'Thùng phá sảnh chúa';
         default:
             return 'Bài cao';
     }

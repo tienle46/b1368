@@ -6491,7 +6491,7 @@
       }
     ],
     "_tag": -1,
-    "_active": false,
+    "_active": true,
     "_components": [
       {
         "__id__": 206
@@ -7477,7 +7477,7 @@
       }
     ],
     "_tag": -1,
-    "_active": true,
+    "_active": false,
     "_components": [
       {
         "__id__": 236
@@ -8239,9 +8239,7 @@
     },
     "_enabled": true,
     "path": "",
-    "lblGold": {
-      "__id__": 204
-    },
+    "lblGold": null,
     "lblBet1": {
       "__id__": 146
     },
@@ -8288,7 +8286,7 @@
       "__id__": 250
     },
     "lblHuMoney": {
-      "__id__": 234
+      "__id__": 204
     },
     "quickSpinToggle": {
       "__id__": 142

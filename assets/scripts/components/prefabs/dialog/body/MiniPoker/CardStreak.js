@@ -57,7 +57,7 @@ class CardStreak extends Actor {
     _doAnimation(duration, onComplete) {
         var curY = this.container.y;
         var targetY = curY - (CardStreak.NUM_RANDOM_CARD + 1) * CardStreak.CARD_HEIGHT;
-        var moveTo = cc.sequence(cc.moveTo(duration, this.container.x, targetY ).easing(cc.easeInOut(2)),
+        var moveTo = cc.sequence(cc.moveTo(duration, this.container.x, targetY ).easing(cc.easeIn(1.5)),
             cc.callFunc(() => {
                 if (onComplete) {
                     onComplete();
@@ -97,7 +97,7 @@ class CardStreak extends Actor {
 
 }
 
-CardStreak.NUM_RANDOM_CARD = 20;
+CardStreak.NUM_RANDOM_CARD = 15;
 CardStreak.CARD_HEIGHT = 155;
 CardStreak.START_Y = 73;
 

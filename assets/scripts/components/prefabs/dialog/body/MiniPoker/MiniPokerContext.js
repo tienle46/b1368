@@ -2,6 +2,7 @@ import app from 'app';
 import SFS2X from 'SFS2X';
 import Utils from 'GeneralUtils';
 import Linking from 'Linking';
+import MiniPokerErrorCode from "./MiniPokerErrorCode";
 
 export default class MiniPokerContext {
     constructor () {
@@ -13,6 +14,7 @@ export default class MiniPokerContext {
         this.selectedBet = 0;
         this.lastSpinTime = 0;
         this.prizeConfig = null;
+        this.enabled = true;
 
         this.resultQueue = [];
 
@@ -96,6 +98,11 @@ export default class MiniPokerContext {
         var data = this.resultQueue.splice(0, 1)[0];
 
         if (data.error) {
+            if (data.error.code === MiniPokerErrorCode.INACTIVE.code ||
+                data.error.code === MiniPokerErrorCode.INITIATE_JACKPOT_FAIL.code)
+            {
+                this.popup && this.popup.disableMiniPoker();
+            }
             this.popup && this.popup.showError(data.error);
             return;
         }
@@ -113,7 +120,7 @@ export default class MiniPokerContext {
             app.context.setBalance(newBalance);
         }
 
-        this.popup && this.popup.updateBalance();
+        // this.popup && this.popup.updateBalance();
     }
 
     sendSubscribe() {

@@ -85,13 +85,13 @@ class MiniPokerPopup extends BasePopup {
             this._getCurTime() - app.miniPokerContext.lastSpinTime > app.miniPokerContext.subInterval) {
             this.scheduleOnce(this._subscribe, .2)
         }
-        this.updateBalance();
+        // this.updateBalance();
         this.loadBetConfig();
         this.updateJarMoneys();
 
         // this._disableBetButtons();
         (app.miniPokerContext) && (app.miniPokerContext.sendGetConfig());
-
+        app.miniPokerContext.enabled = true;
     }
 
     _scheduleSubscribe() {
@@ -211,6 +211,8 @@ class MiniPokerPopup extends BasePopup {
     }
 
     onBtnSpinClicked() {
+        if (!app.miniPokerContext.enabled) return;
+
         var anim = this.btnSpin.getComponent(cc.Animation);
         anim.play("ButtonSpinAnimation");
 
@@ -297,6 +299,11 @@ class MiniPokerPopup extends BasePopup {
         }
     }
 
+    disableMiniPoker() {
+        app.miniPokerContext.enabled = false;
+        this.disableAutoSpin();
+    }
+
     disableAutoSpin() {
         if (this.quickSpinToggle && this.quickSpinToggle.isChecked) {
             this.quickSpinToggle.uncheck();
@@ -308,7 +315,7 @@ class MiniPokerPopup extends BasePopup {
     }
 
     updateJarMoneys() {
-        this.lblHuMoney.string = GameUtils.formatNumberType3(app.miniPokerContext.getCurJackpotMoney());
+        this.lblHuMoney.string = numberFormat(app.miniPokerContext.getCurJackpotMoney());
     }
 
     loadBetConfig() {
@@ -366,16 +373,16 @@ class MiniPokerPopup extends BasePopup {
             app.miniPokerContext.updateJackpotForIdx(data.jackpot, app.miniPokerContext.getIdxForBet(bet));
         }
         this.isSpinning = true;
-        this.cardStreak1.spinToCard(cards[0], 3.75);
-        this.cardStreak2.spinToCard(cards[1], 4);
-        this.cardStreak3.spinToCard(cards[2], 4.25);
-        this.cardStreak4.spinToCard(cards[3], 4.5);
-        this.cardStreak5.spinToCard(cards[4], 4.75, function () {
+        this.cardStreak1.spinToCard(cards[0], 1.75);
+        this.cardStreak2.spinToCard(cards[1], 2);
+        this.cardStreak3.spinToCard(cards[2], 2.25);
+        this.cardStreak4.spinToCard(cards[3], 2.5);
+        this.cardStreak5.spinToCard(cards[4], 2.75, function () {
             this.isSpinning = false;
             if (isWin && winAmount > 0) {
                 this._showWinMoney(cardType, winAmount);
             }
-            this.updateBalance();
+            // this.updateBalance();
             this.updateJarMoneys();
             if (app.miniPokerContext.checkResultQueue()) return;
             this._checkQuickSpin();
@@ -383,7 +390,7 @@ class MiniPokerPopup extends BasePopup {
     }
 
     _showWinMoney(cardType, winAmount) {
-        if (cardType === MiniPokerCardType.THUNG_PHA_SANH_J) {
+        if (cardType === MiniPokerCardType.THUNG_PHA_SANH_CHUA) {
             var username = app.context.getMeDisplayName();
             var money = winAmount;
             var message = "Chúc mừng bạn đã nổ hũ game Mini Poker.";

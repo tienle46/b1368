@@ -35,6 +35,10 @@ MiniPokerErrorCode.valueOf = function(code) {
             return MiniPokerErrorCode.INVALID_BET_MONEY.message;
         case MiniPokerErrorCode.FLOOD_PLAY.code:
             return MiniPokerErrorCode.FLOOD_PLAY.message;
+        case MiniPokerErrorCode.INACTIVE.code:
+            return MiniPokerErrorCode.INACTIVE.message;
+        case MiniPokerErrorCode.INITIATE_JACKPOT_FAIL.code:
+            return MiniPokerErrorCode.INITIATE_JACKPOT_FAIL.message;
         default:
             return MiniPokerErrorCode.UNKNOWN.message;
     }
