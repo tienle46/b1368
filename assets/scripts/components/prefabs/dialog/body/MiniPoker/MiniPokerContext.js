@@ -150,7 +150,7 @@ export default class MiniPokerContext {
         this.jackpotValues = data.jackpotValues;
         this.betValues = data.bets;
         this.subInterval = data.subInterval;
-        this.spinInterval = data.spinInterval + 2000;
+        this.spinInterval = data.spinInterval + 200;
         this.curBetValue = this.betValues[this.selectedBet];
         this.prizeConfig = data.prizeConfig;
 

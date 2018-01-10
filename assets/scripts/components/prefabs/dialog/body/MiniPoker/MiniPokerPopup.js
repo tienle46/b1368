@@ -373,11 +373,11 @@ class MiniPokerPopup extends BasePopup {
             app.miniPokerContext.updateJackpotForIdx(data.jackpot, app.miniPokerContext.getIdxForBet(bet));
         }
         this.isSpinning = true;
-        this.cardStreak1.spinToCard(cards[0], 1.75);
-        this.cardStreak2.spinToCard(cards[1], 2);
-        this.cardStreak3.spinToCard(cards[2], 2.25);
-        this.cardStreak4.spinToCard(cards[3], 2.5);
-        this.cardStreak5.spinToCard(cards[4], 2.75, function () {
+        this.cardStreak1.spinToCard(cards[0], 2);
+        this.cardStreak2.spinToCard(cards[1], 2.25);
+        this.cardStreak3.spinToCard(cards[2], 2.5);
+        this.cardStreak4.spinToCard(cards[3], 2.75);
+        this.cardStreak5.spinToCard(cards[4], 3, function () {
             this.isSpinning = false;
             if (isWin && winAmount > 0) {
                 this._showWinMoney(cardType, winAmount);
