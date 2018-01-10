@@ -4792,7 +4792,7 @@
       }
     ],
     "_N$interactable": true,
-    "_N$enableAutoGrayEffect": false,
+    "_N$enableAutoGrayEffect": true,
     "_N$normalColor": {
       "__type__": "cc.Color",
       "r": 255,
@@ -4992,7 +4992,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "fada7f47-a2cf-42af-a126-e38557bc33e0"
+      "__uuid__": "a19fce8f-13db-4b93-850a-a08f1927f170"
     },
     "_type": 1,
     "_sizeMode": 0,
@@ -5048,7 +5048,7 @@
       }
     ],
     "_N$interactable": true,
-    "_N$enableAutoGrayEffect": false,
+    "_N$enableAutoGrayEffect": true,
     "_N$normalColor": {
       "__type__": "cc.Color",
       "r": 255,

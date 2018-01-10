@@ -93,7 +93,7 @@ class MiniHighLowPopup extends BasePopup {
         // app.highLowContext.sendStart(1000)
         this.removeAtCards()
         this.disableCardStreak()
-        this._showHighLowBtns()
+        this._turnOnInteractableHighLowBtns()
         this.switchBetInteractable(true)
         this._stopTimer()
     }
@@ -167,9 +167,9 @@ class MiniHighLowPopup extends BasePopup {
         this.btnEnd.active = false
     }
 
-    _showHighLowBtns() {
-        this.btnHigh.active = true
-        this.btnLow.active = true
+    _turnOnInteractableHighLowBtns() {
+        this.btnHigh.getComponent(cc.Button).interactable = true
+        this.btnLow.getComponent(cc.Button).interactable = true
     }
 
     //when End Game
@@ -194,14 +194,14 @@ class MiniHighLowPopup extends BasePopup {
         this.isSpinning = true
         this.card.spinToCard(cardValue, duration, () => {
             this.isSpinning = false
-            this._showHighLowBtns()
+            this._turnOnInteractableHighLowBtns()
             if (cardValue < 8) {
                 let children = this.atGroup.children
                 children[this.atCount].getComponent(cc.Sprite).spriteFrame = this.highLowAtlas.getSpriteFrame('A-2')
                 this.atCount++
-                this.btnHigh.active = false
+                this.btnHigh.getComponent(cc.Button).interactable = false
             } else if (cardValue < 12) {
-                this.btnLow.active = false
+                this.btnLow.getComponent(cc.Button).interactable = false
             }
         })
     }
