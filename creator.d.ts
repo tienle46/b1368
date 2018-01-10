@@ -5175,7 +5175,7 @@ declare module cc {
 	}		
 		/** !#en The Label Component.
 		!#zh 文字标签组件 */
-		export class Label extends _RendererUnderSG {		
+		export class Label extends _RendererUnderSG {
 		/** !#en Content string of label.
 		!#zh 标签显示的文本内容。 */
 		string : string;		

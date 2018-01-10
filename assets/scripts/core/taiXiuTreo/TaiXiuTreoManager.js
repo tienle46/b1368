@@ -108,6 +108,11 @@ export default class TaiXiuTreoManager {
         
         this.setMeBalance(app.context.getMeBalance())
     }
+
+    updateIcon() {
+        app.service.send({cmd: app.commands.MINIGAME_TAI_XIU_REMAIN_TIME});
+        this.setMeBalance(app.context.getMeBalance());
+    }
     
     setMeBalance(amount) {
         this._meMoney = Number(amount)

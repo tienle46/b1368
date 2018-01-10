@@ -1,5 +1,6 @@
 import app from 'app'
 import Actor from 'Actor'
+import MiniPokerPopup from 'MiniPokerPopup';
 
 /**
  * This component MUST BE placed in lower level than Draggable Component (if any)
@@ -14,9 +15,9 @@ class TaiXiuTreo extends Actor {
         
         this.properties = this.assignProperties({
             popup: cc.Prefab,
-            remainTime: cc.Label
+            remainTime: cc.Label,
         })
-        
+
         this._lastTime = null
         this._time = {min: 0, sec: 0}
     }
@@ -28,7 +29,7 @@ class TaiXiuTreo extends Actor {
     
     onEnable() {
         super.onEnable()
-        this.node.on(cc.Node.EventType.TOUCH_END, this._onClick, this)
+        // this.node.on(cc.Node.EventType.TOUCH_END, this._onClick, this)
         app.system.addAppStateListener(this)
     }
     
@@ -87,14 +88,24 @@ class TaiXiuTreo extends Actor {
     }
    
     _onClick() {
-        if(this.draggable && this.draggable.isIdle()) {
-            if(app.taiXiuTreoManager.needRequestNew())
-                app.service.send({
-                    cmd: app.commands.MINIGAME_TAI_XIU_GET_STATE
-                })
-            else
-                app.taiXiuTreoManager.showPopup()
+        if (app.taiXiuTreoManager.needRequestNew()) {
+            app.service.send({
+                cmd: app.commands.MINIGAME_TAI_XIU_GET_STATE
+            })
         }
+        else {
+            app.taiXiuTreoManager.showPopup()
+        }
+
+        // if(this.draggable && this.draggable.isIdle()) {
+        //     if(app.taiXiuTreoManager.needRequestNew())
+        //         app.service.send({
+        //             cmd: app.commands.MINIGAME_TAI_XIU_GET_STATE
+        //         })
+        //     else
+        //         app.taiXiuTreoManager.showPopup()
+        // }
+
     }
     
     createPopup(data) {

@@ -319,6 +319,9 @@
     },
     "remainTime": {
       "__id__": 4
+    },
+    "miniPokerPrefab": {
+      "__uuid__": "afe648fd-d110-4c55-bfd3-4df82240570e"
     }
   },
   {
