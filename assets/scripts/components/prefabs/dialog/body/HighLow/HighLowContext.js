@@ -78,7 +78,9 @@ export default class HighLowContext {
 
     _onReceivedPlay(data) {
         // data.card = 5
+        // data.card = 4 + Math.floor(Math.random()*52)
         if (!this.playing) {
+            // data.card = 9
             // data.card = 4 + Math.floor(Math.random()*52)
             this._setStartGame(data.card)
         } else {

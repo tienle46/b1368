@@ -6,6 +6,7 @@ import CCUtils from 'CCUtils';
 import GameUtils from 'GameUtils';
 import HighLowHistoryPopup from 'HighLowHistoryPopup';
 import HighLowTopPopup from 'HighLowTopPopup';
+import HighLowCardHand from './HighLowCardHand';
 
 class MiniHighLowPopup extends BasePopup {
     constructor() {
@@ -24,6 +25,11 @@ class MiniHighLowPopup extends BasePopup {
             btnHigh: cc.Node,
             btnLow: cc.Node,
             lblJackpotValue: cc.Label,
+
+            cardResults: cc.Node,
+            cardResultItem: cc.Node,
+            lblResultRank: cc.Label,
+            spriteResultSuit: cc.Sprite,
 
             highLowHistoryPrefab: cc.Prefab,
             highLowTopPrefab: cc.Prefab,
@@ -44,10 +50,9 @@ class MiniHighLowPopup extends BasePopup {
     }
 
     loadConfig() {
-        //TODO
         this._updateTimer()
         this._loadBetAndJackpotValues()
-        //TODO
+        this.cardResults.removeAllChildren()
     }
 
     onBtnBetClicked(e) {
@@ -92,6 +97,7 @@ class MiniHighLowPopup extends BasePopup {
     }
     onReceivedEnd() {
         // app.highLowContext.sendStart(1000)
+        this.cardResults.removeAllChildren()
         this.removeAtCards()
         this.disableCardStreak()
         this._turnOnInteractableHighLowBtns()
@@ -191,7 +197,7 @@ class MiniHighLowPopup extends BasePopup {
     }
 
     //spin the card streak
-    playSpinCard(cardValue, duration = 3) {
+    playSpinCard(cardValue, duration = 1) {
         this.isSpinning = true
         this.card.startAnimate(duration, cardValue, () => {
             this.isSpinning = false
@@ -204,7 +210,17 @@ class MiniHighLowPopup extends BasePopup {
             } else if (cardValue < 12) {
                 this.btnLow.getComponent(cc.Button).interactable = false
             }
+            this._addResult(cardValue)
         })
+    }
+    
+    _addResult(cardValue) {
+        const cardRank = HighLowCardHand._getRankName(cardValue >> 2)
+        //TODO calculatecardsuit
+        this.lblResultRank.string = cardRank.toUpperCase()
+        let item = cc.instantiate(this.cardResultItem)
+        this.cardResults.addChild(item)
+        item.active = true
     }
 
     // TIMER
