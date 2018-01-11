@@ -184,7 +184,7 @@ class MiniHighLowPopup extends BasePopup {
         this.atCount = 0
         let children = this.atGroup.children
         children.forEach(node => {
-            node.getComponent(cc.Sprite).spriteFrame = this.highLowAtlas.getSpriteFrame('A-1')
+            node.getChildByName('active').active = false
         })
     }
 
@@ -204,7 +204,7 @@ class MiniHighLowPopup extends BasePopup {
             this._turnOnInteractableHighLowBtns()
             if (cardValue < 8) {
                 let children = this.atGroup.children
-                children[this.atCount].getComponent(cc.Sprite).spriteFrame = this.highLowAtlas.getSpriteFrame('A-2')
+                children[this.atCount].getChildByName('active').active = true
                 this.atCount++
                 this.btnHigh.getComponent(cc.Button).interactable = false
             } else if (cardValue < 12) {
@@ -217,9 +217,9 @@ class MiniHighLowPopup extends BasePopup {
     _addResult(cardValue) {
         const cardRank = HighLowCardHand._getRankName(cardValue >> 2)
         //TODO calculatecardsuit
-        // const suitSprite = HighLowCardHand._getSuitName(cardValue & 0x03)
+        const suitSprite = HighLowCardHand._getSuitName(cardValue & 0x03)
         this.lblResultRank.string = cardRank.toUpperCase()
-        // this.spriteResultSuit.spriteFrame = this.highLowAtlas.getSpriteFrame(suitSprite)
+        this.spriteResultSuit.spriteFrame = this.highLowAtlas.getSpriteFrame(suitSprite)
         let item = cc.instantiate(this.cardResultItem)
         this.cardResults.addChild(item)
         item.active = true
