@@ -56,7 +56,7 @@ class MiniPokerPopup extends BasePopup {
         this.popupHistory = null;
         // this.enableSpin = true;
         this.toggleEnableColor = new cc.Color(255, 12, 12, 255);
-        this.toggleDisableColor = new cc.Color(0, 0, 0, 255);
+        this.toggleDisableColor = new cc.Color(255, 255, 255, 255);
         this.isSpinning = false;
 
     }
@@ -151,7 +151,7 @@ class MiniPokerPopup extends BasePopup {
     }
 
     onBtnCloseClicked() {
-        if (this.isSpinning) return;
+        // if (this.isSpinning) return;
 
         if (this.quickSpinToggle.isChecked) {
             this.quickSpinToggle.uncheck();

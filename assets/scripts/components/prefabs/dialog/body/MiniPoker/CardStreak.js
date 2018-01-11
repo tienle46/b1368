@@ -98,7 +98,7 @@ class CardStreak extends Actor {
 }
 
 CardStreak.NUM_RANDOM_CARD = 15;
-CardStreak.CARD_HEIGHT = 155;
-CardStreak.START_Y = 73;
+CardStreak.CARD_HEIGHT = 185;
+CardStreak.START_Y = 83;
 
 app.createComponent(CardStreak);
