@@ -217,7 +217,9 @@ class MiniHighLowPopup extends BasePopup {
     _addResult(cardValue) {
         const cardRank = HighLowCardHand._getRankName(cardValue >> 2)
         //TODO calculatecardsuit
+        // const suitSprite = HighLowCardHand._getSuitName(cardValue & 0x03)
         this.lblResultRank.string = cardRank.toUpperCase()
+        // this.spriteResultSuit.spriteFrame = this.highLowAtlas.getSpriteFrame(suitSprite)
         let item = cc.instantiate(this.cardResultItem)
         this.cardResults.addChild(item)
         item.active = true
