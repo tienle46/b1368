@@ -8,12 +8,14 @@ class HighLowTopItem extends Actor {
         super();
 
         this.properties = this.assignProperties({
-            lblRank: cc.Label,
+            rank: cc.Node,
             lblTime: cc.Label,
             lblUsername: cc.Label,
             lblBet: cc.Label,
             lblInfo: cc.Label,
             lblWin: cc.Label,
+
+            highLowAtlas: cc.SpriteAtlas,
 
         });
 
@@ -23,13 +25,25 @@ class HighLowTopItem extends Actor {
     }
 
     loadData(idx, data) {
-        if (idx <= 2) {
-            this.lblRank.node.color = this.topRankColor1;
+        let rank = idx + 1;
+        let spriteRank
+        if (rank < 4) {
+            switch (rank) {
+                case 1:
+                    spriteRank = 'rank_first'
+                    break
+                case 2:
+                    spriteRank = 'rank_second'
+                    break
+                case 3:
+                    spriteRank = 'rank_third'
+                    break
+            }
+            this.rank.getComponentInChildren(cc.Sprite).spriteFrame = this.highLowAtlas.getSpriteFrame(spriteRank)
         } else {
-            this.lblRank.node.color = this.topRankColor2;
+            this.rank.getComponentInChildren(cc.Label).string = rank
         }
-
-        var rank = idx + 1;
+        
         var time = this.formatDate(data.time);
         var username = this.formatUsername(data.playerName);
         var bet = data.bet || 0;
@@ -37,7 +51,7 @@ class HighLowTopItem extends Actor {
         var win = data.winAmount || 0;
         // var cards = data.cards;
 
-        this.lblRank.string = rank;
+        // this.lblRank.string = rank;
         this.lblTime.string = '' + time;
         this.lblUsername.string = username;
         this.lblBet.string = GameUtils.formatNumberType1(bet);
@@ -57,7 +71,7 @@ class HighLowTopItem extends Actor {
     }
 
     formatDate(dateString) {
-         return Utils.timeFormat(dateString, 'DD-MM-YYYY HH:mm:ss', 'DD-MM-YY HH:mm');
+        return Utils.timeFormat(dateString, 'DD-MM-YYYY HH:mm:ss', 'DD-MM-YY HH:mm');
     }
 
 }

@@ -46,7 +46,6 @@ class MiniHighLowPopup extends BasePopup {
     onLoad() {
         super.onLoad()
 
-        this._commonInit()
     }
 
     loadConfig() {
@@ -105,6 +104,20 @@ class MiniHighLowPopup extends BasePopup {
         this._stopTimer()
     }
 
+    //Click pop up
+    onHistoryBtnClicked() {
+        if (this._initHighLowHistory()) {
+            var highLowHistoryPopupController = this.highLowHistoryPopup.getComponent(HighLowHistoryPopup);
+            highLowHistoryPopupController.openPopup(true);
+        }
+    }
+    onTopBtnClicked() {
+        if (this._initTopHistory()) {
+            var miniHighLowPopupController = this.highLowTopPopup.getComponent(HighLowTopPopup);
+            miniHighLowPopupController.openPopup(true);
+        }
+    }
+
     //ClosePopup
     onBtnCloseClicked() {
         // this.disableCardStreak()
@@ -114,9 +127,11 @@ class MiniHighLowPopup extends BasePopup {
 
     onEnable() {
         super.onEnable();
+        this._commonInit()
     }
     onDisable() {
         super.onDisable();
+
     }
 
     //initHighLowContext
@@ -213,7 +228,7 @@ class MiniHighLowPopup extends BasePopup {
             this._addResult(cardValue)
         })
     }
-    
+
     _addResult(cardValue) {
         const cardRank = HighLowCardHand._getRankName(cardValue >> 2)
         //TODO calculatecardsuit
@@ -263,20 +278,6 @@ class MiniHighLowPopup extends BasePopup {
         }
 
         return false;
-    }
-
-    //Click pop up
-    onHistoryBtnClicked() {
-        if (this._initHighLowHistory()) {
-            var highLowHistoryPopupController = this.highLowHistoryPopup.getComponent(HighLowHistoryPopup);
-            highLowHistoryPopupController.openPopup(true);
-        }
-    }
-    onTopBtnClicked() {
-        if (this._initTopHistory()) {
-            var miniHighLowPopupController = this.highLowTopPopup.getComponent(HighLowTopPopup);
-            miniHighLowPopupController.openPopup(true);
-        }
     }
 
 }

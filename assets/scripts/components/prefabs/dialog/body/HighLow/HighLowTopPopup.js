@@ -17,13 +17,13 @@ class HighLowTopPopup extends BasePopup {
     onEnable() {
         super.onEnable();
         // let topPlayers = []
-        // for(let i=0; i< 15; i++) {
+        // for (let i = 0; i < 15; i++) {
         //     topPlayers.push({
         //         time: `12/3/201${i}`,
         //         playerName: `aneo${i}`,
         //         bet: `00${i}`,
         //         info: '123K',
-        //         winAmount: '34M' 
+        //         winAmount: '34M'
         //     })
         // }
         // let data = {
@@ -33,7 +33,8 @@ class HighLowTopPopup extends BasePopup {
 
         this._registerEventListener();
 
-        this._sendGetTop();
+        this.scheduleOnce(this._sendGetTop, 0.2);
+        // this._sendGetTop();
     }
 
     onDisable() {
@@ -44,7 +45,7 @@ class HighLowTopPopup extends BasePopup {
     }
 
     _sendGetTop() {
-        app.service.send({cmd:app.commands.MINIGAME_CAO_THAP_TOP_PLAYER});
+        app.service.send({ cmd: app.commands.MINIGAME_CAO_THAP_TOP_PLAYER });
     }
 
     _registerEventListener() {
@@ -72,6 +73,7 @@ class HighLowTopPopup extends BasePopup {
     _addItem(idx, data) {
         var item = cc.instantiate(this.itemPrefab);
         item.active = true;
+        item.color = (idx % 2 === 0) ? new cc.Color(0, 15, 29) : new cc.Color(1, 17, 38)
         var itemCtrl = item.getComponent(HighLowTopItem);
         itemCtrl.loadData(idx, data);
         this.container.addChild(item);
