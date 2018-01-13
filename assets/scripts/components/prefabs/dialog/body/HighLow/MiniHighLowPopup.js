@@ -30,7 +30,8 @@ class MiniHighLowPopup extends BasePopup {
             lblNextBeloveAmount: cc.Label,
             lblWinAmount: cc.Label,
 
-            cardResults: cc.Node,
+            cardResultsScrollView: cc.ScrollView,
+            cardResultsContent: cc.Node,
             cardResultItem: cc.Node,
             lblResultRank: cc.Label,
             spriteResultSuit: cc.Sprite,
@@ -43,18 +44,17 @@ class MiniHighLowPopup extends BasePopup {
         this.isSpinning = false
         this.betValue = 0
         this.jackpotValue = 0
-        this.previousCardValue = null// fake
 
         this.highLowHistoryPopup = null
         this.highLowTopPopup = null
-        this.fakeData = () => {
-            return {
-                card: 4 + Math.floor(Math.random() * 52),
-                nextAboveAmount: Math.floor(Math.random() * 52),
-                nextBelowAmount: Math.floor(Math.random() * 52),
-                winAmount: Math.floor(Math.random() * 52),
-            }
-        }// fake
+        // this.fakeData = () => {
+        //     return {
+        //         card: 4 + Math.floor(Math.random() * 52),
+        //         nextAboveAmount: Math.floor(Math.random() * 52),
+        //         nextBelowAmount: Math.floor(Math.random() * 52),
+        //         winAmount: Math.floor(Math.random() * 52),
+        //     }
+        // }// fake
     }
 
     onLoad() {
@@ -64,9 +64,9 @@ class MiniHighLowPopup extends BasePopup {
 
     onEnable() {
         super.onEnable();
-        this._removeCardResults()
+        this._removeCardResults()// forfake1
         this._commonInit()
-        this.loadConfig() // fake
+        // this.loadConfig() // fake
     }
     onDisable() {
         super.onDisable();
@@ -82,7 +82,7 @@ class MiniHighLowPopup extends BasePopup {
     loadConfig() {
         this._updateTimer()
         this._loadBetAndJackpotValues()
-        this._removeCardResults()
+        this._removeCardResults()// forfake1
     }
 
     onBtnBetClicked(e) {
@@ -95,28 +95,32 @@ class MiniHighLowPopup extends BasePopup {
 
     //Start
     onStartBtnClicked() {
-        // app.highLowContext.sendStart(this.betValue);// forfake
-        this.onReceivedStart(this.fakeData())// fake
-        app.highLowContext.playing = true// fake
+        app.highLowContext.sendStart(this.betValue);// forfake //forfake1
+        // this.onReceivedStart(this.fakeData())// fake
+        // app.highLowContext.playing = true// fake
+        // this.cardResultsScrollView.getComponent(cc.ScrollView).scrollToRight()// fake1
     }
     onReceivedStart(data) {
+        if (data.playing) {
+            this._setHistoryResults(data.cardHistory)
+        }
         this.playSpinCard(data)
         this.enableCardStreak()
-        this.switchBetInteractable(false)
+        this._switchBetInteractable(false)
         this._startTimer()
     }
 
     //PlayButton(Higher and Lower)
     onHigherBetBtnClicked() {
         if (!this.isSpinning && app.highLowContext.playing) {
-            // app.highLowContext.sendGetPlay(this.betValue, 1);// forfake
-            this.onReceivedPlay(this.fakeData())// fake
+            app.highLowContext.sendGetPlay(this.betValue, 1);// forfake
+            // this.onReceivedPlay(this.fakeData())// fake
         }
     }
     onLowerBetBtnClicked() {
         if (!this.isSpinning && app.highLowContext.playing) {
-            // app.highLowContext.sendGetPlay(this.betValue, 0);// forfake
-            this.onReceivedPlay(this.fakeData())// fake
+            app.highLowContext.sendGetPlay(this.betValue, 0);// forfake
+            // this.onReceivedPlay(this.fakeData())// fake
         }
     }
     onReceivedPlay(data) {
@@ -128,17 +132,22 @@ class MiniHighLowPopup extends BasePopup {
     //EndTurn
     onEndBtnClicked() {
         if (!this.isSpinning) {
-            // app.highLowContext.sendEnd(this.betValue);// for fake
-            this.onReceivedEnd()//fake
+            if (app.highLowContext.playing) {
+                app.highLowContext.sendEnd(this.betValue);// forfake
+            } else {
+                this.onReceivedEnd()
+            }
+            // this.onReceivedEnd()// fake
         }
     }
     onReceivedEnd() {
+        console.log('end======')
         // app.highLowContext.sendStart(1000)
         this._removeCardResults()
         this.removeAtCards()
         this.disableCardStreak()
-        this._turnOnInteractableHighLowBtns()
-        this.switchBetInteractable(true)
+        this._switchInteractableHighLowBtns(true)
+        this._switchBetInteractable(true)
         this._stopTimer()
         this._updateNextWinAmount(0, 0, 0)
     }
@@ -159,7 +168,7 @@ class MiniHighLowPopup extends BasePopup {
 
     _removeCardResults() {
         this.resultCount = 0
-        this.cardResults.removeAllChildren()
+        this.cardResultsContent.removeAllChildren()
     }
 
     //ClosePopup
@@ -218,9 +227,9 @@ class MiniHighLowPopup extends BasePopup {
         this.btnEnd.active = false
     }
 
-    _turnOnInteractableHighLowBtns() {
-        this.btnHigh.getComponent(cc.Button).interactable = true
-        this.btnLow.getComponent(cc.Button).interactable = true
+    _switchInteractableHighLowBtns(isEnable) {
+        this.btnHigh.getComponent(cc.Button).interactable = isEnable
+        this.btnLow.getComponent(cc.Button).interactable = isEnable
     }
 
     //when End Game
@@ -233,7 +242,7 @@ class MiniHighLowPopup extends BasePopup {
     }
 
     //when playing, user cannot change the bet value, this functiuon turn on/off the interactable of toggle group
-    switchBetInteractable(isEnable) {
+    _switchBetInteractable(isEnable) {
         let children = this.toggleGroup.children
         children.forEach(node => {
             node.getComponent(cc.Toggle).interactable = isEnable
@@ -248,44 +257,62 @@ class MiniHighLowPopup extends BasePopup {
 
     _spinCallback(data) {
         this.isSpinning = false
-        this._turnOnInteractableHighLowBtns()
+        this._switchInteractableHighLowBtns(true)
         if (data.card < 8) {
             let children = this.atGroup.children
             children[this.atCount].getChildByName('active').active = true
-            this.atCount++
+            this.atCount < 3 && this.atCount++
             this.btnHigh.getComponent(cc.Button).interactable = false
         } else if (data.card < 12) {
             this.btnLow.getComponent(cc.Button).interactable = false
         }
-        this._addResult(data.card)
         const { nextAboveAmount, nextBelowAmount, winAmount } = data
         this._updateNextWinAmount(nextAboveAmount, nextBelowAmount, winAmount)
+        if (data.start === undefined && data.win != undefined && !data.win) {
+            app.highLowContext.playing = false
+            app.highLowContext.startTime = null
+            this._switchInteractableHighLowBtns(false)
+            return
+        }
+        if (!data.playing) {
+            this._addResult(data.card)
+        }
+        if (this.resultCount > 9) {
+            this.cardResultsScrollView.scrollToRight(0.5)
+        }
     }
 
-    _updateNextWinAmount(nextAboveAmount, nextBelowAmount, winAmount) {
+    _updateNextWinAmount(nextAboveAmount = 0, nextBelowAmount = 0, winAmount = 0) {
         this.lblNextAboveAmount.string = nextAboveAmount
         this.lblNextBeloveAmount.string = nextBelowAmount
         this.lblWinAmount.string = winAmount
     }
 
+    _setHistoryResults(cardValues) {
+        cardValues.forEach(card => {
+            this._addResult(card)
+        })
+    }
+
     _addResult(cardValue) {
         this.resultCount++
-        if (this.resultCount > 9) {
-            this.cardResults.children[0].removeFromParent()
-        }
+        // if (this.resultCount > 9) {
+        //     this.cardResultsContent.children[0].removeFromParent()
+        // }
         const cardRank = HighLowCardHand._getRankName(cardValue >> 2)
         //TODO calculatecardsuit
         const suitSprite = HighLowCardHand._getSuitName(cardValue & 0x03)
         this.lblResultRank.string = cardRank.toUpperCase()
         this.spriteResultSuit.spriteFrame = this.highLowAtlas.getSpriteFrame(suitSprite)
         let item = cc.instantiate(this.cardResultItem)
-        this.cardResults.addChild(item)
+        this.cardResultsContent.addChild(item)
+        // this.cardResultsScrollView.getComponent(cc.ScrollView).scrollToRight()
         item.active = true
     }
 
     // TIMER
     _startTimer() {
-        app.highLowContext.startTime = app.highLowContext.now()// fake
+        // app.highLowContext.startTime = app.highLowContext.now()// fake
         this.schedule(this._updateTimer, 1);
     }
 

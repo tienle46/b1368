@@ -13,13 +13,13 @@ export default class HighLowContext {
 
         this._registerEventListeners();
 
-        let fakeData = {
-            jackpotValues: [1000, 2000, 3000, 4000, 5000],
-            bets: [1000, 10000, 50000, 100000, 500000],
-            duration: 60
-        }// fake
-        this._onReceivedConfig(fakeData) // fake
-        // this.sendGetConfig();// forfake
+        // let fakeData = {
+        //     jackpotValues: [1000, 2000, 3000, 4000, 5000],
+        //     bets: [1000, 10000, 50000, 100000, 500000],
+        //     duration: 60
+        // }// fake
+        // this._onReceivedConfig(fakeData) // fake
+        this.sendGetConfig();// forfake
     }
 
     sendGetConfig() {
@@ -97,11 +97,16 @@ export default class HighLowContext {
     _onReceivedEnd(data) {
         this.playing = false
         this.startTime = null
+        this.tempDuration = this.duration
         this.popup && this.popup.onReceivedEnd()
     }
     
     loadConfig(data) {
         this.duration = data.duration;
+        this.tempDuration = this.duration
+        if(data.remainTime) {
+            this.tempDuration = data.remainTime
+        }
         this.isLoadedConfig = true;
         this.jackpotValues = data.jackpotValues;
         this.betValues = data.bets;
@@ -127,7 +132,7 @@ export default class HighLowContext {
         let now = this.now();
         let playingTime = 0
         playingTime = this.startTime && this.now() - this.startTime
-        let remainingTimeInSecond = this.duration - (playingTime / 1000);
+        let remainingTimeInSecond = this.tempDuration - (playingTime / 1000);
         let result = 0
         if(remainingTimeInSecond > 0) {
             result = remainingTimeInSecond
@@ -140,8 +145,8 @@ export default class HighLowContext {
 
         let minute = Math.floor(time / 60);
         let second = Math.floor(time % 60);
-
-        return minute + ":" + second;
+        let result = minute + ":" + second;
+        return Utils.timeFormat(result, 'm:s', 'mm:ss')
     }
 
 }
