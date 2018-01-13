@@ -29,7 +29,7 @@ class MiniHighLowPopup extends BasePopup {
             lblNextAboveAmount: cc.Label,
             lblNextBeloveAmount: cc.Label,
             lblWinAmount: cc.Label,
-            
+
             cardResults: cc.Node,
             cardResultItem: cc.Node,
             lblResultRank: cc.Label,
@@ -38,13 +38,23 @@ class MiniHighLowPopup extends BasePopup {
             highLowHistoryPrefab: cc.Prefab,
             highLowTopPrefab: cc.Prefab,
         });
+        this.resultCount = 0
         this.atCount = 0
         this.isSpinning = false
         this.betValue = 0
         this.jackpotValue = 0
+        this.previousCardValue = null// fake
 
         this.highLowHistoryPopup = null
         this.highLowTopPopup = null
+        this.fakeData = () => {
+            return {
+                card: 4 + Math.floor(Math.random() * 52),
+                nextAboveAmount: Math.floor(Math.random() * 52),
+                nextBelowAmount: Math.floor(Math.random() * 52),
+                winAmount: Math.floor(Math.random() * 52),
+            }
+        }// fake
     }
 
     onLoad() {
@@ -56,7 +66,7 @@ class MiniHighLowPopup extends BasePopup {
         super.onEnable();
         this._removeCardResults()
         this._commonInit()
-        // this.loadConfig() // fake
+        this.loadConfig() // fake
     }
     onDisable() {
         super.onDisable();
@@ -68,7 +78,7 @@ class MiniHighLowPopup extends BasePopup {
         (!app.highLowContext) && (app.highLowContext = new HighLowContext());
         (app.highLowContext) && (app.highLowContext.popup = this);
     }
-    
+
     loadConfig() {
         this._updateTimer()
         this._loadBetAndJackpotValues()
@@ -85,7 +95,9 @@ class MiniHighLowPopup extends BasePopup {
 
     //Start
     onStartBtnClicked() {
-        app.highLowContext.sendStart(this.betValue);
+        // app.highLowContext.sendStart(this.betValue);// forfake
+        this.onReceivedStart(this.fakeData())// fake
+        app.highLowContext.playing = true// fake
     }
     onReceivedStart(data) {
         this.playSpinCard(data)
@@ -97,16 +109,18 @@ class MiniHighLowPopup extends BasePopup {
     //PlayButton(Higher and Lower)
     onHigherBetBtnClicked() {
         if (!this.isSpinning && app.highLowContext.playing) {
-            app.highLowContext.sendGetPlay(this.betValue, 1);
+            // app.highLowContext.sendGetPlay(this.betValue, 1);// forfake
+            this.onReceivedPlay(this.fakeData())// fake
         }
     }
     onLowerBetBtnClicked() {
         if (!this.isSpinning && app.highLowContext.playing) {
-            app.highLowContext.sendGetPlay(this.betValue, 0);
+            // app.highLowContext.sendGetPlay(this.betValue, 0);// forfake
+            this.onReceivedPlay(this.fakeData())// fake
         }
     }
     onReceivedPlay(data) {
-        if(data.card != undefined) {
+        if (data.card != undefined) {
             this.playSpinCard(data)
         }
     }
@@ -114,7 +128,8 @@ class MiniHighLowPopup extends BasePopup {
     //EndTurn
     onEndBtnClicked() {
         if (!this.isSpinning) {
-            app.highLowContext.sendEnd(this.betValue);
+            // app.highLowContext.sendEnd(this.betValue);// for fake
+            this.onReceivedEnd()//fake
         }
     }
     onReceivedEnd() {
@@ -141,8 +156,9 @@ class MiniHighLowPopup extends BasePopup {
             miniHighLowPopupController.openPopup(true);
         }
     }
-    
+
     _removeCardResults() {
+        this.resultCount = 0
         this.cardResults.removeAllChildren()
     }
 
@@ -227,9 +243,9 @@ class MiniHighLowPopup extends BasePopup {
     //spin the card streak
     playSpinCard(data, duration = 1) {
         this.isSpinning = true
-        this.card.startAnimate(duration, data.card, this._spinCallback(data))
+        this.card.startAnimate(duration, data.card, () => { this._spinCallback(data) })
     }
-    
+
     _spinCallback(data) {
         this.isSpinning = false
         this._turnOnInteractableHighLowBtns()
@@ -242,10 +258,10 @@ class MiniHighLowPopup extends BasePopup {
             this.btnLow.getComponent(cc.Button).interactable = false
         }
         this._addResult(data.card)
-        const {nextAboveAmount, nextBelowAmount, winAmount} = data
+        const { nextAboveAmount, nextBelowAmount, winAmount } = data
         this._updateNextWinAmount(nextAboveAmount, nextBelowAmount, winAmount)
     }
-    
+
     _updateNextWinAmount(nextAboveAmount, nextBelowAmount, winAmount) {
         this.lblNextAboveAmount.string = nextAboveAmount
         this.lblNextBeloveAmount.string = nextBelowAmount
@@ -253,6 +269,10 @@ class MiniHighLowPopup extends BasePopup {
     }
 
     _addResult(cardValue) {
+        this.resultCount++
+        if (this.resultCount > 9) {
+            this.cardResults.children[0].removeFromParent()
+        }
         const cardRank = HighLowCardHand._getRankName(cardValue >> 2)
         //TODO calculatecardsuit
         const suitSprite = HighLowCardHand._getSuitName(cardValue & 0x03)
@@ -265,6 +285,7 @@ class MiniHighLowPopup extends BasePopup {
 
     // TIMER
     _startTimer() {
+        app.highLowContext.startTime = app.highLowContext.now()// fake
         this.schedule(this._updateTimer, 1);
     }
 

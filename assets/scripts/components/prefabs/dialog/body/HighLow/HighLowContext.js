@@ -13,12 +13,13 @@ export default class HighLowContext {
 
         this._registerEventListeners();
 
-        // let fakeData = {
-        //     jackpotValues: [1000, 2000, 3000, 4000, 5000],
-        //     bets: [1000, 10000, 50000, 100000, 500000]
-        // }
-        // this._onReceivedConfig(fakeData) // fake
-        this.sendGetConfig();
+        let fakeData = {
+            jackpotValues: [1000, 2000, 3000, 4000, 5000],
+            bets: [1000, 10000, 50000, 100000, 500000],
+            duration: 60
+        }// fake
+        this._onReceivedConfig(fakeData) // fake
+        // this.sendGetConfig();// forfake
     }
 
     sendGetConfig() {
@@ -105,8 +106,6 @@ export default class HighLowContext {
         this.jackpotValues = data.jackpotValues;
         this.betValues = data.bets;
        
-        // this.jackpotValues = [1000, 2000, 3000, 4000, 5000];  // fake
-        // this.betValues = [1000, 10000, 50000, 100000, 500000];  // fake
         this.popup && this.popup.loadConfig()
         if (data.playing) {
             this._setStartGame(data)
@@ -129,7 +128,11 @@ export default class HighLowContext {
         let playingTime = 0
         playingTime = this.startTime && this.now() - this.startTime
         let remainingTimeInSecond = this.duration - (playingTime / 1000);
-        return this.formatTime(remainingTimeInSecond);
+        let result = 0
+        if(remainingTimeInSecond > 0) {
+            result = remainingTimeInSecond
+        }
+        return this.formatTime(result);
     }
 
     formatTime(time) {
