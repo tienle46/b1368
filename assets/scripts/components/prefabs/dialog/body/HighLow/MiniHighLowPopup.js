@@ -26,6 +26,10 @@ class MiniHighLowPopup extends BasePopup {
             btnLow: cc.Node,
             lblJackpotValue: cc.Label,
 
+            lblNextAboveAmount: cc.Label,
+            lblNextBeloveAmount: cc.Label,
+            lblWinAmount: cc.Label,
+            
             cardResults: cc.Node,
             cardResultItem: cc.Node,
             lblResultRank: cc.Label,
@@ -48,10 +52,27 @@ class MiniHighLowPopup extends BasePopup {
 
     }
 
+    onEnable() {
+        super.onEnable();
+        this._removeCardResults()
+        this._commonInit()
+        // this.loadConfig() // fake
+    }
+    onDisable() {
+        super.onDisable();
+
+    }
+
+    //initHighLowContext
+    _commonInit() {
+        (!app.highLowContext) && (app.highLowContext = new HighLowContext());
+        (app.highLowContext) && (app.highLowContext.popup = this);
+    }
+    
     loadConfig() {
         this._updateTimer()
         this._loadBetAndJackpotValues()
-        this.cardResults.removeAllChildren()
+        this._removeCardResults()
     }
 
     onBtnBetClicked(e) {
@@ -66,8 +87,8 @@ class MiniHighLowPopup extends BasePopup {
     onStartBtnClicked() {
         app.highLowContext.sendStart(this.betValue);
     }
-    onReceivedStart(cardValue) {
-        this.playSpinCard(cardValue)
+    onReceivedStart(data) {
+        this.playSpinCard(data)
         this.enableCardStreak()
         this.switchBetInteractable(false)
         this._startTimer()
@@ -84,8 +105,10 @@ class MiniHighLowPopup extends BasePopup {
             app.highLowContext.sendGetPlay(this.betValue, 0);
         }
     }
-    onReceivedPlay(cardValue) {
-        this.playSpinCard(cardValue)
+    onReceivedPlay(data) {
+        if(data.card != undefined) {
+            this.playSpinCard(data)
+        }
     }
 
     //EndTurn
@@ -96,12 +119,13 @@ class MiniHighLowPopup extends BasePopup {
     }
     onReceivedEnd() {
         // app.highLowContext.sendStart(1000)
-        this.cardResults.removeAllChildren()
+        this._removeCardResults()
         this.removeAtCards()
         this.disableCardStreak()
         this._turnOnInteractableHighLowBtns()
         this.switchBetInteractable(true)
         this._stopTimer()
+        this._updateNextWinAmount(0, 0, 0)
     }
 
     //Click pop up
@@ -117,27 +141,16 @@ class MiniHighLowPopup extends BasePopup {
             miniHighLowPopupController.openPopup(true);
         }
     }
+    
+    _removeCardResults() {
+        this.cardResults.removeAllChildren()
+    }
 
     //ClosePopup
     onBtnCloseClicked() {
         // this.disableCardStreak()
         app.highLowContext.popup = null;
         super.onBtnCloseClicked()
-    }
-
-    onEnable() {
-        super.onEnable();
-        this._commonInit()
-    }
-    onDisable() {
-        super.onDisable();
-
-    }
-
-    //initHighLowContext
-    _commonInit() {
-        (!app.highLowContext) && (app.highLowContext = new HighLowContext());
-        (app.highLowContext) && (app.highLowContext.popup = this);
     }
 
     //initBetAndJackpotValue
@@ -212,21 +225,31 @@ class MiniHighLowPopup extends BasePopup {
     }
 
     //spin the card streak
-    playSpinCard(cardValue, duration = 1) {
+    playSpinCard(data, duration = 1) {
         this.isSpinning = true
-        this.card.startAnimate(duration, cardValue, () => {
-            this.isSpinning = false
-            this._turnOnInteractableHighLowBtns()
-            if (cardValue < 8) {
-                let children = this.atGroup.children
-                children[this.atCount].getChildByName('active').active = true
-                this.atCount++
-                this.btnHigh.getComponent(cc.Button).interactable = false
-            } else if (cardValue < 12) {
-                this.btnLow.getComponent(cc.Button).interactable = false
-            }
-            this._addResult(cardValue)
-        })
+        this.card.startAnimate(duration, data.card, this._spinCallback(data))
+    }
+    
+    _spinCallback(data) {
+        this.isSpinning = false
+        this._turnOnInteractableHighLowBtns()
+        if (data.card < 8) {
+            let children = this.atGroup.children
+            children[this.atCount].getChildByName('active').active = true
+            this.atCount++
+            this.btnHigh.getComponent(cc.Button).interactable = false
+        } else if (data.card < 12) {
+            this.btnLow.getComponent(cc.Button).interactable = false
+        }
+        this._addResult(data.card)
+        const {nextAboveAmount, nextBelowAmount, winAmount} = data
+        this._updateNextWinAmount(nextAboveAmount, nextBelowAmount, winAmount)
+    }
+    
+    _updateNextWinAmount(nextAboveAmount, nextBelowAmount, winAmount) {
+        this.lblNextAboveAmount.string = nextAboveAmount
+        this.lblNextBeloveAmount.string = nextBelowAmount
+        this.lblWinAmount.string = winAmount
     }
 
     _addResult(cardValue) {

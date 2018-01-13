@@ -59,20 +59,21 @@ class HighLowHistoryPopup extends BasePopup {
 
     _sendGetHistoryDetail(i) {
         // warn('send get history');
-        app.service.send({
+        const sendObj = {
             cmd: app.commands.MINIGAME_CAO_THAP_HISTORY_DETAIL,
             data: {
                 i
             }
-        });
+        }
+        app.service.send(sendObj);
     }
 
     _onReceivedHistory(data) {
         // warn('history', data);
         this._removeItems();
 
-        data.histories.forEach((info) => {
-            this._addItem(info);
+        data.histories.forEach((info, idx) => {
+            this._addItem(info, idx);
         });
     }
     
@@ -117,10 +118,10 @@ class HighLowHistoryPopup extends BasePopup {
         CCUtils.clearAllChildren(this.container);
     }
 
-    _addItem(info) {
+    _addItem(info, idx) {
         var item = cc.instantiate(this.itemPrefab);
         item.active = true;
-
+        item.color = (idx % 2 === 0) ? new cc.Color(0, 15, 29) : new cc.Color(1, 17, 38)
         var itemCtrl = item.getComponent(HighLowHistoryItem);
         itemCtrl.loadData(info);
         this.container.addChild(item);

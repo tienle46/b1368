@@ -13,6 +13,11 @@ export default class HighLowContext {
 
         this._registerEventListeners();
 
+        // let fakeData = {
+        //     jackpotValues: [1000, 2000, 3000, 4000, 5000],
+        //     bets: [1000, 10000, 50000, 100000, 500000]
+        // }
+        // this._onReceivedConfig(fakeData) // fake
         this.sendGetConfig();
     }
 
@@ -72,8 +77,7 @@ export default class HighLowContext {
     }
 
     _onReceivedStart(data) {
-        let betValue = this.popup && this.popup.betValue
-        this.sendGetPlay(betValue)
+        this._setStartGame(data)
     }
 
     _onReceivedPlay(data) {
@@ -83,9 +87,9 @@ export default class HighLowContext {
         if (!this.playing) {
             // data.card = 9
             // data.card = 4 + Math.floor(Math.random()*52)
-            this._setStartGame(data.card)
+            this._setStartGame(data)
         } else {
-            this.popup && this.popup.onReceivedPlay(data.card)
+            this.popup && this.popup.onReceivedPlay(data)
         }
     }
 
@@ -99,19 +103,20 @@ export default class HighLowContext {
         this.duration = data.duration;
         this.isLoadedConfig = true;
         this.jackpotValues = data.jackpotValues;
-        // fake
-        // this.jackpotValues = [1000, 2000, 3000, 4000, 5000];
         this.betValues = data.bets;
+       
+        // this.jackpotValues = [1000, 2000, 3000, 4000, 5000];  // fake
+        // this.betValues = [1000, 10000, 50000, 100000, 500000];  // fake
         this.popup && this.popup.loadConfig()
         if (data.playing) {
-            this._setStartGame(data.card)
+            this._setStartGame(data)
         }
     }
 
-    _setStartGame(cardValue) {
+    _setStartGame(data) {
         this.playing = true
         this.startTime = this.now()
-        this.popup && this.popup.onReceivedStart(cardValue)
+        this.popup && this.popup.onReceivedStart(data)
     }
     
     now() {
