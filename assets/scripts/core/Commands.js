@@ -332,6 +332,7 @@ Commands.MINIGAME_CAO_THAP_START = "mng_caoThapStart";
 Commands.MINIGAME_CAO_THAP_PLAY = "mng_caoThapPlay";
 Commands.MINIGAME_CAO_THAP_END = "mng_caoThapEnd";
 Commands.MINIGAME_CAO_THAP_CONFIG = "mng_caoThapConfig";
+Commands.MINIGAME_CAO_THAP_SYNC = "mng_caoThapSync";
 
 Commands.BANK_TRANSFER_HISTORY_DETAIL = "b_athd";
 Commands.AGENCY_LIST = "agent";

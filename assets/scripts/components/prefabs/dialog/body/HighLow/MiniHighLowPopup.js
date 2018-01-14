@@ -102,6 +102,7 @@ class MiniHighLowPopup extends BasePopup {
 
     //Start
     onStartBtnClicked() {
+        if (!app.highLowContext.isLoadedConfig) return
         app.highLowContext.sendStart(this.betValue);// forfake //forfake1
         // this.onReceivedStart(this.fakeData())// fake
         // app.highLowContext.playing = true// fake
@@ -132,8 +133,8 @@ class MiniHighLowPopup extends BasePopup {
         }
     }
     onReceivedPlay(data) {
-        console.warn('dataPlay======',data)
-        console.warn('dataPlay.win======',data.win)
+        console.warn('dataPlay======', data)
+        console.warn('dataPlay.win======', data.win)
         if (data.card != undefined) {
             this.playSpinCard(data)
         }
@@ -197,6 +198,14 @@ class MiniHighLowPopup extends BasePopup {
         this.jackpotValue = jackpotValue
         this.lblJackpotValue.string = jackpotValue
     }
+    updateJackpotValues(jackpotValuesObj) {
+        let children = this.toggleGroup.children
+        children.forEach((item, index) => {
+            item._data.jackpot = app.highLowContext.jackpotValues[index]
+            console.log('item._data.jackpot======',item._data.jackpot)
+            this._updateJackpotValue(jackpotValuesObj[this.betValue])
+        })
+    }
     _loadBetAndJackpotValues() {//initBetAndJackpotValue
         const btnBetPositions = this._saveOldBtnBetPositions()
         this._generateNewBtnBet(btnBetPositions)
@@ -237,7 +246,7 @@ class MiniHighLowPopup extends BasePopup {
         this.isSpinning = false
         this._switchInteractableHighLowBtns(true)
         this._updateNextWinAmount(data.nextAboveAmount, data.nextBelowAmount, data.winAmount)
-        if(this._checkBetWin(data)){
+        if (this._checkBetWin(data)) {
             data.jackpot && this._updateJackpotValue(data.jackpot)
             this._handleValueCard(data.card)
             if (!data.playing) {
@@ -251,7 +260,7 @@ class MiniHighLowPopup extends BasePopup {
                 this.cardResultsScrollView.scrollToRight(0.5)
             }
         }
-        
+
     }
     _handleValueCard(cardValue) {
         if (cardValue < 8) {
@@ -378,7 +387,7 @@ class MiniHighLowPopup extends BasePopup {
 
         return false;
     }
-    
+
     showError(error) {
         if (error.message) {
             this._showErroMessage(error.message);

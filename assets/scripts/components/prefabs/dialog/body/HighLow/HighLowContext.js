@@ -70,6 +70,7 @@ export default class HighLowContext {
         app.system.addListener(app.commands.MINIGAME_CAO_THAP_PLAY, this._onReceivedPlay, this);
         app.system.addListener(app.commands.MINIGAME_CAO_THAP_END, this._onReceivedEnd, this);
         app.system.addListener(app.commands.MINIGAME_CAO_THAP_CONFIG, this._onReceivedConfig, this);
+        app.system.addListener(app.commands.MINIGAME_CAO_THAP_SYNC, this._onReceivedSync, this);
     }
 
     _removeEventListeners() {
@@ -77,11 +78,17 @@ export default class HighLowContext {
         app.system.removeListener(app.commands.MINIGAME_CAO_THAP_PLAY, this._onReceivedPlay, this);
         app.system.removeListener(app.commands.MINIGAME_CAO_THAP_END, this._onReceivedEnd, this);
         app.system.removeListener(app.commands.MINIGAME_CAO_THAP_CONFIG, this._onReceivedConfig, this);
+        app.system.removeListener(app.commands.MINIGAME_CAO_THAP_SYNC, this._onReceivedSync, this);
     }
 
     _onReceivedConfig(data) {
-        // warn('config', data);
+        warn('data.jackpotValues===cofnig===', data.jackpotValues);
         this.loadConfig(data);
+    }
+    _onReceivedSync(data) {
+        console.log('dataSync======',data)
+        this.jackpotValues = Object.values(data.jackpotValues)
+        this.popup && this.popup.updateJackpotValues(data.jackpotValues)
     }
 
     _onReceivedStart(data) {
@@ -119,10 +126,10 @@ export default class HighLowContext {
         if (data.remainTime) {
             this.tempDuration = data.remainTime
         }
-        this.isLoadedConfig = true;
         this.jackpotValues = data.jackpotValues;
         this.betValues = data.bets;
-
+        
+        this.isLoadedConfig = true;
         this.popup && this.popup.loadConfig()
         if (data.playing) {
             this._setStartGame(data)
