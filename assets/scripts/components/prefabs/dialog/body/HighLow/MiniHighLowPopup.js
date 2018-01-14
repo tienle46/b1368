@@ -45,6 +45,7 @@ class MiniHighLowPopup extends BasePopup {
         this.isSpinning = false
         this.betValue = 0
         this.jackpotValue = 0
+        this.betIndex = 0
 
         this.highLowHistoryPopup = null
         this.highLowTopPopup = null
@@ -95,8 +96,8 @@ class MiniHighLowPopup extends BasePopup {
     onBtnBetClicked(e) {
         if (!app.highLowContext.playing) {
             const data = e.node._data
-            const { bet, jackpot } = data
-            this._updateBetAndJackpotValue(bet, jackpot)
+            const { bet, jackpot, betIndex } = data
+            this._updateBetAndJackpotValue(bet, jackpot, betIndex)
         }
     }
 
@@ -119,7 +120,7 @@ class MiniHighLowPopup extends BasePopup {
         this._startTimer()
     }
 
-    //PlayButton(Higher and Lower)
+    // PlayButton(Higher and Lower)
     onHigherBetBtnClicked() {
         if (!this.isSpinning && app.highLowContext.playing) {
             app.highLowContext.sendGetPlay(this.betValue, 1);// forfake
@@ -189,27 +190,35 @@ class MiniHighLowPopup extends BasePopup {
             node.getComponent(cc.Toggle).interactable = isEnable
         })
     }
-    _updateBetAndJackpotValue(bet, jackpot) {//Update jackpot Value and bet when click bet
-        this.betValue = bet
-        this.jackpotValue = jackpot
-        this.lblJackpotValue.string = this.jackpotValue
-    }
     _updateJackpotValue(jackpotValue) {
         this.jackpotValue = jackpotValue
         this.lblJackpotValue.string = jackpotValue
     }
-    updateJackpotValues(jackpotValuesObj) {
+    _updateBetAndJackpotValue(bet, jackpot, betIndex) {//Update jackpot Value and bet when click bet
+        this.betIndex = betIndex
+        this.betValue = bet
+        this._updateJackpotValue(jackpot)
+    }
+    updateBetAndJackpotValues() {
         let children = this.toggleGroup.children
+        const betValues = app.highLowContext.betValues
+        const jackpotValues = app.highLowContext.jackpotValues
         children.forEach((item, index) => {
-            item._data.jackpot = app.highLowContext.jackpotValues[index]
-            console.log('item._data.jackpot======',item._data.jackpot)
-            this._updateJackpotValue(jackpotValuesObj[this.betValue])
+            const bet = betValues[index]
+            const jackpot = jackpotValues[index]
+            const betIndex = index
+            item.getComponentInChildren(cc.Label).string = GameUtils.formatBalanceShort(bet)
+            item._data = { bet, jackpot, betIndex }
+            if (index === this.betIndex) {
+                this._updateBetAndJackpotValue(bet, jackpot, betIndex)
+            }
         })
     }
+
     _loadBetAndJackpotValues() {//initBetAndJackpotValue
         const btnBetPositions = this._saveOldBtnBetPositions()
         this._generateNewBtnBet(btnBetPositions)
-        this._updateBetAndJackpotValue(app.highLowContext.betValues[0], app.highLowContext.jackpotValues[0])
+        // this._updateBetAndJackpotValue(app.highLowContext.betValues[0], app.highLowContext.jackpotValues[0], 0)
     }
     _saveOldBtnBetPositions() {
         let children = this.toggleGroup.children
@@ -222,17 +231,12 @@ class MiniHighLowPopup extends BasePopup {
         return positionBetButtons
     }
     _generateNewBtnBet(btnBetPositions) {
-        const betValues = app.highLowContext.betValues
-        const jackpotValues = app.highLowContext.jackpotValues
-        betValues.forEach((betValue, i) => {
+        btnBetPositions.forEach(position => {
             const item = cc.instantiate(this.itemBet)
-            item.getComponentInChildren(cc.Label).string = GameUtils.formatBalanceShort(betValue)
-            const bet = betValue
-            const jackpot = jackpotValues[i]
-            item._data = { bet, jackpot }
             this.toggleGroup.addChild(item)
-            item.setPosition(btnBetPositions[i])
+            item.setPosition(position)
         })
+        this.updateBetAndJackpotValues()
     }
 
 
@@ -397,7 +401,7 @@ class MiniHighLowPopup extends BasePopup {
     }
 
     _showErroMessage(msg) {
-        warn("error message: " + msg);
+        app.system.showToast(msg);
     }
 }
 

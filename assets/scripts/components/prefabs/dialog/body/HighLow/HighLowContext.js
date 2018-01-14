@@ -82,16 +82,42 @@ export default class HighLowContext {
     }
 
     _onReceivedConfig(data) {
-        warn('data.jackpotValues===cofnig===', data.jackpotValues);
+        warn('dataConfig======', data);
         this.loadConfig(data);
     }
     _onReceivedSync(data) {
-        console.log('dataSync======',data)
-        this.jackpotValues = Object.values(data.jackpotValues)
-        this.popup && this.popup.updateJackpotValues(data.jackpotValues)
+        // console.log('dataSync======', data)
+        // this.jackpotValues = Object.values(data.betToJackpot)
+        this._analystJackpotAndBetValues(data.betToJackpot)
+        this.popup && this.popup.updateBetAndJackpotValues()
+    }
+
+    loadConfig(data) {
+        // console.log('dataConfig======', data)
+        this.duration = data.duration;
+        this.tempDuration = this.duration
+        if (data.remainTime) {
+            this.tempDuration = data.remainTime
+        }
+        this._analystJackpotAndBetValues(data.betToJackpot)
+
+        this.isLoadedConfig = true;
+        this.popup && this.popup.loadConfig()
+        if (data.playing) {
+            this._setStartGame(data)
+        }
+    }
+
+    _analystJackpotAndBetValues(betToJackpotObj) {
+        this.betValues = Object.keys(betToJackpotObj).map(item => Number(item))
+        this.jackpotValues = Object.values(betToJackpotObj)
     }
 
     _onReceivedStart(data) {
+        if (data.error) {
+            this.popup && this.popup.showError(data.error);
+            return;
+        }
         this._setStartGame(data)
     }
 
@@ -113,28 +139,18 @@ export default class HighLowContext {
     }
 
     _onReceivedEnd(data) {
-        console.warn('dataEnd======',data)
+        console.warn('dataEnd======', data)
+        if (data.error) {
+            this.popup && this.popup.showError(data.error);
+            return;
+        }
         this.playing = false
         this.startTime = null
         this.tempDuration = this.duration
         this.popup && this.popup.onReceivedEnd()
     }
 
-    loadConfig(data) {
-        this.duration = data.duration;
-        this.tempDuration = this.duration
-        if (data.remainTime) {
-            this.tempDuration = data.remainTime
-        }
-        this.jackpotValues = data.jackpotValues;
-        this.betValues = data.bets;
-        
-        this.isLoadedConfig = true;
-        this.popup && this.popup.loadConfig()
-        if (data.playing) {
-            this._setStartGame(data)
-        }
-    }
+
 
     _setStartGame(data) {
         this.playing = true

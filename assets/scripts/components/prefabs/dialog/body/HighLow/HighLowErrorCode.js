@@ -6,7 +6,7 @@ export default class HighLowErrorCode {
     }
 }
 
-HighLowErrorCode.LOCK = new HighLowErrorCode("-1", "Tài khoản đã bị khoá");
+HighLowErrorCode.LOCK = new HighLowErrorCode("-1", "Game Cao Thấp tạm khoá");
 HighLowErrorCode.UNKNOWN = new HighLowErrorCode("0", "Lỗi không xác định");
 HighLowErrorCode.NOT_ENOUGH_JACKPOT_PAY = new HighLowErrorCode("1", "Hũ hết tiền");
 HighLowErrorCode.UPDATE_JACKPOT_VALUE_FAIL = new HighLowErrorCode("2", "Không thay đổi được giá trị Jackpot");
