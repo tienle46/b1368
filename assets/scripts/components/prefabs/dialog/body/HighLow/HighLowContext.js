@@ -46,7 +46,14 @@ export default class HighLowContext {
                 predict
             }
         }
-        app.service.send(sendObject)
+        console.log('sendObject======', sendObject)
+        // let data = {
+        //     error: {
+        //         code: '8'
+        //     }
+        // } //fakeErrorCode
+        // this._onReceivedPlay(data)//fakeErrorCode
+        app.service.send(sendObject)//forfakeErrorCode
     }
 
     sendEnd(bet) {
@@ -71,7 +78,7 @@ export default class HighLowContext {
         app.system.removeListener(app.commands.MINIGAME_CAO_THAP_END, this._onReceivedEnd, this);
         app.system.removeListener(app.commands.MINIGAME_CAO_THAP_CONFIG, this._onReceivedConfig, this);
     }
-    
+
     _onReceivedConfig(data) {
         // warn('config', data);
         this.loadConfig(data);
@@ -85,6 +92,10 @@ export default class HighLowContext {
         // data.card = 4 + Math.floor(Math.random()*52)
         // data.card = 5
         // data.card = 9
+        if (data.error) {
+            this.popup && this.popup.showError(data.error);
+            return;
+        }
         if (!this.playing) {
             // data.card = 9
             // data.card = 4 + Math.floor(Math.random()*52)
@@ -95,22 +106,23 @@ export default class HighLowContext {
     }
 
     _onReceivedEnd(data) {
+        console.warn('dataEnd======',data)
         this.playing = false
         this.startTime = null
         this.tempDuration = this.duration
         this.popup && this.popup.onReceivedEnd()
     }
-    
+
     loadConfig(data) {
         this.duration = data.duration;
         this.tempDuration = this.duration
-        if(data.remainTime) {
+        if (data.remainTime) {
             this.tempDuration = data.remainTime
         }
         this.isLoadedConfig = true;
         this.jackpotValues = data.jackpotValues;
         this.betValues = data.bets;
-       
+
         this.popup && this.popup.loadConfig()
         if (data.playing) {
             this._setStartGame(data)
@@ -119,10 +131,14 @@ export default class HighLowContext {
 
     _setStartGame(data) {
         this.playing = true
-        this.startTime = this.now()
+        this.setStartTime()
         this.popup && this.popup.onReceivedStart(data)
     }
-    
+
+    setStartTime() {
+        this.startTime = this.now()
+    }
+
     now() {
         let time = new Date();
         return time.getTime();
@@ -134,14 +150,13 @@ export default class HighLowContext {
         playingTime = this.startTime && this.now() - this.startTime
         let remainingTimeInSecond = this.tempDuration - (playingTime / 1000);
         let result = 0
-        if(remainingTimeInSecond > 0) {
+        if (remainingTimeInSecond > 0) {
             result = remainingTimeInSecond
         }
         return this.formatTime(result);
     }
 
     formatTime(time) {
-        // console.warn('time', time);
 
         let minute = Math.floor(time / 60);
         let second = Math.floor(time % 60);

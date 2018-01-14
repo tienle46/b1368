@@ -5708,7 +5708,7 @@
     },
     "_children": [],
     "_tag": -1,
-    "_active": false,
+    "_active": true,
     "_components": [
       {
         "__id__": 175
@@ -5816,8 +5816,8 @@
         "__id__": 177
       }
     ],
-    "_N$interactable": true,
-    "_N$enableAutoGrayEffect": false,
+    "_N$interactable": false,
+    "_N$enableAutoGrayEffect": true,
     "_N$normalColor": {
       "__type__": "cc.Color",
       "r": 214,
@@ -7171,7 +7171,7 @@
       "__id__": 147
     },
     "btnEnd": {
-      "__id__": 174
+      "__id__": 176
     },
     "toggleGroup": {
       "__id__": 33
