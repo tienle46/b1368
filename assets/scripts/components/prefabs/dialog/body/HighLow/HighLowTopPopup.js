@@ -73,7 +73,7 @@ class HighLowTopPopup extends BasePopup {
     _addItem(idx, data) {
         var item = cc.instantiate(this.itemPrefab);
         item.active = true;
-        item.color = (idx % 2 === 0) ? new cc.Color(2, 10, 32) : cc.Color.TRANSPARENT
+        item.color = (idx % 2 === 0) ? new cc.Color(2, 10, 32) : new cc.Color(1, 18, 38) 
         var itemCtrl = item.getComponent(HighLowTopItem);
         itemCtrl.loadData(idx, data);
         this.container.addChild(item);

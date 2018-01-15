@@ -121,7 +121,7 @@ class HighLowHistoryPopup extends BasePopup {
     _addItem(info, idx) {
         var item = cc.instantiate(this.itemPrefab);
         item.active = true;
-        item.color = (idx % 2 === 0) ? new cc.Color(0, 15, 29) : new cc.Color(1, 17, 38)
+        item.color = (idx % 2 === 0) ? new cc.Color(2, 10, 32) : new cc.Color(1, 18, 38) 
         var itemCtrl = item.getComponent(HighLowHistoryItem);
         itemCtrl.loadData(info);
         this.container.addChild(item);
