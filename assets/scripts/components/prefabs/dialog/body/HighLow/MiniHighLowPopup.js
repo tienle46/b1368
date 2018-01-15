@@ -38,7 +38,7 @@ class MiniHighLowPopup extends BasePopup {
 
             highLowHistoryPrefab: cc.Prefab,
             highLowTopPrefab: cc.Prefab,
-            
+
             body: cc.Node,
         });
         this.resultCount = 0
@@ -87,8 +87,8 @@ class MiniHighLowPopup extends BasePopup {
         (!app.highLowContext) && (app.highLowContext = new HighLowContext());
         (app.highLowContext) && (app.highLowContext.popup = this);
     }
-    
-    _onTouchMove(evt) {        
+
+    _onTouchMove(evt) {
         var delta = evt.touch.getDelta();
         var curPos = this.body.position;
         curPos = cc.p(curPos.x + delta.x, curPos.y + delta.y);
@@ -117,6 +117,7 @@ class MiniHighLowPopup extends BasePopup {
         // app.highLowContext.playing = true// fake
         // this.cardResultsScrollView.getComponent(cc.ScrollView).scrollToRight()// fake1
     }
+    
     onReceivedStart(data) {
         if (data.playing) {
             this._setHistoryResults(data.cardHistory)
@@ -135,12 +136,14 @@ class MiniHighLowPopup extends BasePopup {
             // this.onReceivedPlay(this.fakeData())// fake
         }
     }
+    
     onLowerBetBtnClicked() {
         if (!this.isSpinning && app.highLowContext.playing) {
             app.highLowContext.sendGetPlay(this.betValue, 0);// forfake
             // this.onReceivedPlay(this.fakeData())// fake
         }
     }
+    
     onReceivedPlay(data) {
         console.warn('dataPlay======', data)
         console.warn('dataPlay.win======', data.win)
@@ -160,6 +163,7 @@ class MiniHighLowPopup extends BasePopup {
             // this.onReceivedEnd()// fake
         }
     }
+    
     onReceivedEnd() {
         // app.highLowContext.sendStart(1000)
         this._removeCardResults()
@@ -180,11 +184,13 @@ class MiniHighLowPopup extends BasePopup {
             node.getChildByName('active').active = false
         })
     }
+    
     _addAtCard() {
         let children = this.atGroup.children
         children[this.atCount].getChildByName('active').active = true
         this.atCount < 3 && this.atCount++
     }
+    
     _setHistoryAtCards(atCardCount) {
         for (i = 0; i < atCardCount; i++) {
             this._addAtCard()
@@ -198,15 +204,18 @@ class MiniHighLowPopup extends BasePopup {
             node.getComponent(cc.Toggle).interactable = isEnable
         })
     }
+    
     _updateJackpotValue(jackpotValue) {
         this.jackpotValue = jackpotValue
         this.lblJackpotValue.string = GameUtils.formatNumberType1(jackpotValue)
     }
+    
     _updateBetAndJackpotValue(bet, jackpot, betIndex) {//Update jackpot Value and bet when click bet
         this.betIndex = betIndex
         this.betValue = bet
         this._updateJackpotValue(jackpot)
     }
+    
     updateBetAndJackpotValues() {
         let children = this.toggleGroup.children
         const betValues = app.highLowContext.betValues
@@ -222,6 +231,7 @@ class MiniHighLowPopup extends BasePopup {
             }
         })
     }
+    
     setHistoryBetAndJackpotValue(bet, jackpot, betIndex) {
         this._updateBetAndJackpotValue(bet, jackpot, betIndex)
         let itemToggleFirst = this.toggleGroup.children[0]
@@ -235,34 +245,25 @@ class MiniHighLowPopup extends BasePopup {
         this._generateNewBtnBet()
         // this._updateBetAndJackpotValue(app.highLowContext.betValues[0], app.highLowContext.jackpotValues[0], 0)
     }
-    // _saveOldBtnBetPositions() {
-    //     let children = this.toggleGroup.children
-    //     let positionBetButtons = []
-    //     children.forEach((betNode, i) => {
-    //         positionBetButtons.push(betNode.getPosition())
-    //     })
-    //     CCUtils.clearAllChildren(this.toggleGroup);
-
-    //     return positionBetButtons
-    // }
+    
     _generateNewBtnBet() {
         CCUtils.clearAllChildren(this.toggleGroup)
         let betValues = app.highLowContext.betValues
         betValues.forEach(bet => {
-            const item = cc.instantiate(this.itemBet)
+            let item = cc.instantiate(this.itemBet)
+            item.active = true
             this.toggleGroup.addChild(item)
             // item.setPosition(position)
         })
         this.updateBetAndJackpotValues()
     }
 
-
-
     //Card Spin Area
     playSpinCard(data, duration = 1) {
         this.isSpinning = true
         this.card.startAnimate(duration, data.card, () => { this._spinCallback(data) })
     }
+    
     _spinCallback(data) {
         this.isSpinning = false
         this._switchInteractableHighLowBtns(true)
@@ -283,6 +284,7 @@ class MiniHighLowPopup extends BasePopup {
         }
 
     }
+    
     _handleValueCard(cardValue) {
         if (cardValue < 8) {
             this._addAtCard()
@@ -291,6 +293,7 @@ class MiniHighLowPopup extends BasePopup {
             this.btnLow.getComponent(cc.Button).interactable = false
         }
     }
+    
     _checkBetWin(data) {
         if (data.start === undefined && data.win != undefined && !data.win) {
             app.highLowContext.playing = false
@@ -301,19 +304,19 @@ class MiniHighLowPopup extends BasePopup {
         }
         return true
     }
+    
     //hide and show cark streak
     enableCardStreak() {
         this.startBtn.active = false
         this.card.node.active = true
         this.btnEnd.interactable = true
     }
+    
     disableCardStreak() {
         this.startBtn.active = true
         this.card.node.active = false
         this.btnEnd.interactable = false
     }
-
-
 
     // Play Area
     _updateNextWinAmount(nextAboveAmount = 0, nextBelowAmount = 0, winAmount = 0) {
@@ -321,12 +324,11 @@ class MiniHighLowPopup extends BasePopup {
         this.lblNextBeloveAmount.string = nextBelowAmount
         this.lblWinAmount.string = winAmount
     }
+    
     _switchInteractableHighLowBtns(isEnable) {
         this.btnHigh.getComponent(cc.Button).interactable = isEnable
         this.btnLow.getComponent(cc.Button).interactable = isEnable
     }
-
-
 
     // Result Area
     _setHistoryResults(cardValues) {
@@ -334,6 +336,7 @@ class MiniHighLowPopup extends BasePopup {
             this._addResult(card)
         })
     }
+    
     _addResult(cardValue) {
         this.resultCount++
         // if (this.resultCount > 9) {
@@ -349,13 +352,13 @@ class MiniHighLowPopup extends BasePopup {
         // this.cardResultsScrollView.getComponent(cc.ScrollView).scrollToRight()
         item.active = true
     }
+    
     _removeCardResults() {
         this.resultCount = 0
         this.cardResultsContent.removeAllChildren()
     }
 
-
-    // TIMER AREA
+    /** TIMER AREA **/
     _startTimer() {
         // app.highLowContext.startTime = app.highLowContext.now()// fake
         this.schedule(this._updateTimer, 1);
@@ -371,20 +374,21 @@ class MiniHighLowPopup extends BasePopup {
         this.remainingTime.string = remainingTime
     }
 
-
-    //Click pop up
+    /** Click pop up **/
     onHistoryBtnClicked() {
         if (this._initHighLowHistory()) {
             var highLowHistoryPopupController = this.highLowHistoryPopup.getComponent(HighLowHistoryPopup);
             highLowHistoryPopupController.openPopup(true);
         }
     }
+    
     onTopBtnClicked() {
         if (this._initTopHistory()) {
             var miniHighLowPopupController = this.highLowTopPopup.getComponent(HighLowTopPopup);
             miniHighLowPopupController.openPopup(true);
         }
     }
+    
     //Init popup
     _initHighLowHistory() {
         if (this.highLowHistoryPopup) return true;
@@ -397,6 +401,7 @@ class MiniHighLowPopup extends BasePopup {
 
         return false;
     }
+    
     _initTopHistory() {
         if (this.highLowTopPopup) return true;
         if (this.highLowTopPrefab) {

@@ -19,7 +19,7 @@ export default class HighLowContext {
         //     duration: 60
         // }// fake
         // this._onReceivedConfig(fakeData) // fake
-        this.sendGetConfig();// forfake
+        // this.sendGetConfig();// forfake
     }
 
     sendGetConfig() {
