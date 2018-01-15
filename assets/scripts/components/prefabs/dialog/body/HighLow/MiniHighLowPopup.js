@@ -39,6 +39,8 @@ class MiniHighLowPopup extends BasePopup {
 
             highLowHistoryPrefab: cc.Prefab,
             highLowTopPrefab: cc.Prefab,
+            
+            body: cc.Node,
         });
         this.resultCount = 0
         this.atCount = 0
@@ -62,7 +64,7 @@ class MiniHighLowPopup extends BasePopup {
     onLoad() {
         super.onLoad()
         this._commonInit()
-        // this.body && this.body.on(cc.Node.EventType.TOUCH_MOVE, this._onTouchMove, this);
+        this.body && this.body.on(cc.Node.EventType.TOUCH_MOVE, this._onTouchMove, this);
 
     }
 
@@ -86,12 +88,13 @@ class MiniHighLowPopup extends BasePopup {
         (!app.highLowContext) && (app.highLowContext = new HighLowContext());
         (app.highLowContext) && (app.highLowContext.popup = this);
     }
-    // _onTouchMove(evt) {
-    //     var delta = evt.touch.getDelta();
-    //     var curPos = this.body.position;
-    //     curPos = cc.p(curPos.x + delta.x, curPos.y + delta.y);
-    //     this.body.position = curPos;
-    // }
+    
+    _onTouchMove(evt) {        
+        var delta = evt.touch.getDelta();
+        var curPos = this.body.position;
+        curPos = cc.p(curPos.x + delta.x, curPos.y + delta.y);
+        this.body.position = curPos;
+    }
 
     loadConfig() {
         this._updateTimer()
