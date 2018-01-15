@@ -15,20 +15,20 @@ class HighLowHistoryItemInfo extends Component{
     }
 
     onEnable() {
-        // super.onEnable();
-        // let info = []
+        super.onEnable();
+        // let details = []
         // for(let i = 0; i< 15; i++) {
-        //     info.push({
+        //     details.push({
         //         time: `12/22/201${i}`,
         //         step: `00${i}`,
-        //         action: `ohoho${i}`,
+        //         predict: `ohoho${i}`,
         //         bet: 123,
         //         winAmount: 123,
         //         card: i+5,
         //     })
         // }
         // let data = {
-        //     info
+        //     details
         // }
         // this._onReceivedHistory(data)
         this._registerEventListener();
@@ -52,8 +52,8 @@ class HighLowHistoryItemInfo extends Component{
         // warn('history', data);
         this._removeItems();
 
-        data.details.forEach((details) => {
-            this._addItem(details);
+        data.details.forEach((detail, idx) => {
+            this._addItem(detail, idx);
         });
     }
 
@@ -61,10 +61,10 @@ class HighLowHistoryItemInfo extends Component{
         CCUtils.clearAllChildren(this.container);
     }
 
-    _addItem(info) {
+    _addItem(info, idx) {
         var item = cc.instantiate(this.itemPrefab);
         item.active = true;
-
+        item.color = (idx % 2 === 0) ? new cc.Color(0, 15, 29) : new cc.Color(1, 17, 38)
         var itemCtrl = item.getComponent(HighLowHistoryItemInfoItem);
         itemCtrl.time = this.time
         itemCtrl.loadData(info);

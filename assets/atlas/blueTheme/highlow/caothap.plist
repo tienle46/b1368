@@ -94,21 +94,6 @@
                 <key>textureRotated</key>
                 <false/>
             </dict>
-            <key>bt- thap.png</key>
-            <dict>
-                <key>aliases</key>
-                <array/>
-                <key>spriteOffset</key>
-                <string>{0,0}</string>
-                <key>spriteSize</key>
-                <string>{177,97}</string>
-                <key>spriteSourceSize</key>
-                <string>{177,97}</string>
-                <key>textureRect</key>
-                <string>{{395,403},{177,97}}</string>
-                <key>textureRotated</key>
-                <false/>
-            </dict>
             <key>bt-cao.png</key>
             <dict>
                 <key>aliases</key>
@@ -120,7 +105,7 @@
                 <key>spriteSourceSize</key>
                 <string>{177,97}</string>
                 <key>textureRect</key>
-                <string>{{574,403},{177,97}}</string>
+                <string>{{395,403},{177,97}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -181,6 +166,21 @@
                 <string>{225,54}</string>
                 <key>textureRect</key>
                 <string>{{753,387},{225,54}}</string>
+                <key>textureRotated</key>
+                <false/>
+            </dict>
+            <key>bt-thap.png</key>
+            <dict>
+                <key>aliases</key>
+                <array/>
+                <key>spriteOffset</key>
+                <string>{0,0}</string>
+                <key>spriteSize</key>
+                <string>{177,97}</string>
+                <key>spriteSourceSize</key>
+                <string>{177,97}</string>
+                <key>textureRect</key>
+                <string>{{574,403},{177,97}}</string>
                 <key>textureRotated</key>
                 <false/>
             </dict>
@@ -273,7 +273,7 @@
             <key>size</key>
             <string>{1008,510}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:ed19cf9fedeb76c915fec17efd309266:78fc36d9e2f8fde78aa0a26095d1618f:3af258f5c61c3eaec856f81b60801c25$</string>
+            <string>$TexturePacker:SmartUpdate:47dd4a84fd86022d2a02d238afeace6b:a8819d98be1aecf4c5940779068969c5:3af258f5c61c3eaec856f81b60801c25$</string>
             <key>textureFileName</key>
             <string>caothap.png</string>
         </dict>

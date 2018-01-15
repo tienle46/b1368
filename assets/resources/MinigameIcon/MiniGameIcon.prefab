@@ -18,24 +18,24 @@
         "__id__": 2
       },
       {
-        "__id__": 35
+        "__id__": 36
       }
     ],
     "_tag": -1,
     "_active": true,
     "_components": [
       {
-        "__id__": 38
-      },
-      {
         "__id__": 39
       },
       {
         "__id__": 40
+      },
+      {
+        "__id__": 41
       }
     ],
     "_prefab": {
-      "__id__": 41
+      "__id__": 42
     },
     "_id": "",
     "_opacity": 255,
@@ -91,21 +91,21 @@
         "__id__": 21
       },
       {
-        "__id__": 25
+        "__id__": 26
       },
       {
-        "__id__": 29
+        "__id__": 30
       }
     ],
     "_tag": -1,
     "_active": true,
     "_components": [
       {
-        "__id__": 33
+        "__id__": 34
       }
     ],
     "_prefab": {
-      "__id__": 34
+      "__id__": 35
     },
     "_id": "",
     "_opacity": 255,
@@ -734,7 +734,7 @@
       }
     ],
     "_prefab": {
-      "__id__": 24
+      "__id__": 25
     },
     "_id": "",
     "_opacity": 255,
@@ -831,8 +831,12 @@
     "hoverSprite": {
       "__uuid__": "ccf8e240-d9be-4033-8a76-3f8096d9c795"
     },
-    "clickEvents": [],
-    "_N$interactable": false,
+    "clickEvents": [
+      {
+        "__id__": 24
+      }
+    ],
+    "_N$interactable": true,
     "_N$enableAutoGrayEffect": false,
     "_N$normalColor": {
       "__type__": "cc.Color",
@@ -848,15 +852,22 @@
       "b": 255,
       "a": 255
     },
-    "_N$normalSprite": {
-      "__uuid__": "ccf8e240-d9be-4033-8a76-3f8096d9c795"
-    },
+    "_N$normalSprite": null,
     "_N$disabledSprite": {
       "__uuid__": "ccf8e240-d9be-4033-8a76-3f8096d9c795"
     },
     "_N$target": {
       "__id__": 21
     }
+  },
+  {
+    "__type__": "cc.ClickEvent",
+    "target": {
+      "__id__": 1
+    },
+    "component": "MiniGameIcon",
+    "handler": "onMiniGameHighLowClicked",
+    "customEventData": ""
   },
   {
     "__type__": "cc.PrefabInfo",
@@ -881,14 +892,14 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 26
+        "__id__": 27
       },
       {
-        "__id__": 27
+        "__id__": 28
       }
     ],
     "_prefab": {
-      "__id__": 28
+      "__id__": 29
     },
     "_id": "",
     "_opacity": 255,
@@ -931,7 +942,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 25
+      "__id__": 26
     },
     "_enabled": true,
     "_spriteFrame": {
@@ -959,7 +970,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 25
+      "__id__": 26
     },
     "_enabled": true,
     "transition": 2,
@@ -1009,7 +1020,7 @@
       "__uuid__": "b89d0259-611f-4e19-8d1c-1353444bc256"
     },
     "_N$target": {
-      "__id__": 25
+      "__id__": 26
     }
   },
   {
@@ -1035,14 +1046,14 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 30
+        "__id__": 31
       },
       {
-        "__id__": 31
+        "__id__": 32
       }
     ],
     "_prefab": {
-      "__id__": 32
+      "__id__": 33
     },
     "_id": "",
     "_opacity": 255,
@@ -1085,7 +1096,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 29
+      "__id__": 30
     },
     "_enabled": true,
     "_spriteFrame": {
@@ -1113,7 +1124,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 29
+      "__id__": 30
     },
     "_enabled": true,
     "transition": 2,
@@ -1163,7 +1174,7 @@
       "__uuid__": "d9769de9-5e0d-4038-9ae0-f5b771ed35d5"
     },
     "_N$target": {
-      "__id__": 29
+      "__id__": 30
     }
   },
   {
@@ -1228,11 +1239,11 @@
     "_active": true,
     "_components": [
       {
-        "__id__": 36
+        "__id__": 37
       }
     ],
     "_prefab": {
-      "__id__": 37
+      "__id__": 38
     },
     "_id": "",
     "_opacity": 255,
@@ -1275,7 +1286,7 @@
     "_name": "",
     "_objFlags": 0,
     "node": {
-      "__id__": 35
+      "__id__": 36
     },
     "_enabled": true,
     "_spriteFrame": {
@@ -1332,10 +1343,13 @@
       "__id__": 2
     },
     "mainButton": {
-      "__id__": 35
+      "__id__": 36
     },
     "miniPokerPrefab": {
       "__uuid__": "afe648fd-d110-4c55-bfd3-4df82240570e"
+    },
+    "miniHighLowPrefab": {
+      "__uuid__": "6df64ad8-f3c8-4dca-b018-0528ff43b73a"
     }
   },
   {
