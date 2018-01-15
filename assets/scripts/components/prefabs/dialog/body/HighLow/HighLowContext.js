@@ -103,14 +103,21 @@ export default class HighLowContext {
 
         this.isLoadedConfig = true;
         this.popup && this.popup.loadConfig()
+        if(data.bet) {
+            this._handleHistoryBet(data.bet)
+        }
         if (data.playing) {
             this._setStartGame(data)
         }
     }
-
     _analystJackpotAndBetValues(betToJackpotObj) {
         this.betValues = Object.keys(betToJackpotObj).map(item => Number(item))
         this.jackpotValues = Object.values(betToJackpotObj)
+    }
+    _handleHistoryBet(betValue) {
+        const index = this.betValues.indexOf(betValue)
+        const jackpotValue = this.jackpotValues[index]
+        this.popup && this.popup.setHistoryBetAndJackpotValue(betValue, jackpotValue, index)
     }
 
     _onReceivedStart(data) {

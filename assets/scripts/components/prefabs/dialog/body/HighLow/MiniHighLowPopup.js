@@ -25,7 +25,6 @@ class MiniHighLowPopup extends BasePopup {
             lblJackpotValue: cc.Label,
             btnHigh: cc.Node,
             btnLow: cc.Node,
-            lblJackpotValue: cc.Label,
 
             lblNextAboveAmount: cc.Label,
             lblNextBeloveAmount: cc.Label,
@@ -201,7 +200,7 @@ class MiniHighLowPopup extends BasePopup {
     }
     _updateJackpotValue(jackpotValue) {
         this.jackpotValue = jackpotValue
-        this.lblJackpotValue.string = jackpotValue
+        this.lblJackpotValue.string = GameUtils.formatNumberType1(jackpotValue)
     }
     _updateBetAndJackpotValue(bet, jackpot, betIndex) {//Update jackpot Value and bet when click bet
         this.betIndex = betIndex
@@ -223,27 +222,36 @@ class MiniHighLowPopup extends BasePopup {
             }
         })
     }
+    setHistoryBetAndJackpotValue(bet, jackpot, betIndex) {
+        this._updateBetAndJackpotValue(bet, jackpot, betIndex)
+        let itemToggleFirst = this.toggleGroup.children[0]
+        let itemToggle = this.toggleGroup.children[betIndex]
+        itemToggleFirst.getComponent(cc.Toggle).isChecked = false
+        itemToggle.getComponent(cc.Toggle).isChecked = true
+    }
 
     _loadBetAndJackpotValues() {//initBetAndJackpotValue
-        const btnBetPositions = this._saveOldBtnBetPositions()
-        this._generateNewBtnBet(btnBetPositions)
+        // const btnBetPositions = this._saveOldBtnBetPositions()
+        this._generateNewBtnBet()
         // this._updateBetAndJackpotValue(app.highLowContext.betValues[0], app.highLowContext.jackpotValues[0], 0)
     }
-    _saveOldBtnBetPositions() {
-        let children = this.toggleGroup.children
-        let positionBetButtons = []
-        children.forEach((betNode, i) => {
-            positionBetButtons.push(betNode.getPosition())
-        })
-        CCUtils.clearAllChildren(this.toggleGroup);
+    // _saveOldBtnBetPositions() {
+    //     let children = this.toggleGroup.children
+    //     let positionBetButtons = []
+    //     children.forEach((betNode, i) => {
+    //         positionBetButtons.push(betNode.getPosition())
+    //     })
+    //     CCUtils.clearAllChildren(this.toggleGroup);
 
-        return positionBetButtons
-    }
-    _generateNewBtnBet(btnBetPositions) {
-        btnBetPositions.forEach(position => {
+    //     return positionBetButtons
+    // }
+    _generateNewBtnBet() {
+        CCUtils.clearAllChildren(this.toggleGroup)
+        let betValues = app.highLowContext.betValues
+        betValues.forEach(bet => {
             const item = cc.instantiate(this.itemBet)
             this.toggleGroup.addChild(item)
-            item.setPosition(position)
+            // item.setPosition(position)
         })
         this.updateBetAndJackpotValues()
     }
