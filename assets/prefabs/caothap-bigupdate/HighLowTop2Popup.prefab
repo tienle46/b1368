@@ -303,8 +303,8 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": 526,
-      "y": 285
+      "x": 510.6,
+      "y": 279.9
     },
     "_skewX": 0,
     "_skewY": 0,
@@ -450,7 +450,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 306.74,
+      "width": 268.4,
       "height": 40
     },
     "_rotationX": 0,
@@ -478,8 +478,8 @@
     },
     "_enabled": true,
     "_useOriginalSize": false,
-    "_actualFontSize": 40,
-    "_fontSize": 40,
+    "_actualFontSize": 35,
+    "_fontSize": 35,
     "_lineHeight": 40,
     "_enableWrapText": true,
     "_N$file": {
@@ -609,7 +609,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 125.01,
+      "width": 100.01,
       "height": 30
     },
     "_rotationX": 0,
@@ -637,8 +637,8 @@
     },
     "_enabled": true,
     "_useOriginalSize": false,
-    "_actualFontSize": 30,
-    "_fontSize": 30,
+    "_actualFontSize": 24,
+    "_fontSize": 24,
     "_lineHeight": 30,
     "_enableWrapText": true,
     "_N$file": {
@@ -698,7 +698,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 130.9,
+      "width": 104.72,
       "height": 30
     },
     "_rotationX": 0,
@@ -726,8 +726,8 @@
     },
     "_enabled": true,
     "_useOriginalSize": false,
-    "_actualFontSize": 30,
-    "_fontSize": 30,
+    "_actualFontSize": 24,
+    "_fontSize": 24,
     "_lineHeight": 30,
     "_enableWrapText": true,
     "_N$file": {
@@ -787,7 +787,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 69.77,
+      "width": 55.82,
       "height": 30
     },
     "_rotationX": 0,
@@ -815,8 +815,8 @@
     },
     "_enabled": true,
     "_useOriginalSize": false,
-    "_actualFontSize": 30,
-    "_fontSize": 30,
+    "_actualFontSize": 24,
+    "_fontSize": 24,
     "_lineHeight": 30,
     "_enableWrapText": true,
     "_N$file": {
@@ -876,7 +876,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 95.23,
+      "width": 76.18,
       "height": 30
     },
     "_rotationX": 0,
@@ -904,8 +904,8 @@
     },
     "_enabled": true,
     "_useOriginalSize": false,
-    "_actualFontSize": 30,
-    "_fontSize": 30,
+    "_actualFontSize": 24,
+    "_fontSize": 24,
     "_lineHeight": 30,
     "_enableWrapText": true,
     "_N$file": {
@@ -965,7 +965,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 85.22,
+      "width": 68.18,
       "height": 30
     },
     "_rotationX": 0,
@@ -993,8 +993,8 @@
     },
     "_enabled": true,
     "_useOriginalSize": false,
-    "_actualFontSize": 30,
-    "_fontSize": 30,
+    "_actualFontSize": 24,
+    "_fontSize": 24,
     "_lineHeight": 30,
     "_enableWrapText": true,
     "_N$file": {
@@ -1599,7 +1599,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 187.03,
+      "width": 160.31,
       "height": 40
     },
     "_rotationX": 0,
@@ -1627,8 +1627,8 @@
     },
     "_enabled": true,
     "_useOriginalSize": false,
-    "_actualFontSize": 28,
-    "_fontSize": 28,
+    "_actualFontSize": 24,
+    "_fontSize": 24,
     "_lineHeight": 40,
     "_enableWrapText": true,
     "_N$file": {
@@ -1688,7 +1688,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 182.53,
+      "width": 156.46,
       "height": 40
     },
     "_rotationX": 0,
@@ -1716,8 +1716,8 @@
     },
     "_enabled": true,
     "_useOriginalSize": false,
-    "_actualFontSize": 28,
-    "_fontSize": 28,
+    "_actualFontSize": 24,
+    "_fontSize": 24,
     "_lineHeight": 40,
     "_enableWrapText": true,
     "_N$file": {
@@ -1777,7 +1777,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 49.55,
+      "width": 42.47,
       "height": 40
     },
     "_rotationX": 0,
@@ -1805,8 +1805,8 @@
     },
     "_enabled": true,
     "_useOriginalSize": false,
-    "_actualFontSize": 28,
-    "_fontSize": 28,
+    "_actualFontSize": 24,
+    "_fontSize": 24,
     "_lineHeight": 40,
     "_enableWrapText": true,
     "_N$file": {
@@ -1866,7 +1866,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 115.71,
+      "width": 99.18,
       "height": 40
     },
     "_rotationX": 0,
@@ -1894,8 +1894,8 @@
     },
     "_enabled": true,
     "_useOriginalSize": false,
-    "_actualFontSize": 28,
-    "_fontSize": 28,
+    "_actualFontSize": 24,
+    "_fontSize": 24,
     "_lineHeight": 40,
     "_enableWrapText": true,
     "_N$file": {
@@ -1955,7 +1955,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 65.3,
+      "width": 55.97,
       "height": 40
     },
     "_rotationX": 0,
@@ -1983,8 +1983,8 @@
     },
     "_enabled": true,
     "_useOriginalSize": false,
-    "_actualFontSize": 28,
-    "_fontSize": 28,
+    "_actualFontSize": 24,
+    "_fontSize": 24,
     "_lineHeight": 40,
     "_enableWrapText": true,
     "_N$file": {
@@ -2144,7 +2144,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 989,
-      "height": 100
+      "height": 90
     },
     "_rotationX": 0,
     "_rotationY": 0,
@@ -2173,7 +2173,7 @@
     "_layoutSize": {
       "__type__": "cc.Size",
       "width": 989,
-      "height": 100
+      "height": 90
     },
     "_resize": 1,
     "_N$layoutType": 2,
@@ -2189,7 +2189,7 @@
     "_N$paddingTop": 0,
     "_N$paddingBottom": 0,
     "_N$spacingX": 0,
-    "_N$spacingY": 8,
+    "_N$spacingY": 0,
     "_N$verticalDirection": 1,
     "_N$horizontalDirection": 0
   },
