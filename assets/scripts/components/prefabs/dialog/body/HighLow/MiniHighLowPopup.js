@@ -50,14 +50,10 @@ class MiniHighLowPopup extends BasePopup {
 
         this.highLowHistoryPopup = null
         this.highLowTopPopup = null
-        // this.fakeData = () => {
-        //     return {
-        //         card: 4 + Math.floor(Math.random() * 52),
-        //         nextAboveAmount: Math.floor(Math.random() * 52),
-        //         nextBelowAmount: Math.floor(Math.random() * 52),
-        //         winAmount: Math.floor(Math.random() * 52),
-        //     }
-        // }// fake
+
+        this.betHilightColor = new cc.Color(49, 28, 0, 255)
+        this.betUnHilightColor = new cc.Color(255, 255, 255, 255)
+
     }
 
     onLoad() {
@@ -102,6 +98,18 @@ class MiniHighLowPopup extends BasePopup {
     }
 
     onBtnBetClicked(e) {
+        var sender = e.target;
+        this.toggleGroup.children.forEach(child => {
+            let title = child.getChildByName("title");
+            var color = null;
+            if (child === sender) {
+                color = this.betHilightColor;
+            } else {
+                color = this.betUnHilightColor;
+            }
+            title && (title.color = color)
+        })
+
         if (!app.highLowContext.playing) {
             const data = e.node._data
             const { bet, jackpot, betIndex } = data
@@ -112,10 +120,8 @@ class MiniHighLowPopup extends BasePopup {
     //Start
     onStartBtnClicked() {
         if (!app.highLowContext.isLoadedConfig) return
-        app.highLowContext.sendStart(this.betValue);// forfake //forfake1
-        // this.onReceivedStart(this.fakeData())// fake
-        // app.highLowContext.playing = true// fake
-        // this.cardResultsScrollView.getComponent(cc.ScrollView).scrollToRight()// fake1
+        app.highLowContext.sendStart(this.betValue)
+
     }
     
     onReceivedStart(data) {
@@ -147,7 +153,7 @@ class MiniHighLowPopup extends BasePopup {
     onReceivedPlay(data) {
         console.warn('dataPlay======', data)
         console.warn('dataPlay.win======', data.win)
-        if (data.card != undefined) {
+        if (data.card !== undefined) {
             this.playSpinCard(data)
         }
     }
@@ -160,7 +166,6 @@ class MiniHighLowPopup extends BasePopup {
             } else {
                 this.onReceivedEnd()
             }
-            // this.onReceivedEnd()// fake
         }
     }
     
@@ -241,20 +246,25 @@ class MiniHighLowPopup extends BasePopup {
     }
 
     _loadBetAndJackpotValues() {//initBetAndJackpotValue
-        // const btnBetPositions = this._saveOldBtnBetPositions()
         this._generateNewBtnBet()
-        // this._updateBetAndJackpotValue(app.highLowContext.betValues[0], app.highLowContext.jackpotValues[0], 0)
     }
     
     _generateNewBtnBet() {
         CCUtils.clearAllChildren(this.toggleGroup)
         let betValues = app.highLowContext.betValues
-        betValues.forEach(bet => {
+        betValues.forEach((bet, idx)=> {
             let item = cc.instantiate(this.itemBet)
             item.active = true
             this.toggleGroup.addChild(item)
-            // item.setPosition(position)
+            warn(bet, this.betValue, idx)
+
+            if ((this.betValue && this.betValue === bet)
+                || (!this.betValue && idx === 0)) {
+                let title = item.getChildByName("title");
+                title && (title.color = this.betHilightColor);
+            }
         })
+
         this.updateBetAndJackpotValues()
     }
 
@@ -295,7 +305,7 @@ class MiniHighLowPopup extends BasePopup {
     }
     
     _checkBetWin(data) {
-        if (data.start === undefined && data.win != undefined && !data.win) {
+        if (data.start === undefined && data.win !== undefined && !data.win) {
             app.highLowContext.playing = false
             app.highLowContext.startTime = null
             this._switchInteractableHighLowBtns(false)

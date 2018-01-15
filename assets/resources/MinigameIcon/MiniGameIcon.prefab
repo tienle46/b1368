@@ -781,7 +781,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "ccf8e240-d9be-4033-8a76-3f8096d9c795"
+      "__uuid__": "39d752d3-400c-4e59-bcbb-4f12453aea30"
     },
     "_type": 1,
     "_sizeMode": 0,
@@ -852,7 +852,9 @@
       "b": 255,
       "a": 255
     },
-    "_N$normalSprite": null,
+    "_N$normalSprite": {
+      "__uuid__": "39d752d3-400c-4e59-bcbb-4f12453aea30"
+    },
     "_N$disabledSprite": {
       "__uuid__": "ccf8e240-d9be-4033-8a76-3f8096d9c795"
     },
@@ -1349,7 +1351,7 @@
       "__uuid__": "afe648fd-d110-4c55-bfd3-4df82240570e"
     },
     "miniHighLowPrefab": {
-      "__uuid__": "6df64ad8-f3c8-4dca-b018-0528ff43b73a"
+      "__uuid__": "3546fe36-dd60-417a-bc2b-cff27a2e2308"
     }
   },
   {
