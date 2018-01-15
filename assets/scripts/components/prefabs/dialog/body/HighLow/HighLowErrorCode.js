@@ -17,9 +17,9 @@ HighLowErrorCode.INVALID_BET_MONEY = new HighLowErrorCode("6", "Sai mức cượ
 HighLowErrorCode.FLOOD_PLAY = new HighLowErrorCode("7", "Thời gian quay quá nhanh");
 
 HighLowErrorCode.SESSION_ALREADY_FINISHED = new HighLowErrorCode("8", "Ván chơi đã kết thúc");
-HighLowErrorCode.PLAYER_NOT_PLAY = new HighLowErrorCode("9", "Thời gian quay quá nhanh");
-HighLowErrorCode.INVALID_PARAMS = new HighLowErrorCode("10", "Thời gian quay quá nhanh");
-HighLowErrorCode.INVALID_PREDICT = new HighLowErrorCode("11", "Thời gian quay quá nhanh");
+HighLowErrorCode.PLAYER_NOT_PLAY = new HighLowErrorCode("9", "Lỗi không xác định");
+HighLowErrorCode.INVALID_PARAMS = new HighLowErrorCode("10", "Lỗi không xác định");
+HighLowErrorCode.INVALID_PREDICT = new HighLowErrorCode("11", "Lỗi không xác định");
 
 HighLowErrorCode.valueOf = function(code) {
     switch (code) {
