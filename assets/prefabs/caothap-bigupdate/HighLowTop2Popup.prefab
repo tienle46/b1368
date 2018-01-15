@@ -1494,12 +1494,12 @@
     "_cascadeOpacityEnabled": true,
     "_anchorPoint": {
       "__type__": "cc.Vec2",
-      "x": 0.5,
+      "x": 0,
       "y": 0.5
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 0,
+      "width": 70,
       "height": 40
     },
     "_rotationX": 0,
@@ -1508,7 +1508,7 @@
     "_scaleY": 1,
     "_position": {
       "__type__": "cc.Vec2",
-      "x": 0,
+      "x": -32.1,
       "y": 0
     },
     "_skewX": 0,
@@ -1537,10 +1537,10 @@
     "_isSystemFontUsed": false,
     "_spacingX": 0,
     "_N$string": "",
-    "_N$horizontalAlign": 1,
+    "_N$horizontalAlign": 0,
     "_N$verticalAlign": 1,
     "_N$fontFamily": "Arial",
-    "_N$overflow": 0
+    "_N$overflow": 1
   },
   {
     "__type__": "cc.PrefabInfo",
