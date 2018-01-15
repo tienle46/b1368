@@ -61,18 +61,24 @@ class MiniHighLowPopup extends BasePopup {
 
     onLoad() {
         super.onLoad()
+        this._commonInit()
+        // this.body && this.body.on(cc.Node.EventType.TOUCH_MOVE, this._onTouchMove, this);
 
+    }
+
+    onDestroy() {
+        super.onDestroy()
+        app.highLowContext.popup = null;
     }
 
     onEnable() {
         super.onEnable();
-        this._removeCardResults()// forfake1
-        this._commonInit()
-        // this.loadConfig() // fake
+
+        app.highLowContext && app.highLowContext.sendGetConfig()
     }
+
     onDisable() {
         super.onDisable();
-
     }
 
     //initHighLowContext
@@ -80,12 +86,12 @@ class MiniHighLowPopup extends BasePopup {
         (!app.highLowContext) && (app.highLowContext = new HighLowContext());
         (app.highLowContext) && (app.highLowContext.popup = this);
     }
-    //ClosePopup
-    onBtnCloseClicked() {
-        // this.disableCardStreak()
-        app.highLowContext.popup = null;
-        super.onBtnCloseClicked()
-    }
+    // _onTouchMove(evt) {
+    //     var delta = evt.touch.getDelta();
+    //     var curPos = this.body.position;
+    //     curPos = cc.p(curPos.x + delta.x, curPos.y + delta.y);
+    //     this.body.position = curPos;
+    // }
 
     loadConfig() {
         this._updateTimer()
