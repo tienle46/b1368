@@ -8,6 +8,7 @@ import HighLowHistoryPopup from 'HighLowHistoryPopup';
 import HighLowTopPopup from 'HighLowTopPopup';
 import HighLowErrorCode from 'HighLowErrorCode';
 import HighLowCardHand from './HighLowCardHand';
+import utils from 'PackageUtils';
 
 class MiniHighLowPopup extends BasePopup {
     constructor() {
@@ -212,7 +213,7 @@ class MiniHighLowPopup extends BasePopup {
     
     _updateJackpotValue(jackpotValue) {
         this.jackpotValue = jackpotValue
-        this.lblJackpotValue.string = GameUtils.formatNumberType1(jackpotValue)
+        this.lblJackpotValue.string = utils.numberFormat(jackpotValue)
     }
     
     _updateBetAndJackpotValue(bet, jackpot, betIndex) {//Update jackpot Value and bet when click bet
