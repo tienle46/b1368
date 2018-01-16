@@ -6,6 +6,7 @@ import CCUtils from 'CCUtils';
 import GameUtils from 'GameUtils';
 import HighLowHistoryPopup from 'HighLowHistoryPopup';
 import HighLowTopPopup from 'HighLowTopPopup';
+import HighLowInfoPopup from 'HighLowInfoPopup';
 import HighLowErrorCode from 'HighLowErrorCode';
 import HighLowCardHand from './HighLowCardHand';
 import utils from 'PackageUtils';
@@ -39,6 +40,7 @@ class MiniHighLowPopup extends BasePopup {
 
             highLowHistoryPrefab: cc.Prefab,
             highLowTopPrefab: cc.Prefab,
+            highLowInfoPrefab: cc.Prefab,
 
             body: cc.Node,
         });
@@ -51,6 +53,7 @@ class MiniHighLowPopup extends BasePopup {
 
         this.highLowHistoryPopup = null
         this.highLowTopPopup = null
+        this.highLowInfoPopup = null
 
         this.betHilightColor = new cc.Color(49, 28, 0, 255)
         this.betUnHilightColor = new cc.Color(255, 255, 255, 255)
@@ -402,6 +405,13 @@ class MiniHighLowPopup extends BasePopup {
         }
     }
     
+    onInfoBtnClicked() {
+        if (this._initInfoHistory()) {
+            var miniHighLowPopupController = this.highLowInfoPopup.getComponent(HighLowInfoPopup);
+            miniHighLowPopupController.openPopup(true);
+        }
+    }
+    
     //Init popup
     _initHighLowHistory() {
         if (this.highLowHistoryPopup) return true;
@@ -421,6 +431,18 @@ class MiniHighLowPopup extends BasePopup {
             this.highLowTopPopup = cc.instantiate(this.highLowTopPrefab);
             this.highLowTopPopup.active = false;
             app.system.getCurrentSceneNode().addChild(this.highLowTopPopup);
+            return true;
+        }
+
+        return false;
+    }
+    
+    _initInfoHistory() {
+        if (this.highLowInfoPopup) return true;
+        if (this.highLowInfoPrefab) {
+            this.highLowInfoPopup = cc.instantiate(this.highLowInfoPrefab);
+            this.highLowInfoPopup.active = false;
+            app.system.getCurrentSceneNode().addChild(this.highLowInfoPopup);
             return true;
         }
 
