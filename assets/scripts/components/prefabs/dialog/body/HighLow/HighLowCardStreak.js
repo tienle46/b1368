@@ -27,18 +27,19 @@ class HighLowCardStreak extends Actor {
     
     onDisable() {
         super.onDisable();
-        
     }
     
     startAnimate(duration, cardValue, onComplete) {
-        this._generateCardValues(cardValue)
+        this.enableAnimation = (duration > 0)
         this.duration = duration;
         this.onComplete = onComplete;
-        
+
+        this._generateCardValues(cardValue)
         this.animating = true;
     }
     
     _reset() {
+        this.enableAnimation = false;
         this.duration = 0;
         this.elapsedTime = 0;
         this.animating = false;
@@ -49,7 +50,8 @@ class HighLowCardStreak extends Actor {
     
     _generateCardValues(cardValue) {
         // Todo: generate and update card values
-        for (i=0; i<HighLowCardStreak.NUM_OF_RANDOM_CARD; i++) {
+        var numOfRandomCard = this.enableAnimation ? HighLowCardStreak.NUM_OF_RANDOM_CARD : 0
+        for (var i = 0; i < HighLowCardStreak.NUM_OF_RANDOM_CARD; i++) {
             this.cardValues.push(this._randomCardValue())
         }
         this.cardValues.push(cardValue)

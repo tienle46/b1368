@@ -24,9 +24,6 @@ class MiniPokerPopup extends BasePopup {
             // Btn spin
             btnSpin: cc.Node,
 
-            // Body:
-            body: cc.Node,
-
             // Prefabs:
             popupGuidePrefab: cc.Prefab,
             popupTopPrefab: cc.Prefab,

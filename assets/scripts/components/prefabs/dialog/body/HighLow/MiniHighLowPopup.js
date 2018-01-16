@@ -40,7 +40,6 @@ class MiniHighLowPopup extends BasePopup {
             highLowHistoryPrefab: cc.Prefab,
             highLowTopPrefab: cc.Prefab,
 
-            body: cc.Node,
         });
         this.resultCount = 0
         this.atCount = 0
@@ -122,15 +121,14 @@ class MiniHighLowPopup extends BasePopup {
     onStartBtnClicked() {
         if (!app.highLowContext.isLoadedConfig) return
         app.highLowContext.sendStart(this.betValue)
-
     }
     
-    onReceivedStart(data) {
+    onReceivedStart(data, duration = 1) {
         if (data.playing) {
             this._setHistoryResults(data.cardHistory)
             this._setHistoryAtCards(data.atCardCount)
         }
-        this.playSpinCard(data)
+        this.playSpinCard(data, duration)
         this.enableCardStreak()
         this._switchBetInteractable(false)
         this._startTimer()
@@ -138,22 +136,38 @@ class MiniHighLowPopup extends BasePopup {
 
     // PlayButton(Higher and Lower)
     onHigherBetBtnClicked() {
+        if (!this._checkSpinInterval()) return
+
         if (!this.isSpinning && app.highLowContext.playing) {
-            app.highLowContext.sendGetPlay(this.betValue, 1);// forfake
-            // this.onReceivedPlay(this.fakeData())// fake
+            app.highLowContext.sendGetPlay(this.betValue, 1);
+            app.highLowContext.lastSpinTime = app.highLowContext.now()
         }
     }
     
     onLowerBetBtnClicked() {
+        if (!this._checkSpinInterval()) return
+
         if (!this.isSpinning && app.highLowContext.playing) {
-            app.highLowContext.sendGetPlay(this.betValue, 0);// forfake
-            // this.onReceivedPlay(this.fakeData())// fake
+            app.highLowContext.sendGetPlay(this.betValue, 0);
+            app.highLowContext.lastSpinTime = app.highLowContext.now()
         }
+    }
+
+    _checkSpinInterval() {
+        if (app.highLowContext.lastSpinTime === 0) {
+            return true
+        }
+
+        if (app.highLowContext.now() - app.highLowContext.lastSpinTime > app.highLowContext.spinInterval) {
+            return true
+        }
+        return false
     }
     
     onReceivedPlay(data) {
         console.warn('dataPlay======', data)
         console.warn('dataPlay.win======', data.win)
+        app.highLowContext.lastSpinTime = app.highLowContext.now()
         if (data.card !== undefined) {
             this.playSpinCard(data)
         }
@@ -234,6 +248,7 @@ class MiniHighLowPopup extends BasePopup {
             item._data = { bet, jackpot, betIndex }
             if (index === this.betIndex) {
                 this._updateBetAndJackpotValue(bet, jackpot, betIndex)
+                item.getComponent(cc.Toggle).check()
             }
         })
     }

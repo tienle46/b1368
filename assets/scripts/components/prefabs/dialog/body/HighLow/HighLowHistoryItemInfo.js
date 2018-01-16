@@ -49,7 +49,7 @@ class HighLowHistoryItemInfo extends Component{
     }
 
     _onReceivedHistory(data) {
-        // warn('history', data);
+        warn('history', data);
         this._removeItems();
 
         data.details.forEach((detail, idx) => {

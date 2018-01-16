@@ -3290,6 +3290,9 @@
     },
     "_enabled": true,
     "path": "",
+    "body": {
+      "__id__": 6
+    },
     "container": {
       "__id__": 90
     },

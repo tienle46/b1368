@@ -5,6 +5,9 @@ export default class HighLowContext {
     constructor() {
         this.jackpotValues = []
         this.betValues = []
+        this.spinInterval = 0
+        this.subInterval = 0
+        this.lastSpinTime = 0
         this.duration = null
         this.isLoadedConfig = false
         this.playing = false
@@ -94,6 +97,8 @@ export default class HighLowContext {
 
     loadConfig(data) {
         // console.log('dataConfig======', data)
+        this.spinInterval = data.spinInterval || 0
+        this.subInterval = data.subInterval || 0
         this.duration = data.duration;
         this.tempDuration = this.duration
         if (data.remainTime) {
@@ -107,7 +112,7 @@ export default class HighLowContext {
             this._handleHistoryBet(data.bet)
         }
         if (data.playing) {
-            this._setStartGame(data)
+            this._setStartGame(data, 0)
         }
     }
     _analystJackpotAndBetValues(betToJackpotObj) {
@@ -157,12 +162,10 @@ export default class HighLowContext {
         this.popup && this.popup.onReceivedEnd()
     }
 
-
-
-    _setStartGame(data) {
+    _setStartGame(data, duration = 1) {
         this.playing = true
         this.setStartTime()
-        this.popup && this.popup.onReceivedStart(data)
+        this.popup && this.popup.onReceivedStart(data, duration)
     }
 
     setStartTime() {

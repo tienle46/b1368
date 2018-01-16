@@ -26,7 +26,7 @@ class HighLowHistoryItemInfoItem extends Actor {
         let step = data.step
         let predict = ''
         if(data.predict != undefined) {
-            predict = data.predict ? 'trên' : 'dưới'
+            predict = data.predict ? 'Trên' : 'Dưới'
         }
         let win = data.winAmount || 0;
         let card = data.card

@@ -4,6 +4,10 @@ export default class BasePopup extends Actor {
     constructor() {
         super();
 
+        this.properties = this.assignProperties({
+            body : cc.Node
+        })
+
         this.parentNode = null;
     }
 
@@ -51,9 +55,13 @@ export default class BasePopup extends Actor {
     _openPopupWithAnimation() {
         this.node.active = true;
         this.node.position = cc.p(0,0);
-        this.node.scale = cc.p(0,0);
-        var scale = cc.scaleTo(BasePopup.DEFAULT_ANIMATION_INTERVAL, 1, 1).easing(cc.easeBackOut());
-        this.node.runAction(scale);
+        this.node.scale = cc.p(1,1);
+
+        if (this.body) {
+            this.body.scale = cc.p(0,0);
+            var scale = cc.scaleTo(BasePopup.DEFAULT_ANIMATION_INTERVAL, 1, 1).easing(cc.easeBackOut());
+            this.body.runAction(scale);
+        }
     }
 
     _closePopupWithoutAnimation() {
@@ -66,7 +74,7 @@ export default class BasePopup extends Actor {
             this.node.active = false;
         }.bind(this)));
 
-        this.node.runAction(sequence);
+        this.body.runAction(sequence);
     }
 
     onBtnCloseClicked() {

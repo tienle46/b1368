@@ -52,9 +52,21 @@ class HighLowHistoryPopup extends BasePopup {
         app.system.removeListener(app.commands.MINIGAME_CAO_THAP_HISTORY, this._onReceivedHistory, this);
     }
 
-    _sendGetHistory() {
+    _sendGetHistory(page) {
         // warn('send get history');
-        app.service.send({ cmd: app.commands.MINIGAME_CAO_THAP_HISTORY });
+        if (isNaN(page)) {
+            return
+        }
+
+        if (page === undefined) {
+            page = 1;
+        }
+        app.service.send({
+            cmd: app.commands.MINIGAME_CAO_THAP_HISTORY,
+            data: {
+                page
+            }
+        });
     }
 
     _sendGetHistoryDetail(i) {
