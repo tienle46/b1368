@@ -4302,7 +4302,7 @@
         "__id__": 133
       }
     ],
-    "_N$interactable": true,
+    "_N$interactable": false,
     "_N$enableAutoGrayEffect": true,
     "_N$normalColor": {
       "__type__": "cc.Color",
@@ -5644,6 +5644,9 @@
     },
     "_enabled": true,
     "path": "",
+    "body": {
+      "__id__": 5
+    },
     "startBtn": {
       "__id__": 63
     },
@@ -5709,9 +5712,6 @@
     },
     "highLowInfoPrefab": {
       "__uuid__": "e60a5462-6e3f-480e-8165-18e22b77559b"
-    },
-    "body": {
-      "__id__": 5
     }
   },
   {

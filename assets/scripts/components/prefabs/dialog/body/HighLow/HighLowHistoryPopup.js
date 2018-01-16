@@ -34,7 +34,9 @@ class HighLowHistoryPopup extends BasePopup {
         // }
         // this._onReceivedHistory(data)
         this._registerEventListener();
-        this.scheduleOnce(this._sendGetHistory, 0.2);
+        this.scheduleOnce(() => {
+            this._sendGetHistory()
+        }, 0.2);
     }
 
     onDisable() {
@@ -53,14 +55,12 @@ class HighLowHistoryPopup extends BasePopup {
     }
 
     _sendGetHistory(page) {
-        // warn('send get history');
-        if (isNaN(page)) {
-            return
-        }
 
         if (page === undefined) {
             page = 1;
         }
+
+        warn('send get history');
         app.service.send({
             cmd: app.commands.MINIGAME_CAO_THAP_HISTORY,
             data: {
@@ -81,7 +81,7 @@ class HighLowHistoryPopup extends BasePopup {
     }
 
     _onReceivedHistory(data) {
-        // warn('history', data);
+        warn('history', data);
         this._removeItems();
 
         data.histories.forEach((info, idx) => {

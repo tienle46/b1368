@@ -88,6 +88,7 @@ export default class HighLowContext {
         warn('dataConfig======', data);
         this.loadConfig(data);
     }
+
     _onReceivedSync(data) {
         // console.log('dataSync======', data)
         // this.jackpotValues = Object.values(data.betToJackpot)
@@ -115,10 +116,12 @@ export default class HighLowContext {
             this._setStartGame(data, 0)
         }
     }
+
     _analystJackpotAndBetValues(betToJackpotObj) {
         this.betValues = Object.keys(betToJackpotObj).map(item => Number(item))
         this.jackpotValues = Object.values(betToJackpotObj)
     }
+
     _handleHistoryBet(betValue) {
         const index = this.betValues.indexOf(betValue)
         const jackpotValue = this.jackpotValues[index]
