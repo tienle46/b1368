@@ -243,7 +243,9 @@ class MiniHighLowPopup extends BasePopup {
         let itemToggleFirst = this.toggleGroup.children[0]
         let itemToggle = this.toggleGroup.children[betIndex]
         itemToggleFirst.getComponent(cc.Toggle).isChecked = false
+        itemToggleFirst.getChildByName('title').color = this.betUnHilightColor
         itemToggle.getComponent(cc.Toggle).isChecked = true
+        itemToggle.getChildByName('title').color = this.betHilightColor
     }
 
     _loadBetAndJackpotValues() {//initBetAndJackpotValue
