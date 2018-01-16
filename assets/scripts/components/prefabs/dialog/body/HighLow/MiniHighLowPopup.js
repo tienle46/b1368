@@ -331,9 +331,9 @@ class MiniHighLowPopup extends BasePopup {
 
     // Play Area
     _updateNextWinAmount(nextAboveAmount = 0, nextBelowAmount = 0, winAmount = 0) {
-        this.lblNextAboveAmount.string = nextAboveAmount
-        this.lblNextBeloveAmount.string = nextBelowAmount
-        this.lblWinAmount.string = winAmount
+        this.lblNextAboveAmount.string = utils.numberFormat(nextAboveAmount)
+        this.lblNextBeloveAmount.string = utils.numberFormat(nextBelowAmount)
+        this.lblWinAmount.string = utils.numberFormat(winAmount)
     }
     
     _switchInteractableHighLowBtns(isEnable) {
