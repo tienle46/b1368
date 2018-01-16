@@ -545,7 +545,10 @@
       "__id__": 1
     },
     "_enabled": true,
-    "path": ""
+    "path": "",
+    "body": {
+      "__id__": 6
+    }
   },
   {
     "__type__": "cc.PrefabInfo",
