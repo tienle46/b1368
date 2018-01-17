@@ -397,7 +397,7 @@ class MiniHighLowPopup extends BasePopup {
 
     _stopTimer() {
         this.unschedule(this._updateTimer);
-        this._updateTimer()
+        // this._updateTimer()
     }
 
     _updateTimer() {
@@ -469,6 +469,11 @@ class MiniHighLowPopup extends BasePopup {
             this._showErroMessage(error.message);
         } else {
             this._showErroMessage(HighLowErrorCode.valueOf(error.code));
+        }
+
+        if (error.code === HighLowErrorCode.PLAYER_NOT_PLAY.code ||
+            error.code === HighLowErrorCode.SESSION_ALREADY_FINISHED.code) {
+            this.onReceivedEnd()
         }
     }
 
