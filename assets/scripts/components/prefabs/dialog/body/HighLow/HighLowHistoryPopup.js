@@ -122,7 +122,6 @@ class HighLowHistoryPopup extends BasePopup {
         this.bodyHistory.active = false
         this.bodyHistoryDetail.active = true
         this._sendGetHistoryDetail(itemId)
-        
     }
     
     _changeToMainHistory(){

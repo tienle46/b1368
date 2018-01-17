@@ -28,6 +28,9 @@ class MiniHighLowPopup extends BasePopup {
             btnHigh: cc.Node,
             btnLow: cc.Node,
 
+            // Label win money
+            lblWinMoney: cc.Label,
+
             lblNextAboveAmount: cc.Label,
             lblNextBeloveAmount: cc.Label,
             lblWinAmount: cc.Label,
@@ -183,6 +186,8 @@ class MiniHighLowPopup extends BasePopup {
 
     //EndTurn
     onEndBtnClicked() {
+        this.unschedule(this.onEndBtnClicked)
+
         if (!this.isSpinning) {
             if (app.highLowContext.playing) {
                 app.highLowContext.sendEnd(this.betValue);// forfake
@@ -306,7 +311,6 @@ class MiniHighLowPopup extends BasePopup {
         this._switchInteractableHighLowBtns(true)
         this._updateNextWinAmount(data.nextAboveAmount, data.nextBelowAmount, data.winAmount)
         if (this._checkBetWin(data)) {
-            warn('result', data)
             data.jackpot && this._updateJackpotValue(data.jackpot)
             this._handleValueCard(data.card)
             if (!data.playing) {
@@ -322,6 +326,8 @@ class MiniHighLowPopup extends BasePopup {
             if (this.atCount === 3) {
                 this._jackpotWin(data.winAmount)
             }
+        } else {
+            this.scheduleOnce(this.onEndBtnClicked, 2)
         }
     }
     
