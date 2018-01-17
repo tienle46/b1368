@@ -13,7 +13,35 @@ class CardStreak extends Actor {
         });
     }
 
-    spinToCard(cardValue, duration, onComplete) {
+    doAnimation() {
+        this._removeCards();
+        this._generateCard();
+
+        var lastChild = this.container.children[this.container.children.length - 1];
+        (lastChild && lastChild.getComponent(MotionBlurCard).enableMotionBlur(false));
+    }
+
+    spinToCard(cardValue, duration = 0, onComplete) {
+        this._spinToCardWithAnimation(cardValue, duration, onComplete);
+    }
+
+    _spinToCardWithoutAnimation(cardValue, onComplete) {
+        this._removeCards();
+        var lastMotionBlurCard = cc.instantiate(this.motionBlurPrefab);
+        lastMotionBlurCard.position = cc.p(0, CardStreak.START_Y + 1 * CardStreak.CARD_HEIGHT);
+        var motionCardController = lastMotionBlurCard.getComponent(MotionBlurCard);
+        motionCardController.initWithCardValue(cardValue);
+        motionCardController.enableMotionBlur(false);
+
+        var curY = this.container.y;
+        var targetY = curY - 1 * CardStreak.CARD_HEIGHT;
+        this.container.y = targetY;
+        if (onComplete) {
+            onComplete();
+        }
+    }
+
+    _spinToCardWithAnimation(cardValue, duration, onComplete) {
         this._removeCards();
         this._generateCard();
         var lastMotionBlurCard = cc.instantiate(this.motionBlurPrefab);
@@ -29,7 +57,7 @@ class CardStreak extends Actor {
     _doAnimation(duration, onComplete) {
         var curY = this.container.y;
         var targetY = curY - (CardStreak.NUM_RANDOM_CARD + 1) * CardStreak.CARD_HEIGHT;
-        var moveTo = cc.sequence(cc.moveTo(duration, this.container.x, targetY ).easing(cc.easeInOut(2)),
+        var moveTo = cc.sequence(cc.moveTo(duration, this.container.x, targetY ).easing(cc.easeIn(1.5)),
             cc.callFunc(() => {
                 if (onComplete) {
                     onComplete();
@@ -69,8 +97,8 @@ class CardStreak extends Actor {
 
 }
 
-CardStreak.NUM_RANDOM_CARD = 20;
-CardStreak.CARD_HEIGHT = 155;
-CardStreak.START_Y = 73;
+CardStreak.NUM_RANDOM_CARD = 15;
+CardStreak.CARD_HEIGHT = 185;
+CardStreak.START_Y = 83;
 
 app.createComponent(CardStreak);

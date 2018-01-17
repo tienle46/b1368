@@ -13,7 +13,8 @@ app.config.useSSL = cc.sys.isBrowser? false: false;
 // app.config.host = "1368casino.com";
 // app.config.host = "1368.company";
 app.config.port = app.config.useSSL ? 443 : 8921;
-app.config.version = 0x00010013;
+app.config.version = 0x00010015;
+app.config.partnerId = 1;
 app.config.ALPHA_TEST = false;
 
 app.config.packageName = "";
@@ -45,6 +46,7 @@ app.config.USER_NAME_REGEX = /^[a-zA-Z0-9._]{6,15}$/;
 app.config.PASSWORD_REGEX = /^(?=.*[A-Za-z])(?=.*\d).{6,30}$/;
 app.config.CRYPTO_AES_KEY = 'hiephvdepzai123$#@^&^$';
 
+app.config.partnerId = 1;
 app.config.fbAppId = 265548353914142;
 // app.config.fbAppId = 1793374524209784; // <- app test
 app.config.fbxfbml = true;
@@ -52,7 +54,7 @@ app.config.fbVersion = 'v2.8';
 // app.config.fbVersion = 'v2.7'; // <- app test too
 app.config.fbScope = 'public_profile,email,user_friends';
 
-app.config.fanpage = `http://m.me/songbaihoanggia`;
+app.config.fanpage = `http://m.me/bai1368`;
 app.config.website = `http://bai1368.com`;
 app.config.supportHotline = '0974851368';
 app.config.otp = false; //default false;

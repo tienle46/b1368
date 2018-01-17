@@ -2858,7 +2858,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 22.24,
+      "width": 31.14,
       "height": 16
     },
     "_rotationX": 0,
@@ -2895,7 +2895,7 @@
     },
     "_isSystemFontUsed": false,
     "_spacingX": 0,
-    "_N$string": "1:6",
+    "_N$string": "1:62",
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
     "_N$fontFamily": "Arial",
@@ -3579,7 +3579,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 22.24,
+      "width": 31.14,
       "height": 16
     },
     "_rotationX": 0,
@@ -3616,7 +3616,7 @@
     },
     "_isSystemFontUsed": false,
     "_spacingX": 0,
-    "_N$string": "1:6",
+    "_N$string": "1:31",
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
     "_N$fontFamily": "Arial",
@@ -4300,7 +4300,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 22.24,
+      "width": 31.14,
       "height": 16
     },
     "_rotationX": 0,
@@ -4337,7 +4337,7 @@
     },
     "_isSystemFontUsed": false,
     "_spacingX": 0,
-    "_N$string": "1:6",
+    "_N$string": "1:18",
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
     "_N$fontFamily": "Arial",
@@ -5021,7 +5021,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 22.24,
+      "width": 31.14,
       "height": 16
     },
     "_rotationX": 0,
@@ -5058,7 +5058,7 @@
     },
     "_isSystemFontUsed": false,
     "_spacingX": 0,
-    "_N$string": "1:6",
+    "_N$string": "1:12",
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
     "_N$fontFamily": "Arial",
@@ -5779,7 +5779,7 @@
     },
     "_isSystemFontUsed": false,
     "_spacingX": 0,
-    "_N$string": "1:6",
+    "_N$string": "1:8",
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
     "_N$fontFamily": "Arial",
@@ -6500,7 +6500,7 @@
     },
     "_isSystemFontUsed": false,
     "_spacingX": 0,
-    "_N$string": "1:6",
+    "_N$string": "1:7",
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
     "_N$fontFamily": "Arial",
@@ -8663,7 +8663,7 @@
     },
     "_isSystemFontUsed": false,
     "_spacingX": 0,
-    "_N$string": "1:6",
+    "_N$string": "1:7",
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
     "_N$fontFamily": "Arial",
@@ -9384,7 +9384,7 @@
     },
     "_isSystemFontUsed": false,
     "_spacingX": 0,
-    "_N$string": "1:6",
+    "_N$string": "1:8",
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
     "_N$fontFamily": "Arial",
@@ -10068,7 +10068,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 22.24,
+      "width": 31.14,
       "height": 16
     },
     "_rotationX": 0,
@@ -10105,7 +10105,7 @@
     },
     "_isSystemFontUsed": false,
     "_spacingX": 0,
-    "_N$string": "1:6",
+    "_N$string": "1:12",
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
     "_N$fontFamily": "Arial",
@@ -10789,7 +10789,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 22.24,
+      "width": 31.14,
       "height": 16
     },
     "_rotationX": 0,
@@ -10826,7 +10826,7 @@
     },
     "_isSystemFontUsed": false,
     "_spacingX": 0,
-    "_N$string": "1:6",
+    "_N$string": "1:18",
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
     "_N$fontFamily": "Arial",
@@ -11510,7 +11510,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 22.24,
+      "width": 31.14,
       "height": 16
     },
     "_rotationX": 0,
@@ -11547,7 +11547,7 @@
     },
     "_isSystemFontUsed": false,
     "_spacingX": 0,
-    "_N$string": "1:6",
+    "_N$string": "1:31",
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
     "_N$fontFamily": "Arial",
@@ -12231,7 +12231,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 22.24,
+      "width": 31.14,
       "height": 16
     },
     "_rotationX": 0,
@@ -12268,7 +12268,7 @@
     },
     "_isSystemFontUsed": false,
     "_spacingX": 0,
-    "_N$string": "1:6",
+    "_N$string": "1:62",
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
     "_N$fontFamily": "Arial",

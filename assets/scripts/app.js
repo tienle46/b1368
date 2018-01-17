@@ -361,3 +361,10 @@ app.sendSMS = (message, recipient) => {
     // });
 })();
 // cc.game.setFrameRate(30);
+
+app.getPartnerId = () =>{
+    let strPId = cc.sys.localStorage.getItem('pid') || "";
+    let pid = Number(strPId) || app.config.partnerId;
+
+    return pid;
+}

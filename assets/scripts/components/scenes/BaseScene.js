@@ -137,6 +137,7 @@ export default class BaseScene extends Actor {
     changeScene(name, onLaunched, initData) {
         this.showLoading();
         clearTimeout(this._errorMessageTimeout);
+        cc.log(`>>debug change scene `, name);
         app.system.loadScene(name, onLaunched, initData);
     }
 
@@ -197,6 +198,8 @@ export default class BaseScene extends Actor {
         
         app.service.requestAuthen(username, password, isRegister, isQuickLogin, accessToken, fbId, (error, result) => {
             if (error) {
+                app.system.hideLoader();
+                
                 let splitMsgs = error.errorMessage && error.errorMessage.split('|');
                 
                 if(splitMsgs && splitMsgs.length > 1){
@@ -249,30 +252,32 @@ export default class BaseScene extends Actor {
                     app.system.marker.setItem(app.const.USER_LOCAL_STORAGE, userInfo);
                 }
                
-                log(`Logged in as ${app.context.getMe().name}`);
+                cc.log(`Logged in as ${app.context.getMe().name}`);
 
                 if (app.env.isMobile() && window.sdkbox) {
+                
                     window.sdkbox.PluginGoogleAnalytics.setUser(app.context.getMe().name);
-                } 
-                else if(app.env.isBrowser()) {
+                } else if(app.env.isBrowser()) {
+                    
                     let l = location.href;
                     l = l.split("?")
                     l && l.length > 0 && (l = l[0])
                     l && window.history.pushState("", "Bai1368", l);
                 }
+                
                 this.showLoading(app.res.string('login_success'));
-
+                
                 if(result.newVersion && result.newVersionLink){
                     app.context.newVersionInfo = {newVersion: result.newVersion, newVersionLink: result.newVersionLink}
                 }
-
+               
+                
                 /**
                  * after login try to resend iap saved on local storage
                  */
                 
                 // app.system.marker.initCaches();
-                
-                this.changeScene(app.const.scene.DASHBOARD_SCENE, () => {setTimeout(() => this._resendIAPSavedItem(), 2000)}, {a: 1, b: 2});
+                this.changeScene(app.const.scene.DASHBOARD_SCENE, () => {setTimeout(() => this._resendIAPSavedItem(), 2000)}, {a: 1, b: 2});    
             }
         }, tmpRegister);
     }

@@ -20,7 +20,7 @@ class MiniPokerGuideItem extends Actor {
     loadItem(name, type, listPrizes) {
         this.cardHandName.string = name;
         this.cardHand.loadCardsByType(type);
-        if (type === MIniPokerCardType.THUNG_PHA_SANH_J) {
+        if (type === MIniPokerCardType.THUNG_PHA_SANH_CHUA) {
             var color = new cc.Color(241, 212, 97);
             this.prize1.node.color = color;
             this.prize2.node.color = color;

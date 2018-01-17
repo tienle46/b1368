@@ -17,7 +17,7 @@ class MiniPokerHistoryPopup extends BasePopup {
         super.onEnable();
 
         this._registerEventListener();
-        this._sendGetHistory();
+        this.scheduleOnce(this._sendGetHistory, .25);
     }
 
     onDisable() {

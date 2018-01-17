@@ -8,6 +8,7 @@ import MiniPokerContext from 'MiniPokerContext';
 import MiniPokerCardType from 'MiniPokerCardType';
 import MiniPokerErrorCode from 'MiniPokerErrorCode';
 import GameUtils from 'GameUtils';
+import {numberFormat} from 'GeneralUtils';
 
 class MiniPokerPopup extends BasePopup {
     constructor() {
@@ -52,7 +53,7 @@ class MiniPokerPopup extends BasePopup {
         this.popupHistory = null;
         // this.enableSpin = true;
         this.toggleEnableColor = new cc.Color(255, 12, 12, 255);
-        this.toggleDisableColor = new cc.Color(0, 0, 0, 255);
+        this.toggleDisableColor = new cc.Color(255, 255, 255, 255);
         this.isSpinning = false;
 
     }
@@ -70,6 +71,7 @@ class MiniPokerPopup extends BasePopup {
 
         (!app.miniPokerContext) && (app.miniPokerContext = new MiniPokerContext());
         (app.miniPokerContext) && (app.miniPokerContext.popup = this);
+        app.miniPokerContext && (app.miniPokerContext.updateCurBet(0));
     }
 
     onEnable() {
@@ -78,15 +80,19 @@ class MiniPokerPopup extends BasePopup {
         // warn(cc.kCCRepeatForever);
         if (app.miniPokerContext.subInterval === 0 ||
             this._getCurTime() - app.miniPokerContext.lastSpinTime > app.miniPokerContext.subInterval) {
-            this._subscribe();
+            this.scheduleOnce(this._subscribe, .2)
         }
-        this.updateBalance();
+        // this.updateBalance();
         this.loadBetConfig();
         this.updateJarMoneys();
+
+        // this._disableBetButtons();
+        (app.miniPokerContext) && (app.miniPokerContext.sendGetConfig());
+        app.miniPokerContext.enabled = true;
     }
 
     _scheduleSubscribe() {
-        var interval = (app.miniPokerContext.subInterval / 1000) || 30;
+        var interval = (app.miniPokerContext.spinInterval / 1000) || 30;
 
         this.schedule(this._subscribe, interval);
     }
@@ -142,7 +148,7 @@ class MiniPokerPopup extends BasePopup {
     }
 
     onBtnCloseClicked() {
-        if (this.isSpinning) return;
+        // if (this.isSpinning) return;
 
         if (this.quickSpinToggle.isChecked) {
             this.quickSpinToggle.uncheck();
@@ -175,30 +181,23 @@ class MiniPokerPopup extends BasePopup {
         popupTopController && popupTopController.openPopup(true);
     }
 
-    onBtnQuickSpinClicked() {
-        // this.quickSpinToggle && this.quickSpinToggle.check();
-        if (this.quickSpinToggle) {
-            if (this.quickSpinToggle.isChecked)
-                this.quickSpinToggle.uncheck();
-            else
-                this.quickSpinToggle.check();
-        }
-    }
-
     onQuickSpinStateChanged() {
-        var btnSpinController = this.btnSpin.getComponent(cc.Button);
-        btnSpinController && (btnSpinController.interactable = !this.quickSpinToggle.isChecked);
+        // var btnSpinController = this.btnSpin.getComponent(cc.Button);
+        // btnSpinController && (btnSpinController.interactable = !this.quickSpinToggle.isChecked);
 
         this._checkQuickSpin();
     }
 
     _checkQuickSpin() {
-        if (this.isSpinning) return;
         if (!this.quickSpinToggle.isChecked) {
+            this._enableBetButtons(true);
             this.unschedule(this.onBtnSpinClicked);
             return;
         }
+        if (this.isSpinning) return;
 
+
+        this._enableBetButtons(false);
         var delay = (app.miniPokerContext.lastSpinTime + app.miniPokerContext.spinInterval - this._getCurTime()) / 1000;
         // warn('delay', delay);
         if (delay <= 0) {
@@ -209,18 +208,28 @@ class MiniPokerPopup extends BasePopup {
     }
 
     onBtnSpinClicked() {
+        if (!app.miniPokerContext.enabled) return;
+
         var anim = this.btnSpin.getComponent(cc.Animation);
         anim.play("ButtonSpinAnimation");
 
+        if (this.isSpinning) return;
+
         if (!app.miniPokerContext.isLoadedConfig) return;
 
+        if (!app.miniPokerContext.checkCurrentMoney()) return;
+
         var checkSpinTime = this._checkSpinTime();
-        // warn(checkSpinTime);
+
         if (checkSpinTime) {
+            // warn('Cur bet', app.miniPokerContext.curBetValue);
             app.miniPokerContext.sendPlay(app.miniPokerContext.curBetValue);
-            // this.enableSpin = false;
+            app.miniPokerContext.updateLastSpinTime();
+
             this._unscheduleSubscribe();
             this._scheduleSubscribe();
+        } else {
+            this.showError({message: "Bạn đã quay quá nhanh."});
         }
     }
 
@@ -233,8 +242,7 @@ class MiniPokerPopup extends BasePopup {
 
         var date = new Date();
         var curTime = date.getTime();
-        if (curTime - app.miniPokerContext.lastSpinTime >= app.miniPokerContext.spinInterval) {
-            // app.miniPokerContext.lastSpinTime = curTime;
+        if (curTime - app.miniPokerContext.lastSpinTime >= app.miniPokerContext.spinInterval - 1000) {
             return true;
         }
         return false;
@@ -248,51 +256,108 @@ class MiniPokerPopup extends BasePopup {
     onBtnBet1Clicked() {
         app.miniPokerContext.updateCurBet(0);
 
-        this.lblBet1.color = this.toggleEnableColor;
-        this.lblBet2.color = this.toggleDisableColor;
-        this.lblBet3.color = this.toggleDisableColor;
+        this.lblBet1.getChildByName("Title").color = this.toggleEnableColor;
+        this.lblBet2.getChildByName("Title").color = this.toggleDisableColor;
+        this.lblBet3.getChildByName("Title").color = this.toggleDisableColor;
+
+        this.updateJarMoneys();
+        this.disableAutoSpin();
     }
 
     onBtnBet2Clicked() {
         app.miniPokerContext.updateCurBet(1);
 
-        this.lblBet1.color = this.toggleDisableColor;
-        this.lblBet2.color = this.toggleEnableColor;
-        this.lblBet3.color = this.toggleDisableColor;
+        this.lblBet1.getChildByName("Title").color = this.toggleDisableColor;
+        this.lblBet2.getChildByName("Title").color = this.toggleEnableColor;
+        this.lblBet3.getChildByName("Title").color = this.toggleDisableColor;
+
+        this.updateJarMoneys();
+        this.disableAutoSpin();
     }
 
     onBtnBet3Clicked() {
         app.miniPokerContext.updateCurBet(2);
 
-        this.lblBet1.color = this.toggleDisableColor;
-        this.lblBet2.color = this.toggleDisableColor;
-        this.lblBet3.color = this.toggleEnableColor;
+        this.lblBet1.getChildByName("Title").color = this.toggleDisableColor;
+        this.lblBet2.getChildByName("Title").color = this.toggleDisableColor;
+        this.lblBet3.getChildByName("Title").color = this.toggleEnableColor;
+
+        this.updateJarMoneys();
+        this.disableAutoSpin();
+    }
+
+    _enableBetButtons(enable) {
+        var count = app.miniPokerContext.betValues.length;
+        for (var i = 0; i < count; i ++) {
+            var betBtn = this._getBtnBetForIdx(i);
+            if (betBtn) {
+                betBtn.getComponent(cc.Toggle).interactable = enable;
+            }
+        }
+    }
+
+    disableMiniPoker() {
+        app.miniPokerContext.enabled = false;
+        this.disableAutoSpin();
+    }
+
+    disableAutoSpin() {
+        if (this.quickSpinToggle && this.quickSpinToggle.isChecked) {
+            this.quickSpinToggle.uncheck();
+        }
     }
 
     updateBalance() {
-        this.lblGold.string = GameUtils.formatNumberType1(app.context.getMeBalance());
+        this.lblGold.string = GameUtils.formatNumberType3(app.context.getMeBalance());
     }
 
     updateJarMoneys() {
-        this.lblHuMoney.string = GameUtils.formatNumberType1(app.miniPokerContext.getCurJackpotMoney());
+        this.lblHuMoney.string = numberFormat(app.miniPokerContext.getCurJackpotMoney());
     }
 
     loadBetConfig() {
-        this.lblBet1.getComponent(cc.Label).string = GameUtils.formatBalanceShort(app.miniPokerContext.betValues[0]);
-        this.lblBet2.getComponent(cc.Label).string = GameUtils.formatBalanceShort(app.miniPokerContext.betValues[1]);
-        this.lblBet3.getComponent(cc.Label).string = GameUtils.formatBalanceShort(app.miniPokerContext.betValues[2]);
+        this._disableBetButtons();
+        var count = app.miniPokerContext.betValues.length;
+
+        for (var i = 0; i < count; i ++) {
+            let btnBet = this._getBtnBetForIdx(i);
+            if (btnBet) {
+                btnBet.active = true;
+                btnBet.getComponentInChildren(cc.Label).string = GameUtils.formatBalanceShort(app.miniPokerContext.betValues[i]);
+                // warn('Btn bet', btnBet);
+            }
+        }
+    }
+
+    _disableBetButtons() {
+        this.lblBet1.active = false;
+        this.lblBet2.active = false;
+        this.lblBet3.active = false;
+    }
+
+    _getBtnBetForIdx(idx) {
+        switch (idx) {
+            case 0:
+                return this.lblBet1;
+            case 1:
+                return this.lblBet2;
+            case 2:
+                return this.lblBet3;
+            default:
+                return null;
+        }
     }
 
     showError(error) {
         if (error.message) {
-            this._showErroMessage(error.message);
+            this._showErrorMessage(error.message);
         } else {
-            this._showErroMessage(MiniPokerErrorCode.valueOf(error.code));
+            this._showErrorMessage(MiniPokerErrorCode.valueOf(error.code));
         }
     }
 
-    _showErroMessage(msg) {
-        warn("error message: " + msg);
+    _showErrorMessage(msg) {
+        app.system.showLongToast(msg);
     }
 
     showResult(data) {
@@ -301,28 +366,39 @@ class MiniPokerPopup extends BasePopup {
         var bet = data.bet || 0;
         var cardType = data.cardType || 0;
         var cards = data.cards;
-        if (data.jackpots) {
-            app.miniPokerContext.jackpotValues = data.jackpots;
-            this.updateJarMoneys();
+        if (data.jackpot) {
+            app.miniPokerContext.updateJackpotForIdx(data.jackpot, app.miniPokerContext.getIdxForBet(bet));
         }
         this.isSpinning = true;
-        this.cardStreak1.spinToCard(cards[0], 3);
-        this.cardStreak2.spinToCard(cards[1], 3.25);
-        this.cardStreak3.spinToCard(cards[2], 3.5);
-        this.cardStreak4.spinToCard(cards[3], 3.75);
-        this.cardStreak5.spinToCard(cards[4], 4, function () {
+        this.cardStreak1.spinToCard(cards[0], 2);
+        this.cardStreak2.spinToCard(cards[1], 2.25);
+        this.cardStreak3.spinToCard(cards[2], 2.5);
+        this.cardStreak4.spinToCard(cards[3], 2.75);
+        this.cardStreak5.spinToCard(cards[4], 3, function () {
             this.isSpinning = false;
             if (isWin && winAmount > 0) {
                 this._showWinMoney(cardType, winAmount);
             }
+            // this.updateBalance();
+            this.updateJarMoneys();
+            if (app.miniPokerContext.checkResultQueue()) return;
             this._checkQuickSpin();
         }.bind(this));
     }
 
     _showWinMoney(cardType, winAmount) {
-        this.lblWinMoney && (this.lblWinMoney.string = MiniPokerCardType.getNameForType(cardType) + " +" + winAmount);
-        var anim = this.lblWinMoney.node.getComponent(cc.Animation);
-        anim.play("WinMoneyUp");
+        if (cardType === MiniPokerCardType.THUNG_PHA_SANH_CHUA) {
+            var username = app.context.getMeDisplayName();
+            var money = winAmount;
+            var message = "Chúc mừng bạn đã nổ hũ game Mini Poker.";
+            app.jarManager.jarExplosive({
+                username, money, message
+            });
+        } else {
+            this.lblWinMoney && (this.lblWinMoney.string = MiniPokerCardType.getNameForType(cardType) + " +" + numberFormat(winAmount));
+            var anim = this.lblWinMoney.node.getComponent(cc.Animation);
+            anim.play("WinMoneyUp");
+        }
     }
 }
 
