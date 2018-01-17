@@ -7,6 +7,7 @@ class HighLowInfoPopup extends BasePopup {
         super();
 
         this.properties = this.assignProperties({
+            richTextInfo: cc.RichText
         });
 
     }
@@ -32,6 +33,7 @@ class HighLowInfoPopup extends BasePopup {
 
         // this.scheduleOnce(this._sendGetTop, 0.2);
         // this._sendGetTop();
+        this.scheduleOnce(this._generateRichText, 0.2)
     }
 
     onDisable() {
@@ -39,6 +41,22 @@ class HighLowInfoPopup extends BasePopup {
 
         // this._removeItems();
         // this._deregisterEventListener();
+    }
+    
+    _generateRichText() {
+        let content = `<color=#1CFF22>Bước 1</c>: Đăng nhập vào game bài 1368 và chọn Mini game Cao thấp`
+        + `<br/><color=#1CFF22>Bước 2</c>: Chọn mức cược: Bạn có thể chọn ngẫu nhiên 1 trong 5 mức cược tùy thuộc vào số dư tài khoản và chiến thuật của mình:`
+        + `<color=#efbb01>1000</c>, <color=#efbb01>10000</c>, <color=#efbb01>50000</c>, <color=#efbb01>100000</c>, <color=#efbb01>500000</c>.`
+        + `<br/><color=#1CFF22>Bước 3</c>: Click nút <color=#efbb01>Chơi ngay</c> để bắt đầu chơi, sau khi click hệ thống sẽ ngẫu nhiên xuất hiện 1 lá bài để người chơi đưa ra quyết định dự đoán lá bài tiếp theo lớn hơn hay nhỏ hơn lá bài hiện tại.`
+        + `<br/><color=#1CFF22>Bước 4</c>: Theo dõi kết quả:`
+        + `<br/>+ Nếu người chơi cược thắng thì số tiền nhận được sẽ tăng lên theo tỷ lệ.`
+        + `<br/>+ Nếu người chơi thua sẽ mất toàn bộ tiền cược.`
+        + `<br/>+ Nếu người chơi đoán trúng đủ 3 quân Át thì sẽ giành được 1/2 số tiền trong hũ (<color=#efbb01>nổ hũ</c>)`
+        + `<br/><color=#FE4C45>Lưu ý </c>`
+        + `<br/>- Người chơi có thể ấn nút lượt mới để lấy số tiền thắng và chuyển qua ván mới`
+        + `<br/>- Thời gian tối đa cho mỗi lần đoán là 60 giây, sau 60 giây hệ thống sẽ tính toán kết quả và chuyển sang ván mới`
+        
+        this.richTextInfo.string = content
     }
 
     // _sendGetTop() {
