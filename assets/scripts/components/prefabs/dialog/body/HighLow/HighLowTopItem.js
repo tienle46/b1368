@@ -21,7 +21,7 @@ class HighLowTopItem extends Actor {
 
         this.topRankColor1 = new cc.Color(255, 242, 0, 255);
         this.topRankColor2 = new cc.Color(235, 235, 235, 255);
-        this.MAX_USER_LENGTH = 8;
+        this.MAX_USER_LENGTH = 12;
     }
 
     loadData(idx, data) {

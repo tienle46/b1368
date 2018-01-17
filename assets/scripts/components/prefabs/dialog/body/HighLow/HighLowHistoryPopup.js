@@ -13,8 +13,11 @@ class HighLowHistoryPopup extends BasePopup {
             itemPrefab: cc.Node,
             bodyHistory: cc.Node,
             bodyHistoryDetail: cc.Node,
-            historyScrollView: cc.ScrollView
+            historyScrollView: cc.ScrollView,
+            lblPage: cc.Label
         });
+
+        this.page = 1
     }
 
     onEnable() {
@@ -54,17 +57,12 @@ class HighLowHistoryPopup extends BasePopup {
         app.system.removeListener(app.commands.MINIGAME_CAO_THAP_HISTORY, this._onReceivedHistory, this);
     }
 
-    _sendGetHistory(page) {
-
-        if (page === undefined) {
-            page = 1;
-        }
-
+    _sendGetHistory() {
         warn('send get history');
         app.service.send({
             cmd: app.commands.MINIGAME_CAO_THAP_HISTORY,
             data: {
-                page
+                page: this.page
             }
         });
     }
@@ -84,6 +82,7 @@ class HighLowHistoryPopup extends BasePopup {
         warn('history', data);
         this._removeItems();
 
+        this.lblPage.string = this.page
         data.histories.forEach((info, idx) => {
             this._addItem(info, idx);
         });
@@ -97,6 +96,18 @@ class HighLowHistoryPopup extends BasePopup {
     onBtnCloseClicked() {
         this._onclosePopup()
         super.onBtnCloseClicked()
+    }
+
+    onBtnNextPageClicked() {
+        this.page ++
+        this._sendGetHistory()
+    }
+
+    onBtnPrevPageClicked() {
+        if (this.page > 1) {
+            this.page --
+            this._sendGetHistory()
+        }
     }
 
     onBtnInfoClicked(e) {

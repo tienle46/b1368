@@ -127,14 +127,18 @@ class MiniHighLowPopup extends BasePopup {
     }
     
     onReceivedStart(data, duration = 1) {
-        if (data.playing) {
-            this._setHistoryResults(data.cardHistory)
-            this._setHistoryAtCards(data.atCardCount)
-        }
         this.playSpinCard(data, duration)
         this.enableCardStreak()
         this._switchBetInteractable(false)
         this._startTimer()
+        if (data.playing) {
+            warn('start', data)
+            this.setEnableBtnEnd(data.cardHistory.length !== 1)
+            this._setHistoryResults(data.cardHistory)
+            this._setHistoryAtCards(data.atCardCount)
+        } else {
+            this.setEnableBtnEnd(false)
+        }
     }
 
     // PlayButton(Higher and Lower)
@@ -171,6 +175,7 @@ class MiniHighLowPopup extends BasePopup {
         console.warn('dataPlay======', data)
         console.warn('dataPlay.win======', data.win)
         app.highLowContext.lastSpinTime = app.highLowContext.now()
+        this.setEnableBtnEnd(true)
         if (data.card !== undefined) {
             this.playSpinCard(data)
         }
@@ -192,7 +197,8 @@ class MiniHighLowPopup extends BasePopup {
         this._removeCardResults()
         this.removeAtCards()
         this.disableCardStreak()
-        this._switchInteractableHighLowBtns(true)
+        this.setEnableBtnEnd(true)
+        this._switchInteractableHighLowBtns(false)
         this._switchBetInteractable(true)
         this._stopTimer()
         this._updateNextWinAmount(0, 0, 0)
@@ -300,6 +306,7 @@ class MiniHighLowPopup extends BasePopup {
         this._switchInteractableHighLowBtns(true)
         this._updateNextWinAmount(data.nextAboveAmount, data.nextBelowAmount, data.winAmount)
         if (this._checkBetWin(data)) {
+            warn('result', data)
             data.jackpot && this._updateJackpotValue(data.jackpot)
             this._handleValueCard(data.card)
             if (!data.playing) {
@@ -312,8 +319,10 @@ class MiniHighLowPopup extends BasePopup {
             if (this.resultCount > 9) {
                 this.cardResultsScrollView.scrollToRight(0.5)
             }
+            if (this.atCount === 3) {
+                this._jackpotWin(data.winAmount)
+            }
         }
-
     }
     
     _handleValueCard(cardValue) {
@@ -335,18 +344,28 @@ class MiniHighLowPopup extends BasePopup {
         }
         return true
     }
+
+    _jackpotWin(money) {
+        app.jarManager.jarExplosive({
+            username: utils.getMeDisplayName(),
+            money: money,
+            message: "Chúc mừng bạn đã nổ hũ game Cao Thấp"
+        })
+    }
     
     //hide and show cark streak
     enableCardStreak() {
         this.startBtn.active = false
         this.card.node.active = true
-        this.btnEnd.interactable = true
     }
     
     disableCardStreak() {
         this.startBtn.active = true
         this.card.node.active = false
-        this.btnEnd.interactable = false
+    }
+
+    setEnableBtnEnd(isEnable) {
+        this.btnEnd.interactable = isEnable
     }
 
     // Play Area
@@ -380,7 +399,6 @@ class MiniHighLowPopup extends BasePopup {
         this.spriteResultSuit.spriteFrame = this.highLowAtlas.getSpriteFrame(suitSprite)
         let item = cc.instantiate(this.cardResultItem)
         this.cardResultsContent.addChild(item)
-        // this.cardResultsScrollView.getComponent(cc.ScrollView).scrollToRight()
         item.active = true
     }
     
@@ -397,7 +415,7 @@ class MiniHighLowPopup extends BasePopup {
 
     _stopTimer() {
         this.unschedule(this._updateTimer);
-        // this._updateTimer()
+        this.remainingTime.string = "01:00";
     }
 
     _updateTimer() {
