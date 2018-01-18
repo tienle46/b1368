@@ -44,17 +44,17 @@ class HighLowInfoPopup extends BasePopup {
     }
     
     _generateRichText() {
-        let content = `<color=#1CFF22>Bước 1</c>: Đăng nhập vào game bài 1368 và chọn Mini game Cao thấp`
-        + `<br/><color=#1CFF22>Bước 2</c>: Chọn mức cược: Bạn có thể chọn ngẫu nhiên 1 trong 5 mức cược tùy thuộc vào số dư tài khoản và chiến thuật của mình:`
-        + `<color=#efbb01>1000</c>, <color=#efbb01>10000</c>, <color=#efbb01>50000</c>, <color=#efbb01>100000</c>, <color=#efbb01>500000</c>.`
-        + `<br/><color=#1CFF22>Bước 3</c>: Click nút <color=#efbb01>Chơi ngay</c> để bắt đầu chơi, sau khi click hệ thống sẽ ngẫu nhiên xuất hiện 1 lá bài để người chơi đưa ra quyết định dự đoán lá bài tiếp theo lớn hơn hay nhỏ hơn lá bài hiện tại.`
-        + `<br/><color=#1CFF22>Bước 4</c>: Theo dõi kết quả:`
-        + `<br/>+ Nếu người chơi cược thắng thì số tiền nhận được sẽ tăng lên theo tỷ lệ.`
-        + `<br/>+ Nếu người chơi thua sẽ mất toàn bộ tiền cược.`
-        + `<br/>+ Nếu người chơi đoán trúng đủ 3 quân Át thì sẽ giành được 1/2 số tiền trong hũ (<color=#efbb01>nổ hũ</c>)`
-        + `<br/><color=#FE4C45>Lưu ý </c>`
-        + `<br/>- Người chơi có thể ấn nút lượt mới để lấy số tiền thắng và chuyển qua ván mới`
-        + `<br/>- Thời gian tối đa cho mỗi lần đoán là 60 giây, sau 60 giây hệ thống sẽ tính toán kết quả và chuyển sang ván mới`
+        let content = 
+        `Cách chơi:`
+        + `<br/><color=#efbb01>Bước 1</c>: Chọn mức cược bạn muốn tham gia chơi. Có các mức cược mặc định là: `
+        + `1000, 10000, 50000, 100000, 500000.`
+        + `<br/><color=#efbb01>Bước 2</c>: Bấm “Chơi ngay” để bắt đầu chơi. Hệ thống sẽ trả về ngẫu nhiên 1 lá bài để bạn đưa ra dự đoán của mình về lá bài tiếp theo`
+        + `<br/><color=#efbb01>Bước 3</c>: Thực hiện dự đoán lá bài tiếp theo lớn hoặc nhỏ hơn lá bài hiện tại.`
+        + `Bạn có 2p để đưa ra dự đoán của mình. Sau 2p mà chưa đưa ra dự đoán thì hệ thống sẽ tự động đưa ra 1 lựa chọn ngẫu nhiên`
+        + `<br/><color=#efbb01>Bước 4</c>: Theo dõi kết quả để biết Thắng – Thua.`
+        + `<br/><color=#FE4C45>Đặc biệt </c>`
+        + `<br/>- Nếu lá bài tiếp theo trùng với lá bài hiện tại thì hệ thống sẽ trích <color=#efbb01>10%</c> tiền cược của người chơi cho vào Hũ thưởng`
+        + `<br/>- <color=#FE4C45>NỔ HŨ</c>: Khi bạn thu thập đủ 3 cây Át (A) trong cùng 1 phiên chơi sẽ được <color=#FE4C45>NỔ HŨ</c> và dành được <color=#efbb01>50%</c> giá trị HŨ`
         
         this.richTextInfo.string = content
     }
