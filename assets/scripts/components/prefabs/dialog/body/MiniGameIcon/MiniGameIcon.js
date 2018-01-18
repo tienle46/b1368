@@ -166,13 +166,16 @@ class MiniGameIcon extends Actor {
     }
 
     _onMainButtonClicked() {
-        if (this._checkClickable()) {
-            if (app.minigameManager.isOpen) {
-                this._closeContainer(true);
-            } else {
-                this._openContainer(true);
+        setTimeout(() => {
+            if (this._checkClickable()) {
+                if (app.minigameManager.isOpen) {
+                    this._closeContainer(true);
+                } else {
+                    this._openContainer(true);
+                }
             }
-        }
+        }, 0)
+
     }
 
     _checkClickable() {

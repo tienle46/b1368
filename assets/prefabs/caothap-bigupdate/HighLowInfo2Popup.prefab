@@ -184,7 +184,7 @@
       "__id__": 1
     },
     "asset": {
-      "__id__": 0
+      "__uuid__": "e60a5462-6e3f-480e-8165-18e22b77559b"
     },
     "fileId": "37k9idsslLLK2chGfV3aT2",
     "sync": false
@@ -407,7 +407,7 @@
       "__id__": 1
     },
     "asset": {
-      "__id__": 0
+      "__uuid__": "e60a5462-6e3f-480e-8165-18e22b77559b"
     },
     "fileId": "ffgTqSVJVBt7E3zB/Q6Nk1",
     "sync": false
@@ -480,11 +480,11 @@
     "_lineHeight": 40,
     "_enableWrapText": true,
     "_N$file": {
-      "__uuid__": "2ffafbb4-ae33-4957-94d8-72654f09eb40"
+      "__uuid__": "e8812705-eb47-4c30-b1f4-0d401d3196a6"
     },
     "_isSystemFontUsed": false,
     "_spacingX": 0,
-    "_N$string": "Hướng dẫn chơi",
+    "_N$string": "HƯỚNG DẪN",
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
     "_N$fontFamily": "Arial",
@@ -496,7 +496,7 @@
       "__id__": 1
     },
     "asset": {
-      "__id__": 0
+      "__uuid__": "e60a5462-6e3f-480e-8165-18e22b77559b"
     },
     "fileId": "29VtbOOEtDCqGNkahltTZH",
     "sync": false
@@ -760,8 +760,7 @@
     },
     "_N$maxWidth": 790,
     "_N$lineHeight": 32,
-    "_N$imageAtlas": null,
-    "_N$handleTouchEvent": true
+    "_N$imageAtlas": null
   },
   {
     "__type__": "cc.Widget",
@@ -795,7 +794,7 @@
       "__id__": 1
     },
     "asset": {
-      "__id__": 0
+      "__uuid__": "e60a5462-6e3f-480e-8165-18e22b77559b"
     },
     "fileId": "63qYz9DgxPupKg+Nf7ofoG",
     "sync": false
@@ -863,7 +862,7 @@
       "__id__": 1
     },
     "asset": {
-      "__id__": 0
+      "__uuid__": "e60a5462-6e3f-480e-8165-18e22b77559b"
     },
     "fileId": "2cbS+DKO9BBaXTQiqiJs4r",
     "sync": false
@@ -914,7 +913,7 @@
       "__id__": 1
     },
     "asset": {
-      "__id__": 0
+      "__uuid__": "e60a5462-6e3f-480e-8165-18e22b77559b"
     },
     "fileId": "f4HrPWC01NUI/SMkYWG/Wl",
     "sync": false
@@ -997,7 +996,7 @@
       "__id__": 1
     },
     "asset": {
-      "__id__": 0
+      "__uuid__": "e60a5462-6e3f-480e-8165-18e22b77559b"
     },
     "fileId": "892HjhTmdLnq/nqHruZDhz",
     "sync": false
@@ -1036,7 +1035,7 @@
       "__id__": 1
     },
     "asset": {
-      "__id__": 0
+      "__uuid__": "e60a5462-6e3f-480e-8165-18e22b77559b"
     },
     "fileId": "eex2e/dSFKMKuj1wr+J1aV",
     "sync": false
@@ -1063,7 +1062,7 @@
       "__id__": 1
     },
     "asset": {
-      "__id__": 0
+      "__uuid__": "e60a5462-6e3f-480e-8165-18e22b77559b"
     },
     "fileId": "ddjbHVN41G7qPpgnLxWh/K",
     "sync": false

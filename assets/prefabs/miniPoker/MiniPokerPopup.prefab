@@ -899,7 +899,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "bb146596-d5a6-48ff-bab7-b9485e4a2e22"
+      "__uuid__": "d8a19352-6135-4099-98a0-72bc9a81149f"
     },
     "_type": 0,
     "_sizeMode": 0,
@@ -1681,7 +1681,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "bb146596-d5a6-48ff-bab7-b9485e4a2e22"
+      "__uuid__": "aba3e461-fa2e-4c49-9b1c-2cf157cd0c8b"
     },
     "_type": 0,
     "_sizeMode": 0,
@@ -2463,7 +2463,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "bb146596-d5a6-48ff-bab7-b9485e4a2e22"
+      "__uuid__": "d8740851-ecac-4713-84b5-79bc46ec914d"
     },
     "_type": 0,
     "_sizeMode": 0,
@@ -3245,7 +3245,7 @@
     },
     "_enabled": true,
     "_spriteFrame": {
-      "__uuid__": "bb146596-d5a6-48ff-bab7-b9485e4a2e22"
+      "__uuid__": "187d4896-b408-4fb6-ac09-5ea70b232ee9"
     },
     "_type": 0,
     "_sizeMode": 0,
@@ -8585,6 +8585,9 @@
     },
     "_enabled": true,
     "path": "",
+    "body": {
+      "__id__": 5
+    },
     "lblGold": null,
     "lblBet1": {
       "__id__": 155
@@ -8597,9 +8600,6 @@
     },
     "btnSpin": {
       "__id__": 249
-    },
-    "body": {
-      "__id__": 5
     },
     "popupGuidePrefab": {
       "__uuid__": "c20f0439-e545-497f-a671-c1775038be63"

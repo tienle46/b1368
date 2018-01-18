@@ -10,6 +10,7 @@ import HighLowInfoPopup from 'HighLowInfoPopup';
 import HighLowErrorCode from 'HighLowErrorCode';
 import HighLowCardHand from './HighLowCardHand';
 import utils from 'PackageUtils';
+import {numberFormat} from 'GeneralUtils';
 
 class MiniHighLowPopup extends BasePopup {
     constructor() {
@@ -30,6 +31,7 @@ class MiniHighLowPopup extends BasePopup {
 
             // Label win money
             lblWinMoney: cc.Label,
+            lose: cc.Node,
 
             lblNextAboveAmount: cc.Label,
             lblNextBeloveAmount: cc.Label,
@@ -52,6 +54,7 @@ class MiniHighLowPopup extends BasePopup {
         this.betValue = 0
         this.jackpotValue = 0
         this.betIndex = 0
+        this.winAmount = 0
 
         this.highLowHistoryPopup = null
         this.highLowTopPopup = null
@@ -126,7 +129,23 @@ class MiniHighLowPopup extends BasePopup {
     //Start
     onStartBtnClicked() {
         if (!app.highLowContext.isLoadedConfig) return
+        if (!this.checkCurrentMoney()) return
         app.highLowContext.sendStart(this.betValue)
+    }
+
+    checkCurrentMoney() {
+        if (app.context.getMeBalance() < this.betValue) {
+            // this.popup && this.popup.showError({message: "Bạn không đủ tiền đẻ chơi tiếp."});
+            app.system.confirm(
+                app.res.string("Bạn không đủ chip để chơi tiếp, nạp thêm nha."),
+                null,
+                () => {
+                    app.visibilityManager.goTo(Linking.ACTION_TOPUP)
+                }
+            );
+            return false;
+        }
+        return true;
     }
     
     onReceivedStart(data, duration = 1) {
@@ -192,21 +211,37 @@ class MiniHighLowPopup extends BasePopup {
             if (app.highLowContext.playing) {
                 app.highLowContext.sendEnd(this.betValue);// forfake
             } else {
-                this.onReceivedEnd()
+                this._reset()
             }
         }
     }
     
     onReceivedEnd() {
         // app.highLowContext.sendStart(1000)
+        this._showResult()
+        this._reset()
+    }
+
+    _reset() {
         this._removeCardResults()
         this.removeAtCards()
         this.disableCardStreak()
-        this.setEnableBtnEnd(true)
+        this.setEnableBtnEnd(false)
         this._switchInteractableHighLowBtns(false)
         this._switchBetInteractable(true)
         this._stopTimer()
         this._updateNextWinAmount(0, 0, 0)
+    }
+
+    _showResult() {
+        if (this.winAmount > 0) {
+            this.lblWinMoney.string = '+' + numberFormat(this.winAmount);
+            var anim = this.lblWinMoney.node.getComponent(cc.Animation);
+            anim.play('WinMoneyUp');
+        } else {
+            var anim = this.lose.getComponent(cc.Animation);
+            anim.play('LoseAnimation');
+        }
     }
 
     // AtCard Area
@@ -310,6 +345,7 @@ class MiniHighLowPopup extends BasePopup {
         this.isSpinning = false
         this._switchInteractableHighLowBtns(true)
         this._updateNextWinAmount(data.nextAboveAmount, data.nextBelowAmount, data.winAmount)
+        this.winAmount = data.winAmount
         if (this._checkBetWin(data)) {
             data.jackpot && this._updateJackpotValue(data.jackpot)
             this._handleValueCard(data.card)
@@ -327,6 +363,7 @@ class MiniHighLowPopup extends BasePopup {
                 this._jackpotWin(data.winAmount)
             }
         } else {
+            this._showResult()
             this.scheduleOnce(this.onEndBtnClicked, 2)
         }
     }
@@ -357,6 +394,10 @@ class MiniHighLowPopup extends BasePopup {
             money: money,
             message: "Chúc mừng bạn đã nổ hũ game Cao Thấp"
         })
+        app.highLowContext.playing = false;
+        app.highLowContext.startTime = null;
+        this._showResult();
+        this.onEndBtnClicked();
     }
     
     //hide and show cark streak
@@ -497,7 +538,7 @@ class MiniHighLowPopup extends BasePopup {
 
         if (error.code === HighLowErrorCode.PLAYER_NOT_PLAY.code ||
             error.code === HighLowErrorCode.SESSION_ALREADY_FINISHED.code) {
-            this.onReceivedEnd()
+            this._reset()
         }
     }
 
