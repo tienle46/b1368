@@ -18,6 +18,7 @@ class HighLowHistoryPopup extends BasePopup {
         });
 
         this.page = 1
+        this.allowPageUp = true
     }
 
     onEnable() {
@@ -47,6 +48,8 @@ class HighLowHistoryPopup extends BasePopup {
         // warn('On disable');
 
         this._deregisterEventListener();
+        this.page = 1;
+        this.allowPageUp = true
     }
 
     _registerEventListener() {

@@ -11,6 +11,7 @@ import HighLowErrorCode from 'HighLowErrorCode';
 import HighLowCardHand from './HighLowCardHand';
 import utils from 'PackageUtils';
 import {numberFormat} from 'GeneralUtils';
+import Linking from 'Linking';
 
 class MiniHighLowPopup extends BasePopup {
     constructor() {
@@ -147,7 +148,7 @@ class MiniHighLowPopup extends BasePopup {
         }
         return true;
     }
-    
+
     onReceivedStart(data, duration = 1) {
         this.playSpinCard(data, duration)
         this.enableCardStreak()
