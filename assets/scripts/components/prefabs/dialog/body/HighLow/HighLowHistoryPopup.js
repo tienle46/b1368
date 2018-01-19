@@ -86,6 +86,8 @@ class HighLowHistoryPopup extends BasePopup {
         this._removeItems();
 
         this.lblPage.string = this.page
+        if (data.histories.length < app.highLowContext.pageSize)
+            this.allowPageUp = false
         data.histories.forEach((info, idx) => {
             this._addItem(info, idx);
         });
@@ -102,6 +104,7 @@ class HighLowHistoryPopup extends BasePopup {
     }
 
     onBtnNextPageClicked() {
+        if (!this.allowPageUp) return
         this.page ++
         this._sendGetHistory()
     }

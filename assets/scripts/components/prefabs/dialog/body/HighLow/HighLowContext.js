@@ -101,6 +101,7 @@ export default class HighLowContext {
         this.spinInterval = data.spinInterval || 0
         this.subInterval = data.subInterval || 0
         this.duration = data.duration;
+        this.pageSize = data.pageSize || 10
         this.tempDuration = this.duration
         if (data.remainTime) {
             this.tempDuration = data.remainTime
