@@ -155,7 +155,9 @@ class MiniHighLowPopup extends BasePopup {
         this._startTimer()
         if (data.playing) {
             warn('start', data)
-            this.setEnableBtnEnd(data.cardHistory.length !== 1)
+            if (data.cardHistory) {
+                this.setEnableBtnEnd(data.cardHistory.length !== 1)
+            }
             this._setHistoryResults(data.cardHistory)
             this._setHistoryAtCards(data.atCardCount)
         } else {
