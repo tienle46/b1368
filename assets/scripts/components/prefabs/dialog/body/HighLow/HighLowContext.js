@@ -92,7 +92,7 @@ export default class HighLowContext {
     _onReceivedSync(data) {
         // console.log('dataSync======', data)
         // this.jackpotValues = Object.values(data.betToJackpot)
-        this._analystJackpotAndBetValues(data.betToJackpot)
+        data.betToJackpot && this._analystJackpotAndBetValues(data.betToJackpot)
         this.popup && this.popup.updateBetAndJackpotValues()
     }
 
@@ -105,7 +105,8 @@ export default class HighLowContext {
         if (data.remainTime) {
             this.tempDuration = data.remainTime
         }
-        this._analystJackpotAndBetValues(data.betToJackpot)
+
+        data.betToJackpot && this._analystJackpotAndBetValues(data.betToJackpot)
 
         this.isLoadedConfig = true;
         this.popup && this.popup.loadConfig()
