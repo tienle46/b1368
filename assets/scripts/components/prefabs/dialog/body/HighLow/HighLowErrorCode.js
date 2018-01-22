@@ -7,7 +7,7 @@ export default class HighLowErrorCode {
 }
 
 HighLowErrorCode.LOCK = new HighLowErrorCode("-1", "Game Cao Thấp tạm khoá");
-HighLowErrorCode.UNKNOWN = new HighLowErrorCode("0", "Lỗi không xác định");
+HighLowErrorCode.UNKNOWN = new HighLowErrorCode("0", "Lỗi không xác định(0)");
 HighLowErrorCode.NOT_ENOUGH_JACKPOT_PAY = new HighLowErrorCode("1", "Hũ hết tiền");
 HighLowErrorCode.UPDATE_JACKPOT_VALUE_FAIL = new HighLowErrorCode("2", "Không thay đổi được giá trị Jackpot");
 HighLowErrorCode.NOT_FOUND_CARDS = new HighLowErrorCode("3", "Không tìm thấy quân bài thích hợp");
@@ -18,8 +18,8 @@ HighLowErrorCode.FLOOD_PLAY = new HighLowErrorCode("7", "Thời gian quay quá n
 
 HighLowErrorCode.SESSION_ALREADY_FINISHED = new HighLowErrorCode("8", "Ván chơi đã kết thúc");
 HighLowErrorCode.PLAYER_NOT_PLAY = new HighLowErrorCode("9", "Bạn chưa bắt đầu ván mới hoặc ván chơi đã kết thúc");
-HighLowErrorCode.INVALID_PARAMS = new HighLowErrorCode("10", "Lỗi không xác định");
-HighLowErrorCode.INVALID_PREDICT = new HighLowErrorCode("11", "Lỗi không xác định");
+HighLowErrorCode.INVALID_PARAMS = new HighLowErrorCode("10", "Lỗi không xác định(10)");
+HighLowErrorCode.INVALID_PREDICT = new HighLowErrorCode("11", "Lỗi không xác định(11)");
 
 HighLowErrorCode.valueOf = function(code) {
     switch (code) {
