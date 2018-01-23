@@ -61,7 +61,6 @@ export default class MiniPokerContext {
     }
 
     _onReceivedPlayResult(data) {
-        warn ('Result', data);
         if (data.results) {
             data.results.forEach(result => {
                 this.resultQueue.push(result);
@@ -104,7 +103,6 @@ export default class MiniPokerContext {
     }
 
     _displayResult() {
-        warn('display result');
         var data = this.resultQueue.splice(0, 1)[0];
 
         if (data.error) {

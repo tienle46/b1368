@@ -223,7 +223,6 @@ class MiniPokerPopup extends BasePopup {
                 delay = defaultDelay;
             }
         }
-        warn('delay', delay);
         if (delay <= 0) {
             this.onBtnSpinClicked();
         } else {
