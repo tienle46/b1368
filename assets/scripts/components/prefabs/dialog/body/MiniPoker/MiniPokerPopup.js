@@ -217,6 +217,13 @@ class MiniPokerPopup extends BasePopup {
         this._enableBetButtons(false);
         var interval = (app.miniPokerContext.isQuickSpin ? app.miniPokerContext.quickSpinInterval * 2 : app.miniPokerContext.spinInterval);
         var delay = (app.miniPokerContext.lastSpinTime + interval - this._getCurTime()) / 1000;
+        if (app.miniPokerContext.isQuickSpin) {
+            const defaultDelay = 0.7;
+            if (delay > defaultDelay) {
+                delay = defaultDelay;
+            }
+        }
+        warn('delay', delay);
         if (delay <= 0) {
             this.onBtnSpinClicked();
         } else {
@@ -417,6 +424,7 @@ class MiniPokerPopup extends BasePopup {
             this.updateJarMoneys();
             if (app.miniPokerContext.checkResultQueue()) return;
             this._checkAutoSpin();
+
         }.bind(this));
     }
 

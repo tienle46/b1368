@@ -77,7 +77,9 @@ export default class MiniPokerContext {
 
     checkResultQueue() {
         if (this.resultQueue.length > 0) {
-            this._displayResult();
+            if (this.isQuickSpin) {
+                setTimeout(() => {this._displayResult()}, 700);
+            }
             return true;
         }
         return false;
@@ -160,7 +162,7 @@ export default class MiniPokerContext {
         this.betValues = data.bets;
         this.subInterval = data.subInterval;
         this.spinInterval = data.spinInterval + 200;
-        this.quickSpinInterval = data.quickInterval + 200 || 1500;
+        this.quickSpinInterval = data.quickInterval || 1500;
         this.curBetValue = this.betValues[this.selectedBet];
         this.prizeConfig = data.prizeConfig;
 
