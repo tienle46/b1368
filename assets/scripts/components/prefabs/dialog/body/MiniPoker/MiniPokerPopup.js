@@ -45,13 +45,15 @@ class MiniPokerPopup extends BasePopup {
             lblHuMoney: cc.Label,
 
             // Quick spin check box
+            autoSpinToggle: cc.Toggle,
             quickSpinToggle: cc.Toggle
+            
         });
 
         this.popupGuide = null;
         this.popupTop = null;
         this.popupHistory = null;
-        // this.enableSpin = true;
+        this.spinned = true;
         this.toggleEnableColor = new cc.Color(255, 12, 12, 255);
         this.toggleDisableColor = new cc.Color(255, 255, 255, 255);
         this.isSpinning = false;
@@ -89,6 +91,13 @@ class MiniPokerPopup extends BasePopup {
         // this._disableBetButtons();
         (app.miniPokerContext) && (app.miniPokerContext.sendGetConfig());
         app.miniPokerContext.enabled = true;
+    }
+
+    onDisable() {
+        super.onDisable();
+        if (this.quickSpinToggle.isChecked) {
+            this.quickSpinToggle.uncheck();
+        }
     }
 
     _scheduleSubscribe() {
@@ -150,8 +159,8 @@ class MiniPokerPopup extends BasePopup {
     onBtnCloseClicked() {
         // if (this.isSpinning) return;
 
-        if (this.quickSpinToggle.isChecked) {
-            this.quickSpinToggle.uncheck();
+        if (this.autoSpinToggle.isChecked) {
+            this.autoSpinToggle.uncheck();
         }
         this._unscheduleSubscribe();
         super.onBtnCloseClicked();
@@ -182,24 +191,32 @@ class MiniPokerPopup extends BasePopup {
     }
 
     onQuickSpinStateChanged() {
-        // var btnSpinController = this.btnSpin.getComponent(cc.Button);
-        // btnSpinController && (btnSpinController.interactable = !this.quickSpinToggle.isChecked);
-
-        this._checkQuickSpin();
+        app.miniPokerContext.isQuickSpin = this.quickSpinToggle.isChecked;
+        if (app.miniPokerContext.isQuickSpin) {
+            if(!this.autoSpinToggle.isChecked) {
+                this.autoSpinToggle.check();
+            }
+        }
     }
 
-    _checkQuickSpin() {
-        if (!this.quickSpinToggle.isChecked) {
+    onAutoSpinStateChanged() {
+        this._checkAutoSpin();
+    }
+
+    _checkAutoSpin() {
+        if (!this.autoSpinToggle.isChecked) {
             this._enableBetButtons(true);
+            if (this.quickSpinToggle.isChecked) {
+                this.quickSpinToggle.uncheck();
+            }
             this.unschedule(this.onBtnSpinClicked);
             return;
         }
         if (this.isSpinning) return;
 
-
         this._enableBetButtons(false);
-        var delay = (app.miniPokerContext.lastSpinTime + app.miniPokerContext.spinInterval - this._getCurTime()) / 1000;
-        // warn('delay', delay);
+        var interval = (app.miniPokerContext.isQuickSpin ? app.miniPokerContext.quickSpinInterval * 2 : app.miniPokerContext.spinInterval);
+        var delay = (app.miniPokerContext.lastSpinTime + interval - this._getCurTime()) / 1000;
         if (delay <= 0) {
             this.onBtnSpinClicked();
         } else {
@@ -210,8 +227,7 @@ class MiniPokerPopup extends BasePopup {
     onBtnSpinClicked() {
         if (!app.miniPokerContext.enabled) return;
 
-        var anim = this.btnSpin.getComponent(cc.Animation);
-        anim.play("ButtonSpinAnimation");
+        this._doButtonSpinAnim();
 
         if (this.isSpinning) return;
 
@@ -233,6 +249,13 @@ class MiniPokerPopup extends BasePopup {
         }
     }
 
+    _doButtonSpinAnim() {
+        var anim = this.btnSpin.getComponent(cc.Animation);
+        anim.play("ButtonSpinAnimation");
+
+        this.spinned = true;
+    }
+
     _checkSpinTime() {
         if (app.miniPokerContext.lastSpinTime <= 0) {
             var date = new Date();
@@ -240,8 +263,7 @@ class MiniPokerPopup extends BasePopup {
             return true;
         }
 
-        var date = new Date();
-        var curTime = date.getTime();
+        var curTime = this._getCurTime();
         if (curTime - app.miniPokerContext.lastSpinTime >= app.miniPokerContext.spinInterval - 1000) {
             return true;
         }
@@ -296,14 +318,18 @@ class MiniPokerPopup extends BasePopup {
         }
     }
 
+    _enableQuickSpinToggle(enable) {
+        this.quickSpinToggle.interactable = enable;
+    }
+
     disableMiniPoker() {
         app.miniPokerContext.enabled = false;
         this.disableAutoSpin();
     }
 
     disableAutoSpin() {
-        if (this.quickSpinToggle && this.quickSpinToggle.isChecked) {
-            this.quickSpinToggle.uncheck();
+        if (this.autoSpinToggle && this.autoSpinToggle.isChecked) {
+            this.autoSpinToggle.uncheck();
         }
     }
 
@@ -369,20 +395,28 @@ class MiniPokerPopup extends BasePopup {
         if (data.jackpot) {
             app.miniPokerContext.updateJackpotForIdx(data.jackpot, app.miniPokerContext.getIdxForBet(bet));
         }
+
+        if (!this.spinned) {
+            this._doButtonSpinAnim();
+        }
+
         this.isSpinning = true;
-        this.cardStreak1.spinToCard(cards[0], 2);
-        this.cardStreak2.spinToCard(cards[1], 2.25);
-        this.cardStreak3.spinToCard(cards[2], 2.5);
-        this.cardStreak4.spinToCard(cards[3], 2.75);
-        this.cardStreak5.spinToCard(cards[4], 3, function () {
+        var maxDuration = app.miniPokerContext.getMaxAnimDuration();
+        var step = 0.25;
+        this.cardStreak1.spinToCard(cards[0], maxDuration - 4 * step);
+        this.cardStreak2.spinToCard(cards[1], maxDuration - 3 * step);
+        this.cardStreak3.spinToCard(cards[2], maxDuration - 2 * step);
+        this.cardStreak4.spinToCard(cards[3], maxDuration - step);
+        this.cardStreak5.spinToCard(cards[4], maxDuration, function () {
             this.isSpinning = false;
+            this.spinned = false;
             if (isWin && winAmount > 0) {
                 this._showWinMoney(cardType, winAmount);
             }
             // this.updateBalance();
             this.updateJarMoneys();
             if (app.miniPokerContext.checkResultQueue()) return;
-            this._checkQuickSpin();
+            this._checkAutoSpin();
         }.bind(this));
     }
 

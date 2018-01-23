@@ -15,6 +15,7 @@ export default class MiniPokerContext {
         this.lastSpinTime = 0;
         this.prizeConfig = null;
         this.enabled = true;
+        this.isQuickSpin = false;
 
         this.resultQueue = [];
 
@@ -60,10 +61,16 @@ export default class MiniPokerContext {
     }
 
     _onReceivedPlayResult(data) {
-        // warn ('Result', data);
-        this.resultQueue.push(data);
+        warn ('Result', data);
+        if (data.results) {
+            data.results.forEach(result => {
+                this.resultQueue.push(result);
+            });
+        } else {
+            this.resultQueue.push(data);
+        }
 
-        if (this.resultQueue.length === 1 && !this.popup.isSpinning) {
+        if (this.resultQueue.length > 0 && !this.popup.isSpinning) {
             this._displayResult();
         }
     }
@@ -95,6 +102,7 @@ export default class MiniPokerContext {
     }
 
     _displayResult() {
+        warn('display result');
         var data = this.resultQueue.splice(0, 1)[0];
 
         if (data.error) {
@@ -137,7 +145,8 @@ export default class MiniPokerContext {
         app.service.send({
             cmd: app.commands.MINIGAME_MINI_POKER_PLAY,
             data: {
-                bet: betAmount
+                bet: betAmount,
+                quickPlay: this.isQuickSpin
             }
         });
     }
@@ -151,6 +160,7 @@ export default class MiniPokerContext {
         this.betValues = data.bets;
         this.subInterval = data.subInterval;
         this.spinInterval = data.spinInterval + 200;
+        this.quickSpinInterval = data.quickInterval + 200 || 1500;
         this.curBetValue = this.betValues[this.selectedBet];
         this.prizeConfig = data.prizeConfig;
 
@@ -165,6 +175,13 @@ export default class MiniPokerContext {
     updateCurBet(selectedBetIdx) {
         this.selectedBet = selectedBetIdx;
         this.curBetValue = this.betValues[this.selectedBet];
+    }
+
+    getMaxAnimDuration() {
+        if (this.isQuickSpin) {
+            return this.quickSpinInterval / 1000;
+        }
+        return (this.spinInterval) / 1000;
     }
 
     getCurrentTime() {
