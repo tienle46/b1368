@@ -54,7 +54,7 @@ class MiniPokerPopup extends BasePopup {
         this.popupTop = null;
         this.popupHistory = null;
         this.spinned = true;
-        this.toggleEnableColor = new cc.Color(255, 12, 12, 255);
+        this.toggleEnableColor = new cc.Color(49, 28, 0, 255);
         this.toggleDisableColor = new cc.Color(255, 255, 255, 255);
         this.isSpinning = false;
 
