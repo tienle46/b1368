@@ -76,9 +76,6 @@ export default class MiniPokerContext {
 
     checkResultQueue() {
         if (this.resultQueue.length > 0) {
-            if (this.isQuickSpin) {
-                setTimeout(() => {this._displayResult()}, 700);
-            }
             return true;
         }
         return false;

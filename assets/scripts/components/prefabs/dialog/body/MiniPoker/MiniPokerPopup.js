@@ -212,7 +212,9 @@ class MiniPokerPopup extends BasePopup {
             this.unschedule(this.onBtnSpinClicked);
             return;
         }
-        if (this.isSpinning) return;
+        if (this.isSpinning) {
+            return;
+        }
 
         this._enableBetButtons(false);
         var interval = (app.miniPokerContext.isQuickSpin ? app.miniPokerContext.quickSpinInterval * 2 : app.miniPokerContext.spinInterval);
@@ -226,7 +228,7 @@ class MiniPokerPopup extends BasePopup {
         if (delay <= 0) {
             this.onBtnSpinClicked();
         } else {
-            this.scheduleOnce(this.onBtnSpinClicked, delay);
+            this.scheduleOnce(()=>{this.onBtnSpinClicked()}, delay);
         }
     }
 
@@ -421,7 +423,14 @@ class MiniPokerPopup extends BasePopup {
             }
             // this.updateBalance();
             this.updateJarMoneys();
-            if (app.miniPokerContext.checkResultQueue()) return;
+            if (app.miniPokerContext.checkResultQueue()) {
+                if (app.miniPokerContext.isQuickSpin) {
+                    this.scheduleOnce(() => {app.miniPokerContext._displayResult()}, 0.7);
+                } else {
+                    app.miniPokerContext._displayResult();
+                }
+                return;
+            }
             this._checkAutoSpin();
 
         }.bind(this));
