@@ -23,12 +23,14 @@ class SlotTopPopup extends BasePopup {
     }
     initValue() {
         const data = []
+        const currentTime = new Date()
         for(let i=0;i<15;i++) {
             data.push({
-                stt: i+1,
+                time: currentTime,
                 username: `aneo${i}`,
                 bet: 1000+i,
-                win: 2000*i
+                win: 2000*i,
+                detail: 'Nổ hũ'
             })
         }
         console.log(data)
